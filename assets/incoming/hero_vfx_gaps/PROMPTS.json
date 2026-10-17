@@ -1,0 +1,149 @@
+[
+  {
+    "id": "C1",
+    "file": "vfx_cocoa_titan_slam.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. EXACTLY six frames 3x2 grid. Small compact chocolate bear paw SLAM with flat oval chocolate shockwave. In frame 1 show a COMPLETE disembodied paw floating down, fully visible, no arm coming from frame border. Frame2 impact; 3 expand; 4 debris;5 fading;6 faint. All elements inside central 75% of each square cell, thick BLACK margin on ALL sides especially ABOVE paw. Never crop a paw or particle. Palette chocolate #5a3420 caramel #ffcf80 cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C2",
+    "file": "vfx_cocoa_slam_mark.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset C2 vfx_cocoa_slam_mark. EXACTLY 4 frames: 1 columns x 4 rows. Each cell 256x256; desired canvas 256x1024. Flat oval warning ring on ground made of melted chocolate and bear paw patterns; caramel rim contracts toward center like countdown. Four loop phases. Chocolate #5a3420, caramel #ffcf80, cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C3",
+    "file": "vfx_cocoa_rage_preview.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset C3 vfx_cocoa_rage_preview. EXACTLY 4 frames: 2 columns x 2 rows. Each cell 256x256; desired canvas 512x512. Wide flat oval ground slam-area aura: swirling hot chocolate heat waves, cracked glowing caramel perimeter, clear central space. Four smooth loop phases. Chocolate #5a3420, caramel #ffcf80, cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C4",
+    "file": "vfx_cocoa_rage_target.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. EXACTLY four frames 4x1 row. Simple tiny glowing CARAMEL BEAR FIST target symbol: only one compact clenched paw/fist silhouette, NO head, NO face, NO body, NO ears, NO ground ring or platform. Same centered fist in every frame, gently blinking glow phases. Thick black padding. Palette chocolate #5a3420 caramel #ffcf80 cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C5",
+    "file": "vfx_cocoa_crater.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset C5 vfx_cocoa_crater. EXACTLY 4 frames: 4 columns x 1 rows. Each cell 256x256; desired canvas 1024x256. Chocolate crater sunk in ground, flat oval viewed from above, cracked chunky chocolate rim. Four frames progressively fading; no background terrain. Chocolate #5a3420, caramel #ffcf80, cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C6",
+    "file": "vfx_cocoa_dash_buff.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset C6 vfx_cocoa_dash_buff. EXACTLY 6 frames: 3 columns x 2 rows. Each cell 128x128; desired canvas 384x256. Caramel sparkles and small glowing bear paw prints flash in a ring around a clear center, expand then fade over six animation frames. Chocolate #5a3420, caramel #ffcf80, cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C7",
+    "file": "vfx_cocoa_dash_trail.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. EXACTLY four frames stacked vertically in 1x4 grid. Four horizontal SEAMLESS REPEATABLE melted chocolate energy RIBBON tiles with cream sparkles flowing right. Ribbon is a continuous horizontal chocolate band passing completely THROUGH BOTH left and right image borders at mid-height. NO start, NO end, NO tapered tips, NO leading splash, NO caps, NO blobs at either side. Both horizontal edges in each tile have identical straight 3-stripe chocolate/caramel/cream cross sections at same vertical position and thickness. Decoration only in middle 70% of width. Pure black above and below. Each frame wide 4:1. Palette chocolate #5a3420 caramel #ffcf80 cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "C8",
+    "file": "vfx_cocoa_landing_dust.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset C8 vfx_cocoa_landing_dust. EXACTLY 6 frames: 3 columns x 2 rows. Each cell 256x256; desired canvas 768x512. Cocoa dust bursts outward in a flat oval ground ring with short chocolate ground cracks, dissipates and fades over six frames. Chocolate #5a3420, caramel #ffcf80, cream #fff3dc.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "S1",
+    "file": "vfx_momo_seed_pop.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset S1 vfx_momo_seed_pop. EXACTLY 4 frames: 4 columns x 1 rows. Each cell 128x128; desired canvas 512x128. Small strawberry juice hit splash with exactly three or four golden seeds popping outward; four phases impact, expansion, scatter, fade. Palette pink #ff7aa8, strawberry red #ff3d5e, leaf green #7ed957. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "S2",
+    "file": "vfx_momo_aim_line.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset S2 vfx_momo_aim_line. EXACTLY 4 frames: 1 columns x 4 rows. Each cell 512x32; desired canvas 512x128. Extremely thin horizontal glowing pink aiming beam with tiny golden seeds flowing right; seamless left/right ends. Four distinct stacked ultra-wide narrow frames. Palette pink #ff7aa8, strawberry red #ff3d5e, leaf green #7ed957. Beam extends fully beyond BOTH horizontal edges with IDENTICAL flat beam cross section at left and right edge; no caps or endpoints.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "S3",
+    "file": "vfx_momo_aim_cone.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset S3 vfx_momo_aim_cone. EXACTLY 4 frames: 1 columns x 4 rows. Each cell 512x256; desired canvas 512x1024. Translucent pink aiming fan cone pointing right, tip at left-middle origin, opening angle 60 degrees, floating pink petals and golden seeds within fan. Four stacked equal wide loop frames. Contain cone fully in frame. Palette pink #ff7aa8, strawberry red #ff3d5e, leaf green #7ed957. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "S4",
+    "file": "vfx_momo_dash.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset S4 vfx_momo_dash. EXACTLY 6 frames: 3 columns x 2 rows. Each cell 128x128; desired canvas 384x256. Pink strawberry petals and small fresh green leaves puff backward toward left, then scatter and fade over six dash frames. Palette pink #ff7aa8, strawberry red #ff3d5e, leaf green #7ed957. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "M1",
+    "file": "vfx_mint_chill_hit.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset M1 vfx_mint_chill_hit. EXACTLY 4 frames: 4 columns x 1 rows. Each cell 128x128; desired canvas 512x128. Subtle light translucent ring of tiny mint snowflakes and cold icy mist around empty central point; four lightweight hit phases then fade. Palette mint #8ff0d6, icy blue #9ad8ff, white. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "M2",
+    "file": "vfx_mint_freeze.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset M2 vfx_mint_freeze. EXACTLY 6 frames: 3 columns x 2 rows. Each cell 128x128; desired canvas 384x256. Ice crystal block forms around an EMPTY creature-sized space (no creature): frames 1-4 progressively grows, frame 5 complete stable ice block for hold, frame 6 cracks and shatters. Mint ice and blue white highlights. Palette mint #8ff0d6, icy blue #9ad8ff, white. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "M3",
+    "file": "vfx_mint_needle_hit.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset M3 vfx_mint_needle_hit. EXACTLY 4 frames: 4 columns x 1 rows. Each cell 64x64; desired canvas 256x64. Tiny sharp icy blue needle splinters shattering outward from a single point, four frames burst expansion fade; strong simple silhouette. Palette mint #8ff0d6, icy blue #9ad8ff, white. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "M4",
+    "file": "vfx_mint_lance_charge.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset M4 vfx_mint_lance_charge. EXACTLY 4 frames: 2 columns x 2 rows. Each cell 128x128; desired canvas 256x256. Small mint snowflakes spiraling inward into a glowing icy blue point, four seamless looping charging phases, compact at hand size. Palette mint #8ff0d6, icy blue #9ad8ff, white. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "M5",
+    "file": "vfx_mint_aim_line.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset M5 vfx_mint_aim_line. EXACTLY 4 frames: 1 columns x 4 rows. Each cell 512x32; desired canvas 512x128. Extremely thin horizontal icy blue aim line with tiny drifting frost flakes flowing right; seamless left/right ends. Four distinct stacked ultra-wide narrow frames. Palette mint #8ff0d6, icy blue #9ad8ff, white. Beam extends fully beyond BOTH horizontal edges with IDENTICAL flat cross section at left and right edge; no caps or endpoints.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "M6",
+    "file": "vfx_mint_bloom_preview.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset M6 vfx_mint_bloom_preview. EXACTLY 4 frames: 2 columns x 2 rows. Each cell 256x256; desired canvas 512x512. Flat oval frost flower pattern of mint and icy blue crystals on ground seen from above, softly pulsing glow in four loop phases, center kept clear. Palette mint #8ff0d6, icy blue #9ad8ff, white. ",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "T1",
+    "file": "vfx_taro_rift_step.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset T1 vfx_taro_rift_step. EXACTLY 6 frames: 3 columns x 2 rows. Each cell 128x128; desired canvas 384x256. Small violet dimensional rift tear opens and closes with tiny cyan lightning sparks: six phases slit, opening, peak, closing, small slit, fading sparks. Palette violet #b388ff, cyan #9ad8ff, white.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "T2",
+    "file": "vfx_taro_shrapnel.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset T2 vfx_taro_shrapnel. EXACTLY 4 frames: 4 columns x 1 rows. Each cell 128x128; desired canvas 512x128. Exactly three short branching forks of violet and cyan lightning shoot outward from central point, four frames burst then fade. Palette violet #b388ff, cyan #9ad8ff, white.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  },
+  {
+    "id": "U1",
+    "file": "vfx_unique_crescendo.png",
+    "prompt": "Use case: stylized-concept. Production VFX animation sheet for Mochi Mayhem cute pastel confectionery fantasy mobile game. Soft illustrated candy shading, glossy magic highlights, 3/4 top-down view. Readable at small mobile size. Background absolutely pure solid black #000; no transparency, no scenery. Exact uniform grid, equal cells; animation order left to right, then top to bottom. No visible grid, separators, gutters, text, numbers, watermark or UI. Keep all particles and glows fully within each cell, 8% clear padding on all non-seamless sides; lock the pivot consistently between frames. Ground effects must be flat ovals seen from above. Asset U1 vfx_unique_crescendo. EXACTLY 8 frames: 4 columns x 2 rows. Each cell 384x384; desired canvas 1536x768. Radiant WHITE-GOLD magical power burst ring expands from center with star sparkles and flowing light ribbons then fades over eight sequential frames. White gold only; allow game tint. Keep center clear. Palette white and pale gold only.",
+    "method": "built-in imagegen",
+    "packing": "Shared sequence crop, fit and black padding. Narrow seam tiles resized to requested frame aspect. Near-black <=3 quantized to RGB0."
+  }
+]

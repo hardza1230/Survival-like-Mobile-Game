@@ -1,13 +1,11 @@
 # Latest session checkpoint
-Updated2026-10-16 Asia/Bangkok.
+Updated 2026-10-17 Asia/Bangkok.
 
-## Art order19 —22 sources stored, runtime integration deferred
-Owner requested docs/art_orders/19_C24_FOUR_SEASON_ART.md with delivery to assets/incoming/c24_seasons_vfx/, continuing the create/upload-only workflow. Added22 PNG32 files/126frames: four A1 seasonal variants, A2–A11 and B1–B8. Existing floor/decor/enemies/miniboss/boss animations unchanged; Bloom Sprout is the new enemy only. Metadata: MANIFEST.json, PROMPTS.json, QA_REPORT.json, DELIVERY_README.md.
+## Art order 20 — 21 source sheets ready for publication
+Owner supplied docs/art_orders/20_HERO_VFX_GAPS.md and requested delivery under assets/incoming/hero_vfx_gaps/. Built-in imagegen produced all 21 PNG32 sheets / 100 frames. C1/C4/C7 were regenerated after visual review. Delivery includes MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md.
 
-Built-in imagegen; Budling and Chronobloom existing art used as style references. Summer edge was regenerated to remove other-season motifs; summer/winter further refined to keep the central window empty. Verified exact dimensions/grids, actual alpha per alpha frame, opaque VFX, central64percent RGB0 in all32 transition frames, body groundline236 in all8 Sprout frames, brighter passed HUD cells, complete PNG chunk CRC/IEND/zlib/scanline data and SHA-256 for22/22. All source sheets and the normalized representative gallery reviewed.
+Exact requested dimensions/grids, opaque RGBA black-background sources, nonempty frames, full PNG CRC/IEND/zlib data and per-file SHA-256 verified. Vertical source rows separated at real dark gaps before exact-size packing. Reviewed generated sheets and normalized gallery. Seam profiles are visually close, not pixel-identical; S3 exact fan footprint/apex, loop transitions, final one-shot fades and world pivots require game-side review. M2 formation 0–3, hold 4, break 5.
 
-Publication base5411e1efb369bf0ba38221388b4d062408bdf4dc (v7.8.30), refreshed during generation. Art-order source revisionf5e7cc0d66bb1253b169d7e71bf02fa861dc4744 stayed unchanged. Storage delivery uses expected-head fast-forward and exact local/remote tree equality on claude/vampire-survival-mobile-game-yo9e8w. Art/docs only: no game.js, registration, sounds, game version or build output changed. No runtime/npm/build/combat tests for incoming storage.
+Publication base: 778be2d0c324e04f949dee29ac9a8a27dc382e6e on claude/vampire-survival-mobile-game-yo9e8w. Expected-head fast-forward only; require exact local/remote tree equality before publishing. Changes are incoming art and delivery/status documentation only. No runtime registration, game version, gameplay, sounds or build outputs changed. No combat simulation; game-side integration and phone visual/FPS tests remain pending.
 
-Next: owner art review, separately requested packing/integration, game-side footprint/pivot/seam/timing checks and mobile HUD/readability/FPS review. Metadata includes pose/state maps; do not animate all Sprout or HUD frames as a single loop, or recenter the quarter-ring seal.
-
-Previous order18 extensions14 sources were published25544f08ab2be715eb31fc646c851d2652a495af and subsequently integrated by game-side work in v7.8.30.
+Next: verify repository publication, then owner art review and separately requested packing/runtime integration. Prior order 19 sources remain under assets/incoming/c24_seasons_vfx/; their runtime integration was deferred.

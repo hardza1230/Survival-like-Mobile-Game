@@ -1,0 +1,953 @@
+{
+  "assetCount": 21,
+  "frameCount": 100,
+  "scope": "Incoming sources only. Runtime packing, playback, seam alignment, pivot and mobile FPS validation pending.",
+  "assets": [
+    {
+      "id": "C1",
+      "file": "vfx_cocoa_titan_slam.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "1869c465ea579bf58e756ab8f724b9c6f295cd6cda1b28e37620819259967ce0",
+      "gitBlobSha": "824e94bdf2b8bdb3b8791e2fbbfc9c38d08b1443",
+      "bytes": 253016,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 10115
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 18883
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 24485
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 26906
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 20619
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 17598
+        }
+      ],
+      "sourceCrop": [
+        4,
+        92,
+        488,
+        495
+      ],
+      "packedFrameContentSize": [
+        248,
+        206
+      ]
+    },
+    {
+      "id": "C2",
+      "file": "vfx_cocoa_slam_mark.png",
+      "size": [
+        256,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "688bb85f7a89b26c3ea55cb16b82ee5f86d31ccdd0f2d60343b88b26e410b3c1",
+      "gitBlobSha": "d7243bd263e7beb7c0dbc81d6c451c4cc18d75f0",
+      "bytes": 154322,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 24687
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 19853
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 14524
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 8852
+        }
+      ],
+      "sourceCrop": [
+        143,
+        8,
+        882,
+        390
+      ],
+      "packedFrameContentSize": [
+        248,
+        128
+      ]
+    },
+    {
+      "id": "C3",
+      "file": "vfx_cocoa_rage_preview.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "705c71f11994b211af4f1b1fd8cab933bc482371d1acdaec0ea813fa6307220c",
+      "gitBlobSha": "13369fb0f45111fa47af6133f8a33b8f14516144",
+      "bytes": 281213,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 24728
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 31373
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 39615
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 30021
+        }
+      ],
+      "sourceCrop": [
+        0,
+        16,
+        627,
+        510
+      ],
+      "packedFrameContentSize": [
+        248,
+        195
+      ]
+    },
+    {
+      "id": "C4",
+      "file": "vfx_cocoa_rage_target.png",
+      "size": [
+        512,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "498093d4e9a2f5842b3a04f168e3831617e9bd9c18c65279ecce71b23f003f0e",
+      "gitBlobSha": "165f9b769d8bc31d3051dfc707dd736df33dcade",
+      "bytes": 66985,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 5221
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 8531
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 11715
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 7915
+        }
+      ],
+      "sourceCrop": [
+        55,
+        142,
+        482,
+        562
+      ],
+      "packedFrameContentSize": [
+        120,
+        118
+      ]
+    },
+    {
+      "id": "C5",
+      "file": "vfx_cocoa_crater.png",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "2885f05580c31fc79b7f9214cb4bcb9ae5c7dad06ed2c5ac4743474d4e070a22",
+      "gitBlobSha": "6b1d115f306aebd732ec3d1fc29aad80c3c978aa",
+      "bytes": 234764,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 32524
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 25898
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 21458
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 17656
+        }
+      ],
+      "sourceCrop": [
+        0,
+        177,
+        496,
+        567
+      ],
+      "packedFrameContentSize": [
+        248,
+        195
+      ]
+    },
+    {
+      "id": "C6",
+      "file": "vfx_cocoa_dash_buff.png",
+      "size": [
+        384,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "2cf3d8942d400e24639e6b6b8a9f91e1ebacd34019f34d9a19b6971cda4a8dd3",
+      "gitBlobSha": "2c9940509a72b2cf20325709a9f8b1f62a00622c",
+      "bytes": 82942,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 4030
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 6236
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 9001
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 7624
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 5387
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 2759
+        }
+      ],
+      "sourceCrop": [
+        18,
+        35,
+        483,
+        456
+      ],
+      "packedFrameContentSize": [
+        120,
+        109
+      ]
+    },
+    {
+      "id": "C7",
+      "file": "vfx_cocoa_dash_trail.png",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "5dacafe35aabf51f70ec11b7d14c90d6dc0d9543c0c06459e86b3ae89e9406c8",
+      "gitBlobSha": "19aa3f13d5fcbbe721ee0c1f0e34334a9f35ed42",
+      "bytes": 97991,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 8903
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 8963
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 9670
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 9232
+        }
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        2172,
+        121
+      ],
+      "packedFrameContentSize": [
+        256,
+        49
+      ]
+    },
+    {
+      "id": "C8",
+      "file": "vfx_cocoa_landing_dust.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "d321f8e96200b46be1c53ae96739e1416e1b4fc0e6d242dd7851e16eea329e86",
+      "gitBlobSha": "5a7e6a41a34ed14da78408f616682d574fc16849",
+      "bytes": 282702,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 29044
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 25581
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 21678
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 20854
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 17006
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 11835
+        }
+      ],
+      "sourceCrop": [
+        10,
+        78,
+        498,
+        464
+      ],
+      "packedFrameContentSize": [
+        248,
+        196
+      ]
+    },
+    {
+      "id": "S1",
+      "file": "vfx_momo_seed_pop.png",
+      "size": [
+        512,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "7f199e7aa42d0ae13013029b8d162e3e6ee28a494419ba745e3b5588ed7dc048",
+      "gitBlobSha": "9e1e50352e525ecb0c71b77eccf9d6949ac88e2b",
+      "bytes": 51491,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 4480
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 6970
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 4804
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 3120
+        }
+      ],
+      "sourceCrop": [
+        25,
+        153,
+        506,
+        581
+      ],
+      "packedFrameContentSize": [
+        120,
+        107
+      ]
+    },
+    {
+      "id": "S2",
+      "file": "vfx_momo_aim_line.png",
+      "size": [
+        512,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "72673398f5931c725c5dca7bc704493e51908d978709a49213d938db09a6a642",
+      "gitBlobSha": "48401f2990c30ad3c03001695b0e73c4b6ef0872",
+      "bytes": 68961,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 7904
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 9729
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 10426
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 8084
+        }
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        1774,
+        112
+      ],
+      "packedFrameContentSize": [
+        512,
+        24
+      ]
+    },
+    {
+      "id": "S3",
+      "file": "vfx_momo_aim_cone.png",
+      "size": [
+        512,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "898c9c799347076fbd3c96e0b75c8a6201b909ebe5b9325f1ae367379296b119",
+      "gitBlobSha": "aa0a432621997e411e69637ee26211bc61effd76",
+      "bytes": 331259,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 43171
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 45854
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 51491
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 44231
+        }
+      ],
+      "sourceCrop": [
+        208,
+        8,
+        748,
+        413
+      ],
+      "packedFrameContentSize": [
+        331,
+        248
+      ]
+    },
+    {
+      "id": "S4",
+      "file": "vfx_momo_dash.png",
+      "size": [
+        384,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "f9c4c240d82904f7b2913716be0ddbcef31edb91f5939949b8b78859c97922f5",
+      "gitBlobSha": "e1b204c902f2aea83c53653bc9c3617c8bda24db",
+      "bytes": 74080,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 8333
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 6786
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 5137
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 4360
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 2715
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 1663
+        }
+      ],
+      "sourceCrop": [
+        21,
+        115,
+        512,
+        485
+      ],
+      "packedFrameContentSize": [
+        120,
+        90
+      ]
+    },
+    {
+      "id": "M1",
+      "file": "vfx_mint_chill_hit.png",
+      "size": [
+        512,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "ffaf7cbdf405fccf29712f87c5c445edfb8ded731e0c29470832781823a40b85",
+      "gitBlobSha": "4daef213a450cd23a0df03b4538b6e582a2375f0",
+      "bytes": 60531,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 5261
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 8177
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 6955
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 4265
+        }
+      ],
+      "sourceCrop": [
+        24,
+        140,
+        513,
+        540
+      ],
+      "packedFrameContentSize": [
+        120,
+        98
+      ]
+    },
+    {
+      "id": "M2",
+      "file": "vfx_mint_freeze.png",
+      "size": [
+        384,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "84288b1c7c7d019a285c5aed9a35b40f202369df05c80502073841f1897f29b6",
+      "gitBlobSha": "438f3720513ad47ed85cfa081f69f930895a56f4",
+      "bytes": 125711,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 5577
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 6719
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 8028
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 7993
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 7637
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 10287
+        }
+      ],
+      "sourceCrop": [
+        3,
+        0,
+        485,
+        512
+      ],
+      "packedFrameContentSize": [
+        113,
+        120
+      ]
+    },
+    {
+      "id": "M3",
+      "file": "vfx_mint_needle_hit.png",
+      "size": [
+        256,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "43186ecc4e10f43ebd5e083a6572d2ad7bccb77751aa3de3f3b1ea2d41d23bc0",
+      "gitBlobSha": "c0996c08adfb5b46d84a47ebf2b32df97c6981dc",
+      "bytes": 19718,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 1225
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 1776
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 1866
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 1245
+        }
+      ],
+      "sourceCrop": [
+        40,
+        202,
+        457,
+        560
+      ],
+      "packedFrameContentSize": [
+        56,
+        48
+      ]
+    },
+    {
+      "id": "M4",
+      "file": "vfx_mint_lance_charge.png",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1f540c2117cacfaae77a36dbf20d622b56272ed2c53860df40be0e60356e6ed3",
+      "gitBlobSha": "22321026dc1095690aee846fc6f182108f7c0a9d",
+      "bytes": 100041,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 7111
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 8679
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 9673
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 10035
+        }
+      ],
+      "sourceCrop": [
+        51,
+        51,
+        590,
+        562
+      ],
+      "packedFrameContentSize": [
+        120,
+        114
+      ]
+    },
+    {
+      "id": "M5",
+      "file": "vfx_mint_aim_line.png",
+      "size": [
+        512,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "9fcbc3e464bc162b444f4f8e0b6f8b712bdbac6371ce2bdf763294fffafc1058",
+      "gitBlobSha": "ae0544f20674464c9999759f9fd54777de6e28b3",
+      "bytes": 64425,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 5906
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 7113
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 9501
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 6250
+        }
+      ],
+      "sourceCrop": [
+        0,
+        8,
+        1983,
+        118
+      ],
+      "packedFrameContentSize": [
+        512,
+        24
+      ]
+    },
+    {
+      "id": "M6",
+      "file": "vfx_mint_bloom_preview.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "ddb60e44b6889db9fae8464c6ca8c4e5b302aaaf24f03444e18792ad10db2250",
+      "gitBlobSha": "f43a971792ff84041139965df07e41ded79414e9",
+      "bytes": 295147,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 21530
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 34141
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 42147
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 27017
+        }
+      ],
+      "sourceCrop": [
+        25,
+        7,
+        606,
+        541
+      ],
+      "packedFrameContentSize": [
+        248,
+        228
+      ]
+    },
+    {
+      "id": "T1",
+      "file": "vfx_taro_rift_step.png",
+      "size": [
+        384,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1af6d4452d0b0559b49b191f3a7c4a18fb80d8bf53c6347c808469a9432855d1",
+      "gitBlobSha": "211eda4e403a8f1ecd14fbf203dddc06a75fdd1a",
+      "bytes": 71288,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 3218
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 5295
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 9009
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 5977
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 3587
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 3311
+        }
+      ],
+      "sourceCrop": [
+        10,
+        44,
+        492,
+        466
+      ],
+      "packedFrameContentSize": [
+        120,
+        105
+      ]
+    },
+    {
+      "id": "T2",
+      "file": "vfx_taro_shrapnel.png",
+      "size": [
+        512,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "fd702314ba002b113b6c71cb4e6cb40177f9228712d5471c4dabc01bf524fa43",
+      "gitBlobSha": "57605c70b6cc52d65891b3dd313d34a8f89f85a4",
+      "bytes": 53340,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 7761
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 5787
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 4466
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2727
+        }
+      ],
+      "sourceCrop": [
+        0,
+        164,
+        496,
+        585
+      ],
+      "packedFrameContentSize": [
+        120,
+        102
+      ]
+    },
+    {
+      "id": "U1",
+      "file": "vfx_unique_crescendo.png",
+      "size": [
+        1536,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "1fa923216303dca079fecbf137dab26edbdd0f43677c0cdf108fc254e98e2130",
+      "gitBlobSha": "ad419cb7d36b404a0d1a7bdab856051114a3f4e0",
+      "bytes": 882275,
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 23394
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 42962
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 68756
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 96333
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 94139
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 73666
+        },
+        {
+          "frame": 6,
+          "nonblackPixels": 44546
+        },
+        {
+          "frame": 7,
+          "nonblackPixels": 25872
+        }
+      ],
+      "sourceCrop": [
+        0,
+        0,
+        444,
+        422
+      ],
+      "packedFrameContentSize": [
+        376,
+        357
+      ]
+    }
+  ]
+}
