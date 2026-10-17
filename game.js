@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.48';
+const GAME_VERSION = '7.8.49';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.49',date:'2026-10-17',title:'Temple Makeover',items:['Flavor Weave Temple has a new painted look: temple hall, the three-core altar that glows as you upgrade, new tabs, power bar, core cards, buttons and Weave Up','Flavor Passives gets matching tier banners, perk cards, rank pips, Special Cores banner, two-column Ancient perks and a new Reset button']},
   {v:'7.8.48',date:'2026-10-17',title:'Replay Meter Only',items:['Replays no longer skip ahead on a timer: the miniboss comes at half the meter and the boss only when the meter is full','Monsters keep coming until the meter fills']},
   {v:'7.8.47',date:'2026-10-17',title:'Fuller Replays',items:['Replaying a cleared stage now asks for about as many kills as the first clear (meter needs ~320 kills instead of ~190), so you reach the boss at a similar level','More monsters spawn to fill it and the backup timer is longer (5 min)']},
   {v:'7.8.46',date:'2026-10-17',title:'Cocoa Landing Dust',items:['Dash Boxer and Phantom Rush landings now kick up a painted cocoa dust ring with short cracks']},
@@ -1507,6 +1508,41 @@ const ASSET_IMAGES = {
   temple_life_core:'assets/art/temple/life_core.webp',
   temple_flavor_spark:'assets/art/temple/flavor_spark.webp',
   temple_oath_shell:'assets/art/temple/oath_shell.webp',
+  // v7.8.49 art order 21 Temple Weave UI (scripts/pack-temple-weave-ui.py) · lazy กับหน้า upgrade/perks
+  screen_temple_weave:'assets/art/temple/ui/screen_temple_weave.webp',
+  temple_altar_trio:'assets/art/temple/ui/temple_altar_trio.webp',
+  temple_altar_glow_sheet:'assets/art/temple/ui/temple_altar_glow_sheet.webp',
+  temple_title_frame:'assets/art/temple/ui/temple_title_frame.webp',
+  temple_rank_ribbon:'assets/art/temple/ui/temple_rank_ribbon.webp',
+  temple_tab_sheet:'assets/art/temple/ui/temple_tab_sheet.webp',
+  temple_power_bar:'assets/art/temple/ui/temple_power_bar.webp',
+  temple_power_fill:'assets/art/temple/ui/temple_power_fill.webp',
+  temple_core_card_sheet:'assets/art/temple/ui/temple_core_card_sheet.webp',
+  temple_core_card_max:'assets/art/temple/ui/temple_core_card_max.webp',
+  temple_star_sheet:'assets/art/temple/ui/temple_star_sheet.webp',
+  temple_buy_btn_sheet:'assets/art/temple/ui/temple_buy_btn_sheet.webp',
+  temple_weave_btn_sheet:'assets/art/temple/ui/temple_weave_btn_sheet.webp',
+  temple_ribbon_knot:'assets/art/temple/ui/temple_ribbon_knot.webp',
+  screen_temple_perks:'assets/art/temple/ui/screen_temple_perks.webp',
+  perk_tier_banner:'assets/art/temple/ui/perk_tier_banner.webp',
+  perk_tier_line:'assets/art/temple/ui/perk_tier_line.webp',
+  perk_card_sheet:'assets/art/temple/ui/perk_card_sheet.webp',
+  perk_pip_sheet:'assets/art/temple/ui/perk_pip_sheet.webp',
+  perk_btn_sheet:'assets/art/temple/ui/perk_btn_sheet.webp',
+  ui_lock_icon:'assets/art/temple/ui/ui_lock_icon.webp',
+  perk_req_chip:'assets/art/temple/ui/perk_req_chip.webp',
+  perk_special_banner:'assets/art/temple/ui/perk_special_banner.webp',
+  perk_compass_icon:'assets/art/temple/ui/perk_compass_icon.webp',
+  perk_ancient_banner:'assets/art/temple/ui/perk_ancient_banner.webp',
+  perk_ancient_card_sheet:'assets/art/temple/ui/perk_ancient_card_sheet.webp',
+  perk_scroll_chip:'assets/art/temple/ui/perk_scroll_chip.webp',
+  ic_scroll:'assets/art/temple/ui/ic_scroll.webp',
+  perk_reset_btn:'assets/art/temple/ui/perk_reset_btn.webp',
+  ic_reset:'assets/art/temple/ui/ic_reset.webp',
+  temple_back_btn:'assets/art/temple/ui/temple_back_btn.webp',
+  temple_currency_chip:'assets/art/temple/ui/temple_currency_chip.webp',
+  ui_notify_dot:'assets/art/temple/ui/ui_notify_dot.webp',
+  temple_sparkle_sheet:'assets/art/temple/ui/temple_sparkle_sheet.webp',
   painted_nav_button:'assets/art/ui/painted_nav_button.png',
   replay_progress_art:'assets/art/ui/replay_progress_sheet.png',
   hub_ui_play:'assets/art/hub_reference/play.webp',
@@ -2767,6 +2803,8 @@ function bootDeferred(url){return DEFER_RE.test(url||'');}
 // v6.38 บูตโหลดเฉพาะของที่เมนูหลักใช้ · ที่เหลือทั้งหมดโหลดเบื้องหลัง (ensureDeferred) ก่อนเข้าด่าน/หน้าย่อย
 function bootKeep(k){return /^hub_btn_|^hub_ui_|^menu_hub|^vfx_poof$|^replay_progress_art$|^chapter\d_cover$|^chapter_endgame_cover$|^tile___/.test(k);}
 // v6.43 (เจ้าของ: แยกโหลดเฉพาะหน้าที่เข้า) แต่ละหน้าเมนูรอแค่โฟลเดอร์ของตัวเอง · ที่เหลือโหลดเบื้องหลังตามเดิม
+// v7.8.49 Temple Weave UI: key → [cellW, cellH, cols, nineSlice [l,t,r,b] | null] (จาก assets/art/temple/ui/MANIFEST.json)
+const TEMPLE_UI={screen_temple_weave:[720,1280,1,null],temple_altar_trio:[600,360,1,null],temple_altar_glow_sheet:[200,200,3,null],temple_title_frame:[700,100,1,[160,30,160,30]],temple_rank_ribbon:[600,55,1,[70,18,70,18]],temple_tab_sheet:[280,65,1,[72,18,38,18]],temple_power_bar:[700,40,1,[55,12,55,12]],temple_power_fill:[600,20,1,[12,6,12,6]],temple_core_card_sheet:[880,200,1,[225,40,280,40]],temple_core_card_max:[880,200,1,[260,40,250,40]],temple_star_sheet:[64,64,3,null],temple_buy_btn_sheet:[240,60,1,[75,16,40,16]],temple_weave_btn_sheet:[500,110,1,[135,30,75,30]],temple_ribbon_knot:[200,100,1,null],screen_temple_perks:[720,1280,1,null],perk_tier_banner:[440,45,1,[90,12,45,12]],perk_tier_line:[600,12,1,null],perk_card_sheet:[280,230,3,[32,32,32,32]],perk_pip_sheet:[40,40,3,null],perk_btn_sheet:[200,45,1,[27,12,27,12]],ui_lock_icon:[96,96,1,null],perk_req_chip:[210,40,1,[58,11,30,11]],perk_special_banner:[920,80,1,[240,22,220,22]],perk_compass_icon:[160,160,1,null],perk_ancient_banner:[550,40,1,[90,11,40,11]],perk_ancient_card_sheet:[300,100,1,[110,20,35,20]],perk_scroll_chip:[160,40,1,[50,11,20,11]],ic_scroll:[128,128,1,null],perk_reset_btn:[500,70,1,[55,19,55,19]],ic_reset:[96,96,1,null],temple_back_btn:[180,60,1,[60,16,32,16]],temple_currency_chip:[180,60,1,[75,16,28,16]],ui_notify_dot:[64,64,1,null],temple_sparkle_sheet:[64,64,6,null]};
 const MENU_GROUPS=[
   [/^gLoadout$/,/assets\/art\/mobile_ui_789\/gear_/],
   [/^hub$/,/assets\/art\/(?:hub_reference|menu_buttons)\//],
@@ -7729,10 +7767,18 @@ class Game extends Phaser.Scene {
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:compact?'14px':'16px',color:'#ffe08a'}).setOrigin(1,0.5);
     // v4.63: ชื่อหน้าต้องอยู่ระหว่างปุ่ม Back (ขวาสุด x=94) กับตัวนับ Sugar — ยาวเกินให้ย่อฟอนต์ลง (เดิมจอแนวตั้งชื่อยาววิ่งทับปุ่ม)
     const room=2*Math.min(w/2-94-8,(w-14-sugar.width-8)-w/2);let fs=compact?20:22;while(t.width>room&&fs>12){fs--;t.setFontSize(fs+'px');}
-    this.menu.add(veil?[bg,veil,t,sugar]:[bg,t,sugar]);
+    const temple=!!artKey&&artKey.startsWith('screen_temple_')&&this.tuHas?.('temple_back_btn');   // v7.8.49 art order 21 หัวหน้าวิหาร
+    if(temple&&veil)veil.setAlpha(.5);
+    this.menu.add(veil?[bg,veil]:[bg]);
+    if(temple){ const tw=Math.min(room+40,t.width+90),tf=this.tuPanel('temple_title_frame',0,w/2-tw/2,headY-tw*.055,tw,tw*.11); if(tf){tf.setAlpha(.95);this.menu.add(tf);} t.setColor('#ffe3c2').setStroke('#5a1f3a',4);
+      const cwid=Math.max(84,sugar.width+44),cc=this.tuPanel('temple_currency_chip',0,w-8-cwid,headY-15,cwid,30); if(cc){this.menu.add(cc);sugar.setText(String(Save.data.sugar||0)).setX(w-18);
+        if(this.textures.exists('ic_sugar'))this.menu.add(this.add.image(w-8-cwid+15,headY,'ic_sugar').setDisplaySize(19,19));
+        const room2=2*Math.min(w/2-100,(w-14-cwid)-w/2);while(t.width>room2&&fs>11){fs--;t.setFontSize(fs+'px');} } }
+    this.menu.add([t,sugar]);
     const by=compact?10:38, bh=compact?32:34;
-    const bg2=this.add.graphics(); bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);
-    const bt=this.add.text(53,by+bh/2,'‹ Back',{fontFamily:'sans-serif',fontSize:'13px',color:'#cbbfda'}).setOrigin(0.5);
+    const bp=temple?this.tuPanel('temple_back_btn',0,10,by,88,bh):null;
+    const bg2=bp||this.add.graphics(); if(!bp){bg2.fillStyle(0x2c2338,1); bg2.fillRoundedRect(12,by,82,bh,11); bg2.lineStyle(2,0x4a4059,1); bg2.strokeRoundedRect(12,by,82,bh,11);}
+    const bt=this.add.text(bp?60:53,by+bh/2,bp?'Back':'‹ Back',{fontFamily:'sans-serif',fontStyle:bp?'bold':'normal',fontSize:'13px',color:bp?'#ffe9d6':'#cbbfda'}).setOrigin(0.5);
     this.menu.add([bg2,bt]); this._zone(0,Math.max(0,by-16),110,bh+28,()=>{ Sfx.back(); if(backScreen&&this._navStack&&this._navStack[this._navStack.length-1]===backScreen)this._navStack.pop(); const prev=backScreen||(this._navStack&&this._navStack.length?this._navStack.pop():null)||'hub'; this._curMenu=prev; this.menuScreen=prev; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].back=true;
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
@@ -8696,7 +8742,7 @@ class Game extends Phaser.Scene {
   hasGroupBadge(key){const grp=HUB_GROUPS[key];return !!grp&&grp.rows.some(row=>this.hasTargetBadge(row[0]));}
   hasActivityBadge(){return this.hasGroupBadge('gActivity');}
   hasNewsBadge(){ return Save.data.seenVersion!==GAME_VERSION; }
-  drawBadgeDot(cont,x,y){ const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
+  drawBadgeDot(cont,x,y){ if(this.textures.exists('ui_notify_dot')){ const g=this.add.image(x,y,'ui_notify_dot').setDisplaySize(16,16); cont.add(g); const pulse={targets:g,alpha:{from:1,to:0.55},duration:640,yoyo:true,repeat:-1};if(this.menuScreen==='hub')this.hubTween(pulse);else this.tweens.add(pulse);return g; } const g=this.add.graphics(); g.fillStyle(0x000000,0.4); g.fillCircle(x+1,y+1,7); g.fillStyle(0xff3b5c,1); g.fillCircle(x,y,6.5); g.lineStyle(1.5,0xffffff,0.95); g.strokeCircle(x,y,6.5); cont.add(g);
     const pulse={targets:g,alpha:{from:1,to:0.45},duration:640,yoyo:true,repeat:-1};if(this.menuScreen==='hub')this.hubTween(pulse);else this.tweens.add(pulse);return g; }
   hubChrome(key,x,y,w,h){
     const k='hub_ui_'+key;if(this.textures.exists(k)){
@@ -9044,73 +9090,125 @@ class Game extends Phaser.Scene {
         tex.add(frame,0,x,y,right-x,bottom-y);}
     }
   }
+  // v7.8.49 art order 21: ชิ้น UI วิหาร · null = ยังไม่มีรูป → ผู้เรียกวาด graphics เดิม
+  tuHas(key){ return !!(TEMPLE_UI[key]&&this.textures?.exists?.(key)); }
+  tuFrames(key){ const tex=this.textures.get(key); if(tex._tuDone)return tex; tex._tuDone=true; const [cw,ch,cols,ns]=TEMPLE_UI[key],src=tex.getSourceImage(),rows=Math.max(1,Math.round(src.height/ch));
+    for(let i=0;i<cols*rows;i++){ const x0=(i%cols)*cw,y0=Math.floor(i/cols)*ch; if(!tex.has('cell'+i))tex.add('cell'+i,0,x0,y0,cw,ch); if(!ns)continue;
+      const [l,t,r,b]=ns,xs=[0,l,cw-r,cw],ys=[0,t,ch-b,ch];
+      for(let j=0;j<9;j++){ const cx=j%3,cy=Math.floor(j/3),fw=xs[cx+1]-xs[cx],fh=ys[cy+1]-ys[cy]; if(fw>0&&fh>0)tex.add('c'+i+'_'+j,0,x0+xs[cx],y0+ys[cy],fw,fh); } }
+    return tex; }
+  // ภาพทั้งช่อง (ไม่ยืดแบบ 9 ส่วน) · h ไม่ใส่ = ตามสัดส่วนช่อง
+  tuImg(key,cell,x,y,w,h){ if(!this.tuHas(key))return null; this.tuFrames(key); const [cw,ch]=TEMPLE_UI[key]; return this.add.image(x,y,key,'cell'+cell).setDisplaySize(w,h??w*ch/cw); }
+  // กรอบ 9 ส่วน มุมบนซ้ายที่ (x,y) · มุมย่อตามความสูง (k=h/cellH) ไม่ยืด · คืน container
+  tuPanel(key,cell,x,y,w,h){ if(!this.tuHas(key))return null; const [cw,ch,,ns]=TEMPLE_UI[key]; this.tuFrames(key);
+    const c=this.add.container(x,y); if(!ns){ c.add(this.add.image(0,0,key,'cell'+cell).setOrigin(0).setDisplaySize(w,h)); return c; }
+    const [l,t,r,b]=ns; let k=h/ch; if((l+r)*k>w)k=w/(l+r);
+    const xs=[0,l*k,w-r*k,w],ys=[0,t*k,h-b*k,h];
+    for(let j=0;j<9;j++){ const cx=j%3,cy=Math.floor(j/3),f='c'+cell+'_'+j,dw=xs[cx+1]-xs[cx],dh=ys[cy+1]-ys[cy]; if(dw<=0.01||dh<=0.01||!this.textures.get(key).has(f))continue;
+      c.add(this.add.image(xs[cx],ys[cy],key,f).setOrigin(0).setDisplaySize(dw+(cx<2?.5:0),dh+(cy<2?.5:0))); }   // +.5 กันรอยต่อ
+    c._tuK=k; return c; }
+  // ประกายดาวตอนกดสำเร็จ (ชีต 6 เฟรม · ADD) · อยู่นอก menu เพราะ rebuild ทันที
+  tuSparkle(x,y,s=56){ if(!this.tuHas('temple_sparkle_sheet'))return; this.tuFrames('temple_sparkle_sheet');
+    for(let n=0;n<3;n++){ const img=this.add.image(x+(n-1)*s*.45,y-(n%2)*s*.3,'temple_sparkle_sheet','cell0').setDisplaySize(s,s).setDepth(99990).setBlendMode(Phaser.BlendModes.ADD);
+      let f=0; const ev=this.time.addEvent({delay:55,repeat:5,callback:()=>{ f++; if(f>5||!img.active){ ev.remove(); img.destroy(); return; } img.setFrame('cell'+f); }}); } }
+  // v7.8.49 แท็บวิหาร (art order 21 A6) · cell 0 ม่วง / 1 ทอง / 2 มินต์ / 3 ทองเรือง · null = ไม่มีรูป
+  tuTab(x,y,w,h,cell,label,iconKey,color){ const p=this.tuPanel('temple_tab_sheet',cell,x,y,w,h); if(!p)return null; const k=p._tuK||h/65,cx=x+33*k;
+    const t=this.add.text((cx+20*k+x+w-10)/2,y+h/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color,stroke:'#2a1020',strokeThickness:3}).setOrigin(0.5);
+    const out=[p,t]; if(iconKey&&this.textures.exists(iconKey))out.push(this.add.image(cx,y+h/2,iconKey).setDisplaySize(h*.66,h*.66)); return out; }
   buildUpgrade(){
     if(this._templeSpecial)return this.buildSpecialCores();
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple','ui_talent_hall');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple',ASSET_IMAGES.screen_temple_weave?'screen_temple_weave':'ui_talent_hall');   // v7.8.49 A1 (โหลดตอนเปิดหน้าใน _screenBg)
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     this.templeArtFrames();
     const portrait=w<=h,ry=portrait?82:55;
     const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9c9e8'}).setOrigin(0.5);
     const rn=this.add.text(w/2,ry+17,rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
+    { const rbw=Math.min(w-80,Math.max(200,rn.width+90)),rb=this.tuPanel('temple_rank_ribbon',0,w/2-rbw/2,ry+17-12,rbw,24); if(rb)this.menu.add(rb); }   // A5
     this.menu.add([rk,rn]);
     if(this.textures.exists('temple_rank_emblems')){const badge=this.add.image(32,ry+13,'temple_rank_emblems','cell'+Math.min(5,rank)).setDisplaySize(42,42);this.menu.add(badge);rn.setFontSize(w<360?'14px':'17px');}
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
     const rpFree=Save.rankPointsFree(), rkW=portrait?Math.min(124,(w-44)/3):124,rkH=30,rkX=portrait?w/2-rkW*1.5-6:w-14-rkW,rkY=portrait?ry+32:44;
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
-    { const dg=Save.dig(),dx=portrait?w/2-rkW/2:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
+    { const dg=Save.dig(),dx=portrait?w/2-rkW/2:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Depths · '+dg.shovels,'tile_dig','#fff1d6');
+      if(art)this.menu.add(art); else { const g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
       const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
-      this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
+      this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); }
+      this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
       if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
-    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),g3=this.add.graphics(); g3.fillStyle(0x1f3a30,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x7fe0b0,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
+    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),open=kitchenOpen(),art=this.tuTab(kx,rkY,rkW,rkH,2,open?'Kitchen':'🔒 Kitchen','tile_kitchen','#e6fff2');
+      if(art)this.menu.add(art); else { const g3=this.add.graphics(); g3.fillStyle(0x1f3a30,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x7fe0b0,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
       const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'🍳 Kitchen',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b8f5d8'}).setOrigin(0.5);
-      this.menu.add([g3,t3]); this._smallBtnIcon(t3,'tile_kitchen'); this._zone(kx,rkY,rkW,rkH,()=>{ if(!kitchenOpen()){this.menuToast?.('🔒 Kitchen unlocks after clearing Chapter 2');return;} this.menuScreen='kitchen'; this.buildMenuScreen(); }); if(!kitchenOpen())t3.setText('🔒 Kitchen'); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
-    const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
-    const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
-    this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
-    if(rpFree>0)this.drawBadgeDot(this.menu,rkX+rkW-6,rkY+6);
-    const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?158:86, barH=9, need=UPG_ORDER.length*TAL_MAX;
+      this.menu.add([g3,t3]); this._smallBtnIcon(t3,'tile_kitchen'); if(!open)t3.setText('🔒 Kitchen'); }
+      this._zone(kx,rkY,rkW,rkH,()=>{ if(!kitchenOpen()){this.menuToast?.('🔒 Kitchen unlocks after clearing Chapter 2');return;} this.menuScreen='kitchen'; this.buildMenuScreen(); }); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
+    { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Perks · '+rpFree+' RP'):'Rank Perks','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
+      if(art)this.menu.add(art); else { const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
+      const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
+      this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); }
+      this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
+      if(rpFree>0)this.drawBadgeDot(this.menu,rkX+rkW-6,rkY+6); }
+    // v7.8.49 A2/A3 แท่นแกน 3 ลูก (แนวตั้งที่มีที่ว่างเท่านั้น) · ออร่าแต่ละลูกสว่างตามเลเวลแกน
+    const gapY=10,artCard=portrait&&this.tuHas('temple_core_card_sheet'),btnH=artCard?48:40;
+    let altH=portrait&&this.tuHas('temple_altar_trio')?Math.min(200,h-150-6-34-(3*106+2*gapY)-btnH-26):0; if(altH<70)altH=0;
+    if(altH){ const altW=Math.min(w-30,altH/.6),ah=altW*.6,ax=w/2,ay=150+ah/2,alt=this.tuImg('temple_altar_trio',0,ax,ay,altW,ah); this.menu.add(alt); altH=ah;
+      [['hp',0,.26,.58,.36],['dmg',1,.5,.27,.4],['def',2,.74,.58,.36]].forEach(([k,cell,fx,fy,fs])=>{ const lv=Save.talLvl(k)+(Save.overcap(k)>0?1:0); if(!lv)return;
+        const gl=this.tuImg('temple_altar_glow_sheet',cell,ax-altW/2+altW*fx,ay-ah/2+ah*fy,altW*fs); if(!gl)return; const a=Math.min(1,.55+.15*lv); gl.setAlpha(a).setBlendMode(Phaser.BlendModes.ADD); this.menu.add(gl);
+        this.tweens.add({targets:gl,alpha:{from:a,to:a*.55},yoyo:true,repeat:-1,duration:900+cell*170}); }); }
+    const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?(altH?150+altH+8:158):86, barH=9, need=UPG_ORDER.length*TAL_MAX;
     const frac=Phaser.Math.Clamp(Save.talFilled()/need,0,1);
-    const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
-    bg.fillStyle(allMax?0x8bd3a0:0xffc24a,1); if(frac>0)bg.fillRoundedRect(bx,by,Math.max(barH,barW*frac),barH,6);
-    this.menu.add(bg);
-    const prog=this.add.text(w/2,by+17,'Woven core power '+Save.talFilled()+' / '+need+(allMax?' · ready to weave':''),
-      {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':'#8f849f'}).setOrigin(0.5);
+    { const tr=this.tuPanel('temple_power_bar',0,bx-14,by-4,barW+28,barH+8); if(tr){ this.menu.add(tr); const fw=Math.max(barH+4,(barW-4)*frac); if(frac>0){const fl=this.tuPanel('temple_power_fill',allMax?1:0,bx+2,by+1,fw,barH-2); if(fl)this.menu.add(fl);} }   // A7/A8
+      else { const bg=this.add.graphics(); bg.fillStyle(0x2c2338,1); bg.fillRoundedRect(bx,by,barW,barH,6);
+        bg.fillStyle(allMax?0x8bd3a0:0xffc24a,1); if(frac>0)bg.fillRoundedRect(bx,by,Math.max(barH,barW*frac),barH,6);
+        this.menu.add(bg); } }
+    const prog=this.add.text(w/2,by+19,'Woven core power '+Save.talFilled()+' / '+need+(allMax?' · ready to weave':''),
+      {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':(artCard?'#e8dcf2':'#8f849f')}).setOrigin(0.5);
     this.menu.add(prog);
     if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
     /* v6.78 C2: Special cores moved to Rank Perks screen */
-    const marginX=16,gapX=portrait?0:10,gapY=10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,cardH=portrait?Math.min(106,(h-302-gapY*2)/3):Math.min(132,h-202),top=portrait?230:144;
+    const marginX=16,gapX=portrait?0:10,cardW=portrait?w-marginX*2:(w-marginX*2-gapX*2)/3,top=portrait?(altH?by+36:230):144,cardH=portrait?Math.min(106,(h-top-btnH-24-gapY*2)/3):Math.min(132,h-202);
     UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k], lvl=Save.talLvl(k), tot=Save.talTotal(k), maxed=lvl>=TAL_MAX;
       const cost=maxed?0:Save.talCost(k), afford=Save.talCanBuy(k);
       const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
-      const g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
-      g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
-      g.fillStyle(u.color,0.14); g.fillRoundedRect(x,y,64,cardH,16);
-      const em=this.textures.exists(u.iconKey)?this.add.image(x+32,y+32,u.iconKey).setDisplaySize(48,48):this.add.text(x+32,y+32,u.emoji,{fontSize:'29px'}).setOrigin(0.5);
+      // A9/A10 การ์ดแกน (แนวตั้ง) · เหรียญซ้าย / ข้อความกลาง / เส้นคั่น + ปุ่มขวา
+      const card=artCard?(maxed&&this.tuHas('temple_core_card_max')?this.tuPanel('temple_core_card_max',0,x,y,cardW,cardH):this.tuPanel('temple_core_card_sheet',i,x,y,cardW,cardH)):null;
+      const ck=card?card._tuK:0,icx=card?x+111*ck:x+32,icy=card?y+cardH*.47:y+32,isz=card?Math.min(64,112*ck):48,tx=card?x+205*ck+6:x+75,rightW=card?263*ck:0;
+      let g=card; if(!card){ g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
+        g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
+        g.fillStyle(u.color,0.14); g.fillRoundedRect(x,y,64,cardH,16); }
+      const em=this.textures.exists(u.iconKey)?this.add.image(icx,icy,u.iconKey).setDisplaySize(isz,isz):this.add.text(icx,icy,u.emoji,{fontSize:'29px'}).setOrigin(0.5);
       let stars=''; for(let s=0;s<TAL_MAX;s++) stars+=(s<lvl?'★':'☆');
-      const st=this.add.text(x+32,y+61,stars,{fontFamily:'sans-serif',fontSize:'9px',color:maxed?'#8bd3a0':'#ffd166'}).setOrigin(0.5);
-      const tag=this.add.text(x+75,y+13,u.tag+' · Lv '+lvl+'/'+TAL_MAX,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#cbbfda'}).setOrigin(0,0);
-      const nm=this.add.text(x+75,y+29,u.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0);
-      const gain=this.add.text(x+75,y+49,'Total: '+u.show(tot),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:'#8bd3a0'}).setOrigin(0,0);
-      const pw=Math.min(100,cardW-82),ph=29,ppx=x+cardW-pw-10,ppy=y+cardH-ph-10;
-      const pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10);
-      const pt=this.add.text(ppx+pw/2,ppy+ph/2,maxed?'Full ✓':('🍬'+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')}).setOrigin(0.5);
-      const nx=maxed?null:this.add.text(ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
-      this.menu.add([g,em,st,tag,nm,gain,pg,pt]); if(nx)this.menu.add(nx);
-      if(Save.overcap(k)>0)st.setText(stars+' +'+Save.overcap(k));
+      const starArt=this.tuHas('temple_star_sheet'),ss=card?Math.max(11,Math.min(15,cardH*.13)):12,sy=card?y+cardH-ss*.8:y+61;
+      const st=this.add.text(icx+(starArt?ss*1.5+4:0),sy,starArt?'':stars,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:maxed?'#8bd3a0':'#ffd166'}).setOrigin(starArt?0:0.5,0.5);
+      const starImgs=[]; if(starArt)for(let s=0;s<TAL_MAX;s++)starImgs.push(this.tuImg('temple_star_sheet',s<lvl?0:1,icx+(s-1)*ss*1.05,sy,ss,ss));   // A11
+      const tag=this.add.text(tx,y+13,u.tag+' · Lv '+lvl+'/'+TAL_MAX,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:card?'#'+u.color.toString(16).padStart(6,'0'):'#cbbfda'}).setOrigin(0,0);
+      const nm=this.add.text(tx,y+29,u.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0);
+      const gain=this.add.text(tx,y+49,'Total: '+u.show(tot),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:'#8bd3a0'}).setOrigin(0,0);
+      if(card){ const room=x+cardW-rightW-tx-6; for(const [o,mn] of [[nm,11],[gain,8],[tag,8]]){ let fz=parseFloat(o.style.fontSize); while(o.width>room&&fz>mn){fz-=.5;o.setFontSize(fz+'px');} } }
+      const buyArt=this.tuHas('temple_buy_btn_sheet'),pw=card?Math.min(118,rightW-18):Math.min(100,cardW-82),ph=card?31:29,ppx=card?x+cardW-rightW/2-pw/2+4:x+cardW-pw-10,ppy=y+cardH-ph-(card?Math.max(10,cardH*.14):10);
+      const bp=buyArt?this.tuPanel('temple_buy_btn_sheet',maxed?2:(afford?0:1),ppx,ppy,pw,ph):null,bk=bp?bp._tuK:0;   // A12
+      let pg=bp; if(!bp){ pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10); }
+      const tcx=bp?(ppx+66*bk+ppx+pw-8)/2:ppx+pw/2;
+      const pt=this.add.text(tcx,ppy+ph/2,maxed?'Full ✓':((bp?'':'🍬')+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:bp?'13px':'11px',color:bp?'#ffffff':(maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')),stroke:bp?'#1d0f16':undefined,strokeThickness:bp?3:0}).setOrigin(0.5);
+      const coin=bp&&!maxed&&this.textures.exists('ic_sugar')?this.add.image(ppx+40*bk,ppy+ph/2,'ic_sugar').setDisplaySize(32*bk,32*bk):null;
+      const nx=maxed?null:this.add.text(bp?ppx+pw/2:ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
+      this.menu.add([g,em,st,...starImgs.filter(Boolean),tag,nm,gain,pg,pt]); if(coin)this.menu.add(coin); if(nx)this.menu.add(nx);
+      if(Save.overcap(k)>0)st.setText((starArt?'+':stars+' +')+Save.overcap(k));
       if(this._tutorialWeaveCoach&&!maxed&&afford&&!this._coachSpot)this._coachSpot={x:ppx,y:ppy,w:pw,h:ph};
-      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this._tutorialWeaveCoach){ this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
+      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this.tuSparkle)this.tuSparkle(ppx+pw/2,ppy+ph/2); if(this._tutorialWeaveCoach){ this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
     });
     if(this._coachSpot){ const sp=this._coachSpot; this._coachSpot=null; this._spotZone=sp; }
-    const py=portrait?Math.min(h-58,top+UPG_ORDER.length*(cardH+gapY)+4):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=40;
-    const pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
-    pg.lineStyle(2,allMax?0xffe08a:0x4a4059,allMax?1:0.6); pg.strokeRoundedRect(pbx-bw/2,py,bw,ph,14);
-    const pl=this.add.text(pbx,py+14,allMax?('⭐ Weave up → '+rankName(rank+1)):'⭐ Weave up · max the cores first',
-      {fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:allMax?'#fff':'#7a7088'}).setOrigin(0.5);
-    const psub=this.add.text(pbx,py+29,allMax?('Spend 🧶'+Save.promoteThreadCost()+' · get 🍬'+promoteReward(rank)):'Max all 3: CORE / FLAVOR / BOND',
-      {fontFamily:'sans-serif',fontSize:'9px',color:allMax?'#ffe9c2':'#8f849f'}).setOrigin(0.5);
+    const py=portrait?Math.min(h-btnH-18,top+UPG_ORDER.length*(cardH+gapY)+(artCard?8:4)):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=artCard?btnH:40;
+    if(artCard){ const kn=this.tuImg('temple_ribbon_knot',0,pbx,py-3,Math.min(96,bw*.3)); if(kn)this.menu.add(kn); }   // A14
+    const wb=this.tuPanel('temple_weave_btn_sheet',allMax?1:0,pbx-bw/2,py,bw,ph),wk=wb?wb._tuK:0;   // A13
+    let pg=wb; if(!wb){ pg=this.add.graphics(); pg.fillStyle(allMax?0xffb020:0x3a3550,1); pg.fillRoundedRect(pbx-bw/2,py,bw,ph,14);
+      pg.lineStyle(2,allMax?0xffe08a:0x4a4059,allMax?1:0.6); pg.strokeRoundedRect(pbx-bw/2,py,bw,ph,14); }
+    const lx=wb?pbx+40*wk:pbx;
+    const pl=this.add.text(lx,py+ph/2-(wb?7:6),(wb?'':'⭐ ')+(allMax?('Weave up → '+rankName(rank+1)):(wb?'Weave Up':'Weave up · max the cores first')),
+      {fontFamily:'sans-serif',fontStyle:'bold',fontSize:wb?'15px':'13px',color:allMax?'#fff':(wb?'#efe6f5':'#7a7088'),stroke:wb?(allMax?'#7a3b00':'#2a2236'):undefined,strokeThickness:wb?3:0}).setOrigin(0.5);
+    const psub=this.add.text(lx,py+ph/2+(wb?10:9),allMax?('Spend 🧶'+Save.promoteThreadCost()+' · get 🍬'+promoteReward(rank)):(wb?'Max all 3 cores to unlock':'Max all 3: CORE / FLAVOR / BOND'),
+      {fontFamily:'sans-serif',fontSize:'9px',color:allMax?'#ffe9c2':(wb?'#d8cde3':'#8f849f')}).setOrigin(0.5);
     this.menu.add([pg,pl,psub]);
-    if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion');
+    if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(pbx,py+ph/2,72);
       if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen(); });
     if(this._spotZone){ const sp=this._spotZone; this._spotZone=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,'Tap to upgrade this core!'); }
     this.menu.setVisible(true);
@@ -9335,54 +9433,78 @@ class Game extends Phaser.Scene {
     // 🎬 กระดานเดิมเลื่อนขึ้นหาย → กระดานใหม่ตกลงมาเด้ง
     this._digBusy=this.time.now; (this._digCells||[]).forEach((cn,k)=>this.digTween({targets:cn,y:cn.y-80,alpha:0,duration:260,delay:k*8,ease:'Cubic.in'}));
     this.digLater(420,()=>{ this._digBusy=false; this._digDrop=true; this.buildDig(); this.menuToast(secret?'🕳️ Hidden Vault · Floor '+d.depth+' — treasure glitters everywhere':'🪜 Floor '+d.depth+(d.depth%5===0?' — 🎁 gift floor!':digBoardN(d.depth)>digBoardN(d.depth-1)?' — the cave widens!':' — richer treasure below'),'#c7a6ff'); }); }
+  // v7.8.49 art order 21 B2/B11: ป้ายหัวหมวด + เส้นทองต่อท้าย · คืน true ถ้าวาดรูปได้
+  tuHeader(key,x,y,w,label,color){ const bw=Math.min(w*.7,Math.max(150,label.length*6.4+64)),p=this.tuPanel(key,0,x,y-2,bw,18); if(!p)return false;
+    const t=this.add.text(x+(TEMPLE_UI[key][3]?.[0]||60)*(p._tuK||.4)+4,y+7,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color,stroke:'#3a0d22',strokeThickness:2}).setOrigin(0,0.5); this.menu.add([p,t]);
+    if(this.tuHas('perk_tier_line')){ const lw=x+w-(x+bw+4); if(lw>20)this.menu.add(this.tuImg('perk_tier_line',0,x+bw+4,y+7,lw,6).setOrigin(0,0.5)); }
+    return true; }
   buildRankPerks(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives','screen_weave_perks');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives',ASSET_IMAGES.screen_temple_perks?'screen_temple_perks':'screen_weave_perks');   // v7.8.49 B1
     const w=this.W,h=this.H;
     const free=Save.rankPointsFree(),total=Save.rankPointsTotal();
-    const hs=this._hdrShift();
-    const rpTxt=this.add.text(w/2,56+hs,'RP  '+free+' free / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:free>0?'#ffd166':'#8f849f'}).setOrigin(0.5);
-    const sub=this.add.text(w/2,73+hs,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:'#b7abc9'}).setOrigin(0.5);
+    const hs=this._hdrShift(),art=this.tuHas('perk_card_sheet');
+    const rpTxt=this.add.text(w/2,56+hs,'RP  '+free+' free / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:free>0?'#ffd166':(art?'#d8cce6':'#8f849f'),stroke:art?'#1d0f16':undefined,strokeThickness:art?3:0}).setOrigin(0.5);
+    const sub=this.add.text(w/2,73+hs,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
     this.menu.add([rpTxt,sub]);
     const tierName={1:'TIER 1 · Foundation',2:'TIER 2 · Utility',3:'TIER 3 · Mastery'};
     const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols,cardH=90; let y=88+hs;
     [1,2,3].forEach(tier=>{
       const unlocked=Save.perkTierUnlocked(tier),req=PERK_TIER_REQ[tier]||0,priorSpent=tier===3?(Save.perkTierSpent(1)+Save.perkTierSpent(2)):Save.perkTierSpent(1),perks=RANK_PERKS.filter(p=>(p.tier||1)===tier);
-      const th=this.add.text(14,y,tierName[tier],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:unlocked?'#ffd9a8':'#7a7088'}).setOrigin(0,0);
-      const lk=this.add.text(w-14,y,unlocked?'':('🔒 need '+priorSpent+'/'+req+' pts'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#f0a0b0'}).setOrigin(1,0);
-      this.menu.add([th,lk]);
+      if(!this.tuHeader('perk_tier_banner',14,y,w-28,tierName[tier].toUpperCase(),unlocked?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,tierName[tier],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:unlocked?'#ffd9a8':'#7a7088'}).setOrigin(0,0));
+      if(!unlocked){ const lt='need '+priorSpent+'/'+req+' pts',cw2=lt.length*5.4+34,chip=this.tuPanel('perk_req_chip',0,w-14-cw2,y-3,cw2,19);   // B8 + B7
+        if(chip){ this.menu.add(chip); if(this.tuHas('ui_lock_icon'))this.menu.add(this.tuImg('ui_lock_icon',0,w-14-cw2+chip._tuK*30,y+6.5,14,14)); this.menu.add(this.add.text(w-20,y+6.5,lt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#ffd9a8'}).setOrigin(1,0.5)); }
+        else this.menu.add(this.add.text(w-14,y,'🔒 '+lt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#f0a0b0'}).setOrigin(1,0)); }
       if(tier>1){ const cg=this.add.graphics(); cg.lineStyle(2,unlocked?0xffd166:0x4a4059,0.7); cg.lineBetween(w/2,y-9,w/2,y-2); this.menu.add(cg); }
-      y+=15;
+      y+=art?18:15;
       perks.forEach((pk,i)=>{ const x=14+i*(cardW+gap),lvl=Save.perkLvl(pk.id),maxed=lvl>=pk.max,canBuy=unlocked&&!maxed&&free>0;
-        const g=this.add.graphics(); g.fillStyle(unlocked?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,cardH,10); g.lineStyle(2,maxed?0x8bd3a0:(canBuy?0xffd166:(unlocked?0x4a4059:0x352b40)),0.9); g.strokeRoundedRect(x,y,cardW,cardH,10);
+        const cp=art?this.tuPanel('perk_card_sheet',!unlocked?2:(lvl>0?1:0),x,y,cardW,cardH):null;   // B4
+        let g=cp; if(!cp){ g=this.add.graphics(); g.fillStyle(unlocked?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,cardH,10); g.lineStyle(2,maxed?0x8bd3a0:(canBuy?0xffd166:(unlocked?0x4a4059:0x352b40)),0.9); g.strokeRoundedRect(x,y,cardW,cardH,10); }
+        else if(canBuy){ const glow=this.add.graphics(); glow.lineStyle(2,0xffe08a,.75).strokeRoundedRect(x+2,y+2,cardW-4,cardH-4,9); this.menu.add(glow); this.tweens.add({targets:glow,alpha:{from:.9,to:.25},yoyo:true,repeat:-1,duration:700}); }
         const em=(this.textures.exists('perk_'+pk.id)?this.add.image(x+cardW/2,y+15,'perk_'+pk.id).setDisplaySize(26,26):this.add.text(x+cardW/2,y+15,pk.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(unlocked?1:0.4);
-        const nm=this.add.text(x+cardW/2,y+31,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:unlocked?'#fff':'#7a7088'}).setOrigin(0.5);
-        const ds=this.add.text(x+cardW/2,y+43,pk.desc,{fontFamily:'sans-serif',fontSize:'7px',color:unlocked?'#b0a4c2':'#5f556e',align:'center',wordWrap:{width:cardW-10}}).setOrigin(0.5,0);
-        let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○'); const dt=this.add.text(x+cardW/2,y+cardH-24,dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':(unlocked?'#ffd166':'#5a4f68')}).setOrigin(0.5);
-        const bh=17,by=y+cardH-bh-3,bx=x+6,bw=cardW-12,bg=this.add.graphics(); bg.fillStyle(maxed?0x2f4a38:(canBuy?0x4a3a1a:0x322a3a),1); bg.fillRoundedRect(bx,by,bw,bh,6);
-        const bt=this.add.text(x+cardW/2,by+bh/2,maxed?'MAX':(!unlocked?'🔒 Locked':(canBuy?('Spend →+'+(lvl+1)):(free<=0?'No RP':'Lv'+lvl+'/'+pk.max))),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:maxed?'#8bd3a0':(canBuy?'#ffe08a':'#8d8195')}).setOrigin(0.5);
-        this.menu.add([g,em,nm,ds,dt,bg,bt]);
-        if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.progress('perk');}else Sfx.error(); this.buildRankPerks(); });
+        const nm=this.add.text(x+cardW/2,y+31,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:unlocked?'#fff':'#9a8fa8'}).setOrigin(0.5);
+        const ds=this.add.text(x+cardW/2,y+43,pk.desc,{fontFamily:'sans-serif',fontSize:'7px',color:unlocked?'#d6cae4':'#7a6f88',align:'center',wordWrap:{width:cardW-12}}).setOrigin(0.5,0);
+        const pipArt=this.tuHas('perk_pip_sheet'),pips=[]; let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○');
+        const dt=this.add.text(x+cardW/2,y+cardH-24,pipArt?'':dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':(unlocked?'#ffd166':'#5a4f68')}).setOrigin(0.5);
+        if(pipArt)for(let s=0;s<pk.max;s++)pips.push(this.tuImg('perk_pip_sheet',s<lvl?0:(unlocked?1:2),x+cardW/2+(s-(pk.max-1)/2)*11,y+cardH-25,9,9));   // B5
+        const bh=17,by=y+cardH-bh-(cp?5:3),bx=x+(cp?8:6),bw=cardW-(cp?16:12),bp=this.tuPanel('perk_btn_sheet',maxed?3:(!unlocked?2:(canBuy?1:0)),bx,by,bw,bh);   // B6
+        let bg=bp; if(!bp){ bg=this.add.graphics(); bg.fillStyle(maxed?0x2f4a38:(canBuy?0x4a3a1a:0x322a3a),1); bg.fillRoundedRect(bx,by,bw,bh,6); }
+        const lockArt=bp&&!unlocked&&this.tuHas('ui_lock_icon'),label=maxed?'MAX':(!unlocked?(lockArt?'Locked':'🔒 Locked'):(canBuy?('Spend →+'+(lvl+1)):(free<=0?'No RP':'Lv'+lvl+'/'+pk.max)));
+        const bt=this.add.text(x+cardW/2+(lockArt?5:0),by+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:bp?(canBuy?'#4a2300':(maxed?'#0d3b2c':'#e6dcef')):(maxed?'#8bd3a0':(canBuy?'#ffe08a':'#8d8195'))}).setOrigin(0.5);
+        this.menu.add([g,em,nm,ds,dt,...pips.filter(Boolean),bg,bt]); if(lockArt)this.menu.add(this.tuImg('ui_lock_icon',0,bt.x-bt.width/2-7,by+bh/2,10,10));
+        if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.progress('perk');if(this.tuSparkle)this.tuSparkle(x+cardW/2,y+cardH/2,44);}else Sfx.error(); this.buildRankPerks(); });
       });
       y+=cardH+11;
     });
-    { const sw=w-28,sg=this.add.graphics(); sg.fillStyle(0x1f3438,1); sg.fillRoundedRect(14,y,sw,26,9); sg.lineStyle(1.5,0x5ad1c4,1); sg.strokeRoundedRect(14,y,sw,26,9);
-      const stx=this.add.text(w/2,y+13,'💠 SPECIAL CORES · Rank 1–5 · 🧶 '+Save.threads()+'  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9.5px',color:'#a8f0e6'}).setOrigin(0.5);
-      this.menu.add([sg,stx]); this._zone(14,y,sw,26,()=>{this._templeSpecial=true;this._specialFrom='perks';this._specialCorePage=0;this.menuScreen='upgrade';this.buildMenuScreen();}); y+=32; }   // v6.78 C2
-    // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว)
-    { const sc=Save.scrolls(),ah=this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0);
-      const as=this.add.text(w-14,y,'📜 '+sc+' (4 per perk)',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#8d8195'}).setOrigin(1,0); this.menu.add([ah,as]); y+=15;
-      const aH=58; ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%3)*(cardW+gap),yy=y+Math.floor(i/3)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=SCROLL_PER_PERK;
-        const g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,cardW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,cardW,aH,10);
-        const icon=this.textures.exists('perk_'+pk.id)?this.add.image(x+16,yy+17,'perk_'+pk.id).setDisplaySize(22,22):this.add.text(x+16,yy+17,pk.emoji,{fontSize:'16px'}).setOrigin(0.5); icon.setAlpha(own||can?1:0.45);
-        const nm=this.add.text(x+30,yy+10,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:own?'#e9dcff':'#cbbfda',wordWrap:{width:cardW-34}}).setOrigin(0,0);
-        const ds=this.add.text(x+6,yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:'🔒 '+pk.desc),{fontFamily:'sans-serif',fontSize:'6.8px',color:own?'#b8a4e0':'#7f748d',wordWrap:{width:cardW-10}}).setOrigin(0,0);
-        this.menu.add([g,icon,nm,ds]); if(can)this._zone(x,yy,cardW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
-      y+=2*(aH+6)+6; }
-    // ปุ่มรีเซ็ต perk (คืนแต้มทั้งหมด)
-    const ry2=Math.min(h-42,y),rw=Math.min(w-40,300);
-    const rg=this.add.graphics(); rg.fillStyle(0x3a2f38,1); rg.fillRoundedRect(w/2-rw/2,ry2,rw,34,10); rg.lineStyle(1.5,0x6a4055,0.8); rg.strokeRoundedRect(w/2-rw/2,ry2,rw,34,10);
-    const rt=this.add.text(w/2,ry2+17,this._perkResetConfirm?'⚠ Confirm · spend 🧶'+Save.perkResetCost():'♻️ Reset Perks · 🧶'+Save.perkResetCost(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#f0a0b0'}).setOrigin(0.5);
-    this.menu.add([rg,rt]);
+    { const sw=w-28,sh=art?30:26,sp=this.tuPanel('perk_special_banner',0,14,y,sw,sh);   // B9 + B10
+      let sg=sp; if(!sp){ sg=this.add.graphics(); sg.fillStyle(0x1f3438,1); sg.fillRoundedRect(14,y,sw,26,9); sg.lineStyle(1.5,0x5ad1c4,1); sg.strokeRoundedRect(14,y,sw,26,9); }
+      const stx=this.add.text(w/2+(sp?10:0),y+sh/2,(sp?'SPECIAL CORES':'💠 SPECIAL CORES')+' · Rank 1–5 · 🧶 '+Save.threads()+'  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:sp?'11px':'9.5px',color:sp?'#f2fffd':'#a8f0e6',stroke:sp?'#0b2f33':undefined,strokeThickness:sp?3:0}).setOrigin(0.5);
+      this.menu.add([sg,stx]); if(sp&&this.tuHas('perk_compass_icon'))this.menu.add(this.tuImg('perk_compass_icon',0,14+65*sp._tuK,y+sh/2,sh*1.15,sh*1.15));
+      this._zone(14,y,sw,sh,()=>{this._templeSpecial=true;this._specialFrom='perks';this._specialCorePage=0;this.menuScreen='upgrade';this.buildMenuScreen();}); y+=sh+6; }   // v6.78 C2
+    // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว) · v7.8.49 มีรูป = 2 คอลัมน์ (เหรียญซ้ายกินที่)
+    { const sc=Save.scrolls(),aArt=this.tuHas('perk_ancient_card_sheet');
+      if(!this.tuHeader('perk_ancient_banner',14,y,w*.7,'ANCIENT · from the Temple Depths','#f3e0ff'))this.menu.add(this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0));
+      const scTxt=sc+' (4 per perk)',chW=scTxt.length*5.2+30,chip=this.tuPanel('perk_scroll_chip',0,w-14-chW,y-3,chW,19);   // B13 + B14
+      if(chip){ this.menu.add(chip); if(this.tuHas('ic_scroll'))this.menu.add(this.tuImg('ic_scroll',0,w-14-chW+chip._tuK*25,y+6.5,15,15)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
+      else this.menu.add(this.add.text(w-14,y,'📜 '+scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#8d8195'}).setOrigin(1,0));
+      y+=aArt?19:15;
+      const aCols=aArt?2:3,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?62:58;
+      ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=SCROLL_PER_PERK;
+        const ap=aArt?this.tuPanel('perk_ancient_card_sheet',own?2:(can?1:0),x,yy,aW,aH):null,ak=ap?ap._tuK:0;   // B12
+        let g=ap; if(!ap){ g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,aW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,aW,aH,10); }
+        const icx=ap?x+50*ak:x+16,icy=ap?yy+aH*.45:yy+17,isz=ap?Math.min(34,58*ak):22,tx=ap?x+100*ak+4:x+30;
+        const icon=this.textures.exists('perk_'+pk.id)?this.add.image(icx,icy,'perk_'+pk.id).setDisplaySize(isz,isz):this.add.text(icx,icy,pk.emoji,{fontSize:ap?'20px':'16px'}).setOrigin(0.5); icon.setAlpha(own||can?1:0.45);
+        const nm=this.add.text(tx,yy+(ap?9:10),pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ap?'10px':'8.5px',color:own?'#fff3c8':'#efe4fa',wordWrap:{width:ap?x+aW-tx-8:aW-34}}).setOrigin(0,0);
+        const lockA=ap&&!own&&!can&&this.tuHas('ui_lock_icon');
+        const ds=this.add.text(ap?tx:x+6,ap?yy+24:yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:(lockA?'':'🔒 ')+pk.desc),{fontFamily:'sans-serif',fontSize:ap?'7.5px':'6.8px',color:own?'#e6d6ff':(ap?'#cfc3dc':'#7f748d'),wordWrap:{width:ap?x+aW-tx-8:aW-10}}).setOrigin(0,0);
+        this.menu.add([g,icon,nm,ds]); if(lockA)this.menu.add(this.tuImg('ui_lock_icon',0,x+16*ak,yy+aH*.8,11,11));
+        if(can)this._zone(x,yy,aW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); if(this.tuSparkle)this.tuSparkle(x+aW/2,yy+aH/2,44); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
+      y+=Math.ceil(ANCIENT_PERKS.length/aCols)*(aH+6)+6; }
+    // ปุ่มรีเซ็ต perk (คืนแต้มทั้งหมด) · B15 + B16
+    const ry2=this.tuHas('perk_reset_btn')?y:Math.min(h-42,y),rw=Math.min(w-40,300),rp=this.tuPanel('perk_reset_btn',this._perkResetConfirm?1:0,w/2-rw/2,ry2,rw,34);
+    let rg=rp; if(!rp){ rg=this.add.graphics(); rg.fillStyle(0x3a2f38,1); rg.fillRoundedRect(w/2-rw/2,ry2,rw,34,10); rg.lineStyle(1.5,0x6a4055,0.8); rg.strokeRoundedRect(w/2-rw/2,ry2,rw,34,10); }
+    const rIco=rp&&this.tuHas('ic_reset');
+    const rt=this.add.text(w/2+(rIco?10:0),ry2+17,this._perkResetConfirm?'⚠ Confirm · spend 🧶'+Save.perkResetCost():((rIco?'':'♻️ ')+'Reset Perks · 🧶'+Save.perkResetCost()),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rp?'12px':'11px',color:rp?'#ffe9ef':'#f0a0b0',stroke:rp?'#3a0716':undefined,strokeThickness:rp?3:0}).setOrigin(0.5);
+    this.menu.add([rg,rt]); if(rIco)this.menu.add(this.tuImg('ic_reset',0,rt.x-rt.width/2-13,ry2+17,18,18));
     this._zone(w/2-rw/2,ry2,rw,34,()=>{ if(this._perkResetConfirm){if(Save.respecPerks())Sfx.clear();else this.menuToast('Need perks and 🧶'+Save.perkResetCost()+' Weave Thread','#ff9bb5');this._perkResetConfirm=false;}else{this._perkResetConfirm=true;Sfx.select();} this.buildRankPerks(); });
     this.menu.setVisible(true);
   }

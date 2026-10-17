@@ -1,0 +1,540 @@
+[
+ {
+  "key": "screen_temple_weave",
+  "file": "assets/art/temple/ui/screen_temple_weave.webp",
+  "cw": 720,
+  "ch": 1280,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "background"
+  ]
+ },
+ {
+  "key": "temple_altar_trio",
+  "file": "assets/art/temple/ui/temple_altar_trio.webp",
+  "cw": 600,
+  "ch": 360,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "trio"
+  ]
+ },
+ {
+  "key": "temple_altar_glow_sheet",
+  "file": "assets/art/temple/ui/temple_altar_glow_sheet.webp",
+  "cw": 200,
+  "ch": 200,
+  "cols": 3,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "pink",
+   "gold",
+   "blue"
+  ]
+ },
+ {
+  "key": "temple_title_frame",
+  "file": "assets/art/temple/ui/temple_title_frame.webp",
+  "cw": 700,
+  "ch": 100,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   160,
+   30,
+   160,
+   30
+  ],
+  "states": [
+   "title"
+  ]
+ },
+ {
+  "key": "temple_rank_ribbon",
+  "file": "assets/art/temple/ui/temple_rank_ribbon.webp",
+  "cw": 600,
+  "ch": 55,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   70,
+   18,
+   70,
+   18
+  ],
+  "states": [
+   "rank"
+  ]
+ },
+ {
+  "key": "temple_tab_sheet",
+  "file": "assets/art/temple/ui/temple_tab_sheet.webp",
+  "cw": 280,
+  "ch": 65,
+  "cols": 1,
+  "rows": 4,
+  "nineSlice": [
+   72,
+   18,
+   38,
+   18
+  ],
+  "states": [
+   "purple",
+   "gold",
+   "mint",
+   "gold_attention"
+  ]
+ },
+ {
+  "key": "temple_power_bar",
+  "file": "assets/art/temple/ui/temple_power_bar.webp",
+  "cw": 700,
+  "ch": 40,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   55,
+   12,
+   55,
+   12
+  ],
+  "states": [
+   "track"
+  ]
+ },
+ {
+  "key": "temple_power_fill",
+  "file": "assets/art/temple/ui/temple_power_fill.webp",
+  "cw": 600,
+  "ch": 20,
+  "cols": 1,
+  "rows": 2,
+  "nineSlice": [
+   12,
+   6,
+   12,
+   6
+  ],
+  "states": [
+   "gold",
+   "mint"
+  ]
+ },
+ {
+  "key": "temple_core_card_sheet",
+  "file": "assets/art/temple/ui/temple_core_card_sheet.webp",
+  "cw": 880,
+  "ch": 200,
+  "cols": 1,
+  "rows": 3,
+  "nineSlice": [
+   225,
+   40,
+   280,
+   40
+  ],
+  "states": [
+   "core_pink",
+   "flavor_gold",
+   "bond_blue"
+  ]
+ },
+ {
+  "key": "temple_core_card_max",
+  "file": "assets/art/temple/ui/temple_core_card_max.webp",
+  "cw": 880,
+  "ch": 200,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   260,
+   40,
+   250,
+   40
+  ],
+  "states": [
+   "max"
+  ]
+ },
+ {
+  "key": "temple_star_sheet",
+  "file": "assets/art/temple/ui/temple_star_sheet.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 3,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "filled_gold",
+   "empty_gray",
+   "bonus_pink"
+  ]
+ },
+ {
+  "key": "temple_buy_btn_sheet",
+  "file": "assets/art/temple/ui/temple_buy_btn_sheet.webp",
+  "cw": 240,
+  "ch": 60,
+  "cols": 1,
+  "rows": 4,
+  "nineSlice": [
+   75,
+   16,
+   40,
+   16
+  ],
+  "states": [
+   "affordable",
+   "insufficient",
+   "max",
+   "pressed"
+  ]
+ },
+ {
+  "key": "temple_weave_btn_sheet",
+  "file": "assets/art/temple/ui/temple_weave_btn_sheet.webp",
+  "cw": 500,
+  "ch": 110,
+  "cols": 1,
+  "rows": 2,
+  "nineSlice": [
+   135,
+   30,
+   75,
+   30
+  ],
+  "states": [
+   "locked",
+   "ready"
+  ]
+ },
+ {
+  "key": "temple_ribbon_knot",
+  "file": "assets/art/temple/ui/temple_ribbon_knot.webp",
+  "cw": 200,
+  "ch": 100,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "knot"
+  ]
+ },
+ {
+  "key": "screen_temple_perks",
+  "file": "assets/art/temple/ui/screen_temple_perks.webp",
+  "cw": 720,
+  "ch": 1280,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "background"
+  ]
+ },
+ {
+  "key": "perk_tier_banner",
+  "file": "assets/art/temple/ui/perk_tier_banner.webp",
+  "cw": 440,
+  "ch": 45,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   90,
+   12,
+   45,
+   12
+  ],
+  "states": [
+   "tier"
+  ]
+ },
+ {
+  "key": "perk_tier_line",
+  "file": "assets/art/temple/ui/perk_tier_line.webp",
+  "cw": 600,
+  "ch": 12,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "line"
+  ]
+ },
+ {
+  "key": "perk_card_sheet",
+  "file": "assets/art/temple/ui/perk_card_sheet.webp",
+  "cw": 280,
+  "ch": 230,
+  "cols": 3,
+  "rows": 1,
+  "nineSlice": [
+   32,
+   32,
+   32,
+   32
+  ],
+  "states": [
+   "normal",
+   "invested",
+   "locked"
+  ]
+ },
+ {
+  "key": "perk_pip_sheet",
+  "file": "assets/art/temple/ui/perk_pip_sheet.webp",
+  "cw": 40,
+  "ch": 40,
+  "cols": 3,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "filled_gold",
+   "empty_gold",
+   "empty_gray"
+  ]
+ },
+ {
+  "key": "perk_btn_sheet",
+  "file": "assets/art/temple/ui/perk_btn_sheet.webp",
+  "cw": 200,
+  "ch": 45,
+  "cols": 1,
+  "rows": 4,
+  "nineSlice": [
+   27,
+   12,
+   27,
+   12
+  ],
+  "states": [
+   "no_rp",
+   "available",
+   "locked",
+   "max"
+  ]
+ },
+ {
+  "key": "ui_lock_icon",
+  "file": "assets/art/temple/ui/ui_lock_icon.webp",
+  "cw": 96,
+  "ch": 96,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "lock"
+  ]
+ },
+ {
+  "key": "perk_req_chip",
+  "file": "assets/art/temple/ui/perk_req_chip.webp",
+  "cw": 210,
+  "ch": 40,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   58,
+   11,
+   30,
+   11
+  ],
+  "states": [
+   "requirement"
+  ]
+ },
+ {
+  "key": "perk_special_banner",
+  "file": "assets/art/temple/ui/perk_special_banner.webp",
+  "cw": 920,
+  "ch": 80,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   240,
+   22,
+   220,
+   22
+  ],
+  "states": [
+   "special"
+  ]
+ },
+ {
+  "key": "perk_compass_icon",
+  "file": "assets/art/temple/ui/perk_compass_icon.webp",
+  "cw": 160,
+  "ch": 160,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "compass"
+  ]
+ },
+ {
+  "key": "perk_ancient_banner",
+  "file": "assets/art/temple/ui/perk_ancient_banner.webp",
+  "cw": 550,
+  "ch": 40,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   90,
+   11,
+   40,
+   11
+  ],
+  "states": [
+   "ancient"
+  ]
+ },
+ {
+  "key": "perk_ancient_card_sheet",
+  "file": "assets/art/temple/ui/perk_ancient_card_sheet.webp",
+  "cw": 300,
+  "ch": 100,
+  "cols": 1,
+  "rows": 3,
+  "nineSlice": [
+   110,
+   20,
+   35,
+   20
+  ],
+  "states": [
+   "locked",
+   "unlockable",
+   "owned"
+  ]
+ },
+ {
+  "key": "perk_scroll_chip",
+  "file": "assets/art/temple/ui/perk_scroll_chip.webp",
+  "cw": 160,
+  "ch": 40,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   50,
+   11,
+   20,
+   11
+  ],
+  "states": [
+   "scroll_count"
+  ]
+ },
+ {
+  "key": "ic_scroll",
+  "file": "assets/art/temple/ui/ic_scroll.webp",
+  "cw": 128,
+  "ch": 128,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "scroll"
+  ]
+ },
+ {
+  "key": "perk_reset_btn",
+  "file": "assets/art/temple/ui/perk_reset_btn.webp",
+  "cw": 500,
+  "ch": 70,
+  "cols": 1,
+  "rows": 2,
+  "nineSlice": [
+   55,
+   19,
+   55,
+   19
+  ],
+  "states": [
+   "normal",
+   "confirm"
+  ]
+ },
+ {
+  "key": "ic_reset",
+  "file": "assets/art/temple/ui/ic_reset.webp",
+  "cw": 96,
+  "ch": 96,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "reset"
+  ]
+ },
+ {
+  "key": "temple_back_btn",
+  "file": "assets/art/temple/ui/temple_back_btn.webp",
+  "cw": 180,
+  "ch": 60,
+  "cols": 1,
+  "rows": 2,
+  "nineSlice": [
+   60,
+   16,
+   32,
+   16
+  ],
+  "states": [
+   "normal",
+   "pressed"
+  ]
+ },
+ {
+  "key": "temple_currency_chip",
+  "file": "assets/art/temple/ui/temple_currency_chip.webp",
+  "cw": 180,
+  "ch": 60,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": [
+   75,
+   16,
+   28,
+   16
+  ],
+  "states": [
+   "currency"
+  ]
+ },
+ {
+  "key": "ui_notify_dot",
+  "file": "assets/art/temple/ui/ui_notify_dot.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 1,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "notification"
+  ]
+ },
+ {
+  "key": "temple_sparkle_sheet",
+  "file": "assets/art/temple/ui/temple_sparkle_sheet.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 6,
+  "rows": 1,
+  "nineSlice": null,
+  "states": [
+   "spark0",
+   "spark1",
+   "spark2",
+   "spark3",
+   "spark4",
+   "spark5"
+  ]
+ }
+]
