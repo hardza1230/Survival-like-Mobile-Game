@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8');
 function method(n){const at=src.indexOf('  '+n+'(');assert(at>=0,n);const tail=src.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);return src.slice(at,at+1+next.index);}
-const ctx={Math,Save:{ancientHas:()=>false},Sfx:{xp(){}},ENDGAME_XP_MUL:1,STAGES:Array.from({length:15},()=>({waves:5})),Phaser:{Math:{FloatBetween:()=>15}}};vm.createContext(ctx);
+const ctx={Math,Save:{ancientHas:()=>false},Sfx:{xp(){}},ENDGAME_XP_MUL:1,REPLAY_QUOTA:340,STAGES:Array.from({length:15},()=>({waves:5})),Phaser:{Math:{FloatBetween:()=>15}}};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('const STORY_WAVE_PLAN='),src.indexOf('const CHANGELOG =')),ctx);
 const names=['usesStoryBudget','beginStoryBudget','storyTimedSwarm','storySpawnPace','storyLiveCap','storyCanSpawn','storySpawned','tickStage','spawnSwarm','settleStoryBudget','storyEnemyXp','gainXp','bossHpMul','dropOrb','collectOrb'];
 const Scene=vm.runInContext('class Scene{'+names.map(method).join('\n')+'\n}Scene',ctx);

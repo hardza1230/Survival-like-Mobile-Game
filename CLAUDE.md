@@ -14,7 +14,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 text-free pieces (A Weave screen 14, B Flavor Passives 16, C shared 4) cut from the owner's two mockups (docs/art_orders/ref/21_temple_*_ref.webp) — backgrounds 1080×1920, 9-slice card/button/tab/bar sheets with nineSlice in MANIFEST, altar trio centerpiece. Delivery to assets/incoming/temple_weave_ui/. Hooks: buildUpgrade / buildRankPerks via Phaser nineslice, graphics fallback.
 
-# Latest delivery: v7.8.46 — C8 Cocoa landing dust wired
+# Latest delivery: v7.8.47 — Fuller replays
+
+Owner: replays (stage already cleared) had fewer kills than the first clear → lower level at the boss. REPLAY_GOAL 140→240 meter (0.75/kill → ~320 kills ≈ first-clear 5-wave quota 322), REPLAY_QUOTA spawn budget 240→340, REPLAY_TIME_CAP 300s (was RECIPE_HUNGER_CAP 180; mini fallback at half). Completion reward unchanged (200).
+
+# Previous delivery: v7.8.46 — C8 Cocoa landing dust wired
 
 Owner re-uploaded vfx_cocoa_landing_dust.png (282,702 bytes, sha matches QA). Packed to bpx_cocoa_landing_dust (6×256, once); cocoaLandingFx plays it (must, width max(160, r*2/.9)) and returns before the old crack/dust graphics (kept as fallback). Order 20 now 21/21 wired; phone visual/FPS QA pending.
 
