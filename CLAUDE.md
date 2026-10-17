@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.42 — Deeper Combat Meter for the all-hero benchmark
+# Latest delivery: v7.8.43 — Combat Meter one-run completeness
+
+Owner wants to play each hero once. Added: card picks with level/time and the cards passed over (mxPick in pickCardAt), casts per skill (castSkill caller), Unique ready-but-unused seconds, game-speed share, avg mob lifetime/HP (e._mxBorn in spawnEnemy), biggest hit taken + source, last-5s damage taken by source, end-of-run player stats, loot (sugar/boxes/currency), objective name per wave, device UA/screen in the copy header.
+
+# Previous delivery: v7.8.42 — Deeper Combat Meter for the all-hero benchmark
 
 Owner plans to play every hero on the same stage with the same gear. Added: per-wave rows (time, DPS, kills, taken) incl. a 'boss' segment, boss/mini damage by source (bsrc), boss phase2/3 timings per fight, biggest hit, survival (min HP%, seconds under 30%, healed via HP-delta in mxTick), movement px, standing-still %, active-attack % (seconds with damage), XP/min (gainXp hook). Stats.toText appends a BENCH CSV block (one row per metered run: hero, build, stage, result, sec, run/hero Lv, power, kills/min, avg/peak DPS, boss & mini sec/DPS, taken/min, min HP%, healed, uniques, unique share%, FPS).
 
@@ -25,10 +29,6 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 # Previous delivery: v7.8.38 — Combat Meter (owner: numbers for balance)
 
 Settings → 📈 Combat Meter (st.mx, also in pause settings) shows a live overlay (left, 36% height): 5s DPS / avg / total, current boss-mini DPS · fight time · HP%, FPS · foes · foe shots · FX. Every run records g._mx (mxReset in Stats.start; hooks: damage()→mxDeal before e.hp-=amount [damage hash fixture updated], killEnemy→mxKill, _noteHit taken, dash button→mxDash, castSkill caller sets _mxSrc=key, Unique paths set _mxSrc='unique', Taro context → 'taro.<source>', _infTick/_frDmg/_gmTick → infusion/recipe/gear). Stats.end saves c.mx=mxSummary(); Play Stats → Copy adds meter lines via mxLines(): dealt (no overkill)/overkill/crit, boss/mini/elite/mob split, peak 5s DPS, every boss & mini fight (HP, seconds, DPS, % left), top 10 sources, taken, dash taps, uniques, level & wave timings, FPS avg/min/low seconds/frames>50ms, peak foes/shots/FX, texture MB. Test tests/combat-meter.test.cjs. Next: owner plays 3 Taro builds + other heroes and pastes Play Stats.
-
-# Previous delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
-
-Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never worked: spawnEnemy → storyCanSpawn returned false once story quota was spent. storyCanSpawn now allows spawns while the Spring trial (idx 0, not partial, not passed) has fewer live foes than 10−kills (seasonNeedsFoes). Test in tests/story-budget.test.cjs.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

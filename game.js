@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.42';
+const GAME_VERSION = '7.8.43';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.43',date:'2026-10-17',title:'Combat Meter: one-run data',items:['Card picks with level, time and the cards you passed on','Casts per skill, seconds the Unique sat ready but unused, game-speed usage','Average monster lifetime and HP, biggest hit taken, damage taken in the last 5 seconds','End-of-run stats, loot earned, objective name per wave and device info in the copy header']},
   {v:'7.8.42',date:'2026-10-17',title:'Deeper Combat Meter',items:['Per-wave stats: time, DPS, kills and damage taken for every wave and the boss','Boss/miniboss damage by skill, boss phase timings, biggest hit','Survival: lowest HP %, time under 30% HP, healing received; movement, standing-still %, active-attack %, XP per minute','Play Stats copy ends with a BENCH CSV table (one row per run) for comparing heroes side by side']},
   {v:'7.8.41',date:'2026-10-17',title:'Taro boss tuning (from Combat Meter)',items:['Sentry: Ball Lightning curves toward nearby bosses and minibosses and slows down on top of them','Spark: Static Charge strikes are stronger (8× → 13× Spark damage)','Taro Uniques (Plasma Field, Overcharge Detonation, Storm Mark) grow +12% per run level; Storm Mark strikes ×2 and Overcharge blasts ×4 base damage']},
   {v:'7.8.40',date:'2026-10-17',title:'Combat Meter fixes',items:['Level timings record every level once, starting from this run','Boss and miniboss names in the report are clean']},
@@ -5492,7 +5493,12 @@ function mxLines(m){if(!m)return[];const L=[],sec=Math.max(1,m.sec||1);
   if(m.src)L.push('sources: '+m.src.map(x=>x[0]+' '+x[1]+'% '+mxFmt(x[2])+' ('+x[3]+' hits)').join(' · '));
   L.push('taken: '+mxFmt(m.taken)+' in '+m.takenHits+' hits ('+(m.takenHits/sec*60).toFixed(1)+'/min) · dash taps '+m.dash+' · uniques '+m.uq);
   if(m.hpMin!=null)L.push('survival: min HP '+m.hpMin+'% · '+m.lowHp+'s under 30% HP · healed '+mxFmt(m.heal)+' · biggest hit dealt '+mxFmt(m.maxHit)+' · active '+m.active+'% of seconds · standing still '+m.still+'% · moved '+mxFmt(m.move)+'px · XP '+mxFmt(m.xp)+' ('+mxFmt(m.xp/sec*60)+'/min)');
-  if(m.wv&&m.wv.length)L.push('per wave: '+m.wv.map(w=>(w.w==='boss'?'Boss':'W'+w.w)+' '+w.sec+'s dps '+mxFmt(w.d/w.sec)+' kills '+w.k+' taken '+mxFmt(w.tk)+'/'+w.h).join(' | '));
+  if(m.end)L.push('end stats: '+m.end);
+  if(m.casts)L.push('casts: '+Object.entries(m.casts).map(([k,v])=>k+' '+v+'×').join(' · ')+' · unique ready but unused '+(m.uqIdle||0)+'s · game speed '+(m.spd||'x1 100%'));
+  if(m.mobLife!=null)L.push('mobs: avg time alive '+m.mobLife+'s · avg HP '+m.mobHp+' · biggest hit taken '+(m.maxTaken||0)+' ('+(m.maxTakenSrc||'-')+') · last 5s taken: '+(m.last5||'-'));
+  if(m.sugar!=null)L.push('loot: sugar +'+m.sugar+' · boxes '+m.boxes+' · currency '+m.cur);
+  if(m.picks&&m.picks.length)L.push('picks: '+m.picks.join(' | '));
+  if(m.wv&&m.wv.length)L.push('per wave: '+m.wv.map(w=>(w.w==='boss'?'Boss':'W'+w.w)+(w.o?' ['+w.o+']':'')+' '+w.sec+'s dps '+mxFmt(w.d/w.sec)+' kills '+w.k+' taken '+mxFmt(w.tk)+'/'+w.h).join(' | '));
   if(m.lv)L.push('levels: '+m.lv);if(m.waves)L.push('waves: '+m.waves);
   L.push('perf: FPS avg '+m.fpsAvg+' · min '+m.fpsMin+' · 1s<30fps '+m.lowSec+' · frames>50ms '+m.spikes+' · peak foes '+m.pFoe+' · foe shots '+m.pShot+' · FX '+m.pFx+' · tex '+m.texMB+'MB');
   return L;}
@@ -5520,7 +5526,7 @@ const Stats={
       const a=this.load(); a.push(c); this.saveAll(a); }catch(e){} },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
   stageLab(i){ const st=(typeof STAGES!=='undefined')&&STAGES[i]; return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1)); },
-  toText(last){ const all=this.load(),a=last?all.slice(-last):all,L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
+  toText(last){ const all=this.load(),a=last?all.slice(-last):all,ua=(()=>{try{const u=navigator.userAgent||'',m=/Android [\d.]+[^)]*/.exec(u)||/(iPhone|iPad)[^)]*/.exec(u);return (m?m[0]:u.slice(0,60))+' · screen '+screen.width+'×'+screen.height+' @'+(window.devicePixelRatio||1);}catch(e){return '';}})(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:'')+(ua?' · device '+ua:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
     a.forEach(r=>{ const d=new Date(r.t||0),dt=d.toISOString().slice(0,16).replace('T',' '),where=r.mode==='story'?this.stageLab(r.stage)+' ★'+r.diff:(r.mode+(r.depth!=null?' D'+r.depth:'')+' ('+this.stageLab(r.stage)+')');
       L.push([dt,r.result,r.mode,where,(r.hero||'?')+(r.path?' ('+r.path+')':''),Math.floor((r.sec||0)/60)+':'+String((r.sec||0)%60).padStart(2,'0'),'Lv'+r.level,r.kills+' kills','wave '+r.wave+(r.boss?' boss':''),r.cause||'-',(r.cards||[]).join(', ')].join(' | '));
       const k=r.kit; if(k){ L.push('   hero Lv'+(k.clv||'?')+' · Unique Lv'+(k.ulv||1)+' · power '+(k.pw||'?')+(r.pwEnd?'→'+r.pwEnd:'')+' · unspent TP '+(k.tp||0)+(k.st?' · '+k.st:''));
@@ -12308,7 +12314,7 @@ class Game extends Phaser.Scene {
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.ev?.('card_focus',.45,.05)||Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
-    Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':(this._chestReward||this._relicPick)?'special_card_confirm':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
+    this.mxPick?.(c); Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':(this._chestReward||this._relicPick)?'special_card_confirm':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
   }
   // แตะครั้งแรก = โชว์กWaitบเรืองWaitบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
   highlightCard(c){
@@ -13287,7 +13293,7 @@ class Game extends Phaser.Scene {
     if(!e) e=this.enemies.create(x,y,key,atlasFrame);
     else { e.setTexture(key,atlasFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e)return;   // pool Full (600) → ข้ามการเกิด (เวฟคุมด้วยเวลา ไม่นับจำนวน) กัน null crash
-    e._bestiaryType=this.stageIndex>=10?'c3_'+(({dasher:'fast',siege:'tank'})[type]||(['basic','fast','shooter','bomber','tank'].includes(type)?type:'basic')):null;
+    e._mxBorn=this.elapsed||0;e._bestiaryType=this.stageIndex>=10?'c3_'+(({dasher:'fast',siege:'tank'})[type]||(['basic','fast','shooter','bomber','tank'].includes(type)?type:'basic')):null;
     this.tagTaroEnemy?.(e);this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;
     // สเกลตามด่าน+Wave (ยิ่งลึกยิ่งอึด/ดาเมจสูง)
     const pg=this._powerGuide||this.getPowerGuide(this.stageIndex),stageCurve=stageCurveValue(this.stageIndex,[1,1.42,1.88,2.42,3.05,3.72],this.recipeMode?1.18:1.28),waveCurve=([1,1.08,1.17,1.27,1.38][this.waveIndex]||1.38)*(this.stageIndex>=2&&this.stageIndex<=4&&this.waveIndex<=1&&!this.recipeMode?1.35:1),c2Mul=this.stageIndex===6?BALANCE.c2Mycelium.hp:this.stageIndex===7?BALANCE.c2Nectar.hp:this.stageIndex===8?BALANCE.c2Seasons.hp:this.stageIndex===9?BALANCE.c2Root.hp:1,s=stageCurve*waveCurve*c2Mul*pg.enemyHp*this.killPowerMul()*this.diffMul().hp*this.newbieEase()/0.9;   // v6.55.26: HP ×1/0.9 ชดเชยดาเมจฐาน 100%   // ฐานแฟร์ (diff 1) + สเกลตามมอนที่ตาย + ระดับความยาก + ผ่อนให้ผู้เล่นใหม่
@@ -15553,21 +15559,24 @@ class Game extends Phaser.Scene {
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.()){this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;}
     if(this.player.hp<=0) this.die(); }
   // 💀 สะสมดาเมจที่รับตามแหล่ง (หน้าตายบอกสาเหตุ) · รีเซ็ตใน startRun
-  mxReset(){this._mx={t0:this.elapsed||0,dealt:0,over:0,hits:0,crits:0,dBoss:0,dMini:0,dElite:0,dMob:0,kills:0,src:{},fights:new Map(),done:[],taken:0,takenHits:0,dash:0,uq0:this._coachUnique||0,lv:[],lv0:this.level||1,waves:[],w0:this.waveIndex,sec:{},peak5:0,fpsN:0,fpsSum:0,fpsMin:999,lowSec:0,spikes:0,pFoe:0,pShot:0,pFx:0,acc:0,bsrc:{},wv:[],cw:null,heal:0,hpMin:1,lowHp:0,lastHp:null,lastMax:null,move:0,still:0,px:null,py:null,active:0,xp:0,maxHit:0};this._mx.cw={w:(this.waveIndex|0)+1,t0:this.elapsed||0,d:0,k:0,tk:0,h:0};this._mx.wv.push(this._mx.cw);this._mxSrc=null;}
+  mxReset(){this._mx={t0:this.elapsed||0,dealt:0,over:0,hits:0,crits:0,dBoss:0,dMini:0,dElite:0,dMob:0,kills:0,src:{},fights:new Map(),done:[],taken:0,takenHits:0,dash:0,uq0:this._coachUnique||0,lv:[],lv0:this.level||1,waves:[],w0:this.waveIndex,sec:{},peak5:0,fpsN:0,fpsSum:0,fpsMin:999,lowSec:0,spikes:0,pFoe:0,pShot:0,pFx:0,acc:0,bsrc:{},wv:[],cw:null,heal:0,hpMin:1,lowHp:0,lastHp:null,lastMax:null,move:0,still:0,px:null,py:null,active:0,xp:0,maxHit:0,picks:[],casts:{},life:0,lifeN:0,mobHp:0,last5:[],maxTaken:0,maxTakenSrc:'',uqIdle:0,spd:{},sugar0:this.sugarRun||0};this._mx.cw={w:(this.waveIndex|0)+1,o:this.waveObjective?.name||'',t0:this.elapsed||0,d:0,k:0,tk:0,h:0};this._mx.wv.push(this._mx.cw);this._mxSrc=null;}
   mxSrcName(){if(this._infTick)return'infusion';if(this._frDmg)return'recipe';if(this._gmTick)return'gear';const c=this._taroDamageContext;if(c&&c.source)return'taro.'+c.source;return this._mxSrc||'other';}
   mxDeal(e,amount,crit){const m=this._mx;if(!m||e.isDummy||!(amount>0))return;const eff=Math.min(amount,Math.max(0,e.hp||0));m.dealt+=eff;m.over+=amount-eff;m.hits++;if(crit)m.crits++;
     if(e.isBoss)m.dBoss+=eff;else if(e.isMini)m.dMini+=eff;else if(e.isElite)m.dElite+=eff;else m.dMob+=eff;
     const k=this.mxSrcName(),r=m.src[k]||(m.src[k]=[0,0]);r[0]+=eff;r[1]++;if(m.cw)m.cw.d+=eff;if(eff>m.maxHit)m.maxHit=eff;if(e.isBoss||e.isMini){const q=m.bsrc[k]||(m.bsrc[k]=[0,0]);q[0]+=eff;q[1]++;}const b=Math.floor((this.elapsed||0)-m.t0);m.sec[b]=(m.sec[b]||0)+eff;
     if(e.isBoss||e.isMini){let f=m.fights.get(e);if(!f){f={n:(e.isBoss?'Boss ':'Mini ')+((this.boss===e&&this.bossName?.text?this.bossName.text.replace(/^\S+\s/,'').split(' · ')[0].slice(0,28):'')||e.roleName||e.texture?.key||'?'),hp:e.maxhp||0,t0:this.elapsed||0,d:0,e};m.fights.set(e,f);}f.d+=eff;f.t1=this.elapsed||0;}}
+  mxPick(c){const m=this._mx;if(!m||!c)return;const others=(this.lvlCards||[]).filter(x=>x!==c).map(x=>x.title);m.picks.push('L'+(this.level||1)+' '+mxClock((this.elapsed||0)-m.t0)+' '+c.title+(others.length?' (over '+others.join(' / ')+')':''));}
   mxDash(){if(this._mx&&this.state==='play')this._mx.dash++;}
-  mxKill(e){const m=this._mx;if(!m||e.isDummy)return;m.kills++;if(m.cw)m.cw.k++;const f=m.fights.get(e);if(f){f.done=true;f.t1=this.elapsed||0;m.done.push(f);m.fights.delete(e);}}
+  mxKill(e){const m=this._mx;if(!m||e.isDummy)return;m.kills++;if(m.cw)m.cw.k++;if(!e.isBoss&&!e.isMini&&e._mxBorn!=null){m.life+=Math.max(0,(this.elapsed||0)-e._mxBorn);m.lifeN++;m.mobHp+=e.maxhp||0;}const f=m.fights.get(e);if(f){f.done=true;f.t1=this.elapsed||0;m.done.push(f);m.fights.delete(e);}}
   mxTick(dt){const m=this._mx;if(!m)return;const now=this.elapsed||0;
     if(this.state==='play'){const fps=this.game?.loop?.actualFps||60,dm=this.game?.loop?.delta||16;if(dm>50)m.spikes++;m.acc+=dt;if(m.acc>=1){m.acc=0;m.fpsN++;m.fpsSum+=fps;m.fpsMin=Math.min(m.fpsMin,fps);if(fps<30)m.lowSec++;
         const b=Math.floor(now-m.t0);let s5=0;for(let i=b-5;i<b;i++)s5+=m.sec[i]||0;m.peak5=Math.max(m.peak5,s5/5);if((m.sec[b-1]||0)>0)m.active++;for(const k in m.sec)if(+k<b-6)delete m.sec[k];
         m.pFoe=Math.max(m.pFoe,this.enemies?.countActive?.(true)||0);m.pShot=Math.max(m.pShot,this.foeBullets?.countActive?.(true)||0);m.pFx=Math.max(m.pFx,(this._artVfx?.size||0)+(this._taroFxLive||0)+(this._c24Live||0));}
       if(m.lvAt==null)m.lvAt=this.level||1;while((this.level||1)>m.lvAt){m.lvAt++;m.lv.push('L'+m.lvAt+' '+mxClock(now-m.t0));}   /* v7.8.40 นับทีละเลเวล · เริ่มจากเลเวลตอนเฟรมแรกของรอบ (เดิมใช้เลเวลรอบก่อน) */
-      if(this.waveIndex!==m.w0){m.w0=this.waveIndex;m.waves.push('W'+((this.waveIndex|0)+1)+' '+mxClock(now-m.t0));if(m.cw)m.cw.t1=now;m.cw={w:(this.waveIndex|0)+1,t0:now,d:0,k:0,tk:0,h:0};m.wv.push(m.cw);}
+      if(this.waveIndex!==m.w0){m.w0=this.waveIndex;m.waves.push('W'+((this.waveIndex|0)+1)+' '+mxClock(now-m.t0));if(m.cw)m.cw.t1=now;m.cw={w:(this.waveIndex|0)+1,o:this.waveObjective?.name||'',t0:now,d:0,k:0,tk:0,h:0};m.wv.push(m.cw);}
+      if(m.cw&&!m.cw.o&&this.waveObjective?.name)m.cw.o=this.waveObjective.name;
       if(m.cw&&this.mode==='boss'&&!m.cw.boss){m.cw.t1=now;m.cw={w:'boss',boss:true,t0:now,d:0,k:0,tk:0,h:0};m.wv.push(m.cw);}
+      if((this.uniqueCd||0)<=0&&this.uniqueBtn?.visible)m.uqIdle+=dt;const gs='x'+(this.gameSpeed||1);m.spd[gs]=(m.spd[gs]||0)+dt;
       const P=this.player;if(P){const hp=Math.max(0,P.hp||0),mx=Math.max(1,P.maxhp||1);if(m.lastHp!=null&&hp>m.lastHp)m.heal+=Math.max(0,(hp-m.lastHp)-Math.max(0,mx-(m.lastMax||mx)));m.lastHp=hp;m.lastMax=mx;const f=hp/mx;if(f<m.hpMin)m.hpMin=f;if(f<.3)m.lowHp+=dt;
         if(m.px!=null){const d=Math.hypot(P.x-m.px,P.y-m.py);if(d<200)m.move+=d;}m.px=P.x;m.py=P.y;if((P.body?.velocity?.length?.()||0)<25)m.still+=dt;}
       for(const f of m.fights.values()){const e=f.e;if(!e?.active)continue;if(e.phase2&&f.p2==null)f.p2=now-f.t0;if(e.phase3&&f.p3==null)f.p3=now-f.t0;}}
@@ -15586,9 +15595,10 @@ class Game extends Phaser.Scene {
     const bsrc=Object.entries(m.bsrc).sort((a,b)=>b[1][0]-a[1][0]).slice(0,6).map(([k,v])=>[k,Math.round(100*v[0]/btot),Math.round(v[0]),v[1]]);
     const wv=m.wv.filter(w=>w.d||w.k||w.tk).map(w=>({w:w.w,sec:+Math.max(.1,(w.t1||now)-w.t0).toFixed(1),d:Math.round(w.d),k:w.k,tk:Math.round(w.tk),h:w.h}));
     return {sec,dealt:Math.round(m.dealt),over:Math.round(m.over),hits:m.hits,crits:m.crits,dBoss:Math.round(m.dBoss),dMini:Math.round(m.dMini),dElite:Math.round(m.dElite),dMob:Math.round(m.dMob),kills:m.kills,peak5:Math.round(m.peak5),fights,src,taken:Math.round(m.taken),takenHits:m.takenHits,dash:m.dash,uq:Math.max(0,(this._coachUnique||0)-m.uq0),lv:m.lv.join(' '),waves:m.waves.join(' '),
-      bsrc,wv,heal:Math.round(m.heal),hpMin:Math.round(100*m.hpMin),lowHp:Math.round(m.lowHp),move:Math.round(m.move),still:Math.round(100*m.still/sec),active:Math.round(100*m.active/sec),xp:Math.round(m.xp),maxHit:Math.round(m.maxHit),
+      bsrc,wv:wv.map((w,i)=>({...w,o:(m.wv.filter(x=>x.d||x.k||x.tk)[i]||{}).o||''})),picks:m.picks.slice(0,40),casts:m.casts,mobLife:m.lifeN?+(m.life/m.lifeN).toFixed(2):0,mobHp:m.lifeN?Math.round(m.mobHp/m.lifeN):0,last5:(()=>{const o={};for(const [,k,d] of m.last5)o[k]=(o[k]||0)+d;return Object.entries(o).map(([k,d])=>k+' '+Math.round(d)).join(', ');})(),maxTaken:Math.round(m.maxTaken),maxTakenSrc:m.maxTakenSrc,uqIdle:Math.round(m.uqIdle),spd:Object.entries(m.spd).map(([k,v])=>k+' '+Math.round(100*v/sec)+'%').join(' '),sugar:Math.max(0,(this.sugarRun||0)-m.sugar0),boxes:(this._runBoxes||[]).length,cur:Object.values(this._runCurrency||{}).reduce((a,b)=>a+(+b||0),0),
+      end:(()=>{const P=this.player||{};return 'HP '+Math.round(P.maxhp||0)+' · DMG ×'+(P.dmgMul||1).toFixed(2)+' · power ×'+(P.powerMul||1).toFixed(2)+' · crit '+Math.round(100*(P.critChance||0))+'% · CD ×'+(P.cdMul||1).toFixed(2)+' · speed '+Math.round(P.baseSpeed||0)+' · taken ×'+(P.dmgTakenMul||1).toFixed(2);})(),heal:Math.round(m.heal),hpMin:Math.round(100*m.hpMin),lowHp:Math.round(m.lowHp),move:Math.round(m.move),still:Math.round(100*m.still/sec),active:Math.round(100*m.active/sec),xp:Math.round(m.xp),maxHit:Math.round(m.maxHit),
       fpsAvg:m.fpsN?Math.round(m.fpsSum/m.fpsN):0,fpsMin:m.fpsN?Math.round(m.fpsMin):0,lowSec:m.lowSec,spikes:m.spikes,pFoe:m.pFoe,pShot:m.pShot,pFx:m.pFx,texMB:Math.round(this.texMB?.()||0)};}
-  _noteHit(src,dmg){ if(this._mx){this._mx.taken+=+dmg||0;this._mx.takenHits++;if(this._mx.cw){this._mx.cw.tk+=+dmg||0;this._mx.cw.h++;}} if(this._miniFight&&this.mode==='mini')this._miniFight.hits++; const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
+  _noteHit(src,dmg){ if(this._mx){const M=this._mx,now=this.elapsed||0;M.last5.push([now,src,+dmg||0]);while(M.last5.length&&now-M.last5[0][0]>5)M.last5.shift();if((+dmg||0)>M.maxTaken){M.maxTaken=+dmg||0;M.maxTakenSrc=src;}this._mx.taken+=+dmg||0;this._mx.takenHits++;if(this._mx.cw){this._mx.cw.tk+=+dmg||0;this._mx.cw.h++;}} if(this._miniFight&&this.mode==='mini')this._miniFight.hits++; const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
   deathReason(){ const d=this._dmgBy||{},top=Object.keys(d).sort((a,b)=>d[b]-d[a])[0]||this._lastHitSrc||'swarm';
     const R={boss:['👑 Boss attacks','Watch the red telegraphs and Dash through big attacks.'],mini:['😈 Miniboss','Kite in circles and Dash when it charges.'],
       elite:['💪 Elite enemies','Focus elites first — they hit hard up close.'],shot:['🎯 Projectiles & hazards','Keep moving; don’t stand in glowing zones.'],
@@ -16882,7 +16892,7 @@ class Game extends Phaser.Scene {
 
     // auto-cast skills tick
     for(const key in this.skills){ if(SKILLDEFS[key].orbit) continue;
-      this.skillCd[key]-=dt;if(key==='meteor'&&this.character==='cocoa'&&this._cocoaFlicker)continue; if(this.skillCd[key]<=0){ this._ccCdMul=0; this._mxSrc=key; this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1)*(key==='meteor'&&this._ccCdMul?this._ccCdMul:1); } }
+      this.skillCd[key]-=dt;if(key==='meteor'&&this.character==='cocoa'&&this._cocoaFlicker)continue; if(this.skillCd[key]<=0){ this._ccCdMul=0; this._mxSrc=key; if(this._mx)this._mx.casts[key]=(this._mx.casts[key]||0)+1; this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1)*(key==='meteor'&&this._ccCdMul?this._ccCdMul:1); } }
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*(this.ringSpin||2.6);
       this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0),pulse=1+Math.sin(this.elapsed*7+(b._motionPhase||0))*0.11;
         b.setPosition(this.player.x+Math.cos(a)*(b.rr||54),this.player.y+Math.sin(a)*(b.rr||54)).setScale((b._baseScale||0.24)*pulse).setRotation(a+this.elapsed*1.8); });

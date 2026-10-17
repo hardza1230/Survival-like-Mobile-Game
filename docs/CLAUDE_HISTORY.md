@@ -1992,3 +1992,7 @@ Spark Build Unique (castStormBeacon smite → castTaroStormMark): picks toughest
 # Previous delivery: v7.8.36 — Taro Unique text fixes
 
 TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u.tiers) instead of the old pathRecall "Stronger Beacon" lines. Echo Map talent text = real effects (Plasma +40 reach, Overcharge and Storm Mark +1.5s); Overcharge now honours Echo (overUntil +1.5s). talent-icons test normalizes the new Echo text. Pending Taro: Sentry/Unique sounds, Storm Mark icon art (order 18 J), owner phone review.
+
+# Previous delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
+
+Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never worked: spawnEnemy → storyCanSpawn returned false once story quota was spent. storyCanSpawn now allows spawns while the Spring trial (idx 0, not partial, not passed) has fewer live foes than 10−kills (seasonNeedsFoes). Test in tests/story-budget.test.cjs.
