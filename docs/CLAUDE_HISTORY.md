@@ -1988,3 +1988,7 @@ Spark boss fix without touching clear: taroStaticCharge counts Spark hits per bo
 # Previous delivery: v7.8.35 — Spark Unique Storm Mark (owner pick A2 + B1)
 
 Spark Build Unique (castStormBeacon smite → castTaroStormMark): picks toughest foe within 700 (boss > mini > highest HP), beacon_strike art strike (8+4n)·dm, marks 6s (+1.5 Echo) with gold shock_aura sprite following it. While marked (taroMarkToken) every Spark steers to it (turn 8 rad/s), passes through it without spending pierce and deals ×1.5 (TARO_MARK_BONUS). Expiry → second strike + blast r130: (14+7n)·dm on mark, 40% to others (taroEndMark/taroTickMark). No target → falls back to castTaroSparkStorm. Static Charge (v7.8.34) stacks. Icon key ic_taro_storm_mark not drawn → emoji 🎯.
+
+# Previous delivery: v7.8.36 — Taro Unique text fixes
+
+TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u.tiers) instead of the old pathRecall "Stronger Beacon" lines. Echo Map talent text = real effects (Plasma +40 reach, Overcharge and Storm Mark +1.5s); Overcharge now honours Echo (overUntil +1.5s). talent-icons test normalizes the new Echo text. Pending Taro: Sentry/Unique sounds, Storm Mark icon art (order 18 J), owner phone review.

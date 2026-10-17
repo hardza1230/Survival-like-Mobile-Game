@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.41';
+const GAME_VERSION = '7.8.42';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.42',date:'2026-10-17',title:'Deeper Combat Meter',items:['Per-wave stats: time, DPS, kills and damage taken for every wave and the boss','Boss/miniboss damage by skill, boss phase timings, biggest hit','Survival: lowest HP %, time under 30% HP, healing received; movement, standing-still %, active-attack %, XP per minute','Play Stats copy ends with a BENCH CSV table (one row per run) for comparing heroes side by side']},
   {v:'7.8.41',date:'2026-10-17',title:'Taro boss tuning (from Combat Meter)',items:['Sentry: Ball Lightning curves toward nearby bosses and minibosses and slows down on top of them','Spark: Static Charge strikes are stronger (8× → 13× Spark damage)','Taro Uniques (Plasma Field, Overcharge Detonation, Storm Mark) grow +12% per run level; Storm Mark strikes ×2 and Overcharge blasts ×4 base damage']},
   {v:'7.8.40',date:'2026-10-17',title:'Combat Meter fixes',items:['Level timings record every level once, starting from this run','Boss and miniboss names in the report are clean']},
   {v:'7.8.39',date:'2026-10-16',title:'Shorter stats copy',items:['Play Stats has a new Copy last 3 runs button so long histories are not cut off when pasted into chat']},
@@ -5486,9 +5487,12 @@ function mxClock(s){s=Math.max(0,Math.round(+s||0));return Math.floor(s/60)+':'+
 function mxLines(m){if(!m)return[];const L=[],sec=Math.max(1,m.sec||1);
   L.push('meter: dealt '+mxFmt(m.dealt)+' · avg DPS '+mxFmt(m.dealt/sec)+' · peak 5s DPS '+mxFmt(m.peak5)+' · hits '+m.hits+' · crit '+(m.hits?Math.round(100*m.crits/m.hits):0)+'% · overkill '+mxFmt(m.over));
   L.push('meter: to boss '+mxFmt(m.dBoss)+' · to mini '+mxFmt(m.dMini)+' · to elite '+mxFmt(m.dElite)+' · to mobs '+mxFmt(m.dMob)+' · kills '+m.kills+' ('+(m.kills/sec*60).toFixed(1)+'/min)');
-  for(const f of m.fights||[])L.push('fight: '+f.n+' '+(f.done?'killed':'left alive')+' · HP '+mxFmt(f.hp)+' · '+f.sec.toFixed(1)+'s · DPS '+mxFmt(f.dps)+(f.hpLeft?' · '+f.hpLeft+'% HP left':''));
+  for(const f of m.fights||[])L.push('fight: '+f.n+' '+(f.done?'killed':'left alive')+' · HP '+mxFmt(f.hp)+' · '+f.sec.toFixed(1)+'s · DPS '+mxFmt(f.dps)+(f.hpLeft?' · '+f.hpLeft+'% HP left':'')+(f.p2!=null?' · phase2 at '+f.p2+'s':'')+(f.p3!=null?' · phase3 at '+f.p3+'s':''));
+  if(m.bsrc&&m.bsrc.length)L.push('boss/mini sources: '+m.bsrc.map(x=>x[0]+' '+x[1]+'% '+mxFmt(x[2])).join(' · '));
   if(m.src)L.push('sources: '+m.src.map(x=>x[0]+' '+x[1]+'% '+mxFmt(x[2])+' ('+x[3]+' hits)').join(' · '));
   L.push('taken: '+mxFmt(m.taken)+' in '+m.takenHits+' hits ('+(m.takenHits/sec*60).toFixed(1)+'/min) · dash taps '+m.dash+' · uniques '+m.uq);
+  if(m.hpMin!=null)L.push('survival: min HP '+m.hpMin+'% · '+m.lowHp+'s under 30% HP · healed '+mxFmt(m.heal)+' · biggest hit dealt '+mxFmt(m.maxHit)+' · active '+m.active+'% of seconds · standing still '+m.still+'% · moved '+mxFmt(m.move)+'px · XP '+mxFmt(m.xp)+' ('+mxFmt(m.xp/sec*60)+'/min)');
+  if(m.wv&&m.wv.length)L.push('per wave: '+m.wv.map(w=>(w.w==='boss'?'Boss':'W'+w.w)+' '+w.sec+'s dps '+mxFmt(w.d/w.sec)+' kills '+w.k+' taken '+mxFmt(w.tk)+'/'+w.h).join(' | '));
   if(m.lv)L.push('levels: '+m.lv);if(m.waves)L.push('waves: '+m.waves);
   L.push('perf: FPS avg '+m.fpsAvg+' · min '+m.fpsMin+' · 1s<30fps '+m.lowSec+' · frames>50ms '+m.spikes+' · peak foes '+m.pFoe+' · foe shots '+m.pShot+' · FX '+m.pFx+' · tex '+m.texMB+'MB');
   return L;}
@@ -5523,6 +5527,9 @@ const Stats={
         if(k.tal)L.push('   talents: '+k.tal); if(k.weave)L.push('   weave: '+k.weave); if(k.gear)L.push('   gear: '+k.gear); }
       if(r.dmg)L.push('   damage taken from: '+r.dmg+(r.maxhp?' · end maxHP '+r.maxhp:''));
       if(r.mx&&typeof mxLines==='function')for(const q of mxLines(r.mx))L.push('   '+q); });
+    try{ const rows=a.filter(r=>r.mx); if(rows.length){ L.push('','BENCH CSV: hero,build,stage,diff,result,sec,runLv,heroLv,power,kills/min,avgDPS,peak5,bossSec,bossDPS,bossDone,miniSec,miniDPS,taken/min,minHP%,healed,uniques,uniqueShare%,fpsAvg');
+      for(const r of rows){ const m=r.mx,sec=Math.max(1,m.sec),bf=(m.fights||[]).find(f=>/^Boss/.test(f.n)),mf=(m.fights||[]).find(f=>/^Mini/.test(f.n)),uq=(m.src||[]).filter(x=>/unique/.test(x[0])).reduce((s,x)=>s+x[1],0);
+        L.push(['bench',r.hero,r.path||'-',this.stageLab(r.stage),r.diff,r.result,sec,r.level,(r.kit&&r.kit.clv)||'',(r.kit&&r.kit.pw)||'',(m.kills/sec*60).toFixed(1),Math.round(m.dealt/sec),m.peak5,bf?bf.sec:'',bf?bf.dps:'',bf?(bf.done?1:0):'',mf?mf.sec:'',mf?mf.dps:'',(m.takenHits/sec*60).toFixed(1),m.hpMin??'',m.heal??'',m.uq,uq,m.fpsAvg].join(',')); } } }catch(e){}
     try{ const d=Save.data; L.splice(1,0,'profile: sugar '+(d.sugar||0)+' · stage unlocked '+this.stageLab(d.unlockedStage||0)+' · heroes '+(typeof CHAR_ORDER!=='undefined'?CHAR_ORDER:(d.chars||[])).filter(h=>(d.chars||[]).includes(h)||((d.charProg||{})[h]||{}).lvl>1).map(h=>{ const cp=Save.cp(h)||{}; return h+' Lv'+(cp.lvl||1); }).join(', ')); }catch(e){}
     return L.join('\n'); },
   copy(last){ const t=this.toText(last); const fb=()=>{ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok; }catch(e){ return false; } };
@@ -12256,6 +12263,7 @@ class Game extends Phaser.Scene {
 
   /* ---------- LEVEL UP ---------- */
   gainXp(n){
+    if(this._mx)this._mx.xp+=(+n||0)*(this.player?.xpMul||1);
     if(this.player.forgeMods)forgeXp(this,n);this.xp+=n*(this.player.xpMul||1);   /* v6.99 Delve = Story XP */
     while(this.xp+1e-8>=this.xpNext){ this.xp=Math.max(0,this.xp-this.xpNext); this.level++; this.xpNext=(this.usesStoryBudget?.()||this.recipeMode)?storyXpNext(this.level):Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } /* v7.6 Unique อัปที่ Talent เท่านั้น (เดิม checkUniqueAutoUpgrade) */ if(this.player.forgeMods){const r=forgeState(this);r.levelUntil=(this.elapsed||0)+4;if(forgeValue(this.player,100))this.uniqueCd=Math.max(0,(this.uniqueCd||0)*(1-Math.min(.3,forgeValue(this.player,100)/100)));}this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
     this.lvlTxt.setText('Lv '+this.level);
@@ -15545,20 +15553,24 @@ class Game extends Phaser.Scene {
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.()){this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;}
     if(this.player.hp<=0) this.die(); }
   // 💀 สะสมดาเมจที่รับตามแหล่ง (หน้าตายบอกสาเหตุ) · รีเซ็ตใน startRun
-  mxReset(){this._mx={t0:this.elapsed||0,dealt:0,over:0,hits:0,crits:0,dBoss:0,dMini:0,dElite:0,dMob:0,kills:0,src:{},fights:new Map(),done:[],taken:0,takenHits:0,dash:0,uq0:this._coachUnique||0,lv:[],lv0:this.level||1,waves:[],w0:this.waveIndex,sec:{},peak5:0,fpsN:0,fpsSum:0,fpsMin:999,lowSec:0,spikes:0,pFoe:0,pShot:0,pFx:0,acc:0};this._mxSrc=null;}
+  mxReset(){this._mx={t0:this.elapsed||0,dealt:0,over:0,hits:0,crits:0,dBoss:0,dMini:0,dElite:0,dMob:0,kills:0,src:{},fights:new Map(),done:[],taken:0,takenHits:0,dash:0,uq0:this._coachUnique||0,lv:[],lv0:this.level||1,waves:[],w0:this.waveIndex,sec:{},peak5:0,fpsN:0,fpsSum:0,fpsMin:999,lowSec:0,spikes:0,pFoe:0,pShot:0,pFx:0,acc:0,bsrc:{},wv:[],cw:null,heal:0,hpMin:1,lowHp:0,lastHp:null,lastMax:null,move:0,still:0,px:null,py:null,active:0,xp:0,maxHit:0};this._mx.cw={w:(this.waveIndex|0)+1,t0:this.elapsed||0,d:0,k:0,tk:0,h:0};this._mx.wv.push(this._mx.cw);this._mxSrc=null;}
   mxSrcName(){if(this._infTick)return'infusion';if(this._frDmg)return'recipe';if(this._gmTick)return'gear';const c=this._taroDamageContext;if(c&&c.source)return'taro.'+c.source;return this._mxSrc||'other';}
   mxDeal(e,amount,crit){const m=this._mx;if(!m||e.isDummy||!(amount>0))return;const eff=Math.min(amount,Math.max(0,e.hp||0));m.dealt+=eff;m.over+=amount-eff;m.hits++;if(crit)m.crits++;
     if(e.isBoss)m.dBoss+=eff;else if(e.isMini)m.dMini+=eff;else if(e.isElite)m.dElite+=eff;else m.dMob+=eff;
-    const k=this.mxSrcName(),r=m.src[k]||(m.src[k]=[0,0]);r[0]+=eff;r[1]++;const b=Math.floor((this.elapsed||0)-m.t0);m.sec[b]=(m.sec[b]||0)+eff;
+    const k=this.mxSrcName(),r=m.src[k]||(m.src[k]=[0,0]);r[0]+=eff;r[1]++;if(m.cw)m.cw.d+=eff;if(eff>m.maxHit)m.maxHit=eff;if(e.isBoss||e.isMini){const q=m.bsrc[k]||(m.bsrc[k]=[0,0]);q[0]+=eff;q[1]++;}const b=Math.floor((this.elapsed||0)-m.t0);m.sec[b]=(m.sec[b]||0)+eff;
     if(e.isBoss||e.isMini){let f=m.fights.get(e);if(!f){f={n:(e.isBoss?'Boss ':'Mini ')+((this.boss===e&&this.bossName?.text?this.bossName.text.replace(/^\S+\s/,'').split(' · ')[0].slice(0,28):'')||e.roleName||e.texture?.key||'?'),hp:e.maxhp||0,t0:this.elapsed||0,d:0,e};m.fights.set(e,f);}f.d+=eff;f.t1=this.elapsed||0;}}
   mxDash(){if(this._mx&&this.state==='play')this._mx.dash++;}
-  mxKill(e){const m=this._mx;if(!m||e.isDummy)return;m.kills++;const f=m.fights.get(e);if(f){f.done=true;f.t1=this.elapsed||0;m.done.push(f);m.fights.delete(e);}}
+  mxKill(e){const m=this._mx;if(!m||e.isDummy)return;m.kills++;if(m.cw)m.cw.k++;const f=m.fights.get(e);if(f){f.done=true;f.t1=this.elapsed||0;m.done.push(f);m.fights.delete(e);}}
   mxTick(dt){const m=this._mx;if(!m)return;const now=this.elapsed||0;
     if(this.state==='play'){const fps=this.game?.loop?.actualFps||60,dm=this.game?.loop?.delta||16;if(dm>50)m.spikes++;m.acc+=dt;if(m.acc>=1){m.acc=0;m.fpsN++;m.fpsSum+=fps;m.fpsMin=Math.min(m.fpsMin,fps);if(fps<30)m.lowSec++;
-        const b=Math.floor(now-m.t0);let s5=0;for(let i=b-5;i<b;i++)s5+=m.sec[i]||0;m.peak5=Math.max(m.peak5,s5/5);for(const k in m.sec)if(+k<b-6)delete m.sec[k];
+        const b=Math.floor(now-m.t0);let s5=0;for(let i=b-5;i<b;i++)s5+=m.sec[i]||0;m.peak5=Math.max(m.peak5,s5/5);if((m.sec[b-1]||0)>0)m.active++;for(const k in m.sec)if(+k<b-6)delete m.sec[k];
         m.pFoe=Math.max(m.pFoe,this.enemies?.countActive?.(true)||0);m.pShot=Math.max(m.pShot,this.foeBullets?.countActive?.(true)||0);m.pFx=Math.max(m.pFx,(this._artVfx?.size||0)+(this._taroFxLive||0)+(this._c24Live||0));}
       if(m.lvAt==null)m.lvAt=this.level||1;while((this.level||1)>m.lvAt){m.lvAt++;m.lv.push('L'+m.lvAt+' '+mxClock(now-m.t0));}   /* v7.8.40 นับทีละเลเวล · เริ่มจากเลเวลตอนเฟรมแรกของรอบ (เดิมใช้เลเวลรอบก่อน) */
-      if(this.waveIndex!==m.w0){m.w0=this.waveIndex;m.waves.push('W'+((this.waveIndex|0)+1)+' '+mxClock(now-m.t0));}}
+      if(this.waveIndex!==m.w0){m.w0=this.waveIndex;m.waves.push('W'+((this.waveIndex|0)+1)+' '+mxClock(now-m.t0));if(m.cw)m.cw.t1=now;m.cw={w:(this.waveIndex|0)+1,t0:now,d:0,k:0,tk:0,h:0};m.wv.push(m.cw);}
+      if(m.cw&&this.mode==='boss'&&!m.cw.boss){m.cw.t1=now;m.cw={w:'boss',boss:true,t0:now,d:0,k:0,tk:0,h:0};m.wv.push(m.cw);}
+      const P=this.player;if(P){const hp=Math.max(0,P.hp||0),mx=Math.max(1,P.maxhp||1);if(m.lastHp!=null&&hp>m.lastHp)m.heal+=Math.max(0,(hp-m.lastHp)-Math.max(0,mx-(m.lastMax||mx)));m.lastHp=hp;m.lastMax=mx;const f=hp/mx;if(f<m.hpMin)m.hpMin=f;if(f<.3)m.lowHp+=dt;
+        if(m.px!=null){const d=Math.hypot(P.x-m.px,P.y-m.py);if(d<200)m.move+=d;}m.px=P.x;m.py=P.y;if((P.body?.velocity?.length?.()||0)<25)m.still+=dt;}
+      for(const f of m.fights.values()){const e=f.e;if(!e?.active)continue;if(e.phase2&&f.p2==null)f.p2=now-f.t0;if(e.phase3&&f.p3==null)f.p3=now-f.t0;}}
     this.mxOverlay(now);}
   mxOverlay(now){const on=!!Save.data.settings?.mx&&(this.state==='play'||this.state==='levelup'),m=this._mx;
     if(!on||!m){if(this._mxTxt)this._mxTxt.setVisible(false);return;}
@@ -15569,11 +15581,14 @@ class Game extends Phaser.Scene {
       'FPS '+Math.round(this.game?.loop?.actualFps||0)+' · foes '+(this.enemies?.countActive?.(true)||0)+' · shots '+(this.foeBullets?.countActive?.(true)||0)+' · fx '+((this._artVfx?.size||0)+(this._taroFxLive||0)+(this._c24Live||0))];
     this._mxTxt.setText(L.join('\n')).setPosition(8,Math.round(this.H*.36)).setVisible(true);}
   mxSummary(){const m=this._mx;if(!m)return null;const now=this.elapsed||0,sec=Math.max(1,Math.round(now-m.t0)),tot=m.dealt||1;
-    const fights=[...m.done,...[...m.fights.values()].map(f=>({...f,done:false}))].map(f=>{const s=Math.max(.1,(f.t1||now)-f.t0);return {n:f.n,hp:Math.round(f.hp),sec:+s.toFixed(1),dps:Math.round(f.d/s),done:!!f.done,hpLeft:f.done?0:Math.round(100*Math.max(0,f.e?.hp||0)/Math.max(1,f.hp))};}).slice(0,12);
-    const src=Object.entries(m.src).sort((a,b)=>b[1][0]-a[1][0]).slice(0,10).map(([k,v])=>[k,Math.round(100*v[0]/tot),Math.round(v[0]),v[1]]);
+    const fights=[...m.done,...[...m.fights.values()].map(f=>({...f,done:false}))].map(f=>{const s=Math.max(.1,(f.t1||now)-f.t0);return {n:f.n,hp:Math.round(f.hp),sec:+s.toFixed(1),dps:Math.round(f.d/s),done:!!f.done,p2:f.p2!=null?+f.p2.toFixed(1):null,p3:f.p3!=null?+f.p3.toFixed(1):null,hpLeft:f.done?0:Math.round(100*Math.max(0,f.e?.hp||0)/Math.max(1,f.hp))};}).slice(0,12);
+    const src=Object.entries(m.src).sort((a,b)=>b[1][0]-a[1][0]).slice(0,10).map(([k,v])=>[k,Math.round(100*v[0]/tot),Math.round(v[0]),v[1]]),btot=(m.dBoss+m.dMini)||1;
+    const bsrc=Object.entries(m.bsrc).sort((a,b)=>b[1][0]-a[1][0]).slice(0,6).map(([k,v])=>[k,Math.round(100*v[0]/btot),Math.round(v[0]),v[1]]);
+    const wv=m.wv.filter(w=>w.d||w.k||w.tk).map(w=>({w:w.w,sec:+Math.max(.1,(w.t1||now)-w.t0).toFixed(1),d:Math.round(w.d),k:w.k,tk:Math.round(w.tk),h:w.h}));
     return {sec,dealt:Math.round(m.dealt),over:Math.round(m.over),hits:m.hits,crits:m.crits,dBoss:Math.round(m.dBoss),dMini:Math.round(m.dMini),dElite:Math.round(m.dElite),dMob:Math.round(m.dMob),kills:m.kills,peak5:Math.round(m.peak5),fights,src,taken:Math.round(m.taken),takenHits:m.takenHits,dash:m.dash,uq:Math.max(0,(this._coachUnique||0)-m.uq0),lv:m.lv.join(' '),waves:m.waves.join(' '),
+      bsrc,wv,heal:Math.round(m.heal),hpMin:Math.round(100*m.hpMin),lowHp:Math.round(m.lowHp),move:Math.round(m.move),still:Math.round(100*m.still/sec),active:Math.round(100*m.active/sec),xp:Math.round(m.xp),maxHit:Math.round(m.maxHit),
       fpsAvg:m.fpsN?Math.round(m.fpsSum/m.fpsN):0,fpsMin:m.fpsN?Math.round(m.fpsMin):0,lowSec:m.lowSec,spikes:m.spikes,pFoe:m.pFoe,pShot:m.pShot,pFx:m.pFx,texMB:Math.round(this.texMB?.()||0)};}
-  _noteHit(src,dmg){ if(this._mx){this._mx.taken+=+dmg||0;this._mx.takenHits++;} if(this._miniFight&&this.mode==='mini')this._miniFight.hits++; const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
+  _noteHit(src,dmg){ if(this._mx){this._mx.taken+=+dmg||0;this._mx.takenHits++;if(this._mx.cw){this._mx.cw.tk+=+dmg||0;this._mx.cw.h++;}} if(this._miniFight&&this.mode==='mini')this._miniFight.hits++; const d=this._dmgBy||(this._dmgBy={}); d[src]=(d[src]||0)+(+dmg||0); this._lastHitSrc=src; }
   deathReason(){ const d=this._dmgBy||{},top=Object.keys(d).sort((a,b)=>d[b]-d[a])[0]||this._lastHitSrc||'swarm';
     const R={boss:['👑 Boss attacks','Watch the red telegraphs and Dash through big attacks.'],mini:['😈 Miniboss','Kite in circles and Dash when it charges.'],
       elite:['💪 Elite enemies','Focus elites first — they hit hard up close.'],shot:['🎯 Projectiles & hazards','Keep moving; don’t stand in glowing zones.'],

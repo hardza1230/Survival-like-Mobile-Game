@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.41 — Taro boss tuning from Combat Meter (owner approved)
+# Latest delivery: v7.8.42 — Deeper Combat Meter for the all-hero benchmark
+
+Owner plans to play every hero on the same stage with the same gear. Added: per-wave rows (time, DPS, kills, taken) incl. a 'boss' segment, boss/mini damage by source (bsrc), boss phase2/3 timings per fight, biggest hit, survival (min HP%, seconds under 30%, healed via HP-delta in mxTick), movement px, standing-still %, active-attack % (seconds with damage), XP/min (gainXp hook). Stats.toText appends a BENCH CSV block (one row per metered run: hero, build, stage, result, sec, run/hero Lv, power, kills/min, avg/peak DPS, boss & mini sec/DPS, taken/min, min HP%, healed, uniques, unique share%, FPS).
+
+# Previous delivery: v7.8.41 — Taro boss tuning from Combat Meter (owner approved)
 
 From C2-1★1 meter data (Arc boss 14.4s / Spark 24.7s / Sentry 57s+, Uniques 0–3%): Sentry/Beacon orbs steer to boss/mini within 360 (2.6 rad/s), slow to ×0.3 when within 0.7·radius, per-orb hit gap on big targets 0.18s (TARO_ORB_SEEK/TURN/LINGER/BIG_GAP). Static Charge ×8 → ×13. castStormBeacon multiplies dm by taroUniqueGrowth() = 1+0.12·(run level−1) for Plasma / Overcharge / Storm Mark; Storm Mark strike/blast base ×2, Overcharge boom base ×4. Targets: Sentry boss ~20–25s, mini ~15s; Spark boss ~18s; Uniques ~10% share. Arc untouched (needs other-hero baseline). Owner to re-run the same 3 builds on C2-1★1 and paste Copy last 3 runs.
 
@@ -25,10 +29,6 @@ Settings → 📈 Combat Meter (st.mx, also in pause settings) shows a live over
 # Previous delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
 
 Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never worked: spawnEnemy → storyCanSpawn returned false once story quota was spent. storyCanSpawn now allows spawns while the Spring trial (idx 0, not partial, not passed) has fewer live foes than 10−kills (seasonNeedsFoes). Test in tests/story-budget.test.cjs.
-
-# Previous delivery: v7.8.36 — Taro Unique text fixes
-
-TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u.tiers) instead of the old pathRecall "Stronger Beacon" lines. Echo Map talent text = real effects (Plasma +40 reach, Overcharge and Storm Mark +1.5s); Overcharge now honours Echo (overUntil +1.5s). talent-icons test normalizes the new Echo text. Pending Taro: Sentry/Unique sounds, Storm Mark icon art (order 18 J), owner phone review.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
