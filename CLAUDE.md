@@ -10,7 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Latest delivery: v7.8.51 — Taro Spark hits more (owner picked A+B)
+# Latest delivery: v7.8.52 — Taro Sentry vs bosses (owner picked A+B+C)
+
+A: Shock cap on boss/mini TARO_SHOCK_MAX_BIG 15 (+75%), mobs stay 5 · B: taroDischarge — every TARO_DISCHARGE_HITS 25 orb zaps on the same boss/mini (Sentry or Beacon orbs) → strike ×TARO_DISCHARGE_MUL 10 zap dmg × shock, beacon_strike art · C: every Sentry orb bursts on fade dmg×(1+overload) radius×1.4 (was only with Overload card). Browser A/B (lv1 Sentry, 15s, boss + 16 mobs): boss dmg 2289→5463 (×2.4), mob 9764→13116 (+34%). Owner to re-run C2-1★1 benchmark.
+
+# Previous delivery: v7.8.51 — Taro Spark hits more (owner picked A+B)
 
 Owner: Spark hit few monsters. A: hit test = enemy body halfWidth (or 35% display width) + TARO_SPARK_HIT_R 10·scale (was 30% of width ≈12px) · B: sparks without boss/mark steering curve toward the nearest not-yet-hit enemy within TARO_SPARK_HOME_R 180 at TARO_SPARK_HOME_TURN 2.4 rad/s. Browser A/B (24 static mobs, 6 casts): 16.7 → 28.5 hits per cast. Meter text adds 'spark: N hits per cast'. If clear becomes too strong, owner may want Spark per-hit damage −10–15%.
 
