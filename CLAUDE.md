@@ -10,7 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Latest delivery: v7.8.44 — Share Play Stats phase 1 (owner device only)
+# Latest delivery: v7.8.45 — Hero VFX gaps (art order 20) wired
+
+20 of 21 sheets packed to assets/art/hero_vfx/ (scripts/pack-hero-vfx-gaps.py, bpx_<hero>_* lazy per hero + shared vfx_unique_crescendo). New helper heroFx(key,x,y,w,{h,rot,must,hold,life,follow,tint,alpha,ts}) — w = on-screen width, ground ovals fill ~90% of frame so size = radius*2/.9. Cocoa: titan_slam on every Titan pound (must, not only landed) + Colossus Rage 0 + Bear Grit Slam; slam_mark replaces cocoaMark graphics; rage_preview/rage_target (≤12 pooled) in tickTitanRage (titanRageArtOff cleans up); crater in titanRageImpact lv≥1; dash_buff follows player; dash_trail segments in cocoaTrailHit. Momo: seed_pop (momoSeedPop throttled 4/100ms) on pre-path + path hits + berrySplash; aim_line / aim_cone via snipeArt in tickSnipe; dash petals via heroDashFx (called from ancientEchoDash). Mint: chill_hit throttled, freeze holds frame 4 while e.frozen>0 (mintFreezeFx + heroFxTick in update), needle_hit, lance_charge, Frost Lance aim line, Bloom preview. Taro: rift_step in charPassiveOnDash, shrapnel in taroAfterDirect (fixture hashes updated). U1 in uniqueCrescendo. Every hook keeps the old code visual as fallback. C8 landing_dust upload was truncated → owner must re-upload; code fallback stays.
+
+# Previous delivery: v7.8.44 — Share Play Stats phase 1 (owner device only)
 
 Settings → 📡 Share Play Stats (st.share, default off). Stats.end → Tele.enqueue(row) → localStorage queue mochi_tele_q (max 40) → Tele.flush POSTs batches of 10 to CLOUD_URL/rest/v1/run_stats with the anon key (also flushed on showMenu). Row: install_id (random, mochi_install_id), v, hero, path, mode, stage, diff, result, sec, data{level,kills,wave,cause,dmgTaken,kit,cards,mx,device}. Supabase project mochi-mayhem was paused (Cloud Save was down) → restored 2026-10-17. Table SQL in docs/telemetry/run_stats.sql (insert-only RLS, size checks); migration via MCP was cancelled — table NOT created yet, awaiting owner. Phase 2 (store): default-on with notice, compact rows, sampling, Privacy Policy + Data safety.
 

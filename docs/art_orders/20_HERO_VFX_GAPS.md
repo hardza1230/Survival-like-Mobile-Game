@@ -1,6 +1,6 @@
 # 20 — Hero VFX gaps (Chocolate · Strawberry · Mint · Taro) · ใบสั่งงานอาร์ต
 
-สถานะ: ส่งต้นฉบับ 21 PNG32 / 100 เฟรมแล้ว 17 ต.ค. 2026 — รอแพ็กและผูก runtime (ดู `assets/incoming/hero_vfx_gaps/DELIVERY_README.md`) · ใบสั่งเดิม อิง runtime v7.8.44 · อ่าน `00_STYLE_GUIDE.md` ก่อน · ชุดสีตัวละครให้ตรงกับอาร์ตที่มีอยู่แล้วของแต่ละตัว (`assets/art/bp_fx/`, `assets/art/taro_*`)
+สถานะ: ส่งแล้ว 17 ต.ค. 2026 · **ผูกแล้ว v7.8.45** 20/21 ชิ้น (แพ็กด้วย `scripts/pack-hero-vfx-gaps.py` → `assets/art/hero_vfx/`, helper `heroFx`) · **C8 `vfx_cocoa_landing_dust.png` ไฟล์ขาด (196,673/282,702 bytes, hash ไม่ตรง QA) → ต้องอัปใหม่** ตอนนี้ใช้ภาพโค้ดเดิม · รอเจ้าของดู visual/FPS บนมือถือ · ใบสั่งเดิม อิง runtime v7.8.44 · อ่าน `00_STYLE_GUIDE.md` ก่อน · ชุดสีตัวละครให้ตรงกับอาร์ตที่มีอยู่แล้วของแต่ละตัว (`assets/art/bp_fx/`, `assets/art/taro_*`)
 ส่งไฟล์ที่ `assets/incoming/hero_vfx_gaps/` · PNG32 · ฝั่งโค้ดแพ็กเป็น WebP และผูกเอง (พร้อม `MANIFEST.json`: key, file, columns, rows, frameWidth, frameHeight, frameCount, background, loop, anchor)
 VFX = **พื้นดำสนิท #000** (โค้ดแปลง alpha จากความสว่าง เล่น NORMAL blend) · เฟรมเรียงซ้าย→ขวา บน→ล่าง ไม่มีเส้นคั่น ไม่มีตัวหนังสือ · มุมกล้อง 3/4 top-down แบบเดียวกับเกม · ของที่ "อยู่บนพื้น" ให้วาดเป็นวงรีแบนมองจากบน
 
