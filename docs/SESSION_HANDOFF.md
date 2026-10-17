@@ -1,3 +1,7 @@
+# C8 source recovery — 2026-10-17
+
+Re-uploaded `assets/incoming/hero_vfx_gaps/vfx_cocoa_landing_dust.png` from the retained original image, using the same sequence crop/packing. Recovered source is exactly 282,702 bytes; SHA-256 `d321f8e96200b46be1c53ae96739e1416e1b4fc0e6d242dd7851e16eea329e86`, Git blob `5a7e6a41a34ed14da78408f616682d574fc16849`, matching the existing QA report. PNG CRC, complete IEND/zlib stream and decode verified locally. The prior GitHub copy was 196,673 bytes and truncated. No runtime changes: C8 remains on its existing code fallback at the owner's request. Next: separately integrate the restored source and review on mobile.
+
 # Latest session checkpoint
 Updated 2026-10-17 Asia/Bangkok.
 
