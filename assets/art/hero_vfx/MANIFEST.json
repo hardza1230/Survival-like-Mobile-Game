@@ -84,6 +84,18 @@
   "anchor": "left"
  },
  {
+  "key": "bpx_cocoa_landing_dust",
+  "source": "vfx_cocoa_landing_dust",
+  "file": "assets/art/hero_vfx/bpx_cocoa_landing_dust.webp",
+  "width": 768,
+  "height": 512,
+  "frameWidth": 256,
+  "frameHeight": 256,
+  "frames": 6,
+  "loop": false,
+  "anchor": "center"
+ },
+ {
   "key": "bpx_momo_seed_pop",
   "source": "vfx_momo_seed_pop",
   "file": "assets/art/hero_vfx/bpx_momo_seed_pop.webp",

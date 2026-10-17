@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.45';
+const GAME_VERSION = '7.8.46';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.46',date:'2026-10-17',title:'Cocoa Landing Dust',items:['Dash Boxer and Phantom Rush landings now kick up a painted cocoa dust ring with short cracks']},
   {v:'7.8.45',date:'2026-10-17',title:'Hero Effects',items:['Cocoa: painted Titan slam on every pound, slam warning, Rage range and target marks, Colossus crater, dash buff and Dash Boxer trail','Strawberry: seed hit pops, Sniper aim line, Berry Blast aim cone and dash petals','Mint: chill and freeze ice (holds while frozen), needle hits, lance charge, Frost Lance aim and Glacier Bloom preview','Taro: Rift Step dash and Arc shrapnel sparks','New Unique burst for Strawberry, Mint and Taro']},
   {v:'7.8.44',date:'2026-10-17',title:'Share Play Stats',items:['New Settings option Share Play Stats (off by default): each finished stage sends its Combat Meter report to the developer, anonymous with a random device code','Stats wait on the device while offline and send later']},
   {v:'7.8.43',date:'2026-10-17',title:'Combat Meter: one-run data',items:['Card picks with level, time and the cards you passed on','Casts per skill, seconds the Unique sat ready but unused, game-speed usage','Average monster lifetime and HP, biggest hit taken, damage taken in the last 5 seconds','End-of-run stats, loot earned, objective name per wave and device info in the copy header']},
@@ -2351,6 +2352,7 @@ const ASSET_FX = {
   bpx_cocoa_rage_target:{url:'assets/art/hero_vfx/bpx_cocoa_rage_target.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   bpx_cocoa_crater:{url:'assets/art/hero_vfx/bpx_cocoa_crater.webp',fw:256,fh:256,frames:4,rate:14,anchor:'center'},
   bpx_cocoa_dash_buff:{url:'assets/art/hero_vfx/bpx_cocoa_dash_buff.webp',fw:128,fh:128,frames:6,rate:16,anchor:'center'},
+  bpx_cocoa_landing_dust:{url:'assets/art/hero_vfx/bpx_cocoa_landing_dust.webp',fw:256,fh:256,frames:6,rate:16,anchor:'center'},
   bpx_cocoa_dash_trail:{url:'assets/art/hero_vfx/bpx_cocoa_dash_trail.webp',fw:256,fh:64,frames:4,rate:8,anchor:'left',loop:true},
   bpx_momo_seed_pop:{url:'assets/art/hero_vfx/bpx_momo_seed_pop.webp',fw:128,fh:128,frames:4,rate:14,anchor:'center'},
   bpx_momo_aim_line:{url:'assets/art/hero_vfx/bpx_momo_aim_line.webp',fw:512,fh:32,frames:4,rate:8,anchor:'left',loop:true},
@@ -14011,6 +14013,7 @@ class Game extends Phaser.Scene {
       p.iframe=Math.max(p.iframe||0,.4);{const d=this.dist(p.x,p.y,best.x,best.y);this.bpFx?.('bpx_cocoa_chainline',p.x,p.y,256,{anchor:'left',rotation:Math.atan2(best.y-p.y,best.x-p.x),scaleX:d/256,scaleY:.5});}this.cocoaGlideTo({x:best.x,y:best.y},.16);this.cocoaLater(.17,()=>{if(!p.active)return;this.cocoaHit(p.x,p.y,r*.85,power*.7,{push:160});this.cocoaVisual(p.x,p.y,r*.85,'fist',0xc9a3ff);this.cocoaLandingFx(p.x,p.y,r*.85);});});}
   cocoaLandingFx(x,y,r){
     if(this.basicAttack?.path==='dashboxer')this.bpFx?.('bpx_cocoa_dashring',x,y,r*2.4,{depth:y-1});
+    if(this.heroFx?.('bpx_cocoa_landing_dust',x,y+6,Math.max(160,r*2/.9),{must:true,depth:y-1}))return;   // v7.8.46 C8 ฝุ่นโกโก้ (fallback = เส้นร้าว+จุดฝุ่นเดิม)
     if(!this.add?.graphics||!this.tweens)return;const g=this.camWorld(this.add.graphics().setDepth(y-1));
     g.fillStyle(0xd9c3a5,.35).fillEllipse(x,y+8,r*1.6,r*.55);g.lineStyle(3,0x5b3a29,.8);
     for(let i=0;i<6;i++){const a=i*Math.PI/3+.3,l=r*(.45+.25*(i%2));g.beginPath();g.moveTo(x,y);g.lineTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.25+3);g.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l*.45);g.strokePath();}
