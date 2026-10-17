@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.43';
+const GAME_VERSION = '7.8.44';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.44',date:'2026-10-17',title:'Share Play Stats',items:['New Settings option Share Play Stats (off by default): each finished stage sends its Combat Meter report to the developer, anonymous with a random device code','Stats wait on the device while offline and send later']},
   {v:'7.8.43',date:'2026-10-17',title:'Combat Meter: one-run data',items:['Card picks with level, time and the cards you passed on','Casts per skill, seconds the Unique sat ready but unused, game-speed usage','Average monster lifetime and HP, biggest hit taken, damage taken in the last 5 seconds','End-of-run stats, loot earned, objective name per wave and device info in the copy header']},
   {v:'7.8.42',date:'2026-10-17',title:'Deeper Combat Meter',items:['Per-wave stats: time, DPS, kills and damage taken for every wave and the boss','Boss/miniboss damage by skill, boss phase timings, biggest hit','Survival: lowest HP %, time under 30% HP, healing received; movement, standing-still %, active-attack %, XP per minute','Play Stats copy ends with a BENCH CSV table (one row per run) for comparing heroes side by side']},
   {v:'7.8.41',date:'2026-10-17',title:'Taro boss tuning (from Combat Meter)',items:['Sentry: Ball Lightning curves toward nearby bosses and minibosses and slows down on top of them','Spark: Static Charge strikes are stronger (8× → 13× Spark damage)','Taro Uniques (Plasma Field, Overcharge Detonation, Storm Mark) grow +12% per run level; Storm Mark strikes ×2 and Overcharge blasts ×4 base damage']},
@@ -5078,7 +5079,7 @@ function gachaMaxBand(){const cap=storyItemLevelBase((Save.data&&Save.data.unloc
 const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:30,cost:560}, {lo:31,hi:40,cost:900}, {lo:41,hi:50,cost:1400}, {lo:51,hi:60,cost:2100} ];
 const LEGEND_FORGE_COST = 45;   // 🔩 หลอมของตำนาน 1 ชิ้น (สุ่มที่ยังNone)
 const AFFIX_REROLL_COST = 15;   // 🔩 สุ่มคุณสมบัติเสริมของชิ้นที่สวมอยู่ใหม่
-const DEFAULT_SETTINGS={mx:false,sound:true,shake:2,flash:true,damageNumbers:true,vfx:2,quality:0,musicVol:1,sfxVol:1};   // v7.2 owner: VFX High · Shake Normal · v7.4 Performance Auto (GPU memory)
+const DEFAULT_SETTINGS={share:false,mx:false,sound:true,shake:2,flash:true,damageNumbers:true,vfx:2,quality:0,musicVol:1,sfxVol:1};   // v7.2 owner: VFX High · Shake Normal · v7.4 Performance Auto (GPU memory)
 const VOL_STEPS=[1,0.75,0.5,0.25,0];
 function applyVolSettings(st){ st=st||{}; Sfx.setVolumes(st.musicVol==null?1:st.musicVol, st.sfxVol==null?1:st.sfxVol); }
 // ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังNone plugin = ใช้เดโมจำลอง) ----
@@ -5523,7 +5524,7 @@ const Stats={
       c.path=(g.basicAttack&&g.basicAttack.path)||null; c.cause=result==='dead'?(g._lastHitSrc||top||'?'):null; c.topDmg=top;
       try{ const tot=Object.values(by).reduce((x,y)=>x+y,0)||1; c.dmg=Object.keys(by).sort((a,b)=>by[b]-by[a]).slice(0,5).map(k=>k+' '+Math.round(100*by[k]/tot)+'%').join(', '); c.maxhp=Math.round((g.player&&g.player.maxhp)||0); c.pwEnd=typeof heroPower==='function'?heroPower(c.hero,g.basicAttack):null; }catch(e){}
       try{ c.mx=g.mxSummary?.(); }catch(e){}
-      const a=this.load(); a.push(c); this.saveAll(a); }catch(e){} },
+      const a=this.load(); a.push(c); this.saveAll(a); try{ Tele.enqueue(c,this.stageLab(c.stage)); }catch(e){} }catch(e){} },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
   stageLab(i){ const st=(typeof STAGES!=='undefined')&&STAGES[i]; return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1)); },
   toText(last){ const all=this.load(),a=last?all.slice(-last):all,ua=(()=>{try{const u=navigator.userAgent||'',m=/Android [\d.]+[^)]*/.exec(u)||/(iPhone|iPad)[^)]*/.exec(u);return (m?m[0]:u.slice(0,60))+' · screen '+screen.width+'×'+screen.height+' @'+(window.devicePixelRatio||1);}catch(e){return '';}})(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:'')+(ua?' · device '+ua:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
@@ -5540,6 +5541,22 @@ const Stats={
     return L.join('\n'); },
   copy(last){ const t=this.toText(last); const fb=()=>{ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok; }catch(e){ return false; } };
     try{ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t).then(()=>true,()=>fb()); }catch(e){} return Promise.resolve(fb()); }
+};
+/* v7.8.44 ช่วงที่ 1: ส่งสถิติจบด่านขึ้น Supabase (ตาราง run_stats · เพิ่มได้อย่างเดียว อ่านไม่ได้) · เปิดเองใน Settings (ค่าเริ่มต้นปิด) · ไม่มีข้อมูลระบุตัวตน มีแค่รหัสสุ่มประจำเครื่อง · คิวในเครื่องไว้ส่งทีหลังถ้าออฟไลน์ */
+const Tele={ Q:'mochi_tele_q', MAX:40,
+  on(){ try{ return !!(Save.data.settings&&Save.data.settings.share); }catch(e){ return false; } },
+  id(){ try{ let v=localStorage.getItem('mochi_install_id'); if(!v){ v=(crypto.randomUUID?crypto.randomUUID():'i'+Date.now().toString(36)+Math.random().toString(36).slice(2)); localStorage.setItem('mochi_install_id',v); } return v; }catch(e){ return 'unknown'; } },
+  load(){ try{ const a=JSON.parse(localStorage.getItem(this.Q)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } },
+  save(a){ try{ localStorage.setItem(this.Q,JSON.stringify(a.slice(-this.MAX))); }catch(e){} },
+  enqueue(c,stageLab){ if(!this.on()||!c)return; const row={install_id:this.id(),v:typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?',hero:c.hero||null,path:c.path||null,mode:c.mode||null,stage:stageLab||null,diff:c.diff|0,result:c.result||null,sec:c.sec|0,
+      data:{level:c.level,kills:c.kills,wave:c.wave,boss:!!c.boss,depth:c.depth,cause:c.cause,dmgTaken:c.dmg,maxhp:c.maxhp,pwEnd:c.pwEnd,kit:c.kit,cards:c.cards,mx:c.mx,device:(()=>{try{return {ua:(navigator.userAgent||'').slice(0,160),w:screen.width,h:screen.height,dpr:window.devicePixelRatio||1};}catch(e){return null;}})()}};
+    try{ if(JSON.stringify(row).length>30000){ row.data.cards=(row.data.cards||[]).slice(0,20); if(row.data.mx)row.data.mx.picks=(row.data.mx.picks||[]).slice(0,20); } }catch(e){}
+    const a=this.load(); a.push(row); this.save(a); this.flush(); },
+  flush(){ if(this._busy||!this.on()||typeof fetch!=='function')return; const a=this.load(); if(!a.length)return; this._busy=true; const batch=a.slice(0,10);
+    fetch(CLOUD_URL+'/rest/v1/run_stats',{method:'POST',headers:{'apikey':CLOUD_KEY,'Authorization':'Bearer '+CLOUD_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(batch)})
+      .then(r=>{ if(r.ok){ const rest=this.load().slice(batch.length); this.save(rest); this.sent=(this.sent||0)+batch.length; this.err=null; } else this.err='HTTP '+r.status; })
+      .catch(e=>{ this.err='offline'; }).finally(()=>{ this._busy=false; if(!this.err&&this.load().length)setTimeout(()=>this.flush(),1500); }); },
+  status(){ const n=this.load().length; return !this.on()?'Off':(n?n+' waiting'+(this.err?' ('+this.err+')':''):'On'+(this.sent?' · '+this.sent+' sent':'')); }
 };
 const CLOUD_URL='https://tohsnflngkfoutqcfrwi.supabase.co';
 const CLOUD_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvaHNuZmxuZ2tmb3V0cWNmcndpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjE3NzYsImV4cCI6MjEwNTE5Nzc3Nn0.EX6rE5skhsJq9jpwRvloDimZoPi5Mnhz-wpTwnx6ej4';
@@ -8534,6 +8551,7 @@ class Game extends Phaser.Scene {
       {k:'ctrlLeft',e:'✋',n:'Button Side',sub:'Left-handed? Move buttons left',value:()=>st.ctrlLeft?'Left':'Right',toggle:()=>{st.ctrlLeft=!st.ctrlLeft;}},
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
       {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>(_lowMemFlag?'Low-memory · ':'')+['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;clearLowMem();this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
+      {k:'share',e:'📡',n:'Share Play Stats',sub:'Send each finished stage’s stats to the developer · anonymous',value:()=>Tele.status(),toggle:()=>{st.share=!st.share;Save.data.settings=st;if(st.share)setTimeout(()=>Tele.flush(),50);}},
       {k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}},
       {k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true},
     ];
@@ -10006,7 +10024,7 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
+  showMenu(){ try{ Tele.flush(); }catch(e){} this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false); }
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
   setGameSpeed(s){ s=Number.isFinite(s)?Math.max(1,Math.min(4,Math.round(s))):1;this.gameSpeed=s;

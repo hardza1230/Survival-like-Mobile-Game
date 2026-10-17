@@ -1996,3 +1996,7 @@ TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u
 # Previous delivery: v7.8.37 — C2-4 Season Storm softlock really fixed
 
 Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never worked: spawnEnemy → storyCanSpawn returned false once story quota was spent. storyCanSpawn now allows spawns while the Spring trial (idx 0, not partial, not passed) has fewer live foes than 10−kills (seasonNeedsFoes). Test in tests/story-budget.test.cjs.
+
+# Previous delivery: v7.8.38 — Combat Meter (owner: numbers for balance)
+
+Settings → 📈 Combat Meter (st.mx, also in pause settings) shows a live overlay (left, 36% height): 5s DPS / avg / total, current boss-mini DPS · fight time · HP%, FPS · foes · foe shots · FX. Every run records g._mx (mxReset in Stats.start; hooks: damage()→mxDeal before e.hp-=amount [damage hash fixture updated], killEnemy→mxKill, _noteHit taken, dash button→mxDash, castSkill caller sets _mxSrc=key, Unique paths set _mxSrc='unique', Taro context → 'taro.<source>', _infTick/_frDmg/_gmTick → infusion/recipe/gear). Stats.end saves c.mx=mxSummary(); Play Stats → Copy adds meter lines via mxLines(): dealt (no overkill)/overkill/crit, boss/mini/elite/mob split, peak 5s DPS, every boss & mini fight (HP, seconds, DPS, % left), top 10 sources, taken, dash taps, uniques, level & wave timings, FPS avg/min/low seconds/frames>50ms, peak foes/shots/FX, texture MB. Test tests/combat-meter.test.cjs. Next: owner plays 3 Taro builds + other heroes and pastes Play Stats.

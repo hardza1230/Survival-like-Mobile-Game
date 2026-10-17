@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.43 — Combat Meter one-run completeness
+# Latest delivery: v7.8.44 — Share Play Stats phase 1 (owner device only)
+
+Settings → 📡 Share Play Stats (st.share, default off). Stats.end → Tele.enqueue(row) → localStorage queue mochi_tele_q (max 40) → Tele.flush POSTs batches of 10 to CLOUD_URL/rest/v1/run_stats with the anon key (also flushed on showMenu). Row: install_id (random, mochi_install_id), v, hero, path, mode, stage, diff, result, sec, data{level,kills,wave,cause,dmgTaken,kit,cards,mx,device}. Supabase project mochi-mayhem was paused (Cloud Save was down) → restored 2026-10-17. Table SQL in docs/telemetry/run_stats.sql (insert-only RLS, size checks); migration via MCP was cancelled — table NOT created yet, awaiting owner. Phase 2 (store): default-on with notice, compact rows, sampling, Privacy Policy + Data safety.
+
+# Previous delivery: v7.8.43 — Combat Meter one-run completeness
 
 Owner wants to play each hero once. Added: card picks with level/time and the cards passed over (mxPick in pickCardAt), casts per skill (castSkill caller), Unique ready-but-unused seconds, game-speed share, avg mob lifetime/HP (e._mxBorn in spawnEnemy), biggest hit taken + source, last-5s damage taken by source, end-of-run player stats, loot (sugar/boxes/currency), objective name per wave, device UA/screen in the copy header.
 
@@ -25,10 +29,6 @@ Level log now per level from this run's first frame (was reusing previous run's 
 # Previous delivery: v7.8.39 — Copy last 3 runs
 
 Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now has two buttons: Copy last 3 runs (Stats.copy(3) → toText(last)) and Copy all.
-
-# Previous delivery: v7.8.38 — Combat Meter (owner: numbers for balance)
-
-Settings → 📈 Combat Meter (st.mx, also in pause settings) shows a live overlay (left, 36% height): 5s DPS / avg / total, current boss-mini DPS · fight time · HP%, FPS · foes · foe shots · FX. Every run records g._mx (mxReset in Stats.start; hooks: damage()→mxDeal before e.hp-=amount [damage hash fixture updated], killEnemy→mxKill, _noteHit taken, dash button→mxDash, castSkill caller sets _mxSrc=key, Unique paths set _mxSrc='unique', Taro context → 'taro.<source>', _infTick/_frDmg/_gmTick → infusion/recipe/gear). Stats.end saves c.mx=mxSummary(); Play Stats → Copy adds meter lines via mxLines(): dealt (no overkill)/overkill/crit, boss/mini/elite/mob split, peak 5s DPS, every boss & mini fight (HP, seconds, DPS, % left), top 10 sources, taken, dash taps, uniques, level & wave timings, FPS avg/min/low seconds/frames>50ms, peak foes/shots/FX, texture MB. Test tests/combat-meter.test.cjs. Next: owner plays 3 Taro builds + other heroes and pastes Play Stats.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
