@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.40 — Meter fixes + first Taro numbers
+# Latest delivery: v7.8.41 — Taro boss tuning from Combat Meter (owner approved)
+
+From C2-1★1 meter data (Arc boss 14.4s / Spark 24.7s / Sentry 57s+, Uniques 0–3%): Sentry/Beacon orbs steer to boss/mini within 360 (2.6 rad/s), slow to ×0.3 when within 0.7·radius, per-orb hit gap on big targets 0.18s (TARO_ORB_SEEK/TURN/LINGER/BIG_GAP). Static Charge ×8 → ×13. castStormBeacon multiplies dm by taroUniqueGrowth() = 1+0.12·(run level−1) for Plasma / Overcharge / Storm Mark; Storm Mark strike/blast base ×2, Overcharge boom base ×4. Targets: Sentry boss ~20–25s, mini ~15s; Spark boss ~18s; Uniques ~10% share. Arc untouched (needs other-hero baseline). Owner to re-run the same 3 builds on C2-1★1 and paste Copy last 3 runs.
+
+# Previous delivery: v7.8.40 — Meter fixes + first Taro numbers
 
 Level log now per level from this run's first frame (was reusing previous run's level). Fight names cleaned. First data (C2-1★1, same gear): Arc 1:56 win, boss 55.6k in 14.4s (3878 DPS), mini 13.0s, 111 kills/min · Spark 2:43 win, boss 24.7s (2255), mini 13.9s, 67/min, sparkChild 87% of dmg · Sentry died 3:46, boss 57s (983, 5% left), mini 55.2s (256), 66/min. Uniques only 0–3% of damage on all three. Balance proposal in chat, awaiting owner.
 
@@ -25,10 +29,6 @@ Owner screenshot: Season Storm · rest, Reserves 0, stuck. v7.8.29 top-up never 
 # Previous delivery: v7.8.36 — Taro Unique text fixes
 
 TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u.tiers) instead of the old pathRecall "Stronger Beacon" lines. Echo Map talent text = real effects (Plasma +40 reach, Overcharge and Storm Mark +1.5s); Overcharge now honours Echo (overUntil +1.5s). talent-icons test normalizes the new Echo text. Pending Taro: Sentry/Unique sounds, Storm Mark icon art (order 18 J), owner phone review.
-
-# Previous delivery: v7.8.35 — Spark Unique Storm Mark (owner pick A2 + B1)
-
-Spark Build Unique (castStormBeacon smite → castTaroStormMark): picks toughest foe within 700 (boss > mini > highest HP), beacon_strike art strike (8+4n)·dm, marks 6s (+1.5 Echo) with gold shock_aura sprite following it. While marked (taroMarkToken) every Spark steers to it (turn 8 rad/s), passes through it without spending pierce and deals ×1.5 (TARO_MARK_BONUS). Expiry → second strike + blast r130: (14+7n)·dm on mark, 40% to others (taroEndMark/taroTickMark). No target → falls back to castTaroSparkStorm. Static Charge (v7.8.34) stacks. Icon key ic_taro_storm_mark not drawn → emoji 🎯.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 

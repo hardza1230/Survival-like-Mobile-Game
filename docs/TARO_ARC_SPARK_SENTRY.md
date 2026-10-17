@@ -97,3 +97,12 @@ Owner: Spark weak on bosses because it spreads. Sparks within TARO_SPARK_SEEK (2
 
 ## v7.8.35 Storm Mark (Spark Unique)
 - Strike + mark the toughest foe (boss first) for 6s; all Sparks home on it, ignore pierce on it and deal +50%; mark ends with a second strike and r130 blast. Uses the existing beacon strike art. Falls back to Spark Storm when no target.
+
+## v7.8.41 Tuning from Combat Meter (C2-1★1 baseline)
+| build | boss TTK | mini TTK | kills/min | Unique share |
+|---|---|---|---|---|
+| Arc | 14.4s | 13.0s | 111 | 3% |
+| Spark | 24.7s | 13.9s | 67 | 2% |
+| Sentry | 57s (5% left, died) | 55.2s | 66 | 0.6% |
+
+Changes: Sentry orbs home on bosses/minis (360 range, slow to 30% on top, big-target gap 0.18s) · Static Charge ×13 · Uniques ×(1+0.12·(level−1)), Storm Mark ×2 base, Overcharge ×4 base.
