@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.47';
+const GAME_VERSION = '7.8.48';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.48',date:'2026-10-17',title:'Replay Meter Only',items:['Replays no longer skip ahead on a timer: the miniboss comes at half the meter and the boss only when the meter is full','Monsters keep coming until the meter fills']},
   {v:'7.8.47',date:'2026-10-17',title:'Fuller Replays',items:['Replaying a cleared stage now asks for about as many kills as the first clear (meter needs ~320 kills instead of ~190), so you reach the boss at a similar level','More monsters spawn to fill it and the backup timer is longer (5 min)']},
   {v:'7.8.46',date:'2026-10-17',title:'Cocoa Landing Dust',items:['Dash Boxer and Phantom Rush landings now kick up a painted cocoa dust ring with short cracks']},
   {v:'7.8.45',date:'2026-10-17',title:'Hero Effects',items:['Cocoa: painted Titan slam on every pound, slam warning, Rage range and target marks, Colossus crater, dash buff and Dash Boxer trail','Strawberry: seed hit pops, Sniper aim line, Berry Blast aim cone and dash petals','Mint: chill and freeze ice (holds while frozen), needle hits, lance charge, Frost Lance aim and Glacier Bloom preview','Taro: Rift Step dash and Arc shrapnel sparks','New Unique burst for Strawberry, Mint and Taro']},
@@ -6102,7 +6103,7 @@ const RIFT_MODS=[
   {id:'titan',emoji:'🗿',name:'Titanic',desc:'Enemies have 55% more HP',hp:1.55,dmg:1,reward:1.30}
 ];
 const SUGAR_RUSH_SEC=5;
-const REPLAY_GOAL=240, REPLAY_QUOTA=340, REPLAY_TIME_CAP=300;
+const REPLAY_GOAL=240, REPLAY_QUOTA=340;   // v7.8.48 เจ้าของ: replay ไม่มีตัดเวลา ต้องฆ่าครบเท่านั้น
 const PINNACLE_KEY_COST=3, RECIPE_PAR=170, RECIPE_HUNGER_CAP=180, RECIPE_TIME_CAP=300, RECIPE_FRAGS_PER_KEY=4, RECIPE_BOSS_HP=0.7;   // R10: บอส recipe เบาลง 30% ให้รันจบใน ~2-3 นาที แต่ยังสเกลตาม tier
 // 📜 Recipe Maps (endgame Phase R · R1 = data model + stash) — แผนที่แบบ PoE: ธีม(ด่าน)+Tier+mods
 const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16;
@@ -10446,7 +10447,7 @@ class Game extends Phaser.Scene {
       if(i<list.length)setTimeout(step,16); else setTimeout(()=>{ c.destroy(true); if(window.GameLoader)window.GameLoader.hide(); done(); },32); };
     step();
   }
-  // v7.8.47 เจ้าของ: เล่นซ้ำมอนน้อยกว่ารอบแรก → เลเวลตอนเจอบอสต่ำ · รอบแรก 5 เวฟ ≈ 322 ตัว → replay ต้องฆ่า ~320 ตัว (240/0.75) · spawn 340 · เวลาสำรอง 300 วิ
+  // v7.8.47 เจ้าของ: เล่นซ้ำมอนน้อยกว่ารอบแรก → เลเวลตอนเจอบอสต่ำ · รอบแรก 5 เวฟ ≈ 322 ตัว → replay ต้องฆ่า ~320 ตัว (240/0.75) · spawn 340 · v7.8.48 ไม่มีตัดเวลาแล้ว (มินิที่ครึ่งหลอด บอสเมื่อเต็มเท่านั้น)
   usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush;}
   startReplayRun(st){
     this.clearWaveObjective();this._finalStoryShown=true;if(this.pipG)this.pipG.setVisible(false);
@@ -10465,11 +10466,11 @@ class Game extends Phaser.Scene {
   }
   tickReplayProgress(dt){
     const m=this._replayMeter;if(!m||m.done)return;m.time+=dt;this.renderReplayProgress();
-    if(!m.miniTriggered&&(m.kills>=m.goal*0.5||m.time>=REPLAY_TIME_CAP*0.5)){
+    if(!m.miniTriggered&&m.kills>=m.goal*0.5){
       m.miniTriggered=true;this.waveIndex=STAGES[this.stageIndex].miniAt;this.mode='miniWarning';this.updateWaveText();
       this.showBanner('Miniboss incoming','Defeat it, then continue filling the meter',2200);Sfx.bossWarn();this.scheduleStageEvent(2200,'miniWarning',()=>this.spawnMiniBoss());return;
     }
-    if(m.miniDone&&(m.kills>=m.goal||m.time>=REPLAY_TIME_CAP)){
+    if(m.miniDone&&m.kills>=m.goal){
       m.done=true;this.clearWaveObjective();this.mode='bossWarning';this.settleStoryBudget?.(true);this.updateWaveText();Sfx.bossWarn();
       this.showBanner('Progress complete','The boss is coming',1800);this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss());
     }
@@ -10818,7 +10819,8 @@ class Game extends Phaser.Scene {
     const o=this.waveObjective,gateNeedsFoes=o?.type==='hunt'&&o._huntPhase==='clear'&&this.enemies.countActive(true)<Math.max(0,o._huntKillGoal-o._huntKills);
     /* v7.8.37 บั๊กค้าง C2-4: บททดสอบใบไม้ผลิต้องฆ่า 10 ตัว แต่ Reserves หมด → spawnEnemy ถูกบล็อกตรงนี้ (ฟิกซ์ v7.8.29 ไม่มีผล) · ยอมให้เติมเท่าที่ยังขาด */
     const sc=o?.type==='seasonCycle'&&!o.done?o.storm?.cur:null,seasonNeedsFoes=!!(sc&&sc.idx===0&&!sc.partial&&!o.storm.passed[0]&&this.enemies.countActive(true)<Math.max(0,10-sc.kills));
-    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes||seasonNeedsFoes));
+    const rm=this._replayMeter,replayNeedsFoes=!!(rm&&!rm.done&&this.mode==='wave');   /* v7.8.48 replay ไม่มีตัดเวลา → เติมมอนจนหลอดเต็ม ไม่ให้ Reserves หมดแล้วค้าง */
+    return objective||(!this._storyBudget.done&&(this.storyTimedSwarm()||this._storyBudget.spawned<this._storyBudget.quota||gateNeedsFoes||seasonNeedsFoes||replayNeedsFoes));
   }
   storySpawned(objective=false){if(this.usesStoryBudget?.()&&this._storyBudget&&!objective)this._storyBudget.spawned++;}
   storyEnemyXp(e){

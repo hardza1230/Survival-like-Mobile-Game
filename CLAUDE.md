@@ -14,7 +14,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 text-free pieces (A Weave screen 14, B Flavor Passives 16, C shared 4) cut from the owner's two mockups (docs/art_orders/ref/21_temple_*_ref.webp) — backgrounds 1080×1920, 9-slice card/button/tab/bar sheets with nineSlice in MANIFEST, altar trio centerpiece. Delivery to assets/incoming/temple_weave_ui/. Hooks: buildUpgrade / buildRankPerks via Phaser nineslice, graphics fallback.
 
-# Latest delivery: v7.8.47 — Fuller replays
+# Latest delivery: v7.8.48 — Replay = kills only
+
+Owner: no timer skip on replays. tickReplayProgress: mini only at kills ≥ goal/2, boss only at kills ≥ goal (REPLAY_TIME_CAP removed). storyCanSpawn adds replayNeedsFoes (meter not done & mode wave) so spawns never run out after the 340 quota.
+
+# Previous delivery: v7.8.47 — Fuller replays
 
 Owner: replays (stage already cleared) had fewer kills than the first clear → lower level at the boss. REPLAY_GOAL 140→240 meter (0.75/kill → ~320 kills ≈ first-clear 5-wave quota 322), REPLAY_QUOTA spawn budget 240→340, REPLAY_TIME_CAP 300s (was RECIPE_HUNGER_CAP 180; mini fallback at half). Completion reward unchanged (200).
 

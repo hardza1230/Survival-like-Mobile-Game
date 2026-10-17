@@ -60,7 +60,7 @@ for(const fast of [true,false])for(const stage of [0,2,6,14]){
  assert.equal(s._storyBudget.paid,s._storyBudget.issued+30);const old=created;s.tickStage(.1);assert.equal(created,old);
 }
 // Quota exemption is only the live timed Swarm; expiration, objectives and special modes retain guards.
-{const s=scene();s.waveIndex=1;s.beginStoryBudget(1);s._storyBudget.spawned=999;s.waveTimer=10;s.waveObjective={type:'survive'};assert(s.storyCanSpawn());s.waveTimer=0;assert(!s.storyCanSpawn());s.waveTimer=10;s._replayMeter={};assert(!s.storyTimedSwarm());assert(!s.storyCanSpawn());s._replayMeter=null;s.waveObjective={type:'capture'};assert(!s.storyCanSpawn());}
+{const s=scene();s.waveIndex=1;s.beginStoryBudget(1);s._storyBudget.spawned=999;s.waveTimer=10;s.waveObjective={type:'survive'};assert(s.storyCanSpawn());s.waveTimer=0;assert(!s.storyCanSpawn());s.waveTimer=10;s._replayMeter={};assert(!s.storyTimedSwarm());assert(s.storyCanSpawn());s._replayMeter={done:true};assert(!s.storyCanSpawn());s._replayMeter=null;s.waveObjective={type:'capture'};assert(!s.storyCanSpawn());}
 console.log('Swarm director: actual tick loop across four stages, fast/slow clear, late countdown spawns, surge pulses, live caps, earned EXP and timed-only exemption passed');
 
 // Final-boss adds are combat too: no old bossAdds EXP rejection, no repeat completion bonus.
