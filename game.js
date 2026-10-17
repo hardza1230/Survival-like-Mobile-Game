@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.39';
+const GAME_VERSION = '7.8.40';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.40',date:'2026-10-17',title:'Combat Meter fixes',items:['Level timings record every level once, starting from this run','Boss and miniboss names in the report are clean']},
   {v:'7.8.39',date:'2026-10-16',title:'Shorter stats copy',items:['Play Stats has a new Copy last 3 runs button so long histories are not cut off when pasted into chat']},
   {v:'7.8.38',date:'2026-10-16',title:'Combat Meter',items:['New Settings option Combat Meter: live DPS, boss DPS / time / HP%, FPS, foes, enemy shots and effects on screen','Every run now records damage dealt (boss/mini/elite/mobs, overkill, crits), peak 5s DPS, each boss and miniboss fight time and DPS, damage by skill, damage taken, dashes, Uniques, level and wave timings, FPS average/minimum, lag spikes and peak object counts','Play Stats → Copy to clipboard includes all of it, ready to paste']},
   {v:'7.8.37',date:'2026-10-16',title:'C2-4 Season Storm fix',items:['Fixed C2-4 getting stuck when the Spring trial needs kills after all Reserves are spent — Bloom Sprouts now really appear until the trial can be passed']},
@@ -15545,14 +15546,14 @@ class Game extends Phaser.Scene {
   mxDeal(e,amount,crit){const m=this._mx;if(!m||e.isDummy||!(amount>0))return;const eff=Math.min(amount,Math.max(0,e.hp||0));m.dealt+=eff;m.over+=amount-eff;m.hits++;if(crit)m.crits++;
     if(e.isBoss)m.dBoss+=eff;else if(e.isMini)m.dMini+=eff;else if(e.isElite)m.dElite+=eff;else m.dMob+=eff;
     const k=this.mxSrcName(),r=m.src[k]||(m.src[k]=[0,0]);r[0]+=eff;r[1]++;const b=Math.floor((this.elapsed||0)-m.t0);m.sec[b]=(m.sec[b]||0)+eff;
-    if(e.isBoss||e.isMini){let f=m.fights.get(e);if(!f){f={n:(e.isBoss?'Boss ':'Mini ')+((this.boss===e&&this.bossName?.text?this.bossName.text.replace(/^\S+\s/,'').slice(0,26):'')||e.roleName||e.texture?.key||'?'),hp:e.maxhp||0,t0:this.elapsed||0,d:0,e};m.fights.set(e,f);}f.d+=eff;f.t1=this.elapsed||0;}}
+    if(e.isBoss||e.isMini){let f=m.fights.get(e);if(!f){f={n:(e.isBoss?'Boss ':'Mini ')+((this.boss===e&&this.bossName?.text?this.bossName.text.replace(/^\S+\s/,'').split(' · ')[0].slice(0,28):'')||e.roleName||e.texture?.key||'?'),hp:e.maxhp||0,t0:this.elapsed||0,d:0,e};m.fights.set(e,f);}f.d+=eff;f.t1=this.elapsed||0;}}
   mxDash(){if(this._mx&&this.state==='play')this._mx.dash++;}
   mxKill(e){const m=this._mx;if(!m||e.isDummy)return;m.kills++;const f=m.fights.get(e);if(f){f.done=true;f.t1=this.elapsed||0;m.done.push(f);m.fights.delete(e);}}
   mxTick(dt){const m=this._mx;if(!m)return;const now=this.elapsed||0;
     if(this.state==='play'){const fps=this.game?.loop?.actualFps||60,dm=this.game?.loop?.delta||16;if(dm>50)m.spikes++;m.acc+=dt;if(m.acc>=1){m.acc=0;m.fpsN++;m.fpsSum+=fps;m.fpsMin=Math.min(m.fpsMin,fps);if(fps<30)m.lowSec++;
         const b=Math.floor(now-m.t0);let s5=0;for(let i=b-5;i<b;i++)s5+=m.sec[i]||0;m.peak5=Math.max(m.peak5,s5/5);for(const k in m.sec)if(+k<b-6)delete m.sec[k];
         m.pFoe=Math.max(m.pFoe,this.enemies?.countActive?.(true)||0);m.pShot=Math.max(m.pShot,this.foeBullets?.countActive?.(true)||0);m.pFx=Math.max(m.pFx,(this._artVfx?.size||0)+(this._taroFxLive||0)+(this._c24Live||0));}
-      if((this.level||1)>m.lv0+m.lv.length)m.lv.push('L'+this.level+' '+mxClock(now-m.t0));
+      if(m.lvAt==null)m.lvAt=this.level||1;while((this.level||1)>m.lvAt){m.lvAt++;m.lv.push('L'+m.lvAt+' '+mxClock(now-m.t0));}   /* v7.8.40 นับทีละเลเวล · เริ่มจากเลเวลตอนเฟรมแรกของรอบ (เดิมใช้เลเวลรอบก่อน) */
       if(this.waveIndex!==m.w0){m.w0=this.waveIndex;m.waves.push('W'+((this.waveIndex|0)+1)+' '+mxClock(now-m.t0));}}
     this.mxOverlay(now);}
   mxOverlay(now){const on=!!Save.data.settings?.mx&&(this.state==='play'||this.state==='levelup'),m=this._mx;

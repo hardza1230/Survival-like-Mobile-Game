@@ -1980,3 +1980,7 @@ Owner: Arc single-target still weak; arrow should find normal monsters when none
 # Previous delivery: v7.8.33 — Taro Spark Storm Unique, Spark +25%
 
 Owner: Spark damage up a bit; Spark Unique = rapid projectiles that are forced to explode after a while. Spark profile damage unitD×0.75 (was 0.60). Spark Build Unique (castStormBeacon smite → castTaroSparkStorm): t.storm emits 16 (+4/level, +4 Echo) Sparks every 0.05s in a 2.4-rad spiral (taroTickSparkStorm inside tickTaroDeployables), hit (3+1.5n)·dm, no fission, boss hit once, pierce = Spark pierce; fuse 1.1s or pierce spent → taroSparkBlast radius 72, (5+2.5n)·dm once. Storm cap 72 sparks. Old Storm Beacon kept as castTaroBeacon (unbound); tests point to it. Icon key ic_taro_spark_storm not drawn yet → emoji ⚡. Check passed; owner phone review pending.
+
+# Previous delivery: v7.8.34 — Spark Static Charge (owner pick A2)
+
+Spark boss fix without touching clear: taroStaticCharge counts Spark hits per boss/mini token (t.charge Map, per run); every 10th hit (TARO_STATIC_HITS) strikes for that Spark's damage ×8 (TARO_STATIC_MUL) × lightning roll, beacon_strike art. Spark Unique still Spark Storm; owner asked about a buff-style Unique instead — options proposed in chat, awaiting pick.

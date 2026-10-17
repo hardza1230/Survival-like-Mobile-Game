@@ -6,7 +6,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
-# Latest delivery: v7.8.39 — Copy last 3 runs
+# Latest delivery: v7.8.40 — Meter fixes + first Taro numbers
+
+Level log now per level from this run's first frame (was reusing previous run's level). Fight names cleaned. First data (C2-1★1, same gear): Arc 1:56 win, boss 55.6k in 14.4s (3878 DPS), mini 13.0s, 111 kills/min · Spark 2:43 win, boss 24.7s (2255), mini 13.9s, 67/min, sparkChild 87% of dmg · Sentry died 3:46, boss 57s (983, 5% left), mini 55.2s (256), 66/min. Uniques only 0–3% of damage on all three. Balance proposal in chat, awaiting owner.
+
+# Previous delivery: v7.8.39 — Copy last 3 runs
 
 Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now has two buttons: Copy last 3 runs (Stats.copy(3) → toText(last)) and Copy all.
 
@@ -25,10 +29,6 @@ TARO_UNIQUES now carry per-Unique `tiers` text (banner on Unique level-up uses u
 # Previous delivery: v7.8.35 — Spark Unique Storm Mark (owner pick A2 + B1)
 
 Spark Build Unique (castStormBeacon smite → castTaroStormMark): picks toughest foe within 700 (boss > mini > highest HP), beacon_strike art strike (8+4n)·dm, marks 6s (+1.5 Echo) with gold shock_aura sprite following it. While marked (taroMarkToken) every Spark steers to it (turn 8 rad/s), passes through it without spending pierce and deals ×1.5 (TARO_MARK_BONUS). Expiry → second strike + blast r130: (14+7n)·dm on mark, 40% to others (taroEndMark/taroTickMark). No target → falls back to castTaroSparkStorm. Static Charge (v7.8.34) stacks. Icon key ic_taro_storm_mark not drawn → emoji 🎯.
-
-# Previous delivery: v7.8.34 — Spark Static Charge (owner pick A2)
-
-Spark boss fix without touching clear: taroStaticCharge counts Spark hits per boss/mini token (t.charge Map, per run); every 10th hit (TARO_STATIC_HITS) strikes for that Spark's damage ×8 (TARO_STATIC_MUL) × lightning roll, beacon_strike art. Spark Unique still Spark Storm; owner asked about a buff-style Unique instead — options proposed in chat, awaiting pick.
 
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
