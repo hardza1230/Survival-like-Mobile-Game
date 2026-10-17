@@ -10,7 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Latest delivery: v7.8.49 — Temple Weave UI (art order 21) wired
+# Latest delivery: v7.8.50 — Temple polish (owner: art looked washed out, page scrolled)
+
+veil over screen_temple_* .5→.22 · altar glows NORMAL blend behind the trio (ADD over it washed the cores out) · altH = min(190, h-26-(150+8+36+3·(106+gap)+8+btnH)) so Weave fits without scrolling · Perks cardH/aH shrink by (h-hs-312)/3 so it fits too · rank line text stroked.
+
+# Previous delivery: v7.8.49 — Temple Weave UI (art order 21) wired
 
 34 pieces packed by scripts/pack-temple-weave-ui.py → assets/art/temple/ui/ (bg 720×1280, UI 50% of 2× source, MANIFEST with scaled nineSlice) · lazy with upgrade/perks group (art/temple/). TEMPLE_UI const = [cellW,cellH,cols,nineSlice]. Helpers: tuHas / tuFrames (cellN + c{cell}_{0..8} slice frames) / tuImg / tuPanel (own 9-slice from images, corners scale k=h/cellH, canvas-safe — no Phaser NineSlice) / tuTab / tuHeader / tuSparkle. _screenBg skins header (back, title frame, currency chip) when artKey starts screen_temple_. buildUpgrade: altar trio + per-core glow (portrait with room), tabs, power bar, core cards (portrait only; landscape keeps graphics), stars, buy buttons, knot, Weave Up. buildRankPerks: tier banners/line, req chip, perk cards/pips/buttons, Special Cores banner + compass, Ancient 2 columns (page scrolls), reset button. drawBadgeDot uses ui_notify_dot when loaded. All with old graphics fallback. Phone visual QA pending.
 

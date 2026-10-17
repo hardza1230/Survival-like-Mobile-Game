@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.49';
+const GAME_VERSION = '7.8.50';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.50',date:'2026-10-17',title:'Temple Polish',items:['Temple art keeps its full colour: lighter background veil, core glows sit behind the altar instead of washing it out','Flavor Weave Temple fits on one screen again (altar shrinks on shorter phones)']},
   {v:'7.8.49',date:'2026-10-17',title:'Temple Makeover',items:['Flavor Weave Temple has a new painted look: temple hall, the three-core altar that glows as you upgrade, new tabs, power bar, core cards, buttons and Weave Up','Flavor Passives gets matching tier banners, perk cards, rank pips, Special Cores banner, two-column Ancient perks and a new Reset button']},
   {v:'7.8.48',date:'2026-10-17',title:'Replay Meter Only',items:['Replays no longer skip ahead on a timer: the miniboss comes at half the meter and the boss only when the meter is full','Monsters keep coming until the meter fills']},
   {v:'7.8.47',date:'2026-10-17',title:'Fuller Replays',items:['Replaying a cleared stage now asks for about as many kills as the first clear (meter needs ~320 kills instead of ~190), so you reach the boss at a similar level','More monsters spawn to fill it and the backup timer is longer (5 min)']},
@@ -7768,7 +7769,7 @@ class Game extends Phaser.Scene {
     // v4.63: ชื่อหน้าต้องอยู่ระหว่างปุ่ม Back (ขวาสุด x=94) กับตัวนับ Sugar — ยาวเกินให้ย่อฟอนต์ลง (เดิมจอแนวตั้งชื่อยาววิ่งทับปุ่ม)
     const room=2*Math.min(w/2-94-8,(w-14-sugar.width-8)-w/2);let fs=compact?20:22;while(t.width>room&&fs>12){fs--;t.setFontSize(fs+'px');}
     const temple=!!artKey&&artKey.startsWith('screen_temple_')&&this.tuHas?.('temple_back_btn');   // v7.8.49 art order 21 หัวหน้าวิหาร
-    if(temple&&veil)veil.setAlpha(.5);
+    if(temple&&veil)veil.setAlpha(.22);
     this.menu.add(veil?[bg,veil]:[bg]);
     if(temple){ const tw=Math.min(room+40,t.width+90),tf=this.tuPanel('temple_title_frame',0,w/2-tw/2,headY-tw*.055,tw,tw*.11); if(tf){tf.setAlpha(.95);this.menu.add(tf);} t.setColor('#ffe3c2').setStroke('#5a1f3a',4);
       const cwid=Math.max(84,sugar.width+44),cc=this.tuPanel('temple_currency_chip',0,w-8-cwid,headY-15,cwid,30); if(cc){this.menu.add(cc);sugar.setText(String(Save.data.sugar||0)).setX(w-18);
@@ -9121,7 +9122,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     this.templeArtFrames();
     const portrait=w<=h,ry=portrait?82:55;
-    const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9c9e8'}).setOrigin(0.5);
+    const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'10px',color:'#efe4f7',stroke:'#1d0f16',strokeThickness:3}).setOrigin(0.5);
     const rn=this.add.text(w/2,ry+17,rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     { const rbw=Math.min(w-80,Math.max(200,rn.width+90)),rb=this.tuPanel('temple_rank_ribbon',0,w/2-rbw/2,ry+17-12,rbw,24); if(rb)this.menu.add(rb); }   // A5
     this.menu.add([rk,rn]);
@@ -9149,11 +9150,11 @@ class Game extends Phaser.Scene {
       if(rpFree>0)this.drawBadgeDot(this.menu,rkX+rkW-6,rkY+6); }
     // v7.8.49 A2/A3 แท่นแกน 3 ลูก (แนวตั้งที่มีที่ว่างเท่านั้น) · ออร่าแต่ละลูกสว่างตามเลเวลแกน
     const gapY=10,artCard=portrait&&this.tuHas('temple_core_card_sheet'),btnH=artCard?48:40;
-    let altH=portrait&&this.tuHas('temple_altar_trio')?Math.min(200,h-150-6-34-(3*106+2*gapY)-btnH-26):0; if(altH<70)altH=0;
-    if(altH){ const altW=Math.min(w-30,altH/.6),ah=altW*.6,ax=w/2,ay=150+ah/2,alt=this.tuImg('temple_altar_trio',0,ax,ay,altW,ah); this.menu.add(alt); altH=ah;
+    let altH=portrait&&this.tuHas('temple_altar_trio')?Math.min(190,h-26-(150+8+36+3*(106+gapY)+8+btnH)):0; if(altH<70)altH=0;   // v7.8.50 พอดีจอไม่ต้องเลื่อน
+    if(altH){ const altW=Math.min(w-30,altH/.6),ah=altW*.6,ax=w/2,ay=150+ah/2,alt=this.tuImg('temple_altar_trio',0,ax,ay,altW,ah); altH=ah;
       [['hp',0,.26,.58,.36],['dmg',1,.5,.27,.4],['def',2,.74,.58,.36]].forEach(([k,cell,fx,fy,fs])=>{ const lv=Save.talLvl(k)+(Save.overcap(k)>0?1:0); if(!lv)return;
-        const gl=this.tuImg('temple_altar_glow_sheet',cell,ax-altW/2+altW*fx,ay-ah/2+ah*fy,altW*fs); if(!gl)return; const a=Math.min(1,.55+.15*lv); gl.setAlpha(a).setBlendMode(Phaser.BlendModes.ADD); this.menu.add(gl);
-        this.tweens.add({targets:gl,alpha:{from:a,to:a*.55},yoyo:true,repeat:-1,duration:900+cell*170}); }); }
+        const gl=this.tuImg('temple_altar_glow_sheet',cell,ax-altW/2+altW*fx,ay-ah/2+ah*fy,altW*fs); if(!gl)return; const a=Math.min(.9,.45+.15*lv); gl.setAlpha(a).setScale(gl.scaleX*1.12); this.menu.add(gl);
+        this.tweens.add({targets:gl,alpha:{from:a,to:a*.55},yoyo:true,repeat:-1,duration:900+cell*170}); }); this.menu.add(alt); }   // ออร่าอยู่หลังแท่น (ADD ทับทำให้ภาพจืด)
     const barW=Math.min(w-(portrait?64:180),420), bx=w/2-barW/2, by=portrait?(altH?150+altH+8:158):86, barH=9, need=UPG_ORDER.length*TAL_MAX;
     const frac=Phaser.Math.Clamp(Save.talFilled()/need,0,1);
     { const tr=this.tuPanel('temple_power_bar',0,bx-14,by-4,barW+28,barH+8); if(tr){ this.menu.add(tr); const fw=Math.max(barH+4,(barW-4)*frac); if(frac>0){const fl=this.tuPanel('temple_power_fill',allMax?1:0,bx+2,by+1,fw,barH-2); if(fl)this.menu.add(fl);} }   // A7/A8
@@ -9447,7 +9448,9 @@ class Game extends Phaser.Scene {
     const sub=this.add.text(w/2,73+hs,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
     this.menu.add([rpTxt,sub]);
     const tierName={1:'TIER 1 · Foundation',2:'TIER 2 · Utility',3:'TIER 3 · Mastery'};
-    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols,cardH=90; let y=88+hs;
+    // v7.8.50 ให้พอดีจอ: เนื้อหา ≈ 342+3·(การ์ด perk + การ์ด Ancient) · จอเตี้ยย่อการ์ดลง
+    const fitH=(h-hs-312)/3,cardH=art?Math.max(78,Math.min(90,fitH-50)):90,aFit=art?Math.max(46,Math.min(62,fitH-cardH)):58;
+    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols; let y=88+hs;
     [1,2,3].forEach(tier=>{
       const unlocked=Save.perkTierUnlocked(tier),req=PERK_TIER_REQ[tier]||0,priorSpent=tier===3?(Save.perkTierSpent(1)+Save.perkTierSpent(2)):Save.perkTierSpent(1),perks=RANK_PERKS.filter(p=>(p.tier||1)===tier);
       if(!this.tuHeader('perk_tier_banner',14,y,w-28,tierName[tier].toUpperCase(),unlocked?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,tierName[tier],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:unlocked?'#ffd9a8':'#7a7088'}).setOrigin(0,0));
@@ -9462,7 +9465,7 @@ class Game extends Phaser.Scene {
         else if(canBuy){ const glow=this.add.graphics(); glow.lineStyle(2,0xffe08a,.75).strokeRoundedRect(x+2,y+2,cardW-4,cardH-4,9); this.menu.add(glow); this.tweens.add({targets:glow,alpha:{from:.9,to:.25},yoyo:true,repeat:-1,duration:700}); }
         const em=(this.textures.exists('perk_'+pk.id)?this.add.image(x+cardW/2,y+15,'perk_'+pk.id).setDisplaySize(26,26):this.add.text(x+cardW/2,y+15,pk.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(unlocked?1:0.4);
         const nm=this.add.text(x+cardW/2,y+31,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:unlocked?'#fff':'#9a8fa8'}).setOrigin(0.5);
-        const ds=this.add.text(x+cardW/2,y+43,pk.desc,{fontFamily:'sans-serif',fontSize:'7px',color:unlocked?'#d6cae4':'#7a6f88',align:'center',wordWrap:{width:cardW-12}}).setOrigin(0.5,0);
+        const ds=this.add.text(x+cardW/2,y+(cardH<86?39:43),pk.desc,{fontFamily:'sans-serif',fontSize:cardH<86?'6.4px':'7px',lineSpacing:cardH<86?-1:0,color:unlocked?'#d6cae4':'#7a6f88',align:'center',wordWrap:{width:cardW-12}}).setOrigin(0.5,0);
         const pipArt=this.tuHas('perk_pip_sheet'),pips=[]; let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○');
         const dt=this.add.text(x+cardW/2,y+cardH-24,pipArt?'':dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':(unlocked?'#ffd166':'#5a4f68')}).setOrigin(0.5);
         if(pipArt)for(let s=0;s<pk.max;s++)pips.push(this.tuImg('perk_pip_sheet',s<lvl?0:(unlocked?1:2),x+cardW/2+(s-(pk.max-1)/2)*11,y+cardH-25,9,9));   // B5
@@ -9487,7 +9490,7 @@ class Game extends Phaser.Scene {
       if(chip){ this.menu.add(chip); if(this.tuHas('ic_scroll'))this.menu.add(this.tuImg('ic_scroll',0,w-14-chW+chip._tuK*25,y+6.5,15,15)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
       else this.menu.add(this.add.text(w-14,y,'📜 '+scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#8d8195'}).setOrigin(1,0));
       y+=aArt?19:15;
-      const aCols=aArt?2:3,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?62:58;
+      const aCols=aArt?2:3,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?aFit:58;
       ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=SCROLL_PER_PERK;
         const ap=aArt?this.tuPanel('perk_ancient_card_sheet',own?2:(can?1:0),x,yy,aW,aH):null,ak=ap?ap._tuK:0;   // B12
         let g=ap; if(!ap){ g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,aW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,aW,aH,10); }
