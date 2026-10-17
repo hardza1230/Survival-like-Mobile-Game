@@ -1,0 +1,2319 @@
+{
+  "sourceCount": 34,
+  "stateCount": 64,
+  "method": "Built-in imagegen; cell extraction, exact-size resampling, opaque panel-interior normalization and bounded outer-alpha cleanup. Native antialiasing retained; A3 keeps translucent native alpha.",
+  "visualReview": "All 64 states/frames and all 20 nine-slice sources at 0.6x/2.2x inspected; sources contain no text/digits. Both center 16:9 background crops reviewed. OCR was a supporting check only; its ornamental false positives were visually reviewed.",
+  "runtimeIntegration": "pending",
+  "assets": [
+    {
+      "id": "A1",
+      "file": "screen_temple_weave.png",
+      "bytes": 2850837,
+      "sha256": "95890c56f3e938c8f6e564df293eb1a08579849a7f4e3858f58e843eb22caf0a",
+      "gitBlobSha": "5b29937dff0985bf4eebe81a9a4c3ba4b6257bfd",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "background",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 2073600
+        }
+      ],
+      "packing": [],
+      "centralZone": {
+        "meanLuminance": 36.08,
+        "whiteContrastMedian": 15.74,
+        "whiteContrast5thPercentile": 12.07,
+        "proof": "qa/A1_landscape.jpg"
+      }
+    },
+    {
+      "id": "A2",
+      "file": "temple_altar_trio.png",
+      "bytes": 1403453,
+      "sha256": "01ab4afc56b3e64728eec4b6187e2cbd0c6c0a0fd878f6ea67ffac5488a39093",
+      "gitBlobSha": "379a041e72a490326ce663f42a07740834840c7b",
+      "dimensions": [
+        1200,
+        720
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "trio",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 550583
+        }
+      ],
+      "packing": [
+        {
+          "state": "trio",
+          "sourceCell": [
+            0,
+            0,
+            1619,
+            971
+          ],
+          "crop": [
+            48,
+            10,
+            1572,
+            938
+          ],
+          "packedContentSize": [
+            1169,
+            712
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "file": "temple_altar_glow_sheet.png",
+      "bytes": 826142,
+      "sha256": "1e25b6307ee482589b3fbf78ab395678b5a73078994fff1c6c38dfdcbc84cae4",
+      "gitBlobSha": "71f2f2e5108dd4527c03dcd9a5dffa151bde3f70",
+      "dimensions": [
+        1200,
+        400
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "pink",
+          "alphaMin": 0,
+          "alphaMax": 253,
+          "visiblePixels": 132249
+        },
+        {
+          "state": "gold",
+          "alphaMin": 0,
+          "alphaMax": 253,
+          "visiblePixels": 131590
+        },
+        {
+          "state": "blue",
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "visiblePixels": 125710
+        }
+      ],
+      "packing": [
+        {
+          "state": "pink",
+          "sourceCell": [
+            0,
+            0,
+            724,
+            724
+          ],
+          "crop": [
+            48,
+            31,
+            722,
+            663
+          ],
+          "packedContentSize": [
+            392,
+            368
+          ]
+        },
+        {
+          "state": "gold",
+          "sourceCell": [
+            724,
+            0,
+            1446,
+            724
+          ],
+          "crop": [
+            25,
+            18,
+            696,
+            680
+          ],
+          "packedContentSize": [
+            392,
+            387
+          ]
+        },
+        {
+          "state": "blue",
+          "sourceCell": [
+            1446,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            1,
+            24,
+            678,
+            677
+          ],
+          "packedContentSize": [
+            392,
+            378
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A4",
+      "file": "temple_title_frame.png",
+      "bytes": 221364,
+      "sha256": "7ac7ef3796f93add296546f8435d6fb9a418cce727d874ec3edc307053853ac1",
+      "gitBlobSha": "b48ee885418fa74ec91ab2d3d1dd6aecfc5e2005",
+      "dimensions": [
+        1400,
+        200
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "title",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 93592
+        }
+      ],
+      "packing": [
+        {
+          "state": "title",
+          "sourceCell": [
+            0,
+            0,
+            2073,
+            758
+          ],
+          "crop": [
+            1,
+            320,
+            2073,
+            474
+          ],
+          "packedContentSize": [
+            1392,
+            192
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A4_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A5",
+      "file": "temple_rank_ribbon.png",
+      "bytes": 115930,
+      "sha256": "fb05015fcb553d320596d2f87981b3e7cb6d8708cac84962eef49537b8a68060",
+      "gitBlobSha": "45546cfb266c3742bbc2ab0cf5a9106f6e564f53",
+      "dimensions": [
+        1200,
+        110
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "rank",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 87498
+        }
+      ],
+      "packing": [
+        {
+          "state": "rank",
+          "sourceCell": [
+            0,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            73,
+            207,
+            2099,
+            497
+          ],
+          "packedContentSize": [
+            1192,
+            102
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A5_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A6",
+      "file": "temple_tab_sheet.png",
+      "bytes": 335624,
+      "sha256": "ea5d6cc32fb728871b8fa20a43db5dc36ae5bdc52e0b03983480d0072c11c83e",
+      "gitBlobSha": "7ea9ac39a39c6f9ad110e796087033536a8af19c",
+      "dimensions": [
+        560,
+        520
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "purple",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 54366
+        },
+        {
+          "state": "gold",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 54964
+        },
+        {
+          "state": "mint",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 54499
+        },
+        {
+          "state": "gold_attention",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 55296
+        }
+      ],
+      "packing": [
+        {
+          "state": "purple",
+          "sourceCell": [
+            0,
+            0,
+            1466,
+            263
+          ],
+          "crop": [
+            14,
+            2,
+            1453,
+            262
+          ],
+          "packedContentSize": [
+            552,
+            122
+          ]
+        },
+        {
+          "state": "gold",
+          "sourceCell": [
+            0,
+            263,
+            1466,
+            528
+          ],
+          "crop": [
+            13,
+            2,
+            1453,
+            261
+          ],
+          "packedContentSize": [
+            552,
+            122
+          ]
+        },
+        {
+          "state": "mint",
+          "sourceCell": [
+            0,
+            528,
+            1466,
+            793
+          ],
+          "crop": [
+            13,
+            5,
+            1453,
+            264
+          ],
+          "packedContentSize": [
+            552,
+            122
+          ]
+        },
+        {
+          "state": "gold_attention",
+          "sourceCell": [
+            0,
+            793,
+            1466,
+            1073
+          ],
+          "crop": [
+            13,
+            2,
+            1453,
+            262
+          ],
+          "packedContentSize": [
+            552,
+            122
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A6_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A7",
+      "file": "temple_power_bar.png",
+      "bytes": 104223,
+      "sha256": "f265565977fa8e1d20b7d3e3a8f6559d8a67692bfb504f9643b37cb1417d2f49",
+      "gitBlobSha": "e10406e342ea2b0cd8eb252f5f3bcf8c44df82df",
+      "dimensions": [
+        1400,
+        80
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "track",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 93755
+        }
+      ],
+      "packing": [
+        {
+          "state": "track",
+          "sourceCell": [
+            0,
+            0,
+            1659,
+            948
+          ],
+          "crop": [
+            23,
+            417,
+            1636,
+            531
+          ],
+          "packedContentSize": [
+            1392,
+            72
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A7_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A8",
+      "file": "temple_power_fill.png",
+      "bytes": 79948,
+      "sha256": "c0663d8ee9b09aed662a544b1b299232a0e8cb9882b6236b860d66dfc8d3cd39",
+      "gitBlobSha": "d4e58e099d248c768aa39a25f15871ca8f91312f",
+      "dimensions": [
+        1200,
+        80
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "gold",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 42594
+        },
+        {
+          "state": "mint",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 42594
+        }
+      ],
+      "packing": [
+        {
+          "state": "gold",
+          "sourceCell": [
+            0,
+            0,
+            2172,
+            362
+          ],
+          "crop": [
+            47,
+            208,
+            2126,
+            332
+          ],
+          "packedContentSize": [
+            1196,
+            36
+          ]
+        },
+        {
+          "state": "mint",
+          "sourceCell": [
+            0,
+            362,
+            2172,
+            724
+          ],
+          "crop": [
+            47,
+            33,
+            2126,
+            157
+          ],
+          "packedContentSize": [
+            1196,
+            36
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A8_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A9",
+      "file": "temple_core_card_sheet.png",
+      "bytes": 1993542,
+      "sha256": "8451b92384efb52740919ed810d466cb2b80ddd7ed1a20d29be9a924a941abc3",
+      "gitBlobSha": "e39a912d3239d5d7eae21c5034fb67ee97ee4c19",
+      "dimensions": [
+        1760,
+        1200
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "core_pink",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 680662
+        },
+        {
+          "state": "flavor_gold",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 679541
+        },
+        {
+          "state": "bond_blue",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 680928
+        }
+      ],
+      "packing": [
+        {
+          "state": "core_pink",
+          "sourceCell": [
+            0,
+            0,
+            1644,
+            319
+          ],
+          "crop": [
+            37,
+            25,
+            1610,
+            308
+          ],
+          "packedContentSize": [
+            1752,
+            392
+          ]
+        },
+        {
+          "state": "flavor_gold",
+          "sourceCell": [
+            0,
+            319,
+            1644,
+            634
+          ],
+          "crop": [
+            37,
+            16,
+            1609,
+            299
+          ],
+          "packedContentSize": [
+            1752,
+            392
+          ]
+        },
+        {
+          "state": "bond_blue",
+          "sourceCell": [
+            0,
+            634,
+            1644,
+            957
+          ],
+          "crop": [
+            37,
+            7,
+            1609,
+            289
+          ],
+          "packedContentSize": [
+            1752,
+            392
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A9_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A10",
+      "file": "temple_core_card_max.png",
+      "bytes": 810370,
+      "sha256": "2412c9950b5fc2aeeb29eab65e93df27f6d51378589f49b029b7849c4fab97b3",
+      "gitBlobSha": "d7eadd01998b0afb8428c65e827e5bdc6fdfa078",
+      "dimensions": [
+        1760,
+        400
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "max",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 682600
+        }
+      ],
+      "packing": [
+        {
+          "state": "max",
+          "sourceCell": [
+            0,
+            0,
+            2079,
+            756
+          ],
+          "crop": [
+            38,
+            156,
+            2042,
+            583
+          ],
+          "packedContentSize": [
+            1752,
+            392
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A10_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A11",
+      "file": "temple_star_sheet.png",
+      "bytes": 21205,
+      "sha256": "45501eb35fb7d5818521358fe1938cc34351510017d0227bd36c99d81a79e032",
+      "gitBlobSha": "853256a2593bbcba63a56c5f58c9eb645b4a75aa",
+      "dimensions": [
+        192,
+        64
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "filled_gold",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 2256
+        },
+        {
+          "state": "empty_gray",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 2266
+        },
+        {
+          "state": "bonus_pink",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 2550
+        }
+      ],
+      "packing": [
+        {
+          "state": "filled_gold",
+          "sourceCell": [
+            0,
+            0,
+            724,
+            724
+          ],
+          "crop": [
+            70,
+            78,
+            654,
+            620
+          ],
+          "packedContentSize": [
+            60,
+            56
+          ]
+        },
+        {
+          "state": "empty_gray",
+          "sourceCell": [
+            724,
+            0,
+            1448,
+            724
+          ],
+          "crop": [
+            70,
+            78,
+            654,
+            620
+          ],
+          "packedContentSize": [
+            60,
+            56
+          ]
+        },
+        {
+          "state": "bonus_pink",
+          "sourceCell": [
+            1448,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            70,
+            79,
+            654,
+            620
+          ],
+          "packedContentSize": [
+            60,
+            56
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A12",
+      "file": "temple_buy_btn_sheet.png",
+      "bytes": 309495,
+      "sha256": "acecd11fa719af6e4f2ff3e59a0255f28e2b6b1f50aa67a1b76dabedd21f12cf",
+      "gitBlobSha": "7369ae6e60d8774814a1cb8d2d06c78b84f0a758",
+      "dimensions": [
+        480,
+        480
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "affordable",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 45660
+        },
+        {
+          "state": "insufficient",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 44725
+        },
+        {
+          "state": "max",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 44613
+        },
+        {
+          "state": "pressed",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 45064
+        }
+      ],
+      "packing": [
+        {
+          "state": "affordable",
+          "sourceCell": [
+            0,
+            0,
+            1206,
+            345
+          ],
+          "crop": [
+            22,
+            78,
+            1185,
+            341
+          ],
+          "packedContentSize": [
+            472,
+            112
+          ]
+        },
+        {
+          "state": "insufficient",
+          "sourceCell": [
+            0,
+            345,
+            1206,
+            652
+          ],
+          "crop": [
+            21,
+            22,
+            1185,
+            286
+          ],
+          "packedContentSize": [
+            472,
+            112
+          ]
+        },
+        {
+          "state": "max",
+          "sourceCell": [
+            0,
+            652,
+            1206,
+            957
+          ],
+          "crop": [
+            21,
+            9,
+            1185,
+            274
+          ],
+          "packedContentSize": [
+            472,
+            112
+          ]
+        },
+        {
+          "state": "pressed",
+          "sourceCell": [
+            0,
+            957,
+            1206,
+            1305
+          ],
+          "crop": [
+            21,
+            5,
+            1186,
+            270
+          ],
+          "packedContentSize": [
+            472,
+            112
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A12_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A13",
+      "file": "temple_weave_btn_sheet.png",
+      "bytes": 522938,
+      "sha256": "a36abed19840855f7a06f497edb043a18b7067043abb486b92ebf31a75ad085c",
+      "gitBlobSha": "27bea2760e6d67f3fa07f242123198dd58c6ea82",
+      "dimensions": [
+        1000,
+        440
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "locked",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 194767
+        },
+        {
+          "state": "ready",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 194639
+        }
+      ],
+      "packing": [
+        {
+          "state": "locked",
+          "sourceCell": [
+            0,
+            0,
+            1890,
+            416
+          ],
+          "crop": [
+            48,
+            84,
+            1842,
+            404
+          ],
+          "packedContentSize": [
+            992,
+            212
+          ]
+        },
+        {
+          "state": "ready",
+          "sourceCell": [
+            0,
+            416,
+            1890,
+            832
+          ],
+          "crop": [
+            48,
+            11,
+            1842,
+            329
+          ],
+          "packedContentSize": [
+            992,
+            212
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/A13_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "A14",
+      "file": "temple_ribbon_knot.png",
+      "bytes": 65249,
+      "sha256": "e4913e1b4bfa4118850ff4ed2b6f997644d09b01f09554d05d6f98d7cceff394",
+      "gitBlobSha": "e7ef118b76e468a03091ba95c39983b904230128",
+      "dimensions": [
+        400,
+        200
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "knot",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 20093
+        }
+      ],
+      "packing": [
+        {
+          "state": "knot",
+          "sourceCell": [
+            0,
+            0,
+            1774,
+            887
+          ],
+          "crop": [
+            31,
+            61,
+            1744,
+            789
+          ],
+          "packedContentSize": [
+            392,
+            167
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "file": "screen_temple_perks.png",
+      "bytes": 2935070,
+      "sha256": "92295b3cc1487f2c6a892f5092a5ca4411ea22cd26a029e1e17f2ecb71d760ce",
+      "gitBlobSha": "5113757051632aab943ac437850e75e2c01e0c97",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "background",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 2073600
+        }
+      ],
+      "packing": [],
+      "centralZone": {
+        "meanLuminance": 49.27,
+        "whiteContrastMedian": 13.86,
+        "whiteContrast5thPercentile": 6.62,
+        "proof": "qa/B1_landscape.jpg"
+      }
+    },
+    {
+      "id": "B2",
+      "file": "perk_tier_banner.png",
+      "bytes": 71367,
+      "sha256": "0f1908a628614418781624f40ba3e20f9fcd01a56c2822991de51d631ec26bb8",
+      "gitBlobSha": "ad31abfcc619e3cf5fb9d8719bda57295ee8ac37",
+      "dimensions": [
+        880,
+        90
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "tier",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 48433
+        }
+      ],
+      "packing": [
+        {
+          "state": "tier",
+          "sourceCell": [
+            0,
+            0,
+            2146,
+            732
+          ],
+          "crop": [
+            18,
+            183,
+            2129,
+            535
+          ],
+          "packedContentSize": [
+            872,
+            82
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B2_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B3",
+      "file": "perk_tier_line.png",
+      "bytes": 9827,
+      "sha256": "02f2c0b6674c69a0d9a73753317e975590663692ac7c249739172f4c41462f2a",
+      "gitBlobSha": "ba40dddadb0dac36db9023183b3b1b87e7cba3f5",
+      "dimensions": [
+        1200,
+        24
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "line",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 8036
+        }
+      ],
+      "packing": [
+        {
+          "state": "line",
+          "sourceCell": [
+            0,
+            0,
+            1774,
+            887
+          ],
+          "crop": [
+            39,
+            407,
+            1738,
+            480
+          ],
+          "packedContentSize": [
+            1196,
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "file": "perk_card_sheet.png",
+      "bytes": 685643,
+      "sha256": "7f2fb662f364992a80dbe92e5241380ac0005062db677d3d04c70201a8703830",
+      "gitBlobSha": "8e65fcc2ac5ce75588b9c39aeb1bfd56fbaa3b42",
+      "dimensions": [
+        1680,
+        460
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "normal",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 248166
+        },
+        {
+          "state": "invested",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 248730
+        },
+        {
+          "state": "locked",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 248677
+        }
+      ],
+      "packing": [
+        {
+          "state": "normal",
+          "sourceCell": [
+            0,
+            0,
+            727,
+            721
+          ],
+          "crop": [
+            18,
+            69,
+            712,
+            614
+          ],
+          "packedContentSize": [
+            552,
+            452
+          ]
+        },
+        {
+          "state": "invested",
+          "sourceCell": [
+            727,
+            0,
+            1453,
+            721
+          ],
+          "crop": [
+            16,
+            68,
+            711,
+            614
+          ],
+          "packedContentSize": [
+            552,
+            452
+          ]
+        },
+        {
+          "state": "locked",
+          "sourceCell": [
+            1453,
+            0,
+            2180,
+            721
+          ],
+          "crop": [
+            17,
+            68,
+            711,
+            614
+          ],
+          "packedContentSize": [
+            552,
+            452
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B4_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B5",
+      "file": "perk_pip_sheet.png",
+      "bytes": 8186,
+      "sha256": "38b6f169d168f875cc7dd1c4508e3db45b9a1b2a8c2e0005bdab6e4d906896dc",
+      "gitBlobSha": "eb3809ffd57f5a4cafb79da3cd7bae2d4f42fd20",
+      "dimensions": [
+        120,
+        40
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "filled_gold",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 1116
+        },
+        {
+          "state": "empty_gold",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 635
+        },
+        {
+          "state": "empty_gray",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 638
+        }
+      ],
+      "packing": [
+        {
+          "state": "filled_gold",
+          "sourceCell": [
+            0,
+            0,
+            724,
+            724
+          ],
+          "crop": [
+            234,
+            186,
+            587,
+            538
+          ],
+          "packedContentSize": [
+            36,
+            36
+          ]
+        },
+        {
+          "state": "empty_gold",
+          "sourceCell": [
+            724,
+            0,
+            1448,
+            724
+          ],
+          "crop": [
+            180,
+            180,
+            544,
+            543
+          ],
+          "packedContentSize": [
+            36,
+            36
+          ]
+        },
+        {
+          "state": "empty_gray",
+          "sourceCell": [
+            1448,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            132,
+            180,
+            496,
+            543
+          ],
+          "packedContentSize": [
+            36,
+            36
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B6",
+      "file": "perk_btn_sheet.png",
+      "bytes": 168282,
+      "sha256": "940cfb69213b8e7cb328b0868f687af728e756815063f484260ac5abd2874e2e",
+      "gitBlobSha": "b86991e1ba0359905b68315eadd770f588bb40c5",
+      "dimensions": [
+        400,
+        360
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "no_rp",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 29472
+        },
+        {
+          "state": "available",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 29304
+        },
+        {
+          "state": "locked",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 29493
+        },
+        {
+          "state": "max",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 29275
+        }
+      ],
+      "packing": [
+        {
+          "state": "no_rp",
+          "sourceCell": [
+            0,
+            0,
+            1448,
+            284
+          ],
+          "crop": [
+            107,
+            51,
+            1342,
+            278
+          ],
+          "packedContentSize": [
+            392,
+            82
+          ]
+        },
+        {
+          "state": "available",
+          "sourceCell": [
+            0,
+            284,
+            1448,
+            541
+          ],
+          "crop": [
+            93,
+            14,
+            1355,
+            247
+          ],
+          "packedContentSize": [
+            392,
+            82
+          ]
+        },
+        {
+          "state": "locked",
+          "sourceCell": [
+            0,
+            541,
+            1448,
+            788
+          ],
+          "crop": [
+            102,
+            7,
+            1346,
+            237
+          ],
+          "packedContentSize": [
+            392,
+            82
+          ]
+        },
+        {
+          "state": "max",
+          "sourceCell": [
+            0,
+            788,
+            1448,
+            1086
+          ],
+          "crop": [
+            90,
+            7,
+            1358,
+            241
+          ],
+          "packedContentSize": [
+            392,
+            82
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B6_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B7",
+      "file": "ui_lock_icon.png",
+      "bytes": 15348,
+      "sha256": "15d1577443fd491fb745bc822052235d169e4074c9e04ef268b02a836badffca",
+      "gitBlobSha": "a83971afafd2cd84378b635a5f3af27b39f0cf83",
+      "dimensions": [
+        96,
+        96
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "lock",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 4867
+        }
+      ],
+      "packing": [
+        {
+          "state": "lock",
+          "sourceCell": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "crop": [
+            130,
+            46,
+            1121,
+            1213
+          ],
+          "packedContentSize": [
+            75,
+            88
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B8",
+      "file": "perk_req_chip.png",
+      "bytes": 39821,
+      "sha256": "b8ba3963549c8399535983aa0dcb022f8fd5fbbe5e9f2f623014b1def26c6a3d",
+      "gitBlobSha": "0d8c801f8b89c3ad07d55a8ae59a0780949b8c50",
+      "dimensions": [
+        420,
+        80
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "requirement",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 27686
+        }
+      ],
+      "packing": [
+        {
+          "state": "requirement",
+          "sourceCell": [
+            0,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            39,
+            176,
+            2134,
+            518
+          ],
+          "packedContentSize": [
+            412,
+            72
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B8_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B9",
+      "file": "perk_special_banner.png",
+      "bytes": 313797,
+      "sha256": "2ce5588a6db7f77340eca2ed92fd18a18002f7646400e742b4d3fc91b09d9045",
+      "gitBlobSha": "8f9be04a7453db89d0068353097d7087f3775203",
+      "dimensions": [
+        1840,
+        160
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "special",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 260733
+        }
+      ],
+      "packing": [
+        {
+          "state": "special",
+          "sourceCell": [
+            0,
+            0,
+            2126,
+            740
+          ],
+          "crop": [
+            20,
+            257,
+            2106,
+            478
+          ],
+          "packedContentSize": [
+            1832,
+            152
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B9_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B10",
+      "file": "perk_compass_icon.png",
+      "bytes": 37257,
+      "sha256": "37bee5819b2320691d327934dced43a86c867f03f47e1d6ef3e56fdc0d206880",
+      "gitBlobSha": "1206e5b0db7017c729a8475fbae169efc5526d5a",
+      "dimensions": [
+        160,
+        160
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "compass",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 11117
+        }
+      ],
+      "packing": [
+        {
+          "state": "compass",
+          "sourceCell": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "crop": [
+            19,
+            27,
+            1231,
+            1208
+          ],
+          "packedContentSize": [
+            152,
+            148
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B11",
+      "file": "perk_ancient_banner.png",
+      "bytes": 66022,
+      "sha256": "f878e4170979b5b87dcf8fec0fc94cf4a9b2e047832b114722d71523ba3ee1f4",
+      "gitBlobSha": "e9a419a0f4f99bdb53c84b516f7a29f35634bed2",
+      "dimensions": [
+        1100,
+        80
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "ancient",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 54691
+        }
+      ],
+      "packing": [
+        {
+          "state": "ancient",
+          "sourceCell": [
+            0,
+            0,
+            1470,
+            1070
+          ],
+          "crop": [
+            24,
+            438,
+            1447,
+            645
+          ],
+          "packedContentSize": [
+            1092,
+            72
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B11_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B12",
+      "file": "perk_ancient_card_sheet.png",
+      "bytes": 471089,
+      "sha256": "c4ba8e20182fc6c3d48c84682e8ae3886b61faa60b57fac21f655cc718dc78d4",
+      "gitBlobSha": "975c7efc24798559b5b9f16a0cf0d05afe99d26f",
+      "dimensions": [
+        600,
+        600
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "locked",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 112787
+        },
+        {
+          "state": "unlockable",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 112219
+        },
+        {
+          "state": "owned",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 112779
+        }
+      ],
+      "packing": [
+        {
+          "state": "locked",
+          "sourceCell": [
+            0,
+            0,
+            1254,
+            420
+          ],
+          "crop": [
+            25,
+            107,
+            1230,
+            414
+          ],
+          "packedContentSize": [
+            592,
+            192
+          ]
+        },
+        {
+          "state": "unlockable",
+          "sourceCell": [
+            0,
+            420,
+            1254,
+            815
+          ],
+          "crop": [
+            25,
+            44,
+            1230,
+            351
+          ],
+          "packedContentSize": [
+            592,
+            192
+          ]
+        },
+        {
+          "state": "owned",
+          "sourceCell": [
+            0,
+            815,
+            1254,
+            1254
+          ],
+          "crop": [
+            25,
+            7,
+            1230,
+            314
+          ],
+          "packedContentSize": [
+            592,
+            192
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B12_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B13",
+      "file": "perk_scroll_chip.png",
+      "bytes": 30667,
+      "sha256": "fb581c102c39918e6a70a8e9d4d1c8639813a73836ee14b76a744854ddafdb89",
+      "gitBlobSha": "7e4330f4915c4d59e0d23e04498aae111fa9a6d4",
+      "dimensions": [
+        320,
+        80
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "scroll_count",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 18985
+        }
+      ],
+      "packing": [
+        {
+          "state": "scroll_count",
+          "sourceCell": [
+            0,
+            0,
+            1983,
+            793
+          ],
+          "crop": [
+            45,
+            210,
+            1938,
+            570
+          ],
+          "packedContentSize": [
+            312,
+            72
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B13_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B14",
+      "file": "ic_scroll.png",
+      "bytes": 22325,
+      "sha256": "bf073675a86108cf3dade1b0b16daa6299b9cab7bd5d69d45eec0e381603e540",
+      "gitBlobSha": "b23cb24035e4c837f282074669610da05ad9f7c2",
+      "dimensions": [
+        128,
+        128
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "scroll",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 7633
+        }
+      ],
+      "packing": [
+        {
+          "state": "scroll",
+          "sourceCell": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "crop": [
+            84,
+            121,
+            1235,
+            1131
+          ],
+          "packedContentSize": [
+            120,
+            105
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B15",
+      "file": "perk_reset_btn.png",
+      "bytes": 258097,
+      "sha256": "445f41d342accc3f60648a2a4e708960fbcd50dfdef6b17abc547c7fc09e7204",
+      "gitBlobSha": "074da6e253cac69c6287305d591975f78fafb40b",
+      "dimensions": [
+        1000,
+        280
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "normal",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 122364
+        },
+        {
+          "state": "confirm",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 122453
+        }
+      ],
+      "packing": [
+        {
+          "state": "normal",
+          "sourceCell": [
+            0,
+            0,
+            1983,
+            396
+          ],
+          "crop": [
+            74,
+            94,
+            1910,
+            366
+          ],
+          "packedContentSize": [
+            992,
+            132
+          ]
+        },
+        {
+          "state": "confirm",
+          "sourceCell": [
+            0,
+            396,
+            1983,
+            793
+          ],
+          "crop": [
+            74,
+            35,
+            1909,
+            303
+          ],
+          "packedContentSize": [
+            992,
+            132
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/B15_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "B16",
+      "file": "ic_reset.png",
+      "bytes": 15236,
+      "sha256": "14773f0a9a23e7cad49872fce9165b82c5931f9b1966a54a144858739baec986",
+      "gitBlobSha": "e05d8fc129a035912e6ee551513574326ba0329e",
+      "dimensions": [
+        96,
+        96
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "reset",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 4689
+        }
+      ],
+      "packing": [
+        {
+          "state": "reset",
+          "sourceCell": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "crop": [
+            68,
+            102,
+            1175,
+            1158
+          ],
+          "packedContentSize": [
+            88,
+            84
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "file": "temple_back_btn.png",
+      "bytes": 104492,
+      "sha256": "11a5852d34b73f2a6fa56d65219142c2613084f8f843c3ba7b098e1acfb618f1",
+      "gitBlobSha": "6a0c20608c2e0e582d6669ac76f4294856d4d0b7",
+      "dimensions": [
+        360,
+        240
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "normal",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 35926
+        },
+        {
+          "state": "pressed",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 35879
+        }
+      ],
+      "packing": [
+        {
+          "state": "normal",
+          "sourceCell": [
+            0,
+            0,
+            1536,
+            512
+          ],
+          "crop": [
+            26,
+            134,
+            1511,
+            480
+          ],
+          "packedContentSize": [
+            352,
+            112
+          ]
+        },
+        {
+          "state": "pressed",
+          "sourceCell": [
+            0,
+            512,
+            1536,
+            1024
+          ],
+          "crop": [
+            26,
+            31,
+            1511,
+            377
+          ],
+          "packedContentSize": [
+            352,
+            112
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/C1_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "C2",
+      "file": "temple_currency_chip.png",
+      "bytes": 53204,
+      "sha256": "676d1873abf1f8ceeb763164784bd16b13c535d5c37ddc73377109195b3e9686",
+      "gitBlobSha": "b78d155557d8df7e3c4d24621f4d9a4dae57e075",
+      "dimensions": [
+        360,
+        120
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "currency",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 36243
+        }
+      ],
+      "packing": [
+        {
+          "state": "currency",
+          "sourceCell": [
+            0,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            123,
+            112,
+            1987,
+            595
+          ],
+          "packedContentSize": [
+            352,
+            112
+          ]
+        }
+      ],
+      "nineSliceTest": {
+        "scales": [
+          0.6,
+          2.2
+        ],
+        "pixelIdenticalCorners": "pass",
+        "proof": "qa/C2_nine_slice.jpg"
+      }
+    },
+    {
+      "id": "C3",
+      "file": "ui_notify_dot.png",
+      "bytes": 7870,
+      "sha256": "91ce18c86aec75ba47b5f2ded81689746fcc63e01f16312fe8c393e45d2d68dc",
+      "gitBlobSha": "84e74db4f8cbe2ec08a723bcba6aaebb36e28709",
+      "dimensions": [
+        64,
+        64
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "notification",
+          "alphaMin": 0,
+          "alphaMax": 255,
+          "visiblePixels": 2968
+        }
+      ],
+      "packing": [
+        {
+          "state": "notification",
+          "sourceCell": [
+            0,
+            0,
+            1254,
+            1254
+          ],
+          "crop": [
+            239,
+            239,
+            1015,
+            1001
+          ],
+          "packedContentSize": [
+            60,
+            59
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "file": "temple_sparkle_sheet.png",
+      "bytes": 38720,
+      "sha256": "825875af6cb75a37be3d4e8f414b32c39984d3888c3929b23399d3da018b4ffd",
+      "gitBlobSha": "9888dadaa218656ccb94d83aee6d75d69cfbec80",
+      "dimensions": [
+        768,
+        128
+      ],
+      "pngCRC_IEND_zlib_decode": "pass",
+      "states": [
+        {
+          "state": "spark0",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 16384
+        },
+        {
+          "state": "spark1",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 16384
+        },
+        {
+          "state": "spark2",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 16384
+        },
+        {
+          "state": "spark3",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 16384
+        },
+        {
+          "state": "spark4",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 16384
+        },
+        {
+          "state": "spark5",
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "visiblePixels": 16384
+        }
+      ],
+      "packing": [
+        {
+          "state": "spark0",
+          "sourceCell": [
+            0,
+            0,
+            362,
+            724
+          ],
+          "crop": [
+            12,
+            170,
+            347,
+            518
+          ],
+          "packedContentSize": [
+            116,
+            120
+          ]
+        },
+        {
+          "state": "spark1",
+          "sourceCell": [
+            362,
+            0,
+            724,
+            724
+          ],
+          "crop": [
+            12,
+            170,
+            347,
+            518
+          ],
+          "packedContentSize": [
+            116,
+            120
+          ]
+        },
+        {
+          "state": "spark2",
+          "sourceCell": [
+            724,
+            0,
+            1086,
+            724
+          ],
+          "crop": [
+            12,
+            170,
+            347,
+            518
+          ],
+          "packedContentSize": [
+            116,
+            120
+          ]
+        },
+        {
+          "state": "spark3",
+          "sourceCell": [
+            1086,
+            0,
+            1448,
+            724
+          ],
+          "crop": [
+            12,
+            170,
+            347,
+            518
+          ],
+          "packedContentSize": [
+            116,
+            120
+          ]
+        },
+        {
+          "state": "spark4",
+          "sourceCell": [
+            1448,
+            0,
+            1810,
+            724
+          ],
+          "crop": [
+            12,
+            170,
+            347,
+            518
+          ],
+          "packedContentSize": [
+            116,
+            120
+          ]
+        },
+        {
+          "state": "spark5",
+          "sourceCell": [
+            1810,
+            0,
+            2172,
+            724
+          ],
+          "crop": [
+            12,
+            170,
+            347,
+            518
+          ],
+          "packedContentSize": [
+            116,
+            120
+          ]
+        }
+      ]
+    }
+  ],
+  "publicationVerification": "Authoritative source bytes/hashes are below; final remote verification is recorded in docs/SESSION_HANDOFF.md.",
+  "proofs": [
+    "qa/A10_nine_slice.jpg",
+    "qa/A12_nine_slice.jpg",
+    "qa/A13_nine_slice.jpg",
+    "qa/A1_landscape.jpg",
+    "qa/A4_nine_slice.jpg",
+    "qa/A5_nine_slice.jpg",
+    "qa/A6_nine_slice.jpg",
+    "qa/A7_nine_slice.jpg",
+    "qa/A8_nine_slice.jpg",
+    "qa/A9_nine_slice.jpg",
+    "qa/B11_nine_slice.jpg",
+    "qa/B12_nine_slice.jpg",
+    "qa/B13_nine_slice.jpg",
+    "qa/B15_nine_slice.jpg",
+    "qa/B1_landscape.jpg",
+    "qa/B2_nine_slice.jpg",
+    "qa/B4_nine_slice.jpg",
+    "qa/B6_nine_slice.jpg",
+    "qa/B8_nine_slice.jpg",
+    "qa/B9_nine_slice.jpg",
+    "qa/C1_nine_slice.jpg",
+    "qa/C2_nine_slice.jpg",
+    "qa/all_states_01.jpg",
+    "qa/all_states_02.jpg",
+    "qa/all_states_03.jpg",
+    "qa/all_states_04.jpg",
+    "qa/nine_slice_overview_1.jpg",
+    "qa/nine_slice_overview_2.jpg",
+    "qa/nine_slice_overview_3.jpg",
+    "qa/nine_slice_overview_4.jpg",
+    "qa/alpha_edges.jpg"
+  ]
+}

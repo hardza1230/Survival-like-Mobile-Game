@@ -10,9 +10,9 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
 
-# Art order 21 — Temple Weave UI (written, awaiting art)
+# Art order 21 — Temple Weave UI (34 sources delivered)
 
-docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 text-free pieces (A Weave screen 14, B Flavor Passives 16, C shared 4) cut from the owner's two mockups (docs/art_orders/ref/21_temple_*_ref.webp) — backgrounds 1080×1920, 9-slice card/button/tab/bar sheets with nineSlice in MANIFEST, altar trio centerpiece. Delivery to assets/incoming/temple_weave_ui/. Hooks: buildUpgrade / buildRankPerks via Phaser nineslice, graphics fallback.
+docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 text-free PNG32 sources (A 14, B 16, C 4) delivered to assets/incoming/temple_weave_ui/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json, DELIVERY_README.md and qa/ previews. Two 1080×1920 backgrounds, 31 real-alpha UI sheets/pieces and one black-background sparkle VFX sheet. Twenty 9-slice assets tested horizontally at 0.6× and 2.2× with identical corner pixels; all 64 source states/frames reviewed. Runtime packing/registration and phone QA remain pending; this source delivery leaves the latest gameplay release unchanged.
 
 # Latest delivery: v7.8.48 — Replay = kills only
 

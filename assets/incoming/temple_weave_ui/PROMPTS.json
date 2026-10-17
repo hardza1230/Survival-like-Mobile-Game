@@ -1,0 +1,342 @@
+[
+  {
+    "id": "A1",
+    "file": "screen_temple_weave.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A1. Full portrait EMPTY confectionery fantasy temple interior background. Arched pink-blue stained glass high at top, candles cakes and small pink/cream flowers along far left and right edges, gold-inlaid marble floor at bottom. Central area x20%-80%, especially y27%-78%, is VERY DARK PLUM #2a1830, softly blurred low-detail empty space for overlaid UI. No altar gems or center objects, no interface panels. Heavy details only far side edges and bottom; center-cropped 16:9 landscape still works. Exact final canvas 1080x1920; 1 columns x 1 rows; each cell 1080x1920. Opaque seamless painting, do not render alpha, no UI elements.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      941,
+      1672
+    ]
+  },
+  {
+    "id": "A2",
+    "file": "temple_altar_trio.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A2. Single standalone centerpiece: curved ornate warm gold altar holding exactly three confectionery cores: glossy pink heart on left, luminous gold flame highest in center, blue gem shield on right. Pink cyan gold light ribbons entwine into loops around trio, charming cream pastry bases and tiny flowers. Same trio proportions and style as reference. No background, no UI, no words. Exact final canvas 1200x720; 1 columns x 1 rows; each cell 1200x720. For the panel sheet: ALL cells same exact silhouette, evenly spaced on transparent exterior; no center ornament; center and straight middle rails must stretch cleanly.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1619,
+      971
+    ]
+  },
+  {
+    "id": "A3",
+    "file": "temple_altar_glow_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A3. Three separate circular soft luminous magical core AURAS in ONE ROW: pink, gold, icy blue. Glow only, no physical heart flame shield, no rings of lettering. Transparent outside and translucent interior. Centered square cells, equal-size aura halos. Final 1200x400; layout 3 columns x 1 rows; 400x400 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "A4",
+    "file": "temple_title_frame.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A4. One VERY WIDE shallow decorative TITLE FRAME, center completely EMPTY AND TRANSPARENT for a live text title. Small gold four-point sparkle ornament at far left and right, thin elegant curved gold underline with curls confined to endcaps. No top opaque panel. Stretchable straight horizontal middle underline. No center medallion. Final 1400x200; layout 1 columns x 1 rows; 1400x200 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2073,
+      758
+    ]
+  },
+  {
+    "id": "A5",
+    "file": "temple_rank_ribbon.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A5. One extremely wide shallow warm gold SCROLL RIBBON with curled gold ends, dark cocoa-gold quiet flat interior, empty area for live rank text. End curls only, simple straight middle edges, no center jewel. Horizontal 11:1 silhouette. Final 1200x110; layout 1 columns x 1 rows; 1200x110 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "A6",
+    "file": "temple_tab_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A6. Exactly FOUR matching blank pill-shaped tab buttons stacked vertically. Top dark plum with gold rim; second amber-gold; third mint-green; fourth gold brighter highlighted available state. Each wide 4.3:1 button has a small EMPTY round recessed icon socket at left, huge blank smooth middle/right. No actual icons, no badges, no words. Rounded gold bevels and flat stretchable central sections. IDENTICAL geometry all states. Final packed size 560x520, STRICT 1 columns by 4 rows, each cell 560x130. Blank 9-slice UI asset, use straight smooth central rails with ornaments ONLY within corner/endcaps. Every state identical shape and scale. No additional symbols.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1466,
+      1073
+    ]
+  },
+  {
+    "id": "A7",
+    "file": "temple_power_bar.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A7. One VERY LONG THIN horizontal empty progress TRACK. Gold bevel frame, dark plum EMPTY interior track, gold vine ornaments ONLY within left and right endcaps. Straight uniform middle rails, no jewels in center, no fill, no lettering. Length to height 17.5:1. Final 1400x80; layout 1 columns x 1 rows; 1400x80 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1659,
+      948
+    ]
+  },
+  {
+    "id": "A8",
+    "file": "temple_power_fill.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A8. Exactly TWO extremely long thin glossy horizontal rounded progress FILL STRIPS stacked vertically: first warm gold gradient, second mint green gradient. Blank continuous smooth center, subtle bevel, no ornaments or UI containers. Each strip visual ratio30:1, same geometry. Final 1200x80; layout 1 columns x 2 rows; 1200x40 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "A9",
+    "file": "temple_core_card_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A9. Exactly THREE matching very wide 4.4:1 rounded rectangular blank CORE CARD PANELS stacked vertically. First pink luminous rim, second gold rim, third icy blue rim. All dark plum solid flat interiors. LEFT fifth has a large EMPTY ROUND GOLD icon medallion, without any core icon. MIDDLE x25%-72% must be flat empty dark plum for live text. RIGHT quarter separated by one thin ornamental GOLD VERTICAL DIVIDER, blank space beyond for separately drawn button. No embedded buttons, stars, text or numbers. Only tiny cream/pink flowers in corners. Top/bottom middle rails straight and repeatable. All geometry identical. Exact final canvas 1760x1200; 1 columns x 3 rows; each cell 1760x400. For the panel sheet: ALL cells same exact silhouette, evenly spaced on transparent exterior; no center ornament; center and straight middle rails must stretch cleanly.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1644,
+      957
+    ]
+  },
+  {
+    "id": "A10",
+    "file": "temple_core_card_max.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A10. Single very wide 4.4:1 blank CORE CARD matching the reference core panels: dark plum interior, softly radiant GOLD-MINT rim at max level; empty round GOLD medallion in left fifth, empty flat middle, right quarter with thin vertical gold divider. No embedded core icons, buttons, stars or text. Straight stretchable middle edges, subtle corner flowers only. Canvas 1760x400, 1 columns by 1 rows. EDIT TARGET. Preserve layout and medallion/divider placements. RECOLOR ALL pink rim highlights and pink decorative gems into luminous MINT GREEN with warm GOLD framing. Max-level palette gold + mint, ZERO pink on this asset. Keep empty dark plum interior.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2079,
+      756
+    ]
+  },
+  {
+    "id": "A11",
+    "file": "temple_star_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A11. Exactly THREE standalone five-point level stars in ONE ROW of equal square cells: solid warm gold filled star; dim muted gray empty recessed star; bonus bright gold star with tiny pink sparkle. No surrounding badges, no text. Final 192x64; layout 3 columns x 1 rows; 64x64 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "A12",
+    "file": "temple_buy_btn_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A12. Exactly FOUR matching blank horizontal 4:1 glossy BUY BUTTONS stacked vertically: rich green raised affordable; muted red insufficient funds; gray-purple max level; darker green depressed pressed. Soft beveled gold edge. Small EMPTY round currency icon socket left. Center and right empty flat for text. No symbols icons text or numbers. All dimensions identical, straight stretchable central rail. Final packed size 480x480, STRICT 1 columns by 4 rows, each cell 480x120. Blank 9-slice UI asset, use straight smooth central rails with ornaments ONLY within corner/endcaps. Every state identical shape and scale. No additional symbols.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1206,
+      1305
+    ]
+  },
+  {
+    "id": "A13",
+    "file": "temple_weave_btn_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A13. Exactly TWO matching large horizontal blank WEAVE BUTTONS stacked vertically, visual ratio4.55:1. First disabled gray-purple stone with silver beveled frame and a gray five-point star at left. Second ready bright warm gold frame and luminous gold interior with subtle tiny sparkles, GOLD star at left. Giant empty flat center/right for live text. Endcap flourishes only, identical silhouette; no embedded words or numbers. Final packed size 1000x440, STRICT 1 columns by 2 rows, each cell 1000x220. Blank 9-slice UI asset, use straight smooth central rails with ornaments ONLY within corner/endcaps. Every state identical shape and scale. No additional symbols.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1890,
+      832
+    ]
+  },
+  {
+    "id": "A14",
+    "file": "temple_ribbon_knot.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset A14. One small elegant knot of PINK and ICY BLUE glowing silk ribbons with a tiny gold diamond gem at center. Wide symmetrical looping knot connecting bottom card to action button. No background, no words. Final 400x200; layout 1 columns x 1 rows; 400x200 per cell. Do NOT include text from the reference screen. Only the specific isolated blank asset, real alpha outside. For 9-slice straight clean repeatable middle edges.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1774,
+      887
+    ]
+  },
+  {
+    "id": "B1",
+    "file": "screen_temple_perks.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B1. EMPTY portrait confectionery fantasy cathedral hall background: pink-and-blue stained glass at TOP, rose marble pillars far left/right with gold trim, tiny cream pastry flowers at bottom corners, circular marble floor motif near bottom. Slightly brighter than weave hall but central x18%-82% y25%-85% very dark softly blurred plum low detail for perk cards. No interface, no panels, no altar cores. Safe for central 16:9 crop. Exact final canvas 1080x1920; 1 columns x 1 rows; each cell 1080x1920. Opaque seamless painting, do not render alpha, no UI elements.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      941,
+      1672
+    ]
+  },
+  {
+    "id": "B2",
+    "file": "perk_tier_banner.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B2. Single long thin ruby-pink TIER LABEL BANNER with GOLD bevel, pointed right tail, small gold four-petal diamond flower emblem at LEFT end. Center absolutely BLANK for live text. Simple straight repeatable middle top/bottom rails, endcap decoration only. Final packed size 880x90, STRICT 1 columns by 1 rows, each cell 880x90. Blank 9-slice UI asset, use straight smooth central rails with ornaments ONLY within corner/endcaps. Every state identical shape and scale. No additional symbols.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2146,
+      732
+    ]
+  },
+  {
+    "id": "B3",
+    "file": "perk_tier_line.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B3. One ultra-thin warm GOLD horizontal divider line, perfectly straight middle with tiny four-point gold star sparkle at far RIGHT end. No left ornament, no text, no banner. Extreme 50:1 overall ratio. Final 1200x24, 1 columns x 1 rows, 1200x24 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1774,
+      887
+    ]
+  },
+  {
+    "id": "B4",
+    "file": "perk_card_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B4. Exactly THREE matching upright rectangular blank PERK CARD PANELS in ONE HORIZONTAL ROW. All same 560:460 ratio. First normal dark plum flat fill and thin rounded gold frame. Second invested warm plum flat fill with softly luminous gold rim. Third locked dim slate-plum flat fill with dull silver-gray rim. Entire interior EMPTY, including top center icon area. Absolutely no icons, pips, button shapes, emblems or lettering. Simple straight stretchable middle edges and uniform flat center. Very subtle corner flourishes, all inside corner squares. Final packed size 1680x460, STRICT 3 columns by 1 rows, each cell 560x460. Blank 9-slice UI asset, use straight smooth central rails with ornaments ONLY within corner/endcaps. Every state identical shape and scale. No additional symbols.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2180,
+      721
+    ]
+  },
+  {
+    "id": "B5",
+    "file": "perk_pip_sheet.png",
+    "prompt": "Production tiny UI rank pips. EXACTLY THREE BASIC SIMPLE CIRCLES IN ONE HORIZONTAL ROW, equally sized square cells on real transparent background: 1 glossy filled GOLD round DOT; 2 thin GOLD circular RING with fully TRANSPARENT center; 3 thin GRAY circular RING with fully TRANSPARENT center. Nothing surrounds these circles. NO medallion, no badge, no flower, no diamond, no additional border, no purple backing, no ornaments. These are simple 16px UI status dots. Target 120x40 sheet of three40x40 cells. No text.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "B6",
+    "file": "perk_btn_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B6. Exactly FOUR matching small blank wide pill buttons stacked vertically: dark gray unavailable; softly glowing warm gold available; muted cool-gray locked; mint-green max. EMPTY flat centers, gold bevel on gold/mint states and muted silver bevel on gray states. No padlocks, words, symbols, numbers or icons. Identical shapes, straight central rails. Final 400x360, 1 columns x 4 rows, 400x90 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "B7",
+    "file": "ui_lock_icon.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B7. Single cute premium game GOLD PADLOCK icon, front facing, rounded body, strong thick shackle and simple dark keyhole, gold-caramel bevel. No letters. Clean readable silhouette at22px. Final 96x96, 1 columns x 1 rows, 96x96 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "B8",
+    "file": "perk_req_chip.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B8. Single small wide dark PLUM requirement pill chip with fine GOLD rim. EMPTY small round socket at left for separately overlaid lock icon. Right and center EMPTY smooth dark for live text. No actual lock, no words. Straight repeatable center rails. Final 420x80, 1 columns x 1 rows, 420x80 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "B9",
+    "file": "perk_special_banner.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B9. Single extremely WIDE shallow TEAL SPECIAL CORES banner, fine raised GOLD frame, pointed endcaps both sides. Small EMPTY circular icon recess in left endcap; right endcap blank space for separately drawn arrow. Faint low-contrast silhouette of rounded mochi town turrets and trees confined to endcaps, uniform smooth dark teal middle50%. No compass, no arrows, no gems, no currency, NO lettering. Simple straight repeatable horizontal central rails, visually11.5:1. Final packed size 1840x160, STRICT 1 columns by 1 rows, each cell 1840x160. Blank 9-slice UI asset, use straight smooth central rails with ornaments ONLY within corner/endcaps. Every state identical shape and scale. No additional symbols.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2126,
+      740
+    ]
+  },
+  {
+    "id": "B10",
+    "file": "perk_compass_icon.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B10. Single beautiful stylized GOLD compass rose icon with cyan gem center and delicate circular gold ring. Four long and four short directional gold points. No letters, no N E S W, no numbers. Readable mobile icon, no background. Final 160x160, 1 columns x 1 rows, 160x160 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "B11",
+    "file": "perk_ancient_banner.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B11. Single very long shallow AMETHYST PURPLE ancient section banner with thin gold trim, small purple crystalline four-petal flower in LEFT endcap. Center empty flat dark purple for live heading. Right end simple pointed tail. Straight repeatable central rails, no runes or text. Final 1100x80, 1 columns x 1 rows, 1100x80 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1470,
+      1070
+    ]
+  },
+  {
+    "id": "B12",
+    "file": "perk_ancient_card_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B12. Exactly THREE matching blank horizontal3:1 ANCIENT PERK card panels stacked vertically. First locked dim dark slate with gray border; second unlockable plum with luminous amethyst purple border; third owned plum with bright gold border. LEFT quarter has an EMPTY subtle icon recess and small EMPTY spot near lower-left for code lock; middle/right absolutely EMPTY flat dark surface. No embedded icons, no padlocks, no words, no decorative runes. Rounded corners and straight repeatable middle rails. Canvas 600x600, 1 columns by 3 rows. EDIT TARGET. Preserve all THREE states and exact 3:1 card geometry. REMOVE the decorative diamonds at the CENTER of the TOP and BOTTOM edges of EACH of the three panels, replacing their locations with straight uniform matching rail. Also REMOVE the separate vertical ornamental divider at left-third, leave a smooth plain blank middle. Keep the empty left medallion and small lock socket and corner decoration. No center-edge jewels anywhere.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "B13",
+    "file": "perk_scroll_chip.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B13. Single small wide plum parchment-count pill chip with thin warm gold rim. Empty left icon socket, blank smooth middle/right. No scroll icon, no text, no digits. Rounded corners straight middle rails. Final 320x80, 1 columns x 1 rows, 320x80 each cell. NO added icons, text, labels or center rail ornaments. Fully isolated elements with real transparent exterior and clear margin.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1983,
+      793
+    ]
+  },
+  {
+    "id": "B14",
+    "file": "ic_scroll.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B14. Single small ancient SCROLL FRAGMENT icon, rolled cream parchment with warm gold ends, slight pink-purple magical shine. Blank parchment with NO markings, no runes, no letters. Cute glossy fantasy game inventory icon. Canvas 128x128, 1 columns by 1 rows. ",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "B15",
+    "file": "perk_reset_btn.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B15. Exactly TWO matching long blank horizontal RESET BUTTONS stacked vertically. First wine-red dark fill fine GOLD border; second brighter ruby-red confirmation fill and brighter gold border glow. Rounded oblong shape with small angular gold endcaps. NO icons, arrows, diamonds, text or numbers; center entirely flat blank. Straight repeatable central rails. Canvas 1000x280, 1 columns by 2 rows. ",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1983,
+      793
+    ]
+  },
+  {
+    "id": "B16",
+    "file": "ic_reset.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset B16. Single compact symbol of TWO curved arrows forming a RESET CIRCLE, pink luminous enamel and warm gold highlights, clean bold silhouette. No letters, no background. Canvas 96x96, 1 columns by 1 rows. ",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "C1",
+    "file": "temple_back_btn.png",
+    "prompt": "Edit target image, ONLY remove all the diffuse gold/brown background haze and ALL external drop shadows/outer glow around both buttons, leaving the two button silhouettes isolated on genuinely transparent alpha. Preserve both plum buttons with gold trim, cream left-chevron on each, no text, same two vertical states, no added details. Button faces opaque. Completely transparent background and empty space between buttons. Crisp clean cutout, no halo. This is a production two-state UI sheet.",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "id": "C2",
+    "file": "temple_currency_chip.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset C2. Single horizontal3:1 dark plum rounded currency chip, fine gold rim. LEFT quarter has EMPTY circular recess for code currency icon, middle/right flat blank dark for number. No icon or digits or text. Canvas 360x120, 1 columns by 1 rows. ",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  },
+  {
+    "id": "C3",
+    "file": "ui_notify_dot.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset C3. Single round red-PINK glossy notification DOT with thin IVORY WHITE rim. Simple clean circle, no numbers or exclamation or letters. No shadow beyond small rim. Canvas 64x64, 1 columns by 1 rows. ",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "C4",
+    "file": "temple_sparkle_sheet.png",
+    "prompt": "Use case: ui-mockup. Production separable PNG game UI asset for Mochi Mayhem Temple Weave, matching the attached references ONLY for style (do NOT reproduce the whole interface). Front-on orthographic crisp high-quality painted game UI, dark plum #2a1830, warm gold #e8c27a, pink #ff7aa8, glossy softly beveled gold, charming confectionery fantasy temple. ABSOLUTELY NO TEXT, letters, digits, runes, watermarks or labels. Every requested cell contains ONLY its isolated asset, no other UI. Transparent exterior REAL alpha, not checkerboard. Keep 3% clear padding, no cast shadow and no outer glow beyond12 target pixels. Asset C4. Exactly SIX sequential sparkle animation frames in ONE ROW, equal square cells. Gold-white four-point star twinkle: tiny dim dot, growing gold sparkle, bright star, peak white-gold star, shrinking gold star, faint dot. Consistent center and no cropping. Pure solid BLACK background #000, NOT transparent. No text. Canvas 768x128, 6 columns by 1 rows. ",
+    "method": "built-in imagegen",
+    "sourceDimensions": [
+      2172,
+      724
+    ]
+  }
+]

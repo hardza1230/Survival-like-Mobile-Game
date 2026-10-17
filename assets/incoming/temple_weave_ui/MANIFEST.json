@@ -1,0 +1,676 @@
+[
+  {
+    "key": "screen_temple_weave",
+    "file": "screen_temple_weave.png",
+    "width": 1080,
+    "height": 1920,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1080,
+    "cellHeight": 1920,
+    "background": "opaque",
+    "states": [
+      "background"
+    ],
+    "nineSlice": null,
+    "sha256": "95890c56f3e938c8f6e564df293eb1a08579849a7f4e3858f58e843eb22caf0a"
+  },
+  {
+    "key": "temple_altar_trio",
+    "file": "temple_altar_trio.png",
+    "width": 1200,
+    "height": 720,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1200,
+    "cellHeight": 720,
+    "background": "transparent",
+    "states": [
+      "trio"
+    ],
+    "nineSlice": null,
+    "sha256": "01ab4afc56b3e64728eec4b6187e2cbd0c6c0a0fd878f6ea67ffac5488a39093"
+  },
+  {
+    "key": "temple_altar_glow_sheet",
+    "file": "temple_altar_glow_sheet.png",
+    "width": 1200,
+    "height": 400,
+    "columns": 3,
+    "rows": 1,
+    "cellWidth": 400,
+    "cellHeight": 400,
+    "background": "transparent",
+    "states": [
+      "pink",
+      "gold",
+      "blue"
+    ],
+    "nineSlice": null,
+    "sha256": "1e25b6307ee482589b3fbf78ab395678b5a73078994fff1c6c38dfdcbc84cae4"
+  },
+  {
+    "key": "temple_title_frame",
+    "file": "temple_title_frame.png",
+    "width": 1400,
+    "height": 200,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1400,
+    "cellHeight": 200,
+    "background": "transparent",
+    "states": [
+      "title"
+    ],
+    "nineSlice": [
+      320,
+      60,
+      320,
+      60
+    ],
+    "sha256": "7ac7ef3796f93add296546f8435d6fb9a418cce727d874ec3edc307053853ac1"
+  },
+  {
+    "key": "temple_rank_ribbon",
+    "file": "temple_rank_ribbon.png",
+    "width": 1200,
+    "height": 110,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1200,
+    "cellHeight": 110,
+    "background": "transparent",
+    "states": [
+      "rank"
+    ],
+    "nineSlice": [
+      140,
+      35,
+      140,
+      35
+    ],
+    "sha256": "fb05015fcb553d320596d2f87981b3e7cb6d8708cac84962eef49537b8a68060"
+  },
+  {
+    "key": "temple_tab_sheet",
+    "file": "temple_tab_sheet.png",
+    "width": 560,
+    "height": 520,
+    "columns": 1,
+    "rows": 4,
+    "cellWidth": 560,
+    "cellHeight": 130,
+    "background": "transparent",
+    "states": [
+      "purple",
+      "gold",
+      "mint",
+      "gold_attention"
+    ],
+    "nineSlice": [
+      145,
+      35,
+      75,
+      35
+    ],
+    "sha256": "ea5d6cc32fb728871b8fa20a43db5dc36ae5bdc52e0b03983480d0072c11c83e"
+  },
+  {
+    "key": "temple_power_bar",
+    "file": "temple_power_bar.png",
+    "width": 1400,
+    "height": 80,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1400,
+    "cellHeight": 80,
+    "background": "transparent",
+    "states": [
+      "track"
+    ],
+    "nineSlice": [
+      110,
+      24,
+      110,
+      24
+    ],
+    "sha256": "f265565977fa8e1d20b7d3e3a8f6559d8a67692bfb504f9643b37cb1417d2f49"
+  },
+  {
+    "key": "temple_power_fill",
+    "file": "temple_power_fill.png",
+    "width": 1200,
+    "height": 80,
+    "columns": 1,
+    "rows": 2,
+    "cellWidth": 1200,
+    "cellHeight": 40,
+    "background": "transparent",
+    "states": [
+      "gold",
+      "mint"
+    ],
+    "nineSlice": [
+      24,
+      12,
+      24,
+      12
+    ],
+    "sha256": "c0663d8ee9b09aed662a544b1b299232a0e8cb9882b6236b860d66dfc8d3cd39"
+  },
+  {
+    "key": "temple_core_card_sheet",
+    "file": "temple_core_card_sheet.png",
+    "width": 1760,
+    "height": 1200,
+    "columns": 1,
+    "rows": 3,
+    "cellWidth": 1760,
+    "cellHeight": 400,
+    "background": "transparent",
+    "states": [
+      "core_pink",
+      "flavor_gold",
+      "bond_blue"
+    ],
+    "nineSlice": [
+      450,
+      80,
+      560,
+      80
+    ],
+    "sha256": "8451b92384efb52740919ed810d466cb2b80ddd7ed1a20d29be9a924a941abc3"
+  },
+  {
+    "key": "temple_core_card_max",
+    "file": "temple_core_card_max.png",
+    "width": 1760,
+    "height": 400,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1760,
+    "cellHeight": 400,
+    "background": "transparent",
+    "states": [
+      "max"
+    ],
+    "nineSlice": [
+      520,
+      80,
+      500,
+      80
+    ],
+    "sha256": "2412c9950b5fc2aeeb29eab65e93df27f6d51378589f49b029b7849c4fab97b3"
+  },
+  {
+    "key": "temple_star_sheet",
+    "file": "temple_star_sheet.png",
+    "width": 192,
+    "height": 64,
+    "columns": 3,
+    "rows": 1,
+    "cellWidth": 64,
+    "cellHeight": 64,
+    "background": "transparent",
+    "states": [
+      "filled_gold",
+      "empty_gray",
+      "bonus_pink"
+    ],
+    "nineSlice": null,
+    "sha256": "45501eb35fb7d5818521358fe1938cc34351510017d0227bd36c99d81a79e032"
+  },
+  {
+    "key": "temple_buy_btn_sheet",
+    "file": "temple_buy_btn_sheet.png",
+    "width": 480,
+    "height": 480,
+    "columns": 1,
+    "rows": 4,
+    "cellWidth": 480,
+    "cellHeight": 120,
+    "background": "transparent",
+    "states": [
+      "affordable",
+      "insufficient",
+      "max",
+      "pressed"
+    ],
+    "nineSlice": [
+      150,
+      32,
+      80,
+      32
+    ],
+    "sha256": "acecd11fa719af6e4f2ff3e59a0255f28e2b6b1f50aa67a1b76dabedd21f12cf"
+  },
+  {
+    "key": "temple_weave_btn_sheet",
+    "file": "temple_weave_btn_sheet.png",
+    "width": 1000,
+    "height": 440,
+    "columns": 1,
+    "rows": 2,
+    "cellWidth": 1000,
+    "cellHeight": 220,
+    "background": "transparent",
+    "states": [
+      "locked",
+      "ready"
+    ],
+    "nineSlice": [
+      270,
+      60,
+      150,
+      60
+    ],
+    "sha256": "a36abed19840855f7a06f497edb043a18b7067043abb486b92ebf31a75ad085c"
+  },
+  {
+    "key": "temple_ribbon_knot",
+    "file": "temple_ribbon_knot.png",
+    "width": 400,
+    "height": 200,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 400,
+    "cellHeight": 200,
+    "background": "transparent",
+    "states": [
+      "knot"
+    ],
+    "nineSlice": null,
+    "sha256": "e4913e1b4bfa4118850ff4ed2b6f997644d09b01f09554d05d6f98d7cceff394"
+  },
+  {
+    "key": "screen_temple_perks",
+    "file": "screen_temple_perks.png",
+    "width": 1080,
+    "height": 1920,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1080,
+    "cellHeight": 1920,
+    "background": "opaque",
+    "states": [
+      "background"
+    ],
+    "nineSlice": null,
+    "sha256": "92295b3cc1487f2c6a892f5092a5ca4411ea22cd26a029e1e17f2ecb71d760ce"
+  },
+  {
+    "key": "perk_tier_banner",
+    "file": "perk_tier_banner.png",
+    "width": 880,
+    "height": 90,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 880,
+    "cellHeight": 90,
+    "background": "transparent",
+    "states": [
+      "tier"
+    ],
+    "nineSlice": [
+      180,
+      24,
+      90,
+      24
+    ],
+    "sha256": "0f1908a628614418781624f40ba3e20f9fcd01a56c2822991de51d631ec26bb8"
+  },
+  {
+    "key": "perk_tier_line",
+    "file": "perk_tier_line.png",
+    "width": 1200,
+    "height": 24,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1200,
+    "cellHeight": 24,
+    "background": "transparent",
+    "states": [
+      "line"
+    ],
+    "nineSlice": null,
+    "sha256": "02f2c0b6674c69a0d9a73753317e975590663692ac7c249739172f4c41462f2a"
+  },
+  {
+    "key": "perk_card_sheet",
+    "file": "perk_card_sheet.png",
+    "width": 1680,
+    "height": 460,
+    "columns": 3,
+    "rows": 1,
+    "cellWidth": 560,
+    "cellHeight": 460,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "invested",
+      "locked"
+    ],
+    "nineSlice": [
+      64,
+      64,
+      64,
+      64
+    ],
+    "sha256": "7f2fb662f364992a80dbe92e5241380ac0005062db677d3d04c70201a8703830"
+  },
+  {
+    "key": "perk_pip_sheet",
+    "file": "perk_pip_sheet.png",
+    "width": 120,
+    "height": 40,
+    "columns": 3,
+    "rows": 1,
+    "cellWidth": 40,
+    "cellHeight": 40,
+    "background": "transparent",
+    "states": [
+      "filled_gold",
+      "empty_gold",
+      "empty_gray"
+    ],
+    "nineSlice": null,
+    "sha256": "38b6f169d168f875cc7dd1c4508e3db45b9a1b2a8c2e0005bdab6e4d906896dc"
+  },
+  {
+    "key": "perk_btn_sheet",
+    "file": "perk_btn_sheet.png",
+    "width": 400,
+    "height": 360,
+    "columns": 1,
+    "rows": 4,
+    "cellWidth": 400,
+    "cellHeight": 90,
+    "background": "transparent",
+    "states": [
+      "no_rp",
+      "available",
+      "locked",
+      "max"
+    ],
+    "nineSlice": [
+      54,
+      24,
+      54,
+      24
+    ],
+    "sha256": "940cfb69213b8e7cb328b0868f687af728e756815063f484260ac5abd2874e2e"
+  },
+  {
+    "key": "ui_lock_icon",
+    "file": "ui_lock_icon.png",
+    "width": 96,
+    "height": 96,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 96,
+    "cellHeight": 96,
+    "background": "transparent",
+    "states": [
+      "lock"
+    ],
+    "nineSlice": null,
+    "sha256": "15d1577443fd491fb745bc822052235d169e4074c9e04ef268b02a836badffca"
+  },
+  {
+    "key": "perk_req_chip",
+    "file": "perk_req_chip.png",
+    "width": 420,
+    "height": 80,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 420,
+    "cellHeight": 80,
+    "background": "transparent",
+    "states": [
+      "requirement"
+    ],
+    "nineSlice": [
+      115,
+      22,
+      60,
+      22
+    ],
+    "sha256": "b8ba3963549c8399535983aa0dcb022f8fd5fbbe5e9f2f623014b1def26c6a3d"
+  },
+  {
+    "key": "perk_special_banner",
+    "file": "perk_special_banner.png",
+    "width": 1840,
+    "height": 160,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1840,
+    "cellHeight": 160,
+    "background": "transparent",
+    "states": [
+      "special"
+    ],
+    "nineSlice": [
+      480,
+      44,
+      440,
+      44
+    ],
+    "sha256": "2ce5588a6db7f77340eca2ed92fd18a18002f7646400e742b4d3fc91b09d9045"
+  },
+  {
+    "key": "perk_compass_icon",
+    "file": "perk_compass_icon.png",
+    "width": 160,
+    "height": 160,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 160,
+    "cellHeight": 160,
+    "background": "transparent",
+    "states": [
+      "compass"
+    ],
+    "nineSlice": null,
+    "sha256": "37bee5819b2320691d327934dced43a86c867f03f47e1d6ef3e56fdc0d206880"
+  },
+  {
+    "key": "perk_ancient_banner",
+    "file": "perk_ancient_banner.png",
+    "width": 1100,
+    "height": 80,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 1100,
+    "cellHeight": 80,
+    "background": "transparent",
+    "states": [
+      "ancient"
+    ],
+    "nineSlice": [
+      180,
+      22,
+      80,
+      22
+    ],
+    "sha256": "f878e4170979b5b87dcf8fec0fc94cf4a9b2e047832b114722d71523ba3ee1f4"
+  },
+  {
+    "key": "perk_ancient_card_sheet",
+    "file": "perk_ancient_card_sheet.png",
+    "width": 600,
+    "height": 600,
+    "columns": 1,
+    "rows": 3,
+    "cellWidth": 600,
+    "cellHeight": 200,
+    "background": "transparent",
+    "states": [
+      "locked",
+      "unlockable",
+      "owned"
+    ],
+    "nineSlice": [
+      220,
+      40,
+      70,
+      40
+    ],
+    "sha256": "c4ba8e20182fc6c3d48c84682e8ae3886b61faa60b57fac21f655cc718dc78d4"
+  },
+  {
+    "key": "perk_scroll_chip",
+    "file": "perk_scroll_chip.png",
+    "width": 320,
+    "height": 80,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 320,
+    "cellHeight": 80,
+    "background": "transparent",
+    "states": [
+      "scroll_count"
+    ],
+    "nineSlice": [
+      100,
+      22,
+      40,
+      22
+    ],
+    "sha256": "fb581c102c39918e6a70a8e9d4d1c8639813a73836ee14b76a744854ddafdb89"
+  },
+  {
+    "key": "ic_scroll",
+    "file": "ic_scroll.png",
+    "width": 128,
+    "height": 128,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 128,
+    "cellHeight": 128,
+    "background": "transparent",
+    "states": [
+      "scroll"
+    ],
+    "nineSlice": null,
+    "sha256": "bf073675a86108cf3dade1b0b16daa6299b9cab7bd5d69d45eec0e381603e540"
+  },
+  {
+    "key": "perk_reset_btn",
+    "file": "perk_reset_btn.png",
+    "width": 1000,
+    "height": 280,
+    "columns": 1,
+    "rows": 2,
+    "cellWidth": 1000,
+    "cellHeight": 140,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "confirm"
+    ],
+    "nineSlice": [
+      110,
+      38,
+      110,
+      38
+    ],
+    "sha256": "445f41d342accc3f60648a2a4e708960fbcd50dfdef6b17abc547c7fc09e7204"
+  },
+  {
+    "key": "ic_reset",
+    "file": "ic_reset.png",
+    "width": 96,
+    "height": 96,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 96,
+    "cellHeight": 96,
+    "background": "transparent",
+    "states": [
+      "reset"
+    ],
+    "nineSlice": null,
+    "sha256": "14773f0a9a23e7cad49872fce9165b82c5931f9b1966a54a144858739baec986"
+  },
+  {
+    "key": "temple_back_btn",
+    "file": "temple_back_btn.png",
+    "width": 360,
+    "height": 240,
+    "columns": 1,
+    "rows": 2,
+    "cellWidth": 360,
+    "cellHeight": 120,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "pressed"
+    ],
+    "nineSlice": [
+      120,
+      32,
+      65,
+      32
+    ],
+    "sha256": "11a5852d34b73f2a6fa56d65219142c2613084f8f843c3ba7b098e1acfb618f1"
+  },
+  {
+    "key": "temple_currency_chip",
+    "file": "temple_currency_chip.png",
+    "width": 360,
+    "height": 120,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 360,
+    "cellHeight": 120,
+    "background": "transparent",
+    "states": [
+      "currency"
+    ],
+    "nineSlice": [
+      150,
+      32,
+      55,
+      32
+    ],
+    "sha256": "676d1873abf1f8ceeb763164784bd16b13c535d5c37ddc73377109195b3e9686"
+  },
+  {
+    "key": "ui_notify_dot",
+    "file": "ui_notify_dot.png",
+    "width": 64,
+    "height": 64,
+    "columns": 1,
+    "rows": 1,
+    "cellWidth": 64,
+    "cellHeight": 64,
+    "background": "transparent",
+    "states": [
+      "notification"
+    ],
+    "nineSlice": null,
+    "sha256": "91ce18c86aec75ba47b5f2ded81689746fcc63e01f16312fe8c393e45d2d68dc"
+  },
+  {
+    "key": "temple_sparkle_sheet",
+    "file": "temple_sparkle_sheet.png",
+    "width": 768,
+    "height": 128,
+    "columns": 6,
+    "rows": 1,
+    "cellWidth": 128,
+    "cellHeight": 128,
+    "background": "#000000",
+    "states": [
+      "spark0",
+      "spark1",
+      "spark2",
+      "spark3",
+      "spark4",
+      "spark5"
+    ],
+    "nineSlice": null,
+    "sha256": "825875af6cb75a37be3d4e8f414b32c39984d3888c3929b23399d3da018b4ffd"
+  }
+]

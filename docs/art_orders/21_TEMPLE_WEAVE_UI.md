@@ -1,6 +1,6 @@
 # 21 — Temple Weave UI (หน้า Flavor Weave Temple + Flavor Passives) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟨 รอผลิต (17 ต.ค. 2026) · อิง runtime v7.8.46 · อ่าน `00_STYLE_GUIDE.md` ก่อน
+สถานะ: ส่งต้นฉบับ PNG32 ครบ 34 ไฟล์แล้ว (17 ต.ค. 2026) — รอแพ็ก/ผูก runtime · ดู `assets/incoming/temple_weave_ui/DELIVERY_README.md` · อิง runtime v7.8.46 · อ่าน `00_STYLE_GUIDE.md` ก่อน
 ส่งไฟล์ที่ `assets/incoming/temple_weave_ui/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 20)
 
 ## ภาพอ้างอิง (mood / layout เป้าหมาย)
@@ -111,3 +111,4 @@
 - `buildRankPerks`: B1 แทน `screen_weave_perks` · B2/B3 แทนข้อความ `TIER n` · B4/B5/B6 แทนการ์ด/จุด/ปุ่ม Perk · B8 ป้าย Requires · B9/B10 แบนเนอร์ SPECIAL CORES · B11–B14 ส่วน Ancient · B15/B16 ปุ่ม Reset
 - ทุกชิ้นต้องมี fallback เป็น graphics เดิมถ้าโหลดไม่ขึ้น · ข้อความทั้งหมดยังเป็นภาษาอังกฤษจากโค้ด
 - หมายเหตุ: ข้อความในภาพอ้างอิงบางจุดไม่ตรงเกมจริง (เช่น Treasure Sense "drop chests" จริงคือ shovels, Deep Roots ตัวเลขต่าง, เงินในหน้า Special Cores ใช้ Weave Thread ไม่ใช่เพชร) → ยึดข้อความจากโค้ด
+
