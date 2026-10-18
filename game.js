@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.74';
+const GAME_VERSION = '7.8.75';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.75',date:'2026-10-18',title:'Recommended Power',items:['Recommended Power on stage cards now matches the new monster and boss strength (lower for Chapter 2, higher for C3-4 and C3-5)']},
   {v:'7.8.74',date:'2026-10-18',title:'Spark Unique Tuning',items:['Storm Mark: the Spark storm it sprays deals half damage (the mark strike and blast are unchanged)']},
   {v:'7.8.73',date:'2026-10-18',title:'Card Text Fixes',items:['Taro: Spark Build and Sentry Build cards describe how they work now (3 sentries, no boss chasing); Spark pierce card renamed High Voltage','Mint: Packed Quiver now says what it really does (+18% shard damage at the 2-lance cap)']},
   {v:'7.8.72',date:'2026-10-18',title:'Spark Fix',items:['Fixed Taro’s Spark normal attack sometimes not firing when the screen was full of Sparks (the Unique’s Sparks no longer use up the limit, and new casts replace the oldest Sparks)']},
@@ -6118,9 +6119,10 @@ function gearADDelta(item,base){try{const d=Save.data,cid=d.character||'momo',sl
   const b0=base||heroAD(cid,null),list=d.gearItems||(d.gearItems=[]),added=!list.includes(item);if(added)list.push(item);eq[slot]=item.uid;let n=b0;try{n=heroAD(cid,null);}finally{if(prev===undefined)delete eq[slot];else eq[slot]=prev;if(added)list.splice(list.indexOf(item),1);}return {a:n.a-b0.a,d:n.d-b0.d};}catch(e){return {a:0,d:0};}}
 function heroPower(cid,basic){const p=computeHeroStats(cid,basic);return Math.max(1,Math.round(100*Math.sqrt(heroOffense(p,cid)*RUN_CARD_OFF*heroDefense(p)*RUN_CARD_DEF/90)));}
 // Power แนะนำต่อด่าน = คิดจากตัวเลขศัตรูจริงของด่าน (HP/ดาเมจ มอน + บอส) เทียบด่าน 1 · ปรับสูตรศัตรู = ค่าแนะนำตามเอง
-function stageThreat(i){const st=STAGES[i]||STAGES[0],c2=i===6?BALANCE.c2Mycelium:i===7?BALANCE.c2Nectar:i===8?BALANCE.c2Seasons:i===9?BALANCE.c2Root:{hp:1,dmg:1};
-  const mobHp=stageCurveValue(i,[1,1.42,1.88,2.42,3.05,3.72],1.28)*(c2.hp||1)*(i>=2&&i<=4?1.1:1),mobDmg=stageCurveValue(i,[1,1.05,1.12,1.20,1.30,1.42],1.09)*(c2.dmg||1);
-  const bossHp=(st.bossHp||920)*(2+i*0.13)*realStageBossMul(i),bossDmg=st.bossDmg||25;return {hp:Math.sqrt(mobHp*bossHp),dmg:Math.sqrt(mobDmg*bossDmg)};}
+function stageThreat(i){const st=STAGES[i]||STAGES[0];   // v7.8.75 เจ้าของ: Power แนะนำคิดจากเส้นมอน/บอสชุดใหม่ (v7.8.65–66) — เดิมยังใช้สูตรเก่าจน C2 แนะนำสูงไป/C3 ท้ายต่ำไป
+  const H=[1,1.29,1.664,2.147,2.769,3.572,4.608,5.945,7.669,9.893,12.761,16.462,23.047,32.266,45.172],D=[1,1.082,1.171,1.267,1.371,1.483,1.605,1.736,1.879,2.033,2.199,2.38,2.689,3.038,3.433],B=[1,1.45,2.11,3.07,4.47,6.49,9.44,13.73,19.96,29.02,42.18,61.33,96.76,152.67,240.88];
+  const mobHp=H[i]??H[14]*Math.pow(1.4,i-14),mobDmg=D[i]??D[14]*Math.pow(1.13,i-14),bossHp=B[i]??B[14]*Math.pow(1.578,i-14),bossDmg=Math.max((st.bossDmg||25)*1.3*.75,18*1.3*mobDmg*1.5);
+  return {hp:Math.sqrt(mobHp*bossHp),dmg:Math.sqrt(mobDmg*bossDmg)};}
 function stageRecommendedPower(i){const t=stageThreat(i),b=stageThreat(0);return Math.round(100*RUN_CARD_MUL*Math.sqrt((t.hp/b.hp)*(t.dmg/b.dmg))/10)*10;}
 const STAGES = [
   { name:'The Sour Ant Nest', en:'The Sour Ant Nest', emoji:'🐜', grid:0x2d261f, tint:0x8ee04b,
