@@ -1,3 +1,4 @@
+> 18 ต.ค. 2026: งานใหม่ Level Up / Card Choice UI (19 ไฟล์) ดู [23_LEVELUP_CARD_UI.md](23_LEVELUP_CARD_UI.md) · ส่งที่ `assets/incoming/levelup_cards_ui/`
 > 18 ต.ค. 2026: งานใหม่ Boss Attack VFX C1–C2 (59 ไฟล์) ดู [22_BOSS_ATTACK_VFX_C1_C2.md](22_BOSS_ATTACK_VFX_C1_C2.md) · ส่งที่ `assets/incoming/boss_vfx_c1_c2/`
 > **สถานะตรวจ 18 ต.ค. 2026 / v7.8.55:** P1 edge accents, Unique Mastery, Tremor/Frost Burn และ Berry crop ส่ง/ต่อแล้ว v7.7.0; ใบ 17 ต่อ v7.8.20, ใบ 18 A/B/C v7.8.25 และ E–I v7.8.30, ใบ 19 ต่อ v7.8.32, ใบ 20 ครบ 21/21 v7.8.45–46, ใบ 21 ครบ 34/34 v7.8.49 และ polish v7.8.50 **งานหลักที่ค้างคือ owner phone visual/FPS QA**; อย่าสร้าง P1 เดิมซ้ำ ส่วนข้อเสนอด้านล่างเป็นฐานสำรวจ 11 ต.ค. ต้องเทียบ runtime ใหม่ก่อนสั่งผลิต
 > C2-4 เปลี่ยนจาก Season Storm trials เป็น Seasonal Harvest แล้ว v7.8.55; ดู [QA ปัจจุบัน](../C2_4_QA.md) ก่อนตีความสเปกเอฟเฟกต์เดิม
