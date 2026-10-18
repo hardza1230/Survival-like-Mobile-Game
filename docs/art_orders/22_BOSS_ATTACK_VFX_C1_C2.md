@@ -1,6 +1,6 @@
 # 22 — Boss Attack VFX · Chapter 1–2 (บอส + มินิบอส 10 ด่าน) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟨 รอผลิต (18 ต.ค. 2026) · อิง runtime v7.8.56 · อ่าน `00_STYLE_GUIDE.md` ก่อน
+สถานะ: 🟩 ผลิตครบ 59 PNG32 / 278 เฟรม (18 ต.ค. 2026) · ส่ง incoming พร้อม manifest/prompts/QA · รอผูก runtime และทดสอบมือถือ · อิง runtime v7.8.56 · อ่าน `00_STYLE_GUIDE.md` ก่อน
 ส่งไฟล์ที่ `assets/incoming/boss_vfx_c1_c2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 20/21 · ตรวจขนาดไฟล์ + hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ

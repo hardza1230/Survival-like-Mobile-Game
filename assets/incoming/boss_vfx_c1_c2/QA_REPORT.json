@@ -1,0 +1,5889 @@
+{
+  "assetCount": 59,
+  "expectedAssetCount": 59,
+  "frameCount": 278,
+  "scope": "Incoming source delivery only. No runtime modifications.",
+  "assets": [
+    {
+      "file": "vfx_b01_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 148486,
+      "sha256": "1631568dcd86d51fde2b12da34e0b78a0e1fbde17f24ae5cbcc4b4d70137d892",
+      "gitBlobSha": "5486d79f8dc8db3da5ca42c952ee0586720a7115",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 11182,
+          "bboxAbove12": [
+            4,
+            93,
+            253,
+            185
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 13080,
+          "bboxAbove12": [
+            4,
+            77,
+            253,
+            186
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 15195,
+          "bboxAbove12": [
+            4,
+            57,
+            253,
+            186
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 11487,
+          "bboxAbove12": [
+            4,
+            86,
+            253,
+            185
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b01_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 298807,
+      "sha256": "eab441e70fac54660fa5286467271d1f6735720a9fac89bd4ca652e89cfac027",
+      "gitBlobSha": "62f31570fe2d4a241e47b8c8b4aab686db6d68ba",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 30103,
+          "bboxAbove12": [
+            17,
+            15,
+            238,
+            233
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 26968,
+          "bboxAbove12": [
+            20,
+            43,
+            245,
+            233
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 19968,
+          "bboxAbove12": [
+            20,
+            56,
+            234,
+            233
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 17332,
+          "bboxAbove12": [
+            26,
+            36,
+            225,
+            229
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 12353,
+          "bboxAbove12": [
+            26,
+            46,
+            231,
+            229
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 8188,
+          "bboxAbove12": [
+            40,
+            74,
+            216,
+            229
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b01_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 118576,
+      "sha256": "3d7ad3373d653fa68c532b39e2553a9934f51fd3d3893a4fe634a7b4117cd39f",
+      "gitBlobSha": "db86234d22f941a74ef5192efaf02dc56ea8b4fb",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 16249,
+          "bboxAbove12": [
+            4,
+            71,
+            254,
+            209
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 12665,
+          "bboxAbove12": [
+            5,
+            76,
+            249,
+            207
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 7455,
+          "bboxAbove12": [
+            8,
+            77,
+            249,
+            202
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2634,
+          "bboxAbove12": [
+            10,
+            91,
+            246,
+            201
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b01_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 236167,
+      "sha256": "0c9f6b0255448dfe2664cf4535484f9162a2193a639a2ec1dc6762b5ad338b50",
+      "gitBlobSha": "65b0655a42dd1860debae058f5773e3dd8a2fbb9",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 21273,
+          "bboxAbove12": [
+            0,
+            6,
+            512,
+            64
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 20719,
+          "bboxAbove12": [
+            0,
+            6,
+            512,
+            64
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 19755,
+          "bboxAbove12": [
+            0,
+            5,
+            512,
+            64
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 22075,
+          "bboxAbove12": [
+            0,
+            5,
+            512,
+            64
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b02_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 145734,
+      "sha256": "6f349d1700f085678e92962a016bafcb5fab592f393b0514ba3f9e392da6d0aa",
+      "gitBlobSha": "6bafbb5d9e78efe2fa050f267c70ad80cc906270",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 11539,
+          "bboxAbove12": [
+            7,
+            68,
+            251,
+            200
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 12352,
+          "bboxAbove12": [
+            7,
+            60,
+            250,
+            200
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 12381,
+          "bboxAbove12": [
+            7,
+            65,
+            250,
+            199
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 12141,
+          "bboxAbove12": [
+            6,
+            63,
+            249,
+            200
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b02_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 349628,
+      "sha256": "a94af2cac1ca2f70c9390dc268d432160a0b9b99aed81c0ee94c09ad29feafc7",
+      "gitBlobSha": "247894c227775e1d4e8b28a684cc54bb7c28149b",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 34786,
+          "bboxAbove12": [
+            15,
+            8,
+            244,
+            245
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 29439,
+          "bboxAbove12": [
+            13,
+            48,
+            242,
+            244
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 25306,
+          "bboxAbove12": [
+            12,
+            69,
+            241,
+            242
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 23732,
+          "bboxAbove12": [
+            15,
+            44,
+            244,
+            230
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 14230,
+          "bboxAbove12": [
+            16,
+            79,
+            237,
+            226
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 8627,
+          "bboxAbove12": [
+            24,
+            124,
+            226,
+            224
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b02_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 93278,
+      "sha256": "b9379a5b0535bf175287f7e1455956622be2d978734e7208f33bb88c47689186",
+      "gitBlobSha": "33fd61bce843cef47d1ead3921c8a1975e735f3d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 11870,
+          "bboxAbove12": [
+            8,
+            75,
+            249,
+            202
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 7202,
+          "bboxAbove12": [
+            8,
+            80,
+            245,
+            206
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 4244,
+          "bboxAbove12": [
+            11,
+            82,
+            245,
+            205
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 1096,
+          "bboxAbove12": [
+            10,
+            91,
+            242,
+            202
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b02_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 187761,
+      "sha256": "fffd578565f9819f15356592f7a2c75841c0a527346e29c44eecf6e9492f3cf2",
+      "gitBlobSha": "94c4c6a9b3663d732ba7728175b7b120ec555f88",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 19834,
+          "bboxAbove12": [
+            0,
+            12,
+            512,
+            59
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 20847,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            59
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 20399,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            60
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 19886,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            55
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b03_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 219447,
+      "sha256": "9259ac8e4ee62dd5568ba8247b19137cfee745ce94cbc61bed0a4dde13d8c695",
+      "gitBlobSha": "fc3600fde705f991882228389a1bdc55bfe9c292",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 16398,
+          "bboxAbove12": [
+            10,
+            59,
+            246,
+            201
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 19008,
+          "bboxAbove12": [
+            10,
+            43,
+            246,
+            199
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 23170,
+          "bboxAbove12": [
+            9,
+            19,
+            248,
+            201
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 19505,
+          "bboxAbove12": [
+            10,
+            22,
+            246,
+            199
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b03_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 381769,
+      "sha256": "baba269f3a5b53a32a6e82a67c878e9799852cb09bf824a27f512d29abc4af6c",
+      "gitBlobSha": "0682c20b48dc7754e37bf62782656982332e921a",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 38046,
+          "bboxAbove12": [
+            12,
+            9,
+            250,
+            245
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 34650,
+          "bboxAbove12": [
+            17,
+            15,
+            242,
+            243
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 26942,
+          "bboxAbove12": [
+            16,
+            20,
+            237,
+            242
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 22072,
+          "bboxAbove12": [
+            24,
+            35,
+            238,
+            237
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 15071,
+          "bboxAbove12": [
+            29,
+            32,
+            229,
+            236
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 9650,
+          "bboxAbove12": [
+            41,
+            38,
+            218,
+            236
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b03_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 112372,
+      "sha256": "935d5d41d2ab76535d3cc68f590cfc81d9dd03e9723c621361136fcd48d1ae2d",
+      "gitBlobSha": "4cf882a23e815907dd4046f2bebcc5a4028ef670",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 15053,
+          "bboxAbove12": [
+            3,
+            72,
+            254,
+            199
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 12002,
+          "bboxAbove12": [
+            5,
+            74,
+            252,
+            195
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 7834,
+          "bboxAbove12": [
+            9,
+            76,
+            250,
+            197
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2692,
+          "bboxAbove12": [
+            12,
+            77,
+            246,
+            192
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b03_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 192326,
+      "sha256": "556201d1ae43d9d04336f8c460898a09965f6ef769ff4cea45ae76c70d25f4e1",
+      "gitBlobSha": "e7bf0629e28f59f6a758b05e63fe5f62c8394160",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 23255,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            60
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 23250,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            60
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 23622,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            60
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 23373,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            61
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b04_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 227280,
+      "sha256": "fd061749790ca71d6146931d10469ad34bf6de4f99d430d600525c11470d908f",
+      "gitBlobSha": "6ee0a3e2c93aba3daf27439cf8fb81babfb8b03d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 10192,
+          "bboxAbove12": [
+            6,
+            69,
+            251,
+            202
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 17420,
+          "bboxAbove12": [
+            4,
+            54,
+            249,
+            204
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 30175,
+          "bboxAbove12": [
+            2,
+            17,
+            256,
+            212
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 17097,
+          "bboxAbove12": [
+            4,
+            28,
+            252,
+            201
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b04_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 347625,
+      "sha256": "d357026fdc8841e074e36a27ce9f85aaa74c93309b7bb837416167e0b496fa85",
+      "gitBlobSha": "8c9067d040d93275aeb394da466fe16108c623a5",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 23530,
+          "bboxAbove12": [
+            12,
+            45,
+            240,
+            239
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 34334,
+          "bboxAbove12": [
+            7,
+            14,
+            244,
+            244
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 30979,
+          "bboxAbove12": [
+            16,
+            28,
+            242,
+            243
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 24975,
+          "bboxAbove12": [
+            13,
+            36,
+            238,
+            234
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 16267,
+          "bboxAbove12": [
+            22,
+            44,
+            231,
+            232
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 8677,
+          "bboxAbove12": [
+            33,
+            65,
+            222,
+            230
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b04_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 143483,
+      "sha256": "e731b5de7e79cdd2d677bd34ef68bf53773db900fdd0bc62529ff7b025e243ad",
+      "gitBlobSha": "83c78edc83300a4d9b0b3581b6137e737fd3259b",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 16415,
+          "bboxAbove12": [
+            2,
+            75,
+            256,
+            212
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 13333,
+          "bboxAbove12": [
+            8,
+            69,
+            247,
+            213
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 7425,
+          "bboxAbove12": [
+            11,
+            80,
+            243,
+            207
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2689,
+          "bboxAbove12": [
+            12,
+            91,
+            240,
+            202
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b04_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 215760,
+      "sha256": "857576bb8f3662a9489d10fb60330b17c3cc72c308478d5cd5b083ffe12fbd5b",
+      "gitBlobSha": "21ae9e603539e8596e9dd82debba73d5eb3c9218",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 15794,
+          "bboxAbove12": [
+            0,
+            11,
+            512,
+            60
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 19110,
+          "bboxAbove12": [
+            0,
+            11,
+            512,
+            60
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 20678,
+          "bboxAbove12": [
+            0,
+            8,
+            512,
+            64
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 18274,
+          "bboxAbove12": [
+            0,
+            12,
+            512,
+            60
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 263552,
+      "sha256": "e2bdf2c9f588aae7e83f0bf183b17e73f5bbf9f3a8df4d001d75c08b699d41b8",
+      "gitBlobSha": "6964997d73fcc7484a11db803eb5ec6fed7092df",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 18805,
+          "bboxAbove12": [
+            2,
+            52,
+            254,
+            202
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 24458,
+          "bboxAbove12": [
+            2,
+            41,
+            254,
+            202
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 34012,
+          "bboxAbove12": [
+            1,
+            2,
+            255,
+            207
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 24271,
+          "bboxAbove12": [
+            2,
+            13,
+            254,
+            202
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 454024,
+      "sha256": "bd5cdea4de09cb296818da2364383e4d789e2613394aefdcad3c1c82a676f268",
+      "gitBlobSha": "94373e8e3b88f41b12266cb71778826881b6ca6c",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 42762,
+          "bboxAbove12": [
+            7,
+            4,
+            249,
+            246
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 38602,
+          "bboxAbove12": [
+            10,
+            8,
+            246,
+            246
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 32173,
+          "bboxAbove12": [
+            16,
+            21,
+            239,
+            246
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 27520,
+          "bboxAbove12": [
+            19,
+            11,
+            242,
+            241
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 18714,
+          "bboxAbove12": [
+            27,
+            16,
+            225,
+            240
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 8511,
+          "bboxAbove12": [
+            32,
+            38,
+            215,
+            237
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 125891,
+      "sha256": "739874534f107c3264cf2076c4743aabcf3bc902f66585dfb5a20e163769ee83",
+      "gitBlobSha": "2de98efef87295cc0046638525d05da68175b0aa",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 17881,
+          "bboxAbove12": [
+            2,
+            64,
+            250,
+            212
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 9778,
+          "bboxAbove12": [
+            10,
+            72,
+            246,
+            211
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 6337,
+          "bboxAbove12": [
+            12,
+            66,
+            246,
+            206
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2059,
+          "bboxAbove12": [
+            14,
+            77,
+            242,
+            201
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 161928,
+      "sha256": "2f82d60752eff3556ae6da71cef654dc6479200952aebaf2267b38335177d2f0",
+      "gitBlobSha": "866f3f56e4a1266d9c7a043ec068265741196555",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 16825,
+          "bboxAbove12": [
+            0,
+            14,
+            512,
+            54
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 17457,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            54
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 18013,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            54
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 17663,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            54
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b06_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 244219,
+      "sha256": "6d943a4d99baf55e1ae3f8410f87a2749e7d3014643d6fe54d45bd1a7dc1cc8f",
+      "gitBlobSha": "9d28cf51463a5ee7fa15e534355abf003e2b34e8",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 15206,
+          "bboxAbove12": [
+            4,
+            79,
+            252,
+            216
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 20212,
+          "bboxAbove12": [
+            5,
+            71,
+            253,
+            217
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 24224,
+          "bboxAbove12": [
+            4,
+            29,
+            253,
+            212
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 18918,
+          "bboxAbove12": [
+            4,
+            55,
+            252,
+            211
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b06_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 384679,
+      "sha256": "524fd981f32c5bdc6b7ba19cedc6c6aff26af7c287b2caa51def3d0cd0514f5f",
+      "gitBlobSha": "d6480e4a404c83517b4ba7323060b3ef11f1b117",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 32764,
+          "bboxAbove12": [
+            11,
+            15,
+            248,
+            242
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 30441,
+          "bboxAbove12": [
+            10,
+            30,
+            246,
+            240
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 23584,
+          "bboxAbove12": [
+            14,
+            37,
+            241,
+            241
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 18952,
+          "bboxAbove12": [
+            12,
+            42,
+            243,
+            235
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 12248,
+          "bboxAbove12": [
+            16,
+            49,
+            236,
+            234
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 7506,
+          "bboxAbove12": [
+            17,
+            70,
+            234,
+            234
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b06_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 141996,
+      "sha256": "0c6bf95f36073f9ad90a23cedf029ff31aebd6db20ca60441c81ed2acae910b0",
+      "gitBlobSha": "4a98264bd5fc3c7bef70f0d2fa99005286a4a3ba",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 19609,
+          "bboxAbove12": [
+            6,
+            71,
+            251,
+            220
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 12636,
+          "bboxAbove12": [
+            11,
+            77,
+            244,
+            217
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 6597,
+          "bboxAbove12": [
+            15,
+            83,
+            239,
+            209
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2840,
+          "bboxAbove12": [
+            15,
+            91,
+            239,
+            210
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b06_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 195263,
+      "sha256": "691f10a39d1ed0c8b89fda89ac9a87966ec8c690d1c34ca407434c69c4c74832",
+      "gitBlobSha": "bb59b17f3cb6791676e2ff2f15b48f13bc48d8ac",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 13675,
+          "bboxAbove12": [
+            0,
+            11,
+            512,
+            58
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 15323,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            57
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 16115,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            57
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 13930,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            58
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b07_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 201277,
+      "sha256": "933855a83694fe94bd237c08cdd557cf54c3816b6fd3ff1d863c5b1bcbcee4c1",
+      "gitBlobSha": "8771a83b4985cf75011d93483d67f44b1f05c7c9",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 11430,
+          "bboxAbove12": [
+            5,
+            78,
+            251,
+            197
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 16101,
+          "bboxAbove12": [
+            4,
+            49,
+            252,
+            198
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 24103,
+          "bboxAbove12": [
+            0,
+            30,
+            256,
+            203
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 12733,
+          "bboxAbove12": [
+            4,
+            50,
+            252,
+            197
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b07_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 388872,
+      "sha256": "bf76fe3f54031323c08b45796219210c79f1246e5e9034a0844676a8a44a633f",
+      "gitBlobSha": "87fa03f11a0e4cba5b9155a2c3e1e5f127fb6b8d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 28573,
+          "bboxAbove12": [
+            22,
+            10,
+            236,
+            235
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 31046,
+          "bboxAbove12": [
+            14,
+            22,
+            246,
+            235
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 25401,
+          "bboxAbove12": [
+            18,
+            42,
+            245,
+            235
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 22427,
+          "bboxAbove12": [
+            20,
+            27,
+            246,
+            227
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 16565,
+          "bboxAbove12": [
+            25,
+            38,
+            234,
+            227
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 10441,
+          "bboxAbove12": [
+            31,
+            63,
+            226,
+            227
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b07_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 120160,
+      "sha256": "974464ee8ef56d33489d01edaa3c962f535598048d01949c736668f4acb3dd5f",
+      "gitBlobSha": "93f0016a51195c50fde46a664ef61c693018a452",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 14399,
+          "bboxAbove12": [
+            7,
+            73,
+            249,
+            199
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 9540,
+          "bboxAbove12": [
+            8,
+            72,
+            249,
+            198
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 6436,
+          "bboxAbove12": [
+            11,
+            76,
+            246,
+            195
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2801,
+          "bboxAbove12": [
+            15,
+            77,
+            245,
+            194
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b07_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 174645,
+      "sha256": "01a73a7caff11f21e5f035c348f5a4d472b91e86b5dc8657a7074ece44ab4318",
+      "gitBlobSha": "1518b82f15c50596835f2c46176cc0e6865a1fdc",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 11904,
+          "bboxAbove12": [
+            0,
+            18,
+            512,
+            54
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 14815,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            56
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 14265,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            57
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 13796,
+          "bboxAbove12": [
+            0,
+            8,
+            512,
+            54
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b08_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 200551,
+      "sha256": "18df5848bd669920562d02fb3e84d345513dab9ab6b8e523e0af42e1d1cacf67",
+      "gitBlobSha": "a1e8cb94146f2cf3fd015e679e1480e6dc720929",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 16864,
+          "bboxAbove12": [
+            6,
+            77,
+            248,
+            205
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 18670,
+          "bboxAbove12": [
+            6,
+            47,
+            247,
+            205
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 21276,
+          "bboxAbove12": [
+            5,
+            51,
+            250,
+            197
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 22408,
+          "bboxAbove12": [
+            5,
+            36,
+            249,
+            199
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b08_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 308254,
+      "sha256": "9d050df2ce71c614ccebfb8fe118f79fe3e95dcca73551fd0851c261ed268764",
+      "gitBlobSha": "d9fad96a92cd74ecad5889228f628daadee30dba",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 29596,
+          "bboxAbove12": [
+            16,
+            29,
+            243,
+            233
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 29429,
+          "bboxAbove12": [
+            21,
+            25,
+            239,
+            233
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 21940,
+          "bboxAbove12": [
+            19,
+            55,
+            238,
+            230
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 17804,
+          "bboxAbove12": [
+            20,
+            55,
+            237,
+            230
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 9490,
+          "bboxAbove12": [
+            21,
+            62,
+            230,
+            227
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 5364,
+          "bboxAbove12": [
+            35,
+            82,
+            229,
+            225
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b08_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 107063,
+      "sha256": "2e51aadcb7b20a5f513482c918bf7b1d832f2db223245a0a9b2c6a2c5dd98f44",
+      "gitBlobSha": "8e34942afa9d32508bb661779fd45be1caeba5b3",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 15218,
+          "bboxAbove12": [
+            3,
+            66,
+            252,
+            203
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 8227,
+          "bboxAbove12": [
+            6,
+            68,
+            250,
+            199
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 4329,
+          "bboxAbove12": [
+            7,
+            73,
+            249,
+            197
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 1240,
+          "bboxAbove12": [
+            10,
+            77,
+            246,
+            194
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b08_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 151304,
+      "sha256": "b21f2d7ae2b7a8ccdbf212e974bc825e60723815d2132655e1c48cce6ee27a34",
+      "gitBlobSha": "5c540d7d7f78c86954897d603c850665ce02000d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 12465,
+          "bboxAbove12": [
+            0,
+            15,
+            512,
+            51
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 12336,
+          "bboxAbove12": [
+            0,
+            13,
+            512,
+            54
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 15517,
+          "bboxAbove12": [
+            0,
+            9,
+            512,
+            56
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 13325,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            46
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b09_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 226285,
+      "sha256": "12fe453e4f6cf9fdd1fbb17189a7abcdca5fcd12240228470975914c40efbc5e",
+      "gitBlobSha": "6908e569f9f6fa9c0c335ab06b57452ff2efc68d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 12045,
+          "bboxAbove12": [
+            5,
+            55,
+            251,
+            203
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 17442,
+          "bboxAbove12": [
+            5,
+            39,
+            251,
+            204
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 20714,
+          "bboxAbove12": [
+            0,
+            20,
+            256,
+            224
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 16181,
+          "bboxAbove12": [
+            5,
+            27,
+            251,
+            204
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b09_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 458142,
+      "sha256": "334c3d9712a27cffc662eedd2230e7468b4b461c949a5d33f0868dc232c292fa",
+      "gitBlobSha": "abf84a710880d92ed9d93ae92bd0b24fbc8ab787",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 38117,
+          "bboxAbove12": [
+            11,
+            13,
+            245,
+            239
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 36035,
+          "bboxAbove12": [
+            14,
+            23,
+            242,
+            238
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 30518,
+          "bboxAbove12": [
+            16,
+            24,
+            244,
+            236
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 28567,
+          "bboxAbove12": [
+            15,
+            16,
+            245,
+            233
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 18515,
+          "bboxAbove12": [
+            20,
+            39,
+            243,
+            229
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 10894,
+          "bboxAbove12": [
+            38,
+            59,
+            223,
+            229
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b09_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 180050,
+      "sha256": "c877956063fa22921eba4928201e36199a186b4a3467a6c981d93352664eeec5",
+      "gitBlobSha": "e5da86bc0ec229b51823e947a11b96273b2a35cc",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 16927,
+          "bboxAbove12": [
+            4,
+            47,
+            251,
+            217
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 18073,
+          "bboxAbove12": [
+            0,
+            57,
+            249,
+            221
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 11997,
+          "bboxAbove12": [
+            8,
+            71,
+            248,
+            223
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 4708,
+          "bboxAbove12": [
+            7,
+            88,
+            245,
+            218
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=7 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b09_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 187553,
+      "sha256": "3efbf202892b51302c2339de444ddc27bf32f030c49b34e0b0f14e166683c77b",
+      "gitBlobSha": "5e9e6806a7ab41e12ea321728a54caff0e3d21ef",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 13436,
+          "bboxAbove12": [
+            0,
+            11,
+            512,
+            53
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 15129,
+          "bboxAbove12": [
+            0,
+            8,
+            512,
+            53
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 17019,
+          "bboxAbove12": [
+            0,
+            6,
+            512,
+            56
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 14403,
+          "bboxAbove12": [
+            0,
+            7,
+            512,
+            52
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_warn.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 293733,
+      "sha256": "d13e005a3d37afd738fa82c0cd9fedae3f39800cfb6ddf6184c47dc5131aee18",
+      "gitBlobSha": "ef6b2cec8fe251199200350911cd3852c94ea3f4",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 21088,
+          "bboxAbove12": [
+            3,
+            58,
+            254,
+            211
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 24670,
+          "bboxAbove12": [
+            1,
+            25,
+            254,
+            211
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 27654,
+          "bboxAbove12": [
+            1,
+            22,
+            255,
+            211
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 24535,
+          "bboxAbove12": [
+            1,
+            41,
+            254,
+            211
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_impact.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 424287,
+      "sha256": "e7af3f7c83947a80f42c054ea6ce09b0e4089045e8161f50c17bfed42981f078",
+      "gitBlobSha": "cc45b6e6048cf4784f45ea95b039f3a16077a3a0",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 29899,
+          "bboxAbove12": [
+            18,
+            35,
+            237,
+            240
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 39682,
+          "bboxAbove12": [
+            8,
+            18,
+            248,
+            242
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 29879,
+          "bboxAbove12": [
+            27,
+            26,
+            234,
+            241
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 23006,
+          "bboxAbove12": [
+            26,
+            25,
+            238,
+            231
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 13631,
+          "bboxAbove12": [
+            38,
+            33,
+            212,
+            231
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 7277,
+          "bboxAbove12": [
+            52,
+            50,
+            206,
+            229
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 135648,
+      "sha256": "9d2d3820acbd8d80af564c84ebca8d31df34d9934471d2222a552e04506e5df7",
+      "gitBlobSha": "0a1311abc40e8b13de757ef691f97002b42d0d11",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 13121,
+          "bboxAbove12": [
+            3,
+            63,
+            253,
+            201
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 10385,
+          "bboxAbove12": [
+            7,
+            64,
+            249,
+            204
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 5942,
+          "bboxAbove12": [
+            9,
+            67,
+            247,
+            198
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2040,
+          "bboxAbove12": [
+            10,
+            73,
+            246,
+            194
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_lane.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 176316,
+      "sha256": "b3579f6111abeacdf9f75d3bbfc669b27f26f4b23b89d3558b915c677ee7c1ef",
+      "gitBlobSha": "3dc30ed9993ad5bb155c0331213e0a3fd0c93c3d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 10403,
+          "bboxAbove12": [
+            0,
+            9,
+            512,
+            52
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 12665,
+          "bboxAbove12": [
+            0,
+            8,
+            512,
+            53
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 15067,
+          "bboxAbove12": [
+            0,
+            7,
+            512,
+            56
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 10849,
+          "bboxAbove12": [
+            0,
+            10,
+            512,
+            52
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b01_nest_collapse.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 309354,
+      "sha256": "3b40dc89d926a0155383223eea1460c5e57b22b6ea7f48c6c135a9b167adcf0e",
+      "gitBlobSha": "fddcd941a9df2d408fa236c0c76b05f3058c402a",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 20264,
+          "bboxAbove12": [
+            24,
+            61,
+            231,
+            224
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 21409,
+          "bboxAbove12": [
+            25,
+            52,
+            233,
+            233
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 23064,
+          "bboxAbove12": [
+            23,
+            57,
+            232,
+            234
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 24574,
+          "bboxAbove12": [
+            19,
+            45,
+            236,
+            220
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 19530,
+          "bboxAbove12": [
+            24,
+            48,
+            231,
+            213
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 15685,
+          "bboxAbove12": [
+            22,
+            42,
+            231,
+            215
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b02_suction.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 298692,
+      "sha256": "50cb980e1a1a6f0dd175693ed648066a6cc59c71df39a65be7ed6f7965c9cc07",
+      "gitBlobSha": "f76e374d5604aae914eb654fe4e53ad4441031f4",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 36053,
+          "bboxAbove12": [
+            12,
+            16,
+            243,
+            248
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 30469,
+          "bboxAbove12": [
+            16,
+            27,
+            243,
+            240
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 25544,
+          "bboxAbove12": [
+            28,
+            28,
+            229,
+            227
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 22367,
+          "bboxAbove12": [
+            37,
+            35,
+            225,
+            215
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b02_bubble_cage.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 286353,
+      "sha256": "844f2e633f219f5042513485a723f2966d4a06c9dca32e161f4fe9395235a7e3",
+      "gitBlobSha": "a8e32268459f98eaecc66711ad9ae7fdbff88078",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 18180,
+          "bboxAbove12": [
+            19,
+            18,
+            243,
+            235
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 24049,
+          "bboxAbove12": [
+            12,
+            27,
+            237,
+            229
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 30071,
+          "bboxAbove12": [
+            17,
+            16,
+            240,
+            225
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 30918,
+          "bboxAbove12": [
+            13,
+            17,
+            240,
+            227
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b03_grinder_blade.png",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 81236,
+      "sha256": "54192daa497c2666848f403248591ae46af9a674edab0a88e73576114d2aa439",
+      "gitBlobSha": "c54371124f0222d457ea855f54763ace91cfe571",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 5995,
+          "bboxAbove12": [
+            12,
+            12,
+            116,
+            107
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 6284,
+          "bboxAbove12": [
+            9,
+            13,
+            117,
+            114
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 6018,
+          "bboxAbove12": [
+            11,
+            9,
+            117,
+            108
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 6286,
+          "bboxAbove12": [
+            12,
+            8,
+            117,
+            110
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b03_fire_cross.png",
+      "size": [
+        512,
+        384
+      ],
+      "mode": "RGBA",
+      "bytes": 250147,
+      "sha256": "e2e9c8e478cc951a75984fae9f5a6d253cef43ea6006a9eb6c6f4f2cceb21bf4",
+      "gitBlobSha": "a9cc1107b2b579c4683f6995a6c384c8ff368134",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 25766,
+          "bboxAbove12": [
+            0,
+            15,
+            512,
+            83
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 26591,
+          "bboxAbove12": [
+            0,
+            15,
+            512,
+            83
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 31307,
+          "bboxAbove12": [
+            0,
+            11,
+            512,
+            86
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 27689,
+          "bboxAbove12": [
+            0,
+            9,
+            512,
+            84
+          ]
+        }
+      ],
+      "rawSize": [
+        1226,
+        1283
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b04_ice_bars.png",
+      "size": [
+        384,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 178392,
+      "sha256": "f66a700a0c529e268e2c7a7b6e872c6f877a0e781fe37218811217e59781ed67",
+      "gitBlobSha": "de98bbde5bc573e7045a26f6a40648b44fc716c2",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 2801,
+          "bboxAbove12": [
+            21,
+            153,
+            103,
+            222
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 6464,
+          "bboxAbove12": [
+            17,
+            103,
+            110,
+            226
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 11350,
+          "bboxAbove12": [
+            16,
+            29,
+            111,
+            227
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 14270,
+          "bboxAbove12": [
+            14,
+            7,
+            116,
+            230
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 13634,
+          "bboxAbove12": [
+            15,
+            6,
+            114,
+            229
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 14489,
+          "bboxAbove12": [
+            12,
+            4,
+            114,
+            228
+          ]
+        }
+      ],
+      "rawSize": [
+        1086,
+        1448
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b04_blizzard.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 361833,
+      "sha256": "9e22588f86a3dfd0d7182c004ed3ac3b823063916df26ee1591070f87c21ad4a",
+      "gitBlobSha": "98621e09a7daebb3fffca0c9988c4521ab714d42",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 24268,
+          "bboxAbove12": [
+            19,
+            10,
+            240,
+            232
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 30653,
+          "bboxAbove12": [
+            12,
+            11,
+            240,
+            236
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 37251,
+          "bboxAbove12": [
+            9,
+            2,
+            247,
+            237
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 29158,
+          "bboxAbove12": [
+            14,
+            11,
+            240,
+            235
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_crown_blade.png",
+      "size": [
+        1536,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 475218,
+      "sha256": "2ad61a79404486dc2c7a15eff55cfd6c7a6f1e723a18f576ae3351b4565cdad3",
+      "gitBlobSha": "bc43a9e477901b3b7f3061d14fc1cbd28c675941",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 62103,
+          "bboxAbove12": [
+            20,
+            9,
+            493,
+            247
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 43142,
+          "bboxAbove12": [
+            19,
+            41,
+            493,
+            215
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 32941,
+          "bboxAbove12": [
+            20,
+            59,
+            478,
+            209
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 26677,
+          "bboxAbove12": [
+            24,
+            58,
+            476,
+            193
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 14649,
+          "bboxAbove12": [
+            25,
+            68,
+            473,
+            176
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 3466,
+          "bboxAbove12": [
+            27,
+            76,
+            473,
+            173
+          ]
+        }
+      ],
+      "rawSize": [
+        2172,
+        724
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_void_maw.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 338876,
+      "sha256": "6c511e3188d9fe74230ef1f8e595671e1ab37cc4e48508a7683c8943f3cb7288",
+      "gitBlobSha": "ac7a469315c214c020a075434f899697b29b9f81",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 35327,
+          "bboxAbove12": [
+            8,
+            20,
+            254,
+            228
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 33598,
+          "bboxAbove12": [
+            13,
+            30,
+            247,
+            232
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 31899,
+          "bboxAbove12": [
+            17,
+            27,
+            245,
+            232
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 25209,
+          "bboxAbove12": [
+            12,
+            30,
+            243,
+            225
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b05_eclipse.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 592415,
+      "sha256": "1033b2df28a1b9ed511cde9ed255d6abc8c2f82eacd1df6cf19d236b27a9714d",
+      "gitBlobSha": "54587e5c555f626e1f5f6f319023204de40114f7",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 34242,
+          "bboxAbove12": [
+            11,
+            26,
+            232,
+            223
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 32228,
+          "bboxAbove12": [
+            16,
+            14,
+            242,
+            223
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 29247,
+          "bboxAbove12": [
+            11,
+            12,
+            248,
+            234
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 33102,
+          "bboxAbove12": [
+            5,
+            11,
+            249,
+            240
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 38183,
+          "bboxAbove12": [
+            7,
+            15,
+            233,
+            231
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 34700,
+          "bboxAbove12": [
+            10,
+            17,
+            240,
+            233
+          ]
+        },
+        {
+          "frame": 6,
+          "nonblackPixels": 26318,
+          "bboxAbove12": [
+            12,
+            21,
+            243,
+            232
+          ]
+        },
+        {
+          "frame": 7,
+          "nonblackPixels": 11998,
+          "bboxAbove12": [
+            18,
+            22,
+            241,
+            227
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b06_root_breach.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 450344,
+      "sha256": "31e55ff3c2cfb4e7e8adbe079e4f5e458feac4a3dfc8b36a7df3f8fbca2e542d",
+      "gitBlobSha": "9dd78845267290f4cef9767c3de6538f6d3db4b4",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 27975,
+          "bboxAbove12": [
+            11,
+            16,
+            245,
+            228
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 24494,
+          "bboxAbove12": [
+            13,
+            21,
+            242,
+            232
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 27520,
+          "bboxAbove12": [
+            4,
+            15,
+            250,
+            241
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 28754,
+          "bboxAbove12": [
+            12,
+            17,
+            256,
+            238
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 23888,
+          "bboxAbove12": [
+            22,
+            29,
+            240,
+            233
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 19427,
+          "bboxAbove12": [
+            23,
+            43,
+            233,
+            221
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b06_full_bloom.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 388908,
+      "sha256": "b99da6888c3ee9159afb34cea6bd21f4edb961c071242e42c96449c4f59b16d7",
+      "gitBlobSha": "cb1884f59c944b825b66fd3fb631691bf6adf46b",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 12928,
+          "bboxAbove12": [
+            56,
+            72,
+            201,
+            205
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 20931,
+          "bboxAbove12": [
+            29,
+            48,
+            212,
+            215
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 32856,
+          "bboxAbove12": [
+            4,
+            28,
+            245,
+            228
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 37359,
+          "bboxAbove12": [
+            10,
+            12,
+            252,
+            233
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 30063,
+          "bboxAbove12": [
+            10,
+            12,
+            244,
+            232
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 13021,
+          "bboxAbove12": [
+            15,
+            22,
+            236,
+            225
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b07_spore_mortar.png",
+      "size": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 288476,
+      "sha256": "f8094cdf2b4e1c3404d74978110570d861bc4bc27c80c8362fa3dbe68f1c29df",
+      "gitBlobSha": "b38e9aaa3f306ccd1e7c2b3c9253eb5d21298ff0",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 5740,
+          "bboxAbove12": [
+            64,
+            138,
+            195,
+            209
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 10640,
+          "bboxAbove12": [
+            41,
+            129,
+            221,
+            219
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 21484,
+          "bboxAbove12": [
+            23,
+            20,
+            233,
+            232
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 32977,
+          "bboxAbove12": [
+            15,
+            19,
+            246,
+            228
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 24466,
+          "bboxAbove12": [
+            22,
+            25,
+            243,
+            226
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 12648,
+          "bboxAbove12": [
+            25,
+            56,
+            226,
+            223
+          ]
+        }
+      ],
+      "rawSize": [
+        1536,
+        1024
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b07_heartstorm.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 305231,
+      "sha256": "b7cb094c6f2f08b8afd59223b817f6b3271d88b0b0fedcae1dff9078184c3ac2",
+      "gitBlobSha": "a633f25687e233b1d7da7d24cc057a00b4f7b912",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 12613,
+          "bboxAbove12": [
+            61,
+            63,
+            200,
+            203
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 24736,
+          "bboxAbove12": [
+            8,
+            26,
+            244,
+            240
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 45535,
+          "bboxAbove12": [
+            6,
+            3,
+            251,
+            241
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 26507,
+          "bboxAbove12": [
+            6,
+            14,
+            251,
+            219
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b08_honey_wall.png",
+      "size": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "bytes": 121071,
+      "sha256": "88ceb912d12c67189d8f307894cccc8b4db38a69b882677bd68d5929120ff76b",
+      "gitBlobSha": "1e3072f6da655e865db77c0311863c7411992a3d",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 3942,
+          "bboxAbove12": [
+            12,
+            100,
+            116,
+            167
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 5725,
+          "bboxAbove12": [
+            11,
+            76,
+            120,
+            166
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 8402,
+          "bboxAbove12": [
+            9,
+            49,
+            118,
+            167
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 8997,
+          "bboxAbove12": [
+            8,
+            35,
+            122,
+            152
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 9387,
+          "bboxAbove12": [
+            8,
+            32,
+            120,
+            154
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 9087,
+          "bboxAbove12": [
+            7,
+            35,
+            121,
+            156
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b08_dive_trail.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 192697,
+      "sha256": "3c11ca19b45014a00ca29eed13b0fafa3d672f146bc93aa2821a04b62dc93182",
+      "gitBlobSha": "0c78bb05c16c4fe3c58b156c3fc934386b081e22",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 15312,
+          "bboxAbove12": [
+            0,
+            14,
+            512,
+            52
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 17750,
+          "bboxAbove12": [
+            0,
+            7,
+            512,
+            56
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 20558,
+          "bboxAbove12": [
+            0,
+            3,
+            512,
+            58
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 14416,
+          "bboxAbove12": [
+            0,
+            12,
+            512,
+            51
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_crown_cage.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 331659,
+      "sha256": "d7f8cebbf38d0f67967c52c9080abfcc984142c501c2c4fc95412bd37af6c152",
+      "gitBlobSha": "7b83488acb5f9249568e7dcaca04a9cee746e985",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 25435,
+          "bboxAbove12": [
+            15,
+            39,
+            245,
+            226
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 30029,
+          "bboxAbove12": [
+            13,
+            34,
+            246,
+            227
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 35825,
+          "bboxAbove12": [
+            9,
+            11,
+            249,
+            231
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 28707,
+          "bboxAbove12": [
+            13,
+            37,
+            248,
+            224
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_choir_note.png",
+      "size": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "bytes": 39401,
+      "sha256": "d4d304d614f78e8c3e76d9b2ffc9595ae5d019b56abd46ba25d43a31f2345ac8",
+      "gitBlobSha": "c8d9d1b8bfed9f156ffc0947f4ba5df2b20ee8ca",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 2143,
+          "bboxAbove12": [
+            19,
+            12,
+            77,
+            82
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 2871,
+          "bboxAbove12": [
+            16,
+            11,
+            78,
+            85
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 3920,
+          "bboxAbove12": [
+            14,
+            7,
+            85,
+            86
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 2259,
+          "bboxAbove12": [
+            19,
+            10,
+            77,
+            80
+          ]
+        }
+      ],
+      "rawSize": [
+        1254,
+        1254
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    },
+    {
+      "file": "vfx_b10_memory_eclipse.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 757173,
+      "sha256": "64751c2b8786fc1116c01a414f22940e75c7942517eebc6678e219394e0ced1e",
+      "gitBlobSha": "33ab253d3f564198155e603e921c6f83584fe4eb",
+      "pngCrcAndZlib": "pass",
+      "opaqueAlpha": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "nonblackPixels": 32916,
+          "bboxAbove12": [
+            16,
+            25,
+            237,
+            229
+          ]
+        },
+        {
+          "frame": 1,
+          "nonblackPixels": 33490,
+          "bboxAbove12": [
+            18,
+            25,
+            237,
+            228
+          ]
+        },
+        {
+          "frame": 2,
+          "nonblackPixels": 30743,
+          "bboxAbove12": [
+            23,
+            25,
+            236,
+            227
+          ]
+        },
+        {
+          "frame": 3,
+          "nonblackPixels": 30220,
+          "bboxAbove12": [
+            20,
+            10,
+            239,
+            233
+          ]
+        },
+        {
+          "frame": 4,
+          "nonblackPixels": 31827,
+          "bboxAbove12": [
+            21,
+            10,
+            243,
+            233
+          ]
+        },
+        {
+          "frame": 5,
+          "nonblackPixels": 30278,
+          "bboxAbove12": [
+            14,
+            12,
+            239,
+            231
+          ]
+        },
+        {
+          "frame": 6,
+          "nonblackPixels": 30457,
+          "bboxAbove12": [
+            13,
+            9,
+            244,
+            231
+          ]
+        },
+        {
+          "frame": 7,
+          "nonblackPixels": 28247,
+          "bboxAbove12": [
+            14,
+            12,
+            243,
+            233
+          ]
+        }
+      ],
+      "rawSize": [
+        1774,
+        887
+      ],
+      "normalization": "Equal-cell resampling to contract dimensions; RGB channel levels <=5 canonicalized to zero; opaque RGBA. 1x4 strip boundaries normalized with 12px smooth crossfade. No runtime packing."
+    }
+  ],
+  "remoteReadback": {
+    "status": "pending"
+  },
+  "visualReview": {
+    "status": "pass for incoming source review",
+    "date": "2026-10-18 Asia/Bangkok",
+    "reviewed": [
+      "All 59 sheets in QA_gallery_01-03.png",
+      "All 40 warning frames on actual stage floors in QA_floor_gallery.png",
+      "Twelve repeated horizontal strip previews in QA_lane_gallery.png",
+      "Raw image outputs for subject, no text/borders, frame progression, growth/hold poses, and Crown Cage opening"
+    ],
+    "notes": [
+      "Acid warning regenerated as a flatter ground ellipse.",
+      "Drain warning regenerated to move foam/bubbles onto the perimeter and clear its interior.",
+      "Chronobloom palette compared with the existing c24 solar-ring artwork.",
+      "Strip boundary samples match exactly in all 48 strip frames; stretched/rotated runtime playback still requires integration QA."
+    ]
+  },
+  "floorTests": [
+    {
+      "stage": 1,
+      "key": "vfx_b01_warn",
+      "floor": "assets/generated/bg1_sour_ant_nest.webp",
+      "preview": "QA_floor_b01.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.6326,
+          "foregroundPixels": 13721,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.6176,
+          "foregroundPixels": 15715,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.6088,
+          "foregroundPixels": 17832,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.6334,
+          "foregroundPixels": 14103,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 2,
+      "key": "vfx_b02_warn",
+      "floor": "assets/generated/bg2_rotting_drain.jpg",
+      "preview": "QA_floor_b02.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 1.0,
+          "foregroundPixels": 13950,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 1.0,
+          "foregroundPixels": 14776,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 1.0,
+          "foregroundPixels": 14815,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 1.0,
+          "foregroundPixels": 14511,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 3,
+      "key": "vfx_b03_warn",
+      "floor": "assets/bg3.webp",
+      "preview": "QA_floor_b03.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.9183,
+          "foregroundPixels": 22774,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.8265,
+          "foregroundPixels": 26546,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.6996,
+          "foregroundPixels": 32165,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.8172,
+          "foregroundPixels": 26927,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 4,
+      "key": "vfx_b04_warn",
+      "floor": "assets/bg4.webp",
+      "preview": "QA_floor_b04.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.8464,
+          "foregroundPixels": 13146,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.7777,
+          "foregroundPixels": 21986,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.5206,
+          "foregroundPixels": 36503,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.8549,
+          "foregroundPixels": 22252,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 5,
+      "key": "vfx_b05_warn",
+      "floor": "assets/bg5.webp",
+      "preview": "QA_floor_b05.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.771,
+          "foregroundPixels": 21789,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.6544,
+          "foregroundPixels": 27957,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.0041,
+          "foregroundPixels": 40387,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.7029,
+          "foregroundPixels": 28313,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 6,
+      "key": "vfx_b06_warn",
+      "floor": "assets/art/floors/floor_c21.webp",
+      "preview": "QA_floor_b06.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.7437,
+          "foregroundPixels": 19109,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.6996,
+          "foregroundPixels": 24390,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.7135,
+          "foregroundPixels": 29525,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.7654,
+          "foregroundPixels": 24048,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 7,
+      "key": "vfx_b07_warn",
+      "floor": "assets/art/floors/floor_c22.webp",
+      "preview": "QA_floor_b07.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.9301,
+          "foregroundPixels": 13722,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.8687,
+          "foregroundPixels": 20170,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.7662,
+          "foregroundPixels": 30053,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.9182,
+          "foregroundPixels": 16780,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 8,
+      "key": "vfx_b08_warn",
+      "floor": "assets/art/floors/floor_c23.webp",
+      "preview": "QA_floor_b08.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.7513,
+          "foregroundPixels": 21942,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.7507,
+          "foregroundPixels": 24112,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.6734,
+          "foregroundPixels": 26274,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.4797,
+          "foregroundPixels": 27642,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 9,
+      "key": "vfx_b09_warn",
+      "floor": "assets/art/floors/floor_c24.webp",
+      "preview": "QA_floor_b09.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 1.0,
+          "foregroundPixels": 16230,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.9619,
+          "foregroundPixels": 21918,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.9788,
+          "foregroundPixels": 26078,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 1.0,
+          "foregroundPixels": 21008,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    },
+    {
+      "stage": 10,
+      "key": "vfx_b10_warn",
+      "floor": "assets/art/floors/floor_c25.webp",
+      "preview": "QA_floor_b10.png",
+      "conversion": "Same as scripts/pack-hero-vfx-gaps.py: alpha=min(255,int(max(R,G,B)*1.35)); alpha<8 transparent; unpremultiply RGB; NORMAL blend.",
+      "frames": [
+        {
+          "frame": 0,
+          "centralClearFraction": 0.5069,
+          "foregroundPixels": 27508,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 1,
+          "centralClearFraction": 0.4792,
+          "foregroundPixels": 31251,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 2,
+          "centralClearFraction": 0.4306,
+          "foregroundPixels": 35482,
+          "peakAlpha": 255
+        },
+        {
+          "frame": 3,
+          "centralClearFraction": 0.4451,
+          "foregroundPixels": 31419,
+          "peakAlpha": 255
+        }
+      ],
+      "visualReadability": "pass in actual-floor static composite; gameplay overlap and damage alignment pending"
+    }
+  ],
+  "pendingRuntimeChecks": [
+    "Warning damage radius alignment and floor-depth placement",
+    "Loop timing and hold frame 4 for Ice Bars and Honey Wall",
+    "Mobile readability and FPS with simultaneous warnings",
+    "Existing projectile palette remains unchanged"
+  ],
+  "contractChecks": {
+    "status": "pass",
+    "failures": [],
+    "assets": [
+      {
+        "key": "vfx_b01_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.7259,
+            "centralMeanTransparency": 0.9133
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.7087,
+            "centralMeanTransparency": 0.8967
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.7018,
+            "centralMeanTransparency": 0.8833
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.7277,
+            "centralMeanTransparency": 0.915
+          }
+        ]
+      },
+      {
+        "key": "vfx_b01_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b01_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.6897,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.7792,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9152,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9971,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b01_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b02_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b02_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b02_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.8004,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.8052,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.8772,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9649,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b02_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b03_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.932,
+            "centralMeanTransparency": 0.9928
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.8582,
+            "centralMeanTransparency": 0.9777
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9656,
+            "centralMeanTransparency": 0.9968
+          }
+        ]
+      },
+      {
+        "key": "vfx_b03_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b03_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.4967,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.5808,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.7357,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9686,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b03_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b04_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.9843,
+            "centralMeanTransparency": 0.9989
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.9412,
+            "centralMeanTransparency": 0.9946
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.7675,
+            "centralMeanTransparency": 0.9709
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9978,
+            "centralMeanTransparency": 0.9999
+          }
+        ]
+      },
+      {
+        "key": "vfx_b04_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b04_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.6999,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.7478,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9053,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9876,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b04_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.9857,
+            "centralMeanTransparency": 0.999
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.9437,
+            "centralMeanTransparency": 0.996
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.008,
+            "centralMeanTransparency": 0.7036
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9821,
+            "centralMeanTransparency": 0.9988
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.6897,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.7467,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9349,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9781,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b06_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.8947,
+            "centralMeanTransparency": 0.9838
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.8366,
+            "centralMeanTransparency": 0.9696
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9306,
+            "centralMeanTransparency": 0.992
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9814,
+            "centralMeanTransparency": 0.999
+          }
+        ]
+      },
+      {
+        "key": "vfx_b06_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b06_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.564,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.6301,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.7979,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.8812,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b06_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b07_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.9996,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.9945,
+            "centralMeanTransparency": 0.9998
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9697,
+            "centralMeanTransparency": 0.9977
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9996,
+            "centralMeanTransparency": 1.0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b07_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b07_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.8944,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.989,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.996,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.9996,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b07_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b08_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.9682,
+            "centralMeanTransparency": 0.9986
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.9737,
+            "centralMeanTransparency": 0.9988
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9101,
+            "centralMeanTransparency": 0.9829
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.6261,
+            "centralMeanTransparency": 0.9238
+          }
+        ]
+      },
+      {
+        "key": "vfx_b08_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b08_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.7833,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.9408,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.9956,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 1.0,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b08_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b09_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 1.0,
+            "centralMeanTransparency": 1.0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b09_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b09_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.5431,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.4748,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.674,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.8363,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b09_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_warn",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 0.6404,
+            "centralMeanTransparency": 0.9779
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 0.6356,
+            "centralMeanTransparency": 0.9779
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 0.6053,
+            "centralMeanTransparency": 0.973
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 0.6023,
+            "centralMeanTransparency": 0.9735
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_impact",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_wave",
+        "frames": [
+          {
+            "frame": 0,
+            "centralClearFraction": 1.0,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "centralClearFraction": 1.0,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "centralClearFraction": 1.0,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "centralClearFraction": 1.0,
+            "centerPixel": [
+              0,
+              0,
+              0,
+              255
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_lane",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b01_nest_collapse",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b02_suction",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b02_bubble_cage",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b03_grinder_blade",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b03_fire_cross",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b04_ice_bars",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b04_blizzard",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_crown_blade",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_void_maw",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b05_eclipse",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          },
+          {
+            "frame": 6
+          },
+          {
+            "frame": 7
+          }
+        ]
+      },
+      {
+        "key": "vfx_b06_root_breach",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b06_full_bloom",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b07_spore_mortar",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b07_heartstorm",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b08_honey_wall",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          }
+        ]
+      },
+      {
+        "key": "vfx_b08_dive_trail",
+        "frames": [
+          {
+            "frame": 0,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 1,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 2,
+            "seamBoundaryMaxDifference": 0
+          },
+          {
+            "frame": 3,
+            "seamBoundaryMaxDifference": 0
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_crown_cage",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_choir_note",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          }
+        ]
+      },
+      {
+        "key": "vfx_b10_memory_eclipse",
+        "frames": [
+          {
+            "frame": 0
+          },
+          {
+            "frame": 1
+          },
+          {
+            "frame": 2
+          },
+          {
+            "frame": 3
+          },
+          {
+            "frame": 4
+          },
+          {
+            "frame": 5
+          },
+          {
+            "frame": 6
+          },
+          {
+            "frame": 7
+          }
+        ]
+      }
+    ],
+    "seamNormalization": "For all 1x4 strips, 12-pixel smooth crossfade to shared boundary samples; no endcap. Full visual repeated-strip previews also supplied."
+  },
+  "generation": {
+    "mode": "built-in image_gen",
+    "selectedAssets": 59,
+    "promptSet": "PROMPTS.json",
+    "referenceStyle": [
+      "docs/art_orders/00_STYLE_GUIDE.md",
+      "docs/ART_BIBLE.md",
+      "assets/incoming/c24_seasons_vfx/vfx_c24_solar_ring.png"
+    ]
+  }
+}
