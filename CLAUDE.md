@@ -22,7 +22,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.64–65 — Monster scaling pass (owner)
+# Latest delivery: v7.8.66 — Boss/miniboss scaling (owner picked A+B+C+D)
+
+Story only (Recipe/Delve keep old formula). A: boss HP = STAGES[0].bossHp·2·1.75/0.9 (3578) × _bStoryC[i], _bStoryC = storyHp×1.127^i = [1,1.45,2.11,3.07,4.47,6.49,9.44,13.73,19.96,29.02,42.18,61.33,96.76,152.67,240.88] (×1.454/stage, ×1.578 into C3-3..5; anchored C1-1 and C3-2 to old values) — replaces realStageBossMul jumps (C2-1 was ×2.16). C2 bosses now 23–44% softer, C3-3/4/5 +25/59/93% (C3-5 862k Normal). B: mini HP = 25% of the stage boss base. C: mini uses the boss _bossScale (Normal fixed, Hard/Hell bossHpMul·diff). D: dmg floor mini ≥1.2×, boss ≥1.5× Tank contact dmg (18·1.3·storyDmg·pg·diff). stageThreat/recommended Power still old formula. Owner phone check pending.
+
+# Previous delivery: v7.8.64–65 — Monster scaling pass (owner)
 
 v7.8.64 siege base HP 260→72. v7.8.65 (owner picked 1–3 + C3-3..5 steeper): spawnEnemy story HP curve storyHp=[1,1.29,1.664,2.147,2.769,3.572,4.608,5.945,7.669,9.893,12.761,16.462,23.047,32.266,45.172] (×1.29/stage, ×1.40 into C3-3..5) and dmg storyDmg=[1,1.082,…,2.38,2.689,3.038,3.433] (×1.082, ×1.13) replace stageCurveValue+BALANCE.c2* hp/dmg multipliers in story (Recipe keeps the old formula); C3 speed ×1.08 like C2-5 · siege dmg 24→18 (= tank), xp 10→5 · spawnElite hp = 120·s with the mob curve (1.5× tank), elite dmg on storyDmg. Note: C1-2…C2-5 mobs are 5–15% softer than before (old curve was uneven), C3-3…C3-5 harder (C3-5 basic 920→1211 HP). Tests/fixtures updated (batch9 fixture regenerated from real spawns). Owner phone check pending.
 
