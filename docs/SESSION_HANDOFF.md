@@ -6,6 +6,10 @@ Implemented: stageIndex 8 siege base HP 260→130 only; existing Wisp fan shots,
 
 Verification: isolated actual-method tests cover Spark target/path scoping, once-only Static Charge scale and stale pooled target guards. Batch9 compares original combat fixture with one explicit Wisp HP exception for both animated/fallback art. npm run check and npm run build:www both passed before publication; no headless gameplay session. Owner phone feel/balance/FPS acceptance remains pending.
 
-Publication procedure: one non-forced expected-head commit to main game branch only; exact local/remote tree equality required before branch update. Verify Pages deployment/live version after publication. Commit containing this checkpoint identifies the exact change. No art, cloud, secrets or workflow modifications.
+Publication procedure: one non-forced expected-head commit to main game branch only; exact local/remote tree equality required before branch update. Verified publication: runtime commit da99b5199529903f4ef2bd0b6f1c59dc0ee27f06, Pages run 39090797004 and APK run 39090796870 both succeeded. Published version.json is 7.8.56; fetched live game.js contains both exact tuning changes. Commit containing this checkpoint identifies the exact change. No art, cloud, secrets or workflow modifications.
 
 Next: owner tests C2-4 Wisp kill time and Spark miniboss fight on x1; compare same equipment/talents. Do not stack further nerfs based on pre-v7.8.54 logs. Play Store remains parked.
+
+## Follow-up boss backlog review
+
+Owner asked to inspect pending boss attacks. Reviewed docs/BOSS_ARENA_MECHANICS.md against current attack dispatch and production methods. Main bosses C1–C2 (10) have bespoke routines; C3 (5) and Pinnacle still use generic attack pools. Delve Warden/Candlewick have dedicated routines. Arena-toolkit/Counter Object proposal remains pending; similar existing attacks must not be counted as full arena implementation. Candlewick proposal changes current candle interaction (current walk-to-snuff vs proposed walk-to-light), requiring a design decision. No boss behavior changed during this review. Main remaining work: C3/Pinnacle identity, scoped arena mechanics, telegraph/follow-up fairness and owner mobile QA.
