@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.69 — Taro tuning (owner)
+# Latest delivery: v7.8.70 — 360×780 UI audit fixes
+
+Audited every menu screen + HUD/level-up/pause/defeat at 360×780 (browser screenshots). Fixed: drawRosterHeader min scale q=max(p,.44) (candy icon covered Sugar) + fitted currency/title text · temple header frame sized to the fitted title (was 11px under Back/chip) · _rowBtn subtitle single line with ellipsis (2-line wrap covered titles in Settings) · Reward Inbox content y 64→96 portrait + real bag cap in empty text · Daily: 100-pt chest clamped inside panel, shared label y, quest counter after the bar · Dig miners label fitted before Hire · Bazaar duplicate Sugar line removed · Achievements summary/top lower · Boss Rush list on a dark panel, locked colour lighter · level-up hint shorter ('tap a card twice to pick') and lvlTitleArt keeps text off the ribbon caps (W-120). Not changed: Delve map black fog band (unexplored), pause HP number overflow only with absurd HP.
+
+# Previous delivery: v7.8.69 — Taro tuning (owner)
 
 TARO_OVER_TIME 4→3 · Sentry/Beacon orbs no longer steer to bosses (v7.8.41 seek/linger block removed; TARO_ORB_SEEK/TURN/LINGER now unused) · Spark: permanent boss seek (TARO_SPARK_SEEK branch) removed; Storm Mark TARO_MARK_TIME 6→2, target only on camera view, homing only while the mark is on view (±40px), castTaroStormMark also calls castTaroSparkStorm(dm,ul,quiet) so sparks appear · smite arc card = Charged Current: damage ×(1+.10·min(6,arc)), pierce left as is (sparks are not consumed) · TARO_ARC_HOP_MS 200→350; loop-back jumps (single target, also boss focus j>0) use taroArcLoopHop: bolt curves out ~90–130px and back, damage on return (0.45 hop) · Plasma end → taroMagField(x,y,max): t.mag 10s (TARO_MAG_TIME), damage() ×TARO_MAG_MUL 1.25 inside, graphics depth 4, ticked from taroTickPlasma. Fixture hashes updated. Owner phone check pending.
 
