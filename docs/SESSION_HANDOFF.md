@@ -4,10 +4,10 @@ Updated2026-10-18 Asia/Bangkok. Main branch claude/vampire-survival-mobile-game-
 
 23:20 PNG32/66frames at assets/incoming/levelup_cards_ui/, published3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd; all31 delivery files full-byte verified.
 24:19 PNG32/43frames at assets/incoming/pause_ui/, published708260861c3c7df93ed565d01606114345094310; all34 delivery/follow-up files full-byte verified. Proof committed with25.
-25:25 PNG32/81frames at assets/incoming/hub_motion/, published2edc7b947dbe423fd01010fa57f759a3f6173ca1; all48 delivery/follow-up files full-byte verified against local length/SHA-256/Git blob SHA. UPLOAD_VERIFICATION.json records the pinned-commit proof. This follow-up saves verified status/proof metadata.
+25:25 PNG32/81frames at assets/incoming/hub_motion/, published5dc47db575366b9d3eff31d69aca1584fc78dc20; all49 delivery/follow-up files full-byte verified against local length/SHA-256/Git blob SHA. UPLOAD_VERIFICATION.json records the pinned-commit proof. This follow-up saves final amended verified status/proof metadata.
 
 25method: user explicitly approved Python extraction: ใช้ Python ตัดจากต้นฉบับ. Original visible Momo/flower RGB and positions retained; AI supplies occluded fill and staff-head completion beyond original edges. Fully opaque interior source RGB100%,0px source translation,28.208MiB decoded (<40MiB). Full reassembly/diff, blink,±6deg joints, loop and technical contracts reviewed. Inpainted scenery and alpha edges intentionally differ. Work scripts under work/order25/; old pack.py overwrites direct extraction, use refine.py+hybrid.py+qa.py+finalize.py only if intentionally reprocessing.
 
 Remaining integration work, outside art orders: runtime WebP packing to941/1080, A1 replacing old background, C/D lazy loads, coordinate/pivot parent transforms, tween cleanup, reduced motion, actual boot-memory/FPS/phone review. Output archives/previews are under task outputs/. No outstanding art-production blocker.
 
-Final gallery amendment: A2 sky glow kept free of castle RGB; A1 neutral baseline compensated accordingly. Reassembly/PNG/identity/memory/loops rerun successfully. Amended sources and new previews await publication/readback; prior proof remains pinned to its earlier commit.
+Final gallery amendment: A2 sky glow kept free of castle RGB; A1 neutral baseline compensated accordingly. Reassembly/PNG/identity/memory/loops rerun successfully. Amended sources and previews published5dc47db; all49 files full-byte verified, final proof/status saved in this follow-up.

@@ -221,7 +221,11 @@
     ]
   },
   "remoteReadback": {
-    "status": "pending publication and full-byte readback"
+    "status": "verified",
+    "commit": "5dc47db575366b9d3eff31d69aca1584fc78dc20",
+    "fileCount": 49,
+    "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
+    "proof": "UPLOAD_VERIFICATION.json"
   },
   "technicalContracts": {
     "result": "pass",
@@ -963,9 +967,9 @@
   },
   "originalPixelIdentity": {
     "fullyOpaqueInteriorPixels": 427490,
-    "exactRGBPercent": 100.0,
-    "within1LevelPercent": 100.0,
-    "p99MaxChannelError": 0.0,
+    "exactRGBPercent": 100,
+    "within1LevelPercent": 100,
+    "p99MaxChannelError": 0,
     "placementTranslationPx": 0,
     "note": "Original RGB source is copied at its original global coordinates; no feature-based pose fitting. Differences at antialias edges and exposed inpaint backgrounds are expected."
   },

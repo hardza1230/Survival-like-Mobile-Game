@@ -1,7 +1,7 @@
 {
   "status": "verified",
-  "commit": "2edc7b947dbe423fd01010fa57f759a3f6173ca1",
-  "fileCount": 48,
+  "commit": "5dc47db575366b9d3eff31d69aca1584fc78dc20",
+  "fileCount": 49,
   "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
   "files": [
     {
@@ -20,9 +20,9 @@
     },
     {
       "file": "assets/incoming/hub_motion/hub_bg_far.png",
-      "bytes": 3162365,
-      "sha256": "3f0d7ee51e91d58068a405e4392e4a887ef4b36add74adb8974087e7cc7ca971",
-      "gitBlobSha": "d7aa5ccb9565a26eb318f86004b2a3c4522be8ed",
+      "bytes": 3189525,
+      "sha256": "ef2c74faa033ead3826cb5e2853568594e894378d87cab703fed9af7bd73a0a3",
+      "gitBlobSha": "76bd4b5675521f24203a63b278f1e40561c7ec69",
       "status": "pass"
     },
     {
@@ -132,9 +132,9 @@
     },
     {
       "file": "assets/incoming/hub_motion/hub_sky_glow.png",
-      "bytes": 824706,
-      "sha256": "9543339740316b7e70919503ad7871999ea0d6ec8bd3bb09061e9408659dd449",
-      "gitBlobSha": "3ff77d2b601f3a5838a32aec90165476eee1f433",
+      "bytes": 550287,
+      "sha256": "fcaf86bae43623dffc913f0d1cae3e0f14afa99e7c6bd807c0ed7ce5242aed33",
+      "gitBlobSha": "57a1fde9af30c36daf5b2c66091af330f5d26436",
       "status": "pass"
     },
     {
@@ -147,8 +147,8 @@
     {
       "file": "assets/incoming/hub_motion/MANIFEST.json",
       "bytes": 14796,
-      "sha256": "9e6e457f439c994fb3d44a10026c5c5d22629d5db9b46aa8759a78c6fab09c4b",
-      "gitBlobSha": "64934405dc2e0d36b0403cfdee1286deb388099b",
+      "sha256": "323e9d413f856913023d8f619fc776ee003c9a9f060bb50e5ef45106b0487a8a",
+      "gitBlobSha": "1fa35122dc0f2781e333e694a3a7743fdeeb38e7",
       "status": "pass"
     },
     {
@@ -161,22 +161,22 @@
     {
       "file": "assets/incoming/hub_motion/QA_blink_alignment.png",
       "bytes": 257885,
-      "sha256": "91b7f830bb1dbec2e9dc5fa5fff8403c2fe10f58186c597d47bf591f16bda391",
-      "gitBlobSha": "907191a28ba308f7ac5a5dc4bc1815c9f4faac80",
+      "sha256": "47b218155a5b9b9ce091b35c30900921a694cc5f086de5b2dedcdeed262afbef",
+      "gitBlobSha": "58ea341f70321483d4b61bbc132442433d2b7074",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_gallery_01.png",
-      "bytes": 536507,
-      "sha256": "477fcba34ec9d3be9732ca25cc194ac0036b0dcc2d5c7e47cdb46dea1f19c315",
-      "gitBlobSha": "74d5d288790847f32d9f907902871b41af87db72",
+      "bytes": 536638,
+      "sha256": "70fe8c934428ecfdae14011a380a6cdf8e555151377415ccf1e8ea45cde01c06",
+      "gitBlobSha": "8e52fcded7e1345ba620ad8b31a9aa64c4eb324a",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_gallery_02.png",
-      "bytes": 543368,
-      "sha256": "5bfdb22473e307e91711f3ebc64bf221b86935eb0ff45403c79ca9658229384d",
-      "gitBlobSha": "755afe0c3d29f4fec64b6e55a0c2bbaeb0832dff",
+      "bytes": 531155,
+      "sha256": "3a566df63038da2e2ff9b20fe9603bfd3d68436d57d5e6af861e11887595529a",
+      "gitBlobSha": "2abff99a7ef6a478d18c4952f4cdc2b52ce3f141",
       "status": "pass"
     },
     {
@@ -188,44 +188,44 @@
     },
     {
       "file": "assets/incoming/hub_motion/QA_pixel_diff.png",
-      "bytes": 794770,
-      "sha256": "ad3de998d68e6c96bdd698d387a1a68585499bfa02f79951b853aa4ef68c3701",
-      "gitBlobSha": "aeeff4487882bc57ae2da9372036c9c756a845c7",
+      "bytes": 813643,
+      "sha256": "d2f2a6354573d463d9a16c236ee4c499b02d6b7ff411822720899b2315bced56",
+      "gitBlobSha": "17dc17cd3ba7e41c2b1bdcfcb6177adce65e58fb",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_puppet_motion.gif",
-      "bytes": 4074062,
-      "sha256": "8a0e40793dc9e216977d7ac9c05bfb7a972b5db96edbd7688bdfe154661619a5",
-      "gitBlobSha": "987df8c0fe1040b671db59ae672b92033aa93382",
+      "bytes": 4073306,
+      "sha256": "1a5980afd519db0defc9461f09b91c43ef6bfaa9a192b1aa8605c014b26e786d",
+      "gitBlobSha": "17baff3c45cb4eddeff6a29a94baf464dfdf9f23",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_reassembly.png",
-      "bytes": 3149066,
-      "sha256": "25baef7997a7673679cc25b9dc9d04b54f065930f675922d0c0070699aaf7ec6",
-      "gitBlobSha": "c288f1d21445f9defbf0c55a45583f6d4999abe5",
+      "bytes": 3149427,
+      "sha256": "d89b721dc1824a33e1f98328016da5ce2925976c01843f9074975cd87babaf4c",
+      "gitBlobSha": "9941f1d2e2bb0e07196bc92cf5394731171acd25",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_reference_comparison.png",
-      "bytes": 1269195,
-      "sha256": "d6002f4ac200c9e05261ffbaa1a3350901a3a165a77432928558d744b9810738",
-      "gitBlobSha": "d0158eafa8e57642f05225a8fc0f2154068053fa",
+      "bytes": 1278040,
+      "sha256": "d44fc46d958e1d8759f25d74cab0b47e61410822de1c4e45f7faa63c9bc3be22",
+      "gitBlobSha": "19851df626be7b80777afbecbfa6cdd5277e7e23",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_REPORT.json",
       "bytes": 23436,
-      "sha256": "398b890f34badc617768daff34e2d82702cfbb6f4dbc6f899e69c1edc8384682",
-      "gitBlobSha": "94656a427fba197eb6add5605de71ecfaacfef15",
+      "sha256": "089ede93d953ecaab5988ec383a236c066f227ff7210b5370c9366c00e7ec9b0",
+      "gitBlobSha": "ff04cfe52c77e45e5938a5079010ec649f4089fd",
       "status": "pass"
     },
     {
       "file": "assets/incoming/hub_motion/QA_rotation_6deg.png",
-      "bytes": 991460,
-      "sha256": "ee3c3d730b8a6941551691a628be5b41d9d88a8b3809fd509f6e68b0fe4f6cb7",
-      "gitBlobSha": "c4ed24e9a2c79245982f364d4ba9bbbcf5ea1141",
+      "bytes": 991327,
+      "sha256": "1e142f7c2e0e25cfdaec8fc91cf6930680e8ede1ce02ac6e3e3d01e5b20c6fc8",
+      "gitBlobSha": "9f472320cfb9f296f57ce53f0ebbddef30025209",
       "status": "pass"
     },
     {
@@ -254,6 +254,13 @@
       "bytes": 53339,
       "sha256": "fc8dc6032e655d0e0c5a66d0b4caf58052f444a8e64ffda53658a34859cd929a",
       "gitBlobSha": "3b712008b0762612f19088e94dff202e5259ab60",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/UPLOAD_VERIFICATION.json",
+      "bytes": 13249,
+      "sha256": "dafc40372ceba0c3026f4c341b440648cd99cd49e0099738bf97d168fc51d363",
+      "gitBlobSha": "fd79e59b168e363b67b66f28a068f15c558f0f93",
       "status": "pass"
     },
     {
@@ -321,23 +328,23 @@
     },
     {
       "file": "CLAUDE.md",
-      "bytes": 47392,
-      "sha256": "3fe05d267e5a6e5c7e786df006b4c08d313546c929bb9b9b1e7bc17381ab3206",
-      "gitBlobSha": "68e550ed3e737fe0226e512596ef4635a3bbd848",
+      "bytes": 47463,
+      "sha256": "e32dddd8e06bbf20752e3886b6ee3a3e51fdd7fcf25094ed7cd37c0e4af4ee5a",
+      "gitBlobSha": "2e3dfbc82a09aca20fe52ebf60c395c9cd97acae",
       "status": "pass"
     },
     {
       "file": "docs/SESSION_HANDOFF.md",
-      "bytes": 1464,
-      "sha256": "28ad779dc5b92f67157a9ac85b34971ffaf570e031ceb27357565921afb58169",
-      "gitBlobSha": "fe6908df5b22d90822193e1aa8d27ac93480b085",
+      "bytes": 2078,
+      "sha256": "375bbb7f0047f331d75374ec85af957e581d3939c27467f61c82ad93e675ea32",
+      "gitBlobSha": "9139e6a9f8ee5d07b35d6aff4afda390b10b8496",
       "status": "pass"
     },
     {
       "file": "docs/art_orders/25_HUB_MENU_MOTION.md",
-      "bytes": 19979,
-      "sha256": "76bda658fe6fc3377bf33b4612d063a91d286c0b1ce2093cc416f240af2af1f3",
-      "gitBlobSha": "7588ef10420708b776d7db488080f7f9d59f6f3e",
+      "bytes": 20042,
+      "sha256": "a54664917434fbe3a1fcd9e6fc59da3f815a66ca5f15a08c76cc96674a0d521a",
+      "gitBlobSha": "bdc963bb346fc4402dbbecffcb4cd7b66df46d19",
       "status": "pass"
     }
   ]
