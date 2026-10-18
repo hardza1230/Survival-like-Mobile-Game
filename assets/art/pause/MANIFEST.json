@@ -1,0 +1,304 @@
+[
+ {
+  "key": "pause_veil",
+  "file": "assets/art/pause/pause_veil.webp",
+  "cw": 540,
+  "ch": 960,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_crest",
+  "file": "assets/art/pause/pause_crest.webp",
+  "cw": 500,
+  "ch": 180,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_title_divider",
+  "file": "assets/art/pause/pause_title_divider.webp",
+  "cw": 400,
+  "ch": 20,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_chip",
+  "file": "assets/art/pause/pause_chip.webp",
+  "cw": 200,
+  "ch": 32,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   20,
+   12,
+   20,
+   12
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_stat_bar",
+  "file": "assets/art/pause/pause_stat_bar.webp",
+  "cw": 850,
+  "ch": 64,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   60,
+   24,
+   60,
+   24
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_stat_sep",
+  "file": "assets/art/pause/pause_stat_sep.webp",
+  "cw": 8,
+  "ch": 64,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_panel",
+  "file": "assets/art/pause/pause_panel.webp",
+  "cw": 440,
+  "ch": 150,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   30,
+   40,
+   30,
+   25
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_panel_header_line",
+  "file": "assets/art/pause/pause_panel_header_line.webp",
+  "cw": 350,
+  "ch": 16,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   16,
+   6,
+   24,
+   6
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_tile",
+  "file": "assets/art/pause/pause_tile.webp",
+  "cw": 270,
+  "ch": 100,
+  "cols": 1,
+  "rows": 3,
+  "frames": 3,
+  "nineSlice": [
+   24,
+   24,
+   24,
+   24
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_detail_strip",
+  "file": "assets/art/pause/pause_detail_strip.webp",
+  "cw": 800,
+  "ch": 32,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   20,
+   12,
+   20,
+   12
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_skill_slot",
+  "file": "assets/art/pause/pause_skill_slot.webp",
+  "cw": 128,
+  "ch": 128,
+  "cols": 3,
+  "rows": 1,
+  "frames": 3,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_level_badge",
+  "file": "assets/art/pause/pause_level_badge.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_relic_row",
+  "file": "assets/art/pause/pause_relic_row.webp",
+  "cw": 800,
+  "ch": 110,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   135,
+   32,
+   120,
+   32
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_count_badge",
+  "file": "assets/art/pause/pause_count_badge.webp",
+  "cw": 96,
+  "ch": 64,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   24,
+   24,
+   24,
+   24
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_btn_resume",
+  "file": "assets/art/pause/pause_btn_resume.webp",
+  "cw": 850,
+  "ch": 130,
+  "cols": 1,
+  "rows": 2,
+  "frames": 2,
+  "nineSlice": [
+   220,
+   32,
+   100,
+   32
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_btn_settings",
+  "file": "assets/art/pause/pause_btn_settings.webp",
+  "cw": 410,
+  "ch": 100,
+  "cols": 1,
+  "rows": 2,
+  "frames": 2,
+  "nineSlice": [
+   40,
+   32,
+   40,
+   32
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_btn_quit",
+  "file": "assets/art/pause/pause_btn_quit.webp",
+  "cw": 410,
+  "ch": 100,
+  "cols": 1,
+  "rows": 2,
+  "frames": 2,
+  "nineSlice": [
+   40,
+   32,
+   40,
+   32
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_icon_sheet",
+  "file": "assets/art/pause/pause_icon_sheet.webp",
+  "cw": 128,
+  "ch": 128,
+  "cols": 4,
+  "rows": 4,
+  "frames": 16,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "pause_loot_icon_sheet",
+  "file": "assets/art/pause/pause_loot_icon_sheet.webp",
+  "cw": 160,
+  "ch": 160,
+  "cols": 3,
+  "rows": 1,
+  "frames": 3,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ }
+]

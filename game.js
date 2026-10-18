@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.58';
+const GAME_VERSION = '7.8.59';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.59',date:'2026-10-18',title:'Living Menu, New Level-Up and Pause Screens',items:['Main menu comes alive: Momo breathes, blinks and waves her wand; braid, cape, ribbon and flowers sway; petals, fireflies, castle lights, clouds and twinkling stars move; menu icons animate','New painted level-up cards: card frames in each skill’s colour, icon medallions, ribbons for special cards, a glowing selection frame, and a burst when you confirm','New Pause screen: crest title, difficulty / level / wave chips, stat bar, loot tiles, skill slots, relic list and big Resume button','Fixed Relic cards sometimes showing “undefined”']},
   {v:'7.8.58',date:'2026-10-18',title:'Hero Feedback Pass',items:['Spark: sparks no longer vanish when they hit — they fly until their timer ends','Spark Storm Unique sprays sparks in two full clockwise circles around Taro','Arc: lightning now travels from target to target instead of jumping instantly','Mint Barrage: at most 2 lances; extra lance cards add shard damage','Mint Frost Lance Charge: the dash ends with a heavy strike on the nearest enemy that heals you (30% of damage, max 8% HP)','Mint Glacier Bloom: frozen enemies get Frostbite and burn over time','Cocoa Rocket Gauntlet: rockets fly much faster and keep chasing until they hit','Cocoa Phantom Rush: every Dash before casting adds +1 leap and faster leaps (max +5)','Level-up cards open after a short LEVEL UP moment instead of instantly']},
   {v:'7.8.57',date:'2026-10-18',title:'Chapter 1–2 Boss Attack Art',items:['Every Chapter 1–2 boss and miniboss now has its own themed warning rings, explosions, shockwaves and charge lanes (acid, sewer bubbles, chili fire, ice, golden crown, roots, spores, honey, seasons, root crown)','19 signature attacks get their own effects: Nest Collapse, Suction Valve, Trapping Bubble, Flavor Grinder, Furnace Overheat, Ice Cage, Frost Storm, Sovereign’s Blade, Maw of the Void, Eclipse of Flavor, Root Breach, Full Bloom, Spore Mortar, Heartstorm, Honey Prison/Wax Cage, Royal Dive, Crown Cage, Root Choir and Memory Eclipse','Hit areas, timings and damage are unchanged — the art matches the real danger zones; enemy bullets keep their single readable colour']},
   {v:'7.8.56',date:'2026-10-18',title:'Seasonal Wisp and Spark Miniboss Balance',items:['C2-4 Seasonal Wisps have 50% less base HP; their five-shot attack stays the same','Spark Build deals 15% less damage to minibosses, including Static Charge and Storm Mark; normal enemies and bosses are unchanged']},
@@ -1561,8 +1562,56 @@ const ASSET_IMAGES = {
   hub_ui_logo:'assets/art/hub_reference/logo.webp',
   hub_ui_arrow:'assets/art/hub_reference/arrow.webp',
   hub_ui_divider:'assets/art/hub_reference/divider.webp',
-  hub_ui_background:'assets/art/hub_reference/background.webp',
+  hub_ui_background:'assets/art/hub_motion/hub_bg_far.webp',   // v7.8.59 ใบ 25: ฉากหลังไม่มีโมโม่ (โมโม่เป็นชั้นหุ่นเชิด HUB_LAYERS) · ภาพเดิม assets/art/hub_reference/background.webp
   hub_ui_candy:'assets/art/hub_reference/candy.webp',
+  // v7.8.59 art orders 23–25: level-up cards, pause screen, hub motion (scripts/pack-ui-orders-23-25.py)
+  lvl_screen_veil:'assets/art/levelup/lvl_screen_veil.webp',
+  lvl_title_banner_sheet:'assets/art/levelup/lvl_title_banner_sheet.webp',
+  lvl_title_burst:'assets/art/levelup/lvl_title_burst.webp',
+  lvl_held_chip_sheet:'assets/art/levelup/lvl_held_chip_sheet.webp',
+  lvl_held_bar:'assets/art/levelup/lvl_held_bar.webp',
+  lvl_card_base:'assets/art/levelup/lvl_card_base.webp',
+  lvl_card_accent:'assets/art/levelup/lvl_card_accent.webp',
+  lvl_card_glow:'assets/art/levelup/lvl_card_glow.webp',
+  lvl_card_select:'assets/art/levelup/lvl_card_select.webp',
+  lvl_icon_socket:'assets/art/levelup/lvl_icon_socket.webp',
+  lvl_ribbon_sheet:'assets/art/levelup/lvl_ribbon_sheet.webp',
+  lvl_pill_sheet:'assets/art/levelup/lvl_pill_sheet.webp',
+  lvl_combo_chip_sheet:'assets/art/levelup/lvl_combo_chip_sheet.webp',
+  lvl_type_badge_sheet:'assets/art/levelup/lvl_type_badge_sheet.webp',
+  lvl_sparkle_sheet:'assets/art/levelup/lvl_sparkle_sheet.webp',
+  lvl_shine_strip:'assets/art/levelup/lvl_shine_strip.webp',
+  pause_veil:'assets/art/pause/pause_veil.webp',
+  pause_crest:'assets/art/pause/pause_crest.webp',
+  pause_title_divider:'assets/art/pause/pause_title_divider.webp',
+  pause_chip:'assets/art/pause/pause_chip.webp',
+  pause_stat_bar:'assets/art/pause/pause_stat_bar.webp',
+  pause_stat_sep:'assets/art/pause/pause_stat_sep.webp',
+  pause_panel:'assets/art/pause/pause_panel.webp',
+  pause_panel_header_line:'assets/art/pause/pause_panel_header_line.webp',
+  pause_tile:'assets/art/pause/pause_tile.webp',
+  pause_detail_strip:'assets/art/pause/pause_detail_strip.webp',
+  pause_skill_slot:'assets/art/pause/pause_skill_slot.webp',
+  pause_level_badge:'assets/art/pause/pause_level_badge.webp',
+  pause_relic_row:'assets/art/pause/pause_relic_row.webp',
+  pause_count_badge:'assets/art/pause/pause_count_badge.webp',
+  pause_btn_resume:'assets/art/pause/pause_btn_resume.webp',
+  pause_btn_settings:'assets/art/pause/pause_btn_settings.webp',
+  pause_btn_quit:'assets/art/pause/pause_btn_quit.webp',
+  pause_icon_sheet:'assets/art/pause/pause_icon_sheet.webp',
+  pause_loot_icon_sheet:'assets/art/pause/pause_loot_icon_sheet.webp',
+  hub_momo_body:'assets/art/hub_motion/hub_momo_body.webp',
+  hub_momo_braid:'assets/art/hub_motion/hub_momo_braid.webp',
+  hub_momo_cape:'assets/art/hub_motion/hub_momo_cape.webp',
+  hub_momo_arm:'assets/art/hub_motion/hub_momo_arm.webp',
+  hub_momo_ribbon:'assets/art/hub_motion/hub_momo_ribbon.webp',
+  hub_momo_hairflower:'assets/art/hub_motion/hub_momo_hairflower.webp',
+  hub_fg_flowers_left:'assets/art/hub_motion/hub_fg_flowers_left.webp',
+  hub_fg_flowers_right:'assets/art/hub_motion/hub_fg_flowers_right.webp',
+  hub_cloud_sheet:'assets/art/hub_motion/hub_cloud_sheet.webp',
+  hub_sky_glow:'assets/art/hub_motion/hub_sky_glow.webp',
+  hub_window_lights:'assets/art/hub_motion/hub_window_lights.webp',
+  hub_momo_blink:'assets/art/hub_motion/hub_momo_blink.webp',
   menu_hub_v3:'assets/ui/menu_hub_v3.webp',
   fg_ui_atlas:'assets/art/forge_ui/atlas.png',
   craft_bench_bg:'assets/ui/craft_bench_bg.webp',
@@ -2344,6 +2393,23 @@ const ASSET_FX = {
   vfx_c24_time_break:{url:'assets/art/c24_seasons/vfx_c24_time_break.webp',fw:384,fh:384,frames:8,rate:9,anchor:'center'},
   vfx_c24_season_seal:{url:'assets/art/c24_seasons/vfx_c24_season_seal.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true},
   vfx_c24_metamorph:{url:'assets/art/c24_seasons/vfx_c24_metamorph.webp',fw:384,fh:384,frames:8,rate:10,anchor:'center'},
+  // v7.8.59 art orders 23–25 VFX
+  vfx_lvl_open:{url:'assets/art/levelup/vfx_lvl_open.webp',fw:384,fh:384,frames:8,rate:18,anchor:'center'},
+  vfx_lvl_card_in:{url:'assets/art/levelup/vfx_lvl_card_in.webp',fw:512,fh:200,frames:4,rate:16,anchor:'center'},
+  vfx_lvl_confirm:{url:'assets/art/levelup/vfx_lvl_confirm.webp',fw:512,fh:256,frames:6,rate:16,anchor:'center'},
+  vfx_lvl_special_confirm:{url:'assets/art/levelup/vfx_lvl_special_confirm.webp',fw:512,fh:256,frames:8,rate:14,anchor:'center'},
+  vfx_hub_petals:{url:'assets/art/hub_motion/vfx_hub_petals.webp',fw:64,fh:64,frames:8,rate:10,anchor:'center',loop:true},
+  vfx_hub_wand_sparkle:{url:'assets/art/hub_motion/vfx_hub_wand_sparkle.webp',fw:128,fh:128,frames:8,rate:10,anchor:'center',loop:true},
+  vfx_hub_flag:{url:'assets/art/hub_motion/vfx_hub_flag.webp',fw:128,fh:128,frames:6,rate:9,anchor:'center',loop:true},
+  vfx_hub_firefly:{url:'assets/art/hub_motion/vfx_hub_firefly.webp',fw:48,fh:48,frames:4,rate:6,anchor:'center',loop:true},
+  vfx_hub_logo_shine:{url:'assets/art/hub_motion/vfx_hub_logo_shine.webp',fw:256,fh:80,frames:8,rate:16,anchor:'center'},
+  vfx_hub_play_shimmer:{url:'assets/art/hub_motion/vfx_hub_play_shimmer.webp',fw:256,fh:64,frames:6,rate:16,anchor:'center'},
+  vfx_hub_moon_twinkle:{url:'assets/art/hub_motion/vfx_hub_moon_twinkle.webp',fw:64,fh:64,frames:4,rate:5,anchor:'center',loop:true},
+  hub_btn_play_anim:{url:'assets/art/hub_motion/hub_btn_play_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  hub_btn_heroes_anim:{url:'assets/art/hub_motion/hub_btn_heroes_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  hub_btn_gear_anim:{url:'assets/art/hub_motion/hub_btn_gear_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  hub_btn_activity_anim:{url:'assets/art/hub_motion/hub_btn_activity_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  hub_btn_codex_anim:{url:'assets/art/hub_motion/hub_btn_codex_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
   // v7.8.57 art order 22: boss attack VFX C1–C2 (assets/art/boss_vfx · scripts/pack-boss-vfx-c1-c2.py) · stage kit vfx_bNN_warn/impact/wave/lane + signatures · loaded per stage via STAGE_SHEETS
   vfx_b01_warn:{url:'assets/art/boss_vfx/vfx_b01_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.95,0.4]},
   vfx_b01_impact:{url:'assets/art/boss_vfx/vfx_b01_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
@@ -2865,16 +2931,20 @@ const STAGE_SHEETS=[
 let _stageOnlyArt=null;
 function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
+const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
 if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
 const DEFER_RE=/assets\/(?:art\/(?:temple|rewards|build_(?:paths|cards)|kitchen|delve|biomes|pinnacle|dig|icons|ch3_bosses|ch3_enemies|floors)\/|ui\/currency\/|gear\/|icons\/levelup\/|incoming\/)/;
 function bootDeferred(url){return DEFER_RE.test(url||'');}
 // v6.38 บูตโหลดเฉพาะของที่เมนูหลักใช้ · ที่เหลือทั้งหมดโหลดเบื้องหลัง (ensureDeferred) ก่อนเข้าด่าน/หน้าย่อย
-function bootKeep(k){return /^hub_btn_|^hub_ui_|^menu_hub|^vfx_poof$|^replay_progress_art$|^chapter\d_cover$|^chapter_endgame_cover$|^tile___/.test(k);}
+function bootKeep(k){return /^hub_btn_|^hub_ui_|^hub_(?:momo|fg|sky|window|cloud)_|^vfx_hub_|^menu_hub|^vfx_poof$|^replay_progress_art$|^chapter\d_cover$|^chapter_endgame_cover$|^tile___/.test(k);}
 // v6.43 (เจ้าของ: แยกโหลดเฉพาะหน้าที่เข้า) แต่ละหน้าเมนูรอแค่โฟลเดอร์ของตัวเอง · ที่เหลือโหลดเบื้องหลังตามเดิม
 // v7.8.49 Temple Weave UI: key → [cellW, cellH, cols, nineSlice [l,t,r,b] | null] (จาก assets/art/temple/ui/MANIFEST.json)
+// v7.8.59 ใบ 25: ชั้นหน้าเมนู [key, x, y, w, h (พิกัดผืน 1080×1920), originX, originY (pivot), anchorX, anchorY] เรียงหลัง→หน้า
+const HUB_LAYERS=[["hub_sky_glow",0,0,1080,420,null,null,null,null],["hub_window_lights",0,81,1080,938,null,null,null,null],["hub_cloud_sheet",0,0,400,160,null,null,null,null],["hub_momo_cape",24,493,533,340,0.8405,0.0824,null,null],["hub_momo_braid",156,419,287,244,0.8676,0.1189,null,null],["hub_momo_body",140,197,574,729,0.6551,0.8642,null,null],["hub_momo_blink",476,362,175,93,null,null,null,null],["hub_momo_hairflower",337,195,159,165,0.5535,0.7455,null,null],["hub_momo_arm",483,-107,717,764,0.1158,0.877,null,null],["hub_momo_ribbon",715,242,268,251,0.8134,0.0,null,null],["hub_fg_flowers_left",0,715,633,297,0.3949,1.0943,null,null],["hub_fg_flowers_right",679,877,327,175,0.6758,0.9886,null,null],["vfx_hub_petals",0,0,64,64,null,null,null,null],["vfx_hub_wand_sparkle",0,0,256,256,null,null,1000,100],["vfx_hub_flag",0,0,128,128,null,null,487,49],["vfx_hub_firefly",0,0,48,48,null,null,null,null],["vfx_hub_moon_twinkle",0,0,64,64,null,null,null,null],["vfx_hub_logo_shine",0,0,512,160,null,null,null,null],["vfx_hub_play_shimmer",0,0,512,128,null,null,null,null],["hub_btn_play_anim",0,0,128,128,null,null,null,null],["hub_btn_heroes_anim",0,0,128,128,null,null,null,null],["hub_btn_gear_anim",0,0,128,128,null,null,null,null],["hub_btn_activity_anim",0,0,128,128,null,null,null,null],["hub_btn_codex_anim",0,0,128,128,null,null,null,null]];
 const TEMPLE_UI={screen_temple_weave:[720,1280,1,null],temple_altar_trio:[600,360,1,null],temple_altar_glow_sheet:[200,200,3,null],temple_title_frame:[700,100,1,[160,30,160,30]],temple_rank_ribbon:[600,55,1,[70,18,70,18]],temple_tab_sheet:[280,65,1,[72,18,38,18]],temple_power_bar:[700,40,1,[55,12,55,12]],temple_power_fill:[600,20,1,[12,6,12,6]],temple_core_card_sheet:[880,200,1,[225,40,280,40]],temple_core_card_max:[880,200,1,[260,40,250,40]],temple_star_sheet:[64,64,3,null],temple_buy_btn_sheet:[240,60,1,[75,16,40,16]],temple_weave_btn_sheet:[500,110,1,[135,30,75,30]],temple_ribbon_knot:[200,100,1,null],screen_temple_perks:[720,1280,1,null],perk_tier_banner:[440,45,1,[90,12,45,12]],perk_tier_line:[600,12,1,null],perk_card_sheet:[280,230,3,[32,32,32,32]],perk_pip_sheet:[40,40,3,null],perk_btn_sheet:[200,45,1,[27,12,27,12]],ui_lock_icon:[96,96,1,null],perk_req_chip:[210,40,1,[58,11,30,11]],perk_special_banner:[920,80,1,[240,22,220,22]],perk_compass_icon:[160,160,1,null],perk_ancient_banner:[550,40,1,[90,11,40,11]],perk_ancient_card_sheet:[300,100,1,[110,20,35,20]],perk_scroll_chip:[160,40,1,[50,11,20,11]],ic_scroll:[128,128,1,null],perk_reset_btn:[500,70,1,[55,19,55,19]],ic_reset:[96,96,1,null],temple_back_btn:[180,60,1,[60,16,32,16]],temple_currency_chip:[180,60,1,[75,16,28,16]],ui_notify_dot:[64,64,1,null],temple_sparkle_sheet:[64,64,6,null]};
+Object.assign(TEMPLE_UI,{"lvl_screen_veil":[540,960,1,null],"lvl_title_banner_sheet":[500,48,1,[50,16,50,16]],"lvl_title_burst":[320,160,1,null],"lvl_held_chip_sheet":[64,64,3,null],"lvl_held_bar":[800,44,1,[16,12,16,12]],"lvl_card_base":[384,150,1,[32,28,32,28]],"lvl_card_accent":[384,150,1,[32,28,32,28]],"lvl_card_glow":[416,182,1,[40,40,40,40]],"lvl_card_select":[400,166,1,[40,36,40,36]],"lvl_icon_socket":[96,96,2,null],"lvl_ribbon_sheet":[180,28,1,[24,8,24,8]],"lvl_pill_sheet":[120,22,1,[12,8,12,8]],"lvl_combo_chip_sheet":[48,48,2,null],"lvl_type_badge_sheet":[64,64,7,null],"lvl_sparkle_sheet":[64,64,4,null],"lvl_shine_strip":[48,256,1,null],"pause_veil":[540,960,1,null],"pause_crest":[500,180,1,null],"pause_title_divider":[400,20,1,null],"pause_chip":[200,32,1,[20,12,20,12]],"pause_stat_bar":[850,64,1,[60,24,60,24]],"pause_stat_sep":[8,64,1,null],"pause_panel":[440,150,1,[30,40,30,25]],"pause_panel_header_line":[350,16,1,[16,6,24,6]],"pause_tile":[270,100,1,[24,24,24,24]],"pause_detail_strip":[800,32,1,[20,12,20,12]],"pause_skill_slot":[128,128,3,null],"pause_level_badge":[64,64,1,null],"pause_relic_row":[800,110,1,[135,32,120,32]],"pause_count_badge":[96,64,1,[24,24,24,24]],"pause_btn_resume":[850,130,1,[220,32,100,32]],"pause_btn_settings":[410,100,1,[40,32,40,32]],"pause_btn_quit":[410,100,1,[40,32,40,32]],"pause_icon_sheet":[128,128,4,null],"pause_loot_icon_sheet":[160,160,3,null],"hub_cloud_sheet":[174,70,3,null],"hub_momo_blink":[152,81,3,null]});   // v7.8.59 ใบ 23/24 ชิ้น UI (tuPanel/tuImg ใช้ร่วม)
 const MENU_GROUPS=[
   [/^gLoadout$/,/assets\/art\/mobile_ui_789\/gear_/],
   [/^hub$/,/assets\/art\/(?:hub_reference|menu_buttons)\//],
@@ -7497,8 +7567,9 @@ class Game extends Phaser.Scene {
       if(!keys.length){ const none=this.add.text(chipX0,y+chip/2,'— none yet',{fontFamily:'sans-serif',fontSize:'11px',color:'#6a6078'}).setOrigin(0,0.5); cont.add(none); return; }
       let x=chipX0;
       keys.forEach(k=>{ const awk=awkOf&&awkOf(k), lvl=lvlOf(k), ik=awk?null:(label.includes('Relic')&&this.textures.exists('relic_'+k)?'relic_'+k:this.iconKey(k,isPass));
-        const g=this.add.graphics(); g.fillStyle(0x2c2338,0.95); g.fillRoundedRect(x,y,chip,chip,7);
-        g.lineStyle(1.5,awk?0xffcf5a:chipColor,awk?1:0.9); g.strokeRoundedRect(x,y,chip,chip,7);
+        let g;if(this.tuHas('lvl_held_chip_sheet')){this.tuFrames('lvl_held_chip_sheet');g=this.add.image(x,y,'lvl_held_chip_sheet','cell'+(awk?1:0)).setOrigin(0).setDisplaySize(chip,chip);}   // v7.8.59 ใบ 23 B1
+        else{g=this.add.graphics(); g.fillStyle(0x2c2338,0.95); g.fillRoundedRect(x,y,chip,chip,7);
+        g.lineStyle(1.5,awk?0xffcf5a:chipColor,awk?1:0.9); g.strokeRoundedRect(x,y,chip,chip,7);}
         const em = ik ? this.add.image(x+chip/2,y+chip/2-1,ik).setDisplaySize(chip*0.82,chip*0.82)
                       : this.add.text(x+chip/2,y+chip/2-1,emojiOf(k),{fontSize:'15px'}).setOrigin(0.5);
         const lt=this.add.text(x+chip-3,y+chip-2,awk?'⚡':String(lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffe08a'}).setOrigin(1,1);
@@ -8868,16 +8939,45 @@ class Game extends Phaser.Scene {
   }
   hubMotionAllowed(){return !(typeof window!=='undefined'&&window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);}
   hubTween(config){if(!this.hubMotionAllowed())return null;const t=this.tweens.add(config);if(t)(this._hubTweens||(this._hubTweens=[])).push(t);return t;}
-  stopHubMotion(){for(const t of this._hubTweens||[])t.remove();this._hubTweens=[];for(const n of this._hubMotes||[])if(n.active)n.destroy();this._hubMotes=[];}
+  stopHubMotion(){for(const t of this._hubTweens||[])t.remove();this._hubTweens=[];for(const e of this._hubEvents||[])e.remove(false);this._hubEvents=[];for(const n of this._hubMotes||[])if(n.active)n.destroy();this._hubMotes=[];}
   startHubAmbience(logoY){
     if(!this.hubMotionAllowed())return;
     this._hubMotes=[];const w=this.W,h=this.H,land=w>h,span=land?w*.43:w,top=Math.max(64,h*.13),bottom=Math.max(top+32,logoY-18);
+    if(this.bpAnim?.('vfx_hub_petals')){for(let i=0;i<12;i++){const sz=14+(i%4)*4,x=span*((i*41)%97)/97,s=this.add.sprite(x,top-30,'vfx_hub_petals',i%8).setDisplaySize(sz,sz).setAlpha(.85);s.play({key:'vfx_hub_petals',startFrame:i%8});this.menu.add(s);this._hubMotes.push(s);   /* v7.8.59 ใบ 25 C1: กลีบดอกจริงปลิวแทนจุดกลม */
+        const fall=()=>{if(!s.active)return;const x0=span*Math.random(),dur=7000+Math.random()*5000;s.setPosition(x0,top-30-Math.random()*60).setAlpha(.85);this.hubTween({targets:s,x:x0+(Math.random()<.5?-1:1)*(60+Math.random()*90),y:Math.min(h*.95,bottom+h*.25),alpha:.15,angle:'+='+(Math.random()<.5?-180:180),duration:dur,ease:'Sine.inOut',onComplete:fall});};this.time.delayedCall(i*650,fall);}
+      if(this.events&&!this._hubShutdownHook){this._hubShutdownHook=true;this.events.once('shutdown',()=>{this.stopHubMotion();this._hubShutdownHook=false;});}return;}
     for(let i=0;i<8;i++){const x=span*(.08+((i*37)%83)/100),y=top+(bottom-top)*((i*29)%89)/100,r=1.8+(i%3)*.7,g=this.add.graphics();
       g.fillStyle(i%3===0?0xffda9b:0xffb5c7,1).fillEllipse(-r,-r*.5,r*2,r*1.2);g.setPosition(x,y).setAlpha(.35);this.menu.add(g);this._hubMotes.push(g);
       this.hubTween({targets:g,x:x+(i%2?12:-10),y:Math.min(bottom,y+18+i*2),angle:i%2?50:-40,alpha:.12,duration:4200+i*370,delay:i*190,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     }
     if(this.events&&!this._hubShutdownHook){this._hubShutdownHook=true;this.events.once('shutdown',()=>{this.stopHubMotion();this._hubShutdownHook=false;});}
   }
+  // v7.8.59 ใบ 25: ฉากเมนูแบบชั้น · พิกัดผืน 1080×1920 ใน container root ที่สเกลตาม cover ของพื้นหลัง · คืน true ถ้าวางโมโม่ได้
+  buildHubScene(bg){ const L=Object.fromEntries(HUB_LAYERS.map(r=>[r[0],r])),has=k=>this.textures.exists(k);if(!has('hub_momo_body')||bg?.type!=='Image')return false;
+    const fw=bg.frame.realWidth||bg.frame.width,sc=Math.max(this.W/fw,this.H/(bg.frame.realHeight||bg.frame.height)),k=sc*fw/1080,root=this.add.container(this.W/2-540*k,this.H/2-960*k).setScale(k);this.menu.add(root);
+    const motion=this.hubMotionAllowed(),put=(cont,key,dx=0,dy=0)=>{const r=L[key];if(!r||!has(key))return null;const [,x,y,w,h,ox,oy]=r,im=ox==null?this.add.image(x-dx,y-dy,key).setOrigin(0):this.add.image(x+w*ox-dx,y+h*oy-dy,key).setOrigin(ox,oy);im.setDisplaySize(w,h);cont.add(im);return im;},
+      sway=(o,deg,ms,d=0)=>{if(o&&motion)this.hubTween({targets:o,angle:{from:-deg,to:deg},duration:ms,delay:d,yoyo:true,repeat:-1,ease:'Sine.inOut'});};
+    const sky=put(root,'hub_sky_glow');if(sky&&motion)this.hubTween({targets:sky,alpha:{from:.6,to:1},duration:3000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const win=put(root,'hub_window_lights');if(win&&motion)this.hubTween({targets:win,alpha:{from:.72,to:1},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut',repeatDelay:300});
+    if(has('hub_cloud_sheet')&&motion&&this.tuFrames){TEMPLE_UI.hub_cloud_sheet&&this.tuFrames('hub_cloud_sheet');for(let i=0;i<3;i++){const c=this.add.image(-420,120+i*95,'hub_cloud_sheet','cell'+i).setDisplaySize(400,160).setAlpha(.55);root.add(c);const go=()=>{if(!c.active)return;c.x=-420;this.hubTween({targets:c,x:1500,duration:52000+i*9000,onComplete:go});};this.time.delayedCall(i*14000,go);}}
+    if(this.bpAnim?.('vfx_hub_moon_twinkle'))for(let i=0;i<6;i++){const s=this.add.sprite(120+((i*173)%840),50+((i*97)%300),'vfx_hub_moon_twinkle',0).setDisplaySize(40,40);if(motion)s.play({key:'vfx_hub_moon_twinkle',startFrame:i%4});root.add(s);}
+    const fl=L.vfx_hub_flag;if(fl&&this.bpAnim?.('vfx_hub_flag')){const s=this.add.sprite(fl[7],fl[8],'vfx_hub_flag',0).setDisplaySize(96,96);if(motion)s.play('vfx_hub_flag');root.add(s);}
+    // โมโม่: hero bob ทั้งตัว · ชิ้นแกว่งรอบ pivot · แขน+ริบบิ้น+ประกายไม้เท้าอยู่ใน armC (หมุนรอบไหล่)
+    const hero=this.add.container(0,0);root.add(hero);sway(put(hero,'hub_momo_cape'),2.5,2600);sway(put(hero,'hub_momo_braid'),3,2300,400);put(hero,'hub_momo_body');
+    const bl=L.hub_momo_blink;let blink=null;if(bl&&has('hub_momo_blink')&&TEMPLE_UI.hub_momo_blink){this.tuFrames('hub_momo_blink');blink=this.add.image(bl[1],bl[2],'hub_momo_blink','cell1').setOrigin(0).setDisplaySize(bl[3],bl[4]).setVisible(false);hero.add(blink);}
+    sway(put(hero,'hub_momo_hairflower'),3,2000,200);
+    const ar=L.hub_momo_arm;if(ar&&has('hub_momo_arm')){const px=ar[1]+ar[3]*ar[5],py=ar[2]+ar[4]*ar[6],armC=this.add.container(px,py);hero.add(armC);put(armC,'hub_momo_arm',px,py);const rb=put(armC,'hub_momo_ribbon',px,py);sway(rb,5,900);
+      const wa=L.vfx_hub_wand_sparkle;if(wa&&this.bpAnim?.('vfx_hub_wand_sparkle')){const s=this.add.sprite(wa[7]-px,wa[8]-py,'vfx_hub_wand_sparkle',0).setDisplaySize(230,230);if(motion)s.play('vfx_hub_wand_sparkle');armC.add(s);}
+      if(motion)this.hubTween({targets:armC,angle:{from:-2,to:2},duration:2000,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
+    if(motion){this.hubTween({targets:hero,y:-6,duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+      if(blink)this.hubEvery(3000,3000,()=>{if(!blink.active)return;blink.setVisible(true).setFrame('cell1');this.time.delayedCall(50,()=>blink.active&&blink.setFrame('cell2'));this.time.delayedCall(120,()=>blink.active&&blink.setFrame('cell1'));this.time.delayedCall(170,()=>blink.active&&blink.setVisible(false));});}
+    sway(put(root,'hub_fg_flowers_left'),1.5,3200);sway(put(root,'hub_fg_flowers_right'),1.5,2800,600);
+    if(this.bpAnim?.('vfx_hub_firefly'))for(let i=0;i<7;i++){const x=80+((i*149)%920),y=1000+((i*61)%380),s=this.add.sprite(x,y,'vfx_hub_firefly',0).setDisplaySize(34,34);if(motion){s.play({key:'vfx_hub_firefly',startFrame:i%4});this.hubTween({targets:s,x:x+(i%2?40:-40),y:y-30-(i%3)*12,duration:2600+i*300,yoyo:true,repeat:-1,ease:'Sine.inOut'});}root.add(s);}
+    return true; }
+  // ทำซ้ำทุก ms (+สุ่ม jitter) ล้างใน stopHubMotion
+  hubEvery(ms,jitter,fn){if(!this.hubMotionAllowed()||!this.time?.addEvent)return null;const ev={stop:false,remove(){this.stop=true;t?.remove(false);}};let t=null;const loop=()=>{if(ev.stop)return;t=this.time.delayedCall(ms+Math.random()*jitter,()=>{if(ev.stop)return;fn();loop();});};loop();(this._hubEvents||(this._hubEvents=[])).push(ev);return ev;}
+  // แสงวิ่ง 1 ครั้งทับกล่อง (โลโก้/ปุ่ม Play)
+  hubFlash(key,x,y,w,h){if(this.state!=='menu'||this.menuScreen!=='hub'||!this.bpAnim?.(key))return;const s=this.add.sprite(x,y,key,0).setDisplaySize(w,h).setAlpha(.9);this.menu.add(s);s.play(key);s.once('animationcomplete',()=>s.destroy());}
   hubLayout(){
     const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.026),gap=Math.max(9,w*.022),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
     const width=right-left,menuTop=portrait?h*(h<680?.55:.57):94,bottom=h-(portrait?Math.max(36,h*.065):12),unit=(bottom-menuTop-gap*3)/4.3;
@@ -8888,9 +8988,10 @@ class Game extends Phaser.Scene {
     this.stopHubMotion();this.claimReadyQuests();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
     const bg=this.textures.exists(bgKey)?this._coverImage(0,0,w,h,bgKey):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
+    const hubLive=bgKey==='hub_ui_background'&&this.buildHubScene?.(bg);   // v7.8.59 ใบ 25: ชั้นฉาก + โมโม่หุ่นเชิด
     const shade=this.add.graphics();for(let i=0;i<16;i++){const y=h*.40+i*h*.60/16;shade.fillStyle(0x111b2c,.04+i*.034).fillRect(0,y,w,h*.60/16+1);}this.menu.add(shade);
     // Subtle background motion stays behind every interactive UI element.
-    if(bg.type==='Image')this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    if(bg.type==='Image'&&!hubLive)this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,gearW=44,versionX=w-side-gearW-8-versionW,top=portrait?Math.max(12,h*.016):10;
     this.hubPanel(side,top,pillW,pillH);const candySize=pillH*.60,candyX=side+pillH*.67;
     this.hubArt('candy',candyX,top+pillH/2,candySize,candySize);
@@ -8901,7 +9002,7 @@ class Game extends Phaser.Scene {
     const cog=this.add.graphics(),cx=gearX+22,cy=gearY+22;cog.fillStyle(0xe7e4ed,1);for(let i=0;i<8;i++){const a=i*Math.PI/4;cog.fillCircle(cx+Math.cos(a)*9,cy+Math.sin(a)*9,3);}cog.fillCircle(cx,cy,10).fillStyle(0x283041,1).fillCircle(cx,cy,4);this.menu.add(cog);
     this._zone(gearX,gearY,gearW,44,()=>{this.menuScreen='gMore';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='gMore';
     const logoW=portrait?w*.82:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
-    this.startHubAmbience(logoY);if(this.textures.exists('hub_ui_logo')){const logo=this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);this.hubTween({targets:logo,y:logo.y+1.5,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});}else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
+    this.startHubAmbience(logoY);if(this.textures.exists('hub_ui_logo')){const logo=this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);this.hubTween({targets:logo,y:logo.y+1.5,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.hubEvery?.(6000,1200,()=>this.hubFlash('vfx_hub_logo_shine',logoX,logoY+logoH/2,logoW,logoH));}else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
     const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
     const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex']];
@@ -8910,7 +9011,9 @@ class Game extends Phaser.Scene {
       if(primary){const glow=this.add.graphics();glow.lineStyle(2,tone.edge,.45).strokeRoundedRect(B.x+2,B.y+2,B.w-4,B.h-4,14);this.menu.add(glow);this.hubTween({targets:glow,alpha:.25,duration:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
       const more=i===5,size=Math.min(B.h*.66,B.w*(primary||more?.16:.19)),cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
       const tx=more?B.x+B.w/2+size*.36:B.x+size*1.35,ix=more?B.x+B.w/2-size*.85:B.x+size*.72,room=more?B.w*.5:arrowX-tx-arrowSize*.65;
-      if(!locked&&this.textures.exists(icon))this.menu.add(this.add.image(ix,cy,icon).setDisplaySize(size,size));else this.hubText(ix,cy,locked?'🔒':'✦',Math.max(18,size*.5),'#ffe3aa',.5);
+      if(!locked&&this.bpAnim?.(icon+'_anim')&&this.hubMotionAllowed()){const s=this.add.sprite(ix,cy,icon+'_anim',0).setDisplaySize(size,size);s.play(icon+'_anim');this.menu.add(s);}   /* v7.8.59 ใบ 25 D: ไอคอนปุ่มขยับ */
+      else if(!locked&&this.textures.exists(icon))this.menu.add(this.add.image(ix,cy,icon).setDisplaySize(size,size));
+      if(primary&&!locked)this.hubEvery?.(4200,900,()=>this.hubFlash('vfx_hub_play_shimmer',B.x+B.w/2,B.y+B.h/2,B.w,B.h));else this.hubText(ix,cy,locked?'🔒':'✦',Math.max(18,size*.5),'#ffe3aa',.5);
       const fs=primary?Math.min(44,B.h*.43):more?Math.min(28,B.h*.35):Math.max(14,Math.min(23,w*.039));
       const title=this.hubText(tx,B.y+B.h*.40,label,fs,'#fff7ed',more?.5:0);let tf=fs;while(title.width>room&&tf>12)title.setFontSize(--tf+'px');
       const st=this.hubText(tx,B.y+B.h*.69,locked?'Clear Stage '+need[i]+' to unlock':sub,primary||more?Math.max(10,Math.min(15,B.h*.18)):Math.max(9,Math.min(12,w*.024)),tone.text,more?.5:0);let ss=parseFloat(st.style.fontSize);while(st.width>room&&ss>8)st.setFontSize(--ss+'px');
@@ -10286,6 +10389,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H;
     if(!this.pauseUI){ this.pauseUI=this.add.container(0,0).setScrollFactor(1).setDepth(90); this.camUI(this.pauseUI); }
     this.pauseUI.removeAll(true); this._pauseBtns=[];
+    if(w<=h&&this.tuHas('pause_panel')&&this.buildPauseArt?.()){this.pauseUI.setVisible(true);return;}   // v7.8.59 ใบ 24: หน้าหยุดตามภาพอ้างอิง
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.85).setOrigin(0,0);
     const t=this.add.text(w/2,38,'⏸ Paused',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ff8fb5'}).setOrigin(0.5);
     const stTxt=(this.stageTxt&&this.stageTxt.text)||('Stage '+((this.stageIndex||0)+1));
@@ -10335,6 +10439,49 @@ class Game extends Phaser.Scene {
     this._pauseBtns.push({x:sbx-sbw/2,y:sby-sbh/2,w:sbw,h:sbh,fn:()=>{Sfx.select();this.buildPauseSettings();}});
     this.pauseUI.setVisible(true);
   }
+  // v7.8.59 ใบ 24: หน้าหยุดเกมแนวตั้ง ประกอบจากชิ้นอาร์ต (เนื้อหาเดิม: สแตต · ของที่เก็บ · สกิล · Relic · Resume/Settings/Quit)
+  buildPauseArt(){
+    const w=this.W,h=this.H,U=this.pauseUI,p=this.player,T=(x,y,s,fs,col,ox=.5,oy=.5,bold=true)=>{const t=this.add.text(x,y,s,{fontFamily:'sans-serif',fontStyle:bold?'bold':'normal',fontSize:fs+'px',color:col}).setOrigin(ox,oy);U.add(t);return t;},
+      ic=(cell,x,y,s)=>{if(!this.tuHas('pause_icon_sheet'))return null;this.tuFrames('pause_icon_sheet');const im=this.add.image(x,y,'pause_icon_sheet','cell'+cell).setDisplaySize(s,s);U.add(im);return im;},
+      panel=(key,cell,x,y,pw,ph)=>{const c=this.tuPanel(key,cell,x,y,pw,ph);if(c)U.add(c);return c;},side=Math.max(10,w*.035),cw=w-side*2;
+    U.add(this.add.rectangle(0,0,w,h,0x120c1a,.35).setOrigin(0));if(this.textures.exists('pause_veil'))U.add(this.add.image(0,0,'pause_veil').setOrigin(0).setDisplaySize(w,h));
+    // หัวเรื่อง
+    const crW=Math.min(w*.62,300),crH=crW*.36;let y=Math.max(6,h*.008);if(this.textures.exists('pause_crest'))U.add(this.add.image(w/2,y+crH/2,'pause_crest').setDisplaySize(crW,crH));ic(0,w/2,y+crH*.2,crH*.24);
+    const ttl=T(w/2,y+crH*.68,'Paused',Math.round(crH*.32),'#ff8fb5');ttl.setStroke('#4a1631',5);y+=crH+2;
+    const stTxt=(this.stageTxt&&this.stageTxt.text)||('Stage '+((this.stageIndex||0)+1));const sub=T(w/2,y+8,stTxt,13,'#fff2e2');let sf=13;while(sub.width>cw&&sf>9)sub.setFontSize(--sf+'px');y+=20;
+    if(this.textures.exists('pause_title_divider'))U.add(this.add.image(w/2,y,'pause_title_divider').setDisplaySize(Math.min(220,cw*.6),11));y+=10;
+    // ชิป ความยาก / เลเวล / เวฟ
+    const st=STAGES[this.stageIndex],d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],chips=[[9,d.name,'#fff2e2',d.color],[10,'Lv '+(this.level||1),'#fff2e2'],[11,st&&st.waves?'Wave '+Math.min(st.waves,(this.waveIndex||0)+1)+'/'+st.waves:'☠ '+(this.kills||0),'#ffd27a']],chW=(cw-16)/3,chH=Math.max(26,Math.min(32,h*.036));
+    chips.forEach(([cell,txt,col,tint],i)=>{const x=side+i*(chW+8);panel('pause_chip',0,x,y,chW,chH);const im=ic(cell,x+chH*.55,y+chH/2,chH*.62);if(im&&tint!=null)im.setTint(tint);const t=T(x+chW/2+chH*.25,y+chH/2,txt,12,col);let fs=12;while(t.width>chW-chH*1.2&&fs>8)t.setFontSize(--fs+'px');});y+=chH+8;
+    // แถบสแตต 5 ช่อง
+    const regen=Math.min(p.maxhp*0.03,(p.regen||0)+(p.regenFlat||0)+p.maxhp*(p.regenPct||0)),stats=[[4,Math.max(0,Math.round(p.hp))+'/'+Math.round(p.maxhp),'#9dffcf'],[5,regen.toFixed(1)+'/s','#ffffff'],[6,Math.round((p.dmgMul||1)*100)+'%','#ffffff'],[7,Math.round((1-(p.dmgTakenMul||1))*100)+'%','#ffffff'],[8,Math.round((p.critChance||0)*100)+'%','#ffffff']],sbH=Math.max(34,Math.min(44,h*.05));
+    panel('pause_stat_bar',0,side-4,y,cw+8,sbH);const inner=cw-24,seg=inner/5;stats.forEach(([cell,txt,col],i)=>{const cx=side+12+seg*i;ic(cell,cx+11,y+sbH/2,18);const t=T(cx+23,y+sbH/2,txt,11,col,0);let fs=11;while(t.width>seg-27&&fs>7)t.setFontSize(--fs+'px');if(i&&this.textures.exists('pause_stat_sep'))U.add(this.add.image(cx-1,y+sbH/2,'pause_stat_sep').setDisplaySize(2,sbH*.5));});y+=sbH+8;
+    const header=(x,yy,pw,cell,label,count)=>{ic(cell,x+20,yy+17,22);const t=T(x+36,yy+17,label,14,'#ffe9c4',0);let lx=x+40+t.width;if(count!=null){const bw=26;panel('pause_count_badge',0,lx,yy+7,bw,20);T(lx+bw/2,yy+17,String(count),12,'#ffffff');lx+=bw+6;}panel('pause_panel_header_line',0,lx+4,yy+12,Math.max(20,x+pw-lx-18),10);};
+    // ปุ่มด้านล่าง (คำนวณก่อนเพื่อรู้พื้นที่เหลือ)
+    const rbH=Math.max(52,Math.min(64,h*.072)),sbH2=Math.max(44,Math.min(52,h*.06)),gap=8,botY=h-Math.max(10,h*.015)-sbH2,resY=botY-gap-rbH;
+    // Collected this run
+    const loot=this._runCurrency||{},lk=Object.keys(loot).filter(k=>loot[k]>0),cur=lk.reduce((s,k)=>s+loot[k],0),boxes=(this._runBoxes||[]).length,tiles=[[0,String(this.sugarRun||0),'Sugar'],[1,String(boxes),'Boxes'],[2,String(cur),'Currency']];
+    const tH=Math.max(50,Math.min(64,h*.072)),dH=24,pH1=36+tH+8+dH+10;panel('pause_panel',0,side,y,cw,pH1);header(side,y,cw,12,'Collected this run');
+    const tw=(cw-24-12)/3;tiles.forEach(([cell,num,lab],i)=>{const x=side+12+i*(tw+6),ty=y+36;panel('pause_tile',0,x,ty,tw,tH);if(this.tuHas('pause_loot_icon_sheet')){this.tuFrames('pause_loot_icon_sheet');U.add(this.add.image(x+tH*.45,ty+tH/2,'pause_loot_icon_sheet','cell'+cell).setDisplaySize(tH*.62,tH*.62));}const n=T(x+tH*.82,ty+tH*.36,num,18,'#ffffff',0);let fs=18;while(n.width>tw-tH*.9&&fs>10)n.setFontSize(--fs+'px');T(x+tH*.82,ty+tH*.72,lab,11,'#e8dcef',0,.5,false);});
+    const dy=y+36+tH+8;panel('pause_detail_strip',0,side+12,dy,cw-24,dH);const det=lk.length?lk.slice(0,3).map(k=>currencyDef(k).name+' ×'+loot[k]).join('  •  ')+(lk.length>3?'  •  +'+(lk.length-3):''):(boxes?'Boxes open at stage end':'No crafting currency yet');const dt=T(w/2,dy+dH/2,det,10,'#efe4f6',.5,.5,false);let dfs=10;while(dt.width>cw-36&&dfs>7)dt.setFontSize(--dfs+'px');y+=pH1+8;
+    // สกิลที่ถือ
+    const atk=Object.keys(this.skills||{}),pas=this.usesBasicAttackBuild?.()?[]:Object.keys(this.passives||{}),slots=[...atk.map(k=>[k,0]),...pas.map(k=>[k,2])],slS=Math.max(40,Math.min(52,h*.058)),perRow=Math.max(1,Math.floor((cw-24+8)/(slS+8))),rows=Math.max(1,Math.ceil(slots.length/perRow)),pH2=36+rows*(slS+8)+6;
+    panel('pause_panel',0,side,y,cw,pH2);header(side,y,cw,13,pas.length?'Skills & passives':'Active skill');
+    slots.forEach(([k,kind],i)=>{const awk=kind===0&&this.skills[k]>=SKILL_AWAKEN_LV,x=side+12+(i%perRow)*(slS+8),sy=y+36+Math.floor(i/perRow)*(slS+8);if(this.tuHas('pause_skill_slot')){this.tuFrames('pause_skill_slot');U.add(this.add.image(x,sy,'pause_skill_slot','cell'+(awk?1:kind)).setOrigin(0).setDisplaySize(slS,slS));}
+      const ik=this.iconKey(k,kind===2);if(ik&&this.textures.exists(ik))U.add(this.add.image(x+slS/2,sy+slS/2,ik).setDisplaySize(slS*.72,slS*.72));else T(x+slS/2,sy+slS/2,(kind===2?PASSIVES[k]?.emoji:SKILLDEFS[k]?.emoji)||'✦',20,'#ffffff');
+      const lv=kind===2?this.passives[k]:this.skills[k];if(this.textures.exists('pause_level_badge'))U.add(this.add.image(x+slS-4,sy+slS-4,'pause_level_badge').setDisplaySize(20,20));T(x+slS-4,sy+slS-4,awk?'⚡':String(lv||1),10,'#ffe08a');});
+    if(!slots.length)T(side+20,y+36+slS/2,'— none yet',11,'#8d82a0',0,.5,false);y+=pH2+8;
+    // Relics (ใส่เท่าที่พื้นที่เหลือ)
+    const rel=(this.relics||[]).slice(),rowH=Math.max(46,Math.min(56,h*.064)),room=resY-gap-y-36-8;if(rel.length&&room>rowH){const fit=Math.max(1,Math.min(rel.length,Math.floor((room+6)/(rowH+6)))),more=rel.length-fit,pH3=36+fit*(rowH+6)+(more>0?16:4);
+      panel('pause_panel',0,side,y,cw,pH3);header(side,y,cw,14,'Your relics',rel.length);
+      rel.slice(0,fit).forEach((k,i)=>{const r=RELICS[k]||{},ry=y+36+i*(rowH+6),rx=side+12,rw=cw-24;panel('pause_relic_row',0,rx,ry,rw,rowH);const key='relic_'+k;if(this.textures.exists(key))U.add(this.add.image(rx+rowH*.55,ry+rowH/2,key).setDisplaySize(rowH*.7,rowH*.7));else T(rx+rowH*.55,ry+rowH/2,r.emoji||'🔮',20,'#ffffff');
+        const tx=rx+rowH*1.2,tw2=rw-rowH*1.2-28;const nm=T(tx,ry+rowH*.3,r.name||k,13,'#fff7ed',0);let nfs=13;while(nm.width>tw2&&nfs>9)nm.setFontSize(--nfs+'px');const ds=this.add.text(tx,ry+rowH*.52,r.desc||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9cde6',wordWrap:{width:tw2},maxLines:2}).setOrigin(0,0);U.add(ds);});
+      if(more>0)T(w/2,y+pH3-10,'+'+more+' more Relic'+(more>1?'s':''),10,'#cbbfda');}
+    // ปุ่ม
+    const btn=(key,x,yy,bw,bh,cell,label,col,fn,big)=>{const c=panel(key,0,x,yy,bw,bh);if(!c)return;const icx=big?x+bh*.95:x+bh*.7;ic(cell,icx,yy+bh/2,bh*(big?.46:.48));const t=T(big?x+bw/2+bh*.3:x+bw/2+bh*.25,yy+bh/2,label,big?Math.round(bh*.46):Math.round(bh*.38),col);t.setStroke(big?'#1d6b55':'#2a1530',big?5:3);this._pauseBtns.push({x,y:yy,w:bw,h:bh,fn,art:c,key});};
+    btn('pause_btn_resume',side-2,resY,cw+4,rbH,1,'Resume','#ffffff',()=>this.togglePause(),true);
+    const hb=(cw-10)/2;btn('pause_btn_settings',side,botY,hb,sbH2,2,'Settings','#ffffff',()=>{Sfx.select();this.buildPauseSettings();});btn('pause_btn_quit',side+hb+10,botY,hb,sbH2,3,'Quit stage','#ff8fb5',()=>this.quitStage());
+    return true; }
   // v5.50: ตั้งค่าระหว่างเล่น (ใช้แถวเดียวกับหน้า Settings แบบย่อ)
   buildPauseSettings(){
     const w=this.W,h=this.H; this.pauseUI.removeAll(true); this._pauseBtns=[];
@@ -12318,18 +12465,20 @@ class Game extends Phaser.Scene {
     const rarIdx=rar?['common','rare','epic','legend'].indexOf(rar.id):-1;
     const glow=this.add.graphics();
     if(rarIdx>=1){const gw=rarIdx>=3?7:rarIdx>=2?5:3,ga=rarIdx>=3?0.55:rarIdx>=2?0.36:0.18;glow.lineStyle(gw,color,ga);glow.strokeRoundedRect(x-3,y-3,w+6,h+6,19);if(rarIdx>=2){glow.lineStyle(gw+6,color,ga*0.4);glow.strokeRoundedRect(x-5,y-5,w+10,h+10,21);}}
-    const panel=this.add.graphics();const bgMix=rarIdx>=2?this._darken(color,rarIdx>=3?0.60:0.70):0x21172b;
-    panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);
+    const art=this.tuHas('lvl_card_base');let panel;   // v7.8.59 ใบ 23: กรอบการ์ดจริง (base + ชั้นสีย้อมตามสกิล)
+    if(art){panel=this.tuPanel('lvl_card_base',0,x,y,w,h);const acc=this.tuPanel('lvl_card_accent',0,0,0,w,h);if(acc){acc.list.forEach(i=>i.setTint(color));panel.add(acc);}}
+    else{panel=this.add.graphics();const bgMix=rarIdx>=2?this._darken(color,rarIdx>=3?0.60:0.70):0x21172b;
+    panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);}
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
     const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
-    let icon,badgeT,nameT,roleT,descT,starsT,ctaT; const hl=options.starting?null:this._cardHeadline(o);
+    let icon,badgeT,nameT,roleT,descT,starsT,ctaT; let hl=options.starting?null:this._cardHeadline(o);if(hl&&(hl.t==null||hl.t==='undefined'||/undefined/.test(String(hl.t))))hl=null;   /* v7.8.59 การ์ด Relic บางใบขึ้น "undefined" */
     // v6.52.1: คำอธิบายสั้นลง — แยกแท็กไปบรรทัดดาว · ตัดท่อนที่ซ้ำกับหัวข้อเขียว
     let dd=String(o.desc||''),tagS='';{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}
     if(hl&&hl.t){const h=hl.t.replace(/^[^A-Za-z0-9+\-−×]+/,'').replace(/…$/,'').trim();if(h.length>3&&dd.trim().startsWith(h)){const r=dd.trim().slice(h.length).replace(/^[\s,·;—-]+/,'');if(r.length>3)dd=r.charAt(0).toUpperCase()+r.slice(1);}}
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
-      const halo=this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
+      const halo=this.lvlSocket(iconX,iconY,Math.min(45,h*0.34)*2.05,color)||this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
@@ -12338,10 +12487,10 @@ class Game extends Phaser.Scene {
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
-      group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
+      group.add([panel,halo]);this.lvlPill(group,ctaT,1);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);this.lvlBadge(group,o,badgeT);
     }else{
       const iconX=x+w/2,iconY=y+h*0.25,iconSize=Math.min(70,h*0.25),textW=w-22;
-      const halo=this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
+      const halo=this.lvlSocket(iconX,iconY,Math.min(42,w*0.22)*2.05,color)||this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
@@ -12350,21 +12499,22 @@ class Game extends Phaser.Scene {
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(x+w/2,y+h*0.85,o.carry,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9be8ff',align:'center',wordWrap:{width:textW},maxLines:2}).setOrigin(0.5):this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
-      group.add([panel,halo,icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
+      group.add([panel,halo]);this.lvlPill(group,ctaT,1);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }
     // v6.51.0: การ์ดพิเศษ (Mutation/Evolution/Relic/Path/Infusion/Fusion/Modifier) เด่นขึ้น — กรอบทองเต้น+ริบบิ้น+แสงวิ่ง+ประกาย
     const SPK={'Build Path':['PICK ONE BUILD',0x7fd8ff],'Flavor Infusion':['INFUSION',0xff9a4d],'Dual Infusion':['DUAL INFUSION',0xff9a4d],'Fusion':['FUSION',0xc58bff],'Relic':['RELIC',0xff7ad9],'Modifier':['MODIFIER',0x6fe3c4]};
     const sp=o.evolution?['✨ EVOLUTION',0xffd447]:o.mutation?['🧬 MUTATION',0xc58bff]:SPK[o.kind]?['✦ '+SPK[o.kind][0],SPK[o.kind][1]]:null;
     if(sp&&!options.starting){
-      const sc=sp[1],fx=this.add.graphics();
-      fx.lineStyle(4,sc,1);fx.strokeRoundedRect(x-2,y-2,w+4,h+4,18);fx.lineStyle(10,sc,0.35);fx.strokeRoundedRect(x-6,y-6,w+12,h+12,22);
+      const sc=sp[1],fx=this.tuPanel('lvl_card_glow',0,x-16,y-16,w+32,h+32)||this.add.graphics();
+      if(fx.type==='Container')fx.list.forEach(i=>i.setTint(sc));else{fx.lineStyle(4,sc,1);fx.strokeRoundedRect(x-2,y-2,w+4,h+4,18);fx.lineStyle(10,sc,0.35);fx.strokeRoundedRect(x-6,y-6,w+12,h+12,22);}
       this.tweens.add({targets:fx,alpha:{from:0.45,to:1},yoyo:true,repeat:-1,duration:450,ease:'Sine.inOut'});
-      const rw=Math.min(w-30,sp[0].length*8+26),rib=this.add.graphics();rib.fillStyle(sc,1);rib.fillRoundedRect(x+w/2-rw/2,y-11,rw,20,10);rib.lineStyle(2,0xffffff,0.9);rib.strokeRoundedRect(x+w/2-rw/2,y-11,rw,20,10);
+      const rw=Math.min(w-30,sp[0].length*8+26),ri={'✨ EVOLUTION':0,'🧬 MUTATION':1}[sp[0]]??({'Build Path':2,'Flavor Infusion':3,'Dual Infusion':3,'Fusion':1,'Relic':4,'Modifier':5}[o.kind]??0);let rib=this.tuPanel('lvl_ribbon_sheet',ri,x+w/2-(rw+20)/2,y-14,rw+20,26);
+      if(!rib){rib=this.add.graphics();rib.fillStyle(sc,1);rib.fillRoundedRect(x+w/2-rw/2,y-11,rw,20,10);rib.lineStyle(2,0xffffff,0.9);rib.strokeRoundedRect(x+w/2-rw/2,y-11,rw,20,10);}
       const ribT=this.add.text(x+w/2,y-1,sp[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#2a1530'}).setOrigin(0.5);
-      const shine=this.add.rectangle(x,y+h/2,18,h-6,0xffffff,0.22).setAngle(14);
+      const shine=this.textures.exists('lvl_shine_strip')?this.add.image(x,y+h/2,'lvl_shine_strip').setDisplaySize(26,h-6).setAlpha(.55).setAngle(14):this.add.rectangle(x,y+h/2,18,h-6,0xffffff,0.22).setAngle(14);
       const mk=this.make.graphics({add:false});mk.fillRoundedRect(x,y,w,h,16);shine.setMask(mk.createGeometryMask());
       this.tweens.add({targets:shine,x:{from:x-20,to:x+w+20},duration:900,repeat:-1,repeatDelay:700,delay:(options.index||0)*65+200});
-      const spk=[];for(let i=0;i<5;i++){const s=this.add.text(x+Math.random()*w,y+Math.random()*h,'✦',{fontSize:(9+Math.random()*7|0)+'px',color:'#ffffff'}).setOrigin(0.5).setAlpha(0);spk.push(s);this.tweens.add({targets:s,alpha:{from:0,to:0.9},scale:{from:0.5,to:1.2},yoyo:true,repeat:-1,duration:600+Math.random()*500,delay:Math.random()*900});}
+      const spk=[];for(let i=0;i<5;i++){const sz=(9+Math.random()*7|0),s=this.tuHas('lvl_sparkle_sheet')?(this.tuFrames('lvl_sparkle_sheet'),this.add.image(x+Math.random()*w,y+Math.random()*h,'lvl_sparkle_sheet','cell'+(i%4)).setDisplaySize(sz*1.4,sz*1.4).setAlpha(0)):this.add.text(x+Math.random()*w,y+Math.random()*h,'✦',{fontSize:sz+'px',color:'#ffffff'}).setOrigin(0.5).setAlpha(0);spk.push(s);const bs=s.scaleX||1;this.tweens.add({targets:s,alpha:{from:0,to:0.9},scale:{from:bs*0.5,to:bs*1.2},yoyo:true,repeat:-1,duration:600+Math.random()*500,delay:Math.random()*900});}
       group.add([fx,shine,rib,ribT,...spk]);
       if(!this._spSndAt||this.time.now-this._spSndAt>800){this._spSndAt=this.time.now;Sfx.legend&&Sfx.legend();}
     }
@@ -12374,6 +12524,15 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:icon,scaleX:baseX,scaleY:baseY,duration:280,delay:(options.index||0)*65,ease:'Back.out'});
   }
   // คำใบ้คอมโบบนการ์ด: ไอคอนคู่คอมโบมุมขวาบน — จางถ้ายังNoneอีกครึ่ง / สว่าง+เรืองถ้ามีแล้ว (ชี้ว่าควWaitัพใบนี้)
+  // v7.8.59 ใบ 23 helpers: วงไอคอน (ฐาน + วงแหวนย้อมสี) · เม็ดยาหลังข้อความ · สัญลักษณ์ประเภทหน้าป้าย
+  lvlSocket(x,y,size,color){if(!this.tuHas('lvl_icon_socket'))return null;this.tuFrames('lvl_icon_socket');const c=this.add.container(x,y);c.add(this.add.image(0,0,'lvl_icon_socket','cell0').setDisplaySize(size,size));c.add(this.add.image(0,0,'lvl_icon_socket','cell1').setDisplaySize(size,size).setTint(color));return c;}
+  lvlPill(group,t,cell){if(!this.tuHas('lvl_pill_sheet')||!t)return null;const pw=t.width+22,ph=Math.max(20,t.height+8),px=t.x-t.originX*t.width-11,py=t.y-t.originY*t.height-(ph-t.height)/2,p=this.tuPanel('lvl_pill_sheet',cell,px,py,pw,ph);if(p)group.add(p);return p;}
+  lvlBadge(group,o,t){if(!this.tuHas('lvl_type_badge_sheet')||!t)return;const i={atk:0,pas:1,basic:2,heal:3,util:4,uni:5,awk:6}[o.type||'atk'];if(i==null)return;this.tuFrames('lvl_type_badge_sheet');const s=t.height+6;group.add(this.add.image(t.x+t.width+5+s/2,t.y+t.height/2,'lvl_type_badge_sheet','cell'+i).setDisplaySize(s,s));}
+  // ป้ายหัวเรื่อง (ช่องตามโหมด) วางหลังข้อความ + ระเบิดดาวตอนเปิด (ไม่ซ้ำภายใน 1.5s) · ข้อความหดให้พอดีจอ
+  lvlTitleArt(t,cell,open){if(!t)return;let fs=13;while(t.width>this.W-40&&fs>9)t.setFontSize(--fs+'px');if(!this.tuHas('lvl_title_banner_sheet'))return;const bw=Math.min(this.W-12,t.width+70),bh=t.height+14,b=this.tuPanel('lvl_title_banner_sheet',cell,t.x-bw/2,t.y-7,bw,bh);if(!b)return;const i=this.lvlUp.getIndex(t);this.lvlUp.addAt(b,Math.max(0,i));t.setColor('#fff7e0').setStroke('#3a1b2e',3);
+    if(open&&this.bpAnim?.('vfx_lvl_open')&&performance.now()-(this._lvlOpenFxAt||0)>1500){this._lvlOpenFxAt=performance.now();const s=this.add.sprite(t.x,t.y+bh/2,'vfx_lvl_open',0).setDisplaySize(260,260).setAlpha(.9);this.lvlUp.addAt(s,Math.max(0,i));s.play('vfx_lvl_open');s.once('animationcomplete',()=>s.destroy());}}
+  // แตะยืนยัน: การ์ดแตกเป็นประกาย (การ์ดพิเศษใช้ชุดใหญ่) · sprite บนกล้อง UI เพราะ lvlUp ถูกซ่อนทันที
+  lvlConfirmFx(c){const o=c.opt||{},big=o.evolution||o.kind==='Relic'||o.kind==='Build Path',k=big?'vfx_lvl_special_confirm':'vfx_lvl_confirm';if(!this.bpAnim?.(k))return;const w=c.right-c.left,h=c.bottom-c.top,s=this.add.sprite(c.left+w/2,c.top+h/2,k,0).setDisplaySize(w*1.15,h*1.6).setDepth(95);s.setScrollFactor?.(1);this.camUI?.(s);s.play(k);s.once('animationcomplete',()=>s.destroy());}
   comboPartners(o){
     const key=o.key,isAtk=(o.type==='atk'||o.type==='awk'),out=[];
     for(const c of COMBOS){
@@ -12563,8 +12722,8 @@ class Game extends Phaser.Scene {
     Sfx.eventLoopStop?.();const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     const _sndForced=!!this._forcedOpts;   // v7.2 sound picked after the final choices are known (guaranteed Relic levels build their offer below)
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
-    const bg=this.add.rectangle(0,0,w,h,0x160f21,0.94).setOrigin(0,0);
-    this.lvlUp.add(bg);
+    const veil=this.textures.exists('lvl_screen_veil'),bg=this.add.rectangle(0,0,w,h,0x160f21,veil?0.5:0.94).setOrigin(0,0);
+    this.lvlUp.add(bg);if(veil)this.lvlUp.add(this.add.image(0,0,'lvl_screen_veil').setOrigin(0).setDisplaySize(w,h));   // v7.8.59 ใบ 23 ม่าน
     const heldBot0=this.drawHeldBar(this.lvlUp, 8);
     const heldBot=heldBot0;   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap the same card again to confirm':'⭐ LEVEL UP — tap to choose, tap again to confirm',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
@@ -12572,7 +12731,7 @@ class Game extends Phaser.Scene {
     this.banishMode=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
     const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
-    if(this._relicPick)t.setText('🔮 RELIC — choose 1 (changes how you fight) · tap again to confirm');
+    if(this._relicPick)t.setText('🔮 RELIC — choose 1 · tap again to confirm');
     if(!_wasLvl&&performance.now()-(this._uniqueRankSfxAt||-9999)>1800){ const special=_sndForced||this._relicPick||this._chestReward; if(special)Sfx.ev?.('special_card_offer',.55,1); else if(performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); } else Sfx.ev?.('card_offer_open',.45,.6); }
     const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
@@ -12585,7 +12744,8 @@ class Game extends Phaser.Scene {
       this.drawReadableChoiceCard(this.lvlUp,o,x,y,finalCardW,ch,{index:i});
       this.lvlCards.push({left:x,right:x+finalCardW,top:y,bottom:y+ch,apply:o.apply,title:o.title,opt:o});
     });
-    const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · one path for this run · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
+    const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
+    this.lvlTitleArt?.(t,this._chestReward?1:this._relicPick?2:pathPick?3:0,!_wasLvl);
     this.lvlActionBtns=[];
     this.lvlUp.setVisible(true);
   }
@@ -12593,14 +12753,15 @@ class Game extends Phaser.Scene {
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.ev?.('card_focus',.45,.05)||Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
-    this.mxPick?.(c); Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':(this._chestReward||this._relicPick)?'special_card_confirm':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
+    this.lvlConfirmFx?.(c); this.mxPick?.(c); Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':(this._chestReward||this._relicPick)?'special_card_confirm':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
   }
   // แตะครั้งแรก = โชว์กWaitบเรืองWaitบการ์ด ให้ผู้เล่นรู้ว่ากำลังเลือกใบนี้ (ก่อนแตะซ้ำยืนยัน)
   highlightCard(c){
     if(!this.lvlUp)return;
-    if(!this._cardHi){this._cardHi=this.add.graphics().setDepth(50);this.lvlUp.add(this._cardHi);}
-    const g=this._cardHi;g.clear();
     const x=c.left,y=c.top,w=c.right-c.left,h=c.bottom-c.top,r=14;
+    if(this.tuHas('lvl_card_select')){if(this._cardHi){this.tweens.killTweensOf(this._cardHi);this._cardHi.destroy();}const sel=this._cardHi=this.tuPanel('lvl_card_select',0,x-8,y-8,w+16,h+16);sel.setDepth(50);this.lvlUp.add(sel);this.tweens.add({targets:sel,alpha:{from:0.6,to:1},duration:260,yoyo:true,repeat:-1,ease:'Sine.inOut'});return;}   // v7.8.59 ใบ 23
+    if(!this._cardHi||this._cardHi.type!=='Graphics'){this._cardHi=this.add.graphics().setDepth(50);this.lvlUp.add(this._cardHi);}
+    const g=this._cardHi;g.clear();
     g.fillStyle(0xffe07a,0.12);g.fillRoundedRect(x,y,w,h,r);
     g.lineStyle(4,0xffe07a,0.95);g.strokeRoundedRect(x,y,w,h,r);
     g.lineStyle(2,0xffffff,0.7);g.strokeRoundedRect(x+3,y+3,w-6,h-6,r-3);

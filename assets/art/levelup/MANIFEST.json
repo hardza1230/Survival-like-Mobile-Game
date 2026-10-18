@@ -1,0 +1,302 @@
+[
+ {
+  "key": "lvl_screen_veil",
+  "file": "assets/art/levelup/lvl_screen_veil.webp",
+  "cw": 540,
+  "ch": 960,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_title_banner_sheet",
+  "file": "assets/art/levelup/lvl_title_banner_sheet.webp",
+  "cw": 500,
+  "ch": 48,
+  "cols": 1,
+  "rows": 5,
+  "frames": 5,
+  "nineSlice": [
+   50,
+   16,
+   50,
+   16
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_title_burst",
+  "file": "assets/art/levelup/lvl_title_burst.webp",
+  "cw": 320,
+  "ch": 160,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_held_chip_sheet",
+  "file": "assets/art/levelup/lvl_held_chip_sheet.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 3,
+  "rows": 1,
+  "frames": 3,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_held_bar",
+  "file": "assets/art/levelup/lvl_held_bar.webp",
+  "cw": 800,
+  "ch": 44,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   16,
+   12,
+   16,
+   12
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_card_base",
+  "file": "assets/art/levelup/lvl_card_base.webp",
+  "cw": 384,
+  "ch": 150,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   32,
+   28,
+   32,
+   28
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_card_accent",
+  "file": "assets/art/levelup/lvl_card_accent.webp",
+  "cw": 384,
+  "ch": 150,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   32,
+   28,
+   32,
+   28
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": true
+ },
+ {
+  "key": "lvl_card_glow",
+  "file": "assets/art/levelup/lvl_card_glow.webp",
+  "cw": 416,
+  "ch": 182,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   40,
+   40,
+   40,
+   40
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": true
+ },
+ {
+  "key": "lvl_card_select",
+  "file": "assets/art/levelup/lvl_card_select.webp",
+  "cw": 400,
+  "ch": 166,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   40,
+   36,
+   40,
+   36
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_icon_socket",
+  "file": "assets/art/levelup/lvl_icon_socket.webp",
+  "cw": 96,
+  "ch": 96,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_ribbon_sheet",
+  "file": "assets/art/levelup/lvl_ribbon_sheet.webp",
+  "cw": 180,
+  "ch": 28,
+  "cols": 1,
+  "rows": 6,
+  "frames": 6,
+  "nineSlice": [
+   24,
+   8,
+   24,
+   8
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_pill_sheet",
+  "file": "assets/art/levelup/lvl_pill_sheet.webp",
+  "cw": 120,
+  "ch": 22,
+  "cols": 1,
+  "rows": 3,
+  "frames": 3,
+  "nineSlice": [
+   12,
+   8,
+   12,
+   8
+  ],
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_combo_chip_sheet",
+  "file": "assets/art/levelup/lvl_combo_chip_sheet.webp",
+  "cw": 48,
+  "ch": 48,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_type_badge_sheet",
+  "file": "assets/art/levelup/lvl_type_badge_sheet.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 7,
+  "rows": 1,
+  "frames": 7,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_sparkle_sheet",
+  "file": "assets/art/levelup/lvl_sparkle_sheet.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 4,
+  "rows": 1,
+  "frames": 4,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "lvl_shine_strip",
+  "file": "assets/art/levelup/lvl_shine_strip.webp",
+  "cw": 48,
+  "ch": 256,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null,
+  "vfx": false,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "vfx_lvl_open",
+  "file": "assets/art/levelup/vfx_lvl_open.webp",
+  "cw": 384,
+  "ch": 384,
+  "cols": 4,
+  "rows": 2,
+  "frames": 8,
+  "nineSlice": null,
+  "vfx": true,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "vfx_lvl_card_in",
+  "file": "assets/art/levelup/vfx_lvl_card_in.webp",
+  "cw": 512,
+  "ch": 200,
+  "cols": 4,
+  "rows": 1,
+  "frames": 4,
+  "nineSlice": null,
+  "vfx": true,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "vfx_lvl_confirm",
+  "file": "assets/art/levelup/vfx_lvl_confirm.webp",
+  "cw": 512,
+  "ch": 256,
+  "cols": 3,
+  "rows": 2,
+  "frames": 6,
+  "nineSlice": null,
+  "vfx": true,
+  "loop": false,
+  "tintable": false
+ },
+ {
+  "key": "vfx_lvl_special_confirm",
+  "file": "assets/art/levelup/vfx_lvl_special_confirm.webp",
+  "cw": 512,
+  "ch": 256,
+  "cols": 4,
+  "rows": 2,
+  "frames": 8,
+  "nineSlice": null,
+  "vfx": true,
+  "loop": false,
+  "tintable": false
+ }
+]
