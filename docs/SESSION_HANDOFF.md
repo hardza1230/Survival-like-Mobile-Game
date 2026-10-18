@@ -1,9 +1,9 @@
 # Latest checkpoint — art orders 23 → 24 → 25
 
-Updated 2026-10-18 Asia/Bangkok. Owner authorized production of Level Up (23), Pause (24), then Hub motion (25). Main branch claude/vampire-survival-mobile-game-yo9e8w, base a9a0121.
+Updated2026-10-18 Asia/Bangkok. Owner authorized production in this order; main branch claude/vampire-survival-mobile-game-yo9e8w. Runtime remains v7.8.57, order22 integrated by runtime owner.
 
-Order 23 complete: 20 PNG32 / 66 frames in assets/incoming/levelup_cards_ui/. Manifest, exact prompts, QA report, 9-slice and tint previews, source galleries, delivery notes. Source grids/alpha/hashes, exact grayscale tint masks, stable corner caps at 384x150 and 178x220, white 11px contrast and visual review passed. E4 regenerated for proper fade; B2 60% alpha; E2 padding cropped. Publishing and complete raw GitHub byte readback next.
+Order23 complete:20 PNG32 /66 frames in assets/incoming/levelup_cards_ui/, published3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd. All31 delivery files read back completely and byte length/SHA256/Git blob SHA matched. UPLOAD_VERIFICATION.json and QA remote status added in this follow-up. No source changes since readback.
 
-Order 24 prompts/contracts prepared locally in work/order24/jobs.json, no sources yet. Next: generate 19 modular assets using docs/art_orders/ref/24_pause_ref.webp as style reference; assemble both required screen sizes for QA. Then order 25: inspect original hub background/icons and produce layered motion pieces, positions/pivots, animation sheets, reassembly/rotation QA and decoded memory budget. User explicitly wants 25 after earlier work.
+Order24 complete sources:19 PNG32 /43 frames in assets/incoming/pause_ui/. Manifest, final built-in ImageGen prompts, QA report, two source galleries, both412x860 and360x780 screen assemblies, reference comparison, 9-slice/text preview and delivery notes. All source contracts and visual QA passed; no-scroll layouts and requested corner sizes verified. Publish then complete raw GitHub readback next.
 
-Runtime remains v7.8.57; order 22 boss art has already been integrated by the runtime owner. This work delivers incoming art only; no gameplay/version changes. Phone review remains pending for existing runtime.
+Next authorized production: order25 Hub motion. Original background and menu icons are now in local sparse checkout; original background viewed. Need25 pieces (A6/B7/C7/D5), preserve original identity/pose/lighting, canonical1080x1920 layer coordinates and pivots, cropped alpha pieces, black VFX, reassembly comparison and ±6degree puppet seam checks, decoded sum <=40MB. No sources for25 yet. Keep runtime integration separate from incoming art delivery.

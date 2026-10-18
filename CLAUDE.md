@@ -10,6 +10,10 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration is complete: 21/21 wired in v7.8.45–46, including the restored C8 landing dust. Seam/apex/timing and phone visual/FPS review remain pending. Historical delivery paragraphs below retain their original per-version context.
 
+# Art delivery 24 — Pause UI
+
+19 modular PNG32 assets /43 frames delivered to assets/incoming/pause_ui/. Native gradients/endcaps retained, real alpha, separate icons and runtime text. Both412x860 and360x780 no-scroll screen assemblies, corner stability at requested sizes and white11px text reviewed. Incoming only; runtime integration pending. Order23 complete, full31-file GitHub byte readback verified at3ffe1bc. Next: order25 Hub motion.
+
 # Art delivery 23 — Level Up UI
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.

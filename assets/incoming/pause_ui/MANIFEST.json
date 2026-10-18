@@ -1,0 +1,480 @@
+[
+  {
+    "key": "pause_veil",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1080,
+    "frameHeight": 1920,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_veil.png",
+    "width": 1080,
+    "height": 1920,
+    "background": "partial-alpha",
+    "states": [
+      "veil"
+    ],
+    "sha256": "ae1ccbc3ab83ffa51b2c174fc829779f84988cfdaa54859bef67798d99b99b8a",
+    "bytes": 172224
+  },
+  {
+    "key": "pause_crest",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1000,
+    "frameHeight": 360,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_crest.png",
+    "width": 1000,
+    "height": 360,
+    "background": "transparent",
+    "states": [
+      "crest"
+    ],
+    "sha256": "d22effbb1581829de282f8056304894cc8386dc655b09f479a36b745374fc1a5",
+    "bytes": 294494
+  },
+  {
+    "key": "pause_title_divider",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 800,
+    "frameHeight": 40,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_title_divider.png",
+    "width": 800,
+    "height": 40,
+    "background": "transparent",
+    "states": [
+      "divider"
+    ],
+    "sha256": "8d31f4aa62f39618f64b55b1044aba28735e5fb6a37c65a2735fb621a5790453",
+    "bytes": 13737
+  },
+  {
+    "key": "pause_chip",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 400,
+    "frameHeight": 64,
+    "frameCount": 1,
+    "nineSlice": [
+      40,
+      24,
+      40,
+      24
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_chip.png",
+    "width": 400,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "chip"
+    ],
+    "sha256": "62879b4505efa76d6bd76d3dab3702bac371fe5267c9518f5cca885ec8529cef",
+    "bytes": 29798
+  },
+  {
+    "key": "pause_stat_bar",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1700,
+    "frameHeight": 128,
+    "frameCount": 1,
+    "nineSlice": [
+      120,
+      48,
+      120,
+      48
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_stat_bar.png",
+    "width": 1700,
+    "height": 128,
+    "background": "transparent",
+    "states": [
+      "stat_bar"
+    ],
+    "sha256": "bdaec99582e355f70a5f094f75e16f53e2ac3248e6540f91bba1da9130c7273e",
+    "bytes": 184804
+  },
+  {
+    "key": "pause_stat_sep",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 8,
+    "frameHeight": 64,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_stat_sep.png",
+    "width": 8,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "separator"
+    ],
+    "sha256": "9bab7f3398371f991d0ba9e48e31f21aa384527b1479d014e0adb5421b835c17",
+    "bytes": 475
+  },
+  {
+    "key": "pause_panel",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 880,
+    "frameHeight": 300,
+    "frameCount": 1,
+    "nineSlice": [
+      60,
+      80,
+      60,
+      50
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_panel.png",
+    "width": 880,
+    "height": 300,
+    "background": "transparent",
+    "states": [
+      "panel"
+    ],
+    "sha256": "174345f552edb826bc44e8da84c400c6d9fc369d2053edc7614bc7108062cc96",
+    "bytes": 254361
+  },
+  {
+    "key": "pause_panel_header_line",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 700,
+    "frameHeight": 32,
+    "frameCount": 1,
+    "nineSlice": [
+      32,
+      12,
+      48,
+      12
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_panel_header_line.png",
+    "width": 700,
+    "height": 32,
+    "background": "transparent",
+    "states": [
+      "header_line"
+    ],
+    "sha256": "762b550b14e9d2c22694c5b040a8a5c9f68255aacc6a6b623f08fb7974a6f958",
+    "bytes": 14398
+  },
+  {
+    "key": "pause_tile",
+    "columns": 1,
+    "rows": 3,
+    "frameWidth": 540,
+    "frameHeight": 200,
+    "frameCount": 3,
+    "nineSlice": [
+      48,
+      48,
+      48,
+      48
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_tile.png",
+    "width": 540,
+    "height": 600,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "new_loot",
+      "empty"
+    ],
+    "sha256": "61f1d651a6b58dc7ad7f57783ac719f252725fe1ba5d6e12b11b77e0e57fffd9",
+    "bytes": 355814
+  },
+  {
+    "key": "pause_detail_strip",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1600,
+    "frameHeight": 64,
+    "frameCount": 1,
+    "nineSlice": [
+      40,
+      24,
+      40,
+      24
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_detail_strip.png",
+    "width": 1600,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "detail_strip"
+    ],
+    "sha256": "7da19abef078fded36b7a38249ab030e242dacf3ffa60bc63bdfd7c6a94f97f7",
+    "bytes": 83916
+  },
+  {
+    "key": "pause_skill_slot",
+    "columns": 3,
+    "rows": 1,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 3,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_skill_slot.png",
+    "width": 384,
+    "height": 128,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "awakened",
+      "passive"
+    ],
+    "sha256": "9951db8bfa146810df97be4821e8c52f2e6faae167559e5dea5c1f7d9ce55639",
+    "bytes": 66524
+  },
+  {
+    "key": "pause_level_badge",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_level_badge.png",
+    "width": 64,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "level_badge"
+    ],
+    "sha256": "dcc4940bab467d81456a83b9bf56d7947ecfdfbc929923cab21f5e66cbf9ac2c",
+    "bytes": 7928
+  },
+  {
+    "key": "pause_relic_row",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1600,
+    "frameHeight": 220,
+    "frameCount": 1,
+    "nineSlice": [
+      270,
+      64,
+      240,
+      64
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_relic_row.png",
+    "width": 1600,
+    "height": 220,
+    "background": "transparent",
+    "states": [
+      "relic_row"
+    ],
+    "sha256": "f53e15382c71cbbebdb9808141bb94052e34a76d19320e00aefd7f3df31bbf2f",
+    "bytes": 256477
+  },
+  {
+    "key": "pause_count_badge",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 96,
+    "frameHeight": 64,
+    "frameCount": 1,
+    "nineSlice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_count_badge.png",
+    "width": 96,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "count_badge"
+    ],
+    "sha256": "bb228ef82ab5abdbc0f12dc6c6935c77be0763a2527726496b1ef89be0dcfb6a",
+    "bytes": 8379
+  },
+  {
+    "key": "pause_btn_resume",
+    "columns": 1,
+    "rows": 2,
+    "frameWidth": 1700,
+    "frameHeight": 260,
+    "frameCount": 2,
+    "nineSlice": [
+      440,
+      64,
+      200,
+      64
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_btn_resume.png",
+    "width": 1700,
+    "height": 520,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "pressed"
+    ],
+    "sha256": "9e91218ebfa17361c3774931a2f688d2101c9e032fd9c27e77f70e9c5371e8c5",
+    "bytes": 867947
+  },
+  {
+    "key": "pause_btn_settings",
+    "columns": 1,
+    "rows": 2,
+    "frameWidth": 820,
+    "frameHeight": 200,
+    "frameCount": 2,
+    "nineSlice": [
+      80,
+      64,
+      80,
+      64
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_btn_settings.png",
+    "width": 820,
+    "height": 400,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "pressed"
+    ],
+    "sha256": "898c836432fa67589226cbac16714932f272f143ba971c4ff06e26cafca3b0e3",
+    "bytes": 337601
+  },
+  {
+    "key": "pause_btn_quit",
+    "columns": 1,
+    "rows": 2,
+    "frameWidth": 820,
+    "frameHeight": 200,
+    "frameCount": 2,
+    "nineSlice": [
+      80,
+      64,
+      80,
+      64
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_btn_quit.png",
+    "width": 820,
+    "height": 400,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "pressed"
+    ],
+    "sha256": "e8965b4103f7d11679a0a1704e61f2140d53197a42df3f0bcb908b3b677f7e54",
+    "bytes": 358283
+  },
+  {
+    "key": "pause_icon_sheet",
+    "columns": 4,
+    "rows": 4,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 16,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_icon_sheet.png",
+    "width": 512,
+    "height": 512,
+    "background": "transparent",
+    "states": [
+      "pause",
+      "play",
+      "settings",
+      "quit",
+      "hp",
+      "regen",
+      "damage",
+      "guard",
+      "critical",
+      "difficulty",
+      "level",
+      "wave",
+      "collected",
+      "skill",
+      "relics",
+      "reserved_empty"
+    ],
+    "sha256": "682e5a7fddd1787173c9711fb390afdc582881d3b35d3a74222e77b6f96dbe40",
+    "bytes": 346209
+  },
+  {
+    "key": "pause_loot_icon_sheet",
+    "columns": 3,
+    "rows": 1,
+    "frameWidth": 160,
+    "frameHeight": 160,
+    "frameCount": 3,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "pause_loot_icon_sheet.png",
+    "width": 480,
+    "height": 160,
+    "background": "transparent",
+    "states": [
+      "sugar",
+      "boxes",
+      "currency"
+    ],
+    "sha256": "e80eab28d76daf60e097909177c2ed689afce01ed7489dcb848ca151ddcdb6ff",
+    "bytes": 102163
+  }
+]

@@ -1,0 +1,225 @@
+{
+  "status": "verified",
+  "commit": "3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd",
+  "fileCount": 31,
+  "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
+  "files": [
+    {
+      "file": "assets/incoming/levelup_cards_ui/DELIVERY_README.md",
+      "bytes": 1217,
+      "sha256": "bc0a02ec80ca6d17e1cf92dc8fcb82624c772626422342763073b6a416ecd73e",
+      "gitBlobSha": "34ccf3dce03a32d43501aab64a759bd732c3cc5f",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_card_accent.png",
+      "bytes": 19562,
+      "sha256": "2a8aafb05222b320c7b9ad5696cbcb6c3c837d0dcba9322eaa00821d1766a6b0",
+      "gitBlobSha": "990bf9a233e96684b815088b5374f0a84054458d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_card_base.png",
+      "bytes": 35451,
+      "sha256": "020c451384d2b78c40af40bb3e29e30cd5c5edcf18963bb815020df9c49a13ad",
+      "gitBlobSha": "e936a2d9935adecef02254bb834e387faa00d842",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_card_glow.png",
+      "bytes": 30412,
+      "sha256": "5169a3fc6426e1b6ee25da42483398d730183f305e22facad158d0464c0b714a",
+      "gitBlobSha": "99248a9f03db3d4bff8b5b5365fbfe04a7d01a24",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_card_select.png",
+      "bytes": 44441,
+      "sha256": "d4781fdc77af2dda5e1453dfd32aa8e70fc1db71a59cca9c39196fa76d0a6dbe",
+      "gitBlobSha": "810ad2622501205c6c3d52fe6aae516099eb7b9d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_combo_chip_sheet.png",
+      "bytes": 7978,
+      "sha256": "b807257fec97af31c9bce8dfa81e0b8adda9f1a6e817d652e1880c68e13895f3",
+      "gitBlobSha": "a52b282ddef9a438068248b11461c4318e5b1230",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_held_bar.png",
+      "bytes": 6099,
+      "sha256": "0c1842718181f580e9755c105552fe6bcdd01076e12055e44608ec1ab7ecfdbc",
+      "gitBlobSha": "da1dbe4fda9ee9fb01bc29710d8e36ea24fbb5a1",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_held_chip_sheet.png",
+      "bytes": 15051,
+      "sha256": "69e5aa752b10637705105e2b6e3b25b95d6bdf19b76ed28429cccbc4502f464d",
+      "gitBlobSha": "e8d2f22eebb80cf0e50afaa2ce6d1776412bd5f7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_icon_socket.png",
+      "bytes": 82147,
+      "sha256": "09eb4b312a229a80b92ad310cde2d5e225d0bea5cc5d558bd4329289a41e03fe",
+      "gitBlobSha": "07a1f710f3348e76f2b3cf070a7588d7e9e5ad82",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_pill_sheet.png",
+      "bytes": 11000,
+      "sha256": "56170e057dc17dde69d38143edcf96c84a9539287470d81cb0ceb9450feff6fd",
+      "gitBlobSha": "e1cc7ee4e703d5e3d4b43f4259f0c17fc40aad73",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_ribbon_sheet.png",
+      "bytes": 38022,
+      "sha256": "96a8f2cf26eda7d8d43a271aac64439117f9ab604198e1b95229195f69687cfc",
+      "gitBlobSha": "93341b03004ec2bf55e82ff602d2a017f9a8df07",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_screen_veil.png",
+      "bytes": 465706,
+      "sha256": "2545bd90af70706b0a251c183c068592fe39b98d1bbf16883e2a31c54bf04e56",
+      "gitBlobSha": "6f8b6c76bec0c950137e21ea1f7f8a5770de8b91",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_shine_strip.png",
+      "bytes": 37207,
+      "sha256": "11083112a5c1654b77a3ca180aaf67a954402a4ded990b6f1eae5c31c13cf38a",
+      "gitBlobSha": "0674575458898b5f8bece058da40495b8666dc52",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_sparkle_sheet.png",
+      "bytes": 24780,
+      "sha256": "77b3adc9cac8a1e347e426a06c2e382155941e784d6741635750c95efd2c6a1d",
+      "gitBlobSha": "8fe05aff53933a065067697a35ef3403819f1af8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_title_banner_sheet.png",
+      "bytes": 133164,
+      "sha256": "3e1c0dfaf85a99fd71224b17760ebbb1f0919e637e6a0907c3f7bea01658bf08",
+      "gitBlobSha": "e753517805e835cdd408144169fa4625ceddac54",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_title_burst.png",
+      "bytes": 251061,
+      "sha256": "f8e0ef702cf47aa59c38282544a20e44545c54061bb233dad4dc1982d6053ca6",
+      "gitBlobSha": "8598997fdb30ec5cc8098e581a4653f9babc5148",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/lvl_type_badge_sheet.png",
+      "bytes": 49978,
+      "sha256": "538556d0423cca84684aab51d0da74bda045c27d03520dfd71dc8680346229d6",
+      "gitBlobSha": "665b0bf4d119a9035d18e208e2d972e7cfe4f6a8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/MANIFEST.json",
+      "bytes": 10791,
+      "sha256": "3d633c3d6bc35a09c120028c259eb2ffcfcd45b67944e948cf9ff21a847d277b",
+      "gitBlobSha": "bcc3e02923b9f7a78791a690ce82595a5cb04def",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/PROMPTS.json",
+      "bytes": 24868,
+      "sha256": "bc2a9dff64f7910e81e848289ae3495e9cd0376242a4120c5af4cb187c2680de",
+      "gitBlobSha": "c0aca9d900f3b8e8340a6df6aea07108e9599d9c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/QA_gallery_01.png",
+      "bytes": 204699,
+      "sha256": "9e302f84b42a5f6bbd8569a562f9283c13c304da88dd49331cc5587f89b107a7",
+      "gitBlobSha": "09a8fb11c9d41a6c8174ad328ca8a53dad4bb6f1",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/QA_gallery_02.png",
+      "bytes": 209757,
+      "sha256": "49cfc054a19ee571756275c88c3952776dda5709ced3218e4842be0f3c594e61",
+      "gitBlobSha": "f7c08e595830f99864f09181984709735fb6efc2",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/QA_nine_slice.png",
+      "bytes": 40418,
+      "sha256": "89ec389374fe027f5d59ee7afea7ca5d802b3d8e193f7af2835ac6a42b139321",
+      "gitBlobSha": "6f58f9c5522a35f8edea89e6c399195e1025daa5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/QA_REPORT.json",
+      "bytes": 51239,
+      "sha256": "40c069e89c43c012c1b1ccf4f263868d81cea40f8e1e87ba13dea78d3f661c4a",
+      "gitBlobSha": "803d42e3d9d16b2827ecff5dbf89fe274fed2eaf",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/QA_tint_palettes.png",
+      "bytes": 117715,
+      "sha256": "e58bd61cbb6fb23df074c72300c1431071a557d4431e573c413755077997d9d9",
+      "gitBlobSha": "c0cb7d6df4798ea2b598e657898d628e14f515cd",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/vfx_lvl_card_in.png",
+      "bytes": 165733,
+      "sha256": "a5041102988dd5b538b27f2787016ca126cc18fbedc5d407cc4292b734c6aaa2",
+      "gitBlobSha": "58ced9f1baab7bfc9eed4ca524212fc98837d8e3",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/vfx_lvl_confirm.png",
+      "bytes": 863741,
+      "sha256": "3c7c8896e7a2f99bfa2c586d81ebc5633fa58872ad419f611e03c0b6b9bd4be1",
+      "gitBlobSha": "6ecd911fa23c18c13fdfa0c728dfbe1b475c496f",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/vfx_lvl_open.png",
+      "bytes": 958113,
+      "sha256": "e2db10ad1eb82ef3b7a6e5d1fe65eeaeb45ecd3736cce911cfabec0adf6bd37e",
+      "gitBlobSha": "9e6503ff5401dee08ef724c921db2e3aa3e11584",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/vfx_lvl_special_confirm.png",
+      "bytes": 706917,
+      "sha256": "5f592b20deb261f49714c6c22421fed2d2c074d45c090dfea8065809adee6938",
+      "gitBlobSha": "8be3a1408851af85c3441ccffecfd531fd00d8a0",
+      "status": "pass"
+    },
+    {
+      "file": "CLAUDE.md",
+      "bytes": 46227,
+      "sha256": "788ecdcd60316460589d18b14b7949794479578eef64d8044cc62223f2e3c71a",
+      "gitBlobSha": "bf966d73204a9c6ffda34db24269abcbcba0d916",
+      "status": "pass"
+    },
+    {
+      "file": "docs/SESSION_HANDOFF.md",
+      "bytes": 1337,
+      "sha256": "36d23bafe5a6dc94e2afaa349051b21b08692720a3ea1c4727ea934491ad0230",
+      "gitBlobSha": "beb9638c18a1aed308b757195720b5bb63d690e7",
+      "status": "pass"
+    },
+    {
+      "file": "docs/art_orders/23_LEVELUP_CARD_UI.md",
+      "bytes": 18420,
+      "sha256": "360e89f997b3f3e65c431857b10945e57a6b82aa3e2479918537e66aec9a7a32",
+      "gitBlobSha": "8aba3a3724219e1f76d22066437a5e6520791dca",
+      "status": "pass"
+    }
+  ]
+}

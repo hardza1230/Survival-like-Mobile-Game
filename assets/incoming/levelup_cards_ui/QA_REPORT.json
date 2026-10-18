@@ -1483,7 +1483,11 @@
     "note": "B2 alpha scaled to 60%; E2 black padding cropped per frame before exact sizing; E4 regenerated to remove persistent card after frame 1."
   },
   "remoteReadback": {
-    "status": "pending"
+    "status": "verified",
+    "commit": "3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd",
+    "fileCount": 31,
+    "proof": "UPLOAD_VERIFICATION.json",
+    "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file."
   },
   "whiteText11px": {
     "preview": "QA_nine_slice.png",

@@ -1,0 +1,165 @@
+[
+  {
+    "key": "pause_veil",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. A portrait full-canvas semitransparent dark PLUM VEIL, alpha approximately82 percent. Center plain dark plum, edges darker than middle as smooth subtle vignette. No patterns or particles at all, no visible environment, no frame. Entire canvas partly transparent, not opaque. Target1080x1920.",
+    "sourceFile": "exec-5f0e56b6-c20b-4a0e-889b-9df9ab3c6079.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_crest",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One decorative header CREST only, target1000x360. At top center a glossy raised PINK CIRCLE medallion, INSIDE EMPTY for a runtime pause glyph. Thin golden curled vines extend on either side, small cream/pink candy cloud swirls at left and right and tiny gold light stars near outer ends. LOWER CENTRAL AREA COMPLETELY TRANSPARENT AND EMPTY to place the large runtime title later. No letters, no Paused text, no play or pause symbol stamped into medallion. Match the reference header ornaments but remove ALL lettering.",
+    "sourceFile": "exec-f5f6387a-77be-4ee0-aa8a-c91144e35b0a.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_title_divider",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One thin straight horizontal GOLD divider line target800x40 with a tiny centered golden diamond, gently tapered ends, transparent all around. No other ornament or text.",
+    "sourceFile": "exec-78ff0673-f6ce-4930-acf7-31590c2f566e.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_chip",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One blank horizontal pill chip target400x64. Smooth dark plum center, raised pale-lavender rim. Empty left side for a separate runtime icon. Plain repeatable middle edges and center for9slice with endcaps40px and verticalcaps24px. No words, labels or icons.",
+    "sourceFile": "exec-53883d83-d2e1-4017-bf82-244177896fa4.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_stat_bar",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One very long low stat HUD bar, target1700x128. Smooth dark plum center, beveled warm gold rim, a tiny four-point gold illustrated diamond glint projecting from BOTH left and right tips. These tip ornaments must be inside left/right120px caps; center and middle edges completely plain and repeatable, no separators and no icons/text. Real alpha outside rounded ends.",
+    "sourceFile": "exec-d891e993-c6f5-470b-aaf8-579e34cb80a7.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_stat_sep",
+    "mode": "built-in image_gen",
+    "prompt": "A SINGLE tiny minimalist vertical UI separator line, isolated on a genuinely transparent background. Narrow tall lavender-gray stroke with softly faded ends. No surrounding artwork. No panels, no buttons, no ornaments, no text, no icons, no symbols. Just one straight vertical thin gray luminous line, intended to be resized to 8 pixels wide and 64 pixels tall. Centered.",
+    "sourceFile": "exec-d0be3829-5fe5-4dd5-b644-63d64f3860d5.png",
+    "references": []
+  },
+  {
+    "key": "pause_panel",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One MAIN PANEL target880x300. Smooth very dark plum field, thin pale-purple/gold beveled rounded border. Tiny elegant curled gold vine only at lower-left and lower-right CORNERS within60x50 sourcepx caps. Top80 sourcepx is a blank dark header area, no header words or divider embedded. All middle edges and central fill plain and repeatable for9slice. No icon sockets, no internal separator. Blank panel only.",
+    "sourceFile": "exec-35c1c2b1-5523-40fe-8dd3-3252ac4c4721.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_panel_header_line",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One thin horizontal gold panel-heading line target700x32. Small illustrated gold glint at LEFT, straight line across middle, tiny golden HEART-DIAMOND finial at RIGHT. No letters or words. Real alpha. End motifs confined to32px left /48px right caps, repeatable smooth line in center.",
+    "sourceFile": "exec-830864ae-0987-4fd8-b030-b682f1a2001e.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_tile",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly THREE subpanel loot tiles STACKED VERTICALLY, each540x200, full540x600. Same rounded geometry and smooth very dark center. Top: dark plum with violet rim. Middle: dark plum with glowing gold rim for new loot. Bottom: faded muted dark plum with faint violet rim for empty state. Blank left area for separate large runtime icon; no icon, digits or text. 9slice corners48px, plain repeatable middle edges and central fill. Transparent outer rounded corners.",
+    "sourceFile": "exec-3172abd6-5daf-4c55-b539-70180443dc9e.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_detail_strip",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. One exceptionally long THIN dark detail strip target1600x64, dark violet center, fine purple rim and softly rounded ends. Blank center for dynamic currency names. Plain repeatable fill/edges,40px horizontal24px verticalcaps, no icons or text.",
+    "sourceFile": "exec-d5229e77-ffb2-46a4-8500-17a02303f473.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_skill_slot",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly THREE square skill-icon sockets in ONE HORIZONTAL ROW, each128x128,384x128 total. Left: raised lavender-pink border and dark empty center. Middle: glowing warm gold awakened border and dark empty center. Right: mint green rim and dark empty center for passive skill. Same rounded square shape and size, true alpha outside. No actual skill icon, numbers, stars or badges inside.",
+    "sourceFile": "exec-53272db3-658f-4289-8137-28eda65fdc51.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_level_badge",
+    "mode": "built-in image_gen",
+    "prompt": "One tiny circular level badge for a confectionery fantasy game UI. A single simple empty brown-plum round medallion with thin warm golden beveled rim, glossy gentle cream highlight. Empty smooth dark center for a number added later. No number, no text, no symbols, no vines, no other objects or panels. Isolated on true transparent alpha. Fill most of the square composition with this single small circular badge.",
+    "sourceFile": "exec-3a1af3b7-3b3d-4560-9445-5b445e7cddfa.png",
+    "references": []
+  },
+  {
+    "key": "pause_relic_row",
+    "mode": "built-in image_gen",
+    "prompt": "One isolated reusable RELIC ROW UI panel for a candy fantasy mobile game, aspect ratio 1600:220, very wide horizontal. Real transparent background outside. Simple rounded rectangle, thin subdued LAVENDER PURPLE beveled border (NO gold). Flat very dark plum #21172b interior, text-safe empty. One thin vertical muted purple separator at EXACTLY 15% of panel width (240 of1600) dividing a small empty icon area on left from the large text area. One very faint dark purple four-point star near 94% width on right, inside last100px. No vines, no corner ornaments, no sockets, no other panels or objects. NO WORDS, NO LETTERS, NO NUMBERS, NO ICONS. This single simple row fills the width of the canvas, centered.",
+    "sourceFile": "exec-9f9a51e5-b756-44ed-bb87-2ce77b51ab3f.png",
+    "references": []
+  },
+  {
+    "key": "pause_count_badge",
+    "mode": "built-in image_gen",
+    "prompt": "One single small rounded oval COUNT BADGE for a candy fantasy UI. Dark plum smooth empty center, a single thin muted lavender-purple outline, subtle top highlight. No gold, no ornaments, no diamonds, no stars, no outer glow, no numbers, no text, no icons. Real transparent background. Simple plain pill capsule approximately96 wide by64 high. One badge only filling most of canvas.",
+    "sourceFile": "exec-a84c115d-8630-4b3a-8eea-eaa17071e216.png",
+    "references": []
+  },
+  {
+    "key": "pause_btn_resume",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly TWO large WIDE RESUME BUTTON BACKPLATES STACKED VERTICALLY, each1700x260,total1700x520. Match reference mint-green glossy jelly button with beveled warm gold rim. A DARK MINT circular icon socket near LEFT side, within left360px fixed cap, EMPTY (no play symbol). Small gold candy sparkles and protruding diamond tip ornaments confined to left360/right100px endcaps. Large center blank smooth mint for runtime text; all middle edges and fill plain repeatable for9slice. Top normal; bottom pressed slightly darker with highlight shifted down4 sourcepx. Identical silhouette and pivot both frames. NO Resume word or glyph inside.",
+    "sourceFile": "exec-1e13b6ce-bce0-4cbd-ac53-5a0081bd457b.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_btn_settings",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly TWO blank secondary SETTINGS BUTTON BACKPLATES STACKED VERTICALLY, each820x200,total820x400. Rounded dark plum pill with beveled gold rim, smooth center and repeatable edges,80px horizontal64px verticalcaps for9slice. Top normal, bottom pressed/darker. No gear icon or words, runtime adds them separately. True alpha.",
+    "sourceFile": "exec-8d6b43a0-7d21-4bd8-a609-972cbcb49ffe.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_btn_quit",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly TWO blank QUIT BUTTON BACKPLATES STACKED VERTICALLY, each820x200,total820x400. Rounded very dark plum-red pill with raised CANDY PINK rim, smooth dark center and repeatable edges,80px horizontal64px verticalcaps for9slice. Top normal, bottom pressed darker with lowered bevel. No door icon, words, digits or warning symbol. True alpha.",
+    "sourceFile": "exec-d181bc4f-b8f4-4284-ba1f-820bf57faf25.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_icon_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly4 columns x4 rows, SIXTEEN128x128 equal cells,512x512 total. Separate small glossy illustrated game pictograms, reading left to right then top to bottom. Row1: two rounded WHITE PAUSE BARS; a WHITE PLAY TRIANGLE; a silver-lavender GEAR; a PINK EXIT DOOR with outward arrow. Row2: PINK HEART; GREEN HEALING PLUS made of candy; SILVER SWORD with gold hilt; BLUE SHIELD. Row3: PINK LIGHT GLINT; glowing GREEN ROUND DIFFICULTY DOT with white core; small GOLD BAR GRAPH; CROSSED SWORDS. Row4: GOLD TREASURE CHEST with pink accents; GOLD LIGHT-STAR; PURPLE RELIC BOOK with gold trim; final bottom-right cell FULLY EMPTY TRANSPARENT. Draw real illustrated objects, not font emoji characters, no letters or numbers, no backgrounds or frames. Strong silhouettes at20px. All sixteen cells perfectly aligned, last cell blank.",
+    "sourceFile": "exec-dd693e85-cc13-4f4f-a77b-04a0bfc897ce.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  },
+  {
+    "key": "pause_loot_icon_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. One production game UI asset for Mochi Mayhem PAUSE menu. The reference image is STYLE AND MATERIAL reference only, never reproduce a complete screen. Match its rounded plum #21172b / #2a1830 panels, warm gold #e8c27a beveled outlines, candy pink #ff7aa8 and mint #5fe3c0, soft glossy confectionery highlights, thin golden corner vines, polished cute fantasy style matching Temple and Level Up. Flat straight-on 2D. ABSOLUTELY NO WORDS, LETTERS, DIGITS, CAPTIONS, WATERMARKS OR LOGOS, and no icons unless specifically requested. Real transparent alpha surrounding shapes, no checkerboard baked in, no backdrop image. Soft shadows <=12 target sourcepx. Sprite cells equal, no gutters or divider lines. Every text region smooth dark and empty. Exactly THREE large glossy loot icons in ONE HORIZONTAL ROW,160x160 each,480x160 total. Left: pink-red translucent candy sugar droplet/gem. Middle: gold gift box with red ribbon bow. Right: elongated bright green faceted currency crystal. Match reference loot tiles' icons. Separate centered objects, no backing tiles, no lettering or digits, real transparent alpha.",
+    "sourceFile": "exec-347532c8-5910-44c4-b9bc-c0c29ba11385.png",
+    "references": [
+      "docs/art_orders/ref/24_pause_ref.webp"
+    ]
+  }
+]

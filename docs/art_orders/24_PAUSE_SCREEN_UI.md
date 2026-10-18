@@ -1,6 +1,6 @@
 # 24 — หน้าหยุดเกม (Paused) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟨 รอผลิต (เขียน 18 ต.ค. 2026)
+สถานะ: 🟩 ส่งอาร์ตครบ 19 ไฟล์ /43 เฟรม — รอผูก runtime (18 ต.ค. 2026)
 ส่งไฟล์ที่ `assets/incoming/pause_ui/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 21)
 
 ## ภาพอ้างอิง (mood / layout เป้าหมาย)
@@ -115,3 +115,6 @@
 - ปุ่ม `uiPillBtn` → D1/D2/D3 + E1②③④ · **ห้ามเปลี่ยนพื้นที่แตะ** (`_pauseBtns` x/y/w/h) · เรียงปุ่มตามภาพอ้างอิง: Resume ใหญ่ แล้ว Settings | Quit stage คู่กันด้านล่าง
 - ต้องพอดีจอโดยไม่เลื่อน (เจ้าของไม่ชอบหน้าที่ต้อง scroll) — ถ้า Relic เยอะให้ย่อแถวหรือแสดง "+N more" เหมือนเดิม
 - แนวนอน: ใช้ชิ้นเดียวกันจัด 2 คอลัมน์ · ทุกจุดต้องมี fallback เป็นกราฟิกโค้ดเดิม
+
+## Art delivery checkpoint — 2026-10-18
+All19 modular sources /43 frames delivered to assets/incoming/pause_ui/. Manifest, final prompts, source galleries, 412x860 and360x780 assemblies, reference comparison, 9-slice/text QA and delivery notes included. Technical and visual source QA passed. Runtime integration pending.
