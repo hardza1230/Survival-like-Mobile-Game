@@ -1,0 +1,2151 @@
+{
+  "assetCount": 20,
+  "expectedAssetCount": 20,
+  "sourceOrderCountCorrection": "The order summary says 19, but A3+B2+C9+D2+E4 lists 20 unique files. All table rows are delivered.",
+  "frameCount": 66,
+  "scope": "Incoming artwork only; runtime/UI integration and hit regions unchanged.",
+  "assets": [
+    {
+      "id": "A1",
+      "file": "lvl_screen_veil.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 465706,
+      "sha256": "2545bd90af70706b0a251c183c068592fe39b98d1bbf16883e2a31c54bf04e56",
+      "gitBlobSha": "6f8b6c76bec0c950137e21ea1f7f8a5770de8b91",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "veil",
+          "sourceAlphaExtrema": [
+            107,
+            250
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            230,
+            242
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 2073600
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "A2",
+      "file": "lvl_title_banner_sheet.png",
+      "width": 1000,
+      "height": 480,
+      "bytes": 133164,
+      "sha256": "3e1c0dfaf85a99fd71224b17760ebbb1f0919e637e6a0907c3f7bea01658bf08",
+      "gitBlobSha": "e753517805e835cdd408144169fa4625ceddac54",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "level_up_gold",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            46,
+            20,
+            2042,
+            145
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 14460,
+          "nontransparentPixels": 81540
+        },
+        {
+          "frame": 1,
+          "state": "treasure_pink_gold",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            46,
+            4,
+            2042,
+            150
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 22464,
+          "nontransparentPixels": 73536
+        },
+        {
+          "frame": 2,
+          "state": "relic_magenta",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            45,
+            0,
+            2042,
+            151
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 19943,
+          "nontransparentPixels": 76057
+        },
+        {
+          "frame": 3,
+          "state": "build_path_infusion_blue",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            45,
+            0,
+            2042,
+            150
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 21476,
+          "nontransparentPixels": 74524
+        },
+        {
+          "frame": 4,
+          "state": "starting_weapon_mint",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            45,
+            0,
+            2042,
+            122
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 11285,
+          "nontransparentPixels": 84715
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "A3",
+      "file": "lvl_title_burst.png",
+      "width": 640,
+      "height": 320,
+      "bytes": 251061,
+      "sha256": "f8e0ef702cf47aa59c38282544a20e44545c54061bb233dad4dc1982d6053ca6",
+      "gitBlobSha": "8598997fdb30ec5cc8098e581a4653f9babc5148",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "burst",
+          "sourceAlphaExtrema": [
+            0,
+            253
+          ],
+          "sourceCrop": [
+            51,
+            91,
+            1714,
+            812
+          ],
+          "alphaExtrema": [
+            0,
+            254
+          ],
+          "transparentPixels": 85092,
+          "nontransparentPixels": 119708
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "B1",
+      "file": "lvl_held_chip_sheet.png",
+      "width": 192,
+      "height": 64,
+      "bytes": 15051,
+      "sha256": "69e5aa752b10637705105e2b6e3b25b95d6bdf19b76ed28429cccbc4502f464d",
+      "gitBlobSha": "e8d2f22eebb80cf0e50afaa2ce6d1776412bd5f7",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "normal",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            154,
+            79,
+            715,
+            615
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 720,
+          "nontransparentPixels": 3376
+        },
+        {
+          "frame": 1,
+          "state": "awakened",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            31,
+            28,
+            691,
+            682
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1019,
+          "nontransparentPixels": 3077
+        },
+        {
+          "frame": 2,
+          "state": "empty",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            11,
+            83,
+            574,
+            612
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 3309,
+          "nontransparentPixels": 787
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "B2",
+      "file": "lvl_held_bar.png",
+      "width": 1600,
+      "height": 88,
+      "bytes": 6099,
+      "sha256": "0c1842718181f580e9755c105552fe6bcdd01076e12055e44608ec1ab7ecfdbc",
+      "gitBlobSha": "da1dbe4fda9ee9fb01bc29710d8e36ea24fbb5a1",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "bar",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            19,
+            417,
+            1673,
+            511
+          ],
+          "alphaExtrema": [
+            0,
+            152
+          ],
+          "transparentPixels": 8208,
+          "nontransparentPixels": 132592
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C1",
+      "file": "lvl_card_base.png",
+      "width": 768,
+      "height": 300,
+      "bytes": 35451,
+      "sha256": "020c451384d2b78c40af40bb3e29e30cd5c5edcf18963bb815020df9c49a13ad",
+      "gitBlobSha": "e936a2d9935adecef02254bb834e387faa00d842",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "base",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            38,
+            91,
+            1968,
+            645
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 7517,
+          "nontransparentPixels": 222883
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C2",
+      "file": "lvl_card_accent.png",
+      "width": 768,
+      "height": 300,
+      "bytes": 19562,
+      "sha256": "2a8aafb05222b320c7b9ad5696cbcb6c3c837d0dcba9322eaa00821d1766a6b0",
+      "gitBlobSha": "990bf9a233e96684b815088b5374f0a84054458d",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "accent",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            9,
+            10,
+            1997,
+            774
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 212070,
+          "nontransparentPixels": 18330
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C3",
+      "file": "lvl_card_glow.png",
+      "width": 832,
+      "height": 364,
+      "bytes": 30412,
+      "sha256": "5169a3fc6426e1b6ee25da42483398d730183f305e22facad158d0464c0b714a",
+      "gitBlobSha": "99248a9f03db3d4bff8b5b5365fbfe04a7d01a24",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "glow",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            16,
+            27,
+            1880,
+            804
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 209574,
+          "nontransparentPixels": 93274
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C4",
+      "file": "lvl_card_select.png",
+      "width": 800,
+      "height": 332,
+      "bytes": 44441,
+      "sha256": "d4781fdc77af2dda5e1453dfd32aa8e70fc1db71a59cca9c39196fa76d0a6dbe",
+      "gitBlobSha": "810ad2622501205c6c3d52fe6aae516099eb7b9d",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "selected",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            15,
+            7,
+            1931,
+            788
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 227263,
+          "nontransparentPixels": 38337
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C5",
+      "file": "lvl_icon_socket.png",
+      "width": 384,
+      "height": 192,
+      "bytes": 82147,
+      "sha256": "09eb4b312a229a80b92ad310cde2d5e225d0bea5cc5d558bd4329289a41e03fe",
+      "gitBlobSha": "07a1f710f3348e76f2b3cf070a7588d7e9e5ad82",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "gold_plum_base",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            36,
+            35,
+            851,
+            828
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 11518,
+          "nontransparentPixels": 25346
+        },
+        {
+          "frame": 1,
+          "state": "tintable_white_outer_ring",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            37,
+            35,
+            851,
+            828
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 26184,
+          "nontransparentPixels": 10680
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C6",
+      "file": "lvl_ribbon_sheet.png",
+      "width": 360,
+      "height": 336,
+      "bytes": 38022,
+      "sha256": "96a8f2cf26eda7d8d43a271aac64439117f9ab604198e1b95229195f69687cfc",
+      "gitBlobSha": "93341b03004ec2bf55e82ff602d2a017f9a8df07",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "evolution_gold",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            316,
+            2,
+            1457,
+            148
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 5323,
+          "nontransparentPixels": 14837
+        },
+        {
+          "frame": 1,
+          "state": "mutation_fusion_purple",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            315,
+            0,
+            1457,
+            148
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 5119,
+          "nontransparentPixels": 15041
+        },
+        {
+          "frame": 2,
+          "state": "build_path_blue",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            316,
+            0,
+            1457,
+            141
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 4741,
+          "nontransparentPixels": 15419
+        },
+        {
+          "frame": 3,
+          "state": "infusion_orange",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            317,
+            5,
+            1457,
+            147
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 4777,
+          "nontransparentPixels": 15383
+        },
+        {
+          "frame": 4,
+          "state": "relic_pink",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            317,
+            0,
+            1457,
+            148
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 5160,
+          "nontransparentPixels": 15000
+        },
+        {
+          "frame": 5,
+          "state": "modifier_mint",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            317,
+            0,
+            1459,
+            148
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 5218,
+          "nontransparentPixels": 14942
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C7",
+      "file": "lvl_pill_sheet.png",
+      "width": 240,
+      "height": 132,
+      "bytes": 11000,
+      "sha256": "56170e057dc17dde69d38143edcf96c84a9539287470d81cb0ceb9450feff6fd",
+      "gitBlobSha": "e1cc7ee4e703d5e3d4b43f4259f0c17fc40aad73",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "level",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            43,
+            34,
+            1601,
+            306
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1459,
+          "nontransparentPixels": 9101
+        },
+        {
+          "frame": 1,
+          "state": "choose",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            43,
+            11,
+            1601,
+            319
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1923,
+          "nontransparentPixels": 8637
+        },
+        {
+          "frame": 2,
+          "state": "tap_again",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            23,
+            0,
+            1618,
+            287
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1649,
+          "nontransparentPixels": 8911
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C8",
+      "file": "lvl_combo_chip_sheet.png",
+      "width": 96,
+      "height": 48,
+      "bytes": 7978,
+      "sha256": "b807257fec97af31c9bce8dfa81e0b8adda9f1a6e817d652e1880c68e13895f3",
+      "gitBlobSha": "a52b282ddef9a438068248b11461c4318e5b1230",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "missing",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            517,
+            273,
+            875,
+            611
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 500,
+          "nontransparentPixels": 1804
+        },
+        {
+          "frame": 1,
+          "state": "owned",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            12,
+            268,
+            370,
+            614
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 469,
+          "nontransparentPixels": 1835
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "C9",
+      "file": "lvl_type_badge_sheet.png",
+      "width": 448,
+      "height": 64,
+      "bytes": 49978,
+      "sha256": "538556d0423cca84684aab51d0da74bda045c27d03520dfd71dc8680346229d6",
+      "gitBlobSha": "665b0bf4d119a9035d18e208e2d972e7cfe4f6a8",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "attack",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            51,
+            180,
+            310,
+            521
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2544,
+          "nontransparentPixels": 1552
+        },
+        {
+          "frame": 1,
+          "state": "passive",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            0,
+            180,
+            311,
+            511
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2016,
+          "nontransparentPixels": 2080
+        },
+        {
+          "frame": 2,
+          "state": "basic_attack",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            0,
+            205,
+            285,
+            517
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2189,
+          "nontransparentPixels": 1907
+        },
+        {
+          "frame": 3,
+          "state": "heal",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            8,
+            237,
+            310,
+            512
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1774,
+          "nontransparentPixels": 2322
+        },
+        {
+          "frame": 4,
+          "state": "utility",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            0,
+            203,
+            310,
+            517
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1773,
+          "nontransparentPixels": 2323
+        },
+        {
+          "frame": 5,
+          "state": "unique",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            0,
+            192,
+            296,
+            511
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 1772,
+          "nontransparentPixels": 2324
+        },
+        {
+          "frame": 6,
+          "state": "awaken",
+          "sourceAlphaExtrema": [
+            0,
+            255
+          ],
+          "sourceCrop": [
+            30,
+            180,
+            250,
+            521
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2579,
+          "nontransparentPixels": 1517
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "D1",
+      "file": "lvl_sparkle_sheet.png",
+      "width": 256,
+      "height": 64,
+      "bytes": 24780,
+      "sha256": "77b3adc9cac8a1e347e426a06c2e382155941e784d6741635750c95efd2c6a1d",
+      "gitBlobSha": "8fe05aff53933a065067697a35ef3403819f1af8",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "four_ray",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            112,
+            195,
+            465,
+            579
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2557,
+          "nontransparentPixels": 1539
+        },
+        {
+          "frame": 1,
+          "state": "eight_ray",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            73,
+            169,
+            465,
+            609
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2398,
+          "nontransparentPixels": 1698
+        },
+        {
+          "frame": 2,
+          "state": "sugar_crystal",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            82,
+            180,
+            403,
+            593
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2088,
+          "nontransparentPixels": 2008
+        },
+        {
+          "frame": 3,
+          "state": "heart",
+          "sourceAlphaExtrema": [
+            0,
+            254
+          ],
+          "sourceCrop": [
+            58,
+            236,
+            413,
+            534
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ],
+          "transparentPixels": 2110,
+          "nontransparentPixels": 1986
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "D2",
+      "file": "lvl_shine_strip.png",
+      "width": 96,
+      "height": 512,
+      "bytes": 37207,
+      "sha256": "11083112a5c1654b77a3ca180aaf67a954402a4ded990b6f1eae5c31c13cf38a",
+      "gitBlobSha": "0674575458898b5f8bece058da40495b8666dc52",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "shine",
+          "sourceAlphaExtrema": [
+            0,
+            253
+          ],
+          "sourceCrop": [
+            295,
+            43,
+            646,
+            1626
+          ],
+          "alphaExtrema": [
+            0,
+            253
+          ],
+          "transparentPixels": 14306,
+          "nontransparentPixels": 34846
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "E1",
+      "file": "vfx_lvl_open.png",
+      "width": 1536,
+      "height": 768,
+      "bytes": 958113,
+      "sha256": "e2db10ad1eb82ef3b7a6e5d1fe65eeaeb45ecd3736cce911cfabec0adf6bd37e",
+      "gitBlobSha": "9e6503ff5401dee08ef724c921db2e3aa3e11584",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "burst0",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 1,
+          "state": "burst1",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 2,
+          "state": "burst2",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 3,
+          "state": "burst3",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 4,
+          "state": "burst4",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 5,
+          "state": "burst5",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 6,
+          "state": "burst6",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        },
+        {
+          "frame": 7,
+          "state": "burst7",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 147456
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "E2",
+      "file": "vfx_lvl_card_in.png",
+      "width": 2048,
+      "height": 200,
+      "bytes": 165733,
+      "sha256": "a5041102988dd5b538b27f2787016ca126cc18fbedc5d407cc4292b734c6aaa2",
+      "gitBlobSha": "58ced9f1baab7bfc9eed4ca524212fc98837d8e3",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "sweep0",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 102400
+        },
+        {
+          "frame": 1,
+          "state": "sweep1",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 102400
+        },
+        {
+          "frame": 2,
+          "state": "sweep2",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 102400
+        },
+        {
+          "frame": 3,
+          "state": "sweep3",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 102400
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "E3",
+      "file": "vfx_lvl_confirm.png",
+      "width": 1536,
+      "height": 512,
+      "bytes": 863741,
+      "sha256": "3c7c8896e7a2f99bfa2c586d81ebc5633fa58872ad419f611e03c0b6b9bd4be1",
+      "gitBlobSha": "6ecd911fa23c18c13fdfa0c728dfbe1b475c496f",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "confirm0",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 1,
+          "state": "confirm1",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 2,
+          "state": "confirm2",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 3,
+          "state": "confirm3",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 4,
+          "state": "confirm4",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 5,
+          "state": "confirm5",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    },
+    {
+      "id": "E4",
+      "file": "vfx_lvl_special_confirm.png",
+      "width": 2048,
+      "height": 512,
+      "bytes": 706917,
+      "sha256": "5f592b20deb261f49714c6c22421fed2d2c074d45c090dfea8065809adee6938",
+      "gitBlobSha": "8be3a1408851af85c3441ccffecfd531fd00d8a0",
+      "mode": "RGBA",
+      "pngCrcAndZlib": "pass",
+      "frames": [
+        {
+          "frame": 0,
+          "state": "special0",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 1,
+          "state": "special1",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 2,
+          "state": "special2",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 3,
+          "state": "special3",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 4,
+          "state": "special4",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 5,
+          "state": "special5",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 6,
+          "state": "special6",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        },
+        {
+          "frame": 7,
+          "state": "special7",
+          "sourceAlphaExtrema": [
+            255,
+            255
+          ],
+          "sourceCrop": null,
+          "alphaExtrema": [
+            255,
+            255
+          ],
+          "transparentPixels": 0,
+          "nontransparentPixels": 131072
+        }
+      ],
+      "normalization": "Cell-aware alpha-bounds crop and exact resampling; alpha retained; grayscale normalized on tintable layers; straight 9-slice bands sampled to repeat; C1 dark center and overlay holes canonicalized. Veil has a flat 90% alpha safe region. VFX near-black levels <=5 canonicalized."
+    }
+  ],
+  "visualReview": {
+    "status": "pass",
+    "reviewed": [
+      "All 20 source assets / 66 frames",
+      "Two card sizes: 384x150 and 178x220, corner caps preserved",
+      "Four requested tint palettes; exact grayscale masks",
+      "White 11px text against flat plum center",
+      "Confirm effect begins bright and disperses into sparse final sparks"
+    ],
+    "note": "B2 alpha scaled to 60%; E2 black padding cropped per frame before exact sizing; E4 regenerated to remove persistent card after frame 1."
+  },
+  "remoteReadback": {
+    "status": "pending"
+  },
+  "whiteText11px": {
+    "preview": "QA_nine_slice.png",
+    "centerRgb": [
+      33,
+      23,
+      43
+    ],
+    "contrastRatio": 17.18,
+    "font": "Arial 11 logical px; title14px",
+    "result": "pass"
+  },
+  "nineSlice": {
+    "preview": "QA_nine_slice.png",
+    "tests": [
+      {
+        "size": [
+          384,
+          150
+        ],
+        "cornerIdentity": true
+      },
+      {
+        "size": [
+          178,
+          220
+        ],
+        "cornerIdentity": true
+      }
+    ],
+    "result": "pass"
+  },
+  "tintTests": {
+    "preview": "QA_tint_palettes.png",
+    "tests": [
+      {
+        "color": "#ff8fb5",
+        "layers": [
+          "lvl_card_accent",
+          "lvl_card_glow",
+          "lvl_icon_socket frame1"
+        ]
+      },
+      {
+        "color": "#66d3b3",
+        "layers": [
+          "lvl_card_accent",
+          "lvl_card_glow",
+          "lvl_icon_socket frame1"
+        ]
+      },
+      {
+        "color": "#ffd166",
+        "layers": [
+          "lvl_card_accent",
+          "lvl_card_glow",
+          "lvl_icon_socket frame1"
+        ]
+      },
+      {
+        "color": "#5ad1ff",
+        "layers": [
+          "lvl_card_accent",
+          "lvl_card_glow",
+          "lvl_icon_socket frame1"
+        ]
+      }
+    ],
+    "result": "pass"
+  },
+  "technicalContracts": {
+    "result": "pass",
+    "checkedAssets": 20,
+    "assets": [
+      {
+        "key": "lvl_screen_veil",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              230,
+              242
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_title_banner_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 4,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_title_burst",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              254
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_held_chip_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_held_bar",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              152
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_card_base",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_card_accent",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ],
+            "grayscaleExact": true,
+            "transparentCenter": true
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_card_glow",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ],
+            "grayscaleExact": true,
+            "transparentCenter": true
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_card_select",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ],
+            "transparentCenter": true
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_icon_socket",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ],
+            "grayscaleExact": true
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_ribbon_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 4,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 5,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_pill_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_combo_chip_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_type_badge_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 4,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 5,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 6,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_sparkle_sheet",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              0,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "lvl_shine_strip",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              0,
+              253
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "vfx_lvl_open",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 4,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 5,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 6,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 7,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "vfx_lvl_card_in",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "vfx_lvl_confirm",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 4,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 5,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      },
+      {
+        "key": "vfx_lvl_special_confirm",
+        "frames": [
+          {
+            "frame": 0,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 1,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 2,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 3,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 4,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 5,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 6,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          },
+          {
+            "frame": 7,
+            "alphaExtrema": [
+              255,
+              255
+            ]
+          }
+        ],
+        "result": "pass"
+      }
+    ]
+  }
+}

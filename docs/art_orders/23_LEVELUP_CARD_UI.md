@@ -82,7 +82,7 @@
 | E3 | `vfx_lvl_confirm.png` | ⭐⭐⭐ | 3×2 = 6 · ครั้งเดียว | 512×256 | ยืนยันการ์ด (แตะครั้งที่ 2) | การ์ดสว่างวาบ → แตกเป็นประกาย/เกล็ดน้ำตาลพุ่งขึ้น · เฟรม 1–2 สว่างสุด |
 | E4 | `vfx_lvl_special_confirm.png` | ⭐⭐ | 4×2 = 8 · ครั้งเดียว | 512×256 | ยืนยัน Evolution / Relic / Build Path | แบบ E3 แต่ใหญ่และหรูกว่า: วงแสงทอง + ริบบิ้นแสงหมุน |
 
-รวม **19 ไฟล์** (A 3 · B 2 · C 9 · D 2 · E 4)
+รวม **20 ไฟล์** (A 3 · B 2 · C 9 · D 2 · E 4)
 
 ## ลำดับความสำคัญ (ถ้าทำทีละรอบ)
 1. **รอบ 1 (เห็นผลทันที):** C1 C2 C4 C5 A2 A1
@@ -115,3 +115,6 @@
 - `openLevelUp`: bg → A1 · ข้อความหัว `levelChoiceHint` วางบน A2 (เลือกช่องตาม chest/relic/path/ปกติ) + E1 ตอนเปิด (ไม่เล่นซ้ำถ้าเปิดต่อกันภายใน 1.5s เหมือนเสียง)
 - `pickCardAt` ยืนยัน → E3 (E4 ถ้า evolution/relic/Build Path) ก่อน `closeLevelUp`
 - **ห้ามเปลี่ยนขนาด/ตำแหน่งพื้นที่แตะของการ์ด** (`lvlCards` left/right/top/bottom) · ทุกจุดต้องมี fallback เป็นกราฟิกโค้ดเดิม
+
+## Art delivery checkpoint — 2026-10-18
+Delivered all 20 source files / 66 frames to assets/incoming/levelup_cards_ui/ with manifest, prompts, technical QA, 9-slice/tint previews and delivery notes. Source visual QA passed; GitHub readback proof follows publication. Runtime integration remains pending.

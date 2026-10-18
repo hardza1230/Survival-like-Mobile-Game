@@ -1,0 +1,512 @@
+[
+  {
+    "key": "lvl_screen_veil",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1080,
+    "frameHeight": 1920,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_screen_veil.png",
+    "width": 1080,
+    "height": 1920,
+    "background": "partial-alpha",
+    "states": [
+      "veil"
+    ],
+    "sha256": "2545bd90af70706b0a251c183c068592fe39b98d1bbf16883e2a31c54bf04e56",
+    "bytes": 465706
+  },
+  {
+    "key": "lvl_title_banner_sheet",
+    "columns": 1,
+    "rows": 5,
+    "frameWidth": 1000,
+    "frameHeight": 96,
+    "frameCount": 5,
+    "nineSlice": [
+      100,
+      32,
+      100,
+      32
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_title_banner_sheet.png",
+    "width": 1000,
+    "height": 480,
+    "background": "transparent",
+    "states": [
+      "level_up_gold",
+      "treasure_pink_gold",
+      "relic_magenta",
+      "build_path_infusion_blue",
+      "starting_weapon_mint"
+    ],
+    "sha256": "3e1c0dfaf85a99fd71224b17760ebbb1f0919e637e6a0907c3f7bea01658bf08",
+    "bytes": 133164
+  },
+  {
+    "key": "lvl_title_burst",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 640,
+    "frameHeight": 320,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_title_burst.png",
+    "width": 640,
+    "height": 320,
+    "background": "transparent",
+    "states": [
+      "burst"
+    ],
+    "sha256": "f8e0ef702cf47aa59c38282544a20e44545c54061bb233dad4dc1982d6053ca6",
+    "bytes": 251061
+  },
+  {
+    "key": "lvl_held_chip_sheet",
+    "columns": 3,
+    "rows": 1,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 3,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_held_chip_sheet.png",
+    "width": 192,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "normal",
+      "awakened",
+      "empty"
+    ],
+    "sha256": "69e5aa752b10637705105e2b6e3b25b95d6bdf19b76ed28429cccbc4502f464d",
+    "bytes": 15051
+  },
+  {
+    "key": "lvl_held_bar",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 1600,
+    "frameHeight": 88,
+    "frameCount": 1,
+    "nineSlice": [
+      32,
+      24,
+      32,
+      24
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_held_bar.png",
+    "width": 1600,
+    "height": 88,
+    "background": "transparent",
+    "states": [
+      "bar"
+    ],
+    "sha256": "0c1842718181f580e9755c105552fe6bcdd01076e12055e44608ec1ab7ecfdbc",
+    "bytes": 6099
+  },
+  {
+    "key": "lvl_card_base",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 768,
+    "frameHeight": 300,
+    "frameCount": 1,
+    "nineSlice": [
+      64,
+      56,
+      64,
+      56
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_card_base.png",
+    "width": 768,
+    "height": 300,
+    "background": "transparent",
+    "states": [
+      "base"
+    ],
+    "sha256": "020c451384d2b78c40af40bb3e29e30cd5c5edcf18963bb815020df9c49a13ad",
+    "bytes": 35451
+  },
+  {
+    "key": "lvl_card_accent",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 768,
+    "frameHeight": 300,
+    "frameCount": 1,
+    "nineSlice": [
+      64,
+      56,
+      64,
+      56
+    ],
+    "tintable": true,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_card_accent.png",
+    "width": 768,
+    "height": 300,
+    "background": "transparent",
+    "states": [
+      "accent"
+    ],
+    "sha256": "2a8aafb05222b320c7b9ad5696cbcb6c3c837d0dcba9322eaa00821d1766a6b0",
+    "bytes": 19562
+  },
+  {
+    "key": "lvl_card_glow",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 832,
+    "frameHeight": 364,
+    "frameCount": 1,
+    "nineSlice": [
+      80,
+      80,
+      80,
+      80
+    ],
+    "tintable": true,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_card_glow.png",
+    "width": 832,
+    "height": 364,
+    "background": "transparent",
+    "states": [
+      "glow"
+    ],
+    "sha256": "5169a3fc6426e1b6ee25da42483398d730183f305e22facad158d0464c0b714a",
+    "bytes": 30412
+  },
+  {
+    "key": "lvl_card_select",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 800,
+    "frameHeight": 332,
+    "frameCount": 1,
+    "nineSlice": [
+      80,
+      72,
+      80,
+      72
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_card_select.png",
+    "width": 800,
+    "height": 332,
+    "background": "transparent",
+    "states": [
+      "selected"
+    ],
+    "sha256": "d4781fdc77af2dda5e1453dfd32aa8e70fc1db71a59cca9c39196fa76d0a6dbe",
+    "bytes": 44441
+  },
+  {
+    "key": "lvl_icon_socket",
+    "columns": 2,
+    "rows": 1,
+    "frameWidth": 192,
+    "frameHeight": 192,
+    "frameCount": 2,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_icon_socket.png",
+    "width": 384,
+    "height": 192,
+    "background": "transparent",
+    "states": [
+      "gold_plum_base",
+      "tintable_white_outer_ring"
+    ],
+    "sha256": "09eb4b312a229a80b92ad310cde2d5e225d0bea5cc5d558bd4329289a41e03fe",
+    "bytes": 82147,
+    "frameTintable": [
+      false,
+      true
+    ]
+  },
+  {
+    "key": "lvl_ribbon_sheet",
+    "columns": 1,
+    "rows": 6,
+    "frameWidth": 360,
+    "frameHeight": 56,
+    "frameCount": 6,
+    "nineSlice": [
+      48,
+      16,
+      48,
+      16
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_ribbon_sheet.png",
+    "width": 360,
+    "height": 336,
+    "background": "transparent",
+    "states": [
+      "evolution_gold",
+      "mutation_fusion_purple",
+      "build_path_blue",
+      "infusion_orange",
+      "relic_pink",
+      "modifier_mint"
+    ],
+    "sha256": "96a8f2cf26eda7d8d43a271aac64439117f9ab604198e1b95229195f69687cfc",
+    "bytes": 38022
+  },
+  {
+    "key": "lvl_pill_sheet",
+    "columns": 1,
+    "rows": 3,
+    "frameWidth": 240,
+    "frameHeight": 44,
+    "frameCount": 3,
+    "nineSlice": [
+      24,
+      16,
+      24,
+      16
+    ],
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_pill_sheet.png",
+    "width": 240,
+    "height": 132,
+    "background": "transparent",
+    "states": [
+      "level",
+      "choose",
+      "tap_again"
+    ],
+    "sha256": "56170e057dc17dde69d38143edcf96c84a9539287470d81cb0ceb9450feff6fd",
+    "bytes": 11000
+  },
+  {
+    "key": "lvl_combo_chip_sheet",
+    "columns": 2,
+    "rows": 1,
+    "frameWidth": 48,
+    "frameHeight": 48,
+    "frameCount": 2,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_combo_chip_sheet.png",
+    "width": 96,
+    "height": 48,
+    "background": "transparent",
+    "states": [
+      "missing",
+      "owned"
+    ],
+    "sha256": "b807257fec97af31c9bce8dfa81e0b8adda9f1a6e817d652e1880c68e13895f3",
+    "bytes": 7978
+  },
+  {
+    "key": "lvl_type_badge_sheet",
+    "columns": 7,
+    "rows": 1,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 7,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_type_badge_sheet.png",
+    "width": 448,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "attack",
+      "passive",
+      "basic_attack",
+      "heal",
+      "utility",
+      "unique",
+      "awaken"
+    ],
+    "sha256": "538556d0423cca84684aab51d0da74bda045c27d03520dfd71dc8680346229d6",
+    "bytes": 49978
+  },
+  {
+    "key": "lvl_sparkle_sheet",
+    "columns": 4,
+    "rows": 1,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 4,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_sparkle_sheet.png",
+    "width": 256,
+    "height": 64,
+    "background": "transparent",
+    "states": [
+      "four_ray",
+      "eight_ray",
+      "sugar_crystal",
+      "heart"
+    ],
+    "sha256": "77b3adc9cac8a1e347e426a06c2e382155941e784d6741635750c95efd2c6a1d",
+    "bytes": 24780
+  },
+  {
+    "key": "lvl_shine_strip",
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 96,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "lvl_shine_strip.png",
+    "width": 96,
+    "height": 512,
+    "background": "transparent",
+    "states": [
+      "shine"
+    ],
+    "sha256": "11083112a5c1654b77a3ca180aaf67a954402a4ded990b6f1eae5c31c13cf38a",
+    "bytes": 37207
+  },
+  {
+    "key": "vfx_lvl_open",
+    "columns": 4,
+    "rows": 2,
+    "frameWidth": 384,
+    "frameHeight": 384,
+    "frameCount": 8,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "vfx_lvl_open.png",
+    "width": 1536,
+    "height": 768,
+    "background": "#000000",
+    "states": [
+      "burst0",
+      "burst1",
+      "burst2",
+      "burst3",
+      "burst4",
+      "burst5",
+      "burst6",
+      "burst7"
+    ],
+    "sha256": "e2db10ad1eb82ef3b7a6e5d1fe65eeaeb45ecd3736cce911cfabec0adf6bd37e",
+    "bytes": 958113
+  },
+  {
+    "key": "vfx_lvl_card_in",
+    "columns": 4,
+    "rows": 1,
+    "frameWidth": 512,
+    "frameHeight": 200,
+    "frameCount": 4,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "vfx_lvl_card_in.png",
+    "width": 2048,
+    "height": 200,
+    "background": "#000000",
+    "states": [
+      "sweep0",
+      "sweep1",
+      "sweep2",
+      "sweep3"
+    ],
+    "sha256": "a5041102988dd5b538b27f2787016ca126cc18fbedc5d407cc4292b734c6aaa2",
+    "bytes": 165733
+  },
+  {
+    "key": "vfx_lvl_confirm",
+    "columns": 3,
+    "rows": 2,
+    "frameWidth": 512,
+    "frameHeight": 256,
+    "frameCount": 6,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "vfx_lvl_confirm.png",
+    "width": 1536,
+    "height": 512,
+    "background": "#000000",
+    "states": [
+      "confirm0",
+      "confirm1",
+      "confirm2",
+      "confirm3",
+      "confirm4",
+      "confirm5"
+    ],
+    "sha256": "3c7c8896e7a2f99bfa2c586d81ebc5633fa58872ad419f611e03c0b6b9bd4be1",
+    "bytes": 863741
+  },
+  {
+    "key": "vfx_lvl_special_confirm",
+    "columns": 4,
+    "rows": 2,
+    "frameWidth": 512,
+    "frameHeight": 256,
+    "frameCount": 8,
+    "nineSlice": null,
+    "tintable": false,
+    "loop": false,
+    "anchor": "center",
+    "file": "vfx_lvl_special_confirm.png",
+    "width": 2048,
+    "height": 512,
+    "background": "#000000",
+    "states": [
+      "special0",
+      "special1",
+      "special2",
+      "special3",
+      "special4",
+      "special5",
+      "special6",
+      "special7"
+    ],
+    "sha256": "5f592b20deb261f49714c6c22421fed2d2c074d45c090dfea8065809adee6938",
+    "bytes": 706917
+  }
+]

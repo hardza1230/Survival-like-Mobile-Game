@@ -1,0 +1,144 @@
+[
+  {
+    "key": "lvl_screen_veil",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. A portrait full-screen semitransparent very dark plum veil, alpha approximately 90 percent over entire canvas. Barely visible cream sugar crystals and little hand-drawn star particles at extreme screen edges only. Center rectangle x60..1020 y280..1800 completely smooth dark uniform plum, no ornaments or gradients there. Top and bottom edges have faint sugar flecks. No opaque illustration, no room, no frame, no checkerboard baked in. Target1080x1920.",
+    "sourceFile": "exec-e35e4649-547e-4737-a62c-ff0a998fbdc6.png",
+    "references": []
+  },
+  {
+    "key": "lvl_title_banner_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. FIVE separate long thin horizontal rolled-end ribbon banners STACKED VERTICALLY in five equal rows, one column five rows. Each ribbon target1000x96, total1000x480. Exact color order top to bottom: warm gold; pink with gold trim; vivid magenta; clear blue; mint green. Raised smooth blank center, tiny rolled candy scroll tails confined to left100 and right100 source pixels. Middle800 pixels of every edge and fill are plain, repeatable, no central jewel or icon. True transparent surroundings, no words. 9-slice.",
+    "sourceFile": "exec-46c2876c-a8e8-425e-9cc5-b7e5086a73df.png",
+    "references": []
+  },
+  {
+    "key": "lvl_title_burst",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One static fan of cream-gold light rays and sugar sparkles spreading behind a title banner, horizontally wide 2:1 composition, brightest at lower center, soft feathered tips and real alpha fade into fully transparent surroundings. Target640x320. No banner itself.",
+    "sourceFile": "exec-8c66c8f9-c115-4091-971a-6b1faab0409f.png",
+    "references": []
+  },
+  {
+    "key": "lvl_held_chip_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly three small SQUARE icon sockets in ONE HORIZONTAL ROW, equal cells. Target3x64x64=192x64. First: dark purple square socket with thin gold rounded rim. Second: same socket with thicker luminous golden awakened rim. Third: faint dashed muted gray-violet empty outline. All centers empty dark or transparent; no skill icon. Keep lower-right corner undecorated for runtime level digits. True alpha around small rounded corners. No words or numbers.",
+    "sourceFile": "exec-a9be7f6d-4296-445e-80e8-3bf5f735384c.png",
+    "references": []
+  },
+  {
+    "key": "lvl_held_bar",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One exceptionally long THIN horizontal HUD tray, shape aspect1600:88, dark plum fill with actual alpha60 percent, one thin gold border line, simple rounded ends, flat repeatable center and center edges, no ornaments or icon circles. True transparency outside. Draw only this very slender bar, no labels. Target1600x88.",
+    "sourceFile": "exec-da1cb37d-ae19-4077-99ec-d19792857b5d.png",
+    "references": []
+  },
+  {
+    "key": "lvl_card_base",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One main choice card panel, horizontal aspect768:300, exact target768x300. Rounded rectangle with perfectly smooth very dark plum center for white 11px text, very thin warm golden beveled border. Tiny cream candy seed/sugar corner flourishes only INSIDE four corner64x56 source-pixel regions, taking no text area. Middle portions of all four edges absolutely plain and repeatable; entire center plain uniform dark plum with only extremely subtle shading. No accent stripe, no icon socket, no separator, no embedded star in middle. Real alpha outside rounded corners, shadow <=12 sourcepx. Designed for 9-slice stretching to BOTH wide384x150 and tall178x220 at half-scale. Reference image is STYLE ONLY; do NOT copy its large icon ring, flowers, divider or three-row layout.",
+    "sourceFile": "exec-86f8df7c-3a4f-4005-a3aa-09f63749d9e7.png",
+    "references": [
+      "assets/incoming/temple_weave_ui/temple_core_card_sheet.png"
+    ]
+  },
+  {
+    "key": "lvl_card_accent",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One overlay for a768x300 rounded card; ONLY pure WHITE and LIGHT GRAY, absolutely zero colored pixels, suitable for runtime tinting. A left vertical stripe28 sourcepx thick, a thin inset rounded rectangle border, a very faint upper-left corner bloom. EVERYTHING ELSE including the entire central region fully transparent. No dark fill, no letters or symbols. Same corner geometry as a rounded main card with corner caps64x56. Straight plain repeatable edges, no flowers or glyphs. Target768x300.",
+    "sourceFile": "exec-196c636a-e2ef-4dd7-80f4-2ce3c5e338c7.png",
+    "references": []
+  },
+  {
+    "key": "lvl_card_glow",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One soft WHITE GRAYSCALE outer glow surrounding the silhouette of a rounded rectangular card, target832x364. Center rectangle remains completely transparent, no fill. White feathered aura only near the border, fades to actual zero alpha outside and inside. No colored pixels, no solid gray backdrop, no border illustrations, no symbols. For 9-slice, corner caps80px, straight glow edges constant and repeatable. Glow contour surrounds inner768x300 card footprint inset32px.",
+    "sourceFile": "exec-1fd98b30-de82-42d4-ab37-b29e732a845b.png",
+    "references": []
+  },
+  {
+    "key": "lvl_card_select",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One bright warm GOLD selection frame, double thin rounded gold lines, four tiny illustrated cream light-star sparkles at corners only, target800x332. Absolutely empty fully TRANSPARENT center, no purple panel or text. Surrounds a768x300 card inset16px. Corner detail contained in80x72px corner caps, all long middle edges smooth and repeatable for9-slice. Real alpha outside and inside.",
+    "sourceFile": "exec-7c90e9d7-fe0d-4e63-9353-9da5f3537704.png",
+    "references": []
+  },
+  {
+    "key": "lvl_icon_socket",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly TWO separate circular icon-socket layers in ONE HORIZONTAL ROW, each192x192, total384x192. Left: gold-purple coin base with beveled warm-gold rim and flat dark plum disk center; no icon. Right: only a pure WHITE/light-gray outer ring, center entirely transparent, zero colored pixels in this right cell; it overlays the first circle and is tinted in runtime. Same circle diameter and centers, real alpha outside both. No icons or characters.",
+    "sourceFile": "exec-f673773e-bccc-4bf8-9b4f-1b997977f914.png",
+    "references": []
+  },
+  {
+    "key": "lvl_ribbon_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly SIX small blank raised ribbon labels STACKED VERTICALLY in six equal rows. Each360x56, total360x336. Top-to-bottom color order GOLD, PURPLE, BLUE, ORANGE, PINK, MINT. Cream-white beveled rim and tiny folded end tips limited to48px ends, smooth center for dark runtime text. All center edges and fill plain repeatable for9-slice. Transparent surroundings. No words, badges or icons.",
+    "sourceFile": "exec-a9fbabeb-6369-4685-9e9a-3ebbff1c7df6.png",
+    "references": []
+  },
+  {
+    "key": "lvl_pill_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly THREE blank small pill-shaped UI labels STACKED VERTICALLY in equal rows. Each240x44, total240x132. First dark plum with thin gold edge. Second raised soft pink candy pill. Third bright glowing gold selected pill. Smooth unmarked flat centers, no icons or text; 9-slice24px horizontal cap16px vertical cap, transparent rounded outer corners. Restrained bevel.",
+    "sourceFile": "exec-5fdf37c3-d5c0-4b53-8502-63a7b915c2c5.png",
+    "references": []
+  },
+  {
+    "key": "lvl_combo_chip_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly TWO tiny square rounded combo-icon sockets in ONE HORIZONTAL ROW,48x48 each,96x48 total. Left faint muted gray outline and translucent empty dark center. Right warm gold glowing outline, same shape and dimensions. No icon inside, no checkmarks, no type or numbers. True alpha surroundings.",
+    "sourceFile": "exec-82961175-3e6b-4919-817f-4b6b18849407.png",
+    "references": []
+  },
+  {
+    "key": "lvl_type_badge_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly SEVEN distinct hand-drawn small GAME CATEGORY PICTOGRAMS in ONE HORIZONTAL ROW of seven equal64x64 cells, total448x64. Ordered left-to-right: a silver candy sword with gold hilt; a flexed green arm/muscle; a little sprouting seed; a pink heart; a warm gold gear; a pink crown; a golden lightning bolt made of glowing candy crystal. Actual illustrated objects, not font characters or emoji glyphs. No circular backgrounds, real alpha, strong simple silhouettes legible at18px.",
+    "sourceFile": "exec-69e738b2-ea69-4c95-b211-baf046119a56.png",
+    "references": []
+  },
+  {
+    "key": "lvl_sparkle_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. Exactly FOUR small cream-white decorative illustrations in ONE HORIZONTAL ROW of four equal64x64 cells, total256x64. Order: four-ray glint, eight-ray light star, faceted sugar crystal, tiny rounded heart. Draw as little luminous objects with soft alpha fade, NOT font characters or emoji. No colored backdrop, no labels.",
+    "sourceFile": "exec-03e91203-d6dc-4398-bb68-7553fb23711f.png",
+    "references": []
+  },
+  {
+    "key": "lvl_shine_strip",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. One vertical WHITE highlight strip target96x512, slender vertical aspect96:512, white core softly fades to genuine transparent alpha on both left and right sides; softly faded top and bottom tips. No hard rectangle, no background color, no symbols. Used later tilted14 degrees by runtime, draw it STRAIGHT VERTICAL.",
+    "sourceFile": "exec-c163718e-f525-4776-8b32-e2d0375e55f8.png",
+    "references": []
+  },
+  {
+    "key": "vfx_lvl_open",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. 8-frame single-shot VFX sprite sheet exactly4 columns x2 rows, equal384x384 cells,1536x768 total. PURE OPAQUE BLACK background. Golden-pink illustrated sugar light-stars burst out from center with a circular sparkle wave, peak at frames0-1, then expand into fragments and fade over remaining frames. No actual character or card, no drawn font stars, no dividers. Consistent center, black safe margins, distinct time progression.",
+    "sourceFile": "exec-2c05d0d0-f2c9-46ad-bc3b-51b31a739ee9.png",
+    "references": []
+  },
+  {
+    "key": "vfx_lvl_card_in",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. 4-frame single-shot VFX sheet ONE HORIZONTAL ROW of4 equal cells, each512x200, total2048x200. Pure opaque black. A thin cream-gold light sweep moves left to right around the perimeter of a wide rounded rectangular card silhouette; frame0 on left edge,1 across upper edge,2 on right edge,3 fading lower-right fragments. Card interior is completely black, no filled panel. Each effect is a very wide2.56:1 rectangle, kept centered in its cell, no text or separator.",
+    "sourceFile": "exec-db6f2405-14d1-49ec-8bc1-b18e67fa965f.png",
+    "references": []
+  },
+  {
+    "key": "vfx_lvl_confirm",
+    "mode": "built-in image_gen",
+    "prompt": "Production game UI asset for Mochi Mayhem, matching a cute confectionery fantasy temple interface. Rich dark plum #21172b / #2a1830, warm gold #e8c27a, creamy highlights, gently rounded candy materials, crisp small-size readable shapes, soft beveled thin outlines, restrained small corner ornaments. Flat straight-on 2D UI, no perspective. ABSOLUTELY NO TEXT, LETTERS, NUMBERS, EMOJI, TYPOGRAPHIC SYMBOLS, LOGOS, WATERMARKS OR CAPTIONS. No icons that are already provided by the game unless the subject explicitly requests category pictograms. Equal sprite cells, no dividers, no gutters. Artwork and shadows must stay inside each cell. 6-frame single-shot confirmation VFX, exactly3 columns x2 rows,512x256 each,1536x512 total. Pure opaque black. Wide card-shaped cream gold flash at frames0-1, a rounded wide card silhouette erupts into glowing sugar-crystal shards shooting UP at frames2-3, then sparse fading particles at4-5. No card text or icons. Peak frames0-1; common center with safe margin, no separators.",
+    "sourceFile": "exec-14fcf1e9-32b2-4589-a72b-d642e5dba468.png",
+    "references": []
+  },
+  {
+    "key": "vfx_lvl_special_confirm",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production Mochi Mayhem confectionery-fantasy single-shot SPECIAL CARD CONFIRMATION VFX sprite sheet. EXACTLY 4 columns x 2 rows, eight equal wide 2:1 cells, total composition 4:1 landscape, read left to right then second row. PURE BLACK OPAQUE BACKGROUND. NO TEXT, no numbers, no labels, no separators. Each cell contains the successive phase of ONE effect, same anchor and scale. Frames0-1: broad horizontal rounded card-shaped brilliant cream-gold flash, pink rim, gold energy ring. Frame2: card vanishes completely as gold-pink spiral ribbons and sugar shards erupt upward. Frame3: ring expands and fragments. Frames4-5: ribbons disperse into thin arcs and tiny fragments; NO CARD silhouette. Frame6: only sparse small fading sparks on black. Frame7: near-black, just 3 very dim tiny sparks. The final FOUR cells must NOT contain ANY card, rectangle, solid object, or persistent ring. Elegant luminous candy magic, crisp game sprite art, no scenery. Generous safe black margin inside each equal cell. Animation must disappear fully when done.",
+    "sourceFile": "exec-8d37f5cc-daf2-4aa8-9580-e4e37dd6ce4a.png",
+    "references": []
+  }
+]
