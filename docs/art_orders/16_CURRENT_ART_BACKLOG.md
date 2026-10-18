@@ -1,3 +1,6 @@
+> **สถานะตรวจ 18 ต.ค. 2026 / v7.8.55:** P1 edge accents, Unique Mastery, Tremor/Frost Burn และ Berry crop ส่ง/ต่อแล้ว v7.7.0; ใบ 17 ต่อ v7.8.20, ใบ 18 A/B/C v7.8.25 และ E–I v7.8.30, ใบ 19 ต่อ v7.8.32, ใบ 20 ครบ 21/21 v7.8.45–46, ใบ 21 ครบ 34/34 v7.8.49 และ polish v7.8.50 **งานหลักที่ค้างคือ owner phone visual/FPS QA**; อย่าสร้าง P1 เดิมซ้ำ ส่วนข้อเสนอด้านล่างเป็นฐานสำรวจ 11 ต.ค. ต้องเทียบ runtime ใหม่ก่อนสั่งผลิต
+> C2-4 เปลี่ยนจาก Season Storm trials เป็น Seasonal Harvest แล้ว v7.8.55; ดู [QA ปัจจุบัน](../C2_4_QA.md) ก่อนตีความสเปกเอฟเฟกต์เดิม
+
 > 17 ต.ค. 2026: Temple Weave UI (34 ไฟล์) ส่งครบและผูกเข้าเกมแล้ว v7.8.49 ดู [21_TEMPLE_WEAVE_UI.md](21_TEMPLE_WEAVE_UI.md) · รอดู visual บนมือถือ
 > 17 ต.ค. 2026: งานใหม่ Hero VFX gaps (Chocolate / Strawberry / Mint / Taro · 21 ไฟล์) ดู [20_HERO_VFX_GAPS.md](20_HERO_VFX_GAPS.md) · ส่งแล้ว ผูกครบ 21/21 แล้ว (v7.8.45–v7.8.46) รอดู visual/FPS บนมือถือ
 > 16 ต.ค. 2026: งานใหม่ C2-4 Four-Season Conservatory (บททดสอบฤดู + ท่าบอส Chronobloom) ดู [19_C24_FOUR_SEASON_ART.md](19_C24_FOUR_SEASON_ART.md) · ส่งที่ `assets/incoming/c24_seasons_vfx/`
@@ -6,7 +9,7 @@
 
 > P1 ส่งใน v7.7.0: ชีต edge accents แยก 13 สกิล, Unique Mastery, Tremor/Frost Burn และแก้ Berry Core crop แล้ว ดู P1_DELIVERY_7_7.md สำหรับหลักฐานและข้อจำกัด QA; รีวิวเล่นจริงบนมือถือยังค้าง
 
-# งานอาร์ตปัจจุบัน — ตรวจ 11 ต.ค. 2026
+# ฐานสำรวจงานอาร์ต — 11 ต.ค. 2026 (อ่านสถานะล่าสุดด้านบนก่อน)
 
 ฐานตรวจ: runtime v7.6.14 (`0b010e8`) รวมเสียง Strawberry ใน v7.6.15
 ไฟล์นี้เป็นรายการปัจจุบัน ใบสั่ง 01–15 ใช้อ้างอิงสเปกเดิม ไม่ใช้ข้อความ “ยังขาด” ในไฟล์เก่าเป็นสถานะปัจจุบัน
@@ -15,8 +18,8 @@
 
 | ลำดับ | งาน | หลักฐานและสถานะ | ใบสั่งสำหรับรอบถัดไป |
 |---|---|---|---|
-| P1 | Screen effect ของฮีโร่ 7 ตัว | มี WebP ใน `assets/art/screen_effects/` แต่ `heroScreenEffect()` return null ตั้งแต่ v7.6.7 จึงไม่ได้ใช้จริง ใช้เอฟเฟกต์โค้ดเดิมอยู่ | ทำใหม่เป็นองค์ประกอบขอบจอที่สัมพันธ์กับสกิล ไม่ใช้ภาพกรอบตกแต่งเดียวครอบทุกสกิล; ส่ง mockup บนภาพเกมก่อนสร้างครบชุด |
-| P1 | ไอคอน Unique Mastery | `UNIQUE_TALENT` เพิ่มหลังชุด Talent เดิม; ไม่มี frame `unique` ใน `TALENT_ICON_FRAMES` จึงใช้ ✨ | 1 ไอคอนร่วมทุกฮีโร่: ดาวพลัง Unique พร้อมวง mastery อ่านได้ที่ 24–40px; alpha จริง ไม่มีข้อความ; เพิ่ม mapping ทั้ง 7 ฮีโร่ |
+| เสร็จ/รอ QA | Screen effect ของฮีโร่ | v7.7.0 เปลี่ยนเป็น edge accents 13 สกิลแล้ว; full-screen ชุดเก่ายังพักไว้ | ตรวจบนมือถือ ไม่สร้างซ้ำ; ดู P1_DELIVERY_7_7.md |
+| เสร็จ/รอ QA | ไอคอน Unique Mastery | ส่งและต่อแล้ว v7.7.0 ที่ assets/art/talents/unique_mastery.webp | ตรวจอ่านง่ายบนมือถือ; ไม่ใช่งานขาด mapping แล้ว |
 | P1 | Visual QA หน้าอุปกรณ์จอใหญ่ | แก้ crop ใบหน้าใน v7.3.1 แล้ว; ยังต้องดูภาพจริงทั้ง 7 ฮีโร่ในจอแคบ/แท็บเล็ต/แนวนอน | ไม่สร้าง portrait ใหม่ก่อนพบภาพผิด ตรวจหน้าครบ รายงานภาพถูกตัดและตำแหน่ง label พร้อมขนาดจอ |
 | P2 | QA งานส่งแล้ว | ชุดมอนสเตอร์, Elite, Chef, Build icons/VFX, Talent, ending/story/growth มีไฟล์และโค้ดแล้ว | ตรวจความอ่านง่าย/FPS/alpha/animation บนมือถือจริง รวม VFX off และ fallback; เป็นงานตรวจ ไม่ใช่งานสร้างซ้ำ |
 
@@ -50,7 +53,7 @@
 
 - ใบ 01–13: พื้น/ของตกแต่ง, มอนสเตอร์และบอส, วิหาร/เหมือง, Perk/Relic/Kitchen, เมนู/Delve ตามสถานะส่งของเดิม
 - ใบ 14: Batch 7A/7B/8/9, Elite/ตัวพิเศษ, Chef, Build icons และ Unique VFX ส่งแล้ว
-- Talent เดิมมี atlas + mappings; Unique Mastery เป็นรายการเพิ่มใหม่แยกจากชุดเดิม
+- Talent เดิมมี atlas + mappings; Unique Mastery ส่ง/ต่อแล้ว v7.7.0
 - ใบ 15: ตัวละคร/Build VFX อยู่ใน `assets/art/bp_fx/` และผูกผ่าน `BP_POSE_SCALE`/`BP_FX`; สเปกกลไกบางส่วนล้าสมัย โดยเฉพาะ Titan
 - ฉากชนะ/แพ้, epilogue และ growth มีงานอาร์ต/การผูกแล้ว; ตรวจต่อด้วย ending-growth-art regression และมือถือจริง
 - Screen effect 7 ภาพมีไฟล์แล้ว แต่สถานะคือ **พักใช้งาน/ต้องปรับใหม่** ไม่ใช่ “ใช้งานแล้ว”

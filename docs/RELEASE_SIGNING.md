@@ -1,57 +1,76 @@
-# 🔐 สร้าง Signed AAB สำหรับ Play Store
+# สร้าง Signed AAB สำหรับ Play Store
 
-> ตอนนี้เกม build เป็น **debug APK** (ทดสอบ/ลงเครื่องเองได้ แต่อัปขึ้น Play Store ไม่ได้)
-> Play Store บังคับใช้ **Android App Bundle (.aab) ที่เซ็นด้วย release keystore**
->
-> ทำ **ครั้งเดียว** ตามขั้นตอนนี้ แล้วต่อไปแค่ push tag `v*` ก็ได้ .aab เซ็นแล้วอัตโนมัติ
+ตรวจเอกสาร 18 ต.ค. 2026 เทียบกับ `.github/workflows/release-aab.yml` และ Android scripts ปัจจุบัน งานขึ้นสโตร์ยังพักไว้ตามแผนโปรเจกต์ การมี workflow ไม่ได้ยืนยันว่าตั้ง signing secrets หรือผ่าน release test แล้ว
 
----
+## Build ที่มีอยู่
 
-## ⚠️ สำคัญที่สุด: เก็บ keystore ให้ดี
-`keystore` = กุญแจเซ็นแอป **ถ้าหาย/ลืมรหัส = อัปเดตแอปบน Play Store ไม่ได้อีกเลยตลอดกาล** (ต้องสร้างแอปใหม่)
-→ เก็บไฟล์ `.keystore` + รหัสผ่านไว้หลายที่ (Google Drive ส่วนตัว, password manager)
+| Workflow | ผลลัพธ์ | แหล่งเกม |
+|---|---|---|
+| Build Android APK | `mochi-mayhem-debug.apk` สำหรับทดสอบ | โหลด GitHub Pages ตาม server.url |
+| Release Signed AAB | `mochi-mayhem-release.aab` พร้อม signing เมื่อมี secrets ถูกต้อง | ลบ server.url แล้วฝังเกมในแอป |
 
----
+Release workflow ใช้ **Node.js 22, JDK 21, Android SDK/build-tools 36** และ Capacitor 8 ตาม dependency ปัจจุบัน VersionName/VersionCode มาจาก **GAME_VERSION ใน game.js** ผ่าน scripts/set-android-version.mjs ไม่ได้ใช้ package.json version เป็นเวอร์ชันเกม
 
-## ขั้นที่ 1 — สร้าง keystore (ทำในเครื่องที่มี Java / หรือให้ Claude สร้างให้ก็ได้)
-รันคำสั่งนี้ (มี `keytool` มากับ Java JDK):
-```bash
+สูตร versionCode คือ major × 10000 + minor × 100 + patch; minor/patch ต้องต่ำกว่า 100 ตัวอย่าง 7.8.55 → 70855 เอกสารอย่างเดียวไม่ต้องเปลี่ยน GAME_VERSION
+
+## 1. เตรียม signing key
+
+ถ้ามี key ของแอปนี้อยู่แล้ว ให้ใช้ key เดิมและสำรองไว้ อย่าสร้างแทนโดยไม่ตรวจการตั้งค่าแอปที่เผยแพร่แล้ว เก็บ keystore และรหัสผ่านในที่ปลอดภัยนอก repository
+
+ตัวอย่างสร้าง key สำหรับการตั้งครั้งแรก (keytool มากับ JDK; โปรแกรมจะถามรหัสผ่าน):
+
+```sh
 keytool -genkeypair -v \
   -keystore mochi-release.keystore \
   -alias mochi \
   -keyalg RSA -keysize 2048 -validity 10000 \
-  -storepass "ตั้งรหัสผ่านที่นี่" \
-  -keypass "ตั้งรหัสผ่านที่นี่" \
   -dname "CN=Mochi Mayhem, OU=Game, O=Mochi, L=Bangkok, S=Bangkok, C=TH"
 ```
-จะได้ไฟล์ `mochi-release.keystore` → **เก็บให้ดี**
 
-## ขั้นที่ 2 — แปลง keystore เป็น base64 (เพื่อใส่เป็น secret)
-```bash
+## 2. เตรียม GitHub Actions secrets
+
+แปลง keystore เป็น base64 โดยไม่ commit ไฟล์:
+
+```sh
 base64 -w0 mochi-release.keystore > keystore.base64.txt
 ```
-(บน Mac ใช้ `base64 -i mochi-release.keystore -o keystore.base64.txt`)
 
-## ขั้นที่ 3 — เพิ่ม GitHub Secrets
-ไปที่: repo → **Settings → Secrets and variables → Actions → New repository secret**
-เพิ่ม 4 อัน:
-| ชื่อ secret | ค่า |
-|-------------|-----|
-| `KEYSTORE_BASE64` | เนื้อหาทั้งหมดในไฟล์ `keystore.base64.txt` |
-| `KEYSTORE_PASSWORD` | รหัส storepass จากขั้นที่ 1 |
-| `KEY_ALIAS` | `mochi` |
-| `KEY_PASSWORD` | รหัส keypass จากขั้นที่ 1 |
+บน macOS: `base64 -i mochi-release.keystore -o keystore.base64.txt`
 
-## ขั้นที่ 4 — สั่ง build AAB
-- **แบบกดเอง:** repo → Actions → "Release Signed AAB" → Run workflow
-- **แบบ tag:** `git tag v3.0.0 && git push origin v3.0.0`
+Repository → Settings → Secrets and variables → Actions:
 
-ได้ไฟล์ `mochi-mayhem-release.aab` ใน artifact (และแนบใน Release ถ้า push tag) → เอาไปอัปใน Play Console
+| Secret | ค่า |
+|---|---|
+| KEYSTORE_BASE64 | เนื้อหา keystore.base64.txt |
+| KEYSTORE_PASSWORD | รหัส keystore |
+| KEY_ALIAS | alias ที่สร้าง เช่น mochi |
+| KEY_PASSWORD | รหัสของ key ที่ใช้ signing |
 
----
+ไฟล์ base64 มีความอ่อนไหวเทียบเท่า keystore ให้เก็บนอก Git เช่นเดียวกัน การตรวจเอกสารครั้งนี้ไม่ได้อ่านหรือตรวจค่า secrets
 
-## หมายเหตุ
-- workflow: `.github/workflows/release-aab.yml`
-- สคริปต์เสียบ signing: `scripts/inject-signing.mjs`
-- ครั้งแรกที่รันควรเช็ก log ว่าผ่านครบ ถ้า gradle fail เรื่อง signing แจ้ง Claude มาปรับ
-- **Play App Signing:** แนะนำเปิด (Play Console จัดการกุญแจ upload ให้) — ตอนสร้างแอปครั้งแรก Google จะถาม; ถ้าเปิด คุณอัป .aab ที่เซ็นด้วย upload key (อันนี้) แล้ว Google เซ็น distribution key ให้เอง = ปลอดภัยกว่าถ้า upload key หาย
+## 3. เรียก workflow
+
+- ทดสอบแบบกดเอง: Actions → **Release Signed AAB** → Run workflow → เลือกสาขา `claude/vampire-survival-mobile-game-yo9e8w`
+- เมื่อต้องการออก release จริง: tag `v*` จาก commit ที่ตรวจแล้ว (tag ควรตรงกับ GAME_VERSION และไม่ซ้ำ tag เดิม)
+- ตรวจ steps จนครบและ workflow สำเร็จ แล้วดาวน์โหลด artifact/ไฟล์แนบ Release ของรันนั้น ไม่ใช้ debug APK แทน AAB
+
+Workflow จะลบ live server เฉพาะใน runner, ประกอบ www, สร้าง Android platform/icons, ตั้ง portrait/fullscreen และเวอร์ชัน, inject signing, decode keystore และรัน bundleRelease
+
+## 4. ก่อนนำไปเผยแพร่
+
+- ยืนยัน signed AAB สร้างสำเร็จและ versionCode เพิ่มจากรุ่นที่เคยอัปจริง
+- ทดสอบ bundle ผ่านช่องทางทดสอบของ Play Console รวมการเปิดเกมจากไฟล์ที่ฝังในแอปและ save lifecycle
+- ตรวจสถานะ Cloud Save, account deletion, privacy/data safety และรายละเอียดสโตร์ตามบริการที่เปิดใช้งานจริง
+- ทบทวน [STORE_LISTING.md](STORE_LISTING.md) และข้อกำหนดใน Play Console ณ วันที่ส่ง
+
+Release AAB ไม่โหลดเกมจาก Pages; การแก้เว็บจะไม่อัปเดตเกมที่ฝังอยู่ใน AAB นั้น การทำ OTA bundle เป็นงานแยกที่ยังไม่ควรอ้างว่ามีแล้ว
+
+## ไฟล์อ้างอิง
+
+- `../.github/workflows/release-aab.yml`
+- `../scripts/strip-live-server.mjs`
+- `../scripts/set-android-version.mjs`
+- `../scripts/inject-signing.mjs`
+- [สถานะโปรเจกต์](PROJECT_SUMMARY_TH.md)
+
+หาก key มีปัญหา ให้ตรวจประเภท app signing/upload key และทางกู้คืนที่ Play Console รองรับสำหรับแอปนั้นก่อนตัดสินใจสร้างแอปใหม่ ไม่สรุปว่าการทำ key หายทุกกรณีแก้ไขไม่ได้

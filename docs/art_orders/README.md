@@ -1,6 +1,5 @@
-> อัปเดตสถานะ 11 ต.ค. 2026: ใช้ [16_CURRENT_ART_BACKLOG.md](16_CURRENT_ART_BACKLOG.md) เป็นรายการงานค้าง/งานใหม่ปัจจุบัน ใบนี้เก็บสเปกเดิม; Build art ส่งและผูกแล้ว แต่ Titan เปลี่ยนกลไกใน v7.6.14 และ screen overlay ชุดใหม่ถูกพักใช้งานตั้งแต่ v7.6.7.
+> สถานะตรวจ 18 ต.ค. 2026 · runtime v7.8.55 · ใช้ [16_CURRENT_ART_BACKLOG.md](16_CURRENT_ART_BACKLOG.md) สำหรับงานค้างปัจจุบัน ใบสั่งเดิมเป็นสเปกและประวัติ การส่งไฟล์/ต่อ runtime/ผ่านมือถือเป็นคนละสถานะ
 
-<!-- Latest: v6.55.99; all scoped art orders A–E are delivered; owner mobile visual/FPS review remains. -->
 # 🎨 Art Orders — ใบสั่งงานอาร์ตจริงแทนของชั่วคราว
 
 โฟลเดอร์นี้คือ "สัญญา" ระหว่าง **AI ทำอาร์ต** กับ **AI เขียนโค้ด** ของ Mochi Mayhem
@@ -10,8 +9,8 @@
 
 ## ลำดับการอ่าน
 1. `00_STYLE_GUIDE.md` — สไตล์/สี/มุมมอง/กฎเทคนิค (**อ่านก่อนทุกชุด**)
-2. **`14_REMAINING_ART.md` — งานที่เหลือทั้งหมด (อัปเดต v6.55.99; A–E ส่งครบแล้ว รอตรวจบนมือถือจริง) ← เริ่มที่นี่** · `NEXT_BATCH_REQUEST.md` = กติกาประหยัดโควต้า §0 (งานในไฟล์นั้นเสร็จแล้ว)
-2b. **`NEXT_BATCH_REQUEST.md` — (เดิม) งานที่ต้องทำตอนนั้น (รวมเป็นแผ่นรวม ประหยัดโควต้า) ← เริ่มที่นี่**
+2. [16_CURRENT_ART_BACKLOG.md](16_CURRENT_ART_BACKLOG.md) — สถานะงานค้าง/QA ปัจจุบัน
+3. `14_REMAINING_ART.md` และ `NEXT_BATCH_REQUEST.md` เป็นประวัติชุดเดิมที่ส่งครบแล้ว; ใช้อ้างอิงสเปก ไม่ใช้เริ่มสร้างซ้ำ
 3. ใบสั่งรายชุด (01–12) = สเปกละเอียดของแต่ละ key
 
 > 💰 **กฎประหยัดโควต้า:** ห้ามสร้างทีละภาพถ้ารวมได้ — ไอคอน/ของในฉาก/แผ่น node/เฟรมอนิเมชัน ให้สร้างเป็น **แผ่นรวม (sheet) ครั้งเดียว** แล้วฝั่งโค้ดตัดเอง · ดูกติกาใน `NEXT_BATCH_REQUEST.md` §0
@@ -36,6 +35,10 @@
 | 13 | `13_DELVE_BOSSES.md` | บอส Delve ชั้น 10/20 + ของประกอบ | 3 | 🔴 | 🟩 ใส่เกมแล้ว v6.39 + กลไกครบ |
 | C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
 | 14 | `14_REMAINING_ART.md` | **ส่งครบ:** อนิเมชัน C2-4 ถึง C2-5 และงาน A–E | 14 ชีต Batch 9 ส่งแล้ว | 🔴 | 🟩 A–E ครบ v6.55.99; รอตรวจมือถือ |
+| 17 | `17_TARO_SENTRY_ART.md` | Sentry / Beacon / ไอคอน | 19 ชิ้น | — | 🟩 ต่อแล้ว v7.8.20; รอมือถือ |
+| 18 | `18_TARO_SPARK_BALL_LIGHTNING_ART.md` | Spark/Ball Lightning และส่วนขยาย Unique | หลายชุด | — | 🟩 A/B/C v7.8.25; E–I v7.8.30; ดูใบสั่งสำหรับส่วน J |
+| 19 | `19_C24_FOUR_SEASON_ART.md` | C2-4 season/boss VFX | 22 ไฟล์ | — | 🟩 ต่อแล้ว v7.8.32; objective เปลี่ยนเป็น Harvest v7.8.55 |
+| 20 | `20_HERO_VFX_GAPS.md` | Hero VFX รวม Cocoa landing dust | 21 ไฟล์ | — | 🟩 ต่อครบ v7.8.45–46; รอมือถือ |
 | 21 | `21_TEMPLE_WEAVE_UI.md` | ชิ้นส่วน UI หน้า Temple Weave + Flavor Passives (พื้นหลัง, การ์ด 9-slice, ปุ่ม, แถบ, ป้าย) ภาพอ้างอิงใน `ref/` | 34 | 🟠 | 🟩 ใส่เข้าเกมแล้ว v7.8.49 |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
@@ -85,8 +88,8 @@ date: YYYY-MM-DD
 2. ย่อ/ครอปถ้าจำเป็น → ย้ายไป `assets/art/<batch>/`
 3. เพิ่ม `key:'assets/art/<batch>/<key>.png'` ใน `ASSET_IMAGES` (path เต็มเสมอ — build-www คัดลอกเฉพาะ path ที่อ้าง)
 4. ของชั่วคราวส่วนใหญ่ **ข้ามตัวเองอัตโนมัติ** เมื่อ key มีอยู่แล้ว (ระบุไว้ในแต่ละใบสั่งว่าชิ้นไหนต้องแก้โค้ดเพิ่ม)
-5. `npm run check` + เทส headless + screenshot → อัปเดตสถานะในตารางนี้เป็น 🟩 · bump GAME_VERSION/CHANGELOG
-6. ลบไฟล์ใน `assets/incoming/<batch>/` ที่ย้ายแล้ว (กัน repo บวม)
+5. งาน runtime: `npm run check` + `npm run build:www` และตรวจภาพ/เมนูที่เกี่ยวข้อง → อัปเดตสถานะและ GAME_VERSION/CHANGELOG; เจ้าของทดสอบ combat/visual/FPS บนมือถือ ไม่จำลอง headless combat
+6. เก็บต้นฉบับ, manifest, prompts และ QA ใน `assets/incoming/<batch>/` เพื่อ trace/repack; build คัดลอกเฉพาะ runtime ที่อ้างอิง ไม่ลบต้นฉบับเพียงเพราะแพ็กแล้ว
 
 ## ❓ ถ้าสเปกไม่ชัด
 ฝั่งอาร์ตเขียนคำถามไว้ใน `MANIFEST.md` หัวข้อ `questions:` แล้วส่งตามที่คิดว่าดีที่สุด — ฝั่งโค้ดจะตอบ/ปรับให้

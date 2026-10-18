@@ -1,34 +1,36 @@
 # C2-4 Four-Season Conservatory — QA Gate
 
-Version: 4.42.0  
-Stage index: 8  
-Status: unlocked (`ready:true`)
+Reviewed against **v7.8.55 / e32cc37**, 2026-10-18.  
+Stage index: 8. Implemented and unlocked in code; owner mobile acceptance remains pending.
 
-## Automated checks
+This supersedes the v4.42 sanctuary route and v7.8.29–54 Season Storm trials. The objective keeps internal type `seasonCycle` but is displayed as **Seasonal Harvest**.
 
-- Four-Season Conservatory background exists.
-- Seasonal enemy/objective atlas is transparent PNG 1024×512.
-- Season Keeper sheet is transparent PNG 1024×256.
-- Chronobloom Orchid sheet is transparent PNG 1024×512.
-- Root Throne remains locked.
-- Mobile live-enemy cap is 92.
-- Boss damage gates match phase transitions at 72% and 38% HP.
-- Seasonal arena, Stabilize the Seasons, monster-role AI, miniboss and boss contracts are present.
+## Current contracts to check
 
-## Manual smoke route
+- Seasons rotate every 10 seconds: Spring → Summer → Autumn → Winter.
+- Each non-boss kill credits 1 petal to the current season; Elites credit 3. Each season needs 12.
+- Once a season is full, excess petals contribute at 50% to the emptiest unfinished season, retaining fractional spill between kills.
+- Full seasons are marked complete and their hazards stop. Filling all 4 completes the objective; there is no failed trial or reset at a season boundary.
+- HUD reports current season, petal count, time until next season and total full seasons.
+- Enemy spawning continues during unfinished harvest so an exhausted wave reserve cannot leave the objective stuck.
+- Replay progression is kill-only (v7.8.48 onward); miniboss/boss arrival must not skip to a timer.
+- Order 19 season/boss art is wired in assets/art/c24_seasons since v7.8.32, with procedural fallbacks. Old trial-specific artwork is not proof the old trial rules are still active.
 
-1. Enter Four-Season Conservatory and confirm all four garden quadrants remain readable around the open combat center.
-2. Play all five waves; verify Spring, Summer, Autumn and Winter rotate without stopping player control.
-3. Verify Spring heals regular enemies, Summer creates warning hazards, Autumn adds Leafblades, and Winter fires an inward volley with a safe gap.
-4. On Stabilize the Seasons, follow the highlighted seasonal sanctuary and confirm only the active circle advances progress.
-5. Confirm Frostbell leads player movement, Seasonal Wisp fires a four-shot fan, Leafblade leads its dash, and Equinox Gardener protects nearby allies.
-6. At Season Keeper, verify Calendar Sweep, Equinox Guard, Solstice Charge and Calendar Call remain readable.
-7. At Chronobloom Orchid, confirm the cinematic completes and damage cannot skip the 72% or 38% transitions.
-8. Verify Vine Cleave, Solar Bloom, Frost Crown, Autumn Spiral, Fourfold Garden and Time Break each preserve a visible escape route.
-9. Defeat the Orchid; confirm defeat presentation, reward flow and hostile-projectile cleanup.
+## Owner phone smoke route
 
-## Performance acceptance
+1. Start a first clear of C2-4. Check the seasonal intro, HUD and open combat center at the device's actual screen size.
+2. Reach Seasonal Harvest. Defeat regular enemies and Elites; observe 1/3-petal credit without requiring manual pickup.
+3. Cross several 10-second boundaries. Counts must persist; taking damage or a failed dodge must not restart a trial.
+4. Fill a season. Confirm the completion marker, calm hazard state for that season and spill progress into the emptiest unfinished season.
+5. Continue until all four reach 12. Check harvest → remaining waves/hunt → boss → reward without an empty-field stall.
+6. At Season Keeper and Chronobloom Orchid, inspect attack telegraphs, transitions, safe routes, sprite visibility and projectile cleanup.
+7. Clear the stage, then replay. Verify progress follows kills and reaches miniboss/boss/rewards without a time skip.
+8. Test pause/resume, restart/death, VFX off and missing-art fallback where practical; no prior-run counters or visuals may remain.
 
-- No sustained frame collapse at the 92-enemy cap on the target Android device.
-- No invisible boss, stuck cinematic, NaN position or disabled boss body.
-- Seasonal banners and hazards remain readable without excessive screen shake.
+## Performance and release evidence
+
+- On target Android devices, record FPS, touch responsiveness, screen size and game speed during the busiest seasonal wave and boss attacks.
+- No invisible boss, stuck transition, NaN position, disabled body or persistent visual after exit.
+- Seasonal labels, count, timer and hazard safe spaces must remain legible on narrow/short phones.
+- Use npm run check and npm run build:www for runtime changes, plus relevant regression/menu checks. Automated contracts and existing browser notes do not replace owner gameplay acceptance.
+- This documentation refresh did not run combat simulation or certify balance/FPS. Record owner results and exact version before marking the gate passed.

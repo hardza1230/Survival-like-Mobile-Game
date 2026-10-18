@@ -1,3 +1,21 @@
+# Current handoff — v7.8.55 · checked 2026-10-18
+
+Use [PROJECT_SUMMARY_TH.md](PROJECT_SUMMARY_TH.md) for the current overview and [SESSION_HANDOFF.md](SESSION_HANDOFF.md) for the latest checkpoint. Runtime source: game.js at e32cc37 on claude/vampire-survival-mobile-game-yo9e8w.
+
+- Story has 3 ready Chapters / 15 stages; 6 roster heroes (Momo, Mint, Cocoa, Taro, Yuzu, Sesame), each with 3 build paths. Berry Core remains compatibility-only.
+- C2-4 is Seasonal Harvest, not the old season trial/sanctuary objective. Follow [C2_4_QA.md](C2_4_QA.md).
+- Taro Spark/Sentry balance changed through v7.8.54. Next: owner phone benchmarks on equal stage/gear, not another speculative rebalance.
+- Hero VFX order 20 is fully wired (21/21, v7.8.45–46). Temple UI order 21 is wired (34/34, v7.8.49) and polished in v7.8.50. Do not repeat delivery/integration; mobile visual/FPS review remains.
+- Forge has 150 registered / 78 active / 72 planned effects. Planned is excluded from roll pools; retain legacy migration and paid choices.
+- APK v7.8.55 build passed; the main-branch Pages run was cancelled and another branch failed. Live v7.8.55 is not confirmed. Deploy only the main game branch; do not concurrently push session branches.
+- Share Play Stats is default off. The v7.8.44 delivery notes report that run_stats was not created; verify backend separately before claiming end-to-end readiness.
+- Play Store work remains parked. Signed AAB workflow and store images already exist; verify signing/account deletion/cloud/privacy/listing before resuming release work.
+- Documentation-only changes do not bump GAME_VERSION or require gameplay simulation. For runtime work follow [AGENT_WORKFLOW.md](AGENT_WORKFLOW.md); owner performs phone gameplay testing.
+
+## Historical handoffs
+
+The entries below preserve the state and proposals at their original versions. Their “current”, “remaining” and release instructions are historical; do not use them to re-open completed tasks or override the current workflow.
+
 # v7.8.3 single-screen Forge
 
 Read docs/FORGE_SINGLE_SCREEN.md. Full CI/build and 21 real-browser menu cases passed (including native Roll/Tier/Choose); preserve 150 catalog / 78 active / 72 gated. Review page uses synthetic data and never saves user progress. Owner phone feel confirmation remains pending.

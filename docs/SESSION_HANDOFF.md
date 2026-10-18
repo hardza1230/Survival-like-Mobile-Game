@@ -1,9 +1,32 @@
-# Latest session checkpoint — Temple Weave UI source delivery
-Updated 2026-10-17 Asia/Bangkok.
+# Latest session checkpoint — project documentation refresh
 
-Owner requested docs/art_orders/21_TEMPLE_WEAVE_UI.md: 34 separate text-free PNG32 sources delivered under assets/incoming/temple_weave_ui/. Both saved mockup references inspected; generated each requested asset with built-in imagegen. A10 max palette, B12 proportions/stretch rails, B5 simple rank dots and C1 alpha edge were refined after review. Exact-size source-cell packing and alpha normalization completed; opaque card interiors normalized while preserving transparent exterior and native antialiased edges.
+Updated 2026-10-18 Asia/Bangkok. Owner requested README and project details brought up to date.
 
-Completed: 34 source PNGs / 64 states-and-frames; MANIFEST with dimensions, state order, SHA-256 and per-cell nineSlice; selected PROMPTS; QA_REPORT with full PNG CRC/IEND/zlib/decode checks, byte sizes and Git blob hashes. Twenty 9-slice sources tested at 0.6x and 2.2x with pixel-identical corners; proofs for every state in qa/. All-state galleries and both center 16:9 background crops reviewed. No embedded text/digits in source assets. Published source commit 551984b2d83537ed68a6224579bb102e072f4474 by a non-forced expected-head branch update. Independent empty Git repository fetched all 34 PNG blobs from GitHub; exact byte sizes, SHA-256, Git blob SHA, dimensions, PNG CRC/IEND/zlib and image decode all passed (34/34). Remote tree f75746c4d33c683b6bde76ad897701dca3dad212 exactly matched the prepared 73-file delivery tree. A pre-upload repeat audit caught A6/A13/B11 partial local writes; these three were regenerated with atomic file replacement, reproduced the existing QA hashes exactly, and the full 34-source/31-JPEG audit passed. No damaged copy was published.
+## Verified base
 
-Published against b2c170bef3759866cccc2231d9b498beaf14f0bd on claude/vampire-survival-mobile-game-yo9e8w, preserving concurrent game-side v7.8.48 changes. Source delivery only: no game.js, production registration, game version or sounds changed; no combat simulation. Next: separately pack WebP and integrate buildUpgrade/buildRankPerks with existing graphics fallbacks and live English text. Mobile layout/readability/FPS QA remains pending.
+Repository hardza1230/Survival-like-Mobile-Game, branch claude/vampire-survival-mobile-game-yo9e8w, parent e32cc3703a541c680cf712690399d1959dfd85c5 (GAME_VERSION 7.8.55, 17 Oct).
+Read AGENTS.md, CLAUDE.md and AGENT_WORKFLOW.md. Confirmed runtime via the GitHub blob route (the file-content tool returned empty for the >2 MB game.js; blob fetch returned full source).
 
+- Story: 3 ready chapters / 15 stages; CHAR_ORDER has Momo, Mint, Cocoa, Taro, Yuzu, Sesame. Berry is outside current roster.
+- Forge registry: 150 entries, exactly 78 active / 72 planned.
+- C2-4: Seasonal Harvest, 10s seasons, 12 petals each, 1 per regular kill / 3 Elite, 50% overflow credit, no failed trials.
+- Hero VFX 20: fully wired 21/21 v7.8.45–46. Temple UI 21: fully wired 34/34 v7.8.49; layout/color polish v7.8.50. Do not redo integration.
+- APK at base passed: Actions 39042341016. Main-branch Pages 39042341134 cancelled; other-branch Pages 39042552545 failed. Live v7.8.55 not confirmed.
+- Store icon, feature graphic and four screenshots exist; freshness/acceptance not verified. Signed AAB workflow bundles the game; debug APK uses Pages.
+- Earlier v7.8.44 notes say run_stats backend was not created. Backend/cloud/secrets were not queried or modified in this task.
+
+## Documentation changes
+
+README.md, docs/PROJECT_SUMMARY_TH.md, CLAUDE.md, docs/HANDOFF_NEXT_AI.md, docs/SESSION_HANDOFF.md, docs/C2_4_QA.md, docs/RELEASE_SIGNING.md, docs/STORE_LISTING.md, docs/art_orders/README.md and docs/art_orders/16_CURRENT_ART_BACKLOG.md.
+
+Updated current counts/version/features, art integration status, QA route, build/deployment distinctions, project start history and release draft. Historical handoff entries are explicitly labelled historical. No game.js, assets, package version or workflows changed; no GAME_VERSION bump.
+
+## Checks and publication
+
+Documentation facts checked against current source, Forge registry, workflow scripts, art orders and Actions evidence. Relative Markdown file links checked against the repository tree and the changed-file set. Inspect the commit containing this checkpoint for the final change and publication SHA; it is intentionally not embedded in its own body.
+
+Publication record: this checkpoint belongs to the documentation-refresh commit on the main game branch; use that commit and branch history for the final SHA. The publishing procedure uses a non-forced expected-head update and exact changed-file read-back. Documentation paths do not trigger current APK/Pages push filters; do not claim this refresh redeployed the game. No gameplay tests, combat simulation, secret access or production service updates are required for this documentation-only change.
+
+## Next work
+
+First resolve/verify main-branch Pages deployment and published version.json if owner requests live update. Then owner phone QA: C2-4 first clear/replay, equal-gear Taro Arc/Spark/Sentry benchmarks, Temple UI and Hero VFX readability/FPS. Preserve current gameplay while collecting evidence. Play Store remains parked.

@@ -8,7 +8,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Art delivery 20 — Hero VFX gaps
 
-21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration, seam/apex/timing review and phone FPS QA remain pending; game version unchanged.
+21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration is complete: 21/21 wired in v7.8.45–46, including the restored C8 landing dust. Seam/apex/timing and phone visual/FPS review remain pending. Historical delivery paragraphs below retain their original per-version context.
 
 # Latest delivery: v7.8.55 — C2-4 Seasonal Harvest (owner picked A, replaces Season Storm trials)
 
@@ -136,16 +136,20 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **Build APK (Capacitor):** `package.json` + `capacitor.config.json` (appId com.mochimayhem.game, webDir www)
   + `scripts/build-www.mjs` (ประกอบ www/) + `.github/workflows/android.yml` (build บน GitHub Actions → APK artifact,
   push tag `v*` = ออก Release). โฟลเดอร์ `android/`,`www/`,`node_modules/` สร้างตอน build ไม่ commit.
-  **ยังเป็น debug APK** — ขึ้นสโตร์จริงต้องเพิ่ม keystore + signed release AAB (`bundleRelease`)
+  **APK สำหรับทดสอบเป็น debug** — workflow `release-aab.yml` มี signed AAB (`bundleRelease`) แล้ว ใช้ keystore/secrets ตาม `docs/RELEASE_SIGNING.md`; การตั้งค่าจริงและ signed release ยังไม่ยืนยัน
 - **Live update (แก้แล้วไม่ต้องลง APK ใหม่):** `.github/workflows/pages.yml` deploy www → **GitHub Pages**
   + `capacitor.config.json` `server.url` = https://hardza1230.github.io/Survival-like-Mobile-Game/
-  ⇒ APK เป็นตัวหุ้มโหลดจาก Pages ทุกครั้งที่เปิด · push โค้ด = แอปอัปเดตเอง (ต้องต่อเน็ต, ออฟไลน์ยังไม่ได้)
+  ⇒ Debug APK โหลดจาก Pages หลัง deploy สำเร็จ; การเปลี่ยน native shell อาจต้องลง APK ใหม่ · Release AAB ลบ server.url และ bundle เกมในแอป ไม่ใช้ Pages live update · เว็บมี service worker cache จึงต้องตรวจเวอร์ชันจริง
   · ต้องเปิด Pages ครั้งแรก: Settings→Pages→Source: GitHub Actions
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.15 · 13 ต.ค. 2026)
-- เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
+## 4. สถานะปัจจุบัน (v7.8.55 · ตรวจ 18 ต.ค. 2026)
+- เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน; สรุปที่เจ้าของอ่าน: `README.md` และ `docs/PROJECT_SUMMARY_TH.md`
+- v7.8.55: C2-4 Seasonal Harvest แทน Season Storm trials; Taro Spark/Sentry จูนถึง v7.8.54; Replay kill-only ตั้งแต่ v7.8.48
+- Forge: 150 catalog / 78 active / 72 planned ไม่อยู่ใน roll pools; หน้าเดียวตั้งแต่ v7.8.3 ดู `docs/FORGE_150_ROLLOUT.md`
+- Hero VFX 21/21 ต่อแล้ว v7.8.45–46; Temple UI 34/34 ต่อ v7.8.49 และ polish v7.8.50; รอ owner phone visual/FPS QA
+- ตรวจ Actions 18 ต.ค.: APK commit e32cc37 สำเร็จ; Pages สาขาหลักถูกยกเลิกและรันสาขาอื่นล้มเหลว จึงยังไม่ยืนยัน live v7.8.55; อย่าอ้าง build สำเร็จ = deployed
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
 - ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)
 - รายละเอียดทุกเวอร์ชันเก่า: `docs/CLAUDE_HISTORY.md`
