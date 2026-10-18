@@ -4,7 +4,7 @@
 
 > หนึ่งชีวิต สองร่าง: Core Form และ Awakened Fighter คือคนเดียวกัน
 >
-> สถานะเอกสาร: **18 ตุลาคม 2026 · โค้ดเกม v7.8.55** (คอมมิต `e32cc37`, 17 ต.ค.) เกมอยู่ระหว่างพัฒนาและทดสอบบนมือถือ เลขเวอร์ชันใน `game.js` → `GAME_VERSION` เป็นแหล่งอ้างอิงหลัก
+> สถานะเอกสาร: **18 ตุลาคม 2026 · โค้ดเกม v7.8.56** (ปรับสมดุล 18 ต.ค.) เกมอยู่ระหว่างพัฒนาและทดสอบบนมือถือ เลขเวอร์ชันใน `game.js` → `GAME_VERSION` เป็นแหล่งอ้างอิงหลัก
 
 [เล่นบนเว็บ](https://hardza1230.github.io/Survival-like-Mobile-Game/) · [ดาวน์โหลด APK ทดสอบ](https://github.com/hardza1230/Survival-like-Mobile-Game/releases/download/latest/mochi-mayhem-debug.apk) · [GitHub Actions](https://github.com/hardza1230/Survival-like-Mobile-Game/actions) · [สรุปสถานะและงานถัดไป](docs/PROJECT_SUMMARY_TH.md)
 
@@ -22,6 +22,7 @@
 
 | เวอร์ชัน | สิ่งที่เปลี่ยน |
 |---|---|
+| v7.8.56 | C2-4 Seasonal Wisp ลด HP ฐาน 260 → 130; Spark ลดดาเมจต่อมินิบอส 15% รวม Static Charge/Storm Mark |
 | v7.8.55 | C2-4 เปลี่ยนเป็น **Seasonal Harvest**: ฤดูเปลี่ยนทุก 10 วินาที เก็บ 12 กลีบต่อฤดูให้ครบ 4 ฤดู ไม่มีสอบตก; กลีบส่วนเกินจากฤดูที่เต็มช่วยเติมฤดูที่ขาด |
 | v7.8.51–54 | ปรับการโดนเป้า/เลี้ยวของ Taro Spark, ดาเมจบอสของ Sentry และ Static Charge เป็น 40 hits ต่อ strike |
 | v7.8.49–50 | ต่อ Temple Weave + Flavor Passives ครบ 34 ชิ้น ปรับสี แสง และ layout ให้พอดีจอเตี้ย |

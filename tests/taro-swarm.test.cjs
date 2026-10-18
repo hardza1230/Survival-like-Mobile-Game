@@ -68,3 +68,20 @@ console.log('Taro v7.8.34: Static Charge strikes once per 40 boss hits passed');
 {const mob=enemy(1,100),boss=enemy(2,300);boss.isBoss=true;const s=view('smite',[mob,boss]);s.taroArt=()=>null;s.taroLightningVisual=()=>{};s.castStormBeacon(1,1);assert(s._taro.mark);assert.equal(s._taro.mark.token.enemy,boss);assert(s.hits.some(h=>h.id===2));
   assert.equal(s.taroMarkToken().enemy,boss);s._taro.time=s._taro.mark.until+1;const before=s.hits.length;s.taroTickMark();assert.equal(s._taro.mark,null);assert(s.hits.length>before);s.taroTickMark();}
 console.log('Taro v7.8.35: Storm Mark targets bosses first, expires with one blast passed');
+
+// v7.8.56: actual shared damage adapter scopes the nerf to Spark minibosses, once per event.
+for(const path of ['smite','storm','tempest',null]){
+  for(const flags of [{},{isElite:true},{isMini:true},{isBoss:true}]){
+    const e=Object.assign(enemy(77),flags),s=view(path,[e]),tk=a.taroEnemyToken(e);
+    for(const source of ['spark','sparkChild','unique']){
+      assert.equal(s.taroDealDamage(tk,100,source),true);
+      assert.equal(s.hits.at(-1).d,path==='smite'&&flags.isMini?85:100,`${path} ${source} ${JSON.stringify(flags)}`);
+    }
+    e._taroSpawnId=78;const before=s.hits.length;assert.equal(s.taroDealDamage(tk,100,'spark'),false);assert.equal(s.hits.length,before,'stale pooled target never damaged');
+  }
+}
+{const e=Object.assign(enemy(88),{isMini:true}),s=view('smite',[e]),tk=a.taroEnemyToken(e);s.taroArt=()=>true;
+  s.taroStaticCharge(tk,{damage:100,kind:'spark',attackId:1});for(let i=1;i<40;i++)s.taroStaticCharge(tk,{damage:100,kind:'spark',attackId:1});
+  assert.equal(s.hits.length,1);assert.equal(s.hits[0].d,1105,'Static Charge 100 ×13 ×.85, applied once');
+}
+console.log('Spark miniboss tuning: direct/child/Unique and Static Charge once-only scaling; bosses/mobs/elites/other paths and stale-target guards passed');

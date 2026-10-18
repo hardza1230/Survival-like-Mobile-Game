@@ -10,7 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration is complete: 21/21 wired in v7.8.45–46, including the restored C8 landing dust. Seam/apex/timing and phone visual/FPS review remain pending. Historical delivery paragraphs below retain their original per-version context.
 
-# Latest delivery: v7.8.55 — C2-4 Seasonal Harvest (owner picked A, replaces Season Storm trials)
+# Latest delivery: v7.8.56 — Seasonal Wisp HP and Spark miniboss tuning
+
+Owner reports C2-4 purple fan-shot enemy survives longer than minibosses. Seasonal Wisp uses siege HP: stage 8 only 260→130 before existing stage/wave scaling; five-shot fan, guard aura and other roles/stages unchanged. Spark (smite) miniboss damage ×.85 once in taroDealDamage, including Static Charge/Storm Mark; bosses/mobs/elites/Arc/Sentry unchanged. Owner phone comparison pending. Automated targeted adapters plus npm check and build:www verify implementation; deployment must be verified separately.
+
+# Previous delivery: v7.8.55 — C2-4 Seasonal Harvest (owner picked A, replaces Season Storm trials)
 
 Same objective type 'seasonCycle' (renamed Seasonal Harvest) · o.storm.harvest[4], SEASON_PETALS 12 · objOnKill → seasonHarvest: non-boss kill = 1 petal (Elite 3) into the current season; full season → spill 50% into the emptiest season · passed[k] when full (icons ✓, full season = no hazard) · all 4 full → complete · stormEndSeason no-op in harvest · HUD 'emoji Season n/12 · next season Ns · k/4 full' · storm keeps ≥10 live foes. Browser sim: first clear C2-4 finished (harvest → hunt → boss → reward).
 
@@ -144,7 +148,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.55 · ตรวจ 18 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.56 · ตรวจ 18 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน; สรุปที่เจ้าของอ่าน: `README.md` และ `docs/PROJECT_SUMMARY_TH.md`
 - v7.8.55: C2-4 Seasonal Harvest แทน Season Storm trials; Taro Spark/Sentry จูนถึง v7.8.54; Replay kill-only ตั้งแต่ v7.8.48
 - Forge: 150 catalog / 78 active / 72 planned ไม่อยู่ใน roll pools; หน้าเดียวตั้งแต่ v7.8.3 ดู `docs/FORGE_150_ROLLOUT.md`

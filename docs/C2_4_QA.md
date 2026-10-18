@@ -1,11 +1,13 @@
 # C2-4 Four-Season Conservatory — QA Gate
 
-Reviewed against **v7.8.55 / e32cc37**, 2026-10-18.  
+Reviewed against **v7.8.56**, 2026-10-18.
 Stage index: 8. Implemented and unlocked in code; owner mobile acceptance remains pending.
 
 This supersedes the v4.42 sanctuary route and v7.8.29–54 Season Storm trials. The objective keeps internal type `seasonCycle` but is displayed as **Seasonal Harvest**.
 
 ## Current contracts to check
+
+- v7.8.56: Seasonal Wisp (siege) base HP is 130 instead of 260, before stage/wave scaling; its five-shot fan and Equinox guard reduction remain unchanged. Spark Build deals 15% less damage to minibosses (including Static Charge/Storm Mark); normal-enemy/boss damage and other build paths are unchanged. Compare first-clear/replay and all three Taro paths on owner phone.
 
 - Seasons rotate every 10 seconds: Spring → Summer → Autumn → Winter.
 - Each non-boss kill credits 1 petal to the current season; Elites credit 3. Each season needs 12.

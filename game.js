@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.55';
+const GAME_VERSION = '7.8.56';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.56',date:'2026-10-18',title:'Seasonal Wisp and Spark Miniboss Balance',items:['C2-4 Seasonal Wisps have 50% less base HP; their five-shot attack stays the same','Spark Build deals 15% less damage to minibosses, including Static Charge and Storm Mark; normal enemies and bosses are unchanged']},
   {v:'7.8.55',date:'2026-10-17',title:'C2-4 Seasonal Harvest',items:['Season Storm is replaced by Seasonal Harvest: seasons change every 10s and every defeated monster drops a petal of the current season (Elites drop 3)','Fill all four seasons (12 petals each) to finish — no failed trials and no waiting; once a season is full its extra petals spill over to the emptiest season','Season hazards still roll in, and a full season becomes a calm rest']},
   {v:'7.8.54',date:'2026-10-17',title:'Spark Static Charge Rebalance',items:['Spark Static Charge now needs 40 hits on the same boss or miniboss per lightning strike (was 10) — sparks hit so often that bosses were melting','Season Storm explains itself: the HUD shows the current season’s trial with a countdown, or which trial comes next and when','A failed season trial tells you when it returns and what the easier goal will be']},
   {v:'7.8.53',date:'2026-10-17',title:'C2-4 Season Storm Fix',items:['A failed season trial gets easier every cycle (one more hit allowed, or 3 fewer kills for Spring), so the Season Storm always finishes','The conservatory keeps a few monsters around during the storm instead of going empty']},
@@ -12591,6 +12592,8 @@ class Game extends Phaser.Scene {
     return ()=>{if(this._taro===t&&t.run===context.run&&t.pathEpoch===context.pathEpoch)this.taroWithDamage(context.source,callback,context);};
   }
   taroDealDamage(token,amount,kind,meta={}){if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
+    // v7.8.56: only Spark Build miniboss damage is reduced; apply once at the shared damage boundary.
+    if(this.basicAttack?.path==='smite'&&token.enemy.isMini&&!token.enemy.isBoss)amount*=.85;
     let dealt=false;this.taroWithDamage(kind,()=>{const e=token.enemy;this.damage(e,amount,e.x,e.y);dealt=true;},{...meta,targetId:token.id,directPending:true});return dealt;
   }
 
@@ -13515,7 +13518,7 @@ class Game extends Phaser.Scene {
     else if(type==='shooter'){ e.hp=19*s; e.spd=62; e.dmg=9; e.xp=2; e.shooter=true; e.shootCd=Phaser.Math.FloatBetween(1.1,2.0); e.setCircle(17,5,5); }
     else if(type==='bomber'){ e.hp=24*s; e.spd=70; e.dmg=12; e.xp=2; e.bomber=true; e.setCircle(17,5,5); }
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
-    else if(type==='siege'){ e.hp=260*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
+    else if(type==='siege'){ e.hp=(this.stageIndex===8?130:260)*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
     const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*1.3/*v6.55.66 mob dmg*/*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;if(this.recipeMode&&this.recipeHas('haste'))e.spd*=1.3;if(this.recipeMode&&this._amapInf&&this._amapInf.frosty)e.spd*=1-0.07*this._amapInf.frosty;if(this.recipeMode&&this._pact&&this._pact.speed)e.spd*=1+0.1*this._pact.speed;
     if(this.stageIndex===0&&type!=='acid'){
