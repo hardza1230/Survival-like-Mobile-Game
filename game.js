@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.73';
+const GAME_VERSION = '7.8.74';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.74',date:'2026-10-18',title:'Spark Unique Tuning',items:['Storm Mark: the Spark storm it sprays deals half damage (the mark strike and blast are unchanged)']},
   {v:'7.8.73',date:'2026-10-18',title:'Card Text Fixes',items:['Taro: Spark Build and Sentry Build cards describe how they work now (3 sentries, no boss chasing); Spark pierce card renamed High Voltage','Mint: Packed Quiver now says what it really does (+18% shard damage at the 2-lance cap)']},
   {v:'7.8.72',date:'2026-10-18',title:'Spark Fix',items:['Fixed Taro’s Spark normal attack sometimes not firing when the screen was full of Sparks (the Unique’s Sparks no longer use up the limit, and new casts replace the oldest Sparks)']},
   {v:'7.8.71',date:'2026-10-18',title:'Arc Speed & Weave Cards',items:['Arc jumps are back to 0.2 seconds','Flavor Weave: maxed core cards line the icon, text and Full button up with their gold frame']},
@@ -13014,7 +13015,7 @@ class Game extends Phaser.Scene {
     for(const k of this.taroCandidates(e,TARO_MARK_BLAST_R))this.taroDealDamage(k,(k===m.token||k.id===m.token.id?m.blast:m.blast*.4)*taroLightningRoll(),'unique',{attackId:m.attackId});if(!this.taroArt?.('bpx_taro_beacon_strike',e.x,e.y+16,200,{h:400,life:.5}))this.taroLightningVisual?.(e.x,e.y,e.x,e.y,true,true);this.screenShake?.(140,.006);this.taroRing?.(e.x,e.y,TARO_MARK_BLAST_R,.35);}
   taroTickMark(){const t=this._taro,m=t?.mark;if(!m)return;const tk=this.taroMarkToken();if(!tk){const timeUp=t.time>=m.until&&m.run===t.run&&m.pathEpoch===t.pathEpoch;this.taroEndMark(timeUp);return;}if(m.fx?.active)m.fx.setPosition(tk.enemy.x,tk.enemy.y);}
   castTaroSparkStorm(dm,ul=1,quiet=false){const t=this.syncTaroCombat();if(!t)return;t.enabled=true;const n=Math.max(1,Math.min(4,ul||1)),f=this.taroSwarmProfile();
-    const sc=TARO_STORM_COUNT;   /* v7.8.63 เจ้าของ: ครบ 2 รอบนาฬิกาเสมอ (18 ลูก/รอบ) · ระดับ Unique เพิ่มความแรงแทนจำนวน */t.storm={left:sc,step:4*Math.PI/sc,next:0,angle:Math.random()*Math.PI*2,hit:(3+1.5*n)*dm,blast:(5+2.5*n)*dm,speed:Math.max(480,f.speed||460),pierce:Math.max(2,f.pierce||2),attackId:++t.attackSeq,run:t.run,pathEpoch:t.pathEpoch};
+    const sc=TARO_STORM_COUNT;   /* v7.8.63 เจ้าของ: ครบ 2 รอบนาฬิกาเสมอ (18 ลูก/รอบ) · ระดับ Unique เพิ่มความแรงแทนจำนวน */const qm=quiet?.5:1;   /* v7.8.74 เจ้าของ: Spark Unique แรงเกิน → พายุ Spark ที่มากับ Storm Mark แรง 50% */t.storm={left:sc,step:4*Math.PI/sc,next:0,angle:Math.random()*Math.PI*2,hit:(3+1.5*n)*dm*qm,blast:(5+2.5*n)*dm*qm,speed:Math.max(480,f.speed||460),pierce:Math.max(2,f.pierce||2),attackId:++t.attackSeq,run:t.run,pathEpoch:t.pathEpoch};
     this.taroArt?.('bpx_taro_spark_burst',this.player.x,this.player.y,170,{life:.35,depth:90390});if(quiet)return;this.screenShake?.(90,.004);this.showBanner?.('Spark Storm Lv'+n,'Rapid Sparks · forced detonation',1000);this.taroSound('beacon');}
   taroTickSparkStorm(dt){const t=this._taro,st=t?.storm;if(!st)return;if(st.run!==t.run||st.pathEpoch!==t.pathEpoch||st.left<=0){t.storm=null;return;}st.next-=dt;
     while(st.next<=0&&st.left>0){st.next+=TARO_STORM_GAP;st.left--;st.angle+=st.step||2.4;const p=this.player;this.taroSpawnProjectile({kind:'spark',gen:TARO_SPARK_GENS,age:0,x:p.x,y:p.y,angle:st.angle,speed:st.speed,life:TARO_STORM_FUSE,damage:st.hit,pierce:st.pierce,split:0,range:600,attackId:st.attackId,blast:st.blast,storm:true});}
