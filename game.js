@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.76';
+const GAME_VERSION = '7.8.77';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.77',date:'2026-10-18',title:'Spark Basic Attack',items:['Taro Spark Build: fewer Sparks per cast (2 at start, 3 from level 4; was 4–5) and casts 30% less often']},
   {v:'7.8.76',date:'2026-10-18',title:'Spark Fixes',items:['Fixed Sparks that dealt damage while invisible when the screen was busy','Storm Mark now sprays one ring of 18 Sparks (was two rings of 36)']},
   {v:'7.8.75',date:'2026-10-18',title:'Recommended Power',items:['Recommended Power on stage cards now matches the new monster and boss strength (lower for Chapter 2, higher for C3-4 and C3-5)']},
   {v:'7.8.74',date:'2026-10-18',title:'Spark Unique Tuning',items:['Storm Mark: the Spark storm it sprays deals half damage (the mark strike and blast are unchanged)']},
@@ -6669,9 +6670,9 @@ function taroAdvanceQueue(t,dt,isValid){
 }
 function taroSegmentDistance(point,from,to){const dx=to.x-from.x,dy=to.y-from.y,d2=dx*dx+dy*dy,k=d2?Math.max(0,Math.min(1,((point.x-from.x)*dx+(point.y-from.y)*dy)/d2)):0;return Math.hypot(point.x-from.x-k*dx,point.y-from.y-k*dy);}
 function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[id]??b?.lv?.[id]??0),count=base.rawRoots;
-  if(b.path==='smite'){const excess=Math.max(0,Math.floor(count+3)-10),pierce=base.arc,range=Math.min(900,base.rootRange*(b.mutation==='chainlord'?1.4:1)*(b.evolved?1.5:1));
-    /* v7.8.21 เจ้าของ: อยู่นานขึ้น เร็วขึ้น ทะลุศัตรู (pierce พื้น 2) · แตกตัว 2 รุ่น: บิน 0.42 วิ แตก 2 ลูก ลูกลูกแตกอีก 2 ลูกเล็ก */
-    return {interval:Math.max(.35,base.unitC),damage:base.unitD*.75*(1+Math.min(.25,excess*.04))*(1+.10*Math.min(6,Math.max(0,pierce))),   /* v7.8.69 เจ้าของ: Spark ไม่หายตอนโดนแล้ว pierce ไร้ความหมาย → ทุกขั้นของ arc = +10% ดาเมจ */count:Math.min(10,Math.floor(count+3)),pierce:Math.min(5,2+Math.floor(pierce)),speed:Math.min(640,460*(1+.12*rank('p_spark_speed'))),life:Math.min(5,3.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?.75:.55};}
+  if(b.path==='smite'){const excess=Math.max(0,Math.floor(count+1)-10),pierce=base.arc,range=Math.min(900,base.rootRange*(b.mutation==='chainlord'?1.4:1)*(b.evolved?1.5:1));
+    /* v7.8.77 เจ้าของ: โจมตีปกติเริ่มต้นลดจำนวน (+3→+1 ลูก: Lv1 2 ลูก, Lv4+ 3 ลูก, เดิม 4/5) และยิงห่างขึ้น ×1.3 */ /* v7.8.21 เจ้าของ: อยู่นานขึ้น เร็วขึ้น ทะลุศัตรู (pierce พื้น 2) · แตกตัว 2 รุ่น: บิน 0.42 วิ แตก 2 ลูก ลูกลูกแตกอีก 2 ลูกเล็ก */
+    return {interval:Math.max(.45,base.unitC*1.3),damage:base.unitD*.75*(1+Math.min(.25,excess*.04))*(1+.10*Math.min(6,Math.max(0,pierce))),   /* v7.8.69 เจ้าของ: Spark ไม่หายตอนโดนแล้ว pierce ไร้ความหมาย → ทุกขั้นของ arc = +10% ดาเมจ */count:Math.min(10,Math.floor(count+1)),pierce:Math.min(5,2+Math.floor(pierce)),speed:Math.min(640,460*(1+.12*rank('p_spark_speed'))),life:Math.min(5,3.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?.75:.55};}
   const radius=Math.min(140,105*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;   /* v7.8.63 เจ้าของ: วงช็อตเริ่มใหญ่ขึ้น 85→105 · ลูกบอลเร็วขึ้น 110→145 */   // v7.8.24 Ball Lightning แบบ PoE: ลูกเล็กลอยช้า ช็อตทุกตัวในรัศมีนี้ทุก 0.15 วิ
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }

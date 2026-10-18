@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.76 — Invisible Sparks + Storm Mark count
+# Latest delivery: v7.8.77 — Spark basic attack fewer/slower (owner)
+
+taroSwarmProfile smite: count = min(10, floor(rawRoots+1)) (was +3 → start 2, Lv4+ 3 instead of 4/5), excess threshold same shift, interval = max(.45, unitC×1.3) (was max(.35, unitC)). Damage per spark unchanged.
+
+# Previous delivery: v7.8.76 — Invisible Sparks + Storm Mark count
 
 taroProjectileVisual no longer gated by taroVisualBudget (transient-fx cap 20 shared with hit/bounce art made new projectiles fx=null → damage without visuals); projectile tick re-creates a missing/destroyed fx. Projectile sprites stay bounded by caps (80 normal + 72 storm sparks, 60 orbs). Storm Mark spark storm: 18 sparks one ring (quiet), still ×0.5.
 
