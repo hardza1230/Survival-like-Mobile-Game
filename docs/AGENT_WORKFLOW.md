@@ -68,3 +68,7 @@ Build www, then scripts/build-taro-feedback-review.mjs and scripts/check-taro-fe
 ## Complete source writes and binary read-back (2026-10-17, Temple UI)
 
 In this workspace, a later pre-upload audit found two zero-byte PNGs and one truncated PNG despite earlier successful generation checks. Regenerating only those three from the retained raw images reproduced their original QA SHA-256 values exactly. No damaged copy was published. For subsequent image saves here, write the encoded bytes to a sibling temporary file, flush/fsync, then atomically rename and recheck actual byte length, complete PNG stream and SHA-256 immediately before staging/upload. This is an observed local-file issue, not proof that GitHub uploads universally truncate. Verify actual remote bytes after publication; connector metadata alone is insufficient for a prior truncation case. The existing 24,000-byte base64 chunk route remains available for upload.
+
+## Bound generated-media responses (2026-10-18, art26)
+
+On this Windows/code-mode session, a single loop accumulated 82 generatedImage outputs into a 147 MB response, exceeding the observed 64 MiB IPC response limit even though all images and ledger records were saved successfully. Use small batches (at most eight images here) or yield_control after each image to flush output. Save each result and provenance before emitting media. If the aggregate response fails, inspect the saved ledger and files before regenerating; do not duplicate completed jobs. This is an observed environment transport limit, not an image-model API limit.

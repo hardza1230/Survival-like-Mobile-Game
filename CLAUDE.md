@@ -10,6 +10,10 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration is complete: 21/21 wired in v7.8.45–46, including the restored C8 landing dust. Seam/apex/timing and phone visual/FPS review remain pending. Historical delivery paragraphs below retain their original per-version context.
 
+# Art delivery 26 — Transition and card icons
+
+82 PNG32 sources /90 frames delivered to assets/incoming/transition_card_icons/:77 distinct card icons plus5 transition assets. Manifest, built-in ImageGen prompts, technical QA, 24/90px icon galleries, hero-family review, tile pairs and both-direction offline transition previews included. Source decoded32.832MiB; runtime wiring, boot GPU budget and phone FPS pending. No game-version change; preserve current v7.8.67. GitHub full-byte proof follows in UPLOAD_VERIFICATION.json.
+
 # Art delivery 25 — Hub motion
 
 25 PNG32 assets /81 frames delivered to assets/incoming/hub_motion/:20 required A/B/C plus5 optional animated menu icons. User approved Python source-pixel extraction; original visible Momo/flower pixels preserved, AI only for occluded/new portions and VFX/icon/blink sources. Source placement0px, fully opaque interiors match original RGB exactly; backgrounds/alpha edges intentionally differ. Decode/CRC/grid/hash/alpha, blink, ±6deg joints, loop and source-memory checks reviewed; decoded28.208MiB <40MiB. Incoming only; runtime packing/loading, tweens, boot cap and phone FPS pending. All49 final delivery/follow-up files full-byte verified on GitHub at5dc47db; UPLOAD_VERIFICATION.json records exact proofs. Art23/24 already published and fully verified.

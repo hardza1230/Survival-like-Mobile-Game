@@ -1,0 +1,3059 @@
+{
+  "expectedAssetCount": 82,
+  "assetCount": 82,
+  "frameCount": 90,
+  "decodedBytes": 34426880,
+  "assets": [
+    {
+      "key": "ic_evo_momo",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        21,
+        240,
+        234
+      ],
+      "bytes": 114061,
+      "sha256": "761bf65047b966ae3f1430f50d787e3bfb6986bb6c11c3f4cf436155f7243a7c",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        38,
+        59,
+        1219,
+        1184
+      ]
+    },
+    {
+      "key": "ic_evo_cocoa",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        19,
+        240,
+        236
+      ],
+      "bytes": 115412,
+      "sha256": "4b9bb526f778309432653b5ac5734a7b95c152bdf0230db057c2ff102ce90736",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        31,
+        42,
+        1235,
+        1210
+      ]
+    },
+    {
+      "key": "ic_evo_berry",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "bytes": 104578,
+      "sha256": "b92cfa48aef42364597590d91164028793e2e683d83756bef887a81fceee8a97",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        57,
+        57,
+        1228,
+        1195
+      ]
+    },
+    {
+      "key": "ic_evo_mint",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        28,
+        16,
+        228,
+        240
+      ],
+      "bytes": 89470,
+      "sha256": "298665205229339a1b88c4153ac56dc3dc697a4cbf4b9c04d3fa1d66e2c12002",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        154,
+        49,
+        1208,
+        1228
+      ]
+    },
+    {
+      "key": "ic_evo_taro",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        25,
+        240,
+        231
+      ],
+      "bytes": 105665,
+      "sha256": "5a2d00a021b7d92c7a4ced77a31a78a2270c8482ff77af69ee1239503ae0511b",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        49,
+        88,
+        1218,
+        1164
+      ]
+    },
+    {
+      "key": "ic_evo_sesame",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        24,
+        16,
+        232,
+        240
+      ],
+      "bytes": 92772,
+      "sha256": "2e261697cf056f84344f2bea72ea29d1e28604d3687554b5c2577f3b2133520e",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        120,
+        33,
+        1192,
+        1189
+      ]
+    },
+    {
+      "key": "ic_fus_heartburst",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "bytes": 81291,
+      "sha256": "295bf99145aef5776a2d0516b29079ea6934112b093f2eb28585e10ef2f7baf0",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        33,
+        89,
+        1228,
+        1162
+      ]
+    },
+    {
+      "key": "ic_fus_crownseed",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "bytes": 113648,
+      "sha256": "0fc3fc2a02093571c22ed573ba34ec1d66fe302f64b3f88f3ce30741e52b0e33",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        44,
+        49,
+        1220,
+        1195
+      ]
+    },
+    {
+      "key": "ic_fus_glacier",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        22,
+        240,
+        234
+      ],
+      "bytes": 102915,
+      "sha256": "eca429e8a1194f522d8b6d91646502b3dea72eb6dcf16da0cabd550e58286681",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        34,
+        62,
+        1233,
+        1196
+      ]
+    },
+    {
+      "key": "ic_fus_shardstorm",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        19,
+        16,
+        236,
+        240
+      ],
+      "bytes": 103134,
+      "sha256": "7d74eb92d8fcb36988fc05fa2b4cb76388473506921529986baefd26a79a868a",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        87,
+        41,
+        1220,
+        1209
+      ]
+    },
+    {
+      "key": "ic_fus_quakeking",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        232
+      ],
+      "bytes": 106304,
+      "sha256": "c6dbd57708b356106732d83c87705b4ddef45c4f23302edd3d56540320c50ac4",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        22,
+        58,
+        1230,
+        1182
+      ]
+    },
+    {
+      "key": "ic_fus_lastbear",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        21,
+        240,
+        234
+      ],
+      "bytes": 112874,
+      "sha256": "5feca38eba43e6bfe17d06161861ff5275cb4899b79491375493d7bb671629e3",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        19,
+        50,
+        1234,
+        1205
+      ]
+    },
+    {
+      "key": "ic_fus_tempest",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        23,
+        16,
+        232,
+        240
+      ],
+      "bytes": 102279,
+      "sha256": "c3eeb686964a7dbe3093cb591606a5ba3e38706f6810bcb8f284a425b44bd59e",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        107,
+        53,
+        1170,
+        1194
+      ]
+    },
+    {
+      "key": "ic_fus_skyjudge",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        16,
+        240,
+        239
+      ],
+      "bytes": 114540,
+      "sha256": "2b10e1389376edfa9e5e2aa585c42958c500361702a6c997e5d13a761a464a0a",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        21,
+        12,
+        1236,
+        1222
+      ]
+    },
+    {
+      "key": "ic_fus_prismnova",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        23,
+        240,
+        233
+      ],
+      "bytes": 110182,
+      "sha256": "c6a99012059188785f6fcaf53249d0209d2d8cf49b9b40793e8401bbdeff5fab",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        73,
+        72,
+        1217,
+        1146
+      ]
+    },
+    {
+      "key": "ic_fus_horizon",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        28,
+        240,
+        228
+      ],
+      "bytes": 94917,
+      "sha256": "d7614975640298e13d7813624ed240ea20b0ab29b03dac8bb0379bac58da7e94",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        65,
+        67,
+        1231,
+        1109
+      ]
+    },
+    {
+      "key": "relic_firstbite",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "bytes": 64358,
+      "sha256": "352fa8ceb69dd85390fb8fcff9c9ed556d825804e86c90bd4aae94005f7b0da7",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        53,
+        98,
+        1213,
+        1137
+      ]
+    },
+    {
+      "key": "relic_dashcharge",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "bytes": 85776,
+      "sha256": "f3dc239bf535c9722d68ecdbc973df5a672786bd994a7519449a6b39f821df76",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        148,
+        169,
+        1166,
+        1110
+      ]
+    },
+    {
+      "key": "relic_trophy",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        28,
+        16,
+        228,
+        240
+      ],
+      "bytes": 88518,
+      "sha256": "b7d6113100d3a9d0a94dd0da9071cc1770bcdc435061ec0b344828d625357014",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        149,
+        90,
+        1105,
+        1162
+      ]
+    },
+    {
+      "key": "relic_harvest",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        22,
+        240,
+        234
+      ],
+      "bytes": 83731,
+      "sha256": "83003dc5b9188fb90ad5c669b68c7e00e771fe429b75fdfc03d00faf67cdc5eb",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        110,
+        70,
+        1235,
+        1135
+      ]
+    },
+    {
+      "key": "tr_curtain",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        1080,
+        1920
+      ],
+      "bytes": 1601400,
+      "sha256": "626621401c9127d0ed3ce0e04f2cdb55e4e6963bf771aa2f3bb16d6ab6991506",
+      "decodedBytes": 8294400,
+      "sourceCanvas": [
+        941,
+        1672
+      ],
+      "sourceCrop": null
+    },
+    {
+      "key": "tr_edge",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        160,
+        1920
+      ],
+      "bytes": 374536,
+      "sha256": "6c4ba05ac8e2704ab812c9f953ebdf74928924666b0e6d031592b26584f4fc09",
+      "decodedBytes": 1228800,
+      "sourceCanvas": [
+        1145,
+        1374
+      ],
+      "sourceCrop": [
+        420,
+        102,
+        660,
+        1318
+      ]
+    },
+    {
+      "key": "ic_mod_bloom",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "bytes": 96166,
+      "sha256": "36ff3b54b6e39f3d45856508d839a683b2d3eb6eaba96e65afb11cde961ae302",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        102,
+        80,
+        1212,
+        1108
+      ]
+    },
+    {
+      "key": "ic_mod_love",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "bytes": 87353,
+      "sha256": "1842706f12c2d0db27b4b2953a14530241eefd497cd8f8d6739a707796d000a6",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        81,
+        96,
+        1195,
+        1088
+      ]
+    },
+    {
+      "key": "ic_mod_heart",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "bytes": 79576,
+      "sha256": "8d89c315effda58511ff0cc1ca0691b01ec6d4d254ea06a88bb03e48369b9b04",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        130,
+        181,
+        1161,
+        1048
+      ]
+    },
+    {
+      "key": "ic_mod_aim",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        21,
+        16,
+        235,
+        240
+      ],
+      "bytes": 90224,
+      "sha256": "9a193aa2039676a59d9d031cf6836151c1802f997679e192683c9e5a4e3a9577",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        158,
+        97,
+        1096,
+        1077
+      ]
+    },
+    {
+      "key": "ic_mod_jam",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "bytes": 78619,
+      "sha256": "b2b4e7005509fb084191d2cf28494535c5d5171aa74ef64e42bd3cbba1ffb942",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        78,
+        87,
+        1175,
+        1154
+      ]
+    },
+    {
+      "key": "ic_mod_spray",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        39,
+        240,
+        216
+      ],
+      "bytes": 74082,
+      "sha256": "007e88e57ccdf52ea4ebc30516c8d0a73a80a93d7949303e8e1eb0c19dcfea03",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        78,
+        164,
+        1219,
+        1064
+      ]
+    },
+    {
+      "key": "ic_mod_icemine",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        40,
+        240,
+        216
+      ],
+      "bytes": 77001,
+      "sha256": "7e4231e80e64dd684b47516e9eecdaf5bc19abeca533be50c4eed7ef8d67266c",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        98,
+        193,
+        1165,
+        1031
+      ]
+    },
+    {
+      "key": "ic_mod_shatter",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        26,
+        16,
+        230,
+        240
+      ],
+      "bytes": 96275,
+      "sha256": "f368ab8a832ad842b6edfaed732517788afcc3beec9f4595ec90d68d01e199f0",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        163,
+        103,
+        1123,
+        1156
+      ]
+    },
+    {
+      "key": "ic_mod_flurry",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        18,
+        240,
+        237
+      ],
+      "bytes": 107023,
+      "sha256": "798ade87ea62709c88b7f4e3ef2837e975ecae7e96de18ae0503c3133dc65d51",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        123,
+        131,
+        1150,
+        1135
+      ]
+    },
+    {
+      "key": "ic_mod_throw",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        25,
+        240,
+        230
+      ],
+      "bytes": 55272,
+      "sha256": "1785c3f819642eae56544f38710531c612ec26fbbec030af8730e3c95f06e9cf",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        13,
+        81,
+        1239,
+        1204
+      ]
+    },
+    {
+      "key": "ic_mod_glide",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "bytes": 78928,
+      "sha256": "7c1e5bd294cf32a85d91e30bbf6bf43d55226d71df91e3c903268068c3e8cf98",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        124,
+        118,
+        1221,
+        1101
+      ]
+    },
+    {
+      "key": "ic_mod_coldarc",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        17,
+        16,
+        238,
+        240
+      ],
+      "bytes": 60826,
+      "sha256": "fc6211cda7d96cd5d00d208a403ca8811866e8b6b8e45a40bbed710ee96f16b5",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        187,
+        142,
+        1136,
+        1105
+      ]
+    },
+    {
+      "key": "ic_mod_quake",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        27,
+        240,
+        229
+      ],
+      "bytes": 93343,
+      "sha256": "fc8db673ca41154303f2b1be276ff3594ad488f3bda06aed778525143cad45f2",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        101,
+        140,
+        1178,
+        1109
+      ]
+    },
+    {
+      "key": "ic_mod_stomp",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        31,
+        240,
+        224
+      ],
+      "bytes": 84171,
+      "sha256": "cfebd1a06f8b698e70069d4fb516abce9b5d0bfe21897d94d9c19cd3e9d67dd4",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        65,
+        142,
+        1198,
+        1117
+      ]
+    },
+    {
+      "key": "ic_mod_rage",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        46,
+        240,
+        210
+      ],
+      "bytes": 66795,
+      "sha256": "93849b87531ac3dc04edff473c1a242b720ca5264c66581cf2e6379a4f395947",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        56,
+        199,
+        1227,
+        1056
+      ]
+    },
+    {
+      "key": "ic_mod_crush",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "bytes": 74504,
+      "sha256": "796a808b0c2e9dfe9111bd7cd5ace1f6a96728d75c2d63a94abeae10b392bfde",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        76,
+        164,
+        1202,
+        1110
+      ]
+    },
+    {
+      "key": "ic_mod_ko",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        34,
+        16,
+        222,
+        240
+      ],
+      "bytes": 75674,
+      "sha256": "dbde6824fc2712050ee785465aa464f78b731bb58be0fc7f0b9af1340f94b4f4",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        176,
+        70,
+        1099,
+        1167
+      ]
+    },
+    {
+      "key": "ic_mod_after",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "bytes": 88785,
+      "sha256": "92b91b3e1d66fd86613076135b48480727ca891cca498d282aeaaf387a13f311",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        114,
+        131,
+        1151,
+        1089
+      ]
+    },
+    {
+      "key": "ic_mod_over",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        22,
+        240,
+        234
+      ],
+      "bytes": 56829,
+      "sha256": "86e5ec96cdf2911204f7e21c75a4285f58ce04c21666f146c8c960a0f2364077",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        72,
+        56,
+        1200,
+        1123
+      ]
+    },
+    {
+      "key": "ic_mod_field",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        58,
+        240,
+        197
+      ],
+      "bytes": 63108,
+      "sha256": "368079d7185cf57b389692a1c14f668d002be2c16ad7e195a9cf91f4a1b6151a",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        66,
+        294,
+        1200,
+        997
+      ]
+    },
+    {
+      "key": "ic_mod_step",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        17,
+        16,
+        238,
+        240
+      ],
+      "bytes": 89367,
+      "sha256": "6775a3214e26668e6a5d2b6f3cd2e6e02e876e2ebbcc147c2d4ebe514bc52081",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        176,
+        137,
+        1129,
+        1104
+      ]
+    },
+    {
+      "key": "ic_mod_judge",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        22,
+        240,
+        234
+      ],
+      "bytes": 98888,
+      "sha256": "8f5e607636dd723e00cefc7eda2e6b647d08c5829048ff503c4105b58723daba",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        64,
+        85,
+        1194,
+        1152
+      ]
+    },
+    {
+      "key": "ic_mod_ion",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        27,
+        240,
+        229
+      ],
+      "bytes": 87825,
+      "sha256": "7b526b0e11b239aa26d0070805b9fa03bd89141fa36185f7516955dcd27eaa15",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        99,
+        138,
+        1194,
+        1127
+      ]
+    },
+    {
+      "key": "ic_mod_focus",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        28,
+        240,
+        228
+      ],
+      "bytes": 79263,
+      "sha256": "2c3a8e5b66fb0f6bb0691d1a95ea9217faaec0b4d3012e1f5d4b3c5c220817a5",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        98,
+        148,
+        1185,
+        1117
+      ]
+    },
+    {
+      "key": "ic_mod_prism",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        22,
+        240,
+        234
+      ],
+      "bytes": 97335,
+      "sha256": "439f04bbd41b5912269c4b75b0cc6cf83acf3b67349260bdeecbef54ea629616",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        236,
+        238,
+        1037,
+        995
+      ]
+    },
+    {
+      "key": "ic_mod_lens",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "bytes": 81291,
+      "sha256": "2313208771e6ad0c198722e1e03219ec3eba593c7df5f65625b82bec08bf91a3",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        143,
+        152,
+        1214,
+        1052
+      ]
+    },
+    {
+      "key": "ic_mod_scope",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        26,
+        240,
+        229
+      ],
+      "bytes": 74795,
+      "sha256": "3c2ef4611c20d21d8d8592fb5f10db4eb8e155208dc6f84504c2efac35efcef9",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        105,
+        109,
+        1239,
+        1137
+      ]
+    },
+    {
+      "key": "ic_mod_refract",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        50,
+        240,
+        205
+      ],
+      "bytes": 61993,
+      "sha256": "bcd949333919b403c3205591683eaabd66acbf53708bc03431c89ac128e1da39",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        55,
+        261,
+        1218,
+        1065
+      ]
+    },
+    {
+      "key": "ic_mod_mirror",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        25,
+        16,
+        230,
+        240
+      ],
+      "bytes": 79153,
+      "sha256": "48fc80a1c7874f0c67e560cf5a8e2f986b6021f09f517a3e9cbe1d07bc1d8208",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        160,
+        115,
+        1094,
+        1135
+      ]
+    },
+    {
+      "key": "ic_mod_exec",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        18,
+        240,
+        237
+      ],
+      "bytes": 80566,
+      "sha256": "76b34b6feedb4e5d4d2f793776a7631664c33288dfe2edca364d27a96709980a",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        104,
+        73,
+        1192,
+        1136
+      ]
+    },
+    {
+      "key": "ic_mut_momo_ricochet",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        23,
+        240,
+        232
+      ],
+      "bytes": 73392,
+      "sha256": "b7bf16b6a51a20d446ac5e1779d25b16c38d832a1944acaedc8f362b4c8a18f3",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        84,
+        109,
+        1177,
+        1127
+      ]
+    },
+    {
+      "key": "ic_mut_momo_fan",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        22,
+        240,
+        234
+      ],
+      "bytes": 77173,
+      "sha256": "5e02cddc8ea9e430323c8d69fe3851d9d2beb70a3f9527a2252200bcd43bc0fb",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        80,
+        114,
+        1180,
+        1156
+      ]
+    },
+    {
+      "key": "ic_mut_cocoa_rush",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        36,
+        240,
+        220
+      ],
+      "bytes": 81079,
+      "sha256": "f15d6e0d15d69fd41385cd032cdd3ee8b9698509e54a3360c92640bd7e3382d0",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        85,
+        167,
+        1209,
+        1091
+      ]
+    },
+    {
+      "key": "ic_mut_cocoa_breaker",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        16,
+        240,
+        240
+      ],
+      "bytes": 98507,
+      "sha256": "33ed6ab41dcaff53524c72cc1ddc2f1f0582655c80e333be67ea491265675a17",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        58,
+        47,
+        1211,
+        1202
+      ]
+    },
+    {
+      "key": "ic_mut_cocoa_counter",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "bytes": 88382,
+      "sha256": "cdb3477299ed7aa113a7c8222cd783d691b4b1b7c4b5719b6f5739122cd527bc",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        82,
+        127,
+        1195,
+        1115
+      ]
+    },
+    {
+      "key": "ic_mut_berry_seeker",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        28,
+        240,
+        228
+      ],
+      "bytes": 68205,
+      "sha256": "6f0b13d492b2283c64546f4a90bef650b84a8280de0785d0244175d98930b431",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        71,
+        81,
+        1241,
+        1128
+      ]
+    },
+    {
+      "key": "ic_mut_berry_sticky",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "bytes": 91656,
+      "sha256": "f45becf59a329336d97bc4e95c6290a5a305c975774d3af9e7be401ac60776fc",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        80,
+        139,
+        1201,
+        1121
+      ]
+    },
+    {
+      "key": "ic_mut_mint_blizzard",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        26,
+        16,
+        230,
+        240
+      ],
+      "bytes": 82105,
+      "sha256": "0761bab5ae836a28f1228e7c3f844bb016d6a40b274b6ec407b0221d0ee5d8df",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        128,
+        61,
+        1158,
+        1191
+      ]
+    },
+    {
+      "key": "ic_mut_mint_permafrost",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        26,
+        240,
+        229
+      ],
+      "bytes": 99458,
+      "sha256": "fcae9920e1045a90f665d075dc8caf065902441698257b824f0e4209ba8c6d7a",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        105,
+        158,
+        1182,
+        1133
+      ]
+    },
+    {
+      "key": "ic_mut_taro_chainlord",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        17,
+        16,
+        239,
+        240
+      ],
+      "bytes": 92758,
+      "sha256": "20a44304a73aacb4bef9d4fb2376c872ca7cb7d85cc822549ed33815a530b60f",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        93,
+        53,
+        1222,
+        1194
+      ]
+    },
+    {
+      "key": "ic_mut_taro_stormcaller",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        35,
+        16,
+        220,
+        240
+      ],
+      "bytes": 83004,
+      "sha256": "37169bed5286b888e983a8738771ceee9da6893acf2f13349b409e7d39f7ee45",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        192,
+        77,
+        1092,
+        1168
+      ]
+    },
+    {
+      "key": "ic_mut_sesame_fortress",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        27,
+        240,
+        229
+      ],
+      "bytes": 94936,
+      "sha256": "982587887950ed189eca2b6e4a1c8642f1d0610f3bf2524c0d32d73cb02db4c0",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        63,
+        100,
+        1200,
+        1125
+      ]
+    },
+    {
+      "key": "ic_mut_sesame_retaliate",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        17,
+        240,
+        238
+      ],
+      "bytes": 94448,
+      "sha256": "692f22a3f1e264cc9783b19572171b36886f66024274ed4719542240f5ecf973",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        175,
+        108,
+        1204,
+        1123
+      ]
+    },
+    {
+      "key": "ic_trade_glass",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "bytes": 90278,
+      "sha256": "5dc937ca3840a19b4134ef43f4b6122320e5ef013df27a700d3f2dd586747e41",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        78,
+        160,
+        1204,
+        1203
+      ]
+    },
+    {
+      "key": "ic_trade_burn",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        42,
+        16,
+        213,
+        240
+      ],
+      "bytes": 70951,
+      "sha256": "bf4e9f7f9e466a0662f49d77f9c33b5f79b9f75611b152e2d7d6d8bec4b96e60",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        208,
+        50,
+        1039,
+        1136
+      ]
+    },
+    {
+      "key": "ic_trade_armor",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "bytes": 86656,
+      "sha256": "bf93263ea634a376d81182c081f9c030e0d7e4374bbad82ffcba8a3a86f6f18b",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        44,
+        120,
+        1212,
+        1107
+      ]
+    },
+    {
+      "key": "ic_trade_rush",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        53,
+        240,
+        202
+      ],
+      "bytes": 71444,
+      "sha256": "fb364973fa79dac0c6caaf42db942e5aba3386f6e66967d332ad527f073d62ca",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        37,
+        244,
+        1191,
+        1010
+      ]
+    },
+    {
+      "key": "ic_trade_berserk",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        21,
+        240,
+        235
+      ],
+      "bytes": 103942,
+      "sha256": "2d00bd2ad85dc0c320a2ad499bc3d6578b236859be6eec7f32fd90be7e7b8835",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        68,
+        88,
+        1203,
+        1171
+      ]
+    },
+    {
+      "key": "ic_trade_core",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        26,
+        16,
+        229,
+        240
+      ],
+      "bytes": 93508,
+      "sha256": "2b7161dbd9df73c4ae2bd584d3cd5cb6613df467ab3e89143d235fcdaaad791f",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        151,
+        75,
+        1126,
+        1153
+      ]
+    },
+    {
+      "key": "ic_trade_feast",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        26,
+        240,
+        229
+      ],
+      "bytes": 96511,
+      "sha256": "8af5aee6a0841740461aa5f892eb5f1015968f48eefa87a3394596275ee08f1d",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        60,
+        86,
+        1200,
+        1119
+      ]
+    },
+    {
+      "key": "ic_trade_oath",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        23,
+        240,
+        233
+      ],
+      "bytes": 84859,
+      "sha256": "a9406ca5478db05b8a527cb1aea1b9255afce8ee0ce6062a54a6838398e6e929",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        130,
+        157,
+        1148,
+        1110
+      ]
+    },
+    {
+      "key": "ic_inf_spicy",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "bytes": 89309,
+      "sha256": "5c836ecf267c8ee0c74cc5e11644ad4ed76f2c8425a13c505b4e3d3c5c50336f",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        158,
+        136,
+        1194,
+        1092
+      ]
+    },
+    {
+      "key": "ic_inf_sour",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        24,
+        240,
+        232
+      ],
+      "bytes": 95930,
+      "sha256": "a4d505cd3acf63266904ba0648dabc4e07b59c0ccea65c738065340ba69450b2",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        138,
+        135,
+        1205,
+        1126
+      ]
+    },
+    {
+      "key": "ic_inf_sweet",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        27,
+        16,
+        228,
+        240
+      ],
+      "bytes": 81752,
+      "sha256": "df9941d16984dc542ac53293bcb91a3b55612918da683fdeb12885ffdd372e74",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        150,
+        58,
+        1149,
+        1170
+      ]
+    },
+    {
+      "key": "ic_inf_minty",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        30,
+        240,
+        225
+      ],
+      "bytes": 101252,
+      "sha256": "ea8564ee3d73309220172f6504e51cc3a3c72b29cfa38c1e34b999b61ab551d9",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        111,
+        150,
+        1198,
+        1096
+      ]
+    },
+    {
+      "key": "ic_cocoa_dashp",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        35,
+        240,
+        220
+      ],
+      "bytes": 73395,
+      "sha256": "182de40b5dd7dd7f24eea1c6ac7878642658c968de5b1a4e5d9579f9fd520913",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        75,
+        155,
+        1199,
+        1082
+      ]
+    },
+    {
+      "key": "ic_cocoa_drum",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "bytes": 103625,
+      "sha256": "2799a9069be15e0d21fe56930f728b621f6bf4446671c317545817c9cacb7053",
+      "decodedBytes": 262144,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        51,
+        66,
+        1203,
+        1177
+      ]
+    },
+    {
+      "key": "vfx_tr_edge_sparkle",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        1024,
+        512
+      ],
+      "bytes": 118084,
+      "sha256": "a073c7b325ed24d36ba89ee48ab768dec9f5c3132e93aac687ef82c578ef120d",
+      "decodedBytes": 2097152,
+      "sourceCanvas": [
+        1774,
+        887
+      ],
+      "sourceCrop": null
+    },
+    {
+      "key": "tr_emblem",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "alphaBBox": [
+        59,
+        32,
+        453,
+        480
+      ],
+      "bytes": 265070,
+      "sha256": "7e66c17a80ac3c6fc3abe24d02adfe4b7d0c88723e8cc759ece750fe0c56d263",
+      "decodedBytes": 1048576,
+      "sourceCanvas": [
+        1254,
+        1254
+      ],
+      "sourceCrop": [
+        237,
+        152,
+        1017,
+        1040
+      ]
+    },
+    {
+      "key": "vfx_tr_puff",
+      "mode": "RGBA",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "bytes": 268709,
+      "sha256": "55a1ccef56207a1cd856e011ba441ef216b2462731e4c97da4dddedcfc42e466",
+      "decodedBytes": 1572864,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "sourceCrop": null
+    }
+  ],
+  "visualReview": {
+    "status": "reviewed",
+    "scope": [
+      "All 77 icons at 24px and 90px, hero-family palette coherence and distinct silhouettes",
+      "Transparent standalone subjects, no text or numbers; evolution gold and fusion aura",
+      "Horizontal curtain and vertical frosting tile pairs",
+      "Four-frame sparkle loop and six-frame puff growth/fade",
+      "Forward/back transition assembly montage at 0/70/150/220/300ms"
+    ],
+    "limitation": "Offline asset review only. Runtime wiring, device GPU budget and phone FPS pending."
+  },
+  "remoteReadback": {
+    "status": "pending publication"
+  },
+  "decodedMiB": 32.832,
+  "technicalContracts": {
+    "status": "pass",
+    "checked": 82,
+    "tests": [
+      {
+        "key": "ic_evo_momo",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_evo_cocoa",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_evo_berry",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_evo_mint",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_evo_taro",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_evo_sesame",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_heartburst",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_crownseed",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_glacier",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_shardstorm",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_quakeking",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_lastbear",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_tempest",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_skyjudge",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_prismnova",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_fus_horizon",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "relic_firstbite",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "relic_dashcharge",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "relic_trophy",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "relic_harvest",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "tr_curtain",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "safeMarginPx": null
+      },
+      {
+        "key": "tr_edge",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": null
+      },
+      {
+        "key": "ic_mod_bloom",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_love",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_heart",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_aim",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_jam",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_spray",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_icemine",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_shatter",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_flurry",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_throw",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_glide",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_coldarc",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_quake",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_stomp",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_rage",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_crush",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_ko",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_after",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_over",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_field",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_step",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_judge",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_ion",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_focus",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_prism",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_lens",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_scope",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_refract",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_mirror",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mod_exec",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_momo_ricochet",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_momo_fan",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_cocoa_rush",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_cocoa_breaker",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_cocoa_counter",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_berry_seeker",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_berry_sticky",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_mint_blizzard",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_mint_permafrost",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_taro_chainlord",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_taro_stormcaller",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_sesame_fortress",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_mut_sesame_retaliate",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_glass",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_burn",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_armor",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_rush",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_berserk",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_core",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_feast",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_trade_oath",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_inf_spicy",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_inf_sour",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_inf_sweet",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_inf_minty",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_cocoa_dashp",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "ic_cocoa_drum",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": 16
+      },
+      {
+        "key": "vfx_tr_edge_sparkle",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "safeMarginPx": null
+      },
+      {
+        "key": "tr_emblem",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "safeMarginPx": null
+      },
+      {
+        "key": "vfx_tr_puff",
+        "decodeCrcHashGrid": "pass",
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "safeMarginPx": null
+      }
+    ]
+  },
+  "categoryCounts": {
+    "basic": 2,
+    "evolution": 6,
+    "fusion": 10,
+    "infusion": 4,
+    "modifier": 30,
+    "mutation": 13,
+    "relic": 4,
+    "tradeoff": 8,
+    "transition": 5
+  },
+  "tileTests": [
+    {
+      "key": "tr_curtain",
+      "axis": "horizontal",
+      "preview": "QA_tr_curtain_tile_pair.png",
+      "edgeMeanAbsRgba": [
+        0.739,
+        0.836,
+        1.375,
+        0.0
+      ],
+      "edgeMaxAbsRgba": [
+        3,
+        3,
+        4,
+        0
+      ],
+      "visualReview": "reviewed; visually continuous in tile-pair preview; boundary pixels are not identical"
+    },
+    {
+      "key": "tr_edge",
+      "axis": "vertical",
+      "preview": "QA_tr_edge_tile_pair.png",
+      "edgeMeanAbsRgba": [
+        1.731,
+        12.094,
+        11.662,
+        0.475
+      ],
+      "edgeMaxAbsRgba": [
+        59,
+        167,
+        162,
+        25
+      ],
+      "visualReview": "reviewed; visually continuous in tile-pair preview; boundary pixels are not identical",
+      "premultipliedEdgeMeanAbsRgba": [
+        1.8070000410079956,
+        11.774999618530273,
+        11.444999694824219,
+        0.4749999940395355
+      ],
+      "premultipliedEdgeMaxAbsRgba": [
+        58.5369987487793,
+        165.69000244140625,
+        160.72900390625,
+        25.0
+      ]
+    }
+  ],
+  "edgeAttachment": {
+    "leftAlphaMin": 255,
+    "leftAlphaMean": 255.0,
+    "rightHasTransparency": true
+  },
+  "animationTests": {
+    "vfx_tr_edge_sparkle": {
+      "preview": "QA_vfx_tr_edge_sparkle.gif",
+      "frames": 4,
+      "loop": true,
+      "visualReview": "reviewed"
+    },
+    "vfx_tr_puff": {
+      "preview": "QA_vfx_tr_puff.gif",
+      "frames": 6,
+      "loop": false,
+      "visualReview": "reviewed"
+    }
+  },
+  "sourceDecodedMiB": 32.832,
+  "runtimeBudgetNote": "Incoming PNGs only. Runtime transitionA1 should reduce to540x960; card icons128x128 lazy per hero. Actual boot GPU budget and device FPS require runtime integration.",
+  "transitionAssembly": {
+    "preview": "QA_transition_forward_back.gif",
+    "status": "reviewed offline assembly, both directions",
+    "directions": [
+      "forward left",
+      "back right using mirrored edge"
+    ],
+    "wipeDurationMs": 300,
+    "method": "Offline asset assembly at270x480 over existing Hub/Pause QA images; luminance-to-alpha VFX simulation. Does not wire or benchmark game code."
+  },
+  "puffFinalFramePureBlack": true
+}

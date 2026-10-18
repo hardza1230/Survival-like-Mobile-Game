@@ -1,13 +1,7 @@
-# Latest checkpoint — art23/24/25 delivered
+# Latest checkpoint — art26 delivery
 
-Updated2026-10-18 Asia/Bangkok. Main branch claude/vampire-survival-mobile-game-yo9e8w, runtimev7.8.57 unchanged. Art incoming only; no runtime wiring or game version bump.
+Updated 2026-10-18 Asia/Bangkok. Repo hardza1230/Survival-like-Mobile-Game; deploy/main claude/vampire-survival-mobile-game-yo9e8w. Preserved remote runtime v7.8.67 at 5320daf. Orders23–25 integrated in v7.8.59.
 
-23:20 PNG32/66frames at assets/incoming/levelup_cards_ui/, published3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd; all31 delivery files full-byte verified.
-24:19 PNG32/43frames at assets/incoming/pause_ui/, published708260861c3c7df93ed565d01606114345094310; all34 delivery/follow-up files full-byte verified. Proof committed with25.
-25:25 PNG32/81frames at assets/incoming/hub_motion/, published5dc47db575366b9d3eff31d69aca1584fc78dc20; all49 delivery/follow-up files full-byte verified against local length/SHA-256/Git blob SHA. UPLOAD_VERIFICATION.json records the pinned-commit proof. This follow-up saves final amended verified status/proof metadata.
+Art26 complete:82 PNG32 /90 frames in assets/incoming/transition_card_icons/ (77 icons +5 transition assets). All technical checks pass; all icons at24/90px, hero palettes, tile pairs, FX loops/fade and both wipe directions visually reviewed. Full prompts, manifest, QA/previews and README present. Incoming only; runtime wiring/device GPU/FPS pending. No game-version bump.
 
-25method: user explicitly approved Python extraction: ใช้ Python ตัดจากต้นฉบับ. Original visible Momo/flower RGB and positions retained; AI supplies occluded fill and staff-head completion beyond original edges. Fully opaque interior source RGB100%,0px source translation,28.208MiB decoded (<40MiB). Full reassembly/diff, blink,±6deg joints, loop and technical contracts reviewed. Inpainted scenery and alpha edges intentionally differ. Work scripts under work/order25/; old pack.py overwrites direct extraction, use refine.py+hybrid.py+qa.py+finalize.py only if intentionally reprocessing.
-
-Remaining integration work, outside art orders: runtime WebP packing to941/1080, A1 replacing old background, C/D lazy loads, coordinate/pivot parent transforms, tween cleanup, reduced motion, actual boot-memory/FPS/phone review. Output archives/previews are under task outputs/. No outstanding art-production blocker.
-
-Final gallery amendment: A2 sky glow kept free of castle RGB; A1 neutral baseline compensated accordingly. Reassembly/PNG/identity/memory/loops rerun successfully. Amended sources and previews published5dc47db; all49 files full-byte verified, final proof/status saved in this follow-up.
+Next: publish only incoming26 and CLAUDE.md, this checkpoint, AGENT_WORKFLOW.md, order26 status via GitHub exact-tree/lease route. Full raw-byte readback of every changed file, save UPLOAD_VERIFICATION.json, publish proof metadata, create ZIP in outputs and confirm final-commit Pages CI. Production ledgers/jobs/scripts retained locally in work/order26. No active generation. Do not regenerate or repeat prior orders.
