@@ -261,6 +261,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - รับ feedback หน้า Forge ใหม่ · Kitchen upkeep · Story C2–C3 · item mods · Delve
 - งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้)
 - **เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ เจ้าของเทสเอง** (จำลองเพื่อหาบั๊กค้างได้)
+- **เจ้าของ (18 ต.ค.): ไม่ต้องเปิดเกมถ่ายภาพหน้าจอตรวจ UI/อาร์ตเอง — เจ้าของตรวจบนมือถือเอง** (เพื่อความเร็ว) · ใช้ `npm run check` + อ่านโค้ดพอ · deploy ให้รอในเบื้องหลัง ไม่ต้องนั่งรอ
 
 ## 6. เอกสารออกแบบ (Artifacts — ความจำภาพ)
 เอกสารเหล่านี้เผยแพร่เป็น artifact แล้ว (ถ้าต้องแก้ให้ publish ทับ URL เดิม):
