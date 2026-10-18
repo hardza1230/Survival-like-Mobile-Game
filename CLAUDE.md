@@ -10,7 +10,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 21 PNG32 sources / 100 frames delivered to assets/incoming/hero_vfx_gaps/ with MANIFEST.json, PROMPTS.json, QA_REPORT.json and DELIVERY_README.md. Exact source dimensions/grids and PNG data checked. Runtime integration is complete: 21/21 wired in v7.8.45–46, including the restored C8 landing dust. Seam/apex/timing and phone visual/FPS review remain pending. Historical delivery paragraphs below retain their original per-version context.
 
-# Latest delivery: v7.8.56 — Seasonal Wisp HP and Spark miniboss tuning
+# Latest delivery: v7.8.57 — Boss attack VFX C1–C2 (art order 22) wired
+
+59 sheets packed by scripts/pack-boss-vfx-c1-c2.py (lum×1.35 alpha) → assets/art/boss_vfx/ · ASSET_FX vfx_bNN_* (warn/wave/crown_cage/bubble_cage carry fill:[w,h] bbox) · loaded per stage: loop after STAGE_SHEETS pushes vfx_bNN_* into STAGE_SHEETS[NN-1]. Helpers: bossKit(kind) → 'vfx_bNN_kind' for stageIndex 0–9 if texture loaded · kitSize(k,r) → outer ring width = 2r (height ≥55% of width) · kitLane(img,{key,h}) overlays a lane sprite on an existing vfx_line image (hides it, copies pos/rot/size/alpha each postupdate → timing unchanged) · bossSig(name,…) = heroFx must · bossSigHold (pause at frame 4). Hooked: spawnHazard warn+impact, bossNovaWave wave, chargeTelegraph lane (+C2-3 dive_trail), aim lines in ant rush/chili belt/behemoth reaper/hunger cleave/rootmother scythe, frost bar marks, chili furnace fire_cross, hunger oven cross, and all 19 signatures. Radius/timing/damage untouched; proj_foe untouched; every hook falls back to the old visuals. Phone visual/FPS review pending.
+
+# Previous delivery: v7.8.56 — Seasonal Wisp HP and Spark miniboss tuning
 
 Owner reports C2-4 purple fan-shot enemy survives longer than minibosses. Seasonal Wisp uses siege HP: stage 8 only 260→130 before existing stage/wave scaling; five-shot fan, guard aura and other roles/stages unchanged. Spark (smite) miniboss damage ×.85 once in taroDealDamage, including Static Charge/Storm Mark; bosses/mobs/elites/Arc/Sentry unchanged. Owner phone comparison pending. Automated targeted adapters plus npm check and build:www verify implementation; deployment must be verified separately.
 
@@ -148,10 +152,10 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.56 · 18 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.57 · 18 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
-- ล่าสุด (v7.8.45–56): อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
+- ล่าสุด (v7.8.45–57): อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
 - **รอเจ้าของเล่นทดสอบบนมือถือ:** Spark/Sentry/Arc benchmark ที่ C2-1★1 (ของชุดเดียวกัน), C2-4 Harvest, หน้า Temple ใหม่, Hero VFX FPS
 - **รอเจ้าของตัดสินใจ:** Yuzu ทำใหม่ทั้งหมด (เสนอชุด Orchard Swarm / Zest Battery ตีไกล / Citrus Knights) · ท่าบอส/กลไกสนาม (ดูข้อ 5) · Supabase ตาราง run_stats ยังไม่สร้าง (docs/telemetry/run_stats.sql)
 - รายละเอียดทุกเวอร์ชันเก่า: `docs/CLAUDE_HISTORY.md`
@@ -172,7 +176,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 
 ## 5. ถัดไป
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **บอส C3 ทั้ง 5 ตัว + Pinnacle ยังใช้ชุดท่ากลาง** (slam/radial/aimed/charge/spiral/trap) แค่เปลี่ยนท่าโพส · มินิบอสเฉพาะตัวมี 5 ตัว (C1-1, C2-2…C2-5) ที่เหลือ 9 ตัว (C1-2…C1-5, C2-1, C3 ทั้ง 5) ใช้ชุดกลาง · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม T1–T8 + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ยังไม่ได้เริ่ม** · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก
-- **ใบสั่งอาร์ต 22 (18 ต.ค.):** เอฟเฟกต์ท่าบอส C1–C2 59 ไฟล์ — บอส C1–C2 มีท่าเฉพาะแล้วแต่ใช้ภาพกลาง (vfx_telegraph/fx_bossnova/vfx_cream_ring/vfx_line ย้อมสี) · ส่งอาร์ตครบ 59 PNG32 / 278 เฟรมที่ `assets/incoming/boss_vfx_c1_c2/` พร้อม manifest/prompts/QA · รอผูก runtime และทดสอบมือถือ · โน้ตผูกโค้ดอยู่ท้ายใบสั่ง
+- **ใบสั่งอาร์ต 22 (18 ต.ค.):** เอฟเฟกต์ท่าบอส C1–C2 59 ไฟล์ — บอส C1–C2 มีท่าเฉพาะแล้วแต่ใช้ภาพกลาง (vfx_telegraph/fx_bossnova/vfx_cream_ring/vfx_line ย้อมสี) · ส่งอาร์ตครบ 59 PNG32 / 278 เฟรมที่ `assets/incoming/boss_vfx_c1_c2/` พร้อม manifest/prompts/QA · **ผูกแล้ว v7.8.57** (59/59: `assets/art/boss_vfx/`, `scripts/pack-boss-vfx-c1-c2.py`, helper `bossKit/kitSize/kitLane/bossSig/bossSigHold`) · รอ QA ภาพ/FPS บนมือถือ
 - Yuzu ทำใหม่: รอเจ้าของเลือกชุด build แล้วเขียนเอกสารออกแบบ + ใบสั่งอาร์ต
 - รับ feedback หน้า Forge ใหม่ · Kitchen upkeep · Story C2–C3 · item mods · Delve
 - งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้)
