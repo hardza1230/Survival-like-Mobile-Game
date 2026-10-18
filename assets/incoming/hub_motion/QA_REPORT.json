@@ -8,10 +8,10 @@
     {
       "key": "hub_bg_far",
       "file": "hub_bg_far.png",
-      "bytes": 3162365,
-      "sha256": "3f0d7ee51e91d58068a405e4392e4a887ef4b36add74adb8974087e7cc7ca971",
+      "bytes": 3189525,
+      "sha256": "ef2c74faa033ead3826cb5e2853568594e894378d87cab703fed9af7bd73a0a3",
       "decodedBytes": 8294400,
-      "gitBlobSha": "d7aa5ccb9565a26eb318f86004b2a3c4522be8ed"
+      "gitBlobSha": "76bd4b5675521f24203a63b278f1e40561c7ec69"
     },
     {
       "key": "hub_momo_body",
@@ -184,10 +184,10 @@
     {
       "key": "hub_sky_glow",
       "file": "hub_sky_glow.png",
-      "bytes": 824706,
-      "sha256": "9543339740316b7e70919503ad7871999ea0d6ec8bd3bb09061e9408659dd449",
+      "bytes": 550287,
+      "sha256": "fcaf86bae43623dffc913f0d1cae3e0f14afa99e7c6bd807c0ed7ce5242aed33",
       "decodedBytes": 1814400,
-      "gitBlobSha": "3ff77d2b601f3a5838a32aec90165476eee1f433"
+      "gitBlobSha": "57a1fde9af30c36daf5b2c66091af330f5d26436"
     },
     {
       "key": "hub_window_lights",
@@ -221,11 +221,7 @@
     ]
   },
   "remoteReadback": {
-    "status": "verified",
-    "commit": "2edc7b947dbe423fd01010fa57f759a3f6173ca1",
-    "fileCount": 48,
-    "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
-    "proof": "UPLOAD_VERIFICATION.json"
+    "status": "pending publication and full-byte readback"
   },
   "technicalContracts": {
     "result": "pass",
@@ -967,9 +963,9 @@
   },
   "originalPixelIdentity": {
     "fullyOpaqueInteriorPixels": 427490,
-    "exactRGBPercent": 100,
-    "within1LevelPercent": 100,
-    "p99MaxChannelError": 0,
+    "exactRGBPercent": 100.0,
+    "within1LevelPercent": 100.0,
+    "p99MaxChannelError": 0.0,
     "placementTranslationPx": 0,
     "note": "Original RGB source is copied at its original global coordinates; no feature-based pose fitting. Differences at antialias edges and exposed inpaint backgrounds are expected."
   },

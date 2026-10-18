@@ -16,8 +16,8 @@
     "frameCount": 1,
     "background": "opaque",
     "loop": false,
-    "sha256": "3f0d7ee51e91d58068a405e4392e4a887ef4b36add74adb8974087e7cc7ca971",
-    "bytes": 3162365,
+    "sha256": "ef2c74faa033ead3826cb5e2853568594e894378d87cab703fed9af7bd73a0a3",
+    "bytes": 3189525,
     "originalPreservation": "Original scene pixels retained outside feathered moving silhouettes and airborne-petal clearing patches; AI reconstructs exposed background only; neutral light overlays reconstruct baseline scene"
   },
   {
@@ -513,8 +513,8 @@
     "frameCount": 1,
     "background": "transparent",
     "loop": false,
-    "sha256": "9543339740316b7e70919503ad7871999ea0d6ec8bd3bb09061e9408659dd449",
-    "bytes": 824706
+    "sha256": "fcaf86bae43623dffc913f0d1cae3e0f14afa99e7c6bd807c0ed7ce5242aed33",
+    "bytes": 550287
   },
   {
     "key": "hub_window_lights",
