@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.66';
+const GAME_VERSION = '7.8.67';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.67',date:'2026-10-18',title:'Cleaner Equipment Screen',items:['Equipment: one bag for every slot — each item shows just its picture and level','Removed the Clean / Sell / Scrap buttons (Sell and Dismantle stay on each item)','Item mods now explain what each one does instead of a comparison table','Enhancing warns you when the item can be destroyed and asks you to tap again','Main menu: only Play animates, all button icons are the same size, smaller settings button']},
   {v:'7.8.66',date:'2026-10-18',title:'Smoother Boss Scaling',items:['Story bosses now get tougher by an even step (+45% HP per stage); C3-3, C3-4 and C3-5 bosses take bigger steps (+58%)','Minibosses always have 25% of their stage boss’s HP','Minibosses follow the same level and difficulty scaling as bosses','Minibosses hit at least 1.2× and bosses at least 1.5× as hard as a Tank']},
   {v:'7.8.65',date:'2026-10-18',title:'Fairer Monster Scaling',items:['Elites now have 1.5× a Tank’s HP on every stage (they were weaker than Tanks)','Siege monsters: contact damage equal to Tanks and 5 EXP (was 10)','Story stages now get tougher by an even step (+29% HP, +8% damage per stage); C3-3, C3-4 and C3-5 take bigger steps (+40% HP, +13% damage)','Chapter 3 monsters move as fast as Chapter 2 ones']},
   {v:'7.8.64',date:'2026-10-18',title:'Siege Monsters Toned Down',items:['Siege-type monsters (Furnace Golem, Gate Warden, Oracles, Choir Moth, Seasonal Wisp, Root Choir Leech, Chapter 3 siege foes) now have 90% of a Tank’s HP on every stage — they used to have over 3× more']},
@@ -4974,6 +4975,16 @@ const MOD_LINE_MAX=3;
 function affixTierForValue(mod,v){ if(!mod||!mod.tiers)return 5; for(let t=0;t<mod.tiers.length;t++){ if(v>=mod.tiers[t][0])return t; } return mod.tiers.length-1; }
 function allAffixDefs(){return AFFIX_POOL.concat(SPECIAL_AFFIX_POOL,FORGE_DEFS);}
 function affixDef(id){return allAffixDefs().find(a=>a.id===id);}
+// v7.8.67 เจ้าของ: หน้า Equipment บอกว่าแต่ละ mod ทำอะไร (Forge mod มี description ในแคตตาล็อกอยู่แล้ว)
+const MOD_DESC={dmg:'More damage from every attack',crit:'Higher chance to land critical hits',critdmg:'Critical hits deal more damage',cd:'Skills recharge faster',bossdmg:'More damage to bosses and minibosses',laststand:'More damage while your HP is low',
+  hp:'More maximum HP',def:'Take less damage from every hit',regen:'Recover HP every second',lifekill:'Heal a little on each kill',crisisguard:'Take less damage while your HP is low',spd:'Move faster',pick:'Pick up EXP and items from farther away',xp:'Gain more EXP',dash:'Dash recharges faster',
+  edge:'Adds flat damage to every hit',precision:'More crit chance and faster skills',hppct:'More maximum HP (percent)',regenpct:'Recover a share of max HP every second',bulwark:'More HP and less damage taken',mend:'Healing restores more HP',sprint:'Move faster and dash more often',forager:'More EXP and a wider pickup range',
+  sugarfind:'More Sugar from runs',boxfind:'More gear boxes drop',orbfind:'More crafting currency drops',uniquecd:'Your Unique skill recharges faster',wayfarer:'Move faster with a wider pickup range',stride:'More damage from every attack',reach:'Bigger attack areas',fleet:'Move faster',armorflat:'Flat armor that blocks damage',reaver:'Heal a little on each kill',nimble:'Move faster',ringhp:'More maximum HP',
+  m_dashnova:'Dashing releases a damaging nova',m_critarc:'Critical hits arc to 2 nearby foes',m_killshell:'Kills build a shield that blocks one hit',m_stillfocus:'More damage while standing still',m_opener:'More damage to foes at full HP',m_thorns:'Getting hit blasts nearby foes (once per second)',
+  vampiric:'Heal on every kill with no cooldown',berserk:'Much more damage, but you take more damage too',focus:'Skills recharge much faster, but less crit chance',gambler:'Critical hits deal much more damage',nourish:'Healing pickups restore more HP',
+  area:'Bigger attack areas',bounce:'Projectiles bounce to one more foe',exec:'More damage while your HP is low',proj:'Fire one more projectile',uniq:'Your Unique skill recharges faster',revive:'Revive once when you would fall',boss:'More damage to bosses and minibosses'};
+function modDesc(d){if(!d)return '';if(d.description)return d.description;const k=String(d.id||'');return MOD_DESC[k]||MOD_DESC[k.replace(/^i_/,'')]||'';}
+
 function craftAffixPoolForItem(item){return item?FORGE_DEFS.filter(m=>m.enabled&&m.slots.includes(item.slot)):[];}
 // v4.91: tier ดีสุดที่สุ่มได้ = iLv (1→T10, 100→T0) + ออฟเซ็ตตามเกรดฐาน · สุ่มในหน้าต่าง best…best+4 (ไม่ล็อกที่ tier เดียว)
 const BASE_TIER_OFFSET={ start:6, common:2, rare:1, epic:1, legend:0 };
@@ -8929,6 +8940,14 @@ class Game extends Phaser.Scene {
   hubArt(key,cx,cy,maxW,maxH){
     const k='hub_ui_'+key;if(!this.textures.exists(k))return null;const im=this.add.image(cx,cy,k),scale=Math.min(maxW/im.width,maxH/im.height);im.setScale(scale);this.menu.add(im);return im;
   }
+  // v7.8.67: ไอคอนแต่ละรูปมีขอบโปร่งไม่เท่ากัน → วัดกรอบเนื้อภาพ (alpha) แล้วย่อให้เนื้อภาพเท่ากันทุกปุ่ม
+  hubIconBox(key){const C=this._hubIconBox||(this._hubIconBox={});if(C[key])return C[key];let r={x:0,y:0,w:1,h:1};
+    try{const img=this.textures.get(key).getSourceImage(),W=img.width,H=img.height,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.drawImage(img,0,0);const d=c.getImageData(0,0,W,H).data;let x0=W,y0=H,x1=-1,y1=-1;
+      for(let y=0;y<H;y+=2)for(let x=0;x<W;x+=2)if(d[(y*W+x)*4+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+      if(x1>x0&&y1>y0)r={x:x0/W,y:y0/H,w:(x1-x0+2)/W,h:(y1-y0+2)/H};}catch(e){}
+    return C[key]=r;}
+  hubIconFit(o,key,cx,cy,size){const b=this.hubIconBox(key),fw=o.frame?.width||o.width||1,fh=o.frame?.height||o.height||1,k=size/Math.max(b.w*fw,b.h*fh);
+    o.setScale(k);o.setPosition(cx+(.5-(b.x+b.w/2))*fw*k,cy+(.5-(b.y+b.h/2))*fh*k);return o;}
   hubGuideTag(B,label){
     const t=this.hubText(B.x+B.w-12,B.y+1,label,Math.max(9,Math.min(14,this.W*.027)),'#51300e',1),tw=t.width+16,th=Math.max(19,this.W*.043),x=B.x+B.w-tw-5,y=B.y-th*.38;
     const g=this.add.graphics();g.fillStyle(0x5b330c,.55).fillRoundedRect(x,y+2,tw,th,5);g.fillStyle(0xffdc72,1).fillGradientStyle(0xffeda8,0xffdc72,0xf4c65a,0xe7ae3e,1).fillRoundedRect(x,y,tw,th,5);g.lineStyle(1.5,0xfff0b8,1).strokeRoundedRect(x,y,tw,th,5);this.menu.add(g);t.setPosition(x+tw/2,y+th/2).setOrigin(.5);this.menu.remove(t);this.menu.add(t);
@@ -9007,27 +9026,28 @@ class Game extends Phaser.Scene {
     const shade=this.add.graphics();for(let i=0;i<16;i++){const y=h*.40+i*h*.60/16;shade.fillStyle(0x111b2c,.04+i*.034).fillRect(0,y,w,h*.60/16+1);}this.menu.add(shade);
     // Subtle background motion stays behind every interactive UI element.
     if(bg.type==='Image'&&!hubLive)this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,gearW=44,versionX=w-side-gearW-8-versionW,top=portrait?Math.max(12,h*.016):10;
+    const pillW=portrait?Math.max(112,w*.28):150,pillH=portrait?Math.max(34,h*.044):34,versionW=pillW*.76,gearW=36,versionX=w-side-gearW-8-versionW,top=portrait?Math.max(12,h*.016):10;
     this.hubPanel(side,top,pillW,pillH);const candySize=pillH*.60,candyX=side+pillH*.67;
     this.hubArt('candy',candyX,top+pillH/2,candySize,candySize);
     const sugar=this.hubText(side+pillW-pillH*.48,top+pillH/2,String(Save.data.sugar||0),Math.max(14,pillH*.46),'#ffe5aa',1);let sf=parseFloat(sugar.style.fontSize);while(sugar.width>pillW-pillH*1.45&&sf>10)sugar.setFontSize(--sf+'px');
     this.hubPanel(versionX,top,versionW,pillH);this.hubText(versionX+versionW/2,top+pillH/2,'v'+GAME_VERSION,Math.max(11,pillH*.34),'#fff0df',.5);
     this._zone(versionX,top,versionW,pillH,()=>{this.menuScreen='news';this.buildMenuScreen();});if(this.hasNewsBadge())this.drawBadgeDot(this.menu,versionX+versionW-7,top+6);
-    const gearX=w-side-gearW,gearY=top+(pillH-44)/2;this.hubPanel(gearX,gearY,gearW,44);
-    const cog=this.add.graphics(),cx=gearX+22,cy=gearY+22;cog.fillStyle(0xe7e4ed,1);for(let i=0;i<8;i++){const a=i*Math.PI/4;cog.fillCircle(cx+Math.cos(a)*9,cy+Math.sin(a)*9,3);}cog.fillCircle(cx,cy,10).fillStyle(0x283041,1).fillCircle(cx,cy,4);this.menu.add(cog);
-    this._zone(gearX,gearY,gearW,44,()=>{this.menuScreen='gMore';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='gMore';
+    const gearX=w-side-gearW,gearY=top+(pillH-gearW)/2;this.hubPanel(gearX,gearY,gearW,gearW);   /* v7.8.67 เจ้าของ: ปุ่มฟันเฟืองเล็กลง 44→36 */
+    const cog=this.add.graphics(),cx=gearX+gearW/2,cy=gearY+gearW/2;cog.fillStyle(0xe7e4ed,1);for(let i=0;i<8;i++){const a=i*Math.PI/4;cog.fillCircle(cx+Math.cos(a)*7,cy+Math.sin(a)*7,2.4);}cog.fillCircle(cx,cy,8).fillStyle(0x283041,1).fillCircle(cx,cy,3.2);this.menu.add(cog);
+    this._zone(gearX-4,gearY-4,gearW+8,gearW+8,()=>{this.menuScreen='gMore';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='gMore';
     const logoW=portrait?w*.82:w*.43,logoH=logoW*310/1200,logoX=portrait?w/2:w*.245,logoY=portrait?Math.min(h*.445,L.menuTop-Math.max(25,h*.03)-12-logoH):h*.40;
     this.startHubAmbience(logoY);if(this.textures.exists('hub_ui_logo')){const logo=this.hubArt('logo',logoX,logoY+logoH/2,logoW,logoH);this.hubTween({targets:logo,y:logo.y+1.5,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.hubEvery?.(6000,1200,()=>this.hubFlash('vfx_hub_logo_shine',logoX,logoY+logoH/2,logoW,logoH));}else this.hubText(logoX,logoY+logoH/2,'MOCHI MAYHEM',Math.min(30,w*.06),'#fff0df',.5);
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
     const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
     const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex']];
     const tutDone=!!Save.data.tutorialDone,us=Save.data.unlockedStage||0,need=[0,0,1,2,1,0],nxt=this.hubNextStep();
+    const iconSz=Math.min(...L.boxes.slice(1,5).map(B=>Math.min(B.h*.66,B.w*.19)));   /* v7.8.67 เจ้าของ: ไอคอนทุกปุ่มขนาดเท่ากัน */
     items.forEach(([label,sub,target,icon],i)=>{const B=L.boxes[i],locked=us<need[i]&&!tutDone,primary=i===0,tone=this.hubTone(i),art=this.hubPanel(B.x,B.y,B.w,B.h,tone);if(locked)art.setAlpha(.60);
       if(primary){const glow=this.add.graphics();glow.lineStyle(2,tone.edge,.45).strokeRoundedRect(B.x+2,B.y+2,B.w-4,B.h-4,14);this.menu.add(glow);this.hubTween({targets:glow,alpha:.25,duration:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
-      const more=i===5,size=Math.min(B.h*.66,B.w*(primary||more?.16:.19)),cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
+      const more=i===5,size=more?Math.min(B.h*.66,B.w*.16):iconSz,cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
       const tx=more?B.x+B.w/2+size*.36:B.x+size*1.35,ix=more?B.x+B.w/2-size*.85:B.x+size*.72,room=more?B.w*.5:arrowX-tx-arrowSize*.65;
-      if(!locked&&icon!=='hub_btn_gear'&&icon!=='hub_btn_codex'&&this.bpAnim?.(icon+'_anim')&&this.hubMotionAllowed()){/* v7.8.62 เจ้าของ: Gear/Codex ขยับแล้วสั่นแปลก → ภาพนิ่ง */const s=this.add.sprite(ix,cy,icon+'_anim',0).setDisplaySize(size,size);s.play(icon+'_anim');this.menu.add(s);}   /* v7.8.59 ใบ 25 D: ไอคอนปุ่มขยับ */
-      else if(!locked&&this.textures.exists(icon))this.menu.add(this.add.image(ix,cy,icon).setDisplaySize(size,size));
+      if(!locked&&primary&&this.bpAnim?.(icon+'_anim')&&this.hubMotionAllowed()){/* v7.8.67 เจ้าของ: ขยับแค่ปุ่ม Play */const s=this.add.sprite(ix,cy,icon+'_anim',0);this.hubIconFit(s,icon,ix,cy,size);s.play(icon+'_anim');this.menu.add(s);}   /* v7.8.59 ใบ 25 D: ไอคอนปุ่มขยับ */
+      else if(!locked&&this.textures.exists(icon))this.menu.add(this.hubIconFit(this.add.image(ix,cy,icon),icon,ix,cy,size));
       if(primary&&!locked)this.hubEvery?.(4200,900,()=>this.hubFlash('vfx_hub_play_shimmer',B.x+B.w/2,B.y+B.h/2,B.w,B.h));else this.hubText(ix,cy,locked?'🔒':'✦',Math.max(18,size*.5),'#ffe3aa',.5);
       const fs=primary?Math.min(44,B.h*.43):more?Math.min(28,B.h*.35):Math.max(14,Math.min(23,w*.039));
       const title=this.hubText(tx,B.y+B.h*.40,label,fs,'#fff7ed',more?.5:0);let tf=fs;while(title.width>room&&tf>12)title.setFontSize(--tf+'px');
@@ -9792,45 +9812,36 @@ class Game extends Phaser.Scene {
     this._zone(gx0+half-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
     this._zone(gx0+aw,gby,half-aw*2,gbh,()=>this.openGachaReveal());
     const setBot=gby+gbh;
-    // ---- Item-instance inventory: new first, 8 per page (portrait-first) ----
-    const selDef=GEAR_SLOTS.find(g=>g.slot===sel),items=Save.gearItemsForSlot(sel).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0);   // v6.55.48: ไม่โชว์ Starter/ช่องว่างในกริด
+    // ---- v7.8.67 เจ้าของ: กระเป๋าเดียวรวมทุกช่อง · ช่องมีแค่รูป + ป้าย Lv มุมขวาบน · เอา Clean/Sell/Scrap ออก ----
+    const items=Save.gearItemsForSlot(null).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0&&GEAR_ALL.some(g=>g.id===x.baseId));
     let selected=Save.gearItem(this.gearSelectedUid);
-    if(!selected||selected.slot!==sel){ selected=items.find(x=>x.isNew)||Save.equippedGearItem(sel)||items[0]||null; this.gearSelectedUid=selected?selected.uid:null; }
-    if(!this.gearPageBySlot)this.gearPageBySlot={}; const pageSize=8,pages=Math.max(1,Math.ceil(items.length/pageSize));
-    let page=Math.max(0,Math.min(pages-1,this.gearPageBySlot[sel]||0)); this.gearPageBySlot[sel]=page;
+    if(!selected||selected.slot!==sel){ selected=Save.equippedGearItem(sel)||items.find(x=>x.slot===sel)||null; this.gearSelectedUid=selected?selected.uid:null; }
+    const cols=5,pageSize=cols*3,pages=Math.max(1,Math.ceil(items.length/pageSize));
+    let page=Math.max(0,Math.min(pages-1,this.gearInvPage||0)); this.gearInvPage=page;
     let y=setBot+12;
-    const newCount=items.filter(x=>x.isNew).length,cap=Save.data.gearInventoryCap||100;
+    const cap=Save.data.gearInventoryCap||100;
     const hdr=this.add.text(14,y,'Inventory',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'18px',color:'#fff0e7'});
     const count=this.add.text(w-72,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);
     const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y+4,'📦 '+inboxN,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:inboxN?'#ffd166':'#9c8ba9'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-62,y-2,48,28,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
-    y+=28;this.heroButton(14,y,Math.min(114,(w-34)/2),30,selDef.label,null,{active:true,fontSize:12});
-    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?'Set '+sc[k]+'/'+gearSetPieces(k).length:'Sets',bx=w/2+3;
-      this.heroButton(bx,y,w/2-17,30,lbl,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();},{fontSize:12});}
-    y+=38;const toolW=(w-40)/3;
-    this.heroButton(14,y,toolW,32,'Clean',()=>{this.menuScreen='gearClean';this.buildMenuScreen();},{fontSize:12});
-    for(const [i,md,label]of [[1,'sell','Sell'],[2,'dis','Scrap']]){const active=this._gearQuick===md;this.heroButton(14+i*(toolW+6),y,toolW,32,label,()=>{this._gearQuick=active?null:md;this.buildMenuScreen();},{active,fontSize:12});}
-    y+=42;
-    if(!items.length){ const empty=this.add.text(w/2,y+30,'No items in this slot',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
-    const gap=6,cols=4,cw=(w-28-gap*(cols-1))/cols,ch=Math.max(92,cw*1.16),visible=items.slice(page*pageSize,page*pageSize+pageSize),basePow=heroPower(Save.data.character||'momo',null);
+    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?'Set '+sc[k]+'/'+gearSetPieces(k).length:'Sets',bx=14+hdr.width+10,bw=Math.max(60,Math.min(110,w-72-60-bx));
+      this.heroButton(bx,y-3,bw,26,lbl,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();},{fontSize:11});}
+    y+=30;
+    if(!items.length){ const empty=this.add.text(w/2,y+30,'No items yet',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
+    const gap=6,cw=(w-28-gap*(cols-1))/cols,ch=cw,visible=items.slice(page*pageSize,page*pageSize+pageSize);
     visible.forEach((item,i)=>{ const base=GEAR_ALL.find(g=>g.id===item.baseId); if(!base)return; const col=i%cols,row=Math.floor(i/cols),x=14+col*(cw+gap),iy=y+row*(ch+gap),on=selected&&selected.uid===item.uid,eq=Save.isGearEquipped(item.uid),tl=TIER_LABEL[item.grade]||TIER_LABEL.common;
-      const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?2:1,on?0xff7ba8:color,1);g.strokeRoundedRect(x,iy,cw,ch,10);
-      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+ch*.28,artKey).setDisplaySize(Math.min(48,cw*.70),Math.min(48,cw*.70)):this.add.text(x+cw/2,iy+ch*.28,base.emoji,{fontSize:'26px'}).setOrigin(0.5),nm=this.add.text(x+cw/2,iy+ch*.67,gearBaseStatText(item)+'\nLv'+(item.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontSize:'9px',color:'#f0e3ef'}).setOrigin(0.5);
-      this.menu.add([g,em,nm]);
-      if(!eq&&item.grade!=='start'){const dd=gearADDelta(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),parts=[];if(dd.a)parts.push(['⚔'+(dd.a>0?'+':'')+dd.a,dd.a>0]);if(dd.d)parts.push(['🛡'+(dd.d>0?'+':'')+dd.d,dd.d>0]);parts.forEach((q,qi)=>{const pt=this.add.text(x+cw/2+(parts.length>1?(qi?1:-1)*cw*0.24:0),iy+ch*.90,q[0],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:q[1]?'#7de0a1':'#ff8da2'}).setOrigin(0.5);this.menu.add(pt);});}   /* v7.6.8 ⚔/🛡 แยก */
-      if(item.isNew){const nb=this.add.text(x+4,iy+3,'NEW',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'7px',color:'#ff8fb0'}).setOrigin(0,0);this.menu.add(nb);}
-      if(item.favorite){const fav=this.add.text(x+cw-4,iy+3,'★',{fontSize:'10px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(fav);}
-      if(item.craftedAt&&!item.isNew){const cb=this.add.text(x+4,iy+3,'⚒',{fontSize:'9px',color:'#c9a3ff'}).setOrigin(0,0);this.menu.add(cb);}
-      if(item.locked){const lk=this.add.text(x+4,iy+ch-4,'🔒',{fontSize:'9px'}).setOrigin(0,1);this.menu.add(lk);}
-      if(eq){const ck=this.add.text(x+cw-3,iy+3,'EQUIPPED',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'7px',color:'#12301f',backgroundColor:'#8bd3a0',padding:{x:3,y:1}}).setOrigin(1,0);this.menu.add(ck);}   // v6.55.72: ป้ายใส่อยู่ในช่องไอเทม
-      if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+20,'+'+item.enhanceLv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(lv);}
-      if(this._gearQuick&&!eq&&!item.locked&&!item.favorite){const qq=this.add.graphics();qq.lineStyle(2,this._gearQuick==='sell'?0x7de0a1:0xffb27a,0.9);qq.strokeRoundedRect(x+2,iy+2,cw-4,ch-4,9);this.menu.add(qq);}
-      this._zone(x,iy,cw,ch,()=>{ if(this._gearQuick&&!eq){ if(item.locked||item.favorite){this.menuToast('Locked / favorite items are protected');return;} const n=this._gearQuick==='sell'?Save.sellGearInstance(item.uid):Save.dismantleGearInstance(item.uid); if(n){Sfx.equipment(this._gearQuick==='sell'?'sell':'dismantle');this.menuToast(this._gearQuick==='sell'?'Sold +🍬'+n:'Scrapped +🔩'+n);if(this.gearSelectedUid===item.uid)this.gearSelectedUid=null;} this.buildMenuScreen(); return; }
-        this.gearSelectedUid=item.uid;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
+      const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();g.fillStyle(on?0x3a3550:0x241a2e,1);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?2.5:eq?2:1,on?0xff7ba8:eq?0x8bd3a0:color,1);g.strokeRoundedRect(x,iy,cw,ch,10);
+      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+ch*.54,artKey).setDisplaySize(cw*.72,cw*.72):this.add.text(x+cw/2,iy+ch*.54,base.emoji,{fontSize:Math.round(cw*.42)+'px'}).setOrigin(0.5);
+      const lt=this.add.text(x+cw-3,iy+3,'Lv'+(item.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',backgroundColor:'#2e2140',padding:{x:3,y:1}}).setOrigin(1,0);
+      this.menu.add([g,em,lt]);
+      if(item.isNew){const nd=this.add.circle(x+6,iy+6,4,0xff5689,1);this.menu.add(nd);}
+      if(eq){const ck=this.add.text(x+4,iy+ch-3,'✓',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#8bd3a0'}).setOrigin(0,1);this.menu.add(ck);}
+      if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+ch-3,'+'+item.enhanceLv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,1);this.menu.add(lv);}
+      this._zone(x,iy,cw,ch,()=>{ this.gearSelectedUid=item.uid;this.gearSlot=item.slot;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
     });
     y+=Math.ceil(visible.length/cols)*(ch+gap);
     if(pages>1){ const py=y-1,pw=68,ph=24;
       const pt=this.add.text(w/2,py+ph/2,(page+1)+' / '+pages,{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#a99fbb'}).setOrigin(0.5);this.menu.add(pt);
-      for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearPageBySlot[sel]=page+dir;this.buildMenuScreen();});} y+=ph+5; }
+      for(const [dir,label,px] of [[-1,'‹',w/2-76],[1,'›',w/2+76]]){const enabled=(dir<0?page>0:page<pages-1),pg=this.add.graphics();pg.fillStyle(enabled?0x3a3550:0x241a2e,1);pg.fillRoundedRect(px-pw/2,py,pw,ph,8);const tx=this.add.text(px,py+ph/2,label,{fontSize:'18px',color:enabled?'#ffffff':'#5e5062'}).setOrigin(0.5);this.menu.add([pg,tx]);if(enabled)this._zone(px-pw/2,py,pw,ph,()=>{this.gearInvPage=page+dir;this.buildMenuScreen();});} y+=ph+5; }
     selected=Save.gearItem(this.gearSelectedUid)||selected; const base=selected&&GEAR_ALL.find(g=>g.id===selected.baseId),equipped=Save.equippedGearItem(sel);
     if(selected&&base){ const eqBase=equipped&&GEAR_ALL.find(g=>g.id===equipped.baseId),tl=TIER_LABEL[selected.grade]||TIER_LABEL.common,rl=RARITY_LABEL[selected.craftState]||RARITY_LABEL.magic,eq=Save.isGearEquipped(selected.uid);
       const rows=gearCompareRows(equipped,selected).filter(r=>r.key==='attack'||r.key==='armor'),affLines=it=>{if(!it)return[];const ib=GEAR_ALL.find(g=>g.id===it.baseId),im=ensureImplicit(it),idf=im&&implicitDef(im.id),out=[];if(idf)out.push({t:'◇ '+implicitText(it)+' · '+IMPLICIT_TIER[idf.rank],c:IMPLICIT_COLOR[idf.rank]});else if(ib&&ib.unique)out.push({t:'★ '+ib.desc,c:'#ff8f3a'});const af=(it.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);for(const kind of ['prefix','suffix'])af.filter(x=>(x.d.kind||'suffix')===kind).slice(0,3).forEach(x=>out.push({t:(kind==='prefix'?'P ':'S ')+x.d.emoji+x.d.label+' '+x.d.fmt(x.a.v)+' T'+(x.a.t||3),c:kind==='prefix'?'#ffb27a':'#8be0c8'}));return out;},eqAff=affLines(equipped),selAff=affLines(selected),affN=0,AH=Math.min(58,Math.round(w*0.15)),affTop=26+AH+Math.max(1,rows.length)*14+6,panelH=affTop+2,cgap=6,cw=(w-28-cgap)/2,leftX=14,rightX=14+cw+cgap;
@@ -9846,6 +9857,7 @@ class Game extends Phaser.Scene {
       this._cmpBase=eq?[]:rows;
       y=this.drawModCompare(equipped,selected,eq,y,w);
       const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
+      if(eq&&base.enh&&(selected.enhanceLv||0)<GEAR_ENH_MAX){const od=enhanceOdds(selected.enhanceLv||0);if(od.destroy>0||od.brk>0){const pc=v=>Math.round(v*100)+'%',wt=this.add.text(w/2,y,(od.destroy>0?'⚠ Risky: ':'⚠ ')+pc(od.success)+' success · '+pc(od.brk)+' drops a level'+(od.destroy>0?' · '+pc(od.destroy)+' DESTROYS the item':''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:od.destroy>0?'#ff8da2':'#ffd166',align:'center',wordWrap:{width:w-32}}).setOrigin(.5,0);this.menu.add(wt);y+=Math.max(16,wt.height+4);}}   /* v7.8.67 เจ้าของ: ตีบวกมีโอกาสพังต้องเตือน */
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
       const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.52),sw=(full-cw2-bgap*2)/2,hw=(full-bgap)/2,moreOpen=true;   // v7.6.4 เจ้าของ: เลิกปุ่ม ⋯ · ย่อย/ขาย แสดงตลอด
       const SL={2:[14,y1,full,bh],c:[14,y2,cw2,bh2],0:[14+cw2+bgap,y2,sw,bh2],1:[14+cw2+bgap*2+sw,y2,sw,bh2],m:[14+cw2+bgap*3+sw*2,y2,sw,bh2],3:[14,y3,hw,bh2],s:[14+hw+bgap,y3,hw,bh2]};
@@ -9854,7 +9866,7 @@ class Game extends Phaser.Scene {
       drawAction(1,selected.locked?'🔒':'🔓',selected.locked?0x85506f:0x3a3550,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});
       if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
       else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhShardCost(lv),afford=(Save.data.shards||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
-        drawAction(2,can?('⚒ Enhance +'+(lv+1)+'   🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);
+        drawAction(2,can?('⚒ Enhance +'+(lv+1)+'   🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} const _el=selected.enhanceLv||0,_od=typeof enhanceOdds==='function'?enhanceOdds(_el):{destroy:0},ck='enh:'+selected.uid+':'+_el;if(_od.destroy>0&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚠ Item may be destroyed',Math.round(_od.destroy*100)+'% chance it shatters · tap Enhance again to try',1800);return;} this._gearConfirm=null; if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);
             if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}
             else if(res.result==='break'){this.screenFlash(0xff8a5a,.42,320);this.showBanner('💥 Enhancement broke','Dropped to +'+res.lv,1500);}
             else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
@@ -15213,35 +15225,21 @@ class Game extends Phaser.Scene {
   // v6.55.48: ตัวหนังสือขั้นต่ำ (หน้า Equipment/Craft) — ห่อ add.text ชั่วคราวระหว่างวาดหน้า
   _clampFonts(min){ const add=this.add,f=add.text; add.text=function(x,y,t,st){ if(st&&st.fontSize){const n=parseFloat(st.fontSize);if(n<min)st=Object.assign({},st,{fontSize:min+'px'});} return f.call(add,x,y,t,st); }; return ()=>{ delete add.text; if(add.text!==f)add.text=f; }; }
   drawModCompare(eqIt,selIt,isEq,y,w){ if(!selIt)return y;
-    { const K=AFFIX_KIND_MAX,cnt=it=>{let p=0;for(const a of ((it&&it.affixes)||[])){if(affixDef(a.id))p++;}return {p:Math.max(0,K-p),s:0};},fs=cnt(selIt),fe=eqIt&&!isEq?cnt(eqIt):null,
-        part=(f)=>f.p+' free',tot=fs.p+fs.s,txt='🛠 Open mod slots  '+(fe?part(fe)+'  →  ':'')+(tot?part(fs):'full'),
-        col=fe?((tot>fe.p+fe.s)?'#7de0a1':(tot<fe.p+fe.s)?'#ff8da2':'#d8c7da'):'#d8c7da',t=this.add.text(w/2,y,txt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:col}).setOrigin(.5,0); this.menu.add(t); y+=14; }
-    if(isEq){   // v7.6.4 เจ้าของ: กดชิ้นที่ใส่อยู่ต้องเห็น Mod ของมัน (เดิมโชว์แค่ตอนเทียบกับชิ้นใหม่)
-      const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id);
-      if(idf)lines.push(['◇ '+implicitText(selIt)+' · '+IMPLICIT_TIER[idf.rank],IMPLICIT_COLOR[idf.rank]]);else if(ib&&ib.unique)lines.push(['★ '+ib.desc,'#ff8f3a']);
-      for(const a of (selIt.affixes||[])){const d=affixDef(a.id);if(d)lines.push([d.emoji+' '+d.label+' '+d.fmt(a.v),'#ffe6c4','T'+(a.t||3)]);}
-      if(!lines.some(l=>l[2]))lines.push(['No mods yet · tap Craft to add some','#8a809a']);
-      const rh=24,top=y,h=22+lines.length*rh+4,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
-      this.menu.add(this.add.text(22,top+6,'MODS',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a0'}));
-      lines.forEach((l,i)=>{ const ry=top+22+i*rh; if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
-        const t=this.add.text(22,ry+2,l[0],{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:l[1]});const room=w-44-(l[2]?34:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
-        if(l[2])this.menu.add(this.add.text(w-22,ry+2,l[2],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a99fbb'}).setOrigin(1,0)); });
-      return y+h+6; }
-    const rows=this.modCompareRows(eqIt,selIt); for(const r of (this._cmpBase||[]).slice().reverse()){const up=r.delta>0.001,dn=r.delta<-0.001;const pc=v=>r.range?' (+'+Math.round((v[0]+v[1])/2*ATK_PCT*100)+'%)':'';rows.unshift({kind:'base',label:'⚔ '+(r.range?'Weapon ATK':r.label),from:gearStatText(r,r.from)+pc(r.from),to:gearStatText(r,r.to)+pc(r.to),st:up?'up':dn?'down':'same',col:'#ffffff'});} if(!rows.length)return y;
-    // v6.55.72: ตารางอ่านง่าย — ตัวใหญ่ แถวสูง แถบสลับสี หัวกลุ่ม PREFIX/SUFFIX เต็มแถว
-    const rh=24,secs=rows.some(r=>r.kind==='mod')?1:0,top=y,h=22+rows.length*rh+secs*16+6,g=this.add.graphics();g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
-    const cL=22,cF=Math.round(w*0.60),cT=Math.round(w*0.82),cS=w-22,hd=(x,t,o)=>{const tx=this.add.text(x,top+6,t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(o,0);this.menu.add(tx);};
-    hd(cL,'MOD',0);hd(cF,'NOW',1);hd(cT,'NEW',1);
-    const ST={new:['NEW','#7de0a1'],lost:['LOST','#ff8da2'],up:['▲','#7de0a1'],down:['▼','#ff8da2'],same:['=','#7a7088'],swap:['⇅','#ffd166']};
-    let ry=top+22,last=null,zi=0;
-    for(const r of rows){ if(r.kind!==last&&r.kind==='mod'){const lc='#ffd9a0',lb=this.add.text(cL,ry+2,'MODS',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:lc});const ln=this.add.graphics();ln.lineStyle(1,Phaser.Display.Color.HexStringToColor(lc).color,0.4);ln.lineBetween(cL+lb.width+6,ry+9,cS,ry+9);this.menu.add([lb,ln]);ry+=16;} last=r.kind;
-      if(zi++%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,rh);this.menu.add(zb);}
-      const dim=r.st==='same',[stT,stC]=ST[r.st],kc=r.kind==='mod'?'#ffe6c4':r.col,sty={fontFamily:'NunitoUI, sans-serif',fontSize:'11px'};
-      const a=this.add.text(cL,ry+2,r.label,{...sty,color:dim?'#8a809a':kc}).setOrigin(0,0);if(a.width>cF-cL-62)a.setScale((cF-cL-62)/a.width);
-      const b=this.add.text(cF,ry+2,String(r.from),{...sty,color:dim?'#7a7088':'#cbbfd6'}).setOrigin(1,0);
-      const c=this.add.text(cT,ry+2,String(r.to),{...sty,fontStyle:dim?'normal':'bold',color:dim?'#7a7088':stC}).setOrigin(1,0);
-      const d=this.add.text(cS,ry+2,stT,{...sty,fontStyle:'bold',color:stC}).setOrigin(1,0);
-      this.menu.add([a,b,c,d]); ry+=rh; }
+    // v7.8.67 เจ้าของ: เลิกตารางเทียบ — บอกว่าชิ้นนี้มี mod อะไร + แต่ละตัวทำอะไร
+    const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id),mods=(selIt.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);
+    if(idf)lines.push({t:'◇ '+implicitText(selIt),c:IMPLICIT_COLOR[idf.rank],r:IMPLICIT_TIER[idf.rank],d:modDesc(idf)});else if(ib&&ib.unique)lines.push({t:'★ Unique',c:'#ff8f3a',d:ib.desc||''});
+    for(const {a,d} of mods)lines.push({t:d.emoji+' '+d.label+' '+d.fmt(a.v),c:'#ffe6c4',r:'T'+(a.t||3),d:modDesc(d)});
+    if(!mods.length)lines.push({t:'No mods yet · tap Craft to add some',c:'#8a809a'});
+    const free=Math.max(0,AFFIX_KIND_MAX-mods.length),rh=l=>l.d?36:24,top=y,h=24+lines.reduce((n,l)=>n+rh(l),0)+4,g=this.add.graphics();
+    g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
+    this.menu.add(this.add.text(22,top+6,'MODS',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a0'}));
+    this.menu.add(this.add.text(w-22,top+6,free?'🛠 '+free+' free slot'+(free>1?'s':''):'🛠 slots full',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:free?'#7de0a1':'#a99fbb'}).setOrigin(1,0));
+    let ry=top+22;
+    lines.forEach((l,i)=>{ const hh=rh(l); if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,hh);this.menu.add(zb);}
+      const t=this.add.text(22,ry+3,l.t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:l.c});const room=w-44-(l.r?40:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
+      if(l.r)this.menu.add(this.add.text(w-22,ry+3,l.r,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(1,0));
+      if(l.d){const dt=this.add.text(22,ry+18,l.d,{fontFamily:'NunitoUI, sans-serif',fontSize:'9.5px',color:'#b9abc5'});if(dt.width>w-44)dt.setScale((w-44)/dt.width);this.menu.add(dt);}
+      ry+=hh; });
     return top+h+6; }
   ptOnFreeze(e){ const PT=(this.player&&this.player._pt)||{};
     if(PT.fnova&&(this.elapsed||0)>=(this._ptNovaAt||0)){this._ptNovaAt=(this.elapsed||0)+0.25;const d=this.relicDmg?this.relicDmg(1.2):20;this.vfxHitRing(e.x,e.y,0xbdf0ff,false);this.enemies.children.iterate(o=>{if(o&&o.active&&o!==e&&this.dist(o.x,o.y,e.x,e.y)<95)this.damage(o,d,o.x,o.y);});}
