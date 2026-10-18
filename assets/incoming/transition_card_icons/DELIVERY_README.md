@@ -16,4 +16,4 @@ QA_REPORT.json records decode, PNG32, CRC, dimensions/grids, alpha, safe margins
 
 Incoming art only: no runtime wiring or game-version change in this delivery. The two-direction preview is an offline composition, not a device performance test. Source decoded size is 32.832 MiB; this is not the boot texture allocation. The brief reports Cocoa near the 300 MiB limit. Integrators should pack the curtain at 540×960, use 128×128 card icons loaded lazily by hero, and reuse/reduce transition textures as needed. Measure the actual boot GPU budget and phone FPS before accepting runtime integration. Prior art orders 23–25 are already integrated in v7.8.59; preserve newer runtime v7.8.67 changes.
 
-GitHub source-byte readback is recorded separately in UPLOAD_VERIFICATION.json after publication.
+All 100 initial delivery files were read back from GitHub at 1c770afb3aaf699fe43c816fb01dc4e1f8566b8a and matched byte length, SHA-256 and Git blob SHA. The full proof is UPLOAD_VERIFICATION.json. This metadata follow-up does not change source art.

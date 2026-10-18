@@ -1,7 +1,7 @@
-# Latest checkpoint — art26 delivery
+# Latest checkpoint — art26 delivered
 
-Updated 2026-10-18 Asia/Bangkok. Repo hardza1230/Survival-like-Mobile-Game; deploy/main claude/vampire-survival-mobile-game-yo9e8w. Preserved remote runtime v7.8.67 at 5320daf. Orders23–25 integrated in v7.8.59.
+Updated 2026-10-18 Asia/Bangkok. Repo hardza1230/Survival-like-Mobile-Game; deploy/main claude/vampire-survival-mobile-game-yo9e8w. Preserved runtime v7.8.67 from5320daf. Art23–25 integrated in v7.8.59.
 
-Art26 complete:82 PNG32 /90 frames in assets/incoming/transition_card_icons/ (77 icons +5 transition assets). All technical checks pass; all icons at24/90px, hero palettes, tile pairs, FX loops/fade and both wipe directions visually reviewed. Full prompts, manifest, QA/previews and README present. Incoming only; runtime wiring/device GPU/FPS pending. No game-version bump.
+Art26 complete:82 PNG32 /90 frames (77 unique card icons +5 transition assets) in assets/incoming/transition_card_icons/. Source commit1c770afb3aaf699fe43c816fb01dc4e1f8566b8a:100 changed files fully read back from GitHub, all byte lengths/SHA-256/Git blob SHAs match. UPLOAD_VERIFICATION.json is the complete proof. Technical and visual reviews passed:24/90px icon galleries, hero palettes, tile pairs, sparkle loop/puff fade, both wipe directions. Manifest/prompts/QA/previews/README included. Incoming only; runtime wiring, boot GPU budget and phone FPS pending; no game-version bump.
 
-Next: publish only incoming26 and CLAUDE.md, this checkpoint, AGENT_WORKFLOW.md, order26 status via GitHub exact-tree/lease route. Full raw-byte readback of every changed file, save UPLOAD_VERIFICATION.json, publish proof metadata, create ZIP in outputs and confirm final-commit Pages CI. Production ledgers/jobs/scripts retained locally in work/order26. No active generation. Do not regenerate or repeat prior orders.
+Proof metadata is included in this follow-up. Local deliverables: outputs/26_transition_card_icons.zip, icon galleries and transition preview; final publication/ZIP/CI checks are recorded in outputs/26_delivery_status.json. Local production ledgers/scripts in work/order26; no active generation. Do not regenerate art. Source memory32.832MiB is not runtime boot allocation. Integrator notes in DELIVERY_README.md and order26.

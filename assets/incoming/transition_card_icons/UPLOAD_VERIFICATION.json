@@ -1,0 +1,708 @@
+{
+  "status": "verified",
+  "commit": "1c770afb3aaf699fe43c816fb01dc4e1f8566b8a",
+  "fileCount": 100,
+  "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
+  "files": [
+    {
+      "file": "CLAUDE.md",
+      "bytes": 54744,
+      "sha256": "d5abc1a3185592c38c3a1f7d22008cebb30591914c9f1def5d6cd58c25cf9e3d",
+      "gitBlobSha": "01dbb11e5458c98ec6a4e9192186a9da1dd3c8e9",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/DELIVERY_README.md",
+      "bytes": 2540,
+      "sha256": "2e879f357ffea01664b82e7cd1440c4988ec11976a0860586989f2f9226a128a",
+      "gitBlobSha": "6db99dc28246b74eeedee1c0903308f7c56bd1fa",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/MANIFEST.json",
+      "bytes": 38400,
+      "sha256": "d49818146a7e5814479b3c9a9ab2c24d66aae4d60f39c390e0abc43ab6ef2e36",
+      "gitBlobSha": "a9b7837c566e3e8110ea8b438421eb2ff02af420",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/PROMPTS.json",
+      "bytes": 200806,
+      "sha256": "7dcc565d1d26655cce21d59ac704b6ff8a865eff27deb3a5077f835e6dbee382",
+      "gitBlobSha": "5504e52993a1628d1bcbfb1f027fbc4c8cbeb17a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_REPORT.json",
+      "bytes": 56987,
+      "sha256": "5dfc71dce0e21fc4e9d44f8d3773f73a86d9c4a66eb68fe82366528390f2f8ce",
+      "gitBlobSha": "ac7d2d0eb3bcf5ef6145518e87aa34f11b5afb39",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_hero_families.png",
+      "bytes": 1012559,
+      "sha256": "c536691a16b8ae163bca54689827e42b070417b17116c3aa0096778cbe219e33",
+      "gitBlobSha": "e96484e056e5d12f9b886822fa564ee7b2463c20",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_icons_24px.png",
+      "bytes": 135742,
+      "sha256": "6e4d8794963f7632d39a064f24d863f0f5ae40b20fd293084cbab256a52f14f6",
+      "gitBlobSha": "6c110bc76ed53b7e8368db095ac895ce1b0ccf20",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_icons_90px.png",
+      "bytes": 995396,
+      "sha256": "2ca9686dedefc19a2f2139accea29b659c9b52590d89c329935ddfc5fd4e5c12",
+      "gitBlobSha": "9021cb800d363757d7c2a401dbc7bf6a01899273",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_style_reference.png",
+      "bytes": 495311,
+      "sha256": "89b6308c6ffa26487de8b21625ba11b337e01e1ee3ad79ef5fcd7d9cb0d6ff59",
+      "gitBlobSha": "809acbc874ccff80252d6e04c8759723c74018d8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_tr_curtain_tile_pair.png",
+      "bytes": 318185,
+      "sha256": "9ac428c0114ab0787e27f12ab4620edbd2c19bddfce03fbd57659a243a320d45",
+      "gitBlobSha": "82e46de2b3d1c932a8125f310a0537eafc463711",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_tr_edge_tile_pair.png",
+      "bytes": 446716,
+      "sha256": "ed271593f3ca5a76a542c7a03bea2c7ef8abb4e0b9233c92de1c5206f4718b4c",
+      "gitBlobSha": "c5fcdc9af949085c612a1edcf01034d23c9cc6e7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_transition_forward_back.gif",
+      "bytes": 2190995,
+      "sha256": "fe79aea1e21222997f22cc02e99b84c5a5d94193feb5061337d58978e76f7e36",
+      "gitBlobSha": "22d3688dae5733f66aa2d2f0670d1c2235bd93c2",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_transition_montage.png",
+      "bytes": 1035208,
+      "sha256": "d18193c91b66bc44015901d0d00f548fee8cee3d3568e3c23ca4faf74212b7fb",
+      "gitBlobSha": "68c7f314c30aa4b0e997a492ff9c03a41fc2b900",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_vfx_tr_edge_sparkle.gif",
+      "bytes": 42861,
+      "sha256": "4cdc6b480aa824563d7eed2bdf01d01da90d2f4aa2ea0f74208e4e129a5c07a4",
+      "gitBlobSha": "292d8ededdec306c671566619adc0ed0923aedff",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/QA_vfx_tr_puff.gif",
+      "bytes": 117295,
+      "sha256": "2f4c31b38b46a86638abf9c3124e293649c3628554ff1e57e9c86d3259dfbcfb",
+      "gitBlobSha": "5a0d6cab65502ee6750ae2e70d6c4190590c1694",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_cocoa_dashp.png",
+      "bytes": 73395,
+      "sha256": "182de40b5dd7dd7f24eea1c6ac7878642658c968de5b1a4e5d9579f9fd520913",
+      "gitBlobSha": "4478805e3bc20f470e11a0da718f4eda3d89c2ca",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_cocoa_drum.png",
+      "bytes": 103625,
+      "sha256": "2799a9069be15e0d21fe56930f728b621f6bf4446671c317545817c9cacb7053",
+      "gitBlobSha": "378ef2057a03bf64a037d3302a54b8a33547b84c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_evo_berry.png",
+      "bytes": 104578,
+      "sha256": "b92cfa48aef42364597590d91164028793e2e683d83756bef887a81fceee8a97",
+      "gitBlobSha": "8089a2ee17f2fd2df81c78811f4e29af829a75c0",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_evo_cocoa.png",
+      "bytes": 115412,
+      "sha256": "4b9bb526f778309432653b5ac5734a7b95c152bdf0230db057c2ff102ce90736",
+      "gitBlobSha": "bec66bd8606e0f629d13d214892ffd980a0e11c4",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_evo_mint.png",
+      "bytes": 89470,
+      "sha256": "298665205229339a1b88c4153ac56dc3dc697a4cbf4b9c04d3fa1d66e2c12002",
+      "gitBlobSha": "df37639ae8fde09e2b5b4358cbcbddee5aebffc0",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_evo_momo.png",
+      "bytes": 114061,
+      "sha256": "761bf65047b966ae3f1430f50d787e3bfb6986bb6c11c3f4cf436155f7243a7c",
+      "gitBlobSha": "93590f92df47113806099569a7735fdbf194ec60",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_evo_sesame.png",
+      "bytes": 92772,
+      "sha256": "2e261697cf056f84344f2bea72ea29d1e28604d3687554b5c2577f3b2133520e",
+      "gitBlobSha": "788938b6fe11249bb198808bc363c837b810718b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_evo_taro.png",
+      "bytes": 105665,
+      "sha256": "5a2d00a021b7d92c7a4ced77a31a78a2270c8482ff77af69ee1239503ae0511b",
+      "gitBlobSha": "9450c792a2f9940dd6accb7c95110c60e6872947",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_crownseed.png",
+      "bytes": 113648,
+      "sha256": "0fc3fc2a02093571c22ed573ba34ec1d66fe302f64b3f88f3ce30741e52b0e33",
+      "gitBlobSha": "39c1bd15e515c2ef272b68219892171ffed44712",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_glacier.png",
+      "bytes": 102915,
+      "sha256": "eca429e8a1194f522d8b6d91646502b3dea72eb6dcf16da0cabd550e58286681",
+      "gitBlobSha": "5e1049d66e72832beaddbfb2407c86abd43392d4",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_heartburst.png",
+      "bytes": 81291,
+      "sha256": "295bf99145aef5776a2d0516b29079ea6934112b093f2eb28585e10ef2f7baf0",
+      "gitBlobSha": "19e3c7bdfbadb8934277ca7fed6c0e9e230c6f8a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_horizon.png",
+      "bytes": 94917,
+      "sha256": "d7614975640298e13d7813624ed240ea20b0ab29b03dac8bb0379bac58da7e94",
+      "gitBlobSha": "7ef428c6eeec3ed8e63c3312fa41ab84a244324f",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_lastbear.png",
+      "bytes": 112874,
+      "sha256": "5feca38eba43e6bfe17d06161861ff5275cb4899b79491375493d7bb671629e3",
+      "gitBlobSha": "a957742d601488aa95fcd9455558aff399f3cc47",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_prismnova.png",
+      "bytes": 110182,
+      "sha256": "c6a99012059188785f6fcaf53249d0209d2d8cf49b9b40793e8401bbdeff5fab",
+      "gitBlobSha": "59fe3e08f66c608e794ac35d8ff3e2a1141535fd",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_quakeking.png",
+      "bytes": 106304,
+      "sha256": "c6dbd57708b356106732d83c87705b4ddef45c4f23302edd3d56540320c50ac4",
+      "gitBlobSha": "3d67e6954e052133e93daed8275d103f8b9ab65e",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_shardstorm.png",
+      "bytes": 103134,
+      "sha256": "7d74eb92d8fcb36988fc05fa2b4cb76388473506921529986baefd26a79a868a",
+      "gitBlobSha": "0c9fa8ab8a9dfb170f3a928be387c0df8de39bbe",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_skyjudge.png",
+      "bytes": 114540,
+      "sha256": "2b10e1389376edfa9e5e2aa585c42958c500361702a6c997e5d13a761a464a0a",
+      "gitBlobSha": "5d0d4ba7ddf367c4eb90081df7e10cccd41921c4",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_fus_tempest.png",
+      "bytes": 102279,
+      "sha256": "c3eeb686964a7dbe3093cb591606a5ba3e38706f6810bcb8f284a425b44bd59e",
+      "gitBlobSha": "746fb8301974c5be722617160731aba8bf5c82e6",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_inf_minty.png",
+      "bytes": 101252,
+      "sha256": "ea8564ee3d73309220172f6504e51cc3a3c72b29cfa38c1e34b999b61ab551d9",
+      "gitBlobSha": "0e87fb2c48307a29e5e6f18229e44c4a52c0f38d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_inf_sour.png",
+      "bytes": 95930,
+      "sha256": "a4d505cd3acf63266904ba0648dabc4e07b59c0ccea65c738065340ba69450b2",
+      "gitBlobSha": "5089b84682c2ef7a2e686dfbc72cf13080b67659",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_inf_spicy.png",
+      "bytes": 89309,
+      "sha256": "5c836ecf267c8ee0c74cc5e11644ad4ed76f2c8425a13c505b4e3d3c5c50336f",
+      "gitBlobSha": "55d64cd6ae00ed8d48f286869311d11d9b1002e5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_inf_sweet.png",
+      "bytes": 81752,
+      "sha256": "df9941d16984dc542ac53293bcb91a3b55612918da683fdeb12885ffdd372e74",
+      "gitBlobSha": "7e568791516fb0eebb73b0a82c0b18945a8ac44a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_after.png",
+      "bytes": 88785,
+      "sha256": "92b91b3e1d66fd86613076135b48480727ca891cca498d282aeaaf387a13f311",
+      "gitBlobSha": "b0f9b78950a70eb315bb0323b1b8e1755b4849b5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_aim.png",
+      "bytes": 90224,
+      "sha256": "9a193aa2039676a59d9d031cf6836151c1802f997679e192683c9e5a4e3a9577",
+      "gitBlobSha": "d0b6ff5b81b502fdadb29d73e3e082223351926b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_bloom.png",
+      "bytes": 96166,
+      "sha256": "36ff3b54b6e39f3d45856508d839a683b2d3eb6eaba96e65afb11cde961ae302",
+      "gitBlobSha": "67e34c18738165b76370e0e0e679de578da24d1b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_coldarc.png",
+      "bytes": 60826,
+      "sha256": "fc6211cda7d96cd5d00d208a403ca8811866e8b6b8e45a40bbed710ee96f16b5",
+      "gitBlobSha": "66b5b12560b8780954fd158db400a88ebf2c378b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_crush.png",
+      "bytes": 74504,
+      "sha256": "796a808b0c2e9dfe9111bd7cd5ace1f6a96728d75c2d63a94abeae10b392bfde",
+      "gitBlobSha": "625ee9a64e1a83c6480c1e2267184ea17c6bb2a2",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_exec.png",
+      "bytes": 80566,
+      "sha256": "76b34b6feedb4e5d4d2f793776a7631664c33288dfe2edca364d27a96709980a",
+      "gitBlobSha": "2f921267259a49fd9a9de6d6e2390c7b241f3e33",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_field.png",
+      "bytes": 63108,
+      "sha256": "368079d7185cf57b389692a1c14f668d002be2c16ad7e195a9cf91f4a1b6151a",
+      "gitBlobSha": "dd1c77d7353525ff612a46c382b13e0d36b33dd7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_flurry.png",
+      "bytes": 107023,
+      "sha256": "798ade87ea62709c88b7f4e3ef2837e975ecae7e96de18ae0503c3133dc65d51",
+      "gitBlobSha": "6115e28f48812e0ee8a1df87b768bdf25011b23f",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_focus.png",
+      "bytes": 79263,
+      "sha256": "2c3a8e5b66fb0f6bb0691d1a95ea9217faaec0b4d3012e1f5d4b3c5c220817a5",
+      "gitBlobSha": "cc2540d92309298dd5e58c0a4a35257442912bc8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_glide.png",
+      "bytes": 78928,
+      "sha256": "7c1e5bd294cf32a85d91e30bbf6bf43d55226d71df91e3c903268068c3e8cf98",
+      "gitBlobSha": "1c8dd4973badde854b679fabd0853515a014617c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_heart.png",
+      "bytes": 79576,
+      "sha256": "8d89c315effda58511ff0cc1ca0691b01ec6d4d254ea06a88bb03e48369b9b04",
+      "gitBlobSha": "e7bd22184349d4091880df9e666fe14dec372b3d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_icemine.png",
+      "bytes": 77001,
+      "sha256": "7e4231e80e64dd684b47516e9eecdaf5bc19abeca533be50c4eed7ef8d67266c",
+      "gitBlobSha": "276b2fc0b2437dfc6d82e34c580bc67ebd6ef7a8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_ion.png",
+      "bytes": 87825,
+      "sha256": "7b526b0e11b239aa26d0070805b9fa03bd89141fa36185f7516955dcd27eaa15",
+      "gitBlobSha": "600d89d03a06bfde223db5bcc5eb729b1903177d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_jam.png",
+      "bytes": 78619,
+      "sha256": "b2b4e7005509fb084191d2cf28494535c5d5171aa74ef64e42bd3cbba1ffb942",
+      "gitBlobSha": "6637878509249a6b0b2030d7e64989381483eda6",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_judge.png",
+      "bytes": 98888,
+      "sha256": "8f5e607636dd723e00cefc7eda2e6b647d08c5829048ff503c4105b58723daba",
+      "gitBlobSha": "31eb592f9e3a19aca2074e689480c772636ff7de",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_ko.png",
+      "bytes": 75674,
+      "sha256": "dbde6824fc2712050ee785465aa464f78b731bb58be0fc7f0b9af1340f94b4f4",
+      "gitBlobSha": "9990bde51764087e8a4d392ae217633f6e7af9a3",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_lens.png",
+      "bytes": 81291,
+      "sha256": "2313208771e6ad0c198722e1e03219ec3eba593c7df5f65625b82bec08bf91a3",
+      "gitBlobSha": "e30594faf97efcc0d2af556d7a0f051a676f63bc",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_love.png",
+      "bytes": 87353,
+      "sha256": "1842706f12c2d0db27b4b2953a14530241eefd497cd8f8d6739a707796d000a6",
+      "gitBlobSha": "6a3fbeddddbd0fd0ac4a2244ccb4ea74f44435a1",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_mirror.png",
+      "bytes": 79153,
+      "sha256": "48fc80a1c7874f0c67e560cf5a8e2f986b6021f09f517a3e9cbe1d07bc1d8208",
+      "gitBlobSha": "756ff5b4ae6db08142527c94bba8a654718d0c39",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_over.png",
+      "bytes": 56829,
+      "sha256": "86e5ec96cdf2911204f7e21c75a4285f58ce04c21666f146c8c960a0f2364077",
+      "gitBlobSha": "f38829946a2c4b68ec7aafce7127ff030a529a6b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_prism.png",
+      "bytes": 97335,
+      "sha256": "439f04bbd41b5912269c4b75b0cc6cf83acf3b67349260bdeecbef54ea629616",
+      "gitBlobSha": "220d065f15bcd3514233fafbf7d75e4626608532",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_quake.png",
+      "bytes": 93343,
+      "sha256": "fc8db673ca41154303f2b1be276ff3594ad488f3bda06aed778525143cad45f2",
+      "gitBlobSha": "21fafb1eda24b264b57cf93631834e2c4081b935",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_rage.png",
+      "bytes": 66795,
+      "sha256": "93849b87531ac3dc04edff473c1a242b720ca5264c66581cf2e6379a4f395947",
+      "gitBlobSha": "768cbe0aefc62e7d7f66fb548f0e686c30982de1",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_refract.png",
+      "bytes": 61993,
+      "sha256": "bcd949333919b403c3205591683eaabd66acbf53708bc03431c89ac128e1da39",
+      "gitBlobSha": "3be09dba6feee03862aa43cf8a9dca58e9b54a8d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_scope.png",
+      "bytes": 74795,
+      "sha256": "3c2ef4611c20d21d8d8592fb5f10db4eb8e155208dc6f84504c2efac35efcef9",
+      "gitBlobSha": "04d4355fa7116ea389374f845f07117bdba5ad56",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_shatter.png",
+      "bytes": 96275,
+      "sha256": "f368ab8a832ad842b6edfaed732517788afcc3beec9f4595ec90d68d01e199f0",
+      "gitBlobSha": "41eb86b0e1865d3fcb2f530445eca7d1a2b9db69",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_spray.png",
+      "bytes": 74082,
+      "sha256": "007e88e57ccdf52ea4ebc30516c8d0a73a80a93d7949303e8e1eb0c19dcfea03",
+      "gitBlobSha": "d8f0df4d192545f65e6a35229f9d993d2be759a5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_step.png",
+      "bytes": 89367,
+      "sha256": "6775a3214e26668e6a5d2b6f3cd2e6e02e876e2ebbcc147c2d4ebe514bc52081",
+      "gitBlobSha": "e61acf605d18dfdcf61ebfd16f9685e4b57f4097",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_stomp.png",
+      "bytes": 84171,
+      "sha256": "cfebd1a06f8b698e70069d4fb516abce9b5d0bfe21897d94d9c19cd3e9d67dd4",
+      "gitBlobSha": "a138aa16aca53a674943dbdf7edb6769578497fb",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mod_throw.png",
+      "bytes": 55272,
+      "sha256": "1785c3f819642eae56544f38710531c612ec26fbbec030af8730e3c95f06e9cf",
+      "gitBlobSha": "35750fca632e86f8ec16fa9e3c2e19436016b919",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_berry_seeker.png",
+      "bytes": 68205,
+      "sha256": "6f0b13d492b2283c64546f4a90bef650b84a8280de0785d0244175d98930b431",
+      "gitBlobSha": "3299db742fece0aaa1a1755f28f9f1d1445c0298",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_berry_sticky.png",
+      "bytes": 91656,
+      "sha256": "f45becf59a329336d97bc4e95c6290a5a305c975774d3af9e7be401ac60776fc",
+      "gitBlobSha": "da9a5b00280bcdbc7f25466b4423ba4ab63ac45a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_cocoa_breaker.png",
+      "bytes": 98507,
+      "sha256": "33ed6ab41dcaff53524c72cc1ddc2f1f0582655c80e333be67ea491265675a17",
+      "gitBlobSha": "ff510918e631b33ae09989d980a3a9b84192f76c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_cocoa_counter.png",
+      "bytes": 88382,
+      "sha256": "cdb3477299ed7aa113a7c8222cd783d691b4b1b7c4b5719b6f5739122cd527bc",
+      "gitBlobSha": "df59168577dc00233a0e1e9af0d4d7cda3beaba9",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_cocoa_rush.png",
+      "bytes": 81079,
+      "sha256": "f15d6e0d15d69fd41385cd032cdd3ee8b9698509e54a3360c92640bd7e3382d0",
+      "gitBlobSha": "35ba789d939282cc301ddb9b282e2455904c3e08",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_mint_blizzard.png",
+      "bytes": 82105,
+      "sha256": "0761bab5ae836a28f1228e7c3f844bb016d6a40b274b6ec407b0221d0ee5d8df",
+      "gitBlobSha": "f569d791368e0da2d00017437cfdbb5887c41e4b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_mint_permafrost.png",
+      "bytes": 99458,
+      "sha256": "fcae9920e1045a90f665d075dc8caf065902441698257b824f0e4209ba8c6d7a",
+      "gitBlobSha": "8dcca676906ae8918879b8c14f6b7415a8955520",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_momo_fan.png",
+      "bytes": 77173,
+      "sha256": "5e02cddc8ea9e430323c8d69fe3851d9d2beb70a3f9527a2252200bcd43bc0fb",
+      "gitBlobSha": "595d6c900e39c8b029f2eebd504a35d0cf43db4c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_momo_ricochet.png",
+      "bytes": 73392,
+      "sha256": "b7bf16b6a51a20d446ac5e1779d25b16c38d832a1944acaedc8f362b4c8a18f3",
+      "gitBlobSha": "658b36dd754983e24c41f12cf27876dc26cc1c6d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_sesame_fortress.png",
+      "bytes": 94936,
+      "sha256": "982587887950ed189eca2b6e4a1c8642f1d0610f3bf2524c0d32d73cb02db4c0",
+      "gitBlobSha": "78a44805c3f79081fbe58e442afb1e45ef900ab2",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_sesame_retaliate.png",
+      "bytes": 94448,
+      "sha256": "692f22a3f1e264cc9783b19572171b36886f66024274ed4719542240f5ecf973",
+      "gitBlobSha": "97c6e28c53fba96e93c2c72efecf9c5e120ae4e8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_taro_chainlord.png",
+      "bytes": 92758,
+      "sha256": "20a44304a73aacb4bef9d4fb2376c872ca7cb7d85cc822549ed33815a530b60f",
+      "gitBlobSha": "920b9eac56271ff6194735b6f3d45edfbd7fe62e",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_mut_taro_stormcaller.png",
+      "bytes": 83004,
+      "sha256": "37169bed5286b888e983a8738771ceee9da6893acf2f13349b409e7d39f7ee45",
+      "gitBlobSha": "a03b48b9a1a8a0145c9c9de059d82890d7c52060",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_armor.png",
+      "bytes": 86656,
+      "sha256": "bf93263ea634a376d81182c081f9c030e0d7e4374bbad82ffcba8a3a86f6f18b",
+      "gitBlobSha": "d463e6552d89653a780f9af50290ac58b13cc86e",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_berserk.png",
+      "bytes": 103942,
+      "sha256": "2d00bd2ad85dc0c320a2ad499bc3d6578b236859be6eec7f32fd90be7e7b8835",
+      "gitBlobSha": "51ef1c7e438ae7e0491d113f2dc805d3ad179505",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_burn.png",
+      "bytes": 70951,
+      "sha256": "bf4e9f7f9e466a0662f49d77f9c33b5f79b9f75611b152e2d7d6d8bec4b96e60",
+      "gitBlobSha": "bbd1e3d425d340252ac0ddffc4ef78107afbff79",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_core.png",
+      "bytes": 93508,
+      "sha256": "2b7161dbd9df73c4ae2bd584d3cd5cb6613df467ab3e89143d235fcdaaad791f",
+      "gitBlobSha": "612c2602b4d1c14159d89de165ac40a415657ff0",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_feast.png",
+      "bytes": 96511,
+      "sha256": "8af5aee6a0841740461aa5f892eb5f1015968f48eefa87a3394596275ee08f1d",
+      "gitBlobSha": "27beb5fc42c073bae01fcac6d1ee3986d2742eab",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_glass.png",
+      "bytes": 90278,
+      "sha256": "5dc937ca3840a19b4134ef43f4b6122320e5ef013df27a700d3f2dd586747e41",
+      "gitBlobSha": "ef89ce746dcb20333d5c501fd90fae017abcd42c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_oath.png",
+      "bytes": 84859,
+      "sha256": "a9406ca5478db05b8a527cb1aea1b9255afce8ee0ce6062a54a6838398e6e929",
+      "gitBlobSha": "3bc9f370cbdf788eed7bfd3fabc6e1183c3e2479",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/ic_trade_rush.png",
+      "bytes": 71444,
+      "sha256": "fb364973fa79dac0c6caaf42db942e5aba3386f6e66967d332ad527f073d62ca",
+      "gitBlobSha": "ed85b7059b5bb461f929d3fd09d17929b7eafad7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/relic_dashcharge.png",
+      "bytes": 85776,
+      "sha256": "f3dc239bf535c9722d68ecdbc973df5a672786bd994a7519449a6b39f821df76",
+      "gitBlobSha": "891db2a92a2832eecc1cb2c550e9d26551377c27",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/relic_firstbite.png",
+      "bytes": 64358,
+      "sha256": "352fa8ceb69dd85390fb8fcff9c9ed556d825804e86c90bd4aae94005f7b0da7",
+      "gitBlobSha": "fceeb3855f876ed10f31cbfcd9d52379ee5bc778",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/relic_harvest.png",
+      "bytes": 83731,
+      "sha256": "83003dc5b9188fb90ad5c669b68c7e00e771fe429b75fdfc03d00faf67cdc5eb",
+      "gitBlobSha": "08794686689846a3c00661616fbf37c6502056bc",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/relic_trophy.png",
+      "bytes": 88518,
+      "sha256": "b7d6113100d3a9d0a94dd0da9071cc1770bcdc435061ec0b344828d625357014",
+      "gitBlobSha": "4e67bfa1ca9e898b8063eec4c8171c0047cd6df1",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/tr_curtain.png",
+      "bytes": 1601400,
+      "sha256": "626621401c9127d0ed3ce0e04f2cdb55e4e6963bf771aa2f3bb16d6ab6991506",
+      "gitBlobSha": "50f234fe33099736df45f6ae551163c617a752c7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/tr_edge.png",
+      "bytes": 374536,
+      "sha256": "6c4ba05ac8e2704ab812c9f953ebdf74928924666b0e6d031592b26584f4fc09",
+      "gitBlobSha": "c0bcfa7e5e18a6fabc446b2058b990a7759bf45f",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/tr_emblem.png",
+      "bytes": 265070,
+      "sha256": "7e66c17a80ac3c6fc3abe24d02adfe4b7d0c88723e8cc759ece750fe0c56d263",
+      "gitBlobSha": "977e50557563ec379f28263ac4fc21802b0d2755",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/vfx_tr_edge_sparkle.png",
+      "bytes": 118084,
+      "sha256": "a073c7b325ed24d36ba89ee48ab768dec9f5c3132e93aac687ef82c578ef120d",
+      "gitBlobSha": "bb6cc777227f8b4c96f946e52004b1ac51f6798e",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/transition_card_icons/vfx_tr_puff.png",
+      "bytes": 268709,
+      "sha256": "55a1ccef56207a1cd856e011ba441ef216b2462731e4c97da4dddedcfc42e466",
+      "gitBlobSha": "c586852f282ca74d9c840829def9082883ef2954",
+      "status": "pass"
+    },
+    {
+      "file": "docs/AGENT_WORKFLOW.md",
+      "bytes": 9820,
+      "sha256": "2aad91be28b41a670fd4eb9a69f982acaa614c843aaaeeeed1b02a3f9b840939",
+      "gitBlobSha": "ea8ce0ed4694a0de257a8ab1b3357447330299bc",
+      "status": "pass"
+    },
+    {
+      "file": "docs/SESSION_HANDOFF.md",
+      "bytes": 1050,
+      "sha256": "905520eb447aa1fda2156ad8b7b4daa3b2f904e567c9896ea4082948e1172a4a",
+      "gitBlobSha": "d26d7d708dc1bcbeb7cca3db7cdb74dac5bf88f2",
+      "status": "pass"
+    },
+    {
+      "file": "docs/art_orders/26_TRANSITION_AND_CARD_ICONS.md",
+      "bytes": 26874,
+      "sha256": "ae76d09996d7c60f8a2736e5656ffb91127016323ad9eafb9505599f756fa444",
+      "gitBlobSha": "c1ac06deefe8302ec31dc6c20de6f19d16801292",
+      "status": "pass"
+    }
+  ]
+}

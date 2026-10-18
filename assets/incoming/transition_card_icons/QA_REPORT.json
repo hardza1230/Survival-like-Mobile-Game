@@ -2216,7 +2216,11 @@
     "limitation": "Offline asset review only. Runtime wiring, device GPU budget and phone FPS pending."
   },
   "remoteReadback": {
-    "status": "pending publication"
+    "status": "verified",
+    "commit": "1c770afb3aaf699fe43c816fb01dc4e1f8566b8a",
+    "fileCount": 100,
+    "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
+    "proof": "UPLOAD_VERIFICATION.json"
   },
   "decodedMiB": 32.832,
   "technicalContracts": {

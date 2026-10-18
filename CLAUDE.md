@@ -12,7 +12,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Art delivery 26 — Transition and card icons
 
-82 PNG32 sources /90 frames delivered to assets/incoming/transition_card_icons/:77 distinct card icons plus5 transition assets. Manifest, built-in ImageGen prompts, technical QA, 24/90px icon galleries, hero-family review, tile pairs and both-direction offline transition previews included. Source decoded32.832MiB; runtime wiring, boot GPU budget and phone FPS pending. No game-version change; preserve current v7.8.67. GitHub full-byte proof follows in UPLOAD_VERIFICATION.json.
+82 PNG32 sources /90 frames delivered to assets/incoming/transition_card_icons/:77 distinct card icons plus5 transition assets. Manifest, built-in ImageGen prompts, technical QA, 24/90px icon galleries, hero-family review, tile pairs and both-direction offline transition previews included. Source decoded32.832MiB; runtime wiring, boot GPU budget and phone FPS pending. No game-version change; preserve current v7.8.67. All100 initial delivery files byte-verified from GitHub at1c770afb; exact proof in UPLOAD_VERIFICATION.json.
 
 # Art delivery 25 — Hub motion
 
