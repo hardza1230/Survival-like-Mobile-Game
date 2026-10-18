@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.60';
+const GAME_VERSION = '7.8.61';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.61',date:'2026-10-18',title:'Slower Arc Chain',items:['Arc lightning now takes 0.2s per jump (was 0.085s), so you can see it travel from target to target']},
   {v:'7.8.60',date:'2026-10-18',title:'Stage Stars and Menu Transitions',items:['Every story stage now has 3 stars: ★ clear the stage · ★ finish with 70%+ HP · ★ never drop below 30% HP','Each new star pays bonus Sugar (more on harder difficulties); best stars show on the stage list and the clear screen','Menu screens now slide in with a curtain wipe when you switch pages']},
   {v:'7.8.59',date:'2026-10-18',title:'Living Menu, New Level-Up and Pause Screens',items:['Main menu comes alive: Momo breathes, blinks and waves her wand; braid, cape, ribbon and flowers sway; petals, fireflies, castle lights, clouds and twinkling stars move; menu icons animate','New painted level-up cards: card frames in each skill’s colour, icon medallions, ribbons for special cards, a glowing selection frame, and a burst when you confirm','New Pause screen: crest title, difficulty / level / wave chips, stat bar, loot tiles, skill slots, relic list and big Resume button','Fixed Relic cards sometimes showing “undefined”']},
   {v:'7.8.58',date:'2026-10-18',title:'Hero Feedback Pass',items:['Spark: sparks no longer vanish when they hit — they fly until their timer ends','Spark Storm Unique sprays sparks in two full clockwise circles around Taro','Arc: lightning now travels from target to target instead of jumping instantly','Mint Barrage: at most 2 lances; extra lance cards add shard damage','Mint Frost Lance Charge: the dash ends with a heavy strike on the nearest enemy that heals you (30% of damage, max 8% HP)','Mint Glacier Bloom: frozen enemies get Frostbite and burn over time','Cocoa Rocket Gauntlet: rockets fly much faster and keep chasing until they hit','Cocoa Phantom Rush: every Dash before casting adds +1 leap and faster leaps (max +5)','Level-up cards open after a short LEVEL UP moment instead of instantly']},
@@ -6568,7 +6569,7 @@ const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,T
 // v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
 const STAGE_STARS=[{name:'Clear the stage'},{name:'Finish with 70%+ HP'},{name:'Never drop below 30% HP'}],STAGE_STAR_SUGAR=30;
 const LEVELUP_DELAY_MS=650;   // v7.8.58 หน่วงก่อนเปิดการ์ดเลเวลอัพ
-const TARO_ARC_HOP_MS=85;   // v7.8.58 Arc: เวลาเดินทางต่อ 1 กระโดด (ms)
+const TARO_ARC_HOP_MS=200;   // v7.8.61 เจ้าของ: 85→200 ms ต่อ 1 กระโดด
 const TARO_MARK_RANGE=700,TARO_MARK_TIME=6,TARO_MARK_BONUS=1.5,TARO_MARK_TURN=8,TARO_MARK_BLAST_R=130,TARO_ORB_SEEK=360,TARO_ORB_TURN=2.6,TARO_ORB_LINGER=.3,TARO_ORB_BIG_GAP=.18,TARO_UQ_GROW=.12,TARO_STATIC_HITS=40,TARO_STATIC_MUL=13,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
 const SEASON_PETALS=12;   // v7.8.55 เจ้าของเลือก A: C2-4 Seasonal Harvest — ฆ่ามอน = กลีบของฤดูปัจจุบัน · 4 ฤดู × 12 · ไม่มีพลาด
 const TARO_SHOCK_MAX_BIG=15,TARO_DISCHARGE_HITS=25,TARO_DISCHARGE_MUL=10;   // v7.8.52 เจ้าของ A+B+C Sentry: Shock บนบอส/มินิ 15 ชั้น · ช็อตโดนตัวเดิมครบ 25 = ฟ้าผ่า ×10 · ลูกบอลระเบิดตอนหมดอายุเป็นพื้นฐาน
