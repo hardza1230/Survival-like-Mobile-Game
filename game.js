@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.59';
+const GAME_VERSION = '7.8.60';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.60',date:'2026-10-18',title:'Stage Stars and Menu Transitions',items:['Every story stage now has 3 stars: ★ clear the stage · ★ finish with 70%+ HP · ★ never drop below 30% HP','Each new star pays bonus Sugar (more on harder difficulties); best stars show on the stage list and the clear screen','Menu screens now slide in with a curtain wipe when you switch pages']},
   {v:'7.8.59',date:'2026-10-18',title:'Living Menu, New Level-Up and Pause Screens',items:['Main menu comes alive: Momo breathes, blinks and waves her wand; braid, cape, ribbon and flowers sway; petals, fireflies, castle lights, clouds and twinkling stars move; menu icons animate','New painted level-up cards: card frames in each skill’s colour, icon medallions, ribbons for special cards, a glowing selection frame, and a burst when you confirm','New Pause screen: crest title, difficulty / level / wave chips, stat bar, loot tiles, skill slots, relic list and big Resume button','Fixed Relic cards sometimes showing “undefined”']},
   {v:'7.8.58',date:'2026-10-18',title:'Hero Feedback Pass',items:['Spark: sparks no longer vanish when they hit — they fly until their timer ends','Spark Storm Unique sprays sparks in two full clockwise circles around Taro','Arc: lightning now travels from target to target instead of jumping instantly','Mint Barrage: at most 2 lances; extra lance cards add shard damage','Mint Frost Lance Charge: the dash ends with a heavy strike on the nearest enemy that heals you (30% of damage, max 8% HP)','Mint Glacier Bloom: frozen enemies get Frostbite and burn over time','Cocoa Rocket Gauntlet: rockets fly much faster and keep chasing until they hit','Cocoa Phantom Rush: every Dash before casting adds +1 leap and faster leaps (max +5)','Level-up cards open after a short LEVEL UP moment instead of instantly']},
   {v:'7.8.57',date:'2026-10-18',title:'Chapter 1–2 Boss Attack Art',items:['Every Chapter 1–2 boss and miniboss now has its own themed warning rings, explosions, shockwaves and charge lanes (acid, sewer bubbles, chili fire, ice, golden crown, roots, spores, honey, seasons, root crown)','19 signature attacks get their own effects: Nest Collapse, Suction Valve, Trapping Bubble, Flavor Grinder, Furnace Overheat, Ice Cage, Frost Storm, Sovereign’s Blade, Maw of the Void, Eclipse of Flavor, Root Breach, Full Bloom, Spore Mortar, Heartstorm, Honey Prison/Wax Cage, Royal Dive, Crown Cage, Root Choir and Memory Eclipse','Hit areas, timings and damage are unchanged — the art matches the real danger zones; enemy bullets keep their single readable colour']},
@@ -6564,6 +6565,8 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=4,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=110,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=16,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
+// v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
+const STAGE_STARS=[{name:'Clear the stage'},{name:'Finish with 70%+ HP'},{name:'Never drop below 30% HP'}],STAGE_STAR_SUGAR=30;
 const LEVELUP_DELAY_MS=650;   // v7.8.58 หน่วงก่อนเปิดการ์ดเลเวลอัพ
 const TARO_ARC_HOP_MS=85;   // v7.8.58 Arc: เวลาเดินทางต่อ 1 กระโดด (ms)
 const TARO_MARK_RANGE=700,TARO_MARK_TIME=6,TARO_MARK_BONUS=1.5,TARO_MARK_TURN=8,TARO_MARK_BLAST_R=130,TARO_ORB_SEEK=360,TARO_ORB_TURN=2.6,TARO_ORB_LINGER=.3,TARO_ORB_BIG_GAP=.18,TARO_UQ_GROW=.12,TARO_STATIC_HITS=40,TARO_STATIC_MUL=13,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=16,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
@@ -7845,6 +7848,10 @@ class Game extends Phaser.Scene {
     let bottom=0;for(const o of m.list){if(!o||!o.visible||o._menuBackdrop||o===this._gearPinned)continue;try{const bounds=o.getBounds();if(bounds&&Number.isFinite(bounds.bottom))bottom=Math.max(bottom,bounds.bottom);}catch(e){}}
     for(const z of this.tapZones||[])if(z.fixedY==null&&Number.isFinite(z.y+z.h))bottom=Math.max(bottom,z.y+z.h);
     this._mScrollMax=Math.max(0,Math.ceil(bottom-this.H+24));this.setMenuScroll(this._mScroll||0);}
+  // v7.8.60 สลับหน้าเมนู: ม่านม่วงเข้มปิดทั้งจอแล้ว "ปาด" ออก (หน้าใหม่ = ปาดไปซ้าย · ย้อนกลับ = ปาดไปขวา) + แถบแสงขอบ · ไม่ใช้ alpha ของเมนู (เคยเห็นพื้นโลกวาบ)
+  menuTransition(forward){ if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
+    const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),veil=this.add.rectangle(0,0,w,h,0x24142f,1).setOrigin(0),edge=this.add.rectangle(forward?0:w,0,10,h,0xffd6ea,.9).setOrigin(forward?1:0,0);c.add([veil,edge]);this._menuWipe=c;
+    const prog={t:0};this.tweens.add({targets:prog,t:1,duration:300,ease:'Cubic.inOut',onUpdate:()=>{const x=w*prog.t;if(forward){veil.setX(-x);edge.setX(w-x);}else{veil.setX(x);edge.setX(x);}veil.setAlpha(1-.35*prog.t);edge.setAlpha(.9*(1-prog.t*.6));},onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); }
   cancelMenuMotion(){ this._mVelocity=0;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;} }
   menuPointerDown(p){
     if(this._mDrag)return;const moving=Math.abs(this._mVelocity||0)>35;this._mVelocity=0;
@@ -7949,10 +7956,12 @@ class Game extends Phaser.Scene {
         setTimeout(go,10000); try{ this.ensureGroup(k=>ks.has(k),go,{all:true,quiet:true}); }catch(e){ go(); } return; } }
     if(s!=='dig'&&this._curMenu==='dig')this.stopDigPresentation(); this.menuMusic(s);
     if(!this._navStack)this._navStack=[];   // นำทางย้อนกลับหน้าก่อนหน้า (แทนที่จะเด้งไป hub เสมอ)
+    const navN0=this._navStack.length,prevMenu=this._curMenu;
     if(s==='hub')this._navStack=[]; else if(this._curMenu&&this._curMenu!==s){ this._navStack.push(this._curMenu); if(this._navStack.length>12)this._navStack.shift(); }
     const changed=this._curMenu!==s; this._curMenu=s;
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
+    if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
     if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
@@ -9206,6 +9215,7 @@ class Game extends Phaser.Scene {
     const rows=Math.ceil(stageIds.length/cols),y0=portrait?100:69,rowH=Math.min(portrait?112:90,(this.H-y0-18-gapY*(rows-1))/rows);
     stageIds.forEach((i,pos)=>{const st=STAGES[i],col=pos%cols,row=Math.floor(pos/cols),x=x0+col*(cardW+gapX),y=y0+row*(rowH+gapY),open=i<=unlocked&&isStageReady(i);
       this.uiStageCard(this.menu,x,y,cardW,rowH,st,i,open,()=>this.startStoryStage(i)); const lz=this.tapZones[this.tapZones.length-1]; if(lz)lz.tag='stage_'+i;
+      if(open){const m=(Save.data.stageStars||{})[i]|0;this.menu.add(this.add.text(x+cardW-12,y+rowH*.36,this.starText(m),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:m?'#ffd84a':'#9a8fa8',stroke:'#2a1530',strokeThickness:3}).setOrigin(1,0));}   // v7.8.60 ดาวรายด่าน
     });
     this.menu.setVisible(true);
   }
@@ -10749,7 +10759,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.stopHubMotion?.();this._lvlQueued=false;
+  startStage(i){this.stopHubMotion?.();this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -12234,7 +12244,7 @@ class Game extends Phaser.Scene {
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=1;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
   }
-  onStageClear(){ this.clearSugarCoins();
+  onStageClear(){ this.clearSugarCoins(); this.evalStageStars?.();
     this._orderReward=(!this._inTutorial&&!this.bossRush&&!this.riftMode&&!this.recipeMode)?Save.completeSugarOrder(this.stageDiff):null;
     // v5.32 ⛏️ พลั่วจากการผ่านด่าน: ปกติ 1 / ยาก 2 / นรก 3 (กฎเหล็ก) · ไม่ให้ใน tutorial
     if(!this._inTutorial){ const n=Math.max(1,Math.min(3,this.stageDiff||1))+1; Save.addShovels(n); this.time.delayedCall(900,()=>this.showBanner&&this.showBanner('⛏️ +'+n+' Shovel'+(n>1?'s':''),'Dig for treasure in the Temple Depths',1600)); }
@@ -12326,6 +12336,14 @@ class Game extends Phaser.Scene {
     draw(animate&&gain?0:1);
     if(animate&&gain)this._summaryExpTween=this.tweens.addCounter({from:0,to:1,duration:1600,delay:500,ease:'Sine.inOut',onUpdate:t=>draw(t.getValue()),onComplete:()=>draw(1)});
   }
+  // ดาวของรอบนี้ (เรื่องหลักเท่านั้น) · เรียกก่อนฮีลรางวัลเคลียร์ด่าน
+  evalStageStars(){ this._starRes=null; if(this._inTutorial||this.bossRush||this.riftMode||this.recipeMode||!this.player)return null; const p=this.player,hp=p.maxhp>0?Math.max(0,p.hp)/p.maxhp:0,min=Math.min(this._minHpPct??1,hp);
+    const mask=1|(hp>=.7?2:0)|(min>=.3?4:0),all=Save.data.stageStars||(Save.data.stageStars={}),prev=all[this.stageIndex]|0,fresh=mask&~prev,n=[0,1,2].filter(b=>fresh&(1<<b)).length;
+    const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],bonus=n?Math.round(n*(STAGE_STAR_SUGAR+this.stageIndex*10)*(d.reward||1)):0;
+    all[this.stageIndex]=prev|mask; if(bonus)this.sugarStage=(this.sugarStage||0)+bonus; Save.save?.();
+    return this._starRes={mask,fresh,bonus,hp,min}; }
+  // แถวดาว ★★☆ (ทอง = ได้ · เทา = ยัง)
+  starText(mask){ return [0,1,2].map(b=>mask&(1<<b)?'★':'☆').join(''); }
   showStageSummary(last){
     this.stopSummaryPresentation();
     if(this.state!=='dead'&&!this._quitSummary&&typeof Stats!=='undefined')Stats.end(this,'win');   /* v6.99.1 stage clears never reached victory() */
@@ -12337,12 +12355,14 @@ class Game extends Phaser.Scene {
     const pw=Math.min(w-20,(h-20-extra)*2/3),ph=pw*1.5,px=(w-pw)/2,py=(h-ph-extra)/2;
     const panel=this.add.image(w/2,py+ph/2,'stage_summary_panel').setDisplaySize(pw,ph);
     const font=Math.max(8,Math.min(13,pw*.035));
-    const t=this.add.text(w/2,py+ph*.194,(this._quitSummary?'Left ':'Cleared ')+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(19,pw*.049)+'px',color:'#fff8da',align:'center',wordWrap:{width:pw*.60}}).setOrigin(.5);
-    const mm=Math.floor(this.elapsed/60),ss=Math.floor(this.elapsed%60),cp=Save.cp(this.character);
+    const t=this.add.text(w/2,py+ph*.194,(this._quitSummary?'Left ':'Cleared ')+st.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.min(19,pw*.049)+'px',color:'#fff8da',align:'center'}).setOrigin(.5);{let fs=Math.min(19,pw*.049);while(t.width>pw*.62&&fs>9)t.setFontSize((fs-=1)+'px');}   // v7.8.60 ชื่อด่านบรรทัดเดียว (เว้นที่ให้ดาว)
+    const mm=Math.floor(this.elapsed/60),ss=Math.floor(this.elapsed%60),cp=Save.cp(this.character),sr=this._quitSummary?null:this._starRes;
+    const starBits=[];if(sr){const sw=pw*.74,cx0=w/2-sw/2;STAGE_STARS.forEach((s,b)=>{const got=sr.mask&(1<<b),x=cx0+sw*(b+.5)/3,y=py+ph*.262;starBits.push(this.add.text(x,y-font*.5,got?'★':'☆',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(font*1.45)+'px',color:got?'#ffd84a':'#7d6f8c',stroke:'#3a1b2e',strokeThickness:3}).setOrigin(.5),this.add.text(x,y+font*.55,s.name+(sr.fresh&(1<<b)?' · NEW':''),{fontFamily:'sans-serif',fontStyle:got?'bold':'normal',fontSize:Math.max(7,font-4)+'px',color:got?(sr.fresh&(1<<b)?'#b9ffe1':'#ffe9bc'):'#9a8fa8',align:'center',wordWrap:{width:sw/3-4}}).setOrigin(.5,0));});}   // v7.8.60 ดาว 3 ดวง + ภารกิจ
     const rows=[
       ['Total Time',mm+':'+ss.toString().padStart(2,'0')],
       ['Minions Killed',String(this.stageKills||0)],
       ['Sugar Earned','+'+this.sugarStage],
+      ...(sr&&sr.bonus?[['★ Star Bonus','+'+sr.bonus]]:[]),
       ...(this._dailyBonus?[['Daily Bonus','+'+this._dailyBonus]]:[]),
       ...(this._orderReward?[['Sugar Order','+'+this._orderReward.qty+' '+this._orderReward.unit]]:[]),
       ['Boxes Opened',String((this._openedBoxes||[]).length)],
@@ -12350,8 +12370,8 @@ class Game extends Phaser.Scene {
       ['Character Level','Lv '+cp.lvl+(this._lastLvlUps>0?' · +'+this._lastLvlUps+' pts':'')],
     ];
     let sugarText;const rewardGroups=[];
-    const box=[bg,panel,t],step=ph*.34/rows.length,rowFont=Math.min(font,step*.45);
-    rows.forEach((r,i)=>{const y=py+ph*.275+i*step;
+    const box=[bg,panel,t,...starBits],rowTop=starBits.length?.33:.275,step=ph*(.615-rowTop-.002)/Math.max(rows.length,1)*(starBits.length?1:.34/.338),rowFont=Math.min(font,step*.45);
+    rows.forEach((r,i)=>{const y=py+ph*rowTop+i*step;
       const l=this.add.text(px+pw*.13,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#d9c8e3',wordWrap:{width:pw*.33}}).setOrigin(0,.5);
       const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);if(i===2)sugarText=v;
     });
@@ -17403,7 +17423,7 @@ class Game extends Phaser.Scene {
       if(this.bossHpTxt)this.bossHpTxt.setText(Math.max(0,Math.ceil(this.boss.hp)).toLocaleString()+' / '+Math.ceil(this.boss.maxhp).toLocaleString());
     }
     this.updateObjectiveArrow();
-    this.mxTick?.(dt);this.heroFxTick?.();
+    this.mxTick?.(dt);this.heroFxTick?.();if(this.state==='play'&&this.player?.maxhp>0)this._minHpPct=Math.min(this._minHpPct??1,Math.max(0,this.player.hp)/this.player.maxhp);
     this.drawBars();
   }
 }
