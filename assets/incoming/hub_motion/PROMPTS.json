@@ -1,0 +1,257 @@
+[
+  {
+    "key": "hub_bg_far",
+    "mode": "built-in image_gen",
+    "prompt": "Precise local edit of this castle background. Change ONLY the foreground plant clusters bordering the staircase: remove the large LEFT foreground red strawberries, green leaves and pink/white flowers from source region x0..360 y600..940, and the RIGHT foreground red strawberries/leaves/pink/white flowers from x595..941 y680..970. Inpaint the stone planters/walls beneath them as bare coherent stone. Keep the central raised distant flowerbed and every distant flowering tree. Keep ALL architecture, all window/lantern positions, stairs, ground paving, sky, lighting and camera framing EXACTLY unchanged. No character, no airborne petals, no foreground strawberries or foreground flower clusters in those two regions. No other edits.",
+    "references": [
+      "A1 generated source: exec-3d26b506-206d-4792-9557-1c94ed7678c1.png"
+    ],
+    "sourceFile": "exec-0979f350-c55d-4d43-ba60-1cda53e07c46.png",
+    "auxiliaryFill": {
+      "prompt": "Precise local inpainting of this background. Remove ONLY the PINK/WHITE FLOWERS AND GREEN LEAVES growing on the CENTRAL FOREGROUND raised stone planter, region approximately x250..570 y730..870 on this941x1672 portrait. Reconstruct the bare planter's curved stone rim and stone wall underneath, no flowers left on this foreground planter. Keep ALL other architecture, windows, stairs, sky, lighting, camera, distant flowerbeds and trees EXACTLY unchanged. No characters, no petals in air, no new plants or objects. This clears the hidden area beneath a separate swaying foreground flower layer.",
+      "reference": "A1 corrected source: exec-0979f350-c55d-4d43-ba60-1cda53e07c46.png",
+      "sourceFile": "exec-a7bb1899-b910-4cdc-a6b6-4b6534dc1db9.png"
+    },
+    "finalProductionMethod": "Original scene retained outside feathered moving-object footprints and petal clearing; AI reconstructs uncovered scenery."
+  },
+  {
+    "key": "hub_momo_body",
+    "mode": "built-in image_gen",
+    "prompt": "Keep the SAME full portrait canvas and exact original pixel positions. Retain ONLY original Momo head INCLUDING RED STRAWBERRY BERET, face/front bangs, torso, collar/short front red neck scarf, belts/pouch/lower-body visible edge, and her ORIGINAL CLENCHED LEFT GLOVE/ARM directed to lower LEFT. Preserve original head-to-belt and head-to-left-hand distances EXACTLY, do not repaint/rescale separate body parts. Erase entire raised RIGHT arm INCLUDING puff sleeve at shoulder, no replacement arm, glove, sleeve, mechanical socket or metal ring. Only a small hidden plain blouse overlap under the removed sleeve. Erase long braid/bows, hairflower/leaves, flowing back cape, staff and all scenery/flowers. No new legs or elongation beyond original lower flower boundary. This is an ERASE-ONLY segmentation, NOT character re-illustration. Retained costume/pose/pixels must stay identical. Full-canvas RGBA transparency; do not center/zoom the body.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-a7d0a177-9cb7-49d4-a318-d99e76e4ba6b.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_momo_braid",
+    "mode": "built-in image_gen",
+    "prompt": "Erase ONLY the RED CAPE FABRIC and all of its cream scalloped trim from this cutout. KEEP ONLY the red HAIR BRAID and the small tied bow at the braid's lower end. Do not remove or alter any braid hair strands or the braid bow. Same portrait canvas, original positions and pixels unchanged. The large sweeping CLOTH below/left of the braid must become fully transparent. No replacement artwork or background. Retained hair braid only, true alpha.",
+    "references": [
+      "B3 precision source: exec-577668a8-6428-4799-812a-ec30e8129979.png"
+    ],
+    "sourceFile": "exec-e2037363-f84b-40cf-9c56-5b336c7ac1f8.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_momo_cape",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISION BACKGROUND EXTRACTION / erase-only edit. SAME FULL PORTRAIT CANVAS and original coordinates, no zoom, no centering, no reframing. Retain original visible pixels of ONLY the original RED CAPE sweeping LEFT from Momo's neck, with its cream trim. Preserve the original visible fabric silhouette and folds at exact original positions. Retain hidden neck/shoulder cloth overlap behind the torso. No body or braid. Make EVERY OTHER pixel truly transparent. Do not redraw or redesign the retained object; preserve original illustration, camera, pose, lighting and visible contours. No new objects, no scene, no caption or lettering. Output a transparent cutout still in its original full-canvas position; it will be cropped later.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-c77d629f-2b8c-41ba-9dec-e961edaf362e.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_momo_arm",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISION CUTOUT: retain ONLY the ORIGINAL RAISED RIGHT ARM including its original large white puff sleeve, forearm, leather glove gripping the golden staff, and the staff/crystal/main red bow loops. Keep the EXACT original sleeve-to-grip distances, hand shape, grip position, staff angle and all visible pixel details. DO NOT redraw the arm or shorten/lengthen it. Remove free ribbon tails, torso/head, other objects and scenery to real transparency. Keep SAME original camera framing/coordinates. Complete only the tiny obscured sleeve attachment and the clipped portion of the pink crystal head; if needed add transparent padding beyond TOP/RIGHT of the original canvas so whole crystal is present without changing the visible original arm or staff. No new pose, no labels, no background.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-98636b3d-754f-4651-a5ca-cd310cdc4a4b.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp",
+    "auxiliaryHiddenFill": {
+      "key": "hub_momo_arm",
+      "prompt": "Isolate and COMPLETE ONLY the entire head of Momo's staff from the reference: gigantic faceted PINK STRAWBERRY-SHAPED CRYSTAL with small white blossom detail, golden leaf-shaped claw setting, main tied RED BOW LOOPS with strawberry/flower center knot, and a very short gold shaft stub below. Preserve exact original 3/4 view, tilt, crystal facets, pink/red palette and warm lighting. Reconstruct the parts clipped by original top/right image boundaries. NO hand, arm, character, cape, long ribbon tails or scenery. Compose the whole complete staff head in the CENTER of a SQUARE canvas, with a WIDE EMPTY TRANSPARENT BORDER of at least20% on ALL FOUR sides. ALL crystal tips and every bow edge must be fully visible and not touch any canvas edge. Do not zoom in or crop the object. True alpha, no text or labels. Production hidden-fill source for the existing staff, not a redesign.",
+      "reference": "assets/art/hub_reference/background.webp",
+      "purpose": "Complete missing crystal beyond original top/right canvas; not a standalone deliverable",
+      "sourceFile": "exec-1ae41640-e609-44a7-a3ba-2c97b4bae111.png"
+    }
+  },
+  {
+    "key": "hub_momo_ribbon",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISION BACKGROUND EXTRACTION / erase-only edit. SAME FULL PORTRAIT CANVAS and original coordinates, no zoom, no centering, no reframing. Retain original visible pixels of ONLY the original FREE RED RIBBON TAILS from the staff bow, at their exact original positions and curl directions. No added golden piping or glow. Keep tiny roots under the knot but no main bow loops, crystal, staff or arm. Make EVERY OTHER pixel truly transparent. Do not redraw or redesign the retained object; preserve original illustration, camera, pose, lighting and visible contours. No new objects, no scene, no caption or lettering. Output a transparent cutout still in its original full-canvas position; it will be cropped later.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-a51236e4-8d1f-4562-a88a-5ef50f0e4078.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_momo_hairflower",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISION BACKGROUND EXTRACTION / erase-only edit. SAME FULL PORTRAIT CANVAS and original coordinates, no zoom, no centering, no reframing. Retain original visible pixels of ONLY the original white flower and green leaves attached to Momo's hair, at EXACT original positions. Preserve asymmetrical original leaf arrangement, petal shape, yellow center and shading. No hair or face. Make EVERY OTHER pixel truly transparent. Do not redraw or redesign the retained object; preserve original illustration, camera, pose, lighting and visible contours. No new objects, no scene, no caption or lettering. Output a transparent cutout still in its original full-canvas position; it will be cropped later.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-773baa5e-3306-449b-8375-90ed02c1b83f.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_fg_flowers_left",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISION BACKGROUND EXTRACTION / erase-only edit. SAME FULL PORTRAIT CANVAS and original coordinates, no zoom, no centering, no reframing. Retain original visible pixels of ONLY original foreground strawberries, flowers and green leaves bordering the LEFT side of the stairs in original region x0..360 y600..940. Preserve original arrangement and original individual strawberry sizes/positions. No wall or paving, no Momo, no cape. Make EVERY OTHER pixel truly transparent. Do not redraw or redesign the retained object; preserve original illustration, camera, pose, lighting and visible contours. No new objects, no scene, no caption or lettering. Output a transparent cutout still in its original full-canvas position; it will be cropped later.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-6d18f425-f9ce-4bf4-9fee-e692f2593446.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_fg_flowers_right",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISION BACKGROUND EXTRACTION / erase-only edit. SAME FULL PORTRAIT CANVAS and original coordinates, no zoom, no centering, no reframing. Retain original visible pixels of ONLY original foreground strawberries, flowers and green leaves bordering the RIGHT side of the stairs in original region x595..941 y680..970. Preserve original arrangement and original individual strawberry sizes/positions. No arch, wall, lantern or paving, no Momo. Make EVERY OTHER pixel truly transparent. Do not redraw or redesign the retained object; preserve original illustration, camera, pose, lighting and visible contours. No new objects, no scene, no caption or lettering. Output a transparent cutout still in its original full-canvas position; it will be cropped later.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-f1e2ea02-6b93-4116-95be-a86c45ae1fde.png",
+    "finalProductionMethod": "Python cutout of original pixels, explicitly authorized by user. Original visible RGB retained; this ImageGen candidate is used only for alpha guidance or occluded fill.",
+    "originalReference": "assets/art/hub_reference/background.webp"
+  },
+  {
+    "key": "hub_cloud_sheet",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Exactly THREE distinct wispy translucent purple night CLOUD/FOG clusters, in a single horizontal row of3 equal cells. Each cluster isolated, very thin low-opacity violet/pink mist, softly faded edges, same night palette as original. No scenery, castle, stars, moon, text, outlines or divider lines. TRUE transparent alpha. Each intended400x160; entire sheet1200x160; safe margins per cell.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-f19b042f-2289-43a0-a49b-0b8b80a573aa.png"
+  },
+  {
+    "key": "vfx_hub_petals",
+    "mode": "built-in image_gen",
+    "prompt": "Production sprite sheet for one PINK CHERRY PETAL doing an evenly spaced full360-degree turn about a vertical axis. EXACTLY4columns x2rows,8 successive equal square cells, read left to right then second row. Common fixed center and petal height in ALL cells; thin luminous pink edge, same detailed candy-fantasy illustration, opaque pure BLACK background. Pose sequence MUST be: frame0 full front/wide;1 front45degrees/medium-width;2 exactly SIDE EDGE/thin sliver;3 back135degrees/medium-width;4 full BACK180degrees/wide;5 back225degrees/medium-width;6 exactly SIDE EDGE270degrees/thin sliver;7 front315degrees/medium-width. Thus silhouette widths follow wide,medium,thin,medium,wide,medium,thin,medium. Frame7 must smoothly continue to frame0 by a45degree turn. One petal per cell, no orbiting/translation/size bounce, constant height and center, generous black margins. No words,numbers,angles,labels,divider lines or extra particles.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-b8bf4cd5-90a1-49fa-a0cf-a421df929979.png"
+  },
+  {
+    "key": "vfx_hub_wand_sparkle",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Eight-frame seamless loop of delicate GOLD-PINK STARS orbiting the head of a magical candy staff with small sugar flakes falling. Render ONLY the light particles, NOT the staff, crystal or a solid object. Exactly4columns x2rows, each256square. Fixed common center, stars orbit clockwise across8 successive phases with no explosive finale, sparse to avoid hiding staff. PURE opaque BLACK background; safe margins, no separators/text.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-6c9f0740-825b-4518-a79b-664844f27baf.png"
+  },
+  {
+    "key": "vfx_hub_flag",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Six-frame seamless loop of one small pointed PINK CASTLE FLAG waving gently in the wind. Same castle candy illustration style as reference, only flag fabric with a tiny fixed golden attachment edge at left, no castle or tower. Exactly3columns x2rows, each128square, fixed upper-left attachment and equal size, cloth ripples through one full cycle. Opaque pure BLACK background. No labels/dividers.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-5c7e27a7-1707-47c7-841d-a8e1d98ed60e.png"
+  },
+  {
+    "key": "vfx_hub_firefly",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Four-frame seamless loop of ONE small warm golden FIREFLY LIGHT pulse: dim, medium, bright, medium. Pure light soft gold core, no insect body, no scene. Exactly4 equal cells in one horizontal row, each48square. Same common center and radius, brightness changes. Opaque pure BLACK backdrop, no lines/text.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-6486a167-d9db-4a47-93cc-cc4179695b68.png"
+  },
+  {
+    "key": "vfx_hub_logo_shine",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Eight successive frames in ONE VERTICAL COLUMN of8 equal WIDE cells, each512x160. A thin slanted WHITE LIGHT STRIP sweeps left to right over an INVISIBLE wide logo. Frame0 far-left faint,1 left,2 left-center,3 center,4 right-center,5 right,6 far-right faint,7 BLACK EMPTY. Only the diagonal light, rest pure opaque BLACK. No actual logo, no letters, no object/rectangle/card/frame, no separator lines. Common reference rectangle per frame but never draw it. Clean additive shine pass.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-81fd1d25-31a4-4c71-8060-16574e9e8054.png"
+  },
+  {
+    "key": "vfx_hub_play_shimmer",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Six successive frames in ONE VERTICAL COLUMN of6 equal WIDE cells, each512x128. A narrow white/mint slanted glint travels left to right across an INVISIBLE wide Play button, with two tiny gold star flashes near the far corners. No actual button, icon, words or border. Only luminous glints on PURE opaque BLACK. Frame0 left,1 left-center,2 center,3 right-center,4 right edge,5 almost-black fading spark. No separator lines.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-f093edcc-7fc7-42c9-89fc-39d511d16790.png"
+  },
+  {
+    "key": "vfx_hub_moon_twinkle",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet. Input original scene is ONLY a palette/style reference; do not reproduce the scene, character or layout. Produce ONLY the specified sprites. No words, labels, letters, numbers, logos or watermarks. Four-frame seamless loop of a single long-ray GOLD-CREAM TWINKLING STAR, exactly2columns x2rows, each64square. Dim-small, medium, bright elongated four rays, medium. Same center, sweet nighttime glint. Opaque pure BLACK, no moon or sky or other stars, no text/dividers.",
+    "references": [
+      "assets/art/hub_reference/background.webp"
+    ],
+    "sourceFile": "exec-e1cd2c18-f1f9-4931-95d9-63b47cbe2b86.png"
+  },
+  {
+    "key": "hub_btn_play_anim",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: precise-object-edit / production game layer. Input image is the EDIT TARGET, not inspiration for a redesign. Preserve original detailed anime confectionery-fantasy illustration, red/pink/purple night colors and warm light. No lettering, captions, numbers, logos or watermarks. Animate the EXACT original pink mochi mascot with green leaf cape by its ornate castle portal and pink flag. Keep original round shape, face, portal and flag. Tiny arm/leaf/flag wiggle, no invented bunny ears. Exactly2columns x2rows of4 successive LOOP frames, each128square. Same center, size and generous safe margin in every cell. Frame0 is original,1 subtle motion,2 peak small motion,3 return. TRUE transparent alpha. NO words, letters, numbers, background, dividers or new objects.",
+    "references": [
+      "assets/art/menu_buttons/hub_btn_play.webp"
+    ],
+    "sourceFile": "exec-84c3f42a-7c25-4c6a-bed8-7038d654404b.png"
+  },
+  {
+    "key": "hub_btn_heroes_anim",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: precise-object-edit / production game layer. Input image is the EDIT TARGET, not inspiration for a redesign. Preserve original detailed anime confectionery-fantasy illustration, red/pink/purple night colors and warm light. No lettering, captions, numbers, logos or watermarks. Animate the EXACT original three mochi heroes: front pink flower heroine, green archer behind left and blue wizard behind right. Gentle small body bounce, preserve faces, outfits, count and layering. Exactly2columns x2rows of4 successive LOOP frames, each128square. Same center, size and generous safe margin in every cell. Frame0 is original,1 subtle motion,2 peak small motion,3 return. TRUE transparent alpha. NO words, letters, numbers, background, dividers or new objects.",
+    "references": [
+      "assets/art/menu_buttons/hub_btn_heroes.webp"
+    ],
+    "sourceFile": "exec-228052c6-6d02-4aa0-8c49-318bc9d490eb.png"
+  },
+  {
+    "key": "hub_btn_gear_anim",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: precise-object-edit / production game layer. Input image is the EDIT TARGET, not inspiration for a redesign. Preserve original detailed anime confectionery-fantasy illustration, red/pink/purple night colors and warm light. No lettering, captions, numbers, logos or watermarks. Animate the EXACT original pink bunny-eared equipment backpack with flower clasp, rolled pink pockets and gold-pink sword. Tiny glint moving over sword and buckle; preserve the backpack face and every item. Exactly2columns x2rows of4 successive LOOP frames, each128square. Same center, size and generous safe margin in every cell. Frame0 is original,1 subtle motion,2 peak small motion,3 return. TRUE transparent alpha. NO words, letters, numbers, background, dividers or new objects.",
+    "references": [
+      "assets/art/menu_buttons/hub_btn_gear.webp"
+    ],
+    "sourceFile": "exec-dc0da0fc-ba55-4fda-bf38-a4b6c64f9daa.png"
+  },
+  {
+    "key": "hub_btn_activity_anim",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: precise-object-edit / production game layer. Input image is the EDIT TARGET, not inspiration for a redesign. Preserve original detailed anime confectionery-fantasy illustration, red/pink/purple night colors and warm light. No lettering, captions, numbers, logos or watermarks. Animate the EXACT original gold star trophy with colorful candy fireworks behind. A gold highlight travels over trophy while tiny confetti twinkles; preserve silhouette and colors. Exactly2columns x2rows of4 successive LOOP frames, each128square. Same center, size and generous safe margin in every cell. Frame0 is original,1 subtle motion,2 peak small motion,3 return. TRUE transparent alpha. NO words, letters, numbers, background, dividers or new objects.",
+    "references": [
+      "assets/art/menu_buttons/hub_btn_activity.webp"
+    ],
+    "sourceFile": "exec-c7da7b51-018f-41d8-8a95-534d9ca67cff.png"
+  },
+  {
+    "key": "hub_btn_codex_anim",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: precise-object-edit / production game layer. Input image is the EDIT TARGET, not inspiration for a redesign. Preserve original detailed anime confectionery-fantasy illustration, red/pink/purple night colors and warm light. No lettering, captions, numbers, logos or watermarks. Animate the EXACT original open illustrated dessert spellbook with pink magical swirls and spoon. A page corner lifts gently then returns across4frames; preserve strawberry/cupcake/cauldron pictures and original book. Exactly2columns x2rows of4 successive LOOP frames, each128square. Same center, size and generous safe margin in every cell. Frame0 is original,1 subtle motion,2 peak small motion,3 return. TRUE transparent alpha. NO words, letters, numbers, background, dividers or new objects.",
+    "references": [
+      "assets/art/menu_buttons/hub_btn_codex.webp"
+    ],
+    "sourceFile": "exec-bfdfe36e-5930-4c62-a0ec-41038f0dd227.png"
+  },
+  {
+    "key": "hub_sky_glow",
+    "mode": "built-in image_gen",
+    "prompt": "Extract ONLY a subtle pink-violet diffuse SKY LIGHT / haze overlay from the upper sky of this supplied castle background. Keep original full portrait canvas coordinates. True transparent alpha everywhere except a very softly faded low-opacity violet-pink glow within the sky area. NO castle, walls, flowers, branches, moon disk, character, stars, objects or lettering. Preserve original sky hue and light direction; this is just a soft luminosity layer for slow alpha breathing.",
+    "references": [
+      "A1 corrected background: exec-0979f350-c55d-4d43-ba60-1cda53e07c46.png"
+    ],
+    "sourceFile": "exec-10126bec-8a2f-4fc6-b118-5e88aac92680.png"
+  },
+  {
+    "key": "hub_window_lights",
+    "mode": "built-in image_gen",
+    "prompt": "PRECISE LIGHT-LAYER EXTRACTION from this background. Keep SAME FULL PORTRAIT CANVAS and each original light pixel's position; do not center or redistribute lights. Retain ONLY the original GOLDEN LIGHT SHAPES of every castle WINDOW and LANTERN, with softly faded warm glow halos. Make ALL stone castle structures, sky, ground, flowers and other non-luminous material completely transparent. No new lights, no moving window shapes, no character, no text. The alpha overlay must align exactly over this same source background so lights can flicker. No lantern hardware beyond the lit glass. REAL transparent alpha.",
+    "references": [
+      "A1 corrected background: exec-0979f350-c55d-4d43-ba60-1cda53e07c46.png"
+    ],
+    "sourceFile": "exec-fe5f37fa-cc3b-4a03-be1c-075a03df382d.png"
+  },
+  {
+    "key": "hub_momo_blink",
+    "mode": "built-in image_gen",
+    "prompt": "Edit this EXACT small eye-area crop into a production BLINK sprite sheet, exactly3 equal cells in ONE HORIZONTAL ROW. Frame0: ORIGINAL OPEN eyes unchanged. Frame1: same eyes HALF CLOSED. Frame2: both eyes CLOSED with gentle curved eyelids. Preserve EXACT original relative eye positions, perspective, asymmetry, red iris identity, brows, hair edges and surrounding skin shading in every frame. Do not move, enlarge or redesign eyes. Each frame includes the SAME surrounding skin patch to fully cover the original open eyes, with a narrow 2px softly transparent edge around the patch. TRUE transparent alpha outside patches. Common stable crop/size/anchor across all3 frames. No complete head, no mouth, no other objects, no text or separators.",
+    "references": [
+      "Original eye crop: source x415 y315 width152 height81"
+    ],
+    "sourceFile": "exec-c8748a5e-4ad8-41ff-b121-658e2dbb0060.png",
+    "finalProductionMethod": "Generated half/closed eyes from original crop; open frame replaced with original RGB and common alpha feather."
+  }
+]

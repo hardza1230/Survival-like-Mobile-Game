@@ -1,0 +1,67 @@
+{
+  "userAuthorization": "ใช้ Python ตัดจากต้นฉบับ",
+  "source": "assets/art/hub_reference/background.webp",
+  "sourceSize": [
+    941,
+    1672
+  ],
+  "method": "Original pixel RGB; local isnet-anime mask, polygon-constrained GrabCut segmentation; hidden fill separate",
+  "drafts": [
+    {
+      "key": "hub_momo_body",
+      "x": 124,
+      "y": 174,
+      "width": 496,
+      "height": 630
+    },
+    {
+      "key": "hub_momo_braid",
+      "x": 138,
+      "y": 365,
+      "width": 218,
+      "height": 210
+    },
+    {
+      "key": "hub_momo_cape",
+      "x": 21,
+      "y": 448,
+      "width": 374,
+      "height": 223
+    },
+    {
+      "key": "hub_momo_arm",
+      "x": 423,
+      "y": 0,
+      "width": 518,
+      "height": 572
+    },
+    {
+      "key": "hub_momo_ribbon",
+      "x": 625,
+      "y": 213,
+      "width": 229,
+      "height": 214
+    },
+    {
+      "key": "hub_momo_hairflower",
+      "x": 296,
+      "y": 172,
+      "width": 134,
+      "height": 139
+    },
+    {
+      "key": "hub_fg_flowers_left",
+      "x": 0,
+      "y": 625,
+      "width": 549,
+      "height": 254
+    },
+    {
+      "key": "hub_fg_flowers_right",
+      "x": 594,
+      "y": 766,
+      "width": 280,
+      "height": 150
+    }
+  ]
+}

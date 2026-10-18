@@ -1,0 +1,246 @@
+{
+  "status": "verified",
+  "commit": "708260861c3c7df93ed565d01606114345094310",
+  "fileCount": 34,
+  "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
+  "files": [
+    {
+      "file": "assets/incoming/pause_ui/DELIVERY_README.md",
+      "bytes": 1390,
+      "sha256": "52ca0ddff84fbc6d5d4cf4dfa9caac91b59b092deaf5e516df27cc08eea3aedd",
+      "gitBlobSha": "9c6f6740b1c3f70e24f753a441c0f26edafec099",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/MANIFEST.json",
+      "bytes": 9889,
+      "sha256": "5a1ceca3f5aa61061662f7ad874209f31cfaf2bb09b3c95b1ba5fb2323114367",
+      "gitBlobSha": "a9d52dd6d770479371b8a8626c6518e23b5431a5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_btn_quit.png",
+      "bytes": 358283,
+      "sha256": "e8965b4103f7d11679a0a1704e61f2140d53197a42df3f0bcb908b3b677f7e54",
+      "gitBlobSha": "1ffc093651765cd63e47525c0204b4585394ae35",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_btn_resume.png",
+      "bytes": 867947,
+      "sha256": "9e91218ebfa17361c3774931a2f688d2101c9e032fd9c27e77f70e9c5371e8c5",
+      "gitBlobSha": "ea5fb7b7b7d1b376eac38cf08effddc816e66513",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_btn_settings.png",
+      "bytes": 337601,
+      "sha256": "898c836432fa67589226cbac16714932f272f143ba971c4ff06e26cafca3b0e3",
+      "gitBlobSha": "db10e53ac3d2d53a08f339c1148c372b312c44a7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_chip.png",
+      "bytes": 29798,
+      "sha256": "62879b4505efa76d6bd76d3dab3702bac371fe5267c9518f5cca885ec8529cef",
+      "gitBlobSha": "b0c3f1aebe90da9df04c8778b1803493b025e6fb",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_count_badge.png",
+      "bytes": 8379,
+      "sha256": "bb228ef82ab5abdbc0f12dc6c6935c77be0763a2527726496b1ef89be0dcfb6a",
+      "gitBlobSha": "8d54b21573647985e96beac1a700bafa465c214e",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_crest.png",
+      "bytes": 294494,
+      "sha256": "d22effbb1581829de282f8056304894cc8386dc655b09f479a36b745374fc1a5",
+      "gitBlobSha": "39170241478ab01547abe27b9a7aeca9208ce555",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_detail_strip.png",
+      "bytes": 83916,
+      "sha256": "7da19abef078fded36b7a38249ab030e242dacf3ffa60bc63bdfd7c6a94f97f7",
+      "gitBlobSha": "b67285d70cb8532eab451f1cc9b561ef961e49cf",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_icon_sheet.png",
+      "bytes": 346209,
+      "sha256": "682e5a7fddd1787173c9711fb390afdc582881d3b35d3a74222e77b6f96dbe40",
+      "gitBlobSha": "d292772aac8d3c2f20ae72d68eb7d45c6a20a982",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_level_badge.png",
+      "bytes": 7928,
+      "sha256": "dcc4940bab467d81456a83b9bf56d7947ecfdfbc929923cab21f5e66cbf9ac2c",
+      "gitBlobSha": "07340bbd8f70eef49e93534a73e37095e64b9dfe",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_loot_icon_sheet.png",
+      "bytes": 102163,
+      "sha256": "e80eab28d76daf60e097909177c2ed689afce01ed7489dcb848ca151ddcdb6ff",
+      "gitBlobSha": "2bf5dc3e9d089847fc7bdb6f6515f40bbef855fd",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_panel.png",
+      "bytes": 254361,
+      "sha256": "174345f552edb826bc44e8da84c400c6d9fc369d2053edc7614bc7108062cc96",
+      "gitBlobSha": "9086419a2514ea3291778135c4cbf92f5b524b87",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_panel_header_line.png",
+      "bytes": 14398,
+      "sha256": "762b550b14e9d2c22694c5b040a8a5c9f68255aacc6a6b623f08fb7974a6f958",
+      "gitBlobSha": "a5bb530cc50224904c2b316f00993365e3fa18c2",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_relic_row.png",
+      "bytes": 256477,
+      "sha256": "f53e15382c71cbbebdb9808141bb94052e34a76d19320e00aefd7f3df31bbf2f",
+      "gitBlobSha": "3bfe070bf441f1c3f425d504efc77f29ddd9e2c3",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_skill_slot.png",
+      "bytes": 66524,
+      "sha256": "9951db8bfa146810df97be4821e8c52f2e6faae167559e5dea5c1f7d9ce55639",
+      "gitBlobSha": "088feb1972e6d797e61019664b374049db46b381",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_stat_bar.png",
+      "bytes": 184804,
+      "sha256": "bdaec99582e355f70a5f094f75e16f53e2ac3248e6540f91bba1da9130c7273e",
+      "gitBlobSha": "4550787ce01e79311c9e9b25f4361ab3bd63366a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_stat_sep.png",
+      "bytes": 475,
+      "sha256": "9bab7f3398371f991d0ba9e48e31f21aa384527b1479d014e0adb5421b835c17",
+      "gitBlobSha": "9ce73af454523dc06e3e9fc3e37f31d36a40d118",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_tile.png",
+      "bytes": 355814,
+      "sha256": "61f1d651a6b58dc7ad7f57783ac719f252725fe1ba5d6e12b11b77e0e57fffd9",
+      "gitBlobSha": "c2b8675e6997e1155deb5d04274b9c9c63f5de9b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_title_divider.png",
+      "bytes": 13737,
+      "sha256": "8d31f4aa62f39618f64b55b1044aba28735e5fb6a37c65a2735fb621a5790453",
+      "gitBlobSha": "3f9d3df72f6b032e4f7e0100eb3da68fce153043",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/pause_veil.png",
+      "bytes": 172224,
+      "sha256": "ae1ccbc3ab83ffa51b2c174fc829779f84988cfdaa54859bef67798d99b99b8a",
+      "gitBlobSha": "7ac59d0b0f78b972892eec4f377be51d8c997c15",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/PROMPTS.json",
+      "bytes": 23468,
+      "sha256": "0720267339ef0b839936f7ae6c45d1f46ca21c6f6c258e30e61f8e69253931a5",
+      "gitBlobSha": "cb65feb3cc025e7e860474831c758a509153e00c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_gallery_01.png",
+      "bytes": 217494,
+      "sha256": "1ae2839257f7b1b62397a01ff064a3ee95c94c198cf653734a2290bda76a8a26",
+      "gitBlobSha": "e521bac3840a951c84261cb96d2cadf96106449d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_gallery_02.png",
+      "bytes": 280479,
+      "sha256": "2ae3bc317b5e1369070915084d9ea6d113b8b85fde560107dba11088cbffdbea",
+      "gitBlobSha": "6672cea0e9b989775bb57b02e866b668b3b56d79",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_nine_slice_and_text.png",
+      "bytes": 236972,
+      "sha256": "a3c8b781e834dda06c3cc4d136de3c284d6a695e607c1c54bdab9f88d9549b94",
+      "gitBlobSha": "c157195e0ac344133ab48c0c6becec41bb3e2211",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_reference_comparison.png",
+      "bytes": 844822,
+      "sha256": "08a90f2becfe3597b316a8a2fd39dc8e9a96252f53b2871d1e2e5e6e57b2da5f",
+      "gitBlobSha": "619edc8f8a79cb52e7ba0791ed86c0178fd3a1d4",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_REPORT.json",
+      "bytes": 44099,
+      "sha256": "bd2d36feb87b8e944e2df32c2aeead4211f2f196ef08fa86b62e5abc7ead436b",
+      "gitBlobSha": "034091ffcccf17d6b788e02a0a91f3d4d8775563",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_screen_360x780.png",
+      "bytes": 357280,
+      "sha256": "42df124f846f313c644c873233a9fb90236574404096c6262bf25ac1c454260e",
+      "gitBlobSha": "3276e36897091002a3f91b7fe37484498534bab4",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_screen_412x860.png",
+      "bytes": 420833,
+      "sha256": "cf223d4cee90f44ae5d3f68680292c4a4ad49c26c459dd4cbeae833c2e807482",
+      "gitBlobSha": "75f6bbf8628b01dbd816fe7cee3948b22cd1c21c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/QA_REPORT.json",
+      "bytes": 51530,
+      "sha256": "f67dfb1df27a614bca6636c391dad3c87b087ce17f12a24753fd17503dad60a3",
+      "gitBlobSha": "036c0cc3143d73c01b67bd7a2769d005bdd484f5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/levelup_cards_ui/UPLOAD_VERIFICATION.json",
+      "bytes": 8759,
+      "sha256": "752f36a36a03c788673c9187eb54efd8b7d1892c5816fafbac8214f6cfad4252",
+      "gitBlobSha": "fc955887bb977ede988c34dd1b4edd404635103d",
+      "status": "pass"
+    },
+    {
+      "file": "CLAUDE.md",
+      "bytes": 46673,
+      "sha256": "8d6202572759405552ddb345a8718d9d4ff00e102e84e9571b2a9121ce7d021e",
+      "gitBlobSha": "754750bde6a5a2c451cfc36576e012e32ac7fea9",
+      "status": "pass"
+    },
+    {
+      "file": "docs/SESSION_HANDOFF.md",
+      "bytes": 1427,
+      "sha256": "eb6d3f1062ff3e821e7ff93daab949df56b11baea391d3018c05267f5b7b8842",
+      "gitBlobSha": "a0ffebb1224be5db624179fab00dfc076058b905",
+      "status": "pass"
+    },
+    {
+      "file": "docs/art_orders/24_PAUSE_SCREEN_UI.md",
+      "bytes": 18291,
+      "sha256": "a4f520abb0baac5cae5475a6eb4afaaca40c48d0ff3dee8e82e8186e30485c39",
+      "gitBlobSha": "9e037ecc3403cc439b1e1f8f530ad90e57cb5697",
+      "status": "pass"
+    }
+  ]
+}

@@ -1,0 +1,982 @@
+{
+  "assetCount": 25,
+  "expectedAssetCount": 25,
+  "decodedBytes": 29577968,
+  "decodedMiB": 28.208,
+  "decodedBudgetBytes": 41943040,
+  "assets": [
+    {
+      "key": "hub_bg_far",
+      "file": "hub_bg_far.png",
+      "bytes": 3162365,
+      "sha256": "3f0d7ee51e91d58068a405e4392e4a887ef4b36add74adb8974087e7cc7ca971",
+      "decodedBytes": 8294400,
+      "gitBlobSha": "d7aa5ccb9565a26eb318f86004b2a3c4522be8ed"
+    },
+    {
+      "key": "hub_momo_body",
+      "file": "hub_momo_body.png",
+      "bytes": 569357,
+      "sha256": "880bb1975ac09c5ae76a785da09a4203585899ae04b60c61242ee2fc8438b743",
+      "decodedBytes": 1673784,
+      "gitBlobSha": "4776a8bd95c8dc476d7a439902a73f34e92c0b2a"
+    },
+    {
+      "key": "hub_momo_braid",
+      "file": "hub_momo_braid.png",
+      "bytes": 72792,
+      "sha256": "854567c41641e8237dfe8f0541bd815e9365ed2ee62c99956bb9dcc895187585",
+      "decodedBytes": 280112,
+      "gitBlobSha": "c665a0615b595627713a358d3eb67b060566ed3c"
+    },
+    {
+      "key": "hub_momo_cape",
+      "file": "hub_momo_cape.png",
+      "bytes": 165895,
+      "sha256": "db7a8279cab6a887a5ce46033b34bf4399fbe7aa493b2a989c6bcb3c87bd8373",
+      "decodedBytes": 724880,
+      "gitBlobSha": "4a03d84b9136705e441771445a9078a406e7bd08"
+    },
+    {
+      "key": "hub_momo_arm",
+      "file": "hub_momo_arm.png",
+      "bytes": 497135,
+      "sha256": "f377430831aaf7fe92893aac0b484a737c360d21a8122818c15a9354888f6b16",
+      "decodedBytes": 2191152,
+      "gitBlobSha": "9711f8545d2045a1094309d83a9f5f00e3696056"
+    },
+    {
+      "key": "hub_momo_ribbon",
+      "file": "hub_momo_ribbon.png",
+      "bytes": 44835,
+      "sha256": "7692606b6139853d123a593981f23d34f151ed30ce85a76e4d48425ecbee2188",
+      "decodedBytes": 269072,
+      "gitBlobSha": "1f9f7b4ca07515b9c5eeac95af532d56f2767be1"
+    },
+    {
+      "key": "hub_momo_hairflower",
+      "file": "hub_momo_hairflower.png",
+      "bytes": 37503,
+      "sha256": "a2ecb0b1571c53e4ba10a9d5fb343059a0c697ae1e89dedc8cf651a26a05e8b6",
+      "decodedBytes": 104940,
+      "gitBlobSha": "0cf9fe89bb6cb7dbc0cc25b45b7804648d64c1f5"
+    },
+    {
+      "key": "hub_fg_flowers_left",
+      "file": "hub_fg_flowers_left.png",
+      "bytes": 152938,
+      "sha256": "08b1ff4c75f7c47ecf7ac02af63ae4c52f58ca5e29c028913fcc043efc7848ad",
+      "decodedBytes": 752004,
+      "gitBlobSha": "a87e4e68de5b8c250a42d2e9946bdc3d3afa3b48"
+    },
+    {
+      "key": "hub_fg_flowers_right",
+      "file": "hub_fg_flowers_right.png",
+      "bytes": 79175,
+      "sha256": "f2538748c2850dd06789a7235d3027b86963ee39414b41459ef32329ea0bc062",
+      "decodedBytes": 228900,
+      "gitBlobSha": "6bf2a3a21bb4e0b22f0dd9924857daa232344038"
+    },
+    {
+      "key": "hub_cloud_sheet",
+      "file": "hub_cloud_sheet.png",
+      "bytes": 163308,
+      "sha256": "72b2214611097f260dcc70bb3b82c03d64acd89b58be2fd31fff2a3b73d70af7",
+      "decodedBytes": 768000,
+      "gitBlobSha": "5ceac5a4ad40d83b4a96b0c45c26bbeaaf9f2081"
+    },
+    {
+      "key": "vfx_hub_petals",
+      "file": "vfx_hub_petals.png",
+      "bytes": 25350,
+      "sha256": "08f22dbdad9d253c145159bbdee194484e34780ca33d0119cab78cd5dee205d7",
+      "decodedBytes": 131072,
+      "gitBlobSha": "66f2e162285a2cf47f4d0f660b38fda9e3a5797b"
+    },
+    {
+      "key": "vfx_hub_wand_sparkle",
+      "file": "vfx_hub_wand_sparkle.png",
+      "bytes": 321584,
+      "sha256": "745b653fa6b4ece53a1c2cd2d5f09238fadd7c404a0c875a0da610e26a86da90",
+      "decodedBytes": 2097152,
+      "gitBlobSha": "8395aebbc779c6cf2b4fd93329a1d497925c5270"
+    },
+    {
+      "key": "vfx_hub_flag",
+      "file": "vfx_hub_flag.png",
+      "bytes": 85168,
+      "sha256": "728ac8bd28366c67bd00d5e574b6ea3a4bf3764cc175f5e7fdb8d0384d70957d",
+      "decodedBytes": 393216,
+      "gitBlobSha": "4aac46f8f529bd8af415af3138ca4cbbdb9923d6"
+    },
+    {
+      "key": "vfx_hub_firefly",
+      "file": "vfx_hub_firefly.png",
+      "bytes": 4693,
+      "sha256": "a37f1dcdb792443cea33bba608e636d0a594c5833e2669795f805ac53c7bf279",
+      "decodedBytes": 36864,
+      "gitBlobSha": "4c78997a7d99f35ab8c2a5bf85c6bec4d6907ab0"
+    },
+    {
+      "key": "vfx_hub_logo_shine",
+      "file": "vfx_hub_logo_shine.png",
+      "bytes": 147148,
+      "sha256": "76fb1625e88f62d00d460d46ebbf8cfd0a94ac9306d74b8eef8f8444dc08929d",
+      "decodedBytes": 2621440,
+      "gitBlobSha": "26ea8cd5e16e03f1f0057ab38876a4c90097cffd"
+    },
+    {
+      "key": "vfx_hub_play_shimmer",
+      "file": "vfx_hub_play_shimmer.png",
+      "bytes": 98413,
+      "sha256": "a6d7b3b8c63916e96cd83c978538520b825b9012b7fc6d279eb4705264c1d1ab",
+      "decodedBytes": 1572864,
+      "gitBlobSha": "ea1bff6211ab564bfa7fd63f258e9ab2680b5139"
+    },
+    {
+      "key": "vfx_hub_moon_twinkle",
+      "file": "vfx_hub_moon_twinkle.png",
+      "bytes": 8008,
+      "sha256": "3fe9889e6e98a54073f818827f4eb8c475529a7bd12f7a87f183b52dcac1ac5d",
+      "decodedBytes": 65536,
+      "gitBlobSha": "47d4cd321f57df64b69250144ef727a14e14e15a"
+    },
+    {
+      "key": "hub_btn_play_anim",
+      "file": "hub_btn_play_anim.png",
+      "bytes": 121307,
+      "sha256": "b663d70775a8853a3aa48378b9d2ececbdb5fa77afd5f990cf3fce5dcdf8df50",
+      "decodedBytes": 262144,
+      "gitBlobSha": "f356e2179db47698b8eeeb1b6f4e3d66bdca4c57"
+    },
+    {
+      "key": "hub_btn_heroes_anim",
+      "file": "hub_btn_heroes_anim.png",
+      "bytes": 108771,
+      "sha256": "7aed14b2280c4847a333193f63ea0f97afa4169d9c952e2193ddceb40b622637",
+      "decodedBytes": 262144,
+      "gitBlobSha": "f6e48cb8451b44703739aac971cb58f2b374c444"
+    },
+    {
+      "key": "hub_btn_gear_anim",
+      "file": "hub_btn_gear_anim.png",
+      "bytes": 75724,
+      "sha256": "18a050d66dd8e330eebec5090c9cff9e120375f99efba21413f238f5dd15e2cc",
+      "decodedBytes": 262144,
+      "gitBlobSha": "2034f3805cbfca13a0de33bef79a0653e34ad27d"
+    },
+    {
+      "key": "hub_btn_activity_anim",
+      "file": "hub_btn_activity_anim.png",
+      "bytes": 133868,
+      "sha256": "6403b4a9af4515e1f9cce67f949db4fdc892255a289b86c421e0941cbf562fd4",
+      "decodedBytes": 262144,
+      "gitBlobSha": "c05ef54d3adc6c6fbb1c65723bd6c013ef8f325b"
+    },
+    {
+      "key": "hub_btn_codex_anim",
+      "file": "hub_btn_codex_anim.png",
+      "bytes": 79632,
+      "sha256": "27b28e344cc6def18d33c391f86e6a3540d227b2c54129c9dde60034bc84972d",
+      "decodedBytes": 262144,
+      "gitBlobSha": "2482e9f86a8e668dd0f054237590c820be49ccfb"
+    },
+    {
+      "key": "hub_sky_glow",
+      "file": "hub_sky_glow.png",
+      "bytes": 824706,
+      "sha256": "9543339740316b7e70919503ad7871999ea0d6ec8bd3bb09061e9408659dd449",
+      "decodedBytes": 1814400,
+      "gitBlobSha": "3ff77d2b601f3a5838a32aec90165476eee1f433"
+    },
+    {
+      "key": "hub_window_lights",
+      "file": "hub_window_lights.png",
+      "bytes": 2050501,
+      "sha256": "3abbb21066476d280ad491a2cb300eb0c1eb8a7acb2c3d7a078d75fdcc3f34de",
+      "decodedBytes": 4052160,
+      "gitBlobSha": "d15371b19023ef835081dd67537b387b4569058a"
+    },
+    {
+      "key": "hub_momo_blink",
+      "file": "hub_momo_blink.png",
+      "bytes": 104535,
+      "sha256": "ce1200a3c6d31f0646527c11a32c37d7bb8b8d5488802d1b1b6a19e3ca0921e0",
+      "decodedBytes": 195300,
+      "gitBlobSha": "1d068dfc479d4b427975c61b1d4e169d04b5842d"
+    }
+  ],
+  "visualReview": {
+    "status": "reviewed",
+    "scope": [
+      "Final asset galleries: complete parts and original icon identities",
+      "Original/reference reassembly and difference",
+      "Open/half-closed/closed eye alignment",
+      "B3/B4/B5/B6 at -6,0,+6 degrees; completed background and overlapping joints",
+      "Petal eight evenly spaced turn poses and moon twinkle loop"
+    ],
+    "limitations": [
+      "Runtime wiring, reduced-motion controls, actual boot-memory cap and phone FPS remain integration checks.",
+      "Inpainted formerly hidden scenery, airborne-petal removal, restored clipped staff head and alpha-edge pixels intentionally differ from the flattened source."
+    ]
+  },
+  "remoteReadback": {
+    "status": "pending publication and full-byte readback"
+  },
+  "technicalContracts": {
+    "result": "pass",
+    "checkedAssets": 25,
+    "tests": [
+      {
+        "key": "hub_bg_far",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          1080,
+          1920
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 8294400
+      },
+      {
+        "key": "hub_momo_body",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          574,
+          729
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 1673784
+      },
+      {
+        "key": "hub_momo_braid",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          287,
+          244
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 280112
+      },
+      {
+        "key": "hub_momo_cape",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          533,
+          340
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 724880
+      },
+      {
+        "key": "hub_momo_arm",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          717,
+          764
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 2191152
+      },
+      {
+        "key": "hub_momo_ribbon",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          268,
+          251
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 269072
+      },
+      {
+        "key": "hub_momo_hairflower",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          159,
+          165
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 104940
+      },
+      {
+        "key": "hub_fg_flowers_left",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          633,
+          297
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 752004
+      },
+      {
+        "key": "hub_fg_flowers_right",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          327,
+          175
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 228900
+      },
+      {
+        "key": "hub_cloud_sheet",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          3,
+          1,
+          400,
+          160
+        ],
+        "alphaExtrema": [
+          0,
+          115
+        ],
+        "decodedBytes": 768000
+      },
+      {
+        "key": "vfx_hub_petals",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          4,
+          2,
+          64,
+          64
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 131072
+      },
+      {
+        "key": "vfx_hub_wand_sparkle",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          4,
+          2,
+          256,
+          256
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 2097152
+      },
+      {
+        "key": "vfx_hub_flag",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          3,
+          2,
+          128,
+          128
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 393216
+      },
+      {
+        "key": "vfx_hub_firefly",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          4,
+          1,
+          48,
+          48
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 36864
+      },
+      {
+        "key": "vfx_hub_logo_shine",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          8,
+          512,
+          160
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 2621440
+      },
+      {
+        "key": "vfx_hub_play_shimmer",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          6,
+          512,
+          128
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 1572864
+      },
+      {
+        "key": "vfx_hub_moon_twinkle",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          2,
+          2,
+          64,
+          64
+        ],
+        "alphaExtrema": [
+          255,
+          255
+        ],
+        "decodedBytes": 65536
+      },
+      {
+        "key": "hub_btn_play_anim",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          2,
+          2,
+          128,
+          128
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 262144
+      },
+      {
+        "key": "hub_btn_heroes_anim",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          2,
+          2,
+          128,
+          128
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 262144
+      },
+      {
+        "key": "hub_btn_gear_anim",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          2,
+          2,
+          128,
+          128
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 262144
+      },
+      {
+        "key": "hub_btn_activity_anim",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          2,
+          2,
+          128,
+          128
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 262144
+      },
+      {
+        "key": "hub_btn_codex_anim",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          2,
+          2,
+          128,
+          128
+        ],
+        "alphaExtrema": [
+          0,
+          255
+        ],
+        "decodedBytes": 262144
+      },
+      {
+        "key": "hub_sky_glow",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          1080,
+          420
+        ],
+        "alphaExtrema": [
+          0,
+          22
+        ],
+        "decodedBytes": 1814400
+      },
+      {
+        "key": "hub_window_lights",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          1,
+          1,
+          1080,
+          938
+        ],
+        "alphaExtrema": [
+          0,
+          51
+        ],
+        "decodedBytes": 4052160
+      },
+      {
+        "key": "hub_momo_blink",
+        "pngDecodeCrcHash": "pass",
+        "grid": [
+          3,
+          1,
+          175,
+          93
+        ],
+        "alphaExtrema": [
+          0,
+          254
+        ],
+        "decodedBytes": 195300
+      }
+    ]
+  },
+  "memory": {
+    "result": "pass",
+    "sourceDecodedBytes": 29577968,
+    "sourceDecodedMiB": 28.208,
+    "budgetMiB": 40,
+    "at941ScaleEstimatedMiB": 21.414,
+    "note": "Incoming sources only. Runtime needs A1 replacing old background; C/D lazy loading recommended. This is a size estimate, not an implemented boot-memory or device FPS result."
+  },
+  "rotationTests": {
+    "result": "reviewed",
+    "preview": "QA_rotation_6deg.png",
+    "tests": [
+      {
+        "key": "hub_momo_braid",
+        "degrees": [
+          -6,
+          0,
+          6
+        ],
+        "pivotCanvas": [
+          405,
+          448
+        ]
+      },
+      {
+        "key": "hub_momo_cape",
+        "degrees": [
+          -6,
+          0,
+          6
+        ],
+        "pivotCanvas": [
+          472,
+          521
+        ]
+      },
+      {
+        "key": "hub_momo_arm",
+        "degrees": [
+          -6,
+          0,
+          6
+        ],
+        "pivotCanvas": [
+          566,
+          563
+        ]
+      },
+      {
+        "key": "hub_momo_ribbon",
+        "degrees": [
+          -6,
+          0,
+          6
+        ],
+        "pivotCanvas": [
+          933,
+          242
+        ]
+      }
+    ],
+    "note": "Completed background and overlapping body/arm/hair joints reviewed at -6/0/+6 degrees. Ribbon inherits arm rotation. Suggested runtime amplitudes remain the smaller values in the order."
+  },
+  "loopTests": [
+    {
+      "key": "vfx_hub_petals",
+      "frameCount": 8,
+      "preview": "QA_vfx_hub_petals_loop.gif",
+      "result": "reviewed smooth cycle"
+    },
+    {
+      "key": "vfx_hub_moon_twinkle",
+      "frameCount": 4,
+      "preview": "QA_vfx_hub_moon_twinkle_loop.gif",
+      "result": "reviewed smooth cycle"
+    }
+  ],
+  "reassembly": {
+    "status": "pass for original-pixel placement",
+    "comparison": "QA_reference_comparison.png",
+    "pixelDiff": "QA_pixel_diff.png",
+    "neutral": "QA_reassembly.png",
+    "positionTolerancePx": 4,
+    "originalPixelPlacementTranslationPx": 0,
+    "method": "Direct source-pixel cutouts share the exact original canvas transform. Fully opaque interiors match RGB exactly; no AI face/crystal feature fitting used to infer full-pose compliance.",
+    "scope": "Character/foreground positions; exposed background was reconstructed and is reviewed visually, not claimed pixel-identical."
+  },
+  "directExtraction": {
+    "userAuthorization": "ใช้ Python ตัดจากต้นฉบับ",
+    "source": "assets/art/hub_reference/background.webp",
+    "sourceSha256": "ed97f347bc8ff399295632e060ac999c67fd66e553e15c6e1f2c767b8470b342",
+    "method": "Local isnet-anime and polygon/AI-alpha seeded GrabCut; RGB copied from original, no visible character redraw",
+    "parts": [
+      {
+        "key": "hub_momo_cape",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 29168,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_momo_braid",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 20500,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_momo_body",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 157944,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_momo_hairflower",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 8479,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_momo_arm",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 103818,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_momo_ribbon",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 8852,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_fg_flowers_left",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 38716,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      },
+      {
+        "key": "hub_fg_flowers_right",
+        "visibleRGB": "Original background.webp resized once with shared1080x1920 transform",
+        "placementDisplacementPx": 0,
+        "nativeVisiblePixels": 20885,
+        "hiddenFill": "Generated part restricted to eroded higher-layer occlusion mask; arm pivot uses original cloth overlap"
+      }
+    ],
+    "petalClearingNativeBoxes": [
+      [
+        0,
+        884,
+        56,
+        930
+      ],
+      [
+        73,
+        971,
+        88,
+        976
+      ],
+      [
+        795,
+        971,
+        810,
+        978
+      ],
+      [
+        92,
+        980,
+        106,
+        988
+      ],
+      [
+        61,
+        982,
+        75,
+        987
+      ],
+      [
+        118,
+        992,
+        136,
+        996
+      ],
+      [
+        840,
+        1025,
+        888,
+        1044
+      ],
+      [
+        104,
+        1052,
+        117,
+        1061
+      ],
+      [
+        138,
+        1053,
+        161,
+        1066
+      ],
+      [
+        167,
+        1063,
+        185,
+        1072
+      ],
+      [
+        306,
+        1067,
+        333,
+        1076
+      ],
+      [
+        814,
+        1076,
+        865,
+        1098
+      ],
+      [
+        56,
+        1093,
+        89,
+        1105
+      ],
+      [
+        201,
+        1094,
+        226,
+        1103
+      ],
+      [
+        752,
+        1105,
+        778,
+        1115
+      ],
+      [
+        0,
+        1168,
+        102,
+        1231
+      ],
+      [
+        727,
+        1208,
+        750,
+        1218
+      ],
+      [
+        880,
+        1218,
+        892,
+        1232
+      ],
+      [
+        844,
+        1276,
+        891,
+        1300
+      ],
+      [
+        308,
+        1298,
+        322,
+        1319
+      ],
+      [
+        276,
+        1307,
+        285,
+        1319
+      ],
+      [
+        0,
+        1360,
+        43,
+        1421
+      ],
+      [
+        923,
+        1367,
+        941,
+        1402
+      ],
+      [
+        117,
+        1375,
+        130,
+        1388
+      ],
+      [
+        0,
+        1484,
+        64,
+        1624
+      ],
+      [
+        74,
+        1532,
+        118,
+        1560
+      ],
+      [
+        825,
+        1543,
+        901,
+        1610
+      ],
+      [
+        62,
+        1571,
+        70,
+        1598
+      ],
+      [
+        124,
+        1582,
+        160,
+        1628
+      ],
+      [
+        98,
+        1589,
+        146,
+        1646
+      ],
+      [
+        885,
+        1602,
+        941,
+        1672
+      ],
+      [
+        674,
+        1637,
+        689,
+        1655
+      ],
+      [
+        105,
+        1647,
+        117,
+        1656
+      ],
+      [
+        555,
+        32,
+        589,
+        75
+      ]
+    ]
+  },
+  "originalPixelIdentity": {
+    "fullyOpaqueInteriorPixels": 427490,
+    "exactRGBPercent": 100.0,
+    "within1LevelPercent": 100.0,
+    "p99MaxChannelError": 0.0,
+    "placementTranslationPx": 0,
+    "note": "Original RGB source is copied at its original global coordinates; no feature-based pose fitting. Differences at antialias edges and exposed inpaint backgrounds are expected."
+  },
+  "blink": {
+    "status": "reviewed",
+    "preview": "QA_blink_alignment.png",
+    "states": [
+      "open",
+      "half_closed",
+      "closed"
+    ],
+    "note": "Open state uses exact original pixels; shared patch footprint with feathered alpha edges."
+  }
+}

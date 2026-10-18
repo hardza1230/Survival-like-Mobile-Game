@@ -1,9 +1,10 @@
-# Latest checkpoint — art orders 23 → 24 → 25
+# Latest checkpoint — art23/24 delivered,25 ready to publish
 
-Updated2026-10-18 Asia/Bangkok. Owner authorized production in this order; main branch claude/vampire-survival-mobile-game-yo9e8w. Runtime remains v7.8.57, order22 integrated by runtime owner.
+Updated2026-10-18 Asia/Bangkok. Main branch claude/vampire-survival-mobile-game-yo9e8w, runtimev7.8.57 unchanged. Art only, no runtime wiring.
 
-Order23 complete:20 PNG32 /66 frames in assets/incoming/levelup_cards_ui/, published3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd. All31 delivery files read back completely and byte length/SHA256/Git blob SHA matched. UPLOAD_VERIFICATION.json and QA remote status added in this follow-up. No source changes since readback.
+23:20 PNG32/66frames published3ffe1bca0eefc0bbfbce367f5bf8357201fb62bd; all31 files full-byte verified.
+24:19 PNG32/43frames published708260861c3c7df93ed565d01606114345094310; all34 files full-byte verified. Local proof/status pending this25commit.
 
-Order24 complete sources:19 PNG32 /43 frames in assets/incoming/pause_ui/. Manifest, final built-in ImageGen prompts, QA report, two source galleries, both412x860 and360x780 screen assemblies, reference comparison, 9-slice/text preview and delivery notes. All source contracts and visual QA passed; no-scroll layouts and requested corner sizes verified. Publish then complete raw GitHub readback next.
+25:25 final PNG32/81frames in assets/incoming/hub_motion/, all20required plus5optional icons. User explicitly approved Python extraction: ใช้ Python ตัดจากต้นฉบับ. Final original-pixel masks + AI hidden fill from work/order25/refine.py and hybrid.py; do not rerun old pack.py, which overwrites direct extraction. QA/finalizer completed: exact grids, decode/CRC/alpha/hash; original opaque interior RGB100%, source placement0px; blink and±6deg joints/loops reviewed,28.208MiB <40MiB. Inpainted background and alpha edges intentionally differ.
 
-Next authorized production: order25 Hub motion. Original background and menu icons are now in local sparse checkout; original background viewed. Need25 pieces (A6/B7/C7/D5), preserve original identity/pose/lighting, canonical1080x1920 layer coordinates and pivots, cropped alpha pieces, black VFX, reassembly comparison and ±6degree puppet seam checks, decoded sum <=40MB. No sources for25 yet. Keep runtime integration separate from incoming art delivery.
+Next: publish selected incoming25files,24proof and these docs using connected GitHub blob/tree/commit route with expected-parent lease. Verify remote tree equals local staged tree, then raw-read every uploaded file at pinned commit. Save25proof/status, publish proof follow-up, and create24/25 outputZIP/previews. Runtime integration/phoneFPS are not included. Current remote+local parent708260861c3c7df93ed565d01606114345094310.

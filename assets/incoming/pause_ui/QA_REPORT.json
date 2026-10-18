@@ -1133,7 +1133,11 @@
     "note": "B3/C6/C7/C8 regenerated as isolated simple components; E1 frame15 intentionally empty. Labels in QA screens are overlays, not baked into sources."
   },
   "remoteReadback": {
-    "status": "pending"
+    "status": "verified",
+    "commit": "708260861c3c7df93ed565d01606114345094310",
+    "fileCount": 34,
+    "proof": "UPLOAD_VERIFICATION.json",
+    "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file."
   },
   "technicalContracts": {
     "result": "pass",
