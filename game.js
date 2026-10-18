@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.61';
+const GAME_VERSION = '7.8.62';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.62',date:'2026-10-18',title:'Taro Static Arc Travels',items:['Taro’s normal attack (Static Arc, before choosing a Build) now jumps target to target at 0.2s per jump instead of instantly','Gear & Power and Codex menu icons stay still (their animation wobbled)']},
   {v:'7.8.61',date:'2026-10-18',title:'Slower Arc Chain',items:['Arc lightning now takes 0.2s per jump (was 0.085s), so you can see it travel from target to target']},
   {v:'7.8.60',date:'2026-10-18',title:'Stage Stars and Menu Transitions',items:['Every story stage now has 3 stars: ★ clear the stage · ★ finish with 70%+ HP · ★ never drop below 30% HP','Each new star pays bonus Sugar (more on harder difficulties); best stars show on the stage list and the clear screen','Menu screens now slide in with a curtain wipe when you switch pages']},
   {v:'7.8.59',date:'2026-10-18',title:'Living Menu, New Level-Up and Pause Screens',items:['Main menu comes alive: Momo breathes, blinks and waves her wand; braid, cape, ribbon and flowers sway; petals, fireflies, castle lights, clouds and twinkling stars move; menu icons animate','New painted level-up cards: card frames in each skill’s colour, icon medallions, ribbons for special cards, a glowing selection frame, and a burst when you confirm','New Pause screen: crest title, difficulty / level / wave chips, stat bar, loot tiles, skill slots, relic list and big Resume button','Fixed Relic cards sometimes showing “undefined”']},
@@ -9021,7 +9022,7 @@ class Game extends Phaser.Scene {
       if(primary){const glow=this.add.graphics();glow.lineStyle(2,tone.edge,.45).strokeRoundedRect(B.x+2,B.y+2,B.w-4,B.h-4,14);this.menu.add(glow);this.hubTween({targets:glow,alpha:.25,duration:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
       const more=i===5,size=Math.min(B.h*.66,B.w*(primary||more?.16:.19)),cy=B.y+B.h/2,arrowSize=Math.max(17,B.h*.30),arrowX=B.x+B.w-Math.max(20,B.h*.38);
       const tx=more?B.x+B.w/2+size*.36:B.x+size*1.35,ix=more?B.x+B.w/2-size*.85:B.x+size*.72,room=more?B.w*.5:arrowX-tx-arrowSize*.65;
-      if(!locked&&this.bpAnim?.(icon+'_anim')&&this.hubMotionAllowed()){const s=this.add.sprite(ix,cy,icon+'_anim',0).setDisplaySize(size,size);s.play(icon+'_anim');this.menu.add(s);}   /* v7.8.59 ใบ 25 D: ไอคอนปุ่มขยับ */
+      if(!locked&&icon!=='hub_btn_gear'&&icon!=='hub_btn_codex'&&this.bpAnim?.(icon+'_anim')&&this.hubMotionAllowed()){/* v7.8.62 เจ้าของ: Gear/Codex ขยับแล้วสั่นแปลก → ภาพนิ่ง */const s=this.add.sprite(ix,cy,icon+'_anim',0).setDisplaySize(size,size);s.play(icon+'_anim');this.menu.add(s);}   /* v7.8.59 ใบ 25 D: ไอคอนปุ่มขยับ */
       else if(!locked&&this.textures.exists(icon))this.menu.add(this.add.image(ix,cy,icon).setDisplaySize(size,size));
       if(primary&&!locked)this.hubEvery?.(4200,900,()=>this.hubFlash('vfx_hub_play_shimmer',B.x+B.w/2,B.y+B.h/2,B.w,B.h));else this.hubText(ix,cy,locked?'🔒':'✦',Math.max(18,size*.5),'#ffe3aa',.5);
       const fs=primary?Math.min(44,B.h*.43):more?Math.min(28,B.h*.35):Math.max(14,Math.min(23,w*.039));
@@ -13038,9 +13039,11 @@ class Game extends Phaser.Scene {
     const p=this.player,b=this.basicAttack,t=this._taro,f=taroNeedleProfile(b,p,level,dm),targets=this.taroCandidates(p,f.range).sort((a,b)=>Math.hypot(a.enemy.x-p.x,a.enemy.y-p.y)-Math.hypot(b.enemy.x-p.x,b.enemy.y-p.y)||a.id-b.id).slice(0,f.shots);
     /* v7.8.27 เจ้าของ: ก่อนเลือก Build = Static Arc เล็ก (สายละ 3 กระโดด + Arc Reach) · กระโดดไม่มีเป้าใหม่ = เด้งกลับเป้าเดิม 60% (Overload Loop) */
     const jumps=Math.min(10,3+Math.min(3,Math.max(0,b?.ranks?.arc||0))+(b?.mutation==='chainlord'?2:0)+(b?.evolved?3:0)),hit=new Set(),all=this.taroCandidates(p,Infinity);
-    for(const root of targets){if(this.state!=='play'||this.player!==p||this._taro!==t||this.basicAttack!==b||b?.path)break;if(!taroTargetValid(root,p,f.range)||hit.has(root.id))continue;let from={x:p.x,y:p.y},token=root,last=null,j=0;
-      for(;j<jumps&&token;j++){if(this.state!=='play'||this.player!==p||!taroTargetValid(token,from,j?TARO_ARC_JUMP:f.range))break;const e=token.enemy;hit.add(token.id);(this.taroArcBolt||this.chainBolt)?.call(this,from.x,from.y,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*Math.min(1.6,1+.12*j),e.x,e.y);from={x:e.x,y:e.y};last=token;token=this.taroNearestUnused(all,from,TARO_ARC_JUMP,hit);}
-      for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const e=last.enemy;if(k<2)(this.taroArcBolt?this.taroArcBolt(p.x,p.y,e.x,e.y,true):this.chainBolt?.(p.x,p.y,e.x,e.y));this.damage(e,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,e.x,e.y);}}
+    /* v7.8.62 เจ้าของ: Arc = โจมตีปกติของ Taro (ก่อนเลือก Build) → กระโดดทีละตัวทุก TARO_ARC_HOP_MS เหมือนสาย Arc Build */
+    const hopMs=this.time?.delayedCall?TARO_ARC_HOP_MS:0,at=(i,fn)=>{if(!i||!hopMs)return fn();this.time.delayedCall(i*hopMs,()=>{if(this.state==='play'&&this.player===p&&this.basicAttack===b)fn();});};
+    for(const root of targets){if(this.state!=='play'||this.player!==p||this._taro!==t||this.basicAttack!==b||b?.path)break;if(!taroTargetValid(root,p,f.range)||hit.has(root.id))continue;let from={x:p.x,y:p.y},token=root,last=null,j=0,prev=null;
+      for(;j<jumps&&token;j++){if(this.state!=='play'||this.player!==p||!taroTargetValid(token,from,j?TARO_ARC_JUMP:f.range))break;const tk=token,src=from,jj=j,pv=prev;hit.add(token.id);at(j,()=>{if(!taroTargetValid(tk,p,Infinity))return;const e=tk.enemy,sx=pv?.enemy?.active?pv.enemy.x:src.x,sy=pv?.enemy?.active?pv.enemy.y:src.y;(this.taroArcBolt||this.chainBolt)?.call(this,sx,sy,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*Math.min(1.6,1+.12*jj),e.x,e.y);});from={x:token.enemy.x,y:token.enemy.y};prev=token;last=token;token=this.taroNearestUnused(all,from,TARO_ARC_JUMP,hit);}
+      for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const lt=last,kk=k;at(j,()=>{if(!taroTargetValid(lt,p,Infinity))return;const e=lt.enemy;if(kk<2)(this.taroArcBolt?this.taroArcBolt(p.x,p.y,e.x,e.y,true):this.chainBolt?.(p.x,p.y,e.x,e.y));this.damage(e,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,e.x,e.y);});}}
     Sfx.bp?.('taro_chain',.22,.18,1.25);
   }
   taroFireNeedle(p,a,f){const b=this.getBullet?.(p.x,p.y,0xd8c2ff,.5);if(!b)return null;b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xd8c2ff);b.faceVel=true;b.homing=0;b.dmg=f.damage*TARO_NEEDLE_POWER;b.life=f.range/TARO_NEEDLE_SPEED;b.pierce=true;b.seedPierce=true;b.hitTargets=new Set();b.hitGapV=.1;this.physics.velocityFromRotation(a,TARO_NEEDLE_SPEED,b.body.velocity);b.setRotation(a);return b;}
