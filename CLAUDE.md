@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.72 — Spark normal attack not firing (owner)
+# Latest delivery: v7.8.73 — Card text audit fixes
+
+Audited every hero card (BASIC_ATTACKS / BASIC_PATHS / MODIFIERS / FUSIONS / TARO_PROGRESSION). Fixed stale text: Spark Build desc (no boss curve), Sentry Build 'up to 3', Static Arc Reach 'Spark damage', smite arc renamed High Voltage (was Charged Current, too close to p_judge Charged Sparks), Mint p_quiver = +18% shard dmg (Barrage already at 2-lance cap). Reported to owner, not changed: shared icons inside a path (Cocoa titan/dashboxer/brawler cards, Mint barrage/pierce/glacier, Momo s_draw/s_seek/s_return, Mint rime+chill, Taro sentry overload/link use basic icons), Yuzu basic cards no icons, Momo Petal Spread under Sniper.
+
+# Previous delivery: v7.8.72 — Spark normal attack not firing (owner)
 
 taroSpawnProjectile: spark cap was 36 counting every spark incl. split children (1→4) and storm sparks, so casts returned null. Now normal sparks cap 80 (storm sparks counted separately, cap 72); a full pool makes a gen-0 cast retire the oldest (lowest left) normal sparks; children still refused at cap (parent keeps flying).
 
