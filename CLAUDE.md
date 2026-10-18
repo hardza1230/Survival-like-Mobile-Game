@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.77 — Spark basic attack fewer/slower (owner)
+# Latest delivery: v7.8.78 — Gear arrows + Spark Unique growth cap
+
+buildGear cells: ▲/▼ at bottom-left for non-equipped items from gearADDelta (ATK+DEF sum; green/red, yellow/orange when ATK and DEF move opposite ways). castStormBeacon: smite path uses min(2, taroUniqueGrowth) (owner: Storm Mark took 200k of a 500k boss; sim Lv30 dmgMul 1.07: one cast = 1717 on boss vs 23 for 3s of normal attacks — growth ×4.48 × 18 homing storm sparks + mark ×1.5). Plasma/Overdrive keep full growth.
+
+# Previous delivery: v7.8.77 — Spark basic attack fewer/slower (owner)
 
 taroSwarmProfile smite: count = min(10, floor(rawRoots+1)) (was +3 → start 2, Lv4+ 3 instead of 4/5), excess threshold same shift, interval = max(.45, unitC×1.3) (was max(.35, unitC)). Damage per spark unchanged.
 

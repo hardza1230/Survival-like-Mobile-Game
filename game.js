@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.77';
+const GAME_VERSION = '7.8.78';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.78',date:'2026-10-18',title:'Gear Arrows & Spark Unique',items:['Taro Spark Build: Storm Mark no longer grows past ×2 from run level (it reached ×4.5 at Lv30 and melted bosses)','Equipment bag: a green ▲ means the item is stronger than what you wear in that slot, a red ▼ means weaker (yellow/orange = trade-off between ATK and DEF)']},
   {v:'7.8.77',date:'2026-10-18',title:'Spark Basic Attack',items:['Taro Spark Build: fewer Sparks per cast (2 at start, 3 from level 4; was 4–5) and casts 30% less often']},
   {v:'7.8.76',date:'2026-10-18',title:'Spark Fixes',items:['Fixed Sparks that dealt damage while invisible when the screen was busy','Storm Mark now sprays one ring of 18 Sparks (was two rings of 36)']},
   {v:'7.8.75',date:'2026-10-18',title:'Recommended Power',items:['Recommended Power on stage cards now matches the new monster and boss strength (lower for Chapter 2, higher for C3-4 and C3-5)']},
@@ -9945,6 +9946,8 @@ class Game extends Phaser.Scene {
       this.menu.add([g,em,lt]);
       if(item.isNew){const nd=this.add.circle(x+6,iy+6,4,0xff5689,1);this.menu.add(nd);}
       if(eq){const ck=this.add.text(x+4,iy+ch-3,'✓',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#8bd3a0'}).setOrigin(0,1);this.menu.add(ck);}
+      if(!eq&&item.grade!=='start'){const dd=gearADDelta(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),up=dd.a+dd.d;   /* v7.8.78 เจ้าของ: ลูกศรบอกว่าดีกว่าชิ้นที่ใส่อยู่ไหม (ATK+DEF รวม) */
+        if(dd.a||dd.d){const both=dd.a>0&&dd.d<0||dd.a<0&&dd.d>0,col=both?(up>0?'#ffd166':'#ffb27a'):(up>0?'#5df08a':'#ff6b81'),ar=this.add.text(x+5,iy+ch-3,up>0?'▲':'▼',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.round(Math.max(13,cw*.2))+'px',color:col,stroke:'#1a1022',strokeThickness:3}).setOrigin(0,1);this.menu.add(ar);}}
       if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4,iy+ch-3,'+'+item.enhanceLv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,1);this.menu.add(lv);}
       this._zone(x,iy,cw,ch,()=>{ this.gearSelectedUid=item.uid;this.gearSlot=item.slot;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
     });
@@ -12998,7 +13001,7 @@ class Game extends Phaser.Scene {
   }
   /* v7.8.41 ตัวเลขจาก Combat Meter: Unique ทั้ง 3 ทำแค่ 0–3% ของดาเมจ → โตตามเลเวลรอบ (+12%/เลเวล) ให้ตามพลังตีปกติทัน */
   taroUniqueGrowth(){return 1+TARO_UQ_GROW*Math.max(0,(this.level||1)-1);}
-  castStormBeacon(dm,ul=1){if(this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;dm*=this.taroUniqueGrowth?.()||1;if(!this.basicAttack?.path||this.basicAttack.path==='storm')return this.castTaroPlasma(dm,ul);if(this.basicAttack.path==='tempest')return this.castTaroOvercharge(dm,ul);return this.castTaroStormMark(dm,ul);}
+  castStormBeacon(dm,ul=1){if(this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;{const ug=this.taroUniqueGrowth?.()||1;dm*=this.basicAttack?.path==='smite'?Math.min(2,ug):ug;}   /* v7.8.78 เจ้าของ: Spark Unique ตีบอส 2 แสน — ตัวคูณเลเวลวิ่ง (Lv30 ×4.5) ซ้อนกับพายุ 18 ลูกที่วิ่งเข้าเป้า → สาย Spark ตัวคูณเลเวลไม่เกิน ×2 */if(!this.basicAttack?.path||this.basicAttack.path==='storm')return this.castTaroPlasma(dm,ul);if(this.basicAttack.path==='tempest')return this.castTaroOvercharge(dm,ul);return this.castTaroStormMark(dm,ul);}
   /* v7.8.33 Storm Beacon (เดิมเป็น Unique สาย Spark) — เก็บไว้เป็นเมธอดแยก ยังไม่ได้ผูกกับปุ่ม */
   castTaroBeacon(dm,ul=1){if(this.character!=='taro'||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;const t=this.syncTaroCombat();t.enabled=true;const f=taroBeaconProfile(dm,ul,!!this.player.echoPath);
     const x=this.player.x,y=this.player.y,attackId=++t.attackSeq;   // v7.8.19 ตอนวาง: สายฟ้าฟาดรอบตัวก่อน แล้วค่อยเป็นป้อม
