@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.67';
+const GAME_VERSION = '7.8.68';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.68',date:'2026-10-18',title:'New Card Icons & Menu Curtain',items:['77 new card icons: Modifiers, Fusions, Mutations, Evolutions, Trade-offs, Flavor Infusions, 4 Relics and 2 Cocoa upgrades now have their own art','Menu screens now change with a candy-shop curtain: frosting edge, sparkles and a Mochi emblem']},
   {v:'7.8.67',date:'2026-10-18',title:'Cleaner Equipment Screen',items:['Equipment: one bag for every slot — each item shows just its picture and level','Removed the Clean / Sell / Scrap buttons (Sell and Dismantle stay on each item)','Item mods now explain what each one does instead of a comparison table','Enhancing warns you when the item can be destroyed and asks you to tap again','Main menu: only Play animates, all button icons are the same size, smaller settings button']},
   {v:'7.8.66',date:'2026-10-18',title:'Smoother Boss Scaling',items:['Story bosses now get tougher by an even step (+45% HP per stage); C3-3, C3-4 and C3-5 bosses take bigger steps (+58%)','Minibosses always have 25% of their stage boss’s HP','Minibosses follow the same level and difficulty scaling as bosses','Minibosses hit at least 1.2× and bosses at least 1.5× as hard as a Tank']},
   {v:'7.8.65',date:'2026-10-18',title:'Fairer Monster Scaling',items:['Elites now have 1.5× a Tank’s HP on every stage (they were weaker than Tanks)','Siege monsters: contact damage equal to Tanks and 5 EXP (was 10)','Story stages now get tougher by an even step (+29% HP, +8% damage per stage); C3-3, C3-4 and C3-5 take bigger steps (+40% HP, +13% damage)','Chapter 3 monsters move as fast as Chapter 2 ones']},
@@ -2005,6 +2006,87 @@ const ASSET_IMAGES = {
   relic_momentum:'assets/art/icons/relic_momentum.webp',
   relic_shell:'assets/art/icons/relic_shell.webp',
   relic_splinter:'assets/art/icons/relic_splinter.webp',
+  // v7.8.68 ใบ 26: ไอคอนการ์ด (card_icons = โหลดพร้อมด่าน) + relic 4 ชิ้น + ม่านสลับหน้า (บูต)
+  ic_evo_momo:'assets/art/card_icons/ic_evo_momo.webp',
+  ic_evo_cocoa:'assets/art/card_icons/ic_evo_cocoa.webp',
+  ic_evo_berry:'assets/art/card_icons/ic_evo_berry.webp',
+  ic_evo_mint:'assets/art/card_icons/ic_evo_mint.webp',
+  ic_evo_taro:'assets/art/card_icons/ic_evo_taro.webp',
+  ic_evo_sesame:'assets/art/card_icons/ic_evo_sesame.webp',
+  ic_fus_heartburst:'assets/art/card_icons/ic_fus_heartburst.webp',
+  ic_fus_crownseed:'assets/art/card_icons/ic_fus_crownseed.webp',
+  ic_fus_glacier:'assets/art/card_icons/ic_fus_glacier.webp',
+  ic_fus_shardstorm:'assets/art/card_icons/ic_fus_shardstorm.webp',
+  ic_fus_quakeking:'assets/art/card_icons/ic_fus_quakeking.webp',
+  ic_fus_lastbear:'assets/art/card_icons/ic_fus_lastbear.webp',
+  ic_fus_tempest:'assets/art/card_icons/ic_fus_tempest.webp',
+  ic_fus_skyjudge:'assets/art/card_icons/ic_fus_skyjudge.webp',
+  ic_fus_prismnova:'assets/art/card_icons/ic_fus_prismnova.webp',
+  ic_fus_horizon:'assets/art/card_icons/ic_fus_horizon.webp',
+  relic_firstbite:'assets/art/icons/relic_firstbite.webp',
+  relic_dashcharge:'assets/art/icons/relic_dashcharge.webp',
+  relic_trophy:'assets/art/icons/relic_trophy.webp',
+  relic_harvest:'assets/art/icons/relic_harvest.webp',
+  tr_curtain:'assets/art/transition/tr_curtain.webp',
+  tr_edge:'assets/art/transition/tr_edge.webp',
+  ic_mod_bloom:'assets/art/card_icons/ic_mod_bloom.webp',
+  ic_mod_love:'assets/art/card_icons/ic_mod_love.webp',
+  ic_mod_heart:'assets/art/card_icons/ic_mod_heart.webp',
+  ic_mod_aim:'assets/art/card_icons/ic_mod_aim.webp',
+  ic_mod_jam:'assets/art/card_icons/ic_mod_jam.webp',
+  ic_mod_spray:'assets/art/card_icons/ic_mod_spray.webp',
+  ic_mod_icemine:'assets/art/card_icons/ic_mod_icemine.webp',
+  ic_mod_shatter:'assets/art/card_icons/ic_mod_shatter.webp',
+  ic_mod_flurry:'assets/art/card_icons/ic_mod_flurry.webp',
+  ic_mod_throw:'assets/art/card_icons/ic_mod_throw.webp',
+  ic_mod_glide:'assets/art/card_icons/ic_mod_glide.webp',
+  ic_mod_coldarc:'assets/art/card_icons/ic_mod_coldarc.webp',
+  ic_mod_quake:'assets/art/card_icons/ic_mod_quake.webp',
+  ic_mod_stomp:'assets/art/card_icons/ic_mod_stomp.webp',
+  ic_mod_rage:'assets/art/card_icons/ic_mod_rage.webp',
+  ic_mod_crush:'assets/art/card_icons/ic_mod_crush.webp',
+  ic_mod_ko:'assets/art/card_icons/ic_mod_ko.webp',
+  ic_mod_after:'assets/art/card_icons/ic_mod_after.webp',
+  ic_mod_over:'assets/art/card_icons/ic_mod_over.webp',
+  ic_mod_field:'assets/art/card_icons/ic_mod_field.webp',
+  ic_mod_step:'assets/art/card_icons/ic_mod_step.webp',
+  ic_mod_judge:'assets/art/card_icons/ic_mod_judge.webp',
+  ic_mod_ion:'assets/art/card_icons/ic_mod_ion.webp',
+  ic_mod_focus:'assets/art/card_icons/ic_mod_focus.webp',
+  ic_mod_prism:'assets/art/card_icons/ic_mod_prism.webp',
+  ic_mod_lens:'assets/art/card_icons/ic_mod_lens.webp',
+  ic_mod_scope:'assets/art/card_icons/ic_mod_scope.webp',
+  ic_mod_refract:'assets/art/card_icons/ic_mod_refract.webp',
+  ic_mod_mirror:'assets/art/card_icons/ic_mod_mirror.webp',
+  ic_mod_exec:'assets/art/card_icons/ic_mod_exec.webp',
+  ic_mut_momo_ricochet:'assets/art/card_icons/ic_mut_momo_ricochet.webp',
+  ic_mut_momo_fan:'assets/art/card_icons/ic_mut_momo_fan.webp',
+  ic_mut_cocoa_rush:'assets/art/card_icons/ic_mut_cocoa_rush.webp',
+  ic_mut_cocoa_breaker:'assets/art/card_icons/ic_mut_cocoa_breaker.webp',
+  ic_mut_cocoa_counter:'assets/art/card_icons/ic_mut_cocoa_counter.webp',
+  ic_mut_berry_seeker:'assets/art/card_icons/ic_mut_berry_seeker.webp',
+  ic_mut_berry_sticky:'assets/art/card_icons/ic_mut_berry_sticky.webp',
+  ic_mut_mint_blizzard:'assets/art/card_icons/ic_mut_mint_blizzard.webp',
+  ic_mut_mint_permafrost:'assets/art/card_icons/ic_mut_mint_permafrost.webp',
+  ic_mut_taro_chainlord:'assets/art/card_icons/ic_mut_taro_chainlord.webp',
+  ic_mut_taro_stormcaller:'assets/art/card_icons/ic_mut_taro_stormcaller.webp',
+  ic_mut_sesame_fortress:'assets/art/card_icons/ic_mut_sesame_fortress.webp',
+  ic_mut_sesame_retaliate:'assets/art/card_icons/ic_mut_sesame_retaliate.webp',
+  ic_trade_glass:'assets/art/card_icons/ic_trade_glass.webp',
+  ic_trade_burn:'assets/art/card_icons/ic_trade_burn.webp',
+  ic_trade_armor:'assets/art/card_icons/ic_trade_armor.webp',
+  ic_trade_rush:'assets/art/card_icons/ic_trade_rush.webp',
+  ic_trade_berserk:'assets/art/card_icons/ic_trade_berserk.webp',
+  ic_trade_core:'assets/art/card_icons/ic_trade_core.webp',
+  ic_trade_feast:'assets/art/card_icons/ic_trade_feast.webp',
+  ic_trade_oath:'assets/art/card_icons/ic_trade_oath.webp',
+  ic_inf_spicy:'assets/art/card_icons/ic_inf_spicy.webp',
+  ic_inf_sour:'assets/art/card_icons/ic_inf_sour.webp',
+  ic_inf_sweet:'assets/art/card_icons/ic_inf_sweet.webp',
+  ic_inf_minty:'assets/art/card_icons/ic_inf_minty.webp',
+  ic_cocoa_dashp:'assets/art/card_icons/ic_cocoa_dashp.webp',
+  ic_cocoa_drum:'assets/art/card_icons/ic_cocoa_drum.webp',
+  tr_emblem:'assets/art/transition/tr_emblem.webp',
   // Stage cards and portrait menu art (source PNGs remain in incoming).
   screen_equipment:'assets/incoming/menu_screens/screen_equipment.png',
   screen_inbox:'assets/incoming/menu_screens/screen_inbox.png',
@@ -2417,6 +2499,8 @@ const ASSET_FX = {
   hub_btn_heroes_anim:{url:'assets/art/hub_motion/hub_btn_heroes_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
   hub_btn_gear_anim:{url:'assets/art/hub_motion/hub_btn_gear_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
   hub_btn_activity_anim:{url:'assets/art/hub_motion/hub_btn_activity_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
+  vfx_tr_edge_sparkle:{url:'assets/art/transition/vfx_tr_edge_sparkle.webp',fw:128,fh:256,frames:4,rate:12,anchor:'center',loop:true},
+  vfx_tr_puff:{url:'assets/art/transition/vfx_tr_puff.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center'},
   hub_btn_codex_anim:{url:'assets/art/hub_motion/hub_btn_codex_anim.webp',fw:128,fh:128,frames:4,rate:7,anchor:'center',loop:true},
   // v7.8.57 art order 22: boss attack VFX C1–C2 (assets/art/boss_vfx · scripts/pack-boss-vfx-c1-c2.py) · stage kit vfx_bNN_warn/impact/wave/lane + signatures · loaded per stage via STAGE_SHEETS
   vfx_b01_warn:{url:'assets/art/boss_vfx/vfx_b01_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.95,0.4]},
@@ -2939,7 +3023,8 @@ const STAGE_SHEETS=[
 let _stageOnlyArt=null;
 function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
-const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
+const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
+const CARD_ICON_KEYS=["ic_evo_momo", "ic_evo_cocoa", "ic_evo_berry", "ic_evo_mint", "ic_evo_taro", "ic_evo_sesame", "ic_fus_heartburst", "ic_fus_crownseed", "ic_fus_glacier", "ic_fus_shardstorm", "ic_fus_quakeking", "ic_fus_lastbear", "ic_fus_tempest", "ic_fus_skyjudge", "ic_fus_prismnova", "ic_fus_horizon", "ic_mod_bloom", "ic_mod_love", "ic_mod_heart", "ic_mod_aim", "ic_mod_jam", "ic_mod_spray", "ic_mod_icemine", "ic_mod_shatter", "ic_mod_flurry", "ic_mod_throw", "ic_mod_glide", "ic_mod_coldarc", "ic_mod_quake", "ic_mod_stomp", "ic_mod_rage", "ic_mod_crush", "ic_mod_ko", "ic_mod_after", "ic_mod_over", "ic_mod_field", "ic_mod_step", "ic_mod_judge", "ic_mod_ion", "ic_mod_focus", "ic_mod_prism", "ic_mod_lens", "ic_mod_scope", "ic_mod_refract", "ic_mod_mirror", "ic_mod_exec", "ic_mut_momo_ricochet", "ic_mut_momo_fan", "ic_mut_cocoa_rush", "ic_mut_cocoa_breaker", "ic_mut_cocoa_counter", "ic_mut_berry_seeker", "ic_mut_berry_sticky", "ic_mut_mint_blizzard", "ic_mut_mint_permafrost", "ic_mut_taro_chainlord", "ic_mut_taro_stormcaller", "ic_mut_sesame_fortress", "ic_mut_sesame_retaliate", "ic_trade_glass", "ic_trade_burn", "ic_trade_armor", "ic_trade_rush", "ic_trade_berserk", "ic_trade_core", "ic_trade_feast", "ic_trade_oath", "ic_inf_spicy", "ic_inf_sour", "ic_inf_sweet", "ic_inf_minty", "ic_cocoa_dashp", "ic_cocoa_drum"];CARD_ICON_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.68 ใบ 26: ไอคอนการ์ดโหลดพร้อมด่าน (ไม่กินงบบูต)   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
 if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
@@ -7867,8 +7952,18 @@ class Game extends Phaser.Scene {
     this._mScrollMax=Math.max(0,Math.ceil(bottom-this.H+24));this.setMenuScroll(this._mScroll||0);}
   // v7.8.60 สลับหน้าเมนู: ม่านม่วงเข้มปิดทั้งจอแล้ว "ปาด" ออก (หน้าใหม่ = ปาดไปซ้าย · ย้อนกลับ = ปาดไปขวา) + แถบแสงขอบ · ไม่ใช้ alpha ของเมนู (เคยเห็นพื้นโลกวาบ)
   menuTransition(forward){ if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
-    const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),veil=this.add.rectangle(0,0,w,h,0x24142f,1).setOrigin(0),edge=this.add.rectangle(forward?0:w,0,10,h,0xffd6ea,.9).setOrigin(forward?1:0,0);c.add([veil,edge]);this._menuWipe=c;
-    const prog={t:0};this.tweens.add({targets:prog,t:1,duration:300,ease:'Cubic.inOut',onUpdate:()=>{const x=w*prog.t;if(forward){veil.setX(-x);edge.setX(w-x);}else{veil.setX(x);edge.setX(x);}veil.setAlpha(1-.35*prog.t);edge.setAlpha(.9*(1-prog.t*.6));},onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); }
+    const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),T=this.textures,art=T.exists('tr_curtain')&&T.exists('tr_edge');this._menuWipe=c;
+    if(!art){ const veil=this.add.rectangle(0,0,w,h,0x24142f,1).setOrigin(0),edge=this.add.rectangle(forward?0:w,0,10,h,0xffd6ea,.9).setOrigin(forward?1:0,0);c.add([veil,edge]);
+      const prog={t:0};this.tweens.add({targets:prog,t:1,duration:300,ease:'Cubic.inOut',onUpdate:()=>{const x=w*prog.t;if(forward){veil.setX(-x);edge.setX(w-x);}else{veil.setX(x);edge.setX(x);}veil.setAlpha(1-.35*prog.t);edge.setAlpha(.9*(1-prog.t*.6));},onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); return; }
+    // v7.8.68 ใบ 26: ผ้าม่านร้านขนม (tile) + ขอบครีมหยัก + ประกายที่ขอบ + ตรากลางจอหมุนย่อ + ควันแป้ง · ทึบสนิท ห้ามโปร่ง
+    const k=h/960,veil=this.add.tileSprite(0,0,w,h,'tr_curtain').setOrigin(0).setTileScale(k),ew=80*k,edge=this.add.image(0,0,'tr_edge').setOrigin(forward?0:1,0).setDisplaySize(ew,h).setFlipX(!forward);c.add([veil,edge]);
+    const sp=[];if(T.exists('vfx_tr_edge_sparkle')&&this.anims.exists('vfx_tr_edge_sparkle'))for(let i=0;i<2;i++){const o=this.add.sprite(0,h*(.3+.4*i),'vfx_tr_edge_sparkle',0).setDisplaySize(64*k*1.4,128*k*1.4).setFlipX(!forward);o.play({key:'vfx_tr_edge_sparkle',startFrame:i*2});sp.push(o);c.add(o);}
+    const em=T.exists('tr_emblem')?this.add.image(w/2,h/2,'tr_emblem').setDisplaySize(Math.min(w,h)*.34,Math.min(w,h)*.34):null;if(em)c.add(em);const es=em?em.scaleX:1;let puffed=false;
+    const prog={t:0};this.tweens.add({targets:prog,t:1,duration:340,ease:'Cubic.inOut',onUpdate:()=>{const t=prog.t,x=w*t,vx=forward?-x:x,lead=forward?w-x:x;veil.setX(vx).setTilePosition((forward?x:-x)*.25/k,0);edge.setX(lead);
+        for(const o of sp)o.setX(lead+(forward?ew*.55:-ew*.55));
+        if(em){const q=Math.min(1,t/.6);em.setScale(es*(1-q)).setRotation((forward?-1:1)*q*Math.PI*.6).setAlpha(1-q*.4).setX(w/2+vx*.35);
+          if(!puffed&&q>=1){puffed=true;em.setVisible(false);if(T.exists('vfx_tr_puff')&&this.anims.exists('vfx_tr_puff')){const pf=this.add.sprite(w/2+vx*.35,h/2,'vfx_tr_puff',0).setDisplaySize(Math.min(w,h)*.42,Math.min(w,h)*.42);c.add(pf);pf.play('vfx_tr_puff');}}}},
+      onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); }
   cancelMenuMotion(){ this._mVelocity=0;this._mDrag=null;if(this._menuPress){this._menuPress.destroy();this._menuPress=null;} }
   menuPointerDown(p){
     if(this._mDrag)return;const moving=Math.abs(this._mVelocity||0)>35;this._mVelocity=0;
@@ -12492,6 +12587,10 @@ class Game extends Phaser.Scene {
     if(num){const t=num[0].replace(/\s+(per|and|to|of|for|on|in)$/,''),bad=/damage taken/i.test(desc.slice(num.index,num.index+30))&&/^[+]/.test(t);return {t,c:bad?'#ff9a9a':G.c,s:bad?'#3a0c0c':G.s};}
     const c=clause();return c?{t:c,c:'#ffe9a8',s:'#2e2410'}:null;
   }
+  // v7.8.68 ใบ 26: การ์ดที่เดิมยืมไอคอนอาวุธ → ไอคอนของตัวเอง (ไม่มีภาพ = ใช้ของเดิม)
+  cardArtKey(o){ if(!o||o.type!=='basic'||!this.textures)return null; const k=String(o.key||''),h=(this.basicAttack&&this.basicAttack.character)||'',kind=o.kind||'';
+    const c=kind==='Modifier'?'ic_mod_'+k.replace(/^m_/,''):kind==='Fusion'?'ic_fus_'+k.replace(/^f_/,''):kind==='Trade-off'?'ic_trade_'+k.replace(/^t_/,''):kind==='Flavor Infusion'?'ic_inf_'+k:o.mutation?'ic_mut_'+h+'_'+k:o.evolution?'ic_evo_'+h:h==='cocoa'&&(k==='dashp'||k==='drum')?'ic_cocoa_'+k:null;
+    return c&&this.textures.exists(c)?c:null; }
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
     const type=o.type||'atk';let color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);
     const rar=o.rarity; if(rar)color=rar.color;   // สีเฟรม = ความหายาก (สัญญาณอ่านเร็ว)
@@ -12509,7 +12608,7 @@ class Game extends Phaser.Scene {
     panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);}
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
-    const iconKey=o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas');
+    const iconKey=this.cardArtKey?.(o)||(o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas'));
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT; let hl=options.starting?null:this._cardHeadline(o);if(hl&&(hl.t==null||hl.t==='undefined'||/undefined/.test(String(hl.t))))hl=null;   /* v7.8.59 การ์ด Relic บางใบขึ้น "undefined" */
     // v6.52.1: คำอธิบายสั้นลง — แยกแท็กไปบรรทัดดาว · ตัดท่อนที่ซ้ำกับหัวข้อเขียว
     let dd=String(o.desc||''),tagS='';{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}

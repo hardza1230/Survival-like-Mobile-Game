@@ -1,6 +1,6 @@
 # 26 — ม่านสลับหน้าเมนู + ไอคอนการ์ดที่ยังไม่มีของตัวเอง · ใบสั่งงานอาร์ต
 
-สถานะ: 🟩 ผลิตอาร์ตครบ 82 ไฟล์ / 90 เฟรม (18 ต.ค. 2026) — รอผูกใช้งานในเกม
+สถานะ: 🟩 ผลิตอาร์ตครบ 82 ไฟล์ / 90 เฟรม (18 ต.ค. 2026) — **ผูกแล้ว v7.8.68** (`scripts/pack-art-order-26.py` → `assets/art/card_icons/` โหลดพร้อมด่าน, relic → `assets/art/icons/`, ม่าน → `assets/art/transition/` บูต · `cardArtKey` / `menuTransition`) · รอ QA ภาพ/FPS บนมือถือ
 ตรวจ PNG32/ขนาด/กริด/alpha/hash และภาพ 24/90px, tile, VFX, ม่านสองทิศแล้ว ดู DELIVERY_README.md และ QA_REPORT.json ในโฟลเดอร์ส่งงาน; งบ GPU/FPS ต้องตรวจตอนผูกโค้ด
 ส่งไฟล์ที่ `assets/incoming/transition_card_icons/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 21–25)
 

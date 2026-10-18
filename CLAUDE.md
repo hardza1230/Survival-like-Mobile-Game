@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.67 — Equipment bag + hub polish (owner)
+# Latest delivery: v7.8.68 — Art order 26 wired (card icons + menu curtain)
+
+scripts/pack-art-order-26.py: 73 card icons 256→128 WebP in assets/art/card_icons/ (CARD_ICON_KEYS pushed to every STAGE_SHEETS = stage-lazy), relic_dashcharge/firstbite/harvest/trophy → assets/art/icons/ (boot like other relics), transition → assets/art/transition/ (boot: tr_curtain 540×960 opaque, tr_edge 80×960, tr_emblem 256, ASSET_FX vfx_tr_edge_sparkle 4×128×256 loop + vfx_tr_puff 3×2×128, lum alpha NORMAL). cardArtKey(o) in drawReadableChoiceCard maps Modifier m_→ic_mod_, Fusion f_→ic_fus_, Trade-off t_→ic_trade_, Flavor Infusion→ic_inf_, mutation→ic_mut_<hero>_<id>, evolution→ic_evo_<hero>, cocoa dashp/drum→ic_cocoa_ (missing texture = old icon; Yuzu has none by design). menuTransition: tileSprite curtain + edge (flipX backward) + 2 sparkles + emblem shrink/spin then puff, 340ms; old flat wipe stays as fallback. Boot GPU cocoa 298.5/300 MB — no room left for more boot art. Phone visual/FPS QA pending.
+
+# Previous delivery: v7.8.67 — Equipment bag + hub polish (owner)
 
 buildGear portrait: inventory = Save.gearItemsForSlot(null) (all slots, starters hidden), 5 cols × 3 rows per page (this.gearInvPage), square cells = art + 'Lv' tag top-right (NEW dot, equipped green border + ✓, +N enhance); tapping a cell sets gearSlot = item.slot so Equip/Enhance act on its slot. Clean/Sell/Scrap row and the slot-label button removed (Set button sits next to the Inventory title; Clean screen still exists but has no entry). drawModCompare = mod list (implicit + mods, tier, free slots) with modDesc() line (Forge description or MOD_DESC). Enhance: warning line when od.brk/destroy>0; destroy risk needs a 2nd tap (_gearConfirm 'enh:uid:lv'). Hub: only Play uses the _anim sprite, all icons share iconSz and hubIconFit (alpha bbox via hubIconBox) so visible content is equal; settings cog 44→36 (tap zone stays 44).
 
