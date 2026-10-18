@@ -1,0 +1,344 @@
+{
+  "status": "verified",
+  "commit": "2edc7b947dbe423fd01010fa57f759a3f6173ca1",
+  "fileCount": 48,
+  "method": "Read complete raw file bytes from GitHub at pinned commit; compare byte length, SHA-256 and Git blob SHA against the local upload source for every file.",
+  "files": [
+    {
+      "file": "assets/incoming/hub_motion/DELIVERY_README.md",
+      "bytes": 2048,
+      "sha256": "48cc65dd51a60880e99abeb2cd0afb2320b756c877ef0961bc036e61b75ce154",
+      "gitBlobSha": "0c3dd34539ffa2d3a48b56df5d38d8c6d62e2233",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/EXTRACTION_PLAN.json",
+      "bytes": 1258,
+      "sha256": "9c86af7e09ae351f430ec2b4d114f1865682dad4f2e8691cba944b2315222449",
+      "gitBlobSha": "e87d78aaba373dc32ad4b13dfbf77b9c8057511a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_bg_far.png",
+      "bytes": 3162365,
+      "sha256": "3f0d7ee51e91d58068a405e4392e4a887ef4b36add74adb8974087e7cc7ca971",
+      "gitBlobSha": "d7aa5ccb9565a26eb318f86004b2a3c4522be8ed",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_btn_activity_anim.png",
+      "bytes": 133868,
+      "sha256": "6403b4a9af4515e1f9cce67f949db4fdc892255a289b86c421e0941cbf562fd4",
+      "gitBlobSha": "c05ef54d3adc6c6fbb1c65723bd6c013ef8f325b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_btn_codex_anim.png",
+      "bytes": 79632,
+      "sha256": "27b28e344cc6def18d33c391f86e6a3540d227b2c54129c9dde60034bc84972d",
+      "gitBlobSha": "2482e9f86a8e668dd0f054237590c820be49ccfb",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_btn_gear_anim.png",
+      "bytes": 75724,
+      "sha256": "18a050d66dd8e330eebec5090c9cff9e120375f99efba21413f238f5dd15e2cc",
+      "gitBlobSha": "2034f3805cbfca13a0de33bef79a0653e34ad27d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_btn_heroes_anim.png",
+      "bytes": 108771,
+      "sha256": "7aed14b2280c4847a333193f63ea0f97afa4169d9c952e2193ddceb40b622637",
+      "gitBlobSha": "f6e48cb8451b44703739aac971cb58f2b374c444",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_btn_play_anim.png",
+      "bytes": 121307,
+      "sha256": "b663d70775a8853a3aa48378b9d2ececbdb5fa77afd5f990cf3fce5dcdf8df50",
+      "gitBlobSha": "f356e2179db47698b8eeeb1b6f4e3d66bdca4c57",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_cloud_sheet.png",
+      "bytes": 163308,
+      "sha256": "72b2214611097f260dcc70bb3b82c03d64acd89b58be2fd31fff2a3b73d70af7",
+      "gitBlobSha": "5ceac5a4ad40d83b4a96b0c45c26bbeaaf9f2081",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_fg_flowers_left.png",
+      "bytes": 152938,
+      "sha256": "08b1ff4c75f7c47ecf7ac02af63ae4c52f58ca5e29c028913fcc043efc7848ad",
+      "gitBlobSha": "a87e4e68de5b8c250a42d2e9946bdc3d3afa3b48",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_fg_flowers_right.png",
+      "bytes": 79175,
+      "sha256": "f2538748c2850dd06789a7235d3027b86963ee39414b41459ef32329ea0bc062",
+      "gitBlobSha": "6bf2a3a21bb4e0b22f0dd9924857daa232344038",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_arm.png",
+      "bytes": 497135,
+      "sha256": "f377430831aaf7fe92893aac0b484a737c360d21a8122818c15a9354888f6b16",
+      "gitBlobSha": "9711f8545d2045a1094309d83a9f5f00e3696056",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_blink.png",
+      "bytes": 104535,
+      "sha256": "ce1200a3c6d31f0646527c11a32c37d7bb8b8d5488802d1b1b6a19e3ca0921e0",
+      "gitBlobSha": "1d068dfc479d4b427975c61b1d4e169d04b5842d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_body.png",
+      "bytes": 569357,
+      "sha256": "880bb1975ac09c5ae76a785da09a4203585899ae04b60c61242ee2fc8438b743",
+      "gitBlobSha": "4776a8bd95c8dc476d7a439902a73f34e92c0b2a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_braid.png",
+      "bytes": 72792,
+      "sha256": "854567c41641e8237dfe8f0541bd815e9365ed2ee62c99956bb9dcc895187585",
+      "gitBlobSha": "c665a0615b595627713a358d3eb67b060566ed3c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_cape.png",
+      "bytes": 165895,
+      "sha256": "db7a8279cab6a887a5ce46033b34bf4399fbe7aa493b2a989c6bcb3c87bd8373",
+      "gitBlobSha": "4a03d84b9136705e441771445a9078a406e7bd08",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_hairflower.png",
+      "bytes": 37503,
+      "sha256": "a2ecb0b1571c53e4ba10a9d5fb343059a0c697ae1e89dedc8cf651a26a05e8b6",
+      "gitBlobSha": "0cf9fe89bb6cb7dbc0cc25b45b7804648d64c1f5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_momo_ribbon.png",
+      "bytes": 44835,
+      "sha256": "7692606b6139853d123a593981f23d34f151ed30ce85a76e4d48425ecbee2188",
+      "gitBlobSha": "1f9f7b4ca07515b9c5eeac95af532d56f2767be1",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_sky_glow.png",
+      "bytes": 824706,
+      "sha256": "9543339740316b7e70919503ad7871999ea0d6ec8bd3bb09061e9408659dd449",
+      "gitBlobSha": "3ff77d2b601f3a5838a32aec90165476eee1f433",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/hub_window_lights.png",
+      "bytes": 2050501,
+      "sha256": "3abbb21066476d280ad491a2cb300eb0c1eb8a7acb2c3d7a078d75fdcc3f34de",
+      "gitBlobSha": "d15371b19023ef835081dd67537b387b4569058a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/MANIFEST.json",
+      "bytes": 14796,
+      "sha256": "9e6e457f439c994fb3d44a10026c5c5d22629d5db9b46aa8759a78c6fab09c4b",
+      "gitBlobSha": "64934405dc2e0d36b0403cfdee1286deb388099b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/PROMPTS.json",
+      "bytes": 28120,
+      "sha256": "523d9d436bad1f4b2b9ae91d10b72fc58966487787963c038f08cc0cb55bc9bd",
+      "gitBlobSha": "d5a9101a6d6ea9da4f20d737b51d5abbe9c2878d",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_blink_alignment.png",
+      "bytes": 257885,
+      "sha256": "91b7f830bb1dbec2e9dc5fa5fff8403c2fe10f58186c597d47bf591f16bda391",
+      "gitBlobSha": "907191a28ba308f7ac5a5dc4bc1815c9f4faac80",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_gallery_01.png",
+      "bytes": 536507,
+      "sha256": "477fcba34ec9d3be9732ca25cc194ac0036b0dcc2d5c7e47cdb46dea1f19c315",
+      "gitBlobSha": "74d5d288790847f32d9f907902871b41af87db72",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_gallery_02.png",
+      "bytes": 543368,
+      "sha256": "5bfdb22473e307e91711f3ebc64bf221b86935eb0ff45403c79ca9658229384d",
+      "gitBlobSha": "755afe0c3d29f4fec64b6e55a0c2bbaeb0832dff",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_gallery_03.png",
+      "bytes": 36992,
+      "sha256": "5ae79e23a66725871c1aaec3fb23bd984d1d457963cbf4fed0204653c81c9418",
+      "gitBlobSha": "a24947cc0dfec2d22f7583c918b5bbc9d5794902",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_pixel_diff.png",
+      "bytes": 794770,
+      "sha256": "ad3de998d68e6c96bdd698d387a1a68585499bfa02f79951b853aa4ef68c3701",
+      "gitBlobSha": "aeeff4487882bc57ae2da9372036c9c756a845c7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_puppet_motion.gif",
+      "bytes": 4074062,
+      "sha256": "8a0e40793dc9e216977d7ac9c05bfb7a972b5db96edbd7688bdfe154661619a5",
+      "gitBlobSha": "987df8c0fe1040b671db59ae672b92033aa93382",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_reassembly.png",
+      "bytes": 3149066,
+      "sha256": "25baef7997a7673679cc25b9dc9d04b54f065930f675922d0c0070699aaf7ec6",
+      "gitBlobSha": "c288f1d21445f9defbf0c55a45583f6d4999abe5",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_reference_comparison.png",
+      "bytes": 1269195,
+      "sha256": "d6002f4ac200c9e05261ffbaa1a3350901a3a165a77432928558d744b9810738",
+      "gitBlobSha": "d0158eafa8e57642f05225a8fc0f2154068053fa",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_REPORT.json",
+      "bytes": 23436,
+      "sha256": "398b890f34badc617768daff34e2d82702cfbb6f4dbc6f899e69c1edc8384682",
+      "gitBlobSha": "94656a427fba197eb6add5605de71ecfaacfef15",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_rotation_6deg.png",
+      "bytes": 991460,
+      "sha256": "ee3c3d730b8a6941551691a628be5b41d9d88a8b3809fd509f6e68b0fe4f6cb7",
+      "gitBlobSha": "c4ed24e9a2c79245982f364d4ba9bbbcf5ea1141",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_vfx_hub_moon_twinkle_loop.gif",
+      "bytes": 12729,
+      "sha256": "0556956eaefe5afe196f2a61a7e0a5556db35b5b89eada11577c40f6802ecaf9",
+      "gitBlobSha": "a7f57a297197833abe1eb635be943d35834af3ac",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_vfx_hub_moon_twinkle_loop.png",
+      "bytes": 17719,
+      "sha256": "7d2e4c106f4c1bba445632f0b76d66ecb168175d34e4248c2696666b3c09ad7c",
+      "gitBlobSha": "bc3ec654c63a8b3ed54a2696f706eed90ce40ae8",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_vfx_hub_petals_loop.gif",
+      "bytes": 33382,
+      "sha256": "0843b158690444c6b5cc18c1649417b36d5902be79a6c73972fb63501de85cdb",
+      "gitBlobSha": "3cafb3227827c9d15d1d93d6b9380044854bde7c",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/QA_vfx_hub_petals_loop.png",
+      "bytes": 53339,
+      "sha256": "fc8dc6032e655d0e0c5a66d0b4caf58052f444a8e64ffda53658a34859cd929a",
+      "gitBlobSha": "3b712008b0762612f19088e94dff202e5259ab60",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_firefly.png",
+      "bytes": 4693,
+      "sha256": "a37f1dcdb792443cea33bba608e636d0a594c5833e2669795f805ac53c7bf279",
+      "gitBlobSha": "4c78997a7d99f35ab8c2a5bf85c6bec4d6907ab0",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_flag.png",
+      "bytes": 85168,
+      "sha256": "728ac8bd28366c67bd00d5e574b6ea3a4bf3764cc175f5e7fdb8d0384d70957d",
+      "gitBlobSha": "4aac46f8f529bd8af415af3138ca4cbbdb9923d6",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_logo_shine.png",
+      "bytes": 147148,
+      "sha256": "76fb1625e88f62d00d460d46ebbf8cfd0a94ac9306d74b8eef8f8444dc08929d",
+      "gitBlobSha": "26ea8cd5e16e03f1f0057ab38876a4c90097cffd",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_moon_twinkle.png",
+      "bytes": 8008,
+      "sha256": "3fe9889e6e98a54073f818827f4eb8c475529a7bd12f7a87f183b52dcac1ac5d",
+      "gitBlobSha": "47d4cd321f57df64b69250144ef727a14e14e15a",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_petals.png",
+      "bytes": 25350,
+      "sha256": "08f22dbdad9d253c145159bbdee194484e34780ca33d0119cab78cd5dee205d7",
+      "gitBlobSha": "66f2e162285a2cf47f4d0f660b38fda9e3a5797b",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_play_shimmer.png",
+      "bytes": 98413,
+      "sha256": "a6d7b3b8c63916e96cd83c978538520b825b9012b7fc6d279eb4705264c1d1ab",
+      "gitBlobSha": "ea1bff6211ab564bfa7fd63f258e9ab2680b5139",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/hub_motion/vfx_hub_wand_sparkle.png",
+      "bytes": 321584,
+      "sha256": "745b653fa6b4ece53a1c2cd2d5f09238fadd7c404a0c875a0da610e26a86da90",
+      "gitBlobSha": "8395aebbc779c6cf2b4fd93329a1d497925c5270",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/QA_REPORT.json",
+      "bytes": 44390,
+      "sha256": "2b9751711a9747587dd01821daf92fcc6350bd1f170678cb51baef955ca71d34",
+      "gitBlobSha": "eef76674368b2565b112d38d347ffd226ee5f4c7",
+      "status": "pass"
+    },
+    {
+      "file": "assets/incoming/pause_ui/UPLOAD_VERIFICATION.json",
+      "bytes": 9362,
+      "sha256": "3c8e1397e01167926adb045f382efa2e9bc7527a93bac46906dd955ce94ac5b7",
+      "gitBlobSha": "25ea2bee9c2cad5963551a61805081da27e26383",
+      "status": "pass"
+    },
+    {
+      "file": "CLAUDE.md",
+      "bytes": 47392,
+      "sha256": "3fe05d267e5a6e5c7e786df006b4c08d313546c929bb9b9b1e7bc17381ab3206",
+      "gitBlobSha": "68e550ed3e737fe0226e512596ef4635a3bbd848",
+      "status": "pass"
+    },
+    {
+      "file": "docs/SESSION_HANDOFF.md",
+      "bytes": 1464,
+      "sha256": "28ad779dc5b92f67157a9ac85b34971ffaf570e031ceb27357565921afb58169",
+      "gitBlobSha": "fe6908df5b22d90822193e1aa8d27ac93480b085",
+      "status": "pass"
+    },
+    {
+      "file": "docs/art_orders/25_HUB_MENU_MOTION.md",
+      "bytes": 19979,
+      "sha256": "76bda658fe6fc3377bf33b4612d063a91d286c0b1ce2093cc416f240af2af1f3",
+      "gitBlobSha": "7588ef10420708b776d7db488080f7f9d59f6f3e",
+      "status": "pass"
+    }
+  ]
+}
