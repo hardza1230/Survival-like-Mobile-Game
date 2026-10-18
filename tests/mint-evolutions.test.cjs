@@ -22,7 +22,7 @@ for(const cancel of ['clear','menu','replace']){const s=scene('barrage',[enemy()
 {const e=enemy({isBoss:true,_glacierBrittleUntil:3000,_glacierFrost:3}),s=scene('glacier',[e]);s.glacierShatter(e);assert.equal(s.hits[0].n,36);assert.equal(e.frozen,0);}
 // Existing ranks preserve power/count conversion; Glacier bloom avoids a shard shower.
 {const foes=[enemy(),enemy({x:20})],a=scene('glacier',foes),b=scene('glacier',foes);a.frostShatterBurst(0,0,0,3,10,.6,1.2,false,1);b.frostShatterBurst(0,0,0,6,10,.6,1.2,false,1);assert.equal(a.shots.length,0);assert.equal(b.shots.length,0);assert(Math.abs(b.hits[0].n/a.hits[0].n-1.24)<1e-9);}
-{const s=scene('barrage',[enemy()]);s.basicAttack.lv.linger=3;s.basicAttack._pm.count=4;s.castFrostLance(5,false,1,s.basicAttack);assert.equal(s.shots.length,3);assert.equal(s.shots[0].shatterInfo.dmg,36*.55*1.72);assert.equal(s.queue.filter(q=>q.at<=450).length,6);}
+{const s=scene('barrage',[enemy()]);s.basicAttack.lv.linger=3;s.basicAttack._pm.count=4;s.castFrostLance(5,false,1,s.basicAttack);assert.equal(s.shots.length,2);assert(Math.abs(s.shots[0].shatterInfo.dmg-36*.55*1.9)<1e-9);assert.equal(s.queue.filter(q=>q.at<=450).length,6);}
 {const s=scene('glacier');s.basicAttack.lv.linger=1;s.basicAttack._pm.count=4;s.castFrostLance(5,false,1,s.basicAttack);assert.equal(s.shots.length,4);assert.equal(s.shots[0].shatterInfo.count,4);assert(Math.abs(s.shots[0].shatterInfo.dmg-36*.55*1.24)<1e-9);}
 {const s=scene('pierce');s.basicAttack.evolved=false;shot(s);shot(s);assert.equal(s.basicAttack._impalerFullShots||0,0);s.basicAttack.evolved=true;assert(!shot(s).impaler.giant);}
 {const s=scene('glacier',[enemy()]);s.frostShatterBurst(0,0,0,8,10,.6,1.2,false,1);assert.equal(s.hits[0].n,10*1.4*1.6);assert.equal(s.shots.length,0);}

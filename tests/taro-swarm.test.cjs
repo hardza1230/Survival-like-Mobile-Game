@@ -17,7 +17,7 @@ const shot=(s,kind='spark',extra={})=>s.taroSpawnProjectile({kind,x:0,y:0,angle:
 // v7.8.23 screen-edge bounce reflects the matching axis.
 {const v={left:0,right:100,top:0,bottom:100},p=a.taroBounceView({x:105,y:50,angle:0},v);assert.equal(p.x,100);assert(Math.cos(p.angle)<0);const q=a.taroBounceView({x:50,y:-3,angle:-Math.PI/2},v);assert.equal(q.y,0);assert(Math.sin(q.angle)>0);}
 // v7.8.21 Spark pierces (pierce N = N+1 victims) and splits by flight time: 1 -> 2 -> 4, children smaller/weaker, inherit victims, never split past gen 2.
-{const es=[enemy(1),enemy(2),enemy(3),enemy(4)],s=view('smite',es),p=shot(s,'spark',{pierce:2,gen:0});for(const e of es)if(p.left>0)s.taroProjectileHit(p,a.taroEnemyToken(e));assert.equal(s.hits.length,3);assert(p.left<=0);assert.equal(s._taro.projectiles.length,1,'hits never split');}
+{const es=[enemy(1),enemy(2),enemy(3),enemy(4)],s=view('smite',es),p=shot(s,'spark',{pierce:2,gen:0});for(const e of es)if(p.left>0)s.taroProjectileHit(p,a.taroEnemyToken(e));assert.equal(s.hits.length,4);assert(p.left>0,'v7.8.58 sparks persist until their timer');assert.equal(s._taro.projectiles.length,1,'hits never split');}
 {const s=view('smite',[]),p=shot(s,'spark',{gen:0,age:0,life:2,damage:36,split:.55,pierce:2,x:-1500});p.hits.set(7,0);s.tickTaroDeployables(.43);let live=s._taro.projectiles;assert.equal(live.length,2);assert(live.every(c=>c.kind==='sparkChild'&&c.gen===1&&Math.abs(c.damage-19.8)<1e-9&&c.hits.has(7)&&c.age===0));
   s.tickTaroDeployables(.43);live=s._taro.projectiles;assert.equal(live.length,4);assert(live.every(c=>c.gen===2));s.tickTaroDeployables(.43);assert.equal(s._taro.projectiles.length,4,'gen 2 never splits');assert(s.hits.every(h=>h.terminal));}
 

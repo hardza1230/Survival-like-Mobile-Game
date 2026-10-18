@@ -39,13 +39,13 @@ const choice=scene(null);const paths=choice.rollBasicAttackUpgrades(3);assert.eq
 choice.basicAttack.mastery=10;assert(choice.rollBasicAttackUpgrades(3).every(c=>c.mutation));choice.basicAttack.mutation='blizzard';choice.basicAttack.mastery=16;assert(choice.rollBasicAttackUpgrades(3)[0].evolution);
 // Barrage extra lance is useful both before and after Evolution, including gear/talent bonuses.
 const b=scene('barrage');b.syncBasicAttack();const cards=b.rollBasicAttackUpgrades(99,{noSpecial:true});const quiver=cards.find(c=>c.key==='p_quiver');assert(quiver);quiver.apply();assert.equal(b.basicAttack.lv.p_quiver,1);assert.equal(b.basicAttack._pm.count,2);
-assert.equal(api.mintVolleyProfile(1,false,2,'barrage').count,3);assert.equal(api.mintVolleyProfile(4,false,2,'barrage').shardMul,1.18);
-assert(Math.abs(api.mintVolleyProfile(5,true,2,'barrage').shardMul-1.36)<1e-9);
-assert.equal(api.mintVolleyProfile(5,true,4,'barrage').count,3);
+assert.equal(api.mintVolleyProfile(1,false,2,'barrage').count,2);assert.equal(api.mintVolleyProfile(4,false,2,'barrage').shardMul.toFixed(2),'1.36');
+assert(Math.abs(api.mintVolleyProfile(5,true,2,'barrage').shardMul-1.54)<1e-9);
+assert.equal(api.mintVolleyProfile(5,true,4,'barrage').count,2);
 for(const path of ['glacier','pierce',null]){assert.equal(api.mintVolleyProfile(5,true,4,path).count,4);assert.equal(api.mintVolleyProfile(5,true,4,path).shardMul,1);}
 // Actual cast output: cap, converted shard damage and unchanged direct lance damage.
 function cast(count,evolved){const s=scene('barrage'),shots=[];Object.assign(s,{nearestEnemy:()=>null,trackArtVfx:o=>o,mintBullet(...a){return this.getBullet(...a);},artDelay(){},queueHailstorm(){},poseAttack(){},camWorld:o=>o,add:{image:()=>({setTint(){return this;},setDepth(){return this;},setScale(){return this;},setAlpha(){return this;}})},textures:{exists:()=>true},tweens:{add(){}},time:{delayedCall(){}},physics:{velocityFromRotation(){}},state:'play',hitCratesInRadius(){},getBullet(){const b={body:{velocity:{}},setTexture(){return this;},setTint(){return this;},setScale(){return this;}};shots.push(b);return b;}});s.castFrostLance(5,false,1,{path:'barrage',lv:{},ranks:{},_pm:{count},evolved});return shots;}
-const base=cast(1,true),extra=cast(2,true);assert.equal(extra.length,3);assert.equal(extra[0].dmg,base[0].dmg);assert(Math.abs(extra[0].shatterInfo.dmg/base[0].shatterInfo.dmg-1.36/1.18)<1e-9);
+const base=cast(1,true),extra=cast(2,true);assert.equal(extra.length,2);assert.equal(extra[0].dmg,base[0].dmg);assert(Math.abs(extra[0].shatterInfo.dmg/base[0].shatterInfo.dmg-1.54/1.36)<1e-9);
 // Endgame saves keep, count and apply previously invested off-path ranks; new builds cannot add them.
 
 
