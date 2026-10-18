@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.75 — Recommended Power on the new curves
+# Latest delivery: v7.8.76 — Invisible Sparks + Storm Mark count
+
+taroProjectileVisual no longer gated by taroVisualBudget (transient-fx cap 20 shared with hit/bounce art made new projectiles fx=null → damage without visuals); projectile tick re-creates a missing/destroyed fx. Projectile sprites stay bounded by caps (80 normal + 72 storm sparks, 60 orbs). Storm Mark spark storm: 18 sparks one ring (quiet), still ×0.5.
+
+# Previous delivery: v7.8.75 — Recommended Power on the new curves
 
 stageThreat uses storyHp/storyDmg (mobs) and _bStoryC (boss HP) + boss dmg floor 1.5× tank. Recommended Power C1-1…C3-5: 130 160 190 240 290 350 440 540 660 820 1010 1230 1580 2030 2610 (was 130 150 200 240 320 420 600 690 830 1030 1140 1350 1580 1860 2200).
 
