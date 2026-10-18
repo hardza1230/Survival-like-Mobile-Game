@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.70';
+const GAME_VERSION = '7.8.71';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,8 +74,9 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.71',date:'2026-10-18',title:'Arc Speed & Weave Cards',items:['Arc jumps are back to 0.2 seconds','Flavor Weave: maxed core cards line the icon, text and Full button up with their gold frame']},
   {v:'7.8.70',date:'2026-10-18',title:'Small-Screen UI Fixes',items:['Heroes / Equipment headers: the candy icon no longer covers your Sugar on small phones','Temple pages: the title fits its frame','Settings: long descriptions stay on one line instead of covering the row title','Reward Inbox, Achievements, Daily Quests, Temple Depths and Bazaar: overlapping text and the oversized 100-point chest fixed','Boss Rush: boss list is readable on its own panel','Level-up banner text fits inside the ribbon']},
-  {v:'7.8.69',date:'2026-10-18',title:'Taro Tuning',items:['Sentry Overdrive lasts 3 seconds; Ball Lightning now flies straight instead of chasing bosses','Storm Mark now also sprays a Spark storm; Sparks hunt the mark for 2 seconds only, and the mark is only placed on enemies on screen','Sparks no longer curve toward bosses outside Storm Mark','Spark Build: Piercing Current is now Charged Current (+10% Spark damage per rank)','Arc jumps are slower (0.35s) and, when only one enemy is left, the Arc loops out and back to strike it again','Plasma Field leaves a Magnetic Field for 10 seconds when it returns: enemies inside take +25% damage']},
+  {v:'7.8.69',date:'2026-10-18',title:'Taro Tuning',items:['Sentry Overdrive lasts 3 seconds; Ball Lightning now flies straight instead of chasing bosses','Storm Mark now also sprays a Spark storm; Sparks hunt the mark for 2 seconds only, and the mark is only placed on enemies on screen','Sparks no longer curve toward bosses outside Storm Mark','Spark Build: Piercing Current is now Charged Current (+10% Spark damage per rank)','When only one enemy is left, the Arc loops out and back to strike it again','Plasma Field leaves a Magnetic Field for 10 seconds when it returns: enemies inside take +25% damage']},
   {v:'7.8.68',date:'2026-10-18',title:'New Card Icons & Menu Curtain',items:['77 new card icons: Modifiers, Fusions, Mutations, Evolutions, Trade-offs, Flavor Infusions, 4 Relics and 2 Cocoa upgrades now have their own art','Menu screens now change with a candy-shop curtain: frosting edge, sparkles and a Mochi emblem']},
   {v:'7.8.67',date:'2026-10-18',title:'Cleaner Equipment Screen',items:['Equipment: one bag for every slot — each item shows just its picture and level','Removed the Clean / Sell / Scrap buttons (Sell and Dismantle stay on each item)','Item mods now explain what each one does instead of a comparison table','Enhancing warns you when the item can be destroyed and asks you to tap again','Main menu: only Play animates, all button icons are the same size, smaller settings button']},
   {v:'7.8.66',date:'2026-10-18',title:'Smoother Boss Scaling',items:['Story bosses now get tougher by an even step (+45% HP per stage); C3-3, C3-4 and C3-5 bosses take bigger steps (+58%)','Minibosses always have 25% of their stage boss’s HP','Minibosses follow the same level and difficulty scaling as bosses','Minibosses hit at least 1.2× and bosses at least 1.5× as hard as a Tank']},
@@ -6672,7 +6673,7 @@ const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,T
 // v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
 const STAGE_STARS=[{name:'Clear the stage'},{name:'Finish with 70%+ HP'},{name:'Never drop below 30% HP'}],STAGE_STAR_SUGAR=30;
 const LEVELUP_DELAY_MS=650;   // v7.8.58 หน่วงก่อนเปิดการ์ดเลเวลอัพ
-const TARO_ARC_HOP_MS=350,TARO_MAG_TIME=10,TARO_MAG_MUL=1.25;   // v7.8.69 เจ้าของ: 200→350   // v7.8.61 เจ้าของ: 85→200 ms ต่อ 1 กระโดด
+const TARO_ARC_HOP_MS=200,TARO_MAG_TIME=10,TARO_MAG_MUL=1.25;   // v7.8.71 เจ้าของ: กลับเป็น 200 (v7.8.69 ลอง 350)   // v7.8.61 เจ้าของ: 85→200 ms ต่อ 1 กระโดด
 const TARO_MARK_RANGE=700,TARO_MARK_TIME=2,TARO_MARK_BONUS=1.5,TARO_MARK_TURN=8,TARO_MARK_BLAST_R=130,TARO_ORB_SEEK=360,TARO_ORB_TURN=2.6,TARO_ORB_LINGER=.3,TARO_ORB_BIG_GAP=.18,TARO_UQ_GROW=.12,TARO_STATIC_HITS=40,TARO_STATIC_MUL=13,TARO_PLASMA_BOSS=1.75,TARO_STORM_COUNT=36,TARO_STORM_GAP=.05,TARO_STORM_FUSE=1.1,TARO_STORM_R=72;   // v7.8.33 Spark Storm   // v7.8.31 Plasma Field ×1.75 ต่อบอส/มินิ
 const SEASON_PETALS=12;   // v7.8.55 เจ้าของเลือก A: C2-4 Seasonal Harvest — ฆ่ามอน = กลีบของฤดูปัจจุบัน · 4 ฤดู × 12 · ไม่มีพลาด
 const TARO_SHOCK_MAX_BIG=15,TARO_DISCHARGE_HITS=25,TARO_DISCHARGE_MUL=10;   // v7.8.52 เจ้าของ A+B+C Sentry: Shock บนบอส/มินิ 15 ชั้น · ช็อตโดนตัวเดิมครบ 25 = ฟ้าผ่า ×10 · ลูกบอลระเบิดตอนหมดอายุเป็นพื้นฐาน
@@ -9494,7 +9495,7 @@ class Game extends Phaser.Scene {
       const x=portrait?marginX:marginX+i*(cardW+gapX), y=portrait?top+i*(cardH+gapY):top;
       // A9/A10 การ์ดแกน (แนวตั้ง) · เหรียญซ้าย / ข้อความกลาง / เส้นคั่น + ปุ่มขวา
       const card=artCard?(maxed&&this.tuHas('temple_core_card_max')?this.tuPanel('temple_core_card_max',0,x,y,cardW,cardH):this.tuPanel('temple_core_card_sheet',i,x,y,cardW,cardH)):null;
-      const ck=card?card._tuK:0,icx=card?x+111*ck:x+32,icy=card?y+cardH*.47:y+32,isz=card?Math.min(64,112*ck):48,tx=card?x+205*ck+6:x+75,rightW=card?263*ck:0;
+      const ck=card?card._tuK:0,mxArt=card&&maxed&&this.tuHas('temple_core_card_max'),icx=card?x+(mxArt?130:111)*ck:x+32,icy=card?y+cardH*(mxArt?.5:.47):y+32,isz=card?Math.min(64,(mxArt?118:112)*ck):48,tx=card?x+(mxArt?250:205)*ck+6:x+75,rightW=card?(mxArt?213:263)*ck:0;   /* v7.8.70 เจ้าของ: การ์ด Max มีวงเหรียญใหญ่/ตำแหน่งต่างจากการ์ดปกติ → ไอคอน/ข้อความ/ปุ่มใช้ตำแหน่งของภาพ Max (เดิมเยื้องดูเอียง) */
       let g=card; if(!card){ g=this.add.graphics(); g.fillStyle(0x2c2338,1); g.fillRoundedRect(x,y,cardW,cardH,16);
         g.lineStyle(2.5,maxed?0x8bd3a0:u.color,0.9); g.strokeRoundedRect(x,y,cardW,cardH,16);
         g.fillStyle(u.color,0.14); g.fillRoundedRect(x,y,64,cardH,16); }
