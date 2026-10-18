@@ -148,14 +148,12 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.56 · ตรวจ 18 ต.ค. 2026)
-- เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน; สรุปที่เจ้าของอ่าน: `README.md` และ `docs/PROJECT_SUMMARY_TH.md`
-- v7.8.55: C2-4 Seasonal Harvest แทน Season Storm trials; Taro Spark/Sentry จูนถึง v7.8.54; Replay kill-only ตั้งแต่ v7.8.48
-- Forge: 150 catalog / 78 active / 72 planned ไม่อยู่ใน roll pools; หน้าเดียวตั้งแต่ v7.8.3 ดู `docs/FORGE_150_ROLLOUT.md`
-- Hero VFX 21/21 ต่อแล้ว v7.8.45–46; Temple UI 34/34 ต่อ v7.8.49 และ polish v7.8.50; รอ owner phone visual/FPS QA
-- ตรวจ Actions 18 ต.ค.: APK commit e32cc37 สำเร็จ; Pages สาขาหลักถูกยกเลิกและรันสาขาอื่นล้มเหลว จึงยังไม่ยืนยัน live v7.8.55; อย่าอ้าง build สำเร็จ = deployed
-- ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe (WHEN▸DO▸TWIST มีราคา HP/AP), Temple Weave/Depths/Rank Perks, Gear (implicit + mod สูงสุด 3 บรรทัด + Play mods, Affix Forge, Bazaar), Talent ราย Build Path, ตัวละคร 6 ตัว (momo/mint/cocoa/taro/sesame/yuzu) แต่ละตัว 3 Build Path
-- ส่วนใหญ่ของ v6.5x–v6.6x ยังรอเจ้าของเล่นทดสอบบนมือถือจริง (balance/feel/FPS)
+## 4. สถานะปัจจุบัน (v7.8.56 · 18 ต.ค. 2026)
+- เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
+- ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
+- ล่าสุด (v7.8.45–56): อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
+- **รอเจ้าของเล่นทดสอบบนมือถือ:** Spark/Sentry/Arc benchmark ที่ C2-1★1 (ของชุดเดียวกัน), C2-4 Harvest, หน้า Temple ใหม่, Hero VFX FPS
+- **รอเจ้าของตัดสินใจ:** Yuzu ทำใหม่ทั้งหมด (เสนอชุด Orchard Swarm / Zest Battery ตีไกล / Citrus Knights) · ท่าบอส/กลไกสนาม (ดูข้อ 5) · Supabase ตาราง run_stats ยังไม่สร้าง (docs/telemetry/run_stats.sql)
 - รายละเอียดทุกเวอร์ชันเก่า: `docs/CLAUDE_HISTORY.md`
 
 ### บั๊กที่เคยเจอ & วิธีแก้ (กันพลาดซ้ำ)
@@ -173,12 +171,11 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 
 
 ## 5. ถัดไป
-- **ออกแบบแล้ว รอเจ้าของเลือกลำดับ:** กลไกสนามบอสทุกตัว (15 story + Delve 2 + Pinnacle) + Counter Object ร่วม → `docs/BOSS_ARENA_MECHANICS.md`
-- รับ feedback หน้า Forge ใหม่: การอ่านม็อด, Track target/Auto-roll, Odds & tiers และ Advanced; การยุบ currency ต้องแยกเป็นงาน economy พร้อม migration
-- **เสร็จแล้ว:** แผนตัด/รวมระบบ `docs/SYSTEM_CONSOLIDATION_PLAN.md` (A–F ตรวจสถานะแล้ว; คงส่วนที่ runtime ยังใช้) · **เจ้าของ: ไม่ต้องจำลองเล่น headless เจ้าของเทสเอง**
-- รอ feedback เจ้าของจากการเล่นจริง: Kitchen upkeep (v6.69), Story C2–C3 buff/Temple cost (v6.68), item mods (v6.67), Delve
-- งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้: ลบบัญชีในแอป, store listing, keystore, closed test)
-- แผน commit เก่า: `docs/COMMIT_ROADMAP.md`
+- **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **บอส C3 ทั้ง 5 ตัว + Pinnacle ยังใช้ชุดท่ากลาง** (slam/radial/aimed/charge/spiral/trap) แค่เปลี่ยนท่าโพส · มินิบอสเฉพาะตัวมี 5 ตัว (C1-1, C2-2…C2-5) ที่เหลือ 9 ตัว (C1-2…C1-5, C2-1, C3 ทั้ง 5) ใช้ชุดกลาง · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม T1–T8 + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ยังไม่ได้เริ่ม** · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก
+- Yuzu ทำใหม่: รอเจ้าของเลือกชุด build แล้วเขียนเอกสารออกแบบ + ใบสั่งอาร์ต
+- รับ feedback หน้า Forge ใหม่ · Kitchen upkeep · Story C2–C3 · item mods · Delve
+- งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้)
+- **เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ เจ้าของเทสเอง** (จำลองเพื่อหาบั๊กค้างได้)
 
 ## 6. เอกสารออกแบบ (Artifacts — ความจำภาพ)
 เอกสารเหล่านี้เผยแพร่เป็น artifact แล้ว (ถ้าต้องแก้ให้ publish ทับ URL เดิม):

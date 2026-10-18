@@ -1,6 +1,18 @@
 # Boss Arena Mechanics — แบบร่างกลไกสนามของบอสทุกตัว
 
 สถานะ: ร่าง 16 ต.ค. 2026 (runtime v7.8.29) · รอเจ้าของเลือกลำดับทำ
+
+**ตรวจโค้ด 18 ต.ค. 2026 (v7.8.56) — ท่าบอสที่มีจริงตอนนี้:**
+
+| กลุ่ม | ท่าเฉพาะตัว (มีแล้ว) | ยังใช้ชุดท่ากลาง |
+|---|---|---|
+| บอส C1 (5) | Ant Empress, Clogmaw, Mr. Griddle, Ice Cream Golem, Great Hunger | — |
+| บอส C2 (5) | Rootmother's Bud, Mycelium Behemoth, Hornet Queen, Chronobloom, True Rootmother | — |
+| บอส C3 (5) | — | Harvest Colossus, Hollow Bloom, Glass Gardener, Seedwarden, First Planter (slam/radial/aimed/charge/spiral/trap + ท่าโพส) |
+| มินิ (15) | Royal Guard C1-1, Fungal Juggernaut, Royal Stinger, Season Keeper, Root Knight | C1-2…C1-5, C2-1 Sporewarden, C3 ทั้ง 5 |
+| Endgame | Jelly Warden, Madame Candlewick | Pinnacle The Hunger Beneath |
+
+กลไกสนาม T1–T8 และ Counter Object ในเอกสารนี้ **ยังไม่ได้ทำ** (ท่าที่คล้าย เช่นดูด/กำแพง/วงเตือน มีกระจายอยู่ในท่าเฉพาะตัว แต่ยังไม่ใช่ระบบกลางตามแผน) · Candlewick แผนนี้ = เดินจุดเทียน แต่ของจริง = เดินไปดับเทียน ต้องเลือก
 เป้าหมาย: บอสทุกตัวเลิกเป็น "ยิงวง/พัด แล้วเดินหลบ" ซ้ำ ๆ — แต่ละตัวมี **กลไกสนาม 1 อย่างที่เป็นตัวตนของด่าน** + ใช้ **กลไกร่วม Counter Object** ให้ Dash มีบทบาทตอนสู้บอส
 ท่าบอสเดิมยังอยู่ทั้งหมด กลไกใหม่ "เพิ่ม" เข้าไป ไม่ได้รื้อของเดิม
 
