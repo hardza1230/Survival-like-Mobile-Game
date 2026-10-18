@@ -1,3 +1,4 @@
+> 18 ต.ค. 2026: งานใหม่ Hub Menu Motion (20+5 ไฟล์) ดู [25_HUB_MENU_MOTION.md](25_HUB_MENU_MOTION.md) · ส่งที่ `assets/incoming/hub_motion/`
 > 18 ต.ค. 2026: งานใหม่ Pause Screen UI (19 ไฟล์) ดู [24_PAUSE_SCREEN_UI.md](24_PAUSE_SCREEN_UI.md) · ส่งที่ `assets/incoming/pause_ui/`
 > 18 ต.ค. 2026: งานใหม่ Level Up / Card Choice UI (19 ไฟล์) ดู [23_LEVELUP_CARD_UI.md](23_LEVELUP_CARD_UI.md) · ส่งที่ `assets/incoming/levelup_cards_ui/`
 > 18 ต.ค. 2026: งานใหม่ Boss Attack VFX C1–C2 (59 ไฟล์) ดู [22_BOSS_ATTACK_VFX_C1_C2.md](22_BOSS_ATTACK_VFX_C1_C2.md) · ส่งที่ `assets/incoming/boss_vfx_c1_c2/`
