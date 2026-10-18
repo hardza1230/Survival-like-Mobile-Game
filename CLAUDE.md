@@ -172,6 +172,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 
 ## 5. ถัดไป
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **บอส C3 ทั้ง 5 ตัว + Pinnacle ยังใช้ชุดท่ากลาง** (slam/radial/aimed/charge/spiral/trap) แค่เปลี่ยนท่าโพส · มินิบอสเฉพาะตัวมี 5 ตัว (C1-1, C2-2…C2-5) ที่เหลือ 9 ตัว (C1-2…C1-5, C2-1, C3 ทั้ง 5) ใช้ชุดกลาง · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม T1–T8 + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ยังไม่ได้เริ่ม** · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก
+- **ใบสั่งอาร์ต 22 (18 ต.ค.):** เอฟเฟกต์ท่าบอส C1–C2 59 ไฟล์ — บอส C1–C2 มีท่าเฉพาะแล้วแต่ใช้ภาพกลาง (vfx_telegraph/fx_bossnova/vfx_cream_ring/vfx_line ย้อมสี) · รออาร์ตส่ง `assets/incoming/boss_vfx_c1_c2/` · โน้ตผูกโค้ดอยู่ท้ายใบสั่ง
 - Yuzu ทำใหม่: รอเจ้าของเลือกชุด build แล้วเขียนเอกสารออกแบบ + ใบสั่งอาร์ต
 - รับ feedback หน้า Forge ใหม่ · Kitchen upkeep · Story C2–C3 · item mods · Delve
 - งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้)
