@@ -14,7 +14,7 @@ function mob(x,y,key){return {active:true,x,y,texture:{key},body:{velocity:{x:0,
 const s=new Scene();Object.assign(s,{stageIndex:3,waveIndex:0,W:300,H:500,viewZoom:1,player:{x:0,y:0},textures:{exists:k=>textures.has(k)},anims,enemies:{countActive:()=>0,getFirstDead:()=>null,create:mob},getPowerGuide:()=>({enemyHp:1,enemyDmg:1}),killPowerMul:()=>1,diffMul:()=>({hp:1,dmg:1}),newbieEase:()=>1,clearObjectiveTargetFx(){},camWorld:o=>o,vfxSpawnPoof(){}});
 
 const curves=(i,a,t)=>i<a.length?a[i]:a.at(-1)*t**(i-a.length+1);
-const roles=[['basic',19,10,58],['fast',10,9,122],['dasher',16,14,70],['shooter',19,9,62],['bomber',24,12,70],['tank',80,18,36],['siege',260,24,24]];
+const roles=[['basic',19,10,58],['fast',10,9,122],['dasher',16,14,70],['shooter',19,9,62],['bomber',24,12,70],['tank',80,18,36],['siege',72,24,24]];
 const s5={basic:['e_void_crumb',.36,[45,83,83]],fast:['e_crown_ripper',.34,[42,86,86]],dasher:['e_crown_ripper',.34,[42,86,86]],shooter:['e_banquet_eye',.38,[45,83,83]],bomber:['e_maw_truffle',.40,[46,82,82]],tank:['e_royal_oven_sentinel',.48,[54,74,74]],siege:['e_royal_oven_sentinel',.56,[54,74,74]]};
 const c3={basic:['c3_e_basic',.82,[26,38,48]],fast:['c3_e_fast',.86,[22,42,56]],dasher:['c3_e_fast',.86,[22,42,56]],shooter:['c3_e_shooter',.82,[25,39,49]],bomber:['c3_e_bomber',.84,[27,37,48]],tank:['c3_e_tank',.66,[38,26,42]],siege:['c3_e_tank',.72,[38,26,42]]};
 for(const stage of [4,10,11,12,13,14]){

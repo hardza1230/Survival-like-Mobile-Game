@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.63';
+const GAME_VERSION = '7.8.64';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.64',date:'2026-10-18',title:'Siege Monsters Toned Down',items:['Siege-type monsters (Furnace Golem, Gate Warden, Oracles, Choir Moth, Seasonal Wisp, Root Choir Leech, Chapter 3 siege foes) now have 90% of a Tank’s HP on every stage — they used to have over 3× more']},
   {v:'7.8.63',date:'2026-10-18',title:'Root Throne, Spark Storm and Sentry Overdrive',items:['C2-2, C2-3 and C2-5 elites now use their own stage guard art instead of the purple golem','C2-5: Root Choir (the crowned multi-shot caster) appears less often — at most 2 at a time','Spark Storm always fires 36 sparks in two full clockwise circles; Unique levels add power','Sentry Build: up to 3 sentries, faster Ball Lightning and a bigger starting shock radius','New Sentry Unique — Sentry Overdrive: for 4s sentries fire Ball Lightning in every direction and attack 50% faster, then return to normal (no more self-detonation)']},
   {v:'7.8.62',date:'2026-10-18',title:'Taro Static Arc Travels',items:['Taro’s normal attack (Static Arc, before choosing a Build) now jumps target to target at 0.2s per jump instead of instantly','Gear & Power and Codex menu icons stay still (their animation wobbled)']},
   {v:'7.8.61',date:'2026-10-18',title:'Slower Arc Chain',items:['Arc lightning now takes 0.2s per jump (was 0.085s), so you can see it travel from target to target']},
@@ -13782,7 +13783,7 @@ class Game extends Phaser.Scene {
     else if(type==='shooter'){ e.hp=19*s; e.spd=62; e.dmg=9; e.xp=2; e.shooter=true; e.shootCd=Phaser.Math.FloatBetween(1.1,2.0); e.setCircle(17,5,5); }
     else if(type==='bomber'){ e.hp=24*s; e.spd=70; e.dmg=12; e.xp=2; e.bomber=true; e.setCircle(17,5,5); }
     else if(type==='dasher'){ e.hp=16*s; e.spd=70; e.dmg=14; e.xp=2; e.dasher=true; e.dashState='chase'; e.dashT=Phaser.Math.FloatBetween(0.6,1.6); e.setCircle(17,5,5); }  // สายพุ่งโฉบ (รูปจริง e_dasher 44px)
-    else if(type==='siege'){ e.hp=(this.stageIndex===8?130:260)*s; e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
+    else if(type==='siege'){ e.hp=72*s;   /* v7.8.64 เจ้าของ: Siege ต้องไม่ถึกกว่า Tank → 90% ของ Tank (เดิม 260 = 3.3× Tank, C2-4 130) */ e.spd=24; e.dmg=24; e.xp=10; e.siege=true; e.setCircle(34,4,4); scale=1.5; }  // ถึกโหด เดินบีบวงช้า ๆ (รูปจริง e_siege 76px)
     else { e.hp=19*s; e.spd=58; e.dmg=10; e.xp=1; e.setCircle(17,5,5); }
     const dmgCurve=stageCurveValue(this.stageIndex,[1,1.05,1.12,1.20,1.30,1.42],1.09);e.dmg=Math.max(1,Math.round(e.dmg*1.3/*v6.55.66 mob dmg*/*dmgCurve*pg.enemyDmg*this.diffMul().dmg*(this.stageIndex===6?BALANCE.c2Mycelium.dmg:this.stageIndex===7?BALANCE.c2Nectar.dmg:this.stageIndex===8?BALANCE.c2Seasons.dmg:this.stageIndex===9?BALANCE.c2Root.dmg:1)));if(this.stageIndex===6)e.spd*=BALANCE.c2Mycelium.speed;else if(this.stageIndex===7)e.spd*=BALANCE.c2Nectar.speed;else if(this.stageIndex===8)e.spd*=BALANCE.c2Seasons.speed;else if(this.stageIndex===9)e.spd*=BALANCE.c2Root.speed;if(this.recipeMode&&this.recipeHas('haste'))e.spd*=1.3;if(this.recipeMode&&this._amapInf&&this._amapInf.frosty)e.spd*=1-0.07*this._amapInf.frosty;if(this.recipeMode&&this._pact&&this._pact.speed)e.spd*=1+0.1*this._pact.speed;
     if(this.stageIndex===0&&type!=='acid'){
