@@ -14,7 +14,7 @@ function mob(x,y,key){return {active:true,x,y,texture:{key},body:{velocity:{x:0,
 const s=new Scene();Object.assign(s,{stageIndex:3,waveIndex:0,W:300,H:500,viewZoom:1,player:{x:0,y:0},textures:{exists:k=>textures.has(k)},anims,enemies:{countActive:()=>0,getFirstDead:()=>null,create:mob},getPowerGuide:()=>({enemyHp:1,enemyDmg:1}),killPowerMul:()=>1,diffMul:()=>({hp:1,dmg:1}),newbieEase:()=>1,clearObjectiveTargetFx(){},camWorld:o=>o,vfxSpawnPoof(){}});
 
 const curves=(i,a,t)=>i<a.length?a[i]:a.at(-1)*t**(i-a.length+1);
-const roles=[['basic',19,10,58],['fast',10,9,122],['dasher',16,14,70],['shooter',19,9,62],['bomber',24,12,70],['tank',80,18,36],['siege',72,24,24]];
+const roles=[['basic',19,10,58],['fast',10,9,122],['dasher',16,14,70],['shooter',19,9,62],['bomber',24,12,70],['tank',80,18,36],['siege',72,18,24]];
 const s5={basic:['e_void_crumb',.36,[45,83,83]],fast:['e_crown_ripper',.34,[42,86,86]],dasher:['e_crown_ripper',.34,[42,86,86]],shooter:['e_banquet_eye',.38,[45,83,83]],bomber:['e_maw_truffle',.40,[46,82,82]],tank:['e_royal_oven_sentinel',.48,[54,74,74]],siege:['e_royal_oven_sentinel',.56,[54,74,74]]};
 const c3={basic:['c3_e_basic',.82,[26,38,48]],fast:['c3_e_fast',.86,[22,42,56]],dasher:['c3_e_fast',.86,[22,42,56]],shooter:['c3_e_shooter',.82,[25,39,49]],bomber:['c3_e_bomber',.84,[27,37,48]],tank:['c3_e_tank',.66,[38,26,42]],siege:['c3_e_tank',.72,[38,26,42]]};
 for(const stage of [4,10,11,12,13,14]){
@@ -22,8 +22,8 @@ for(const stage of [4,10,11,12,13,14]){
  for(const [type,hp,dmg,speed] of roles){
   const [base,scale,circle]=(stage===4?s5:c3)[type],key=base+'_animated',e=s.spawnEnemy(type,0,100);
   assert.equal(e._enemyArtKey,key);assert.equal(e.baseScale,scale);assert.deepEqual(e.circle,circle);
-  assert(Math.abs(e.hp*0.9-hp*curves(stage,[1,1.42,1.88,2.42,3.05,3.72],1.28)*(stage>=2&&stage<=4?1.35:1))<1e-8);
-  assert.equal(e.dmg,Math.round(dmg*1.3*curves(stage,[1,1.05,1.12,1.20,1.30,1.42],1.09)));assert.equal(e.spd,speed);
+  assert(Math.abs(e.hp*0.9-hp*[1,1.29,1.664,2.147,2.769,3.572,4.608,5.945,7.669,9.893,12.761,16.462,23.047,32.266,45.172][stage]*(stage>=2&&stage<=4?1.35:1))<1e-8);
+  assert.equal(e.dmg,Math.round(dmg*1.3*[1,1.082,1.171,1.267,1.371,1.483,1.605,1.736,1.879,2.033,2.199,2.38,2.689,3.038,3.433][stage]));assert.equal(e.spd,speed*(stage>=10?1.08:1));
   assert.equal(e.clip,key+'_idle');e.setVelocity(speed,0);s.tickEnemyPresentation(e,.016);assert.equal(e.clip,key+'_walk');
  }
  const shot=s.spawnEnemy('shooter',0,100);shot.shootCd=.1;s.antSpitWindup(shot);assert.equal(shot._enemyAction.state,'windup');assert.equal(shot.shootCd,.1);
@@ -32,7 +32,7 @@ for(const stage of [4,10,11,12,13,14]){
  const bomb=s.spawnEnemy('bomber',0,100);bomb.hp=bomb.maxhp*.3;s.warnAntBomber(bomb);assert.equal(bomb._enemyAction.state,'windup');const action=bomb._enemyAction;s.warnAntBomber(bomb);assert.equal(bomb._enemyAction,action);s.resetEnemyPresentation(bomb);assert.equal(bomb._antBombWarn,false);
 }
 s.stageIndex=4;
-{const e=s.spawnElite();assert.equal(e._enemyArtKey,'e_royal_oven_sentinel_animated');assert.equal(e.baseScale,.56);assert.deepEqual(e.circle,[54,74,74]);assert(Math.abs(e.hp*0.9-70*2.72*1.15)<1e-8);assert.equal(e.dmg,Math.round(18*1.3*1.30));}
+{const e=s.spawnElite();assert.equal(e._enemyArtKey,'e_royal_oven_sentinel_animated');assert.equal(e.baseScale,.56);assert.deepEqual(e.circle,[54,74,74]);assert(Math.abs(e.hp*0.9-120*2.769)<1e-6);assert.equal(e.dmg,Math.round(18*1.3*1.371));}
 {const e=s.spawnEnemy('dasher',0,100);s.stage5EnemyPose(e,4,400);assert.equal(e._enemyAction.state,'windup');assert.equal(e._enemyActionT,.4);s.stage5EnemyPose(e,6,120);assert.equal(e._enemyAction.state,'windup');s.stage5EnemyPose(e,5,340);assert.equal(e._enemyAction.state,'dash');assert.equal(e._enemyActionT,.34);}
 {let ghosts=0,legacy=0,completed;const ghost={setScale(){return this;},setFlipX(){return this;},setDepth(){return this;},once(event,f){assert.equal(event,'animationcomplete');completed=f;},play(key){assert.equal(key,'e_void_crumb_animated_death');},destroy(){this.destroyed=true;}};Object.assign(s,{fxOk:()=>true,trackArtVfx:o=>o,add:{sprite(){ghosts++;return ghost;},image(){legacy++;}}});const e=s.spawnEnemy('basic',0,100);s.playEnemyDeath(e);s.stage5DeathGhost(e);assert.equal(ghosts,1);assert.equal(legacy,0);completed();assert(ghost.destroyed);}
 for(const key of [...textures]){textures.delete(key);const type=key.includes('shooter')||key.includes('banquet')?'shooter':key.includes('fast')||key.includes('ripper')?'fast':key.includes('bomber')||key.includes('truffle')?'bomber':key.includes('tank')||key.includes('sentinel')?'tank':'basic';assert.equal(key.startsWith('c3_')?s.chapter3ArtKey(type):s.stage5ArtKey(type),key.replace(/_animated$/,''));textures.add(key);}

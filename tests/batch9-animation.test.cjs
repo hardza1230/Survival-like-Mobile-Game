@@ -14,7 +14,7 @@ function aura(){return {active:true,setTint(v){this.tint=v;return this;},setDisp
 const s=new Scene();let recycled=null;Object.assign(s,{stageIndex:8,waveIndex:0,W:300,H:500,viewZoom:1,player:{x:0,y:0},textures:{exists:k=>textures.has(k)},anims,enemies:{countActive:()=>0,getFirstDead:()=>recycled,create:mob},getPowerGuide:()=>({enemyHp:1,enemyDmg:1}),killPowerMul:()=>1,diffMul:()=>({hp:1,dmg:1}),newbieEase:()=>1,clearObjectiveTargetFx(){},camWorld:o=>o,vfxSpawnPoof(){},add:{image:()=>aura()}});
 function combat(e){return {hp:e.hp,dmg:e.dmg,spd:e.spd,xp:e.xp,baseScale:e.baseScale,circle:e.circle,shooter:e.shooter,bomber:e.bomber,dasher:e.dasher,siege:e.siege,shootCd:e.shootCd,roleName:e.roleName,seasonRole:e.seasonRole,rootRole:e.rootRole,aura:e._aura?{size:e._aura.size,tint:e._aura.tint,alpha:e._aura.alpha}:null};}
 // Keep the historical art fixture intact; v7.8.64 siege base HP 260→72 (never tougher than tank) on every stage.
-function expectedCombat(label){const expected={...saved[label].combat};if(label.endsWith(':siege'))expected.hp*=72/260;return expected;}
+function expectedCombat(label){return {...saved[label].combat};}   // v7.8.65 fixture re-captured after the story curve / siege / elite rebalance
 const roles=['basic','fast','dasher','shooter','bomber','tank','siege'],fixture='tests/fixtures/batch9-combat.json',saved=capture?{}:JSON.parse(fs.readFileSync(fixture,'utf8'));
 for(const g of groups){s.stageIndex=g.stage;
  for(let i=0;i<roles.length;i++){

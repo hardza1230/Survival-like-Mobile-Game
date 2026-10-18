@@ -22,7 +22,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.61–63 — Arc 0.2s hops, Root Throne cleanup, Spark Storm rings, Sentry Overdrive
+# Latest delivery: v7.8.64–65 — Monster scaling pass (owner)
+
+v7.8.64 siege base HP 260→72. v7.8.65 (owner picked 1–3 + C3-3..5 steeper): spawnEnemy story HP curve storyHp=[1,1.29,1.664,2.147,2.769,3.572,4.608,5.945,7.669,9.893,12.761,16.462,23.047,32.266,45.172] (×1.29/stage, ×1.40 into C3-3..5) and dmg storyDmg=[1,1.082,…,2.38,2.689,3.038,3.433] (×1.082, ×1.13) replace stageCurveValue+BALANCE.c2* hp/dmg multipliers in story (Recipe keeps the old formula); C3 speed ×1.08 like C2-5 · siege dmg 24→18 (= tank), xp 10→5 · spawnElite hp = 120·s with the mob curve (1.5× tank), elite dmg on storyDmg. Note: C1-2…C2-5 mobs are 5–15% softer than before (old curve was uneven), C3-3…C3-5 harder (C3-5 basic 920→1211 HP). Tests/fixtures updated (batch9 fixture regenerated from real spawns). Owner phone check pending.
+
+# Previous delivery: v7.8.61–63 — Arc 0.2s hops, Root Throne cleanup, Spark Storm rings, Sentry Overdrive
 
 TARO_ARC_HOP_MS 200 (owner) and the pre-path starter castTaroNeedle (Static Arc = Taro normal attack before a Build) now hops too · hub Gear/Codex icons static (anim frames wobble). v7.8.63: elites on stages 6/7/9 use c22_bulwark / c23_wax_guard / c25_bark_guard art (was generic purple e_tank) · v7.8.64 siege base HP 260→72 (90% of tank 80) on every stage incl. C2-4 · C2-5 spawnWaveEnemy: siege → basic 60% and ≤2 live Root Choir · Spark Storm TARO_STORM_COUNT 36 fixed (2 rings) · Sentry: TARO_BL_SPEED 110→145, base orb radius 85→105 (cap 140), TARO_SENTRY_MAX 3 (taroPlaceNode cap + castTaroSentry), TARO_ORB_CAP 60 · castTaroOvercharge = Sentry Overdrive: fill to 3, 8-orb ring per sentry, t.overRing=5+n / t.overDmg, for TARO_OVER_TIME 4s every pulse fires a radial ring and pulses ×1.5, no detonation. Owner phone check pending.
 
@@ -175,7 +179,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.63 · 18 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.65 · 18 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

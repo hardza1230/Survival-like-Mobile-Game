@@ -21,11 +21,11 @@ function mob(x,y,key){return {active:true,x,y,texture:{key},body:{velocity:{x:0,
 function aura(){return {active:true,setTint(v){this.tint=v;return this;},setDisplaySize(w,h){this.size=[w,h];return this;},setAlpha(v){this.alpha=v;return this;},setDepth(v){this.depth=v;return this;},destroy(){this.active=false;}};}
 const s=new Scene();let recycled=null,live=0;
 Object.assign(s,{stageIndex:6,waveIndex:0,W:300,H:500,viewZoom:1,player:{x:0,y:0},textures:{exists:k=>textures.has(k)},anims,enemies:{countActive:()=>live,getFirstDead:()=>recycled,create:mob},getPowerGuide:()=>({enemyHp:1,enemyDmg:1}),killPowerMul:()=>1,diffMul:()=>({hp:1,dmg:1}),newbieEase:()=>1,clearObjectiveTargetFx(){},camWorld:o=>o,vfxSpawnPoof(){},add:{image:()=>aura()}});
-const roles=[['basic','drifter',19,10,58,1,.39,[45,83,83],0],['fast','hopper',10,9,122,1,.38,[43,85,85],1],['dasher','hopper',16,14,70,2,.38,[43,85,85],1],['shooter','sniper',19,9,62,2,.40,[45,83,83],2],['bomber','mold_sac',24,12,70,2,.42,[47,81,81],3],['tank','bulwark',80,18,36,4,.48,[54,74,74],4],['siege','oracle',72,24,24,10,.44,[48,80,80],5],['sporeling','sporeling',7,7,96,0,.26,[34,94,94],6]];
+const roles=[['basic','drifter',19,10,58,1,.39,[45,83,83],0],['fast','hopper',10,9,122,1,.38,[43,85,85],1],['dasher','hopper',16,14,70,2,.38,[43,85,85],1],['shooter','sniper',19,9,62,2,.40,[45,83,83],2],['bomber','mold_sac',24,12,70,2,.42,[47,81,81],3],['tank','bulwark',80,18,36,4,.48,[54,74,74],4],['siege','oracle',72,18,24,5,.44,[48,80,80],5],['sporeling','sporeling',7,7,96,0,.26,[34,94,94],6]];
 for(const [type,id,hp,dmg,speed,xp,scale,circle,oldFrame] of roles){
  const key='c22_'+id+'_animated',e=s.spawnEnemy(type,0,100);
  assert.equal(e.texture.key,key);assert.equal(e._enemyArtKey,key);assert.equal(e._enemyRestFrame,0);assert.equal(e.baseScale,scale);assert.deepEqual(e.circle,circle);
- assert(Math.abs(e.hp-hp*3.72*1.28*1.145/.9)<1e-8);assert.equal(e.dmg,Math.round(dmg*1.3*1.42*1.09*1.19));assert.equal(e.spd,speed*1.08);assert.equal(e.xp,xp);assert.equal(e.clip,key+'_idle');
+ assert(Math.abs(e.hp-hp*4.608/.9)<1e-8);assert.equal(e.dmg,Math.round(dmg*1.3*1.605));assert.equal(e.spd,speed*1.08);assert.equal(e.xp,xp);assert.equal(e.clip,key+'_idle');
  if(type==='tank'){assert.deepEqual(e._aura.size,[235,168]);assert.equal(e._aura.tint,0x9ae66e);assert.equal(e._aura.alpha,.34);}if(type==='siege'){assert(e.shooter);assert.equal(e.shootCd,1.5);assert.equal(e.mycoRole,'oracle');}
  e.setVelocity(speed,0);s.tickEnemyPresentation(e,.016);assert.equal(e.clip,key+'_walk');
  s.enemyAction(e,'attack',340);assert.equal(e.clip,key+'_attack');s.enemyAction(e,'hurt',120);assert.equal(e._enemyAction.state,'attack');
