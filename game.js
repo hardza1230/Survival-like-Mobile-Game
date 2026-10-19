@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.6';
+const GAME_VERSION = '7.9.7';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.7',date:'2026-10-19',title:'Forge: faster switching',items:['The 6 gear slots are back at the top of the Forge: tap a slot for the item you wear, tap it again for the next one in that slot','Locked items show an “Unlock to craft” button right in the Forge','Your currency count now sits on the Roll button; the extra currency box and hint line are gone','Fixed the Auto button showing only an icon']},
   {v:'7.9.6',date:'2026-10-19',title:'Clearer Forge',items:['Roll and Auto are one button: tick the mods you want (✓) and it becomes “Auto until ✓”; no ticks = Roll','Mods use the same plain wording and star colours as Equipment','Each possible mod shows its chance right in the row — no more i / Odds popups','Shorter rows, so most lists fit on one page']},
   {v:'7.9.5',date:'2026-10-19',title:'Clearer mods',items:['Equipment mods now read as one plain line, e.g. “+4% damage to far enemies”, instead of a name plus a description','More mods fit on screen; ✓ still marks mods that fit your hero','Forge keeps the mod names, with the same plain wording underneath']},
   {v:'7.9.4',date:'2026-10-19',title:'Equipment: cleaner bag',items:['Items waiting in the Inbox move into your bag by themselves as soon as there is room','Salvage weaker (♻) and Equip Best (⚡) are now small buttons on the bag header — more room for your item','The Inbox shortcut only shows when something is waiting']},
@@ -5084,9 +5085,9 @@ function gearAffixName(baseName,affs){ return baseName;   // v7.8.94 เจ้�
 function forgeLayout(w,h){
  const land=w>h,small=h<680,p=w<350?12:14,b=small?8:14,box=(x,y,w,h)=>({x,y,w,h});
  if(land){const header=box(p,8,w-2*p,40),footer=box(p,h-72,w-2*p,64),y=54,bh=footer.y-8-y,lw=Math.floor((w-3*p)*.48),rx=2*p+lw;return{w,h,pad:p,small:true,landscape:true,header,slots:null,items:null,summary:box(p,y,lw,44),mods:box(p,y+50,lw,bh-50),pool:box(rx,y,w-p-rx,bh),footer,rowH:36};}
- const dims=small?[44,0,0,44,184,76]:h<740?[44,0,0,58,200,78]:[48,0,0,64,214,82],gaps=small?[4,0,0,4,4,4]:h<740?[8,0,0,8,8,8]:[8,0,0,10,10,10];let y=8;   // v7.8.84 Forge ข้อ 4: เปิดจากไอเทมโดยตรง — ตัดแถวเลือกช่อง/ไอเทม (เปลี่ยนชิ้นได้จากไอคอนในแถวสรุป)
+ const dims=small?[44,36,0,44,184,64]:h<740?[44,42,0,58,200,66]:[48,46,0,64,214,70],gaps=small?[4,4,0,4,4,4]:h<740?[8,6,0,8,8,8]:[8,8,0,10,10,10];   /* v7.9.7 R1 แถวช่องสวมใส่กลับมา (สูง 36–46) · S2 แถวล่างเตี้ยลง (ไม่มีบรรทัดอธิบาย) */let y=8;   // v7.8.84 Forge ข้อ 4: เปิดจากไอเทมโดยตรง — ตัดแถวเลือกช่อง/ไอเทม (เปลี่ยนชิ้นได้จากไอคอนในแถวสรุป)
  const make=(hh,g)=>{const r=box(p,y,w-2*p,hh);y+=hh+g;return r;},header=make(dims[0],gaps[0]),slots=make(dims[1],gaps[1]),items=make(dims[2],gaps[2]),summary=make(dims[3],gaps[3]),mods=make(dims[4],gaps[4]),footer=box(p,h-b-dims[5],w-2*p,dims[5]),pool=box(p,y,w-2*p,footer.y-gaps[5]-y);
- return{w,h,pad:p,small,landscape:false,header,slots:null,items:null,summary,mods,pool,footer,rowH:small?40:h<740?44:46};
+ return{w,h,pad:p,small,landscape:false,header,slots,items:null,summary,mods,pool,footer,rowH:small?40:h<740?44:46};
 }
 function forgeTierRange(mod,a){
  if(!mod||!a||!mod.tiers)return'—';const t=Math.max(0,Math.min(mod.tiers.length-1,a.t??10)),b=mod.tiers[t];if(!b)return'—';
@@ -9882,10 +9883,15 @@ class Game extends Phaser.Scene {
         this._zone(x,IL.y,iw,IL.h,()=>this.forgeSelectItem(it));this.tapZones[this.tapZones.length-1].tag='item_'+it.uid;});
       if(ipages>1){this.forgeButton(IL.x,IL.y,24,IL.h,'‹',()=>{this.craftPageBySlot[slot]=(ipage-1+ipages)%ipages;this.buildCraftBench();},{tag:'gear_previous'});this.forgeButton(IL.x+IL.w-24,IL.y,24,IL.h,'›',()=>{this.craftPageBySlot[slot]=(ipage+1)%ipages;this.buildCraftBench();},{tag:'gear_next'});}
     }
+    if(SL){ const order=['weapon','armor','gloves','amulet','ring','boots'],g=6,cw=(SL.w-g*5)/6;   /* v7.9.7 R1 แตะช่อง = ชิ้นที่ใส่อยู่ในช่องนั้น · แตะซ้ำ = ชิ้นถัดไปในช่องเดียวกัน */
+      order.forEach((sl,i)=>{ const x=SL.x+i*(cw+g),list=items.filter(it=>it.slot===sl),on=sl===slot,eqIt=Save.equippedGearItem(sl),show=on?selected:(list.find(it=>eqIt&&it.uid===eqIt.uid)||list[0]),b=show&&GEAR_ALL.find(q=>q.id===show.baseId);
+        this.forgeChrome(on?'panel_on':'panel',x,SL.y,cw,SL.h); if(b)this.forgeIcon('gear_'+b.id,x+cw/2,SL.y+SL.h/2,Math.min(SL.h-8,cw-8),b.emoji); else this.forgeText(x+cw/2,SL.y+(SL.h-14)/2,'—',12,'#6f6283',true,cw,.5);
+        if(list.length>1)this.forgeText(x+cw-4,SL.y+2,String(list.length),9,'#ffd9a0',true,20,1);
+        if(list.length)this._zone(x,SL.y,cw,SL.h,()=>{ let pick; if(on){const k=list.findIndex(it=>it.uid===selected.uid);pick=list[(k+1)%list.length];}else pick=list.find(it=>eqIt&&it.uid===eqIt.uid)||list[0]; this.forgeSelectItem(pick); }); if(list.length)this.tapZones[this.tapZones.length-1].tag='fslot_'+sl; }); }
     this.forgeChrome('panel',S.x,S.y,S.w,S.h);this.forgeIcon('gear_'+base.id,S.x+26,S.y+S.h/2,40,base.emoji);
     const name=gearAffixName(base.name,affs);this.forgeText(S.x+52,S.y+8,name,15,'#fff0df',true,S.w-136);this.forgeText(S.x+52,S.y+S.h-22,'iLv '+(selected.itemLevel||1)+' · '+affs.filter(Boolean).length+'/3 mods'+(selected.locked?' · Locked':''),12,'#9fd4bc',false,S.w-140);
     this.forgeText(S.x+26,S.y+S.h-12,'⇄',11,'#ffd9a0',true,0,.5);this._zone(S.x,S.y,48,S.h,()=>this.forgeOpenPanel('items',items));this.tapZones[this.tapZones.length-1].tag='gear_browse';
-    this._zone(S.x+50,S.y,S.w-134,S.h,()=>this.forgeOpenPanel('item',selected));this.tapZones[this.tapZones.length-1].tag='gear_info';
+    /* v7.9.7 E2 แตะชื่อไม่เปิดหน้าข้อมูลไอเทมแล้ว (หน้า Equipment มีข้อมูลนี้) */
     if(isEq){this.forgeChrome('equipped',S.x+S.w-80,S.y+(S.h-26)/2,70,26);this.forgeText(S.x+S.w-45,S.y+(S.h-14)/2,'Equipped',10,'#123b31',true,64,.5);}
     else this.forgeButton(S.x+S.w-80,S.y+(S.h-36)/2,70,36,'Equip',()=>{if(Save.equipGearInstance(slot,selected.uid))Sfx.equipment('equip');this.buildCraftBench();},{kind:'primary',tag:'equip'});
     this.forgeChrome('panel',M.x,M.y,M.w,M.h);const compact=M.h<190,headingH=compact?22:30,impH=compact?22:26,rowH=L.rowH,rg=compact?4:6;
@@ -9912,12 +9918,13 @@ class Game extends Phaser.Scene {
     this.forgeChrome('panel',F.x,F.y,F.w,F.h);const key=craftCurrencyForLine(line),cur=currencyDef(key),have=Save.currency(key),can=pool.length>0&&!selected.locked&&!selected.forgeChoice&&have>=1,old=affs[line],tierCan=!!old&&!!affixDef(old.id)&&!selected.locked&&!selected.forgeChoice&&(old.t??10)>affixBestTierForItem(selected,affixDef(old.id))&&Save.currency('divine')>=forgeGlazeCost(old);
     /* v7.9.6 C1 Roll + Auto เป็นปุ่มเดียว: มี ✓ เป้าหมาย = Auto until ✓ · ไม่มี = Roll */
     const targets=Object.keys(this.craftTargets||{}).filter(id=>pool.some(m=>m.id===id)),useAuto=forgeAdvOpen()&&targets.length>0,tierW=this.W<350?78:92,rollW=this.W<350?118:150,tx=F.x+F.w-tierW-8,rx=tx-rollW-6,cy=F.y+8;
-    this.forgeIcon(cur.asset,F.x+22,cy+16,24,cur.emoji);this.forgeText(F.x+38,cy,L.small?cur.name.split(' ')[0]:cur.name,11,'#fff0df',true,rx-F.x-44);this.forgeText(F.x+38,cy+17,have,14,'#a2e1bc',true,rx-F.x-44);
-    if(useAuto)this.forgeButton(rx,cy,rollW,44,'Auto until ✓ ('+targets.length+')',can?()=>this.autoRollToTarget():null,{kind:'primary',icon:'fg_ui_auto',disabled:!can,tag:'auto'});
-    else this.forgeButton(rx,cy,rollW,44,'Roll',can?()=>this.randomCraftSelected():null,{kind:'primary',cost:key,disabled:!can,tag:'roll'});
+    /* v7.9.7 S2 จำนวนสกุลเงินอยู่บนปุ่ม (ไม่มีบล็อกสกุลเงิน/บรรทัดอธิบาย) · R2 ของที่ล็อก = ปุ่ม Unlock ในหน้านี้เลย */
+    const bw2=F.w-tierW-24,rxx=F.x+8,cnt=' · '+(cur.emoji||'')+' '+have;
+    if(selected.locked)this.forgeButton(rxx,cy,bw2,44,'🔓 Unlock to craft',()=>{if(Save.gearItem(selected.uid)){Save.toggleGearLock(selected.uid);Sfx.equipment('unlock');}this.buildCraftBench();},{kind:'primary',tag:'unlock'});
+    else if(useAuto)this.forgeButton(rxx,cy,bw2,44,'Auto until ✓ ('+targets.length+')'+cnt,can?()=>this.autoRollToTarget():null,{kind:'primary',disabled:!can,tag:'auto'});
+    else this.forgeButton(rxx,cy,bw2,44,(selected.forgeChoice?'Pick a result above':'Roll')+cnt,can?()=>this.randomCraftSelected():null,{kind:'primary',disabled:!can,tag:'roll'});
     if(!forgeAdvOpen())this.forgeButton(tx,cy,tierW,44,'🔒 Tier +1',()=>this.showBanner('🔒 Tier +1','Unlocks after you clear Chapter 1',1500),{disabled:true,tag:'tier_locked'});   // v7.8.96 ช่วงต้นเกมเหลือแค่ Roll
     else this.forgeButton(tx,cy,tierW,44,old&&affixDef(old.id)?'Tier +1 ('+forgeGlazeCost(old)+')':'Tier +1',tierCan?()=>this.divineFocusedLine():null,{cost:'divine',disabled:!tierCan,tag:'tier'});
-    const note=selected.locked?'Unlock this item in Equipment':selected.forgeChoice?'Pick a result or keep the current mod':!can?'Need 1 '+cur.name:useAuto?'Rolls 3 options each time until a ✓ mod appears':'1 currency → pick 1 of 3 '+FORGE_ROWS[line]+' mods';if(!L.landscape)this.forgeText(F.x+10,F.y+F.h-20,note,11,'#c5b6ce',false,F.w-20);
     if(this._forgePanel)this.drawForgePanel(selected,items);this.menu.setVisible(true);
   }
   drawForgePanel(selected,items){

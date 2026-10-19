@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.9.6 — Forge ECRS set 1 (owner: C1+C2+E1+S1)
+# Latest delivery: v7.9.7 — Forge ECRS set 2 (owner: R1+R2+S2+E2)
+
+forgeLayout portrait gets the slots row back (36/42/46px) and a shorter footer (64/66/70). R1 _buildCraftBenchRaw slot strip: 6 chips (equipped or first item art, count badge), tap = that slot's equipped item, tap the active slot again = next item in that slot (tags fslot_<slot>, forgeSelectItem). E2 summary name tap no longer opens the item-info panel (gear_info removed; ⇄ list kept). S2 footer: currency block and hint line removed; primary button label carries the count ('Roll · emoji N', 'Auto until ✓ (n) · …', 'Pick a result above · …' while a choice is pending). R2 locked item → primary button '🔓 Unlock to craft' (tag unlock) toggles the lock in place. Also fixed: Auto button passed icon so forgeButton drew only the icon — label now shown. check-forge-live-ui 21 states + npm check pass.
+
+# Previous delivery: v7.9.6 — Forge ECRS set 1 (owner: C1+C2+E1+S1)
 
 _buildCraftBenchRaw: C1 one primary button — ticked targets (forgeAdvOpen) → 'Auto until ✓ (n)' tag auto → autoRollToTarget, else 'Roll' tag roll; separate Auto/auto_locked button removed (Tier +1 kept, wider buttons). C2 implicit/current lines/choice options use modLine + MOD_TIER_COLOR by tierStars (implicit IMPLICIT_COLOR). E1 per-row i buttons (current_info_/info_) and Odds removed; pool rows show 'chance% · modDesc ✓' + tier label. S1 pool rows 34px (RH), header 'Tap mods you want · Auto rolls until one lands' when advanced, target zones only when forgeAdvOpen. modLine tolerates defs without fmt. Tests: forge-redesign (no odds/info, target → auto, pool_next optional, colour consts in ctx) + scripts/check-forge-live-ui.cjs (target → auto, no odds) — 21 states pass.
 
@@ -360,7 +364,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.6 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.7 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
