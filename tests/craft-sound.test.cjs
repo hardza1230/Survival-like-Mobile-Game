@@ -10,8 +10,7 @@ S.craft('cancel');assert(voices[3].destroyed);S._craftVoices[0].done();assert.eq
 const n=played.length;S.muted=true;S.craft('start');S.muted=false;S.sv=0;S.craft('exhaust');assert.equal(played.length,n);
 S.sv=.5;S.craft('rare');assert.equal(voices.at(-1).opts.volume,.15);S.stopCraft();assert(voices.at(-1).destroyed);
 context.window.__g.cache.audio.exists=()=>false;const fallback=[];S.seq=(notes,type,vol)=>fallback.push({notes,vol});S.craft('exhaust');assert.equal(fallback[0].notes.length,2);
-const block=source.slice(source.indexOf('  _playAffixRoulette('),source.indexOf('  promoteFocusedItem()'));
-assert(!/Sfx\.(chest|slot|legend|ult|clear|card)/.test(block));assert(block.includes('if(this._craftRollToken!==token)return; if(stopped)'));
+assert(!source.includes('  _playAffixRoulette('));   // v7.8.93 roulette ยุคเก่าตัดแล้ว
 for(const name of ['start','tick','slow','common','rare','jackpot','near','cancel','exhaust','capacity','reroll','remove','reset']){const f=fs.readFileSync(`assets/audio/sfx/craft/craft_${name}.wav`);assert.equal(f.toString('ascii',0,4),'RIFF');let peak=0;for(let i=44;i<f.length;i+=2)peak=Math.max(peak,Math.abs(f.readInt16LE(i)));assert(peak>0&&peak<32767);assert((f.length-44)/88200<=.4);assert(source.includes(`sfx_craft_${name}:`));}
 console.log('Craft audio: tick throttle, voice cleanup, result replacement, mute/volume, fallback, wiring and WAV limits passed');
 

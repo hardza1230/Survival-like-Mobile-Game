@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.92 — Performance pass (owner list, verified first)
+# Latest delivery: v7.8.93 — ECRS E: dead code removed (~600 lines) + R10/R11/S12
+
+Removed unreachable: old skill/passive/awaken card pool (rollUpgrades now 1 line) and old starting-skill picker (openStartingSkillChoice keeps the Basic Attack route) · Bear Beat Rush (beat*, BEAT_*) · legacy Taro castTaroBeacon/castTaroSmiteBasic/castTempestBasic/taroFireNeedle/taroNeedleVisual/taroTempestDash · old Forge/Gear actions (annul/scour/promote, rerollAffix, setAffixes, setGearRarity, sell/dismantleGearInstance, equipGearBase, bazaarGambleGear, _playAffixRoulette, slot*, chestSpin) · Recipe/Atlas leftovers (rollRecipeDrops, drawRecipeBar/Panel, migrateRiftToRecipes, makeRecipe, atlas* helpers, pact*) · Tag Sets data (TAG_SETS/UP_TAGS/TAGS_OF/TAG_TIERS/tagCounts/upTags/tagList) · misc dead methods/consts and both if(false) lines. Kept as test markers: gearStatText, rollOneAffixLocked, CRAFT_AFFIX_CAP, POWER_TUNING, POWER_BASE_HIT, taroRefreshRod, taroBeaconProfile; SKILLDEFS still feeds the loadout/Codex. tests/taro-smite + taro-tempest (not in npm check, covered only the removed legacy Taro code) deleted; validator contracts updated. R10: achievement 'hell' → 'Pinnacle Breaker' (pinnacleKills≥1, old diffBest≥3 still counts). R11: diffBest no longer written. S12: Codex row subtitle 'Weapons, Relics, Items and Sets'. Browser smoke boot + 5 hero stage starts: no page errors.
+
+# Previous delivery: v7.8.92 — Performance pass (owner list, verified first)
 
 Verified each claim in code. Done: _guardsNow() per-frame guard list (damage() stage 6–9 was iterating all enemies per hit) · _bigsNow() per-frame boss/mini list for priorityBossTarget · creamWave squared distances · tickEnemyPresentation caches anim/signature strings on this._presC (anims.exists still live — sheets load lazily) · burst() pools dots (_burstPool ≤140) · drawDashRing redraws only when charge/position changes · drawOverheadStatus draws once at local origin, moves og.setPosition, redraws/setText only when hp/max/lv/xp change · RENDER_DPR Auto = 1.5 (was 2; High still 3, Low 1.25). Checked and left: popDmg already pooled + throttled (2 tweens is fine); drawUniqueRing (side calls inside, risky); XP bar glint animates every frame by design; full spatial grid not done (120 enemy iterate sites — big refactor, ask owner).
 
@@ -291,7 +295,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.92 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.93 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

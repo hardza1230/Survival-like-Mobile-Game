@@ -1,9 +1,9 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);return source.slice(at,at+1+next.index);}
 const sugar=source.slice(source.indexOf('const SUGAR_CAP='),source.indexOf('const Save = {'));
-let stored;const c={localStorage:{setItem:(k,v)=>stored=JSON.parse(v)},gearSellSugar:()=>30};vm.createContext(c);const Save=vm.runInContext(sugar+'\n({data:{sugar:0},gearItem:()=>({uid:"g"}),isGearEquipped:()=>false,'+['save','addSugar','sellGearInstance'].map(method).join('\n')+'\n})',c);
+let stored;const c={localStorage:{setItem:(k,v)=>stored=JSON.parse(v)},gearSellSugar:()=>30};vm.createContext(c);const Save=vm.runInContext(sugar+'\n({data:{sugar:0},gearItem:()=>({uid:"g"}),isGearEquipped:()=>false,'+['save','addSugar'].map(method).join('\n')+'\n})',c);
 for(const value of [0,-5,12.9,'999999999',Infinity,NaN]){Save.data.sugar=value;Save.save();assert(stored.sugar>=0&&stored.sugar<=9999999);assert(Number.isInteger(stored.sugar));}
-Save.data.sugar=9999990;Save.addSugar(100);assert.equal(Save.data.sugar,9999999);Save.data.sugar=9999990;Save.data.gearItems=[{uid:'g'}];Save.sellGearInstance('g');assert.equal(Save.data.sugar,9999999);Save.data.sugar=4;Save.addSugar(5);assert.equal(Save.data.sugar,9);
+Save.data.sugar=9999990;Save.addSugar(100);assert.equal(Save.data.sugar,9999999);Save.data.sugar=4;Save.addSugar(5);assert.equal(Save.data.sugar,9);
 const exp=source.slice(source.indexOf('function characterExpProgress('),source.indexOf('\n',source.indexOf('function charExpNeed(')));
 let cp={lvl:1,exp:60,tp:0},saves=0;const ec={Save:{cp:()=>cp,save:()=>saves++},Sfx:{stopCraft(){}}};vm.createContext(ec);vm.runInContext(exp,ec);const Scene=vm.runInContext('class Scene{'+['gainCharExp','buildSummaryExpBar','stopSummaryPresentation'].map(method).join('\n')+'\n}Scene',ec);
 const scene=new Scene();scene.character='mint';scene.gainCharExp(450);assert.equal(saves,1);assert(scene._lastLvlUps>1);assert.equal(scene._charExpGain.before.exp,60);

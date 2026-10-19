@@ -13,8 +13,6 @@ for(const contract of [
   "id:'crisisguard', category:'defense'",
   "id:'xp', category:'utility'",
   "id:'dash', category:'utility'",
-  "_playAffixRoulette(pool,winner,rolled,cur)",
-  "const delays=[76,88,102,120,145,175,215,270,340]",
 ]){
   if(!source.includes(contract))throw new Error(`Missing Affix Roulette contract: ${contract}`);
 }
@@ -112,7 +110,7 @@ for(const skill of signatureComboSkills){
 if (!source.includes('rollUpgrades(this.usesBasicAttackBuild()?3:4)') || !source.includes("slice(0,3)")) {
   throw new Error('Readable-card choice counts changed unexpectedly');
 }
-for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaRush(lvl,aw,dm,basic.evolved,basic)","berry:{name:'Jam Cannon'","if(this.usesBasicAttackBuild())return this.rollBasicAttackUpgrades(n,opts)","b.mastery>=10&&!b.mutation","b.mastery>=evoAt&&!b.evolved"]){
+for(const contract of ["const BASIC_ATTACKS = {","momo:{name:'Heart Seed Blaster'","cocoa:{name:'Bear Core Combo'","this.castCocoaRush(lvl,aw,dm,basic.evolved,basic)","berry:{name:'Jam Cannon'","rollUpgrades(n,opts){ return this.rollBasicAttackUpgrades(n,opts); }","b.mastery>=10&&!b.mutation","b.mastery>=evoAt&&!b.evolved"]){
   if(!source.includes(contract))throw new Error(`Missing character-first Basic Attack contract: ${contract}`);
 }
 const levelUpIcons=['momo_power','momo_rate','momo_size','momo_volley','cocoa_power','cocoa_rate','cocoa_size','cocoa_combo','berry_power','berry_rate','berry_size','berry_cluster','sweet_recovery','mochi_vitality','flavor_regeneration','sugar_on_kill'];
@@ -363,7 +361,7 @@ for(const contract of ["this.stageIndex===4?'boss5_sovereign'","?'e_crown_ripper
 }
 
 // R10: Recipe Maps endgame contracts + กฎเหล็ก (ยิ่งยาก รางวัลยิ่งดี)
-for(const c of ['const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16','function makeRecipe(','function recipeMul(','function atlasPoints(','const ATLAS_NODES=[','const UNIQUE_GEAR={','startRecipeRun(st)','tickRecipeHunger(dt)','finishRecipeBoss()','rollRecipeDrops(r)','triggerRecipeEvent()','migrateRiftToRecipes()','startPinnacle()','this.riftMul().hp*RECIPE_BOSS_HP*']){
+for(const c of ['const RECIPE_BAG_MAX=30, RECIPE_TIER_MAX=16','function recipeMul(','const ATLAS_NODES=[','const UNIQUE_GEAR={','startRecipeRun(st)','tickRecipeHunger(dt)','finishRecipeBoss()','triggerRecipeEvent()','startPinnacle()','this.riftMul().hp*RECIPE_BOSS_HP*']){
   if(!source.includes(c))throw new Error(`Missing Recipe Maps contract: ${c}`);
 }
 const recipeMods=block(/const RIFT_MODS=\[([\s\S]*?)\n\];/,'RIFT_MODS')+block(/const RECIPE_MECH_MODS=\[([\s\S]*?)\n\];/,'RECIPE_MECH_MODS');
