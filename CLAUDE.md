@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.79 — Storm Mark homing = Unique sparks only + on-hit cards from Taro secondary hits
+# Latest delivery: v7.8.80 — Split Spark falloff + secondary procs at 1/4
+
+Owner: split sparks should get weaker each split. taroSwarmProfile split .55→.45 (card p_spark_split .75→.65) → gen1 45%/gen2 20% (card 65%/42%); sparkChild hits roll .7–1.3 instead of taroLightningRoll .2–1.8. Owner picked ข for procs: modOnHit runs for Taro terminal sources with chance ×.25 (Overcharge, Living Tempest, hitBoom/hitChain; recursion still blocked by _modTick + modBoom ≤8/.25s), Chill relic 10%→2.5% on terminal. Still gated: modOnKill, relic dashcharge, gearCritArc, _uqCritBurst, forge hit counters.
+
+# Previous delivery: v7.8.79 — Storm Mark homing = Unique sparks only + on-hit cards from Taro secondary hits
 
 Owner picked ก: mark homing (projectile tick mk0) and TARO_MARK_BONUS/big re-hit (taroProjectileHit marked) only for p.storm sparks; normal sparks fly as usual. On-hit audit: TARO_SOURCE_POLICY terminal sources (sparkChild, sentry, beacon, repeat, splash, shrapnel, nova, bomb) skipped every on-hit proc → Sentry got nothing from Infusions/HP on Hit, Spark only on gen-0 sparks (children = 73% dmg). Now damage() runs infusionOnHit (Sweet/Sour/Spicy/Minty) + _tagIgnite/_tagChill for terminal too; forgeDamage HP on Hit (mod 17, 0.5s cd) moved to direct||terminal. Still gated for terminal (by design, recursion/spam): modOnHit hitBoom/hitChain (Taro m_over Overcharge, f_tempest Living Tempest), modOnKill, relic dashcharge/chill, gearCritArc, _uqCritBurst, forge hit counters/23. Reported to owner.
 
@@ -239,7 +243,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.79 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.80 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

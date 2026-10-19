@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.79';
+const GAME_VERSION = '7.8.80';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.80',date:'2026-10-19',title:'Split Sparks & Hit Procs',items:['Taro Spark Build: split Sparks are weaker each split — 45% then 20% of the main Spark (Split Spark card: 65% then 42%) — and their damage swings less, so the numbers clearly shrink','“X% of hits” cards (Overcharge, Living Tempest and other hit bursts/arcs) and Chill Relic now also trigger from split Sparks, Ball Lightning and Beacon orbs at 1/4 of the chance']},
   {v:'7.8.79',date:'2026-10-19',title:'Storm Mark & On-Hit Cards',items:['Taro Spark Build: during Storm Mark only the Unique’s own Sparks home in and get the +50% bonus — normal Sparks fly as usual (bosses were losing huge chunks)','Flavor Infusions (Sweet heal, Sour, Spicy, Minty) and the HP on Hit gear mod now also trigger from split Sparks, Ball Lightning and Beacon orbs']},
   {v:'7.8.78',date:'2026-10-18',title:'Gear Arrows & Spark Unique',items:['Taro Spark Build: Storm Mark no longer grows past ×2 from run level (it reached ×4.5 at Lv30 and melted bosses)','Equipment bag: a green ▲ means the item is stronger than what you wear in that slot, a red ▼ means weaker (yellow/orange = trade-off between ATK and DEF)']},
   {v:'7.8.77',date:'2026-10-18',title:'Spark Basic Attack',items:['Taro Spark Build: fewer Sparks per cast (2 at start, 3 from level 4; was 4–5) and casts 30% less often']},
@@ -3801,7 +3802,7 @@ const BASIC_PATHS={
                 {id:'p_overload',iconKey:'ic_path_p_overload',name:'Spark Power',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% Spark power per rank'},
                 {id:'p_spark_life',iconKey:'ic_taro_live_current',name:'Live Current',emoji:'⏳',max:3,fx:{},desc:'+15% Spark lifetime per rank; max 5 seconds'},
                 {id:'p_spark_speed',iconKey:'ic_taro_fast_sparks',name:'Fast Sparks',emoji:'💨',max:3,fx:{},desc:'+12% Spark movement speed per rank; max 640'},
-                {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},desc:'Split sparks keep 75% power instead of 55%'}]},
+                {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},desc:'Split sparks keep 65% power instead of 45% (second split 42% instead of 20%)'}]},
     {id:'tempest',iconKey:'ic_path_tempest_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Place up to 3 sentries that stay until they expire or you walk far away. They fire slow Ball Lightning that zaps every enemy around it many times per second.',
       upgrades:[{id:'p_sentry_overload',iconKey:'ic_taro_surge',name:'Overload',emoji:'💥',max:2,fx:{},desc:'Ball Lightning bursts when it fades: 150% orb power per rank in a wider area'},
                 {id:'p_sentry_link',iconKey:'ic_taro_arc',name:'Tesla Link',emoji:'🔗',max:2,fx:{},desc:'Two sentries within 420px link with lightning; enemies on the link take 80% orb power per rank every 0.5s'},
@@ -6674,7 +6675,7 @@ function taroSegmentDistance(point,from,to){const dx=to.x-from.x,dy=to.y-from.y,
 function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[id]??b?.lv?.[id]??0),count=base.rawRoots;
   if(b.path==='smite'){const excess=Math.max(0,Math.floor(count+1)-10),pierce=base.arc,range=Math.min(900,base.rootRange*(b.mutation==='chainlord'?1.4:1)*(b.evolved?1.5:1));
     /* v7.8.77 เจ้าของ: โจมตีปกติเริ่มต้นลดจำนวน (+3→+1 ลูก: Lv1 2 ลูก, Lv4+ 3 ลูก, เดิม 4/5) และยิงห่างขึ้น ×1.3 */ /* v7.8.21 เจ้าของ: อยู่นานขึ้น เร็วขึ้น ทะลุศัตรู (pierce พื้น 2) · แตกตัว 2 รุ่น: บิน 0.42 วิ แตก 2 ลูก ลูกลูกแตกอีก 2 ลูกเล็ก */
-    return {interval:Math.max(.45,base.unitC*1.3),damage:base.unitD*.75*(1+Math.min(.25,excess*.04))*(1+.10*Math.min(6,Math.max(0,pierce))),   /* v7.8.69 เจ้าของ: Spark ไม่หายตอนโดนแล้ว pierce ไร้ความหมาย → ทุกขั้นของ arc = +10% ดาเมจ */count:Math.min(10,Math.floor(count+1)),pierce:Math.min(5,2+Math.floor(pierce)),speed:Math.min(640,460*(1+.12*rank('p_spark_speed'))),life:Math.min(5,3.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?.75:.55};}
+    return {interval:Math.max(.45,base.unitC*1.3),damage:base.unitD*.75*(1+Math.min(.25,excess*.04))*(1+.10*Math.min(6,Math.max(0,pierce))),   /* v7.8.69 เจ้าของ: Spark ไม่หายตอนโดนแล้ว pierce ไร้ความหมาย → ทุกขั้นของ arc = +10% ดาเมจ */count:Math.min(10,Math.floor(count+1)),pierce:Math.min(5,2+Math.floor(pierce)),speed:Math.min(640,460*(1+.12*rank('p_spark_speed'))),life:Math.min(5,3.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?.65:.45};}
   const radius=Math.min(140,105*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;   /* v7.8.63 เจ้าของ: วงช็อตเริ่มใหญ่ขึ้น 85→105 · ลูกบอลเร็วขึ้น 110→145 */   // v7.8.24 Ball Lightning แบบ PoE: ลูกเล็กลอยช้า ช็อตทุกตัวในรัศมีนี้ทุก 0.15 วิ
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
@@ -13062,7 +13063,7 @@ class Game extends Phaser.Scene {
   taroDischarge(token,p){const t=this._taro;if(!t?.enabled||this.state!=='play'||!token?.enemy?.active)return;t.discharge=t.discharge||new Map();const n=(t.discharge.get(token.id)||0)+1;if(n<TARO_DISCHARGE_HITS){t.discharge.set(token.id,n);return;}t.discharge.set(token.id,0);
     const e=token.enemy;this.taroDealDamage(token,p.damage*TARO_DISCHARGE_MUL*taroLightningRoll()*this.taroShockMul(e),p.kind,{attackId:p.attackId});if(!this.taroArt?.('bpx_taro_beacon_strike',e.x,e.y+16,150,{h:300,life:.45}))this.taroLightningVisual?.(e.x,e.y,e.x,e.y,true,true);this.screenShake?.(60,.003);this.taroSound?.('beacon');}
   taroProjectileHit(p,token,quiet=false){const t=this._taro;if(!t?.enabled||this.state!=='play'||p.run!==t.run||p.pathEpoch!==t.pathEpoch||!taroTargetValid(token,p,Infinity))return false;const spark=p.kind==='spark'||p.kind==='sparkChild';const marked=spark&&p.storm&&this.taroMarkToken?.()?.id===token.id,big=!!(token.enemy.isBoss||token.enemy.isMini||marked);if(p.hits.has(token.id)&&(spark?!(big&&!p.storm&&t.time-p.hits.get(token.id)>=TARO_SPARK_BOSS_GAP):t.time-p.hits.get(token.id)<(big?TARO_ORB_BIG_GAP:TARO_ORB_HIT_GAP)))return false;p.hits.set(token.id,t.time);
-    const admitted=this.taroDealDamage(token,p.damage*taroLightningRoll()*(spark?(marked?TARO_MARK_BONUS:1):this.taroShockMul(token.enemy)),p.kind,{attackId:p.attackId});if(!admitted)return false;if(!spark){this.taroShockAdd(token.enemy);if(big)this.taroDischarge?.(token,p);}
+    const admitted=this.taroDealDamage(token,p.damage*(p.kind==='sparkChild'?.7+Math.random()*.6:taroLightningRoll())*(spark?(marked?TARO_MARK_BONUS:1):this.taroShockMul(token.enemy)),p.kind,{attackId:p.attackId});if(!admitted)return false;if(!spark){this.taroShockAdd(token.enemy);if(big)this.taroDischarge?.(token,p);}
     if(spark){this.taroArt?.('bpx_taro_spark_hit',token.enemy.x,token.enemy.y,44,{life:.17,rot:p.angle});if(big)this.taroStaticCharge?.(token,p);}   /* v7.8.58 เจ้าของ: Spark ไม่หายเมื่อโดน — อยู่จนหมดเวลา (ระเบิด blast ตอนหมดอายุผ่าน taroOrbFade) */
     else if(!quiet&&!this.taroArt?.('bpx_taro_orb_zap',token.enemy.x,token.enemy.y,48,{life:.2}))this.taroLightningVisual(p.x,p.y,token.enemy.x,token.enemy.y);
     return true;
@@ -15393,9 +15394,9 @@ class Game extends Phaser.Scene {
   gearCritArc(e,amount){ const t=this.elapsed||0; if(t<(this._critArcAt||0))return; this._critArcAt=t+0.15; this._gmTick=true; let n=0;
     this.enemies.children.iterate(o=>{ if(n>=2||!o||!o.active||o===e||this.dist(o.x,o.y,e.x,e.y)>220)return; n++; this.chainBolt(e.x,e.y,o.x,o.y); this.damage(o,amount*this.player.gearCritArc,o.x,o.y); }); this._gmTick=false; }
   gearKillShell(){ this._ksAcc=(this._ksAcc||0)+this.player.gearKillShell; if(this._ksAcc<100)return; this._ksAcc-=100; if((this._shield||0)<2){ this._shield=(this._shield||0)+1; this.floatText(this.player.x,this.player.y-44,'🫧 Kill Shell',0x9fe8ff); } }
-  modOnHit(e){ const L=this.modList(); if(!L||this._modTick||this.taroIsSecondary?.())return;
-    for(const d of L){ if(d.kind==='hitBoom'&&Math.random()<d.p)this.modBoom(e.x,e.y,d.r,d.mul);
-      else if(d.kind==='hitChain'&&Math.random()<d.p){ this._modTick=true; let n=0; this.enemies.children.iterate(o=>{ if(n>=d.n||!o||!o.active||o===e||this.dist(o.x,o.y,e.x,e.y)>200)return; n++; this.chainBolt(e.x,e.y,o.x,o.y); this.damage(o,this.relicDmg(d.mul),o.x,o.y); if(d.freeze&&!o.isBoss&&!o.isMini)o.frozen=Math.max(o.frozen||0,0.5); }); this._modTick=false; } } }
+  modOnHit(e){ const L=this.modList(); if(!L||this._modTick)return; const pm=this.taroIsSecondary?.()?.25:1;   /* v7.8.80 เจ้าของเลือก ข.: ดาเมจรองของ Taro (ลูกแตก Spark/ลูกบอล/Beacon) ติด on-hit ได้ แต่โอกาส ×1/4 · กันวนซ้ำด้วย _modTick + modBoom ≤8 ต่อ 0.25 วิ */
+    for(const d of L){ if(d.kind==='hitBoom'&&Math.random()<d.p*pm)this.modBoom(e.x,e.y,d.r,d.mul);
+      else if(d.kind==='hitChain'&&Math.random()<d.p*pm){ this._modTick=true; let n=0; this.enemies.children.iterate(o=>{ if(n>=d.n||!o||!o.active||o===e||this.dist(o.x,o.y,e.x,e.y)>200)return; n++; this.chainBolt(e.x,e.y,o.x,o.y); this.damage(o,this.relicDmg(d.mul),o.x,o.y); if(d.freeze&&!o.isBoss&&!o.isMini)o.frozen=Math.max(o.frozen||0,0.5); }); this._modTick=false; } } }
   modOnKill(e){ const L=this.modList(); if(!L||this.taroIsSecondary?.())return; const x=e.x,y=e.y;
     for(const d of L){ if(d.kind==='killBurst'&&Math.random()<d.p)this.time.delayedCall(40,()=>{ if(this.state==='play')this.modBoom(x,y,d.r,d.mul); });
       else if(d.kind==='killTrap'&&Math.random()<0.35){ const blob=this.camWorld(this.add.circle(x,y,9,d.freeze?0x9fe8ff:0xff7aa8,0.9).setDepth(8).setStrokeStyle(2,0xffffff));
@@ -15468,7 +15469,7 @@ class Game extends Phaser.Scene {
     if(this.basicAttack?.character==='mint'&&(e.isBoss||e.isMini)){ if(e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.04*Math.min(4,e._chill); if(this.basicAttack.path==='glacier'&&this.glacierBrittle(e))amount*=1.15; }   // v6.70 Chill/Brittle มีผลกับบอส
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);if(e._titanMarkT>(this.elapsed||0))amount*=1.25;if(e._shadowUntil>(this.elapsed||0))amount*=1+0.08*(e._shadowN||0);
-    /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this.taroIsSecondary?.()&&!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
+    /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
@@ -15492,7 +15493,7 @@ class Game extends Phaser.Scene {
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
     this.mxDeal?.(e,amount,crit);e.hp-=amount;if(taroDirect?.smiteProfile)this.taroAfterSmite(taroDirect,e);else if(!taroDirect?.noEffects)this.taroAfterDirect?.(taroDirect,e);
     if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
-    if(RL&&RL.chill&&!this.taroIsSecondary?.()&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<0.10){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
+    if(RL&&RL.chill&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<(this.taroIsSecondary?.()?.025:0.10)){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
     if(!e.isBoss&&!e.isMini&&e.hp>0)this.enemyAction(e,'hurt',120);
     this.warnAntBomber(e);
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
