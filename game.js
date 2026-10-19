@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.102';
+const GAME_VERSION = '7.8.103';
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
   {id:'swift',emoji:'⚡',name:'Swift Swarm',desc:'Enemies move 15% faster · +25% EXP',spd:1.15,player:p=>{p.xpMul=(p.xpMul||1)*1.25;}},
@@ -81,6 +81,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.103',date:'2026-10-19',title:'Cloud Play Stats & Save Check',items:['Play Stats now sync to the cloud with your save (last 150 runs) and merge across devices','If this device and your cloud save both changed, the game asks which one to keep instead of overwriting','While you decide, nothing is uploaded, so neither save gets lost']},
   {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss','Run trait now stays on screen under your kill count, and its banner no longer gets covered','Equipment fits the screen without scrolling: Equip / Craft / Lock / Salvage buttons stay at the bottom, the bag shows 2 rows on shorter phones, long mod lists get compact']},
   {v:'7.8.101',date:'2026-10-19',title:'Boss Voices',items:['Every story boss now speaks when the fight starts and when it falls','Every miniboss has a line when it arrives','Level-up Reroll and Banish removed (Spare Cards / Cull perks gone — their Rank Points are refunded)','Rank Points spent on removed perks (Vigor, Might, Iron Will) are refunded too']},
   {v:'7.8.100',date:'2026-10-19',title:'Surprises',items:['From Stage 3 on, every story run rolls a Run Trait: Swift Swarm, Sugar Rush, Frenzy or Lucky Day','Replays get a random event every 60–90 seconds: Treasure Room, Sugar Shrine, Rare Elite or a Wandering Merchant']},
@@ -5497,19 +5498,38 @@ const Save = {
     Sfx.muted=!this.data.settings.sound; applyVolSettings(this.data.settings);
     if(gearMigrated){ this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} }
     return this.data; },
-  save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
+  save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1;this.data.savedAt=Date.now();try{this.data.lastDev=Tele.id();}catch(e){} try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
     for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(this.data.stageMastery&&this.data.stageMastery[stage]&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----
   async syncCloud(){ if(typeof Cloud==='undefined')return; const ok=await Cloud.init(); if(!ok)return;
     const remote=await Cloud.pull();
+    try{ if(Array.isArray(Cloud._remoteStats))Stats.merge(Cloud._remoteStats); Cloud.queueStats(); }catch(e){}   // v7.8.103 Play Stats ขึ้นคลาวด์ (รวมสองฝั่ง)
     if(remote&&typeof remote==='object'){
-      if((remote.rev||0)>(this.data.rev||0)){ this.data=Object.assign(this.data,remote); try{localStorage.setItem('mochi_save',JSON.stringify(this.data));}catch(e){} this.load(); this._cloudAdopted=true; }
-      else if((this.data.rev||0)>(remote.rev||0)){ Cloud.push(this.data); }
-    } else { Cloud.push(this.data); }   // ยังNoneบนเมฆ = อัปเซฟปัจจุบันขึ้นไป
+      /* v7.8.103 เจ้าของ: เตือนเมื่อเซฟในเครื่องกับบนคลาวด์ไม่ตรงกัน · base = rev ที่ซิงก์กันล่าสุด (ต่อบัญชี)
+         ฝั่งเดียวเปลี่ยน = ซิงก์เงียบ · เปลี่ยนทั้งสองฝั่ง / เซฟจากเครื่องอื่น = ให้ผู้เล่นเลือก (ระหว่างนั้นไม่ push ทับ) */
+      const lr=this.data.rev||0, rr=remote.rev||0, base=Cloud.base();
+      let act;
+      if(lr===rr)act='same';
+      else if(base!=null)act=rr===base?'push':lr===base?'adopt':'ask';
+      else if(this.isFreshSave())act='adopt';
+      else if(!remote.lastDev||remote.lastDev===Tele.id())act=rr>lr?'adopt':'push';
+      else act='ask';
+      if(act==='same')Cloud.setBase(rr);
+      else if(act==='push')Cloud.push(this.data);
+      else if(act==='adopt'){ this.adoptCloud(remote); this._cloudAdopted=true; }
+      else { this._cloudConflict={remote,lr,rr}; Cloud.hold=true; }
+    } else { Cloud.push(this.data); }   // ยังไม่มีบนเมฆ = อัปเซฟปัจจุบันขึ้นไป
     this._cloudReady=true;
   },
+  isFreshSave(){ const d=this.data,sm=d.stageMastery||{}; return !Object.values(sm).some(Boolean)&&!(d.rank>0)&&!(d.unlockedStage>0); },
+  adoptCloud(remote){ try{ localStorage.setItem('mochi_save',JSON.stringify(remote)); }catch(e){} this.data=JSON.parse(JSON.stringify(SAVE_DEFAULTS)); this.load(); Cloud.setBase(remote.rev||0); },
+  resolveCloud(useCloud){ const c=this._cloudConflict; if(!c)return; this._cloudConflict=null; Cloud.hold=false;
+    if(useCloud){ this.adoptCloud(c.remote); this._cloudAdopted=true; }
+    else { this.data.rev=Math.max(this.data.rev||0,c.rr||0)+1; try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} Cloud.push(this.data); } },
+  saveSummary(d){ d=d||{}; const sm=d.stageMastery||{},n=Object.values(sm).filter(Boolean).length,t=d.savedAt?new Date(d.savedAt):null,pad=x=>String(x).padStart(2,'0');
+    return { stages:n, rank:d.rank||0, sugar:Math.floor(d.sugar||0), heroes:(d.chars||[]).length||1, gear:(d.gearItems||[]).length, when:t?(t.getDate()+'/'+(t.getMonth()+1)+' '+pad(t.getHours())+':'+pad(t.getMinutes())):'—' }; },
   addSugar(n){ this.data.sugar=clampSugar(clampSugar(this.data.sugar)+Number(n||0)); this.save(); if(Number(n)>0)(typeof DailyQ!=='undefined')&&DailyQ.tick('sugar',Math.floor(Number(n))); },
   // สมุดสูตร: บันทึกสูตรที่ปรุงสำเร็จถาวร · คืนรางวัล Sugar เฉพาะครั้งแรกที่ค้นพบ (0 = เคยมีแล้ว)
   discoverDish(key,sig){ if(!this.data.cookbook)this.data.cookbook={}; if(this.data.cookbook[key])return 0;
@@ -5724,8 +5744,9 @@ const Save = {
     if(sugar){ this.data.sugar=(this.data.sugar||0)+sugar; this.save(); }
     return sugar; },
 };
+const SAVE_DEFAULTS=JSON.parse(JSON.stringify(Save.data));   // v7.8.103 ค่าเริ่มต้นไว้รีเซ็ตก่อนรับเซฟจากคลาวด์
 /* ---- Cloud: เซฟขึ้น Supabase (Anonymous auth ผูกกับ device) กันเซฟหาย ---- */
-// v6.95 📊 สถิติการเล่น (เก็บในเครื่องเท่านั้น · ยังไม่ส่งขึ้นเซิร์ฟเวอร์) · localStorage mochi_stats = รอบล่าสุด 300 รอบ
+// v6.95 📊 สถิติการเล่น (v7.8.103 ซิงก์ขึ้นคลาวด์ด้วย Cloud.queueStats) · localStorage mochi_stats = รอบล่าสุด 300 รอบ
 const STATS_MAX=300;
 /* v7.8.38 เจ้าของ: ตัววัดตัวเลขให้มากที่สุด (Combat Meter) · ดาเมจที่ทำได้ไม่นับ overkill · แหล่ง = Taro context / สกิลล่าสุด / unique / dot */
 function mxFmt(n){n=+n||0;return n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e4?(n/1e3).toFixed(1)+'k':String(Math.round(n));}
@@ -5769,7 +5790,8 @@ const Stats={
       c.path=(g.basicAttack&&g.basicAttack.path)||null; c.cause=result==='dead'?(g._lastHitSrc||top||'?'):null; c.topDmg=top;
       try{ const tot=Object.values(by).reduce((x,y)=>x+y,0)||1; c.dmg=Object.keys(by).sort((a,b)=>by[b]-by[a]).slice(0,5).map(k=>k+' '+Math.round(100*by[k]/tot)+'%').join(', '); c.maxhp=Math.round((g.player&&g.player.maxhp)||0); c.pwEnd=typeof heroPower==='function'?heroPower(c.hero,g.basicAttack):null; }catch(e){}
       try{ c.mx=g.mxSummary?.(); }catch(e){}
-      const a=this.load(); a.push(c); this.saveAll(a); try{ Tele.enqueue(c,this.stageLab(c.stage)); }catch(e){} }catch(e){} },
+      const a=this.load(); a.push(c); this.saveAll(a); try{ Tele.enqueue(c,this.stageLab(c.stage)); }catch(e){} try{ Cloud.queueStats(); }catch(e){} }catch(e){} },
+  merge(remote){ const key=r=>(r&&r.t)+'|'+(r&&r.hero)+'|'+(r&&r.stage), seen=new Set(), out=[]; for(const r of this.load().concat(remote||[])){ if(!r||!r.t)continue; const k=key(r); if(seen.has(k))continue; seen.add(k); out.push(r); } out.sort((x,y)=>x.t-y.t); this.saveAll(out); return out; },
   clear(){ try{ localStorage.removeItem('mochi_stats'); }catch(e){} },
   stageLab(i){ const st=(typeof STAGES!=='undefined')&&STAGES[i]; return st&&st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(i/5)+1)+'-'+(i%5+1)); },
   toText(last){ const all=this.load(),a=last?all.slice(-last):all,ua=(()=>{try{const u=navigator.userAgent||'',m=/Android [\d.]+[^)]*/.exec(u)||/(iPhone|iPad)[^)]*/.exec(u);return (m?m[0]:u.slice(0,60))+' · screen '+screen.width+'×'+screen.height+' @'+(window.devicePixelRatio||1);}catch(e){return '';}})(),L=['Mochi Mayhem play stats · v'+(typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?')+' · '+a.length+' runs'+(this._mem?' · '+this._mem:'')+(ua?' · device '+ua:''),'date time | result | mode | stage★diff/depth | hero (build) | time | Lv | kills | wave | death cause | cards'];
@@ -5834,9 +5856,13 @@ const Cloud = {
       if(!sess){ const r=await this.sb.auth.signInAnonymously(); if(r.error){ console.warn('[cloud] anon sign-in disabled?',r.error.message); return false; } sess=r.data.session; }
       this.user=sess.user; this.ready=true; return true;
     }catch(e){ console.warn('[cloud] init',e); return false; } },
-  async pull(){ if(!this.ready)return null; try{ const {data,error}=await this.sb.from('game_saves').select('data').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} return data?data.data:null; }catch(e){ return null; } },
-  async push(data){ if(!this.ready)return; try{ await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); }catch(e){ console.warn('[cloud] push',e); } },
-  queuePush(data){ if(!this.ready)return; clearTimeout(this._pushT); this._pushT=setTimeout(()=>this.push(data),1500); },
+  base(){ try{ const b=JSON.parse(localStorage.getItem('mochi_cloud_base')||'null'); return b&&this.user&&b.uid===this.user.id?b.rev:null; }catch(e){ return null; } },
+  setBase(rev){ try{ if(this.user)localStorage.setItem('mochi_cloud_base',JSON.stringify({uid:this.user.id,rev})); }catch(e){} },
+  async pull(){ if(!this.ready)return null; this._remoteStats=null; try{ const st=await this.sb.from('game_saves').select('stats').eq('user_id',this.user.id).maybeSingle(); if(!st.error&&st.data)this._remoteStats=st.data.stats; }catch(e){} try{ const {data,error}=await this.sb.from('game_saves').select('data').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} return data?data.data:null; }catch(e){ return null; } },
+  async push(data){ if(!this.ready||this.hold)return; try{ const rev=data.rev||0,{error}=await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); if(!error)this.setBase(rev); else console.warn('[cloud] push',error.message); }catch(e){ console.warn('[cloud] push',e); } },
+  /* v7.8.103 Play Stats ขึ้นคลาวด์ (คอลัมน์ stats แยก · ส่งตอนจบรัน ไม่ใช่ทุกเซฟ · เก็บ 150 รันล่าสุด) */
+  queueStats(){ if(!this.ready)return; clearTimeout(this._statT); this._statT=setTimeout(async()=>{ try{ const a=Stats.load().slice(-150); await this.sb.from('game_saves').update({stats:a}).eq('user_id',this.user.id); }catch(e){ console.warn('[cloud] stats',e); } },3000); },
+  queuePush(data){ if(!this.ready||this.hold)return; clearTimeout(this._pushT); this._pushT=setTimeout(()=>this.push(data),1500); },
   // ---- Google login (บัญชีถาวร ข้ามเครื่อง) ----
   isGoogle(){ try{ return !!(this.user&&this.user.app_metadata&&this.user.app_metadata.provider==='google'); }catch(e){ return false; } },
   accountLabel(){ try{ if(this.isGoogle())return this.user.email||'Google account'; return this.user?'Temporary account (this device)':'Not connected'; }catch(e){ return 'Not connected'; } },
@@ -6635,9 +6661,9 @@ class Game extends Phaser.Scene {
     this.state='menu'; this.elapsed=0; this.kills=0; this.stageKills=0;
     this.level=1; this.xp=0; this.xpNext=12;
     Save.load(); this.comboFlags={}; this.combosOwned={}; this.sugarStage=0; this.sugarRun=0;
-    if(!Save._cloudReady&&Save.syncCloud){ Save.syncCloud().then(()=>{ if(Save._cloudAdopted&&this.state==='menu'){ this.buildMenuScreen&&this.buildMenuScreen(); if(this.showBanner)this.showBanner('☁️ Cloud sync','Loaded your latest progress from the cloud',1600); } }); }   // ซิงค์เซฟกับ Supabase (กันเซฟหาย)
+    if(!Save._cloudReady&&Save.syncCloud){ Save.syncCloud().then(()=>{ if(Save._cloudConflict&&this.state==='menu'){ this.buildMenuScreen(); return; } if(Save._cloudAdopted&&this.state==='menu'){ this.buildMenuScreen&&this.buildMenuScreen(); if(this.showBanner)this.showBanner('☁️ Cloud sync','Loaded your latest progress from the cloud',1600); } }); }   // ซิงค์เซฟกับ Supabase (กันเซฟหาย)
     // ในแอป: หลังLockedอิน Google เด้งกลับผ่าน deep link → ซิงค์ + Updatesหน้าSettings + แจ้งผล
-    if(typeof Cloud!=='undefined'){ Cloud._onLogin=()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this._acctChecked=false; if(this.menuToast)this.menuToast('✅ Signed in with Google','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); }; if(Cloud.bindDeepLink)Cloud.ensureClient&&Cloud.ensureClient(); }
+    if(typeof Cloud!=='undefined'){ Cloud._onLogin=()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud().then(()=>{ if((Save._cloudConflict||Save._cloudAdopted)&&this.state==='menu')this.buildMenuScreen(); }); this._acctChecked=false; if(this.menuToast)this.menuToast('✅ Signed in with Google','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); }; if(Cloud.bindDeepLink)Cloud.ensureClient&&Cloud.ensureClient(); }
 
     this.cameras.main.removeBounds();   // v7.6.1 กล้องอยู่กลางตัวละครเสมอ (เดิมชนขอบโลก → ขอบล่าง/ชาร์จสไนเปอร์ซูมออก ตัวละครหลุดไปล่างจอ วงเล็งไม่ตรง) · พื้นวาดตามมุมกล้องอยู่แล้ว
     this.physics.world.setBounds(-WORLD/2,-WORLD/2,WORLD,WORLD);
@@ -7941,7 +7967,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ this.cancelMenuMotion(); const s=this.menuScreen||'hub';if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
+  buildMenuScreen(){ this.cancelMenuMotion(); const s=this.menuScreen||'hub'; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     if(s!=='hub'&&!(this._grpOk&&this._grpOk[s])&&!fullCached&&!this._allComplete){ this._grpOk=this._grpOk||{}; if(window.GameLoader)window.GameLoader.show('Loading…',0.3);
@@ -8958,6 +8984,20 @@ class Game extends Phaser.Scene {
   buildHeroes(){
     const tab=this._heroesTab||'roster';if(tab==='talents')this.buildTalents();else if(tab==='stats')this.buildStats();else this.buildChars();
   }
+  /* v7.8.103 เจ้าของ: เซฟในเครื่องกับบนคลาวด์ไม่ตรงกัน → ให้เลือกก่อน (ระหว่างนี้ไม่ส่งเซฟขึ้นคลาวด์) */
+  buildCloudConflict(){ const c=Save._cloudConflict; this.menu.removeAll(true); this.tapZones=[]; const w=this.W,h=this.H;
+    const bg=this.add.rectangle(w/2,h/2,w,h,0x1d1428,1); this.menu.add(bg);
+    const T=(x,y,t,o)=>{const tx=this.add.text(x,y,t,Object.assign({fontFamily:'NunitoUI, sans-serif',color:'#f1e5ef',align:'center'},o||{})).setOrigin(.5,0);this.menu.add(tx);return tx;};
+    let y=Math.max(40,h*.07); T(w/2,y,'☁️ Save Mismatch',{fontStyle:'bold',fontSize:'22px',color:'#ffd9a0'}); y+=40;
+    const it=T(w/2,y,'This device and your cloud save have different progress.\nPick the one to keep — the other one will be replaced.',{fontSize:'12px',color:'#c9bdd6',wordWrap:{width:w-40}}); y+=it.height+18;
+    const card=(title,d,useCloud,col)=>{ const sm=Save.saveSummary(d),ch=150,g=this.add.graphics(); g.fillStyle(0x2c2140,1).fillRoundedRect(16,y,w-32,ch,12); g.lineStyle(1.5,col,1).strokeRoundedRect(16,y,w-32,ch,12); this.menu.add(g);
+      T(w/2,y+10,title,{fontStyle:'bold',fontSize:'15px',color:'#'+col.toString(16).padStart(6,'0')});
+      T(w/2,y+36,'⭐ Stages cleared '+sm.stages+'   ·   🎖 Rank '+sm.rank+'\n🍬 Sugar '+sm.sugar.toLocaleString()+'   ·   🧸 Heroes '+sm.heroes+'   ·   🎒 Items '+sm.gear+'\n🕒 Last saved '+sm.when,{fontSize:'12px',lineSpacing:4});
+      this.heroButton(30,y+ch-46,w-60,36,useCloud?'☁️ Use Cloud Save':'📱 Keep This Device',()=>{ Save.resolveCloud(useCloud); this.menuScreen='hub'; this.buildMenuScreen(); this.menuToast?.(useCloud?'☁️ Cloud save loaded':'📱 This device’s save is now in the cloud','#8bd3a0'); },{active:true,fontSize:14});
+      y+=ch+14; };
+    card('📱 This Device',Save.data,false,0x8bd3ff); card('☁️ Cloud',c&&c.remote,true,0xffd166);
+    T(w/2,y+2,'Not sure? Keep the one with more stages cleared.',{fontSize:'11px',color:'#a99fbb'});
+    this.menu.setVisible(true); }
   heroButton(x,y,w,h,label,fn,{active=false,disabled=false,fontSize=13}={}){
     const art=this.rosterChrome(active?'tab_on':'tab_off',x,y,w,h);if(disabled)art.setAlpha(.48);
     const text=this.add.text(x+w/2,y+h/2,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fontSize+'px',color:disabled?'#b9a7be':'#fff0df',stroke:'#482139',strokeThickness:1,align:'center'}).setOrigin(.5);
