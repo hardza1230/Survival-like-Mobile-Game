@@ -50,7 +50,8 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.96';
+const GAME_VERSION = '7.8.97';
+const WHEEL_RELIC_CHANCE=0.30;   // v7.8.97 เจ้าของเลือก 30%
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -73,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.97',date:'2026-10-19',title:'One Wheel to Rule the Loot',items:['Miniboss chest: Relic is now a slot on the wheel (30%) instead of a separate pick every time; the chest bonus shows right on the wheel','Boss loot is now a golden wheel too — Sugar, Currency, Shovels, Thread, Gear or a JACKPOT','After the boss wheel, choose: Take it, or risk Double or Nothing']},
   {v:'7.8.96',date:'2026-10-19',title:'Gentler Early Game',items:['Forge: Tier +1 and Auto-roll unlock after you clear Chapter 1 — early on you only Roll','Special Cores unlock at Weave Rank 1']},
   {v:'7.8.95',date:'2026-10-19',title:'Tidier Bag',items:['Bag sorted by slot, worn item first, then highest level','Salvage weaker and Equip Best moved under the Inventory title','Mods are coloured by tier: white ★1, green ★2, blue ★3, purple ★4, orange ★5','The set button shows which set it counts','Bazaar shortcut removed from the Equipment page (still in Gear & Power)']},
   {v:'7.8.94',date:'2026-10-19',title:'Cleaner Equipment Screen',items:['Items show one rarity (Epic, Rare…) instead of two','Favorite and Lock were the same thing — only 🔒 Lock remains (your favorites are now locked)','Item names are just the base name; the mods are listed below','No more “Common” tag on the base stat line','Buttons regrouped: Craft · Lock · Salvage, then Salvage weaker · Equip Best','Salvage buttons and the Inbox say what they do']},
@@ -11832,20 +11834,17 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(700,()=>this.openBossLootCards(()=>this.revealStageReward(_note)));
   }
   // v6.54.9: ล้มบอส = การ์ดสุ่ม 3 ใบ (ของหลายชนิด) เลือก 1 แบบ Jackpot Event
-  openBossLootCards(done){ if(!this._bossLootOpen){this._bossLootOpen=true;this._bossRerolled=false;} const _d0=done; done=()=>{this._bossLootOpen=false;_d0&&_d0();};
+  openBossLootCards(done){ if(this._bossLootOpen)return; this._bossLootOpen=true; const _d0=done; done=()=>{this._bossLootOpen=false;_d0&&_d0();};   // v7.8.97 เจ้าของ (แบบ A): รางวัลบอส = วงล้อทอง + ปุ่ม Double or Nothing
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.max(1,Math.round(n*(1+si*0.3)*dr));
     const pool=[
-      {emoji:'🍭',artKey:'prize_sugar',name:'Sugar',sub:'+'+S(120),color:0xff7fb0,give:()=>{this.sugarStage+=S(120);}},
-      {emoji:'💠',artKey:'prize_currency',name:'Currency',sub:'×'+(2+Math.floor(si/3)),color:0x7fd0ff,give:()=>this.grantCurrencyReward(2+Math.floor(si/3),this.currencyTierFor(),'Boss card')},
-      {emoji:'⛏️',name:'Shovels',sub:'+'+(3+Math.floor(dr)),color:0xc9a36b,give:()=>Save.addShovels(3+Math.floor(dr))},
-      {emoji:'🧶',name:'Weave Thread',sub:'+'+S(25),color:0xd59bff,give:()=>Save.addThreads(S(25))},
-      {emoji:'🎁',artKey:'prize_jackpot',name:'Gear',sub:'Random item',color:0x8ff0b0,give:()=>{ const t=Math.random()<0.15*dr?'epic':'rare'; this.grantGear&&this.grantGear(t); }}];
-    const pick=Phaser.Utils.Array.Shuffle(pool.slice()).slice(0,3);
-    const jp={emoji:'🌟',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}};
-    if(Math.random()<0.25+0.1*(dr-1))pick[Math.floor(Math.random()*3)]=jp;
-    this.openMysteryCards(done,{prizes:pick,title:'Boss Loot',hint:'Pick a card — anything could be inside!',choice:true,noReroll:!!this._bossRerolled,reroll:()=>{ this._bossRerolled=true; this.openBossLootCards(done); }});
+      {id:'sugar',artKey:'prize_sugar',name:'Sugar',sub:'+'+S(120),w:5,color:0xff7fb0,give:()=>{this.sugarStage+=S(120);}},
+      {id:'currency',artKey:'prize_currency',name:'Currency',sub:'×'+(2+Math.floor(si/3)),w:5,color:0x7fd0ff,give:()=>this.grantCurrencyReward(2+Math.floor(si/3),this.currencyTierFor(),'Boss wheel')},
+      {id:'shovel',artKey:'prize_shovel',name:'Shovels',sub:'+'+(3+Math.floor(dr)),w:4,color:0xc9a36b,give:()=>Save.addShovels(3+Math.floor(dr))},
+      {id:'thread',artKey:'prize_thread',name:'Weave Thread',sub:'+'+S(25),w:5,color:0xd59bff,give:()=>Save.addThreads(S(25))},
+      {id:'gear',artKey:'prize_chest',name:'Gear',sub:'Random item',w:3,color:0x8ff0b0,give:()=>{ const t=Math.random()<0.15*dr?'epic':'rare'; this.grantGear&&this.grantGear(t); }},
+      {id:'jackpot',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',w:2.4,color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}}];
+    this.openPrizeWheel('gold',()=>done(),{prizes:pool,title:'👑 Boss Loot',double:true});
   }
-  // v6.55: เดิมพันสองเท่า — การ์ด 3 ใบ มี 💀 1 ใบ · รอด = ได้ของ ×2 · เจอ 💀 = เสียหมด
   openDoubleOrNothing(p,done){
     const skull={emoji:'💀',name:'Nothing',sub:'You lost the prize',color:0x8a3a4a,give:()=>{}},win={emoji:p.emoji,artKey:p.artKey,name:p.name+' ×2',sub:p.sub+' ×2',color:0xffd166,jackpot:true,give:()=>{p.give();p.give();}};
     this.openMysteryCards(()=>{ this._bossRerolled=false; done&&done(); },{prizes:Phaser.Utils.Array.Shuffle([skull,win,Object.assign({},win)]),title:'Double or Nothing',hint:'2 cards double your prize · 1 card loses it all'});
@@ -15179,10 +15178,10 @@ class Game extends Phaser.Scene {
     if(tier==='bronze')return {sugar:0,cur:0};
     return tier==='gold'?{sugar:Math.round((80+si*25)*dr),cur:3}:{sugar:Math.round((40+si*15)*dr),cur:1};
   }
-  grantMiniChestBonus(tier){
+  grantMiniChestBonus(tier,quiet){
     const b=this.miniChestBonus(tier);if(b.sugar>0){this.sugarStage+=b.sugar;this.sugarRun+=b.sugar;if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);}
-    if(b.cur>0)this.grantCurrencyReward(b.cur,this.currencyTierFor(),(MINI_CHEST_TIERS[tier]||{}).name+' Chest bonus');
-    else if(b.sugar>0)this.showBanner('🍬 +'+b.sugar,'Chest bonus',1200);
+    if(b.cur>0)this.grantCurrencyReward(b.cur,this.currencyTierFor(),quiet?null:(MINI_CHEST_TIERS[tier]||{}).name+' Chest bonus');
+    else if(b.sugar>0&&!quiet)this.showBanner('🍬 +'+b.sugar,'Chest bonus',1200);
     return b;
   }
   // v5.14 วงล้อจับรางวัล: ของรางวัล 8 ช่องเรียงเป็นวง · ไฟวิ่งกระพริบช่องนั้นทีช่องนี้ทีเร็ว ๆ แล้วช้าลงจนหยุดที่ของที่ได้ → ของที่ได้โตขึ้นกลางจอ
@@ -15225,13 +15224,14 @@ class Game extends Phaser.Scene {
   openPrizeWheel(tier,done,opts={}){
     if(this.state==='rolling'){done&&done();return;}
     // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
-    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
-    const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],rewards=this.miniPrizePool(upTier||tier);
+    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=opts.prizes?0:[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
+    const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],rewards=opts.prizes?opts.prizes.slice():this.miniPrizePool(upTier||tier);
     let mim=null; if(opts.onMimic){ let base=0; rewards.forEach(p=>base+=p.w); mim={id:'mimic',artKey:this.textures.exists('mimic_chest_animated')?'mimic_chest_animated':'prize_chest',emoji:'🦷',name:'MIMIC!',w:base*MIMIC_WHEEL_CHANCE/(1-MIMIC_WHEEL_CHANCE),color:0xd23a5a,mimic:true,give:()=>{}}; rewards.push(mim); }   // v6.89.1 Mimic เป็นช่องหนึ่งในวงล้อเสมอ
+    let rel=null; if(opts.relic){ let base=0; rewards.forEach(p=>base+=p.w); rel={id:'relic',artKey:this.textures.exists('relic_crown')?'relic_crown':'prize_jackpot',emoji:'🔮',name:'🔮 Relic!',w:base*WHEEL_RELIC_CHANCE/(1-WHEEL_RELIC_CHANCE),color:0xc07bff,give:()=>{}}; rewards.push(rel); }   // v7.8.97 เจ้าของ: Relic เป็นช่องในวงล้อ 30% (เดิมได้ทุกครั้งเป็นหน้าแยก)
     let tw=0;rewards.forEach(p=>tw+=p.w);let r=Math.random()*tw,winner=rewards[rewards.length-1];for(const prize of rewards){r-=prize.w;if(r<=0){winner=prize;break;}}
     // Roll from every reward first, then show eight slots including the winner.
     // This keeps all reward odds intact and leaves readable spacing on phones.
-    const must=[winner].concat(mim&&winner!==mim?[mim]:[]),pool=rewards.length<=8?rewards:Phaser.Utils.Array.Shuffle([...must,...Phaser.Utils.Array.Shuffle(rewards.filter(p=>!must.includes(p))).slice(0,8-must.length)]),winIdx=pool.indexOf(winner);
+    const must=[winner].concat(mim&&winner!==mim?[mim]:[],rel&&winner!==rel?[rel]:[]),pool=rewards.length<=8?rewards:Phaser.Utils.Array.Shuffle([...must,...Phaser.Utils.Array.Shuffle(rewards.filter(p=>!must.includes(p))).slice(0,8-must.length)]),winIdx=pool.indexOf(winner);
     Sfx.eventLoopStop?.();this._prevRollState=this.state;this.state='rolling';this.physics.pause();
     const w=this.W,h=this.H,texture=this.textures.get('prize_wheel_bg').getSourceImage(),layout=prizeWheelLayout(w,h,texture.width,texture.height),{cx,cy,R}=layout,n=pool.length;
     const cont=this.add.container(0,0).setDepth(96);this.camUI(cont);
@@ -15240,7 +15240,7 @@ class Game extends Phaser.Scene {
     const rays=this.add.circle(cx,cy,R+42,T0.color,0.05).setStrokeStyle(1,T0.color,0.18);
     this.tweens.add({targets:rays,alpha:{from:0.45,to:1},duration:1100,yoyo:true,repeat:-1});
     const ring=this.add.graphics();ring.lineStyle(3,T0.color,0.5);ring.strokeCircle(cx,cy,R);
-    const ttl=this.add.text(cx+17,cy-R-70,T0.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T0.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
+    const ttl=this.add.text(cx+17,cy-R-70,opts.title||T0.name+' Chest',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#'+T0.color.toString(16).padStart(6,'0'),stroke:'#1a0f24',strokeThickness:5}).setOrigin(0.5);
     const tierBadge=this.add.image(cx-92,cy-R-70,T0.artKey).setDisplaySize(38,38);
     const hint=this.add.text(cx,cy+R+62,'Spinning…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#c7bdd6'}).setOrigin(0.5);
     const center=this.add.image(cx,cy,'prize_chest').setDisplaySize(65,65);
@@ -15287,15 +15287,20 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:big,y:cy-10,duration:420,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }});
       const glow=this.add.circle(cx,cy,72,p.color,0.08).setStrokeStyle(2,p.color,0.5).setScale(0.2);cont.addAt(glow,2);
       this.tweens.add({targets:glow,scale:1.25,alpha:{from:1,to:0.55},duration:520,ease:'Cubic.out'});
-      hint.setText(p.name).setFontSize(p.jackpot?'26px':'20px').setColor('#'+p.color.toString(16).padStart(6,'0'));
+      hint.setText(p.name+(opts.prizes&&p.sub?'\n'+p.sub:'')).setAlign('center').setWordWrapWidth(w-32).setFontSize(opts.prizes&&p.sub?(p.jackpot?'20px':'18px'):(p.jackpot?'26px':'20px')).setColor('#'+p.color.toString(16).padStart(6,'0'));
       this.tweens.add({targets:hint,scale:{from:0.5,to:1},duration:320,ease:'Back.out'});
       for(let i=0;i<(p.jackpot?28:14);i++){const a=i/(p.jackpot?28:14)*TAU,sp=this.add.circle(cx,cy,p.jackpot?6:4,p.color,1);cont.add(sp);
         this.tweens.add({targets:sp,x:cx+Math.cos(a)*(120+Math.random()*80),y:cy+Math.sin(a)*(120+Math.random()*80),alpha:0,duration:700,ease:'Cubic.out'});}
       this.screenFlash(p.color,p.jackpot?0.6:0.35,320);if(p.jackpot){this.screenShake(400,0.012);}
-      this.time.delayedCall(p.jackpot?1700:1250,()=>{ this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);
+      { const bt=!p.mimic&&opts.bonusText?opts.bonusText(upTier||tier):''; if(bt){const bl=this.add.text(cx,Math.min(cy+R+92,h-30),'Chest bonus  '+bt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffe08a',stroke:'#1a0f24',strokeThickness:4}).setOrigin(0.5);cont.add(bl);} }   // v7.8.97 โบนัสหีบแสดงในหน้าวงล้อ (เดิมเป็นป้ายแยก)
+      const finish=(dn)=>{ this._rollBtns=[]; this.tweens.add({targets:cont,alpha:0,duration:220,onComplete:()=>{ cont.destroy(true);
         this.state=this._prevRollState==='rolling'?'play':(this._prevRollState||'play');if(this.state!=='paused')this.physics.resume();
         if(p.mimic){ opts.onMimic&&opts.onMimic(); return; }
-        p.give(); done&&done(upTier||tier); if(this._prizeLevelUp){this._prizeLevelUp=false;if(this.state==='play')this.openLevelUp();} }}); });
+        if(dn){ this.openDoubleOrNothing(p,()=>done&&done(upTier||tier,p)); return; }
+        p.give(); done&&done(upTier||tier,p); if(this._prizeLevelUp){this._prizeLevelUp=false;if(this.state==='play')this.openLevelUp();} }}); };
+      if(opts.double&&!p.mimic){ this.time.delayedCall(700,()=>{ if(!cont.active)return; const bw2=Math.min(150,(w-48)/2),bh2=44,by2=Math.min(cy+R+118,h-bh2-12),mk=(x,label,col,fn)=>{const g=this.add.graphics();g.fillStyle(col,1);g.fillRoundedRect(x,by2,bw2,bh2,14);g.lineStyle(2,0xffffff,0.85);g.strokeRoundedRect(x,by2,bw2,bh2,14);const t=this.add.text(x+bw2/2,by2+bh2/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0.5);if(t.width>bw2-10)t.setScale((bw2-10)/t.width);cont.add([g,t]);return {x,y:by2,w:bw2,h:bh2,fn};};
+          this._rollBtns=[mk(cx-bw2-6,'✓ Take it',0x3f8f5a,()=>finish(false)),mk(cx+6,'🎲 Double or Nothing',0xb8402f,()=>finish(true))]; }); }   // v7.8.97 บอส: เสี่ยง Double or Nothing จากหน้าวงล้อ
+      else this.time.delayedCall(p.jackpot?1700:1250,()=>finish(false));
     };
     this.time.delayedCall(250,hop);
   }
@@ -15460,7 +15465,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const mx=c.x,my=c.y;
-    if(kind==='mini'){ this.openPrizeWheel(tier,ft=>{const finalTier=ft||tier,after=()=>{this.grantMiniChestBonus(finalTier);if(!this.offerRelic())this.showBanner('Relic slots full','Wheel and chest bonuses received',1600);};after();},{onMimic:(this._inTutorial||noMimic)?null:()=>this.awakenMimic(mx,my,tier)});return;} // Keep the full reward sequence; no random upgrade box fallback.
+    if(kind==='mini'){ this.openPrizeWheel(tier,(ft,won)=>{const finalTier=ft||tier;this.grantMiniChestBonus(finalTier,true);if(won&&won.id==='relic')this.offerRelic();},{onMimic:(this._inTutorial||noMimic)?null:()=>this.awakenMimic(mx,my,tier),relic:!this._inTutorial&&(this.relicSlotsLeft?.()??1)>0,bonusText:t=>{const b=this.miniChestBonus(t);return [b.sugar?'+'+b.sugar+' 🍬':'',b.cur?'+'+b.cur+' crafting':''].filter(Boolean).join('  ·  ');}});return;} // Keep the full reward sequence; no random upgrade box fallback.
     if(kind==='pick'&&Math.random()<0.10&&this.offerRelic())return;   // 🔮 กล่องลับ 10% = Relic (v5.19.1 ลดจาก 30%)
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
   }
