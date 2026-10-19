@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.95';
+const GAME_VERSION = '7.8.96';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -73,6 +73,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.96',date:'2026-10-19',title:'Gentler Early Game',items:['Forge: Tier +1 and Auto-roll unlock after you clear Chapter 1 — early on you only Roll','Special Cores unlock at Weave Rank 1']},
   {v:'7.8.95',date:'2026-10-19',title:'Tidier Bag',items:['Bag sorted by slot, worn item first, then highest level','Salvage weaker and Equip Best moved under the Inventory title','Mods are coloured by tier: white ★1, green ★2, blue ★3, purple ★4, orange ★5','The set button shows which set it counts','Bazaar shortcut removed from the Equipment page (still in Gear & Power)']},
   {v:'7.8.94',date:'2026-10-19',title:'Cleaner Equipment Screen',items:['Items show one rarity (Epic, Rare…) instead of two','Favorite and Lock were the same thing — only 🔒 Lock remains (your favorites are now locked)','Item names are just the base name; the mods are listed below','No more “Common” tag on the base stat line','Buttons regrouped: Craft · Lock · Salvage, then Salvage weaker · Equip Best','Salvage buttons and the Inbox say what they do']},
   {v:'7.8.93',date:'2026-10-19',title:'Spring Cleaning',items:['About 600 lines of old, unused code removed (old skill picker, retired Cocoa and Taro moves, old Forge buttons, slot machine, Tag Sets, old Recipe/Atlas leftovers) — a smaller, faster-loading game','Achievement Hell Survivor is now Pinnacle Breaker: defeat the Pinnacle boss (already earned ones stay)','Codex menu text now lists what it really shows: Weapons, Relics, Items and Sets']},
@@ -5095,6 +5096,7 @@ function currencyDef(k){ k=curKey(k); return CURRENCY.find(c=>c.key===k); }
 // v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
 const FLAME_REROLL_COST = 1;
 // v7.8.84 ราคา Glaze ต่อการอัป 1 ขั้น: ขั้นยิ่งดียิ่งแพง (T10→9 = 1 … T1→0 = 10)
+function forgeAdvOpen(){ const d=(typeof Save!=='undefined'&&Save.data)||{}; return d.stageMastery==null||!!d.stageMastery[4]||(d.unlockedStage||0)>=5; }   // v7.8.96 Tier +1 / Auto-roll เปิดหลังจบ Chapter 1 (ไม่มีเซฟ = เปิด สำหรับเทส)
 function forgeGlazeCost(a){return Math.max(1,11-Math.max(1,a&&a.t!=null?a.t:10));}
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
 const CURRENCY_BUY = { transmute:110, alt:110, regal:120, chaos:110, exalt:120, divine:320, scour:30, annul:90 };   // v6.79 merged keys share a price
@@ -9158,11 +9160,11 @@ class Game extends Phaser.Scene {
       if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
     // v7.8.90 Special Cores มีแท็บของตัวเอง (เดิมซ่อนหลังแบนเนอร์ใน Rank Perks) · Kitchen ย้ายไป Activities
-    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),art=this.tuTab(kx,rkY,rkW,rkH,2,'Special Cores','tile_special','#e6fff2');
+    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),scOpen=(Save.data.rank||0)>=1,art=this.tuTab(kx,rkY,rkW,rkH,2,scOpen?'Special Cores':'🔒 Special Cores','tile_special',scOpen?'#e6fff2':'#9c8ba9');
       if(art)this.menu.add(art); else { const g3=this.add.graphics(); g3.fillStyle(0x1f3438,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x5ad1c4,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
-      const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'💠 Special Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a8f0e6'}).setOrigin(0.5);
+      const t3=this.add.text(kx+rkW/2,rkY+rkH/2,scOpen?'💠 Special Cores':'🔒 Special Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a8f0e6'}).setOrigin(0.5);
       this.menu.add([g3,t3]); }
-      this._zone(kx,rkY,rkW,rkH,()=>{ this._templeSpecial=true; this._specialFrom=null; this._specialCorePage=0; this.buildMenuScreen(); }); }
+      this._zone(kx,rkY,rkW,rkH,()=>{ if(!scOpen){Sfx.select&&Sfx.select();this.menuToast?.('🔒 Special Cores unlock at Weave Rank 1','#ffb4c7');return;} this._templeSpecial=true; this._specialFrom=null; this._specialCorePage=0; this.buildMenuScreen(); }); }   // v7.8.96 เปิดหลังเลื่อนยศครั้งแรก
     { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Perks · '+rpFree+' RP'):'Rank Perks','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
       if(art)this.menu.add(art); else { const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
       const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
@@ -9822,8 +9824,9 @@ class Game extends Phaser.Scene {
     this.forgeChrome('panel',F.x,F.y,F.w,F.h);const key=craftCurrencyForLine(line),cur=currencyDef(key),have=Save.currency(key),can=pool.length>0&&!selected.locked&&!selected.forgeChoice&&have>=1,old=affs[line],tierCan=!!old&&!!affixDef(old.id)&&!selected.locked&&!selected.forgeChoice&&(old.t??10)>affixBestTierForItem(selected,affixDef(old.id))&&Save.currency('divine')>=forgeGlazeCost(old);
     const autoW=44,tierW=70,rollW=this.W<350?80:96,fx=F.x+F.w-autoW-8,tx=fx-tierW-6,rx=tx-rollW-6,cy=F.y+8;
     this.forgeIcon(cur.asset,F.x+22,cy+16,24,cur.emoji);this.forgeText(F.x+38,cy,L.small?cur.name.split(' ')[0]:cur.name,11,'#fff0df',true,rx-F.x-44);this.forgeText(F.x+38,cy+17,have,14,'#a2e1bc',true,rx-F.x-44);
-    this.forgeButton(rx,cy,rollW,44,'Roll',can?()=>this.randomCraftSelected():null,{kind:'primary',cost:key,disabled:!can,tag:'roll'});this.forgeButton(tx,cy,tierW,44,old&&affixDef(old.id)?'Tier +1 ('+forgeGlazeCost(old)+')':'Tier +1',tierCan?()=>this.divineFocusedLine():null,{cost:'divine',disabled:!tierCan,tag:'tier'});
-    const targets=Object.keys(this.craftTargets||{}).filter(id=>pool.some(m=>m.id===id)),autoCan=targets.length&&can;this.forgeButton(fx,cy,autoW,44,'Auto',autoCan?()=>this.autoRollToTarget():null,{icon:'fg_ui_auto',disabled:!autoCan,tag:'auto'});
+    this.forgeButton(rx,cy,rollW,44,'Roll',can?()=>this.randomCraftSelected():null,{kind:'primary',cost:key,disabled:!can,tag:'roll'});if(!forgeAdvOpen())this.forgeButton(tx,cy,tierW,44,'🔒 Tier +1',()=>this.showBanner('🔒 Tier +1','Unlocks after you clear Chapter 1',1500),{disabled:true,tag:'tier_locked'});   // v7.8.96 ช่วงต้นเกมเหลือแค่ Roll
+    else this.forgeButton(tx,cy,tierW,44,old&&affixDef(old.id)?'Tier +1 ('+forgeGlazeCost(old)+')':'Tier +1',tierCan?()=>this.divineFocusedLine():null,{cost:'divine',disabled:!tierCan,tag:'tier'});
+    const targets=Object.keys(this.craftTargets||{}).filter(id=>pool.some(m=>m.id===id)),autoCan=targets.length&&can;if(!forgeAdvOpen())this.forgeButton(fx,cy,autoW,44,'🔒',()=>this.showBanner('🔒 Auto-roll','Unlocks after you clear Chapter 1',1500),{disabled:true,tag:'auto_locked'});else this.forgeButton(fx,cy,autoW,44,'Auto',autoCan?()=>this.autoRollToTarget():null,{icon:'fg_ui_auto',disabled:!autoCan,tag:'auto'});
     const note=selected.locked?'Unlock this item in Equipment':selected.forgeChoice?'Pick a result or keep the current mod':!can?'Need 1 '+cur.name:'1 currency → pick 1 of 3 '+FORGE_ROWS[line]+' mods';if(!L.landscape)this.forgeText(F.x+10,F.y+F.h-20,note,11,'#c5b6ce',false,F.w-20);
     if(this._forgePanel)this.drawForgePanel(selected,items);this.menu.setVisible(true);
   }
