@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.9.1 (was v7.8.104; owner asked for the 7.9 line) — New version on first launch (owner)
+# Latest delivery: v7.9.2 — Equipment ECRS set 1 (owner: C1+C2+E1+S1, bag stays 2 rows)
+
+buildGear: E1 portrait removed → top bar _pwBox full width (name Lv + ATK/DEF, no delta colouring now) + 6 slots in one row (ss ≤64). C1 this.gearFilter: slot tap toggles filter (gearSlot=slot, page 0, selection reset); bag shows only that slot, sorted equipped first then gearCompareScore desc; header 'Gloves ✕' clears. invRows fixed 2. C2 when selected is not equipped and an item is equipped: 2-column compare card (EQUIPPED | THIS ITEM · tap again to equip: art, name, gearBaseStatText one line scaled, tier · Lv · +enh) + ATK/DEF delta line (gearADDelta, green/red/yellow); equipped item keeps the old single card. S1: tapping the already-selected unequipped bag cell equips it. tests/equipment-portrait.test.cjs removed (tested the deleted portrait crop). Browser smoke 360×800: filter, compare, 0 scroll at 360×640–412×915, no page errors.
+
+# Previous delivery: v7.9.1 (was v7.8.104; owner asked for the 7.9 line) — New version on first launch (owner)
 
 Cause: sw.js shellFetch races network vs cache with SHELL_TIMEOUT 3.5s; game.js is 2.3MB so slow phones got the cached old version and only saw the update on the 2nd open. Fix: index.html fetches version.json (2.5s cap) before appending game.js; if version ≠ localStorage mochi_last_ver (written by game.js at load) → src += '&fresh=<v>' + GameLoader 'Updating to v…'. sw.js: version.json network-only (cache fallback), ?fresh= requests wait for the network and update the shell cache (fallback cache on error). Also scripts/set-android-version.mjs versionCode = major·1e6+minor·1e3+patch (old formula failed at patch 100 → APK build broke since v7.8.100). Browser check (localhost SW): first/stale/normal loads OK, 0 errors.
 
@@ -340,7 +344,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.1 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.2 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
