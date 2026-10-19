@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.9.3 — Equipment ECRS set 2 (owner: R1+C3+S2)
+# Latest delivery: v7.9.4 — Equipment ECRS E2 + R2 (owner)
+
+E2: Save.drainGearInbox() claims Inbox items while the bag has room; buildGear calls it first and toasts '📦 N items moved from Inbox to your bag'. R2: bag header = title/filter · Sets · count · (📦N only when Inbox has items) · ♻ (Salvage weaker; armed → ⚠ + banner with totals) · ⚡ (Equip Best), 36×26 heroButtons; the old 36px bag-action row is gone (bagY row removed, y+=34), old 's'/'m' drawActions removed. equipment-redesign test expects '⚡' / '♻'. Browser smoke 360×800: inbox 3 → 0 (bag 33/100), header icons, no page errors.
+
+# Previous delivery: v7.9.3 — Equipment ECRS set 2 (owner: R1+C3+S2)
 
 buildGear actions: R1 unequipped item row 1 = ⚔ Equip | ⚒ Enhance (SL.e; Save.enhance(uid) works on bag items; risk warning line shows for any selected item); equipped = full-width Enhance. C3 lock = small 🔒/🔓 chip at the card's bottom-right (zone flagged lockChip); row 2 = 🧪 Craft | right slot: equipped → 🔒 Locked/🔓 Lock toggle, locked bag item → '🔓 Unlock to salvage', else ♻ Salvage (starter → 'Starter items are protected'). S2 conf(ck,label)/arm(ck): confirm keys (sal:uid crafted salvage, salw bulk, enh:uid:lv) rebuild the screen with '⚠ Tap again to confirm' on the button instead of a banner. equipment-redesign test finds the lock via lockChip. Browser smoke 360×800 OK.
 
@@ -348,7 +352,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.3 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.4 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

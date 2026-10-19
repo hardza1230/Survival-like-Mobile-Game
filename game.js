@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.3';
+const GAME_VERSION = '7.9.4';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.4',date:'2026-10-19',title:'Equipment: cleaner bag',items:['Items waiting in the Inbox move into your bag by themselves as soon as there is room','Salvage weaker (♻) and Equip Best (⚡) are now small buttons on the bag header — more room for your item','The Inbox shortcut only shows when something is waiting']},
   {v:'7.9.3',date:'2026-10-19',title:'Equipment: fewer taps',items:['Enhance any item in your bag — no need to equip it first (Equip and Enhance sit side by side)','Lock is now a small 🔒 on the item card; the second row is just Craft and Salvage (or Unlock / Lock)','Buttons that need a second tap now say “Tap again to confirm” right on the button']},
   {v:'7.9.2',date:'2026-10-19',title:'Easier Equipment',items:['Tap a gear slot to show only that slot in your bag (best items first) · tap it again or ✕ to show everything','New side-by-side compare: what you wear vs the selected item, with the ATK / DEF change','Tap a selected bag item again to equip it','Big hero portrait replaced by a slim name + ATK / DEF bar; the 6 slots sit in one row']},
   {v:'7.9.1',date:'2026-10-19',title:'Updates on first launch',items:['A new version now loads the first time you open the game, even on slow connections — no more opening twice','Shows “Updating to v…” on the loading screen while it downloads']},
@@ -5630,6 +5631,7 @@ const Save = {
       const shards=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+shards;this.save();return{item,destination:'salvaged',shards};
     }
     this.data.gearItems.push(item);this.save();return{item,destination:'bag'};},
+  drainGearInbox(){ let n=0; for(const it of (this.data.gearInbox||[]).slice()){ if(this.gearInventoryFull())break; if(it&&this.claimGearInbox(it.uid))n++; } return n; },   // v7.9.4 E2 มีที่ว่างในกระเป๋า → ของใน Inbox เข้ากระเป๋าเอง
   claimGearInbox(uid){const item=this.gearInboxItem(uid);if(!item||this.gearInventoryFull())return false;this.data.gearInbox=this.data.gearInbox.filter(x=>x&&x.uid!==uid);item.isNew=true;this.data.gearItems.push(item);this.save();return true;},
   setGearAutoDismantle(mode){this.data.gearAutoDismantle=['off','common','rare'].includes(mode)?mode:'off';this.save();return this.data.gearAutoDismantle;},
   equipGearInstance(slot,uid){ const item=this.gearItem(uid); if(!item||item.slot!==slot)return false;
@@ -9607,6 +9609,7 @@ class Game extends Phaser.Scene {
   }
   buildGear(){
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_equipment');
+    { const mv=Save.drainGearInbox?.()||0; if(mv)this.time.delayedCall(60,()=>this.menuToast?.('📦 '+mv+' item'+(mv>1?'s':'')+' moved from Inbox to your bag','#8bd3a0')); }
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
     /* v7.9.2 เจ้าของ ECRS ชุดแรก: E1 เอารูปตัวละครใหญ่ออก (เหลือแถบชื่อ + ATK/DEF) · C1 ช่องสวมใส่ = ตัวกรองกระเป๋า (แตะซ้ำ = ดูทั้งหมด) · กระเป๋า 2 แถวตามเจ้าของ */
@@ -9639,11 +9642,18 @@ class Game extends Phaser.Scene {
     let y=setBot+12;
     const cap=Save.data.gearInventoryCap||100;
     const hdr=this.add.text(14,y,flt?((GEAR_SLOTS.find(g=>g.slot===flt)||{}).label||flt)+' ✕':'Inventory',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'18px',color:flt?'#ffb3cf':'#fff0e7'}); if(flt)this._zone(10,y-4,hdr.width+10,30,()=>{this.gearFilter=null;this.gearInvPage=0;this.buildMenuScreen();});
-    const count=this.add.text(w-90,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);
-    const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y+4,'📦 Inbox '+inboxN,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:inboxN?'#ffd166':'#9c8ba9'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-82,y-2,68,28,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
-    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' '+GEAR_SETS[k].name.replace(/ Set$/,'').split(' ').pop()+' '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets',bx=14+hdr.width+10,bw=Math.max(60,Math.min(110,w-72-60-bx));
+    /* v7.9.4 R2 Salvage weaker / Equip Best เป็นไอคอนเล็กบนหัวกระเป๋า · Inbox โชว์เฉพาะตอนมีของค้าง */
+    const ib=36,ix2=w-14-ib,ix1=ix2-6-ib,salArm=this._gearConfirm==='salw';
+    this.heroButton(ix1,y-3,ib,26,salArm?'⚠':'♻',()=>{const worse=this.gearWorseItems();if(!worse.length){this._gearConfirm=null;this.showBanner('♻ Nothing to salvage','No weaker unlocked items in the bag',1300);return;}
+      if(this._gearConfirm!=='salw'){const t=worse.reduce((o,it)=>({sh:o.sh+gearDismantleValue(it),su:o.su+gearSellSugar(it)}),{sh:0,su:0});this._gearConfirm='salw';Sfx.error();this.buildMenuScreen();this.showBanner('♻ Salvage '+worse.length+' weaker items?','🧶 +'+t.sh+'  🍬 +'+t.su+' · tap ⚠ again to confirm (locked kept)',2200);return;}
+      this._gearConfirm=null;let sh=0,su=0;for(const it of worse){const r=Save.salvageGearInstance(it.uid);if(r){sh+=r.shards;su+=r.sugar;}}this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged '+worse.length+' items','🧶 +'+sh+'   🍬 +'+su,1600);},{fontSize:14});
+    this.heroButton(ix2,y-3,ib,26,'⚡',()=>{this._gearConfirm=null;this.gearEquipBest();},{fontSize:14});
+    const count=this.add.text(ix1-8,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);this.menu.add([hdr,count]);
+    let rightX=count.x-count.width; const inboxN=Save.gearInboxCount();
+    if(inboxN){const inbox=this.add.text(rightX-8,y+4,'📦 '+inboxN,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(inbox);this._zone(inbox.x-inbox.width-4,y-2,inbox.width+8,28,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});rightX=inbox.x-inbox.width;}
+    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' '+GEAR_SETS[k].name.replace(/ Set$/,'').split(' ').pop()+' '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets',bx=14+hdr.width+10,bw=Math.max(56,Math.min(110,rightX-10-bx));
       this.heroButton(bx,y-3,bw,26,lbl,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();},{fontSize:11});}
-    y+=30; const bagY=y; y+=36;   // v7.8.95 ปุ่มทั้งกระเป๋า (Salvage weaker · Equip Best) อยู่ใต้หัว Inventory
+    y+=34; const bagY=y;   // v7.8.95 ปุ่มทั้งกระเป๋า (Salvage weaker · Equip Best) อยู่ใต้หัว Inventory
     if(!items.length){ const empty=this.add.text(w/2,y+30,'No items yet',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
     const gap=6,cw=(w-28-gap*(cols-1))/cols,ch=cw,visible=items.slice(page*pageSize,page*pageSize+pageSize);
     visible.forEach((item,i)=>{ const base=GEAR_ALL.find(g=>g.id===item.baseId); if(!base)return; const col=i%cols,row=Math.floor(i/cols),x=14+col*(cw+gap),iy=y+row*(ch+gap),on=selected&&selected.uid===item.uid,eq=Save.isGearEquipped(item.uid),tl=TIER_LABEL[item.grade]||TIER_LABEL.common;
@@ -9709,8 +9719,6 @@ class Game extends Phaser.Scene {
       if(eq)drawAction(3,selected.locked?'🔒 Locked':'🔓 Lock',0x3a3550,togLock); else if(selected.locked||selected.favorite)drawAction(3,'🔓 Unlock to salvage',0x3a3550,togLock);
       if(canDis)drawAction(3,conf('sal:'+selected.uid,'♻ Salvage +'+gain+'🧶 +'+sv+'🍬'),0x8d4b3e,()=>{const ck='sal:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){arm(ck);return;}this._gearConfirm=null;const r=Save.salvageGearInstance(selected.uid);if(r){this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged','🧶 +'+r.shards+'   🍬 +'+r.sugar,1200);}});
       { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
-      drawAction('m','⚡ Equip Best',0x3f6d54,()=>this.gearEquipBest());
-      drawAction('s',this._gearConfirm==='salw'?'⚠ Tap again: salvage '+this.gearWorseItems().length:'♻ Salvage weaker',0x6e5634,()=>{const worse=this.gearWorseItems();if(!worse.length){this.showBanner('♻ Nothing to salvage','No weaker unlocked items in the bag',1300);return;}const ck='salw';if(this._gearConfirm!==ck){arm(ck);return;}this._gearConfirm=null;let sh=0,su=0;for(const it of worse){const r=Save.salvageGearInstance(it.uid);if(r){sh+=r.shards;su+=r.sugar;}}this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged '+worse.length+' items','🔩 +'+sh+'   🍬 +'+su,1600);});
       if(!eq&&!selected.locked&&!selected.favorite&&!canDis){this.menu.add(this.add.text(14+cW+bgap+dW/2,y2+bh2/2,'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
       y=y2+bh2;
     }
