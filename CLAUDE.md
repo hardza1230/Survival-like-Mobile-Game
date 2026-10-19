@@ -26,6 +26,10 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
+# Art orders 27 + 28 (19 Oct, owner) — journal redesign
+
+27 `docs/art_orders/27_EQUIPMENT_FORGE_JOURNAL_UI.md`: Equipment + Forge reskinned as an old parchment journal (owner mockups `ref/27_equipment_ref.webp`, `ref/27_forge_ref.webp`), 33 files, lazy with gear/craft group, ink-on-paper text. 28 `docs/art_orders/28_BOOK_PAGE_TRANSITION.md`: page-turn (6 frames + shadow + spine + dust) for menuTransition and a first-open book cover (5 frames), lazy-loaded with the old curtain as fallback. Both await art.
+
 # Latest delivery: v7.9.7 — Forge ECRS set 2 (owner: R1+R2+S2+E2)
 
 forgeLayout portrait gets the slots row back (36/42/46px) and a shorter footer (64/66/70). R1 _buildCraftBenchRaw slot strip: 6 chips (equipped or first item art, count badge), tap = that slot's equipped item, tap the active slot again = next item in that slot (tags fslot_<slot>, forgeSelectItem). E2 summary name tap no longer opens the item-info panel (gear_info removed; ⇄ list kept). S2 footer: currency block and hint line removed; primary button label carries the count ('Roll · emoji N', 'Auto until ✓ (n) · …', 'Pick a result above · …' while a choice is pending). R2 locked item → primary button '🔓 Unlock to craft' (tag unlock) toggles the lock in place. Also fixed: Auto button passed icon so forgeButton drew only the icon — label now shown. check-forge-live-ui 21 states + npm check pass.
