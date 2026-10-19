@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.82';
+const GAME_VERSION = '7.8.83';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.83',date:'2026-10-19',title:'Equipment Slot Roles',items:['Every slot now has its own job: Weapon and Ring = ATK · Gloves = Crit chance and Crit DMG · Armor = Armor and HP · Boots = Move Speed and Dash cooldown · Amulet = Cooldown','Role stats grow with item level (iLv 1 → 100), rarity and enhancement','Boots and Amulets no longer give Armor, and Gloves no longer give ATK']},
   {v:'7.8.82',date:'2026-10-19',title:'Clearer Equipment Mods',items:['Forge now rolls from 36 easy-to-read mods (was 78) — mods already on your items keep working','Mod tiers show as ★1–★5 instead of T0–T10 (★5 = strongest)','Mods that suit your hero (crit, frost, spark, melee, ranged, swarm, fire) show a green ✓ in Equipment and the Forge']},
   {v:'7.8.81',date:'2026-10-19',title:'Fairer Equipment',items:['Enhancing can no longer destroy an item — a failed try only drops one level (never below +3)','Each enhancement level now adds +12% base ATK/Armor (was +8%), so +10 is ×2.2','Set weapons from earlier chapters keep dropping in later chapters','Set comparison shows the real piece count (e.g. 2/5, not 2/3)','Landscape Equipment uses the same bag screen as portrait (the old list showed bonus text that did nothing)']},
   {v:'7.8.80',date:'2026-10-19',title:'Split Sparks & Hit Procs',items:['Taro Spark Build: split Sparks are weaker each split — 45% then 20% of the main Spark (Split Spark card: 65% then 42%) — and their damage swings less, so the numbers clearly shrink','“X% of hits” cards (Overcharge, Living Tempest and other hit bursts/arcs) and Chill Relic now also trigger from split Sparks, Ball Lightning and Beacon orbs at 1/4 of the chance']},
@@ -5334,20 +5335,28 @@ function rewardSourceStage(){return Math.max(0,((Save.data&&Save.data.unlockedSt
 function rewardChapter(){return itemChapterForStage(rewardSourceStage());}
 function currentRewardItemLevel(rng=Math.random){return rollItemLevel(rewardSourceStage(),1,rng);}
 function gearBaseStats(item){
-  const base=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start')return{attackMin:0,attackMax:0,armor:0};
+  const base=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start')return{attackMin:0,attackMax:0,armor:0,hp:0,crit:0,critDmg:0,speed:0,dashCd:0,skillCd:0};
   const level=Math.max(1,Math.min(100,Number(item.itemLevel)||1)),quality=({common:1,rare:1.12,epic:1.24,legend:1.4})[base.tier]||1;
   let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=Math.max(0,item.enhanceLv||0),enhance=1+.12*el;   // v7.8.81 +12%/ขั้น (+10 = ×2.2) · v6.55.37: +8%/ขั้น (+10 = ×1.8) เท่ากันทุก iLv (เอาขั้นต่ำ +1 ออก)
-  const attack=['weapon','gloves','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
-  const armor=['armor','boots','amulet'].includes(item.slot)?(()=>{const b0=(2+level*.15)*quality*variation*(item.slot==='armor'?1:.4);return Math.max(1,Math.round(b0*enhance));})():0;
+  const attack=['weapon','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
+  const armor=item.slot==='armor'?Math.max(1,Math.round((2+level*.15)*quality*variation*enhance)):0;
+  // v7.8.83 เฟส 2 (เจ้าของ): แต่ละช่องมีบทบาท · ถุงมือ=คริ · เกราะ=+HP · รองเท้า=วิ่ง+Dash · สร้อย=คูลดาวน์ · iLv1→100 · คูณคุณภาพ และตีบวก +5%/ขั้น
+  const f=(level-1)/99,uq=quality*(1+.05*el),r1=v=>Math.round(v*10)/10,role={hp:0,crit:0,critDmg:0,speed:0,dashCd:0,skillCd:0};
+  if(item.slot==='gloves'){role.crit=r1((1+4*f)*uq);role.critDmg=r1((5+25*f)*uq);}
+  if(item.slot==='armor')role.hp=Math.round((5+55*f)*quality*enhance);   /* 10→160 ตามตารางทำ Power +37% · 5→60 ใช้แทน Armor ที่รองเท้า/สร้อยเสียไป ≈ Power เท่าเดิม ±5% */
+  if(item.slot==='boots'){role.speed=r1((3+5*f)*uq);role.dashCd=r1((2+6*f)*uq);}
+  if(item.slot==='amulet')role.skillCd=r1((2+6*f)*uq);
   const lp=attack?1+weaponLocalPct(item)/100:1,amin=attack?Math.max(1,Math.round(attack*lp)):0;
-  return{attackMin:amin,attackMax:amin?Math.max(amin+1,Math.round(attack*1.4*lp)):0,armor};
+  return{attackMin:amin,attackMax:amin?Math.max(amin+1,Math.round(attack*1.4*lp)):0,armor,...role};
 }
 // v6.55.78: mod Damage % บนอาวุธเป็น local แบบ PoE — คูณ ATK ของอาวุธชิ้นนั้น ×3 แทน +dmg ทั้งตัว
 const WEAPON_LOCAL_MUL=3;
 function weaponLocalMod(item,id){return !!item&&item.slot==='weapon'&&(id==='dmg'||id==='i_dmg');}
 function weaponLocalPct(item){if(!item||item.slot!=='weapon')return 0;let v=0;for(const a of (item.affixes||[]))if(a&&a.id==='dmg')v+=a.v||0;const im=ensureImplicit(item);if(im&&im.id==='i_dmg')v+=im.v||0;return v*WEAPON_LOCAL_MUL;}
-function gearBaseStatText(item){const b=gearBaseStats(item);return b.attackMax?'ATK '+b.attackMin+'-'+b.attackMax:b.armor?'Armor '+b.armor:'Starter';}
-function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=(p.gearAttackMin||0)+b.attackMin;p.gearAttackMax=(p.gearAttackMax||0)+b.attackMax;p.armor=(p.armor||0)+b.armor;}
+function gearBaseStatText(item){const b=gearBaseStats(item);if(b.attackMax)return 'ATK '+b.attackMin+'-'+b.attackMax;if(b.armor)return 'Armor '+b.armor+(b.hp?' · HP +'+b.hp:'');if(b.crit)return 'Crit +'+b.crit+'% · Crit DMG +'+b.critDmg+'%';if(b.speed)return 'Speed +'+b.speed+'% · Dash CD −'+b.dashCd+'%';if(b.skillCd)return 'Cooldown −'+b.skillCd+'%';return 'Starter';}
+function applyGearBaseStats(p,item){const b=gearBaseStats(item);p.gearAttackMin=(p.gearAttackMin||0)+b.attackMin;p.gearAttackMax=(p.gearAttackMax||0)+b.attackMax;p.armor=(p.armor||0)+b.armor;
+  if(b.hp)p.maxhp=(p.maxhp||0)+b.hp;if(b.crit)p.critChance=(p.critChance||0)+b.crit/100;if(b.critDmg)p.critMul=(p.critMul||1.55)+b.critDmg/100;
+  if(b.speed)p.baseSpeed=(p.baseSpeed||1)*(1+b.speed/100);if(b.dashCd)p.dashCdMul=(p.dashCdMul||1)*(1-b.dashCd/100);if(b.skillCd)p.cdMul=(p.cdMul||1)*(1-b.skillCd/100);}
 function gearAttackRoll(p,rng=Math.random){const hi=p.gearAttackMax||0,lo=(p.gearAttackMin||0)+Math.floor((hi-(p.gearAttackMin||0))*Math.min(.5,p.forgeMods?forgeValue(p,101)/100:0));return lo+Math.floor(rng()*Math.max(1,hi-lo+1));}
 function armorDamageMultiplier(p){return 100/(100+Math.max(0,p.armor||0));}
 // v6.16: Item Power — อาวุธ iLv สูง = ดาเมจผู้เล่นโตตาม progress (อยู่นอกเพดาน STAT_CAPS.dmgMul)
