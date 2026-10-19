@@ -81,7 +81,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
-  {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss','Run trait now stays on screen under your kill count, and its banner no longer gets covered']},
+  {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss','Run trait now stays on screen under your kill count, and its banner no longer gets covered','Equipment fits the screen without scrolling: Equip / Craft / Lock / Salvage buttons stay at the bottom, the bag shows 2 rows on shorter phones, long mod lists get compact']},
   {v:'7.8.101',date:'2026-10-19',title:'Boss Voices',items:['Every story boss now speaks when the fight starts and when it falls','Every miniboss has a line when it arrives','Level-up Reroll and Banish removed (Spare Cards / Cull perks gone — their Rank Points are refunded)','Rank Points spent on removed perks (Vigor, Might, Iron Will) are refunded too']},
   {v:'7.8.100',date:'2026-10-19',title:'Surprises',items:['From Stage 3 on, every story run rolls a Run Trait: Swift Swarm, Sugar Rush, Frenzy or Lucky Day','Replays get a random event every 60–90 seconds: Treasure Room, Sugar Shrine, Rare Elite or a Wandering Merchant']},
   {v:'7.8.99',date:'2026-10-19',title:'No More Scrolling',items:['Menus only scroll when content really runs past the screen — Settings, News, Kitchen, Codex and Stats now sit still','Achievements fit on one screen']},
@@ -9568,7 +9568,11 @@ class Game extends Phaser.Scene {
     // v6.55.48: ตัวละครเล็กลง + หุบได้ (Save.data.gearFold) → ตารางเทียบขึ้นมาใกล้ขึ้น
     // v6.55.51: ตัวละครเป็นอวาตาร์เล็กซ้ายสุด + ช่องสวมใส่ 6 ช่องแถวเดียว
     // v6.55.55: อวาตาร์สูงเท่า 2 แถวช่องสวมใส่ · ช่องชิดกัน · gacha กว้างเท่ากริด · กล่องเซ็ทบอกชิ้นที่ขาด
-    const folded=true, cy0=Math.max(58,112*w/941), sgap=8, ss=Math.min(92,Math.floor((w*.61-sgap*2)/3)), avH=ss*2+sgap+32;
+    const folded=true, cy0=Math.max(58,112*w/941), sgap=8, cols=this.W>this.H?10:5, icw=(w-28-6*(cols-1))/cols;
+    /* v7.8.102 เจ้าของ: หน้านี้ห้ามเลื่อน → ถ้าจอเตี้ย ลดกระเป๋าเหลือ 2 แถว แล้วค่อยย่อช่องสวมใส่ */
+    let ss=Math.min(92,Math.floor((w*.61-sgap*2)/3)), invRows=3; const _below=r=>66+r*(icw+6)+29+72+56+92+18, _top=q=>cy0+4+q*2+sgap+32+44+8;
+    if(_top(ss)+_below(3)>h)invRows=2; if(_top(ss)+_below(invRows)+36>h)ss=Math.max(40,Math.floor(ss-(_top(ss)+_below(invRows)+36-h)/2));
+    const avH=ss*2+sgap+32;
     const gridW=ss*3+sgap*2, x0=w-12-gridW, ax=12, ay=cy0+4, key='card_'+id, avW=x0-10-ax;
     { const fg=this.add.graphics(); fg.fillStyle(0x2e2140,1); fg.fillRoundedRect(ax,ay,avW,avH,12); this.menu.add(fg);
       if(this.textures.exists(key)){ const im=this.add.image(0,0,key),TW=im.width,TH=im.height,cw=TW*0.62,ch=TH*(id==='berry'?.68:.55),cx0=TW*0.19,cy1=TH*(id==='berry'?.14:.03);
@@ -9604,7 +9608,7 @@ class Game extends Phaser.Scene {
       .sort((a,b)=>(_so.indexOf(a.slot)-_so.indexOf(b.slot))||((Save.isGearEquipped(b.uid)?1:0)-(Save.isGearEquipped(a.uid)?1:0))||((b.itemLevel||1)-(a.itemLevel||1))||(_go.indexOf(a.grade)-_go.indexOf(b.grade)));   // v7.8.95 เรียงตามช่อง · ที่ใส่อยู่ก่อน · Lv สูงก่อน
     let selected=Save.gearItem(this.gearSelectedUid);
     if(!selected||selected.slot!==sel){ selected=Save.equippedGearItem(sel)||items.find(x=>x.slot===sel)||null; this.gearSelectedUid=selected?selected.uid:null; }
-    const cols=this.W>this.H?10:5,pageSize=cols*3,pages=Math.max(1,Math.ceil(items.length/pageSize));
+    const pageSize=cols*invRows,pages=Math.max(1,Math.ceil(items.length/pageSize));
     let page=Math.max(0,Math.min(pages-1,this.gearInvPage||0)); this.gearInvPage=page;
     let y=setBot+12;
     const cap=Save.data.gearInventoryCap||100;
@@ -9639,14 +9643,16 @@ class Game extends Phaser.Scene {
         if(any){const up=dd.a>=0&&dd.d>=0,dn=dd.a<=0&&dd.d<=0;this._pwG.clear();this._pwG.fillStyle(up?0x2f6b47:dn?0x7a3442:0x6b5a2a,1);this._pwG.fillRoundedRect(px,py,pw,ph,10);}
         const ln=(ic,lab,v,dv)=>ic+' '+lab+' '+v+(dv?'→'+(v+dv)+(dv>0?' ▲':' ▼')+Math.abs(dv):'');
         this._pwT.setScale(1).setText(any?ln('⚔','ATK',ad.a,dd.a)+'\n'+ln('🛡','DEF',ad.d,dd.d):'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d).setFontSize(any?11:13).setAlign('center');if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);}   // v6.55.50: คำตอบหลัก "ใส่แล้วดีขึ้นไหม" อยู่บนสุด
-      {const sh=78,g=this.add.graphics();g.fillStyle(0x241a33,.98).fillRoundedRect(14,y,w-28,sh,12);g.lineStyle(1,0x655271,1).strokeRoundedRect(14,y,w-28,sh,12);this.menu.add(g);
+      {const sh=64,g=this.add.graphics();g.fillStyle(0x241a33,.98).fillRoundedRect(14,y,w-28,sh,12);g.lineStyle(1,0x655271,1).strokeRoundedRect(14,y,w-28,sh,12);this.menu.add(g);
         const ak='gear_'+base.id,ic=this.textures.exists(ak)?this.add.image(42,y+sh/2,ak).setDisplaySize(46,46):this.add.text(42,y+sh/2,base.emoji,{fontSize:'26px'}).setOrigin(.5);
-        const nm=this.add.text(74,y+14,gearAffixName(base.name,selected.affixes||[]),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:tl.color}).setOrigin(0,.5);let nf=14;while(nm.width>w-94&&nf>11)nm.setFontSize(--nf+'px');
-        const st=this.add.text(74,y+36,(eq?'Equipped · ':'')+tl.name,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:tl.color}).setOrigin(0,.5);
-        const bs=this.add.text(74,y+59,gearBaseStatText(selected)+' · Lv'+(selected.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f1e5ef'}).setOrigin(0,.5);this.menu.add([ic,nm,st,bs]);y+=sh+8;}
+        const nm=this.add.text(74,y+13,gearAffixName(base.name,selected.affixes||[]),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:tl.color}).setOrigin(0,.5);let nf=14;while(nm.width>w-94&&nf>11)nm.setFontSize(--nf+'px');
+        const st=this.add.text(74,y+31,(eq?'Equipped · ':'')+tl.name,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:tl.color}).setOrigin(0,.5);
+        const bs=this.add.text(74,y+49,gearBaseStatText(selected)+' · Lv'+(selected.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#f1e5ef'}).setOrigin(0,.5);this.menu.add([ic,nm,st,bs]);y+=sh+8;}
       this._cmpBase=eq?[]:rows;
-      y=this.drawModCompare(equipped,selected,eq,y,w);
-      const setChange=gearSetCompareText(sel,selected); if(setChange){const st=this.add.text(16,y,setChange,{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
+      const _actH=40+6+34+12,_od0=eq&&base.enh&&(selected.enhanceLv||0)<GEAR_ENH_MAX?enhanceOdds(selected.enhanceLv||0):null,_warnH=_od0&&(_od0.destroy>0||_od0.brk>0)?18:0,_actTop=Math.max(y+60,h-_actH-_warnH);   // v7.8.102 ปุ่มติดล่างจอ ไม่ต้องเลื่อน
+      y=this.drawModCompare(equipped,selected,eq,y,w,_actTop-4);
+      const setChange=gearSetCompareText(sel,selected); if(setChange&&y+14<=_actTop){const st=this.add.text(16,y,setChange,{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-32}}).setOrigin(0,0);this.menu.add(st);y+=Math.max(14,st.height+3);}
+      y=Math.max(y,_actTop);
       if(eq&&base.enh&&(selected.enhanceLv||0)<GEAR_ENH_MAX){const od=enhanceOdds(selected.enhanceLv||0);if(od.destroy>0||od.brk>0){const pc=v=>Math.round(v*100)+'%',wt=this.add.text(w/2,y,(od.destroy>0?'⚠ Risky: ':'⚠ ')+pc(od.success)+' success · '+pc(od.brk)+' drops a level'+(od.destroy>0?' · '+pc(od.destroy)+' DESTROYS the item':''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:od.destroy>0?'#ff8da2':'#ffd166',align:'center',wordWrap:{width:w-32}}).setOrigin(.5,0);this.menu.add(wt);y+=Math.max(16,wt.height+4);}}   /* v7.8.67 เจ้าของ: ตีบวกมีโอกาสพังต้องเตือน */
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
       const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.52),sw=(full-cw2-bgap*2)/2,hw=(full-bgap)/2,moreOpen=true;   // v7.6.4 เจ้าของ: เลิกปุ่ม ⋯ · ย่อย/ขาย แสดงตลอด
@@ -14786,13 +14792,16 @@ class Game extends Phaser.Scene {
   // v6.55.44: ตารางจับคู่ mod ชิ้นที่ใส่ ↔ ชิ้นที่เลือก + สรุปบรรทัดเดียว
   // v6.55.48: ตัวหนังสือขั้นต่ำ (หน้า Equipment/Craft) — ห่อ add.text ชั่วคราวระหว่างวาดหน้า
   _clampFonts(min){ const add=this.add,f=add.text; add.text=function(x,y,t,st){ if(st&&st.fontSize){const n=parseFloat(st.fontSize);if(n<min)st=Object.assign({},st,{fontSize:min+'px'});} return f.call(add,x,y,t,st); }; return ()=>{ delete add.text; if(add.text!==f)add.text=f; }; }
-  drawModCompare(eqIt,selIt,isEq,y,w){ if(!selIt)return y;
+  drawModCompare(eqIt,selIt,isEq,y,w,maxY){ if(!selIt)return y;
     // v7.8.67 เจ้าของ: เลิกตารางเทียบ — บอกว่าชิ้นนี้มี mod อะไร + แต่ละตัวทำอะไร
     const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id),mods=(selIt.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);
     if(idf)lines.push({t:'◇ '+implicitText(selIt),c:IMPLICIT_COLOR[idf.rank],d:modDesc(idf)});else if(ib&&ib.unique)lines.push({t:'★ Unique',c:'#ff8f3a',d:ib.desc||''});
     for(const {a,d} of mods){const fit=forgeModFits(d),tc=MOD_TIER_COLOR[tierStars(d,a.t)]||MOD_TIER_COLOR[1];lines.push({t:d.emoji+' '+d.label+' '+d.fmt(a.v)+(fit?'  ✓':''),c:tc,r:tierStarText(d,a.t),rc:tc,d:(fit?'✓ Fits your hero · ':'')+modDesc(d)});}   // v7.8.95 สีตามขั้น mod
     if(!mods.length)lines.push({t:'No mods yet · tap Craft to add some',c:'#8a809a'});
-    const free=Math.max(0,AFFIX_KIND_MAX-mods.length),rh=l=>l.d?36:24,top=y,h=24+lines.reduce((n,l)=>n+rh(l),0)+4,g=this.add.graphics();
+    /* v7.8.102 เจ้าของ: หน้า Equipment ห้ามเลื่อน → ถ้าสูงเกิน maxY ตัดคำอธิบายก่อน แล้วค่อยตัดบรรทัด (+N more) */
+    let compact=false; const hOf=()=>24+lines.reduce((n,l)=>n+(compact||!l.d?24:36),0)+4;
+    if(maxY&&y+hOf()>maxY){compact=true; const cap=Math.max(1,Math.floor((maxY-y-28)/24)); if(lines.length>cap){const k=lines.length-cap+1;lines.splice(cap-1);lines.push({t:'+'+k+' more mod'+(k>1?'s':'')+' · open Craft to see all',c:'#a99fbb'});}}
+    const free=Math.max(0,AFFIX_KIND_MAX-mods.length),rh=l=>(compact||!l.d)?24:36,top=y,h=hOf(),g=this.add.graphics();
     g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
     this.menu.add(this.add.text(22,top+6,'MODS',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd9a0'}));
     this.menu.add(this.add.text(w-22,top+6,free?'🛠 '+free+' free slot'+(free>1?'s':''):'🛠 slots full',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:free?'#7de0a1':'#a99fbb'}).setOrigin(1,0));
@@ -14800,7 +14809,7 @@ class Game extends Phaser.Scene {
     lines.forEach((l,i)=>{ const hh=rh(l); if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,hh);this.menu.add(zb);}
       const t=this.add.text(22,ry+3,l.t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:l.c});const room=w-44-(l.r?40:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
       if(l.r)this.menu.add(this.add.text(w-22,ry+3,l.r,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:l.rc||'#a99fbb'}).setOrigin(1,0));
-      if(l.d){const dt=this.add.text(22,ry+18,l.d,{fontFamily:'NunitoUI, sans-serif',fontSize:'9.5px',color:'#b9abc5'});if(dt.width>w-44)dt.setScale((w-44)/dt.width);this.menu.add(dt);}
+      if(l.d&&!compact){const dt=this.add.text(22,ry+18,l.d,{fontFamily:'NunitoUI, sans-serif',fontSize:'9.5px',color:'#b9abc5'});if(dt.width>w-44)dt.setScale((w-44)/dt.width);this.menu.add(dt);}
       ry+=hh; });
     return top+h+6; }
   ptOnFreeze(e){ const PT=(this.player&&this.player._pt)||{};

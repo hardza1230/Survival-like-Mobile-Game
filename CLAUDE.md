@@ -28,7 +28,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Latest delivery: v7.8.102 — Boss lines on screen (owner: camera panned away, line not seen)
 
-bossSay(text,who,ms) is now a UI text box (camUI, W/2·H·0.70, name line + quoted line, depth 130) instead of a world bubble. bossIntro schedules the intro line at 1750ms (camera on the boss, during cinematic) and sets b._said; minis still via tickBossSay; defeat line via bossLine(1). Smoke C1-3: line visible during cinematic, mini + defeat OK, 0 errors. Run trait (owner: no notice in replay — single banner slot was overwritten): traitTxt HUD line under kills (pad+74, emoji+name, shown with HUD only while _runTrait) + banner delay 2.3→4.6s.
+bossSay(text,who,ms) is now a UI text box (camUI, W/2·H·0.70, name line + quoted line, depth 130) instead of a world bubble. bossIntro schedules the intro line at 1750ms (camera on the boss, during cinematic) and sets b._said; minis still via tickBossSay; defeat line via bossLine(1). Smoke C1-3: line visible during cinematic, mini + defeat OK, 0 errors. Run trait (owner: no notice in replay — single banner slot was overwritten): traitTxt HUD line under kills (pad+74, emoji+name, shown with HUD only while _runTrait) + banner delay 2.3→4.6s. Equipment no scroll (owner): buildGear estimates _top(ss)+_below(rows) → invRows 3→2 if short, then shrinks slot cells ss (min 40); item card 78→64; action rows pinned at _actTop=max(y+60,h−92−warn); drawModCompare(…,maxY) compacts (drops desc lines, then '+N more mods'). Measured with 40 items + 4-mod item: 360×740/800, 390×844, 412×915 = 0 scroll; 360×640 still 61px.
 
 # Previous delivery: v7.8.101 — Boss voices + Reroll/Banish removed (owner)
 
