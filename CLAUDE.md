@@ -28,7 +28,7 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Latest delivery: v7.8.102 — Boss lines on screen (owner: camera panned away, line not seen)
 
-bossSay(text,who,ms) is now a UI text box (camUI, W/2·H·0.70, name line + quoted line, depth 130) instead of a world bubble. bossIntro schedules the intro line at 1750ms (camera on the boss, during cinematic) and sets b._said; minis still via tickBossSay; defeat line via bossLine(1). Smoke C1-3: line visible during cinematic, mini + defeat OK, 0 errors.
+bossSay(text,who,ms) is now a UI text box (camUI, W/2·H·0.70, name line + quoted line, depth 130) instead of a world bubble. bossIntro schedules the intro line at 1750ms (camera on the boss, during cinematic) and sets b._said; minis still via tickBossSay; defeat line via bossLine(1). Smoke C1-3: line visible during cinematic, mini + defeat OK, 0 errors. Run trait (owner: no notice in replay — single banner slot was overwritten): traitTxt HUD line under kills (pad+74, emoji+name, shown with HUD only while _runTrait) + banner delay 2.3→4.6s.
 
 # Previous delivery: v7.8.101 — Boss voices + Reroll/Banish removed (owner)
 

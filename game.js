@@ -81,7 +81,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
-  {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss']},
+  {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss','Run trait now stays on screen under your kill count, and its banner no longer gets covered']},
   {v:'7.8.101',date:'2026-10-19',title:'Boss Voices',items:['Every story boss now speaks when the fight starts and when it falls','Every miniboss has a line when it arrives','Level-up Reroll and Banish removed (Spare Cards / Cull perks gone — their Rank Points are refunded)','Rank Points spent on removed perks (Vigor, Might, Iron Will) are refunded too']},
   {v:'7.8.100',date:'2026-10-19',title:'Surprises',items:['From Stage 3 on, every story run rolls a Run Trait: Swift Swarm, Sugar Rush, Frenzy or Lucky Day','Replays get a random event every 60–90 seconds: Treasure Room, Sugar Shrine, Rare Elite or a Wandering Merchant']},
   {v:'7.8.99',date:'2026-10-19',title:'No More Scrolling',items:['Menus only scroll when content really runs past the screen — Settings, News, Kitchen, Codex and Stats now sit still','Achievements fit on one screen']},
@@ -7461,6 +7461,7 @@ class Game extends Phaser.Scene {
     // แถวข้อมูล 2 บรรทัดใต้หลอด — ซ้าย: Lv/ฆ่า · กลาง: สถานะเวฟ/Stage · ขวาบน: ปุ่มควบคุม
     this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
     this.killTxt=this.add.text(pad,pad+56,'☠ 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9cff0'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    this.traitTxt=this.camUI(this.add.text(pad,pad+74,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a',stroke:'#2a1830',strokeThickness:3}).setOrigin(0,0).setScrollFactor(1).setDepth(51).setVisible(false));   // v7.8.102 ป้าย Run trait ติดจอ (แบนเนอร์ถูกทับ)
     // สรุปสเตตย่อ ๆ ขณะเล่น (เลือด/ฟื้น/โจมตี/ป้องกัน)
     this.statTxt=this.add.text(pad,pad+75,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#bfe8d6',stroke:'#141018',strokeThickness:3}).setOrigin(0,0).setScrollFactor(1).setDepth(54);
     this.runSugarTxt=this.add.text(w-pad,pad+56,'🍬 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,0).setScrollFactor(1).setDepth(51);   // เงินที่ได้Waitบนี้ (realtime)
@@ -7514,7 +7515,7 @@ class Game extends Phaser.Scene {
     this.hudList.forEach(o=>o.setVisible(false));
     this.bossUI.forEach(o=>o.setVisible(false));
   }
-  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
+  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     const bx=pad+16, bw=(this.W-138)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
@@ -7720,7 +7721,7 @@ class Game extends Phaser.Scene {
     if(this.dashBtn){ this.dashBtn.setPosition(this.W-58,this.H-78); this.dashTxt.setPosition(this.W-58,this.H-78);
       if(this.uniqueBtn){this.uniqueBtn.setPosition(this.W-58,this.H-78-80);this.uniqueTxt.setPosition(this.W-58,this.H-78-80);}
       this.layoutControls();
-      this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(pad,pad+56);
+      this.lvlTxt.setPosition(pad,pad+34); this.killTxt.setPosition(pad,pad+56); this.traitTxt?.setPosition(pad,pad+74);
       if(this.statTxt)this.statTxt.setPosition(pad,pad+75);
       if(this.runSugarTxt)this.runSugarTxt.setPosition(this.W-pad,pad+56);
       this.timeTxt.setPosition(this.W/2,pad+34).setWordWrapWidth(this.W-150);
@@ -12285,10 +12286,10 @@ class Game extends Phaser.Scene {
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
-  rollRunTrait(){ if(this._inTutorial||this.recipeMode||this.bossRush||this._pinnacleRun||this.riftMode||(this.stageIndex||0)<2)return; const T=Phaser.Utils.Array.GetRandom(RUN_TRAITS); this._runTrait=T;
-    if(T.player&&this.player)T.player(this.player); this.time.delayedCall(2300,()=>{ if(this._runTrait===T&&(this.state==='play'||this.state==='levelup'))this.showBanner(T.emoji+' Run trait: '+T.name,T.desc,2600); }); }
+  rollRunTrait(){ if(this._inTutorial||this.recipeMode||this.bossRush||this._pinnacleRun||this.riftMode||(this.stageIndex||0)<2)return; const T=Phaser.Utils.Array.GetRandom(RUN_TRAITS); this._runTrait=T; this.traitTxt?.setText(T.emoji+' '+T.name).setVisible(true);
+    if(T.player&&this.player)T.player(this.player); this.time.delayedCall(4600,()=>{ if(this._runTrait===T&&(this.state==='play'||this.state==='levelup'))this.showBanner(T.emoji+' Run trait: '+T.name,T.desc,2600); }); }   /* v7.8.102 เลื่อน 2.3→4.6s ให้พ้นแบนเนอร์เริ่มด่าน/Replay */
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
-    const begin=()=>{this.physics.resume();this.state='play';this._runTrait=null;this.startStage(this.stageIndex);this.rollRunTrait?.();this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
+    const begin=()=>{this.physics.resume();this.state='play';this._runTrait=null;this.traitTxt?.setVisible(false);this.startStage(this.stageIndex);this.rollRunTrait?.();this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
     const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
     // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
