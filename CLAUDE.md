@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.94 — Equipment ECRS 1,2,3,6,9,10 (owner)
+# Latest delivery: v7.8.95 — Equipment ECRS 4,5,7,8,11 (owner)
+
+buildGear: Bazaar bar removed (setBot = gby-4) · inventory sorted GEAR_SLOTS order → equipped first → itemLevel desc → grade · set button label = set emoji + short name + n/pieces (gearSetCounts uses data.gear which equipGearInstance keeps in sync — 2/3 vs 0/5 were different sets) · bag row under Inventory header (bagY): '♻ Salvage weaker' | '⚡ Equip Best'; bottom = Equip/Enhance + Craft|Lock|Salvage · MOD_TIER_COLOR by tierStars (★1 white, ★2 green, ★3 blue, ★4 purple, ★5 orange) colours mod line + star in drawModCompare (Forge screen unchanged).
+
+# Previous delivery: v7.8.94 — Equipment ECRS 1,2,3,6,9,10 (owner)
 
 buildGear detail: one rarity label (tl.name, was 'Epic · Rare' with craftState) · drawModCompare implicit line drops IMPLICIT_TIER ('Common') · gearAffixName returns base name (all screens) · ★ Favorite button removed, load migrates favorite→locked (checks on .favorite kept) · SL: row1 Equip/Enhance, row2 Craft 28% | Lock 18% | '♻ Salvage +N🧶 +N🍬', row3 '♻ Salvage weaker' | '⚡ Equip Best' (true 2-row needs item 7: move bag actions to the Inventory header) · '📦 Inbox N' label (zone widened, count moved left). Pending owner: 4 (Bazaar bar), 5 (Set 2/3 vs set line), 7, 8 (sort), 11 (★1 stars).
 
@@ -299,7 +303,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.94 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.95 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

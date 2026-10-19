@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.94';
+const GAME_VERSION = '7.8.95';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -73,6 +73,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.95',date:'2026-10-19',title:'Tidier Bag',items:['Bag sorted by slot, worn item first, then highest level','Salvage weaker and Equip Best moved under the Inventory title','Mods are coloured by tier: white ★1, green ★2, blue ★3, purple ★4, orange ★5','The set button shows which set it counts','Bazaar shortcut removed from the Equipment page (still in Gear & Power)']},
   {v:'7.8.94',date:'2026-10-19',title:'Cleaner Equipment Screen',items:['Items show one rarity (Epic, Rare…) instead of two','Favorite and Lock were the same thing — only 🔒 Lock remains (your favorites are now locked)','Item names are just the base name; the mods are listed below','No more “Common” tag on the base stat line','Buttons regrouped: Craft · Lock · Salvage, then Salvage weaker · Equip Best','Salvage buttons and the Inbox say what they do']},
   {v:'7.8.93',date:'2026-10-19',title:'Spring Cleaning',items:['About 600 lines of old, unused code removed (old skill picker, retired Cocoa and Taro moves, old Forge buttons, slot machine, Tag Sets, old Recipe/Atlas leftovers) — a smaller, faster-loading game','Achievement Hell Survivor is now Pinnacle Breaker: defeat the Pinnacle boss (already earned ones stay)','Codex menu text now lists what it really shows: Weapons, Relics, Items and Sets']},
   {v:'7.8.92',date:'2026-10-19',title:'Smoother Frames',items:['Performance: Auto quality now renders at 1.5× (was 2×) — much lighter on the graphics chip; pick High in Settings for the old sharpness','Guard checks in Chapter 2 stages, boss targeting for homing shots and Cream Wave no longer scan every enemy on every hit','Hit sparks are reused instead of created and thrown away','Dash ring and the HP/EXP bar under your hero only redraw when something changes']},
@@ -4947,6 +4948,7 @@ const FORGE_MOD_TAGS={3:['crit'],4:['crit'],18:['crit'],33:['frost'],32:['melee'
 function forgeModFits(mod,cid){const tg=mod&&FORGE_MOD_TAGS[mod.number];if(!tg)return false;const own=(typeof WEAPON_TAGS!=='undefined'?WEAPON_TAGS:{})[cid||(typeof Save!=='undefined'&&Save.data&&Save.data.character)||'momo']||[];return tg.some(t=>own.includes(t));}
 function tierStars(mod,t){const n=(mod&&mod.tiers&&mod.tiers.length)||11;t=Math.max(0,Math.min(n-1,t??n-1));return Math.max(1,5-Math.floor(t*5/n));}
 function tierStarText(mod,t){return '★'+tierStars(mod,t);}
+const MOD_TIER_COLOR={1:'#e9e2f2',2:'#7ee08f',3:'#6fb8ff',4:'#c891ff',5:'#ffae3d'};   // v7.8.95 ★1 ขาว · ★2 เขียว · ★3 ฟ้า · ★4 ม่วง · ★5 ส้ม Legendary
 const FORGE_DEFS=FORGE_CATALOG.map(c=>({id:c.id,label:c.label,description:c.description,row:c.row,group:c.group,slots:c.slots,number:c.number,enabled:c.status==='active'&&FORGE_ROLLABLE.has(c.number),kind:'mod',category:c.row==='power'?'offense':c.row==='sustain'?'defense':['quantity','quality','target_farming','economy','collection','exploration'].includes(c.group)?'utility':'play',emoji:c.row==='power'?'⚔️':c.row==='sustain'?'🛡️':'✦',pre:c.label,
   fmt:v=>c.number===115?'Once per run':c.number===13||c.number===14?'+'+v:c.number===15?'+'+(v/10)+' HP/s':'+'+v+'%',
   tiers:(()=>{const lo=Math.max(1,Math.round(c.maxValue*.2)),n=Math.min(11,c.maxValue-lo+1);return Array.from({length:n},(_,t)=>{const v=c.maxValue-Math.round((c.maxValue-lo)*t/Math.max(1,n-1));return[v,v];});})(),apply:(p,v)=>forgeApply(p,c.number,v)}));
@@ -9562,13 +9564,12 @@ class Game extends Phaser.Scene {
     const gby=ay+avH+44, gbh=36, half=w-28;   // v6.55.73: กาชาอยู่ใต้กริด · แถบ Power อยู่ใต้ตัวละคร
     const gcx=w/2; this._pwBox=[ax,gby-38,avW,30];
     /* v7.8.84 เจ้าของ: กาชาซื้อของสุ่มย้ายไปรวมในร้าน Bazaar (แท็บ Gacha) — ตรงนี้เหลือปุ่มไปร้าน */
-    const gx0=14,gbg=this.add.graphics();gbg.fillStyle(0x30243d,1);gbg.fillRoundedRect(gx0,gby,half,gbh,10);gbg.lineStyle(1,0x655271,1);gbg.strokeRoundedRect(gx0,gby,half,gbh,10);
-    const gbt=this.add.text(gcx,gby+gbh/2,'🏪 Bazaar · Shop & Gear Gacha  ›',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff'}).setOrigin(0.5);if(gbt.width>half-12)gbt.setScale((half-12)/gbt.width);this.menu.add([gbg,gbt]);
+    // v7.8.95 เจ้าของ: แถบ Bazaar ออกจากหน้านี้ (มีปุ่มในหมวด Gear & Power แล้ว)
     { const [px,py,pw,ph]=this._pwBox,ad=this._adBase=heroAD(Save.data.character||'momo',null),pg=this.add.graphics();pg.fillStyle(0x3a3550,1);pg.fillRoundedRect(px,py,pw,ph,10);this._pwG=pg;this._pwT=this.add.text(px+pw/2,py+ph/2,'⚔ ATK '+ad.a+'   🛡 DEF '+ad.d,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',align:'center'}).setOrigin(.5);if(this._pwT.width>pw-6)this._pwT.setScale((pw-6)/this._pwT.width);this.menu.add([pg,this._pwT]); }
-    this._zone(gx0,gby,half,gbh,()=>{Sfx.select();this.menuScreen='bazaar';this._bazTab='gamble';this.buildMenuScreen();});
-    const setBot=gby+gbh;
+    const setBot=gby-4;
     // ---- v7.8.67 เจ้าของ: กระเป๋าเดียวรวมทุกช่อง · ช่องมีแค่รูป + ป้าย Lv มุมขวาบน · เอา Clean/Sell/Scrap ออก ----
-    const items=Save.gearItemsForSlot(null).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0&&GEAR_ALL.some(g=>g.id===x.baseId));
+    const _so=GEAR_SLOTS.map(q=>q.slot),_go=['legend','epic','rare','common'],items=Save.gearItemsForSlot(null).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0&&GEAR_ALL.some(g=>g.id===x.baseId))
+      .sort((a,b)=>(_so.indexOf(a.slot)-_so.indexOf(b.slot))||((Save.isGearEquipped(b.uid)?1:0)-(Save.isGearEquipped(a.uid)?1:0))||((b.itemLevel||1)-(a.itemLevel||1))||(_go.indexOf(a.grade)-_go.indexOf(b.grade)));   // v7.8.95 เรียงตามช่อง · ที่ใส่อยู่ก่อน · Lv สูงก่อน
     let selected=Save.gearItem(this.gearSelectedUid);
     if(!selected||selected.slot!==sel){ selected=Save.equippedGearItem(sel)||items.find(x=>x.slot===sel)||null; this.gearSelectedUid=selected?selected.uid:null; }
     const cols=this.W>this.H?10:5,pageSize=cols*3,pages=Math.max(1,Math.ceil(items.length/pageSize));
@@ -9578,9 +9579,9 @@ class Game extends Phaser.Scene {
     const hdr=this.add.text(14,y,'Inventory',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'18px',color:'#fff0e7'});
     const count=this.add.text(w-90,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);
     const inboxN=Save.gearInboxCount(),inbox=this.add.text(w-14,y+4,'📦 Inbox '+inboxN,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:inboxN?'#ffd166':'#9c8ba9'}).setOrigin(1,0);this.menu.add([hdr,count,inbox]);this._zone(w-82,y-2,68,28,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});
-    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?'Set '+sc[k]+'/'+gearSetPieces(k).length:'Sets',bx=14+hdr.width+10,bw=Math.max(60,Math.min(110,w-72-60-bx));
+    {const sc=gearSetCounts(),k=SET_ORDER.filter(x=>sc[x]).sort((p,q)=>sc[q]-sc[p])[0],lbl=k?GEAR_SETS[k].emoji+' '+GEAR_SETS[k].name.replace(/ Set$/,'').split(' ').pop()+' '+sc[k]+'/'+gearSetPieces(k).length:'🧩 Sets',bx=14+hdr.width+10,bw=Math.max(60,Math.min(110,w-72-60-bx));
       this.heroButton(bx,y-3,bw,26,lbl,()=>{this._skillArchiveTab='sets';this.menuScreen='skills';this.buildMenuScreen();},{fontSize:11});}
-    y+=30;
+    y+=30; const bagY=y; y+=36;   // v7.8.95 ปุ่มทั้งกระเป๋า (Salvage weaker · Equip Best) อยู่ใต้หัว Inventory
     if(!items.length){ const empty=this.add.text(w/2,y+30,'No items yet',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#9a90ab'}).setOrigin(0.5);this.menu.add(empty);this.menu.setVisible(true);return; }
     const gap=6,cw=(w-28-gap*(cols-1))/cols,ch=cw,visible=items.slice(page*pageSize,page*pageSize+pageSize);
     visible.forEach((item,i)=>{ const base=GEAR_ALL.find(g=>g.id===item.baseId); if(!base)return; const col=i%cols,row=Math.floor(i/cols),x=14+col*(cw+gap),iy=y+row*(ch+gap),on=selected&&selected.uid===item.uid,eq=Save.isGearEquipped(item.uid),tl=TIER_LABEL[item.grade]||TIER_LABEL.common;
@@ -9617,7 +9618,7 @@ class Game extends Phaser.Scene {
       if(eq&&base.enh&&(selected.enhanceLv||0)<GEAR_ENH_MAX){const od=enhanceOdds(selected.enhanceLv||0);if(od.destroy>0||od.brk>0){const pc=v=>Math.round(v*100)+'%',wt=this.add.text(w/2,y,(od.destroy>0?'⚠ Risky: ':'⚠ ')+pc(od.success)+' success · '+pc(od.brk)+' drops a level'+(od.destroy>0?' · '+pc(od.destroy)+' DESTROYS the item':''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:od.destroy>0?'#ff8da2':'#ffd166',align:'center',wordWrap:{width:w-32}}).setOrigin(.5,0);this.menu.add(wt);y+=Math.max(16,wt.height+4);}}   /* v7.8.67 เจ้าของ: ตีบวกมีโอกาสพังต้องเตือน */
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
       const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.52),sw=(full-cw2-bgap*2)/2,hw=(full-bgap)/2,moreOpen=true;   // v7.6.4 เจ้าของ: เลิกปุ่ม ⋯ · ย่อย/ขาย แสดงตลอด
-      const cW=Math.round((full-2*bgap)*.28),lW=Math.round((full-2*bgap)*.18),dW=full-2*bgap-cW-lW,SL={2:[14,y1,full,bh],c:[14,y2,cW,bh2],1:[14+cW+bgap,y2,lW,bh2],3:[14+cW+lW+bgap*2,y2,dW,bh2],s:[14,y3,hw,bh2],m:[14+hw+bgap,y3,hw,bh2]};   // v7.8.94 ★ รวมกับ 🔒 · แถว 2 Craft|Lock|Salvage · แถว 3 Salvage weaker|Equip Best   // v7.8.84 แถวล่าง 3 ปุ่ม: Salvage · Salvage ▼ · Best
+      const cW=Math.round((full-2*bgap)*.28),lW=Math.round((full-2*bgap)*.18),dW=full-2*bgap-cW-lW,SL={2:[14,y1,full,bh],c:[14,y2,cW,bh2],1:[14+cW+bgap,y2,lW,bh2],3:[14+cW+lW+bgap*2,y2,dW,bh2],s:[14,bagY,hw,30],m:[14+hw+bgap,bagY,hw,30]};   // v7.8.94 ★ รวมกับ 🔒 · แถว 2 Craft|Lock|Salvage · แถว 3 Salvage weaker|Equip Best   // v7.8.84 แถวล่าง 3 ปุ่ม: Salvage · Salvage ▼ · Best
       const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i];this.heroButton(bx,by,bw,bhh,label,fn,{active:i===2&&!!fn,disabled:!fn,fontSize:i===2?15:12});if(fn)this.tapZones[this.tapZones.length-1].fn=fn;};
       drawAction(1,selected.locked?'🔒':'🔓',selected.locked?0x85506f:0x3a3550,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});
       if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
@@ -9632,8 +9633,8 @@ class Game extends Phaser.Scene {
       { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
       drawAction('m','⚡ Equip Best',0x3f6d54,()=>this.gearEquipBest());
       drawAction('s','♻ Salvage weaker',0x6e5634,()=>{const worse=this.gearWorseItems();if(!worse.length){this.showBanner('♻ Nothing to salvage','No weaker unlocked items in the bag',1300);return;}const ck='salw:'+worse.length;if(this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();const t=worse.reduce((o,it)=>({sh:o.sh+gearDismantleValue(it),su:o.su+gearSellSugar(it)}),{sh:0,su:0});this.showBanner('♻ Salvage '+worse.length+' weaker items?','🔩 +'+t.sh+'  🍬 +'+t.su+' · tap again to confirm (locked/★ kept)',2000);return;}this._gearConfirm=null;let sh=0,su=0;for(const it of worse){const r=Save.salvageGearInstance(it.uid);if(r){sh+=r.shards;su+=r.sugar;}}this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged '+worse.length+' items','🔩 +'+sh+'   🍬 +'+su,1600);});
-      if(!canDis&&!canSell){this.menu.add(this.add.text(w/2,y3+10,eq?'Equipped items are protected':selected.locked||selected.favorite?'Locked items are protected':'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
-      y=(moreOpen?y3:y2)+bh2;
+      if(!canDis&&!canSell){this.menu.add(this.add.text(14+cW+lW+bgap*2+dW/2,y2+bh2/2,eq?'Equipped items are protected':selected.locked||selected.favorite?'Locked items are protected':'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
+      y=y2+bh2;
     }
     this.menu.setVisible(true);
   }
@@ -14756,7 +14757,7 @@ class Game extends Phaser.Scene {
     // v7.8.67 เจ้าของ: เลิกตารางเทียบ — บอกว่าชิ้นนี้มี mod อะไร + แต่ละตัวทำอะไร
     const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id),mods=(selIt.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);
     if(idf)lines.push({t:'◇ '+implicitText(selIt),c:IMPLICIT_COLOR[idf.rank],d:modDesc(idf)});else if(ib&&ib.unique)lines.push({t:'★ Unique',c:'#ff8f3a',d:ib.desc||''});
-    for(const {a,d} of mods){const fit=forgeModFits(d);lines.push({t:d.emoji+' '+d.label+' '+d.fmt(a.v)+(fit?'  ✓':''),c:fit?'#a8f0bf':'#ffe6c4',r:tierStarText(d,a.t),d:(fit?'✓ Fits your hero · ':'')+modDesc(d)});}
+    for(const {a,d} of mods){const fit=forgeModFits(d),tc=MOD_TIER_COLOR[tierStars(d,a.t)]||MOD_TIER_COLOR[1];lines.push({t:d.emoji+' '+d.label+' '+d.fmt(a.v)+(fit?'  ✓':''),c:tc,r:tierStarText(d,a.t),rc:tc,d:(fit?'✓ Fits your hero · ':'')+modDesc(d)});}   // v7.8.95 สีตามขั้น mod
     if(!mods.length)lines.push({t:'No mods yet · tap Craft to add some',c:'#8a809a'});
     const free=Math.max(0,AFFIX_KIND_MAX-mods.length),rh=l=>l.d?36:24,top=y,h=24+lines.reduce((n,l)=>n+rh(l),0)+4,g=this.add.graphics();
     g.fillStyle(0x221a30,0.96);g.fillRoundedRect(14,top,w-28,h,10);g.lineStyle(1,0x5a4f6e,0.9);g.strokeRoundedRect(14,top,w-28,h,10);this.menu.add(g);
@@ -14765,7 +14766,7 @@ class Game extends Phaser.Scene {
     let ry=top+22;
     lines.forEach((l,i)=>{ const hh=rh(l); if(i%2===0){const zb=this.add.graphics();zb.fillStyle(0xffffff,0.045);zb.fillRect(16,ry-1,w-32,hh);this.menu.add(zb);}
       const t=this.add.text(22,ry+3,l.t,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:l.c});const room=w-44-(l.r?40:0);if(t.width>room)t.setScale(room/t.width);this.menu.add(t);
-      if(l.r)this.menu.add(this.add.text(w-22,ry+3,l.r,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#a99fbb'}).setOrigin(1,0));
+      if(l.r)this.menu.add(this.add.text(w-22,ry+3,l.r,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:l.rc||'#a99fbb'}).setOrigin(1,0));
       if(l.d){const dt=this.add.text(22,ry+18,l.d,{fontFamily:'NunitoUI, sans-serif',fontSize:'9.5px',color:'#b9abc5'});if(dt.width>w-44)dt.setScale((w-44)/dt.width);this.menu.add(dt);}
       ry+=hh; });
     return top+h+6; }
