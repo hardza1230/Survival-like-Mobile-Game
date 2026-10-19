@@ -16,6 +16,13 @@
 <link rel="preload" href="assets/fonts/NunitoUI-Bold.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="license" href="assets/fonts/OFL-Nunito.txt">
 <style>
+  /* v7.8.98 portrait only: touch devices in landscape see a rotate prompt (desktop unaffected) */
+  #rotate-lock{position:fixed;inset:0;z-index:2147483000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#241d2e;color:#fff4e8;font:600 18px/1.4 system-ui,sans-serif;text-align:center;padding:24px}
+  #rotate-lock.on{display:flex}
+  #rotate-lock .ph{width:46px;height:78px;border:4px solid #ffd166;border-radius:10px;animation:rl-turn 1.6s ease-in-out infinite}
+  @keyframes rl-turn{0%,30%{transform:rotate(90deg)}60%,100%{transform:rotate(0deg)}}
+  @media (prefers-reduced-motion: reduce){#rotate-lock .ph{animation:none}}
+
   @font-face{font-family:NunitoUI;src:url('assets/fonts/NunitoUI-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap;}
   @font-face{font-family:NunitoUI;src:url('assets/fonts/NunitoUI-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap;}
   html,body{position:fixed;inset:0;width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:#241d2e;
@@ -169,6 +176,21 @@
 </script>
 <script>
   (function(){ try{ window.enterGameFullscreen(); }catch(e){} })();
+</script>
+<div id="rotate-lock" aria-live="polite"><div class="ph"></div><div>Please turn your phone upright</div><div style="font-weight:400;font-size:14px;opacity:.75">Mochi Mayhem plays in portrait only</div></div>
+<script>
+(function(){
+  var el=document.getElementById('rotate-lock'),slept=false;
+  function touch(){ try{ return window.matchMedia('(pointer: coarse)').matches||('ontouchstart' in window&&navigator.maxTouchPoints>0); }catch(e){ return false; } }
+  function check(){
+    var land=window.innerWidth>window.innerHeight&&touch(),g=window.__g;
+    el.classList.toggle('on',land);
+    try{ if(g&&g.loop){ if(land&&!slept){ g.loop.sleep(); slept=true; } else if(!land&&slept){ g.loop.wake(); slept=false; } } }catch(e){}
+    try{ var o=screen.orientation; if(land&&o&&o.lock)o.lock('portrait').catch(function(){}); }catch(e){}
+  }
+  window.addEventListener('resize',check); window.addEventListener('orientationchange',function(){ setTimeout(check,120); });
+  document.addEventListener('DOMContentLoaded',check); setTimeout(check,500); setInterval(function(){ if(el.classList.contains('on'))check(); },1500);
+})();
 </script>
 </body>
 </html>

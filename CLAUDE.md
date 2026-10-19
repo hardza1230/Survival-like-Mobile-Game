@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.97 — Rewards merged into the wheel (owner picked A, Relic 30%)
+# Latest delivery: v7.8.98 — Portrait only (owner)
+
+index.html #rotate-lock overlay: touch device (pointer:coarse) with innerWidth>innerHeight → 'Please turn your phone upright' + __g.loop.sleep(); back to portrait → wake; also retries screen.orientation.lock('portrait'). Desktop (fine pointer) unaffected. Native APK/AAB already portrait via scripts/set-android-landscape.mjs (name is old; it sets portrait) and manifest.webmanifest orientation portrait. Landscape layout code in game.js left in place (unused on phones now). Browser check: 844×390 touch → overlay + loop stopped; rotate → resumes.
+
+# Previous delivery: v7.8.97 — Rewards merged into the wheel (owner picked A, Relic 30%)
 
 openPrizeWheel opts: prizes (custom pool, no tier upgrade), title, relic (adds 🔮 slot weight base·WHEEL_RELIC_CHANCE/(1−0.30) after Mimic, always shown), bonusText(tier) (line under result), double (after land: '✓ Take it' | '🎲 Double or Nothing' via _rollBtns, DoN → openDoubleOrNothing(p,done)); done now gets (tier, winner). Miniboss collectChest: grantMiniChestBonus(finalTier,true) (quiet) + offerRelic only when won.id==='relic' (no more 'Relic slots full' banner). openBossLootCards = gold wheel (sugar 5, currency 5, shovel 4, thread 5, gear 3, jackpot 2.4 weights; old 3-card + reroll gone). Browser smoke: boss wheel → 2 buttons → done; mini wheel with relic slot resolves.
 
@@ -312,7 +316,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.97 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.98 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

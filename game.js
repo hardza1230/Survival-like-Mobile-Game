@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.97';
+const GAME_VERSION = '7.8.98';
 const WHEEL_RELIC_CHANCE=0.30;   // v7.8.97 เจ้าของเลือก 30%
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.98',date:'2026-10-19',title:'Portrait Only',items:['The game now plays in portrait only — turning a phone sideways pauses it with a “turn your phone upright” screen']},
   {v:'7.8.97',date:'2026-10-19',title:'One Wheel to Rule the Loot',items:['Miniboss chest: Relic is now a slot on the wheel (30%) instead of a separate pick every time; the chest bonus shows right on the wheel','Boss loot is now a golden wheel too — Sugar, Currency, Shovels, Thread, Gear or a JACKPOT','After the boss wheel, choose: Take it, or risk Double or Nothing']},
   {v:'7.8.96',date:'2026-10-19',title:'Gentler Early Game',items:['Forge: Tier +1 and Auto-roll unlock after you clear Chapter 1 — early on you only Roll','Special Cores unlock at Weave Rank 1']},
   {v:'7.8.95',date:'2026-10-19',title:'Tidier Bag',items:['Bag sorted by slot, worn item first, then highest level','Salvage weaker and Equip Best moved under the Inventory title','Mods are coloured by tier: white ★1, green ★2, blue ★3, purple ★4, orange ★5','The set button shows which set it counts','Bazaar shortcut removed from the Equipment page (still in Gear & Power)']},
