@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.100';
+const GAME_VERSION = '7.8.101';
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
   {id:'swift',emoji:'⚡',name:'Swift Swarm',desc:'Enemies move 15% faster · +25% EXP',spd:1.15,player:p=>{p.xpMul=(p.xpMul||1)*1.25;}},
@@ -81,6 +81,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.101',date:'2026-10-19',title:'Boss Voices',items:['Every story boss now speaks when the fight starts and when it falls','Every miniboss has a line when it arrives','Level-up Reroll and Banish removed (Spare Cards / Cull perks gone — their Rank Points are refunded)','Rank Points spent on removed perks (Vigor, Might, Iron Will) are refunded too']},
   {v:'7.8.100',date:'2026-10-19',title:'Surprises',items:['From Stage 3 on, every story run rolls a Run Trait: Swift Swarm, Sugar Rush, Frenzy or Lucky Day','Replays get a random event every 60–90 seconds: Treasure Room, Sugar Shrine, Rare Elite or a Wandering Merchant']},
   {v:'7.8.99',date:'2026-10-19',title:'No More Scrolling',items:['Menus only scroll when content really runs past the screen — Settings, News, Kitchen, Codex and Stats now sit still','Achievements fit on one screen']},
   {v:'7.8.98',date:'2026-10-19',title:'Portrait Only',items:['The game now plays in portrait only — turning a phone sideways pauses it with a “turn your phone upright” screen']},
@@ -3513,8 +3514,6 @@ function rollRarity(){ return RARITIES[0]; }   // v6.55.30: การ์ดเ�
 /* ตัวคูณสเกลตอนโชว์ชีต action (idle/พุ่ง/โดนตี ฯลฯ) เฉพาะตัวที่อาร์ต action เล็กกว่าอาร์ต run — กันตัวหดตอนหยุดเดิน */
 const CHAR_ACTION_SCALE = {};   // ชีตท่า/วิ่งของมิ้นต์ใหม่สัดส่วนตรงกันแล้ว ไม่ต้องคูณชดเชย
 const PASSIVE_CAP = 4;       // จำกัดพรติดตัว ลด power stacking และทำให้คู่ Evolution มีความหมาย
-const REROLL_MAX = 3;        // สุ่มการ์ดเลเวลอัพใหม่ได้ N times/ด่าน
-const BANISH_MAX = 2;        // ลบสกิลออกจากกองการ์ด (ไม่โผล่อีกทั้งด่าน) ได้ N times/ด่าน
 /* ---- PASSIVES: Passiveแบบเลเวลได้ (คนละหมวดกับAttack Skill) · apply(p)=ผล 1 rank ---- */
 const PASSIVES = {
   heart: { name:'Mochi Vitality', emoji:'❤️', color:0xff5f7a, max:5, desc:'+10% max HP and heals by the amount gained',
@@ -4549,8 +4548,6 @@ function promoteReward(rank){ return 50+rank*40; }   // 🍬 โบนัสต�
 // ผัง Passive แบ่ง 3 ชั้น: ชั้น 2 ปลดเมื่อลงแต้มชั้น 1 ครบ 3 · ชั้น 3 ปลดเมื่อลงชั้น 1+2 ครบ 8 (ความลึกของระบบ)
 const RANK_PERKS = [
   { id:'greed',   tier:1, emoji:'🍬', name:'Sweet Greed',  max:5, desc:'+8% Sugar from stage rewards per rank' },
-  { id:'reroll',  tier:2, emoji:'🎲', name:'Spare Cards',  max:3, desc:'+1 card reroll per stage' },
-  { id:'banish',  tier:2, emoji:'🚫', name:'Cull',         max:2, desc:'+1 card banish per stage' },
   { id:'boxLuck', tier:2, emoji:'🎁', name:'Box Luck',     max:3, desc:'+30% secret box drop chance per rank' },
   { id:'fortune', tier:3, emoji:'💠', name:'Fortune',      max:3, desc:'+10% crafting currency from rewards per rank' },
   { id:'revive',  tier:3, emoji:'🕯️', name:'Revival Candle',max:1, desc:'Revive once per stage at 45% HP' },
@@ -5476,6 +5473,7 @@ const Save = {
     if(this.data.bestiary.boss!=null){ this.data.bestiary.boss0=(this.data.bestiary.boss0||0)+this.data.bestiary.boss; delete this.data.bestiary.boss; }
     if(this.data.bestiary.mini!=null){ this.data.bestiary.mini0=(this.data.bestiary.mini0||0)+this.data.bestiary.mini; delete this.data.bestiary.mini; }
     if(!this.data.rankPerks)this.data.rankPerks={};
+    for(const k in this.data.rankPerks){ if(!RANK_PERKS.some(p=>p.id===k))delete this.data.rankPerks[k]; }   // v7.8.101 perk ที่ถูกตัด (vigor/might/ironWill/reroll/banish) → คืนแต้ม RP
     if(!this.data.stageMastery)this.data.stageMastery={};
     if(!this.data.charUnlockNew)this.data.charUnlockNew={};
     if(this.unlockCoreCharacters(false))gearMigrated=true; // เซฟเก่าที่ผ่านด่านแล้วรับตัวละครโดยไม่ต้องซื้อซ้ำ
@@ -6116,6 +6114,24 @@ const STAGES = [
     lore:'At the root of all hunger sits the one who planted the crown — end the cycle here',
     objectives:['survive','hunt','purge','capture'],
     waves:5, recommendedPower:24500, miniAt:2, mini:'Crown Thorn Knight', boss:'The First Planter', bossHp:30000, bossDmg:150 },
+];
+/* v7.8.101 Lens of Story: บทพูดบอส [เปิดฉาก, ตอนแพ้, มินิบอสมาถึง] ต่อด่าน (Story เท่านั้น) */
+const BOSS_LINES = [
+  ['Touch my eggs and the whole nest will bury you!','The Chef… promised… my eggs would live…','Halt! No stranger reaches the Queen’s eggs.'],
+  ['Everything flows down to me. Even you.','The pressure… goes up… to the engine room…','Pressure rising! Nobody passes the valves!'],
+  ['Hot enough for you? The furnace never stops!','My fire… was only ever his fuel…','Sizzle, sizzle! Into the pan you go!'],
+  ['No sweetness leaves this prison. Not one drop.','The spirits… they’re melting free…','Freeze. Stay. Forever.'],
+  ['The Chef was only a spoon. I am the mouth.','You can’t starve hunger, little mochi. I will wake again.','The banquet needs one more dish. You.'],
+  ['These memories bloom for me now.','Mother… the crown seed… still grows above…','Out of season, out of luck. The garden is mine.'],
+  ['Breathe while you can. The marsh breathes for me.','The spores… settle…','The colony grows. You will feed it.'],
+  ['The last flowers are mine. My swarm will drink them dry.','My hive… was only hungry too…','Buzz off, mochi — the Queen’s nectar is not for you!'],
+  ['Spring, summer, frost and storm. All at once, forever.','Time… finally… moves on…','Every season answers to me. Which one ends you?'],
+  ['Every root ends at my throne. So will you.','The one who planted me… waits beyond the ash…','The roots remember every intruder. Kneel.'],
+  ['Harvest time. Everything gets cut down.','The fields… were green once…','Reaping season. Stand still.'],
+  ['Sweet? I am empty. Let me be full of you.','So hollow… so light…','Every fruit here is a husk. You will be next.'],
+  ['These flavors were grown in secret. You will not see them.','Shatter me… and let them grow in the sun.','Intruder detected. Refracting.'],
+  ['The last seed of every flavor stays locked. Forever.','Then take them… plant them well…','The vault is sealed. Turn back.'],
+  ['I planted the crown so the world would never go hungry.','Every flavor… not just one… Maybe that is enough.','The Planter is not to be disturbed.'],
 ];
 
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
@@ -10352,7 +10368,7 @@ class Game extends Phaser.Scene {
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this._cocoaRegenT=0; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
-        this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
+        this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
@@ -10450,7 +10466,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.stopHubMotion?.();this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.stopHubMotion?.();this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -11552,7 +11568,7 @@ class Game extends Phaser.Scene {
     b.atkCd=0.85; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     if(this.anims.exists(mkey+'_idle'))b.play(mkey+'_idle',true);else if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
-    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
+    this.boss=b;b._said=false; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
     this.waveAlive=adds+1;
     this.mode='mini';this.updateWaveText();
     this.miniIntro(b);
@@ -11628,13 +11644,21 @@ class Game extends Phaser.Scene {
     b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_idle'))b.play(bkey+'_idle',true);else if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))b.play('boss6_rootmother_idle',true); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
-    this.boss=b; this.camWorld(b);this.applyBossRage(b,false);if(this.recipeMode&&this.recipeHas('twinboss'))this.time.delayedCall(900,()=>{if(this.state!=='play'||!this.boss)return;const g=this.spawnElite();if(g){g.hp*=6;g.maxhp=g.hp;g.setPosition(this.boss.x+120,this.boss.y);g.setScale((g.baseScale||1)*1.4);g.tintColor=0xb07aff;g.setTint(0xb07aff);this.showBanner('👥 Bodyguard','The boss brought a giant elite!',1600);}});this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
+    this.boss=b;b._said=false; this.camWorld(b);this.applyBossRage(b,false);if(this.recipeMode&&this.recipeHas('twinboss'))this.time.delayedCall(900,()=>{if(this.state!=='play'||!this.boss)return;const g=this.spawnElite();if(g){g.hp*=6;g.maxhp=g.hp;g.setPosition(this.boss.x+120,this.boss.y);g.setScale((g.baseScale||1)*1.4);g.tintColor=0xb07aff;g.setTint(0xb07aff);this.showBanner('👥 Bodyguard','The boss brought a giant elite!',1600);}});this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
     if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; if(this.textures.exists('boss_pinnacle')){ if(b.anims)b.anims.stop(); b.setTexture('boss_pinnacle',0); b._pinnacleArt=true; b.tintColor=null; b.clearTint(); } else { b.tintColor=0x8a4dff; b.setTint(0x8a4dff); } b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
     const _dvb=this.setupDelveBoss(b); if(_dvb){ if(this.bossName)this.bossName.setText('👹 '+(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick')+' · Floor '+this._amapNode.d); this.bossIntro(b,_dvb); return; }
     this.bossIntro(b, this._pinnacleRun?'✦ PINNACLE · The Hunger Beneath':st.boss);
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนfind → ปรากฏตัว/คำราม → แพนกลับ
+  storyVoice(){ return !this.recipeMode&&!this.bossRush&&!this.riftMode&&!this._inTutorial&&!this._pinnacleRun&&!!STAGES[this.stageIndex]; }
+  bossSay(text,e,x,y,ms=2600){ if(!text)return; this._bossSayObj?.destroy(); const z=this.viewZoom||1;
+    const t=this.camWorld(this.add.text(x,y,text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(13/z)+'px',color:'#3a1f2b',backgroundColor:'#fff6ea',padding:{x:Math.round(8/z),y:Math.round(5/z)},align:'center',wordWrap:{width:Math.round(210/z)}}).setOrigin(.5,1).setDepth(9000).setAlpha(0));
+    t._follow=e; this._bossSayObj=t; this.tweens.add({targets:t,alpha:1,duration:160});
+    this.time.delayedCall(ms,()=>{ if(this._bossSayObj===t)this._bossSayObj=null; if(t.active)this.tweens.add({targets:t,alpha:0,duration:260,onComplete:()=>t.destroy()}); }); }
+  tickBossSay(){ const b=this.boss;
+    if(b&&b.active&&!b._said&&(b.isBoss||b.isMini)){ b._said=true; const L=this.storyVoice()&&BOSS_LINES[this.stageIndex]; const txt=L&&(b.isMini?L[2]:L[0]); if(txt)this.bossSay(txt,b,b.x,b.y-b.displayHeight*.5-6); }
+    const t=this._bossSayObj; if(t&&t.active&&t._follow&&t._follow.active)t.setPosition(t._follow.x,t._follow.y-t._follow.displayHeight*.5-6); }
   bossIntro(b,name){
     if(this.recipeMode){ this.bossIntroQuick(b,name); return; }
     const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y;
@@ -11901,7 +11925,7 @@ class Game extends Phaser.Scene {
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.clearYuzuCrew();this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this._cocoaRegenT=0;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
-    this.rerollLeft=REROLL_MAX+Save.perkLvl("reroll");this.banishLeft=BANISH_MAX+Save.perkLvl("banish");this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
+    this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=1;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
@@ -12405,7 +12429,6 @@ class Game extends Phaser.Scene {
     const heldBot=heldBot0;   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap a card twice to pick':'⭐ LEVEL UP — tap a card twice to pick',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
-    this.banishMode=false;this._banishArm=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
     const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
     if(this._relicPick)t.setText((this._forcedOpts||[]).every(o=>o&&String(o.key||'').startsWith('relic_'))?'🔮 RELIC — choose 1 · tap again to confirm':'🔮 SPECIAL PICK — choose 1 · tap again to confirm');
@@ -12423,21 +12446,10 @@ class Game extends Phaser.Scene {
     });
     const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
     this.lvlTitleArt?.(t,this._chestReward?1:this._relicPick?2:pathPick?3:0,!_wasLvl);
-    this.lvlActionBtns=[];
-    /* v7.8.85 เจ้าของ: ปุ่ม 🎲 Reroll / 🚫 Banish กลับมา (Perk Spare Cards / Cull ซื้อแล้วได้ผลจริง) · เฉพาะหน้าการ์ดปกติ */
-    { const plain=!this._chestReward&&!this._relicPick&&!this._inTutorial&&opts.length&&opts.every(o=>o&&!o.mutation&&!o.evolution&&!['Build Path','Flavor Infusion','Relic'].includes(o.kind)),by=startY+rows*ch+(rows-1)*gap+8,bh=34,bw=Math.min(170,(w-side*2-10)/2);
-      if(plain&&by+bh<=h-2&&((this.rerollLeft||0)>0||(this.banishLeft||0)>0)){
-        const mk=(x,label,on,active,fn)=>{const g=this.add.graphics();g.fillStyle(active?0x7a3442:on?0x3a2f52:0x2a2236,0.96);g.fillRoundedRect(x,by,bw,bh,10);g.lineStyle(1.5,active?0xff8fa3:on?0xb9a3ff:0x4a4058,1);g.strokeRoundedRect(x,by,bw,bh,10);const tx=this.add.text(x+bw/2,by+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#fff0f6':'#7d7290'}).setOrigin(.5);this.lvlUp.add([g,tx]);if(on)this.lvlActionBtns.push({left:x,right:x+bw,top:by,bottom:by+bh,fn});};
-        const x0=w/2-bw-5,x1=w/2+5;
-        mk(x0,'🎲 Reroll ('+(this.rerollLeft||0)+')',(this.rerollLeft||0)>0,false,()=>{this.rerollLeft--;Sfx.select();this.openLevelUp();});
-        mk(x1,this.banishMode?'🚫 Tap a card to banish':'🚫 Banish ('+(this.banishLeft||0)+')',(this.banishLeft||0)>0,!!this.banishMode,()=>{this._banishArm=!this._banishArm;Sfx.select();this.banishMode=this._banishArm;this.levelChoiceHint?.setText(this.banishMode?'🚫 Tap a card to remove it for this stage':'⭐ LEVEL UP — tap a card twice to pick');this._pendingCardConfirm=null;});
-      } }
     this.lvlUp.setVisible(true);
   }
   pickCardAt(px,py){
-    const ab=(this.lvlActionBtns||[]).find(b=>px>=b.left&&px<=b.right&&py>=b.top&&py<=b.bottom);if(ab&&this.time.now>=(this.levelCardReadyAt||0)){ab.fn();return;}
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
-    if(c&&this.banishMode&&this.time.now>=(this.levelCardReadyAt||0)){const o=c.opt||{};if(o.type==='basic'&&o.key&&o.kind!=='Instant Heal'&&(this.banishLeft||0)>0){this.banishLeft--;this.banishedKeys=this.banishedKeys||{};this.banishedKeys['b:'+o.key]=true;this.banishMode=false;this._banishArm=false;Sfx.ev?.('card_banish',.5,.2)||Sfx.select();this.showBanner?.('🚫 Banished',(c.title||'Card')+' won’t appear again this stage',1100);this.openLevelUp();}else{Sfx.error?.();}return;}
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.ev?.('card_focus',.45,.05)||Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
     this.lvlConfirmFx?.(c); this.mxPick?.(c); Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':(this._chestReward||this._relicPick)?'special_card_confirm':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
@@ -14979,8 +14991,8 @@ class Game extends Phaser.Scene {
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
     this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
-      const bx=e.x,by=e.y; this.mode='reward'; this.boss=null; if(this.usesStoryBudget?.())this.settleStoryBudget();this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
-      this.scheduleStageEvent(1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
+      const bx=e.x,by=e.y,_ln=this.storyVoice()&&BOSS_LINES[this.stageIndex]?.[1]; if(_ln)this.bossSay(_ln,null,bx,by-(e.displayHeight||120)*.5-6,2300); this.mode='reward'; this.boss=null; if(this.usesStoryBudget?.())this.settleStoryBudget();this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
+      this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
     if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
     if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(false,true); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
@@ -16782,7 +16794,7 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play'){this.suspendTaroCombat?.();return;} this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;this.tickTaroCombat?.(delta/1000); if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play'){this.suspendTaroCombat?.();return;} this.tickBossSay(); this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;this.tickTaroCombat?.(delta/1000); if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
