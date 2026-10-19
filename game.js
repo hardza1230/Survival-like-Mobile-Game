@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.84';
+const GAME_VERSION = '7.8.85';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.85',date:'2026-10-19',title:'Reroll, Banish & Kitchen Fixes',items:['Level-up: 🎲 Reroll and 🚫 Banish buttons are back (3 rerolls and 2 banishes per stage, +1 each per Spare Cards / Cull perk rank)','Banish removes a card for the rest of the stage; reroll draws three new cards','Kitchen: 4 signature recipes that could never work now use live effects (Candy Armor = hurt → Wipe Enemy Shots, Brain Freeze = low HP → Freeze, Double Helping = Unique → 8-Way Shots, Slow Simmer = every 10s → Pull All EXP)','Removed unused card code (Dual Infusion, Fusion card, old Modifier/Trade-off injection)']},
   {v:'7.8.84',date:'2026-10-19',title:'Equipment & Forge Overhaul',items:['Forge: each roll now shows 3 different mods — pick one, or keep your current mod','Forge: Crystal Glaze raises a mod by one tier and never lowers it (cost grows with the tier; item level sets the cap)','Forge Auto-roll: 3 picks per roll, misses never replace your mod, and the target is guaranteed by roll 20','Forge opens straight on the item you chose (tap the item icon to switch)','Equipment: Sell and Dismantle are merged into Salvage (gives both Shards and Sugar)','Equipment: new Equip Best and Salvage all ▼ buttons','Equipment: Boots arrows now count Move Speed and Dash cooldown','Gear Gacha moved into the Bazaar Gacha tab (tap iLv band to change level range)','Implicit stats no longer repeat the slot role (e.g. Gloves no longer roll Crit)']},
   {v:'7.8.83',date:'2026-10-19',title:'Equipment Slot Roles',items:['Every slot now has its own job: Weapon and Ring = ATK · Gloves = Crit chance and Crit DMG · Armor = Armor and HP · Boots = Move Speed and Dash cooldown · Amulet = Cooldown','Role stats grow with item level (iLv 1 → 100), rarity and enhancement','Boots and Amulets no longer give Armor, and Gloves no longer give ATK']},
   {v:'7.8.82',date:'2026-10-19',title:'Clearer Equipment Mods',items:['Forge now rolls from 36 easy-to-read mods (was 78) — mods already on your items keep working','Mod tiers show as ★1–★5 instead of T0–T10 (★5 = strongest)','Mods that suit your hero (crit, frost, spark, melee, ranged, swarm, fire) show a green ✓ in Equipment and the Forge']},
@@ -4694,13 +4695,14 @@ const FR_MODS=[
   {id:'twin',   emoji:'👯',name:'Twin',     desc:'Fires twice, ×0.65 each',cost:2},
 ];
 // v5.47 ⭐ Signature Dishes: คู่ WHEN+DO ที่เข้ากัน = ชื่อพิเศษ + พลัง +25%
+/* v7.8.85 สูตร 4 ตัวที่ผูกกับ effect ที่ถูกตัด (shield/immune/cdr/recover) เปลี่ยนเป็น effect ที่ใช้ได้จริง */
 const FR_SIGNATURES=[
-  {t:'dash',e:'shock',name:'Sugar Rush Slam'},{t:'crit',e:'bolt',name:'Thunder Crème'},{t:'hurt',e:'shield',name:'Candy Armor'},
-  {t:'lowHp',e:'immune',name:'Last Bite'},{t:'kill10',e:'shots',name:'Sprinkle Fountain'},{t:'still',e:'meteor',name:'Chef’s Patience'},
+  {t:'dash',e:'shock',name:'Sugar Rush Slam'},{t:'crit',e:'bolt',name:'Thunder Crème'},{t:'hurt',e:'cleanse',name:'Candy Armor'},
+  {t:'lowHp',e:'freeze',name:'Brain Freeze'},{t:'kill10',e:'shots',name:'Sprinkle Fountain'},{t:'still',e:'meteor',name:'Chef’s Patience'},
   {t:'bossHit',e:'sour',name:'Tart Takedown'},{t:'surround',e:'hole',name:'Whirlpool Parfait'},{t:'moving',e:'burn',name:'Hot Trail'},
   {t:'multikill',e:'haste',name:'Frenzy Feast'},{t:'fullHp',e:'orbit',name:'Lollipop Guard'},{t:'bossAppear',e:'rage',name:'Battle Banquet'},
-  {t:'newWave',e:'buddy',name:'Welcome Mochi'},{t:'unique',e:'cdr',name:'Double Helping'},{t:'shield',e:'freeze',name:'Frozen Custard'},
-  {t:'kill25',e:'burst',name:'Rainbow Feast'},{t:'timer10',e:'recover',name:'Slow Simmer'},
+  {t:'newWave',e:'buddy',name:'Welcome Mochi'},{t:'unique',e:'shots',name:'Double Helping'},{t:'shield',e:'freeze',name:'Frozen Custard'},
+  {t:'kill25',e:'burst',name:'Rainbow Feast'},{t:'timer10',e:'vacuum',name:'Slow Simmer'},
 ];
 function frSignature(r){ const t=r&&(r.t||'').replace(/^t:/,''),e=r&&(r.e||'').replace(/^e:/,''); return FR_SIGNATURES.find(x=>x.t===t&&x.e===e)||null; }
 const FR_KIND={t:FR_TRIGGERS,e:FR_EFFECTS,m:FR_MODS};
@@ -12842,7 +12844,7 @@ class Game extends Phaser.Scene {
     const heldBot=heldBot0;   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap a card twice to pick':'⭐ LEVEL UP — tap a card twice to pick',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
-    this.banishMode=false;
+    this.banishMode=false;this._banishArm=false;
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
     const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
     if(this._relicPick)t.setText('🔮 RELIC — choose 1 · tap again to confirm');
@@ -12861,10 +12863,20 @@ class Game extends Phaser.Scene {
     const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
     this.lvlTitleArt?.(t,this._chestReward?1:this._relicPick?2:pathPick?3:0,!_wasLvl);
     this.lvlActionBtns=[];
+    /* v7.8.85 เจ้าของ: ปุ่ม 🎲 Reroll / 🚫 Banish กลับมา (Perk Spare Cards / Cull ซื้อแล้วได้ผลจริง) · เฉพาะหน้าการ์ดปกติ */
+    { const plain=!this._chestReward&&!this._relicPick&&!this._inTutorial&&opts.length&&opts.every(o=>o&&!o.mutation&&!o.evolution&&!['Build Path','Flavor Infusion','Relic'].includes(o.kind)),by=startY+rows*ch+(rows-1)*gap+8,bh=34,bw=Math.min(170,(w-side*2-10)/2);
+      if(plain&&by+bh<=h-2&&((this.rerollLeft||0)>0||(this.banishLeft||0)>0)){
+        const mk=(x,label,on,active,fn)=>{const g=this.add.graphics();g.fillStyle(active?0x7a3442:on?0x3a2f52:0x2a2236,0.96);g.fillRoundedRect(x,by,bw,bh,10);g.lineStyle(1.5,active?0xff8fa3:on?0xb9a3ff:0x4a4058,1);g.strokeRoundedRect(x,by,bw,bh,10);const tx=this.add.text(x+bw/2,by+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:on?'#fff0f6':'#7d7290'}).setOrigin(.5);this.lvlUp.add([g,tx]);if(on)this.lvlActionBtns.push({left:x,right:x+bw,top:by,bottom:by+bh,fn});};
+        const x0=w/2-bw-5,x1=w/2+5;
+        mk(x0,'🎲 Reroll ('+(this.rerollLeft||0)+')',(this.rerollLeft||0)>0,false,()=>{this.rerollLeft--;Sfx.select();this.openLevelUp();});
+        mk(x1,this.banishMode?'🚫 Tap a card to banish':'🚫 Banish ('+(this.banishLeft||0)+')',(this.banishLeft||0)>0,!!this.banishMode,()=>{this._banishArm=!this._banishArm;Sfx.select();this.banishMode=this._banishArm;this.levelChoiceHint?.setText(this.banishMode?'🚫 Tap a card to remove it for this stage':'⭐ LEVEL UP — tap a card twice to pick');this._pendingCardConfirm=null;});
+      } }
     this.lvlUp.setVisible(true);
   }
   pickCardAt(px,py){
+    const ab=(this.lvlActionBtns||[]).find(b=>px>=b.left&&px<=b.right&&py>=b.top&&py<=b.bottom);if(ab&&this.time.now>=(this.levelCardReadyAt||0)){ab.fn();return;}
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
+    if(c&&this.banishMode&&this.time.now>=(this.levelCardReadyAt||0)){const o=c.opt||{};if(o.type==='basic'&&o.key&&o.kind!=='Instant Heal'&&(this.banishLeft||0)>0){this.banishLeft--;this.banishedKeys=this.banishedKeys||{};this.banishedKeys['b:'+o.key]=true;this.banishMode=false;this._banishArm=false;Sfx.ev?.('card_banish',.5,.2)||Sfx.select();this.showBanner?.('🚫 Banished',(c.title||'Card')+' won’t appear again this stage',1100);this.openLevelUp();}else{Sfx.error?.();}return;}
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.ev?.('card_focus',.45,.05)||Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}
     this.lvlConfirmFx?.(c); this.mxPick?.(c); Stats.card(c.title,c.opt&&c.opt.kind); c.apply(); if(!(c.opt&&c.opt.evolution)){this.playGrowthWorld?.('levelup',0.6);const kd=c.opt&&c.opt.kind,cue=kd==='Build Path'?'build_path_select':kd==='Flavor Infusion'?'infusion_apply':kd==='Relic'?'relic_acquire':kd==='Modifier'?'modifier_acquire':kd==='Trade-off'?'tradeoff_acquire':(c.opt&&c.opt.awaken)?'skill_awaken':(this._chestReward||this._relicPick)?'special_card_confirm':'card_confirm';Sfx.ev?.(cue,.55,.3);this._cardCueAt=Date.now();}   /* v6.95.2 level-up FX on every normal card pick, 60% speed */ this._pendingCardConfirm=null; this.closeLevelUp();   // v5.24: เหลือเสียงเดียว (Sfx.card ใน closeLevelUp)
@@ -13584,11 +13596,6 @@ class Game extends Phaser.Scene {
       this.showBanner('🍯 Flavor Infusion','Infuse your attack with a flavor',1600);
       return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,tags:TAGS_OF.infusion[f.id],kind:'Flavor Infusion',special:true,color:f.color,...(this.cocoaInfMatch(f.id)?{headline:'★ Build match: '+this.cocoaInfMatch(f.id)}:{}),apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
-    // v6.12 (B7): Dual Infusion — ธาตุที่สอง (ติด 50% ของฮิต) ตั้งแต่เลเวล 22
-    if(false&&!noSpecial&&b.infusion&&!b.infusion2&&!this._inTutorial&&(this.level||1)>=22){
-      this.showBanner('🍯 Dual Infusion','Blend a second flavor (50% of hits)',1600);
-      return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.filter(f=>f.id!==b.infusion)).slice(0,3).map(f=>makeCard(f,{desc:f.desc+' · procs on 50% of hits',tags:TAGS_OF.infusion[f.id],kind:'Dual Infusion',special:true,color:f.color,apply:()=>{b.infusion2=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' Dual Flavor','Second flavor blended in',1800);Sfx.clear();}}));
-    }
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) timesเดียว: การ์ดทั้งจอเป็น mutation ล้วน
     if(!noSpecial&&b.mastery>=10&&!b.mutation){   // v5.9: 8→10 ห่างขึ้น (เจ้าของ: เก่งเร็วไป)   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
@@ -13603,9 +13610,6 @@ class Game extends Phaser.Scene {
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
       return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.time.delayedCall(2300,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});Sfx.bp?.('shared_build_evolution',.7,1);this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];
     }
-    // 🧬 v6.10.0 B6: Evolution แล้ว + มี Relic ที่จับคู่ → การ์ด Fusion ใบเดียว
-    if(false&&!noSpecial&&b.evolved){ const fu=this.fusionReady(); if(fu){ /* v6.75 A5: Fusion ใช้อัตโนมัติ (autoFusion) */ this.showBanner('🧬 Fusion Ready!',d.evolution+' + '+RELICS[fu.relic].name,1600);
-      return [makeCard(fu,{evolution:true,special:true,kind:'Fusion',tags:fu.tags,color:0xff6ad5,headline:'🧬 '+fu.desc,apply:()=>{ b.mods=(b.mods||[]).concat(fu.id); this.syncBasicAttack(); this.showBanner('🧬 '+fu.emoji+' '+fu.name,fu.desc,2200); Sfx.clear(); }})]; } }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const mintLocked=b.character==='mint'&&!!b.path,berryLocked=b.character==='momo'&&!!b.path,cocoaLocked=b.character==='cocoa'&&!!b.path,storyCards=!noSpecial&&(this.usesStoryBudget?.()||(this.recipeMode&&!this._inTutorial)),chosenPath=PATHS?.find(pt=>pt.id===b.path);
@@ -13629,8 +13633,6 @@ class Game extends Phaser.Scene {
     if(focused){
       const pool=atk.slice();
       // Modifier/trade choices are shared options, not replacements of a path card.
-      if(false&&!noSpecial&&!this._inTutorial&&(this.level||1)>=4){const c=this.modCard();if(c)pool.push({group:'shared',w:2,card:c});}
-      if(false&&!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5){const c=this.tradeCard();if(c)pool.push({group:'shared',w:1,card:c});}
       for(const c of this.endlessCards(this.endlessStatDefs().length))pool.push({group:'universal',w:1,card:c});
       if(healCard)pool.push({group:'universal',w:3,card:healCard});
       const buildDraft=storyCards||cocoaLocked;
@@ -13639,8 +13641,6 @@ class Game extends Phaser.Scene {
       Phaser.Utils.Array.Shuffle(out);return out.slice(0,n);
     }
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
-    if(false&&!noSpecial&&!this._inTutorial&&(this.level||1)>=4&&Math.random()<(out.length<n?1:0.35)){ const mc=this.modCard(); if(mc){ if(out.length>=n)out[n-1]=mc; else out.push(mc); } }   // v6.8.0 B3
-    if(false&&!noSpecial&&!this._inTutorial&&((this.stageIndex||0)>=5||this.recipeMode)&&(this.level||1)>=5&&Math.random()<0.25){ const tc=this.tradeCard(); if(tc){ const at=Math.min(out.length,n)-1; if(at>=0&&out.length>=n){ const j=out[at]&&out[at].kind==='Modifier'&&at>0?at-1:at; out[j]=tc; } else out.push(tc); } }   // v6.9.0 B4   // การ์ดอาวุธของตัวละครล้วน
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
     else if(out.length<n&&healCard){out.push(healCard);healCard=null;}
     // ♾️ เติมช่องที่เหลือด้วยการ์ดสแตตไม่รู้จบ (อาวุธตันแล้วก็ยังมีอะไรให้เลือกเสมอ)
@@ -15427,7 +15427,7 @@ class Game extends Phaser.Scene {
     if(this.basicAttack?.character==='mint'&&(e.isBoss||e.isMini)){ if(e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.04*Math.min(4,e._chill); if(this.basicAttack.path==='glacier'&&this.glacierBrittle(e))amount*=1.15; }   // v6.70 Chill/Brittle มีผลกับบอส
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);if(e._titanMarkT>(this.elapsed||0))amount*=1.25;if(e._shadowUntil>(this.elapsed||0))amount*=1+0.08*(e._shadowN||0);
-    /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); const inf2=this.basicAttack&&this.basicAttack.infusion2; if(inf2&&!this._infTick&&!e.isDummy&&Math.random()<0.5)this.infusionOnHit(e,amount,inf2); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
+    /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }

@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.84 — Equipment remove 1–4 / add 1–4 + Forge 1–4 (owner)
+# Latest delivery: v7.8.85 — ECRS E-batch: reroll/banish back, Kitchen signatures, dead card branches
+
+openLevelUp: plain card screens (no chest/relic/path/infusion/mutation/evolution/tutorial) get 🎲 Reroll (rerollLeft = REROLL_MAX 3 + perk reroll) and 🚫 Banish (banishLeft = BANISH_MAX 2 + perk banish) buttons under the cards (lvlActionBtns, hit-tested first in pickCardAt); banish mode → tap a basic card → banishedKeys['b:'+key] (all pools already respect it) → reroll. FR_SIGNATURES with cut effects remapped: hurt+cleanse Candy Armor, lowHp+freeze Brain Freeze, unique+shots Double Helping, timer10+vacuum Slow Simmer. Removed 6 if(false&&…) branches (Dual Infusion, Fusion card, mod/trade injection) and the damage() infusion2 proc. Not removed (owner-approved off, harmless, tests reference them): TAG_SETS/TAGS_OF/UP_TAGS/tagCounts data, rollRarity (fixed common). ECRS report pending owner: Story difficulty forced to 1 (Hard/Hell only Boss Rush/Pinnacle), perf top items, C/R/S lists.
+
+# Previous delivery: v7.8.84 — Equipment remove 1–4 / add 1–4 + Forge 1–4 (owner)
 
 Forge: randomCraftSelected → forgeRollOptions(item,line,pool,3) → item.forgeChoice={line,options,old}; chooseForgeSustain(i) now any line (pending.line) · forgeKeepCurrent discards · choice panel 3 options + Keep · divineFocusedLine = tier +1 only (cap affixBestTierForItem, cost forgeGlazeCost = 11−t) · autoRollToTarget: 3 candidates per currency, miss = no replace, FORGE_PITY 20 forces target · forgeLayout slots/items rows null (picker removed; summary icon ⇄ opens all-slot item list, forgeSelectItem sets gearSlot). Equipment: IMPLICIT_POOL slots drop role dupes (i_hp armor, i_spd boots, i_cd amulet, i_crit/i_critdmg gloves) · Save.salvageGearInstance (shards+sugar) replaces Sell/Dismantle buttons · gearCompareScore (boots m = speed+dashCd diff) for arrows · gearEquipBest (gearPowerDelta per slot) · gearWorseItems + ♻ All ▼ (computed on tap, double-tap confirm) · bottom row thirds: Salvage | All ▼ | Equip Best · gacha bar → Bazaar button (_bazTab gamble, band cycle as card alt) · auto-salvage toggle already existed in Inbox · removed dead rerollGearAffix, gearEnhCost, craftLockFor, MOD_LINE_MAX, TIER_LOCK_COST, GACHA_COST, LEGEND_FORGE_COST, AFFIX_REROLL_COST. Kept: legacy AFFIX_POOL (old saves), 72 planned FORGE_CATALOG rows (catalog test), base item desc/apply (gearInstanceStats path).
 
@@ -259,7 +263,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.84 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.85 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
