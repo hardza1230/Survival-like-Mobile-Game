@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.101';
+const GAME_VERSION = '7.8.102';
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
   {id:'swift',emoji:'⚡',name:'Swift Swarm',desc:'Enemies move 15% faster · +25% EXP',spd:1.15,player:p=>{p.xpMul=(p.xpMul||1)*1.25;}},
@@ -81,6 +81,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss']},
   {v:'7.8.101',date:'2026-10-19',title:'Boss Voices',items:['Every story boss now speaks when the fight starts and when it falls','Every miniboss has a line when it arrives','Level-up Reroll and Banish removed (Spare Cards / Cull perks gone — their Rank Points are refunded)','Rank Points spent on removed perks (Vigor, Might, Iron Will) are refunded too']},
   {v:'7.8.100',date:'2026-10-19',title:'Surprises',items:['From Stage 3 on, every story run rolls a Run Trait: Swift Swarm, Sugar Rush, Frenzy or Lucky Day','Replays get a random event every 60–90 seconds: Treasure Room, Sugar Shrine, Rare Elite or a Wandering Merchant']},
   {v:'7.8.99',date:'2026-10-19',title:'No More Scrolling',items:['Menus only scroll when content really runs past the screen — Settings, News, Kitchen, Codex and Stats now sit still','Achievements fit on one screen']},
@@ -11652,15 +11653,17 @@ class Game extends Phaser.Scene {
   }
   // ฉากปรากฏตัวบอส: WARNING → แพนfind → ปรากฏตัว/คำราม → แพนกลับ
   storyVoice(){ return !this.recipeMode&&!this.bossRush&&!this.riftMode&&!this._inTutorial&&!this._pinnacleRun&&!!STAGES[this.stageIndex]; }
-  bossSay(text,e,x,y,ms=2600){ if(!text)return; this._bossSayObj?.destroy(); const z=this.viewZoom||1;
-    const t=this.camWorld(this.add.text(x,y,text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(13/z)+'px',color:'#3a1f2b',backgroundColor:'#fff6ea',padding:{x:Math.round(8/z),y:Math.round(5/z)},align:'center',wordWrap:{width:Math.round(210/z)}}).setOrigin(.5,1).setDepth(9000).setAlpha(0));
-    t._follow=e; this._bossSayObj=t; this.tweens.add({targets:t,alpha:1,duration:160});
+  /* v7.8.102 กรอบคำพูดติดจอ (UI) — เดิมลอยเหนือบอสในโลก พอกล้องแพนกลับบอสหลุดจอเลยไม่เห็น */
+  bossSay(text,who,ms=3000){ if(!text)return; this._bossSayObj?.destroy();
+    const t=this.camUI(this.add.text(this.W/2,this.H*0.70,(who?who+'\n':'')+'“'+text+'”',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#3a1f2b',backgroundColor:'#fff6ea',padding:{x:12,y:8},align:'center',lineSpacing:3,wordWrap:{width:Math.min(320,this.W-48)}}).setOrigin(.5).setScrollFactor(1).setDepth(130).setAlpha(0));
+    this._bossSayObj=t; this.tweens.add({targets:t,alpha:1,y:t.y-8,duration:180});
     this.time.delayedCall(ms,()=>{ if(this._bossSayObj===t)this._bossSayObj=null; if(t.active)this.tweens.add({targets:t,alpha:0,duration:260,onComplete:()=>t.destroy()}); }); }
+  bossLine(i){ const L=this.storyVoice()&&BOSS_LINES[this.stageIndex]; return L?L[i]:null; }
   tickBossSay(){ const b=this.boss;
-    if(b&&b.active&&!b._said&&(b.isBoss||b.isMini)){ b._said=true; const L=this.storyVoice()&&BOSS_LINES[this.stageIndex]; const txt=L&&(b.isMini?L[2]:L[0]); if(txt)this.bossSay(txt,b,b.x,b.y-b.displayHeight*.5-6); }
-    const t=this._bossSayObj; if(t&&t.active&&t._follow&&t._follow.active)t.setPosition(t._follow.x,t._follow.y-t._follow.displayHeight*.5-6); }
+    if(b&&b.active&&!b._said&&(b.isBoss||b.isMini)){ b._said=true; const st=STAGES[this.stageIndex]; this.bossSay(this.bossLine(b.isMini?2:0),b.isMini?st?.mini:st?.boss); } }
   bossIntro(b,name){
     if(this.recipeMode){ this.bossIntroQuick(b,name); return; }
+    { const ln=this.bossLine(0); if(ln){ b._said=true; this.time.delayedCall(1750,()=>{ if(b.active)this.bossSay(ln,STAGES[this.stageIndex]?.boss,3200); }); } }
     const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y;
     this.state='cinematic';this.mode='bossIntro';this.player.setVelocity(0,0);b.setVelocity(0,0);b.setVisible(false).setScale(base*0.82).setDepth(targetY+1);if(b.body)b.body.enable=false;
     Sfx.playBossBgm(this.stageIndex+1);Sfx.bossWarn();
@@ -14991,7 +14994,7 @@ class Game extends Phaser.Scene {
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
     this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
-      const bx=e.x,by=e.y,_ln=this.storyVoice()&&BOSS_LINES[this.stageIndex]?.[1]; if(_ln)this.bossSay(_ln,null,bx,by-(e.displayHeight||120)*.5-6,2300); this.mode='reward'; this.boss=null; if(this.usesStoryBudget?.())this.settleStoryBudget();this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
+      const bx=e.x,by=e.y,_ln=this.bossLine(1); if(_ln)this.bossSay(_ln,STAGES[this.stageIndex]?.boss,2300); this.mode='reward'; this.boss=null; if(this.usesStoryBudget?.())this.settleStoryBudget();this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
     if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว

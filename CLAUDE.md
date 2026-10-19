@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.8.101 — Boss voices + Reroll/Banish removed (owner)
+# Latest delivery: v7.8.102 — Boss lines on screen (owner: camera panned away, line not seen)
+
+bossSay(text,who,ms) is now a UI text box (camUI, W/2·H·0.70, name line + quoted line, depth 130) instead of a world bubble. bossIntro schedules the intro line at 1750ms (camera on the boss, during cinematic) and sets b._said; minis still via tickBossSay; defeat line via bossLine(1). Smoke C1-3: line visible during cinematic, mini + defeat OK, 0 errors.
+
+# Previous delivery: v7.8.101 — Boss voices + Reroll/Banish removed (owner)
 
 BOSS_LINES[stage] = [intro, defeat, mini] (15 stages, English). storyVoice() = story only (no recipe/rush/rift/tutorial/pinnacle). bossSay(text,follow,x,y,ms) world text bubble (font 13/viewZoom, depth 9000, one at a time, follows target); tickBossSay() in update after the state check — this.boss._said (reset at both this.boss=b) → intro/mini line once play resumes after the cinematic. Boss kill (killEnemy isBoss) shows defeat line 2.3s and delays onBossDown 1600→2400. Removed level-up 🎲 Reroll/🚫 Banish buttons + banish tap mode + REROLL_MAX/BANISH_MAX/rerollLeft/banishLeft + Rank Perks Spare Cards/Cull (banishedKeys stays {} for pools). Load deletes rankPerks keys not in RANK_PERKS → RP refunded (also fixes v7.8.88 vigor/might/ironWill points that were never refunded). Browser smoke C1-3: mini/boss/defeat lines shown, level-up opens, 0 errors.
 
@@ -328,7 +332,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.8.101 · 19 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.8.102 · 19 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
