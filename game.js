@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.80';
+const GAME_VERSION = '7.8.81';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.81',date:'2026-10-19',title:'Fairer Equipment',items:['Enhancing can no longer destroy an item — a failed try only drops one level (never below +3)','Each enhancement level now adds +12% base ATK/Armor (was +8%), so +10 is ×2.2','Set weapons from earlier chapters keep dropping in later chapters','Set comparison shows the real piece count (e.g. 2/5, not 2/3)','Landscape Equipment uses the same bag screen as portrait (the old list showed bonus text that did nothing)']},
   {v:'7.8.80',date:'2026-10-19',title:'Split Sparks & Hit Procs',items:['Taro Spark Build: split Sparks are weaker each split — 45% then 20% of the main Spark (Split Spark card: 65% then 42%) — and their damage swings less, so the numbers clearly shrink','“X% of hits” cards (Overcharge, Living Tempest and other hit bursts/arcs) and Chill Relic now also trigger from split Sparks, Ball Lightning and Beacon orbs at 1/4 of the chance']},
   {v:'7.8.79',date:'2026-10-19',title:'Storm Mark & On-Hit Cards',items:['Taro Spark Build: during Storm Mark only the Unique’s own Sparks home in and get the +50% bonus — normal Sparks fly as usual (bosses were losing huge chunks)','Flavor Infusions (Sweet heal, Sour, Spicy, Minty) and the HP on Hit gear mod now also trigger from split Sparks, Ball Lightning and Beacon orbs']},
   {v:'7.8.78',date:'2026-10-18',title:'Gear Arrows & Spark Unique',items:['Taro Spark Build: Storm Mark no longer grows past ×2 from run level (it reached ×4.5 at Lv30 and melted bosses)','Equipment bag: a green ▲ means the item is stronger than what you wear in that slot, a red ▼ means weaker (yellow/orange = trade-off between ATK and DEF)']},
@@ -4773,7 +4774,7 @@ const GEAR_ENH_MAX = 10;
 // โอกาสตีบวก lv->lv+1 · +0..+3 ปลอดภัย · +4 ขึ้นไปเสี่ยง: "แตก" (ขั้นลดลง 1, ไม่ต่ำกว่า +3) หรือ "ของหาย" (ไอเทมทำลายทิ้ง) · เพดาน +10
 // v4.35: destroy เริ่มมีตั้งแต่ +4 (น้อย ๆ) แล้วไต่ขึ้นเรื่อย ๆ — ยิ่ง +สูงยิ่งเสี่ยงของแตกหาย
 function enhanceOdds(lv){ if(lv<4)return{success:1,brk:0,destroy:0};
-  const t={4:[0.76,0.22,0.02],5:[0.68,0.27,0.05],6:[0.58,0.32,0.10],7:[0.50,0.35,0.15],8:[0.42,0.38,0.20],9:[0.34,0.40,0.26]}[lv]||[0.34,0.40,0.26];
+  const t={4:[0.76,0.24,0],5:[0.68,0.32,0],6:[0.58,0.42,0],7:[0.50,0.50,0],8:[0.42,0.58,0],9:[0.34,0.66,0]}[lv]||[0.34,0.66,0];   // v7.8.81 เจ้าของ: ตีบวกไม่ทำให้ของหายแล้ว (ล้ม = ลด 1 ขั้น ไม่ต่ำกว่า +3)
   return {success:t[0],brk:t[1],destroy:t[2]}; }
 function gearSellSugar(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)*6+Math.max(1,item.itemLevel||1)*2+Math.max(0,item.enhanceLv||0)*10;}
 const GEAR_INBOX_CAP = 5;
@@ -5327,7 +5328,7 @@ function currentRewardItemLevel(rng=Math.random){return rollItemLevel(rewardSour
 function gearBaseStats(item){
   const base=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start')return{attackMin:0,attackMax:0,armor:0};
   const level=Math.max(1,Math.min(100,Number(item.itemLevel)||1)),quality=({common:1,rare:1.12,epic:1.24,legend:1.4})[base.tier]||1;
-  let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=Math.max(0,item.enhanceLv||0),enhance=1+.08*el;   // v6.55.37: +8%/ขั้น (+10 = ×1.8) เท่ากันทุก iLv (เอาขั้นต่ำ +1 ออก)
+  let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=Math.max(0,item.enhanceLv||0),enhance=1+.12*el;   // v7.8.81 +12%/ขั้น (+10 = ×2.2) · v6.55.37: +8%/ขั้น (+10 = ×1.8) เท่ากันทุก iLv (เอาขั้นต่ำ +1 ออก)
   const attack=['weapon','gloves','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
   const armor=['armor','boots','amulet'].includes(item.slot)?(()=>{const b0=(2+level*.15)*quality*variation*(item.slot==='armor'?1:.4);return Math.max(1,Math.round(b0*enhance));})():0;
   const lp=attack?1+weaponLocalPct(item)/100:1,amin=attack?Math.max(1,Math.round(attack*lp)):0;
@@ -5390,7 +5391,7 @@ function applyItemLevelBonus(p,item){const bse=item&&GEAR_ALL.find(g=>g.id===ite
   applyGearBaseStats(p,item);const q=Math.max(0,Math.min(1,((Number(item&&item.itemLevel)||1)-1)/99)),slot=item&&item.slot;
   void q;void slot;   // v6.55.32: per-slot iLv bonus removed (implicit scales with iLv instead)
 }
-function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot==='weapon'&&(it.chapter||1)===ch),support=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&(it.chapter||1)<=ch);}
+function gearPool(tier,chapter=currentItemChapter()){const ch=clampItemChapter(chapter),currentWeapons=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot==='weapon'&&((it.chapter||1)===ch||(it.set&&(it.chapter||1)<=ch))),support=GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&it.slot!=='weapon'&&(it.chapter||1)<=ch);return currentWeapons.concat(support).length?currentWeapons.concat(support):GEAR_ALL.filter(it=>!it.unique&&it.tier===tier&&(it.chapter||1)<=ch);}
 const GACHA_COST = 220;   // 🍬 ต่อการเปิดกล่อง 1 times
 // v4.33: gacha เลือก "ช่วง" base item level เป็นชั้นละ 10 (สุ่ม iLv ในช่วง) · ยิ่งช่วงสูง = ของแรงกว่า = แพงขึ้น · เพดาน 60 (iLv 61-100 หาได้จาก drop เท่านั้น) · mod ยังสุ่ม 0-1 เสมอ
 // v6.55.19: เปิดได้ถึงช่วง iLv ที่ความคืบหน้าเนื้อเรื่องถึง (+4) · กัน account ใหม่ซื้ออาวุธ iLv60 (Item Power ×4) ตั้งแต่ต้น
@@ -5490,7 +5491,7 @@ function gearStatText(row,value){if(row.range)return value.join('-');const n=Mat
 function gearSetCompareText(slot,selected){ if(!selected)return ''; const current=gearSetCounts(),next=Object.assign({},current),old=Save.equippedGearItem(slot),oldBase=old&&GEAR_ALL.find(g=>g.id===old.baseId),newBase=GEAR_ALL.find(g=>g.id===selected.baseId);
   if(oldBase&&oldBase.set)next[oldBase.set]=Math.max(0,(next[oldBase.set]||0)-1); if(newBase&&newBase.set)next[newBase.set]=(next[newBase.set]||0)+1;
   const ids=Array.from(new Set([oldBase&&oldBase.set,newBase&&newBase.set].filter(Boolean))),parts=[];
-  for(const id of ids){const def=GEAR_SETS[id];if(def&&(current[id]||0)!==(next[id]||0))parts.push(def.emoji+' '+def.name+' '+(current[id]||0)+'/3 → '+(next[id]||0)+'/3');} return parts.join('   '); }
+  for(const id of ids){const def=GEAR_SETS[id];if(def&&(current[id]||0)!==(next[id]||0)){const n=gearSetPieces(id).length;parts.push(def.emoji+' '+def.name+' '+(current[id]||0)+'/'+n+' → '+(next[id]||0)+'/'+n);}} return parts.join('   '); }
 
 /* ---- Save: เก็บ Sugar + ความคืบหน้า + upgrades + gear ลง localStorage ---- */
 const DIG_FREE_PER_DAY=1, DIG_FREE_SHOVELS=10;
@@ -8090,7 +8091,7 @@ class Game extends Phaser.Scene {
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='gearClean')this.buildGearClean(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildBossRush(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='recipebag')this.buildRecipes(); else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -9844,42 +9845,7 @@ class Game extends Phaser.Scene {
     this._zone(w/2-rw/2,ry2,rw,34,()=>{ if(this._perkResetConfirm){if(Save.respecPerks())Sfx.clear();else this.menuToast('Need perks and 🧶'+Save.perkResetCost()+' Weave Thread','#ff9bb5');this._perkResetConfirm=false;}else{this._perkResetConfirm=true;Sfx.select();} this.buildRankPerks(); });
     this.menu.setVisible(true);
   }
-  buildGearLandscape(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Equipment','screen_equipment');
-    const w=this.W,h=this.H,id=this.character||Save.data.character||'momo',sel=this.gearSlot||'weapon';
-    const leftW=Math.min(345,w*0.45),panelX=12,panelY=56,panelW=leftW-20,panelH=h-70,pcx=panelX+panelW/2,pcy=panelY+panelH*0.40;
-    const pbg=this.add.graphics();pbg.fillStyle(0x241a33,0.72);pbg.fillRoundedRect(panelX,panelY,panelW,panelH,16);pbg.lineStyle(1.5,0x4a4059,0.8);pbg.strokeRoundedRect(panelX,panelY,panelW,panelH,16);this.menu.add(pbg);
-    if(!this._characterCardArt(id,pcx,pcy,panelW*0.60,panelH*0.72)){const em=this.add.text(pcx,pcy,CHARACTERS[id].emoji,{fontSize:'54px'}).setOrigin(0.5);this.menu.add(em);}
-    const ss=43,leftX=panelX+34,rightX=panelX+panelW-34,rowY=[panelY+42,panelY+104,panelY+166];
-    const layout=[['weapon',leftX,0],['gloves',leftX,1],['amulet',leftX,2],['armor',rightX,0],['boots',rightX,1],['ring',rightX,2]];
-    layout.forEach(([slot,sx,ri])=>{const y=rowY[ri],def=GEAR_SLOTS.find(g=>g.slot===slot),curId=Save.data.gear[slot],it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0],lv=Save.gearLv(it.id),on=!it.id.includes('_none'),isSel=slot===sel;
-      const g=this.add.graphics();g.fillStyle(isSel?0x3a3550:0x2c2338,1);g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,11);g.lineStyle(isSel?3:2,isSel?0xffd166:(on?0x8bd3a0:0x4a4059),1);g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,11);
-      const artKey=on?'gear_'+it.id:null,em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y-1,artKey).setDisplaySize(ss*0.72,ss*0.72):this.add.text(sx,y-1,on?it.emoji:def.emoji,{fontSize:'22px'}).setOrigin(0.5).setAlpha(on?1:0.45);this.menu.add([g,em]);
-      if(on&&lv>0){const bd=this.add.text(sx+ss/2-2,y-ss/2,'+'+lv,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(bd);}this._zone(sx-ss/2,y-ss/2,ss,ss,()=>{this.gearSlot=slot;this.buildMenuScreen();});
-    });
-    // v4.32: gacha stepper (◄ ► เลือก base item level, กลาง=เปิด)
-    const glvI=Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0)),glv=GACHA_LEVELS[glvI],gCost=glv.cost;
-    const gbw=Math.min(230,panelW-32),gbh=34,gby=h-55,gx0=pcx-gbw/2,aw=30,afG=(Save.data.sugar||0)>=gCost;
-    const gbg=this.add.graphics();gbg.fillStyle(afG?0xffb020:0x3a3550,1);gbg.fillRoundedRect(gx0,gby,gbw,gbh,11);gbg.lineStyle(1.5,afG?0xffe08a:0x4a4059,1);gbg.strokeRoundedRect(gx0,gby,gbw,gbh,11);
-    const gbt=this.add.text(pcx,gby+gbh/2,'🎁 Gacha · iLv'+glv.lo+'-'+glv.hi+' 🍬'+gCost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:afG?'#fff':'#7a7088'}).setOrigin(0.5);
-    const lArr=this.add.text(gx0+aw/2,gby+gbh/2,'◄',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI>0?'#17101d':'#8a7a55'}).setOrigin(0.5);
-    const rArr=this.add.text(gx0+gbw-aw/2,gby+gbh/2,'►',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:glvI<gachaMaxBand()?'#17101d':'#8a7a55'}).setOrigin(0.5);
-    this.menu.add([gbg,gbt,lArr,rArr]);
-    this._zone(gx0,gby,aw,gbh,()=>{this._gachaLevel=Math.max(0,glvI-1);Sfx.select();this.buildMenuScreen();});
-    this._zone(gx0+gbw-aw,gby,aw,gbh,()=>{this._gachaLevel=Math.min(gachaMaxBand(),glvI+1);Sfx.select();this.buildMenuScreen();});
-    this._zone(gx0+aw,gby,gbw-aw*2,gbh,()=>this.openGachaReveal());
-    const rx=leftW+8,rw=w-rx-14,selDef=GEAR_SLOTS.find(g=>g.slot===sel);
-    const hdr=this.add.text(rx+rw/2,58,selDef.emoji+' '+selDef.label+' · equip / enhance',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd9a8'}).setOrigin(0.5);this.menu.add(hdr);
-    const items=GEAR[sel],rowGap=8,rowH=Math.min(72,(h-88-rowGap*(items.length-1))/items.length);
-    items.forEach((it,i)=>{const owned=Save.data.ownedGear.includes(it.id),equipped=Save.data.gear[sel]===it.id,lv=Save.gearLv(it.id),canEnh=it.enh&&lv<GEAR_ENH_MAX,ecost=gearEnhShardCost(lv),tl=TIER_LABEL[it.tier]||TIER_LABEL.common,nm=it.name+(it.tier==='rare'?' ⭐':it.tier==='epic'?' 💠':'')+(lv>0?' +'+lv:'');let label,color,fn;
-      if(equipped&&canEnh){const ok=(Save.data.shards||0)>=ecost;label='⚒️ +'+(lv+1)+' 🔩'+ecost;color=ok?'#ffd166':'#e0788a';fn=()=>{if(Save.spendShards(ecost)){Sfx.equipmentEnhance(Save.enhance(it.id));}else{Sfx.error();this.showBanner('🔩 Not enough shards','Dismantle gear to get more',1400);}this.buildMenuScreen();};}
-      else if(equipped){label='Equipped ✓';color='#ffd166';fn=null;}else if(owned){label='Equip';color='#8bd3a0';fn=()=>{if(Save.equipGearBase(sel,it.id))Sfx.equipment('equip');this.buildMenuScreen();};}else{label='🔒 '+tl.name;color=tl.color;fn=null;}
-      this._rowBtn(80+i*(rowH+rowGap),rowH,owned?it.emoji:'❔',nm,owned?it.desc:'Not discovered yet',label,color,fn,rx,rw);
-    });
-    this.menu.setVisible(true);
-  }
   buildGear(){
-    if(this.W>this.H){this.buildGearLandscape();return;}
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Equipment','screen_equipment');
     const w=this.W,h=this.H, id=this.character||Save.data.character||'momo';
     const sel=this.gearSlot||'weapon';
@@ -9929,7 +9895,7 @@ class Game extends Phaser.Scene {
     const items=Save.gearItemsForSlot(null).filter(x=>x.grade!=='start'&&String(x.baseId).indexOf('_none')<0&&GEAR_ALL.some(g=>g.id===x.baseId));
     let selected=Save.gearItem(this.gearSelectedUid);
     if(!selected||selected.slot!==sel){ selected=Save.equippedGearItem(sel)||items.find(x=>x.slot===sel)||null; this.gearSelectedUid=selected?selected.uid:null; }
-    const cols=5,pageSize=cols*3,pages=Math.max(1,Math.ceil(items.length/pageSize));
+    const cols=this.W>this.H?10:5,pageSize=cols*3,pages=Math.max(1,Math.ceil(items.length/pageSize));
     let page=Math.max(0,Math.min(pages-1,this.gearInvPage||0)); this.gearInvPage=page;
     let y=setBot+12;
     const cap=Save.data.gearInventoryCap||100;
@@ -9997,30 +9963,6 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // v6.55.35 🧹 Clean up: ขาย/ย่อยหลายชิ้นในครั้งเดียวตามตัวกรอง · ไม่แตะของสวม/ล็อก/★/คราฟแล้ว/unique · + ตั้งค่า auto ตอนดรอป
-  gearCleanCfg(){const d=Save.data;if(!d.gearCleanCfg)d.gearCleanCfg={common:true,rare:true,epic:false,legend:false,weaker:true,out:'sell'};return d.gearCleanCfg;}
-  gearCleanList(){const c=this.gearCleanCfg(),basePow=heroPower(Save.data.character||'momo',null);return (Save.data.gearItems||[]).filter(it=>{if(!it||it.locked||it.favorite||it.grade==='start'||it.craftedAt||Save.isGearEquipped(it.uid))return false;const b=GEAR_ALL.find(g=>g.id===it.baseId);if(!b||b.unique||!c[it.grade])return false;return !c.weaker||gearPowerDelta(it,basePow)<=0;});}
-  buildGearClean(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Clean up','craft_bench_bg','gear');
-    const w=this.W,c=this.gearCleanCfg(),d=Save.data;let y=(w<=this.H?84:56);
-    const T=(x,yy,t,sz,col,b,o)=>{const tx=this.add.text(x,yy,t,{fontFamily:'sans-serif',fontStyle:b?'bold':'normal',fontSize:sz+'px',color:col,align:'center',wordWrap:{width:w-40}}).setOrigin(o??0,0);this.menu.add(tx);return tx;};
-    const btn=(x,yy,bw,bh,lb,on,fn,col)=>{const g=this.add.graphics();g.fillStyle(on?(col||0x3f9160):0x2a2235,1);g.fillRoundedRect(x,yy,bw,bh,9);g.lineStyle(1.4,on?0xffd166:0x4a3f58,1);g.strokeRoundedRect(x,yy,bw,bh,9);const t=this.add.text(x+bw/2,yy+bh/2,lb,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:on?'#fff':'#a99fbb',align:'center'}).setOrigin(.5);this.menu.add([g,t]);if(fn)this._zone(x,yy,bw,bh,fn);};
-    const re=()=>{this._cleanArm=false;Save.save();this.buildGearClean();};
-    T(16,y,'CLEAN UP NOW · pick what to remove',10,'#ffe0a8',true);y+=18;
-    const gw=(w-32-18)/4;['common','rare','epic','legend'].forEach((g,i)=>btn(16+i*(gw+6),y,gw,30,(TIER_LABEL[g]||{}).name||g,!!c[g],()=>{c[g]=!c[g];re();}));y+=38;
-    btn(16,y,w-32,30,(c.weaker?'☑':'☐')+' Only items weaker than what you wear (Power)',c.weaker,()=>{c.weaker=!c.weaker;re();});y+=38;
-    const hw=(w-32-6)/2;btn(16,y,hw,30,'💰 Sell for Sugar',c.out==='sell',()=>{c.out='sell';re();},0x8d6a3e);btn(16+hw+6,y,hw,30,'🔩 Dismantle',c.out!=='sell',()=>{c.out='dismantle';re();},0x8d4b3e);y+=40;
-    const list=this.gearCleanList(),tot=list.reduce((a,it)=>a+(c.out==='sell'?gearSellSugar(it):gearDismantleValue(it)),0);
-    T(w/2,y,list.length+' items  →  '+(c.out==='sell'?'🍬 +':'🔩 +')+tot,13,'#fff4df',true,.5);y+=20;
-    T(w/2,y,'Never touched: equipped · 🔒 locked · ★ favorite · ⚒ crafted · unique',8.5,'#9d93a8',false,.5);y+=18;
-    btn(16,y,w-32,40,list.length?(this._cleanArm?'TAP AGAIN TO CONFIRM':'🧹 '+(c.out==='sell'?'Sell ':'Dismantle ')+list.length+' items'):'Nothing to clean',list.length>0,list.length?()=>{if(!this._cleanArm){this._cleanArm=true;Sfx.select&&Sfx.select();this.buildGearClean();return;}let n=0,got=0;for(const it of list){const v=c.out==='sell'?Save.sellGearInstance(it.uid):Save.dismantleGearInstance(it.uid);if(v){n++;got+=v;}}this._cleanArm=false;Sfx.equipment(c.out==='sell'?'sell':'dismantle');this.buildGearClean();this.showBanner('🧹 Cleaned '+n+' items',(c.out==='sell'?'🍬 +':'🔩 +')+got,1500);}:null,0xb0563f);y+=54;
-    T(16,y,'AUTO ON DROP',10,'#ffe0a8',true);y+=18;
-    const mode=d.gearAutoDismantle||'off',ml={off:'Off',common:'Common',rare:'Common + Rare'};
-    btn(16,y,w-32,30,'Auto-clean drops: '+ml[mode],mode!=='off',()=>{Save.setGearAutoDismantle(mode==='off'?'common':mode==='common'?'rare':'off');this.buildGearClean();});y+=36;
-    btn(16,y,hw,30,'💰 Auto-sell',d.gearAutoOut==='sell',()=>{d.gearAutoOut='sell';re();},0x8d6a3e);btn(16+hw+6,y,hw,30,'🔩 Auto-dismantle',d.gearAutoOut!=='sell',()=>{d.gearAutoOut='dismantle';re();},0x8d4b3e);y+=36;
-    btn(16,y,w-32,30,(d.gearAutoKeepUp!==false?'☑':'☐')+' Keep drops that raise your Power',d.gearAutoKeepUp!==false,()=>{d.gearAutoKeepUp=d.gearAutoKeepUp===false;re();});y+=36;
-    T(w/2,y,'Epic, Legend, locked and favorite drops are never auto-cleaned',8.5,'#9d93a8',false,.5);
-    this.menu.setVisible(true);
-  }
   buildGearInbox(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📦 Reward Inbox','screen_inbox','gLoadout');
     const w=this.W,cap=Save.data.gearInventoryCap||100,items=Save.gearInboxItems(),mode=Save.data.gearAutoDismantle||'off',labels={off:'OFF',common:'COMMON',rare:'COMMON + RARE'};
