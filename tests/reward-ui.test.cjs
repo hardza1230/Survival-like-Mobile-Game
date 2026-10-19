@@ -39,10 +39,9 @@ console.log('Reward UI: two choices, no expiry, one-shot selection, HP caps, dam
 
 // Reward persistence and run effects for all new prize kinds, including low HP and full HP.
 for(const tier of ['bronze','silver','gold']){
- const s=scene(),pool=s.miniPrizePool(tier);assert.equal(pool.length,12);assert.equal(new Set(pool.map(p=>p.id)).size,12);
+ const s=scene(),pool=s.miniPrizePool(tier);assert.equal(pool.length,11);assert.equal(new Set(pool.map(p=>p.id)).size,11);assert(!pool.some(p=>p.id==='scroll'));
  const before=Save.threads();pool.find(p=>p.id==='thread').give();assert.equal(Save.threads()-before,tier==='gold'?5:3);
  const shovel=Save.shovels||0;pool.find(p=>p.id==='shovel').give();assert.equal(Save.shovels-shovel,tier==='gold'?2:1);
- const scroll=Save.scrolls();pool.find(p=>p.id==='scroll').give();assert.equal(Save.scrolls()-scroll,1);
  s.uniqueCd=10;s.player.hp=190;pool.find(p=>p.id==='recharge').give();assert.equal(s.uniqueCd,0);assert.equal(s.player.hp,200);
  assert.equal(pool.find(p=>p.id==='card').artKey,'prize_levelup');
 }

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.87';
+const GAME_VERSION = '7.8.88';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.88',date:'2026-10-19',title:'Fewer Layers, Clearer Rewards',items:['Permanent HP/DMG now comes from two places only: the Flavor Weave and each hero’s Talents. Vigor, Might and Iron Will left Rank Perks (your points are free to spend again); Deep Roots is now +1 HP regen','Gear Shards and Scroll Fragments are now Weave Thread (old amounts converted). Enhance and Ancient Perks (60 Thread) cost Thread','Forge currency is now just two: 🟢 Twist Cream rolls any mod line and ⚪ Crystal Glaze raises tiers (old Spark Sugar and Wild Jam converted)','Condition relics trimmed to Dash Fury, Kill Streak and Last Stand — the copies of other bonuses are gone','Burn and freeze from every source now use one shared rule, and burn ticks even without a Spicy Infusion','Relic cards tell you which one makes a Fusion with Evolution, and the Evolution card lists them','Hidden Quests merged into Achievements — no more double rewards, five new achievements','Renamed duplicates: Cracked Crystal relic, Titan Fist, Blood Mend, Bossbreaker Gloves']},
   {v:'7.8.87',date:'2026-10-19',title:'Menu Cleanup',items:['Core Stones are gone for good: Dig stones, Depth Gifts and boss loot now give Weave Thread directly','Removed the unused Overcap stars from the Temple','Removed hidden leftovers: Sugar Orders, the Pact tab, Atlas Points, the old Recipe map bag and Zone Modifiers','The old hidden daily mission no longer runs next to Daily Quests','Hero unlocks are recorded again, so the Mochi Core Family achievement can be completed']},
   {v:'7.8.86',date:'2026-10-19',title:'Deeper Delve, Better Loot',items:['Mochi Delve: Forge currency now scales with depth — Epic currency below depth 10, Legend from depth 10, and +5% more drops per depth (up to ×3 at depth 40)','The Delve node panel shows the loot tier and multiplier for that depth']},
   {v:'7.8.85',date:'2026-10-19',title:'Reroll, Banish & Kitchen Fixes',items:['Level-up: 🎲 Reroll and 🚫 Banish buttons are back (3 rerolls and 2 banishes per stage, +1 each per Spare Cards / Cull perk rank)','Banish removes a card for the rest of the stage; reroll draws three new cards','Kitchen: 4 signature recipes that could never work now use live effects (Candy Armor = hurt → Wipe Enemy Shots, Brain Freeze = low HP → Freeze, Double Helping = Unique → 8-Way Shots, Slow Simmer = every 10s → Pull All EXP)','Removed unused card code (Dual Infusion, Fusion card, old Modifier/Trade-off injection)']},
@@ -3544,7 +3545,7 @@ const RELICS = {
   shell:     { emoji:'🫧', name:'Candy Shell',    desc:'Every 15 kills, gain a shield that blocks the next hit' },
   jam:       { emoji:'🍓', name:'Jam Trail',      desc:'Dashing drops 3 jam bombs that explode after 0.5s' },
   crown:     { emoji:'👑', name:'Crown Breaker',  desc:'+30% damage to bosses, minibosses and elites' },
-  glass:     { emoji:'💔', name:'Glass Heart',    desc:'+40% damage, but -25% max HP' },
+  glass:     { emoji:'💔', name:'Cracked Crystal',    desc:'+40% damage, but -25% max HP' },
   momentum:  { emoji:'🌀', name:'Momentum',       desc:'+25% damage while moving' },
   lastbreath:{ emoji:'🕯️', name:'Last Breath',    desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
   chill:     { emoji:'❄️', name:'Chill Touch',    desc:'Hits have a 10% chance to freeze normal enemies for 1s' },
@@ -3787,10 +3788,10 @@ const BASIC_PATHS={
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
                 {id:'p_ember',iconKey:'ic_path_brawler',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. No five-hit combo: every punch is a Ground Pound that adds Tremor (+6% damage taken per stack, up to 5, 3s). Higher regen than other paths. Hold Unique: charge up to 3 Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage. Endgame: beat a Delve boss at Depth 15+ with Chocolate to unlock Rage IV (×5.5, almost full-screen)',
-      upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Giant Slayer',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+      upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Titan Fist',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Quake',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'},
                 {id:'p_ironblood',iconKey:'ic_path_titan',name:'Iron Blood',emoji:'🩸',max:3,fx:{},headline:'-20% charge HP cost',desc:'Blood Rage costs 20% less HP per rank and Titan regen +0.4% max HP/s per rank'},
-                {id:'p_secondwind',iconKey:'ic_path_titan',name:'Second Wind',emoji:'💗',max:2,fx:{},headline:'Heal on big release',desc:'Releasing level 2+ Blood Rage heals 4% max HP per charge level per rank'},
+                {id:'p_secondwind',iconKey:'ic_path_titan',name:'Blood Mend',emoji:'💗',max:2,fx:{},headline:'Heal on big release',desc:'Releasing level 2+ Blood Rage heals 4% max HP per charge level per rank'},
                 {id:'p_fastrage',iconKey:'ic_path_titan',name:'Quick Fury',emoji:'⏩',max:3,fx:{},headline:'+20% charge speed',desc:'Blood Rage charges 20% faster per rank'},
                 {id:'p_crater',iconKey:'ic_path_titan',name:'Lava Crater',emoji:'🌋',max:2,fx:{},headline:'Release leaves lava',desc:'Releasing level 2+ Blood Rage leaves a lava pool for 3s; +50% lava damage per rank'}]},
     {id:'dashboxer',iconKey:'ic_path_dashboxer',name:'Dash Boxer Build',emoji:'🐾',base:{dmg:0.9,dashc:1,dashm:0.5},desc:'+1 normal Dash charge, 25% faster recharge and ×0.9 punch power. Dash preserves combo progress and empowers the next punch. Tap Unique: Phantom Rush',
@@ -4586,17 +4587,14 @@ function promoteReward(rank){ return 50+rank*40; }   // 🍬 โบนัสต�
 /* ---- RANK PERKS: ทุก rank ได้ 1 แต้ม (RP) ลงใน perk ถาวรที่เลือกเอง (depth + การตัดสินใจ) ---- */
 // ผัง Passive แบ่ง 3 ชั้น: ชั้น 2 ปลดเมื่อลงแต้มชั้น 1 ครบ 3 · ชั้น 3 ปลดเมื่อลงชั้น 1+2 ครบ 8 (ความลึกของระบบ)
 const RANK_PERKS = [
-  { id:'vigor',   tier:1, emoji:'❤️', name:'Vigor',        max:5, desc:'+6% max HP per rank' },
-  { id:'might',   tier:1, emoji:'💥', name:'Might',        max:5, desc:'+5% damage per rank' },
   { id:'greed',   tier:1, emoji:'🍬', name:'Sweet Greed',  max:5, desc:'+8% Sugar from stage rewards per rank' },
   { id:'reroll',  tier:2, emoji:'🎲', name:'Spare Cards',  max:3, desc:'+1 card reroll per stage' },
   { id:'banish',  tier:2, emoji:'🚫', name:'Cull',         max:2, desc:'+1 card banish per stage' },
   { id:'boxLuck', tier:2, emoji:'🎁', name:'Box Luck',     max:3, desc:'+30% secret box drop chance per rank' },
-  { id:'ironWill',tier:3, emoji:'🛡️', name:'Iron Will',    max:3, desc:'-4% damage taken per rank' },
   { id:'fortune', tier:3, emoji:'💠', name:'Fortune',      max:3, desc:'+10% crafting currency from rewards per rank' },
   { id:'revive',  tier:3, emoji:'🕯️', name:'Revival Candle',max:1, desc:'Revive once per stage at 45% HP' },
 ];
-const PERK_TIER_REQ = { 2:3, 3:8 };   // แต้มที่ต้องลงในชั้นก่อนหน้าเพื่อปลดชั้นนี้
+const PERK_TIER_REQ = { 2:2, 3:5 };   // v7.8.88 Vigor/Might/Iron Will ตัด (สเตตัสถาวรเหลือ Weave + Talent ฮีโร่)   // แต้มที่ต้องลงในชั้นก่อนหน้าเพื่อปลดชั้นนี้
 /* ---- v5.27 ⛏️ Temple Depths: มินิเกมขุดใต้วิหาร (ดู docs/TEMPLE_DIG_DESIGN.md) ---- */
 const DIG_N=5, DIG_START_SHOVELS=0;
 const DIG_SHOP_COST=120, DIG_SHOP_SHOVELS=5, DIG_SHOP_DAILY_LIMIT=3;
@@ -4618,7 +4616,7 @@ const DIG_ITEMS={
   trap:{emoji:'🪤',name:'Trap'},                          // v5.31 เสียพลั่วเพิ่ม 1
   stair:{emoji:'🕳️',name:'Secret Passage',rare:true},    // v5.31 ข้ามลง 2 ชั้น + ห้องลับ
 };
-const SCROLL_PER_PERK=4;
+const SCROLL_PER_PERK=4; const SCROLL_THREADS=15, ANCIENT_THREAD_COST=60;   // v7.8.88 Scroll รวมเป็น Thread: 1 ชิ้นเก่า = 15 · Ancient Perk = 60 Thread
 /* ---- v5.30 Ancient Perks: Perk ลับจากใต้วิหาร (ปลดด้วยคัมภีร์ · RP ใช้ไม่ได้) ---- */
 const ANCIENT_PERKS=[
   { id:'echoDash',      emoji:'🌀', name:'Echo Dash',      desc:'3 dashes within 2.5s release a shockwave' },
@@ -4626,7 +4624,7 @@ const ANCIENT_PERKS=[
   { id:'secondWeave',   emoji:'🃏', name:'Second Weave',   desc:'Your first level-up each stage gives an extra card pick' },
   { id:'ancientGuard',  emoji:'🗿', name:'Ancient Guard',  desc:'Survive your first lethal hit each stage at 1 HP (3s immune)' },
   { id:'sugarVein',     emoji:'🍬', name:'Sugar Vein',     desc:'+20% Sugar from kills' },
-  { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+8% max HP · +0.6 HP regen per second' },
+  { id:'deepRoots',     emoji:'🌳', name:'Deep Roots',     desc:'+1 HP regen per second' },
 ];
 const STONE_THREADS=25;   // แก่นขั้นพิเศษ +1..+6 ถาวร (ไม่รีเซ็ตตอนเลื่อนยศ) · 1 ขั้น = 2 เลเวลแก่น
 /* ---- v5.35 🍳 Flavor Recipes: ประกอบ perk เอง = Trigger + Effect (+ Modifier) · ชิ้นส่วนได้จากการขุด ---- */
@@ -4762,18 +4760,8 @@ const HUB_GROUPS = {
     ['__tutorial','🎓','How to Play','Replay the controls & combat tutorial'] ] },
 };
 
-/* ---- QUESTS: เส้นทางเป้าหมาย (Player Journey) — ร้อยทุกระบบเข้าด้วยกัน โชว์ "Next Quest" ที่หน้าหลัก ---- */
-const QUESTS = [
-  { id:'s1',     t:'Clear Stage 1 — Sour Ant Nest',        r:60,  go:'chapter',  done:d=>!!(d.stageMastery||{})[0] },
-  { id:'rank1',  t:'Reach your first Rank',                r:60,  go:'gLoadout', done:d=>(d.rank||0)>=1 },
-  { id:'gear3',  t:'Collect 3 pieces of equipment',        r:70,  go:'gLoadout', done:d=>(d.ownedGear||[]).length>=3 },
-  { id:'s2',     t:'Clear Stage 2 — Rotten Drain',         r:90,  go:'chapter',  done:d=>!!(d.stageMastery||{})[1] },
-  { id:'s3',     t:'Clear Stage 3 — Chili Engine Room',    r:110, go:'chapter',  done:d=>!!(d.stageMastery||{})[2] },
-  { id:'legend', t:'Hunt 1 Legendary item',                r:150, go:'gLoadout', done:d=>(d.ownedGear||[]).some(id=>String(id).startsWith('lg_')) },
-  { id:'s4',     t:'Clear Stage 4 — Sugar Freezer',        r:140, go:'chapter',  done:d=>!!(d.stageMastery||{})[3] },
-  { id:'hell1',  t:'Clear any stage on Hell difficulty',   r:180, go:'chapter',  done:d=>(d.diffBest||[]).some(v=>v>=3) },
-  { id:'s5',     t:'Defeat The Great Hunger (Stage 5)',    r:250, go:'chapter',  done:d=>!!(d.stageMastery||{})[4] },
-];
+// v7.8.87+: QUESTS (Player Journey ซ่อน) รวมเข้า ACHIEVEMENTS แล้ว · questClaimed เก่า → achievements (กันจ่ายซ้ำ)
+const QUEST_TO_ACH={s1:'stage1',rank1:'bond',gear3:'gear3',s2:'stage2',s3:'stage3',legend:'legend',s4:'stage4',hell1:'hell',s5:'hunger'};
 
 /* ---- GEAR: ของสวมใส่ 2 ช่อง (weapon/charm) ซื้อด้วย Sugar แล้วสวมใส่ ---- */
 // ของสวมใส่ · ตีบวกได้ (lv=ระดับตีบวก 0..enhMax) เพิ่มพลังต่อระดับ
@@ -4787,7 +4775,7 @@ function gearSellSugar(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.
 const GEAR_INBOX_CAP = 5;
 const GEAR_DISMANTLE_BASE = {start:0,common:1,rare:3,epic:7,legend:15};
 function gearDismantleValue(item){if(!item)return 0;return (GEAR_DISMANTLE_BASE[item.grade]||0)+Math.floor(Math.max(1,item.itemLevel||1)/20)+Math.max(0,item.enhanceLv||0)*2;}
-function gearDeliverySuffix(got){if(!got)return '';const d=got.delivery||got.destination;if(d==='inbox')return ' · Sent to Reward Inbox';if(d==='salvaged')return got.sugar?' · Auto-sold +🍬'+got.sugar:' · Auto-dismantled +🔩'+(got.shards||0);return '';}
+function gearDeliverySuffix(got){if(!got)return '';const d=got.delivery||got.destination;if(d==='inbox')return ' · Sent to Reward Inbox';if(d==='salvaged')return got.sugar?' · Auto-sold +🍬'+got.sugar:' · Auto-dismantled +🧶'+(got.shards||0);return '';}
 // v6.55.35 Item Power: เปลี่ยน Power ของตัวละครปัจจุบันถ้าสวมชิ้นนี้แทนชิ้นในช่องเดียวกัน (สลับชั่วคราวแล้วคืน)
 function gearPowerDelta(item,basePow){try{const d=Save.data,cid=d.character||'momo',slot=item&&item.slot;if(!slot)return 0;const eq=d.equippedGear||(d.equippedGear={}),prev=eq[slot];if(prev===item.uid)return 0;
   const base=basePow!=null?basePow:heroPower(cid,null),list=d.gearItems||(d.gearItems=[]),added=!list.includes(item);if(added)list.push(item);eq[slot]=item.uid;let p=base;try{p=heroPower(cid,null);}finally{if(prev===undefined)delete eq[slot];else eq[slot]=prev;if(added)list.splice(list.indexOf(item),1);}return p-base;}catch(e){return 0;}}
@@ -5043,9 +5031,9 @@ function forgePool(item,line,group){const row=['power','sustain','play'][line];r
 function forgeRollOptions(item,line,pool,n,forceId){const left=pool.slice(),out=[];if(forceId){const f=left.find(m=>m.id===forceId);if(f){out.push(forgeRoll(item,line,f));left.splice(left.indexOf(f),1);}}while(out.length<n&&left.length){const m=pickWeightedMod(left);if(!m)break;out.push(forgeRoll(item,line,m));left.splice(left.indexOf(m),1);}return out;}
 const FORGE_PITY=20;   // v7.8.84 Auto-roll: ครบ 20 ครั้งไม่ได้ → ครั้งที่ 20 ได้เป้าแน่นอน
 function forgeRoll(item,line,mod){const old=forgeLines(item)[line],best=affixBestTierForItem(item,mod);if(!old)return rollOneAffix(mod,best,item.itemLevel||1);const od=affixDef(old.id),ratio=(old.t??10)/Math.max(1,(od&&od.tiers.length||11)-1),t=Math.min(mod.tiers.length-1,Math.round(ratio*(mod.tiers.length-1))),b=mod.tiers[t];return{id:mod.id,t,v:b[0]+Math.floor(Math.random()*(b[1]-b[0]+1)),t11:1,tierSchema:2,line};}
-function forgeMigrate(data){if(data.forgeEconomyVersion===1)return false;const w=data.currency||(data.currency={}),safe=k=>Math.max(0,Math.floor(Number(w[k])||0)),refund=(key,to,oldPrice,newPrice)=>{const value=safe(key)*oldPrice,n=Math.floor(value/newPrice);w[to]=safe(to)+n;data.sugar=(data.sugar||0)+value-n*newPrice;delete w[key];};
+function forgeMigrate(data){if(data.forgeEconomyVersion===1){const w=data.currency||{};const n=Math.max(0,Math.floor(Number(w.alt)||0))+Math.max(0,Math.floor(Number(w.chaos)||0));if(n||w.alt!=null||w.chaos!=null){w.transmute=Math.max(0,Math.floor(Number(w.transmute)||0))+n;delete w.alt;delete w.chaos;data.currency=w;return true;}return false;}const w=data.currency||(data.currency={}),safe=k=>Math.max(0,Math.floor(Number(w[k])||0)),refund=(key,to,oldPrice,newPrice)=>{const value=safe(key)*oldPrice,n=Math.floor(value/newPrice);w[to]=safe(to)+n;data.sugar=(data.sugar||0)+value-n*newPrice;delete w[key];};
   for(const k of ['regal','exalt']){w.transmute=safe('transmute')+safe(k);delete w[k];}const jam=Math.floor(safe('alt')/2);w.alt=safe('alt')-jam;w.chaos=safe('chaos')+jam;
-  refund('annul','alt',90,110);refund('scour','transmute',30,120);for(const it of (data.gearItems||[]).concat(data.gearInbox||[]))if(it&&it.affixes)forgeSetLines(it,forgeLines(it));data.forgeEconomyVersion=1;return true;}
+  refund('annul','alt',90,110);refund('scour','transmute',30,120);for(const it of (data.gearItems||[]).concat(data.gearInbox||[]))if(it&&it.affixes)forgeSetLines(it,forgeLines(it));data.forgeEconomyVersion=1;forgeMigrate(data);return true;}
 function forgeState(s){return s._forgeState||(s._forgeState={barrier:0,barrierUntil:0,lastHurt:s.elapsed||0,lastHit:-Infinity,kills:0,hitCount:0,xp:0,eliteBonus:0});}
 function forgeBarrier(s,amount){const p=s.player,r=forgeState(s),cap=p.maxhp*Math.min(.5,.25+forgeValue(p,61)/100);r.barrier=Math.min(cap,r.barrier+Math.max(0,amount));r.barrierUntil=(s.elapsed||0)+4*(1+forgeValue(p,62)/100);}
 function forgeHeal(s,amount,overflow=true){const p=s.player;if(s.recipeHas?.('noheal')||p._uqNoRegen)return;amount=Math.max(0,amount)*(s.pactHealMul?.()??1);if(s.usesStoryBudget?.()){const r=forgeState(s),now=s.elapsed||0;if(now-(r.healWindowAt??-Infinity)>=1){r.healWindowAt=now;r.healSum=0;}amount=Math.min(amount,Math.max(0,p.maxhp*.03-(r.healSum||0)));r.healSum=(r.healSum||0)+amount;}const healed=Math.min(p.maxhp-p.hp,amount);p.hp+=Math.max(0,healed);if(overflow&&forgeValue(p,24))forgeBarrier(s,(amount-healed)*forgeValue(p,24)/100);}
@@ -5104,7 +5092,7 @@ function affixBestTierForItem(item,mod){const base=item&&GEAR_ALL.find(g=>g.id==
   const levelBest=Math.max(0,Math.round(AFFIX_TIER_MAX-lvl/9));const count=(mod&&mod.tiers&&mod.tiers.length)||11;return Math.min(count-1,Math.max(Math.round((levelBest+(BASE_TIER_OFFSET[grade]??3))*(count-1)/10),(mod&&mod.bestTier)||0));}
 function affixBestRangeText(item,mod){if(!mod||!mod.tiers)return'—';const t=affixBestTierForItem(item,mod),b=mod.tiers[t]||mod.tiers[mod.tiers.length-1],lo=mod.fmt?mod.fmt(b[0]):b[0],hi=mod.fmt?mod.fmt(b[1]):b[1];return lo===hi?lo:(lo+' – '+hi);}
 // v4.29: เติมช่องว่าง — common/magic ใช้ Spark Sugar (transmute, ได้บ่อย) · rare ใช้ Wish Candy (exalt) · reroll ช่องเดิม: rare=Wild Jam, magic=Twist Cream
-function craftCurrencyForLine(line){return ['transmute','alt','chaos'][Number.isInteger(line)?Math.max(0,Math.min(2,line)):0];}
+function craftCurrencyForLine(line){return 'transmute';}
 // สุ่ม tier ระหว่าง best..5 · ถ่วงให้ tier แย่เจอบ่อย (T1 หายาก = loot chase)
 // iLv มีผลกับ Tier ที่ออก: แบ่งช่วงละ 10 เลเวล (step 0..9) → ยิ่ง iLv สูง bias ยิ่งลด = tier แย่ (t สูง) ถูกถ่วงน้อยลง = tier ดีออกบ่อยขึ้น
 // v4.92: สุ่มได้ทุก tier ตั้งแต่ best ถึง T10 เสมอ · 5 ขั้นแรกจาก best ถ่วง (d+1)^1.3 · ต่ำกว่านั้นหางลดลง ×0.7/ขั้น (T10 ออกได้ทุก iLv)
@@ -5154,12 +5142,10 @@ function sortAffixesByKind(affs){return affs.slice().sort((a,b)=>(a.line??0)-(b.
 const RARITY_LABEL = { common:{name:'Common',color:'#c7bdd6'}, magic:{name:'Magic',color:'#7fb0ff'}, rare:{name:'Rare',color:'#ffd166'} };
 function baseDefaultRarity(baseTier){ if(baseTier==='start')return 'common'; if(baseTier==='common')return 'magic'; return 'rare'; }
 const CURRENCY = [
-  {key:'transmute',emoji:'🔵',asset:'currency_spark_sugar',name:'Spark Sugar',desc:'Roll Power: one random result'},
-  {key:'alt',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Roll one random Sustain mod'},
-  {key:'chaos',emoji:'🟠',asset:'currency_wild_jam',name:'Wild Jam',desc:'Roll one random Utility mod'},
+  {key:'transmute',emoji:'🟢',asset:'currency_twist_cream',name:'Twist Cream',desc:'Forge roll: pick 1 of 3 new mods for any line'},   // v7.8.88 Spark Sugar/Twist Cream/Wild Jam รวมเป็นตัวเดียว
   {key:'divine',emoji:'⚪',asset:'currency_crystal_glaze',name:'Crystal Glaze',desc:'Reroll the selected mod tier; keep its identity'},
 ];
-const CUR_ALIAS={exalt:'transmute',regal:'transmute',annul:'alt',scour:'transmute'};
+const CUR_ALIAS={exalt:'transmute',regal:'transmute',annul:'transmute',scour:'transmute',alt:'transmute',chaos:'transmute'};
 function curKey(k){ return CUR_ALIAS[k]||k; }
 function currencyDef(k){ k=curKey(k); return CURRENCY.find(c=>c.key===k); }
 // v4.30: flame-sand แบบ Torchlight — reroll ค่าของ mod ที่เลือก ใช้ได้ทุก rarity แต่ "ผลาญเยอะ" (เผา 3 ต่อครั้ง)
@@ -5167,14 +5153,14 @@ const FLAME_REROLL_COST = 1;
 // v7.8.84 ราคา Glaze ต่อการอัป 1 ขั้น: ขั้นยิ่งดียิ่งแพง (T10→9 = 1 … T1→0 = 10)
 function forgeGlazeCost(a){return Math.max(1,11-Math.max(1,a&&a.t!=null?a.t:10));}
 // ราคา currency เป็น Sugar (ซื้อ = Fullราคา · ขาย = 60%)
-const CURRENCY_BUY = { transmute:120, alt:110, regal:120, chaos:110, exalt:120, divine:320, scour:30, annul:90 };   // v6.79 merged keys share a price
+const CURRENCY_BUY = { transmute:110, alt:110, regal:120, chaos:110, exalt:120, divine:320, scour:30, annul:90 };   // v6.79 merged keys share a price
 // ราคากล่องสุ่ม currency = ค่าเฉลี่ยราคาขายใหม่ (90%) ตามน้ำหนักสุ่มจริง
 let _bazBoxCost=0; function bazaarCurrencyBoxCost(){ if(_bazBoxCost)return _bazBoxCost; let t=0; const N=6000; for(let i=0;i<N;i++){const k=rollWeightedCurrency('epic')||'alt';t+=(CURRENCY_BUY[k]||60)*0.9;} _bazBoxCost=Math.max(10,Math.round(t/N/5)*5); return _bazBoxCost; }
 // One active Sugar Order: the reward is earned by clearing a regular stage, scaled by DIFFS[].reward.
 // Weighted reward pools. Values are percentages within a successful currency drop.
 const CURRENCY_DROP_POOLS = {
-  common:{transmute:45,alt:35,chaos:15,divine:5},rare:{transmute:30,alt:30,chaos:30,divine:10},
-  epic:{transmute:20,alt:25,chaos:35,divine:20},legend:{transmute:15,alt:20,chaos:35,divine:30},
+  common:{transmute:95,divine:5},rare:{transmute:90,divine:10},
+  epic:{transmute:80,divine:20},legend:{transmute:70,divine:30},
 };
 function rollWeightedCurrency(tier){
   const pool=CURRENCY_DROP_POOLS[tier]||CURRENCY_DROP_POOLS.common;
@@ -5304,7 +5290,7 @@ const UNIQUE_GEAR={
   ring2:{ slot:'ring', id:'uq_lucky_charm', chapter:5, tier:'legend', unique:true, themes:[0,6,12], emoji:'🍀', name:'Four-Leaf Gummy', cost:0, enh:true, desc:'UNIQUE · +12% crit chance · but -25% crit damage', apply:(p,lv)=>{p.critChance+=0.12+0.005*lv;p.critMul=(p.critMul||1.55)-0.25;} },
   amulet2:{ slot:'amulet', id:'uq_dash_heart', chapter:5, tier:'legend', unique:true, themes:[4,8,10], emoji:'💨', name:'Whirlwind Heart', cost:0, enh:true, desc:'UNIQUE · +50% damage for 2s after a Dash', apply:(p,lv)=>{p._cond=p._cond||{};p._cond.c_dash=(p._cond.c_dash||0)+2;} },
   armor2:{ slot:'armor', id:'uq_rage_apron', chapter:5, tier:'legend', unique:true, themes:[0,7,14], emoji:'😤', name:'Rage Apron', cost:0, enh:true, desc:'UNIQUE · up to ×2 damage as HP drops · but -15% max HP', apply:(p,lv)=>{p._tdBerserk=true;p._uqGlass=0.85;} },
-  gloves2:{ slot:'gloves', id:'uq_giant_gloves', chapter:5, tier:'legend', unique:true, themes:[3,6,12], emoji:'🥊', name:'Giant-Slayer Gloves', cost:0, enh:true, desc:'UNIQUE · +45% damage vs elites & bosses · but -10% move speed', apply:(p,lv)=>{p._cond=p._cond||{};p._cond.c_boss=(p._cond.c_boss||0)+3;p.baseSpeed*=0.90;} }
+  gloves2:{ slot:'gloves', id:'uq_giant_gloves', chapter:5, tier:'legend', unique:true, themes:[3,6,12], emoji:'🥊', name:'Bossbreaker Gloves', cost:0, enh:true, desc:'UNIQUE · +45% damage vs elites & bosses · but -10% move speed', apply:(p,lv)=>{p._cond=p._cond||{};p._cond.c_boss=(p._cond.c_boss||0)+3;p.baseSpeed*=0.90;} }
 };
 for(const _s in UNIQUE_GEAR){const _u=UNIQUE_GEAR[_s],_k=_u.slot||_s;if(GEAR[_k])GEAR[_k].push(_u);}
 function uniqueForTheme(t){ return Object.values(UNIQUE_GEAR).filter(u=>u.themes.includes(t)); }
@@ -5444,7 +5430,7 @@ const DQ_POOL=[
   {id:'cards',emoji:'🃏',name:'Pick 15 level-up cards',target:15,go:'stage'},
   {id:'sugar',emoji:'🍬',name:'Earn 600 Sugar',target:600,go:'stage'},
   {id:'gear',emoji:'🎁',name:'Collect 4 gear items',target:4,go:'stage',req:0},
-  {id:'shards',emoji:'🔩',name:'Dismantle gear for 20 shards',target:20,go:'gear',req:0},
+  {id:'shards',emoji:'♻️',name:'Salvage gear for 20 Thread',target:20,go:'gear',req:0},
   {id:'dig',emoji:'⛏️',name:'Dig 5 Temple Depths tiles',target:5,go:'dig',req:1},
 ];
 const DQ_PTS=20, DQ_BOXES=[{pts:40,art:'chest_badge_bronze',name:'Small Box'},{pts:70,art:'chest_badge_silver',name:'Big Box'},{pts:100,art:'chest_badge_gold',name:'Grand Box'}];
@@ -5530,8 +5516,9 @@ const Save = {
     if(!CHAR_ORDER.includes(this.data.character))this.data.character='momo';   // ตัวที่ถูกพัก (Berry) → คืนเป็นโมโม่
     if(!this.data.charProg)this.data.charProg={};
     if(this.data.coreStones){ let n=0; for(const k in this.data.coreStones)n+=Math.max(0,this.data.coreStones[k]||0); if(n)this.data.threads=(this.data.threads||0)+n*STONE_THREADS; this.data.coreStones={}; }   // v6.78 C1 refund
-    if(this.data.setDeposit){ let n=0; for(const k in this.data.setDeposit)n+=Math.max(0,this.data.setDeposit[k]||0); if(n)this.data.shards=(this.data.shards||0)+n*10; this.data.setDeposit={}; }   // v6.79 D1 refund
+    if(this.data.setDeposit){ let n=0; for(const k in this.data.setDeposit)n+=Math.max(0,this.data.setDeposit[k]||0); if(n)this.data.threads=(this.data.threads||0)+n*10; this.data.setDeposit={}; }   // v6.79 D1 refund
     if(!this.data.bestiary)this.data.bestiary={};
+    if(this.data.questClaimed){ if(!this.data.achievements)this.data.achievements={}; for(const q in this.data.questClaimed){ const a=QUEST_TO_ACH[q]; if(a&&this.data.questClaimed[q])this.data.achievements[a]=true; } delete this.data.questClaimed; }   // v7.8.88 Quests → Achievements (ไม่จ่ายซ้ำ)
     if(this.data.sugarOrder){ const o=this.data.sugarOrder; this.data.sugar=(this.data.sugar||0)+(o.cost||0); this.data.sugarOrder=null; }   // v6.78 C5: refund removed Sugar Orders
     // v4.12: bosses/minibosses แยกรายด่าน (boss0..5 / mini0..5) — เซฟเดิมนับรวมเป็น 'boss'/'mini' → ยกไป entry ด่าน 1
     if(this.data.bestiary.boss!=null){ this.data.bestiary.boss0=(this.data.bestiary.boss0||0)+this.data.bestiary.boss; delete this.data.bestiary.boss; }
@@ -5544,7 +5531,8 @@ const Save = {
     if(this.data.stageMastery[4])this.data.unlockedStage=Math.max(5,this.data.unlockedStage||0);
     if(!this.data.achievements)this.data.achievements={};
     if(!this.data.cookbook)this.data.cookbook={};   // สูตรที่เคยปรุงสำเร็จ (ถาวรข้ามรัน) → สมุดสูตร + รางวัล Sugar timesแรก
-    if(this.data.shards==null)this.data.shards=0;   // 🔩 เศษอุปกรณ์ (จากของซ้ำ) → หลอมของตำนาน
+    if(this.data.shards){ this.data.threads=(this.data.threads||0)+this.data.shards; } this.data.shards=0;   // v7.8.88 Shards → Thread 1:1
+    if(this.data.scrolls){ this.data.threads=(this.data.threads||0)+this.data.scrolls*SCROLL_THREADS; } this.data.scrolls=0;   // v7.8.88 Scrolls → Thread
     if(!this.data.gearAffix)this.data.gearAffix={};   // affix ต่อชิ้น (E: loot chase)
     if(!this.data.gearRarity)this.data.gearRarity={};   // rarity ที่คราฟต์ (common/magic/rare) ต่อชิ้น
     if(!this.data.currency)this.data.currency={};
@@ -5662,14 +5650,14 @@ const Save = {
     if(!this.data.ownedGear.includes(baseId))this.data.ownedGear.push(baseId);
     const mode=this.data.gearAutoDismantle||'off',protectedItem=!!item.favorite||!!item.locked||item.grade==='epic'||item.grade==='legend';let auto=!protectedItem&&((mode==='common'&&item.grade==='common')||(mode==='rare'&&(item.grade==='common'||item.grade==='rare')));
     if(auto&&this.data.gearAutoKeepUp!==false&&gearPowerDelta(item)>0)auto=false;   // v6.55.35 เก็บชิ้นที่ดีกว่าของที่สวม
-    if(auto){if(this.data.gearAutoOut==='sell'){const sugar=gearSellSugar(item);this.addSugar?this.addSugar(sugar):(this.data.sugar=(this.data.sugar||0)+sugar);this.save();return{item,destination:'salvaged',sugar};}const shards=gearDismantleValue(item);this.data.shards=(this.data.shards||0)+shards;this.save();return{item,destination:'salvaged',shards};}
+    if(auto){if(this.data.gearAutoOut==='sell'){const sugar=gearSellSugar(item);this.addSugar?this.addSugar(sugar):(this.data.sugar=(this.data.sugar||0)+sugar);this.save();return{item,destination:'salvaged',sugar};}const shards=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+shards;this.save();return{item,destination:'salvaged',shards};}
     if(this.gearInventoryFull()){
-      if(auto){const shards=gearDismantleValue(item);this.data.shards=(this.data.shards||0)+shards;this.save();return{item,destination:'salvaged',shards};}
+      if(auto){const shards=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+shards;this.save();return{item,destination:'salvaged',shards};}
       if(this.data.gearInbox.length<GEAR_INBOX_CAP){this.data.gearInbox.push(item);this.save();return{item,destination:'inbox'};}
       if(protectedItem){const idx=this.data.gearInbox.findIndex(x=>x&&!x.favorite&&!x.locked&&(x.grade==='common'||x.grade==='rare'));
-        let displacedShards=0;if(idx>=0){const old=this.data.gearInbox.splice(idx,1)[0];displacedShards=gearDismantleValue(old);this.data.shards=(this.data.shards||0)+displacedShards;}
+        let displacedShards=0;if(idx>=0){const old=this.data.gearInbox.splice(idx,1)[0];displacedShards=gearDismantleValue(old);this.data.threads=(this.data.threads||0)+displacedShards;}
         this.data.gearInbox.push(item);this.save();return{item,destination:'inbox',overflow:idx<0,displacedShards};}
-      const shards=gearDismantleValue(item);this.data.shards=(this.data.shards||0)+shards;this.save();return{item,destination:'salvaged',shards};
+      const shards=gearDismantleValue(item);this.data.threads=(this.data.threads||0)+shards;this.save();return{item,destination:'salvaged',shards};
     }
     this.data.gearItems.push(item);this.save();return{item,destination:'bag'};},
   claimGearInbox(uid){const item=this.gearInboxItem(uid);if(!item||this.gearInventoryFull())return false;this.data.gearInbox=this.data.gearInbox.filter(x=>x&&x.uid!==uid);item.isNew=true;this.data.gearItems.push(item);this.save();return true;},
@@ -5679,16 +5667,16 @@ const Save = {
   equipGearBase(slot,baseId){ const item=(this.data.gearItems||[]).find(x=>x&&x.baseId===baseId&&x.slot===slot); return item?this.equipGearInstance(slot,item.uid):false; },
   removeGearInstance(uid){ const item=this.gearItem(uid); if(!item||item.locked||item.favorite||this.isGearEquipped(uid))return false;
     this.data.gearItems=this.data.gearItems.filter(x=>x.uid!==uid); this.save(); return true; },
-  dismantleGearInstance(uid){const item=this.gearItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return 0;const shards=gearDismantleValue(item);this.data.gearItems=this.data.gearItems.filter(x=>x&&x.uid!==uid);this.data.shards=(this.data.shards||0)+shards;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return shards;},
-  dismantleGearInbox(uid){const item=this.gearInboxItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='epic'||item.grade==='legend'||item.grade==='start')return 0;const shards=gearDismantleValue(item);this.data.gearInbox=this.data.gearInbox.filter(x=>x&&x.uid!==uid);this.data.shards=(this.data.shards||0)+shards;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return shards;},
+  dismantleGearInstance(uid){const item=this.gearItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return 0;const shards=gearDismantleValue(item);this.data.gearItems=this.data.gearItems.filter(x=>x&&x.uid!==uid);this.data.threads=(this.data.threads||0)+shards;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return shards;},
+  dismantleGearInbox(uid){const item=this.gearInboxItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='epic'||item.grade==='legend'||item.grade==='start')return 0;const shards=gearDismantleValue(item);this.data.gearInbox=this.data.gearInbox.filter(x=>x&&x.uid!==uid);this.data.threads=(this.data.threads||0)+shards;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return shards;},
   markGearSeen(uid){ const item=this.gearItem(uid); if(!item)return false; if(item.isNew){item.isNew=false;this.save();} return true; },
   toggleGearFavorite(uid){ const item=this.gearItem(uid); if(!item)return false; item.favorite=!item.favorite; this.save(); return item.favorite; },
   toggleGearLock(uid){ const item=this.gearItem(uid); if(!item)return false; item.locked=!item.locked; this.save(); return item.locked; },
   gearLv(ref){ const item=this.gearItem(ref); if(item)return item.enhanceLv||0; const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearLv&&this.data.gearLv[id])||0; },
   gearReviveCount(){ let n=0; for(const slot in GEAR){ const it=GEAR[slot].find(g=>g.id===this.data.gear[slot]); if(it&&it.fx==='revive')n++; } return n; },   // อุปกรณ์ตำนานคืนชีพที่สวมอยู่
   // 🔩 เศษอุปกรณ์: ได้จากของซ้ำ · ใช้หลอมของตำนาน
-  addShards(n){ this.data.shards=(this.data.shards||0)+n; this.save(); },
-  spendShards(n){ if((this.data.shards||0)>=n){ this.data.shards-=n; this.save(); return true; } return false; },
+  addShards(n){ this.addThreads(n); },   // v7.8.88 Gear Shards รวมเป็น Weave Thread
+  spendShards(n){ return this.spendThreads(n); },
   // affix ต่อ instance; legacy maps are mirrored for compatibility with the current UI.
   gearAffixes(ref){ const item=this.gearItem(ref); if(item)return item.affixes||[]; const id=(this.gearBase(ref)||{}).id||ref; return (this.data.gearAffix&&this.data.gearAffix[id])||[]; },
   ensureAffix(ref,tier){ const item=this.gearItem(ref),base=this.gearBase(ref),id=base?base.id:ref,t=base?base.tier:tier;
@@ -5715,7 +5703,7 @@ const Save = {
     if(item){ for(const s in this.data.equippedGear){ if(this.data.equippedGear[s]===item.uid){ delete this.data.equippedGear[s]; if(this.data.gear)delete this.data.gear[s]; } } this.data.gearItems=(this.data.gearItems||[]).filter(x=>x&&x.uid!==item.uid); }
     this.data.gearLv[id]=0; this.save(); return {result:'destroy',lv:0}; },
   // v7.8.84 เจ้าของ: รวม Sell+Dismantle เป็น Salvage ปุ่มเดียว — ได้ทั้ง 🔩 Shard และ 🍬 Sugar
-  salvageGearInstance(uid){const item=this.gearItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return null;const shards=gearDismantleValue(item),sugar=gearSellSugar(item);this.data.gearItems=this.data.gearItems.filter(x=>x&&x.uid!==uid);this.data.shards=(this.data.shards||0)+shards;this.data.sugar=(this.data.sugar||0)+sugar;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return {shards,sugar};},
+  salvageGearInstance(uid){const item=this.gearItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return null;const shards=gearDismantleValue(item),sugar=gearSellSugar(item);this.data.gearItems=this.data.gearItems.filter(x=>x&&x.uid!==uid);this.data.threads=(this.data.threads||0)+shards;this.data.sugar=(this.data.sugar||0)+sugar;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return {shards,sugar};},
   sellGearInstance(uid){ const item=this.gearItem(uid); if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return 0;
     const sugar=gearSellSugar(item); this.data.gearItems=(this.data.gearItems||[]).filter(x=>x&&x.uid!==uid); this.data.sugar=(this.data.sugar||0)+sugar; this.save(); return sugar; },
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลWaitบปัจจุบัน (0..TAL_MAX)
@@ -5737,8 +5725,7 @@ const Save = {
   frResetRecipes(){ const rs=this.frRecipes();if(!rs.some(r=>r.t||r.e||r.m)||this.threads()<this.kitchenResetCost())return false;
     this.data.threads-=this.kitchenResetCost();const p=this.frParts();for(const r of rs){for(const k of ['t','e','m']){if(r[k]){p[r[k]]=(p[r[k]]||0)+1;r[k]=null;}}}this.save();return true; },
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
-  scrolls(){ return this.data.scrolls||0; },
-  unlockAncient(id){ if(this.ancientHas(id)||this.scrolls()<SCROLL_PER_PERK||!ANCIENT_PERKS.find(p=>p.id===id))return false; this.data.scrolls-=SCROLL_PER_PERK; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
+  unlockAncient(id){ if(this.ancientHas(id)||!ANCIENT_PERKS.find(p=>p.id===id)||!this.spendThreads(ANCIENT_THREAD_COST))return false; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
   specialCoreLvl(id){ const n=Number((this.data.specialCores||{})[id])||0;return Math.max(0,Math.min(3,Math.floor(n))); },
   specialCoreCost(id){const core=SPECIAL_CORES.find(c=>c.id===id);return core?core.base*(this.specialCoreLvl(id)+1):0;},
   buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
@@ -6108,8 +6095,8 @@ function computeHeroStats(cid,basic){
       applyItemLevelBonus(p,inst);mark('Gear · '+nm+' iLv bonus');if(slot.slot==='weapon'&&it&&it.tier!=='start')p.powerMul=itemPowerMul(inst.itemLevel);
       if(inst.affixes)for(const a of inst.affixes){ const d=affixDef(a.id); if(d&&d.apply&&!weaponLocalMod(inst,a.id)){d.apply(p,a.v);mark('Mod · '+(d.label||a.id)+' T'+(a.t!=null?a.t:'?')+' ('+(it?it.name:slot.slot)+')');} } }
     { const sc=gearSetCounts(); for(const sid in sc){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(sc[sid]>=+need&&def.bonuses[need].apply){def.bonuses[need].apply(p);mark('Set · '+def.name+' '+need+'pc');} } } }
-    const rp=Save.data.rankPerks||{}; if(rp.vigor){p.maxhp*=1+0.06*rp.vigor;mark('Perk · Vigor '+rp.vigor);} if(rp.might){p.dmgMul+=(1+0.05*rp.might)-1;mark('Perk · Might '+rp.might);} if(rp.ironWill){p.dmgTakenMul*=(1-0.04*rp.ironWill);mark('Perk · Iron Will '+rp.ironWill);}
-    if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; } mark('Ancient Perks');
+    const rp=Save.data.rankPerks||{}; 
+    if(Save.ancientHas('deepRoots')){ p.regen=(p.regen||0)+1; } mark('Ancient Perks');
     if(applyFrUpkeep(p))mark('Kitchen upkeep');
     clampPlayerStats(p); mark('Stat cap');   // v4.55: เดิมใช้เพดาน 0.6/0.5 ≠ ในเกมจริง → หน้า Stats โชว์เลขเกินของจริง
     return p;
@@ -6434,12 +6421,6 @@ const RECIPE_PACT_MODS=[
 const RECIPE_MODS=RIFT_MODS.concat(RECIPE_MECH_MODS,RECIPE_PACT_MODS);
 function recipeModDef(id){ return RECIPE_MODS.find(q=>q.id===id); }
 // ต้นทุนคราฟต์ recipe (currency เดิมของ Affix Forge)
-const RECIPE_CRAFT=[
-  {id:'transmute',label:'Upgrade → Magic',need:'normal'},
-  {id:'regal',label:'Upgrade → Rare',need:'magic'},
-  {id:'chaos',label:'Reroll mods',need:'any'},
-  {id:'scour',label:'Wipe → Normal',need:'any'}
-];
 // R6: Atlas — จำ Tier สูงสุดที่เคลียร์ต่อธีม · แต้ม = เคลียร์ครั้งแรก 1 + ทุก 4 Tier อีก 1 (T4/T8/T12/T16)
 function atlasData(){ if(!Save.data.atlas||typeof Save.data.atlas!=='object')Save.data.atlas={}; return Save.data.atlas; }
 // v6.19 (Atlas Map M1-M4): แผนที่การเดินทาง 3 ชั้น · Mochitopia (ล่าง) → ครัว → สวน → บัลลังก์ → Pinnacle (บน)
@@ -6523,7 +6504,7 @@ function delveMul(d){ const a=Math.min(d,20),b=Math.max(0,d-20); return {hp:Math
 // v6.22 Atlas Influence (3A): ทุกแมพมีรสประจำตัว · เคลียร์แล้วรสซึมไปแมพที่เชื่อม (+1 ชั้น/การเคลียร์ เพดาน 3/รส) · ชั้นละ ยาก+10% รางวัล+15% (กฎเหล็ก)
 const AMAP_FLAVORS=[
   {id:'spicy',emoji:'🌶️',name:'Spicy',color:0xff6b4a,eff:'Enemies may leave fire puddles',rew:'+currency'},
-  {id:'frosty',emoji:'❄️',name:'Frosty',color:0x7fd4ff,eff:'Enemies slower but tougher',rew:'+gear shards'},
+  {id:'frosty',emoji:'❄️',name:'Frosty',color:0x7fd4ff,eff:'Enemies slower but tougher',rew:'+Weave Thread'},
   {id:'sweet',emoji:'🍯',name:'Sweet',color:0xffd166,eff:'Bigger swarms',rew:'+Sugar'},
   {id:'sour',emoji:'🍋',name:'Sour',color:0xc8f26b,eff:'Elites appear more often',rew:'+gear drops'},
   {id:'fermented',emoji:'🍄',name:'Fermented',color:0xc9a3ff,eff:'Enemies hit harder',rew:'+unique chance'}];
@@ -6610,9 +6591,14 @@ const ACHIEVEMENTS=[
   {id:'first',emoji:'⚔️',name:'First Taste of Victory',desc:'Defeat your first enemy',reward:30,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1},
   {id:'hunter',emoji:'☠️',name:'Thousand-Flavor Hunter',desc:'Defeat 1,000 enemies total',reward:180,test:d=>Object.values(d.bestiary||{}).reduce((a,b)=>a+b,0)>=1000},
   {id:'stage1',emoji:'🐜',name:'Sour Nest Conqueror',desc:'Clear Stage 1 for the first time',reward:60,test:d=>!!(d.stageMastery||{})[0]},
+  {id:'stage2',emoji:'🚰',name:'Drain Diver',desc:'Clear Stage 2 — The Rotting Drain',reward:90,test:d=>!!(d.stageMastery||{})[1]},
+  {id:'stage3',emoji:'🌶️',name:'Engine Room Escape',desc:'Clear Stage 3 — Chili Engine Room',reward:110,test:d=>!!(d.stageMastery||{})[2]},
+  {id:'stage4',emoji:'🧊',name:'Prison Break',desc:'Clear Stage 4 — Sugar Frost Prison',reward:140,test:d=>!!(d.stageMastery||{})[3]},
   {id:'hunger',emoji:'🌑',name:'Hunger Ender',desc:'Defeat The Great Hunger',reward:300,test:d=>!!(d.stageMastery||{})[4]},
   {id:'master',emoji:'🏆',name:'Lord of the Under-Kitchen',desc:'Mastery on all 5 stages',reward:250,test:d=>[0,1,2,3,4].every(i=>(d.stageMastery||{})[i])},
   {id:'hell',emoji:'🔥',name:'Hell Survivor',desc:'Clear any stage on Hell',reward:220,test:d=>(d.diffBest||[]).some(v=>v>=3)},
+  {id:'gear3',emoji:'🎒',name:'Kitted Out',desc:'Collect 3 pieces of equipment',reward:70,test:d=>(d.ownedGear||[]).length>=3},
+  {id:'legend',emoji:'👑',name:'Legend Hunter',desc:'Find a Legendary item',reward:150,test:d=>(d.ownedGear||[]).some(id=>String(id).startsWith('lg_'))},
   {id:'collector',emoji:'💎',name:'Charm Collector',desc:'Collect at least 12 items',reward:160,test:d=>(d.ownedGear||[]).length>=12},
   {id:'family',emoji:'🍡',name:'The Mochi Core Family',desc:'Unlock the five story fighters',reward:220,test:d=>['momo','mint','cocoa','taro','yuzu'].every(id=>(d.chars||[]).includes(id))},
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
@@ -8541,7 +8527,7 @@ class Game extends Phaser.Scene {
     const ch=Math.min(2,Math.floor((Save.data.unlockedStage||0)/5)),m=Save.data.stageMastery||{},lines=[];
     DailyQ._mute=true; try{
       const sug=Math.round([80,160,320][i]*(1+ch*0.5)); Save.addSugar(sug); lines.push('🍬 +'+sug+' Sugar');
-      if(m[0]){ const sh=[8,16,32][i]; Save.addShards(sh); lines.push('🔩 +'+sh+' Gear Shards');
+      if(m[0]){ const sh=[8,16,32][i]; Save.addThreads(sh); lines.push('🧶 +'+sh+' Weave Thread');
         const nc=[0,2,4][i],got={}; for(let k=0;k<nc;k++){ const c=CURRENCY[Math.floor(Math.random()*CURRENCY.length)]; Save.addCurrency(c.key,1); got[c.key]=(got[c.key]||0)+1; }
         for(const k in got){ const c=CURRENCY.find(x=>x.key===k); lines.push((c.emoji||'✦')+' +'+got[k]+' '+c.name); } }
       if(m[1]&&i!==1){ const sv=i===2?5:2; Save.addShovels(sv); lines.push('⛏️ +'+sv+' Shovels'); }
@@ -8581,24 +8567,11 @@ class Game extends Phaser.Scene {
   }
   // 🌀 Mochi Rift menu — เลือก Tier · สุ่มด่าน+mod (Reroll ฟรี) · Pinnacle ใช้ 3 กุญแจ
   recipeBag(){ if(!Array.isArray(Save.data.recipes))Save.data.recipes=[]; return Save.data.recipes; }
-  craftRecipe(r,cid){ const rar=r.rarity||'normal';
-    if(cid==='transmute'&&rar!=='normal')return this.menuToast('Only Normal recipes can be upgraded to Magic','#ff9bb5');
-    if(cid==='regal'&&rar!=='magic')return this.menuToast('Only Magic recipes can be upgraded to Rare','#ff9bb5');
-    if(cid==='chaos'&&rar==='normal')return this.menuToast('Normal recipes have no mods to reroll','#ff9bb5');
-    if(cid==='scour'&&rar==='normal')return this.menuToast('Already Normal','#ff9bb5');
-    if(!Save.spendCurrency(cid,1)){const d=currencyDef(cid);return this.menuToast('Need 1 '+(d?d.name:cid),'#ff9bb5');}
-    const rollMods=n=>{const c=RECIPE_MODS.map(m=>m.id),o=[];for(let k=0;k<n;k++)o.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);return o;};
-    if(cid==='transmute'){r.rarity='magic';r.mods=rollMods(1);}
-    else if(cid==='regal'){r.rarity='rare';const c=RECIPE_MODS.map(m=>m.id).filter(id=>!r.mods.includes(id));r.mods.push(c[Math.floor(Math.random()*c.length)]);}
-    else if(cid==='chaos'){r.mods=rollMods(RECIPE_RARITY[rar].mods);}
-    else if(cid==='scour'){r.rarity='normal';r.mods=[];}
-    Save.save(); Sfx.chest&&Sfx.chest(); this.menuToast('📜 '+RECIPE_RARITY[r.rarity].label+' · '+(r.mods.length?r.mods.map(id=>recipeModDef(id).emoji).join(' '):'no mods'),'#9dff9d'); }
   // R9: เซฟเก่าที่เคยเล่น Rift → แจก recipe ตาม Tier ที่ไปถึง 1 ครั้ง (กุญแจเดิมใช้เปิด Pinnacle ต่อได้)
   migrateRiftToRecipes(){ if(Save.data.riftMigrated)return; Save.data.riftMigrated=true; const t=Math.min(RECIPE_TIER_MAX,(Save.data.riftBest||1)-1);
     if(t>=1){ const bag=this.recipeBag(); for(let i=0;i<2&&bag.length<RECIPE_BAG_MAX;i++)bag.unshift(makeRecipe(t,null,i?'magic':'normal')); Save.data.recipeMaxTier=Math.max(Save.data.recipeMaxTier||1,t); this.menuToast('🌀 Rift progress converted: 2 Tier '+t+' recipes','#9dff9d'); } Save.save(); }
   startPinnacle(){ const keys=Save.data.riftKeys||0; if(atlasPinnacleOpen()&&!Save.data.pinnacleFreeUsed){ Save.data.pinnacleFreeUsed=true; Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); return; } if(keys<PINNACLE_KEY_COST){this.menuToast('Need '+PINNACLE_KEY_COST+' 🗝️ keys — every '+RECIPE_FRAGS_PER_KEY+' 🧩 fragments from recipe bosses make one','#ff9bb5');return;}
     Save.data.riftKeys=keys-PINNACLE_KEY_COST; Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); }
-  claimFreeRecipe(){ const bag=this.recipeBag(); if(bag.length>=RECIPE_BAG_MAX){this.menuToast('Recipe bag is full ('+RECIPE_BAG_MAX+')','#ff9bb5');return;} const r=makeRecipe(1); bag.unshift(r); Save.save(); this._recipeSel=r.uid; this.menuToast('📜 Free Tier 1 recipe: '+STAGES[r.theme].name,'#9dff9d'); }
   buildAtlas(){
     this.menu.removeAll(true);this.tapZones=[];this._amRect=null;this._amView=null;this._amDrag=null;this._screenBg('⛏ Mochi Delve','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
@@ -8824,7 +8797,7 @@ class Game extends Phaser.Scene {
   }
   buildAchievements(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement','screen_achievements');
-    const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?94:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows);
+    const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?94:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.max(48,Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows));
     let done=0;ACHIEVEMENTS.forEach(a=>{if(a.test(Save.data))done++;});
     const sum=this.add.text(w/2,portrait?80:45,'Completed '+done+' / '+ACHIEVEMENTS.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a'}).setOrigin(0.5);this.menu.add(sum);
     ACHIEVEMENTS.forEach((a,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(rh+gap),ok=a.test(Save.data),claimed=!!Save.data.achievements[a.id],g=this.add.graphics();
@@ -8933,11 +8906,6 @@ class Game extends Phaser.Scene {
     }).catch(e=>{ this.menuToast('⚠️ '+String(e&&e.message||e),'#ff9bb5'); });
   }
   // ---- Quest chain + badge helpers ----
-  claimReadyQuests(){ const d=Save.data; if(!d.questClaimed)d.questClaimed={}; let claimed=null,total=0;
-    for(const q of QUESTS){ if(q.done(d)&&!d.questClaimed[q.id]){ d.questClaimed[q.id]=1; d.sugar=(d.sugar||0)+q.r; total+=q.r; claimed=q; } }
-    if(claimed){ Save.save(); if(this.menuToast)this.menuToast('🎯 Quest complete! +🍬'+total+' · '+claimed.t,'#ffe08a'); Sfx.progress('quest'); }   // menuToast is safe in the hub (bannerT not built there)
-  }
-  nextQuest(){ const d=Save.data; for(const q of QUESTS){ if(!q.done(d))return q; } return null; }
   hasTargetBadge(target){try{const d=Save.data,day=localDayKey();
     if(target==='daily')return !d.daily||d.daily.claimDay!==day||(typeof DailyQ!=='undefined')&&DailyQ.claimable();   // v7.5 รางวัลเข้าเกม หรือกล่อง Daily พร้อมเปิด
     if(target==='achievements')return ACHIEVEMENTS.some(a=>a.test(d)&&!(d.achievements||{})[a.id]);
@@ -9056,7 +9024,7 @@ class Game extends Phaser.Scene {
     return {portrait,side,gap,menuTop,boxes:[{x:left,y:menuTop,w:width,h:playH},{x:left,y:menuTop+playH+gap,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+gap,w:half,h:rowH},{x:left,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+rowH+gap*2,w:half,h:rowH}]};
   }
   buildHub(){
-    this.stopHubMotion();this.claimReadyQuests();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
+    this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
     const bg=this.textures.exists(bgKey)?this._coverImage(0,0,w,h,bgKey):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
     const hubLive=bgKey==='hub_ui_background'&&this.buildHubScene?.(bg);   // v7.8.59 ใบ 25: ชั้นฉาก + โมโม่หุ่นเชิด
@@ -9552,7 +9520,7 @@ class Game extends Phaser.Scene {
     btn(w/2-bw-6,free?'🎁 Daily ⛏️×10':(bought>=DIG_SHOP_DAILY_LIMIT?'✓ Shop sold out':'🍬120 → ⛏️×5'),free?0x3a5a3a:0x755035,free||canBuy,()=>{ if(free){if(Save.digClaimFree()){Sfx.digFind();this.menuToast('⛏️ +10 shovels — come back tomorrow!');}}else if(Save.digBuyShovels()){Sfx.digFind();this.menuToast('⛏️ +5 shovels');}this.buildDig(); });
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'🪜 Go down':'🪜 Find the ladder'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
     if(canGo)this.digTween({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
-    const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret  ✦ hint\n📜 Scroll Fragments '+Save.scrolls(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
+    const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret  ✦ hint\n🧶 Weave Thread '+Save.threads(),{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
     if(Save.minersTick){ // 👷 Mochi Miners (idle) — แถวล่างสุด
       const m=Save.minersTick(),L=MINER_LEVELS[m.lv],nx=MINER_LEVELS[m.lv+1],my=Math.min(h-48,by+bh+64),rw=Math.min(w-32,420),rx=w/2-rw/2;
       const g=this.add.graphics(); g.fillStyle(0x241a2e,0.95); g.fillRoundedRect(rx,my,rw,40,12); g.lineStyle(1.5,0x8a6a4a,1); g.strokeRoundedRect(rx,my,rw,40,12); this.menu.add(g);
@@ -9635,12 +9603,11 @@ class Game extends Phaser.Scene {
   digResolve(c){ if(!c||c.taken)return null;const d=Save.dig(); c.taken=true;
     if(c.c==='thread'||c.c==='sugar'){ const n=digThreadAmt(d.depth); Save.data.threads=Save.threads()+n; (Sfx.ev?.('dig_find_thread',.5,.1)||Sfx.digFind()); return {t:'🧶 +'+n+' Weave Thread',c:'#ffe08a'}; }
     if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();
-      if(roll>0.88){ Save.data.scrolls=(Save.data.scrolls||0)+1; return {t:'🏺 Ancient Chest! 📜 Scroll Fragment '+Math.min(Save.data.scrolls,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK,c:'#ffd166'}; }
-      if(roll<0.55){ const n=digThreadAmt(d.depth)*4; Save.data.threads=Save.threads()+n; return {t:'🏺 Ancient Chest! 🧶 +'+n+' Weave Thread',c:'#ffd166'}; }
+            if(roll<0.55){ const n=digThreadAmt(d.depth)*4; Save.data.threads=Save.threads()+n; return {t:'🏺 Ancient Chest! 🧶 +'+n+' Weave Thread',c:'#ffd166'}; }
       const k=rollWeightedCurrency(d.depth>=6?'epic':'rare'),n=Phaser.Math.Between(2,4); if(k){ Save.addCurrency(k,n); const cd=currencyDef(k); return {t:'🏺 Ancient Chest! '+(cd?cd.emoji+' '+cd.name:'Currency')+' ×'+n,c:'#ffd166'}; }
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
     const st=(DIG_ITEMS[c.c]||{}).stone; if(st){ Save.data.threads=Save.threads()+STONE_THREADS; (Sfx.ev?.('dig_find_thread_rare',.6,.2)||Sfx.digRare()); return {t:DIG_ITEMS[c.c].emoji+' Core Stone! 🧶 +'+STONE_THREADS+' Weave Thread',c:'#ffd166'}; }
-    if(c.c==='scroll'){ Save.data.scrolls=(Save.data.scrolls||0)+1; (Sfx.ev?.('dig_find_scroll',.55,.2)||Sfx.digRare()); const n=Save.data.scrolls; return {t:'📜 Scroll Fragment '+Math.min(n,SCROLL_PER_PERK)+'/'+SCROLL_PER_PERK+(n>=SCROLL_PER_PERK?' — unlock an Ancient Perk in 🏅 Rank Perks!':''),c:'#ffd9a8'}; }
+    if(c.c==='scroll'){ Save.data.threads=Save.threads()+SCROLL_THREADS; (Sfx.ev?.('dig_find_scroll',.55,.2)||Sfx.digRare()); return {t:'📜 Ancient Scroll! 🧶 +'+SCROLL_THREADS+' Weave Thread',c:'#ffd9a8'}; }
     if(c.c==='part'){ const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); (Sfx.ev?.('dig_find_part',.55,.2)||Sfx.digRare()); return {t:'🧩 Recipe Part: '+pt.emoji+' '+pt.name,c:'#9ff0c8'}; }
     if(c.c==='trap'){ const lost=d.shovels>0?1:0; d.shovels-=lost; Sfx.digTrap(); return {t:'🪤 Trap! '+(lost?'−1 ⛏️':'Nothing to lose… lucky!'),c:'#ff9bb5'}; }
     if(c.c==='stair'){ d.stairFound=true; (Sfx.ev?.('dig_ladder_found',.6,.3)||Sfx.digRare()); return {t:'🕳️ Secret Passage! Drop 2 depths into a hidden vault',c:'#c7a6ff'}; }
@@ -9648,7 +9615,7 @@ class Game extends Phaser.Scene {
     if(c.c==='gift'){ Sfx.digRare(); if(Sfx.chestWin)Sfx.chestWin(); const got=[]; const tn=digThreadAmt(d.depth)*3; Save.data.threads=Save.threads()+tn; got.push('🧶'+tn);
       const k=frRollPart(),pt=frPart(k); Save.frAddPart(k,1); got.push(pt.emoji+' '+pt.name);
       if(Math.random()<0.35+d.depth*0.02){ Save.data.threads=Save.threads()+STONE_THREADS; got.push('🧶'+STONE_THREADS); }
-      if(Math.random()<0.2+d.depth*0.015){ Save.data.scrolls=(Save.data.scrolls||0)+1; got.push('📜'); }
+      if(Math.random()<0.2+d.depth*0.015){ Save.data.threads=Save.threads()+SCROLL_THREADS; got.push('🧶'+SCROLL_THREADS); }
       const cur=rollWeightedCurrency(d.depth>=10?'legend':d.depth>=6?'epic':'rare'); if(cur){ const n=Phaser.Math.Between(2,3)+Math.floor(d.depth/5); Save.addCurrency(cur,n); got.push(currencyDef(cur).emoji+'×'+n); }
       return {t:'🎁 Depth Gift! '+got.join('  '),c:'#ffd166'}; }
     if(c.c==='gem'){ d.gemFound=true; (Sfx.ev?.('dig_ladder_found',.6,.3)||Sfx.digRare()); return {t:'🪜 Ladder found! Head down to floor '+(d.depth+1),c:'#c7a6ff'}; }
@@ -9707,14 +9674,14 @@ class Game extends Phaser.Scene {
       this.menu.add([sg,stx]); if(sp&&this.tuHas('perk_compass_icon'))this.menu.add(this.tuImg('perk_compass_icon',0,14+65*sp._tuK,y+sh/2,sh*1.15,sh*1.15));
       this._zone(14,y,sw,sh,()=>{this._templeSpecial=true;this._specialFrom='perks';this._specialCorePage=0;this.menuScreen='upgrade';this.buildMenuScreen();}); y+=sh+6; }   // v6.78 C2
     // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว) · v7.8.49 มีรูป = 2 คอลัมน์ (เหรียญซ้ายกินที่)
-    { const sc=Save.scrolls(),aArt=this.tuHas('perk_ancient_card_sheet');
+    { const sc=Save.threads(),aArt=this.tuHas('perk_ancient_card_sheet');
       if(!this.tuHeader('perk_ancient_banner',14,y,w*.7,'ANCIENT · from the Temple Depths','#f3e0ff'))this.menu.add(this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0));
-      const scTxt=sc+' (4 per perk)',chW=scTxt.length*5.2+30,chip=this.tuPanel('perk_scroll_chip',0,w-14-chW,y-3,chW,19);   // B13 + B14
-      if(chip){ this.menu.add(chip); if(this.tuHas('ic_scroll'))this.menu.add(this.tuImg('ic_scroll',0,w-14-chW+chip._tuK*25,y+6.5,15,15)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
-      else this.menu.add(this.add.text(w-14,y,'📜 '+scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=SCROLL_PER_PERK?'#ffe08a':'#8d8195'}).setOrigin(1,0));
+      const scTxt=sc+' ('+ANCIENT_THREAD_COST+' per perk)',chW=scTxt.length*5.2+30,chip=this.tuPanel('perk_scroll_chip',0,w-14-chW,y-3,chW,19);   // B13 + B14
+      if(chip){ this.menu.add(chip); this.menu.add(this.add.text(w-14-chW+chip._tuK*25,y+6.5,'🧶',{fontSize:'11px'}).setOrigin(0.5)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
+      else this.menu.add(this.add.text(w-14,y,'🧶 '+scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#8d8195'}).setOrigin(1,0));
       y+=aArt?19:15;
       const aCols=aArt?2:3,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?aFit:58;
-      ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=SCROLL_PER_PERK;
+      ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=ANCIENT_THREAD_COST;
         const ap=aArt?this.tuPanel('perk_ancient_card_sheet',own?2:(can?1:0),x,yy,aW,aH):null,ak=ap?ap._tuK:0;   // B12
         let g=ap; if(!ap){ g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,aW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,aW,aH,10); }
         const icx=ap?x+50*ak:x+16,icy=ap?yy+aH*.45:yy+17,isz=ap?Math.min(34,58*ak):22,tx=ap?x+100*ak+4:x+30;
@@ -9829,14 +9796,14 @@ class Game extends Phaser.Scene {
       drawAction(0,selected.favorite?'★':'☆',selected.favorite?0xb88925:0x3a3550,()=>{Save.toggleGearFavorite(selected.uid);this.buildMenuScreen();});
       drawAction(1,selected.locked?'🔒':'🔓',selected.locked?0x85506f:0x3a3550,()=>{if(Save.gearItem(selected.uid)){const locked=Save.toggleGearLock(selected.uid);Sfx.equipment(locked?'lock':'unlock');}this.buildMenuScreen();});
       if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
-      else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhShardCost(lv),afford=(Save.data.shards||0)>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
-        drawAction(2,can?('⚒ Enhance +'+(lv+1)+'   🔩'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🔩 Not enough shards','Requires '+cost+' shards · dismantle gear to get more',1400);return;} const _el=selected.enhanceLv||0,_od=typeof enhanceOdds==='function'?enhanceOdds(_el):{destroy:0},ck='enh:'+selected.uid+':'+_el;if(_od.destroy>0&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚠ Item may be destroyed',Math.round(_od.destroy*100)+'% chance it shatters · tap Enhance again to try',1800);return;} this._gearConfirm=null; if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);
+      else {const lv=selected.enhanceLv||0,can=base.enh&&lv<GEAR_ENH_MAX,cost=gearEnhShardCost(lv),afford=Save.threads()>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
+        drawAction(2,can?('⚒ Enhance +'+(lv+1)+'   🧶'+cost+risk):'MAX +'+lv,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🧶 Not enough Thread','Requires '+cost+' Thread · salvage gear to get more',1400);return;} const _el=selected.enhanceLv||0,_od=typeof enhanceOdds==='function'?enhanceOdds(_el):{destroy:0},ck='enh:'+selected.uid+':'+_el;if(_od.destroy>0&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚠ Item may be destroyed',Math.round(_od.destroy*100)+'% chance it shatters · tap Enhance again to try',1800);return;} this._gearConfirm=null; if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);
             if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}
             else if(res.result==='break'){this.screenFlash(0xff8a5a,.42,320);this.showBanner('💥 Enhancement broke','Dropped to +'+res.lv,1500);}
             else {this.gearSelectedUid=null;this.screenFlash(0xff4a5a,.6,440);this.showBanner('💀 Item destroyed','It shattered at high enhancement',1800);} }
           this.buildMenuScreen(); }:null);}
       const canDis=!eq&&!selected.locked&&!selected.favorite&&selected.grade!=='start',gain=gearDismantleValue(selected),canSell=canDis,sv=gearSellSugar(selected);
-      if(canDis)drawAction(3,'♻ 🔩'+gain+' 🍬'+sv,0x8d4b3e,()=>{const ck='sal:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Salvage again to confirm',1400);return;}this._gearConfirm=null;const r=Save.salvageGearInstance(selected.uid);if(r){this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged','🔩 +'+r.shards+'   🍬 +'+r.sugar,1200);}});
+      if(canDis)drawAction(3,'♻ 🧶'+gain+' 🍬'+sv,0x8d4b3e,()=>{const ck='sal:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();this.showBanner('⚒ Crafted item','Tap Salvage again to confirm',1400);return;}this._gearConfirm=null;const r=Save.salvageGearInstance(selected.uid);if(r){this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged','🧶 +'+r.shards+'   🍬 +'+r.sugar,1200);}});
       { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
       drawAction('m','⚡ Equip Best',0x3f6d54,()=>this.gearEquipBest());
       drawAction('s','♻ All ▼',0x6e5634,()=>{const worse=this.gearWorseItems();if(!worse.length){this.showBanner('♻ Nothing to salvage','No weaker unlocked items in the bag',1300);return;}const ck='salw:'+worse.length;if(this._gearConfirm!==ck){this._gearConfirm=ck;Sfx.error();const t=worse.reduce((o,it)=>({sh:o.sh+gearDismantleValue(it),su:o.su+gearSellSugar(it)}),{sh:0,su:0});this.showBanner('♻ Salvage '+worse.length+' weaker items?','🔩 +'+t.sh+'  🍬 +'+t.su+' · tap again to confirm (locked/★ kept)',2000);return;}this._gearConfirm=null;let sh=0,su=0;for(const it of worse){const r=Save.salvageGearInstance(it.uid);if(r){sh+=r.shards;su+=r.sugar;}}this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged '+worse.length+' items','🔩 +'+sh+'   🍬 +'+su,1600);});
@@ -10164,8 +10131,7 @@ class Game extends Phaser.Scene {
         {art:'prize_currency',name:'Crafting supply box',desc:'1 random crafting material',price:'Open · Sugar '+bazaarCurrencyBoxCost(),afford:(Save.data.sugar||0)>=bazaarCurrencyBoxCost(),color:0x8edbd0,fn:()=>this.bazaarGambleCurrency(false),alt:{label:'▶▶ AUTO',fn:()=>this.bazaarGambleCurrency(true)}}],cardH);
       this.menu.add(this.add.text(w/2,y+12,'Tap a box to open it · rewards go to your inventory',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',wordWrap:{width:w-32},align:'center'}).setOrigin(.5,0));
     }else{
-      heading('Sell surplus materials');const sh=Save.data.shards||0;
-      this._rowBtn(y,44,'prize_currency','Gear shards ×'+sh,'Sell all shards','Sugar '+sh*2,'#a8edc6',sh?()=>this.bazaarSellShards():null);y+=51;
+      heading('Sell surplus materials');
       const owned=CURRENCY.filter(c=>Save.currency(c.key)>0),perPage=Math.max(1,Math.floor((h-y-48)/51)),pages=Math.max(1,Math.ceil(owned.length/perPage));this._bazSellPage=Math.max(0,Math.min(pages-1,this._bazSellPage||0));
       owned.slice(this._bazSellPage*perPage,(this._bazSellPage+1)*perPage).forEach(c=>{const val=Math.round((CURRENCY_BUY[c.key]||60)*.9);this._rowBtn(y,44,c.asset,c.name+' ×'+Save.currency(c.key),'Sell one material','Sugar '+val,'#a8edc6',()=>this.bazaarSellCurrency(c.key,val));y+=51;});
       if(pages>1)this.uiPillBtn(this.menu,w/2,h-25,w-28,32,COLORS.grape,'','Page '+(this._bazSellPage+1)+' / '+pages+' · Next',()=>{this._bazSellPage=(this._bazSellPage+1)%pages;this.buildBazaar();});
@@ -10240,14 +10206,13 @@ class Game extends Phaser.Scene {
     const ilv=pv.lo+Math.floor(Math.random()*(pv.hi-pv.lo+1)),grade=Phaser.Utils.Array.GetRandom(sel).grade||'common';
     if(!sel.every(x=>Save.removeGearInstance(x.uid))){Sfx.error();this.buildTradeIn();return;}
     let got=null; for(const t of [grade,'rare','common','epic']){got=this.grantGear(t==='legend'?'epic':t,{tradeLv:ilv});if(got)break;}
-    this._tradeSel=[]; if(!got){Save.addShards(15);this.menuToast('No eligible base · +15 shards','#f295a8');this.buildTradeIn();return;}
+    this._tradeSel=[]; if(!got){Save.addThreads(15);this.menuToast('No eligible base · +15 Thread','#f295a8');this.buildTradeIn();return;}
     Sfx.equipment&&Sfx.equipment('equip');
     this.bazaarSlotReveal(GEAR_ALL.map(x=>'gear_'+x.id).filter(k=>this.textures.exists(k)),{artKey:'gear_'+got.id,title:'✨ '+got.name+'!',sub:(TIER_LABEL[got.tier]||TIER_LABEL.common).name+' · iLv '+got.instance.itemLevel+gearDeliverySuffix(got),back:'tradein'}); }
   bazaarGambleCurrency(auto){ if(this._bazBusy)return; const cost=bazaarCurrencyBoxCost(); if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); if(auto)this.buildBazaar(); return; }
     const k=rollWeightedCurrency('epic')||'alt', d=currencyDef(k); Save.addCurrency(k,1);
     this._bazAutoN=auto?(this._bazAutoN||0)+1:0;
     this.bazaarSlotReveal(CURRENCY.map(c=>c.asset),{artKey:d.asset,title:d.emoji+' '+d.name+'!',sub:auto?('AUTO #'+this._bazAutoN+' · Sugar '+(Save.data.sugar||0)+' · tap to stop'):'',auto:auto?()=>this.bazaarGambleCurrency(true):null}); }
-  bazaarSellShards(){ const sh=Save.data.shards||0; if(sh<=0)return; Save.data.shards=0; Save.addSugar(sh*2); Sfx.clear(); this.showBanner('💰 Sold shards','+🍬'+(sh*2),1300); this.buildBazaar(); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
   openGachaReveal(){ this.setMenuScroll(0);
     const lvObj=GACHA_LEVELS[Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
@@ -10261,15 +10226,15 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.2,alpha:{from:0.2,to:0.78},duration:900,ease:'Cubic.in'});
     this.time.delayedCall(420,()=>status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'));
     this.time.delayedCall(920,()=>{
-      const it=this.gachaRoll(ilv);let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addShards(6);}
+      const it=this.gachaRoll(ilv);let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addThreads(6);}
       const color=tier==='legend'?0xff8f3a:tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       const gArt=it?('gear_'+it.id):null;
       if(gArt&&this.textures.exists(gArt)){ chest.setText(''); const gi=this.add.image(w/2,h*0.47,gArt).setDisplaySize(120,120); const ts=gi.scaleX; gi.setScale(ts*0.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:340,ease:'Back.out'}); }
-      else chest.setRotation(0).setScale(1.05).setText(it?it.emoji:'🔩');
+      else chest.setRotation(0).setScale(1.05).setText(it?it.emoji:'🧶');
       glow.setTint(color).setScale(2.8).setAlpha(0.88);
       this.screenFlash(color,tier==='legend'?0.85:tier==='epic'?0.68:tier==='rare'?0.48:0.30,520);this.screenShake(tier==='legend'?620:tier==='epic'?480:260,tier==='legend'?0.02:tier==='epic'?0.014:0.007);Sfx.clear();
       title.setText(it?(tier==='legend'?'🌟 LEGEND DROP 🌟':tier==='epic'?'✦ EPIC DROP ✦':tier==='rare'?'★ RARE DROP ★':'COMMON DROP'):'All owned');
-      title.setColor(hex);status.setText(it?(it.name+'\n'+TIER_LABEL[tier].name+gearDeliverySuffix(it)):'Refund 🍬120 · 🔩6').setColor('#ffffff').setAlign('center').setFontSize('18px');
+      title.setColor(hex);status.setText(it?(it.name+'\n'+TIER_LABEL[tier].name+gearDeliverySuffix(it)):'Refund 🍬120 · 🧶6').setColor('#ffffff').setAlign('center').setFontSize('18px');
       for(let i=0;i<(tier==='epic'?14:8);i++){const a=i*TAU/(tier==='epic'?14:8),p=this.add.image(w/2,h*0.47,'dot').setTint(color).setScale(0.8).setAlpha(0.9);this.menu.add(p);this.tweens.add({targets:p,x:w/2+Math.cos(a)*Math.min(w*0.38,180),y:h*0.47+Math.sin(a)*Math.min(h*0.25,150),alpha:0,duration:700+i*18,onComplete:()=>p.destroy()});}
       const bw=Math.min(w-60,260),by=h*0.80,btn=this.add.graphics();btn.fillStyle(color,1);btn.fillRoundedRect(w/2-bw/2,by-24,bw,48,16);btn.lineStyle(2,0xffffff,0.42);btn.strokeRoundedRect(w/2-bw/2,by-24,bw,48,16);
       const bt=this.add.text(w/2,by,'Claim and return',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#17101d'}).setOrigin(0.5);this.menu.add([btn,bt]);
@@ -10312,10 +10277,7 @@ class Game extends Phaser.Scene {
     for(const sid in setCounts){ const def=GEAR_SETS[sid]; if(!def)continue; for(const need in def.bonuses){ if(setCounts[sid]>=+need&&def.bonuses[need].apply)def.bonuses[need].apply(p); } }
     // Rank Perks (ถาวร เลือกเอง) — vigor/might บวกสแตต · greed/boxLuck ตั้งตัวคูณรันนี้
     const rp=Save.data.rankPerks||{};
-    if(rp.vigor)p.maxhp*=1+0.06*rp.vigor;
-    if(Save.ancientHas('deepRoots')){ p.maxhp*=1.08; p.regen=(p.regen||0)+0.6; }   // v5.30 Ancient
-    if(rp.might)p.dmgMul+=(1+0.05*rp.might)-1;
-    if(rp.ironWill)p.dmgTakenMul*=(1-0.04*rp.ironWill);
+    if(Save.ancientHas('deepRoots')){ p.regen=(p.regen||0)+1; }   // v5.30 Ancient
     this.rankSugarMul=1+0.08*(rp.greed||0);
     this._boxLuckMul=1+0.30*(rp.boxLuck||0);
     this._currencyLuckMul=1+0.10*(rp.fortune||0);
@@ -10910,7 +10872,7 @@ class Game extends Phaser.Scene {
     if(r.node!=null&&amapNode(r.node)){ const dv=delveSave(),am=dv.clears,nd=amapNode(r.node),first=!am[r.node]; am[r.node]=(am[r.node]|0)+1; const newBest=nd.d>(dv.best||0); if(newBest)dv.best=nd.d;
       { const fi=this._amapInf||{},dr=this.diffMul().reward,got=[];
         if(fi.spicy){ this.grantCurrencyReward(fi.spicy,this.currencyTierFor(),'🌶️ Spicy influence'); }
-        if(fi.frosty){ const n=Math.round(6*fi.frosty*dr); Save.addShards(n); got.push('❄️ +'+n+' shards'); }
+        if(fi.frosty){ const n=Math.round(6*fi.frosty*dr); Save.addThreads(n); got.push('❄️ +'+n+' Thread'); }
         if(fi.sweet){ const n=Math.round((40+r.tier*15)*fi.sweet*dr); this.sugarStage+=n; got.push('🍯 +'+n+' Sugar'); }
         if(fi.sour){ let n=0; for(let i=0;i<fi.sour;i++)if(Math.random()<0.5&&this.grantGear(Math.random()<0.25?'epic':'rare'))n++; if(n)got.push('🍋 +'+n+' gear'); }
         if(got.length)this.time.delayedCall(3800,()=>this.showBanner('🍽 Flavor rewards',got.join(' · '),2200)); }
@@ -12132,7 +12094,6 @@ class Game extends Phaser.Scene {
       {emoji:'💠',artKey:'prize_currency',name:'Currency',sub:'×'+(2+Math.floor(si/3)),color:0x7fd0ff,give:()=>this.grantCurrencyReward(2+Math.floor(si/3),this.currencyTierFor(),'Boss card')},
       {emoji:'⛏️',name:'Shovels',sub:'+'+(3+Math.floor(dr)),color:0xc9a36b,give:()=>Save.addShovels(3+Math.floor(dr))},
       {emoji:'🧶',name:'Weave Thread',sub:'+'+S(25),color:0xd59bff,give:()=>Save.addThreads(S(25))},
-      {emoji:'🔩',name:'Gear Shards',sub:'+'+S(12),color:0xb8c4d6,give:()=>Save.addShards(S(12))},
       {emoji:'🎁',artKey:'prize_jackpot',name:'Gear',sub:'Random item',color:0x8ff0b0,give:()=>{ const t=Math.random()<0.15*dr?'epic':'rare'; this.grantGear&&this.grantGear(t); }}];
     const pick=Phaser.Utils.Array.Shuffle(pool.slice()).slice(0,3);
     const jp={emoji:'🌟',artKey:'prize_jackpot',name:'JACKPOT',sub:'Sugar +'+S(250)+' · Currency ×3 · Shovels +5',color:0xffd166,jackpot:true,give:()=>{this.sugarStage+=S(250);this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');Save.addShovels(5);}};
@@ -13218,8 +13179,8 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:t,scale:1,duration:140,ease:'Back.out'}); this.tweens.add({targets:t,y:t.y-26,alpha:0,delay:260,duration:420,onComplete:()=>t.destroy()}); }
     try{ this.frEffect(r); } finally{ this._frBusy=depth; this._frCur=prev; } }
   frHit(e,dmg,r){ if(!e||!e.active)return; this._frDmg=true; try{ this.damage(e,dmg,e.x,e.y); } finally{ this._frDmg=false; } if(!e.active)return;
-    if(r.m==='fire'){ e._burnDps=Math.max(e._burnDps||0,dmg*0.25); e._burnT=2; }
-    if(r.m==='ice'&&!e.isBoss&&!e.isMini&&(this.elapsed||0)>=(e._frIceAt||0)){ e._frIceAt=(this.elapsed||0)+3; e.frozen=Math.max(e.frozen||0,0.6); e.setTint(COLORS.ice); }
+    if(r.m==='fire')this.applyBurn(e,dmg*0.25,dmg*0.25);
+    if(r.m==='ice'&&!e.isBoss&&!e.isMini&&(this.elapsed||0)>=(e._frIceAt||0)){ e._frIceAt=(this.elapsed||0)+3; this.applyFreeze(e,0.6); }
     if(r.m==='sour')e._sourT=Math.max(e._sourT||0,3);
     if(r.m==='sweet'){ const p=this.player,now=this.elapsed||0; if(now-(this._frSweetWin||-9)>=1){ this._frSweetWin=now; this._frSweetSum=0; } if(this._frSweetSum<p.maxhp*0.05){ const n=Math.max(1,Math.round(p.maxhp*0.01)); this._frSweetSum+=n; p.hp=Math.min(p.maxhp,p.hp+n); } } }
   frRing(x,y,R,col,key='vfx_recipe_shock'){
@@ -13251,7 +13212,7 @@ class Game extends Phaser.Scene {
       case 'recover':{ const n=this.frHealCap(Math.round(p.maxhp*0.12*pw*(p.healEffect||1))); if(n<=0)break;p.hp=Math.min(p.maxhp,p.hp+n);this.popHeal(px,py,n);this.fireRecipes('heal');break; }
       case 'burst':{ const R=165*A;this.frRing(px,py,R,0xffd166,'vfx_recipe_burst');near(R).slice(0,16).forEach(e=>this.frHit(e,this.relicDmg(1.4)*pw,r));break; }
       case 'shield':{ if(!this.frGuardOk())break; this._shield=Math.min(3,(this._shield||0)+(pw>=2?2:1)); this.floatText(px,py-44,'🫧 Shield',0x9fe8ff); break; }
-      case 'freeze':{ const R=140*A; this.frRing(px,py,R,0x9fe8ff,'vfx_recipe_freeze'); near(R).forEach(e=>{ if(!e.isBoss&&!e.isMini){ e.frozen=Math.max(e.frozen||0,1.2*pw); e.setVelocity(0,0); e.setTint(COLORS.ice); } else this.frHit(e,this.relicDmg(0.8)*pw,r); }); break; }
+      case 'freeze':{ const R=140*A; this.frRing(px,py,R,0x9fe8ff,'vfx_recipe_freeze'); near(R).forEach(e=>{ if(this.applyFreeze(e,1.2*pw)){ e.setVelocity(0,0); } else this.frHit(e,this.relicDmg(0.8)*pw,r); }); break; }
       case 'rage':{ const nw=this.elapsed||0; if(nw<(this._frRageCd||0))break; this._frRageCd=nw+8; this._frRageT=4; this._frRageMul=Math.max(this._frRageMul&&this._frRageT>0?this._frRageMul:1,1+0.3*pw); this.floatText(px,py-50,'🔥 Rage',0xff7a3d); break; }
       case 'bolt':{ const L=near(360*A).sort((a,b)=>this.dist(a.x,a.y,px,py)-this.dist(b.x,b.y,px,py)).slice(0,3);
         L.forEach(e=>{ const ln=this.camWorld(this.add.line(0,0,px,py-20,e.x,e.y,0xfff27a,1).setOrigin(0,0).setLineWidth(3).setDepth(90000)); this.tweens.add({targets:ln,alpha:0,duration:200,onComplete:()=>ln.destroy()}); this.frHit(e,this.relicDmg(1.6)*pw,r); }); break; }
@@ -13359,8 +13320,8 @@ class Game extends Phaser.Scene {
     // ถืออีกครึ่งของคู่ synergy อยู่ → น้ำหนัก ×2.5 ให้เจอบ่อยขึ้น
     const fr=((FUSIONS[(this.basicAttack||{}).character]||[]).map(f=>f.relic)),w=pool.map(k=>(RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1)*(fr.includes(k)?2:1)),out=[];
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
-      const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]));
-      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:''),apply:()=>this.gainRelic(k)}); }
+      const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a])),fu=(FUSIONS[(this.basicAttack||{}).character]||[]).find(f=>f.relic===k);   // v7.8.88 บอกล่วงหน้าว่า Relic นี้ + Evolution = Fusion
+      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:d.headline+(syn?'  🔗 '+syn.name+': '+syn.desc:'')+(fu?'  🧬 + Evolution → '+fu.name:''),apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
     if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);} if(Math.random()<0.45){const cc=this.condRelicCard();if(cc)extra.push(cc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
@@ -13423,7 +13384,7 @@ class Game extends Phaser.Scene {
     ].filter(d=>!d.capped());
   }
   condRelicCard(){ const b=this.basicAttack; if(!b)return null; const own=b.condRelics||[];
-    const D=[['c_low','🩸','Desperate Bite','+40% damage while HP < 50%'],['c_dash','💨','Dash Fury','+50% damage for 2s after a Dash'],['c_still','🧘','Rooted Aim','+30% damage while standing still'],['c_full','✨','Pristine Power','+24% damage while HP ≥ 90%'],['c_boss','👑','Giant Slayer','+30% damage vs elites & bosses'],['c_streak','🔥','Frenzy Feast','+3% damage per kill streak (max 20%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
+    const D=[['c_dash','💨','Dash Fury','+50% damage for 2s after a Dash'],['c_streak','🔥','Kill Streak','+3% damage per kill in your streak (max +40%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
     if(!D.length)return null; const [id,emoji,title,desc]=Phaser.Utils.Array.GetRandom(D);
     return {type:'relic',key:'cond_'+id,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }
   condDmgMul(e){ const P=this.player,c=P&&P._cond; if(!c)return 1; let m=1; const f=P.hp/Math.max(1,P.maxhp);
@@ -13464,7 +13425,7 @@ class Game extends Phaser.Scene {
     if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
-      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')};
+      const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')+(()=>{const L=(typeof FUSIONS!=='undefined'&&FUSIONS[b.character])||[];return L.length?'  🧬 Fusion with '+L.map(f=>((typeof RELICS!=='undefined'&&RELICS[f.relic])||{}).name||f.relic).join(' / '):'';})()};
       return [makeCard(evo,{evolution:true,special:true,tags:WEAPON_TAGS[b.character]||[],color:0xffd54a,apply:()=>{b.evolved=true;this.syncBasicAttack();this.time.delayedCall(2300,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});Sfx.bp?.('shared_build_evolution',.7,1);this.showBanner('✨ EVOLUTION',d.name+' → '+d.evolution,2200);Sfx.clear();this.playGrowthWorld?.('unlock');}})];
     }
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
@@ -14364,7 +14325,7 @@ class Game extends Phaser.Scene {
     }else if(path==='titan'){
       const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel'))*(lv>0&&lv>=this.titanMaxLv()&&this.ptv('rage4')?1.3:1),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.('char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
       this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*1.0*rm,{center:3.6,push:260+lv*80});this.titanPctSlam?.(x,y,r,lv);this.startHeroRegen?.(3+lv*1.5,(.008+.006*lv)*(this.ptv('rage4')?2:1),'🗿 Titan Recovery');if(!(lv===0&&this.heroFx?.('bpx_cocoa_titan_slam',x,y,r*2/.9,{must:true,depth:6})))this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
-        if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1.5);});
+        if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.applyFreeze(e,1.5,false);});
         if(this.cocoaHasInf('sour')){const until=(this.elapsed||0)+4;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)e._titanMarkT=until;});}
         if(lv>=3&&b?.evolved){this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<900&&!(e._phaseGateLocked||e._phaseInvuln>0))this.damage(e,unit*.85*rm*.5,e.x,e.y);});p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.1);this.screenFlash?.(0xffd27a,.35,260);}
         if(lv>=2&&b?.lv?.p_crater)this.cocoaPool(x,y,r*.7,unit*.25*(1+.5*(b.lv.p_crater-1)),3,0xff3a10);});
@@ -14393,7 +14354,7 @@ class Game extends Phaser.Scene {
   }
   cocoaAfterimages(x0,y0,x1,y1){if(!this.textures?.exists?.('bpx_cocoa_afterimage'))return;const fl=this.player.flipX;for(let i=0;i<3;i++){const k=i/3,g=this.trackArtVfx(this.camWorld(this.add.image(x0+(x1-x0)*k,y0+(y1-y0)*k,'bpx_cocoa_afterimage').setScale(.42).setFlipX(fl).setAlpha(.55-i*.12).setDepth(y0-1)));this.tweens.add({targets:g,alpha:0,duration:320+i*60,onComplete:()=>g.destroy()});}}
   cocoaLeapMutation(x,y,r,power){const m=this.basicAttack?.mutation,p=this.player;
-    if(this.cocoaHasInf('minty'))this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,1);});
+    if(this.cocoaHasInf('minty'))this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.applyFreeze(e,1,false);});
     if(m==='afterimage')for(let i=0;i<3;i++)this.cocoaLater(.5+i*.6,()=>{this.cocoaHit(x,y,r*.8,power*.4,{push:80});this.cocoaVisual(x,y,r*.8,'punch',0xc9a3ff);});
     if(m==='chainleap')this.cocoaLater(.12,()=>{if(!p?.active)return;let best=null,bd=230;this.enemies.children.iterate(e=>{if(!e?.active||e._phaseGateLocked)return;const d=this.dist(e.x,e.y,p.x,p.y);if(d>r*.6&&d<bd){bd=d;best=e;}});if(!best)return;
       p.iframe=Math.max(p.iframe||0,.4);{const d=this.dist(p.x,p.y,best.x,best.y);this.bpFx?.('bpx_cocoa_chainline',p.x,p.y,256,{anchor:'left',rotation:Math.atan2(best.y-p.y,best.x-p.x),scaleX:d/256,scaleY:.5});}this.cocoaGlideTo({x:best.x,y:best.y},.16);this.cocoaLater(.17,()=>{if(!p.active)return;this.cocoaHit(p.x,p.y,r*.85,power*.7,{push:160});this.cocoaVisual(p.x,p.y,r*.85,'fist',0xc9a3ff);this.cocoaLandingFx(p.x,p.y,r*.85);});});}
@@ -14459,7 +14420,7 @@ class Game extends Phaser.Scene {
     this.hitCratesInRadius(x,y,r,dmg);this.burst(x,y,0xc97932);
     const glaze=this.camWorld(this.add.image(x,y,'vfx_choco_glaze').setDepth(2).setScale((r*2)/256).setAlpha(0.76));
     const ticks=aw?8:5;for(let n=1;n<=ticks;n++)this.time.delayedCall(n*260,()=>{if(!glaze.active)return;
-      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r){this.damage(e,dmg*0.12,e.x,e.y);if(!e.isBoss&&!e.isMini)e.frozen=Math.max(e.frozen||0,0.10);}});
+      this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r){this.damage(e,dmg*0.12,e.x,e.y);this.applyFreeze(e,0.10,false);}});
     });
     this.tweens.add({targets:glaze,alpha:0,delay:ticks*260,duration:300,onComplete:()=>glaze.destroy()});
     if(final){const wave=this.camWorld(this.add.image(x,y,'vfx_bear_shockwave').setDepth(4).setScale(0.18).setAlpha(0.92));
@@ -14970,7 +14931,7 @@ class Game extends Phaser.Scene {
     const ring=this.camWorld(this.add.image(x,y,'vfx_ring').setTint(0xff79b8).setDepth(5).setScale(0.12).setAlpha(0.9));
     this.tweens.add({targets:ring,scale:(r*2)/256,alpha:0,duration:360,ease:'Quad.out',onComplete:()=>ring.destroy()});
     for(let i=0;i<6;i++){const a=i*Math.PI/3,p=this.camWorld(this.add.image(x,y,'sakura_petal').setDepth(6).setRotation(a).setScale(0.5));this.tweens.add({targets:p,x:x+Math.cos(a)*r,y:y+Math.sin(a)*r,rotation:a+2,alpha:0,duration:330,onComplete:()=>p.destroy()});}
-    this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r){this.damage(e,dmg,e.x,e.y);if(lvl>=4&&!e.isBoss&&!e.isMini)e.frozen=Math.max(e.frozen||0,0.16);}});
+    this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r){this.damage(e,dmg,e.x,e.y);if(lvl>=4)this.applyFreeze(e,0.16,false);}});
     if(aw&&this.player.hp<this.player.maxhp&&(this._sakuraHealCd||0)<=0){this.player.hp=Math.min(this.player.maxhp,this.player.hp+1.5);this._sakuraHealCd=1.8;this.popHeal(this.player.x,this.player.y,2);}
   }
   // Sakura Aura: กลีบอ่านระยะได้ + สะสม Bloom แทนการเผาดาเมจฟรีทุกเฟรม
@@ -15203,7 +15164,7 @@ class Game extends Phaser.Scene {
       else if(k==='nthHit'&&!this.taroIsSecondary?.()){ this._modHits=(this._modHits||0)+1; if(this._modHits%d.n===0){ m*=d.mul; this.floatText&&this.floatText(e.x,e.y-30,d.emoji,0xffd166); if(d.boom)this.modBoom(e.x,e.y,d.boom,d.mul*0.5); } } }
     return m; }
   modBoom(x,y,r,mul,freeze){ if(this._modTick)return; const t=this.elapsed||0; if(t-(this._modBT||0)>0.25){this._modBT=t;this._modBN=0;} if(++this._modBN>8)return; this._modTick=true; this.explodeAt(x,y,r,this.relicDmg(mul)); if(freeze)this.modFreeze(x,y,r); this._modTick=false; }
-  modFreeze(x,y,r){ this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,x,y)<r)e.frozen=Math.max(e.frozen||0,0.6); }); }
+  modFreeze(x,y,r){ this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.applyFreeze(e,0.6,false); }); }
   // v6.67: item Play mods
   gearModBoom(x,y,r,mul,col){ if(this._gmTick)return; this._gmTick=true; this.explodeAt(x,y,r,this.relicDmg(mul)); this._gmTick=false; if(col&&this.fxOk&&this.fxOk()){const c=this.camWorld(this.add.circle(x,y,r,col,0.18).setStrokeStyle(3,col,0.8).setDepth(8));this.tweens.add({targets:c,alpha:0,scale:1.15,duration:260,onComplete:()=>c.destroy()});} }
   gearCritArc(e,amount){ const t=this.elapsed||0; if(t<(this._critArcAt||0))return; this._critArcAt=t+0.15; this._gmTick=true; let n=0;
@@ -15240,12 +15201,15 @@ class Game extends Phaser.Scene {
   cocoaInfMatch(inf){const b=this.basicAttack;if(this.character!=='cocoa'||!b?.path)return null;const M={brawler:{spicy:'Burn ×1.5'},titan:{sour:'Release marks foes +25% dmg taken 4s',sweet:'Blood Rage costs 30% less HP'},dashboxer:{minty:'Dash Leap landing freezes foes'}};return M[b.path]?.[inf]||null;}
   cocoaHasInf(inf){const b=this.basicAttack;return b?.infusion===inf||b?.infusion2===inf;}
   infusionPow(){ const b=this.basicAttack; return 1+0.35*((b&&b.lv&&b.lv.inf_deep)||0); }
+  // v7.8.88 สถานะกลาง: ติดไฟ/แช่แข็งทุกแหล่งของผู้เล่นใช้ 2 ฟังก์ชันนี้ (บอส/มินิไม่โดนแช่)
+  applyBurn(e,add,cap,t=2){ if(!e||!e.active)return; const cur=e._burnDps||0; e._burnDps=Math.min(cur+add,Math.max(cap,cur)); e._burnT=Math.max(e._burnT||0,t); }
+  applyFreeze(e,t,tint=true){ if(!e||!e.active||e.isBoss||e.isMini||!(t>0))return false; e.frozen=Math.max(e.frozen||0,t); if(tint&&e.setTint)e.setTint(COLORS.ice); return true; }
   infusionOnHit(e,amount,inf){ const pw=this.infusionPow();
-    if(inf==='spicy'){ const bm=this.character==='cocoa'&&this.basicAttack?.path==='brawler'?1.5:1; e._burnDps=Math.min((e._burnDps||0)+amount*0.30*pw*bm/2, amount*0.6*pw*bm); e._burnT=2; }
+    if(inf==='spicy'){ const bm=this.character==='cocoa'&&this.basicAttack?.path==='brawler'?1.5:1; this.applyBurn(e,amount*0.30*pw*bm/2,amount*0.6*pw*bm); }
     else if(inf==='sour'){ e._sourT=3; e._sourPow=pw; }
     else if(inf==='sweet'){ const now=this.elapsed||0; if(now>=(this._sweetCd||0)){ this._sweetCd=now+0.3; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+Math.max(0.5,p.maxhp*0.005*pw)); } }
-    else if(inf==='minty'){ if(!e.isBoss&&!e.isMini&&Math.random()<0.30)e.frozen=Math.max(e.frozen||0,0.35*pw); } }
-  tickInfusion(dt){ const b=this.basicAttack; if(!b||!(b.infusion||b.infusion2))return; this._infAcc=(this._infAcc||0)+dt; if(this._infAcc<0.25)return; const step=this._infAcc; this._infAcc=0;
+    else if(inf==='minty'){ if(Math.random()<0.30)this.applyFreeze(e,0.35*pw,false); } }
+  tickInfusion(dt){ const b=this.basicAttack; if(!b)return; this._infAcc=(this._infAcc||0)+dt; if(this._infAcc<0.25)return; const step=this._infAcc; this._infAcc=0;
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
       if(e._sourT>0)e._sourT-=step;
       if(e._burnT>0){ e._burnT-=step; this._infTick=true; this.damage(e,(e._burnDps||0)*step,e.x,e.y); this._infTick=false; if(Math.random()<0.3)this.burst&&this.burst(e.x,e.y,0xff5a3d); if(e._burnT<=0)e._burnDps=0; } }); }
@@ -15284,7 +15248,7 @@ class Game extends Phaser.Scene {
     if(this.basicAttack?.character==='mint'&&(e.isBoss||e.isMini)){ if(e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.04*Math.min(4,e._chill); if(this.basicAttack.path==='glacier'&&this.glacierBrittle(e))amount*=1.15; }   // v6.70 Chill/Brittle มีผลกับบอส
     if(this.basicAttack?.character==='mint'&&this.basicAttack.ranks.rime&&e._chill>0&&this.time.now-(e._chillAt||0)<=2500)amount*=1+0.10*this.basicAttack.ranks.rime;
     if(e._sourT>0)amount*=1+0.12*(e._sourPow||1);if(e._titanMarkT>(this.elapsed||0))amount*=1.25;if(e._shadowUntil>(this.elapsed||0))amount*=1+0.08*(e._shadowN||0);
-    /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&!e.isBoss&&!e.isMini&&Math.random()<P._tagChill)e.frozen=Math.max(e.frozen||0,0.35); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
+    /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&Math.random()<P._tagChill)this.applyFreeze(e,0.35,false); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
@@ -15308,7 +15272,7 @@ class Game extends Phaser.Scene {
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
     this.mxDeal?.(e,amount,crit);e.hp-=amount;if(taroDirect?.smiteProfile)this.taroAfterSmite(taroDirect,e);else if(!taroDirect?.noEffects)this.taroAfterDirect?.(taroDirect,e);
     if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
-    if(RL&&RL.chill&&!e.isBoss&&!e.isMini&&e.hp>0&&Math.random()<(this.taroIsSecondary?.()?.025:0.10)){ e.frozen=Math.max(e.frozen||0,1); e.setVelocity(0,0); e.setTint(COLORS.ice); }
+    if(RL&&RL.chill&&e.hp>0&&Math.random()<(this.taroIsSecondary?.()?.025:0.10)&&this.applyFreeze(e,1)){ e.setVelocity(0,0); }
     if(!e.isBoss&&!e.isMini&&e.hp>0)this.enemyAction(e,'hurt',120);
     this.warnAntBomber(e);
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
@@ -15559,7 +15523,7 @@ class Game extends Phaser.Scene {
   // เปิดกล่องไอเทมที่สะสมมาทั้งด่าน → แจกจริง คืน list สำหรับหน้าสรุป
   openRunBoxes(){ const boxes=this._runBoxes||[]; const opened=[]; for(const tier of boxes){ const got=this.grantGear(tier);
       if(got){ opened.push({emoji:GEAR_SLOTS.find(s=>s.slot===got.slot).emoji, name:got.name, tier}); }
-      else { const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8, sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1; this.sugarStage+=refund; Save.addShards(sh); opened.push({emoji:'🍬', name:'+'+refund+' Sugar · +'+sh+' shards', tier}); } }
+      else { const refund=tier==='legend'?90:tier==='epic'?60:tier==='rare'?25:8, sh=tier==='legend'?12:tier==='epic'?6:tier==='rare'?3:1; this.sugarStage+=refund; Save.addThreads(sh); opened.push({emoji:'🍬', name:'+'+refund+' Sugar · +'+sh+' Thread', tier}); } }
     this._runBoxes=[]; return opened; }
   // สุ่ม currency ดWaitปตาม tier ของ loot (นรก/ของสูง = ได้ orb ระดับสูง)
   rollCurrencyDrop(tier){
@@ -15616,7 +15580,6 @@ class Game extends Phaser.Scene {
       {id:'card',artKey:'prize_levelup',emoji:'⭐',name:'Bonus Level-up',w:5,color:0x8ff0b0,give:()=>{this.pendingLvl=(this.pendingLvl||0)+1;this._prizeLevelUp=true;}},
       {id:'thread',artKey:'prize_thread',name:'Weave Thread +'+(tier==='gold'?5:3),w:5,color:0xcaa4ff,give:()=>{Save.data.threads=Save.threads()+(tier==='gold'?5:3);Save.save();this.showBanner('Weave Thread gained','Use it in Flavor Weave Temple',1400);}},
       {id:'shovel',artKey:'prize_shovel',name:'Shovels +'+(tier==='gold'?2:1),w:4,color:0xffd782,give:()=>{Save.addShovels(tier==='gold'?2:1);this.showBanner('Shovels gained','Explore Temple Depths',1400);}},
-      {id:'scroll',artKey:'prize_scroll',name:'Ancient Scroll +1',w:tier==='gold'?2:1,color:0xd9b2ff,give:()=>{Save.data.scrolls=Save.scrolls()+1;Save.save();this.showBanner('Ancient Scroll +1','Unlock an Ancient Perk',1400);}},
       {id:'recharge',artKey:'prize_recharge',name:'Unique ready + Heal 15%',w:4,color:0x8fe3df,give:()=>{this.uniqueCd=0;const p=this.player,a=Math.round(p.maxhp*0.15);p.hp=Math.min(p.maxhp,p.hp+a);this.popHeal(p.x,p.y,a);this.showBanner('Unique ready','Your Unique skill can be used again',1400);}},
       {id:'jackpot',artKey:'prize_jackpot',emoji:'🌟',name:'JACKPOT!',w:tier==='gold'?3:tier==='silver'?1.5:0.7,color:0xffd166,jackpot:true,give:()=>{this.addRunSugar(S(150));this.grantCurrencyReward(3,this.currencyTierFor(),'JACKPOT');const p=this.player;p.hp=p.maxhp;}},
     ];
@@ -16516,7 +16479,7 @@ class Game extends Phaser.Scene {
   }
 
   charPassiveOnHurt(){ if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
-    this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,px,py)<r){ e.frozen=Math.max(e.frozen||0,0.9*CP.s); if(e.setTint)e.setTint(COLORS.ice); } }); this.burst(px,py,0x8fe7ff); }
+    this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<r)this.applyFreeze(e,0.9*CP.s); }); this.burst(px,py,0x8fe7ff); }
   charPassiveOnDash(){ const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     if(!this.heroFx?.('bpx_taro_rift_step',px,py,120,{must:true,depth:this.player.depth-1}))this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
   charPassiveOnKill(e){ if(this._titanHold&&this.ptv('trLust')){const p=this.player;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.01);} const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
