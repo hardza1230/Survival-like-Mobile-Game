@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.4';
+const GAME_VERSION = '7.9.5';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.5',date:'2026-10-19',title:'Clearer mods',items:['Equipment mods now read as one plain line, e.g. “+4% damage to far enemies”, instead of a name plus a description','More mods fit on screen; ✓ still marks mods that fit your hero','Forge keeps the mod names, with the same plain wording underneath']},
   {v:'7.9.4',date:'2026-10-19',title:'Equipment: cleaner bag',items:['Items waiting in the Inbox move into your bag by themselves as soon as there is room','Salvage weaker (♻) and Equip Best (⚡) are now small buttons on the bag header — more room for your item','The Inbox shortcut only shows when something is waiting']},
   {v:'7.9.3',date:'2026-10-19',title:'Equipment: fewer taps',items:['Enhance any item in your bag — no need to equip it first (Equip and Enhance sit side by side)','Lock is now a small 🔒 on the item card; the second row is just Craft and Salvage (or Unlock / Lock)','Buttons that need a second tap now say “Tap again to confirm” right on the button']},
   {v:'7.9.2',date:'2026-10-19',title:'Easier Equipment',items:['Tap a gear slot to show only that slot in your bag (best items first) · tap it again or ✕ to show everything','New side-by-side compare: what you wear vs the selected item, with the ATK / DEF change','Tap a selected bag item again to equip it','Big hero portrait replaced by a slim name + ATK / DEF bar; the 6 slots sit in one row']},
@@ -5046,7 +5047,10 @@ const MOD_DESC={dmg:'More damage from every attack',crit:'Higher chance to land 
   m_dashnova:'Dashing releases a damaging nova',m_critarc:'Critical hits arc to 2 nearby foes',m_killshell:'Kills build a shield that blocks one hit',m_stillfocus:'More damage while standing still',m_opener:'More damage to foes at full HP',m_thorns:'Getting hit blasts nearby foes (once per second)',
   vampiric:'Heal on every kill with no cooldown',berserk:'Much more damage, but you take more damage too',focus:'Skills recharge much faster, but less crit chance',gambler:'Critical hits deal much more damage',nourish:'Healing pickups restore more HP',
   area:'Bigger attack areas',bounce:'Projectiles bounce to one more foe',exec:'More damage while your HP is low',proj:'Fire one more projectile',uniq:'Your Unique skill recharges faster',revive:'Revive once when you would fall',boss:'More damage to bosses and minibosses'};
-function modDesc(d){if(!d)return '';if(d.description)return d.description;const k=String(d.id||'');return MOD_DESC[k]||MOD_DESC[k.replace(/^i_/,'')]||'';}
+/* v7.9.5 เจ้าของเลือก A: mod แสดงบรรทัดเดียวเป็นภาษาบอกผล ({v} = ค่า fmt) · ไม่มีในตาราง = ชื่อ + ค่าแบบเดิม */
+const MOD_EFFECT={'f_might': '{v} damage', 'f_rapid_rhythm': '{v} attack speed', 'f_precision': '{v} crit chance', 'f_deadly_sweet': '{v} crit damage', 'f_wide_recipe': '{v} attack area', 'f_lingering_flavor': '{v} damage over time', 'f_executioner': '{v} damage to enemies below 30% HP', 'f_opening_bite': '{v} damage to enemies above 90% HP', 'f_giant_slayer': '{v} damage to elites & bosses', 'f_vital_dough': '{v} max HP', 'f_hard_shell': '{v} armor', 'f_slow_recovery': '{v} regen', 'f_fresh_meal': '{v} max HP healed on kill', 'f_vampiric_bite': '{v} HP on hit', 'f_critical_barrier': 'Crits give a {v} shield', 'f_emergency_coating': '{v} damage reduction below 40% HP', 'f_dash_guard': '{v} damage reduction after a dash', 'f_dash_primer': '{v} damage on the first hit after a dash', 'f_steady_hands': '{v} damage while standing still', 'f_close_quarters': '{v} damage to nearby enemies', 'f_brittle_shell': '{v} damage to chilled or frozen enemies', 'f_last_bite': '{v} damage while you are below 40% HP', 'f_perfect_glaze': '{v} damage while you are above 90% HP', 'f_gathering_pace': 'Picking up EXP gives {v} move speed', 'f_growing_appetite': 'Level-ups give {v} damage for a while', 'f_distant_bite': '{v} damage to far enemies', 'f_quick_preparation': '{v} faster skill cooldown', 'f_efficient_recovery': '{v} healing received', 'f_boss_padding': '{v} damage reduction in boss fights', 'f_earned_edge': 'Kills stack up to {v} damage', 'f_second_course': 'Level-ups refund {v} of skill cooldown', 'f_last_crumb': 'Survive one lethal hit (once per run)', 'f_treasure_aroma': '{v} chance for extra gear drops', 'f_currency_sprinkles': '{v} chance for extra currency drops', 'f_boss_pantry': '{v} chance for a bonus currency parcel from bosses', 'f_quick_pull': '{v} loot pull speed', 'i_hp': '{v} max HP', 'i_dmg': '{v} damage', 'i_pick': '{v} pickup range', 'i_regen': '{v} HP regen per second', 'i_spd': '{v} move speed', 'i_def': '{v} damage taken', 'i_cd': '{v} skill cooldown', 'i_xp': '{v} EXP', 'i_crit': '{v} crit chance', 'i_critdmg': '{v} crit damage', 'i_boss': '{v} boss damage', 'i_lifekill': '{v} HP on kill', 'i_area': '{v} attack area', 'i_bounce': '{v} projectile bounce', 'i_exec': '{v} damage to low-HP enemies', 'i_proj': '{v} projectile', 'i_uniq': '{v} Unique cooldown', 'i_revive': '{v} revive per run'};
+function modLine(d,v){const t=d&&MOD_EFFECT[d.id];return t?t.replace('{v}',d.fmt(v)):(d?d.label+' '+d.fmt(v):'');}
+function modDesc(d){if(!d)return '';{const t=MOD_EFFECT[d.id];if(t){const x=t.replace(/\{v\}\s*/,'').replace(/\s+/g,' ').trim();return x.charAt(0).toUpperCase()+x.slice(1);}}if(d.description)return d.description;const k=String(d.id||'');return MOD_DESC[k]||MOD_DESC[k.replace(/^i_/,'')]||'';}
 
 // v4.91: tier ดีสุดที่สุ่มได้ = iLv (1→T10, 100→T0) + ออฟเซ็ตตามเกรดฐาน · สุ่มในหน้าต่าง best…best+4 (ไม่ล็อกที่ tier เดียว)
 const BASE_TIER_OFFSET={ start:6, common:2, rare:1, epic:1, legend:0 };
@@ -14843,8 +14847,8 @@ class Game extends Phaser.Scene {
   drawModCompare(eqIt,selIt,isEq,y,w,maxY){ if(!selIt)return y;
     // v7.8.67 เจ้าของ: เลิกตารางเทียบ — บอกว่าชิ้นนี้มี mod อะไร + แต่ละตัวทำอะไร
     const lines=[],ib=GEAR_ALL.find(g=>g.id===selIt.baseId),im=ensureImplicit(selIt),idf=im&&implicitDef(im.id),mods=(selIt.affixes||[]).map(a=>({a,d:affixDef(a.id)})).filter(x=>x.d);
-    if(idf)lines.push({t:'◇ '+implicitText(selIt),c:IMPLICIT_COLOR[idf.rank],d:modDesc(idf)});else if(ib&&ib.unique)lines.push({t:'★ Unique',c:'#ff8f3a',d:ib.desc||''});
-    for(const {a,d} of mods){const fit=forgeModFits(d),tc=MOD_TIER_COLOR[tierStars(d,a.t)]||MOD_TIER_COLOR[1];lines.push({t:d.emoji+' '+d.label+' '+d.fmt(a.v)+(fit?'  ✓':''),c:tc,r:tierStarText(d,a.t),rc:tc,d:(fit?'✓ Fits your hero · ':'')+modDesc(d)});}   // v7.8.95 สีตามขั้น mod
+    if(idf)lines.push({t:'◇ '+idf.emoji+' '+modLine(idf,im.v),c:IMPLICIT_COLOR[idf.rank],d:MOD_EFFECT[idf.id]?'':modDesc(idf)});else if(ib&&ib.unique)lines.push({t:'★ Unique',c:'#ff8f3a',d:ib.desc||''});
+    for(const {a,d} of mods){const fit=forgeModFits(d),tc=MOD_TIER_COLOR[tierStars(d,a.t)]||MOD_TIER_COLOR[1];lines.push({t:d.emoji+' '+modLine(d,a.v)+(fit?'  ✓':''),c:tc,r:tierStarText(d,a.t),rc:tc,d:MOD_EFFECT[d.id]?'':(fit?'✓ Fits your hero · ':'')+modDesc(d)});}   // v7.8.95 สีตามขั้น mod
     if(!mods.length)lines.push({t:'No mods yet · tap Craft to add some',c:'#8a809a'});
     /* v7.8.102 เจ้าของ: หน้า Equipment ห้ามเลื่อน → ถ้าสูงเกิน maxY ตัดคำอธิบายก่อน แล้วค่อยตัดบรรทัด (+N more) */
     let compact=false; const hOf=()=>24+lines.reduce((n,l)=>n+(compact||!l.d?24:36),0)+4;
