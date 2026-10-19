@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.98';
+const GAME_VERSION = '7.8.99';
 const WHEEL_RELIC_CHANCE=0.30;   // v7.8.97 เจ้าของเลือก 30%
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.99',date:'2026-10-19',title:'No More Scrolling',items:['Menus only scroll when content really runs past the screen — Settings, News, Kitchen, Codex and Stats now sit still','Achievements fit on one screen']},
   {v:'7.8.98',date:'2026-10-19',title:'Portrait Only',items:['The game now plays in portrait only — turning a phone sideways pauses it with a “turn your phone upright” screen']},
   {v:'7.8.97',date:'2026-10-19',title:'One Wheel to Rule the Loot',items:['Miniboss chest: Relic is now a slot on the wheel (30%) instead of a separate pick every time; the chest bonus shows right on the wheel','Boss loot is now a golden wheel too — Sugar, Currency, Shovels, Thread, Gear or a JACKPOT','After the boss wheel, choose: Take it, or risk Double or Nothing']},
   {v:'7.8.96',date:'2026-10-19',title:'Gentler Early Game',items:['Forge: Tier +1 and Auto-roll unlock after you clear Chapter 1 — early on you only Roll','Special Cores unlock at Weave Rank 1']},
@@ -7811,7 +7812,7 @@ class Game extends Phaser.Scene {
     if(this._mScrollFill){if(m.list.includes(this._mScrollFill))m.remove(this._mScrollFill,true);this._mScrollFill=null;}
     let bottom=0;for(const o of m.list){if(!o||!o.visible||o._menuBackdrop||o===this._gearPinned)continue;try{const bounds=o.getBounds();if(bounds&&Number.isFinite(bounds.bottom))bottom=Math.max(bottom,bounds.bottom);}catch(e){}}
     for(const z of this.tapZones||[])if(z.fixedY==null&&Number.isFinite(z.y+z.h))bottom=Math.max(bottom,z.y+z.h);
-    this._mScrollMax=Math.max(0,Math.ceil(bottom-this.H+24));this.setMenuScroll(this._mScroll||0);}
+    this._mScrollMax=bottom>this.H+2?Math.ceil(bottom-this.H+24):0;this.setMenuScroll(this._mScroll||0);}   // v7.8.99 เลื่อนเฉพาะเมื่อของล้นจอจริง (เดิมขอบล่าง 24px ทำให้หลายหน้าเลื่อนได้นิดเดียว)
   // v7.8.60 สลับหน้าเมนู: ม่านม่วงเข้มปิดทั้งจอแล้ว "ปาด" ออก (หน้าใหม่ = ปาดไปซ้าย · ย้อนกลับ = ปาดไปขวา) + แถบแสงขอบ · ไม่ใช้ alpha ของเมนู (เคยเห็นพื้นโลกวาบ)
   menuTransition(forward){ if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
     const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),T=this.textures,art=T.exists('tr_curtain')&&T.exists('tr_edge');this._menuWipe=c;
@@ -8645,7 +8646,7 @@ class Game extends Phaser.Scene {
   }
   buildAchievements(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Achievement','screen_achievements');
-    const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=8,side=14,top=portrait?94:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.max(48,Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows));
+    const w=this.W,h=this.H,portrait=w<=h,cols=portrait?1:2,gap=portrait&&ACHIEVEMENTS.length>10?5:8,side=14,top=portrait?94:60,cw=(w-side*2-gap*(cols-1))/cols,rows=Math.ceil(ACHIEVEMENTS.length/cols),rh=Math.max(38,Math.min(portrait?61:58,(h-top-14-gap*(rows-1))/rows));   // v7.8.99 14 แถวพอดีจอ 360×780 ไม่ต้องเลื่อน
     let done=0;ACHIEVEMENTS.forEach(a=>{if(a.test(Save.data))done++;});
     const sum=this.add.text(w/2,portrait?80:45,'Completed '+done+' / '+ACHIEVEMENTS.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a'}).setOrigin(0.5);this.menu.add(sum);
     ACHIEVEMENTS.forEach((a,i)=>{const col=i%cols,row=Math.floor(i/cols),x=side+col*(cw+gap),y=top+row*(rh+gap),ok=a.test(Save.data),claimed=!!Save.data.achievements[a.id],g=this.add.graphics();
