@@ -38,7 +38,7 @@ for(const character of remaining)for(const path of api.BASIC_PATHS[character].ma
 }
 // Before a path is chosen, every hero (including pathless Berry) has core options.
 for(const character of Object.keys(api.BASIC_ATTACKS)){
- const s=scene(null,character);s.level=5;s.stageIndex=8;s.player.hp=20;const ids=new Set(api.BASIC_ATTACKS[character].upgrades.map(u=>u.id));
+ const s=scene(null,character);s.level=4;s.stageIndex=8;s.player.hp=20;const ids=new Set(api.BASIC_ATTACKS[character].upgrades.map(u=>u.id));
  const randomBefore=rng.random;rng.random=()=>.999999;
  for(const n of [1,2,3]){const cards=s.rollBasicAttackUpgrades(n);assert.equal(cards.length,n);assert(cards.some(c=>ids.has(c.key)));if(n>1)assert(cards.some(c=>c.type==='heal'));}
  rng.random=randomBefore;

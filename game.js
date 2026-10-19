@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.89';
+const GAME_VERSION = '7.8.90';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.90',date:'2026-10-19',title:'Smoother First Steps',items:['Build Path is now picked at level 5, so it no longer collides with the level 6 Relic pick','Activities and Daily Quests are open from the start','New-player guide is spread out: Equipment after Stage 1, the Forge (with 3 Twist Cream) after Stage 2, Talents after Stage 3','Temple: Special Cores now have their own tab; the Kitchen moved to Activities']},
   {v:'7.8.89',date:'2026-10-19',title:'Boss Rush Resting',items:['Boss Rush is taken out of the Activities menu for now']},
   {v:'7.8.88',date:'2026-10-19',title:'Fewer Layers, Clearer Rewards',items:['Permanent HP/DMG now comes from two places only: the Flavor Weave and each hero’s Talents. Vigor, Might and Iron Will left Rank Perks (your points are free to spend again); Deep Roots is now +1 HP regen','Gear Shards and Scroll Fragments are now Weave Thread (old amounts converted). Enhance and Ancient Perks (60 Thread) cost Thread','Forge currency is now just two: 🟢 Twist Cream rolls any mod line and ⚪ Crystal Glaze raises tiers (old Spark Sugar and Wild Jam converted)','Condition relics trimmed to Dash Fury, Kill Streak and Last Stand — the copies of other bonuses are gone','Burn and freeze from every source now use one shared rule, and burn ticks even without a Spicy Infusion','Relic cards tell you which one makes a Fusion with Evolution, and the Evolution card lists them','Hidden Quests merged into Achievements — no more double rewards, five new achievements','Renamed duplicates: Cracked Crystal relic, Titan Fist, Blood Mend, Bossbreaker Gloves']},
   {v:'7.8.87',date:'2026-10-19',title:'Menu Cleanup',items:['Core Stones are gone for good: Dig stones, Depth Gifts and boss loot now give Weave Thread directly','Removed the unused Overcap stars from the Temple','Removed hidden leftovers: Sugar Orders, the Pact tab, Atlas Points, the old Recipe map bag and Zone Modifiers','The old hidden daily mission no longer runs next to Daily Quests','Hero unlocks are recorded again, so the Mochi Core Family achievement can be completed']},
@@ -4753,6 +4754,7 @@ const HUB_GROUPS = {
   gActivity:{ title:'🎉 Activities', rows:[
     ['daily','📅','Daily Quests','Daily quests, points and reward boxes'],
     ['achievements','🏆','Achievements','Milestones and Sugar rewards'],
+    ['kitchen','🍳','Kitchen','Recipes that power every run'],
     /* v6.80 E2: Endgame (Endless/Ascension) entry removed */
     /* v7.8.89 เจ้าของ: Boss Rush เอาออกไปก่อน (โค้ดยังอยู่ · ใส่แถวนี้กลับเพื่อเปิด) */
     ['recipes','📜','Recipe Maps','Endgame maps · Atlas · Uniques · Pinnacle Boss'] ] },
@@ -8099,8 +8101,11 @@ class Game extends Phaser.Scene {
     if(this._stage1Coach){ const z=this.tapZones.find(q=>q.tag==='stage_0'); if(!z)return; const fn=z.fn; z.fn=()=>{ this._stage1Coach=false; fn(); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Play Stage 1!'); return; }
     if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
-      d.gearTut=0; Save.addSugar(GACHA_LEVELS[0].cost); Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+GACHA_LEVELS[0].cost+' + 3 crafting orbs','#ffd166'); }
-    const st=d.gearTut; if(st<0||st>4)return; if(st===4){const cp=Save.cp(d.character||'momo');if((cp.tp||0)<1&&!d._talTutGift){cp.tp=(cp.tp||0)+1;d._talTutGift=true;Save.save();}}
+      d.gearTut=0; Save.addSugar(GACHA_LEVELS[0].cost); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+GACHA_LEVELS[0].cost,'#ffd166'); }
+    const st=d.gearTut; if(st<0||st>4)return;
+    // v7.8.90 กระจายบทแนะนำ: ด่าน 1 = ของ · ด่าน 2 = Forge (+3 Twist Cream) · ด่าน 3 = Talent
+    const sm=d.stageMastery||{}; if(st>=2&&st<=3&&!sm[1])return; if(st===4&&!sm[2])return;
+    if(st===2&&!d._craftTutGift){ d._craftTutGift=true; Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Forge unlocked: +3 🟢 Twist Cream','#ffd166'); } if(st===4){const cp=Save.cp(d.character||'momo');if((cp.tp||0)<1&&!d._talTutGift){cp.tp=(cp.tp||0)+1;d._talTutGift=true;Save.save();}}
     const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/cp\.tal\[n\.id\]=r\+1/,t:'Spend a Talent Point — talents are permanent!'}];
     const cur=STEPS[st],src=z=>{try{return String(z.fn)}catch(e){return ''}};
     let z=this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
@@ -8109,7 +8114,7 @@ class Game extends Phaser.Scene {
     if(!z){ if(st===1&&this.menuScreen==='gear'){ const items=d.gearItems||[],it=items[items.length-1],b=it&&GEAR_ALL.find(g=>g.id===it.baseId);
         if(it&&b&&!Save.isGearEquipped(it.uid)&&this.gearSelectedUid!==it.uid){ this.gearSlot=b.slot; this.gearSelectedUid=it.uid; this.buildMenuScreen(); return; }
         d.gearTut=2; Save.save(); this.buildMenuScreen(); } return; }
-    const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===4?-1:st+1; Save.save(); if(st===3)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: power up your hero with Talents','#ffd166')); if(st===4)this.time.delayedCall(800,()=>this.menuToast('✨ Tutorial done! Gear, crafting and talents make you stronger','#8dffb0')); } fn(); };
+    const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===4?-1:st+1; Save.save(); if(st===1)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: the Forge opens after Stage 2','#ffd166')); if(st===3)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: Talents after Stage 3','#ffd166')); if(st===4)this.time.delayedCall(800,()=>this.menuToast('✨ Tutorial done! Gear, crafting and talents make you stronger','#8dffb0')); } fn(); };
     const skip={x:this.W-96,y:this.H-40,w:86,h:30,fn:()=>{ d.gearTut=-1; Save.save(); this.buildMenuScreen(); }};
     this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
     c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); }
@@ -8138,17 +8143,17 @@ class Game extends Phaser.Scene {
     const nxtG=this.hubNextStep(), GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone;   // v4.28: จบ tutorial = ปลดทุกอย่างในหมวดนี้
     if(grp.sections){ this._buildHubTiles(key,grp,nxtG,GATED,afterS1); return; }
     rows.forEach(([target,emoji,label,sub],i)=>{ const y=y0+i*(rh+gap);
-      const locked=GATED.has(target)&&!afterS1;
+      const kLock=target==='kitchen'&&!kitchenOpen(), locked=(GATED.has(target)&&!afterS1)||kLock;
       const g=this.add.graphics(); g.fillStyle(0x241a30,locked?0.7:0.96); g.fillRoundedRect(x,y,bw,rh,14); g.lineStyle(2,locked?0x4a4059:0x6a5b86,0.85); g.strokeRoundedRect(x,y,bw,rh,14); g.fillStyle(locked?0x4a4059:0x8f7de8,1); g.fillRoundedRect(x,y,7,rh,4);
       const ic=this.add.circle(x+40,y+rh/2,21,0x3a2f50,1).setAlpha(locked?0.5:1); const tk='tile_'+target, em=(this.textures.exists(tk)?this.add.image(x+40,y+rh/2,tk).setDisplaySize(50,50):this.add.text(x+40,y+rh/2,emoji,{fontSize:'22px'}).setOrigin(0.5)).setAlpha(locked?0.45:1);
       const nm=this.add.text(x+72,y+rh*0.34,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:locked?'#8d8399':'#ffffff'}).setOrigin(0,0.5);
-      const ds=this.add.text(x+72,y+rh*0.68,locked?'🔒 Clear Stage 1 to unlock':sub,{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#9a8fac':'#bfb5ca',wordWrap:{width:bw-160}}).setOrigin(0,0.5);
+      const ds=this.add.text(x+72,y+rh*0.68,locked?(kLock?'🔒 Clear Chapter 2 to unlock':'🔒 Clear Stage 1 to unlock'):sub,{fontFamily:'sans-serif',fontSize:'10px',color:locked?'#9a8fac':'#bfb5ca',wordWrap:{width:bw-160}}).setOrigin(0,0.5);
       const ar=this.add.text(x+bw-16,y+rh/2,locked?'🔒':'›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#cbb8e0'}).setOrigin(1,0.5);
       this.menu.add([g,ic,em,nm,ds,ar]);
       if(!locked&&this.hasTargetBadge(target))this.drawBadgeDot(this.menu,x+13,y+13);
       if(!locked&&this.hasClaimableTarget(target))this._drawNextGuide(x,y,bw,rh,'Reward ready');
       else if(!locked&&nxtG&&nxtG.group===key&&nxtG.target===target)this._drawNextGuide(x,y,bw,rh,nxtG.tag);
-      this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast('🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
+      this._zone(x,y,bw,rh,()=>{ if(locked){Sfx.select();this.menuToast&&this.menuToast(kLock?'🔒 Kitchen unlocks after clearing Chapter 2':'🔒 Clear Stage 1 of Chapter 1 to unlock this');return;}
         if(target==='__tutorial'){ this.startTutorial(()=>{this.state='menu';this.menu.setVisible(true);this.menuScreen='hub';this.buildMenuScreen();},true); }
         else { if(target==='skills'){this._skillArchiveTab='attack';this._skillArchivePage=0;this._skillArchiveSelected=null;} this.menuScreen=target; this.buildMenuScreen(); } });
     });
@@ -9046,7 +9051,7 @@ class Game extends Phaser.Scene {
     const ch=CHARACTERS[this.character||'momo'],heroW=portrait?w*.66:w*.42,heroH=portrait?Math.max(25,h*.03):28,heroY=portrait?L.menuTop-heroH-8:h*.65;
     const ht=this.hubText(logoX,heroY+heroH/2,ch.name+' · '+CHARACTER_UNIQUES[ch.unique].name,Math.max(9,Math.min(14,w*.025)),'#fff0df',.5);let hf=parseFloat(ht.style.fontSize);while(ht.width>heroW*.88&&hf>8)ht.setFontSize(--hf+'px');
     const items=[['Play','Choose a stage','chapter','hub_btn_play'],['Heroes','Choose & awaken','char','hub_btn_heroes'],['Gear & Power','Equipment · Craft','gLoadout','hub_btn_gear'],['Activities','Daily · Achievements','gActivity','hub_btn_activity'],['Codex','Skills · Bestiary','gCodex','hub_btn_codex']];
-    const tutDone=!!Save.data.tutorialDone,us=Save.data.unlockedStage||0,need=[0,0,1,2,1,0],nxt=this.hubNextStep();
+    const tutDone=!!Save.data.tutorialDone,us=Save.data.unlockedStage||0,need=[0,0,1,0,1,0],nxt=this.hubNextStep();   // v7.8.90 Activities/Daily เปิดตั้งแต่แรก (เดิมหลังด่าน 2)
     const iconSz=Math.min(...L.boxes.slice(1,5).map(B=>Math.min(B.h*.66,B.w*.19)));   /* v7.8.67 เจ้าของ: ไอคอนทุกปุ่มขนาดเท่ากัน */
     items.forEach(([label,sub,target,icon],i)=>{const B=L.boxes[i],locked=us<need[i]&&!tutDone,primary=i===0,tone=this.hubTone(i),art=this.hubPanel(B.x,B.y,B.w,B.h,tone);if(locked)art.setAlpha(.60);
       if(primary){const glow=this.add.graphics();glow.lineStyle(2,tone.edge,.45).strokeRoundedRect(B.x+2,B.y+2,B.w-4,B.h-4,14);this.menu.add(glow);this.hubTween({targets:glow,alpha:.25,duration:2200,yoyo:true,repeat:-1,ease:'Sine.inOut'});}
@@ -9331,11 +9336,12 @@ class Game extends Phaser.Scene {
       this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
       if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
-    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),open=kitchenOpen(),art=this.tuTab(kx,rkY,rkW,rkH,2,open?'Kitchen':'🔒 Kitchen','tile_kitchen','#e6fff2');
-      if(art)this.menu.add(art); else { const g3=this.add.graphics(); g3.fillStyle(0x1f3a30,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x7fe0b0,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
-      const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'🍳 Kitchen',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#b8f5d8'}).setOrigin(0.5);
-      this.menu.add([g3,t3]); this._smallBtnIcon(t3,'tile_kitchen'); if(!open)t3.setText('🔒 Kitchen'); }
-      this._zone(kx,rkY,rkW,rkH,()=>{ if(!kitchenOpen()){this.menuToast?.('🔒 Kitchen unlocks after clearing Chapter 2');return;} this.menuScreen='kitchen'; this.buildMenuScreen(); }); }   // v4.63: แนวตั้งวางใต้ชื่อยศ (เดิมทับข้อความ)
+    // v7.8.90 Special Cores มีแท็บของตัวเอง (เดิมซ่อนหลังแบนเนอร์ใน Rank Perks) · Kitchen ย้ายไป Activities
+    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),art=this.tuTab(kx,rkY,rkW,rkH,2,'Special Cores','tile_special','#e6fff2');
+      if(art)this.menu.add(art); else { const g3=this.add.graphics(); g3.fillStyle(0x1f3438,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x5ad1c4,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
+      const t3=this.add.text(kx+rkW/2,rkY+rkH/2,'💠 Special Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a8f0e6'}).setOrigin(0.5);
+      this.menu.add([g3,t3]); }
+      this._zone(kx,rkY,rkW,rkH,()=>{ this._templeSpecial=true; this._specialFrom=null; this._specialCorePage=0; this.buildMenuScreen(); }); }
     { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Perks · '+rpFree+' RP'):'Rank Perks','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
       if(art)this.menu.add(art); else { const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
       const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
@@ -9442,7 +9448,7 @@ class Game extends Phaser.Scene {
   // ⛏️ v5.27 Temple Depths — หน้าขุด
   // ===== v5.37 🍳 Recipe Kitchen: ประกอบ perk เอง · แตะช่องสูตร → แตะชิ้นส่วนในถุง =====
   buildKitchen(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Recipe Kitchen','ui_talent_hall','upgrade');
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🍳 Recipe Kitchen','ui_talent_hall','gActivity');
     const w=this.W,h=this.H,hs=this._hdrShift(),slots=Save.frSlots(),R=Save.frRecipes();
     if(this._kSel==null)this._kSel={slot:0,k:'t'};
     const sel=this._kSel; if(sel.slot>=slots)sel.slot=0;
@@ -13404,9 +13410,9 @@ class Game extends Phaser.Scene {
     const noSpecial=opts&&opts.noSpecial;
    // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};return c;};
-    // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation)
+    // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation) · v7.8.90 เดิม 6 ชนกับ Relic → สายเลื่อนเป็น 7 ทุกครั้ง
     const PATHS=BASIC_PATHS[b.character];
-    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=6){
+    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
       return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,carry:this.pathCarryText?.(pt)||'',headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));
     }
