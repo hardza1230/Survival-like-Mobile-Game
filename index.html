@@ -171,7 +171,12 @@
     s.src='game.js?v='+Date.now();
     s.onerror=function(){ var b=document.getElementById('err-box'); if(b)b.style.display='block'; };
     var ready=document.fonts?Promise.all([document.fonts.load('700 24px NunitoUI'),document.fonts.load('400 16px NunitoUI')]):Promise.resolve();
-    Promise.race([ready,new Promise(function(resolve){setTimeout(resolve,1500);})]).catch(function(){}).then(function(){document.body.appendChild(s);});
+    // v7.8.104 เวอร์ชันใหม่ขึ้นตั้งแต่เปิดครั้งแรก: ถาม version.json (เล็ก) ก่อน · ถ้าไม่ตรงกับตัวที่โหลดล่าสุด → ขอ game.js แบบ fresh (SW รอเน็ตจนจบ ไม่ตัด 3.5 วิ แล้วยื่นของเก่า)
+    var ver=new Promise(function(resolve){ try{ var done=false,t=setTimeout(function(){if(!done){done=true;resolve(null);}},2500);
+      fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){if(!done){done=true;clearTimeout(t);resolve(j&&j.version);}}).catch(function(){if(!done){done=true;clearTimeout(t);resolve(null);}}); }catch(e){resolve(null);} });
+    Promise.all([Promise.race([ready,new Promise(function(resolve){setTimeout(resolve,1500);})]).catch(function(){}),ver]).then(function(r){ var v=r[1],last=null; try{last=localStorage.getItem('mochi_last_ver');}catch(e){}
+      if(v&&v!==last){ s.src+='&fresh='+encodeURIComponent(v); try{ if(window.GameLoader&&window.GameLoader.show)window.GameLoader.show('Updating to v'+v+'…',0.2); }catch(e){} }
+      document.body.appendChild(s); });
   })();
 </script>
 <script>

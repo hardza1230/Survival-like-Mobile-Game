@@ -50,7 +50,8 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.103';
+const GAME_VERSION = '7.8.104';
+try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
   {id:'swift',emoji:'⚡',name:'Swift Swarm',desc:'Enemies move 15% faster · +25% EXP',spd:1.15,player:p=>{p.xpMul=(p.xpMul||1)*1.25;}},
@@ -81,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.104',date:'2026-10-19',title:'Updates on first launch',items:['A new version now loads the first time you open the game, even on slow connections — no more opening twice','Shows “Updating to v…” on the loading screen while it downloads']},
   {v:'7.8.103',date:'2026-10-19',title:'Cloud Play Stats & Save Check',items:['Play Stats now sync to the cloud with your save (last 150 runs) and merge across devices','If this device and your cloud save both changed, the game asks which one to keep instead of overwriting','While you decide, nothing is uploaded, so neither save gets lost']},
   {v:'7.8.102',date:'2026-10-19',title:'Boss lines you can read',items:['Boss lines now show in a box on screen instead of over the boss','The opening line plays while the camera is still on the boss','Run trait now stays on screen under your kill count, and its banner no longer gets covered','Equipment fits the screen without scrolling: Equip / Craft / Lock / Salvage buttons stay at the bottom, the bag shows 2 rows on shorter phones, long mod lists get compact']},
   {v:'7.8.101',date:'2026-10-19',title:'Boss Voices',items:['Every story boss now speaks when the fight starts and when it falls','Every miniboss has a line when it arrives','Level-up Reroll and Banish removed (Spare Cards / Cull perks gone — their Rank Points are refunded)','Rank Points spent on removed perks (Vigor, Might, Iron Will) are refunded too']},
