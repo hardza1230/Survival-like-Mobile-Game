@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.85';
+const GAME_VERSION = '7.8.86';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.86',date:'2026-10-19',title:'Deeper Delve, Better Loot',items:['Mochi Delve: Forge currency now scales with depth — Epic currency below depth 10, Legend from depth 10, and +5% more drops per depth (up to ×3 at depth 40)','The Delve node panel shows the loot tier and multiplier for that depth']},
   {v:'7.8.85',date:'2026-10-19',title:'Reroll, Banish & Kitchen Fixes',items:['Level-up: 🎲 Reroll and 🚫 Banish buttons are back (3 rerolls and 2 banishes per stage, +1 each per Spare Cards / Cull perk rank)','Banish removes a card for the rest of the stage; reroll draws three new cards','Kitchen: 4 signature recipes that could never work now use live effects (Candy Armor = hurt → Wipe Enemy Shots, Brain Freeze = low HP → Freeze, Double Helping = Unique → 8-Way Shots, Slow Simmer = every 10s → Pull All EXP)','Removed unused card code (Dual Infusion, Fusion card, old Modifier/Trade-off injection)']},
   {v:'7.8.84',date:'2026-10-19',title:'Equipment & Forge Overhaul',items:['Forge: each roll now shows 3 different mods — pick one, or keep your current mod','Forge: Crystal Glaze raises a mod by one tier and never lowers it (cost grows with the tier; item level sets the cap)','Forge Auto-roll: 3 picks per roll, misses never replace your mod, and the target is guaranteed by roll 20','Forge opens straight on the item you chose (tap the item icon to switch)','Equipment: Sell and Dismantle are merged into Salvage (gives both Shards and Sugar)','Equipment: new Equip Best and Salvage all ▼ buttons','Equipment: Boots arrows now count Move Speed and Dash cooldown','Gear Gacha moved into the Bazaar Gacha tab (tap iLv band to change level range)','Implicit stats no longer repeat the slot role (e.g. Gloves no longer roll Crit)']},
   {v:'7.8.83',date:'2026-10-19',title:'Equipment Slot Roles',items:['Every slot now has its own job: Weapon and Ring = ATK · Gloves = Crit chance and Crit DMG · Armor = Armor and HP · Boots = Move Speed and Dash cooldown · Amulet = Cooldown','Role stats grow with item level (iLv 1 → 100), rarity and enhancement','Boots and Amulets no longer give Armor, and Gloves no longer give ATK']},
@@ -6534,6 +6535,8 @@ function amapGuardiansDown(){ return delveBossesDown(); }
 // v6.40 จูนจากเซฟจริงเจ้าของ: หลังชั้น 20 ของตัน (iLv>60 โตแค่ 1.5%/lv) → ชะลอการโตเลือด/ดาเมจ ไม่ให้ชั้น 40+ เป็นกำแพง
 const DELVE_BOSS_FLOOR=0.3;   // v6.98.1 owner: Delve boss floor = 30% of C3-5 Normal boss
 const HUNGER_PER_KILL=0.19, FEAST_SHARE=0.12, FEAST_EVERY=16, FEAST_FIRST=6, FEAST_LIFE=22, MISSION_HUNGER=0.16;   // v6.42 Feast Targets
+/* v7.8.86 เจ้าของ: "ความยาก" ของ endgame = ความลึก Delve — ยิ่งลึก สกุลเงิน Forge ดีขึ้น (ระดับ+จำนวน) · Story เล่นระดับเดียว */
+function delveLoot(d){d=Math.max(1,d||1);return {tier:d>=10?'legend':'epic',mul:Math.min(3,1+0.05*d)};}
 function delveMul(d){ const a=Math.min(d,20),b=Math.max(0,d-20); return {hp:Math.pow(1.08,a)*Math.pow(1.05,b),dmg:Math.pow(1.06,a)*Math.pow(1.04,b),reward:1+0.05*d}; }
 // v6.22 Atlas Influence (3A): ทุกแมพมีรสประจำตัว · เคลียร์แล้วรสซึมไปแมพที่เชื่อม (+1 ชั้น/การเคลียร์ เพดาน 3/รส) · ชั้นละ ยาก+10% รางวัล+15% (กฎเหล็ก)
 const AMAP_FLAVORS=[
@@ -8772,7 +8775,7 @@ class Game extends Phaser.Scene {
       // v6.35 แผงอ่านง่าย: หัว / ตาราง 2×2 / mods / ตัวคูณ / ปุ่ม
       TL(cx+14,y0+18,sn.name,16,'#ffffff','bold');
       { const bl=ty.emoji+' '+ty.name,bwid=bl.length*6.5+18; const g=this.add.graphics(); g.fillStyle(sn.flavor.color,0.28); g.fillRoundedRect(cx+cw-14-bwid,y0+8,bwid,20,10); this.menu.add(g); TL(cx+cw-14-bwid/2,y0+18,bl,10,'#ffffff','bold').setOrigin(0.5,0.5); }
-      TL(cx+14,y0+38,'⛏ Depth '+sn.d+(t?'   ·   ✓ Cleared ×'+t:'   ·   Not cleared yet'),11,t?'#ffe08a':'#bfb5ca');
+      {const lt=delveLoot(sn.d);TL(cx+14,y0+38,'⛏ Depth '+sn.d+'  ·  💠 '+(lt.tier==='legend'?'Legend':'Epic')+' loot ×'+lt.mul.toFixed(2)+(t?'  ·  ✓ ×'+t:''),11,t?'#ffe08a':'#bfb5ca');}
       const sep=this.add.graphics(); sep.lineStyle(1,0x4a4059,1); sep.lineBetween(cx+12,y0+52,cx+cw-12,y0+52); this.menu.add(sep);
       const md=sn.mission?WAVE_OBJECTIVES[sn.mission]:null,colW=(cw-28)/2;
       const cell=(i,lab,val,c)=>{ const xx=cx+14+(i%2)*colW,yy=y0+66+Math.floor(i/2)*34; TL(xx,yy,lab,9,'#8d8499','bold'); const v=TL(xx,yy+15,val,12,c||'#ffffff','bold'); if(v.width>colW-8)v.setScale((colW-8)/v.width); };
@@ -15710,10 +15713,10 @@ class Game extends Phaser.Scene {
     return rollWeightedCurrency(tier);
   }
   // เกรด orb pool ตามความยาก+Stage (คนขยัน/เล่นยาก ได้ของดี — กฎเหล็ก)
-  currencyTierFor(){ const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
+  currencyTierFor(){ if(this.recipeMode&&this._amapNode&&!this._pinnacleRun)return delveLoot(this._amapNode.d).tier; const diff=this.stageDiff||1, st=this.stageIndex||0; if(diff>=3)return 'legend'; if(diff>=2)return st>=3?'legend':'epic'; return st>=3?'epic':'rare'; }
   // แจก currency แน่นอน N ชิ้น (ข้าม 28% miss ของ rollCurrencyDrop) + แบนเนอร์
   grantCurrencyReward(n,tier,head){
-    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)*(this.player.currencyFindMul||1)*(this.isEndgameRun()?this.zoneModMul().reward:1)));   // Fortune perk
+    if(n>0)n=Math.max(1,Math.round(n*(this._currencyLuckMul||1)*(this.player.currencyFindMul||1)*(this.isEndgameRun()?this.zoneModMul().reward:1)*(this.recipeMode&&this._amapNode&&!this._pinnacleRun?delveLoot(this._amapNode.d).mul:1)));   // Fortune perk
     const got={}; for(let i=0;i<n;i++){ const k=forgeCurrency(tier,this._forgeLoot); got[k]=(got[k]||0)+1; Save.addCurrency(k,1); }
     if(head&&this.showBanner){ const txt=Object.keys(got).map(k=>currencyDef(k).emoji+'×'+got[k]).join(' '); this.showBanner(head,txt,1800); } return got; }
   // ---- หีบสมบัติ (ดWaitปจากบอส) → เดินไปเก็บ = เปิดหน้าสุ่มสกิล ----
