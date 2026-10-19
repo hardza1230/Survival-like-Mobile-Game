@@ -50,7 +50,14 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.99';
+const GAME_VERSION = '7.8.100';
+// v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
+const RUN_TRAITS=[
+  {id:'swift',emoji:'⚡',name:'Swift Swarm',desc:'Enemies move 15% faster · +25% EXP',spd:1.15,player:p=>{p.xpMul=(p.xpMul||1)*1.25;}},
+  {id:'sugar',emoji:'🍬',name:'Sugar Rush',desc:'Enemies have 15% more HP · +35% Sugar from kills',hp:1.15,player:p=>{p.sugarFindMul=(p.sugarFindMul||1)*1.35;}},
+  {id:'frenzy',emoji:'🔥',name:'Frenzy',desc:'You attack 15% faster · but take 15% more damage',player:p=>{p.cdMul=(p.cdMul||1)*0.87;p.dmgTakenMul=(p.dmgTakenMul||1)*1.15;}},
+  {id:'lucky',emoji:'🍀',name:'Lucky Day',desc:'Miniboss chests upgrade more often',lucky:true},
+];
 const WHEEL_RELIC_CHANCE=0.30;   // v7.8.97 เจ้าของเลือก 30%
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
@@ -74,6 +81,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.100',date:'2026-10-19',title:'Surprises',items:['From Stage 3 on, every story run rolls a Run Trait: Swift Swarm, Sugar Rush, Frenzy or Lucky Day','Replays get a random event every 60–90 seconds: Treasure Room, Sugar Shrine, Rare Elite or a Wandering Merchant']},
   {v:'7.8.99',date:'2026-10-19',title:'No More Scrolling',items:['Menus only scroll when content really runs past the screen — Settings, News, Kitchen, Codex and Stats now sit still','Achievements fit on one screen']},
   {v:'7.8.98',date:'2026-10-19',title:'Portrait Only',items:['The game now plays in portrait only — turning a phone sideways pauses it with a “turn your phone upright” screen']},
   {v:'7.8.97',date:'2026-10-19',title:'One Wheel to Rule the Loot',items:['Miniboss chest: Relic is now a slot on the wheel (30%) instead of a separate pick every time; the chest bonus shows right on the wheel','Boss loot is now a golden wheel too — Sugar, Currency, Shovels, Thread, Gear or a JACKPOT','After the boss wheel, choose: Take it, or risk Double or Nothing']},
@@ -10023,7 +10031,7 @@ class Game extends Phaser.Scene {
     const p=this.player;
     p.forgeMods={};p.cdMul=1;p.powerMul=1;p.armor=0;p.gearAttackMin=0;p.gearAttackMax=0; p.dmgTakenMul=1; p.flatDmg=0;   // ตัวคูณ/ดาเมจตรง (รีเซ็ตก่อน)
     p.sugarFindMul=1; p.boxFindMul=1; p.currencyFindMul=1; p.uniqueCdMul=1; p.gearDashNova=0; p.gearCritArc=0; p.gearKillShell=0; p.gearStillDmg=0; p.gearOpener=0; p.gearThorns=0; p.gearCount=0; p.gearBounce=0; p.gearArea=0; p.critChance=0; p.critMul=1.55; p.regen=0; p.regenFlat=0; p.regenPct=0; p.lifeOnKill=0; p.healEffect=1; p.lifesteal=0; p.memoryAmp=0; p.lowHpDmg=0; p._uqGlass=0; p._uqNoRegen=false; p._uqCritBurst=0;
-    p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1;
+    p.bossDmg=0; p.lowHpGuard=0; p.xpMul=1; p.dashCdMul=1; if(this._runTrait?.player)this._runTrait.player(p);   // v7.8.100 ลักษณะพิเศษของรอบ
     p.twinSprinkle=false; p.deepFreeze=false; p.donutImpact=false; p.echoPath=false; p.mirrorWard=false; p.pressurizedJam=false; p._gearRevive=0;
     p.weaponDmgMul=1;p.weaponCdMul=1;p.weaponShots=0;p.weaponAreaMul=1;p.weaponControlMul=1;p.weaponChains=0;p.weaponReflect=0;
     // เลือกตัวละคร
@@ -10497,7 +10505,7 @@ class Game extends Phaser.Scene {
   usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush;}
   startReplayRun(st){
     this.clearWaveObjective();this._finalStoryShown=true;if(this.pipG)this.pipG.setVisible(false);
-    this._replayMeter={kills:0,goal:REPLAY_GOAL,time:0,miniTriggered:false,miniDone:false,done:false};
+    this._replayMeter={kills:0,goal:REPLAY_GOAL,time:0,miniTriggered:false,miniDone:false,done:false,nextEv:60+Math.floor(Math.random()*31)};
     this.waveIndex=0;this.scheduleStageEvent(1200,'breather',()=>this.beginReplaySwarm());
     this.showBanner('Replay · Survival rules','No objectives this time — defeat monsters to fill the meter · Elites count 8× · Miniboss at half, boss when full',3600);   // v7.8.91 บอกกฎ replay
   }
@@ -10512,6 +10520,8 @@ class Game extends Phaser.Scene {
   }
   tickReplayProgress(dt){
     const m=this._replayMeter;if(!m||m.done)return;m.time+=dt;this.renderReplayProgress();
+    if(this.mode==='wave'&&m.nextEv&&m.time>=m.nextEv&&this.state==='play'){ m.nextEv=m.time+60+Math.floor(Math.random()*31); this.triggerRecipeEvent?.(true); }   // v7.8.100 Lens of Interest Curve: เหตุการณ์สุ่มระหว่าง Replay
+    if(this._replayMeter&&this._shrine)this.tickRecipeShrine(dt);
     if(!m.miniTriggered&&m.kills>=m.goal*0.5){
       m.miniTriggered=true;this.waveIndex=STAGES[this.stageIndex].miniAt;this.mode='miniWarning';this.updateWaveText();
       this.showBanner('Miniboss incoming','Defeat it, then continue filling the meter',2200);Sfx.bossWarn();this.scheduleStageEvent(2200,'miniWarning',()=>this.spawnMiniBoss());return;
@@ -10547,17 +10557,17 @@ class Game extends Phaser.Scene {
       this.showBanner(full?(this._recipeFast?'⚡ Fast clear!':'🍽 Hunger Meter full!'):'⏳ The boss grows impatient','The boss is coming',1800);
       this.mode='bossWarning'; this.updateWaveText(); Sfx.bossWarn(); this.scheduleStageEvent(1600,'bossWarning',()=>this.spawnFinalBoss()); } }
   // R5: เหตุการณ์สุ่มกลางรัน (1 ครั้ง/รัน ที่ Hunger 40%)
-  triggerRecipeEvent(){ this._recipeEventDone=true; const ev=Phaser.Utils.Array.GetRandom(['treasure','shrine','merchant','rare']);this._recipeEvent=ev; const p=this.player;
+  triggerRecipeEvent(replay){ if(!replay)this._recipeEventDone=true; const ev=Phaser.Utils.Array.GetRandom(replay&&!((this.relicSlotsLeft?.()??0)>0)?['treasure','shrine','rare']:['treasure','shrine','merchant','rare']);this._recipeEvent=ev; const p=this.player;
     if(ev==='treasure'){ for(let i=0;i<6;i++)this.spawnCrate(); this.spawnVac(p.x+Phaser.Math.Between(-120,120),p.y+Phaser.Math.Between(-120,120)); this.showBanner('💰 Treasure Room','Jam jars spilled everywhere — smash them for loot',2200); }
     else if(ev==='shrine'){ this.clearRecipeShrine(); const a=Math.random()*Math.PI*2,x=p.x+Math.cos(a)*260,y=p.y+Math.sin(a)*260,g=this.camWorld(this.add.graphics().setDepth(3));
       this._shrine={x,y,t:0,life:22,g}; this.showBanner('⛩️ Sugar Shrine','Stand in the glowing circle for 2s to gain power',2200); }
     else if(ev==='merchant'){ this.showBanner('🧺 Wandering Merchant','A traveller offers you a relic',1800); this.time.delayedCall(900,()=>{ if(this.state==='play'&&!this.offerRelic())this.grantCurrencyReward(2,this.currencyTierFor(),'🧺 The merchant pays in currency'); }); }
-    else { const e=this.spawnElite(); if(e){ e.hp*=4; e.maxhp=e.hp; e._rareElite=true; e.tintColor=0xffd166; e.setTint(0xffd166); e.setScale((e.baseScale||1)*1.25); } this.showBanner('✨ Rare Elite','A golden elite appeared — worth big Hunger and currency',2200); } }
+    else { const e=this.spawnElite(); if(e){ e.hp*=4; e.maxhp=e.hp; e._rareElite=true; e.tintColor=0xffd166; e.setTint(0xffd166); e.setScale((e.baseScale||1)*1.25); } this.showBanner('✨ Rare Elite',replay?'A golden elite appeared — worth a big chunk of the meter':'A golden elite appeared — worth big Hunger and currency',2200); } }
   tickRecipeShrine(dt){ const sh=this._shrine; if(!sh)return; sh.life-=dt; const p=this.player,inside=Phaser.Math.Distance.Between(p.x,p.y,sh.x,sh.y)<90;
     if(inside)sh.t+=dt; const g=sh.g; g.clear(); g.lineStyle(4,0xffd166,0.9); g.strokeCircle(sh.x,sh.y,90); g.fillStyle(0xffd166,0.12+0.1*Math.sin(this.elapsed*6)); g.fillCircle(sh.x,sh.y,90);
     if(sh.t>0){ g.fillStyle(0xffffff,0.35); g.slice(sh.x,sh.y,40,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,sh.t/2),false); g.fillPath(); }
     if(sh.t>=2){ this.clearRecipeShrine(); p.dmgMul+=(1.3)-1; p.cdMul*=0.85; this.burst(p.x,p.y,0xffd166); this.showBanner('⛩️ Shrine Blessing','+30% damage · faster attacks for 25s',1800);
-      this.time.delayedCall(25000,()=>{ if(this.recipeMode){p.dmgMul-=0.3;p.cdMul/=0.85;} }); }
+      const run=this._artEpoch||0; this.time.delayedCall(25000,()=>{ if((this.recipeMode||this._replayMeter)&&(this._artEpoch||0)===run){p.dmgMul-=0.3;p.cdMul/=0.85;} }); }
     else if(sh.life<=0)this.clearRecipeShrine(); }
   // v6.33: Biome ต่อรส (เริ่มที่ 🌶️ Spicy) · พื้นของตัวเอง + กลไกฉาก + มอนประจำรส
   makeSpicyFloor(){ if(this.textures.exists('biome_spicy_floor'))return; const S=512,c=this.textures.createCanvas('biome_spicy_floor',S,S),x=c.getContext(),R=mulberry32(7331);
@@ -12248,8 +12258,10 @@ class Game extends Phaser.Scene {
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
   equipSignatureWeapon(){const w=this.signatureWeaponInfo();this.signatureWeapon=w;this.skills[w.skill]=Math.max(1,this.skills[w.skill]||0);if(this.usesBasicAttackBuild())this.initBasicAttack();if(w.skill==='star')this.rebuildRing();}
+  rollRunTrait(){ if(this._inTutorial||this.recipeMode||this.bossRush||this._pinnacleRun||this.riftMode||(this.stageIndex||0)<2)return; const T=Phaser.Utils.Array.GetRandom(RUN_TRAITS); this._runTrait=T;
+    if(T.player&&this.player)T.player(this.player); this.time.delayedCall(2300,()=>{ if(this._runTrait===T&&(this.state==='play'||this.state==='levelup'))this.showBanner(T.emoji+' Run trait: '+T.name,T.desc,2600); }); }
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
-    const begin=()=>{this.physics.resume();this.state='play';this.startStage(this.stageIndex);this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
+    const begin=()=>{this.physics.resume();this.state='play';this._runTrait=null;this.startStage(this.stageIndex);this.rollRunTrait?.();this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
     const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
     // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
@@ -13386,6 +13398,7 @@ class Game extends Phaser.Scene {
       const role={basic:['Ash Mochi',.82,26,38,48],fast:['Sunseed Sprinter',.86,22,42,56],dasher:['Sunseed Sprinter',.86,22,42,56],shooter:['Hollow Apple Sniper',.82,25,39,49],bomber:['Crownseed Pod',.84,27,37,48],tank:['Acorn Shield Knight',.66,38,26,42],siege:['Acorn Shield Knight',.72,38,26,42]}[type]||['Ash Mochi',.82,26,38,48];
       e.roleName=role[0];scale=role[1];e.clearTint();e.setCircle(role[2],role[3],role[4]);
     }
+    if(this._runTrait){ e.hp*=this._runTrait.hp||1; e.spd*=this._runTrait.spd||1; }   // v7.8.100 ลักษณะพิเศษของรอบ
     e.isBoss=false; e.isMini=false; e.isElite=false; e.maxhp=e.hp; e.frozen=0; e._glacierLifeToken=(e._glacierLifeToken||0)+1;e._frostBurnStacks=0;e._trem=0;e._shock=0;e._frostBurnUntil=0;e._frostBurnPower=0;e._frostBurnTick=0; e._glacierFrost=0; e._glacierFrostAt=0; e._glacierBrittleUntil=0;e._mintImpale=0;e._mintImpaleAt=-Infinity;e._mintRuptureAt=-Infinity; e._glacierBurstAt=-Infinity; e._chill=0; e._chillAt=null; e.knock=0; e.baseScale=scale; e._sqX=1; e._sqY=1; e.setScale(scale);
     e.setFlipX(false);this.resetEnemyPresentation(e,atlasFrame);
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
@@ -15226,7 +15239,7 @@ class Game extends Phaser.Scene {
   openPrizeWheel(tier,done,opts={}){
     if(this.state==='rolling'){done&&done();return;}
     // v5.15: ลุ้นอัปเกรดระดับกลางวงล้อ (ตัดสินตั้งแต่ต้น โชว์ตอนหมุนไปได้ ~55%) bronze→silver 25% · silver→gold 15%
-    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=opts.prizes?0:[0.25,0.15,0][ri],upTier=Math.random()<upChance?order[ri+1]:null;
+    const order=['bronze','silver','gold'],ri=Math.max(0,order.indexOf(tier)),upChance=opts.prizes?0:[0.25,0.15,0][ri]+(this._runTrait?.lucky&&ri<2?0.25:0),upTier=Math.random()<upChance?order[ri+1]:null;
     const T0=MINI_CHEST_TIERS[tier]||MINI_CHEST_TIERS.bronze,T=MINI_CHEST_TIERS[upTier||tier],rewards=opts.prizes?opts.prizes.slice():this.miniPrizePool(upTier||tier);
     let mim=null; if(opts.onMimic){ let base=0; rewards.forEach(p=>base+=p.w); mim={id:'mimic',artKey:this.textures.exists('mimic_chest_animated')?'mimic_chest_animated':'prize_chest',emoji:'🦷',name:'MIMIC!',w:base*MIMIC_WHEEL_CHANCE/(1-MIMIC_WHEEL_CHANCE),color:0xd23a5a,mimic:true,give:()=>{}}; rewards.push(mim); }   // v6.89.1 Mimic เป็นช่องหนึ่งในวงล้อเสมอ
     let rel=null; if(opts.relic){ let base=0; rewards.forEach(p=>base+=p.w); rel={id:'relic',artKey:this.textures.exists('relic_crown')?'relic_crown':'prize_jackpot',emoji:'🔮',name:'🔮 Relic!',w:base*WHEEL_RELIC_CHANCE/(1-WHEEL_RELIC_CHANCE),color:0xc07bff,give:()=>{}}; rewards.push(rel); }   // v7.8.97 เจ้าของ: Relic เป็นช่องในวงล้อ 30% (เดิมได้ทุกครั้งเป็นหน้าแยก)
