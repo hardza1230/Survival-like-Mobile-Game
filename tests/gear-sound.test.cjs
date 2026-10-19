@@ -15,7 +15,7 @@ for(const result of ['success','break','destroy','no_shards','stale_wallet']){
  assert.deepEqual(events,result==='no_shards'?['error']:result==='stale_wallet'?[]:[result]);assert.equal(spent,['no_shards','stale_wallet'].includes(result)?0:10);if(result==='destroy')assert.equal(scene.gearSelectedUid,null);
 }
 // Equipment/destruction actions only emit a result after the save reports success.
-for(const [call,cue] of [['Save.equipGearInstance(sel,selected.uid)','equip'],['Save.dismantleGearInstance(selected.uid)','dismantle'],['Save.sellGearInstance(selected.uid)','sell'],['Save.dismantleGearInbox(item.uid)','dismantle']]){
- const marker=source.indexOf(call),line=source.slice(source.lastIndexOf('\n',marker)+1,source.indexOf('\n',marker));assert(line.includes(`Sfx.equipment('${cue}')`));if(cue==='equip')assert(line.includes('if('+call+')'));else assert(line.includes('if(n){'));
+for(const [call,cue] of [['Save.equipGearInstance(sel,selected.uid)','equip'],['Save.salvageGearInstance(selected.uid)','dismantle'],['Save.dismantleGearInbox(item.uid)','dismantle']]){
+ const marker=source.indexOf(call),line=source.slice(source.lastIndexOf('\n',marker)+1,source.indexOf('\n',marker));assert(line.includes(`Sfx.equipment('${cue}')`));if(cue==='equip')assert(line.includes('if('+call+')'));else assert(line.includes('if(n){')||line.includes('if(r){'));
 }
 console.log('Equipment audio: actual enhancement callbacks, all outcomes/rejections, mute/volume, fallback and WAV limits passed');
