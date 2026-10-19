@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.8.91';
+const GAME_VERSION = '7.8.92';
 const MIMIC_WHEEL_CHANCE = 0.12;   // v6.89.1 โอกาสวงล้อหยุดที่ MIMIC
 // v6.88 APK ขั้นต่ำ: bump เฉพาะตอนที่ตัวแอป (native) เปลี่ยนจนต้องลงใหม่ · APK เวอร์ชันต่ำกว่านี้จะเห็นป้ายแจ้งเตือน
 const MIN_APK_VERSION = '6.88.0';
@@ -74,6 +74,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.8.92',date:'2026-10-19',title:'Smoother Frames',items:['Performance: Auto quality now renders at 1.5× (was 2×) — much lighter on the graphics chip; pick High in Settings for the old sharpness','Guard checks in Chapter 2 stages, boss targeting for homing shots and Cream Wave no longer scan every enemy on every hit','Hit sparks are reused instead of created and thrown away','Dash ring and the HP/EXP bar under your hero only redraw when something changes']},
   {v:'7.8.91',date:'2026-10-19',title:'Clearer Card Text',items:['Relic cards now really show their synergy and Fusion hints','Cards that freeze now say freeze (Chill stays Mint’s own stack system)','Sesame mutations describe the Mirror Beam they actually change','Rocket Gauntlet text matches what it does','Replays explain their rules when they start','Condition cards are now called Instincts, and mixed pick screens say Special Pick instead of Relic']},
   {v:'7.8.90',date:'2026-10-19',title:'Smoother First Steps',items:['Build Path is now picked at level 5, so it no longer collides with the level 6 Relic pick','Activities and Daily Quests are open from the start','New-player guide is spread out: Equipment after Stage 1, the Forge (with 3 Twist Cream) after Stage 2, Talents after Stage 3','Temple: Special Cores now have their own tab; the Kitchen moved to Activities']},
   {v:'7.8.89',date:'2026-10-19',title:'Boss Rush Resting',items:['Boss Rush is taken out of the Activities menu for now']},
@@ -7626,24 +7627,28 @@ class Game extends Phaser.Scene {
   }
   // หลอดเลือด+เลเวลNorthหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
   drawOverheadStatus(hpf){
-    const og=this.pOverG; if(!og||!this.player)return; og.clear();
-    const cam=this.cameras.main, wv=cam.worldView; if(!wv||!wv.width||!wv.height)return;
+    const og=this.pOverG; if(!og||!this.player)return;
+    const cam=this.cameras.main, wv=cam.worldView; if(!wv||!wv.width||!wv.height){ og.clear(); og._k=NaN; return; }
     // แปลงPositionผู้เล่น (world) → พิกัดจอ logical (0..this.W/H) ที่ uiCam ใช้ · หาร width/height กัน DPR/zoom
     const ox=(this.player.x-wv.x)/wv.width*this.W;
     // v6.96 แถบสถานะใต้เท้า: ป้ายเลเวลซ้าย + หลอด HP (มีตัวเลข) + หลอด EXP บาง ๆ ข้างใต้
     let oy=(this.player.y-wv.y)/wv.height*this.H + 30;
     oy=Phaser.Math.Clamp(oy, this._pad+66, this.H-150);   // กันหลุดขอบบน/ล่าง
     const w=60,h=10,xh=4,bs=h+xh+3,bx=ox-w/2+bs/2+1,lx=bx-bs-3;
-    og.fillStyle(0x000000,0.55); og.fillRoundedRect(lx-2,oy-2,bs+3+w+4,bs+4,5);
-    og.fillStyle(0x3a3150,1); og.fillRoundedRect(lx,oy,bs,bs,4); og.lineStyle(1.5,0xffe27a,0.85); og.strokeRoundedRect(lx,oy,bs,bs,4);
-    og.fillStyle(0x3a1a24,1); og.fillRoundedRect(bx,oy,w,h,3);
-    const col=hpf>0.5?0x5ef07a:(hpf>0.25?0xffd166:0xff5f5f);
-    if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(bx,oy,Math.max(3,w*hpf),h,3); }
-    og.lineStyle(1,0xffffff,0.25); og.strokeRoundedRect(bx,oy,w,h,3);
-    const xf=Phaser.Math.Clamp((this.xp||0)/Math.max(1,this.xpNext||1),0,1),xy=oy+h+3;
-    og.fillStyle(0x1c1530,1); og.fillRect(bx,xy,w,xh); if(xf>0){ og.fillStyle(0xffa63d,1); og.fillRect(bx,xy,Math.max(1,w*xf),xh); }
-    if(this.pOverHp)this.pOverHp.setPosition(bx+w/2,oy+h/2+0.5).setText(Math.max(0,Math.ceil(this.player.hp))+' / '+Math.round(this.player.maxhp));
-    if(this.pOverLv)this.pOverLv.setPosition(lx+bs/2,oy+bs/2+0.5).setText(String(this.level||1));
+    const xf=Phaser.Math.Clamp((this.xp||0)/Math.max(1,this.xpNext||1),0,1),hpN=Math.max(0,Math.ceil(this.player.hp)),mxN=Math.round(this.player.maxhp),lvN=this.level||1;
+    // v7.8.92 perf: วาดที่จุดเดิมแล้วเลื่อน graphics ตามผู้เล่น · วาดใหม่/ตั้งข้อความเฉพาะเมื่อเลือด/EXP/เลเวลเปลี่ยน
+    og.setPosition(ox,oy); const rb=bx-ox,rl=lx-ox,k=hpN*7919+mxN*31+lvN*1000003+Math.round(xf*w);
+    if(og._k!==k){ og._k=k; og.clear();
+      og.fillStyle(0x000000,0.55); og.fillRoundedRect(rl-2,-2,bs+3+w+4,bs+4,5);
+      og.fillStyle(0x3a3150,1); og.fillRoundedRect(rl,0,bs,bs,4); og.lineStyle(1.5,0xffe27a,0.85); og.strokeRoundedRect(rl,0,bs,bs,4);
+      og.fillStyle(0x3a1a24,1); og.fillRoundedRect(rb,0,w,h,3);
+      const col=hpf>0.5?0x5ef07a:(hpf>0.25?0xffd166:0xff5f5f);
+      if(hpf>0){ og.fillStyle(col,1); og.fillRoundedRect(rb,0,Math.max(3,w*hpf),h,3); }
+      og.lineStyle(1,0xffffff,0.25); og.strokeRoundedRect(rb,0,w,h,3);
+      og.fillStyle(0x1c1530,1); og.fillRect(rb,h+3,w,xh); if(xf>0){ og.fillStyle(0xffa63d,1); og.fillRect(rb,h+3,Math.max(1,w*xf),xh); }
+      if(this.pOverHp)this.pOverHp.setText(hpN+' / '+mxN); if(this.pOverLv)this.pOverLv.setText(String(lvN)); }
+    if(this.pOverHp)this.pOverHp.setPosition(bx+w/2,oy+h/2+0.5);
+    if(this.pOverLv)this.pOverLv.setPosition(lx+bs/2,oy+bs/2+0.5);
   }
   // 🎮 ปุ่ม Dash/Unique ตาม Settings: ขนาด (ctrlSize 0-2) + ฝั่ง (ctrlLeft = ถนัดซ้าย)
   ctrlScale(){ const st=Save.data.settings||{}; return [1,1.2,1.4][st.ctrlSize||0]||1; }
@@ -7655,7 +7660,11 @@ class Game extends Phaser.Scene {
     const fx=x+(st.ctrlLeft?1:-1)*(r+12*k+31*k);
     this.flickerBtn?.setPosition(fx,uy).setSize(62*k,46*k);this.flickerTxt?.setPosition(fx,uy).setScale(k); }
   drawDashRing(){
-    const g=this.dashRing; if(!g)return; g.clear(); const b=this.dashBtn; if(!b||!b.visible){ this._dpTxt&&this._dpTxt.setVisible(false); return; }
+    const g=this.dashRing; if(!g)return; const b=this.dashBtn; if(!b||!b.visible){ g.clear(); g._sk=NaN; this._dpTxt&&this._dpTxt.setVisible(false); return; }
+    { let k; if(this.character==='cocoa'&&this._dpCh!=null){ const mx=this.cocoaDashMax(),ch=this._dpCh,f=ch<mx?Math.round(Phaser.Math.Clamp((this._dpT||0)/this.cocoaDashRecharge(),0,1)*120):121; k=1e7+((ch*16+mx)*16+(this._cocoaPhantom?.charges||0))*128+f; }
+      else k=(!this.dashReady&&this.dashCd>0)?Math.round(Phaser.Math.Clamp(1-this.dashCd/(this.dashCdMax||1.1),0,1)*120):-1;
+      if(g._sk===k&&g._sx===b.x&&g._sy===b.y&&g._sr===b.radius)return; g._sk=k;g._sx=b.x;g._sy=b.y;g._sr=b.radius; }   // v7.8.92 perf: วาดใหม่เมื่อค่าเปลี่ยนเท่านั้น
+    g.clear();
     if(this.character==='cocoa'&&this._dpCh!=null){ const mx=this.cocoaDashMax(),ch=this._dpCh;const temp=this._cocoaPhantom?.charges||0;if(temp){g.lineStyle(3,0xc9a3ff,.9);for(let i=0;i<temp;i++)g.strokeCircle(b.x+(i-(temp-1)/2)*12,b.y-b.radius-13,3);}   // v5.70 จุดชาร์จ Dash รอบปุ่ม
       if(ch<mx){ const f=Phaser.Math.Clamp((this._dpT||0)/this.cocoaDashRecharge(),0,1); g.lineStyle(3.5,0xffa54d,0.9).beginPath(); g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+TAU*f,false); g.strokePath(); }
       else g.lineStyle(2,0xffd9a8,0.5).strokeCircle(b.x,b.y,b.radius+4);
@@ -13646,14 +13655,14 @@ class Game extends Phaser.Scene {
   }
   tickEnemyPresentation(e,dt){
     if(!e||!e.active||e.isBoss||e.isMini)return;
-    const key=e._enemyArtKey||e.texture.key,walk=key+'_walk',hasWalk=this.anims.exists(walk);
+    const key=e._enemyArtKey||e.texture.key,S=(this._presC||(this._presC={}))[key]||(this._presC[key]={walk:key+'_walk',a:{},g:{}}),hasWalk=this.anims.exists(S.walk);   // v7.8.92 perf: ข้อความชื่อ anim สร้างครั้งเดียวต่อ key
     // Frozen time does not consume an action pose or advance the sprite animation.
     if(e.frozen>0){if(e.anims&&e.anims.isPlaying&&!e.anims.isPaused)e.anims.pause();e._enemyFrozen=true;return;}
     if(e._enemyFrozen){if(e.anims&&e.anims.isPaused)e.anims.resume();e._enemyFrozen=false;}
     if(e._enemyAction){e._enemyActionT-=dt;if(e._enemyActionT<=0){e._enemyAction=null;e._enemyPlayed=null;}}
     const v=e.body&&e.body.velocity,speed=v?Math.hypot(v.x,v.y):0;
-    const state=e._enemyAction?e._enemyAction.state:speed>8?(key==='feast_target_animated'&&(e._huntFlee||e._fleeing)?'flee':'walk'):'idle',anim=key+'_'+state;
-    const frame=e._enemyAction&&e._enemyAction.frame!=null?e._enemyAction.frame:(e._enemyRestFrame||0),signature=state+':'+frame;
+    const state=e._enemyAction?e._enemyAction.state:speed>8?(key==='feast_target_animated'&&(e._huntFlee||e._fleeing)?'flee':'walk'):'idle',anim=S.a[state]||(S.a[state]=key+'_'+state);
+    const frame=e._enemyAction&&e._enemyAction.frame!=null?e._enemyAction.frame:(e._enemyRestFrame||0),sk=state+frame,signature=S.g[sk]||(S.g[sk]=state+':'+frame);
     e._enemyAnimState=state;
     if(e._enemyPlayed!==signature){
       if(this.anims.exists(anim))e.play(anim,true);
@@ -15008,8 +15017,9 @@ class Game extends Phaser.Scene {
       const waveTrack={radius:10};
       this.tweens.add({targets:waveTrack,radius:maxR,duration:420,ease:'Quad.out',
         onUpdate:(tw)=>{ const rr=waveTrack.radius; ring.setScale((rr*2)/256).setAlpha(0.9*(1-tw.progress));
-          this.enemies.children.iterate(e=>{ if(e&&e.active&&!hit.has(e)){ const d=this.dist(e.x,e.y,px,py);
-          if(d<rr&&d>rr-46){ hit.add(e); this.damage(e,dmg,e.x,e.y); if(!e.isBoss){ const a=Math.atan2(e.y-py,e.x-px); e.setVelocity(Math.cos(a)*force,Math.sin(a)*force); e.knock=0.2; } } } }); },
+          const o2=rr*rr,i2=rr>46?(rr-46)*(rr-46):0;   // v7.8.92 perf: เทียบระยะกำลังสอง (ไม่ถอดราก)
+          this.enemies.children.iterate(e=>{ if(e&&e.active&&!hit.has(e)){ const dx=e.x-px,dy=e.y-py,d=dx*dx+dy*dy;
+          if(d<o2&&d>i2){ hit.add(e); this.damage(e,dmg,e.x,e.y); if(!e.isBoss){ const a=Math.atan2(e.y-py,e.x-px); e.setVelocity(Math.cos(a)*force,Math.sin(a)*force); e.knock=0.2; } } } }); },
         onComplete:()=>ring.destroy() }); });
   }
   explodeAt(x,y,r,dmg){
@@ -15053,13 +15063,18 @@ class Game extends Phaser.Scene {
     const fl=this.camWorld(this.add.circle(x,y,22,0xfff2a8,0.6).setDepth(7));
     this.tweens.add({targets:[g,fl],alpha:0,duration:200,onComplete:()=>{ g.destroy(); fl.destroy(); }});
   }
+  // v7.8.92 perf: รายชื่อผู้คุ้มกัน (ด่าน 6–9) และบอส/มินิ สร้างครั้งเดียวต่อเฟรม (เดิมวนศัตรูทุกตัวต่อการตี/ต่อกระสุน)
+  _guardsNow(){ const f=this.game?.loop?.frame; if(f==null||this._gdF!==f){ this._gdF=f; const L=this._gdL||(this._gdL=[]),si=this.stageIndex; L.length=0;
+      this.enemies.children.iterate(o=>{ if(o&&o.active&&((o.mycoRole==='bulwark'&&si===6)||(o.nectarRole==='waxGuard'&&si===7)||(o.seasonRole==='equinoxGuard'&&si===8)||(o.rootRole==='barkGuard'&&si===9)))L.push(o); }); } return this._gdL; }
+  _bigsNow(){ const f=this.game?.loop?.frame; if(f==null||this._bgF!==f){ this._bgF=f; const L=this._bgL||(this._bgL=[]); L.length=0;
+      this.enemies.children.iterate(e=>{ if(e&&e.active&&(e.isBoss||e.isMini))L.push(e); }); } return this._bgL; }
   priorityBossTarget(maxD,x=this.player.x,y=this.player.y){
     const b=this.boss;
     if(b&&b.active&&(b.isBoss||b.isMini)&&(b.x-x)**2+(b.y-y)**2<=maxD*maxD)return b;
     if(this.mode!=='boss'&&this.mode!=='mini')return null;
     let best=null,bd=maxD*maxD;
-    this.enemies.children.iterate(e=>{if(!e||!e.active||!(e.isBoss||e.isMini))return;
-      const d=(e.x-x)**2+(e.y-y)**2;if(d<bd){bd=d;best=e;}});
+    for(const e of this._bigsNow()){if(!e.active)continue;
+      const d=(e.x-x)**2+(e.y-y)**2;if(d<bd){bd=d;best=e;}}
     return best;
   }
   nearestEnemy(maxD){ const fr=this.game.loop.frame,px=this.player.x,py=this.player.y; if(this._neF!==fr||this._nePX!==px||this._nePY!==py){ this._neF=fr; this._nePX=px; this._nePY=py; this._neC=new Map(); } const hit=this._neC.get(maxD); if(hit!==undefined&&(!hit||hit.active))return hit; const res=this._nearestEnemyRaw(maxD); this._neC.set(maxD,res); return res; }   // v6.92 จำผลต่อเฟรม (เรียก ~37 จุด)
@@ -15247,7 +15262,7 @@ class Game extends Phaser.Scene {
     if((e.isBoss||e.isMini)&&this.player.bossDmg)amount*=1+this.player.bossDmg;
     if(this._frRageT>0)amount*=this._frRageMul||1;   // v5.36 🍳 Rage
     if((e.isBoss||e.isMini)&&this._fr&&this._fr.length&&!this._frBusy)this.fireRecipes('bossHit');
-    if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;this.enemies.children.iterate(o=>{if(!guarded&&o&&o.active&&o!==e&&((o.mycoRole==='bulwark'&&this.stageIndex===6)||(o.nectarRole==='waxGuard'&&this.stageIndex===7)||(o.seasonRole==='equinoxGuard'&&this.stageIndex===8)||(o.rootRole==='barkGuard'&&this.stageIndex===9))&&this.dist(o.x,o.y,e.x,e.y)<175)guarded=true;});if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
+    if((this.stageIndex>=6&&this.stageIndex<=9)&&!e.isBoss&&!e.isMini&&e.mycoRole!=='bulwark'&&e.nectarRole!=='waxGuard'&&e.seasonRole!=='equinoxGuard'&&e.rootRole!=='barkGuard'){let guarded=false;for(const o of this._guardsNow()){if(o!==e&&o.active&&(o.x-e.x)**2+(o.y-e.y)**2<30625){guarded=true;break;}}if(guarded)amount*=this.stageIndex===9?.78:this.stageIndex===8?.76:this.stageIndex===7?.74:.72;}   // Objective: บอสกางเกราะ = ลดดาเมจ 55% (เดิม 88% ทำให้บอสแทบInvincible = เหมือนBoss vanished) ยังตีเข้าได้
     { const pm=this.basicAttack&&this.basicAttack._pm; if(pm&&(pm.big||pm.frozen||pm.far||pm.low)){   // 🛤 Build Path: โบนัสตามเงื่อนไข
       if(pm.big&&(e.isBoss||e.isMini||e.isElite))amount*=1+pm.big;
       if(pm.frozen&&(e.frozen>0||this.glacierBrittle(e)))amount*=1+pm.frozen;
@@ -16830,9 +16845,12 @@ class Game extends Phaser.Scene {
   deathFling(e){ if(!this.fxOk()||!e.texture)return; const g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame&&e.frame.name).setScale(e.scaleX,e.scaleY).setFlipX(!!e.flipX).setDepth(e.depth||e.y)); if(e.tintColor)g.setTint(e.tintColor);
     const a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-0.35,0.35), d=Phaser.Math.Between(50,85);
     this.tweens.add({targets:g,x:e.x+Math.cos(a)*d,y:e.y+Math.sin(a)*d-18,angle:(Math.cos(a)>0?1:-1)*Phaser.Math.Between(160,300),scaleX:e.scaleX*0.55,scaleY:e.scaleY*0.55,alpha:0,duration:280,ease:'Cubic.out',onComplete:()=>g.destroy()}); }
-  burst(x,y,color){ for(let i=0;i<7;i++){ const p=this.camWorld(this.add.image(x,y,'dot').setTint(color).setDepth(6).setScale(Phaser.Math.FloatBetween(0.5,1.1)));
-    const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
-    this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>p.destroy()}); } }
+  burst(x,y,color){ const P=this._burstPool||(this._burstPool=[]);   // v7.8.92 perf: ใช้จุดซ้ำ (เดิมสร้าง/ทำลาย 7 รูปต่อครั้ง)
+    for(let i=0;i<7;i++){ let p=P.pop(); while(p&&!p.scene)p=P.pop();
+      if(p)p.setActive(true).setVisible(true).setPosition(x,y).setAlpha(1); else p=this.camWorld(this.add.image(x,y,'dot').setDepth(6));
+      p.setTint(color).setScale(Phaser.Math.FloatBetween(0.5,1.1));
+      const a=Math.random()*Math.PI*2, s=Phaser.Math.Between(40,150);
+      this.tweens.add({targets:p,x:x+Math.cos(a)*s,y:y+Math.sin(a)*s,alpha:0,scale:0,duration:420,onComplete:()=>{ if(!p.scene)return; if(P.length<140){p.setVisible(false).setActive(false);P.push(p);} else p.destroy(); }}); } }
   squash(o,sx,sy){ o.setScale(sx,sy); this.tweens.add({targets:o,scaleX:1,scaleY:1,duration:220,ease:'Back.out'}); }
   // VFX ระเบิดวง (รูปจริง) — ขยายจากเล็ก→Fullรัศมี แล้วจางหาย · โอเวอร์เลย์แบนราบ (oval) เข้ากับมุมกล้อง
   fxBurst(key,x,y,radius,dur,spin){
@@ -17359,7 +17377,7 @@ const DEVICE_DPR = window.devicePixelRatio||1;
 const LOW_MEMORY_DEVICE = Number(navigator.deviceMemory||8)<=4||_lowMemFlag;   // v7.4 + โหมดหน่วยความจำต่ำหลังกราฟิกดับ
 // v5.50: คุณภาพกราฟิก (0 Auto · 1 Low · 2 High) — ความละเอียด render มีผลตอนเปิดเกมใหม่
 const QUALITY_SETTING=(()=>{try{const d=JSON.parse(localStorage.getItem('mochi_save')||'{}');if(!d||!d.settingsAuto74)return 0;const q=d.settings&&d.settings.quality;return q===0||q===1||q===2?q:0;}catch(e){return 0;}})();
-const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, _lowMemFlag?1.5:9, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):(LOW_MEMORY_DEVICE?1.5:2)));
+const RENDER_DPR = Math.max(1, Math.min(DEVICE_DPR, _lowMemFlag?1.5:9, QUALITY_SETTING===1?1.25:QUALITY_SETTING===2?(LOW_MEMORY_DEVICE?2.25:3):1.5));   // v7.8.92 Auto = 1.5 (เดิม 2 · GPU ทำงานลด ~44%)
 // v7.0 เล่นบนคอม (ไม่มีจอสัมผัส): บีบเป็นจอแนวตั้งแบบมือถือ 9:16 ตรงกลางจอ แทนการยืดเต็มจอกว้าง
 const DESKTOP_FIT=(()=>{ try{ return !window.Capacitor?.isNativePlatform?.()&&!('ontouchstart' in window)&&!(navigator.maxTouchPoints>0); }catch(e){ return false; } })();
 function viewSize(){ const w=window.innerWidth,h=window.innerHeight; if(!DESKTOP_FIT||w<=h*0.62)return {w,h,fit:false}; return {w:Math.round(h*9/16),h,fit:true}; }
