@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.10';
+const GAME_VERSION = '7.9.11';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.11',date:'2026-10-20',title:'Every boss has its own moves',items:['All Chapter 3 bosses and the Pinnacle boss now fight with their own signature attacks and big finishers','Minibosses in Chapter 1, Chapter 2 and Chapter 3 that shared moves now have their own too','When a wave ends, leftover EXP visibly flies to you instead of vanishing']},
   {v:'7.9.10',date:'2026-10-20',title:'Adventurer’s journal',items:['Equipment and Affix Forge now look like an old parchment journal','Menus turn like book pages, and the book cover opens when you arrive at the menu (tap to skip)']},
   {v:'7.9.9',date:'2026-10-20',title:'Box opening',items:['After clearing a stage, every box you picked up is opened on screen one by one — best ones last','Tap to open them all at once, then Continue to the stage summary','Boss lines are short and type out letter by letter, stay on screen longer, and bosses keep talking during the fight']},
   {v:'7.9.8',date:'2026-10-20',title:'EXP never lost',items:['When a boss falls, every EXP drop on the field flies to you, and anything left is counted before the reward screen','With too many drops on screen, new EXP merges into a nearby drop instead of vanishing — in every mode, not only Story']},
@@ -6206,6 +6207,106 @@ const STAGES = [
 ];
 /* v7.8.101 บทพูดบอสต่อด่าน (Story เท่านั้น) · v7.9.9 เจ้าของ: สั้น ภาษาง่าย พิมพ์ทีละตัว + พูดวนระหว่างสู้
    [เปิดฉาก, ตอนแพ้, มินิบอสมาถึง, [บอสพูดวน…], [มินิพูดวน…]] */
+/* v7.9.11 ท่าเฉพาะตัวที่เหลือ · key: m<stage> = มินิ, b<stage> = บอส, pin = Pinnacle · base → +p2 (เฟส 2) → +p3 (เฟส 3) · run() คืน cooldown (วินาที ก่อนคูณ fast) */
+const BOSS_KITS={
+  // C1-3 Boiling Pan
+  m2:{c:0xff7a3a,base:['splash','flip','sizzle'],p2:['grease'],moves:{
+    splash:{n:'🍳 Oil Splash',h:'Hot oil lands where you stand — keep moving!',run:({s,px,py,haz,T,b})=>{for(let i=0;i<3;i++)T(i*260,()=>haz(s.player.x+Phaser.Math.Between(-40,40),s.player.y+Phaser.Math.Between(-40,40),70));return 2.1;}},
+    flip:{n:'🥘 Pan Flip',h:'It jumps at you — dash sideways, then out of the ring!',run:({s,b,hd})=>{s.chargeTelegraph(b,700,640,26);s.time.delayedCall(1250,()=>{if(b.active)s.bossNovaWave(b.x,b.y,230,hd);});return 2.6;}},
+    sizzle:{n:'🔥 Sizzle Ring',h:'Find the gap in the ring of sparks!',run:({ring,b})=>{ring(14,3,190);if(b.phase2)ring(14,3,140);return 2;}},
+    grease:{n:'🛢️ Grease Trail',h:'Slick puddles burn — go around them.',c:0xffb347,run:({s,px,py,aim})=>{for(let i=1;i<=5;i++)s.spawnBossObject('acid',s.player.x+Math.cos(aim+Math.PI/2)*(i-3)*60,s.player.y+Math.sin(aim+Math.PI/2)*(i-3)*60,5);return 2.4;}}}},
+  // C1-4 Giant Ice Block
+  m3:{c:0x8fd8ff,base:['slide','shatter','iceWall'],p2:['avalanche'],moves:{
+    slide:{n:'🧊 Ice Slide',h:'It slides fast in a straight line — step aside!',run:({s,b})=>{s.chargeTelegraph(b,800,720,30);if(b.phase2)s.time.delayedCall(1100,()=>{if(b.active)s.chargeTelegraph(b,600,720,26);});return 2.7;}},
+    shatter:{n:'❄️ Shatter',h:'Slow ice shards fly out — slip between them.',run:({ring,fan,aim})=>{ring(18,0,130);fan(aim,3,.18,240);return 2.2;}},
+    iceWall:{n:'🧱 Ice Wall',h:'A wall forms — the gap is your way out!',run:({px,py,aim,haz})=>{const g=Phaser.Math.Between(-2,2);for(let i=-3;i<=3;i++){if(i===g)continue;const a=aim+Math.PI/2;haz(px+Math.cos(aim)*60+Math.cos(a)*i*70,py+Math.sin(aim)*60+Math.sin(a)*i*70,48);}return 2.5;}},
+    avalanche:{n:'🏔️ Avalanche',h:'Ice keeps falling behind you — don’t stop!',run:({s,haz,T})=>{for(let i=0;i<6;i++)T(i*220,()=>haz(s.player.x,s.player.y,66));return 2.9;}}}},
+  // C1-5 Banquet Executioner
+  m4:{c:0xd9445a,base:['chop','serve','tableCage'],p2:['feast'],moves:{
+    chop:{n:'🪓 Cleaver Chop',h:'Watch the red line — the chop comes right after!',pose:5,run:({s,b,aim,lane,fan,T})=>{lane(aim,600);T(620,()=>fan(aim,7,.1,420));return 2.4;}},
+    serve:{n:'🍽️ Plate Service',h:'Plates fly in three waves.',pose:5,run:({fan,T,s,b})=>{for(let w=0;w<3;w++)T(w*300,()=>fan(Math.atan2(s.player.y-b.y,s.player.x-b.x),5,.22,260));return 2.3;}},
+    tableCage:{n:'🕯️ Table Cage',h:'Candles circle you — leave through the gap.',pose:6,run:({px,py,haz})=>{const n=10,g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===g||i===(g+1)%n)continue;const a=i*TAU/n;haz(px+Math.cos(a)*150,py+Math.sin(a)*150,52);}return 2.6;}},
+    feast:{n:'🍖 Feast Call',h:'Guests arrive — clear them fast!',pose:6,long:true,run:({adds,s,b,hd})=>{adds(['tank','shooter','fast']);s.bossNovaWave(b.x,b.y,260,hd,500);return 3.2;}}}},
+  // C2-1 Sporewarden Mantis
+  m5:{c:0x9be86b,base:['scythe','sporeShot','pounce'],p2:['bloomTrap'],moves:{
+    scythe:{n:'🦗 Twin Scythe',h:'Two slashes cross — stand in the open sides.',pose:3,run:({lane,fan,aim,T})=>{lane(aim+.35,520);lane(aim-.35,520);T(560,()=>{fan(aim+.35,4,.07,400);fan(aim-.35,4,.07,400);});return 2.4;}},
+    sporeShot:{n:'🍄 Spore Volley',h:'Spores burst into rings — keep your distance.',pose:4,run:({s,aim,T,ring})=>{for(let i=0;i<3;i++){const x=s.player.x+Phaser.Math.Between(-90,90),y=s.player.y+Phaser.Math.Between(-90,90);s.spawnHazard(x,y,54,Math.round((16+s.stageIndex*6)*.9),0x9be86b);T(800,()=>ring(8,0,150,undefined,0x9be86b,0,x,y));}return 2.6;}},
+    pounce:{n:'💨 Pounce',h:'It leaps twice — sidestep both!',pose:3,run:({s,b})=>{s.chargeTelegraph(b,620,700,24);s.time.delayedCall(980,()=>{if(b.active)s.chargeTelegraph(b,520,700,22);});return 2.8;}},
+    bloomTrap:{n:'🌸 Bloom Trap',h:'Flowers bloom around you — walk out through the gap.',pose:6,run:({px,py,haz})=>{const n=9,g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===g)continue;const a=i*TAU/n;haz(px+Math.cos(a)*135,py+Math.sin(a)*135,50);}return 2.6;}}}},
+  // C3-1 Scarecrow Reaper
+  m10:{c:0xd9a441,base:['reap','crows','hayTrap'],p2:['harvestDash'],moves:{
+    reap:{n:'🌾 Reaping Sweep',h:'A wide scythe swing — get behind it!',pose:3,run:({lane,fan,aim,T})=>{lane(aim,560);T(580,()=>fan(aim,9,.13,380));return 2.4;}},
+    crows:{n:'🐦‍⬛ Crow Flock',h:'Crows dive at you one after another.',pose:4,run:({T,s,b,fan})=>{for(let i=0;i<5;i++)T(i*180,()=>fan(Math.atan2(s.player.y-b.y,s.player.x-b.x)+Phaser.Math.FloatBetween(-.25,.25),1,0,330,undefined,0x3a3a46));return 2.2;}},
+    hayTrap:{n:'🧺 Hay Bales',h:'Bales burst in a cross — find the safe corner.',pose:3,run:({px,py,haz})=>{for(const [dx,dy] of [[0,0],[110,0],[-110,0],[0,110],[0,-110]])haz(px+dx,py+dy,62);return 2.5;}},
+    harvestDash:{n:'🎃 Harvest Dash',h:'Three dashes in a row — keep sidestepping!',pose:2,long:true,run:({s,b})=>{s.chargeTelegraph(b,600,720,26);for(let i=1;i<3;i++)s.time.delayedCall(i*900,()=>{if(b.active)s.chargeTelegraph(b,480,740,24);});return 3.4;}}}},
+  // C3-2 Husk Gardener
+  m11:{c:0xc9a06a,base:['dryWind','huskSeeds','thornFan'],p2:['wither'],moves:{
+    dryWind:{n:'🍂 Dry Wind',h:'The wind pulls you in — walk against it!',pose:4,run:({s,b,ring})=>{s.drainPull={x:b.x,y:b.y,t:1.6,strength:150};ring(12,3,160);return 2.6;}},
+    huskSeeds:{n:'🌰 Husk Seeds',h:'Seeds sprout into husks — break them early.',pose:3,run:({adds,haz,px,py})=>{adds(['basic','basic','fast']);haz(px,py,60);return 2.8;}},
+    thornFan:{n:'🌵 Thorn Fan',h:'Thorns spread wide — move to the edge.',pose:3,run:({fan,aim,b})=>{fan(aim,b.phase2?9:7,.17,300);return 2;}},
+    wither:{n:'🥀 Wither Field',h:'Dead patches spread — stay on fresh ground.',pose:6,run:({s,px,py})=>{for(let i=0;i<6;i++){const a=i*TAU/6;s.spawnBossObject('acid',px+Math.cos(a)*120,py+Math.sin(a)*120,5);}return 2.6;}}}},
+  // C3-3 Prism Sentinel
+  m12:{c:0x9fe8ff,base:['prismBeam','mirrorRing','shardRain'],p2:['refract'],moves:{
+    prismBeam:{n:'🔷 Prism Beam',h:'Three beams light up — stand between them.',pose:3,run:({lane,fan,aim,T})=>{for(const o of [-.5,0,.5])lane(aim+o,600);T(640,()=>{for(const o of [-.5,0,.5])fan(aim+o,3,.03,460);});return 2.5;}},
+    mirrorRing:{n:'🪞 Mirror Ring',h:'Two rings spin opposite ways — time your step.',pose:4,run:({ring})=>{const o=Math.random()*TAU;ring(12,2,170,undefined,0x9fe8ff,o);ring(12,2,120,undefined,0xc9a3ff,-o);return 2.3;}},
+    shardRain:{n:'💎 Shard Rain',h:'Glass falls from above — watch the shadows.',pose:3,run:({s,haz,T})=>{for(let i=0;i<5;i++)T(i*150,()=>haz(s.player.x+Phaser.Math.Between(-130,130),s.player.y+Phaser.Math.Between(-130,130),56));return 2.4;}},
+    refract:{n:'✨ Refraction',h:'Shots split in the air — keep moving sideways.',pose:6,run:({s,b,aim,fan,T})=>{fan(aim,3,.25,260);T(520,()=>{for(const o of [-.25,0,.25]){const a=aim+o,x=b.x+Math.cos(a)*135,y=b.y+Math.sin(a)*135;for(let k=-1;k<=1;k++)s.foeShot(x,y,a+k*.4,300,Math.round((9+s.stageIndex*3)*.9),0xc9a3ff,1);}});return 2.6;}}}},
+  // C3-4 Vault Keeper
+  m13:{c:0xd8b25a,base:['keySpin','lockGrid','vaultCharge'],p2:['sealCall'],moves:{
+    keySpin:{n:'🗝️ Key Spin',h:'Keys spiral out — circle with the gap.',pose:4,run:({s,b,T})=>{const d=Math.round((9+s.stageIndex*3)*.9);for(let k=0;k<10;k++)T(k*110,()=>{for(let a=0;a<3;a++)s.foeShot(b.x,b.y,k*.32+a*TAU/3,220,d,0xd8b25a,1);});return 2.6;}},
+    lockGrid:{n:'🔒 Lock Grid',h:'The floor locks in a grid — use the open row.',pose:3,run:({px,py,haz})=>{const g=Phaser.Math.Between(-1,1);for(let r=-1;r<=1;r++){if(r===g)continue;for(let c=-2;c<=2;c++)haz(px+c*80,py+r*90,42);}return 2.8;}},
+    vaultCharge:{n:'🚪 Vault Charge',h:'It rams forward and slams — move twice!',pose:2,run:({s,b,hd})=>{s.chargeTelegraph(b,700,690,28);s.time.delayedCall(1200,()=>{if(b.active)s.bossNovaWave(b.x,b.y,220,hd);});return 2.8;}},
+    sealCall:{n:'🛡️ Seal Guards',h:'Guards protect the vault — break through!',pose:6,long:true,run:({adds})=>{adds(['tank','tank','shooter']);return 3.2;}}}},
+  // C3-5 Crown Thorn Knight
+  m14:{c:0xe06a8c,base:['thornLance','crownRing','thornWall'],p2:['knightRush'],moves:{
+    thornLance:{n:'🗡️ Thorn Lance',h:'A long thrust — step off the line!',pose:3,run:({lane,fan,aim,T})=>{lane(aim,520,0xe06a8c,760);T(540,()=>fan(aim,5,.04,520));return 2.2;}},
+    crownRing:{n:'👑 Crown of Thorns',h:'Thorns ring outward twice — slip through the gap.',pose:4,run:({ring,T})=>{ring(16,3,180);T(450,()=>ring(16,3,150));return 2.4;}},
+    thornWall:{n:'🌹 Thorn Wall',h:'Thorns rise beside you — go forward or back!',pose:3,run:({px,py,aim,haz})=>{const a=aim+Math.PI/2;for(const side of [-1,1])for(let i=-2;i<=2;i++)haz(px+Math.cos(a)*side*95+Math.cos(aim)*i*70,py+Math.sin(a)*side*95+Math.sin(aim)*i*70,40);return 2.6;}},
+    knightRush:{n:'🐎 Knight Rush',h:'Two charges, then a thorn burst!',pose:2,long:true,run:({s,b,ring})=>{s.chargeTelegraph(b,560,760,26);s.time.delayedCall(880,()=>{if(b.active)s.chargeTelegraph(b,480,760,24);});s.time.delayedCall(1700,()=>{if(b.active)ring(14,0,170);});return 3.4;}}}},
+  // C3-1 boss · The Harvest Colossus
+  b10:{c:0xe0b04a,base:['reap','sowing','thresher'],p2:['stampede'],p3:['harvestMoon'],moves:{
+    reap:{n:'🌾 Great Reap',h:'The giant scythe sweeps — go behind the Colossus!',pose:3,run:({lane,fan,aim,T,b})=>{lane(aim,640);T(660,()=>fan(aim,b.phase2?13:11,.12,400));return 2.5;}},
+    sowing:{n:'🌱 Sowing Rows',h:'Seeds burst in rows — stand between them.',pose:4,run:({px,py,haz,T})=>{for(let r=0;r<3;r++)T(r*260,()=>{for(let c=-2;c<=2;c++)haz(px+c*90,py+(r-1)*110,44);});return 2.9;}},
+    thresher:{n:'🌀 Thresher',h:'Spinning blades — run around with the spin.',pose:4,run:({s,b,T,sd})=>{for(let k=0;k<12;k++)T(k*100,()=>{for(let a=0;a<4;a++)s.foeShot(b.x,b.y,k*.26+a*TAU/4,230,sd,0xe0b04a,1.05);});return 2.8;}},
+    stampede:{n:'🐂 Stampede',h:'It charges twice — the second one turns!',pose:2,run:({s,b})=>{s.chargeTelegraph(b,700,760,34);s.time.delayedCall(1050,()=>{if(b.active)s.chargeTelegraph(b,520,800,30);});return 3;}},
+    harvestMoon:{n:'🌕 HARVEST MOON',h:'Three shockwaves, then a ring — cross each rim, take the gap!',pose:6,long:true,run:({s,b,hd,ring,T})=>{s.screenFlash?.(0xffd166,.3,420);s.bossNovaWave(b.x,b.y,240,hd,250);s.bossNovaWave(b.x,b.y,340,hd,700);s.bossNovaWave(b.x,b.y,440,hd,1150);T(1400,()=>ring(22,4,200));return 4;}}}},
+  // C3-2 boss · The Hollow Bloom
+  b11:{c:0xc98aa8,base:['witherWind','husks','petalSpiral'],p2:['hollowBurst'],p3:['emptyHeart'],moves:{
+    witherWind:{n:'🍂 Wither Wind',h:'The Bloom breathes in — walk against the pull!',pose:4,run:({s,b,ring})=>{s.drainPull={x:b.x,y:b.y,t:1.9,strength:165};ring(16,3,170);return 2.8;}},
+    husks:{n:'🥀 Husk Bloom',h:'Empty husks wake up — clear them before they swarm.',pose:3,run:({adds,b})=>{adds(b.phase2?['basic','fast','shooter','basic']:['basic','fast','basic']);return 3;}},
+    petalSpiral:{n:'🌸 Petal Spiral',h:'Petals spiral out — move with the gap.',pose:4,run:({s,b,T,sd})=>{for(let k=0;k<12;k++)T(k*95,()=>{for(let a=0;a<3;a++)s.foeShot(b.x,b.y,-k*.3+a*TAU/3,210,sd,0xc98aa8,1.05);});return 2.7;}},
+    hollowBurst:{n:'💥 Hollow Burst',h:'Your footsteps leave hollows — keep moving!',pose:3,run:({s,haz,T})=>{for(let i=0;i<5;i++)T(i*240,()=>haz(s.player.x,s.player.y,64));return 2.9;}},
+    emptyHeart:{n:'🖤 EMPTY HEART',h:'It pulls you in and bursts — run out, then dodge the rings!',pose:6,long:true,run:({s,b,hd,ring,T})=>{s.drainPull={x:b.x,y:b.y,t:2.2,strength:190};s.bossNovaWave(b.x,b.y,280,hd,500);s.bossNovaWave(b.x,b.y,380,hd,1000);T(800,()=>ring(24,4,220));return 4;}}}},
+  // C3-3 boss · The Glass Gardener
+  b12:{c:0xa8ecff,base:['prismBeams','shardRain','mirrorRings'],p2:['refract'],p3:['shatterDome'],moves:{
+    prismBeams:{n:'🔷 Prism Beams',h:'Five beams light up — stand in a dark gap.',pose:3,run:({lane,fan,aim,T})=>{const o=[-.8,-.4,0,.4,.8];o.forEach(x=>lane(aim+x,620));T(660,()=>o.forEach(x=>fan(aim+x,2,.03,470)));return 2.6;}},
+    shardRain:{n:'💎 Shard Rain',h:'Glass rains down — read the shadows.',pose:4,run:({s,haz,T,b})=>{for(let i=0;i<(b.phase2?8:6);i++)T(i*140,()=>haz(s.player.x+Phaser.Math.Between(-150,150),s.player.y+Phaser.Math.Between(-150,150),56));return 2.6;}},
+    mirrorRings:{n:'🪞 Mirror Rings',h:'Rings spin opposite ways — wait for the gap.',pose:4,run:({ring,T})=>{const o=Math.random()*TAU;ring(16,3,170,undefined,0xa8ecff,o);T(300,()=>ring(16,3,130,undefined,0xc9a3ff,-o));return 2.4;}},
+    refract:{n:'✨ Refraction',h:'Every shot splits in three — keep sidestepping.',pose:3,run:({s,b,aim,fan,T,sd})=>{fan(aim,5,.22,260);T(500,()=>{for(let o=-2;o<=2;o++){const a=aim+o*.22,x=b.x+Math.cos(a)*130,y=b.y+Math.sin(a)*130;for(let k=-1;k<=1;k++)s.foeShot(x,y,a+k*.42,300,sd,0xc9a3ff,1);}});return 2.7;}},
+    shatterDome:{n:'🔮 SHATTER DOME',h:'A glass dome closes — get out through the crack!',pose:6,long:true,run:({s,px,py,haz,b,hd,T})=>{const n=12,g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===g||i===(g+1)%n)continue;const a=i*TAU/n;haz(px+Math.cos(a)*170,py+Math.sin(a)*170,50);}T(900,()=>s.bossNovaWave(px,py,190,hd));return 3.8;}}}},
+  // C3-4 boss · The Seedwarden
+  b13:{c:0xd8b25a,base:['vaultLock','keyThrow','sealRing'],p2:['guardians'],p3:['lastSeed'],moves:{
+    vaultLock:{n:'🔒 Vault Lock',h:'The floor locks in a grid — use the open row.',pose:3,run:({px,py,haz})=>{const g=Phaser.Math.Between(-1,1);for(let r=-1;r<=1;r++){if(r===g)continue;for(let c=-3;c<=3;c++)haz(px+c*75,py+r*95,40);}return 2.9;}},
+    keyThrow:{n:'🗝️ Key Throw',h:'Keys fly out and come back — dodge twice!',pose:4,run:({s,b,aim,fan,T,sd})=>{fan(aim,5,.2,330);T(900,()=>{for(let i=-2;i<=2;i++){const a=aim+i*.2,x=b.x+Math.cos(a)*300,y=b.y+Math.sin(a)*300;s.foeShot(x,y,a+Math.PI,330,sd,0xd8b25a,1.05);}});return 2.6;}},
+    sealRing:{n:'⭕ Seal Ring',h:'A seal circles you — leave through the gap.',pose:3,run:({px,py,haz})=>{const n=12,g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===g||i===(g+1)%n)continue;const a=i*TAU/n;haz(px+Math.cos(a)*160,py+Math.sin(a)*160,48);}return 2.7;}},
+    guardians:{n:'🛡️ Vault Guardians',h:'Guardians step out — break through them!',pose:6,run:({adds,b})=>{adds(b.phase3?['tank','tank','shooter','bomber']:['tank','shooter','bomber']);return 3.2;}},
+    lastSeed:{n:'🌰 LAST SEED',h:'The vault pulls everything in — run out, then dodge the spiral!',pose:6,long:true,run:({s,b,T,sd})=>{s.drainPull={x:b.x,y:b.y,t:2,strength:180};for(let k=0;k<16;k++)T(300+k*90,()=>{for(let a=0;a<4;a++)s.foeShot(b.x,b.y,k*.24+a*TAU/4,220,sd,0xd8b25a,1.05);});return 4;}}}},
+  // C3-5 boss · The First Planter
+  b14:{c:0xff7aa8,base:['crownThorns','rootCage','plantCharge'],p2:['seedStorm'],p3:['firstBloom'],moves:{
+    crownThorns:{n:'👑 Crown Thorns',h:'Thorns fan out, then a ring follows — find the gap.',pose:3,run:({fan,ring,aim,T})=>{fan(aim,9,.14,360);T(500,()=>ring(18,3,170));return 2.6;}},
+    rootCage:{n:'🌳 Root Cage',h:'Roots trap you — leave through the gap fast!',pose:4,run:({px,py,haz,s,hd,T})=>{const n=12,g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===g||i===(g+1)%n)continue;const a=i*TAU/n;haz(px+Math.cos(a)*165,py+Math.sin(a)*165,50);}T(950,()=>s.bossNovaWave(px,py,180,hd));return 3;}},
+    plantCharge:{n:'🌱 Planter’s Charge',h:'Three charges — sidestep each one!',pose:2,run:({s,b})=>{s.chargeTelegraph(b,620,780,32);for(let i=1;i<3;i++)s.time.delayedCall(i*880,()=>{if(b.active)s.chargeTelegraph(b,480,800,28);});return 3.4;}},
+    seedStorm:{n:'🌪️ Seed Storm',h:'Seeds spiral while the ground bursts — keep moving!',pose:4,run:({s,b,T,haz,sd})=>{for(let k=0;k<14;k++)T(k*95,()=>{for(let a=0;a<3;a++)s.foeShot(b.x,b.y,k*.28+a*TAU/3,225,sd,0xff7aa8,1.05);});for(let i=0;i<3;i++)T(i*400,()=>haz(s.player.x,s.player.y,60));return 3.2;}},
+    firstBloom:{n:'🌺 FIRST BLOOM',h:'The crown blooms — run against the pull and cross the rings!',pose:6,long:true,run:({s,b,hd,ring,T})=>{s.screenFlash?.(0xff7aa8,.35,450);s.drainPull={x:b.x,y:b.y,t:2.2,strength:180};s.bossNovaWave(b.x,b.y,260,hd,350);s.bossNovaWave(b.x,b.y,360,hd,850);T(700,()=>ring(26,4,230));return 4.2;}}}},
+  // Pinnacle · The Hunger Beneath
+  pin:{c:0xb46cff,base:['devour','abyssFan','crownRain'],p2:['echoCharge','rootCage'],p3:['eclipse'],moves:{
+    devour:{n:'🕳️ Devour',h:'The Hunger pulls you in — walk away and cross the ring!',pose:4,run:({s,b,hd})=>{s.drainPull={x:b.x,y:b.y,t:1.8,strength:200};s.bossNovaWave(b.x,b.y,300,hd,600);return 2.8;}},
+    abyssFan:{n:'🌑 Abyss Fan',h:'Two fans cross — stand in the middle gap.',pose:3,run:({fan,aim,T})=>{fan(aim-.5,6,.09,380);T(320,()=>fan(aim+.5,6,.09,380));return 2.4;}},
+    crownRain:{n:'👑 Crown Rain',h:'Crowns fall everywhere — watch the shadows.',pose:4,run:({s,haz,T})=>{for(let i=0;i<8;i++)T(i*130,()=>haz(s.player.x+Phaser.Math.Between(-160,160),s.player.y+Phaser.Math.Between(-160,160),58));return 2.7;}},
+    echoCharge:{n:'⚡ Echo Charge',h:'It charges, then its echo charges again!',pose:2,run:({s,b})=>{s.chargeTelegraph(b,600,800,34);s.time.delayedCall(900,()=>{if(b.active)s.chargeTelegraph(b,440,860,30);});return 3;}},
+    rootCage:{n:'🌳 Root Cage',h:'Roots trap you — leave through the gap fast!',pose:4,run:({px,py,haz,s,hd,T})=>{const n=12,g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===g||i===(g+1)%n)continue;const a=i*TAU/n;haz(px+Math.cos(a)*165,py+Math.sin(a)*165,50);}T(950,()=>s.bossNovaWave(px,py,180,hd));return 3;}},
+    eclipse:{n:'🌘 ECLIPSE',h:'Darkness pulls, rings burst, a spiral follows — keep moving!',pose:6,long:true,run:({s,b,hd,T,sd})=>{s.screenFlash?.(0x6a3aa8,.4,500);s.drainPull={x:b.x,y:b.y,t:2.4,strength:210};s.bossNovaWave(b.x,b.y,280,hd,300);s.bossNovaWave(b.x,b.y,400,hd,800);for(let k=0;k<16;k++)T(900+k*90,()=>{for(let a=0;a<4;a++)s.foeShot(b.x,b.y,-k*.24+a*TAU/4,235,sd,0xb46cff,1.05);});return 4.4;}}}},
+};
 const BOSS_LINES = [
   ['Stay away from my eggs!','My eggs… please keep them safe…','No one gets near the Queen!',['My nest is everywhere!','Ants, attack!','You will not win, mochi!'],['Go back!','The Queen is mine to guard!']],
   ['Everything flows down to me.','The pressure… goes up…','Nobody passes the valves!',['Down the drain you go!','I never stop flowing!','Clogged forever!'],['Pressure up!','Too much steam for you!']],
@@ -11093,7 +11194,9 @@ class Game extends Phaser.Scene {
   }
   settleStoryBudget(completed=false,partial=false){
     const b=this._storyBudget;if(!this.usesStoryBudget?.()||!b||b.done)return;
-    let collected=0;this.orbs.children.iterate(o=>{if(!o?.active||o._storyBudget!==b)return;collected+=o.value;o.setActive(false).setVisible(false);if(o.body)o.body.enable=false;});
+    let collected=0;const P=this.player;this.orbs.children.iterate(o=>{if(!o?.active||o._storyBudget!==b)return;collected+=o.value;
+      if(this.add?.image&&P&&this.tweens&&o.texture){const f=this.camWorld(this.add.image(o.x,o.y,o.texture.key).setScale(o.scaleX,o.scaleY).setTint(o.tintTopLeft??0xffffff).setDepth(o.depth||3));this.tweens.add({targets:f,x:P.x,y:P.y,scale:o.scaleX*.5,duration:260+Math.random()*260,ease:'Cubic.in',onComplete:()=>f.destroy()});}   /* v7.9.11 เจ้าของ: จบเวฟเม็ดหายวับ → ให้เห็นบินเข้าตัว (EXP ได้ทันทีเหมือนเดิม) */
+      o.setActive(false).setVisible(false);if(o.body)o.body.enable=false;});
     const target=completed?(partial?40:b.reward):b.questPaid,grant=Math.max(0,target-b.questPaid);b.questPaid+=grant;
     if(!partial)b.done=true;b.paid+=collected+grant;
     if(collected+grant>0)this.gainXp(collected+grant);
@@ -16167,6 +16270,22 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(720,()=>{if(!b.active)return;const n=26,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n||i===(gap+2)%n||i===(gap+3)%n)continue;this.foeShot(b.x,b.y,i*TAU/n,245+(i%2)*42,bd,i%2?0xd95cff:0x56e5bd,1.15);}this.screenShake(520,.017);Sfx.bossWarn();});b.atkCd=4.05*fast;
     }
   }
+  /* v7.9.11 เจ้าของ: ท่าเฉพาะตัวให้บอส/มินิที่เหลือ (มินิ C1-3/4/5, C2-1, C3 ทั้ง 5 · บอส C3 ทั้ง 5 + Pinnacle) · ดาเมจเท่าชุดกลางเดิม (shot 9+3·si, ระเบิด 16+6·si) */
+  kitPose(b,f,ms=800){ if(/^c3_(mini|boss)[1-5]$/.test(b.texture?.key||''))this.c3BossPose(b,f,ms); else if(this.stageIndex===4)this.stage5Pose(b,f,ms); else if(this.stageIndex===5)this.chapter2Pose(b,f,ms); }
+  kitAttack(b){
+    const si=this.stageIndex,pin=!!(b._pinnacleArt||this._pinnacleRun),key=b.isBoss?(pin?'pin':'b'+si):'m'+si,K=BOSS_KITS[key]; if(!K){b.atkCd=1.5;return;}
+    const pool=b.phase3&&K.p3?[...K.base,...(K.p2||[]),...K.p3]:b.phase2&&K.p2?[...K.base,...K.p2]:K.base,pick=Phaser.Utils.Array.GetRandom(pool),mv=K.moves[pick];
+    const pw=b.isBoss?1:.9,sd=Math.round((9+si*3)*pw*(pin?1.15:1)),hd=Math.round((16+si*6)*pw*(pin?1.15:1)),fast=b.phase3?.72:b.phase2?.85:1,px=this.player.x,py=this.player.y,aim=Math.atan2(py-b.y,px-b.x),tint=mv.c||K.c||0xffa54d,T=(ms,fn)=>this.time.delayedCall(ms,()=>{if(b.active&&this.state!=='dead')fn();});
+    const ring=(n,gap,spd,d=sd,c=tint,off=Math.random()*TAU,ox=b.x,oy=b.y)=>{const g=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(gap&&((i-g+n)%n)<gap)continue;this.foeShot(ox,oy,off+i*TAU/n,spd,d,c,1.05);}Sfx.zap?.();};
+    const fan=(a,n,step,spd,d=sd,c=tint)=>{for(let i=0;i<n;i++)this.foeShot(b.x,b.y,a+(i-(n-1)/2)*step,spd,d,c,1.05);Sfx.zap?.();};
+    const lane=(a,ms,c=tint,len=640)=>{const l=this.camWorld(this.add.image(b.x,b.y,'vfx_line').setOrigin(0,.5).setRotation(a).setScale(len/256,.7).setTint(c).setAlpha(.8).setDepth(4));this.tweens.add({targets:l,alpha:{from:.25,to:1},duration:120,yoyo:true,repeat:Math.max(1,Math.round(ms/240)),onComplete:()=>l.destroy()});};
+    const haz=(x,y,r,d=hd,c=tint)=>this.spawnHazard(x,y,r,d,c);
+    const adds=(types)=>types.forEach((t,i)=>T(i*140,()=>{const e=this.spawnEnemy(t);if(e)e.setPosition(b.x+Phaser.Math.Between(-140,140),b.y+Phaser.Math.Between(-90,90));}));
+    if(mv.pose!=null)this.kitPose(b,mv.pose,mv.pms||850);
+    this.showBanner(mv.n,mv.h,mv.long?1000:780);
+    const cd=mv.run({s:this,b,si,sd,hd,px,py,aim,fast,ring,fan,lane,haz,adds,T,tint});
+    b.atkCd=(cd||2.4)*fast;
+  }
   royalStingerPose(b,frame,ms=900){
     if(!b||!b.active||b.texture.key!=='mb8_royal_stinger')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._stingerPoseToken=(b._stingerPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);
     this.time.delayedCall(ms,()=>{if(!b.active||b._stingerPoseToken!==token)return;if(this.anims.exists('mb8_royal_stinger_walk'))b.play('mb8_royal_stinger_walk',true);else b.setFrame(0);});
@@ -16577,6 +16696,7 @@ class Game extends Phaser.Scene {
     if(b.isBoss&&this.stageIndex===2){this.chiliBossAttack(b);return;}
     if(b.isBoss&&this.stageIndex===3){this.frostBossAttack(b);return;}
     if(b.isBoss&&this.stageIndex===5){this.rootmotherAttack(b);return;}
+    if((b.isBoss&&this.stageIndex>=10)||(b.isMini&&[2,3,4,5,10,11,12,13,14].includes(this.stageIndex))){this.kitAttack(b);return;}   // v7.9.11 ท่าเฉพาะตัวที่เหลือ (BOSS_KITS)
     const atks=b.atks||['slam']; const pick=atks[Math.floor(Math.random()*atks.length)];if(this.stageIndex>=10)this.c3BossPose(b,pick==='summon'?4:pick==='charge'?2:3,pick==='charge'?900:pick==='summon'?900:550);if(b.isMini&&this.stageIndex===4)this.stage5Pose(b,{slam:5,aimed:5,radial:5,nova:6,charge:3,spiral:5,summon:5}[pick]??1,900);if(this.stageIndex===5)this.chapter2Pose(b,{slam:3,aimed:4,radial:4,nova:6,charge:3,spiral:4,summon:5,trap:3}[pick]??2,pick==='summon'?1150:900);
     const dm=1+this.stageIndex*0.12, pw=b.isBoss?1:0.9, fast=b.phase3?0.72:b.phase2?0.85:1;   // เว้นจังหวะให้ telegraph จบก่อนเริ่มท่าถัดไป
     if(pick==='slam'){ // สแลม AoE ตรงPositionผู้เล่น (เตือนก่อน หลบได้) · เฟส 3 = 3 points
