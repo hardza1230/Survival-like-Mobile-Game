@@ -1,0 +1,72 @@
+[
+ {
+  "key": "bk_page_turn",
+  "file": "assets/art/book/bk_page_turn.webp",
+  "cw": 432,
+  "ch": 768,
+  "cols": 3,
+  "rows": 2,
+  "frames": 6,
+  "nineSlice": null
+ },
+ {
+  "key": "bk_page_shadow",
+  "file": "assets/art/book/bk_page_shadow.webp",
+  "cw": 216,
+  "ch": 384,
+  "cols": 3,
+  "rows": 2,
+  "frames": 6,
+  "nineSlice": null
+ },
+ {
+  "key": "bk_spine",
+  "file": "assets/art/book/bk_spine.webp",
+  "cw": 51,
+  "ch": 1536,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "vfx_bk_dust",
+  "file": "assets/art/book/vfx_bk_dust.webp",
+  "cw": 102,
+  "ch": 102,
+  "cols": 6,
+  "rows": 1,
+  "frames": 6,
+  "nineSlice": null
+ },
+ {
+  "key": "bk_cover_closed",
+  "file": "assets/art/book/bk_cover_closed.webp",
+  "cw": 864,
+  "ch": 1536,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "bk_cover_open",
+  "file": "assets/art/book/bk_cover_open.webp",
+  "cw": 432,
+  "ch": 768,
+  "cols": 5,
+  "rows": 1,
+  "frames": 5,
+  "nineSlice": null
+ },
+ {
+  "key": "bk_cover_glow",
+  "file": "assets/art/book/bk_cover_glow.webp",
+  "cw": 410,
+  "ch": 410,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ }
+]

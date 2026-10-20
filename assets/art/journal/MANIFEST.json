@@ -1,0 +1,367 @@
+[
+ {
+  "key": "jr_page_bg",
+  "file": "assets/art/journal/jr_page_bg.webp",
+  "cw": 540,
+  "ch": 960,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_header_plaque",
+  "file": "assets/art/journal/jr_header_plaque.webp",
+  "cw": 450,
+  "ch": 75,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_btn_back",
+  "file": "assets/art/journal/jr_btn_back.webp",
+  "cw": 180,
+  "ch": 55,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_chip_currency",
+  "file": "assets/art/journal/jr_chip_currency.webp",
+  "cw": 190,
+  "ch": 50,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   16,
+   12,
+   16,
+   12
+  ]
+ },
+ {
+  "key": "jr_chip_plus",
+  "file": "assets/art/journal/jr_chip_plus.webp",
+  "cw": 36,
+  "ch": 36,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_panel",
+  "file": "assets/art/journal/jr_panel.webp",
+  "cw": 400,
+  "ch": 200,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   70,
+   50,
+   70,
+   50
+  ]
+ },
+ {
+  "key": "jr_panel_inset",
+  "file": "assets/art/journal/jr_panel_inset.webp",
+  "cw": 350,
+  "ch": 120,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   50,
+   30,
+   50,
+   30
+  ]
+ },
+ {
+  "key": "jr_divider",
+  "file": "assets/art/journal/jr_divider.webp",
+  "cw": 380,
+  "ch": 14,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_section_title_deco",
+  "file": "assets/art/journal/jr_section_title_deco.webp",
+  "cw": 32,
+  "ch": 32,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_warning_ribbon",
+  "file": "assets/art/journal/jr_warning_ribbon.webp",
+  "cw": 500,
+  "ch": 40,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   90,
+   9,
+   90,
+   9
+  ]
+ },
+ {
+  "key": "jr_slot",
+  "file": "assets/art/journal/jr_slot.webp",
+  "cw": 80,
+  "ch": 90,
+  "cols": 4,
+  "rows": 1,
+  "frames": 4,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_bag_cell",
+  "file": "assets/art/journal/jr_bag_cell.webp",
+  "cw": 90,
+  "ch": 90,
+  "cols": 3,
+  "rows": 1,
+  "frames": 3,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_tag_level",
+  "file": "assets/art/journal/jr_tag_level.webp",
+  "cw": 60,
+  "ch": 26,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   9,
+   6,
+   9,
+   6
+  ]
+ },
+ {
+  "key": "jr_badge_new",
+  "file": "assets/art/journal/jr_badge_new.webp",
+  "cw": 28,
+  "ch": 28,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_row",
+  "file": "assets/art/journal/jr_row.webp",
+  "cw": 750,
+  "ch": 60,
+  "cols": 1,
+  "rows": 3,
+  "frames": 3,
+  "nineSlice": [
+   50,
+   11,
+   50,
+   11
+  ]
+ },
+ {
+  "key": "jr_icon_ring",
+  "file": "assets/art/journal/jr_icon_ring.webp",
+  "cw": 56,
+  "ch": 56,
+  "cols": 4,
+  "rows": 1,
+  "frames": 4,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_star",
+  "file": "assets/art/journal/jr_star.webp",
+  "cw": 28,
+  "ch": 28,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_chip_pct",
+  "file": "assets/art/journal/jr_chip_pct.webp",
+  "cw": 80,
+  "ch": 32,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   10,
+   8,
+   10,
+   8
+  ]
+ },
+ {
+  "key": "jr_checkbox",
+  "file": "assets/art/journal/jr_checkbox.webp",
+  "cw": 32,
+  "ch": 32,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_radio",
+  "file": "assets/art/journal/jr_radio.webp",
+  "cw": 32,
+  "ch": 32,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_lock_cell",
+  "file": "assets/art/journal/jr_lock_cell.webp",
+  "cw": 32,
+  "ch": 32,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_btn_primary",
+  "file": "assets/art/journal/jr_btn_primary.webp",
+  "cw": 750,
+  "ch": 100,
+  "cols": 1,
+  "rows": 3,
+  "frames": 3,
+  "nineSlice": [
+   165,
+   22,
+   60,
+   22
+  ]
+ },
+ {
+  "key": "jr_btn_secondary",
+  "file": "assets/art/journal/jr_btn_secondary.webp",
+  "cw": 380,
+  "ch": 75,
+  "cols": 1,
+  "rows": 3,
+  "frames": 3,
+  "nineSlice": [
+   50,
+   16,
+   50,
+   16
+  ]
+ },
+ {
+  "key": "jr_btn_accent",
+  "file": "assets/art/journal/jr_btn_accent.webp",
+  "cw": 260,
+  "ch": 75,
+  "cols": 1,
+  "rows": 3,
+  "frames": 3,
+  "nineSlice": [
+   38,
+   18,
+   38,
+   18
+  ]
+ },
+ {
+  "key": "jr_btn_icon",
+  "file": "assets/art/journal/jr_btn_icon.webp",
+  "cw": 50,
+  "ch": 50,
+  "cols": 2,
+  "rows": 1,
+  "frames": 2,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_btn_pill",
+  "file": "assets/art/journal/jr_btn_pill.webp",
+  "cw": 220,
+  "ch": 40,
+  "cols": 1,
+  "rows": 2,
+  "frames": 2,
+  "nineSlice": [
+   30,
+   10,
+   30,
+   10
+  ]
+ },
+ {
+  "key": "jr_btn_pager",
+  "file": "assets/art/journal/jr_btn_pager.webp",
+  "cw": 75,
+  "ch": 45,
+  "cols": 3,
+  "rows": 1,
+  "frames": 3,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_icon_sheet",
+  "file": "assets/art/journal/jr_icon_sheet.webp",
+  "cw": 64,
+  "ch": 64,
+  "cols": 4,
+  "rows": 4,
+  "frames": 16,
+  "nineSlice": null
+ },
+ {
+  "key": "jr_forge_summary",
+  "file": "assets/art/journal/jr_forge_summary.webp",
+  "cw": 750,
+  "ch": 150,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   250,
+   35,
+   50,
+   35
+  ]
+ },
+ {
+  "key": "jr_forge_footer",
+  "file": "assets/art/journal/jr_forge_footer.webp",
+  "cw": 750,
+  "ch": 150,
+  "cols": 1,
+  "rows": 1,
+  "frames": 1,
+  "nineSlice": [
+   90,
+   35,
+   90,
+   50
+  ]
+ }
+]
