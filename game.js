@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.15';
+const GAME_VERSION = '7.9.16';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.16',date:'2026-10-20',title:'Clearer damage cards',items:['Cards that boost one attack now say “hit (multiplies)” — they multiply on top of everything else, so they always give their full %','Cards that add to your total damage now say “all damage (adds up)” — they add together with every other “+% damage” source, so each extra one counts a little less','Same wording in Talents, Weave and item mods']},
   {v:'7.9.15',date:'2026-10-20',title:'Every boss has an arena mechanic',items:['Clogmaw sweeps sludge across the screen (stand in the grate gap) · Mr. Griddle lights up a hot grid · Ice Cream Golem breathes ice (hide behind a pillar)','Rootmother’s Bud and the First Planter shield themselves with pods (dash them in) · Mycelium Behemoth fills the marsh with fog (stay in the bubble) · Chronobloom sweeps clock hands','True Rootmother roots, Harvest Colossus scythe, Hollow Bloom husk decoys, Glass Gardener mirror beams, Seedwarden vault rings, Pinnacle closing jaws','Card clean-up: duplicate names renamed (two Overloads, two Arc Powers, two Heavy Draws…), more cards get their own icon, Yuzu cards now have icons']},
   {v:'7.9.14',date:'2026-10-20',title:'Faster start',items:['The game opens faster: smaller game code, and the journal/book art now loads only when needed','On a slow connection the game starts with the version already on your phone after 6 seconds, and the update arrives next time']},
   {v:'7.9.13',date:'2026-10-20',title:'Boss skill mechanics (pilot)',items:['Hornet Queen: Hive Rush — she flies to the side and rushes across the screen, move out of her lane','Ant Empress: Tunnel — she digs under you, walk out of the shadow before she bursts out (two shadows later, the real one drips acid)','Great Hunger: The Feast — it pulls you in and eats plates to heal, dash into a plate to make it choke','Dash into the honey jar or ant egg they leave behind to kick it back at the boss']},
@@ -3710,7 +3711,7 @@ function berryAttackInfo(d,b){
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
   yuzu:{name:'Citrus Crew',emoji:'🍋',skill:'yuzling',color:0xffd85e,evolution:'The Citrus Court',upgrades:[
-    {id:'power',name:'Juicy Bite',emoji:'🍋',max:5,desc:'+12% minion damage per rank'},
+    {id:'power',name:'Juicy Bite',emoji:'🍋',max:5,headline:'+12% Minion hit (multiplies)',desc:'+12% minion damage per rank. Multiplies with your “+% damage” total.'},
     {id:'rate',name:'Quick Feet',emoji:'👟',max:5,desc:'+8% minion attack speed per rank'},
     {id:'family',name:'Growing Family',emoji:'🐣',max:3,desc:'+1 Yuzling per rank; Guardian gains +15% power and +2 stamina instead'},
     {id:'splash',name:'Zest Splash',emoji:'💦',max:3,desc:'Bites splash nearby enemies · larger radius per rank'},
@@ -3720,7 +3721,7 @@ const BASIC_ATTACKS = {
       {id:'second',name:'Second Serving',emoji:'♻️',desc:'Every fourth Yuzling bite deals 50% more damage'}]},
   momo:{name:'Heart Seed Blaster',emoji:'🍓',skill:'sprinkle',color:0xff76a8,evolution:'Heartstorm Blaster',
     upgrades:[
-      {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic Attack damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Mochi Trigger',emoji:'⏩',iconKey:'ic_momo_rate',max:5,desc:'Basic Attack interval −8% per rank; manual Unique charge is separate'},
       {id:'size',name:'Juicy Burst',emoji:'💥',iconKey:'ic_momo_size',max:3,desc:'Seeds pop on hit, splashing nearby enemies (bigger splash per rank)'},
       {id:'volley',name:'Sweet Branching',emoji:'🌱',iconKey:'ic_momo_volley',max:3,desc:'+1 Basic seed per rank; Sniper converts to +12% heavy-shot power. Other paths convert excess count to +8% power.'}],
@@ -3729,7 +3730,7 @@ const BASIC_ATTACKS = {
       {id:'fan',name:'Petal Spread',emoji:'🌸',desc:'Wider fan and +2 shots'}]},
   cocoa:{name:'Bear Core Combo',emoji:'🐻',skill:'meteor',color:0x8b5cf0,evolution:'Chocolate Path Evolution',
     upgrades:[
-      {id:'power',name:'Heavy Cocoa Punch',emoji:'💥',iconKey:'ic_cocoa_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'power',name:'Heavy Cocoa Punch',emoji:'💥',iconKey:'ic_cocoa_power',max:5,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic Attack damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Fighter Rhythm',emoji:'⏩',iconKey:'ic_cocoa_rate',max:5,desc:'+8% attack speed per rank'},
       {id:'size',name:'Mochi Reach',emoji:'🥊',iconKey:'ic_cocoa_size',max:3,desc:'+12% punch range & arc per rank'},
       {id:'combo',name:'Knockout Force',emoji:'🐻',iconKey:'ic_cocoa_combo',max:3,desc:'+18% finisher power per rank for the selected five-hit combo'},
@@ -3741,7 +3742,7 @@ const BASIC_ATTACKS = {
       {id:'counter',name:'Counter Bear',emoji:'🔁',desc:'Dash recharges 40% faster and you take 30% less damage while the Dash buff is active'}]},
   berry:{name:'Jam Cannon',emoji:'💗',skill:'rocket',color:0xff5f88,evolution:'Jam Supernova',
     upgrades:[
-      {id:'power',name:'Jam Pressure',emoji:'💥',iconKey:'ic_berry_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'power',name:'Jam Pressure',emoji:'💥',iconKey:'ic_berry_power',max:5,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic Attack damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Sweet Slide',emoji:'⏩',iconKey:'ic_berry_rate',max:5,desc:'+8% fire rate per rank'},
       {id:'size',name:'Plump Warhead',emoji:'🔴',iconKey:'ic_berry_size',max:3,desc:'+14% rocket & blast size per rank'},
       {id:'cluster',name:'Twin Jam Chamber',emoji:'💗',iconKey:'ic_berry_cluster',max:3,desc:'+1 rocket per volley per rank'}],
@@ -3750,7 +3751,7 @@ const BASIC_ATTACKS = {
       {id:'sticky',name:'Sticky Jam',emoji:'🫙',desc:'+35% blast radius and briefly pins enemies'}]},
   mint:{name:'Frost Lance',emoji:'🧊',skill:'frost',color:0x8fd0ff,evolution:'Glacier Sovereign',
     upgrades:[
-      {id:'power',name:'Frost Lance Edge',emoji:'🗡️',iconKey:'ic_mint_power',max:5,headline:'+12% Lance & Shard DMG',desc:'Frost Lance and its shatter deal 12% more damage per rank.'},
+      {id:'power',name:'Frost Lance Edge',emoji:'🗡️',iconKey:'ic_mint_power',max:5,headline:'+12% Lance hit (multiplies)',desc:'Frost Lance and its shatter deal 12% more damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Swift Ice Draw',emoji:'⏩',iconKey:'ic_mint_rate',max:5,headline:'-7% Lance interval',desc:'Fire Frost Lance 7% sooner per rank.'},
       {id:'rime',name:'Rime Mark',emoji:'🎯',iconKey:'ic_mint_chill',max:3,headline:'+10% DMG to Chilled',desc:'Your hits deal 10% more damage to Chilled enemies per rank, including bosses.'},
       {id:'chill',name:'Frost Reach',emoji:'❄️',iconKey:'ic_mint_chill',max:3,headline:'+10% Lance range',desc:'Frost Lance reaches 10% farther per rank. Crystal Impaler stays a precision shot; other paths bloom at impact or maximum range.'},
@@ -3760,7 +3761,7 @@ const BASIC_ATTACKS = {
       {id:'permafrost',name:'Eternal Frost',emoji:'🥶',headline:'Freeze at 3 Chill stacks',desc:'Normal enemies freeze at 3 stacks instead of 4; freezes last longer and lances deal 15% more. Glacier bosses gain Brittle instead of Freeze.'}]},
   taro:{name:'Rift Bolt Compass',emoji:'⚡',skill:'thunder',color:0xb388ff,evolution:'Stormstep Sovereign',
     upgrades:[
-      {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,desc:'+12% Basic Attack damage per rank'},
+      {id:'power',name:'Dense Charge',emoji:'💥',iconKey:'ic_taro_power',max:5,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic Attack damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Lightning Rhythm',emoji:'⏩',iconKey:'ic_taro_rate',max:5,desc:'+8% lightning cast speed per rank'},
       {id:'arc',name:'Chain Bolt',emoji:'🔗',iconKey:'ic_taro_arc',max:3,desc:'+1 chain target per rank'},
       {id:'surge',name:'Twin Bolt',emoji:'⚡',iconKey:'ic_taro_surge',max:3,desc:'+1 simultaneous strike per rank'}],
@@ -3769,7 +3770,7 @@ const BASIC_ATTACKS = {
       {id:'stormcaller',name:'Stormcaller',emoji:'🌩️',desc:'+2 simultaneous strikes and +20% damage'}]},
   sesame:{name:'Mirror Beam',emoji:'🪞',skill:'mirror',color:0x8a8f9c,evolution:'Absolute Oath Mirror',
     upgrades:[
-      {id:'power',name:'Strong Oath',emoji:'💥',iconKey:'ic_sesame_power',max:5,desc:'+12% beam damage per rank'},
+      {id:'power',name:'Strong Oath',emoji:'💥',iconKey:'ic_sesame_power',max:5,headline:'+12% Beam hit (multiplies)',desc:'+12% beam damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Fast Mirror Pulse',emoji:'⏩',iconKey:'ic_sesame_rate',max:5,desc:'+8% fire rate per rank'},
       {id:'pane',name:'Extra Pane',emoji:'🪟',iconKey:'ic_sesame_pane',max:3,desc:'+1 beam & wider per rank'},
       {id:'radius',name:'Long Beam',emoji:'🛡️',iconKey:'ic_sesame_radius',max:3,desc:'+12% beam length per rank'}],
@@ -3787,12 +3788,12 @@ const TARO_PROGRESSION={
 };
 function taroAttackInfo(d,b){if(!d)return d;
   if(!b?.path)return {...d,name:'Static Arc',upgrades:d.upgrades.map(u=>{
-    const info={power:['Arc Power','+12% Arc damage','Static Arc gains +12% damage per rank.'],rate:['Quick Arc','-8% attack interval','Cast Static Arc 8% sooner per rank.'],arc:['Arc Reach','+1 Arc jump','+1 jump per rank (base 3, +3 max) and +10% reach. Converts to Arc links, Spark damage or sentry lifetime after choosing a build.'],surge:['Extra Arcs','+1 Arc stream','+1 stream from Taro; max 3. Excess: +5% damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
+    const info={power:['Arc Power','+12% Arc hit (multiplies)','Static Arc gains +12% damage per rank. Multiplies with your “+% damage” total.'],rate:['Quick Arc','-8% attack interval','Cast Static Arc 8% sooner per rank.'],arc:['Arc Reach','+1 Arc jump','+1 jump per rank (base 3, +3 max) and +10% reach. Converts to Arc links, Spark damage or sentry lifetime after choosing a build.'],surge:['Extra Arcs','+1 Arc stream','+1 stream from Taro; max 3. Excess: +5% damage, max +25%. Converts to the chosen build’s extra-root bonus.']}[u.id];return info?{...u,name:info[0],headline:info[1],desc:info[2],...(u.id==='arc'?{iconKey:'ic_path_p_farstrike'}:{})}:u;
   }),mutations:d.mutations.map(m=>({...m,desc:m.id==='chainlord'?'+2 Arc jumps and +40% reach.':'+2 Arc streams and +20% damage; stream cap and overflow apply.'})),evolutionDesc:'+20% Arc damage, +3 jumps, +2 streams and +50% reach; existing caps apply.'};
   const path=TARO_PROGRESSION[b.path];if(!path)return d;
   return {...d,name:({storm:'Arc Compass',smite:'Spark Compass',tempest:'Storm Sentry'})[b.path],evolutionDesc:path.evolution,upgrades:d.upgrades.map(u=>{
     if(path[u.id]){const [name,headline,desc]=path[u.id],ik=b.path==='tempest'?{arc:'ic_taro_reserve_cell',surge:'ic_taro_wide_conductor'}[u.id]:b.path==='smite'?{arc:'ic_taro_piercing_current'}[u.id]:null;return {...u,name,headline,desc,...(ik?{iconKey:ik}:{})};}
-    if(u.id==='power')return {...u,headline:'+12% attack power',desc:'+12% base attack power per rank; strengthens this path’s basic and secondary effects, not Unique.'};
+    if(u.id==='power')return {...u,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic hit damage per rank; multiplies with your “+% damage” total; strengthens this path’s basic and secondary effects, not Unique.'};
     if(u.id==='rate')return {...u,headline:b.path==='tempest'?'-8% sentry pulse':'-8% basic interval',desc:b.path==='tempest'?'Sentries fire their orbs 8% sooner per rank. Does not shorten Dash or Beacon timers.':'Basic attacks fire 8% sooner per rank. Does not shorten Dash or Beacon timers.'};return u;
   }),mutations:d.mutations.map(m=>({...m,desc:path[m.id]||m.desc}))};}
 function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.ranks?.p_gale??b?.lv?.p_gale??0)));}
@@ -3801,8 +3802,8 @@ function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.r
 const BASIC_PATHS={
   yuzu:[
     {id:'zestSwarm',iconKey:'ic_path_zestSwarm',name:'Swarm Build',emoji:'🐝',base:{dmg:0.75,count:2},desc:'+2 small Yuzlings; faster hunting, lighter bites · crowd build',upgrades:[{id:'p_pulp',iconKey:'ic_path_p_pulp',name:'Extra Pulp',emoji:'🍋',max:2,fx:{count:1},desc:'+1 Yuzling per rank (max 9)'},{id:'p_feast',iconKey:'ic_path_p_feast',name:'Chain Feast',emoji:'⚡',max:3,fx:{cd:0.93},desc:'-7% attack cooldown per rank'}]},
-    {id:'citrusGuardian',iconKey:'ic_path_citrusGuardian',name:'Guardian Build',emoji:'🛡️',base:{dmg:2.5,range:0.25},desc:'Merge the crew into one large guardian; heavy area attacks · defense build',upgrades:[{id:'p_heavyPeel',iconKey:'ic_path_p_heavyPeel',name:'Heavy Peel',emoji:'💥',max:3,fx:{dmg:1.14},desc:'+14% guardian damage per rank'},{id:'p_bodyguard',iconKey:'ic_path_p_bodyguard',name:'Thick Rind',emoji:'💚',max:3,fx:{taken:0.04},desc:'Take 4% less damage per rank'}]},
-    {id:'juiceWorkshop',iconKey:'ic_path_juiceWorkshop',name:'Workshop Build',emoji:'🧀',base:{dmg:0.85},desc:'Cheese helper cooks alongside Yuzlings: sour zones and support · utility build',upgrades:[{id:'p_sourMixer',iconKey:'ic_path_p_sourMixer',name:'Sour Mixer',emoji:'🍋',max:3,fx:{dmg:1.08},desc:'+8% sour zone damage per rank'},{id:'p_sweetHelper',iconKey:'ic_path_p_sweetHelper',name:'Sweet Helper',emoji:'🧀',max:3,fx:{cd:0.94},desc:'Cheese support acts 6% faster per rank'}]}],
+    {id:'citrusGuardian',iconKey:'ic_path_citrusGuardian',name:'Guardian Build',emoji:'🛡️',base:{dmg:2.5,range:0.25},desc:'Merge the crew into one large guardian; heavy area attacks · defense build',upgrades:[{id:'p_heavyPeel',iconKey:'ic_path_p_heavyPeel',name:'Heavy Peel',emoji:'💥',max:3,fx:{dmg:1.14},headline:'+14% Guardian hit (multiplies)',desc:'+14% guardian damage per rank. Multiplies with your “+% damage” total.'},{id:'p_bodyguard',iconKey:'ic_path_p_bodyguard',name:'Thick Rind',emoji:'💚',max:3,fx:{taken:0.04},desc:'Take 4% less damage per rank'}]},
+    {id:'juiceWorkshop',iconKey:'ic_path_juiceWorkshop',name:'Workshop Build',emoji:'🧀',base:{dmg:0.85},desc:'Cheese helper cooks alongside Yuzlings: sour zones and support · utility build',upgrades:[{id:'p_sourMixer',iconKey:'ic_path_p_sourMixer',name:'Sour Mixer',emoji:'🍋',max:3,fx:{dmg:1.08},headline:'+8% Sour zone hit (multiplies)',desc:'+8% sour zone damage per rank. Multiplies with your “+% damage” total.'},{id:'p_sweetHelper',iconKey:'ic_path_p_sweetHelper',name:'Sweet Helper',emoji:'🧀',max:3,fx:{cd:0.94},desc:'Cheese support acts 6% faster per rank'}]}],
   momo:[
     {id:'sniper',iconKey:'ic_path_sniper',name:'Sniper Build',emoji:'🎯',desc:'Auto-charge one heavy seed (340ms) at ×3.2 power. Extra seeds become +12% base power each. Full charges pierce; Dash/hurt releases partial power',
       upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
@@ -3870,11 +3871,11 @@ const BASIC_PATHS={
   taro:[
     {id:'storm',iconKey:'ic_path_storm',name:'Arc Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. With no new target, remaining jumps loop back into the last one, so bosses take every jump. Direct kills release shards.',
       upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Forked Arc',emoji:'⚡',max:2,fx:{count:1},headline:'+1 Arc stream',desc:'+1 Arc stream from Taro; max 3. Streams share targets; excess boosts damage.'},
-                {id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc power',desc:'+8% Arc and shard damage per rank; Unique keeps its own power.'},
+                {id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc hit (multiplies)',desc:'+8% Arc and shard damage per rank; multiplies with your “+% damage” total; Unique keeps its own power.'},
                 {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Loopback',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'}]},
     {id:'smite',iconKey:'ic_path_smite_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release splitting sparks',desc:'Sparks burst out all around Taro, bounce off the screen edges, pass through enemies and split into smaller sparks. They keep zapping until their timer runs out.',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Giant Hunter',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% Spark damage to elites and bosses per rank'},
-                {id:'p_overload',iconKey:'ic_path_p_overload',name:'Spark Power',emoji:'💥',max:3,fx:{dmg:1.1},desc:'+10% Spark power per rank'},
+                {id:'p_overload',iconKey:'ic_path_p_overload',name:'Spark Power',emoji:'💥',max:3,fx:{dmg:1.1},headline:'+10% Spark hit (multiplies)',desc:'+10% Spark damage per rank. Multiplies with your “+% damage” total.'},
                 {id:'p_spark_life',iconKey:'ic_taro_live_current',name:'Live Current',emoji:'⏳',max:3,fx:{},desc:'+15% Spark lifetime per rank; max 5 seconds'},
                 {id:'p_spark_speed',iconKey:'ic_taro_fast_sparks',name:'Fast Sparks',emoji:'💨',max:3,fx:{},desc:'+12% Spark movement speed per rank; max 640'},
                 {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},desc:'Split sparks keep 65% power instead of 45% (second split 42% instead of 20%)'}]},
@@ -3886,10 +3887,10 @@ const BASIC_PATHS={
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
       upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Extra Facet',emoji:'💠',max:2,fx:{count:1},desc:'+1 beam per rank'},
-                {id:'p_refract',iconKey:'ic_path_p_refract',name:'Refraction',emoji:'✨',max:3,fx:{dmg:1.08},desc:'+8% beam damage per rank'}]},
+                {id:'p_refract',iconKey:'ic_path_p_refract',name:'Refraction',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Beam hit (multiplies)',desc:'+8% beam damage per rank. Multiplies with your “+% damage” total.'}]},
     {id:'lens',iconKey:'ic_path_lens',name:'Focus Build',emoji:'🔍',base:{dmg:1.6,cd:1.3,big:0.2},desc:'×1.6 damage and +20% vs elites/bosses, but 30% slower · boss build',
       upgrades:[{id:'p_lensbig',iconKey:'ic_path_p_lensbig',name:'Burning Lens',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
-                {id:'p_steady',iconKey:'ic_path_p_steady',name:'Steady Hand',emoji:'🧘',max:3,fx:{dmg:1.1},desc:'+10% beam damage per rank'}]},
+                {id:'p_steady',iconKey:'ic_path_p_steady',name:'Steady Hand',emoji:'🧘',max:3,fx:{dmg:1.1},headline:'+10% Beam hit (multiplies)',desc:'+10% beam damage per rank. Multiplies with your “+% damage” total.'}]},
     {id:'sentinel',iconKey:'ic_path_sentinel',name:'Sentinel Build',emoji:'🔭',base:{range:0.4,far:0.25},desc:'+40% beam length, +25% damage to far enemies · kite build',
       upgrades:[{id:'p_longsight',iconKey:'ic_path_p_longsight',name:'Longsight',emoji:'👁️',max:3,fx:{far:0.10},desc:'+10% damage to far enemies per rank'},
                 {id:'p_swift',iconKey:'ic_path_p_swift',name:'Swift Mirror',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% beam cooldown per rank'}]}]
@@ -4320,14 +4321,14 @@ const TALENT_ICON_FRAMES = {
 const CHAR_TALENTS = {
   momo: [   // สายสมดุล — เก่งWaitบด้าน + คริติคอล
     { id:'hp',      emoji:'❤️', name:'Vitality',  max:5, per:'+8% max HP',   apply:(p,r)=>{ p.maxhp*=(1+0.08*r); } },
-    { id:'dmg',     emoji:'💥', name:'Attack Power',  max:5, per:'+6% damage',       apply:(p,r)=>{ p.dmgMul+=((1+0.06*r))-1; } },
+    { id:'dmg',     emoji:'💥', name:'Attack Power',  max:5, per:'+6% all damage (adds up)',       apply:(p,r)=>{ p.dmgMul+=((1+0.06*r))-1; } },
     { id:'crit',    emoji:'🎯', name:'Critical',     max:4, per:'+5% crit chance (×1.8)', apply:(p,r)=>{ p.critChance+=0.05*r; } },
     { id:'cdr',     emoji:'⏱️', name:'Fast Cast',     max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'regen',   emoji:'💗', name:'Regen',    max:3, per:'+0.5 HP/s',  apply:(p,r)=>{ p.regen+=0.5*r; } },
     { id:'twinSprinkle',emoji:'🍓', name:'Radiant Heart Seeds', max:1, per:'✦ Unique: Strawberry Rebound bursts seeds in 16 directions!', apply:(p,r)=>{ p.twinSprinkle=true; } },
   ],
   mint: [   // สายแทงค์ — อึดโหด ดูดเลือด ฟื้นตัว
-    { id:'dmg',      emoji:'🧊', name:'Frost Lance Mastery', max:5, per:'+8% damage', apply:(p,r)=>{p.dmgMul+=((1+0.08*r))-1;} },
+    { id:'dmg',      emoji:'🧊', name:'Frost Lance Mastery', max:5, per:'+8% all damage (adds up)', apply:(p,r)=>{p.dmgMul+=((1+0.08*r))-1;} },
     { id:'hp',       emoji:'❤️', name:'Tough Body',    max:6, per:'+12% max HP',  apply:(p,r)=>{ p.maxhp*=(1+0.12*r); } },
     { id:'armor',    emoji:'🛡️', name:'Ice Armor', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
     { id:'regen',    emoji:'💗', name:'Cool Recovery',  max:4, per:'+0.7 HP/s',  apply:(p,r)=>{ p.regen+=0.7*r; } },
@@ -4336,7 +4337,7 @@ const CHAR_TALENTS = {
     { id:'deepFreeze',emoji:'🌿', name:'Breath Over the Rift', max:1, per:'✦ Unique: Mint\'s breath zone expands its radius!', apply:(p,r)=>{ p.deepFreeze=true; } },
   ],
   cocoa: [   // สายจอมพลัง — ดาเมจ/คริติคอลจัดFull
-    { id:'dmg',     emoji:'💥', name:'Destruction',  max:6, per:'+10% damage',      apply:(p,r)=>{ p.dmgMul+=((1+0.10*r))-1; } },
+    { id:'dmg',     emoji:'💥', name:'Destruction',  max:6, per:'+10% all damage (adds up)',      apply:(p,r)=>{ p.dmgMul+=((1+0.10*r))-1; } },
     { id:'crit',    emoji:'🎯', name:'Slayer',     max:5, per:'+6% crit chance (×1.8)', apply:(p,r)=>{ p.critChance+=0.06*r; } },
     { id:'spd',     emoji:'👟', name:'Footwork',     max:3, per:'+5% move speed',    apply:(p,r)=>{ p.baseSpeed*=(1+0.05*r); } },
     { id:'lifesteal',emoji:'🩸', name:'Bloodthirst',    max:3, per:'+0.6 HP on kill', apply:(p,r)=>{ p.lifesteal+=0.6*r; } },
@@ -4351,7 +4352,7 @@ const CHAR_TALENTS = {
   ],
   yuzu:[
     {id:'hp',emoji:'❤️',name:'Citrus Skin',max:5,per:'+8% max HP',apply:(p,r)=>{p.maxhp*=1+0.08*r;}},
-    {id:'dmg',emoji:'🍋',name:'Crew Spirit',max:5,per:'+6% minion damage',apply:(p,r)=>{p.dmgMul+=(1+0.06*r)-1;}},
+    {id:'dmg',emoji:'🍋',name:'Crew Spirit',max:5,per:'+6% all damage (adds up)',apply:(p,r)=>{p.dmgMul+=(1+0.06*r)-1;}},
     {id:'spd',emoji:'👟',name:'Leader Pace',max:4,per:'+5% move speed',apply:(p,r)=>{p.baseSpeed*=1+0.05*r;}},
     {id:'regen',emoji:'💚',name:'Fresh Juice',max:4,per:'+0.5 HP/s',apply:(p,r)=>{p.regen+=0.5*r;}},
     {id:'parade',emoji:'👑',name:'Royal Parade',max:1,per:'✦ Unique: Citrus Parade lasts 2s longer',apply:(p,r)=>{p.yuzuParade=true;}}],
@@ -4359,11 +4360,11 @@ const CHAR_TALENTS = {
     { id:'hp', emoji:'❤️', name:'Steady Sesame Core', max:6, per:'+11% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.11*r); } },
     { id:'armor', emoji:'🛡️', name:'Oath Architecture', max:5, per:'-6% damage taken', apply:(p,r)=>{ p.dmgTakenMul*=(1-0.06*r); } },
     { id:'regen', emoji:'💗', name:'Flavor Lantern', max:4, per:'+0.6 HP/s', apply:(p,r)=>{ p.regen+=0.6*r; } },
-    { id:'dmg', emoji:'💥', name:'Counter Seal', max:4, per:'+6% damage', apply:(p,r)=>{ p.dmgMul+=((1+0.06*r))-1; } },
+    { id:'dmg', emoji:'💥', name:'Counter Seal', max:4, per:'+6% all damage (adds up)', apply:(p,r)=>{ p.dmgMul+=((1+0.06*r))-1; } },
     { id:'mirrorWard', emoji:'🪞', name:'Perfect Mirror Architecture', max:1, per:'✦ Unique: more mirrors, duration, and reflected shots!', apply:(p,r)=>{ p.mirrorWard=true; } },
   ],
   berry: [
-    { id:'dmg', emoji:'💥', name:'Jam Core Pressure', max:5, per:'+7% damage', apply:(p,r)=>{ p.dmgMul+=((1+0.07*r))-1; } },
+    { id:'dmg', emoji:'💥', name:'Jam Core Pressure', max:5, per:'+7% all damage (adds up)', apply:(p,r)=>{ p.dmgMul+=((1+0.07*r))-1; } },
     { id:'cdr', emoji:'⏱️', name:'Fast Heart Trigger', max:4, per:'-5% skill cooldown', apply:(p,r)=>{ p.cdMul*=(1-0.05*r); } },
     { id:'hp', emoji:'❤️', name:'Packed Mochi', max:4, per:'+9% max HP', apply:(p,r)=>{ p.maxhp*=(1+0.09*r); } },
     { id:'crit', emoji:'🎯', name:'Seed Sights', max:4, per:'+5% crit chance', apply:(p,r)=>{ p.critChance+=0.05*r; } },
@@ -4420,15 +4421,15 @@ const PATH_TALENTS={
     capA:{emoji:'❄️',name:'Absolute Zero',max:1,per:'Freezing needs 1 less Chill stack',apply:_K('azero',1)},
     capB:{emoji:'💥',name:'Shatter Nova',max:1,per:'Each freeze blasts nearby enemies',apply:_K('fnova',1)},
     capC:{emoji:'🛡️',name:'Frost Armor',max:1,per:'Each freeze: −30% damage taken for 3s',apply:_K('farmor',1)}},
-  barrage:{root:{emoji:'🌨️',name:'Sharp Volley',max:3,per:'+5% lance damage',apply:_P({dmg:1.05})},
-    a1:{emoji:'🔪',name:'Honed Tips',max:3,per:'+6% lance damage',apply:_P({dmg:1.06})},
+  barrage:{root:{emoji:'🌨️',name:'Sharp Volley',max:3,per:'+5% lance hit (multiplies)',apply:_P({dmg:1.05})},
+    a1:{emoji:'🔪',name:'Honed Tips',max:3,per:'+6% lance hit (multiplies)',apply:_P({dmg:1.06})},
     a2:{emoji:'🎯',name:'Long Volley',max:3,per:'+10% damage beyond 300px',apply:_P({far:0.10})},
     b1:{emoji:'⏱️',name:'Quick Hands',max:3,per:'−5% lance cooldown',apply:_P({cd:0.95})},
     b2:{emoji:'📏',name:'Reach',max:3,per:'+6% lance range',apply:_P({range:0.06})},
     capA:{emoji:'🌪️',name:'Lance Storm',max:1,per:'+1 lance (max 3); at cap: +18% shard damage',apply:_P({count:1})},
     capB:{emoji:'⚡',name:'Rapid Frost',max:1,per:'−25% lance cooldown',apply:_P({cd:0.75})},
     capC:{emoji:'💨',name:'Cold Stride',max:1,per:'While moving: −15% damage taken',apply:_K('moveGuard',0.15)}},
-  pierce:{root:{emoji:'🏹',name:'Heavy Shaft',max:3,per:'+6% lance damage',apply:_P({dmg:1.06})},
+  pierce:{root:{emoji:'🏹',name:'Heavy Shaft',max:3,per:'+6% lance hit (multiplies)',apply:_P({dmg:1.06})},
     a1:{emoji:'👑',name:'Giant Piercer',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     a2:{emoji:'🔭',name:'Sniper’s Lance',max:3,per:'+12% damage beyond 300px',apply:_P({far:0.12})},
     b1:{emoji:'📏',name:'Long Reach',max:3,per:'+8% lance range',apply:_P({range:0.08})},
@@ -4436,7 +4437,7 @@ const PATH_TALENTS={
     capA:{emoji:'🗡️',name:'Glacial Spear',max:1,per:'+40% damage to bosses/elites',apply:_P({big:0.40})},
     capB:{emoji:'🌠',name:'Long Shot',max:1,per:'+35% damage beyond 300px · +30% range',apply:_P({far:0.35,range:0.30})},
     capC:{emoji:'🧱',name:'Ice Wall',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}},
-  brawler:{root:{emoji:'🔥',name:'Ember Fists',max:3,per:'+5% fist damage',apply:_P({dmg:1.05})},
+  brawler:{root:{emoji:'🔥',name:'Ember Fists',max:3,per:'+5% fist hit (multiplies)',apply:_P({dmg:1.05})},
     a1:{emoji:'🎯',name:'Long Shot',max:3,per:'+12% fist range',apply:_K('ffRange',0.12)},
     a2:{emoji:'💥',name:'Blast Core',max:3,per:'+10% fireball blast size',apply:_K('ffBlast',0.10)},
     b1:{emoji:'🌶️',name:'Burning Knuckles',max:3,per:'Fists leave fire patches · +20% fire damage',apply:_K('ffBurn',0.20)},
@@ -4444,7 +4445,7 @@ const PATH_TALENTS={
     capA:{emoji:'☄️',name:'Meteor Finisher',max:1,per:'5th-punch fireball calls 2 fire meteors',apply:_K('ffMeteor',1)},
     capB:{emoji:'🌀',name:'Barrage',max:1,per:'−20% fist cooldown',apply:_P({cd:0.80})},
     capC:{emoji:'🛡️',name:'Fire Shield',max:1,per:'−20% damage taken',apply:_K('chin',0.20)}},
-  titan:{root:{emoji:'🗿',name:'Stone Fist',max:3,per:'+6% damage',apply:_P({dmg:1.06})},
+  titan:{root:{emoji:'🗿',name:'Stone Fist',max:3,per:'+6% Basic hit (multiplies)',apply:_P({dmg:1.06})},
     a1:{emoji:'⏩',name:'Quick Rage',max:3,per:'Blood Rage charges 10% faster',apply:_K('trSpeed',0.10)},
     a2:{emoji:'👊',name:'Crushing Release',max:3,per:'+10% Colossus Fist damage',apply:_K('trRel',0.10)},
     b1:{emoji:'🩸',name:'Iron Veins',max:3,per:'Blood Rage costs 8% less HP',apply:_K('trCost',0.08)},
@@ -4452,7 +4453,7 @@ const PATH_TALENTS={
     capA:{emoji:'🔥',name:'Rage Overflow',max:1,per:'Max-Rage release deals ×1.3 damage and doubles the regen after release',apply:_K('rage4',1)},
     capB:{emoji:'🪨',name:'Iron Body',max:1,per:'−30% damage taken while charging',apply:_K('trGuard',0.30)},
     capC:{emoji:'🧛',name:'Bloodlust',max:1,per:'Kills while charging heal 1% max HP',apply:_K('trLust',1)}},
-  dashboxer:{root:{emoji:'🐾',name:'Bear Rush',max:3,per:'+5% combo damage',apply:_P({dmg:1.05})},
+  dashboxer:{root:{emoji:'🐾',name:'Bear Rush',max:3,per:'+5% combo hit (multiplies)',apply:_P({dmg:1.05})},
     a1:{emoji:'🦘',name:'Far Leap',max:3,per:'+10% Dash Leap range',apply:_K('dbLeap',0.10)},
     a2:{emoji:'👑',name:'Hit and Run',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     b1:{emoji:'💢',name:'Heavy Landing',max:3,per:'+12% landing slam damage',apply:_K('dbSlam',0.12)},
@@ -4460,24 +4461,24 @@ const PATH_TALENTS={
     capA:{emoji:'🌪️',name:'Afterimage',max:1,per:'Dash buff +80% combo damage',apply:_P({dashm:0.80})},
     capB:{emoji:'♾️',name:'Endless Dash',max:1,per:'+3 Dash charges',apply:_P({dashc:3})},
     capC:{emoji:'🍃',name:'Slip',max:1,per:'While Dash buff is active: −30% damage taken',apply:_K('dashGuard',1)}},
-  storm:{root:{emoji:'🌩️',name:'Charged Air',max:3,per:'+5% lightning damage',apply:_P({dmg:1.05})},
-    a1:{emoji:'✨',name:'Static Build',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
+  storm:{root:{emoji:'🌩️',name:'Charged Air',max:3,per:'+5% lightning hit (multiplies)',apply:_P({dmg:1.05})},
+    a1:{emoji:'✨',name:'Static Build',max:3,per:'+6% lightning hit (multiplies)',apply:_P({dmg:1.06})},
     a2:{emoji:'👑',name:'Conductor',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     b1:{emoji:'⏱️',name:'Quick Spark',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
     b2:{emoji:'📡',name:'Wide Arc',max:3,per:'+8% basic root and jump range',apply:_P({range:0.08})},
     capA:{emoji:'⛈️',name:'Thunderhead',max:1,per:'+2 basic roots; excess adds bolt damage',apply:_P({count:2})},
-    capB:{emoji:'⚡',name:'Overcharge',max:1,per:'+20% lightning damage',apply:_P({dmg:1.20})},
+    capB:{emoji:'⚡',name:'Overcharge',max:1,per:'+20% lightning hit (multiplies)',apply:_P({dmg:1.20})},
     capC:{emoji:'🧲',name:'Grounded',max:1,per:'While moving: −20% damage taken',apply:_K('moveGuard',0.20)}},
-  smite:{root:{emoji:'🔨',name:'Heavy Bolt',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
+  smite:{root:{emoji:'🔨',name:'Heavy Bolt',max:3,per:'+6% lightning hit (multiplies)',apply:_P({dmg:1.06})},
     a1:{emoji:'🎯',name:'Judgment+',max:3,per:'+10% damage to bosses/elites',apply:_P({big:0.10})},
     a2:{emoji:'🩸',name:'Wrath',max:3,per:'+10% damage below 50% HP',apply:_P({low:0.10})},
     b1:{emoji:'⏱️',name:'Steady Prayer',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
     b2:{emoji:'📡',name:'Long Reach',max:3,per:'+8% priority target range',apply:_P({range:0.08})},
     capA:{emoji:'🌟',name:'Divine Hammer',max:1,per:'+40% damage to bosses/elites',apply:_P({big:0.40})},
-    capB:{emoji:'☁️',name:'Heavy Sky',max:1,per:'+30% attack power · basic 10% slower',apply:_P({dmg:1.30,cd:1.10})},
+    capB:{emoji:'☁️',name:'Heavy Sky',max:1,per:'+30% Basic hit (multiplies) · basic 10% slower',apply:_P({dmg:1.30,cd:1.10})},
     capC:{emoji:'⛪',name:'Sanctuary',max:1,per:'Still 0.6s: −40% damage taken',apply:_K('stillWall',1)}},
   tempest:{root:{emoji:'🌪️',name:'Swift Storm',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
-    a1:{emoji:'✨',name:'Sharp Wind',max:3,per:'+6% lightning damage',apply:_P({dmg:1.06})},
+    a1:{emoji:'✨',name:'Sharp Wind',max:3,per:'+6% lightning hit (multiplies)',apply:_P({dmg:1.06})},
     a2:{emoji:'🔭',name:'Far Strike+',max:3,per:'+10% hit damage beyond 300px',apply:_P({far:0.10})},
     b1:{emoji:'⏩',name:'Gale+',max:3,per:'−4% basic attack interval',apply:_P({cd:0.96})},
     b2:{emoji:'📡',name:'Wide Gust',max:3,per:'+8% weak basic target range',apply:_P({range:0.08})},
@@ -4486,7 +4487,7 @@ const PATH_TALENTS={
     capC:{emoji:'💨',name:'Wind Step',max:1,per:'While moving: −20% damage taken',apply:_K('moveGuard',0.20)}}};
 const TAL_CAP_COST=5, TAL_SLOTS=['root','a1','a2','b1','b2','c1','c2','capA','capB','capC'];
 function _ptGeneric(pt){ return {
-  root:{emoji:pt.emoji||'✦',name:'Path Focus',max:3,per:'+5% damage',apply:(p,r)=>{p.dmgMul+=0.05*r;}},
+  root:{emoji:pt.emoji||'✦',name:'Path Focus',max:3,per:'+5% all damage (adds up)',apply:(p,r)=>{p.dmgMul+=0.05*r;}},
   a1:{emoji:'🎯',name:'Sharpness',max:3,per:'+3% crit chance',apply:(p,r)=>{p.critChance+=0.03*r;}},
   a2:{emoji:'👑',name:'Giant Hunter',max:3,per:'+8% boss damage',apply:(p,r)=>{p.bossDmg=(p.bossDmg||0)+0.08*r;}},
   b1:{emoji:'⏱️',name:'Tempo',max:3,per:'−4% cooldown',apply:(p,r)=>{p.cdMul*=(1-0.04*r);}},
@@ -5105,7 +5106,7 @@ const MOD_DESC={dmg:'More damage from every attack',crit:'Higher chance to land 
   vampiric:'Heal on every kill with no cooldown',berserk:'Much more damage, but you take more damage too',focus:'Skills recharge much faster, but less crit chance',gambler:'Critical hits deal much more damage',nourish:'Healing pickups restore more HP',
   area:'Bigger attack areas',bounce:'Projectiles bounce to one more foe',exec:'More damage while your HP is low',proj:'Fire one more projectile',uniq:'Your Unique skill recharges faster',revive:'Revive once when you would fall',boss:'More damage to bosses and minibosses'};
 /* v7.9.5 เจ้าของเลือก A: mod แสดงบรรทัดเดียวเป็นภาษาบอกผล ({v} = ค่า fmt) · ไม่มีในตาราง = ชื่อ + ค่าแบบเดิม */
-const MOD_EFFECT={'f_might': '{v} damage', 'f_rapid_rhythm': '{v} attack speed', 'f_precision': '{v} crit chance', 'f_deadly_sweet': '{v} crit damage', 'f_wide_recipe': '{v} attack area', 'f_lingering_flavor': '{v} damage over time', 'f_executioner': '{v} damage to enemies below 30% HP', 'f_opening_bite': '{v} damage to enemies above 90% HP', 'f_giant_slayer': '{v} damage to elites & bosses', 'f_vital_dough': '{v} max HP', 'f_hard_shell': '{v} armor', 'f_slow_recovery': '{v} regen', 'f_fresh_meal': '{v} max HP healed on kill', 'f_vampiric_bite': '{v} HP on hit', 'f_critical_barrier': 'Crits give a {v} shield', 'f_emergency_coating': '{v} damage reduction below 40% HP', 'f_dash_guard': '{v} damage reduction after a dash', 'f_dash_primer': '{v} damage on the first hit after a dash', 'f_steady_hands': '{v} damage while standing still', 'f_close_quarters': '{v} damage to nearby enemies', 'f_brittle_shell': '{v} damage to chilled or frozen enemies', 'f_last_bite': '{v} damage while you are below 40% HP', 'f_perfect_glaze': '{v} damage while you are above 90% HP', 'f_gathering_pace': 'Picking up EXP gives {v} move speed', 'f_growing_appetite': 'Level-ups give {v} damage for a while', 'f_distant_bite': '{v} damage to far enemies', 'f_quick_preparation': '{v} faster skill cooldown', 'f_efficient_recovery': '{v} healing received', 'f_boss_padding': '{v} damage reduction in boss fights', 'f_earned_edge': 'Kills stack up to {v} damage', 'f_second_course': 'Level-ups refund {v} of skill cooldown', 'f_last_crumb': 'Survive one lethal hit (once per run)', 'f_treasure_aroma': '{v} chance for extra gear drops', 'f_currency_sprinkles': '{v} chance for extra currency drops', 'f_boss_pantry': '{v} chance for a bonus currency parcel from bosses', 'f_quick_pull': '{v} loot pull speed', 'i_hp': '{v} max HP', 'i_dmg': '{v} damage', 'i_pick': '{v} pickup range', 'i_regen': '{v} HP regen per second', 'i_spd': '{v} move speed', 'i_def': '{v} damage taken', 'i_cd': '{v} skill cooldown', 'i_xp': '{v} EXP', 'i_crit': '{v} crit chance', 'i_critdmg': '{v} crit damage', 'i_boss': '{v} boss damage', 'i_lifekill': '{v} HP on kill', 'i_area': '{v} attack area', 'i_bounce': '{v} projectile bounce', 'i_exec': '{v} damage to low-HP enemies', 'i_proj': '{v} projectile', 'i_uniq': '{v} Unique cooldown', 'i_revive': '{v} revive per run'};
+const MOD_EFFECT={'f_might': '{v} all damage (adds up)', 'f_rapid_rhythm': '{v} attack speed', 'f_precision': '{v} crit chance', 'f_deadly_sweet': '{v} crit damage', 'f_wide_recipe': '{v} attack area', 'f_lingering_flavor': '{v} damage over time', 'f_executioner': '{v} damage to enemies below 30% HP', 'f_opening_bite': '{v} damage to enemies above 90% HP', 'f_giant_slayer': '{v} damage to elites & bosses', 'f_vital_dough': '{v} max HP', 'f_hard_shell': '{v} armor', 'f_slow_recovery': '{v} regen', 'f_fresh_meal': '{v} max HP healed on kill', 'f_vampiric_bite': '{v} HP on hit', 'f_critical_barrier': 'Crits give a {v} shield', 'f_emergency_coating': '{v} damage reduction below 40% HP', 'f_dash_guard': '{v} damage reduction after a dash', 'f_dash_primer': '{v} damage on the first hit after a dash', 'f_steady_hands': '{v} damage while standing still', 'f_close_quarters': '{v} damage to nearby enemies', 'f_brittle_shell': '{v} damage to chilled or frozen enemies', 'f_last_bite': '{v} damage while you are below 40% HP', 'f_perfect_glaze': '{v} damage while you are above 90% HP', 'f_gathering_pace': 'Picking up EXP gives {v} move speed', 'f_growing_appetite': 'Level-ups give {v} damage for a while', 'f_distant_bite': '{v} damage to far enemies', 'f_quick_preparation': '{v} faster skill cooldown', 'f_efficient_recovery': '{v} healing received', 'f_boss_padding': '{v} damage reduction in boss fights', 'f_earned_edge': 'Kills stack up to {v} damage', 'f_second_course': 'Level-ups refund {v} of skill cooldown', 'f_last_crumb': 'Survive one lethal hit (once per run)', 'f_treasure_aroma': '{v} chance for extra gear drops', 'f_currency_sprinkles': '{v} chance for extra currency drops', 'f_boss_pantry': '{v} chance for a bonus currency parcel from bosses', 'f_quick_pull': '{v} loot pull speed', 'i_hp': '{v} max HP', 'i_dmg': '{v} damage', 'i_pick': '{v} pickup range', 'i_regen': '{v} HP regen per second', 'i_spd': '{v} move speed', 'i_def': '{v} damage taken', 'i_cd': '{v} skill cooldown', 'i_xp': '{v} EXP', 'i_crit': '{v} crit chance', 'i_critdmg': '{v} crit damage', 'i_boss': '{v} boss damage', 'i_lifekill': '{v} HP on kill', 'i_area': '{v} attack area', 'i_bounce': '{v} projectile bounce', 'i_exec': '{v} damage to low-HP enemies', 'i_proj': '{v} projectile', 'i_uniq': '{v} Unique cooldown', 'i_revive': '{v} revive per run'};
 function modLine(d,v){if(!d)return '';const t=MOD_EFFECT[d.id],f=typeof d.fmt==='function'?d.fmt(v):String(v??'');return t?t.replace('{v}',f):(d.label||'')+' '+f;}
 function modDesc(d){if(!d)return '';{const t=MOD_EFFECT[d.id];if(t){const x=t.replace(/\{v\}\s*/,'').replace(/\s+/g,' ').trim();return x.charAt(0).toUpperCase()+x.slice(1);}}if(d.description)return d.description;const k=String(d.id||'');return MOD_DESC[k]||MOD_DESC[k.replace(/^i_/,'')]||'';}
 
