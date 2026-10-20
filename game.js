@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.17';
+const GAME_VERSION = '7.9.18';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.18',date:'2026-10-21',title:'Heroes in development',items:['Sesame and Yuzu now show a 🚧 In development badge on the hero screen: their cards and balance will still change']},
   {v:'7.9.17',date:'2026-10-21',title:'Fewer copy-paste cards',items:['Relics: Jam Trail → Sticky Jam (Dash leaves a puddle: enemies get stuck and take +25% damage) · Chill Touch → Cold Snap (every 6s your next hit freezes a small area) · Candy Shell also gives a shield on elite/miniboss/boss kills (Hunter Trophy merged in) · Momentum and Sugar Magnet removed (pickup range lives in Weave and Special Cores)','Trade-offs Glass Heart and Frozen Core removed (same as Cracked Crystal and Minty Infusion) · Dash Fury instinct removed (same as Spark Step)','Path cards that only repeated attack speed now do something new: Yuzu Chain Feast (kills refresh the bite), Cocoa Hot Hands (every few fists explode), Taro Close Charge (sentries near you fire faster), Sesame Retreat Shot (Dash, then hit harder)','Path cards that only repeated +1 count: Yuzu Quick Paws (Yuzlings run faster), Sesame Prism Echo (every few casts fire twice); Forked Arc and Buckshot removed (same as Arc Streams and Sweet Branching)','Cocoa: Blitz merged into Phantom Jab (Dash Stack already gives the extra Dash)']},
   {v:'7.9.16',date:'2026-10-20',title:'Clearer damage cards',items:['Cards that boost one attack now say “hit (multiplies)” — they multiply on top of everything else, so they always give their full %','Cards that add to your total damage now say “all damage (adds up)” — they add together with every other “+% damage” source, so each extra one counts a little less','Same wording in Talents, Weave and item mods']},
   {v:'7.9.15',date:'2026-10-20',title:'Every boss has an arena mechanic',items:['Clogmaw sweeps sludge across the screen (stand in the grate gap) · Mr. Griddle lights up a hot grid · Ice Cream Golem breathes ice (hide behind a pillar)','Rootmother’s Bud and the First Planter shield themselves with pods (dash them in) · Mycelium Behemoth fills the marsh with fog (stay in the bubble) · Chronobloom sweeps clock hands','True Rootmother roots, Harvest Colossus scythe, Hollow Bloom husk decoys, Glass Gardener mirror beams, Seedwarden vault rings, Pinnacle closing jaws','Card clean-up: duplicate names renamed (two Overloads, two Arc Powers, two Heavy Draws…), more cards get their own icon, Yuzu cards now have icons']},
@@ -3640,6 +3641,7 @@ const CHARACTERS = {
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','yuzu','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
+const HEROES_WIP=['sesame','yuzu'];   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=true; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
 const CORE_UNLOCK_STAGE={mint:0,cocoa:4,taro:5,yuzu:9};
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) — Mint ที่ Stage 3 · Cocoa ที่ C2-1 (เจ้าของสั่ง)
@@ -9273,7 +9275,9 @@ class Game extends Phaser.Scene {
       this.menu.add(frame);
       this.menu.add(this.add.text(x+11,y+ch-98*p,hero.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,32*p)+'px',color:'#ffffff',stroke:'#251124',strokeThickness:3}).setOrigin(0,0));
       this.menu.add(this.add.text(x+67*p,y+ch-28*p,owned?meta[1]:'Locked',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,25*p)+'px',color:'#'+meta[3].toString(16).padStart(6,'0'),stroke:'#251124',strokeThickness:2}).setOrigin(0,.5));
-      this.rosterIcon(meta[1].toLowerCase(),x+36*p,y+ch-28*p,32*p);if(chosen)this.rosterIcon('check',x+cw-34*p,y+34*p,59*p);
+      this.rosterIcon(meta[1].toLowerCase(),x+36*p,y+ch-28*p,32*p);
+      if(HEROES_WIP.includes(key)){const bh=Math.max(18,30*p),bt=this.add.text(x+cw/2,y+10*p+bh/2,'🚧 In development',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,20*p)+'px',color:'#2a1a00'}).setOrigin(.5),bw2=Math.min(cw-8,bt.width+16),bg=this.add.graphics();bg.fillStyle(0xffc94a,.95).fillRoundedRect(x+cw/2-bw2/2,y+10*p,bw2,bh,bh/2);this.menu.add([bg,bt]);}
+      if(chosen)this.rosterIcon('check',x+cw-34*p,y+34*p,59*p);
       this._zone(x,y,cw,ch,()=>{this._heroPreview=key;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='char_'+key;
     });
     const rows=Math.ceil(roster.length/cols),fy=y0+rows*ch+(rows-1)*rowGap+70*p+Math.min(extra*.25,24*p),bw=Math.min(panelW*.78,390),buttonH=Math.max(44,Math.min(60,110*p)),owned=FIGHTER_PLAYTEST_ALL||Save.data.chars.includes(id),chosen=Save.data.character===id,button=this.add.graphics();
@@ -9284,7 +9288,7 @@ class Game extends Phaser.Scene {
   }
   showCharacterInfo(id){const returnScroll=this._mScroll||0;this.cancelMenuMotion();this.setMenuScroll(0);const c=CHARACTERS[id],w=this.W,h=this.H,bw=Math.min(w-32,430),bh=Math.min(h-60,410),x=(w-bw)/2,y=(h-bh)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0c0815,0.88).setOrigin(0),panel=this.add.graphics();panel.fillStyle(0x281e34,1);panel.fillRoundedRect(x,y,bw,bh,18);panel.lineStyle(2,c.color,1);panel.strokeRoundedRect(x,y,bw,bh,18);
-    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
+    const gate=CORE_UNLOCK_STAGE[id],owned=Save.data.chars.includes(id),unlock=HEROES_WIP.includes(id)?'🚧 In development — cards and balance will change':FIGHTER_PLAYTEST_ALL?'Available for playtest ✓':owned?'Unlocked ✓':gate!=null?'Unlock: Clear Stage '+(gate+1):'In development · unlock plan reserved';
     const title=this.add.text(w/2,y+32,c.emoji+' '+c.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffffff'}).setOrigin(0.5);
     const role=this.add.text(w/2,y+71,c.role+' · '+SIGNATURE_WEAPONS[c.weapon].name,{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#ffe6ad',align:'center',wordWrap:{width:bw-34}}).setOrigin(0.5);
     const desc=this.add.text(x+22,y+111,c.desc,{fontFamily:'NunitoUI, sans-serif',fontSize:'14px',color:'#e7daed',wordWrap:{width:bw-44},lineSpacing:6}).setOrigin(0,0);
