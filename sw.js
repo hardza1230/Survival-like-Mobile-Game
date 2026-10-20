@@ -1,7 +1,7 @@
-// Mochi Mayhem service worker (v7.8.104)
+// Mochi Mayhem service worker (v7.9.14)
 // assets/*?v=<hash> = cache-first (URL เปลี่ยนเมื่อไฟล์เปลี่ยน)
 // หน้า/โค้ดเกม (index.html, game.js, phaser) = network-first มี timeout → ออนไลน์ได้เวอร์ชันใหม่ทันที · เน็ตช้า/ออฟไลน์ใช้ตัวในเครื่อง
-const CACHE='mochi-assets-v1', SHELL='mochi-shell-v1', SHELL_TIMEOUT=3500;
+const CACHE='mochi-assets-v1', SHELL='mochi-shell-v1', SHELL_TIMEOUT=3500, FRESH_TIMEOUT=6000;
 self.addEventListener('install',e=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
 function isShell(url,req){ return req.mode==='navigate'||/\/(index\.html)?$/.test(url.pathname)||/\.(js|css|json|webmanifest)$/.test(url.pathname)&&!/\/assets\//.test(url.pathname); }
@@ -19,7 +19,10 @@ self.addEventListener('fetch',e=>{
   if(/\/assets\//.test(url.pathname)&&!url.searchParams.has('v')){ e.respondWith(shellFetch(req)); return; }   // v6.87.1 ภาพหน้าโหลด/CSS ที่ไม่มี ?v
   const isAsset=(/\/assets\//.test(url.pathname)&&url.searchParams.has('v'));
   if(/\/version\.json$/.test(url.pathname)){ e.respondWith(fetch(req,{cache:'no-store'}).catch(()=>caches.match(req,{ignoreSearch:true}).then(h=>h||Response.error()))); return; }   // v7.8.104 เช็คเวอร์ชันต้องไปเน็ตเสมอ
-  if(url.searchParams.has('fresh')){ e.respondWith(caches.open(SHELL).then(async c=>{ const key=new Request(url.pathname); try{ const res=await fetch(req,{cache:'no-store'}); if(res&&res.ok)c.put(key,res.clone()).catch(()=>{}); return res; }catch(err){ return (await c.match(key))||Response.error(); } })); return; }   // v7.8.104 มีเวอร์ชันใหม่ = รอโหลดจากเน็ตให้จบ
+  if(url.searchParams.has('fresh')){ e.respondWith(caches.open(SHELL).then(async c=>{ const key=new Request(url.pathname),hit=await c.match(key);
+      const net=fetch(req,{cache:'no-store'}).then(res=>{ if(res&&res.ok)c.put(key,res.clone()).catch(()=>{}); return res; });
+      if(!hit)return net.catch(()=>Response.error());
+      return Promise.race([net.catch(()=>hit),new Promise(r=>setTimeout(()=>r(hit),FRESH_TIMEOUT))]); })); return; }   // v7.9.14 มีเวอร์ชันใหม่: รอเน็ตได้ไม่เกิน 6 วิ แล้วเล่นตัวในเครื่องไปก่อน (โหลดต่อเบื้องหลัง ครั้งหน้าได้ของใหม่)   // v7.8.104 มีเวอร์ชันใหม่ = รอโหลดจากเน็ตให้จบ
   if(!isAsset){ if(isShell(url,req))e.respondWith(shellFetch(req)); return; }
   e.respondWith(caches.open(CACHE).then(async c=>{
     const hit=await c.match(req); if(hit){ const h=new Headers(hit.headers); h.set('x-mochi-cache','hit'); return new Response(hit.body,{status:hit.status,statusText:hit.statusText,headers:h}); }

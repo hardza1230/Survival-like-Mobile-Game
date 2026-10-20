@@ -66,6 +66,24 @@ const assetHashes=Object.fromEntries(uniqueAssets.map(rel=>[rel,createHash('sha2
 const assetSizes=Object.fromEntries(uniqueAssets.map(rel=>[rel,statSync(join(root,rel)).size]));
 gjs=gjs.replace('let ASSET_FILE_SIZES = null;', 'let ASSET_FILE_SIZES = '+JSON.stringify(assetSizes)+';');
 gjs=gjs.replace('let ASSET_FILE_VERSIONS = null;', 'let ASSET_FILE_VERSIONS = '+JSON.stringify(assetHashes)+';');
+// v7.9.14 เจ้าของ: บีบ game.js (esbuild minify, ชื่อ global คงเดิม) ให้โหลด/parse เร็วขึ้น · หาไม่เจอ = ส่งตัวเต็มตามเดิม
+{
+  const ver = (gjs.match(/const GAME_VERSION = '([^']+)'/) || [])[1];
+  const opts = ['--minify', '--charset=utf8', '--log-level=error'];
+  let out = null;
+  try { const esb = await import('esbuild'); out = (await esb.transform(gjs, { minify:true, charset:'utf8' })).code; }
+  catch (e) { try { out = execFileSync('npx', ['--yes', 'esbuild@0.24.2', ...opts], { input: gjs, maxBuffer: 64 << 20 }).toString(); } catch (e2) { console.warn('minify skipped: ' + (e2.message || e2).toString().split('\n')[0]); } }
+  if (out && ver) {
+    // คำสั่งตรวจหลัง deploy (pages.yml) หา "const GAME_VERSION = 'x'" ตรงตัว → คืนรูปเดิมหลังบีบ
+    const re = new RegExp('GAME_VERSION\\s*=\\s*["\']' + ver.replace(/\./g, '\\.') + '["\']');
+    const m = re.exec(out);
+    if (m) { const lead = out.slice(Math.max(0, m.index - 6), m.index), tag = "const GAME_VERSION = '" + ver + "'";
+      // esbuild รวม const ติดกัน (const TAU=…,GAME_VERSION="x") → แยกเป็น const ของตัวเอง
+      out = lead.endsWith('const ') ? out.slice(0, m.index - 6) + tag + out.slice(m.index + m[0].length) : lead.endsWith(',') ? out.slice(0, m.index - 1) + ';' + tag + out.slice(m.index + m[0].length) : out; }
+    if (out.includes("const GAME_VERSION = '" + ver + "'")) { console.log('game.js minified ' + (gjs.length / 1024 | 0) + ' KB → ' + (out.length / 1024 | 0) + ' KB'); gjs = out; }
+    else console.warn('minify skipped: GAME_VERSION marker not kept');
+  }
+}
 writeFileSync(join(www,'game.js'),gjs);
 execFileSync(process.execPath, ['--check', join(www, 'game.js')]);
 console.log('game.js built with stable per-asset hashes ('+uniqueAssets.length+' assets)');

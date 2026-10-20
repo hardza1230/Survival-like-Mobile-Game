@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.9.13 — Boss arena mechanics pilot (owner picked pilot 3)
+# Latest delivery: v7.9.14 — Faster start (owner: loading got slow again)
+
+Causes: 8 releases in a day (each new version waits for the full game.js via ?fresh= with no timeout) + v7.9.10 put journal/book in UI_ART_RE so the cached-start preloadAll waited for them. Fixes: UI_ART_RE drops journal|book (they stay lazy via MENU_GROUPS/LAZY_MENU_ART_RE + loadBook). sw.js ?fresh= = race network vs cached shell, FRESH_TIMEOUT 6000 (network keeps filling the cache → next launch is new). build-www.mjs minifies www/game.js with esbuild (import, else `npx --yes esbuild@0.24.2`, else ship full) then restores the exact `const GAME_VERSION = 'x'` text the pages.yml post-deploy check greps (esbuild merges consts → split with ';'). 2342→1979 KB raw, gzip 767→625 KB. Minified build passed the boss arena smoke + check-forge-live-ui 21 states. Source game.js is unchanged (tests read the source).
+
+# Previous delivery: v7.9.13 — Boss arena mechanics pilot (owner picked pilot 3)
 
 Owner wants skill-based boss mechanics like Terraria's Queen Bee. Following docs/BOSS_ARENA_MECHANICS.md P1+P2. Shared: arenaMechDue(b) (first 4.5s, then every 12/10/8.5s by phase, skipped while b._arenaBusy), bossStun(b,sec,label) (knock+atkCd), bossPctHit(b,pct) (damage() with _infTick so flat ATK is skipped; phase gate still applies), spawnCounter(b,x,y,{emoji,key,tint,life,onHit,drift,onArrive}) + tickArenaMech (dash kick = dashTime>0 or <.22s after dash, within 56px → flies to boss → onHit; unkicked 6s → warns 1s then small blast) + clearArenaMech (from clearBossObjects). Pilots hooked at the top of each attack fn: hiveRush (Hornet Queen C2-3: 3/4/5 side-to-side screen rushes at the player's row, lane warning 720/620/560ms, speed 1100/1250, then 🍯 jelly counter = 3% + stun + 40% slow 3.2s), antTunnel (Ant Empress C1-1: burrows (body off), shadow chases 2s then locks 700/560ms, erupts with hit + nova; phase 2 adds a fake shadow, the real one drips acid; 🥚 nest_eggs counter = 4% + stun), hungerFeast (Great Hunger C1-5: drainPull 4.2s 150/175/195 + 4/5 plates drifting into the mouth, each arrival heals 3%, kicking one = 3% + stun + pull ends). Browser: all three ran, kick → 3–5% boss HP + stun, 0 errors. Next after owner playtest: remaining 12 bosses + Pinnacle per the doc.
 
@@ -392,7 +396,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.13 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.14 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

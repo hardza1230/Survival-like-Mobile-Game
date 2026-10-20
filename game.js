@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.13';
+const GAME_VERSION = '7.9.14';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.14',date:'2026-10-20',title:'Faster start',items:['The game opens faster: smaller game code, and the journal/book art now loads only when needed','On a slow connection the game starts with the version already on your phone after 6 seconds, and the update arrives next time']},
   {v:'7.9.13',date:'2026-10-20',title:'Boss skill mechanics (pilot)',items:['Hornet Queen: Hive Rush — she flies to the side and rushes across the screen, move out of her lane','Ant Empress: Tunnel — she digs under you, walk out of the shadow before she bursts out (two shadows later, the real one drips acid)','Great Hunger: The Feast — it pulls you in and eats plates to heal, dash into a plate to make it choke','Dash into the honey jar or ant egg they leave behind to kick it back at the boss']},
   {v:'7.9.12',date:'2026-10-20',title:'Pick up your EXP',items:['EXP drops now stay on the ground after a wave or a boss — walk over them to collect']},
   {v:'7.9.11',date:'2026-10-20',title:'Every boss has its own moves',items:['All Chapter 3 bosses and the Pinnacle boss now fight with their own signature attacks and big finishers','Minibosses in Chapter 1, Chapter 2 and Chapter 3 that shared moves now have their own too','When a wave ends, leftover EXP visibly flies to you instead of vanishing']},
@@ -3142,7 +3143,7 @@ const MENU_GROUPS=[
   [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/|art\/mobile_ui_789\/stat_)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|journal|book|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|mobile_ui_789|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:ui\/|art\/(?:ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|mobile_ui_789|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')); return g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/; }
 // v6.45: ของ tier1 ที่มาถึงหลังเริ่มด่านได้ (ใช้ตอนเลเวลอัพ/หน้าสรุป · ทุกจุดเช็ค textures.exists แล้ว)
 const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|menu_buttons|icons|ui|mobile_ui_789)\/|ui\/(?:currency|results)\/|ui\/chapter|gear\/|icons\/levelup\/|ui_talent_hall)/;
