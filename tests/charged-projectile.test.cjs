@@ -43,6 +43,6 @@ for(const leaveAt of [0,100,500,1700]){
  assert.equal(s.hits.length,count,'No old void damage in new run');assert.equal(s._artTimers.size,0);assert.equal(s._artVfx.size,0);
 }
 {const s=timedScene();s.castVoidPull(1,1);s.advance(2200);assert(s.hits.includes(7),'Original Lv1 tick damage');assert(s.hits.includes(32),'Original Lv1 finish damage');assert.equal(s._artTimers.size,0);assert.equal(s._artVfx.size,0);}
-for(const cancel of [true,false]){const s=timedScene();s.relicJamTrail({x:1,y:0});assert.deepEqual(s.objects.map(o=>o.x),[0,50,100]);if(cancel)s.clearArtVfx();s.advance(2000);assert.equal(s.explosions.length,cancel?0:3);for(const e of s.explosions){assert.equal(e.r,70);assert.equal(e.n,14);}assert.equal(s._artTimers.size,0);}
+for(const cancel of [true,false]){const s=timedScene();s.relicJamTrail({x:1,y:0});assert.deepEqual(s.objects.map(o=>o.x),[0]);if(cancel)s.clearArtVfx();s.advance(4000);assert.equal(s.explosions.length,0);assert.equal(s._artTimers.size,0);}   // v7.9.17 Sticky Jam = one puddle, no bombs
 {const s=timedScene();s.greatHungerMetamorph({active:true,x:1,y:2},4,0xffd166);assert.equal(s.pose.ms,2100);assert.equal(s.phaseFx.key,'fx_hunger_metamorph');assert(s.phaseFx.opt.normal);assert(s.phaseFx.opt.force);s.clearArtVfx();assert.equal(s._artVfx.size,0);}
 console.log('Void/jam/boss VFX: interrupted timers, next-run isolation, original damage/positions and phase art cleanup passed');

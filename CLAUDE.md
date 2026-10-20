@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.9.16 — Clearer damage card wording (owner)
+# Latest delivery: v7.9.17 — ECRS relics + duplicate cards (owner: ตามแนะนำ)
+
+Relics: jam = Sticky Jam (relicJamTrail → puddle r70, 12 ticks×250ms via artDelay, pins non-boss once (frozen .5), damage() ×1.25 via inJamPool; max 4 pools) · chill = Cold Snap (damage(): every 6s → relicColdSnap freezes target + 110px non-boss 1s; _coldSnapAt) · shell also triggers on elite/mini/boss kill (trophy removed) · momentum, magnet removed (fusions f_quakeking→dashcharge, f_horizon→firstbite; Sticky Rush = jam+dashcharge) · TRADEOFFS t_glass, t_core removed · condRelicCard c_dash removed (p._cond.c_dash still works for gear). Cards: Yuzu p_feast Chain Feast = kill → 30%/rank next bite ready, p_pulp Quick Paws = swarm run +20%/rank · Cocoa p_footwork Hot Hands = every 8/6/4th fist explode 60 ×1.3 (_ffHot), p_blitz removed, Phantom Jab takes the combo hold (cocoaComboHold uses p_phantom) · Taro p_sentry_pulse Close Charge = sentries <260px of Taro tick ×(1+.12·lv) (pulse no longer ×.9^rank), p_squall Forked Arc removed · Sesame p_facet Prism Echo = every 4th/3rd cast re-fires at 50% after 300ms, p_swift Retreat Shot = charPassiveOnDash sets _sesRetreatT +2s → next beam ×(1+.3·lv) · Momo buckshot removed. Tests: charged-projectile jam case, taro-progression Forked Arc case, fixtures (cocoa-rework-baseline, taro t1/t5 hashes). Browser smoke 8 hero/path combos with relics + dashes: 0 errors. Still open from the ECRS list: CC2–CC5 (far/frozen/boss/execute layering), CR1 hero mods, CS1 Sesame mutations, RR1/RR2, RS1/CS2.
+
+# Previous delivery: v7.9.16 — Clearer damage card wording (owner)
 
 Owner asked how 'power' cards differ from '+damage'. One-attack multipliers (basic 'power' cards of every hero incl. taroAttackInfo, path fx:{dmg} cards Heavy Peel/Sour Mixer/Static Shards/Spark Power/Refraction/Steady Hand, talent _P({dmg}) nodes) now read '+N% <X> hit (multiplies)' + desc 'Multiplies with your “+% damage” total.'; dmgMul pool sources (Weave Attack Power, hero Talent dmg nodes, Path Focus, mod f_might) read '+N% all damage (adds up)'. Text only, no number changes. tests/talent-icons normalizes the new labels; cocoa-rework-baseline regenerated (non-Cocoa heroes + Taro basic).
 
@@ -404,7 +408,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.16 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.17 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

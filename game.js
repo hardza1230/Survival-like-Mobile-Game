@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.16';
+const GAME_VERSION = '7.9.17';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.17',date:'2026-10-21',title:'Fewer copy-paste cards',items:['Relics: Jam Trail → Sticky Jam (Dash leaves a puddle: enemies get stuck and take +25% damage) · Chill Touch → Cold Snap (every 6s your next hit freezes a small area) · Candy Shell also gives a shield on elite/miniboss/boss kills (Hunter Trophy merged in) · Momentum and Sugar Magnet removed (pickup range lives in Weave and Special Cores)','Trade-offs Glass Heart and Frozen Core removed (same as Cracked Crystal and Minty Infusion) · Dash Fury instinct removed (same as Spark Step)','Path cards that only repeated attack speed now do something new: Yuzu Chain Feast (kills refresh the bite), Cocoa Hot Hands (every few fists explode), Taro Close Charge (sentries near you fire faster), Sesame Retreat Shot (Dash, then hit harder)','Path cards that only repeated +1 count: Yuzu Quick Paws (Yuzlings run faster), Sesame Prism Echo (every few casts fire twice); Forked Arc and Buckshot removed (same as Arc Streams and Sweet Branching)','Cocoa: Blitz merged into Phantom Jab (Dash Stack already gives the extra Dash)']},
   {v:'7.9.16',date:'2026-10-20',title:'Clearer damage cards',items:['Cards that boost one attack now say “hit (multiplies)” — they multiply on top of everything else, so they always give their full %','Cards that add to your total damage now say “all damage (adds up)” — they add together with every other “+% damage” source, so each extra one counts a little less','Same wording in Talents, Weave and item mods']},
   {v:'7.9.15',date:'2026-10-20',title:'Every boss has an arena mechanic',items:['Clogmaw sweeps sludge across the screen (stand in the grate gap) · Mr. Griddle lights up a hot grid · Ice Cream Golem breathes ice (hide behind a pillar)','Rootmother’s Bud and the First Planter shield themselves with pods (dash them in) · Mycelium Behemoth fills the marsh with fog (stay in the bubble) · Chronobloom sweeps clock hands','True Rootmother roots, Harvest Colossus scythe, Hollow Bloom husk decoys, Glass Gardener mirror beams, Seedwarden vault rings, Pinnacle closing jaws','Card clean-up: duplicate names renamed (two Overloads, two Arc Powers, two Heavy Draws…), more cards get their own icon, Yuzu cards now have icons']},
   {v:'7.9.14',date:'2026-10-20',title:'Faster start',items:['The game opens faster: smaller game code, and the journal/book art now loads only when needed','On a slow connection the game starts with the version already on your phone after 6 seconds, and the update arrives next time']},
@@ -3611,24 +3612,21 @@ const RELICS = {
   splinter:  { emoji:'💥', name:'Crit Splinter',  desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
   leech:     { emoji:'🩸', name:'Berry Leech',    desc:'Crits heal 1% max HP (0.25s cooldown)' },
   burst:     { emoji:'🎆', name:'Sugar Burst',    desc:'Slain enemies have an 18% chance to explode, hurting everything nearby' },
-  shell:     { emoji:'🫧', name:'Candy Shell',    desc:'Every 15 kills, gain a shield that blocks the next hit' },
-  jam:       { emoji:'🍓', name:'Jam Trail',      desc:'Dashing drops 3 jam bombs that explode after 0.5s' },
+  shell:     { emoji:'🫧', name:'Candy Shell',    headline:'Kills grant shields', desc:'Every 15 kills, or any elite/miniboss/boss kill, gain a shield that blocks the next hit' },
+  jam:       { emoji:'🍓', name:'Sticky Jam',     headline:'Dash leaves a sticky puddle', desc:'Dashing leaves a jam puddle for 3s. Enemies inside get stuck for a moment and take 25% more damage.' },
   crown:     { emoji:'👑', name:'Crown Breaker',  desc:'+30% damage to bosses, minibosses and elites' },
   glass:     { emoji:'💔', name:'Cracked Crystal',    desc:'+40% damage, but -25% max HP' },
-  momentum:  { emoji:'🌀', name:'Momentum',       desc:'+25% damage while moving' },
   lastbreath:{ emoji:'🕯️', name:'Last Breath',    desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
-  chill:     { emoji:'❄️', name:'Chill Touch',    desc:'Hits have a 10% chance to freeze normal enemies for 1s' },
-  magnet:    { emoji:'🧲', name:'Sugar Magnet',   desc:'+60% pickup range and +20% EXP' },
+  chill:     { emoji:'❄️', name:'Cold Snap',      headline:'Every 6s: freeze burst', desc:'Every 6s your next hit freezes the target and enemies near it for 1s (bosses and minibosses are not frozen).' },
   firstbite: { emoji:'🎯', name:'First Bite',     headline:'+35% opening hit', desc:'Your first hit against each enemy deals 35% more damage.' },
   dashcharge:{ emoji:'⚡', name:'Spark Step',     headline:'Dash empowers 3 hits', desc:'After dashing, your next 3 hits within 3s deal 25% more damage.' },
-  trophy:    { emoji:'🏆', name:'Hunter Trophy',  headline:'Elite kills grant a shield', desc:'Defeating an elite, miniboss or boss grants 1 shield (max 1).'},
   harvest:   { emoji:'🍵', name:'Mochi Harvest',  headline:'Heal every 20 kills', desc:'Every 20 enemy kills restore 5% max HP.' },
 };
 // คู่ synergy — ถือครบทั้งคู่ = ผลพิเศษเพิ่ม (โชว์ในการ์ดเมื่อถืออีกครึ่งอยู่แล้ว)
 const RELIC_SYNERGIES = [
   { a:'splinter', b:'burst',     name:'Chain Reaction', desc:'Splinter kills always explode' },
   { a:'shell',    b:'lastbreath',name:'Second Wind',    desc:'Last Breath restores 40% HP + a shield · hold 2 shields' },
-  { a:'jam',      b:'momentum',  name:'Sticky Rush',    desc:'Dash recharges 35% faster' },
+  { a:'jam',      b:'dashcharge',name:'Sticky Rush',    desc:'Dash recharges 35% faster' },
   { a:'leech',    b:'crown',     name:'Royal Feast',    desc:'Crits on bosses heal 3× more' },
 ];
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
@@ -3801,7 +3799,7 @@ function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.r
 // 🛤 Build Path (v4.94) — เลเวล 5 เลือก 1 ใน 3 สาย · ปิดอีก 2 สาย · สายเปลี่ยน "รูปแบบ" ดาเมจ ไม่ได้บวกเพิ่มรวม
 const BASIC_PATHS={
   yuzu:[
-    {id:'zestSwarm',iconKey:'ic_path_zestSwarm',name:'Swarm Build',emoji:'🐝',base:{dmg:0.75,count:2},desc:'+2 small Yuzlings; faster hunting, lighter bites · crowd build',upgrades:[{id:'p_pulp',iconKey:'ic_path_p_pulp',name:'Extra Pulp',emoji:'🍋',max:2,fx:{count:1},desc:'+1 Yuzling per rank (max 9)'},{id:'p_feast',iconKey:'ic_path_p_feast',name:'Chain Feast',emoji:'⚡',max:3,fx:{cd:0.93},desc:'-7% attack cooldown per rank'}]},
+    {id:'zestSwarm',iconKey:'ic_path_zestSwarm',name:'Swarm Build',emoji:'🐝',base:{dmg:0.75,count:2},desc:'+2 small Yuzlings; faster hunting, lighter bites · crowd build',upgrades:[{id:'p_pulp',iconKey:'ic_path_p_pulp',name:'Quick Paws',emoji:'🐾',max:3,fx:{},headline:'Yuzlings run faster',desc:'Yuzlings run 20% faster per rank, so they reach new targets sooner.'},{id:'p_feast',iconKey:'ic_path_p_feast',name:'Chain Feast',emoji:'⚡',max:3,fx:{},headline:'Kills refresh the bite',desc:'When a Yuzling bite kills, 30% chance per rank that its next bite is ready at once.'}]},
     {id:'citrusGuardian',iconKey:'ic_path_citrusGuardian',name:'Guardian Build',emoji:'🛡️',base:{dmg:2.5,range:0.25},desc:'Merge the crew into one large guardian; heavy area attacks · defense build',upgrades:[{id:'p_heavyPeel',iconKey:'ic_path_p_heavyPeel',name:'Heavy Peel',emoji:'💥',max:3,fx:{dmg:1.14},headline:'+14% Guardian hit (multiplies)',desc:'+14% guardian damage per rank. Multiplies with your “+% damage” total.'},{id:'p_bodyguard',iconKey:'ic_path_p_bodyguard',name:'Thick Rind',emoji:'💚',max:3,fx:{taken:0.04},desc:'Take 4% less damage per rank'}]},
     {id:'juiceWorkshop',iconKey:'ic_path_juiceWorkshop',name:'Workshop Build',emoji:'🧀',base:{dmg:0.85},desc:'Cheese helper cooks alongside Yuzlings: sour zones and support · utility build',upgrades:[{id:'p_sourMixer',iconKey:'ic_path_p_sourMixer',name:'Sour Mixer',emoji:'🍋',max:3,fx:{dmg:1.08},headline:'+8% Sour zone hit (multiplies)',desc:'+8% sour zone damage per rank. Multiplies with your “+% damage” total.'},{id:'p_sweetHelper',iconKey:'ic_path_p_sweetHelper',name:'Sweet Helper',emoji:'🧀',max:3,fx:{cd:0.94},desc:'Cheese support acts 6% faster per rank'}]}],
   momo:[
@@ -3815,7 +3813,6 @@ const BASIC_PATHS={
                  {id:'s_split',iconKey:'ic_card_s_split',name:'Split Shot',emoji:'🔱',max:2,desc:'Charged Unique: +1 pair of side beams per rank (55% damage each) · main shot −10% per rank'}]},
     {id:'shotgun',iconKey:'ic_path_shotgun',name:'Shotgun Build',emoji:'💥',desc:'+5 Basic pellets, max 12; overflow +8% power each. ×0.45 power per pellet; close large targets tighten the spread. Within 120px: ×2 and +40% damage',
       upgrades:[{id:'pointblank',iconKey:'ic_card_pointblank',name:'Point Blank',emoji:'🔥',max:3,desc:'+15% close-range bonus per rank'},
-                {id:'buckshot',iconKey:'ic_card_buckshot',name:'Buckshot',emoji:'🌰',max:2,desc:'+1 pellet per rank'},
                 {id:'s_slug',iconKey:'ic_path_pointblank',name:'Heart Slug',emoji:'💥',max:1,headline:'Basic: heavy center pellet',desc:'Center Basic pellet gains +60% power. Keeps close-range bonus and does not become a piercing sniper shot'},
                 {id:'b_wide',iconKey:'ic_card_b_wide',name:'Wide Blast',emoji:'🌸',max:3,desc:'Berry Blast Unique: cone +20° and +2 pellets per rank'},
                 {id:'b_recoil',iconKey:'ic_card_b_recoil',name:'Recoil Hop',emoji:'🐇',max:2,desc:'Berry Blast Unique: hop back 40px farther per rank · +0.3s invulnerability per rank'},
@@ -3852,7 +3849,7 @@ const BASIC_PATHS={
   cocoa:[
     {id:'brawler',iconKey:'ic_path_brawler',name:'Fire Fist Build',emoji:'🔥',base:{dmg:0.72,cd:0.7,wave:1},desc:'Throw blazing fist projectiles at range. The 5th punch is a big piercing fireball that explodes. Tap Unique: Rocket Gauntlet',
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Blast Radius',emoji:'💥',max:3,fx:{},headline:'+25% fireball blast',desc:'The 5th-punch fireball explosion is 25% bigger per rank'},
-                {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Rapid Fire',emoji:'💨',max:3,fx:{cd:0.92},headline:'+8% fist fire rate',desc:'Fire fists 8% faster per rank'},
+                {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Hot Hands',emoji:'💨',max:3,fx:{},headline:'Every few fists explode',desc:'Every 8th fist explodes on hit (every 6th at rank 2, every 4th at rank 3) for a small fire blast.'},
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
                 {id:'p_ember',iconKey:'ic_inf_spicy',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. No five-hit combo: every punch is a Ground Pound that adds Tremor (+6% damage taken per stack, up to 5, 3s). Higher regen than other paths. Hold Unique: charge up to 3 Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage. Endgame: beat a Delve boss at Depth 15+ with Chocolate to unlock Rage IV (×5.5, almost full-screen)',
@@ -3863,15 +3860,13 @@ const BASIC_PATHS={
                 {id:'p_fastrage',iconKey:'ic_path_titan',name:'Quick Fury',emoji:'⏩',max:3,fx:{},headline:'+20% charge speed',desc:'Blood Rage charges 20% faster per rank'},
                 {id:'p_crater',iconKey:'ic_mod_quake',name:'Lava Crater',emoji:'🌋',max:2,fx:{},headline:'Release leaves lava',desc:'Releasing level 2+ Blood Rage leaves a lava pool for 3s; +50% lava damage per rank'}]},
     {id:'dashboxer',iconKey:'ic_path_dashboxer',name:'Dash Boxer Build',emoji:'🐾',base:{dmg:0.9,dashc:1,dashm:0.5},desc:'+1 normal Dash charge, 25% faster recharge and ×0.9 punch power. Dash preserves combo progress and empowers the next punch. Tap Unique: Phantom Rush',
-      upgrades:[{id:'p_blitz',iconKey:'ic_path_p_blitz',name:'Blitz',emoji:'⚡',max:2,fx:{dashc:1},desc:'+1 normal Dash charge and +1s Dash buff per rank; keep combo progress +0.4s longer'},
-                {id:'p_phantom',iconKey:'ic_path_p_phantom',name:'Phantom Jab',emoji:'👻',max:3,fx:{dashm:0.2},desc:'Dash buff +20% combo damage per rank; Phantom Rush trail punches gain +10% power per rank'},
+      upgrades:[{id:'p_phantom',iconKey:'ic_path_p_phantom',name:'Phantom Jab',emoji:'👻',max:3,fx:{dashm:0.2},desc:'Dash buff +20% combo damage per rank and keeps combo progress +0.4s longer per rank; Phantom Rush trail punches gain +10% power per rank'},
                 {id:'p_longleap',iconKey:'ic_path_dashboxer',name:'Long Leap',emoji:'🦘',max:3,fx:{},headline:'+25% leap range',desc:'Dash Leap reaches enemies 25% farther per rank'},
                 {id:'p_slamwave',iconKey:'ic_mod_stomp',name:'Slam Wave',emoji:'💢',max:3,fx:{},headline:'+20% landing slam',desc:'Dash Leap landing slam is 20% wider and 10% stronger per rank'},
                 {id:'p_recharge',iconKey:'ic_cocoa_drum',name:'Rush Battery',emoji:'🔋',max:2,fx:{},headline:'Dash -0.5s Unique cd',desc:'Each Dash cuts an extra 0.5s off the Unique cooldown per rank'}]}],
   taro:[
     {id:'storm',iconKey:'ic_path_storm',name:'Arc Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. With no new target, remaining jumps loop back into the last one, so bosses take every jump. Direct kills release shards.',
-      upgrades:[{id:'p_squall',iconKey:'ic_path_p_squall',name:'Forked Arc',emoji:'⚡',max:2,fx:{count:1},headline:'+1 Arc stream',desc:'+1 Arc stream from Taro; max 3. Streams share targets; excess boosts damage.'},
-                {id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc hit (multiplies)',desc:'+8% Arc and shard damage per rank; multiplies with your “+% damage” total; Unique keeps its own power.'},
+      upgrades:[{id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc hit (multiplies)',desc:'+8% Arc and shard damage per rank; multiplies with your “+% damage” total; Unique keeps its own power.'},
                 {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Loopback',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'}]},
     {id:'smite',iconKey:'ic_path_smite_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release splitting sparks',desc:'Sparks burst out all around Taro, bounce off the screen edges, pass through enemies and split into smaller sparks. They keep zapping until their timer runs out.',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Giant Hunter',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% Spark damage to elites and bosses per rank'},
@@ -3883,17 +3878,17 @@ const BASIC_PATHS={
       upgrades:[{id:'p_sentry_overload',iconKey:'ic_path_tempest',name:'Fade Burst',emoji:'💥',max:2,fx:{},desc:'Ball Lightning bursts when it fades: 150% orb power per rank in a wider area'},
                 {id:'p_sentry_link',iconKey:'ic_path_smite',name:'Tesla Link',emoji:'🔗',max:2,fx:{},desc:'Two sentries within 420px link with lightning; enemies on the link take 80% orb power per rank every 0.5s'},
                 {id:'p_farstrike',iconKey:'ic_taro_long_current',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% hit damage beyond 300px from Taro per rank'},
-                {id:'p_sentry_pulse',iconKey:'ic_taro_rapid_pulse',name:'Rapid Pulse',emoji:'⏱️',max:3,fx:{},desc:'Sentries fire 10% sooner per rank; minimum 0.35 seconds'}]}],
+                {id:'p_sentry_pulse',iconKey:'ic_taro_rapid_pulse',name:'Close Charge',emoji:'⏱️',max:3,fx:{},headline:'Stay near to charge sentries',desc:'Sentries within 260px of Taro fire 12% faster per rank.'}]}],
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
-      upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Extra Facet',emoji:'💠',max:2,fx:{count:1},desc:'+1 beam per rank'},
+      upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Prism Echo',emoji:'💠',max:2,fx:{},headline:'Every few casts fire twice',desc:'Every 4th beam cast (every 3rd at rank 2) fires again 0.3s later at 50% damage.'},
                 {id:'p_refract',iconKey:'ic_path_p_refract',name:'Refraction',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Beam hit (multiplies)',desc:'+8% beam damage per rank. Multiplies with your “+% damage” total.'}]},
     {id:'lens',iconKey:'ic_path_lens',name:'Focus Build',emoji:'🔍',base:{dmg:1.6,cd:1.3,big:0.2},desc:'×1.6 damage and +20% vs elites/bosses, but 30% slower · boss build',
       upgrades:[{id:'p_lensbig',iconKey:'ic_path_p_lensbig',name:'Burning Lens',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_steady',iconKey:'ic_path_p_steady',name:'Steady Hand',emoji:'🧘',max:3,fx:{dmg:1.1},headline:'+10% Beam hit (multiplies)',desc:'+10% beam damage per rank. Multiplies with your “+% damage” total.'}]},
     {id:'sentinel',iconKey:'ic_path_sentinel',name:'Sentinel Build',emoji:'🔭',base:{range:0.4,far:0.25},desc:'+40% beam length, +25% damage to far enemies · kite build',
       upgrades:[{id:'p_longsight',iconKey:'ic_path_p_longsight',name:'Longsight',emoji:'👁️',max:3,fx:{far:0.10},desc:'+10% damage to far enemies per rank'},
-                {id:'p_swift',iconKey:'ic_path_p_swift',name:'Swift Mirror',emoji:'⏩',max:3,fx:{cd:0.94},desc:'-6% beam cooldown per rank'}]}]
+                {id:'p_swift',iconKey:'ic_path_p_swift',name:'Retreat Shot',emoji:'⏩',max:3,fx:{},headline:'Dash, then hit harder',desc:'After a Dash, your next beam within 2s deals 30% more damage per rank.'}]}]
 };
 // 🍯 Flavor Infusion (v4.96) — เลเวล 10 เลือกธาตุรสชาติ 1 ใน 3 (สุ่มจาก 4) · แลกดาเมจตรงเล็กน้อยกับเอฟเฟกต์ติดเป้า
 // v5.12 ระดับกล่องมินิบอส (สีเสาแสง) · v5.13 ผูกกับผลงานตอนสู้
@@ -3961,12 +3956,10 @@ const MODIFIERS={
 // ⚖️ Trade-offs (v6.9.0 · B4) — ได้อย่าง เสียอย่าง · ออกตั้งแต่บท 2 (stageIndex≥5) และ Endgame · สูงสุด TRADE_MAX/ด่าน
 const TRADE_MAX=2;
 const TRADEOFFS=[
-  {id:'t_glass',emoji:'💔',name:'Glass Heart',tags:['crit'],gain:'×1.5 damage',cost:'Max HP halved',apply:p=>{p.dmgMul+=(1.5)-1;p.maxhp=Math.max(1,Math.round(p.maxhp*0.5));p.hp=Math.min(p.hp,p.maxhp);}},
   {id:'t_burn',emoji:'🕯️',name:'Slow Burn',tags:['fire'],gain:'Every hit ignites',cost:'Attacks 30% slower',apply:p=>{p._tagIgnite=1;p.cdMul*=1.3;}},
   {id:'t_armor',emoji:'🛡️',name:'Heavy Armor',tags:['guard'],gain:'Take 35% less damage',cost:'Move 15% slower',apply:p=>{p.dmgTakenMul*=0.65;p.baseSpeed*=0.85;}},
   {id:'t_rush',emoji:'🍬',name:'Sugar Rush',tags:['spark'],gain:'+25% speed, -15% cooldowns',cost:'Take 25% more damage',apply:p=>{p.baseSpeed*=1.25;p.cdMul*=0.85;p.dmgTakenMul*=1.25;}},
   {id:'t_berserk',emoji:'😤',name:'Berserker',tags:['melee'],gain:'Up to ×2 damage as HP drops',cost:'No HP regeneration',apply:p=>{p._tdBerserk=true;p.regen=0;p.regenFlat=0;p.regenPct=0;p._uqNoRegen=true;}},
-  {id:'t_core',emoji:'🧊',name:'Frozen Core',tags:['frost'],gain:'30% of hits freeze briefly',cost:'-15% damage',apply:p=>{p._tagChill=Math.max(p._tagChill||0,0.3);p.dmgMul+=(0.85)-1;}},
   {id:'t_feast',emoji:'🌀',name:'Hungry Pact',tags:['swarm'],gain:'+20% damage, +30% EXP',cost:'Healing items do nothing',apply:p=>{p.dmgMul+=(1.2)-1;p.xpMul=(p.xpMul||1)*1.3;p.healEffect=0;}},
   {id:'t_oath',emoji:'🎯',name:'Marksman’s Oath',tags:['ranged','crit'],gain:'+20% crit chance',cost:'Attacks 20% slower',apply:p=>{p.critChance=(p.critChance||0)+0.20;p.cdMul*=1.2;}}];
 // 🧬 Fusions (v6.10.0 · B6) — Evolution + Relic เฉพาะ = ร่างพิเศษ · ตัวละ 2 สูตร · เก็บใน b.mods (id ขึ้นต้น f_ ไม่นับ MOD_MAX)
@@ -3975,12 +3968,12 @@ const FUSIONS={
         {id:'f_crownseed',relic:'crown',emoji:'👑',name:'Crown Seed',kind:'nthHit',n:4,mul:3.5,boom:80,tags:['crit'],desc:'Every 4th hit ×3.5 and bursts'}],
   mint:[{id:'f_glacier',relic:'chill',emoji:'🏔️',name:'Living Glacier',kind:'pulse',every:2.5,r:200,mul:2,freeze:true,tags:['frost'],desc:'Every 2.5s a huge freezing wave'},
         {id:'f_shardstorm',relic:'splinter',emoji:'💠',name:'Shardstorm',kind:'hitChain',p:0.3,n:3,mul:0.8,freeze:true,tags:['frost','crit'],desc:'30% of hits arc and freeze 3 enemies'}],
-  cocoa:[{id:'f_quakeking',relic:'momentum',emoji:'🌋',name:'Quake King',kind:'dashNova',r:200,mul:3.5,tags:['melee'],desc:'Every dash ends in a massive quake'},
+  cocoa:[{id:'f_quakeking',relic:'dashcharge',emoji:'🌋',name:'Quake King',kind:'dashNova',r:200,mul:3.5,tags:['melee'],desc:'Every dash ends in a massive quake'},
          {id:'f_lastbear',relic:'lastbreath',emoji:'🐻',name:'Last Bear Standing',kind:'execute',hp:0.4,mul:2,tags:['melee','crit'],desc:'×2 damage to enemies under 40% HP'}],
   taro:[{id:'f_tempest',relic:'dashcharge',emoji:'🌩️',name:'Living Tempest',kind:'hitChain',p:0.35,n:4,mul:0.7,tags:['spark'],desc:'35% of hits arc to 4 enemies'},
         {id:'f_skyjudge',relic:'crown',emoji:'⚖️',name:'Sky Judge',kind:'bossBonus',mul:1.6,tags:['crit','spark'],desc:'+60% damage to elites and bosses'}],
   sesame:[{id:'f_prismnova',relic:'glass',emoji:'🔮',name:'Prism Nova',kind:'hitBoom',p:0.2,r:100,mul:1.8,tags:['swarm','crit'],desc:'20% of hits burst into a prism nova'},
-          {id:'f_horizon',relic:'magnet',emoji:'🌅',name:'Event Horizon',kind:'farBonus',r:220,mul:1.7,tags:['ranged'],desc:'+70% damage to distant enemies'}],
+          {id:'f_horizon',relic:'firstbite',emoji:'🌅',name:'Event Horizon',kind:'farBonus',r:220,mul:1.7,tags:['ranged'],desc:'+70% damage to distant enemies'}],
   yuzu:[{id:'f_harvest',relic:'harvest',emoji:'🍋',name:'Harvest King',kind:'killBurst',p:0.45,r:100,mul:1.5,tags:['swarm','fire'],desc:'45% of kills burst in citrus'},
         {id:'f_parade',relic:'jam',emoji:'🎉',name:'Jam Parade',kind:'pulse',every:3,r:170,mul:1.6,tags:['swarm'],desc:'Every 3s the crew blasts around you'}]};
 function modDef(id){ for(const c in FUSIONS){ const f=FUSIONS[c].find(x=>x.id===id); if(f)return f; } for(const c in MODIFIERS){ const m=MODIFIERS[c].find(x=>x.id===id); if(m)return m; } return null; }
@@ -6794,7 +6787,7 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
     /* v7.8.77 เจ้าของ: โจมตีปกติเริ่มต้นลดจำนวน (+3→+1 ลูก: Lv1 2 ลูก, Lv4+ 3 ลูก, เดิม 4/5) และยิงห่างขึ้น ×1.3 */ /* v7.8.21 เจ้าของ: อยู่นานขึ้น เร็วขึ้น ทะลุศัตรู (pierce พื้น 2) · แตกตัว 2 รุ่น: บิน 0.42 วิ แตก 2 ลูก ลูกลูกแตกอีก 2 ลูกเล็ก */
     return {interval:Math.max(.45,base.unitC*1.3),damage:base.unitD*.75*(1+Math.min(.25,excess*.04))*(1+.10*Math.min(6,Math.max(0,pierce))),   /* v7.8.69 เจ้าของ: Spark ไม่หายตอนโดนแล้ว pierce ไร้ความหมาย → ทุกขั้นของ arc = +10% ดาเมจ */count:Math.min(10,Math.floor(count+1)),pierce:Math.min(5,2+Math.floor(pierce)),speed:Math.min(640,460*(1+.12*rank('p_spark_speed'))),life:Math.min(5,3.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?.65:.45};}
   const radius=Math.min(140,105*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;   /* v7.8.63 เจ้าของ: วงช็อตเริ่มใหญ่ขึ้น 85→105 · ลูกบอลเร็วขึ้น 110→145 */   // v7.8.24 Ball Lightning แบบ PoE: ลูกเล็กลอยช้า ช็อตทุกตัวในรัศมีนี้ทุก 0.15 วิ
-  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62*Math.pow(.90,rank('p_sentry_pulse'))),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
+  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=3,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=145,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=60,TARO_SENTRY_MAX=3,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
 // v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
@@ -12961,7 +12954,8 @@ class Game extends Phaser.Scene {
   tickTaroDeployables(dt){const t=this._taro;if(!t?.enabled||this.state!=='play'||!this.player?.active||!(this.player.hp>0))return;t.nodes=t.nodes||[];t.projectiles=t.projectiles||[];
     this.taroTickPlasma?.(dt);this.taroTickSparkStorm?.(dt);this.taroTickMark?.();this.taroTickShockMarks?.();if(this._taro!==t||this.state!=='play')return;
     const over=t.time<(t.overUntil||0)||t.nodes.some(n=>n.beacon&&n.run===t.run&&n.pathEpoch===t.pathEpoch);
-    for(const n of [...t.nodes]){if(this._taro!==t||this.state!=='play')return;if(n.run!==t.run||n.pathEpoch!==t.pathEpoch){this.taroRemoveNode(n);continue;}n.left-=dt;n.next-=dt*(over&&!n.beacon?TARO_OVERCHARGE:1);if(!n.beacon&&n.fx?.active){if(over&&!n.fx._aura?.active&&this.bpAnim?.('bpx_taro_overcharge')){const au=this.add.sprite(0,-14,'bpx_taro_overcharge',0).setDisplaySize(84,84);au.play('bpx_taro_overcharge');n.fx.addAt?.(au,1);n.fx._aura=au;}n.fx._aura?.setVisible?.(over);}if(n.left<=0){this.taroRemoveNode(n,true);continue;}if(n.fx?._bar)n.fx._bar.width=44*Math.max(0,n.left/n.life);if(n.next<=0){n.next=n.interval;const target=this.taroNearestUnused(this.taroCandidates(n,n.range),n,n.range,new Set());if(target&&n.fx?._art?.active&&!n.beacon&&this.anims?.exists?.('bpx_taro_sentry_fire')){n.fx._art.play('bpx_taro_sentry_fire');if(this.anims.exists('bpx_taro_sentry_idle'))n.fx._art.chain('bpx_taro_sentry_idle');}if(target)this.taroArt?.('bpx_taro_orb_launch',n.x,n.y-(n.beacon?40:24),56,{life:.2});if(over&&!n.beacon&&t.time<(t.overUntil||0)){const k=t.overRing||6,id=++t.attackSeq;n._spin=(n._spin||0)+.45;for(let i=0;i<k;i++)this.taroSpawnProjectile({kind:'sentry',x:n.x,y:n.y,angle:n._spin+i*Math.PI*2/k,speed:n.speed,life:n.orbLife,damage:n.damage*(t.overDmg||1),radius:n.orbRadius,range:n.range,attackId:id});}   /* v7.8.63 Overdrive: ยิงรอบทิศ */
+    const cc=this.basicAttack?.path==='tempest'?Math.min(3,this.basicAttack.lv?.p_sentry_pulse||0):0;   // v7.9.17 Close Charge
+    for(const n of [...t.nodes]){if(this._taro!==t||this.state!=='play')return;if(n.run!==t.run||n.pathEpoch!==t.pathEpoch){this.taroRemoveNode(n);continue;}n.left-=dt;n.next-=dt*(over&&!n.beacon?TARO_OVERCHARGE:1)*(!n.beacon&&cc>0&&this.dist(n.x,n.y,this.player.x,this.player.y)<260?1+.12*cc:1);if(!n.beacon&&n.fx?.active){if(over&&!n.fx._aura?.active&&this.bpAnim?.('bpx_taro_overcharge')){const au=this.add.sprite(0,-14,'bpx_taro_overcharge',0).setDisplaySize(84,84);au.play('bpx_taro_overcharge');n.fx.addAt?.(au,1);n.fx._aura=au;}n.fx._aura?.setVisible?.(over);}if(n.left<=0){this.taroRemoveNode(n,true);continue;}if(n.fx?._bar)n.fx._bar.width=44*Math.max(0,n.left/n.life);if(n.next<=0){n.next=n.interval;const target=this.taroNearestUnused(this.taroCandidates(n,n.range),n,n.range,new Set());if(target&&n.fx?._art?.active&&!n.beacon&&this.anims?.exists?.('bpx_taro_sentry_fire')){n.fx._art.play('bpx_taro_sentry_fire');if(this.anims.exists('bpx_taro_sentry_idle'))n.fx._art.chain('bpx_taro_sentry_idle');}if(target)this.taroArt?.('bpx_taro_orb_launch',n.x,n.y-(n.beacon?40:24),56,{life:.2});if(over&&!n.beacon&&t.time<(t.overUntil||0)){const k=t.overRing||6,id=++t.attackSeq;n._spin=(n._spin||0)+.45;for(let i=0;i<k;i++)this.taroSpawnProjectile({kind:'sentry',x:n.x,y:n.y,angle:n._spin+i*Math.PI*2/k,speed:n.speed,life:n.orbLife,damage:n.damage*(t.overDmg||1),radius:n.orbRadius,range:n.range,attackId:id});}   /* v7.8.63 Overdrive: ยิงรอบทิศ */
         else if(target)this.taroSpawnProjectile({kind:n.beacon?'beacon':'sentry',x:n.x,y:n.y,angle:Math.atan2(target.enemy.y-n.y,target.enemy.x-n.x),speed:n.speed,life:n.orbLife,damage:n.damage,radius:n.orbRadius,range:n.range,attackId:++t.attackSeq});}}
     this.taroTeslaLink?.(dt);
     const vw=this.cameras?.main?.worldView,view=vw&&vw.width>0?{left:vw.x+10,right:vw.x+vw.width-10,top:vw.y+10,bottom:vw.y+vw.height-10}:null;
@@ -13339,7 +13333,7 @@ class Game extends Phaser.Scene {
       if(target)assigned.add(target);
       let near=Infinity;
       if(target)near=this.dist(sp.x,sp.y,target.x,target.y);
-      const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=guardian?260:330;
+      const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=(guardian?260:330)*(guardian?1:1+0.2*(b.lv.p_pulp||0));   // v7.9.17 Quick Paws
       if(Math.abs(tx-sp.x)>4)sp.setFlipX(tx<sp.x);
       if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>950)sp.setPosition(homeX,homeY);
       else if(dist>25){const step=Math.min(dist,speed*dt);sp.setPosition(sp.x+(tx-sp.x)/dist*step,sp.y+(ty-sp.y)/dist*step);}
@@ -13356,7 +13350,8 @@ class Game extends Phaser.Scene {
         this.damage(target,dmg,target.x,target.y);this.playYuzuMinionAttack(m,0.36);if((this._yuzuAttackCd||0)<=now){this.poseAttack(400);this._yuzuAttackCd=now+0.65;}
         const splash=(b.lv.splash||0)>0||guardian||b.evolved||b.mutation==='parting'&&m.bites%4===0;
         if(splash){const R=(guardian?90:45)+12*(b.lv.splash||0)+(b.evolved?20:0),blast=b.mutation==='parting'&&m.bites%4===0;this.enemies.children.iterate(e=>{if(e&&e.active&&e!==target&&this.dist(e.x,e.y,target.x,target.y)<R)this.damage(e,dmg*(blast?0.8:0.3),e.x,e.y);});}
-        m.cd=Math.max(0.32,(guardian?1.3:0.9)*Math.pow(0.92,b.ranks.rate||0)*(pm.cd||1)*(parade?0.58:1)*(b.evolved?0.85:1));}
+        m.cd=Math.max(0.32,(guardian?1.3:0.9)*Math.pow(0.92,b.ranks.rate||0)*(pm.cd||1)*(parade?0.58:1)*(b.evolved?0.85:1));
+        if((b.lv.p_feast||0)>0&&!(target.hp>0)&&Math.random()<0.3*b.lv.p_feast)m.cd=0.05;}   // v7.9.17 Chain Feast: กัดตาย → กัดต่อทันที
     }
     if((b.lv.loyal||0)>0&&crew.some(m=>this.dist(m.spr.x,m.spr.y,this.player.x,this.player.y)<85)){this._yuzuHealT=(this._yuzuHealT||0)+dt;if(this._yuzuHealT>=10){this._yuzuHealT=0;this.player.hp=Math.min(this.player.maxhp,this.player.hp+Math.max(1,Math.round(this.player.maxhp*0.01*(b.lv.loyal||0))));}}}
   tickFR(dt){ if(!this._fr||this.state!=='play')return; const p=this.player;
@@ -13379,7 +13374,7 @@ class Game extends Phaser.Scene {
     const B=this._frBuddy; if(B){ B.t-=dt; B.ang+=dt*2.4; B.spr.setPosition(p.x+Math.cos(B.ang)*56,p.y+Math.sin(B.ang)*56-10); B.acc+=dt;
       if(B.acc>=0.45){ B.acc=0; const e=this.nearestEnemy(420); if(e){ const b=this.getBullet(B.spr.x,B.spr.y,0xffffff,0.18); if(b){ b.setTexture('proj_sprinkle').setTint(0xffb3cd); b.dmg=this.relicDmg(0.7)*B.pw; b.life=1.2; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(Math.atan2(e.y-B.spr.y,e.x-B.spr.x),560,b.body.velocity); } } }
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
-  resetRelics(){ this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
+  resetRelics(){ this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length)+((b.condRelics||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
@@ -13408,7 +13403,6 @@ class Game extends Phaser.Scene {
   gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics(); this.time.delayedCall(600,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});
     this.relics.push(k); this._rel[k]=true; const p=this.player,d=RELICS[k];
     if(k==='glass'){ p.dmgMul+=(1.4)-1; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
-    if(k==='magnet'){ p.pickup*=1.6; p.xpMul=(p.xpMul||1)*1.2; }
     const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
     if(syn&&syn.a==='jam')p.dashCdMul=(p.dashCdMul||1)*0.65;   // Sticky Rush
     this.showBanner(syn?('🔗 '+syn.name+'!'):(d.emoji+' Relic: '+d.name),syn?syn.desc:d.desc,syn?2200:1700);
@@ -13425,9 +13419,8 @@ class Game extends Phaser.Scene {
       const heal=p.maxhp*0.01*((big&&this.relicSyn('leech','crown'))?3:1); p.hp=Math.min(p.maxhp,p.hp+heal); }
   }
   relicOnKill(e){ const R=this._rel;
-    if(R.trophy&&(e.isElite||e.isMini||e.isBoss)&&this._shield<1){this._shield=1;this.floatText(this.player.x,this.player.y-44,'🫧 Trophy Shield',0x9fe8ff);}
     if(R.harvest&&++this._harvestKills>=20){this._harvestKills=0;const heal=this.player.maxhp*0.05;this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,Math.round(heal));}
-    if(R.shell){ this._relicKills=(this._relicKills||0)+1; if(this._relicKills>=15){ this._relicKills=0; const cap=this.relicSyn('shell','lastbreath')?2:1;
+    if(R.shell){ this._relicKills=(this._relicKills||0)+1; if(this._relicKills>=15||e.isElite||e.isMini||e.isBoss){ this._relicKills=0; const cap=this.relicSyn('shell','lastbreath')?2:1;
       if((this._shield||0)<cap){ this._shield=(this._shield||0)+1; this.floatText(this.player.x,this.player.y-44,'🫧 Shield',0x9fe8ff); } } }
     if(R.burst&&!this.taroIsSecondary?.()){ const chain=this.relicSyn('splinter','burst')&&e._splinterHit!=null&&this.elapsed-e._splinterHit<0.3;
       if(chain||Math.random()<0.18){
@@ -13435,11 +13428,17 @@ class Game extends Phaser.Scene {
         if((this._burstN=(this._burstN||0)+1)<=6){ const x=e.x,y=e.y,dmg=(e.isBoss||e.isMini)?this.relicDmg(2):Math.max(this.relicDmg(1),(e.maxhp||10)*0.5);
           this.time.delayedCall(50,()=>{ if(this.state==='play'||this.state==='levelup')this.explodeAt(x,y,80,dmg); }); } } }
   }
-  relicJamTrail(d){ const x0=this.player.x,y0=this.player.y,dmg=this.relicDmg(1.4);
-    for(let i=0;i<3;i++){ const x=x0+d.x*50*i,y=y0+d.y*50*i,blob=this.trackArtVfx(this.camWorld(this.textures.exists('vfx_relic_jam')?this.add.image(x,y,'vfx_relic_jam').setDisplaySize(32,26).setDepth(8):this.add.circle(x,y,10,0xff5f88,0.9).setDepth(8).setStrokeStyle(2,0xffd1e0)));
-      this.tweens.add({targets:blob,scaleX:blob.scaleX*1.35,scaleY:blob.scaleY*1.35,duration:250,yoyo:true});
-      this.artDelay(500+i*60,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.explodeAt(x,y,70,dmg); }); }
-  }
+  relicJamTrail(d){ const x=this.player.x,y=this.player.y,r=70,P=this._jamPools=(this._jamPools||[]).filter(o=>o.until>(this.elapsed||0));   // v7.9.17 Sticky Jam: บ่อแยม 3 วิ — ติดชั่วครู่ + โดนแรงขึ้น 25%
+    if(P.length>=4)P.shift()?.img?.destroy();
+    const img=this.trackArtVfx(this.camWorld(this.textures.exists('vfx_relic_jam')?this.add.image(x,y,'vfx_relic_jam').setDisplaySize(r*2,r*1.6).setAlpha(.75).setDepth(3):this.add.ellipse(x,y,r*2,r*1.6,0xff5f88,0.35).setDepth(3).setStrokeStyle(2,0xffd1e0)));
+    const o={x,y,r,until:(this.elapsed||0)+3,left:12,img,stuck:new Set()};P.push(o);
+    const tick=()=>{ if(img.active===false)return; if(--o.left<0){o.until=0;this.tweens.add({targets:img,alpha:0,duration:250,onComplete:()=>img.destroy()});return;}
+      if(this.state==='play')this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&!o.stuck.has(e)&&this.dist(e.x,e.y,x,y)<r){ o.stuck.add(e); e.frozen=Math.max(e.frozen||0,0.5); e.setVelocity?.(0,0); } });
+      this.artDelay(250,tick); };
+    tick(); }
+  inJamPool(e){ const t=this.elapsed||0; for(const o of this._jamPools){ if(o.until>t&&this.dist(e.x,e.y,o.x,o.y)<o.r)return true; } return false; }
+  relicColdSnap(e){ const x=e.x,y=e.y; this.burst?.(x,y,0x9fe8ff,14);   // v7.9.17 Cold Snap: ทุก 6 วิ ตีครั้งถัดไปแช่แข็งเป้า + รอบ ๆ 1 วิ (บอส/มินิไม่โดน)
+    this.enemies.children.iterate(o=>{ if(o&&o.active&&!o.isBoss&&!o.isMini&&o.hp>0&&this.dist(o.x,o.y,x,y)<110&&this.applyFreeze(o,1))o.setVelocity(0,0); }); }
   endlessCards(n){ const b=this.basicAttack,d=this.basicAttackInfo(); b.endless=b.endless||{}; const out=[];
     for(const s of Phaser.Utils.Array.Shuffle(this.endlessStatDefs().slice())){ if(out.length>=n)break; const stack=(b.endless[s.id]||0)+1,rr=rollRarity();
       out.push({type:'basic',key:'endless_'+s.id,lvl:stack,max:99,kind:'Power Up',color:rr.color,rarity:rr,emoji:s.emoji,title:s.title,desc:s.desc+(stack>1?('  ·  Stack '+stack):''),iconKey:SKILL_ICON[d.skill],apply:()=>{b.endless[s.id]=(b.endless[s.id]||0)+1;s.apply(this.player);if(s.id==='ehp'&&this.drawBars)this.drawBars();}}); }
@@ -13460,7 +13459,7 @@ class Game extends Phaser.Scene {
     ].filter(d=>!d.capped());
   }
   condRelicCard(){ const b=this.basicAttack; if(!b)return null; const own=b.condRelics||[];
-    const D=[['c_dash','💨','Dash Fury','+50% damage for 2s after a Dash'],['c_streak','🔥','Kill Streak','+3% damage per kill in your streak (max +40%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
+    const D=[['c_streak','🔥','Kill Streak','+3% damage per kill in your streak (max +40%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
     if(!D.length)return null; const [id,emoji,title,desc]=Phaser.Utils.Array.GetRandom(D);
     return {type:'relic',key:'cond_'+id,lvl:1,max:1,kind:'Instinct',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }
   condDmgMul(e){ const P=this.player,c=P&&P._cond; if(!c)return 1; let m=1; const f=P.hp/Math.max(1,P.maxhp);
@@ -14076,7 +14075,7 @@ class Game extends Phaser.Scene {
     if(!this._cocoaGlide){f.anchor.x=this.player.x;f.anchor.y=this.player.y;}
     if(this.dashTime>0||this.cocoaFlickerRetreat(f.anchor,f.target))this.finishCocoaFlicker(true);
   }
-  cocoaComboHold(){const b=this.basicAttack;return b?.path==='brawler'?2.5:b?.path==='dashboxer'?3+.4*(b.lv.p_blitz||0):3;}
+  cocoaComboHold(){const b=this.basicAttack;return b?.path==='brawler'?2.5:b?.path==='dashboxer'?3+.4*(b.lv.p_phantom||0):3;}
   clearCocoaCombat(){this.finishCocoaFlicker(true);this._cocoaFlickerBoss=null;this._cocoaEpoch=(this._cocoaEpoch||0)+1;this._cocoaJobs=[];this._cocoaPhantom=null;this._cocoaTrail=null;this._cocoaNextPunch=false;this._cocoaUniqueT=0;this._cc=null;this._ccCdMul=0;this._ccLeech=null;this._cocoaUsedAt=null;this._cocoaMinGap=0;for(const fx of this._cocoaMarks||[]){this.tweens?.killTweensOf(fx);if(fx.active)fx.destroy();}this._cocoaMarks=new Set();this._ccDots?.clear?.();this._titanRage=0;this._rageG?.clear?.();for(const q of this._cocoaPools||[])q.g?.destroy?.();this._cocoaPools=[];}
   cocoaLater(delay,fn){const jobs=this._cocoaJobs||(this._cocoaJobs=[]);if(jobs.length>=32)return false;jobs.push({t:delay,fn,player:this.player,basic:this.basicAttack,path:this.basicAttack?.path,epoch:this._cocoaEpoch||0});return true;}
   tickCocoaCombat(dt){
@@ -14316,6 +14315,7 @@ class Game extends Phaser.Scene {
       b.dmg=power*(n>1&&fin?.6:1);b.life=(fin?.9:.7)*rng;b.pierce=!!fin;b.explode=fin?Math.round(reach*.9*(1+(basic?._pm?.wave||1)*.12)*(1+.25*(L.p_shock||0)+this.ptv('ffBlast'))):0;b.knockback=fin?260:90;b.faceVel=true;
       if(fin&&mut==='breaker'){b.dmg*=1.25;b.explode=Math.round(b.explode*1.25);}   /* v7.8.28 Earthbreaker บน Fire Fist: ลูกไฟ +25% และระเบิดกว้างขึ้น */
       if(fin&&mut==='napalm'){b.firePool=Math.round(b.explode*.8);b.firePoolT=2;}else if(!fin&&(L.p_ember||this.ptv('ffBurn'))){b.firePool=40;b.firePoolT=1.2;}
+      if(!fin&&L.p_footwork){this._ffHot=(this._ffHot||0)+1;if(this._ffHot%[8,6,4][Math.min(3,L.p_footwork)-1]===0){b.explode=Math.max(b.explode||0,60);b.dmg*=1.3;}}   // v7.9.17 Hot Hands
       if(!fin&&mut==='ricochet')b.bounce=2;
       if(this.textures?.exists?.('proj_rocket')){b.setTexture('proj_rocket').setTint(fin?0xff5a1f:0xffa040).setScale(fin?.95:.6);}
       this.attachProjectileAnim?.(b,fin?'bpx_cocoa_fireball':'bpx_cocoa_fist',fin?150:96);if(fin)b._bpBoom='bpx_cocoa_explode';
@@ -14464,7 +14464,8 @@ class Game extends Phaser.Scene {
     const bRad=1+(basic?.ranks.radius||0)*0.12, bPane=basic?.ranks.pane||0, bPow=basic?.ranks.power||0;
     const len=(360+lvl*26)*bRad*(aw?1.2:1)*(evo?1.15:1)*(1+(basic?._pm?.range||0));
     const wide=(10+lvl*0.9+bPane*2+focus*5)*(basic?.mutation==='fortress'?1.25:1);   // ลำแสงเล็กลง (เดิม 18+lvl*1.6)
-    const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*focusMul*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1);
+    const SL=basic?.lv||{},retreat=SL.p_swift&&(this.elapsed||0)<(this._sesRetreatT||0)?1+.3*SL.p_swift:1; if(retreat>1)this._sesRetreatT=0;   // v7.9.17 Retreat Shot
+    const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*focusMul*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1)*retreat;
     const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0)+(basic?._pm?.count||0), spread=0.12;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ
     const PRISM=0xc86bff;   // สีบีมงาดำ = ม่วงพริซึม (แยกจากสกิลอื่น)
     // 🔮 ลูกเล่น Mirror Mark: บีมโดน = สะสมรอยกระจก ครบ 5 → แตกระเบิดดาเมจก้อน (โดยเฉพาะบอส)
@@ -14473,6 +14474,7 @@ class Game extends Phaser.Scene {
         if(this.anims.exists('fx_slash'))this.spawnFxAnim('fx_slash',e.x,e.y,{scale:1.1,depth:8,anchor:'center',tint:PRISM});
         else this.vfxHitRing(e.x,e.y,PRISM,true); this.popDmg(Math.round(burst),e.x,e.y,true); Sfx.boom(); } };
     for(let k=0;k<beams;k++){ const a=ang+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,k===0?dmg:dmg*0.7,{tint:PRISM,onHit:markHit}); }
+    if(SL.p_facet&&(this._sesEchoN=(this._sesEchoN||0)+1)%(SL.p_facet>=2?3:4)===0)this.artDelay(300,()=>{ if(this.state!=='play'||this.basicAttack!==basic)return; for(let k=0;k<beams;k++){ const a=this._sesBeamAng+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,(k===0?dmg:dmg*0.7)*.5,{tint:PRISM,onHit:markHit}); } });   // v7.9.17 Prism Echo
     // คงบทบาทป้องกัน: ลบกระสุนศัตรูรอบตัวเล็กน้อย (ward)
     this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<70){ this.vfxHitRing(f.x,f.y,PRISM,false); this.killFoe(f); } });
     this.vfxHitRing(this.player.x,this.player.y,over?0xffe08a:PRISM,true); Sfx.beam();
@@ -15252,7 +15254,7 @@ class Game extends Phaser.Scene {
     /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&Math.random()<P._tagChill)this.applyFreeze(e,0.35,false); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
-    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.momentum&&this.player.body&&this.player.body.velocity.length()>40)amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;
     if(!this._infTick&&!e.isDummy){ const P=this.player; if(P.gearStillDmg&&P.body&&P.body.velocity.length()<25)amount*=1+P.gearStillDmg; if(P.gearOpener&&e.hp>=e.maxhp)amount*=1+P.gearOpener; }   // 🪞 Oath Focus
     if(!e.isDummy&&this.player.forgeMods)amount=forgeDamage(this,e,amount);
@@ -15273,7 +15275,7 @@ class Game extends Phaser.Scene {
     if(e._memoryToken)e._memoryStored=(e._memoryStored||0)+amount;
     this.mxDeal?.(e,amount,crit);e.hp-=amount;if(taroDirect?.smiteProfile)this.taroAfterSmite(taroDirect,e);else if(!taroDirect?.noEffects)this.taroAfterDirect?.(taroDirect,e);
     if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
-    if(RL&&RL.chill&&e.hp>0&&Math.random()<(this.taroIsSecondary?.()?.025:0.10)&&this.applyFreeze(e,1)){ e.setVelocity(0,0); }
+    if(RL&&RL.chill&&e.hp>0&&(this.elapsed||0)>=(this._coldSnapAt||0)){ this._coldSnapAt=(this.elapsed||0)+6; this.relicColdSnap(e); }
     if(!e.isBoss&&!e.isMini&&e.hp>0)this.enemyAction(e,'hurt',120);
     this.warnAntBomber(e);
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
@@ -16635,7 +16637,8 @@ class Game extends Phaser.Scene {
 
   charPassiveOnHurt(){ if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<r)this.applyFreeze(e,0.9*CP.s); }); this.burst(px,py,0x8fe7ff); }
-  charPassiveOnDash(){ const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
+  charPassiveOnDash(){ if(this.character==='sesame'&&this.basicAttack?.lv?.p_swift)this._sesRetreatT=(this.elapsed||0)+2;   // v7.9.17 Retreat Shot
+    const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     if(!this.heroFx?.('bpx_taro_rift_step',px,py,120,{must:true,depth:this.player.depth-1}))this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
   charPassiveOnKill(e){ if(this._titanHold&&this.ptv('trLust')){const p=this.player;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.01);} const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
   // v4.88: หน้า Talent ประจำตัวละคร — ใช้ TP จากเลเวลตัวละคร (Save.cp) + โชว์ passive ประจำตัว
