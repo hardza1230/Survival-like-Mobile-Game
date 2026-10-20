@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.11';
+const GAME_VERSION = '7.9.12';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.12',date:'2026-10-20',title:'Pick up your EXP',items:['EXP drops now stay on the ground after a wave or a boss — walk over them to collect']},
   {v:'7.9.11',date:'2026-10-20',title:'Every boss has its own moves',items:['All Chapter 3 bosses and the Pinnacle boss now fight with their own signature attacks and big finishers','Minibosses in Chapter 1, Chapter 2 and Chapter 3 that shared moves now have their own too','When a wave ends, leftover EXP visibly flies to you instead of vanishing']},
   {v:'7.9.10',date:'2026-10-20',title:'Adventurer’s journal',items:['Equipment and Affix Forge now look like an old parchment journal','Menus turn like book pages, and the book cover opens when you arrive at the menu (tap to skip)']},
   {v:'7.9.9',date:'2026-10-20',title:'Box opening',items:['After clearing a stage, every box you picked up is opened on screen one by one — best ones last','Tap to open them all at once, then Continue to the stage summary','Boss lines are short and type out letter by letter, stay on screen longer, and bosses keep talking during the fight']},
@@ -11194,9 +11195,7 @@ class Game extends Phaser.Scene {
   }
   settleStoryBudget(completed=false,partial=false){
     const b=this._storyBudget;if(!this.usesStoryBudget?.()||!b||b.done)return;
-    let collected=0;const P=this.player;this.orbs.children.iterate(o=>{if(!o?.active||o._storyBudget!==b)return;collected+=o.value;
-      if(this.add?.image&&P&&this.tweens&&o.texture){const f=this.camWorld(this.add.image(o.x,o.y,o.texture.key).setScale(o.scaleX,o.scaleY).setTint(o.tintTopLeft??0xffffff).setDepth(o.depth||3));this.tweens.add({targets:f,x:P.x,y:P.y,scale:o.scaleX*.5,duration:260+Math.random()*260,ease:'Cubic.in',onComplete:()=>f.destroy()});}   /* v7.9.11 เจ้าของ: จบเวฟเม็ดหายวับ → ให้เห็นบินเข้าตัว (EXP ได้ทันทีเหมือนเดิม) */
-      o.setActive(false).setVisible(false);if(o.body)o.body.enable=false;});
+    const collected=0;   /* v7.9.12 เจ้าของ: จบเวฟเม็ด EXP อยู่บนพื้นต่อ ผู้เล่นต้องเดินเก็บเอง (collectOrb นับ paid) · จบด่าน onBossDown เก็บที่เหลือให้ */
     const target=completed?(partial?40:b.reward):b.questPaid,grant=Math.max(0,target-b.questPaid);b.questPaid+=grant;
     if(!partial)b.done=true;b.paid+=collected+grant;
     if(collected+grant>0)this.gainXp(collected+grant);
@@ -15344,7 +15343,7 @@ class Game extends Phaser.Scene {
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
     this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
-      this.orbs.children.iterate(q=>{if(q&&q.active)q._vac=true;});   // v7.9.8 บอสล้ม = ดูดเม็ด EXP ทั้งหมดมาหาผู้เล่น
+      // v7.9.12 เจ้าของ: ไม่ดูดเม็ดเข้าตัวแล้ว (เก็บเอง) · onBossDown ยังนับเม็ดที่เหลือให้ตอนจบด่าน
       const bx=e.x,by=e.y,_ln=this.bossLine(1); if(_ln)this.bossSay(_ln,STAGES[this.stageIndex]?.boss,1800); this.mode='reward'; this.boss=null; if(this.usesStoryBudget?.())this.settleStoryBudget();this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }

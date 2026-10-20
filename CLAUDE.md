@@ -26,7 +26,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 20 PNG32 assets / 66 frames delivered to assets/incoming/levelup_cards_ui/ with manifest, final built-in ImageGen prompts and QA previews. All table rows delivered (summary corrected 19→20). 9-slice, four tint palettes, alpha and 11px text contrast checked. Incoming only; runtime integration pending. Next art: order 24 Pause, then order 25 Hub motion.
 
-# Latest delivery: v7.9.11 — Remaining boss kits + wave-end EXP visible (owner)
+# Latest delivery: v7.9.12 — EXP stays on the ground (owner)
+
+Owner: no flying EXP — the player must walk over it. settleStoryBudget no longer touches orbs (collected=0); leftover orbs keep their _storyBudget and pay through collectOrb. killEnemy boss branch no longer sets _vac on all orbs; onBossDown still pays any orbs left at stage end. tests/story-budget.test.cjs adds pick(s) (collect active orbs) before the settle assertions. Pickup magnets (vacuum item, Sweet field) unchanged.
+
+# Previous delivery: v7.9.11 — Remaining boss kits + wave-end EXP visible (owner)
 
 BOSS_KITS const (before BOSS_LINES) = data-driven kits: m2 Boiling Pan, m3 Giant Ice Block, m4 Banquet Executioner, m5 Sporewarden Mantis, m10–m14 C3 minis, b10–b14 C3 bosses, pin = Pinnacle (stage 14 + _pinnacleArt). Each kit {c tint, base, p2, p3, moves{n banner, h hint, pose, run(ctx) → cooldown}}; ctx helpers ring(n,gap,spd)/fan(a,n,step,spd)/lane(a,ms) (vfx_line telegraph)/haz/adds/T(delayed, b.active guard) + s (scene) for chargeTelegraph/bossNovaWave/drainPull/spawnBossObject. kitAttack(b) dispatched in _bossThinkCore before the generic pick for isBoss&&si≥10 or isMini&&si∈{2,3,4,5,10–14}; kitPose → c3BossPose / stage5Pose / chapter2Pose. Damage = old generic scale (shot 9+3·si, hazard 16+6·si, mini ×.9, Pinnacle ×1.15); phases use the generic 50%/25% thresholds. Browser: all 67 moves fired incl. delayed parts, 0 errors. settleStoryBudget: wave-end orbs still pay instantly (story-budget test) but now spawn a copy that tweens into the player (owner saw EXP vanish). Owner phone review pending; Candlewick/arena mechanics T1–T8 still open.
 
@@ -384,7 +388,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.11 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.12 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
