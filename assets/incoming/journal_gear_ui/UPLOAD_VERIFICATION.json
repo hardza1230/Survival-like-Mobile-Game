@@ -1,4 +1,305 @@
 {
-  "status": "awaiting-post-publication-byte-readback",
-  "scope": "All source PNGs and accompanying files in source delivery commit; proof updated after remote byte verification."
+  "status": "verified",
+  "repository": "hardza1230/Survival-like-Mobile-Game",
+  "sourceCommit": "a23ce009e3f20d59bb5b77854ee50cbb42f33ba2",
+  "method": "Complete raw.githubusercontent.com byte readback; byte lengths, SHA-256 and Git blob SHA-1 matched staged normalized payloads",
+  "verifiedFileCount": 42,
+  "verifiedBytes": 12692210,
+  "files": [
+    {
+      "path": "assets/incoming/journal_gear_ui/DELIVERY_README.md",
+      "bytes": 3302,
+      "sha256": "48e07cac146437d774fa6d25c3e7e8ffaed0902efc1a9e921cd80c2aa139ba39",
+      "gitBlobSha": "7078af948cd4c07e9b72131a6fa1ab9f080bd31a",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/LAYOUT_CHECKS.json",
+      "bytes": 31891,
+      "sha256": "0990822ad3cb85c8dfc50d83021065ad279f8f4d6f9d21b16642d6c0dde3dcb1",
+      "gitBlobSha": "cba812e091e5c2393875181347cd96b0c55572e4",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/MANIFEST.json",
+      "bytes": 16914,
+      "sha256": "47d8297f3e09823e9a2d4642a1492cf01a6caec4ff97e4473a9d6454b91b24ed",
+      "gitBlobSha": "3a8f8b031743a2e3533bbd3443259edff35f70c8",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/PROMPTS.json",
+      "bytes": 56224,
+      "sha256": "e642285e8711b5185c8160f907ccfb4bf46dc268d8f10a0a5c8f03116d34163b",
+      "gitBlobSha": "fcde01efee45a25dfb702461de6c49ba03642594",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/QA_REPORT.json",
+      "bytes": 9982,
+      "sha256": "f6a9d8b58fc67ea34e04ea48a7b20e9363ab0156bdf8876aef5e44026a6e5eef",
+      "gitBlobSha": "0d05819f12829e4026798a91e2b08d8963539d59",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/UPLOAD_VERIFICATION.json",
+      "bytes": 183,
+      "sha256": "91c05ef609591ebb73e28edc50b235c24df5961f37add96b0d96583a2e285112",
+      "gitBlobSha": "72c64d228b4803294831ed52e6afc25754a92686",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_badge_new.png",
+      "bytes": 4463,
+      "sha256": "7c523450674a0017a64a1d0b738de7a0ae09c41f2a4897f2f48be4b6051be493",
+      "gitBlobSha": "4f0b9fbd11db8b24e760a812ede27a2bb758ae4e",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_bag_cell.png",
+      "bytes": 147647,
+      "sha256": "9466e1265d2755db1cffe72a9121d7cb52c0ead3e110e0fea7b35c7f137c631a",
+      "gitBlobSha": "c9f9627f25498c9a488928bdf2ed819fba7d132f",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_accent.png",
+      "bytes": 314759,
+      "sha256": "aafaab636678164b8e09cf5f544ffcb0903e9f93aaeef4ed93ba61fe12ab8db2",
+      "gitBlobSha": "7469af634aa8c8bdb7840cd71ffe71157da91e84",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_back.png",
+      "bytes": 136705,
+      "sha256": "f1f0824cc2592142efda5bba8eb4216d309ce28e6cfb57ff883298d210a61c03",
+      "gitBlobSha": "cc335733790a9dcfda90a8d390a0b0051cabceb4",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_icon.png",
+      "bytes": 29153,
+      "sha256": "97263e54f4f3fb851afed7085ebfbcca1f8ef6ca85a415150bad4b9ef0ee8221",
+      "gitBlobSha": "484d55a072d66fa68503976d53fffe3431954849",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_pager.png",
+      "bytes": 78004,
+      "sha256": "6e1a545fb750ab9263fb90896c669294af49c22bcc1d99116054654ca6f6bc49",
+      "gitBlobSha": "b546d02336dcda0d637e3f51082c87995159eee2",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_pill.png",
+      "bytes": 113696,
+      "sha256": "d10188b43a47f75676b9735ec99c3a9f36d8ed0521a770a987cee1ab0e904f94",
+      "gitBlobSha": "8880daddaead786fe1af90536c5c3017ecc0dd0f",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_primary.png",
+      "bytes": 1426229,
+      "sha256": "e2257105e697285610fd82dddf7b56f2fbf983016b3dac7d6224c780c48756b0",
+      "gitBlobSha": "5c859d00031ee8d57194a739a9d03bd541f8d569",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_btn_secondary.png",
+      "bytes": 551200,
+      "sha256": "c1a8e414760e26d8df0df9ee4259d2d665d1224e8cf9d8d1862e0591f1fa4d65",
+      "gitBlobSha": "17d1c8b7343425ceea23f38d9211bdaf898b5510",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_checkbox.png",
+      "bytes": 6531,
+      "sha256": "447a537553ddbf2dbf13d79ce8d34577ca5e0d64eee75c3cdb3e58118f3f94a8",
+      "gitBlobSha": "3c81b65ebb94b63e11143a0f3d64981df0ac7961",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_chip_currency.png",
+      "bytes": 43102,
+      "sha256": "a664c8202957d79ba17a3f70f8ab0572275903836ce1d3d4f4f24eb43ef9c5b2",
+      "gitBlobSha": "7e685634b0dfb6765245366ae693008c6e277944",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_chip_pct.png",
+      "bytes": 14175,
+      "sha256": "b49c8a734cab956051bdfb175e1cc06f7a6747d96dcf6cb489022ea28cf0a09e",
+      "gitBlobSha": "dc7b6f6882e31737150e3d23f740eae451658e3d",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_chip_plus.png",
+      "bytes": 10108,
+      "sha256": "2e25528daf7373a57045286f1f8a6077960d1f551c06b72f09c8e80a6ba22105",
+      "gitBlobSha": "647d2af6281eefd4a7c05140a1aa1298f8c51e24",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_divider.png",
+      "bytes": 7122,
+      "sha256": "c601a5c574d967ad22a9d8ac5423fc178467837db8800786ae9d302c17ac52ce",
+      "gitBlobSha": "7c85045aa1b77c9b5ec42536ae2c7a8147e3b7d2",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_forge_footer.png",
+      "bytes": 680819,
+      "sha256": "e89fd7bc4d9bccaf300406dabbeb34a28bde4de2a7811ebe8dac269372141092",
+      "gitBlobSha": "a88650627fafb4829af16e1569b2c3d06ea4478b",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_forge_summary.png",
+      "bytes": 605663,
+      "sha256": "831f9c58aad351cbcbc741a8a80129b9218c90217c6b7bcee72d30877a226b06",
+      "gitBlobSha": "ba90808c513027d2d6c1628b3de5428087ff1aec",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_header_plaque.png",
+      "bytes": 158566,
+      "sha256": "1201e4c8a654affa16fefe08ac70f814bfc961c3dd4cac67e0c28e1b79d548b7",
+      "gitBlobSha": "461d181831ced2529ef8504342cd72d0f53e8895",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_icon_ring.png",
+      "bytes": 69655,
+      "sha256": "7c02c53a783a284799b46b1cd3d17487e4974a5a5a035e58d56fbe22441c6784",
+      "gitBlobSha": "58f0ce79d90117eca98ad4be2fbce6faa4f23ffa",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_icon_sheet.png",
+      "bytes": 337698,
+      "sha256": "93b9963643ef61f3774aa8ad1d4412718b9c20a8ea312f42c268bbb675a81c76",
+      "gitBlobSha": "28fc9a00aa229f1feb116659603ab3139e1c89b1",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_lock_cell.png",
+      "bytes": 5455,
+      "sha256": "bf52b9a22ac0e0ea0d4ff98a18bbd9a46db87c83a27f60514864a17caa4e7bfd",
+      "gitBlobSha": "2379f723f9e7053968f216f36d3dd838b99fd87d",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_page_bg.png",
+      "bytes": 3523388,
+      "sha256": "f2ad67c284ba3f645d3847064c3091c8c375adb1c05bc695fdaaf9e8317a0291",
+      "gitBlobSha": "7bd8559a802981068d0994fa819434e2fabc236c",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_panel.png",
+      "bytes": 394837,
+      "sha256": "c7de511359bd83e3b87217ec22f69a92dbfeb055eb9ae086299a38a35713b3a9",
+      "gitBlobSha": "ea2f25da87fe5ad117af998b3c95a2aa138c2d7a",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_panel_inset.png",
+      "bytes": 252244,
+      "sha256": "e27e151627e44e747cb5e5f0675337c4080be5e4644ba06c99b4cf07088ee4a6",
+      "gitBlobSha": "331f2f3e062a85569961ceff0e8898e56160fed2",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_radio.png",
+      "bytes": 11120,
+      "sha256": "1cc57b14f1a3dbfd934007de19441da95de16ebe36e94bf917880471582243cb",
+      "gitBlobSha": "8b3eac194b6ed368309f89067d9334fd5fc08009",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_row.png",
+      "bytes": 709308,
+      "sha256": "ef3fa9ea7275d920397ed560f83bbb997f1b03c90b484db08c6a81e16fa78830",
+      "gitBlobSha": "610181108e1fb547861a22cfa7349dc4ede84b0d",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_section_title_deco.png",
+      "bytes": 3952,
+      "sha256": "713f16bd84aac9cbc756403c3ee0117e65221f0e44d5e5168c187ae195bdde4a",
+      "gitBlobSha": "5a23662193f39e1f61968fd609fe1092893ce903",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_slot.png",
+      "bytes": 192589,
+      "sha256": "10d37379c7617b2f518fe3d9901c04e37e0b1f36abebe30b83a633cd04c94c78",
+      "gitBlobSha": "1346204dd64344b5f65855a52400f6a664810fa5",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_star.png",
+      "bytes": 10505,
+      "sha256": "252de67b21f286043be2a512ce35fdabfce9ec668f31e9b7c39e2f51b706beaf",
+      "gitBlobSha": "607f14941b2b120ccce9ac5707ada3e1a5094bbc",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_tag_level.png",
+      "bytes": 8830,
+      "sha256": "61fafc0377e13abeb7a6804479c0cb3d723b4859a35fa5a2a3ff63cc4df606a6",
+      "gitBlobSha": "d4c67e5b8f8c09787cd12178cf4e9e94a0f04ec6",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/jr_warning_ribbon.png",
+      "bytes": 116209,
+      "sha256": "5575a43d0bceb66a91b7631dd5ca11b99839ee9c975ac16a3f8e77595d3267d4",
+      "gitBlobSha": "58e83be3d5ffc803603bfa4437e18dfd5d390b63",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/previews/ASSET_GALLERY.jpg",
+      "bytes": 249622,
+      "sha256": "a9bd07ddb091d3d0b0cdafb353b2539e4077aa11136f9fd73dadcbfaef1aa9d7",
+      "gitBlobSha": "3d8fe2764a4461df026bdf422065d4ca3a7fd681",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/previews/SLICE_TINT_TEXT_QA.jpg",
+      "bytes": 105754,
+      "sha256": "e60a01d1bd0f9cfc9294ae7b8fed4b6b0f1a6c8d480bbaec3d7110042d99a997",
+      "gitBlobSha": "90eda4bcd0beac0de9f49d391a85a57b0cf05918",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/previews/equipment_360x800.png",
+      "bytes": 492167,
+      "sha256": "facb70346a1ce9f95de954f812c0eea1699e47b14c87298d765c3f51356f58a8",
+      "gitBlobSha": "ba7b7f7ffbf61656a96477c0d62037aae9b309dc",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/previews/equipment_412x915.png",
+      "bytes": 634993,
+      "sha256": "bfca648b294d0c2221fd0b3bee44c7ec5a01add011ae77261e44bcb739690435",
+      "gitBlobSha": "140971d4f38edfd4d4912b233c48abcbd05765d1",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/previews/forge_360x800.png",
+      "bytes": 483949,
+      "sha256": "c0d61ea7e9365fe8a96d33a9a89fdfe32fe471f5ef73e5adc3662ca0e78aa14c",
+      "gitBlobSha": "3f4bcecbf7a64ad4cc27ebcbe347fdb57fbe5fe5",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/journal_gear_ui/previews/forge_412x915.png",
+      "bytes": 643497,
+      "sha256": "ed50ddf00ee75dcd4b9293df0bfd4de9fdd2efcf4dc061eb9abf19382ba4b209",
+      "gitBlobSha": "7b12f7b80903295ba2aa1bc8db18397368b32ec3",
+      "verified": true
+    }
+  ],
+  "scope": "Every delivery file at the source commit, including the initial pending proof marker; this final proof document is published in the follow-up verification commit."
 }

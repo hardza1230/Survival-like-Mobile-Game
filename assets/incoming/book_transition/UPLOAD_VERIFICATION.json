@@ -1,4 +1,130 @@
 {
-  "status": "awaiting-post-publication-byte-readback",
-  "scope": "All source PNGs and accompanying files in source delivery commit; proof updated after remote byte verification."
+  "status": "verified",
+  "repository": "hardza1230/Survival-like-Mobile-Game",
+  "sourceCommit": "a23ce009e3f20d59bb5b77854ee50cbb42f33ba2",
+  "method": "Complete raw.githubusercontent.com byte readback; byte lengths, SHA-256 and Git blob SHA-1 matched staged normalized payloads",
+  "verifiedFileCount": 17,
+  "verifiedBytes": 15096759,
+  "files": [
+    {
+      "path": "assets/incoming/book_transition/ANIMATION_CHECKS.json",
+      "bytes": 839,
+      "sha256": "112d59829d22cade81035d47343dd8bb0ea709af169a2958f60b63a840d76393",
+      "gitBlobSha": "dc8f13f584d21068de386ac467965e8f9db89f5c",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/DELIVERY_README.md",
+      "bytes": 3105,
+      "sha256": "3681aeb6b0bc6e18a41c6476a297a008dfc1cc8ccb3fcc88cc2eea7e8043daed",
+      "gitBlobSha": "63c21dffadc732197baeb6b97cd3b76a59f0bb96",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/MANIFEST.json",
+      "bytes": 4417,
+      "sha256": "76d0b86be1a1cccbbb4c55445fa5c675d10573dc7067a01721a79f75c82213f6",
+      "gitBlobSha": "464b6139bd9c63f8e746f384241a59c47e554593",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/PROMPTS.json",
+      "bytes": 18973,
+      "sha256": "7b893c15dd96505f803aa18ee8914918e06864a13851fec2288f1cdafaef15c7",
+      "gitBlobSha": "d02bf7d5f42891980dca20ce177417e1b36789b5",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/QA_REPORT.json",
+      "bytes": 2880,
+      "sha256": "dba9404090781a51f705b3856d6adf7d7e110e3cee1a8277c0388e2380083479",
+      "gitBlobSha": "b0f023a55d5d88f6bbdfd9754ade89a3c827e0c9",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/UPLOAD_VERIFICATION.json",
+      "bytes": 183,
+      "sha256": "91c05ef609591ebb73e28edc50b235c24df5961f37add96b0d96583a2e285112",
+      "gitBlobSha": "72c64d228b4803294831ed52e6afc25754a92686",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/bk_cover_closed.png",
+      "bytes": 4511570,
+      "sha256": "8ceb4c0a30337dce61a6211c2f743479ec33a4732350b2d53a1028c93761692d",
+      "gitBlobSha": "b405c733aa36041e944a79d6955c189894d48a0e",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/bk_cover_glow.png",
+      "bytes": 285913,
+      "sha256": "0b3ac16c3ea4d46436b34f953dd2f481ab9f0cfc10485aedb0e558fb043cbc04",
+      "gitBlobSha": "36151cee4280c311ec2791ecf0727870a0a59ac0",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/bk_cover_open.png",
+      "bytes": 1651025,
+      "sha256": "d440922fe9098711ec6a07f67f74378af6a1b6d63c05998d4c56c54325a060e3",
+      "gitBlobSha": "da92fc1d43883b3a1fc33d9c3dceda03bb986ecb",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/bk_page_shadow.png",
+      "bytes": 337160,
+      "sha256": "b6f2e795342fcbf1c00eed7e739120e731b873b7e265468ad2835fcf4c437dc1",
+      "gitBlobSha": "78781b27c476d76801674f17386ca02a417e59aa",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/bk_page_turn.png",
+      "bytes": 2269613,
+      "sha256": "24232a55c9336dba930eb2b1da2800d2c4c7e0f61764b29a29529b541c8c2528",
+      "gitBlobSha": "d7e22edf4815021b9e4c281aaf2515ca12ee54ad",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/bk_spine.png",
+      "bytes": 290042,
+      "sha256": "ca70c5b664dfca7b810beb31de2f760f94896c7422f6dd7f2e7c51d0dabe30a9",
+      "gitBlobSha": "dab69dd9c0d7a9facdff970f23eed40fd973895e",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/previews/ANIMATION_CONTACT.jpg",
+      "bytes": 358402,
+      "sha256": "7450ddb304bf28337c1948d6820871d7d84668a440f1f753255561eb68f60fb7",
+      "gitBlobSha": "b8d08242f6624aabc6781ded9c3cff86a1e9c873",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/previews/cover_open.gif",
+      "bytes": 1653518,
+      "sha256": "eb842709f6b85ca239be1c62514877348cd82cd4d98c3f964383110c1ba86219",
+      "gitBlobSha": "36411983fdaf91bb355b772561d705735130487d",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/previews/page_turn_back.gif",
+      "bytes": 1779884,
+      "sha256": "a351b5c6e2ce665948ce00e3bf1a311c2825664407ae85c44b0569bb7b1fc424",
+      "gitBlobSha": "dbe18c227b329f925e5f8ea1e70532370fe00ace",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/previews/page_turn_forward.gif",
+      "bytes": 1798660,
+      "sha256": "b0399610d6321343b65accdc5dca97dc6a15dd330aa5399416c991347c49b7f8",
+      "gitBlobSha": "4c8a242b81ab28d0c87c70ba755816fab2f22bd5",
+      "verified": true
+    },
+    {
+      "path": "assets/incoming/book_transition/vfx_bk_dust.png",
+      "bytes": 130575,
+      "sha256": "b3d2d90def724deb09780fb81ef1f98b78961596ef8a6f1b8e3cf4de2ff6152e",
+      "gitBlobSha": "8d71f2dba7aa6fcc316bd89707e575556da3b6d4",
+      "verified": true
+    }
+  ],
+  "scope": "Every delivery file at the source commit, including the initial pending proof marker; this final proof document is published in the follow-up verification commit."
 }
