@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.7';
+const GAME_VERSION = '7.9.8';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.8',date:'2026-10-20',title:'EXP never lost',items:['When a boss falls, every EXP drop on the field flies to you, and anything left is counted before the reward screen','With too many drops on screen, new EXP merges into a nearby drop instead of vanishing — in every mode, not only Story']},
   {v:'7.9.7',date:'2026-10-19',title:'Forge: faster switching',items:['The 6 gear slots are back at the top of the Forge: tap a slot for the item you wear, tap it again for the next one in that slot','Locked items show an “Unlock to craft” button right in the Forge','Your currency count now sits on the Roll button; the extra currency box and hint line are gone','Fixed the Auto button showing only an icon']},
   {v:'7.9.6',date:'2026-10-19',title:'Clearer Forge',items:['Roll and Auto are one button: tick the mods you want (✓) and it becomes “Auto until ✓”; no ticks = Roll','Mods use the same plain wording and star colours as Equipment','Each possible mod shows its chance right in the row — no more i / Odds popups','Shorter rows, so most lists fit on one page']},
   {v:'7.9.5',date:'2026-10-19',title:'Clearer mods',items:['Equipment mods now read as one plain line, e.g. “+4% damage to far enemies”, instead of a name plus a description','More mods fit on screen; ✓ still marks mods that fit your hero','Forge keeps the mod names, with the same plain wording underneath']},
@@ -11927,6 +11928,7 @@ class Game extends Phaser.Scene {
   }
   // บอสตาย → เปิดกล่องรางวัลจบStage (Sugar/อุปกรณ์) แล้วกลับหน้าเลือกด่าน
   onBossDown(x,y){
+    { let left=0; this.orbs.children.iterate(q=>{if(!q||!q.active)return;left+=q.value||1;if(q._storyBudget)q._storyBudget.paid+=q.value||1;q._vac=false;q.setActive(false).setVisible(false);if(q.body)q.body.enable=false;}); if(left>0)this.gainXp(left); }   // v7.9.8 เม็ดที่ยังเหลือก่อนหน้ารางวัล = นับให้ครบ
     this._rewardRage=this.bossRageInfo();this.boss=null;this.mode='reward';this.bossUI.forEach(o=>o.setVisible(false));Sfx.bossClear();this.time.delayedCall(3000,()=>{if(!this.boss&&this.state!=='menu')Sfx.playStageBgm(this.stageIndex+1);});this.clearFoes();this.clearEnemies();this.clearBossObjects();
     // 🧪 ล้มบอส = การันตี currency ก้อนใหญ่ (ยิ่งด่าน/ยากสูง ยิ่งเยอะ+ดี — กฎเหล็ก)
     this.grantCurrencyReward(2+(this.stageIndex||0)+((this.stageDiff||1)-1)*2,this.currencyTierFor(),'🏆 Boss Down! Currency gained');
@@ -15065,6 +15067,7 @@ class Game extends Phaser.Scene {
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
     this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
+      this.orbs.children.iterate(q=>{if(q&&q.active)q._vac=true;});   // v7.9.8 บอสล้ม = ดูดเม็ด EXP ทั้งหมดมาหาผู้เล่น
       const bx=e.x,by=e.y,_ln=this.bossLine(1); if(_ln)this.bossSay(_ln,STAGES[this.stageIndex]?.boss,2300); this.mode='reward'; this.boss=null; if(this.usesStoryBudget?.())this.settleStoryBudget();this.clearFoes(); this.bossUI.forEach(o=>o.setVisible(false));
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
@@ -15111,9 +15114,12 @@ class Game extends Phaser.Scene {
   }
   dropOrb(x,y,value){ value=value||1;
     const budget=this.usesStoryBudget?.()?this._storyBudget:null;
+    /* v7.9.8 เจ้าของ: EXP ห้ามหาย — เม็ดบนพื้นเยอะ (≥300) รวมเข้าเม็ดที่ใกล้สุด · pool เต็มทุกโหมดให้ EXP ทันที */
+    if((this.orbs.countActive?.(true)||0)>=300){let best=null,bd=90*90;this.orbs.children.iterate(q=>{if(!q||!q.active||q._storyBudget!==budget)return;const dx=q.x-x,dy=q.y-y,d2=dx*dx+dy*dy;if(d2<bd){bd=d2;best=q;}});
+      if(best){if(budget)budget.issued+=value;best.value=(best.value||1)+value;const st=this.orbStyle(best.value);best.setTint(st.tint);best._sc=st.sc;return;}}
     let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
-    if(!o){if(budget){budget.issued+=value;budget.paid+=value;this.gainXp(value);}return;}   // Full story orb pool still pays earned combat EXP.
+    if(!o){if(budget){budget.issued+=value;budget.paid+=value;}this.gainXp(value);return;}   // v7.9.8 pool เต็ม = ได้ EXP ทันทีทุกโหมด (เดิมเฉพาะ Story)
     if(budget)budget.issued+=value;
     const st=this.orbStyle(value);o._storyBudget=budget; o.value=value; o._vac=false; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
     o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
