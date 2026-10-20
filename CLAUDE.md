@@ -34,9 +34,9 @@ playBoxOpening(list,done) runs at the end of onStageClear before showStageEpilog
 
 dropOrb: ≥300 active orbs → value merges into the nearest orb within 90px of the same budget (tint/scale by new value); pool full → gainXp in every mode (was Story only). Boss kill (killEnemy isBoss) sets _vac on all orbs; onBossDown collects any left (paid to story budget) and gainXp. Browser check: 500 drops → 300 orbs holding 500 EXP, 0 errors. Art order 29 `docs/art_orders/29_EXP_ORBS.md`: 'Flavor Drops' 6 tiers (shape + colour, not the Sugar candy), shadow, pickup/big pickup/trail/merge VFX, HUD icon — awaits art.
 
-# Art orders 27 + 28 (19 Oct, owner) — journal redesign
+# Art delivery 27 + 28 — Journal UI / book transition (20 Oct)
 
-27 `docs/art_orders/27_EQUIPMENT_FORGE_JOURNAL_UI.md`: Equipment + Forge reskinned as an old parchment journal (owner mockups `ref/27_equipment_ref.webp`, `ref/27_forge_ref.webp`), 33 files, lazy with gear/craft group, ink-on-paper text. 28 `docs/art_orders/28_BOOK_PAGE_TRANSITION.md`: page-turn (6 frames + shadow + spine + dust) for menuTransition and a first-open book cover (5 frames), lazy-loaded with the old curtain as fallback. Both await art.
+Order27: 30 PNG32 /69 atlas frames (all A1–F2 rows; old summary33 corrected) in assets/incoming/journal_gear_ui/. Order28:7 PNG32 /26 frames (old summary30 corrected) in assets/incoming/book_transition/. Built-in ImageGen sources, manifest/prompts/technical+visual QA, offline page assemblies at360x800/412x915, slice/tint/text samples and both-direction page/cover GIFs included. Original mockup refs unchanged. **Incoming only: runtime remains v7.9.9; journal/book wiring still pending.** Journal recommended50% pack (~6.239MiB decode); book80% per frame (~22.061MiB decode, full source34.473MiB exceeds24MB). Never preload these at boot. Keep curtain fallback and original hit tags. Delivery_README and UPLOAD_VERIFICATION.json record details and byte proof.
 
 # Previous delivery: v7.9.7 — Forge ECRS set 2 (owner: R1+R2+S2+E2)
 

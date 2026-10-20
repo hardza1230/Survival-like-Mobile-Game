@@ -1,0 +1,113 @@
+{
+  "order": 28,
+  "status": "source-art-technical-and-visual-pass",
+  "missing": [],
+  "checks": [
+    {
+      "key": "bk_page_turn",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.53372,
+      "sha256": "24232a55c9336dba930eb2b1da2800d2c4c7e0f61764b29a29529b541c8c2528"
+    },
+    {
+      "key": "bk_page_shadow",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        0,
+        240
+      ],
+      "transparentFraction": 0.72033,
+      "sha256": "b6f2e795342fcbf1c00eed7e739120e731b873b7e265468ad2835fcf4c437dc1"
+    },
+    {
+      "key": "bk_spine",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.04683,
+      "sha256": "ca70c5b664dfca7b810beb31de2f760f94896c7422f6dd7f2e7c51d0dabe30a9"
+    },
+    {
+      "key": "vfx_bk_dust",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.48534,
+      "sha256": "b3d2d90def724deb09780fb81ef1f98b78961596ef8a6f1b8e3cf4de2ff6152e"
+    },
+    {
+      "key": "bk_cover_closed",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "transparentFraction": 0.0,
+      "sha256": "8ceb4c0a30337dce61a6211c2f743479ec33a4732350b2d53a1028c93761692d"
+    },
+    {
+      "key": "bk_cover_open",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.69297,
+      "sha256": "d440922fe9098711ec6a07f67f74378af6a1b6d63c05998d4c56c54325a060e3"
+    },
+    {
+      "key": "bk_cover_glow",
+      "pngDecode": true,
+      "mode": "RGBA",
+      "exactDimensions": true,
+      "alphaRange": [
+        0,
+        253
+      ],
+      "transparentFraction": 0.23624,
+      "sha256": "0b3ac16c3ea4d46436b34f953dd2f481ab9f0cfc10485aedb0e558fb043cbc04"
+    }
+  ],
+  "estimatedWebPBytes": 955828,
+  "sourceDecodedMiB": 34.473,
+  "estimatedRuntimeDecodedMiB": 22.061,
+  "recommendedRuntimeScale": 0.8,
+  "runtimeIntegrated": false,
+  "bootAddedBytes": 0,
+  "visualReview": {
+    "noBakedLettersOrNumbers": true,
+    "nativeTransparency": true,
+    "blankRuntimeTextAreas": true,
+    "sourceSheetsReviewed": true,
+    "onlyOpaqueExceptions": [
+      "bk_cover_closed"
+    ],
+    "pageTurnBothDirectionsMs": 340,
+    "coverAnimationMs": 400,
+    "monotonicReveal": true,
+    "shadowDrawAlpha": 0.4
+  },
+  "limits": [
+    "Incoming art only. Runtime wiring, touch zones, lazy-loader behavior, device FPS and phone visual approval are not verified by offline art assemblies."
+  ]
+}

@@ -1,0 +1,875 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "key": "jr_page_bg",
+      "sourceSha256": "5e53bee3814f890f00f46c2ebe893430f7352ec9b9e3dbd7e044f9af4eabacfd",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Asset type: production mobile game UI texture, jr_page_bg.png for Equipment and Affix Forge. Generate a single front-on full-bleed 1080x1920 portrait page background, old adventurer parchment journal in dark brown stitched leather frame, warm cream #f1e3c4 fine paper fibers, subtle aged edges, restrained green leafy vines and tiny cream flowers in corners, antique gold corner clasps. Match the two reference journal mockups shown in conversation as style references only. The broad central 85% must be clean blank quiet paper with no panels, no buttons, no slots, no items, no UI content. Flat straight-on orthographic, never a perspective book on a table. No text, letters, numbers, watermark or logos anywhere. Opaque image, full page reaches canvas edges. This is the background only; all interactive components will be separate.",
+        "tool": "built-in image_gen",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-efc53e37-02f4-4afe-af58-3fe345315134.png"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          941,
+          1672
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_header_plaque",
+      "sourceSha256": "818c961513fc1f918a29081cc9bd33416258f3a30daa14760227e4371296cf15",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_header_plaque.png\nRequested source size/grid: 900×150 โปร่ง\nSpecification: ป้ายหัวเรื่องกลางบน: เถาใบไม้สองข้าง + ประกายเพชรเล็กใต้ · กลางว่างให้โค้ดเขียนชื่อหน้า (ภาพ Forge มีบรรทัดเล็ก \"02 · ENCHANTED JOURNAL\" ด้านบน — เว้นที่ไว้ด้วย)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-33cabdbf-a80d-4d60-b237-3674eb598de7.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1983,
+          793
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_back",
+      "sourceSha256": "870f6878d2b236f40c7b98cb0fb123f29fe58dcb9de6ae6a21b8e42047b78aa7",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_btn_back.png\nRequested source size/grid: 2 ช่อง × 360×110 โปร่ง\nSpecification: ปุ่ม Back เขียวขอบทองมีลูกศรทองในวงกลมซ้าย · ① ปกติ ② กด",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-bcb18042-00bf-4345-84f0-511a0692e4c4.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Edit this two-state game button sheet. REMOVE the word Back completely from BOTH buttons, replace its pixels with blank dark forest green. There must be ZERO letters, words or numerals anywhere. Keep left-pointing arrow inside left circle, all center-right blank for game text. Change glossy vivid emerald finish into matte old forest green #2f5a3c, and gold into muted antique brass #c9a35a, subtle painted parchment-journal texture matching the journal reference mockups, no plastic neon highlights. State 1 normal; state 2 visibly darker pressed. Exact two equal horizontal cells, transparent outside silhouettes. Do not add any text.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_btn_back.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-5363ceed-1ead-4118-a165-c82b946c7faf.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2103,
+          748
+        ],
+        "sourceGrid": [
+          2,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_chip_currency",
+      "sourceSha256": "281dcbe8710fa8a2f459676c8ee332201b244fa32c1c7a7371fdc8c84da6a1ab",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_chip_currency.png\nRequested source size/grid: 380×100 โปร่ง · 9-slice\nSpecification: ชิป Sugar แดงไวน์ขอบทอง · ซ้ายเว้นที่ไอคอนลูกอม · (Forge ในภาพมีปุ่ม + ด้านขวา — ทำเป็น A5 แยก)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-35904c4f-38f4-4372-abef-3e93bd391476.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. Simplify into a MATTE wine-red #7a1f2b rounded horizontal chip with thin muted antique gold rim, matching old hand-painted journal. Completely empty center and left icon space; REMOVE huge circular jeweled socket, diamond pattern, sparkles and glossy plastic highlights. One long simple low rounded rectangle, no text or icons, transparent outside. Absolutely no text, numbers, watermark or labels anywhere. Actual alpha transparency.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_chip_currency.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-c1443497-f040-4a3d-8b0b-8ac91b5263f6.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2075,
+          758
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_chip_plus",
+      "sourceSha256": "6506ed7806b4d7b360931daf0c44ce8289fcb99c51b45a1922633f8d9a9600c9",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_chip_plus.png\nRequested source size/grid: 72×72 โปร่ง\nSpecification: ปุ่มวงกลมเขียวเข้มมีเครื่องหมาย + ทอง (ต่อท้ายชิป Sugar)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-9e9bb11b-2701-42ce-a796-b528294ffa4c.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production journal UI asset correction. Keep single circle and gold plus symbol only. Restyle green to matte dark forest #2f5a3c, gold to aged muted brass #c9a35a, hand-painted old journal texture with subtle patina, NO glossy neon plastic highlights. Centered circular button, transparent outside.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_chip_plus.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-663ebdbb-b0d5-4325-b8f0-aaabd2cd0181.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_panel",
+      "sourceSha256": "48a4a1a5d641a78e361c963ebcb2cd1c4b1d457604411d8156df471c69b303cc",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game UI asset for an old parchment adventurer journal. Style reference: the two journal mockups shown earlier. Warm cream #f1e3c4 paper, brown #5a3826 ink edges, antique gold #c9a35a, forest green #2f5a3c, wine #7a1f2b, restrained tiny leafy corner decorations. Painterly polished 2D fantasy UI, front-on orthographic. THIS IS ONE MODULAR ASSET, never a complete screen. Absolutely NO letters, words, numbers, labels, watermark. All text mentioned in description is CONTEXT ONLY and MUST BE OMITTED. All outside edges genuinely transparent alpha. Keep each state's silhouette and dimensions identical. Clean generous blank centers for runtime text, no central ornaments. If a sheet, exact uniform grid, each state wholly inside its equal cell, no guides or gutters other than a few transparent edge pixels. Keep texture subtle, 9-slice center and straight edges stretchable.\nFilename: jr_panel.png\nRequested source size/grid: 800×400 โปร่ง · 9-slice\nSpecification: **แผงหลัก**: กระดาษสีอ่อนกว่า A1 นิดหน่อย ขอบเส้นน้ำตาลทองสองชั้นแบบสมุด · มุมบนซ้าย/ขวามีใบไม้เถาเล็ก · มุมล่างมีดอกไม้ขาวได้ (ตามแผง MODS ในภาพ) · ใช้กับ: แถบฮีโร่ · การ์ดไอเทม · MODS · Choose an affix · Target affixes · แถบล่าง",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-74dc988c-29ec-454e-a6d0-52b58c10bac2.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. Preserve parchment panel and corner vines/flowers. Remove ALL mid-edge ornaments and diamonds: top center, bottom center and mid-left/right diamonds. Replace them with uninterrupted thin straight double brown/gold rules. Center remains blank cream paper, decorations only at four CORNERS. This is stretchable 9-slice so ALL straight edge middle sections must be plain. Transparent outer background. Absolutely no text, numbers, watermark or labels anywhere. Actual alpha transparency.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_panel.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-58127d64-c787-442f-b26d-f09c11ed7b73.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_panel_inset",
+      "sourceSha256": "b159f13e7170bb153e74a4a63a2013ab27fa61728f75d4b5f3278f73d5584a60",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_panel_inset.png\nRequested source size/grid: 700×240 โปร่ง · 9-slice\nSpecification: แผงยุบลงกว่า B1 (ร่องกระดาษ) — พื้นหลังกระเป๋าตามภาพ Equipment (มีเถาจาง ๆ ที่มุมขวา)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-e7fddedf-7a53-4b5f-949a-077fbcae5103.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          2141,
+          734
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_divider",
+      "sourceSha256": "705d4bcee7c9397440a557e95d5ad98b16fabbce60a0ca4f6126997a303bb8b1",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_divider.png\nRequested source size/grid: 760×28 โปร่ง · ยืดแนวนอน\nSpecification: เส้นหมึกน้ำตาลบาง มีเพชรเล็กตรงกลางและปลาย ✦ — ใช้คั่นแถว MODS และใต้หัวแผง",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-f569fe86-cbff-4659-9410-72944a8b32f8.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          2064,
+          762
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_section_title_deco",
+      "sourceSha256": "b2c0dd44c46c68b8c3579d99db216ef6955ce5543322699b52762fa844dbb57a",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_section_title_deco.png\nRequested source size/grid: 64×64 โปร่ง\nSpecification: ดาวสี่แฉกทองหน้าหัวแผง (\"✦ Choose an affix\")",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-27d62d77-5fbb-488c-82fe-611ba7b11068.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_warning_ribbon",
+      "sourceSha256": "a8c70bad5f3d5c7989bb2e44e81ff0b43f92584449d40691f16b4c3812ef96e1",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_warning_ribbon.png\nRequested source size/grid: 1000×80 โปร่ง · 9-slice\nSpecification: แถบริบบิ้นครีมเหลืองมีปลายเถาสองข้าง สำหรับบรรทัดคำเตือนตีบวก (โค้ดใส่ ⚠ + ข้อความ)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-773efd44-cf66-4123-83dd-6f39b2f90179.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production journal UI asset correction. Restyle this blank ribbon as worn cream-yellow parchment PAPER with fine fibers and faint tiny leafy sprigs at the two far ends only. No satin/metal look or bright shiny highlights. Keep long flat uninterrupted blank middle for dark-ink warning text, thin soft brown edge, modest folded ends. No text, numerals or symbols. Actual transparent outside.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_warning_ribbon.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-a088575f-e205-4676-9bd5-1222fe257032.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2035,
+          773
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_slot",
+      "sourceSha256": "96d4d446f3a8611a6771426713a9c93997ddf5f96e2834ea327ce57ef26f1e7b",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game UI asset for an old parchment adventurer journal. Style reference: the two journal mockups shown earlier. Warm cream #f1e3c4 paper, brown #5a3826 ink edges, antique gold #c9a35a, forest green #2f5a3c, wine #7a1f2b, restrained tiny leafy corner decorations. Painterly polished 2D fantasy UI, front-on orthographic. THIS IS ONE MODULAR ASSET, never a complete screen. Absolutely NO letters, words, numbers, labels, watermark. All text mentioned in description is CONTEXT ONLY and MUST BE OMITTED. All outside edges genuinely transparent alpha. Keep each state's silhouette and dimensions identical. Clean generous blank centers for runtime text, no central ornaments. If a sheet, exact uniform grid, each state wholly inside its equal cell, no guides or gutters other than a few transparent edge pixels. Keep texture subtle, 9-slice center and straight edges stretchable.\nFilename: jr_slot.png\nRequested source size/grid: 4 ช่อง × 160×180 (640×180) โปร่ง\nSpecification: **ช่องสวมใส่ 6 ช่องด้านบน**: ① ปกติ (กรอบไม้สลักครีม) ② เลือกอยู่ (กรอบแดงไวน์ + ริบบิ้นที่คั่นหนังสือแดงห้อยมุมขวาบนตามภาพ Equipment) ③ เลือกอยู่แบบ Forge (กรอบแดงเรือง + เพชรบนล่างตามภาพ Forge) ④ ว่าง (จาง) · ด้านบนเว้นแถบชื่อช่อง",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-75ad9b0e-4138-45d7-8150-639e1edc5878.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1983,
+          793
+        ],
+        "sourceGrid": [
+          4,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_bag_cell",
+      "sourceSha256": "51f5676857985f43adbae9b0a225164536a7e82a2bef644825da0e52e9afa970",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game UI asset for an old parchment adventurer journal. Style reference: the two journal mockups shown earlier. Warm cream #f1e3c4 paper, brown #5a3826 ink edges, antique gold #c9a35a, forest green #2f5a3c, wine #7a1f2b, restrained tiny leafy corner decorations. Painterly polished 2D fantasy UI, front-on orthographic. THIS IS ONE MODULAR ASSET, never a complete screen. Absolutely NO letters, words, numbers, labels, watermark. All text mentioned in description is CONTEXT ONLY and MUST BE OMITTED. All outside edges genuinely transparent alpha. Keep each state's silhouette and dimensions identical. Clean generous blank centers for runtime text, no central ornaments. If a sheet, exact uniform grid, each state wholly inside its equal cell, no guides or gutters other than a few transparent edge pixels. Keep texture subtle, 9-slice center and straight edges stretchable.\nFilename: jr_bag_cell.png\nRequested source size/grid: 3 ช่อง × 180×180 (540×180) โปร่ง\nSpecification: **ช่องกระเป๋า**: ① ปกติ กรอบ **เทาขาว tint-ready** (โค้ดย้อมสีเกรด) ② เลือกอยู่ (กรอบแดงไวน์หนา) ③ ใส่อยู่ (มุมล่างซ้ายมีวงกลมเขียวสำหรับ ✓) · พื้นในช่องสีเข้มอุ่นให้รูปไอเทมเด่น (ภาพ Equipment ช่อง Lv25 เป็นพื้นแดงเข้ม)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-b27c0ea9-bbbc-490e-a59a-1662454a6bed.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Edit this production game UI sprite sheet only. Preserve all three square cells, layout, proportions, transparency and states. In the LEFTMOST normal cell only: remove ALL colored gold and green from the border and its leaf decorations; make the ENTIRE border and ALL border ornaments neutral white and gray, true tint-ready grayscale. Keep the inner warm dark brown blank well. Middle wine-red selected cell and right green equipped/check cell MUST remain exactly the same. No text, no extra icons. Exact three equal square cells in one horizontal row. Genuine transparent background.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_bag_cell.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-e83a04e7-1160-46ef-bdc2-93d7bb6aa1ef.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2172,
+          724
+        ],
+        "sourceGrid": [
+          3,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_tag_level",
+      "sourceSha256": "5a0b6ee2b72a4f83cf7e318d6037cff64c858460a459efdaac08ea6f497ec0fb",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_tag_level.png\nRequested source size/grid: 120×52 โปร่ง · 9-slice\nSpecification: ป้าย Lv มุมขวาบนช่อง: พื้นน้ำตาลเข้มโปร่งครึ่ง ขอบทองบาง",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-58ac7c14-06dd-420f-88dc-1365174e41e6.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. Remove the letters Lv completely, leaving a totally BLANK translucent dark-brown tag with thin antique gold edge. Preserve tag silhouette. Absolutely NO text or symbols. Actual alpha transparency outside.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_tag_level.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-f240ae73-09e7-4e2f-99f5-652fd499b854.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1905,
+          826
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_badge_new",
+      "sourceSha256": "6d4c343f0cc7978601a330461080dea49625fe6d17f35488a7309a526c3ba331",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_badge_new.png\nRequested source size/grid: 56×56 โปร่ง\nSpecification: จุดแดงชมพูขอบขาว (มีตัวเลข = โค้ดเขียน) — ภาพ Equipment ที่ Amulet/Ring/Boots",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-9f253695-029a-49c9-9fc5-3d5c7d0c1ec1.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. Replace this image with ONE SINGLE small circular pink-red notification dot with a thin cream-white outline. Dot interior completely blank. Remove ALL necklaces, boots, rings, gems and numbers. Only ONE plain red circle centered on transparent canvas. It is an empty badge BASE, never an equipment illustration. Actual alpha transparency outside.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_badge_new.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-3d4e1f5a-85be-4f99-860b-c4015da79f47.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_row",
+      "sourceSha256": "7ee71982b6024b84a233a847c5221250006888ca25a91a1f8f86cc0ed828591a",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game UI asset for an old parchment adventurer journal. Style reference: the two journal mockups shown earlier. Warm cream #f1e3c4 paper, brown #5a3826 ink edges, antique gold #c9a35a, forest green #2f5a3c, wine #7a1f2b, restrained tiny leafy corner decorations. Painterly polished 2D fantasy UI, front-on orthographic. THIS IS ONE MODULAR ASSET, never a complete screen. Absolutely NO letters, words, numbers, labels, watermark. All text mentioned in description is CONTEXT ONLY and MUST BE OMITTED. All outside edges genuinely transparent alpha. Keep each state's silhouette and dimensions identical. Clean generous blank centers for runtime text, no central ornaments. If a sheet, exact uniform grid, each state wholly inside its equal cell, no guides or gutters other than a few transparent edge pixels. Keep texture subtle, 9-slice center and straight edges stretchable.\nFilename: jr_row.png\nRequested source size/grid: 3 ช่อง × 1500×120 (แนวตั้ง 1500×360) โปร่ง · 9-slice\nSpecification: **แถวรายการ**: ① ปกติ (กระดาษอ่อน ขอบน้ำตาลบาง) ② เลือกอยู่ (แดงไวน์เข้ม ขอบทอง ตามแถว Power ในภาพ Forge) ③ ติ๊กเป้าหมาย (ชมพูอ่อน ขอบแดงไวน์ ตามแถว Damage over time) · ใช้กับแถว affix ของ Forge และแถว mod ในแผง MODS (ไม่มีกรอบ ใช้ B3 คั่นก็ได้)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-bbe31ca8-a481-413d-bee7-c55a798b3114.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1983,
+          793
+        ],
+        "sourceGrid": [
+          1,
+          3
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_icon_ring",
+      "sourceSha256": "7c88ab84887c13f0b17866140d5faa8f15b2703f73c9475b61fea6602c634d14",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_icon_ring.png\nRequested source size/grid: 4 ช่อง × 112×112 (448×112) โปร่ง\nSpecification: **วงกลมรองไอคอน mod**: ① Power ส้มแดง ② Sustain เขียว ③ Utility น้ำเงิน ④ ล็อก/implicit เทา · ขอบทองบาง ตรงกลางว่างให้ไอคอนเดิม",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-e0e4ae4c-0084-49f0-a80d-ea4c56270314.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. Replace with FOUR SIMPLE identical circular medallion bases in equal square horizontal cells: muted orange-red, muted green, muted blue, neutral gray. Thin antique gold rim only, blank solid dark center reserved for separate runtime icons. REMOVE top badges, flames, leaves, locks, sparkles, gems and large swirling glows. Matte hand-painted parchment journal style, tiny inset soft shading. No icons, text, letters, numbers. Transparent outside the four plain circles. Absolutely no text, numbers, watermark or labels anywhere. Actual alpha transparency.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_icon_ring.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-61c34e14-b19e-41c0-b58b-18f3b5781bee.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2067,
+          761
+        ],
+        "sourceGrid": [
+          4,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_star",
+      "sourceSha256": "5a9e75e557cc4e2eb59eef80811eb27cb5f079474cc9a57a71e856f2c6ebdd15",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_star.png\nRequested source size/grid: 2 ช่อง × 56×56 (112×56) โปร่ง\nSpecification: ดาว ★ แบบหมึกปั๊ม: ① **เทาขาว tint-ready** ② ทองเต็ม — โค้ดเขียนเลข 1–5 ข้าง ๆ",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-cd833788-dd37-4709-b933-7bdc3f1a923c.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. Remove the circled numeral 1 and circled numeral 2 completely. Keep ONLY two five-point ink-stamp stars in equal square cells horizontally, left neutral white-gray for tinting, right antique gold. Nothing else. No digits, circles or labels. Preserve true alpha and both star shapes. Absolutely no text, numbers, watermark or labels anywhere. Actual alpha transparency.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_star.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-2288174e-2817-4658-9f77-078df4ef309a.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          2,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_chip_pct",
+      "sourceSha256": "88a468376581a3c2c3e43c320ceb76a10f1897140443735107b6614f01778cea",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_chip_pct.png\nRequested source size/grid: 160×64 โปร่ง · 9-slice\nSpecification: ชิปสีน้ำตาลอ่อนมุมมนท้ายแถว Forge สำหรับ % โอกาส",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-361a23ee-b89d-4af5-9efe-624657005f09.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production asset correction. REMOVE the percent sign completely; replace with plain continuous warm light brown surface. One single blank rounded chip with thin brown rim for runtime text. Matte paper style, no gloss. Absolutely no text, numerals, symbols or icons anywhere. Actual alpha transparency outside.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_chip_pct.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-c30f9882-cd29-4714-9973-dea4b33d3564.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1983,
+          793
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_checkbox",
+      "sourceSha256": "c4a3e1d7a2bc7b860f0b8339d74780abb7daad3574073c6b70308019450d4837",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_checkbox.png\nRequested source size/grid: 2 ช่อง × 64×64 (128×64) โปร่ง\nSpecification: ① ว่าง (กรอบน้ำตาล) ② ติ๊ก (พื้นแดงไวน์ เครื่องหมาย ✓ ขาว)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-43f7dd6a-3040-4fb6-a830-d1c97c652493.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          2,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_radio",
+      "sourceSha256": "88d431721af10ccd3590f4e515bf66a45d8ec10f3f103be8295781146808b92a",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_radio.png\nRequested source size/grid: 2 ช่อง × 64×64 (128×64) โปร่ง\nSpecification: ปุ่มวงกลมเลือกแถว Power/Sustain/Utility: ① ว่าง ② เลือก (วงแดงมีจุดขาว)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-3c83019b-42f4-4ac7-a73d-fddab65f1fbd.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Replace with ONLY TWO SMALL RADIO CONTROL SYMBOLS in TWO equal square cells in ONE horizontal row. Left: a plain matte brown thin circular outline, center transparent. Right: a plain matte wine-red circular outline with a small white dot in center. DELETE ALL WORDS Power Sustain Utility, delete all labels and extra rows. No text, no numbers, no typography. Exactly two circles total, one empty and one selected. Old paper journal ink style, not glossy. Canvas outside and between the circles is actually transparent. Intended sheet 128x64.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_radio.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-4dc6bcb9-d776-40b0-9f27-cccfdab7100f.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          2,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_lock_cell",
+      "sourceSha256": "9aeff5aa709136ab59745628b084327843938975af25e371a5f7f06a2e1564de",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_lock_cell.png\nRequested source size/grid: 64×64 โปร่ง\nSpecification: ช่องกุญแจเล็กหน้าแถว implicit (Fixed)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-14ec50c7-76d4-4169-94b7-500be78ff266.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_primary",
+      "sourceSha256": "11ba431125fbf630f90e6b66ef1078f3d7bb68f3de898feb10bb7a3da3dc5bb4",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game UI asset for an old parchment adventurer journal. Style reference: the two journal mockups shown earlier. Warm cream #f1e3c4 paper, brown #5a3826 ink edges, antique gold #c9a35a, forest green #2f5a3c, wine #7a1f2b, restrained tiny leafy corner decorations. Painterly polished 2D fantasy UI, front-on orthographic. THIS IS ONE MODULAR ASSET, never a complete screen. Absolutely NO letters, words, numbers, labels, watermark. All text mentioned in description is CONTEXT ONLY and MUST BE OMITTED. All outside edges genuinely transparent alpha. Keep each state's silhouette and dimensions identical. Clean generous blank centers for runtime text, no central ornaments. If a sheet, exact uniform grid, each state wholly inside its equal cell, no guides or gutters other than a few transparent edge pixels. Keep texture subtle, 9-slice center and straight edges stretchable.\nFilename: jr_btn_primary.png\nRequested source size/grid: 3 ช่อง × 1500×200 (แนวตั้ง 1500×600) โปร่ง · 9-slice\nSpecification: **ปุ่มหลักเขียวป่าขอบทองนูน** (Enhance / Equip / Roll): ① ปกติ ② กด (เข้มขึ้นยุบ 3px) ③ ปิด (เทาเขียวจาง) · ปลายสองข้างมีเพชรทองเล็ก · เว้นที่ไอคอนซ้าย",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-02384e84-0c91-48b4-ad09-35d902833392.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1983,
+          793
+        ],
+        "sourceGrid": [
+          1,
+          3
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_secondary",
+      "sourceSha256": "f335c439306d250286b34f64e78aaa08ca4238322e416ba5cfd3e438764b9c9c",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game UI asset for an old parchment adventurer journal. Style reference: the two journal mockups shown earlier. Warm cream #f1e3c4 paper, brown #5a3826 ink edges, antique gold #c9a35a, forest green #2f5a3c, wine #7a1f2b, restrained tiny leafy corner decorations. Painterly polished 2D fantasy UI, front-on orthographic. THIS IS ONE MODULAR ASSET, never a complete screen. Absolutely NO letters, words, numbers, labels, watermark. All text mentioned in description is CONTEXT ONLY and MUST BE OMITTED. All outside edges genuinely transparent alpha. Keep each state's silhouette and dimensions identical. Clean generous blank centers for runtime text, no central ornaments. If a sheet, exact uniform grid, each state wholly inside its equal cell, no guides or gutters other than a few transparent edge pixels. Keep texture subtle, 9-slice center and straight edges stretchable.\nFilename: jr_btn_secondary.png\nRequested source size/grid: 3 ช่อง × 760×150 (แนวตั้ง 760×450) โปร่ง · 9-slice\nSpecification: ปุ่มรองเขียวเข้มกว่า D1 (Craft / Lock / Salvage / Unlock): ① ปกติ ② กด ③ ปิด",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-4d03cfb2-46ef-4784-bafd-e9a6211b6c93.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          3,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_accent",
+      "sourceSha256": "3d0e5ba04355fdec40b91286d512e8a7d9cc0a05ce1ebfddabd41e09b7cfd8a4",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_btn_accent.png\nRequested source size/grid: 3 ช่อง × 520×150 (แนวตั้ง 520×450) โปร่ง · 9-slice\nSpecification: ปุ่มแดงไวน์ขอบทอง (Tier +1 ในภาพ Forge) · ① ปกติ ② กด ③ ปิด",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-15285ee3-f70d-4672-8ecf-1ca104e7b36b.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production journal UI asset correction. Keep three equal button states VERTICALLY (normal, darker pressed, desaturated disabled). Change bright crimson to deep matte wine #7a1f2b, antique muted gold trim, hand-painted journal style. Remove all top-center and bottom-center gemstones so the long horizontal edges are plain continuous straight gold lines for 9-slice; retain small ornaments at side endcaps only. No text or icons, blank centers, genuine transparent outside.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_btn_accent.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-d75907f7-71d9-426f-9ccc-f92cba4ee61c.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1234,
+          1275
+        ],
+        "sourceGrid": [
+          1,
+          3
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_icon",
+      "sourceSha256": "46fb08bf5835190d4bb3ab345efe08162854e5538943cb864742c9710b6d04d7",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_btn_icon.png\nRequested source size/grid: 2 ช่อง × 100×100 (200×100) โปร่ง\nSpecification: ปุ่มไอคอนสี่เหลี่ยมมุมมนเขียว (♻ ⚡ บนหัวกระเป๋า · กุญแจบนการ์ด) · ① ปกติ ② กด/เปิดอยู่ (ขอบทองเรือง)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-3b110ea8-c26f-4846-b312-c45594b9f369.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Edit this UI sheet into two EMPTY square icon-button BASES. REMOVE EVERYTHING inside both buttons: remove shopping bag, card, lock, recycle, bolt and all other objects completely. Both button interiors must be totally blank uninterrupted dark forest green #2f5a3c. Restyle to MATTE hand-painted old parchment journal, muted antique gold #c9a35a thin edging, absolutely NO glossy neon plastic or big glow. Two identical-sized rounded square silhouettes in equal horizontal cells. Left normal state, right pressed/active has a slightly brighter thin antique gold edge only. Entirely transparent outside button shapes. No text, letters, numerals, symbols, pictures or icons inside either button.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_btn_icon.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-5d0d0925-b3c2-485e-abd0-81f8e5a48734.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          2,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_pill",
+      "sourceSha256": "6ef05abd46cafc4e111a9e29eb2649b43534e3712f58f6f159d8972c3e9bb1c2",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_btn_pill.png\nRequested source size/grid: 2 ช่อง × 440×80 (แนวตั้ง 440×160) โปร่ง · 9-slice\nSpecification: ปุ่มเม็ดยาเขียวขอบทองบาง (ปุ่ม Set \"Kitchen 1/5\", ป้าย Equipped) · ① ปกติ ② เขียวอ่อน (สถานะ \"Equipped\" ตามภาพ Forge)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-9e15ebd7-8276-45f2-98a0-36e4825a7160.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Edit this sheet of two pill-shaped button states. REMOVE ALL letters, words and numbers completely from BOTH buttons: remove Kitchen 1/5 and Equipped, fill with uninterrupted blank green. REMOVE ALL outer glow and halo. Matte hand-painted old journal style: first muted dark forest green #2f5a3c, second soft pale sage green, thin antique brass #c9a35a edge. No shiny neon highlights. Preserve identical pill silhouette, one column by two equal rows. Actual transparent alpha outside silhouettes, no background. No text, numbers, symbols, or icons.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_btn_pill.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-3cb50499-6d79-4dd9-87fd-cb5418f9e4ac.png"
+        },
+        {
+          "prompt": "Change ONLY the pixels OUTSIDE the two pill silhouettes. REMOVE THE ENTIRE golden glow and brown haze outside and between both buttons; replace all of it with fully transparent alpha zero. Preserve both blank green button interiors, gold borders, shapes and colors. Outside each gold rim should become immediately completely transparent, with only antialias edge and no shadow. No glow at all. No text or other changes.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_btn_pill.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-9f2247d1-b3f2-4e83-a044-32c623c171e5.png"
+        },
+        {
+          "prompt": "Create a NEW production sprite sheet, 880x320 wide landscape. TWO EMPTY LOW PILL-SHAPED UI BUTTON BASES in ONE COLUMN and TWO ROWS, each button 880x160. Top button dark muted forest green painted leather, bottom button pale sage green painted paper. Thin antique brass rim. Completely blank interiors. Matte hand-painted adventurer journal style. Exact same low horizontal pill silhouette in both rows. Actual transparent alpha outside each pill, immediate hard clean antialiased edge. Absolutely NO glow, NO aura, NO bloom, NO shadows, NO words, NO text, NO numerals, NO icons, NO background. The ONLY opaque pixels are the two pill shapes and their thin rims.",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-6954f293-44bc-463f-9329-12586557be0e.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2079,
+          756
+        ],
+        "sourceGrid": [
+          1,
+          2
+        ],
+        "selectedFrames": [
+          0,
+          1
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_btn_pager",
+      "sourceSha256": "eadc312e9dd5294dc975cb39a6fc1e34f918bfffdea16c6d458c0d9fa0926947",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_btn_pager.png\nRequested source size/grid: 3 ช่อง × 150×90 (450×90) โปร่ง\nSpecification: ปุ่มเปลี่ยนหน้า ‹ › : ① ครีม (ปกติ) ② เขียว (ไปหน้าถัดไปได้) ③ ปิด — ลูกศรวาดในภาพได้ (ไม่ใช่ตัวอักษร)",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-8b8cc64c-b1af-4259-b10e-15b37d58d4f6.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Production journal UI asset correction. Replace with exactly THREE low rounded rectangular pagination buttons in THREE equal horizontal cells (150x90 each): first cream parchment with brown RIGHT-pointing chevron, second matte forest green with muted gold RIGHT-pointing chevron, third disabled pale gray-brown with faint RIGHT-pointing chevron. Only THREE buttons total, not six pairs. Same rectangular silhouette each state, hand-painted old journal style, thin antique brown/gold border. No words or numerals, no glossy plastic, transparent outside. Runtime mirrors for left arrow.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_btn_pager.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-897006fa-d9d0-4c37-9f10-2dc6a5d1e0ad.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2172,
+          724
+        ],
+        "sourceGrid": [
+          3,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_icon_sheet",
+      "sourceSha256": "d53ad3441dd12b7e1f1c63426e55303aac006b309061a9c50ea1d9745b527bee",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_icon_sheet.png\nRequested source size/grid: 16 ช่อง × 128×128 (4×4 = 512×512) โปร่ง\nSpecification: สไตล์หมึก+ลงสีบนกระดาษ ตามภาพ เรียงตามนี้: ① ดาบไขว้ (ATK) ② โล่ฟ้า (DEF) ③ ลูกศรรีไซเคิล (Salvage weaker) ④ สายฟ้าทอง (Equip Best) ⑤ กุญแจล็อกทอง ⑥ กุญแจปลดล็อก ⑦ ค้อนเงิน (Enhance) ⑧ ขวดยาเขียว (Craft) ⑨ เป้าเล็ง (Target affixes) ⑩ กากบาท ✕ (ล้างตัวกรอง) ⑪ ถ้วยเซ็ต/บ้าน (ปุ่ม Set) ⑫ ⚠ สามเหลี่ยมเตือน ⑬ ลูกศรวนคู่ (Auto-roll) ⑭ หัวใจแดง (HP implicit) ⑮ ประกายดาวสี่แฉก ⑯ ว่าง CRITICAL: exact 4 columns x 4 rows, 16 equal square cells, last cell wholly transparent. Icons only with NO paper tile behind them.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-1d5926e3-37ac-4a66-a5df-4df5aa8d08e4.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "sourceGrid": [
+          4,
+          4
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_forge_summary",
+      "sourceSha256": "8d291a9d425983dd6c274d5587a1845eef15345eee42b01d0107b7c5021c66d8",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_forge_summary.png\nRequested source size/grid: 1500×300 โปร่ง · 9-slice\nSpecification: การ์ดสรุปไอเทมใหญ่: กระดาษ ขอบน้ำตาลสองชั้น · **ซ้ายมีช่อง/ลายเถาลาเวนเดอร์รองรูปไอเทมใหญ่** · มุมขวาบน/ล่างมีใบไม้เล็ก · เส้นคั่นบางใต้บรรทัดชื่อ Keep lavender art confined within the left 180px cap so nine-slice left=200 is usable.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-80e90bb4-ee81-4798-8267-d198a4589699.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1774,
+          887
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "jr_forge_footer",
+      "sourceSha256": "e8d20e0885256ec6da903186dee65845853a89c82cacae1b47862a32df22196f",
+      "generation": {
+        "prompt": "undefined\nFilename: jr_forge_footer.png\nRequested source size/grid: 1500×300 โปร่ง · 9-slice\nSpecification: แถบล่าง: กระดาษเข้มกว่าแผงนิด ขอบบนเป็นเส้นหนังเย็บ · มุมล่างมีดอกไม้ม่วง + ใบไม้ ตามภาพ · พื้นที่กลางเรียบสำหรับ \"1 target selected\" + ปุ่ม Keep flowers confined to the bottom corners only, no middle motifs.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-8b1f6bf2-f19d-4d09-a79c-17b038e7987d.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "Correct this old-journal footer asset. The large center surface must be LIGHT CREAM PARCHMENT #e6d2a8, NOT dark leather, so dark-brown game text reads clearly. Keep only a THIN stitched brown leather top border, tiny violet flowers/green leaves confined to BOTTOM LEFT and BOTTOM RIGHT corners. Full low rectangular footer panel, entirely blank clean pale paper center occupying at least 80% area. No mid-edge ornaments or center dividers. No text, numbers, buttons, symbols or icons. Hand-painted aged paper matching reference journal. True transparent alpha outside silhouette. Intended 1500x300.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order27/jr_forge_footer.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-5c04ce12-cb77-4e4c-bbd7-5291f186229d.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2172,
+          724
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    }
+  ]
+}

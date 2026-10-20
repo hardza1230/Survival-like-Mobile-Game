@@ -1,0 +1,51 @@
+{
+  "bk_page_turn": {
+    "opaqueWidthByFrame": [
+      533,
+      533,
+      406,
+      228,
+      79,
+      46
+    ],
+    "coverageByFrame": [
+      0.8641,
+      0.7708,
+      0.5011,
+      0.2654,
+      0.0657,
+      0.0251
+    ],
+    "monotonicallyRevealsNewPage": true
+  },
+  "bk_cover_open": {
+    "opaqueWidthByFrame": [
+      518,
+      273,
+      45,
+      35,
+      14
+    ],
+    "coverageByFrame": [
+      0.888,
+      0.4291,
+      0.0686,
+      0.0459,
+      0.0136
+    ],
+    "monotonicallyRevealsNewPage": true
+  },
+  "pageTurnMs": 340,
+  "coverHoldMs": 150,
+  "coverAnimationMs": 400,
+  "shadowDrawAlpha": 0.4,
+  "dustDrawAlphaEnvelope": [
+    0.7,
+    0.95,
+    1,
+    0.6,
+    0.25,
+    0
+  ],
+  "type": "offline art-only compositing using owner refs; runtime skip/reduced-motion/fallback still pending implementation"
+}

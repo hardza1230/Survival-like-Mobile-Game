@@ -1,0 +1,249 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "key": "bk_page_turn",
+      "sourceSha256": "2bfbeb21801631854bcddbe9095d22624102c2777cbf5504c28932890ecf07e7",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game book transition texture, one modular asset. Match journal palette: warm cream parchment #f1e3c4 fine fibers and aged yellow edges, dark brown leather #5a3826 with antique gold #c9a35a details. Front view mobile portrait book; no text, no letters, no numbers, no labels, no watermark anywhere. For animation sheets: EXACT requested equal-cell grid, no gridlines, no labels, no exterior margins, every frame aligned to SAME top-left origin and same scale, leave unused frame area genuinely transparent. All panels plain with NO writing. Sheet frames ordered left-to-right then top-to-bottom. Preserve logical physical continuity between frames. Paper and cover must fill portrait frame at start; all revealed space genuinely alpha transparent. No table, no scene background, no extra book or hands.\nFilename: bk_page_turn.png\nSource size/grid: **6 เฟรม × 540×960** (3×2 = 1620×1920) โปร่ง\nSpecification: **แผ่นกระดาษที่กำลังพลิก** (เฉพาะแผ่นหน้า ไม่มีพื้นหลัง): ① แผ่นเต็มจอ มุมขวาล่างเริ่มม้วน ② ม้วนถึง 1/4 เห็นหลังกระดาษ (สีเข้มกว่าหน้าเล็กน้อย) ③ ยกตั้งเกือบครึ่งจอ ④ เลยกึ่งกลาง เหลือแผ่นแคบเอียง ⑤ เหลือขอบแคบด้านซ้าย ⑥ แผ่นหายเข้าสันซ้าย เหลือเงาบาง ๆ · ขอบกระดาษมีเส้นใยและขอบเหลืองเก่า · หน้ากระดาษในเฟรม ①–③ **เรียบไม่มีลายตรงกลาง** (ไม่ต้องแสดงเนื้อหาหน้าเก่า — โค้ดจะซ้อนภาพหน้าเดิมจางไว้ใต้) EXACT 3 columns by 2 rows. Frame 1 page covers nearly full portrait viewport. Frame 2 curled from bottom right, full height left edge anchored x=0. Frame 3 folds toward left with 55% page remaining. Frame 4 30% width remaining on left, Frame 5 10% left, Frame 6 only 1% left sliver, rest transparent. Do not draw six full books; show progressively vanishing page.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-e15d0ebc-8a1a-4711-8843-3db61c3d1029.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1152,
+          1366
+        ],
+        "sourceGrid": [
+          3,
+          2
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "bk_page_shadow",
+      "sourceSha256": "69fb5d39ccb8c81f86b1ddeff7518dd9a949a523e5737059472d8c7abf392233",
+      "generation": {
+        "prompt": "Use this six-frame page-turn sheet as an EXACT REGISTRATION reference. Create ONLY the matching soft shadows cast onto the underlying page by these curls, no visible paper whatsoever. Keep EXACT same 3 columns x 2 rows equal portrait cells and exact frame alignment. Every cell's left edge remains anchored at same cell x=0. Frame 1 narrow warm-brown soft edge shadow at lower right curl; frame 2 warm brown diagonal curling edge shadow; frame 3 narrower shadow as page leaves; frame 4 shadow on left ~30% width; frame 5 narrow left strip shadow; frame 6 barely visible left-edge shadow. Shadow color warm #5a3826, translucent alpha 25–45%, feathered soft edges. All other pixels transparent. NO paper, NO outlines, NO text, NO solid background. Output ONLY the shadow spritesheet at 810x960, 3x2 cells of 270x480.",
+        "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order28/bk_page_turn.raw.png",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-32837eaf-5292-4966-a943-a6e607e1611c.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1151,
+          1366
+        ],
+        "sourceGrid": [
+          3,
+          2
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "bk_spine",
+      "sourceSha256": "0e36784b409527587d201c0cb8ca3a7ceadb91e76894966434afd53a2b895a34",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game book transition texture, one modular asset. Match journal palette: warm cream parchment #f1e3c4 fine fibers and aged yellow edges, dark brown leather #5a3826 with antique gold #c9a35a details. Front view mobile portrait book; no text, no letters, no numbers, no labels, no watermark anywhere. For animation sheets: EXACT requested equal-cell grid, no gridlines, no labels, no exterior margins, every frame aligned to SAME top-left origin and same scale, leave unused frame area genuinely transparent. All panels plain with NO writing. Sheet frames ordered left-to-right then top-to-bottom. Preserve logical physical continuity between frames. Paper and cover must fill portrait frame at start; all revealed space genuinely alpha transparent. No table, no scene background, no extra book or hands.\nFilename: bk_spine.png\nSource size/grid: 64×1920 โปร่ง · ยืดแนวตั้ง\nSpecification: **สันหนังสือ**ด้านซ้าย: เส้นเย็บหนัง + เงาร่องสัน · แสดงเฉพาะตอนพลิก (fade in/out) Single extremely tall narrow strip; allow all canvas outside leather spine to be transparent. No book cover, only seam.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-7e93ddb7-8033-4ac4-9694-9532aa838d7c.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          724,
+          2172
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "vfx_bk_dust",
+      "sourceSha256": "1317a5f3053712622c22b6b7ebdd51826ecb6b46e25f5aba1ab143d0e88db164",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game book transition texture, one modular asset. Match journal palette: warm cream parchment #f1e3c4 fine fibers and aged yellow edges, dark brown leather #5a3826 with antique gold #c9a35a details. Front view mobile portrait book; no text, no letters, no numbers, no labels, no watermark anywhere. For animation sheets: EXACT requested equal-cell grid, no gridlines, no labels, no exterior margins, every frame aligned to SAME top-left origin and same scale, leave unused frame area genuinely transparent. All panels plain with NO writing. Sheet frames ordered left-to-right then top-to-bottom. Preserve logical physical continuity between frames. Paper and cover must fill portrait frame at start; all revealed space genuinely alpha transparent. No table, no scene background, no extra book or hands.\nFilename: vfx_bk_dust.png\nSource size/grid: 6 เฟรม × 128×128 (768×128) โปร่ง\nSpecification: ฝุ่นกระดาษ/ประกายทองเล็ก ๆ ฟุ้งจากสันหนังสือตอนแผ่นพลิกจบ (แทน `vfx_tr_puff`) · alpha ตามความสว่าง EXACT 6 columns 1 row, small gold paper dust grows then dissipates. Every cell equal 128 square.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-f568a5e9-b692-4de1-a3ed-3d48cf566611.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [
+        {
+          "prompt": "REMOVE ALL six visible books completely. Keep ONLY floating paper dust and tiny golden sparkles on genuine transparent alpha, no other objects. Six equal square cells in ONE HORIZONTAL ROW. Frame 1 small compact puff, frame 2 grows, frame 3 largest outward burst, frame 4 disperses thinner, frame 5 sparse fading specks, frame 6 nearly invisible few specks. Paper particles and tiny gold sparkles ONLY, absolutely no books, pages, covers, icons or text. Transparent outside dust, no solid smoke background. Source sheet intended 768x128.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order28/vfx_bk_dust.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-9a6dc733-3c92-4b81-b90b-35cdbebb4eb8.png"
+        },
+        {
+          "prompt": "Correct this six-frame dust spritesheet so frames DO NOT TOUCH or OVERLAP. EXACT 6 EQUAL SQUARE CELLS in ONE horizontal row, total768x128. Each cell128x128, effect centered64,64, no pixels within 8px of any cell edge. Frame1 compact radius20, frame2 radius36, frame3 radius50 maximum, frame4 radius50 but more sparse, frame5 radius50 faint few paper specks, frame6 radius50 almost invisible specks. IMPORTANT every effect fully inside its own equal128px square; no overlapping glow clouds between neighboring cells. Tiny cream paper fibers and gold sparkles only, transparent outside and between particles, NO books, text or objects. Make brightness fade clearly in frames4,5,6.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order28/vfx_bk_dust.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-f00f075b-5bb4-452e-bb28-fe0385aea373.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2172,
+          724
+        ],
+        "sourceGrid": [
+          6,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art",
+        "commonVerticalCrop": "center square (source sheet height cropped equally for all six frames)"
+      }
+    },
+    {
+      "key": "bk_cover_closed",
+      "sourceSha256": "938a5ff0e5df22ef0c72932657e4404c4821069f16666a2eac09c02430943b73",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game book transition texture, one modular asset. Match journal palette: warm cream parchment #f1e3c4 fine fibers and aged yellow edges, dark brown leather #5a3826 with antique gold #c9a35a details. Front view mobile portrait book; no text, no letters, no numbers, no labels, no watermark anywhere. For animation sheets: EXACT requested equal-cell grid, no gridlines, no labels, no exterior margins, every frame aligned to SAME top-left origin and same scale, leave unused frame area genuinely transparent. All panels plain with NO writing. Sheet frames ordered left-to-right then top-to-bottom. Preserve logical physical continuity between frames. Paper and cover must fill portrait frame at start; all revealed space genuinely alpha transparent. No table, no scene background, no extra book or hands.\nFilename: bk_cover_closed.png\nSource size/grid: 1080×1920 **ทึบ**\nSpecification: **ปกหนังสือปิด**: หนังน้ำตาลเข้มลายหนัง ขอบเย็บด้ายทอง มุมโลหะทองสี่มุม · กลางมี **ตราสัญลักษณ์** (โมจิน่ารักในวงพวงใบไม้ + ดาวสี่แฉก) นูนทอง · ไม่มีตัวอักษร Opaque full-bleed front cover filling entire canvas, not a book floating in a scene. Cute mochi in gold leaf wreath emblem with four-point star, NO letter logo.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-c9ff67fd-37fb-466c-8bc8-0941f3bd2f90.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          941,
+          1672
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    },
+    {
+      "key": "bk_cover_open",
+      "sourceSha256": "7c9e85ff3a97934dd873724f3659276729e91c1c61693e7a70ee7b5ea04a41a4",
+      "generation": {},
+      "corrections": [
+        {
+          "prompt": "Use this EXACT closed leather cover as visual design reference for an opening animation spritesheet. Preserve brown leather, gold corners, stitching and cute gold mochi-leaf wreath emblem. Output ONLY FIVE animation frames in ONE horizontal row of FIVE EQUAL portrait cells (each 540x960, sheet 2700x960). Hinge fixed on each cell's LEFT x=0 spine; fixed top/bottom registration. Frame 1 front cover almost closed fills viewport, slight gap right; frame 2 cover opens toward left to 45 degrees, 70% width; frame 3 edge-on cover narrow 8% strip at left; frame 4 inside of cover folds further left, only 5% edge left inside frame, light tan leather visible; frame 5 cover almost fully gone outside left, tiny thin shadow sliver x=0 only. The rest of each viewport is TRANSPARENT so new menu shows underneath; DO NOT draw any book pages or table behind cover. No background, no words, no labels, no letters or numbers. This is cover alone opening, not five complete books.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order28/bk_cover_closed.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-e0471493-e930-47ee-ad63-92b6c41b015b.png"
+        },
+        {
+          "prompt": "Correct the REGISTRATION of this five-frame animation sheet. Use EXACTLY 5 EQUAL-WIDTH columns, all frames portrait 540x960, sheet2700x960. Frame boundaries at x=0,540,1080,1620,2160,2700. Fixed spine at LEFT EDGE OF EACH CELL, fixed top0 and bottom960. No margin. Frame1 cover fills x0..525 in its cell. Frame2 same cover seen45degrees fills x0..350 only. Frame3 edge-on x0..40 only. Frame4 cover has gone past the LEFT edge; show ONLY a tiny strip of TAN INNER leather x0..20, rest transparent (REMOVE large tan panel that currently sticks right). Frame5 only barely visible shadow x0..3, NO metal spine visible, rest transparent. Preserve brown leather and cute mochi gold emblem first2frames. All remaining pixels transparent. Do not vary source cells' widths or center objects inside cells. Exactly aligned five equal cells, no labels/text/grid lines. IMPORTANT widths decrease monotonically:525,350,40,20,3.",
+          "input": "C:/Users/Norrasates/Documents/Codex/2026-10-20/2-github-27-equipment-affix-forge/work/order28/bk_cover_open.raw.png",
+          "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-10bff92e-2d8d-4634-bc43-83df2a17bade.png"
+        }
+      ],
+      "packing": {
+        "sourceSize": [
+          2036,
+          772
+        ],
+        "sourceGrid": [
+          5,
+          1
+        ],
+        "selectedFrames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art",
+        "sourceRects": [
+          [
+            0,
+            0,
+            464,
+            772
+          ],
+          [
+            490,
+            0,
+            737,
+            772
+          ],
+          [
+            998,
+            0,
+            1042,
+            772
+          ],
+          [
+            1320,
+            0,
+            1354,
+            772
+          ],
+          [
+            1676,
+            0,
+            1694,
+            772
+          ]
+        ],
+        "registrationCanvas": [
+          480,
+          772
+        ],
+        "registration": "each isolated generated pose at x=0 before uniform resize; no pose drawn procedurally"
+      }
+    },
+    {
+      "key": "bk_cover_glow",
+      "sourceSha256": "662da5ef5617b2de5cf6c980f157a1f204160066fd9a8e480a8fc600b71c4062",
+      "generation": {
+        "prompt": "Use case: stylized-concept. Production game book transition texture, one modular asset. Match journal palette: warm cream parchment #f1e3c4 fine fibers and aged yellow edges, dark brown leather #5a3826 with antique gold #c9a35a details. Front view mobile portrait book; no text, no letters, no numbers, no labels, no watermark anywhere. For animation sheets: EXACT requested equal-cell grid, no gridlines, no labels, no exterior margins, every frame aligned to SAME top-left origin and same scale, leave unused frame area genuinely transparent. All panels plain with NO writing. Sheet frames ordered left-to-right then top-to-bottom. Preserve logical physical continuity between frames. Paper and cover must fill portrait frame at start; all revealed space genuinely alpha transparent. No table, no scene background, no extra book or hands.\nFilename: bk_cover_glow.png\nSource size/grid: 512×512 โปร่ง\nSpecification: แสงทองนุ่ม ๆ จากตราตอนเริ่มเปิด (โค้ดขยาย + จางออก 200ms) A single soft golden bloom on true alpha, radiating from center, no hard disk boundary, no objects.",
+        "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a1595f-7b53-7b31-ab2c-4f39134e2bee\\exec-666028ce-aff8-4ee4-a766-1c6c5f924158.png",
+        "tool": "built-in image_gen"
+      },
+      "corrections": [],
+      "packing": {
+        "sourceSize": [
+          1254,
+          1254
+        ],
+        "sourceGrid": [
+          1,
+          1
+        ],
+        "selectedFrames": [
+          0
+        ],
+        "method": "Pillow atlas crop/resize to exact contract; native generated RGBA preserved; no procedural art"
+      }
+    }
+  ]
+}
