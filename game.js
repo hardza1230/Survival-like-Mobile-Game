@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.12';
+const GAME_VERSION = '7.9.13';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.13',date:'2026-10-20',title:'Boss skill mechanics (pilot)',items:['Hornet Queen: Hive Rush — she flies to the side and rushes across the screen, move out of her lane','Ant Empress: Tunnel — she digs under you, walk out of the shadow before she bursts out (two shadows later, the real one drips acid)','Great Hunger: The Feast — it pulls you in and eats plates to heal, dash into a plate to make it choke','Dash into the honey jar or ant egg they leave behind to kick it back at the boss']},
   {v:'7.9.12',date:'2026-10-20',title:'Pick up your EXP',items:['EXP drops now stay on the ground after a wave or a boss — walk over them to collect']},
   {v:'7.9.11',date:'2026-10-20',title:'Every boss has its own moves',items:['All Chapter 3 bosses and the Pinnacle boss now fight with their own signature attacks and big finishers','Minibosses in Chapter 1, Chapter 2 and Chapter 3 that shared moves now have their own too','When a wave ends, leftover EXP visibly flies to you instead of vanishing']},
   {v:'7.9.10',date:'2026-10-20',title:'Adventurer’s journal',items:['Equipment and Affix Forge now look like an old parchment journal','Menus turn like book pages, and the book cover opens when you arrive at the menu (tap to skip)']},
@@ -16081,7 +16082,7 @@ class Game extends Phaser.Scene {
     if(broken&&b&&b.active){const dmg=b.maxhp*0.08;b.hp-=dmg;this.popDmg(Math.round(dmg),b.x,b.y,true);b.atkCd=Math.max(b.atkCd||1,2.2);b.frozen=Math.max(b.frozen||0,0.6);this.screenFlash(0xffe07a,0.3,360);this.screenShake(220,0.01);this.hitStop(60);this.showBanner('🛡️ Shield Broken!','The boss is stunned — hit it hard!',1600);Sfx.bp?.('boss_shield_break',.7,.5)||Sfx.clear();if(b.hp<=0)this.killEnemy(b);}
   }
   resetBossObjective(){this._weakActive=false;this._bossShield=false;this._weakAcc=11;this._weakCount=0;if(this._bossShieldFx){this.tweens.killTweensOf(this._bossShieldFx);if(this._bossShieldFx.active)this._bossShieldFx.destroy();this._bossShieldFx=null;}}
-  clearBossObjects(){this.clearDelveBoss&&this.clearDelveBoss();this._weakActive=false;if(this.bossObjects)this.bossObjects.children.iterate(o=>{if(o&&o.active){o._weak=false;this.killBossObject(o,false);}});this.resetBossObjective();}
+  clearBossObjects(){this.clearArenaMech?.();this.clearDelveBoss&&this.clearDelveBoss();this._weakActive=false;if(this.bossObjects)this.bossObjects.children.iterate(o=>{if(o&&o.active){o._weak=false;this.killBossObject(o,false);}});this.resetBossObjective();}
   tickBossObjects(dt){
     if(!this.bossObjects)return;this.bossObjects.children.iterate(o=>{if(!o||!o.active)return;o.life-=dt;o.tick-=dt;if(o.kind==='acid'){if(this.dist(o.x,o.y,this.player.x,this.player.y)<68&&o.tick<=0){o.tick=0.55;this.hurtPlayer(11,0.28);}if(o.life<=0)this.killBossObject(o,false);return;}
       if(o.kind==='hole'){if(o.life<=0)this.killBossObject(o,false);return;}
@@ -16109,6 +16110,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(ms,()=>{if(b.active&&b.texture.key==='boss1'&&b._poseToken===token){if(this.anims.exists('boss1_idle'))b.play('boss1_idle',true);else b.setFrame(0);}});
   }
   antQueenAttack(b){
+    if(this.arenaMechDue(b)){this.antTunnel(b);return;}   // v7.9.13 กลไกสนาม
     const fast=b.phase3?0.72:b.phase2?0.84:1,pool=b.phase3?['slam','acid','brood','rush','nova','collapse','nova']:b.phase2?['slam','acid','brood','rush','nova']:['slam','acid','brood','rush'];   // เอา 'crystal' (เสาผลึก) ออก
     const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y;
     if(pick==='slam'){this.bossPose(b,2,900);const n=b.phase3?3:b.phase2?2:1;for(let i=0;i<n;i++)this.time.delayedCall(280+i*130,()=>{if(b.active){this.bossPose(b,3,420);this.spawnHazard(px+Phaser.Math.Between(-70,70),py+Phaser.Math.Between(-70,70),100,22,0x75ff4b);}});b.atkCd=2.2*fast;}
@@ -16285,6 +16287,70 @@ class Game extends Phaser.Scene {
     const cd=mv.run({s:this,b,si,sd,hd,px,py,aim,fast,ring,fan,lane,haz,adds,T,tint});
     b.atkCd=(cd||2.4)*fast;
   }
+  /* v7.9.13 เจ้าของ: กลไกสนามที่ต้องใช้ฝีมือ (docs/BOSS_ARENA_MECHANICS.md · นำร่อง 3 ตัว) · Counter Object = Dash ชนแล้วพุ่งกลับใส่บอส */
+  arenaMechDue(b){ const now=this.elapsed||0; if(b._mechNext==null){b._mechNext=now+4.5;return false;} if(now<b._mechNext||b._arenaBusy)return false; b._mechNext=now+(b.phase3?8.5:b.phase2?10:12); return true; }
+  arenaVw(){ return this.W/(this.cameras?.main?.zoom||1); }
+  arenaHurt(dmg,x,y,r){ const p=this.player; if(p&&this.dist(p.x,p.y,x,y)<r)this.hurtPlayer(dmg,Math.atan2(p.y-y,p.x-x)); }
+  bossStun(b,sec,label){ if(!b?.active)return; b.knock=Math.max(b.knock||0,sec); b.setVelocity?.(0,0); b.atkCd=Math.max(b.atkCd||0,sec+.4); b._mechNext=Math.max(b._mechNext||0,(this.elapsed||0)+sec+3);
+    this.popDmg?.(label||'Stunned!',b.x,b.y-60,true); const r=this.camWorld(this.add.circle(b.x,b.y-70,14,0xffe08a,.9).setDepth(b.depth+2)); this.tweens.add({targets:r,angle:360,alpha:0,y:r.y-20,duration:sec*1000,onComplete:()=>r.destroy()}); }
+  bossPctHit(b,pct){ if(!b?.active)return; const was=this._infTick; this._infTick=true; try{ this.damage(b,b.maxhp*pct,b.x,b.y); }finally{ this._infTick=was; } }
+  // ของตอบโต้: kind ใช้สี/emoji · onHit(boss) ตอนพุ่งชนบอส · ไม่โดนเตะ 6 วิ = แตกเอง (เตือน 1 วิ)
+  spawnCounter(b,x,y,{emoji='🥚',key=null,tint=0xffe08a,life=6,onHit=null,drift=null,onArrive=null}={}){ const L=this._counters||(this._counters=[]); if(L.filter(c=>c.boss===b&&!c.dead).length>=(drift?6:2))return null;
+    const ring=this.camWorld(this.add.circle(x,y,26,tint,.18).setStrokeStyle(3,tint,.95).setDepth(y-1));
+    const spr=this.camWorld(key&&this.textures.exists(key)?this.add.image(x,y,key).setDisplaySize(46,46).setDepth(y):this.add.text(x,y,emoji,{fontSize:'34px'}).setOrigin(.5).setDepth(y));
+    this.tweens.add({targets:ring,scale:{from:.85,to:1.15},yoyo:true,repeat:-1,duration:420});
+    const c={b,boss:b,x,y,spr,ring,t:life,life,onHit,drift,onArrive,launched:false,dead:false}; L.push(c); return c; }
+  killCounter(c){ if(c.dead)return; c.dead=true; this.tweens.killTweensOf(c.ring); c.spr?.destroy(); c.ring?.destroy(); }
+  tickArenaMech(dt){ const L=this._counters; if(!L||!L.length)return; const p=this.player,kick=(this.dashTime||0)>0||((this.elapsed||0)-(this._lastDashAt??-9))<.22;
+    for(const c of L){ if(c.dead)continue; const b=c.boss;
+      if(!b||!b.active){this.killCounter(c);continue;}
+      if(c.launched){ const a=Math.atan2(b.y-c.y,b.x-c.x),sp=760*dt; c.x+=Math.cos(a)*sp; c.y+=Math.sin(a)*sp; c.spr.setPosition(c.x,c.y).setAngle((c.spr.angle||0)+900*dt); c.ring.setPosition(c.x,c.y);
+        if(this.dist(c.x,c.y,b.x,b.y)<Math.max(48,(b.displayWidth||90)*.32)){ this.killCounter(c); this.screenShake?.(220,.012); Sfx.hit?.(); this.vfxHitRing?.(b.x,b.y,0xffe08a,true); c.onHit?.(b); } continue; }
+      if(c.drift){ const a=Math.atan2(b.y-c.y,b.x-c.x),sp=c.drift*dt; c.x+=Math.cos(a)*sp; c.y+=Math.sin(a)*sp; c.spr.setPosition(c.x,c.y); c.ring.setPosition(c.x,c.y);
+        if(this.dist(c.x,c.y,b.x,b.y)<60){ this.killCounter(c); c.onArrive?.(b); continue; } }
+      if(p&&kick&&this.dist(p.x,p.y,c.x,c.y)<56){ c.launched=true; this.tweens.killTweensOf(c.ring); c.ring.setAlpha(.6); Sfx.select?.(); this.popDmg?.('KICK!',c.x,c.y-30,true); continue; }
+      c.t-=dt; if(!c.drift&&c.t<1&&!c._warn){ c._warn=true; this.tweens.add({targets:c.spr,alpha:.35,yoyo:true,repeat:4,duration:100}); }
+      if(c.t<=0){ this.killCounter(c); if(!c.drift){ this.vfxHitRing?.(c.x,c.y,0xff6b6b,false); this.arenaHurt(Math.round((b.dmg||30)*.35),c.x,c.y,70); } } }
+    this._counters=L.filter(c=>!c.dead); }
+  clearArenaMech(){ for(const c of this._counters||[])this.killCounter(c); this._counters=[]; for(const o of this._arenaFx||[])if(o?.active)o.destroy(); this._arenaFx=[]; }
+  arenaFx(o){ (this._arenaFx||(this._arenaFx=[])).push(o); return o; }
+  // C2-3 Hornet Queen · Hive Rush (แบบผึ้งยักษ์ Terraria): บินไปข้างจอ → เส้นเตือนแนวนอนที่ระดับผู้เล่น → พุ่งข้ามจอ ซ้ายขวาสลับ
+  hiveRush(b){ const passes=b.phase3?5:b.phase2?4:3,warn=b.phase3?560:b.phase2?620:720,vw=this.arenaVw(),off=Math.min(vw*.62,560),sp=b.phase3?1250:1100;
+    b._arenaBusy=true; this.hornetQueenPose?.(b,2,1200); this.showBanner('🐝 Hive Rush','She rushes across the screen — move up or down out of her lane!',1100);
+    let side=b.x<this.player.x?-1:1; const step=i=>{ if(!b.active||this.state==='dead'){b._arenaBusy=false;return;} if(i>=passes){ b._arenaBusy=false; b.knock=0; b.atkCd=1.4;
+        const c=this.spawnCounter(b,this.player.x+Phaser.Math.Between(-90,90),this.player.y+Phaser.Math.Between(-70,70),{emoji:'🍯',tint:0xffc23a,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,1.2,'Sticky!');if(!bb._sticky){bb._sticky=true;bb.spd*=.6;this.time.delayedCall(3200,()=>{if(bb.active){bb.spd/=.6;bb._sticky=false;}});}}});
+        if(c)this.showBanner('🍯 Royal Jelly','Dash into the jelly to kick it back at the Queen!',1000); return; }
+      const py=this.player.y,tx=this.player.x+side*off; b.knock=9; b.setVelocity(0,0);
+      this.tweens.add({targets:b,x:tx,y:py,duration:360,ease:'Sine.inOut',onUpdate:()=>b.body?.reset(b.x,b.y),onComplete:()=>{ if(!b.active)return;
+        const ln=this.arenaFx(this.camWorld(this.add.rectangle(this.player.x,py,vw*1.6,Math.max(46,(b.displayHeight||100)*.55),0xff3a4a,.24).setStrokeStyle(3,0xff6b6b,.95).setDepth(9000)));
+        this.tweens.add({targets:ln,alpha:{from:.35,to:1},duration:110,yoyo:true,repeat:Math.round(warn/220)}); Sfx.bossWarn?.();
+        this.time.delayedCall(warn,()=>{ ln.destroy(); if(!b.active)return; const dir=-side; b.knock=off*2/sp+.05; b.setVelocity(dir*sp,0); Sfx.dash?.(); this.screenFlash?.(0xffc95c,.12,120);
+          this.bossSig?.('08_dive_trail',b.x,b.y,260,{h:60,anchor:'left',rot:dir>0?Math.PI:0,follow:b,life:.5,depth:b.depth-1});
+          this.time.delayedCall(Math.round(b.knock*1000),()=>{ if(!b.active)return; b.setVelocity(0,0); side=-side; step(i+1); }); }); }}); };
+    step(0); b.atkCd=99; }
+  // C1-1 Ant Empress · Tunnel: มุดดิน เงาไล่ตาม 2 วิ → หยุด → โผล่พุ่งขึ้น · เฟส 2 เงา 2 อัน (ตัวจริงมีกรดหยด)
+  antTunnel(b){ const two=!!b.phase2,chase=2000,lock=b.phase3?560:700,hd=Math.round(22+this.stageIndex*6+(b.dmg||40)*.4);
+    b._arenaBusy=true; b.knock=9; b.setVelocity(0,0); this.bossPose?.(b,2,600); this.showBanner('🕳️ Tunnel','She digs under you — walk out of the shadow before she bursts out!',1100);
+    this.tweens.add({targets:b,alpha:.0,scale:b.scale*.6,duration:380,onComplete:()=>{ if(!b.active)return; if(b.body)b.body.enable=false;
+      const mk=(real)=>{ const s=this.arenaFx(this.camWorld(this.add.ellipse(this.player.x,this.player.y,140,74,0x1f3a12,.55).setStrokeStyle(3,real?0x75ff4b:0x5c7a4a,.9).setDepth(2))); s._real=real; return s; };
+      const sh=[mk(true)]; if(two)sh.push(mk(false)); let t=0,dr=0;
+      const ev=this.time.addEvent({delay:16,loop:true,callback:()=>{ t+=16; const p=this.player; sh.forEach((s,k)=>{ if(t<chase){ const tx=p.x+(k?Math.cos(t/300)*150:0),ty=p.y+(k?Math.sin(t/300)*90:0),a=Math.atan2(ty-s.y,tx-s.x),d=Math.hypot(tx-s.x,ty-s.y),v=Math.min(d,(k?260:210)*.016); s.x+=Math.cos(a)*v; s.y+=Math.sin(a)*v; }
+            else s.setScale(1+Math.sin(t/40)*.06); });
+          if(two&&(dr+=16)>140){ dr=0; const s=sh[0],d=this.arenaFx(this.camWorld(this.add.circle(s.x+Phaser.Math.Between(-40,40),s.y-40,5,0x75ff4b,.9).setDepth(3))); this.tweens.add({targets:d,y:d.y+40,alpha:0,duration:420,onComplete:()=>d.destroy()}); }
+          if(t>=chase+lock){ ev.remove(false); sh.forEach(s=>{ const real=s._real; this.vfxHitRing?.(s.x,s.y,real?0x75ff4b:0x8a9a7a,real); if(real){ b.setPosition(s.x,s.y); if(b.body){b.body.enable=true;b.body.reset(s.x,s.y);} this.arenaHurt(hd,s.x,s.y,78); this.bossNovaWave?.(s.x,s.y,170,Math.round(hd*.6),120); this.screenShake?.(300,.016); }
+              else this.arenaHurt(Math.round(hd*.4),s.x,s.y,60); s.destroy(); });
+            this.tweens.add({targets:b,alpha:1,scale:b.scale/.6,duration:260}); b.knock=.6; b._arenaBusy=false; b.atkCd=1.6;
+            this.spawnCounter(b,b.x+Phaser.Math.Between(-110,110),b.y+Phaser.Math.Between(60,120),{key:'nest_eggs',emoji:'🥚',tint:0x75ff4b,onHit:bb=>{this.bossPctHit(bb,.04);this.bossStun(bb,1.2,'Acid splash!');}}); } }}); }});
+    b.atkCd=99; }
+  // C1-5 Great Hunger · Feast: ดูดเข้าปาก 4 วิ + จานลอยเข้าปาก (ถึงปาก = บอสฟื้น 3%) · Dash เตะจาน = บอสสำลัก
+  hungerFeast(b){ const n=b.phase2?5:4,pull=b.phase3?195:b.phase2?175:150; b._arenaBusy=true;
+    this.stage5Pose?.(b,5,1400); this.showBanner('🍽️ The Feast','It pulls you in and eats the plates — dash into a plate to make it choke!',1200);
+    this.drainPull={x:b.x,y:b.y,t:4.2,strength:pull}; this.bossSig?.('05_void_maw',b.x,b.y,360,{life:4.2,depth:2});
+    for(let i=0;i<n;i++){ const a=i*TAU/n+Math.random()*.4,r=Math.min(this.arenaVw()*.45,400);
+      this.spawnCounter(b,b.x+Math.cos(a)*r,b.y+Math.sin(a)*r,{emoji:['🍰','🍗','🍩','🍮','🥧'][i%5],tint:0xffb36b,drift:62+i*6,
+        onArrive:bb=>{ if(!bb.active)return; const h=Math.round(bb.maxhp*.03); bb.hp=Math.min(bb.maxhp,bb.hp+h); this.popDmg?.('+3% HP',bb.x,bb.y-70,false); this.vfxHitRing?.(bb.x,bb.y,0x6dffb4,false); },
+        onHit:bb=>{ this.bossPctHit(bb,.03); this.bossStun(bb,1.2,'Choking!'); this.drainPull=null; }}); }
+    this.time.delayedCall(4400,()=>{ b._arenaBusy=false; }); b.atkCd=4.6; }
   royalStingerPose(b,frame,ms=900){
     if(!b||!b.active||b.texture.key!=='mb8_royal_stinger')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._stingerPoseToken=(b._stingerPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);
     this.time.delayedCall(ms,()=>{if(!b.active||b._stingerPoseToken!==token)return;if(this.anims.exists('mb8_royal_stinger_walk'))b.play('mb8_royal_stinger_walk',true);else b.setFrame(0);});
@@ -16306,6 +16372,7 @@ class Game extends Phaser.Scene {
     this.screenFlash(color,phase===3?.66:.42,phase===3?850:600);this.screenShake(phase===3?900:580,phase===3?.026:.017);Sfx.bossWarn();
   }
   hornetQueenAttack(b){
+    if(this.arenaMechDue(b)){this.hiveRush(b);return;}   // v7.9.13 กลไกสนาม
     const fast=b.phase3?.62:b.phase2?.78:1,pool=b.phase3?['decree','spiral','swarm','dive','prison','decree']:b.phase2?['dive','fan','prison','swarm','spiral']:['dive','fan','prison'],pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(18,Math.round(b.dmg*.48));
     if(pick==='dive'){this.hornetQueenPose(b,2,1250);this.showBanner('🐝 Royal Dive','Three crimson lanes — keep moving across their angle!',850);for(let i=0;i<(b.phase3?3:2);i++)this.time.delayedCall(i*460,()=>{if(b.active)this.chargeTelegraph(b,620-i*70,650+i*45,30);});b.atkCd=3.1*fast;}
     else if(pick==='fan'){this.hornetQueenPose(b,3,980);this.showBanner('🌼 Pollen Fan','The center shot tracks ahead; dodge late through a side gap!',800);let a=Math.atan2(py-b.y,px-b.x);if(this.player.body)a=Math.atan2(py+this.player.body.velocity.y*.38-b.y,px+this.player.body.velocity.x*.38-b.x);for(let i=-5;i<=5;i++)if(i!==0)this.foeShot(b.x,b.y,a+i*.105,300+(Math.abs(i)%2)*35,bd,0xffc95c,1.08);b.atkCd=2.35*fast;}
@@ -16399,6 +16466,7 @@ class Game extends Phaser.Scene {
   }
 
   greatHungerAttack(b){
+    if(this.arenaMechDue(b)){this.hungerFeast(b);return;}   // v7.9.13 กลไกสนาม
     const fast=b.phase4?0.60:b.phase3?0.70:b.phase2?0.82:1;
     const pool=b.phase4?['eclipse','voidMaw','crownRain','ovenCross','eclipse']:b.phase3?['voidMaw','spiral','lastSupper','ovenCross','crownRain']:b.phase2?['ovenCross','spiral','cleave','crownRain','lastSupper']:['crownRain','cleave','spiral'];
     const pick=Phaser.Utils.Array.GetRandom(pool),px=this.player.x,py=this.player.y,bd=Math.max(12,Math.round(b.dmg*0.45)),pose={crownRain:4,cleave:2,ovenCross:2,spiral:4,voidMaw:3,lastSupper:5,eclipse:6}[pick]??1;
@@ -17207,6 +17275,7 @@ class Game extends Phaser.Scene {
     this.tickStage(dt);
     this.tickBossZoom();
     this.tickBossObjects(dt);
+    this.tickArenaMech(dt);
 
     // enemies
     this.enemies.children.iterate(e=>{ if(!e||!e.active)return;
