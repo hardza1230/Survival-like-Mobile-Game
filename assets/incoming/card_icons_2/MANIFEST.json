@@ -1,0 +1,12 @@
+[
+  {
+    "key": "ic_mod_shatter",
+    "group": "E",
+    "card": "m_shatter",
+    "hero": "mint",
+    "optional": true,
+    "skipped": true,
+    "replaces": "assets/art/card_icons/ic_mod_shatter.webp",
+    "reason": "Reviewed actual existing runtime icon: large blue ice chunks shattering outward already communicate frozen-enemy break and spreading shards; retain it. No redraw needed."
+  }
+]
