@@ -1,7 +1,37 @@
 {
   "order": 32,
-  "assetCount": 49,
+  "assetCount": 51,
   "requiredAssetCount": 46,
+  "sourceBytes": 4747941,
+  "decodedSourceMiB": 12.75,
+  "visualCoverage": {
+    "all24": true,
+    "all90Pages": 4,
+    "mutationPairs": 12,
+    "pathComparisons": 15,
+    "optionalReviews": 6,
+    "selectedRedraws": 5
+  },
+  "previewPalette": {
+    "light": "#efe1c8",
+    "dark": "#221a2c"
+  },
+  "finalAudit": {
+    "assets": 51,
+    "required": 46,
+    "optionalRedraws": 5,
+    "optionalSkipped": 1,
+    "counts": {
+      "A": 5,
+      "C": 15,
+      "B": 24,
+      "D": 2,
+      "E": 5
+    },
+    "bytes": 4747941,
+    "proofs": 12,
+    "allPNG32CornersAndMargins": true
+  },
   "optionalSkipped": [
     {
       "key": "ic_mod_shatter",
@@ -63,7 +93,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uq_cd",
@@ -111,7 +141,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uq_kill",
@@ -159,7 +189,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uq_echo",
@@ -207,7 +237,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uq_ready",
@@ -255,7 +285,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_arc_twin",
@@ -303,7 +333,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_spark_shock",
@@ -351,7 +381,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_bar_echo",
@@ -399,7 +429,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_r_spark",
@@ -447,7 +477,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_streak",
@@ -495,7 +525,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_snipe_refund",
@@ -543,7 +573,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_snipe_guard",
@@ -591,7 +621,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_blast_stun",
@@ -639,7 +669,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_blast_rain",
@@ -687,7 +717,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_reb_shield",
@@ -735,7 +765,55 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
+    },
+    {
+      "key": "ic_uqm_reb_double",
+      "file": "ic_uqm_reb_double.png",
+      "width": 256,
+      "height": 256,
+      "group": "B",
+      "number": 6,
+      "card": "reb_double",
+      "hero": "momo",
+      "path": "ricochet",
+      "optional": false,
+      "replaces": null,
+      "bytes": 59031,
+      "sha256": "35f768e7a538e9c0eea1dc0c8314ce99fb9a6ce8116ec9c43471e3c6b2a6768b",
+      "gitBlobSha": "88b430fc3dd22585a477ed102b198a187f7fc4d7",
+      "source": {
+        "width": 1364,
+        "height": 1153,
+        "bytes": 962592,
+        "sha256": "eb16a516f7aad5ea44650c4d7fe70348e9b64bc1bd999b615f76459a91658f7d"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 50641,
+        "partialAlphaPixels": 14895,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          40,
+          232,
+          216
+        ],
+        "padding": {
+          "left": 24,
+          "top": 40,
+          "right": 24,
+          "bottom": 40
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_bloom_field",
@@ -783,7 +861,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_bloom_heal",
@@ -831,7 +909,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_lance_mines",
@@ -879,7 +957,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_lance_guard",
@@ -927,7 +1005,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_gale_blades",
@@ -975,7 +1053,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_gale_tail",
@@ -1023,7 +1101,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_rocket_ring",
@@ -1071,7 +1149,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_rocket_heat",
@@ -1119,7 +1197,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_rage_after",
@@ -1167,7 +1245,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_rage_guard",
@@ -1215,7 +1293,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_phantom_refund",
@@ -1263,7 +1341,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_phantom_slam",
@@ -1311,7 +1389,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_plasma_wide",
@@ -1359,7 +1437,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_plasma_twin",
@@ -1407,7 +1485,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_mark_jump",
@@ -1455,7 +1533,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_mark_nova",
@@ -1503,7 +1581,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_over_long",
@@ -1551,7 +1629,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_uqm_over_finale",
@@ -1599,7 +1677,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "relic_streak",
@@ -1647,7 +1725,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "relic_laststand",
@@ -1695,7 +1773,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_arc_shock",
@@ -1743,7 +1821,55 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
+    },
+    {
+      "key": "ic_path_p_arc_ground",
+      "file": "ic_path_p_arc_ground.png",
+      "width": 256,
+      "height": 256,
+      "group": "C",
+      "number": 3,
+      "card": "p_arc_ground",
+      "hero": "taro",
+      "path": "storm",
+      "optional": false,
+      "replaces": null,
+      "bytes": 79743,
+      "sha256": "0cbb6d98f2bcf4624c5fc55c06d76f2b97bd8e47a5adb233b55dfbdf21c16842",
+      "gitBlobSha": "f9d5a2acd4af42c1cfdea8585298510031f2aaa3",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1163681,
+        "sha256": "9de986bc744ceb3f2a345844a5e4d1d4a7305bba4ca3fc9394aba1c9b41b8f92"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 46171,
+        "partialAlphaPixels": 19365,
+        "cornersTransparent": true,
+        "bbox": [
+          49,
+          24,
+          206,
+          232
+        ],
+        "padding": {
+          "left": 49,
+          "top": 24,
+          "right": 50,
+          "bottom": 24
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_sentry_ward",
@@ -1791,7 +1917,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_sentry_pulse",
@@ -1839,7 +1965,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_static",
@@ -1887,7 +2013,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_bar_wide",
@@ -1935,7 +2061,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_bar_chain",
@@ -1983,7 +2109,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_leapstun",
@@ -2031,7 +2157,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_footwork",
@@ -2079,7 +2205,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_path_p_recharge",
@@ -2127,7 +2253,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_mod_spray",
@@ -2175,7 +2301,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_mod_rage",
@@ -2223,7 +2349,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_mod_judge",
@@ -2271,7 +2397,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_mod_focus",
@@ -2319,7 +2445,7 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     },
     {
       "key": "ic_fus_skyjudge",
@@ -2367,10 +2493,95 @@
         "minimumPaddingPassed": true,
         "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
       },
-      "visualQA": "pending24/90px/pair/path comparison"
+      "visualQA": "Selected source and native24/90px light/dark proofs inspected; distinct Mutation-pair silhouettes and C-vs-main-path comparisons reviewed. No text/UI frame; gold star for A, gold DNA accent for B; no star/DNA badge on C. In-game/phone review pending."
     }
   ],
-  "proofs": [],
+  "proofs": [
+    {
+      "path": "qa/all_icons_24px_light_dark.png",
+      "bytes": 163322,
+      "sha256": "e2729e534659df5a627ce09210a662fb67c565e30fd822f1a322c4e2880dc536",
+      "gitBlobSha": "fd9dc271974758d1d85ccd05bde27858fa0a4e02",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/all_icons_90px_light_dark_1.png",
+      "bytes": 392605,
+      "sha256": "2cffae5e1e13abbc68fe23570436a31f4fa1d86ad69742674816828836fcd119",
+      "gitBlobSha": "c504d6328de361d213579df935eb805bab2cc61a",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/all_icons_90px_light_dark_2.png",
+      "bytes": 377837,
+      "sha256": "6b53ee896c6498ce9cefc7d54039a0505eab5fbd137382e35030b0130305e35e",
+      "gitBlobSha": "cd8bd710a530a609b444cd5930d28481cdc0e32c",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/all_icons_90px_light_dark_3.png",
+      "bytes": 340413,
+      "sha256": "b4f9ea4440680b1a4f5704cd4dbb4bafc8f58896cbdf54853a6532b56af7d6aa",
+      "gitBlobSha": "e60fad3f9e71fb63fcf31d2834928ecdd2d0dd64",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/all_icons_90px_light_dark_4.png",
+      "bytes": 322282,
+      "sha256": "0044ff1ed7c290f20377b8f1e9b7c00a5299b1920b0a56ea15e8f79cae4616ca",
+      "gitBlobSha": "b40afdca104df443f95d599ad3fa6e8062e9579c",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/mutation_pairs_24px.png",
+      "bytes": 92584,
+      "sha256": "666cd0d7c2093b63451ce7cf4a134ef12dceb75a59ade04384d9d65669fbe2e2",
+      "gitBlobSha": "92fe0ab8478112b64f54b85ede2588529c395bfd",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/path_C_vs_main_1.png",
+      "bytes": 321396,
+      "sha256": "54199077af56330d412e139ec2d1573aa51a67bc16a65fe8933ac46d671a5ba8",
+      "gitBlobSha": "6ce6089cc32b5796fa1c2351a752d2263cd13045",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/path_C_vs_main_2.png",
+      "bytes": 279748,
+      "sha256": "c3d84f54c1a70549fe506d6154c07b152fbacbe92784499a0b98c7928200455f",
+      "gitBlobSha": "419f4f422c440bc6b89df8e80277c29f406874e5",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/path_C_vs_main_3.png",
+      "bytes": 292589,
+      "sha256": "2cdbd2a4762ff0bb626ed28ee63b7f1e2c8eb09dcb51bd058338ccda0e73a968",
+      "gitBlobSha": "a387b675b627ff759d4a39cdc3c95a02e2d65a06",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/optional_before_after.png",
+      "bytes": 368015,
+      "sha256": "4bd297cf2210b86277014c84babe8ada3f3060e09bfb029b66623b2b200e9017",
+      "gitBlobSha": "d2fbb7fd4b83f773d06f7191f0b95179fc0c1c85",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/INDEX.json",
+      "bytes": 12871,
+      "sha256": "f8e8f76d8b273c50629431a9e8cab2713ce60f60a5b20984a39c45502fdca1ed",
+      "gitBlobSha": "f347e5786385962abe8ae345da6e407e8f69b130",
+      "mime": "application/json"
+    },
+    {
+      "path": "qa/README.md",
+      "bytes": 942,
+      "sha256": "0652ab858a66f583cba57f59b8eee075d765a9683dc18f48bceebcddb96aa517",
+      "gitBlobSha": "4a6860335cfa00c53bfe9bdc783799c30e651489",
+      "mime": "text/markdown"
+    }
+  ],
   "references": [
     {
       "path": "assets/art/build_paths/storm.webp",
@@ -2446,9 +2657,63 @@
       "decodedPngSha256": "21a9ed32a586055602f8f53cea39cd46d5fc9830302297aa615006c9862fb7a7",
       "decoder": "libwebp asm.js from chase-moskal/webp-hero; direct RGBA SDL surface capture, no Canvas composition",
       "runtimeIconKey": "ic_path_dashboxer"
+    },
+    {
+      "path": "assets/art/card_icons/ic_mod_spray.webp",
+      "bytes": 8792,
+      "sha256": "a27d9ca09ae9ebfa08455348ce576b87c5f9ff9114c94dd4e34c65a0bae5dabf",
+      "gitBlobSha": "1ca92c063d5ed11eae3d32bc7c596f626c3a310f",
+      "width": 128,
+      "height": 128,
+      "review": "redraw per changed card effect"
+    },
+    {
+      "path": "assets/art/card_icons/ic_mod_rage.webp",
+      "bytes": 7950,
+      "sha256": "0b7967a21a595e09e125834e52037b412029b90cf9942d95539edb289b69ea90",
+      "gitBlobSha": "ac13d01a2dfed9142b4e8eb022103025e089b9c1",
+      "width": 128,
+      "height": 128,
+      "review": "redraw per changed card effect"
+    },
+    {
+      "path": "assets/art/card_icons/ic_mod_judge.webp",
+      "bytes": 12264,
+      "sha256": "f9f0b5636a64804846ba9c846a111a3e90ee4658f161ea9f6356a05597dc7f3b",
+      "gitBlobSha": "392f4d09156048ef7355e996a3537659b513e270",
+      "width": 128,
+      "height": 128,
+      "review": "redraw per changed card effect"
+    },
+    {
+      "path": "assets/art/card_icons/ic_mod_shatter.webp",
+      "bytes": 11842,
+      "sha256": "0b264a887f11a19fb9cd661b32ceba93b3a3218d5ccb81123085b16c3a6a093f",
+      "gitBlobSha": "f4ba9d2f510c37fbf4b55138af1544a140822a6d",
+      "width": 128,
+      "height": 128,
+      "review": "retain; already ice fragments spreading"
+    },
+    {
+      "path": "assets/art/card_icons/ic_mod_focus.webp",
+      "bytes": 10030,
+      "sha256": "d4a56c80a64d09d6070739411ba16ba9e1325a159e2b16aaf4b642b45da69408",
+      "gitBlobSha": "298ec5f0f848ec1aaff25c59a832846d1af99762",
+      "width": 128,
+      "height": 128,
+      "review": "redraw per changed card effect"
+    },
+    {
+      "path": "assets/art/card_icons/ic_fus_skyjudge.webp",
+      "bytes": 12882,
+      "sha256": "a879b7ec23d1b6b164d021da314754868a2b1e78ea206666aecbd6569f1fa6ba",
+      "gitBlobSha": "318242dbdc02a8529461a00083d247d29793df83",
+      "width": 128,
+      "height": 128,
+      "review": "redraw per changed card effect"
     }
   ],
-  "visualQA": "In progress; final tiny-size/pair/path proofs pending.",
+  "visualQA": "Source art and native24/90px raster proof sheets inspected. Mutation pairs compared; C main-path comparisons provided. Phone/in-game review pending.",
   "limitations": [
     "Execution environment offline; no npm/build/browser/gameplay/phone tests.",
     "Source art only, no CARD_ICON_KEYS/cardArtKey/runtime registration changes."

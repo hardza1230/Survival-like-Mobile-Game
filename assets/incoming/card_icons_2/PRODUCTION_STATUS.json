@@ -1,11 +1,11 @@
 {
   "order": 32,
   "sourceOnly": true,
-  "phase": "49 source icons milestone; two refinements pending",
+  "phase": "complete 46 required icons and5 optional redraws",
   "required": 46,
-  "requiredDelivered": 44,
+  "requiredDelivered": 46,
   "optionalRedraws": 5,
-  "totalPngs": 49,
+  "totalPngs": 51,
   "optionalSkipped": [
     {
       "key": "ic_mod_shatter",
@@ -18,10 +18,7 @@
       "reason": "Reviewed actual existing runtime icon: large blue ice chunks shattering outward already communicate frozen-enemy break and spreading shards; retain it. No redraw needed."
     }
   ],
-  "pending": [
-    "ic_uqm_reb_double",
-    "ic_path_p_arc_ground"
-  ],
+  "pending": [],
   "runtimeVersionPreserved": "7.9.30",
   "runtimeIntegrationNotPartOfThisDelivery": true
 }

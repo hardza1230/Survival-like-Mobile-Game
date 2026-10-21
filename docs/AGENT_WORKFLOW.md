@@ -72,3 +72,8 @@ In this workspace, a later pre-upload audit found two zero-byte PNGs and one tru
 ## Bound generated-media responses (2026-10-18, art26)
 
 On this Windows/code-mode session, a single loop accumulated 82 generatedImage outputs into a 147 MB response, exceeding the observed 64 MiB IPC response limit even though all images and ledger records were saved successfully. Use small batches (at most eight images here) or yield_control after each image to flush output. Save each result and provenance before emitting media. If the aggregate response fails, inspect the saved ledger and files before regenerating; do not duplicate completed jobs. This is an observed environment transport limit, not an image-model API limit.
+
+
+## Offline source-art QA with exact WebP references (21 Oct2026)
+
+In this disconnected workspace, ImageGen + GitHub connector and in-memory JavaScript PNG decode/encode/resize worked for source delivery. When native execution, Canvas and WebAssembly were unavailable, the libwebp asm.js build from chase-moskal/webp-hero (libwebp/dist/google/webp.js) decoded exact runtime WebP references. Disable DOM environment setup, replace only SDL I/O surface hooks with in-memory RGBA surface capture, and retain the decoder core and alpha. Test a known icon visually before using it for raster comparison proofs. Do not claim a browser/gameplay check from these source compositions. Keep proof PNGs below1MiB for this connector’s exact base64 readback path. Publish recoverable source milestones and verify full remote bytes, PNG streams and hashes before claiming delivery. Store selected prompts/provenance and distinguish optional skips from missing work. These are observations, not a requirement to bypass a working local environment.

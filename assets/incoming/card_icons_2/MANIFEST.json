@@ -9,7 +9,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "302d72cbcbe4ae3ab2f9e24a8a249f2f8f1d1ccf2f597f57a0cbf7d9a6d01633",
-    "bytes": 91973
+    "bytes": 91973,
+    "runtimeTarget": "assets/art/card_icons/ic_uq_power.webp"
   },
   {
     "key": "ic_uq_cd",
@@ -21,7 +22,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "3449ef3a9bb2ed97c794910d718bdb582484e22cffe0c919ecfbe206692cda1a",
-    "bytes": 93998
+    "bytes": 93998,
+    "runtimeTarget": "assets/art/card_icons/ic_uq_cd.webp"
   },
   {
     "key": "ic_uq_kill",
@@ -33,7 +35,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "ba64d0c53554d844764cb045e1f24704013241d42a9ef9ac4e6771dadb7d3718",
-    "bytes": 104691
+    "bytes": 104691,
+    "runtimeTarget": "assets/art/card_icons/ic_uq_kill.webp"
   },
   {
     "key": "ic_uq_echo",
@@ -45,7 +48,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "2bf34a2188e8dcf0f91ffc1d25e6321b5e9e11470dc1ac2eaffbe0565dccb499",
-    "bytes": 105475
+    "bytes": 105475,
+    "runtimeTarget": "assets/art/card_icons/ic_uq_echo.webp"
   },
   {
     "key": "ic_uq_ready",
@@ -57,7 +61,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "0cf8138048813a6395a552a9d5e7ab80451a05b209622c2b851a9d5081a1b2e5",
-    "bytes": 101091
+    "bytes": 101091,
+    "runtimeTarget": "assets/art/card_icons/ic_uq_ready.webp"
   },
   {
     "key": "ic_path_p_arc_twin",
@@ -70,7 +75,8 @@
     "path": "storm",
     "background": "transparent",
     "sha256": "bf55f3c30f1eddee4b11978bb33a2bfa7f7179aa2c57cffb136458cc494113dc",
-    "bytes": 83202
+    "bytes": 83202,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_arc_twin.webp"
   },
   {
     "key": "ic_path_p_spark_shock",
@@ -83,7 +89,8 @@
     "path": "smite",
     "background": "transparent",
     "sha256": "55b97b5847a44e90cd686979e0631d649598a1651416fee559e5fe36768c0dd0",
-    "bytes": 91158
+    "bytes": 91158,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_spark_shock.webp"
   },
   {
     "key": "ic_path_p_bar_echo",
@@ -96,7 +103,8 @@
     "path": "barrage",
     "background": "transparent",
     "sha256": "7aaf38d841a34379f73047197e15a8c462ab4fe66a4e4c1b97d6472cafe2e0be",
-    "bytes": 89559
+    "bytes": 89559,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_bar_echo.webp"
   },
   {
     "key": "ic_path_r_spark",
@@ -109,7 +117,8 @@
     "path": "ricochet",
     "background": "transparent",
     "sha256": "488ccf0e486c2d1a8edadfd72c18a7580fa88de30e834034958a3fa79bcd8efb",
-    "bytes": 71327
+    "bytes": 71327,
+    "runtimeTarget": "assets/art/card_icons/ic_path_r_spark.webp"
   },
   {
     "key": "ic_path_p_streak",
@@ -122,7 +131,8 @@
     "path": "brawler",
     "background": "transparent",
     "sha256": "1fc1bdd192e2b84b3fd6e881ada4e1e620aff8b0547e3445c108767b0d63396f",
-    "bytes": 69026
+    "bytes": 69026,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_streak.webp"
   },
   {
     "key": "ic_uqm_snipe_refund",
@@ -135,7 +145,8 @@
     "path": "sniper",
     "background": "transparent",
     "sha256": "886b24666c5b367118fb0ff9e426616de2ec68ac61e92e9f5a9ad825540b015b",
-    "bytes": 86394
+    "bytes": 86394,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_snipe_refund.webp"
   },
   {
     "key": "ic_uqm_snipe_guard",
@@ -148,7 +159,8 @@
     "path": "sniper",
     "background": "transparent",
     "sha256": "ab42afce73de66b442b496b7692d1f5d6d76d67185d81cf6ad2c73c5ad18bf28",
-    "bytes": 122231
+    "bytes": 122231,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_snipe_guard.webp"
   },
   {
     "key": "ic_uqm_blast_stun",
@@ -161,7 +173,8 @@
     "path": "shotgun",
     "background": "transparent",
     "sha256": "acfcde0d1712b25fb7906f0988c785e1d0cf9dfc26ced0430ec816d2e26a0130",
-    "bytes": 110526
+    "bytes": 110526,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_blast_stun.webp"
   },
   {
     "key": "ic_uqm_blast_rain",
@@ -174,7 +187,8 @@
     "path": "shotgun",
     "background": "transparent",
     "sha256": "ed2784e7d76bb5dfd30748525b84f76d9bd931e49f63122e15800ad511af3f4d",
-    "bytes": 85685
+    "bytes": 85685,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_blast_rain.webp"
   },
   {
     "key": "ic_uqm_reb_shield",
@@ -187,7 +201,22 @@
     "path": "ricochet",
     "background": "transparent",
     "sha256": "1cf0fa887db0a99e25d0c71609a5d2e067ab98c600b36ff9085e316e23b4e9e2",
-    "bytes": 122408
+    "bytes": 122408,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_reb_shield.webp"
+  },
+  {
+    "key": "ic_uqm_reb_double",
+    "file": "ic_uqm_reb_double.png",
+    "width": 256,
+    "height": 256,
+    "group": "B",
+    "card": "reb_double",
+    "hero": "momo",
+    "path": "ricochet",
+    "background": "transparent",
+    "sha256": "35f768e7a538e9c0eea1dc0c8314ce99fb9a6ce8116ec9c43471e3c6b2a6768b",
+    "bytes": 59031,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_reb_double.webp"
   },
   {
     "key": "ic_uqm_bloom_field",
@@ -200,7 +229,8 @@
     "path": "glacier",
     "background": "transparent",
     "sha256": "210f500d166cc9895b8cf371a099a7c55270fa8c0b236e1dfddcfb444aef2a51",
-    "bytes": 119078
+    "bytes": 119078,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_bloom_field.webp"
   },
   {
     "key": "ic_uqm_bloom_heal",
@@ -213,7 +243,8 @@
     "path": "glacier",
     "background": "transparent",
     "sha256": "190fb87b88ef445d2cf6d84fb1410403890c4b7a7d8e0e7ef2694b7067748dd2",
-    "bytes": 103412
+    "bytes": 103412,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_bloom_heal.webp"
   },
   {
     "key": "ic_uqm_lance_mines",
@@ -226,7 +257,8 @@
     "path": "pierce",
     "background": "transparent",
     "sha256": "5ccffebb2fe22998185b7e70a66f56d8c89035bcdb01787dc9fc9de03fe870f4",
-    "bytes": 62046
+    "bytes": 62046,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_lance_mines.webp"
   },
   {
     "key": "ic_uqm_lance_guard",
@@ -239,7 +271,8 @@
     "path": "pierce",
     "background": "transparent",
     "sha256": "5dcd17c1ef476a530a16b59e68ede3e18e3fb3358d910b1e67bf123aef2bb023",
-    "bytes": 77503
+    "bytes": 77503,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_lance_guard.webp"
   },
   {
     "key": "ic_uqm_gale_blades",
@@ -252,7 +285,8 @@
     "path": "barrage",
     "background": "transparent",
     "sha256": "89e7178c7b21066c2bbf3fd292d4b6cccd61aae3fbcd2c51483e1097b11ba20a",
-    "bytes": 109631
+    "bytes": 109631,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_gale_blades.webp"
   },
   {
     "key": "ic_uqm_gale_tail",
@@ -265,7 +299,8 @@
     "path": "barrage",
     "background": "transparent",
     "sha256": "c31fc2e50addb23df77db43a4a8568cc4a972aac962ea2b88c69a0e07428958f",
-    "bytes": 95805
+    "bytes": 95805,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_gale_tail.webp"
   },
   {
     "key": "ic_uqm_rocket_ring",
@@ -278,7 +313,8 @@
     "path": "brawler",
     "background": "transparent",
     "sha256": "63671b734d928ac67374c2b8ea511cdd469849b80d0662c00e3872301a96703d",
-    "bytes": 109456
+    "bytes": 109456,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_rocket_ring.webp"
   },
   {
     "key": "ic_uqm_rocket_heat",
@@ -291,7 +327,8 @@
     "path": "brawler",
     "background": "transparent",
     "sha256": "9c49999929a0969236a64fdc7bb9740038cb29ab9e2184befce9133bb376ad11",
-    "bytes": 106841
+    "bytes": 106841,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_rocket_heat.webp"
   },
   {
     "key": "ic_uqm_rage_after",
@@ -304,7 +341,8 @@
     "path": "titan",
     "background": "transparent",
     "sha256": "56f6148b895413c8f07b9c95bbd7891899f77bf06cf2d4416f2483262a6d1fcc",
-    "bytes": 97860
+    "bytes": 97860,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_rage_after.webp"
   },
   {
     "key": "ic_uqm_rage_guard",
@@ -317,7 +355,8 @@
     "path": "titan",
     "background": "transparent",
     "sha256": "6a4c03e0b4298a4651e78c1f4ef1e3fd49524f5292ad70873bdb947420498c9f",
-    "bytes": 97367
+    "bytes": 97367,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_rage_guard.webp"
   },
   {
     "key": "ic_uqm_phantom_refund",
@@ -330,7 +369,8 @@
     "path": "dashboxer",
     "background": "transparent",
     "sha256": "554744c9c1cdeae20a112f096353955201ad61189423ffc2322b673d3dfa3f7e",
-    "bytes": 102762
+    "bytes": 102762,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_phantom_refund.webp"
   },
   {
     "key": "ic_uqm_phantom_slam",
@@ -343,7 +383,8 @@
     "path": "dashboxer",
     "background": "transparent",
     "sha256": "fe0ad3ac47ccbcac78c3a0a2c0ded8fc72d09e8bfd13ffc155a70b45f64955fa",
-    "bytes": 116460
+    "bytes": 116460,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_phantom_slam.webp"
   },
   {
     "key": "ic_uqm_plasma_wide",
@@ -356,7 +397,8 @@
     "path": "storm",
     "background": "transparent",
     "sha256": "d9ea504db34cb2cdae96659d0aa664ae766da2d7266b30b21ea40412bf07d3c5",
-    "bytes": 97750
+    "bytes": 97750,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_plasma_wide.webp"
   },
   {
     "key": "ic_uqm_plasma_twin",
@@ -369,7 +411,8 @@
     "path": "storm",
     "background": "transparent",
     "sha256": "86df2699d1def3ee96ee19b51860b8940cfe0158524a07a243dc3d222c06e0c8",
-    "bytes": 105322
+    "bytes": 105322,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_plasma_twin.webp"
   },
   {
     "key": "ic_uqm_mark_jump",
@@ -382,7 +425,8 @@
     "path": "smite",
     "background": "transparent",
     "sha256": "c9c6c9de65c55ed3bc6a11ee3dde17fbd16922bac5543e950c1a7478b39c7b00",
-    "bytes": 68585
+    "bytes": 68585,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_mark_jump.webp"
   },
   {
     "key": "ic_uqm_mark_nova",
@@ -395,7 +439,8 @@
     "path": "smite",
     "background": "transparent",
     "sha256": "df55e2857839d37af0bcc77b574e15f5b6a7daae642426d448a8811067f2a208",
-    "bytes": 80264
+    "bytes": 80264,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_mark_nova.webp"
   },
   {
     "key": "ic_uqm_over_long",
@@ -408,7 +453,8 @@
     "path": "tempest",
     "background": "transparent",
     "sha256": "3f054859f2265baa6cd21f9ca6a1578ebcff31e9549443beafe75ffaa789b5a7",
-    "bytes": 91138
+    "bytes": 91138,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_over_long.webp"
   },
   {
     "key": "ic_uqm_over_finale",
@@ -421,7 +467,8 @@
     "path": "tempest",
     "background": "transparent",
     "sha256": "7cf4e1f7d09d358cdaa099b86743d16354def2a84613fcdd87cc66eb64fb42b7",
-    "bytes": 107837
+    "bytes": 107837,
+    "runtimeTarget": "assets/art/card_icons/ic_uqm_over_finale.webp"
   },
   {
     "key": "relic_streak",
@@ -433,7 +480,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "b5093ce678d03b2a24f10aefd474420fae0c3b7975c9f344dbc11d0a487dbe34",
-    "bytes": 64506
+    "bytes": 64506,
+    "runtimeTarget": "assets/art/icons/relic_streak.webp"
   },
   {
     "key": "relic_laststand",
@@ -445,7 +493,8 @@
     "hero": "shared",
     "background": "transparent",
     "sha256": "a26edc2210c01bfdbec034524c149b82afb04be5333da68c02ee1990b34ed11e",
-    "bytes": 101415
+    "bytes": 101415,
+    "runtimeTarget": "assets/art/icons/relic_laststand.webp"
   },
   {
     "key": "ic_path_p_arc_shock",
@@ -458,7 +507,22 @@
     "path": "storm",
     "background": "transparent",
     "sha256": "99e3eda6188749c232e38958cb49810c5500c942cf7dba09e9257b8f0bb8b1ad",
-    "bytes": 105505
+    "bytes": 105505,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_arc_shock.webp"
+  },
+  {
+    "key": "ic_path_p_arc_ground",
+    "file": "ic_path_p_arc_ground.png",
+    "width": 256,
+    "height": 256,
+    "group": "C",
+    "card": "p_arc_ground",
+    "hero": "taro",
+    "path": "storm",
+    "background": "transparent",
+    "sha256": "0cbb6d98f2bcf4624c5fc55c06d76f2b97bd8e47a5adb233b55dfbdf21c16842",
+    "bytes": 79743,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_arc_ground.webp"
   },
   {
     "key": "ic_path_p_sentry_ward",
@@ -471,7 +535,8 @@
     "path": "tempest",
     "background": "transparent",
     "sha256": "0b9db44045d212e44e532e11b32f44a17866936fd6f68b5c4cee6ed9423ab336",
-    "bytes": 107118
+    "bytes": 107118,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_sentry_ward.webp"
   },
   {
     "key": "ic_path_p_sentry_pulse",
@@ -484,7 +549,8 @@
     "path": "tempest",
     "background": "transparent",
     "sha256": "2260699fe0ae964bf9572710965c13ef4c6de8cd75175ce1f7b91d40efe0b591",
-    "bytes": 62378
+    "bytes": 62378,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_sentry_pulse.webp"
   },
   {
     "key": "ic_path_p_static",
@@ -497,7 +563,8 @@
     "path": "storm",
     "background": "transparent",
     "sha256": "cc47d888730cf1664a201a6675398af438e676ee81be4db665c1e17498127bc7",
-    "bytes": 103351
+    "bytes": 103351,
+    "runtimeTarget": "assets/art/build_paths/p_static.webp"
   },
   {
     "key": "ic_path_p_bar_wide",
@@ -510,7 +577,8 @@
     "path": "barrage",
     "background": "transparent",
     "sha256": "0158c20070fe41543d4445383a1ed69deb0c622f1a5f27e7ae21fec230ba4897",
-    "bytes": 84638
+    "bytes": 84638,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_bar_wide.webp"
   },
   {
     "key": "ic_path_p_bar_chain",
@@ -523,7 +591,8 @@
     "path": "barrage",
     "background": "transparent",
     "sha256": "587719f05ed0699e642cc50bd54ea0aba3c5cad87a77b497f6107fbea5bad3e4",
-    "bytes": 59684
+    "bytes": 59684,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_bar_chain.webp"
   },
   {
     "key": "ic_path_p_leapstun",
@@ -536,7 +605,8 @@
     "path": "dashboxer",
     "background": "transparent",
     "sha256": "2d74ce64bf8aa643344808f34fd706f047d385f50391e2826414ec16d526c46a",
-    "bytes": 79303
+    "bytes": 79303,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_leapstun.webp"
   },
   {
     "key": "ic_path_p_footwork",
@@ -549,7 +619,8 @@
     "path": "brawler",
     "background": "transparent",
     "sha256": "d463d39334310fff87a42f7eab17d1f5073238a948b0737cd0f7e6f28c371232",
-    "bytes": 106445
+    "bytes": 106445,
+    "runtimeTarget": "assets/art/build_paths/p_footwork.webp"
   },
   {
     "key": "ic_path_p_recharge",
@@ -562,7 +633,8 @@
     "path": "dashboxer",
     "background": "transparent",
     "sha256": "04b403a0fef057192cfac3aa7552af6498cd5a6c444d5be0143dc07ea2e9426e",
-    "bytes": 95152
+    "bytes": 95152,
+    "runtimeTarget": "assets/art/card_icons/ic_path_p_recharge.webp"
   },
   {
     "key": "ic_mod_spray",
@@ -575,6 +647,7 @@
     "background": "transparent",
     "sha256": "d7953b0ad367ed5e60bfea4b18fce01449546b1f6e96d757a10763ae71fd8cc1",
     "bytes": 96942,
+    "runtimeTarget": "assets/art/card_icons/ic_mod_spray.webp",
     "replaces": "assets/art/card_icons/ic_mod_spray.webp",
     "optional": true
   },
@@ -589,6 +662,7 @@
     "background": "transparent",
     "sha256": "7f7d45ffa07eac63cb2ed7080b6101ebc7f6244d1f2495556f4fc7193b32f497",
     "bytes": 99355,
+    "runtimeTarget": "assets/art/card_icons/ic_mod_rage.webp",
     "replaces": "assets/art/card_icons/ic_mod_rage.webp",
     "optional": true
   },
@@ -603,6 +677,7 @@
     "background": "transparent",
     "sha256": "f8f5b64cb84b03948cdada50d2b3b5c42dc6aead16fb2440127c8a4a0f013b69",
     "bytes": 88465,
+    "runtimeTarget": "assets/art/card_icons/ic_mod_judge.webp",
     "replaces": "assets/art/card_icons/ic_mod_judge.webp",
     "optional": true
   },
@@ -617,6 +692,7 @@
     "background": "transparent",
     "sha256": "273a96274a9de510628ad939d8237521dbf88d574378dc7a25d40dcc94c8fb7f",
     "bytes": 84107,
+    "runtimeTarget": "assets/art/card_icons/ic_mod_focus.webp",
     "replaces": "assets/art/card_icons/ic_mod_focus.webp",
     "optional": true
   },
@@ -631,6 +707,7 @@
     "background": "transparent",
     "sha256": "1a00078b722b3df2f86e51ba209a72daa1358913df897f09c444c4f48c05554e",
     "bytes": 92942,
+    "runtimeTarget": "assets/art/card_icons/ic_fus_skyjudge.webp",
     "replaces": "assets/art/card_icons/ic_fus_skyjudge.webp",
     "optional": true
   },
