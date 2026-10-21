@@ -1,11 +1,11 @@
 {
-  "sourceCommit": "bb9fcb68dc049821619c6cb6c0d5f3f57ecc8cc0",
-  "deliveredPngs": 49,
+  "sourceCommit": "5bad9b6e969990eb96509234ce97618c687c9ff4",
+  "deliveredPngs": 51,
   "required": 46,
   "optionalRedraws": 5,
   "optionalSkipped": 1,
-  "verifiedBinaryFiles": 49,
-  "verifiedTextFiles": 7,
+  "verifiedBinaryFiles": 63,
+  "verifiedTextFiles": 10,
   "method": "Exact GitHub readback: binary base64 equality + blob SHA, with recorded SHA256; exact UTF8 metadata text.",
   "files": [
     {
@@ -111,6 +111,13 @@
       "bytes": 122408,
       "sha256": "1cf0fa887db0a99e25d0c71609a5d2e067ab98c600b36ff9085e316e23b4e9e2",
       "gitBlobSha": "1528f5a8bc7de949cfd608d0ef75059eb144b494",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_reb_double.png",
+      "bytes": 59031,
+      "sha256": "35f768e7a538e9c0eea1dc0c8314ce99fb9a6ce8116ec9c43471e3c6b2a6768b",
+      "gitBlobSha": "88b430fc3dd22585a477ed102b198a187f7fc4d7",
       "byteForByteMatch": true
     },
     {
@@ -261,6 +268,13 @@
       "byteForByteMatch": true
     },
     {
+      "path": "assets/incoming/card_icons_2/ic_path_p_arc_ground.png",
+      "bytes": 79743,
+      "sha256": "0cbb6d98f2bcf4624c5fc55c06d76f2b97bd8e47a5adb233b55dfbdf21c16842",
+      "gitBlobSha": "f9d5a2acd4af42c1cfdea8585298510031f2aaa3",
+      "byteForByteMatch": true
+    },
+    {
       "path": "assets/incoming/card_icons_2/ic_path_p_sentry_ward.png",
       "bytes": 107118,
       "sha256": "0b9db44045d212e44e532e11b32f44a17866936fd6f68b5c4cee6ed9423ab336",
@@ -349,6 +363,90 @@
       "bytes": 92942,
       "sha256": "1a00078b722b3df2f86e51ba209a72daa1358913df897f09c444c4f48c05554e",
       "gitBlobSha": "54d7dc272e944c205aa760f90d4159b50d3f05b6",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/all_icons_24px_light_dark.png",
+      "bytes": 163322,
+      "sha256": "e2729e534659df5a627ce09210a662fb67c565e30fd822f1a322c4e2880dc536",
+      "gitBlobSha": "fd9dc271974758d1d85ccd05bde27858fa0a4e02",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/all_icons_90px_light_dark_1.png",
+      "bytes": 392605,
+      "sha256": "2cffae5e1e13abbc68fe23570436a31f4fa1d86ad69742674816828836fcd119",
+      "gitBlobSha": "c504d6328de361d213579df935eb805bab2cc61a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/all_icons_90px_light_dark_2.png",
+      "bytes": 377837,
+      "sha256": "6b53ee896c6498ce9cefc7d54039a0505eab5fbd137382e35030b0130305e35e",
+      "gitBlobSha": "cd8bd710a530a609b444cd5930d28481cdc0e32c",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/all_icons_90px_light_dark_3.png",
+      "bytes": 340413,
+      "sha256": "b4f9ea4440680b1a4f5704cd4dbb4bafc8f58896cbdf54853a6532b56af7d6aa",
+      "gitBlobSha": "e60fad3f9e71fb63fcf31d2834928ecdd2d0dd64",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/all_icons_90px_light_dark_4.png",
+      "bytes": 322282,
+      "sha256": "0044ff1ed7c290f20377b8f1e9b7c00a5299b1920b0a56ea15e8f79cae4616ca",
+      "gitBlobSha": "b40afdca104df443f95d599ad3fa6e8062e9579c",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/mutation_pairs_24px.png",
+      "bytes": 92584,
+      "sha256": "666cd0d7c2093b63451ce7cf4a134ef12dceb75a59ade04384d9d65669fbe2e2",
+      "gitBlobSha": "92fe0ab8478112b64f54b85ede2588529c395bfd",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/path_C_vs_main_1.png",
+      "bytes": 321396,
+      "sha256": "54199077af56330d412e139ec2d1573aa51a67bc16a65fe8933ac46d671a5ba8",
+      "gitBlobSha": "6ce6089cc32b5796fa1c2351a752d2263cd13045",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/path_C_vs_main_2.png",
+      "bytes": 279748,
+      "sha256": "c3d84f54c1a70549fe506d6154c07b152fbacbe92784499a0b98c7928200455f",
+      "gitBlobSha": "419f4f422c440bc6b89df8e80277c29f406874e5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/path_C_vs_main_3.png",
+      "bytes": 292589,
+      "sha256": "2cdbd2a4762ff0bb626ed28ee63b7f1e2c8eb09dcb51bd058338ccda0e73a968",
+      "gitBlobSha": "a387b675b627ff759d4a39cdc3c95a02e2d65a06",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/optional_before_after.png",
+      "bytes": 368015,
+      "sha256": "4bd297cf2210b86277014c84babe8ada3f3060e09bfb029b66623b2b200e9017",
+      "gitBlobSha": "d2fbb7fd4b83f773d06f7191f0b95179fc0c1c85",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/INDEX.json",
+      "bytes": 12871,
+      "sha256": "f8e8f76d8b273c50629431a9e8cab2713ce60f60a5b20984a39c45502fdca1ed",
+      "gitBlobSha": "f347e5786385962abe8ae345da6e407e8f69b130",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/qa/README.md",
+      "bytes": 942,
+      "sha256": "0652ab858a66f583cba57f59b8eee075d765a9683dc18f48bceebcddb96aa517",
+      "gitBlobSha": "4a6860335cfa00c53bfe9bdc783799c30e651489",
       "byteForByteMatch": true
     }
   ]
