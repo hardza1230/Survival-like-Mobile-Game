@@ -38,7 +38,7 @@ const hurt=scene('pierce');hurt.player.hp=10;const recovery=hurt.rollBasicAttack
 const choice=scene(null);const paths=choice.rollBasicAttackUpgrades(3);assert.equal(paths.length,3);paths.find(c=>c.key==='pierce').apply();assert.equal(choice.basicAttack.path,'pierce');
 choice.basicAttack.mastery=10;assert(choice.rollBasicAttackUpgrades(3).every(c=>c.mutation));choice.basicAttack.mutation='blizzard';choice.basicAttack.mastery=16;assert(choice.rollBasicAttackUpgrades(3)[0].evolution);
 // Barrage extra lance is useful both before and after Evolution, including gear/talent bonuses.
-const b=scene('barrage');b.syncBasicAttack();const cards=b.rollBasicAttackUpgrades(99,{noSpecial:true});const quiver=cards.find(c=>c.key==='p_quiver');assert(quiver);quiver.apply();assert.equal(b.basicAttack.lv.p_quiver,1);assert.equal(b.basicAttack._pm.count,2);
+const b=scene('barrage');b.syncBasicAttack();const cards=b.rollBasicAttackUpgrades(99,{noSpecial:true});assert(!cards.find(c=>c.key==='p_quiver'));   // v7.9.21 Packed Quiver removed (duplicate of Crystal Payload)
 assert.equal(api.mintVolleyProfile(1,false,2,'barrage').count,2);assert.equal(api.mintVolleyProfile(4,false,2,'barrage').shardMul.toFixed(2),'1.36');
 assert(Math.abs(api.mintVolleyProfile(5,true,2,'barrage').shardMul-1.54)<1e-9);
 assert.equal(api.mintVolleyProfile(5,true,4,'barrage').count,2);

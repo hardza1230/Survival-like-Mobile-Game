@@ -30,7 +30,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Owner: Sesame and Yuzu are not finished. Do NOT change their cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame','yuzu']` shows a '🚧 In development' badge on their roster cards; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add hero-specific fixes for these two. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.20 — Slower page turn + more warning on boss arena attacks (owner)
+# Latest delivery: v7.9.21 — Card ECRS round 2 (owner: ตามที่แนะนำ)
+
+E1 Mint p_quiver removed · C4 Mint p_executioner card removed (hitImpaler execute code kept, lv 0) · E2 Taro p_overload Spark Power removed · E4 TRADEOFFS t_burn removed · E3 Taro p_static = fx {} + taroAfterDirect storm kill shards 3+lv targets, damage ×(1+.33·lv) · C1 Cocoa p_recharge = Leap Mend (cocoaDashLeap heals 1.5%·lv max HP when it finds a target; the −0.5s/rank Unique refund in doDash removed) · C2 dashp = charges only (cocoaDashBuffPct = .1 + _pm.dashm) · C3 Taro m_focus = Storm Battery (kind killCharge: modOnKill counts to n=15, next hit in modDmgMul ×5, _killChg) · S1 rate headlines '+8% attack speed' (Momo/Cocoa/Taro/Quick Arc, Mint +7%, tempest '+8% sentry fire rate') · S3 headline on every Momo/Mint/Cocoa/Taro card; Taro path mutations clear the fixed headline (their desc changes per path). Tests: mint-build-path (no Quiver), taro-progression (no path dmg mul), fixtures cocoa-rework-baseline (taro basic+paths), taro-v7817-dash (doDash refund), taro-t5. Still open for new card ideas: C5 Momo Seed Bloom, C6 Instinct → relics, R1 path card counts (Taro Arc 2, Mint Barrage 2, Cocoa Fire Fist/Dash Boxer 4 vs Sniper 7 / Impaler 7), R2 Unique tag, R3 Cocoa Close Crush, R4 Taro Overcharge, S2 long descs, S4 Petal Spread text.
+
+# Previous delivery: v7.9.20 — Slower page turn + more warning on boss arena attacks (owner)
 
 Owner: menu transition too fast; some new boss skills hit before you can react (e.g. C1-2 flood). bookTurn frames 54→82ms, dust 40→60, total 360→540ms; curtain 340→500 (flat fallback 300→450). Arena: arenaSweep warn 900→1500 dur 1600→2400 gapW 150→170 · second sweeps (C1-2 P2, C2-5, Pinnacle tongue) start 1400ms after the first · arenaGrid warn 850→1300 gap 420→600 (C1-3 call 700/850→1100/1300) · arenaRings warn 700→1100 shrink 2600→3400 (Pinnacle 3000→3800) · arenaHands warn 900→1400 speed ×~.77 · arenaPillars warn 1300→1800 · C3-1 scythe 1300→1900 · C3-3 mirror beam warn 1100→1600 · hiveRush lane warn 720/620/560→1000/900/820 · antTunnel lock 700/560→950/800. Arena smoke 13 bosses × 3 phases: 0 errors.
 
@@ -424,7 +428,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.20 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.21 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
