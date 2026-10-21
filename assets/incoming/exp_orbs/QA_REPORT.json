@@ -1,0 +1,140 @@
+{
+  "order": 29,
+  "technicalChecks": [
+    {
+      "key": "xp_orbs",
+      "sourceSha256": "f91a6b772fa2a303551e57e0540383c7feb9b633497c8b35bb63c4a18b9bf7c8",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceGrid": [
+        6,
+        6
+      ],
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "xp_orb_shadow",
+      "sourceSha256": "025fdbf899aef107f3bac3e0a82db5e99ec8e2cfd09edb970e63edd53009b6d2",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        1,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 76,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_pickup",
+      "sourceSha256": "5d2b5c8dfd4c96aaac36c84c27488272db8455fd08e256f8d529cc01212479bc",
+      "sourceSize": [
+        2172,
+        724
+      ],
+      "sourceGrid": [
+        6,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 253,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_pickup_big",
+      "sourceSha256": "4d761f5d5eee3bf9834fd107508fa47b13f706645924a8334a912993091941cc",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "alphaMin": 0,
+      "alphaMax": 253,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_trail",
+      "sourceSha256": "b659fee0cb3cf9f7fd1dab10b9696c6c1b05f374e1677d6eb077fdd7e3ad790c",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_merge",
+      "sourceSha256": "5d5658bf6135c870d1de98bbdb6fc512f4fa77ea0a0c2fb9fe03412bb908e840",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        5,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "xp_bar_icon",
+      "sourceSha256": "070ec31b28a3c0a28c62d280f496cdeb140a491df110e57f7a90961449d15b07",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceGrid": [
+        1,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    }
+  ],
+  "packedWebpTotalBytes": 136794,
+  "packedBudgetBytes": 250000,
+  "packedBudgetPass": true,
+  "pngDecodeAndHashVerified": true,
+  "exactDimensionsAndGrids": true,
+  "offlinePreviews": [
+    "QA_actual_sizes.png",
+    "QA_all_frames.png",
+    "QA_200_drops.png",
+    "QA_loop_10fps.gif",
+    "QA_effects.png"
+  ],
+  "visualReview": "Reviewed offline source proofs: all 36 cells at 16px, six tiers at 14/17/20/24/28/36px on five representative colors beside Sugar; clean 200-drop density proof; four FX strips. No game launch.",
+  "runtimeInteractionAndPhoneFPS": "not tested; source art delivery only",
+  "backgroundProof": "Five representative solid background colors, not actual stage screenshots",
+  "remoteBytesVerified": false,
+  "checksScope": "Technical asset QA and offline visual proofs only; actual stage backgrounds, runtime animation and phone FPS remain pending.",
+  "processingNotes": [
+    "Original orb rows extracted using source y boundaries [0,195,395,595,785,978,1254], avoiding adjacent tier fragments.",
+    "Uniform scale within each orb row; transparent padding and fixed frame pivots.",
+    "Discard alpha <=8/255 resampling residue; clear RGB of transparent texels.",
+    "No VFX frame rescaled independently; shadow alpha maximum 76/255."
+  ]
+}

@@ -1,6 +1,7 @@
 # 29 — เม็ด EXP ใหม่ (Flavor Drops) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟥 รอผลิต (20 ต.ค. 2026 · runtime v7.9.8)
+สถานะ: 🟢 ส่งอาร์ตครบ 7 PNG32 / 61 เฟรม (21 ต.ค. 2026) · WebP 136,794 bytes · ยังไม่ผูก runtime
+ดู `assets/incoming/exp_orbs/DELIVERY_README.md` และ `QA_REPORT.json` · runtime v7.9.25 ไม่เปลี่ยน
 ส่งไฟล์ที่ `assets/incoming/exp_orbs/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 21–28)
 
 ## ตอนนี้เป็นยังไง

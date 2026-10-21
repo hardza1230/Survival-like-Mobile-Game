@@ -1,0 +1,154 @@
+{
+  "order": 29,
+  "tool": "built-in image_gen",
+  "prompts": [
+    {
+      "key": "xp_orbs",
+      "prompt": "Use case: stylized-concept. Production game sprite sheet, transparent background. Exactly 6 columns by 6 rows of equal square cells, no gaps, no grid lines, no text. 36 separate sprites. Cute polished pastel confectionery fantasy Mochitopia. Each row is 6 animation frames of SAME centered upright crystal with identical body silhouette and size, only surface glint changes; seamless loop. Every sprite occupies 75% of cell, fully contained. Soft narrow dark colored outline and white upper highlight, readable when tiny. Row1 strawberry pink small round teardrop. Row2 mint green teardrop with a small four-point star INSIDE. Row3 blueberry blue angular diamond-shaped drop with four facets. Row4 grape purple diamond drop with thin tilted orbit ring that changes orientation across six frames. Row5 honey gold four-point star crystal. Row6 gold pink cyan iridescent large four-point star crystal with three-point light crown and a tiny traveling sparkle. Distinct silhouettes across tiers, not candies, no wrappers, no faces. Body NEVER rotates or shifts. Glints travel left to right in six frames. Equal aligned square cells. Canvas square. Real transparency, no checkerboard, no shadows baked."
+    },
+    {
+      "key": "xp_orb_shadow",
+      "prompt": "Production 2D game asset. One extremely simple soft flattened oval shadow centered, muted brown-purple, maximum opacity 30 percent, soft transparent feathered edges. Transparent background. Wide 2:1 canvas, ellipse occupies 80 percent width and 60 percent height. No object, text, sparkle, light, border or scenery. Real alpha."
+    },
+    {
+      "key": "vfx_xp_pickup",
+      "prompt": "Production 2D game VFX spritesheet, transparent background. EXACTLY SIX equal square cells in ONE horizontal row. White with very pale gold tint-ready light particles. Center fixed in every cell. Frame1 small bright central flash, frame2 bigger flash with thin ring, frame3 expanding thin ring and 4 four-point sparkles, frame4 six sparkles flying radially outward, frame5 fainter smaller outward sparkles, frame6 almost vanished faint points. Each cell isolated with 15 percent margin no overlapping neighbors. No text no grid no labels no black backdrop no checkerboard. Clean cute magical fantasy game style, simple broad graphic shapes, brightness mapped into alpha. Wide 6:1 canvas."
+    },
+    {
+      "key": "vfx_xp_pickup_big",
+      "prompt": "Production magical game VFX sprite sheet on REAL TRANSPARENT background. Exactly EIGHT square frames, arranged FOUR columns TWO rows, read left to right then next row; each cell separate and identically sized. Golden EXP pickup burst. Fixed origin in center of each cell. Frame1 small gold star flash, frame2 gold light thrust upward, frame3 brighter upward tapered gold ray plus double thin concentric rings, frame4 rings expanding with 4-point stars, frame5 six scattered stars and faint upward rays, frame6 stars drift further apart and fade, frame7 tiny dim star points, frame8 almost invisible remnants. White-gold warm honey palette. All effects completely within each cell with 12 percent transparent margins. No text labels grid background shadows or objects. Bold clean magical shapes suitable for small mobile display."
+    },
+    {
+      "key": "vfx_xp_trail",
+      "prompt": "Production 2D magical game VFX sprite sheet, genuine transparent background. EXACTLY FOUR frames in ONE horizontal row, each cell aspect 1:2 tall. Total canvas aspect 2:1. Four similar short tapered light trails, same position and dimensions in each cell, subtle pulse animation. Each trail points UP, bright rounded white head near top center, tapering wispy tail fading downward to transparency. Tint-ready ivory white with only very pale gold. Soft outer alpha, strong simple core. Frame1 medium, frame2 bright, frame3 medium, frame4 dim. No stars outside cells, no text lines grid checkerboard backdrop. Each fully contained with margins."
+    },
+    {
+      "key": "vfx_xp_merge",
+      "prompt": "Production 2D magical game VFX spritesheet REAL transparent background. EXACTLY FIVE equal square cells in ONE horizontal row. Fixed central origin in every cell. Pale gold and white, with delicate pink cyan accents. An inward fusion animation: frame1 two small wisps on opposite sides, frame2 inward arcs approaching center, frame3 compact four-point star flash at center where they meet, frame4 smaller central star with two tiny sparkles, frame5 fading tiny central glint. Simple clean readable shapes suitable 40px. No orb object, no text no labels no grid no border. Each frame with 15 percent transparent margin; no intercell overlap. Wide 5:1 canvas."
+    },
+    {
+      "key": "xp_bar_icon",
+      "prompt": "Production 2D game HUD icon, one single centered honey-gold FOUR-POINT star crystal, taller vertical points and shorter horizontal points, four broad faceted faces, translucent warm honey interior white top-left highlight and narrow dark brown-purple outline. Cute polished pastel confectionery fantasy mobile game. Match Flavor Drops tier5. Simple strong silhouette readable at 22px. Object covers 75 percent square canvas. REAL transparent background, no halo, no shadow, no extra stars, no text, no numbers, no candy wrapper, no face."
+    }
+  ],
+  "selectedSources": [
+    {
+      "key": "xp_orbs",
+      "sourceSha256": "f91a6b772fa2a303551e57e0540383c7feb9b633497c8b35bb63c4a18b9bf7c8",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceGrid": [
+        6,
+        6
+      ],
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "xp_orb_shadow",
+      "sourceSha256": "025fdbf899aef107f3bac3e0a82db5e99ec8e2cfd09edb970e63edd53009b6d2",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        1,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 76,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_pickup",
+      "sourceSha256": "5d2b5c8dfd4c96aaac36c84c27488272db8455fd08e256f8d529cc01212479bc",
+      "sourceSize": [
+        2172,
+        724
+      ],
+      "sourceGrid": [
+        6,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 253,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_pickup_big",
+      "sourceSha256": "4d761f5d5eee3bf9834fd107508fa47b13f706645924a8334a912993091941cc",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        2
+      ],
+      "alphaMin": 0,
+      "alphaMax": 253,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_trail",
+      "sourceSha256": "b659fee0cb3cf9f7fd1dab10b9696c6c1b05f374e1677d6eb077fdd7e3ad790c",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        4,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "vfx_xp_merge",
+      "sourceSha256": "5d5658bf6135c870d1de98bbdb6fc512f4fa77ea0a0c2fb9fe03412bb908e840",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceGrid": [
+        5,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    },
+    {
+      "key": "xp_bar_icon",
+      "sourceSha256": "070ec31b28a3c0a28c62d280f496cdeb140a491df110e57f7a90961449d15b07",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceGrid": [
+        1,
+        1
+      ],
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "allFramesNonempty": true,
+      "transparentFrameBorders": true
+    }
+  ],
+  "processing": "Extract cells, preserve alpha, uniform resampling, transparent padding. Shadow alpha capped to 30%. No procedural replacement artwork.",
+  "retry": {
+    "key": "vfx_xp_pickup_big",
+    "prompt": "Revise this VFX sprite sheet. Keep golden magical pickup effect style and exactly FOUR columns TWO rows, eight frames total. CRITICAL: reduce every effect to ONLY 55 percent of its cell height and width. Leave a broad fully transparent empty moat on ALL FOUR sides of EACH of eight cells. No particle may touch any cell boundary. No effects may cross into adjacent cells. Entire vertical ray must have a complete tapered top, never clipped. Fixed origin center in every equal square cell. Frame order: tiny star flash; rising golden beam; beam with two rings; beam subsiding and rings expanding with four stars; rays gone and six outward stars; six outward stars fainter; tiny sparkles; almost vanished points. Frame5 must have no beam remaining. Real alpha transparent background. No text, grid, lines or checkerboard.",
+    "reason": "Original upper beam clipped; selected retry has complete tip."
+  }
+}
