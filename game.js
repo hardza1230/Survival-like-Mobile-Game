@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.34';
+const GAME_VERSION = '7.9.35';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.35',date:'2026-10-21',title:'Tutorial fixes',items:['The gear tutorial after Stage 1 works again: it now leads you to the Bazaar Gacha, then Equipment, the Forge and Talents','Fixed a rare error when leaving the screen right after a Gacha roll (you still get the item)','Help pages updated: drag anywhere to move, Build Path at level 5','Menu pages no longer play a transition — the storybook cover only opens when you enter the menu']},
   {v:'7.9.34',date:'2026-10-21',title:'Book cover between menu pages',items:['Moving between menu pages now opens the storybook cover, the same as returning from a stage','Tap to skip it any time']},
   {v:'7.9.33',date:'2026-10-21',title:'No EXP during the final boss',items:['Enemies no longer drop EXP while the stage’s final boss is alive — the stage ends with the boss, so the drops were never useful','Bosses still give their rewards as before']},
   {v:'7.9.32',date:'2026-10-21',title:'Smaller EXP drops',items:['EXP drops are about 40% smaller on the ground, so they no longer cover the field','Pickup range is unchanged']},
@@ -8254,7 +8255,8 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(270,()=>{ if(!c.active)return; cl.setVisible(false); gl.setVisible(false); op.setVisible(true);
       this.time.addEvent({delay:80,repeat:5,callback:()=>{ f++; if(!op.active)return; if(f<5)op.setFrame('cell'+f); else this.tweens.add({targets:c,alpha:0,duration:120,onComplete:end}); }}); });
     this.time.delayedCall(1400,end); }
-  menuTransition(forward){ if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
+  menuTransition(forward){ return;   // v7.9.35 เจ้าของ: ไม่ต้องมี transition ระหว่างหน้า — เหลือแค่เปิดปกตอนเข้าเมนู (showMenu → bookCover) · โค้ดเดิมด้านล่างเก็บไว้
+    if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
     if(this.bookReady()){ if(this._bookCover)this._bookSkip?.(); this.bookCover(); return; }   // v7.9.34 เจ้าของ: ทุกหน้าใช้การเปิดปกแบบตอนจบด่านกลับเมนู (bookTurn เก็บไว้)   // v7.9.10 ใบ 28 พลิกหน้าหนังสือ (ม่านใบ 26 = สำรองตอนยังโหลดไม่เสร็จ)
     const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),T=this.textures,art=T.exists('tr_curtain')&&T.exists('tr_edge');this._menuWipe=c;
     if(!art){ const veil=this.add.rectangle(0,0,w,h,0x24142f,1).setOrigin(0),edge=this.add.rectangle(forward?0:w,0,10,h,0xffd6ea,.9).setOrigin(forward?1:0,0);c.add([veil,edge]);
@@ -8394,17 +8396,20 @@ class Game extends Phaser.Scene {
     // v7.8.90 กระจายบทแนะนำ: ด่าน 1 = ของ · ด่าน 2 = Forge (+3 Twist Cream) · ด่าน 3 = Talent
     const sm=d.stageMastery||{}; if(st>=2&&st<=3&&!sm[1])return; if(st===4&&!sm[2])return;
     if(st===2&&!d._craftTutGift){ d._craftTutGift=true; Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Forge unlocked: +3 🟢 Twist Cream','#ffd166'); } if(st===4){const cp=Save.cp(d.character||'momo');if((cp.tp||0)<1&&!d._talTutGift){cp.tp=(cp.tp||0)+1;d._talTutGift=true;Save.save();}}
-    const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/cp\.tal\[n\.id\]=r\+1/,t:'Spend a Talent Point — talents are permanent!'}];
-    const cur=STEPS[st],src=z=>{try{return String(z.fn)}catch(e){return ''}};
+    const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/\.tal\[\w+\.id\]=\w+\+1/,t:'Spend a Talent Point — talents are permanent!'}];
+    if(st===0&&this.menuScreen==='bazaar'&&this._bazTab!=='gamble'){ this._bazTab='gamble'; this.buildMenuScreen(); return; }   // v7.9.35 กาชาอยู่แท็บ Gacha ของ Bazaar
+    const cur=STEPS[st],src=z=>{try{return String(z.fn).replace(/"/g,"'")}catch(e){return ''}};   // v7.9.35 เวอร์ชัน live ย่อโค้ด (esbuild) → เครื่องหมายคำพูดเป็น " · ชื่อตัวแปรเปลี่ยน
     let z=this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
     if(!z&&st===4){ adv=false; z=this.tapZones.find(q=>q.tag==='tab_talents'); label='Open Talents'; if(!z){ z=this.tapZones.find(q=>/menuScreen='char'/.test(src(q))&&!/_heroesTab/.test(src(q))); label='Open Heroes'; } if(!z){ z=this.tapZones.find(q=>q.tag==='talents'||q.tag==='char'); label='Open Talents'; } if(!z){ z=this.tapZones.find(q=>q.back); label='Go back'; } }
-    if(!z&&st<4){ adv=false; z=this.tapZones.find(q=>q.tag===(st===3?'craft':'gear'))||this.tapZones.find(q=>/menuScreen='gLoadout'/.test(src(q))); label=z&&z.tag?'Open '+(st===3?'Crafting':'Equipment'):'Open Gear & Power'; }
+    if(!z&&st<4){ adv=false; const want=st===0?'bazaar':st===3?'craft':'gear'; z=this.tapZones.find(q=>q.tag===want); label='Open '+(st===0?'Bazaar':st===3?'Crafting':'Equipment');   // v7.9.35 กาชาย้ายไป Bazaar แล้ว (v7.8.95)
+      if(!z){ z=this.tapZones.find(q=>q.tag==='gLoadout'||/menuScreen='gLoadout'/.test(src(q))); label='Open Gear & Power'; }
+      if(!z&&this.menuScreen!=='hub'&&!(st===1&&this.menuScreen==='gear')){ z=this.tapZones.find(q=>q.back)||this.tapZones.find(q=>/Sfx\.back\(\)/.test(src(q))); label='Go back'; } }
     if(!z){ if(st===1&&this.menuScreen==='gear'){ const items=d.gearItems||[],it=items[items.length-1],b=it&&GEAR_ALL.find(g=>g.id===it.baseId);
         if(it&&b&&!Save.isGearEquipped(it.uid)&&this.gearSelectedUid!==it.uid){ this.gearSlot=b.slot; this.gearSelectedUid=it.uid; this.buildMenuScreen(); return; }
         d.gearTut=2; Save.save(); this.buildMenuScreen(); } return; }
     const fn=z.fn; z.fn=()=>{ if(adv){ d.gearTut=st===4?-1:st+1; Save.save(); if(st===1)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: the Forge opens after Stage 2','#ffd166')); if(st===3)this.time.delayedCall(1800,()=>this.menuToast('🌟 Next: Talents after Stage 3','#ffd166')); if(st===4)this.time.delayedCall(800,()=>this.menuToast('✨ Tutorial done! Gear, crafting and talents make you stronger','#8dffb0')); } fn(); };
     const skip={x:this.W-96,y:this.H-40,w:86,h:30,fn:()=>{ d.gearTut=-1; Save.save(); this.buildMenuScreen(); }};
-    this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
+    this._gearTutLabel=label; this.tapZones=[z,skip]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label);
     c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   gearPowerLayout(){const w=this.W,h=this.H,portrait=w<=h,bw=Math.min(w-28,520),x=(w-bw)/2,gap=10,cols=portrait?2:4,tw=(bw-gap*(cols-1))/cols,top=portrait?112:90,powerH=bw*231/768,tileH=tw*267/384,gearY=top+powerH+36;return{portrait,bw,x,top,gap,cols,tw,powerH,tileH,gearY};}
@@ -9042,11 +9047,11 @@ class Game extends Phaser.Scene {
   tutorialPages(){
     return [
       {e:'👋',t:'Hi! My name is Berry',d:'Welcome to Mochi Mayhem! I will teach you how to play — tap the screen to continue~'},
-      {e:'🕹️',t:'Move with the joystick',d:'Hold and drag on the left half of the screen — you move where you drag · keep running from enemies!'},
+      {e:'🕹️',t:'Move with the joystick',d:'Drag anywhere on the screen — you move where you drag · keep running from enemies!'},
       {e:'⚔️',t:'Weapon auto-fires!',d:'No need to shoot — your weapon auto-attacks the nearest enemy · your job is to dodge and aim well'},
       {e:'💨',t:'Dash to dodge',d:'Tap the Dash button (bottom-right) to dodge · when you see red ground or boss bullets, Dash out before they hit!'},
-      {e:'⭐',t:'Level up = pick a card',d:'Collect EXP orbs to fill the bar and pick a power-up card · max the same card to "Awaken" it for even more power!'},
-      {e:'🍳',t:'Cook secret recipes',d:'Your weapon + the matching passive = a special dish! Check the "Recipes" panel on level-up and collect them all'},
+      {e:'⭐',t:'Level up = pick a card',d:'Walk over EXP drops to fill the bar, then pick 1 of 3 power-up cards · the same card can be picked again to rank it up'},
+      {e:'🍳',t:'Pick a Build Path',d:'At level 5 you choose a Build Path — it changes how your attack works · later cards grow that path and can Evolve it!'},
       {e:'✨',t:'Unique power',d:'The button above Dash is your ultimate · save it for when you are swarmed or fighting a boss'},
       {e:'🎒',t:'Collect Sugar to upgrade',d:'Kill enemies / clear stages to earn 🍬 Sugar for permanent upgrades and gear · you grow stronger the more you play!'},
       {e:'🔥',t:'Ready to go!',d:'Harder stages give better rewards! Climb up step by step · go have fun in the chaotic kitchen~ 🍡'},
@@ -10528,9 +10533,10 @@ class Game extends Phaser.Scene {
     this.menu.add([bg,title,glow,chest,status]);this.menu.setVisible(true);Sfx.chest();
     this.tweens.add({targets:chest,rotation:{from:-0.06,to:0.06},scale:{from:0.72,to:0.88},duration:90,yoyo:true,repeat:8});
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.2,alpha:{from:0.2,to:0.78},duration:900,ease:'Cubic.in'});
-    this.time.delayedCall(420,()=>status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'));
+    this.time.delayedCall(420,()=>{ if(status.active)status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'); });
     this.time.delayedCall(920,()=>{
       const it=this.gachaRoll(ilv);let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addThreads(6);}
+      if(!status.active||this.state!=='menu')return;   // v7.9.35 ออกจากหน้าก่อนเปิดกล่อง → ของยังได้ แต่ไม่วาดต่อ (เดิม setText บนข้อความที่ถูกลบ = error)
       const color=tier==='legend'?0xff8f3a:tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       const gArt=it?('gear_'+it.id):null;
       if(gArt&&this.textures.exists(gArt)){ chest.setText(''); const gi=this.add.image(w/2,h*0.47,gArt).setDisplaySize(120,120); const ts=gi.scaleX; gi.setScale(ts*0.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:340,ease:'Back.out'}); }
