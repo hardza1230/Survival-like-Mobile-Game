@@ -1,0 +1,1151 @@
+{
+  "status": "technical sources checked; proof compositions pending",
+  "assets": [
+    {
+      "key": "counter_c15_dishes",
+      "file": "counter_c15_dishes.png",
+      "section": "A5",
+      "stage": "c15",
+      "width": 640,
+      "height": 128,
+      "columns": 5,
+      "rows": 1,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 5,
+      "background": "transparent",
+      "loop": false,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 117532,
+      "sha256": "e39928978c8f6989a69b570386013d488dd455d20f7c826ff89410911763ca3d",
+      "gitBlobSha": "33856b3e15baa61ca475c7e1298ca5112de64bf4",
+      "source": {
+        "width": 2172,
+        "height": 724,
+        "bytes": 1204217,
+        "sha256": "6bd49ee91682bc0e5090157f626f6b166b2e87821a016c0935a3556d5c7d03dd"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              15,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9951884522854851,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              21,
+              112,
+              107
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9478748997594226,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              17,
+              24,
+              112,
+              103
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9807538091419407,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              22,
+              108,
+              106
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9494787489975942,
+            "seamMax": 0
+          },
+          {
+            "frame": 4,
+            "bounds": [
+              15,
+              19,
+              112,
+              108
+            ],
+            "alphaMin": 0,
+            "alphaMax": 253,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c21_pod",
+      "file": "counter_c21_pod.png",
+      "section": "A6",
+      "stage": "c21",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 90717,
+      "sha256": "c58dcfb1f81df41254bd40235ee73f2f089c199f218924571038970618ecfed2",
+      "gitBlobSha": "c37a0ad8559f38706512b931a116b1470be9f01e",
+      "source": {
+        "width": 1332,
+        "height": 1181,
+        "bytes": 1187426,
+        "sha256": "b4d815acfe80fc3e31bb6979bec95bcd4dbd32470f3ec0bacd9d6013542c1688"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              20,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9935846030473136,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              20,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9927826784282278,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              20,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.991980753809142,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              20,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9935846030473136,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "vfx_counter_ring",
+      "file": "vfx_counter_ring.png",
+      "section": "B1",
+      "stage": "shared",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "#000000",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 27841,
+      "sha256": "963279631408804498760aa8719a811e28b76e433211f169ce84ea9e4cb1af7c",
+      "gitBlobSha": "e0b3a5fd4e7641979dc2e9672e8ae51e21488428",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 761535,
+        "sha256": "5804c63560b01f22cee2cffb7a8943ba9bd07a26c729adee3abf8558504d1f52"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              42,
+              114,
+              85
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              43,
+              113,
+              85
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              15,
+              46,
+              114,
+              84
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              45,
+              113,
+              84
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "not applicable",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c12_sponge",
+      "file": "counter_c12_sponge.png",
+      "section": "A2",
+      "stage": "c12",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 73725,
+      "sha256": "98a3e8e3af360d135f42a4c96d02d336d348bc44d8c3e1df8e31efca42a31367",
+      "gitBlobSha": "7a62ccc8fdd7118bf539c64bd3b4db05a3a81f1b",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 2052536,
+        "sha256": "9b102dd7b7ddd59b786c994c25685f021c313c0fbd3ac58f51096b572fadd355"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              28,
+              112,
+              99
+            ],
+            "alphaMin": 0,
+            "alphaMax": 253,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              28,
+              112,
+              100
+            ],
+            "alphaMin": 0,
+            "alphaMax": 253,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              15,
+              27,
+              112,
+              100
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9991980753809142,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              28,
+              112,
+              100
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c13_pan",
+      "file": "counter_c13_pan.png",
+      "section": "A3",
+      "stage": "c13",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 68351,
+      "sha256": "2686b3a2a05af57b86506cb6293b71b59089c96d06761dee6080fbee6ba0a9b6",
+      "gitBlobSha": "ce83ce3ed56b46a59f4d1b46f3dc9ed5211f584d",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 723323,
+        "sha256": "96ce76f113e59ecf6cab5ec2679379c6124100401b8191d91b960987e1fdc24b"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              26,
+              112,
+              101
+            ],
+            "alphaMin": 0,
+            "alphaMax": 253,
+            "nonempty": true,
+            "centerBrightFraction": 0.8500400962309543,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              25,
+              112,
+              103
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.8075380914194066,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              15,
+              27,
+              112,
+              101
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.8356054530874097,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              26,
+              112,
+              102
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.813953488372093,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c14_ice",
+      "file": "counter_c14_ice.png",
+      "section": "A4",
+      "stage": "c14",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 88451,
+      "sha256": "91d73224cc49fbbfe39910498d7a2cbca67aa3ba9700c03c6c4d02c5a6d3f15d",
+      "gitBlobSha": "f540533a173f4252c47f092e7f333832c9b1623e",
+      "source": {
+        "width": 1322,
+        "height": 1190,
+        "bytes": 1248725,
+        "sha256": "a13b5dfd308a260684407fb7cdb49cbd6cfdaa45abc132c1d4c54225909613c2"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              22,
+              15,
+              106,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              22,
+              15,
+              106,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              21,
+              15,
+              106,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              22,
+              15,
+              106,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c22_mushroom",
+      "file": "counter_c22_mushroom.png",
+      "section": "A7",
+      "stage": "c22",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 71626,
+      "sha256": "f1a6d5510c1e95f9ec7afd7b07aeca7a1d4ba33845c87c00a4144d8b9a3b6a36",
+      "gitBlobSha": "f1bdaf00568821d814cb12eea2aec0c60e4bfe99",
+      "source": {
+        "width": 1274,
+        "height": 1235,
+        "bytes": 939198,
+        "sha256": "a070bce26d3417d6946c5d1bb5418b2db497811a82358f7acadfb09c0ae45b99"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              21,
+              112,
+              107
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9991980753809142,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              17,
+              112,
+              110
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              15,
+              23,
+              112,
+              104
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9951884522854851,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              24,
+              112,
+              104
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9975942261427426,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c23_honey",
+      "file": "counter_c23_honey.png",
+      "section": "A8",
+      "stage": "c23",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 110077,
+      "sha256": "a2b6b3e35401788633f6826de65e457c6734eb5a0567d66bc1bba8288c436178",
+      "gitBlobSha": "8db31580506bb5bcc9897503fdfc467ecd8ddf07",
+      "source": {
+        "width": 1312,
+        "height": 1199,
+        "bytes": 1495338,
+        "sha256": "527b3760eb0d7fca37aafe1c08c8027249941be191651dfc5313998f4e1d3db9"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              15,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              15,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9991980753809142,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              15,
+              16,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9991980753809142,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              15,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c24_season_seed",
+      "file": "counter_c24_season_seed.png",
+      "section": "A9",
+      "stage": "c24",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 114741,
+      "sha256": "c240f40eccd49459239e3b53ba048cebe923ccff9c9e9d9427c12f940c050ad7",
+      "gitBlobSha": "98a8029d5dbd128352cd2bf46f7d9a1da0cf43dc",
+      "source": {
+        "width": 1289,
+        "height": 1221,
+        "bytes": 1565971,
+        "sha256": "2acb583f2ba790140a0c467dd1e20520c4137027acf7cff5ed66921f391d56c0"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              15,
+              15,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9943865276663993,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              15,
+              16,
+              112,
+              111
+            ],
+            "alphaMin": 0,
+            "alphaMax": 253,
+            "nonempty": true,
+            "centerBrightFraction": 0.9975942261427426,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              15,
+              17,
+              112,
+              110
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9975942261427426,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              15,
+              16,
+              112,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9967923015236567,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c25_root_seed",
+      "file": "counter_c25_root_seed.png",
+      "section": "A10",
+      "stage": "c25",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 93571,
+      "sha256": "ec6e7a3d0ce7651ee522e570a41f219ceeb20c2806511fc4e8e4ad90e7921c59",
+      "gitBlobSha": "f7a5104615fdd519ea766bbf9d42f95a2c69580c",
+      "source": {
+        "width": 1263,
+        "height": 1246,
+        "bytes": 1487773,
+        "sha256": "c54ac7e1d4be1f8d66eb123d23fcfe2073f4e0f59888214c2f369b73b6b47272"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              17,
+              15,
+              110,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.92542101042502,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              18,
+              15,
+              110,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9558941459502807,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              18,
+              15,
+              110,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.8853247794707297,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              17,
+              15,
+              111,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9350441058540497,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    },
+    {
+      "key": "vfx_counter_hit",
+      "file": "vfx_counter_hit.png",
+      "section": "B2",
+      "stage": "shared",
+      "width": 768,
+      "height": 512,
+      "columns": 3,
+      "rows": 2,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 6,
+      "background": "#000000",
+      "loop": false,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 262203,
+      "sha256": "25ef25cddec8175eb7c8c439e9f42c26aac1bda558724d0a8c9d7dfcc78e727f",
+      "gitBlobSha": "6e1c50d50967e708898a044591e8ed1bf204ee33",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 976938,
+        "sha256": "c83b0759bbcddb44e120d7594d33c45b8a64434e427def350317fef05a46f434"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              78,
+              78,
+              178,
+              174
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0.40774349667271625,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              39,
+              40,
+              215,
+              209
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0.8743698326275459,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              12,
+              15,
+              239,
+              232
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0.9762048800161323,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              24,
+              33,
+              234,
+              225
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0.1550715870135108,
+            "seamMax": 0
+          },
+          {
+            "frame": 4,
+            "bounds": [
+              17,
+              23,
+              214,
+              204
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0.047186932849364795,
+            "seamMax": 0
+          },
+          {
+            "frame": 5,
+            "bounds": [
+              44,
+              9,
+              222,
+              161
+            ],
+            "alphaMin": 255,
+            "alphaMax": 255,
+            "nonempty": true,
+            "centerBrightFraction": 0.011292599314377899,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "not applicable",
+      "visualQA": "pending"
+    },
+    {
+      "key": "counter_c11_egg",
+      "file": "counter_c11_egg.png",
+      "section": "A1",
+      "stage": "c11",
+      "width": 256,
+      "height": 256,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 4,
+      "background": "transparent",
+      "loop": true,
+      "anchor": "center",
+      "holdFrame": null,
+      "bytes": 98987,
+      "sha256": "072657d78cd5bac015ae1ad26af4d6d9bc37d7eb00d47e140802d957b5d9d7e1",
+      "gitBlobSha": "fb5a6b5cfa66d2ee158a996c1fa8c21d90c6f4cf",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1666267,
+        "sha256": "979fe3c1e70b7541a9ceeb31e4f042af24787be21c7a8bf061cbc9d634c16872"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "pngCRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "frameChecks": [
+          {
+            "frame": 0,
+            "bounds": [
+              19,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              19,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 2,
+            "bounds": [
+              20,
+              15,
+              108,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          },
+          {
+            "frame": 3,
+            "bounds": [
+              17,
+              15,
+              111,
+              112
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 1,
+            "seamMax": 0
+          }
+        ],
+        "seamCorrection": "none"
+      },
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "pending"
+    }
+  ]
+}

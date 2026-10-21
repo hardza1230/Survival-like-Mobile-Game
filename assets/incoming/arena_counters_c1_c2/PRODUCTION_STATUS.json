@@ -1,7 +1,8 @@
 {
-  "assets": 12,
+  "order": 31,
+  "completed": 12,
+  "total": 12,
   "frames": 51,
-  "completed": 0,
-  "status": "production started",
-  "sourceOnly": true
+  "status": "sources complete; final QA in progress",
+  "runtimeIntegrated": false
 }
