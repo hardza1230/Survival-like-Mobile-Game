@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.30';
+const GAME_VERSION = '7.9.31';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.31',date:'2026-10-21',title:'New card icons',items:['⭐ Unique cards and every ⭐ Unique Mutation now have their own icons','New Build Path cards (Static Shock, Double Arc, Heart Spark, Hot Streak, Lance Echo and more) no longer borrow other cards’ pictures','Kill Streak and Last Stand relics have icons','Fresh icons for Petal Kick, Rolling Rage, Static Buildup, Storm Battery and Sky Judge']},
   {v:'7.9.30',date:'2026-10-21',title:'Kick objects for every boss',items:['The things you dash into bosses now have real pictures in Chapters 1 and 2 too: eggs, sponge, pan, ice, the feast dishes, spore pods, mushroom, honey, season seed and root seed','A new ring under each one shows where to dash, and a burst shows when it hits the boss']},
   {v:'7.9.29',date:'2026-10-21',title:'Chapter 3 boss effects',items:['Every Chapter 3 boss, miniboss and the Pinnacle now has its own warning circles, blasts, shockwaves and charge lines','Big moves have new art: Harvest Moon, Wither Wind, Empty Heart, Shatter Dome, Last Seed, Root Cage, First Bloom, Devour, Eclipse','Arena attacks got real art: the giant scythe, nectar drip on the real Hollow Bloom, prism mirror beams, vault rings, seed grid, crown roots, closing jaws and the tongue','The things you dash into bosses now have their own pictures in Chapter 3 and the Pinnacle']},
   {v:'7.9.28',date:'2026-10-21',title:'Storm Mark icon',items:['Taro’s Spark Build Unique button now has its own Storm Mark icon']},
@@ -2139,6 +2140,51 @@ const ASSET_IMAGES = {
   ic_mod_aim:'assets/art/card_icons/ic_mod_aim.webp',
   ic_mod_jam:'assets/art/card_icons/ic_mod_jam.webp',
   ic_mod_spray:'assets/art/card_icons/ic_mod_spray.webp',
+  // v7.9.31 ใบ 32: ไอคอนการ์ดรอบ 2 (Unique / Unique Mutation / การ์ดสายใหม่ / relic ใหม่)
+  ic_uq_power:'assets/art/card_icons/ic_uq_power.webp',
+  ic_uq_cd:'assets/art/card_icons/ic_uq_cd.webp',
+  ic_uq_kill:'assets/art/card_icons/ic_uq_kill.webp',
+  ic_uq_echo:'assets/art/card_icons/ic_uq_echo.webp',
+  ic_uq_ready:'assets/art/card_icons/ic_uq_ready.webp',
+  ic_path_p_arc_twin:'assets/art/card_icons/ic_path_p_arc_twin.webp',
+  ic_path_p_spark_shock:'assets/art/card_icons/ic_path_p_spark_shock.webp',
+  ic_path_p_bar_echo:'assets/art/card_icons/ic_path_p_bar_echo.webp',
+  ic_path_r_spark:'assets/art/card_icons/ic_path_r_spark.webp',
+  ic_path_p_streak:'assets/art/card_icons/ic_path_p_streak.webp',
+  ic_uqm_snipe_refund:'assets/art/card_icons/ic_uqm_snipe_refund.webp',
+  ic_uqm_snipe_guard:'assets/art/card_icons/ic_uqm_snipe_guard.webp',
+  ic_uqm_blast_stun:'assets/art/card_icons/ic_uqm_blast_stun.webp',
+  ic_uqm_blast_rain:'assets/art/card_icons/ic_uqm_blast_rain.webp',
+  ic_uqm_reb_shield:'assets/art/card_icons/ic_uqm_reb_shield.webp',
+  ic_uqm_reb_double:'assets/art/card_icons/ic_uqm_reb_double.webp',
+  ic_uqm_bloom_field:'assets/art/card_icons/ic_uqm_bloom_field.webp',
+  ic_uqm_bloom_heal:'assets/art/card_icons/ic_uqm_bloom_heal.webp',
+  ic_uqm_lance_mines:'assets/art/card_icons/ic_uqm_lance_mines.webp',
+  ic_uqm_lance_guard:'assets/art/card_icons/ic_uqm_lance_guard.webp',
+  ic_uqm_gale_blades:'assets/art/card_icons/ic_uqm_gale_blades.webp',
+  ic_uqm_gale_tail:'assets/art/card_icons/ic_uqm_gale_tail.webp',
+  ic_uqm_rocket_ring:'assets/art/card_icons/ic_uqm_rocket_ring.webp',
+  ic_uqm_rocket_heat:'assets/art/card_icons/ic_uqm_rocket_heat.webp',
+  ic_uqm_rage_after:'assets/art/card_icons/ic_uqm_rage_after.webp',
+  ic_uqm_rage_guard:'assets/art/card_icons/ic_uqm_rage_guard.webp',
+  ic_uqm_phantom_refund:'assets/art/card_icons/ic_uqm_phantom_refund.webp',
+  ic_uqm_phantom_slam:'assets/art/card_icons/ic_uqm_phantom_slam.webp',
+  ic_uqm_plasma_wide:'assets/art/card_icons/ic_uqm_plasma_wide.webp',
+  ic_uqm_plasma_twin:'assets/art/card_icons/ic_uqm_plasma_twin.webp',
+  ic_uqm_mark_jump:'assets/art/card_icons/ic_uqm_mark_jump.webp',
+  ic_uqm_mark_nova:'assets/art/card_icons/ic_uqm_mark_nova.webp',
+  ic_uqm_over_long:'assets/art/card_icons/ic_uqm_over_long.webp',
+  ic_uqm_over_finale:'assets/art/card_icons/ic_uqm_over_finale.webp',
+  relic_streak:'assets/art/icons/relic_streak.webp',
+  relic_laststand:'assets/art/icons/relic_laststand.webp',
+  ic_path_p_arc_shock:'assets/art/card_icons/ic_path_p_arc_shock.webp',
+  ic_path_p_arc_ground:'assets/art/card_icons/ic_path_p_arc_ground.webp',
+  ic_path_p_sentry_ward:'assets/art/card_icons/ic_path_p_sentry_ward.webp',
+  ic_path_p_sentry_pulse:'assets/art/card_icons/ic_path_p_sentry_pulse.webp',
+  ic_path_p_bar_wide:'assets/art/card_icons/ic_path_p_bar_wide.webp',
+  ic_path_p_bar_chain:'assets/art/card_icons/ic_path_p_bar_chain.webp',
+  ic_path_p_leapstun:'assets/art/card_icons/ic_path_p_leapstun.webp',
+  ic_path_p_recharge:'assets/art/card_icons/ic_path_p_recharge.webp',
   ic_mod_icemine:'assets/art/card_icons/ic_mod_icemine.webp',
   ic_mod_shatter:'assets/art/card_icons/ic_mod_shatter.webp',
   ic_mod_flurry:'assets/art/card_icons/ic_mod_flurry.webp',
@@ -3197,7 +3243,7 @@ function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('flo
 const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
 const XP_ORB_KEYS=['xp_orbs','xp_orb_shadow','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
 const XP_ORB_PX=[0,36,44,52,62,73,94],XP_TIER_COL=[0,0xff8fb5,0x8be6a4,0x7fc9ff,0xb98cff,0xffd75e,0xfff0a0];   // ขนาดเม็ดในโลก (ส่วนที่เห็น ~75% ของเฟรม) · สีย้อม VFX ตามระดับ
-const CARD_ICON_KEYS=["ic_evo_momo", "ic_evo_cocoa", "ic_evo_berry", "ic_evo_mint", "ic_evo_taro", "ic_evo_sesame", "ic_fus_heartburst", "ic_fus_crownseed", "ic_fus_glacier", "ic_fus_shardstorm", "ic_fus_quakeking", "ic_fus_lastbear", "ic_fus_tempest", "ic_fus_skyjudge", "ic_fus_prismnova", "ic_fus_horizon", "ic_mod_bloom", "ic_mod_love", "ic_mod_heart", "ic_mod_aim", "ic_mod_jam", "ic_mod_spray", "ic_mod_icemine", "ic_mod_shatter", "ic_mod_flurry", "ic_mod_throw", "ic_mod_glide", "ic_mod_coldarc", "ic_mod_quake", "ic_mod_stomp", "ic_mod_rage", "ic_mod_crush", "ic_mod_ko", "ic_mod_after", "ic_mod_over", "ic_mod_field", "ic_mod_step", "ic_mod_judge", "ic_mod_ion", "ic_mod_focus", "ic_mod_prism", "ic_mod_lens", "ic_mod_scope", "ic_mod_refract", "ic_mod_mirror", "ic_mod_exec", "ic_mut_momo_ricochet", "ic_mut_momo_fan", "ic_mut_cocoa_rush", "ic_mut_cocoa_breaker", "ic_mut_cocoa_counter", "ic_mut_berry_seeker", "ic_mut_berry_sticky", "ic_mut_mint_blizzard", "ic_mut_mint_permafrost", "ic_mut_taro_chainlord", "ic_mut_taro_stormcaller", "ic_mut_sesame_fortress", "ic_mut_sesame_retaliate", "ic_trade_glass", "ic_trade_burn", "ic_trade_armor", "ic_trade_rush", "ic_trade_berserk", "ic_trade_core", "ic_trade_feast", "ic_trade_oath", "ic_inf_spicy", "ic_inf_sour", "ic_inf_sweet", "ic_inf_minty", "ic_cocoa_dashp", "ic_cocoa_drum"];CARD_ICON_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.68 ใบ 26: ไอคอนการ์ดโหลดพร้อมด่าน (ไม่กินงบบูต)   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
+const CARD_ICON_KEYS=["ic_evo_momo", "ic_evo_cocoa", "ic_evo_berry", "ic_evo_mint", "ic_evo_taro", "ic_evo_sesame", "ic_fus_heartburst", "ic_fus_crownseed", "ic_fus_glacier", "ic_fus_shardstorm", "ic_fus_quakeking", "ic_fus_lastbear", "ic_fus_tempest", "ic_fus_skyjudge", "ic_fus_prismnova", "ic_fus_horizon", "ic_mod_bloom", "ic_mod_love", "ic_mod_heart", "ic_mod_aim", "ic_mod_jam", "ic_mod_spray", "ic_mod_icemine", "ic_mod_shatter", "ic_mod_flurry", "ic_mod_throw", "ic_mod_glide", "ic_mod_coldarc", "ic_mod_quake", "ic_mod_stomp", "ic_mod_rage", "ic_mod_crush", "ic_mod_ko", "ic_mod_after", "ic_mod_over", "ic_mod_field", "ic_mod_step", "ic_mod_judge", "ic_mod_ion", "ic_mod_focus", "ic_mod_prism", "ic_mod_lens", "ic_mod_scope", "ic_mod_refract", "ic_mod_mirror", "ic_mod_exec", "ic_mut_momo_ricochet", "ic_mut_momo_fan", "ic_mut_cocoa_rush", "ic_mut_cocoa_breaker", "ic_mut_cocoa_counter", "ic_mut_berry_seeker", "ic_mut_berry_sticky", "ic_mut_mint_blizzard", "ic_mut_mint_permafrost", "ic_mut_taro_chainlord", "ic_mut_taro_stormcaller", "ic_mut_sesame_fortress", "ic_mut_sesame_retaliate", "ic_trade_glass", "ic_trade_burn", "ic_trade_armor", "ic_trade_rush", "ic_trade_berserk", "ic_trade_core", "ic_trade_feast", "ic_trade_oath", "ic_inf_spicy", "ic_inf_sour", "ic_inf_sweet", "ic_inf_minty", "ic_cocoa_dashp", "ic_cocoa_drum", "ic_uq_power", "ic_uq_cd", "ic_uq_kill", "ic_uq_echo", "ic_uq_ready", "ic_path_p_arc_twin", "ic_path_p_spark_shock", "ic_path_p_bar_echo", "ic_path_r_spark", "ic_path_p_streak", "ic_uqm_snipe_refund", "ic_uqm_snipe_guard", "ic_uqm_blast_stun", "ic_uqm_blast_rain", "ic_uqm_reb_shield", "ic_uqm_reb_double", "ic_uqm_bloom_field", "ic_uqm_bloom_heal", "ic_uqm_lance_mines", "ic_uqm_lance_guard", "ic_uqm_gale_blades", "ic_uqm_gale_tail", "ic_uqm_rocket_ring", "ic_uqm_rocket_heat", "ic_uqm_rage_after", "ic_uqm_rage_guard", "ic_uqm_phantom_refund", "ic_uqm_phantom_slam", "ic_uqm_plasma_wide", "ic_uqm_plasma_twin", "ic_uqm_mark_jump", "ic_uqm_mark_nova", "ic_uqm_over_long", "ic_uqm_over_finale", "ic_path_p_arc_shock", "ic_path_p_arc_ground", "ic_path_p_sentry_ward", "ic_path_p_sentry_pulse", "ic_path_p_bar_wide", "ic_path_p_bar_chain", "ic_path_p_leapstun", "ic_path_p_recharge"];CARD_ICON_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.68 ใบ 26: ไอคอนการ์ดโหลดพร้อมด่าน (ไม่กินงบบูต)   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
 if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);else if(/^(vfx_bpin_|counter_pin_)/.test(k))STAGE_SHEETS[14]?.push(k);else{const c=/^counter_c(\d)(\d)_/.exec(k);if(c)STAGE_SHEETS[(+c[1]-1)*5+(+c[2])-1]?.push(k);else if(/^vfx_counter_/.test(k))STAGE_SHEETS.forEach(z=>z.push(k));}}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
@@ -3932,7 +3978,7 @@ const BASIC_PATHS={
                 {id:'s_seek',iconKey:'ic_path_carom',name:'Seeking Hearts',emoji:'💞',max:2,headline:'Longer bounce reach',desc:'Seeds find their next bounce target from 20% farther per rank.'},
                 {id:'s_return',iconKey:'ic_path_deadeye',name:'Lone Heart',emoji:'🎯',max:2,headline:'Extra hit on lonely bosses',desc:'If a seed has no new enemy to bounce to, the boss or miniboss takes an extra hit: +10% per rank (max +80%).'},
                 {id:'gather',iconKey:'ic_path_gather',name:'Gathering Juice',emoji:'🧃',max:3,headline:'Bounces build power',desc:'Each bounce makes the seed 8% stronger per rank (up to ×2.2).'},
-                {id:'r_spark',iconKey:'ic_path_buckshot',name:'Heart Spark',emoji:'💗',max:3,fx:{},headline:'Bounces zap',desc:'Each bounce has a 15% chance per rank to zap another enemy nearby for 40% damage.'}]}],
+                {id:'r_spark',iconKey:'ic_path_r_spark',name:'Heart Spark',emoji:'💗',max:3,fx:{},headline:'Bounces zap',desc:'Each bounce has a 15% chance per rank to zap another enemy nearby for 40% damage.'}]}],
   // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
   // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
   mint:[
@@ -3947,9 +3993,9 @@ const BASIC_PATHS={
     {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 2 lances 22% faster, each at 62% damage. Lances burst into ice shards.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
                 {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'},
-                {id:'p_bar_wide',iconKey:'ic_path_barrage',name:'Wide Bloom',emoji:'❄️',max:3,fx:{},headline:'Bigger shard burst',desc:'Shard bursts cover 20% more area per rank.'},
-                {id:'p_bar_chain',iconKey:'ic_card_m_shard',name:'Shard Chain',emoji:'🔗',max:3,fx:{},headline:'Bursts chain on',desc:'Each shard burst has a 25% chance per rank to burst again on a nearby enemy at 60% power.'},
-                {id:'p_bar_echo',iconKey:'ic_mod_exec',name:'Lance Echo',emoji:'🔁',max:2,fx:{},headline:'Every few volleys fire twice',desc:'Every 4th volley (every 3rd at rank 2) fires again 0.25s later.'}]},
+                {id:'p_bar_wide',iconKey:'ic_path_p_bar_wide',name:'Wide Bloom',emoji:'❄️',max:3,fx:{},headline:'Bigger shard burst',desc:'Shard bursts cover 20% more area per rank.'},
+                {id:'p_bar_chain',iconKey:'ic_path_p_bar_chain',name:'Shard Chain',emoji:'🔗',max:3,fx:{},headline:'Bursts chain on',desc:'Each shard burst has a 25% chance per rank to burst again on a nearby enemy at 60% power.'},
+                {id:'p_bar_echo',iconKey:'ic_path_p_bar_echo',name:'Lance Echo',emoji:'🔁',max:2,fx:{},headline:'Every few volleys fire twice',desc:'Every 4th volley (every 3rd at rank 2) fires again 0.25s later.'}]},
     {id:'pierce',iconKey:'ic_path_pierce',name:'Crystal Impaler Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Charge → Impale → Rupture',desc:'Charge one heavy lance by itself: +75% damage, +30% range, but 40% slower. It goes through enemies. 3 full hits on a boss trigger Rupture for big damage. Dashing or getting hit fires it early, weaker.',
       upgrades:[{id:'p_shatterpt',iconKey:'ic_path_p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% Boss / +10% Rupture',desc:'+15% damage to elites/minibosses/bosses and +10% Crystal Rupture damage per rank.'},
                 {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Overpenetration',emoji:'💎',max:3,headline:'+1 pierce',desc:'Lances go through 1 more enemy per rank, and hit 6% harder for each enemy they already went through (max 3).'},
@@ -3964,7 +4010,7 @@ const BASIC_PATHS={
                 {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Hot Hands',emoji:'💨',max:3,fx:{},headline:'Every few fists explode',desc:'Every 8th fist explodes on hit (every 6th at rank 2, every 4th at rank 3) for a small fire blast.'},
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
                 {id:'p_ember',iconKey:'ic_inf_spicy',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'},
-                {id:'p_streak',iconKey:'ic_path_p_blitz',name:'Hot Streak',emoji:'🔥',max:3,fx:{},headline:'Fist hits build heat',desc:'Each fist hit adds +2% fist damage per rank for 3s, stacking up to 10 times.'}]},
+                {id:'p_streak',iconKey:'ic_path_p_streak',name:'Hot Streak',emoji:'🔥',max:3,fx:{},headline:'Fist hits build heat',desc:'Each fist hit adds +2% fist damage per rank for 3s, stacking up to 10 times.'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'Every punch is a slow, heavy Ground Pound (×1.7 damage, +25% reach, 45% slower). Pounds add Tremor: enemies take +6% damage per stack (max 5). Better healing. Hold your Unique to charge Blood Rage (costs HP), then release a huge Colossus Fist.',
       upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Titan Fist',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% vs Bosses & elites',desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Wide Pound',emoji:'🌋',max:3,fx:{range:0.1},headline:'+10% impact size',desc:'+10% impact size per rank'},
@@ -3976,28 +4022,28 @@ const BASIC_PATHS={
       upgrades:[{id:'p_phantom',iconKey:'ic_path_p_phantom',name:'Phantom Jab',emoji:'👻',max:3,fx:{dashm:0.2},headline:'Stronger Dash combos',desc:'After a Dash, your combo deals 20% more and lasts 0.4s longer per rank. Phantom Rush punches are 10% stronger per rank.'},
                 {id:'p_longleap',iconKey:'ic_path_dashboxer',name:'Long Leap',emoji:'🦘',max:3,fx:{},headline:'+25% leap range',desc:'Dash Leap reaches enemies 25% farther per rank'},
                 {id:'p_slamwave',iconKey:'ic_mod_stomp',name:'Slam Wave',emoji:'💢',max:3,fx:{},headline:'+20% landing slam',desc:'The Dash Leap landing slam is 20% wider and 10% stronger per rank.'},
-                {id:'p_recharge',iconKey:'ic_cocoa_drum',name:'Leap Mend',emoji:'💗',max:2,fx:{},headline:'Leaps heal',desc:'Each Dash Leap onto an enemy heals 1.5% max HP per rank.'},
-                {id:'p_leapstun',iconKey:'ic_path_p_longleap',name:'Leap Stun',emoji:'💫',max:3,fx:{},headline:'Leaps stun',desc:'Dash Leap stuns its target for 0.4s per rank (not bosses or minibosses).'}]}],
+                {id:'p_recharge',iconKey:'ic_path_p_recharge',name:'Leap Mend',emoji:'💗',max:2,fx:{},headline:'Leaps heal',desc:'Each Dash Leap onto an enemy heals 1.5% max HP per rank.'},
+                {id:'p_leapstun',iconKey:'ic_path_p_leapstun',name:'Leap Stun',emoji:'💫',max:3,fx:{},headline:'Leaps stun',desc:'Dash Leap stuns its target for 0.4s per rank (not bosses or minibosses).'}]}],
   taro:[
     {id:'storm',iconKey:'ic_path_storm',name:'Arc Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Lightning jumps from Taro through nearby enemies, getting stronger with each jump. With no new enemy, the jumps keep hitting the last one, so bosses take them all. Kills throw lightning shards.',
       upgrades:[{id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{},headline:'Bigger kill shards',desc:'Arc kills throw shards at 1 more enemy, and shards deal 33% more per rank.'},
                 {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Loopback',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new enemies, the leftover jumps hit the last enemy again at 60% (+15% per rank).'},
-                {id:'p_arc_shock',iconKey:'ic_path_storm',name:'Static Shock',emoji:'⚡',max:3,fx:{},headline:'Arc hits shock',desc:'Enemies hit by Arc take 4% more damage per rank from everything for 2s.'},
-                {id:'p_arc_twin',iconKey:'ic_path_p_squall',name:'Double Arc',emoji:'🔁',max:2,fx:{},headline:'Every few casts fire twice',desc:'Every 4th Arc cast (every 3rd at rank 2) fires a second Arc.'},
-                {id:'p_arc_ground',iconKey:'ic_taro_reserve_cell',name:'Grounding',emoji:'💚',max:3,fx:{},headline:'Arc kills heal',desc:'Arc kills heal 0.4% max HP per rank.'}]},
+                {id:'p_arc_shock',iconKey:'ic_path_p_arc_shock',name:'Static Shock',emoji:'⚡',max:3,fx:{},headline:'Arc hits shock',desc:'Enemies hit by Arc take 4% more damage per rank from everything for 2s.'},
+                {id:'p_arc_twin',iconKey:'ic_path_p_arc_twin',name:'Double Arc',emoji:'🔁',max:2,fx:{},headline:'Every few casts fire twice',desc:'Every 4th Arc cast (every 3rd at rank 2) fires a second Arc.'},
+                {id:'p_arc_ground',iconKey:'ic_path_p_arc_ground',name:'Grounding',emoji:'💚',max:3,fx:{},headline:'Arc kills heal',desc:'Arc kills heal 0.4% max HP per rank.'}]},
     {id:'smite',iconKey:'ic_path_smite_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release splitting sparks',desc:'Sparks burst out all around Taro, bounce off the screen edges, pass through enemies and split into smaller sparks. They keep zapping until their timer runs out.',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Giant Hunter',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% vs Bosses & elites',desc:'+15% Spark damage to elites and bosses per rank'},
                 
                 {id:'p_spark_life',iconKey:'ic_taro_live_current',name:'Live Current',emoji:'⏳',max:3,fx:{},headline:'Sparks last longer',desc:'+15% Spark lifetime per rank; max 5 seconds'},
                 {id:'p_spark_speed',iconKey:'ic_taro_fast_sparks',name:'Fast Sparks',emoji:'💨',max:3,fx:{},headline:'Sparks fly faster',desc:'+12% Spark movement speed per rank; max 640'},
                 {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},headline:'Stronger split sparks',desc:'Split sparks keep 65% power instead of 45% (second split 42% instead of 20%)'},
-                {id:'p_spark_shock',iconKey:'ic_path_p_overload',name:'Static Sparks',emoji:'✨',max:3,fx:{},headline:'Spark hits shock',desc:'Enemies hit by Sparks take 3% more damage per rank from everything for 2s.'}]},
+                {id:'p_spark_shock',iconKey:'ic_path_p_spark_shock',name:'Static Sparks',emoji:'✨',max:3,fx:{},headline:'Spark hits shock',desc:'Enemies hit by Sparks take 3% more damage per rank from everything for 2s.'}]},
     {id:'tempest',iconKey:'ic_path_tempest_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Place up to 3 sentries that stay until they expire or you walk far away. They fire slow Ball Lightning that zaps every enemy around it many times per second.',
       upgrades:[{id:'p_sentry_overload',iconKey:'ic_path_tempest',name:'Fade Burst',emoji:'💥',max:2,fx:{},headline:'Orbs burst on fade',desc:'When a Ball Lightning disappears, it explodes for 150% damage per rank.'},
                 {id:'p_sentry_link',iconKey:'ic_path_smite',name:'Tesla Link',emoji:'🔗',max:2,fx:{},headline:'Sentries link up',desc:'Two sentries close together (420px) are linked by lightning; enemies touching the line take 80% orb damage per rank every 0.5s.'},
                 {id:'p_farstrike',iconKey:'ic_taro_long_current',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},headline:'+12% beyond 300px',desc:'Hits 300px or more away from Taro deal 12% more per rank.'},
-                {id:'p_sentry_pulse',iconKey:'ic_taro_rapid_pulse',name:'Close Charge',emoji:'⏱️',max:3,fx:{},headline:'Stay near to charge sentries',desc:'Sentries within 260px of Taro fire 12% faster per rank.'},
-                {id:'p_sentry_ward',iconKey:'ic_taro_wide_conductor',name:'Sentry Ward',emoji:'🛡️',max:3,fx:{},headline:'Safe near sentries',desc:'Take 5% less damage per rank while within 160px of a sentry.'}]}],
+                {id:'p_sentry_pulse',iconKey:'ic_path_p_sentry_pulse',name:'Close Charge',emoji:'⏱️',max:3,fx:{},headline:'Stay near to charge sentries',desc:'Sentries within 260px of Taro fire 12% faster per rank.'},
+                {id:'p_sentry_ward',iconKey:'ic_path_p_sentry_ward',name:'Sentry Ward',emoji:'🛡️',max:3,fx:{},headline:'Safe near sentries',desc:'Take 5% less damage per rank while within 160px of a sentry.'}]}],
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
       upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Prism Echo',emoji:'💠',max:2,fx:{},headline:'Every few casts fire twice',desc:'Every 4th beam cast (every 3rd at rank 2) fires again 0.3s later at 50% damage.'},
@@ -12662,7 +12708,7 @@ class Game extends Phaser.Scene {
     return {...hl,t:f(cur)+' → '+f(cur+1)+(m[4]||''),prog:true};}
   // v7.8.68 ใบ 26: การ์ดที่เดิมยืมไอคอนอาวุธ → ไอคอนของตัวเอง (ไม่มีภาพ = ใช้ของเดิม)
   cardArtKey(o){ if(!o||o.type!=='basic'||!this.textures)return null; const k=String(o.key||''),h=(this.basicAttack&&this.basicAttack.character)||'',kind=o.kind||'';
-    const c=kind==='Modifier'?'ic_mod_'+k.replace(/^m_/,''):kind==='Fusion'?'ic_fus_'+k.replace(/^f_/,''):kind==='Trade-off'?'ic_trade_'+k.replace(/^t_/,''):kind==='Flavor Infusion'?'ic_inf_'+k:o.mutation?'ic_mut_'+h+'_'+k:o.evolution?'ic_evo_'+h:h==='cocoa'&&(k==='dashp'||k==='drum')?'ic_cocoa_'+k:null;
+    const c=o.uniqueCard?(kind==='⭐ Unique Mutation'?'ic_uqm_'+k:'ic_uq_'+k.replace(/^uq_/,'')):kind==='Modifier'?'ic_mod_'+k.replace(/^m_/,''):kind==='Fusion'?'ic_fus_'+k.replace(/^f_/,''):kind==='Trade-off'?'ic_trade_'+k.replace(/^t_/,''):kind==='Flavor Infusion'?'ic_inf_'+k:o.mutation?'ic_mut_'+h+'_'+k:o.evolution?'ic_evo_'+h:h==='cocoa'&&(k==='dashp'||k==='drum')?'ic_cocoa_'+k:null;
     return c&&this.textures.exists(c)?c:null; }
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
     const type=o.type||'atk';let color=type==='basic'?(o.color||0xff8fb5):type==='heal'?0xff6f9d:type==='util'?0xffd166:type==='uni'?(o.color||0xff76a8):type==='pas'?(PASSIVES[o.key]?.color||0x66d3b3):type==='awk'?0xffc447:(SKILL_CARD_COLOR[o.key]||0xff8fb5);

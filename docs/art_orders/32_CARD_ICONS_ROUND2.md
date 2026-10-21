@@ -1,6 +1,6 @@
 # 32 — ไอคอนการ์ดรอบ 2 (Unique / Unique Mutation / การ์ดสายใหม่ / Relic ใหม่) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่งอาร์ตครบ46ไฟล์หลัก +5วาดใหม่ /256×256 PNG32 · E4คงภาพเดิม · 21ต.ค.2026 · source-only
+สถานะ: 🟩 ส่งครบ 51 ไฟล์ (46 หลัก + 5 วาดใหม่, ข้าม `ic_mod_shatter`) · **ผูกแล้ว v7.9.31** (`scripts/pack-card-icons-2.py`) · รอ QA ภาพบนมือถือ
 ส่งไฟล์ที่ `assets/incoming/card_icons_2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ
