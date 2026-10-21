@@ -1,6 +1,6 @@
 # 32 — ไอคอนการ์ดรอบ 2 (Unique / Unique Mutation / การ์ดสายใหม่ / Relic ใหม่) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 กำลังผลิต · ส่งแล้ว0/51 PNG32 · 21ต.ค.2026 · source-only
+สถานะ: 🟡 กำลังผลิต · ส่งแล้ว10/51 PNG32 · 21ต.ค.2026 · source-only
 ส่งไฟล์ที่ `assets/incoming/card_icons_2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ

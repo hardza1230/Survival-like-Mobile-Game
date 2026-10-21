@@ -1,6 +1,6 @@
 {
   "order": 32,
-  "assetCount": 0,
+  "assetCount": 10,
   "requiredAssetCount": 46,
   "optionalSkipped": [
     {
@@ -15,10 +15,567 @@
     }
   ],
   "checks": "Full PNG decode + chunk CRC/zlib Adler; RGBA8, real alpha/clear corners, bbox padding>=16, pixel roundtrip, SHA256/bytes. Exact remote readback stored separately.",
-  "runtimeVersionPreserved": "see CLAUDE",
-  "assets": [],
+  "runtimeVersionPreserved": "7.9.30",
+  "assets": [
+    {
+      "key": "ic_uq_power",
+      "file": "ic_uq_power.png",
+      "width": 256,
+      "height": 256,
+      "group": "A",
+      "number": 1,
+      "card": "uq_power",
+      "hero": "shared",
+      "path": null,
+      "optional": false,
+      "replaces": null,
+      "bytes": 91973,
+      "sha256": "302d72cbcbe4ae3ab2f9e24a8a249f2f8f1d1ccf2f597f57a0cbf7d9a6d01633",
+      "gitBlobSha": "8140b10278cebcdd4002627c45b3b148f0ae7f3e",
+      "source": {
+        "width": 1322,
+        "height": 1190,
+        "bytes": 1333561,
+        "sha256": "f8581c1008d16b9e8dec02960522b017ed679a74cb06264f118eeea424940b66"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 39381,
+        "partialAlphaPixels": 26155,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          29,
+          232,
+          226
+        ],
+        "padding": {
+          "left": 24,
+          "top": 29,
+          "right": 24,
+          "bottom": 30
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_uq_cd",
+      "file": "ic_uq_cd.png",
+      "width": 256,
+      "height": 256,
+      "group": "A",
+      "number": 2,
+      "card": "uq_cd",
+      "hero": "shared",
+      "path": null,
+      "optional": false,
+      "replaces": null,
+      "bytes": 93998,
+      "sha256": "3449ef3a9bb2ed97c794910d718bdb582484e22cffe0c919ecfbe206692cda1a",
+      "gitBlobSha": "bf436a21250825b21efdc4386d7acf219771d624",
+      "source": {
+        "width": 1295,
+        "height": 1214,
+        "bytes": 1250984,
+        "sha256": "cc83ad025e239cc962579f76c789241a9760e2b36d2dff13837dac1f14e204a4"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 41989,
+        "partialAlphaPixels": 23547,
+        "cornersTransparent": true,
+        "bbox": [
+          40,
+          24,
+          216,
+          232
+        ],
+        "padding": {
+          "left": 40,
+          "top": 24,
+          "right": 40,
+          "bottom": 24
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_uq_kill",
+      "file": "ic_uq_kill.png",
+      "width": 256,
+      "height": 256,
+      "group": "A",
+      "number": 3,
+      "card": "uq_kill",
+      "hero": "shared",
+      "path": null,
+      "optional": false,
+      "replaces": null,
+      "bytes": 104691,
+      "sha256": "ba64d0c53554d844764cb045e1f24704013241d42a9ef9ac4e6771dadb7d3718",
+      "gitBlobSha": "c0d82e71b72b0f582fc574b56a0f6c75f29f161b",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1209466,
+        "sha256": "58adf7850d33c9a40dbea2c8c8347a197692c9cd4d87b99e6618cf6c2e1e4e7f"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 36020,
+        "partialAlphaPixels": 29516,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          24,
+          231,
+          232
+        ],
+        "padding": {
+          "left": 24,
+          "top": 24,
+          "right": 25,
+          "bottom": 24
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_uq_echo",
+      "file": "ic_uq_echo.png",
+      "width": 256,
+      "height": 256,
+      "group": "A",
+      "number": 4,
+      "card": "uq_echo",
+      "hero": "shared",
+      "path": null,
+      "optional": false,
+      "replaces": null,
+      "bytes": 105475,
+      "sha256": "2bf34a2188e8dcf0f91ffc1d25e6321b5e9e11470dc1ac2eaffbe0565dccb499",
+      "gitBlobSha": "7967ddd046da85dec70cfb29f65ea6e89d444a76",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1446699,
+        "sha256": "950c6bcc23f37c39a6a6354b1d2b3eb053006830b019bf5845e16c38e48f26a4"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 37681,
+        "partialAlphaPixels": 27855,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          29,
+          232,
+          227
+        ],
+        "padding": {
+          "left": 24,
+          "top": 29,
+          "right": 24,
+          "bottom": 29
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_uq_ready",
+      "file": "ic_uq_ready.png",
+      "width": 256,
+      "height": 256,
+      "group": "A",
+      "number": 5,
+      "card": "uq_ready",
+      "hero": "shared",
+      "path": null,
+      "optional": false,
+      "replaces": null,
+      "bytes": 101091,
+      "sha256": "0cf8138048813a6395a552a9d5e7ab80451a05b209622c2b851a9d5081a1b2e5",
+      "gitBlobSha": "1636bf7f9a59c67c2dfe7b91de956ef8c9a7d8bc",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1424918,
+        "sha256": "8f9578408dfb8312732a4cbfb1ca5e4537c5c97edeef9eac187333b04641b65c"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 39395,
+        "partialAlphaPixels": 26141,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          25,
+          232,
+          230
+        ],
+        "padding": {
+          "left": 24,
+          "top": 25,
+          "right": 24,
+          "bottom": 26
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_path_p_arc_twin",
+      "file": "ic_path_p_arc_twin.png",
+      "width": 256,
+      "height": 256,
+      "group": "C",
+      "number": 2,
+      "card": "p_arc_twin",
+      "hero": "taro",
+      "path": "storm",
+      "optional": false,
+      "replaces": null,
+      "bytes": 83202,
+      "sha256": "bf55f3c30f1eddee4b11978bb33a2bfa7f7179aa2c57cffb136458cc494113dc",
+      "gitBlobSha": "d74fceccff42b0558c32e58883089c1eacf6606d",
+      "source": {
+        "width": 1299,
+        "height": 1211,
+        "bytes": 1075725,
+        "sha256": "706c885fad648045c39fe520a745f59e8aa6e973451385e6cfe2bc34d18448ee"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 41888,
+        "partialAlphaPixels": 23648,
+        "cornersTransparent": true,
+        "bbox": [
+          29,
+          24,
+          227,
+          232
+        ],
+        "padding": {
+          "left": 29,
+          "top": 24,
+          "right": 29,
+          "bottom": 24
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_path_p_spark_shock",
+      "file": "ic_path_p_spark_shock.png",
+      "width": 256,
+      "height": 256,
+      "group": "C",
+      "number": 4,
+      "card": "p_spark_shock",
+      "hero": "taro",
+      "path": "smite",
+      "optional": false,
+      "replaces": null,
+      "bytes": 91158,
+      "sha256": "55b97b5847a44e90cd686979e0631d649598a1651416fee559e5fe36768c0dd0",
+      "gitBlobSha": "99c576f1743d4047949841ae5044ea9ae7139b65",
+      "source": {
+        "width": 1333,
+        "height": 1180,
+        "bytes": 1419239,
+        "sha256": "3257be025baa0ed36f47e29bc6373ae904bb0a005f03194dd8113f8c29ef9463"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 40431,
+        "partialAlphaPixels": 25105,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          38,
+          232,
+          217
+        ],
+        "padding": {
+          "left": 24,
+          "top": 38,
+          "right": 24,
+          "bottom": 39
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_path_p_bar_echo",
+      "file": "ic_path_p_bar_echo.png",
+      "width": 256,
+      "height": 256,
+      "group": "C",
+      "number": 10,
+      "card": "p_bar_echo",
+      "hero": "mint",
+      "path": "barrage",
+      "optional": false,
+      "replaces": null,
+      "bytes": 89559,
+      "sha256": "7aaf38d841a34379f73047197e15a8c462ab4fe66a4e4c1b97d6472cafe2e0be",
+      "gitBlobSha": "de6c3c083f3757e935802bc615f30f61d8771942",
+      "source": {
+        "width": 1312,
+        "height": 1199,
+        "bytes": 1530650,
+        "sha256": "fa6e74f535e537c33df0c687eff245490e4f8d4dfed3148fe60d0b20b57013c0"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 43332,
+        "partialAlphaPixels": 22204,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          37,
+          232,
+          219
+        ],
+        "padding": {
+          "left": 24,
+          "top": 37,
+          "right": 24,
+          "bottom": 37
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_path_r_spark",
+      "file": "ic_path_r_spark.png",
+      "width": 256,
+      "height": 256,
+      "group": "C",
+      "number": 11,
+      "card": "r_spark",
+      "hero": "momo",
+      "path": "ricochet",
+      "optional": false,
+      "replaces": null,
+      "bytes": 71327,
+      "sha256": "488ccf0e486c2d1a8edadfd72c18a7580fa88de30e834034958a3fa79bcd8efb",
+      "gitBlobSha": "30c0976a234ba6eedfbe17e55228788d8382b5c3",
+      "source": {
+        "width": 1312,
+        "height": 1199,
+        "bytes": 1242541,
+        "sha256": "58c753e75f47d56c5e92655416d85a0110b454d36c3664ce1e8fcccd23179bf0"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 46652,
+        "partialAlphaPixels": 18884,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          44,
+          232,
+          211
+        ],
+        "padding": {
+          "left": 24,
+          "top": 44,
+          "right": 24,
+          "bottom": 45
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    },
+    {
+      "key": "ic_path_p_streak",
+      "file": "ic_path_p_streak.png",
+      "width": 256,
+      "height": 256,
+      "group": "C",
+      "number": 12,
+      "card": "p_streak",
+      "hero": "cocoa",
+      "path": "brawler",
+      "optional": false,
+      "replaces": null,
+      "bytes": 69026,
+      "sha256": "1fc1bdd192e2b84b3fd6e881ada4e1e620aff8b0547e3445c108767b0d63396f",
+      "gitBlobSha": "d00588cef94b8ed975f13e2b9809ccb0d733b996",
+      "source": {
+        "width": 1417,
+        "height": 1110,
+        "bytes": 1220089,
+        "sha256": "b61844b2d02753a2ec7d44aa67fa9173b4f05121d4d40aae7f686af9279c0192"
+      },
+      "technicalQA": {
+        "fullDecode": true,
+        "CRCAndAdler": true,
+        "losslessPixelRoundtrip": true,
+        "colorMode": "RGBA8",
+        "alphaMin": 0,
+        "alphaMax": 254,
+        "fullyTransparentPixels": 47563,
+        "partialAlphaPixels": 17973,
+        "cornersTransparent": true,
+        "bbox": [
+          24,
+          59,
+          232,
+          196
+        ],
+        "padding": {
+          "left": 24,
+          "top": 59,
+          "right": 24,
+          "bottom": 60
+        },
+        "minimumPaddingPassed": true,
+        "processing": "Alpha>8 source bbox, preserve aspect within208px envelope, center in256px; premultiplied-alpha area resize; clear alpha<=3 RGB"
+      },
+      "visualQA": "pending24/90px/pair/path comparison"
+    }
+  ],
   "proofs": [],
-  "references": [],
+  "references": [
+    {
+      "path": "assets/art/build_paths/storm.webp",
+      "bytes": 30514,
+      "sha256": "0ec05dc571ee318fcbf68c6ab99064b4441c60bad4e90e8f0f1bf7b7049ac6d1",
+      "gitBlobSha": "47bc95b529f435d89df2046e115cd8d8951e05c0",
+      "width": 256,
+      "height": 256,
+      "decodedPngSha256": "8043a00e19b17f3d73d7e34ef0b53793b36e5a3eb5d0a6566406bf89f1213b02",
+      "decoder": "libwebp asm.js from chase-moskal/webp-hero; direct RGBA SDL surface capture, no Canvas composition",
+      "runtimeIconKey": "ic_path_storm"
+    },
+    {
+      "path": "assets/art/build_paths/taro_spark_path.webp",
+      "bytes": 25048,
+      "sha256": "951b3f66925fee627d15fcc26b442b6b756b875023c76f50a2fa45abc1257499",
+      "gitBlobSha": "ec90d591dd92cd9569d04855f88a9125429575cc",
+      "width": 128,
+      "height": 128,
+      "decodedPngSha256": "8239cda338f83c6ffd4e686f4ea762c6ea8a0d1a431d03c680f567479bcc0bf5",
+      "runtimeIconKey": "ic_path_smite_spark"
+    },
+    {
+      "path": "assets/art/build_paths/taro_sentry_path.webp",
+      "bytes": 22330,
+      "sha256": "18d71600543d659eac2a039bf7bf2511b6d9ecd3bcf2b60d204ac513e6fa4665",
+      "gitBlobSha": "ebb2a5d3ea074999d5954147691bfece030832fa",
+      "width": 128,
+      "height": 128,
+      "decodedPngSha256": "469dfe21a8b28e67bd1886e1dfed61f1f522a3088e094c1adb428e73c4c43a47",
+      "runtimeIconKey": "ic_path_tempest_sentry"
+    },
+    {
+      "path": "assets/art/build_paths/barrage.webp",
+      "bytes": 30108,
+      "sha256": "ab1e1553469c9616c0c2be807b63317443c7080b5592f1683e51a3b3f8311d26",
+      "gitBlobSha": "1c4a303a00b6adc66e2952ee648ab58ad5419229",
+      "width": 256,
+      "height": 256,
+      "decodedPngSha256": "6cb1d9e52153cd771f4cc150e68dad8fea29f263e99137505759904f06a4544b",
+      "decoder": "libwebp asm.js from chase-moskal/webp-hero; direct RGBA SDL surface capture, no Canvas composition",
+      "runtimeIconKey": "ic_path_barrage"
+    },
+    {
+      "path": "assets/art/build_paths/ricochet.webp",
+      "bytes": 24630,
+      "sha256": "9b70ea194e0d334be7024f5e83eb19c4d970b4bcd4df31a3ed508e5e73e98ef0",
+      "gitBlobSha": "0a126d5b2d0d2942ebbef473d24eec4bdd484e0b",
+      "width": 256,
+      "height": 256,
+      "decodedPngSha256": "27d9a5be0e53546dd15b6024b84da293369c8243f556e5ce92e189253c71c44d",
+      "decoder": "libwebp asm.js from chase-moskal/webp-hero; direct RGBA SDL surface capture, no Canvas composition",
+      "runtimeIconKey": "ic_path_ricochet"
+    },
+    {
+      "path": "assets/art/build_paths/brawler.webp",
+      "bytes": 26848,
+      "sha256": "1014169afa5edb6d0fa585a28bcea38924c0d31f21d688a436fe08f9d66f7cd7",
+      "gitBlobSha": "4b42800fbb50eef409958bc175cbec73cf041b10",
+      "width": 256,
+      "height": 256,
+      "decodedPngSha256": "099911fd81ea2901ec4be0b5862880ba1184c7f64d539c41fd368d94d9e2867f",
+      "decoder": "libwebp asm.js from chase-moskal/webp-hero; direct RGBA SDL surface capture, no Canvas composition",
+      "runtimeIconKey": "ic_path_brawler"
+    },
+    {
+      "path": "assets/art/build_paths/dashboxer.webp",
+      "bytes": 24078,
+      "sha256": "94a5eb9727d0cd0a2df51b4229406c8405e81a49e4666eb8a8df3bf2021b4610",
+      "gitBlobSha": "5995f969a027993299bb4257d0fdaa8a46b95a9b",
+      "width": 256,
+      "height": 256,
+      "decodedPngSha256": "21a9ed32a586055602f8f53cea39cd46d5fc9830302297aa615006c9862fb7a7",
+      "decoder": "libwebp asm.js from chase-moskal/webp-hero; direct RGBA SDL surface capture, no Canvas composition",
+      "runtimeIconKey": "ic_path_dashboxer"
+    }
+  ],
   "visualQA": "In progress; final tiny-size/pair/path proofs pending.",
   "limitations": [
     "Execution environment offline; no npm/build/browser/gameplay/phone tests.",

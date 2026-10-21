@@ -1,11 +1,11 @@
 {
   "order": 32,
   "sourceOnly": true,
-  "phase": "production plan and optional-icon review checkpoint",
+  "phase": "priority10 icons delivered",
   "required": 46,
-  "requiredDelivered": 0,
+  "requiredDelivered": 10,
   "optionalRedraws": 0,
-  "totalPngs": 0,
+  "totalPngs": 10,
   "optionalSkipped": [
     {
       "key": "ic_mod_shatter",
@@ -19,16 +19,6 @@
     }
   ],
   "pending": [
-    "ic_uq_power",
-    "ic_uq_cd",
-    "ic_uq_kill",
-    "ic_uq_echo",
-    "ic_uq_ready",
-    "ic_path_p_arc_twin",
-    "ic_path_p_spark_shock",
-    "ic_path_p_bar_echo",
-    "ic_path_r_spark",
-    "ic_path_p_streak",
     "ic_uqm_snipe_refund",
     "ic_uqm_snipe_guard",
     "ic_uqm_blast_stun",
@@ -71,6 +61,6 @@
     "ic_mod_focus",
     "ic_fus_skyjudge"
   ],
-  "runtimeVersionPreserved": "see CLAUDE",
+  "runtimeVersionPreserved": "7.9.30",
   "runtimeIntegrationNotPartOfThisDelivery": true
 }

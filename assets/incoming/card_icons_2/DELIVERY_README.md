@@ -1,6 +1,6 @@
 # Art order32 — card icons round2
 
-0 PNG32 source icons delivered so far;46 required plus5 chosen optional redraws targeted. Every source is256x256, real alpha,>=16px safe margins. Optional E4 Ice Breaker retained after review of actual runtime art; MANIFEST includes a skipped:true record (do not pack it).
+10 PNG32 source icons delivered so far;46 required plus5 chosen optional redraws targeted. Every source is256x256, real alpha,>=16px safe margins. Optional E4 Ice Breaker retained after review of actual runtime art; MANIFEST includes a skipped:true record (do not pack it).
 
 A = shared gold Unique icons with small upper-right gold star. B = hero-color Unique Mutation icons with small gold DNA at lower corner, paired per path. C = distinct path upgrades, no star/DNA. D = shared relics. E = selected existing-card redraws. No Sesame/Yuzu work.
 
