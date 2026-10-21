@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.27';
+const GAME_VERSION = '7.9.28';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.28',date:'2026-10-21',title:'Storm Mark icon',items:['Taro’s Spark Build Unique button now has its own Storm Mark icon']},
   {v:'7.9.27',date:'2026-10-21',title:'EXP drop shadows',items:['EXP drops now have a soft shadow underneath']},
   {v:'7.9.26',date:'2026-10-21',title:'New EXP drops',items:['EXP is now Flavor Drops instead of candy, so it no longer looks like Sugar','6 drop shapes: bigger EXP = a fancier crystal','New pickup sparkle, a short trail when drops fly to you, and a flash when drops merge','The EXP bar has a drop icon']},
   {v:'7.9.25',date:'2026-10-21',title:'Cards show before → after',items:['When you already have an upgrade, its card now shows your total from that card now and after you pick it, e.g. “+16% → +24% attack speed”']},
@@ -2329,7 +2330,7 @@ const ASSET_IMAGES = {
   ic_taro_spark:'assets/icons/levelup/taro_arc.png',
   fx_taro_sentry:'assets/art/taro_swarm/sentry.webp',
   ic_path_tempest_sentry:'assets/art/build_paths/taro_sentry_path.webp',ic_taro_reserve_cell:'assets/art/build_paths/taro_reserve_cell.webp',ic_taro_wide_conductor:'assets/art/build_paths/taro_wide_conductor.webp',
-  ic_taro_rapid_pulse:'assets/art/build_paths/taro_rapid_pulse.webp',ic_path_smite_spark:'assets/art/build_paths/taro_spark_path.webp',ic_taro_plasma_field:'assets/art/build_paths/taro_plasma_field.webp',ic_taro_overcharge:'assets/art/build_paths/taro_overcharge.webp',ic_taro_arc_overload:'assets/art/build_paths/taro_arc_overload.webp',ic_taro_live_current:'assets/art/build_paths/taro_live_current.webp',ic_taro_fast_sparks:'assets/art/build_paths/taro_fast_sparks.webp',ic_taro_split_spark:'assets/art/build_paths/taro_split_spark.webp',ic_taro_piercing_current:'assets/art/build_paths/taro_piercing_current.webp',ic_taro_long_current:'assets/art/build_paths/taro_long_current.webp',ic_taro_storm_beacon:'assets/art/build_paths/taro_storm_beacon.webp',
+  ic_taro_rapid_pulse:'assets/art/build_paths/taro_rapid_pulse.webp',ic_path_smite_spark:'assets/art/build_paths/taro_spark_path.webp',ic_taro_storm_mark:'assets/art/build_paths/taro_storm_mark.webp',ic_taro_plasma_field:'assets/art/build_paths/taro_plasma_field.webp',ic_taro_overcharge:'assets/art/build_paths/taro_overcharge.webp',ic_taro_arc_overload:'assets/art/build_paths/taro_arc_overload.webp',ic_taro_live_current:'assets/art/build_paths/taro_live_current.webp',ic_taro_fast_sparks:'assets/art/build_paths/taro_fast_sparks.webp',ic_taro_split_spark:'assets/art/build_paths/taro_split_spark.webp',ic_taro_piercing_current:'assets/art/build_paths/taro_piercing_current.webp',ic_taro_long_current:'assets/art/build_paths/taro_long_current.webp',ic_taro_storm_beacon:'assets/art/build_paths/taro_storm_beacon.webp',
   fx_taro_dash_bomb:'assets/art/taro_t6/dash_bomb.webp',
   ic_taro_power:'assets/icons/levelup/taro_power.png', ic_taro_rate:'assets/icons/levelup/taro_rate.png',
   ic_taro_arc:'assets/icons/levelup/taro_arc.png', ic_taro_surge:'assets/icons/levelup/taro_surge.png',

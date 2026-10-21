@@ -36,7 +36,7 @@
 | C2-5 | `C2_5_ROOT_KNIGHT_ANIMATION.md` | Root Knight 16 เฟรม | 1 ชีต | — | 🟩 ใส่เข้าเกมแล้ว v6.0.54 |
 | 14 | `14_REMAINING_ART.md` | **ส่งครบ:** อนิเมชัน C2-4 ถึง C2-5 และงาน A–E | 14 ชีต Batch 9 ส่งแล้ว | 🔴 | 🟩 A–E ครบ v6.55.99; รอตรวจมือถือ |
 | 17 | `17_TARO_SENTRY_ART.md` | Sentry / Beacon / ไอคอน | 19 ชิ้น | — | 🟩 ต่อแล้ว v7.8.20; รอมือถือ |
-| 18 | `18_TARO_SPARK_BALL_LIGHTNING_ART.md` | Spark/Ball Lightning และส่วนขยาย Unique | หลายชุด | — | 🟩 A/B/C v7.8.25; E–I v7.8.30; ดูใบสั่งสำหรับส่วน J |
+| 18 | `18_TARO_SPARK_BALL_LIGHTNING_ART.md` | Spark/Ball Lightning และส่วนขยาย Unique | หลายชุด | — | 🟩 A/B/C v7.8.25; E–I v7.8.30; J (Storm Mark) v7.9.28 |
 | 19 | `19_C24_FOUR_SEASON_ART.md` | C2-4 season/boss VFX | 22 ไฟล์ | — | 🟩 ต่อแล้ว v7.8.32; objective เปลี่ยนเป็น Harvest v7.8.55 |
 | 20 | `20_HERO_VFX_GAPS.md` | Hero VFX รวม Cocoa landing dust | 21 ไฟล์ | — | 🟩 ต่อครบ v7.8.45–46; รอมือถือ |
 | 21 | `21_TEMPLE_WEAVE_UI.md` | ชิ้นส่วน UI หน้า Temple Weave + Flavor Passives (พื้นหลัง, การ์ด 9-slice, ปุ่ม, แถบ, ป้าย) ภาพอ้างอิงใน `ref/` | 34 | 🟠 | 🟩 ใส่เข้าเกมแล้ว v7.8.49 |
