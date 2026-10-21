@@ -1,0 +1,11 @@
+{
+  "sourceCommit": "be1d744ca281edc65d685ca859bf1e326d0f2524",
+  "deliveredPngs": 0,
+  "required": 46,
+  "optionalRedraws": 0,
+  "optionalSkipped": 1,
+  "verifiedBinaryFiles": 0,
+  "verifiedTextFiles": 7,
+  "method": "Exact GitHub readback: binary base64 equality + blob SHA, with recorded SHA256; exact UTF8 metadata text.",
+  "files": []
+}
