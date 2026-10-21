@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.18';
+const GAME_VERSION = '7.9.19';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.19',date:'2026-10-21',title:'More cards that change how you play',items:['Crown Breaker relic: every 40 hits on a boss or miniboss stuns it and lands a crushing hit (was a flat +30%)','New relic combos: Full Belly (Harvest + Candy Shell), Frozen Jam (Cold Snap + Sticky Jam), Sharp Edge (First Bite + Cracked Crystal)','Strawberry Petal Kick: Dash fires a ring of bouncing seeds · Mint Ice Breaker: frozen enemies you kill shatter and freeze others · Cocoa Rolling Rage: each Dash adds a Rage stack, getting hit clears them · Taro Static Buildup: every 6th hit on one enemy shocks it · Taro Sky Judge: lightning strikes the toughest enemy every 4s','Boss and long-range cards now show their condition in the card title']},
   {v:'7.9.18',date:'2026-10-21',title:'Heroes in development',items:['Sesame and Yuzu now show a 🚧 In development badge on the hero screen: their cards and balance will still change']},
   {v:'7.9.17',date:'2026-10-21',title:'Fewer copy-paste cards',items:['Relics: Jam Trail → Sticky Jam (Dash leaves a puddle: enemies get stuck and take +25% damage) · Chill Touch → Cold Snap (every 6s your next hit freezes a small area) · Candy Shell also gives a shield on elite/miniboss/boss kills (Hunter Trophy merged in) · Momentum and Sugar Magnet removed (pickup range lives in Weave and Special Cores)','Trade-offs Glass Heart and Frozen Core removed (same as Cracked Crystal and Minty Infusion) · Dash Fury instinct removed (same as Spark Step)','Path cards that only repeated attack speed now do something new: Yuzu Chain Feast (kills refresh the bite), Cocoa Hot Hands (every few fists explode), Taro Close Charge (sentries near you fire faster), Sesame Retreat Shot (Dash, then hit harder)','Path cards that only repeated +1 count: Yuzu Quick Paws (Yuzlings run faster), Sesame Prism Echo (every few casts fire twice); Forked Arc and Buckshot removed (same as Arc Streams and Sweet Branching)','Cocoa: Blitz merged into Phantom Jab (Dash Stack already gives the extra Dash)']},
   {v:'7.9.16',date:'2026-10-20',title:'Clearer damage cards',items:['Cards that boost one attack now say “hit (multiplies)” — they multiply on top of everything else, so they always give their full %','Cards that add to your total damage now say “all damage (adds up)” — they add together with every other “+% damage” source, so each extra one counts a little less','Same wording in Talents, Weave and item mods']},
@@ -3610,14 +3611,14 @@ const PASSIVES = {
    ได้จาก: เลเวล 6 (การันตี) · กล่องมินิบอส · กล่องลับในแมพ 30% · hook อยู่ที่ damage/killEnemy/hurtPlayer/die/doDash (ดู relicOn*) */
 const RELIC_CAP = 5;   // v6.72: Relic + Modifier + Trade-off รวมช่องเดียว (เดิม Relic 3 + Mod 3 + Trade 2)
 const RELICS = {
-  splinter:  { emoji:'💥', name:'Crit Splinter',  desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
-  leech:     { emoji:'🩸', name:'Berry Leech',    desc:'Crits heal 1% max HP (0.25s cooldown)' },
-  burst:     { emoji:'🎆', name:'Sugar Burst',    desc:'Slain enemies have an 18% chance to explode, hurting everything nearby' },
+  splinter:  { emoji:'💥', name:'Crit Splinter',  headline:'Crits splinter', desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
+  leech:     { emoji:'🩸', name:'Berry Leech',    headline:'Crits heal', desc:'Crits heal 1% max HP (0.25s cooldown)' },
+  burst:     { emoji:'🎆', name:'Sugar Burst',    headline:'Kills may explode', desc:'Slain enemies have an 18% chance to explode, hurting everything nearby' },
   shell:     { emoji:'🫧', name:'Candy Shell',    headline:'Kills grant shields', desc:'Every 15 kills, or any elite/miniboss/boss kill, gain a shield that blocks the next hit' },
   jam:       { emoji:'🍓', name:'Sticky Jam',     headline:'Dash leaves a sticky puddle', desc:'Dashing leaves a jam puddle for 3s. Enemies inside get stuck for a moment and take 25% more damage.' },
-  crown:     { emoji:'👑', name:'Crown Breaker',  desc:'+30% damage to bosses, minibosses and elites' },
-  glass:     { emoji:'💔', name:'Cracked Crystal',    desc:'+40% damage, but -25% max HP' },
-  lastbreath:{ emoji:'🕯️', name:'Last Breath',    desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
+  crown:     { emoji:'👑', name:'Crown Breaker',  headline:'Every 40 boss hits: stun', desc:'Every 40 hits on a boss or miniboss (at most every 6s) stuns it for 0.8s and crushes it for a big hit.' },
+  glass:     { emoji:'💔', name:'Cracked Crystal',    headline:'+40% damage · −25% HP', desc:'+40% damage, but -25% max HP' },
+  lastbreath:{ emoji:'🕯️', name:'Last Breath',    headline:'Survive one lethal hit', desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
   chill:     { emoji:'❄️', name:'Cold Snap',      headline:'Every 6s: freeze burst', desc:'Every 6s your next hit freezes the target and enemies near it for 1s (bosses and minibosses are not frozen).' },
   firstbite: { emoji:'🎯', name:'First Bite',     headline:'+35% opening hit', desc:'Your first hit against each enemy deals 35% more damage.' },
   dashcharge:{ emoji:'⚡', name:'Spark Step',     headline:'Dash empowers 3 hits', desc:'After dashing, your next 3 hits within 3s deal 25% more damage.' },
@@ -3629,6 +3630,9 @@ const RELIC_SYNERGIES = [
   { a:'shell',    b:'lastbreath',name:'Second Wind',    desc:'Last Breath restores 40% HP + a shield · hold 2 shields' },
   { a:'jam',      b:'dashcharge',name:'Sticky Rush',    desc:'Dash recharges 35% faster' },
   { a:'leech',    b:'crown',     name:'Royal Feast',    desc:'Crits on bosses heal 3× more' },
+  { a:'harvest',  b:'shell',     name:'Full Belly',     desc:'Mochi Harvest heals also grant a shield' },   // v7.9.19 RR2
+  { a:'chill',    b:'jam',       name:'Frozen Jam',     desc:'Enemies stuck in Sticky Jam freeze for 1s' },
+  { a:'firstbite',b:'glass',     name:'Sharp Edge',     desc:'First Bite bonus doubles to +70%' },
 ];
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 const CHARACTERS = {
@@ -3807,7 +3811,7 @@ const BASIC_PATHS={
   momo:[
     {id:'sniper',iconKey:'ic_path_sniper',name:'Sniper Build',emoji:'🎯',desc:'Auto-charge one heavy seed (340ms) at ×3.2 power. Extra seeds become +12% base power each. Full charges pierce; Dash/hurt releases partial power',
       upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
-                {id:'deadeye',iconKey:'ic_path_deadeye',name:'Deadeye',emoji:'👁️',max:3,desc:'+15% damage to elites, minibosses and bosses per rank'},
+                {id:'deadeye',iconKey:'ic_path_deadeye',name:'Deadeye',emoji:'👁️',max:3,headline:'+15% vs Bosses & elites',desc:'+15% damage to elites, minibosses and bosses per rank'},
                  {id:'s_draw',iconKey:'ic_path_sniper',name:'Steady Draw',emoji:'🎯',max:3,headline:'Basic: +15% full-charge power',desc:'Basic full-charge multiplier gains +15 percentage points per rank; auto-charge takes +60ms longer per rank. Partial shots gain less'},
                  {id:'s_heavy',iconKey:'ic_card_s_heavy',name:'Heavy Round',emoji:'💣',max:3,desc:'Charged Unique: +45% damage per rank · charge takes +0.35s longer per rank'},
                  {id:'s_quick',iconKey:'ic_card_s_quick',name:'Quick Scope',emoji:'⏱️',max:3,desc:'Charged Unique: charge 22% faster per rank · −12% shot damage per rank'},
@@ -3855,7 +3859,7 @@ const BASIC_PATHS={
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
                 {id:'p_ember',iconKey:'ic_inf_spicy',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. No five-hit combo: every punch is a Ground Pound that adds Tremor (+6% damage taken per stack, up to 5, 3s). Higher regen than other paths. Hold Unique: charge up to 3 Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage. Endgame: beat a Delve boss at Depth 15+ with Chocolate to unlock Rage IV (×5.5, almost full-screen)',
-      upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Titan Fist',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% damage to elites and bosses per rank'},
+      upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Titan Fist',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% vs Bosses & elites',desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Wide Pound',emoji:'🌋',max:3,fx:{range:0.1},desc:'+10% impact size per rank'},
                 {id:'p_ironblood',iconKey:'ic_path_titan',name:'Iron Blood',emoji:'🩸',max:3,fx:{},headline:'-20% charge HP cost',desc:'Blood Rage costs 20% less HP per rank and Titan regen +0.4% max HP/s per rank'},
                 {id:'p_secondwind',iconKey:'ic_path_titan',name:'Blood Mend',emoji:'💗',max:2,fx:{},headline:'Heal on big release',desc:'Releasing level 2+ Blood Rage heals 4% max HP per charge level per rank'},
@@ -3871,7 +3875,7 @@ const BASIC_PATHS={
       upgrades:[{id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{dmg:1.08},headline:'+8% Arc hit (multiplies)',desc:'+8% Arc and shard damage per rank; multiplies with your “+% damage” total; Unique keeps its own power.'},
                 {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Loopback',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'}]},
     {id:'smite',iconKey:'ic_path_smite_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release splitting sparks',desc:'Sparks burst out all around Taro, bounce off the screen edges, pass through enemies and split into smaller sparks. They keep zapping until their timer runs out.',
-      upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Giant Hunter',emoji:'🎯',max:3,fx:{big:0.15},desc:'+15% Spark damage to elites and bosses per rank'},
+      upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Giant Hunter',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% vs Bosses & elites',desc:'+15% Spark damage to elites and bosses per rank'},
                 {id:'p_overload',iconKey:'ic_path_p_overload',name:'Spark Power',emoji:'💥',max:3,fx:{dmg:1.1},headline:'+10% Spark hit (multiplies)',desc:'+10% Spark damage per rank. Multiplies with your “+% damage” total.'},
                 {id:'p_spark_life',iconKey:'ic_taro_live_current',name:'Live Current',emoji:'⏳',max:3,fx:{},desc:'+15% Spark lifetime per rank; max 5 seconds'},
                 {id:'p_spark_speed',iconKey:'ic_taro_fast_sparks',name:'Fast Sparks',emoji:'💨',max:3,fx:{},desc:'+12% Spark movement speed per rank; max 640'},
@@ -3879,7 +3883,7 @@ const BASIC_PATHS={
     {id:'tempest',iconKey:'ic_path_tempest_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Place up to 3 sentries that stay until they expire or you walk far away. They fire slow Ball Lightning that zaps every enemy around it many times per second.',
       upgrades:[{id:'p_sentry_overload',iconKey:'ic_path_tempest',name:'Fade Burst',emoji:'💥',max:2,fx:{},desc:'Ball Lightning bursts when it fades: 150% orb power per rank in a wider area'},
                 {id:'p_sentry_link',iconKey:'ic_path_smite',name:'Tesla Link',emoji:'🔗',max:2,fx:{},desc:'Two sentries within 420px link with lightning; enemies on the link take 80% orb power per rank every 0.5s'},
-                {id:'p_farstrike',iconKey:'ic_taro_long_current',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},desc:'+12% hit damage beyond 300px from Taro per rank'},
+                {id:'p_farstrike',iconKey:'ic_taro_long_current',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},headline:'+12% beyond 300px',desc:'+12% hit damage beyond 300px from Taro per rank'},
                 {id:'p_sentry_pulse',iconKey:'ic_taro_rapid_pulse',name:'Close Charge',emoji:'⏱️',max:3,fx:{},headline:'Stay near to charge sentries',desc:'Sentries within 260px of Taro fire 12% faster per rank.'}]}],
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
@@ -3919,10 +3923,10 @@ const MODIFIERS={
     {id:'m_heart',emoji:'💗',name:'Big Heart',kind:'nthHit',n:7,mul:3,tags:['crit'],desc:'Every 7th hit deals ×3 damage'},
     {id:'m_aim',emoji:'🎯',name:'Steady Aim',kind:'stillPower',mul:1.25,tags:['ranged'],desc:'+25% damage while standing still'},
     {id:'m_jam',emoji:'🍓',name:'Jam Mine',kind:'killTrap',mul:1.2,tags:['fire','swarm'],desc:'Slain enemies leave a jam mine that pops'},
-    {id:'m_spray',emoji:'💨',name:'Dash Spray',kind:'dashTrail',mul:1.0,tags:['ranged'],desc:'Dashing drops 3 exploding seeds'}],
+    {id:'m_spray',emoji:'💨',name:'Petal Kick',kind:'dashSeeds',n:6,tags:['ranged'],desc:'Dashing fires 6 seeds in a ring that bounce once'}],
   mint:[
     {id:'m_icemine',emoji:'❄️',name:'Ice Mine',kind:'killTrap',mul:1.1,freeze:true,tags:['frost'],desc:'Slain enemies leave an ice mine that freezes'},
-    {id:'m_shatter',emoji:'💎',name:'Ice Breaker',kind:'frozenMul',mul:1.5,tags:['frost','crit'],desc:'+50% damage to frozen enemies'},
+    {id:'m_shatter',emoji:'💎',name:'Ice Breaker',kind:'frozenKill',r:90,mul:1.2,tags:['frost','crit'],desc:'Frozen enemies you kill shatter, hitting and freezing enemies nearby'},
     {id:'m_flurry',emoji:'🌨️',name:'Flurry Pulse',kind:'pulse',every:4,r:140,mul:1.2,freeze:true,tags:['frost'],desc:'Every 4s a frost pulse hits and freezes around you'},
     {id:'m_throw',emoji:'🏹',name:'Long Throw',kind:'farBonus',r:260,mul:1.3,tags:['ranged'],desc:'+30% damage to enemies far away'},
     {id:'m_glide',emoji:'🌬️',name:'Glide Nova',kind:'dashNova',r:120,mul:1.6,tags:['spark'],desc:'Dashing releases a cold blast'},
@@ -3930,7 +3934,7 @@ const MODIFIERS={
   cocoa:[
     {id:'m_quake',emoji:'🌋',name:'Sixth Slam',kind:'nthHit',n:6,mul:2.5,boom:90,tags:['melee'],desc:'Every 6th hit ×2.5 and shakes the ground'},
     {id:'m_stomp',emoji:'🐾',name:'Bear Stomp',kind:'dashNova',r:140,mul:2,tags:['melee'],desc:'Dashing ends in a heavy stomp'},
-    {id:'m_rage',emoji:'🔥',name:'Rolling Rage',kind:'movePower',mul:1.2,tags:['melee','fire'],desc:'+20% damage while moving'},
+    {id:'m_rage',emoji:'🔥',name:'Rolling Rage',kind:'dashRage',tags:['melee','fire'],desc:'Each Dash adds a Rage stack: +6% damage each (max 5). Getting hit clears them'},
     {id:'m_crush',emoji:'👊',name:'Close Crush',kind:'closeBonus',r:110,mul:1.3,tags:['melee'],desc:'+30% damage to enemies right next to you'},
     {id:'m_ko',emoji:'💀',name:'Finishing Blow',kind:'execute',hp:0.25,mul:1.6,tags:['crit'],desc:'+60% damage to enemies under 25% HP'},
     {id:'m_after',emoji:'💥',name:'Aftershock',kind:'killBurst',p:0.25,r:80,mul:1,tags:['fire','swarm'],desc:'25% of kills explode'}],
@@ -3938,7 +3942,7 @@ const MODIFIERS={
     {id:'m_over',emoji:'⚡',name:'Overcharge',kind:'hitChain',p:0.2,n:3,mul:0.5,tags:['spark'],desc:'20% of hits arc to 3 enemies'},
     {id:'m_field',emoji:'🌀',name:'Static Field',kind:'pulse',every:3,r:120,mul:1,tags:['spark','swarm'],desc:'Every 3s a static pulse hits around you'},
     {id:'m_step',emoji:'👣',name:'Thunder Step',kind:'dashNova',r:120,mul:1.6,tags:['spark'],desc:'Dashing leaves a thunderclap'},
-    {id:'m_judge',emoji:'⚖️',name:'Judgment',kind:'bossBonus',mul:1.25,tags:['crit'],desc:'+25% damage to elites, minibosses and bosses'},
+    {id:'m_judge',emoji:'⚖️',name:'Static Buildup',kind:'stackShock',n:6,mul:1.5,tags:['spark'],desc:'Every 6th hit on the same enemy shocks it: bonus damage, normal enemies are stunned'},
     {id:'m_ion',emoji:'💥',name:'Ion Burst',kind:'killBurst',p:0.2,r:80,mul:1,tags:['spark','swarm'],desc:'20% of kills burst with lightning'},
     {id:'m_focus',emoji:'🎯',name:'Focus Bolt',kind:'nthHit',n:8,mul:3,tags:['crit'],desc:'Every 8th hit deals ×3 damage'}],
   sesame:[
@@ -3973,7 +3977,7 @@ const FUSIONS={
   cocoa:[{id:'f_quakeking',relic:'dashcharge',emoji:'🌋',name:'Quake King',kind:'dashNova',r:200,mul:3.5,tags:['melee'],desc:'Every dash ends in a massive quake'},
          {id:'f_lastbear',relic:'lastbreath',emoji:'🐻',name:'Last Bear Standing',kind:'execute',hp:0.4,mul:2,tags:['melee','crit'],desc:'×2 damage to enemies under 40% HP'}],
   taro:[{id:'f_tempest',relic:'dashcharge',emoji:'🌩️',name:'Living Tempest',kind:'hitChain',p:0.35,n:4,mul:0.7,tags:['spark'],desc:'35% of hits arc to 4 enemies'},
-        {id:'f_skyjudge',relic:'crown',emoji:'⚖️',name:'Sky Judge',kind:'bossBonus',mul:1.6,tags:['crit','spark'],desc:'+60% damage to elites and bosses'}],
+        {id:'f_skyjudge',relic:'crown',emoji:'⚖️',name:'Sky Judge',kind:'skyStrike',every:4,r:80,mul:5,tags:['crit','spark'],desc:'Every 4s lightning strikes the toughest enemy on screen'}],
   sesame:[{id:'f_prismnova',relic:'glass',emoji:'🔮',name:'Prism Nova',kind:'hitBoom',p:0.2,r:100,mul:1.8,tags:['swarm','crit'],desc:'20% of hits burst into a prism nova'},
           {id:'f_horizon',relic:'firstbite',emoji:'🌅',name:'Event Horizon',kind:'farBonus',r:220,mul:1.7,tags:['ranged'],desc:'+70% damage to distant enemies'}],
   yuzu:[{id:'f_harvest',relic:'harvest',emoji:'🍋',name:'Harvest King',kind:'killBurst',p:0.45,r:100,mul:1.5,tags:['swarm','fire'],desc:'45% of kills burst in citrus'},
@@ -13378,7 +13382,7 @@ class Game extends Phaser.Scene {
     const B=this._frBuddy; if(B){ B.t-=dt; B.ang+=dt*2.4; B.spr.setPosition(p.x+Math.cos(B.ang)*56,p.y+Math.sin(B.ang)*56-10); B.acc+=dt;
       if(B.acc>=0.45){ B.acc=0; const e=this.nearestEnemy(420); if(e){ const b=this.getBullet(B.spr.x,B.spr.y,0xffffff,0.18); if(b){ b.setTexture('proj_sprinkle').setTint(0xffb3cd); b.dmg=this.relicDmg(0.7)*B.pw; b.life=1.2; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(Math.atan2(e.y-B.spr.y,e.x-B.spr.x),560,b.body.velocity); } } }
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
-  resetRelics(){ this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
+  resetRelics(){ this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._crownHits=0; this._rageStk=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length)+((b.condRelics||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
@@ -13423,7 +13427,7 @@ class Game extends Phaser.Scene {
       const heal=p.maxhp*0.01*((big&&this.relicSyn('leech','crown'))?3:1); p.hp=Math.min(p.maxhp,p.hp+heal); }
   }
   relicOnKill(e){ const R=this._rel;
-    if(R.harvest&&++this._harvestKills>=20){this._harvestKills=0;const heal=this.player.maxhp*0.05;this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,Math.round(heal));}
+    if(R.harvest&&++this._harvestKills>=20){this._harvestKills=0;const heal=this.player.maxhp*0.05;this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,Math.round(heal));if(this.relicSyn('harvest','shell')&&(this._shield||0)<(this.relicSyn('shell','lastbreath')?2:1)){this._shield=(this._shield||0)+1;this.floatText(this.player.x,this.player.y-44,'🫧 Full Belly',0x9fe8ff);}}
     if(R.shell){ this._relicKills=(this._relicKills||0)+1; if(this._relicKills>=15||e.isElite||e.isMini||e.isBoss){ this._relicKills=0; const cap=this.relicSyn('shell','lastbreath')?2:1;
       if((this._shield||0)<cap){ this._shield=(this._shield||0)+1; this.floatText(this.player.x,this.player.y-44,'🫧 Shield',0x9fe8ff); } } }
     if(R.burst&&!this.taroIsSecondary?.()){ const chain=this.relicSyn('splinter','burst')&&e._splinterHit!=null&&this.elapsed-e._splinterHit<0.3;
@@ -13437,7 +13441,7 @@ class Game extends Phaser.Scene {
     const img=this.trackArtVfx(this.camWorld(this.textures.exists('vfx_relic_jam')?this.add.image(x,y,'vfx_relic_jam').setDisplaySize(r*2,r*1.6).setAlpha(.75).setDepth(3):this.add.ellipse(x,y,r*2,r*1.6,0xff5f88,0.35).setDepth(3).setStrokeStyle(2,0xffd1e0)));
     const o={x,y,r,until:(this.elapsed||0)+3,left:12,img,stuck:new Set()};P.push(o);
     const tick=()=>{ if(img.active===false)return; if(--o.left<0){o.until=0;this.tweens.add({targets:img,alpha:0,duration:250,onComplete:()=>img.destroy()});return;}
-      if(this.state==='play')this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&!o.stuck.has(e)&&this.dist(e.x,e.y,x,y)<r){ o.stuck.add(e); e.frozen=Math.max(e.frozen||0,0.5); e.setVelocity?.(0,0); } });
+      if(this.state==='play')this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&!e.isMini&&!o.stuck.has(e)&&this.dist(e.x,e.y,x,y)<r){ o.stuck.add(e); e.frozen=Math.max(e.frozen||0,this.relicSyn?.('chill','jam')?1:0.5); e.setVelocity?.(0,0); } });
       this.artDelay(250,tick); };
     tick(); }
   inJamPool(e){ const t=this.elapsed||0; for(const o of this._jamPools){ if(o.until>t&&this.dist(e.x,e.y,o.x,o.y)<o.r)return true; } return false; }
@@ -15173,6 +15177,7 @@ class Game extends Phaser.Scene {
   modDmgMul(e){ const L=this.modList(); if(!L)return 1; let m=1; const P=this.player,v=P.body?P.body.velocity.length():0,dd=this.dist(P.x,P.y,e.x,e.y);
     for(const d of L){ const k=d.kind;
       if(k==='stillPower'&&v<20)m*=d.mul; else if(k==='movePower'&&v>40)m*=d.mul; else if(k==='closeBonus'&&dd<d.r)m*=d.mul; else if(k==='farBonus'&&dd>d.r)m*=d.mul;
+      else if(k==='dashRage'&&this._rageStk>0)m*=1+0.06*this._rageStk;
       else if(k==='execute'&&e.hp<e.maxhp*d.hp)m*=d.mul; else if(k==='bossBonus'&&(e.isBoss||e.isMini||e.isElite))m*=d.mul; else if(k==='frozenMul'&&(e.frozen>0||this.glacierBrittle(e)))m*=d.mul;
       else if(k==='nthHit'&&!this.taroIsSecondary?.()){ this._modHits=(this._modHits||0)+1; if(this._modHits%d.n===0){ m*=d.mul; this.floatText&&this.floatText(e.x,e.y-30,d.emoji,0xffd166); if(d.boom)this.modBoom(e.x,e.y,d.boom,d.mul*0.5); } } }
     return m; }
@@ -15185,16 +15190,22 @@ class Game extends Phaser.Scene {
   gearKillShell(){ this._ksAcc=(this._ksAcc||0)+this.player.gearKillShell; if(this._ksAcc<100)return; this._ksAcc-=100; if((this._shield||0)<2){ this._shield=(this._shield||0)+1; this.floatText(this.player.x,this.player.y-44,'🫧 Kill Shell',0x9fe8ff); } }
   modOnHit(e){ const L=this.modList(); if(!L||this._modTick)return; const pm=this.taroIsSecondary?.()?.25:1;   /* v7.8.80 เจ้าของเลือก ข.: ดาเมจรองของ Taro (ลูกแตก Spark/ลูกบอล/Beacon) ติด on-hit ได้ แต่โอกาส ×1/4 · กันวนซ้ำด้วย _modTick + modBoom ≤8 ต่อ 0.25 วิ */
     for(const d of L){ if(d.kind==='hitBoom'&&Math.random()<d.p*pm)this.modBoom(e.x,e.y,d.r,d.mul);
+      else if(d.kind==='stackShock'&&!this.taroIsSecondary?.()){ if(e._shockMod!==d.id){e._shockMod=d.id;e._shockN=0;} if(++e._shockN>=d.n){ e._shockN=0; this._modTick=true; this.chainBolt?.(e.x,e.y-60,e.x,e.y); this.damage(e,this.relicDmg(d.mul),e.x,e.y); this._modTick=false; if(!e.isBoss&&!e.isMini&&e.active){e.knock=Math.max(e.knock||0,0.6);e.setVelocity?.(0,0);} } }   // v7.9.19 Static Buildup
       else if(d.kind==='hitChain'&&Math.random()<d.p*pm){ this._modTick=true; let n=0; this.enemies.children.iterate(o=>{ if(n>=d.n||!o||!o.active||o===e||this.dist(o.x,o.y,e.x,e.y)>200)return; n++; this.chainBolt(e.x,e.y,o.x,o.y); this.damage(o,this.relicDmg(d.mul),o.x,o.y); if(d.freeze&&!o.isBoss&&!o.isMini)o.frozen=Math.max(o.frozen||0,0.5); }); this._modTick=false; } } }
   modOnKill(e){ const L=this.modList(); if(!L||this.taroIsSecondary?.())return; const x=e.x,y=e.y;
-    for(const d of L){ if(d.kind==='killBurst'&&Math.random()<d.p)this.time.delayedCall(40,()=>{ if(this.state==='play')this.modBoom(x,y,d.r,d.mul); });
+    const fz=e.frozen>0||this.glacierBrittle?.(e);
+    for(const d of L){ if(d.kind==='frozenKill'&&fz)this.time.delayedCall(40,()=>{ if(this.state==='play')this.modBoom(x,y,d.r,d.mul,true); });   // v7.9.19 Ice Breaker
+      else if(d.kind==='killBurst'&&Math.random()<d.p)this.time.delayedCall(40,()=>{ if(this.state==='play')this.modBoom(x,y,d.r,d.mul); });
       else if(d.kind==='killTrap'&&Math.random()<0.35){ const blob=this.camWorld(this.add.circle(x,y,9,d.freeze?0x9fe8ff:0xff7aa8,0.9).setDepth(8).setStrokeStyle(2,0xffffff));
         this.tweens.add({targets:blob,scale:1.4,duration:260,yoyo:true,repeat:1}); this.time.delayedCall(650,()=>{ if(blob.active)blob.destroy(); if(this.state==='play')this.modBoom(x,y,70,d.mul,d.freeze); }); } } }
   modOnDash(dir){ const L=this.modList(); if(!L)return; const P=this.player;
-    for(const d of L){ if(d.kind==='dashNova')this.time.delayedCall(200,()=>{ if(this.state==='play')this.modBoom(P.x,P.y,d.r,d.mul); });
+    for(const d of L){ if(d.kind==='dashRage'){ this._rageStk=Math.min(5,(this._rageStk||0)+1); this.floatText?.(P.x,P.y-50,'🔥×'+this._rageStk,0xff8a3d); }   // v7.9.19 Rolling Rage
+      else if(d.kind==='dashSeeds'){ for(let i=0;i<d.n;i++){ const c=this.getBullet(P.x,P.y,0xffffff,0.13); if(!c)break; c.setTexture('proj_sprinkle').setTint(0xff9ec4); c.faceVel=true; c.dmg=(5.25+(this.skills.sprinkle||1)*1.5)*1.2*(P.dmgMul||1); c.life=1.1; c.pierce=false; c.hitGapV=0.16; c.bounce=1; c.homing=0; c.headshot=0; c.bigMul=0; c.closeMul=0; c.bounceGain=0; c.seedPierce=false; c.penGain=0; c.forceHs=false; c.cqMul=0; c.dragon=false; c.lastMul=0; c.seekMul=1; c.splitCh=0; c.boomer2=false; c.loopT=false; this.physics.velocityFromRotation(i*Math.PI*2/d.n,700,c.body.velocity); } }   // v7.9.19 Petal Kick
+      else if(d.kind==='dashNova')this.time.delayedCall(200,()=>{ if(this.state==='play')this.modBoom(P.x,P.y,d.r,d.mul); });
       else if(d.kind==='dashTrail'){ const x0=P.x,y0=P.y; for(let i=0;i<3;i++){ const x=x0+dir.x*45*i,y=y0+dir.y*45*i; this.time.delayedCall(450+i*70,()=>{ if(this.state==='play')this.modBoom(x,y,65,d.mul); }); } } } }
   modTick(dt){ const L=this.modList(); if(!L||this.state!=='play')return; this._modT=this._modT||{};
-    for(const d of L){ if(d.kind!=='pulse')continue; this._modT[d.id]=(this._modT[d.id]||0)+dt; if(this._modT[d.id]>=d.every){ this._modT[d.id]=0; this.modBoom(this.player.x,this.player.y,d.r,d.mul,d.freeze); } } }
+    for(const d of L){ if(d.kind==='skyStrike'){ this._modT[d.id]=(this._modT[d.id]||0)+dt; if(this._modT[d.id]>=d.every){ this._modT[d.id]=0; const v=this.cameras?.main?.worldView; let t=null; this.enemies.children.iterate(e=>{ if(e&&e.active&&e.hp>0&&(!v||v.contains(e.x,e.y))&&(!t||e.hp>t.hp))t=e; }); if(t){ this.chainBolt?.(t.x,t.y-220,t.x,t.y); this.modBoom(t.x,t.y,d.r,d.mul); } } continue; }   // v7.9.19 Sky Judge
+      if(d.kind!=='pulse')continue; this._modT[d.id]=(this._modT[d.id]||0)+dt; if(this._modT[d.id]>=d.every){ this._modT[d.id]=0; this.modBoom(this.player.x,this.player.y,d.r,d.mul,d.freeze); } } }
   modCard(){ const b=this.basicAttack; if(!b)return null; const set=MODIFIERS[b.character]||MODIFIERS.momo,have=(b.mods||[]).filter(id=>!id.startsWith('f_')); if(have.length>=MOD_MAX)return null;
     const pool=set.filter(m=>!have.includes(m.id)&&!this.banishedKeys?.['b:'+m.id]); if(!pool.length)return null; const m=Phaser.Utils.Array.GetRandom(pool);
     return {type:'basic',key:m.id,lvl:1,max:1,kind:'Modifier',special:true,color:0xff9f43,emoji:m.emoji,title:m.name,desc:m.desc+'  ·  '+(have.length+1)+'/'+MOD_MAX,headline:'🧩 '+m.desc,iconKey:SKILL_ICON[(this.basicAttackInfo()||{}).skill],
@@ -15258,7 +15269,7 @@ class Game extends Phaser.Scene {
     /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&Math.random()<P._tagChill)this.applyFreeze(e,0.35,false); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
-    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini||e.isElite))amount*=1.30; if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=this.relicSyn('firstbite','glass')?1.70:1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini)&&!this._crownTick&&!this.taroIsSecondary?.()&&++this._crownHits>=40&&(this.elapsed||0)>=(this._crownAt||0)){ this._crownHits=0; this._crownAt=(this.elapsed||0)+6; this._crownTick=true; try{ e.knock=Math.max(e.knock||0,0.8); e.setVelocity?.(0,0); e.atkCd=Math.max(e.atkCd||0,1.2); this.floatText?.(e.x,e.y-70,'👑 CROWN BREAK',0xffd166); this.damage(e,this.relicDmg(6),e.x,e.y); } finally{ this._crownTick=false; } } if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;
     if(!this._infTick&&!e.isDummy){ const P=this.player; if(P.gearStillDmg&&P.body&&P.body.velocity.length()<25)amount*=1+P.gearStillDmg; if(P.gearOpener&&e.hp>=e.maxhp)amount*=1+P.gearOpener; }   // 🪞 Oath Focus
     if(!e.isDummy&&this.player.forgeMods)amount=forgeDamage(this,e,amount);
@@ -16639,7 +16650,8 @@ class Game extends Phaser.Scene {
     }
   }
 
-  charPassiveOnHurt(){ if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
+  charPassiveOnHurt(){ if(this._rageStk)this._rageStk=0;   // v7.9.19 Rolling Rage หายเมื่อโดนตี
+    if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<r)this.applyFreeze(e,0.9*CP.s); }); this.burst(px,py,0x8fe7ff); }
   charPassiveOnDash(){ if(this.character==='sesame'&&this.basicAttack?.lv?.p_swift)this._sesRetreatT=(this.elapsed||0)+2;   // v7.9.17 Retreat Shot
     const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
