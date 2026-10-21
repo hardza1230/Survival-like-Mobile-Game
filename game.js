@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.47';
+const GAME_VERSION = '7.9.48';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.48',date:'2026-10-21',title:'New Lobby',items:['The Home page is now a Lobby: your hero stands in the next stage’s scenery with a big STAGE plate — tap it to play, or use ‹ › to pick another unlocked stage','Quick buttons on the side for Inbox, News, Daily, Awards and Codex, with red dots when something is waiting','Profile card at the top: hero level and EXP, Power and Rank','The bottom bar now widens the open tab and shows its name; the big duplicate buttons on Home are gone'],},
   {v:'7.9.47',date:'2026-10-21',title:'Bottom menu bar + phone Back button',items:['New menu bar at the bottom of every menu page: Home · Heroes · Play · Gear · Activities — jump anywhere in one tap, with a red dot when something is waiting','The phone’s Back button (or back swipe) now works: it goes back one page in menus, pauses or resumes a stage, and on the Home page asks you to press again to exit'],},
   {v:'7.9.46',date:'2026-10-21',title:'Clearer Weave tutorial',items:['After the tutorial, a 5-step guide shows where Weave is (Hub → Gear & Power → Weave & Rank), how to leave with Back, and where Play is — no more jumping between pages']},
   {v:'7.9.45',date:'2026-10-21',title:'Replay and boss reward fixes',items:['Replay after a defeat now really restarts the stage from the beginning (monsters and the boss from the last try no longer stay on the field)','No more level-up cards on top of the boss reward wheel — the stage is already won, so the wheel always works','Buttons on the end-of-stage, defeat and tutorial-complete screens react on the first tap and have a slightly bigger touch area'],},
@@ -8241,16 +8242,19 @@ class Game extends Phaser.Scene {
     if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft','bazaar','tradein'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
   drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;};
     const g=fix(this.add.graphics()); g.fillStyle(0x000000,.35).fillRect(0,y0-6,W,6); g.fillStyle(0x1a1024,.98).fillRect(0,y0,W,NAV_H); g.lineStyle(2,0xffd36e,.4).lineBetween(0,y0,W,y0);
-    const tabs=[['hub','','🏠','Home'],['char','hub_btn_heroes','🧸','Heroes'],['chapter','hub_btn_play','▶','Play'],['gLoadout','hub_btn_gear','🎒','Gear'],['gActivity','hub_btn_activity','🎯','Activities']],cw=W/tabs.length;
-    tabs.forEach(([t,key,em,lab],i)=>{ const cx=cw*(i+.5),on=act===t,play=t==='chapter',iy=y0+(play?NAV_H*.36:NAV_H*.4),sz=play?36:26;
-      if(on){ g.fillStyle(0xffd36e,.16).fillRoundedRect(cx-cw/2+4,y0+4,cw-8,NAV_H-8,12); g.fillStyle(0xffd36e,1).fillRoundedRect(cx-14,y0+2,28,3,1.5); }
-      if(play){ g.fillStyle(0x000000,.35).fillCircle(cx,iy+3,27); g.fillStyle(on?0xff8fbf:0xff6fa8,1).fillCircle(cx,iy,26); g.lineStyle(3,0xffe2a8,.9).strokeCircle(cx,iy,26); }
-      if(key&&this.textures.exists(key))fix(this.hubIconFit(this.add.image(cx,iy,key),key,cx,iy,sz)).setAlpha(on||play?1:.78);
-      else fix(this.add.text(cx,iy,em,{fontSize:(play?24:20)+'px'}).setOrigin(.5)).setAlpha(on||play?1:.78);
-      fix(this.add.text(cx,y0+NAV_H-11,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:on?'#ffe9a8':'#bfb0cc'}).setOrigin(.5));
-      if((t==='char'&&this.hasTargetBadge?.('char'))||((t==='gLoadout'||t==='gActivity')&&this.hasGroupBadge?.(t))){ const n0=this.menu.list.length; this.drawBadgeDot(this.menu,cx+sz/2,iy-sz/2); for(let k=n0;k<this.menu.list.length;k++){const o=this.menu.list[k];o._menuBackdrop=true;o._menuFixedY=o.y;} }
+    const tabs=[['hub','','🏠','Home'],['char','hub_btn_heroes','🧸','Heroes'],['chapter','hub_btn_play','▶','Play'],['gLoadout','hub_btn_gear','🎒','Gear'],['gActivity','hub_btn_activity','🎯','Activities']];
+    // v7.9.48 ช่องที่เลือกกว้างขึ้น + มีชื่อ · ช่องอื่นไอคอนอย่างเดียว (แบบเกมทั่วไป · แก้ป้าย Play โดนวงกลมทับ)
+    const wt=tabs.map(([t])=>t===act?1.9:1),sum=wt.reduce((a,b)=>a+b,0); let x0=0;
+    tabs.forEach(([t,key,em,lab],i)=>{ const cw=W*wt[i]/sum,cx=x0+cw/2,on=act===t,play=t==='chapter'; x0+=cw;
+      if(on){ g.fillStyle(0xffc43d,1).fillRoundedRect(cx-cw/2+3,y0+4,cw-6,NAV_H-6,14); g.fillStyle(0xffe08a,1).fillRoundedRect(cx-cw/2+6,y0+7,cw-12,(NAV_H-12)*.42,10); }
+      else{ g.fillStyle(play?0x6a2a4e:0x2a1d38,1).fillRoundedRect(cx-cw/2+3,y0+6,cw-6,NAV_H-10,12); }
+      const iy=on?y0+NAV_H*.38:y0+NAV_H*.5,sz=on?34:30;
+      if(key&&this.textures.exists(key))fix(this.hubIconFit(this.add.image(cx,iy,key),key,cx,iy,sz)).setAlpha(on?1:.85);
+      else fix(this.add.text(cx,iy,em,{fontSize:(on?24:21)+'px'}).setOrigin(.5)).setAlpha(on?1:.85);
+      if(on)fix(this.add.text(cx,y0+NAV_H-13,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#3a1d08',stroke:'#fff3cf',strokeThickness:3}).setOrigin(.5));
+      if((t==='char'&&this.hasTargetBadge?.('char'))||((t==='gLoadout'||t==='gActivity')&&this.hasGroupBadge?.(t))){ const n0=this.menu.list.length; this.drawBadgeDot(this.menu,cx+sz/2,y0+10); for(let k=n0;k<this.menu.list.length;k++){const o=this.menu.list[k];o._menuBackdrop=true;o._menuFixedY=o.y;} }
       this._zone(cx-cw/2,y0,cw,NAV_H,()=>{ if(t===s)return; this._navStack=[]; this._curMenu='hub'; if(t==='chapter')this.selectedChapter=this.selectedChapter||0; this.menuScreen=t; this.buildMenuScreen(); });
-      const z=this.tapZones[this.tapZones.length-1]; z.fixedY=y0; z.tag='nav_'+t; }); }
+      const z=this.tapZones[this.tapZones.length-1]; z.fixedY=y0; z.tag=t; z.nav=true; }); }
   // v7.9.47 ปุ่มย้อนกลับของมือถือ (Android back / ปัดย้อนกลับในเบราว์เซอร์) · คืน 'exit' เมื่อกดซ้ำที่ Hub ภายใน 2 วิ
   handleBackKey(){ const st=this.state;
     if(st==='menu'){ if(this._bookSkip){this._bookSkip();return true;} if(this._gachaBusy||this._craftRolling||this._bazBusy)return true;
@@ -8429,8 +8433,8 @@ class Game extends Phaser.Scene {
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
-    const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; } if(_nav)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s);
+    const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; } if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -9367,7 +9371,53 @@ class Game extends Phaser.Scene {
     const playH=unit*1.30,rowH=unit,half=(width-gap)/2;
     return {portrait,side,gap,menuTop,boxes:[{x:left,y:menuTop,w:width,h:playH},{x:left,y:menuTop+playH+gap,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+gap,w:half,h:rowH},{x:left,y:menuTop+playH+rowH+gap*2,w:half,h:rowH},{x:left+half+gap,y:menuTop+playH+rowH+gap*2,w:half,h:rowH}]};
   }
+  // v7.9.48 เจ้าของ (อ้างอิงเกมอื่น ข้อ 1–4): Lobby = ฮีโร่ยืนในฉากด่านถัดไป + ป้ายด่านใหญ่ (กดเข้าด่าน) + ปุ่มทางลัดข้างจอ + ป้ายโปรไฟล์ · เมนูอื่นอยู่แถบล่าง
+  lobbyStage(){ const us=Math.min(STAGES.length-1,Save.data.unlockedStage||0); let i=this._lobbyStage; if(i==null||i>us||i<0){ i=us; const m=Save.data.stageMastery||{}; while(i>0&&!isStageReady(i))i--; if(m[i]&&i<us)i++; } return i; }
+  buildLobby(){
+    this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
+    const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk='card_'+c,miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]);
+    if(miss.length&&!this._lobbyLoading){ this._lobbyLoading=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
+    const bgk=this.textures.exists(sk)?sk:(this.textures.exists('hub_ui_background')?'hub_ui_background':null);
+    const bg=bgk?this._coverImage(0,0,w,h,bgk):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
+    if(bg.type==='Image')this.hubTween({targets:bg,scaleX:bg.scaleX*1.015,scaleY:bg.scaleY*1.015,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const shade=this.add.graphics(),T0=48,B0=72;for(let i=0;i<T0;i++){const y0=Math.floor(i*h*.22/T0),y1=Math.floor((i+1)*h*.22/T0);shade.fillStyle(0x0d0816,.5*(1-i/T0)).fillRect(0,y0,w,y1-y0);}for(let i=0;i<B0;i++){const y0=Math.floor(h*.5+i*h*.5/B0),y1=Math.floor(h*.5+(i+1)*h*.5/B0);shade.fillStyle(0x0d0816,.66*(i+1)/B0).fillRect(0,y0,w,y1-y0);}this.menu.add(shade);
+    // ── ข้อ 4 ป้ายโปรไฟล์ (ซ้ายบน): ฮีโร่ · Lv + EXP · Power · Rank
+    const top=Math.max(10,h*.014),side=12,pw=Math.min(w*.56,220),ph=58;this.hubPanel(side,top,pw,ph);
+    if(this.textures.exists('roster_'+c)){ const av=this.add.image(side+30,top+ph/2,'roster_'+c),q=Math.min(av.width,av.height);av.setCrop((av.width-q)/2,(av.height-q)/2,q,q).setScale(46/q);this.menu.add(av); const fr=this.add.graphics();fr.lineStyle(2,0xffd36e,.9).strokeRoundedRect(side+7,top+ph/2-23,46,46,8);this.menu.add(fr); }
+    const cp=Save.cp(c)||{lvl:1,exp:0},need=charExpNeed(cp.lvl||1),tx=side+60;
+    this.hubText(tx,top+13,ch.name+'  Lv '+(cp.lvl||1),13,'#fff3e0');
+    const bw=pw-tx+side-10,bar=this.add.graphics();bar.fillStyle(0x000000,.45).fillRoundedRect(tx,top+24,bw,6,3).fillStyle(0x8fe3d0,1).fillRoundedRect(tx,top+24,Math.max(3,bw*Math.min(1,(cp.exp||0)/need)),6,3);this.menu.add(bar);
+    const ps=this.powerStatus(si);this.hubText(tx,top+43,'⚡ '+Math.round(ps.cur).toLocaleString()+'   🎖 Rank '+(d.rank||0),11,'#ffe08a');
+    this._zone(side,top,pw,ph,()=>{this.menuScreen='char';this.buildMenuScreen();});
+    // Sugar + ตั้งค่า (ขวาบน)
+    const gearW=36,gx=w-side-gearW;this.hubPanel(gx,top,gearW,gearW);const cog=this.add.graphics(),cx=gx+gearW/2,cy=top+gearW/2;cog.fillStyle(0xe7e4ed,1);for(let i=0;i<8;i++){const a=i*Math.PI/4;cog.fillCircle(cx+Math.cos(a)*7,cy+Math.sin(a)*7,2.4);}cog.fillCircle(cx,cy,8).fillStyle(0x283041,1).fillCircle(cx,cy,3.2);this.menu.add(cog);
+    this._zone(gx-4,top-4,gearW+8,gearW+8,()=>{this.menuScreen='gMore';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='gMore';
+    const sw=Math.min(118,w-pw-gearW-side*3-6),sx=gx-8-sw;this.hubPanel(sx,top,sw,gearW);this.hubArt('candy',sx+16,top+gearW/2,20,20);const sg=this.hubText(sx+sw-8,top+gearW/2,String(Math.floor(d.sugar||0)),14,'#ffe5aa',1);let sf=14;while(sg.width>sw-34&&sf>9)sg.setFontSize(--sf+'px');
+    this.hubText(w-side,top+gearW+11,'v'+GAME_VERSION,10,'#d9cce6',1);
+    // ── ข้อ 2 ปุ่มทางลัดข้างจอ (มีจุดแดงเมื่อมีของรอ)
+    const sideBtn=(x,y,em,lab,t,badge)=>{ const s0=52;this.hubPanel(x,y,s0,s0);this.menu.add(this.add.text(x+s0/2,y+s0*.4,em,{fontSize:'22px'}).setOrigin(.5));this.hubText(x+s0/2,y+s0-9,lab,9,'#fff0df',.5);
+      this._zone(x,y,s0,s0,()=>{this.menuScreen=t;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='side_'+t; if(badge)this.drawBadgeDot(this.menu,x+s0-5,y+5); };
+    let ry=top+ph+30; [['📦','Inbox','gearInbox'],['📰','News','news'],['📋','Daily','daily'],['🏆','Awards','achievements']].forEach(([em,lab,t])=>{ sideBtn(w-side-52,ry,em,lab,t,this.hasTargetBadge(t)); ry+=60; });
+    sideBtn(side,top+ph+30,'📖','Codex','gCodex',false);
+    // ── ข้อ 1 ฮีโร่ยืนกลางฉาก + ป้ายด่านใหญ่
+    const plateW=Math.min(w*.7,280),plateH=Math.max(74,h*.1),plateY=h-plateH-Math.max(14,h*.025),heroH=Math.min(h*.46,plateY-(top+ph+40)),heroY=plateY-10;
+    const sh=this.add.ellipse(w/2,heroY-6,heroH*.42,heroH*.07,0x000000,.38);this.menu.add(sh);
+    if(this.textures.exists(hk)){ const hi=this.add.image(w/2,heroY,hk).setOrigin(.5,1);hi.setScale(heroH/hi.height);this.menu.add(hi);this.hubTween({targets:hi,y:heroY-5,duration:1600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+    else this.hubText(w/2,heroY-heroH/2,ch.emoji||'🍡',Math.min(96,heroH*.5),'#fff',.5);
+    const px=(w-plateW)/2,pg=this.add.graphics();pg.fillStyle(0x000000,.4).fillRoundedRect(px+3,plateY+5,plateW,plateH,18).fillStyle(0xffc43d,1).fillRoundedRect(px,plateY,plateW,plateH,18).fillStyle(0xffe08a,1).fillRoundedRect(px+4,plateY+4,plateW-8,plateH*.45,14).lineStyle(3,0x5a3510,1).strokeRoundedRect(px,plateY,plateW,plateH,18);this.menu.add(pg);
+    const tg=this.add.graphics();tg.fillStyle(0x2a1a3a,1).fillRoundedRect(w/2-46,plateY-11,92,20,8);this.menu.add(tg);this.hubText(w/2,plateY-1,'S T A G E',10,'#ffffff',.5);
+    const chN=st.chapter||0,lab='C'+(chN+1)+'-'+(st.chapterStage||STAGES.slice(0,si+1).filter(x=>(x.chapter||0)===chN).length),big=this.add.text(w/2,plateY+plateH*.42,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(plateH*.46)+'px',color:'#3a1d08',stroke:'#fff6d8',strokeThickness:4}).setOrigin(.5);this.menu.add(big);
+    const stars=(d.stageStars||{})[si]||0,starTxt='⭐ '+[1,2,4].filter(b=>stars&b).length+'/3';
+    const sub=this.add.text(w/2,plateY+plateH*.8,(st.name||'')+'  '+starTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#5a3510'}).setOrigin(.5);let f2=12;while(sub.width>plateW-20&&f2>8)sub.setFontSize(--f2+'px');this.menu.add(sub);
+    this.hubText(w/2,plateY-26,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec)+'  '+ps.label,12,ps.hex,.5);
+    this._zone(px,plateY,plateW,plateH,()=>{ if(!isStageReady(si)){this.menuToast('🛠️ Stage in production','#ffb4c7');return;} this.startStoryStage(si); });this.tapZones[this.tapZones.length-1].tag='lobby_play';
+    // ‹ › เลือกด่านที่ปลดแล้ว
+    const us=Math.min(STAGES.length-1,d.unlockedStage||0),arrow=(x,dir,ok)=>{ this.hubPanel(x,plateY+plateH/2-22,40,44);this.hubText(x+20,plateY+plateH/2,dir<0?'‹':'›',28,ok?'#fff0df':'#6d6078',.5);
+      this._zone(x,plateY+plateH/2-26,40,52,()=>{ if(!ok)return; this._lobbyStage=si+dir; this.buildMenuScreen(); }); };
+    arrow(px-48,-1,si>0); arrow(px+plateW+8,1,si<us&&isStageReady(si+1));
+  }
   buildHub(){
+    if(this._navOn&&this.W<this.H)return this.buildLobby();
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
     const bg=this.textures.exists(bgKey)?this._coverImage(0,0,w,h,bgKey):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
@@ -12979,7 +13029,7 @@ class Game extends Phaser.Scene {
     this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.openTutorialWeave()}];   // ปิดได้เฉพาะกดปุ่ม
   }
   // v6.50.6 สปอตไลต์ tutorial: มืดรอบนอก เจาะรูที่ปุ่ม + กรอบทองเต้น + นิ้วชี้
-  drawSpotlight(cont,x,y,bw,bh,label){ const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
+  drawSpotlight(cont,x,y,bw,bh,label){ this._spotBuild=true; const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
     g.fillRect(0,0,W,Y); g.fillRect(0,Y+B,W,H-Y-B); g.fillRect(0,Y,X,B); g.fillRect(X+R,Y,W-X-R,B);
     const fr=this.add.graphics(); fr.lineStyle(4,0xffd166,1); fr.strokeRoundedRect(X,Y,R,B,14); this.tweens.add({targets:fr,alpha:{from:1,to:0.35},yoyo:true,repeat:-1,duration:520});
     const below=Y+B+60<H, hy=below?Y+B+26:Y-26, hand=this.add.text(x+bw/2,hy,below?'👆':'👇',{fontSize:'34px'}).setOrigin(0.5); this.tweens.add({targets:hand,y:hy+(below?-10:10),yoyo:true,repeat:-1,duration:420,ease:'Sine.inOut'});
