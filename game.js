@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.19';
+const GAME_VERSION = '7.9.20';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.20',date:'2026-10-21',title:'More time to react',items:['Boss arena attacks give more warning: floods/roots sweep slower with a longer warning, hot grids, rings, pillars, clock hands, scythe and mirror beams all wait longer before hitting','Hornet Queen rush lanes and Ant Empress tunnel lock-on warn longer','Menu page turn is a little slower']},
   {v:'7.9.19',date:'2026-10-21',title:'More cards that change how you play',items:['Crown Breaker relic: every 40 hits on a boss or miniboss stuns it and lands a crushing hit (was a flat +30%)','New relic combos: Full Belly (Harvest + Candy Shell), Frozen Jam (Cold Snap + Sticky Jam), Sharp Edge (First Bite + Cracked Crystal)','Strawberry Petal Kick: Dash fires a ring of bouncing seeds · Mint Ice Breaker: frozen enemies you kill shatter and freeze others · Cocoa Rolling Rage: each Dash adds a Rage stack, getting hit clears them · Taro Static Buildup: every 6th hit on one enemy shocks it · Taro Sky Judge: lightning strikes the toughest enemy every 4s','Boss and long-range cards now show their condition in the card title']},
   {v:'7.9.18',date:'2026-10-21',title:'Heroes in development',items:['Sesame and Yuzu now show a 🚧 In development badge on the hero screen: their cards and balance will still change']},
   {v:'7.9.17',date:'2026-10-21',title:'Fewer copy-paste cards',items:['Relics: Jam Trail → Sticky Jam (Dash leaves a puddle: enemies get stuck and take +25% damage) · Chill Touch → Cold Snap (every 6s your next hit freezes a small area) · Candy Shell also gives a shield on elite/miniboss/boss kills (Hunter Trophy merged in) · Momentum and Sugar Magnet removed (pickup range lives in Weave and Special Cores)','Trade-offs Glass Heart and Frozen Core removed (same as Cracked Crystal and Minty Infusion) · Dash Fury instinct removed (same as Spark Step)','Path cards that only repeated attack speed now do something new: Yuzu Chain Feast (kills refresh the bite), Cocoa Hot Hands (every few fists explode), Taro Close Charge (sentries near you fire faster), Sesame Retreat Shot (Dash, then hit harder)','Path cards that only repeated +1 count: Yuzu Quick Paws (Yuzlings run faster), Sesame Prism Echo (every few casts fire twice); Forked Arc and Buckshot removed (same as Arc Streams and Sweet Branching)','Cocoa: Blitz merged into Phantom Jab (Dash Stack already gives the extra Dash)']},
@@ -8046,10 +8047,10 @@ class Game extends Phaser.Scene {
       pg=this.add.image(0,0,'bk_page_turn','cell0').setOrigin(0).setDisplaySize(w,h).setFlipX(fl),
       sp=this.add.image(sx,0,'bk_spine').setOrigin(forward?0:1,0).setDisplaySize(Math.max(22,w*.07),h).setFlipX(fl).setAlpha(0);
     c.add([sh,pg,sp]); this.tweens.add({targets:sp,alpha:1,duration:60});
-    let f=0; const ev=this.time.addEvent({delay:54,repeat:5,callback:()=>{ f++; if(!pg.active)return; if(f<=5){pg.setFrame('cell'+f);sh.setFrame('cell'+f);} if(f===5){ const d=this.add.image(sx+(forward?28:-28),h*.56,'vfx_bk_dust','cell0').setDisplaySize(130,130).setFlipX(fl);c.add(d);
-        const A=[.7,.95,1,.6,.25,0];let n=0;d.setAlpha(A[0]);this.time.addEvent({delay:40,repeat:5,callback:()=>{n++;if(!d.active)return;if(n>5){d.setVisible(false);return;}d.setFrame('cell'+n).setAlpha(A[n]);}}); } }});
-    this.tweens.add({targets:sp,alpha:0,duration:80,delay:280});
-    this.time.delayedCall(360,()=>{ ev.remove(false); if(this._menuWipe===c)this._menuWipe=null; c.destroy(); }); }
+    let f=0; const ev=this.time.addEvent({delay:82,repeat:5,callback:()=>{ f++; if(!pg.active)return; if(f<=5){pg.setFrame('cell'+f);sh.setFrame('cell'+f);} if(f===5){ const d=this.add.image(sx+(forward?28:-28),h*.56,'vfx_bk_dust','cell0').setDisplaySize(130,130).setFlipX(fl);c.add(d);
+        const A=[.7,.95,1,.6,.25,0];let n=0;d.setAlpha(A[0]);this.time.addEvent({delay:60,repeat:5,callback:()=>{n++;if(!d.active)return;if(n>5){d.setVisible(false);return;}d.setFrame('cell'+n).setAlpha(A[n]);}}); } }});
+    this.tweens.add({targets:sp,alpha:0,duration:120,delay:420});   // v7.9.20 เจ้าของ: พลิกหน้าช้าลง ×1.5 (360→540ms)
+    this.time.delayedCall(540,()=>{ ev.remove(false); if(this._menuWipe===c)this._menuWipe=null; c.destroy(); }); }
   // เปิดปก: ครั้งแรกตอนเข้าเมนูหลังเปิดเกม/กลับจากด่าน · ปกปิด 150ms + แสงตรา → 5 เฟรม 400ms · แตะ = ข้าม
   bookCover(){ if(this._bookCover||!this.bookReady()||this.state!=='menu')return; const w=this.W,h=this.H,c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5200));this._bookCover=c;this.tuFrames('bk_cover_open');
     const sc=Math.max(w/432,h/768),cw=432*sc,chh=768*sc,ox=(w-cw)/2,oy=(h-chh)/2,cl=this.add.image(ox,oy,'bk_cover_closed').setOrigin(0).setDisplaySize(cw,chh),gl=this.add.image(w/2,h/2,'bk_cover_glow').setDisplaySize(Math.min(w,h)*.7,Math.min(w,h)*.7).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD),
@@ -8065,12 +8066,12 @@ class Game extends Phaser.Scene {
     if(this.bookReady()){this.bookTurn(forward);return;}   // v7.9.10 ใบ 28 พลิกหน้าหนังสือ (ม่านใบ 26 = สำรองตอนยังโหลดไม่เสร็จ)
     const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),T=this.textures,art=T.exists('tr_curtain')&&T.exists('tr_edge');this._menuWipe=c;
     if(!art){ const veil=this.add.rectangle(0,0,w,h,0x24142f,1).setOrigin(0),edge=this.add.rectangle(forward?0:w,0,10,h,0xffd6ea,.9).setOrigin(forward?1:0,0);c.add([veil,edge]);
-      const prog={t:0};this.tweens.add({targets:prog,t:1,duration:300,ease:'Cubic.inOut',onUpdate:()=>{const x=w*prog.t;if(forward){veil.setX(-x);edge.setX(w-x);}else{veil.setX(x);edge.setX(x);}veil.setAlpha(1-.35*prog.t);edge.setAlpha(.9*(1-prog.t*.6));},onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); return; }
+      const prog={t:0};this.tweens.add({targets:prog,t:1,duration:450,ease:'Cubic.inOut',onUpdate:()=>{const x=w*prog.t;if(forward){veil.setX(-x);edge.setX(w-x);}else{veil.setX(x);edge.setX(x);}veil.setAlpha(1-.35*prog.t);edge.setAlpha(.9*(1-prog.t*.6));},onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); return; }
     // v7.8.68 ใบ 26: ผ้าม่านร้านขนม (tile) + ขอบครีมหยัก + ประกายที่ขอบ + ตรากลางจอหมุนย่อ + ควันแป้ง · ทึบสนิท ห้ามโปร่ง
     const k=h/960,veil=this.add.tileSprite(0,0,w,h,'tr_curtain').setOrigin(0).setTileScale(k),ew=80*k,edge=this.add.image(0,0,'tr_edge').setOrigin(forward?0:1,0).setDisplaySize(ew,h).setFlipX(!forward);c.add([veil,edge]);
     const sp=[];if(T.exists('vfx_tr_edge_sparkle')&&this.anims.exists('vfx_tr_edge_sparkle'))for(let i=0;i<2;i++){const o=this.add.sprite(0,h*(.3+.4*i),'vfx_tr_edge_sparkle',0).setDisplaySize(64*k*1.4,128*k*1.4).setFlipX(!forward);o.play({key:'vfx_tr_edge_sparkle',startFrame:i*2});sp.push(o);c.add(o);}
     const em=T.exists('tr_emblem')?this.add.image(w/2,h/2,'tr_emblem').setDisplaySize(Math.min(w,h)*.34,Math.min(w,h)*.34):null;if(em)c.add(em);const es=em?em.scaleX:1;let puffed=false;
-    const prog={t:0};this.tweens.add({targets:prog,t:1,duration:340,ease:'Cubic.inOut',onUpdate:()=>{const t=prog.t,x=w*t,vx=forward?-x:x,lead=forward?w-x:x;veil.setX(vx).setTilePosition((forward?x:-x)*.25/k,0);edge.setX(lead);
+    const prog={t:0};this.tweens.add({targets:prog,t:1,duration:500,ease:'Cubic.inOut',onUpdate:()=>{const t=prog.t,x=w*t,vx=forward?-x:x,lead=forward?w-x:x;veil.setX(vx).setTilePosition((forward?x:-x)*.25/k,0);edge.setX(lead);
         for(const o of sp)o.setX(lead+(forward?ew*.55:-ew*.55));
         if(em){const q=Math.min(1,t/.6);em.setScale(es*(1-q)).setRotation((forward?-1:1)*q*Math.PI*.6).setAlpha(1-q*.4).setX(w/2+vx*.35);
           if(!puffed&&q>=1){puffed=true;em.setVisible(false);if(T.exists('vfx_tr_puff')&&this.anims.exists('vfx_tr_puff')){const pf=this.add.sprite(w/2+vx*.35,h/2,'vfx_tr_puff',0).setDisplaySize(Math.min(w,h)*.42,Math.min(w,h)*.42);c.add(pf);pf.play('vfx_tr_puff');}}}},
@@ -16341,7 +16342,7 @@ class Game extends Phaser.Scene {
   clearArenaMech(){ this._arenaTicks=[]; for(const c of this._counters||[])this.killCounter(c); this._counters=[]; for(const o of this._arenaFx||[])if(o?.active)o.destroy(); this._arenaFx=[]; }
   arenaFx(o){ (this._arenaFx||(this._arenaFx=[])).push(o); return o; }
   // C2-3 Hornet Queen · Hive Rush (แบบผึ้งยักษ์ Terraria): บินไปข้างจอ → เส้นเตือนแนวนอนที่ระดับผู้เล่น → พุ่งข้ามจอ ซ้ายขวาสลับ
-  hiveRush(b){ const passes=b.phase3?5:b.phase2?4:3,warn=b.phase3?560:b.phase2?620:720,vw=this.arenaVw(),off=Math.min(vw*.62,560),sp=b.phase3?1250:1100;
+  hiveRush(b){ const passes=b.phase3?5:b.phase2?4:3,warn=b.phase3?820:b.phase2?900:1000,vw=this.arenaVw(),off=Math.min(vw*.62,560),sp=b.phase3?1250:1100;
     b._arenaBusy=true; this.hornetQueenPose?.(b,2,1200); this.showBanner('🐝 Hive Rush','She rushes across the screen — move up or down out of her lane!',1100);
     let side=b.x<this.player.x?-1:1; const step=i=>{ if(!b.active||this.state==='dead'){b._arenaBusy=false;return;} if(i>=passes){ b._arenaBusy=false; b.knock=0; b.atkCd=1.4;
         const c=this.spawnCounter(b,this.player.x+Phaser.Math.Between(-90,90),this.player.y+Phaser.Math.Between(-70,70),{emoji:'🍯',tint:0xffc23a,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,1.2,'Sticky!');if(!bb._sticky){bb._sticky=true;bb.spd*=.6;this.time.delayedCall(3200,()=>{if(bb.active){bb.spd/=.6;bb._sticky=false;}});}}});
@@ -16355,7 +16356,7 @@ class Game extends Phaser.Scene {
           this.time.delayedCall(Math.round(b.knock*1000),()=>{ if(!b.active)return; b.setVelocity(0,0); side=-side; step(i+1); }); }); }}); };
     step(0); b.atkCd=99; }
   // C1-1 Ant Empress · Tunnel: มุดดิน เงาไล่ตาม 2 วิ → หยุด → โผล่พุ่งขึ้น · เฟส 2 เงา 2 อัน (ตัวจริงมีกรดหยด)
-  antTunnel(b){ const two=!!b.phase2,chase=2000,lock=b.phase3?560:700,hd=Math.round(22+this.stageIndex*6+(b.dmg||40)*.4);
+  antTunnel(b){ const two=!!b.phase2,chase=2000,lock=b.phase3?800:950,hd=Math.round(22+this.stageIndex*6+(b.dmg||40)*.4);
     b._arenaBusy=true; b.knock=9; b.setVelocity(0,0); this.bossPose?.(b,2,600); this.showBanner('🕳️ Tunnel','She digs under you — walk out of the shadow before she bursts out!',1100);
     this.tweens.add({targets:b,alpha:.0,scale:b.scale*.6,duration:380,onComplete:()=>{ if(!b.active)return; if(b.body)b.body.enable=false;
       const mk=(real)=>{ const s=this.arenaFx(this.camWorld(this.add.ellipse(this.player.x,this.player.y,140,74,0x1f3a12,.55).setStrokeStyle(3,real?0x75ff4b:0x5c7a4a,.9).setDepth(2))); s._real=real; return s; };
@@ -16384,7 +16385,7 @@ class Game extends Phaser.Scene {
   runArenaTicks(dt){ const L=this._arenaTicks; if(!L||!L.length)return; this._arenaTicks=L.filter(f=>{ try{ return f(dt)!==false; }catch(e){ return false; } }); }
   arenaEnd(b,ms,cd=1.4){ this.time.delayedCall(ms,()=>{ if(b?.active){ b._arenaBusy=false; b.atkCd=Math.min(b.atkCd??cd,cd); } }); }
   // T2 Sweep: แถบกวาดข้ามจอ มีช่องลอด (ตะแกรง) · dir 'h' = แถบแนวนอนเลื่อนลง/ขึ้น · 'v' = แถบแนวตั้งเลื่อนซ้าย/ขวา
-  arenaSweep(b,{dir='h',rev=false,warn=900,dur=1600,gapW=150,band=70,color=0x6bd07a,dmg}={}){ const V=this.arenaView(),p=this.player,hz=dir==='h',len=(hz?V.w:V.h)+200,gapC=hz?Phaser.Math.Clamp(p.x+Phaser.Math.Between(-120,120),V.x+gapW,V.x+V.w-gapW):Phaser.Math.Clamp(p.y+Phaser.Math.Between(-120,120),V.y+gapW,V.y+V.h-gapW);
+  arenaSweep(b,{dir='h',rev=false,warn=1500,dur=2400,gapW=170,band=70,color=0x6bd07a,dmg}={}){ const V=this.arenaView(),p=this.player,hz=dir==='h',len=(hz?V.w:V.h)+200,gapC=hz?Phaser.Math.Clamp(p.x+Phaser.Math.Between(-120,120),V.x+gapW,V.x+V.w-gapW):Phaser.Math.Clamp(p.y+Phaser.Math.Between(-120,120),V.y+gapW,V.y+V.h-gapW);
     const start=hz?(rev?V.y+V.h+band:V.y-band):(rev?V.x+V.w+band:V.x-band),end=hz?(rev?V.y-band:V.y+V.h+band):(rev?V.x-band:V.x+V.w+band);
     const mk=()=>{ const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000))); return g; },g=mk(); let t=-warn,hit=false; dmg=dmg??this.arenaDmg(b);
     const draw=(pos,a)=>{ g.clear(); g.fillStyle(color,a); const gl=gapC-gapW/2,gr=gapC+gapW/2; if(hz){ const x0=V.x-100; g.fillRect(x0,pos-band/2,gl-x0,band); g.fillRect(gr,pos-band/2,V.x+V.w+100-gr,band); g.lineStyle(3,0xffffff,a*.8).strokeRect(gl,pos-band/2,gapW,band); }
@@ -16395,7 +16396,7 @@ class Game extends Phaser.Scene {
       if(!hit&&Math.abs(pp-pos)<band/2+12&&Math.abs(pq-gapC)>gapW/2-10){ hit=true; this.hurtPlayer(dmg,hz?(rev?-Math.PI/2:Math.PI/2):(rev?Math.PI:0)); }
       if(k>=1){ g.destroy(); return false; } return true; }); return warn+dur; }
   // T1 Grid: ช่องสี่เหลี่ยมรอบผู้เล่น สว่างตามลาย แล้วระเบิด · patterns = ฟังก์ชัน (c,r)=>bool ทีละรอบ
-  arenaGrid(b,{n=5,cell=86,warn=850,gap=420,patterns,color=0xff7a3a,dmg}={}){ const p=this.player,ox=p.x-cell*n/2,oy=p.y-cell*n/2; dmg=dmg??this.arenaDmg(b); let t=0;
+  arenaGrid(b,{n=5,cell=86,warn=1300,gap=600,patterns,color=0xff7a3a,dmg}={}){ const p=this.player,ox=p.x-cell*n/2,oy=p.y-cell*n/2; dmg=dmg??this.arenaDmg(b); let t=0;
     patterns.forEach((pat,i)=>this.time.delayedCall(i*(warn+gap),()=>{ if(!b.active)return; const cells=[];
       for(let c=0;c<n;c++)for(let r=0;r<n;r++)if(pat(c,r)){ const x=ox+c*cell+cell/2,y=oy+r*cell+cell/2,q=this.arenaFx(this.camWorld(this.add.rectangle(x,y,cell-6,cell-6,color,.16).setStrokeStyle(2,color,.9).setDepth(3))); cells.push(q);
         this.tweens.add({targets:q,fillAlpha:{from:.12,to:.45},duration:warn/3,yoyo:true,repeat:1}); }
@@ -16403,14 +16404,14 @@ class Game extends Phaser.Scene {
           q.setFillStyle(0xffffff,.8); this.tweens.add({targets:q,alpha:0,duration:220,onComplete:()=>q.destroy()}); } this.screenShake?.(120,.006); }); }));
     return patterns.length*(warn+gap); }
   // T3 Rings: วงแหวนซ้อนรอบผู้เล่น แต่ละวงมีช่องเดียว หมุนคนละทิศ แล้วหดเข้าหาตัว · แตะขอบวง (นอกช่อง) = โดน
-  arenaRings(b,{rings=2,r0=230,shrink=2600,warn=700,gapA=.75,color=0xd8b25a,dmg,cx,cy}={}){ const p=this.player; cx=cx??p.x; cy=cy??p.y; dmg=dmg??this.arenaDmg(b); const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000)));
+  arenaRings(b,{rings=2,r0=230,shrink=3400,warn=1100,gapA=.75,color=0xd8b25a,dmg,cx,cy}={}){ const p=this.player; cx=cx??p.x; cy=cy??p.y; dmg=dmg??this.arenaDmg(b); const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000)));
     const R=Array.from({length:rings},(_,i)=>({r:r0+i*85,a:Math.random()*TAU,s:(i%2?-1:1)*(.9+i*.25),hit:false})); let t=-warn;
     this.arenaTick(dt=>{ if(!g.active)return false; t+=dt*1000; const k=t<0?0:Math.min(1,t/shrink); g.clear();
       for(const q of R){ q.a+=q.s*dt; const rr=q.r*(1-k*.82); g.lineStyle(t<0?3:9,color,t<0?.45:.9); g.beginPath(); g.arc(cx,cy,rr,q.a+gapA/2,q.a+TAU-gapA/2,false); g.strokePath();
         if(t>=0&&!q.hit){ const d=Math.hypot(p.x-cx,p.y-cy),an=Phaser.Math.Angle.Wrap(Math.atan2(p.y-cy,p.x-cx)-q.a); if(Math.abs(d-rr)<14&&Math.abs(an)>gapA/2){ q.hit=true; this.hurtPlayer(dmg,Math.atan2(p.y-cy,p.x-cx)); } } }
       if(k>=1){ g.destroy(); return false; } return true; }); return warn+shrink; }
   // T2 หมุน: เข็มนาฬิกา 2 เข็มหมุนรอบบอส (ยาวช้า · สั้นเร็ว) · แตะเข็ม = โดน (กันโดนซ้ำ .8 วิ)
-  arenaHands(b,{dur=5200,warn=900,long=520,short=330,sl=.9,ss=-1.7,color=0xffd166,dmg}={}){ const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000))),p=this.player; dmg=dmg??this.arenaDmg(b); let t=-warn,cd=0,aL=Math.atan2(p.y-b.y,p.x-b.x)+1.6,aS=aL+Math.PI;
+  arenaHands(b,{dur=5200,warn=1400,long=520,short=330,sl=.9,ss=-1.7,color=0xffd166,dmg}={}){ const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000))),p=this.player; dmg=dmg??this.arenaDmg(b); let t=-warn,cd=0,aL=Math.atan2(p.y-b.y,p.x-b.x)+1.6,aS=aL+Math.PI;
     const seg=(x,y,a,l)=>{ const ex=x+Math.cos(a)*l,ey=y+Math.sin(a)*l,dx=ex-x,dy=ey-y,u=Phaser.Math.Clamp(((p.x-x)*dx+(p.y-y)*dy)/(dx*dx+dy*dy),0,1); return Math.hypot(p.x-(x+dx*u),p.y-(y+dy*u)); };
     this.arenaTick(dt=>{ if(!g.active||!b.active){g.destroy?.();return false;} t+=dt*1000; cd-=dt; if(t>=0){aL+=sl*dt;aS+=ss*dt;} g.clear();
       for(const [a,l,w] of [[aL,long,14],[aS,short,10]]){ g.lineStyle(t<0?3:w,color,t<0?.4:.9); g.lineBetween(b.x,b.y,b.x+Math.cos(a)*l,b.y+Math.sin(a)*l); if(t>=0&&cd<=0&&seg(b.x,b.y,a,l)<w+12){ cd=.8; this.hurtPlayer(dmg,a+Math.PI/2); } }
@@ -16424,7 +16425,7 @@ class Game extends Phaser.Scene {
       if(t>=0&&(tick-=dt)<=0){ tick=.5; if(!B.some(q=>Math.hypot(p.x-q.x,p.y-q.y)<q.r))this.hurtPlayer(dmg,0); }
       if(t>=dur){ fog.destroy(); return false; } return true; }); return dur+900; }
   // T4 Pillars + ลมหายใจทั้งจอ: หลบหลังเสา (เสาอยู่ระหว่างบอสกับผู้เล่น) · เสาบังได้ครั้งเดียวแล้วแตก
-  arenaPillars(b,{n=3,warn=1300,color=0x9fe0ff,dmg}={}){ const p=this.player; dmg=dmg??Math.round(this.arenaDmg(b)*1.3); const P=[];
+  arenaPillars(b,{n=3,warn=1800,color=0x9fe0ff,dmg}={}){ const p=this.player; dmg=dmg??Math.round(this.arenaDmg(b)*1.3); const P=[];
     for(let i=0;i<n;i++){ const a=Math.atan2(p.y-b.y,p.x-b.x)+(i-(n-1)/2)*.9,d=Math.min(260,this.dist(b.x,b.y,p.x,p.y)*.6+90),x=b.x+Math.cos(a)*d,y=b.y+Math.sin(a)*d;
       const s=this.arenaFx(this.camWorld(this.add.rectangle(x,y,40,70,color,.85).setStrokeStyle(3,0xffffff,.9).setDepth(y))); P.push(s); this.tweens.add({targets:s,scaleY:{from:.1,to:1},duration:300}); }
     const fan=this.arenaFx(this.camWorld(this.add.circle(b.x,b.y,30,color,.12).setDepth(2))); this.tweens.add({targets:fan,scale:28,alpha:.28,duration:warn});
@@ -16452,26 +16453,26 @@ class Game extends Phaser.Scene {
     const banner=(n,h)=>this.showBanner(n,h,1100),counter=(emoji,tint,label,pct=.03)=>this.time.delayedCall(Math.max(600,ms-400),()=>{ if(b.active)this.spawnCounter(b,this.player.x+Phaser.Math.Between(-100,100),this.player.y+Phaser.Math.Between(-80,80),{emoji,tint,onHit:bb=>{this.bossPctHit(bb,pct);this.bossStun(bb,1.2,label);}}); });
     const pick=a=>Phaser.Utils.Array.GetRandom(a);
     if(pin){ const m=pick(p3?['jaws','tongue','jaws']:['jaws','tongue']);
-      if(m==='jaws'){ banner('🦷 Closing Jaws','The teeth close in — stay inside the safe circle and slip through the gap!'); ms=this.arenaRings(b,{rings:p3?3:2,r0:300,shrink:3000,color:0xb46cff}); }
-      else { banner('👅 The Tongue','It sweeps across the screen — line up with the open gap!'); ms=this.arenaSweep(b,{dir:'h',color:0xd95cff,band:90}); if(p2){ this.time.delayedCall(700,()=>{ if(b.active)this.arenaSweep(b,{dir:'v',rev:true,color:0xd95cff,band:90}); }); ms+=700; } }
+      if(m==='jaws'){ banner('🦷 Closing Jaws','The teeth close in — stay inside the safe circle and slip through the gap!'); ms=this.arenaRings(b,{rings:p3?3:2,r0:300,shrink:3800,color:0xb46cff}); }
+      else { banner('👅 The Tongue','It sweeps across the screen — line up with the open gap!'); ms=this.arenaSweep(b,{dir:'h',color:0xd95cff,band:90}); if(p2){ this.time.delayedCall(1400,()=>{ if(b.active)this.arenaSweep(b,{dir:'v',rev:true,color:0xd95cff,band:90}); }); ms+=1400; } }
       counter('🍖',0xd95cff,'Choking!',.03); }
-    else if(si===1){ banner('🌊 Sewer Flood','Sludge sweeps across the screen — stand in the grate gap!'); ms=this.arenaSweep(b,{dir:'h',color:0x6bd07a}); if(p2)this.time.delayedCall(500,()=>{ if(b.active)this.arenaSweep(b,{dir:'v',rev:true,color:0x6bd07a}); }); ms+=p2?500:0; counter('🧽',0x74e3cf,'Clogged!'); }
+    else if(si===1){ banner('🌊 Sewer Flood','Sludge sweeps across the screen — stand in the grate gap!'); ms=this.arenaSweep(b,{dir:'h',color:0x6bd07a}); if(p2)this.time.delayedCall(1400,()=>{ if(b.active)this.arenaSweep(b,{dir:'v',rev:true,color:0x6bd07a}); }); ms+=p2?1400:0; counter('🧽',0x74e3cf,'Clogged!'); }
     else if(si===2){ banner('🔥 Hot Grid','Red tiles light up, then burn — step onto the dark ones!'); const chk=(o)=>(c,r)=>(c+r)%2===o,row=(c,r)=>r%2===0,col=(c,r)=>c%2===1;
-      ms=this.arenaGrid(b,{patterns:p2?[chk(0),chk(1),row,col]:[chk(0),chk(1),row],warn:p3?700:850}); counter('🍳',0xff7a3a,'Oil splash!'); }
+      ms=this.arenaGrid(b,{patterns:p2?[chk(0),chk(1),row,col]:[chk(0),chk(1),row],warn:p3?1100:1300}); counter('🍳',0xff7a3a,'Oil splash!'); }
     else if(si===3){ banner('🧊 Frost Breath','The Golem breathes ice over everything — hide behind a pillar!'); ms=this.arenaPillars(b,{n:p2?2:3}); counter('🧊',0x9fe0ff,'Frozen!'); }
     else if(si===5){ banner('🌰 Spore Pods','Three pods shield the Bud — dash into them to break the shield!'); this.arenaPods(b,{n:3}); ms=1600; }
     else if(si===6){ banner('🫧 Clean Air','Poison fog fills the marsh — stay inside the moving bubble!'); ms=this.arenaFog(b,{bubbles:p2?2:1}); counter('🍄',0xb46cff,'Bonk!'); }
-    else if(si===8){ banner('🕰️ Clock Hands','Two golden hands sweep around the Orchid — keep out of their path!'); ms=this.arenaHands(b,{sl:p2?1.1:.9,ss:p2?2:-1.7}); counter('🌱',0xffd166,'Season sealed!'); }
-    else if(si===9){ banner('🌳 Root Surge','Roots burst across the throne room — find the gap, twice!'); ms=this.arenaSweep(b,{dir:'h',color:0x8a6a3a,band:80}); this.time.delayedCall(800,()=>{ if(b.active)this.arenaSweep(b,{dir:'v',rev:true,color:0x8a6a3a,band:80}); }); ms+=800; if(p2){ this.arenaPods(b,{n:2,emoji:'🌱',tint:0x8a6a3a}); } else counter('🌱',0x8a6a3a,'Root-bound!'); }
+    else if(si===8){ banner('🕰️ Clock Hands','Two golden hands sweep around the Orchid — keep out of their path!'); ms=this.arenaHands(b,{sl:p2?.85:.7,ss:p2?1.5:-1.3}); counter('🌱',0xffd166,'Season sealed!'); }
+    else if(si===9){ banner('🌳 Root Surge','Roots burst across the throne room — find the gap, twice!'); ms=this.arenaSweep(b,{dir:'h',color:0x8a6a3a,band:80}); this.time.delayedCall(1400,()=>{ if(b.active)this.arenaSweep(b,{dir:'v',rev:true,color:0x8a6a3a,band:80}); }); ms+=1400; if(p2){ this.arenaPods(b,{n:2,emoji:'🌱',tint:0x8a6a3a}); } else counter('🌱',0x8a6a3a,'Root-bound!'); }
     else if(si===10){ banner('🌾 Great Scythe','The giant scythe cuts the side you stand on — cross to the other side!'); const side=this.player.x<b.x?-1:1,V=this.arenaView(),half=this.arenaFx(this.camWorld(this.add.rectangle(side<0?(V.x+b.x)/2:(b.x+V.x+V.w)/2,V.cy,Math.abs((side<0?V.x:V.x+V.w)-b.x)+80,V.h+160,0xe0b04a,.12).setStrokeStyle(4,0xffd166,.9).setDepth(8990)));
-      this.tweens.add({targets:half,fillAlpha:{from:.08,to:.35},duration:280,yoyo:true,repeat:3}); this.time.delayedCall(1300,()=>{ half.destroy(); if(!b.active)return; const sx=this.player.x-b.x; this.screenShake?.(300,.016); this.screenFlash?.(0xffd166,.3,200); if(Math.sign(sx||1)===side)this.hurtPlayer(Math.round(this.arenaDmg(b)*1.4),side>0?0:Math.PI); }); ms=1700; counter('🌾',0xe0b04a,'Toppled!'); }
+      this.tweens.add({targets:half,fillAlpha:{from:.08,to:.35},duration:280,yoyo:true,repeat:5}); this.time.delayedCall(1900,()=>{ half.destroy(); if(!b.active)return; const sx=this.player.x-b.x; this.screenShake?.(300,.016); this.screenFlash?.(0xffd166,.3,200); if(Math.sign(sx||1)===side)this.hurtPlayer(Math.round(this.arenaDmg(b)*1.4),side>0?0:Math.PI); }); ms=2300; counter('🌾',0xe0b04a,'Toppled!'); }
     else if(si===11){ banner('🥀 Hollow Husks','The Bloom splits into husks — only the one dripping nectar is real!'); ms=this.arenaDecoys(b,{}); counter('🍑',0xffb36b,'Revealed!',.04); }
     else if(si===12){ banner('🪞 Mirror Beams','Beams bounce between the mirrors — stay off the lines, or dash a mirror into the Gardener!'); const p=this.player,M=[];
       for(let i=0;i<3;i++){ const a=Math.random()*TAU,x=p.x+Math.cos(a)*(120+i*50),y=p.y+Math.sin(a)*(100+i*40),c=this.spawnCounter(b,x,y,{emoji:'💎',tint:0xa8ecff,life:4,onHit:bb=>{this.bossPctHit(bb,.03);this.bossStun(bb,1.2,'Reflected!');}}); if(c)M.push(c); }
-      const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000))); let t=-1100,hit=false; const pts=()=>[{x:b.x,y:b.y},...M.filter(c=>!c.dead).map(c=>({x:c.x,y:c.y}))];
+      const g=this.arenaFx(this.camWorld(this.add.graphics().setDepth(9000))); let t=-1600,hit=false; const pts=()=>[{x:b.x,y:b.y},...M.filter(c=>!c.dead).map(c=>({x:c.x,y:c.y}))];
       this.arenaTick(dt=>{ if(!g.active||!b.active){g.destroy?.();return false;} t+=dt*1000; const P=pts(); g.clear(); g.lineStyle(t<0?3:11,0xa8ecff,t<0?.45:.9); for(let i=1;i<P.length;i++)g.lineBetween(P[i-1].x,P[i-1].y,P[i].x,P[i].y);
         if(t>=0&&!hit)for(let i=1;i<P.length;i++){ const A=P[i-1],B=P[i],dx=B.x-A.x,dy=B.y-A.y,u=Phaser.Math.Clamp(((p.x-A.x)*dx+(p.y-A.y)*dy)/(dx*dx+dy*dy||1),0,1); if(Math.hypot(p.x-(A.x+dx*u),p.y-(A.y+dy*u))<24){hit=true;this.hurtPlayer(this.arenaDmg(b),0);break;} }
-        if(t>900){ g.destroy(); return false; } return true; }); ms=2200; }
+        if(t>900){ g.destroy(); return false; } return true; }); ms=2700; }
     else if(si===13){ banner('🔐 Vault Rings','The vault rings close in — slip out through each gap before they reach you!'); ms=this.arenaRings(b,{rings:p2?3:2,color:0xd8b25a}); counter('💣',0xd8b25a,'Locked!'); }
     else if(si===14){ const m=pick(p3?['grid','sweep','rings','crown']:p2?['grid','sweep','crown']:['grid','crown']);
       if(m==='grid'){ banner('🌱 Seed Grid','Seeds sprout under the red tiles — step onto the dark ones!'); ms=this.arenaGrid(b,{patterns:[(c,r)=>(c+r)%2===0,(c,r)=>(c+r)%2===1,(c,r)=>c===2||r===2],color:0xff7aa8}); }
