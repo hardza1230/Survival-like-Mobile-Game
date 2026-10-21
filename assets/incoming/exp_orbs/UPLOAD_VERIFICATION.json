@@ -1,0 +1,200 @@
+{
+  "repository": "hardza1230/Survival-like-Mobile-Game",
+  "branch": "claude/vampire-survival-mobile-game-yo9e8w",
+  "sourceCommit": "521be1cd0bfaca40d8cef85d9c23ad53bfdb3953",
+  "verifiedFiles": 27,
+  "totalBytes": 1076319,
+  "method": "GitHub connector fetch_file encoding=base64 at exact source commit; decoded bytes compared exactly to upload inputs, with Git blob SHA equality and locally recorded SHA-256.",
+  "files": [
+    {
+      "path": "assets/incoming/exp_orbs/vfx_xp_merge.png",
+      "bytes": 4442,
+      "sha256": "51e2f059e2f9b004fa48327b9c9612857605cbd0a8a1a02032138c4f3ab1e9d8",
+      "blob": "c6c08a11421f16dea4a619ee2ee74b57bf9392b5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/xp_orbs.png",
+      "bytes": 297255,
+      "sha256": "e3deec5068e54ab4fa7bd3921c72e4dbe01c6939a41610e46311f02fee81c06b",
+      "blob": "30fc4ad8e961546a325f7da5af21b286038f4ba8",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/MANIFEST.json",
+      "bytes": 4765,
+      "sha256": "7ed1442bde0522fe79c86e078d1828447ebb16606cc007ff491a24d10f2d5362",
+      "blob": "adb275ca3f3bc9ac79b4c958905854ff82fa1519",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/DELIVERY_README.md",
+      "bytes": 2408,
+      "sha256": "f43efcf5def16977b307bb707ddc37231e1fda75f12c015c9c1d81be3c2094fe",
+      "blob": "98896bafa20dea8a5ad3e3d49118a26023f8646c",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/QA_200_drops.png",
+      "bytes": 93198,
+      "sha256": "149e83fdc617d086e1c7a168a0caace72f98ac4fa003dfe2f76b285684107380",
+      "blob": "7d73777e614f1ab1ac0804a36a2218d5ee8a5fc0",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/vfx_xp_pickup_big.png",
+      "bytes": 118638,
+      "sha256": "c2fb2b9a3d445cfdd17d995f5410f6802b4fb50935ae570d1dcf06f231a9cdd2",
+      "blob": "8d10fa599d7d90a6c0f53cb6a4af393bb94fbdd2",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/PROMPTS.json",
+      "bytes": 9011,
+      "sha256": "f6ae3786932ca116ecdbba2091e5a369dba64efe0c204662c64b7424f5b7451f",
+      "blob": "2025046ee0f2dbb20eab6b45fe1e67e28d774103",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/xp_bar_icon.png",
+      "bytes": 5181,
+      "sha256": "dbbbf70f2aaccd4ae091fbefd079c2dabc8995c5b49923bd77c6b52f8a2cd466",
+      "blob": "9300a8efc1831ff0f66416987403e744b8ec7d96",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/vfx_xp_trail.png",
+      "bytes": 12450,
+      "sha256": "7079c2307a5ed575563db2cdab1647ef7261c60d282ae8fb7bb53efce2c4f8d8",
+      "blob": "c38d785e5ebb2e9bb725b0ad38a7e33aad05ac1b",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/QA_loop_10fps.gif",
+      "bytes": 56474,
+      "sha256": "c48c955e1e22c7be8e0323ae9017d62caf639d441f6376154013197fe8a89e1a",
+      "blob": "abf72feaca52144f710e66f423bfaaadcd972569",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/xp_orb_shadow.png",
+      "bytes": 826,
+      "sha256": "849e901386048e0182b0947318d28cad2202f6eb9c48634d77f96ac170bff3ab",
+      "blob": "35583c9cdb87de10586920ce0f53efb5877814fc",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/QA_all_frames.png",
+      "bytes": 98836,
+      "sha256": "b2f31fab488153d573af21aedbdce901a92267ae0a33f33e5ceba6add341881e",
+      "blob": "103c384e3960cee6d3da6f37529bba39c835556f",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/QA_REPORT.json",
+      "bytes": 3810,
+      "sha256": "28dba87ff211ae583b94afb6158574456e0b42702879054f12f2e095d8ac5ff9",
+      "blob": "adbd9beec0c38f3b7a93a775b0011a53a53ebb96",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/QA_effects.png",
+      "bytes": 32874,
+      "sha256": "e388fef82bf84e396c683607f21e7be0022b0888e545135447975895234ed0bc",
+      "blob": "0e940bc0ddc87eef2148c64d6d5e6e7cb38b6973",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/vfx_xp_pickup.png",
+      "bytes": 15706,
+      "sha256": "bdf102557de8a0312d3231f92a54fb88a9c1e2fa342df712d0d3ba95b03e02e9",
+      "blob": "7d860a94cecfcb42bad281063bc42b19a24c641d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/QA_actual_sizes.png",
+      "bytes": 37937,
+      "sha256": "8dcd2681cb89262c3d87c351adf32c3d5a53b60383568df6f831ee3d5f290a35",
+      "blob": "7e7abf0a52466974a0f855f18c2e8ab608ee5afd",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/vfx_xp_trail.webp",
+      "bytes": 5088,
+      "sha256": "88c8d92ab3c37c9bc8d959796a728bb0643bba94a4b0f8e466211bdc86a286df",
+      "blob": "a4b79d4aa3d10e5b2359fda74f310507b98d8630",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/vfx_xp_merge.webp",
+      "bytes": 2464,
+      "sha256": "5e3852d32994e4ddc0144c97c7bf0f472130cb1d3ba42d6f9fe5a74597d2a904",
+      "blob": "c14a3c2a794740cee72e6a9aecd5d647400949a5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/xp_orb_shadow.webp",
+      "bytes": 410,
+      "sha256": "a751c3796416a0a8b78fafec90faa954656706077e63d72155f37c1031ff92c8",
+      "blob": "f92cd985fb9928dfcfaf2ae0ed9c0525973d6e9d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/vfx_xp_pickup.webp",
+      "bytes": 7858,
+      "sha256": "6be720d1ba72f9c1d9b3d50545a1813c1b57aaa72ff7deb84e0725692a5507ed",
+      "blob": "e7b992586157e5b5e63eda8ca9c1f5535cdcf529",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/vfx_xp_pickup_big.webp",
+      "bytes": 36560,
+      "sha256": "4ad530d6a56181c8bb596a28f299bd468da55672cfac44734f8b5f6c3e455f53",
+      "blob": "026be26efd649b5b1452bc4dea7c26bdba27ca9a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/xp_orbs.webp",
+      "bytes": 82576,
+      "sha256": "4a55a330d9941ee8b4018f1b2035de23d3ba933e927a819d8ec1726724b066b0",
+      "blob": "3430c0df35a08c241e0424b6966913414e8b560b",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/exp_orbs/packed/xp_bar_icon.webp",
+      "bytes": 1838,
+      "sha256": "be3116a5ec1fb17748f808369c92687c004ff1cbe2292a77684b9db3614b1f62",
+      "blob": "5ffea9bf6e2780db1d817061ea651534f19763dc",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 110615,
+      "sha256": "e0075bc4e3e55eefce25bda7509a09206ee9f87afda361c8e4b38e513d642c53",
+      "blob": "19b799e87f1c65c3c966b3c92a7be00d0a856d93",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 1389,
+      "sha256": "ca70535780399ff7ccc43d0ba1a3f9de25df834ffa5e11c7c752bd04bb3e88cc",
+      "blob": "5aeb90cc26673778adc70877124dde5f246bf41a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/29_EXP_ORBS.md",
+      "bytes": 12171,
+      "sha256": "6598fe5701d94931bad9b3d98750560fe0207453aff82b40b85e0b3ffa4a9d39",
+      "blob": "f0dd634ca34580c6c62f00f5aa7428ad98e49352",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/README.md",
+      "bytes": 21539,
+      "sha256": "4857eb1b613cc03b1bc7fb1a6e2747b2982cbe378e18d4c6a90a1f3285f0d415",
+      "blob": "85ef708e8d2bd3407d328fa9c886878432838e56",
+      "byteForByteMatch": true
+    }
+  ],
+  "note": "This record covers the initial source commit. The follow-up verification commit changes only this proof, QA report and handoff; original PNG/WebP/preview/manifest/prompt bytes remain identical."
+}

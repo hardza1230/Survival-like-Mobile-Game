@@ -129,12 +129,15 @@
   "visualReview": "Reviewed offline source proofs: all 36 cells at 16px, six tiers at 14/17/20/24/28/36px on five representative colors beside Sugar; clean 200-drop density proof; four FX strips. No game launch.",
   "runtimeInteractionAndPhoneFPS": "not tested; source art delivery only",
   "backgroundProof": "Five representative solid background colors, not actual stage screenshots",
-  "remoteBytesVerified": false,
+  "remoteBytesVerified": true,
   "checksScope": "Technical asset QA and offline visual proofs only; actual stage backgrounds, runtime animation and phone FPS remain pending.",
   "processingNotes": [
     "Original orb rows extracted using source y boundaries [0,195,395,595,785,978,1254], avoiding adjacent tier fragments.",
     "Uniform scale within each orb row; transparent padding and fixed frame pivots.",
     "Discard alpha <=8/255 resampling residue; clear RGB of transparent texels.",
     "No VFX frame rescaled independently; shadow alpha maximum 76/255."
-  ]
+  ],
+  "sourceCommit": "521be1cd0bfaca40d8cef85d9c23ad53bfdb3953",
+  "remoteProof": "UPLOAD_VERIFICATION.json",
+  "repositoryValidation": "npm run check: passed in full on v7.9.25; git diff --check: passed"
 }
