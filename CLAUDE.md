@@ -554,6 +554,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 26 — ผูกแล้ว v7.8.68, รอ QA มือถือ:** ม่านสลับหน้าเมนู 5 + ไอคอนการ์ด 77 · `docs/art_orders/26_TRANSITION_AND_CARD_ICONS.md`
 - **ค้างจากเซสชัน 18 ต.ค.:** ยังไม่ได้ตรวจ UI แนวนอน · การ์ด Weave ที่เต็มยังไม่ได้ถ่ายภาพยืนยัน · รอเจ้าของเลือกเรื่องการ์ด (ไอคอนซ้ำในสาย, Petal Spread ใต้ Sniper, ชื่อ Overload ซ้ำ, Sesame Extra Pane/Facet ซ้ำ)
 - **Yuzu ทำใหม่ (21 ต.ค. เจ้าของเลือก):** แก่น Orchard Swarm + สาย Ripen / Yuzling Toss / Harvest Sprouts · `docs/YUZU_ORCHARD_SWARM.md` อนุมัติแล้ว · ขั้น 1 (แก่นฝูง) v7.9.37 · ขั้น 2 (3 สาย + Unique) v7.9.38 · ขั้น 3 (การ์ด/Mutation/Evolution/Unique Mutation, ออกจาก HEROES_WIP) v7.9.39 · ถัดไปขั้น 4 Talent 3 สาย + ขั้น 5 ใบสั่งอาร์ต 33
+- **Sesame ทำใหม่ (21 ต.ค. เจ้าของเลือก):** แก่น Mirror Network (Dash วางกระจก, เส้นแสงเด้ง) + สาย Mirror Maze / Reflect / Phase Swap + Unique Glass World · `docs/SESAME_MIRROR_NETWORK.md` รอเจ้าของตอบคำถาม §10 ก่อนลงมือขั้น 1
 - รับ feedback หน้า Forge ใหม่ · Kitchen upkeep · Story C2–C3 · item mods · Delve
 - งานค้างระยะยาว: มือถือ visual/FPS QA ของอาร์ตที่ส่งแล้ว (`docs/art_orders/16_CURRENT_ART_BACKLOG.md`), Play Store (พักไว้)
 - **เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ เจ้าของเทสเอง** (จำลองเพื่อหาบั๊กค้างได้)
