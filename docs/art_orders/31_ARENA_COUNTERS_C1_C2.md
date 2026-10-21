@@ -1,6 +1,6 @@
 # 31 — ของให้เตะ (Counter Objects) · Chapter 1–2 + วงและเอฟเฟกต์กลาง · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่งอาร์ตครบ 12 PNG32 / 51 เฟรม (21 ต.ค. 2026) · source-only · รอแพ็กและเชื่อม runtime
+สถานะ: 🟩 ส่งครบ 12 ไฟล์ (21 ต.ค. 2026) · **ผูกแล้ว v7.9.30** (`scripts/pack-arena-counters-c1-c2.py` → `assets/art/counters/`) · รอ QA ภาพบนมือถือ
 ส่งไฟล์ที่ `assets/incoming/arena_counters_c1_c2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ

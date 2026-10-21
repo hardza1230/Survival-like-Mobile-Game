@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.29';
+const GAME_VERSION = '7.9.30';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.30',date:'2026-10-21',title:'Kick objects for every boss',items:['The things you dash into bosses now have real pictures in Chapters 1 and 2 too: eggs, sponge, pan, ice, the feast dishes, spore pods, mushroom, honey, season seed and root seed','A new ring under each one shows where to dash, and a burst shows when it hits the boss']},
   {v:'7.9.29',date:'2026-10-21',title:'Chapter 3 boss effects',items:['Every Chapter 3 boss, miniboss and the Pinnacle now has its own warning circles, blasts, shockwaves and charge lines','Big moves have new art: Harvest Moon, Wither Wind, Empty Heart, Shatter Dome, Last Seed, Root Cage, First Bloom, Devour, Eclipse','Arena attacks got real art: the giant scythe, nectar drip on the real Hollow Bloom, prism mirror beams, vault rings, seed grid, crown roots, closing jaws and the tongue','The things you dash into bosses now have their own pictures in Chapter 3 and the Pinnacle']},
   {v:'7.9.28',date:'2026-10-21',title:'Storm Mark icon',items:['Taro’s Spark Build Unique button now has its own Storm Mark icon']},
   {v:'7.9.27',date:'2026-10-21',title:'EXP drop shadows',items:['EXP drops now have a soft shadow underneath']},
@@ -2666,6 +2667,19 @@ const ASSET_FX = {
   vfx_b10_crown_cage:{url:'assets/art/boss_vfx/vfx_b10_crown_cage.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.91,0.75]},
   vfx_b10_choir_note:{url:'assets/art/boss_vfx/vfx_b10_choir_note.webp',fw:96,fh:96,frames:4,rate:8,anchor:'center',loop:true},
   vfx_b10_memory_eclipse:{url:'assets/art/boss_vfx/vfx_b10_memory_eclipse.webp',fw:256,fh:256,frames:8,rate:10,anchor:'center'},
+  // v7.9.30 art order 31: ของให้เตะ C1–C2 (counter_cCN_ โหลดพร้อมด่าน) + วงใต้ของ/ระเบิดตอนชน (vfx_counter_* ทุกด่าน)
+  counter_c15_dishes:{url:'assets/art/counters/counter_c15_dishes.webp',fw:128,fh:128,frames:5,rate:8,anchor:'center'},
+  counter_c21_pod:{url:'assets/art/counters/counter_c21_pod.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  vfx_counter_ring:{url:'assets/art/counters/vfx_counter_ring.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c12_sponge:{url:'assets/art/counters/counter_c12_sponge.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c13_pan:{url:'assets/art/counters/counter_c13_pan.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c14_ice:{url:'assets/art/counters/counter_c14_ice.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c22_mushroom:{url:'assets/art/counters/counter_c22_mushroom.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c23_honey:{url:'assets/art/counters/counter_c23_honey.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c24_season_seed:{url:'assets/art/counters/counter_c24_season_seed.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  counter_c25_root_seed:{url:'assets/art/counters/counter_c25_root_seed.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
+  vfx_counter_hit:{url:'assets/art/counters/vfx_counter_hit.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
+  counter_c11_egg:{url:'assets/art/counters/counter_c11_egg.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   // v7.9.29 art order 30: ท่าบอส C3 + Pinnacle (vfx_b11…b15 โหลดพร้อมด่านผ่านลูป vfx_bNN · vfx_bpin_/counter_pin_ → ด่าน 14 · counter_c3N_ → ด่าน N+9)
   vfx_b11_warn:{url:'assets/art/boss_vfx/vfx_b11_warn.webp',fw:256,fh:256,frames:4,rate:8,anchor:'center',loop:true,fill:[0.91,0.68]},
   vfx_b11_impact:{url:'assets/art/boss_vfx/vfx_b11_impact.webp',fw:256,fh:256,frames:6,rate:14,anchor:'center'},
@@ -3184,7 +3198,7 @@ const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burs
 const XP_ORB_KEYS=['xp_orbs','xp_orb_shadow','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
 const XP_ORB_PX=[0,36,44,52,62,73,94],XP_TIER_COL=[0,0xff8fb5,0x8be6a4,0x7fc9ff,0xb98cff,0xffd75e,0xfff0a0];   // ขนาดเม็ดในโลก (ส่วนที่เห็น ~75% ของเฟรม) · สีย้อม VFX ตามระดับ
 const CARD_ICON_KEYS=["ic_evo_momo", "ic_evo_cocoa", "ic_evo_berry", "ic_evo_mint", "ic_evo_taro", "ic_evo_sesame", "ic_fus_heartburst", "ic_fus_crownseed", "ic_fus_glacier", "ic_fus_shardstorm", "ic_fus_quakeking", "ic_fus_lastbear", "ic_fus_tempest", "ic_fus_skyjudge", "ic_fus_prismnova", "ic_fus_horizon", "ic_mod_bloom", "ic_mod_love", "ic_mod_heart", "ic_mod_aim", "ic_mod_jam", "ic_mod_spray", "ic_mod_icemine", "ic_mod_shatter", "ic_mod_flurry", "ic_mod_throw", "ic_mod_glide", "ic_mod_coldarc", "ic_mod_quake", "ic_mod_stomp", "ic_mod_rage", "ic_mod_crush", "ic_mod_ko", "ic_mod_after", "ic_mod_over", "ic_mod_field", "ic_mod_step", "ic_mod_judge", "ic_mod_ion", "ic_mod_focus", "ic_mod_prism", "ic_mod_lens", "ic_mod_scope", "ic_mod_refract", "ic_mod_mirror", "ic_mod_exec", "ic_mut_momo_ricochet", "ic_mut_momo_fan", "ic_mut_cocoa_rush", "ic_mut_cocoa_breaker", "ic_mut_cocoa_counter", "ic_mut_berry_seeker", "ic_mut_berry_sticky", "ic_mut_mint_blizzard", "ic_mut_mint_permafrost", "ic_mut_taro_chainlord", "ic_mut_taro_stormcaller", "ic_mut_sesame_fortress", "ic_mut_sesame_retaliate", "ic_trade_glass", "ic_trade_burn", "ic_trade_armor", "ic_trade_rush", "ic_trade_berserk", "ic_trade_core", "ic_trade_feast", "ic_trade_oath", "ic_inf_spicy", "ic_inf_sour", "ic_inf_sweet", "ic_inf_minty", "ic_cocoa_dashp", "ic_cocoa_drum"];CARD_ICON_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.68 ใบ 26: ไอคอนการ์ดโหลดพร้อมด่าน (ไม่กินงบบูต)   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
-if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);else if(/^(vfx_bpin_|counter_pin_)/.test(k))STAGE_SHEETS[14]?.push(k);else{const c=/^counter_c3(\d)_/.exec(k);if(c)STAGE_SHEETS[+c[1]+9]?.push(k);}}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
+if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);else if(/^(vfx_bpin_|counter_pin_)/.test(k))STAGE_SHEETS[14]?.push(k);else{const c=/^counter_c(\d)(\d)_/.exec(k);if(c)STAGE_SHEETS[(+c[1]-1)*5+(+c[2])-1]?.push(k);else if(/^vfx_counter_/.test(k))STAGE_SHEETS.forEach(z=>z.push(k));}}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
 // v6.37 โหลดเร็วขึ้น: ภาพที่ใช้เฉพาะหน้าย่อย/ในด่าน + VFX ทั้งหมด ไม่โหลดตอนบูต → โหลดเบื้องหลังหลังเข้าเมนู (ensureDeferred)
 // v6.38 บูตโหลดเฉพาะของที่เมนูหลักใช้ · ที่เหลือทั้งหมดโหลดเบื้องหลัง (ensureDeferred) ก่อนเข้าด่าน/หน้าย่อย
@@ -16229,7 +16243,7 @@ class Game extends Phaser.Scene {
   bossKit(kind){const i=this.stageIndex;if(!(i>=0&&i<15))return null;if(this._pinnacleRun||this.boss?._pinnacleArt){const q='vfx_bpin_'+kind;if(ASSET_FX[q]&&this.bpAnim?.(q))return q;}const k='vfx_b'+(i<9?'0':'')+(i+1)+'_'+kind;return ASSET_FX[k]&&this.bpAnim?.(k)?k:null;}   // v7.9.29 ใบ 30: C3 (b11–b15) + Pinnacle (bpin)
   /* v7.9.29 ใบ 30: ของให้เตะ C3 / Pinnacle (ไม่มีภาพ = emoji เดิม) */
   rootCageArt(x,y,r,gapA,life){if(!this.bpAnim?.('vfx_b15_root_cage'))return null;const w=r*2/(ASSET_FX.vfx_b15_root_cage.fill?.[0]||.96);const sp=this.bossSig('15_root_cage',x,y,w,{h:w,life,rot:gapA-Math.PI/2,depth:3});return sp;}
-  counterArt(b){const k=(b?._pinnacleArt||this._pinnacleRun)?'counter_pin_meat':{10:'counter_c31_sheaf',11:'counter_c32_nectar',12:'counter_c33_mirror',13:'counter_c34_vault_bomb',14:'counter_c35_crown_seed'}[this.stageIndex];return k&&ASSET_FX[k]&&this.bpAnim?.(k)?k:null;}
+  counterArt(b){const k=(b?._pinnacleArt||this._pinnacleRun)?'counter_pin_meat':['counter_c11_egg','counter_c12_sponge','counter_c13_pan','counter_c14_ice','counter_c15_dishes','counter_c21_pod','counter_c22_mushroom','counter_c23_honey','counter_c24_season_seed','counter_c25_root_seed','counter_c31_sheaf','counter_c32_nectar','counter_c33_mirror','counter_c34_vault_bomb','counter_c35_crown_seed'][this.stageIndex];return k&&ASSET_FX[k]&&this.bpAnim?.(k)?k:null;}
   // วงรี (มุมมองเฉียง): ขอบนอกแนวนอน = รัศมีจริง · วงแบนมากยืดแนวตั้งให้สูงอย่างน้อย 55% ของกว้าง
   kitSize(k,r){const f=ASSET_FX[k].fill||[.92,.6],w=r*2/f[0];return [w,w*Math.max(f[1],.55)];}
   // เส้นเตือน: sprite ลายด่านทับเส้นเดิม (ซ่อนเส้นเดิม แต่ยังใช้ตำแหน่ง/หมุน/ยาว/alpha/tween ของมัน → เวลาเท่าเดิม)
@@ -16497,18 +16511,18 @@ class Game extends Phaser.Scene {
     this.popDmg?.(label||'Stunned!',b.x,b.y-60,true); const r=this.camWorld(this.add.circle(b.x,b.y-70,14,0xffe08a,.9).setDepth(b.depth+2)); this.tweens.add({targets:r,angle:360,alpha:0,y:r.y-20,duration:sec*1000,onComplete:()=>r.destroy()}); }
   bossPctHit(b,pct){ if(!b?.active)return; const was=this._infTick; this._infTick=true; try{ this.damage(b,b.maxhp*pct,b.x,b.y); }finally{ this._infTick=was; } }
   // ของตอบโต้: kind ใช้สี/emoji · onHit(boss) ตอนพุ่งชนบอส · ไม่โดนเตะ 6 วิ = แตกเอง (เตือน 1 วิ)
-  spawnCounter(b,x,y,{emoji='🥚',key=null,tint=0xffe08a,life=6,onHit=null,drift=null,onArrive=null}={}){ const L=this._counters||(this._counters=[]); if(L.filter(c=>c.boss===b&&!c.dead).length>=(drift?6:2))return null;
-    const ring=this.camWorld(this.add.circle(x,y,26,tint,.18).setStrokeStyle(3,tint,.95).setDepth(y-1));
+  spawnCounter(b,x,y,{emoji='🥚',key=null,frame=null,tint=0xffe08a,life=6,onHit=null,drift=null,onArrive=null}={}){ const L=this._counters||(this._counters=[]); if(L.filter(c=>c.boss===b&&!c.dead).length>=(drift?6:2))return null;
+    const ra=this.bpAnim?.('vfx_counter_ring'),ring=this.camWorld(ra?this.add.sprite(x,y,'vfx_counter_ring',0).setDisplaySize(78,78).setTint(tint).setDepth(y-1):this.add.circle(x,y,26,tint,.18).setStrokeStyle(3,tint,.95).setDepth(y-1)); if(ra)ring.play('vfx_counter_ring');   /* v7.9.30 ใบ 31 B1 */
     key=key||this.counterArt?.(b); const an=key&&ASSET_FX[key]&&this.bpAnim?.(key);   /* v7.9.29 ใบ 30: ชีตของให้เตะ (loop) */
-    const spr=this.camWorld(an?this.add.sprite(x,y,key,0).setDisplaySize(54,54).setDepth(y):key&&this.textures.exists(key)?this.add.image(x,y,key).setDisplaySize(46,46).setDepth(y):this.add.text(x,y,emoji,{fontSize:'34px'}).setOrigin(.5).setDepth(y)); if(an)spr.play(key);
-    this.tweens.add({targets:ring,scale:{from:.85,to:1.15},yoyo:true,repeat:-1,duration:420});
-    const c={b,boss:b,x,y,spr,ring,t:life,life,onHit,drift,onArrive,launched:false,dead:false}; L.push(c); return c; }
+    const spr=this.camWorld(an?this.add.sprite(x,y,key,0).setDisplaySize(54,54).setDepth(y):key&&this.textures.exists(key)?this.add.image(x,y,key).setDisplaySize(46,46).setDepth(y):this.add.text(x,y,emoji,{fontSize:'34px'}).setOrigin(.5).setDepth(y)); if(an){ if(frame!=null||!ASSET_FX[key].loop)spr.setFrame(frame??0); else spr.play(key); }
+    { const bx=ring.scaleX,by=ring.scaleY; this.tweens.add({targets:ring,scaleX:{from:bx*.85,to:bx*1.15},scaleY:{from:by*.85,to:by*1.15},yoyo:true,repeat:-1,duration:420}); }
+    const c={b,boss:b,x,y,spr,ring,tint,t:life,life,onHit,drift,onArrive,launched:false,dead:false}; L.push(c); return c; }
   killCounter(c){ if(c.dead)return; c.dead=true; this.tweens.killTweensOf(c.ring); c.spr?.destroy(); c.ring?.destroy(); }
   tickArenaMech(dt){ const L=this._counters; if(!L||!L.length)return; const p=this.player,kick=(this.dashTime||0)>0||((this.elapsed||0)-(this._lastDashAt??-9))<.22;
     for(const c of L){ if(c.dead)continue; const b=c.boss;
       if(!b||!b.active){this.killCounter(c);continue;}
       if(c.launched){ const a=Math.atan2(b.y-c.y,b.x-c.x),sp=760*dt; c.x+=Math.cos(a)*sp; c.y+=Math.sin(a)*sp; c.spr.setPosition(c.x,c.y).setAngle((c.spr.angle||0)+900*dt); c.ring.setPosition(c.x,c.y);
-        if(this.dist(c.x,c.y,b.x,b.y)<Math.max(48,(b.displayWidth||90)*.32)){ this.killCounter(c); this.screenShake?.(220,.012); Sfx.hit?.(); this.vfxHitRing?.(b.x,b.y,0xffe08a,true); c.onHit?.(b); } continue; }
+        if(this.dist(c.x,c.y,b.x,b.y)<Math.max(48,(b.displayWidth||90)*.32)){ this.killCounter(c); this.screenShake?.(220,.012); Sfx.hit?.(); this.vfxHitRing?.(b.x,b.y,0xffe08a,true); this.heroFx?.('vfx_counter_hit',b.x,b.y,170,{must:true,depth:b.depth+2,tint:c.tint}); c.onHit?.(b); }   /* v7.9.30 ใบ 31 B2 */ continue; }
       if(c.drift){ const a=Math.atan2(b.y-c.y,b.x-c.x),sp=c.drift*dt; c.x+=Math.cos(a)*sp; c.y+=Math.sin(a)*sp; c.spr.setPosition(c.x,c.y); c.ring.setPosition(c.x,c.y);
         if(this.dist(c.x,c.y,b.x,b.y)<60){ this.killCounter(c); c.onArrive?.(b); continue; } }
       if(p&&kick&&this.dist(p.x,p.y,c.x,c.y)<56){ c.launched=true; this.tweens.killTweensOf(c.ring); c.ring.setAlpha(.6); Sfx.select?.(); this.popDmg?.('KICK!',c.x,c.y-30,true); continue; }
@@ -16543,14 +16557,14 @@ class Game extends Phaser.Scene {
           if(t>=chase+lock){ ev.remove(false); sh.forEach(s=>{ const real=s._real; this.vfxHitRing?.(s.x,s.y,real?0x75ff4b:0x8a9a7a,real); if(real){ b.setPosition(s.x,s.y); if(b.body){b.body.enable=true;b.body.reset(s.x,s.y);} this.arenaHurt(hd,s.x,s.y,78); this.bossNovaWave?.(s.x,s.y,170,Math.round(hd*.6),120); this.screenShake?.(300,.016); }
               else this.arenaHurt(Math.round(hd*.4),s.x,s.y,60); s.destroy(); });
             this.tweens.add({targets:b,alpha:1,scale:b.scale/.6,duration:260}); b.knock=.6; b._arenaBusy=false; b.atkCd=1.6;
-            this.spawnCounter(b,b.x+Phaser.Math.Between(-110,110),b.y+Phaser.Math.Between(60,120),{key:'nest_eggs',emoji:'🥚',tint:0x75ff4b,onHit:bb=>{this.bossPctHit(bb,.04);this.bossStun(bb,1.2,'Acid splash!');}}); } }}); }});
+            this.spawnCounter(b,b.x+Phaser.Math.Between(-110,110),b.y+Phaser.Math.Between(60,120),{key:this.counterArt(b)||'nest_eggs',emoji:'🥚',tint:0x75ff4b,onHit:bb=>{this.bossPctHit(bb,.04);this.bossStun(bb,1.2,'Acid splash!');}}); } }}); }});
     b.atkCd=99; }
   // C1-5 Great Hunger · Feast: ดูดเข้าปาก 4 วิ + จานลอยเข้าปาก (ถึงปาก = บอสฟื้น 3%) · Dash เตะจาน = บอสสำลัก
   hungerFeast(b){ const n=b.phase2?5:4,pull=b.phase3?195:b.phase2?175:150; b._arenaBusy=true;
     this.stage5Pose?.(b,5,1400); this.showBanner('🍽️ The Feast','It pulls you in and eats the plates — dash into a plate to make it choke!',1200);
     this.drainPull={x:b.x,y:b.y,t:4.2,strength:pull}; this.bossSig?.('05_void_maw',b.x,b.y,360,{life:4.2,depth:2});
     for(let i=0;i<n;i++){ const a=i*TAU/n+Math.random()*.4,r=Math.min(this.arenaVw()*.45,400);
-      this.spawnCounter(b,b.x+Math.cos(a)*r,b.y+Math.sin(a)*r,{emoji:['🍰','🍗','🍩','🍮','🥧'][i%5],tint:0xffb36b,drift:62+i*6,
+      this.spawnCounter(b,b.x+Math.cos(a)*r,b.y+Math.sin(a)*r,{emoji:['🍰','🍗','🍩','🍮','🥧'][i%5],frame:i%5,tint:0xffb36b,drift:62+i*6,
         onArrive:bb=>{ if(!bb.active)return; const h=Math.round(bb.maxhp*.03); bb.hp=Math.min(bb.maxhp,bb.hp+h); this.popDmg?.('+3% HP',bb.x,bb.y-70,false); this.vfxHitRing?.(bb.x,bb.y,0x6dffb4,false); },
         onHit:bb=>{ this.bossPctHit(bb,.03); this.bossStun(bb,1.2,'Choking!'); this.drainPull=null; }}); }
     this.time.delayedCall(4400,()=>{ b._arenaBusy=false; }); b.atkCd=4.6; }
