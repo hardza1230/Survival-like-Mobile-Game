@@ -1,6 +1,6 @@
-# Latest checkpoint — art order32 priority10 icons delivered
+# Latest checkpoint — art order32 49 source icons milestone; two refinements pending
 
-21 October2026. hardza1230/Survival-like-Mobile-Game; branch claude/vampire-survival-mobile-game-yo9e8w. User requested46 required card icons +6 optional reviews. Target51 PNG32:46 required +5 redraws; E4 existing Ice Breaker already fits, skipped with reason. Delivered10/51 at assets/incoming/card_icons_2/. Priority A1–5+C2/C4/C10/C11/C12.
+21 October2026. hardza1230/Survival-like-Mobile-Game; branch claude/vampire-survival-mobile-game-yo9e8w. User requested46 required card icons +6 optional reviews. Target51 PNG32:46 required +5 redraws; E4 existing Ice Breaker already fits, skipped with reason. Delivered49/51 at assets/incoming/card_icons_2/. Priority A1–5+C2/C4/C10/C11/C12.
 
 Next finish pending keys in PRODUCTION_STATUS.json, create native24/90px PNG galleries,12 Mutation-pair and C main-path comparisons, then final byte verification.
 
