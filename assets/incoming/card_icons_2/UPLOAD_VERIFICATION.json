@@ -1,11 +1,82 @@
 {
-  "sourceCommit": "be1d744ca281edc65d685ca859bf1e326d0f2524",
-  "deliveredPngs": 0,
+  "sourceCommit": "0c6bce58be8d49fa202305b56554acc33fee76d6",
+  "deliveredPngs": 10,
   "required": 46,
   "optionalRedraws": 0,
   "optionalSkipped": 1,
-  "verifiedBinaryFiles": 0,
+  "verifiedBinaryFiles": 10,
   "verifiedTextFiles": 7,
   "method": "Exact GitHub readback: binary base64 equality + blob SHA, with recorded SHA256; exact UTF8 metadata text.",
-  "files": []
+  "files": [
+    {
+      "path": "assets/incoming/card_icons_2/ic_uq_power.png",
+      "bytes": 91973,
+      "sha256": "302d72cbcbe4ae3ab2f9e24a8a249f2f8f1d1ccf2f597f57a0cbf7d9a6d01633",
+      "gitBlobSha": "8140b10278cebcdd4002627c45b3b148f0ae7f3e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uq_cd.png",
+      "bytes": 93998,
+      "sha256": "3449ef3a9bb2ed97c794910d718bdb582484e22cffe0c919ecfbe206692cda1a",
+      "gitBlobSha": "bf436a21250825b21efdc4386d7acf219771d624",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uq_kill.png",
+      "bytes": 104691,
+      "sha256": "ba64d0c53554d844764cb045e1f24704013241d42a9ef9ac4e6771dadb7d3718",
+      "gitBlobSha": "c0d82e71b72b0f582fc574b56a0f6c75f29f161b",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uq_echo.png",
+      "bytes": 105475,
+      "sha256": "2bf34a2188e8dcf0f91ffc1d25e6321b5e9e11470dc1ac2eaffbe0565dccb499",
+      "gitBlobSha": "7967ddd046da85dec70cfb29f65ea6e89d444a76",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uq_ready.png",
+      "bytes": 101091,
+      "sha256": "0cf8138048813a6395a552a9d5e7ab80451a05b209622c2b851a9d5081a1b2e5",
+      "gitBlobSha": "1636bf7f9a59c67c2dfe7b91de956ef8c9a7d8bc",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_arc_twin.png",
+      "bytes": 83202,
+      "sha256": "bf55f3c30f1eddee4b11978bb33a2bfa7f7179aa2c57cffb136458cc494113dc",
+      "gitBlobSha": "d74fceccff42b0558c32e58883089c1eacf6606d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_spark_shock.png",
+      "bytes": 91158,
+      "sha256": "55b97b5847a44e90cd686979e0631d649598a1651416fee559e5fe36768c0dd0",
+      "gitBlobSha": "99c576f1743d4047949841ae5044ea9ae7139b65",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_bar_echo.png",
+      "bytes": 89559,
+      "sha256": "7aaf38d841a34379f73047197e15a8c462ab4fe66a4e4c1b97d6472cafe2e0be",
+      "gitBlobSha": "de6c3c083f3757e935802bc615f30f61d8771942",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_r_spark.png",
+      "bytes": 71327,
+      "sha256": "488ccf0e486c2d1a8edadfd72c18a7580fa88de30e834034958a3fa79bcd8efb",
+      "gitBlobSha": "30c0976a234ba6eedfbe17e55228788d8382b5c3",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_streak.png",
+      "bytes": 69026,
+      "sha256": "1fc1bdd192e2b84b3fd6e881ada4e1e620aff8b0547e3445c108767b0d63396f",
+      "gitBlobSha": "d00588cef94b8ed975f13e2b9809ccb0d733b996",
+      "byteForByteMatch": true
+    }
+  ]
 }
