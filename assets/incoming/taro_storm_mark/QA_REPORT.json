@@ -1,0 +1,43 @@
+{
+  "order": 18,
+  "section": "J",
+  "file": "ic_taro_storm_mark.png",
+  "width": 256,
+  "height": 256,
+  "PNG32": true,
+  "fullPngDecode": true,
+  "chunkCrcVerified": true,
+  "zlibAdlerVerified": true,
+  "losslessEncodedPixelRoundTrip": true,
+  "bytes": 62345,
+  "sha256": "74790e1120974531f3b9e3ec107c06d167acd255e63abb8cf398ec38edf44430",
+  "alpha": {
+    "min": 0,
+    "max": 254,
+    "transparentPixels": 49860,
+    "visibleBounds": [
+      21,
+      31,
+      236,
+      229
+    ],
+    "transparentOuterBorder": true
+  },
+  "visual": {
+    "reviewed": true,
+    "goldenTargetAndCentralDownwardLightning": true,
+    "inwardVioletCyanSparks": 3,
+    "noTextNoButtonFrame": true,
+    "actual52pxProof": "QA_52px.png",
+    "backgrounds": [
+      "pastel",
+      "ice",
+      "stove",
+      "forest",
+      "dark plum"
+    ]
+  },
+  "runtimeTests": "Not run: execution environment offline; source-art delivery only, no runtime code changed.",
+  "phoneVisualQA": "pending",
+  "remoteVerification": "See UPLOAD_VERIFICATION.json for exact readback proof."
+}

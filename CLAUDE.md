@@ -8,6 +8,8 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 # Art delivery 18 — Taro Spark + Ball Lightning
 
+21 Oct: J1 Storm Mark button icon delivered to assets/incoming/taro_storm_mark/ —256×256 PNG32 real alpha, manifest/prompts/QA and52px proof. Source-only; runtime v7.9.27 unchanged. Next: existing256→128 WebP pack and Spark Unique button hookup/phone review.
+
 16 PNG32 sources delivered to assets/incoming/taro_spark_ball/ with manifest, prompts, QA and delivery notes. A/B/C were subsequently integrated in v7.8.25; phone visual/FPS review remains pending. See the current art order for runtime status.
 
 # Art delivery 20 — Hero VFX gaps

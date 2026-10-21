@@ -1,0 +1,31 @@
+{
+  "order": 18,
+  "section": "J",
+  "status": "delivered-incoming",
+  "assetCount": 1,
+  "assets": [
+    {
+      "key": "ic_taro_storm_mark",
+      "file": "ic_taro_storm_mark.png",
+      "width": 256,
+      "height": 256,
+      "columns": 1,
+      "rows": 1,
+      "frameCount": 1,
+      "background": "transparent",
+      "colorType": 6,
+      "bitDepth": 8,
+      "bytes": 62345,
+      "sha256": "74790e1120974531f3b9e3ec107c06d167acd255e63abb8cf398ec38edf44430",
+      "pivot": "center",
+      "screenSize": 52
+    }
+  ],
+  "runtimeIntegrated": false,
+  "recommendedRuntime": {
+    "file": "assets/art/build_paths/taro_storm_mark.webp",
+    "width": 128,
+    "height": 128,
+    "key": "ic_taro_storm_mark"
+  }
+}

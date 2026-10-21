@@ -1,0 +1,11 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Use case: stylized-concept. Production single game UI skill icon, icon key ic_taro_storm_mark, intended final canvas 256 by 256 pixels RGBA with real transparent alpha. Mochi Mayhem pastel confectionery fantasy, Taro purple taro mochi storm-compass hero, match glossy crystal icons: thin dark plum #4a2d6b contours, lavender #c6a2ed, pale cyan #a9e8ee, luminous white #f4edff, pale yellow gold #ffe066. PRIMARY SYMBOL: one bold simple pale-gold target reticle ring, with four short cardinal crosshair ticks, and a thick bright yellow-gold lightning bolt striking DOWN through the exact center. SECONDARY SYMBOLS: exactly THREE small compact violet and cyan electric spark orbs outside the ring, with short tapered tails pointing inward toward the central marked target; evenly composed around ring with clear negative space. Target ring plus central lightning bolt must dominate and remain immediately readable at 52 pixels. Chunky stylized glossy candy-crystal materials, 2–3 broad shading levels, crisp silhouette, controlled subtle glow only. Center the entire icon. Keep all artwork within central 80 percent with generous transparent margin on every side. Entire target visible, no clipped parts. No character, no enemy, no scene, no cloud, no extra particles, no decorative frame or button rim, no text, letters, numbers, logo, watermark, no opaque background and no checkerboard. Single icon only, not a sprite sheet.",
+  "source": {
+    "width": 1254,
+    "height": 1254,
+    "bytes": 750630,
+    "sha256": "518e35dd75ce03a3990a71842418fd856a323ae007bb5af92f0de17debb714fd"
+  },
+  "processing": "Premultiplied-alpha area resampling to 256x256; lossless PNG32 encoding. No repainting, added details or alpha extraction from an opaque backdrop."
+}

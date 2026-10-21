@@ -1,11 +1,9 @@
-# Latest checkpoint — art order 29 Flavor Drops
+# Latest checkpoint — art order 18 J Storm Mark
 
-21 October 2026 Asia/Bangkok. Repository hardza1230/Survival-like-Mobile-Game; branch claude/vampire-survival-mobile-game-yo9e8w. User requested production of docs/art_orders/29_EXP_ORBS.md.
+21 October 2026 Asia/Bangkok. Repository hardza1230/Survival-like-Mobile-Game; branch claude/vampire-survival-mobile-game-yo9e8w.
 
-Completed: all7 named PNG32 sources /61 frames in assets/incoming/exp_orbs/, including optional HUD icon; seven WebP candidates136,794 bytes <250,000. Exact grids/RGBA/full-decode/SHA/real-alpha/transparent frame borders checked. Source proofs reviewed: all36 frames16px, tiers14–36px on5 representative solid colors beside original Sugar, offline200-drop field, FX strips,10fps loop GIF. No game launched or combat simulated. Actual stage-texture readability/runtime loops/phone FPS pending. Prompts and selected-source hashes retained; big pickup regenerated once to retain complete upper beam.
+User requested missing J1 icon. Delivered assets/incoming/taro_storm_mark/ic_taro_storm_mark.png: exact256×256 PNG32, real alpha, 62345 bytes; SHA-256 74790e1120974531f3b9e3ec107c06d167acd255e63abb8cf398ec38edf44430. Built-in ImageGen; gold target/lightning +3 inward violet-cyan sparks. Manifest, prompt/source hash, technical QA, actual52px proof on5 backgrounds and delivery guide included. PNG chunk CRC, zlib Adler, full decode, dimension/alpha/border and lossless pixel round-trip checked. Source icon and metadata are verified through GitHub readback recorded in UPLOAD_VERIFICATION.json.
 
-No game.js, physics, pickup, EXP accounting or runtime registration changes; runtime v7.9.25 unchanged. Order29/readme and CLAUDE.md updated. Source commit521be1cd0bfaca40d8cef85d9c23ad53bfdb3953:27/27 files,1,076,319 bytes fully read back from GitHub; exact bytes and Git blob SHAs match. UPLOAD_VERIFICATION.json added in the follow-up commit. Next: integrate stage-lazy per DELIVERY_README.md in a later runtime task; preserve v7.9.12 (EXP stays on floor; no automatic boss vacuum). Sesame/Yuzu remain WIP.
+Runtime v7.9.27 preserved; no game.js, runtime art registration, behavior or balance change. Next: existing pack pipeline256→128 → assets/art/build_paths/taro_storm_mark.webp; finish existing ic_taro_storm_mark hook and owner phone review. Do not restore historical Storm Mark timing from the old brief. Execution environment offline, so npm check not run; only source-art changes.
 
-Local checkout: game/. Generation ledger/packing work: work/order29/. Final delivery includes source commit + verification commit; runtime integration remains pending. Concurrent upstream v7.9.24–25 preserved.
-
-Validation: npm run check passed in full on preserved upstream v7.9.25; git diff --check passed. No runtime or game-version change.
+Previous milestone: art29 Flavor Drops source delivery verified at3be3c6d; subsequently integrated upstream in v7.9.26. Preserve current upstream updates. Sesame/Yuzu remain WIP.
