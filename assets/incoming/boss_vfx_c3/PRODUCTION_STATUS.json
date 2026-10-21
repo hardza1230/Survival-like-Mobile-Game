@@ -3,23 +3,10 @@
   "status": "in-production",
   "plannedAssets": 48,
   "plannedFrames": 226,
-  "deliveredAssets": 0,
-  "priority": "Round1: six warn/impact pairs first",
-  "sourceOnly": true,
-  "runtimeChanges": false,
+  "deliveredAssets": 12,
+  "deliveredFrames": 60,
+  "phase": "priority round1 — six warn/impact pairs",
   "pending": [
-    "vfx_b11_warn",
-    "vfx_b11_impact",
-    "vfx_b12_warn",
-    "vfx_b12_impact",
-    "vfx_b13_warn",
-    "vfx_b13_impact",
-    "vfx_b14_warn",
-    "vfx_b14_impact",
-    "vfx_b15_warn",
-    "vfx_b15_impact",
-    "vfx_bpin_warn",
-    "vfx_bpin_impact",
     "vfx_b11_scythe_cut",
     "vfx_b12_wither_pull",
     "vfx_b12_nectar_drip",
@@ -56,5 +43,8 @@
     "counter_c32_nectar",
     "counter_c34_vault_bomb",
     "counter_pin_meat"
-  ]
+  ],
+  "sourceOnly": true,
+  "runtimeIntegrated": false,
+  "runtimeVersionPreserved": "7.9.28"
 }

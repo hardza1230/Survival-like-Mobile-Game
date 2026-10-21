@@ -1,6 +1,6 @@
 # 30 — Boss Attack VFX · Chapter 3 + Pinnacle · ใบสั่งงานอาร์ต
 
-สถานะ: 🟠 รออาร์ต (21 ต.ค. 2026) · อิง runtime v7.9.27 · อ่าน `00_STYLE_GUIDE.md` และใบ 22 (ชุด C1–C2) ก่อน
+สถานะ: 🟡 กำลังผลิต · ส่งแล้ว 12/48 PNG32 · 21 ต.ค. 2026 · ดู PRODUCTION_STATUS.json
 ส่งไฟล์ที่ `assets/incoming/boss_vfx_c3/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 22 · ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ

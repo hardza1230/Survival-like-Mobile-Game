@@ -17,7 +17,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: burned wheat stubble and tiny embers in C3-1 Ashen Seedfields. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: burned wheat stubble and tiny embers in C3-1 Ashen Seedfields. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1110543,
+        "sha256": "01e3d1b7d712b71ca589297c15157eae936427c5f5cd0cf8a0b187c3fd9acc8c"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b11_impact",
@@ -34,7 +41,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: straw splinters and ash erupt with orange embers in C3-1 Ashen Seedfields. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: straw splinters and ash erupt with orange embers in C3-1 Ashen Seedfields. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1368180,
+        "sha256": "891bf97b9baf302113f7adeaed13ea15d3c9148dea73511422af7c04b13993b1"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b12_warn",
@@ -51,7 +65,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: rotating dry orchard leaves in C3-2 Hollow Orchard. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: rotating dry orchard leaves in C3-2 Hollow Orchard. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1136626,
+        "sha256": "cb2d204019d91f2cc9fdaa5c416d0a457b3460ec51438a4702018c557deb9097"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b12_impact",
@@ -68,7 +89,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: hollow fruit husks fracture with nectar splashes in C3-2 Hollow Orchard. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: hollow fruit husks fracture with nectar splashes in C3-2 Hollow Orchard. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1173054,
+        "sha256": "e528940913774ab6ef92300fdce5f8aff33eaf7c6cccc5f7316761b38769a28c"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b13_warn",
@@ -85,7 +113,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: reflective glass-shard ring in C3-3 Glass Greenhouse Ruins. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: reflective glass-shard ring in C3-3 Glass Greenhouse Ruins. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1489393,
+        "sha256": "edad8039948e1e082f8e1ab1aea3eebd4d136e45cd8c4b568c722246a14cbf72"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b13_impact",
@@ -102,7 +137,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: glass fragments burst into cyan-violet prisms in C3-3 Glass Greenhouse Ruins. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: glass fragments burst into cyan-violet prisms in C3-3 Glass Greenhouse Ruins. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1466761,
+        "sha256": "28f7dbc63b2d81f40d3f4528b8670913ce7f2f42801c0de01190197ed93304b2"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b14_warn",
@@ -119,7 +161,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: geometric golden vault-lock ring, no glyphs in C3-4 Seed Vault. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: geometric golden vault-lock ring, no glyphs in C3-4 Seed Vault. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1269,
+        "height": 1240,
+        "bytes": 1230778,
+        "sha256": "2dc871190b892b194472f08540e7d6a9e9a430119fc4e640529ae753ffcf61fa"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b14_impact",
@@ -136,7 +185,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: dark stone plates burst with gold fragments in C3-4 Seed Vault. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: dark stone plates burst with gold fragments in C3-4 Seed Vault. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1364270,
+        "sha256": "1b7e5c11cad448a92f3a0c06096a0e37c88cedcc9d24e75476c77fd5517f65ed"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_warn",
@@ -153,7 +209,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: golden root ring with pink crown thorns in C3-5 First Seed Throne. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: golden root ring with pink crown thorns in C3-5 First Seed Throne. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1642350,
+        "sha256": "67e189563e200ab35b21b5299994b7d108c67528cea33c46923965ded32f097b"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_impact",
@@ -170,7 +233,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: pink-gold crown roots erupt from ground in C3-5 First Seed Throne. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: pink-gold crown roots erupt from ground in C3-5 First Seed Throne. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1434463,
+        "sha256": "6cee2b422c3b2a84eb67786dbe94c26f8b5da61c2e5bd46c1b16dc64423102aa"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_warn",
@@ -187,7 +257,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: abyss-mouth rim with violet teeth in Pinnacle Hunger Beneath. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: abyss-mouth rim with violet teeth in Pinnacle Hunger Beneath. Animation: Four looping rim pulses/glints. Flat ground ELLIPSE90 percent cell width and55 percent height. Same outer radius in all frames. At least70 percent of interior EMPTY BLACK; no bright central symbol.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1563324,
+        "sha256": "3ec4a7199390582238ebcf2af103c03da5273b0fabfc07bdc566c0cae9a99c1a"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_impact",
@@ -204,7 +281,14 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: violet darkness erupts with shattered crowns in Pinnacle Hunger Beneath. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: violet darkness erupts with shattered crowns in Pinnacle Hunger Beneath. Animation: Six once-only cells:0 small initial flash,1 and2 strongest peak eruption,3 debris spreading,4 sparse fading fragments,5 almost vanished remnants. Fixed ground origin exact cell center.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1714768,
+        "sha256": "30c79dc1b66da42d8028bf5c0c11cb250d613b97254ac209c700714943ba9367"
+      },
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b11_scythe_cut",
@@ -218,11 +302,13 @@
       "fh": 256,
       "loop": false,
       "tile": false,
-      "anchor": "left-center",
+      "anchor": "center",
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 512:256, final native cell 512x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Great Scythe: gigantic gold scythe sweeps half-screen, ember-orange trail. Animation: Six cells:0-1 ONLY faint warning arc,2 blade enters,3 strongest broad golden slash,4 ember trail fades,5 sparse remnants. No hand/character.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 512:256, final native cell 512x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Great Scythe: gigantic gold scythe sweeps half-screen, ember-orange trail. Animation: Six cells:0-1 ONLY faint warning arc,2 blade enters,3 strongest broad golden slash,4 ember trail fades,5 sparse remnants. No hand/character.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 512:256, final native cell 512x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Great Scythe: gigantic gold scythe sweeps half-screen, ember-orange trail. Animation: Six cells:0-1 ONLY faint warning arc,2 blade enters,3 strongest broad golden slash,4 ember trail fades,5 sparse remnants. No hand/character.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap. CRITICAL REVISION: This is an animation sheet on ONE uninterrupted pure black background. Absolutely NO thin gray lines, white lines, divider strokes, frames or cell borders. SIX CELLS exactly3 columns2 rows. TOP LEFT cell0: ONLY a faint thin warning crescent. TOP MIDDLE cell1: ONLY a brighter thin warning crescent, STILL NO SCYTHE, NO WEAPON, NO FLAME BURST. TOP RIGHT cell2: FIRST appearance of gigantic golden scythe and orange sweep. BOTTOM LEFT cell3: full strongest broad half-screen slash with scythe. BOTTOM MIDDLE cell4: scythe gone, fading ember slash. BOTTOM RIGHT cell5: nearly gone faint embers. Fixed empty space around every cell. Do not draw a decorative sun emblem on scythe. Clean broad golden blade, not a circular ring."
     },
     {
       "key": "vfx_b12_wither_pull",
@@ -240,7 +326,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Wither Wind: dry mauve leaves and orange petal wisps spiraling INWARD. Animation: Four loop phases of inward suction, flat ellipse. Nearly empty dark center, not an explosion.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Wither Wind: dry mauve leaves and orange petal wisps spiraling INWARD. Animation: Four loop phases of inward suction, flat ellipse. Nearly empty dark center, not an explosion.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b12_nectar_drip",
@@ -258,7 +346,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 128:128, final native cell 128x128. Uniform exact grid. Fixed effect origin in every cell. Subject: Nectar Drip: tiny orange nectar drop falling into small ground puddle. Animation: Four cells: suspended drop, descends, tiny splash, puddle shimmer plus new suspended drop. Fixed splash origin, no fruit/boss.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 128:128, final native cell 128x128. Uniform exact grid. Fixed effect origin in every cell. Subject: Nectar Drip: tiny orange nectar drop falling into small ground puddle. Animation: Four cells: suspended drop, descends, tiny splash, puddle shimmer plus new suspended drop. Fixed splash origin, no fruit/boss.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b13_prism_beam",
@@ -272,11 +362,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Prism Beam: narrow cyan-violet rainbow refracted laser, white-cyan core. Animation: Four phases moving prismatic glints. Continuous parallel cross-section both ends, no emitter/mirror.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Prism Beam: narrow cyan-violet rainbow refracted laser, white-cyan core. Animation: Four phases moving prismatic glints. Continuous parallel cross-section both ends, no emitter/mirror.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b14_vault_ring",
@@ -294,7 +386,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 128:64, final native cell 128x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Vault Ring SEGMENT: short horizontal golden engraved stone/metal band, angular grooves NO writing. Animation: Four glint loop phases same geometry. Repeatable segment for code to arrange into ring. NOT whole ring, no endcaps.. Palette vault gold #d8b25a, dark stone. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 128:64, final native cell 128x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Vault Ring SEGMENT: short horizontal golden engraved stone/metal band, angular grooves NO writing. Animation: Four glint loop phases same geometry. Repeatable segment for code to arrange into ring. NOT whole ring, no endcaps.. Palette vault gold #d8b25a, dark stone. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_root_cage",
@@ -312,7 +406,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Root Cage: flat elliptical enclosure of pink-gold crown roots with ONE WIDE EXIT GAP at BOTTOM CENTER. Animation: Four rim-glow loop phases. EXACT SAME70-degree open gap at bottom ALL frames. Center/gap EMPTY BLACK. No roots or sparks bridging exit. Not a closed ring.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Root Cage: flat elliptical enclosure of pink-gold crown roots with ONE WIDE EXIT GAP at BOTTOM CENTER. Animation: Four rim-glow loop phases. EXACT SAME70-degree open gap at bottom ALL frames. Center/gap EMPTY BLACK. No roots or sparks bridging exit. Not a closed ring.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_seed_tile",
@@ -330,7 +426,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 128:128, final native cell 128x128. Uniform exact grid. Fixed effect origin in every cell. Subject: Seed Grid: ONE square pink-red ground warning tile then thorny crown seedling. Animation: Six cells:0 dim red square outline with empty center,1 brighter red warning outline ONLY,2 sprout erupts,3 full pink-gold thorn crown seedling,4 retracts,5 nearly gone ember. No grid field.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 128:128, final native cell 128x128. Uniform exact grid. Fixed effect origin in every cell. Subject: Seed Grid: ONE square pink-red ground warning tile then thorny crown seedling. Animation: Six cells:0 dim red square outline with empty center,1 brighter red warning outline ONLY,2 sprout erupts,3 full pink-gold thorn crown seedling,4 retracts,5 nearly gone ember. No grid field.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_maw",
@@ -348,7 +446,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Devour: top-down flat abyss-mouth ellipse, glowing violet FANGS on rim, magenta INWARD suction. Animation: Four suction loop phases, black empty center, teeth ONLY at edge, no face/tongue/gore.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Devour: top-down flat abyss-mouth ellipse, glowing violet FANGS on rim, magenta INWARD suction. Animation: Four suction loop phases, black empty center, teeth ONLY at edge, no face/tongue/gore.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_jaw_ring",
@@ -366,7 +466,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 128:64, final native cell 128x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Closing Jaws SEGMENT: short horizontal row of violet fangs with magenta rim light. Animation: Four energy loop phases, same geometry. Repeatable SEGMENT for code to arrange into ring, not whole jaw or ring.. Palette abyss violet #b46cff, magenta #d95cff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 128:64, final native cell 128x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Closing Jaws SEGMENT: short horizontal row of violet fangs with magenta rim light. Animation: Four energy loop phases, same geometry. Repeatable SEGMENT for code to arrange into ring, not whole jaw or ring.. Palette abyss violet #b46cff, magenta #d95cff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "counter_c33_mirror",
@@ -384,7 +486,9 @@
       "holdFrame": null,
       "transparent": true,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one upright CYAN PRISM MIRROR on tiny glass base, broad violet-rainbow reflection. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette glass cyan #a8ecff, rainbow violet #c9a3ff. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256."
+      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one upright CYAN PRISM MIRROR on tiny glass base, broad violet-rainbow reflection. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette glass cyan #a8ecff, rainbow violet #c9a3ff. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "counter_c35_crown_seed",
@@ -402,7 +506,9 @@
       "holdFrame": null,
       "transparent": true,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one chunky PINK-GOLD CROWN SEED POD, three crown-like thorn tips, amethyst glowing core. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette crown pink #ff7aa8, gold, amethyst. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256."
+      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one chunky PINK-GOLD CROWN SEED POD, three crown-like thorn tips, amethyst glowing core. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette crown pink #ff7aa8, gold, amethyst. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b11_wave",
@@ -419,7 +525,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin golden grain-dust ring in C3-1 Ashen Seedfields. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin golden grain-dust ring in C3-1 Ashen Seedfields. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b11_lane",
@@ -432,11 +540,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: gold scythe-scrape track with embers in C3-1 Ashen Seedfields. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette wheat gold #e0b04a, ember orange #ff8a3a. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: gold scythe-scrape track with embers in C3-1 Ashen Seedfields. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette wheat gold #e0b04a, ember orange #ff8a3a. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b12_wave",
@@ -453,7 +563,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin withered-petal ring in C3-2 Hollow Orchard. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin withered-petal ring in C3-2 Hollow Orchard. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b12_lane",
@@ -466,11 +578,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: dry thorn-vine band in C3-2 Hollow Orchard. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette mauve #c98aa8, nectar orange #ffb36b. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: dry thorn-vine band in C3-2 Hollow Orchard. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette mauve #c98aa8, nectar orange #ffb36b. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b13_wave",
@@ -487,7 +601,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin refracted-light ring in C3-3 Glass Greenhouse Ruins. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin refracted-light ring in C3-3 Glass Greenhouse Ruins. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b13_lane",
@@ -500,11 +616,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: rainbow prism beam band in C3-3 Glass Greenhouse Ruins. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: rainbow prism beam band in C3-3 Glass Greenhouse Ruins. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b14_wave",
@@ -521,7 +639,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin golden seal ring in C3-4 Seed Vault. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin golden seal ring in C3-4 Seed Vault. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b14_lane",
@@ -534,11 +654,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: golden chain-link band in C3-4 Seed Vault. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette vault gold #d8b25a, dark stone. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: golden chain-link band in C3-4 Seed Vault. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette vault gold #d8b25a, dark stone. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_wave",
@@ -555,7 +677,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin pink-petal ring with gold rim in C3-5 First Seed Throne. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin pink-petal ring with gold rim in C3-5 First Seed Throne. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_lane",
@@ -568,11 +692,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: pink-gold crown-thorn band in C3-5 First Seed Throne. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette crown pink #ff7aa8, gold, amethyst. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: pink-gold crown-thorn band in C3-5 First Seed Throne. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette crown pink #ff7aa8, gold, amethyst. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_wave",
@@ -589,7 +715,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin hunger ring with violet-magenta rim in Pinnacle Hunger Beneath. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: thin hunger ring with violet-magenta rim in Pinnacle Hunger Beneath. Animation: Four phases of thin expanding ground-ellipse shockwave, bright sharp CONTACT RIM, EMPTY BLACK center throughout, no filled disc or rays crossing the center.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_lane",
@@ -602,11 +730,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: violet fang-row band in Pinnacle Hunger Beneath. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette abyss violet #b46cff, magenta #d95cff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: violet fang-row band in Pinnacle Hunger Beneath. Animation: Four loop phases of a narrow long ground warning track with moving glints.. Palette abyss violet #b46cff, magenta #d95cff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b11_harvest_moon",
@@ -624,7 +754,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Harvest Moon: golden FULL MOON and radiating golden wave. Animation: Eight cells: dim moon appears, brightens, grows, peak halo, outward wave, larger wave, fading motes, almost gone.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Harvest Moon: golden FULL MOON and radiating golden wave. Animation: Eight cells: dim moon appears, brightens, grows, peak halo, outward wave, larger wave, fading motes, almost gone.. Palette wheat gold #e0b04a, ember orange #ff8a3a. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b11_stampede_trail",
@@ -638,11 +770,13 @@
       "fh": 64,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Stampede: golden straw-dust and ember-ash trail. Animation: Four looping dust streak phases. No bull or character.. Palette wheat gold #e0b04a, ember orange #ff8a3a. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:64, final native cell 512x64. Uniform exact grid. Fixed effect origin in every cell. Subject: Stampede: golden straw-dust and ember-ash trail. Animation: Four looping dust streak phases. No bull or character.. Palette wheat gold #e0b04a, ember orange #ff8a3a. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b12_empty_heart",
@@ -660,7 +794,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Empty Heart: hollow dark heart with luminous mauve-orange rim. Animation: Eight cells: faint heart, swelling, contracting, brightest pulse, rim fractures, withered petals scatter, petals fade, almost gone. Heart center black.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Empty Heart: hollow dark heart with luminous mauve-orange rim. Animation: Eight cells: faint heart, swelling, contracting, brightest pulse, rim fractures, withered petals scatter, petals fade, almost gone. Heart center black.. Palette mauve #c98aa8, nectar orange #ffb36b. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b13_dome_shard",
@@ -674,11 +810,13 @@
       "fh": 256,
       "loop": false,
       "tile": false,
-      "anchor": "bottom-center",
+      "anchor": "center",
       "holdFrame": 4,
       "transparent": false,
       "colors": "glass cyan #a8ecff, rainbow violet #c9a3ff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 128:256, final native cell 128x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Shatter Dome: ONE narrow vertical cyan glass WALL PANEL with violet edges, standing on ground at bottom-center. Animation: Six cells:0 tiny ground glint,1 low emerging shard,2 half pane,3 nearly full,4 COMPLETE INTACT FULL-HEIGHT WALL for hold,5 shattering/fade. ONE panel not full dome.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 3 columns by 2 rows, 6 frames, read left-to-right then next row. ALL cells equal aspect 128:256, final native cell 128x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Shatter Dome: ONE narrow vertical cyan glass WALL PANEL with violet edges, standing on ground at bottom-center. Animation: Six cells:0 tiny ground glint,1 low emerging shard,2 half pane,3 nearly full,4 COMPLETE INTACT FULL-HEIGHT WALL for hold,5 shattering/fade. ONE panel not full dome.. Palette glass cyan #a8ecff, rainbow violet #c9a3ff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b14_last_seed",
@@ -696,7 +834,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Last Seed: top-down circular gold vault door open around dark suction aperture. Animation: Four rotating-rim loop phases, stone fragments gently drawn inward, black hollow center, no room/scene.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 2 columns by 2 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Last Seed: top-down circular gold vault door open around dark suction aperture. Animation: Four rotating-rim loop phases, stone fragments gently drawn inward, black hollow center, no room/scene.. Palette vault gold #d8b25a, dark stone. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_crown_sweep",
@@ -710,11 +850,13 @@
       "fh": 96,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:96, final native cell 512x96. Uniform exact grid. Fixed effect origin in every cell. Subject: Crown Roots Sweep: long horizontal pink-gold root band with amethyst thorns. Animation: Four flowing crown-glint loop phases, continuous same root cross-section at ends, not a circular cage.. Palette crown pink #ff7aa8, gold, amethyst. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:96, final native cell 512x96. Uniform exact grid. Fixed effect origin in every cell. Subject: Crown Roots Sweep: long horizontal pink-gold root band with amethyst thorns. Animation: Four flowing crown-glint loop phases, continuous same root cross-section at ends, not a circular cage.. Palette crown pink #ff7aa8, gold, amethyst. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_b15_first_bloom",
@@ -732,7 +874,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "crown pink #ff7aa8, gold, amethyst",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: First Bloom: pink-gold CROWN FLOWER blooms from an amethyst seed, gold-violet light rays. Animation: Eight cells: dim seed, opens, petal shoots, half-open flower, FULL bloom peak, petals/light burst, petals fade, almost gone. No pot/character.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: First Bloom: pink-gold CROWN FLOWER blooms from an amethyst seed, gold-violet light rays. Animation: Eight cells: dim seed, opens, petal shoots, half-open flower, FULL bloom peak, petals/light burst, petals fade, almost gone. No pot/character.. Palette crown pink #ff7aa8, gold, amethyst. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_tongue",
@@ -746,11 +890,13 @@
       "fh": 128,
       "loop": true,
       "tile": true,
-      "anchor": "left-center",
+      "anchor": "left",
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:128, final native cell 512x128. Uniform exact grid. Fixed effect origin in every cell. Subject: The Tongue: long flat violet-magenta tongue MIDSECTION, parallel organic edges, restrained surface ridges. Animation: Four moving-glint phases. Uninterrupted middle section, NO rounded tip or endcap, no face/mouth/drool.. Palette abyss violet #b46cff, magenta #d95cff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 1 columns by 4 rows, 4 frames, read left-to-right then next row. ALL cells equal aspect 512:128, final native cell 512x128. Uniform exact grid. Fixed effect origin in every cell. Subject: The Tongue: long flat violet-magenta tongue MIDSECTION, parallel organic edges, restrained surface ridges. Animation: Four moving-glint phases. Uninterrupted middle section, NO rounded tip or endcap, no face/mouth/drool.. Palette abyss violet #b46cff, magenta #d95cff. Each frame is a SEAMLESS HORIZONTAL TILE: art reaches left/right edges with IDENTICAL cross-sections, NO start/end cap or projectile head, no arrow tip. Empty black top/bottom 12 percent. Four loop phases only highlights flow left-to-right, geometry stays fixed.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "vfx_bpin_eclipse",
@@ -768,7 +914,9 @@
       "holdFrame": null,
       "transparent": false,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Eclipse: abyss darkness swallows glowing violet-magenta CROWN then releases purple wave. Animation: Eight cells: small glowing crown, eclipse crosses, half obscured, almost swallowed, bright thin eclipse rim, broad purple wave, rim fades, sparse violet embers. No face/scene.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap."
+      "prompt": "Use case: stylized-concept. Production animated VFX source sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game. Polished hand-painted 2D art, whimsical dark fantasy, not realistic horror. Three-quarter top-down. Bold simple shapes, restrained detail, no character, no boss, no scene. PURE SOLID BLACK #000000 background in all unused pixels. No gray backdrop, checkerboard, text, glyphs, labels, letters, numbers, watermarks, borders, gutters or grid lines. Exactly 4 columns by 2 rows, 8 frames, read left-to-right then next row. ALL cells equal aspect 256:256, final native cell 256x256. Uniform exact grid. Fixed effect origin in every cell. Subject: Eclipse: abyss darkness swallows glowing violet-magenta CROWN then releases purple wave. Animation: Eight cells: small glowing crown, eclipse crosses, half obscured, almost swallowed, bright thin eclipse rim, broad purple wave, rim fades, sparse violet embers. No face/scene.. Palette abyss violet #b46cff, magenta #d95cff. All art fully contained in its own cell, 8 percent pure black margin on every side, no clipped rays or fragments, no cell overlap.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "counter_c31_sheaf",
@@ -786,7 +934,9 @@
       "holdFrame": null,
       "transparent": true,
       "colors": "wheat gold #e0b04a, ember orange #ff8a3a",
-      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: a tied bundle of GOLD WHEAT SHEAVES, rope bow, tiny ember near base. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette wheat gold #e0b04a, ember orange #ff8a3a. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256."
+      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: a tied bundle of GOLD WHEAT SHEAVES, rope bow, tiny ember near base. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette wheat gold #e0b04a, ember orange #ff8a3a. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "counter_c32_nectar",
@@ -804,7 +954,9 @@
       "holdFrame": null,
       "transparent": true,
       "colors": "mauve #c98aa8, nectar orange #ffb36b",
-      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one juicy ORANGE PEACH, mauve leaf, bright nectar drop running down. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette mauve #c98aa8, nectar orange #ffb36b. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256."
+      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one juicy ORANGE PEACH, mauve leaf, bright nectar drop running down. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette mauve #c98aa8, nectar orange #ffb36b. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "counter_c34_vault_bomb",
@@ -822,7 +974,9 @@
       "holdFrame": null,
       "transparent": true,
       "colors": "vault gold #d8b25a, dark stone",
-      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one round GOLD VAULT BOMB, dark KEYHOLE, tiny KEY-shaped fuse slowly turning, cartoon object. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette vault gold #d8b25a, dark stone. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256."
+      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one round GOLD VAULT BOMB, dark KEYHOLE, tiny KEY-shaped fuse slowly turning, cartoon object. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette vault gold #d8b25a, dark stone. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256.",
+      "selectedSource": null,
+      "revisedPrompt": null
     },
     {
       "key": "counter_pin_meat",
@@ -840,7 +994,10 @@
       "holdFrame": null,
       "transparent": true,
       "colors": "abyss violet #b46cff, magenta #d95cff",
-      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one chunky cartoon ROAST MEAT BONE wrapped in a VIOLET LEAF and simple tie, no gore. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette abyss violet #b46cff, magenta #d95cff. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256."
+      "prompt": "Use case: stylized-concept. Production animated counter-object sprite sheet, Mochi Mayhem cute pastel confectionery fantasy, polished hand-painted 2D, three-quarter top-down. Exactly FOUR equal square cells in2 columns2 rows, row-major, no gutters/dividers. Subject: one chunky cartoon ROAST MEAT BONE wrapped in a VIOLET LEAF and simple tie, no gore. SAME object scale/position/shape all cells,4 subtle glint/hover loop phases, do not rotate entire object. Chunky silhouette readable44px, thin dark plum outline, bright rim highlight on dark floors,2-3 broad shade levels, palette abyss violet #b46cff, magenta #d95cff. Object covers76 percent of cell, generous FULLY TRANSPARENT margin all sides. REAL TRANSPARENT alpha background. No black/white/gray/checkerboard backdrop, no baked shadow, no extra objects/particles, no text/letters/numbers/logo/watermark/frame/UI. Must look like solid kickable object, NOT EXP drop/currency. Final cell128x128; sheet256x256.",
+      "selectedSource": null,
+      "revisedPrompt": null
     }
-  ]
+  ],
+  "processing": "Grid extraction, resize to exact native dimensions, VFX flatten onto black and remove <=7 RGB residue; C preserve true alpha. Seam strips use endpoint correction when indicated in QA. No procedural substitute art."
 }

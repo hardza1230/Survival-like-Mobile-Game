@@ -1,0 +1,1100 @@
+{
+  "order": 30,
+  "assets": 12,
+  "frames": 60,
+  "technicalChecks": [
+    {
+      "key": "vfx_b11_warn",
+      "bytes": 251388,
+      "sha256": "52c230f82a0e2b84ab4b2a65541b750e359ce5d0f2a71cfa6dba8a45c1080390",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1110543,
+        "sha256": "01e3d1b7d712b71ca589297c15157eae936427c5f5cd0cf8a0b187c3fd9acc8c"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            11,
+            41,
+            245,
+            209
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0022181891510385156,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            11,
+            35,
+            245,
+            209
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.003226456946965114,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            11,
+            31,
+            245,
+            208
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.004839685420447671,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            11,
+            40,
+            245,
+            208
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.002621496269409155,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b11_impact",
+      "bytes": 434593,
+      "sha256": "628e78ad0a077ecfb3b1ce32b586014f5e5b06b6fc73aebad190c2b3c553bf2e",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1368180,
+        "sha256": "891bf97b9baf302113f7adeaed13ea15d3c9148dea73511422af7c04b13993b1"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            48,
+            109,
+            211,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.05384150030248034,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            10,
+            14,
+            245,
+            236
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8134704577535794,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            15,
+            39,
+            241,
+            234
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6652550917523694,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            13,
+            48,
+            245,
+            232
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.3167977414801371,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            29,
+            65,
+            231,
+            230
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.12522686025408347,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            53,
+            97,
+            202,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.029038112522686024,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b12_warn",
+      "bytes": 256100,
+      "sha256": "0bb47405a4661aff7e19b78a73ac6f69cc843db77f386b282e9cf587bc4259ce",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1136626,
+        "sha256": "cb2d204019d91f2cc9fdaa5c416d0a457b3460ec51438a4702018c557deb9097"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            14,
+            57,
+            244,
+            199
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.014720709820528333,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            10,
+            58,
+            246,
+            204
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.034482758620689655,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            9,
+            52,
+            245,
+            199
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.030248033877797943,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            11,
+            54,
+            238,
+            198
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.019560395240976004,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b12_impact",
+      "bytes": 382736,
+      "sha256": "172532483d7627bed808cdfe59b6d54aedcf57f04056cab6e439954023e4b663",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1173054,
+        "sha256": "e528940913774ab6ef92300fdce5f8aff33eaf7c6cccc5f7316761b38769a28c"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            66,
+            92,
+            190,
+            206
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.4337568058076225,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            13,
+            30,
+            237,
+            234
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8886872353297036,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            15,
+            34,
+            240,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8527929017947167,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            21,
+            26,
+            238,
+            223
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.46602137527727366,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            33,
+            45,
+            232,
+            216
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.2655777374470659,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            56,
+            76,
+            201,
+            194
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.11252268602540835,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b13_warn",
+      "bytes": 349319,
+      "sha256": "3a671e2fd3a1a9fe4187fb6a084fab4da113316a2d362a7306bef18b37c494d9",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1489393,
+        "sha256": "edad8039948e1e082f8e1ab1aea3eebd4d136e45cd8c4b568c722246a14cbf72"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            11,
+            46,
+            249,
+            214
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            10,
+            46,
+            249,
+            215
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            8,
+            44,
+            249,
+            214
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            11,
+            44,
+            248,
+            213
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b13_impact",
+      "bytes": 488850,
+      "sha256": "afbb77bebf96234a468ed51b1f19eab5a0672fece5424fd16f64a1c7c5ac0be4",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1466761,
+        "sha256": "28f7dbc63b2d81f40d3f4528b8670913ce7f2f42801c0de01190197ed93304b2"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            57,
+            113,
+            200,
+            223
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.06553740673522887,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            12,
+            11,
+            242,
+            237
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8820326678765881,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            14,
+            39,
+            243,
+            237
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.44605767291792703,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            20,
+            34,
+            238,
+            234
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.20024198427102238,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            22,
+            38,
+            235,
+            226
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.06331921758419036,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            40,
+            84,
+            218,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.02016535591853196,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b14_warn",
+      "bytes": 274157,
+      "sha256": "04381b0450d451a9d97362abc9ffe2c1ec668f31906933dd4a5cebb2ff1b66b2",
+      "source": {
+        "width": 1269,
+        "height": 1240,
+        "bytes": 1230778,
+        "sha256": "2dc871190b892b194472f08540e7d6a9e9a430119fc4e640529ae753ffcf61fa"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            21,
+            31,
+            239,
+            210
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.009074410163339383,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            16,
+            35,
+            235,
+            210
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0102843315184513,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            21,
+            20,
+            239,
+            195
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.18794111716071787,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            20,
+            235,
+            196
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.18915103851582982,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b14_impact",
+      "bytes": 471706,
+      "sha256": "e808d9b86679a1fd8b8f9b0abafdc9aaba6a307217355d269795b470515197ae",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1364270,
+        "sha256": "1b7e5c11cad448a92f3a0c06096a0e37c88cedcc9d24e75476c77fd5517f65ed"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            48,
+            88,
+            202,
+            213
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.41056664650131075,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            20,
+            18,
+            224,
+            219
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8554143980641258,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            9,
+            15,
+            244,
+            229
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9516031457955233,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            14,
+            12,
+            236,
+            231
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6499294212542851,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            28,
+            48,
+            233,
+            231
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.37467231296632386,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            47,
+            79,
+            213,
+            221
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.2200040330711837,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b15_warn",
+      "bytes": 380610,
+      "sha256": "0ee6a529beb8b0b27ea88b1bb6c2bf9818cbb972cf04eafc6c5922d3298069a2",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1642350,
+        "sha256": "67e189563e200ab35b21b5299994b7d108c67528cea33c46923965ded32f097b"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            6,
+            49,
+            249,
+            207
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.02802984472675943,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            5,
+            49,
+            249,
+            207
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.030852994555353903,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            6,
+            9,
+            249,
+            207
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.03226456946965114,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            6,
+            49,
+            250,
+            207
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.036297640653357534,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_b15_impact",
+      "bytes": 507149,
+      "sha256": "da5f95bf2879bda906c89310f80e093d1062e4ff7e26a585b8a261123024c2d6",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1434463,
+        "sha256": "6cee2b422c3b2a84eb67786dbe94c26f8b5da61c2e5bd46c1b16dc64423102aa"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            41,
+            82,
+            206,
+            215
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.28977616454930427,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            24,
+            28,
+            233,
+            227
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6948981649526114,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            7,
+            7,
+            245,
+            237
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.680782415809639,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            39,
+            241,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6894535188546078,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            24,
+            52,
+            234,
+            221
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.16394434361766486,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            31,
+            71,
+            225,
+            221
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.012502520669489817,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_bpin_warn",
+      "bytes": 393878,
+      "sha256": "51d9c30a865a39fc15fb1a5d92725bd959bbcd6adb18244fac80f0e7d295cb42",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1563324,
+        "sha256": "3ec4a7199390582238ebcf2af103c03da5273b0fabfc07bdc566c0cae9a99c1a"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            11,
+            43,
+            246,
+            213
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.004234724742891712,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            11,
+            31,
+            246,
+            213
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.006251260334744909,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            6,
+            20,
+            246,
+            213
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.006251260334744909,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            11,
+            41,
+            246,
+            212
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.004436378302077031,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    },
+    {
+      "key": "vfx_bpin_impact",
+      "bytes": 588763,
+      "sha256": "1891b2eec7cacb1677f2bd28dd76cba64dc23a2aab2d8e41f7a550de2b9ac1d1",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1714768,
+        "sha256": "30c79dc1b66da42d8028bf5c0c11cb250d613b97254ac209c700714943ba9367"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            42,
+            92,
+            204,
+            227
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.04597701149425287,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            5,
+            15,
+            246,
+            243
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6150433555152248,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            9,
+            17,
+            243,
+            242
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5523290986085905,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            6,
+            13,
+            247,
+            240
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.3103448275862069,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            21,
+            23,
+            237,
+            234
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.08005646299657189,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            39,
+            39,
+            215,
+            230
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.02097197015527324,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+    }
+  ],
+  "actualRuntimeFloorProofs": [],
+  "floorSources": [
+    {
+      "path": "assets/art/floors/floor_c31.webp",
+      "bytes": 120252,
+      "sha256": "7a5b5a238fa4ed599db1b9cf8d670044c351126e543a199e9a7959ba4d488659",
+      "gitBlobSha": "85a034d50f0ca06fd51f1b094832d80eb92e32aa"
+    },
+    {
+      "path": "assets/art/floors/floor_c32.webp",
+      "bytes": 144138,
+      "sha256": "7f66a2370b45d36f3f97461e270d010edf88e7bf4035f9d1fd51e7f4dbec4cbf",
+      "gitBlobSha": "64e618c40bb5c02bdaa31c566210335d3a597586"
+    },
+    {
+      "path": "assets/art/floors/floor_c33.webp",
+      "bytes": 150492,
+      "sha256": "e882a30e3276df71cca9401ef7482dc19d7cc48eb33dedcbf2d2269a9103a8e2",
+      "gitBlobSha": "7fad9d7567913cda4d78c097b8dad5bec30d33da"
+    },
+    {
+      "path": "assets/art/floors/floor_c34.webp",
+      "bytes": 91554,
+      "sha256": "6f498c9a5f8e75014721fd8eaa05e5e7ba6365b4dce53532b6782a0273bafe3c",
+      "gitBlobSha": "ff2ced4f3fbd014608408055ad2390ff18246fbc"
+    },
+    {
+      "path": "assets/art/floors/floor_c35.webp",
+      "bytes": 148620,
+      "sha256": "41b57a0ca476db20d53d710251771d5f4c6be9dd1349912832ccb0e5c351f1da",
+      "gitBlobSha": "f607911d6970fb9c2e490ced35dd3db332b0669a"
+    }
+  ],
+  "actualPackerAlpha": "matches scripts/pack-boss-vfx-c1-c2.py: alpha=min(255,int(max(R,G,B)*1.35)); unpremultiply RGB by255/alpha; alpha<8=>clear",
+  "runtimeTests": "Not run: execution environment offline; game code unchanged. Owner reviews actual phone visuals/FPS.",
+  "sourceReview": "Generated source frames visually inspected. Offline proof pages use exact runtime floor WebP bytes; browser/game QA remains pending.",
+  "uploadVerification": "UPLOAD_VERIFICATION.json"
+}
