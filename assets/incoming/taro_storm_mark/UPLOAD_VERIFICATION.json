@@ -1,0 +1,73 @@
+{
+  "repository": "hardza1230/Survival-like-Mobile-Game",
+  "branch": "claude/vampire-survival-mobile-game-yo9e8w",
+  "sourceCommit": "8a3784ed09d428f2496d9200b2373172b6fb9a55",
+  "fileCount": 9,
+  "totalBytes": 235133,
+  "method": "fetch_file base64 at exact source commit, byte-for-byte comparison plus Git blob SHA and SHA-256; uploaded icon independently decoded again as 256x256 PNG32.",
+  "files": [
+    {
+      "path": "assets/incoming/taro_storm_mark/ic_taro_storm_mark.png",
+      "bytes": 62345,
+      "sha256": "74790e1120974531f3b9e3ec107c06d167acd255e63abb8cf398ec38edf44430",
+      "gitBlobSha": "927383d6751ba8931838cfcf2c9e6bf8c0303267",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/taro_storm_mark/QA_52px.png",
+      "bytes": 19043,
+      "sha256": "8ebbd681b49504f23d14cc3f46da6f02a2e4ae5cef03dc49868efe67d8b220f9",
+      "gitBlobSha": "ccaa2c86c90a2f81b6e86b93a6b9cc407a473055",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/taro_storm_mark/MANIFEST.json",
+      "bytes": 717,
+      "sha256": "109a8288ba429ad751859a32f04b04db85c5c577a226d8d4eca9dfcae74d4361",
+      "gitBlobSha": "50740fe82a6ec4035aaa39481057e5e75ae24fc9",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/taro_storm_mark/PROMPTS.json",
+      "bytes": 1803,
+      "sha256": "501f30a30f6d2d20576fe39c4b3c662750c22afd7d89d3139a12645be7fdf875",
+      "gitBlobSha": "604c93e4c1d2e8a38d999e2dfe40e6662e05cd3d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/taro_storm_mark/QA_REPORT.json",
+      "bytes": 1056,
+      "sha256": "8d5bc9fe2ad415815ddc8837a735d6da102f9f917a1e38c415548f71834014f5",
+      "gitBlobSha": "bb4dbc398b1db72f7b9e112b92710133bb8e8a6f",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/taro_storm_mark/DELIVERY_README.md",
+      "bytes": 1176,
+      "sha256": "5d70b42d0543d114105d81b109494773d26617d315cb8488529298550ba7e0d8",
+      "gitBlobSha": "c1333abab8080206059d5dcaac80360f9cb23486",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/18_TARO_SPARK_BALL_LIGHTNING_ART.md",
+      "bytes": 34886,
+      "sha256": "eeb7dddb802b0c3a8b6cc6e5bb9d26190e90d457a3b28bc90edb0bb13af357cf",
+      "gitBlobSha": "0c4a1401b3c58e035a8430653cc9714d3ce81e95",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 1346,
+      "sha256": "763910dcca84433bc29c0ce5899b8d1e86e4e267f239fa4561c023eb6fe30f6c",
+      "gitBlobSha": "292a512998a3110da65870e5715b8630b78f53ec",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 112761,
+      "sha256": "f05ade020cc8c875e66eb3d5d66b93767a11510784b256f71ba2ac313b95f6f0",
+      "gitBlobSha": "e87d444fa64f4289cae74169145bac429442f244",
+      "byteForByteMatch": true
+    }
+  ]
+}
