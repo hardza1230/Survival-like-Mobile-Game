@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.39';
+const GAME_VERSION = '7.9.40';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.40',date:'2026-10-21',title:'Sesame: Mirror Network (part 1)',items:['Every Dash now leaves a mirror on the ground (up to 3, each lasts 20s)','The Mirror Beam bounces from Sesame through your mirrors, oldest first, then out to the nearest enemy (bosses first) — every part of the line deals damage, and each bounce adds +15%','No mirrors yet? The beam fires straight, like before','Oath Focus: +6% damage for each mirror on the ground (up to 3) instead of standing still','Big boss blasts and waves break mirrors','Sesame is still in development — Builds, cards and the new Unique come next'],},
   {v:'7.9.39',date:'2026-10-21',title:'Yuzu is ready (part 3)',items:['Each Yuzu Build now has 5 cards of its own: Sun Kissed, Firm Skin, Big Squash · Strong Arm, Big Splat, Double Toss · Lucky Seeds, Deep Roots, Elder Grove','New Mutation Hardy Peel: each Yuzling survives one big boss attack','Evolutions per Build: Golden Orchard, Citrus Catapult and Endless Orchard','6 new ⭐ Unique Mutations for Citrus Parade','Yuzu is no longer marked In development']},
   {v:'7.9.38',date:'2026-10-21',title:'Yuzu: three new Builds (part 2)',items:['Ripen: half as many Yuzlings, but each one ripens from its own kills — green, yellow, gold, then giant with an area slam','Yuzling Toss: Yuzu throws a Yuzling at the biggest group every 1.4s; kills charge a Giant Toss','Harvest Sprouts: kills drop seeds that sprout into helpers, elites leave a Grove Elder, and Cheese waters the orchard','Citrus Parade now sends the whole crew charging into the biggest group, with a different twist for each Build']},
   {v:'7.9.37',date:'2026-10-21',title:'Yuzu: Orchard Swarm (part 1)',items:['Yuzu starts each stage with 3 Yuzlings and the orchard grows by 1 after every few kills (up to 12)','Past the limit, extra growth makes every Yuzling stronger','Big boss blasts and waves knock Yuzlings out into seeds — they regrow in 6s, twice as fast when Yuzu stands near','Growing Family now raises the orchard limit']},
@@ -3778,7 +3779,7 @@ const CHARACTERS = {
   mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — lances stack Chill (slow); 4 stacks freeze the enemy solid. Chilled bosses take more damage',stats:{hp:18,dmg:1.00,spd:1.12,def:0.90,crit:0.05,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'A sturdy boxer: Brawler sweeps crowds, Titan crushes marked targets, Dash Boxer strikes through movement. Toggle Flicker to warp into short punch chains and return; Dash cancels. Each path has a one-tap Unique',stats:{hp:46,dmg:1.03,spd:0.94,def:0.84,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
-  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Fires a Mirror Beam that hits bosses at full damage. Hold still to charge Focus — the beam grows stronger and wider; moving lets it fade. Rewards in-and-out play',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
+  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Dash to drop mirrors (up to 3). The Mirror Beam bounces through every mirror, oldest first, then out to the nearest enemy — bosses first. Each bounce hits harder, so place mirrors to cross the beam through big groups',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
   yuzu:{name:'Yuzu',emoji:'🍋',unique:'citrusParade',weapon:'yuzuCrew',cost:0,color:0xffd85e,role:'Minion commander',desc:'Grows an orchard of Yuzlings that fight on their own — more kills, more Yuzlings. Pick Ripen, Yuzling Toss or Harvest Sprouts.',stats:{hp:12,dmg:0.98,spd:1.04,def:0.96,crit:0.03,cdr:0.98,regenFlat:0.4},rating:{hp:3,atk:4,spd:3,def:3}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
@@ -3806,6 +3807,8 @@ const UNIQUE_MUTS={
   zestSwarm:[{id:'toss_rain',emoji:'🌧️',name:'Juice Rain',desc:'1s after the parade toss, the whole crew is thrown again.'},{id:'toss_home',emoji:'🎯',name:'Homing Hop',desc:'Thrown Yuzlings follow their target, so running enemies still get hit.'}],
   juiceWorkshop:[{id:'grow_burst',emoji:'💥',name:'Bloom Burst',desc:'When Citrus Parade ends, every Sprout bursts and hits enemies around it.'},{id:'grow_grove',emoji:'🌳',name:'Sacred Grove',desc:'Citrus Parade plants a Grove Elder right where Yuzu stands.'}],
   tempest:[{id:'over_long',emoji:'⏱️',name:'Long Overdrive',desc:'Overdrive lasts 1.5s longer.'},{id:'over_finale',emoji:'🎆',name:'Finale Burst',desc:'When Overdrive ends, every sentry fires a double-damage ring.'}]};
+// v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md)
+const SES_MIRROR_MAX=3, SES_MIRROR_LIFE=20, SES_MIRROR_REACH=700, SES_BOUNCE=0.15, SES_PRISM=0xc86bff;
 const YUZU_START=3,YUZU_CAP=12,YUZU_HARD_CAP=17,YUZU_BITE=7,YUZU_REGROW=6,YUZU_TOSS_CHARGE=25;   // v7.9.37 Yuzu Orchard Swarm (สวนส้ม) — ดู docs/YUZU_ORCHARD_SWARM.md
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=true; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
@@ -4689,7 +4692,7 @@ const CHAR_PASSIVES={
   cocoa:{emoji:'🐻',name:'Bear Grit',desc:'Below 40% HP: take less damage, deal more'},
   taro:{emoji:'🧭',name:'Rift Step',desc:'Dash: lightning shockwave'},
   yuzu:{emoji:'🍋',name:'Crew Leader',desc:'Knocked-out Yuzlings regrow twice as fast when Yuzu stands near their seed'},
-  sesame:{emoji:'🪞',name:'Oath Focus',desc:'Standing still boosts your damage'},
+  sesame:{emoji:'🪞',name:'Oath Focus',desc:'+6% damage for each mirror on the ground (up to 3)'},
   berry:{emoji:'💗',name:'Jam Heart',desc:'Kills have a chance to heal you'},
 };
 function charPassiveScale(lvl){ return 1+Math.min(0.9,Math.max(0,(lvl||1)-1)*0.03); }
@@ -14767,27 +14770,35 @@ class Game extends Phaser.Scene {
   // 🪞 Mirror Beam — งาดำยิง "ลำแสงกระจก" ใส่เป้า (ดาเมจเต็มกับบอส · แรงขึ้นตาม Focus ที่ชาร์จจากการยืนนิ่ง)
   // แก้ปัญหางาดำเอาบอสไม่อยู่: field เดิม tick เบา → beam ลงดาเมจก้อนใหญ่ single-line เจาะทะลุ โดนบอสเต็ม
   castMirrorBeam(lvl,aw,dm,basic){
-    const evo=basic&&basic.evolved;
-    // เล็งบอส/มินิก่อน (จุดขาย: งาดำสู้บอสได้) ไม่งั้นเล็งตัวใกล้สุด
-    let t=null,td=1e9; this.enemies.children.iterate(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini))return; const d=this.dist(e.x,e.y,this.player.x,this.player.y); if(d<td){td=d;t=e;} });
-    if(!t)t=this.nearestEnemy(1300);
-    const ang=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):((this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._sesBeamAng||0));
+    const evo=basic&&basic.evolved, px=this.player.x, py=this.player.y;
+    // v7.9.40 Mirror Network: เส้นแสง งาดำ → กระจกเก่าสุด → … → ใหม่สุด → ศัตรู (บอส/มินิก่อน) · กระจกเกิน 700px ไม่นับ · ไม่มีกระจก = ยิงตรงแบบเดิม
+    const pts=[{x:px,y:py}]; for(const m of this._sesMirrors||[])if(m.ring&&m.ring.active&&this.dist(m.x,m.y,px,py)<=SES_MIRROR_REACH)pts.push(m);
+    const L=pts[pts.length-1], bounces=pts.length-1;
+    let t=null,td=1e9; this.enemies.children.iterate(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini))return; const d=this.dist(e.x,e.y,L.x,L.y); if(d<td&&d<1300){td=d;t=e;} });
+    if(!t){ let nd=1300; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const d=this.dist(e.x,e.y,L.x,L.y); if(d<nd){nd=d;t=e;} }); }
+    const ang=t?Math.atan2(t.y-L.y,t.x-L.x):((!bounces&&this.moveDir&&(this.moveDir.x||this.moveDir.y))?this.moveDir.angle():(this._sesBeamAng||0));
     this._sesBeamAng=ang;
-    const focus=this._sesFocus||0, focusMul=1+focus*0.9, over=focus>0.85;   // ยืนนิ่งชาร์จ Focus → แรงขึ้น + overcharge เมื่อเกือบเต็ม
+    const over=bounces>=3;   // เด้งครบ 3 บาน = รอย Mirror Mark ×2
     const bRad=1+(basic?.ranks.radius||0)*0.12, bPane=basic?.ranks.pane||0, bPow=basic?.ranks.power||0;
     const len=(360+lvl*26)*bRad*(aw?1.2:1)*(evo?1.15:1)*(1+(basic?._pm?.range||0));
-    const wide=(10+lvl*0.9+bPane*2+focus*5)*(basic?.mutation==='fortress'?1.25:1);   // ลำแสงเล็กลง (เดิม 18+lvl*1.6)
+    const wide=(10+lvl*0.9+bPane*2+bounces*1.5)*(basic?.mutation==='fortress'?1.25:1);
     const SL=basic?.lv||{},retreat=SL.p_swift&&(this.elapsed||0)<(this._sesRetreatT||0)?1+.3*SL.p_swift:1; if(retreat>1)this._sesRetreatT=0;   // v7.9.17 Retreat Shot
-    const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*focusMul*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1)*retreat;
-    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0)+(basic?._pm?.count||0), spread=0.12;   // Lv1 ลำเดียว · pane/awaken/evo/unique = เพิ่มลำ
-    const PRISM=0xc86bff;   // สีบีมงาดำ = ม่วงพริซึม (แยกจากสกิลอื่น)
-    // 🔮 ลูกเล่น Mirror Mark: บีมโดน = สะสมรอยกระจก ครบ 5 → แตกระเบิดดาเมจก้อน (โดยเฉพาะบอส)
+    const dmg=(20+lvl*6)*dm*(1+bPow*0.12)*(evo?1.3:1)*(aw?1.25:1)*(basic?.mutation==='retaliate'?1.25:1)*retreat;
+    const beams=1+(evo?1:0)+(aw?1:0)+Math.min(2,bPane)+(this.player.mirrorWard?1:0)+(basic?._pm?.count||0), spread=0.12;   // ลำเสริมแตกออกที่ปลายทาง (จุดสุดท้าย)
+    const PRISM=SES_PRISM;
+    // 🔮 Mirror Mark: บีมโดน = สะสมรอยกระจก ครบ 5 → แตกระเบิดดาเมจก้อน (โดยเฉพาะบอส)
     const markHit=(e)=>{ const need=5; e._sesMark=(e._sesMark||0)+(over?2:1); e._sesMarkT=2.2;
-      if(e._sesMark>=need){ e._sesMark=0; const burst=dmg*((e.isBoss||e.isMini)?1.8:2.6); this.damage(e,burst,e.x,e.y);
+      if(e._sesMark>=need){ e._sesMark=0; const burst=dmg*((e.isBoss||e.isMini)?1.8:2.6); this._mxSrc='sesame.mark'; this.damage(e,burst,e.x,e.y);
         if(this.anims.exists('fx_slash'))this.spawnFxAnim('fx_slash',e.x,e.y,{scale:1.1,depth:8,anchor:'center',tint:PRISM});
         else this.vfxHitRing(e.x,e.y,PRISM,true); this.popDmg(Math.round(burst),e.x,e.y,true); Sfx.boom(); } };
-    for(let k=0;k<beams;k++){ const a=ang+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,k===0?dmg:dmg*0.7,{tint:PRISM,onHit:markHit}); }
-    if(SL.p_facet&&(this._sesEchoN=(this._sesEchoN||0)+1)%(SL.p_facet>=2?3:4)===0)this.artDelay(300,()=>{ if(this.state!=='play'||this.basicAttack!==basic)return; for(let k=0;k<beams;k++){ const a=this._sesBeamAng+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,(k===0?dmg:dmg*0.7)*.5,{tint:PRISM,onHit:markHit}); } });   // v7.9.17 Prism Echo
+    const fireChain=(mul)=>{ const P=pts.filter((q,i)=>i===0||(q.ring&&q.ring.active));
+      for(let i=0;i+1<P.length;i++){ const A=P[i],B=P[i+1],a=Math.atan2(B.y-A.y,B.x-A.x),d=Math.hypot(B.x-A.x,B.y-A.y);
+        this._mxSrc=i?'sesame.bounce':'sesame.beam'; this.fireBeam(a,d,wide,dmg*mul*(1+SES_BOUNCE*i),{tint:PRISM,ox:A.x,oy:A.y,onHit:markHit}); if(i)this.vfxHitRing(A.x,A.y,0xffffff,false); }
+      const E=P[P.length-1],k0=(P.length-1)*SES_BOUNCE; if(P.length>1)this.vfxHitRing(E.x,E.y,0xffffff,false);
+      this._mxSrc=P.length>1?'sesame.bounce':'sesame.beam';
+      for(let k=0;k<beams;k++){ const a=this._sesBeamAng+(k-(beams-1)/2)*spread; this.fireBeam(a,len,wide,(k===0?dmg:dmg*0.7)*mul*(1+k0),{tint:PRISM,ox:E.x,oy:E.y,onHit:markHit}); } };
+    fireChain(1);
+    if(SL.p_facet&&(this._sesEchoN=(this._sesEchoN||0)+1)%(SL.p_facet>=2?3:4)===0)this.artDelay(300,()=>{ if(this.state!=='play'||this.basicAttack!==basic)return; pts[0]={x:this.player.x,y:this.player.y}; fireChain(.5); });   // v7.9.17 Prism Echo
     // คงบทบาทป้องกัน: ลบกระสุนศัตรูรอบตัวเล็กน้อย (ward)
     this.foeBullets.children.iterate(f=>{ if(f&&f.active&&this.dist(f.x,f.y,this.player.x,this.player.y)<70){ this.vfxHitRing(f.x,f.y,PRISM,false); this.killFoe(f); } });
     this.vfxHitRing(this.player.x,this.player.y,over?0xffe08a:PRISM,true); Sfx.beam();
@@ -15276,7 +15287,7 @@ class Game extends Phaser.Scene {
   }
   // Sakura Aura: กลีบอ่านระยะได้ + สะสม Bloom แทนการเผาดาเมจฟรีทุกเฟรม
   // ---- Signature aura ประจำตัว (rework Mint + งาดำ ให้แข็งแรงขึ้น มี DPS always-on) ----
-  clearCharSignature(){this._toxicSfxAt=-Infinity;this._uniqueRankSfxAt=-Infinity; if(this._frostStreams){this._frostStreams.forEach(s=>s&&s.img&&s.img.destroy());this._frostStreams=null;} if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} }
+  clearCharSignature(){this._toxicSfxAt=-Infinity;this._uniqueRankSfxAt=-Infinity; if(this._frostStreams){this._frostStreams.forEach(s=>s&&s.img&&s.img.destroy());this._frostStreams=null;} if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} this.clearSesMirrors(); }
   tickCharSignature(dt){
     const ch=this.character;
     // ❄️ Mint — Frost Lance เป็น Basic Attack แล้ว (ยิงเป็นจังหวะใน castSkill) · signature นี้แค่ดูแล "Ice Torrent" ที่หอกทิ้งไว้
@@ -15285,12 +15296,25 @@ class Game extends Phaser.Scene {
     // 🪞 งาดำ — วงเวทกระจกถาวรWaitบตัว (aura ไม่หาย): ทำดาเมจศัตรูในเขต + ลบกระสุนศัตรูที่เข้าเขต (ward) · Noneจรวด/ไม่ยิง projectile
     if(ch==='sesame'){
       // เอาวงแหวน/field ออกแล้ว (v4.20) — เหลือแค่ Focus: ยืนนิ่งชาร์จ → Mirror Beam แรง+กว้างขึ้น · ขยับ = Focus สลาย
-      const pv=this.player.body?Math.hypot(this.player.body.velocity.x,this.player.body.velocity.y):0, moving=pv>45;
-      if(this._sesFocus==null)this._sesFocus=0;
-      this._sesFocus=moving?Math.max(0,this._sesFocus-dt*1.7):Math.min(1,this._sesFocus+dt*0.5);
+      this.tickSesMirrors(dt);   // v7.9.40 Focus แบบยืนนิ่งเลิกใช้ → Oath Focus = +6%/กระจก (ใน damage())
       if(this._sesField){ this._sesField.destroy(); this._sesField=null; }
-    } else if(this._sesField){ this._sesField.destroy(); this._sesField=null; }
+    } else { if(this._sesField){ this._sesField.destroy(); this._sesField=null; } if(this._sesMirrors&&this._sesMirrors.length)this.clearSesMirrors(); }
   }
+  // 🪞 v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md) — Dash วางกระจก · Mirror Beam เด้งผ่านกระจกเก่า→ใหม่ แล้วออกไปหาศัตรู
+  sesPlaceMirror(x,y){
+    const M=this._sesMirrors||(this._sesMirrors=[]); while(M.length>=SES_MIRROR_MAX)this.sesMirrorGone(M.shift(),false);
+    const ring=this.camWorld(this.add.image(x,y,this.textures.exists('vfx_magic_circle')?'vfx_magic_circle':'vfx_glow').setDisplaySize(64,64).setTint(SES_PRISM).setAlpha(.5).setDepth(4));
+    const shard=this.camWorld(this.add.rectangle(x,y-14,12,30,0xe9e3f6,.9).setStrokeStyle(2,SES_PRISM).setDepth(y+1).setRotation(.35));
+    const m={x,y,life:SES_MIRROR_LIFE,ring,shard,ph:Math.random()*6}; M.push(m);
+    this.tweens.add({targets:ring,scale:{from:ring.scale*.2,to:ring.scale},duration:160,ease:'Back.out'}); this.tweens.add({targets:shard,scale:{from:.2,to:1},duration:160,ease:'Back.out'}); this.vfxHitRing?.(x,y,SES_PRISM,false); return m;
+  }
+  sesMirrorGone(m,broken){ if(!m)return; if(broken){ this.burst?.(m.x,m.y,0xe9e3f6); this.vfxHitRing?.(m.x,m.y,0xffffff,false); } for(const o of [m.ring,m.shard])if(o&&o.active)o.destroy(); }
+  clearSesMirrors(){ for(const m of this._sesMirrors||[])this.sesMirrorGone(m,false); this._sesMirrors=[]; }
+  tickSesMirrors(dt){ const M=this._sesMirrors; if(!M||!M.length)return;
+    for(let i=M.length-1;i>=0;i--){ const m=M[i]; m.life-=dt; m.ph+=dt*2; if(m.life<=0||!m.ring.active){ this.sesMirrorGone(m,false); M.splice(i,1); continue; }
+      const a=m.life<2?Math.max(.15,m.life/2):1; m.ring.setRotation(m.ph*.25).setAlpha(.5*a); m.shard.setAlpha(.9*a).setY(m.y-14+Math.sin(m.ph)*2.5); } }
+  // ท่าใหญ่ของบอส (วงระเบิด/คลื่น) ทำกระจกแตก · ศัตรูธรรมดาไม่ทำ (เจ้าของ 21 ต.ค. ตามแนะนำ)
+  sesMirrorBreak(test){ const M=this._sesMirrors; if(this.character!=='sesame'||!M||!M.length)return; for(let i=M.length-1;i>=0;i--)if(test(M[i].x,M[i].y)){ this.sesMirrorGone(M[i],true); M.splice(i,1); } }
   tickAura(dt){
     const lvl=this.skills&&this.skills.aura;if(!lvl){this.clearAuraFx();return;}
     const aw=lvl>=SKILL_AWAKEN_LV,r=(72+lvl*13)*(aw?1.35:1);this.ensureAuraFx();this._auraAngle=(this._auraAngle||0)+dt*(aw?1.45:1.05);this._sakuraHealCd=Math.max(0,(this._sakuraHealCd||0)-dt);
@@ -15305,7 +15329,7 @@ class Game extends Phaser.Scene {
   }
   fireBeam(ang,len,wide,dmg,opt){
     opt=opt||{}; const tint=opt.tint!=null?opt.tint:0xffe08a, rectColor=opt.tint!=null?opt.tint:0xffe08a;
-    const px=this.player.x, py=this.player.y;
+    const px=opt.ox!=null?opt.ox:this.player.x, py=opt.oy!=null?opt.oy:this.player.y;   // v7.9.40 ox/oy = ยิงจากกระจกงาดำ
     if(this.textures.exists('fx_beam')&&this.anims.exists('fx_beam')){
       const sx=len/ASSET_FX.fx_beam.fw, sy=0.42*(wide/15);
       this.spawnFxAnim('fx_beam',px,py,{rotation:ang,scaleX:sx,scaleY:sy,depth:6,anchor:'left',tint:opt.tint!=null?tint:null});
@@ -15582,7 +15606,7 @@ class Game extends Phaser.Scene {
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=this.relicSyn('firstbite','glass')?1.70:1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini)&&!this._crownTick&&!this.taroIsSecondary?.()&&++this._crownHits>=40&&(this.elapsed||0)>=(this._crownAt||0)){ this._crownHits=0; this._crownAt=(this.elapsed||0)+6; this._crownTick=true; try{ e.knock=Math.max(e.knock||0,0.8); e.setVelocity?.(0,0); e.atkCd=Math.max(e.atkCd||0,1.2); this.floatText?.(e.x,e.y-70,'👑 CROWN BREAK',0xffd166); this.damage(e,this.relicDmg(6),e.x,e.y); } finally{ this._crownTick=false; } } if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
     if(e._arcShockT>(this.elapsed||0))amount*=1+(e._arcShockM||0);   // v7.9.23 Static Shock/Sparks
-    const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;
+    const CP=this._cpas; if(CP&&CP.id==='sesame'&&this._sesMirrors&&this._sesMirrors.length)amount*=1+0.06*Math.min(3,this._sesMirrors.length)*CP.s;   // v7.9.40 Oath Focus = +6%/กระจก
     if(!this._infTick&&!e.isDummy){ const P=this.player; if(P.gearStillDmg&&P.body&&P.body.velocity.length()<25)amount*=1+P.gearStillDmg; if(P.gearOpener&&e.hp>=e.maxhp)amount*=1+P.gearOpener; }   // 🪞 Oath Focus
     if(!e.isDummy&&this.player.forgeMods)amount=forgeDamage(this,e,amount);
     let crit=false; if(!this._frDmg&&(this.player.critChance||this.player.forgeMods&&forgeValue(this.player,96))&&Math.random()<Math.min(STAT_CAPS.critChance,(this.player.critChance||0)+(this.player.forgeMods&&forgeState(this).barrier>0&&(this.elapsed||0)-forgeState(this).lastHurt>=3?forgeValue(this.player,96)/100:0))){ amount*=(this.player.critMul||1.55); crit=true; } if(crit&&!this._infTick){Sfx.crit();if(this.player.forgeMods)forgeCrit(this);}
@@ -16364,6 +16388,7 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:boom,alpha:0,scaleX:boom.scaleX*1.18,scaleY:boom.scaleY*1.18,duration:280,onComplete:()=>boom.destroy()}); }
       this.tweens.add({targets:[warn,inner],alpha:0,duration:180,onComplete:()=>{warn.destroy();inner.destroy();}});
       this.yuzuKnock?.((mx,my)=>this.dist(mx,my,x,y)<r+8);   // v7.9.37 ลูกส้มในวงระเบิดล้ม
+      this.sesMirrorBreak?.((mx,my)=>this.dist(mx,my,x,y)<r+8);   // v7.9.40 กระจกงาดำแตก
       if(this.dist(this.player.x,this.player.y,x,y)<r+8){const hp=this.player.hp;this.hurtPlayer(dmg,0.5);if(this.player.hp<hp&&[0xd95cff,0xb46cff,0x56e5bd,0x53caa4].includes(color)&&this.time.now-(this._toxicSfxAt??-Infinity)>3000){this._toxicSfxAt=this.time.now;Sfx.rewardCue?.('sfx_event_poison_apply',.58);this.floatText(this.player.x,this.player.y-58,'TOXIC HIT',0xb7ffbc);}}
       Sfx.boom();
     });
@@ -16377,7 +16402,7 @@ class Game extends Phaser.Scene {
         onUpdate:(tw)=>{ const rr=track.radius; if(wk){const [w,h]=this.kitSize(wk,rr);wave.setDisplaySize(w,h).setAlpha(0.95*(1-tw.progress*.7));}else wave.setScale((rr*2)/256).setAlpha(0.95*(1-tw.progress));
           const d=this.dist(this.player.x,this.player.y,x,y);
           if(!hitOnce&&Math.abs(d-rr)<28){hitOnce=true;this.hurtPlayer(dmg,0.6);}
-          this.yuzuKnock?.((mx,my)=>Math.abs(this.dist(mx,my,x,y)-rr)<28); },
+          this.yuzuKnock?.((mx,my)=>Math.abs(this.dist(mx,my,x,y)-rr)<28); this.sesMirrorBreak?.((mx,my)=>Math.abs(this.dist(mx,my,x,y)-rr)<28); },
         onComplete:()=>wave.destroy()});
     });
   }
@@ -17000,6 +17025,7 @@ class Game extends Phaser.Scene {
     if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<r)this.applyFreeze(e,0.9*CP.s); }); this.burst(px,py,0x8fe7ff); }
   charPassiveOnDash(){ if(this.character==='sesame'&&this.basicAttack?.lv?.p_swift)this._sesRetreatT=(this.elapsed||0)+2;   // v7.9.17 Retreat Shot
+    if(this.character==='sesame'&&this.state==='play'&&this.player)this.sesPlaceMirror(this.player.x,this.player.y);   // v7.9.40 Mirror Network: Dash ทิ้งกระจก
     const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     if(!this.heroFx?.('bpx_taro_rift_step',px,py,120,{must:true,depth:this.player.depth-1}))this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
   charPassiveOnKill(e){ if(this._titanHold&&this.ptv('trLust')){const p=this.player;p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.01);} const CP=this._cpas; if(!CP||CP.id!=='berry'||Math.random()>0.06)return; const p=this.player; p.hp=Math.min(p.maxhp,p.hp+p.maxhp*0.02*CP.s); }
