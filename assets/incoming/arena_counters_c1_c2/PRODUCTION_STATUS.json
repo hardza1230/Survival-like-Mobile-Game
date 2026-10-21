@@ -1,8 +1,10 @@
 {
   "order": 31,
+  "status": "delivered-source-only",
   "completed": 12,
   "total": 12,
   "frames": 51,
-  "status": "sources complete; final QA in progress",
-  "runtimeIntegrated": false
+  "pendingAssets": [],
+  "runtimeIntegrated": false,
+  "next": "Pack WebP and stage-lazy integrate per order31; preserve kick radius56px, lifetime6s, damage/stun and all fallbacks; owner phone review"
 }

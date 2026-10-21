@@ -1,5 +1,203 @@
 {
-  "status": "technical sources checked; proof compositions pending",
+  "order": 31,
+  "assetCount": 12,
+  "frameCount": 51,
+  "sourceBytes": 1217274,
+  "sourceOnly": true,
+  "checks": {
+    "exactDimensions": true,
+    "png32": true,
+    "fullDecodeCRCAdler": true,
+    "losslessEncodeRoundtrip": true,
+    "hashesRecheckedBeforePublish": true,
+    "transparentFrameEdges": true,
+    "blackVfxFrameEdges": true,
+    "sourceVisualReview": true
+  },
+  "packing": {
+    "A": "Alpha-bbox resized into76% frame envelope; premultiplied-alpha resize, original color preserved; fully transparent RGB cleared. Looping Counters solid-alpha centroid aligned to(63.5,63.5), integer translation with <=0.5px residual per axis; A5 static alternatives keep bbox centering",
+    "B1": "Ring geometric midpoint aligned using median top/bottom bright ring positions; preserve aspect,76% width; hollow center guarded",
+    "B2": "Main white impact core centered before uniform resize; chronological burst size progression retained",
+    "BAlphaPreview": "Actual order22 max(R,G,B)*1.35 alpha, RGB unpremultiply; sources remain opaque black PNG"
+  },
+  "limitations": [
+    "Execution environment offline; npm/build/browser/gameplay and phone visual/FPS not run",
+    "SVG proofs embed exact runtime background and pickup bytes but have not been browser-rendered here",
+    "Loop cadence and rotation/contact alignment need runtime integration review"
+  ],
+  "proofs": [
+    {
+      "path": "qa/stage_c11_46px.svg",
+      "bytes": 485009,
+      "sha256": "b62bffa698518271c3d07ff280c49ec851e6844a226955ad3e004b1095feaddd",
+      "gitBlobSha": "7051a1eb56688f3b349615526cf74485070f4264",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c12_46px.svg",
+      "bytes": 551539,
+      "sha256": "41e43c686d30299950ef375d5b9664922f5b11dde1a13f07947b7d901dfebaf9",
+      "gitBlobSha": "9046e21ba4202de6a67cf91213674933be368c08",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c13_46px.svg",
+      "bytes": 259917,
+      "sha256": "4fac44d32012f156d225eb0cd197442780d22a4a73c960262463c7cbf3e17f5c",
+      "gitBlobSha": "13de811e498c2cbb461e02dce99aa41f0f68ad45",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c14_46px.svg",
+      "bytes": 360769,
+      "sha256": "820e0977edaca857cbdbd498d90eebda28b762bdfeab586cfcd4e6c0928d9d49",
+      "gitBlobSha": "f0ceeb4d2a3b1c794d941b619b24d33e829877af",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c15_46px.svg",
+      "bytes": 273007,
+      "sha256": "93472c0150bbf367308ecfcecda2b4682100fdb6e8a021574f73f1a9c7a5326a",
+      "gitBlobSha": "58d24d0775bea234f835869897d96f6726988c85",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c21_46px.svg",
+      "bytes": 480718,
+      "sha256": "8a218672e144a4696a9e8596a6608380fb71eadfcfd1225712993f3252df9245",
+      "gitBlobSha": "fdb0e1abf63594e400bbe8924628d82d9e43c49a",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c22_46px.svg",
+      "bytes": 386043,
+      "sha256": "1b8684457a5238bf6d16cc54e37e382edc4104d5e541e2fd16e0836fb6bcf84e",
+      "gitBlobSha": "60916cd5b689e8052034b0c9b58668a72a7595b2",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c23_46px.svg",
+      "bytes": 348576,
+      "sha256": "4848449231294afc02d7f25bdec45b5a7f40baade7264e29742d3fef0c283882",
+      "gitBlobSha": "54e55c4f77e9b62ae6f9c04080c7f8a22d51f210",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c24_46px.svg",
+      "bytes": 358450,
+      "sha256": "bf15412d958cd6f9216a67d5738761bb24098b88c50bcf31b311ba303d6dfa78",
+      "gitBlobSha": "a6f4b9e4736a5b063c40e4c74cacfde313d60a42",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/stage_c25_46px.svg",
+      "bytes": 299904,
+      "sha256": "89a28df5d045e1ad7bd712ae3995e095b8bcd385e2015525b252211c2ab4671b",
+      "gitBlobSha": "28e47b26ec8f1a14beaeabefdb791c35c402c1f9",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "qa/all_counters_46px_light_dark.png",
+      "bytes": 283575,
+      "sha256": "68c876aea8f21d24c1d87cbaa67059e9b9f729398c179b90785d17668455d58b",
+      "gitBlobSha": "ee5a29e64fff0f3cb0459c465adbbf60ec270f93",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/shared_vfx_contact.png",
+      "bytes": 94782,
+      "sha256": "6e07c3b83e30c58725d909d6a5836b59a47511c2321079ca7593bcff725f68e5",
+      "gitBlobSha": "bd1c5c5c87d8aae1fdac390cea5e5ee49f566a6d",
+      "mime": "image/png"
+    },
+    {
+      "path": "qa/README.md",
+      "bytes": 794,
+      "sha256": "30f1123212451bd2a4b56b6fe077708369b8f799e409c47b3e89c8b05f7665fc",
+      "gitBlobSha": "3966135abfd3cb6f01cf26ad669003ffff69d895",
+      "mime": "text/markdown"
+    }
+  ],
+  "references": [
+    {
+      "path": "assets/generated/bg1_sour_ant_nest.webp",
+      "bytes": 247234,
+      "sha256": "cb4f7b48b6915a61605ecbb8f3e95364585788aa6f7efeb3a4a4049f0ed1be6c",
+      "gitBlobSha": "8843a6ebd964716b9c712d7e55806447cb8fe09b"
+    },
+    {
+      "path": "assets/generated/bg2_rotting_drain.jpg",
+      "bytes": 302195,
+      "sha256": "1efe213f4459b941fa5137bc1e0dd9cd937bb689094751c9c18b59e7ea9a6057",
+      "gitBlobSha": "d83649bc2596ba7bf563db7c42cb3ce0bb73c4e2"
+    },
+    {
+      "path": "assets/bg3.webp",
+      "bytes": 84112,
+      "sha256": "a5a653df8aff951b5be66488913239050e33ac8f4428755681c1e6ed14226962",
+      "gitBlobSha": "83c63ea420de7f73171f46002140d7d0c697715d"
+    },
+    {
+      "path": "assets/bg4.webp",
+      "bytes": 156110,
+      "sha256": "8d1ced52def88e0c6cee72b72beed2cd22048e7e71db01457ff7da088af3be57",
+      "gitBlobSha": "93c71a8f987464a9ebe0e0cf816c7fcea62051a8"
+    },
+    {
+      "path": "assets/bg5.webp",
+      "bytes": 83814,
+      "sha256": "1e48e9cad28930777904d0c5c101297a47567bc3c310d2ff155ab5b5576750e5",
+      "gitBlobSha": "db2c99df167508984747cf1a5d40361dd9fb7eb1"
+    },
+    {
+      "path": "assets/art/floors/floor_c21.webp",
+      "bytes": 246466,
+      "sha256": "08bc433fb74af6acadc0bc49a6f33315a85ee4650ec5091114cd4b43a96a69b5",
+      "gitBlobSha": "43cc2b0e506cfe9b5b88f712b2a75c94d2caa074"
+    },
+    {
+      "path": "assets/art/floors/floor_c22.webp",
+      "bytes": 176548,
+      "sha256": "c88883765958b86148b352fb2e1bb4050ccd17988a44343d185d6413367722a0",
+      "gitBlobSha": "0805442f7fc4a6a5d5d731651b4f1a44c241550a"
+    },
+    {
+      "path": "assets/art/floors/floor_c23.webp",
+      "bytes": 144472,
+      "sha256": "4f88c8e92b1b58f785fc87e6809b2573e2e3601eaff96977dcb9b6ce7e9cfa41",
+      "gitBlobSha": "85906daac1b3c012602ad2c2a3331fa0b6485182"
+    },
+    {
+      "path": "assets/art/floors/floor_c24.webp",
+      "bytes": 150822,
+      "sha256": "6ca9d1e474cc06b01dd3261bc41dddc3fa5a7a29d2776a47dcebc62499380139",
+      "gitBlobSha": "afc26aa19f4bf6b1f5a2bc0f61e8f12c2fe6f68f"
+    },
+    {
+      "path": "assets/art/floors/floor_c25.webp",
+      "bytes": 110278,
+      "sha256": "0029c8bf989ce9972d3d6a56e9b3a04cf87a4342eeeb9d7271dfcada2f1ed096",
+      "gitBlobSha": "faa0b51720e61addeb41293dc3d0293236630161"
+    },
+    {
+      "path": "assets/art/exp/xp_orbs.webp",
+      "bytes": 82576,
+      "sha256": "4a55a330d9941ee8b4018f1b2035de23d3ba933e927a819d8ec1726724b066b0",
+      "gitBlobSha": "3430c0df35a08c241e0424b6966913414e8b560b"
+    },
+    {
+      "path": "assets/items/heal_mochi_heart.png",
+      "bytes": 78765,
+      "sha256": "587b4a141dff4c7fb64ee4e12397857fcec82ad5dc396cb59cba98504378eea8",
+      "gitBlobSha": "c34e707968cffe2938e2a8ab654c7d3cb3079bda"
+    },
+    {
+      "path": "assets/items/item_magnet_pickup.png",
+      "bytes": 119058,
+      "sha256": "0539b76447fc41f93cd90b31cb6b1e7cbc61aee05966cda455dfab62642477ce",
+      "gitBlobSha": "b5f4c6d85cef25baa681d1e64d49e5aecf191ffc"
+    }
+  ],
   "assets": [
     {
       "key": "counter_c15_dishes",
@@ -105,7 +303,59 @@
         "seamCorrection": "none"
       },
       "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9784,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.8295878152631,
+            69.21526235465886
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10809,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            67.3270813847842,
+            68.9857854655754
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10607,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            64.50395054054401,
+            64.51136546705769
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10885,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            61.50848787114244,
+            68.5905400470939
+          ]
+        },
+        {
+          "frame": 4,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10072,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            64.22005897747654,
+            67.10609180215678
+          ]
+        }
+      ]
     },
     {
       "key": "counter_c21_pod",
@@ -124,8 +374,8 @@
       "anchor": "center",
       "holdFrame": null,
       "bytes": 90717,
-      "sha256": "c58dcfb1f81df41254bd40235ee73f2f089c199f218924571038970618ecfed2",
-      "gitBlobSha": "c37a0ad8559f38706512b931a116b1470be9f01e",
+      "sha256": "bec2b977b46ba9ae43401ade0c217b33cc1d430e8514759ab1567b24508ddc3a",
+      "gitBlobSha": "7c534901a68872c67aa2d1a30b0e3df67e1c8c55",
       "source": {
         "width": 1332,
         "height": 1181,
@@ -140,64 +390,114 @@
           {
             "frame": 0,
             "bounds": [
-              20,
-              15,
-              108,
-              112
+              21,
+              8,
+              109,
+              105
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9935846030473136,
+            "centerBrightFraction": 0.9807538091419407,
             "seamMax": 0
           },
           {
             "frame": 1,
             "bounds": [
-              20,
-              15,
-              108,
-              112
+              21,
+              8,
+              109,
+              105
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9927826784282278,
+            "centerBrightFraction": 0.9799518845228549,
             "seamMax": 0
           },
           {
             "frame": 2,
             "bounds": [
-              20,
-              15,
-              108,
-              112
+              21,
+              8,
+              109,
+              105
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.991980753809142,
+            "centerBrightFraction": 0.9783480352846833,
             "seamMax": 0
           },
           {
             "frame": 3,
             "bounds": [
-              20,
-              15,
-              108,
-              112
+              21,
+              8,
+              109,
+              105
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9935846030473136,
+            "centerBrightFraction": 0.9807538091419407,
             "seamMax": 0
           }
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10588,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.75136960215621,
+            63.75395573328646
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10573,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.73112786357316,
+            63.68811095659811
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10584,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.785741386660185,
+            63.65492145852896
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10572,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.84668447909627,
+            63.71614753612216
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.3466844790962682,
+        "maxResidualAt46px": 0.12458973467522139
+      }
     },
     {
       "key": "vfx_counter_ring",
@@ -289,7 +589,37 @@
         "seamCorrection": "none"
       },
       "counterAlignment": "not applicable",
-      "visualQA": "pending"
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 16384,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 16384,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 16384,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 16384,
+          "solidAlphaCentroid": null
+        }
+      ]
     },
     {
       "key": "counter_c12_sponge",
@@ -307,9 +637,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 73725,
-      "sha256": "98a3e8e3af360d135f42a4c96d02d336d348bc44d8c3e1df8e31efca42a31367",
-      "gitBlobSha": "7a62ccc8fdd7118bf539c64bd3b4db05a3a81f1b",
+      "bytes": 73703,
+      "sha256": "1f131bec0b9871527f246bd620eea7a93e0d70634bd6ab6274e7641d57be6a03",
+      "gitBlobSha": "7ad99e24fd1550ad1427956c4cdad747d5c27c9f",
       "source": {
         "width": 1536,
         "height": 1024,
@@ -325,9 +655,9 @@
             "frame": 0,
             "bounds": [
               15,
-              28,
+              30,
               112,
-              99
+              101
             ],
             "alphaMin": 0,
             "alphaMax": 253,
@@ -339,9 +669,9 @@
             "frame": 1,
             "bounds": [
               15,
-              28,
+              29,
               112,
-              100
+              101
             ],
             "alphaMin": 0,
             "alphaMax": 253,
@@ -353,9 +683,9 @@
             "frame": 2,
             "bounds": [
               15,
-              27,
+              28,
               112,
-              100
+              101
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -367,9 +697,9 @@
             "frame": 3,
             "bounds": [
               15,
-              28,
+              29,
               112,
-              100
+              101
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -380,8 +710,58 @@
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11670,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.073925789297434,
+            63.868989864100755
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11654,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.53134619532612,
+            63.6533575634578
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11631,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.07986192024764,
+            63.47411700259117
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11705,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.331473867826624,
+            63.81546159111484
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.42607421070256635,
+        "maxResidualAt46px": 0.15312041947123478
+      }
     },
     {
       "key": "counter_c13_pan",
@@ -399,9 +779,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 68351,
-      "sha256": "2686b3a2a05af57b86506cb6293b71b59089c96d06761dee6080fbee6ba0a9b6",
-      "gitBlobSha": "ce83ce3ed56b46a59f4d1b46f3dc9ed5211f584d",
+      "bytes": 68202,
+      "sha256": "6bef7bdcf3e625b892fbc7aa164c661a67f0661f40ee63ecdbb69b9d9f977c69",
+      "gitBlobSha": "c1740ff87d58d567ea676f608362085b3be96d5c",
       "source": {
         "width": 1774,
         "height": 887,
@@ -416,64 +796,114 @@
           {
             "frame": 0,
             "bounds": [
-              15,
-              26,
-              112,
-              101
+              22,
+              22,
+              119,
+              97
             ],
             "alphaMin": 0,
             "alphaMax": 253,
             "nonempty": true,
-            "centerBrightFraction": 0.8500400962309543,
+            "centerBrightFraction": 0.946271050521251,
             "seamMax": 0
           },
           {
             "frame": 1,
             "bounds": [
-              15,
-              25,
-              112,
-              103
+              22,
+              19,
+              119,
+              97
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.8075380914194066,
+            "centerBrightFraction": 0.9454691259021651,
             "seamMax": 0
           },
           {
             "frame": 2,
             "bounds": [
-              15,
-              27,
-              112,
-              101
+              22,
+              23,
+              119,
+              97
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.8356054530874097,
+            "centerBrightFraction": 0.9454691259021651,
             "seamMax": 0
           },
           {
             "frame": 3,
             "bounds": [
-              15,
-              26,
-              112,
-              102
+              22,
+              21,
+              119,
+              97
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.813953488372093,
+            "centerBrightFraction": 0.9430633520449078,
             "seamMax": 0
           }
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11958,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.3777780334716,
+            63.354749289011366
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11949,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.456177286061134,
+            63.2430809264493
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11999,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.30870401443601,
+            63.447500891141615
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11993,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.336330886561576,
+            63.46069760066828
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.2569190735506979,
+        "maxResidualAt46px": 0.09233029205728205
+      }
     },
     {
       "key": "counter_c14_ice",
@@ -491,9 +921,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 88451,
-      "sha256": "91d73224cc49fbbfe39910498d7a2cbca67aa3ba9700c03c6c4d02c5a6d3f15d",
-      "gitBlobSha": "f540533a173f4252c47f092e7f333832c9b1623e",
+      "bytes": 88461,
+      "sha256": "bada465f42677cfde27083508e03b7dc70e7065ed1088327b992c89c6e0a17d5",
+      "gitBlobSha": "c4ef40b243e8b76d4c2e5f7a7209bee0c74be696",
       "source": {
         "width": 1322,
         "height": 1190,
@@ -508,10 +938,10 @@
           {
             "frame": 0,
             "bounds": [
-              22,
-              15,
-              106,
-              112
+              21,
+              13,
+              105,
+              110
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -523,9 +953,9 @@
             "frame": 1,
             "bounds": [
               22,
-              15,
+              13,
               106,
-              112
+              110
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -537,9 +967,9 @@
             "frame": 2,
             "bounds": [
               21,
-              15,
+              13,
               106,
-              112
+              110
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -551,9 +981,9 @@
             "frame": 3,
             "bounds": [
               22,
-              15,
+              13,
               106,
-              112
+              110
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -564,8 +994,58 @@
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10150,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.03111690575073,
+            63.7430519504598
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10180,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.79677200269011,
+            63.836534088758974
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10070,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.33027679864934,
+            63.641237038018765
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10157,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.82714955950823,
+            63.63122448048164
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.46888309424927144,
+        "maxResidualAt46px": 0.16850486199583192
+      }
     },
     {
       "key": "counter_c22_mushroom",
@@ -583,9 +1063,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 71626,
-      "sha256": "f1a6d5510c1e95f9ec7afd7b07aeca7a1d4ba33845c87c00a4144d8b9a3b6a36",
-      "gitBlobSha": "f1bdaf00568821d814cb12eea2aec0c60e4bfe99",
+      "bytes": 71317,
+      "sha256": "7a8b9b7f1895d674d030a7e587276a208ef91a672cf70aae764f9c6524630856",
+      "gitBlobSha": "474f4f32e78e7000647a2647bd59902f766911b4",
       "source": {
         "width": 1274,
         "height": 1235,
@@ -600,10 +1080,24 @@
           {
             "frame": 0,
             "bounds": [
+              16,
+              22,
+              113,
+              108
+            ],
+            "alphaMin": 0,
+            "alphaMax": 254,
+            "nonempty": true,
+            "centerBrightFraction": 0.9983961507618284,
+            "seamMax": 0
+          },
+          {
+            "frame": 1,
+            "bounds": [
+              16,
               15,
-              21,
-              112,
-              107
+              113,
+              108
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -612,52 +1106,88 @@
             "seamMax": 0
           },
           {
-            "frame": 1,
-            "bounds": [
-              15,
-              17,
-              112,
-              110
-            ],
-            "alphaMin": 0,
-            "alphaMax": 254,
-            "nonempty": true,
-            "centerBrightFraction": 1,
-            "seamMax": 0
-          },
-          {
             "frame": 2,
             "bounds": [
-              15,
-              23,
-              112,
-              104
+              18,
+              25,
+              115,
+              106
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9951884522854851,
+            "centerBrightFraction": 0.9983961507618284,
             "seamMax": 0
           },
           {
             "frame": 3,
             "bounds": [
-              15,
-              24,
-              112,
-              104
+              18,
+              25,
+              115,
+              105
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9975942261427426,
+            "centerBrightFraction": 0.9983961507618284,
             "seamMax": 0
           }
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10471,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.532317437144386,
+            63.11940286032495
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10520,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.523474218042026,
+            63.437340639300245
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11126,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.82909212850289,
+            63.90734532226639
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11238,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.363203761911606,
+            63.86280814748827
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.4073453222663872,
+        "maxResidualAt46px": 0.1463897251894829
+      }
     },
     {
       "key": "counter_c23_honey",
@@ -676,8 +1206,8 @@
       "anchor": "center",
       "holdFrame": null,
       "bytes": 110077,
-      "sha256": "a2b6b3e35401788633f6826de65e457c6734eb5a0567d66bc1bba8288c436178",
-      "gitBlobSha": "8db31580506bb5bcc9897503fdfc467ecd8ddf07",
+      "sha256": "374d5e8cd1274e6cd4f3b33297d6b01b79fd5886b64089c339eb876b7583fcda",
+      "gitBlobSha": "966364c3c9b5aff02f8d067502ee801d8ad53e13",
       "source": {
         "width": 1312,
         "height": 1199,
@@ -693,9 +1223,9 @@
             "frame": 0,
             "bounds": [
               15,
-              15,
+              16,
               112,
-              112
+              113
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -707,9 +1237,9 @@
             "frame": 1,
             "bounds": [
               15,
-              15,
+              16,
               112,
-              112
+              113
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -748,8 +1278,58 @@
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9255,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.25015820306561,
+            63.6845749285863
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9210,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.35043837176854,
+            63.85035316775926
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9306,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.12412351426302,
+            63.14477846224523
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9274,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.414015295948616,
+            63.053022038469116
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.44697796153088376,
+        "maxResidualAt46px": 0.16063270492516135
+      }
     },
     {
       "key": "counter_c24_season_seed",
@@ -767,9 +1347,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 114741,
-      "sha256": "c240f40eccd49459239e3b53ba048cebe923ccff9c9e9d9427c12f940c050ad7",
-      "gitBlobSha": "98a8029d5dbd128352cd2bf46f7d9a1da0cf43dc",
+      "bytes": 114656,
+      "sha256": "7da2b0e59b37ff5dcd22c9aec464a6261fa50544c81d9e385f997639c2c1faa8",
+      "gitBlobSha": "54139a8c3399c777ac1ab66e74d6d1f30147b74d",
       "source": {
         "width": 1289,
         "height": 1221,
@@ -784,24 +1364,24 @@
           {
             "frame": 0,
             "bounds": [
-              15,
-              15,
-              112,
-              112
+              16,
+              11,
+              113,
+              108
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9943865276663993,
+            "centerBrightFraction": 0.9975942261427426,
             "seamMax": 0
           },
           {
             "frame": 1,
             "bounds": [
               15,
-              16,
+              13,
               112,
-              111
+              108
             ],
             "alphaMin": 0,
             "alphaMax": 253,
@@ -813,9 +1393,9 @@
             "frame": 2,
             "bounds": [
               15,
-              17,
+              15,
               112,
-              110
+              108
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -827,21 +1407,71 @@
             "frame": 3,
             "bounds": [
               15,
-              16,
+              12,
               112,
-              112
+              108
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9967923015236567,
+            "centerBrightFraction": 0.9951884522854851,
             "seamMax": 0
           }
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9017,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.34925870875059,
+            63.253134425980925
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 8953,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.2261153653254,
+            63.05011529807986
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9127,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.24896669056087,
+            63.080274185988806
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9081,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.06827255675416,
+            63.25249908665571
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.44988470192014063,
+        "maxResidualAt46px": 0.16167731475255054
+      }
     },
     {
       "key": "counter_c25_root_seed",
@@ -859,9 +1489,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 93571,
-      "sha256": "ec6e7a3d0ce7651ee522e570a41f219ceeb20c2806511fc4e8e4ad90e7921c59",
-      "gitBlobSha": "f7a5104615fdd519ea766bbf9d42f95a2c69580c",
+      "bytes": 93588,
+      "sha256": "f4bdd05afa1aa73ecf1c8239a4c0e88a8d2cac17a7ab979ebf648ccbbe7c92a6",
+      "gitBlobSha": "eada45eb3ca1373c17f389046fc8c0c4ec943971",
       "source": {
         "width": 1263,
         "height": 1246,
@@ -876,64 +1506,114 @@
           {
             "frame": 0,
             "bounds": [
-              17,
-              15,
-              110,
-              112
+              18,
+              12,
+              111,
+              109
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.92542101042502,
+            "centerBrightFraction": 0.97514033680834,
             "seamMax": 0
           },
           {
             "frame": 1,
             "bounds": [
               18,
-              15,
+              12,
               110,
-              112
+              109
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9558941459502807,
+            "centerBrightFraction": 0.9895749799518845,
             "seamMax": 0
           },
           {
             "frame": 2,
             "bounds": [
               18,
-              15,
+              11,
               110,
-              112
+              108
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.8853247794707297,
+            "centerBrightFraction": 0.9623095429029671,
             "seamMax": 0
           },
           {
             "frame": 3,
             "bounds": [
-              17,
-              15,
-              111,
-              112
+              16,
+              13,
+              110,
+              110
             ],
             "alphaMin": 0,
             "alphaMax": 254,
             "nonempty": true,
-            "centerBrightFraction": 0.9350441058540497,
+            "centerBrightFraction": 0.9679230152365678,
             "seamMax": 0
           }
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10802,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.67758720972337,
+            63.07863034938775
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10528,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.10831263304093,
+            63.50014033891667
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 11052,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.903389567509805,
+            63.62781544141642
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 10590,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.149790413772074,
+            63.886935853021456
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.42136965061224885,
+        "maxResidualAt46px": 0.15142971818877693
+      }
     },
     {
       "key": "vfx_counter_hit",
@@ -1053,7 +1733,51 @@
         "seamCorrection": "none"
       },
       "counterAlignment": "not applicable",
-      "visualQA": "pending"
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 65536,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 65536,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 65536,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 65536,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 4,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 65536,
+          "solidAlphaCentroid": null
+        },
+        {
+          "frame": 5,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 0,
+          "fullyOpaquePixels": 65536,
+          "solidAlphaCentroid": null
+        }
+      ]
     },
     {
       "key": "counter_c11_egg",
@@ -1071,9 +1795,9 @@
       "loop": true,
       "anchor": "center",
       "holdFrame": null,
-      "bytes": 98987,
-      "sha256": "072657d78cd5bac015ae1ad26af4d6d9bc37d7eb00d47e140802d957b5d9d7e1",
-      "gitBlobSha": "fb5a6b5cfa66d2ee158a996c1fa8c21d90c6f4cf",
+      "bytes": 98977,
+      "sha256": "664e28f2e8c9ac4296b7381d0bd94e1a46d367b255662adadb1bd6d82e9b797d",
+      "gitBlobSha": "55d4b7f349bd783179d0e0bf58d3a11f08ea3490",
       "source": {
         "width": 1536,
         "height": 1024,
@@ -1088,10 +1812,10 @@
           {
             "frame": 0,
             "bounds": [
-              19,
-              15,
-              108,
-              112
+              18,
+              12,
+              107,
+              109
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -1102,10 +1826,10 @@
           {
             "frame": 1,
             "bounds": [
-              19,
-              15,
-              108,
-              112
+              18,
+              12,
+              107,
+              109
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -1116,10 +1840,10 @@
           {
             "frame": 2,
             "bounds": [
-              20,
-              15,
-              108,
-              112
+              18,
+              12,
+              106,
+              109
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -1131,9 +1855,9 @@
             "frame": 3,
             "bounds": [
               17,
-              15,
+              12,
               111,
-              112
+              109
             ],
             "alphaMin": 0,
             "alphaMax": 254,
@@ -1144,8 +1868,58 @@
         ],
         "seamCorrection": "none"
       },
-      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
-      "visualQA": "pending"
+      "counterAlignment": "Per-cell alpha bbox resized into76% frame envelope, preserve aspect; looping Counters solid-alpha centroid anchored at(63.5,63.5) within0.5px per axis",
+      "visualQA": "Selected source and 46px light/dark contact inspected; no text/dividers/character contamination. Actual-floor/EXP/pickup SVG source compositions provided; browser/phone rendering pending.",
+      "additionalQA": [
+        {
+          "frame": 0,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9627,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.30391555256207,
+            63.48950946800461
+          ]
+        },
+        {
+          "frame": 1,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9599,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.58577218947318,
+            63.64095710250945
+          ]
+        },
+        {
+          "frame": 2,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9607,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.39875156282797,
+            63.49433305651125
+          ]
+        },
+        {
+          "frame": 3,
+          "edgeBad": 0,
+          "fullyTransparentPixels": 9572,
+          "fullyOpaquePixels": 0,
+          "solidAlphaCentroid": [
+            63.41001863048646,
+            63.610353651860294
+          ]
+        }
+      ],
+      "pivotQA": {
+        "target": [
+          63.5,
+          63.5
+        ],
+        "maxResidual128px": 0.19608444743793285,
+        "maxResidualAt46px": 0.07046784829800712
+      }
     }
   ]
 }

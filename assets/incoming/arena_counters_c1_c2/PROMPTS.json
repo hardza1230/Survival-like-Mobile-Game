@@ -1,86 +1,172 @@
-[
-  {
-    "key": "counter_c15_dishes",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 5 columns by 1 rows, 5 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. Five DIFFERENT delicious plated food icons in ONE horizontal row of FIVE equal square cells. Cell1 strawberry layer cake slice, Cell2 roasted chicken drumstick, Cell3 glazed donut with sprinkles, Cell4 caramel flan pudding, Cell5 golden pie wedge. Each food on identical white porcelain plate with thin gold #ffcf6a rim. Every plate same size/angle and centered. These are five separate STATIC alternatives, NOT animation. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. ",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c21_pod",
-    "prompt": "undefined Do not add a pink mochi character or previous objects. Only this specified asset.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": "Selected revision uses shorter tether and safe cell margins"
-  },
-  {
-    "key": "vfx_counter_ring",
-    "prompt": "undefined",
-    "transparentBackground": false,
-    "reference": "Edit of first rejected ring sheet; num_last_images_to_include=1",
-    "notes": "Selected revision removes unwanted character; only empty ring retained"
-  },
-  {
-    "key": "counter_c12_sponge",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A chunky yellow dishwashing sponge with visible large round porous holes and dark green scrubber underside, soaked in murky water, a few cyan #62e5cf soap bubbles hugging its edges. Heavy rectangular squishy object, no bucket. Four subtle idle frames, only one bubble/glint moves, body stays fixed. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c13_pan",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A small heavy dark iron frying pan with a short thick handle toward lower right, sizzling orange #ff5a1f cooking oil glowing inside and one tiny wisp of smoke. No fried egg, no food. Whole pan and handle clearly readable. Four subtle idle frames, pan orientation and center fixed, tiny oil bubble/light changes. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c14_ice",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A large hefty transparent sky-blue #8fdcff ICE CUBE with square block silhouette and soft chamfered corners, topped with a creamy vanilla dollop dripping down one side. Clearly an ice cube with cream, NOT a faceted crystal or EXP gem. Four subtle idle frames, fixed cube orientation, one edge glint drifts. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c22_mushroom",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A squat chunky purple #b46cff mushroom with broad rounded domed cap, large ivory white spots and thick short ivory stem, one or two tiny purple spores hugging its silhouette. Heavy sturdy physical ground object, no face. Four subtle idle frames, fixed center/orientation, one drifting spore. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c23_honey",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A chunky golden amber #ffc95c jelly-like royal honey mass held in a thick HEXAGONAL honeycomb cup, clearly six-sided honeycomb structure, thick glossy honey drooping over the lip. No jar, no heart, no crystal. Four subtle idle frames, fixed orientation and center, syrup highlight shifts slightly. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c24_season_seed",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A large golden round clock seed with two clear simple clock hands on its round brass shell, surrounded by exactly FOUR thick petal lobes for seasons: fresh mint green, warm yellow, burnt orange, ice blue. No digits/text. Seed has woody/organic heft, NOT a pickup coin. Four subtle idle frames, no whole-object rotation, fixed center, one glint. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c25_root_seed",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A large purple #d56bff root seed sprout with a bulbous woody base, two chunky curling violet roots and two small thick leaves, wearing a TINY GOLD CROWN at its top. Heavy organic seed rather than heart or crystal pickup. Four subtle idle frames, crown/root center fixed, one rim glint. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "vfx_counter_hit",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 3 columns by 2 rows, 6 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. SIX chronological frames of a single white-gold impact VFX on pure black. 3 columns x2rows, row-major. F1 compact sharp star contact flash, F2 expanding starburst, F3 largest burst with broken circular shock ring, F4 fading ring with THREE tiny stun stars orbiting upper arc, F5 sparse orbit stars and fading fragments, F6 almost fully faded few glints. Keep origin exact center throughout. Pure white pale gold tint-ready light only, no object/background. No red, no purple. Opaque PERFECT PURE BLACK #000000 background, no gray panel, no dividers, do not add a floor. All dark empty pixels black. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale.  Do not add a pink mochi character or previous objects. Only this specified asset.",
-    "transparentBackground": false,
-    "reference": "new text generation",
-    "notes": null
-  },
-  {
-    "key": "counter_c11_egg",
-    "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A single large plump ivory ant EGG, thin translucent white shell and luminous acid-green #9dff45 slime clinging around its base/one side, one tiny green acid bubble rising just beside shell. Organic egg, no face, not a crystal. Four subtle idle frames, egg center fixed, one bubble/glint moves. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
-    "transparentBackground": true,
-    "reference": "new text generation",
-    "notes": null
-  }
-]
+{
+  "generator": "built-in ImageGen",
+  "order": 31,
+  "assets": [
+    {
+      "key": "counter_c15_dishes",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 5 columns by 1 rows, 5 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. Five DIFFERENT delicious plated food icons in ONE horizontal row of FIVE equal square cells. Cell1 strawberry layer cake slice, Cell2 roasted chicken drumstick, Cell3 glazed donut with sprinkles, Cell4 caramel flan pudding, Cell5 golden pie wedge. Each food on identical white porcelain plate with thin gold #ffcf6a rim. Every plate same size/angle and centered. These are five separate STATIC alternatives, NOT animation. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. ",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 2172,
+        "height": 724,
+        "bytes": 1204217,
+        "sha256": "6bd49ee91682bc0e5090157f626f6b166b2e87821a016c0935a3556d5c7d03dd"
+      }
+    },
+    {
+      "key": "counter_c21_pod",
+      "prompt": "undefined Do not add a pink mochi character or previous objects. Only this specified asset.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": "Selected revision uses shorter tether and safe cell margins",
+      "selectedSource": {
+        "width": 1332,
+        "height": 1181,
+        "bytes": 1187426,
+        "sha256": "b4d815acfe80fc3e31bb6979bec95bcd4dbd32470f3ec0bacd9d6013542c1688"
+      }
+    },
+    {
+      "key": "vfx_counter_ring",
+      "prompt": "undefined",
+      "transparentBackground": false,
+      "reference": "Edit of first rejected ring sheet; num_last_images_to_include=1",
+      "notes": "Selected revision removes unwanted character; only empty ring retained",
+      "selectedSource": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 761535,
+        "sha256": "5804c63560b01f22cee2cffb7a8943ba9bd07a26c729adee3abf8558504d1f52"
+      }
+    },
+    {
+      "key": "counter_c12_sponge",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A chunky yellow dishwashing sponge with visible large round porous holes and dark green scrubber underside, soaked in murky water, a few cyan #62e5cf soap bubbles hugging its edges. Heavy rectangular squishy object, no bucket. Four subtle idle frames, only one bubble/glint moves, body stays fixed. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 2052536,
+        "sha256": "9b102dd7b7ddd59b786c994c25685f021c313c0fbd3ac58f51096b572fadd355"
+      }
+    },
+    {
+      "key": "counter_c13_pan",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A small heavy dark iron frying pan with a short thick handle toward lower right, sizzling orange #ff5a1f cooking oil glowing inside and one tiny wisp of smoke. No fried egg, no food. Whole pan and handle clearly readable. Four subtle idle frames, pan orientation and center fixed, tiny oil bubble/light changes. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 723323,
+        "sha256": "96ce76f113e59ecf6cab5ec2679379c6124100401b8191d91b960987e1fdc24b"
+      }
+    },
+    {
+      "key": "counter_c14_ice",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A large hefty transparent sky-blue #8fdcff ICE CUBE with square block silhouette and soft chamfered corners, topped with a creamy vanilla dollop dripping down one side. Clearly an ice cube with cream, NOT a faceted crystal or EXP gem. Four subtle idle frames, fixed cube orientation, one edge glint drifts. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1322,
+        "height": 1190,
+        "bytes": 1248725,
+        "sha256": "a13b5dfd308a260684407fb7cdb49cbd6cfdaa45abc132c1d4c54225909613c2"
+      }
+    },
+    {
+      "key": "counter_c22_mushroom",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A squat chunky purple #b46cff mushroom with broad rounded domed cap, large ivory white spots and thick short ivory stem, one or two tiny purple spores hugging its silhouette. Heavy sturdy physical ground object, no face. Four subtle idle frames, fixed center/orientation, one drifting spore. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Only the specified standalone physical object repeated for animation; no characters, faces, mochi creatures or rings.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1274,
+        "height": 1235,
+        "bytes": 939198,
+        "sha256": "a070bce26d3417d6946c5d1bb5418b2db497811a82358f7acadfb09c0ae45b99"
+      }
+    },
+    {
+      "key": "counter_c23_honey",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A chunky golden amber #ffc95c jelly-like royal honey mass held in a thick HEXAGONAL honeycomb cup, clearly six-sided honeycomb structure, thick glossy honey drooping over the lip. No jar, no heart, no crystal. Four subtle idle frames, fixed orientation and center, syrup highlight shifts slightly. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1312,
+        "height": 1199,
+        "bytes": 1495338,
+        "sha256": "527b3760eb0d7fca37aafe1c08c8027249941be191651dfc5313998f4e1d3db9"
+      }
+    },
+    {
+      "key": "counter_c24_season_seed",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A large golden round clock seed with two clear simple clock hands on its round brass shell, surrounded by exactly FOUR thick petal lobes for seasons: fresh mint green, warm yellow, burnt orange, ice blue. No digits/text. Seed has woody/organic heft, NOT a pickup coin. Four subtle idle frames, no whole-object rotation, fixed center, one glint. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1289,
+        "height": 1221,
+        "bytes": 1565971,
+        "sha256": "2acb583f2ba790140a0c467dd1e20520c4137027acf7cff5ed66921f391d56c0"
+      }
+    },
+    {
+      "key": "counter_c25_root_seed",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A large purple #d56bff root seed sprout with a bulbous woody base, two chunky curling violet roots and two small thick leaves, wearing a TINY GOLD CROWN at its top. Heavy organic seed rather than heart or crystal pickup. Four subtle idle frames, crown/root center fixed, one rim glint. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1263,
+        "height": 1246,
+        "bytes": 1487773,
+        "sha256": "c54ac7e1d4be1f8d66eb123d23fcfe2073f4e0f59888214c2f369b73b6b47272"
+      }
+    },
+    {
+      "key": "vfx_counter_hit",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 3 columns by 2 rows, 6 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. SIX chronological frames of a single white-gold impact VFX on pure black. 3 columns x2rows, row-major. F1 compact sharp star contact flash, F2 expanding starburst, F3 largest burst with broken circular shock ring, F4 fading ring with THREE tiny stun stars orbiting upper arc, F5 sparse orbit stars and fading fragments, F6 almost fully faded few glints. Keep origin exact center throughout. Pure white pale gold tint-ready light only, no object/background. No red, no purple. Opaque PERFECT PURE BLACK #000000 background, no gray panel, no dividers, do not add a floor. All dark empty pixels black. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale.  Do not add a pink mochi character or previous objects. Only this specified asset.",
+      "transparentBackground": false,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 976938,
+        "sha256": "c83b0759bbcddb44e120d7594d33c45b8a64434e427def350317fef05a46f434"
+      }
+    },
+    {
+      "key": "counter_c11_egg",
+      "prompt": "Create a polished professional sprite sheet for Mochi Mayhem, cute pastel confectionery fantasy mobile action game. Soft clean dark colored outlines, glossy candy-like highlights, 2-3 soft shading levels, 3/4 top-down view, readable strong simple silhouette at 46px, coherent hand-painted mobile game art. EXACT 2 columns by 2 rows, 4 equal square cells, row-major. Each object's body centered identically inside its cell, approximately 75% cell width/height, generous empty margin and no overlap across cells. A single large plump ivory ant EGG, thin translucent white shell and luminous acid-green #9dff45 slime clinging around its base/one side, one tiny green acid bubble rising just beside shell. Organic egg, no face, not a crystal. Four subtle idle frames, egg center fixed, one bubble/glint moves. Isolated on REAL transparent background, no backdrop, no floor, no large drop shadow, no checkerboard, no white fringe. No text, labels, numbers, watermarks, grid lines, frames, UI, decorative panel, or separator lines. All elements fully inside their cells; consistent lighting and scale. The four frames form a calm seamless idle loop, no rotating the entire object, no translation of the main body, no sudden changes or morphing. Do not add a pink mochi character or previous objects. Only this specified asset.",
+      "transparentBackground": true,
+      "reference": "new text generation",
+      "notes": null,
+      "selectedSource": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1666267,
+        "sha256": "979fe3c1e70b7541a9ceeb31e4f042af24787be21c7a8bf061cbc9d634c16872"
+      }
+    }
+  ],
+  "rejectedVariants": [
+    {
+      "key": "vfx_counter_ring",
+      "reason": "Unwanted character above ring; replaced with empty ring via ImageGen edit"
+    },
+    {
+      "key": "counter_c21_pod",
+      "reason": "Long tether clipped source cell and changed apparent body scale; replaced by short-tether generation"
+    }
+  ]
+}

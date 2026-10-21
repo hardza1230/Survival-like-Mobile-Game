@@ -2,6 +2,10 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery31 — C1–C2 arena Counters
+
+12 PNG32 source assets /51 frames delivered to assets/incoming/arena_counters_c1_c2/, with array manifest, ImageGen prompts, full PNG/hash QA, 46px actual-floor/EXP/magnet comparison pages and byte readback verification. Source-only; runtime version unchanged. Next: pack WebP and integrate per order31, keeping fallback/56px kick/6s lifetime/damage/stun unchanged; owner phone visual/FPS pending.
+
 # Art delivery30 — C3 and Pinnacle boss VFX
 
 48 PNG32 sources /226 frames delivered to assets/incoming/boss_vfx_c3/, with array manifest, built-in ImageGen prompts, source provenance, technical QA, actual runtime-floor proof pages and byte readback verification. Source-only; runtime v7.9.28 unchanged. Next: pack A/B with existing max-channel alpha/unpremultiply pipeline, preserve C alpha, stage-lazy integration + owner phone review. No C1-C2 Counter extras.
@@ -496,7 +500,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 29:** ผูกครบแล้ว v7.9.26–27 (รวมเงา) · รอตรวจภาพ/FPS บนมือถือ
 - **ใบสั่งอาร์ต 30:** ส่งครบ 48 ไฟล์และผูกแล้ว v7.9.29 · รอตรวจภาพ/FPS บนมือถือ
 - **ใบ 18 J:** ไอคอน Storm Mark ผูกแล้ว v7.9.28 · รอดูบนมือถือ
-- **ใบสั่งอาร์ต 31 (21 ต.ค.):** Counter C1–C2 10 ชิ้น + วง/เอฟเฟกต์ชนกลาง 2 · รออาร์ตส่ง `assets/incoming/arena_counters_c1_c2/`
+- **ใบสั่งอาร์ต 31 (21 ต.ค.):** ส่งครบ Counter C1–C2 10 ชิ้น + วง/เอฟเฟกต์ชนกลาง 2 (12 PNG32 /51 เฟรม) ที่ assets/incoming/arena_counters_c1_c2/ พร้อม MANIFEST/QA/readback proof · พร้อมแพ็กและเชื่อม runtime
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **v7.9.11 ครบแล้ว:** บอส C3 ทั้ง 5 + Pinnacle + มินิ C1-3/4/5, C2-1, C3 ทั้ง 5 มีท่าเฉพาะใน BOSS_KITS (C1-2 มินิใช้ชุดของบอส Drain) · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ครบทุกบอส v7.9.13 (นำร่อง 3) + v7.9.15 (อีก 12 + Pinnacle)** · รอเจ้าของเล่นปรับจังหวะ · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก
 - **ใบสั่งอาร์ต 22 (18 ต.ค.):** เอฟเฟกต์ท่าบอส C1–C2 59 ไฟล์ — บอส C1–C2 มีท่าเฉพาะแล้วแต่ใช้ภาพกลาง (vfx_telegraph/fx_bossnova/vfx_cream_ring/vfx_line ย้อมสี) · ส่งอาร์ตครบ 59 PNG32 / 278 เฟรมที่ `assets/incoming/boss_vfx_c1_c2/` พร้อม manifest/prompts/QA · **ผูกแล้ว v7.8.57** (59/59: `assets/art/boss_vfx/`, `scripts/pack-boss-vfx-c1-c2.py`, helper `bossKit/kitSize/kitLane/bossSig/bossSigHold`) · รอ QA ภาพ/FPS บนมือถือ
 - **ใบสั่งอาร์ต 23 (18 ต.ค.) — ผูกแล้ว v7.8.59, รอ QA มือถือ:** หน้าเลือกการ์ด/Level Up 19 ไฟล์ (`docs/art_orders/23_LEVELUP_CARD_UI.md`) — ตอนนี้วาดด้วยโค้ดล้วน · รออาร์ตส่ง `assets/incoming/levelup_cards_ui/` · โน้ตผูกโค้ดอยู่ท้ายใบสั่ง (`drawReadableChoiceCard`/`highlightCard`/`drawHeldBar`/`openLevelUp`)
