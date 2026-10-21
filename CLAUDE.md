@@ -34,7 +34,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Owner: Sesame and Yuzu are not finished. Do NOT change their cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame','yuzu']` shows a '🚧 In development' badge on their roster cards; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add hero-specific fixes for these two. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.26 — Art order 29 Flavor Drops wired
+# Latest delivery: v7.9.27 — EXP drop shadows + art order 30 written (owner)
+
+xp_orb_shadow (assets/art/exp, ASSET_IMAGES, XP_ORB_KEYS) · xpShadow(o) from orbSkin: one image per orb (o._sh, depth 79998, width XP_ORB_PX·.6, offset _shDy = .42·size), moved only while flying, hidden in the orb loop when the orb is inactive or in the candy fallback. Art order 30 `docs/art_orders/30_BOSS_ATTACK_VFX_C3.md`: 48 files (A stage kits vfx_b11…b15 + vfx_bpin warn/impact/wave/lane · B 18 signatures/arena art · C 6 counter objects PNG32) → assets/incoming/boss_vfx_c3/, awaits art. Code notes in the order (bossKit 0–14 + pin, arena hooks).
+
+# Previous delivery: v7.9.26 — Art order 29 Flavor Drops wired
 
 6 packed WebP → assets/art/exp/ (hash-checked vs MANIFEST; shadow A2 not used — 300 extra sprites, skipped for FPS). XP_ORB_KEYS pushed to every STAGE_SHEETS (not boot); warmStageTextures regex adds xp_. ASSET_SHEETS.xp_orbs (96), ASSET_FX vfx_xp_pickup/_big/_trail(loop)/_merge, ASSET_IMAGES xp_bar_icon. orbStyle adds t (T6 ≥50). orbSkin(o,v): xp_orbs + anim xp_t1…6 (xpOrbAnim, random start frame), world size XP_ORB_PX[t]/.75, body.setSize keeps the old 30·sc world body (pickup unchanged); else candy+tint fallback; first call swaps HUD ⭐ xpIcon to xp_bar_icon (hudList updated). Drops don't spin, scale pulse ±5%. Flying orbs (_vac or in pickup range) get xpTrail (pool ≤40, tinted XP_TIER_COL, swept when owner inactive). collectOrb: vfx_xp_pickup tinted / _big for T5–T6, xpFxOk ≤6 per 100ms, else old sparkle. Merge (≥300 orbs) → orbSkin + vfx_xp_merge. tests/story-budget stubs orbSkin/xpTrailOff/xpFxOk. Browser: 30 drops T1–T6 + 300-merge + vacuum, 0 errors. Phone FPS at 300 drops pending (fallback idea: static frame for T1–T2).
 
@@ -452,7 +456,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.26 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.27 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
@@ -475,7 +479,9 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 
 
 ## 5. ถัดไป
-- **ใบสั่งอาร์ต 29:** ส่งต้นฉบับครบ 7 PNG32 /61 เฟรม + WebP 136,794 bytes · รอผูก runtime ตาม DELIVERY_README และตรวจภาพ/FPS บนมือถือ · คงพฤติกรรม EXP อยู่บนพื้นของ v7.9.12
+- **ใบสั่งอาร์ต 29:** ผูกครบแล้ว v7.9.26–27 (รวมเงา) · รอตรวจภาพ/FPS บนมือถือ
+- **ใบสั่งอาร์ต 30 (21 ต.ค.):** ท่าบอส C3 + Pinnacle 48 ไฟล์ · รออาร์ตส่ง `assets/incoming/boss_vfx_c3/`
+- **ใบ 18 J:** ไอคอน `ic_taro_storm_mark` ยังไม่ส่ง
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **v7.9.11 ครบแล้ว:** บอส C3 ทั้ง 5 + Pinnacle + มินิ C1-3/4/5, C2-1, C3 ทั้ง 5 มีท่าเฉพาะใน BOSS_KITS (C1-2 มินิใช้ชุดของบอส Drain) · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ครบทุกบอส v7.9.13 (นำร่อง 3) + v7.9.15 (อีก 12 + Pinnacle)** · รอเจ้าของเล่นปรับจังหวะ · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก
 - **ใบสั่งอาร์ต 22 (18 ต.ค.):** เอฟเฟกต์ท่าบอส C1–C2 59 ไฟล์ — บอส C1–C2 มีท่าเฉพาะแล้วแต่ใช้ภาพกลาง (vfx_telegraph/fx_bossnova/vfx_cream_ring/vfx_line ย้อมสี) · ส่งอาร์ตครบ 59 PNG32 / 278 เฟรมที่ `assets/incoming/boss_vfx_c1_c2/` พร้อม manifest/prompts/QA · **ผูกแล้ว v7.8.57** (59/59: `assets/art/boss_vfx/`, `scripts/pack-boss-vfx-c1-c2.py`, helper `bossKit/kitSize/kitLane/bossSig/bossSigHold`) · รอ QA ภาพ/FPS บนมือถือ
 - **ใบสั่งอาร์ต 23 (18 ต.ค.) — ผูกแล้ว v7.8.59, รอ QA มือถือ:** หน้าเลือกการ์ด/Level Up 19 ไฟล์ (`docs/art_orders/23_LEVELUP_CARD_UI.md`) — ตอนนี้วาดด้วยโค้ดล้วน · รออาร์ตส่ง `assets/incoming/levelup_cards_ui/` · โน้ตผูกโค้ดอยู่ท้ายใบสั่ง (`drawReadableChoiceCard`/`highlightCard`/`drawHeldBar`/`openLevelUp`)

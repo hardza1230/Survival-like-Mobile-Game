@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.26';
+const GAME_VERSION = '7.9.27';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.27',date:'2026-10-21',title:'EXP drop shadows',items:['EXP drops now have a soft shadow underneath']},
   {v:'7.9.26',date:'2026-10-21',title:'New EXP drops',items:['EXP is now Flavor Drops instead of candy, so it no longer looks like Sugar','6 drop shapes: bigger EXP = a fancier crystal','New pickup sparkle, a short trail when drops fly to you, and a flash when drops merge','The EXP bar has a drop icon']},
   {v:'7.9.25',date:'2026-10-21',title:'Cards show before → after',items:['When you already have an upgrade, its card now shows your total from that card now and after you pick it, e.g. “+16% → +24% attack speed”']},
   {v:'7.9.24',date:'2026-10-21',title:'Easier card text',items:['About 60 Strawberry, Mint, Cocoa and Taro cards rewritten in plain words — no more “converts excess”, “percentage points” or “roots”','Numbers did not change, only the wording']},
@@ -1890,7 +1891,8 @@ const ASSET_IMAGES = {
   codex_c3_boss4:'assets/art/ch3_bosses/c3_boss4.png',
   codex_c3_mini5:'assets/art/ch3_bosses/c3_mini5.png',
   codex_c3_boss5:'assets/art/ch3_bosses/c3_boss5.png',
-  xp_bar_icon:'assets/art/exp/xp_bar_icon.webp',   // v7.9.26 ใบ 29 ไอคอนหน้าแถบ EXP
+  xp_bar_icon:'assets/art/exp/xp_bar_icon.webp',
+  xp_orb_shadow:'assets/art/exp/xp_orb_shadow.webp',   // v7.9.27 เงาใต้เม็ด EXP   // v7.9.26 ใบ 29 ไอคอนหน้าแถบ EXP
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   e_drain_slime:'assets/generated/e_drain_slime.png', e_drain_dasher:'assets/generated/e_drain_dasher.png',
   e_drain_caster:'assets/generated/e_drain_caster.png', e_drain_bomber:'assets/generated/e_drain_bomber.png',
@@ -3128,7 +3130,7 @@ let _stageOnlyArt=null;
 function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
-const XP_ORB_KEYS=['xp_orbs','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
+const XP_ORB_KEYS=['xp_orbs','xp_orb_shadow','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
 const XP_ORB_PX=[0,36,44,52,62,73,94],XP_TIER_COL=[0,0xff8fb5,0x8be6a4,0x7fc9ff,0xb98cff,0xffd75e,0xfff0a0];   // ขนาดเม็ดในโลก (ส่วนที่เห็น ~75% ของเฟรม) · สีย้อม VFX ตามระดับ
 const CARD_ICON_KEYS=["ic_evo_momo", "ic_evo_cocoa", "ic_evo_berry", "ic_evo_mint", "ic_evo_taro", "ic_evo_sesame", "ic_fus_heartburst", "ic_fus_crownseed", "ic_fus_glacier", "ic_fus_shardstorm", "ic_fus_quakeking", "ic_fus_lastbear", "ic_fus_tempest", "ic_fus_skyjudge", "ic_fus_prismnova", "ic_fus_horizon", "ic_mod_bloom", "ic_mod_love", "ic_mod_heart", "ic_mod_aim", "ic_mod_jam", "ic_mod_spray", "ic_mod_icemine", "ic_mod_shatter", "ic_mod_flurry", "ic_mod_throw", "ic_mod_glide", "ic_mod_coldarc", "ic_mod_quake", "ic_mod_stomp", "ic_mod_rage", "ic_mod_crush", "ic_mod_ko", "ic_mod_after", "ic_mod_over", "ic_mod_field", "ic_mod_step", "ic_mod_judge", "ic_mod_ion", "ic_mod_focus", "ic_mod_prism", "ic_mod_lens", "ic_mod_scope", "ic_mod_refract", "ic_mod_mirror", "ic_mod_exec", "ic_mut_momo_ricochet", "ic_mut_momo_fan", "ic_mut_cocoa_rush", "ic_mut_cocoa_breaker", "ic_mut_cocoa_counter", "ic_mut_berry_seeker", "ic_mut_berry_sticky", "ic_mut_mint_blizzard", "ic_mut_mint_permafrost", "ic_mut_taro_chainlord", "ic_mut_taro_stormcaller", "ic_mut_sesame_fortress", "ic_mut_sesame_retaliate", "ic_trade_glass", "ic_trade_burn", "ic_trade_armor", "ic_trade_rush", "ic_trade_berserk", "ic_trade_core", "ic_trade_feast", "ic_trade_oath", "ic_inf_spicy", "ic_inf_sour", "ic_inf_sweet", "ic_inf_minty", "ic_cocoa_dashp", "ic_cocoa_drum"];CARD_ICON_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.68 ใบ 26: ไอคอนการ์ดโหลดพร้อมด่าน (ไม่กินงบบูต)   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
 if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
@@ -15518,10 +15520,12 @@ class Game extends Phaser.Scene {
   /* v7.9.26 ใบ 29 Flavor Drops: รูปหยดตามระดับแทนลูกอมย้อมสี · body คงขนาดเดิม (30px×sc ในโลก) ระยะเก็บไม่เปลี่ยน · ยังไม่โหลด = candy+tint เดิม */
   xpOrbAnim(t){if(!this.textures.exists('xp_orbs'))return false;const k='xp_t'+t;if(!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers('xp_orbs',{start:(t-1)*6,end:(t-1)*6+5}),frameRate:10,repeat:-1});return true;}
   orbSkin(o,v){const st=this.orbStyle(v);o._tier=st.t;
-    if(this.xpOrbAnim(st.t)){const k='xp_t'+st.t,sc=XP_ORB_PX[st.t]/.75/96;if(o.texture.key!=='xp_orbs')o.setTexture('xp_orbs',0);o.clearTint();o._xp=true;o._sc=sc;if(o.anims?.currentAnim?.key!==k)o.play({key:k,startFrame:(Math.random()*6)|0});if(o.body){const bw=30*st.sc/sc;o.body.setSize(bw,bw,true);}}
-    else{if(o.texture.key!=='candy'){o.anims?.stop();o.setTexture('candy');if(o.body)o.body.setSize(30,30,true);}o._xp=false;o._sc=st.sc;o.setTint(st.tint);}
+    if(this.xpOrbAnim(st.t)){const k='xp_t'+st.t,sc=XP_ORB_PX[st.t]/.75/96;if(o.texture.key!=='xp_orbs')o.setTexture('xp_orbs',0);o.clearTint();o._xp=true;o._sc=sc;if(o.anims?.currentAnim?.key!==k)o.play({key:k,startFrame:(Math.random()*6)|0});if(o.body){const bw=30*st.sc/sc;o.body.setSize(bw,bw,true);}this.xpShadow(o);}
+    else{if(o.texture.key!=='candy'){o.anims?.stop();o.setTexture('candy');if(o.body)o.body.setSize(30,30,true);}o._xp=false;o._sc=st.sc;o.setTint(st.tint);if(o._sh?.scene)o._sh.setVisible(false);}
     if(!this._xpIconArt&&this.textures.exists('xp_bar_icon')&&this.xpIcon&&this.xpIcon.type==='Text'){const t=this.xpIcon,im=this.camUI(this.add.image(t.x,t.y,'xp_bar_icon').setDisplaySize(15,15).setScrollFactor(1).setDepth(52).setVisible(t.visible)),i=this.hudList?.indexOf(t);if(i>=0)this.hudList[i]=im;this.xpIcon=im;t.destroy();this._xpIconArt=true;}
     return st;}
+  /* v7.9.27 เจ้าของ: เงาใต้เม็ด (ภาพเดียวกันทุกเม็ด depth เดียวกัน = วาดรวดเดียว) · ขยับเฉพาะตอนเม็ดบิน · เม็ดหาย = ซ่อนใน orb loop */
+  xpShadow(o){if(!this.textures.exists('xp_orb_shadow')){if(o._sh?.scene)o._sh.setVisible(false);return;}let s=o._sh;if(!s||!s.scene)s=o._sh=this.camWorld(this.add.image(0,0,'xp_orb_shadow').setDepth(79998));const w=XP_ORB_PX[o._tier||1]*.6;s.setDisplaySize(w,w*.5).setVisible(true);o._shDy=XP_ORB_PX[o._tier||1]*.42;s.setPosition(o.x,o.y+o._shDy);}
   xpFxOk(){const n=this.time.now;if(n-(this._xpFxT||0)>100){this._xpFxT=n;this._xpFxN=0;}return (this._xpFxN=(this._xpFxN||0)+1)<=6;}   // ≤6 ชิ้น/100ms ตอนดูดทีละเยอะ
   xpTrail(o,ang){if(!this.bpAnim('vfx_xp_trail'))return;let s=o._trail;
     if(!s){const P=this._xpTr=(this._xpTr||[]).filter(q=>q.scene);s=P.find(q=>!q._own);if(!s){if(P.length>=40)return;s=this.camWorld(this.add.sprite(0,0,'vfx_xp_trail',0).setDepth(79999));s.play('vfx_xp_trail');P.push(s);}
@@ -17582,11 +17586,11 @@ class Game extends Phaser.Scene {
 
     // orb vacuum + ออร์บAlive (หมุนช้า + เต้นวิบวับ)
     if(this._xpTr)for(const s of this._xpTr)if(s._own&&!s._own.active)this.xpTrailOff(s._own);
-    this.orbs.children.iterate(o=>{ if(!o||!o.active)return;
+    this.orbs.children.iterate(o=>{ if(!o||!o.active){if(o&&o._sh&&o._sh.visible)o._sh.setVisible(false);return;}
       if(o._xp){o.rotation=0;o.setScale((o._sc||1)*(1+Math.sin(this.elapsed*4+o.x*0.05)*0.05));}   // v7.9.26 หยดไม่หมุน · เต้นเบา ๆ
       else{ o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob); }
       const d=this.dist(o.x,o.y,this.player.x,this.player.y);
-      if(o._vac || d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x), sp=o._vac?560:380; o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp); if(o._xp)this.xpTrail(o,ang); }
+      if(o._vac || d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x), sp=o._vac?560:380; o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp); if(o._xp)this.xpTrail(o,ang); if(o._sh)o._sh.setPosition(o.x,o.y+o._shDy); }
       else { o.setVelocity(0,0); if(o._trail)this.xpTrailOff(o); } });
 
     // bullets life + boomerang return/rebound + spin + pierce cd
