@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.43';
+const GAME_VERSION = '7.9.44';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.44',date:'2026-10-21',title:'Yuzlings really bite',items:['Each bite is now a visible lunge: the Yuzling winds back, dashes in and squirts juice — damage lands at that moment','Yuzlings stand at the edge of their target instead of sitting on top of it','Fixed the bite animation flashing hurt and sleepy frames'],},
   {v:'7.9.43',date:'2026-10-21',title:'Yuzu crew teamwork',items:['Yuzlings now gang up: up to 3 bite the same enemy, so enemies fall faster and Pack Instinct actually works','Tossed Yuzlings stay and fight where they land for 3s instead of walking straight back','Yuzu starts each stage with 4 Yuzlings, and the orchard grows every 6 kills until you pick a Build'],},
   {v:'7.9.42',date:'2026-10-21',title:'Yuzu bites hit harder',items:['Yuzling bites are slower but twice as strong, with a little hop and a hit flash — easier to feel','Yuzu no longer does an attack pose every time a Yuzling bites','A green bar under your EXP shows how close the orchard is to its next Yuzling','Ripen no longer halves your crew when you pick it: you keep every Yuzling, up to 6, and extra growth makes them stronger'],},
   {v:'7.9.41',date:'2026-10-21',title:'Yuzu feels like a leader',items:['Yuzlings now fight around Yuzu (about 300px) instead of running all over the screen — walk to lead your orchard','Dash sends every free Yuzling charging the way you dash, biting each enemy they pass for double damage','Yuzlings spread out instead of stacking on one spot, and speed up and slow down smoothly'],},
@@ -13625,6 +13626,7 @@ class Game extends Phaser.Scene {
       for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){ const A=L[i].spr,B=L[j].spr,dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy; if(d2>=R2)continue; const d=Math.sqrt(d2)||0.01,push=(YUZU_SEP-d)*0.5,ux=d>0.02?dx/d:Math.cos(i+j),uy=d>0.02?dy/d:Math.sin(i+j); A.x-=ux*push;A.y-=uy*push;B.x+=ux*push;B.y+=uy*push; } }
     for(let i=0;i<crew.length;i++){const m=crew[i],sp=m.spr,ang=i*TAU/Math.max(1,crew.length),homeX=this.player.x+Math.cos(ang)*46,homeY=this.player.y+Math.sin(ang)*39;
       m.cd=Math.max(0,m.cd-dt);
+      if(m.lunge&&(m.down>0||m.air||m.dash)){ m.lunge=null; if(m.cd>50)m.cd=0.2; if(!(m.down>0)&&this.textures.exists('minion_yuzling'))sp.setTexture('minion_yuzling').setFrame(0); }   // v7.9.44 ยกเลิกท่ากัดเมื่อถูกปา/ล้ม/พุ่ง
       if(m.popT>0){ m.popT=Math.max(0,m.popT-dt); if(!m.air)sp.setScale((m.sc||0.34)*(1+1.8*m.popT)); }
       if(m.down>0){ const nearY=this.dist(sp.x,sp.y,this.player.x,this.player.y)<150; m.down-=dt*(nearY?2:1); if(m.down<=0){ this.yuzuRegrow(m); if(ripen)this.yuzuRipeLook(m); } continue; }
       if(m.air){ const a=m.air; a.t+=dt; const k=Math.min(1,a.t/a.dur); if(a.tgt&&b.uqMut==='toss_home'&&a.tgt.active&&a.tgt.hp>0){a.tx=a.tgt.x;a.ty=a.tgt.y;} sp.setPosition(a.sx+(a.tx-a.sx)*k,a.sy+(a.ty-a.sy)*k-Math.sin(Math.PI*k)*(a.giant?140:a.bounced?50:90)).setRotation(k*TAU*(a.giant?1:2)); if(a.giant)sp.setScale((m.sc||0.34)*2); if(k>=1)this.yuzuLand(m); continue; }
@@ -13649,13 +13651,22 @@ class Game extends Phaser.Scene {
       let near=Infinity;
       if(target)near=this.dist(sp.x,sp.y,target.x,target.y);
       const ripeCap=b.evolved?4:3,ripeEff=ripen?Math.min(ripeCap,(m.ripe||0)+(parade?1:0)):0;
-      const tx=target&&!m.cheese?target.x:homeX,ty=target&&!m.cheese?target.y:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=330*(1+0.2*(b.lv.p_pulp||0));   // v7.9.17 Quick Paws
+      // v7.9.44 ยืนชิดขอบเป้า (ไม่ทับตัวศัตรู) แล้วพุ่งกัดเป็นจังหวะ
+      const standR=target&&!m.cheese?((target.body?target.body.halfWidth:20)+14):0, sdx=target?sp.x-target.x:0, sdy=target?sp.y-target.y:0, sdl=Math.hypot(sdx,sdy)||1;
+      const tx=target&&!m.cheese?target.x+sdx/sdl*standR:homeX,ty=target&&!m.cheese?target.y+sdy/sdl*standR:homeY,dist=this.dist(sp.x,sp.y,tx,ty),speed=330*(1+0.2*(b.lv.p_pulp||0));   // v7.9.17 Quick Paws
       if(Math.abs(tx-sp.x)>12)sp.setFlipX(tx<sp.x);
-      if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>950){sp.setPosition(homeX,homeY);m.vx=m.vy=0;}
+      let doBite=null;
+      if(m.lunge){ const L=m.lunge; L.t+=dt; const k=Math.min(1,L.t/L.dur), o=k<.35?-8*k/.35:k<.55?-8+30*(k-.35)/.2:22*(1-(k-.55)/.45);
+        if(L.tgt&&L.tgt.active)sp.setFlipX(L.tgt.x<L.ax); sp.setPosition(L.ax+L.ux*o,L.ay+L.uy*o);
+        if(this.textures.exists('minion_yuzling_attack')){ if(sp.texture.key!=='minion_yuzling_attack'){sp.stop();sp.setTexture('minion_yuzling_attack');} sp.setFrame(k<.35?2:k<.55?3:4); }   // ชาร์จ → พุ่ง → พ่นน้ำส้ม (ไม่ใช้เฟรมเจ็บ/หลับ 5–6)
+        if(!L.hit&&k>=.55){ L.hit=true; if(L.tgt&&L.tgt.active&&L.tgt.hp>0)doBite=L.tgt; }
+        if(k>=1){ m.lunge=null; m.vx=m.vy=0; if(!L.dealt)m.cd=Math.min(m.cd,0.2); if(this.textures.exists('minion_yuzling'))sp.setTexture('minion_yuzling').setFrame(0); } }
+      else if(this.dist(sp.x,sp.y,this.player.x,this.player.y)>950){sp.setPosition(homeX,homeY);m.vx=m.vy=0;}
       else{ // v7.9.41 เดินนุ่ม: เร่ง/ชะลอเข้าเป้า แทนความเร็วคงที่
         const want=dist>25?Math.min(speed,speed*dist/90+40):0,dvx=dist>1?(tx-sp.x)/dist*want:0,dvy=dist>1?(ty-sp.y)/dist*want:0,k=1-Math.exp(-9*dt);
         m.vx=(m.vx||0)+(dvx-(m.vx||0))*k; m.vy=(m.vy||0)+(dvy-(m.vy||0))*k; sp.setPosition(sp.x+m.vx*dt,sp.y+m.vy*dt); }
-      if(m.attackTime>0){m.attackTime=Math.max(0,m.attackTime-dt);
+      if(m.lunge){}
+      else if(m.attackTime>0){m.attackTime=Math.max(0,m.attackTime-dt);
         if(m.attackTime>0){sp.setFrame(Math.min(7,Math.floor((1-m.attackTime/m.attackDuration)*8)));}
         else sp.setTexture(m.cheese?'minion_cheese':'minion_yuzling').setFrame(0);
       }else if(sp.anims&&this.anims.exists((m.cheese?'minion_cheese':'minion_yuzling')+'_walk')&&dist>28)sp.play((m.cheese?'minion_cheese':'minion_yuzling')+'_walk',true);
@@ -13664,11 +13675,13 @@ class Game extends Phaser.Scene {
       if(m.cheese){this._yuzuCheeseT=(this._yuzuCheeseT||0)+dt;if(this._yuzuCheeseT>=Math.max(5,9*Math.pow(0.94,b.lv.p_sweetHelper||0))){this._yuzuCheeseT=0;this.playYuzuMinionAttack(m,0.48);const heal=Math.max(1,Math.round(this.player.maxhp*(b.evolved?0.05:0.035)));this.player.hp=Math.min(this.player.maxhp,this.player.hp+heal);this.popHeal(this.player.x,this.player.y,heal);
         for(const s of this._yuzuSeeds||[])s.t=0; for(const s of this._yuzuSprouts||[])s.life+=2;   // 🧀 Cheese รดน้ำ: เมล็ดงอกทันที · หน่ออยู่นานขึ้น
         const enemy=this.nearestEnemy(260);if(enemy){this._mxSrc='yuzu.cheese';this.damage(enemy,this.relicDmg(b.evolved?1.0:0.6)*(1+0.08*(b.lv.p_sourMixer||0)),enemy.x,enemy.y);}}continue;}
-      if(target&&near<=58+(ripen?12*ripeEff:0)&&m.cd<=0){let dmg=bite0*(parade?(ul>=2?1.7:1.55):1)*(ripen?Math.pow(1.5,ripeEff):1);
+      const reach=Math.max(58,standR+18)+(ripen?12*ripeEff:0);
+      if(!m.lunge&&!doBite&&target&&near<=reach&&m.cd<=0){ const ux=(target.x-sp.x)/(near||1),uy=(target.y-sp.y)/(near||1); m.lunge={t:0,dur:0.3,ax:sp.x,ay:sp.y,ux,uy,tgt:target,hit:false,dealt:false}; m.cd=99; }
+      if(doBite){ target=doBite; m.lunge&&(m.lunge.dealt=true); let dmg=bite0*(parade?(ul>=2?1.7:1.55):1)*(ripen?Math.pow(1.5,ripeEff):1);
         if(elders.length&&elders.some(el=>this.dist(el.spr.x,el.spr.y,sp.x,sp.y)<140))dmg*=1.2;   // 🌳 ใกล้ Grove Elder +20%
         if(b.mutation==='pack'){let allies=0;for(const a of crew)if(a!==m&&!a.cheese&&this.dist(a.spr.x,a.spr.y,target.x,target.y)<90)allies++;dmg*=1+Math.min(0.6,allies*0.12);}
         m.bites++;if(b.mutation==='second'&&m.bites%4===0)dmg*=1.5;
-        this._mxSrc='yuzu.bite'; this.damage(target,dmg,target.x,target.y);this.playYuzuMinionAttack(m,0.36);m.popT=0.16;   // v7.9.42 Yuzu ไม่ทำท่าโจมตีแทนลูกส้ม · ลูกส้มเด้งตอนกัด
+        this._mxSrc='yuzu.bite'; this.damage(target,dmg,target.x,target.y);m.popT=0.12; if(!target.isBoss&&!target.isMini&&target.active)target.knock=Math.max(target.knock||0,0.06);   // v7.9.42 Yuzu ไม่ทำท่าโจมตีแทนลูกส้ม · ลูกส้มเด้งตอนกัด
         if(this.time.now-(this._yuzuHitFxAt||0)>90){this._yuzuHitFxAt=this.time.now;this.vfxHitRing?.(target.x,target.y,0xffe066,false);}
         const giantSlam=ripen&&ripeEff>=3,splash=(b.lv.splash||0)>0||giantSlam||b.evolved||b.mutation==='parting'&&m.bites%4===0;
         if(splash){const R=(giantSlam?90*(1+0.2*(b.lv.y_giantslam||0)):45)+12*(b.lv.splash||0)+(b.evolved?20:0),blast=b.mutation==='parting'&&m.bites%4===0,mul=giantSlam?0.6:blast?0.8:0.3;this.enemies.children.iterate(e=>{if(e&&e.active&&e!==target&&this.dist(e.x,e.y,target.x,target.y)<R)this.damage(e,dmg*mul,e.x,e.y);});if(giantSlam)this.vfxHitRing?.(target.x,target.y,0xffa62e,false);}

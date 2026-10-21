@@ -48,7 +48,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.43 — Yuzu teamwork (owner picked 1 + 2/3 + 7 from critique round 2)
+# Latest delivery: v7.9.44 — Yuzlings visibly bite (owner: minions just stick to enemies and damage appears)
+
+Cause: bites dealt damage instantly when in range while the Yuzling sat on the enemy centre, and playYuzuMinionAttack ran all 8 frames of yuzling_attack_sheet (incl. hurt 5 / sleepy 6). Now: stand-off point = target edge (halfWidth+14 on the Yuzling's side), reach = max(58, standR+18)+ripen; in range + cd ready → m.lunge {dur .3, ax/ay, ux/uy, tgt} (cd 99 while lunging): wind back −8px with frame 2 (charge), dash +22px frame 3, juice frame 4; damage at k .55 via the old bite block (doBite), small knock .06 on non-boss; lunge ends → walk sheet, cd from the bite block (or .2 if the target died). Lunge cancelled (cd reset) when thrown/knocked/dashing. Browser: frames 2/3/4, src yuzu.bite, no stuck cd after toss+rush, 0 errors.
+
+# Previous delivery: v7.9.43 — Yuzu teamwork (owner picked 1 + 2/3 + 7 from critique round 2)
 
 1: yuzuLand sets m.stayT=YUZU_STAY 3 + stayX/Y → leash centre for that Yuzling is the landing point (Toss cluster 420 > leash 300 made tossed Yuzlings walk straight back). 2/3: assigned Set → Map count; ≤YUZU_FOCUS 3 per target, score d−70 if already targeted (gang up, Pack Instinct can trigger). 7: YUZU_START 3→4; yuzuNeed(o,fam): before a Build YUZU_EARLY_NEED 6, after 10+2·(size−START), −2·family, min 4 (used by yuzuOnKill + yuzuOrchFrac). Not done (owner may pick): Loyal Guard rework, Second Serving vs Parting Gift duplicate, Yuzu armor per nearby Yuzling, fixed formation slots. Browser: start 4 / need 6, targets 3,3,3, tossed Yuzling stays, 0 errors (caught and fixed a `new Mat()` typo first).
 
@@ -534,7 +538,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.43 · 21 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.44 · 21 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
