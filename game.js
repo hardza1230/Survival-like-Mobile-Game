@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.45';
+const GAME_VERSION = '7.9.46';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.46',date:'2026-10-21',title:'Clearer Weave tutorial',items:['After the tutorial, a 5-step guide shows where Weave is (Hub → Gear & Power → Weave & Rank), how to leave with Back, and where Play is — no more jumping between pages']},
   {v:'7.9.45',date:'2026-10-21',title:'Replay and boss reward fixes',items:['Replay after a defeat now really restarts the stage from the beginning (monsters and the boss from the last try no longer stay on the field)','No more level-up cards on top of the boss reward wheel — the stage is already won, so the wheel always works','Buttons on the end-of-stage, defeat and tutorial-complete screens react on the first tap and have a slightly bigger touch area'],},
   {v:'7.9.44',date:'2026-10-21',title:'Yuzlings really bite',items:['Each bite is now a visible lunge: the Yuzling winds back, dashes in and squirts juice — damage lands at that moment','Yuzlings stand at the edge of their target instead of sitting on top of it','Fixed the bite animation flashing hurt and sleepy frames'],},
   {v:'7.9.43',date:'2026-10-21',title:'Yuzu crew teamwork',items:['Yuzlings now gang up: up to 3 bite the same enemy, so enemies fall faster and Pack Instinct actually works','Tossed Yuzlings stay and fight where they land for 3s instead of walking straight back','Yuzu starts each stage with 4 Yuzlings, and the orchard grows every 6 kills until you pick a Build'],},
@@ -8409,6 +8410,16 @@ class Game extends Phaser.Scene {
     try{ this.texTouch(this.texInUse()); this.texBudget(); }catch(e){} }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
   applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
+    if(this._weaveTour){ const T=this._weaveTour,s=this.menuScreen,find=f=>this.tapZones.find(f);   // v7.9.45 ทัวร์หลังบทสอน: Hub → Gear & Power → Weave & Rank → อัปแก่น → Back → Back → Play → ด่าน 1
+      const spot=(z,label,fn)=>{ if(!z)return false; const f0=z.fn; z.fn=fn||(()=>f0()); this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label); return true; };
+      if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Upgrades live in Gear & Power — tap it',()=>{ this._weaveTour='gear'; f0(); }))return; }
+      if(T==='gear'&&s==='gLoadout'){ const z=find(q=>q.tag==='upgrade'),f0=z&&z.fn; if(spot(z,'Step 2/5 · Open Weave & Rank',()=>{ this._weaveTour='weave'; this._tutorialWeaveCoach=true; f0(); }))return; }
+      if(T==='weave'&&s==='upgrade'&&Date.now()-(this._weaveSpotAt||0)>300){ this._weaveTour='back'; this._tutorialWeaveCoach=false; return this.applyGearTut(); }   // ไม่มีแก่นที่ซื้อได้ → ข้ามไปสอนปุ่ม Back
+      if(T==='back'&&s!=='hub'){ const z=find(q=>q.back),f0=z&&z.fn; if(spot(z,s==='upgrade'?'Step 4/5 · Nice! Tap Back to leave this page':'Tap Back again to reach the Hub',()=>f0()))return; }
+      if(T==='back'&&s==='hub')this._weaveTour=T==='back'?'play':T;
+      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Step 5/5 · You can come back here any time. Now tap Play!',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
+      if(s==='hub'&&(T==='gear'||T==='weave')){ this._weaveTour='hub'; const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Upgrades live in Gear & Power — tap it',()=>{ this._weaveTour='gear'; f0(); }))return; }   // ผู้เล่นกด Back กลางทาง → เริ่มขั้นแรกใหม่
+    }
     if(this._mintCoach){ const hi=this._mintCoach===true?HERO_INTROS[0]:this._mintCoach; const z=this.tapZones.find(q=>q.tag==='char_'+hi.id); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character=hi.id; this.character=hi.id; Save.data[hi.flag]=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(hi.idx); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); const st=STAGES[hi.idx],lab=st&&st.chapterStage?'C'+(st.chapter+1)+'-'+st.chapterStage:'Stage '+(hi.idx+1); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Pick '+hi.name+' for '+lab+'!'); return; }
     if(this._stage1Coach){ const z=this.tapZones.find(q=>q.tag==='stage_0'); if(!z)return; const fn=z.fn; z.fn=()=>{ this._stage1Coach=false; fn(); };
@@ -9710,7 +9721,7 @@ class Game extends Phaser.Scene {
       const nx=maxed?null:this.add.text(bp?ppx+pw/2:ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
       this.menu.add([g,em,st,...starImgs.filter(Boolean),tag,nm,gain,pg,pt]); if(coin)this.menu.add(coin); if(nx)this.menu.add(nx);
       if(this._tutorialWeaveCoach&&!maxed&&afford&&!this._coachSpot)this._coachSpot={x:ppx,y:ppy,w:pw,h:ph};
-      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this.tuSparkle)this.tuSparkle(ppx+pw/2,ppy+ph/2); if(this._tutorialWeaveCoach){ this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
+      if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this.tuSparkle)this.tuSparkle(ppx+pw/2,ppy+ph/2); if(this._tutorialWeaveCoach){ if(this._weaveTour){ this._weaveTour='back'; this.menuToast('✨ Core upgraded! Your hero is stronger in every stage','#8dffb0'); } else { this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
     });
     if(this._coachSpot){ const sp=this._coachSpot; this._coachSpot=null; this._spotZone=sp; }
     const py=portrait?Math.min(h-btnH-18,top+UPG_ORDER.length*(cardH+gapY)+(artCard?8:4)):h-48,bw=Math.min(w-40,330),pbx=w/2,ph=artCard?btnH:40;
@@ -9726,7 +9737,7 @@ class Game extends Phaser.Scene {
     this.menu.add([pg,pl,psub]);
     if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(pbx,py+ph/2,72);
       if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen(); });
-    if(this._spotZone){ const sp=this._spotZone; this._spotZone=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,'Tap to upgrade this core!'); }
+    if(this._spotZone){ const sp=this._spotZone; this._spotZone=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); this._weaveSpotAt=Date.now(); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,this._weaveTour?'Step 3/5 · Tap a core to spend your Sugar':'Tap to upgrade this core!'); }
     this.menu.setVisible(true);
   }
   buildSpecialCores(){
@@ -12688,8 +12699,8 @@ class Game extends Phaser.Scene {
     this.stopSummaryPresentation();
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     this._quitSummary=false;this._stageReward=null;this.sugarStage=0;this._tutorialWeaveCoach=true;
-    this.exitStage(); this.menuScreen='upgrade'; this.buildMenuScreen();
-    this.menuToast&&this.menuToast('🍓 Tap a core to spend your Sugar and grow stronger!','#ffe08a');
+    this._weaveTour='hub'; this.exitStage(); this.menuScreen='hub'; this.buildMenuScreen();   // v7.9.45 เจ้าของ: เดิมวาปเข้าหน้า Weave ตรง ๆ แล้ววาปไปหน้าเลือกด่าน → พาเดินจาก Hub ทีละปุ่มแทน
+    this.menuToast&&this.menuToast('🍓 Let’s power up! Follow the glowing buttons','#ffe08a');
   }
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
