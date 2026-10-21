@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.46';
+const GAME_VERSION = '7.9.47';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.47',date:'2026-10-21',title:'Bottom menu bar + phone Back button',items:['New menu bar at the bottom of every menu page: Home · Heroes · Play · Gear · Activities — jump anywhere in one tap, with a red dot when something is waiting','The phone’s Back button (or back swipe) now works: it goes back one page in menus, pauses or resumes a stage, and on the Home page asks you to press again to exit'],},
   {v:'7.9.46',date:'2026-10-21',title:'Clearer Weave tutorial',items:['After the tutorial, a 5-step guide shows where Weave is (Hub → Gear & Power → Weave & Rank), how to leave with Back, and where Play is — no more jumping between pages']},
   {v:'7.9.45',date:'2026-10-21',title:'Replay and boss reward fixes',items:['Replay after a defeat now really restarts the stage from the beginning (monsters and the boss from the last try no longer stay on the field)','No more level-up cards on top of the boss reward wheel — the stage is already won, so the wheel always works','Buttons on the end-of-stage, defeat and tutorial-complete screens react on the first tap and have a slightly bigger touch area'],},
   {v:'7.9.44',date:'2026-10-21',title:'Yuzlings really bite',items:['Each bite is now a visible lunge: the Yuzling winds back, dashes in and squirts juice — damage lands at that moment','Yuzlings stand at the edge of their target instead of sitting on top of it','Fixed the bite animation flashing hurt and sleepy frames'],},
@@ -3815,6 +3816,7 @@ const UNIQUE_MUTS={
   tempest:[{id:'over_long',emoji:'⏱️',name:'Long Overdrive',desc:'Overdrive lasts 1.5s longer.'},{id:'over_finale',emoji:'🎆',name:'Finale Burst',desc:'When Overdrive ends, every sentry fires a double-damage ring.'}]};
 // v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md)
 const SES_MIRROR_MAX=3, SES_MIRROR_LIFE=20, SES_MIRROR_REACH=700, SES_BOUNCE=0.15, SES_PRISM=0xc86bff;
+const NAV_H=62;   // v7.9.47 ความสูงแถบเมนูล่าง
 const YUZU_START=4,YUZU_FOCUS=3,YUZU_STAY=3,YUZU_EARLY_NEED=6,YUZU_CAP=12,YUZU_HARD_CAP=17,YUZU_BITE=14,YUZU_REGROW=6,YUZU_TOSS_CHARGE=25;
 const YUZU_BITE_CD=1.8,YUZU_RIPEN_CAP=6,YUZU_LEASH=300,YUZU_BOSS_LEASH=380,YUZU_RUSH_LEN=240,YUZU_RUSH_MUL=2,YUZU_SEP=26;   // v7.9.41 เจ้าของ ก+ข+ค: ฝูงทำงานรอบตัว Yuzu · Dash สั่งพุ่ง · ไม่ซ้อนกัน   // v7.9.37 Yuzu Orchard Swarm (สวนส้ม) — ดู docs/YUZU_ORCHARD_SWARM.md
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
@@ -8233,6 +8235,30 @@ class Game extends Phaser.Scene {
     cont.add([chapter,icon,name,en,power,lore,action]);this._zone(x,y,w,h,open?fn:()=>Sfx.select());
   }
   // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
+  // v7.9.47 เจ้าของ: แถบเมนูล่างแบบเกมทั่วไป (หน้าแนวตั้งหลังจบบทสอน · ไม่แสดงบนแผนที่ Delve)
+  navBarOn(s){ return this.state==='menu'&&this.W<this.H&&!!Save.data.tutorialDone&&!Save._cloudConflict&&!['atlas','rift','recipes','recipeprep'].includes(s); }
+  navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'chapter';
+    if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft','bazaar','tradein'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
+  drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;};
+    const g=fix(this.add.graphics()); g.fillStyle(0x000000,.35).fillRect(0,y0-6,W,6); g.fillStyle(0x1a1024,.98).fillRect(0,y0,W,NAV_H); g.lineStyle(2,0xffd36e,.4).lineBetween(0,y0,W,y0);
+    const tabs=[['hub','','🏠','Home'],['char','hub_btn_heroes','🧸','Heroes'],['chapter','hub_btn_play','▶','Play'],['gLoadout','hub_btn_gear','🎒','Gear'],['gActivity','hub_btn_activity','🎯','Activities']],cw=W/tabs.length;
+    tabs.forEach(([t,key,em,lab],i)=>{ const cx=cw*(i+.5),on=act===t,play=t==='chapter',iy=y0+(play?NAV_H*.36:NAV_H*.4),sz=play?36:26;
+      if(on){ g.fillStyle(0xffd36e,.16).fillRoundedRect(cx-cw/2+4,y0+4,cw-8,NAV_H-8,12); g.fillStyle(0xffd36e,1).fillRoundedRect(cx-14,y0+2,28,3,1.5); }
+      if(play){ g.fillStyle(0x000000,.35).fillCircle(cx,iy+3,27); g.fillStyle(on?0xff8fbf:0xff6fa8,1).fillCircle(cx,iy,26); g.lineStyle(3,0xffe2a8,.9).strokeCircle(cx,iy,26); }
+      if(key&&this.textures.exists(key))fix(this.hubIconFit(this.add.image(cx,iy,key),key,cx,iy,sz)).setAlpha(on||play?1:.78);
+      else fix(this.add.text(cx,iy,em,{fontSize:(play?24:20)+'px'}).setOrigin(.5)).setAlpha(on||play?1:.78);
+      fix(this.add.text(cx,y0+NAV_H-11,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:on?'#ffe9a8':'#bfb0cc'}).setOrigin(.5));
+      if((t==='char'&&this.hasTargetBadge?.('char'))||((t==='gLoadout'||t==='gActivity')&&this.hasGroupBadge?.(t))){ const n0=this.menu.list.length; this.drawBadgeDot(this.menu,cx+sz/2,iy-sz/2); for(let k=n0;k<this.menu.list.length;k++){const o=this.menu.list[k];o._menuBackdrop=true;o._menuFixedY=o.y;} }
+      this._zone(cx-cw/2,y0,cw,NAV_H,()=>{ if(t===s)return; this._navStack=[]; this._curMenu='hub'; if(t==='chapter')this.selectedChapter=this.selectedChapter||0; this.menuScreen=t; this.buildMenuScreen(); });
+      const z=this.tapZones[this.tapZones.length-1]; z.fixedY=y0; z.tag='nav_'+t; }); }
+  // v7.9.47 ปุ่มย้อนกลับของมือถือ (Android back / ปัดย้อนกลับในเบราว์เซอร์) · คืน 'exit' เมื่อกดซ้ำที่ Hub ภายใน 2 วิ
+  handleBackKey(){ const st=this.state;
+    if(st==='menu'){ if(this._bookSkip){this._bookSkip();return true;} if(this._gachaBusy||this._craftRolling||this._bazBusy)return true;
+      const z=(this.tapZones||[]).find(q=>q.back); if(z){ Sfx.back?.(); z.fn(); return true; }
+      if((this.menuScreen||'hub')!=='hub'){ Sfx.back?.(); this._navStack=[]; this.menuScreen='hub'; this.buildMenuScreen(); return true; }
+      const now=Date.now(); if(now-(this._exitAskAt||0)<2000)return 'exit'; this._exitAskAt=now; this.menuToast?.('Press back again to exit','#ffe08a'); return true; }
+    if(st==='play'||st==='paused'){ this.togglePause(); return true; }
+    return true; }
   handleTap(px,py){ if(this._bookSkip&&this.state==='menu'){this._bookSkip();return;} const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; py+=_sc;const feedback=(z,x,y)=>this._tapFeedback({...z,y:z.y-_sc},x,y-_sc);
     { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); Sfx.uiAction('back',()=>bz.fn()); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
     for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
@@ -8250,7 +8276,7 @@ class Game extends Phaser.Scene {
     if(this._mScrollFill){if(m.list.includes(this._mScrollFill))m.remove(this._mScrollFill,true);this._mScrollFill=null;}
     let bottom=0;for(const o of m.list){if(!o||!o.visible||o._menuBackdrop||o===this._gearPinned)continue;try{const bounds=o.getBounds();if(bounds&&Number.isFinite(bounds.bottom))bottom=Math.max(bottom,bounds.bottom);}catch(e){}}
     for(const z of this.tapZones||[])if(z.fixedY==null&&Number.isFinite(z.y+z.h))bottom=Math.max(bottom,z.y+z.h);
-    this._mScrollMax=bottom>this.H+2?Math.ceil(bottom-this.H+24):0;this.setMenuScroll(this._mScroll||0);}   // v7.8.99 เลื่อนเฉพาะเมื่อของล้นจอจริง (เดิมขอบล่าง 24px ทำให้หลายหน้าเลื่อนได้นิดเดียว)
+    const vh=this.H-(this._navOn?NAV_H:0); this._mScrollMax=bottom>vh+2?Math.ceil(bottom-vh+24):0;this.setMenuScroll(this._mScroll||0);}   // v7.8.99 เลื่อนเฉพาะเมื่อของล้นจอจริง (เดิมขอบล่าง 24px ทำให้หลายหน้าเลื่อนได้นิดเดียว)
   // v7.8.60 สลับหน้าเมนู: ม่านม่วงเข้มปิดทั้งจอแล้ว "ปาด" ออก (หน้าใหม่ = ปาดไปซ้าย · ย้อนกลับ = ปาดไปขวา) + แถบแสงขอบ · ไม่ใช้ alpha ของเมนู (เคยเห็นพื้นโลกวาบ)
   /* v7.9.10 ใบ 28 หนังสือ: โหลดหลังเมนูแรกขึ้น (lazy · ไม่อยู่ในงบบูต) · ครบทุกชิ้นถึงใช้ */
   bookReady(){ return BOOK_KEYS.every(k=>this.realTex(k)); }
@@ -8403,7 +8429,8 @@ class Game extends Phaser.Scene {
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); this.applyGearTut(); this.setupMenuScroll(s);
+    const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; } if(_nav)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -17993,3 +18020,11 @@ function _scheduleResize(){ clearTimeout(_rzT); _rzT=setTimeout(_applyResize,160
 window.addEventListener('resize', _scheduleResize);
 window.addEventListener('orientationchange', ()=>{ setTimeout(_applyResize,60); setTimeout(_applyResize,300); setTimeout(_applyResize,600); });
 if(window.visualViewport)window.visualViewport.addEventListener('resize',_scheduleResize);
+// v7.9.47 ปุ่มย้อนกลับของมือถือ: APK (Capacitor App plugin) ใช้ backButton · เบราว์เซอร์ใช้ history.pushState + popstate
+(function(){ const scn=()=>{ try{ return window.__g&&window.__g.scene.getScene('Game'); }catch(e){ return null; } };
+  const exitApp=()=>{ try{ const A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App; if(A&&A.exitApp){A.exitApp();return true;} }catch(e){} return false; };
+  try{ const A=window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;
+    if(A&&A.addListener){ A.addListener('backButton',()=>{ const s=scn(); let r=true; try{ r=s?s.handleBackKey():true; }catch(e){} if(r==='exit')exitApp(); }); return; } }catch(e){}
+  try{ if(!window.history||!history.pushState)return; history.pushState({mm:1},'');
+    window.addEventListener('popstate',()=>{ const s=scn(); let r=true; try{ r=s?s.handleBackKey():true; }catch(e){} if(r==='exit'){ if(!exitApp())history.back(); return; } history.pushState({mm:1},''); }); }catch(e){}
+})();
