@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.44';
+const GAME_VERSION = '7.9.45';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.45',date:'2026-10-21',title:'Replay and boss reward fixes',items:['Replay after a defeat now really restarts the stage from the beginning (monsters and the boss from the last try no longer stay on the field)','No more level-up cards on top of the boss reward wheel — the stage is already won, so the wheel always works','Buttons on the end-of-stage, defeat and tutorial-complete screens react on the first tap and have a slightly bigger touch area'],},
   {v:'7.9.44',date:'2026-10-21',title:'Yuzlings really bite',items:['Each bite is now a visible lunge: the Yuzling winds back, dashes in and squirts juice — damage lands at that moment','Yuzlings stand at the edge of their target instead of sitting on top of it','Fixed the bite animation flashing hurt and sleepy frames'],},
   {v:'7.9.43',date:'2026-10-21',title:'Yuzu crew teamwork',items:['Yuzlings now gang up: up to 3 bite the same enemy, so enemies fall faster and Pack Instinct actually works','Tossed Yuzlings stay and fight where they land for 3s instead of walking straight back','Yuzu starts each stage with 4 Yuzlings, and the orchard grows every 6 kills until you pick a Build'],},
   {v:'7.9.42',date:'2026-10-21',title:'Yuzu bites hit harder',items:['Yuzling bites are slower but twice as strong, with a little hop and a hit flash — easier to feel','Yuzu no longer does an attack pose every time a Yuzling bites','A green bar under your EXP shows how close the orchard is to its next Yuzling','Ripen no longer halves your crew when you pick it: you keep every Yuzling, up to 6, and extra growth makes them stronger'],},
@@ -7362,14 +7363,13 @@ class Game extends Phaser.Scene {
         return; }
       if(this.state==='menu'){ if(this.menuScreen==='atlas'&&this._amRect&&this.atlasPointerDown(p))return; this.menuPointerDown(p); return; return; }
       if(this.state==='tutorial'){this.advanceTutorial();return;}
-      if(['dead','rushDone','summary','epilogue','rewardChoice'].includes(this.state)){ const now=Date.now(); if(this._endScreenState!==this.state){ this._endScreenState=this.state; this._endLockAt=Math.max(this._endLockAt||0,now+900); this._endOpenAt=now; }
-        if(now<(this._endLockAt||0)){ this._endLockAt=Math.min(this._endOpenAt+2600,Math.max(this._endLockAt,now+380)); return; } }   // v6.44: กันกดแดช/Unique รัว ๆ แล้วข้ามหน้าจบด่าน
-      else this._endScreenState=null;
-      if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}
+      if(['dead','rushDone','summary','epilogue','rewardChoice'].includes(this.state)){ const now=Date.now(),at=this._stSeen===this.state?(this._stAt||0):now;
+        if(now<at+700)return; }   // v6.44 กันกดรัว ๆ ข้ามหน้าจบด่าน · v7.9.45 นับ 0.7 วิจากตอนเปิดหน้า (เดิมเริ่มนับตอนแตะครั้งแรก → แตะแรกโดนกินเสมอ และแตะซ้ำยืดล็อกถึง 2.6 วิ)
+      if(this.state==='dead'||this.state==='rushDone'){for(const z of (this._overBtns||[])){const q=10;if(p.x>=z.x-q&&p.x<=z.x+z.w+q&&p.y>=z.y-q&&p.y<=z.y+z.h+q){Sfx.uiAction('click',()=>z.fn());return;}}return;}
       if(this.state==='win'){ this.scene.restart(); return; }
       if(this.state==='rolling'){ for(const z of (this._rollBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ z.fn(); return; } } return; }
-      if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
-      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
+      if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){const q=10;if(p.x>=z.x-q&&p.x<=z.x+z.w+q&&p.y>=z.y-q&&p.y<=z.y+z.h+q){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
+      if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){const q=10;if(p.x>=z.x-q&&p.x<=z.x+z.w+q&&p.y>=z.y-q&&p.y<=z.y+z.h+q){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
       if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}
       if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
       if(this.state==='startskill'){ this.pickStartingSkillAt(p.x,p.y); return; }
@@ -10627,6 +10627,7 @@ class Game extends Phaser.Scene {
     Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
   showMenu(){ try{ Tele.flush(); }catch(e){} this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false);
+    const rp=window.__pendingRun; window.__pendingRun=null; if(rp!=null){ this.time.delayedCall(60,()=>{ if(this.state==='menu')this.startRun(rp); }); return; }   // v7.9.45 Replay ตอนแพ้ = รีสตาร์ทฉากแล้วเริ่มด่านเดิมใหม่ (เดิมเรียก startRun ตรง ๆ ศัตรู/บอสเดิมค้างในสนาม)
     if(this.hubMotionAllowed()){ const t0=Date.now(); this.loadBook(()=>{ if(this.state==='menu'&&Date.now()-t0<2500)this.bookCover(); }); } }   // v7.9.10 ใบ 28 เปิดปกหนังสือทุกครั้งที่เข้าเมนู (เปิดเกม/กลับจากด่าน)
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
@@ -12996,12 +12997,12 @@ class Game extends Phaser.Scene {
     if(this.player.forgeMods)forgeXp(this,n);this.xp+=n*(this.player.xpMul||1);   /* v6.99 Delve = Story XP */
     while(this.xp+1e-8>=this.xpNext){ this.xp=Math.max(0,this.xp-this.xpNext); this.level++; this.xpNext=(this.usesStoryBudget?.()||this.recipeMode)?storyXpNext(this.level):Math.round((this.stageIndex>=2&&!this.recipeMode)?this.xpNext*1.32+9:this.xpNext*1.26+6); /* v6.55.17 ด่าน 3+ ช้าลง */ /* v5.25 ช้าลงเล็กน้อย (เดิม 10 · ×1.26+4) */ this.pendingLvl=(this.pendingLvl||0)+1; if(!this._swDone&&Save.ancientHas('secondWeave')){ this._swDone=true; this.pendingLvl++; } /* v7.6 Unique อัปที่ Talent เท่านั้น (เดิม checkUniqueAutoUpgrade) */ if(this.player.forgeMods){const r=forgeState(this);r.levelUntil=(this.elapsed||0)+4;if(forgeValue(this.player,100))this.uniqueCd=Math.max(0,(this.uniqueCd||0)*(1-Math.min(.3,forgeValue(this.player,100)/100)));}this.jelly(0,3.2); this.vfxLevelUp(); this.fireRecipes('levelup'); }
     this.lvlTxt.setText('Lv '+this.level);
-    if(this.pendingLvl>0 && this.state==='play') (this.queueLevelUp?this.queueLevelUp():this.openLevelUp());
+    if(this.pendingLvl>0 && this.state==='play' && this.mode!=='reward' && !this._bossLootOpen) (this.queueLevelUp?this.queueLevelUp():this.openLevelUp());
   }
   // v7.8.58 เจ้าของ: การ์ดเลเวลอัพไม่เด้งทันที — โชว์ LEVEL UP ก่อน LEVELUP_DELAY_MS แล้วค่อยเปิด (ไม่ซ้อนคิว)
   queueLevelUp(){ if(!this.time?.delayedCall||this._inTutorial){this.openLevelUp();return;} if(this._lvlQueued)return; this._lvlQueued=true;
     const p=this.player;if(p?.active)this.floatText?.(p.x,p.y-70,'LEVEL UP!',0xffe07a);
-    this.time.delayedCall(LEVELUP_DELAY_MS,()=>{ this._lvlQueued=false; if(this.state==='play'&&this.pendingLvl>0)this.openLevelUp(); }); }
+    this.time.delayedCall(LEVELUP_DELAY_MS,()=>{ this._lvlQueued=false; if(this.state==='play'&&this.pendingLvl>0&&this.mode!=='reward'&&!this._bossLootOpen)this.openLevelUp(); }); }   // v7.9.45 บอสตายแล้วไม่เปิดการ์ดซ้อนวงล้อรางวัล (ด่านจบอยู่แล้ว)
   checkUniqueAutoUpgrade(){
     let target=1;for(let lv=2;lv<=UNIQUE_MAX_LV;lv++)if(this.level>=uniqueAt[lv])target=lv;if(target<=(this.uniqueLevel||1))return;
     const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+(u.tiers||UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique])[target],1900);this._uniqueRankSfxAt=performance.now();Sfx.rewardCue?.('sfx_event_unique_rank_up',.72);this.uniqueRankNotice?.(target,u);this.playGrowthWorld?.('unlock');
@@ -17697,7 +17698,7 @@ class Game extends Phaser.Scene {
     let y=py+ph+8;
     if(canRevive){const z=this._endBtn(box,w/2,y+25,Math.min(w-28,pw*.92),50,0x2fae6a,'📺 REVIVE (Watch Ad) · HP 50%',{primary:true,pulse:true});this._overBtns.push({...z,fn:()=>this.showRewardedAd('Revive back into the field · HP 50%',()=>this.adRevive())});y+=58;}
     const zl=this._endBtn(box,w/2,py+ph*.88,pw*.66,Math.max(40,ph*.082),COLORS.pink,'↻ Replay',{primary:!canRevive,font:Math.min(16,pw*.045)}),bh=46,zr=this._endBtn(box,w/2,y+bh/2,Math.min(w-28,pw*.92),bh,COLORS.grape,this.recipeMode?'⛏ Back to Delve':'🏠 Back to Hub');
-    this._overBtns.push({...zl,fn:()=>{this.over.setVisible(false);this.physics.resume();this.state='menu';if(this._challengeRun&&this._challengeRun.length)this._challengeRequested=this._challengeRun.slice();this.startRun(this.stageIndex);}});
+    this._overBtns.push({...zl,fn:()=>{window.__pendingRun=this.stageIndex;this.scene.restart();}});
     this._overBtns.push({...zr,fn:()=>{if(this.recipeMode){window.__pendingMenu='atlas';}this.scene.restart();}});
     y+=bh+10;
     { const z=this._endBtn(box,w/2,y+20,Math.min(w-28,pw*.92),40,0x4a3466,adv.text,{font:11});this._overBtns.push({...z,fn:()=>{window.__pendingMenu=adv.screen;this.scene.restart();}});}
@@ -17782,7 +17783,8 @@ class Game extends Phaser.Scene {
     }
   }
   update(time,delta){
-    let dt=delta/1000; this.tickMenuMotion(dt); if(this.state!=='play'){this.suspendTaroCombat?.();return;} this.tickBossSay(); this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;this.tickTaroCombat?.(delta/1000); if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
+    let dt=delta/1000; if(this.state!==this._stSeen){ this._stSeen=this.state; this._stAt=Date.now(); }   // v7.9.45 เวลาเริ่มของแต่ละ state (ล็อกหน้าจบด่านนับจากตอนเปิด)
+    this.tickMenuMotion(dt); if(this.state!=='play'){this.suspendTaroCombat?.();return;} this.tickBossSay(); this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;this.tickTaroCombat?.(delta/1000); if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 
