@@ -10,7 +10,7 @@ const pick=s=>s.pool.filter(o=>o.active).forEach(o=>s.collectOrb(s.player,o));  
 function scene(stage=0){const s=new Scene();s.stageIndex=stage;s.player={xpMul:1};s.level=1;s.xp=0;s.xpNext=12;s.state='play';s.mode='wave';s.waveIndex=0;s.maxLive=100;s.pool=[];s.foes=[];
  s.enemies={countActive:()=>s.foes.filter(e=>e.active).length,children:{iterate:fn=>s.foes.forEach(fn)}};
  s.orbs={getFirstDead:()=>s.pool.find(o=>!o.active),create(){const o=orb();o.active=true;s.pool.push(o);return o;},children:{iterate:fn=>s.pool.forEach(fn)}};
- Object.assign(s,{orbStyle:()=>({tint:1,sc:1}),camWorld(){},checkUniqueAutoUpgrade(){},jelly(){},vfxLevelUp(){},fireRecipes(){},vfxCollectSparkle(){},lvlTxt:{setText(){}},openLevelUp(){this.state='levelup';}});return s;}
+ Object.assign(s,{orbStyle:()=>({tint:1,sc:1}),orbSkin(o){o._sc=1;},xpTrailOff(){},xpFxOk:()=>false,camWorld(){},checkUniqueAutoUpgrade(){},jelly(){},vfxLevelUp(){},fireRecipes(){},vfxCollectSparkle(){},lvlTxt:{setText(){}},openLevelUp(){this.state='levelup';}});return s;}
 // Every stage: completion pays only its fixed reward plus actual earned orbs.
 for(let stage=0;stage<15;stage++)for(const style of ['fast','slow','uncollected']){
  const s=scene(stage);let earned=0;

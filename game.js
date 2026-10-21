@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.25';
+const GAME_VERSION = '7.9.26';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.26',date:'2026-10-21',title:'New EXP drops',items:['EXP is now Flavor Drops instead of candy, so it no longer looks like Sugar','6 drop shapes: bigger EXP = a fancier crystal','New pickup sparkle, a short trail when drops fly to you, and a flash when drops merge','The EXP bar has a drop icon']},
   {v:'7.9.25',date:'2026-10-21',title:'Cards show before → after',items:['When you already have an upgrade, its card now shows your total from that card now and after you pick it, e.g. “+16% → +24% attack speed”']},
   {v:'7.9.24',date:'2026-10-21',title:'Easier card text',items:['About 60 Strawberry, Mint, Cocoa and Taro cards rewritten in plain words — no more “converts excess”, “percentage points” or “roots”','Numbers did not change, only the wording']},
   {v:'7.9.23',date:'2026-10-21',title:'More build cards',items:['Instinct cards are now relics: Kill Streak and Last Stand','Taro Arc: Static Shock (Arc hits make enemies take more damage), Double Arc (every few casts fire twice), Grounding (Arc kills heal)','Mint Barrage: Wide Bloom (bigger shard bursts), Shard Chain (bursts chain on), Lance Echo (every few volleys fire twice)','New: Strawberry Heart Spark (bounces zap), Cocoa Hot Streak (fist hits build heat) and Leap Stun, Taro Static Sparks and Sentry Ward — every build now has 5–7 path cards']},
@@ -1889,6 +1890,7 @@ const ASSET_IMAGES = {
   codex_c3_boss4:'assets/art/ch3_bosses/c3_boss4.png',
   codex_c3_mini5:'assets/art/ch3_bosses/c3_mini5.png',
   codex_c3_boss5:'assets/art/ch3_bosses/c3_boss5.png',
+  xp_bar_icon:'assets/art/exp/xp_bar_icon.webp',   // v7.9.26 ใบ 29 ไอคอนหน้าแถบ EXP
   candy:     'assets/candy.png',       // ออร์บ EXP (ย้อมสีตามค่าได้ เพราะรูปขาว)
   e_drain_slime:'assets/generated/e_drain_slime.png', e_drain_dasher:'assets/generated/e_drain_dasher.png',
   e_drain_caster:'assets/generated/e_drain_caster.png', e_drain_bomber:'assets/generated/e_drain_bomber.png',
@@ -2355,6 +2357,7 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   }
 }
 const ASSET_SHEETS = {
+  xp_orbs:{url:'assets/art/exp/xp_orbs.webp',frame:96},   // v7.9.26 ใบ 29 Flavor Drops: 6 แถว = T1–T6 × 6 เฟรม (anim xp_t1…xp_t6 สร้างใน xpOrbAnim)
   p1_skill_edges:{url:'assets/art/p1_feedback/skill_edges.webp',frame:256},
   talent_momo:{url:'assets/art/talents/momo_talents.webp',frame:128},
   talent_mint:{url:'assets/art/talents/mint_talents.webp',frame:128},
@@ -2714,6 +2717,10 @@ const ASSET_FX = {
   bpx_cocoa_rage_target:{url:'assets/art/hero_vfx/bpx_cocoa_rage_target.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   bpx_cocoa_crater:{url:'assets/art/hero_vfx/bpx_cocoa_crater.webp',fw:256,fh:256,frames:4,rate:14,anchor:'center'},
   bpx_cocoa_dash_buff:{url:'assets/art/hero_vfx/bpx_cocoa_dash_buff.webp',fw:128,fh:128,frames:6,rate:16,anchor:'center'},
+  vfx_xp_pickup:{url:'assets/art/exp/vfx_xp_pickup.webp',fw:128,fh:128,frames:6,rate:15,anchor:'center'},   // v7.9.26 ใบ 29 (tint ตามระดับ)
+  vfx_xp_pickup_big:{url:'assets/art/exp/vfx_xp_pickup_big.webp',fw:192,fh:192,frames:8,rate:15,anchor:'center'},
+  vfx_xp_trail:{url:'assets/art/exp/vfx_xp_trail.webp',fw:64,fh:128,frames:4,rate:15,anchor:'center',loop:true},
+  vfx_xp_merge:{url:'assets/art/exp/vfx_xp_merge.webp',fw:96,fh:96,frames:5,rate:15,anchor:'center'},
   bpx_cocoa_landing_dust:{url:'assets/art/hero_vfx/bpx_cocoa_landing_dust.webp',fw:256,fh:256,frames:6,rate:16,anchor:'center'},
   bpx_cocoa_dash_trail:{url:'assets/art/hero_vfx/bpx_cocoa_dash_trail.webp',fw:256,fh:64,frames:4,rate:8,anchor:'left',loop:true},
   bpx_momo_seed_pop:{url:'assets/art/hero_vfx/bpx_momo_seed_pop.webp',fw:128,fh:128,frames:4,rate:14,anchor:'center'},
@@ -3121,6 +3128,8 @@ let _stageOnlyArt=null;
 function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
 const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
+const XP_ORB_KEYS=['xp_orbs','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
+const XP_ORB_PX=[0,36,44,52,62,73,94],XP_TIER_COL=[0,0xff8fb5,0x8be6a4,0x7fc9ff,0xb98cff,0xffd75e,0xfff0a0];   // ขนาดเม็ดในโลก (ส่วนที่เห็น ~75% ของเฟรม) · สีย้อม VFX ตามระดับ
 const CARD_ICON_KEYS=["ic_evo_momo", "ic_evo_cocoa", "ic_evo_berry", "ic_evo_mint", "ic_evo_taro", "ic_evo_sesame", "ic_fus_heartburst", "ic_fus_crownseed", "ic_fus_glacier", "ic_fus_shardstorm", "ic_fus_quakeking", "ic_fus_lastbear", "ic_fus_tempest", "ic_fus_skyjudge", "ic_fus_prismnova", "ic_fus_horizon", "ic_mod_bloom", "ic_mod_love", "ic_mod_heart", "ic_mod_aim", "ic_mod_jam", "ic_mod_spray", "ic_mod_icemine", "ic_mod_shatter", "ic_mod_flurry", "ic_mod_throw", "ic_mod_glide", "ic_mod_coldarc", "ic_mod_quake", "ic_mod_stomp", "ic_mod_rage", "ic_mod_crush", "ic_mod_ko", "ic_mod_after", "ic_mod_over", "ic_mod_field", "ic_mod_step", "ic_mod_judge", "ic_mod_ion", "ic_mod_focus", "ic_mod_prism", "ic_mod_lens", "ic_mod_scope", "ic_mod_refract", "ic_mod_mirror", "ic_mod_exec", "ic_mut_momo_ricochet", "ic_mut_momo_fan", "ic_mut_cocoa_rush", "ic_mut_cocoa_breaker", "ic_mut_cocoa_counter", "ic_mut_berry_seeker", "ic_mut_berry_sticky", "ic_mut_mint_blizzard", "ic_mut_mint_permafrost", "ic_mut_taro_chainlord", "ic_mut_taro_stormcaller", "ic_mut_sesame_fortress", "ic_mut_sesame_retaliate", "ic_trade_glass", "ic_trade_burn", "ic_trade_armor", "ic_trade_rush", "ic_trade_berserk", "ic_trade_core", "ic_trade_feast", "ic_trade_oath", "ic_inf_spicy", "ic_inf_sour", "ic_inf_sweet", "ic_inf_minty", "ic_cocoa_dashp", "ic_cocoa_drum"];CARD_ICON_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.8.68 ใบ 26: ไอคอนการ์ดโหลดพร้อมด่าน (ไม่กินงบบูต)   // v7.8.59 ชิ้น UI เลเวลอัพ/หยุดเกม โหลดพร้อมด่าน (ไม่กินงบบูต)
 if(typeof ASSET_FX!=="undefined")for(const k in ASSET_FX){const m=/^vfx_b(\d\d)_/.exec(k);if(m)STAGE_SHEETS[+m[1]-1]?.push(k);}   // v7.8.57 ใบ 22: ชุด VFX บอส vfx_bNN_* โหลดพร้อมด่าน NN
 const STAGE_SHEET_KEYS=new Set(STAGE_SHEETS.flat());
@@ -10884,7 +10893,7 @@ class Game extends Phaser.Scene {
   // 📜 Recipe run (R2): ไม่มีเวฟ/มินิ · ฆ่าเติม Hunger Meter เต็ม → บอสโผล่ทันที · เคลียร์เร็ว=จบเร็ว · กันค้าง: ครบ RECIPE_HUNGER_CAP วิ บอสมาเอง
   warmStageTextures(idx,done){
     const ch=this.character||Save.data.character||'momo',st=STAGES[idx]||{},keys=new Set();
-    const re=new RegExp('^(e_|proj_|fx_|vfx_|orb|candy|heal|chest|crate|vac|gift|char_'+ch+(idx>=10?'|c3_e_':'')+(idx>=5&&idx<10?'|ch2_':'')+')');
+    const re=new RegExp('^(e_|proj_|fx_|vfx_|orb|xp_|candy|heal|chest|crate|vac|gift|char_'+ch+(idx>=10?'|c3_e_':'')+(idx>=5&&idx<10?'|ch2_':'')+')');
     this.textures.getTextureKeys().forEach(k=>{ if(re.test(k))keys.add(k); });
     Object.values(st).forEach(v=>{ if(typeof v==='string'&&this.textures.exists(v))keys.add(v); });
     ['bg'+(idx+1),FLOOR_KEYS[idx],'mb'+(idx+1),'boss'+(idx+1)].forEach(k=>{ if(k&&this.textures.exists(k))keys.add(k); });
@@ -15499,25 +15508,39 @@ class Game extends Phaser.Scene {
   }
   // สีออร์บตามค่า EXP: ยิ่งค่ามาก สียิ่งพรีเมียม (เขียว→ฟ้า→ม่วง→ทอง) + เม็ดใหญ่ขึ้น
   orbStyle(v){
-    if(v>=20) return {tint:0xffd75e, sc:2.05};   // ทอง = ค่าสูงสุด (บอส)
-    if(v>=10) return {tint:0xb98cff, sc:1.75};  // ม่วง
-    if(v>=5)  return {tint:0x7fc9ff, sc:1.55};  // ฟ้า
-    if(v>=2)  return {tint:0x8be6a4, sc:1.38};   // เขียว
-    return {tint:0xffffff, sc:1.22};              // ขาว/ชมพู = 1 (Normal)
+    if(v>=50) return {tint:0xffd75e, sc:2.05, t:6};   // v7.9.26 T6 = เม็ดรวม/บอส
+    if(v>=20) return {tint:0xffd75e, sc:2.05, t:5};   // ทอง = ค่าสูงสุด (บอส)
+    if(v>=10) return {tint:0xb98cff, sc:1.75, t:4};  // ม่วง
+    if(v>=5)  return {tint:0x7fc9ff, sc:1.55, t:3};  // ฟ้า
+    if(v>=2)  return {tint:0x8be6a4, sc:1.38, t:2};   // เขียว
+    return {tint:0xffffff, sc:1.22, t:1};              // ขาว/ชมพู = 1 (Normal)
   }
+  /* v7.9.26 ใบ 29 Flavor Drops: รูปหยดตามระดับแทนลูกอมย้อมสี · body คงขนาดเดิม (30px×sc ในโลก) ระยะเก็บไม่เปลี่ยน · ยังไม่โหลด = candy+tint เดิม */
+  xpOrbAnim(t){if(!this.textures.exists('xp_orbs'))return false;const k='xp_t'+t;if(!this.anims.exists(k))this.anims.create({key:k,frames:this.anims.generateFrameNumbers('xp_orbs',{start:(t-1)*6,end:(t-1)*6+5}),frameRate:10,repeat:-1});return true;}
+  orbSkin(o,v){const st=this.orbStyle(v);o._tier=st.t;
+    if(this.xpOrbAnim(st.t)){const k='xp_t'+st.t,sc=XP_ORB_PX[st.t]/.75/96;if(o.texture.key!=='xp_orbs')o.setTexture('xp_orbs',0);o.clearTint();o._xp=true;o._sc=sc;if(o.anims?.currentAnim?.key!==k)o.play({key:k,startFrame:(Math.random()*6)|0});if(o.body){const bw=30*st.sc/sc;o.body.setSize(bw,bw,true);}}
+    else{if(o.texture.key!=='candy'){o.anims?.stop();o.setTexture('candy');if(o.body)o.body.setSize(30,30,true);}o._xp=false;o._sc=st.sc;o.setTint(st.tint);}
+    if(!this._xpIconArt&&this.textures.exists('xp_bar_icon')&&this.xpIcon&&this.xpIcon.type==='Text'){const t=this.xpIcon,im=this.camUI(this.add.image(t.x,t.y,'xp_bar_icon').setDisplaySize(15,15).setScrollFactor(1).setDepth(52).setVisible(t.visible)),i=this.hudList?.indexOf(t);if(i>=0)this.hudList[i]=im;this.xpIcon=im;t.destroy();this._xpIconArt=true;}
+    return st;}
+  xpFxOk(){const n=this.time.now;if(n-(this._xpFxT||0)>100){this._xpFxT=n;this._xpFxN=0;}return (this._xpFxN=(this._xpFxN||0)+1)<=6;}   // ≤6 ชิ้น/100ms ตอนดูดทีละเยอะ
+  xpTrail(o,ang){if(!this.bpAnim('vfx_xp_trail'))return;let s=o._trail;
+    if(!s){const P=this._xpTr=(this._xpTr||[]).filter(q=>q.scene);s=P.find(q=>!q._own);if(!s){if(P.length>=40)return;s=this.camWorld(this.add.sprite(0,0,'vfx_xp_trail',0).setDepth(79999));s.play('vfx_xp_trail');P.push(s);}
+      s._own=o;o._trail=s;const w=Math.max(16,XP_ORB_PX[o._tier||1]*.55);s.setVisible(true).setTint(XP_TIER_COL[o._tier||1]).setDisplaySize(w,w*2);}
+    const L=s.displayHeight*.45;s.setRotation(ang+Math.PI/2).setPosition(o.x-Math.cos(ang)*L,o.y-Math.sin(ang)*L);}
+  xpTrailOff(o){const s=o&&o._trail;if(s){s._own=null;if(s.scene)s.setVisible(false);o._trail=null;}}
   dropOrb(x,y,value){ value=value||1;
     const budget=this.usesStoryBudget?.()?this._storyBudget:null;
     /* v7.9.8 เจ้าของ: EXP ห้ามหาย — เม็ดบนพื้นเยอะ (≥300) รวมเข้าเม็ดที่ใกล้สุด · pool เต็มทุกโหมดให้ EXP ทันที */
     if((this.orbs.countActive?.(true)||0)>=300){let best=null,bd=90*90;this.orbs.children.iterate(q=>{if(!q||!q.active||q._storyBudget!==budget)return;const dx=q.x-x,dy=q.y-y,d2=dx*dx+dy*dy;if(d2<bd){bd=d2;best=q;}});
-      if(best){if(budget)budget.issued+=value;best.value=(best.value||1)+value;const st=this.orbStyle(best.value);best.setTint(st.tint);best._sc=st.sc;return;}}
+      if(best){if(budget)budget.issued+=value;best.value=(best.value||1)+value;this.orbSkin(best,best.value);if(best._xp&&this.xpFxOk())this.heroFx('vfx_xp_merge',best.x,best.y,XP_ORB_PX[best._tier]*1.3,{depth:80001});return;}}
     let o=this.orbs.getFirstDead(false);
     if(!o) o=this.orbs.create(x,y,'candy'); else { o.setActive(true).setVisible(true); o.body.enable=true; o.setPosition(x,y); }
     if(!o){if(budget){budget.issued+=value;budget.paid+=value;}this.gainXp(value);return;}   // v7.9.8 pool เต็ม = ได้ EXP ทันทีทุกโหมด (เดิมเฉพาะ Story)
     if(budget)budget.issued+=value;
-    const st=this.orbStyle(value);o._storyBudget=budget; o.value=value; o._vac=false; o.setTint(st.tint); o._sc=st.sc; o.setRotation(0).setDepth(80000);
-    o.body.setAllowGravity(false); o.setScale(st.sc); this.camWorld(o); }
-  collectOrb(player,o){ if(!o.active)return; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); if(o._storyBudget)o._storyBudget.paid+=ov;Sfx.xp(); this.jelly(0.9,-0.9);
-    this.vfxCollectSparkle(ox,oy,this.orbStyle(ov).tint); this.gainXp(ov); this.fireRecipes('xp20'); }
+    o._storyBudget=budget; o.value=value; o._vac=false; this.orbSkin(o,value); o.setRotation(0).setDepth(80000);
+    o.body.setAllowGravity(false); o.setScale(o._sc); this.camWorld(o); }
+  collectOrb(player,o){ if(!o.active)return; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); this.xpTrailOff(o); if(o._storyBudget)o._storyBudget.paid+=ov;Sfx.xp(); this.jelly(0.9,-0.9);
+    {const t=o._tier||1;if(!o._xp||!this.xpFxOk()||!(t>=5?this.heroFx('vfx_xp_pickup_big',ox,oy,100,{depth:80001}):this.heroFx('vfx_xp_pickup',ox,oy,48,{tint:XP_TIER_COL[t],depth:80001})))this.vfxCollectSparkle(ox,oy,this.orbStyle(ov).tint);} this.gainXp(ov); this.fireRecipes('xp20'); }
   // ---- ไอเทมฟื้นฟู HP ----
   fieldDropState(){return this._fieldDrops||(this._fieldDrops={heartAt:-Infinity,magnetAt:-Infinity,hearts:0,magnets:0,magnetProgress:0});}
   healingItemPower(){return Math.max(0,this.player.healEffect??1)*(this.recipeHas?.('noheal')?0:1)*this.pactHealMul();}
@@ -17558,11 +17581,13 @@ class Game extends Phaser.Scene {
     });
 
     // orb vacuum + ออร์บAlive (หมุนช้า + เต้นวิบวับ)
+    if(this._xpTr)for(const s of this._xpTr)if(s._own&&!s._own.active)this.xpTrailOff(s._own);
     this.orbs.children.iterate(o=>{ if(!o||!o.active)return;
-      o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob);
+      if(o._xp){o.rotation=0;o.setScale((o._sc||1)*(1+Math.sin(this.elapsed*4+o.x*0.05)*0.05));}   // v7.9.26 หยดไม่หมุน · เต้นเบา ๆ
+      else{ o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob); }
       const d=this.dist(o.x,o.y,this.player.x,this.player.y);
-      if(o._vac || d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x), sp=o._vac?560:380; o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp); }
-      else o.setVelocity(0,0); });
+      if(o._vac || d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x), sp=o._vac?560:380; o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp); if(o._xp)this.xpTrail(o,ang); }
+      else { o.setVelocity(0,0); if(o._trail)this.xpTrailOff(o); } });
 
     // bullets life + boomerang return/rebound + spin + pierce cd
     this.bullets.children.iterate(b=>{ if(!b||!b.active)return;
