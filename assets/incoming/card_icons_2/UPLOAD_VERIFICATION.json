@@ -1,10 +1,10 @@
 {
-  "sourceCommit": "0c6bce58be8d49fa202305b56554acc33fee76d6",
-  "deliveredPngs": 10,
+  "sourceCommit": "bb9fcb68dc049821619c6cb6c0d5f3f57ecc8cc0",
+  "deliveredPngs": 49,
   "required": 46,
-  "optionalRedraws": 0,
+  "optionalRedraws": 5,
   "optionalSkipped": 1,
-  "verifiedBinaryFiles": 10,
+  "verifiedBinaryFiles": 49,
   "verifiedTextFiles": 7,
   "method": "Exact GitHub readback: binary base64 equality + blob SHA, with recorded SHA256; exact UTF8 metadata text.",
   "files": [
@@ -76,6 +76,279 @@
       "bytes": 69026,
       "sha256": "1fc1bdd192e2b84b3fd6e881ada4e1e620aff8b0547e3445c108767b0d63396f",
       "gitBlobSha": "d00588cef94b8ed975f13e2b9809ccb0d733b996",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_snipe_refund.png",
+      "bytes": 86394,
+      "sha256": "886b24666c5b367118fb0ff9e426616de2ec68ac61e92e9f5a9ad825540b015b",
+      "gitBlobSha": "7fb7b47380a936cab56aa62367c4bdd181077fa5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_snipe_guard.png",
+      "bytes": 122231,
+      "sha256": "ab42afce73de66b442b496b7692d1f5d6d76d67185d81cf6ad2c73c5ad18bf28",
+      "gitBlobSha": "2b0cd179a8d022678b2919cfd6f51f57f152e08e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_blast_stun.png",
+      "bytes": 110526,
+      "sha256": "acfcde0d1712b25fb7906f0988c785e1d0cf9dfc26ced0430ec816d2e26a0130",
+      "gitBlobSha": "1826bbe6262489652f35c2127ef4f0f3837da349",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_blast_rain.png",
+      "bytes": 85685,
+      "sha256": "ed2784e7d76bb5dfd30748525b84f76d9bd931e49f63122e15800ad511af3f4d",
+      "gitBlobSha": "47dfc2529294e75b822578093fe0fd180171a7ab",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_reb_shield.png",
+      "bytes": 122408,
+      "sha256": "1cf0fa887db0a99e25d0c71609a5d2e067ab98c600b36ff9085e316e23b4e9e2",
+      "gitBlobSha": "1528f5a8bc7de949cfd608d0ef75059eb144b494",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_bloom_field.png",
+      "bytes": 119078,
+      "sha256": "210f500d166cc9895b8cf371a099a7c55270fa8c0b236e1dfddcfb444aef2a51",
+      "gitBlobSha": "d86bf7975af1fedc9af5db70524a80aa123942d0",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_bloom_heal.png",
+      "bytes": 103412,
+      "sha256": "190fb87b88ef445d2cf6d84fb1410403890c4b7a7d8e0e7ef2694b7067748dd2",
+      "gitBlobSha": "5ec60810498870fe3b22cfd87159c6636fae9e74",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_lance_mines.png",
+      "bytes": 62046,
+      "sha256": "5ccffebb2fe22998185b7e70a66f56d8c89035bcdb01787dc9fc9de03fe870f4",
+      "gitBlobSha": "a70b6d807c7f22500c6433b37d92e7779518af91",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_lance_guard.png",
+      "bytes": 77503,
+      "sha256": "5dcd17c1ef476a530a16b59e68ede3e18e3fb3358d910b1e67bf123aef2bb023",
+      "gitBlobSha": "43169c84e50693bfd928196f21de8746f9f49d52",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_gale_blades.png",
+      "bytes": 109631,
+      "sha256": "89e7178c7b21066c2bbf3fd292d4b6cccd61aae3fbcd2c51483e1097b11ba20a",
+      "gitBlobSha": "94c1987bdfd6e4afc113a67fecdcea9c197eeddd",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_gale_tail.png",
+      "bytes": 95805,
+      "sha256": "c31fc2e50addb23df77db43a4a8568cc4a972aac962ea2b88c69a0e07428958f",
+      "gitBlobSha": "e26b0d27c02e61359fdae5cc3bddf3599ec943a1",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_rocket_ring.png",
+      "bytes": 109456,
+      "sha256": "63671b734d928ac67374c2b8ea511cdd469849b80d0662c00e3872301a96703d",
+      "gitBlobSha": "b574b8d41f72fd2a5cc5b17ecb2422d4d717ef40",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_rocket_heat.png",
+      "bytes": 106841,
+      "sha256": "9c49999929a0969236a64fdc7bb9740038cb29ab9e2184befce9133bb376ad11",
+      "gitBlobSha": "0d2cf3f07c16a1075a9e7dd599848e836375efd7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_rage_after.png",
+      "bytes": 97860,
+      "sha256": "56f6148b895413c8f07b9c95bbd7891899f77bf06cf2d4416f2483262a6d1fcc",
+      "gitBlobSha": "58e768aec217da6d706fe16fc256507925a8d6de",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_rage_guard.png",
+      "bytes": 97367,
+      "sha256": "6a4c03e0b4298a4651e78c1f4ef1e3fd49524f5292ad70873bdb947420498c9f",
+      "gitBlobSha": "eaf431d3ebaed4b27f9cc1a21f410c0b671e1a12",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_phantom_refund.png",
+      "bytes": 102762,
+      "sha256": "554744c9c1cdeae20a112f096353955201ad61189423ffc2322b673d3dfa3f7e",
+      "gitBlobSha": "46a0e9383c56712377a65ace9c0aec2998e64fa7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_phantom_slam.png",
+      "bytes": 116460,
+      "sha256": "fe0ad3ac47ccbcac78c3a0a2c0ded8fc72d09e8bfd13ffc155a70b45f64955fa",
+      "gitBlobSha": "b515d68781e0260b1060644e75abdc99f2fc9eb1",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_plasma_wide.png",
+      "bytes": 97750,
+      "sha256": "d9ea504db34cb2cdae96659d0aa664ae766da2d7266b30b21ea40412bf07d3c5",
+      "gitBlobSha": "0a52e59157dd7c377ee0eaffb1dc4d060249fe26",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_plasma_twin.png",
+      "bytes": 105322,
+      "sha256": "86df2699d1def3ee96ee19b51860b8940cfe0158524a07a243dc3d222c06e0c8",
+      "gitBlobSha": "02da2e0dc1e65d98717e62414c50f4795c1ed45e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_mark_jump.png",
+      "bytes": 68585,
+      "sha256": "c9c6c9de65c55ed3bc6a11ee3dde17fbd16922bac5543e950c1a7478b39c7b00",
+      "gitBlobSha": "d0531c6dfb5a298c8da01b42978d55459d399c4f",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_mark_nova.png",
+      "bytes": 80264,
+      "sha256": "df55e2857839d37af0bcc77b574e15f5b6a7daae642426d448a8811067f2a208",
+      "gitBlobSha": "f54ea982ecfa03441f54b53df1011e23293dc273",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_over_long.png",
+      "bytes": 91138,
+      "sha256": "3f054859f2265baa6cd21f9ca6a1578ebcff31e9549443beafe75ffaa789b5a7",
+      "gitBlobSha": "0d0c4933e5af68a44b92f4636974839936db8eec",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_uqm_over_finale.png",
+      "bytes": 107837,
+      "sha256": "7cf4e1f7d09d358cdaa099b86743d16354def2a84613fcdd87cc66eb64fb42b7",
+      "gitBlobSha": "dc3144d242ad5919c69cbe4a53ac662ad354c808",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/relic_streak.png",
+      "bytes": 64506,
+      "sha256": "b5093ce678d03b2a24f10aefd474420fae0c3b7975c9f344dbc11d0a487dbe34",
+      "gitBlobSha": "b2bf4c24019f32b5c0f48a314d79124a69e08150",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/relic_laststand.png",
+      "bytes": 101415,
+      "sha256": "a26edc2210c01bfdbec034524c149b82afb04be5333da68c02ee1990b34ed11e",
+      "gitBlobSha": "4386dd3f667acc14b3e85f92b54c764eaf0a61cb",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_arc_shock.png",
+      "bytes": 105505,
+      "sha256": "99e3eda6188749c232e38958cb49810c5500c942cf7dba09e9257b8f0bb8b1ad",
+      "gitBlobSha": "72970b92c47717158294d35b7e1eeedb12b524d0",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_sentry_ward.png",
+      "bytes": 107118,
+      "sha256": "0b9db44045d212e44e532e11b32f44a17866936fd6f68b5c4cee6ed9423ab336",
+      "gitBlobSha": "730b51fcd43ba9a3ded7bd4aa8dc3aa83c5031bf",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_sentry_pulse.png",
+      "bytes": 62378,
+      "sha256": "2260699fe0ae964bf9572710965c13ef4c6de8cd75175ce1f7b91d40efe0b591",
+      "gitBlobSha": "816e5646def0703cc3bbb53aecb26b0efb1afbd5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_static.png",
+      "bytes": 103351,
+      "sha256": "cc47d888730cf1664a201a6675398af438e676ee81be4db665c1e17498127bc7",
+      "gitBlobSha": "77dbc3140fe01801fb85536d2c86d6549f13f65a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_bar_wide.png",
+      "bytes": 84638,
+      "sha256": "0158c20070fe41543d4445383a1ed69deb0c622f1a5f27e7ae21fec230ba4897",
+      "gitBlobSha": "733d24d59054863f47088a650e4450e688c55e95",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_bar_chain.png",
+      "bytes": 59684,
+      "sha256": "587719f05ed0699e642cc50bd54ea0aba3c5cad87a77b497f6107fbea5bad3e4",
+      "gitBlobSha": "b8a12e2bae934137bb432c7af621366c8c12d72a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_leapstun.png",
+      "bytes": 79303,
+      "sha256": "2d74ce64bf8aa643344808f34fd706f047d385f50391e2826414ec16d526c46a",
+      "gitBlobSha": "17486297082c00c33b3c2dafd7f5e00955159e0c",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_footwork.png",
+      "bytes": 106445,
+      "sha256": "d463d39334310fff87a42f7eab17d1f5073238a948b0737cd0f7e6f28c371232",
+      "gitBlobSha": "00fc7d4a2906ffe7e843187065a0926825d46f8b",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_path_p_recharge.png",
+      "bytes": 95152,
+      "sha256": "04b403a0fef057192cfac3aa7552af6498cd5a6c444d5be0143dc07ea2e9426e",
+      "gitBlobSha": "0d1c07ffe76c57e1d1b496eb7fbec7cc60a63e50",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_mod_spray.png",
+      "bytes": 96942,
+      "sha256": "d7953b0ad367ed5e60bfea4b18fce01449546b1f6e96d757a10763ae71fd8cc1",
+      "gitBlobSha": "2d7cec626d30625f9c7d8bfe59a8acddfe057f52",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_mod_rage.png",
+      "bytes": 99355,
+      "sha256": "7f7d45ffa07eac63cb2ed7080b6101ebc7f6244d1f2495556f4fc7193b32f497",
+      "gitBlobSha": "630e1262349967adc97fdafc871d3682aa900b30",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_mod_judge.png",
+      "bytes": 88465,
+      "sha256": "f8f5b64cb84b03948cdada50d2b3b5c42dc6aead16fb2440127c8a4a0f013b69",
+      "gitBlobSha": "31b81459097982f04d19406e88817bf433974806",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_mod_focus.png",
+      "bytes": 84107,
+      "sha256": "273a96274a9de510628ad939d8237521dbf88d574378dc7a25d40dcc94c8fb7f",
+      "gitBlobSha": "2fb3f411f60a38e2c240eb033e0608198f2afa71",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/card_icons_2/ic_fus_skyjudge.png",
+      "bytes": 92942,
+      "sha256": "1a00078b722b3df2f86e51ba209a72daa1358913df897f09c444c4f48c05554e",
+      "gitBlobSha": "54d7dc272e944c205aa760f90d4159b50d3f05b6",
       "byteForByteMatch": true
     }
   ]
