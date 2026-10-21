@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.22';
+const GAME_VERSION = '7.9.23';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.23',date:'2026-10-21',title:'More build cards',items:['Instinct cards are now relics: Kill Streak and Last Stand','Taro Arc: Static Shock (Arc hits make enemies take more damage), Double Arc (every few casts fire twice), Grounding (Arc kills heal)','Mint Barrage: Wide Bloom (bigger shard bursts), Shard Chain (bursts chain on), Lance Echo (every few volleys fire twice)','New: Strawberry Heart Spark (bounces zap), Cocoa Hot Streak (fist hits build heat) and Leap Stun, Taro Static Sparks and Sentry Ward — every build now has 5–7 path cards']},
   {v:'7.9.22',date:'2026-10-21',title:'⭐ Unique cards',items:['Use your Unique 3 times in a stage and ⭐ Unique cards start showing up on level-up','5 cards for every hero: Unique Power (+20% damage), Quick Recharge (−10% cooldown), Kill Charge (kills recharge it), Unique Echo (extra blast), Ready Rush (faster while it is ready)','Unique Mutations: pick 1 of 2 for your build — e.g. Taro Leaping Mark or Mark Nova, Cocoa Aftershocks or Unshaken, Mint Permafrost or Cold Heart, Strawberry Shell Shock or Seed Rain (Strawberry, Mint, Cocoa and Taro, all 12 builds)']},
   {v:'7.9.21',date:'2026-10-21',title:'Card clean-up round 2',items:['Removed duplicate cards: Mint Packed Quiver (same as Crystal Payload) and Executioner, Taro Spark Power (same as Dense Charge), trade-off Slow Burn (same as Spicy Infusion)','Taro Static Shards: Arc kills throw shards at more enemies and hit harder · Taro Storm Battery (was Focus Bolt): every 15 kills your next hit deals ×5','Cocoa Leap Mend (was Rush Battery): Dash Leaps heal · Dash Stack now only adds Dash charges (the Dash damage bonus lives on Phantom Jab)','Attack speed cards all say “+% attack speed” · every card now has a short title line']},
   {v:'7.9.20',date:'2026-10-21',title:'More time to react',items:['Boss arena attacks give more warning: floods/roots sweep slower with a longer warning, hot grids, rings, pillars, clock hands, scythe and mirror beams all wait longer before hitting','Hornet Queen rush lanes and Ant Empress tunnel lock-on warn longer','Menu page turn is a little slower']},
@@ -3625,6 +3626,8 @@ const RELICS = {
   chill:     { emoji:'❄️', name:'Cold Snap',      headline:'Every 6s: freeze burst', desc:'Every 6s your next hit freezes the target and enemies near it for 1s (bosses and minibosses are not frozen).' },
   firstbite: { emoji:'🎯', name:'First Bite',     headline:'+35% opening hit', desc:'Your first hit against each enemy deals 35% more damage.' },
   dashcharge:{ emoji:'⚡', name:'Spark Step',     headline:'Dash empowers 3 hits', desc:'After dashing, your next 3 hits within 3s deal 25% more damage.' },
+  streak:    { emoji:'🔥', name:'Kill Streak',    headline:'Kills stack damage', desc:'+3% damage per kill in your streak (max +40%).' },   // v7.9.23 จาก Instinct
+  laststand: { emoji:'🛡️', name:'Last Stand',     headline:'Tougher at low HP', desc:'Take 30% less damage while HP is below 35%.' },
   harvest:   { emoji:'🍵', name:'Mochi Harvest',  headline:'Heal every 20 kills', desc:'Every 20 enemy kills restore 5% max HP.' },
 };
 // คู่ synergy — ถือครบทั้งคู่ = ผลพิเศษเพิ่ม (โชว์ในการ์ดเมื่อถืออีกครึ่งอยู่แล้ว)
@@ -3850,7 +3853,8 @@ const BASIC_PATHS={
       upgrades:[{id:'carom',iconKey:'ic_path_carom',name:'Carom',emoji:'🔁',max:3,headline:'+1 bounce',desc:'+1 Basic bounce per rank, max 8. Excess planned bounces add +8% starting seed power each (max +80%)'},
                 {id:'s_seek',iconKey:'ic_path_carom',name:'Seeking Hearts',emoji:'💞',max:2,headline:'Basic: +20% bounce reach',desc:'Basic bounce acquire radius +20% per rank; still visits each enemy once per seed'},
                 {id:'s_return',iconKey:'ic_path_deadeye',name:'Lone Heart',emoji:'🎯',max:2,headline:'Basic: +10% boss fallback',desc:'If no unvisited target is nearby, surviving bosses/minibosses take an extra +10% starting seed impact per rank. Total fallback caps at 80%'},
-                {id:'gather',iconKey:'ic_path_gather',name:'Gathering Juice',emoji:'🧃',max:3,headline:'Bounces build power',desc:'+8 percentage points of starting seed power per bounce per rank; max ×2.2 total. No exponential growth'}]}],
+                {id:'gather',iconKey:'ic_path_gather',name:'Gathering Juice',emoji:'🧃',max:3,headline:'Bounces build power',desc:'+8 percentage points of starting seed power per bounce per rank; max ×2.2 total. No exponential growth'},
+                {id:'r_spark',iconKey:'ic_path_buckshot',name:'Heart Spark',emoji:'💗',max:3,fx:{},headline:'Bounces zap',desc:'Each bounce has a 15% chance per rank to zap another enemy nearby for 40% damage.'}]}],
   // สายของตัวอื่นใช้ระบบกลาง: base = ผลตอนเลือก · upgrades[].fx = ผลต่อ rank (dmg/cd คูณ · อื่น ๆ บวก)
   // คีย์: dmg cd count range big(vs elite/มินิ/บอส) frozen(vs ศัตรูแช่) far(>300px) low(HP เรา<50%) taken(ลดดาเมจที่รับ)
   mint:[
@@ -3864,7 +3868,10 @@ const BASIC_PATHS={
                 {id:'m_shard',iconKey:'ic_card_m_shard',name:'Shard Spray',emoji:'💎',max:2,headline:'Shatter splashes',desc:'Glacier Bloom Unique: each shatter hits enemies within 90px for 40% per rank.'}]},
     {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 1 extra lance (max 2), 22% sooner at 62% damage. Each excess lance grants +18% shard damage instead.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
-                {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'}]},
+                {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'},
+                {id:'p_bar_wide',iconKey:'ic_path_barrage',name:'Wide Bloom',emoji:'❄️',max:3,fx:{},headline:'Bigger shard burst',desc:'Shard bursts cover 20% more area per rank.'},
+                {id:'p_bar_chain',iconKey:'ic_card_m_shard',name:'Shard Chain',emoji:'🔗',max:3,fx:{},headline:'Bursts chain on',desc:'Each shard burst has a 25% chance per rank to burst again on a nearby enemy at 60% power.'},
+                {id:'p_bar_echo',iconKey:'ic_mod_exec',name:'Lance Echo',emoji:'🔁',max:2,fx:{},headline:'Every few volleys fire twice',desc:'Every 4th volley (every 3rd at rank 2) fires again 0.25s later.'}]},
     {id:'pierce',iconKey:'ic_path_pierce',name:'Crystal Impaler Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Charge → Impale → Rupture',desc:'Auto-charge one heavy lance at +75% base damage, +30% range and 40% slower fire. Full hits build 3 Impale; the next full hit triggers boss Rupture. Dash/hurt releases a weaker shot.',
       upgrades:[{id:'p_shatterpt',iconKey:'ic_path_p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% Boss / +10% Rupture',desc:'+15% damage to elites/minibosses/bosses and +10% Crystal Rupture damage per rank.'},
                 {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Overpenetration',emoji:'💎',max:3,headline:'+1 pierce / stronger late hits',desc:'+1 normal target pierced per rank. Each prior penetration adds +6% lance damage per rank, capped at 3 prior targets; stop on bosses.'},
@@ -3878,7 +3885,8 @@ const BASIC_PATHS={
       upgrades:[{id:'p_shock',iconKey:'ic_path_p_shock',name:'Blast Radius',emoji:'💥',max:3,fx:{},headline:'+25% fireball blast',desc:'The 5th-punch fireball explosion is 25% bigger per rank'},
                 {id:'p_footwork',iconKey:'ic_path_p_footwork',name:'Hot Hands',emoji:'💨',max:3,fx:{},headline:'Every few fists explode',desc:'Every 8th fist explodes on hit (every 6th at rank 2, every 4th at rank 3) for a small fire blast.'},
                 {id:'p_twin',iconKey:'ic_path_brawler',name:'Twin Fists',emoji:'✌️',max:2,fx:{},headline:'Double fist volleys',desc:'Every 3rd fist fires 2 fists; rank 2 makes it every 2nd fist'},
-                {id:'p_ember',iconKey:'ic_inf_spicy',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'}]},
+                {id:'p_ember',iconKey:'ic_inf_spicy',name:'Ember Trail',emoji:'🔥',max:3,fx:{},headline:'Fists leave fire',desc:'Fists that hit leave a small fire patch for 1.2s; +30% burn damage per rank'},
+                {id:'p_streak',iconKey:'ic_path_p_blitz',name:'Hot Streak',emoji:'🔥',max:3,fx:{},headline:'Fist hits build heat',desc:'Each fist hit adds +2% fist damage per rank for 3s, stacking up to 10 times.'}]},
     {id:'titan',iconKey:'ic_path_titan',name:'Titan Build',emoji:'🗿',base:{dmg:1.7,cd:1.45,range:0.25},desc:'×1.7 punch power, +25% reach and 45% slower. No five-hit combo: every punch is a Ground Pound that adds Tremor (+6% damage taken per stack, up to 5, 3s). Higher regen than other paths. Hold Unique: charge up to 3 Blood Rage (costs HP) and release a Colossus Fist for up to ×4.2 damage. Endgame: beat a Delve boss at Depth 15+ with Chocolate to unlock Rage IV (×5.5, almost full-screen)',
       upgrades:[{id:'p_titanfist',iconKey:'ic_path_p_titanfist',name:'Titan Fist',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% vs Bosses & elites',desc:'+15% damage to elites and bosses per rank'},
                 {id:'p_quake',iconKey:'ic_path_p_quake',name:'Wide Pound',emoji:'🌋',max:3,fx:{range:0.1},headline:'+10% impact size',desc:'+10% impact size per rank'},
@@ -3890,22 +3898,28 @@ const BASIC_PATHS={
       upgrades:[{id:'p_phantom',iconKey:'ic_path_p_phantom',name:'Phantom Jab',emoji:'👻',max:3,fx:{dashm:0.2},headline:'Stronger Dash combos',desc:'Dash buff +20% combo damage per rank and keeps combo progress +0.4s longer per rank; Phantom Rush trail punches gain +10% power per rank'},
                 {id:'p_longleap',iconKey:'ic_path_dashboxer',name:'Long Leap',emoji:'🦘',max:3,fx:{},headline:'+25% leap range',desc:'Dash Leap reaches enemies 25% farther per rank'},
                 {id:'p_slamwave',iconKey:'ic_mod_stomp',name:'Slam Wave',emoji:'💢',max:3,fx:{},headline:'+20% landing slam',desc:'Dash Leap landing slam is 20% wider and 10% stronger per rank'},
-                {id:'p_recharge',iconKey:'ic_cocoa_drum',name:'Leap Mend',emoji:'💗',max:2,fx:{},headline:'Leaps heal',desc:'Each Dash Leap onto an enemy heals 1.5% max HP per rank.'}]}],
+                {id:'p_recharge',iconKey:'ic_cocoa_drum',name:'Leap Mend',emoji:'💗',max:2,fx:{},headline:'Leaps heal',desc:'Each Dash Leap onto an enemy heals 1.5% max HP per rank.'},
+                {id:'p_leapstun',iconKey:'ic_path_p_longleap',name:'Leap Stun',emoji:'💫',max:3,fx:{},headline:'Leaps stun',desc:'Dash Leap stuns its target for 0.4s per rank (not bosses or minibosses).'}]}],
   taro:[
     {id:'storm',iconKey:'ic_path_storm',name:'Arc Build',emoji:'🌩️',base:{dmg:0.75,count:1},headline:'Launch Arc from Taro',desc:'Arc jumps from Taro through nearby enemies; grows per jump. With no new target, remaining jumps loop back into the last one, so bosses take every jump. Direct kills release shards.',
       upgrades:[{id:'p_static',iconKey:'ic_path_p_static',name:'Static Shards',emoji:'✨',max:3,fx:{},headline:'Bigger kill shards',desc:'Arc kills release shards at 1 more enemy per rank, and shards deal 33% more per rank.'},
-                {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Loopback',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'}]},
+                {id:'p_arc_overload',iconKey:'ic_taro_arc_overload',name:'Loopback',emoji:'🔁',max:3,fx:{},headline:'+15% loop power',desc:'When an Arc runs out of new targets, its remaining jumps loop back into the last target. +15% loop damage per rank (base 60%).'},
+                {id:'p_arc_shock',iconKey:'ic_path_storm',name:'Static Shock',emoji:'⚡',max:3,fx:{},headline:'Arc hits shock',desc:'Enemies hit by Arc take 4% more damage per rank from everything for 2s.'},
+                {id:'p_arc_twin',iconKey:'ic_path_p_squall',name:'Double Arc',emoji:'🔁',max:2,fx:{},headline:'Every few casts fire twice',desc:'Every 4th Arc cast (every 3rd at rank 2) fires a second Arc.'},
+                {id:'p_arc_ground',iconKey:'ic_taro_reserve_cell',name:'Grounding',emoji:'💚',max:3,fx:{},headline:'Arc kills heal',desc:'Arc kills heal 0.4% max HP per rank.'}]},
     {id:'smite',iconKey:'ic_path_smite_spark',name:'Spark Build',emoji:'✨',base:{dmg:1.8,cd:1.35},headline:'Release splitting sparks',desc:'Sparks burst out all around Taro, bounce off the screen edges, pass through enemies and split into smaller sparks. They keep zapping until their timer runs out.',
       upgrades:[{id:'p_judge',iconKey:'ic_path_p_judge',name:'Giant Hunter',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% vs Bosses & elites',desc:'+15% Spark damage to elites and bosses per rank'},
                 
                 {id:'p_spark_life',iconKey:'ic_taro_live_current',name:'Live Current',emoji:'⏳',max:3,fx:{},headline:'Sparks last longer',desc:'+15% Spark lifetime per rank; max 5 seconds'},
                 {id:'p_spark_speed',iconKey:'ic_taro_fast_sparks',name:'Fast Sparks',emoji:'💨',max:3,fx:{},headline:'Sparks fly faster',desc:'+12% Spark movement speed per rank; max 640'},
-                {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},headline:'Stronger split sparks',desc:'Split sparks keep 65% power instead of 45% (second split 42% instead of 20%)'}]},
+                {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},headline:'Stronger split sparks',desc:'Split sparks keep 65% power instead of 45% (second split 42% instead of 20%)'},
+                {id:'p_spark_shock',iconKey:'ic_path_p_overload',name:'Static Sparks',emoji:'✨',max:3,fx:{},headline:'Spark hits shock',desc:'Enemies hit by Sparks take 3% more damage per rank from everything for 2s.'}]},
     {id:'tempest',iconKey:'ic_path_tempest_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Place up to 3 sentries that stay until they expire or you walk far away. They fire slow Ball Lightning that zaps every enemy around it many times per second.',
       upgrades:[{id:'p_sentry_overload',iconKey:'ic_path_tempest',name:'Fade Burst',emoji:'💥',max:2,fx:{},headline:'Orbs burst on fade',desc:'Ball Lightning bursts when it fades: 150% orb power per rank in a wider area'},
                 {id:'p_sentry_link',iconKey:'ic_path_smite',name:'Tesla Link',emoji:'🔗',max:2,fx:{},headline:'Sentries link up',desc:'Two sentries within 420px link with lightning; enemies on the link take 80% orb power per rank every 0.5s'},
                 {id:'p_farstrike',iconKey:'ic_taro_long_current',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},headline:'+12% beyond 300px',desc:'+12% hit damage beyond 300px from Taro per rank'},
-                {id:'p_sentry_pulse',iconKey:'ic_taro_rapid_pulse',name:'Close Charge',emoji:'⏱️',max:3,fx:{},headline:'Stay near to charge sentries',desc:'Sentries within 260px of Taro fire 12% faster per rank.'}]}],
+                {id:'p_sentry_pulse',iconKey:'ic_taro_rapid_pulse',name:'Close Charge',emoji:'⏱️',max:3,fx:{},headline:'Stay near to charge sentries',desc:'Sentries within 260px of Taro fire 12% faster per rank.'},
+                {id:'p_sentry_ward',iconKey:'ic_taro_wide_conductor',name:'Sentry Ward',emoji:'🛡️',max:3,fx:{},headline:'Safe near sentries',desc:'Take 5% less damage per rank while within 160px of a sentry.'}]}],
   sesame:[
     {id:'prism',iconKey:'ic_path_prism',name:'Prism Build',emoji:'🌈',base:{dmg:0.6,count:2},desc:'+2 beams, ×0.6 damage each · swarm build',
       upgrades:[{id:'p_facet',iconKey:'ic_path_p_facet',name:'Prism Echo',emoji:'💠',max:2,fx:{},headline:'Every few casts fire twice',desc:'Every 4th beam cast (every 3rd at rank 2) fires again 0.3s later at 50% damage.'},
@@ -7300,6 +7314,7 @@ class Game extends Phaser.Scene {
   uqMut(){return this.basicAttack?.uqMut||null;}
   uqMul(){return 1+.2*this.uqLv('uq_power');}
   uqReady(){return this.uqLv('uq_ready')>0&&!(this.uniqueCd>0)&&this.state==='play';}
+  sentryWardMul(){ const b=this.basicAttack,w=b?.path==='tempest'?(b.lv?.p_sentry_ward||0):0; if(!w||this.character!=='taro')return 1; const p=this.player; return (this._taro?.nodes||[]).some(n=>!n.beacon&&this.dist(n.x,n.y,p.x,p.y)<160)?1-.05*w:1; }   // v7.9.23 Sentry Ward
   uqGuardMul(){return (this.elapsed||0)<(this._uqGuardT||0)?(this._uqGuardM||1):1;}
   // v7.9.22 ⭐ Unique cards: นับการใช้ (เปิดการ์ดหลัง 3 ครั้ง) · Echo · Mutation ตอนกด
   uniqueCastFx(){ const p=this.player; if(!p)return; this._uqUses=(this._uqUses||0)+1; const um=this.uqMul(),b=this.basicAttack,mut=this.uqMut(),T=this.elapsed||0;
@@ -12931,7 +12946,7 @@ class Game extends Phaser.Scene {
   taroCarryContext(callback){if(!this.taroIsSecondary())return callback;const t=this._taro,context=this._taroDamageContext;
     return ()=>{if(this._taro===t&&t.run===context.run&&t.pathEpoch===context.pathEpoch)this.taroWithDamage(context.source,callback,context);};
   }
-  taroDealDamage(token,amount,kind,meta={}){if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
+  taroDealDamage(token,amount,kind,meta={}){const _sb=this.basicAttack,_sk=_sb?.path==='storm'&&kind==='chain'?(_sb.lv?.p_arc_shock||0)*.04:_sb?.path==='smite'&&(kind==='spark'||kind==='sparkChild')?(_sb.lv?.p_spark_shock||0)*.03:0;if(_sk>0&&token?.enemy){token.enemy._arcShockT=(this.elapsed||0)+2;token.enemy._arcShockM=_sk;}   /* v7.9.23 Static Shock/Sparks */if(!this.player||!Number.isFinite(amount)||amount<=0||!taroTargetValid(token,this.player,meta.range??Infinity))return false;
     // v7.8.56: only Spark Build miniboss damage is reduced; apply once at the shared damage boundary.
     if(this.basicAttack?.path==='smite'&&token.enemy.isMini&&!token.enemy.isBoss)amount*=.85;
     let dealt=false;this.taroWithDamage(kind,()=>{const e=token.enemy;this.damage(e,amount,e.x,e.y);dealt=true;},{...meta,targetId:token.id,directPending:true});return dealt;
@@ -13131,8 +13146,9 @@ class Game extends Phaser.Scene {
       for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const lt=last;at(j,()=>{if(!taroTargetValid(lt,p,Infinity))return;(this.taroArcLoopHop||((tk,fn)=>fn())).call(this,lt,()=>{if(this.state==='play'&&taroTargetValid(lt,p,Infinity))this.damage(lt.enemy,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,lt.enemy.x,lt.enemy.y);});});}}
     Sfx.bp?.('taro_chain',.22,.18,1.25);
   }
-  castTaroChainBasic(level){
+  castTaroChainBasic(level,_echo){
     const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='storm'||this.state!=='play')return;
+    {const tw=this.basicAttack?.lv?.p_arc_twin||0;if(tw&&!_echo&&(this._arcN=(this._arcN||0)+1)%(tw>=2?3:4)===0)this.time?.delayedCall?.(180,()=>{if(this._taro===t&&this.state==='play')this.castTaroChainBasic(level,true);});}   // v7.9.23 Double Arc
     const f=this.taroTempestProfile(level),candidates=this.taroCandidates(this.player,Infinity),hit=new Set(),attackId=++t.attackSeq;
     /* v7.8.58 เจ้าของ: Arc ไม่กระโดดทันที — แต่ละกระโดดเดินทางทีละช่วง TARO_ARC_HOP_MS (แบบ Chain Frost แต่เร็วกว่า) · เลือกเป้าทันทีเหมือนเดิม แค่ส่งดาเมจ/ภาพตามลำดับ */
     const hopMs=this.time?.delayedCall?TARO_ARC_HOP_MS:0,at=(i,fn)=>{if(!i||!hopMs)return fn();this.time.delayedCall(i*hopMs,()=>{if(this._taro===t&&this.state==='play')fn();});};
@@ -13167,7 +13183,8 @@ class Game extends Phaser.Scene {
   }
   taroAfterDirect(ticket,e){
     if(!ticket||ticket.used||ticket.owner!==this._taro||ticket.run!==this._taro.run||ticket.pathEpoch!==this._taro.pathEpoch||this.state!=='play'||!e.active||e.hp>0||e.isDummy||ticket.token?.enemy!==e||ticket.token.id!==e._taroSpawnId)return;
-    ticket.used=true;const ss=this.basicAttack?.path==='storm'?Math.min(3,this.basicAttack.lv?.p_static||0):0,origin={x:e.x,y:e.y},damage=.3*ticket.unitD*(1+ss*.33),dead=ticket.token;   // v7.9.21 Static Shards
+    ticket.used=true;{const gr=this.basicAttack?.path==='storm'?(this.basicAttack.lv?.p_arc_ground||0):0;if(gr&&(this.elapsed||0)>=(this._groundAt||0)){this._groundAt=(this.elapsed||0)+.25;const p=this.player,h=p.maxhp*.004*gr;p.hp=Math.min(p.maxhp,p.hp+h);}}   // v7.9.23 Grounding
+    const ss=this.basicAttack?.path==='storm'?Math.min(3,this.basicAttack.lv?.p_static||0):0,origin={x:e.x,y:e.y},damage=.3*ticket.unitD*(1+ss*.33),dead=ticket.token;   // v7.9.21 Static Shards
     const job=this.taroSchedule('shrapnel',.08,()=>{
       const hit=new Set([dead.id]),candidates=this.taroCandidates(origin,130).filter(token=>token.enemy!==dead.enemy),targets=[];
       for(let i=0;i<3+ss;i++){const token=this.taroNearestUnused(candidates,origin,130,hit);if(!token)break;hit.add(token.id);targets.push(token);}
@@ -13433,7 +13450,8 @@ class Game extends Phaser.Scene {
     const B=this._frBuddy; if(B){ B.t-=dt; B.ang+=dt*2.4; B.spr.setPosition(p.x+Math.cos(B.ang)*56,p.y+Math.sin(B.ang)*56-10); B.acc+=dt;
       if(B.acc>=0.45){ B.acc=0; const e=this.nearestEnemy(420); if(e){ const b=this.getBullet(B.spr.x,B.spr.y,0xffffff,0.18); if(b){ b.setTexture('proj_sprinkle').setTint(0xffb3cd); b.dmg=this.relicDmg(0.7)*B.pw; b.life=1.2; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(Math.atan2(e.y-B.spr.y,e.x-B.spr.x),560,b.body.velocity); } } }
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
-  resetRelics(){ this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._crownHits=0; this._rageStk=0; this._killChg=0; this._uqUses=0; this._uqGuardT=0; this._uqHotT=0; this._uqWinT=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
+  resetRelics(){ if(this._relCond&&this.player?._cond){for(const k in this._relCond)this.player._cond[k]=Math.max(0,(this.player._cond[k]||0)-this._relCond[k]);} this._relCond={};
+    this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._crownHits=0; this._rageStk=0; this._killChg=0; this._uqUses=0; this._uqGuardT=0; this._uqHotT=0; this._uqWinT=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length)+((b.condRelics||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
@@ -13453,7 +13471,7 @@ class Game extends Phaser.Scene {
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a])),fu=(FUSIONS[(this.basicAttack||{}).character]||[]).find(f=>f.relic===k);   // v7.8.88 บอกล่วงหน้าว่า Relic นี้ + Evolution = Fusion
       out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:[syn?'🔗 '+syn.name+': '+syn.desc:'',fu?'🧬 + Evolution → '+fu.name:'',d.headline||''].filter(Boolean).join('  ')||undefined,apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
-    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);} if(Math.random()<0.45){const cc=this.condRelicCard();if(cc)extra.push(cc);}
+    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
     return out;
   }
@@ -13461,6 +13479,7 @@ class Game extends Phaser.Scene {
     this._forcedOpts=opts; this._relicPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return true; }
   gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics(); this.time.delayedCall(600,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});
     this.relics.push(k); this._rel[k]=true; const p=this.player,d=RELICS[k];
+    if(k==='streak'||k==='laststand'){ const ck=k==='streak'?'c_streak':'c_close'; p._cond=p._cond||{}; p._cond[ck]=(p._cond[ck]||0)+2; (this._relCond=this._relCond||{})[ck]=(this._relCond[ck]||0)+2; }
     if(k==='glass'){ p.dmgMul+=(1.4)-1; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
     const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
     if(syn&&syn.a==='jam')p.dashCdMul=(p.dashCdMul||1)*0.65;   // Sticky Rush
@@ -13846,7 +13865,7 @@ class Game extends Phaser.Scene {
     b.setAlpha(1);
     b.setScale(scale||1).setTint(tint||0xffffff).setRotation(0).setDepth(90000); if(b.body)b.body.setAllowGravity(false); this.camWorld(b);
     b.pierce=false; b.hitCd=0; b.hitGapV=0.16; b.boomer=false; b.returned=false;
-    b.bounce=0; b.firePool=0; b.firePoolT=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.homeSpeed=0; b.homeRange=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null;b.impaler=null;b.mintEpoch=null;b.berrySeed=null;b.sgPellet=false;b.frShot=false;b._uqRocket=false;b._bpBoom=null;b._ptSniper=false; b.seedPop=0; b.seedPierce=false; b.hitTargets=null; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null; b.penGain=0;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b._boomed=false;b.loopT=false;b._bounced=false;b._split=false;
+    b.bounce=0; b.firePool=0; b.firePoolT=0; b.rebound=false; b.reb=0; b.spin=false; b.homing=0; b.homeSpeed=0; b.homeRange=0; b.explode=0; b.sticky=false; b.faceVel=false; b.chain=0;b.knockback=0;b.lockedTarget=null; b.bubblePrison=false; b.bubbleAwaken=false; b.iceNeedle=null;b.impaler=null;b.mintEpoch=null;b.berrySeed=null;b.sgPellet=false;b.frShot=false;b._uqRocket=false;b._bpBoom=null;b._ptSniper=false; b.seedPop=0; b.seedPierce=false; b.hitTargets=null; b.headshot=0; b.bigMul=0; b.closeMul=0; b.bounceGain=0; b.pierceLeft=0; b.shatterInfo=null; b.shatterState=null; b.penGain=0;b._fist=false;b.forceHs=false;b.oneShot=false;b.cqMul=0;b.dragon=false;b.lastMul=0;b.seekMul=1;b.splitCh=0;b.boomer2=false;b._boomed=false;b.loopT=false;b._bounced=false;b._split=false;
     return b;
   }
   // คูลดาวน์เกือบคงที่ — เลเวลอัพเน้น "Effect" ไม่ใช่ยิงถี่ขึ้น
@@ -14379,6 +14398,7 @@ class Game extends Phaser.Scene {
       b.dmg=power*(n>1&&fin?.6:1);b.life=(fin?.9:.7)*rng;b.pierce=!!fin;b.explode=fin?Math.round(reach*.9*(1+(basic?._pm?.wave||1)*.12)*(1+.25*(L.p_shock||0)+this.ptv('ffBlast'))):0;b.knockback=fin?260:90;b.faceVel=true;
       if(fin&&mut==='breaker'){b.dmg*=1.25;b.explode=Math.round(b.explode*1.25);}   /* v7.8.28 Earthbreaker บน Fire Fist: ลูกไฟ +25% และระเบิดกว้างขึ้น */
       if(fin&&mut==='napalm'){b.firePool=Math.round(b.explode*.8);b.firePoolT=2;}else if(!fin&&(L.p_ember||this.ptv('ffBurn'))){b.firePool=40;b.firePoolT=1.2;}
+      b._fist=!fin;
       if(!fin&&(this.elapsed||0)<(this._uqHotT||0)){b.explode=Math.max(b.explode||0,60);}   // v7.9.22 Heat Up
       if(!fin&&L.p_footwork){this._ffHot=(this._ffHot||0)+1;if(this._ffHot%[8,6,4][Math.min(3,L.p_footwork)-1]===0){b.explode=Math.max(b.explode||0,60);b.dmg*=1.3;}}   // v7.9.17 Hot Hands
       if(!fin&&mut==='ricochet')b.bounce=2;
@@ -14440,7 +14460,8 @@ class Game extends Phaser.Scene {
     const aim=this.joy?.active&&this.moveDir?.lengthSq()>.04,rng=1+.25*(b.lv?.p_longleap||0)+this.ptv('dbLeap');let best=null,score=-Infinity;
     const big=this.cocoaPriorityTarget(320*rng);if(big&&(big.isBoss||big.isMini)&&!big._phaseGateLocked){const dx=big.x-p.x,dy=big.y-p.y,dd=Math.hypot(dx,dy)||1;if(!aim||(dx*d.x+dy*d.y)/dd>.2)best=big;}
     if(!best)this.enemies.children.iterate(e=>{if(!e?.active||e._phaseGateLocked)return;const dx=e.x-p.x,dy=e.y-p.y,dist=Math.hypot(dx,dy);if(dist>280*rng||dist<20)return;const dot=(dx*d.x+dy*d.y)/dist;if(aim&&dot<.5)return;const v=(aim?dot*200:0)-dist;if(v>score){score=v;best=e;}});
-    if(!best)return;if(b.lv?.p_recharge){const hl=p.maxhp*.015*b.lv.p_recharge;p.hp=Math.min(p.maxhp,p.hp+hl);this.popHeal?.(p.x,p.y,Math.round(hl));}   // v7.9.21 Leap Mend
+    if(!best)return;if(b.lv?.p_leapstun&&!best.isBoss&&!best.isMini){best.knock=Math.max(best.knock||0,.4*b.lv.p_leapstun);best.setVelocity?.(0,0);}   // v7.9.23 Leap Stun
+    if(b.lv?.p_recharge){const hl=p.maxhp*.015*b.lv.p_recharge;p.hp=Math.min(p.maxhp,p.hp+hl);this.popHeal?.(p.x,p.y,Math.round(hl));}   // v7.9.21 Leap Mend
     const dist=this.dist(best.x,best.y,p.x,p.y),gap=Math.max(36,(best.body?.halfWidth||20)+18),k=Math.max(0,(dist-gap)/dist);
     p.setVelocity(0,0);p.iframe=Math.max(p.iframe||0,.45);this.bpPose?.('char_cocoa_dash_leap',.32);this.cocoaAfterimages?.(p.x,p.y,best.x,best.y);if(best.isBoss||best.isMini)tr.bossT=best;this.cocoaGlideTo({x:p.x+(best.x-p.x)*k,y:p.y+(best.y-p.y)*k},.2);this.dashTime=.22;const sw=b.lv?.p_slamwave||0;tr.finale*=1.5*(1+.1*sw+this.ptv('dbSlam'));tr.finaleR=Math.round(110*(1+.2*sw));tr.leap=true;
   }
@@ -14745,6 +14766,7 @@ class Game extends Phaser.Scene {
     i.hits++;if(i.hits>=i.pierces||e.isBoss||e.isMini)this.killBullet(b);
   }
   castFrostLance(lvl,aw,dm,basic){
+    {const ec=basic?.path==='barrage'?(basic.lv?.p_bar_echo||0):0;if(ec&&!this._barEcho&&(this._barEchoN=(this._barEchoN||0)+1)%(ec>=2?3:4)===0)this.artDelay?.(250,()=>{if(this.state!=='play'||this.basicAttack!==basic)return;this._barEcho=true;try{this.castFrostLance(lvl,aw,dm,basic);}finally{this._barEcho=false;}});}   // v7.9.23 Lance Echo
     if(basic?.path==='pierce'){this.castImpalerLance(lvl,aw,dm,basic);return;}
     const evo=basic&&basic.evolved, permafrost=basic?.mutation==='permafrost', blizzard=basic?.mutation==='blizzard';
     const t=this.nearestEnemy(1000);
@@ -14877,11 +14899,12 @@ class Game extends Phaser.Scene {
     const shardCount=glacier?0:Math.min(6,Math.max(0,count),Math.max(0,12-(this._mintShardCount||0)));
     // Planned count above six retains value in power; scene saturation never removes the bloom.
     const power=sdmg*(glacier?1+.08*Math.max(0,count-3):1+.12*Math.max(0,count-6));
-    const bloomR=118+lvl*8+(blizzard?40:0);this.mintBurstFx(x,y,bloomR);
+    const bar=this.basicAttack?.path==='barrage'?this.basicAttack.lv||{}:{},bloomR=(118+lvl*8+(blizzard?40:0))*(1+.2*(bar.p_bar_wide||0));   /* v7.9.23 Wide Bloom */this.mintBurstFx(x,y,bloomR);
     let hits=0;this.enemies.children.iterate(e=>{if(hits>=24||!e?.active||this.dist(e.x,e.y,x,y)>bloomR)return;hits++;
       this.damage(e,power*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
       if(e.active)this.mintChill(e,freeze*1.2);
     });
+    if(bar.p_bar_chain&&!this._barChain&&Math.random()<.25*bar.p_bar_chain){let t=null,td=220;this.enemies.children.iterate(o=>{if(o&&o.active&&o.hp>0){const d=this.dist(o.x,o.y,x,y);if(d>40&&d<td){td=d;t=o;}}});if(t){const tx=t.x,ty=t.y;this.time.delayedCall(150,()=>{if(this.state!=='play')return;this._barChain=true;try{this.frostShatterBurst(tx,ty,baseAng,count,sdmg*.6,freeze,fb,blizzard,lvl);}finally{this._barChain=false;}});}}   // v7.9.23 Shard Chain
     const arc=Math.PI*1.6;
     for(let i=0;i<shardCount;i++){
       const a=baseAng+(i/(shardCount-1||1)-.5)*arc+Phaser.Math.FloatBetween(-.06,.06),b=this.mintBullet(x,y,0xffffff,.28);if(!b)break;
@@ -15196,7 +15219,8 @@ class Game extends Phaser.Scene {
         this.physics.velocityFromRotation(ang,sp,bullet.body.velocity); return; } }
     if(bullet.boomer2&&!bullet._boomed&&bullet._bounced&&bullet.body&&this.player){bullet._boomed=true;bullet.pierce=true;bullet.life=Math.max(bullet.life||0,0.9);const a=Math.atan2(this.player.y-bullet.y,this.player.x-bullet.x);this.physics.velocityFromRotation(a,bullet.body.velocity.length()||700,bullet.body.velocity);return;}
     this.killBullet(bullet); }
-  ptOnBounce(b,enemy){ const PT=(this.player&&this.player._pt)||{};
+  ptOnBounce(b,enemy){ {const hs=this.basicAttack?.path==='ricochet'?(this.basicAttack.lv?.r_spark||0):0;if(hs&&enemy&&Math.random()<.15*hs){let t=null,td=170;this.enemies.children.iterate(o=>{if(o&&o.active&&o!==enemy&&o.hp>0){const d=this.dist(o.x,o.y,enemy.x,enemy.y);if(d<td){td=d;t=o;}}});if(t){this.chainBolt?.(enemy.x,enemy.y,t.x,t.y);this.damage(t,(b.dmg||8)*.4,t.x,t.y);}}}   // v7.9.23 Heart Spark
+    const PT=(this.player&&this.player._pt)||{};
     if(PT.sip){this._ptBounces=(this._ptBounces||0)+1;if(this._ptBounces>=20){this._ptBounces=0;const P=this.player;P.hp=Math.min(P.maxhp,P.hp+P.maxhp*0.01*PT.sip);}}
     if(b.loopT&&this.dist(b.x,b.y,this.player.x,this.player.y)<120&&(this.elapsed||0)>=(this._ptLoopAt||0)){this._ptLoopAt=(this.elapsed||0)+6;this._shield=Math.min(2,(this._shield||0)+1);this.popDmg('🍬 SHIELD',this.player.x,this.player.y-30,false);}
     if(b.splitCh&&!b._split&&Math.random()<b.splitCh){const c=b.berrySeed?this.berryBullet(b.x,b.y,b.scaleX||.13,b.berrySeed.basic):this.getBullet(b.x,b.y,0xffffff,b.scaleX||.13);if(c){b._split=true;c.setTexture('proj_sprinkle').setTint(0xff7bd5);c.faceVel=true;c.dmg=b.dmg*0.6;c.life=1.2;c.pierce=false;c.hitGapV=0.16;c.bounce=1;c.homing=0;c._split=true;c.headshot=0;c.bigMul=0;c.closeMul=0;c.bounceGain=0;c.seedPierce=false;c.penGain=0;c.forceHs=false;c.cqMul=0;c.dragon=false;c.lastMul=0;c.seekMul=1;c.splitCh=0;c.boomer2=false;c.loopT=false;if(c.berrySeed)Object.assign(c.berrySeed,{path:b.berrySeed.path,evolved:false,base:c.dmg,visited:new Map(b.berrySeed.visited),splashed:b.berrySeed.splashed});const t=this.nearestEnemy(400);const a=t&&t!==enemy?Math.atan2(t.y-b.y,t.x-b.x):Math.random()*Math.PI*2;this.physics.velocityFromRotation(a,700,c.body.velocity);}} }
@@ -15294,7 +15318,8 @@ class Game extends Phaser.Scene {
     if(this.textures.exists('vfx_shotgun_muzzle'))this.trackArtVfx(this.spawnFxAnim('vfx_shotgun_muzzle',pl.x+Math.cos(ang)*20,pl.y+Math.sin(ang)*20,{scale:0.55,rotation:ang,depth:90450,normal:true}));
     else {const g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(90450))); g.fillStyle(0xfff1a8,0.75); g.slice(pl.x,pl.y,70,ang-0.45,ang+0.45,false); g.fillPath(); g.fillStyle(0xffffff,0.9); g.fillCircle(pl.x+Math.cos(ang)*26,pl.y+Math.sin(ang)*26,9);
     this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()});} this.screenShake(130,0.0075); if(Sfx.shotgun)Sfx.shotgun(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
-  pathBulletDmg(b,e){ let d=b.dmg;   // 🛤 Build Path: ตัวคูณตามสาย (sniper/shotgun)
+  pathBulletDmg(b,e){ let d=b.dmg;
+    if(b._fist){const hs=this.basicAttack?.lv?.p_streak||0;if(hs){const T=this.elapsed||0;if(T>(this._hotT||0))this._hotN=0;this._hotN=Math.min(10,(this._hotN||0)+1);this._hotT=T+3;d*=1+.02*hs*this._hotN;}}   /* v7.9.23 Hot Streak */   // 🛤 Build Path: ตัวคูณตามสาย (sniper/shotgun)
     if(b.bigMul&&(e.isBoss||e.isMini||e.isElite))d*=1+b.bigMul;
     if(b.penGain&&b.hitTargets)d*=1+b.penGain*Math.max(0,b.berrySeed?b.hitTargets.size:b.hitTargets.size-1);
     if(b.forceHs||(b.headshot&&Math.random()<b.headshot)){b.forceHs=false;d*=2.5;if(b.oneShot){if(e.isBoss||e.isMini)d*=1.6;else d=Math.max(d,e.hp+1);}this.popDmg('HEADSHOT',e.x,e.y-18,true);}
@@ -15330,6 +15355,7 @@ class Game extends Phaser.Scene {
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
     if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=this.relicSyn('firstbite','glass')?1.70:1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini)&&!this._crownTick&&!this.taroIsSecondary?.()&&++this._crownHits>=40&&(this.elapsed||0)>=(this._crownAt||0)){ this._crownHits=0; this._crownAt=(this.elapsed||0)+6; this._crownTick=true; try{ e.knock=Math.max(e.knock||0,0.8); e.setVelocity?.(0,0); e.atkCd=Math.max(e.atkCd||0,1.2); this.floatText?.(e.x,e.y-70,'👑 CROWN BREAK',0xffd166); this.damage(e,this.relicDmg(6),e.x,e.y); } finally{ this._crownTick=false; } } if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
+    if(e._arcShockT>(this.elapsed||0))amount*=1+(e._arcShockM||0);   // v7.9.23 Static Shock/Sparks
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this.player.body&&this.player.body.velocity.length()<25)amount*=1+0.18*CP.s;
     if(!this._infTick&&!e.isDummy){ const P=this.player; if(P.gearStillDmg&&P.body&&P.body.velocity.length()<25)amount*=1+P.gearStillDmg; if(P.gearOpener&&e.hp>=e.maxhp)amount*=1+P.gearOpener; }   // 🪞 Oath Focus
     if(!e.isDummy&&this.player.forgeMods)amount=forgeDamage(this,e,amount);
@@ -16002,7 +16028,7 @@ class Game extends Phaser.Scene {
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.())this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
-    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; let taken=edmg*armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard()*this.condTakenMul()*(this.uqGuardMul?.()||1);if(this.player.forgeMods){if(this.player.body&&this.player.body.velocity&&Math.hypot(this.player.body.velocity.x,this.player.body.velocity.y)<25)taken*=(100+Math.max(0,this.player.armor||0))/(100+Math.max(0,this.player.armor||0)+forgeValue(this.player,67));taken=forgeHurt(this,taken);}this.player.hp-=taken; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
+    this.player.iframe=0.6*HURT_IFRAME_MUL; const wardMul=this.player.wardGuardT>0?0.70:1,crisisMul=this.player.hp/this.player.maxhp<0.40?1-(this.player.lowHpGuard||0):1; const edmg=Number.isFinite(e.dmg)?e.dmg:10; let taken=edmg*armorDamageMultiplier(this.player)*(this.player.dmgTakenMul||1)*wardMul*crisisMul*this.cocoaGuard()*this.condTakenMul()*(this.uqGuardMul?.()||1)*(this.sentryWardMul?.()||1);if(this.player.forgeMods){if(this.player.body&&this.player.body.velocity&&Math.hypot(this.player.body.velocity.x,this.player.body.velocity.y)<25)taken*=(100+Math.max(0,this.player.armor||0))/(100+Math.max(0,this.player.armor||0)+forgeValue(this.player,67));taken=forgeHurt(this,taken);}this.player.hp-=taken; this.charPassiveOnHurt(); Sfx.hurt(); this.screenShake(120,0.008);   // guard e.dmg NaN (กัน HP กลายเป็น NaN)
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>this.player.clearTint());
     this._sqX=0.7; this._sqY=1.3; this.poseFlash(CF.hurt,260);   // โดนตี = หน้าเจ็บ (เจลลี่แบน)
     const ang=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.()){this.player.setVelocity(Math.cos(ang)*260,Math.sin(ang)*260); this.dashTime=0.12;}
