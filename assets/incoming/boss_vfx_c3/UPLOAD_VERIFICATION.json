@@ -1,0 +1,93 @@
+{
+  "sourceCommit": "bf83833e92cdb49b75954200a9016801d8facd12",
+  "verifiedAssets": 12,
+  "verifiedArtifactFiles": 0,
+  "metadataTextFilesVerified": 7,
+  "method": "Exact GitHub readback at source commit: base64 byte equality + Git blob SHA; locally recorded SHA256. Metadata compared as exact UTF8 text.",
+  "files": [
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b11_warn.png",
+      "bytes": 251388,
+      "sha256": "52c230f82a0e2b84ab4b2a65541b750e359ce5d0f2a71cfa6dba8a45c1080390",
+      "gitBlobSha": "3a3518c3c5c16cc251cc7291089bc5539dfdc64d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b11_impact.png",
+      "bytes": 434593,
+      "sha256": "628e78ad0a077ecfb3b1ce32b586014f5e5b06b6fc73aebad190c2b3c553bf2e",
+      "gitBlobSha": "4835925cf7fba66f3c175dea360e68a5874c0be2",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b12_warn.png",
+      "bytes": 256100,
+      "sha256": "0bb47405a4661aff7e19b78a73ac6f69cc843db77f386b282e9cf587bc4259ce",
+      "gitBlobSha": "8d8253d6dd042418895c5b0282c675a191574ce5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b12_impact.png",
+      "bytes": 382736,
+      "sha256": "172532483d7627bed808cdfe59b6d54aedcf57f04056cab6e439954023e4b663",
+      "gitBlobSha": "ddb5dea160bb81faf26d6f35395d3bf495ece68d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b13_warn.png",
+      "bytes": 349319,
+      "sha256": "3a671e2fd3a1a9fe4187fb6a084fab4da113316a2d362a7306bef18b37c494d9",
+      "gitBlobSha": "68a7e8e74eb33d3ff8a6431c96f3a4f7ce626367",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b13_impact.png",
+      "bytes": 488850,
+      "sha256": "afbb77bebf96234a468ed51b1f19eab5a0672fece5424fd16f64a1c7c5ac0be4",
+      "gitBlobSha": "ebf2bff3a3e08ced86889fd5656f2511c0fd6a6e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b14_warn.png",
+      "bytes": 274157,
+      "sha256": "04381b0450d451a9d97362abc9ffe2c1ec668f31906933dd4a5cebb2ff1b66b2",
+      "gitBlobSha": "671b5cbfff16c548c521a8e13f5b6fb0fe8d9c14",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b14_impact.png",
+      "bytes": 471706,
+      "sha256": "e808d9b86679a1fd8b8f9b0abafdc9aaba6a307217355d269795b470515197ae",
+      "gitBlobSha": "1c3965f42ec19845a95ff0aa7f8e344381880bb7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b15_warn.png",
+      "bytes": 380610,
+      "sha256": "0ee6a529beb8b0b27ea88b1bb6c2bf9818cbb972cf04eafc6c5922d3298069a2",
+      "gitBlobSha": "70a292449bd2a860c9b7a0cdb6ede01252800ea4",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_b15_impact.png",
+      "bytes": 507149,
+      "sha256": "da5f95bf2879bda906c89310f80e093d1062e4ff7e26a585b8a261123024c2d6",
+      "gitBlobSha": "d14cc2f21dc1715e20c2b8e1955494c26bc9adc8",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_bpin_warn.png",
+      "bytes": 393878,
+      "sha256": "51d9c30a865a39fc15fb1a5d92725bd959bbcd6adb18244fac80f0e7d295cb42",
+      "gitBlobSha": "046cb29d09c590093f648f3b0f3a895e544be377",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/boss_vfx_c3/vfx_bpin_impact.png",
+      "bytes": 588763,
+      "sha256": "1891b2eec7cacb1677f2bd28dd76cba64dc23a2aab2d8e41f7a550de2b9ac1d1",
+      "gitBlobSha": "061b5d8b08e5785013bea08a6b58e8a58826bcb6",
+      "byteForByteMatch": true
+    }
+  ]
+}
