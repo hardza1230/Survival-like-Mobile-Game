@@ -40,7 +40,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Owner: Sesame and Yuzu are not finished. Do NOT change their cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame','yuzu']` shows a '🚧 In development' badge on their roster cards; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add hero-specific fixes for these two. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.28 — Art order 18 J Storm Mark icon wired
+# Latest delivery: v7.9.29 — Art order 30 (C3 + Pinnacle boss VFX) wired
+
+scripts/pack-boss-vfx-c3.py (sha check vs MANIFEST, lum×1.35 alpha for black sheets, counters keep alpha, prints ASSET_FX lines with fill bbox) → assets/art/boss_vfx/ (48 files, ~4.1 MB, ~700 KB/stage like C1–C2). Loading: vfx_b11…b15 via the vfx_bNN loop; vfx_bpin_*/counter_pin_* → STAGE_SHEETS[14]; counter_c3N_* → STAGE_SHEETS[N+9]. bossKit now 0–14 and returns vfx_bpin_* first when _pinnacleRun/boss._pinnacleArt. Kit lane() helper → kitLane (C3-3 uses prism_beam); chargeTelegraph on stage 10 uses stampede_trail. Signatures in BOSS_KITS: harvestMoon, dryWind/witherWind (wither_pull life), emptyHeart, shatterDome (dome_shard hold 4 per hazard), lastSeed, rootCage ×2 (rootCageArt: art gap at 90°, drawn as a circle rotated to (g+.5)·TAU/n), firstBloom, devour (pin_maw), eclipse. Arena: arenaSweep/arenaGrid/arenaRings take art (bands left/right of the gap · seed tile frames 0–1 warn then 2–5 · ring segments along the arc outside the gap); scythe_cut at the half-screen hit; nectar_drip follows the real Hollow Bloom (replaces drip dots); mirror beams = prism_beam sprites per segment. spawnCounter: key ||= counterArt(b) (C3 stage / Pinnacle) → looping sprite 54px. Every hook falls back to the old graphics. Phone visual/FPS review pending.
+
+# Previous delivery: v7.9.28 — Art order 18 J Storm Mark icon wired
 
 ic_taro_storm_mark.png (sha matches MANIFEST) → assets/art/build_paths/taro_storm_mark.webp (128 lossless, same as other Taro Unique icons) + ASSET_IMAGES.ic_taro_storm_mark; syncUniqueIcon already picks it for the smite path. Order 18 now fully wired.
 
@@ -466,7 +470,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.28 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.29 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
@@ -490,7 +494,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 
 ## 5. ถัดไป
 - **ใบสั่งอาร์ต 29:** ผูกครบแล้ว v7.9.26–27 (รวมเงา) · รอตรวจภาพ/FPS บนมือถือ
-- **ใบสั่งอาร์ต 30 (21 ต.ค.):** ท่าบอส C3 + Pinnacle 48 ไฟล์ · รออาร์ตส่ง `assets/incoming/boss_vfx_c3/`
+- **ใบสั่งอาร์ต 30:** ส่งครบ 48 ไฟล์และผูกแล้ว v7.9.29 · รอตรวจภาพ/FPS บนมือถือ
 - **ใบ 18 J:** ไอคอน Storm Mark ผูกแล้ว v7.9.28 · รอดูบนมือถือ
 - **ใบสั่งอาร์ต 31 (21 ต.ค.):** Counter C1–C2 10 ชิ้น + วง/เอฟเฟกต์ชนกลาง 2 · รออาร์ตส่ง `assets/incoming/arena_counters_c1_c2/`
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **v7.9.11 ครบแล้ว:** บอส C3 ทั้ง 5 + Pinnacle + มินิ C1-3/4/5, C2-1, C3 ทั้ง 5 มีท่าเฉพาะใน BOSS_KITS (C1-2 มินิใช้ชุดของบอส Drain) · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ครบทุกบอส v7.9.13 (นำร่อง 3) + v7.9.15 (อีก 12 + Pinnacle)** · รอเจ้าของเล่นปรับจังหวะ · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก

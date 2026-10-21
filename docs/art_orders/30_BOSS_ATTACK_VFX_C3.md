@@ -1,6 +1,6 @@
 # 30 — Boss Attack VFX · Chapter 3 + Pinnacle · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่งอาร์ตครบ 48 PNG32 / 226 เฟรม · 21 ต.ค. 2026 · ดูสถานะ runtime ที่ CLAUDE.md
+สถานะ: 🟩 ส่งครบ 48 PNG32 / 226 เฟรม (21 ต.ค. 2026) · **ผูกแล้ว v7.9.29** (`scripts/pack-boss-vfx-c3.py` → `assets/art/boss_vfx/`) · รอ QA ภาพ/FPS บนมือถือ
 ส่งไฟล์ที่ `assets/incoming/boss_vfx_c3/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 22 · ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ
