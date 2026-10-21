@@ -30,7 +30,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Owner: Sesame and Yuzu are not finished. Do NOT change their cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame','yuzu']` shows a '🚧 In development' badge on their roster cards; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add hero-specific fixes for these two. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.24 — Plain card text (owner: many descriptions still confusing)
+# Latest delivery: v7.9.25 — Card before → after (owner, from a reference screenshot)
+
+_cardProgress(o,hl) (called after _cardHeadline in drawReadableChoiceCard): basic upgrade cards with lvl>1, max>1 (not mutation/evolution/path/infusion/relic/mod/fusion/trade-off) whose headline is a single leading '+N', '+N%' or '+Ns' (no other digits) show 'cur·N → (cur+1)·N rest', e.g. '+16% → +24% attack speed'; additive per rank, uq_cd uses 1−.9^n. Font shrinks to fit one line (hl.prog).
+
+# Previous delivery: v7.9.24 — Plain card text (owner: many descriptions still confusing)
 
 Text only. ~60 desc/headline rewrites for Momo/Mint/Cocoa/Taro basic upgrades, mutations, Build Path cards and path upgrades + TARO_PROGRESSION (storm/smite/tempest arc/surge/chainlord/stormcaller/evolution) + taroAttackInfo pre-path Arc Reach/Extra Arcs/mutations/evolutionDesc. Removed jargon: 'converts/excess/overflow', 'percentage points', 'root', 'base power', 'cap applies', 'Charged Unique:' → 'Your Unique beam …'. Script kept at scratchpad plain.py (D(id,name,desc,headline)). Tests: taro-needle-arc headline strings ('+1 Arc jump', '+1 Arc at once'), cocoa-rework-baseline regenerated.
 
@@ -440,7 +444,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.24 · 20 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.25 · 20 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

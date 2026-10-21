@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.24';
+const GAME_VERSION = '7.9.25';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.25',date:'2026-10-21',title:'Cards show before → after',items:['When you already have an upgrade, its card now shows your total from that card now and after you pick it, e.g. “+16% → +24% attack speed”']},
   {v:'7.9.24',date:'2026-10-21',title:'Easier card text',items:['About 60 Strawberry, Mint, Cocoa and Taro cards rewritten in plain words — no more “converts excess”, “percentage points” or “roots”','Numbers did not change, only the wording']},
   {v:'7.9.23',date:'2026-10-21',title:'More build cards',items:['Instinct cards are now relics: Kill Streak and Last Stand','Taro Arc: Static Shock (Arc hits make enemies take more damage), Double Arc (every few casts fire twice), Grounding (Arc kills heal)','Mint Barrage: Wide Bloom (bigger shard bursts), Shard Chain (bursts chain on), Lance Echo (every few volleys fire twice)','New: Strawberry Heart Spark (bounces zap), Cocoa Hot Streak (fist hits build heat) and Leap Stun, Taro Static Sparks and Sentry Ward — every build now has 5–7 path cards']},
   {v:'7.9.22',date:'2026-10-21',title:'⭐ Unique cards',items:['Use your Unique 3 times in a stage and ⭐ Unique cards start showing up on level-up','5 cards for every hero: Unique Power (+20% damage), Quick Recharge (−10% cooldown), Kill Charge (kills recharge it), Unique Echo (extra blast), Ready Rush (faster while it is ready)','Unique Mutations: pick 1 of 2 for your build — e.g. Taro Leaping Mark or Mark Nova, Cocoa Aftershocks or Unshaken, Mint Permafrost or Cold Heart, Strawberry Shell Shock or Seed Rain (Strawberry, Mint, Cocoa and Taro, all 12 builds)']},
@@ -12579,6 +12580,10 @@ class Game extends Phaser.Scene {
     if(num){const t=num[0].replace(/\s+(per|and|to|of|for|on|in)$/,''),bad=/damage taken/i.test(desc.slice(num.index,num.index+30))&&/^[+]/.test(t);return {t,c:bad?'#ff9a9a':G.c,s:bad?'#3a0c0c':G.s};}
     const c=clause();return c?{t:c,c:'#ffe9a8',s:'#2e2410'}:null;
   }
+  // v7.9.25 การ์ดอัปเกรดซ้ำ: '+8% attack speed' Lv3 → '+16% → +24% attack speed' (ค่ารวมจากการ์ดนี้ก่อน/หลังเลือก, นับแบบบวกต่อ rank)
+  _cardProgress(o,hl){const cur=(o.lvl||1)-1;if(cur<1||(o.max||1)<2||o.type!=='basic'||o.mutation||o.evolution||/Build Path|Infusion|Relic|Modifier|Fusion|Trade-off|Mutation/.test(o.kind||''))return null;
+    const m=String(hl.t||'').match(/^([+\-−])(\d+(?:\.\d+)?)(%|s)?(\s.*)?$/);if(!m||/\d/.test(m[4]||''))return null;const v=+m[2],f=n=>m[1]+(o.key==='uq_cd'&&m[3]==='%'?Math.round((1-Math.pow(1-v/100,n))*100):+(n*v).toFixed(2))+(m[3]||'');   /* uq_cd ×.9^rank */
+    return {...hl,t:f(cur)+' → '+f(cur+1)+(m[4]||''),prog:true};}
   // v7.8.68 ใบ 26: การ์ดที่เดิมยืมไอคอนอาวุธ → ไอคอนของตัวเอง (ไม่มีภาพ = ใช้ของเดิม)
   cardArtKey(o){ if(!o||o.type!=='basic'||!this.textures)return null; const k=String(o.key||''),h=(this.basicAttack&&this.basicAttack.character)||'',kind=o.kind||'';
     const c=kind==='Modifier'?'ic_mod_'+k.replace(/^m_/,''):kind==='Fusion'?'ic_fus_'+k.replace(/^f_/,''):kind==='Trade-off'?'ic_trade_'+k.replace(/^t_/,''):kind==='Flavor Infusion'?'ic_inf_'+k:o.mutation?'ic_mut_'+h+'_'+k:o.evolution?'ic_evo_'+h:h==='cocoa'&&(k==='dashp'||k==='drum')?'ic_cocoa_'+k:null;
@@ -12602,6 +12607,7 @@ class Game extends Phaser.Scene {
     group.add(glow);
     const iconKey=this.cardArtKey?.(o)||(o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas'));
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT; let hl=options.starting?null:this._cardHeadline(o);if(hl&&(hl.t==null||hl.t==='undefined'||/undefined/.test(String(hl.t))))hl=null;   /* v7.8.59 การ์ด Relic บางใบขึ้น "undefined" */
+    if(hl&&!options.starting)hl=this._cardProgress(o,hl)||hl;   /* v7.9.25 เจ้าของ: บอกค่าเดิม → ค่าหลังเลือก */
     // v6.52.1: คำอธิบายสั้นลง — แยกแท็กไปบรรทัดดาว · ตัดท่อนที่ซ้ำกับหัวข้อเขียว
     let dd=String(o.desc||''),tagS='';{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}
     if(hl&&hl.t){const h=hl.t.replace(/^[^A-Za-z0-9+\-−×]+/,'').replace(/…$/,'').trim();if(h.length>3&&dd.trim().startsWith(h)){const r=dd.trim().slice(h.length).replace(/^[\s,·;—-]+/,'');if(r.length>3)dd=r.charAt(0).toUpperCase()+r.slice(1);}}
@@ -12612,6 +12618,7 @@ class Game extends Phaser.Scene {
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      if(hl&&hl.prog){roleT.setWordWrapWidth(null);let fs=parseInt(roleT.style.fontSize)||14;while(roleT.width>textW&&fs>9)roleT.setFontSize(--fs+'px');}
       descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
@@ -12624,6 +12631,7 @@ class Game extends Phaser.Scene {
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      if(hl&&hl.prog){roleT.setWordWrapWidth(null);let fs=parseInt(roleT.style.fontSize)||14;while(roleT.width>textW&&fs>9)roleT.setFontSize(--fs+'px');}
       descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(x+w/2,y+h*0.85,o.carry,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9be8ff',align:'center',wordWrap:{width:textW},maxLines:2}).setOrigin(0.5):this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
