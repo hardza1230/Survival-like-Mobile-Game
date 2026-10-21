@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.33';
+const GAME_VERSION = '7.9.34';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.34',date:'2026-10-21',title:'Book cover between menu pages',items:['Moving between menu pages now opens the storybook cover, the same as returning from a stage','Tap to skip it any time']},
   {v:'7.9.33',date:'2026-10-21',title:'No EXP during the final boss',items:['Enemies no longer drop EXP while the stage’s final boss is alive — the stage ends with the boss, so the drops were never useful','Bosses still give their rewards as before']},
   {v:'7.9.32',date:'2026-10-21',title:'Smaller EXP drops',items:['EXP drops are about 40% smaller on the ground, so they no longer cover the field','Pickup range is unchanged']},
   {v:'7.9.31',date:'2026-10-21',title:'New card icons',items:['⭐ Unique cards and every ⭐ Unique Mutation now have their own icons','New Build Path cards (Static Shock, Double Arc, Heart Spark, Hot Streak, Lance Echo and more) no longer borrow other cards’ pictures','Kill Streak and Last Stand relics have icons','Fresh icons for Petal Kick, Rolling Rage, Static Buildup, Storm Battery and Sky Judge']},
@@ -8254,7 +8255,7 @@ class Game extends Phaser.Scene {
       this.time.addEvent({delay:80,repeat:5,callback:()=>{ f++; if(!op.active)return; if(f<5)op.setFrame('cell'+f); else this.tweens.add({targets:c,alpha:0,duration:120,onComplete:end}); }}); });
     this.time.delayedCall(1400,end); }
   menuTransition(forward){ if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
-    if(this.bookReady()){this.bookTurn(forward);return;}   // v7.9.10 ใบ 28 พลิกหน้าหนังสือ (ม่านใบ 26 = สำรองตอนยังโหลดไม่เสร็จ)
+    if(this.bookReady()){ if(this._bookCover)this._bookSkip?.(); this.bookCover(); return; }   // v7.9.34 เจ้าของ: ทุกหน้าใช้การเปิดปกแบบตอนจบด่านกลับเมนู (bookTurn เก็บไว้)   // v7.9.10 ใบ 28 พลิกหน้าหนังสือ (ม่านใบ 26 = สำรองตอนยังโหลดไม่เสร็จ)
     const c=this.camUI(this.add.container(0,0).setScrollFactor(1).setDepth(5000)),T=this.textures,art=T.exists('tr_curtain')&&T.exists('tr_edge');this._menuWipe=c;
     if(!art){ const veil=this.add.rectangle(0,0,w,h,0x24142f,1).setOrigin(0),edge=this.add.rectangle(forward?0:w,0,10,h,0xffd6ea,.9).setOrigin(forward?1:0,0);c.add([veil,edge]);
       const prog={t:0};this.tweens.add({targets:prog,t:1,duration:450,ease:'Cubic.inOut',onUpdate:()=>{const x=w*prog.t;if(forward){veil.setX(-x);edge.setX(w-x);}else{veil.setX(x);edge.setX(x);}veil.setAlpha(1-.35*prog.t);edge.setAlpha(.9*(1-prog.t*.6));},onComplete:()=>{if(this._menuWipe===c)this._menuWipe=null;c.destroy();}}); return; }
