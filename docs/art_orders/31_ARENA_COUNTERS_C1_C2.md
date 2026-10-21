@@ -1,6 +1,6 @@
 # 31 — ของให้เตะ (Counter Objects) · Chapter 1–2 + วงและเอฟเฟกต์กลาง · ใบสั่งงานอาร์ต
 
-สถานะ: 🟠 รออาร์ต (21 ต.ค. 2026) · อิง runtime v7.9.28 · อ่าน `00_STYLE_GUIDE.md` และส่วน C ของใบ 30 ก่อน
+สถานะ: 🟡 กำลังผลิตอาร์ต 12 PNG32 / 51 เฟรม (21 ต.ค. 2026)
 ส่งไฟล์ที่ `assets/incoming/arena_counters_c1_c2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 ## ทำไมต้องทำ
