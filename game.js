@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.42';
+const GAME_VERSION = '7.9.43';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.43',date:'2026-10-21',title:'Yuzu crew teamwork',items:['Yuzlings now gang up: up to 3 bite the same enemy, so enemies fall faster and Pack Instinct actually works','Tossed Yuzlings stay and fight where they land for 3s instead of walking straight back','Yuzu starts each stage with 4 Yuzlings, and the orchard grows every 6 kills until you pick a Build'],},
   {v:'7.9.42',date:'2026-10-21',title:'Yuzu bites hit harder',items:['Yuzling bites are slower but twice as strong, with a little hop and a hit flash — easier to feel','Yuzu no longer does an attack pose every time a Yuzling bites','A green bar under your EXP shows how close the orchard is to its next Yuzling','Ripen no longer halves your crew when you pick it: you keep every Yuzling, up to 6, and extra growth makes them stronger'],},
   {v:'7.9.41',date:'2026-10-21',title:'Yuzu feels like a leader',items:['Yuzlings now fight around Yuzu (about 300px) instead of running all over the screen — walk to lead your orchard','Dash sends every free Yuzling charging the way you dash, biting each enemy they pass for double damage','Yuzlings spread out instead of stacking on one spot, and speed up and slow down smoothly'],},
   {v:'7.9.40',date:'2026-10-21',title:'Sesame: Mirror Network (part 1)',items:['Every Dash now leaves a mirror on the ground (up to 3, each lasts 20s)','The Mirror Beam bounces from Sesame through your mirrors, oldest first, then out to the nearest enemy (bosses first) — every part of the line deals damage, and each bounce adds +15%','No mirrors yet? The beam fires straight, like before','Oath Focus: +6% damage for each mirror on the ground (up to 3) instead of standing still','Big boss blasts and waves break mirrors','Sesame is still in development — Builds, cards and the new Unique come next'],},
@@ -3811,7 +3812,7 @@ const UNIQUE_MUTS={
   tempest:[{id:'over_long',emoji:'⏱️',name:'Long Overdrive',desc:'Overdrive lasts 1.5s longer.'},{id:'over_finale',emoji:'🎆',name:'Finale Burst',desc:'When Overdrive ends, every sentry fires a double-damage ring.'}]};
 // v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md)
 const SES_MIRROR_MAX=3, SES_MIRROR_LIFE=20, SES_MIRROR_REACH=700, SES_BOUNCE=0.15, SES_PRISM=0xc86bff;
-const YUZU_START=3,YUZU_CAP=12,YUZU_HARD_CAP=17,YUZU_BITE=14,YUZU_REGROW=6,YUZU_TOSS_CHARGE=25;
+const YUZU_START=4,YUZU_FOCUS=3,YUZU_STAY=3,YUZU_EARLY_NEED=6,YUZU_CAP=12,YUZU_HARD_CAP=17,YUZU_BITE=14,YUZU_REGROW=6,YUZU_TOSS_CHARGE=25;
 const YUZU_BITE_CD=1.8,YUZU_RIPEN_CAP=6,YUZU_LEASH=300,YUZU_BOSS_LEASH=380,YUZU_RUSH_LEN=240,YUZU_RUSH_MUL=2,YUZU_SEP=26;   // v7.9.41 เจ้าของ ก+ข+ค: ฝูงทำงานรอบตัว Yuzu · Dash สั่งพุ่ง · ไม่ซ้อนกัน   // v7.9.37 Yuzu Orchard Swarm (สวนส้ม) — ดู docs/YUZU_ORCHARD_SWARM.md
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=true; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
@@ -13552,14 +13553,16 @@ class Game extends Phaser.Scene {
   playYuzuMinionAttack(m,seconds){const key=m.cheese?'minion_cheese_attack':'minion_yuzling_attack';if(!this.textures.exists(key))return;
     m.attackDuration=seconds;m.attackTime=seconds;m.spr.stop().setTexture(key).setFrame(0);}
   // v7.9.37 Yuzu Orchard Swarm ขั้น 1 (docs/YUZU_ORCHARD_SWARM.md): เริ่ม 3 ตัว · ฆ่าครบเป้า (10,12,14…) สวนโต +1 · เพดาน 12 (+Growing Family) · เกินเพดาน = +3%/ครั้ง สูงสุด +30%
+  // v7.9.43 ก่อนเลือกสาย (Lv1–4) โตทุก 6 kill · หลังเลือกสาย 10,12,14… (นับจาก YUZU_START)
+  yuzuNeed(o,fam){ const pre=!this.basicAttack||!this.basicAttack.path; return Math.max(4,(pre?YUZU_EARLY_NEED:10+2*(o.size-YUZU_START))-2*fam); }
   yuzuOrch(){ return this._yuzuOrch||(this._yuzuOrch={size:YUZU_START,kills:0,over:0}); }
   yuzuCap(){ const b=this.basicAttack,f=(b&&b.lv&&b.lv.family)||0; return (b&&b.path==='citrusGuardian'?YUZU_RIPEN_CAP:YUZU_CAP)+f; }
   // v7.9.42 แถบโตของสวน (ใต้ EXP): kill ถึงตัวถัดไป · เต็มแล้ว = power เต็ม
-  yuzuOrchFrac(){ if(this.character!=='yuzu'||!this.basicAttack)return -1; const o=this.yuzuOrch(),fam=this.basicAttack.lv.family||0,need=Math.max(4,10+2*(o.size-YUZU_START)-2*fam); if(o.size>=this.yuzuCap()&&o.over>=10)return 1; return Phaser.Math.Clamp(o.kills/need,0,1); }
+  yuzuOrchFrac(){ if(this.character!=='yuzu'||!this.basicAttack)return -1; const o=this.yuzuOrch(),fam=this.basicAttack.lv.family||0,need=this.yuzuNeed(o,fam); if(o.size>=this.yuzuCap()&&o.over>=10)return 1; return Phaser.Math.Clamp(o.kills/need,0,1); }
   yuzuOnKill(e){ if(this.character!=='yuzu'||!this.basicAttack)return; const path=this.basicAttack.path||'';
     if(path==='zestSwarm'){ const T=this._yuzuToss||(this._yuzuToss={t:0,charge:0,ready:false,n:0}); if(!T.ready&&++T.charge>=YUZU_TOSS_CHARGE){ T.ready=true; if(this.player)this.floatText?.(this.player.x,this.player.y-80,'🍊 Giant Toss ready!',0xffa62e); } }
     if(path==='juiceWorkshop'&&e){ const big=e.isElite||e.isMini; if(big||Math.random()<0.3+0.1*(this.basicAttack.lv.y_seedluck||0)){ const S=this._yuzuSeeds||(this._yuzuSeeds=[]); if(S.length<14){ const spr=this.camWorld(this.add.image(e.x,e.y,'vfx_glow').setDepth(6).setScale(0.06).setTint(big?0x5fbf4a:0x9be36f)); S.push({x:e.x,y:e.y,t:big?0.6:1.0,elder:big,spr}); } } }
-    const o=this.yuzuOrch(),fam=this.basicAttack.lv.family||0,need=Math.max(4,10+2*(o.size-YUZU_START)-2*fam);
+    const o=this.yuzuOrch(),fam=this.basicAttack.lv.family||0,need=this.yuzuNeed(o,fam);
     if(++o.kills<need)return; o.kills=0;
     if(o.size<this.yuzuCap()){ o.size++; if(this.player)this.floatText?.(this.player.x,this.player.y-62,'🍋 +1 Yuzling ('+o.size+')',0xffe066); Sfx.select&&Sfx.select(); }
     else if(o.over<10){ o.over++; if(this.player)this.floatText?.(this.player.x,this.player.y-62,'🍋 Orchard power +'+(o.over*3)+'%',0xffe066); } }
@@ -13585,7 +13588,7 @@ class Game extends Phaser.Scene {
   yuzuLand(m){ const a=m.air,sp=m.spr,giant=a.giant,b0=this.basicAttack||{}; m.air=null; sp.setRotation(0).setDepth(7); if(giant&&!m.ripe)sp.clearTint(); this.tweens.killTweensOf(sp); sp.setScale(m.sc||0.34);
     const R=(giant?150:70)*(1+0.2*(this.basicAttack.lv.y_bigsplat||0)),dmg=this.yuzuBite()*(giant?6:2.2); this._mxSrc=giant?'yuzu.giantToss':'yuzu.toss';
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,a.tx,a.ty)<R+(e.body?e.body.halfWidth:0)){ this.damage(e,dmg,e.x,e.y); if(giant&&!e.isBoss&&!e.isMini&&e.active)e.knock=Math.max(e.knock||0,0.5); } });
-    this.vfxHitRing?.(a.tx,a.ty,giant?0xffa62e:0xffe066,giant); this.burst?.(a.tx,a.ty,0xffd24a); if(giant){ this.screenShake?.(140,0.006); Sfx.boom&&Sfx.boom(); } m.cd=0.2;
+    this.vfxHitRing?.(a.tx,a.ty,giant?0xffa62e:0xffe066,giant); this.burst?.(a.tx,a.ty,0xffd24a); if(giant){ this.screenShake?.(140,0.006); Sfx.boom&&Sfx.boom(); } m.cd=0.2; m.stayT=YUZU_STAY; m.stayX=a.tx; m.stayY=a.ty;
     if(b0.evolved&&b0.path==='zestSwarm'&&!a.bounced){ let nx=null,nd=230; this.enemies.children.iterate(e=>{ if(e&&e.active&&e.hp>0){ const d=this.dist(e.x,e.y,a.tx,a.ty); if(d>40&&d<nd){nd=d;nx=e;} } }); if(nx){ sp.setPosition(a.tx,a.ty); this.yuzuThrow(m,nx.x,nx.y,false,nx,true); } } }   // v7.9.39 Citrus Catapult: เด้งต่อ 1 ครั้ง
   yuzuSprout(x,y,force,gen2){ const L=this._yuzuSprouts||(this._yuzuSprouts=[]); if(!force&&L.length>=10)return; if(L.length>=16)return; const spr=this.camWorld(this.add.sprite(x,y,'minion_yuzling',0).setDepth(7).setScale(0.1).setTint(0x8fe36a));
     this.tweens.add({targets:spr,scale:0.27,duration:260,ease:'Back.out'}); L.push({spr,life:8+3*(this.basicAttack.lv.y_longroot||0),cd:0.3,target:null,gen2:!!gen2}); }
@@ -13608,7 +13611,7 @@ class Game extends Phaser.Scene {
     let yz=crew.filter(m=>!m.cheese).length;
     while(yz>count){ for(let i=crew.length-1;i>=0;i--)if(!crew[i].cheese){crew[i].spr.destroy();crew.splice(i,1);break;} yz--; }
     while(yz<count){ crew.push(mk(false)); yz++; }
-    const now=this.elapsed||0,wasParade=(this._yuzuParadeT||0)>0;this._yuzuParadeT=Math.max(0,(this._yuzuParadeT||0)-dt);const parade=this._yuzuParadeT>0,ul=this._yuzuParadeLv||1,assigned=new Set(),bite0=this.yuzuBite();
+    const now=this.elapsed||0,wasParade=(this._yuzuParadeT||0)>0;this._yuzuParadeT=Math.max(0,(this._yuzuParadeT||0)-dt);const parade=this._yuzuParadeT>0,ul=this._yuzuParadeLv||1,assigned=new Map(),bite0=this.yuzuBite();
     if(wasParade&&!parade&&ul>=4){ this._mxSrc='yuzu.parade'; for(const m of crew){ if(m.cheese||m.down>0)continue; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,m.spr.x,m.spr.y)<70)this.damage(e,bite0*1.5,e.x,e.y); }); this.burst?.(m.spr.x,m.spr.y,0xffe066); } }
     if(wasParade&&!parade){ if(b.uqMut==='ripe_fest'&&ripen)for(const m of crew){ if(m.cheese||m.down>0)continue; if((m.ripe||0)<(b.evolved?4:3)){ m.ripe=(m.ripe||0)+1; m.kills=0; this.yuzuRipeLook(m); } }
       if(b.uqMut==='grow_burst'&&this._yuzuSprouts){ this._mxSrc='yuzu.bloomBurst'; for(const s of this._yuzuSprouts){ if(!s.spr.active)continue; this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,s.spr.x,s.spr.y)<80)this.damage(e,bite0*2,e.x,e.y); }); this.vfxHitRing?.(s.spr.x,s.spr.y,0x9be36f,false); s.life=0; } } }
@@ -13629,18 +13632,20 @@ class Game extends Phaser.Scene {
         this.enemies.children.iterate(e=>{ if(e&&e.active&&!d.hit.has(e)&&this.dist(e.x,e.y,sp.x,sp.y)<46+(e.body?e.body.halfWidth:0)){ d.hit.add(e); this.damage(e,bite0*(d.mul||1.5),e.x,e.y); } }); if(d.t<=0||dd<20){m.dash=null;m.vx=m.vy=0;} continue; }
       // Hunt from the minion's position and hold a live target while Yuzu moves.
       // v7.9.41 ฝูงทำงานรอบตัว Yuzu (เดิมไล่ไกล 640–780px = เต็มจอ) → ผู้เล่นพาฝูงไปเองด้วยการเดิน
-      const inLeash=e=>e&&e.active&&this.dist(this.player.x,this.player.y,e.x,e.y)<YUZU_LEASH;
+      // v7.9.43 ลูกส้มที่ถูกปา อยู่ทำงานตรงจุดที่ตก YUZU_STAY วิ (ระยะ 300 นับจากจุดตก) · รุมทีละ ≤YUZU_FOCUS ตัวต่อเป้า (เลือกเป้าที่เพื่อนกัดอยู่ก่อน)
+      if(m.stayT>0)m.stayT-=dt; const lx=m.stayT>0?m.stayX:this.player.x,ly=m.stayT>0?m.stayY:this.player.y;
+      const inLeash=e=>e&&e.active&&this.dist(lx,ly,e.x,e.y)<YUZU_LEASH, cnt=e=>assigned.get(e)||0;
       const bossTarget=!m.cheese?this.priorityBossTarget(YUZU_BOSS_LEASH,this.player.x,this.player.y):null;
       let target=bossTarget?bossTarget:
-        !m.cheese&&inLeash(m.target)&&!assigned.has(m.target)?m.target:null;
-      if(!m.cheese&&!target){let closest=1e9,fallback=null,fallbackDist=1e9;
-        this.enemies.children.iterate(e=>{if(!inLeash(e))return;const d=this.dist(sp.x,sp.y,e.x,e.y);
+        !m.cheese&&inLeash(m.target)&&cnt(m.target)<YUZU_FOCUS?m.target:null;
+      if(!m.cheese&&!target){let best=1e9,fallback=null,fallbackDist=1e9;
+        this.enemies.children.iterate(e=>{if(!inLeash(e))return;const d=this.dist(sp.x,sp.y,e.x,e.y),c=cnt(e);
           if(d<fallbackDist){fallbackDist=d;fallback=e;}
-          if(!assigned.has(e)&&d<closest){closest=d;target=e;}});
+          if(c<YUZU_FOCUS){const sc=d-(c>0?70:0); if(sc<best){best=sc;target=e;}}});
         if(!target)target=fallback;
       }
       m.target=target;
-      if(target)assigned.add(target);
+      if(target)assigned.set(target,cnt(target)+1);
       let near=Infinity;
       if(target)near=this.dist(sp.x,sp.y,target.x,target.y);
       const ripeCap=b.evolved?4:3,ripeEff=ripen?Math.min(ripeCap,(m.ripe||0)+(parade?1:0)):0;
