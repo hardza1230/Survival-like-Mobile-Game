@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.35';
+const GAME_VERSION = '7.9.36';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -82,6 +82,7 @@ const STORY_WAVE_PLAN=[
 ];
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.36',date:'2026-10-21',title:'Clearer first tutorial',items:['Each tutorial step now shows a big card at the top: STEP n/6, what to do and why','A moving finger shows how to drag, and TAP labels point at the Dash and Unique buttons','Steps say clearly that attacking needs no button — just walk near enemies']},
   {v:'7.9.35',date:'2026-10-21',title:'Tutorial fixes',items:['The gear tutorial after Stage 1 works again: it now leads you to the Bazaar Gacha, then Equipment, the Forge and Talents','Fixed a rare error when leaving the screen right after a Gacha roll (you still get the item)','Help pages updated: drag anywhere to move, Build Path at level 5','Menu pages no longer play a transition — the storybook cover only opens when you enter the menu']},
   {v:'7.9.34',date:'2026-10-21',title:'Book cover between menu pages',items:['Moving between menu pages now opens the storybook cover, the same as returning from a stage','Tap to skip it any time']},
   {v:'7.9.33',date:'2026-10-21',title:'No EXP during the final boss',items:['Enemies no longer drop EXP while the stage’s final boss is alive — the stage ends with the boss, so the drops were never useful','Bosses still give their rewards as before']},
@@ -12853,13 +12854,13 @@ class Game extends Phaser.Scene {
     launch();
   }
   /* ---- 🍓 ครูBerryสอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
-  coachSteps(){ return [
-    { say:'Drag anywhere to move', hi:'Drag', spot:'move', goal:'Move around', check:c=>this.dist(this.player.x,this.player.y,c.px,c.py)>150 },
-    { say:'Walk into enemies — you auto-fire', hi:'auto-fire', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:5, check:c=>this.kills-c.kills>=3 },
-    { say:'Tap Dash to dodge', hi:'Dash', spot:'dash', goal:'Dash once', check:c=>(this._coachDash||0)-c.dash>=1 },
-    { say:'Pick 1 upgrade card', hi:'1 card', spot:'card', goal:'Pick a card', level:true, check:c=>(this._coachCardPick||0)-c.card>=1 },
-    { say:'Tap your Unique skill', hi:'Unique', spot:'unique', goal:'Use Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:16 },
-    { say:'All set! Tap to claim your reward', hi:'reward', spot:null, goal:'Tap to finish', tap:true },
+  coachSteps(){ return [   // v7.9.36 เจ้าของ: ช่วงแรกไม่ชัดว่าต้องทำอะไร → หัวข้อคำสั่ง + บรรทัดอธิบาย + ป้าย TAP/ลาก
+    { icon:'👆', say:'DRAG to move', sub:'Put a finger anywhere and slide it', spot:'move', goal:'Move a little', check:c=>this.dist(this.player.x,this.player.y,c.px,c.py)>150 },
+    { icon:'⚔️', say:'Walk near enemies', sub:'No button needed — you attack on your own', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:5, check:c=>this.kills-c.kills>=3 },
+    { icon:'💨', say:'TAP the Dash button', sub:'Green button, bottom right — a quick dodge', spot:'dash', label:'TAP', goal:'Dash once', check:c=>(this._coachDash||0)-c.dash>=1 },
+    { icon:'🃏', say:'Pick an upgrade card', sub:'Tap a card, then tap it again to choose it', spot:'card', goal:'Pick a card', level:true, check:c=>(this._coachCardPick||0)-c.card>=1 },
+    { icon:'⭐', say:'TAP your Unique skill', sub:'Pink button above Dash — your big attack', spot:'unique', label:'TAP', goal:'Use Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:16 },
+    { icon:'🎁', say:'All done!', sub:'Tap anywhere to get your reward', spot:null, goal:'Tap the screen', tap:true },
   ]; }
   startCoach(){ this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
   _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps();
@@ -12923,38 +12924,42 @@ class Game extends Phaser.Scene {
     const lt=this.add.text(W/2,below?hy+34:hy-38,label||'Tap here!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5,align:'center',wordWrap:{width:W-40}}).setOrigin(0.5);
     cont.add([g,fr,hand,lt]); return {x,y,w:bw,h:bh}; }
   drawCoachBubble(step){ if(this._coachUI)this._coachUI.destroy(); const w=this.W,h=this.H; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(60); this.camUI(cont);
-    // บับเบิลอยู่ "ด้านล่าง" (เหนือปุ่ม dash/unique เล็กน้อย) · ข้อความสั้น + ไฮไลต์สีคำสำคัญ
-    const bw=w-20,bh=52,bx=10,by=h-bh-14, g=this.add.graphics(); g.fillStyle(0x2a1030,0.95); g.fillRoundedRect(bx,by,bw,bh,14); g.lineStyle(2,0xff5f88,1); g.strokeRoundedRect(bx,by,bw,bh,14); cont.add(g);
-    if(this.textures.exists('card_berry')){ const im=this.add.image(bx+24,by+bh/2,'card_berry'); const s=Math.min(40/im.width,48/im.height); im.setScale(s); cont.add(im); }
-    else { cont.add(this.add.text(bx+8,by+bh/2,'🍓',{fontSize:'26px'}).setOrigin(0,0.5)); }
-    // ข้อความหลัก + ไฮไลต์คำ (แยกสีคำ hi)
-    const tx=bx+48, ty=by+10; let sayTxt=step.say, parts=[];
-    if(step.hi&&sayTxt.includes(step.hi)){ const i=sayTxt.indexOf(step.hi); parts=[[sayTxt.slice(0,i),'#ffffff'],[step.hi,'#ffe08a'],[sayTxt.slice(i+step.hi.length),'#ffffff']]; }
-    else parts=[[sayTxt,'#ffffff']];
-    let cxp=tx; parts.forEach(p=>{ if(!p[0])return; const t=this.add.text(cxp,ty,p[0],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:p[1]}).setOrigin(0,0); cont.add(t); cxp+=t.width; });
+    // v7.9.36 การ์ดคำสั่งใหญ่กลางจอด้านบน (เดิมแถบเล็กล่างจอ ทับปุ่ม Dash/นิ้ว) · ขั้นที่ n/6 · หัวข้อใหญ่ + อธิบาย + เป้าหมาย
+    const steps=this.coachSteps(),n=steps.indexOf(step)+1||((this._coach&&this._coach.step)+1), bw=Math.min(w-24,380),bh=112,bx=(w-bw)/2,by=Math.max(86,h*0.13), g=this.add.graphics();
+    g.fillStyle(0x000000,0.35); g.fillRoundedRect(bx+3,by+5,bw,bh,18); g.fillStyle(0x2a1030,0.96); g.fillRoundedRect(bx,by,bw,bh,18); g.lineStyle(3,0xffd166,1); g.strokeRoundedRect(bx,by,bw,bh,18); cont.add(g);
+    if(this.textures.exists('card_berry')){ const im=this.add.image(bx+34,by+bh/2+4,'card_berry'); im.setScale(Math.min(52/im.width,64/im.height)); cont.add(im); }
+    else cont.add(this.add.text(bx+34,by+bh/2,'🍓',{fontSize:'34px'}).setOrigin(0.5));
+    const tx=bx+70,tw=bw-82;
+    cont.add(this.add.text(tx,by+10,'STEP '+n+' / '+steps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffb3c8'}).setOrigin(0,0));
+    const title=this.add.text(tx,by+26,(step.icon?step.icon+' ':'')+step.say,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(0,0); if(title.width>tw)title.setScale(tw/title.width); cont.add(title);
+    const sub=this.add.text(tx,by+58,step.sub||'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffffff',wordWrap:{width:tw}}).setOrigin(0,0); cont.add(sub);
     const goalStr=typeof step.goal==='function'?step.goal(this._coach):step.goal;
-    this._coachGoalTxt=this.add.text(tx,by+bh-9,'🎯 '+goalStr,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#8fe8ff'}).setOrigin(0,1); cont.add(this._coachGoalTxt);
+    this._coachGoalTxt=this.add.text(tx,by+bh-10,'🎯 '+goalStr,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(0,1); cont.add(this._coachGoalTxt);
+    cont.setAlpha(0); cont.y=-14; this.tweens.add({targets:cont,alpha:1,y:0,duration:240,ease:'Back.out'});
+    this.tweens.add({targets:title,scale:{from:title.scale*1.08,to:title.scale},duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     this._coachUI=cont;
     this.buildCoachSpotlight(step); }
   // 🔦 สปอตไลต์ชี้จุดที่ต้องทำ (วงกลมเต้น + นิ้วชี้) — reposition ต่อเฟรมใน tickTutorialCoach
   buildCoachSpotlight(step){ if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;}
     if(!step||!step.spot)return; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(59); this.camUI(cont);
-    const ring=this.add.circle(0,0,34,0xffe08a,0).setStrokeStyle(4,0xffe08a,0.95); const finger=this.add.text(0,0,'👆',{fontSize:'26px'}).setOrigin(0.5,0);
-    cont.add([ring,finger]); this._coachSpot=cont; this._coachSpotRing=ring; this._coachSpotFinger=finger; this._coachSpotKind=step.spot;
-    this.tweens.add({targets:ring,scale:{from:0.8,to:1.25},alpha:{from:0.95,to:0.4},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
-    this.tweens.add({targets:finger,y:'+=8',yoyo:true,repeat:-1,duration:520,ease:'Sine.inOut'}); }
+    const ring=this.add.circle(0,0,44,0xffe08a,0).setStrokeStyle(5,0xffe08a,1); const finger=this.add.text(0,0,'👆',{fontSize:'34px'}).setOrigin(0.5,0);
+    const lab=this.add.text(0,0,step.label||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#1a0f1e',backgroundColor:'#ffe08a',padding:{x:10,y:4}}).setOrigin(1,0.5).setVisible(!!step.label);
+    cont.add([ring,finger,lab]); this._coachSpot=cont; this._coachSpotRing=ring; this._coachSpotFinger=finger; this._coachSpotLab=lab; this._coachSpotKind=step.spot;
+    this.tweens.add({targets:ring,scale:{from:0.8,to:1.25},alpha:{from:1,to:0.45},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
+    this.tweens.add({targets:lab,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420,ease:'Sine.inOut'});
+    if(step.spot==='move'){ ring.setVisible(false); this._coachDrag=0; } else this.tweens.add({targets:finger,y:'+=8',yoyo:true,repeat:-1,duration:520,ease:'Sine.inOut'}); }
   coachSpotTarget(kind){ const w=this.W,h=this.H;
-    if(kind==='dash')return {x:w-58,y:h-78};
-    if(kind==='unique')return {x:w-58,y:h-78-80};
+    if(kind==='dash')return this.dashBtn?{x:this.dashBtn.x,y:this.dashBtn.y}:{x:w-58,y:h-78};
+    if(kind==='unique')return this.uniqueBtn?{x:this.uniqueBtn.x,y:this.uniqueBtn.y}:{x:w-58,y:h-78-80};
     if(kind==='card')return {x:w/2,y:h*0.52};
     if(kind==='move')return {x:w*0.28,y:h*0.64};
     if(kind==='enemy'){ const e=this.nearestEnemy?this.nearestEnemy(2000):null; if(e&&this.cameras&&this.cameras.main){ const cam=this.cameras.main; return {x:(e.x-cam.worldView.x)*cam.zoom,y:(e.y-cam.worldView.y)*cam.zoom}; } return {x:w/2,y:h*0.4}; }
     return null; }
   tickTutorialCoach(dt){ const c=this._coach; if(!c||this.state!=='play')return; const steps=this.coachSteps(),step=steps[c.step]; if(!step)return; c.t+=dt;
     if(this._coachGoalTxt&&typeof step.goal==='function')this._coachGoalTxt.setText('🎯 '+step.goal(c));
-    if(this._coachSpot&&this._coachSpotKind){ const p=this.coachSpotTarget(this._coachSpotKind); if(p){ this._coachSpot.setVisible(true); this._coachSpotRing.setPosition(p.x,p.y); this._coachSpotFinger.setPosition(p.x,p.y+18); } else this._coachSpot.setVisible(false); }
+    if(this._coachSpot&&this._coachSpotKind){ const p=this.coachSpotTarget(this._coachSpotKind); if(p){ this._coachSpot.setVisible(true); this._coachSpotRing.setPosition(p.x,p.y); if(this._coachSpotKind==='move'){ this._coachDrag=((this._coachDrag||0)+dt*0.6)%1; const k=Math.sin(this._coachDrag*Math.PI*2); this._coachSpotFinger.setPosition(this.W/2+k*this.W*0.22,this.H*0.62).setAlpha(0.95); } else this._coachSpotFinger.setPosition(p.x,p.y+22); if(this._coachSpotLab)this._coachSpotLab.setPosition(p.x-52,p.y); } else this._coachSpot.setVisible(false); }
     if(step.tap){ if(this.input.activePointer&&this.input.activePointer.isDown&&c.t>0.4)this._coachNext(); return; }
-    if((step.check&&step.check(c))||(step.timeout&&c.t>=step.timeout)){ if(!c.done){c.done=true; this.showBanner&&this.showBanner('✅ Done!','Great job~',900); this.time.delayedCall(700,()=>this._coachNext());} }
+    if((step.check&&step.check(c))||(step.timeout&&c.t>=step.timeout)){ if(!c.done){c.done=true; this.showBanner&&this.showBanner('✅ Nice!','Next step…',900); this.time.delayedCall(700,()=>this._coachNext());} }
   }
   openStartingSkillChoice(){ this.state='startskill';this.physics.pause();this.lvlUp.setVisible(false);this.time.delayedCall(0,()=>this.launchStageLoadout()); }   // v7.8.93 หน้าเลือกสกิลเริ่มต้นยุคเก่าตัดแล้ว
   pickStartingSkillAt(px,py){
