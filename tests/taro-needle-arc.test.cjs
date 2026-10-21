@@ -13,6 +13,6 @@ function view(es){const v=new View();Object.assign(v,{character:'taro',state:'pl
 {const es=[enemy(1,30),enemy(2,40)],v=view(es);v.damage=e=>{v.hits.push(e._taroSpawnId);es[1]._taroSpawnId=99;};v.castTaroNeedle(1,1);assert(v.hits.length>=1&&v.hits.every(h=>h===1),'recycled foe never joins; loop stays on the valid target');}
 {const e=enemy(1,30),v=view([e]);e._phaseInvuln=1;v.castTaroNeedle(1,1);assert.equal(v.hits.length,0);e._phaseInvuln=0;v.state='paused';v.castTaroNeedle(1,1);assert.equal(v.hits.length,0);}
 {const v=view(Array.from({length:8},(_,i)=>enemy(i+1,30+i*30)));v.basicAttack.path='storm';v._taro.enabled=true;v._taro.path='storm';v._taro.attackSeq=0;v.castTaroChainBasic(1);assert.equal(v.links.length,8);assert.deepEqual(v.links[0].slice(0,2),[0,0]);assert.deepEqual(v.links[4].slice(0,2),[0,0]);assert.equal(new Set(v.hits.map(h=>h.id)).size,8);}
-assert(src.includes("headline:'Launch Arc from Taro'"));assert(src.includes("name:'Static Arc'"));assert(src.includes("['Arc Links','+1 Arc target'"));assert(src.includes("['Arc Streams','+1 Arc stream'"));
+assert(src.includes("headline:'Launch Arc from Taro'"));assert(src.includes("name:'Static Arc'"));assert(src.includes("['Arc Links','+1 Arc jump'"));assert(src.includes("['Arc Streams','+1 Arc at once'"));
 
 console.log('Taro starter needles: distinct straight hits, no path emissions, capped ranks/reach, phase/pause/pool guards; Chain Arc originates at player for every root with shared victims passed');
