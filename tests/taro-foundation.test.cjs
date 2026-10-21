@@ -116,7 +116,8 @@ function legacyMethod(name){return method(name)
  .replace("||(this.character==='taro'&&this.basicAttack?.path==='tempest'&&this.dashTime>0)",'')
  .replace("*(this.character==='taro'&&this.basicAttack?.path==='tempest'?Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0))):1)",'')
  .replace("    if(this.character==='taro'&&this.basicAttack?.path==='tempest')this.taroTempestDash(this.moveDir.clone().normalize());\n",'')
- .replace("\n    if(this.character==='sesame'&&this.state==='play'&&this.player)this.sesPlaceMirror(this.player.x,this.player.y);   // v7.9.40 Mirror Network: Dash ทิ้งกระจก",'');}
+ .replace("\n    if(this.character==='sesame'&&this.state==='play'&&this.player)this.sesPlaceMirror(this.player.x,this.player.y);   // v7.9.40 Mirror Network: Dash ทิ้งกระจก",'')
+ .replace("\n    if(this.character==='yuzu'&&this.state==='play'&&this.player)this.yuzuRush();   // v7.9.41 Dash = ฝูงพุ่งตาม",'');}
 for(const [name,hash] of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(legacyMethod(name)).digest('hex'),hash,name+' retained legacy branch');
 assert(scene('tempest')._taro.enabled,'Tempest opts in');assert(scene('storm')._taro.enabled,'Chain opts in');assert(scene('smite')._taro.enabled,'Smite opts in');assert(!scene()._taro.enabled,'Pre-path stays dormant');
 for(const n of ['resetRelics','clearArtVfx','die'])assert(method(n).includes('clearTaroCombat?.()'),n+' clears pending state');
