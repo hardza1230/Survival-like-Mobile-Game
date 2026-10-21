@@ -2,6 +2,10 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery30 — C3 and Pinnacle boss VFX
+
+48 PNG32 sources /226 frames delivered to assets/incoming/boss_vfx_c3/, with array manifest, built-in ImageGen prompts, source provenance, technical QA, actual runtime-floor proof pages and byte readback verification. Source-only; runtime v7.9.28 unchanged. Next: pack A/B with existing max-channel alpha/unpremultiply pipeline, preserve C alpha, stage-lazy integration + owner phone review. No C1-C2 Counter extras.
+
 # Art delivery 29 — Flavor Drops
 
 7 PNG32 source assets /61 frames delivered to assets/incoming/exp_orbs/ with manifest, exact built-in ImageGen prompts, technical QA, offline tiny-size/Sugar/200-drop/effect/loop proofs and seven WebP candidates totaling136,794 bytes (<250KB). Source delivery only; game.js / runtime v7.9.25 unchanged (concurrent upstream v7.9.24–25 preserved). Next: stage-lazy EXP integration and owner phone visual/FPS review. Preserve v7.9.12 ground-only EXP behavior; do not restore boss auto-vacuum from the outdated order29 note.

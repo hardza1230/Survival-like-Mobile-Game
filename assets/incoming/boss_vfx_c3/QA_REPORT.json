@@ -1,7 +1,7 @@
 {
   "order": 30,
-  "assets": 12,
-  "frames": 60,
+  "assets": 48,
+  "frames": 226,
   "technicalChecks": [
     {
       "key": "vfx_b11_warn",
@@ -75,7 +75,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b11_impact",
@@ -177,7 +178,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b12_warn",
@@ -251,7 +253,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b12_impact",
@@ -353,7 +356,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b13_warn",
@@ -427,7 +431,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b13_impact",
@@ -529,7 +534,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b14_warn",
@@ -603,7 +609,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b14_impact",
@@ -705,7 +712,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b15_warn",
@@ -779,7 +787,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_b15_impact",
@@ -881,7 +890,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_bpin_warn",
@@ -955,7 +965,8 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     },
     {
       "key": "vfx_bpin_impact",
@@ -1057,10 +1068,3040 @@
         }
       ],
       "seamCorrection": "none",
-      "visualQA": "Source-sheet review passed: correct themed ring/eruption, expected cell count, hollow warning center, no text/dividers. Actual-floor browser/phone check pending."
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b11_scythe_cut",
+      "bytes": 557100,
+      "sha256": "9fb5872cc4555fe145e9b801487b09e0eab100fdb759f3e733108dd89a5ec2f9",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 940333,
+        "sha256": "386a5c501bdc4476f0ebcbb22f4bfd2794c379e802eb54d37faab217677ac88d"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            32,
+            98,
+            462,
+            256
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            25,
+            94,
+            458,
+            194
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            14,
+            31,
+            512,
+            220
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.1193984962406015,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            17,
+            0,
+            512,
+            215
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.4317794486215539,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            0,
+            44,
+            501,
+            211
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.07368421052631578,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            23,
+            59,
+            485,
+            201
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0016040100250626567,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending. Selected revised source: first two cells warning-only, gray dividers removed by regeneration."
+    },
+    {
+      "key": "vfx_b12_wither_pull",
+      "bytes": 301767,
+      "sha256": "9b93af1703ccf52bdea50efe8213dfb1ed357e182bcdf7f191921eb9bbc6469f",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1283005,
+        "sha256": "f0108d3a564bc49fa412be7265ed9484e26787e0c985e0775f66f465451479b0"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            16,
+            21,
+            245,
+            228
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.08207299858842508,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            11,
+            37,
+            239,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.14135914498890906,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            19,
+            37,
+            240,
+            212
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.3018753781004235,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            36,
+            54,
+            215,
+            202
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.4648114539221617,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b12_nectar_drip",
+      "bytes": 46118,
+      "sha256": "766310451ac4ac699e0250d92271773d01ba47394f9dd6d10c7260644af342df",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 899595,
+        "sha256": "16de574838a49b0431238086f6746d3fa0a317d8c7d14ce598423c69870ce638"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            17,
+            20,
+            113,
+            110
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0681635926222935,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            16,
+            38,
+            113,
+            111
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.161186848436247,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            16,
+            45,
+            113,
+            103
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.28789093825180434,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            15,
+            14,
+            113,
+            103
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.14354450681635927,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b13_prism_beam",
+      "bytes": 250109,
+      "sha256": "0b8ee8820d416e2c81a55388b2dc29279aea798ac5fd0e054b2b78150c83dd81",
+      "source": {
+        "width": 2180,
+        "height": 721,
+        "bytes": 1328374,
+        "sha256": "a481af2d5dfb6ce55dacbca19873eac374c79ea574e513c6d72407a6d1d7f6b5"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            16,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            16,
+            512,
+            52
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9912380952380953,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            16,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9866666666666667,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            16,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b14_vault_ring",
+      "bytes": 64279,
+      "sha256": "443c65521a7c6b02270448a15bb18b255994b4876ae014dbe8e2a29a24b66389",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1555320,
+        "sha256": "8e11eb4e7e6283b67cae8bed6545937660f814cd481a5a6217534a5c1f5c79d1"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            14,
+            128,
+            55
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.648062015503876,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            12,
+            128,
+            55
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6449612403100775,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            8,
+            128,
+            55
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8635658914728682,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            12,
+            128,
+            55
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6573643410852713,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b15_root_cage",
+      "bytes": 394429,
+      "sha256": "0b2413a842dc3e4bb8fd7eb217858b30894353f665f9e584170701c2a31d1c91",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1545773,
+        "sha256": "646f237969df87e9ee9e072e767d7d49928495d8eec857e02077c63018ba756d"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            12,
+            35,
+            243,
+            200
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0215769308328292,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            3,
+            31,
+            251,
+            200
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.043557168784029036,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            3,
+            6,
+            254,
+            200
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.05807622504537205,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            10,
+            16,
+            245,
+            200
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.034281105061504336,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b15_seed_tile",
+      "bytes": 110045,
+      "sha256": "16dccccf6a164e8c0bfc22cc02348fb822f96f1143cbd4082179fe9a4a076784",
+      "source": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 1219102,
+        "sha256": "cf868b9075d7d243725781543b18f246dc2a76e7767b0171529513234677c089"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            11,
+            46,
+            117,
+            101
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0545308740978348,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            10,
+            34,
+            117,
+            104
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.12670408981555734,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            12,
+            21,
+            115,
+            104
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6134723336006416,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            11,
+            6,
+            120,
+            106
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.7874899759422614,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            14,
+            12,
+            116,
+            105
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.7072975140336808,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            18,
+            20,
+            109,
+            101
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.38011226944667204,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_bpin_maw",
+      "bytes": 414047,
+      "sha256": "e793ddf03b2a93ed000d6289101f62833adec369bccdd3bdb79f49f8da8bb7a7",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1644779,
+        "sha256": "4ae15f3d3c50ea047f91309fca6c625cc7e8fad3674cbd9bb699d0cd44afb4c7"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            8,
+            29,
+            249,
+            225
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            13,
+            28,
+            244,
+            228
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.027626537608388787,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            11,
+            26,
+            245,
+            229
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.11534583585400282,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            8,
+            25,
+            248,
+            229
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_bpin_jaw_ring",
+      "bytes": 52510,
+      "sha256": "ba819c367b58c313d9af47ae5900d32127becc941b1971baeb47138bf5a0165f",
+      "source": {
+        "width": 887,
+        "height": 1774,
+        "bytes": 1383661,
+        "sha256": "c7c08e3816cb7fe45b16cac508ed7054f80c3c5c33ab532a94688fdb1f22ee61"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            18,
+            128,
+            49
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.3984496124031008,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            17,
+            128,
+            49
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5255813953488372,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            16,
+            128,
+            49
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6883720930232559,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            17,
+            128,
+            48
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.4077519379844961,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "counter_c33_mirror",
+      "bytes": 69472,
+      "sha256": "b6ee8c508561d5c5ff8de17c61d22752cc81bddcf6aabeadc92b08a6faa6fc64",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1191315,
+        "sha256": "359e1c77b3d68da412ac32e5e579eaf543e030264a506e44cfe27cbd66f253d2"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            34,
+            15,
+            94,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9911788291900562,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            34,
+            15,
+            94,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9895749799518845,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            34,
+            15,
+            94,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9911788291900562,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            34,
+            15,
+            94,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 253,
+          "nonempty": true,
+          "centerBrightFraction": 0.9903769045709703,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "counter_c35_crown_seed",
+      "bytes": 95477,
+      "sha256": "b8e4202ee6690f6a7c44caf60fb8aa18bc57da42b978fbcc5f60c9c9cff01118",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 928774,
+        "sha256": "5b18d5f10f9a772ebfded7c3eb5d46e11ff261c34f0bec5b12be80fbfefebce8"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            17,
+            15,
+            111,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9526864474739375,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            17,
+            15,
+            110,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9767441860465116,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            17,
+            15,
+            111,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9735364875701684,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            17,
+            15,
+            110,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9743384121892542,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b11_wave",
+      "bytes": 172509,
+      "sha256": "00562b6c1a211baf20efa729d6e5531e82173de0a98aa3a8b978be24e14d1957",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1021124,
+        "sha256": "60662e68687e3752f28da9f923d0e2da34c5f9d7281224ae41b3ad10e0ce0462"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            64,
+            87,
+            189,
+            163
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.36216979229683405,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            19,
+            76,
+            231,
+            181
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.26860254083484575,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            8,
+            57,
+            247,
+            181
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.16898568259729785,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            51,
+            254,
+            201
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.036095987094172215,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b11_lane",
+      "bytes": 191916,
+      "sha256": "d6f04accc986a317dc34f63678f1843e35b29e48411058ce7c6e150d74919630",
+      "source": {
+        "width": 2243,
+        "height": 701,
+        "bytes": 1330504,
+        "sha256": "e9ce7b12e17eeda81294e346f64242f622ebc6885037b3f4bfca80b725378671"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            15,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.632,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            14,
+            512,
+            50
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.7428571428571429,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            12,
+            512,
+            49
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.7603809523809524,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            13,
+            512,
+            48
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.7676190476190476,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b12_wave",
+      "bytes": 180755,
+      "sha256": "085ceebf0022450eccf70cf027311040e6164e525e184446466365101b168f58",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1010331,
+        "sha256": "048be0c829e45a3d96fbab6c0f3f2ea201340d43ce9ed065877a5a474ecc0444"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            77,
+            92,
+            179,
+            160
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.26537608388788064,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            40,
+            78,
+            212,
+            171
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.2137527727364388,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            13,
+            62,
+            243,
+            188
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.04456543657995564,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            6,
+            29,
+            252,
+            210
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0014115749142972374,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b12_lane",
+      "bytes": 235507,
+      "sha256": "41b3e8aa643e3dfa833739187e0e3544c6052b5e640f5910ec6d0d60d517f370",
+      "source": {
+        "width": 2172,
+        "height": 724,
+        "bytes": 1675542,
+        "sha256": "af5b99ffaadd37b0bcc9f1fe82cd503aa9e75b873ea3e42a64a48d432580aaa6"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            9,
+            512,
+            53
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.38133333333333336,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            9,
+            512,
+            53
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.4868571428571429,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            9,
+            512,
+            53
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.49638095238095237,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            9,
+            512,
+            53
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.4704761904761905,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b13_wave",
+      "bytes": 199531,
+      "sha256": "666bf20bf9684b2daa56f31a96fd17724e558e3452cc3077efae6112bc115023",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1109097,
+        "sha256": "135a6958c547d7d1059d0e820636884cc80875ca18b41e2523f4564c565e7c8a"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            72,
+            92,
+            184,
+            162
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.2875579753982658,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            38,
+            79,
+            223,
+            186
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.10264166162532769,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            13,
+            52,
+            243,
+            202
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0018148820326678765,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            5,
+            39,
+            250,
+            210
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b13_lane",
+      "bytes": 242431,
+      "sha256": "634cb92e8c311b1ae4fc72ebedc258ca8d882b82a46119ea351b7b6514f87dbf",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1457898,
+        "sha256": "8d0f5a1da19acfd2b9e3e30667ec47ab82448b7f191eae4f9c16f90b31edae2f"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            23,
+            512,
+            62
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5344761904761904,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            23,
+            512,
+            62
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5466666666666666,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            25,
+            512,
+            62
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5074285714285715,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            24,
+            512,
+            60
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5043809523809524,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending. Selected revised pure-light source, no physical mosaic wall."
+    },
+    {
+      "key": "vfx_b14_wave",
+      "bytes": 203958,
+      "sha256": "0e96f901c03d3baf81ccff20e0f576add3f3484eb85abf400c901f37eb41b858",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1143433,
+        "sha256": "dfa43bdfbda4127217a4ef2adb2e567f77cbada0b1cd2bbd3dd39eff4aca24e9"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            68,
+            79,
+            191,
+            166
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.38515829804396046,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            30,
+            68,
+            221,
+            187
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.29562411776567854,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            13,
+            53,
+            241,
+            200
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.017543859649122806,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            4,
+            34,
+            249,
+            219
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.001008267795926598,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b14_lane",
+      "bytes": 231302,
+      "sha256": "c76d17cbbc23c7b281edc967b2a77add25f7e4c8a0e289f4269a29bc68a173db",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1559850,
+        "sha256": "eaf8e1780c062813cd76d8e22e77768ef9ee082e7fb1ac2cfbbbcb602b7037ac"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            20,
+            512,
+            57
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5668571428571428,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            19,
+            512,
+            56
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6342857142857142,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            19,
+            512,
+            56
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5824761904761905,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            19,
+            512,
+            57
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5767619047619048,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b15_wave",
+      "bytes": 225138,
+      "sha256": "727cd26901f4508f812668b02c91a363501e580abd2401246e51d4ab518dfff5",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1129374,
+        "sha256": "c3b1c7c2bcae15ba8e9c770cc5c944c9ac4e80d7240a5ac077730e05541338b8"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            76,
+            88,
+            180,
+            156
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.21355111917725347,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            39,
+            77,
+            218,
+            172
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.11474087517644686,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            12,
+            46,
+            245,
+            189
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.03549102641661625,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            2,
+            24,
+            253,
+            216
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.01572897761645493,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b15_lane",
+      "bytes": 253392,
+      "sha256": "b35c0e86278e7a2c7340d05b15b45afc7b9fc55fff0b00c87b698ba07e6caf85",
+      "source": {
+        "width": 2172,
+        "height": 724,
+        "bytes": 1841496,
+        "sha256": "93c9923efb55603d6309a64401b8aeb5e5e5264bf7c0c8823363bc23ef74c01e"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            12,
+            512,
+            53
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6003809523809523,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            12,
+            512,
+            53
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6655238095238095,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            12,
+            512,
+            54
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6685714285714286,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            13,
+            512,
+            54
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6053333333333333,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_bpin_wave",
+      "bytes": 178220,
+      "sha256": "ea4a3b05e22cc2c0f0ede8e8b46d8fd1ec13ca3076a09f11318fcbdac6bdb645",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1070331,
+        "sha256": "1f7ecdf0a025d77ef9d42918f984a67a216b7ee78c1aea94851c2438530f6f63"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            68,
+            103,
+            189,
+            159
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.15789473684210525,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            29,
+            79,
+            229,
+            175
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.15769308328291995,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            12,
+            56,
+            245,
+            178
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0514216575922565,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            8,
+            39,
+            248,
+            203
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.006251260334744909,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_bpin_lane",
+      "bytes": 228442,
+      "sha256": "28d7b388328c6c7ca56d88097a1dfdd6a4f970d1a836a8a645a416209c0d5935",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1646836,
+        "sha256": "5261c6c3682150bc8ad772679136206b5d4f655c2f15538d715093ffb4492c9e"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            14,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.29714285714285715,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            14,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.3325714285714286,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            14,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.38285714285714284,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            14,
+            512,
+            51
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.31238095238095237,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b11_harvest_moon",
+      "bytes": 646537,
+      "sha256": "d4d86908191de80359ff9e3ab859f1ede3d64fa68a6b1e5df88fff35b33e5d32",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1316184,
+        "sha256": "d278c2560a2c9cd002f16a2af4be5f038abd264d2438c5a7993b7ef1a4ef1f4b"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            74,
+            72,
+            179,
+            172
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.5430530348860657,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            58,
+            58,
+            196,
+            186
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8047993547086106,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            31,
+            40,
+            221,
+            213
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9965718894938496,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            10,
+            12,
+            246,
+            241
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            7,
+            15,
+            244,
+            235
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9868925186529542,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            0,
+            13,
+            253,
+            232
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8931236136317806,
+          "seamMax": 0
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            17,
+            25,
+            236,
+            220
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6122202056866304,
+          "seamMax": 0
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            36,
+            39,
+            218,
+            212
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.42609397055858034,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b11_stampede_trail",
+      "bytes": 305683,
+      "sha256": "d6b4478b339d411947daba39df96b6de3f7a266bd189b5f96b0582d74e8bb94a",
+      "source": {
+        "width": 2172,
+        "height": 724,
+        "bytes": 1985583,
+        "sha256": "eaeb7b54ad80cd2fd7cd408e07c8196ac18118a6f2f38209ae31b3768f87f4a5"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            4,
+            512,
+            57
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9177142857142857,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            4,
+            512,
+            58
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9394285714285714,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            5,
+            512,
+            58
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9401904761904762,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            6,
+            512,
+            58
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9074285714285715,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b12_empty_heart",
+      "bytes": 515786,
+      "sha256": "fd262b83df3470955c88e711bf53b6d0b088954692309032e40a5a684ff394be",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1234693,
+        "sha256": "91ee301dc0cd7edd6a1af3ba7793cb62fc1193a71bd680faf12e16b396be80f9"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            45,
+            71,
+            208,
+            192
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.08106473079249849,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            20,
+            47,
+            230,
+            215
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.05948779995966929,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            21,
+            46,
+            232,
+            224
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.07138535995160314,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            5,
+            24,
+            246,
+            239
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.0790481952006453,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            21,
+            37,
+            232,
+            219
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.09578544061302682,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            21,
+            24,
+            230,
+            230
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.08469449485783424,
+          "seamMax": 0
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            26,
+            38,
+            224,
+            218
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.012905827787860456,
+          "seamMax": 0
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            44,
+            60,
+            202,
+            202
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.006654567453115548,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b13_dome_shard",
+      "bytes": 214094,
+      "sha256": "87e8d5fda2ca0ced7eefa58e9b2687e710ecc21f81701ddb6801b8e4f124d627",
+      "source": {
+        "width": 1024,
+        "height": 1536,
+        "bytes": 1185525,
+        "sha256": "0c4c2105080f20b1c17fe943cc46c09c04a24c63167312615a982e688a303ffa"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            27,
+            167,
+            102,
+            221
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            25,
+            134,
+            102,
+            221
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.03998368013055895,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            22,
+            73,
+            104,
+            222
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8033455732354141,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            22,
+            18,
+            110,
+            222
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9543043655650755,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            17,
+            10,
+            109,
+            223
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            19,
+            13,
+            108,
+            222
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6111791105671155,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b14_last_seed",
+      "bytes": 475571,
+      "sha256": "df28240817b7ffd39f7f9eb5c4a70b6f6a4a411f1a6dc09c0333e81636d9d5d8",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1908810,
+        "sha256": "7d52fb9cb75efb222b0b8945a150de94ebfed6c62f601def6cd1b4230dc21dd3"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            14,
+            16,
+            242,
+            234
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.17120387174833634,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            15,
+            13,
+            242,
+            236
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.14357733413994758,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            16,
+            8,
+            242,
+            231
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.22040734018955435,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            8,
+            242,
+            231
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.34462593264771124,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b15_crown_sweep",
+      "bytes": 405388,
+      "sha256": "d4726012aa1623b9a23c5e5696f8d3e0694c464995b7e35ffe3957e233ab2f0e",
+      "source": {
+        "width": 1672,
+        "height": 941,
+        "bytes": 1885452,
+        "sha256": "35dcdc57505ee2b6ef5657800850fab4b1cfc15f10536c12c1ac1b1e50288057"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            12,
+            512,
+            85
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9099319727891156,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            11,
+            512,
+            84
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9466666666666667,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            10,
+            512,
+            85
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9553741496598639,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            9,
+            512,
+            85
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9287074829931973,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_b15_first_bloom",
+      "bytes": 802648,
+      "sha256": "7c29fd9a7e366a97e86208d62ade82d3f515c3aa4feb02146d8c3f3f7a1d0ce5",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1494814,
+        "sha256": "35972e9ce7741bbd0dbc520621514a1ae4a947edf52ac6b9d6419bad1dc74f00"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            59,
+            69,
+            200,
+            211
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6658600524299254,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            45,
+            36,
+            212,
+            219
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8943335349868925,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            36,
+            25,
+            227,
+            230
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.941923774954628,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            28,
+            14,
+            233,
+            232
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9979834644081468,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            7,
+            0,
+            248,
+            237
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9995966928816293,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            12,
+            7,
+            246,
+            243
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9602742488404921,
+          "seamMax": 0
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            29,
+            26,
+            226,
+            229
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6210929622907845,
+          "seamMax": 0
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            50,
+            52,
+            214,
+            209
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.28513813268804195,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_bpin_tongue",
+      "bytes": 488081,
+      "sha256": "7529f73ba81892b49545edd427b3406c61ff6be3d9f88afe9973396ccdeba8c7",
+      "source": {
+        "width": 1241,
+        "height": 1268,
+        "bytes": 1457124,
+        "sha256": "1751ba8632c544a95a2a5b6fdbbd7177115fc625240a3f8dd3b60ab271929254"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            0,
+            30,
+            512,
+            105
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8248275862068966,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            0,
+            30,
+            512,
+            105
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.932807881773399,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            0,
+            29,
+            512,
+            105
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.9452216748768473,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            0,
+            30,
+            512,
+            105
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.8577339901477833,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "Trim empty/tapered horizontal margins, then6% mirrored endpoint crossfade; exact first/last-column equality",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "vfx_bpin_eclipse",
+      "bytes": 791930,
+      "sha256": "34595a38473b2dad7b2a80e5fcc002aeb7b9037c967abea374c8b5c2ff2e0a07",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 1592162,
+        "sha256": "0b42b426cb74097575f99fe2d248c443c19b6ba2934c899b2546a0f23416fb16"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            22,
+            59,
+            232,
+            227
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6918733615648316,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            22,
+            19,
+            246,
+            231
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.6386368219399072,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            23,
+            23,
+            243,
+            235
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.299657188949385,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            24,
+            21,
+            238,
+            229
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.16918733615648315,
+          "seamMax": 0
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            10,
+            11,
+            247,
+            235
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.00020165355918531962,
+          "seamMax": 0
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            3,
+            14,
+            253,
+            231
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.21294615849969753,
+          "seamMax": 0
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            9,
+            17,
+            246,
+            228
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.007864488808227465,
+          "seamMax": 0
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            25,
+            26,
+            226,
+            221
+          ],
+          "alphaMin": 255,
+          "alphaMax": 255,
+          "nonempty": true,
+          "centerBrightFraction": 0.02722323049001815,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "not applicable",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "counter_c31_sheaf",
+      "bytes": 86870,
+      "sha256": "e437f9e638d8cc213608c70ebd7354d86408699ea66103337d5e64f171754280",
+      "source": {
+        "width": 1275,
+        "height": 1233,
+        "bytes": 1639571,
+        "sha256": "2c2b70be81822256233d69154d1aca8cac4ca3b020dc15fadcc5adb228f4f88a"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            19,
+            15,
+            109,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9623095429029671,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            18,
+            15,
+            109,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9510825982357658,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            18,
+            15,
+            109,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9663191659983962,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            19,
+            15,
+            109,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9607056936647955,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "counter_c32_nectar",
+      "bytes": 92375,
+      "sha256": "216b12a2ad4a1a0a97d65b2bec310f50c2cf13b8449cc05fb8595f72c751373d",
+      "source": {
+        "width": 1261,
+        "height": 1247,
+        "bytes": 1301482,
+        "sha256": "249e62b736b6c203d4323a94632b993d60bc67919f75569ca822bd26c559cc05"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            15,
+            19,
+            112,
+            108
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            15,
+            20,
+            112,
+            108
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9991980753809142,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            15,
+            20,
+            112,
+            108
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            15,
+            20,
+            112,
+            108
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 1,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "counter_c34_vault_bomb",
+      "bytes": 81715,
+      "sha256": "a1ea110995d9616299bd4894286131f08d69bfc159df638e3aa619081894feb1",
+      "source": {
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1416661,
+        "sha256": "ce9fa2df5992cb14e0721ac97136f324b8b22987d63f3ffc7472cd79c1390424"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            23,
+            15,
+            104,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.942261427425822,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            24,
+            15,
+            104,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9406575781876504,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            23,
+            15,
+            104,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9406575781876504,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            23,
+            15,
+            104,
+            112
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.9390537289494787,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
+    },
+    {
+      "key": "counter_pin_meat",
+      "bytes": 75903,
+      "sha256": "37aefab69830ec3523eea78766c58c2d396b9fe21e12d5fadfb1697dabbce113",
+      "source": {
+        "width": 1774,
+        "height": 887,
+        "bytes": 990430,
+        "sha256": "02098ef42989efaad530e9e25c5bc51a907b61776258f18cb9ba4162367de43a"
+      },
+      "fullDecode": true,
+      "pngCRCAndAdler": true,
+      "losslessPixelRoundtrip": true,
+      "frameChecks": [
+        {
+          "frame": 0,
+          "bounds": [
+            15,
+            24,
+            112,
+            103
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.7690457097032879,
+          "seamMax": 0
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            15,
+            25,
+            112,
+            103
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.7826784282277466,
+          "seamMax": 0
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            15,
+            24,
+            112,
+            103
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.781074578989575,
+          "seamMax": 0
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            15,
+            24,
+            112,
+            103
+          ],
+          "alphaMin": 0,
+          "alphaMax": 254,
+          "nonempty": true,
+          "centerBrightFraction": 0.7746591820368885,
+          "seamMax": 0
+        }
+      ],
+      "seamCorrection": "none",
+      "counterAlignment": "Per-cell alpha bbox centered into76% frame envelope, preserve aspect",
+      "visualQA": "Source-sheet review passed: subject/theme, expected phases, no text or frame separators. Counter alignment and seamless-strip proofs supplied separately; actual game timing and phone visuals/FPS pending."
     }
   ],
-  "actualRuntimeFloorProofs": [],
+  "actualRuntimeFloorProofs": [
+    "qa/stage_11.svg",
+    "qa/stage_12.svg",
+    "qa/stage_13.svg",
+    "qa/stage_14.svg",
+    "qa/stage_15.svg",
+    "qa/stage_pin.svg",
+    "qa/seam_vfx_b13_prism_beam.png",
+    "qa/seam_vfx_b14_vault_ring.png",
+    "qa/seam_vfx_bpin_jaw_ring.png",
+    "qa/seam_vfx_b11_lane.png",
+    "qa/seam_vfx_b12_lane.png",
+    "qa/seam_vfx_b13_lane.png",
+    "qa/seam_vfx_b14_lane.png",
+    "qa/seam_vfx_b15_lane.png",
+    "qa/seam_vfx_bpin_lane.png",
+    "qa/seam_vfx_b11_stampede_trail.png",
+    "qa/seam_vfx_b15_crown_sweep.png",
+    "qa/seam_vfx_bpin_tongue.png",
+    "qa/counters_44px.png",
+    "qa/README.md"
+  ],
   "floorSources": [
     {
       "path": "assets/art/floors/floor_c31.webp",
