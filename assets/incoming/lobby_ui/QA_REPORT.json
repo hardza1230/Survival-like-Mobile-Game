@@ -1,0 +1,757 @@
+{
+  "order": 33,
+  "scope": "Source delivery only; offline PIL compositions, not game/browser screenshots.",
+  "tool": "built-in image_gen",
+  "assets": 26,
+  "frames": 38,
+  "sourceBytes": 1224206,
+  "packedDecodedBytes": 2444804,
+  "packedDecodedMiB": 2.3315467834472656,
+  "budgetMiB": 6,
+  "proofs": [
+    "lobby_360x780_s01.png",
+    "lobby_360x780_s11.png",
+    "lobby_412x915_s01.png",
+    "lobby_412x915_s11.png",
+    "icons_28_56_light_dark.png",
+    "stretch_and_text.png",
+    "asset_contact.png"
+  ],
+  "layout": "Header, hero, mission, battle and nav occupy separate bands in both exact-size source compositions. The hero/background are existing repository assets.",
+  "textPolicy": "Asset PNGs contain no text; all labels and numbers in proofs are runtime-text specimens. White text on honey requires dark stroke; dark brown recommended for BATTLE.",
+  "nineSlice": "Stretch centers flattened from native painted columns; transitions feathered within protected endcaps. Center top ornament on stage frame removed to avoid stretching its star; code may overlay a small four-point star.",
+  "reviewPending": [
+    "Owner phone visual/touch/FPS review",
+    "Runtime 50% packing, TEMPLE_UI/ASSET_FX binding and Lobby-only lazy loading; preserve fallback"
+  ],
+  "checks": [
+    {
+      "file": "lb_stage_panel.png",
+      "bytes": 54907,
+      "sha256": "d147b740414184380d3e4ae7d1a6fd6e1f40ca25470659a14ed317e488a6c24e",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            5,
+            637,
+            217
+          ]
+        }
+      ],
+      "packedDecodedBytes": 140800
+    },
+    {
+      "file": "lb_battle_btn.png",
+      "bytes": 194489,
+      "sha256": "bac90211af364cf70702f51949249ae87bf60c8f69e45d26adf33adb5443a2e4",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            637,
+            177
+          ]
+        },
+        {
+          "index": 1,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            7,
+            637,
+            180
+          ]
+        },
+        {
+          "index": 2,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            637,
+            177
+          ]
+        }
+      ],
+      "packedDecodedBytes": 345600
+    },
+    {
+      "file": "lb_arrow_btn.png",
+      "bytes": 33164,
+      "sha256": "6c62f1c37428a98bb4f45c5414c58600306df27d4b3f9ae8c5eb3b204bbad148",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            93,
+            117
+          ]
+        },
+        {
+          "index": 1,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            93,
+            117
+          ]
+        }
+      ],
+      "packedDecodedBytes": 23040
+    },
+    {
+      "file": "lb_side_btn.png",
+      "bytes": 14457,
+      "sha256": "66f2907058960eceadbab8c332dc0d99de465f4e3734d4e954257c51bb7323cd",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            157,
+            157
+          ]
+        }
+      ],
+      "packedDecodedBytes": 25600
+    },
+    {
+      "file": "lb_profile_frame.png",
+      "bytes": 34571,
+      "sha256": "df3055817fbe7a99dc409a1de5be4a740bf424e2c8aaaec4c0d2cd5bd2761099",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            517,
+            147
+          ]
+        }
+      ],
+      "packedDecodedBytes": 78000
+    },
+    {
+      "file": "lb_avatar_ring.png",
+      "bytes": 18479,
+      "sha256": "b347da0dc5b305bfd0282659d6d8b56d2c5cd8703a7861372fb2fccf933a54b1",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            147,
+            147
+          ]
+        }
+      ],
+      "packedDecodedBytes": 22500
+    },
+    {
+      "file": "lb_currency_pill.png",
+      "bytes": 20200,
+      "sha256": "37a57791b2f359942b2863aafa65d027597aea8a09057b80b21905a94aa60ce4",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            297,
+            87
+          ]
+        }
+      ],
+      "packedDecodedBytes": 27000
+    },
+    {
+      "file": "ic_lb_battle.png",
+      "bytes": 65515,
+      "sha256": "3bdec17fa73d4cc25cbf35e155bc7560b1ecbcc4f51da270b8697faf8c2ab38c",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            46,
+            238,
+            210
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_nav_home.png",
+      "bytes": 83669,
+      "sha256": "c72fd941ac3ff3ca1b1654e624e07069a46dd0956a09f37129e76c077b46ff9f",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            34,
+            238,
+            222
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_nav_heroes.png",
+      "bytes": 45088,
+      "sha256": "1ed6dfeefb27d5b31b3995149905e3fb325caec34242a5bd344b19f3128a0fa1",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            61,
+            238,
+            194
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_nav_play.png",
+      "bytes": 52890,
+      "sha256": "904684b49a204a1261ce317ef66a705185e7a46224fcff042bc7e851a92d9e79",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            70,
+            238,
+            185
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_nav_gear.png",
+      "bytes": 78814,
+      "sha256": "bf0862d21c4de302016f44bd9de80b1a6a31d42130212ae28b53b4077751d6ab",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            28,
+            238,
+            227
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_nav_activities.png",
+      "bytes": 61324,
+      "sha256": "791a939e7915ccb550e32a9e3a8cf1b4ae407630d8cbb7c4aadb20f13b126097",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            32,
+            238,
+            224
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_side_codex.png",
+      "bytes": 48868,
+      "sha256": "4dad8eec3cebd20a4cba0f077c3eb69e65d7d93da17e7cf0919b947c738dcf41",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            59,
+            238,
+            197
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_side_inbox.png",
+      "bytes": 74038,
+      "sha256": "7642260c785624c3a1c1b960c0157bf4a0b9bd9628d3309a34320e7fb2c10849",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            27,
+            238,
+            229
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_side_news.png",
+      "bytes": 55942,
+      "sha256": "6989f6cde0027862b0b2427d9a4c5f640187447cb7d04c0503661cda763621ed",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            44,
+            238,
+            211
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_side_daily.png",
+      "bytes": 54840,
+      "sha256": "07849ccc5e7a3e94634fed9437a9c3f1ab61b2050b512a6dfd5464dd30bfc5c2",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            38,
+            18,
+            217,
+            238
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "ic_side_awards.png",
+      "bytes": 55795,
+      "sha256": "df29196b0fcd674d2b2190e8495c84b0c6c4e72a857555c7d164e2f2b162a768",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            18,
+            35,
+            238,
+            221
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    },
+    {
+      "file": "lb_nav_bg.png",
+      "bytes": 17849,
+      "sha256": "54f2c8c9a1c150fb0d8dd1b4ffba387061d579a41f8f1551a4e405c403770428",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            1077,
+            147
+          ]
+        }
+      ],
+      "packedDecodedBytes": 162000
+    },
+    {
+      "file": "lb_nav_active.png",
+      "bytes": 18089,
+      "sha256": "9010c51e24a140451778a36b30518732d8e13d6cfa917fdc9217f29d01231ea9",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            3,
+            297,
+            137
+          ]
+        }
+      ],
+      "packedDecodedBytes": 42000
+    },
+    {
+      "file": "lb_nav_divider.png",
+      "bytes": 858,
+      "sha256": "eec35375d98c74bbb5400d3d4bb02b134a6d2e7f878db48326b9bfde8289b387",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            250
+          ],
+          "bbox": [
+            1,
+            4,
+            5,
+            97
+          ]
+        }
+      ],
+      "packedDecodedBytes": 600
+    },
+    {
+      "file": "lb_star.png",
+      "bytes": 27105,
+      "sha256": "e431dff6e672b70d87a1a5b4d2d839007714f940166e4242fb396ad9afd354b2",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            5,
+            93,
+            91
+          ]
+        },
+        {
+          "index": 1,
+          "alphaRange": [
+            0,
+            255
+          ],
+          "bbox": [
+            3,
+            5,
+            93,
+            91
+          ]
+        }
+      ],
+      "packedDecodedBytes": 18432
+    },
+    {
+      "file": "lb_power_pill.png",
+      "bytes": 11884,
+      "sha256": "3f7de3462c6f337bd860e22cae1f4bc71d4a0b0b2877b5b9532592193a33f378",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            217
+          ],
+          "bbox": [
+            3,
+            3,
+            417,
+            77
+          ]
+        }
+      ],
+      "packedDecodedBytes": 33600
+    },
+    {
+      "file": "lb_hero_shadow.png",
+      "bytes": 60215,
+      "sha256": "f53952e04efb117c68f8b7ca71613c79fc64f019705332f85b6a054a081d1566",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            0,
+            189
+          ],
+          "bbox": [
+            15,
+            13,
+            382,
+            114
+          ]
+        }
+      ],
+      "packedDecodedBytes": 48000
+    },
+    {
+      "file": "vfx_lb_battle_shine.png",
+      "bytes": 35438,
+      "sha256": "ae134ffe98a2e0c7dc413711384506632c3f1018b96981e942fce00b2b76d5fc",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            640,
+            180
+          ]
+        },
+        {
+          "index": 1,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            640,
+            180
+          ]
+        },
+        {
+          "index": 2,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            640,
+            180
+          ]
+        },
+        {
+          "index": 3,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            640,
+            180
+          ]
+        },
+        {
+          "index": 4,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            640,
+            180
+          ]
+        },
+        {
+          "index": 5,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            640,
+            180
+          ]
+        }
+      ],
+      "packedDecodedBytes": 691200
+    },
+    {
+      "file": "vfx_lb_sparkle.png",
+      "bytes": 5718,
+      "sha256": "466b2eb1e21612b096ca0684bc5d017910befd5234453372541efaaf32f5ec72",
+      "pngStream": "complete; CRC checked",
+      "frames": [
+        {
+          "index": 0,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            128,
+            128
+          ]
+        },
+        {
+          "index": 1,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            128,
+            128
+          ]
+        },
+        {
+          "index": 2,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            128,
+            128
+          ]
+        },
+        {
+          "index": 3,
+          "alphaRange": [
+            255,
+            255
+          ],
+          "bbox": [
+            0,
+            0,
+            128,
+            128
+          ]
+        }
+      ],
+      "packedDecodedBytes": 65536
+    }
+  ]
+}

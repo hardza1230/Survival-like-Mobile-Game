@@ -1,0 +1,570 @@
+[
+  {
+    "key": "lb_stage_panel",
+    "file": "lb_stage_panel.png",
+    "width": 640,
+    "height": 220,
+    "frames": 1,
+    "frameWidth": 640,
+    "frameHeight": 220,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "d147b740414184380d3e4ae7d1a6fd6e1f40ca25470659a14ed317e488a6c24e",
+    "bytes": 54907,
+    "packScale": 0.5,
+    "nineSlice": [
+      90,
+      60,
+      90,
+      60
+    ],
+    "displayAt360": [
+      290,
+      100
+    ]
+  },
+  {
+    "key": "lb_battle_btn",
+    "file": "lb_battle_btn.png",
+    "width": 640,
+    "height": 540,
+    "frames": 3,
+    "frameWidth": 640,
+    "frameHeight": 180,
+    "columns": 1,
+    "rows": 3,
+    "background": "transparent",
+    "sha256": "bac90211af364cf70702f51949249ae87bf60c8f69e45d26adf33adb5443a2e4",
+    "bytes": 194489,
+    "packScale": 0.5,
+    "nineSlice": [
+      128,
+      0,
+      128,
+      0
+    ],
+    "frameMeaning": [
+      "normal",
+      "pressed",
+      "locked"
+    ],
+    "displayAt360": [
+      300,
+      84
+    ]
+  },
+  {
+    "key": "lb_arrow_btn",
+    "file": "lb_arrow_btn.png",
+    "width": 96,
+    "height": 240,
+    "frames": 2,
+    "frameWidth": 96,
+    "frameHeight": 120,
+    "columns": 1,
+    "rows": 2,
+    "background": "transparent",
+    "sha256": "6c62f1c37428a98bb4f45c5414c58600306df27d4b3f9ae8c5eb3b204bbad148",
+    "bytes": 33164,
+    "packScale": 0.5,
+    "frameMeaning": [
+      "normal",
+      "pressed"
+    ],
+    "displayAt360": [
+      30,
+      50
+    ]
+  },
+  {
+    "key": "lb_side_btn",
+    "file": "lb_side_btn.png",
+    "width": 160,
+    "height": 160,
+    "frames": 1,
+    "frameWidth": 160,
+    "frameHeight": 160,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "66f2907058960eceadbab8c332dc0d99de465f4e3734d4e954257c51bb7323cd",
+    "bytes": 14457,
+    "packScale": 0.5,
+    "nineSlice": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "displayAt360": [
+      80.0,
+      80.0
+    ]
+  },
+  {
+    "key": "lb_profile_frame",
+    "file": "lb_profile_frame.png",
+    "width": 520,
+    "height": 150,
+    "frames": 1,
+    "frameWidth": 520,
+    "frameHeight": 150,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "df3055817fbe7a99dc409a1de5be4a740bf424e2c8aaaec4c0d2cd5bd2761099",
+    "bytes": 34571,
+    "packScale": 0.5,
+    "nineSlice": [
+      70,
+      35,
+      70,
+      35
+    ],
+    "displayAt360": [
+      260.0,
+      75.0
+    ]
+  },
+  {
+    "key": "lb_avatar_ring",
+    "file": "lb_avatar_ring.png",
+    "width": 150,
+    "height": 150,
+    "frames": 1,
+    "frameWidth": 150,
+    "frameHeight": 150,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "b347da0dc5b305bfd0282659d6d8b56d2c5cd8703a7861372fb2fccf933a54b1",
+    "bytes": 18479,
+    "packScale": 0.5,
+    "displayAt360": [
+      75.0,
+      75.0
+    ]
+  },
+  {
+    "key": "lb_currency_pill",
+    "file": "lb_currency_pill.png",
+    "width": 300,
+    "height": 90,
+    "frames": 1,
+    "frameWidth": 300,
+    "frameHeight": 90,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "37a57791b2f359942b2863aafa65d027597aea8a09057b80b21905a94aa60ce4",
+    "bytes": 20200,
+    "packScale": 0.5,
+    "nineSlice": [
+      48,
+      0,
+      84,
+      0
+    ],
+    "displayAt360": [
+      150.0,
+      45.0
+    ]
+  },
+  {
+    "key": "ic_lb_battle",
+    "file": "ic_lb_battle.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "3bdec17fa73d4cc25cbf35e155bc7560b1ecbcc4f51da270b8697faf8c2ab38c",
+    "bytes": 65515,
+    "packScale": 0.5,
+    "displayAt360": [
+      128.0,
+      128.0
+    ]
+  },
+  {
+    "key": "ic_nav_home",
+    "file": "ic_nav_home.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "c72fd941ac3ff3ca1b1654e624e07069a46dd0956a09f37129e76c077b46ff9f",
+    "bytes": 83669,
+    "packScale": 0.5,
+    "displayAt360": [
+      28,
+      28
+    ]
+  },
+  {
+    "key": "ic_nav_heroes",
+    "file": "ic_nav_heroes.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "1ed6dfeefb27d5b31b3995149905e3fb325caec34242a5bd344b19f3128a0fa1",
+    "bytes": 45088,
+    "packScale": 0.5,
+    "displayAt360": [
+      28,
+      28
+    ]
+  },
+  {
+    "key": "ic_nav_play",
+    "file": "ic_nav_play.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "904684b49a204a1261ce317ef66a705185e7a46224fcff042bc7e851a92d9e79",
+    "bytes": 52890,
+    "packScale": 0.5,
+    "displayAt360": [
+      28,
+      28
+    ]
+  },
+  {
+    "key": "ic_nav_gear",
+    "file": "ic_nav_gear.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "bf0862d21c4de302016f44bd9de80b1a6a31d42130212ae28b53b4077751d6ab",
+    "bytes": 78814,
+    "packScale": 0.5,
+    "displayAt360": [
+      28,
+      28
+    ]
+  },
+  {
+    "key": "ic_nav_activities",
+    "file": "ic_nav_activities.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "791a939e7915ccb550e32a9e3a8cf1b4ae407630d8cbb7c4aadb20f13b126097",
+    "bytes": 61324,
+    "packScale": 0.5,
+    "displayAt360": [
+      28,
+      28
+    ]
+  },
+  {
+    "key": "ic_side_codex",
+    "file": "ic_side_codex.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "4dad8eec3cebd20a4cba0f077c3eb69e65d7d93da17e7cf0919b947c738dcf41",
+    "bytes": 48868,
+    "packScale": 0.5,
+    "displayAt360": [
+      128.0,
+      128.0
+    ]
+  },
+  {
+    "key": "ic_side_inbox",
+    "file": "ic_side_inbox.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "7642260c785624c3a1c1b960c0157bf4a0b9bd9628d3309a34320e7fb2c10849",
+    "bytes": 74038,
+    "packScale": 0.5,
+    "displayAt360": [
+      128.0,
+      128.0
+    ]
+  },
+  {
+    "key": "ic_side_news",
+    "file": "ic_side_news.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "6989f6cde0027862b0b2427d9a4c5f640187447cb7d04c0503661cda763621ed",
+    "bytes": 55942,
+    "packScale": 0.5,
+    "displayAt360": [
+      128.0,
+      128.0
+    ]
+  },
+  {
+    "key": "ic_side_daily",
+    "file": "ic_side_daily.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "07849ccc5e7a3e94634fed9437a9c3f1ab61b2050b512a6dfd5464dd30bfc5c2",
+    "bytes": 54840,
+    "packScale": 0.5,
+    "displayAt360": [
+      128.0,
+      128.0
+    ]
+  },
+  {
+    "key": "ic_side_awards",
+    "file": "ic_side_awards.png",
+    "width": 256,
+    "height": 256,
+    "frames": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "df29196b0fcd674d2b2190e8495c84b0c6c4e72a857555c7d164e2f2b162a768",
+    "bytes": 55795,
+    "packScale": 0.5,
+    "displayAt360": [
+      128.0,
+      128.0
+    ]
+  },
+  {
+    "key": "lb_nav_bg",
+    "file": "lb_nav_bg.png",
+    "width": 1080,
+    "height": 150,
+    "frames": 1,
+    "frameWidth": 1080,
+    "frameHeight": 150,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "54f2c8c9a1c150fb0d8dd1b4ffba387061d579a41f8f1551a4e405c403770428",
+    "bytes": 17849,
+    "packScale": 0.5,
+    "nineSlice": [
+      36,
+      0,
+      36,
+      0
+    ],
+    "displayAt360": [
+      360,
+      62
+    ]
+  },
+  {
+    "key": "lb_nav_active",
+    "file": "lb_nav_active.png",
+    "width": 300,
+    "height": 140,
+    "frames": 1,
+    "frameWidth": 300,
+    "frameHeight": 140,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "9010c51e24a140451778a36b30518732d8e13d6cfa917fdc9217f29d01231ea9",
+    "bytes": 18089,
+    "packScale": 0.5,
+    "nineSlice": [
+      60,
+      28,
+      60,
+      28
+    ],
+    "displayAt360": [
+      120,
+      56
+    ]
+  },
+  {
+    "key": "lb_nav_divider",
+    "file": "lb_nav_divider.png",
+    "width": 6,
+    "height": 100,
+    "frames": 1,
+    "frameWidth": 6,
+    "frameHeight": 100,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "eec35375d98c74bbb5400d3d4bb02b134a6d2e7f878db48326b9bfde8289b387",
+    "bytes": 858,
+    "packScale": 0.5,
+    "displayAt360": [
+      3.0,
+      50.0
+    ]
+  },
+  {
+    "key": "lb_star",
+    "file": "lb_star.png",
+    "width": 96,
+    "height": 192,
+    "frames": 2,
+    "frameWidth": 96,
+    "frameHeight": 96,
+    "columns": 1,
+    "rows": 2,
+    "background": "transparent",
+    "sha256": "e431dff6e672b70d87a1a5b4d2d839007714f940166e4242fb396ad9afd354b2",
+    "bytes": 27105,
+    "packScale": 0.5,
+    "frameMeaning": [
+      "earned",
+      "empty"
+    ],
+    "displayAt360": [
+      48.0,
+      48.0
+    ]
+  },
+  {
+    "key": "lb_power_pill",
+    "file": "lb_power_pill.png",
+    "width": 420,
+    "height": 80,
+    "frames": 1,
+    "frameWidth": 420,
+    "frameHeight": 80,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "3f7de3462c6f337bd860e22cae1f4bc71d4a0b0b2877b5b9532592193a33f378",
+    "bytes": 11884,
+    "packScale": 0.5,
+    "nineSlice": [
+      48,
+      0,
+      48,
+      0
+    ],
+    "displayAt360": [
+      180,
+      28
+    ]
+  },
+  {
+    "key": "lb_hero_shadow",
+    "file": "lb_hero_shadow.png",
+    "width": 400,
+    "height": 120,
+    "frames": 1,
+    "frameWidth": 400,
+    "frameHeight": 120,
+    "columns": 1,
+    "rows": 1,
+    "background": "transparent",
+    "sha256": "f53952e04efb117c68f8b7ca71613c79fc64f019705332f85b6a054a081d1566",
+    "bytes": 60215,
+    "packScale": 0.5,
+    "displayAt360": [
+      200.0,
+      60.0
+    ]
+  },
+  {
+    "key": "vfx_lb_battle_shine",
+    "file": "vfx_lb_battle_shine.png",
+    "width": 3840,
+    "height": 180,
+    "frames": 6,
+    "frameWidth": 640,
+    "frameHeight": 180,
+    "columns": 6,
+    "rows": 1,
+    "background": "#000000",
+    "sha256": "ae134ffe98a2e0c7dc413711384506632c3f1018b96981e942fce00b2b76d5fc",
+    "bytes": 35438,
+    "packScale": 0.5,
+    "loop": true,
+    "fps": 12,
+    "triggerSeconds": 3,
+    "frameCenters": [
+      0,
+      128,
+      256,
+      384,
+      512,
+      640
+    ],
+    "displayAt360": [
+      320.0,
+      90.0
+    ]
+  },
+  {
+    "key": "vfx_lb_sparkle",
+    "file": "vfx_lb_sparkle.png",
+    "width": 256,
+    "height": 256,
+    "frames": 4,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "columns": 2,
+    "rows": 2,
+    "background": "#000000",
+    "sha256": "466b2eb1e21612b096ca0684bc5d017910befd5234453372541efaaf32f5ec72",
+    "bytes": 5718,
+    "packScale": 0.5,
+    "loop": true,
+    "fps": 8,
+    "displayAt360": [
+      64.0,
+      64.0
+    ]
+  }
+]

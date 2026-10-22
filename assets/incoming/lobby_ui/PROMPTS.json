@@ -1,0 +1,314 @@
+[
+  {
+    "key": "lb_stage_panel",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset: lb_stage_panel. Intended final frame 640x220.\nSingle wide rounded stage information panel. Dark plum #2a1a3a interior, subtle vertical shading, thick soft honey gold 6\u20138px border, rounded corners. Tiny gold four-point accent at top center border. Empty smooth center with ample space for runtime text. No thumbnail, stars, icons or words.",
+    "rawSha256": "7819752bc45fd230c0d0c3a16fae64c6b576ad65256e56e5f681328ea0a63db6",
+    "rawSize": [
+      2138,
+      736
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "d147b740414184380d3e4ae7d1a6fd6e1f40ca25470659a14ed317e488a6c24e"
+  },
+  {
+    "key": "lb_battle_btn",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset: lb_battle_btn. Intended frame 640x180; sheet grid 1 columns x 3 rows.\nSprite sheet: exactly THREE equal frames stacked vertically, same alignment and size. Each frame a wide glossy honey-gold blank button with brown outline, rounded ends, 2\u20133 honey drips beneath. Two tiny cream flowers with leaves at EACH end, fully within endcaps. Broad EMPTY smooth golden middle, no icon, no energy pill, no writing. Top frame normal bright honey #ffc43d to #ffe08a; middle pressed darker and face shifted down subtly; bottom locked desaturated gray brown, same silhouette.",
+    "rawSha256": "70bc67e21bb75973be696dde1ecaf853aa3eae5379bbca60aa6574ca4ca844f1",
+    "rawSize": [
+      1536,
+      1024
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "bac90211af364cf70702f51949249ae87bf60c8f69e45d26adf33adb5443a2e4"
+  },
+  {
+    "key": "lb_arrow_btn",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_arrow_btn. Intended frame 96x120; grid 1 columns x 2 rows. Respect extremely wide/narrow proportions.\nExactly TWO equal frames stacked vertically. Rounded tall plum button gold outline, with one chunky embossed ivory LEFT chevron. Top normal, bottom pressed darker. Only chevron symbol, no words.",
+    "rawSha256": "255c859165cbf55214bed9ed43377a3ee93b7ac01f2bb1d1594e1ccc4915ed3c",
+    "rawSize": [
+      1122,
+      1402
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "6c62f1c37428a98bb4f45c5414c58600306df27d4b3f9ae8c5eb3b204bbad148"
+  },
+  {
+    "key": "lb_side_btn",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_side_btn. Intended dimensions 160x160.\nSingle rounded square dark plum utility button frame with thin soft honey gold outline, subtle upper highlight, entirely empty smooth center. No icons.",
+    "rawSha256": "f6997ade44f6d250caed57af9ff795c6fbf24a4b21ce97b2ceda86e38025d109",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "66f2907058960eceadbab8c332dc0d99de465f4e3734d4e954257c51bb7323cd"
+  },
+  {
+    "key": "lb_profile_frame",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_profile_frame. Intended dimensions 520x150.\nSingle wide dark plum rounded rectangular profile panel, soft thin honey gold rim, smooth empty dark center, no portrait or avatar hole, no icons or meters.",
+    "rawSha256": "5e27faabea89cb15b889ab2476f44d159544b8dd067f683837b4483c57e80944",
+    "rawSize": [
+      2100,
+      749
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "df3055817fbe7a99dc409a1de5be4a740bf424e2c8aaaec4c0d2cd5bd2761099"
+  },
+  {
+    "key": "lb_avatar_ring",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_avatar_ring. Intended dimensions 150x150.\nSingle honey gold rounded square avatar ring, center opening fully transparent about 120x120 of intended 150x150 sprite. Small neutral cream flower at upper left corner. No portrait, no dark fill in hole.",
+    "rawSha256": "5235fe2abc64b02adc92fbd51d9c98e3142485ec8f62631c964c01d2ec350b7a",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "b347da0dc5b305bfd0282659d6d8b56d2c5cd8703a7861372fb2fccf933a54b1"
+  },
+  {
+    "key": "lb_currency_pill",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_currency_pill. Intended dimensions 300x90.\nSingle horizontal dark plum capsule, thin honey-gold edge. Right end has inset small round dusty rose button with simple ivory plus symbol. All remaining center empty. No candy icon, no number.",
+    "rawSha256": "5b65cb3ff52f3b8b764b0b8f0e73f29291bbdc550c7664c0b10f75a95bf9049f",
+    "rawSize": [
+      2172,
+      724
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "37a57791b2f359942b2863aafa65d027597aea8a09057b80b21905a94aa60ce4"
+  },
+  {
+    "key": "ic_lb_battle",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset: ic_lb_battle. Intended frame 256x256; sheet grid 1 columns x 1 rows.\nSingle icon, two chunky red boxing gloves CROSSED, small cream flower tied to wrist straps. No frame. Strong dark outlines, simple readable at 28px.",
+    "rawSha256": "af304f1b8229ad3b235c17ad97fac360672ae5c173a8b28e4b7164e5cfdc8c64",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "3bdec17fa73d4cc25cbf35e155bc7560b1ecbcc4f51da270b8697faf8c2ab38c"
+  },
+  {
+    "key": "ic_nav_home",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset: ic_nav_home. Intended frame 256x256; sheet grid 1 columns x 1 rows.\nSingle chunky candy cottage icon, cream frosted roof, warm red roof tiles, wooden door and orange glowing window. No surrounding scene, no frame. Simple readable at 28px.",
+    "rawSha256": "6794f80d3b7201e15c2253c5374015f69c9299e3347e374a54ed642ad034a657",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "c72fd941ac3ff3ca1b1654e624e07069a46dd0956a09f37129e76c077b46ff9f"
+  },
+  {
+    "key": "ic_nav_heroes",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_nav_heroes.\nSingle team icon of THREE overlapping generic round mochi face badges, cream front, mint and pink behind. Cute simple eyes, NOT a specific hero portrait, no human hair. No frame. Simple readable at 28px.\nKeep at least 8 percent transparent padding around silhouette.",
+    "rawSha256": "474d942b0afdc7428d207eb8107caa0936bc7f4f4c5df722e2f120b5fd7cd08a",
+    "rawSize": [
+      1536,
+      1024
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "1ed6dfeefb27d5b31b3995149905e3fb325caec34242a5bd344b19f3128a0fa1"
+  },
+  {
+    "key": "ic_nav_play",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_nav_play.\nSingle open storybook icon with a simple winding stage map on its pages and one small red flag. No letters or numerals, no frame. Chunky silhouette readable at 28px and against pink circle.\nKeep at least 8 percent transparent padding around silhouette.",
+    "rawSha256": "cafb6b908a29e1b3821a2c2d228a57559a1d173cf3a73ed885cd1b26207f5c79",
+    "rawSize": [
+      1536,
+      1024
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "904684b49a204a1261ce317ef66a705185e7a46224fcff042bc7e851a92d9e79"
+  },
+  {
+    "key": "ic_nav_gear",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_nav_gear.\nSingle chunky equipment icon, brown leather gauntlet overlapping a small cream and honey gold shield. No flower or hero-specific emblem. No frame. Simple bold silhouette readable at 28px.\nKeep at least 8 percent transparent padding around silhouette.",
+    "rawSha256": "3bcdedbafb00fc8be47a3b77d7192f1a6ee7afe528ff3389547a3b36a82f1d58",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "bf0862d21c4de302016f44bd9de80b1a6a31d42130212ae28b53b4077751d6ab"
+  },
+  {
+    "key": "ic_nav_activities",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_nav_activities.\nSingle chunky GOLD TROPHY icon decorated with TWO bold colorful pennant flags and a gold star above. Distinct silhouette flags spread left and right. No frame. Simple readable at 28px.\nKeep at least 8 percent transparent padding around silhouette.",
+    "rawSha256": "62707edff38b64797d286571fd85fce0e6c775a5d0c5c8ec43d1f922362809fe",
+    "rawSize": [
+      1312,
+      1199
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "791a939e7915ccb550e32a9e3a8cf1b4ae407630d8cbb7c4aadb20f13b126097"
+  },
+  {
+    "key": "ic_side_codex",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_side_codex.\nSingle chunky OPEN BOOK with cream pages and tiny berry bookmark. No letters, no readable writing, no frame. Simple readable at 28px.\nGenerous 8 percent transparent margins, bold simple shapes.",
+    "rawSha256": "cc8c844df0dade8d86cc345c8bf1033527056d7d79ae3f4cfc2422fa9bbb9296",
+    "rawSize": [
+      1464,
+      1075
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "4dad8eec3cebd20a4cba0f077c3eb69e65d7d93da17e7cf0919b947c738dcf41"
+  },
+  {
+    "key": "ic_side_inbox",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_side_inbox.\nSingle chunky kraft PAPER PARCEL BOX tied with red ribbon. No writing, no stamps, no frame. Simple readable at 28px.\nGenerous 8 percent transparent margins, bold simple shapes.",
+    "rawSha256": "44974ac5e211d61312b1206ee0611f806ac40174e7e9981554b3f38c4ea8146d",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "7642260c785624c3a1c1b960c0157bf4a0b9bd9628d3309a34320e7fb2c10849"
+  },
+  {
+    "key": "ic_side_news",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_side_news.\nSingle chunky folded cream NEWSPAPER with simple candy picture and abstract short gray lines. No actual letters or text. No frame. Readable at 28px.\nGenerous 8 percent transparent margins, bold simple shapes.",
+    "rawSha256": "a92ea0764c11209960c11febadc13fddea7e7567c60e1f2c374add95c1668e80",
+    "rawSize": [
+      1321,
+      1191
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "6989f6cde0027862b0b2427d9a4c5f640187447cb7d04c0503661cda763621ed"
+  },
+  {
+    "key": "ic_side_daily",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_side_daily.\nSingle chunky cream CLIPBOARD with brown backing and THREE clear check marks in small boxes. No text, no frame. Simple readable at 28px.\nGenerous 8 percent transparent margins, bold simple shapes.",
+    "rawSha256": "f7c4bc98934e86994cdb0abf7cdf749a2d14a51c443ceac79466f54f95a9892c",
+    "rawSize": [
+      1222,
+      1287
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "07849ccc5e7a3e94634fed9437a9c3f1ab61b2050b512a6dfd5464dd30bfc5c2"
+  },
+  {
+    "key": "ic_side_awards",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset ic_side_awards.\nSingle chunky honey GOLD TROPHY with a star embossed on front. Plain cup alone, NO flags, no extra star above, no frame. Simple readable at 28px.\nGenerous 8 percent transparent margins, bold simple shapes.",
+    "rawSha256": "c1e5b56dcd4ec52deace2f44c7e3b56458e20797be86c982cffb722141c80f77",
+    "rawSize": [
+      1254,
+      1254
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "df29196b0fcd674d2b2190e8495c84b0c6c4e72a857555c7d164e2f2b162a768"
+  },
+  {
+    "key": "lb_nav_bg",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_nav_bg. Intended frame 1080x150; grid 1 columns x 1 rows. Respect extremely wide/narrow proportions.\nSingle extremely wide plain bottom navigation background strip. Deep plum #1f1428, thin honey gold top border and soft top shadow, simple straight lower edge. Entire middle smooth horizontally uniform, NO icons, dividers or decorations.",
+    "rawSha256": "b175ee06871ede5fd8f2e94d997b49ad7c4f2cd07c0678fcc54492bacc88399c",
+    "rawSize": [
+      2172,
+      724
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "54f2c8c9a1c150fb0d8dd1b4ffba387061d579a41f8f1551a4e405c403770428"
+  },
+  {
+    "key": "lb_nav_active",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Single standalone small selected bottom navigation tab background for a warm candy fantasy mobile RPG. Wide rounded RECTANGLE, aspect about 300:140. Pale creamy vanilla gold #ffe08a interior, soft matte shading, thin rounded honey gold border. Very simple restrained highlight panel, NOT an action button. Straight smooth edges, NO dripping honey, NO flowers, NO leaves, NO symbols, NO text, NO icons. One short thick GOLD UNDERLINE at the very bottom, centered, only 6 pixels above bottom edge of intended 140px frame, leaving entire upper 115px blank for runtime icon and text. Center horizontally uniform and stretchable, only corner curvature inside endcaps. Full silhouette on genuine transparent RGBA background, orthographic, no perspective, no drop shadow outside. Empty center. No white or black background.",
+    "rawSha256": "0a89a7acde4cbbfed3f75fe1073a77076daacd9bcb44950f011f1363726d568f",
+    "rawSize": [
+      1836,
+      857
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "9010c51e24a140451778a36b30518732d8e13d6cfa917fdc9217f29d01231ea9"
+  },
+  {
+    "key": "lb_nav_divider",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_nav_divider. Exact intended frame 6x100; grid 1 columns x 1 rows. Wide frame proportions required.\nSingle very thin vertical gold divider line fading to transparent at top and bottom. Nothing else.",
+    "rawSha256": "681ff88fac817314f87ab7c448902db47f82ffa09ea8e35a41a8e5533b091d02",
+    "rawSize": [
+      971,
+      1619
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "eec35375d98c74bbb5400d3d4bb02b134a6d2e7f878db48326b9bfde8289b387"
+  },
+  {
+    "key": "lb_star",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_star. Intended frame 96x96; grid 1 columns x 2 rows. Respect extremely wide/narrow proportions.\nSprite sheet exactly TWO equal frames stacked vertically, perfectly aligned and identical star silhouette. Top: chunky glossy golden five-point earned star. Bottom: dark plum unearned star with faint gold edge. No frame, no text.",
+    "rawSha256": "a62a53e3f94f383e622202791892f1707d724462d16146a432db5484fa1d6212",
+    "rawSize": [
+      887,
+      1774
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "e431dff6e672b70d87a1a5b4d2d839007714f940166e4242fb396ad9afd354b2"
+  },
+  {
+    "key": "lb_power_pill",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_power_pill. Exact intended frame 420x80; grid 1 columns x 1 rows. Wide frame proportions required.\nSingle horizontal translucent almost-black plum capsule 85 percent opacity, very thin honey gold border, plain empty middle. No icons or symbols, no divider, no writing.",
+    "rawSha256": "4a3834d37e2f8b4b3209e85b201b66163ef278e038808fbca716a760743f5e04",
+    "rawSize": [
+      1983,
+      793
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "3f7de3462c6f337bd860e22cae1f4bc71d4a0b0b2877b5b9532592193a33f378"
+  },
+  {
+    "key": "lb_hero_shadow",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Production modular mobile fantasy candy RPG UI asset, warm storybook painterly 2.5D, soft honey gold rims, blackberry plum panels, rounded chunky shapes, gentle glossy highlights, cream flowers and neutral green leaves only where requested. Match supplied warm reference materials. No text, no letters, no numerals, no watermark, no strawberry or hero-specific ornaments. Orthographic straight-on 2D sprite, no perspective, centered, complete edges with clear transparent margin. Genuine transparent RGBA background. Main panels have plain horizontally uniform center safe for nine-slice; decorative details stay in endcaps. This is a standalone asset, NOT an assembled screen.\nAsset lb_hero_shadow. Exact intended frame 400x120; grid 1 columns x 1 rows. Wide frame proportions required.\nSingle soft broad horizontal oval ground shadow, black transparent gradient center fading to full transparency, very subtle thin warm gold rim illumination. No platform, no objects.",
+    "rawSha256": "ce64862c6a97c8a065ca7268c7a1b9eb4be8ada512ed8f11987506718cc1d790",
+    "rawSize": [
+      2172,
+      724
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "f53952e04efb117c68f8b7ca71613c79fc64f019705332f85b6a054a081d1566"
+  },
+  {
+    "key": "vfx_lb_battle_shine",
+    "tool": "built-in image_gen",
+    "prompt": "Production fantasy mobile game VFX sprite sheet. Warm honey gold light. No text, no letters, no borders, no interface. Pure black #000000 background.\nAsset vfx_lb_battle_shine. Exact intended frame 640x180; grid 6 columns x 1 rows. Wide frame proportions required.\nSprite animation strip exactly SIX equally sized wide frames arranged LEFT TO RIGHT. Pure BLACK background #000000, no transparency. Each frame contains ONLY one soft diagonal white golden light sweep band. Move band smoothly from far left in frame 1 through center frames 3 and 4 to far right frame 6. No button, no border, no text. Equal cells, no grid lines.",
+    "rawSha256": "8427894225f79bfab06f35f4d86fed987468323177c8d2e97dfc013a9f49680c",
+    "rawSize": [
+      1983,
+      793
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "ae134ffe98a2e0c7dc413711384506632c3f1018b96981e942fce00b2b76d5fc"
+  },
+  {
+    "key": "vfx_lb_sparkle",
+    "tool": "built-in image_gen",
+    "prompt": "Production fantasy mobile game VFX sprite sheet. Warm honey gold light. No text, no letters, no borders, no interface. Pure black #000000 background.\nAsset vfx_lb_sparkle. Exact intended frame 128x128; grid 2 columns x 2 rows. Wide frame proportions required.\nSprite animation sheet FOUR equal square cells in 2x2 grid. Pure BLACK background #000000, no transparency. One tiny centered warm white gold FOUR POINT sparkle per cell, same position. Brightness cycle: dim small, bright medium, peak large, medium dim. Smooth glowing tapered rays, no extra particles, no grid lines.",
+    "rawSha256": "895226c3402076add6fd7bce62a4ca0f4c0a66506c2e6a993f069263cdaa0793",
+    "rawSize": [
+      1774,
+      887
+    ],
+    "processing": "PNG32 cell extraction, native-alpha crop, exact sizing; painted endcaps retained and stretch centers made horizontally uniform; VFX aligned/translated into equal cells.",
+    "finalSha256": "466b2eb1e21612b096ca0684bc5d017910befd5234453372541efaaf32f5ec72"
+  }
+]

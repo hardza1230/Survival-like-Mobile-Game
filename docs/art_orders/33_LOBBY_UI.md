@@ -1,6 +1,6 @@
 # 33 — หน้า Lobby ใหม่ (กล่องด่าน + ปุ่ม BATTLE + แถบเมนูล่าง) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · ส่งไฟล์ที่ `assets/incoming/lobby_ui/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
+สถานะ: ✅ ส่งอาร์ตต้นฉบับครบ 26 PNG32 / 38 เฟรม ที่ `assets/incoming/lobby_ui/` · MANIFEST / PROMPTS / QA_REPORT และภาพประกอบ 360×780 + 412×915 พื้นสว่าง/มืด · หลังแพ็ก 50% ใช้ 2.332 MiB · รอแพ็ก/ผูกโค้ดและเจ้าของตรวจมือถือ · ดู `DELIVERY_README.md` และ `UPLOAD_VERIFICATION.json` ในชุดงาน
 
 > หมายเหตุเลขใบ: ใบสั่งอาร์ต Yuzu ที่เคยวางไว้เป็น "33" ให้ใช้เลข 35 แทน (34 = ฮีโร่ขยับใน Lobby)
 

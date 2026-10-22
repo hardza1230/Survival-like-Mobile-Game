@@ -2,6 +2,10 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery33 — warm Lobby UI source kit
+
+26 PNG32 /38 frames delivered to assets/incoming/lobby_ui/ with MANIFEST, built-in ImageGen PROMPTS, full PNG CRC/hash/alpha/frame QA and exact-size 360×780 +412×915 offline compositions on stage_card_s01/s11 using existing card_momo. Source at2x; packed50% decoded2.332MiB <6MiB. Native-endcap stretch matrix,28/56px icon gallery, no image text, no Energy slot or hero-specific frame motifs. Source-only; runtime v7.9.50 unchanged. Next: scripts/pack-lobby-ui.py + Lobby-only lazy load and fallback-preserving binding per order33; owner phone visual/FPS pending. Small center stage accent is reserved for a code overlay so nine-slice stays undistorted. Exact remote-byte proof in UPLOAD_VERIFICATION.json.
+
 # Art delivery32 — card icons round2
 
 51 PNG32 source icons delivered to assets/incoming/card_icons_2/ (46 required +5 optional redraws; E4 Ice Breaker retained after actual-icon review). Array manifest, exact ImageGen prompts, full PNG/hash/alpha/bbox QA, native24/90px light/dark galleries, Mutation-pair and C-vs-main-path comparisons plus byte readback proof. Source-only; runtime version unchanged. Next: pack256-to128 and integrate per order32, per-stage card loading and relic budget review; owner phone visual/FPS pending.
@@ -589,7 +593,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 30:** ส่งครบ 48 ไฟล์และผูกแล้ว v7.9.29 · รอตรวจภาพ/FPS บนมือถือ
 - **ใบ 18 J:** ไอคอน Storm Mark ผูกแล้ว v7.9.28 · รอดูบนมือถือ
 - **ใบสั่งอาร์ต 31:** ส่งครบ 12 ไฟล์และผูกแล้ว v7.9.30 · รอตรวจภาพบนมือถือ
-- **ใบสั่งอาร์ต 33 (22 ต.ค.) หน้า Lobby:** 26 ไฟล์ (`docs/art_orders/33_LOBBY_UI.md`, ref `ref/33_lobby_*.webp`, เจ้าของเลือกแนวอบอุ่นภาพที่ 2) · รออาร์ต → `assets/incoming/lobby_ui/` · ใบ Yuzu เดิมที่วางเป็น 33 ใช้เลข 35
+- **ใบสั่งอาร์ต 33 (22 ต.ค.) หน้า Lobby:** 26 ไฟล์ (`docs/art_orders/33_LOBBY_UI.md`, ref `ref/33_lobby_*.webp`, เจ้าของเลือกแนวอบอุ่นภาพที่ 2) · ส่งอาร์ตครบ 26/26 → `assets/incoming/lobby_ui/` (2.332 MiB, รอแพ็ก/ผูกโค้ด) · ใบ Yuzu เดิมที่วางเป็น 33 ใช้เลข 35
 - **ใบสั่งอาร์ต 34 (22 ต.ค.) ฮีโร่ขยับใน Lobby + นิสัย:** 48 ชีต (`docs/art_orders/34_LOBBY_HERO_MOTION.md`: ตารางนิสัย 6 ตัว + idle/greet/act1–4/tap/poke ต่อตัว, 512×640/เฟรม เท้า y600) · รออาร์ต → `assets/incoming/lobby_hero_motion/<hero>/` · รอบ 1 Strawberry + Yuzu
 - **ใบสั่งอาร์ต 32 (21 ต.ค.):** ส่งครบ 51 ไฟล์ (E4 Ice Breaker คงภาพเดิม) · ผูกแล้ว v7.9.31 · รอตรวจภาพบนมือถือ
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **v7.9.11 ครบแล้ว:** บอส C3 ทั้ง 5 + Pinnacle + มินิ C1-3/4/5, C2-1, C3 ทั้ง 5 มีท่าเฉพาะใน BOSS_KITS (C1-2 มินิใช้ชุดของบอส Drain) · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ครบทุกบอส v7.9.13 (นำร่อง 3) + v7.9.15 (อีก 12 + Pinnacle)** · รอเจ้าของเล่นปรับจังหวะ · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก

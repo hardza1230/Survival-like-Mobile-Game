@@ -1,7 +1,9 @@
-# Latest checkpoint — art order32 complete 46 required icons and5 optional redraws
+# Latest checkpoint — art order 33 warm Lobby source delivery
 
-21 October2026. hardza1230/Survival-like-Mobile-Game; branch claude/vampire-survival-mobile-game-yo9e8w. User requested46 required card icons +6 optional reviews. Target51 PNG32:46 required +5 redraws; E4 existing Ice Breaker already fits, skipped with reason. Delivered51/51 at assets/incoming/card_icons_2/. Priority A1–5+C2/C4/C10/C11/C12.
+22 October 2026. hardza1230/Survival-like-Mobile-Game; branch claude/vampire-survival-mobile-game-yo9e8w. User supplied order33; created all26 PNG32 assets /38 frames at assets/incoming/lobby_ui/ using built-in ImageGen, warm reference. Text stays in code; no Energy slot or hero-specific frame motifs.
 
-All51 source PNGs (46 required +5 optional) and QA proofs delivered; exact binary/text readback in UPLOAD_VERIFICATION.json. Next pack/integrate per original order32 and owner phone review.
+Completed: exact2x source dimensions, real alpha/black VFX, aligned frame grids, native painted endcaps with uniform stretch centers, manifest/prompts, full PNG CRC/hash checks, 28/56px light/dark gallery, required stretch/text matrix, four exact-size offline compositions (360x780 +412x915, stage_card_s01/s11 + existing card_momo). Packed50% decoded2.33155MiB <6MiB. Source PNG bytes1,224,206 (authoritative MANIFEST/QA_REPORT).
 
-Single256x256 icons,>=16px margins, real alpha. Source-only, current runtime v7.9.30 preserved. No Sesame/Yuzu changes. Execution environment offline; npm/build/browser/gameplay checks not run. Art30/31 already wired upstream v7.9.29/30.
+Next: pack and runtime bind per docs/art_orders/33_LOBBY_UI.md; load only at Lobby, never boot; preserve fallback/tag zones. Use dark brown text on honey or dark-outline white. Tiny stage-top accent omitted from stretch texture; overlay it in code if desired. Owner phone visual/touch/FPS review pending. No game.js change, no runtime version bump (v7.9.50). Offline compositions are not browser/gameplay tests.
+
+Publication: local source milestone prepared; connector publication and exact remote-byte verification pending. Changed: incoming/lobby_ui, scripts/check-lobby-ui-source.py, order33/readme, CLAUDE.md and this checkpoint. Run python scripts/check-lobby-ui-source.py for source QA; no npm/build required for source-only delivery.
