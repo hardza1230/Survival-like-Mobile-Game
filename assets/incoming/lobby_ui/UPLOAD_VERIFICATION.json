@@ -1,0 +1,263 @@
+{
+  "order": 33,
+  "repository": "hardza1230/Survival-like-Mobile-Game",
+  "branch": "claude/vampire-survival-mobile-game-yo9e8w",
+  "sourceCommit": "d0349bea4a0794ea6c476151ad5bbddcd6f901cf",
+  "sourceTree": "c79f44a41667cbc799925753d8a690591876ae97",
+  "method": "GitHub fetch_file(encoding=base64, immutable commit ref), whitespace-normalized complete base64 compared byte-for-byte with local encoded data; exact length checked. SHA-256 and complete PNG CRC/stream checks are in QA_REPORT.json.",
+  "verifiedFiles": [
+    {
+      "path": "CLAUDE.md",
+      "bytes": 138232,
+      "gitBlobSha": "7885abdc3aef22c10839e9fb447f8734bf760789",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/DELIVERY_README.md",
+      "bytes": 2558,
+      "gitBlobSha": "08139e0baf447a70f4ac4f15586afa9f75a42773",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/MANIFEST.json",
+      "bytes": 11567,
+      "gitBlobSha": "4713693ce50389416d8ec9090a7f14bbd2a4ae9f",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/PROMPTS.json",
+      "bytes": 37332,
+      "gitBlobSha": "47637d5b10dfed223ede39ebd1e86321780d0dbd",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/QA_REPORT.json",
+      "bytes": 15937,
+      "gitBlobSha": "aa94474a60c7b74fcb922dc6cda199f513c32df8",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_lb_battle.png",
+      "bytes": 65515,
+      "gitBlobSha": "5b08a05517d94345cf33241c675186e10425d66f",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_nav_activities.png",
+      "bytes": 61324,
+      "gitBlobSha": "281d69d067d981bbc798f60449c91c4e02b22964",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_nav_gear.png",
+      "bytes": 78814,
+      "gitBlobSha": "437cb90e4222dec12a38b95f635c60211aa94ebf",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_nav_heroes.png",
+      "bytes": 45088,
+      "gitBlobSha": "e909966f9a7fad5bececc46e70bd0219b2c30f1d",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_nav_home.png",
+      "bytes": 83669,
+      "gitBlobSha": "42a01e816124d55698f096359263f991ffe3437c",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_nav_play.png",
+      "bytes": 52890,
+      "gitBlobSha": "6519afed21323916757db6d7d67790d5b44328e1",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_side_awards.png",
+      "bytes": 55795,
+      "gitBlobSha": "d171db298b34b145cb5e7786e1d0bf4a06efff4d",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_side_codex.png",
+      "bytes": 48868,
+      "gitBlobSha": "90b35c2e443abccbf6b916334c1eacd39d489cbf",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_side_daily.png",
+      "bytes": 54840,
+      "gitBlobSha": "eed3c9e1d158ff3f5702ad779e29d92a4055569a",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_side_inbox.png",
+      "bytes": 74038,
+      "gitBlobSha": "56bc6987ee0b0dcc387321fffe1155ef39799655",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/ic_side_news.png",
+      "bytes": 55942,
+      "gitBlobSha": "b366aa5515c9b2ba1db284919496e63e821c7490",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_arrow_btn.png",
+      "bytes": 33164,
+      "gitBlobSha": "f92b50295b2a6e1dc575823611c9dbde53dd5565",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_avatar_ring.png",
+      "bytes": 18479,
+      "gitBlobSha": "4e8d52f1f77dc038b2014c406691afa4946da271",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_battle_btn.png",
+      "bytes": 194489,
+      "gitBlobSha": "a6e352c8d9fda4f75f61fea54cffc98ea6300b55",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_currency_pill.png",
+      "bytes": 20200,
+      "gitBlobSha": "86ac54c5204bb7883edb4b79cd8aa81face90d66",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_hero_shadow.png",
+      "bytes": 60215,
+      "gitBlobSha": "6f7a1b23060a851e4b273a8fc92fc41f3bfdf65d",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_nav_active.png",
+      "bytes": 18089,
+      "gitBlobSha": "9db4d0abb39cf7c2782e07693d729964454c431c",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_nav_bg.png",
+      "bytes": 17849,
+      "gitBlobSha": "bf27a1c8f1f71e0fb7c271ff5e8ce00001dfdaa9",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_nav_divider.png",
+      "bytes": 858,
+      "gitBlobSha": "ceb35094e8035fc71ea950f7496f26a38c0108d6",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_power_pill.png",
+      "bytes": 11884,
+      "gitBlobSha": "1315e011501d71a79f0c43a44c452c44d595c065",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_profile_frame.png",
+      "bytes": 34571,
+      "gitBlobSha": "a88ff3f8143a47d45e58abe3ad0f60f3cf8eea20",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_side_btn.png",
+      "bytes": 14457,
+      "gitBlobSha": "995f6a9a211c39effbe225192d2143c5e72e22ed",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_stage_panel.png",
+      "bytes": 54907,
+      "gitBlobSha": "4aa70a380681505f3831fcecf6431e7bcd1f6574",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/lb_star.png",
+      "bytes": 27105,
+      "gitBlobSha": "8427d5100bd0431feb48410221d3a74f7affaeae",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/asset_contact.png",
+      "bytes": 416520,
+      "gitBlobSha": "f52e636d2c9bcd46c35441f18cf5a9c66bc89899",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/icons_28_56_light_dark.png",
+      "bytes": 121566,
+      "gitBlobSha": "a84a4839f9b0f916c5f6c2f687563071616aa992",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/lobby_360x780_s01.png",
+      "bytes": 420915,
+      "gitBlobSha": "ae5ca6ec30b27fb118c11ddbedb634eb2b7f907a",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/lobby_360x780_s11.png",
+      "bytes": 408574,
+      "gitBlobSha": "287c6318155d3f9717d34a46a0b42935c95fdf2c",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/lobby_412x915_s01.png",
+      "bytes": 548750,
+      "gitBlobSha": "adcadd2244750f72c1857ceefe4e9dbb0b0d395c",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/lobby_412x915_s11.png",
+      "bytes": 525617,
+      "gitBlobSha": "42a59ac5ec0e222038eba09877dc6ecd2226f651",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/qa/stretch_and_text.png",
+      "bytes": 124181,
+      "gitBlobSha": "ecaba0b831b69a3aa7d127a3e0ab4331dbf8f757",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/vfx_lb_battle_shine.png",
+      "bytes": 35438,
+      "gitBlobSha": "79e812f6916795ebf1af5a8984c451ef21b3aa15",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "assets/incoming/lobby_ui/vfx_lb_sparkle.png",
+      "bytes": 5718,
+      "gitBlobSha": "1206f32223ed1812c91f4c1124c3dbca51b149d0",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 1542,
+      "gitBlobSha": "6cb5b8113b0b84eaabb21ab6260ae391310979d5",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "docs/art_orders/33_LOBBY_UI.md",
+      "bytes": 18956,
+      "gitBlobSha": "614b19a52bb8975cea5ddc4bcc65175b0994d7cc",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "docs/art_orders/README.md",
+      "bytes": 23456,
+      "gitBlobSha": "2a1bcb298b3c262daf2b7402ad89e1957148f3e6",
+      "exactBase64Readback": true
+    },
+    {
+      "path": "scripts/check-lobby-ui-source.py",
+      "bytes": 9907,
+      "gitBlobSha": "6b4ee5b6936a9acbd120a89fdcc539841086ea92",
+      "exactBase64Readback": true
+    }
+  ],
+  "all42FilesExact": true
+}
