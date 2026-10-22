@@ -56,7 +56,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.58 — Art order 34 Lobby hero motion wired (owner)
+# Latest delivery: v7.9.59 — Smoother menus, no Loading screen on page change (owner)
+
+Both blocking GameLoader 'Loading…' spots in buildMenuScreen (group art _grpOk and lazy art menuLazyMissing) now go through menuLoadSoft(s,start,onDone,recheck): quiet ensureGroup; finished within 300ms → one build, else build at once with fallback art (_menuNoWait=s skips both checks) and rebuild when the art arrives (first block rebuilds normally so the lazy check still runs). menuPrefetch() (from buildLobby, once at a time) quietly loads lazy art of char/gLoadout/gActivity/chapter/upgrade/gear one screen after another. Nav tab tap sets _navDir (±1 by tab order) → menuEnterAnim slides the new page's pieces in from that side (x ±18%W, 260ms) instead of rising. Browser: 4 nav tabs, 0 loader shows, 0 errors.
+
+# Previous delivery: v7.9.58 — Art order 34 Lobby hero motion wired (owner)
 
 scripts/pack-lobby-hero-motion.py (sha/bytes vs each hero MANIFEST, 75% → 384×480 per frame in one row, WebP q88) → assets/art/lobby_hero/<hero>/ (48 sheets incl. Sesame — owner said wire it, ~3 MB per hero). LH_SHEETS (literal urls so build-www copies them), LH_MS frame times (idle/tap/def, from MANIFEST), LH_FOOT 451 / LH_BODY 390. Never at boot: lhLoad(keys) loads spritesheets on demand (filecomplete-spritesheet-<k>) and lhAnim makes per-frame-duration anims. buildLobby: idle ready → sprite (origin foot, scale heroH·.975/390 = same size as card_<hero>) + greet when hero changed or coming from another screen; else old static card + bob and loads idle/greet/tap then rebuilds. hubEvery 8–14s → random act1–4 (not same twice, skipped <8s after a tap or FPS <35). Zone tag lobby_hero (noBounce) → lhTap: 5 taps in 3s = poke, else tap. After one-shots end → idle, lhDrop keeps only idle+tap (and current hero's idle/greet/tap when switching hero). Browser 360×780: greet → idle, tap, poke, act2, hero switch to Yuzu, 0 errors.
 
@@ -602,7 +606,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.58 · 21 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.59 · 21 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
