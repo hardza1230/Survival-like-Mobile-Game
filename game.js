@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.55';
+const GAME_VERSION = '7.9.57';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,8 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.57',date:'2026-10-22',title:'Roulette Forge rolls',items:['Rolling a mod now runs a light across the Possible mods list — fast, then slowing down — and stops on each result (tap to skip)']},
+  {v:'7.9.56',date:'2026-10-22',title:'Red dots for gear and Kitchen',items:['A red dot shows when a bag item would raise your Power (Gear tab, Equipment and the ⚡ Equip Best button)','The Kitchen lights up when a recipe slot is empty and you have a part to put in it']},
   {v:'7.9.55',date:'2026-10-22',title:'More red dots',items:['A red dot now shows when a hero has Talent points to spend (Heroes tab, Talents tab and the hero card)','Weave Cores you can afford, a ready Rank Up and affordable Special Cores now light up the Gear tab too']},
   {v:'7.9.54',date:'2026-10-22',title:'Livelier menus',items:['Opening a menu page now slides its buttons and cards in one after another','The BATTLE button gently breathes so it is easy to spot','Red notification dots now pulse like a heartbeat']},
   {v:'7.9.53',date:'2026-10-22',title:'Bouncy buttons',items:['Menu buttons now squish and bounce when you tap them before the next page opens']},
@@ -8298,7 +8300,7 @@ class Game extends Phaser.Scene {
       const now=Date.now(); if(now-(this._exitAskAt||0)<2000)return 'exit'; this._exitAskAt=now; this.menuToast?.('Press back again to exit','#ffe08a'); return true; }
     if(st==='play'||st==='paused'){ this.togglePause(); return true; }
     return true; }
-  handleTap(px,py){ if(this._bookSkip&&this.state==='menu'){this._bookSkip();return;} const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; py+=_sc;const feedback=(z,x,y)=>this._tapFeedback({...z,y:z.y-_sc},x,y-_sc);
+  handleTap(px,py){ if(this._bookSkip&&this.state==='menu'){this._bookSkip();return;} if(this._forgeSpin&&this.state==='menu'){this._forgeSpin.finish();return;} const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; py+=_sc;const feedback=(z,x,y)=>this._tapFeedback({...z,y:z.y-_sc},x,y-_sc);
     { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); (this._pressBounce?this._pressBounce(bz,()=>bz.fn(),'back'):Sfx.uiAction('back',()=>bz.fn())); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
     for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
@@ -9328,12 +9330,17 @@ class Game extends Phaser.Scene {
     if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean)||this.hasTargetBadge('talents');
     if(target==='weave')return UPG_ORDER.some(k=>Save.talCanBuy(k))||(Save.talAllMax()&&Save.threads()>=Save.promoteThreadCost());   // v7.9.55 ซื้อ Core ได้ / เลื่อนยศได้
     if(target==='specialCores')return (d.rank||0)>=1&&SPECIAL_CORES.some(c=>(d.rank||0)>=c.rank&&Save.specialCoreLvl(c.id)<3&&Save.threads()>=Save.specialCoreCost(c.id));
-    if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew);
+    if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew)||!!this._gearBetter?.();   // v7.9.56 +ของในกระเป๋าที่ดีกว่าที่สวม
+    if(target==='kitchen')return kitchenOpen()&&Save.frRecipes().slice(0,Save.frSlots()).some(r=>['t','e'].some(k=>!(r&&r[k])&&Object.entries(Save.frParts()).some(([pk,n])=>n>0&&pk[0]===k&&!(frPart(pk)||{}).cut)));   // v7.9.56 ช่องสูตรว่าง + มีชิ้นส่วนวางได้
     if(target==='perks')return Save.rankPointsFree()>0;
     if(target==='dig')return Save.digFreeReady()||!!(Save.minersReady&&Save.minersReady());
     if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
     if(target==='news')return this.hasNewsBadge();
     return false;}catch(e){return false;}}
+  _gearBetter(){try{const d=Save.data,cid=d.character||'momo',items=d.gearItems||[],sig=cid+'|'+JSON.stringify(d.equippedGear||{})+'|'+items.map(g=>g.uid+':'+(g.enhanceLv||0)+':'+(g.itemLevel||0)+':'+((g.affixes||[]).length)).join(',');
+    if(this._gbSig===sig)return this._gbVal; let v=false; const base=heroPower(cid,null);
+    for(const it of items){ if(!it||it.grade==='start'||it.forgeChoice||Save.isGearEquipped(it.uid))continue; if(gearPowerDelta(it,base)>0){v=true;break;} }
+    this._gbSig=sig; this._gbVal=v; return v;}catch(e){return false;}}
   hasClaimableTarget(target){const d=Save.data;
     if(target==='daily')return !d.daily||d.daily.claimDay!==localDayKey()||(typeof DailyQ!=='undefined')&&DailyQ.claimable();
     if(target==='achievements')return this.hasTargetBadge('achievements');
@@ -10290,6 +10297,7 @@ class Game extends Phaser.Scene {
       if(this._gearConfirm!=='salw'){const t=worse.reduce((o,it)=>({sh:o.sh+gearDismantleValue(it),su:o.su+gearSellSugar(it)}),{sh:0,su:0});this._gearConfirm='salw';Sfx.error();this.buildMenuScreen();this.showBanner('♻ Salvage '+worse.length+' weaker items?','🧶 +'+t.sh+'  🍬 +'+t.su+' · tap ⚠ again to confirm (locked kept)',2200);return;}
       this._gearConfirm=null;let sh=0,su=0;for(const it of worse){const r=Save.salvageGearInstance(it.uid);if(r){sh+=r.shards;su+=r.sugar;}}this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged '+worse.length+' items','🧶 +'+sh+'   🍬 +'+su,1600);},{fontSize:14});
     this.heroButton(ix2,y-3,ib,26,'⚡',()=>{this._gearConfirm=null;this.gearEquipBest();},{fontSize:14});
+    if(this._gearBetter?.())this.drawBadgeDot?.(this.menu,ix2+ib-3,y);   // v7.9.56 มีของที่ดีกว่าให้สวม
     const count=this.add.text(ix1-8,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);this.menu.add([hdr,count]);
     let rightX=count.x-count.width; const inboxN=Save.gearInboxCount();
     if(inboxN){const inbox=this.add.text(rightX-8,y+4,'📦 '+inboxN,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166'}).setOrigin(1,0);this.menu.add(inbox);this._zone(inbox.x-inbox.width-4,y-2,inbox.width+8,28,()=>{this.menuScreen='gearInbox';this.buildMenuScreen();});rightX=inbox.x-inbox.width;}
@@ -10401,7 +10409,34 @@ class Game extends Phaser.Scene {
     /* v7.8.84 เจ้าของ (Forge ข้อ 1): จ่าย 1 → สุ่ม 3 ม็อดไม่ซ้ำ แล้วเลือก 1 (หรือเก็บของเดิม) แทนการแทนที่แบบสุ่มล้วน */
     const options=forgeRollOptions(item,line,pool,3);if(!options.length){Sfx.error();return;}
     item.forgeChoice={line,options,old:old?Object.assign({},old):null};item.craftedAt=Date.now();this.gearSelectedUid=item.uid;Save.data.currency[key]-=1;Save.save();this._craftResult=null;this._craftRolledId=null;
-    Sfx.craft(options.some(a=>(a.t??10)<=2)?'jackpot':'rare');this.buildCraftBench();}
+    const big=options.some(a=>(a.t??10)<=2);if(this.forgeSpin?.(item,line,pool,options,big))return;
+    Sfx.craft(big?'jackpot':'rare');this.buildCraftBench();}
+  /* v7.9.57 เจ้าของ: Roll แล้วไฟวิ่งสุ่มในรายการ Possible mods แบบ Dokapon — เร็วแล้วค่อยช้าลง หยุดที่ผลแต่ละอัน · แตะ = ข้าม · จ่าย/บันทึกผลแล้วก่อนเริ่ม */
+  forgeSpin(item,line,pool,options,big){ if(!this.time||this.state!=='menu')return false;
+    const id0=options[0]&&options[0].id,k=pool.findIndex(m=>m.id===id0),per=this._forgePageSize||0; if(k<0||!per)return false;
+    this._poolPage=Math.floor(k/per); this._forgeSpinView=true; try{this.buildCraftBench();}finally{this._forgeSpinView=false;}
+    const R=()=>this._forgePoolRows||[]; if(R().length<2)return false;
+    this._craftRolling=true; const timers=[],pins=[]; let hl=null,done=false,prev=-1;
+    /* หน้าอาจถูกสร้างใหม่ระหว่างหมุน (อาร์ตโหลดเสร็จ) → สร้างไฟ/หมุดใหม่จากแถวปัจจุบัน */
+    const live=o=>o&&o.scene&&this.menu.list.includes(o);
+    const rowOf=id=>R().find(r=>r.id===id);
+    const drawPin=(pn)=>{ const r=rowOf(pn.id); if(!r)return; const g=this.add.graphics(); g.fillStyle(0xffb02e,.35); g.fillRoundedRect(r.x,r.y,r.w,r.h,8); g.lineStyle(3,0xe05a00,1); g.strokeRoundedRect(r.x,r.y,r.w,r.h,8);
+      const t=this.add.text(r.x+r.w-46,r.y+r.h/2,'★'+pn.n,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#7a3b00',stroke:'#fff3c0',strokeThickness:3}).setOrigin(.5); this.menu.add([g,t]); pn.objs=[g,t]; return t; };
+    const ensure=()=>{ if(live(hl))return; hl=this.add.graphics(); this.menu.add(hl); pins.forEach(pn=>{ if(!pn.objs||!live(pn.objs[0]))drawPin(pn); }); this.menu.bringToTop(hl); };
+    const draw=(r,gold)=>{ ensure(); hl.clear(); hl.fillStyle(gold?0xffa72e:0xffcf4a,gold?.6:.45); hl.fillRoundedRect(r.x,r.y,r.w,r.h,8); hl.lineStyle(gold?4:3,gold?0xe05a00:0xff8a00,1); hl.strokeRoundedRect(r.x-1,r.y-1,r.w+2,r.h+2,9); };
+    const finish=()=>{ if(done)return; done=true; timers.forEach(t=>t&&t.remove&&t.remove()); this._forgeSpin=null; this._craftRolling=false; Sfx.craft(big?'jackpot':'rare'); if(this.state==='menu'&&this.menuScreen==='craft')this.buildCraftBench(); };
+    this._forgeSpin={finish};
+    const hop=(at,id,n)=>{ timers.push(this.time.delayedCall(at,()=>{ if(done)return; if(this.state!=='menu'||this.menuScreen!=='craft'){finish();return;}
+      const rows=R(); let r;
+      if(id){ r=rowOf(id); if(!r)return; draw(r,true); const pn={id,n}; pins.push(pn); const t=drawPin(pn); if(t){t.setScale(1.8);this.tweens.add({targets:t,scale:1,duration:220,ease:'Back.easeOut'});} this.menu.bringToTop(hl); this.tweens.add({targets:hl,alpha:{from:1,to:.5},duration:90,yoyo:true,repeat:1}); Sfx.wheelTick?.(true); return; }
+      let i; do{ i=Math.floor(Math.random()*rows.length); }while(rows.length>2&&i===prev); prev=i; r=rows[i]; if(r){ draw(r,false); Sfx.wheelTick?.(at>600); } })); };
+    /* ผลอยู่คนละหน้าของรายการ → พลิกไปหน้านั้นก่อนวิ่ง */
+    const page=(id,at)=>timers.push(this.time.delayedCall(at,()=>{ if(done||rowOf(id))return; const kk=pool.findIndex(m=>m.id===id),pp=this._forgePageSize||per; if(kk<0)return; this._poolPage=Math.floor(kk/pp); this.buildCraftBench(); prev=-1; Sfx.wheelTick?.(false); }));
+    const run=(id,hops,start,slow,n)=>{ let at=start; page(id,at); for(let h=0;h<hops;h++){ const f=h/hops; at+=Math.round(45+slow*f*f); hop(at,null,n); } at+=Math.round(60+slow); hop(at,id,n); return at; };
+    let t=run(id0,14,0,200,1);
+    options.slice(1).forEach((o,j)=>{ if(o)t=run(o.id,5,t+220,100,j+2); });
+    timers.push(this.time.delayedCall(t+420,finish));
+    return true; }
   chooseForgeSustain(index){const {item}=this._craftContext(),pending=item&&item.forgeChoice;if(!pending||item.locked||!Number.isInteger(index)||!pending.options[index])return;
     const line=Number.isInteger(pending.line)?pending.line:1,row=['power','sustain','play'][line],lines=forgeLines(item),a=Object.assign({},pending.options[index],{line}),mod=affixDef(a.id);if(!mod||mod.row!==row)return;const before=lines[line];lines[line]=a;forgeSetLines(item,lines);delete item.forgeChoice;item.craftedAt=Date.now();Save.save();
     this._craftRolledId=mod.id;this._craftResult={uid:item.uid,title:before?'MOD REPLACED':'NEW MOD',before:before?(affixDef(before.id)?.label||before.id):'Empty '+FORGE_ROWS[line],after:mod.label+' '+mod.fmt(a.v)+' · '+tierStarText(mod,a.t)};Sfx.craft('rare');this.buildCraftBench();}
@@ -10549,15 +10584,15 @@ class Game extends Phaser.Scene {
       if(J&&on)for(const o of this.menu.list.slice(n0))if(o&&o.type==='Text'){o._jrKeep=true;o.setColor(o.style.color==='#bfaecd'?'#f3d9c4':'#fff3dc');}   /* แถวที่เลือก = แดงไวน์ ตัวหนังสือครีม */
       this._zone(M.x+8,my,M.w-16,rowH,()=>{this.craftLineIndex=i;this.craftTargets={};this.craftTargetId=null;this.craftGroup=null;this._poolPage=0;this._familyPage=0;this._forgePanel=null;this.buildCraftBench();});this.tapZones[this.tapZones.length-1].tag='mod_'+i;my+=rowH+rg;});   /* v7.9.6 E1 ปุ่ม i ออก */
     const line=this.craftLineIndex,pool=forgePool(selected,line);this._forgeVisiblePool=pool;this.forgeChrome('panel',P.x,P.y,P.w,P.h);
-    if(selected.forgeChoice&&P.h<132){this.forgeText(P.x+10,P.y+6,'Choose one · already paid',14,'#a2e1bc',true,P.w-20);this.forgeButton(P.x+10,P.y+36,96,36,'Choose',()=>this.forgeOpenPanel('choices',selected.forgeChoice.options),{kind:'choice',tag:'choices_open'});}
-    else if(selected.forgeChoice){const options=selected.forgeChoice.options||[],kh=36,hh=Math.max(40,Math.min(64,Math.floor((P.h-30-kh-12-6*options.length)/Math.max(1,options.length))));this.forgeText(P.x+10,P.y+6,'Pick one · or keep the current mod',14,'#a2e1bc',true,P.w-20);
+    const fc=selected.forgeChoice&&!this._forgeSpinView&&!this._forgeSpin;if(fc&&P.h<132){this.forgeText(P.x+10,P.y+6,'Choose one · already paid',14,'#a2e1bc',true,P.w-20);this.forgeButton(P.x+10,P.y+36,96,36,'Choose',()=>this.forgeOpenPanel('choices',selected.forgeChoice.options),{kind:'choice',tag:'choices_open'});}
+    else if(fc){const options=selected.forgeChoice.options||[],kh=36,hh=Math.max(40,Math.min(64,Math.floor((P.h-30-kh-12-6*options.length)/Math.max(1,options.length))));this.forgeText(P.x+10,P.y+6,'Pick one · or keep the current mod',14,'#a2e1bc',true,P.w-20);
       this.forgeButton(P.x+10,P.y+P.h-kh-6,P.w-20,kh,selected.forgeChoice.old?'Keep current mod':'Skip',()=>this.forgeKeepCurrent(),{tag:'choice_keep'});
       options.slice(0,3).forEach((a,i)=>{const mod=a&&affixDef(a.id),yy=P.y+30+i*(hh+6);this.forgeChrome('panel',P.x+8,yy,P.w-16,hh);if(mod)drawForgeModIcon(this,mod,P.x+26,yy+hh/2,26);this.forgeText(P.x+(mod?44:16),yy+4,mod?modLine(mod,a.v):'Unavailable result',12,mod?(MOD_TIER_COLOR[tierStars(mod,a.t)]||'#fff0df'):'#fff0df',true,P.w-140);this.forgeText(P.x+44,yy+(hh>=64?29:21),mod?forgeTierRange(mod,a):'—',12,'#c5b6ce',false,P.w-140);this.forgeButton(P.x+P.w-82,yy+(hh-30)/2,66,30,'Choose',mod&&!selected.locked?()=>this.chooseForgeSustain(i):null,{kind:'choice',disabled:!mod||selected.locked,tag:'choose_'+i});});
     }else{
       /* v7.9.6 E1+S1+C1: ไม่มีปุ่ม i / Odds · โอกาสออกอยู่ในแถว · แถวละ 34px · แตะ mod = ✓ เป้าหมายของปุ่ม Auto (เปิดหลังจบบท 1) */
       let py=P.y+4;const adv=forgeAdvOpen(),headH=P.h<150?28:34,pagerH=P.h<150?32:40,RH=34;this.forgeText(P.x+10,py+3,adv?'Tap mods you want · Auto rolls until one lands':'Possible mods',adv?13:16,'#fff0df',true,P.w-20);py+=headH;
-      const count=Math.max(1,Math.floor((P.y+P.h-pagerH-py-4)/RH)),pages=Math.max(1,Math.ceil(pool.length/count)),page=Math.min(pages-1,Math.max(0,this._poolPage||0));this._forgePageSize=count;
-      pool.slice(page*count,page*count+count).forEach((mod,i)=>{const yy=py+i*RH,tracked=mod.id in (this.craftTargets||{}),rw=38,last=mod.id===this._craftRolledId,fit=forgeModFits(mod);this.forgeChrome(J?(tracked?'row_pick':'panel'):(tracked?'panel_on':'panel'),P.x+8,yy,P.w-16,RH-3);if(J&&adv)this.jrImg('jr_checkbox',tracked?1:0,P.x+P.w-58,yy+(RH-3)/2,18,18);drawForgeModIcon(this,mod,P.x+22,yy+(RH-3)/2,20);if(tracked&&!J)this.forgeText(P.x+30,yy,'✓',10,'#a2e1bc',true);
+      const count=Math.max(1,Math.floor((P.y+P.h-pagerH-py-4)/RH)),pages=Math.max(1,Math.ceil(pool.length/count)),page=Math.min(pages-1,Math.max(0,this._poolPage||0));this._forgePageSize=count;this._forgePoolRows=[];
+      pool.slice(page*count,page*count+count).forEach((mod,i)=>{const yy=py+i*RH;this._forgePoolRows.push({id:mod.id,x:P.x+8,y:yy,w:P.w-16,h:RH-3});const tracked=mod.id in (this.craftTargets||{}),rw=38,last=mod.id===this._craftRolledId,fit=forgeModFits(mod);this.forgeChrome(J?(tracked?'row_pick':'panel'):(tracked?'panel_on':'panel'),P.x+8,yy,P.w-16,RH-3);if(J&&adv)this.jrImg('jr_checkbox',tracked?1:0,P.x+P.w-58,yy+(RH-3)/2,18,18);drawForgeModIcon(this,mod,P.x+22,yy+(RH-3)/2,20);if(tracked&&!J)this.forgeText(P.x+30,yy,'✓',10,'#a2e1bc',true);
         this.forgeText(P.x+38,yy+8,affixChancePct(mod,pool)+'% · '+modDesc(mod)+(fit?' ✓':''),12,last?'#a2e1bc':fit?'#a8f0bf':'#fff0df',true,P.w-(J&&adv?120:100));this.forgeText(P.x+P.w-16,yy+8,forgeTierLabel(mod,{t:forgePreviewTier(selected,line,mod)}),13,'#c5b6ce',true,rw,1);
         if(adv){this._zone(P.x+8,yy,P.w-16,RH-3,()=>{const T=this.craftTargets||(this.craftTargets={});if(mod.id in T){delete T[mod.id];if(this.craftTargetId===mod.id)this.craftTargetId=Object.keys(T)[0]||null;}else{T[mod.id]=null;this.craftTargetId=mod.id;}this.buildCraftBench();});this.tapZones[this.tapZones.length-1].tag='target_'+mod.id;}
       });
