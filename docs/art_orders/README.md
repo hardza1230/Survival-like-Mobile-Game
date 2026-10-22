@@ -52,7 +52,7 @@
 | 31 | `31_ARENA_COUNTERS_C1_C2.md` | ของให้เตะ (Counter) C1–C2 10 ด่าน + วงใต้ของ/เอฟเฟกต์ชนบอสใช้ร่วมทั้งเกม | 12 | 🟡 | 🟩 ส่งครบ 12 ไฟล์ · ผูกแล้ว v7.9.30, รอ QA มือถือ |
 | 32 | `32_CARD_ICONS_ROUND2.md` | ไอคอนการ์ดรอบ 2: ⭐ Unique 5 + Unique Mutation 24 + การ์ดสายใหม่ 15 + Relic 2 (+ วาดใหม่ทางเลือก 6) | 46 (+6) | 🟡 | 🟩 ส่ง46หลัก+5วาดใหม่ · E4คงเดิม · ผูกแล้ว v7.9.31, รอ QA มือถือ |
 | 33 | `33_LOBBY_UI.md` | หน้า Lobby ใหม่: กล่องด่านขอบทอง + ปุ่ม BATTLE น้ำผึ้ง + ปุ่มข้าง/โปรไฟล์/Sugar + ไอคอนเมนูล่าง 5 + ปุ่มข้าง 5 + พื้นแถบเมนู (ref `ref/33_lobby_*.webp`) | 26 | ✅ 26/26 | 🟩 ส่งครบ 26/26 · ผูกแล้ว v7.9.51 (`scripts/pack-lobby-ui.py` → `assets/art/lobby/`) · รอ QA มือถือ |
-| 34 | `34_LOBBY_HERO_MOTION.md` | ฮีโร่ขยับในหน้า Lobby + นิสัย 6 ตัว: idle/ทักทาย/ท่าตามนิสัย 4/แตะ/แตะรัว ต่อตัว (8 ชีต × 6) | 48 (+6) | 🟡 | ⬜ รออาร์ต |
+| 34 | `34_LOBBY_HERO_MOTION.md` | ฮีโร่ขยับในหน้า Lobby + นิสัย 6 ตัว: idle/ทักทาย/ท่าตามนิสัย 4/แตะ/แตะรัว ต่อตัว (8 ชีต × 6) | 48 (+6) | 🟡 | 🟩 ส่งต้นฉบับครบ 48 PNG32 /372 เฟรม + GIF สว่าง–มืด · รอแพ็ก/ผูก Lobby และ QA มือถือ |
 
 (อัปเดตคอลัมน์สถานะเป็น 🟨 กำลังทำ / ✅ ส่งแล้ว / 🟩 ใส่เข้าเกมแล้ว)
 
@@ -136,3 +136,4 @@ Batch 9 is implemented: seven Four-Season Conservatory and seven Root Throne spe
 ## Additional presentation art — v6.56.1
 
 Victory/defeat environments, 15 stage epilogue illustrations and Level Up/Mastery/Unlock effects are integrated. Original Talent art (218 nodes) delivered at v6.56.0. Source packages: assets/incoming/ending_growth and assets/incoming/talent_icons. Reward reveal/Jackpot VFX and crafting effect art remain future work; owner mobile visual/FPS review pending.
+

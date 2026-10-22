@@ -1,0 +1,786 @@
+{
+  "commit": "f85ef27467113783d6392e9a4b58a66b9e7a8313",
+  "method": "Full immutable-commit raw-byte download and SHA256 comparison",
+  "files": [
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_idle.png",
+      "bytes": 3145879,
+      "sha256": "39c7f8eb10daaf37e8f9e965ee4d01d152f64552cd98db7de0c95a2f669f0542",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_act3.png",
+      "bytes": 3043733,
+      "sha256": "9aad2d1ac673c0ed3a3e53640578debc1f3f59782f49ba41a9e87d648333ac70",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_greet.png",
+      "bytes": 3360507,
+      "sha256": "af1a4cf520bb6b30a01770e6d22b5801a8e7d5a954e7764835d85a644601752c",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_act1.png",
+      "bytes": 3108778,
+      "sha256": "988d6ffbf41fd63e0ae8e295794417b516472102b5b7f6dda5fbe915a3c4f67b",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_act2.png",
+      "bytes": 3206582,
+      "sha256": "5c4dfaa2d23a078204e035abcf1faa166037450d08b747e3d715979a6c83338f",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_act4.png",
+      "bytes": 3215194,
+      "sha256": "5383a38144b295938959566dfd4519df38b37141e17e0c266ed8e15c91fb7c8d",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/MANIFEST.json",
+      "bytes": 4204,
+      "sha256": "2ee72dd7e4667d66314aef5174682d6ec2f6e17abb6a6547a4ddd9c7df4ccfb4",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_act1.gif",
+      "bytes": 784830,
+      "sha256": "20cb22fadbac3f47a495dbe59dfa0a224dcca01df2b60c9de22dcf4020fbfc82",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_act2.gif",
+      "bytes": 785121,
+      "sha256": "2ddbdfbd36846cc7e029773f3b8d9e89ab5955dc6333e7f5bb847776d9fa2bc7",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_poke.png",
+      "bytes": 2982730,
+      "sha256": "8071d5807df42dab288a48f57624659a34c553c11cd73b2432108bc1a56a9c81",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_act3.gif",
+      "bytes": 762970,
+      "sha256": "083fe2882351d096d3b39dde3068b5cbc8b58a4bca3831083bb8e09504f554bd",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_act4.gif",
+      "bytes": 804652,
+      "sha256": "a7bdb80a3b84e6b1ad6b34ef7a3ef07e53d1b06c1c92f25d83c3a9f88f97e6db",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/lh_cocoa_tap.png",
+      "bytes": 2231498,
+      "sha256": "ccc5f63ea740101db959ac575ed92a8803d133fa776e6b8484713ad1f6f21f32",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_idle.gif",
+      "bytes": 750065,
+      "sha256": "059cd6036b5c11dfc0907cfbdc98cf3b5e3067ef82aaffad4db218f6b9a197a1",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_greet.gif",
+      "bytes": 835222,
+      "sha256": "1c23c59fc0d43c484d2a52c8de490d1e1698f82b46caae0775ff515078eeecb5",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_poke.gif",
+      "bytes": 745902,
+      "sha256": "e3943643b7fc7dd147eec7cb62e3fec73099d2674b8b3d5b26063f0e78b86029",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/QA_REPORT.json",
+      "bytes": 13135,
+      "sha256": "3e074079dee061e859c58676f69d4fa150408e1db9efd5f41fdddb79a28d110e",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/DELIVERY_README.md",
+      "bytes": 2415,
+      "sha256": "c5f603ca203f67ebd85fba760d32185cf17c42787842c1a5853acfb30bad7bf8",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/index.html",
+      "bytes": 6217,
+      "sha256": "a0bda612cf246d71de155044b75ed70bb5414051c23c6f608717a80db962ce43",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/MANIFEST.json",
+      "bytes": 25406,
+      "sha256": "a060a95e27fdeda39459465694904e7564670391d42f212c4fb68789d266272e",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/previews/lh_cocoa_tap.gif",
+      "bytes": 597441,
+      "sha256": "aee322a3abb1ce8300d5f94d2e54922c9735b8d329ab02a21fef82fd3932820b",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/PROMPTS.json",
+      "bytes": 17572,
+      "sha256": "05bd57ccbc99fd2f90ecb408a1660926c9c3babbeef1565ddb96bf1f81713061",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/cocoa/qa_all_sets.png",
+      "bytes": 1614156,
+      "sha256": "bc6150c0991a7d26fdb621e3ee8d4190c399b5345000e2dfc3772068d8bddce9",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_act1.png",
+      "bytes": 3770026,
+      "sha256": "f98f2664e4070a902b68f6be2c1420e47035f0b4a013c3075f01c48ba74896a8",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_act3.png",
+      "bytes": 3885652,
+      "sha256": "3914c7058a6b19d17c9b576a0c181058d179ba23f109caf891e57fac80317f5b",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_act2.png",
+      "bytes": 3546985,
+      "sha256": "a669ccade43a2a67d193f66b4b6b0f6dabf3e54e90f0242fc6546c584eb9bd27",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/MANIFEST.json",
+      "bytes": 4180,
+      "sha256": "3cff9f7c2daf60549efd3c54ebafdd76ceb415be4136aec71bedb97a666e9d27",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_act4.png",
+      "bytes": 3720882,
+      "sha256": "64bdf4780fd9e562aa76182208b6b9bcfdf49dfe13e11ad25ad5f5bf6165ffb1",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_poke.png",
+      "bytes": 3809207,
+      "sha256": "fcb07bf227d6feb454f412e8c362ec9b34c5d27c37c7c61a468e41b2ed930903",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_act1.gif",
+      "bytes": 795239,
+      "sha256": "a700c0db73e3fda57b9de797ed5907cdc35e9b7577b01bf91a6b6c8bad074aa6",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_act2.gif",
+      "bytes": 774784,
+      "sha256": "3c7290a2720c57c87bc2d6fde21dce027fb59127e91b82478e8015590a654dcb",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_tap.png",
+      "bytes": 2495907,
+      "sha256": "4cf5bdcf45cf3dd779baaefbed77133d5e97cfbd0c6161f800fe2d985e01bcce",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_greet.png",
+      "bytes": 3788532,
+      "sha256": "d39d24a835b236f290683a6b075ca8feda0c54b43ba66f6298cc0e29fdcbccf6",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/lh_mint_idle.png",
+      "bytes": 3676178,
+      "sha256": "cbbb141d1342ff763671938bd8bc6a81735b73107f1ae803c7ba769326e1b103",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_greet.gif",
+      "bytes": 790843,
+      "sha256": "a1642dac2d48e8d52ee3c22596c07f25e1f79fe58050205e37af42d90d9d4e60",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_act4.gif",
+      "bytes": 789481,
+      "sha256": "e402675885ce70f5194b07218dd6ed0786fb11dff48eb38c8fcf484cd9b95505",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_poke.gif",
+      "bytes": 798844,
+      "sha256": "658c038d1db58afa413a3154bfbff66db22e9293c5299b9eb5371b5495016ff0",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_idle.gif",
+      "bytes": 800070,
+      "sha256": "9537391ad3f9e5dfd36d46d90e059ee00bb9fe8d3e837dffc9de008a6722bb54",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/PROMPTS.json",
+      "bytes": 17364,
+      "sha256": "231f664570714804aecdd5e162c70cc2481b01d6365380ea405505d206547141",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_act3.gif",
+      "bytes": 863103,
+      "sha256": "c366368362204f6fe9e48df01ce119cb6768683e404265ae1a3afc52e61ba2bc",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/QA_REPORT.json",
+      "bytes": 13049,
+      "sha256": "90795dcd833044d7a9ce24b96b31627c8d3e259570b2ce15c1c50fc5d2fe8dbf",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/previews/lh_mint_tap.gif",
+      "bytes": 583427,
+      "sha256": "ff054053b7113e62cfbd4351e04dd6aa6761aff8000001c1a318e466b39b6a04",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/mint/qa_all_sets.png",
+      "bytes": 1861611,
+      "sha256": "59a10f8590bce6a98320ae036b937aea0d845bd60039855f6a2fc4285a673fd4",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_act1.png",
+      "bytes": 3230194,
+      "sha256": "e1d4ee9a7f996418b4a375bf53324bc804c44d1189efc092a5db37a3691ad2b2",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_act3.png",
+      "bytes": 3158262,
+      "sha256": "0a61d341c147624ab5ce8ff89d7f12ee73c6d31a5819fadbf01a0fc5286367dc",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_act4.png",
+      "bytes": 3152709,
+      "sha256": "606b36741855b0b6d3631a77ec26b52fef94fc5d4074e63edab2bd5a930f09ce",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_act2.png",
+      "bytes": 3034366,
+      "sha256": "4b61fe89dd0c1543f209b0bafc236a101b7fd734d4fa854b0f8d23033d188751",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_greet.png",
+      "bytes": 3107803,
+      "sha256": "6d2ab1cbfea5e3beba6019e873c0c7937cf3fc79923a9c8323357912bfe020b6",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_idle.png",
+      "bytes": 2987533,
+      "sha256": "5c3e723dd723dc9a9b6463aa93397f63cf74bc91177832815198c4d2a42dc686",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/MANIFEST.json",
+      "bytes": 4180,
+      "sha256": "5e74d317e1c1898a7c7ed37aac0c29e1b246d55a87f695f2ef08d4405d4c861d",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_act1.gif",
+      "bytes": 798436,
+      "sha256": "1d0948a278bfab44f74c8722d765df549fc997fcffe51e0a3911378cdef747ef",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_tap.png",
+      "bytes": 2171447,
+      "sha256": "8e5c69367cf8147315c0d615aac58d2b21d82b3cb4bef4da86e61abe3e0b01db",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_act3.gif",
+      "bytes": 760701,
+      "sha256": "b85583178d992292b4067614d8a2a2416a7de31724b9c0a557141314b66e9508",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_act2.gif",
+      "bytes": 711331,
+      "sha256": "700de1636666c50fc2cd972519f0b71d944af5728147e56e8ac2b95d78d7676a",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_greet.gif",
+      "bytes": 761617,
+      "sha256": "a302ca81c41f2d2a9c1cb5da5e95a901c6b872d7f36e98da2247a8a6c3080735",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/lh_momo_poke.png",
+      "bytes": 3186580,
+      "sha256": "11ed7d92dfe90852093e4e98aced6cde9889d9dac867850bfae372a019382847",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_idle.gif",
+      "bytes": 743231,
+      "sha256": "0ad1e148087ee4687d56991ba65dd4d65d52049c2e126f8b09c1c2524ca4eaea",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_poke.gif",
+      "bytes": 771858,
+      "sha256": "b5ea912faee35bd6a804a80a693518a5736d71f5e5fc9695df65b1fbb815fcac",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/PROMPTS.json",
+      "bytes": 16749,
+      "sha256": "6c3d2e2276a6cbe4b39fb4203055eccc0c29e611c399e451ab7ea9a7bd204f38",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_tap.gif",
+      "bytes": 569749,
+      "sha256": "2393580ea2a571f51f9e2861236945deed6df10bc28420e4d05e32ec700c7ebc",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/qa_all_sets.png",
+      "bytes": 1586600,
+      "sha256": "342559447dea945a7fb98ba473dafabaa1eb8fb8a3209bf92c0efe9eb17e975d",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/QA_REPORT.json",
+      "bytes": 13050,
+      "sha256": "a07403f2d9963bf3ecd4b365d71c45d6645b0bf906827c2397c64976c0e7dbf4",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/momo/previews/lh_momo_act4.gif",
+      "bytes": 747674,
+      "sha256": "7c943e5fe45b9424d99879cd225a3eb4c843ba3bf13b71df40685d0b997dadb3",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/PROMPTS.json",
+      "bytes": 105087,
+      "sha256": "8119f44c3f3a9281acce39fdaf1e859bc2ff681ffb2a6ed0efd6c1af53258b7d",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/QA_REPORT.json",
+      "bytes": 14001,
+      "sha256": "2f556d8daa2533c9cc03dca458ecc2d1875ee2dd0ef512a9794beb4e80acb46f",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/qa_silhouettes.png",
+      "bytes": 137537,
+      "sha256": "22c9d5fe0cae06060072504758eecd8d7837cddaa4dc49d2479b3b00c8199eab",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_act4.png",
+      "bytes": 3664086,
+      "sha256": "0198beea310afb2acb09082562adb6edd32a19b79ae9f23b5ee0d13101be884b",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_act3.png",
+      "bytes": 3617078,
+      "sha256": "4f6a142d6c25d5459a88454e1305dbde51fd7b3f3ea0ec70f55db181b46ef47b",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_act1.png",
+      "bytes": 3633150,
+      "sha256": "2fb542f96d5a14663504a502d2a90c71b9c21a54db0d0445681d9516e6fe6b33",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_greet.png",
+      "bytes": 3517570,
+      "sha256": "094774249a4615b6835c4e7861a2f026bb42cf3ff4edfc708af8702e6081dfbf",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_act2.png",
+      "bytes": 3578212,
+      "sha256": "ab321f97f403169101dddd9220ac0d23f2ab2ded124b5953ebd5f00f38dec111",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/MANIFEST.json",
+      "bytes": 4228,
+      "sha256": "fe13fb8e96ddbf1dc1f525d50400d11f1a97c1625c4e07d726b0ccbbf71ba210",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_idle.png",
+      "bytes": 3636739,
+      "sha256": "972b5c09eccd6a7ba6489103e534f599459474165a1516e59c21ee50e7d04b59",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_act1.gif",
+      "bytes": 845580,
+      "sha256": "4e5c6dac982d34ff5c94ad8cd98d932150cbef58eff0ce0c338a590eacf26f29",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_poke.png",
+      "bytes": 3698459,
+      "sha256": "0ba14bd8211948be4a1c21994b15e6bd948971d18afa2fda3c696254eedf240b",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/lh_sesame_tap.png",
+      "bytes": 2653409,
+      "sha256": "7a1ebff8ebcc4cf6a9c8bdeca0c511b6fc2528de37da6def1dec1b641f3c60d9",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_act2.gif",
+      "bytes": 823719,
+      "sha256": "ae8cad6cf7c1ab69fa6f76e3947cbbdb2eecb72ee1a53382a7fd4933560f8eef",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_act3.gif",
+      "bytes": 836476,
+      "sha256": "0955dd204f02d5013fd8effd7dd92c986f54c264af9a316c9c0bff180a9bc188",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_idle.gif",
+      "bytes": 854284,
+      "sha256": "9c06d5318b74245ab9297cb77038b7589dc746483ec2fe82031e8017efe27bf6",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_poke.gif",
+      "bytes": 845666,
+      "sha256": "e1de67f3478e017bc3de9882f6e8f05bf5b9d6c5adb80bc4bd36a624242dc586",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_greet.gif",
+      "bytes": 818924,
+      "sha256": "4a73817a2c3958f0bf9048c899be055f7ba4c8f9bf7932efeaa20b9ff2b0192f",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/PROMPTS.json",
+      "bytes": 17964,
+      "sha256": "7cf6e33a6c5fffc9b69bf9dd296f6e66bcf10b78af35670eb19d537d88e1fd3a",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_act4.gif",
+      "bytes": 837883,
+      "sha256": "b9c8f2b2303478aeb415f7ba6dd18052b04efe1909a788277de06fb179dd01f5",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/previews/lh_sesame_tap.gif",
+      "bytes": 669375,
+      "sha256": "17a52c15468bf7c87a890c23ead550f1e5d0c126dbe441748a334e8c96a1e4e9",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/QA_REPORT.json",
+      "bytes": 13120,
+      "sha256": "ad5865a0a26cfaa0ba9285e8756f2ef6c74bfcc0ab51fc149fe6642ed7924fc1",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/sesame/qa_all_sets.png",
+      "bytes": 1766005,
+      "sha256": "c8295a354093d5c0a4b491d8626beb01b83868f36a2da0e65e66ac8cda32a7aa",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_act3.png",
+      "bytes": 2631334,
+      "sha256": "fc66a70b5d0de710893c34024627dc9e17bb5e05c6302d3708ec8ecc3f31d2df",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_greet.png",
+      "bytes": 2835787,
+      "sha256": "dca96136e65c69691b4371be0d97868e48d4e9c1a6cde00d46a588f59f66b601",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_act2.png",
+      "bytes": 2862795,
+      "sha256": "e95997f9da06359164aa88d4aecf1f4fe6b69a867167a3c9674012ddd345748f",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_act1.png",
+      "bytes": 2733670,
+      "sha256": "83301a143646e64073c83bf1776be7a386927869bf6e2f66d6c75ba12a41d683",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/MANIFEST.json",
+      "bytes": 4180,
+      "sha256": "0b8c1986a27e5ff3ac36a1e166373efe9aad7954a3a0f64fb9f01fc5a379a69a",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_poke.png",
+      "bytes": 2753638,
+      "sha256": "0dd88920f011324993e410140a89f6f28a5bd7e1793e47c6d6ed3fd6d1165791",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_tap.png",
+      "bytes": 2105741,
+      "sha256": "2c1e842e8b92018850f8d856e30429b38a7253f9f810bcdc0d89b0380ad62296",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_idle.png",
+      "bytes": 2646604,
+      "sha256": "4a6a0bf83288307f87bb55c17656e9dbebe49e01c44411a1692f7ecb0ad21c21",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_act2.gif",
+      "bytes": 688376,
+      "sha256": "fccaf9b644935ae633f193f1a9dba186b60f61342542ed62db434962cd567949",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_act1.gif",
+      "bytes": 670608,
+      "sha256": "3984d460378e63b63f20cbfe165c044da9430d8f5dbcc10f7ac98adf1be1e061",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/lh_taro_act4.png",
+      "bytes": 3033758,
+      "sha256": "fec91d8dfe3ce1eea0f59b763d1cb1eefaed7cf59479feb8864912cba3b6405c",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_act4.gif",
+      "bytes": 739578,
+      "sha256": "e432b243f3e5bcfed0a53e2fbc05ff94ced25ae478c03695fdd2831137b347cd",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_act3.gif",
+      "bytes": 633963,
+      "sha256": "fd8a5802808cf1b7cd05772061b1f2f3477997c8b2bb09418c732687584135ce",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_greet.gif",
+      "bytes": 706003,
+      "sha256": "10c699154445c28bb8e41d227707e807f29bdffe2616d948c7100e30c089336a",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_idle.gif",
+      "bytes": 670328,
+      "sha256": "ab63c3bb09912d179c4452103353334118eceac02a4f511b4e90f553959505c5",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_poke.gif",
+      "bytes": 685812,
+      "sha256": "5363085f84e2d45d7a2cb255bd32eb82fd67326fb8b537eb1b02916206128837",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/PROMPTS.json",
+      "bytes": 17683,
+      "sha256": "65dec633758e320c00d63678d979b28c17c89d9bcea895980bae0cbcac6a5267",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/QA_REPORT.json",
+      "bytes": 13030,
+      "sha256": "07cc14197cee2417cf261fda4ca89d4b42fb75402650ba5e098e10eebbb74847",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/previews/lh_taro_tap.gif",
+      "bytes": 561835,
+      "sha256": "aadd8431e071484d5cd515d2d50f08eed7684e7a2d5f7210c2e80cf7efaff768",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/taro/qa_all_sets.png",
+      "bytes": 1418827,
+      "sha256": "03a6cd9c08f5fa7a984fa54b9b1c46f293c36ec34beae8710f633c37e6f18ed7",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_act2.png",
+      "bytes": 3260762,
+      "sha256": "6829a21d71b74e7aef6eac91139c16d02e47d3cf06b657ccf910fc4274a834f6",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_act1.png",
+      "bytes": 3242615,
+      "sha256": "0864d043e54fb67294b00c5605599baece593ec569c02bdc57aa84c16a165078",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_act3.png",
+      "bytes": 3218180,
+      "sha256": "74114a0ba444bfd3e34f4b166dc01dbdc0be66978ed096395e676087ca48265c",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_greet.png",
+      "bytes": 3272640,
+      "sha256": "59ecf8e9e6810540b06fb2fccb2348f36576a407ece944f04ce22fac816072bb",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_idle.png",
+      "bytes": 3196585,
+      "sha256": "661a9bdc7aed30e6d0ed3451462f403d7da1b3157762e1f48b6df5ed2ee68a46",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_act4.png",
+      "bytes": 3236619,
+      "sha256": "7a0ea411d40f002e66861b71427885de8d6804a3b0682a0bff86174d20fa922a",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_tap.png",
+      "bytes": 2352331,
+      "sha256": "a50adc4a606f64b94c6705e0d406a104473646e2e4b295252f34a06fbb8fa4af",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/MANIFEST.json",
+      "bytes": 4180,
+      "sha256": "3adb48213a12a321fe73e05dc1ed12ba7beda81aae8a1828d289a5d7093146db",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/lh_yuzu_poke.png",
+      "bytes": 3239230,
+      "sha256": "c0abfb89a63ff74e2a66fb35a34dd4f197c7cc90b36a879b76e70a5e27aef1aa",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_act1.gif",
+      "bytes": 762792,
+      "sha256": "25c50472e5bf27d6a5606e4081b8c1fab1ba2965ceb211e16065dbaddc81748e",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_act3.gif",
+      "bytes": 753614,
+      "sha256": "498476ad62f39a99ae725cecc2c230771cfc6aff5514315c5f03bcbe45ae89c1",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_idle.gif",
+      "bytes": 759182,
+      "sha256": "5e862dd6f0ab14dee3a5a847270924e9ce0c0e8b8fec7db02c79a4f6a646c24c",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_act4.gif",
+      "bytes": 759360,
+      "sha256": "6de89bbec581dd03d5a23b02be147a08802ace84e6571f940617f5a67f05ca13",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_greet.gif",
+      "bytes": 758348,
+      "sha256": "2ae90adca7999078400088deb1cd5198e9444de9216d0d6f656e95f8f67db769",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_tap.gif",
+      "bytes": 588812,
+      "sha256": "736210c9dbfda642a0769388c005ff28c68be6b4a159387f9da31f81b8854b10",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/PROMPTS.json",
+      "bytes": 17764,
+      "sha256": "13a73863a7ba8101c713cca88d6f8a3e3843c00f4dbd2bda0413794ea8516686",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_act2.gif",
+      "bytes": 773752,
+      "sha256": "c659df0de87ff5ec563cf6e9a8a76ae63304b5293a74c2df978c5c59cd5fb851",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/QA_REPORT.json",
+      "bytes": 13051,
+      "sha256": "b2283ab5ebb5ede712a51a582fbdbd3d9da352db1fd665184f0a6dbc80559f09",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/previews/lh_yuzu_poke.gif",
+      "bytes": 764467,
+      "sha256": "bab50eca77f320fa04030edd6e527577d3b3988f6f6c76ba4beac47c3ff17bb5",
+      "match": true
+    },
+    {
+      "path": "docs/art_orders/34_LOBBY_HERO_MOTION.md",
+      "bytes": 20001,
+      "sha256": "c2535f7f6b58a094ef2d0feafa97b11a0563ae08297293e495f2ee0068aab59f",
+      "match": true
+    },
+    {
+      "path": "assets/incoming/lobby_hero_motion/yuzu/qa_all_sets.png",
+      "bytes": 1646954,
+      "sha256": "864d31a46fd036276bcaa7c4b661d84c7003f54cdf37c61b3f94e7d83aa100e5",
+      "match": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 144742,
+      "sha256": "cbbb040a946aa8f41870b103885185423181f7e66d30c75be2839cbb6895ce98",
+      "match": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 1640,
+      "sha256": "1fe7fd99bca912d6a9dd5f917bf0998ee8c49a2662e67a3c2dd7d4fdf9bc9cea",
+      "match": true
+    }
+  ],
+  "count": 129,
+  "matched": 129,
+  "sourceCommit": "f85ef27467113783d6392e9a4b58a66b9e7a8313",
+  "repository": "hardza1230/Survival-like-Mobile-Game",
+  "scope": "All129 initial delivery paths at sourceCommit; this proof and following metadata updates are separate.",
+  "allMatch": true
+}

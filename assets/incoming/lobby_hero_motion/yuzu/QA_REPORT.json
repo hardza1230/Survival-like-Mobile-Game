@@ -511,7 +511,7 @@
   ],
   "visualReview": "Storyboards reviewed at all48 sets; bright/dark stage GIFs supplied for owner review. Face, costume and action readability reviewed; exact temporal smoothness and phone visual/FPS remain owner review.",
   "runtimeIntegrated": false,
-  "githubUploaded": false,
+  "githubUploaded": true,
   "checks": [
     {
       "key": "lh_yuzu_idle",
@@ -616,5 +616,7 @@
     "Cocoa neutral496px is approximately500px and preserves16px side safety.",
     "8 source poses generated for tap; frames0,1,2,4,6,7 selected for the6-frame delivery.",
     "Tiny border-touching sliced-neighbor fragments removed during grid extraction."
-  ]
+  ],
+  "sourceCommit": "f85ef27467113783d6392e9a4b58a66b9e7a8313",
+  "sourceReadback": "Full bytes verified by SHA256 and length; see ../UPLOAD_VERIFICATION.json"
 }

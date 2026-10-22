@@ -6,5 +6,5 @@ Checks:512x640 cells, horizontal8/6-frame strips, complete PNG/CRC/hash/bytes/al
 
 Next: pack75% WebP and implement Lobby-only selected-hero lazy animation loading per order34. Never load at boot, preserve static fallback/shadow/heroH and clear temporary action sheets. Sesame remains WIP; this source delivery changes no Sesame wiring. No runtime code or version changed; concurrent upstream runtime changes preserved.
 
-Publication: source files prepared and validated; GitHub upload/readback will be recorded in UPLOAD_VERIFICATION.json after successful commit. Do not claim runtime integration from source delivery.
+Publication: source commit f85ef27467113783d6392e9a4b58a66b9e7a8313. All129 initial delivery files downloaded in full from this immutable GitHub commit and compared byte-for-byte by SHA256 and length:129/129 match. UPLOAD_VERIFICATION.json records exact evidence. A following metadata commit marks this result; source-only, current runtime preserved. Do not claim runtime integration from source delivery.
 
