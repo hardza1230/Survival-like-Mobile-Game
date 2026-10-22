@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.54';
+const GAME_VERSION = '7.9.55';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.55',date:'2026-10-22',title:'More red dots',items:['A red dot now shows when a hero has Talent points to spend (Heroes tab, Talents tab and the hero card)','Weave Cores you can afford, a ready Rank Up and affordable Special Cores now light up the Gear tab too']},
   {v:'7.9.54',date:'2026-10-22',title:'Livelier menus',items:['Opening a menu page now slides its buttons and cards in one after another','The BATTLE button gently breathes so it is easy to spot','Red notification dots now pulse like a heartbeat']},
   {v:'7.9.53',date:'2026-10-22',title:'Bouncy buttons',items:['Menu buttons now squish and bounce when you tap them before the next page opens']},
   {v:'7.9.52',date:'2026-10-22',title:'Smoother bottom menu',items:['The gold highlight on the bottom menu now slides to the tab you tap, and the icon pops in','All bottom tabs are the same width, so icons no longer jump around when you switch']},
@@ -7020,6 +7021,12 @@ function taroProjectileStep(p,dt,limit,boxes=[]){let x=p.x+Math.cos(p.angle)*p.s
 
 // End Taro T1 helpers.
 
+// v7.9.55 จุดแดง Talent: ฮีโร่มีแต้ม TP พอซื้อโหนดที่เปิดอยู่และยังไม่เต็ม (กติกาเดียวกับหน้า Talent: Core ตามสาย 3 สาย, Build Path ใช้ talNodeOpen/talNodeCost)
+function heroTalentSpendable(id){ try{ const cp=Save.cp(id)||{},tp=cp.tp||0; if(tp<=0)return false; const tal=cp.tal||{};
+  const core=charTalents(id)||[]; if(core.length){ const root=core[0],par={},ch=[[],[],[]]; core.slice(1).forEach((n,i)=>ch[i%3].push(n)); ch.forEach(c=>c.forEach((n,i)=>par[n.id]=i===0?root.id:c[i-1].id));
+    if(core.some(n=>{ const r=tal[n.id]||0,ok=n===root||n.free||(tal[par[n.id]]||0)>0,c=n.costs?n.costs[r]:talCost(r); return ok&&r<n.max&&c!=null&&tp>=c; }))return true; }
+  for(const pt of (BASIC_PATHS[id]||[])){ const N=talentBranch(pt); if(N.some(n=>{ const r=tal[n.id]||0; return talNodeOpen(N,tal,n)&&r<n.max&&tp>=talNodeCost(n,r); }))return true; }
+  return false; }catch(e){ return false; } }
 // v7.9.53 ปุ่มเด้งตอนกด: จำกรอบของรูปที่วาดด้วย Graphics (Phaser ไม่มี getBounds ให้ Graphics) · ใช้หาชิ้นส่วนของปุ่มที่ถูกแตะ
 (function(){ const G=typeof Phaser!=='undefined'&&Phaser.GameObjects&&Phaser.GameObjects.Graphics; if(!G||G.prototype._bbPatched)return; const P=G.prototype; P._bbPatched=true;
   const grow=(g,x,y,w,h)=>{ const b=g._bb||(g._bb={x0:1e9,y0:1e9,x1:-1e9,y1:-1e9}); if(x<b.x0)b.x0=x; if(y<b.y0)b.y0=y; if(x+w>b.x1)b.x1=x+w; if(y+h>b.y1)b.y1=y+h; };
@@ -9317,11 +9324,14 @@ class Game extends Phaser.Scene {
     if(target==='daily')return !d.daily||d.daily.claimDay!==day||(typeof DailyQ!=='undefined')&&DailyQ.claimable();   // v7.5 รางวัลเข้าเกม หรือกล่อง Daily พร้อมเปิด
     if(target==='achievements')return ACHIEVEMENTS.some(a=>a.test(d)&&!(d.achievements||{})[a.id]);
     if(target==='gearInbox')return Save.gearInboxItems().length>0;
-    if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean);
+    if(target==='talents')return heroTalentSpendable(d.character||'momo');
+    if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean)||this.hasTargetBadge('talents');
+    if(target==='weave')return UPG_ORDER.some(k=>Save.talCanBuy(k))||(Save.talAllMax()&&Save.threads()>=Save.promoteThreadCost());   // v7.9.55 ซื้อ Core ได้ / เลื่อนยศได้
+    if(target==='specialCores')return (d.rank||0)>=1&&SPECIAL_CORES.some(c=>(d.rank||0)>=c.rank&&Save.specialCoreLvl(c.id)<3&&Save.threads()>=Save.specialCoreCost(c.id));
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew);
     if(target==='perks')return Save.rankPointsFree()>0;
     if(target==='dig')return Save.digFreeReady()||!!(Save.minersReady&&Save.minersReady());
-    if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig');
+    if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
     if(target==='news')return this.hasNewsBadge();
     return false;}catch(e){return false;}}
   hasClaimableTarget(target){const d=Save.data;
@@ -9635,6 +9645,7 @@ class Game extends Phaser.Scene {
     [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{const x=x0+i*(tw+gap);this.rosterChrome(id===(this._heroesTab||'roster')?'tab_on':'tab_off',x,y,tw,h);
       this.menu.add(this.add.text(x+tw/2,y+h/2,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(13,31*p)+'px',color:'#fff3f3',stroke:'#482139',strokeThickness:Math.max(1,2*p)}).setOrigin(.5));
       this._zone(x,y,tw,h,()=>{this._heroesTab=id;this.menuScreen='char';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='tab_'+id;
+      if(id==='talents'&&this.hasTargetBadge?.('talents'))this.drawBadgeDot(this.menu,x+tw-8,y+8);   // v7.9.55
     });
   }
   buildChars(){
@@ -9678,6 +9689,7 @@ class Game extends Phaser.Scene {
       this.menu.add(this.add.text(x+67*p,y+ch-28*p,owned?meta[1]:'Locked',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,25*p)+'px',color:'#'+meta[3].toString(16).padStart(6,'0'),stroke:'#251124',strokeThickness:2}).setOrigin(0,.5));
       this.rosterIcon(meta[1].toLowerCase(),x+36*p,y+ch-28*p,32*p);
       if(HEROES_WIP.includes(key)){const bh=Math.max(18,30*p),bt=this.add.text(x+cw/2,y+10*p+bh/2,'🚧 In development',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.max(10,20*p)+'px',color:'#2a1a00'}).setOrigin(.5),bw2=Math.min(cw-8,bt.width+16),bg=this.add.graphics();bg.fillStyle(0xffc94a,.95).fillRoundedRect(x+cw/2-bw2/2,y+10*p,bw2,bh,bh/2);this.menu.add([bg,bt]);}
+      if(typeof heroTalentSpendable==='function'&&heroTalentSpendable(key))this.drawBadgeDot(this.menu,x+cw-10,y+10);   // v7.9.55 มี TP ใช้ได้
       if(chosen)this.rosterIcon('check',x+cw-34*p,y+34*p,59*p);
       this._zone(x,y,cw,ch,()=>{this._heroPreview=key;Sfx.select();this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='char_'+key;
     });
@@ -9832,7 +9844,7 @@ class Game extends Phaser.Scene {
       if(art)this.menu.add(art); else { const g3=this.add.graphics(); g3.fillStyle(0x1f3438,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x5ad1c4,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
       const t3=this.add.text(kx+rkW/2,rkY+rkH/2,scOpen?'💠 Special Cores':'🔒 Special Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a8f0e6'}).setOrigin(0.5);
       this.menu.add([g3,t3]); }
-      this._zone(kx,rkY,rkW,rkH,()=>{ if(!scOpen){Sfx.select&&Sfx.select();this.menuToast?.('🔒 Special Cores unlock at Weave Rank 1','#ffb4c7');return;} this._templeSpecial=true; this._specialFrom=null; this._specialCorePage=0; this.buildMenuScreen(); }); }   // v7.8.96 เปิดหลังเลื่อนยศครั้งแรก
+      this._zone(kx,rkY,rkW,rkH,()=>{ if(!scOpen){Sfx.select&&Sfx.select();this.menuToast?.('🔒 Special Cores unlock at Weave Rank 1','#ffb4c7');return;} this._templeSpecial=true; this._specialFrom=null; this._specialCorePage=0; this.buildMenuScreen(); }); if(scOpen&&this.hasTargetBadge?.('specialCores'))this.drawBadgeDot(this.menu,kx+rkW-6,rkY+6); }   // v7.8.96 เปิดหลังเลื่อนยศครั้งแรก
     { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Perks · '+rpFree+' RP'):'Rank Perks','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
       if(art)this.menu.add(art); else { const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
       const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
