@@ -1,6 +1,6 @@
 # 34 — ฮีโร่ขยับในหน้า Lobby + นิสัยของแต่ละตัว · ใบสั่งงานอาร์ตแอนิเมชัน
 
-สถานะ: ✅ ผูกแล้ว v7.9.58 (Strawberry/Yuzu/Mint/Cocoa/Taro · Sesame ยังไม่ผูกเพราะยังพัฒนา) · ส่งต้นฉบับครบ 48 ชีต /372 เฟรม (22 ต.ค. 2026) · PNG32 พร้อม manifest/prompts/QA และ GIF ฉากสว่าง–มืด · รอแพ็ก/ผูกเข้า Lobby และ owner phone visual/FPS QA · ไฟล์ที่ `assets/incoming/lobby_hero_motion/<hero>/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
+สถานะ: ✅ ผูกแล้ว v7.9.58 ครบ 6 ตัว · ส่งต้นฉบับครบ 48 ชีต /372 เฟรม (22 ต.ค. 2026) · PNG32 พร้อม manifest/prompts/QA และ GIF ฉากสว่าง–มืด · รอแพ็ก/ผูกเข้า Lobby และ owner phone visual/FPS QA · ไฟล์ที่ `assets/incoming/lobby_hero_motion/<hero>/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 > หมายเหตุเลขใบ: ใบสั่งอาร์ต Yuzu ที่เคยวางเป็น 33/34 ให้ใช้เลข 35
 

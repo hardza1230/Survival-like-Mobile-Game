@@ -1,8 +1,8 @@
 """Pack art order 34 (Lobby hero motion) into runtime WebP: sha/bytes vs MANIFEST, 75% per frame (384x480).
-Sesame is skipped (hero still in development). Prints the LH_SHEETS table for game.js."""
+Sesame included (owner 22 Oct). Prints the LH_SHEETS table for game.js."""
 import hashlib, json, os
 from PIL import Image
-S='assets/incoming/lobby_hero_motion'; D='assets/art/lobby_hero'; SC=.75; SKIP={'sesame'}
+S='assets/incoming/lobby_hero_motion'; D='assets/art/lobby_hero'; SC=.75; SKIP=set()
 tab={}
 for hero in ['momo','yuzu','mint','cocoa','taro','sesame']:
     if hero in SKIP: continue
