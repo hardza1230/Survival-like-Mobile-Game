@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.52';
+const GAME_VERSION = '7.9.53';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.53',date:'2026-10-22',title:'Bouncy buttons',items:['Menu buttons now squish and bounce when you tap them before the next page opens']},
   {v:'7.9.52',date:'2026-10-22',title:'Smoother bottom menu',items:['The gold highlight on the bottom menu now slides to the tab you tap, and the icon pops in','All bottom tabs are the same width, so icons no longer jump around when you switch']},
   {v:'7.9.51',date:'2026-10-22',title:'New Lobby look',items:['The Home page has a new honey-and-gold look: a stage panel with chapter, stage name and stars, and a big BATTLE button underneath','New icons for the side buttons and the bottom menu, and every bottom tab now shows its name','Tap the + next to your Sugar to open the Bazaar']},
   {v:'7.9.50',date:'2026-10-22',title:'Card types unlock as you go',items:['Stage 1 now only offers basic attack and power cards; new card types join one stage at a time: Build Path (C1-2), Relics (C1-3), Unique upgrades (C1-4), Modifiers (C1-5), Mutation and Evolution (C2-1), Flavor Infusion (C2-2), Trade-offs (C2-3)','The first time a new card type shows up, a short note under the cards explains it','The Lobby shows which new cards the next stage brings']},
@@ -7018,6 +7019,13 @@ function taroProjectileStep(p,dt,limit,boxes=[]){let x=p.x+Math.cos(p.angle)*p.s
 
 // End Taro T1 helpers.
 
+// v7.9.53 ปุ่มเด้งตอนกด: จำกรอบของรูปที่วาดด้วย Graphics (Phaser ไม่มี getBounds ให้ Graphics) · ใช้หาชิ้นส่วนของปุ่มที่ถูกแตะ
+(function(){ const G=typeof Phaser!=='undefined'&&Phaser.GameObjects&&Phaser.GameObjects.Graphics; if(!G||G.prototype._bbPatched)return; const P=G.prototype; P._bbPatched=true;
+  const grow=(g,x,y,w,h)=>{ const b=g._bb||(g._bb={x0:1e9,y0:1e9,x1:-1e9,y1:-1e9}); if(x<b.x0)b.x0=x; if(y<b.y0)b.y0=y; if(x+w>b.x1)b.x1=x+w; if(y+h>b.y1)b.y1=y+h; };
+  for(const m of ['fillRoundedRect','strokeRoundedRect','fillRect','strokeRect']){ const f=P[m]; if(f)P[m]=function(x,y,w,h,...r){ grow(this,x,y,w,h); return f.call(this,x,y,w,h,...r); }; }
+  for(const m of ['fillCircle','strokeCircle']){ const f=P[m]; if(f)P[m]=function(x,y,rad,...r){ grow(this,x-rad,y-rad,rad*2,rad*2); return f.call(this,x,y,rad,...r); }; }
+  const c=P.clear; if(c)P.clear=function(...a){ this._bb=null; return c.apply(this,a); };
+})();
 class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
@@ -8283,12 +8291,27 @@ class Game extends Phaser.Scene {
     if(st==='play'||st==='paused'){ this.togglePause(); return true; }
     return true; }
   handleTap(px,py){ if(this._bookSkip&&this.state==='menu'){this._bookSkip();return;} const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; py+=_sc;const feedback=(z,x,y)=>this._tapFeedback({...z,y:z.y-_sc},x,y-_sc);
-    { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); Sfx.uiAction('back',()=>bz.fn()); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
+    { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); this._pressBounce(bz,()=>bz.fn(),'back'); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
     for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
       for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; const ew=Math.max(0,(MIN-z.w)/2)+SLOP,eh=Math.max(0,(MIN-z.h)/2)+SLOP;
         if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
-    if(!hit)return; feedback(hit,px,py); Sfx.uiAction(hit.sound||'click',()=>hit.fn()); }
+    if(!hit)return; feedback(hit,px,py); this._pressBounce(hit,()=>hit.fn(),hit.sound||'click'); }
+  // v7.9.53 เจ้าของ: กดแล้วเด้ง ๆ ให้รู้สึกสนุก · ชิ้นส่วนของปุ่ม (ภาพ/ตัวหนังสือ/กรอบที่อยู่ในกรอบแตะ) ยุบ 0.86 → เด้ง 1.08 แล้วค่อยทำงาน (~130ms) · ไม่มีชิ้นให้เด้ง = ทำทันทีเหมือนเดิม
+  _pressBounce(z,fn,kind){ const run=()=>Sfx.uiAction(kind,fn);
+    if(this._pressBusy)return; if(this.state!=='menu'||!this.time||!this.tweens||!this.menu?.list||z.nav)return run();
+    const sc=this._mScrollMax>0?(this._mScroll||0):0,zx=z.x,zy=z.y,zw=z.w,zh=z.h,cx=zx+zw/2,cy=zy+zh/2,objs=[];
+    for(const o of this.menu.list){ if(!o||!o.active||o._menuBackdrop||!o.visible)continue; let b=null;
+      if(o.type==='Graphics'){ const q=o._bb; if(q&&q.x1>q.x0)b={x:q.x0*o.scaleX+o.x,y:q.y0*o.scaleY+o.y,w:(q.x1-q.x0)*o.scaleX,h:(q.y1-q.y0)*o.scaleY}; }
+      else if(o.getBounds){ try{ const r=o.getBounds(); b={x:r.x,y:r.y+sc,w:r.width,h:r.height}; }catch(e){} }
+      if(!b||b.w<=0||b.h<=0||b.w>zw*1.3+10||b.h>zh*1.3+10)continue; const mx=b.x+b.w/2,my=b.y+b.h/2;
+      if(mx<zx-4||mx>zx+zw+4||my<zy-4||my>zy+zh+4)continue; objs.push({o,x:o.x,y:o.y,sx:o.scaleX,sy:o.scaleY}); }
+    if(!objs.length)return run();
+    this._pressBusy=true; Sfx.ui?.(kind); const st={k:1},apply=()=>{ for(const p of objs){ if(!p.o.active)continue; p.o.x=cx+(p.x-cx)*st.k; p.o.y=cy+(p.y-cy)*st.k; p.o.setScale(p.sx*st.k,p.sy*st.k); } };
+    const done=()=>{ this._pressBusy=false; const S=Sfx; if(S._uiPending===undefined){ S._uiPending=kind; try{fn();}finally{ const cue=S._uiPending; delete S._uiPending; if(cue!==kind)S.ui(cue); } } else fn();
+      if(objs.some(p=>p.o.active))this.tweens.add({targets:st,k:1,duration:160,ease:'Back.easeOut',onUpdate:apply,onComplete:apply}); };
+    this.tweens.add({targets:st,k:.86,duration:60,ease:'Quad.easeOut',onUpdate:apply,onComplete:()=>this.tweens.add({targets:st,k:1.08,duration:70,ease:'Quad.easeOut',onUpdate:apply,onComplete:done})});
+ }
   // ไฟกระพริบบนปุ่ม + วงกระเพื่อมที่นิ้ว (อยู่นอก this.menu จึงไม่หายตอน rebuild)
   // v6.55.45: หน้าเมนูที่ยาวเกินจอ ลากเลื่อนขึ้นลงได้ (แตะ = ปล่อยนิ้วโดยไม่ลาก)
   setupMenuScroll(s){const m=this.menu;this._mScrollMax=0;
