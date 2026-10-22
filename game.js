@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.49';
+const GAME_VERSION = '7.9.50';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -80,8 +80,13 @@ const STORY_WAVE_PLAN=[
   {quota:50,live:18,reward:20},{quota:56,live:22,reward:30},{quota:64,live:26,reward:40},
   {quota:72,live:30,reward:50},{quota:80,live:34,reward:60}
 ];
+// v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
+const CARD_UNLOCK={path:1,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
+const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
+function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.50',date:'2026-10-22',title:'Card types unlock as you go',items:['Stage 1 now only offers basic attack and power cards; new card types join one stage at a time: Build Path (C1-2), Relics (C1-3), Unique upgrades (C1-4), Modifiers (C1-5), Mutation and Evolution (C2-1), Flavor Infusion (C2-2), Trade-offs (C2-3)','The first time a new card type shows up, a short note under the cards explains it','The Lobby shows which new cards the next stage brings']},
   {v:'7.9.49',date:'2026-10-22',title:'Fix: screen stuck after a stage',items:['Finishing a stage and tapping Continue now shows the Lobby again (the game world stayed on screen with only the menu bar)']},
   {v:'7.9.48',date:'2026-10-21',title:'New Lobby',items:['The Home page is now a Lobby: your hero stands in the next stage’s scenery with a big STAGE plate — tap it to play, or use ‹ › to pick another unlocked stage','Quick buttons on the side for Inbox, News, Daily, Awards and Codex, with red dots when something is waiting','Profile card at the top: hero level and EXP, Power and Rank','The bottom bar now widens the open tab and shows its name; the big duplicate buttons on Home are gone'],},
   {v:'7.9.47',date:'2026-10-21',title:'Bottom menu bar + phone Back button',items:['New menu bar at the bottom of every menu page: Home · Heroes · Play · Gear · Activities — jump anywhere in one tap, with a red dot when something is waiting','The phone’s Back button (or back swipe) now works: it goes back one page in menus, pauses or resumes a stage, and on the Home page asks you to press again to exit'],},
@@ -9411,6 +9416,7 @@ class Game extends Phaser.Scene {
     const stars=(d.stageStars||{})[si]||0,starTxt='⭐ '+[1,2,4].filter(b=>stars&b).length+'/3';
     const sub=this.add.text(w/2,plateY+plateH*.8,(st.name||'')+'  '+starTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#5a3510'}).setOrigin(.5);let f2=12;while(sub.width>plateW-20&&f2>8)sub.setFontSize(--f2+'px');this.menu.add(sub);
     this.hubText(w/2,plateY-26,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec)+'  '+ps.label,12,ps.hex,.5);
+    { const seen=d.cardSeen||{},nw=Object.keys(CARD_UNLOCK).filter(k=>CARD_UNLOCK[k]===si&&!seen[k]); if(nw.length)this.hubText(w/2,plateY-46,'✨ New cards here: '+nw.map(k=>CARD_INTRO[k][0]+' '+CARD_INTRO[k][1]).join(' · '),12,'#ffd54a',.5); }   // v7.9.50 progression hint
     this._zone(px,plateY,plateW,plateH,()=>{ if(!isStageReady(si)){this.menuToast('🛠️ Stage in production','#ffb4c7');return;} this.startStoryStage(si); });this.tapZones[this.tapZones.length-1].tag='lobby_play';
     // ‹ › เลือกด่านที่ปลดแล้ว
     const us=Math.min(STAGES.length-1,d.unlockedStage||0),arrow=(x,dir,ok)=>{ this.hubPanel(x,plateY+plateH/2-22,40,44);this.hubText(x+20,plateY+plateH/2,dir<0?'‹':'›',28,ok?'#fff0df':'#6d6078',.5);
@@ -13108,14 +13114,15 @@ class Game extends Phaser.Scene {
     const t=this.add.text(w/2,heldBot+2,this._chestReward?'🎁 Treasure — tap a card twice to pick':'⭐ LEVEL UP — tap a card twice to pick',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe07a'}).setOrigin(0.5,0);this.levelChoiceHint=t;this._pendingCardConfirm=null;this.levelCardReadyAt=this.time.now+300;
     this.lvlUp.add(t);
     // 🔮 เลเวล 6 = การันตีเลือก Relic แทนการ์ดหนึ่งรอบ
-    const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
+    const _rlv=[6,12,18][this._relicLvN||0]; if(!this._forcedOpts&&_rlv&&!this._inTutorial&&this.cardOpen?.('relic')!==false&&(this.level||1)>=_rlv&&this.relicSlotsLeft()>0){ this._relicLvN=(this._relicLvN||0)+1; this._relicLvDone=true; const r=this.rollRelicChoices(3); if(r.length){ this._forcedOpts=r; this._relicPick=true; } }
     if(this._relicPick)t.setText((this._forcedOpts||[]).every(o=>o&&String(o.key||'').startsWith('relic_'))?'🔮 RELIC — choose 1 · tap again to confirm':'🔮 SPECIAL PICK — choose 1 · tap again to confirm');
     if(!_wasLvl&&performance.now()-(this._uniqueRankSfxAt||-9999)>1800){ const special=_sndForced||this._relicPick||this._chestReward; if(special)Sfx.ev?.('special_card_offer',.55,1); else if(performance.now()-(this._lvlSndAt||0)>1500){ this._lvlSndAt=performance.now(); Sfx.levelup(); } else Sfx.ev?.('card_offer_open',.45,.6); }
     const opts=this._forcedOpts||this.rollUpgrades(this.usesBasicAttackBuild()?3:4); this._forcedOpts=null; this._lvlOpts=opts;
     const portrait=w<=h,cols=portrait?1:2,gap=portrait?12:10,side=portrait?14:10,startY=heldBot+33;
     const rows=Math.ceil(opts.length/cols),cardW=Math.min(portrait?190:178,(w-side*2-gap*(cols-1))/cols);
     const finalCardW=portrait?(w-side*2):cardW;
-    const ch=Math.min(portrait?150:220,(h-startY-22-gap*(rows-1))/rows);   // เว้นล่าง 40px ให้ปุ่มสุ่มใหม่/ลบสกิล
+    const _nt=this.newCardIntro(opts),_nH=_nt?78:0;   // v7.9.50 first time a card type shows up → short explainer under the cards
+    const ch=Math.min(portrait?150:220,(h-startY-22-_nH-gap*(rows-1))/rows);   // เว้นล่าง 40px ให้ปุ่มสุ่มใหม่/ลบสกิล
     const total=finalCardW*cols+gap*(cols-1), lx=(w-total)/2;
     opts.forEach((o,i)=>{
       const col=i%cols,row=Math.floor(i/cols),x=lx+col*(finalCardW+gap), y=startY+row*(ch+gap);
@@ -13124,7 +13131,17 @@ class Game extends Phaser.Scene {
     });
     const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
     this.lvlTitleArt?.(t,this._chestReward?1:this._relicPick?2:pathPick?3:0,!_wasLvl);
+    if(_nt)this.drawCardIntro(_nt,side,startY+rows*(ch+gap)+4,w-side*2,_nH-10);
     this.lvlUp.setVisible(true);
+  }
+  newCardIntro(opts){ if(this._inTutorial||typeof Save==='undefined'||!Save.data)return null; const seen=Save.data.cardSeen=Save.data.cardSeen||{};
+    for(const o of opts||[]){ const t=cardTypeOf(o); if(t&&CARD_INTRO[t]&&!seen[t]){ seen[t]=1; try{Save.save();}catch(e){} return t; } } return null; }
+  drawCardIntro(t,x,y,w,h){ const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
+    g.fillStyle(0x2a1a3a,.96).fillRoundedRect(x,y,w,h,14).lineStyle(2,0xffd54a,1).strokeRoundedRect(x,y,w,h,14);this.lvlUp.add(g);
+    const a=this.add.text(x+14,y+8,'✨ NEW CARD TYPE: '+em+' '+name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd54a'});this.lvlUp.add(a);
+    const b=this.add.text(x+14,y+30,txt,{fontFamily:'sans-serif',fontSize:'12px',color:'#fff0df',wordWrap:{width:w-28}});this.lvlUp.add(b);
+    this.tweens.add({targets:[g,a,b],alpha:{from:0,to:1},duration:300});
+    this.levelCardReadyAt=Math.max(this.levelCardReadyAt||0,this.time.now+900);   // a moment to read before the first tap counts
   }
   pickCardAt(px,py){
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
@@ -13830,11 +13847,11 @@ class Game extends Phaser.Scene {
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a])),fu=(FUSIONS[(this.basicAttack||{}).character]||[]).find(f=>f.relic===k);   // v7.8.88 บอกล่วงหน้าว่า Relic นี้ + Evolution = Fusion
       out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:[syn?'🔗 '+syn.name+': '+syn.desc:'',fu?'🧬 + Evolution → '+fu.name:'',d.headline||''].filter(Boolean).join('  ')||undefined,apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
-    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
+    if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(this.cardOpen?.('mod')!==false&&Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&this.cardOpen?.('trade')!==false&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
     return out;
   }
-  offerRelic(){ if(this._inTutorial)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
+  offerRelic(){ if(this._inTutorial||this.cardOpen?.('relic')===false)return false; const opts=this.rollRelicChoices(3); if(!opts.length)return false;
     this._forcedOpts=opts; this._relicPick=true; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return true; }
   gainRelic(k){ if(!RELICS[k]||(this._rel&&this._rel[k]))return; if(!this._rel)this.resetRelics(); this.time.delayedCall(600,()=>{if(this.state==='play'||this.state==='levelup')this.autoFusion();});
     this.relics.push(k); this._rel[k]=true; const p=this.player,d=RELICS[k];
@@ -13910,6 +13927,7 @@ class Game extends Phaser.Scene {
   ptTakenMul(){ const P=this.player,PT=P&&P._pt; if(!PT)return 1; let m=1; const st=this._ptStill||0;
     if(PT.still&&st>=0.6)m*=1-PT.still; if(PT.ghillie&&st>=1.5)m*=0.4; if(PT.stillWall&&st>=0.6)m*=0.6; if(PT.moveGuard&&st===0&&P.body&&P.body.velocity.length()>40)m*=1-PT.moveGuard; if(PT.farmor&&(this.elapsed||0)<(this._ptArmorT||0))m*=0.7; if(PT.chin)m*=1-PT.chin; if(PT.dashGuard&&this._dashBuffT>0)m*=0.7; if(PT.trGuard&&this._titanHold)m*=1-PT.trGuard;
     if(PT.surround){let n=0;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,P.x,P.y)<170)n++;});if(n>=5)m*=1-PT.surround;} return m; }
+  cardOpen(t){ const n=CARD_UNLOCK[t]; if(n==null||this._inTutorial||!this.usesStoryBudget?.()||typeof Save==='undefined'||!Save.data)return true; return Math.max(this.stageIndex||0,Save.data.unlockedStage||0)>=n; }
   rollBasicAttackUpgrades(n,opts){
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
@@ -13917,24 +13935,24 @@ class Game extends Phaser.Scene {
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation) · v7.8.90 เดิม 6 ชนกับ Relic → สายเลื่อนเป็น 7 ทุกครั้ง
     const PATHS=BASIC_PATHS[b.character];
-    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5){
+    if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5&&this.cardOpen?.('path')!==false){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
       return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,carry:this.pathCarryText?.(pt)||'',headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));
     }
     // 🍯 Flavor Infusion: เลเวล 10 เลือกธาตุ (หลังเลือกสายแล้ว)
-    if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)){
+    if(!noSpecial&&!b.infusion&&!this._inTutorial&&(this.level||1)>=13&&(!PATHS||b.path)&&this.cardOpen?.('infusion')!==false){
       this.showBanner('🍯 Flavor Infusion','Infuse your attack with a flavor',1600);
       return Phaser.Utils.Array.Shuffle(FLAVOR_INFUSIONS.slice()).slice(0,3).map(f=>makeCard(f,{desc:f.desc,kind:'Flavor Infusion',special:true,color:f.color,...(this.cocoaInfMatch(f.id)?{headline:'★ Build match: '+this.cocoaInfMatch(f.id)}:{}),apply:()=>{b.infusion=f.id;this.syncBasicAttack();this.showBanner(f.emoji+' '+f.name,'Your attacks now carry this flavor',1800);Sfx.clear();}}));
     }
     // ⭐ ช่วงพิเศษ #1 — เลือกสายกลายรูป (Mutation) timesเดียว: การ์ดทั้งจอเป็น mutation ล้วน
-    if(!noSpecial&&b.mastery>=10&&!b.mutation){   // v5.9: 8→10 ห่างขึ้น (เจ้าของ: เก่งเร็วไป)   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
+    if(!noSpecial&&b.mastery>=10&&!b.mutation&&this.cardOpen?.('mutation')!==false){   // v5.9: 8→10 ห่างขึ้น (เจ้าของ: เก่งเร็วไป)   // Mutation ออกช้าลง (เดิม mastery 5 → 8)
       const muts=d.mutations.filter(u=>!this.banishedKeys?.['b:'+u.id]);
       if(muts.length){ this.showBanner('⭐ Mutation Fork!','Choose one playstyle (the other locks)',1500);
         return muts.map(u=>makeCard(u,{mutation:true,special:true,apply:()=>{b.mutation=u.id;this.syncBasicAttack();this.showBanner(u.emoji+' '+u.name,'Mutation path chosen · the other is locked',1700);}})); }
     }
     // ✨ ช่วงพิเศษ #2 — Evolution timesเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     const evoAt=Math.min(16,d.upgrades.reduce((s,u)=>s+(this.banishedKeys?.['b:'+u.id]?(b.lv[u.id]||0):u.max),0)+1);   // v4.54: เดิม 20 แต่ mastery สูงสุดได้แค่ 17 (16 อัพ+1 mutation) = evolution ไม่มีวันออก
-    if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']){
+    if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']&&this.cardOpen?.('evolution')!==false){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')+(()=>{const L=(typeof FUSIONS!=='undefined'&&FUSIONS[b.character])||[];return L.length?'  🧬 Fusion with '+L.map(f=>((typeof RELICS!=='undefined'&&RELICS[f.relic])||{}).name||f.relic).join(' / '):'';})()};
@@ -13955,7 +13973,7 @@ class Game extends Phaser.Scene {
         b.ranks[u.id]=Math.min(u.max*(isCount?1:1.55),(b.ranks[u.id]||0)+pot);   // scalar = magnitude ถ่วง potency · count = จำนวนเต็ม
         this.syncBasicAttack();}})});}
     // v7.9.22 ⭐ Unique cards: หลังใช้ Unique ครบ 3 ครั้งในด่าน (เจ้าของเลือก ก) · ไม่โผล่ใน tutorial/ตัวละครที่ยังพัฒนา (Mutation)
-    if((this._uqUses||0)>=3&&!this._inTutorial){ const UQ={kind:'⭐ Unique',color:0xffc94a,special:true,uniqueCard:true};
+    if((this._uqUses||0)>=3&&!this._inTutorial&&this.cardOpen?.('unique')!==false){ const UQ={kind:'⭐ Unique',color:0xffc94a,special:true,uniqueCard:true};
       for(const u of UNIQUE_CARDS){ const cur=b.lv[u.id]||0; if(cur>=u.max||this.banishedKeys?.['b:'+u.id])continue;
         atk.push({group:focused?'universal':null,w:2.2,card:makeCard(u,{...UQ,lvl:cur+1,max:u.max,iconKey:null,apply:()=>{ b.lv[u.id]=Math.min(u.max,(b.lv[u.id]||0)+1); this.syncBasicAttack(); }})}); }
       const MU=UNIQUE_MUTS[b.path]; if(MU&&!b.uqMut&&!HEROES_WIP.includes(b.character||this.character))for(const m of MU)atk.push({group:focused?'universal':null,w:2.6,card:makeCard({...m,max:1},{...UQ,kind:'⭐ Unique Mutation',color:0xff9f43,headline:'⭐ '+m.desc,iconKey:null,apply:()=>{ b.uqMut=m.id; this.showBanner?.('⭐ '+m.emoji+' '+m.name,m.desc,1800); this.syncBasicAttack(); }})}); }
@@ -16352,7 +16370,7 @@ class Game extends Phaser.Scene {
     if(c._glow){ this.tweens.killTweensOf(c._glow); c._glow.destroy(); c._glow=null; }
     Sfx.clear(); this.burst(c.x,c.y,0xffd166); this.screenFlash(0xffe08a,0.4,300);
     const mx=c.x,my=c.y;
-    if(kind==='mini'){ this.openPrizeWheel(tier,(ft,won)=>{const finalTier=ft||tier;this.grantMiniChestBonus(finalTier,true);if(won&&won.id==='relic')this.offerRelic();},{onMimic:(this._inTutorial||noMimic)?null:()=>this.awakenMimic(mx,my,tier),relic:!this._inTutorial&&(this.relicSlotsLeft?.()??1)>0,bonusText:t=>{const b=this.miniChestBonus(t);return [b.sugar?'+'+b.sugar+' 🍬':'',b.cur?'+'+b.cur+' crafting':''].filter(Boolean).join('  ·  ');}});return;} // Keep the full reward sequence; no random upgrade box fallback.
+    if(kind==='mini'){ this.openPrizeWheel(tier,(ft,won)=>{const finalTier=ft||tier;this.grantMiniChestBonus(finalTier,true);if(won&&won.id==='relic')this.offerRelic();},{onMimic:(this._inTutorial||noMimic)?null:()=>this.awakenMimic(mx,my,tier),relic:!this._inTutorial&&this.cardOpen?.('relic')!==false&&(this.relicSlotsLeft?.()??1)>0,bonusText:t=>{const b=this.miniChestBonus(t);return [b.sugar?'+'+b.sugar+' 🍬':'',b.cur?'+'+b.cur+' crafting':''].filter(Boolean).join('  ·  ');}});return;} // Keep the full reward sequence; no random upgrade box fallback.
     if(kind==='pick'&&Math.random()<0.10&&this.offerRelic())return;   // 🔮 กล่องลับ 10% = Relic (v5.19.1 ลดจาก 30%)
     if(kind==='pick'){this._chestReward=false; this.pendingLvl=(this.pendingLvl||0)+1; this.openLevelUp(); return;}   // กล่องในแมพ = เลือกเอง 1 ใบ
   }
