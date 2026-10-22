@@ -2,6 +2,10 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# Art delivery34 — Lobby hero motion source kit
+
+48 PNG32 sheets /372 frames delivered to assets/incoming/lobby_hero_motion/<hero>/ for Momo/Yuzu/Mint/Cocoa/Taro/Sesame; built-in ImageGen prompts/provenance, manifests, complete PNG CRC/hash/alpha/frame/endpoint QA,48 light/dark actual-stage GIFs,6 storyboards and silhouette proof.512×640 cells; every one-shot starts/ends on exact idle0 pixels. Cocoa neutral496px (approximately500px) keeps arm margins. Source-only; runtime version unchanged. Next:75% WebP packing and selected-hero Lobby-only lazy animation integration per order34; never boot load; owner phone visual/timing/FPS pending. Sesame WIP wiring unchanged. Read UPLOAD_VERIFICATION.json for remote-byte proof.
+
 # Art delivery33 — warm Lobby UI source kit
 
 26 PNG32 /38 frames delivered to assets/incoming/lobby_ui/ with MANIFEST, built-in ImageGen PROMPTS, full PNG CRC/hash/alpha/frame QA and exact-size 360×780 +412×915 offline compositions on stage_card_s01/s11 using existing card_momo. Source at2x; packed50% decoded2.332MiB <6MiB. Native-endcap stretch matrix,28/56px icon gallery, no image text, no Energy slot or hero-specific frame motifs. Source-only; runtime v7.9.50 unchanged. Next: scripts/pack-lobby-ui.py + Lobby-only lazy load and fallback-preserving binding per order33; owner phone visual/FPS pending. Small center stage accent is reserved for a code overlay so nine-slice stays undistorted. Exact remote-byte proof in UPLOAD_VERIFICATION.json.
@@ -672,3 +676,4 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - อาวุธประจำตัว: โมโม่=ปืนเมล็ดหัวใจ, มินต์=แกนลมเย็น, โกโก้=ถุงมือตราหมี, ตาโร่=เข็มทิศสายฟ้า, งาดำ=กระจกคำสัตย์, Berry Core=ปืนแกนแยม
 - ผู้เล่นเริ่มด้วยอาวุธประจำตัวและเลือกอาวุธรอง 1 ชิ้น; อาวุธประจำตัวนับรวมในเพดานอาวุธ 4 ช่อง
 - Weapon Mastery มีผลเฉพาะอาวุธประจำตัว และ resetStageLoadout() ต้องคืนอาวุธประจำตัวทุกด่าน
+

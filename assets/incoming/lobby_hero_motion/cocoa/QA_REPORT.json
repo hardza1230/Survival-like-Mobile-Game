@@ -1,0 +1,620 @@
+{
+  "hero": "cocoa",
+  "status": "source_delivery_checked",
+  "technical": [
+    {
+      "file": "lh_cocoa_idle.png",
+      "decoded": true,
+      "sha256": "39c7f8eb10daaf37e8f9e965ee4d01d152f64552cd98db7de0c95a2f669f0542",
+      "bytes": 3145879,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 50,
+          "y": 103,
+          "width": 413,
+          "height": 498,
+          "n": 131599
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130629
+        },
+        {
+          "x": 49,
+          "y": 105,
+          "width": 415,
+          "height": 496,
+          "n": 130548
+        },
+        {
+          "x": 49,
+          "y": 105,
+          "width": 414,
+          "height": 496,
+          "n": 129943
+        },
+        {
+          "x": 41,
+          "y": 104,
+          "width": 430,
+          "height": 497,
+          "n": 133875
+        },
+        {
+          "x": 51,
+          "y": 105,
+          "width": 410,
+          "height": 496,
+          "n": 130370
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_greet.png",
+      "decoded": true,
+      "sha256": "af1a4cf520bb6b30a01770e6d22b5801a8e7d5a954e7764835d85a644601752c",
+      "bytes": 3360507,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 35,
+          "y": 100,
+          "width": 442,
+          "height": 501,
+          "n": 139261
+        },
+        {
+          "x": 32,
+          "y": 74,
+          "width": 449,
+          "height": 527,
+          "n": 144902
+        },
+        {
+          "x": 32,
+          "y": 99,
+          "width": 449,
+          "height": 502,
+          "n": 140856
+        },
+        {
+          "x": 32,
+          "y": 92,
+          "width": 448,
+          "height": 509,
+          "n": 145363
+        },
+        {
+          "x": 32,
+          "y": 99,
+          "width": 448,
+          "height": 502,
+          "n": 141359
+        },
+        {
+          "x": 40,
+          "y": 98,
+          "width": 432,
+          "height": 503,
+          "n": 136861
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_act1.png",
+      "decoded": true,
+      "sha256": "988d6ffbf41fd63e0ae8e295794417b516472102b5b7f6dda5fbe915a3c4f67b",
+      "bytes": 3108778,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 45,
+          "y": 113,
+          "width": 422,
+          "height": 488,
+          "n": 123188
+        },
+        {
+          "x": 45,
+          "y": 103,
+          "width": 423,
+          "height": 498,
+          "n": 124509
+        },
+        {
+          "x": 52,
+          "y": 134,
+          "width": 409,
+          "height": 467,
+          "n": 121328
+        },
+        {
+          "x": 52,
+          "y": 106,
+          "width": 408,
+          "height": 495,
+          "n": 135885
+        },
+        {
+          "x": 52,
+          "y": 116,
+          "width": 408,
+          "height": 485,
+          "n": 132212
+        },
+        {
+          "x": 50,
+          "y": 120,
+          "width": 413,
+          "height": 481,
+          "n": 129858
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_act2.png",
+      "decoded": true,
+      "sha256": "5c4dfaa2d23a078204e035abcf1faa166037450d08b747e3d715979a6c83338f",
+      "bytes": 3206582,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 55,
+          "y": 103,
+          "width": 404,
+          "height": 498,
+          "n": 131608
+        },
+        {
+          "x": 39,
+          "y": 105,
+          "width": 434,
+          "height": 496,
+          "n": 127684
+        },
+        {
+          "x": 39,
+          "y": 99,
+          "width": 434,
+          "height": 502,
+          "n": 133923
+        },
+        {
+          "x": 26,
+          "y": 105,
+          "width": 461,
+          "height": 496,
+          "n": 138851
+        },
+        {
+          "x": 44,
+          "y": 105,
+          "width": 424,
+          "height": 496,
+          "n": 131402
+        },
+        {
+          "x": 52,
+          "y": 107,
+          "width": 409,
+          "height": 494,
+          "n": 131590
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_act3.png",
+      "decoded": true,
+      "sha256": "9aad2d1ac673c0ed3a3e53640578debc1f3f59782f49ba41a9e87d648333ac70",
+      "bytes": 3043733,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 57,
+          "y": 102,
+          "width": 399,
+          "height": 499,
+          "n": 125380
+        },
+        {
+          "x": 37,
+          "y": 105,
+          "width": 438,
+          "height": 496,
+          "n": 136084
+        },
+        {
+          "x": 66,
+          "y": 99,
+          "width": 381,
+          "height": 502,
+          "n": 123327
+        },
+        {
+          "x": 62,
+          "y": 98,
+          "width": 388,
+          "height": 503,
+          "n": 125341
+        },
+        {
+          "x": 46,
+          "y": 103,
+          "width": 420,
+          "height": 498,
+          "n": 134028
+        },
+        {
+          "x": 56,
+          "y": 93,
+          "width": 400,
+          "height": 508,
+          "n": 125863
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_act4.png",
+      "decoded": true,
+      "sha256": "5383a38144b295938959566dfd4519df38b37141e17e0c266ed8e15c91fb7c8d",
+      "bytes": 3215194,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 60,
+          "y": 102,
+          "width": 392,
+          "height": 499,
+          "n": 126906
+        },
+        {
+          "x": 35,
+          "y": 106,
+          "width": 443,
+          "height": 495,
+          "n": 132980
+        },
+        {
+          "x": 17,
+          "y": 104,
+          "width": 479,
+          "height": 497,
+          "n": 143012
+        },
+        {
+          "x": 35,
+          "y": 106,
+          "width": 442,
+          "height": 495,
+          "n": 138577
+        },
+        {
+          "x": 19,
+          "y": 107,
+          "width": 475,
+          "height": 494,
+          "n": 138753
+        },
+        {
+          "x": 42,
+          "y": 106,
+          "width": 428,
+          "height": 495,
+          "n": 136116
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_tap.png",
+      "decoded": true,
+      "sha256": "ccc5f63ea740101db959ac575ed92a8803d133fa776e6b8484713ad1f6f21f32",
+      "bytes": 2231498,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 53,
+          "y": 103,
+          "width": 407,
+          "height": 498,
+          "n": 132237
+        },
+        {
+          "x": 54,
+          "y": 155,
+          "width": 405,
+          "height": 446,
+          "n": 124882
+        },
+        {
+          "x": 44,
+          "y": 111,
+          "width": 424,
+          "height": 490,
+          "n": 130314
+        },
+        {
+          "x": 49,
+          "y": 105,
+          "width": 415,
+          "height": 496,
+          "n": 135360
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    },
+    {
+      "file": "lh_cocoa_poke.png",
+      "decoded": true,
+      "sha256": "8071d5807df42dab288a48f57624659a34c553c11cd73b2432108bc1a56a9c81",
+      "bytes": 2982730,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        },
+        {
+          "x": 51,
+          "y": 108,
+          "width": 410,
+          "height": 493,
+          "n": 125245
+        },
+        {
+          "x": 55,
+          "y": 118,
+          "width": 402,
+          "height": 483,
+          "n": 122017
+        },
+        {
+          "x": 60,
+          "y": 113,
+          "width": 393,
+          "height": 488,
+          "n": 123103
+        },
+        {
+          "x": 52,
+          "y": 105,
+          "width": 408,
+          "height": 496,
+          "n": 127905
+        },
+        {
+          "x": 54,
+          "y": 107,
+          "width": 404,
+          "height": 494,
+          "n": 130081
+        },
+        {
+          "x": 56,
+          "y": 106,
+          "width": 401,
+          "height": 495,
+          "n": 125332
+        },
+        {
+          "x": 50,
+          "y": 105,
+          "width": 413,
+          "height": 496,
+          "n": 130534
+        }
+      ]
+    }
+  ],
+  "visualReview": "Storyboards reviewed at all48 sets; bright/dark stage GIFs supplied for owner review. Face, costume and action readability reviewed; exact temporal smoothness and phone visual/FPS remain owner review.",
+  "runtimeIntegrated": false,
+  "githubUploaded": false,
+  "checks": [
+    {
+      "key": "lh_cocoa_idle",
+      "pngChunks": 387,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_idle.gif"
+    },
+    {
+      "key": "lh_cocoa_greet",
+      "pngChunks": 413,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_greet.gif"
+    },
+    {
+      "key": "lh_cocoa_act1",
+      "pngChunks": 382,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_act1.gif"
+    },
+    {
+      "key": "lh_cocoa_act2",
+      "pngChunks": 394,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_act2.gif"
+    },
+    {
+      "key": "lh_cocoa_act3",
+      "pngChunks": 374,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_act3.gif"
+    },
+    {
+      "key": "lh_cocoa_act4",
+      "pngChunks": 395,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_act4.gif"
+    },
+    {
+      "key": "lh_cocoa_tap",
+      "pngChunks": 275,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 6,
+      "gif": "cocoa/previews/lh_cocoa_tap.gif"
+    },
+    {
+      "key": "lh_cocoa_poke",
+      "pngChunks": 367,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "cocoa/previews/lh_cocoa_poke.gif"
+    }
+  ],
+  "notes": [
+    "All one-shot endpoints and idle7 are exact idle0 pixel copies.",
+    "Per-sheet scale anchored to its neutral frame; posture/props change visible bounds.",
+    "Cocoa neutral496px is approximately500px and preserves16px side safety.",
+    "8 source poses generated for tap; frames0,1,2,4,6,7 selected for the6-frame delivery.",
+    "Tiny border-touching sliced-neighbor fragments removed during grid extraction."
+  ]
+}

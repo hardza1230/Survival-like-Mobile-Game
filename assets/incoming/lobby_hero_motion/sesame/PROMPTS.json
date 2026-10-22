@@ -1,0 +1,113 @@
+[
+  {
+    "key": "lh_sesame_idle",
+    "hero": "sesame",
+    "set": "idle",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_idle.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors.  Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Still shy posture with hands together, 2-3 mirror shards drift slowly, one blink, looping.  Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-64fef9f1-2c04-49ca-af07-8d2e71241487.png",
+    "references": [
+      "assets/character_cards/card_sesame.png"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_greet",
+    "hero": "sesame",
+    "set": "greet",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_greet.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Small polite bow, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-508e4c9e-e7aa-4a20-8337-ca7e5212ff0a.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_act1",
+    "hero": "sesame",
+    "set": "act1",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_act1.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Gently polishes one ornate mirror with cloth, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-74b9c2fa-0069-4906-a1fd-d80dc2c4069f.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_act2",
+    "hero": "sesame",
+    "set": "act2",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_act2.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Looks in small mirror and neatly adjusts hair, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-03a2471d-ee05-447e-8fae-cc96366ea8a1.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_act3",
+    "hero": "sesame",
+    "set": "act3",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_act3.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Reflection in small mirror pulls a silly face, startles then pretends nothing happened, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-e462ab91-4dbe-48db-b366-ae9293e2a673.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_act4",
+    "hero": "sesame",
+    "set": "act4",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_act4.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Quietly reads small book and turns a page, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-40db1c9c-b106-4b89-ba83-b26ec20c7b5b.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_tap",
+    "hero": "sesame",
+    "set": "tap",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_tap.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Startles subtly and averts eyes shyly, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Eight transparent cells will be packed to six for runtime. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-7c38ce68-eba2-416c-a521-66b97bbd5915.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_sesame_poke",
+    "hero": "sesame",
+    "set": "poke",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_sesame_poke.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: long black ponytail, pale gold eyes, ivory flower ornament, black ivory gold flowing ceremonial robes, tasseled ornaments and original ornate floating mirrors. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Hides behind a larger ornate mirror, peeks out shyly, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground, no large magical aura. Quiet shy expression. Mirror props match original ornamentation. Keep every boot and prop inside its cell with clear margins.",
+    "generatedFile": "exec-dfe82aa8-6940-46ee-b951-fe0fee04da70.png",
+    "references": [
+      "assets/character_cards/card_sesame.png",
+      "generated sesame idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  }
+]

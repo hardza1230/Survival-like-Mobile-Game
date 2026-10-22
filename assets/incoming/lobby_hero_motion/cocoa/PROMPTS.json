@@ -1,0 +1,113 @@
+[
+  {
+    "key": "lh_cocoa_idle",
+    "hero": "cocoa",
+    "set": "idle",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_idle.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots.  Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Sturdy relaxed standing, bear gloves resting low, slow breath and sleepy blink, looping.  Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-f6f87048-7c4c-4d64-a57c-a674200c001b.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_greet",
+    "hero": "cocoa",
+    "set": "greet",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_greet.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Raises one bear glove and waves slowly with warm smile, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-2df41b9b-bdcc-4547-afa5-14c36c9710a5.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_act1",
+    "hero": "cocoa",
+    "set": "act1",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_act1.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Cracks fingers in huge gloves and gently stretches neck, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-a520c81d-66e1-43f0-86c9-b25dff3bd3fa.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_act2",
+    "hero": "cocoa",
+    "set": "act2",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_act2.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Long sleepy yawn, stretches arms overhead, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-f2fd598f-15e7-4adb-b67e-6f994568371f.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_act3",
+    "hero": "cocoa",
+    "set": "act3",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_act3.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Takes a chocolate cookie out of pocket and happily bites it, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-4b575637-2f9a-4acb-a27f-c0d14a9a93ed.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_act4",
+    "hero": "cocoa",
+    "set": "act4",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_act4.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Knocks bear gloves together firmly then gives thumbs up, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-50d0cdde-9cf1-4ec4-8f5b-e4c5daa3e037.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_tap",
+    "hero": "cocoa",
+    "set": "tap",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_tap.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Nods warmly and gently pats her own head, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Eight transparent cells will be packed to six for runtime. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-0b20cce7-0a9a-47fa-8423-93744db63e18.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_cocoa_poke",
+    "hero": "cocoa",
+    "set": "poke",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_cocoa_poke.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: brown ponytail, warm brown eyes, cream and bear hair ornament, chocolate cream ruffled dress, huge chocolate bear boxing gloves, brown armored boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Sleepy annoyed expression, covers face with bear gloves blocking the light, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No backdrop, no ground, no large magical aura. Every cell isolated transparent RGBA. Keep her warm and sleepy, slow heavy deliberate poses.",
+    "generatedFile": "exec-16e516e6-3094-4f3b-b9b5-b84cae1ebd44.png",
+    "references": [
+      "assets/character_cards/card_cocoa.png",
+      "generated cocoa idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  }
+]

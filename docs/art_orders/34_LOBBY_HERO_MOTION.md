@@ -1,6 +1,6 @@
 # 34 — ฮีโร่ขยับในหน้า Lobby + นิสัยของแต่ละตัว · ใบสั่งงานอาร์ตแอนิเมชัน
 
-สถานะ: 🟡 รออาร์ต · ส่งไฟล์ที่ `assets/incoming/lobby_hero_motion/<hero>/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
+สถานะ: 🟩 ส่งต้นฉบับครบ 48 ชีต /372 เฟรม (22 ต.ค. 2026) · PNG32 พร้อม manifest/prompts/QA และ GIF ฉากสว่าง–มืด · รอแพ็ก/ผูกเข้า Lobby และ owner phone visual/FPS QA · ไฟล์ที่ `assets/incoming/lobby_hero_motion/<hero>/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (ตรวจขนาดไฟล์และ hash หลังอัปทุกไฟล์)
 
 > หมายเหตุเลขใบ: ใบสั่งอาร์ต Yuzu ที่เคยวางเป็น 33/34 ให้ใช้เลข 35
 
@@ -156,3 +156,4 @@ hero = `momo` `mint` `cocoa` `taro` `yuzu` `sesame`
 - **`buildLobby()`:** แทนภาพ `card_<hero>` ด้วย sprite idle (คงเงา D3 จากใบ 33 และขนาด heroH เดิม: scale = heroH/(540·0.75)) · เปิดหน้า → greet แล้วกลับ idle · ไม่มีการแตะ 8–14 วิ → สุ่ม act1–4 (ไม่ซ้ำท่าเดิมติดกัน) · แตะตัวฮีโร่ (zone ใหม่ tag `lobby_hero`) → tap · 5 ครั้งใน 3 วิ → poke · ไม่มี texture = ภาพนิ่ง + ลอยขึ้นลงแบบเดิม
 - เก็บนิสัยไว้ในโค้ดเป็น `HERO_PERSONA` (ฉายา + คำพูดสั้น 3–5 ประโยคต่อตัว เป็นภาษาอังกฤษ) ใช้โชว์ฟองคำพูดตอน tap ได้ภายหลัง
 - หยุดสุ่มท่าเมื่อ FPS ต่ำหรือเปิดโหมดประหยัด (Low graphics)
+

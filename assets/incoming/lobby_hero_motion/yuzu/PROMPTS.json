@@ -1,0 +1,114 @@
+[
+  {
+    "key": "lh_yuzu_idle",
+    "hero": "yuzu",
+    "set": "idle",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_idle.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots.  Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Hands on hips, foot tapping, tiny sway and one blink, looping.  Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Every empty pixel must be alpha=0. Absolutely no colored backdrop, gradient, card or panel. No large magical aura.",
+    "generatedFile": "exec-2931197c-47b1-471e-a7b8-8808e7142462.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_greet",
+    "hero": "yuzu",
+    "set": "greet",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_greet.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Small jump and points forward confidently, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Every empty pixel must be alpha=0. Absolutely no colored backdrop, gradient, card or panel. No large magical aura.",
+    "generatedFile": "exec-68d2c6dd-23d7-46f6-a073-0fbc6eff046a.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_act1",
+    "hero": "yuzu",
+    "set": "act1",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_act1.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Blows a small whistle, points left then right issuing orders, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Every empty pixel must be alpha=0. Absolutely no colored backdrop, gradient, card or panel. No large magical aura.",
+    "generatedFile": "exec-e78898ac-7e7e-45f0-b237-ac43cf541581.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_act2",
+    "hero": "yuzu",
+    "set": "act2",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_act2.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: One small Yuzling lemon creature hops onto her head, she lifts it down and hugs it, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Third reference is EXACT Yuzling design: a small yellow pear-shaped citrus mochi creature with ONLY two green sprout leaves, tiny yellow side nubs, dark round eyes, rosy cheeks and little mouth. NO FLOWER, NO FLOWER CROWN, NO LEGS OR HUMAN CLOTHES, NO rounded orange pet redesign. Use this exact sprout creature in the action. Yuzu remains same size as idle throughout and both grounded boots stay visible. No backdrop, true transparent RGBA.",
+    "generatedFile": "exec-5817449c-6485-4f21-bb8a-83663e42daf5.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet",
+      "assets/characters/yuzling_sheet.png"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_act3",
+    "hero": "yuzu",
+    "set": "act3",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_act3.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Juggles three oranges, catches all three, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Every empty pixel must be alpha=0. Absolutely no colored backdrop, gradient, card or panel. No large magical aura.",
+    "generatedFile": "exec-0b796404-f963-40bd-a2e2-85c87878d390.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_act4",
+    "hero": "yuzu",
+    "set": "act4",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_act4.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Proud upright military salute, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Every empty pixel must be alpha=0. Absolutely no colored backdrop, gradient, card or panel. No large magical aura.",
+    "generatedFile": "exec-c25049cf-f407-4cff-968b-5e2251ab7f72.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_tap",
+    "hero": "yuzu",
+    "set": "tap",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_tap.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Turns to point toward viewer with confident smile, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Generate eight genuinely transparent cells; technical packaging will choose six for tap. Absolutely no backdrop.",
+    "generatedFile": "exec-6b46d694-d349-46a7-b230-5f2c0065c13d.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_yuzu_poke",
+    "hero": "yuzu",
+    "set": "poke",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_yuzu_poke.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: golden amber curls, amber eyes, citrus leaf and white flower hair ornament, green scarf/cape, white and green gold-trim dress, citrus round bag, brown flower-trim boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Puffs cheeks very wide, stamps one foot and flails arms cutely, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Every empty pixel must be alpha=0. Absolutely no colored backdrop, gradient, card or panel. No large magical aura.",
+    "generatedFile": "exec-5c05b0ea-857b-4cee-98df-be8f658b8fe7.png",
+    "references": [
+      "assets/character_cards/card_yuzu.png",
+      "generated yuzu idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  }
+]

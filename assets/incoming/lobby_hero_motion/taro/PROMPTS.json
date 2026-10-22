@@ -1,0 +1,113 @@
+[
+  {
+    "key": "lh_taro_idle",
+    "hero": "taro",
+    "set": "idle",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_idle.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass.  Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Holds compass, looks down at its moving needle then looks around curiously, one blink, looping.  Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-11e101ef-783d-4bc1-8a9e-b375571f389c.png",
+    "references": [
+      "assets/character_cards/card_taro.png"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_greet",
+    "hero": "taro",
+    "set": "greet",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_greet.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Looks up from compass and waves enthusiastically, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-4fbda816-ca06-49b8-bcc8-a232e885a40e.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_act1",
+    "hero": "taro",
+    "set": "act1",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_act1.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Looks through small binoculars turning left then right, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-732f7c6e-61c2-48cb-9bc0-f7c95febe414.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_act2",
+    "hero": "taro",
+    "set": "act2",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_act2.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Tiny electric spark from compass surprises him and makes hair fluffy, smooths hair down, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-592f4635-79b2-4813-bd4a-94784a5a5d87.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_act3",
+    "hero": "taro",
+    "set": "act3",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_act3.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Writes seriously in small notebook then taps chin with pen, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-25f6124a-95c0-4420-8afc-e44174ea22e2.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_act4",
+    "hero": "taro",
+    "set": "act4",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_act4.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Points forward excitedly and makes a small hop, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-cc5494fb-6256-4d44-83b6-577da563bc15.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_tap",
+    "hero": "taro",
+    "set": "tap",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_tap.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Eyes widen, presents compass to viewer to show it off, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Eight transparent cells will be packed to six for runtime. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-3c3b2b7a-d0b0-4692-a41b-ea86d9f7cbc3.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_taro_poke",
+    "hero": "taro",
+    "set": "poke",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_taro_poke.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: short lilac hair, amber eyes, purple ivory gold explorer robes, shorts, compass medallions, cross-body satchel and boots, ornate handheld lightning compass. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Hair fluffs with tiny electric sparks around body and a dazed cute face, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. No colored backdrop, no ground or large aura. Tiny electric sparks only when specified. Stay full body with boots visible. Genuinely transparent.",
+    "generatedFile": "exec-0f6e3077-adec-4797-8006-17af491175e1.png",
+    "references": [
+      "assets/character_cards/card_taro.png",
+      "generated taro idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  }
+]

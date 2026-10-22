@@ -1,0 +1,113 @@
+[
+  {
+    "key": "lh_momo_idle",
+    "hero": "momo",
+    "set": "idle",
+    "tool": "built-in image_gen",
+    "prompt": "Create production game animation sprite sheet lh_momo_idle.png. Reference image is the EXACT character identity and outfit: pink ponytail strawberry chibi brawler with green eyes, red brown white dress and large chocolate strawberry armored boxing gloves, mismatched stockings and boots. Preserve face, hair ornament, costume and painting style. Eight sequential animation frames in a perfectly regular 4 column by 2 row grid, total 2048x1280 pixels, each cell 512x640. Full body same size in every cell, standing relaxed at x256 and feet at y600 within each cell, character height 520px, 16px safe margin. Gentle bouncy breathing on toes, loosely held fists, blink once at frames 4-5. Small coordinated changes, loop seamlessly. No combat pose, no large effects. Background genuinely transparent RGBA. No text, grid lines, labels, ground shadows, scenery or watermark. Artwork isolated in each cell. Same character and scale every frame. This sheet is idle animation only.",
+    "generatedFile": "exec-a6de4f6e-dad0-429f-aaa9-30b0eb22a1da.png",
+    "references": [
+      "assets/character_cards/card_momo.png"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_greet",
+    "hero": "momo",
+    "set": "greet",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_greet.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Jumps slightly, raises one fist triumphantly and winks, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate.",
+    "generatedFile": "exec-37fa88cd-a0a3-4c17-adcd-e9b506ffd865.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_act1",
+    "hero": "momo",
+    "set": "act1",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_act1.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Shadowboxes a left jab then right jab then flashes victory two-finger sign, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate.",
+    "generatedFile": "exec-9b7e425b-3d7c-4318-895a-855bce234d47.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_act2",
+    "hero": "momo",
+    "set": "act2",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_act2.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Blows pink strawberry bubblegum bubble, bubble pops over face, laughs, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate.",
+    "generatedFile": "exec-08e36b20-0023-45b2-8a04-1e72f9d7add1.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_act3",
+    "hero": "momo",
+    "set": "act3",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_act3.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Trips on own feet, wobbles and recovers to a cool confident stance, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Critical correction: she DOES NOT FALL DOWN. Both feet remain close to ground, body remains UPRIGHT the entire time, only a slight sideways wobble and recovery. Never lie down, never rotate the whole body. Keep full standing height. No large effects. All empty background pixels alpha0.",
+    "generatedFile": "exec-a26896aa-1690-4083-ace7-5ec27f04a97c.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_act4",
+    "hero": "momo",
+    "set": "act4",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_act4.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Flexes both arms proudly showing boxing gloves with a tiny sparkle, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate.",
+    "generatedFile": "exec-2620d697-d3e0-416e-898b-72d959539fd0.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_tap",
+    "hero": "momo",
+    "set": "tap",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_tap.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Startles slightly then looks toward viewer with a broad smile, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate. Generate eight transparent cells; technical packaging will choose six for tap. No backdrop whatsoever.",
+    "generatedFile": "exec-2a934e6d-8f1d-442b-a47a-a2457f1c9122.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  },
+  {
+    "key": "lh_momo_poke",
+    "hero": "momo",
+    "set": "poke",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset: production animation sprite sheet lh_momo_poke.png for Mochi Mayhem Lobby. Input image 1 is exact character design reference; preserve face, original costume, palette, ornaments, proportions and fine painted anime chibi style. Identity: pink ponytail, green eyes, strawberry hair ornament, red brown white ruffled dress, huge chocolate strawberry boxing gloves, mismatched stockings, red brown boots. Input image 2 is the idle sheet anchor; match its first cell as the neutral pose and match its character size. Exactly 8 sequential full-body frames, 4 columns by 2 rows, perfectly equal 512x640 cells, total 2048x1280 pixels. Read order left to right then next row. Action: Puffs cheeks and playfully punches gently toward viewer, returns to idle. Frame 0 and last frame must exactly show the neutral idle starting pose. Six middle frames show anticipation, action, recovery. Body height 520px each frame, centered x256, feet at local y600 on grounded frames, margins at least16px, hops at most60px. Do not crop hair, hands, boots or props. Keep head and face identity stable. Movement smooth and coordinated, no character redesign. Genuine transparent RGBA background, no scenery, text, letters, labels, grid lines, shadows, watermark or large combat VFX. Small action props allowed only as specified. Keep all cells fully separate.",
+    "generatedFile": "exec-2bc158be-d569-4458-8f1e-b14276cea828.png",
+    "references": [
+      "assets/character_cards/card_momo.png",
+      "generated momo idle sheet"
+    ],
+    "referenceCommit": "6de71c2303362506991906bd28a6d38addcd43f4",
+    "packing": "Regular grid extraction; remove tiny sliced-neighbor fragments touching cell borders; one constant scale per sheet anchored to its neutral frame; centered and grounded at y600; first/last one-shot frames copied from idle0; idle7 copied from idle0; tap selects source frames 0,1,2,4,6,7. No frame tweening or invented painted details."
+  }
+]

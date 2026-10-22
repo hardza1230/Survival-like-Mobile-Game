@@ -1,0 +1,620 @@
+{
+  "hero": "momo",
+  "status": "source_delivery_checked",
+  "technical": [
+    {
+      "file": "lh_momo_idle.png",
+      "decoded": true,
+      "sha256": "5c3e723dd723dc9a9b6463aa93397f63cf74bc91177832815198c4d2a42dc686",
+      "bytes": 2987533,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 52,
+          "y": 80,
+          "width": 409,
+          "height": 521,
+          "n": 115854
+        },
+        {
+          "x": 56,
+          "y": 81,
+          "width": 400,
+          "height": 520,
+          "n": 113947
+        },
+        {
+          "x": 52,
+          "y": 82,
+          "width": 409,
+          "height": 519,
+          "n": 115524
+        },
+        {
+          "x": 53,
+          "y": 82,
+          "width": 407,
+          "height": 519,
+          "n": 114596
+        },
+        {
+          "x": 47,
+          "y": 81,
+          "width": 418,
+          "height": 520,
+          "n": 116038
+        },
+        {
+          "x": 55,
+          "y": 81,
+          "width": 403,
+          "height": 520,
+          "n": 115050
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_greet.png",
+      "decoded": true,
+      "sha256": "6d2ab1cbfea5e3beba6019e873c0c7937cf3fc79923a9c8323357912bfe020b6",
+      "bytes": 3107803,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 70,
+          "y": 146,
+          "width": 373,
+          "height": 455,
+          "n": 107987
+        },
+        {
+          "x": 60,
+          "y": 89,
+          "width": 392,
+          "height": 512,
+          "n": 120168
+        },
+        {
+          "x": 52,
+          "y": 89,
+          "width": 409,
+          "height": 512,
+          "n": 117645
+        },
+        {
+          "x": 52,
+          "y": 86,
+          "width": 408,
+          "height": 515,
+          "n": 123397
+        },
+        {
+          "x": 52,
+          "y": 99,
+          "width": 409,
+          "height": 502,
+          "n": 120079
+        },
+        {
+          "x": 53,
+          "y": 79,
+          "width": 406,
+          "height": 522,
+          "n": 118970
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_act1.png",
+      "decoded": true,
+      "sha256": "e1d4ee9a7f996418b4a375bf53324bc804c44d1189efc092a5db37a3691ad2b2",
+      "bytes": 3230194,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 44,
+          "y": 79,
+          "width": 424,
+          "height": 522,
+          "n": 126064
+        },
+        {
+          "x": 41,
+          "y": 77,
+          "width": 430,
+          "height": 524,
+          "n": 125995
+        },
+        {
+          "x": 51,
+          "y": 79,
+          "width": 411,
+          "height": 522,
+          "n": 131678
+        },
+        {
+          "x": 53,
+          "y": 82,
+          "width": 407,
+          "height": 519,
+          "n": 130572
+        },
+        {
+          "x": 42,
+          "y": 84,
+          "width": 429,
+          "height": 517,
+          "n": 126131
+        },
+        {
+          "x": 41,
+          "y": 77,
+          "width": 430,
+          "height": 524,
+          "n": 128519
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_act2.png",
+      "decoded": true,
+      "sha256": "4b61fe89dd0c1543f209b0bafc236a101b7fd734d4fa854b0f8d23033d188751",
+      "bytes": 3034366,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 50,
+          "y": 83,
+          "width": 413,
+          "height": 518,
+          "n": 122624
+        },
+        {
+          "x": 50,
+          "y": 83,
+          "width": 413,
+          "height": 518,
+          "n": 122234
+        },
+        {
+          "x": 58,
+          "y": 85,
+          "width": 396,
+          "height": 516,
+          "n": 120799
+        },
+        {
+          "x": 52,
+          "y": 79,
+          "width": 409,
+          "height": 522,
+          "n": 124162
+        },
+        {
+          "x": 48,
+          "y": 79,
+          "width": 416,
+          "height": 522,
+          "n": 123680
+        },
+        {
+          "x": 49,
+          "y": 82,
+          "width": 414,
+          "height": 519,
+          "n": 120860
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_act3.png",
+      "decoded": true,
+      "sha256": "0a61d341c147624ab5ce8ff89d7f12ee73c6d31a5819fadbf01a0fc5286367dc",
+      "bytes": 3158262,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 43,
+          "y": 87,
+          "width": 427,
+          "height": 514,
+          "n": 127208
+        },
+        {
+          "x": 46,
+          "y": 85,
+          "width": 420,
+          "height": 516,
+          "n": 130311
+        },
+        {
+          "x": 66,
+          "y": 81,
+          "width": 381,
+          "height": 520,
+          "n": 122314
+        },
+        {
+          "x": 51,
+          "y": 80,
+          "width": 411,
+          "height": 521,
+          "n": 122340
+        },
+        {
+          "x": 43,
+          "y": 79,
+          "width": 427,
+          "height": 522,
+          "n": 131876
+        },
+        {
+          "x": 53,
+          "y": 78,
+          "width": 406,
+          "height": 523,
+          "n": 123639
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_act4.png",
+      "decoded": true,
+      "sha256": "606b36741855b0b6d3631a77ec26b52fef94fc5d4074e63edab2bd5a930f09ce",
+      "bytes": 3152709,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 49,
+          "y": 97,
+          "width": 414,
+          "height": 504,
+          "n": 120438
+        },
+        {
+          "x": 38,
+          "y": 84,
+          "width": 436,
+          "height": 517,
+          "n": 130065
+        },
+        {
+          "x": 45,
+          "y": 74,
+          "width": 423,
+          "height": 527,
+          "n": 130578
+        },
+        {
+          "x": 50,
+          "y": 73,
+          "width": 412,
+          "height": 528,
+          "n": 130639
+        },
+        {
+          "x": 54,
+          "y": 86,
+          "width": 405,
+          "height": 515,
+          "n": 121833
+        },
+        {
+          "x": 57,
+          "y": 84,
+          "width": 398,
+          "height": 517,
+          "n": 120048
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_tap.png",
+      "decoded": true,
+      "sha256": "8e5c69367cf8147315c0d615aac58d2b21d82b3cb4bef4da86e61abe3e0b01db",
+      "bytes": 2171447,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 49,
+          "y": 85,
+          "width": 414,
+          "height": 516,
+          "n": 119673
+        },
+        {
+          "x": 57,
+          "y": 86,
+          "width": 398,
+          "height": 515,
+          "n": 121680
+        },
+        {
+          "x": 56,
+          "y": 82,
+          "width": 400,
+          "height": 519,
+          "n": 121424
+        },
+        {
+          "x": 57,
+          "y": 82,
+          "width": 399,
+          "height": 519,
+          "n": 122807
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    },
+    {
+      "file": "lh_momo_poke.png",
+      "decoded": true,
+      "sha256": "11ed7d92dfe90852093e4e98aced6cde9889d9dac867850bfae372a019382847",
+      "bytes": 3186580,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        },
+        {
+          "x": 43,
+          "y": 83,
+          "width": 427,
+          "height": 518,
+          "n": 121248
+        },
+        {
+          "x": 53,
+          "y": 82,
+          "width": 406,
+          "height": 519,
+          "n": 127630
+        },
+        {
+          "x": 46,
+          "y": 80,
+          "width": 421,
+          "height": 521,
+          "n": 135648
+        },
+        {
+          "x": 51,
+          "y": 84,
+          "width": 410,
+          "height": 517,
+          "n": 122301
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 427,
+          "height": 520,
+          "n": 126597
+        },
+        {
+          "x": 55,
+          "y": 82,
+          "width": 402,
+          "height": 519,
+          "n": 119644
+        },
+        {
+          "x": 59,
+          "y": 81,
+          "width": 394,
+          "height": 520,
+          "n": 113463
+        }
+      ]
+    }
+  ],
+  "visualReview": "Storyboards reviewed at all48 sets; bright/dark stage GIFs supplied for owner review. Face, costume and action readability reviewed; exact temporal smoothness and phone visual/FPS remain owner review.",
+  "runtimeIntegrated": false,
+  "githubUploaded": false,
+  "checks": [
+    {
+      "key": "lh_momo_idle",
+      "pngChunks": 368,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_idle.gif"
+    },
+    {
+      "key": "lh_momo_greet",
+      "pngChunks": 382,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_greet.gif"
+    },
+    {
+      "key": "lh_momo_act1",
+      "pngChunks": 397,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_act1.gif"
+    },
+    {
+      "key": "lh_momo_act2",
+      "pngChunks": 373,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_act2.gif"
+    },
+    {
+      "key": "lh_momo_act3",
+      "pngChunks": 388,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_act3.gif"
+    },
+    {
+      "key": "lh_momo_act4",
+      "pngChunks": 388,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_act4.gif"
+    },
+    {
+      "key": "lh_momo_tap",
+      "pngChunks": 268,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 6,
+      "gif": "momo/previews/lh_momo_tap.gif"
+    },
+    {
+      "key": "lh_momo_poke",
+      "pngChunks": 392,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "momo/previews/lh_momo_poke.gif"
+    }
+  ],
+  "notes": [
+    "All one-shot endpoints and idle7 are exact idle0 pixel copies.",
+    "Per-sheet scale anchored to its neutral frame; posture/props change visible bounds.",
+    "Cocoa neutral496px is approximately500px and preserves16px side safety.",
+    "8 source poses generated for tap; frames0,1,2,4,6,7 selected for the6-frame delivery.",
+    "Tiny border-touching sliced-neighbor fragments removed during grid extraction."
+  ]
+}

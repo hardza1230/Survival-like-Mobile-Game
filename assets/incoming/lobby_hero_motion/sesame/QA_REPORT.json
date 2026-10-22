@@ -1,0 +1,620 @@
+{
+  "hero": "sesame",
+  "status": "source_delivery_checked",
+  "technical": [
+    {
+      "file": "lh_sesame_idle.png",
+      "decoded": true,
+      "sha256": "972b5c09eccd6a7ba6489103e534f599459474165a1516e59c21ee50e7d04b59",
+      "bytes": 3636739,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 52,
+          "y": 81,
+          "width": 409,
+          "height": 520,
+          "n": 142002
+        },
+        {
+          "x": 49,
+          "y": 82,
+          "width": 415,
+          "height": 519,
+          "n": 148262
+        },
+        {
+          "x": 59,
+          "y": 82,
+          "width": 394,
+          "height": 519,
+          "n": 142054
+        },
+        {
+          "x": 46,
+          "y": 76,
+          "width": 421,
+          "height": 525,
+          "n": 148052
+        },
+        {
+          "x": 39,
+          "y": 77,
+          "width": 434,
+          "height": 524,
+          "n": 146236
+        },
+        {
+          "x": 39,
+          "y": 74,
+          "width": 435,
+          "height": 527,
+          "n": 159335
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_greet.png",
+      "decoded": true,
+      "sha256": "094774249a4615b6835c4e7861a2f026bb42cf3ff4edfc708af8702e6081dfbf",
+      "bytes": 3517570,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 43,
+          "y": 90,
+          "width": 427,
+          "height": 511,
+          "n": 148944
+        },
+        {
+          "x": 40,
+          "y": 129,
+          "width": 433,
+          "height": 472,
+          "n": 139867
+        },
+        {
+          "x": 40,
+          "y": 158,
+          "width": 432,
+          "height": 443,
+          "n": 133254
+        },
+        {
+          "x": 47,
+          "y": 78,
+          "width": 419,
+          "height": 523,
+          "n": 149039
+        },
+        {
+          "x": 45,
+          "y": 80,
+          "width": 423,
+          "height": 521,
+          "n": 150590
+        },
+        {
+          "x": 45,
+          "y": 80,
+          "width": 422,
+          "height": 521,
+          "n": 151435
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_act1.png",
+      "decoded": true,
+      "sha256": "2fb542f96d5a14663504a502d2a90c71b9c21a54db0d0445681d9516e6fe6b33",
+      "bytes": 3633150,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 46,
+          "y": 80,
+          "width": 421,
+          "height": 521,
+          "n": 155217
+        },
+        {
+          "x": 40,
+          "y": 80,
+          "width": 432,
+          "height": 521,
+          "n": 155527
+        },
+        {
+          "x": 56,
+          "y": 79,
+          "width": 400,
+          "height": 522,
+          "n": 148354
+        },
+        {
+          "x": 46,
+          "y": 74,
+          "width": 420,
+          "height": 527,
+          "n": 157723
+        },
+        {
+          "x": 43,
+          "y": 75,
+          "width": 426,
+          "height": 526,
+          "n": 156011
+        },
+        {
+          "x": 41,
+          "y": 82,
+          "width": 430,
+          "height": 519,
+          "n": 156046
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_act2.png",
+      "decoded": true,
+      "sha256": "ab321f97f403169101dddd9220ac0d23f2ab2ded124b5953ebd5f00f38dec111",
+      "bytes": 3578212,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 48,
+          "y": 91,
+          "width": 417,
+          "height": 510,
+          "n": 152135
+        },
+        {
+          "x": 45,
+          "y": 84,
+          "width": 422,
+          "height": 517,
+          "n": 155346
+        },
+        {
+          "x": 54,
+          "y": 92,
+          "width": 404,
+          "height": 509,
+          "n": 145853
+        },
+        {
+          "x": 48,
+          "y": 87,
+          "width": 416,
+          "height": 514,
+          "n": 151684
+        },
+        {
+          "x": 52,
+          "y": 91,
+          "width": 409,
+          "height": 510,
+          "n": 151739
+        },
+        {
+          "x": 50,
+          "y": 84,
+          "width": 412,
+          "height": 517,
+          "n": 153866
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_act3.png",
+      "decoded": true,
+      "sha256": "4f6a142d6c25d5459a88454e1305dbde51fd7b3f3ea0ec70f55db181b46ef47b",
+      "bytes": 3617078,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 46,
+          "y": 86,
+          "width": 420,
+          "height": 515,
+          "n": 150941
+        },
+        {
+          "x": 48,
+          "y": 100,
+          "width": 416,
+          "height": 501,
+          "n": 147190
+        },
+        {
+          "x": 46,
+          "y": 89,
+          "width": 420,
+          "height": 512,
+          "n": 152352
+        },
+        {
+          "x": 47,
+          "y": 81,
+          "width": 419,
+          "height": 520,
+          "n": 153382
+        },
+        {
+          "x": 48,
+          "y": 85,
+          "width": 417,
+          "height": 516,
+          "n": 151881
+        },
+        {
+          "x": 48,
+          "y": 86,
+          "width": 416,
+          "height": 515,
+          "n": 147971
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_act4.png",
+      "decoded": true,
+      "sha256": "0198beea310afb2acb09082562adb6edd32a19b79ae9f23b5ee0d13101be884b",
+      "bytes": 3664086,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 47,
+          "y": 74,
+          "width": 418,
+          "height": 527,
+          "n": 163070
+        },
+        {
+          "x": 47,
+          "y": 88,
+          "width": 419,
+          "height": 513,
+          "n": 154893
+        },
+        {
+          "x": 47,
+          "y": 80,
+          "width": 418,
+          "height": 521,
+          "n": 153654
+        },
+        {
+          "x": 42,
+          "y": 78,
+          "width": 428,
+          "height": 523,
+          "n": 159309
+        },
+        {
+          "x": 45,
+          "y": 78,
+          "width": 423,
+          "height": 523,
+          "n": 158693
+        },
+        {
+          "x": 47,
+          "y": 78,
+          "width": 418,
+          "height": 523,
+          "n": 154568
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_tap.png",
+      "decoded": true,
+      "sha256": "7a1ebff8ebcc4cf6a9c8bdeca0c511b6fc2528de37da6def1dec1b641f3c60d9",
+      "bytes": 2653409,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 47,
+          "y": 90,
+          "width": 419,
+          "height": 511,
+          "n": 154018
+        },
+        {
+          "x": 42,
+          "y": 91,
+          "width": 429,
+          "height": 510,
+          "n": 152328
+        },
+        {
+          "x": 45,
+          "y": 82,
+          "width": 422,
+          "height": 519,
+          "n": 151021
+        },
+        {
+          "x": 48,
+          "y": 80,
+          "width": 416,
+          "height": 521,
+          "n": 154937
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    },
+    {
+      "file": "lh_sesame_poke.png",
+      "decoded": true,
+      "sha256": "0ba14bd8211948be4a1c21994b15e6bd948971d18afa2fda3c696254eedf240b",
+      "bytes": 3698459,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        },
+        {
+          "x": 46,
+          "y": 96,
+          "width": 421,
+          "height": 505,
+          "n": 153749
+        },
+        {
+          "x": 48,
+          "y": 90,
+          "width": 417,
+          "height": 511,
+          "n": 156697
+        },
+        {
+          "x": 43,
+          "y": 112,
+          "width": 426,
+          "height": 489,
+          "n": 149444
+        },
+        {
+          "x": 42,
+          "y": 94,
+          "width": 429,
+          "height": 507,
+          "n": 159454
+        },
+        {
+          "x": 43,
+          "y": 101,
+          "width": 427,
+          "height": 500,
+          "n": 156422
+        },
+        {
+          "x": 43,
+          "y": 90,
+          "width": 427,
+          "height": 511,
+          "n": 155832
+        },
+        {
+          "x": 43,
+          "y": 81,
+          "width": 426,
+          "height": 520,
+          "n": 148410
+        }
+      ]
+    }
+  ],
+  "visualReview": "Storyboards reviewed at all48 sets; bright/dark stage GIFs supplied for owner review. Face, costume and action readability reviewed; exact temporal smoothness and phone visual/FPS remain owner review.",
+  "runtimeIntegrated": false,
+  "githubUploaded": false,
+  "checks": [
+    {
+      "key": "lh_sesame_idle",
+      "pngChunks": 447,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_idle.gif"
+    },
+    {
+      "key": "lh_sesame_greet",
+      "pngChunks": 432,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_greet.gif"
+    },
+    {
+      "key": "lh_sesame_act1",
+      "pngChunks": 446,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_act1.gif"
+    },
+    {
+      "key": "lh_sesame_act2",
+      "pngChunks": 440,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_act2.gif"
+    },
+    {
+      "key": "lh_sesame_act3",
+      "pngChunks": 444,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_act3.gif"
+    },
+    {
+      "key": "lh_sesame_act4",
+      "pngChunks": 450,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_act4.gif"
+    },
+    {
+      "key": "lh_sesame_tap",
+      "pngChunks": 327,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 6,
+      "gif": "sesame/previews/lh_sesame_tap.gif"
+    },
+    {
+      "key": "lh_sesame_poke",
+      "pngChunks": 454,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "sesame/previews/lh_sesame_poke.gif"
+    }
+  ],
+  "notes": [
+    "All one-shot endpoints and idle7 are exact idle0 pixel copies.",
+    "Per-sheet scale anchored to its neutral frame; posture/props change visible bounds.",
+    "Cocoa neutral496px is approximately500px and preserves16px side safety.",
+    "8 source poses generated for tap; frames0,1,2,4,6,7 selected for the6-frame delivery.",
+    "Tiny border-touching sliced-neighbor fragments removed during grid extraction."
+  ]
+}

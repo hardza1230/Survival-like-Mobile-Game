@@ -1,0 +1,620 @@
+{
+  "hero": "taro",
+  "status": "source_delivery_checked",
+  "technical": [
+    {
+      "file": "lh_taro_idle.png",
+      "decoded": true,
+      "sha256": "4a6a0bf83288307f87bb55c17656e9dbebe49e01c44411a1692f7ecb0ad21c21",
+      "bytes": 2646604,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 62,
+          "y": 83,
+          "width": 389,
+          "height": 518,
+          "n": 96509
+        },
+        {
+          "x": 71,
+          "y": 85,
+          "width": 371,
+          "height": 516,
+          "n": 99534
+        },
+        {
+          "x": 76,
+          "y": 81,
+          "width": 361,
+          "height": 520,
+          "n": 98874
+        },
+        {
+          "x": 68,
+          "y": 82,
+          "width": 376,
+          "height": 519,
+          "n": 104315
+        },
+        {
+          "x": 59,
+          "y": 82,
+          "width": 394,
+          "height": 519,
+          "n": 101042
+        },
+        {
+          "x": 62,
+          "y": 94,
+          "width": 389,
+          "height": 507,
+          "n": 94250
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_greet.png",
+      "decoded": true,
+      "sha256": "dca96136e65c69691b4371be0d97868e48d4e9c1a6cde00d46a588f59f66b601",
+      "bytes": 2835787,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 59,
+          "y": 76,
+          "width": 395,
+          "height": 525,
+          "n": 113071
+        },
+        {
+          "x": 66,
+          "y": 80,
+          "width": 380,
+          "height": 521,
+          "n": 114931
+        },
+        {
+          "x": 44,
+          "y": 74,
+          "width": 424,
+          "height": 527,
+          "n": 113656
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 112085
+        },
+        {
+          "x": 75,
+          "y": 88,
+          "width": 363,
+          "height": 513,
+          "n": 104250
+        },
+        {
+          "x": 73,
+          "y": 87,
+          "width": 367,
+          "height": 514,
+          "n": 101098
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_act1.png",
+      "decoded": true,
+      "sha256": "83301a143646e64073c83bf1776be7a386927869bf6e2f66d6c75ba12a41d683",
+      "bytes": 2733670,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 75,
+          "y": 76,
+          "width": 362,
+          "height": 525,
+          "n": 108328
+        },
+        {
+          "x": 66,
+          "y": 78,
+          "width": 380,
+          "height": 523,
+          "n": 106546
+        },
+        {
+          "x": 75,
+          "y": 79,
+          "width": 363,
+          "height": 522,
+          "n": 103467
+        },
+        {
+          "x": 64,
+          "y": 71,
+          "width": 385,
+          "height": 530,
+          "n": 109004
+        },
+        {
+          "x": 59,
+          "y": 76,
+          "width": 394,
+          "height": 525,
+          "n": 109811
+        },
+        {
+          "x": 67,
+          "y": 80,
+          "width": 378,
+          "height": 521,
+          "n": 105884
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_act2.png",
+      "decoded": true,
+      "sha256": "e95997f9da06359164aa88d4aecf1f4fe6b69a867167a3c9674012ddd345748f",
+      "bytes": 2862795,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 68,
+          "y": 82,
+          "width": 377,
+          "height": 519,
+          "n": 105489
+        },
+        {
+          "x": 64,
+          "y": 81,
+          "width": 385,
+          "height": 520,
+          "n": 118442
+        },
+        {
+          "x": 78,
+          "y": 81,
+          "width": 356,
+          "height": 520,
+          "n": 111675
+        },
+        {
+          "x": 65,
+          "y": 84,
+          "width": 383,
+          "height": 517,
+          "n": 115313
+        },
+        {
+          "x": 59,
+          "y": 83,
+          "width": 394,
+          "height": 518,
+          "n": 114877
+        },
+        {
+          "x": 73,
+          "y": 84,
+          "width": 366,
+          "height": 517,
+          "n": 104068
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_act3.png",
+      "decoded": true,
+      "sha256": "fc66a70b5d0de710893c34024627dc9e17bb5e05c6302d3708ec8ecc3f31d2df",
+      "bytes": 2631334,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 62,
+          "y": 81,
+          "width": 389,
+          "height": 520,
+          "n": 101833
+        },
+        {
+          "x": 69,
+          "y": 84,
+          "width": 374,
+          "height": 517,
+          "n": 101651
+        },
+        {
+          "x": 61,
+          "y": 79,
+          "width": 391,
+          "height": 522,
+          "n": 104495
+        },
+        {
+          "x": 57,
+          "y": 85,
+          "width": 398,
+          "height": 516,
+          "n": 105978
+        },
+        {
+          "x": 60,
+          "y": 85,
+          "width": 392,
+          "height": 516,
+          "n": 107504
+        },
+        {
+          "x": 67,
+          "y": 84,
+          "width": 378,
+          "height": 517,
+          "n": 100301
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_act4.png",
+      "decoded": true,
+      "sha256": "fec91d8dfe3ce1eea0f59b763d1cb1eefaed7cf59479feb8864912cba3b6405c",
+      "bytes": 3033758,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 51,
+          "y": 82,
+          "width": 410,
+          "height": 519,
+          "n": 120185
+        },
+        {
+          "x": 49,
+          "y": 90,
+          "width": 414,
+          "height": 511,
+          "n": 125888
+        },
+        {
+          "x": 50,
+          "y": 84,
+          "width": 413,
+          "height": 517,
+          "n": 118061
+        },
+        {
+          "x": 48,
+          "y": 82,
+          "width": 416,
+          "height": 519,
+          "n": 120846
+        },
+        {
+          "x": 43,
+          "y": 93,
+          "width": 426,
+          "height": 508,
+          "n": 111462
+        },
+        {
+          "x": 67,
+          "y": 82,
+          "width": 378,
+          "height": 519,
+          "n": 106041
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_tap.png",
+      "decoded": true,
+      "sha256": "2c1e842e8b92018850f8d856e30429b38a7253f9f810bcdc0d89b0380ad62296",
+      "bytes": 2105741,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 56,
+          "y": 85,
+          "width": 401,
+          "height": 516,
+          "n": 118896
+        },
+        {
+          "x": 56,
+          "y": 86,
+          "width": 401,
+          "height": 515,
+          "n": 123701
+        },
+        {
+          "x": 63,
+          "y": 89,
+          "width": 387,
+          "height": 512,
+          "n": 117545
+        },
+        {
+          "x": 72,
+          "y": 93,
+          "width": 368,
+          "height": 508,
+          "n": 100045
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    },
+    {
+      "file": "lh_taro_poke.png",
+      "decoded": true,
+      "sha256": "0dd88920f011324993e410140a89f6f28a5bd7e1793e47c6d6ed3fd6d1165791",
+      "bytes": 2753638,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        },
+        {
+          "x": 69,
+          "y": 84,
+          "width": 374,
+          "height": 517,
+          "n": 107184
+        },
+        {
+          "x": 63,
+          "y": 69,
+          "width": 387,
+          "height": 532,
+          "n": 113974
+        },
+        {
+          "x": 69,
+          "y": 83,
+          "width": 375,
+          "height": 518,
+          "n": 106933
+        },
+        {
+          "x": 69,
+          "y": 102,
+          "width": 375,
+          "height": 499,
+          "n": 102147
+        },
+        {
+          "x": 67,
+          "y": 96,
+          "width": 379,
+          "height": 505,
+          "n": 105435
+        },
+        {
+          "x": 70,
+          "y": 95,
+          "width": 372,
+          "height": 506,
+          "n": 100996
+        },
+        {
+          "x": 79,
+          "y": 81,
+          "width": 355,
+          "height": 520,
+          "n": 96291
+        }
+      ]
+    }
+  ],
+  "visualReview": "Storyboards reviewed at all48 sets; bright/dark stage GIFs supplied for owner review. Face, costume and action readability reviewed; exact temporal smoothness and phone visual/FPS remain owner review.",
+  "runtimeIntegrated": false,
+  "githubUploaded": false,
+  "checks": [
+    {
+      "key": "lh_taro_idle",
+      "pngChunks": 326,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_idle.gif"
+    },
+    {
+      "key": "lh_taro_greet",
+      "pngChunks": 349,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_greet.gif"
+    },
+    {
+      "key": "lh_taro_act1",
+      "pngChunks": 337,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_act1.gif"
+    },
+    {
+      "key": "lh_taro_act2",
+      "pngChunks": 352,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_act2.gif"
+    },
+    {
+      "key": "lh_taro_act3",
+      "pngChunks": 324,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_act3.gif"
+    },
+    {
+      "key": "lh_taro_act4",
+      "pngChunks": 373,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_act4.gif"
+    },
+    {
+      "key": "lh_taro_tap",
+      "pngChunks": 260,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 6,
+      "gif": "taro/previews/lh_taro_tap.gif"
+    },
+    {
+      "key": "lh_taro_poke",
+      "pngChunks": 339,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "taro/previews/lh_taro_poke.gif"
+    }
+  ],
+  "notes": [
+    "All one-shot endpoints and idle7 are exact idle0 pixel copies.",
+    "Per-sheet scale anchored to its neutral frame; posture/props change visible bounds.",
+    "Cocoa neutral496px is approximately500px and preserves16px side safety.",
+    "8 source poses generated for tap; frames0,1,2,4,6,7 selected for the6-frame delivery.",
+    "Tiny border-touching sliced-neighbor fragments removed during grid extraction."
+  ]
+}

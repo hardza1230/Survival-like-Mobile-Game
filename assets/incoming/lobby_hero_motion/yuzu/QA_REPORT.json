@@ -1,0 +1,620 @@
+{
+  "hero": "yuzu",
+  "status": "source_delivery_checked",
+  "technical": [
+    {
+      "file": "lh_yuzu_idle.png",
+      "decoded": true,
+      "sha256": "661a9bdc7aed30e6d0ed3451462f403d7da1b3157762e1f48b6df5ed2ee68a46",
+      "bytes": 3196585,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 60,
+          "y": 81,
+          "width": 393,
+          "height": 520,
+          "n": 123316
+        },
+        {
+          "x": 64,
+          "y": 83,
+          "width": 385,
+          "height": 518,
+          "n": 124692
+        },
+        {
+          "x": 55,
+          "y": 81,
+          "width": 403,
+          "height": 520,
+          "n": 125383
+        },
+        {
+          "x": 58,
+          "y": 84,
+          "width": 397,
+          "height": 517,
+          "n": 125020
+        },
+        {
+          "x": 62,
+          "y": 86,
+          "width": 388,
+          "height": 515,
+          "n": 124360
+        },
+        {
+          "x": 51,
+          "y": 86,
+          "width": 411,
+          "height": 515,
+          "n": 127106
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_greet.png",
+      "decoded": true,
+      "sha256": "59ecf8e9e6810540b06fb2fccb2348f36576a407ece944f04ce22fac816072bb",
+      "bytes": 3272640,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 61,
+          "y": 96,
+          "width": 390,
+          "height": 505,
+          "n": 127966
+        },
+        {
+          "x": 56,
+          "y": 86,
+          "width": 400,
+          "height": 515,
+          "n": 127883
+        },
+        {
+          "x": 49,
+          "y": 83,
+          "width": 414,
+          "height": 518,
+          "n": 132122
+        },
+        {
+          "x": 52,
+          "y": 83,
+          "width": 409,
+          "height": 518,
+          "n": 129218
+        },
+        {
+          "x": 49,
+          "y": 85,
+          "width": 415,
+          "height": 516,
+          "n": 133747
+        },
+        {
+          "x": 50,
+          "y": 91,
+          "width": 413,
+          "height": 510,
+          "n": 135007
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_act1.png",
+      "decoded": true,
+      "sha256": "0864d043e54fb67294b00c5605599baece593ec569c02bdc57aa84c16a165078",
+      "bytes": 3242615,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 56,
+          "y": 81,
+          "width": 400,
+          "height": 520,
+          "n": 129132
+        },
+        {
+          "x": 49,
+          "y": 80,
+          "width": 415,
+          "height": 521,
+          "n": 128525
+        },
+        {
+          "x": 53,
+          "y": 80,
+          "width": 407,
+          "height": 521,
+          "n": 129005
+        },
+        {
+          "x": 48,
+          "y": 88,
+          "width": 417,
+          "height": 513,
+          "n": 130502
+        },
+        {
+          "x": 46,
+          "y": 82,
+          "width": 421,
+          "height": 519,
+          "n": 131513
+        },
+        {
+          "x": 51,
+          "y": 82,
+          "width": 410,
+          "height": 519,
+          "n": 133766
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_act2.png",
+      "decoded": true,
+      "sha256": "6829a21d71b74e7aef6eac91139c16d02e47d3cf06b657ccf910fc4274a834f6",
+      "bytes": 3260762,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 49,
+          "y": 72,
+          "width": 414,
+          "height": 529,
+          "n": 133409
+        },
+        {
+          "x": 56,
+          "y": 85,
+          "width": 400,
+          "height": 516,
+          "n": 128609
+        },
+        {
+          "x": 58,
+          "y": 120,
+          "width": 396,
+          "height": 481,
+          "n": 119348
+        },
+        {
+          "x": 55,
+          "y": 83,
+          "width": 402,
+          "height": 518,
+          "n": 128539
+        },
+        {
+          "x": 55,
+          "y": 98,
+          "width": 402,
+          "height": 503,
+          "n": 128230
+        },
+        {
+          "x": 43,
+          "y": 73,
+          "width": 427,
+          "height": 528,
+          "n": 135797
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_act3.png",
+      "decoded": true,
+      "sha256": "74114a0ba444bfd3e34f4b166dc01dbdc0be66978ed096395e676087ca48265c",
+      "bytes": 3218180,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 60,
+          "y": 81,
+          "width": 392,
+          "height": 520,
+          "n": 128041
+        },
+        {
+          "x": 55,
+          "y": 76,
+          "width": 402,
+          "height": 525,
+          "n": 125828
+        },
+        {
+          "x": 58,
+          "y": 71,
+          "width": 397,
+          "height": 530,
+          "n": 126283
+        },
+        {
+          "x": 57,
+          "y": 77,
+          "width": 399,
+          "height": 524,
+          "n": 125782
+        },
+        {
+          "x": 58,
+          "y": 85,
+          "width": 396,
+          "height": 516,
+          "n": 126401
+        },
+        {
+          "x": 57,
+          "y": 86,
+          "width": 399,
+          "height": 515,
+          "n": 130200
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_act4.png",
+      "decoded": true,
+      "sha256": "7a0ea411d40f002e66861b71427885de8d6804a3b0682a0bff86174d20fa922a",
+      "bytes": 3236619,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 55,
+          "y": 83,
+          "width": 403,
+          "height": 518,
+          "n": 129230
+        },
+        {
+          "x": 56,
+          "y": 83,
+          "width": 401,
+          "height": 518,
+          "n": 129809
+        },
+        {
+          "x": 51,
+          "y": 83,
+          "width": 411,
+          "height": 518,
+          "n": 129020
+        },
+        {
+          "x": 53,
+          "y": 83,
+          "width": 406,
+          "height": 518,
+          "n": 128606
+        },
+        {
+          "x": 50,
+          "y": 83,
+          "width": 412,
+          "height": 518,
+          "n": 130588
+        },
+        {
+          "x": 54,
+          "y": 83,
+          "width": 404,
+          "height": 518,
+          "n": 129758
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_tap.png",
+      "decoded": true,
+      "sha256": "a50adc4a606f64b94c6705e0d406a104473646e2e4b295252f34a06fbb8fa4af",
+      "bytes": 2352331,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 53,
+          "y": 76,
+          "width": 407,
+          "height": 525,
+          "n": 131117
+        },
+        {
+          "x": 51,
+          "y": 88,
+          "width": 411,
+          "height": 513,
+          "n": 131519
+        },
+        {
+          "x": 51,
+          "y": 78,
+          "width": 411,
+          "height": 523,
+          "n": 136344
+        },
+        {
+          "x": 54,
+          "y": 82,
+          "width": 405,
+          "height": 519,
+          "n": 133389
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    },
+    {
+      "file": "lh_yuzu_poke.png",
+      "decoded": true,
+      "sha256": "c0abfb89a63ff74e2a66fb35a34dd4f197c7cc90b36a879b76e70a5e27aef1aa",
+      "bytes": 3239230,
+      "endpointPixelsMatchIdle": true,
+      "bboxes": [
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        },
+        {
+          "x": 53,
+          "y": 113,
+          "width": 407,
+          "height": 488,
+          "n": 128714
+        },
+        {
+          "x": 44,
+          "y": 80,
+          "width": 425,
+          "height": 521,
+          "n": 135304
+        },
+        {
+          "x": 50,
+          "y": 89,
+          "width": 413,
+          "height": 512,
+          "n": 132542
+        },
+        {
+          "x": 49,
+          "y": 84,
+          "width": 415,
+          "height": 517,
+          "n": 127556
+        },
+        {
+          "x": 57,
+          "y": 93,
+          "width": 399,
+          "height": 508,
+          "n": 128055
+        },
+        {
+          "x": 53,
+          "y": 92,
+          "width": 407,
+          "height": 509,
+          "n": 129296
+        },
+        {
+          "x": 53,
+          "y": 81,
+          "width": 407,
+          "height": 520,
+          "n": 125652
+        }
+      ]
+    }
+  ],
+  "visualReview": "Storyboards reviewed at all48 sets; bright/dark stage GIFs supplied for owner review. Face, costume and action readability reviewed; exact temporal smoothness and phone visual/FPS remain owner review.",
+  "runtimeIntegrated": false,
+  "githubUploaded": false,
+  "checks": [
+    {
+      "key": "lh_yuzu_idle",
+      "pngChunks": 393,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_idle.gif"
+    },
+    {
+      "key": "lh_yuzu_greet",
+      "pngChunks": 402,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_greet.gif"
+    },
+    {
+      "key": "lh_yuzu_act1",
+      "pngChunks": 399,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_act1.gif"
+    },
+    {
+      "key": "lh_yuzu_act2",
+      "pngChunks": 401,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_act2.gif"
+    },
+    {
+      "key": "lh_yuzu_act3",
+      "pngChunks": 396,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_act3.gif"
+    },
+    {
+      "key": "lh_yuzu_act4",
+      "pngChunks": 398,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_act4.gif"
+    },
+    {
+      "key": "lh_yuzu_tap",
+      "pngChunks": 290,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 6,
+      "gif": "yuzu/previews/lh_yuzu_tap.gif"
+    },
+    {
+      "key": "lh_yuzu_poke",
+      "pngChunks": 398,
+      "dimensions": true,
+      "crc": true,
+      "hash": true,
+      "alpha": true,
+      "safeMargins": true,
+      "idleEndpointExact": true,
+      "gifFrames": 8,
+      "gif": "yuzu/previews/lh_yuzu_poke.gif"
+    }
+  ],
+  "notes": [
+    "All one-shot endpoints and idle7 are exact idle0 pixel copies.",
+    "Per-sheet scale anchored to its neutral frame; posture/props change visible bounds.",
+    "Cocoa neutral496px is approximately500px and preserves16px side safety.",
+    "8 source poses generated for tap; frames0,1,2,4,6,7 selected for the6-frame delivery.",
+    "Tiny border-touching sliced-neighbor fragments removed during grid extraction."
+  ]
+}
