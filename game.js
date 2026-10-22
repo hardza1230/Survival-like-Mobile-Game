@@ -8291,12 +8291,12 @@ class Game extends Phaser.Scene {
     if(st==='play'||st==='paused'){ this.togglePause(); return true; }
     return true; }
   handleTap(px,py){ if(this._bookSkip&&this.state==='menu'){this._bookSkip();return;} const zs=this.tapZones;let hit=null; const _sc=(this.state==='menu'&&this._mScrollMax>0)?(this._mScroll||0):0; py+=_sc;const feedback=(z,x,y)=>this._tapFeedback({...z,y:z.y-_sc},x,y-_sc);
-    { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); this._pressBounce(bz,()=>bz.fn(),'back'); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
+    { const bz=zs.find(z=>z.back); if(bz&&px>=bz.x&&px<=bz.x+bz.w&&py>=bz.y&&py<=bz.y+bz.h){ feedback(bz,px,py); (this._pressBounce?this._pressBounce(bz,()=>bz.fn(),'back'):Sfx.uiAction('back',()=>bz.fn())); return; } }   // v6.50.8 Back ชนะเสมอในกรอบขยาย
     for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; if(px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h){hit=z;break;} }
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
       for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; const ew=Math.max(0,(MIN-z.w)/2)+SLOP,eh=Math.max(0,(MIN-z.h)/2)+SLOP;
         if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
-    if(!hit)return; feedback(hit,px,py); this._pressBounce(hit,()=>hit.fn(),hit.sound||'click'); }
+    if(!hit)return; feedback(hit,px,py); (this._pressBounce?this._pressBounce(hit,()=>hit.fn(),hit.sound||'click'):Sfx.uiAction(hit.sound||'click',()=>hit.fn())); }
   // v7.9.53 เจ้าของ: กดแล้วเด้ง ๆ ให้รู้สึกสนุก · ชิ้นส่วนของปุ่ม (ภาพ/ตัวหนังสือ/กรอบที่อยู่ในกรอบแตะ) ยุบ 0.86 → เด้ง 1.08 แล้วค่อยทำงาน (~130ms) · ไม่มีชิ้นให้เด้ง = ทำทันทีเหมือนเดิม
   _pressBounce(z,fn,kind){ const run=()=>Sfx.uiAction(kind,fn);
     if(this._pressBusy)return; if(this.state!=='menu'||!this.time||!this.tweens||!this.menu?.list||z.nav)return run();
