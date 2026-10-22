@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.51';
+const GAME_VERSION = '7.9.52';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.52',date:'2026-10-22',title:'Smoother bottom menu',items:['The gold highlight on the bottom menu now slides to the tab you tap, and the icon pops in','All bottom tabs are the same width, so icons no longer jump around when you switch']},
   {v:'7.9.51',date:'2026-10-22',title:'New Lobby look',items:['The Home page has a new honey-and-gold look: a stage panel with chapter, stage name and stars, and a big BATTLE button underneath','New icons for the side buttons and the bottom menu, and every bottom tab now shows its name','Tap the + next to your Sugar to open the Bazaar']},
   {v:'7.9.50',date:'2026-10-22',title:'Card types unlock as you go',items:['Stage 1 now only offers basic attack and power cards; new card types join one stage at a time: Build Path (C1-2), Relics (C1-3), Unique upgrades (C1-4), Modifiers (C1-5), Mutation and Evolution (C2-1), Flavor Infusion (C2-2), Trade-offs (C2-3)','The first time a new card type shows up, a short note under the cards explains it','The Lobby shows which new cards the next stage brings']},
   {v:'7.9.49',date:'2026-10-22',title:'Fix: screen stuck after a stage',items:['Finishing a stage and tapping Continue now shows the Lobby again (the game world stayed on screen with only the menu bar)']},
@@ -8256,19 +8257,22 @@ class Game extends Phaser.Scene {
     else{ g.fillStyle(0x1a1024,.98).fillRect(0,y0,W,NAV_H); g.lineStyle(2,0xffd36e,.4).lineBetween(0,y0,W,y0); }
     const tabs=[['hub','ic_nav_home','','🏠','Home'],['char','ic_nav_heroes','hub_btn_heroes','🧸','Heroes'],['chapter','ic_nav_play','hub_btn_play','▶','Play'],['gLoadout','ic_nav_gear','hub_btn_gear','🎒','Gear'],['gActivity','ic_nav_activities','hub_btn_activity','🎯','Activities']];
     // v7.9.51 ชื่อใต้ทุกช่อง (เจ้าของเลือกแบบภาพอ้างอิงอบอุ่น) · ช่องที่เปิดกว้างขึ้นนิดและมีไฮไลต์ทอง C2
-    const wt=tabs.map(([t])=>t===act?1.3:1),sum=wt.reduce((a,b)=>a+b,0); let x0=0;
-    const g2=fix(this.add.graphics());
+    // v7.9.52 ช่องกว้างเท่ากัน (ไอคอนไม่ย้ายที่เมื่อเปลี่ยนแท็บ) · ไฮไลต์เลื่อนจากแท็บเดิมไปแท็บใหม่ (เจ้าของ: เดิมดูวาป)
+    const wt=tabs.map(()=>1),sum=wt.reduce((a,b)=>a+b,0); let x0=0;
+    const g2=fix(this.add.graphics()),cwE=W/tabs.length,nf=this._navFrom,fromI=(nf&&Date.now()-nf.at<600&&nf.t!==act)?tabs.findIndex(q=>q[0]===nf.t):-1; this._navFrom=null;
     tabs.forEach(([t,nk,key,em,lab],i)=>{ const cw=W*wt[i]/sum,cx=x0+cw/2,on=act===t,play=t==='chapter'; x0+=cw;
-      if(on){ const hp=this.tuHas('lb_nav_active')?this.tuPanel('lb_nav_active',0,cx-cw/2+3,y0+4,cw-6,NAV_H-7):null;
-        if(hp){ hp._menuBackdrop=true;hp._menuFixedY=y0+4;this.menu.add(hp); } else { g2.fillStyle(0xffc43d,1).fillRoundedRect(cx-cw/2+3,y0+4,cw-6,NAV_H-6,14); g2.fillStyle(0xffe08a,1).fillRoundedRect(cx-cw/2+6,y0+7,cw-12,(NAV_H-12)*.42,10); } }
+      if(on){ let hp=this.tuHas('lb_nav_active')?this.tuPanel('lb_nav_active',0,cx-cw/2+3,y0+4,cw-6,NAV_H-7):null;
+        if(!hp){ hp=this.add.graphics(); hp.fillStyle(0xffc43d,1).fillRoundedRect(0,0,cw-6,NAV_H-6,14).fillStyle(0xffe08a,1).fillRoundedRect(3,3,cw-12,(NAV_H-12)*.42,10); hp.setPosition(cx-cw/2+3,y0+4); }
+        hp._menuBackdrop=true;hp._menuFixedY=y0+4;this.menu.add(hp);
+        if(fromI>=0){ const tx0=hp.x; hp.x=fromI*cwE+3; this.tweens.add({targets:hp,x:tx0,duration:240,ease:'Cubic.easeOut'}); } }
       else if(!bgArt) g2.fillStyle(play?0x6a2a4e:0x2a1d38,1).fillRoundedRect(cx-cw/2+3,y0+6,cw-6,NAV_H-10,12);
       if(i>0&&!on&&tabs[i-1][0]!==act&&this.tuHas('lb_nav_divider'))fix(this.tuImg('lb_nav_divider',0,cx-cw/2,y0+NAV_H/2,2,NAV_H*.6));
       const iy=y0+NAV_H*(on?.36:.4),sz=on?30:28,ik=this.textures.exists(nk)?nk:(key&&this.textures.exists(key)?key:null);
-      if(ik)fix(this.hubIconFit(this.add.image(cx,iy,ik),ik,cx,iy,sz)).setAlpha(on?1:.9);
-      else fix(this.add.text(cx,iy,em,{fontSize:(on?23:20)+'px'}).setOrigin(.5)).setAlpha(on?1:.9);
-      fix(this.add.text(cx,y0+NAV_H-(on?15:11),lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(on?12:10)+'px',color:on?'#3a1d08':'#f3dcc0',stroke:on?'#fff3cf':'#1a1024',strokeThickness:on?3:2}).setOrigin(.5));
+      const icO=ik?fix(this.hubIconFit(this.add.image(cx,iy,ik),ik,cx,iy,sz)).setAlpha(on?1:.9):fix(this.add.text(cx,iy,em,{fontSize:(on?23:20)+'px'}).setOrigin(.5)).setAlpha(on?1:.9);
+      if(on&&fromI>=0){ const s1x=icO.scaleX,s1y=icO.scaleY; icO.setScale(s1x*.78,s1y*.78); this.tweens.add({targets:icO,scaleX:s1x,scaleY:s1y,duration:260,delay:90,ease:'Back.easeOut'}); }
+      const lbO=fix(this.add.text(cx,y0+NAV_H-(on?15:11),lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(on?12:10)+'px',color:on?'#3a1d08':'#f3dcc0',stroke:on?'#fff3cf':'#1a1024',strokeThickness:on?3:2}).setOrigin(.5)); if(on&&fromI>=0){ lbO.setAlpha(0); this.tweens.add({targets:lbO,alpha:1,duration:200,delay:120}); }
       if((t==='char'&&this.hasTargetBadge?.('char'))||((t==='gLoadout'||t==='gActivity')&&this.hasGroupBadge?.(t))){ const n0=this.menu.list.length; this.drawBadgeDot(this.menu,cx+sz/2,y0+10); for(let k=n0;k<this.menu.list.length;k++){const o=this.menu.list[k];o._menuBackdrop=true;o._menuFixedY=o.y;} }
-      this._zone(cx-cw/2,y0,cw,NAV_H,()=>{ if(t===s)return; this._navStack=[]; this._curMenu='hub'; if(t==='chapter')this.selectedChapter=this.selectedChapter||0; this.menuScreen=t; this.buildMenuScreen(); });
+      this._zone(cx-cw/2,y0,cw,NAV_H,()=>{ if(t===s)return; this._navFrom={t:act,at:Date.now()}; this._navStack=[]; this._curMenu='hub'; if(t==='chapter')this.selectedChapter=this.selectedChapter||0; this.menuScreen=t; this.buildMenuScreen(); });
       const z=this.tapZones[this.tapZones.length-1]; z.fixedY=y0; z.tag=t; z.nav=true; }); }
   // v7.9.47 ปุ่มย้อนกลับของมือถือ (Android back / ปัดย้อนกลับในเบราว์เซอร์) · คืน 'exit' เมื่อกดซ้ำที่ Hub ภายใน 2 วิ
   handleBackKey(){ const st=this.state;

@@ -52,7 +52,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.51 — Art order 33 Lobby UI wired (owner)
+# Latest delivery: v7.9.52 — Bottom menu highlight slides (owner: tab change looked like a warp)
+
+drawNavBar: all 5 tabs equal width (active weight 1.3 removed, so icons stay put); tab tap stores this._navFrom={t,at}; on the next draw (<600ms) the active highlight (tuPanel lb_nav_active, or a positioned Graphics fallback) starts at the old tab x and tweens to the new one 240ms Cubic.out, active icon pops from ×.78 (Back.easeOut, 90ms delay) and its label fades in. Browser: Home → Gear highlight x 3 → 219, 0 errors.
+
+# Previous delivery: v7.9.51 — Art order 33 Lobby UI wired (owner)
 
 scripts/pack-lobby-ui.py (sha/bytes vs MANIFEST, 50% per cell, nineSlice halved, black VFX → lum×1.35 alpha) → assets/art/lobby/ (26 files, 192 KB, ~2.3 MiB decoded). Keys in ASSET_IMAGES + TEMPLE_UI cells (tuPanel/tuImg/tuFrames) + LB_KEYS; lazy via LAZY_MENU_ART_RE 'lobby' and loadLobbyArt() (one ensureGroup, rebuilds the menu) called from buildLobby and drawNavBar. buildLobby: profile lb_profile_frame + lb_avatar_ring, Sugar lb_currency_pill (+ zone tag bazaar), cog on lb_side_btn, side buttons lb_side_btn + ic_side_*, hero lb_hero_shadow, power lb_power_pill, stage panel lb_stage_panel (✦ CHAPTER n ✦ · C1-1 · name · lb_star ×3) split from the BATTLE button lb_battle_btn (cell 2 when the stage is not ready, 'SOON') + ic_lb_battle + vfx_lb_battle_shine every ~3s; lobby_play tag now on BATTLE; arrows lb_arrow_btn (flipX right, alpha .4 disabled); 2 vfx_lb_sparkle on panel corners. drawNavBar: lb_nav_bg, lb_nav_active, lb_nav_divider, ic_nav_* (fallback hub_btn_*/emoji), labels under every tab, active weight 1.3. Every piece falls back to the old graphics. Browser 360×780 + 412×915: all 26 loaded, tags intact, 0 errors.
 
@@ -570,7 +574,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.51 · 21 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.52 · 21 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
