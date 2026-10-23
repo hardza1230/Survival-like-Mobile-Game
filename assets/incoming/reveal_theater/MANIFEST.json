@@ -1,0 +1,13 @@
+{
+  "tool": "built-in ImageGen",
+  "source": "original.png",
+  "runtime": "assets/art/mobile_ui_789/reveal_theater.webp",
+  "bytes": 49122,
+  "sha256": "5ec08cfddd883558577400777972b7af90f9cc70c37d0f6631b57b642fc868cb",
+  "source_sha256": "9940abd30259481f337f3e3a5fb0631c5b994aae6dd4e643d67415098c447011",
+  "runtime_size": [
+    512,
+    768
+  ],
+  "packing": "Pillow Lanczos half-size,WebP quality86 method6"
+}

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.96';
+const GAME_VERSION = '7.9.97';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.97',date:'2026-10-24',title:'A sweeter discovery stage',items:['New painted confectionery theater for feature discoveries and item rewards','Calmer lighting, clearer reward focus and a refined Ruby message panel']},
   {v:'7.9.96',date:'2026-10-24',title:'Ruby motion stories and smoother guidance',items:['Story scenes focus on a moving painted shot with snow, embers, sound and a trail of previous memories','Training and upgrades use spotlights on the actual controls; the first story begins at the real pantry stage','Recovered memories now appear at stage clear, with a fourth beat leading toward the next floor','A stage-title curtain carries the story through loading into the arena; reduced motion and Skip remain available']},
   {v:'7.9.95',date:'2026-10-23',title:'Ruby’s story becomes a comic',items:['Each early story now has three distinct painted comic panels','Next reveals one new panel with a gentle fade while earlier pictures stay visible','Ruby’s memories also unfold in three panels; Back and Skip remain available','Previously read early stories can be seen once more in their new comic form']},
   {v:'7.9.94',date:'2026-10-23',title:'Rarer early gear, tap-to-stop Forge, cuter heroes',items:['Early gear is rarer in Chapter 1, low-level drops come without mods and early items enhance less','Forge Roll now gives one mod — the light runs until you tap, then slows down and stops','Hero lines in the Lobby are short and cheeky, in a bubble right above the hero’s head']},
@@ -1554,6 +1555,7 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  reveal_theater:'assets/art/mobile_ui_789/reveal_theater.webp',
   lb_dialog_speech:'assets/art/lobby/lb_dialog_speech.webp',lb_dialog_thought:'assets/art/lobby/lb_dialog_thought.webp',
   ruby_comic_s1_1:'assets/art/ruby_comic/ruby_comic_s1_1.webp',ruby_comic_s1_2:'assets/art/ruby_comic/ruby_comic_s1_2.webp',ruby_comic_s1_3:'assets/art/ruby_comic/ruby_comic_s1_3.webp',ruby_comic_s2_1:'assets/art/ruby_comic/ruby_comic_s2_1.webp',ruby_comic_s2_2:'assets/art/ruby_comic/ruby_comic_s2_2.webp',ruby_comic_s2_3:'assets/art/ruby_comic/ruby_comic_s2_3.webp',ruby_comic_s3_1:'assets/art/ruby_comic/ruby_comic_s3_1.webp',ruby_comic_s3_2:'assets/art/ruby_comic/ruby_comic_s3_2.webp',ruby_comic_s3_3:'assets/art/ruby_comic/ruby_comic_s3_3.webp',ruby_comic_s4_1:'assets/art/ruby_comic/ruby_comic_s4_1.webp',ruby_comic_s4_2:'assets/art/ruby_comic/ruby_comic_s4_2.webp',ruby_comic_s4_3:'assets/art/ruby_comic/ruby_comic_s4_3.webp',ruby_comic_s5_1:'assets/art/ruby_comic/ruby_comic_s5_1.webp',ruby_comic_s5_2:'assets/art/ruby_comic/ruby_comic_s5_2.webp',ruby_comic_s5_3:'assets/art/ruby_comic/ruby_comic_s5_3.webp',
   ruby_story_pantry:'assets/art/ruby_storybook/ruby_story_pantry.webp',ruby_story_furnace:'assets/art/ruby_storybook/ruby_story_furnace.webp',ruby_story_frozen:'assets/art/ruby_storybook/ruby_story_frozen.webp',ruby_story_crown:'assets/art/ruby_storybook/ruby_story_crown.webp',ruby_story_paper:'assets/art/ruby_storybook/ruby_story_paper.webp',
@@ -3398,7 +3400,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
 const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
-const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
+const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
@@ -9822,23 +9824,26 @@ class Game extends Phaser.Scene {
   featShow(list,anim){ for(const [o,a] of list||[]){ if(!o.active)continue; if(anim&&this.tweens){ o.setAlpha(0); this.tweens.add({targets:o,alpha:a,duration:260}); } else o.setAlpha(a); } }
   starTeach(){ const d=Save.data; if(!d||d.settings?.noRuby||d.starTaught||this.state!=='menu'||this.menuScreen!=='hub'||!(d.stageStars&&d.stageStars[0]!=null)||this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1))return;
     this.rubyGuide(['Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP.','New stars give bonus Sugar. Tap the stage box any time to replay a floor.'],()=>{d.starTaught=true;Save.save();if(this.state==='menu')this.buildMenuScreen();},{target:'chapter'}); }
+  revealBackdrop(cont,W,H){const bg=this.add.rectangle(0,0,W,H,0x170c20,1).setOrigin(0);cont.add(bg);if(this.realTex('reveal_theater'))cont.add(this._coverImage(0,0,W,H,'reveal_theater'));else if(this.ensureGroup)this.ensureGroup(k=>k==='reveal_theater',()=>{if(bg.active&&cont.active&&this.realTex('reveal_theater'))cont.addAt(this._coverImage(0,0,W,H,'reveal_theater'),cont.getIndex(bg)+1);},{all:true,quiet:true});return bg;}
+  loadRevealTheater(done){if(this.realTex('reveal_theater')||this._revealArtTried||!this.ensureGroup)return false;if(this._revealArtLoading)return true;this._revealArtLoading=true;const zones=this.tapZones;this.ensureGroup(k=>k==='reveal_theater',()=>{this._revealArtLoading=false;this._revealArtTried=true;if(this.state==='menu'&&this.tapZones===zones)done();},{all:true,quiet:true});return true;}
   featRevealNext(){ const q=this._featQ||[]; if(!q.length){ this._featQ=null; this._featBusy=false; this._featHid=null; this._featZones=null; if(this.state==='menu')this.buildMenuScreen(); return; }
     if(this.state!=='menu'||this.menuScreen!=='hub'){ this._featBusy=false; return; }
     if(this._bookCover||this._bookSkip){ this.time.delayedCall(400,()=>this.featRevealNext()); return; }
+    if(this.loadRevealTheater(()=>this.featRevealNext()))return;
     this._featBusy=true; const t=q[0],d=Save.data; d.featSeen[t]=1; Save.save();
     const W=this.W,H=this.H,zs=(this.tapZones.length>1?this.tapZones:(this._featZones||[])).slice(),tag=FEAT_TAG[t]||t,tz=zs.find(z=>z.tag===tag&&z.nav)||zs.find(z=>z.tag===tag); this._featZones=zs;   // v7.9.93 ตัวที่ 2 เป็นต้นไป tapZones ถูกล้างแล้ว → ใช้ชุดเดิมของ Lobby (เดิมหาไม่เจอ = ลอยลงล่างจอ)
     if(!this._featHid||this._featHidZs!==zs[0]){ this._featHid={}; this._featHidZs=zs[0]; for(const k of q){ const tg=FEAT_TAG[k]||k,zk=zs.find(z=>z.tag===tg&&z.nav)||zs.find(z=>z.tag===tg); if(zk)this._featHid[k]=this.featHideAt(zk); } }
     const hid=this._featHid[t]||[];   // ซ่อนไอคอนจริงไว้ก่อน แล้วค่อยโผล่ตอนไอคอนลอยไปถึง (ไม่ซ้อนกัน)
-    const c=this.add.container(0,0); c._menuBackdrop=true; this.menu.add(c); this._featC=c; const dim=this.add.rectangle(0,0,W,H,0x0d0816,.78).setOrigin(0); c.add(dim);
-    const cy=H*.34,ray=this.add.image(W/2,cy,'vfx_glow').setTint(0xffd36e).setAlpha(.7).setScale(.5); c.add(ray); this.tweens.add({targets:ray,scale:2.3,rotation:Math.PI,duration:900,ease:'Cubic.out'});
+    const c=this.add.container(0,0); c._menuBackdrop=true; this.menu.add(c); this._featC=c; const dim=this.revealBackdrop(c,W,H);
+    const cy=H*.34,ray=this.add.circle(W/2,cy,58,0xffe3b4,.025);c.add(ray);
     const ik=FEAT_ICON[t]; let ic; if(ik&&this.textures.exists(ik)){ ic=this.add.image(W/2,cy,ik); ic.setScale(110/Math.max(ic.width,ic.height)); } else ic=this.add.text(W/2,cy,(FEATURE_NAME[t]||'✨').split(' ')[0],{fontSize:'72px'}).setOrigin(.5);
     const s1=ic.scale; ic.setScale(s1*.1); c.add(ic); this.tweens.add({targets:ic,scale:s1,duration:520,ease:'Back.out'}); Sfx.select&&Sfx.select();
-    const nb=this.add.text(W/2,cy-78,'✨ NEW ✨',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#3a1d08',backgroundColor:'#ffd54a',padding:{x:10,y:3}}).setOrigin(.5); c.add(nb);
+    const nb=this.add.text(W/2,cy-78,'NEW DISCOVERY',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffe5bc',padding:{x:10,y:3}}).setOrigin(.5); c.add(nb);
     const nm=this.add.text(W/2,cy+76,(FEATURE_NAME[t]||t).replace(/^\S+\s/,''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5}).setOrigin(.5); c.add(nm);
-    const bw=Math.min(W-28,380),bx=(W-bw)/2,by=H*.56,bh=128,box=this.add.graphics(); box.fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,18).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,18); c.add(box);
+    const bw=Math.min(W-32,380),bx=(W-bw)/2,by=H*.61,bh=Math.min(144,H*.27),box=this.add.graphics(); box.fillStyle(0x231324,.94).fillRoundedRect(bx,by,bw,bh,18).lineStyle(1.5,0xdcb78a,.9).strokeRoundedRect(bx,by,bw,bh,18); c.add(box);
     const av=this.rubyAvatar(bx-6,by+bh/2+30,58); if(av)c.add(av);
     c.add(this.add.text(bx+86,by+16,FEAT_LINE[t]||'Something new just opened!',{fontFamily:'sans-serif',fontSize:'15px',color:'#ffffff',lineSpacing:5,wordWrap:{width:bw-104}}));
-    const hint=this.add.text(W/2,by+bh-16,'👆 Tap to see where it lives',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); c.add(hint); this.tweens.add({targets:hint,alpha:1,delay:700,duration:300});
+    const hint=this.add.text(W/2,by+bh-16,'Show me where  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); c.add(hint); this.tweens.add({targets:hint,alpha:1,delay:700,duration:300});
     const t0=Date.now(); this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<800)return; this.tapZones=[]; Sfx.ui&&Sfx.ui();
       this.tweens.add({targets:[dim,box,nb,nm,hint,ray].concat(av?[av]:[]),alpha:0,duration:220}); c.each(o=>{ if(o!==ic&&o!==dim&&o!==box&&o!==nb&&o!==nm&&o!==hint&&o!==ray&&o!==av)this.tweens.add({targets:o,alpha:0,duration:220}); });
       this._featFly=true; this.time.delayedCall(1500,()=>{ if(this._featFly){ this.featShow(hid); this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); if(c.active)c.destroy(); this.featRevealNext(); } });   // ถ้าหน้าถูกสร้างใหม่ระหว่างลอย → ข้ามไปตัวถัดไปเอง
@@ -11219,7 +11224,7 @@ class Game extends Phaser.Scene {
     const glow=this.add.image(w/2,h*.47,'vfx_glow').setScale(.4).setAlpha(.3).setTint(c.tint),chest=anim?this.add.image(w/2,h*.47,ok,'cell0').setDisplaySize(230,230):this.chestVisual(c,w/2,h*.47,170),cs=chest.scale;
     if(anim){ let t=620; [100,90,90,110,140].forEach((ms,i)=>{ t+=ms; this.time.delayedCall(t,()=>{ if(chest.active)chest.setFrame('cell'+(i+1)); }); }); }   // ใบ 40: สั่น → ฝาเด้ง → แสง → ค้างเปิด
     const status=this.add.text(w/2,h*.66,'Tap… the lid is shaking!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(.5);
-    this.menu.add([bg,title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.();
+    glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.();
     this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:anim?3:10});
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.4,alpha:{from:.2,to:.85},duration:1100,ease:'Cubic.in'});
     this.time.delayedCall(1150,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addThreads(Math.round(c.cost*.5)); }
@@ -11274,13 +11279,13 @@ class Game extends Phaser.Scene {
   bazaarBuyCurrency(key,qty,cost,slotKey){ if(slotKey&&(Save.data.bazaarBought||[]).includes(slotKey))return; if(!Save.spend(cost)){ Sfx.error(); this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300); return; }
     Save.addCurrency(key,qty); if(slotKey){Save.data.bazaarBought=(Save.data.bazaarBought||[]).concat(slotKey);Save.save();} Sfx.clear(); const d=currencyDef(key); this.showBanner('🛒 Purchased',d.emoji+' '+d.name+' ×'+qty,1400); this.buildBazaar(); }
   // ตู้สล็อต: หมุนไอคอนช้าลงเรื่อย ๆ แล้วหยุดที่รางวัล (ลุ้นสนุก)
-  bazaarSlotReveal(pool,land){ this.setMenuScroll(0); if(this._bazBusy)return; this._bazBusy=true; this.tapZones=[]; const w=this.W,h=this.H;
-    const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.47,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.image(w/2,h*0.47,'prize_chest').setDisplaySize(96,96);
-    this.menu.add([veil,title,glow,icon]); this.menu.setVisible(true);
+  bazaarSlotReveal(pool,land){ if(this.loadRevealTheater?.(()=>this.bazaarSlotReveal(pool,land)))return;this.setMenuScroll(0); if(this._bazBusy)return; this._bazBusy=true; this.tapZones=[]; const w=this.W,h=this.H;
+    const veil=this.add.rectangle(0,0,w,h,0x0a0611,0.92).setOrigin(0),title=this.add.text(w/2,h*0.30,'🎰 Rolling…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a'}).setOrigin(0.5),glow=this.add.image(w/2,h*0.34,'vfx_glow').setTint(0xffd166).setScale(0.5).setAlpha(0.25),icon=this.add.image(w/2,h*0.34,'prize_chest').setDisplaySize(96,96);
+    glow.setVisible(false);this.menu.add(veil);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,icon]); this.menu.setVisible(true);
     let ticks=0,delay=55; const spin=()=>{ if(!icon.scene){this._bazBusy=false;return;} const key=Phaser.Utils.Array.GetRandom(pool);icon.setTexture(this.textures.exists(key)?key:'prize_chest').setDisplaySize(96,96); Sfx.select&&Sfx.select(); ticks++;
       if(ticks<26){ delay+=ticks>17?(ticks-17)*10:2; this.time.delayedCall(delay,spin); }
       else { const resultKey=land.artKey&&this.textures.exists(land.artKey)?land.artKey:'prize_currency';icon.setTexture(resultKey).setDisplaySize(96,96);this.tweens.add({targets:icon,scaleX:icon.scaleX*1.18,scaleY:icon.scaleY*1.18,duration:300,ease:'Back.out'});
-        title.setText(land.title||'✨ Prize!'); glow.setScale(2.6).setAlpha(0.85); this.screenFlash(0xffd166,0.5,420); Sfx.clear();
+        title.setText(land.title||'✨ Prize!'); glow.setScale(.48).setAlpha(.18); this.screenFlash(0xffd166,0.5,420); Sfx.clear();
         const sub=this.add.text(w/2,h*0.63,land.sub||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff',align:'center',wordWrap:{width:w-50}}).setOrigin(0.5);
         const bt=this.add.text(w/2,h*0.74,land.auto?'Tap to stop AUTO':'Tap to continue',{fontFamily:'sans-serif',fontSize:'12px',color:'#c7bdd6'}).setOrigin(0.5); this.menu.add([sub,bt]);
         this._bazBusy=false; const tok=(this._bazAutoTok=(this._bazAutoTok||0)+1);
@@ -11335,29 +11340,29 @@ class Game extends Phaser.Scene {
     this._bazAutoN=auto?(this._bazAutoN||0)+1:0;
     this.bazaarSlotReveal(CURRENCY.map(c=>c.asset),{artKey:d.asset,title:d.emoji+' '+d.name+'!',sub:auto?('AUTO #'+this._bazAutoN+' · Sugar '+(Save.data.sugar||0)+' · tap to stop'):'',auto:auto?()=>this.bazaarGambleCurrency(true):null}); }
   bazaarSellCurrency(key,val){ if(Save.currency(key)<=0)return; Save.spendCurrency(key,1); Save.addSugar(val); Sfx.select(); this.buildBazaar(); }
-  openGachaReveal(){ this.setMenuScroll(0);
+  openGachaReveal(){ if(this.loadRevealTheater?.(()=>this.openGachaReveal()))return;this.setMenuScroll(0);
     const lvObj=GACHA_LEVELS[Math.max(0,Math.min(gachaMaxBand(),this._gachaLevel||0))],cost=lvObj.cost,ilv=lvObj.lo+Math.floor(Math.random()*(lvObj.hi-lvObj.lo+1));
     if(this._gachaBusy)return;if((Save.data.sugar||0)<cost){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar (iLv '+lvObj.lo+'-'+lvObj.hi+')',1300);return;}
     if(!Save.spend(cost))return;this._gachaBusy=true;this.menu.removeAll(true);this.tapZones=[];
     const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,0.97).setOrigin(0,0),title=this.add.text(w/2,h*0.14,'🎁 Flavor box',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffe08a'}).setOrigin(0.5);
-    const glow=this.add.image(w/2,h*0.47,'vfx_glow').setScale(0.4).setAlpha(0.3).setTint(0xffd166),chest=this.add.text(w/2,h*0.47,'🎁',{fontSize:'92px'}).setOrigin(0.5).setScale(0.72);
+    const glow=this.add.image(w/2,h*0.34,'vfx_glow').setScale(0.4).setAlpha(0.3).setTint(0xffd166),chest=this.add.text(w/2,h*0.34,'🎁',{fontSize:'92px'}).setOrigin(0.5).setScale(0.72);
     const status=this.add.text(w/2,h*0.66,'Searching for hidden flavors…',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(0.5);
-    this.menu.add([bg,title,glow,chest,status]);this.menu.setVisible(true);Sfx.chest();
+    glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]);this.menu.setVisible(true);Sfx.chest();
     this.tweens.add({targets:chest,rotation:{from:-0.06,to:0.06},scale:{from:0.72,to:0.88},duration:90,yoyo:true,repeat:8});
-    this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.2,alpha:{from:0.2,to:0.78},duration:900,ease:'Cubic.in'});
+    this.tweens.add({targets:glow,rotation:0,scale:.5,alpha:{from:0.08,to:0.18},duration:900,ease:'Cubic.in'});
     this.time.delayedCall(420,()=>{ if(status.active)status.setText('COMMON  ·  RARE  ·  EPIC').setColor('#fff0b8'); });
     this.time.delayedCall(920,()=>{
       const it=this.gachaRoll(ilv);let tier=it?it.tier:'common';if(!it){Save.addSugar(120);Save.addThreads(6);}
       if(!status.active||this.state!=='menu')return;   // v7.9.35 ออกจากหน้าก่อนเปิดกล่อง → ของยังได้ แต่ไม่วาดต่อ (เดิม setText บนข้อความที่ถูกลบ = error)
       const color=tier==='legend'?0xff8f3a:tier==='epic'?0xc9a3ff:tier==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       const gArt=it?('gear_'+it.id):null;
-      if(gArt&&this.textures.exists(gArt)){ chest.setText(''); const gi=this.add.image(w/2,h*0.47,gArt).setDisplaySize(120,120); const ts=gi.scaleX; gi.setScale(ts*0.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:340,ease:'Back.out'}); }
+      if(gArt&&this.textures.exists(gArt)){ chest.setText(''); const gi=this.add.image(w/2,h*0.34,gArt).setDisplaySize(120,120); const ts=gi.scaleX; gi.setScale(ts*0.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:340,ease:'Back.out'}); }
       else chest.setRotation(0).setScale(1.05).setText(it?it.emoji:'🧶');
-      glow.setTint(color).setScale(2.8).setAlpha(0.88);
+      glow.setTint(color).setScale(.5).setAlpha(.18);
       this.screenFlash(color,tier==='legend'?0.85:tier==='epic'?0.68:tier==='rare'?0.48:0.30,520);this.screenShake(tier==='legend'?620:tier==='epic'?480:260,tier==='legend'?0.02:tier==='epic'?0.014:0.007);Sfx.clear();
       title.setText(it?(tier==='legend'?'🌟 LEGEND DROP 🌟':tier==='epic'?'✦ EPIC DROP ✦':tier==='rare'?'★ RARE DROP ★':'COMMON DROP'):'All owned');
       title.setColor(hex);status.setText(it?(it.name+'\n'+TIER_LABEL[tier].name+gearDeliverySuffix(it)):'Refund 🍬120 · 🧶6').setColor('#ffffff').setAlign('center').setFontSize('18px');
-      for(let i=0;i<(tier==='epic'?14:8);i++){const a=i*TAU/(tier==='epic'?14:8),p=this.add.image(w/2,h*0.47,'dot').setTint(color).setScale(0.8).setAlpha(0.9);this.menu.add(p);this.tweens.add({targets:p,x:w/2+Math.cos(a)*Math.min(w*0.38,180),y:h*0.47+Math.sin(a)*Math.min(h*0.25,150),alpha:0,duration:700+i*18,onComplete:()=>p.destroy()});}
+      for(let i=0;i<(tier==='epic'?14:8);i++){const a=i*TAU/(tier==='epic'?14:8),p=this.add.circle(w/2,h*0.34,2,color,1).setScale(0.8).setAlpha(0.9);this.menu.add(p);this.tweens.add({targets:p,x:w/2+Math.cos(a)*Math.min(w*0.38,180),y:h*0.34+Math.sin(a)*Math.min(h*0.25,150),alpha:0,duration:700+i*18,onComplete:()=>p.destroy()});}
       const bw=Math.min(w-60,260),by=h*0.80,btn=this.add.graphics();btn.fillStyle(color,1);btn.fillRoundedRect(w/2-bw/2,by-24,bw,48,16);btn.lineStyle(2,0xffffff,0.42);btn.strokeRoundedRect(w/2-bw/2,by-24,bw,48,16);
       const bt=this.add.text(w/2,by,'Claim and return',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#17101d'}).setOrigin(0.5);this.menu.add([btn,bt]);
       this._gachaBusy=false;this._zone(w/2-bw/2,by-24,bw,48,()=>{this.menuScreen='gear';this.buildMenuScreen();});
@@ -13301,7 +13306,7 @@ class Game extends Phaser.Scene {
   revealStageReward(note){
     this.state='rewardChoice';this.physics.pause();this.player.setVelocity(0,0);this.lvlUp.setVisible(false);this.over.removeAll(true);this._rewardBtns=[];
     this._stageReward=this.rollStageReward('fortune');Sfx.clear();
-    const w=this.W,h=this.H,r=this._stageReward,bg=this.add.rectangle(0,0,w,h,0x090611,0.96).setOrigin(0),glow=this.add.image(w/2,h*0.40,'vfx_glow').setTint(r.type==='gear'?0x6ed7df:0xffd166).setScale(1.5).setAlpha(0.5),em=r.artKey&&this.textures.exists(r.artKey)?this.add.image(w/2,h*0.38,r.artKey).setDisplaySize(104,104):this.add.text(w/2,h*0.38,r.emoji,{fontSize:'86px'}).setOrigin(0.5),t=this.add.text(w/2,h*0.55,r.type==='gear'?'Gear reward!':'Sugar reward!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffe08a'}).setOrigin(0.5),d=this.add.text(w/2,h*0.62,r.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5);this.over.add([bg,glow,em,t,d]);
+    const w=this.W,h=this.H,r=this._stageReward,bg=this.add.rectangle(0,0,w,h,0x090611,0.96).setOrigin(0),glow=this.add.image(w/2,h*0.40,'vfx_glow').setTint(r.type==='gear'?0x6ed7df:0xffd166).setScale(1.5).setAlpha(0.5),em=r.artKey&&this.textures.exists(r.artKey)?this.add.image(w/2,h*0.38,r.artKey).setDisplaySize(104,104):this.add.text(w/2,h*0.38,r.emoji,{fontSize:'86px'}).setOrigin(0.5),t=this.add.text(w/2,h*0.55,r.type==='gear'?'Gear reward!':'Sugar reward!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'23px',color:'#ffe08a'}).setOrigin(0.5),d=this.add.text(w/2,h*0.62,r.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',align:'center',wordWrap:{width:w-40}}).setOrigin(0.5);glow.setVisible(false);this.over.add(bg);this.revealBackdrop?.(this.over,w,h);glow.setScale(.5).setAlpha(.16);this.over.add([glow,em,t,d]);
     if(note){const n=this.add.text(w/2,h*0.70,note,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#9be89b'}).setOrigin(0.5);this.over.add(n);}
     if(r.type==='gear')this.over.add(this.add.text(w/2,h*0.76,'Equip it from the Gear menu on the Stage Select screen',{fontFamily:'sans-serif',fontSize:'11px',color:'#bfb4cc',align:'center',wordWrap:{width:w-60}}).setOrigin(0.5));
     const sx=em.scaleX,sy=em.scaleY;this.tweens.add({targets:em,scaleX:{from:sx*0.4,to:sx},scaleY:{from:sy*0.4,to:sy},duration:420,ease:'Back.out'});this.screenFlash(0xffd166,0.35,350);

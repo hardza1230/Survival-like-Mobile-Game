@@ -1,3 +1,7 @@
+# Latest delivery: v7.9.97 - Painted discovery theater
+
+Built-in ImageGen confectionery theater replaces oversized combat-glow backgrounds for new features,Gacha,Bazaar/trade-in and stage rewards.512x768 WebP,menu lazy with owned late-load fallback. Full opaque plum/cream/gold backdrop,icons above pedestal,refined Ruby message panel and bounded highlights;original costs/rewards/claim/fly routing retained. Original source,exact prompt,manifest and real feature/item Canvas proofs in assets/incoming/reveal_theater/. See SESSION_HANDOFF.md for checks/publication.
+
 # Latest delivery: v7.9.96 - Cinematic Ruby stories and contextual teaching
 
 Stories focus on a large painted shot with a slow push-in, entrance motion, scene-specific snow/embers/memory motes, quiet story cues, dim moving background and previous-shot strip. Existing ImageGen art is reused; zero new runtime asset bytes. Narration accepts 2+ shots; clear memories use four beats including the next-stage cause/destination. Owned tween cleanup, missing-art fallback, manual Back/Follow/Skip and reduced motion retained. Read version3 is saved only on completion/Skip so older readers see the revised presentation once.
