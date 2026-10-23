@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.92';
+const GAME_VERSION = '7.9.93';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.93',date:'2026-10-23',title:'More guidance from Ruby',items:['Ruby shows you how to Dash-kick the glowing items bosses leave behind','Ruby explains stage stars and the reward wheel after your first clear','Mutation and Evolution cards get their own short lesson the first time','New-feature icons now fly to the right button and no longer overlap the real icon']},
   {v:'7.9.92',date:'2026-10-23',title:'Grandma’s Battle Recipes',items:['Before C1-2 Ruby finds Grandma’s Battle Recipes — the reason Builds open from the second floor','The first Build pick is now a Battle Recipe lesson from Ruby']},
   {v:'7.9.91',date:'2026-10-23',title:'Clearer loading',items:['The loading bar now says Preparing when it unpacks files already on your phone, and Downloading only when it fetches new files','The game asks your phone to keep its downloaded data so it is not cleared']},
   {v:'7.9.90',date:'2026-10-23',title:'Ruby opens her storybook',items:['Ruby narrates illustrated story pages before the first five stages','New pantry, furnace, frozen spirits and Crown Oven paintings bring early events to life','Narration now fills the screen with recipe-book paper or a black fallback instead of the Lobby','Read at your own pace with Back, Next and Skip; story progress is saved after closing']},
@@ -6832,6 +6833,7 @@ const RUBY_TIPS={
   seasonCycle:{say:'The seasons are all mixed up! Monsters drop [petals]\nof the current season. Fill all [4 seasons] to fix it.',short:'Gather [petals] for all [4 seasons]'},
   breakRoots:{say:'These [root anchors] are draining the garden!\nStand right next to each one until it snaps.',short:'Snap every [root anchor]!'},
   cleanAir:{say:'Ugh, the swamp air stings! Stay inside the\n[clean-air ring] — it moves, so follow it!',short:'Follow the [clean-air ring]'},
+  counter:{say:'See that glowing thing the boss left? [Dash into it]\nto kick it back — it hurts the boss and stuns it!',short:'[Dash] into the glowing item to kick it!'},
   mini:{say:'Eek! A [Miniboss]! It guards something shiny…\nBeat it and we get to spin the [reward wheel]!',short:'Beat the [Miniboss]!'},
   boss:{say:'That’s the one who stole this floor’s flavor!\nWatch for [red warnings] — Dash away, then strike back!',short:'Defeat the [Boss]!'},
   magnet:{say:'Ooh, a [Magnet]! Grandma used these to gather sprinkles.\nIt pulls all your [EXP] in at once!'},
@@ -9809,11 +9811,23 @@ class Game extends Phaser.Scene {
     const nw=open.filter(t=>!d.featSeen[t]&&!(this._featQ||[]).includes(t)); if(!nw.length&&!(this._featQ||[]).length)return; if(!this._featQ)this._featQ=[]; this._featQ.push(...nw);
     this.time.delayedCall(350,()=>{ if(!(this._featC&&this._featC.active)&&!this._featFly){ this._featBusy=false; this.featRevealNext(); } }); }   // หน้าเมนูถูกสร้างใหม่ระหว่างแนะนำ (ภาพโหลดเสร็จ) → เริ่มตัวเดิมต่อ
   // v7.9.77 เจ้าของ: ระบบใหม่ต้องมีการแนะนำ → ไอคอนโผล่กลางจอ + Ruby อธิบาย → แตะ → ไอคอนลอยไปที่ปุ่มจริง + วงแสง → ตัวถัดไป · จบแล้วบทสอนเดิม (gearTut) ทำงานต่อ
-  featRevealNext(){ const q=this._featQ||[]; if(!q.length){ this._featQ=null; this._featBusy=false; if(this.state==='menu')this.buildMenuScreen(); return; }
+  featHideAt(z){ const out=[],sc=this._mScrollMax>0?(this._mScroll||0):0,cx=z.x+z.w/2,cy=z.y+z.h/2-(z.fixedY==null?sc:0);
+    for(const o of this.menu?.list||[]){ if(!o||!o.active||!o.visible||o===this._featC||!(o.alpha>0))continue; let b=null;
+      if(o.type==='Graphics'){ const q=o._bb; if(q&&q.x1>q.x0)b={x:q.x0*o.scaleX+o.x,y:q.y0*o.scaleY+o.y,w:(q.x1-q.x0)*o.scaleX,h:(q.y1-q.y0)*o.scaleY}; }
+      else if(o.getBounds){ try{ const r=o.getBounds(); b={x:r.x,y:r.y,w:r.width,h:r.height}; }catch(e){} }
+      if(!b||b.w<=0||b.h<=0||b.w>z.w*1.4+12||b.h>z.h*1.4+12)continue; const mx=b.x+b.w/2,my=b.y+b.h/2;
+      if(Math.abs(mx-cx)<=z.w/2+4&&Math.abs(my-cy)<=z.h/2+4){ out.push([o,o.alpha]); o.setAlpha(0); } }
+    return out; }
+  featShow(list,anim){ for(const [o,a] of list||[]){ if(!o.active)continue; if(anim&&this.tweens){ o.setAlpha(0); this.tweens.add({targets:o,alpha:a,duration:260}); } else o.setAlpha(a); } }
+  starTeach(){ const d=Save.data; if(!d||d.starTaught||this.state!=='menu'||this.menuScreen!=='hub'||!(d.stageStars&&d.stageStars[0]!=null)||this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1))return;
+    d.starTaught=true; Save.save(); this.rubyTalk(['See the stars on the stage box? Every floor has three.','★ Clear the floor · ★ Finish with 70% HP or more · ★ Never drop below 30% HP.','Each new star gives bonus Sugar. You can replay a floor any time to collect the rest!','And when a Miniboss falls, its reward wheel spins — brighter slices mean better prizes!'],()=>{ if(this.state==='menu')this.buildMenuScreen(); }); }   // v7.9.93 เจ้าของ: อธิบายดาว + วงล้อรางวัล (ครั้งเดียว)
+  featRevealNext(){ const q=this._featQ||[]; if(!q.length){ this._featQ=null; this._featBusy=false; this._featHid=null; this._featZones=null; if(this.state==='menu')this.buildMenuScreen(); return; }
     if(this.state!=='menu'||this.menuScreen!=='hub'){ this._featBusy=false; return; }
     if(this._bookCover||this._bookSkip){ this.time.delayedCall(400,()=>this.featRevealNext()); return; }
     this._featBusy=true; const t=q[0],d=Save.data; d.featSeen[t]=1; Save.save();
-    const W=this.W,H=this.H,zs=this.tapZones.slice(),tag=FEAT_TAG[t]||t,tz=zs.find(z=>z.tag===tag&&z.nav)||zs.find(z=>z.tag===tag);
+    const W=this.W,H=this.H,zs=(this.tapZones.length>1?this.tapZones:(this._featZones||[])).slice(),tag=FEAT_TAG[t]||t,tz=zs.find(z=>z.tag===tag&&z.nav)||zs.find(z=>z.tag===tag); this._featZones=zs;   // v7.9.93 ตัวที่ 2 เป็นต้นไป tapZones ถูกล้างแล้ว → ใช้ชุดเดิมของ Lobby (เดิมหาไม่เจอ = ลอยลงล่างจอ)
+    if(!this._featHid||this._featHidZs!==zs[0]){ this._featHid={}; this._featHidZs=zs[0]; for(const k of q){ const tg=FEAT_TAG[k]||k,zk=zs.find(z=>z.tag===tg&&z.nav)||zs.find(z=>z.tag===tg); if(zk)this._featHid[k]=this.featHideAt(zk); } }
+    const hid=this._featHid[t]||[];   // ซ่อนไอคอนจริงไว้ก่อน แล้วค่อยโผล่ตอนไอคอนลอยไปถึง (ไม่ซ้อนกัน)
     const c=this.add.container(0,0); c._menuBackdrop=true; this.menu.add(c); this._featC=c; const dim=this.add.rectangle(0,0,W,H,0x0d0816,.78).setOrigin(0); c.add(dim);
     const cy=H*.34,ray=this.add.image(W/2,cy,'vfx_glow').setTint(0xffd36e).setAlpha(.7).setScale(.5); c.add(ray); this.tweens.add({targets:ray,scale:2.3,rotation:Math.PI,duration:900,ease:'Cubic.out'});
     const ik=FEAT_ICON[t]; let ic; if(ik&&this.textures.exists(ik)){ ic=this.add.image(W/2,cy,ik); ic.setScale(110/Math.max(ic.width,ic.height)); } else ic=this.add.text(W/2,cy,(FEATURE_NAME[t]||'✨').split(' ')[0],{fontSize:'72px'}).setOrigin(.5);
@@ -9826,12 +9840,12 @@ class Game extends Phaser.Scene {
     const hint=this.add.text(W/2,by+bh-16,'👆 Tap to see where it lives',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); c.add(hint); this.tweens.add({targets:hint,alpha:1,delay:700,duration:300});
     const t0=Date.now(); this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<800)return; this.tapZones=[]; Sfx.ui&&Sfx.ui();
       this.tweens.add({targets:[dim,box,nb,nm,hint,ray].concat(av?[av]:[]),alpha:0,duration:220}); c.each(o=>{ if(o!==ic&&o!==dim&&o!==box&&o!==nb&&o!==nm&&o!==hint&&o!==ray&&o!==av)this.tweens.add({targets:o,alpha:0,duration:220}); });
-      this._featFly=true; this.time.delayedCall(1500,()=>{ if(this._featFly){ this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); if(c.active)c.destroy(); this.featRevealNext(); } });   // ถ้าหน้าถูกสร้างใหม่ระหว่างลอย → ข้ามไปตัวถัดไปเอง
+      this._featFly=true; this.time.delayedCall(1500,()=>{ if(this._featFly){ this.featShow(hid); this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); if(c.active)c.destroy(); this.featRevealNext(); } });   // ถ้าหน้าถูกสร้างใหม่ระหว่างลอย → ข้ามไปตัวถัดไปเอง
       const tx=tz?tz.x+tz.w/2:W/2,ty=tz?tz.y+tz.h/2-(tz.fixedY==null?(this._mScroll||0):0):H-30;
-      this.tweens.add({targets:ic,x:tx,y:ty,scale:s1*.32,duration:620,ease:'Cubic.inOut',onComplete:()=>{ const ring=this.add.circle(tx,ty,30,0xffd36e,0).setStrokeStyle(4,0xffe08a,1); c.add(ring);
+      this.tweens.add({targets:ic,x:tx,y:ty,scale:s1*.32,duration:620,ease:'Cubic.inOut',onComplete:()=>{ this.featShow(hid,true); const ring=this.add.circle(tx,ty,30,0xffd36e,0).setStrokeStyle(4,0xffe08a,1); c.add(ring);
         this.tweens.add({targets:ring,scale:2.2,alpha:0,duration:520,onComplete:()=>{ c.destroy(); if(!this._featFly)return; this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); this.featRevealNext(); }}); this.tweens.add({targets:ic,alpha:0,duration:420,delay:120}); }}); });
     const z=this.tapZones[this.tapZones.length-1]; z.tag='feat_reveal'; z.noBounce=true; }
-  buildLobby(){ this.menu.setVisible(true); this.menuPrefetch?.(); this.featureReveal?.();   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
+  buildLobby(){ this.menu.setVisible(true); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk='card_'+c,miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]);
     if(miss.length&&!this._lobbyLoading){ this._lobbyLoading=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
@@ -12712,8 +12726,10 @@ class Game extends Phaser.Scene {
     else if(type==='defendNectar')(this._nectarFlowers||[]).slice(0,3).forEach(f=>pt(f,90,'🌺 Protect the flowers'));
     else if(type==='breakRoots')this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._rootAnchor&&out.length<4)pt(n,95,'🌳 Root anchor'); });
     return out; }
-  questFocus(type,force){ if(this.state!=='play'||this._inTutorial||this.recipeMode&&!this._recipeMission||!this.time||!this.cameras)return; const d=Save.data,seen=d.questFocusSeen||(d.questFocusSeen={});
-    if(!force&&(seen[type]||0)>=3)return; const tg=this.questFocusTargets(type); if(!tg.length)return; seen[type]=(seen[type]||0)+1;
+  counterTeach(x,y){ const d=typeof Save!=='undefined'&&Save.data; if(!d||this._inTutorial||(d.counterTaught||0)>=2||this._counterTaughtRun)return; this._counterTaughtRun=true; d.counterTaught=(d.counterTaught||0)+1; Save.save?.();
+    this.rubyTip?.('counter',0); this.time?.delayedCall(150,()=>{ if(this.state==='play')this.questFocus('counter',true,[{x,y,r:52,l:'🦶 Dash into it!'}]); }); }
+  questFocus(type,force,tgs){ if(this.state!=='play'||this._inTutorial||this.recipeMode&&!this._recipeMission||!this.time||!this.cameras)return; const d=Save.data,seen=d.questFocusSeen||(d.questFocusSeen={});
+    if(!force&&(seen[type]||0)>=3)return; const tg=tgs||this.questFocusTargets(type); if(!tg.length)return; seen[type]=(seen[type]||0)+1;
     const cam=this.cameras.main,vz=this.viewZoom||cam.zoom||1; this.state='cinematic'; this.physics.pause(); this.player.setVelocity?.(0,0); cam.stopFollow();
     const g=this.camWorld(this.add.graphics().setDepth(95000)),lab=this.camUI(this.add.text(this.W/2,this.H*.24,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#fff1a8',stroke:'#1a0f1e',strokeThickness:6,align:'center'}).setOrigin(.5).setDepth(130).setAlpha(0));
     const hint=this.camUI(this.add.text(this.W/2,this.H*.24+30,'tap to skip',{fontFamily:'sans-serif',fontSize:'11px',color:'#d9cce6'}).setOrigin(.5).setDepth(130).setAlpha(.6));
@@ -13949,7 +13965,7 @@ class Game extends Phaser.Scene {
   }
   newCardIntro(opts){ if(this._inTutorial||typeof Save==='undefined'||!Save.data)return null; const seen=Save.data.cardSeen=Save.data.cardSeen||{};
     for(const o of opts||[]){ const t=cardTypeOf(o); if(t&&CARD_INTRO[t]&&!seen[t]){ seen[t]=1; try{Save.save();}catch(e){} return t; } } return null; }
-  drawCardIntro(t,x,y,w,h){ if(t==='path')this.time.delayedCall(250,()=>{ if(this.state==='levelup'&&!this._pathTeach)this.pathTeach(); }); const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
+  drawCardIntro(t,x,y,w,h){ if(t==='path'||t==='mutation'||t==='evolution')this.time.delayedCall(250,()=>{ if(this.state==='levelup'&&!this._pathTeach)this.pathTeach(t); }); const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
     g.fillStyle(0x2a1a3a,.96).fillRoundedRect(x,y,w,h,14).lineStyle(2,0xffd54a,1).strokeRoundedRect(x,y,w,h,14);this.lvlUp.add(g);
     const a=this.add.text(x+14,y+8,'✨ NEW CARD TYPE: '+em+' '+name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd54a'});this.lvlUp.add(a);
     const b=this.add.text(x+14,y+30,txt,{fontFamily:'sans-serif',fontSize:'12px',color:'#fff0df',wordWrap:{width:w-28}});this.lvlUp.add(b);
@@ -13957,8 +13973,10 @@ class Game extends Phaser.Scene {
     this.levelCardReadyAt=Math.max(this.levelCardReadyAt||0,this.time.now+900);   // a moment to read before the first tap counts
   }
   /* v7.9.83 เจ้าของ: สอนเลือกบิลด์ Strawberry (ครั้งแรกที่เจอการ์ด Build Path) · Ruby อธิบาย 3 หน้า · แตะ = หน้าถัดไป · ระหว่างนี้แตะการ์ดไม่ได้ */
-  pathTeach(){ if(!this.lvlUp||!this.add)return; const w=this.W,h=this.H,mo=(this.character||Save.data.character)==='momo';
-    const pages=mo?['Remember Grandma’s [Battle Recipes]? Here they are!\nPick one and Strawberry fights that way for the rest of this floor.',
+  pathTeach(kind){ if(!this.lvlUp||!this.add)return; const w=this.W,h=this.H,mo=(this.character||Save.data.character)==='momo';
+    const pages=kind==='mutation'?['A [Mutation]! It changes HOW your attack works,\nnot just how strong it is.','Pick [one] — the other choice locks for this floor.\nRead both and choose the one that fits your recipe!']
+      :kind==='evolution'?['Your attack is fully grown! An [Evolution]\nturns it into its final form.','It’s a huge power jump — always worth taking.\nSome Relics even fuse with it for something stronger!']
+      :mo?['Remember Grandma’s [Battle Recipes]? Here they are!\nPick one and Strawberry fights that way for the rest of this floor.',
       '[🎯 One Big Seed] — Sniper: a charged seed that pierces. Great on bosses.\n[💥 Seed Spray] — Shotgun: a wide spray. Get close for huge damage.\n[💞 Bouncing Seeds] — Ricochet: seeds bounce. Best in big crowds.',
       'After you pick, new cards power up that recipe.\nNext floor we can try a different page — find your favorite!']
       :['Grandma wrote [Battle Recipes] for you too!\nPick one and you fight that way for the rest of this floor.','Read each card — they play very differently.\nNew cards power up the recipe you pick. You choose again every floor!'];
@@ -17661,6 +17679,7 @@ class Game extends Phaser.Scene {
     const ra=this.bpAnim?.('vfx_counter_ring'),ring=this.camWorld(ra?this.add.sprite(x,y,'vfx_counter_ring',0).setDisplaySize(78,78).setTint(tint).setDepth(y-1):this.add.circle(x,y,26,tint,.18).setStrokeStyle(3,tint,.95).setDepth(y-1)); if(ra)ring.play('vfx_counter_ring');   /* v7.9.30 ใบ 31 B1 */
     key=key||this.counterArt?.(b); const an=key&&ASSET_FX[key]&&this.bpAnim?.(key);   /* v7.9.29 ใบ 30: ชีตของให้เตะ (loop) */
     const spr=this.camWorld(an?this.add.sprite(x,y,key,0).setDisplaySize(54,54).setDepth(y):key&&this.textures.exists(key)?this.add.image(x,y,key).setDisplaySize(46,46).setDepth(y):this.add.text(x,y,emoji,{fontSize:'34px'}).setOrigin(.5).setDepth(y)); if(an){ if(frame!=null||!ASSET_FX[key].loop)spr.setFrame(frame??0); else spr.play(key); }
+    this.counterTeach?.(x,y);   // v7.9.93 เจ้าของ: สอนครั้งแรกว่า Dash ชนของเพื่อเตะใส่บอส
     { const bx=ring.scaleX,by=ring.scaleY; this.tweens.add({targets:ring,scaleX:{from:bx*.85,to:bx*1.15},scaleY:{from:by*.85,to:by*1.15},yoyo:true,repeat:-1,duration:420}); }
     const c={b,boss:b,x,y,spr,ring,tint,t:life,life,onHit,drift,onArrive,launched:false,dead:false}; L.push(c); return c; }
   killCounter(c){ if(c.dead)return; c.dead=true; this.tweens.killTweensOf(c.ring); c.spr?.destroy(); c.ring?.destroy(); }

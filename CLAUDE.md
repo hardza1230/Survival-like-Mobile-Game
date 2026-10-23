@@ -1,4 +1,8 @@
-# Latest delivery: v7.9.92 — Grandma’s Battle Recipes (owner picked ข+ค)
+# Latest delivery: v7.9.93 — Ruby guides counters, stars, Mutation/Evolution; feature-reveal fly fix (owner)
+
+counterTeach(x,y) from spawnCounter: first counter per run (max 2 saves, d.counterTaught) → rubyTip('counter') + questFocus('counter',true,[target]) (questFocus now takes optional targets). starTeach() 900ms after buildLobby once (d.starTaught; waits for feature reveals, Weave tour, gearTut 0–1) → rubyTalk about 3 stars + Sugar + replay + mini wheel. pathTeach(kind) also for first mutation/evolution card (2 pages each). Feature reveal: second+ item used an empty tapZones → flew to the bottom; now keeps _featZones (Lobby zones) and hides every queued target's real icon (featHideAt bounds match) until its fly arrives (featShow).
+
+# Previous delivery: v7.9.92 — Grandma’s Battle Recipes (owner picked ข+ค)
 
 RUBY_STORYBOOK[1] (shown before C1-2) gains page 3 (ruby_memory_jar art): Ruby finds Grandma’s Battle Recipes and can hold one at a time → why Builds open from C1-2 and are picked each floor. CARD_INTRO.path = '📖 Battle Recipe' (first-time note only); pathTeach Strawberry pages renamed One Big Seed / Seed Spray / Bouncing Seeds, other heroes get 'Grandma wrote Battle Recipes for you too'. Everywhere else still says Build Path (option ข). tests/ruby-storybook uses each chapter's page count.
 
