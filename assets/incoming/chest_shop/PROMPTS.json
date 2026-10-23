@@ -5,48 +5,54 @@
     {
       "key": "closed",
       "prompt": "Use case stylized-concept. Production mobile candy-fantasy RPG treasure-chest asset atlas for Mochi Mayhem Bazaar. Exactly TWO equal square cells, side by side, actual transparent background, no divider. LEFT silver chest: warmly painted medium brown wood, brushed silver corner bands and ornate silver trim, broad cream cloth sash across the lid, cute rounded mochi-face silver latch. Soft restrained silver highlights. RIGHT premium gold chest: warm rich wood, luxurious golden icing-lace trim and ornate gold corners, one prominent faceted PINK gemstone centered on lid, tiny gold glints; visibly more luxurious than silver. Both CLOSED. Consistent front three-quarter slightly top-down camera, same chest body proportions, same dark cocoa outlines, softly shaded glossy hand-painted candy fantasy matching warm ornate Lobby UI. Critical animation staging: each chest occupies central78% cell width, chest base feet line at y86% of cell, closed lid top around y40% of cell; preserve generous empty upper area for future opening lid and rays. No ground shadow baked beneath, no floor, no text, no numbers, no currency or labels or watermark. Completely isolated, clean high quality silhouettes readable at90px. Desired2048x1024 atlas, each square1024. Same scale and baseline across two cells.",
-      "output_hint": "Generated images are saved to C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303 as C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303\\exec-01d786ae-3ad4-4fc6-bb13-ebc2cb87f77e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
-      "referenceImages": []
+      "referenceImages": [],
+      "generatorOutputId": "exec-01d786ae-3ad4-4fc6-bb13-ebc2cb87f77e.png",
+      "rawSource": "raw/closed_chests.png"
     },
     {
       "key": "silver_open",
       "prompt": "Use case stylized-concept. Animate the EXACT referenced SILVER closed chest into a six-frame production opening sprite sheet. Same chest identity, wood plank layout, SILVER ornate bands/corners, CREAM sash with cute silver mochi-face latch, same threequarter camera and warm hand-painted dark cocoa outline. Exactly3columns by2rows of equal SQUARE cells, row-major time order, transparent background, no gutters or separator lines. Every cell uses the same viewport and SAME lower chest body pixel placement: chest body width90% cell, feet baseline y88% cell; don't move chest to center vertically or scale it between poses. Frame1 closed matching supplied reference; frame2 brief tiny sideways shake, lid cracks open; frame3 lid springs halfway up on rear hinge; frame4 lid fully open (inside lid visible) with a contained white/icy-blue light beam rising from chest interior; frame5 light begins settling, chest stays fully open; frame6 open hold pose, soft white-blue glow inside, chest body unchanged. Lid stays attached to rear hinge, never detached or floating, whole lid inside cell. Upper empty space accommodates raised lid and rays, don't clip at top. Background and all area outside chest/light must be actual alpha transparent. No floor, no reward item drawn, no gold or pink chest trim, no text/numbers/watermark/frame borders. Six distinct AI-painted poses. Target1536x1024 (six512square cells), later horizontal strip.",
-      "output_hint": "Generated images are saved to C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303 as C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303\\exec-40935f7b-6cf5-427f-9968-4f9a6d983aeb.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
       "referenceImages": [
         {
           "role": "identity and framing reference",
           "path": "chest_silver.png"
         }
-      ]
+      ],
+      "generatorOutputId": "exec-40935f7b-6cf5-427f-9968-4f9a6d983aeb.png",
+      "rawSource": "raw/silver_open.png"
     },
     {
       "key": "gold_open",
       "prompt": "Use case stylized-concept. Animate the EXACT referenced GOLD chest into a six-frame production opening sprite sheet. Same wood panel pattern, luxurious GOLD icing-lace trim, heart-shaped golden corners, prominent PINK gemstone centered on lid and tiny pink-gem details, same threequarter camera and warm hand-painted dark cocoa outline. Exactly3columns by2rows of equal SQUARE cells, rowmajor time order; transparent background, no gutters or separator lines. Same lower chest body geometry/placement every frame: width90% cell, feet baseline y88%, no shifting camera or zoom, no pose-dependent scale. Frame1 closed matching reference; frame2 stronger tiny shake with a few gold glints, lid starts cracking; frame3 lid bursts halfway open attached to rear hinge, golden light beginning; frame4 fully raised attached lid, bright contained GOLD light rising and3to5 little pink candy-petal flakes popping outward; frame5 rays settle and candy petals drift upward, chest remains open; frame6 fully open hold pose with gentle gold interior glow, only a few fading candy petals. Lid never detaches, never floats. Keep whole lid and glow within each cell, spare upper space for opened lid; no neighboring-cell overlap. All outside chest/light is genuine alpha transparent, no floor, no reward object. No silver-colored variant, no text, numbers, watermark or borders. Six distinct AI-painted poses. Target1536x1024, six512square cells to be arranged horizontally later.",
-      "output_hint": "Generated images are saved to C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303 as C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303\\exec-6f4155f5-28e1-4cb8-8d65-34813e74bf6d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
       "referenceImages": [
         {
           "role": "identity and framing reference",
           "path": "chest_gold.png"
         }
-      ]
+      ],
+      "generatorOutputId": "exec-6f4155f5-28e1-4cb8-8d65-34813e74bf6d.png",
+      "rawSource": "raw/gold_open.png"
     },
     {
       "key": "rays",
       "prompt": "Use case stylized-concept. Production seamless looping six-frame reward rays VFX for mobile candy fantasy RPG Mochi Mayhem chest rewards. Layout exactly3 columns by2 rows of equal square cells, no grid lines. Pure black RGB0,0,0 background throughout empty regions. Six consecutive frames of a softly luminous WHITE neutral starburst of broad translucent radial light beams rotating gently clockwise around a small empty central area for reward item. Code will tint these rays by rarity, so MUST be neutral WHITE/grayscale only, no inherent gold/pink/blue color, no chest or object in center. Brightness distributed evenly, gentle 8degree advance each frame (sixfold radial symmetry makes loop continuous). Soft tapered edges, a few tiny white sparkles, no hard outer disk or opaque core. All rays contained within central84% of each cell, generous black margin, no overlap between cells. No lettering, numbers, watermark or dividers. Desired1536x1024 source, six512 square cells, later packed as3072x512 horizontal strip.",
-      "output_hint": "Generated images are saved to C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303 as C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303\\exec-f82342aa-30ce-475d-8f13-f639c9221788.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
-      "referenceImages": []
+      "referenceImages": [],
+      "generatorOutputId": "exec-f82342aa-30ce-475d-8f13-f639c9221788.png",
+      "rawSource": "raw/rays.png"
     },
     {
       "key": "thread",
       "prompt": "Use case stylized-concept. Single production mobile game currency icon for Mochi Mayhem, THREAD: a compact round ball/spool of candy thread in interwoven pastel PINK and SKY BLUE strands, with one short GOLDEN sewing needle inserted diagonally through the top, a small thread tail curving close to body. Cute confectionery fantasy, rich clean dark cocoa outline, softly shaded glossy highlights, warm gold accents, simple bold silhouette. Must read clearly at20pixels: favor thick color bands rather than hairline strands, one spool only, needle thick enough to identify, no tiny additional objects or elaborate background. Centered on genuine alpha transparency,14% transparent safety padding. Desired1024 square source, will deliver256x256. No text, numbers, currency letters, symbols, watermark, UI frame or floor.",
-      "output_hint": "Generated images are saved to C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303 as C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303\\exec-01fd0dbc-5259-45b3-92b8-09d406468ffa.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
-      "referenceImages": []
+      "referenceImages": [],
+      "generatorOutputId": "exec-01fd0dbc-5259-45b3-92b8-09d406468ffa.png",
+      "rawSource": "raw/thread.png"
     },
     {
       "key": "card",
       "prompt": "Use case stylized-concept. Single production nine-slice SHOP CARD PANEL for Mochi Mayhem warm confectionery fantasy game Bazaar. Wide horizontal rectangle EXACT aspect780:400 (1.95:1). Warm brown wood outer border with restrained ornate gold corner caps and delicate golden icing trim, softly rounded corners. Broad perfectly EMPTY dark cocoa/plum interior with minimal low-contrast texture, dark enough for WHITE text, consistent flat background. No chest illustration or icon or text inside; runtime will draw chest art and labels. Border should be modest width about45px at780px source, corners within70px square, continuous straight uniform top/bottom/side strips suitable for nine-slice stretch, no centerpiece ornaments which stretch badly. Hand-painted clean dark cocoa outlines, warm softly shaded materials same style as cute candy fantasy Lobby UI. Entire panel included, real transparent alpha outside rounded corners; interior opaque. No letters, numbers, watermark, labels or outside drop shadow. Desired1560x800 source, will resize to780x400.",
-      "output_hint": "Generated images are saved to C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303 as C:\\Users\\Norrasates\\.codex\\generated_images\\01a166a4-4ae3-7803-a9a5-2c054d0b5303\\exec-e8c57957-bf27-418e-badb-849fe81c32db.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
-      "referenceImages": []
+      "referenceImages": [],
+      "generatorOutputId": "exec-e8c57957-bf27-418e-badb-849fe81c32db.png",
+      "rawSource": "raw/card.png"
     }
   ]
 }

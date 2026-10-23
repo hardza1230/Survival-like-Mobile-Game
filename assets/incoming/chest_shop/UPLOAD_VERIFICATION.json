@@ -1,0 +1,236 @@
+{
+  "sourceCommit": "1f664c60fe43b0c07667acda66c5ec76b354ce1b",
+  "date": "2026-10-23",
+  "verifiedFiles": 38,
+  "allFullBytesMatch": true,
+  "files": [
+    {
+      "path": "assets/incoming/chest_shop/bz_chest_card.png",
+      "bytes": 257171,
+      "sha256": "84b3b4ae55a01034b411fcb49ae36b26c170f04d509aa43068b50cfc37f8b51a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/chest_gold.png",
+      "bytes": 279664,
+      "sha256": "8f678d64a6de9f0002a19074e71d8582d93acf713d0e2acda29a23a4ec899135",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/chest_gold_open.png",
+      "bytes": 2002483,
+      "sha256": "6bfcc174aeb3376291b1921954d1896b7dc8a2aa37877974016e0679784ab918",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/chest_silver.png",
+      "bytes": 281128,
+      "sha256": "35460ca6277c4a8cf8c4cea569bc642669c43e821626196d28fd4889e31d41e7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/chest_silver_open.png",
+      "bytes": 2100293,
+      "sha256": "23bd34e8bddd169f419df5ed4c1a7a88c047d7fda935300a9cd6cbe2a65773cc",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/DELIVERY_README.md",
+      "bytes": 2962,
+      "sha256": "0cd6076a0066c1c00d2e597f2e5f8f5122f466a4ffb72e3a81f2160c8d99d06d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/ic_thread.png",
+      "bytes": 76421,
+      "sha256": "1be0845e80f2b94f1a5dbee7122af401ec7d07c54151b55343d0261a99aa25a9",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/MANIFEST.json",
+      "bytes": 5221,
+      "sha256": "c3f845808889be5575282f775e49f823b0e6aea18315258508903a2accb44579",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/PROMPTS.json",
+      "bytes": 11342,
+      "sha256": "5c058ec3c018b9df92cfebd8f2602d95bb2a070caa3cac2e31959d6c8d6213c3",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/QA_REPORT.json",
+      "bytes": 4714,
+      "sha256": "883164f2de40ef32190e79fd02a9ed85de8ff43f39a6a561b3c603465dadb2e3",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/vfx_chest_rays.png",
+      "bytes": 512008,
+      "sha256": "5a93b45bb3d2899222782920fc18811675959fdbbe93e1f8d50a24490469a4ae",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/gold_closed_open.png",
+      "bytes": 534084,
+      "sha256": "2ed040688885c1584b2f4a61b215d10563891da431ffee763dc5f57188a32c50",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/gold_open.gif",
+      "bytes": 209849,
+      "sha256": "d73365b86a4ec0ed06a9fe524180d83227df91496f0edae9c298f8af28cb9646",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/gold_six_frames.png",
+      "bytes": 467138,
+      "sha256": "0ca85bcadb18ec5aac87eb609b72dabbcb1d2ea447b7303a332d487f9b633d7b",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/rays_loop.gif",
+      "bytes": 350022,
+      "sha256": "67bd0630f93680dbcbaa1a79c092159be2d19b126353cf5b361d389e522009e2",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/rays_rarity_tints.png",
+      "bytes": 98638,
+      "sha256": "4f1e464cd487f875f9e2912ff93ea52348998ecddab6df7152f3ac022c373513",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/shop_cards_slice_proof.png",
+      "bytes": 217631,
+      "sha256": "2ad8cb34787e67228afc4e84aab6f86089f7b5cd33b4bdad23d972ce7dce0c71",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/silver_closed_open.png",
+      "bytes": 612801,
+      "sha256": "94e5959848495f347d1c4d97bb1a072e3f127d4dcd7da0f7ae28c5eb271c17f3",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/silver_open.gif",
+      "bytes": 223478,
+      "sha256": "d1be45a96e196a895dd105f7ba11eb72205974fdf0269ae2bceeb32f57163305",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/silver_six_frames.png",
+      "bytes": 516350,
+      "sha256": "7239b66ce14968d4900cc20f77e802bba6f4506b2716d09c1f45812a706271dd",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/previews/thread_20_28_40_64_light_dark.png",
+      "bytes": 28912,
+      "sha256": "cc334d39db7620e98d82a99a6d319eea38d2111a4a5bc0a6fe70ca7cea827107",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/raw/card.png",
+      "bytes": 1648810,
+      "sha256": "78cf0c9ec72334e1a3af1fc4820d066fb1daa08dc40185e265b5ac6554f0e403",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/raw/closed_chests.png",
+      "bytes": 1533997,
+      "sha256": "5c7c9cb6dc17f9e721da0d5f2c01b829f1dd78dc1ebdc5fdb61062253d49a550",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/raw/gold_open.png",
+      "bytes": 2429435,
+      "sha256": "14252740fea6e81bba6bfc7ec32ef9cbc552d0f6c853775c3d165ca035687e26",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/raw/rays.png",
+      "bytes": 1340164,
+      "sha256": "47b8a1f5c6543fcde01c32b0b88f712fd78236fb16d43d4493baf715373a8c5d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/raw/silver_open.png",
+      "bytes": 2579141,
+      "sha256": "2caf94489015f3ba2e4e90467294eed099d6fbcf76611ffaa526562f49cbc6f0",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/raw/thread.png",
+      "bytes": 1230405,
+      "sha256": "2c2700d07982b0640208d645438cdafda5050b7b983fd0bbcce6f0696f4046e5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/bz_chest_card.webp",
+      "bytes": 23542,
+      "sha256": "c3c0dd483d96d3e90afae8195179518ad74df32303d74c41d532f22bf5d10bc9",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/chest_gold.webp",
+      "bytes": 48472,
+      "sha256": "57fc959be7c0b3440b3e68186a62cdd10fd1cc0faafb0ea1538c1d9df53637ac",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/chest_gold_open.webp",
+      "bytes": 355720,
+      "sha256": "4c0747c855e74af152a9f29331a1035f423af7b22595805855325fc856d8942b",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/chest_silver.webp",
+      "bytes": 43178,
+      "sha256": "f48f87e71e87fd4a2a33651cf5eef5a3b8549eb27dd78dc9aa480422a7aac067",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/chest_silver_open.webp",
+      "bytes": 303840,
+      "sha256": "bab3622147dec70d8acf8cfb27497d4d90d045d924644f1d46d80dd649944ac8",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/ic_thread.webp",
+      "bytes": 15946,
+      "sha256": "34f96d09490feb15c71873b1e7296f04e10d95c137a2a4af2917ca1f3ace784a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/chest_shop/webp_candidates/vfx_chest_rays.webp",
+      "bytes": 53978,
+      "sha256": "6491adf397c300c6eba3201e0b70f3f14710238fe37f86aea1de3a40d783c20e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 164931,
+      "sha256": "fd3ccca0ecc5bb532130d182d2dd107d1b27d4f1ae201ef6703e9113566063d9",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 814,
+      "sha256": "b90c4717b4481a1b85194b403a7d8b8032a3a33dcdb71cd0070f02007c29ae43",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/40_CHEST_SHOP.md",
+      "bytes": 4250,
+      "sha256": "c9145bbddf0487fdf619d67084513c18b9c8c541941350c8ee2410a67e502617",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/README.md",
+      "bytes": 24820,
+      "sha256": "8a837505f9b38d799773076f5cd76ad96223bad62378ccb7ece63bba09abc61f",
+      "byteForByteMatch": true
+    }
+  ]
+}

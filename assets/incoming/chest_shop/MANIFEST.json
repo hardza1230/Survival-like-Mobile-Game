@@ -191,7 +191,8 @@
       "width": 256,
       "height": 256,
       "bytes": 15946
-    }
+    },
+    "runtimeIntegrationNote": "Existing runtime ic_thread is a combat Knot texture. Use a separate currency alias or review the existing combat call site before overriding that shared key."
   },
   {
     "key": "bz_chest_card",
