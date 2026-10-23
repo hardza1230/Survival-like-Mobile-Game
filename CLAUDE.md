@@ -1,4 +1,8 @@
-# Latest delivery: v7.9.90 - Ruby's illustrated storybook
+# Latest delivery: v7.9.91 — Clearer loading + persistent storage (owner)
+
+GameLoader.set (patched in game.js) percent line: window.__dlPhase (set by downloadAllAssets while fetching) → '⬇️ Downloading n% (n / N)'; else LoadMeter dev ≥ net → '📦 Preparing n% (seen / count)', else '⬇️ Loading'. downloadAllAssets first calls navigator.storage.persist() so Android is less likely to evict the ~288 MB cache. Owner question answered: per-file ?v= hashes mean only changed files re-download; the boot bar every launch is decoding cached files into GPU memory, plus game.js on each new version.
+
+# Previous delivery: v7.9.90 - Ruby's illustrated storybook
 
 Five built-in ImageGen originals (four event paintings + recipe paper), source/prompts/hash manifest and real Canvas proofs retained in assets/incoming/ruby_storybook/. Runtime451,184bytes; menu-lazy only, per-story image loading. Pre-stage C1-1 through C1-5 two-page stories, before first tutorial too; grandma/jar art reused. rubyTalk now opaque paper/black full-screen, contained event art, expression portrait, manual Back/Next/Skip,600ms debounce, deferred once-only completion/save and menu rebuild guard. Post-clear memories retained; no combat/balance changes. Required check/build and six real Canvas viewports passed; Pages CI includes story review. See docs/art_orders/43_RUBY_STORYBOOK.md and publication state in docs/SESSION_HANDOFF.md.
 

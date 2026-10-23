@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.90';
+const GAME_VERSION = '7.9.91';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.91',date:'2026-10-23',title:'Clearer loading',items:['The loading bar now says Preparing when it unpacks files already on your phone, and Downloading only when it fetches new files','The game asks your phone to keep its downloaded data so it is not cleared']},
   {v:'7.9.90',date:'2026-10-23',title:'Ruby opens her storybook',items:['Ruby narrates illustrated story pages before the first five stages','New pantry, furnace, frozen spirits and Crown Oven paintings bring early events to life','Narration now fills the screen with recipe-book paper or a black fallback instead of the Lobby','Read at your own pace with Back, Next and Skip; story progress is saved after closing']},
   {v:'7.9.89',date:'2026-10-23',title:'A clearer Lobby',items:['Roomier Sugar and Thread displays with compact balances','Painted Settings icon and new currency frames','Hero dialogue now sits above the hero, clear of side shortcuts','Brighter controls, tidy shortcuts and clearer stage information']},
   {v:'7.9.88',date:'2026-10-23',title:'Painted winter magic and Lobby bubbles',items:['Crystal Impaler dash shards now shimmer through four hand-painted animation frames','Glacier Bloom now has an eight-frame snowfall and icy wind animation that pauses with gameplay','Lobby speech and thought bubbles now use painted cream/gold and pale-blue panels','Winter art loads when entering a Mint stage; dialogue panels load with the Lobby']},
@@ -3293,7 +3294,7 @@ const LoadMeter={ total:0, done:0, dev:0, seen:new Set(), t0:0, hist:[],
   const TIPS=['Dash makes you briefly invincible — dash through enemy attacks.','Red circles on the ground explode — step out fast.','Pick cards that boost your main attack early.','Elites drop more EXP and loot — hunt them down.','Grab hearts when HP is low; magnets pull in every EXP orb.','Your Unique skill charges over time — save it for bosses.','Higher difficulty gives better rewards.','Spend Sugar in the Temple to grow stronger between runs.','Keep moving — standing still lets the swarm surround you.','Watch the mission text above your hero to know what to do.'];
   let i=Math.floor(Math.random()*TIPS.length); const put=()=>{ const el=document.getElementById('load-status'); if(el)el.textContent='💡 '+TIPS[i]; };
   if(L._tipT){clearInterval(L._tipT);L._tipT=null;} put(); setInterval(()=>{ i=(i+1)%TIPS.length; put(); },4000);
-  L.set=function(progress){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc){ const n=LoadMeter.count||0; pc.textContent=Math.round(p*100)+'%'+(n?'  ('+Math.min(n,LoadMeter.seen.size)+' / '+n+')':''); } put(); };   /* v6.96.1 file count (xx / yy) */
+  L.set=function(progress){ const p=Math.max(0,Math.min(1,Number(progress)||0)),f=document.getElementById('load-fill'),pc=document.getElementById('load-percent'); if(f)f.style.width=Math.round(p*100)+'%'; if(pc){ const n=LoadMeter.count||0,D=window.__dlPhase,net=LoadMeter.done-LoadMeter.dev; pc.textContent=D?'⬇️ Downloading '+Math.round(p*100)+'%  ('+D.n+' / '+D.N+')':(n&&LoadMeter.seen.size?(LoadMeter.dev>=net?'📦 Preparing ':'⬇️ Loading ')+Math.round(p*100)+'%  ('+Math.min(n,LoadMeter.seen.size)+' / '+n+')':Math.round(p*100)+'%'); } put(); };   /* v7.9.91 เจ้าของ: แยก Downloading (เน็ต) กับ Preparing (ไฟล์ในเครื่อง) */   /* v6.96.1 file count (xx / yy) */
 })();
 function fileFromDevice(f){ try{ const x=f&&f.xhrLoader; return !!(x&&x.getResponseHeader&&x.getResponseHeader('x-mochi-cache')==='hit'); }catch(e){ return false; } }
 function verUrl(u){ const v=ASSET_FILE_VERSIONS&&ASSET_FILE_VERSIONS[u];return v?(u+'?v='+v):(ASSET_VER?(u+'?v='+ASSET_VER):u); }
@@ -3738,14 +3739,16 @@ function allAssetUrls(){ const set=new Set(),add=u=>{ if(typeof u==='string'&&u.
   for(const k in ASSET_IMAGES)add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(ASSET_FX[k]&&ASSET_FX[k].url); for(const k in ASSET_AUDIO)add(ASSET_AUDIO[k]);
   if(typeof LH_USE_SHEETS!=='undefined'&&LH_USE_SHEETS)for(const k in LH_SHEETS)add(LH_SHEETS[k]); return [...set]; }
 async function downloadAllAssets(done){ let fin=false; const go=()=>{ if(fin)return; fin=true; try{ done(); }catch(e){ console.error(e); } };
+  try{ navigator.storage?.persist?.().catch?.(()=>{}); }catch(e){}   // v7.9.91 เจ้าของ: ขอให้เครื่องเก็บข้อมูลเกมถาวร (ลดโอกาส Android ลบแคชเอง)
   try{ if(typeof fetch!=='function'||!navigator.onLine)return go(); const urls=allAssetUrls(),key='mochi_dl_'+GAME_VERSION+'_'+ASSET_VER+'_'+urls.length;
     let doneKey=null; try{ doneKey=localStorage.getItem('mochi_dl_done'); }catch(e){} if(doneKey===key)return go();
     try{ const sw=navigator.serviceWorker; if(sw&&!sw.controller)await Promise.race([new Promise(r=>sw.addEventListener('controllerchange',r,{once:true})),new Promise(r=>setTimeout(r,3000))]); }catch(e){}   // เครื่องใหม่: รอ SW คุมหน้าก่อน ไม่งั้นไฟล์ไม่เข้า cache
     let have=null; try{ if(window.caches){ const c=await caches.open('mochi-assets-v1'),ks=await c.keys(); have=new Set(ks.map(r=>{ const u=new URL(r.url); return u.pathname.replace(/^.*?\/assets\//,'assets/')+u.search; })); } }catch(e){}
     const todo=have?urls.filter(u=>!have.has(u)):urls; if(!todo.length){ try{ localStorage.setItem('mochi_dl_done',key); }catch(e){} return go(); }
-    let n=0,fail=0,i=0; const N=todo.length,show=()=>{ try{ GameLoader.show&&GameLoader.show('Downloading game data (one time) · '+n+' / '+N,n/N); }catch(e){} }; show();
+    let n=0,fail=0,i=0; const N=todo.length,show=()=>{ window.__dlPhase={n,N}; try{ GameLoader.show&&GameLoader.show('Downloading game data (one time) · '+n+' / '+N,n/N); }catch(e){} }; show();
     const worker=async()=>{ while(i<N){ const u=todo[i++]; try{ const r=await fetch(u); if(!r.ok)fail++; else await r.arrayBuffer(); }catch(e){ fail++; } n++; if(n%8===0||n===N)show(); } };
     await Promise.all(Array.from({length:8},worker));
+    window.__dlPhase=null;
     if(!fail){ try{ localStorage.setItem('mochi_dl_done',key); }catch(e){} }   // ไฟล์ที่ล้มเหลว → ลองใหม่ครั้งหน้า
   }catch(e){ console.warn('[dl]',e); } go(); }
 
