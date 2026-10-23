@@ -1,0 +1,320 @@
+{
+  "sourceCommit": "d94edfcc21a7db6e66205896e08209af26299dc1",
+  "fileCount": 52,
+  "totalBytes": 18178435,
+  "method": "Full immutable raw GitHub byte-for-byte readback",
+  "files": [
+    {
+      "path": "assets/incoming/ruby_mascot/DELIVERY_README.md",
+      "bytes": 1333,
+      "sha256": "3421862b99ec6650dfad5921355b287c9d90c28f606d8a7e2687ed7bbe5413cf",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/MANIFEST.json",
+      "bytes": 10585,
+      "sha256": "af92465dda433c45acdf1555c74c3f529b48c49fdecbbbeb0cb150d469f68e21",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/mascot_ruby.png",
+      "bytes": 79076,
+      "sha256": "508c123006d544427161e6d46ef653cf8a7c1a9776a166ac0ea4335f256c4ddf",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/mascot_ruby_alert.png",
+      "bytes": 72281,
+      "sha256": "fba537e6a67edefbd485dd8efc60168ce3f4cc098038ea6e21af5ec81abec9b6",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/mascot_ruby_cheer.png",
+      "bytes": 87767,
+      "sha256": "1c3df373fd18e9df7e85b687b93a200caa0e190cb80fafc9ddbbdc0c0bf58835",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/mascot_ruby_happy.png",
+      "bytes": 79709,
+      "sha256": "8992a0819d583b28f293803f77627df951a0a3c97bc5ff5ec01bb8f22816fd02",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/mascot_ruby_sad.png",
+      "bytes": 76110,
+      "sha256": "bf81fdf402c09187c7b62e9c11442ce3978d8a0a73295c7a14214edf6f346098",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/mascot_ruby_think.png",
+      "bytes": 79695,
+      "sha256": "e79dc105215b068288d0c13e62f66e8319eb5d34938f9794da7064f0e63cb1fa",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/PROMPTS.json",
+      "bytes": 8103,
+      "sha256": "a3c5d31e2654324d109b75dde723e2a7a9f485ec839f4e52961fb58cfb53d038",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/QA_REPORT.json",
+      "bytes": 4261,
+      "sha256": "1a8dc11ba266d69da93146fba24b5cebd8f351e84043659352f5f5ae061023a4",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_memory_grandma.png",
+      "bytes": 645214,
+      "sha256": "2a461a06a09f164e404e817f6027d983380994c125b9e199e61b0b420a5bc2da",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_memory_jar.png",
+      "bytes": 549712,
+      "sha256": "d0408996b2d158d31e58004ede0a05694b9cf414fe8c178f96a9d1a0c52138fd",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_point.png",
+      "bytes": 277540,
+      "sha256": "a1ee19c21f4d94e28857576eadcc09a4d7a6b0c66e25bf0d601eb28641265e4f",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_talk_explain.png",
+      "bytes": 190478,
+      "sha256": "8c4e9e104edbdc89fe0a4ff72336a36e4991aede7c706d52c7ae612678f100b4",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_talk_normal.png",
+      "bytes": 189894,
+      "sha256": "2915047b87bbbc5a20ea5d1ee5e0cae1ef6a1949cf4da88405490d99bda88468",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_talk_proud.png",
+      "bytes": 188858,
+      "sha256": "49ae8f7f02ab93e8090fef651ec90f205e4f8db8d9fd6d476a678645cb050a2a",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/ruby_talk_worried.png",
+      "bytes": 184866,
+      "sha256": "154aa0559a7b942b78e5f1e7d318b22571d2b322d1a4e9d63679a4b14a11244b",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/vfx_ruby_sparkle.png",
+      "bytes": 26267,
+      "sha256": "fa558ddd0432ef0db9ef5cf8097788c23444d747ba9777741d06ae9be81d8c9d",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/expressions_and_60px.png",
+      "bytes": 443798,
+      "sha256": "92ae500464eabeaf8dfee4d372083aa498cf74892b320b92e241e02ae7c94046",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/memories.png",
+      "bytes": 1147161,
+      "sha256": "9a92fb1e69b7fdca1f37c36258610cacc1d02b10295b3c74cfde51853744d0b8",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/ruby_point.gif",
+      "bytes": 110282,
+      "sha256": "c305fa5585986a92055391c7a09e3783e6f269857987439fa42329cf85072f63",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/ruby_talk_explain_360x780.png",
+      "bytes": 65763,
+      "sha256": "151a6cc84c68b630e8160798a41cf64eed0c8788f2a3088c7d5b5bfe8dd9eba0",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/ruby_talk_normal_360x780.png",
+      "bytes": 65928,
+      "sha256": "a4081ddb2000863c86f39674fd7f2c5109af2566b85a68fdfda9d2c431cd02a3",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/ruby_talk_proud_360x780.png",
+      "bytes": 65754,
+      "sha256": "525a7addb918e526d53b686d09086e526bb93a31a847ed3f344ddf8da832d0b5",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/ruby_talk_worried_360x780.png",
+      "bytes": 63670,
+      "sha256": "093913dfe7c7e2c90c21d8b4e37b4a6fc3b52b27441b252163628c9d0e9666a4",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/talk_layout_360x780.png",
+      "bytes": 209890,
+      "sha256": "ce5fe95fd2adbd51bccc45ee987035da3ca9e8b1db5c6a215aa135ed89c08829",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/previews/vfx_ruby_sparkle.gif",
+      "bytes": 18130,
+      "sha256": "e96067997f1d56ce6031ca4322ef9af69737653cc2a4c8fb3571a8d0abdcdc6a",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/A.png",
+      "bytes": 2228571,
+      "sha256": "95174f121e230083e8022b52b96902e05365207d66c61e8e2754465d1831d463",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/B.png",
+      "bytes": 1667041,
+      "sha256": "6d37a1028f792a9a8bd70e1b092b02f94ba679c050b0ec18039373eadcb6e3ed",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/C.png",
+      "bytes": 1480912,
+      "sha256": "7713df4762b4b8abe1c4415b0e100857859ced5e15485ee4cf1d99aa1a22087d",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/D1.png",
+      "bytes": 2882174,
+      "sha256": "3d05bf917fc879db4023803bfde6e4b2aa3f4576661bec0521432f35b8fbf226",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/D2.png",
+      "bytes": 2524471,
+      "sha256": "2b2ba8c31256b0067e6bed7c119cf79d5f97f0cfdf310774c240de39182e50a4",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/proud.png",
+      "bytes": 1439996,
+      "sha256": "87375aac551bfb1e93fd9120cef340f70e466026149d9956d7d237fa3c95d914",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/raw/V.png",
+      "bytes": 625119,
+      "sha256": "772725b4d8ea7ce94a7b7e2654d57d7e1bf45d3cf259b23e3b218f89a432562b",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/mascot_ruby.webp",
+      "bytes": 6382,
+      "sha256": "b053c40455942ad6d393d82f2464c3fe979343f9c68cdc9de9058faa88e994ec",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/mascot_ruby_alert.webp",
+      "bytes": 6030,
+      "sha256": "4e23907026ae4beed1a1bb3ba2d9b57dfd0fdd8b46cb3ee30be293a42db60175",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/mascot_ruby_cheer.webp",
+      "bytes": 7928,
+      "sha256": "468ec48f071c3c032cdcc600834661d358c9d330ac612c1f9db1d84a5a290ff3",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/mascot_ruby_happy.webp",
+      "bytes": 6494,
+      "sha256": "af9a141c9664f2983d3e8e1c1994a24f8af53f1775e9d87a394f71e90a7cc151",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/mascot_ruby_sad.webp",
+      "bytes": 6146,
+      "sha256": "8a3b3a2e29d3994b4310b09f7c3299a92c3ea684116575e47e3d08f7bd0f3118",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/mascot_ruby_think.webp",
+      "bytes": 6492,
+      "sha256": "556ca039f8e68e795510e2d7919a4a0b69c40b1e094a0d6aeeb47754c20523f8",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_memory_grandma.webp",
+      "bytes": 40550,
+      "sha256": "fa79c52ac0d0bdf533ae1a1125f36eaf2d4363ba796b84e17a3cf9c5e3e6b929",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_memory_jar.webp",
+      "bytes": 30228,
+      "sha256": "7fe18b8c1b1f329a78c1cc41c7d43c69a4832099c201e89b44df719cca930445",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_point.webp",
+      "bytes": 23520,
+      "sha256": "4536b6b38784509f6c5c21604a3b36505729eaa326d34bbdd7c3c0ceaf6a8028",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_talk_explain.webp",
+      "bytes": 12012,
+      "sha256": "edab85e5078a9314b2d9a0b6d37a070b70685122dde06535e40393d3099e93cc",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_talk_normal.webp",
+      "bytes": 12068,
+      "sha256": "9134795784c0d3e6c5d008b0ed58c65e0adeeafb13b58519cd374259a938b8e0",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_talk_proud.webp",
+      "bytes": 12864,
+      "sha256": "48a73a04d1bed37d06637c7e54466cb3344130b6b2364f3606d94e57d4a7c359",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/ruby_talk_worried.webp",
+      "bytes": 11530,
+      "sha256": "84fa8859929d9723272ebc9e777c0cf42e83f290cee658e95ed3c592de754f3d",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "assets/incoming/ruby_mascot/webp_candidates/vfx_ruby_sparkle.webp",
+      "bytes": 1908,
+      "sha256": "abe8042fe8dddc6af4f8f6be9951c23c0b6c533eba075beb286db447fe5b9fc1",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 169664,
+      "sha256": "79bb3afa0f7f8f72d52e38c1eafbfcc964cc9a68f8275a43403929416df1d277",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 638,
+      "sha256": "cf9f63002f6773eb937ccac88e6d7aa1e411c3fa8546a538058cf530231e7e67",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "docs/art_orders/36_RUBY_MASCOT.md",
+      "bytes": 8602,
+      "sha256": "811607b358f02a110a3f06ce5d35ff150574e10e3d3d80fcb4d3ed6a9781a521",
+      "exactRemoteMatch": true
+    },
+    {
+      "path": "docs/art_orders/README.md",
+      "bytes": 24970,
+      "sha256": "8c4999e24b8706d7b9da765681c6c4c798061dcc521c52a6d6d19b82cf476d7c",
+      "exactRemoteMatch": true
+    }
+  ]
+}
