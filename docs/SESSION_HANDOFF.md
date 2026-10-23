@@ -1,7 +1,5 @@
-# Latest checkpoint — art order40 Bazaar chest source kit
+# Latest checkpoint — Ruby rewritten art order36
 
-23 October2026. All7 PNG32 /22frames delivered to assets/incoming/chest_shop/: silver/gold closed+6frame opening, neutral black rays, Thread and9slice card.6 ImageGen raw donors and exact prompts retained. PNG5,509,168bytes; WebP844,676bytes. Full PNG CRC/hash/alpha/dimensions, exact static-frame0 matching and6frame GIF counts passed. Native20px Thread, light/dark, closed/open, card stretch and current rarity-tint proofs reviewed.
+23 October2026. Complete14 PNG32 /22frames in assets/incoming/ruby_mascot/, including optional grandma and jar memories. Seven AI-painted sources; exact prompts, manifest, QA, WebP candidates, expression60px and portrait360×780 proofs, point/sparkle GIF previews. All14 PNG full decode/CRC/alpha/dimension/hash checks passed. Source filesSee MANIFEST.json for exact final byte counts.
 
-Source commit1f664c60fe43b0c07667acda66c5ec76b354ce1b. All38 initial delivery/document files downloaded in full and byte-for-byte matched (20,593,753bytes). UPLOAD_VERIFICATION.json records immutable evidence. Following metadata adds source IDs and the existing ic_thread combat-key note.
-
-Source-only; game.js/GAME_VERSION v7.9.78 preserved, including concurrent upstream updates. Next: Bazaar/Chests lazy art integration, preserving cost/pity/reward logic and combat ic_thread/Knot mapping. Owner phone cadence/skip/FPS review pending.
+Ready for guarded GitHub source upload; runtime unchanged, concurrent upstream9a86596 preserved. Next: full remote byte verification, then integrate lazy assets per art order and owner phone checks.

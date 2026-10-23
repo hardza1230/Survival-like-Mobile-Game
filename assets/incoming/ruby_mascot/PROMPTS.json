@@ -1,0 +1,47 @@
+{
+  "order": 36,
+  "sources": [
+    {
+      "source": "raw/A.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "Create a professional game sprite expression sheet, transparent background, exactly 3 columns x 2 rows of SIX separate full body versions of the SAME mascot, evenly spaced square cells, no dividers, no labels or text. Ruby is a cute round ruby-pink mochi filled with pomegranate jam, no human body, no legs, two tiny round hands. Large sparkling dark eyes, crimson cheeks, one small faceted red ruby gemstone on top like a fruit stem. Cream and red gingham apron with bow behind. Tiny brown cookbook with blank cover and wooden spoon are her signature props. Warm soft cel shading, thick dark cocoa outlines, saturated confectionery fantasy mobile game art, clear at 60 pixels. Identical round body size and center in every cell, all appendages safely inside cells. Row1: normal gentle smile holding cookbook and spoon; happy closed-eye broad smile both hands raised; alert wide eyes open mouth pointing right. Row2: thinking slight head tilt wooden spoon touching chin; cheering raised round fists sparkling eyes; sad downcast eyes hugging closed cookbook. Preserve exact same gem, apron and anatomy across all six. No strawberry seeds, no text, no ground shadow, no background.",
+      "originalFilename": "exec-2e08d0ec-d536-47de-937d-25f0d310bcc2.png"
+    },
+    {
+      "source": "raw/B.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "Use attached Ruby expression sheet as STRICT character reference: same ruby-pink round mochi, single faceted top ruby, red cheeks, cocoa outlines, cream and red gingham apron and bow, wooden spoon and tiny plain brown cookbook. Create FOUR matching large talk portraits in exactly 2 columns by 2 rows, every cell portrait 4:5 ratio, full sheet 8:10. Transparent background no scenery no cast shadows no text no grid lines. Consistent same character body position, same body size across cells, half-to-full round body in LEFT 75 percent of each cell, clear empty right 25 percent. Ample safe transparent margins. Top left: warm smile, holds closed cookbook in one hand and waves other hand. Top right: attentive friendly teacher opens cookbook showing blank cream pages and points to page with other hand. Bottom left: proud smile, hands on hips, chest up, gem glows soft ruby light, book tucked by apron. Bottom right: worried eyebrows, small concerned mouth, both hands clasped together at chest, cookbook tucked beside apron. Only TWO hands each pose. Warm polished 2D cel shaded mobile fantasy game sprites, faithful identical design to reference.",
+      "originalFilename": "exec-0d064f86-9e8f-4b1e-81e8-f72c95dbdad5.png"
+    },
+    {
+      "source": "raw/C.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "Create a four-frame animation spritesheet, 2 columns x 2 rows equal square cells, transparent background, no labels dividers text or ground. Strictly preserve attached Ruby design: round pink pomegranate-jam mochi body, single small faceted ruby on head, two round hands, red cream gingham apron and rear bows, tiny blank brown cookbook and wooden spoon, cocoa outlines. Four AI-drawn consecutive poses read left to right top to bottom: (1) Ruby at rest smiling, spoon held near right side pointing diagonally right, cookbook left; (2) small squash anticipation, spoon beginning upward; (3) light joyful hop lifted about 10 percent of cell height, stretches just slightly, wooden spoon points clearly RIGHT; (4) soft landing near frame1 pose, spoon relaxed diagonal right. Character facing viewer but attention toward right. Exactly same body scale, horizontal center, apron, gem and book proportions in all frames, ample transparent margins no clipping. Loop is light hop and point, not a spin. Cute warm polished cel shaded 2D game art matching reference.",
+      "originalFilename": "exec-02af984c-5601-48f3-b0a9-6d962514d296.png"
+    },
+    {
+      "source": "raw/V.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "Game VFX sprite sheet exactly 3 columns 2 rows, six equal square cells. Solid pure black background, no alpha needed. Tiny ruby-red magical sparkles materializing then dispersing, sequence left to right top to bottom: a few faint pink pinpoints; small red four-point stars; expanding clustered ruby sparkles bright pink white cores; widest gentle burst of faceted crimson shards and tiny star glints; receding sparse pink stars; almost vanished two tiny dim pinpoints. Clean minimal additive particle effect, no rings no explosion no smoky clouds no text no dividers no frames. Each effect centered safely with large black margins inside its own cell. Warm charming confectionery fantasy game art.",
+      "originalFilename": "exec-7237677e-ada8-4232-893e-91fbe130918e.png"
+    },
+    {
+      "source": "raw/D1.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "A tender storybook memory illustration, landscape 3:2 composition, no text anywhere. Use reference for Ruby's exact design. Tiny ruby-pink round mochi Ruby, single little faceted ruby on head, red cream gingham apron and brown recipe book, sits on a wooden kitchen table watching her GRANDMOTHER. Grandma is a warm grandmotherly round mochi with reddish-brown red-bean filling color, white hair in a bun, soft kind wrinkled eyes, cream apron, no human limbs or human anatomy. Grandma gently stirs pomegranate jam in a copper pot with wooden spoon. Cozy Mochitopia pantry kitchen, jars without labels, pomegranate halves, old wooden shelves, warm evening window light. Nostalgic faded old-photo palette, warm sepia peach and muted ruby, subtle painterly paper texture inside image. Cocoa outlines and soft cel shading matching cute fantasy game. Characters and faces must read clearly at 360x240. Full illustrated scene with gently irregular soft feathered transparent border, true alpha outside scene, no rectangular picture frame, no lettering.",
+      "originalFilename": "exec-c92ab1c9-5cc4-4c52-98f8-03f79899250f.png"
+    },
+    {
+      "source": "raw/D2.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "Landscape 3:2 storybook memory illustration for cute fantasy game, no words or labels. A precious small glass jar of deep ruby-red pomegranate jam with a cream-and-red gingham cloth lid and twine, no label, falling tilted down into a jagged dark fissure beneath the wooden shelves of an old cozy pantry. From deep in crack reaches a huge shadow-black hand of The Great Hunger with long soft smoky fingers, ominous but suitable for all ages. Jam jar is main focal point glowing ruby against blue-purple darkness. Above crack warm sepia pantry boards and a few spilled pomegranate seeds and one fallen wooden spoon; below a mysterious cool dark abyss. Emotional memory of losing Grandma's precious jam, nostalgic faded colors, cocoa outline, soft painterly cel shading, warm rim light, storybook confectionery fantasy world. Composition and silhouette clear at 360x240. Full illustrated scene with soft irregular transparent vignette border and actual alpha outside edges, no decorative picture frame, no text.",
+      "originalFilename": "exec-ee96f919-c90b-4975-a8dc-5a2c612517d2.png"
+    },
+    {
+      "source": "raw/proud.png",
+      "generator": "image_gen.imagegen",
+      "prompt": "Single Ruby proud talk portrait on transparent background. Strictly same Ruby character as reference: ruby pink ROUND mochi, one top faceted ruby, cream and red gingham apron, rear bow, big dark sparkling eyes, red cheeks. Pose BOTH tiny round hands REST ON HIPS, elbows slightly outward, chest up, confident warm proud smile with OPEN eyes. Exactly two hands, no held book, small closed brown cookbook tucked into apron side pocket. Gem on head softly glowing ruby pink. Full round body visible, no legs, no human anatomy. Dark cocoa outlines warm cel shaded cute fantasy mobile game art. Safe transparent margin all around, no text no background no shadows no extra floating symbols.",
+      "originalFilename": "exec-89257c73-8c72-4b61-97bc-2a9856f7adf7.png"
+    }
+  ]
+}
