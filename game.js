@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.83';
+const GAME_VERSION = '7.9.84';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.84',date:'2026-10-23',title:'Elite Poison',items:['Hunt missions: while the marked Elite lives you are poisoned, growing stronger until you defeat it']},
   {v:'7.9.83',date:'2026-10-23',title:'Unlock order + Build lesson',items:['Ruby explains how to choose a Build the first time you see Build Path cards','Gear crafting waits until the Affix Forge opens','Heroes you have not met yet stay hidden in the Heroes and Codex pages']},
   {v:'7.9.82',date:'2026-10-23',title:'Escort the Wisp: stay close',items:['Standing outside the Wisp’s ring now makes you bleed, stacking stronger the longer you stay out']},
   {v:'7.9.81',date:'2026-10-23',title:'Quest guide + boss music',items:['New missions now pan the camera to the target with a spotlight (first 3 times, tap to skip)','Boss and miniboss music now starts even if it was still loading']},
@@ -6784,7 +6785,7 @@ const STAGE_GIMMICKS = [
 const RUBY_TIPS={
   survive:{say:'Uh-oh, they’re coming from everywhere!\nJust stay alive until the [timer] runs out — keep moving!',short:'Hang on until the [timer] ends!'},
   fill:{say:'Every monster carries a bit of stolen flavor.\nBeat them to fill the [Meter] and we take it back!',short:'Fill the [Meter] — take the flavor back!'},
-  hunt:{say:'That one with the [🎯] is the leader!\nFollow the arrow and take it down before it runs.',short:'Chase down the [marked Elite]!'},
+  hunt:{say:'That one with the [🎯] is the leader!\nTake it down fast — while it lives, its [poison] keeps getting worse!',short:'Chase down the [marked Elite]!'},
   huntClear:{say:'The leader is hiding behind its friends…\nClear a few monsters and it’ll show itself. Then [🎯] it!',short:'Clear the crowd, then get the [marked Elite]'},
   purge:{say:'See that little [Wisp]? It can clean the cursed cores!\nStay close — out here the curse makes you [bleed]! Keep the [red raiders] off it.',short:'Keep the [Wisp] safe from [red raiders]'},
   capture:{say:'This [ring] is an old pantry seal.\nStand inside and I’ll help you wake it up!',short:'Stay inside the [ring]!'},
@@ -12644,14 +12645,16 @@ class Game extends Phaser.Scene {
   }
   // ล้างมอนธรรมดาที่ค้าง (เก็บบอส/มินิไว้) — ใช้ตอนจบเวฟ/Waitดครบเวลา
   // v5.19.1 Hunt: ถ้าไม่ไล่ตามเป้า (ห่าง >460 นาน 2.5 วิ) โดนคำสาปเลือดลดเรื่อย ๆ จนกว่าจะเข้าใกล้
-  tickHuntCurse(dt,d){ const p=this.player;if(!p||!isFinite(d)||this._inTutorial){this.endHuntCurse();return;}
-    const far=d>460;this._huntFar=far?(this._huntFar||0)+dt:0;
-    if(this._huntFar<2.5){this.endHuntCurse();return;}
-    if(!this._huntCursed){this._huntCursed=true;this.showBanner('💀 Hunter’s Curse','Chase the target or your HP keeps draining!',1600);Sfx.rewardCue?.('sfx_event_hunt_curse_apply',.62);this.floatText(this.player.x,this.player.y-62,'CURSED',0xc9a3ff);}
-    this._curseTick=(this._curseTick||0)+dt;if(this._curseTick>=0.5){this._curseTick=0;const dmg=Math.max(1,Math.round(p.maxhp*0.012));if(p.hp>1){p.hp=Math.max(1,p.hp-dmg);this.floatText(p.x,p.y-46,'-'+dmg+' 💀',0xb46cff);}
-      const r=this.camWorld(this.add.circle(p.x,p.y,34,0x8a3cff,0.28).setDepth(p.depth-1));this.tweens.add({targets:r,scale:1.8,alpha:0,duration:420,onComplete:()=>r.destroy()});}
-    p.setTint(0xc79cff); }
-  endHuntCurse(){ if(!this._huntCursed)return;this._huntCursed=false;this._curseTick=0;if(this.player)this.player.clearTint(); }
+  tickHuntCurse(dt,d){ const p=this.player;if(!p||this._inTutorial||!this.huntTargetActive()){this.endHuntCurse();return;}
+    // v7.9.84 เจ้าของ: ไม่กำจัด Elite = ติดพิษแรงขึ้นเรื่อย ๆ · เริ่มหลัง 6 วิ · +1 ชั้นทุก 4 วิ (สูงสุด 10) · ฆ่า Elite = หาย
+    this._huntPois=(this._huntPois||0)+dt; if(this._huntPois<6){ if(this._huntCursed)this.endHuntCurse(); return; }
+    const stk=Math.min(10,1+Math.floor((this._huntPois-6)/4));
+    if(!this._huntCursed){this._huntCursed=true;this.showBanner('☠️ Elite Poison','Defeat the marked Elite — the poison grows stronger!',1600);Sfx.rewardCue?.('sfx_event_hunt_curse_apply',.62);}
+    if(stk!==this._huntStk){this._huntStk=stk;this.floatText(p.x,p.y-62,'☠️ Poison ×'+stk,0x7dff6a);}
+    this._curseTick=(this._curseTick||0)+dt;if(this._curseTick>=0.5){this._curseTick=0;const dmg=Math.max(1,Math.round(p.maxhp*0.003*stk));p.hp-=dmg;this.floatText(p.x,p.y-46,'-'+dmg+' ☠️',0x7dff6a);
+      const r=this.camWorld(this.add.circle(p.x,p.y,34,0x5adf4a,0.28).setDepth(p.depth-1));this.tweens.add({targets:r,scale:1.8,alpha:0,duration:420,onComplete:()=>r.destroy()}); if(p.hp<=0){this.die();return;}}
+    p.setTint(0xa6ff8c); }
+  endHuntCurse(){ this._huntPois=0;this._huntStk=0; if(!this._huntCursed)return;this._huntCursed=false;this._curseTick=0;if(this.player)this.player.clearTint(); }
   clearEnemies(){ this.enemies.children.iterate(e=>{ if(e&&e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);} if(e&&e.active&&!e.isBoss&&!e.isMini){ if(e._aura){e._aura.destroy();e._aura=null;} this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; } }); }
   // เรียกทุกเฟรม: คุมนับเวลา + เกิดมอนต่อเนื่อง
   tickJackpotEvent(dt){
