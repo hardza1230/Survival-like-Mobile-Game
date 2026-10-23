@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.59';
+const GAME_VERSION = '7.9.60';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.60',date:'2026-10-23',title:'Ruby shows you what to do',items:['Ruby, your guide, pops up at the top to explain each mission, miniboss and boss in plain words','She reminds you of the current goal now and then, and explains Magnets, Heal Mochi and chests the first time you find them','Pause screen: the pause and play icons now sit in the middle of their circles']},
   {v:'7.9.59',date:'2026-10-22',title:'Smoother menus',items:['Changing pages no longer shows a Loading screen — the page opens at once and its art fills in','Pages you open from the bottom bar slide in from the side you tapped','Art for the bottom-bar pages loads quietly while you are on Home']},
   {v:'7.9.58',date:'2026-10-22',title:'Heroes come alive in the Lobby',items:['Every hero now breathes, wave hello and do little moves that fit their personality','Tap your hero for a reaction — tap fast for a surprise']},
   {v:'7.9.57',date:'2026-10-22',title:'Roulette Forge rolls',items:['Rolling a mod now runs a light across the Possible mods list — fast, then slowing down — and stops on each result (tap to skip)']},
@@ -6706,6 +6707,24 @@ const STAGE_GIMMICKS = [
 ];
 
 /* ภารกิจสุ่มประจำWave Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
+/* v7.9.60 เจ้าของ: มาสคอต Ruby บอกวิธีเล่นแต่ละภารกิจ (กรอบข้อความด้านบน คำสำคัญเป็นสี [..]) · say = ครั้งแรก ๆ (2 บรรทัด), short = สรุปสั้น/เตือนซ้ำ */
+const RUBY_TIPS={
+  survive:{say:'Stay alive until the [timer] runs out!\nKeep moving — your attacks fire on their own.',short:'Stay alive until the [timer] ends'},
+  fill:{say:'Defeat monsters to fill the [Meter]!\nMore kills, faster fill.',short:'Defeat monsters to fill the [Meter]'},
+  hunt:{say:'Follow the [🎯 arrow] to the [marked Elite]\nand defeat it!',short:'Follow [🎯] and defeat the [marked Elite]'},
+  huntClear:{say:'Clear monsters to reveal the [marked Elite],\nthen follow [🎯] and defeat it!',short:'Clear monsters, then defeat the [marked Elite]'},
+  purge:{say:'Stay near the [Wisp] while it cleans the cores.\nStop the [red raiders] that chase it!',short:'Guard the [Wisp] from [red raiders]'},
+  capture:{say:'Stand inside the [ring] to capture it!\nThe ring grows while you stay in.',short:'Stand inside the [ring]'},
+  defendNectar:{say:'Keep the [flowers] alive!\nStay close and clear the bugs around them.',short:'Keep the [flowers] alive'},
+  seasonCycle:{say:'Monsters drop [petals] of the current season.\nFill all [4 seasons] to finish!',short:'Collect [petals] for all [4 seasons]'},
+  breakRoots:{say:'Stand next to each [root anchor]\nuntil it breaks. Get all of them!',short:'Stand next to each [root anchor]'},
+  cleanAir:{say:'Stay inside the moving [clean-air ring]!\nOutside the ring, the swamp hurts you.',short:'Stay inside the [clean-air ring]'},
+  mini:{say:'A [Miniboss] is here!\nBeat it to spin the [reward wheel]!',short:'Defeat the [Miniboss]'},
+  boss:{say:'The [Boss] is here! Watch the [red warnings]\nand Dash away, then hit back!',short:'Defeat the [Boss]'},
+  magnet:{say:'A [Magnet]! It pulls in all your\n[EXP] at once!'},
+  heal:{say:'[Heal Mochi]! It restores your [HP].\nGrab one when you are hurt.'},
+  chest:{say:'A [Treasure Chest]!\nOpen it for a free [upgrade]!'}
+};
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
@@ -10967,7 +10986,7 @@ class Game extends Phaser.Scene {
       panel=(key,cell,x,y,pw,ph)=>{const c=this.tuPanel(key,cell,x,y,pw,ph);if(c)U.add(c);return c;},side=Math.max(10,w*.035),cw=w-side*2;
     U.add(this.add.rectangle(0,0,w,h,0x120c1a,.35).setOrigin(0));if(this.textures.exists('pause_veil'))U.add(this.add.image(0,0,'pause_veil').setOrigin(0).setDisplaySize(w,h));
     // หัวเรื่อง
-    const crW=Math.min(w*.62,300),crH=crW*.36;let y=Math.max(6,h*.008);if(this.textures.exists('pause_crest'))U.add(this.add.image(w/2,y+crH/2,'pause_crest').setDisplaySize(crW,crH));ic(0,w/2,y+crH*.2,crH*.24);
+    const crW=Math.min(w*.62,300),crH=crW*.36;let y=Math.max(6,h*.008);if(this.textures.exists('pause_crest'))U.add(this.add.image(w/2,y+crH/2,'pause_crest').setDisplaySize(crW,crH));ic(0,w/2,y+crH*.333,crH*.34);   /* v7.9.60 กลางวงอัญมณี (ภาพ: cx .5, cy 120/360, ⌀170) */
     const ttl=T(w/2,y+crH*.68,'Paused',Math.round(crH*.32),'#ff8fb5');ttl.setStroke('#4a1631',5);y+=crH+2;
     const stTxt=(this.stageTxt&&this.stageTxt.text)||('Stage '+((this.stageIndex||0)+1));const sub=T(w/2,y+8,stTxt,13,'#fff2e2');let sf=13;while(sub.width>cw&&sf>9)sub.setFontSize(--sf+'px');y+=20;
     if(this.textures.exists('pause_title_divider'))U.add(this.add.image(w/2,y,'pause_title_divider').setDisplaySize(Math.min(220,cw*.6),11));y+=10;
@@ -10999,7 +11018,7 @@ class Game extends Phaser.Scene {
         const tx=rx+rowH*1.2,tw2=rw-rowH*1.2-28;const nm=T(tx,ry+rowH*.3,r.name||k,13,'#fff7ed',0);let nfs=13;while(nm.width>tw2&&nfs>9)nm.setFontSize(--nfs+'px');const ds=this.add.text(tx,ry+rowH*.52,r.desc||'',{fontFamily:'sans-serif',fontSize:'10px',color:'#d9cde6',wordWrap:{width:tw2},maxLines:2}).setOrigin(0,0);U.add(ds);});
       if(more>0)T(w/2,y+pH3-10,'+'+more+' more Relic'+(more>1?'s':''),10,'#cbbfda');}
     // ปุ่ม
-    const btn=(key,x,yy,bw,bh,cell,label,col,fn,big)=>{const c=panel(key,0,x,yy,bw,bh);if(!c)return;const icx=big?x+bh*.95:x+bh*.7;ic(cell,icx,yy+bh/2,bh*(big?.46:.48));const t=T(big?x+bw/2+bh*.3:x+bw/2+bh*.25,yy+bh/2,label,big?Math.round(bh*.46):Math.round(bh*.38),col);t.setStroke(big?'#1d6b55':'#2a1530',big?5:3);this._pauseBtns.push({x,y:yy,w:bw,h:bh,fn,art:c,key});};
+    const btn=(key,x,yy,bw,bh,cell,label,col,fn,big)=>{const c=panel(key,0,x,yy,bw,bh);if(!c)return;const icx=big?x+bh*280/260:x+bh*.7;ic(cell,icx,yy+bh/2,bh*(big?.42:.48));   /* v7.9.60 Resume: กลางวงกลมเขียวในภาพ (x 280/260·สูง) */const t=T(big?x+bw/2+bh*.3:x+bw/2+bh*.25,yy+bh/2,label,big?Math.round(bh*.46):Math.round(bh*.38),col);t.setStroke(big?'#1d6b55':'#2a1530',big?5:3);this._pauseBtns.push({x,y:yy,w:bw,h:bh,fn,art:c,key});};
     btn('pause_btn_resume',side-2,resY,cw+4,rbH,1,'Resume','#ffffff',()=>this.togglePause(),true);
     const hb=(cw-10)/2;btn('pause_btn_settings',side,botY,hb,sbH2,2,'Settings','#ffffff',()=>{Sfx.select();this.buildPauseSettings();});btn('pause_btn_quit',side+hb+10,botY,hb,sbH2,3,'Quit stage','#ff8fb5',()=>this.quitStage());
     return true; }
@@ -11602,7 +11621,36 @@ class Game extends Phaser.Scene {
     this.showSpeechBubble(quote,Phaser.Math.Clamp(1800+quote.length*45,2600,4200));
     done();
   }
-  showSpeechBubble(text,ms=3000){
+  /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
+  rubyOn(){ return this.state==='play'&&!this._coach&&!this.tutorialMode&&!(Save.data.settings||{}).noRuby; }
+  rubySay(text,ms=4000,opt={}){ if(!this.add||!this.time||!this.rubyOn())return; const q=this._rubyQ||(this._rubyQ=[]); if(opt.replace){ q.length=0; this.rubyHide(true); } if(q.some(m=>m.text===text)||(this._ruby&&this._ruby.text===text))return; q.push({text,ms}); if(!this._ruby)this.rubyNext(); }
+  rubyNext(){ const m=(this._rubyQ||[]).shift(); if(!m)return; if(!this.rubyOn()){ this._rubyQ=[]; return; }
+    const W=this.W,pad=this._pad||14,bw=Math.min(W-20,400),bx=(W-bw)/2,by=pad+182,lines=String(m.text).split('\n'),fs=W<380?13:14,lh=fs+7,bh=Math.max(70,24+lines.length*lh),c=this.add.container(0,0).setScrollFactor(1).setDepth(64);
+    const g=this.add.graphics(); g.fillStyle(0x000000,.35); g.fillRoundedRect(bx+3,by+4,bw,bh,16); g.fillStyle(0x0b0710,.94); g.fillRoundedRect(bx,by,bw,bh,16); g.lineStyle(3,0xffffff,1); g.strokeRoundedRect(bx,by,bw,bh,16); c.add(g);
+    const tx0=bx+80,cols=['#ffd54a','#7dff6a','#ff8fb8']; let ci=0; lines.forEach((ln,li)=>{ const parts=ln.split(/(\[[^\]]+\])/).filter(Boolean),row=[]; let x=0;
+      for(const pt of parts){ const hl=pt[0]==='['; const t=this.add.text(0,by+16+li*lh,hl?pt.slice(1,-1):pt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:(hl?fs+1:fs)+'px',color:hl?cols[ci++%cols.length]:'#ffffff',stroke:'#000000',strokeThickness:hl?3:0}); row.push(t); x+=t.width; }
+      const k=Math.min(1,(bw-94)/Math.max(1,x)); let cx=tx0; row.forEach(t=>{ t.setScale(k).setPosition(cx,t.y+(1-k)*fs*.5); cx+=t.width*k; c.add(t); }); });
+    const av=this.rubyAvatar(bx+1,by+bh-3,60); c.add(av);
+    const nm=this.add.text(bx+40,by+2,'Ruby',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(.5,1); const nb=this.add.graphics(); nb.fillStyle(0x6a2fd6,1); nb.fillRoundedRect(bx+40-nm.width/2-12,by+2-nm.height-3,nm.width+24,nm.height+5,9); nb.lineStyle(2,0xffffff,.9); nb.strokeRoundedRect(bx+40-nm.width/2-12,by+2-nm.height-3,nm.width+24,nm.height+5,9); c.add([nb,nm]);
+    this.camUI(c); c.setAlpha(0); c.x=40; this.tweens.add({targets:c,alpha:1,x:0,duration:260,ease:'Back.easeOut'}); this.tweens.add({targets:av,y:av.y-5,duration:420,yoyo:true,repeat:Math.max(1,Math.round(m.ms/840)-1),ease:'Sine.inOut'});
+    Sfx.select&&Sfx.select(); if(this._speech){ try{ this._speech.ev.remove(); this._speech.box.destroy(); }catch(e){} this._speech=null; } this._ruby={c,text:m.text,bottom:by+bh};
+    this._ruby.ev=this.time.addEvent({delay:150,loop:true,callback:()=>{ if(!this.rubyOn())this.rubyHide(true); }});
+    this._ruby.end=this.time.delayedCall(m.ms,()=>this.rubyHide()); }
+  rubyHide(now){ const r=this._ruby; if(!r)return; this._ruby=null; r.ev&&r.ev.remove(false); r.end&&r.end.remove(false);
+    const fin=()=>{ if(r.c&&r.c.active)r.c.destroy(); if(!now)this.time?.delayedCall(250,()=>this.rubyNext()); else this._rubyQ=[]; };
+    if(now||!this.tweens)fin(); else this.tweens.add({targets:r.c,alpha:0,x:30,duration:220,onComplete:fin}); }
+  rubyAvatar(x,y,sz=84){ const k='mascot_ruby'; if(this.textures.exists(k)){ const im=this.add.image(x+40,y,k).setOrigin(.5,1); im.setScale(sz/Math.max(im.width,im.height)); return im; }
+    /* ภาพชั่วคราว: โมจิสีชมพูทับทิม + อัญมณีบนหัว (ใบสั่งอาร์ต 36 จะมาแทน) */
+    const g=this.add.graphics(); g.fillStyle(0x000000,.25); g.fillEllipse(40,2,58,12); g.fillStyle(0xff6f9a,1); g.fillEllipse(40,-30,72,60); g.fillStyle(0xffb3c9,1); g.fillEllipse(30,-44,26,14);
+    g.lineStyle(3,0x7a1838,1); g.strokeEllipse(40,-30,72,60); g.fillStyle(0x2a0f1c,1); g.fillCircle(28,-30,5); g.fillCircle(52,-30,5); g.fillStyle(0xffffff,1); g.fillCircle(30,-32,2); g.fillCircle(54,-32,2);
+    g.fillStyle(0xff3d6e,.6); g.fillEllipse(19,-20,11,6); g.fillEllipse(61,-20,11,6); g.lineStyle(2.5,0x2a0f1c,1); g.beginPath(); g.arc(40,-22,6,0.2,Math.PI-0.2); g.strokePath();
+    g.fillStyle(0xe0103f,1); g.fillTriangle(40,-74,30,-62,50,-62); g.fillTriangle(30,-62,50,-62,40,-52); g.fillStyle(0xff7f9f,1); g.fillTriangle(40,-72,34,-63,40,-63); g.lineStyle(2,0x7a0a24,1); g.strokeTriangle(40,-74,30,-62,50,-62); g.strokeTriangle(30,-62,50,-62,40,-52);
+    g.setScale(sz/84); g.setPosition(x+40*(1-sz/84),y); return g; }
+  /* เล่าภารกิจ: เห็นภารกิจนี้ <3 ครั้ง = อธิบายเต็ม · หลังจากนั้นสรุปบรรทัดเดียว */
+  rubyTip(key,delay=650){ const t=RUBY_TIPS[key]; if(!t||!this.time)return; const d=Save.data,seen=d.rubySeen||(d.rubySeen={}),n=seen[key]||0; seen[key]=n+1;
+    const text=(n<3||!t.short)?t.say:t.short; this.time.delayedCall(delay,()=>this.rubySay(text,n<3?4300:2700)); }
+  rubyOnce(key,delay=0){ const d=Save.data,seen=d.rubySeen||(d.rubySeen={}); if(seen[key])return; seen[key]=1; Save.save?.(); this.time?.delayedCall(delay,()=>this.rubySay(RUBY_TIPS[key].say,4200)); }
+  showSpeechBubble(text,ms=3000){ if(this._ruby)return;   // v7.9.60 Ruby กำลังพูด = ไม่ซ้อนข้อความเดียวกัน
     if(this._speech){this._speech.ev.remove();this._speech.box.destroy();}
     const p=this.player;if(!p)return;
     const t=this.add.text(0,0,text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#3a2140',align:'center',wordWrap:{width:200},backgroundColor:'#fffaf5',padding:{x:10,y:7}}).setOrigin(0.5);
@@ -11792,6 +11840,7 @@ class Game extends Phaser.Scene {
     if(o._huntPhase)o.desc='Clear foes to reveal each marked Elite, then defeat it';
     this.startBonusChallenge(o);
     this.renderWaveObjectiveHUD();
+    if(!this.recipeMode||this._recipeMission)this.rubyTip?.(o._huntPhase?'huntClear':type);   // v7.9.60 Ruby อธิบายภารกิจ
   }
   spawnCleanAirZone(){
     const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=145;
@@ -12228,7 +12277,7 @@ class Game extends Phaser.Scene {
     const step=o._huntPhase?'Step '+(o.progress*2+(o._huntPhase==='clear'?1:2))+'/'+(o.target*2)+' · '+(o._huntPhase==='clear'?'Clear '+o._huntKills+'/'+o._huntKillGoal:'Defeat marked Elite'):(o.type==='fill'&&this.usesStoryBudget?.()?'Step 1/2 · Clear '+Math.floor(o.progress)+'/'+o.target:null);
     const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||(o.type==='seasonCycle'?value:((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value))).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
     this.syncSeasonIcons?.(o);
-    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); }   // v5.71 เตือนภารกิจทุก 12 วิ
+    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._ruby&&(now-(this._rubyRemAt||0)>24000)){ this._rubyRemAt=now; const tp=RUBY_TIPS[wo._huntPhase?'huntClear':wo.type]; if(tp&&tp.short&&this.rubySay)this.rubySay(tp.short+(wo.target&&wo.type!=='seasonCycle'?'  ·  '+Math.floor(wo.progress)+'/'+wo.target:''),2600); else if(!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); } }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
   /* v7.8.32 ไอคอนฤดู (อาร์ต A10) หน้าข้อความภารกิจ Season Storm: แถวบน=ยังไม่ผ่าน 0–3 · ผ่านแล้ว 4–7 */
   syncSeasonIcons(o){const T=this.waveObjTxt;if(!T)return;const on=!!(o&&o.type==='seasonCycle'&&o.storm&&T.visible&&this.realTex?.('ui_c24_season_icons'));
@@ -12339,7 +12388,7 @@ class Game extends Phaser.Scene {
     const st=STAGES[this.stageIndex];this.bossName.setText((b.isBoss?'👹 ':'💢 ')+(b.isBoss?(b.delveBoss?(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick'):this._pinnacleRun?'The Hunger Beneath':st.boss):st.mini)+' · '+r.emoji+' '+r.name).setColor('#'+r.color.toString(16).padStart(6,'0'));
     if(announce&&r.tier>old.tier){this.showBanner(r.emoji+' Boss '+r.name,'Minions killed '+r.kills+' · reward x'+r.reward.toFixed(2),1500);this.screenFlash(r.color,0.14,300);Sfx.bossWarn();}
   }
-  spawnMiniBoss(){
+  spawnMiniBoss(){ if(!this.recipeMode&&!this.bossRush)this.rubyTip?.('mini',3200);
     if(this.state==='levelup'){this._queuedBossIntro='mini';return;}
     if(this.state!=='play')return;
     this._miniFight={t0:this.elapsed||0,hits:0}; Sfx.ev?.('miniboss_arrival',.6,2);   // v5.13 วัดผลงานสู้มินิบอส → ระดับกล่อง
@@ -12400,7 +12449,7 @@ class Game extends Phaser.Scene {
       const z=this._shz,r=Math.max(360,950-(now-z.t0)*6.5); z.r=r; const g=this._shzG; g.clear(); g.lineStyle(6,0xff4d6d,0.75); g.strokeCircle(z.x,z.y,r); g.lineStyle(2,0xffffff,0.35); g.strokeCircle(z.x,z.y,r-8);
       if(this.dist(p.x,p.y,z.x,z.y)>r){ this._shAcc=(this._shAcc||0)+dt; if(this._shAcc>=0.25){ this._shAcc=0; if(!(p.iframe>0)){ p.hp=Math.max(1,p.hp-p.maxhp*0.015); this.drawBars&&this.drawBars(); } if(now-(this._shMsgAt||0)>3){ this._shMsgAt=now; this.floatText?.(p.x,p.y-60,'⭕ Back inside!',0xff4d6d); } } } } }
   clearDelveMods(){ if(this._shzG){ this._shzG.destroy(); this._shzG=null; } this._shz=null; this._stillT=0; }
-  spawnFinalBoss(){
+  spawnFinalBoss(){ if(!this.bossRush)this.rubyTip?.('boss',4200);
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
     if(this.usesStoryBudget?.()&&this._storyBudget&&!this._storyBudget.bossAdds){this._storyBudget.bossAdds=true;this._storyBudget.done=false;this._storyBudget.quota=this._storyBudget.spawned+[8,12,16][Math.min(2,Math.floor(this.stageIndex/5))];}
@@ -12954,6 +13003,7 @@ class Game extends Phaser.Scene {
   }
   showBanner(title,sub,ms){
     if(!this.bannerT||!this.bannerS)return;   // กันเรียกตอนยังNone HUD (เช่นจากหน้าเมนู) → ไม่ให้ crash
+    { const rb=this._ruby?this._ruby.bottom+34:0; this.bannerT.y=Math.max(this.H*0.30,rb); this.bannerS.y=this.bannerT.y+this.H*0.06; }   // v7.9.60 ไม่ทับกรอบ Ruby
     this.bannerT.setText(title).setVisible(true).setAlpha(0).setScale(0.7);
     this.bannerS.setText(sub||'').setVisible(true).setAlpha(0);
     this.tweens.add({targets:[this.bannerT,this.bannerS],alpha:1,duration:250});
@@ -16118,7 +16168,7 @@ class Game extends Phaser.Scene {
     if(d){d.heartAt=now;d.hearts++;}
     h.body.setAllowGravity(false); this.camWorld(h); this.showPickupCue(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y));
     this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'});return h; }
-  collectHeal(player,h){ if(!h.active)return;
+  collectHeal(player,h){ if(!h.active)return; this.rubyOnce?.('heal');
     const power=this.healingItemPower(),p=this.player;
     const requested=Math.round((this.usesStoryBudget?.()?p.maxhp*.18:p.maxhp*.18+6)*power),amt=Math.max(0,Math.min(p.maxhp-p.hp,this.usesStoryBudget?.()?Math.min(requested,p.maxhp*.35):requested));
     this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
@@ -16183,7 +16233,7 @@ class Game extends Phaser.Scene {
     if(d){d.magnetAt=now;d.magnets++;d.magnetProgress=0;}
     v.body.setAllowGravity(false); this.camWorld(v); this.showPickupCue(v,0xff5a6e,1.40); if(this.iso)v.setDepth(Math.max(80000,v.y));
     this.tweens.add({targets:v,y:y-10,duration:540,yoyo:true,repeat:-1,ease:'Sine.inOut'});return v; }
-  collectVac(player,v){ if(!v.active)return;Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
+  collectVac(player,v){ if(!v.active)return; this.rubyOnce?.('magnet');Sfx.magnet(); this.tweens.killTweensOf(v); this.hidePickupCue(v); v.setActive(false).setVisible(false); if(v.body)v.body.enable=false;
     this.burst(v.x,v.y,0xff5a6e); this.floatText(v.x,v.y-24,'Magnet!',0xff9dcc);
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
@@ -16524,7 +16574,7 @@ class Game extends Phaser.Scene {
         this.showBanner(T.name+' Chest',inf?('Beat it in '+Math.round(inf.dur)+'s · '+inf.hits+' hits taken'):'Walk into the light to open it',1600); }});
     }});
   }
-  collectChest(player,c){ if(!c.active)return;
+  collectChest(player,c){ if(!c.active)return; this.rubyOnce?.('chest',1400);
     const kind=c.rewardKind;if(kind!=='mini'&&kind!=='pick')return;
     // Claim the pooled pickup before callbacks can open a modal or overlap again.
     const tier=c._tier||'bronze',noMimic=!!c._noMimic;
