@@ -1,3 +1,7 @@
+# Latest delivery: v7.9.90 - Ruby's illustrated storybook
+
+Five built-in ImageGen originals (four event paintings + recipe paper), source/prompts/hash manifest and real Canvas proofs retained in assets/incoming/ruby_storybook/. Runtime451,184bytes; menu-lazy only, per-story image loading. Pre-stage C1-1 through C1-5 two-page stories, before first tutorial too; grandma/jar art reused. rubyTalk now opaque paper/black full-screen, contained event art, expression portrait, manual Back/Next/Skip,600ms debounce, deferred once-only completion/save and menu rebuild guard. Post-clear memories retained; no combat/balance changes. Required check/build and six real Canvas viewports passed; Pages CI includes story review. See docs/art_orders/43_RUBY_STORYBOOK.md and publication state in docs/SESSION_HANDOFF.md.
+
 # Latest delivery: v7.9.89 — Lobby layout and missing art
 
 Real Canvas audit repaired currency collisions, dimmed controls, dialogue over hero, locked shortcut gaps and stage title/power collisions. Two built-in ImageGen assets: painted Settings and empty currency panel,11,020 runtime bytes, existing Lobby lazy loader. Reused existing panels/hero/shadow. Source/prompt/hash manifest/review screenshots in assets/incoming/lobby_polish/; docs/art_orders/42_LOBBY_POLISH.md. Five portrait sizes × early/unlocked ×36 lines pass real Canvas bounds/collision/routes (360 dialogue states); check now in Pages CI. Required check/build passed; publication status in docs/SESSION_HANDOFF.md. Menu screenshots explicitly requested by owner; no combat simulation.

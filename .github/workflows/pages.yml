@@ -39,13 +39,14 @@ jobs:
       - name: Validate game and UI contracts
         run: npm run check
       - name: Assemble web assets (www/)
-        run: node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs
-      - name: Verify Forge menu visuals
+        run: node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs && node scripts/build-ruby-story-review.mjs
+      - name: Verify menu visuals
         run: |
           npm install --prefix /tmp/forge-browser --no-save playwright@1.51.1
           /tmp/forge-browser/node_modules/.bin/playwright install --with-deps chromium
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-forge-live-ui.cjs
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-lobby-live-ui.cjs
+          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-ruby-story-ui.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

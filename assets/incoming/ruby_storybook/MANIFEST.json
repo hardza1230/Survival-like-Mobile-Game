@@ -1,0 +1,55 @@
+{
+  "tool": "built-in ImageGen",
+  "assets": [
+    {
+      "key": "ruby_story_crown",
+      "source": "raw/ruby_story_crown.png",
+      "source_sha256": "2697b8926c0a6ebfa79aa7ba82a56d5aeb7a4bfac4b900ebfb2948ab9ec92ca9",
+      "runtime": "assets/art/ruby_storybook/ruby_story_crown.webp",
+      "width": 768,
+      "height": 512,
+      "bytes": 104058,
+      "sha256": "d6de9b35cb87978bbeee8567e846e9746df2f59137ab2bdde8ebddb9d1a63ce2"
+    },
+    {
+      "key": "ruby_story_frozen",
+      "source": "raw/ruby_story_frozen.png",
+      "source_sha256": "56b5775611d6063dd9ca8422448e56ef9f9b80ad2af3a85342093d010064a753",
+      "runtime": "assets/art/ruby_storybook/ruby_story_frozen.webp",
+      "width": 768,
+      "height": 512,
+      "bytes": 115892,
+      "sha256": "afc0972dfc15fb6005639dfd742379fd680315bb624b91a23d6689c185180137"
+    },
+    {
+      "key": "ruby_story_furnace",
+      "source": "raw/ruby_story_furnace.png",
+      "source_sha256": "9a6cb217e31427a35930ba1834dc399ee6ae0c61cfff880bfc2faacbbd11f0b3",
+      "runtime": "assets/art/ruby_storybook/ruby_story_furnace.webp",
+      "width": 768,
+      "height": 512,
+      "bytes": 106484,
+      "sha256": "64c149882653e7d54f0a8cfb8ca094a65fff00746252fed25e16798639040da0"
+    },
+    {
+      "key": "ruby_story_pantry",
+      "source": "raw/ruby_story_pantry.png",
+      "source_sha256": "c5e73471a884eafdb39410a842fb7c90d372991fd9d5835253fbb6ac32977673",
+      "runtime": "assets/art/ruby_storybook/ruby_story_pantry.webp",
+      "width": 768,
+      "height": 512,
+      "bytes": 83460,
+      "sha256": "e4dcef7421c1a9b3cfe15308c4f5bd555e231d55cd746e6782b6a20bf030f6db"
+    },
+    {
+      "key": "ruby_story_paper",
+      "source": "raw/ruby_story_paper.png",
+      "source_sha256": "d5e4e51699a9a198f231fac13a61f755b0c5d342fdf59821256375fa6bc457c5",
+      "runtime": "assets/art/ruby_storybook/ruby_story_paper.webp",
+      "width": 512,
+      "height": 768,
+      "bytes": 41290,
+      "sha256": "5edfacac39afd1424374dc3238f353152a6081f465fd6cc987df482ac7661ace"
+    }
+  ]
+}

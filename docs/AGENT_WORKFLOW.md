@@ -81,3 +81,7 @@ In this disconnected workspace, ImageGen + GitHub connector and in-memory JavaSc
 ## Lobby visual audit (23 Oct2026)
 
 When owner requests visual audit, build www then scripts/build-lobby-review.mjs; run scripts/check-lobby-live-ui.cjs with Playwright NODE_PATH. Uses production Lobby/nav and synthetic menu data only, no combat. Checks360 dialogue states across five sizes/early-unlocked. LOBBY_SHOT_DIR saves menu screenshots. Cropped ordinary Phaser Images report full uncropped getBounds; use crop x/y/width/height transformed by world matrix to measure rendered panel extents. Static hero fallback is deterministic; phone animation/FPS remains owner review. Keep game.js UTF-8 LF after Windows file tools because existing contract regexes expect LF.
+
+## Ruby illustrated narration review (23 Oct2026)
+
+Build www then scripts/build-ruby-story-review.mjs; scripts/check-ruby-story-ui.cjs uses real production renderer with synthetic narration, all stories/memories and six portrait/landscape sizes. RUBY_STORY_SHOT_DIR saves screenshots. Underlying magenta proves opaque paper/black coverage. Clock substitution is review-only to exercise600ms page debounce; no combat. Existing hubIconBox gives actual alpha bounds for padded Ruby portraits; ordinary image getBounds includes invisible margins. Restrict landscape scene height above footer, and defer menu rebuilds while Ruby dialogue is active. Preserve event aspect ratio rather than covering phone canvas.

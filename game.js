@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.89';
+const GAME_VERSION = '7.9.90';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.90',date:'2026-10-23',title:'Ruby opens her storybook',items:['Ruby narrates illustrated story pages before the first five stages','New pantry, furnace, frozen spirits and Crown Oven paintings bring early events to life','Narration now fills the screen with recipe-book paper or a black fallback instead of the Lobby','Read at your own pace with Back, Next and Skip; story progress is saved after closing']},
   {v:'7.9.89',date:'2026-10-23',title:'A clearer Lobby',items:['Roomier Sugar and Thread displays with compact balances','Painted Settings icon and new currency frames','Hero dialogue now sits above the hero, clear of side shortcuts','Brighter controls, tidy shortcuts and clearer stage information']},
   {v:'7.9.88',date:'2026-10-23',title:'Painted winter magic and Lobby bubbles',items:['Crystal Impaler dash shards now shimmer through four hand-painted animation frames','Glacier Bloom now has an eight-frame snowfall and icy wind animation that pauses with gameplay','Lobby speech and thought bubbles now use painted cream/gold and pale-blue panels','Winter art loads when entering a Mint stage; dialogue panels load with the Lobby']},
   {v:'7.9.87',date:'2026-10-23',title:'Ruby, winter magic and growing gear',items:['Ruby now uses her painted expressions, dialogue portraits, quest pointer and story memories','Crystal Impaler: Frost Lance dash releases a homing ice shard every 70px travelled; longer and repeat dashes release more','Glacier Bloom leaves a snowstorm for 4 seconds, dealing damage every half second with knockback and damage-based or chance-based freeze','Lobby heroes alternate their own spoken lines and thoughts','Low-level gear has limited Forge rows and enhancement caps; stored legacy investments remain saved with excess power inactive']},
@@ -1548,6 +1549,7 @@ const Sfx = {
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
   lb_dialog_speech:'assets/art/lobby/lb_dialog_speech.webp',lb_dialog_thought:'assets/art/lobby/lb_dialog_thought.webp',
+  ruby_story_pantry:'assets/art/ruby_storybook/ruby_story_pantry.webp',ruby_story_furnace:'assets/art/ruby_storybook/ruby_story_furnace.webp',ruby_story_frozen:'assets/art/ruby_storybook/ruby_story_frozen.webp',ruby_story_crown:'assets/art/ruby_storybook/ruby_story_crown.webp',ruby_story_paper:'assets/art/ruby_storybook/ruby_story_paper.webp',
   mascot_ruby:'assets/art/mascot/mascot_ruby.webp',mascot_ruby_happy:'assets/art/mascot/mascot_ruby_happy.webp',mascot_ruby_alert:'assets/art/mascot/mascot_ruby_alert.webp',mascot_ruby_think:'assets/art/mascot/mascot_ruby_think.webp',mascot_ruby_cheer:'assets/art/mascot/mascot_ruby_cheer.webp',mascot_ruby_sad:'assets/art/mascot/mascot_ruby_sad.webp',
   ruby_talk_normal:'assets/art/mascot/ruby_talk_normal.webp',ruby_talk_explain:'assets/art/mascot/ruby_talk_explain.webp',ruby_talk_proud:'assets/art/mascot/ruby_talk_proud.webp',ruby_talk_worried:'assets/art/mascot/ruby_talk_worried.webp',ruby_memory_grandma:'assets/art/mascot/ruby_memory_grandma.webp',ruby_memory_jar:'assets/art/mascot/ruby_memory_jar.webp',ruby_point:'assets/art/mascot/ruby_point.webp',vfx_ruby_sparkle:'assets/art/mascot/vfx_ruby_sparkle.webp',
   ic_unique_mastery:'assets/art/talents/unique_mastery.webp',
@@ -3354,6 +3356,7 @@ Object.assign(TEMPLE_UI,{"bk_open_long":[432,768,4,null],"bk_page_riffle":[432,7
 Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],vfx_chest_rays:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
 const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','vfx_chest_rays','bz_chest_card'];
 const RUBY_STAGE_KEYS=['mascot_ruby','mascot_ruby_happy','mascot_ruby_alert','mascot_ruby_think','mascot_ruby_cheer','mascot_ruby_sad','ruby_point','vfx_ruby_sparkle'];
+const RUBY_STORY_KEYS=['ruby_story_pantry','ruby_story_furnace','ruby_story_frozen','ruby_story_crown','ruby_story_paper'];
 const RUBY_MENU_KEYS=['ruby_talk_normal','ruby_talk_explain','ruby_talk_proud','ruby_talk_worried','ruby_memory_grandma','ruby_memory_jar'];
 Object.assign(TEMPLE_UI,{ruby_point:[128,128,4,null],vfx_ruby_sparkle:[64,64,6,null]});
 const BKP_KEYS=["bk_open_long", "bk_clasp", "bk_emblem_spin", "vfx_bk_magic", "bk_page_riffle", "vfx_bk_burst", "bk_cover_clean_plate"];
@@ -3377,7 +3380,7 @@ const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|me
 const ENDGAME_ART_RE=/assets\/art\/(?:biomes|delve_bosses|pinnacle)\//;
 // ของที่ต้องมีก่อนเข้าด่าน = tier1 ลบ (ของตัวละครอื่น + ของมาทีหลัง + อาร์ต endgame ถ้าไม่ใช่ endgame)
 function stageCritical(k,u,ch,endgame){
-  if(RUBY_MENU_KEYS.includes(k))return false;
+  if(RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return false;
   const m=/^(?:char|bpx)_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if(k.startsWith('minion_')&&ch!=='yuzu')return false;
   if(!endgame&&['mini_jelly_animated','feast_target_animated'].includes(k))return false;
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
@@ -3390,7 +3393,7 @@ const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|t
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(RUBY_MENU_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -6851,6 +6854,28 @@ const RUBY_STORY=[
   'The seeds here are the very first flavors ever planted.\nI can hear my own flavor calling from up ahead!',
   'This is the beginning of everything. The First Planter.\nWhatever happens… thank you for bringing me this far.'
 ];
+const RUBY_STORYBOOK=[
+  {title:'The Recipe Keeper',pages:[
+    {art:'ruby_story_pantry',text:'When the Hunger came, I hid beneath the pantry. I’m Ruby, the keeper of Mochitopia’s recipes.',mood:'sad'},
+    {art:'ruby_story_pantry',text:'My recipe book is still here, but so many memories are missing. Will you help me find them?',mood:'normal'}
+  ]},
+  {title:'Grandma’s Jam Jar',pages:[
+    {art:'ruby_memory_grandma',text:'When the Ant Empress fell, a memory came back: Grandma’s jam jar, warm and sweet in her hands.',mood:'happy'},
+    {art:'ruby_memory_jar',text:'Then it slipped away, down these pipes. Let’s follow it. There may be another memory waiting below.',mood:'normal'}
+  ]},
+  {title:'The Stolen Flavor',pages:[
+    {art:'ruby_story_furnace',text:'This heat… the Hunger’s machine burns the flavor it stole from us. Every spark used to belong to someone.',mood:'alert'},
+    {art:'ruby_story_furnace',text:'I can almost taste my old strawberry jam. If we stop this machine, maybe I’ll remember a little more.',mood:'normal'}
+  ]},
+  {title:'A Voice in the Ice',pages:[
+    {art:'ruby_story_frozen',text:'Sweet spirits are trapped in the ice. I can hear their voices beneath the frost.',mood:'sad'},
+    {art:'ruby_story_frozen',text:'One of them sounds like Grandma. Please, we have to hurry. I can’t leave that voice behind.',mood:'alert'}
+  ]},
+  {title:'The Crown Oven',pages:[
+    {art:'ruby_story_crown',text:'The Crown Oven. This is where the Hunger lives, with all the flavor it took from our home.',mood:'alert'},
+    {art:'ruby_story_crown',text:'If we win, maybe I can finally wake up like you did. I’m frightened… but I’m ready to go with you.',mood:'normal'}
+  ]}
+];
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
@@ -8777,7 +8802,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ if(this._chestOpen)return; this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._jrSkin=false; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
+  buildMenuScreen(){ if(this._chestOpen||this._rubyTalk?.active)return; this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._jrSkin=false; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     /* v7.9.59 เจ้าของ: เปลี่ยนหน้าแล้วขึ้นจอ Loading = ติดขัด → ไม่บังจอแล้ว: รอเงียบ ๆ ≤300ms ถ้ายังไม่เสร็จก็วาดหน้าด้วยภาพสำรองก่อน แล้ววาดใหม่เมื่อภาพมาครบ */
@@ -10213,7 +10238,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   loadTutArt(){ const miss=TUT_KEYS.filter(k=>!this.textures.exists(k)); if(!miss.length||this._tutArt)return; this._tutArt=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._tutArt=false; },{all:true,quiet:true}); }catch(e){ this._tutArt=false; } }   // v7.9.68 ใบ 38
-  startChapterTutorial(){ this.loadTutArt?.();
+  startChapterTutorial(){ if(this.rubyStageStory(0,()=>this.startChapterTutorial()))return; this.loadTutArt?.();
     this._forceCoachTutorial=true;this.stageDiff=1;this.startRun(0);
   }
   buildStageSelect(){
@@ -10235,6 +10260,7 @@ class Game extends Phaser.Scene {
   startStoryStage(idx){
     // Mint is an optional ally; Stage 3 accepts the player's selected hero.   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
     { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===2?{idx:2,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
+    if(this.rubyStageStory(idx,()=>this.startStoryStage(idx)))return;
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
   }
   showMintWarning(hi=HERO_INTROS[0]){ const w=this.W,h=this.H; this.tapZones=[];   // ชื่อเดิม · ใช้กับฮีโร่ทุกตัวใน HERO_INTROS
@@ -12075,6 +12101,11 @@ class Game extends Phaser.Scene {
     done();
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
+  rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
+    if(!entry||d.settings?.noRuby||d.rubyStorybook?.[idx]||this.state!=='menu')return false;
+    if(this._rubyTalk)return true;
+    this.rubyTalk(entry.pages.map(p=>p.text),()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=1;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();if(done)done();},{title:entry.title,pages:entry.pages,storybook:true});return true;
+  }
   rubyStoryAt(i){ if(this.recipeMode||this.bossRush||this.riftMode||this._pinnacleRun||this._inTutorial||!RUBY_STORY[i]||!this.time)return; const d=Save.data,st=d.rubyStory||(d.rubyStory={}); if(st[i])return;
     this.time.delayedCall(300,()=>{ if(!this.rubyOn()||this.stageIndex!==i)return; st[i]=1; Save.save(); this.rubySay(RUBY_STORY[i],5600,{face:[1,3,6,10,11,14].includes(i)?'sad':'normal'}); }); }   // v7.9.81 เรื่องของ Ruby ทีละด่าน (ครั้งแรกเท่านั้น)
   rubyOn(){ return this.state==='play'&&!this._coach&&!this.tutorialMode&&!(Save.data.settings||{}).noRuby; }
@@ -13772,20 +13803,46 @@ class Game extends Phaser.Scene {
   }
   // v6.50.6 สปอตไลต์ tutorial: มืดรอบนอก เจาะรูที่ปุ่ม + กรอบทองเต้น + นิ้วชี้
   // v7.9.75 เจ้าของ: บทสอนในเมนูมีคนสอน · Ruby พูดทีละประโยค (แตะ = ถัดไป, แตะได้หลัง .6 วิ) · ใช้ในทัวร์ Weave
-  rubyTalk(lines,done,opt={}){ const W=this.W,H=this.H,c=this.add.container(0,0); this.menu.add(c); c._menuBackdrop=true; let i=0,at=0;
-    this._rubyTalk=c; c.once('destroy',()=>{ if(this._rubyTalk===c)this._rubyTalk=null; });
-    const g=this.add.graphics(); g.fillStyle(0x0d0816,.72).fillRect(0,0,W,H); c.add(g);
-    const bw=Math.min(W-28,380),bx=(W-bw)/2,bh=170,by=H*.52,box=this.add.graphics(); box.fillStyle(0x000000,.4).fillRoundedRect(bx+3,by+5,bw,bh,20).fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,20).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,20); c.add(box);
-    let av=null,memory=null; const portrait=()=>{ if(!c.active)return; av?.destroy(); memory?.destroy(); const mood=opt.memory?'worried':i===lines.length-1?'proud':i?'explain':'normal',key='ruby_talk_'+mood;
-      if(this.realTex(key)){ av=this.add.image(bx+72,by+7,key).setOrigin(.5,1).setDisplaySize(132,165); }else av=this.rubyAvatar(bx+32,by+4,104,opt.memory?'sad':'normal'); c.add(av);
-      if(opt.memory&&this.realTex(opt.memory)){ const mw=Math.min(bw,300,Math.max(96,(by-204)*1.5)),mh=mw*2/3; memory=this.add.image(W/2,by-180,opt.memory).setOrigin(.5,1).setDisplaySize(mw,mh); c.add(memory); }
-    }; portrait(); this.ensureGroup(k=>RUBY_MENU_KEYS.includes(k),portrait,{all:true,quiet:true});
-    const nm=this.add.text(bx+20,by+14,'Ruby',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',backgroundColor:'#8a3fb8',padding:{x:9,y:3}}); c.add(nm);
-    const tx=this.add.text(W/2,by+48,'',{fontFamily:'sans-serif',fontSize:'16px',color:'#ffffff',align:'center',lineSpacing:6,wordWrap:{width:bw-36}}).setOrigin(.5,0); c.add(tx);
-    const hint=this.add.text(W/2,by+bh-20,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(.5); c.add(hint);
-    const pip=this.add.text(bx+bw-18,by+16,'',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffb3c8'}).setOrigin(1,0); c.add(pip);
-    const show=()=>{ portrait(); tx.setText(lines[i]); pip.setText((i+1)+' / '+lines.length); hint.setText(i<lines.length-1?'👆 Tap to continue':'👆 Tap to go on'); at=Date.now(); tx.setAlpha(0); this.tweens.add({targets:tx,alpha:1,duration:220}); if(av)this.tweens.add({targets:av,y:av.y-8,duration:140,yoyo:true,ease:'Sine.out'}); };
-    show(); this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-at<600)return; Sfx.select&&Sfx.select(); i++; if(i<lines.length)return show(); c.destroy(); done&&done(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='ruby_talk'; }
+  rubyTalk(lines,done,opt={}){ if(this._rubyTalk?.active)return; const W=this.W,H=this.H,c=this.add.container(0,0);this.menu.add(c);c._menuBackdrop=true;let i=0,at=Date.now(),finished=false;
+    this._rubyTalk=c;c.once('destroy',()=>{if(this._rubyTalk===c)this._rubyTalk=null;});
+    // Opaque foundation keeps the Lobby and navigation out of every narration page.
+    const backdrop=this.add.rectangle(0,0,W,H,0x09070c,1).setOrigin(0);c.add(backdrop);
+    const page=this.add.container();c.add(page);const margin=Math.max(16,Math.min(32,W*.05)),bw=Math.min(W-2*margin,560),bx=(W-bw)/2,land=W>H;
+    const footerY=H-60,headY=Math.max(22,Math.min(38,H*.045)),hasArt=!!(opt.memory||opt.pages?.some(p=>p.art));
+    const finish=()=>{if(finished||!c.active)return;finished=true;this.tapZones=this.tapZones.filter(z=>!z._rubyPage);c.destroy();done?.();};
+    const render=()=>{if(!c.active)return;page.removeAll(true);
+      const paper=this.realTex('ruby_story_paper');if(paper)page.add(this._coverImage(0,0,W,H,'ruby_story_paper'));
+      const ink=paper?'#462d29':'#fff1df',muted=paper?'#8c6244':'#d3b28e',entry=opt.pages?.[i],artKey=entry?.art||opt.memory;
+      const text=(x,y,t,size,color=ink,wrap=bw)=>{const o=this.add.text(x,y,t,{fontFamily:'NunitoUI, sans-serif',fontSize:size+'px',fontStyle:'bold',color,wordWrap:{width:wrap,useAdvancedWrap:true},lineSpacing:4}).setOrigin(.5,0);page.add(o);return o;};
+      text(land?W*.265:W/2,headY,'RUBY’S RECIPE BOOK',10,muted);
+      const title=text(land?W*.265:W/2,headY+24,opt.title||(opt.memory?'A memory returns':'A word from Ruby'),land?20:Math.min(25,W*.064));
+      const rowH=land?H-96:Math.min(190,Math.max(168,H*.24)),rowY=land?78:footerY-20-rowH,artTop=headY+24+title.height+18;
+      const bodyX=land?W*.56:bx,bodyW=land?W*.40:bw,bodyY=rowY,bodyH=land?H-148:rowH;
+      if(hasArt){const maxW=land?W*.46:bw,maxH=land?footerY-artTop-16:rowY-artTop-16,artCx=land?W*.265:W/2,artCy=artTop+maxH/2;
+        if(artKey&&this.realTex(artKey)){const im=this.add.image(artCx,artCy,artKey),k=Math.min(maxW/im.width,maxH/im.height);im.setScale(k);page.add(im);}
+        else text(artCx,artCy-12,'Opening the illustration…',12,muted,maxW-12);
+      }
+      const box=this.add.graphics();box.fillStyle(paper?0xfffcf2:0x201923,paper ? .70 : .96).fillRoundedRect(bodyX,bodyY,bodyW,bodyH,14).lineStyle(1,paper?0xc7a77a:0x886b55,.7).strokeRoundedRect(bodyX,bodyY,bodyW,bodyH,14);page.add(box);
+      const portraitKey='ruby_talk_'+({sad:'worried',alert:'worried',happy:'proud',normal:'normal'}[entry?.mood]||(opt.memory?'worried':i===lines.length-1?'proud':i?'explain':'normal'));
+      let av;if(this.realTex(portraitKey)){av=this.add.image(0,0,portraitKey);this.hubIconFit(av,portraitKey,bodyX+52,bodyY+bodyH*.58,86);}
+      else av=this.rubyAvatar(bodyX+5,bodyY+bodyH-22,86,opt.memory?'sad':'normal');if(av)page.add(av);
+      const txLeft=bodyX+108,txWidth=bodyW-124;const name=text(txLeft,bodyY+16,'Ruby',13,paper?'#a23c50':'#ffb1c4',txWidth).setOrigin(0,0);
+      const tx=text(txLeft,bodyY+42,lines[i],land?14:15,ink,txWidth).setOrigin(0,0);let fs=land?14:15;while(tx.height>bodyH-56&&fs>12)tx.setFontSize(--fs+'px');
+      const controls=this.add.graphics();controls.fillStyle(paper?0xe8d2a7:0x302431,1).fillRoundedRect(bx,footerY,bw,44,12);page.add(controls);
+      text(bx+40,footerY+13,'‹ Back',12,i?ink:muted,70).setAlpha(i?1:.4);
+      text(W/2,footerY+14,(i+1)+' / '+lines.length,11,muted,60);
+      text(bx+bw-48,footerY+13,i<lines.length-1?'Next ›':'Continue ›',12,ink,96);
+      text(W-margin-22,headY,'Skip',11,muted,44);
+      c._rubyLayout={body:{x:bodyX,y:bodyY,w:bodyW,h:bodyH},text:tx,portrait:av,page:i,art:artKey,paper};
+    };
+    const advance=()=>{if(Date.now()-at<600)return;at=Date.now();Sfx.select?.();if(++i>=lines.length)finish();else render();};
+    this.tapZones=[];const zone=(x,y,w,h,fn,tag)=>{this._zone(x,y,w,h,fn);const z=this.tapZones[this.tapZones.length-1];z.noBounce=true;z._rubyPage=true;z.tag=tag;};
+    zone(0,headY+36,W,Math.max(1,footerY-headY-36),advance,'ruby_talk');
+    zone(bx,footerY,86,44,()=>{if(!i||Date.now()-at<600)return;i--;at=Date.now();render();},'ruby_previous');
+    zone(bx+bw-108,footerY,108,44,advance,'ruby_next');
+    zone(W-margin-44,headY-12,44,44,()=>{if(Date.now()-at>=600)finish();},'ruby_skip');
+    render();const keys=new Set(['ruby_story_paper',...RUBY_MENU_KEYS,...(opt.pages||[]).map(p=>p.art),opt.memory].filter(Boolean));this.ensureGroup(k=>keys.has(k),render,{all:true,quiet:true});
+  }
   drawSpotlight(cont,x,y,bw,bh,label){ this._spotBuild=true; const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
     g.fillRect(0,0,W,Y); g.fillRect(0,Y+B,W,H-Y-B); g.fillRect(0,Y,X,B); g.fillRect(X+R,Y,W-X-R,B);
     const fr=this.add.graphics(); fr.lineStyle(4,0xffd166,1); fr.strokeRoundedRect(X,Y,R,B,14); this.tweens.add({targets:fr,alpha:{from:1,to:0.35},yoyo:true,repeat:-1,duration:520});
