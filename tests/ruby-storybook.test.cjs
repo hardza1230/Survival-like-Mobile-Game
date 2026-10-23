@@ -13,19 +13,19 @@ const a=src.indexOf('const RUBY_STORYBOOK='),b=src.indexOf('const WAVE_OBJECTIVE
 const ctx={Save,HERO_INTROS:[{idx:2,id:'mint',flag:'mintIntro'}]};vm.createContext(ctx);vm.runInContext(src.slice(a,b)+';this.entries=RUBY_STORYBOOK;',ctx);
 const C=vm.runInContext('class C{'+['rubyStageStory','startChapterTutorial','startStoryStage'].map(method).join('\n')+'}C',ctx);
 function scene(data={}){Save.data=data;Save.saves=0;const c=new C();Object.assign(c,{state:'menu',talks:[],runs:[],rubyTalk(lines,done,opt){this._rubyTalk={};this.talks.push({lines,opt,finish:()=>{this._rubyTalk=null;done();}});},startRun(idx){this.runs.push(idx);},loadTutArt(){this.loadedTut=true;},showMintWarning(hi){this.warning=hi;}});return c;}
-const art=['ruby_story_pantry','ruby_memory_jar','ruby_story_furnace','ruby_story_frozen','ruby_story_crown'];
 assert.equal(ctx.entries.length,5);
 for(let i=0;i<5;i++){
   const c=scene();let resumed=0;assert(c.rubyStageStory(i,()=>resumed++));
-  const t=c.talks[0];assert.equal(t.opt.storybook,true);assert.equal(t.opt.title,ctx.entries[i].title);assert.equal(t.opt.pages.length,ctx.entries[i].pages.length);assert.equal(t.lines.length,ctx.entries[i].pages.length);assert.ok(t.lines.length>=2);
-  for(let p=0;p<2;p++){assert.equal(t.opt.pages[p].art,i===1&&p===0?'ruby_memory_grandma':art[i]);assert.equal(t.lines[p],t.opt.pages[p].text);assert(t.lines[p].length>20);assert(t.opt.pages[p].mood);}
+  const t=c.talks[0];assert.equal(t.opt.storybook,true);assert.equal(t.opt.title,ctx.entries[i].title);assert.equal(t.opt.pages.length,3);assert.equal(t.lines.length,3);
+  for(let p=0;p<3;p++){assert.equal(t.opt.pages[p].art,`ruby_comic_s${i+1}_${p+1}`);assert.equal(t.lines[p],t.opt.pages[p].text);assert(t.lines[p].length>20&&t.lines[p].length<=100,'short comic caption');assert(t.opt.pages[p].mood);}
   assert.equal(Save.data.rubyStorybook,undefined,'opening a story must not mark it read');assert.equal(Save.data.rubyStory,undefined);assert.equal(resumed,0);
   assert(c.rubyStageStory(i,()=>resumed++));assert.equal(c.talks.length,1,'repeated entry while modal is open is deduplicated');
-  t.finish();assert.equal(Save.data.rubyStorybook[i],1);assert.equal(Save.data.rubyStory[i],1);assert.equal(Save.saves,1);assert.equal(resumed,1);
+  t.finish();assert.equal(Save.data.rubyStorybook[i],2);assert.equal(Save.data.rubyStory[i],1);assert.equal(Save.saves,1);assert.equal(resumed,1);
   assert.equal(!!Save.data.storyIntroSeen,i===0,'only the opening story replaces the old falling-panel intro');
   assert.equal(c.rubyStageStory(i,()=>resumed++),false);assert.equal(c.talks.length,1);
 }
-for(const data of [{settings:{noRuby:true}},{rubyStorybook:{0:1}}]){const c=scene(data);assert.equal(c.rubyStageStory(0),false);assert.equal(c.talks.length,0);assert.equal(Save.saves,0);}
+for(const data of [{settings:{noRuby:true}},{rubyStorybook:{0:2}},{rubyStorybook:{0:3}}]){const c=scene(data);assert.equal(c.rubyStageStory(0),false);assert.equal(c.talks.length,0);assert.equal(Save.saves,0);}
+for(let idx=0;idx<5;idx++){const c=scene({rubyStorybook:{[idx]:1},rubyStory:{[idx]:1}});assert(c.rubyStageStory(idx));assert.equal(Save.data.rubyStorybook[idx],1,'legacy read flag remains until the new comic completes');assert.equal(Save.saves,0);c.talks[0].finish();assert.equal(Save.data.rubyStorybook[idx],2);assert.equal(c.rubyStageStory(idx),false,'legacy readers see the new comic once');}
 for(const idx of [-1,5,14,99]){const c=scene();assert.equal(c.rubyStageStory(idx),false);assert.equal(c.talks.length,0);}
 {const c=scene();c.state='play';assert.equal(c.rubyStageStory(0),false);assert.equal(c.talks.length,0);}
 {const c=scene();c.startChapterTutorial();assert.equal(c.runs.length,0);assert.equal(c.loadedTut,undefined);c.talks[0].finish();assert.deepEqual(c.runs,[0]);assert(c._forceCoachTutorial);assert(c.loadedTut);assert.equal(c.stageDiff,1);}
@@ -33,4 +33,4 @@ for(const idx of [-1,5,14,99]){const c=scene();assert.equal(c.rubyStageStory(idx
 {const c=scene();c.startStoryStage(1);assert.equal(c.runs.length,0);c.talks[0].finish();assert.deepEqual(c.runs,[1]);assert.equal(c._dailyRun,false);assert.equal(c._challengeChoice,null);assert.equal(c.stageDiff,1);}
 {const c=scene({character:'momo',chars:['mint']});c.startStoryStage(2);assert(c.warning,'optional hero warning still precedes the story');assert.equal(c.talks.length,0);assert.equal(c.runs.length,0);c.startStoryStage(2);assert.equal(c.talks.length,1);c.talks[0].finish();assert.deepEqual(c.runs,[2]);}
 {const c=scene();c.startStoryStage(5);assert.deepEqual(c.runs,[5]);assert.equal(c.talks.length,0);}
-console.log('Ruby storybook: five two-page stories, deferred completion, once/deduplication, noRuby, tutorial and optional-hero routing passed');
+console.log('Ruby storybook: five three-panel stories, short unique captions, version-2 migration, deferred completion, deduplication and entry routing passed');
