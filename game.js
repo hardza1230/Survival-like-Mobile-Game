@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.73';
+const GAME_VERSION = '7.9.74';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.74',date:'2026-10-23',title:'Download once',items:['The first loading screen now downloads the whole game once and keeps it on your phone, so later screens and stages load from the device']},
   {v:'7.9.73',date:'2026-10-23',title:'Reset and sign out start fresh',items:['Reset progress now restarts the game from the title screen (and clears the cloud copy if you are signed in)','Signing out clears this device’s save and restarts; sign in again to get your cloud save back','Inbox removed from the Upgrade page — use the Mail button in the Lobby']},
   {v:'7.9.72',date:'2026-10-23',title:'More room on strong phones',items:['Phones with 8 GB RAM or more keep more art loaded, so screens reload pictures less often']},
   {v:'7.9.71',date:'2026-10-23',title:'Lobby rises in',items:['After the storybook opens, the Lobby pieces float up one by one']},
@@ -3696,10 +3697,27 @@ class Boot extends Phaser.Scene {
   }
 }
 
+/* v7.9.74 เจ้าของเลือก ข: ดาวน์โหลดไฟล์ภาพ/เสียงทั้งเกมครั้งเดียวตั้งแต่หน้าโหลดแรก → เก็บใน cache ของ service worker (cache-first ตาม ?v=) · ครั้งต่อไปเช็กแค่ไฟล์ใหม่ของเวอร์ชันนั้น */
+function allAssetUrls(){ const set=new Set(),add=u=>{ if(typeof u==='string'&&u.startsWith('assets/'))set.add(verUrl(u)); };
+  for(const k in ASSET_IMAGES)add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(ASSET_FX[k]&&ASSET_FX[k].url); for(const k in ASSET_AUDIO)add(ASSET_AUDIO[k]);
+  if(typeof LH_USE_SHEETS!=='undefined'&&LH_USE_SHEETS)for(const k in LH_SHEETS)add(LH_SHEETS[k]); return [...set]; }
+async function downloadAllAssets(done){ let fin=false; const go=()=>{ if(fin)return; fin=true; try{ done(); }catch(e){ console.error(e); } };
+  try{ if(typeof fetch!=='function'||!navigator.onLine)return go(); const urls=allAssetUrls(),key='mochi_dl_'+GAME_VERSION+'_'+ASSET_VER+'_'+urls.length;
+    let doneKey=null; try{ doneKey=localStorage.getItem('mochi_dl_done'); }catch(e){} if(doneKey===key)return go();
+    try{ const sw=navigator.serviceWorker; if(sw&&!sw.controller)await Promise.race([new Promise(r=>sw.addEventListener('controllerchange',r,{once:true})),new Promise(r=>setTimeout(r,3000))]); }catch(e){}   // เครื่องใหม่: รอ SW คุมหน้าก่อน ไม่งั้นไฟล์ไม่เข้า cache
+    let have=null; try{ if(window.caches){ const c=await caches.open('mochi-assets-v1'),ks=await c.keys(); have=new Set(ks.map(r=>{ const u=new URL(r.url); return u.pathname.replace(/^.*?\/assets\//,'assets/')+u.search; })); } }catch(e){}
+    const todo=have?urls.filter(u=>!have.has(u)):urls; if(!todo.length){ try{ localStorage.setItem('mochi_dl_done',key); }catch(e){} return go(); }
+    let n=0,fail=0,i=0; const N=todo.length,show=()=>{ try{ GameLoader.show&&GameLoader.show('Downloading game data (one time) · '+n+' / '+N,n/N); }catch(e){} }; show();
+    const worker=async()=>{ while(i<N){ const u=todo[i++]; try{ const r=await fetch(u); if(!r.ok)fail++; else await r.arrayBuffer(); }catch(e){ fail++; } n++; if(n%8===0||n===N)show(); } };
+    await Promise.all(Array.from({length:8},worker));
+    if(!fail){ try{ localStorage.setItem('mochi_dl_done',key); }catch(e){} }   // ไฟล์ที่ล้มเหลว → ลองใหม่ครั้งหน้า
+  }catch(e){ console.warn('[dl]',e); } go(); }
+
 /* ---- OPENING: hand off to the game beneath the kitchen loading animation ---- */
 class Opening extends Phaser.Scene {
   constructor(){ super('Opening'); }
-  create(){
+  create(){ downloadAllAssets(()=>this.scene.start('Game')); }
+  _old(){
     this.scene.start('Game');   // v6.48: หน้าโหลดแรกค้างไว้ → Game.preloadAll โหลดทั้งเกมต่อในหลอดเดียว แล้วค่อยเล่นฉากเปิด
   }
 }
