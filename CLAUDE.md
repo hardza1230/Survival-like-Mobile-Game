@@ -2,6 +2,14 @@
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
 
+# 🧭 Model routing (owner 23 Oct) — pick the cheapest model that fits
+
+Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). The main session (Opus) plans, decides, reviews diffs, bumps GAME_VERSION/CHANGELOG, commits and deploys.
+- **quick (Haiku):** look-ups in game.js, "did art arrive?", Actions run status, file lists, small exact doc edits (CLAUDE.md blocks, README rows).
+- **builder (Sonnet):** clear code changes where what/where is already known — given numbers, text rewording, wiring delivered art by an existing pack script/pattern, copy-an-existing-UI-piece, art order docs from an outline.
+- **Main (Opus) itself:** design and owner questions, unclear bugs, balance, new mechanics, multi-system features, final review.
+- Skip delegation when the job is one or two tool calls (spawning costs more than doing it). Always read the subagent's diff (`git diff`) before committing.
+
 # Art delivery34 — Lobby hero motion source kit
 
 48 PNG32 sheets /372 frames delivered to assets/incoming/lobby_hero_motion/<hero>/ for Momo/Yuzu/Mint/Cocoa/Taro/Sesame; built-in ImageGen prompts/provenance, manifests, complete PNG CRC/hash/alpha/frame/endpoint QA,48 light/dark actual-stage GIFs,6 storyboards and silhouette proof.512×640 cells; every one-shot starts/ends on exact idle0 pixels. Cocoa neutral496px (approximately500px) keeps arm margins. Source-only; runtime version unchanged. Next:75% WebP packing and selected-hero Lobby-only lazy animation integration per order34; never boot load; owner phone visual/timing/FPS pending. Sesame WIP wiring unchanged. Read UPLOAD_VERIFICATION.json for remote-byte proof.
