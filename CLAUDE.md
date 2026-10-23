@@ -76,7 +76,11 @@ Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). 
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.77 — Chest shop, Thread pill, feature reveal, book order, no hero spin (owner)
+# Latest delivery: v7.9.78 — Taro C2-3 / Yuzu C3-1 + hidden Sugar plus (owner)
+
+CORE_UNLOCK_STAGE taro 5→6 (playable from C2-3), yuzu 9 (C3-1); HERO_INTROS idx 7 taro + idx 10 yuzu (lore lines). Sesame stays hidden until finished (planned C3-3). Lobby Sugar + zone only when featureOpen('bazaar'). Owner kept one-by-one feature reveals.
+
+# Previous delivery: v7.9.77 — Chest shop, Thread pill, feature reveal, book order, no hero spin (owner)
 
 Bazaar first tab 'chests' → buildChestShop(top): CHESTS silver (🧶30, free once per localDayKey via chestFreeDay, odds common .5/rare .42/epic .075/legend .005) + gold (🧶120, rare .3/epic .6/legend .1, chestPity → Legend at CHEST_PITY 10); openChest(c,isFree) spends Thread, rolls pickWeighted, grantGear at the top GACHA band item level (fallback epic/rare/common, refund half), reveal screen with _chestOpen (buildMenuScreen returns while set) → Collect. chestVisual uses chest_<id> (art order 40 `docs/art_orders/40_CHEST_SHOP.md`, 7 files) → prize_chest → 🧰. Lobby: Thread pill under Sugar (tag thread_pill → chests). featureReveal → _featQ queue, featRevealNext: NEW card (glow, FEAT_ICON, name, Ruby FEAT_LINE) → tap → icon flies to FEAT_TAG zone + ring → next; applyGearTut waits until the queue ends; robust to menu rebuilds (_featC/_featFly fallback 1.5s). bookOpeningPlus reveal builds the Lobby with _enterRise + _enterRiseDelay 2100 (pieces hidden until the book finishes), finish no longer rebuilds (_bkRose). lobbyHeroTap 5-tap = bigger sway (amp 4), no spin.
 
@@ -698,7 +702,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.77 · 23 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.78 · 23 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.77';
+const GAME_VERSION = '7.9.78';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.78',date:'2026-10-23',title:'New heroes on the story path',items:['Taro now joins at C2-3 and Yuzu at C3-1, each with a short introduction','The + next to Sugar stays hidden until the Bazaar opens']},
   {v:'7.9.77',date:'2026-10-23',title:'Chest shop and Thread',items:['New Bazaar Chests: Silver Chest (one free a day) and Gold Chest (Legend guaranteed every 10) open with 🧶 Thread','Thread now shows under Sugar in the Lobby; tap it to open the chests','The storybook now opens its page first, then the Lobby floats up once','Tapping the hero a lot makes them wiggle instead of spinning']},
   {v:'7.9.76',date:'2026-10-23',title:'Menus open up as you play',items:['Locked systems are now hidden: Bazaar, Activities, Equipment, Daily, Awards and News appear after Stage 1; Heroes, Affix Forge and Codex after Stage 2; Kitchen after Chapter 2','A note pops up when something new unlocks']},
   {v:'7.9.75',date:'2026-10-23',title:'Ruby teaches the Weave',items:['Ruby now explains the Flavor Weave step by step after the first tutorial','Fixed: the hero looked big on the first tutorial card','Heroes unlock with the story again: Mint from C1-3, Cocoa from C2-1']},
@@ -3889,13 +3890,17 @@ const YUZU_START=4,YUZU_FOCUS=3,YUZU_STAY=3,YUZU_EARLY_NEED=6,YUZU_CAP=12,YUZU_H
 const YUZU_BITE_CD=1.8,YUZU_RIPEN_CAP=6,YUZU_LEASH=300,YUZU_BOSS_LEASH=380,YUZU_RUSH_LEN=240,YUZU_RUSH_MUL=2,YUZU_SEP=26;   // v7.9.41 เจ้าของ ก+ข+ค: ฝูงทำงานรอบตัว Yuzu · Dash สั่งพุ่ง · ไม่ซ้อนกัน   // v7.9.37 Yuzu Orchard Swarm (สวนส้ม) — ดู docs/YUZU_ORCHARD_SWARM.md
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
-const CORE_UNLOCK_STAGE={mint:1,cocoa:4,taro:5,yuzu:9};   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
+const CORE_UNLOCK_STAGE={mint:1,cocoa:4,taro:6,yuzu:9};   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame ซ่อนจนทำเสร็จ (ต่อไป C3-3) */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) — Mint ที่ Stage 3 · Cocoa ที่ C2-1 (เจ้าของสั่ง)
 const HERO_INTROS=[
   {idx:2,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
     text:'The Chili Engine Room ahead is burning hot! My frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.'},
   {idx:5,id:'cocoa',flag:'cocoaIntro',card:'card_cocoa',emoji:'🐻',name:'Cocoa',color:'#8a4b22',edge:0xd9a066,btn:0xa0612f,btnEdge:0xffe2bf,stroke:'#4a2410',label:'🐻 Choose Cocoa',
     text:'The Fermented Canopy is choked with thick roots and armored Root Beetles — little seeds just bounce off their bark! My bear gauntlets punch straight through. Let me take the front line? Tap Heroes on the main menu any time to switch hero.'},
+  {idx:7,id:'taro',flag:'taroIntro',card:'card_taro',emoji:'⚡',name:'Taro',color:'#6a4fc8',edge:0xb9a3ff,btn:0x7c5ce0,btnEdge:0xeee6ff,stroke:'#2e1f66',label:'⚡ Choose Taro',
+    text:'Lightning led my compass here — the Hornet Queen’s hive hums with stolen flavor! Fast hornets? My sparks jump from one to the next. Tap Heroes on the main menu any time to switch hero.'},
+  {idx:10,id:'yuzu',flag:'yuzuIntro',card:'card_yuzu',emoji:'🍋',name:'Yuzu',color:'#c99a12',edge:0xffe07a,btn:0xe0b52a,btnEdge:0xfff4c4,stroke:'#5c4306',label:'🍋 Choose Yuzu',
+    text:'The Great Hunger drained my orchard dry… only my little Yuzlings escaped. Help me take these harvest fields back and we will plant it all again! Tap Heroes on the main menu any time to switch hero.'},
 ];
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
@@ -9674,7 +9679,7 @@ class Game extends Phaser.Scene {
     this._zone(gx-4,top-4,gearW+8,gearW+8,()=>{this.menuScreen='gMore';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='gMore';
     const sw=Math.min(124,w-pw-gearW-side*3-6),sx=gx-8-sw,pill=panel('lb_currency_pill',sx,top,sw,gearW),plusW=pill?Math.round(42*gearW/45):0;this.hubArt('candy',sx+16,top+gearW/2,20,20);
     const sg=this.hubText(sx+sw-8-plusW,top+gearW/2,String(Math.floor(d.sugar||0)),14,'#ffe5aa',1);let sf=14;while(sg.width>sw-34-plusW&&sf>9)sg.setFontSize(--sf+'px');
-    if(pill){ this._zone(sx+sw-plusW-4,top-4,plusW+8,gearW+8,()=>{this._bazTab=this._bazTab||'gamble';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='bazaar'; }
+    if(pill&&featureOpen('bazaar')){ this._zone(sx+sw-plusW-4,top-4,plusW+8,gearW+8,()=>{this._bazTab=this._bazTab||'gamble';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='bazaar'; }
     { const ty=top+gearW+6,th=30,tpill=panel('lb_currency_pill',sx,ty,sw,th);   // v7.9.77 เจ้าของ: เห็นสกุลเงินที่ 2 (🧶 Thread = ใช้เปิดหีบใน Bazaar)
       if(!tpill){ const tg=this.add.graphics(); tg.fillStyle(0x1a1024,.85).fillRoundedRect(sx,ty,sw,th,th/2).lineStyle(1.5,0xffd36e,.7).strokeRoundedRect(sx,ty,sw,th,th/2); this.menu.add(tg); }
       this.menu.add(this.add.text(sx+16,ty+th/2,'🧶',{fontSize:'15px'}).setOrigin(.5)); const tpw=tpill?Math.round(42*th/45):0;
