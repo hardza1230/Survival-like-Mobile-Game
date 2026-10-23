@@ -1,3 +1,7 @@
+# Art delivery39 — Book opening plus source kit
+
+All9 PNG32 /51 frames delivered to assets/incoming/book_opening_plus/ with selected ImageGen donors, exact prompts, source-pixel12-frame opening, clean-cover helper, manifest/CRC/hash/alpha QA and offline previews. Exact-size WebP candidates total1,290,464bytes; including clean-cover helper1,363,314bytes under1.5MB. Source-only; preserve runtime v7.9.68 and its order38 integration. Next: lazy bookOpening / navigation wiring per order39 and phone playback/skip/FPS review.
+
 # Art delivery38 — Tutorial UI source kit
 
 13 PNG32 / 23 frames delivered to assets/incoming/tutorial_ui/: nine step icons, pointer hand, nine-slice panel and two six-frame VFX strips. Five original built-in ImageGen sources, exact prompts, manifest, PNG CRC/hash/alpha/dimension QA, 48/72px galleries, vertical panel proof and animation previews included. Source-only; runtime version unchanged. Next: tutorial-only lazy WebP packing and integration per order38; owner phone visual/timing/FPS pending.

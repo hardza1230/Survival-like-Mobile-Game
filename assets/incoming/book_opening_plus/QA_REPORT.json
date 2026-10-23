@@ -1,0 +1,192 @@
+{
+  "requiredFiles": 9,
+  "deliveredFiles": 9,
+  "actualFrameTotal": 51,
+  "specCountCorrection": "Table sums to51, not54",
+  "checks": [
+    {
+      "file": "ic_nav_bazaar.png",
+      "bytes": 85778,
+      "sha256": "07b52a3c23259e875cd334ac9093e4a0808ee04531cc93caa5cd21b1c07539a7",
+      "pngCRC": true,
+      "size": [
+        256,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    },
+    {
+      "file": "ic_nav_upgrade.png",
+      "bytes": 73652,
+      "sha256": "cd162b33e92ed6599cb35c9c91fa110906911d037f96eeac2bef1e4b71ebd1db",
+      "pngCRC": true,
+      "size": [
+        256,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    },
+    {
+      "file": "ic_side_mail.png",
+      "bytes": 73340,
+      "sha256": "0408d4b997a280f95d5b4e692787e27f6147b6b63b56fc346bfffe399621c957",
+      "pngCRC": true,
+      "size": [
+        256,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    },
+    {
+      "file": "bk_clasp.png",
+      "bytes": 357574,
+      "sha256": "b5a7012faf1f47aa5209c7675410ca41569cb19e2861ced23157e6b81c9d837a",
+      "pngCRC": true,
+      "size": [
+        1536,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 6
+    },
+    {
+      "file": "bk_emblem_spin.png",
+      "bytes": 762965,
+      "sha256": "7b226e43689062dafe5bf21972c7fe753aa9e596a03d8ef44cec8c0b593ac041",
+      "pngCRC": true,
+      "size": [
+        2048,
+        256
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 8
+    },
+    {
+      "file": "vfx_bk_magic.png",
+      "bytes": 414862,
+      "sha256": "35abe5a17894058cd6bb0ed22c24c9b9719a35ece97bb38fd84bfa7ef41454d7",
+      "pngCRC": true,
+      "size": [
+        2048,
+        256
+      ],
+      "alphaRange": [
+        255,
+        255
+      ],
+      "frameCount": 8
+    },
+    {
+      "file": "bk_page_riffle.png",
+      "bytes": 2238894,
+      "sha256": "55fa1abad027e87ca5e226652e0ea96889e6a9adc675080d81c47a650b00f5d2",
+      "pngCRC": true,
+      "size": [
+        1728,
+        1536
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 8
+    },
+    {
+      "file": "vfx_bk_burst.png",
+      "bytes": 685963,
+      "sha256": "b2c825506e752a775155b4fea70b15ced83b7e7213c644d6683d6726c527c857",
+      "pngCRC": true,
+      "size": [
+        3072,
+        512
+      ],
+      "alphaRange": [
+        255,
+        255
+      ],
+      "frameCount": 6
+    },
+    {
+      "file": "bk_open_long.png",
+      "bytes": 5183928,
+      "sha256": "9a90ab1f6e655b6d2fd30fcad1a35fa0b7e1a6b2c15dbc92541252933c01ec1e",
+      "pngCRC": true,
+      "size": [
+        1728,
+        2304
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 12
+    }
+  ],
+  "webpCandidateTotalBytes": 1290464,
+  "webpBudgetBytes": 1500000,
+  "webpBudgetPass": true,
+  "visualReview": "Reviewed source sheets, all12 opening frames, exact first-frame identity, monotonic reveal, native28/56px light/dark icons, clean-cover/emblem composition and transparent final riffle frame. Phone playback/FPS pending.",
+  "runtimeIntegration": "Pending",
+  "phoneVisualTimingFPS": "Pending owner test",
+  "openingRevealWidths": [
+    432,
+    428,
+    414,
+    383,
+    338,
+    280,
+    216,
+    151,
+    94,
+    47,
+    15,
+    4
+  ],
+  "openingFirstFrameExact": true,
+  "emblemLoopEndpointsExact": true,
+  "riffleFinalFrameEmpty": true,
+  "additionalHelper": {
+    "file": "bk_cover_clean_plate.png",
+    "purpose": "Additional integration helper, not one of nine requested rows; prevents double-stamped emblem.",
+    "width": 1080,
+    "height": 1920,
+    "bytes": 4220565,
+    "sha256": "56e54a3f1181d2eeb2a5a1eb4092d1e923613a69177e16adf0ffff58c1b0a0ac",
+    "packedFile": "webp_candidates/bk_cover_clean_plate.webp",
+    "packedWidth": 432,
+    "packedHeight": 768,
+    "packedBytes": 72850,
+    "emblemCenter": [
+      222,
+      359
+    ],
+    "emblemSize": [
+      340,
+      380
+    ],
+    "coverViewport": [
+      432,
+      768
+    ]
+  },
+  "webpTotalIncludingHelper": 1363314,
+  "webpBudgetPassIncludingHelper": true
+}

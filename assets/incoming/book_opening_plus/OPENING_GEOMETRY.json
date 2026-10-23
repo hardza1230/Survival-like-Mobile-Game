@@ -1,0 +1,215 @@
+{
+  "method": "Rigid perspective projections from the existing closed-cover pixels; generated inside-leather material for thin edge only. Discarded AI full-sheet candidate because ornament identity and hinge alignment drifted.",
+  "original": "assets/incoming/book_transition/bk_cover_closed.png",
+  "originalSHA256": "8ceb4c0a30337dce61a6211c2f743479ec33a4732350b2d53a1028c93761692d",
+  "frame0ExactResizedSource": true,
+  "frames": [
+    {
+      "frame": 0,
+      "width": 432,
+      "farEdgeInset": 0,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        432,
+        768
+      ]
+    },
+    {
+      "frame": 1,
+      "width": 428,
+      "farEdgeInset": 1,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        428,
+        768
+      ]
+    },
+    {
+      "frame": 2,
+      "width": 414,
+      "farEdgeInset": 3,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        414,
+        768
+      ]
+    },
+    {
+      "frame": 3,
+      "width": 383,
+      "farEdgeInset": 7,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        383,
+        768
+      ]
+    },
+    {
+      "frame": 4,
+      "width": 338,
+      "farEdgeInset": 12,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        338,
+        768
+      ]
+    },
+    {
+      "frame": 5,
+      "width": 280,
+      "farEdgeInset": 18,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        280,
+        768
+      ]
+    },
+    {
+      "frame": 6,
+      "width": 216,
+      "farEdgeInset": 20,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        216,
+        768
+      ]
+    },
+    {
+      "frame": 7,
+      "width": 151,
+      "farEdgeInset": 18,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        151,
+        768
+      ]
+    },
+    {
+      "frame": 8,
+      "width": 94,
+      "farEdgeInset": 14,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        94,
+        768
+      ]
+    },
+    {
+      "frame": 9,
+      "width": 47,
+      "farEdgeInset": 9,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        47,
+        768
+      ]
+    },
+    {
+      "frame": 10,
+      "width": 15,
+      "farEdgeInset": 3,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        15,
+        768
+      ]
+    },
+    {
+      "frame": 11,
+      "width": 0,
+      "farEdgeInset": 0,
+      "hinge": [
+        0,
+        0,
+        0,
+        768
+      ],
+      "alphaBBox": [
+        0,
+        0,
+        4,
+        768
+      ]
+    }
+  ],
+  "cleanPlate": "bk_cover_clean_plate.png",
+  "cleanPlatePurpose": "Optional helper behind animated emblem; static gold is baked into the original cover.",
+  "pendingPhoneReview": true
+}

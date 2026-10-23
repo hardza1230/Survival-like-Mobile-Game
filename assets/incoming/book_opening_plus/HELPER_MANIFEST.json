@@ -1,0 +1,24 @@
+{
+  "file": "bk_cover_clean_plate.png",
+  "purpose": "Additional integration helper, not one of nine requested rows; prevents double-stamped emblem.",
+  "width": 1080,
+  "height": 1920,
+  "bytes": 4220565,
+  "sha256": "56e54a3f1181d2eeb2a5a1eb4092d1e923613a69177e16adf0ffff58c1b0a0ac",
+  "packedFile": "webp_candidates/bk_cover_clean_plate.webp",
+  "packedWidth": 432,
+  "packedHeight": 768,
+  "packedBytes": 72850,
+  "emblemCenter": [
+    222,
+    359
+  ],
+  "emblemSize": [
+    340,
+    380
+  ],
+  "coverViewport": [
+    432,
+    768
+  ]
+}
