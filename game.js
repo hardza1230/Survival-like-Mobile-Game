@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.78';
+const GAME_VERSION = '7.9.79';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.79',date:'2026-10-23',title:'New chest art',items:['Silver and Gold chests now have their own art and a lid-opening animation','Light rays in the prize colour behind your new gear','New Thread icon in the Lobby']},
   {v:'7.9.78',date:'2026-10-23',title:'New heroes on the story path',items:['Taro now joins at C2-3 and Yuzu at C3-1, each with a short introduction','The + next to Sugar stays hidden until the Bazaar opens']},
   {v:'7.9.77',date:'2026-10-23',title:'Chest shop and Thread',items:['New Bazaar Chests: Silver Chest (one free a day) and Gold Chest (Legend guaranteed every 10) open with 🧶 Thread','Thread now shows under Sugar in the Lobby; tap it to open the chests','The storybook now opens its page first, then the Lobby floats up once','Tapping the hero a lot makes them wiggle instead of spinning']},
   {v:'7.9.76',date:'2026-10-23',title:'Menus open up as you play',items:['Locked systems are now hidden: Bazaar, Activities, Equipment, Daily, Awards and News appear after Stage 1; Heroes, Affix Forge and Codex after Stage 2; Kitchen after Chapter 2','A note pops up when something new unlocks']},
@@ -1683,6 +1684,7 @@ const ASSET_IMAGES = {
   bk_cover_open:'assets/art/book/bk_cover_open.webp',
   bk_cover_glow:'assets/art/book/bk_cover_glow.webp',
   bk_open_long:'assets/art/book/bk_open_long.webp',bk_clasp:'assets/art/book/bk_clasp.webp',bk_emblem_spin:'assets/art/book/bk_emblem_spin.webp',vfx_bk_magic:'assets/art/book/vfx_bk_magic.webp',bk_page_riffle:'assets/art/book/bk_page_riffle.webp',vfx_bk_burst:'assets/art/book/vfx_bk_burst.webp',bk_cover_clean_plate:'assets/art/book/bk_cover_clean_plate.webp',   // v7.9.69 ใบ 39 เปิดหนังสือแบบเต็ม (lazy เฉพาะหน้าเปิดเกม · ใช้แล้วคืนหน่วยความจำ)
+  chest_silver:'assets/art/chest/chest_silver.webp',chest_gold:'assets/art/chest/chest_gold.webp',chest_silver_open:'assets/art/chest/chest_silver_open.webp',chest_gold_open:'assets/art/chest/chest_gold_open.webp',vfx_chest_rays:'assets/art/chest/vfx_chest_rays.webp',bz_chest_card:'assets/art/chest/bz_chest_card.webp',   // v7.9.79 ใบ 40 หีบ (lazy กับ Bazaar · scripts/pack-chest-shop.py)
   ic_nav_bazaar:'assets/art/lobby/ic_nav_bazaar.webp',ic_nav_upgrade:'assets/art/lobby/ic_nav_upgrade.webp',ic_side_mail:'assets/art/lobby/ic_side_mail.webp',
   screen_temple_weave:'assets/art/temple/ui/screen_temple_weave.webp',
   temple_altar_trio:'assets/art/temple/ui/temple_altar_trio.webp',
@@ -2412,7 +2414,7 @@ const ASSET_IMAGES = {
   ic_aura:'assets/ic_aura.png', ic_fork:'assets/ic_fork.png', ic_mine:'assets/ic_mine.png', ic_beam:'assets/ic_beam.png',
   ic_meteor:'assets/ic_meteor.png', ic_cloud:'assets/ic_cloud.png', ic_rocket:'assets/ic_rocket.png', ic_wave:'assets/ic_wave.png',
   ic_bear_donut:'assets/ic_bear_donut.png', ic_mirror:'assets/ic_mirror.png', ic_memory:'assets/ic_memory.png',
-  ic_thread:'assets/ic_thread.png', ic_decoy:'assets/ic_decoy.png', ic_triseal:'assets/ic_triseal.png', ic_echo_step:'assets/ic_echo_step.png',
+  ic_thread:'assets/art/chest/ic_thread.webp', ic_decoy:'assets/ic_decoy.png', ic_triseal:'assets/ic_triseal.png', ic_echo_step:'assets/ic_echo_step.png',
   // ไอคอนพรชุดใหม่ (สไตล์เดียวกับสกิล) — power/swift/haste/crit/guard/regen · heart/magnet ใช้ของเดิม (heart รีเจนใหม่แล้ว)
   ic_power:'assets/ic_power.png', ic_swift:'assets/ic_swift.png', ic_haste:'assets/ic_haste.png',
   ic_crit:'assets/ic_crit.png', ic_guard:'assets/ic_guard.png', ic_regen:'assets/ic_regen.png',
@@ -3328,6 +3330,8 @@ const JR_INK=(()=>{const I='#3b2416',S='#6b4a33',G='#2f7a3c',R='#a8323e',Y='#8a5
   put('#8a1f2c',['#ffb3cf','#ff7ba8','#ff9ec4']); put(Y,['#ffd166','#ffd9a0','#ffe39b','#ffe08a']); put(G,['#8bd3a0','#7de0a1','#a2e1bc','#a8f0bf','#9fd4bc','#5df08a','#7ee08f','#75ddb4']);
   put(R,['#ff8da2','#ff6b81']); put('#8a6400',['#ffcf5a']); put('#6d3aa8',['#c9a3ff','#c891ff']); put('#b4531a',['#ff8f3a','#ffae3d','#ffb27a']); put('#1f5fa8',['#6fb8ff','#8bd3ff']); put('#2a7a6a',['#8be0c8']); return m;})();
 Object.assign(TEMPLE_UI,{"bk_open_long":[432,768,4,null],"bk_page_riffle":[432,768,4,null],"bk_clasp":[256,256,6,null],"bk_emblem_spin":[256,256,8,null],"vfx_bk_magic":[256,256,8,null],"vfx_bk_burst":[512,512,6,null],"bk_cover_clean_plate":[432,768,1,null],"ic_nav_bazaar":[256,256,1,null],"ic_nav_upgrade":[256,256,1,null],"ic_side_mail":[256,256,1,null]});
+Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],vfx_chest_rays:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
+const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','vfx_chest_rays','bz_chest_card'];
 const BKP_KEYS=["bk_open_long", "bk_clasp", "bk_emblem_spin", "vfx_bk_magic", "bk_page_riffle", "vfx_bk_burst", "bk_cover_clean_plate"];
 const BOOK_KEYS=['bk_page_turn','bk_page_shadow','bk_spine','vfx_bk_dust','bk_cover_closed','bk_cover_open','bk_cover_glow'];
 const MENU_GROUPS=[
@@ -3357,7 +3361,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -9682,7 +9686,7 @@ class Game extends Phaser.Scene {
     if(pill&&featureOpen('bazaar')){ this._zone(sx+sw-plusW-4,top-4,plusW+8,gearW+8,()=>{this._bazTab=this._bazTab||'gamble';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='bazaar'; }
     { const ty=top+gearW+6,th=30,tpill=panel('lb_currency_pill',sx,ty,sw,th);   // v7.9.77 เจ้าของ: เห็นสกุลเงินที่ 2 (🧶 Thread = ใช้เปิดหีบใน Bazaar)
       if(!tpill){ const tg=this.add.graphics(); tg.fillStyle(0x1a1024,.85).fillRoundedRect(sx,ty,sw,th,th/2).lineStyle(1.5,0xffd36e,.7).strokeRoundedRect(sx,ty,sw,th,th/2); this.menu.add(tg); }
-      this.menu.add(this.add.text(sx+16,ty+th/2,'🧶',{fontSize:'15px'}).setOrigin(.5)); const tpw=tpill?Math.round(42*th/45):0;
+      if(this.realTex('ic_thread'))this.menu.add(this.add.image(sx+16,ty+th/2,'ic_thread').setDisplaySize(22,22)); else this.menu.add(this.add.text(sx+16,ty+th/2,'🧶',{fontSize:'15px'}).setOrigin(.5)); const tpw=tpill?Math.round(42*th/45):0;
       const tt=this.hubText(sx+sw-8-tpw,ty+th/2,String(Math.floor(Save.threads?.()||0)),13,'#cfe9ff',1);let tf=13;while(tt.width>sw-34-tpw&&tf>9)tt.setFontSize(--tf+'px');
       if(featureOpen('bazaar')){ this._zone(sx,ty-2,sw,th+4,()=>{this._bazTab='chests';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='thread_pill'; } }
     this.hubText(w-side,top+gearW+46,'v'+GAME_VERSION,10,'#d9cce6',1);
@@ -10955,19 +10959,21 @@ class Game extends Phaser.Scene {
     else if(!product.sold&&product.fn)this._zone(x,y,w,h,product.fn);
   }
   /* v7.9.77 เจ้าของ: หีบแบบเกมทั่วไป (หีบเงิน / หีบทอง) แลกด้วย 🧶 Thread · แตะหีบ = สุ่มอุปกรณ์ · หีบเงินฟรีวันละ 1 · หีบทองการันตี Legend ทุก 10 ครั้ง · ต่อไปเป็นจุดขาย Thread (IAP) */
-  buildChestShop(top){ const w=this.W,h=this.H,d=Save.data,day=localDayKey(),free=d.chestFreeDay!==day,thr=Save.threads(),pity=CHEST_PITY-(d.chestPity||0);
+  loadChestArt(){ if(this._chArt)return; const miss=CHEST_KEYS.filter(k=>!this.realTex(k)); if(!miss.length)return; this._chArt=true;
+    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._chArt=false; if(this.state==='menu'&&this.menuScreen==='bazaar'&&!this._chestOpen&&!this._gachaBusy)this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._chArt=false; } }
+  buildChestShop(top){ this.loadChestArt(); const w=this.W,h=this.H,d=Save.data,day=localDayKey(),free=d.chestFreeDay!==day,thr=Save.threads(),pity=CHEST_PITY-(d.chestPity||0);
     this.menu.add(this.add.text(w/2,top,'🧶 Thread '+thr,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#cfe9ff',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5,0));
     const cw=Math.min(w-28,400),cx=(w-cw)/2,ch=Math.min(200,(h-top-70)/2-10); let y=top+30;
-    CHESTS.forEach(c=>{ const isFree=c.id==='silver'&&free,can=isFree||thr>=c.cost,g=this.add.graphics();
-      g.fillStyle(0x000000,.35).fillRoundedRect(cx+3,y+5,cw,ch,20).fillStyle(c.bg,.96).fillRoundedRect(cx,y,cw,ch,20).lineStyle(3,c.edge,1).strokeRoundedRect(cx,y,cw,ch,20); this.menu.add(g);
+    CHESTS.forEach(c=>{ const isFree=c.id==='silver'&&free,can=isFree||thr>=c.cost,g=this.add.graphics(); g.fillStyle(0x000000,.35).fillRoundedRect(cx+3,y+5,cw,ch,20);
+      const card=this.tuPanel('bz_chest_card',0,cx,y,cw,ch); if(card){ g.destroy(); this.menu.add(card); } else { g.fillStyle(c.bg,.96).fillRoundedRect(cx,y,cw,ch,20).lineStyle(3,c.edge,1).strokeRoundedRect(cx,y,cw,ch,20); this.menu.add(g); }
       const im=this.chestVisual(c,cx+ch*.5+8,y+ch/2,ch*.72); this.menu.add(im);
       this.hubTween({targets:im,y:y+ch/2-5,duration:1300+(c.id==='gold'?200:0),yoyo:true,repeat:-1,ease:'Sine.inOut'});
-      const tx=cx+ch+12,tw=cw-ch-24;
-      this.menu.add(this.add.text(tx,y+16,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:c.title}));
+      const tx=cx+ch+4,tw=cw-ch-(card?34:24);
+      { const nt=this.add.text(tx,y+(card?22:16),c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:c.title,stroke:'#1a0f1e',strokeThickness:3}); let f=19; while(nt.width>tw&&f>12)nt.setFontSize(--f+'px'); this.menu.add(nt); }
       const od=this.add.text(tx,y+46,c.odds.map(([t,p])=>TIER_LABEL[t].name+' '+(p<.01?(p*100).toFixed(1):Math.round(p*100))+'%').join(' · '),{fontFamily:'sans-serif',fontSize:'11px',color:'#e8ddf2',wordWrap:{width:tw}}); this.menu.add(od);
       this.menu.add(this.add.text(tx,y+50+od.height,c.id==='gold'?'🌟 Legend guaranteed in '+pity:'Daily free chest · resets every day',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffe08a',wordWrap:{width:tw}}));
       const bh=40,by=y+ch-bh-14,bg=this.add.graphics(); bg.fillStyle(can?c.edge:0x5a4d66,1).fillRoundedRect(tx,by,tw,bh,14).fillStyle(0xffffff,.18).fillRoundedRect(tx+3,by+3,tw-6,bh*.42,10); this.menu.add(bg);
-      this.menu.add(this.add.text(tx+tw/2,by+bh/2,isFree?'🎁 OPEN FREE':'Open · 🧶 '+c.cost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#1a0f1e'}).setOrigin(.5));
+      { const bt=this.add.text(tx+tw/2,by+bh/2,isFree?'🎁 OPEN FREE':'Open · 🧶 '+c.cost,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#1a0f1e'}).setOrigin(.5); let f=15; while(bt.width>tw-12&&f>10)bt.setFontSize(--f+'px'); this.menu.add(bt); }
       if(isFree)this.drawBadgeDot(this.menu,tx+tw-4,by+4);
       this._zone(cx,y,cw,ch,()=>{ if(!can){ Sfx.error?.(); this.menuToast('🧶 Need '+c.cost+' Thread — earn it from salvage, stages and the Dig','#ffb3c8'); return; } this.openChest(c,isFree); }); this.tapZones[this.tapZones.length-1].tag='chest_'+c.id;
       y+=ch+14; });
@@ -10979,15 +10985,18 @@ class Game extends Phaser.Scene {
     const lv=GACHA_LEVELS[Math.max(0,gachaMaxBand())],ilv=lv.lo+Math.floor(Math.random()*(lv.hi-lv.lo+1));
     this._gachaBusy=true; this.setMenuScroll(0); this.stopHubMotion?.(); this.menu.removeAll(true); this.tapZones=[]; this._chestOpen=true;
     const w=this.W,h=this.H,bg=this.add.rectangle(0,0,w,h,0x090510,.97).setOrigin(0),title=this.add.text(w/2,h*.14,c.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:c.title}).setOrigin(.5);
-    const glow=this.add.image(w/2,h*.47,'vfx_glow').setScale(.4).setAlpha(.3).setTint(c.tint),chest=this.chestVisual(c,w/2,h*.47,170),cs=chest.scale;
+    const ok='chest_'+c.id+'_open',anim=this.realTex(ok); if(anim)this.tuFrames(ok);
+    const glow=this.add.image(w/2,h*.47,'vfx_glow').setScale(.4).setAlpha(.3).setTint(c.tint),chest=anim?this.add.image(w/2,h*.47,ok,'cell0').setDisplaySize(230,230):this.chestVisual(c,w/2,h*.47,170),cs=chest.scale;
+    if(anim){ let t=620; [100,90,90,110,140].forEach((ms,i)=>{ t+=ms; this.time.delayedCall(t,()=>{ if(chest.active)chest.setFrame('cell'+(i+1)); }); }); }   // ใบ 40: สั่น → ฝาเด้ง → แสง → ค้างเปิด
     const status=this.add.text(w/2,h*.66,'Tap… the lid is shaking!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(.5);
     this.menu.add([bg,title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.();
-    this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:10});
+    this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:anim?3:10});
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.4,alpha:{from:.2,to:.85},duration:1100,ease:'Cubic.in'});
     this.time.delayedCall(1150,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addThreads(Math.round(c.cost*.5)); }
       if(!status.active||this.state!=='menu'){ this._gachaBusy=false; this._chestOpen=false; return; }
       const t2=it?it.tier:'common',color=t2==='legend'?0xff8f3a:t2==='epic'?0xc9a3ff:t2==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
-      this.tweens.add({targets:chest,scale:cs*1.25,alpha:0,angle:0,duration:220});
+      if(anim){ chest.setAngle(0); this.tweens.add({targets:chest,y:h*.57,scale:cs*.62,alpha:.85,duration:260}); status.setY(h*.71); } else this.tweens.add({targets:chest,scale:cs*1.25,alpha:0,angle:0,duration:220});
+      if(this.realTex('vfx_chest_rays')){ this.tuFrames('vfx_chest_rays'); const ry=this.add.image(w/2,h*.47,'vfx_chest_rays','cell0').setDisplaySize(380,380).setBlendMode(Phaser.BlendModes.ADD).setTint(color); this.menu.addAt(ry,2); let f=0; const ev=this.time.addEvent({delay:100,loop:true,callback:()=>{ if(!ry.active){ ev.remove(); return; } f=(f+1)%6; ry.setFrame('cell'+f); }}); this.tweens.add({targets:ry,rotation:Math.PI*2,duration:9000,repeat:-1}); glow.setVisible(false); }
       const gArt=it?('gear_'+it.id):null; if(gArt&&this.textures.exists(gArt)){ const gi=this.add.image(w/2,h*.47,gArt).setDisplaySize(130,130),ts=gi.scaleX; gi.setScale(ts*.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:360,ease:'Back.out'}); }
       glow.setTint(color).setScale(2.9).setAlpha(.9); this.screenFlash(color,t2==='legend'?.85:t2==='epic'?.65:.4,520); this.screenShake(t2==='legend'?620:300,t2==='legend'?.02:.008); if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.();
       title.setText(it?(t2==='legend'?'🌟 LEGEND 🌟':t2==='epic'?'✦ EPIC ✦':t2==='rare'?'★ RARE ★':'COMMON'):'All owned').setColor(hex);
