@@ -1,0 +1,13 @@
+{
+  "tool": "built-in ImageGen",
+  "prompts": [
+    {
+      "key": "ic_lb_settings",
+      "prompt": "Use case: stylized-concept. Production mobile fantasy game UI sprite, one settings cog icon only, centered and entirely visible on truly transparent background. Match a warm hand-painted storybook RPG UI: rounded ivory enamel gear with eight chunky polished honey-gold teeth, copper-brown outline and soft painted highlights, small dark plum central circular aperture. Front view, strong clean readable silhouette at 28 pixels. No button plate, no lettering, no numbers, no sparkles, no surrounding objects, no cast shadow outside icon. Square canvas, icon fills about 80 percent, generous transparent safety margins. Original hand-painted raster illustration, cozy premium fantasy mobile game."
+    },
+    {
+      "key": "lb_currency_plain",
+      "prompt": "Use case: stylized-concept. Production mobile fantasy game UI asset: a single EMPTY horizontal capsule currency display panel, aspect ratio 4 to 1, centered on a truly transparent background. Warm hand-painted storybook RPG interface, narrow layered honey-gold and copper rounded bevel rim, subtly luminous cream upper edge, dark muted plum inset with extremely subtle smooth gradient, smooth empty center for dynamic white numerals. Symmetrical rounded end caps, straight quiet middle suitable for three-slice horizontal stretching. No text, no numbers, no plus sign, no symbols, no icons, no ornaments projecting outside panel, no drop shadow. One panel only, no mockup. Large enough to stay readable at 120 by 30 pixels, safety margin transparent around every edge."
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+# Latest delivery: v7.9.89 — Lobby layout and missing art
+
+Real Canvas audit repaired currency collisions, dimmed controls, dialogue over hero, locked shortcut gaps and stage title/power collisions. Two built-in ImageGen assets: painted Settings and empty currency panel,11,020 runtime bytes, existing Lobby lazy loader. Reused existing panels/hero/shadow. Source/prompt/hash manifest/review screenshots in assets/incoming/lobby_polish/; docs/art_orders/42_LOBBY_POLISH.md. Five portrait sizes × early/unlocked ×36 lines pass real Canvas bounds/collision/routes (360 dialogue states); check now in Pages CI. Required check/build passed; publication status in docs/SESSION_HANDOFF.md. Menu screenshots explicitly requested by owner; no combat simulation.
+
 # Latest delivery: v7.9.88 — ImageGen winter magic and Lobby panels
 
 Four original ImageGen assets retained with exact prompts in assets/incoming/mint_winter_update/. Runtime293,070bytes (~3.25MiB decoded):4-frame dash shard,8-frame snowstorm, cream/gold speech and blue cloud thought panels. FX are Mint-stage-only; panels Lobby-lazy. Sprite playback follows gameplay time, full fallback/cleanup, original damage/body/range unchanged. scripts/pack-mint-winter-art.py reproduces source-pixel packing; MANIFEST/QA and offline GIFs included. Added tests/winter-art.test.cjs. Owner phone visual/FPS remains pending; publication state in docs/SESSION_HANDOFF.md.

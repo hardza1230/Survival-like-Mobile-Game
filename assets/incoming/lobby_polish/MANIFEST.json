@@ -1,0 +1,37 @@
+{
+  "tool": "built-in ImageGen",
+  "assets": [
+    {
+      "key": "ic_lb_settings",
+      "source": "raw/ic_lb_settings.png",
+      "source_sha256": "6ef06c408be41d0665e70a918bb58d68dca0c7c27a99c8b44e2fbecaa5c3ed57",
+      "crop": [
+        71,
+        77,
+        1182,
+        1153
+      ],
+      "runtime": "assets/art/lobby/ic_lb_settings.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 7776,
+      "sha256": "806cdd09aaaf718f5e4f1794d06fdeabeba33b4c8931144e6d80359d3afd8682"
+    },
+    {
+      "key": "lb_currency_plain",
+      "source": "raw/lb_currency_plain.png",
+      "source_sha256": "b5fd8a689aef5684462d3ab64c8d5c9e42215a639056bee6c4c5510af18bcd73",
+      "crop": [
+        64,
+        145,
+        2108,
+        551
+      ],
+      "runtime": "assets/art/lobby/lb_currency_plain.webp",
+      "width": 192,
+      "height": 40,
+      "bytes": 3244,
+      "sha256": "a5283ea1e9e0eab07deaf5a71358220db42297ced1ff9fa420a7ad13673b6a4b"
+    }
+  ]
+}

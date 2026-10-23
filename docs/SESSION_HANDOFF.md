@@ -1,13 +1,9 @@
-# Latest checkpoint — v7.9.88 ImageGen winter art
+# Latest checkpoint — v7.9.89 Lobby audit and ImageGen art
 
-23 October2026 (Asia/Bangkok). E:/Heart/TT/survival-mobile on claude/vampire-survival-mobile-game-yo9e8w; base7974020. User requested ImageGen art for the latest update.
+23 October2026, Asia/Bangkok. E:/Heart/TT/survival-mobile, deploy branch claude/vampire-survival-mobile-game-yo9e8w; base00a4fc6a4caff6e0c57ec7386ae5507c34c1cf36. Owner requested Lobby visual audit, fixes and ImageGen missing art.
 
-Created four original ImageGen RGBA sources:4-frame Mint dash shard,8-frame falling snowstorm, cream/gold speech panel and pale-blue thought panel. Original pixels and exact prompts preserved in assets/incoming/mint_winter_update/raw and PROMPTS.json. Normalized PNGs, manifest/hash/alpha/full-decode QA and offline playback GIFs included. Reproducible pack script scripts/pack-mint-winter-art.py; runtime293,070bytes /3,407,872 decoded bytes. See docs/art_orders/41_MINT_WINTER_LOBBY.md.
+Completed: separate header currency lane/compact balances, fitted profile, painted Settings, no-plus currency frames, dim behind UI, packed unlocked shortcuts, reused painted foot shadow/softer glow, dialogue above hero clear of shortcut rails, bounded stage title. Source originals/exact prompts/hash manifest/review screenshots at assets/incoming/lobby_polish/; reproducible scripts/pack-lobby-polish.py. New runtime11,020bytes, menu-lazy only. See docs/art_orders/42_LOBBY_POLISH.md.
 
-Integrated without balance changes: animated projectile overlay preserves collider/homing/caps; one stationary storm sprite follows gameplay time and clears on all exits; Low/fallback retained; menu-lazy9slice dialogue panels. FX load on Mint stage entry only, no boot GPU increase.
+Validation: npm run check passed; npm run build:www passed (1915 assets). Real production Canvas review passed five portrait sizes320x568 through412x915, early/unlocked, all36 lines each (360 dialogue states), crop-aware panel bounds, text collisions and navigation. Added scripts/build-lobby-review.mjs + check-lobby-live-ui.cjs and Pages CI gate. Screenshots explicitly requested for this audit; no combat/balance simulation. Review uses deterministic static-card fallback, not hero animation/FPS assessment.
 
-Final automated check and v7.9.88 web build passed (1,913 runtime assets). No game window/screenshots or balance simulation. Local minification uses existing Windows fallback; CI performs normal Linux build.
-
-Published code commit a7d3a4cad87456873b846dddf46b9e2ac91b2d63; tested local/remote tree8ce38a68108d6655b3620a71c7cabd3f4260bda0 matched. All26 changed files (9,643,387bytes) read back byte-exact from immutable GitHub URLs. Pages39958790529 and Android39958790426 succeeded; latest APK targets this commit (298,561,507bytes). Live version.json is7.9.88 and all4 live WebPs matched manifest SHA256 (293,070bytes).
-
-Next: owner phone readability, cadence and FPS review. Art generation, integration and publication complete. Ruby36 remains complete from v7.9.87; no gear balance/backend/Play Store changes.
+Next: publish exact tested tree via GitHub connector, verify immutable bytes, Pages/Android success, live v7.9.89 and two runtime hashes. Then replace this paragraph with final publication evidence. Owner phone touch/animation/FPS review remains.
