@@ -7,10 +7,10 @@ Save.save=()=>{};Sfx.select=()=>{};window.__reviewNow=10000;const reviewNativeNo
 class RubyStoryReview extends Game{
  preload(){for(const k of [...RUBY_COMIC_KEYS,...RUBY_STORY_KEYS,...RUBY_MENU_KEYS,'mascot_ruby'])if(ASSET_IMAGES[k])this.load.image(k,ASSET_IMAGES[k]);}
  create(){this.W=RW;this.H=RH;this.state='menu';this.menuScreen='hub';this.add.rectangle(0,0,RW,RH,0xff00ff,1).setOrigin(0);this.menu=this.add.container();this.tapZones=[];this.completed=0;window.__rubyReviewScene=this;window.__rubyReviewEntries=RUBY_STORYBOOK;document.querySelector('#status').textContent='Ready';}
- update(){} ensureGroup(){}
+ update(){} ensureGroup(){} camUI(o){return o;}
  reviewOpen(kind,index=0){this._rubyTalk?.destroy();this.tapZones=[];this.completed=0;const done=()=>this.completed++;
    if(kind==='story'){const e=RUBY_STORYBOOK[index];this.rubyTalk(e.pages.map(p=>p.text),done,{title:e.title,pages:e.pages,storybook:true});}
-   else if(kind==='memory')this.rubyTalk(['Grandma taught me to stir ruby jam slowly, so its sweet flavor could find its way home.','She gave me this recipe book. We can bring those flavors back together.'],done,{memory:index?'ruby_memory_jar':'ruby_memory_grandma'});
+   else if(kind==='memory')this.rubyTalk(['Grandma taught me to stir ruby jam slowly, so its sweet flavor could find its way home.','She gave me this recipe book. We can bring those flavors back together.'],done,{memory:index?'ruby_memory_jar':'ruby_memory_grandma',bridge:(index?'A crown seed escapes the oven and roots upward. ':'The freed ants point to the poisoned drains. ')+STAGE_EPILOGUE[index?4:0].why});
    else this.rubyTalk(['The next recipe is waiting. Let’s explore the garden together!','Keep moving, and watch for the red warning marks.'],done);
  }
 }

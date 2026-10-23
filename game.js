@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.95';
+const GAME_VERSION = '7.9.96';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.96',date:'2026-10-24',title:'Ruby motion stories and smoother guidance',items:['Story scenes focus on a moving painted shot with snow, embers, sound and a trail of previous memories','Training and upgrades use spotlights on the actual controls; the first story begins at the real pantry stage','Recovered memories now appear at stage clear, with a fourth beat leading toward the next floor','A stage-title curtain carries the story through loading into the arena; reduced motion and Skip remain available']},
   {v:'7.9.95',date:'2026-10-23',title:'Ruby’s story becomes a comic',items:['Each early story now has three distinct painted comic panels','Next reveals one new panel with a gentle fade while earlier pictures stay visible','Ruby’s memories also unfold in three panels; Back and Skip remain available','Previously read early stories can be seen once more in their new comic form']},
   {v:'7.9.94',date:'2026-10-23',title:'Rarer early gear, tap-to-stop Forge, cuter heroes',items:['Early gear is rarer in Chapter 1, low-level drops come without mods and early items enhance less','Forge Roll now gives one mod — the light runs until you tap, then slows down and stops','Hero lines in the Lobby are short and cheeky, in a bubble right above the hero’s head']},
   {v:'7.9.93',date:'2026-10-23',title:'More guidance from Ruby',items:['Ruby shows you how to Dash-kick the glowing items bosses leave behind','Ruby explains stage stars and the reward wheel after your first clear','Mutation and Evolution cards get their own short lesson the first time','New-feature icons now fly to the right button and no longer overlap the real icon']},
@@ -6871,7 +6872,7 @@ const RUBY_STORYBOOK=[
     {art:'ruby_comic_s1_3',text:'Then a little light found me. Will you help me bring our flavors home?',mood:'happy'}
   ]},
   {title:'Grandma’s Jam Jar',pages:[
-    {art:'ruby_comic_s2_1',text:'After the Ant Empress fell, I remembered Grandma’s kitchen and her warm ruby jam.',mood:'happy'},
+    {art:'ruby_comic_s2_1',text:'The pantry is safe. These pipes lead deeper down — the path Grandma’s jar took.',mood:'happy'},
     {art:'ruby_comic_s2_2',text:'Her jam jar slipped into a crack beneath the pantry. I couldn’t catch it.',mood:'sad'},
     {art:'ruby_comic_s2_3',text:'A page on the jar: Grandma’s Battle Recipes! Three seed styles; choose one on each floor.',mood:'happy'}
   ]},
@@ -8843,23 +8844,15 @@ class Game extends Phaser.Scene {
     try{ this.texTouch(this.texInUse()); this.texBudget(); }catch(e){} }
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
   applyGearTut(){ if(this._featBusy||(this._featQ&&this._featQ.length))return; const d=Save.data; if(this.state!=='menu')return;
-    if((this.menuScreen||'hub')==='hub'&&d.tutorialDone&&!d.settings?.noRuby){ const seen=d.rubyMemories||(d.rubyMemories={}),memory=[0,4].find(n=>(d.stageMastery||{})[n]&&!seen[n]); if(memory!==undefined){
-      const key=memory===0?'ruby_memory_grandma':'ruby_memory_jar',lines=memory===0?['I remember Grandma’s kitchen… she taught me to stir ruby jam slowly, so the sweet flavor could find its way home.','She gave me this recipe book. Even if I cannot fight, I can still help us bring those flavors back.']:['The jam jar fell into a crack beneath the pantry. The Hunger reached for it… and my flavor went with it.','We drove it away from the Crown Oven. My memories are coming back — let’s find the rest together!'];
-      this.rubyTalk(lines,()=>{ seen[memory]=1; Save.save(); this.buildMenuScreen(); },{memory:key}); return; } }
     if(this._weaveTour){ const T=this._weaveTour,s=this.menuScreen,find=f=>this.tapZones.find(f);   // v7.9.45 ทัวร์หลังบทสอน: Hub → Gear & Power → Weave & Rank → อัปแก่น → Back → Back → Play → ด่าน 1
       const spot=(z,label,fn)=>{ if(!z)return false; const f0=z.fn; z.fn=fn||(()=>f0()); this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label); return true; };
-      const talk=(flag,lines)=>{ if(this[flag])return false; this.rubyTalk(lines,()=>{ this[flag]=1; this.buildMenuScreen(); }); return true; };   // v7.9.75 Ruby อธิบายก่อนแต่ละช่วง
-      if(T==='hub'&&s==='hub'&&talk('_wtTalk1',['You did it! The Hunger ran off — and look at all the Sugar you took back!','My grandma used to say: Sugar remembers. Let me show you where we use it — the Flavor Weave.']))return;
-      if(T==='gear'&&s==='gLoadout'&&talk('_wtTalk2',['This is the Upgrade page — think of it as our little workshop.','Gear, the Forge and the old temple are all in here. The temple first, come on!']))return;
-      if(T==='weave'&&s==='upgrade'&&talk('_wtTalk3',['The Flavor Weave… I haven’t been here since I was a tiny Core.','Each glowing core weaves Sugar into strength — damage, health or speed.','And it stays forever, for every hero. Go on, feed one some Sugar!']))return;
-      if(T==='back'&&s==='upgrade'&&talk('_wtTalk4',['Ooh, I felt that too! You’re stronger already.','Fill all the stars on a core to Weave Up. That raises your Rank, and Rank opens new perks later.','Bring Sugar home after every fight and we’ll come back here. Now — the next floor is waiting!']))return;
-      if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }
-      if(T==='gear'&&s==='gLoadout'){ const z=find(q=>q.tag==='upgrade'),f0=z&&z.fn; if(spot(z,'Step 2/5 · Open Weave & Rank',()=>{ this._weaveTour='weave'; this._tutorialWeaveCoach=true; f0(); }))return; }
+      if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Use your Sugar to grow stronger · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }
+      if(T==='gear'&&s==='gLoadout'){ const z=find(q=>q.tag==='upgrade'),f0=z&&z.fn; if(spot(z,'Weave gives every hero permanent strength',()=>{ this._weaveTour='weave'; this._tutorialWeaveCoach=true; f0(); }))return; }
       if(T==='weave'&&s==='upgrade'&&Date.now()-(this._weaveSpotAt||0)>300){ this._weaveTour='back'; this._tutorialWeaveCoach=false; return this.applyGearTut(); }   // ไม่มีแก่นที่ซื้อได้ → ข้ามไปสอนปุ่ม Back
-      if(T==='back'&&s!=='hub'){ const z=find(q=>q.back),f0=z&&z.fn; if(spot(z,s==='upgrade'?'Step 4/5 · Nice! Tap Back to leave this page':'Tap Back again to reach the Hub',()=>f0()))return; }
+      if(T==='back'&&s!=='hub'){ const z=find(q=>q.back),f0=z&&z.fn; if(spot(z,s==='upgrade'?'Power stays with you! Tap Back':'Tap Back again to reach the Hub',()=>f0()))return; }
       if(T==='back'&&s==='hub')this._weaveTour=T==='back'?'play':T;
-      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Step 5/5 · Tap the stage box to pick your next stage!',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
-      if(s==='hub'&&(T==='gear'||T==='weave')){ this._weaveTour='hub'; const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }   // ผู้เล่นกด Back กลางทาง → เริ่มขั้นแรกใหม่
+      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Ready! Choose Stage 1 to meet Ruby in the pantry',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
+      if(s==='hub'&&(T==='gear'||T==='weave')){ this._weaveTour='hub'; const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Use your Sugar to grow stronger · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }   // ผู้เล่นกด Back กลางทาง → เริ่มขั้นแรกใหม่
     }
     if(this._mintCoach){ const hi=this._mintCoach===true?HERO_INTROS[0]:this._mintCoach; const z=this.tapZones.find(q=>q.tag==='char_'+hi.id); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character=hi.id; this.character=hi.id; Save.data[hi.flag]=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(hi.idx); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); const st=STAGES[hi.idx],lab=st&&st.chapterStage?'C'+(st.chapter+1)+'-'+st.chapterStage:'Stage '+(hi.idx+1); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Pick '+hi.name+' for '+lab+'!'); return; }
@@ -9827,8 +9820,8 @@ class Game extends Phaser.Scene {
       if(Math.abs(mx-cx)<=z.w/2+4&&Math.abs(my-cy)<=z.h/2+4){ out.push([o,o.alpha]); o.setAlpha(0); } }
     return out; }
   featShow(list,anim){ for(const [o,a] of list||[]){ if(!o.active)continue; if(anim&&this.tweens){ o.setAlpha(0); this.tweens.add({targets:o,alpha:a,duration:260}); } else o.setAlpha(a); } }
-  starTeach(){ const d=Save.data; if(!d||d.starTaught||this.state!=='menu'||this.menuScreen!=='hub'||!(d.stageStars&&d.stageStars[0]!=null)||this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1))return;
-    d.starTaught=true; Save.save(); this.rubyTalk(['See the stars on the stage box? Every floor has three.','★ Clear the floor · ★ Finish with 70% HP or more · ★ Never drop below 30% HP.','Each new star gives bonus Sugar. You can replay a floor any time to collect the rest!','And when a Miniboss falls, its reward wheel spins — brighter slices mean better prizes!'],()=>{ if(this.state==='menu')this.buildMenuScreen(); }); }   // v7.9.93 เจ้าของ: อธิบายดาว + วงล้อรางวัล (ครั้งเดียว)
+  starTeach(){ const d=Save.data; if(!d||d.settings?.noRuby||d.starTaught||this.state!=='menu'||this.menuScreen!=='hub'||!(d.stageStars&&d.stageStars[0]!=null)||this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1))return;
+    this.rubyGuide(['Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP.','New stars give bonus Sugar. Tap the stage box any time to replay a floor.'],()=>{d.starTaught=true;Save.save();if(this.state==='menu')this.buildMenuScreen();},{target:'chapter'}); }
   featRevealNext(){ const q=this._featQ||[]; if(!q.length){ this._featQ=null; this._featBusy=false; this._featHid=null; this._featZones=null; if(this.state==='menu')this.buildMenuScreen(); return; }
     if(this.state!=='menu'||this.menuScreen!=='hub'){ this._featBusy=false; return; }
     if(this._bookCover||this._bookSkip){ this.time.delayedCall(400,()=>this.featRevealNext()); return; }
@@ -10035,7 +10028,7 @@ class Game extends Phaser.Scene {
     tap._noEnter=true;this.hubTween({targets:tap,alpha:{from:1,to:.35},scale:{from:1,to:.94},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     this.hubText(w/2,h-Math.max(18,h*.03),'v'+GAME_VERSION,11,'#d9cce6',.5);
     this._zone(0,0,w,h,()=>{ if(this._titleGo)return; this._titleGo=true; Sfx.ui?.();
-      if(this.bookReady()&&this.hubMotionAllowed()&&this.bookOpening){ const tut=!Save.data.tutorialDone; this.bookOpening(()=>{ this._titleGo=false; if(this.state!=='menu')return; this.menuScreen='hub'; if(tut){ this.startChapterTutorial(); return; } this.buildMenuScreen(); },!tut); return; }   // v7.9.68 เปิดหนังสือช้า ๆ ก่อนเข้า Lobby / บทสอน
+      if(Save.data.tutorialDone&&this.bookReady()&&this.hubMotionAllowed()&&this.bookOpening){ const tut=!Save.data.tutorialDone; this.bookOpening(()=>{ this._titleGo=false; if(this.state!=='menu')return; this.menuScreen='hub'; if(tut){ this.startChapterTutorial(); return; } this.buildMenuScreen(); },!tut); return; }   // v7.9.68 เปิดหนังสือช้า ๆ ก่อนเข้า Lobby / บทสอน
       if(!Save.data.tutorialDone){ this._titleGo=false; this.menuScreen='hub'; this.startChapterTutorial(); return; }   // v7.9.66 ผู้เล่นใหม่: แตะ → เข้าบทสอนเลย
       this.menuScreen='hub'; this.buildMenuScreen(); this._titleGo=false;
       });
@@ -10271,7 +10264,7 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   loadTutArt(){ const miss=TUT_KEYS.filter(k=>!this.textures.exists(k)); if(!miss.length||this._tutArt)return; this._tutArt=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._tutArt=false; },{all:true,quiet:true}); }catch(e){ this._tutArt=false; } }   // v7.9.68 ใบ 38
-  startChapterTutorial(){ if(this.rubyStageStory(0,()=>this.startChapterTutorial()))return; this.loadTutArt?.();
+  startChapterTutorial(){ this.loadTutArt?.();
     this._forceCoachTutorial=true;this.stageDiff=1;this.startRun(0);
   }
   buildStageSelect(){
@@ -10291,9 +10284,11 @@ class Game extends Phaser.Scene {
   }
   // เลือกระดับความยาก 1-5 ก่อนเข้าStage — กฎเหล็ก: ยิ่งยาก ศัตรูยิ่งถึก/แรง แต่better rewards
   startStoryStage(idx){
+    if(!Save.data.tutorialDone){this.startChapterTutorial();return;}
     // Mint is an optional ally; Stage 3 accepts the player's selected hero.   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
     { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===2?{idx:2,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
     if(this.rubyStageStory(idx,()=>this.startStoryStage(idx)))return;
+    if(!this._rubyEntry&&isStageReady(idx))this.rubyEntryCurtain?.(idx);
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
   }
   showMintWarning(hi=HERO_INTROS[0]){ const w=this.W,h=this.H; this.tapZones=[];   // ชื่อเดิม · ใช้กับฮีโร่ทุกตัวใน HERO_INTROS
@@ -11584,7 +11579,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){ this._rubyEntry?.destroy();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -12138,9 +12133,9 @@ class Game extends Phaser.Scene {
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
   rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
-    if(!entry||d.settings?.noRuby||Number(d.rubyStorybook?.[idx])>=2||this.state!=='menu')return false;
+    if(!entry||d.settings?.noRuby||Number(d.rubyStorybook?.[idx])>=3||this.state!=='menu')return false;
     if(this._rubyTalk)return true;
-    this.rubyTalk(entry.pages.map(p=>p.text),()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=2;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();if(done)done();},{title:entry.title,pages:entry.pages,storybook:true});return true;
+    this.rubyTalk(entry.pages.map(p=>p.text),()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=3;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();this.rubyEntryCurtain?.(idx);if(done)done();},{title:entry.title,pages:entry.pages,storybook:true});return true;
   }
   rubyStoryAt(i){ if(this.recipeMode||this.bossRush||this.riftMode||this._pinnacleRun||this._inTutorial||!RUBY_STORY[i]||!this.time)return; const d=Save.data,st=d.rubyStory||(d.rubyStory={}); if(st[i])return;
     this.time.delayedCall(300,()=>{ if(!this.rubyOn()||this.stageIndex!==i)return; st[i]=1; Save.save(); this.rubySay(RUBY_STORY[i],5600,{face:[1,3,6,10,11,14].includes(i)?'sad':'normal'}); }); }   // v7.9.81 เรื่องของ Ruby ทีละด่าน (ครั้งแรกเท่านั้น)
@@ -13388,6 +13383,7 @@ class Game extends Phaser.Scene {
     fx.once('destroy',()=>this._summaryGrowthVfx&&this._summaryGrowthVfx.delete(fx));fx.once('animationcomplete',()=>fx.destroy());fx.play(key);
   }
   showStageEpilogue(last){
+    if(this.rubyClearStory(last))return;
     const ep=this.riftMode?null:STAGE_EPILOGUE[this.stageIndex];
     if(!ep){this.showStageSummary(last);return;}
     this.state='epilogue';this.physics.pause();this.player.setVelocity(0,0);
@@ -13746,8 +13742,8 @@ class Game extends Phaser.Scene {
     const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
     // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
-    if(this._forceCoachTutorial||!Save.data.tutorialDone){ this._forceCoachTutorial=false; this._inTutorial=true; begin(); this.startCoach(); return; }
-    launch();
+    if(this._forceCoachTutorial||!Save.data.tutorialDone){ this._rubyEntry?.destroy();this._forceCoachTutorial=false; this._inTutorial=true; begin(); this.startCoach(); return; }
+    if(this._rubyEntry){this.rubyEnterStage(launch);return;}launch();
   }
   /* ---- 🍓 ครูBerryสอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
   coachSteps(){ return [   // v7.9.66 เจ้าของ: สอนช้า ๆ เข้าใจง่าย → ทุกขั้นมีหน้าอธิบาย (เกมหยุด, แตะเพื่อไปต่อ) ก่อนให้ลองทำ · ทำได้แล้วชม 1.5 วิค่อยไปขั้นถัดไป
@@ -13759,7 +13755,7 @@ class Game extends Phaser.Scene {
     { id:'dash', icon:'💨', title:'Dash', body:'Green button: zoom past danger.\nIt needs a moment to recharge.', say:'TAP Dash two times', sub:'Wait for it to recharge between dashes', spot:'dash', label:'TAP', goal:c=>'Dash '+Math.min(2,(this._coachDash||0)-c.dash)+'/2', check:c=>(this._coachDash||0)-c.dash>=2 },
     { id:'unique', icon:'⭐', title:'Your Unique', body:'Pink button: your Core’s big attack.\nIt charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
     { id:'hp', icon:'❤️', title:'Stay Healthy', body:'HP at zero ends the stage.\nPink mochi hearts heal you.', introOnly:true },
-    { id:'ready', icon:'🎁', title:'You’re Ready!', body:'The pantry floor is cracking…\nGo save Mochitopia’s flavor!', introOnly:true },
+    { id:'ready', icon:'🎁', title:'You’re Ready!', body:'Training complete! Use your starter Sugar\nto upgrade one core, then enter the pantry.', introOnly:true },
   ]; }
   startCoach(){ this.loadTutArt?.(); this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
   _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps();
@@ -13768,7 +13764,7 @@ class Game extends Phaser.Scene {
     const go=()=>{ if(this._coach!==c)return; if(step.introOnly){ this._coachNext(); return; }
       c.px=this.player.x; c.py=this.player.y; c.lx=c.px; c.ly=c.py; c.trav=0; c.kills=this.kills; c.dash=this._coachDash||0; c.uniq=this._coachUnique||0; c.lvl=this.level; c.card=this._coachCardPick||0; c.orbs=this._coachOrbs||0; c.t=0; c.done=false;
       this.tutorialSetupStep(step); this.drawCoachBubble(step); Sfx.select&&Sfx.select(); };
-    if(step.title&&this.showCoachIntro)this.showCoachIntro(step,go); else go(); }
+    if(step.introOnly&&this.showCoachIntro)this.showCoachIntro(step,go); else go(); }
   // v7.9.66 หน้าอธิบายก่อนลองทำ: หยุดเกม + การ์ดใหญ่ (Ruby, หัวข้อ, 2–3 บรรทัด) · แตะได้หลัง 1.2 วิ (กันแตะข้ามโดยไม่ได้อ่าน)
   showCoachIntro(step,go){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;}
     if(this._coachIntro)this._coachIntro.destroy(); this.state='coachIntro'; this.physics.pause(); if(this.player){ this.player.setVelocity(0,0); if(this._pBase)this.player.setScale(this._pBase); } /* v7.9.75 ตัวละครขนาดจริงตั้งแต่หน้าแรก */ if(this.joy)this.joy.active=false;
@@ -13782,7 +13778,7 @@ class Game extends Phaser.Scene {
     const ik='tut_ic_'+step.id,hasIc=this.textures.exists(ik); if(hasIc){ const ic=this.add.image(bx+bw-(fr?58:52),by+(fr?88:52),ik); ic.setScale(72/Math.max(ic.width,ic.height)); cont.add(ic); }   // ใบสั่งอาร์ต 38 (ไอคอนประจำขั้น) · ไม่มีภาพ = ใช้อีโมจิในหัวข้อ
     const tt=this.add.text(w/2,by+96,(step.icon&&!hasIc?step.icon+' ':'')+step.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5}).setOrigin(.5,0); if(tt.width>tw)tt.setScale(tw/tt.width); cont.add(tt);
     body.setY(by+142); cont.add(body);
-    const last=n===steps.length,hint=this.add.text(w/2,by+bh-(fr?16:30),last?'👆 Tap to start your first stage':(step.introOnly?'👆 Tap to continue':'👆 Tap to try it'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); cont.add(hint);
+    const last=n===steps.length,hint=this.add.text(w/2,by+bh-(fr?16:30),last?'👆 Finish training, then power up':(step.introOnly?'👆 Tap to continue':'👆 Tap to try it'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); cont.add(hint);
     cont.setAlpha(0); this.tweens.add({targets:cont,alpha:1,duration:320});
     this._coachIntro=cont; this._coachIntroGo=null;
     this.time.delayedCall(1200,()=>{ if(this._coachIntro!==cont)return; this._coachIntroGo=()=>{ this._coachIntroGo=null; Sfx.select&&Sfx.select(); this.tweens.add({targets:cont,alpha:0,duration:200,onComplete:()=>{ cont.destroy(); if(this._coachIntro===cont)this._coachIntro=null; this.state='play'; this.physics.resume(); go(); }}); };
@@ -13841,7 +13837,41 @@ class Game extends Phaser.Scene {
   }
   // v6.50.6 สปอตไลต์ tutorial: มืดรอบนอก เจาะรูที่ปุ่ม + กรอบทองเต้น + นิ้วชี้
   // v7.9.75 เจ้าของ: บทสอนในเมนูมีคนสอน · Ruby พูดทีละประโยค (แตะ = ถัดไป, แตะได้หลัง .6 วิ) · ใช้ในทัวร์ Weave
+  rubyGuide(lines,done,opt={}){ if(this._rubyTalk?.active)return;
+    const W=this.W,H=this.H,oldZones=this.tapZones.slice(),target=oldZones.find(z=>z.tag===(opt.target||'chapter'))||oldZones.find(z=>!z.back),c=this.add.container();this.menu.add(c);this._rubyTalk=c;
+    let i=0,at=Date.now(),closed=false;const tweens=[];
+    c.once('destroy',()=>{tweens.forEach(t=>t.remove());if(this._rubyTalk===c)this._rubyTalk=null;});
+    const close=()=>{if(closed||!c.active)return;closed=true;this.tapZones=oldZones;c.destroy();done?.();};
+    const render=()=>{tweens.splice(0).forEach(t=>t.remove());c.removeAll(true);
+      const r=target?{x:Math.max(8,target.x),y:Math.max(8,target.y),w:Math.min(target.w,W-16),h:Math.min(target.h,H-16)}:{x:W*.2,y:H*.25,w:W*.6,h:80},g=this.add.graphics();
+      g.fillStyle(0x08050d,.7).fillRect(0,0,W,r.y).fillRect(0,r.y+r.h,W,Math.max(0,H-r.y-r.h)).fillRect(0,r.y,r.x,r.h).fillRect(r.x+r.w,r.y,Math.max(0,W-r.x-r.w),r.h);
+      g.lineStyle(3,0xffd590,1).strokeRoundedRect(r.x,r.y,r.w,r.h,12);c.add(g);
+      const bw=Math.min(W-24,440),bx=(W-bw)/2,tx=this.add.text(bx+18,0,lines[i],{fontFamily:'NunitoUI, sans-serif',fontSize:'14px',color:'#fff1df',wordWrap:{width:bw-36},lineSpacing:4}),bh=tx.height+86,by=r.y+r.h+bh+20<H?r.y+r.h+16:Math.max(12,r.y-bh-16);
+      const bg=this.add.graphics().fillStyle(0x211725,.98).fillRoundedRect(bx,by,bw,bh,14).lineStyle(1,0xffd590,.7).strokeRoundedRect(bx,by,bw,bh,14);c.add(bg);
+      c.add(this.add.text(bx+18,by+12,'Ruby · Try it here',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#ffc0cf'}));tx.y=by+34;c.add(tx);
+      c.add(this.add.text(bx+bw-18,by+bh-15,i===lines.length-1?'Got it ›':'Next ›',{fontFamily:'NunitoUI, sans-serif',fontSize:'13px',color:'#ffe0a0'}).setOrigin(1,1));
+      c._rubyGuideLayout={target:r,body:{x:bx,y:by,w:bw,h:bh},text:tx,page:i};
+      this.tapZones=[{x:bx,y:by,w:bw,h:bh,tag:'ruby_guide_next',noBounce:true,fn:()=>{if(Date.now()-at<400)return;at=Date.now();if(++i>=lines.length)close();else render();}}];
+    };render();
+  }
+  rubyEntryCurtain(idx){this.tapZones=[];this._rubyEntry?.destroy();const c=this.add.container(0,0).setDepth(10000);this.camUI(c);this._rubyEntry=c;
+    c.add(this.add.rectangle(0,0,this.W,this.H,0x09070c,1).setOrigin(0));
+    c.add(this.add.text(this.W/2,this.H*.4,'CHAPTER '+((STAGES[idx]?.chapter||0)+1)+' · STAGE '+(STAGES[idx]?.chapterStage||idx+1),{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#e0b981'}).setOrigin(.5));
+    c.add(this.add.text(this.W/2,this.H*.48,STAGES[idx]?.name||'Into the pantry',{fontFamily:'NunitoUI, sans-serif',fontSize:'25px',color:'#fff1df',align:'center',wordWrap:{width:this.W-40}}).setOrigin(.5,0));
+    c.once('destroy',()=>{if(this._rubyEntry===c)this._rubyEntry=null;});
+  }
+  rubyEnterStage(done){const c=this._rubyEntry;if(!c?.active){done();return;}let ended=false;
+    const finish=()=>{if(ended||!c.active)return;ended=true;c.destroy();done();if(this.hubMotionAllowed())this.cameras.main.fadeIn(450,9,7,12);};
+    if(!this.hubMotionAllowed()){finish();return;}
+    this.tweens.add({targets:c,alpha:1,duration:500,onComplete:finish});
+  }
+  rubyClearStory(last){const d=Save.data,idx=this.stageIndex;
+    if(this.recipeMode||this.riftMode||this.bossRush||this._inTutorial||![0,4].includes(idx)||d.settings?.noRuby||d.rubyMemories?.[idx])return false;
+    this.physics.pause();this.player?.setVelocity(0,0);this.over.setVisible(false);this.state='menu';this.menu.setVisible(true);
+    this.rubyTalk([],()=>{(d.rubyMemories||(d.rubyMemories={}))[idx]=1;Save.save();this.menu.setVisible(false);this.state='epilogue';this.showStageSummary(last);},{memory:idx===0?'ruby_memory_grandma':'ruby_memory_jar',bridge:(idx===0?'The freed ants point to the poisoned drains. ':'A crown seed escapes the oven and roots upward. ')+(STAGE_EPILOGUE[idx]?.why||'')});return true;
+  }
   rubyTalk(lines,done,opt={}){ if(this._rubyTalk?.active)return;
+    if(!opt.memory&&!opt.pages?.some(p=>p.art))return this.rubyGuide(lines,done,opt);
     if(opt.memory&&!opt.pages){const jar=opt.memory==='ruby_memory_jar',pages=jar?[
       {art:'ruby_comic_s2_2',text:'Grandma’s jar slipped through the pantry floor. The Hunger reached after it.',mood:'sad'},
       {art:'ruby_comic_s2_3',text:'My flavor went with it. Now I remember the dark pipes beneath our home.',mood:'sad'},
@@ -13850,30 +13880,41 @@ class Game extends Phaser.Scene {
       {art:'ruby_comic_s2_1',text:'Grandma taught me to stir ruby jam slowly, until its sweetness could find the way home.',mood:'happy'},
       {art:'ruby_comic_s1_2',text:'She gave me this recipe book. It is the one thing the Hunger could not take away.',mood:'normal'},
       {art:'ruby_comic_s1_3',text:'Even if I cannot fight, I can still help us bring those flavors back.',mood:'happy'}
-    ];opt={...opt,pages};lines=pages.map(p=>p.text);}
+    ];if(opt.bridge)pages.push({art:pages.at(-1).art,text:opt.bridge,mood:'normal'});opt={...opt,pages};lines=pages.map(p=>p.text);}
     const W=this.W,H=this.H,c=this.add.container(0,0);this.menu.add(c);c._menuBackdrop=true;let i=0,at=Date.now(),finished=false,revealTweens=[],lastCue=-1;
     const clearReveal=()=>{for(const tw of revealTweens)tw.remove();revealTweens=[];};
     this._rubyTalk=c;c.once('destroy',()=>{clearReveal();if(this._rubyTalk===c)this._rubyTalk=null;});
     // Opaque foundation keeps the Lobby and navigation out of every narration page.
     const backdrop=this.add.rectangle(0,0,W,H,0x09070c,1).setOrigin(0);c.add(backdrop);
     const page=this.add.container();c.add(page);const margin=Math.max(16,Math.min(32,W*.05)),bw=Math.min(W-2*margin,560),bx=(W-bw)/2,land=W>H;
-    const footerY=H-60,headY=Math.max(22,Math.min(38,H*.045)),hasArt=!!(opt.memory||opt.pages?.some(p=>p.art)),comic=opt.pages?.length===3&&opt.pages.every(p=>p.art);
+    const footerY=H-60,headY=Math.max(22,Math.min(38,H*.045)),hasArt=!!(opt.memory||opt.pages?.some(p=>p.art)),comic=opt.pages?.length>=2&&opt.pages.every(p=>p.art);
     const finish=()=>{if(finished||!c.active)return;finished=true;this.tapZones=this.tapZones.filter(z=>!z._rubyPage);c.destroy();done?.();};
     const render=()=>{if(!c.active)return;clearReveal();page.removeAll(true);
-      const paper=this.realTex('ruby_story_paper');if(paper)page.add(this._coverImage(0,0,W,H,'ruby_story_paper'));
+      const paper=false; // Black theatrical canvas: each painted shot supplies its own atmosphere.
       const ink=paper?'#462d29':'#fff1df',muted=paper?'#8c6244':'#d3b28e',entry=opt.pages?.[i],artKey=entry?.art||opt.memory;
+      if(artKey&&this.realTex(artKey)){const atmosphere=this.add.container(),scene=this._coverImage(0,0,W,H,artKey);scene.setAlpha(.18);atmosphere.add(scene);page.add(atmosphere);
+        if(this.hubMotionAllowed())revealTweens.push(this.tweens.add({targets:scene,alpha:.28,duration:2600,ease:'Sine.out'}));
+        page.add(this.add.rectangle(0,0,W,headY+66,0x09070c,.86).setOrigin(0));
+      }
       const text=(x,y,t,size,color=ink,wrap=bw)=>{const o=this.add.text(x,y,t,{fontFamily:'NunitoUI, sans-serif',fontSize:size+'px',fontStyle:'bold',color,wordWrap:{width:wrap,useAdvancedWrap:true},lineSpacing:4}).setOrigin(.5,0);page.add(o);return o;};
-      text(land?W*.265:W/2,headY,'RUBY’S RECIPE BOOK',10,muted);
+      text(land?W*.265:W/2,headY,opt.memory?'A MEMORY RETURNS':'MOCHITOPIA · RUBY’S STORY',10,muted);
       const title=text(land?W*.265:W/2,headY+24,opt.title||(opt.memory?'A memory returns':'A word from Ruby'),land?20:Math.min(25,W*.064));
       const rowH=land?H-96:Math.min(190,Math.max(168,H*.24)),rowY=land?78:footerY-20-rowH,artTop=headY+24+title.height+18;
       const bodyX=land?W*.56:bx,bodyW=land?W*.40:bw,bodyY=rowY,bodyH=land?H-148:rowH;
       const panels=[];
       if(hasArt){const maxW=land?W*.46:bw,maxH=land?footerY-artTop-16:rowY-artTop-16,artCx=land?W*.265:W/2,artCy=artTop+maxH/2;
-        if(comic){const gap=9,gw=Math.max(1,Math.min(maxW,(maxH-gap*.75)/.75)),small=(gw-gap)/2,gh=gw/2+gap+small/2,left=artCx-gw/2,top=artCy-gh/2,slots=[[left,top,gw,gw/2],[left,top+gw/2+gap,small,small/2],[left+small+gap,top+gw/2+gap,small,small/2]];
-          for(let j=0;j<=i;j++){const [x,y,pw,ph]=slots[j],key=opt.pages[j].art,frame=this.add.container(x,y),border=this.add.graphics();border.fillStyle(paper?0xfffcf1:0x18131c,1).fillRect(0,0,pw,ph).lineStyle(2,paper?0x51372e:0xd6b58a,1).strokeRect(0,0,pw,ph);frame.add(border);page.add(frame);let im=null;
+        if(comic){const gap=10,count=opt.pages.length,gw=Math.max(1,Math.min(maxW,(maxH-gap)/(0.5+0.5/count))),thumbW=(gw-gap*(count-1))/count,gh=gw/2+gap+thumbW/2,left=artCx-gw/2,top=artCy-gh/2;
+          // The active shot becomes the camera's focus; past shots stay in the memory strip.
+          for(let j=0;j<=i;j++){const active=j===i,x=active?left:left+j*(thumbW+gap),y=active?top:top+gw/2+gap,pw=active?gw:thumbW,ph=pw/2,key=opt.pages[j].art,frame=this.add.container(x,y),border=this.add.graphics();border.fillStyle(0x18131c,1).fillRect(0,0,pw,ph).lineStyle(active?2:1,active?0xffd590:0x69546a,1).strokeRect(0,0,pw,ph);frame.add(border);page.add(frame);let im=null;
             if(this.realTex(key)){im=this.add.image(pw/2,ph/2,key);im.setScale(Math.min((pw-6)/im.width,(ph-6)/im.height));frame.add(im);}
-            if(j===i&&im&&lastCue!==i&&this.hubMotionAllowed()){frame.setAlpha(0);revealTweens.push(this.tweens.add({targets:frame,alpha:1,duration:420,ease:'Sine.out'}));}
-            panels.push({index:j,key,frame,image:im,rect:{x,y,w:pw,h:ph}});
+            if(active&&im&&lastCue!==i&&this.hubMotionAllowed()){
+              frame.setAlpha(0);frame.y+=10;revealTweens.push(this.tweens.add({targets:frame,alpha:1,y,duration:520,ease:'Cubic.out'}));
+              const scale=im.scaleX;im.setScale(scale*.94);revealTweens.push(this.tweens.add({targets:im,scaleX:scale,scaleY:scale,duration:3000,ease:'Sine.out'}));
+              // Bounded, scene-specific atmosphere: ice falls; furnace embers rise; memories glow.
+              const cold=key.includes('_s4_'),fire=key.includes('_s3_')||key.includes('_s5_'),color=cold?0xc9f2ff:fire?0xffb46a:0xffe5af;
+              for(let n=0;n<12;n++){const px=8+(pw-16)*((n*.618)%1),py=8+(ph-16)*((n*.381)%1),dot=this.add.circle(px,py,cold?1.7:1.2,color,.6);frame.add(dot);revealTweens.push(this.tweens.add({targets:dot,y:Math.max(6,Math.min(ph-6,py+(cold?16:-16))),alpha:.1,duration:1500+n*70,yoyo:true,repeat:-1,ease:'Sine.inOut'}));}
+            }
+            panels.push({index:j,key,frame,image:im,rect:{x,y,w:pw,h:ph},active});
           }
           if(panels[i]?.image)lastCue=i;
         }else if(artKey&&this.realTex(artKey)){const im=this.add.image(artCx,artCy,artKey),k=Math.min(maxW/im.width,maxH/im.height);im.setScale(k);page.add(im);}
@@ -13885,20 +13926,21 @@ class Game extends Phaser.Scene {
       else av=this.rubyAvatar(bodyX+5,bodyY+bodyH-22,86,opt.memory?'sad':'normal');if(av)page.add(av);
       const txLeft=bodyX+108,txWidth=bodyW-124;const name=text(txLeft,bodyY+16,'Ruby',13,paper?'#a23c50':'#ffb1c4',txWidth).setOrigin(0,0);
       const tx=text(txLeft,bodyY+42,lines[i],land?14:15,ink,txWidth).setOrigin(0,0);let fs=land?14:15;while(tx.height>bodyH-56&&fs>12)tx.setFontSize(--fs+'px');
+      if(this.hubMotionAllowed()){tx.setAlpha(0);revealTweens.push(this.tweens.add({targets:tx,alpha:1,delay:140,duration:380}));if(av){av.setAlpha(0);revealTweens.push(this.tweens.add({targets:av,alpha:1,duration:360}));}}
       const controls=this.add.graphics();controls.fillStyle(paper?0xe8d2a7:0x302431,1).fillRoundedRect(bx,footerY,bw,44,12);page.add(controls);
       text(bx+40,footerY+13,'‹ Back',12,i?ink:muted,70).setAlpha(i?1:.4);
       text(W/2,footerY+14,(i+1)+' / '+lines.length,11,muted,60);
-      text(bx+bw-48,footerY+13,i<lines.length-1?(comic?'Next panel ›':'Next ›'):'Continue ›',12,ink,96);
+      text(bx+bw-48,footerY+13,i<lines.length-1?(comic?'Follow ›':'Next ›'):(opt.storybook?'Enter stage ›':'Continue ›'),12,ink,96);
       text(W-margin-22,headY,'Skip',11,muted,44);
       c._rubyLayout={body:{x:bodyX,y:bodyY,w:bodyW,h:bodyH},text:tx,portrait:av,page:i,art:artKey,paper,panels,comic};
     };
-    const advance=()=>{if(Date.now()-at<600)return;at=Date.now();Sfx.select?.();if(++i>=lines.length)finish();else render();};
+    const advance=()=>{if(Date.now()-at<600)return;at=Date.now();Sfx.ev?.('story_advance',.4,.05);if(++i>=lines.length)finish();else render();};
     this.tapZones=[];const zone=(x,y,w,h,fn,tag)=>{this._zone(x,y,w,h,fn);const z=this.tapZones[this.tapZones.length-1];z.noBounce=true;z._rubyPage=true;z.tag=tag;};
     zone(0,headY+36,W,Math.max(1,footerY-headY-36),advance,'ruby_talk');
     zone(bx,footerY,86,44,()=>{if(!i||Date.now()-at<600)return;i--;at=Date.now();render();},'ruby_previous');
     zone(bx+bw-108,footerY,108,44,advance,'ruby_next');
     zone(W-margin-44,headY-12,44,44,()=>{if(Date.now()-at>=600)finish();},'ruby_skip');
-    render();const keys=new Set(['ruby_story_paper',...RUBY_MENU_KEYS,...(opt.pages||[]).map(p=>p.art),opt.memory].filter(Boolean));if([...keys].some(k=>!this.realTex(k)))this.ensureGroup(k=>keys.has(k),render,{all:true,quiet:true});
+    Sfx.ev?.('story_panel_open',.45,.1);render();const keys=new Set([...RUBY_MENU_KEYS,...(opt.pages||[]).map(p=>p.art),opt.memory].filter(Boolean));if([...keys].some(k=>!this.realTex(k)))this.ensureGroup(k=>keys.has(k),render,{all:true,quiet:true});
   }
   drawSpotlight(cont,x,y,bw,bh,label){ this._spotBuild=true; const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
     g.fillRect(0,0,W,Y); g.fillRect(0,Y+B,W,H-Y-B); g.fillRect(0,Y,X,B); g.fillRect(X+R,Y,W-X-R,B);
@@ -14001,7 +14043,7 @@ class Game extends Phaser.Scene {
   }
   newCardIntro(opts){ if(this._inTutorial||typeof Save==='undefined'||!Save.data)return null; const seen=Save.data.cardSeen=Save.data.cardSeen||{};
     for(const o of opts||[]){ const t=cardTypeOf(o); if(t&&CARD_INTRO[t]&&!seen[t]){ seen[t]=1; try{Save.save();}catch(e){} return t; } } return null; }
-  drawCardIntro(t,x,y,w,h){ if(t==='path'||t==='mutation'||t==='evolution')this.time.delayedCall(250,()=>{ if(this.state==='levelup'&&!this._pathTeach)this.pathTeach(t); }); const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
+  drawCardIntro(t,x,y,w,h){ if(t==='path'||t==='mutation'||t==='evolution'){this.pathTeach(t,{x,y,w,h});return;} const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
     g.fillStyle(0x2a1a3a,.96).fillRoundedRect(x,y,w,h,14).lineStyle(2,0xffd54a,1).strokeRoundedRect(x,y,w,h,14);this.lvlUp.add(g);
     const a=this.add.text(x+14,y+8,'✨ NEW CARD TYPE: '+em+' '+name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd54a'});this.lvlUp.add(a);
     const b=this.add.text(x+14,y+30,txt,{fontFamily:'sans-serif',fontSize:'12px',color:'#fff0df',wordWrap:{width:w-28}});this.lvlUp.add(b);
@@ -14009,22 +14051,17 @@ class Game extends Phaser.Scene {
     this.levelCardReadyAt=Math.max(this.levelCardReadyAt||0,this.time.now+900);   // a moment to read before the first tap counts
   }
   /* v7.9.83 เจ้าของ: สอนเลือกบิลด์ Strawberry (ครั้งแรกที่เจอการ์ด Build Path) · Ruby อธิบาย 3 หน้า · แตะ = หน้าถัดไป · ระหว่างนี้แตะการ์ดไม่ได้ */
-  pathTeach(kind){ if(!this.lvlUp||!this.add)return; const w=this.W,h=this.H,mo=(this.character||Save.data.character)==='momo';
-    const pages=kind==='mutation'?['A [Mutation]! It changes HOW your attack works,\nnot just how strong it is.','Pick [one] — the other choice locks for this floor.\nRead both and choose the one that fits your recipe!']
-      :kind==='evolution'?['Your attack is fully grown! An [Evolution]\nturns it into its final form.','It’s a huge power jump — always worth taking.\nSome Relics even fuse with it for something stronger!']
-      :mo?['Remember Grandma’s [Battle Recipes]? Here they are!\nPick one and Strawberry fights that way for the rest of this floor.',
-      '[🎯 One Big Seed] — Sniper: a charged seed that pierces. Great on bosses.\n[💥 Seed Spray] — Shotgun: a wide spray. Get close for huge damage.\n[💞 Bouncing Seeds] — Ricochet: seeds bounce. Best in big crowds.',
-      'After you pick, new cards power up that recipe.\nNext floor we can try a different page — find your favorite!']
-      :['Grandma wrote [Battle Recipes] for you too!\nPick one and you fight that way for the rest of this floor.','Read each card — they play very differently.\nNew cards power up the recipe you pick. You choose again every floor!'];
-    const c=this.add.container(0,0).setDepth(9999); this.lvlUp.add(c); let i=-1; this.levelCardReadyAt=Infinity;
-    const show=()=>{ c.removeAll(true); i++; if(i>=pages.length){ c.destroy(); this._pathTeach=null; this.levelCardReadyAt=this.time.now+400; return; }
-      const bw=Math.min(w-20,420),bx=(w-bw)/2,lines=rubyWrap(pages[i],Math.floor((bw-110)/(13*.56))),bh=Math.max(96,40+lines.length*20),by=h-bh-26,g=this.add.graphics();
-      g.fillStyle(0x000000,.45).fillRect(0,0,w,h).fillStyle(0x0b0710,.96).fillRoundedRect(bx,by,bw,bh,16).lineStyle(3,0xffffff,1).strokeRoundedRect(bx,by,bw,bh,16); c.add(g);
-      const av=this.rubyAvatar(bx+4,by+bh-6,76); if(av)c.add(av);
-      lines.forEach((ln,li)=>{ let x=bx+96; ln.split(/(\[[^\]]+\])/).filter(Boolean).forEach(pt=>{ const hl=pt[0]==='[',t=this.add.text(x,by+14+li*20,hl?pt.slice(1,-1):pt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:hl?'#ffd54a':'#ffffff'}); c.add(t); x+=t.width; }); });
-      c.add(this.add.text(bx+bw-12,by+bh-8,(i+1)+'/'+pages.length+' · tap',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1'}).setOrigin(1,1));
-      c.setAlpha(0); this.tweens.add({targets:c,alpha:1,duration:180}); };
-    this._pathTeach={next:()=>{ if(this.time.now<(this._pathTeachAt||0))return; this._pathTeachAt=this.time.now+350; show(); }}; this._pathTeachAt=this.time.now+600; show(); }
+  pathTeach(kind,slot){if(!this.lvlUp||!this.add||this._pathTeach)return;
+    const w=this.W,h=this.H,box=slot||{x:14,y:h-88,w:w-28,h:68},cards=this.lvlCards||[],c=this.add.container(0,0).setDepth(9999);this.lvlUp.add(c);
+    const g=this.add.graphics();if(cards.length){const left=Math.min(...cards.map(q=>q.left)),right=Math.max(...cards.map(q=>q.right)),top=Math.min(...cards.map(q=>q.top)),bottom=Math.max(...cards.map(q=>q.bottom));
+      g.fillStyle(0x000000,.65).fillRect(0,0,w,top).fillRect(0,bottom,w,h-bottom).fillRect(0,top,left,bottom-top).fillRect(right,top,w-right,bottom-top).lineStyle(3,0xffd590,1).strokeRoundedRect(left-3,top-3,right-left+6,bottom-top+6,14);}
+    g.fillStyle(0x211725,1).fillRoundedRect(box.x,box.y,box.w,box.h,12).lineStyle(1,0xffd590,.8).strokeRoundedRect(box.x,box.y,box.w,box.h,12);c.add(g);
+    const label=kind==='mutation'?'Mutation':kind==='evolution'?'Evolution':'Grandma’s Battle Recipe',message=kind==='mutation'?'Changes how your attack works. Read both choices; pick one for this floor.':kind==='evolution'?'Your attack’s final form! Read the card to discover its new power.':'Pick a fighting style for this floor. Later cards improve it. Try another next floor.';
+    const title=this.add.text(box.x+12,box.y+7,'Ruby · '+label,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',fontStyle:'bold',color:'#ffd590'}),body=this.add.text(box.x+12,box.y+24,message,{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#fff1df',wordWrap:{width:box.w-24}});c.add([title,body]);
+    c._rubyCardGuideLayout={box,title,body};this.levelCardReadyAt=Infinity;this._pathTeachAt=this.time.now+600;
+    const guide={next:()=>{if(this.time.now<this._pathTeachAt||this._pathTeach!==guide)return;c.destroy();this._pathTeach=null;this.levelCardReadyAt=this.time.now+300;}};this._pathTeach=guide;
+    c.once('destroy',()=>{if(this._pathTeach===guide)this._pathTeach=null;});
+  }
   pickCardAt(px,py){
     if(this._pathTeach){ this._pathTeach.next(); return; }
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
