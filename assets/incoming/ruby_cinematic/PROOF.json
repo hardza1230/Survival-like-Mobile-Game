@@ -1,0 +1,69 @@
+{
+  "version": "7.9.96",
+  "source": "Real Phaser Canvas presentation review; synthetic scene/menu data, no combat simulation",
+  "art": "Reused original built-in ImageGen paintings in assets/incoming/ruby_comic/; no new generated art",
+  "runtime_asset_bytes_added": 0,
+  "motion_gif": "36 captured Canvas frames with measured screenshot intervals; not a gameplay recording",
+  "files": [
+    {
+      "file": "review/320x568.png",
+      "bytes": 163395,
+      "sha256": "95aca0e18f2d50a86f2e74b4308e1421e61216d799e311422f17eafb9bebe5c8"
+    },
+    {
+      "file": "review/360x640.png",
+      "bytes": 200469,
+      "sha256": "e6c952596e757b71d3bea416730323d448e1ef20aa1a2f87ecccbdadf1ccedfe"
+    },
+    {
+      "file": "review/360x780-step1.png",
+      "bytes": 241949,
+      "sha256": "05a1098de645fbdbe97a83c29f292beec26a5e87f2d065709257a175e821b4be"
+    },
+    {
+      "file": "review/360x780-step2.png",
+      "bytes": 192560,
+      "sha256": "20c260390a525ff2360bc5ca9dd596cbeacc00292fa69a4794cc9455f7f2c4e6"
+    },
+    {
+      "file": "review/360x780-step3.png",
+      "bytes": 221009,
+      "sha256": "a59fb8bb39c739a3114b1eabc63c2e0d765ff89be5204dc3258e81673c2fb918"
+    },
+    {
+      "file": "review/360x780.png",
+      "bytes": 224861,
+      "sha256": "b04682ee19215c944e8773ac9f031b1cba98637c5b802213e884a8f0fed100ee"
+    },
+    {
+      "file": "review/390x844.png",
+      "bytes": 252664,
+      "sha256": "f9080009b875e08271a04aa6fa899b7693a4a8b6e0d2efbaa2b0e57323c6fbeb"
+    },
+    {
+      "file": "review/412x915.png",
+      "bytes": 277793,
+      "sha256": "5d713efb2c0ec3ea7914707b03f175479f59fa334cf6650b59c59554f5b7a7b7"
+    },
+    {
+      "file": "review/844x390.png",
+      "bytes": 250007,
+      "sha256": "19ea343612345b4bdbd9cc8fcd15f9a513a746cdffe67f7a7691cb0493a234f5"
+    },
+    {
+      "file": "review/clear-bridge.png",
+      "bytes": 221841,
+      "sha256": "842c8d655e42175317b3e1bc5a27a12e0828f5c97c5438277e19145d70985c76"
+    },
+    {
+      "file": "review/MOTION_STORY.gif",
+      "bytes": 4069139,
+      "sha256": "fce9fa36b44dc5c39c9d6548acd35ed5ba000908eff8583f02573c9c36f0b129"
+    },
+    {
+      "file": "review/stars-spotlight.png",
+      "bytes": 258954,
+      "sha256": "deab73fe8b3753af2d0453346cb063fd35138711034594cb7ff4ac1eb8a575b4"
+    }
+  ]
+}
