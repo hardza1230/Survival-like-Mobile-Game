@@ -1,0 +1,194 @@
+{
+  "sourceCommit": "11d217961e7309f2aa0a6dcb21daa57a64ea925a",
+  "date": "2026-10-23",
+  "verifiedFiles": 31,
+  "allFullBytesMatch": true,
+  "files": [
+    {
+      "path": "assets/incoming/tutorial_ui/DELIVERY_README.md",
+      "bytes": 2193,
+      "sha256": "1937d660811a94e16f3f1ae748aca527f23ad41ab796909254a197f0eb10bdfb",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/MANIFEST.json",
+      "bytes": 6579,
+      "sha256": "e39e90178e3ea63975ce6c0211234871ef1fd2cc6fa7ec85662c4f0d59733944",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/PROMPTS.json",
+      "bytes": 9064,
+      "sha256": "3a2d4eb407b0a5bdefeac16cee6c798182e455210e7ec51a775580a22f8f20da",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/QA_REPORT.json",
+      "bytes": 4834,
+      "sha256": "937b5a846489c7b72d1d6549fa15ac2e3930aab679cb1af98bd113bd36c89aef",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_card_frame.png",
+      "bytes": 507080,
+      "sha256": "cf2dd9f8d4ccb60203adf922b0cbf7cdefec80ad6aa04955b5d7dd9e97cead23",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_finger.png",
+      "bytes": 14415,
+      "sha256": "eacf4231baf136b497fbe209662e87eaff589f3bc7fd0f95adac67dd62bcccc5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_attack.png",
+      "bytes": 53465,
+      "sha256": "6f41ddb96e9d849aeb63f0326f7bfa6607738a41f0e38b3f58e942a559dc1778",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_cards.png",
+      "bytes": 64377,
+      "sha256": "2c31721aad07768a374ad283ac02abd789e36c0e39565e15dd57a3e70f5682d6",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_dash.png",
+      "bytes": 71169,
+      "sha256": "bfbe3094c562448c7400d364be0e68ff86524795f149185e7f05c1c77a39691f",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_hp.png",
+      "bytes": 72266,
+      "sha256": "79869364edea7a11c29ff8c4494dc00475912d479d0bb024a5e95ccf2947a52d",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_move.png",
+      "bytes": 68669,
+      "sha256": "4219a2f35ea0a7bdb97d434483dbd24b71adaa85d9346a15488a5d886615ea45",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_ready.png",
+      "bytes": 78037,
+      "sha256": "840c7729e048b3c5ca2ebb40060c1980e16ffa89738d987d33dd4bb15412bf66",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_sweets.png",
+      "bytes": 82351,
+      "sha256": "6f11937df01fbf64733a1fe156b6273126c73ddad6d7004589b7b8caebba1d89",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_unique.png",
+      "bytes": 77588,
+      "sha256": "190456e6614b2d4fd95215cacf7e3ed9d55ede35fed1d8b34e4fc0a90d8289e4",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/tut_ic_welcome.png",
+      "bytes": 67555,
+      "sha256": "6e1b2466ef83a303cee74e4037bc0df6c9f19c077ed17b60305f7f8778692b9e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/vfx_tut_great.png",
+      "bytes": 290137,
+      "sha256": "1913a521a10c30c8fe4858542b1a8f070c0272f373e83f688f51ff5b1adf2298",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/vfx_tut_ring.png",
+      "bytes": 366646,
+      "sha256": "cb310b006c2714c94b973187037187266a274864a72ef04463153f3d11502878",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/preview/card_vertical_slice_proof.png",
+      "bytes": 289954,
+      "sha256": "0d84fa1c1b18e6cc420717a2e943dc46ba29f6ef11f3e098da3d77ae65c1e964",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/preview/great.gif",
+      "bytes": 101393,
+      "sha256": "6405558f57c358d8846d9525c8a7d979223ae9a9e355863868e5eeef8cb8dd9e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/preview/icons_72_48_light_dark.png",
+      "bytes": 195758,
+      "sha256": "482ea21aa717570257de90e0441aea903159d0d798f352879a77093eefa94294",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/preview/ring.gif",
+      "bytes": 178754,
+      "sha256": "229d0f5860f99eb8a8e5285f76ec7cfc96f5626ecf3807dc33e40c0d993a8d32",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/preview/vfx_frames.png",
+      "bytes": 569007,
+      "sha256": "a0620b21a7ab293a5d90f5cdb9453336dac96f0905824e8b497f5e73caa55afc",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/raw/card.png",
+      "bytes": 1857197,
+      "sha256": "d5776fda3dae9146650a6ae6685fca5dd99a77778aad73f085e2f55275a80dc5",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/raw/finger.png",
+      "bytes": 671002,
+      "sha256": "80dc6f538678264d79534528441a36de7fd31a885ec7fbf5c4c95b2190c1093a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/raw/great.png",
+      "bytes": 1782180,
+      "sha256": "d00ebf6975f13cb27cf346cccb7d4e41aa23992a4db64e3d6c4fe574c4945ae7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/raw/icons.png",
+      "bytes": 1824054,
+      "sha256": "168a7f4dc0d0fa0bf66bdf659e8c19bc1ec2fb49e7225f7222d5e3338e17f2f8",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/tutorial_ui/raw/ring.png",
+      "bytes": 2002823,
+      "sha256": "466b7cdd9b893ff63f0f66cf9d2b90806dc7728defdbbb4dbc3b82a1b2f6989a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 154776,
+      "sha256": "39bb6c22078ac0eb951658aa01380085fae728baa4e7599911710a6f86ee7e33",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 682,
+      "sha256": "4c9f4f2776a499437be572114168258b1b3a49f4e834b92def87986b63c8ebe0",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/38_TUTORIAL_UI.md",
+      "bytes": 7662,
+      "sha256": "2a03784206c4f060b6f38034bab3946478d91ffcc0f6feb2057dbd07cca373cd",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/README.md",
+      "bytes": 24598,
+      "sha256": "35c3046b2e401b6a7d127c4e5159257e0714f1eb1ea8a8d25617b39881c1c0ba",
+      "byteForByteMatch": true
+    }
+  ]
+}
