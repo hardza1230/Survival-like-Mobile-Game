@@ -214,7 +214,7 @@
     "loop": false,
     "sha256": "9a90ab1f6e655b6d2fd30fcad1a35fa0b7e1a6b2c15dbc92541252933c01ec1e",
     "bytes": 5183928,
-    "source": "../../book_transition/bk_cover_closed.png",
+    "source": "assets/incoming/book_transition/bk_cover_closed.png",
     "pivot": "spine-left",
     "notes": "Exact selected construction recorded in OPENING_GEOMETRY.json",
     "webpCandidate": {

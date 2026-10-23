@@ -1,0 +1,302 @@
+{
+  "sourceCommit": "27f78496641ce7734e0debf612a1973e5a166f1c",
+  "date": "2026-10-23",
+  "verifiedFiles": 49,
+  "allFullBytesMatch": true,
+  "files": [
+    {
+      "path": "assets/incoming/book_opening_plus/bk_clasp.png",
+      "bytes": 357574,
+      "sha256": "b5a7012faf1f47aa5209c7675410ca41569cb19e2861ced23157e6b81c9d837a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/bk_cover_clean_plate.png",
+      "bytes": 4220565,
+      "sha256": "56e54a3f1181d2eeb2a5a1eb4092d1e923613a69177e16adf0ffff58c1b0a0ac",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/bk_emblem_spin.png",
+      "bytes": 762965,
+      "sha256": "7b226e43689062dafe5bf21972c7fe753aa9e596a03d8ef44cec8c0b593ac041",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/bk_open_long.png",
+      "bytes": 5183928,
+      "sha256": "9a90ab1f6e655b6d2fd30fcad1a35fa0b7e1a6b2c15dbc92541252933c01ec1e",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/bk_page_riffle.png",
+      "bytes": 2238894,
+      "sha256": "55fa1abad027e87ca5e226652e0ea96889e6a9adc675080d81c47a650b00f5d2",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/DELIVERY_README.md",
+      "bytes": 3391,
+      "sha256": "a1d0ca7b6815bddd2ff372662b1172ac4f124d2e4db56d0adbc2dc0ccd8954c9",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/HELPER_MANIFEST.json",
+      "bytes": 541,
+      "sha256": "e9a075069e5abc5a0469926d930a33d987c0f1e24898168072571665e8dcd5ba",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/ic_nav_bazaar.png",
+      "bytes": 85778,
+      "sha256": "07b52a3c23259e875cd334ac9093e4a0808ee04531cc93caa5cd21b1c07539a7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/ic_nav_upgrade.png",
+      "bytes": 73652,
+      "sha256": "cd162b33e92ed6599cb35c9c91fa110906911d037f96eeac2bef1e4b71ebd1db",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/ic_side_mail.png",
+      "bytes": 73340,
+      "sha256": "0408d4b997a280f95d5b4e692787e27f6147b6b63b56fc346bfffe399621c957",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/MANIFEST.json",
+      "bytes": 5490,
+      "sha256": "2c08807c98db28893ca52cbb559adf6e59272791b24ac34257708f35991b97b3",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/OPENING_GEOMETRY.json",
+      "bytes": 3299,
+      "sha256": "db909e755cbc3f264b94e559ea21a59d963938a251cf90eee28fffde64768007",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/OPENING_RENDER_SOURCE.py",
+      "bytes": 3410,
+      "sha256": "2838e46b0c86b4ec44406bb0c3b8dd0b5e4aaf38af96132ebea6ffa800ecee46",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/PROMPTS.json",
+      "bytes": 15032,
+      "sha256": "29bfdfd66ec8e0f31b031a210edcf38b71f77e0e2449b5ca196424b895e49910",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/QA_REPORT.json",
+      "bytes": 4220,
+      "sha256": "1f9fdec1b0f6031d415aba62eaf0e32a91aaa91846c3f103f3541cbc3838d030",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/vfx_bk_burst.png",
+      "bytes": 685963,
+      "sha256": "b2c825506e752a775155b4fea70b15ced83b7e7213c644d6683d6726c527c857",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/vfx_bk_magic.png",
+      "bytes": 414862,
+      "sha256": "35abe5a17894058cd6bb0ed22c24c9b9719a35ece97bb38fd84bfa7ef41454d7",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/bk_clasp.gif",
+      "bytes": 87236,
+      "sha256": "29485a738288a0d9660be8884e115e507e7a14d8265b4ac2011de172dc2f8d69",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/bk_emblem_spin.gif",
+      "bytes": 194065,
+      "sha256": "bad6f7320c5520db42179e7db91693ac220706d4f98a7eeed85087c60aad2c62",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/bk_open_long.gif",
+      "bytes": 638091,
+      "sha256": "322628ad176783e10e721b5411ed94c0be798002a1707f516b6214e2937a7ebd",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/bk_page_riffle.gif",
+      "bytes": 317214,
+      "sha256": "318d304148bc2128a0c934651e9dbd3d9aec3038a48b8885af8bb9e9f55e8956",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/cover_clean_emblem_comparison.png",
+      "bytes": 382196,
+      "sha256": "0273a9cc30bdeee51b44521dd6f81f4e54a8690074ce556d0f25550b825edd83",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/emblem_over_clean_cover.gif",
+      "bytes": 756635,
+      "sha256": "326bca4a5ad9dc02ea434c23a320ce6c5a47ec9f35d45bb380e754df99712bc1",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/icons_56_28_light_dark.png",
+      "bytes": 47481,
+      "sha256": "c9e70d8b5ee1cc7db4e34097dd1ac3756a9c11729364d954b46b80a48982b9cc",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/opening_12_frame_contact.png",
+      "bytes": 1473379,
+      "sha256": "09887b6fd453ad15943109e8b1d7968114f8c0aa7a4d8611ef350a1fe992cf12",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/opening_over_lobby.gif",
+      "bytes": 933812,
+      "sha256": "7d2f92b4d1c2d7424c9088ce773ffc2c448d4c46a345d242c2fd1b67ac54ff19",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/vfx_bk_burst.gif",
+      "bytes": 65383,
+      "sha256": "d1fb4a42d3741a8b93a59ae2a85c5362466ec88289b24140701c82d18d6148f2",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/previews/vfx_bk_magic.gif",
+      "bytes": 124593,
+      "sha256": "18285e3f2ca0ba0eae89e3bb683911f3a43a9f86ca4924fe007d965e84f02a68",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/burst.png",
+      "bytes": 1094999,
+      "sha256": "481907a9fe302577da2d2a6da10f90a0a09fd0e67f978fb7b16cf202c8ba1ee4",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/clasp.png",
+      "bytes": 2002641,
+      "sha256": "702010e07165d9695e5ed8941e597f99abc1083824965d7583f1474851093ec1",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/emblem.png",
+      "bytes": 2499254,
+      "sha256": "65a0734b806a2e13517d3f670277d0406f18710effbe7262a4527caeeae06f30",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/icons.png",
+      "bytes": 1622776,
+      "sha256": "4f9656e9bf1ef9c6dabd34ceffa809d34b200c36dba2a2c8565cfb9540e6812f",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/magic.png",
+      "bytes": 1477323,
+      "sha256": "e381b7e92e87ad3a3a9088f22ee171a9541344201a7855bb59c26d5802f600a6",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/plain_cover.png",
+      "bytes": 3178981,
+      "sha256": "4642afbb8346823e661d41938859da68643818ff4a0c67130f5b494dfd8d2588",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/raw/riffle.png",
+      "bytes": 1555555,
+      "sha256": "55c902b701448090e208d93a6779da7abf7376fc646767cb10f4c678725e5ce9",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/bk_clasp.webp",
+      "bytes": 82852,
+      "sha256": "8e995c1d4001f36322f292f5601bf22a3d83cc65422e894777b48d8a0e8f6ef3",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/bk_cover_clean_plate.webp",
+      "bytes": 72850,
+      "sha256": "67276de7b73a8d20ff6b66870191e0c577d37d1e62ddfad573f93f5aa4662b11",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/bk_emblem_spin.webp",
+      "bytes": 275120,
+      "sha256": "8e4b8529ed412bd84726c1d294078c6eec2ea31f3a2c7c75b0b793e0f9a82cfe",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/bk_open_long.webp",
+      "bytes": 490708,
+      "sha256": "99dfb2f50dbb4ae78dbcc226bc1b9313653df624cd9cd77e2150125a3704ff86",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/bk_page_riffle.webp",
+      "bytes": 293996,
+      "sha256": "829ed1a87ebd854c49ee3121192bf059f3ea019422649137d2e5ee74606dfd31",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/ic_nav_bazaar.webp",
+      "bytes": 14988,
+      "sha256": "ad776f45bdefa41b4af24c7b6a1bba1a4243a8e58a59aa2e68fad81eb0f67e5f",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/ic_nav_upgrade.webp",
+      "bytes": 13924,
+      "sha256": "8fb5c3930031086a5c5410fcc13194a41b9343d082c85c0391ac8c846c883002",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/ic_side_mail.webp",
+      "bytes": 12396,
+      "sha256": "9bb1d07e74eb0e39db9cc617c3362da31eded6818ec430d17c74265bf3211cf4",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/vfx_bk_burst.webp",
+      "bytes": 55852,
+      "sha256": "09cfaa6060a171af65138289c9ec21532a9415368646e888f37492377229e165",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "assets/incoming/book_opening_plus/webp_candidates/vfx_bk_magic.webp",
+      "bytes": 50628,
+      "sha256": "179c59af0466eac54502fe6d19829414a85c3e765e54c0b8bd483ee442d7f652",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 157244,
+      "sha256": "7c317e308322e50b25dfcde903ee8fcbf303e41f1fea8d3b42a5454c7300193a",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/SESSION_HANDOFF.md",
+      "bytes": 761,
+      "sha256": "0cb6cfcb8ec40f20cc6e18305d2555852838ed16ddc726de7f478d9b3c41d5c4",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/39_BOOK_OPENING_PLUS.md",
+      "bytes": 7662,
+      "sha256": "e39272cd7531da605becbdee95043f55d6bb84d1a30569ee1995e129a7c06892",
+      "byteForByteMatch": true
+    },
+    {
+      "path": "docs/art_orders/README.md",
+      "bytes": 24541,
+      "sha256": "61f40a473b2cc8956e9bfca060b5685e4b54ecc1c526abf32239e39c80c187c0",
+      "byteForByteMatch": true
+    }
+  ]
+}
