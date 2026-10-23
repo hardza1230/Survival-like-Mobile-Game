@@ -1,3 +1,7 @@
+# 🔢 Next version = v8.0.0 (owner 23 Oct)
+
+Owner picked: the release after v7.9.98 is **v8.0.0** (skip patch 99/100 like 7.8.104 → 7.9.1). Any session bumping GAME_VERSION next uses 8.0.0, then 8.0.1, … Fetch the vampire branch first; if it already has 8.0.x, take the next patch.
+
 # Latest delivery: v7.9.98 — One story canon + art order 45 (owner)
 
 docs/STORY_CANON.md (draft 2 + plot holes 7.1–7.13, owner approved): a Crown on the First Tree cursed the kingdom into mochi and eats their flavor (= The Great Hunger); the starving Hunger's roots crack the pantry, Strawberry finds the waking Heart Seed and becomes a person; each boss returns flavor so the seed frees the next friend; ending = Planter lifts the Crown, Heart Seed planted, curse breaks, Hunger sleeps (Delve/Pinnacle). Ruby = jam spirit made by Grandma (royal head cook, frozen in C1-4, flavor in the Crown), never cursed, never transforms. Text rewritten: RUBY_STORY, RUBY_STORYBOOK, clear memories + bridge, STAGE_STORY_BEATS, STAGE_EPILOGUE (fixture presentation-art-baseline regenerated), STAGES lore, playStoryPanel intro/ch2/boss lines, coachSteps welcome/attack/unique, HERO_INTROS, achievement family name; 'Momo' → 'Strawberry' in story text; Bitter Chef removed. docs/LORE.md points to the canon. Art order 45 docs/art_orders/45_STORY_MOTION_COMIC.md: layered motion-comic cutscenes S00–S17 (~100 files, 3 batches) + playMotionComic code notes. No combat changes.
