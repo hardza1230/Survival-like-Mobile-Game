@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.81';
+const GAME_VERSION = '7.9.82';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.82',date:'2026-10-23',title:'Escort the Wisp: stay close',items:['Standing outside the Wisp’s ring now makes you bleed, stacking stronger the longer you stay out']},
   {v:'7.9.81',date:'2026-10-23',title:'Quest guide + boss music',items:['New missions now pan the camera to the target with a spotlight (first 3 times, tap to skip)','Boss and miniboss music now starts even if it was still loading']},
   {v:'7.9.80',date:'2026-10-23',title:'Book only at start',items:['The book now opens only when you start the game, not after every stage']},
   {v:'7.9.79',date:'2026-10-23',title:'New chest art',items:['Silver and Gold chests now have their own art and a lid-opening animation','Light rays in the prize colour behind your new gear','New Thread icon in the Lobby']},
@@ -6784,7 +6785,7 @@ const RUBY_TIPS={
   fill:{say:'Every monster carries a bit of stolen flavor.\nBeat them to fill the [Meter] and we take it back!',short:'Fill the [Meter] — take the flavor back!'},
   hunt:{say:'That one with the [🎯] is the leader!\nFollow the arrow and take it down before it runs.',short:'Chase down the [marked Elite]!'},
   huntClear:{say:'The leader is hiding behind its friends…\nClear a few monsters and it’ll show itself. Then [🎯] it!',short:'Clear the crowd, then get the [marked Elite]'},
-  purge:{say:'See that little [Wisp]? It can clean the cursed cores!\nIt’s shy, though — keep the [red raiders] off it.',short:'Keep the [Wisp] safe from [red raiders]'},
+  purge:{say:'See that little [Wisp]? It can clean the cursed cores!\nStay close — out here the curse makes you [bleed]! Keep the [red raiders] off it.',short:'Keep the [Wisp] safe from [red raiders]'},
   capture:{say:'This [ring] is an old pantry seal.\nStand inside and I’ll help you wake it up!',short:'Stay inside the [ring]!'},
   defendNectar:{say:'These [flowers] are the last sweet ones left here…\nPlease protect them! Stay close and swat the bugs.',short:'Protect the [flowers]!'},
   seasonCycle:{say:'The seasons are all mixed up! Monsters drop [petals]\nof the current season. Fill all [4 seasons] to fix it.',short:'Gather [petals] for all [4 seasons]'},
@@ -12476,6 +12477,10 @@ class Game extends Phaser.Scene {
     if(!this._wisp){ this._wispRespawn-=dt; if(this._wispRespawn<=0&&o.progress<o.target)this.spawnPurifyWisp(); this.renderWispHUD(); return; }
     const w=this._wisp,near=this.dist(this.player.x,this.player.y,w.x,w.y)<=t.escortR;
     if(!near){w._awayHint=(w._awayHint||0)-dt;if(w._awayHint<=0){w._awayHint=5;this.floatText(w.x,w.y-70,'Stay near the Wisp!',0xffc6a2);}}else w._awayHint=0;
+    // v7.9.82 เจ้าของ: ยืนนอกวง Wisp = เลือดไหล ซ้อนแรงขึ้นทุก 1.5 วิ (สูงสุด 10) · กลับเข้าวง = หายเร็ว
+    { const P=this.player; if(!near&&!this._inTutorial){ w._out=(w._out||0)+dt; const stk=Math.min(10,1+Math.floor(w._out/1.5)); if(stk!==w._bleedStk){ w._bleedStk=stk; this.floatText(P.x,P.y-60,'🩸 Bleeding ×'+stk,0xff4a5a); }
+        w._bleedT=(w._bleedT||0)+dt; if(w._bleedT>=.5){ w._bleedT=0; P.hp-=P.maxhp*.004*stk; P.setTint?.(0xff6a6a); this.time.delayedCall(120,()=>{ if(P.active)P.clearTint?.(); }); if(P.hp<=0){ this.die(); return; } } }
+      else if(w._out){ w._out=Math.max(0,w._out-dt*4); if(!w._out){ w._bleedStk=0; w._bleedT=0; } } }
     // 🕯️ Raiders: ทุก ~7s ส่งมอนแดง 2 ตัวพุ่งเข้าหา Wisp (ต้องคอยสกัด)
     this._raidT=(this._raidT??5)-dt;if(this._raidT<=0){this._raidT=7;if(this.enemies.countActive(true)<this.maxLive){for(let i=0;i<2;i++){const e=this.spawnEnemy('fast');if(e){e._wispRaider=true;e.tintColor=0xff6a6a;e.setTint(0xff6a6a);}}this.floatText(w.x,w.y-60,'⚠ Raiders!',0xff6a6a);}}
     // มอนกัดกินแสง
