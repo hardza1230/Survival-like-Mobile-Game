@@ -1,0 +1,262 @@
+{
+  "tool": "built-in ImageGen",
+  "sources": [
+    {
+      "file": "raw/story_1.png",
+      "sha256": "931f91830246071385a0c14a6a72a950ee0f587e195a8d27756e9231d338f374",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "file": "raw/story_2.png",
+      "sha256": "1eee04088fabc9a24c6decd6244943d224100d222df2da0552c06fea67e42aee",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "file": "raw/story_3.png",
+      "sha256": "a9131d97fe6b638ac9b674423cddd43b3e2b8e18664077a6e532fd4b7e7f4e45",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "file": "raw/story_4.png",
+      "sha256": "8a3eb6d8877fce944b1b39b8f9b399ce6bd7b7fadd3a25f77121f59f5794ce58",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "file": "raw/story_5.png",
+      "sha256": "92193503ec0f28ed0f0e4f0268415269945b5486c797b5e0a55daf1f6b40983b",
+      "width": 1024,
+      "height": 1536
+    }
+  ],
+  "assets": [
+    {
+      "key": "ruby_comic_s1_1",
+      "source": "raw/story_1.png",
+      "crop": [
+        0,
+        0,
+        1024,
+        559
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s1_1.webp",
+      "width": 768,
+      "height": 419,
+      "bytes": 83868,
+      "sha256": "5ed3075e5b60a6cea455247c860abe33505e2a2c415976e500938061ea471d96"
+    },
+    {
+      "key": "ruby_comic_s1_2",
+      "source": "raw/story_1.png",
+      "crop": [
+        0,
+        562,
+        1024,
+        1028
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s1_2.webp",
+      "width": 768,
+      "height": 350,
+      "bytes": 33716,
+      "sha256": "2e0f81c11bb55f21f5d05d6740be5e29042165fcd820b2c865b60a0d258b234f"
+    },
+    {
+      "key": "ruby_comic_s1_3",
+      "source": "raw/story_1.png",
+      "crop": [
+        0,
+        1031,
+        1024,
+        1536
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s1_3.webp",
+      "width": 768,
+      "height": 379,
+      "bytes": 45116,
+      "sha256": "56c07429ab6b696f18a71ccce3c32bcf36f95cc6b0536d8accbdf89802ac0c0d"
+    },
+    {
+      "key": "ruby_comic_s2_1",
+      "source": "raw/story_2.png",
+      "crop": [
+        0,
+        0,
+        1024,
+        510
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s2_1.webp",
+      "width": 768,
+      "height": 382,
+      "bytes": 84254,
+      "sha256": "4f8116dd14ec0f662b54e9792a5020cfd3856bbbc1a3b872af7b577494d1e1a9"
+    },
+    {
+      "key": "ruby_comic_s2_2",
+      "source": "raw/story_2.png",
+      "crop": [
+        0,
+        512,
+        1024,
+        979
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s2_2.webp",
+      "width": 768,
+      "height": 350,
+      "bytes": 46638,
+      "sha256": "3449e5cd7753e2079ed84e177e4bb211e44ff56a3c179fdc6cea9104b38b2aae"
+    },
+    {
+      "key": "ruby_comic_s2_3",
+      "source": "raw/story_2.png",
+      "crop": [
+        0,
+        981,
+        1024,
+        1536
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s2_3.webp",
+      "width": 768,
+      "height": 416,
+      "bytes": 64674,
+      "sha256": "5953cd867eb3ff12b9b23adba178659bb26e23d322b08cb944a6e37d7288bc99"
+    },
+    {
+      "key": "ruby_comic_s3_1",
+      "source": "raw/story_3.png",
+      "crop": [
+        0,
+        0,
+        1024,
+        511
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s3_1.webp",
+      "width": 768,
+      "height": 383,
+      "bytes": 93664,
+      "sha256": "d3a96bff0adfd1297839349a8fbb45916db2055eec7172cd41b4b63660d01cf6"
+    },
+    {
+      "key": "ruby_comic_s3_2",
+      "source": "raw/story_3.png",
+      "crop": [
+        0,
+        513,
+        1024,
+        1022
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s3_2.webp",
+      "width": 768,
+      "height": 382,
+      "bytes": 69050,
+      "sha256": "f6f4b98ca21119b91951d6d65c9f7ccc59be2bb0da5aeff5eda8b533536bad76"
+    },
+    {
+      "key": "ruby_comic_s3_3",
+      "source": "raw/story_3.png",
+      "crop": [
+        0,
+        1025,
+        1024,
+        1536
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s3_3.webp",
+      "width": 768,
+      "height": 383,
+      "bytes": 58490,
+      "sha256": "343a1096fc7691d1ab12dc1b9d835960efd8f071e46d8ee243f4e1ddb9eb14cc"
+    },
+    {
+      "key": "ruby_comic_s4_1",
+      "source": "raw/story_4.png",
+      "crop": [
+        0,
+        0,
+        1024,
+        552
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s4_1.webp",
+      "width": 768,
+      "height": 414,
+      "bytes": 120186,
+      "sha256": "cf91d0b6002f2311e5666db59467988bb7cf3e3f5bd3001628c64f839936035b"
+    },
+    {
+      "key": "ruby_comic_s4_2",
+      "source": "raw/story_4.png",
+      "crop": [
+        0,
+        555,
+        1024,
+        1018
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s4_2.webp",
+      "width": 768,
+      "height": 347,
+      "bytes": 85838,
+      "sha256": "bc7d8a7fe1ec95ff3a9b69802855b97b415ca87f1919405f1aa0b2ff6a7b151b"
+    },
+    {
+      "key": "ruby_comic_s4_3",
+      "source": "raw/story_4.png",
+      "crop": [
+        0,
+        1021,
+        1024,
+        1536
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s4_3.webp",
+      "width": 768,
+      "height": 386,
+      "bytes": 60220,
+      "sha256": "7d54d83b52f63b1fb7a80f3fe3f69bd39b82fde36495702f9f9c97052d7d0645"
+    },
+    {
+      "key": "ruby_comic_s5_1",
+      "source": "raw/story_5.png",
+      "crop": [
+        0,
+        0,
+        1024,
+        508
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s5_1.webp",
+      "width": 768,
+      "height": 381,
+      "bytes": 87900,
+      "sha256": "e0f374bf2e473aa84d84872acf6f94d2e583f03ae00caf03ec8cc95126252c5d"
+    },
+    {
+      "key": "ruby_comic_s5_2",
+      "source": "raw/story_5.png",
+      "crop": [
+        0,
+        511,
+        1024,
+        1025
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s5_2.webp",
+      "width": 768,
+      "height": 386,
+      "bytes": 48744,
+      "sha256": "33d447763072ffc9e1c017c735cabc703d12a056cd7e3534c43d0827d612de95"
+    },
+    {
+      "key": "ruby_comic_s5_3",
+      "source": "raw/story_5.png",
+      "crop": [
+        0,
+        1028,
+        1024,
+        1536
+      ],
+      "runtime": "assets/art/ruby_comic/ruby_comic_s5_3.webp",
+      "width": 768,
+      "height": 381,
+      "bytes": 67790,
+      "sha256": "5fedc09e4c994d53f3ba92b61b4ff270d758199b2949072e0df084586b9bf946"
+    }
+  ]
+}

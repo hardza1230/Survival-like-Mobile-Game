@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.94';
+const GAME_VERSION = '7.9.95';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.95',date:'2026-10-23',title:'Ruby’s story becomes a comic',items:['Each early story now has three distinct painted comic panels','Next reveals one new panel with a gentle fade while earlier pictures stay visible','Ruby’s memories also unfold in three panels; Back and Skip remain available','Previously read early stories can be seen once more in their new comic form']},
   {v:'7.9.94',date:'2026-10-23',title:'Rarer early gear, tap-to-stop Forge, cuter heroes',items:['Early gear is rarer in Chapter 1, low-level drops come without mods and early items enhance less','Forge Roll now gives one mod — the light runs until you tap, then slows down and stops','Hero lines in the Lobby are short and cheeky, in a bubble right above the hero’s head']},
   {v:'7.9.93',date:'2026-10-23',title:'More guidance from Ruby',items:['Ruby shows you how to Dash-kick the glowing items bosses leave behind','Ruby explains stage stars and the reward wheel after your first clear','Mutation and Evolution cards get their own short lesson the first time','New-feature icons now fly to the right button and no longer overlap the real icon']},
   {v:'7.9.92',date:'2026-10-23',title:'Grandma’s Battle Recipes',items:['Before C1-2 Ruby finds Grandma’s Battle Recipes — the reason Builds open from the second floor','The first Build pick is now a Battle Recipe lesson from Ruby']},
@@ -1553,6 +1554,7 @@ const Sfx = {
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
   lb_dialog_speech:'assets/art/lobby/lb_dialog_speech.webp',lb_dialog_thought:'assets/art/lobby/lb_dialog_thought.webp',
+  ruby_comic_s1_1:'assets/art/ruby_comic/ruby_comic_s1_1.webp',ruby_comic_s1_2:'assets/art/ruby_comic/ruby_comic_s1_2.webp',ruby_comic_s1_3:'assets/art/ruby_comic/ruby_comic_s1_3.webp',ruby_comic_s2_1:'assets/art/ruby_comic/ruby_comic_s2_1.webp',ruby_comic_s2_2:'assets/art/ruby_comic/ruby_comic_s2_2.webp',ruby_comic_s2_3:'assets/art/ruby_comic/ruby_comic_s2_3.webp',ruby_comic_s3_1:'assets/art/ruby_comic/ruby_comic_s3_1.webp',ruby_comic_s3_2:'assets/art/ruby_comic/ruby_comic_s3_2.webp',ruby_comic_s3_3:'assets/art/ruby_comic/ruby_comic_s3_3.webp',ruby_comic_s4_1:'assets/art/ruby_comic/ruby_comic_s4_1.webp',ruby_comic_s4_2:'assets/art/ruby_comic/ruby_comic_s4_2.webp',ruby_comic_s4_3:'assets/art/ruby_comic/ruby_comic_s4_3.webp',ruby_comic_s5_1:'assets/art/ruby_comic/ruby_comic_s5_1.webp',ruby_comic_s5_2:'assets/art/ruby_comic/ruby_comic_s5_2.webp',ruby_comic_s5_3:'assets/art/ruby_comic/ruby_comic_s5_3.webp',
   ruby_story_pantry:'assets/art/ruby_storybook/ruby_story_pantry.webp',ruby_story_furnace:'assets/art/ruby_storybook/ruby_story_furnace.webp',ruby_story_frozen:'assets/art/ruby_storybook/ruby_story_frozen.webp',ruby_story_crown:'assets/art/ruby_storybook/ruby_story_crown.webp',ruby_story_paper:'assets/art/ruby_storybook/ruby_story_paper.webp',
   mascot_ruby:'assets/art/mascot/mascot_ruby.webp',mascot_ruby_happy:'assets/art/mascot/mascot_ruby_happy.webp',mascot_ruby_alert:'assets/art/mascot/mascot_ruby_alert.webp',mascot_ruby_think:'assets/art/mascot/mascot_ruby_think.webp',mascot_ruby_cheer:'assets/art/mascot/mascot_ruby_cheer.webp',mascot_ruby_sad:'assets/art/mascot/mascot_ruby_sad.webp',
   ruby_talk_normal:'assets/art/mascot/ruby_talk_normal.webp',ruby_talk_explain:'assets/art/mascot/ruby_talk_explain.webp',ruby_talk_proud:'assets/art/mascot/ruby_talk_proud.webp',ruby_talk_worried:'assets/art/mascot/ruby_talk_worried.webp',ruby_memory_grandma:'assets/art/mascot/ruby_memory_grandma.webp',ruby_memory_jar:'assets/art/mascot/ruby_memory_jar.webp',ruby_point:'assets/art/mascot/ruby_point.webp',vfx_ruby_sparkle:'assets/art/mascot/vfx_ruby_sparkle.webp',
@@ -3360,6 +3362,7 @@ Object.assign(TEMPLE_UI,{"bk_open_long":[432,768,4,null],"bk_page_riffle":[432,7
 Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],vfx_chest_rays:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
 const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','vfx_chest_rays','bz_chest_card'];
 const RUBY_STAGE_KEYS=['mascot_ruby','mascot_ruby_happy','mascot_ruby_alert','mascot_ruby_think','mascot_ruby_cheer','mascot_ruby_sad','ruby_point','vfx_ruby_sparkle'];
+const RUBY_COMIC_KEYS=['ruby_comic_s1_1','ruby_comic_s1_2','ruby_comic_s1_3','ruby_comic_s2_1','ruby_comic_s2_2','ruby_comic_s2_3','ruby_comic_s3_1','ruby_comic_s3_2','ruby_comic_s3_3','ruby_comic_s4_1','ruby_comic_s4_2','ruby_comic_s4_3','ruby_comic_s5_1','ruby_comic_s5_2','ruby_comic_s5_3'];
 const RUBY_STORY_KEYS=['ruby_story_pantry','ruby_story_furnace','ruby_story_frozen','ruby_story_crown','ruby_story_paper'];
 const RUBY_MENU_KEYS=['ruby_talk_normal','ruby_talk_explain','ruby_talk_proud','ruby_talk_worried','ruby_memory_grandma','ruby_memory_jar'];
 Object.assign(TEMPLE_UI,{ruby_point:[128,128,4,null],vfx_ruby_sparkle:[64,64,6,null]});
@@ -3384,7 +3387,7 @@ const STAGE_LATE_RE=/assets\/(?:art\/(?:build_(?:paths|cards)|talents|rewards|me
 const ENDGAME_ART_RE=/assets\/art\/(?:biomes|delve_bosses|pinnacle)\//;
 // ของที่ต้องมีก่อนเข้าด่าน = tier1 ลบ (ของตัวละครอื่น + ของมาทีหลัง + อาร์ต endgame ถ้าไม่ใช่ endgame)
 function stageCritical(k,u,ch,endgame){
-  if(RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return false;
+  if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return false;
   const m=/^(?:char|bpx)_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if(k.startsWith('minion_')&&ch!=='yuzu')return false;
   if(!endgame&&['mini_jelly_animated','feast_target_animated'].includes(k))return false;
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
@@ -3397,7 +3400,7 @@ const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|t
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -6863,25 +6866,29 @@ const RUBY_STORY=[
 ];
 const RUBY_STORYBOOK=[
   {title:'The Recipe Keeper',pages:[
-    {art:'ruby_story_pantry',text:'When the Hunger came, I hid beneath the pantry. I’m Ruby, the keeper of Mochitopia’s recipes.',mood:'sad'},
-    {art:'ruby_story_pantry',text:'My recipe book is still here, but so many memories are missing. Will you help me find them?',mood:'normal'}
+    {art:'ruby_comic_s1_1',text:'When the Hunger came, I hid beneath the pantry. I’m Ruby, the recipe keeper.',mood:'sad'},
+    {art:'ruby_comic_s1_2',text:'I held my recipe book close. Its pages survived, but so many memories were gone.',mood:'sad'},
+    {art:'ruby_comic_s1_3',text:'Then a little light found me. Will you help me bring our flavors home?',mood:'happy'}
   ]},
   {title:'Grandma’s Jam Jar',pages:[
-    {art:'ruby_memory_grandma',text:'When the Ant Empress fell, a memory came back: Grandma’s jam jar, warm and sweet in her hands.',mood:'happy'},
-    {art:'ruby_memory_jar',text:'Then it slipped away, down these pipes. Let’s follow it. There may be another memory waiting below.',mood:'normal'},
-    {art:'ruby_memory_jar',text:'Wait… a page is stuck to the jar’s label. Grandma’s Battle Recipes! Three ways to fight with seeds. I can only hold one in my head at a time, so on each floor you’ll pick one.',mood:'happy'}
-  ]},   /* v7.9.92 เจ้าของเลือก ข+ค: Build = สูตรต่อสู้ของคุณยาย (เปิดตั้งแต่ C1-2) */
+    {art:'ruby_comic_s2_1',text:'After the Ant Empress fell, I remembered Grandma’s kitchen and her warm ruby jam.',mood:'happy'},
+    {art:'ruby_comic_s2_2',text:'Her jam jar slipped into a crack beneath the pantry. I couldn’t catch it.',mood:'sad'},
+    {art:'ruby_comic_s2_3',text:'A page on the jar: Grandma’s Battle Recipes! Three seed styles; choose one on each floor.',mood:'happy'}
+  ]},
   {title:'The Stolen Flavor',pages:[
-    {art:'ruby_story_furnace',text:'This heat… the Hunger’s machine burns the flavor it stole from us. Every spark used to belong to someone.',mood:'alert'},
-    {art:'ruby_story_furnace',text:'I can almost taste my old strawberry jam. If we stop this machine, maybe I’ll remember a little more.',mood:'normal'}
+    {art:'ruby_comic_s3_1',text:'This furnace burns the flavors the Hunger stole. Every spark once belonged to someone.',mood:'alert'},
+    {art:'ruby_comic_s3_2',text:'Look at those jars. The machine is pulling every last ribbon of sweetness from them.',mood:'sad'},
+    {art:'ruby_comic_s3_3',text:'That scent… my strawberry jam! If we stop the furnace, perhaps I’ll remember more.',mood:'normal'}
   ]},
   {title:'A Voice in the Ice',pages:[
-    {art:'ruby_story_frozen',text:'Sweet spirits are trapped in the ice. I can hear their voices beneath the frost.',mood:'sad'},
-    {art:'ruby_story_frozen',text:'One of them sounds like Grandma. Please, we have to hurry. I can’t leave that voice behind.',mood:'alert'}
+    {art:'ruby_comic_s4_1',text:'Sweet spirits are frozen inside this place. Their voices tremble beneath the frost.',mood:'sad'},
+    {art:'ruby_comic_s4_2',text:'That gentle voice… Grandma? I remember the warmth, even through all this ice.',mood:'sad'},
+    {art:'ruby_comic_s4_3',text:'Please, help me free them. I can’t leave those voices here in the cold.',mood:'alert'}
   ]},
   {title:'The Crown Oven',pages:[
-    {art:'ruby_story_crown',text:'The Crown Oven. This is where the Hunger lives, with all the flavor it took from our home.',mood:'alert'},
-    {art:'ruby_story_crown',text:'If we win, maybe I can finally wake up like you did. I’m frightened… but I’m ready to go with you.',mood:'normal'}
+    {art:'ruby_comic_s5_1',text:'The Crown Oven. The Hunger waits inside, with all the flavor it took from our home.',mood:'alert'},
+    {art:'ruby_comic_s5_2',text:'I’m frightened. I hold Grandma’s recipe book and wish I could hear her again.',mood:'sad'},
+    {art:'ruby_comic_s5_3',text:'But I’m ready. If we win, maybe I can wake up like you did. Let’s go together.',mood:'happy'}
   ]}
 ];
 const WAVE_OBJECTIVES = {
@@ -12131,9 +12138,9 @@ class Game extends Phaser.Scene {
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
   rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
-    if(!entry||d.settings?.noRuby||d.rubyStorybook?.[idx]||this.state!=='menu')return false;
+    if(!entry||d.settings?.noRuby||Number(d.rubyStorybook?.[idx])>=2||this.state!=='menu')return false;
     if(this._rubyTalk)return true;
-    this.rubyTalk(entry.pages.map(p=>p.text),()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=1;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();if(done)done();},{title:entry.title,pages:entry.pages,storybook:true});return true;
+    this.rubyTalk(entry.pages.map(p=>p.text),()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=2;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();if(done)done();},{title:entry.title,pages:entry.pages,storybook:true});return true;
   }
   rubyStoryAt(i){ if(this.recipeMode||this.bossRush||this.riftMode||this._pinnacleRun||this._inTutorial||!RUBY_STORY[i]||!this.time)return; const d=Save.data,st=d.rubyStory||(d.rubyStory={}); if(st[i])return;
     this.time.delayedCall(300,()=>{ if(!this.rubyOn()||this.stageIndex!==i)return; st[i]=1; Save.save(); this.rubySay(RUBY_STORY[i],5600,{face:[1,3,6,10,11,14].includes(i)?'sad':'normal'}); }); }   // v7.9.81 เรื่องของ Ruby ทีละด่าน (ครั้งแรกเท่านั้น)
@@ -13834,14 +13841,25 @@ class Game extends Phaser.Scene {
   }
   // v6.50.6 สปอตไลต์ tutorial: มืดรอบนอก เจาะรูที่ปุ่ม + กรอบทองเต้น + นิ้วชี้
   // v7.9.75 เจ้าของ: บทสอนในเมนูมีคนสอน · Ruby พูดทีละประโยค (แตะ = ถัดไป, แตะได้หลัง .6 วิ) · ใช้ในทัวร์ Weave
-  rubyTalk(lines,done,opt={}){ if(this._rubyTalk?.active)return; const W=this.W,H=this.H,c=this.add.container(0,0);this.menu.add(c);c._menuBackdrop=true;let i=0,at=Date.now(),finished=false;
-    this._rubyTalk=c;c.once('destroy',()=>{if(this._rubyTalk===c)this._rubyTalk=null;});
+  rubyTalk(lines,done,opt={}){ if(this._rubyTalk?.active)return;
+    if(opt.memory&&!opt.pages){const jar=opt.memory==='ruby_memory_jar',pages=jar?[
+      {art:'ruby_comic_s2_2',text:'Grandma’s jar slipped through the pantry floor. The Hunger reached after it.',mood:'sad'},
+      {art:'ruby_comic_s2_3',text:'My flavor went with it. Now I remember the dark pipes beneath our home.',mood:'sad'},
+      {art:'ruby_comic_s5_3',text:'We drove it away from the Crown Oven. Let’s find the rest of my memories together!',mood:'normal'}
+    ]:[
+      {art:'ruby_comic_s2_1',text:'Grandma taught me to stir ruby jam slowly, until its sweetness could find the way home.',mood:'happy'},
+      {art:'ruby_comic_s1_2',text:'She gave me this recipe book. It is the one thing the Hunger could not take away.',mood:'normal'},
+      {art:'ruby_comic_s1_3',text:'Even if I cannot fight, I can still help us bring those flavors back.',mood:'happy'}
+    ];opt={...opt,pages};lines=pages.map(p=>p.text);}
+    const W=this.W,H=this.H,c=this.add.container(0,0);this.menu.add(c);c._menuBackdrop=true;let i=0,at=Date.now(),finished=false,revealTweens=[],lastCue=-1;
+    const clearReveal=()=>{for(const tw of revealTweens)tw.remove();revealTweens=[];};
+    this._rubyTalk=c;c.once('destroy',()=>{clearReveal();if(this._rubyTalk===c)this._rubyTalk=null;});
     // Opaque foundation keeps the Lobby and navigation out of every narration page.
     const backdrop=this.add.rectangle(0,0,W,H,0x09070c,1).setOrigin(0);c.add(backdrop);
     const page=this.add.container();c.add(page);const margin=Math.max(16,Math.min(32,W*.05)),bw=Math.min(W-2*margin,560),bx=(W-bw)/2,land=W>H;
-    const footerY=H-60,headY=Math.max(22,Math.min(38,H*.045)),hasArt=!!(opt.memory||opt.pages?.some(p=>p.art));
+    const footerY=H-60,headY=Math.max(22,Math.min(38,H*.045)),hasArt=!!(opt.memory||opt.pages?.some(p=>p.art)),comic=opt.pages?.length===3&&opt.pages.every(p=>p.art);
     const finish=()=>{if(finished||!c.active)return;finished=true;this.tapZones=this.tapZones.filter(z=>!z._rubyPage);c.destroy();done?.();};
-    const render=()=>{if(!c.active)return;page.removeAll(true);
+    const render=()=>{if(!c.active)return;clearReveal();page.removeAll(true);
       const paper=this.realTex('ruby_story_paper');if(paper)page.add(this._coverImage(0,0,W,H,'ruby_story_paper'));
       const ink=paper?'#462d29':'#fff1df',muted=paper?'#8c6244':'#d3b28e',entry=opt.pages?.[i],artKey=entry?.art||opt.memory;
       const text=(x,y,t,size,color=ink,wrap=bw)=>{const o=this.add.text(x,y,t,{fontFamily:'NunitoUI, sans-serif',fontSize:size+'px',fontStyle:'bold',color,wordWrap:{width:wrap,useAdvancedWrap:true},lineSpacing:4}).setOrigin(.5,0);page.add(o);return o;};
@@ -13849,8 +13867,16 @@ class Game extends Phaser.Scene {
       const title=text(land?W*.265:W/2,headY+24,opt.title||(opt.memory?'A memory returns':'A word from Ruby'),land?20:Math.min(25,W*.064));
       const rowH=land?H-96:Math.min(190,Math.max(168,H*.24)),rowY=land?78:footerY-20-rowH,artTop=headY+24+title.height+18;
       const bodyX=land?W*.56:bx,bodyW=land?W*.40:bw,bodyY=rowY,bodyH=land?H-148:rowH;
+      const panels=[];
       if(hasArt){const maxW=land?W*.46:bw,maxH=land?footerY-artTop-16:rowY-artTop-16,artCx=land?W*.265:W/2,artCy=artTop+maxH/2;
-        if(artKey&&this.realTex(artKey)){const im=this.add.image(artCx,artCy,artKey),k=Math.min(maxW/im.width,maxH/im.height);im.setScale(k);page.add(im);}
+        if(comic){const gap=9,gw=Math.max(1,Math.min(maxW,(maxH-gap*.75)/.75)),small=(gw-gap)/2,gh=gw/2+gap+small/2,left=artCx-gw/2,top=artCy-gh/2,slots=[[left,top,gw,gw/2],[left,top+gw/2+gap,small,small/2],[left+small+gap,top+gw/2+gap,small,small/2]];
+          for(let j=0;j<=i;j++){const [x,y,pw,ph]=slots[j],key=opt.pages[j].art,frame=this.add.container(x,y),border=this.add.graphics();border.fillStyle(paper?0xfffcf1:0x18131c,1).fillRect(0,0,pw,ph).lineStyle(2,paper?0x51372e:0xd6b58a,1).strokeRect(0,0,pw,ph);frame.add(border);page.add(frame);let im=null;
+            if(this.realTex(key)){im=this.add.image(pw/2,ph/2,key);im.setScale(Math.min((pw-6)/im.width,(ph-6)/im.height));frame.add(im);}
+            if(j===i&&im&&lastCue!==i&&this.hubMotionAllowed()){frame.setAlpha(0);revealTweens.push(this.tweens.add({targets:frame,alpha:1,duration:420,ease:'Sine.out'}));}
+            panels.push({index:j,key,frame,image:im,rect:{x,y,w:pw,h:ph}});
+          }
+          if(panels[i]?.image)lastCue=i;
+        }else if(artKey&&this.realTex(artKey)){const im=this.add.image(artCx,artCy,artKey),k=Math.min(maxW/im.width,maxH/im.height);im.setScale(k);page.add(im);}
         else text(artCx,artCy-12,'Opening the illustration…',12,muted,maxW-12);
       }
       const box=this.add.graphics();box.fillStyle(paper?0xfffcf2:0x201923,paper ? .70 : .96).fillRoundedRect(bodyX,bodyY,bodyW,bodyH,14).lineStyle(1,paper?0xc7a77a:0x886b55,.7).strokeRoundedRect(bodyX,bodyY,bodyW,bodyH,14);page.add(box);
@@ -13862,9 +13888,9 @@ class Game extends Phaser.Scene {
       const controls=this.add.graphics();controls.fillStyle(paper?0xe8d2a7:0x302431,1).fillRoundedRect(bx,footerY,bw,44,12);page.add(controls);
       text(bx+40,footerY+13,'‹ Back',12,i?ink:muted,70).setAlpha(i?1:.4);
       text(W/2,footerY+14,(i+1)+' / '+lines.length,11,muted,60);
-      text(bx+bw-48,footerY+13,i<lines.length-1?'Next ›':'Continue ›',12,ink,96);
+      text(bx+bw-48,footerY+13,i<lines.length-1?(comic?'Next panel ›':'Next ›'):'Continue ›',12,ink,96);
       text(W-margin-22,headY,'Skip',11,muted,44);
-      c._rubyLayout={body:{x:bodyX,y:bodyY,w:bodyW,h:bodyH},text:tx,portrait:av,page:i,art:artKey,paper};
+      c._rubyLayout={body:{x:bodyX,y:bodyY,w:bodyW,h:bodyH},text:tx,portrait:av,page:i,art:artKey,paper,panels,comic};
     };
     const advance=()=>{if(Date.now()-at<600)return;at=Date.now();Sfx.select?.();if(++i>=lines.length)finish();else render();};
     this.tapZones=[];const zone=(x,y,w,h,fn,tag)=>{this._zone(x,y,w,h,fn);const z=this.tapZones[this.tapZones.length-1];z.noBounce=true;z._rubyPage=true;z.tag=tag;};
@@ -13872,7 +13898,7 @@ class Game extends Phaser.Scene {
     zone(bx,footerY,86,44,()=>{if(!i||Date.now()-at<600)return;i--;at=Date.now();render();},'ruby_previous');
     zone(bx+bw-108,footerY,108,44,advance,'ruby_next');
     zone(W-margin-44,headY-12,44,44,()=>{if(Date.now()-at>=600)finish();},'ruby_skip');
-    render();const keys=new Set(['ruby_story_paper',...RUBY_MENU_KEYS,...(opt.pages||[]).map(p=>p.art),opt.memory].filter(Boolean));this.ensureGroup(k=>keys.has(k),render,{all:true,quiet:true});
+    render();const keys=new Set(['ruby_story_paper',...RUBY_MENU_KEYS,...(opt.pages||[]).map(p=>p.art),opt.memory].filter(Boolean));if([...keys].some(k=>!this.realTex(k)))this.ensureGroup(k=>keys.has(k),render,{all:true,quiet:true});
   }
   drawSpotlight(cont,x,y,bw,bh,label){ this._spotBuild=true; const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
     g.fillRect(0,0,W,Y); g.fillRect(0,Y+B,W,H-Y-B); g.fillRect(0,Y,X,B); g.fillRect(X+R,Y,W-X-R,B);

@@ -3,9 +3,9 @@ const source=readFileSync(process.env.RUBY_STORY_SOURCE||'game.js','utf8'),end=s
 if(end<0)throw new Error('Game bootstrap boundary missing');
 const tail=`
 const RENDER_DPR=1,params=new URLSearchParams(location.search),RW=Number(params.get('w'))||360,RH=Number(params.get('h'))||780;
-Save.save=()=>{};Sfx.select=()=>{};window.__reviewNow=10000;Date.now=()=>window.__reviewNow;
+Save.save=()=>{};Sfx.select=()=>{};window.__reviewNow=10000;const reviewNativeNow=Date.now;Date.now=()=>reviewNativeNow()+window.__reviewNow;
 class RubyStoryReview extends Game{
- preload(){for(const k of [...RUBY_STORY_KEYS,...RUBY_MENU_KEYS,'mascot_ruby'])if(ASSET_IMAGES[k])this.load.image(k,ASSET_IMAGES[k]);}
+ preload(){for(const k of [...RUBY_COMIC_KEYS,...RUBY_STORY_KEYS,...RUBY_MENU_KEYS,'mascot_ruby'])if(ASSET_IMAGES[k])this.load.image(k,ASSET_IMAGES[k]);}
  create(){this.W=RW;this.H=RH;this.state='menu';this.menuScreen='hub';this.add.rectangle(0,0,RW,RH,0xff00ff,1).setOrigin(0);this.menu=this.add.container();this.tapZones=[];this.completed=0;window.__rubyReviewScene=this;window.__rubyReviewEntries=RUBY_STORYBOOK;document.querySelector('#status').textContent='Ready';}
  update(){} ensureGroup(){}
  reviewOpen(kind,index=0){this._rubyTalk?.destroy();this.tapZones=[];this.completed=0;const done=()=>this.completed++;
