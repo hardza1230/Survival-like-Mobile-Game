@@ -1,0 +1,263 @@
+[
+  {
+    "key": "floor_c11",
+    "file": "floor_c11.png",
+    "part": "A",
+    "stage": 0,
+    "width": 1024,
+    "height": 1024,
+    "alpha": false,
+    "seamless": true,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 90,
+      "orthoScale": 10
+    },
+    "blend": "src/c11_floor.blend",
+    "sha256": "d6e1b4b3e5b520dbdc1445e70733437be19328cc270a601be9b0c6827fe08240",
+    "bytes": 518404,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_dirt_mound",
+    "file": "dec_c11_dirt_mound.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_dirt_mound.blend",
+    "sha256": "9c31a81fda10a957ff9f284507654e10c8b75b9bc61db2ad2ea3070c6edb42f6",
+    "bytes": 25382,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_acid_crystal",
+    "file": "dec_c11_acid_crystal.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_acid_crystal.blend",
+    "sha256": "be611ccff28a028458ef6055ea691862b380b1eafd77b3de4bf46437873ce24b",
+    "bytes": 30723,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_seed_shell",
+    "file": "dec_c11_seed_shell.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_seed_shell.blend",
+    "sha256": "af104fdd52b49141f5616ee11afb109f214b0e6d59eced221b7d74b5fde9ad61",
+    "bytes": 35646,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_crumb",
+    "file": "dec_c11_crumb.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_crumb.blend",
+    "sha256": "8107e28480ca41024029a0f52baab3dda55db6f31ba4b2651445e48076908ed4",
+    "bytes": 30935,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_ant_hole",
+    "file": "dec_c11_ant_hole.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_ant_hole.blend",
+    "sha256": "f3e26fe19220e86a8c631c50fe0ec7ec684a3544d4a3cc21be13b53733df62e5",
+    "bytes": 25064,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_leaf_bit",
+    "file": "dec_c11_leaf_bit.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_leaf_bit.blend",
+    "sha256": "f0231d62eb5fd3be9e6405761af2b402030d1e2e26bd4f68b1ab1a4c8a182c72",
+    "bytes": 34764,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_acid_puddle",
+    "file": "dec_c11_acid_puddle.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_acid_puddle.blend",
+    "sha256": "9eb286acb80a3f03d5ee84cf8d5e8c7d2ac7348091005325fce997df5980ceac",
+    "bytes": 26201,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  },
+  {
+    "key": "dec_c11_pebble",
+    "file": "dec_c11_pebble.png",
+    "part": "B",
+    "stage": 0,
+    "width": 256,
+    "height": 256,
+    "alpha": true,
+    "seamless": false,
+    "camera": {
+      "type": "ortho",
+      "elevationDeg": 55,
+      "orthoScale": 5.15
+    },
+    "blend": "src/c11_pebble.blend",
+    "sha256": "1f3838bf8ca341ec362177910266d09d638ad49e6f48b339e60bb24e9e252969",
+    "bytes": 31564,
+    "sunDir": "top-left 60deg",
+    "sun": {
+      "elevationDeg": 60,
+      "azimuthDeg": -135,
+      "energy": 2.1,
+      "angularDiameterDeg": 24
+    },
+    "renderEngine": "eevee",
+    "blenderVersion": "5.2.3 LTS",
+    "colorManagement": "Standard",
+    "stylePreset": "src/style_preset.blend"
+  }
+]
