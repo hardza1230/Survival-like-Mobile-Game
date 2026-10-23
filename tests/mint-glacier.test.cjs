@@ -3,11 +3,11 @@ const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'(');assert(at>=0,n);const tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);return source.slice(at,at+1+next.index);}
 const math=Object.create(Math);math.random=()=>.9;
 const ctx={Math:math,COLORS:{ice:1},BALANCE:{skillPower:{frost:1}},FLAVOR_INFUSIONS:[],FLAT_EFF_PATH:{},FLAT_EFF:{mint:1},gearAttackRoll:()=>0,ATK_PCT:.05,Sfx:{magnet(){},boom(){}},Phaser:{Math:{Between:()=>0}}};
-const names=['applyFrostBurn','tickFrostBurn','glacierBrittle','glacierPrimed','glacierHitPower','glacierFrostHit','glacierEcho','mintChill','glacierShatter','mintBurstFx','stopEnemyPresentation','damage','releaseGlacierBloom','artDelay','clearArtVfx','applyFreeze','applyBurn','_guardsNow'];
+const names=['applyFrostBurn','tickFrostBurn','glacierBrittle','glacierPrimed','glacierHitPower','glacierFrostHit','glacierEcho','mintChill','glacierShatter','mintBurstFx','stopEnemyPresentation','damage','releaseGlacierBloom','glacierSnowPulse','tickGlacierSnow','artDelay','clearArtVfx','applyFreeze','applyBurn','_guardsNow'];
 const Scene=vm.runInNewContext('class Scene{'+names.map(method).join('\n')+'\n}Scene',ctx);
 function enemy(o={}){return {active:true,x:0,y:0,hp:1e6,maxhp:1e6,frozen:0,_glacierLifeToken:1,body:{velocity:{x:100,y:0}},setVelocity(x,y){this.body.velocity={x,y};},setTint(){},...o};}
 function scene(foes,path='glacier'){
- const s=new Scene(),hits=[],fx=[],timers=[];Object.assign(s,{state:'play',time:{now:0,delayedCall(ms,fn){const ev={ms,fn,remove(){this.removed=true;}};timers.push(ev);return ev;}},skills:{frost:1},basicAttack:{character:'mint',path,lv:{},ranks:{},_pm:{dmg:.9,frozen:.35}},player:{x:0,y:0,dmgMul:1,hp:100,maxhp:100,_pt:{}},enemies:{children:{iterate(fn){foes.forEach(fn);}}},dist:(x,y,a,b)=>Math.hypot(x-a,y-b),damage(e,n){if(!e._phaseGateLocked&&!(e._phaseInvuln>0)){hits.push({e,n});e.hp-=n;}},ptOnFreeze(){},burst(){},floatText(){},vfxHitRing(){},textures:{exists:()=>true},trackArtVfx:o=>o,spawnFxAnim(...a){fx.push(a);return {};},tweens:{add(){},killTweensOf(){}},camWorld:o=>o,add:{circle:()=>({setStrokeStyle(){return this;},setDepth(){return this;}})},screenShake(){},showBanner(){},mintLv:()=>s.basicAttack.lv,bloomRadius:()=>200,mintUniqueStart:()=>({ul:1,unit:1})});Object.assign(s,{hits,fx,timers});return s;
+ const s=new Scene(),hits=[],fx=[],timers=[];Object.assign(s,{state:'play',time:{now:0,delayedCall(ms,fn){const ev={ms,fn,remove(){this.removed=true;}};timers.push(ev);return ev;}},skills:{frost:1},basicAttack:{character:'mint',path,lv:{},ranks:{},_pm:{dmg:.9,frozen:.35}},player:{active:true,x:0,y:0,dmgMul:1,hp:100,maxhp:100,_pt:{}},enemies:{children:{iterate(fn){foes.forEach(fn);}}},dist:(x,y,a,b)=>Math.hypot(x-a,y-b),damage(e,n){if(!e._phaseGateLocked&&!(e._phaseInvuln>0)){hits.push({e,n});e.hp-=n;}},ptOnFreeze(){},burst(){},floatText(){},vfxHitRing(){},textures:{exists:()=>true},trackArtVfx:o=>o,spawnFxAnim(...a){fx.push(a);return {};},tweens:{add(){},killTweensOf(){}},camWorld:o=>o,drawGlacierSnow(){},add:{graphics:()=>({active:true,setDepth(){return this;},destroy(){this.active=false;}}),circle:()=>({setStrokeStyle(){return this;},setDepth(){return this;}})},screenShake(){},showBanner(){},mintLv:()=>s.basicAttack.lv,bloomRadius:()=>200,mintUniqueStart:()=>({ul:1,unit:1})});Object.assign(s,{hits,fx,timers});return s;
 }
 // At t=0 the first Chill is retained. Fresh freeze does not count as a Frost hit.
 {const e=enemy(),s=scene([e]);for(let i=0;i<4;i++)s.mintChill(e,.6);assert(e.frozen>0);assert.equal(e._glacierFrost||0,0);for(let i=0;i<3;i++)s.mintChill(e,.6);assert.equal(e._glacierFrost,3);assert.equal(s.hits.length,0);s.mintChill(e,.6);assert.equal(s.hits.length,1);assert.equal(e._glacierFrost,0);assert.equal(s.hits[0].n,25.2);}
@@ -33,14 +33,7 @@ for(const path of ['barrage','pierce']){const a=enemy(),b=enemy({isBoss:true}),s
 {const e=enemy({_glacierFrost:3,_glacierBrittleUntil:3000,_chill:4,_glacierBurstAt:100}),s=scene([e]);s.stopEnemyPresentation(e);assert.equal(e._glacierFrost,0);assert.equal(e._chill,0);assert.equal(e._glacierLifeToken,2);assert.equal(e._glacierBrittleUntil,0);assert.equal(e._glacierBurstAt,-Infinity);}
 // Actual damage() applies Frozen path bonuses to Brittle, including boss phase gates.
 {const e=enemy({isBoss:true,phase2:true,phase3:true,_glacierBrittleUntil:3000}),s=scene([e]);s.damage=Scene.prototype.damage;s.player.critChance=0;s.stageIndex=0;s.condDmgMul=()=>1;s.warnAntBomber=()=>{};s.popDmg=()=>{};s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,155.25);s.time.now=3001;s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,255.25);e._phaseInvuln=1;s.damage(e,100,0,0);assert.equal(e.maxhp-e.hp,255.25);}
-// Unique delayed damage is canceled on transition and cannot damage a recycled enemy.
-for(const cancel of [true,false]){
- const e=enemy({isBoss:true}),s=scene([e]);s.releaseGlacierBloom(1);assert.equal(e.frozen,0);assert(s.glacierBrittle(e));const before=s.hits.length;
- if(cancel)s.clearArtVfx();else s.stopEnemyPresentation(e);
- for(const t of s.timers)t.fn();assert.equal(s.hits.length,before);
-}
-{const e=enemy({_phaseGateLocked:true,isBoss:true}),s=scene([e]);s.releaseGlacierBloom(1);assert.equal(e._glacierBrittleUntil,undefined);}
-console.log('Glacier M2: real Chill/Frost/Shatter, boss/immune Brittle, expiry, chain depth/budgets, phase gates, resets, damage bonuses and Unique lifecycle passed');
-
-// Real Bloom applies the first stack and its delayed Rupture adds the second; hit power is +10%.
-{const e=enemy({isBoss:true}),s=scene([e]);s.releaseGlacierBloom(1);assert.equal(e._frostBurnStacks,1);assert.equal(s.hits[0].n,22);for(const t of s.timers)t.fn();assert.equal(e._frostBurnStacks,2);assert.equal(e._frostBurnUntil,8000);}
+// Unique field is canceled on transition; pooled enemies are re-evaluated by each pulse.
+{const e=enemy({isBoss:true}),s=scene([e]);s.releaseGlacierBloom(1);assert.equal(e.frozen,0);assert(s.glacierBrittle(e));const before=s.hits.length;s.clearArtVfx();s.tickGlacierSnow(.5);assert.equal(s.hits.length,before);assert.equal(s._glacierStorms.length,0);}
+{const e=enemy({_phaseGateLocked:true,isBoss:true}),s=scene([e]);s.releaseGlacierBloom(1);assert.equal(e._glacierBrittleUntil,undefined);assert.equal(s.hits.length,0);}
+console.log('Glacier M2: Chill/Frost/Shatter, boss Brittle, expiry, chain budgets, phase/reset/damage and snowfield lifecycle passed');

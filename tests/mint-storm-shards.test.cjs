@@ -1,0 +1,29 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const source=fs.readFileSync('game.js','utf8');
+function method(n){const at=source.indexOf('  '+n+'('),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(source.slice(at+1));assert(at>=0&&next,n);return source.slice(at,at+1+next.index);}
+const math=Object.create(Math);math.random=()=>.99;
+const ctx={Math:math,COLORS:{ice:1},Sfx:{},Save:{data:{settings:{vfx:0}}}};
+const Scene=vm.runInNewContext('class Scene{'+['releaseGlacierBloom','glacierSnowPulse','tickGlacierSnow','emitLanceDistanceShards','lanceShardTarget','releaseFrostLance','lanceLen','clearArtVfx'].map(method).join('\n')+'\n}Scene',ctx);
+function enemy(x=0,o={}){return {active:true,x,y:0,hp:1000,maxhp:1000,_glacierLifeToken:1,setTint(){},setVelocity(x,y){this.vx=x;this.vy=y;},...o};}
+function art(){return {active:true,setDepth(){return this;},destroy(){this.active=false;}};}
+function scene(foes=[]){const s=new Scene(),shots=[],hits=[];Object.assign(s,{state:'play',basicAttack:{path:'pierce',lv:{}},player:{active:true,x:0,y:0,body:{reset(){}},iframe:0},time:{now:0},enemies:{children:{iterate(fn){foes.forEach(fn);}}},textures:{exists:()=>false},dist:(x,y,a,b)=>Math.hypot(x-a,y-b),mintLv(){return this.basicAttack.lv;},mintUniqueStart:()=>({ul:1,unit:1}),bloomRadius:()=>200,trackArtVfx:x=>x,camWorld:x=>x,add:{graphics:art},drawGlacierSnow(){},damage(e,n){hits.push([e,n]);e.hp-=n;if(e.hp<=0)e.active=false;},mintChill(e){e.chills=(e.chills||0)+1;},applyFrostBurn(e){e.burns=(e.burns||0)+1;},mintBullet(x,y){const b={active:true,x,y,body:{velocity:{}},setTexture(){return this;},setTint(){return this;}};shots.push(b);return b;},physics:{velocityFromRotation(a,v,out){out.x=Math.cos(a)*v;out.y=Math.sin(a)*v;}},showBanner(){},screenShake(){},uqMutHook(){},poseAttack(){},tweens:{killTweensOf(){},add(c){s.tweenConfig=c;return {stop(){},pause(){},isPaused:()=>false};}}});s.hits=hits;s.shots=shots;return s;}
+function dash(s){return {x:0,y:0,carry:0,basic:s.basicAttack,epoch:0,power:30,emitted:0};}
+// Sampling distance, not frames: same 350px dash at 1/5/60 updates emits five shards at exact positions.
+for(const frames of [1,5,60]){const s=scene([enemy(400)]),d=dash(s);for(let i=1;i<=frames;i++)s.emitLanceDistanceShards(d,350*i/frames,0);assert.equal(s.shots.length,5);assert.deepEqual(s.shots.map(b=>Math.round(b.x)),[70,140,210,280,350]);assert(s.shots.every(b=>b.mintDashShard&&b.homing>0&&b.iceNeedle&&!b.impaler));}
+{const s=scene([enemy(400)]),d=dash(s);s.emitLanceDistanceShards(d,665,0);assert.equal(s.shots.length,9);const second=dash(s);s.emitLanceDistanceShards(second,350,0);assert.equal(second.emitted,5);}
+// Local nearest enemy beats a farther boss; invulnerable/dead targets are skipped.
+{const near=enemy(510),boss=enemy(0,{isBoss:true}),locked=enemy(501,{_phaseGateLocked:true}),s=scene([boss,locked,near]);assert.equal(s.lanceShardTarget(500,0),near);near.active=false;assert.equal(s.lanceShardTarget(500,0),boss);}
+for(const change of ['epoch','basic','menu']){const s=scene([enemy(100)]),d=dash(s);if(change==='epoch')s._artEpoch=1;if(change==='basic')s.basicAttack={path:'pierce'};if(change==='menu')s.state='menu';s.emitLanceDistanceShards(d,350,0);assert.equal(s.shots.length,0);}
+{const s=scene([enemy(2000)]),d=dash(s);s.emitLanceDistanceShards(d,350,0);assert.equal(s.shots.length,0);assert.equal(d.emitted,5);}
+// Production dash wires distance emission on tween update and completion, with fresh counters on a second dash.
+{const s=scene([enemy(400)]);s._artVfx=new Set();s.add.graphics=()=>({setDepth(){return this;},lineStyle(){return this;},lineBetween(){return this;}});s.releaseFrostLance(0,1);const t=s.tweenConfig;assert.equal(t.x,350);s.player.x=350;t.onUpdate();t.onComplete();assert.equal(s.shots.length,5);}
+// Eight pulses over four gameplay seconds, including release. A late entrant is hit; outside enemies are not.
+{const a=enemy(20),b=enemy(400),s=scene([a,b]);s.basicAttack.path='glacier';s._mxSrc='previous';s.releaseGlacierBloom(1);assert.equal(s.hits.length,1);assert.equal(s._mxSrc,'previous');b.x=30;for(let i=0;i<8;i++)s.tickGlacierSnow(.5);assert.equal(s.hits.length,15);assert.equal(s._glacierStorms.length,0);assert.equal(s._mxSrc,'previous');assert.equal(a.frozen,undefined);assert(a.vx>0);}
+// Damage threshold guarantees freeze; weaker damage uses chance, not permanent guaranteed crowd control.
+{const a=enemy(20,{hp:100,maxhp:100}),s=scene([a]);s.basicAttack.path='glacier';s.releaseGlacierBloom(1);assert(a.frozen>=1);assert.equal(a.burns,1);}
+{const a=enemy(20),s=scene([a]);s.basicAttack.path='glacier';math.random=()=>.1;s.releaseGlacierBloom(1);assert(a.frozen>0);math.random=()=>.99;}
+{const a=enemy(20,{isBoss:true}),b=enemy(30,{_phaseInvuln:1}),s=scene([a,b]);s.basicAttack.path='glacier';s.releaseGlacierBloom(1);assert.equal(a.frozen,undefined);assert.equal(a.vx,undefined);assert(a._glacierBrittleUntil>0);assert.equal(b.hp,1000);}
+// Pause preserves duration; epoch/basic replacement and transitions remove the field and prevent later damage.
+for(const mode of ['pause','epoch','basic','clear']){const a=enemy(20),s=scene([a]);s.basicAttack.path='glacier';s.releaseGlacierBloom(1);const before=s.hits.length;if(mode==='pause'){s.state='levelup';s.tickGlacierSnow(10);assert.equal(s._glacierStorms[0].t,0);}else{if(mode==='epoch')s._artEpoch=1;if(mode==='basic')s.basicAttack={path:'pierce'};if(mode==='clear')s.clearArtVfx();s.tickGlacierSnow(.5);assert.equal(s._glacierStorms.length,0);}assert.equal(s.hits.length,before);}
+assert(source.includes('b.mintEpoch=null;b.mintDashShard=false;'),'pooled shard homing flag reset');
+console.log('Mint storm/shards: distance invariance, longer/repeated dash yield, local targeting, field duration/late entrants/freeze/phase/pause/cleanup passed');

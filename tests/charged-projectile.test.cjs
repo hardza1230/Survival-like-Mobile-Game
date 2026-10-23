@@ -25,7 +25,7 @@ const aura=a.trackArtVfx(image());a._snipe={aura,g:image()};a.cancelSnipe();asse
 a.drawWindTrail(0,0,Math.PI/2,1500,30,1);assert.equal(created.length,2);assert.equal(tweens.length,1);assert(a._artVfx.size===2);
 a.clearArtVfx();assert.equal(a._artVfx.size,0);assert(created.every(o=>!o.active));assert.equal(a._shellArt,null);
 assert(source.includes("this.attachProjectileArt(b,'proj_mint_shard'"));
-assert(source.includes("spawnFxAnim('fx_mint_shatter'"));assert(source.includes("spawnFxAnim('fx_mint_gale'"));
+assert(source.includes("key=painted?'vfx_glacier_shatter':'fx_mint_shatter'"));assert(source.includes("spawnFxAnim('fx_mint_gale'"));
 console.log('Painted VFX: shield follows/reuses/hides, charge cancellation, image wind trail and transition cleanup passed');
 // Void and jam timers must never leak combat into the next run.
 const TimedScene=vm.runInNewContext('class Scene{'+['trackArtVfx','clearArtVfx','artDelay','artLoop','castVoidPull','relicJamTrail','greatHungerMetamorph'].map(method).join('\n')+'\n}Scene',{Sfx:{ult(){},boom(){},bossWarn(){}},Math,TAU:Math.PI*2});

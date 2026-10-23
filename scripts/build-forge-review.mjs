@@ -7,7 +7,7 @@ const params=new URLSearchParams(location.search),RW=Math.max(320,Math.min(1000,
 function seedReview(){
  const weapons=['w_knife','w_chop','w_whisk'].map(id=>GEAR_ALL.find(b=>b.id===id)),owned=[];
  for(const sd of GEAR_SLOTS){const b=sd.slot==='weapon'?weapons[0]:GEAR_ALL.find(b=>b.slot===sd.slot&&b.tier!=='start'&&!b.unique);if(b)owned.push({uid:'review-'+sd.slot,baseId:b.id,slot:sd.slot,grade:b.tier,itemLevel:55,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]});}
- weapons.slice(1).forEach((b,i)=>owned.push({uid:'review-extra-'+i,baseId:b.id,slot:'weapon',grade:b.tier,itemLevel:16+i,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]}));
+ weapons.slice(1).forEach((b,i)=>owned.push({uid:'review-extra-'+i,baseId:b.id,slot:'weapon',grade:b.tier,itemLevel:reviewState==='utility'?25:16+i,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]}));
  for(const it of owned)for(const a of it.affixes){const m=affixDef(a.id);a.t=Math.max(5,affixBestTierForItem(it,m));a.v=m.tiers[a.t][0];}
  Save.data={sugar:554,currency:{transmute:24,alt:18,chaos:12,divine:10},gearItems:owned,equippedGear:Object.fromEntries(owned.filter(i=>!i.uid.includes('extra')).map(i=>[i.slot,i.uid])),gear:Object.fromEntries(owned.map(i=>[i.slot,i.baseId])),gearLv:{},forgeEconomyVersion:1};
  Save.save=()=>{};for(const k of Object.keys(Sfx))if(typeof Sfx[k]==='function')Sfx[k]=()=>{};

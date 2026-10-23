@@ -10,7 +10,7 @@ for(const name of ['equip','lock','unlock','enhance_success','enhance_break','en
 const start=source.indexOf("can?()=>{ if(!afford){Sfx.error();"),finish=source.indexOf('this.buildMenuScreen(); }:null',start);
 const callback=source.slice(start+4,finish)+'this.buildMenuScreen(); }';
 for(const result of ['success','break','destroy','no_shards','stale_wallet']){
- const events=[];let spent=0;const c={afford:result!=='no_shards',cost:10,selected:{uid:'gear'},Save:{spendShards:()=>{if(result==='stale_wallet')return false;spent+=10;return true;},enhance:()=>({result,lv:4})},Sfx:{error:()=>events.push('error'),equipmentEnhance:r=>events.push(r.result)}};vm.createContext(c);
+ const events=[];let spent=0;const limits=require('./forge-fixture.cjs').fixture().ctx;const c={lv:0,gearEnhanceCap:limits.gearEnhanceCap,gearEffectiveEnhance:limits.gearEffectiveEnhance,afford:result!=='no_shards',cost:10,selected:{uid:'gear'},Save:{gearItem:()=>({uid:'gear',itemLevel:55,enhanceLv:0}),spendShards:()=>{if(result==='stale_wallet')return false;spent+=10;return true;},enhance:()=>({result,lv:4})},Sfx:{error:()=>events.push('error'),equipmentEnhance:r=>events.push(r.result)}};vm.createContext(c);
  const factory=vm.runInContext('(function(){return '+callback+';})',c);const scene={buildMenuScreen(){},showBanner(){},screenFlash(){},gearSelectedUid:'gear'};factory.call(scene)();
  assert.deepEqual(events,result==='no_shards'?['error']:result==='stale_wallet'?[]:[result]);assert.equal(spent,['no_shards','stale_wallet'].includes(result)?0:10);if(result==='destroy')assert.equal(scene.gearSelectedUid,null);
 }

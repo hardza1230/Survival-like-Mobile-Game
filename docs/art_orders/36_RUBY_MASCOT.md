@@ -1,6 +1,6 @@
 # 36 — Ruby ผู้นำทาง (มาสคอตที่คอยสอนเรา) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่ง source art ครบ 14 ไฟล์ / 22 เฟรมแล้ว (รวมภาพความทรงจำทั้งสอง) ที่ assets/incoming/ruby_mascot/ พร้อม MANIFEST, PROMPTS, QA, WebP candidates และภาพตรวจ 60px / 360×780 · รอผูกเข้าเกมและตรวจมือถือ
+สถานะ: 🟢 ส่ง source art ครบ 14 ไฟล์ / 22 เฟรมแล้ว (รวมภาพความทรงจำทั้งสอง) ที่ assets/incoming/ruby_mascot/ พร้อม MANIFEST, PROMPTS, QA, WebP candidates และภาพตรวจ 60px / 360×780 · ผูกเข้าเกมแล้ว v7.9.87 (14 WebP, 186,478 bytes; สีหน้า/ภาพพูด/ท่าชี้/ความทรงจำ) · รอตรวจมือถือ
 ส่งไฟล์ที่ `assets/incoming/ruby_mascot/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` (เส้นขอบเข้ม สีสด อ่านออกตอนภาพเล็ก) · PNG32 พื้นโปร่งใสจริง · **ห้ามมีตัวหนังสือในภาพ**
 

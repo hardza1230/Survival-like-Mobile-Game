@@ -1,3 +1,15 @@
+# Latest delivery: v7.9.87 — Ruby art, Mint winter magic, Lobby voices and gear limits
+
+Order36 is integrated: 14 half-size WebPs (186,478 bytes), A/C stage-lazy and B/D menu-lazy; Ruby expressions, large talk portraits, animated quest pointer/sparkle, optional memory scenes after first C1-1/C1-5 clear. Lobby heroes cycle six personality-specific spoken/thought lines without tap capture, yielding to Ruby/tutorials.
+
+Crystal Impaler Unique Frost Lance emits a homing shard every 70 world pixels actually travelled (base350px =5; Long Lance rank3 665px =9 when targets/budget allow). Each repeat dash has its own accumulator; nearest target is measured from the shard, no boss priority. Shards reuse painted ice art, single-hit Chill and shared24 projectile budget, with epoch/pool reset. Direct lance/Impale/Rupture retained.
+
+Glacier Bloom leaves one stationary4s snowstorm: eight .5s pulses including release, each .45×Bloom power (+20%/Shard Spray rank), bounded snowfall and knockback. A hit dealing ≥8% max HP guarantees freeze; otherwise25% chance (35% with Permafrost). Freeze1s +.6/Long Winter rank. Bosses/mini/immune get Brittle, no forced displacement/freeze. Permafrost adds Chill per pulse; card/pause screens preserve lifetime; transitions clear field/tween/art. Owner owns actual combat/balance/FPS review.
+
+Gear: iLv1–11 Power/+3;12–24 Power+Sustain/+5;25–44 all3/+7;45+ all3/+10. Enforced in direct mutations and effective stats, leaving legacy rolls/enhancement data intact. Locked paid choices have one-time refund; first Forge lesson still works. See docs/GEAR_LEVEL_LIMITS.md.
+
+Validation: required automated check and web build; new Ruby/Mint/Lobby/gear regression suites. No browser screenshots or simulated balance runs per owner instruction. Deployment state is in docs/SESSION_HANDOFF.md.
+
 # Art delivery36 — rewritten Ruby mascot
 
 14 PNG32 assets /22frames delivered to assets/incoming/ruby_mascot/: six expressions, four talk portraits, four-frame point loop, six-frame black ADD sparkle and two memory illustrations. Seven ImageGen originals and exact prompts retained. PNG CRC/hash/alpha checks and offline60px /360×780 layout proofs passed. Source-only; preserve current runtime and lazy-load A/C in stage, B/D in menu when integrating. Phone overlap/cadence/FPS pending.
@@ -84,7 +96,7 @@ Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). 
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.86 — No spawns outside the map (owner)
+# Previous delivery: v7.9.86 — No spawns outside the map (owner)
 
 inMapPt(x,y,m=80) (global, before STORY_HP_MUL): point outside ±(WORLD/2−80) → random point within 220px of the map centre. Used (with a typeof fallback for method-extract tests) in spawnEnemy, spawnElite, spawnMiniBoss, spawnFinalBoss and the far-straggler teleport. Crates unchanged.
 
@@ -742,7 +754,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.86 · 23 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.87 · 23 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
