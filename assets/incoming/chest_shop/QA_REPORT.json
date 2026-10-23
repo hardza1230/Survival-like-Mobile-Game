@@ -1,0 +1,208 @@
+{
+  "requiredFiles": 7,
+  "deliveredFiles": 7,
+  "frames": 22,
+  "checks": [
+    {
+      "file": "chest_silver.png",
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 281128,
+      "sha256": "35460ca6277c4a8cf8c4cea569bc642669c43e821626196d28fd4889e31d41e7",
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    },
+    {
+      "file": "chest_gold.png",
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 279664,
+      "sha256": "8f678d64a6de9f0002a19074e71d8582d93acf713d0e2acda29a23a4ec899135",
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    },
+    {
+      "file": "chest_silver_open.png",
+      "size": [
+        3072,
+        512
+      ],
+      "bytes": 2100293,
+      "sha256": "23bd34e8bddd169f419df5ed4c1a7a88c047d7fda935300a9cd6cbe2a65773cc",
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 6
+    },
+    {
+      "file": "chest_gold_open.png",
+      "size": [
+        3072,
+        512
+      ],
+      "bytes": 2002483,
+      "sha256": "6bfcc174aeb3376291b1921954d1896b7dc8a2aa37877974016e0679784ab918",
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 6
+    },
+    {
+      "file": "vfx_chest_rays.png",
+      "size": [
+        3072,
+        512
+      ],
+      "bytes": 512008,
+      "sha256": "5a93b45bb3d2899222782920fc18811675959fdbbe93e1f8d50a24490469a4ae",
+      "pngCRC": true,
+      "alphaRange": [
+        255,
+        255
+      ],
+      "frameCount": 6
+    },
+    {
+      "file": "ic_thread.png",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 76421,
+      "sha256": "1be0845e80f2b94f1a5dbee7122af401ec7d07c54151b55343d0261a99aa25a9",
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    },
+    {
+      "file": "bz_chest_card.png",
+      "size": [
+        780,
+        400
+      ],
+      "bytes": 257171,
+      "sha256": "84b3b4ae55a01034b411fcb49ae36b26c170f04d509aa43068b50cfc37f8b51a",
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "frameCount": 1
+    }
+  ],
+  "registration": {
+    "silver": [
+      {
+        "frame": 0,
+        "generatedFootY": 458,
+        "targetFootY": 450,
+        "translationY": 0,
+        "firstFrameUsesExactClosed": true
+      },
+      {
+        "frame": 1,
+        "generatedFootY": 459,
+        "targetFootY": 450,
+        "translationY": -9,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 2,
+        "generatedFootY": 459,
+        "targetFootY": 450,
+        "translationY": -9,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 3,
+        "generatedFootY": 449,
+        "targetFootY": 450,
+        "translationY": 1,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 4,
+        "generatedFootY": 448,
+        "targetFootY": 450,
+        "translationY": 2,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 5,
+        "generatedFootY": 450,
+        "targetFootY": 450,
+        "translationY": 0,
+        "firstFrameUsesExactClosed": false
+      }
+    ],
+    "gold": [
+      {
+        "frame": 0,
+        "generatedFootY": 459,
+        "targetFootY": 452,
+        "translationY": 0,
+        "firstFrameUsesExactClosed": true
+      },
+      {
+        "frame": 1,
+        "generatedFootY": 462,
+        "targetFootY": 452,
+        "translationY": -10,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 2,
+        "generatedFootY": 464,
+        "targetFootY": 452,
+        "translationY": -12,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 3,
+        "generatedFootY": 420,
+        "targetFootY": 452,
+        "translationY": 32,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 4,
+        "generatedFootY": 422,
+        "targetFootY": 452,
+        "translationY": 30,
+        "firstFrameUsesExactClosed": false
+      },
+      {
+        "frame": 5,
+        "generatedFootY": 423,
+        "targetFootY": 452,
+        "translationY": 29,
+        "firstFrameUsesExactClosed": false
+      }
+    ]
+  },
+  "firstFramesExactClosed": true,
+  "raysStrictGrayscale": true,
+  "webpCandidateTotalBytes": 844676,
+  "visualReview": "Reviewed six-frame silver/gold contacts, exact first-frame matching, closed/open comparisons, native20/28/40/64px Thread on light/dark backgrounds, nine-slice cards and neutral rays with current rarity tints. Phone cadence/FPS pending.",
+  "runtimeIntegration": "Pending",
+  "phoneVisualTimingFPS": "Pending owner test"
+}

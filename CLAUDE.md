@@ -1,3 +1,7 @@
+# Art delivery40 — Bazaar chest source kit
+
+All7 PNG32 /22frames delivered to assets/incoming/chest_shop/ with6 built-in ImageGen donors, exact prompts, manifests, PNG CRC/hash/alpha QA, six-frame GIFs, exact closed-frame0 matching, Thread20px gallery, nine-slice and rarity-tint proofs. WebP candidates844,676bytes. Source-only; runtime v7.9.78 untouched. Next: Bazaar/Chests lazy wiring and phone cadence/FPS. Existing combat ic_thread key is used by a Knot effect; see delivery notes before replacing the texture key.
+
 # Art39 opening revision — explicit owner choice: AI-painted frames
 
 Active bk_open_long now uses12 AI-painted poses, mechanically extracted/registered to fixed left hinge and height. Geometric opening/renderer retired to history/. PROMPTS and OPENING_SOURCE record actual provenance; no exact original-pixel match is claimed. Required WebP1,212,176bytes; with clean-cover helper1,285,026bytes. Crossfade static cover into painted frame0 before playing. Source-only; v7.9.68 runtime untouched.

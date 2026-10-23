@@ -1,6 +1,6 @@
 # 40 — หีบสมบัติใน Bazaar + ไอคอน Thread · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · โค้ดพร้อมแล้ว v7.9.77 (ตอนนี้ใช้ภาพหีบเดิม/อีโมจิแทน)
+สถานะ: ✅ ส่งอาร์ตครบ7 PNG32 /22เฟรม (23 ต.ค. 2026) · รอผูก runtime / QA มือถือ · โค้ดพร้อมแล้ว v7.9.77 (ตอนนี้ใช้ภาพหีบเดิม/อีโมจิแทน)
 ส่งไฟล์ที่ `assets/incoming/chest_shop/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` (โทนอบอุ่นแบบหน้า Lobby ใบ 33) · PNG32 พื้นโปร่งใสจริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -26,3 +26,6 @@ Thread (🧶 เส้นด้ายขนม) = สกุลเงินที
 - `openChest`: เล่น `chest_<id>_open` แทนการสั่นหมุน · `vfx_chest_rays` แทน vfx_glow
 - `ic_thread` ใช้กับป้าย Thread ใน Lobby / Bazaar / ราคาบนปุ่ม แทนอีโมจิ 🧶
 - `bz_chest_card` → `tuPanel` แทนกรอบวาดในหน้า Chests
+
+## ส่งมอบ
+ครบ7ไฟล์ที่ assets/incoming/chest_shop/ พร้อมต้นฉบับ ImageGen, MANIFEST/PROMPTS/QA, GIF และ proof20px/9-slice · WebP candidatesรวม844,676bytes · Source-only ไม่เปลี่ยนgame.js/เวอร์ชัน · อ่านDELIVERY_READMEก่อนผูก โดยเฉพาะชื่อtexture ic_thread ที่มีผู้ใช้เดิมในcombat

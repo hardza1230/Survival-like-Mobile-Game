@@ -1,0 +1,229 @@
+[
+  {
+    "key": "chest_silver",
+    "file": "chest_silver.png",
+    "width": 512,
+    "height": 512,
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "background": "transparent",
+    "loop": false,
+    "frameDurationsMs": [
+      100
+    ],
+    "sha256": "35460ca6277c4a8cf8c4cea569bc642669c43e821626196d28fd4889e31d41e7",
+    "bytes": 281128,
+    "source": "raw/closed_chests.png",
+    "sourceCell": 0,
+    "pivot": [
+      256,
+      450
+    ],
+    "webpCandidate": {
+      "file": "webp_candidates/chest_silver.webp",
+      "quality": 82,
+      "width": 512,
+      "height": 512,
+      "bytes": 43178
+    }
+  },
+  {
+    "key": "chest_gold",
+    "file": "chest_gold.png",
+    "width": 512,
+    "height": 512,
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "background": "transparent",
+    "loop": false,
+    "frameDurationsMs": [
+      100
+    ],
+    "sha256": "8f678d64a6de9f0002a19074e71d8582d93acf713d0e2acda29a23a4ec899135",
+    "bytes": 279664,
+    "source": "raw/closed_chests.png",
+    "sourceCell": 1,
+    "pivot": [
+      256,
+      450
+    ],
+    "webpCandidate": {
+      "file": "webp_candidates/chest_gold.webp",
+      "quality": 82,
+      "width": 512,
+      "height": 512,
+      "bytes": 48472
+    }
+  },
+  {
+    "key": "chest_silver_open",
+    "file": "chest_silver_open.png",
+    "width": 3072,
+    "height": 512,
+    "columns": 6,
+    "rows": 1,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 6,
+    "background": "transparent",
+    "loop": false,
+    "frameDurationsMs": [
+      100,
+      90,
+      90,
+      110,
+      140,
+      500
+    ],
+    "sha256": "23bd34e8bddd169f419df5ed4c1a7a88c047d7fda935300a9cd6cbe2a65773cc",
+    "bytes": 2100293,
+    "source": "raw/silver_open.png",
+    "pivot": [
+      256,
+      450
+    ],
+    "notes": "AI-painted opening poses. Foot baseline translated only; frame0 exact closed asset. Final frame is an open hold, not a loop.",
+    "webpCandidate": {
+      "file": "webp_candidates/chest_silver_open.webp",
+      "quality": 82,
+      "width": 3072,
+      "height": 512,
+      "bytes": 303840
+    }
+  },
+  {
+    "key": "chest_gold_open",
+    "file": "chest_gold_open.png",
+    "width": 3072,
+    "height": 512,
+    "columns": 6,
+    "rows": 1,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 6,
+    "background": "transparent",
+    "loop": false,
+    "frameDurationsMs": [
+      100,
+      90,
+      90,
+      110,
+      140,
+      500
+    ],
+    "sha256": "6bfcc174aeb3376291b1921954d1896b7dc8a2aa37877974016e0679784ab918",
+    "bytes": 2002483,
+    "source": "raw/gold_open.png",
+    "pivot": [
+      256,
+      452
+    ],
+    "notes": "AI-painted opening poses. Foot baseline translated only; frame0 exact closed asset. Final frame is an open hold, not a loop.",
+    "webpCandidate": {
+      "file": "webp_candidates/chest_gold_open.webp",
+      "quality": 82,
+      "width": 3072,
+      "height": 512,
+      "bytes": 355720
+    }
+  },
+  {
+    "key": "vfx_chest_rays",
+    "file": "vfx_chest_rays.png",
+    "width": 3072,
+    "height": 512,
+    "columns": 6,
+    "rows": 1,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 6,
+    "background": "black",
+    "loop": true,
+    "frameDurationsMs": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "sha256": "5a93b45bb3d2899222782920fc18811675959fdbbe93e1f8d50a24490469a4ae",
+    "bytes": 512008,
+    "source": "raw/rays.png",
+    "blend": "ADD",
+    "notes": "Strict grayscale / black so rarity tints remain neutral. Do not NORMAL-blend opaque black.",
+    "webpCandidate": {
+      "file": "webp_candidates/vfx_chest_rays.webp",
+      "quality": 82,
+      "width": 3072,
+      "height": 512,
+      "bytes": 53978
+    }
+  },
+  {
+    "key": "ic_thread",
+    "file": "ic_thread.png",
+    "width": 256,
+    "height": 256,
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 1,
+    "background": "transparent",
+    "loop": false,
+    "frameDurationsMs": [
+      100
+    ],
+    "sha256": "1be0845e80f2b94f1a5dbee7122af401ec7d07c54151b55343d0261a99aa25a9",
+    "bytes": 76421,
+    "source": "raw/thread.png",
+    "minimumReviewSize": 20,
+    "webpCandidate": {
+      "file": "webp_candidates/ic_thread.webp",
+      "quality": 82,
+      "width": 256,
+      "height": 256,
+      "bytes": 15946
+    }
+  },
+  {
+    "key": "bz_chest_card",
+    "file": "bz_chest_card.png",
+    "width": 780,
+    "height": 400,
+    "columns": 1,
+    "rows": 1,
+    "frameWidth": 780,
+    "frameHeight": 400,
+    "frameCount": 1,
+    "background": "transparent",
+    "loop": false,
+    "frameDurationsMs": [
+      100
+    ],
+    "sha256": "84b3b4ae55a01034b411fcb49ae36b26c170f04d509aa43068b50cfc37f8b51a",
+    "bytes": 257171,
+    "source": "raw/card.png",
+    "nineSlice": {
+      "left": 64,
+      "top": 64,
+      "right": 64,
+      "bottom": 64
+    },
+    "notes": "Slice values are native780x400 pixels; halve if packing50%.",
+    "webpCandidate": {
+      "file": "webp_candidates/bz_chest_card.webp",
+      "quality": 82,
+      "width": 780,
+      "height": 400,
+      "bytes": 23542
+    }
+  }
+]
