@@ -1,0 +1,446 @@
+{
+  "order": 36,
+  "revision": "rewritten Ruby mascot",
+  "assetCount": 14,
+  "totalFrames": 22,
+  "sourceOnly": true,
+  "assets": [
+    {
+      "key": "mascot_ruby",
+      "file": "mascot_ruby.png",
+      "width": 256,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/A.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 79076,
+      "sha256": "508c123006d544427161e6d46ef653cf8a7c1a9776a166ac0ea4335f256c4ddf",
+      "webpCandidate": {
+        "file": "webp_candidates/mascot_ruby.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 6382
+      },
+      "pivot": [
+        128,
+        240
+      ],
+      "minimumReviewSize": 60
+    },
+    {
+      "key": "mascot_ruby_happy",
+      "file": "mascot_ruby_happy.png",
+      "width": 256,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/A.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 79709,
+      "sha256": "8992a0819d583b28f293803f77627df951a0a3c97bc5ff5ec01bb8f22816fd02",
+      "webpCandidate": {
+        "file": "webp_candidates/mascot_ruby_happy.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 6494
+      },
+      "pivot": [
+        128,
+        240
+      ],
+      "minimumReviewSize": 60
+    },
+    {
+      "key": "mascot_ruby_alert",
+      "file": "mascot_ruby_alert.png",
+      "width": 256,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/A.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 72281,
+      "sha256": "fba537e6a67edefbd485dd8efc60168ce3f4cc098038ea6e21af5ec81abec9b6",
+      "webpCandidate": {
+        "file": "webp_candidates/mascot_ruby_alert.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 6030
+      },
+      "pivot": [
+        128,
+        240
+      ],
+      "minimumReviewSize": 60
+    },
+    {
+      "key": "mascot_ruby_think",
+      "file": "mascot_ruby_think.png",
+      "width": 256,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/A.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 79695,
+      "sha256": "e79dc105215b068288d0c13e62f66e8319eb5d34938f9794da7064f0e63cb1fa",
+      "webpCandidate": {
+        "file": "webp_candidates/mascot_ruby_think.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 6492
+      },
+      "pivot": [
+        128,
+        240
+      ],
+      "minimumReviewSize": 60
+    },
+    {
+      "key": "mascot_ruby_cheer",
+      "file": "mascot_ruby_cheer.png",
+      "width": 256,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/A.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 87767,
+      "sha256": "1c3df373fd18e9df7e85b687b93a200caa0e190cb80fafc9ddbbdc0c0bf58835",
+      "webpCandidate": {
+        "file": "webp_candidates/mascot_ruby_cheer.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 7928
+      },
+      "pivot": [
+        128,
+        240
+      ],
+      "minimumReviewSize": 60
+    },
+    {
+      "key": "mascot_ruby_sad",
+      "file": "mascot_ruby_sad.png",
+      "width": 256,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/A.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 76110,
+      "sha256": "bf81fdf402c09187c7b62e9c11442ce3978d8a0a73295c7a14214edf6f346098",
+      "webpCandidate": {
+        "file": "webp_candidates/mascot_ruby_sad.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 6146
+      },
+      "pivot": [
+        128,
+        240
+      ],
+      "minimumReviewSize": 60
+    },
+    {
+      "key": "ruby_talk_normal",
+      "file": "ruby_talk_normal.png",
+      "width": 512,
+      "height": 640,
+      "frameWidth": 512,
+      "frameHeight": 640,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/B.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 189894,
+      "sha256": "2915047b87bbbc5a20ea5d1ee5e0cae1ef6a1949cf4da88405490d99bda88468",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_talk_normal.webp",
+        "width": 256,
+        "height": 320,
+        "bytes": 12068
+      },
+      "pivot": [
+        205,
+        590
+      ],
+      "textSafeArea": [
+        430,
+        0,
+        82,
+        640
+      ]
+    },
+    {
+      "key": "ruby_talk_explain",
+      "file": "ruby_talk_explain.png",
+      "width": 512,
+      "height": 640,
+      "frameWidth": 512,
+      "frameHeight": 640,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/B.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 190478,
+      "sha256": "8c4e9e104edbdc89fe0a4ff72336a36e4991aede7c706d52c7ae612678f100b4",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_talk_explain.webp",
+        "width": 256,
+        "height": 320,
+        "bytes": 12012
+      },
+      "pivot": [
+        205,
+        590
+      ],
+      "textSafeArea": [
+        430,
+        0,
+        82,
+        640
+      ]
+    },
+    {
+      "key": "ruby_talk_proud",
+      "file": "ruby_talk_proud.png",
+      "width": 512,
+      "height": 640,
+      "frameWidth": 512,
+      "frameHeight": 640,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/proud.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 188858,
+      "sha256": "49ae8f7f02ab93e8090fef651ec90f205e4f8db8d9fd6d476a678645cb050a2a",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_talk_proud.webp",
+        "width": 256,
+        "height": 320,
+        "bytes": 12864
+      },
+      "pivot": [
+        215,
+        590
+      ],
+      "textSafeArea": [
+        430,
+        0,
+        82,
+        640
+      ]
+    },
+    {
+      "key": "ruby_talk_worried",
+      "file": "ruby_talk_worried.png",
+      "width": 512,
+      "height": 640,
+      "frameWidth": 512,
+      "frameHeight": 640,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/B.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 184866,
+      "sha256": "154aa0559a7b942b78e5f1e7d318b22571d2b322d1a4e9d63679a4b14a11244b",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_talk_worried.webp",
+        "width": 256,
+        "height": 320,
+        "bytes": 11530
+      },
+      "pivot": [
+        205,
+        590
+      ],
+      "textSafeArea": [
+        430,
+        0,
+        82,
+        640
+      ]
+    },
+    {
+      "key": "ruby_point",
+      "file": "ruby_point.png",
+      "width": 1024,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 4,
+      "columns": 4,
+      "rows": 1,
+      "source": "raw/C.png",
+      "background": "transparent",
+      "loop": true,
+      "frameDurationsMs": [
+        260,
+        110,
+        200,
+        170
+      ],
+      "bytes": 277540,
+      "sha256": "a1ee19c21f4d94e28857576eadcc09a4d7a6b0c66e25bf0d601eb28641265e4f",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_point.webp",
+        "width": 512,
+        "height": 128,
+        "bytes": 23520
+      },
+      "pivot": [
+        128,
+        238
+      ],
+      "notes": "Four AI-painted poses. Mechanical cropping, fit and baseline registration only; no perspective-derived frames."
+    },
+    {
+      "key": "vfx_ruby_sparkle",
+      "file": "vfx_ruby_sparkle.png",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "rows": 1,
+      "source": "raw/V.png",
+      "background": "black",
+      "loop": false,
+      "frameDurationsMs": [
+        70,
+        80,
+        90,
+        100,
+        100,
+        120
+      ],
+      "bytes": 26267,
+      "sha256": "fa558ddd0432ef0db9ef5cf8097788c23444d747ba9777741d06ae9be81d8c9d",
+      "webpCandidate": {
+        "file": "webp_candidates/vfx_ruby_sparkle.webp",
+        "width": 384,
+        "height": 64,
+        "bytes": 1908
+      },
+      "blend": "ADD",
+      "notes": "One-shot show/hide burst; pure black background, do not NORMAL-blend."
+    },
+    {
+      "key": "ruby_memory_grandma",
+      "file": "ruby_memory_grandma.png",
+      "width": 720,
+      "height": 480,
+      "frameWidth": 720,
+      "frameHeight": 480,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/D1.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 645214,
+      "sha256": "2a461a06a09f164e404e817f6027d983380994c125b9e199e61b0b420a5bc2da",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_memory_grandma.webp",
+        "width": 360,
+        "height": 240,
+        "bytes": 40550
+      },
+      "notes": "Optional story illustration included; soft transparent vignette edge."
+    },
+    {
+      "key": "ruby_memory_jar",
+      "file": "ruby_memory_jar.png",
+      "width": 720,
+      "height": 480,
+      "frameWidth": 720,
+      "frameHeight": 480,
+      "frameCount": 1,
+      "columns": 1,
+      "rows": 1,
+      "source": "raw/D2.png",
+      "background": "transparent",
+      "loop": false,
+      "frameDurationsMs": [
+        100
+      ],
+      "bytes": 549712,
+      "sha256": "d0408996b2d158d31e58004ede0a05694b9cf414fe8c178f96a9d1a0c52138fd",
+      "webpCandidate": {
+        "file": "webp_candidates/ruby_memory_jar.webp",
+        "width": 360,
+        "height": 240,
+        "bytes": 30228
+      },
+      "notes": "Optional story illustration included; soft transparent vignette edge."
+    }
+  ]
+}

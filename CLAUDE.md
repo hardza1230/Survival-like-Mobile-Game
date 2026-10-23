@@ -1,3 +1,7 @@
+# Art delivery36 — rewritten Ruby mascot
+
+14 PNG32 assets /22frames delivered to assets/incoming/ruby_mascot/: six expressions, four talk portraits, four-frame point loop, six-frame black ADD sparkle and two memory illustrations. Seven ImageGen originals and exact prompts retained. PNG CRC/hash/alpha checks and offline60px /360×780 layout proofs passed. Source-only; preserve current runtime and lazy-load A/C in stage, B/D in menu when integrating. Phone overlap/cadence/FPS pending.
+
 # Art delivery40 — Bazaar chest source kit
 
 All7 PNG32 /22frames delivered to assets/incoming/chest_shop/ with6 built-in ImageGen donors, exact prompts, manifests, PNG CRC/hash/alpha QA, six-frame GIFs, exact closed-frame0 matching, Thread20px gallery, nine-slice and rarity-tint proofs. WebP candidates844,676bytes. Source-only; runtime v7.9.78 untouched. Next: Bazaar/Chests lazy wiring and phone cadence/FPS. Existing combat ic_thread key is used by a Knot effect; see delivery notes before replacing the texture key.

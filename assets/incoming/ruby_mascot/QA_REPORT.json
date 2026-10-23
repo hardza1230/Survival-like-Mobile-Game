@@ -1,0 +1,171 @@
+{
+  "order": 36,
+  "automatedChecks": [
+    {
+      "file": "mascot_ruby.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "508c123006d544427161e6d46ef653cf8a7c1a9776a166ac0ea4335f256c4ddf",
+      "bytes": 79076
+    },
+    {
+      "file": "mascot_ruby_happy.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "8992a0819d583b28f293803f77627df951a0a3c97bc5ff5ec01bb8f22816fd02",
+      "bytes": 79709
+    },
+    {
+      "file": "mascot_ruby_alert.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "fba537e6a67edefbd485dd8efc60168ce3f4cc098038ea6e21af5ec81abec9b6",
+      "bytes": 72281
+    },
+    {
+      "file": "mascot_ruby_think.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "e79dc105215b068288d0c13e62f66e8319eb5d34938f9794da7064f0e63cb1fa",
+      "bytes": 79695
+    },
+    {
+      "file": "mascot_ruby_cheer.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "1c3df373fd18e9df7e85b687b93a200caa0e190cb80fafc9ddbbdc0c0bf58835",
+      "bytes": 87767
+    },
+    {
+      "file": "mascot_ruby_sad.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "bf81fdf402c09187c7b62e9c11442ce3978d8a0a73295c7a14214edf6f346098",
+      "bytes": 76110
+    },
+    {
+      "file": "ruby_talk_normal.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "2915047b87bbbc5a20ea5d1ee5e0cae1ef6a1949cf4da88405490d99bda88468",
+      "bytes": 189894
+    },
+    {
+      "file": "ruby_talk_explain.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "8c4e9e104edbdc89fe0a4ff72336a36e4991aede7c706d52c7ae612678f100b4",
+      "bytes": 190478
+    },
+    {
+      "file": "ruby_talk_proud.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "49ae8f7f02ab93e8090fef651ec90f205e4f8db8d9fd6d476a678645cb050a2a",
+      "bytes": 188858
+    },
+    {
+      "file": "ruby_talk_worried.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "154aa0559a7b942b78e5f1e7d318b22571d2b322d1a4e9d63679a4b14a11244b",
+      "bytes": 184866
+    },
+    {
+      "file": "ruby_point.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "a1ee19c21f4d94e28857576eadcc09a4d7a6b0c66e25bf0d601eb28641265e4f",
+      "bytes": 277540
+    },
+    {
+      "file": "vfx_ruby_sparkle.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "sha256": "fa558ddd0432ef0db9ef5cf8097788c23444d747ba9777741d06ae9be81d8c9d",
+      "bytes": 26267
+    },
+    {
+      "file": "ruby_memory_grandma.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "2a461a06a09f164e404e817f6027d983380994c125b9e199e61b0b420a5bc2da",
+      "bytes": 645214
+    },
+    {
+      "file": "ruby_memory_jar.png",
+      "pngCRC": true,
+      "fullDecode": true,
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "d0408996b2d158d31e58004ede0a05694b9cf414fe8c178f96a9d1a0c52138fd",
+      "bytes": 549712
+    }
+  ],
+  "visualReview": [
+    "Six distinct expressions at 256px and 60px on black white-bordered boxes",
+    "Four portraits beside rubyTalk geometry at 360x780; layout proof only, not runtime screenshot",
+    "Point animation and sparkle GIF previews",
+    "Both memory scenes included"
+  ],
+  "limitations": [
+    "Source delivery only; runtime integration and phone gameplay remain pending",
+    "Four-frame point loop is intentionally brief; no claim of 12-frame motion",
+    "AI-painted details may vary slightly between poses"
+  ],
+  "runtimeVersionInspected": "7.9.81"
+}
