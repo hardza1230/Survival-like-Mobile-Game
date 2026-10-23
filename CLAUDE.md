@@ -56,7 +56,11 @@ The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.60 — Ruby mascot guide + pause icon fix (owner)
+# Latest delivery: v7.9.61 — Lobby hero warp + fairer C1-2 Sewer Flood (owner)
+
+LH_USE_SHEETS=false: order 34 frame sheets look boiling (every frame redrawn by AI, mean frame diff 20–35) → off (code kept). lobbyHeroWarp(key,x,y,H): card_<hero> split into 28 horizontal setCrop strips in a container at the feet; hubTween counter st.t → breathing (scaleY 1±.018 about the feet, scaleX inverse) + per-strip x sway (h²·4.2·sin(1.15t) + h³·1.6·sin(3.3t+5h), top moves most); zone lobby_hero (noBounce) → lobbyHeroTap: squash .12 → hop 22 → Bounce back; 5 taps in 3s = squash .16 + hop 70 + full spin; sway amp ×2.2 easing back. Canvas-safe (no Mesh). C1-2 arenaMech: Sewer Flood sweeps warn 1900 / dur 3800 (was 1500/2400) / gap 250 (was 170) / band 60, P2 vertical sweep starts after the first ends (+400ms) instead of 1400ms in; arenaSweep hit check now forgives the gap edge (+6px, was −10). Browser: warp strips move (top ±3px, feet 0), tap/poke run, 0 errors.
+
+# Previous delivery: v7.9.60 — Ruby mascot guide + pause icon fix (owner)
 
 RUBY_TIPS (before WAVE_OBJECTIVES): say (2 lines, [word] = highlighted gold/green/pink) + short for every wave objective type, huntClear, mini, boss, magnet, heal, chest. rubySay(text,ms,{replace}) queue → rubyNext draws a UI container (depth 64, by pad+182, centred, black box white border, avatar inside left, purple 'Ruby' pill) sliding in; rubyAvatar uses texture mascot_ruby if loaded, else a code-drawn pink mochi with a ruby gem (art order 36 docs/art_orders/36_RUBY_MASCOT.md). rubyOn: state play, no coach/tutorial. rubyTip(key) from setupWaveObjective end (Save.data.rubySeen[key] <3 → full say 4.3s, else short 2.7s), spawnMiniBoss (+3.2s), spawnFinalBoss (+4.2s); rubyOnce on first collectHeal/collectVac/collectChest. The 12s objective pulse now reminds via Ruby short line + progress (≤ every 24s) instead of the player bubble; showSpeechBubble skipped while Ruby shows, Ruby closes an open bubble. showBanner moves below the Ruby box while it is up. Pause: crest icon at the gem centre (y .333·crH, size .34·crH); Resume play icon at the green socket (x+bh·280/260, .42·bh). Browser: survive/capture tips shown, pause icons centred, 0 errors.
 
@@ -610,7 +614,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.60 · 21 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.61 · 21 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
