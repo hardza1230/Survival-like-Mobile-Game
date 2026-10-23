@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.63';
+const GAME_VERSION = '7.9.64';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.64',date:'2026-10-23',title:'Title screen',items:['Opening the game now shows a title screen: Strawberry waves her wand over the castle with the Mochi Mayhem logo','Tap anywhere to start and go to the Lobby']},
   {v:'7.9.63',date:'2026-10-23',title:'Lobby polish',items:['Stars you have not earned yet now show a gold outline','Power uses a soft colour; if you are far below the recommended Power, BATTLE asks you to tap again','Awards moved to the left side next to Codex','The Play tab is now called Stages']},
   {v:'7.9.62',date:'2026-10-23',title:'Cleaner Lobby',items:['Profile picture now shows your hero’s face','Heroes stand on a soft glowing spot with a clear shadow, and the background is dimmed so they stand out','Power now sits inside the stage box under the stars; new card types show as a small badge on the box']},
   {v:'7.9.61',date:'2026-10-23',title:'Softer heroes, fairer flood',items:['Lobby heroes now gently breathe and sway (hair and head move most) — tap for a squishy bounce, tap fast for a spin jump','C1-2 boss Sewer Flood: slower bars, a wider gap, a longer warning, and the second bar waits for the first one to finish']},
@@ -8306,7 +8307,7 @@ class Game extends Phaser.Scene {
   }
   // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
   // v7.9.47 เจ้าของ: แถบเมนูล่างแบบเกมทั่วไป (หน้าแนวตั้งหลังจบบทสอน · ไม่แสดงบนแผนที่ Delve)
-  navBarOn(s){ return this.state==='menu'&&this.W<this.H&&!!Save.data.tutorialDone&&!Save._cloudConflict&&!['atlas','rift','recipes','recipeprep'].includes(s); }
+  navBarOn(s){ return this.state==='menu'&&s!=='title'&&this.W<this.H&&!!Save.data.tutorialDone&&!Save._cloudConflict&&!['atlas','rift','recipes','recipeprep'].includes(s); }
   navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'chapter';
     if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft','bazaar','tradein'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
   drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;}; this.loadLobbyArt?.();
@@ -8526,7 +8527,7 @@ class Game extends Phaser.Scene {
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
     const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -9477,7 +9478,7 @@ class Game extends Phaser.Scene {
   // ทำซ้ำทุก ms (+สุ่ม jitter) ล้างใน stopHubMotion
   hubEvery(ms,jitter,fn){if(!this.hubMotionAllowed()||!this.time?.addEvent)return null;const ev={stop:false,remove(){this.stop=true;t?.remove(false);}};let t=null;const loop=()=>{if(ev.stop)return;t=this.time.delayedCall(ms+Math.random()*jitter,()=>{if(ev.stop)return;fn();loop();});};loop();(this._hubEvents||(this._hubEvents=[])).push(ev);return ev;}
   // แสงวิ่ง 1 ครั้งทับกล่อง (โลโก้/ปุ่ม Play)
-  hubFlash(key,x,y,w,h){if(this.state!=='menu'||this.menuScreen!=='hub'||!this.bpAnim?.(key))return;const s=this.add.sprite(x,y,key,0).setDisplaySize(w,h).setAlpha(.9);this.menu.add(s);s.play(key);s.once('animationcomplete',()=>s.destroy());}
+  hubFlash(key,x,y,w,h){if(this.state!=='menu'||(this.menuScreen!=='hub'&&this.menuScreen!=='title')||!this.bpAnim?.(key))return;const s=this.add.sprite(x,y,key,0).setDisplaySize(w,h).setAlpha(.9);this.menu.add(s);s.play(key);s.once('animationcomplete',()=>s.destroy());}
   hubLayout(){
     const w=this.W,h=this.H,portrait=w<=h,side=Math.max(10,w*.026),gap=Math.max(9,w*.022),right=portrait?w-side:w*.97,left=portrait?side:w*.48;
     const width=right-left,menuTop=portrait?h*(h<680?.55:.57):94,bottom=h-(portrait?Math.max(36,h*.065):12),unit=(bottom-menuTop-gap*3)/4.3;
@@ -9612,6 +9613,22 @@ class Game extends Phaser.Scene {
     if(sp._lhSet==='poke')return; if(t.length>=5){ this._lhTaps=[]; this.lhPlay('poke'); return; } if(sp._lhSet==='tap')return; this.lhPlay('tap'); }
   loadLobbyArt(){ if(this._lbArt)return; const miss=LB_KEYS.filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]); if(!miss.length){this._lbArt=true;return;} this._lbArt=true;
     try{ this.ensureGroup(k=>miss.includes(k),()=>{ if(this.state==='menu')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
+  /* v7.9.64 หน้าเปิดเกม: ฉาก Hub เดิม (Strawberry ถือคทาแยกชิ้น ใบ 25) + โลโก้ + TAP TO START · แตะที่ไหนก็ได้ → Lobby (เปิดปกหนังสือ) */
+  buildTitle(){ this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H;
+    const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
+    const bg=this.textures.exists(bgKey)?this._coverImage(0,0,w,h,bgKey):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
+    const live=bgKey==='hub_ui_background'&&this.buildHubScene?.(bg);
+    if(bg.type==='Image'&&!live)this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    const shade=this.add.graphics();for(let i=0;i<24;i++){const y=h*.52+i*h*.48/24;shade.fillStyle(0x140a1e,.03+i*.03).fillRect(0,y,w,h*.48/24+1);}this.menu.add(shade);
+    const logoW=Math.min(w*.86,460),logoH=logoW*310/1200,logoY=h*.62;this.startHubAmbience(h*.5);
+    if(this.textures.exists('hub_ui_logo')){ const logo=this.hubArt('logo',w/2,logoY,logoW,logoH);this.hubTween({targets:logo,y:logoY+3,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.hubEvery?.(5000,1500,()=>this.hubFlash('vfx_hub_logo_shine',w/2,logoY,logoW,logoH)); }
+    else this.menu.add(this.add.text(w/2,logoY,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(40,w*.1))+'px',color:'#fff0df',stroke:'#5a2440',strokeThickness:6}).setOrigin(.5));
+    const ty=Math.min(h*.82,logoY+logoH/2+h*.12),tap=this.add.text(w/2,ty,'TAP TO START',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(24,w*.062))+'px',color:'#ffe08a',stroke:'#3a1830',strokeThickness:5}).setOrigin(.5);this.menu.add(tap);
+    tap._noEnter=true;this.hubTween({targets:tap,alpha:{from:1,to:.35},scale:{from:1,to:.94},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    this.hubText(w/2,h-Math.max(18,h*.03),'v'+GAME_VERSION,11,'#d9cce6',.5);
+    this._zone(0,0,w,h,()=>{ if(this._titleGo)return; this._titleGo=true; Sfx.ui?.(); this.menuScreen='hub'; this.buildMenuScreen(); this._titleGo=false;
+      if(this.hubMotionAllowed()){ const t0=Date.now(); this.loadBook?.(()=>{ if(this.state==='menu'&&Date.now()-t0<2500)this.bookCover(); }); } });
+    const z=this.tapZones[this.tapZones.length-1]; z.tag='title_start'; z.noBounce=true; }
   buildHub(){
     if(this._navOn&&this.W<this.H)return this.buildLobby();
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,L=this.hubLayout(),p=w/941,portrait=L.portrait,side=L.side;
@@ -10940,8 +10957,10 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ try{ Tele.flush(); }catch(e){} this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); this.menuScreen=window.__pendingMenu||'hub'; window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false);
+  showMenu(){ try{ Tele.flush(); }catch(e){} this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); const _title=!window.__titleShown&&!window.__pendingMenu&&window.__pendingRun==null&&!!Save.data.tutorialDone; window.__titleShown=true;   // v7.9.64 หน้าเปิดเกมครั้งแรกที่เข้าเมนูหลังเปิดแอป
+    this.menuScreen=_title?'title':(window.__pendingMenu||'hub'); window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false);
     const rp=window.__pendingRun; window.__pendingRun=null; if(rp!=null){ this.time.delayedCall(60,()=>{ if(this.state==='menu')this.startRun(rp); }); return; }   // v7.9.45 Replay ตอนแพ้ = รีสตาร์ทฉากแล้วเริ่มด่านเดิมใหม่ (เดิมเรียก startRun ตรง ๆ ศัตรู/บอสเดิมค้างในสนาม)
+    if(_title)return;
     if(this.hubMotionAllowed()){ const t0=Date.now(); this.loadBook(()=>{ if(this.state==='menu'&&Date.now()-t0<2500)this.bookCover(); }); } }   // v7.9.10 ใบ 28 เปิดปกหนังสือทุกครั้งที่เข้าเมนู (เปิดเกม/กลับจากด่าน)
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
