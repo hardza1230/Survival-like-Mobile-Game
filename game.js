@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.87';
+const GAME_VERSION = '7.9.88';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.88',date:'2026-10-23',title:'Painted winter magic and Lobby bubbles',items:['Crystal Impaler dash shards now shimmer through four hand-painted animation frames','Glacier Bloom now has an eight-frame snowfall and icy wind animation that pauses with gameplay','Lobby speech and thought bubbles now use painted cream/gold and pale-blue panels','Winter art loads when entering a Mint stage; dialogue panels load with the Lobby']},
   {v:'7.9.87',date:'2026-10-23',title:'Ruby, winter magic and growing gear',items:['Ruby now uses her painted expressions, dialogue portraits, quest pointer and story memories','Crystal Impaler: Frost Lance dash releases a homing ice shard every 70px travelled; longer and repeat dashes release more','Glacier Bloom leaves a snowstorm for 4 seconds, dealing damage every half second with knockback and damage-based or chance-based freeze','Lobby heroes alternate their own spoken lines and thoughts','Low-level gear has limited Forge rows and enhancement caps; stored legacy investments remain saved with excess power inactive']},
   {v:'7.9.86',date:'2026-10-23',title:'No spawns outside the map',items:['Monsters, Elites, minibosses and bosses never appear outside the map — they come in near the middle instead']},
   {v:'7.9.85',date:'2026-10-23',title:'Tougher monsters',items:['Story monsters, Elites, minibosses and bosses have 20% more HP']},
@@ -1545,6 +1546,7 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  lb_dialog_speech:'assets/art/lobby/lb_dialog_speech.webp',lb_dialog_thought:'assets/art/lobby/lb_dialog_thought.webp',
   mascot_ruby:'assets/art/mascot/mascot_ruby.webp',mascot_ruby_happy:'assets/art/mascot/mascot_ruby_happy.webp',mascot_ruby_alert:'assets/art/mascot/mascot_ruby_alert.webp',mascot_ruby_think:'assets/art/mascot/mascot_ruby_think.webp',mascot_ruby_cheer:'assets/art/mascot/mascot_ruby_cheer.webp',mascot_ruby_sad:'assets/art/mascot/mascot_ruby_sad.webp',
   ruby_talk_normal:'assets/art/mascot/ruby_talk_normal.webp',ruby_talk_explain:'assets/art/mascot/ruby_talk_explain.webp',ruby_talk_proud:'assets/art/mascot/ruby_talk_proud.webp',ruby_talk_worried:'assets/art/mascot/ruby_talk_worried.webp',ruby_memory_grandma:'assets/art/mascot/ruby_memory_grandma.webp',ruby_memory_jar:'assets/art/mascot/ruby_memory_jar.webp',ruby_point:'assets/art/mascot/ruby_point.webp',vfx_ruby_sparkle:'assets/art/mascot/vfx_ruby_sparkle.webp',
   ic_unique_mastery:'assets/art/talents/unique_mastery.webp',
@@ -2674,6 +2676,8 @@ const ASSET_SHEETS = {
 // v6.60.3 build-path pose sheets are packed at half size; scale them back to the run sheet's on-screen size
 const BP_POSE_SCALE={char_cocoa_titan_slam:1/.74,char_cocoa_titan_hop:1/.76,char_cocoa_titan_charge:1/.8,char_cocoa_titan_walk:1/.88,char_cocoa_titan_colossus:1/.8,char_cocoa_fire_jab:1/.76,char_cocoa_fire_fin:1/.72,char_cocoa_rocket:1/.7,char_cocoa_dash_leap:1/.78,char_cocoa_dash_jab:1/.8,char_cocoa_phantom:1/.62,char_cocoa_hurt:1/.92,char_cocoa_victory:1/.82,char_mint_lance_charged:1/.66};
 const ASSET_FX = {
+  fx_mint_dash_shard:{url:'assets/art/mint_winter/fx_mint_dash_shard.webp',fw:128,fh:128,frames:4,rate:16,anchor:'center',loop:true},
+  fx_mint_snowstorm:{url:'assets/art/mint_winter/fx_mint_snowstorm.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
   // v6.60.3 Build path art (assets/art/bp_fx · scripts/pack-build-path-art.py): luminance-alpha, NORMAL blend
   // v7.8.20 Taro Sentry art (assets/art/taro_sentry · scripts/pack-taro-sentry-art.py): turrets alpha 128px cells, VFX luminance-alpha, NORMAL blend
   // v7.8.25 Taro Spark + Ball Lightning art (assets/art/taro_spark_ball · scripts/pack-taro-spark-ball-art.py)
@@ -3337,7 +3341,7 @@ const LH_FW=384,LH_FH=480,LH_FOOT=451,LH_BODY=390,LH_ACTS=['act1','act2','act3',
 const LH_MS={idle:[220,220,220,160,120,220,220,220],tap:[100,100,180,200,120,120],def:[100,110,140,180,220,140,110,100]};
 Object.assign(TEMPLE_UI,{"tut_ic_welcome":[128,128,1,null],"tut_ic_move":[128,128,1,null],"tut_ic_attack":[128,128,1,null],"tut_ic_sweets":[128,128,1,null],"tut_ic_cards":[128,128,1,null],"tut_ic_dash":[128,128,1,null],"tut_ic_unique":[128,128,1,null],"tut_ic_hp":[128,128,1,null],"tut_ic_ready":[128,128,1,null],"tut_finger":[128,128,1,null],"tut_card_frame":[390,300,1,[40,75,40,40]],"vfx_tut_ring":[128,128,6,null],"vfx_tut_great":[128,128,6,null]});
 const TUT_KEYS=["tut_ic_welcome", "tut_ic_move", "tut_ic_attack", "tut_ic_sweets", "tut_ic_cards", "tut_ic_dash", "tut_ic_unique", "tut_ic_hp", "tut_ic_ready", "tut_finger", "tut_card_frame", "vfx_tut_ring", "vfx_tut_great"];
-const LB_KEYS=["ic_nav_bazaar","ic_nav_upgrade","ic_side_mail","lb_stage_panel","lb_battle_btn","lb_arrow_btn","lb_side_btn","lb_profile_frame","lb_avatar_ring","lb_currency_pill","ic_lb_battle","ic_nav_home","ic_nav_heroes","ic_nav_play","ic_nav_gear","ic_nav_activities","ic_side_codex","ic_side_inbox","ic_side_news","ic_side_daily","ic_side_awards","lb_nav_bg","lb_nav_active","lb_nav_divider","lb_star","lb_power_pill","lb_hero_shadow","vfx_lb_battle_shine","vfx_lb_sparkle"];
+const LB_KEYS=["lb_dialog_speech","lb_dialog_thought","ic_nav_bazaar","ic_nav_upgrade","ic_side_mail","lb_stage_panel","lb_battle_btn","lb_arrow_btn","lb_side_btn","lb_profile_frame","lb_avatar_ring","lb_currency_pill","ic_lb_battle","ic_nav_home","ic_nav_heroes","ic_nav_play","ic_nav_gear","ic_nav_activities","ic_side_codex","ic_side_inbox","ic_side_news","ic_side_daily","ic_side_awards","lb_nav_bg","lb_nav_active","lb_nav_divider","lb_star","lb_power_pill","lb_hero_shadow","vfx_lb_battle_shine","vfx_lb_sparkle"];
 const JR_REQ=['jr_page_bg','jr_header_plaque','jr_btn_back','jr_chip_currency','jr_panel','jr_divider','jr_warning_ribbon','jr_slot','jr_bag_cell','jr_row','jr_icon_ring','jr_checkbox','jr_btn_primary','jr_btn_secondary','jr_btn_accent','jr_btn_icon','jr_btn_pill','jr_btn_pager','jr_icon_sheet','jr_forge_summary','jr_forge_footer','jr_badge_new'];
 // สีตัวหนังสือธีมม่วง → หมึกบนกระดาษ (เกรด/ดาวใช้เฉดเข้มของสีเดิม)
 const JR_INK=(()=>{const I='#3b2416',S='#6b4a33',G='#2f7a3c',R='#a8323e',Y='#8a5a00',m={};const put=(c,l)=>l.forEach(x=>m[x]=c);
@@ -3385,7 +3389,7 @@ const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|t
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(RUBY_MENU_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(RUBY_MENU_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -7410,6 +7414,7 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_IMAGES)chk(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)chk(k,ASSET_SHEETS[k].url); return out; }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat',...RUBY_STAGE_KEYS];
+    if((this.character||Save.data.character)==='mint')keys.push('fx_mint_dash_shard','fx_mint_snowstorm');
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
     return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]||ASSET_FX[k]);   // v7.8.32 ASSET_FX เฉพาะด่าน (C2-4) โหลดพร้อมด่าน
@@ -7780,8 +7785,9 @@ class Game extends Phaser.Scene {
     const storm={x:pl.x,y:pl.y,r,hit,t:0,pulses:0,basic:this.basicAttack,epoch:this._artEpoch||0,freeze:1+0.6*(this.mintLv().m_hold||0),frozen:new Map(),deepChill:false};
     storm.g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(6)));
     // One stationary field; gameplay time advances only in play, so card/pause screens cannot consume it.
-    for(const old of this._glacierStorms||[])if(old.g?.active)old.g.destroy();
+    for(const old of this._glacierStorms||[]){if(old.g?.active)old.g.destroy();if(old.art?.active)old.art.destroy();}
     this._glacierStorms=[storm];
+    if(this.realTex?.('fx_mint_snowstorm'))storm.art=this.trackArtVfx(this.camWorld(this.add.sprite(storm.x,storm.y,'fx_mint_snowstorm',0).setOrigin(.5,.78).setDepth(6).setDisplaySize(r*3,r*3)));
     if(this.textures.exists('vfx_glacier_bloom'))this.trackArtVfx(this.spawnFxAnim('vfx_glacier_bloom',storm.x,storm.y,{scale:r*2/384,depth:6,normal:true}));
     this.glacierSnowPulse(storm);
     this.uqMutHook?.('bloom',{cx:storm.x,cy:storm.y,r,n:storm.frozen.size,storm});
@@ -7816,6 +7822,7 @@ class Game extends Phaser.Scene {
   drawGlacierSnow(storm){
     const g=storm.g;if(!g?.active)return;const {x,y,r,t}=storm,q=typeof Save==='undefined'?1:(Save.data.settings?.vfx??1);
     g.clear();g.fillStyle(0x84cff5,.10).fillCircle(x,y,r);g.lineStyle(2,0xd1f8ff,.55).strokeCircle(x,y,r);
+    if(storm.art?.active){storm.art.setVisible(q!==0).setFrame(Math.floor(t*12)%8).setAlpha(Math.min(1,(4-t)*3));if(q!==0)return;}
     // Bounded procedural snow: a few streaks even on Low keep the damaging area readable.
     const n=q===0?8:q===1?18:28;
     for(let i=0;i<n;i++){
@@ -7828,11 +7835,11 @@ class Game extends Phaser.Scene {
   tickGlacierSnow(dt){
     if(this.state!=='play')return;const storms=this._glacierStorms||[];
     for(let i=storms.length-1;i>=0;i--){const s=storms[i];
-      if(s.epoch!==(this._artEpoch||0)||s.basic!==this.basicAttack||!this.player?.active){if(s.g?.active)s.g.destroy();storms.splice(i,1);continue;}
+      if(s.epoch!==(this._artEpoch||0)||s.basic!==this.basicAttack||!this.player?.active){if(s.g?.active)s.g.destroy();if(s.art?.active)s.art.destroy();storms.splice(i,1);continue;}
       s.t+=dt;
       // Exactly eight pulses, including release, at 0 / .5 / ... / 3.5s. New arrivals are checked each pulse.
       while(this.state==='play'&&s.epoch===(this._artEpoch||0)&&s.pulses<8&&s.t+1e-8>=s.pulses*.5)this.glacierSnowPulse(s);
-      if(s.t>=4){if(s.g?.active)s.g.destroy();storms.splice(i,1);continue;}
+      if(s.t>=4){if(s.g?.active)s.g.destroy();if(s.art?.active)s.art.destroy();storms.splice(i,1);continue;}
       this.drawGlacierSnow(s);
     }
   }
@@ -7865,7 +7872,9 @@ class Game extends Phaser.Scene {
       const t=this.lanceShardTarget(sx,sy);if(!t)continue;
       const b=this.mintBullet(sx,sy,0xc8f5ff,.18);if(!b)continue;
       const angle=Math.atan2(t.y-sy,t.x-sx);
-      b.setTexture('proj_sprinkle').setTint(0xc8f5ff);this.attachProjectileArt?.(b,'proj_mint_shard',26,.67,.5);
+      b.setTexture('proj_sprinkle').setTint(0xc8f5ff);
+      if(this.attachProjectileAnim?.(b,'fx_mint_dash_shard',128))b._chargeFx.setDisplaySize(64,64);
+      else this.attachProjectileArt?.(b,'proj_mint_shard',26,.67,.5);
       b.dmg=dash.power;b.life=1.6;b.faceVel=true;b.homing=650;b.homeSpeed=600;b.homeRange=760;b.mintDashShard=true;
       b.iceNeedle={freeze:.6,frozenBonus:1.2,shatter:false,dmg:b.dmg,lvl:1};b.pierceLeft=1;
       this.physics.velocityFromRotation(angle,600,b.body.velocity);
@@ -9909,9 +9918,12 @@ class Game extends Phaser.Scene {
     const lines=LOBBY_LINES[v.hero]||LOBBY_LINES.momo,cursors=this._lobbyLineCursor||(this._lobbyLineCursor={}),i=cursors[v.hero]||0,[kind,line]=lines[i%lines.length];cursors[v.hero]=i+1;
     v.label.setText((CHARACTERS[v.hero]?.name||'Hero')+(kind==='thinks'?' · thinking':' says'));
     v.text.setText(line);const H=21+v.text.height+10;
-    v.g.clear();v.g.fillStyle(kind==='thinks'?0xebf3ff:0xfff6e7,.96).fillRoundedRect(-v.width/2,-4,v.width,H,12).lineStyle(1.5,kind==='thinks'?0xabc9eb:0xe3b976,1).strokeRoundedRect(-v.width/2,-4,v.width,H,12);
-    if(kind==='thinks'){v.g.fillStyle(0xebf3ff,.96).fillCircle(v.width*.28,-11,4).fillCircle(v.width*.24,-19,2);}
-    else{v.g.fillStyle(0xfff6e7,.96).fillTriangle(v.width*.19,-4,v.width*.33,-4,v.width*.27,-14);}
+    v.g.clear();if(v.panel?.active)v.panel.destroy();v.panel=null;
+    const key=kind==='thinks'?'lb_dialog_thought':'lb_dialog_speech';
+    if(this.realTex?.(key)&&this.menuRasterPanel){v.panel=this.menuRasterPanel(key,-v.width/2-8,-24,v.width+16,H+32,64);if(v.panel){v.root.add(v.panel);v.root.sendToBack(v.panel);}}
+    if(!v.panel){v.g.fillStyle(kind==='thinks'?0xebf3ff:0xfff6e7,.96).fillRoundedRect(-v.width/2,-4,v.width,H,12).lineStyle(1.5,kind==='thinks'?0xabc9eb:0xe3b976,1).strokeRoundedRect(-v.width/2,-4,v.width,H,12);
+      if(kind==='thinks'){v.g.fillStyle(0xebf3ff,.96).fillCircle(v.width*.28,-11,4).fillCircle(v.width*.24,-19,2);}
+      else{v.g.fillStyle(0xfff6e7,.96).fillTriangle(v.width*.19,-4,v.width*.33,-4,v.width*.27,-14);}}
     v.root.setVisible(true);v.showing=true;v.t=5.5;
   }
   lobbyHeroWarp(key,x,y,H){ if(!this.textures.exists(key)||!this.tweens)return false; const src=this.textures.get(key).getSourceImage(),tw=src.width,th=src.height; if(!tw||!th)return false;
@@ -10066,9 +10078,9 @@ class Game extends Phaser.Scene {
   rosterTabLayout(){const w=this.W,p=w/941,h=Math.max(36,Math.min(48,86*p)),gap=Math.max(8,18*p),tw=Math.min(w*.245,220),y=w<=this.H?Math.max(42,110*p):50;return{tw,h,gap,y,x0:(w-tw*3-gap*2)/2};}
   heroTone(){const id=(this._heroesTab||'roster')==='roster'?(this._heroPreview||Save.data.character):Save.data.character;return({momo:{fill:0xa52f53,edge:0xffb99b},mint:{fill:0x22616b,edge:0x8bece5},cocoa:{fill:0x754327,edge:0xf5bd7c},taro:{fill:0x63398c,edge:0xd3a1ff},yuzu:{fill:0x756123,edge:0xffe67d},sesame:{fill:0x444552,edge:0xe9e3f6}})[id]||{fill:0xa52f53,edge:0xffb99b};}
   menuRasterIcon(key,x,y,size){if(!this.textures.exists(key))return null;const im=this.add.image(x,y,key),scale=Math.min(size/im.width,size/im.height);im.setScale(scale);this.menu.add(im);return im;}
-  menuRasterPanel(key,x,y,w,h){
+  menuRasterPanel(key,x,y,w,h,sourceCap){
     if(!this.textures.exists(key)||!this.textures.get||!this.add.container)return null;
-    const src=this.textures.get(key).getSourceImage(),sw=src.width,sh=src.height,cap=sh*.28,d=Math.min(h*.28,w/2),xs=[0,cap,sw-cap,sw],ys=[0,cap,sh-cap,sh],xd=[0,d,w-d,w],yd=[0,d,h-d,h],group=this.add.container(x,y);
+    const src=this.textures.get(key).getSourceImage(),sw=src.width,sh=src.height,cap=sourceCap??sh*.28,d=Math.min(h*.28,w/2),xs=[0,cap,sw-cap,sw],ys=[0,cap,sh-cap,sh],xd=[0,d,w-d,w],yd=[0,d,h-d,h],group=this.add.container(x,y);
     // Cropped ordinary images preserve painted corners in Phaser Canvas and WebGL.
     for(let r=0;r<3;r++)for(let c=0;c<3;c++){const sx=xs[c],sy=ys[r],cw=xs[c+1]-sx,ch=ys[r+1]-sy,dw=xd[c+1]-xd[c],dh=yd[r+1]-yd[r];if(dw<=0||dh<=0)continue;const ax=dw/cw,ay=dh/ch;group.add(this.add.image(xd[c]-sx*ax,yd[r]-sy*ay,key).setOrigin(0).setCrop(sx,sy,cw,ch).setScale(ax,ay));}this.menu.add(group);return group;
   }

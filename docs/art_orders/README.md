@@ -18,6 +18,7 @@
 ## ชุดงาน (Batch) และสถานะ
 | # | ไฟล์ | เนื้อหา | จำนวน | ลำดับความสำคัญ | สถานะ |
 |---|---|---|---|---|---|
+| 41 | `41_MINT_WINTER_LOBBY.md` | Mint homing Shard / พายุหิมะ / กรอบคำพูดและความคิด Lobby | 4 / 14 เฟรม | 🟠 | 🟩 ImageGen + ผูกแล้ว v7.9.88 · รอ QA มือถือ |
 | 01 | `01_FLOORS_SEAMLESS.md` | พื้นด่านแบบต่อขอบ C2-1…C3-5 | 10 | 🔴 สูงสุด (แก้ภาพแตก) | 🟩 ใส่เข้าเกมแล้ว v5.54 (webp ใน assets/art/floors) |
 | 02 | `02_MAP_DECOR.md` | ของตกแต่งพื้นรายด่าน (เริ่ม C2-1) | 8/ด่าน | 🔴 | 🟩 C2-1 v5.54 · C2-2 v6.0.7 · C2-3…C3-5 v6.0.8 ใส่เข้าเกมครบแล้ว |
 | 03 | `03_CH3_ENEMIES.md` | ศัตรู Chapter 3 (5 บทบาท) | 5 | 🟡 | 🟩 ชีตเดิน 4 เฟรมใส่เกมแล้ว v6.34 |
@@ -74,7 +75,8 @@ assets/art/<batch>/                 ← AI เขียนโค้ด ย้า
 ### แผนที่ batch → ใบสั่ง → โฟลเดอร์
 | batch | ใบสั่ง | วางไฟล์ส่งงาน | ไฟล์จริงในเกม |
 |---|---|---|---|
-| floors | 01 | assets/incoming/floors/ | assets/art/floors/ |
+| floors | 41 | `41_MINT_WINTER_LOBBY.md` | Mint homing Shard / พายุหิมะ / กรอบคำพูดและความคิด Lobby | 4 / 14 เฟรม | 🟠 | 🟩 ImageGen + ผูกแล้ว v7.9.88 · รอ QA มือถือ |
+| 01 | assets/incoming/floors/ | assets/art/floors/ |
 | decor_c21…decor_c35 | 02 | assets/incoming/decor_cXX/ | assets/art/decor_cXX/ |
 | ch3_enemies | 03 | assets/incoming/ch3_enemies/ | assets/art/ch3_enemies/ |
 | ch3_bosses | 04 | assets/incoming/ch3_bosses/ | assets/art/ch3_bosses/ |

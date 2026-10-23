@@ -1,0 +1,58 @@
+{
+  "assets": [
+    {
+      "key": "fx_mint_dash_shard",
+      "size": [
+        512,
+        128
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "sha256": "ce963f4460f99174ff873bf393466f4625ac4a76fd0d1de8cba2f8abb306d02b",
+      "full_decode": true
+    },
+    {
+      "key": "fx_mint_snowstorm",
+      "size": [
+        2048,
+        256
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "sha256": "123e57e31192e8d8dbceab8fe912d5517cfd1013aaedda5195f67b613bf458a9",
+      "full_decode": true
+    },
+    {
+      "key": "lb_dialog_speech",
+      "size": [
+        512,
+        256
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "sha256": "86e2a12765aaca2baf0527cb5cca25bbe3a64ef3a1e536fb045082da96c83dc8",
+      "full_decode": true
+    },
+    {
+      "key": "lb_dialog_thought",
+      "size": [
+        512,
+        256
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "sha256": "36234bf27112fc6f72d97ed7f1ef5fc33357bdbde7df63b3a995a7ef7a7bb657",
+      "full_decode": true
+    }
+  ],
+  "runtime_bytes": 293070,
+  "decoded_bytes": 3407872
+}

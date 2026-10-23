@@ -1,11 +1,11 @@
-# Latest checkpoint — v7.9.87 owner improvements
+# Latest checkpoint — v7.9.88 ImageGen winter art
 
-23 October 2026 (Asia/Bangkok). Workspace E:/Heart/TT/survival-mobile on claude/vampire-survival-mobile-game-yo9e8w, based on2a4eca3. User authorized Ruby36, Crystal Impaler distance shards,4s Glacier snowstorm, character Lobby lines, early gear craft/enhance caps.
+23 October2026 (Asia/Bangkok). E:/Heart/TT/survival-mobile on claude/vampire-survival-mobile-game-yo9e8w; base7974020. User requested ImageGen art for the latest update.
 
-Implemented all five. Ruby14 WebPs stage/menu lazy and memories. Frost Lance Unique70px spacing with local nearest homing, five base/nine max-range shards when targets/budget allow. Glacier8 pulses/.5s over4s; knockback, ≥8% maxHP actual hit freeze or25% chance, bosses Brittle; pause/transition guards. Six speech/thought lines per Lobby hero. Gear1/2/3 active rows at iLv1/12/25 and enhance caps+3/+5/+7/+10 at iLv1/12/25/45, saved legacy data retained; direct guards, paid-choice refund and tutorial recovery.
+Created four original ImageGen RGBA sources:4-frame Mint dash shard,8-frame falling snowstorm, cream/gold speech panel and pale-blue thought panel. Original pixels and exact prompts preserved in assets/incoming/mint_winter_update/raw and PROMPTS.json. Normalized PNGs, manifest/hash/alpha/full-decode QA and offline playback GIFs included. Reproducible pack script scripts/pack-mint-winter-art.py; runtime293,070bytes /3,407,872 decoded bytes. See docs/art_orders/41_MINT_WINTER_LOBBY.md.
 
-Checks: final npm run check passed including Ruby/Mint/Lobby/gear regression suites; npm run build:www passed for v7.9.87 with 1,909 runtime assets. Local Windows build cannot find npx via execFileSync, so it uses the existing unminified fallback; CI Linux retains the existing minification path. No browser screenshots or headless balance simulation (owner instruction).
+Integrated without balance changes: animated projectile overlay preserves collider/homing/caps; one stationary storm sprite follows gameplay time and clears on all exits; Low/fallback retained; menu-lazy9slice dialogue panels. FX load on Mint stage entry only, no boot GPU increase.
 
-Published code commit 76dceb3e19c7987625591f74653656d66d47e4b4; local and remote tree matched 69f86ccfa12d7d32161ada748a33ccaed8b79ce2. All 35 changed files (3,142,340 bytes) read back from immutable GitHub URLs and matched staged Git blob SHA. Pages run 39943051799 and Android run 39943051819 both succeeded; rolling latest APK targets this commit (298,266,715 bytes). Live unqueried and cache-bypassed version.json and game.js report 7.9.87; all five runtime features present. All 14 live Ruby WebPs match tested local SHA256 (186,478 bytes).
+Final automated check and v7.9.88 web build passed (1,913 runtime assets). No game window/screenshots or balance simulation. Local minification uses existing Windows fallback; CI performs normal Linux build.
 
-Next: owner phone visual, timing, combat feel and FPS review. Implementation and publication complete; no Play Store or backend changes.
+Next: publish verified tree, confirm Pages/Android and live version/assets; then owner phone readability, cadence and FPS review. Ruby36 remains complete from v7.9.87; no gear balance/backend/Play Store changes.

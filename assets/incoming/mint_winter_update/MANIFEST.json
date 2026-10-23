@@ -1,0 +1,98 @@
+{
+  "generated_with": "built-in ImageGen",
+  "processing": "source-pixel crop/registration/resize only",
+  "assets": [
+    {
+      "key": "fx_mint_dash_shard",
+      "frames": 4,
+      "width": 512,
+      "height": 128,
+      "source_crop": [
+        58,
+        196,
+        587,
+        456
+      ],
+      "registration": "tip",
+      "decoded_bytes": 262144,
+      "source": "fx_mint_dash_shard.png",
+      "runtime": "assets/art/mint_winter/fx_mint_dash_shard.webp",
+      "bytes": 20346,
+      "sha256": "ce963f4460f99174ff873bf393466f4625ac4a76fd0d1de8cba2f8abb306d02b"
+    },
+    {
+      "key": "fx_mint_snowstorm",
+      "frames": 8,
+      "width": 2048,
+      "height": 256,
+      "source_crop": [
+        0,
+        0,
+        384,
+        512
+      ],
+      "registration": "common",
+      "decoded_bytes": 2097152,
+      "source": "fx_mint_snowstorm.png",
+      "runtime": "assets/art/mint_winter/fx_mint_snowstorm.webp",
+      "bytes": 241410,
+      "sha256": "123e57e31192e8d8dbceab8fe912d5517cfd1013aaedda5195f67b613bf458a9"
+    },
+    {
+      "key": "lb_dialog_speech",
+      "frames": 1,
+      "width": 512,
+      "height": 256,
+      "nine_slice": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "decoded_bytes": 524288,
+      "source": "lb_dialog_speech.png",
+      "runtime": "assets/art/lobby/lb_dialog_speech.webp",
+      "bytes": 13266,
+      "sha256": "86e2a12765aaca2baf0527cb5cca25bbe3a64ef3a1e536fb045082da96c83dc8"
+    },
+    {
+      "key": "lb_dialog_thought",
+      "frames": 1,
+      "width": 512,
+      "height": 256,
+      "nine_slice": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "decoded_bytes": 524288,
+      "source": "lb_dialog_thought.png",
+      "runtime": "assets/art/lobby/lb_dialog_thought.webp",
+      "bytes": 18048,
+      "sha256": "36234bf27112fc6f72d97ed7f1ef5fc33357bdbde7df63b3a995a7ef7a7bb657"
+    }
+  ],
+  "raw": [
+    {
+      "file": "raw/shard.png",
+      "bytes": 827053,
+      "sha256": "30b81a9c58cd58958c60ea85f20410b689426470cb43356054320da72fcf6ef9"
+    },
+    {
+      "file": "raw/speech.png",
+      "bytes": 1229189,
+      "sha256": "5f0b4e29f0602657c291a3e3243824c40abc1a3d1ff1a749ffdeb251ef1b72dd"
+    },
+    {
+      "file": "raw/storm-initial.png",
+      "bytes": 2239759,
+      "sha256": "698783b72c6d8b4fde35f052219a583184282095a028e37103c65ef3b62c96f4"
+    },
+    {
+      "file": "raw/thought.png",
+      "bytes": 1127101,
+      "sha256": "50077055e55f78c3c66666d1751bec77c8a8d9096ff84e31507ae91b73621268"
+    }
+  ]
+}
