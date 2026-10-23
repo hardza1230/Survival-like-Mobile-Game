@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.66';
+const GAME_VERSION = '7.9.67';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.67',date:'2026-10-23',title:'Shorter tutorial lines',items:['Every tutorial card now has just two short lines','Ruby’s lines tell the story: the Great Hunger is stealing Mochitopia’s flavors and you take them back']},
   {v:'7.9.66',date:'2026-10-23',title:'Slower, clearer tutorial',items:['New players go straight from the title screen into the tutorial','Ruby explains each step on a big card before you try it — the game waits until you tap','New steps: picking up sweets (EXP) and staying healthy; Dash is practised twice','After each step you get a short “Great job!” before the next one']},
   {v:'7.9.65',date:'2026-10-23',title:'Stage box spacing',items:['Stars and Power on the Lobby stage box sit further from the edge']},
   {v:'7.9.64',date:'2026-10-23',title:'Title screen',items:['Opening the game now shows a title screen: Strawberry waves her wand over the castle with the Mochi Mayhem logo','Tap anywhere to start and go to the Lobby']},
@@ -13248,15 +13249,15 @@ class Game extends Phaser.Scene {
   }
   /* ---- 🍓 ครูBerryสอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
   coachSteps(){ return [   // v7.9.66 เจ้าของ: สอนช้า ๆ เข้าใจง่าย → ทุกขั้นมีหน้าอธิบาย (เกมหยุด, แตะเพื่อไปต่อ) ก่อนให้ลองทำ · ทำได้แล้วชม 1.5 วิค่อยไปขั้นถัดไป
-    { icon:'👋', title:'Hi, I’m Ruby!', body:'Welcome to Mochi Mayhem!\nI will show you how to play, one step at a time.\nTake your time — the game waits for you.', introOnly:true },
-    { icon:'👆', title:'Moving', body:'Put one finger anywhere on the screen and slide it.\nYour hero walks the way you slide.\nLift your finger to stop.', say:'Slide your finger to walk', sub:'Walk around a little', spot:'move', goal:c=>'Walk around · '+Math.min(100,Math.round((c.trav||0)/7))+'%', check:c=>(c.trav||0)>=700 },
-    { icon:'⚔️', title:'Attacking', body:'There is no attack button!\nYour hero attacks the closest enemy all by itself.\nJust walk near the enemies.', say:'Defeat the enemies', sub:'Walk near them — you attack on your own', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:3, check:c=>this.kills-c.kills>=3 },
-    { icon:'🍬', title:'Sweets = EXP', body:'Defeated enemies drop sweets.\nWalk over them to pick them up.\nSweets fill the EXP bar at the top of the screen.', say:'Pick up the sweets', sub:'Walk over the shiny drops', spot:null, orbs:4, goal:c=>'Collected '+Math.min(3,(this._coachOrbs||0)-c.orbs)+'/3', check:c=>(this._coachOrbs||0)-c.orbs>=3, timeout:30 },
-    { icon:'🃏', title:'Level Up!', body:'When the EXP bar is full you level up and get 3 cards.\nTap a card to read it. Tap the same card again to take it.\nCards make you stronger until the stage ends.', say:'Pick a card', sub:'Tap once to read, tap again to take', spot:'card', goal:'Pick a card', level:true, check:c=>(this._coachCardPick||0)-c.card>=1 },
-    { icon:'💨', title:'Dash', body:'The green button at the bottom right is Dash.\nIt makes you zoom forward to dodge danger.\nAfter a dash it needs a moment to recharge.', say:'TAP Dash two times', sub:'Wait for it to recharge between dashes', spot:'dash', label:'TAP', goal:c=>'Dash '+Math.min(2,(this._coachDash||0)-c.dash)+'/2', check:c=>(this._coachDash||0)-c.dash>=2 },
-    { icon:'⭐', title:'Your Unique Skill', body:'The pink button above Dash is your Unique — your big attack.\nEvery hero has a different one.\nAfter you use it, it charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
-    { icon:'❤️', title:'Stay Healthy', body:'Your HP bar shows how much health you have.\nIf it reaches zero, the stage ends.\nPink mochi hearts dropped by enemies heal you.', introOnly:true },
-    { icon:'🎁', title:'You’re Ready!', body:'That’s everything you need to start.\nYour first stage is waiting — have fun!', introOnly:true },
+    { id:'welcome', icon:'👋', title:'Hi, I’m Ruby!', body:'The Great Hunger is eating Mochitopia’s flavors.\nLet’s get you ready to fight back!', introOnly:true },
+    { id:'move', icon:'👆', title:'Moving', body:'Slide one finger to walk.\nLift it to stop.', say:'Slide your finger to walk', sub:'Walk around a little', spot:'move', goal:c=>'Walk around · '+Math.min(100,Math.round((c.trav||0)/7))+'%', check:c=>(c.trav||0)>=700 },
+    { id:'attack', icon:'⚔️', title:'Attacking', body:'Your Mochi Core fights on its own.\nJust walk near the sour critters!', say:'Defeat the enemies', sub:'Walk near them — you attack on your own', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:3, check:c=>this.kills-c.kills>=3 },
+    { id:'sweets', icon:'🍬', title:'Sweets = EXP', body:'Beaten foes drop stolen sweets.\nWalk over them to take them back!', say:'Pick up the sweets', sub:'Walk over the shiny drops', spot:null, orbs:4, goal:c=>'Collected '+Math.min(3,(this._coachOrbs||0)-c.orbs)+'/3', check:c=>(this._coachOrbs||0)-c.orbs>=3, timeout:30 },
+    { id:'cards', icon:'🃏', title:'Level Up!', body:'Full EXP bar = 3 flavor cards.\nTap one to read, tap again to take it.', say:'Pick a card', sub:'Tap once to read, tap again to take', spot:'card', goal:'Pick a card', level:true, check:c=>(this._coachCardPick||0)-c.card>=1 },
+    { id:'dash', icon:'💨', title:'Dash', body:'Green button: zoom past danger.\nIt needs a moment to recharge.', say:'TAP Dash two times', sub:'Wait for it to recharge between dashes', spot:'dash', label:'TAP', goal:c=>'Dash '+Math.min(2,(this._coachDash||0)-c.dash)+'/2', check:c=>(this._coachDash||0)-c.dash>=2 },
+    { id:'unique', icon:'⭐', title:'Your Unique', body:'Pink button: your Core’s big attack.\nIt charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
+    { id:'hp', icon:'❤️', title:'Stay Healthy', body:'HP at zero ends the stage.\nPink mochi hearts heal you.', introOnly:true },
+    { id:'ready', icon:'🎁', title:'You’re Ready!', body:'The pantry floor is cracking…\nGo save Mochitopia’s flavor!', introOnly:true },
   ]; }
   startCoach(){ this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
   _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps();
@@ -13276,7 +13277,8 @@ class Game extends Phaser.Scene {
     g.fillStyle(0x000000,.4).fillRoundedRect(bx+4,by+6,bw,bh,22).fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,22).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,22); cont.add(g);
     const av=this.rubyAvatar(w/2-40,by+78,78); if(av)cont.add(av);
     cont.add(this.add.text(bx+16,by+12,'STEP '+n+' / '+steps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffb3c8'}));
-    const tt=this.add.text(w/2,by+96,(step.icon?step.icon+' ':'')+step.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5}).setOrigin(.5,0); if(tt.width>tw)tt.setScale(tw/tt.width); cont.add(tt);
+    const ik='tut_ic_'+step.id,hasIc=this.textures.exists(ik); if(hasIc){ const ic=this.add.image(bx+bw-52,by+52,ik); ic.setScale(72/Math.max(ic.width,ic.height)); cont.add(ic); }   // ใบสั่งอาร์ต 38 (ไอคอนประจำขั้น) · ไม่มีภาพ = ใช้อีโมจิในหัวข้อ
+    const tt=this.add.text(w/2,by+96,(step.icon&&!hasIc?step.icon+' ':'')+step.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5}).setOrigin(.5,0); if(tt.width>tw)tt.setScale(tw/tt.width); cont.add(tt);
     body.setY(by+142); cont.add(body);
     const last=n===steps.length,hint=this.add.text(w/2,by+bh-30,last?'👆 Tap to start your first stage':(step.introOnly?'👆 Tap to continue':'👆 Tap to try it'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); cont.add(hint);
     cont.setAlpha(0); this.tweens.add({targets:cont,alpha:1,duration:320});
@@ -13358,7 +13360,7 @@ class Game extends Phaser.Scene {
   // 🔦 สปอตไลต์ชี้จุดที่ต้องทำ (วงกลมเต้น + นิ้วชี้) — reposition ต่อเฟรมใน tickTutorialCoach
   buildCoachSpotlight(step){ if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;}
     if(!step||!step.spot)return; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(59); this.camUI(cont);
-    const ring=this.add.circle(0,0,44,0xffe08a,0).setStrokeStyle(5,0xffe08a,1); const finger=this.add.text(0,0,'👆',{fontSize:'34px'}).setOrigin(0.5,0);
+    const ring=this.add.circle(0,0,44,0xffe08a,0).setStrokeStyle(5,0xffe08a,1); const finger=this.textures.exists('tut_finger')?this.add.image(0,0,'tut_finger').setOrigin(.3,0).setDisplaySize(56,56):this.add.text(0,0,'👆',{fontSize:'34px'}).setOrigin(0.5,0);   // ใบ 38
     const lab=this.add.text(0,0,step.label||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#1a0f1e',backgroundColor:'#ffe08a',padding:{x:10,y:4}}).setOrigin(1,0.5).setVisible(!!step.label);
     cont.add([ring,finger,lab]); this._coachSpot=cont; this._coachSpotRing=ring; this._coachSpotFinger=finger; this._coachSpotLab=lab; this._coachSpotKind=step.spot;
     this.tweens.add({targets:ring,scale:{from:0.8,to:1.25},alpha:{from:1,to:0.45},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
