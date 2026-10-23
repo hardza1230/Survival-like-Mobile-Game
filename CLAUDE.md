@@ -1,3 +1,7 @@
+# Art delivery38 — Tutorial UI source kit
+
+13 PNG32 / 23 frames delivered to assets/incoming/tutorial_ui/: nine step icons, pointer hand, nine-slice panel and two six-frame VFX strips. Five original built-in ImageGen sources, exact prompts, manifest, PNG CRC/hash/alpha/dimension QA, 48/72px galleries, vertical panel proof and animation previews included. Source-only; runtime version unchanged. Next: tutorial-only lazy WebP packing and integration per order38; owner phone visual/timing/FPS pending.
+
 # ⚠️ DEPLOY BRANCH — read first
 
 The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.

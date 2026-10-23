@@ -1,3 +1,5 @@
+> 23 ต.ค. 2026: ส่งอาร์ตครบ 13 PNG32 / 23 เฟรมแล้วที่ `assets/incoming/tutorial_ui/` พร้อมต้นฉบับ, manifest, prompts, QA และ preview · รอแพ็ก/ผูก runtime และตรวจมือถือ
+
 # 38 — บทสอนผู้เล่นใหม่ (Tutorial) · ใบสั่งงานอาร์ต
 
 ส่งไฟล์ที่ `assets/incoming/tutorial_ui/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`

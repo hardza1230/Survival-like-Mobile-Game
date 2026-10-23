@@ -1,0 +1,227 @@
+{
+  "date": "2026-10-23",
+  "requiredFiles": 13,
+  "deliveredFiles": 13,
+  "frames": 23,
+  "checks": [
+    {
+      "file": "tut_ic_welcome.png",
+      "sha256": "6e1b2466ef83a303cee74e4037bc0df6c9f19c077ed17b60305f7f8778692b9e",
+      "bytes": 67555,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 37647,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_move.png",
+      "sha256": "4219a2f35ea0a7bdb97d434483dbd24b71adaa85d9346a15488a5d886615ea45",
+      "bytes": 68669,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 31058,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_attack.png",
+      "sha256": "6f41ddb96e9d849aeb63f0326f7bfa6607738a41f0e38b3f58e942a559dc1778",
+      "bytes": 53465,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 45639,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_sweets.png",
+      "sha256": "6f11937df01fbf64733a1fe156b6273126c73ddad6d7004589b7b8caebba1d89",
+      "bytes": 82351,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 34177,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_cards.png",
+      "sha256": "2c31721aad07768a374ad283ac02abd789e36c0e39565e15dd57a3e70f5682d6",
+      "bytes": 64377,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 34676,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_dash.png",
+      "sha256": "bfbe3094c562448c7400d364be0e68ff86524795f149185e7f05c1c77a39691f",
+      "bytes": 71169,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 35075,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_unique.png",
+      "sha256": "190456e6614b2d4fd95215cacf7e3ed9d55ede35fed1d8b34e4fc0a90d8289e4",
+      "bytes": 77588,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 29683,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_hp.png",
+      "sha256": "79869364edea7a11c29ff8c4494dc00475912d479d0bb024a5e95ccf2947a52d",
+      "bytes": 72266,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 32801,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_ic_ready.png",
+      "sha256": "840c7729e048b3c5ca2ebb40060c1980e16ffa89738d987d33dd4bb15412bf66",
+      "bytes": 78037,
+      "size": [
+        256,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 33805,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_finger.png",
+      "sha256": "eacf4231baf136b497fbe209662e87eaff589f3bc7fd0f95adac67dd62bcccc5",
+      "bytes": 14415,
+      "size": [
+        128,
+        128
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 10476,
+      "frameCount": 1
+    },
+    {
+      "file": "tut_card_frame.png",
+      "sha256": "cf2dd9f8d4ccb60203adf922b0cbf7cdefec80ad6aa04955b5d7dd9e97cead23",
+      "bytes": 507080,
+      "size": [
+        780,
+        600
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 69475,
+      "frameCount": 1
+    },
+    {
+      "file": "vfx_tut_ring.png",
+      "sha256": "cb310b006c2714c94b973187037187266a274864a72ef04463153f3d11502878",
+      "bytes": 366646,
+      "size": [
+        1536,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 233552,
+      "frameCount": 6
+    },
+    {
+      "file": "vfx_tut_great.png",
+      "sha256": "1913a521a10c30c8fe4858542b1a8f070c0272f373e83f688f51ff5b1adf2298",
+      "bytes": 290137,
+      "size": [
+        1536,
+        256
+      ],
+      "pngCRC": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPixels": 264756,
+      "frameCount": 6
+    }
+  ],
+  "ringCenterAlpha": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "visualReview": "Reviewed generated sources, 48/72px light/dark icons, vertical 9-slice compositions, all six VFX frames and hand pointer. No asset text. Phone timing/FPS remains pending.",
+  "phoneVisualTimingFPS": "Pending owner test",
+  "runtimeIntegration": "Not part of source delivery"
+}
