@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.72';
+const GAME_VERSION = '7.9.73';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.73',date:'2026-10-23',title:'Reset and sign out start fresh',items:['Reset progress now restarts the game from the title screen (and clears the cloud copy if you are signed in)','Signing out clears this device’s save and restarts; sign in again to get your cloud save back','Inbox removed from the Upgrade page — use the Mail button in the Lobby']},
   {v:'7.9.72',date:'2026-10-23',title:'More room on strong phones',items:['Phones with 8 GB RAM or more keep more art loaded, so screens reload pictures less often']},
   {v:'7.9.71',date:'2026-10-23',title:'Lobby rises in',items:['After the storybook opens, the Lobby pieces float up one by one']},
   {v:'7.9.70',date:'2026-10-23',title:'Lobby art fix',items:['Fixed: Lobby frames, BATTLE button and side buttons could go plain after the storybook opening']},
@@ -8661,7 +8662,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Gear & Power','screen_gear_power_789','hub');
     const L=this.gearPowerLayout(),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone,nxt=this.hubNextStep();
     const label=(y,t,c)=>{this.hubText(L.x+3,y,t,12,c);const line=this.add.rectangle(L.x+60,y,L.bw-62,1,parseInt(c.slice(1),16),.45).setOrigin(0,.5);this.menu.add(line);};label(L.top-14,'POWER','#ffdc91');label(L.gearY-14,'GEAR','#9de4d6');
-    const rows=[['upgrade','Weave & Rank'],['gear','Equipment'],['craft','Affix Forge'],['bazaar','Bazaar'],['gearInbox','Inbox']];
+    const rows=[['upgrade','Weave & Rank'],['gear','Equipment'],['craft','Affix Forge'],['bazaar','Bazaar']];   // v7.9.73 Inbox ย้ายไปปุ่ม Mail ใน Lobby
     rows.forEach(([target,title],i)=>{const primary=i===0,j=i-1,x=primary?L.x:L.x+(j%L.cols)*(L.tw+L.gap),y=primary?L.top:L.gearY+Math.floor(j/L.cols)*(L.tileH+L.gap),w=primary?L.bw:L.tw,h=primary?L.powerH:L.tileH,locked=!primary&&!afterS1,key='mui_gear_card_'+target;
       if(this.textures.exists(key)){const art=this.add.image(x+w/2,y+h/2,key).setDisplaySize(w,h).setAlpha(locked?.42:1);this.menu.add(art);}else this.hubPanel(x,y,w,h,this.hubTone(primary?3:2));
       const tx=primary?x+w*.75:x+w/2,ty=primary?y+h*.53:y+h*.89,room=primary?w*.42:w-16;
@@ -9383,7 +9384,7 @@ class Game extends Phaser.Scene {
     const rt=this.add.text(w/2,h-30,labels[Math.min(rc,2)],{fontFamily:'sans-serif',fontSize:'11px',color:rc>0?'#ff8fb5':'#6f6578'}).setOrigin(0.5);this.menu.add(rt);
     this._zone(w/2-140,h-44,280,30,()=>{
       this._resetTaps=(this._resetTaps||0)+1;
-      if(this._resetTaps>=3){ Save.reset(); this._resetTaps=0; this.character='momo'; Sfx.clear(); this.menuScreen='hub'; this.buildMenuScreen(); return; }
+      if(this._resetTaps>=3){ this._resetTaps=0; Sfx.clear(); this.wipeAndRestart?.(true); return; }   // v7.9.73 เจ้าของ: รีเซ็ตแล้วโหลดเกมใหม่ (หน้าเปิดเกม → บทสอน)
       Sfx.select(); this.buildSettings();
       clearTimeout(this._resetTapTimer); this._resetTapTimer=setTimeout(()=>{ if(this._resetTaps){ this._resetTaps=0; if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); } },2600);
     });
@@ -9433,12 +9434,17 @@ class Game extends Phaser.Scene {
     const t=this.add.text(w/2,y,msg,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:color||'#ffe08a',align:'center',wordWrap:{width:320}}).setOrigin(0.5);
     if(this.menu){this.menu.add([g,t]);} this._toast=t; this._toastBg=g;
     this.time.delayedCall(2600,()=>{ if(this._toast===t){t.destroy();g.destroy();this._toast=null;this._toastBg=null;} }); }
+  // v7.9.73 ล้างเซฟในเครื่องแล้วโหลดหน้าใหม่ · cloudToo = รีเซ็ตบัญชี (เขียนเซฟว่างทับบนคลาวด์ด้วย ถ้าเข้าระบบอยู่) · false = ออกจากระบบ (คลาวด์เก็บไว้)
+  async wipeAndRestart(cloudToo){ try{ GameLoader.show?.(cloudToo?'Resetting…':'Signing out…',.3); }catch(e){}
+    try{ const r=(Save.data.rev||0)+1; Save.reset(); if(cloudToo&&typeof Cloud!=='undefined'&&Cloud.ready){ Save.data.rev=r; Save.data.savedAt=Date.now(); try{ localStorage.setItem('mochi_save',JSON.stringify(Save.data)); }catch(e){} await Cloud.push(Save.data); } }catch(e){}
+    if(!cloudToo){ try{ await Cloud.signOut(); }catch(e){} try{ localStorage.removeItem('mochi_save'); }catch(e){} }
+    try{ localStorage.removeItem('mochi_cloud_base'); }catch(e){} window.__titleShown=false; setTimeout(()=>location.reload(),150); }
   // เข้าสู่ระบบ / ออกจากระบบ Google สำหรับ Cloud Save
   doGoogleAuth(signedIn){
     Sfx.select();
     if(typeof Cloud==='undefined'||!Cloud.enabled||!Cloud.enabled()){ this.menuToast('☁️ Cannot reach the cloud (SDK failed) — check your connection and refresh','#ff9bb5'); return; }
     if(signedIn){
-      Cloud.signOut().then(()=>{ Save._cloudReady=false; if(Save.syncCloud)Save.syncCloud(); this.menuToast('👋 Signed out — your save stays on this device','#8bd3a0'); if(this.state==='menu'&&this.menuScreen==='settings')this.buildSettings(); });
+      this.wipeAndRestart?.(false);   // v7.9.73 เจ้าของ: ออกจากระบบ = ล้างเซฟในเครื่อง (เซฟบนคลาวด์ยังอยู่ · เข้าระบบใหม่ได้คืน) แล้วโหลดเกมใหม่
       return;
     }
     this.menuToast('☁️ Opening Google…','#8bd3a0');
