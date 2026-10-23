@@ -1,4 +1,8 @@
-# Latest delivery: v7.9.91 — Clearer loading + persistent storage (owner)
+# Latest delivery: v7.9.92 — Grandma’s Battle Recipes (owner picked ข+ค)
+
+RUBY_STORYBOOK[1] (shown before C1-2) gains page 3 (ruby_memory_jar art): Ruby finds Grandma’s Battle Recipes and can hold one at a time → why Builds open from C1-2 and are picked each floor. CARD_INTRO.path = '📖 Battle Recipe' (first-time note only); pathTeach Strawberry pages renamed One Big Seed / Seed Spray / Bouncing Seeds, other heroes get 'Grandma wrote Battle Recipes for you too'. Everywhere else still says Build Path (option ข). tests/ruby-storybook uses each chapter's page count.
+
+# Previous delivery: v7.9.91 — Clearer loading + persistent storage (owner)
 
 GameLoader.set (patched in game.js) percent line: window.__dlPhase (set by downloadAllAssets while fetching) → '⬇️ Downloading n% (n / N)'; else LoadMeter dev ≥ net → '📦 Preparing n% (seen / count)', else '⬇️ Loading'. downloadAllAssets first calls navigator.storage.persist() so Android is less likely to evict the ~288 MB cache. Owner question answered: per-file ?v= hashes mean only changed files re-download; the boot bar every launch is decoding cached files into GPU memory, plus game.js on each new version.
 

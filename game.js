@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.91';
+const GAME_VERSION = '7.9.92';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -85,10 +85,11 @@ const STORY_WAVE_PLAN=[
 function inMapPt(x,y,m=80){ const L=WORLD/2-m; if(Math.abs(x)<=L&&Math.abs(y)<=L)return [x,y]; const a=Math.random()*Math.PI*2,r=Math.random()*220; return [Math.cos(a)*r,Math.sin(a)*r]; }
 const STORY_HP_MUL=1.2;   // v7.9.85 เจ้าของ: ตัวละครตีแรงไป → มอน/Elite/มินิ/บอสใน Story ถึกขึ้น 20%
 const CARD_UNLOCK={path:1,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
-const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
+const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.92',date:'2026-10-23',title:'Grandma’s Battle Recipes',items:['Before C1-2 Ruby finds Grandma’s Battle Recipes — the reason Builds open from the second floor','The first Build pick is now a Battle Recipe lesson from Ruby']},
   {v:'7.9.91',date:'2026-10-23',title:'Clearer loading',items:['The loading bar now says Preparing when it unpacks files already on your phone, and Downloading only when it fetches new files','The game asks your phone to keep its downloaded data so it is not cleared']},
   {v:'7.9.90',date:'2026-10-23',title:'Ruby opens her storybook',items:['Ruby narrates illustrated story pages before the first five stages','New pantry, furnace, frozen spirits and Crown Oven paintings bring early events to life','Narration now fills the screen with recipe-book paper or a black fallback instead of the Lobby','Read at your own pace with Back, Next and Skip; story progress is saved after closing']},
   {v:'7.9.89',date:'2026-10-23',title:'A clearer Lobby',items:['Roomier Sugar and Thread displays with compact balances','Painted Settings icon and new currency frames','Hero dialogue now sits above the hero, clear of side shortcuts','Brighter controls, tidy shortcuts and clearer stage information']},
@@ -6864,8 +6865,9 @@ const RUBY_STORYBOOK=[
   ]},
   {title:'Grandma’s Jam Jar',pages:[
     {art:'ruby_memory_grandma',text:'When the Ant Empress fell, a memory came back: Grandma’s jam jar, warm and sweet in her hands.',mood:'happy'},
-    {art:'ruby_memory_jar',text:'Then it slipped away, down these pipes. Let’s follow it. There may be another memory waiting below.',mood:'normal'}
-  ]},
+    {art:'ruby_memory_jar',text:'Then it slipped away, down these pipes. Let’s follow it. There may be another memory waiting below.',mood:'normal'},
+    {art:'ruby_memory_jar',text:'Wait… a page is stuck to the jar’s label. Grandma’s Battle Recipes! Three ways to fight with seeds. I can only hold one in my head at a time, so on each floor you’ll pick one.',mood:'happy'}
+  ]},   /* v7.9.92 เจ้าของเลือก ข+ค: Build = สูตรต่อสู้ของคุณยาย (เปิดตั้งแต่ C1-2) */
   {title:'The Stolen Flavor',pages:[
     {art:'ruby_story_furnace',text:'This heat… the Hunger’s machine burns the flavor it stole from us. Every spark used to belong to someone.',mood:'alert'},
     {art:'ruby_story_furnace',text:'I can almost taste my old strawberry jam. If we stop this machine, maybe I’ll remember a little more.',mood:'normal'}
@@ -13956,10 +13958,10 @@ class Game extends Phaser.Scene {
   }
   /* v7.9.83 เจ้าของ: สอนเลือกบิลด์ Strawberry (ครั้งแรกที่เจอการ์ด Build Path) · Ruby อธิบาย 3 หน้า · แตะ = หน้าถัดไป · ระหว่างนี้แตะการ์ดไม่ได้ */
   pathTeach(){ if(!this.lvlUp||!this.add)return; const w=this.W,h=this.H,mo=(this.character||Save.data.character)==='momo';
-    const pages=mo?['Time to choose a [Build]!\nA Build changes how Strawberry fights for the rest of this stage.',
-      '[🎯 Sniper] — one big charged seed that pierces. Great on bosses.\n[💥 Shotgun] — a wide spray. Get close for huge damage.\n[💞 Ricochet] — seeds bounce. Best in big crowds.',
-      'After you pick, new cards will power up that Build.\nEvery stage you choose again — try them all and find your favorite!']
-      :['Time to choose a [Build]!\nA Build changes how your hero fights for the rest of this stage.','Read each card — they play very differently.\nAfter you pick, new cards power up that Build. You choose again every stage!'];
+    const pages=mo?['Remember Grandma’s [Battle Recipes]? Here they are!\nPick one and Strawberry fights that way for the rest of this floor.',
+      '[🎯 One Big Seed] — Sniper: a charged seed that pierces. Great on bosses.\n[💥 Seed Spray] — Shotgun: a wide spray. Get close for huge damage.\n[💞 Bouncing Seeds] — Ricochet: seeds bounce. Best in big crowds.',
+      'After you pick, new cards power up that recipe.\nNext floor we can try a different page — find your favorite!']
+      :['Grandma wrote [Battle Recipes] for you too!\nPick one and you fight that way for the rest of this floor.','Read each card — they play very differently.\nNew cards power up the recipe you pick. You choose again every floor!'];
     const c=this.add.container(0,0).setDepth(9999); this.lvlUp.add(c); let i=-1; this.levelCardReadyAt=Infinity;
     const show=()=>{ c.removeAll(true); i++; if(i>=pages.length){ c.destroy(); this._pathTeach=null; this.levelCardReadyAt=this.time.now+400; return; }
       const bw=Math.min(w-20,420),bx=(w-bw)/2,lines=rubyWrap(pages[i],Math.floor((bw-110)/(13*.56))),bh=Math.max(96,40+lines.length*20),by=h-bh-26,g=this.add.graphics();

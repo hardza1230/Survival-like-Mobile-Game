@@ -17,7 +17,7 @@ const art=['ruby_story_pantry','ruby_memory_jar','ruby_story_furnace','ruby_stor
 assert.equal(ctx.entries.length,5);
 for(let i=0;i<5;i++){
   const c=scene();let resumed=0;assert(c.rubyStageStory(i,()=>resumed++));
-  const t=c.talks[0];assert.equal(t.opt.storybook,true);assert.equal(t.opt.title,ctx.entries[i].title);assert.equal(t.opt.pages.length,2);assert.equal(t.lines.length,2);
+  const t=c.talks[0];assert.equal(t.opt.storybook,true);assert.equal(t.opt.title,ctx.entries[i].title);assert.equal(t.opt.pages.length,ctx.entries[i].pages.length);assert.equal(t.lines.length,ctx.entries[i].pages.length);assert.ok(t.lines.length>=2);
   for(let p=0;p<2;p++){assert.equal(t.opt.pages[p].art,i===1&&p===0?'ruby_memory_grandma':art[i]);assert.equal(t.lines[p],t.opt.pages[p].text);assert(t.lines[p].length>20);assert(t.opt.pages[p].mood);}
   assert.equal(Save.data.rubyStorybook,undefined,'opening a story must not mark it read');assert.equal(Save.data.rubyStory,undefined);assert.equal(resumed,0);
   assert(c.rubyStageStory(i,()=>resumed++));assert.equal(c.talks.length,1,'repeated entry while modal is open is deduplicated');
