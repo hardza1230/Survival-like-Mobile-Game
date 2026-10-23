@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.79';
+const GAME_VERSION = '7.9.80';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.80',date:'2026-10-23',title:'Book only at start',items:['The book now opens only when you start the game, not after every stage']},
   {v:'7.9.79',date:'2026-10-23',title:'New chest art',items:['Silver and Gold chests now have their own art and a lid-opening animation','Light rays in the prize colour behind your new gear','New Thread icon in the Lobby']},
   {v:'7.9.78',date:'2026-10-23',title:'New heroes on the story path',items:['Taro now joins at C2-3 and Yuzu at C3-1, each with a short introduction','The + next to Sugar stays hidden until the Bazaar opens']},
   {v:'7.9.77',date:'2026-10-23',title:'Chest shop and Thread',items:['New Bazaar Chests: Silver Chest (one free a day) and Gold Chest (Legend guaranteed every 10) open with 🧶 Thread','Thread now shows under Sugar in the Lobby; tap it to open the chests','The storybook now opens its page first, then the Lobby floats up once','Tapping the hero a lot makes them wiggle instead of spinning']},
@@ -9808,7 +9809,7 @@ class Game extends Phaser.Scene {
       if(this.bookReady()&&this.hubMotionAllowed()&&this.bookOpening){ const tut=!Save.data.tutorialDone; this.bookOpening(()=>{ this._titleGo=false; if(this.state!=='menu')return; this.menuScreen='hub'; if(tut){ this.startChapterTutorial(); return; } this.buildMenuScreen(); },!tut); return; }   // v7.9.68 เปิดหนังสือช้า ๆ ก่อนเข้า Lobby / บทสอน
       if(!Save.data.tutorialDone){ this._titleGo=false; this.menuScreen='hub'; this.startChapterTutorial(); return; }   // v7.9.66 ผู้เล่นใหม่: แตะ → เข้าบทสอนเลย
       this.menuScreen='hub'; this.buildMenuScreen(); this._titleGo=false;
-      if(this.hubMotionAllowed()){ const t0=Date.now(); this.loadBook?.(()=>{ if(this.state==='menu'&&Date.now()-t0<2500)this.bookCover(); }); } });
+      });
     const z=this.tapZones[this.tapZones.length-1]; z.tag='title_start'; z.noBounce=true; }
   buildHub(){
     if(this._navOn&&this.W<this.H)return this.buildLobby();
@@ -11188,7 +11189,7 @@ class Game extends Phaser.Scene {
     this.menuScreen=_title?'title':(window.__pendingMenu||'hub'); window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false);
     const rp=window.__pendingRun; window.__pendingRun=null; if(rp!=null){ this.time.delayedCall(60,()=>{ if(this.state==='menu')this.startRun(rp); }); return; }   // v7.9.45 Replay ตอนแพ้ = รีสตาร์ทฉากแล้วเริ่มด่านเดิมใหม่ (เดิมเรียก startRun ตรง ๆ ศัตรู/บอสเดิมค้างในสนาม)
     if(_title)return;
-    if(this.hubMotionAllowed()){ const t0=Date.now(); this.loadBook(()=>{ if(this.state==='menu'&&Date.now()-t0<2500)this.bookCover(); }); } }   // v7.9.10 ใบ 28 เปิดปกหนังสือทุกครั้งที่เข้าเมนู (เปิดเกม/กลับจากด่าน)
+    /* v7.9.80 เจ้าของ: เปิดหนังสือแค่ตอนเปิดเกม (หน้า TAP TO START) · กลับจากด่านไม่ต้องเปิดปก */ }   // v7.9.10 ใบ 28 เปิดปกหนังสือทุกครั้งที่เข้าเมนู (เปิดเกม/กลับจากด่าน)
   // หยุดชั่วคราว / เล่นต่อ
   // เร่ง/ลดความเร็วเกมทั้งระบบ (physics + timers + tweens + dt) แบบ Godot time_scale
   setGameSpeed(s){ s=Number.isFinite(s)?Math.max(1,Math.min(4,Math.round(s))):1;this.gameSpeed=s;
