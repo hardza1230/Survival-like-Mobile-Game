@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.71';
+const GAME_VERSION = '7.9.72';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.72',date:'2026-10-23',title:'More room on strong phones',items:['Phones with 8 GB RAM or more keep more art loaded, so screens reload pictures less often']},
   {v:'7.9.71',date:'2026-10-23',title:'Lobby rises in',items:['After the storybook opens, the Lobby pieces float up one by one']},
   {v:'7.9.70',date:'2026-10-23',title:'Lobby art fix',items:['Fixed: Lobby frames, BATTLE button and side buttons could go plain after the storybook opening']},
   {v:'7.9.69',date:'2026-10-23',title:'New storybook opening art',items:['The storybook after TAP TO START now has its own art: the mochi crest moves, magic sparkles swirl, the gold clasp unlocks, the cover swings open in 12 frames, the pages riffle and light bursts out','New icons for the Bazaar and Upgrade tabs and the Mail button']},
@@ -3359,7 +3360,7 @@ function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
-const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:400;
+const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
 
 class Boot extends Phaser.Scene {
