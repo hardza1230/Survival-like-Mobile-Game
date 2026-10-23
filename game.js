@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.64';
+const GAME_VERSION = '7.9.65';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.65',date:'2026-10-23',title:'Stage box spacing',items:['Stars and Power on the Lobby stage box sit further from the edge']},
   {v:'7.9.64',date:'2026-10-23',title:'Title screen',items:['Opening the game now shows a title screen: Strawberry waves her wand over the castle with the Mochi Mayhem logo','Tap anywhere to start and go to the Lobby']},
   {v:'7.9.63',date:'2026-10-23',title:'Lobby polish',items:['Stars you have not earned yet now show a gold outline','Power uses a soft colour; if you are far below the recommended Power, BATTLE asks you to tap again','Awards moved to the left side next to Codex','The Play tab is now called Stages']},
   {v:'7.9.62',date:'2026-10-23',title:'Cleaner Lobby',items:['Profile picture now shows your hero’s face','Heroes stand on a soft glowing spot with a clear shadow, and the background is dimmed so they stand out','Power now sits inside the stage box under the stars; new card types show as a small badge on the box']},
@@ -9546,14 +9547,14 @@ class Game extends Phaser.Scene {
     else this.hubText(w/2,heroY-heroH/2,ch.emoji||'🍡',Math.min(96,heroH*.5),'#fff',.5);
     // กล่องด่าน (A1) · CHAPTER · C1-1 · ชื่อ · ดาว 3 ดวง (D1)
     if(!panel('lb_stage_panel',px,panY,panW,panH)){ const pg=this.add.graphics();pg.fillStyle(0x000000,.4).fillRoundedRect(px+3,panY+4,panW,panH,18).fillStyle(0x2a1a3a,.96).fillRoundedRect(px,panY,panW,panH,18).lineStyle(3,0xffc43d,1).strokeRoundedRect(px,panY,panW,panH,18);this.menu.add(pg); }
-    const chN=st.chapter||0,lab='C'+(chN+1)+'-'+(st.chapterStage||STAGES.slice(0,si+1).filter(x=>(x.chapter||0)===chN).length),starW=Math.round(panH*.24),tcx=px+(panW-starW*3-14)/2+6;
+    const chN=st.chapter||0,lab='C'+(chN+1)+'-'+(st.chapterStage||STAGES.slice(0,si+1).filter(x=>(x.chapter||0)===chN).length),starW=Math.round(panH*.22),SM=30,tcx=px+(panW-starW*3-SM)/2+8;   // v7.9.65 SM = ระยะดาวจากขอบขวา (เดิม 14 ชิดขอบเกิน)
     this.hubText(tcx,panY+panH*.2,'✦  C H A P T E R  '+(chN+1)+'  ✦',10,'#ffd98a',.5);
     const big=this.add.text(tcx,panY+panH*.5,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(panH*.36)+'px',color:'#fff3df',stroke:'#2a1a3a',strokeThickness:3}).setOrigin(.5);this.menu.add(big);
-    const nm=this.hubText(tcx,panY+panH*.79,st.name||'',12,'#f3dcc0',.5);let f2=12;while(nm.width>panW-starW*3-34&&f2>8)nm.setFontSize(--f2+'px');
-    const stars=(d.stageStars||{})[si]||0,scx=px+panW-14-starW*1.5;[1,2,4].forEach((b,i)=>{ const sx0=px+panW-14-starW*(3-i)+starW/2,sy0=panY+panH*.42; if(!img('lb_star',(stars&b)?0:1,sx0,sy0,starW,starW))this.hubText(sx0,sy0,(stars&b)?'★':'☆',Math.round(starW*.9),(stars&b)?'#ffd54a':'#6d6078',.5);
+    const nm=this.hubText(tcx,panY+panH*.79,st.name||'',12,'#f3dcc0',.5);let f2=12;while(nm.width>panW-starW*3-SM-24&&f2>8)nm.setFontSize(--f2+'px');
+    const stars=(d.stageStars||{})[si]||0,scx=px+panW-SM-starW*1.5;[1,2,4].forEach((b,i)=>{ const sx0=px+panW-SM-starW*(3-i)+starW/2,sy0=panY+panH*.42; if(!img('lb_star',(stars&b)?0:1,sx0,sy0,starW,starW))this.hubText(sx0,sy0,(stars&b)?'★':'☆',Math.round(starW*.9),(stars&b)?'#ffd54a':'#6d6078',.5);
       if(!(stars&b)){ const og=this.add.graphics(),pts=[],R1=starW*.43,R2=R1*.45;for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?R2:R1;pts.push(new Phaser.Math.Vector2(sx0+Math.cos(a)*r,sy0+Math.sin(a)*r+starW*.03));} og.lineStyle(1.6,0xffd98a,.8).strokePoints(pts,true,true);this.menu.add(og); } });   // v7.9.63 ดาวที่ยังไม่ได้ = ขอบทอง (เดิมม่วงเข้มบนแผงม่วง)
     // v7.9.62 พลังย้ายเข้ากล่องด่าน (ใต้ดาว) · การ์ดใหม่ = ป้ายเล็กบนขอบกล่อง
-    const pw2=this.hubText(px+panW-20,panY+panH*.76,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec),11,ps.ratio<.9?'#ffc58a':ps.hex,1);let f3=11;while(pw2.width>starW*3+16&&f3>8)pw2.setFontSize(--f3+'px');
+    const pw2=this.hubText(px+panW-SM,panY+panH*.76,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec),11,ps.ratio<.9?'#ffc58a':ps.hex,1);let f3=11;while(pw2.width>starW*3+16&&f3>8)pw2.setFontSize(--f3+'px');
     if(nw.length){ const nt=this.add.text(w/2,panY-1,'NEW: '+nw.map(k=>CARD_INTRO[k][0]+' '+CARD_INTRO[k][1]).join(' · '),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#3a2208'}).setOrigin(.5);let f4=10;while(nt.width>panW-40&&f4>7)nt.setFontSize(--f4+'px');
       const bw2=nt.width+18,bh2=18,bg3=this.add.graphics();bg3.fillStyle(0x000000,.35).fillRoundedRect(w/2-bw2/2+1,panY-bh2/2+2,bw2,bh2,9).fillStyle(0xffd54a,1).fillRoundedRect(w/2-bw2/2,panY-bh2/2-1,bw2,bh2,9).lineStyle(1.5,0x8a5a12,1).strokeRoundedRect(w/2-bw2/2,panY-bh2/2-1,bw2,bh2,9);this.menu.add(bg3);this.menu.add(nt); }
     // ปุ่ม BATTLE (A2 + B1 + แสงวิ่ง D4) · แท็ก lobby_play
