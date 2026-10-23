@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.85';
+const GAME_VERSION = '7.9.86';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -81,12 +81,15 @@ const STORY_WAVE_PLAN=[
   {quota:72,live:30,reward:50},{quota:80,live:34,reward:60}
 ];
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
+/* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
+function inMapPt(x,y,m=80){ const L=WORLD/2-m; if(Math.abs(x)<=L&&Math.abs(y)<=L)return [x,y]; const a=Math.random()*Math.PI*2,r=Math.random()*220; return [Math.cos(a)*r,Math.sin(a)*r]; }
 const STORY_HP_MUL=1.2;   // v7.9.85 เจ้าของ: ตัวละครตีแรงไป → มอน/Elite/มินิ/บอสใน Story ถึกขึ้น 20%
 const CARD_UNLOCK={path:1,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
 const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.86',date:'2026-10-23',title:'No spawns outside the map',items:['Monsters, Elites, minibosses and bosses never appear outside the map — they come in near the middle instead']},
   {v:'7.9.85',date:'2026-10-23',title:'Tougher monsters',items:['Story monsters, Elites, minibosses and bosses have 20% more HP']},
   {v:'7.9.84',date:'2026-10-23',title:'Elite Poison',items:['Hunt missions: while the marked Elite lives you are poisoned, growing stronger until you defeat it']},
   {v:'7.9.83',date:'2026-10-23',title:'Unlock order + Build lesson',items:['Ruby explains how to choose a Build the first time you see Build Path cards','Gear crafting waits until the Affix Forge opens','Heroes you have not met yet stay hidden in the Heroes and Codex pages']},
@@ -12093,7 +12096,7 @@ class Game extends Phaser.Scene {
   spawnElite(allowRecycle=true,objective=false){
     if(this.storyCanSpawn?.(objective)===false)return null;
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.6+40;
-    const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
+    const [x,y]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
     let e=this.enemies.getFirstDead(false); const eliteKey=this.stageIndex===0?this.antArtKey('elite'):(this.stageIndex===1?this.drainArtKey('elite'):this.stageIndex===2?this.fireArtKey('elite'):this.stageIndex===3?this.iceArtKey('elite'):this.stageIndex===4?this.stage5ArtKey('elite'):this.stageIndex===5?'ch2_enemy_atlas':this.stageIndex===8?'ch2_seasons_enemy_atlas':'e_tank'),eliteFrame=this.stageIndex===5?6:this.stageIndex===8?5:0;
     if(!e) e=this.enemies.create(x,y,eliteKey,eliteFrame); else { e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }
     if(!e){ if(!allowRecycle)return null;e=this.enemies.getFirstAlive(); if(!e)return null; e.setTexture(eliteKey,eliteFrame); e.setActive(true).setVisible(true); if(e.body)e.body.enable=true; e.setPosition(x,y); }   // Other elite events retain their existing pool fallback.
@@ -12742,7 +12745,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<adds;i++) this.spawnEnemy(Math.random()<0.5?'fast':'basic');
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const mkey=this.stageIndex>=10?'c3_mini'+(this.stageIndex-9):this.stageIndex===4?'mb5_banquet_executioner':this.stageIndex===5?'mb6_sporewarden':this.stageIndex===6?'mb7_fungal_juggernaut':this.stageIndex===7?'mb8_royal_stinger':this.stageIndex===8?'mb9_season_keeper':this.stageIndex===9?'mb10_ancient_root_knight':'mb'+(this.stageIndex+1), mArt=this.textures.exists(mkey);
-    const b=this.enemies.create(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad, mArt?mkey:'e_brute');
+    const [mx0,my0]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad),b=this.enemies.create(mx0,my0, mArt?mkey:'e_brute');
     this.tagTaroEnemy?.(b);
     let mScale=this.stageIndex===4?0.78:(this.stageIndex===5?0.72:(this.stageIndex===6?0.82:(this.stageIndex===7?0.78:(this.stageIndex===1?0.88:(mArt?1.15:1.7)))));if(this.stageIndex===8)mScale=.82;if(this.stageIndex===9)mScale=1.19; b.baseScale=mScale; b._sqX=1; b._sqY=1;
     let mRadius=this.stageIndex===4?57:(this.stageIndex===5?54:(this.stageIndex===6?58:(this.stageIndex===7?55:(this.stageIndex===1?48:(mArt?52:26))))),mOff=this.stageIndex===4?71:(this.stageIndex===5?74:(this.stageIndex===6?70:(this.stageIndex===7?73:(this.stageIndex===1?48:(mArt?18:5)))));
@@ -12810,7 +12813,7 @@ class Game extends Phaser.Scene {
     if(this.stageIndex===14&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg15','FINAL CHAPTER · THE FIRST SEED','THE FIRST PLANTER','The throne turns. The one who planted the first crown finally looks at Momo',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
-    const bx=this.player.x+Math.cos(ang)*rad, by=this.player.y+Math.sin(ang)*rad;
+    const [bx,by]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
     const bkey=this.stageIndex>=10?'c3_boss'+(this.stageIndex-9):this.stageIndex===4?'boss5_sovereign':this.stageIndex===5?'boss6_rootmother':this.stageIndex===6?'boss7_mycelium_behemoth':this.stageIndex===7?'boss8_hornet_queen':this.stageIndex===8?'boss9_chronobloom_orchid':this.stageIndex===9?'boss10_true_rootmother':'boss'+(this.stageIndex+1);
     let b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute');
     if(!b){ b=this.enemies.getFirstAlive(); if(!b){ this.clearEnemies(); b=this.enemies.create(bx,by,this.textures.exists(bkey)?bkey:'e_brute'); } if(b){ b.setTexture(this.textures.exists(bkey)?bkey:'e_brute'); b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(bx,by); } }   // pool Full → รีไซเคิล/Cleared กันบอสเป็น null
@@ -14774,7 +14777,7 @@ class Game extends Phaser.Scene {
     if(this.storyCanSpawn?.(false,type)===false)return null;
     if(this.enemies&&this.enemies.countActive(true)>=(this.maxLive||100)+24)return null;   // v4.60: เพดานรวมกันมอนล้น (Colony Call/Mold Sac ของ C2-2 เคยสะสมถึง 209 ตัว) · ผู้เรียกทุกจุด guard null แล้ว
     const ang=angOverride!=null?angOverride:Math.random()*Math.PI*2, rad=radOverride!=null?radOverride:Math.max(this.W,this.H)/this.viewZoom*0.62+40;
-    const x=this.player.x+Math.cos(ang)*rad, y=this.player.y+Math.sin(ang)*rad;
+    const [x,y]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
     let e=this.enemies.getFirstDead(false);
     let key=type==='acid'?'e_acid':type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
     if(this.stageIndex===0)key=this.antArtKey(type);
@@ -18559,7 +18562,7 @@ class Game extends Phaser.Scene {
       { // v5.50: มอนที่หลุดไกล → ย้ายมาเกิดใกล้ผู้เล่นใหม่ · มอนไกลคิดทิศทุก 4 เฟรม
         const fx=e.x-this.player.x,fy=e.y-this.player.y,fd2=fx*fx+fy*fy,view=Math.max(this.W,this.H)/(this.viewZoom||1);
         if(fd2>view*view*1.9&&!e.isBoss&&!e.isMini&&!e.isElite&&!e._objectiveMark&&!e._fleeing&&!e._huntFlee&&!e._wispRaider){
-          const a=Math.random()*TAU,r=view*0.62;e.setPosition(this.player.x+Math.cos(a)*r,this.player.y+Math.sin(a)*r);e.setVelocity(0,0);return; }
+          const a=Math.random()*TAU,r=view*0.62;e.setPosition(...(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(a)*r,this.player.y+Math.sin(a)*r));e.setVelocity(0,0);return; }
         if(fd2>view*view*0.5&&!e.isBoss&&!e.isMini){ e._aiSlot=e._aiSlot??((Math.random()*4)|0); if((this.game.loop.frame+e._aiSlot)&3)return; }
       }
       if(e._decoyT>0)e._decoyT-=dt;
