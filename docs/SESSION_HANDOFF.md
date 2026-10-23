@@ -8,4 +8,6 @@ Integrated: two-page pre-stage narration C1-1..C1-5 and first tutorial; optional
 
 Validation: required npm run check and npm run build:www passed (1920 runtime assets). Real production Canvas narration review all six sizes320x568..844x390 passed five stories, two memories, generic dialogue, bounds, navigation/debounce, exactly-once completion/late callbacks, missing-art/black fallback. Screenshots retained in incoming review/. New unit and browser review are CI gates. No combat/balance simulation; owner phone readability/loading/touch remains.
 
-Next: publish exact staged tree via GitHub connector, verify all immutable bytes, Pages/Android success, live7.9.90 and five WebP hashes, then save final publication checkpoint. No implementation blockers.
+Published code0c671eb4420fa53b19954b21744781d959c67668, exact tested local/remote tree1ef329ffd1138b790c8dce3e21fec42fed69c9ff. All31 changed files18,094,031bytes read back byte-exact from immutable GitHub URLs. Pages39973964910 and Android39973964919 succeeded. Live unqueried version.json7.9.90; all5 runtime WebPs match manifest SHA256 (451,184bytes). Latest APK targets the code commit and is299,027,937bytes.
+
+ImageGen art, story integration, required checks, real Canvas review and publication complete. Owner phone readability/loading/touch review remains; no implementation or deployment blockers.
