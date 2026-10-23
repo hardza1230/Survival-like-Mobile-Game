@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.82';
+const GAME_VERSION = '7.9.83';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.83',date:'2026-10-23',title:'Unlock order + Build lesson',items:['Ruby explains how to choose a Build the first time you see Build Path cards','Gear crafting waits until the Affix Forge opens','Heroes you have not met yet stay hidden in the Heroes and Codex pages']},
   {v:'7.9.82',date:'2026-10-23',title:'Escort the Wisp: stay close',items:['Standing outside the Wisp’s ring now makes you bleed, stacking stronger the longer you stay out']},
   {v:'7.9.81',date:'2026-10-23',title:'Quest guide + boss music',items:['New missions now pan the camera to the target with a spotlight (first 3 times, tap to skip)','Boss and miniboss music now starts even if it was still loading']},
   {v:'7.9.80',date:'2026-10-23',title:'Book only at start',items:['The book now opens only when you start the game, not after every stage']},
@@ -9047,7 +9048,7 @@ class Game extends Phaser.Scene {
   }
   // ⚔️ อาวุธประจำตัวรายตัวละคร: อัพเกรด 4 · Mutation 2 · Evolution
   buildWeaponCodex(top){
-    const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
+    const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]&&(c==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c))),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
     const ch=ids[this._codexChar],c=CHARACTERS[ch],d=ch==='taro'?taroAttackInfo(BASIC_ATTACKS[ch],{path:this._codexTaroPath==='base'?null:this._codexTaroPath||'storm'}):BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
     if(ch==='taro'){const paths=[{id:'base',name:'Starter'},...BASIC_PATHS.taro],cw=(this.W-32)/4;paths.forEach((path,i)=>this.heroButton(10+i*(cw+4),top,cw,44,path.name.replace(/ Build$/,''),()=>{this._codexTaroPath=path.id;this.buildSkillArchive();},{active:path.id===(this._codexTaroPath||'storm'),fontSize:12}));top+=50;}
     const rows=[{head:c.emoji+' '+c.name+' — '+d.emoji+' '+d.name,hex}];
@@ -9976,7 +9977,7 @@ class Game extends Phaser.Scene {
     this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];if(!this._heroPreview)this._heroPreview=Save.data.character||'momo';this._screenBg('Heroes','screen_heroes');this.drawRosterTabs();
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
     const w=this.W,h=this.H,p=w/941,landscape=w>h,side=30*p,extra=landscape?0:Math.max(0,h-1672*p),gap=18*p,rowGap=Math.min(gap+extra*.20,26*p);
-    const roster=CHAR_ORDER.filter(id=>id!=='sesame'||FIGHTER_PLAYTEST_ALL||Save.data.chars.includes('sesame'));
+    const roster=CHAR_ORDER.filter(id=>id==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(id));   // v7.9.83 เจ้าของ: ซ่อนฮีโร่ที่ยังไม่ปลด (ไม่โชว์ล็อก) จนกว่าจะถึงด่าน
     if(!roster.includes(this._heroPreview))this._heroPreview=roster.includes(Save.data.character)?Save.data.character:roster[0];
     const id=this._heroPreview,c=CHARACTERS[id];
     const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Arc, Sparks and sentries.\nControl the battlefield.',0xd1a0ff],yuzu:['Summoner','Summoner','Command a citrus crew.\nYour minions fight for you.',0xf5ec83],sesame:['Precision','Precision','Charged mirror beams.\nPrecise boss damage.',0xe4e0eb]};
@@ -10686,7 +10687,7 @@ class Game extends Phaser.Scene {
       const togLock=()=>{if(Save.gearItem(selected.uid)){const l=Save.toggleGearLock(selected.uid);Sfx.equipment(l?'lock':'unlock');}this._gearConfirm=null;this.buildMenuScreen();};
       if(eq)drawAction(3,selected.locked?'🔒 Locked':'🔓 Lock',0x3a3550,togLock); else if(selected.locked||selected.favorite)drawAction(3,'🔓 Unlock to salvage',0x3a3550,togLock);
       if(canDis)drawAction(3,conf('sal:'+selected.uid,'♻ Salvage +'+gain+'🧶 +'+sv+'🍬'),0x8d4b3e,()=>{const ck='sal:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){arm(ck);return;}this._gearConfirm=null;const r=Save.salvageGearInstance(selected.uid);if(r){this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged','🧶 +'+r.shards+'   🍬 +'+r.sugar,1200);}});
-      { const canCraft=selected.grade!=='start'&&!selected.locked; drawAction('c','🧪 Craft',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
+      { const fOpen=typeof featureOpen!=='function'||featureOpen('craft'),canCraft=fOpen&&selected.grade!=='start'&&!selected.locked; drawAction('c',fOpen?'🧪 Craft':'🔒 Forge after C1-2',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
       if(!eq&&!selected.locked&&!selected.favorite&&!canDis){this.menu.add(this.add.text(14+cW+bgap+dW/2,y2+bh2/2,'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
       y=y2+bh2;
     }
@@ -11587,7 +11588,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.stopHubMotion?.(); this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.stopHubMotion?.(); this._pathTeach=null; this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -13729,14 +13730,30 @@ class Game extends Phaser.Scene {
   }
   newCardIntro(opts){ if(this._inTutorial||typeof Save==='undefined'||!Save.data)return null; const seen=Save.data.cardSeen=Save.data.cardSeen||{};
     for(const o of opts||[]){ const t=cardTypeOf(o); if(t&&CARD_INTRO[t]&&!seen[t]){ seen[t]=1; try{Save.save();}catch(e){} return t; } } return null; }
-  drawCardIntro(t,x,y,w,h){ const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
+  drawCardIntro(t,x,y,w,h){ if(t==='path')this.time.delayedCall(250,()=>{ if(this.state==='levelup'&&!this._pathTeach)this.pathTeach(); }); const [em,name,txt]=CARD_INTRO[t],g=this.add.graphics();
     g.fillStyle(0x2a1a3a,.96).fillRoundedRect(x,y,w,h,14).lineStyle(2,0xffd54a,1).strokeRoundedRect(x,y,w,h,14);this.lvlUp.add(g);
     const a=this.add.text(x+14,y+8,'✨ NEW CARD TYPE: '+em+' '+name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd54a'});this.lvlUp.add(a);
     const b=this.add.text(x+14,y+30,txt,{fontFamily:'sans-serif',fontSize:'12px',color:'#fff0df',wordWrap:{width:w-28}});this.lvlUp.add(b);
     this.tweens.add({targets:[g,a,b],alpha:{from:0,to:1},duration:300});
     this.levelCardReadyAt=Math.max(this.levelCardReadyAt||0,this.time.now+900);   // a moment to read before the first tap counts
   }
+  /* v7.9.83 เจ้าของ: สอนเลือกบิลด์ Strawberry (ครั้งแรกที่เจอการ์ด Build Path) · Ruby อธิบาย 3 หน้า · แตะ = หน้าถัดไป · ระหว่างนี้แตะการ์ดไม่ได้ */
+  pathTeach(){ if(!this.lvlUp||!this.add)return; const w=this.W,h=this.H,mo=(this.character||Save.data.character)==='momo';
+    const pages=mo?['Time to choose a [Build]!\nA Build changes how Strawberry fights for the rest of this stage.',
+      '[🎯 Sniper] — one big charged seed that pierces. Great on bosses.\n[💥 Shotgun] — a wide spray. Get close for huge damage.\n[💞 Ricochet] — seeds bounce. Best in big crowds.',
+      'After you pick, new cards will power up that Build.\nEvery stage you choose again — try them all and find your favorite!']
+      :['Time to choose a [Build]!\nA Build changes how your hero fights for the rest of this stage.','Read each card — they play very differently.\nAfter you pick, new cards power up that Build. You choose again every stage!'];
+    const c=this.add.container(0,0).setDepth(9999); this.lvlUp.add(c); let i=-1; this.levelCardReadyAt=Infinity;
+    const show=()=>{ c.removeAll(true); i++; if(i>=pages.length){ c.destroy(); this._pathTeach=null; this.levelCardReadyAt=this.time.now+400; return; }
+      const bw=Math.min(w-20,420),bx=(w-bw)/2,lines=rubyWrap(pages[i],Math.floor((bw-110)/(13*.56))),bh=Math.max(96,40+lines.length*20),by=h-bh-26,g=this.add.graphics();
+      g.fillStyle(0x000000,.45).fillRect(0,0,w,h).fillStyle(0x0b0710,.96).fillRoundedRect(bx,by,bw,bh,16).lineStyle(3,0xffffff,1).strokeRoundedRect(bx,by,bw,bh,16); c.add(g);
+      const av=this.rubyAvatar(bx+4,by+bh-6,76); if(av)c.add(av);
+      lines.forEach((ln,li)=>{ let x=bx+96; ln.split(/(\[[^\]]+\])/).filter(Boolean).forEach(pt=>{ const hl=pt[0]==='[',t=this.add.text(x,by+14+li*20,hl?pt.slice(1,-1):pt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:hl?'#ffd54a':'#ffffff'}); c.add(t); x+=t.width; }); });
+      c.add(this.add.text(bx+bw-12,by+bh-8,(i+1)+'/'+pages.length+' · tap',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1'}).setOrigin(1,1));
+      c.setAlpha(0); this.tweens.add({targets:c,alpha:1,duration:180}); };
+    this._pathTeach={next:()=>{ if(this.time.now<(this._pathTeachAt||0))return; this._pathTeachAt=this.time.now+350; show(); }}; this._pathTeachAt=this.time.now+600; show(); }
   pickCardAt(px,py){
+    if(this._pathTeach){ this._pathTeach.next(); return; }
     const c=this.lvlCards.find(c=>px>=c.left&&px<=c.right&&py>=c.top&&py<=c.bottom);
     if(!c||this.time.now<(this.levelCardReadyAt||0)) return;
     if(this._pendingCardConfirm!==c){this._pendingCardConfirm=c;Sfx.ev?.('card_focus',.45,.05)||Sfx.select();this.highlightCard(c);if(this.levelChoiceHint)this.levelChoiceHint.setText('Selected \u201c'+c.title+'\u201d · tap again to confirm');return;}

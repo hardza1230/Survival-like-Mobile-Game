@@ -14,6 +14,6 @@ for(const [W,H] of [[320,568],[390,844],[400,820],[524,931],[691,1536],[430,764]
  s.tapZones.find(z=>z.tag==='hero_details').fn();assert.equal(s.detail,'mint');s.tapZones.find(z=>z.tag==='hero_confirm').fn();assert.equal(Save.data.character,'mint');assert.equal(s.character,'mint');assert.equal(saves,before+1);s.tapZones.find(z=>z.tag==='hero_confirm').fn();assert.equal(saves,before+1,'selected confirm is idempotent');
  s.tapZones.find(z=>z.tag==='tab_talents').fn();assert.equal(s._heroesTab,'talents');
 }
-ctx.FIGHTER_PLAYTEST_ALL=false;Save.data.chars=['momo'];Save.data.character='momo';{const s=scene(390,844);s.buildChars();s.tapZones.find(z=>z.tag==='char_mint').fn();const before=saves;s.tapZones.find(z=>z.tag==='hero_confirm').fn();assert.equal(s.detail,'mint');assert.equal(Save.data.character,'momo');assert.equal(saves,before,'locked hero cannot be selected');}
+ctx.FIGHTER_PLAYTEST_ALL=false;Save.data.chars=['momo'];Save.data.character='momo';{const s=scene(390,844);s.buildChars();assert.ok(!s.tapZones.some(z=>z.tag==='char_mint'),'v7.9.83 locked heroes are hidden');assert.equal(Save.data.character,'momo');}
 for(const id of ['momo','mint','cocoa','taro','yuzu','sesame'])assert(src.includes("roster_"+id+":'assets/art/hero_roster/"+id+".webp'"));
 console.log('Hero roster: responsive tall portrait, six non-overlapping cards, five viewports, missing art fallback, preview without save, explicit confirmation, idempotence, details, tabs and locked guard passed');
