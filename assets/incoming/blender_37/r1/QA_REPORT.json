@@ -198,8 +198,13 @@
     "rebuild": "blender --background --python src/build_r1.py -- OUTPUT_DIR; then python src/finish_r1.py OUTPUT_DIR"
   },
   "upload": {
-    "status": "pending",
-    "hashesBelow": "payload files excluding QA_REPORT and later upload-proof metadata; self hashes cannot be embedded in the same file"
+    "status": "verified",
+    "sourceCommit": "8293db4da830c34c0436228e4e8877639c91c9fc",
+    "verifiedInitialFiles": 31,
+    "allSha256AndBytesMatch": true,
+    "method": "Full immutable raw GitHub downloads, SHA256 and byte-length compared with local payload",
+    "evidence": "UPLOAD_VERIFICATION.json",
+    "metadataNote": "Evidence anchors the immutable source commit, including its initial QA and docs. Final verification metadata is checked separately after publication; no file embeds its own hash."
   },
   "files": [
     {
