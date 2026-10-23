@@ -68,7 +68,11 @@ Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). 
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.67 — Shorter tutorial lines tied to the lore + art order 38 (owner)
+# Latest delivery: v7.9.68 — Book opening, tutorial fix, art order 38 wired, new bottom bar (owner)
+
+bookOpening(done,reveal) (after bookCover): title tap → cover floats in (scale .78→1, Back.out) + dust → glow ×2 + shake → bk_cover_open 5×150ms + slow zoom (reveal=Lobby built under the cover here) → 2 bk_page_turn flips → zoom 1.45 + fade; tap skips via _bookSkip; new players (reveal false) → startChapterTutorial at the zoom. Art order 39 `docs/art_orders/39_BOOK_OPENING_PLUS.md` (12-frame cover, clasp, emblem, magic, riffle, burst, ic_nav_bazaar/upgrade, ic_side_mail) awaits art. Tutorial freeze: sweets-step level-up opened as the step changed → coach intro over the cards → state play with cards visible. Now queueLevelUp holds levels during welcome/move/attack/sweets, the step advance waits for state play, showMenu hides lvlUp. Art 38: scripts/pack-tutorial-ui.py → assets/art/tutorial (13 files, 180 KB, TUT_KEYS, lazy 'tutorial' in LAZY_MENU_ART_RE, loadTutArt from title/startChapterTutorial/startCoach, texEvict skips tut_ keys during the tutorial); tut_card_frame tuPanel in showCoachIntro, vfx_tut_ring frame loop in buildCoachSpotlight, finger origin (.297,.016), tutGreatFx on step success. Nav: Home · Heroes · Bazaar (bazaar/tradein) · Upgrade (was Gear) · Activities; chapter/stage map to Home. Lobby stage panel = zone tag 'chapter' + '📜 All stages ›' pill (Weave tour step 5 now 'tap the stage box'); Inbox → 'Mail' left under Awards. Browser: fresh save title → book → tutorial with real level-ups to summary, returning title → book → Lobby, chapter + bazaar tabs, 0 errors.
+
+# Previous delivery: v7.9.67 — Shorter tutorial lines tied to the lore + art order 38 (owner)
 
 coachSteps get ids (welcome/move/attack/sweets/cards/dash/unique/hp/ready) and 2 short lines each that tell the story (Great Hunger eating Mochitopia’s flavors, enemies drop stolen sweets, pantry floor cracking → C1-1 fall). showCoachIntro shows texture tut_ic_<id> (72px, card top-right) when loaded, else the emoji in the title; buildCoachSpotlight uses tut_finger when loaded. Art order 38 `docs/art_orders/38_TUTORIAL_UI.md`: 9 step icons, finger, vfx_tut_ring, tut_card_frame (9-slice), vfx_tut_great → assets/incoming/tutorial_ui/, awaits art.
 
@@ -650,7 +654,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.67 · 21 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.68 · 23 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง
@@ -679,7 +683,8 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 31:** ส่งครบ 12 ไฟล์และผูกแล้ว v7.9.30 · รอตรวจภาพบนมือถือ
 - **ใบสั่งอาร์ต 33 (22 ต.ค.) หน้า Lobby:** 26 ไฟล์ (`docs/art_orders/33_LOBBY_UI.md`, ref `ref/33_lobby_*.webp`, เจ้าของเลือกแนวอบอุ่นภาพที่ 2) · ส่งอาร์ตครบ 26/26 → `assets/incoming/lobby_ui/` (2.332 MiB, รอแพ็ก/ผูกโค้ด) · ใบ Yuzu เดิมที่วางเป็น 33 ใช้เลข 35
 - **ใบสั่งอาร์ต 34 (22 ต.ค.) ฮีโร่ขยับใน Lobby + นิสัย:** 48 ชีต (`docs/art_orders/34_LOBBY_HERO_MOTION.md`: ตารางนิสัย 6 ตัว + idle/greet/act1–4/tap/poke ต่อตัว, 512×640/เฟรม เท้า y600) · ส่งครบ 48 และผูกแล้ว v7.9.58 ครบ 6 ตัว · รอ QA มือถือ/FPS
-- **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** 13 ไฟล์ (`docs/art_orders/38_TUTORIAL_UI.md`) · โค้ดรับไอคอน/นิ้วแล้ว v7.9.67 · รออาร์ต · ใบ 37 ถูกยกเลิก (เลขว่าง)
+- **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** ส่งครบ 13 ไฟล์ · ผูกครบแล้ว v7.9.68 · รอ QA มือถือ
+- **ใบสั่งอาร์ต 39 (23 ต.ค.) เปิดหนังสือหลัง TAP TO START + ไอคอน Bazaar/Upgrade/Mail:** 9 ไฟล์ (`docs/art_orders/39_BOOK_OPENING_PLUS.md`) · โค้ดเวอร์ชันแรกใช้อาร์ตใบ 28 แล้ว · รออาร์ต · ใบ 37 ถูกยกเลิก (เลขว่าง)
 - **ใบสั่งอาร์ต 36 (23 ต.ค.) มาสคอต Ruby:** 5 หน้า (`docs/art_orders/36_RUBY_MASCOT.md`) · โค้ดพร้อม v7.9.60 ใช้ภาพวาดชั่วคราว · รออาร์ต
 - **ใบสั่งอาร์ต 32 (21 ต.ค.):** ส่งครบ 51 ไฟล์ (E4 Ice Breaker คงภาพเดิม) · ผูกแล้ว v7.9.31 · รอตรวจภาพบนมือถือ
 - **ท่าบอส (18 ต.ค. ตรวจโค้ดแล้ว):** บอสหลัก C1–C2 ทั้ง 10 ตัวมีชุดท่าเฉพาะตัวแล้ว · **v7.9.11 ครบแล้ว:** บอส C3 ทั้ง 5 + Pinnacle + มินิ C1-3/4/5, C2-1, C3 ทั้ง 5 มีท่าเฉพาะใน BOSS_KITS (C1-2 มินิใช้ชุดของบอส Drain) · Delve Warden/Candlewick มีท่าเฉพาะ · ระบบกลางกลไกสนาม + Counter Object (`docs/BOSS_ARENA_MECHANICS.md`) **ครบทุกบอส v7.9.13 (นำร่อง 3) + v7.9.15 (อีก 12 + Pinnacle)** · รอเจ้าของเล่นปรับจังหวะ · Candlewick ในแผน (เดินจุดเทียน) ขัดกับของจริง (เดินดับเทียน) ต้องให้เจ้าของเลือก

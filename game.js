@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.67';
+const GAME_VERSION = '7.9.68';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.68',date:'2026-10-23',title:'Book opening, tutorial art and a new bottom bar',items:['After TAP TO START the storybook now floats in, glows, opens slowly and flips its pages (tap to skip)','Fixed: the tutorial card screen could freeze when you levelled up from sweets','New tutorial art: step icons, card frame, pointing hand, icing ring and a star stamp when you finish a step','Bottom bar: Gear is now Upgrade, and Bazaar takes the place of Stages','Tap the stage box above BATTLE to choose any stage','Inbox is now Mail, on the left under Awards']},
   {v:'7.9.67',date:'2026-10-23',title:'Shorter tutorial lines',items:['Every tutorial card now has just two short lines','Ruby’s lines tell the story: the Great Hunger is stealing Mochitopia’s flavors and you take them back']},
   {v:'7.9.66',date:'2026-10-23',title:'Slower, clearer tutorial',items:['New players go straight from the title screen into the tutorial','Ruby explains each step on a big card before you try it — the game waits until you tap','New steps: picking up sweets (EXP) and staying healthy; Dash is practised twice','After each step you get a short “Great job!” before the next one']},
   {v:'7.9.65',date:'2026-10-23',title:'Stage box spacing',items:['Stars and Power on the Lobby stage box sit further from the edge']},
@@ -1717,6 +1718,7 @@ const ASSET_IMAGES = {
   hub_ui_background:'assets/art/hub_motion/hub_bg_far.webp',   // v7.8.59 ใบ 25: ฉากหลังไม่มีโมโม่ (โมโม่เป็นชั้นหุ่นเชิด HUB_LAYERS) · ภาพเดิม assets/art/hub_reference/background.webp
   hub_ui_candy:'assets/art/hub_reference/candy.webp',
   // v7.8.59 art orders 23–25: level-up cards, pause screen, hub motion (scripts/pack-ui-orders-23-25.py)
+  tut_ic_welcome:'assets/art/tutorial/tut_ic_welcome.webp',tut_ic_move:'assets/art/tutorial/tut_ic_move.webp',tut_ic_attack:'assets/art/tutorial/tut_ic_attack.webp',tut_ic_sweets:'assets/art/tutorial/tut_ic_sweets.webp',tut_ic_cards:'assets/art/tutorial/tut_ic_cards.webp',tut_ic_dash:'assets/art/tutorial/tut_ic_dash.webp',tut_ic_unique:'assets/art/tutorial/tut_ic_unique.webp',tut_ic_hp:'assets/art/tutorial/tut_ic_hp.webp',tut_ic_ready:'assets/art/tutorial/tut_ic_ready.webp',tut_finger:'assets/art/tutorial/tut_finger.webp',tut_card_frame:'assets/art/tutorial/tut_card_frame.webp',vfx_tut_ring:'assets/art/tutorial/vfx_tut_ring.webp',vfx_tut_great:'assets/art/tutorial/vfx_tut_great.webp',   // v7.9.68 ใบ 38 บทสอน (lazy: โหลดตอนเข้าบทสอน)
   lb_stage_panel:'assets/art/lobby/lb_stage_panel.webp',lb_battle_btn:'assets/art/lobby/lb_battle_btn.webp',lb_arrow_btn:'assets/art/lobby/lb_arrow_btn.webp',lb_side_btn:'assets/art/lobby/lb_side_btn.webp',lb_profile_frame:'assets/art/lobby/lb_profile_frame.webp',lb_avatar_ring:'assets/art/lobby/lb_avatar_ring.webp',lb_currency_pill:'assets/art/lobby/lb_currency_pill.webp',ic_lb_battle:'assets/art/lobby/ic_lb_battle.webp',ic_nav_home:'assets/art/lobby/ic_nav_home.webp',ic_nav_heroes:'assets/art/lobby/ic_nav_heroes.webp',ic_nav_play:'assets/art/lobby/ic_nav_play.webp',ic_nav_gear:'assets/art/lobby/ic_nav_gear.webp',ic_nav_activities:'assets/art/lobby/ic_nav_activities.webp',ic_side_codex:'assets/art/lobby/ic_side_codex.webp',ic_side_inbox:'assets/art/lobby/ic_side_inbox.webp',ic_side_news:'assets/art/lobby/ic_side_news.webp',ic_side_daily:'assets/art/lobby/ic_side_daily.webp',ic_side_awards:'assets/art/lobby/ic_side_awards.webp',lb_nav_bg:'assets/art/lobby/lb_nav_bg.webp',lb_nav_active:'assets/art/lobby/lb_nav_active.webp',lb_nav_divider:'assets/art/lobby/lb_nav_divider.webp',lb_star:'assets/art/lobby/lb_star.webp',lb_power_pill:'assets/art/lobby/lb_power_pill.webp',lb_hero_shadow:'assets/art/lobby/lb_hero_shadow.webp',vfx_lb_battle_shine:'assets/art/lobby/vfx_lb_battle_shine.webp',vfx_lb_sparkle:'assets/art/lobby/vfx_lb_sparkle.webp',   // v7.9.51 ใบ 33 Lobby (lazy · LAZY_MENU_ART_RE)
   lvl_screen_veil:'assets/art/levelup/lvl_screen_veil.webp',
   lvl_title_banner_sheet:'assets/art/levelup/lvl_title_banner_sheet.webp',
@@ -3303,6 +3305,8 @@ const LH_SHEETS={lh_momo_idle:'assets/art/lobby_hero/momo/lh_momo_idle.webp',lh_
 const LH_USE_SHEETS=false;   /* v7.9.61 เจ้าของ: ชีตใบ 34 วาดใหม่ทุกเฟรม ดูยุบยับ → ปิด ใช้ภาพนิ่งดัดด้วยโค้ด (lobbyHeroWarp) แทน */
 const LH_FW=384,LH_FH=480,LH_FOOT=451,LH_BODY=390,LH_ACTS=['act1','act2','act3','act4'];
 const LH_MS={idle:[220,220,220,160,120,220,220,220],tap:[100,100,180,200,120,120],def:[100,110,140,180,220,140,110,100]};
+Object.assign(TEMPLE_UI,{"tut_ic_welcome":[128,128,1,null],"tut_ic_move":[128,128,1,null],"tut_ic_attack":[128,128,1,null],"tut_ic_sweets":[128,128,1,null],"tut_ic_cards":[128,128,1,null],"tut_ic_dash":[128,128,1,null],"tut_ic_unique":[128,128,1,null],"tut_ic_hp":[128,128,1,null],"tut_ic_ready":[128,128,1,null],"tut_finger":[128,128,1,null],"tut_card_frame":[390,300,1,[40,75,40,40]],"vfx_tut_ring":[128,128,6,null],"vfx_tut_great":[128,128,6,null]});
+const TUT_KEYS=["tut_ic_welcome", "tut_ic_move", "tut_ic_attack", "tut_ic_sweets", "tut_ic_cards", "tut_ic_dash", "tut_ic_unique", "tut_ic_hp", "tut_ic_ready", "tut_finger", "tut_card_frame", "vfx_tut_ring", "vfx_tut_great"];
 const LB_KEYS=["lb_stage_panel","lb_battle_btn","lb_arrow_btn","lb_side_btn","lb_profile_frame","lb_avatar_ring","lb_currency_pill","ic_lb_battle","ic_nav_home","ic_nav_heroes","ic_nav_play","ic_nav_gear","ic_nav_activities","ic_side_codex","ic_side_inbox","ic_side_news","ic_side_daily","ic_side_awards","lb_nav_bg","lb_nav_active","lb_nav_divider","lb_star","lb_power_pill","lb_hero_shadow","vfx_lb_battle_shine","vfx_lb_sparkle"];
 const JR_REQ=['jr_page_bg','jr_header_plaque','jr_btn_back','jr_chip_currency','jr_panel','jr_divider','jr_warning_ribbon','jr_slot','jr_bag_cell','jr_row','jr_icon_ring','jr_checkbox','jr_btn_primary','jr_btn_secondary','jr_btn_accent','jr_btn_icon','jr_btn_pill','jr_btn_pager','jr_icon_sheet','jr_forge_summary','jr_forge_footer','jr_badge_new'];
 // สีตัวหนังสือธีมม่วง → หมึกบนกระดาษ (เกรด/ดาวใช้เฉดเข้มของสีเดิม)
@@ -3339,7 +3343,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:journal|book|lobby|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -7258,7 +7262,7 @@ class Game extends Phaser.Scene {
   // ภาพ lazy ทีละใบในหน้าเมนู: มีแล้ว = true · ยังไม่มี = สั่งโหลด แล้ววาดหน้านี้ใหม่เมื่อเสร็จ
   // pred(k,cls) เลือกผู้สมัคร · budgetMB=null คืนทุกตัวที่ตรง · ตัวที่แสดงอยู่บนจอไม่ถูกคืนเด็ดขาด
   texEvict(pred,budgetMB){ try{ const used=this.texInUse(),T=this._texT||{},cand=[];
-      for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||!this.realTex(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }
+      for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||!this.realTex(k))continue; if((this._forceCoachTutorial||this._inTutorial)&&/^(?:vfx_)?tut_/.test(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }   // v7.9.68 ใบ 38 ไม่คืนภาพบทสอนระหว่างบทสอน
       if(!cand.length)return 0; cand.sort((a,b)=>(T[a]||0)-(T[b]||0));
       let mb=budgetMB==null?0:this.texMB(); const drop=new Set();
       for(const k of cand){ if(budgetMB!=null&&mb<=budgetMB)break; drop.add(k); mb-=this.texBytes(k)/1e6; }
@@ -8312,13 +8316,13 @@ class Game extends Phaser.Scene {
   // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
   // v7.9.47 เจ้าของ: แถบเมนูล่างแบบเกมทั่วไป (หน้าแนวตั้งหลังจบบทสอน · ไม่แสดงบนแผนที่ Delve)
   navBarOn(s){ return this.state==='menu'&&s!=='title'&&this.W<this.H&&!!Save.data.tutorialDone&&!Save._cloudConflict&&!['atlas','rift','recipes','recipeprep'].includes(s); }
-  navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'chapter';
-    if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft','bazaar','tradein'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
+  navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'hub'; if(['bazaar','tradein'].includes(s))return 'bazaar';   // v7.9.68 เจ้าของ: เลือกด่านจากกล่องด่านใน Lobby · Bazaar ได้แท็บของตัวเอง
+    if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
   drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;}; this.loadLobbyArt?.();
     const g=fix(this.add.graphics()),bgArt=this.tuHas('lb_nav_bg'); g.fillStyle(0x000000,.35).fillRect(0,y0-6,W,6);
     if(bgArt){ const p=this.tuPanel('lb_nav_bg',0,0,y0,W,NAV_H); p._menuBackdrop=true;p._menuFixedY=y0;this.menu.add(p); }   // v7.9.51 ใบ 33 พื้นแถบ C1
     else{ g.fillStyle(0x1a1024,.98).fillRect(0,y0,W,NAV_H); g.lineStyle(2,0xffd36e,.4).lineBetween(0,y0,W,y0); }
-    const tabs=[['hub','ic_nav_home','','🏠','Home'],['char','ic_nav_heroes','hub_btn_heroes','🧸','Heroes'],['chapter','ic_nav_play','hub_btn_play','▶','Stages'],['gLoadout','ic_nav_gear','hub_btn_gear','🎒','Gear'],['gActivity','ic_nav_activities','hub_btn_activity','🎯','Activities']];
+    const tabs=[['hub','ic_nav_home','','🏠','Home'],['char','ic_nav_heroes','hub_btn_heroes','🧸','Heroes'],['bazaar','ic_nav_bazaar','','🛒','Bazaar'],['gLoadout','ic_nav_gear','hub_btn_gear','🎒','Upgrade'],['gActivity','ic_nav_activities','hub_btn_activity','🎯','Activities']];
     // v7.9.51 ชื่อใต้ทุกช่อง (เจ้าของเลือกแบบภาพอ้างอิงอบอุ่น) · ช่องที่เปิดกว้างขึ้นนิดและมีไฮไลต์ทอง C2
     // v7.9.52 ช่องกว้างเท่ากัน (ไอคอนไม่ย้ายที่เมื่อเปลี่ยนแท็บ) · ไฮไลต์เลื่อนจากแท็บเดิมไปแท็บใหม่ (เจ้าของ: เดิมดูวาป)
     const wt=tabs.map(()=>1),sum=wt.reduce((a,b)=>a+b,0); let x0=0;
@@ -8407,6 +8411,38 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(270,()=>{ if(!c.active)return; cl.setVisible(false); gl.setVisible(false); op.setVisible(true);
       this.time.addEvent({delay:80,repeat:5,callback:()=>{ f++; if(!op.active)return; if(f<5)op.setFrame('cell'+f); else this.tweens.add({targets:c,alpha:0,duration:120,onComplete:end}); }}); });
     this.time.delayedCall(1400,end); }
+  // v7.9.68 เจ้าของ: หลัง TAP TO START เปิดหนังสือช้าลง + ขยับมากขึ้น (~3 วิ) · ปกลอยเข้า → สั่น+แสงตรา 2 ครั้ง → เปิดปก 150ms/เฟรม + ซูมช้า → พลิกหน้า 2 แผ่น → ซูมเข้าหน้าแล้วจาง · แตะ = ข้าม · reveal = สร้างหน้าใหม่ใต้ปกตอนเริ่มเปิด (Lobby) · ไม่ reveal (บทสอน) = done() ตอนเริ่มซูม (หน้าใหม่สร้างใต้หนังสือ แล้วหนังสือจางออก)
+  bookOpening(done,reveal){ const w=this.W,h=this.H; ['bk_cover_open','bk_page_turn','bk_page_shadow','vfx_bk_dust'].forEach(k=>this.tuFrames(k));
+    const c=this.camUI(this.add.container(w/2,h/2).setScrollFactor(1).setDepth(5200));this._bookCover=c;
+    const veil=this.add.rectangle(-w/2,-h/2,w,h,0x0d0816,1).setOrigin(0).setAlpha(0);
+    const sc=Math.max(w/432,h/768),cw=432*sc,chh=768*sc,bk=this.add.container(0,0);
+    const cl=this.add.image(0,0,'bk_cover_closed').setDisplaySize(cw,chh),gl=this.add.image(0,0,'bk_cover_glow').setDisplaySize(Math.min(w,h)*.75,Math.min(w,h)*.75).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD),
+      op=this.add.image(0,0,'bk_cover_open','cell0').setDisplaySize(cw,chh).setVisible(false),
+      sh=this.add.image(0,0,'bk_page_shadow','cell0').setDisplaySize(cw,chh).setAlpha(0),pg=this.add.image(0,0,'bk_page_turn','cell0').setDisplaySize(cw,chh).setVisible(false);
+    bk.add([cl,op,sh,pg,gl]); c.add([veil,bk]);
+    let fin=false; const T=[],at=(ms,f)=>T.push(this.time.delayedCall(ms,()=>{ if(!fin&&c.active)f(); }));
+    const end=()=>{ if(fin)return; fin=true; T.forEach(t=>t.remove(false)); if(this._bookCover===c)this._bookCover=null; if(this._bookSkip===end)this._bookSkip=null; this.tweens.killTweensOf([c,bk,cl,gl,op,sh,pg,veil]); c.destroy(); go(); };
+    let gone=false; const go=()=>{ if(gone)return; gone=true; try{ done&&done(); }catch(e){ console.warn(e); } };
+    const finish=()=>{ if(fin)return; this._bookSkip=null; go(); c.setDepth(5200); this.tweens.killTweensOf([c,bk]); this.tweens.add({targets:bk,scale:bk.scale*1.45,duration:480,ease:'Cubic.in'}); this.tweens.add({targets:c,alpha:0,duration:480,ease:'Quad.in',onComplete:end}); };
+    this._bookSkip=finish;
+    const dust=(x,y,s)=>{ const d=this.add.image(x,y,'vfx_bk_dust','cell0').setDisplaySize(s,s).setAlpha(.9);bk.add(d);let n=0;const ev=this.time.addEvent({delay:70,repeat:5,callback:()=>{n++;if(!d.active)return;if(n>5){d.destroy();return;}d.setFrame('cell'+n).setAlpha(.9-n*.15);}}); };
+    // 1) ปกลอยเข้า (ย่อ + เอียงนิด → ตั้งตรง)
+    this.tweens.add({targets:veil,alpha:.85,duration:300}); bk.setScale(.78).setAngle(-3).setAlpha(0).setY(h*.06);
+    this.tweens.add({targets:bk,scale:1,angle:0,alpha:1,y:0,duration:700,ease:'Back.out'});
+    at(520,()=>{ dust(-cw*.32,chh*.34,120); dust(cw*.3,chh*.36,110); });
+    // 2) ตราเรืองแสง 2 ครั้ง + ปกสั่นเหมือนเวทกำลังปลดล็อก
+    at(760,()=>{ this.tweens.add({targets:gl,alpha:{from:0,to:1},scale:{from:gl.scale*.85,to:gl.scale*1.3},duration:260,yoyo:true,repeat:1,ease:'Sine.inOut'}); Sfx.select&&Sfx.select(); });
+    at(820,()=>this.tweens.add({targets:bk,x:{from:-4,to:4},duration:45,yoyo:true,repeat:7,ease:'Sine.inOut',onComplete:()=>bk.setX(0)}));
+    // 3) เปิดปก 5 เฟรม × 150ms + ซูมเข้าช้า ๆ
+    at(1820,()=>{ if(reveal){ go(); c.setDepth(5200); this.tweens.add({targets:veil,alpha:0,duration:300}); } cl.setVisible(false); op.setVisible(true); dust(cw*.36,0,140); this.tweens.add({targets:bk,scale:1.08,duration:1500,ease:'Sine.inOut'}); Sfx.ui&&Sfx.ui(); });
+    for(let f=1;f<5;f++)at(1820+f*150,()=>op.setFrame('cell'+f));
+    // 4) พลิกหน้า 2 แผ่น (ขวา → ซ้าย) + เงา + ฝุ่น
+    for(let k=0;k<2;k++){ const t0=2700+k*420;
+      at(t0,()=>{ pg.setVisible(true).setFrame('cell0'); sh.setAlpha(.4).setFrame('cell0'); Sfx.ui&&Sfx.ui(); });
+      for(let f=1;f<6;f++)at(t0+f*60,()=>{ pg.setFrame('cell'+f); sh.setFrame('cell'+f); if(f===5)dust(-cw*.3,chh*.1,110); });
+      at(t0+380,()=>{ pg.setVisible(false); sh.setAlpha(0); }); }
+    // 5) ซูมเข้าหน้ากระดาษแล้วจาง → done
+    at(3560,finish); at(6500,end); }
   menuTransition(forward){ return;   // v7.9.35 เจ้าของ: ไม่ต้องมี transition ระหว่างหน้า — เหลือแค่เปิดปกตอนเข้าเมนู (showMenu → bookCover) · โค้ดเดิมด้านล่างเก็บไว้
     if(this.state!=='menu'||!this.add||!this.hubMotionAllowed?.())return; const w=this.W,h=this.H; if(this._menuWipe){this.tweens.killTweensOf(this._menuWipe);this._menuWipe.destroy();}
     if(this.bookReady()){ if(this._bookCover)this._bookSkip?.(); this.bookCover(); return; }   // v7.9.34 เจ้าของ: ทุกหน้าใช้การเปิดปกแบบตอนจบด่านกลับเมนู (bookTurn เก็บไว้)   // v7.9.10 ใบ 28 พลิกหน้าหนังสือ (ม่านใบ 26 = สำรองตอนยังโหลดไม่เสร็จ)
@@ -8545,7 +8581,7 @@ class Game extends Phaser.Scene {
       if(T==='weave'&&s==='upgrade'&&Date.now()-(this._weaveSpotAt||0)>300){ this._weaveTour='back'; this._tutorialWeaveCoach=false; return this.applyGearTut(); }   // ไม่มีแก่นที่ซื้อได้ → ข้ามไปสอนปุ่ม Back
       if(T==='back'&&s!=='hub'){ const z=find(q=>q.back),f0=z&&z.fn; if(spot(z,s==='upgrade'?'Step 4/5 · Nice! Tap Back to leave this page':'Tap Back again to reach the Hub',()=>f0()))return; }
       if(T==='back'&&s==='hub')this._weaveTour=T==='back'?'play':T;
-      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Step 5/5 · You can come back here any time. Now tap Play!',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
+      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Step 5/5 · You can come back here any time. Now tap the stage box!',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
       if(s==='hub'&&(T==='gear'||T==='weave')){ this._weaveTour='hub'; const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Upgrades live in Gear & Power — tap it',()=>{ this._weaveTour='gear'; f0(); }))return; }   // ผู้เล่นกด Back กลางทาง → เริ่มขั้นแรกใหม่
     }
     if(this._mintCoach){ const hi=this._mintCoach===true?HERO_INTROS[0]:this._mintCoach; const z=this.tapZones.find(q=>q.tag==='char_'+hi.id); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character=hi.id; this.character=hi.id; Save.data[hi.flag]=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(hi.idx); };
@@ -9525,8 +9561,8 @@ class Game extends Phaser.Scene {
       this.hubText(x+s0/2,y+s0-9,lab,9,'#fff0df',.5);
       this._zone(x,y,s0,s0,()=>{this.menuScreen=t;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='side_'+t; if(badge)this.drawBadgeDot(this.menu,x+s0-5,y+5); };
     // v7.9.63 ขวา 3 (ของรายวัน) · ซ้าย 2 (สะสม) ให้สมดุล
-    let ry=top+ph+28; [['📦','Inbox','gearInbox','ic_side_inbox'],['📰','News','news','ic_side_news'],['📋','Daily','daily','ic_side_daily']].forEach(([em,lab,t,ik])=>{ sideBtn(w-side-54,ry,em,lab,t,ik,this.hasTargetBadge(t)); ry+=62; });
-    sideBtn(side,top+ph+28,'📖','Codex','gCodex','ic_side_codex',false); sideBtn(side,top+ph+90,'🏆','Awards','achievements','ic_side_awards',this.hasTargetBadge('achievements'));
+    let ry=top+ph+28; [['📰','News','news','ic_side_news'],['📋','Daily','daily','ic_side_daily']].forEach(([em,lab,t,ik])=>{ sideBtn(w-side-54,ry,em,lab,t,ik,this.hasTargetBadge(t)); ry+=62; });
+    sideBtn(side,top+ph+28,'📖','Codex','gCodex','ic_side_codex',false); sideBtn(side,top+ph+90,'🏆','Awards','achievements','ic_side_awards',this.hasTargetBadge('achievements')); sideBtn(side,top+ph+152,'📦','Mail','gearInbox','ic_side_inbox',this.hasTargetBadge('gearInbox'));   // v7.9.68 Inbox → Mail ใต้ Awards
     // ── v7.9.51 ใบ 33: กล่องด่าน (ข้อมูล) แยกจากปุ่ม BATTLE (กดเล่น) · ฮีโร่ยืนเหนือกล่อง
     const ready=isStageReady(si),btnW=Math.min(w*.78,300),btnH=Math.round(btnW*90/320),btnY=h-btnH-Math.max(10,h*.014),bx=(w-btnW)/2;
     const arW=36,panW=Math.min(300,w-2*(side+arW+6)),panH=Math.max(80,Math.min(96,h*.115)),panY=btnY-panH-8,px=(w-panW)/2;
@@ -9558,6 +9594,9 @@ class Game extends Phaser.Scene {
       if(!(stars&b)){ const og=this.add.graphics(),pts=[],R1=starW*.43,R2=R1*.45;for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?R2:R1;pts.push(new Phaser.Math.Vector2(sx0+Math.cos(a)*r,sy0+Math.sin(a)*r+starW*.03));} og.lineStyle(1.6,0xffd98a,.8).strokePoints(pts,true,true);this.menu.add(og); } });   // v7.9.63 ดาวที่ยังไม่ได้ = ขอบทอง (เดิมม่วงเข้มบนแผงม่วง)
     // v7.9.62 พลังย้ายเข้ากล่องด่าน (ใต้ดาว) · การ์ดใหม่ = ป้ายเล็กบนขอบกล่อง
     const pw2=this.hubText(px+panW-SM,panY+panH*.76,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec),11,ps.ratio<.9?'#ffc58a':ps.hex,1);let f3=11;while(pw2.width>starW*3+16&&f3>8)pw2.setFontSize(--f3+'px');
+    { const cy0=panY+panH-1,ct=this.add.text(w/2,cy0,'📜 All stages ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#3a2208'}).setOrigin(.5),cbw=ct.width+18,cg=this.add.graphics();   // v7.9.68 เจ้าของ: แตะกล่องด่าน = เลือกด่าน (แทนแท็บ Stages)
+      cg.fillStyle(0x000000,.35).fillRoundedRect(w/2-cbw/2+1,cy0-8,cbw,17,8).fillStyle(0xffe08a,1).fillRoundedRect(w/2-cbw/2,cy0-9,cbw,17,8).lineStyle(1.5,0x8a5a12,1).strokeRoundedRect(w/2-cbw/2,cy0-9,cbw,17,8);this.menu.add(cg);this.menu.add(ct);
+      this._zone(px,panY,panW,panH+8,()=>{ this.selectedChapter=chN; this.menuScreen='chapter'; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='chapter'; }
     if(nw.length){ const nt=this.add.text(w/2,panY-1,'NEW: '+nw.map(k=>CARD_INTRO[k][0]+' '+CARD_INTRO[k][1]).join(' · '),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#3a2208'}).setOrigin(.5);let f4=10;while(nt.width>panW-40&&f4>7)nt.setFontSize(--f4+'px');
       const bw2=nt.width+18,bh2=18,bg3=this.add.graphics();bg3.fillStyle(0x000000,.35).fillRoundedRect(w/2-bw2/2+1,panY-bh2/2+2,bw2,bh2,9).fillStyle(0xffd54a,1).fillRoundedRect(w/2-bw2/2,panY-bh2/2-1,bw2,bh2,9).lineStyle(1.5,0x8a5a12,1).strokeRoundedRect(w/2-bw2/2,panY-bh2/2-1,bw2,bh2,9);this.menu.add(bg3);this.menu.add(nt); }
     // ปุ่ม BATTLE (A2 + B1 + แสงวิ่ง D4) · แท็ก lobby_play
@@ -9624,13 +9663,14 @@ class Game extends Phaser.Scene {
     const live=bgKey==='hub_ui_background'&&this.buildHubScene?.(bg);
     if(bg.type==='Image'&&!live)this.hubTween({targets:bg,scaleX:bg.scaleX*1.012,scaleY:bg.scaleY*1.012,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const shade=this.add.graphics();for(let i=0;i<24;i++){const y=h*.52+i*h*.48/24;shade.fillStyle(0x140a1e,.03+i*.03).fillRect(0,y,w,h*.48/24+1);}this.menu.add(shade);
-    const logoW=Math.min(w*.86,460),logoH=logoW*310/1200,logoY=h*.62;this.startHubAmbience(h*.5);
+    const logoW=Math.min(w*.86,460),logoH=logoW*310/1200,logoY=h*.62;this.startHubAmbience(h*.5);this.loadBook?.();if(!Save.data.tutorialDone)this.loadTutArt?.();
     if(this.textures.exists('hub_ui_logo')){ const logo=this.hubArt('logo',w/2,logoY,logoW,logoH);this.hubTween({targets:logo,y:logoY+3,duration:2600,yoyo:true,repeat:-1,ease:'Sine.inOut'});this.hubEvery?.(5000,1500,()=>this.hubFlash('vfx_hub_logo_shine',w/2,logoY,logoW,logoH)); }
     else this.menu.add(this.add.text(w/2,logoY,'MOCHI MAYHEM',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(40,w*.1))+'px',color:'#fff0df',stroke:'#5a2440',strokeThickness:6}).setOrigin(.5));
     const ty=Math.min(h*.82,logoY+logoH/2+h*.12),tap=this.add.text(w/2,ty,'TAP TO START',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(24,w*.062))+'px',color:'#ffe08a',stroke:'#3a1830',strokeThickness:5}).setOrigin(.5);this.menu.add(tap);
     tap._noEnter=true;this.hubTween({targets:tap,alpha:{from:1,to:.35},scale:{from:1,to:.94},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     this.hubText(w/2,h-Math.max(18,h*.03),'v'+GAME_VERSION,11,'#d9cce6',.5);
     this._zone(0,0,w,h,()=>{ if(this._titleGo)return; this._titleGo=true; Sfx.ui?.();
+      if(this.bookReady()&&this.hubMotionAllowed()&&this.bookOpening){ const tut=!Save.data.tutorialDone; this.bookOpening(()=>{ this._titleGo=false; if(this.state!=='menu')return; this.menuScreen='hub'; if(tut){ this.startChapterTutorial(); return; } this.buildMenuScreen(); },!tut); return; }   // v7.9.68 เปิดหนังสือช้า ๆ ก่อนเข้า Lobby / บทสอน
       if(!Save.data.tutorialDone){ this._titleGo=false; this.menuScreen='hub'; this.startChapterTutorial(); return; }   // v7.9.66 ผู้เล่นใหม่: แตะ → เข้าบทสอนเลย
       this.menuScreen='hub'; this.buildMenuScreen(); this._titleGo=false;
       if(this.hubMotionAllowed()){ const t0=Date.now(); this.loadBook?.(()=>{ if(this.state==='menu'&&Date.now()-t0<2500)this.bookCover(); }); } });
@@ -9865,7 +9905,8 @@ class Game extends Phaser.Scene {
     }
     this.menu.setVisible(true);
   }
-  startChapterTutorial(){
+  loadTutArt(){ const miss=TUT_KEYS.filter(k=>!this.textures.exists(k)); if(!miss.length||this._tutArt)return; this._tutArt=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._tutArt=false; },{all:true,quiet:true}); }catch(e){ this._tutArt=false; } }   // v7.9.68 ใบ 38
+  startChapterTutorial(){ this.loadTutArt?.();
     this._forceCoachTutorial=true;this.stageDiff=1;this.startRun(0);
   }
   buildStageSelect(){
@@ -10963,7 +11004,7 @@ class Game extends Phaser.Scene {
     let ups=0; while(cp.exp>=charExpNeed(cp.lvl)){ cp.exp-=charExpNeed(cp.lvl); cp.lvl++; cp.tp=(cp.tp||0)+1; ups++; }
     Save.save(); this._lastExpGain=Math.round(n);const pg=this._charExpGain&&this._charExpGain.character===this.character?this._charExpGain:null;this._charExpGain={character:this.character,before:pg?pg.before:before,after:{lvl:cp.lvl,exp:cp.exp},gain:(pg?pg.gain:0)+this._lastExpGain}; this._lastLvlUps=ups; return ups;
   }
-  showMenu(){ try{ Tele.flush(); }catch(e){} this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); const _title=!window.__titleShown&&!window.__pendingMenu&&window.__pendingRun==null; window.__titleShown=true;   // v7.9.64 หน้าเปิดเกมครั้งแรกที่เข้าเมนูหลังเปิดแอป
+  showMenu(){ try{ Tele.flush(); }catch(e){} this.lvlUp?.setVisible(false); this.cancelSnipe();this.clearArtVfx(); this.state='menu'; this.clearYuzuCrew(); this.clearCharSignature(); Sfx.bgmIntense(false); Sfx.playMainBgm(); const _title=!window.__titleShown&&!window.__pendingMenu&&window.__pendingRun==null; window.__titleShown=true;   // v7.9.64 หน้าเปิดเกมครั้งแรกที่เข้าเมนูหลังเปิดแอป
     this.menuScreen=_title?'title':(window.__pendingMenu||'hub'); window.__pendingMenu=null; if(this.pauseUI)this.pauseUI.setVisible(false); this.buildMenuScreen(); this.hudVisible(false);
     const rp=window.__pendingRun; window.__pendingRun=null; if(rp!=null){ this.time.delayedCall(60,()=>{ if(this.state==='menu')this.startRun(rp); }); return; }   // v7.9.45 Replay ตอนแพ้ = รีสตาร์ทฉากแล้วเริ่มด่านเดิมใหม่ (เดิมเรียก startRun ตรง ๆ ศัตรู/บอสเดิมค้างในสนาม)
     if(_title)return;
@@ -13259,7 +13300,7 @@ class Game extends Phaser.Scene {
     { id:'hp', icon:'❤️', title:'Stay Healthy', body:'HP at zero ends the stage.\nPink mochi hearts heal you.', introOnly:true },
     { id:'ready', icon:'🎁', title:'You’re Ready!', body:'The pantry floor is cracking…\nGo save Mochitopia’s flavor!', introOnly:true },
   ]; }
-  startCoach(){ this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
+  startCoach(){ this.loadTutArt?.(); this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
   _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps();
     if(c.step>=steps.length){ this._coachFinish(); return; }
     const step=steps[c.step];
@@ -13272,19 +13313,21 @@ class Game extends Phaser.Scene {
     if(this._coachIntro)this._coachIntro.destroy(); this.state='coachIntro'; this.physics.pause(); if(this.player)this.player.setVelocity(0,0); if(this.joy)this.joy.active=false;
     const w=this.W,h=this.H,steps=this.coachSteps(),n=(this._coach?this._coach.step:0)+1,cont=this.add.container(0,0).setScrollFactor(1).setDepth(70); this.camUI(cont);
     cont.add(this.add.rectangle(0,0,w,h,0x0d0816,.72).setOrigin(0));
-    const bw=Math.min(w-28,390),bx=(w-bw)/2,tw=bw-40,body=this.add.text(w/2,0,step.body||'',{fontFamily:'sans-serif',fontSize:'16px',color:'#ffffff',align:'center',lineSpacing:7,wordWrap:{width:tw}}).setOrigin(.5,0);
+    const bw=Math.min(w-28,390),bx=(w-bw)/2,tw=bw-(this.tuHas('tut_card_frame')?72:40),body=this.add.text(w/2,0,step.body||'',{fontFamily:'sans-serif',fontSize:'16px',color:'#ffffff',align:'center',lineSpacing:7,wordWrap:{width:tw}}).setOrigin(.5,0);
     const bh=Math.max(250,150+body.height+70),by=Math.max(40,(h-bh)/2-h*.04),g=this.add.graphics();
-    g.fillStyle(0x000000,.4).fillRoundedRect(bx+4,by+6,bw,bh,22).fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,22).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,22); cont.add(g);
+    const fr=this.tuHas('tut_card_frame')&&this.tuPanel('tut_card_frame',0,bx-8,by-30,bw+16,bh+84); if(fr)cont.add(fr); else{ g.fillStyle(0x000000,.4).fillRoundedRect(bx+4,by+6,bw,bh,22).fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,22).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,22); cont.add(g); }   // ใบ 38 กรอบการ์ด (ไม่มีภาพ = กรอบวาด)
     const av=this.rubyAvatar(w/2-40,by+78,78); if(av)cont.add(av);
-    cont.add(this.add.text(bx+16,by+12,'STEP '+n+' / '+steps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffb3c8'}));
-    const ik='tut_ic_'+step.id,hasIc=this.textures.exists(ik); if(hasIc){ const ic=this.add.image(bx+bw-52,by+52,ik); ic.setScale(72/Math.max(ic.width,ic.height)); cont.add(ic); }   // ใบสั่งอาร์ต 38 (ไอคอนประจำขั้น) · ไม่มีภาพ = ใช้อีโมจิในหัวข้อ
+    cont.add(this.add.text(bx+(fr?26:16),by+(fr?62:12),'STEP '+n+' / '+steps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffb3c8'}));
+    const ik='tut_ic_'+step.id,hasIc=this.textures.exists(ik); if(hasIc){ const ic=this.add.image(bx+bw-(fr?58:52),by+(fr?88:52),ik); ic.setScale(72/Math.max(ic.width,ic.height)); cont.add(ic); }   // ใบสั่งอาร์ต 38 (ไอคอนประจำขั้น) · ไม่มีภาพ = ใช้อีโมจิในหัวข้อ
     const tt=this.add.text(w/2,by+96,(step.icon&&!hasIc?step.icon+' ':'')+step.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5}).setOrigin(.5,0); if(tt.width>tw)tt.setScale(tw/tt.width); cont.add(tt);
     body.setY(by+142); cont.add(body);
-    const last=n===steps.length,hint=this.add.text(w/2,by+bh-30,last?'👆 Tap to start your first stage':(step.introOnly?'👆 Tap to continue':'👆 Tap to try it'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); cont.add(hint);
+    const last=n===steps.length,hint=this.add.text(w/2,by+bh-(fr?16:30),last?'👆 Tap to start your first stage':(step.introOnly?'👆 Tap to continue':'👆 Tap to try it'),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#8fe8ff'}).setOrigin(.5).setAlpha(0); cont.add(hint);
     cont.setAlpha(0); this.tweens.add({targets:cont,alpha:1,duration:320});
     this._coachIntro=cont; this._coachIntroGo=null;
     this.time.delayedCall(1200,()=>{ if(this._coachIntro!==cont)return; this._coachIntroGo=()=>{ this._coachIntroGo=null; Sfx.select&&Sfx.select(); this.tweens.add({targets:cont,alpha:0,duration:200,onComplete:()=>{ cont.destroy(); if(this._coachIntro===cont)this._coachIntro=null; this.state='play'; this.physics.resume(); go(); }}); };
       this.tweens.add({targets:hint,alpha:{from:.35,to:1},duration:650,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }); }
+  tutGreatFx(){ if(!this.tuHas('vfx_tut_great'))return; this.tuFrames('vfx_tut_great'); const im=this.camUI(this.add.image(this.W/2,this.H*.4,'vfx_tut_great','cell0').setScrollFactor(1).setDepth(66).setDisplaySize(170,170)); let f=0;   // ใบ 38 ตราดาวตอนผ่านขั้น (เล่นครั้งเดียวแล้วลบ)
+    const ev=this.time.addEvent({delay:83,repeat:6,callback:()=>{ f++; if(!im.active)return; if(f>5){ ev.remove(false); im.destroy(); return; } im.setFrame('cell'+f); }}); }
   coachIntroTap(){ if(this._coachIntroGo)this._coachIntroGo(); }
   // จัดสนามให้เข้ากับบทที่สอน: เคลียร์มอนเก่าให้โล่ง (freeze/calm) · บทฆ่า = สปอนมอนอ่อน ๆ ให้ลอง · บทเลเวล = เปิดการ์ดให้เลือก
   tutorialSetupStep(step){
@@ -13360,10 +13403,10 @@ class Game extends Phaser.Scene {
   // 🔦 สปอตไลต์ชี้จุดที่ต้องทำ (วงกลมเต้น + นิ้วชี้) — reposition ต่อเฟรมใน tickTutorialCoach
   buildCoachSpotlight(step){ if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;}
     if(!step||!step.spot)return; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(59); this.camUI(cont);
-    const ring=this.add.circle(0,0,44,0xffe08a,0).setStrokeStyle(5,0xffe08a,1); const finger=this.textures.exists('tut_finger')?this.add.image(0,0,'tut_finger').setOrigin(.3,0).setDisplaySize(56,56):this.add.text(0,0,'👆',{fontSize:'34px'}).setOrigin(0.5,0);   // ใบ 38
+    const rArt=this.tuHas('vfx_tut_ring'); let ring; if(rArt){ this.tuFrames('vfx_tut_ring'); ring=this.add.image(0,0,'vfx_tut_ring','cell0').setDisplaySize(128,128); let rf=0; const ev=this.time.addEvent({delay:125,loop:true,callback:()=>{ if(!ring.active){ev.remove(false);return;} rf=(rf+1)%6; ring.setFrame('cell'+rf); }}); } else ring=this.add.circle(0,0,44,0xffe08a,0).setStrokeStyle(5,0xffe08a,1); /* ใบ 38 วงไอซิ่งหมุน */ const finger=this.textures.exists('tut_finger')?this.add.image(0,0,'tut_finger').setOrigin(.297,.016).setDisplaySize(56,56):this.add.text(0,0,'👆',{fontSize:'34px'}).setOrigin(0.5,0);   // ใบ 38
     const lab=this.add.text(0,0,step.label||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#1a0f1e',backgroundColor:'#ffe08a',padding:{x:10,y:4}}).setOrigin(1,0.5).setVisible(!!step.label);
     cont.add([ring,finger,lab]); this._coachSpot=cont; this._coachSpotRing=ring; this._coachSpotFinger=finger; this._coachSpotLab=lab; this._coachSpotKind=step.spot;
-    this.tweens.add({targets:ring,scale:{from:0.8,to:1.25},alpha:{from:1,to:0.45},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
+    if(rArt){ const k0=ring.scale; this.tweens.add({targets:ring,scale:{from:k0*.92,to:k0*1.08},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'}); } else this.tweens.add({targets:ring,scale:{from:0.8,to:1.25},alpha:{from:1,to:0.45},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
     this.tweens.add({targets:lab,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420,ease:'Sine.inOut'});
     if(step.spot==='move'){ ring.setVisible(false); this._coachDrag=0; } else this.tweens.add({targets:finger,y:'+=8',yoyo:true,repeat:-1,duration:520,ease:'Sine.inOut'}); }
   coachSpotTarget(kind){ const w=this.W,h=this.H;
@@ -13378,7 +13421,7 @@ class Game extends Phaser.Scene {
     if(this._coachSpot&&this._coachSpotKind){ const p=this.coachSpotTarget(this._coachSpotKind); if(p){ this._coachSpot.setVisible(true); this._coachSpotRing.setPosition(p.x,p.y); if(this._coachSpotKind==='move'){ this._coachDrag=((this._coachDrag||0)+dt*0.6)%1; const k=Math.sin(this._coachDrag*Math.PI*2); this._coachSpotFinger.setPosition(this.W/2+k*this.W*0.22,this.H*0.62).setAlpha(0.95); } else this._coachSpotFinger.setPosition(p.x,p.y+22); if(this._coachSpotLab)this._coachSpotLab.setPosition(p.x-52,p.y); } else this._coachSpot.setVisible(false); }
     if(this.player&&c.lx!=null){ c.trav=(c.trav||0)+this.dist(this.player.x,this.player.y,c.lx,c.ly); c.lx=this.player.x; c.ly=this.player.y; }
     if(step.tap){ if(this.input.activePointer&&this.input.activePointer.isDown&&c.t>0.4)this._coachNext(); return; }
-    if((step.check&&step.check(c))||(step.timeout&&c.t>=step.timeout)){ if(!c.done){c.done=true; if(this._coachGoalTxt)this._coachGoalTxt.setText('✅ Done!'); this.showBanner&&this.showBanner('✅ Great job!','',1300); Sfx.select&&Sfx.select(); this.time.delayedCall(1600,()=>{ if(this._coach===c)this._coachNext(); });} }
+    if((step.check&&step.check(c))||(step.timeout&&c.t>=step.timeout)){ if(!c.done){c.done=true; if(this._coachGoalTxt)this._coachGoalTxt.setText('✅ Done!'); this.showBanner&&this.showBanner('✅ Great job!','',1300); this.tutGreatFx?.(); Sfx.select&&Sfx.select(); const adv=()=>{ if(this._coach!==c)return; if(this.state!=='play'){this.time.delayedCall(300,adv);return;} this._coachNext(); }; this.time.delayedCall(1600,adv);} }   // v7.9.68 รอให้ปิดการ์ดเลเวลอัพก่อน (เดิมขึ้นหน้าอธิบายทับการ์ด → การ์ดค้างแตะไม่ได้)
   }
   openStartingSkillChoice(){ this.state='startskill';this.physics.pause();this.lvlUp.setVisible(false);this.time.delayedCall(0,()=>this.launchStageLoadout()); }   // v7.8.93 หน้าเลือกสกิลเริ่มต้นยุคเก่าตัดแล้ว
   pickStartingSkillAt(px,py){
@@ -13395,7 +13438,8 @@ class Game extends Phaser.Scene {
     if(this.pendingLvl>0 && this.state==='play' && this.mode!=='reward' && !this._bossLootOpen) (this.queueLevelUp?this.queueLevelUp():this.openLevelUp());
   }
   // v7.8.58 เจ้าของ: การ์ดเลเวลอัพไม่เด้งทันที — โชว์ LEVEL UP ก่อน LEVELUP_DELAY_MS แล้วค่อยเปิด (ไม่ซ้อนคิว)
-  queueLevelUp(){ if(!this.time?.delayedCall||this._inTutorial){this.openLevelUp();return;} if(this._lvlQueued)return; this._lvlQueued=true;
+  queueLevelUp(){ if(this._inTutorial&&this._coach&&['welcome','move','attack','sweets'].includes(this.coachSteps()[this._coach.step]?.id))return;   // v7.9.68 บทสอน: เก็บเลเวลไว้จนถึงขั้นสอนการ์ด
+    if(!this.time?.delayedCall||this._inTutorial){this.openLevelUp();return;} if(this._lvlQueued)return; this._lvlQueued=true;
     const p=this.player;if(p?.active)this.floatText?.(p.x,p.y-70,'LEVEL UP!',0xffe07a);
     this.time.delayedCall(LEVELUP_DELAY_MS,()=>{ this._lvlQueued=false; if(this.state==='play'&&this.pendingLvl>0&&this.mode!=='reward'&&!this._bossLootOpen)this.openLevelUp(); }); }   // v7.9.45 บอสตายแล้วไม่เปิดการ์ดซ้อนวงล้อรางวัล (ด่านจบอยู่แล้ว)
   checkUniqueAutoUpgrade(){
