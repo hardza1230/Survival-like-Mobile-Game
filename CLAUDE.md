@@ -64,7 +64,11 @@ Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). 
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
-# Latest delivery: v7.9.62 — Cleaner Lobby (owner picked critique 1–4)
+# Latest delivery: v7.9.63 — Lobby polish 5/6/8/10 (owner)
+
+Empty stars get a gold 10-point outline (Graphics strokePoints over lb_star cell 1). Power line in the stage panel uses soft '#ffc58a' when ratio<.9 (no red); BATTLE with ratio<.7 first shows a toast 'Recommended N — tap BATTLE again to go' (_lbWarnAt/_lbWarnSi, 4s window). Side buttons: right Inbox/News/Daily, left Codex + Awards. Nav tab 'Play' renamed 'Stages' (map-book icon kept). Browser 360×780 checked.
+
+# Previous delivery: v7.9.62 — Cleaner Lobby (owner picked critique 1–4)
 
 LOBBY_FACE {hero:[cx/w, cy/h, size/h, foot]} (before CHARACTERS): profile avatar = square crop of card_<hero> at the face (roster_ banner kept as fallback). buildLobby: dim overlay .24 over the stage background, soft halo (hero colour edge → warm centre) behind the hero, glow ellipse + thin ring + light shadow at the real feet (fy uses foot fraction; Cocoa art ends at .902). Power pill removed → '⚡ cur / rec' right-aligned under the stars inside the stage panel (ps.hex colour); 'New cards here' line → gold 'NEW: …' badge on the panel top edge; hero stands at panY−10 (−20 with badge). Browser 360×780 + 412×915 checked.
 
@@ -626,7 +630,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   · **หมายเหตุ:** เพราะ server.url ชี้ Pages → APK ตัวใหม่ต้อง build หลังตั้ง Pages (ตัว build แรกสุดยังเป็นออฟไลน์)
 
 
-## 4. สถานะปัจจุบัน (v7.9.62 · 21 ต.ค. 2026)
+## 4. สถานะปัจจุบัน (v7.9.63 · 21 ต.ค. 2026)
 - เวอร์ชันล่าสุดดูที่ `GAME_VERSION` ใน game.js และบล็อก Latest delivery ด้านบน
 - ระบบหลักครบ: Story 3 Chapter (15 ด่าน) → Endgame Mochi Delve (แผนที่ seed ต่อความลึก, บอส Delve, Pinnacle), Boss Rush, Kitchen Recipe, Temple Weave/Depths/Rank Perks, Gear, Talent ราย Build Path, ตัวละคร 6 ตัว แต่ละตัว 3 Build Path
 - ล่าสุด (v7.8.45–60): ดาวรายด่าน 3 ดวง + แอนิเมชันสลับหน้าเมนู (v7.8.60) · อาร์ตใบ 23–25 (Level Up / Pause / เมนูเคลื่อนไหว) ผูกแล้ว (v7.8.59) · ปรับ Spark/Arc/Mint/Cocoa ตามเจ้าของ + หน่วงการ์ดเลเวลอัพ (v7.8.58) · อาร์ตท่าบอส C1–C2 ใบ 22 ผูกครบ 59 ไฟล์ (v7.8.57) · อาร์ต Hero VFX ใบ 20 ครบ 21/21 · อาร์ตหน้า Temple ใบ 21 ครบ 34 ชิ้น · Replay ฆ่าครบ ~320 ตัวถึงเจอบอส (ไม่มีตัดเวลา) · Taro Spark ระยะโดน+เลี้ยวหา / Static Charge 40 ครั้ง / มินิบอส ×0.85 · Taro Sentry Shock 15 ชั้นบนบอส + Discharge + ระเบิดตอนหมดอายุ · C2-4 เปลี่ยนเป็น Seasonal Harvest (เก็บกลีบ 4 ฤดู) + Seasonal Wisp HP ครึ่ง

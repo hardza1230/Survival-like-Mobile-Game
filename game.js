@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.62';
+const GAME_VERSION = '7.9.63';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.63',date:'2026-10-23',title:'Lobby polish',items:['Stars you have not earned yet now show a gold outline','Power uses a soft colour; if you are far below the recommended Power, BATTLE asks you to tap again','Awards moved to the left side next to Codex','The Play tab is now called Stages']},
   {v:'7.9.62',date:'2026-10-23',title:'Cleaner Lobby',items:['Profile picture now shows your hero’s face','Heroes stand on a soft glowing spot with a clear shadow, and the background is dimmed so they stand out','Power now sits inside the stage box under the stars; new card types show as a small badge on the box']},
   {v:'7.9.61',date:'2026-10-23',title:'Softer heroes, fairer flood',items:['Lobby heroes now gently breathe and sway (hair and head move most) — tap for a squishy bounce, tap fast for a spin jump','C1-2 boss Sewer Flood: slower bars, a wider gap, a longer warning, and the second bar waits for the first one to finish']},
   {v:'7.9.60',date:'2026-10-23',title:'Ruby shows you what to do',items:['Ruby, your guide, pops up at the top to explain each mission, miniboss and boss in plain words','She reminds you of the current goal now and then, and explains Magnets, Heal Mochi and chests the first time you find them','Pause screen: the pause and play icons now sit in the middle of their circles']},
@@ -8312,7 +8313,7 @@ class Game extends Phaser.Scene {
     const g=fix(this.add.graphics()),bgArt=this.tuHas('lb_nav_bg'); g.fillStyle(0x000000,.35).fillRect(0,y0-6,W,6);
     if(bgArt){ const p=this.tuPanel('lb_nav_bg',0,0,y0,W,NAV_H); p._menuBackdrop=true;p._menuFixedY=y0;this.menu.add(p); }   // v7.9.51 ใบ 33 พื้นแถบ C1
     else{ g.fillStyle(0x1a1024,.98).fillRect(0,y0,W,NAV_H); g.lineStyle(2,0xffd36e,.4).lineBetween(0,y0,W,y0); }
-    const tabs=[['hub','ic_nav_home','','🏠','Home'],['char','ic_nav_heroes','hub_btn_heroes','🧸','Heroes'],['chapter','ic_nav_play','hub_btn_play','▶','Play'],['gLoadout','ic_nav_gear','hub_btn_gear','🎒','Gear'],['gActivity','ic_nav_activities','hub_btn_activity','🎯','Activities']];
+    const tabs=[['hub','ic_nav_home','','🏠','Home'],['char','ic_nav_heroes','hub_btn_heroes','🧸','Heroes'],['chapter','ic_nav_play','hub_btn_play','▶','Stages'],['gLoadout','ic_nav_gear','hub_btn_gear','🎒','Gear'],['gActivity','ic_nav_activities','hub_btn_activity','🎯','Activities']];
     // v7.9.51 ชื่อใต้ทุกช่อง (เจ้าของเลือกแบบภาพอ้างอิงอบอุ่น) · ช่องที่เปิดกว้างขึ้นนิดและมีไฮไลต์ทอง C2
     // v7.9.52 ช่องกว้างเท่ากัน (ไอคอนไม่ย้ายที่เมื่อเปลี่ยนแท็บ) · ไฮไลต์เลื่อนจากแท็บเดิมไปแท็บใหม่ (เจ้าของ: เดิมดูวาป)
     const wt=tabs.map(()=>1),sum=wt.reduce((a,b)=>a+b,0); let x0=0;
@@ -9518,8 +9519,9 @@ class Game extends Phaser.Scene {
       if(!img(ik,0,x+s0/2,y+s0*.42,34,34))this.menu.add(this.add.text(x+s0/2,y+s0*.4,em,{fontSize:'22px'}).setOrigin(.5));
       this.hubText(x+s0/2,y+s0-9,lab,9,'#fff0df',.5);
       this._zone(x,y,s0,s0,()=>{this.menuScreen=t;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='side_'+t; if(badge)this.drawBadgeDot(this.menu,x+s0-5,y+5); };
-    let ry=top+ph+28; [['📦','Inbox','gearInbox','ic_side_inbox'],['📰','News','news','ic_side_news'],['📋','Daily','daily','ic_side_daily'],['🏆','Awards','achievements','ic_side_awards']].forEach(([em,lab,t,ik])=>{ sideBtn(w-side-54,ry,em,lab,t,ik,this.hasTargetBadge(t)); ry+=62; });
-    sideBtn(side,top+ph+28,'📖','Codex','gCodex','ic_side_codex',false);
+    // v7.9.63 ขวา 3 (ของรายวัน) · ซ้าย 2 (สะสม) ให้สมดุล
+    let ry=top+ph+28; [['📦','Inbox','gearInbox','ic_side_inbox'],['📰','News','news','ic_side_news'],['📋','Daily','daily','ic_side_daily']].forEach(([em,lab,t,ik])=>{ sideBtn(w-side-54,ry,em,lab,t,ik,this.hasTargetBadge(t)); ry+=62; });
+    sideBtn(side,top+ph+28,'📖','Codex','gCodex','ic_side_codex',false); sideBtn(side,top+ph+90,'🏆','Awards','achievements','ic_side_awards',this.hasTargetBadge('achievements'));
     // ── v7.9.51 ใบ 33: กล่องด่าน (ข้อมูล) แยกจากปุ่ม BATTLE (กดเล่น) · ฮีโร่ยืนเหนือกล่อง
     const ready=isStageReady(si),btnW=Math.min(w*.78,300),btnH=Math.round(btnW*90/320),btnY=h-btnH-Math.max(10,h*.014),bx=(w-btnW)/2;
     const arW=36,panW=Math.min(300,w-2*(side+arW+6)),panH=Math.max(80,Math.min(96,h*.115)),panY=btnY-panH-8,px=(w-panW)/2;
@@ -9547,9 +9549,10 @@ class Game extends Phaser.Scene {
     this.hubText(tcx,panY+panH*.2,'✦  C H A P T E R  '+(chN+1)+'  ✦',10,'#ffd98a',.5);
     const big=this.add.text(tcx,panY+panH*.5,lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.round(panH*.36)+'px',color:'#fff3df',stroke:'#2a1a3a',strokeThickness:3}).setOrigin(.5);this.menu.add(big);
     const nm=this.hubText(tcx,panY+panH*.79,st.name||'',12,'#f3dcc0',.5);let f2=12;while(nm.width>panW-starW*3-34&&f2>8)nm.setFontSize(--f2+'px');
-    const stars=(d.stageStars||{})[si]||0,scx=px+panW-14-starW*1.5;[1,2,4].forEach((b,i)=>{ const sx0=px+panW-14-starW*(3-i)+starW/2,sy0=panY+panH*.42; if(!img('lb_star',(stars&b)?0:1,sx0,sy0,starW,starW))this.hubText(sx0,sy0,(stars&b)?'★':'☆',Math.round(starW*.9),(stars&b)?'#ffd54a':'#6d6078',.5); });
+    const stars=(d.stageStars||{})[si]||0,scx=px+panW-14-starW*1.5;[1,2,4].forEach((b,i)=>{ const sx0=px+panW-14-starW*(3-i)+starW/2,sy0=panY+panH*.42; if(!img('lb_star',(stars&b)?0:1,sx0,sy0,starW,starW))this.hubText(sx0,sy0,(stars&b)?'★':'☆',Math.round(starW*.9),(stars&b)?'#ffd54a':'#6d6078',.5);
+      if(!(stars&b)){ const og=this.add.graphics(),pts=[],R1=starW*.43,R2=R1*.45;for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?R2:R1;pts.push(new Phaser.Math.Vector2(sx0+Math.cos(a)*r,sy0+Math.sin(a)*r+starW*.03));} og.lineStyle(1.6,0xffd98a,.8).strokePoints(pts,true,true);this.menu.add(og); } });   // v7.9.63 ดาวที่ยังไม่ได้ = ขอบทอง (เดิมม่วงเข้มบนแผงม่วง)
     // v7.9.62 พลังย้ายเข้ากล่องด่าน (ใต้ดาว) · การ์ดใหม่ = ป้ายเล็กบนขอบกล่อง
-    const pw2=this.hubText(px+panW-20,panY+panH*.76,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec),11,ps.hex,1);let f3=11;while(pw2.width>starW*3+16&&f3>8)pw2.setFontSize(--f3+'px');
+    const pw2=this.hubText(px+panW-20,panY+panH*.76,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec),11,ps.ratio<.9?'#ffc58a':ps.hex,1);let f3=11;while(pw2.width>starW*3+16&&f3>8)pw2.setFontSize(--f3+'px');
     if(nw.length){ const nt=this.add.text(w/2,panY-1,'NEW: '+nw.map(k=>CARD_INTRO[k][0]+' '+CARD_INTRO[k][1]).join(' · '),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#3a2208'}).setOrigin(.5);let f4=10;while(nt.width>panW-40&&f4>7)nt.setFontSize(--f4+'px');
       const bw2=nt.width+18,bh2=18,bg3=this.add.graphics();bg3.fillStyle(0x000000,.35).fillRoundedRect(w/2-bw2/2+1,panY-bh2/2+2,bw2,bh2,9).fillStyle(0xffd54a,1).fillRoundedRect(w/2-bw2/2,panY-bh2/2-1,bw2,bh2,9).lineStyle(1.5,0x8a5a12,1).strokeRoundedRect(w/2-bw2/2,panY-bh2/2-1,bw2,bh2,9);this.menu.add(bg3);this.menu.add(nt); }
     // ปุ่ม BATTLE (A2 + B1 + แสงวิ่ง D4) · แท็ก lobby_play
@@ -9564,7 +9567,9 @@ class Game extends Phaser.Scene {
       const tw=this.tweens.add({targets:st,k:1.035,duration:900,ease:'Sine.easeInOut',yoyo:true,repeat:-1,onUpdate:()=>{ if(!parts[0].o.active){ tw.remove(); return; } for(const p of parts){ p.o.x=bcx+(p.x-bcx)*st.k; p.o.y=bcy+(p.y-bcy)*st.k; p.o.setScale(p.sx*st.k,p.sy*st.k); } }});
       this._lbBreathe={tw,parts}; }
     if(art('vfx_lb_sparkle')){ this.tuFrames('vfx_lb_sparkle'); [[px+10,panY+6],[px+panW-10,panY+panH-6]].forEach(([x0,y0],i)=>{ const sp=this.add.image(x0,y0,'vfx_lb_sparkle','cell0').setDisplaySize(30,30);this.menu.add(sp); let f=i*2; this.hubEvery(140,0,()=>{ if(sp.active)sp.setFrame('cell'+(f=(f+1)%4)); }); }); }
-    this._zone(bx,btnY,btnW,btnH,()=>{ if(!ready){this.menuToast('🛠️ Stage in production','#ffb4c7');return;} this.startStoryStage(si); });this.tapZones[this.tapZones.length-1].tag='lobby_play';
+    this._zone(bx,btnY,btnW,btnH,()=>{ if(!ready){this.menuToast('🛠️ Stage in production','#ffb4c7');return;}
+      if(ps.ratio<.7&&!(this._lbWarnAt&&Date.now()-this._lbWarnAt<4000&&this._lbWarnSi===si)){ this._lbWarnAt=Date.now(); this._lbWarnSi=si; this.menuToast('⚡ Recommended '+Math.round(ps.rec)+' — tap BATTLE again to go','#ffc58a'); return; }
+      this._lbWarnAt=0; this.startStoryStage(si); });this.tapZones[this.tapZones.length-1].tag='lobby_play';
     // ‹ › เลือกด่านที่ปลดแล้ว (A3)
     const us=Math.min(STAGES.length-1,d.unlockedStage||0),arH=Math.round(arW*60/48),arrow=(x,dir,ok)=>{ const ay=panY+panH/2;
       const a=img('lb_arrow_btn',0,x+arW/2,ay,arW,arH); if(a){ if(dir>0)a.setFlipX(true); a.setAlpha(ok?1:.4); } else { this.hubPanel(x,ay-22,arW,44);this.hubText(x+arW/2,ay,dir<0?'‹':'›',28,ok?'#fff0df':'#6d6078',.5); }
