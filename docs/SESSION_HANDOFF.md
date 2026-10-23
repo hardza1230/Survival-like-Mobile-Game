@@ -6,4 +6,6 @@ Implemented all five. Ruby14 WebPs stage/menu lazy and memories. Frost Lance Uni
 
 Checks: final npm run check passed including Ruby/Mint/Lobby/gear regression suites; npm run build:www passed for v7.9.87 with 1,909 runtime assets. Local Windows build cannot find npx via execFileSync, so it uses the existing unminified fallback; CI Linux retains the existing minification path. No browser screenshots or headless balance simulation (owner instruction).
 
-Next: finish final check, publish one fast-forward commit to deploy branch via GitHub connector, confirm remote tree/assets and Pages/version.json. Owner phone visual, timing, combat feel and FPS remain pending. No Play Store or backend changes.
+Published code commit 76dceb3e19c7987625591f74653656d66d47e4b4; local and remote tree matched 69f86ccfa12d7d32161ada748a33ccaed8b79ce2. All 35 changed files (3,142,340 bytes) read back from immutable GitHub URLs and matched staged Git blob SHA. Pages run 39943051799 and Android run 39943051819 both succeeded; rolling latest APK targets this commit (298,266,715 bytes). Live unqueried and cache-bypassed version.json and game.js report 7.9.87; all five runtime features present. All 14 live Ruby WebPs match tested local SHA256 (186,478 bytes).
+
+Next: owner phone visual, timing, combat feel and FPS review. Implementation and publication complete; no Play Store or backend changes.
