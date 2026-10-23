@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.74';
+const GAME_VERSION = '7.9.75';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.75',date:'2026-10-23',title:'Ruby teaches the Weave',items:['Ruby now explains the Flavor Weave step by step after the first tutorial','Fixed: the hero looked big on the first tutorial card','Heroes unlock with the story again: Mint from C1-3, Cocoa from C2-1']},
   {v:'7.9.74',date:'2026-10-23',title:'Download once',items:['The first loading screen now downloads the whole game once and keeps it on your phone, so later screens and stages load from the device']},
   {v:'7.9.73',date:'2026-10-23',title:'Reset and sign out start fresh',items:['Reset progress now restarts the game from the title screen (and clears the cloud copy if you are signed in)','Signing out clears this device’s save and restarts; sign in again to get your cloud save back','Inbox removed from the Upgrade page — use the Mail button in the Lobby']},
   {v:'7.9.72',date:'2026-10-23',title:'More room on strong phones',items:['Phones with 8 GB RAM or more keep more art loaded, so screens reload pictures less often']},
@@ -3885,8 +3886,8 @@ const NAV_H=62;   // v7.9.47 ความสูงแถบเมนูล่า
 const YUZU_START=4,YUZU_FOCUS=3,YUZU_STAY=3,YUZU_EARLY_NEED=6,YUZU_CAP=12,YUZU_HARD_CAP=17,YUZU_BITE=14,YUZU_REGROW=6,YUZU_TOSS_CHARGE=25;
 const YUZU_BITE_CD=1.8,YUZU_RIPEN_CAP=6,YUZU_LEASH=300,YUZU_BOSS_LEASH=380,YUZU_RUSH_LEN=240,YUZU_RUSH_MUL=2,YUZU_SEP=26;   // v7.9.41 เจ้าของ ก+ข+ค: ฝูงทำงานรอบตัว Yuzu · Dash สั่งพุ่ง · ไม่ซ้อนกัน   // v7.9.37 Yuzu Orchard Swarm (สวนส้ม) — ดู docs/YUZU_ORCHARD_SWARM.md
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
-const FIGHTER_PLAYTEST_ALL=true; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
-const CORE_UNLOCK_STAGE={mint:0,cocoa:4,taro:5,yuzu:9};
+const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
+const CORE_UNLOCK_STAGE={mint:1,cocoa:4,taro:5,yuzu:9};   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) — Mint ที่ Stage 3 · Cocoa ที่ C2-1 (เจ้าของสั่ง)
 const HERO_INTROS=[
   {idx:2,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
@@ -8641,13 +8642,18 @@ class Game extends Phaser.Scene {
   applyGearTut(){ const d=Save.data; if(this.state!=='menu')return;
     if(this._weaveTour){ const T=this._weaveTour,s=this.menuScreen,find=f=>this.tapZones.find(f);   // v7.9.45 ทัวร์หลังบทสอน: Hub → Gear & Power → Weave & Rank → อัปแก่น → Back → Back → Play → ด่าน 1
       const spot=(z,label,fn)=>{ if(!z)return false; const f0=z.fn; z.fn=fn||(()=>f0()); this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label); return true; };
-      if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Upgrades live in Gear & Power — tap it',()=>{ this._weaveTour='gear'; f0(); }))return; }
+      const talk=(flag,lines)=>{ if(this[flag])return false; this.rubyTalk(lines,()=>{ this[flag]=1; this.buildMenuScreen(); }); return true; };   // v7.9.75 Ruby อธิบายก่อนแต่ละช่วง
+      if(T==='hub'&&s==='hub'&&talk('_wtTalk1',['You did it! The Great Hunger ran away — and look at all the stolen Sugar you took back!','Sugar is power here. Let me show you the Flavor Weave, the old temple that makes every hero stronger.']))return;
+      if(T==='gear'&&s==='gLoadout'&&talk('_wtTalk2',['This is the Upgrade page. Gear, the Forge and the temple all live here.','The Flavor Weave is the most important one. Let’s go in!']))return;
+      if(T==='weave'&&s==='upgrade'&&talk('_wtTalk3',['Welcome to the Flavor Weave! Each glowing Flavor Core powers up one part of you — damage, health or speed.','Upgrades stay forever: every stage, every hero. Spend Sugar on a core now!']))return;
+      if(T==='back'&&s==='upgrade'&&talk('_wtTalk4',['Feel that? You are stronger already!','Fill every star on a core to Weave Up — that raises your Rank and opens Rank Perks later.','Come back whenever you bring Sugar home. Now let’s head back.']))return;
+      if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }
       if(T==='gear'&&s==='gLoadout'){ const z=find(q=>q.tag==='upgrade'),f0=z&&z.fn; if(spot(z,'Step 2/5 · Open Weave & Rank',()=>{ this._weaveTour='weave'; this._tutorialWeaveCoach=true; f0(); }))return; }
       if(T==='weave'&&s==='upgrade'&&Date.now()-(this._weaveSpotAt||0)>300){ this._weaveTour='back'; this._tutorialWeaveCoach=false; return this.applyGearTut(); }   // ไม่มีแก่นที่ซื้อได้ → ข้ามไปสอนปุ่ม Back
       if(T==='back'&&s!=='hub'){ const z=find(q=>q.back),f0=z&&z.fn; if(spot(z,s==='upgrade'?'Step 4/5 · Nice! Tap Back to leave this page':'Tap Back again to reach the Hub',()=>f0()))return; }
       if(T==='back'&&s==='hub')this._weaveTour=T==='back'?'play':T;
-      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Step 5/5 · You can come back here any time. Now tap the stage box!',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
-      if(s==='hub'&&(T==='gear'||T==='weave')){ this._weaveTour='hub'; const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Upgrades live in Gear & Power — tap it',()=>{ this._weaveTour='gear'; f0(); }))return; }   // ผู้เล่นกด Back กลางทาง → เริ่มขั้นแรกใหม่
+      if(this._weaveTour==='play'&&s==='hub'){ const z=find(q=>q.tag==='chapter'); if(spot(z,'Step 5/5 · Tap the stage box to pick your next stage!',()=>{ this._weaveTour=null; this._stage1Coach=true; this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); }))return; }
+      if(s==='hub'&&(T==='gear'||T==='weave')){ this._weaveTour='hub'; const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }   // ผู้เล่นกด Back กลางทาง → เริ่มขั้นแรกใหม่
     }
     if(this._mintCoach){ const hi=this._mintCoach===true?HERO_INTROS[0]:this._mintCoach; const z=this.tapZones.find(q=>q.tag==='char_'+hi.id); if(!z)return; z.fn=()=>{ this._mintCoach=false; Save.data.character=hi.id; this.character=hi.id; Save.data[hi.flag]=1; Save.save(); Sfx.select&&Sfx.select(); this.startStoryStage(hi.idx); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); const st=STAGES[hi.idx],lab=st&&st.chapterStage?'C'+(st.chapter+1)+'-'+st.chapterStage:'Stage '+(hi.idx+1); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Pick '+hi.name+' for '+lab+'!'); return; }
@@ -13381,7 +13387,7 @@ class Game extends Phaser.Scene {
     if(step.title&&this.showCoachIntro)this.showCoachIntro(step,go); else go(); }
   // v7.9.66 หน้าอธิบายก่อนลองทำ: หยุดเกม + การ์ดใหญ่ (Ruby, หัวข้อ, 2–3 บรรทัด) · แตะได้หลัง 1.2 วิ (กันแตะข้ามโดยไม่ได้อ่าน)
   showCoachIntro(step,go){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;}
-    if(this._coachIntro)this._coachIntro.destroy(); this.state='coachIntro'; this.physics.pause(); if(this.player)this.player.setVelocity(0,0); if(this.joy)this.joy.active=false;
+    if(this._coachIntro)this._coachIntro.destroy(); this.state='coachIntro'; this.physics.pause(); if(this.player){ this.player.setVelocity(0,0); if(this._pBase)this.player.setScale(this._pBase); } /* v7.9.75 ตัวละครขนาดจริงตั้งแต่หน้าแรก */ if(this.joy)this.joy.active=false;
     const w=this.W,h=this.H,steps=this.coachSteps(),n=(this._coach?this._coach.step:0)+1,cont=this.add.container(0,0).setScrollFactor(1).setDepth(70); this.camUI(cont);
     cont.add(this.add.rectangle(0,0,w,h,0x0d0816,.72).setOrigin(0));
     const bw=Math.min(w-28,390),bx=(w-bw)/2,tw=bw-(this.tuHas('tut_card_frame')?72:40),body=this.add.text(w/2,0,step.body||'',{fontFamily:'sans-serif',fontSize:'16px',color:'#ffffff',align:'center',lineSpacing:7,wordWrap:{width:tw}}).setOrigin(.5,0);
@@ -13450,6 +13456,17 @@ class Game extends Phaser.Scene {
     this._summaryLast=false; this._summaryBtns=[{x:w/2-bw2/2,y:byc-bh2/2,w:bw2,h:bh2,fn:()=>this.openTutorialWeave()}];   // ปิดได้เฉพาะกดปุ่ม
   }
   // v6.50.6 สปอตไลต์ tutorial: มืดรอบนอก เจาะรูที่ปุ่ม + กรอบทองเต้น + นิ้วชี้
+  // v7.9.75 เจ้าของ: บทสอนในเมนูมีคนสอน · Ruby พูดทีละประโยค (แตะ = ถัดไป, แตะได้หลัง .6 วิ) · ใช้ในทัวร์ Weave
+  rubyTalk(lines,done){ const W=this.W,H=this.H,c=this.add.container(0,0); this.menu.add(c); c._menuBackdrop=true; let i=0,at=0;
+    const g=this.add.graphics(); g.fillStyle(0x0d0816,.72).fillRect(0,0,W,H); c.add(g);
+    const bw=Math.min(W-28,380),bx=(W-bw)/2,bh=170,by=H*.52,box=this.add.graphics(); box.fillStyle(0x000000,.4).fillRoundedRect(bx+3,by+5,bw,bh,20).fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,20).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,20); c.add(box);
+    const av=this.rubyAvatar(W/2-40-62,by+4,104); if(av)c.add(av);
+    const nm=this.add.text(bx+20,by+14,'Ruby',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',backgroundColor:'#8a3fb8',padding:{x:9,y:3}}); c.add(nm);
+    const tx=this.add.text(W/2,by+48,'',{fontFamily:'sans-serif',fontSize:'16px',color:'#ffffff',align:'center',lineSpacing:6,wordWrap:{width:bw-36}}).setOrigin(.5,0); c.add(tx);
+    const hint=this.add.text(W/2,by+bh-20,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#8fe8ff'}).setOrigin(.5); c.add(hint);
+    const pip=this.add.text(bx+bw-18,by+16,'',{fontFamily:'sans-serif',fontSize:'11px',color:'#ffb3c8'}).setOrigin(1,0); c.add(pip);
+    const show=()=>{ tx.setText(lines[i]); pip.setText((i+1)+' / '+lines.length); hint.setText(i<lines.length-1?'👆 Tap to continue':'👆 Tap to go on'); at=Date.now(); tx.setAlpha(0); this.tweens.add({targets:tx,alpha:1,duration:220}); if(av)this.tweens.add({targets:av,y:av.y-8,duration:140,yoyo:true,ease:'Sine.out'}); };
+    show(); this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-at<600)return; Sfx.select&&Sfx.select(); i++; if(i<lines.length)return show(); c.destroy(); done&&done(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='ruby_talk'; }
   drawSpotlight(cont,x,y,bw,bh,label){ this._spotBuild=true; const W=this.W,H=this.H,p=8,X=x-p,Y=y-p,R=bw+p*2,B=bh+p*2,g=this.add.graphics(); g.fillStyle(0x000000,0.74);
     g.fillRect(0,0,W,Y); g.fillRect(0,Y+B,W,H-Y-B); g.fillRect(0,Y,X,B); g.fillRect(X+R,Y,W-X-R,B);
     const fr=this.add.graphics(); fr.lineStyle(4,0xffd166,1); fr.strokeRoundedRect(X,Y,R,B,14); this.tweens.add({targets:fr,alpha:{from:1,to:0.35},yoyo:true,repeat:-1,duration:520});
