@@ -1,0 +1,130 @@
+{
+  "activeMethod": "AI-painted12frames",
+  "source": "raw/opening_ai_v2.png",
+  "sourceSHA256": "5b3ca99caa8fc8a952e6314946df2f7f207137a2270bdda2641c3066d93e50ae",
+  "postProcessing": "Equal4x3cell extraction, largest painted component isolation, uniform height registration and packing. No inferred or geometrically generated poses.",
+  "registration": [
+    {
+      "frame": 0,
+      "paintedComponentBounds": [
+        0,
+        1,
+        430,
+        747
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 1,
+      "paintedComponentBounds": [
+        29,
+        1,
+        432,
+        747
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 2,
+      "paintedComponentBounds": [
+        50,
+        2,
+        430,
+        750
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 3,
+      "paintedComponentBounds": [
+        49,
+        1,
+        389,
+        746
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 4,
+      "paintedComponentBounds": [
+        19,
+        0,
+        342,
+        746
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 5,
+      "paintedComponentBounds": [
+        54,
+        0,
+        328,
+        746
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 6,
+      "paintedComponentBounds": [
+        78,
+        0,
+        297,
+        746
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 7,
+      "paintedComponentBounds": [
+        98,
+        0,
+        229,
+        746
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 8,
+      "paintedComponentBounds": [
+        56,
+        0,
+        154,
+        745
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 9,
+      "paintedComponentBounds": [
+        88,
+        0,
+        150,
+        745
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 10,
+      "paintedComponentBounds": [
+        110,
+        0,
+        135,
+        741
+      ],
+      "operation": "crop largest painted component; uniform height resize; left-hinge registration"
+    },
+    {
+      "frame": 11,
+      "paintedComponentBounds": [
+        101,
+        246,
+        115,
+        720
+      ],
+      "operation": "crop and left-align painted shadow"
+    }
+  ],
+  "supersedes": "Geometric sequence in commit27f78496641ce7734e0debf612a1973e5a166f1c",
+  "historicalFiles": "history/ contains superseded geometry and renderer only; never run them over the active asset."
+}

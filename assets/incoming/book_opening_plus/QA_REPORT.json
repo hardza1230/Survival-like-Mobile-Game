@@ -126,8 +126,8 @@
     },
     {
       "file": "bk_open_long.png",
-      "bytes": 5183928,
-      "sha256": "9a90ab1f6e655b6d2fd30fcad1a35fa0b7e1a6b2c15dbc92541252933c01ec1e",
+      "bytes": 3874739,
+      "sha256": "e2cee0f01f902f60da488c40633a4c7889b54b024117af98bf9a9eff6d6d86ac",
       "pngCRC": true,
       "size": [
         1728,
@@ -140,27 +140,12 @@
       "frameCount": 12
     }
   ],
-  "webpCandidateTotalBytes": 1290464,
+  "webpCandidateTotalBytes": 1212176,
   "webpBudgetBytes": 1500000,
   "webpBudgetPass": true,
-  "visualReview": "Reviewed source sheets, all12 opening frames, exact first-frame identity, monotonic reveal, native28/56px light/dark icons, clean-cover/emblem composition and transparent final riffle frame. Phone playback/FPS pending.",
+  "visualReview": "Reviewed revisedAI12-frame sheet and compositions on Lobby, light and dark backgrounds; left hinge registered and painted body height consistent. Exact original-cover identity is not claimed. All8 unchanged required assets retain prior QA. Phone playback/FPS pending.",
   "runtimeIntegration": "Pending",
   "phoneVisualTimingFPS": "Pending owner test",
-  "openingRevealWidths": [
-    432,
-    428,
-    414,
-    383,
-    338,
-    280,
-    216,
-    151,
-    94,
-    47,
-    15,
-    4
-  ],
-  "openingFirstFrameExact": true,
   "emblemLoopEndpointsExact": true,
   "riffleFinalFrameEmpty": true,
   "additionalHelper": {
@@ -187,6 +172,83 @@
       768
     ]
   },
-  "webpTotalIncludingHelper": 1363314,
-  "webpBudgetPassIncludingHelper": true
+  "webpTotalIncludingHelper": 1285026,
+  "webpBudgetPassIncludingHelper": true,
+  "openingMethod": "AI-painted frames per explicit owner choice; slicing/resizing only",
+  "openingAlphaBounds": [
+    [
+      0,
+      0,
+      432,
+      768
+    ],
+    [
+      0,
+      0,
+      415,
+      768
+    ],
+    [
+      0,
+      0,
+      390,
+      768
+    ],
+    [
+      0,
+      0,
+      350,
+      768
+    ],
+    [
+      0,
+      0,
+      333,
+      768
+    ],
+    [
+      0,
+      0,
+      282,
+      768
+    ],
+    [
+      0,
+      0,
+      225,
+      768
+    ],
+    [
+      0,
+      0,
+      135,
+      768
+    ],
+    [
+      0,
+      0,
+      101,
+      768
+    ],
+    [
+      0,
+      0,
+      64,
+      768
+    ],
+    [
+      0,
+      0,
+      26,
+      768
+    ],
+    [
+      0,
+      246,
+      14,
+      720
+    ]
+  ],
+  "openingFirstFrameNote": "Painted visual match; not pixel-identical to old cover. Crossfade static cover into frame0 before playing.",
+  "openingFirstFrameExact": false
 }

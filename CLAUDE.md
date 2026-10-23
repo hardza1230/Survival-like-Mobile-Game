@@ -1,3 +1,7 @@
+# Art39 opening revision — explicit owner choice: AI-painted frames
+
+Active bk_open_long now uses12 AI-painted poses, mechanically extracted/registered to fixed left hinge and height. Geometric opening/renderer retired to history/. PROMPTS and OPENING_SOURCE record actual provenance; no exact original-pixel match is claimed. Required WebP1,212,176bytes; with clean-cover helper1,285,026bytes. Crossfade static cover into painted frame0 before playing. Source-only; v7.9.68 runtime untouched.
+
 # Art delivery39 — Book opening plus source kit
 
 All9 PNG32 /51 frames delivered to assets/incoming/book_opening_plus/ with selected ImageGen donors, exact prompts, source-pixel12-frame opening, clean-cover helper, manifest/CRC/hash/alpha QA and offline previews. Exact-size WebP candidates total1,290,464bytes; including clean-cover helper1,363,314bytes under1.5MB. Source-only; preserve runtime v7.9.68 and its order38 integration. Next: lazy bookOpening / navigation wiring per order39 and phone playback/skip/FPS review.
