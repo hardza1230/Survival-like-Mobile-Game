@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.75';
+const GAME_VERSION = '7.9.76';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.76',date:'2026-10-23',title:'Menus open up as you play',items:['Locked systems are now hidden: Bazaar, Activities, Equipment, Daily, Awards and News appear after Stage 1; Heroes, Affix Forge and Codex after Stage 2; Kitchen after Chapter 2','A note pops up when something new unlocks']},
   {v:'7.9.75',date:'2026-10-23',title:'Ruby teaches the Weave',items:['Ruby now explains the Flavor Weave step by step after the first tutorial','Fixed: the hero looked big on the first tutorial card','Heroes unlock with the story again: Mint from C1-3, Cocoa from C2-1']},
   {v:'7.9.74',date:'2026-10-23',title:'Download once',items:['The first loading screen now downloads the whole game once and keeps it on your phone, so later screens and stages load from the device']},
   {v:'7.9.73',date:'2026-10-23',title:'Reset and sign out start fresh',items:['Reset progress now restarts the game from the title screen (and clears the cloud copy if you are signed in)','Signing out clears this device’s save and restarts; sign in again to get your cloud save back','Inbox removed from the Upgrade page — use the Mail button in the Lobby']},
@@ -4986,6 +4987,11 @@ function frIconKey(key){ const icon=key&&'fr_'+key[0]+'_'+key.slice(2); return i
 function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); return (FR_KIND[k]||[]).find(x=>x.id===id)||null; }   // key = 't:dash' / 'e:shock' / 'm:big'
 // v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
 /* v6.77 C4: Kitchen locked until Chapter 2 (stage 10) cleared */
+// v7.9.76 เจ้าของ: ระบบที่ยังไม่ปลดจะไม่แสดง แล้วค่อย ๆ โผล่ตามด่านที่ผ่าน (ค่า = จำนวนด่าน Story ที่ผ่านแล้ว)
+const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,news:1,gear:1,gearInbox:1,craft:2,char:2,gCodex:2,skills:2,bestiary:2};
+const FEATURE_NAME={bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Codex'};
+function storyCleared(){ const d=Save.data||{},sm=d.stageMastery||{}; return Math.max(d.unlockedStage||0,Object.keys(sm).filter(k=>sm[k]).length); }
+function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='gearInbox'&&(Save.data?.gearInbox||[]).length)return true; const n=FEATURE_OPEN[t]; return n==null||storyCleared()>=n; }
 function kitchenOpen(){ return !!((Save.data&&Save.data.stageMastery)||{})[9]; }
 function frActive(){ if(!kitchenOpen())return []; return Save.frRecipes().slice(0,Save.frSlots()).filter(r=>r&&r.t&&r.e&&!(frPart(r.e)||{}).cut); }
 function frUpkeep(){ let hp=0,dmg=0; for(const r of frActive()){ const x=0.02*(Save.frLv(r.e)-1)+(frSignature(r)?0.02:0); hp+=0.06+x; dmg+=0.04+x; } return {hp,dmg}; }
@@ -8353,6 +8359,7 @@ class Game extends Phaser.Scene {
     const tabs=[['hub','ic_nav_home','','🏠','Home'],['char','ic_nav_heroes','hub_btn_heroes','🧸','Heroes'],['bazaar','ic_nav_bazaar','','🛒','Bazaar'],['gLoadout','ic_nav_upgrade','ic_nav_gear','🎒','Upgrade'],['gActivity','ic_nav_activities','hub_btn_activity','🎯','Activities']];
     // v7.9.51 ชื่อใต้ทุกช่อง (เจ้าของเลือกแบบภาพอ้างอิงอบอุ่น) · ช่องที่เปิดกว้างขึ้นนิดและมีไฮไลต์ทอง C2
     // v7.9.52 ช่องกว้างเท่ากัน (ไอคอนไม่ย้ายที่เมื่อเปลี่ยนแท็บ) · ไฮไลต์เลื่อนจากแท็บเดิมไปแท็บใหม่ (เจ้าของ: เดิมดูวาป)
+    for(let i=tabs.length-1;i>=0;i--)if(!featureOpen(tabs[i][0]))tabs.splice(i,1);   // v7.9.76 แท็บที่ยังไม่ปลดซ่อนไว้
     const wt=tabs.map(()=>1),sum=wt.reduce((a,b)=>a+b,0); let x0=0;
     const g2=fix(this.add.graphics()),cwE=W/tabs.length,nf=this._navFrom,fromI=(nf&&Date.now()-nf.at<600&&nf.t!==act)?tabs.findIndex(q=>q[0]===nf.t):-1; this._navFrom=null;
     tabs.forEach(([t,nk,key,em,lab],i)=>{ const cw=W*wt[i]/sum,cx=x0+cw/2,on=act===t,play=t==='chapter'; x0+=cw;
@@ -8686,7 +8693,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Gear & Power','screen_gear_power_789','hub');
     const L=this.gearPowerLayout(),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone,nxt=this.hubNextStep();
     const label=(y,t,c)=>{this.hubText(L.x+3,y,t,12,c);const line=this.add.rectangle(L.x+60,y,L.bw-62,1,parseInt(c.slice(1),16),.45).setOrigin(0,.5);this.menu.add(line);};label(L.top-14,'POWER','#ffdc91');label(L.gearY-14,'GEAR','#9de4d6');
-    const rows=[['upgrade','Weave & Rank'],['gear','Equipment'],['craft','Affix Forge'],['bazaar','Bazaar']];   // v7.9.73 Inbox ย้ายไปปุ่ม Mail ใน Lobby
+    const rows=[['upgrade','Weave & Rank'],['gear','Equipment'],['craft','Affix Forge'],['bazaar','Bazaar']].filter(r=>featureOpen(r[0]));   // v7.9.73 Inbox ย้ายไปปุ่ม Mail ใน Lobby
     rows.forEach(([target,title],i)=>{const primary=i===0,j=i-1,x=primary?L.x:L.x+(j%L.cols)*(L.tw+L.gap),y=primary?L.top:L.gearY+Math.floor(j/L.cols)*(L.tileH+L.gap),w=primary?L.bw:L.tw,h=primary?L.powerH:L.tileH,locked=!primary&&!afterS1,key='mui_gear_card_'+target;
       if(this.textures.exists(key)){const art=this.add.image(x+w/2,y+h/2,key).setDisplaySize(w,h).setAlpha(locked?.42:1);this.menu.add(art);}else this.hubPanel(x,y,w,h,this.hubTone(primary?3:2));
       const tx=primary?x+w*.75:x+w/2,ty=primary?y+h*.53:y+h*.89,room=primary?w*.42:w-16;
@@ -8699,7 +8706,7 @@ class Game extends Phaser.Scene {
   buildHubGroup(key){
     if(key==='gLoadout')return this.buildGearPower();
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
-    const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows;
+    const w=this.W,h=this.H,portrait=w<=h,rows=grp.rows.filter(r=>featureOpen(r[0]));
     const bw=Math.min(w-28,440),x=(w-bw)/2,y0=portrait?116:92,gap=10,rh=Math.min(portrait?80:64,(h-y0-56-gap*(rows.length-1))/rows.length);
     // v4.25: หมวด Gear&Power — เปิด stats/upgrade (3 แก่น) ได้ตั้งแต่เริ่ม · gear/craft/bazaar/inbox ล็อกจนผ่านด่าน 1
     const nxtG=this.hubNextStep(), GATED=new Set(['gear','craft','bazaar','gearInbox']),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone;   // v4.28: จบ tutorial = ปลดทุกอย่างในหมวดนี้
@@ -8724,6 +8731,7 @@ class Game extends Phaser.Scene {
   // v5.48: เลย์เอาต์ไทล์แบ่งหมวด (Gear & Power)
   _buildHubTiles(key,grp,nxtG,GATED,afterS1){
     const w=this.W,h=this.H,portrait=w<=h,bw=Math.min(w-28,440),x0=(w-bw)/2,gap=10,cols=portrait?2:4;
+    grp={...grp,sections:grp.sections.map(sc=>[sc[0],sc[1],sc[2].filter(t=>featureOpen(t[0]))]).filter(sc=>sc[2].length)};
     const tw=(bw-gap*(cols-1))/cols; let nRows=0; grp.sections.forEach(s=>nRows+=Math.ceil(s[2].length/cols));
     const y0=portrait?112:88,hdrH=26,avail=h-y0-30-grp.sections.length*hdrH-gap*nRows;
     const th=Math.max(62,Math.min(portrait?104:80,avail/nRows)); let y=y0;
@@ -9604,7 +9612,12 @@ class Game extends Phaser.Scene {
   }
   // v7.9.48 เจ้าของ (อ้างอิงเกมอื่น ข้อ 1–4): Lobby = ฮีโร่ยืนในฉากด่านถัดไป + ป้ายด่านใหญ่ (กดเข้าด่าน) + ปุ่มทางลัดข้างจอ + ป้ายโปรไฟล์ · เมนูอื่นอยู่แถบล่าง
   lobbyStage(){ const us=Math.min(STAGES.length-1,Save.data.unlockedStage||0); let i=this._lobbyStage; if(i==null||i>us||i<0){ i=us; const m=Save.data.stageMastery||{}; while(i>0&&!isStageReady(i))i--; if(m[i]&&i<us)i++; } return i; }
-  buildLobby(){ this.menu.setVisible(true); this.menuPrefetch?.();   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
+  // v7.9.76 ระบบใหม่ที่เพิ่งปลด → แจ้งครั้งเดียว (เซฟเก่า: นับของที่เปิดอยู่แล้วว่าเห็นแล้ว ไม่แจ้งย้อนหลัง)
+  featureReveal(){ const d=Save.data; if(!d||!d.tutorialDone)return; const open=Object.keys(FEATURE_NAME).filter(t=>featureOpen(t)&&FEATURE_OPEN[t]!=null);
+    if(!d.featSeen){ d.featSeen={}; open.forEach(t=>d.featSeen[t]=1); Save.save(); return; }
+    const nw=open.filter(t=>!d.featSeen[t]); if(!nw.length)return; nw.forEach(t=>d.featSeen[t]=1); Save.save();
+    this.time.delayedCall(1200,()=>{ if(this.state==='menu')this.menuToast?.('✨ New: '+nw.map(t=>FEATURE_NAME[t]).join(' · ')+' unlocked!','#ffe08a'); }); }
+  buildLobby(){ this.menu.setVisible(true); this.menuPrefetch?.(); this.featureReveal?.();   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk='card_'+c,miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]);
     if(miss.length&&!this._lobbyLoading){ this._lobbyLoading=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
@@ -9633,7 +9646,7 @@ class Game extends Phaser.Scene {
     if(pill){ this._zone(sx+sw-plusW-4,top-4,plusW+8,gearW+8,()=>{this._bazTab=this._bazTab||'gamble';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='bazaar'; }
     this.hubText(w-side,top+gearW+11,'v'+GAME_VERSION,10,'#d9cce6',1);
     // ── ข้อ 2 ปุ่มทางลัดข้างจอ (มีจุดแดงเมื่อมีของรอ) · กรอบ lb_side_btn + ไอคอน ic_side_*
-    const sideBtn=(x,y,em,lab,t,ik,badge)=>{ const s0=54;panel('lb_side_btn',x,y,s0,s0);
+    const sideBtn=(x,y,em,lab,t,ik,badge)=>{ if(!featureOpen(t))return; const s0=54;panel('lb_side_btn',x,y,s0,s0);
       if(!img(ik,0,x+s0/2,y+s0*.42,34,34))this.menu.add(this.add.text(x+s0/2,y+s0*.4,em,{fontSize:'22px'}).setOrigin(.5));
       this.hubText(x+s0/2,y+s0-9,lab,9,'#fff0df',.5);
       this._zone(x,y,s0,s0,()=>{this.menuScreen=t;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='side_'+t; if(badge)this.drawBadgeDot(this.menu,x+s0-5,y+5); };
