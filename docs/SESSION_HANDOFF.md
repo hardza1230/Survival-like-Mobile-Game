@@ -1,4 +1,4 @@
-# Verified locally - v7.9.96 Ruby motion stories and contextual teaching
+# Complete - v7.9.96 Ruby motion stories and contextual teaching
 
 24 October2026. Base2327f04/v7.9.95; deploy branch claude/vampire-survival-mobile-game-yo9e8w matched remote on latest fetch. Owner requests exciting/fluid narration and entry transitions, spotlight-only teaching and coherent stage/story/tutorial order. Another AI may change upstream; recheck expected head immediately before publish.
 
@@ -8,4 +8,8 @@ Flow: training does not open book cover or consume C1-1 story. Action lessons us
 
 Passed: npm run check (.git/cinematic-publish-check.log),npm run build:www (.git/cinematic-publish-build.log),1935 assets/280.4MB. Real Canvas six sizes,3/4 beats,active zoom/fade,bounds/controls/back/skip,late loader,cleanup,reduced motion,arrival title/once-only handoff,reserved card-guide text. Latest .git/cinematic-card-ui.log and .git/cinematic-bridge-ui.log;final card UI reviewed on latest source. Real Lobby360 dialogue states plus actual star spotlight atfive sizes passed. No combat simulation. Proof stills and36-frame native Canvas GIF withhashes:assets/incoming/ruby_cinematic/PROOF.json. Details docs/RUBY_CINEMATIC_FLOW.md.
 
-Next: stage exact files;GitHub connector blobs/tree must match local git write-tree;create commit on expected2327f04 parent and fast-forward deployment branch. Verify Pages/Android runs and live7.9.96. Upload/publish not yet done;do not claim deployed until verified. No remaining implementation blocker.
+Published code e2640b9a440227a00f02cd46c3f62e9c591f7929;exact tested local/remote tree4fc1f6da63b99140a239016c4d7b71bd08bf64bd. All25 changed files9,472,003bytes read back from immutable GitHub URLs and Git-blob hashes match. No concurrent remote changes appeared during this task.
+
+Pages40036075289 and Android40036075254 completed successfully. Unqueried live version.json is7.9.96;published minified game.js2,292,092bytes contains the new entry/clear-story/spotlight methods. Rolling latest APK targets e2640b9a440227a00f02cd46c3f62e9c591f7929 and is300,086,739bytes. CI real-menu visual checks also passed.
+
+Implementation,source proof,tests,browser review,publication and live verification are complete. This final documentation-only checkpoint records the verified code deployment;no additional runtime release is needed. Owner phone touch/cadence/FPS review remains;no implementation/deployment blocker.
