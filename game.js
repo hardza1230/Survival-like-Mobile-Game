@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.80';
+const GAME_VERSION = '7.9.81';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.81',date:'2026-10-23',title:'Quest guide + boss music',items:['New missions now pan the camera to the target with a spotlight (first 3 times, tap to skip)','Boss and miniboss music now starts even if it was still loading']},
   {v:'7.9.80',date:'2026-10-23',title:'Book only at start',items:['The book now opens only when you start the game, not after every stage']},
   {v:'7.9.79',date:'2026-10-23',title:'New chest art',items:['Silver and Gold chests now have their own art and a lid-opening animation','Light rays in the prize colour behind your new gear','New Thread icon in the Lobby']},
   {v:'7.9.78',date:'2026-10-23',title:'New heroes on the story path',items:['Taro now joins at C2-3 and Yuzu at C3-1, each with a short introduction','The + next to Sugar stays hidden until the Bazaar opens']},
@@ -1489,11 +1490,14 @@ const Sfx = {
       if(old){if(window.__g.tweens)window.__g.tweens.add({targets:old,volume:0,duration:480,onComplete:()=>{try{old.stop();old.destroy();}catch(e){}}});else{old.stop();old.destroy();}}return true;
     }catch(e){return false;}
   },
-  playStageBgm(stageNum=1){const key=bgmKeyFor('stage',stageNum);this._bgmIntense=false;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
-  playBossBgm(stageNum=1){const key=bgmKeyFor('boss',stageNum);this._bgmIntense=true;if(!this._playTrack(key,0.34))this.bgmIntense(true);},
-  playMiniBgm(stageNum=1){const key=bgmKeyFor('mini',stageNum);this._bgmIntense=true;if(!key||!this._playTrack(key,0.33))this.bgmIntense(true);},
+  playStageBgm(stageNum=1){const key=bgmKeyFor('stage',stageNum);this._bgmIntense=false;this._wantTrack=null;if(!this._playTrack(key,0.30)){this.stopBgm();this.startBgm();}},
+  playBossBgm(stageNum=1){const key=bgmKeyFor('boss',stageNum);this._bgmIntense=true;if(!this._playTrack(key,0.34)){this.bgmIntense(true);this._lateTrack(key,0.34);}},
+  playMiniBgm(stageNum=1){const key=bgmKeyFor('mini',stageNum);this._bgmIntense=true;if(!key||!this._playTrack(key,0.33)){this.bgmIntense(true);this._lateTrack(key,0.33);}},
+  /* v7.9.81 เจ้าของ: เพลงบอส/มินิบอสด่านแรกไม่ขึ้น (ยังโหลดไม่เสร็จตอนบอสมา → ไม่เคยสลับ) · โหลดทันทีแล้วเล่นถ้ายังสู้อยู่ */
+  _lateTrack(key,vol){ this._wantTrack=key; if(!key||!ASSET_AUDIO[key])return; try{ const sc=window.__g?.scene?.scenes?.find(x=>x.sys.settings.key==='Game'); if(!sc||!sc.load)return; const go=()=>{ if(this._wantTrack===key&&sc.state!=='menu'&&(sc.boss?.active||sc.mini?.active||sc._miniFight||sc.state==='cinematic'||sc.state==='play'))this._playTrack(key,vol); };
+    if(sc.cache.audio.exists(key)){go();return;} sc.load.once('filecomplete-audio-'+key,go); sc.load.audio(key,verUrl(ASSET_AUDIO[key])); if(!sc.load.isLoading())sc.load.start(); }catch(e){} },
   playMenuBgm(key){ if(!key){ if((this._currentBgmKey||'').startsWith('bgm_menu_'))this.playMainBgm(); return; } this._bgmIntense=false; this._playTrack(key,0.28); },   // v5.40
-  playMainBgm(){ // v6.48.1: ระหว่างหน้าโหลด/ฉากเปิดใช้เพลงหน้าโหลดเพลงเดียว → เริ่มเพลงเมนูหลังฉากเปิดจบ
+  playMainBgm(){ this._wantTrack=null; // v6.48.1: ระหว่างหน้าโหลด/ฉากเปิดใช้เพลงหน้าโหลดเพลงเดียว → เริ่มเพลงเมนูหลังฉากเปิดจบ
     const GL=typeof window!=='undefined'&&window.GameLoader; if(GL&&!GL._introFinished&&!GL._lightOn){ if(!this._waitIntro){ this._waitIntro=true; window.addEventListener('mochi-intro-light',()=>{ this._waitIntro=false; this.playMainBgm(); },{once:true}); } return; }
     if(typeof window!=='undefined'&&window.LoaderMusic)window.LoaderMusic.stop();this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
@@ -6774,23 +6778,44 @@ const STAGE_GIMMICKS = [
 
 /* ภารกิจสุ่มประจำWave Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
 /* v7.9.60 เจ้าของ: มาสคอต Ruby บอกวิธีเล่นแต่ละภารกิจ (กรอบข้อความด้านบน คำสำคัญเป็นสี [..]) · say = ครั้งแรก ๆ (2 บรรทัด), short = สรุปสั้น/เตือนซ้ำ */
+/* v7.9.81 เจ้าของ: Ruby พูดเป็นธรรมชาติ มีเรื่องราว · Ruby = Mochi Core ไส้แยมทับทิม ผู้เฝ้าตำราสูตรของตู้กับข้าว · Great Hunger กลืนรสของเธอไป เลยปลุกร่างนักสู้ไม่ได้ · ทุกด่านที่ชนะ = ความทรงจำกลับมาทีละชิ้น */
 const RUBY_TIPS={
-  survive:{say:'Stay alive until the [timer] runs out!\nKeep moving — your attacks fire on their own.',short:'Stay alive until the [timer] ends'},
-  fill:{say:'Defeat monsters to fill the [Meter]!\nMore kills, faster fill.',short:'Defeat monsters to fill the [Meter]'},
-  hunt:{say:'Follow the [🎯 arrow] to the [marked Elite]\nand defeat it!',short:'Follow [🎯] and defeat the [marked Elite]'},
-  huntClear:{say:'Clear monsters to reveal the [marked Elite],\nthen follow [🎯] and defeat it!',short:'Clear monsters, then defeat the [marked Elite]'},
-  purge:{say:'Stay near the [Wisp] while it cleans the cores.\nStop the [red raiders] that chase it!',short:'Guard the [Wisp] from [red raiders]'},
-  capture:{say:'Stand inside the [ring] to capture it!\nThe ring grows while you stay in.',short:'Stand inside the [ring]'},
-  defendNectar:{say:'Keep the [flowers] alive!\nStay close and clear the bugs around them.',short:'Keep the [flowers] alive'},
-  seasonCycle:{say:'Monsters drop [petals] of the current season.\nFill all [4 seasons] to finish!',short:'Collect [petals] for all [4 seasons]'},
-  breakRoots:{say:'Stand next to each [root anchor]\nuntil it breaks. Get all of them!',short:'Stand next to each [root anchor]'},
-  cleanAir:{say:'Stay inside the moving [clean-air ring]!\nOutside the ring, the swamp hurts you.',short:'Stay inside the [clean-air ring]'},
-  mini:{say:'A [Miniboss] is here!\nBeat it to spin the [reward wheel]!',short:'Defeat the [Miniboss]'},
-  boss:{say:'The [Boss] is here! Watch the [red warnings]\nand Dash away, then hit back!',short:'Defeat the [Boss]'},
-  magnet:{say:'A [Magnet]! It pulls in all your\n[EXP] at once!'},
-  heal:{say:'[Heal Mochi]! It restores your [HP].\nGrab one when you are hurt.'},
-  chest:{say:'A [Treasure Chest]!\nOpen it for a free [upgrade]!'}
+  survive:{say:'Uh-oh, they’re coming from everywhere!\nJust stay alive until the [timer] runs out — keep moving!',short:'Hang on until the [timer] ends!'},
+  fill:{say:'Every monster carries a bit of stolen flavor.\nBeat them to fill the [Meter] and we take it back!',short:'Fill the [Meter] — take the flavor back!'},
+  hunt:{say:'That one with the [🎯] is the leader!\nFollow the arrow and take it down before it runs.',short:'Chase down the [marked Elite]!'},
+  huntClear:{say:'The leader is hiding behind its friends…\nClear a few monsters and it’ll show itself. Then [🎯] it!',short:'Clear the crowd, then get the [marked Elite]'},
+  purge:{say:'See that little [Wisp]? It can clean the cursed cores!\nIt’s shy, though — keep the [red raiders] off it.',short:'Keep the [Wisp] safe from [red raiders]'},
+  capture:{say:'This [ring] is an old pantry seal.\nStand inside and I’ll help you wake it up!',short:'Stay inside the [ring]!'},
+  defendNectar:{say:'These [flowers] are the last sweet ones left here…\nPlease protect them! Stay close and swat the bugs.',short:'Protect the [flowers]!'},
+  seasonCycle:{say:'The seasons are all mixed up! Monsters drop [petals]\nof the current season. Fill all [4 seasons] to fix it.',short:'Gather [petals] for all [4 seasons]'},
+  breakRoots:{say:'These [root anchors] are draining the garden!\nStand right next to each one until it snaps.',short:'Snap every [root anchor]!'},
+  cleanAir:{say:'Ugh, the swamp air stings! Stay inside the\n[clean-air ring] — it moves, so follow it!',short:'Follow the [clean-air ring]'},
+  mini:{say:'Eek! A [Miniboss]! It guards something shiny…\nBeat it and we get to spin the [reward wheel]!',short:'Beat the [Miniboss]!'},
+  boss:{say:'That’s the one who stole this floor’s flavor!\nWatch for [red warnings] — Dash away, then strike back!',short:'Defeat the [Boss]!'},
+  magnet:{say:'Ooh, a [Magnet]! Grandma used these to gather sprinkles.\nIt pulls all your [EXP] in at once!'},
+  heal:{say:'A [Heal Mochi]! Fresh and warm.\nGrab it when you’re hurt to get your [HP] back.'},
+  chest:{say:'A [Treasure Chest]! Someone hid this from the Hunger.\nOpen it — there’s a free [upgrade] inside!'}
 };
+/* Ruby ตอนเริ่มด่านครั้งแรก — เรื่องราวของ Ruby ต่อเนื่องทีละด่าน (ความทรงจำกลับมาเมื่อชนะบอสก่อนหน้า) */
+function rubyWrap(text,max){ const out=[]; for(const ln of String(text).split('\n')){ const words=ln.match(/\[[^\]]*\]\S*|\S+/g)||['']; let cur='';
+  for(const w of words){ const len=(cur+' '+w).replace(/[\[\]]/g,'').length; if(cur&&len>max){ out.push(cur); cur=w; } else cur=cur?cur+' '+w:w; } out.push(cur); } return out; }   // v7.9.81 ตัดบรรทัดกล่อง Ruby (ไม่ตัดกลางคำใน [ ])
+const RUBY_STORY=[
+  'This is where I hid when the Hunger came…\nI’m Ruby! I used to keep every recipe in Mochitopia.',
+  'When the Ant Empress fell, I remembered something!\nGrandma’s jam jar… it fell down these pipes.',
+  'It’s so hot! The Hunger’s machine burns stolen flavor here.\nI can almost taste my old strawberry jam…',
+  'Brrr! Sweet spirits are frozen in here.\nOne of them sounds like my grandma… we have to hurry!',
+  'This is it — the Crown Oven. The Hunger lives here.\nIf we win, maybe I can finally wake up like you did.',
+  'We beat it… but it only ran away, deeper into the garden.\nI remember now: my real flavor is still inside it.',
+  'The marsh air makes my gem feel heavy…\nStay close to me, okay? I don’t like the dark spores.',
+  'Bees! They used to make honey for the whole kingdom.\nNow the Hunger makes them guard it. Poor things…',
+  'Time feels strange here — like a recipe stuck on one step.\nI think Grandma wrote about this garden once.',
+  'The roots all lead to one place. I can feel it.\nThe Hunger is growing a body from stolen flavors…',
+  'Look, the fields are empty. Not a single crumb left.\nIf we don’t stop it, the whole world goes bland.',
+  'Something here feels hollow… like a cake with no filling.\nKeep your eyes open. Things aren’t what they seem.',
+  'Glass flowers! So pretty… and so cold.\nThey reflect what you fear. Don’t look too long.',
+  'The seeds here are the very first flavors ever planted.\nI can hear my own flavor calling from up ahead!',
+  'This is the beginning of everything. The First Planter.\nWhatever happens… thank you for bringing me this far.'
+];
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
@@ -8668,10 +8693,10 @@ class Game extends Phaser.Scene {
     if(this._weaveTour){ const T=this._weaveTour,s=this.menuScreen,find=f=>this.tapZones.find(f);   // v7.9.45 ทัวร์หลังบทสอน: Hub → Gear & Power → Weave & Rank → อัปแก่น → Back → Back → Play → ด่าน 1
       const spot=(z,label,fn)=>{ if(!z)return false; const f0=z.fn; z.fn=fn||(()=>f0()); this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label); return true; };
       const talk=(flag,lines)=>{ if(this[flag])return false; this.rubyTalk(lines,()=>{ this[flag]=1; this.buildMenuScreen(); }); return true; };   // v7.9.75 Ruby อธิบายก่อนแต่ละช่วง
-      if(T==='hub'&&s==='hub'&&talk('_wtTalk1',['You did it! The Great Hunger ran away — and look at all the stolen Sugar you took back!','Sugar is power here. Let me show you the Flavor Weave, the old temple that makes every hero stronger.']))return;
-      if(T==='gear'&&s==='gLoadout'&&talk('_wtTalk2',['This is the Upgrade page. Gear, the Forge and the temple all live here.','The Flavor Weave is the most important one. Let’s go in!']))return;
-      if(T==='weave'&&s==='upgrade'&&talk('_wtTalk3',['Welcome to the Flavor Weave! Each glowing Flavor Core powers up one part of you — damage, health or speed.','Upgrades stay forever: every stage, every hero. Spend Sugar on a core now!']))return;
-      if(T==='back'&&s==='upgrade'&&talk('_wtTalk4',['Feel that? You are stronger already!','Fill every star on a core to Weave Up — that raises your Rank and opens Rank Perks later.','Come back whenever you bring Sugar home. Now let’s head back.']))return;
+      if(T==='hub'&&s==='hub'&&talk('_wtTalk1',['You did it! The Hunger ran off — and look at all the Sugar you took back!','My grandma used to say: Sugar remembers. Let me show you where we use it — the Flavor Weave.']))return;
+      if(T==='gear'&&s==='gLoadout'&&talk('_wtTalk2',['This is the Upgrade page — think of it as our little workshop.','Gear, the Forge and the old temple are all in here. The temple first, come on!']))return;
+      if(T==='weave'&&s==='upgrade'&&talk('_wtTalk3',['The Flavor Weave… I haven’t been here since I was a tiny Core.','Each glowing core weaves Sugar into strength — damage, health or speed.','And it stays forever, for every hero. Go on, feed one some Sugar!']))return;
+      if(T==='back'&&s==='upgrade'&&talk('_wtTalk4',['Ooh, I felt that too! You’re stronger already.','Fill all the stars on a core to Weave Up. That raises your Rank, and Rank opens new perks later.','Bring Sugar home after every fight and we’ll come back here. Now — the next floor is waiting!']))return;
       if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Step 1/5 · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }
       if(T==='gear'&&s==='gLoadout'){ const z=find(q=>q.tag==='upgrade'),f0=z&&z.fn; if(spot(z,'Step 2/5 · Open Weave & Rank',()=>{ this._weaveTour='weave'; this._tutorialWeaveCoach=true; f0(); }))return; }
       if(T==='weave'&&s==='upgrade'&&Date.now()-(this._weaveSpotAt||0)>300){ this._weaveTour='back'; this._tutorialWeaveCoach=false; return this.applyGearTut(); }   // ไม่มีแก่นที่ซื้อได้ → ข้ามไปสอนปุ่ม Back
@@ -11561,7 +11586,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.stopHubMotion?.();this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.stopHubMotion?.(); this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -11903,10 +11928,12 @@ class Game extends Phaser.Scene {
     done();
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
+  rubyStoryAt(i){ if(this.recipeMode||this.bossRush||this.riftMode||this._pinnacleRun||this._inTutorial||!RUBY_STORY[i]||!this.time)return; const d=Save.data,st=d.rubyStory||(d.rubyStory={}); if(st[i])return;
+    this.time.delayedCall(300,()=>{ if(!this.rubyOn()||this.stageIndex!==i)return; st[i]=1; Save.save(); this.rubySay(RUBY_STORY[i],5600); }); }   // v7.9.81 เรื่องของ Ruby ทีละด่าน (ครั้งแรกเท่านั้น)
   rubyOn(){ return this.state==='play'&&!this._coach&&!this.tutorialMode&&!(Save.data.settings||{}).noRuby; }
   rubySay(text,ms=4000,opt={}){ if(!this.add||!this.time||!this.rubyOn())return; const q=this._rubyQ||(this._rubyQ=[]); if(opt.replace){ q.length=0; this.rubyHide(true); } if(q.some(m=>m.text===text)||(this._ruby&&this._ruby.text===text))return; q.push({text,ms}); if(!this._ruby)this.rubyNext(); }
   rubyNext(){ const m=(this._rubyQ||[]).shift(); if(!m)return; if(!this.rubyOn()){ this._rubyQ=[]; return; }
-    const W=this.W,pad=this._pad||14,bw=Math.min(W-20,400),bx=(W-bw)/2,by=pad+182,lines=String(m.text).split('\n'),fs=W<380?13:14,lh=fs+7,bh=Math.max(70,24+lines.length*lh),c=this.add.container(0,0).setScrollFactor(1).setDepth(64);
+    const W=this.W,pad=this._pad||14,bw=Math.min(W-20,400),bx=(W-bw)/2,by=pad+182,fs=W<380?13:14,lines=rubyWrap(m.text,Math.floor((bw-96)/(fs*.56))),lh=fs+7,bh=Math.max(70,24+lines.length*lh),c=this.add.container(0,0).setScrollFactor(1).setDepth(64);
     const g=this.add.graphics(); g.fillStyle(0x000000,.35); g.fillRoundedRect(bx+3,by+4,bw,bh,16); g.fillStyle(0x0b0710,.94); g.fillRoundedRect(bx,by,bw,bh,16); g.lineStyle(3,0xffffff,1); g.strokeRoundedRect(bx,by,bw,bh,16); c.add(g);
     const tx0=bx+80,cols=['#ffd54a','#7dff6a','#ff8fb8']; let ci=0; lines.forEach((ln,li)=>{ const parts=ln.split(/(\[[^\]]+\])/).filter(Boolean),row=[]; let x=0;
       for(const pt of parts){ const hl=pt[0]==='['; const t=this.add.text(0,by+16+li*lh,hl?pt.slice(1,-1):pt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:(hl?fs+1:fs)+'px',color:hl?cols[ci++%cols.length]:'#ffffff',stroke:'#000000',strokeThickness:hl?3:0}); row.push(t); x+=t.width; }
@@ -12122,6 +12149,7 @@ class Game extends Phaser.Scene {
     this.startBonusChallenge(o);
     this.renderWaveObjectiveHUD();
     if(!this.recipeMode||this._recipeMission)this.rubyTip?.(o._huntPhase?'huntClear':type);   // v7.9.60 Ruby อธิบายภารกิจ
+    if(type!=='hunt')this.time?.delayedCall(350,()=>{ if(this.waveObjective===o&&!o.done)this.questFocus(type); });
   }
   spawnCleanAirZone(){
     const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=145;
@@ -12487,6 +12515,29 @@ class Game extends Phaser.Scene {
   startStoryHuntRound(o){ Sfx.ev?.('hunt_threat_start',.55,2);
     o._huntPhase='clear';o._huntKills=0;o._huntKillGoal=6+2*Math.floor((this.stageIndex||0)/5);o._huntSpawnAt=0;
   }
+  /* v7.9.81 เจ้าของ: แนะนำเควส = หยุดเกม แพนกล้องไปที่เป้าหมาย + สปอตไลต์ + ชื่อ แล้วกลับมาที่ผู้เล่น · 3 ครั้งแรกต่อชนิด · แตะ = ข้าม */
+  questFocusTargets(type){ const o=this.waveObjective,out=[],pt=(q,r,l)=>{ if(q&&(q.active!==false))out.push({x:q.x,y:q.y,r,l}); };
+    if(type==='hunt'){ this.enemies.children.iterate(e=>{ if(e?.active&&e._waveObjectiveTarget)pt(e,95,'🎯 Marked Elite'); }); }
+    else if(type==='purge'){ pt(this._wisp,80,'🕯️ The Wisp'); this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._waveObjectiveNode&&out.length<3)pt(n,90,'Cursed core'); }); }
+    else if(type==='capture')pt(this._captureZone,(this._captureZone?.radius||130)+20,'🔷 Stand in the ring');
+    else if(type==='cleanAir')pt(this._cleanAirZone,(this._cleanAirZone?.radius||145)+20,'🫧 Clean-air ring');
+    else if(type==='defendNectar')(this._nectarFlowers||[]).slice(0,3).forEach(f=>pt(f,90,'🌺 Protect the flowers'));
+    else if(type==='breakRoots')this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._rootAnchor&&out.length<4)pt(n,95,'🌳 Root anchor'); });
+    return out; }
+  questFocus(type,force){ if(this.state!=='play'||this._inTutorial||this.recipeMode&&!this._recipeMission||!this.time||!this.cameras)return; const d=Save.data,seen=d.questFocusSeen||(d.questFocusSeen={});
+    if(!force&&(seen[type]||0)>=3)return; const tg=this.questFocusTargets(type); if(!tg.length)return; seen[type]=(seen[type]||0)+1;
+    const cam=this.cameras.main,vz=this.viewZoom||cam.zoom||1; this.state='cinematic'; this.physics.pause(); this.player.setVelocity?.(0,0); cam.stopFollow();
+    const g=this.camWorld(this.add.graphics().setDepth(95000)),lab=this.camUI(this.add.text(this.W/2,this.H*.24,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#fff1a8',stroke:'#1a0f1e',strokeThickness:6,align:'center'}).setOrigin(.5).setDepth(130).setAlpha(0));
+    const hint=this.camUI(this.add.text(this.W/2,this.H*.24+30,'tap to skip',{fontFamily:'sans-serif',fontSize:'11px',color:'#d9cce6'}).setOrigin(.5).setDepth(130).setAlpha(.6));
+    let done=false,cur=null; const spot={r:600,a:0},timers=[];
+    const draw=()=>{ g.clear(); if(!cur)return; const R=spot.r; g.lineStyle(3000,0x080410,.62*spot.a).strokeCircle(cur.x,cur.y,R+1500); g.lineStyle(4,0xfff1a8,.9*spot.a).strokeCircle(cur.x,cur.y,R); };
+    const tw=this.tweens.addCounter({from:0,to:1,duration:1e9,onUpdate:draw});
+    const finish=()=>{ if(done)return; done=true; timers.forEach(t=>t.remove?.()); tw.remove(); g.destroy(); lab.destroy(); hint.destroy(); this._finishStoryCutscene=null;
+      cam.pan(this.player.x,this.player.y,380,'Sine.easeInOut',true,(c,k)=>{ if(k<1)return; cam.startFollow(this.player,false,.2,.2); if(this.state==='cinematic'){ this.state='play'; this.physics.resume(); } }); };
+    this._finishStoryCutscene=finish; let t=0;
+    tg.forEach((q,i)=>{ timers.push(this.time.delayedCall(t,()=>{ if(done)return; cur=q; cam.pan(q.x,q.y,i?420:520,'Sine.easeInOut',true); spot.r=Math.max(420,q.r*4); spot.a=0;
+      this.tweens.add({targets:spot,r:q.r,a:1,duration:520,delay:i?260:360,ease:'Cubic.out'}); lab.setText(q.l).setAlpha(0); this.tweens.add({targets:lab,alpha:1,duration:220,delay:i?300:420}); Sfx.ui?.(); })); t+=i?1350:1550; });
+    timers.push(this.time.delayedCall(t+150,finish)); }
   huntTargetActive(){
     let found=false;this.enemies.children.iterate(e=>{if(e?.active&&e._waveObjectiveTarget)found=true;});return found;
   }
@@ -12510,6 +12561,7 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:e._objectiveAura,scale:{from:0.42,to:0.58},alpha:{from:0.9,to:0.45},rotation:TAU,duration:620,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     e._objectiveMark=this.camWorld((this.textures.exists('objective_hunt_mark')?this.add.image(e.x,e.y-72,'objective_hunt_mark').setScale(.8):this.add.text(e.x,e.y-72,'🎯',{fontSize:'27px',stroke:'#2a102f',strokeThickness:5}).setOrigin(.5)).setDepth(e.y+8));
     this.tweens.add({targets:e._objectiveMark,y:e.y-80,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+    if(!o._focused){ o._focused=true; try{ this.questFocus?.('hunt'); }catch(err){} }
   }
   clearObjectiveTargetFx(e){ if(e._objectiveAura){this.tweens.killTweensOf(e._objectiveAura);if(e._objectiveAura.active)e._objectiveAura.destroy();e._objectiveAura=null;} if(e._objectiveMark){this.tweens.killTweensOf(e._objectiveMark);if(e._objectiveMark.active)e._objectiveMark.destroy();e._objectiveMark=null;} }
   onWaveObjectiveTargetDown(e){
