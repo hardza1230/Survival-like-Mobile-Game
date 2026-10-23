@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.93';
+const GAME_VERSION = '7.9.94';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.94',date:'2026-10-23',title:'Rarer early gear, tap-to-stop Forge, cuter heroes',items:['Early gear is rarer in Chapter 1, low-level drops come without mods and early items enhance less','Forge Roll now gives one mod — the light runs until you tap, then slows down and stops','Hero lines in the Lobby are short and cheeky, in a bubble right above the hero’s head']},
   {v:'7.9.93',date:'2026-10-23',title:'More guidance from Ruby',items:['Ruby shows you how to Dash-kick the glowing items bosses leave behind','Ruby explains stage stars and the reward wheel after your first clear','Mutation and Evolution cards get their own short lesson the first time','New-feature icons now fly to the right button and no longer overlap the real icon']},
   {v:'7.9.92',date:'2026-10-23',title:'Grandma’s Battle Recipes',items:['Before C1-2 Ruby finds Grandma’s Battle Recipes — the reason Builds open from the second floor','The first Build pick is now a Battle Recipe lesson from Ruby']},
   {v:'7.9.91',date:'2026-10-23',title:'Clearer loading',items:['The loading bar now says Preparing when it unpacks files already on your phone, and Downloading only when it fetches new files','The game asks your phone to keep its downloaded data so it is not cleared']},
@@ -3888,13 +3889,13 @@ const RELIC_SYNERGIES = [
 // v7.9.62 จุดกลางหน้า [x/กว้าง, y/สูง, ขนาด/สูง] ใน card_<hero> สำหรับรูปโปรไฟล์ Lobby
 const LOBBY_FACE={momo:[.492,.278,.273,.985],mint:[.521,.293,.273,.984],cocoa:[.521,.361,.234,.902],taro:[.449,.259,.264,.966],sesame:[.475,.278,.264,.975],yuzu:[.540,.278,.273,.98]};   // [3] = เท้า (ขอบล่างของภาพทึบ)
 // Alternating spoken lines / thoughts, following the personalities in art order34.
-const LOBBY_LINES={
-  momo:[['says','One more adventure! I can feel a win coming!'],['thinks','If I trip again, I’ll call it a new move.'],['says','Watch this! Bouncy feet, brave heart!'],['thinks','Do heroes get extra strawberry cake?'],['says','Fall down, bounce back. That’s my secret!'],['thinks','I hope everyone heard that cheer.']],
-  mint:[['says','Stay close. The cold won’t touch you.'],['thinks','A quiet breeze... and perhaps some iced tea.'],['says','No need to rush. Find your opening.'],['thinks','They said my flower looks nice. Don’t blush.'],['says','I saved a safe spot for you.'],['thinks','Everyone is here. Good. I can relax.']],
-  cocoa:[['says','Have a cookie before we head out.'],['thinks','Just five more minutes... then I’ll get up.'],['says','Behind me, little ones. I’ve got this.'],['thinks','Did I pack enough snacks for everyone?'],['says','A deep breath. We can do this together.'],['thinks','A warm blanket would be lovely right now.']],
-  taro:[['says','Look! The compass found something new!'],['thinks','Was that a hidden path? Better write it down.'],['says','Ooh, a spark! That was mostly on purpose.'],['thinks','Left at the strange rock... or was it right?'],['says','Every trail has a story. Let’s find ours!'],['thinks','Another mystery for my notebook!']],
-  yuzu:[['says','Yuzlings! Line up! Smallest first!'],['thinks','They’re so tiny. Nobody gets left behind.'],['says','A good captain checks every little sprout!'],['thinks','I’m not pouting. This is my command face.'],['says','Citrus crew, ready for adventure!'],['thinks','One more orange slice for the crew.']],
-  sesame:[['says','I... kept a safe place for you.'],['thinks','Measure twice. Place the mirror once.'],['says','Quiet steps can still take us far.'],['thinks','Oh. That was only my reflection.'],['says','The light finds its way back.'],['thinks','Perhaps one more page before we go.']]
+const LOBBY_LINES={   // v7.9.94 เจ้าของ: สั้น กวน ๆ น่ารัก (ลอยเหนือหัว)
+  momo:[['says','Poke me again. I dare you!'],['thinks','Cake first. Saving the world second.'],['says','Pew pew! Did you see that?'],['thinks','I tripped. It was a dance move.'],['says','Let’s go! My feet are bouncy!'],['thinks','Is it snack time yet?']],
+  mint:[['says','Chill. I’ve got your back.'],['thinks','Iced tea… then heroics.'],['says','Too hot? I can fix that.'],['thinks','Don’t blush. Don’t blush.'],['says','Brr! …That was me. Sorry.'],['thinks','Five more minutes of quiet.']],
+  cocoa:[['says','Cookie? I always carry two.'],['thinks','Nap first. Punch later.'],['says','Hide behind me, little one.'],['thinks','Did someone say hot cocoa?'],['says','Big hug or big punch? Pick!'],['thinks','Zzz… huh? I’m awake!']],
+  taro:[['says','Zap! …Mostly on purpose.'],['thinks','Left at the rock. Or right?'],['says','My compass says: adventure!'],['thinks','Lost? No. Exploring hard.'],['says','Ooh, sparkly! Can I touch it?'],['thinks','Note: don’t zap the snacks.']],
+  yuzu:[['says','Yuzlings! Look busy!'],['thinks','Command face on. No pouting.'],['says','Tiny crew, big trouble!'],['thinks','Did I count everyone? 1, 2…'],['says','Citrus squad, roll out!'],['thinks','One more orange slice. Shh.']],
+  sesame:[['says','Oh! You saw me. Hi.'],['thinks','Was that my reflection again?'],['says','Shh… the mirrors are napping.'],['thinks','Hide behind the mirror. Smooth.'],['says','I polished you a safe spot.'],['thinks','One more page. Just one.']]
 };
 const CHARACTERS = {
   momo:{name:'Strawberry',emoji:'🍓',unique:'berryRebound',weapon:'berryBlaster',cost:0,color:0xff9ec4,role:'Nimble gunner',desc:'Sweet but Strong — rapid fire, fast movement, steady crits',stats:{hp:0,dmg:1.00,spd:1.06,def:1.00,crit:0.05,cdr:0.96,regenFlat:0.25},rating:{hp:3,atk:3,spd:4,def:3}},
@@ -5367,7 +5368,7 @@ function forgeRowForMod(m){return m&&m.row||((m&&m.category)==='offense'?'power'
 function forgeLines(item){const out=[null,null,null],rest=[];for(const a of (item&&item.affixes)||[]){if(Number.isInteger(a.line)&&a.line>=0&&a.line<3&&!out[a.line])out[a.line]=a;else rest.push(a);}for(const a of rest){const row=['power','sustain','play'].indexOf(forgeRowForMod(affixDef(a.id))),i=row>=0&&!out[row]?row:out.indexOf(null);if(i>=0)out[i]=a;}return out;}
 function forgeSetLines(item,lines){item.affixes=lines.map((a,i)=>a?Object.assign({},a,{line:i}):null).filter(Boolean);item.forgeSchema=1;}
 function forgeLineOpen(item,line){return !!item&&Number.isInteger(line)&&line>=0&&line<Math.min(3,affixCountCap(item.itemLevel));}
-function gearEnhanceCap(item){const l=Math.max(1,Number(item&&item.itemLevel)||1);return l<12?3:l<25?5:l<45?7:10;}
+function gearEnhanceCap(item){const l=Math.max(1,Number(item&&item.itemLevel)||1);return l<12?1:l<25?3:l<45?6:10;}   // v7.9.94 เจ้าของ: ของเลเวลต่ำตีบวกได้น้อยลง (เดิม 3/5/7/10)
 function gearEffectiveEnhance(item){return Math.min(gearEnhanceCap(item),Math.max(0,Math.floor(Number(item&&item.enhanceLv)||0)));}
 // Retain old rolls in saves; locked rows stay dormant until the item meets their level requirement.
 function gearActiveAffixes(item){return forgeLines(item).filter((a,i)=>a&&forgeLineOpen(item,i));}
@@ -5450,7 +5451,7 @@ function rollOneAffixLocked(mod,best,ilvl,lock){ if(!lock||lock.id!==mod.id)retu
   const band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; return {id:mod.id,t,v:band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)),t11:1,tierSchema:2}; }
 function rollOneAffix(mod,best,ilvl){ const t=rollTier(best,ilvl,mod.tiers.length-1), band=mod.tiers[t]||mod.tiers[mod.tiers.length-1]; const v=band[0]+Math.floor(Math.random()*(band[1]-band[0]+1)); return {id:mod.id,t,v,t11:1,tierSchema:2}; }
 function affixCountCap(itemLevel){const l=Math.max(1,Number(itemLevel)||1);return l<12?1:l<25?2:3;}   // iLv12 unlocks Sustain; iLv25 unlocks Play.
-function rollAffixes(baseTier,itemLevel=1,base=null){const n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
+function rollAffixes(baseTier,itemLevel=1,base=null){const L0=Math.max(1,Number(itemLevel)||1),n=Math.min(AFFIX_COUNT[baseTier]||0,affixCountCap(itemLevel),L0<12?0:L0<25?1:L0<45?2:3,3),item={baseId:base&&base.id,slot:base&&base.slot||'weapon',grade:baseTier,itemLevel,affixes:[]};for(let line=0;line<n;line++){const mod=pickWeightedMod(forgePool(item,line));if(mod)item.affixes.push(Object.assign(rollOneAffix(mod,affixBestTierForItem(item,mod),itemLevel),{line}));}return item.affixes;}
 // ชื่อไอเทมแบบ PoE: [prefix ดีสุด] ฐาน [suffix ดีสุด]
 function gearAffixName(baseName,affs){ return baseName;   // v7.8.94 เจ้าของ: ชื่อของ = ชื่อฐาน (mod อยู่ในรายการด้านล่างแล้ว)
   if(!affs||!affs.length)return baseName;
@@ -9911,7 +9912,9 @@ class Game extends Phaser.Scene {
     else if(this.textures.exists(hk)){ const hi=this.add.image(w/2,heroY,hk).setOrigin(.5,1);hi.setScale(heroH/hi.height);this.menu.add(hi);this.hubTween({targets:hi,y:heroY-5,duration:1600,yoyo:true,repeat:-1,ease:'Sine.inOut'});
       if(LH_USE_SHEETS&&lhI&&!this._lhLoading){ this._lhLoading=true; this.lhLoad([lhI,this.lhKey(c,'greet'),this.lhKey(c,'tap')],()=>{ this._lhLoading=false; if(this.state==='menu'&&this.menuScreen==='hub'&&(Save.data.character||'momo')===c)this.buildMenuScreen(); }); } }
     else this.hubText(w/2,heroY-heroH/2,ch.emoji||'🍡',Math.min(96,heroH*.5),'#fff',.5);
-    this.startLobbyVoice(c,w/2,top+ph+36,Math.min(230,w-164));
+    /* v7.9.94 เจ้าของ: กล่องคำพูดลอยเหนือหัวฮีโร่ (หางชี้ลง) · กว้างไม่เกินช่องระหว่างปุ่มข้างจอ */
+    { const gapW=w-2*(side+54)-8,bw=Math.max(120,Math.min(170,gapW-16)),lf=LOBBY_FACE[c]||[.5,.28,.27,1],headY=Math.min(heroY-heroH*(1-lf[1]+lf[2]*.62),heroY-heroH*.95+10),hx=w/2+(lf[0]-.5)*heroH*.55;
+      this.startLobbyVoice(c,hx,headY,bw,top+ph+8,side+54+4,w-side-54-4); }
     // กล่องด่าน (A1) · CHAPTER · C1-1 · ชื่อ · ดาว 3 ดวง (D1)
     if(!panel('lb_stage_panel',px,panY,panW,panH)){ const pg=this.add.graphics();pg.fillStyle(0x000000,.4).fillRoundedRect(px+3,panY+4,panW,panH,18).fillStyle(0x2a1a3a,.96).fillRoundedRect(px,panY,panW,panH,18).lineStyle(3,0xffc43d,1).strokeRoundedRect(px,panY,panW,panH,18);this.menu.add(pg); }
     const chN=st.chapter||0,lab='C'+(chN+1)+'-'+(st.chapterStage||STAGES.slice(0,si+1).filter(x=>(x.chapter||0)===chN).length),starW=Math.round(panH*.22),SM=30,tcx=px+(panW-starW*3-SM)/2+8;   // v7.9.65 SM = ระยะดาวจากขอบขวา (เดิม 14 ชิดขอบเกิน)
@@ -9952,10 +9955,10 @@ class Game extends Phaser.Scene {
   /* v7.9.58 ฮีโร่ขยับใน Lobby: โหลดชีตทีละอัน · anim ใช้เวลาต่อเฟรมจาก MANIFEST · ทิ้งชีตท่าชั่วคราวหลังเล่น */
   /* v7.9.61 ฮีโร่ใน Lobby ขยับจากภาพนิ่ง: ตัดภาพเป็นแถบแนวนอน 28 แถบ (setCrop) แล้วเลื่อนแต่ละแถบตามคลื่น — ส่วนบน (ผม/หัว) โยกมากกว่าเท้า
      หายใจ = ยืด/หดแนวตั้งรอบเท้า · แตะ = ยุบแล้วเด้ง · แตะรัว 5 ครั้งใน 3 วิ = กระโดดหมุนตัว · ใช้ได้ทั้ง canvas/WebGL */
-  startLobbyVoice(hero,x,y,width){
-    const root=this.add.container(x,y),g=this.add.graphics(),label=this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',fontStyle:'bold',color:'#583849'}).setOrigin(.5,0),text=this.add.text(0,17,'',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#302938',align:'center',wordWrap:{width:width-20,useAdvancedWrap:true}}).setOrigin(.5,0);
+  startLobbyVoice(hero,x,y,width,minY,left,right){
+    const root=this.add.container(x,y),g=this.add.graphics(),label=this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',fontStyle:'bold',color:'#583849'}).setOrigin(.5,0),text=this.add.text(0,17,'',{fontFamily:'NunitoUI, sans-serif',fontSize:'13px',fontStyle:'bold',color:'#302938',align:'center',wordWrap:{width:width-16,useAdvancedWrap:true}}).setOrigin(.5,0);
     root.add([g,label,text]);root.setVisible(false);this.menu.add(root);
-    this._lobbyVoice={hero,root,g,label,text,width,t:1.5,showing:false};
+    this._lobbyVoice={hero,root,g,label,text,width,t:1.5,showing:false,hx:x,hy:y,minY:minY??y-120,left:left??-1e9,right:right??1e9};
   }
   tickLobbyVoice(dt){
     const v=this._lobbyVoice;if(!v||!v.root.active)return;
@@ -9966,14 +9969,18 @@ class Game extends Phaser.Scene {
     if(v.showing){v.root.setVisible(false);v.showing=false;v.t=5;return;}
     const lines=LOBBY_LINES[v.hero]||LOBBY_LINES.momo,cursors=this._lobbyLineCursor||(this._lobbyLineCursor={}),i=cursors[v.hero]||0,[kind,line]=lines[i%lines.length];cursors[v.hero]=i+1;
     v.label.setText((CHARACTERS[v.hero]?.name||'Hero')+(kind==='thinks'?' · thinking':' says'));
-    v.text.setText(line);const H=21+v.text.height+10;
+    v.text.setText(line);const H=21+v.text.height+10,PH=H+32,pw=v.width+16;
     v.g.clear();if(v.panel?.active)v.panel.destroy();v.panel=null;
+    /* v7.9.94 หางของภาพอยู่มุมขวาบน → พลิกแนวตั้งให้หางชี้ลงที่หัว · เลื่อนกล่องไปซ้ายให้หางใกล้หัวที่สุดโดยไม่ทับปุ่มข้างจอ */
+    const d=Math.min(PH*.28,pw/2),tailX=pw/2-d*.77,cx=Math.max(v.left+pw/2,Math.min(v.right-pw/2,(v.hx??0)-tailX));
+    if(Number.isFinite(v.hy)){v.root.x=cx;v.root.y=Math.max(v.minY+24,v.hy-(H+8));}
     const key=kind==='thinks'?'lb_dialog_thought':'lb_dialog_speech';
-    if(this.realTex?.(key)&&this.menuRasterPanel){v.panel=this.menuRasterPanel(key,-v.width/2-8,-24,v.width+16,H+32,64);if(v.panel){v.root.add(v.panel);v.root.sendToBack(v.panel);}}
+    if(this.realTex?.(key)&&this.menuRasterPanel){v.panel=this.menuRasterPanel(key,-pw/2,-24,pw,PH,64);if(v.panel){if(v.panel.setScale){v.panel.setScale(1,-1);v.panel.y=-24+PH;}v.root.add(v.panel);v.root.sendToBack(v.panel);}}
     if(!v.panel){v.g.fillStyle(kind==='thinks'?0xebf3ff:0xfff6e7,.96).fillRoundedRect(-v.width/2,-4,v.width,H,12).lineStyle(1.5,kind==='thinks'?0xabc9eb:0xe3b976,1).strokeRoundedRect(-v.width/2,-4,v.width,H,12);
-      if(kind==='thinks'){v.g.fillStyle(0xebf3ff,.96).fillCircle(v.width*.28,-11,4).fillCircle(v.width*.24,-19,2);}
-      else{v.g.fillStyle(0xfff6e7,.96).fillTriangle(v.width*.19,-4,v.width*.33,-4,v.width*.27,-14);}}
+      if(kind==='thinks'){v.g.fillStyle(0xebf3ff,.96).fillCircle(tailX-6,H+3,4).fillCircle(tailX,H+10,2);}
+      else{v.g.fillStyle(0xfff6e7,.96).fillTriangle(tailX-14,H-4,tailX,H-4,tailX+2,H+8);}}
     v.root.setVisible(true);v.showing=true;v.t=5.5;
+    if(this.tweens&&v.root.setScale){v.root.setScale(.8);this.tweens.add({targets:v.root,scale:1,duration:220,ease:'Back.easeOut'});}
   }
   lobbyHeroWarp(key,x,y,H){ if(!this.textures.exists(key)||!this.tweens)return false; const src=this.textures.get(key).getSourceImage(),tw=src.width,th=src.height; if(!tw||!th)return false;
     const N=28,sc=H/th,c=this.add.container(x,y); this.menu.add(c); const strips=[];
@@ -10915,7 +10922,7 @@ class Game extends Phaser.Scene {
     const line=this.craftLineIndex??0;if(!forgeLineOpen(item,line)){Sfx.error();this.showBanner('Mod locked by item level','Sustain needs iLv 12 · Play needs iLv 25',1500);return;}const lines=forgeLines(item),old=lines[line],pool=forgePool(item,line),key=craftCurrencyForLine(line),cur=currencyDef(key);
     if(!pool.length||Save.currency(key)<1){Sfx.error();this.showBanner('Cannot roll',!pool.length?'No compatible mods':'Need 1 '+cur.name,1400);return;}
     /* v7.8.84 เจ้าของ (Forge ข้อ 1): จ่าย 1 → สุ่ม 3 ม็อดไม่ซ้ำ แล้วเลือก 1 (หรือเก็บของเดิม) แทนการแทนที่แบบสุ่มล้วน */
-    const options=forgeRollOptions(item,line,pool,3);if(!options.length){Sfx.error();return;}
+    const options=forgeRollOptions(item,line,pool,1);if(!options.length){Sfx.error();return;}   /* v7.9.94 เจ้าของ: สุ่มครั้งเดียวได้ 1 ม็อด (เดิม 3 ให้เลือก) */
     item.forgeChoice={line,options,paid:key,old:old?Object.assign({},old):null};item.craftedAt=Date.now();this.gearSelectedUid=item.uid;Save.data.currency[key]-=1;Save.save();this._craftResult=null;this._craftRolledId=null;
     const big=options.some(a=>(a.t??10)<=2);if(this.forgeSpin?.(item,line,pool,options,big))return;
     Sfx.craft(big?'jackpot':'rare');this.buildCraftBench();}
@@ -10941,9 +10948,12 @@ class Game extends Phaser.Scene {
     /* ผลอยู่คนละหน้าของรายการ → พลิกไปหน้านั้นก่อนวิ่ง */
     const page=(id,at)=>timers.push(this.time.delayedCall(at,()=>{ if(done||rowOf(id))return; const kk=pool.findIndex(m=>m.id===id),pp=this._forgePageSize||per; if(kk<0)return; this._poolPage=Math.floor(kk/pp); this.buildCraftBench(); prev=-1; Sfx.wheelTick?.(false); }));
     const run=(id,hops,start,slow,n)=>{ let at=start; page(id,at); for(let h=0;h<hops;h++){ const f=h/hops; at+=Math.round(45+slow*f*f); hop(at,null,n); } at+=Math.round(60+slow); hop(at,id,n); return at; };
-    let t=run(id0,14,0,200,1);
-    options.slice(1).forEach((o,j)=>{ if(o)t=run(o.id,5,t+220,100,j+2); });
-    timers.push(this.time.delayedCall(t+420,finish));
+    /* v7.9.94 เจ้าของ: ไฟวิ่งวนไปเรื่อย ๆ จนกว่าจะแตะ → แตะแล้วค่อยช้าลงหยุดที่ผล · แตะอีกครั้งระหว่างหยุด = ข้าม · 10 วิไม่แตะ = หยุดเอง */
+    let phase='run',hint=null; const hintOn=()=>{ const rows=R(); if(!rows.length||live(hint))return; const r0=rows[rows.length-1]; hint=this.add.text(r0.x+r0.w/2,r0.y+r0.h+16,'👆 TAP to stop!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#fff3c0',stroke:'#7a3b00',strokeThickness:4}).setOrigin(.5); this.menu.add(hint); this.tweens.add({targets:hint,scale:{from:1,to:1.12},duration:320,yoyo:true,repeat:-1}); };
+    const loop=this.time.addEvent({delay:75,loop:true,callback:()=>{ if(done||phase!=='run')return; if(this.state!=='menu'||this.menuScreen!=='craft'){finish();return;} const rows=R(); if(!rows.length)return; let i; do{ i=Math.floor(Math.random()*rows.length); }while(rows.length>2&&i===prev); prev=i; draw(rows[i],false); hintOn(); Sfx.wheelTick?.(false); }}); timers.push(loop);
+    const stop=()=>{ if(phase!=='run'){finish();return;} phase='stop'; loop.remove(); if(live(hint))hint.destroy(); const t=run(id0,7,0,220,1); timers.push(this.time.delayedCall(t+420,finish)); };
+    this._forgeSpin={finish:stop}; hintOn();
+    timers.push(this.time.delayedCall(10000,()=>{ if(!done&&phase==='run')stop(); }));
     return true; }
   chooseForgeSustain(index){const {item}=this._craftContext(),pending=item&&item.forgeChoice;if(!pending||item.locked||!Number.isInteger(index)||!pending.options[index])return;
     const line=Number.isInteger(pending.line)?pending.line:1;if(!forgeLineOpen(item,line)){Sfx.error();this.showBanner('Mod locked by item level','Keep current to refund this pending roll',1500);return;}const row=['power','sustain','play'][line],lines=forgeLines(item),a=Object.assign({},pending.options[index],{line}),mod=affixDef(a.id);if(!mod||mod.row!==row||!mod.slots.includes(item.slot))return;const before=lines[line];lines[line]=a;forgeSetLines(item,lines);delete item.forgeChoice;item.craftedAt=Date.now();Save.save();
@@ -10986,7 +10996,7 @@ class Game extends Phaser.Scene {
       const lines=forgeLines(item),old=lines[line],available=forgePool(item,line);if(!Object.keys(tmap).some(id=>available.some(m=>m.id===id)))return end('unreachable');
       const key=craftCurrencyForLine(line),need=1;if(Save.currency(key)<need){cur.setText('Out of '+currencyDef(key).name);return end('broke');}
       /* v7.8.84 ต่อ 1 currency สุ่ม 3 ตัว (เหมือนกดเอง) · ไม่ตรงเป้า = ไม่แทนของเดิม · ครั้งที่ FORGE_PITY ได้เป้าแน่นอน */
-      const tcat=affixCategory(tmod).label,pityId=rolls+1>=FORGE_PITY?Object.keys(tmap).find(id=>available.some(m=>m.id===id)):null,opts=forgeRollOptions(item,line,available,3,pityId),hitOpt=opts.find(o=>(o.id in tmap)&&(tmap[o.id]==null||o.t<=tmap[o.id])),rolled=hitOpt||opts[0],mod=affixDef(rolled.id);
+      const tcat=affixCategory(tmod).label,pityId=rolls+1>=FORGE_PITY?Object.keys(tmap).find(id=>available.some(m=>m.id===id)):null,opts=forgeRollOptions(item,line,available,1,pityId),hitOpt=opts.find(o=>(o.id in tmap)&&(tmap[o.id]==null||o.t<=tmap[o.id])),rolled=hitOpt||opts[0],mod=affixDef(rolled.id);
       if(hitOpt){lines[line]=Object.assign({},hitOpt,{line});forgeSetLines(item,lines);item.craftedAt=Date.now();}this.gearSelectedUid=item.uid;Save.data.currency[key]-=need;Save.save();this._craftRolledId=mod.id;
       spent[key]=(spent[key]||0)+need;rolls++;this._craftRolledId=mod.id;
       wallet(key);this.tweens.killTweensOf(walT);walT.setScale(1.18).setColor('#ff9aa8');this.tweens.add({targets:walT,scale:1,duration:260,onComplete:()=>walT.setColor('#ffe08a')});
@@ -16680,7 +16690,7 @@ class Game extends Phaser.Scene {
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
     if(!this.usesStoryBudget?.()&&(isMini||(isElite&&Math.random()<0.08)||(!big&&Math.random()<0.005))) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
-    if((isMini&&Math.random()<0.25*(1+forgeLootValue(this,117)))||(isElite&&Math.random()<0.06*(1+forgeLootValue(this,117)))) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
+    if((isMini&&Math.random()<0.25*this.earlyLootMul()*(1+forgeLootValue(this,117)))||(isElite&&Math.random()<0.06*this.earlyLootMul()*(1+forgeLootValue(this,117)))) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
     if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
     if(this.stageIndex===6&&e.mycoRole==='moldSac'){const sx=e.x,sy=e.y;for(let i=0;i<2;i++)this.time.delayedCall(80+i*90,()=>{if(!this._busy())return;const child=this.spawnEnemy('sporeling');if(child)child.setPosition(sx+Phaser.Math.Between(-34,34),sy+Phaser.Math.Between(-34,34));});}
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
@@ -16832,7 +16842,7 @@ class Game extends Phaser.Scene {
     this.burst(x,y,0xe59a4d); Sfx.boom(); this.screenShake(90,0.004);
     this.dropOrb(x,y, 3+Phaser.Math.Between(0,this.stageIndex*2));   // ดWaitปออร์บ
     if(Math.random()<(this.usesStoryBudget?.()?0.20:0.28)) this.dropHeal(x+Phaser.Math.Between(-12,12),y+Phaser.Math.Between(-12,12));   // โอกาสดWaitปฟื้นฟู (ลดจากครึ่งนึง ให้หัวใจหายากขึ้น)
-    if(Math.random()<0.10) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
+    if(Math.random()<0.10*this.earlyLootMul()) this.spawnLoot(x,y);   // โอกาสเล็ก ๆ ได้ของสวมใส่ (low tier)
     if(Math.random()<0.04) this.spawnVac(x,y);    // โอกาสเล็ก ๆ ได้Magnet
     if(Math.random()<0.25){ this.sugarStage+=3; this.sugarRun+=3; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); }
   }
@@ -16869,6 +16879,7 @@ class Game extends Phaser.Scene {
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
+  earlyLootMul(){ return !this.recipeMode&&(this.stageIndex||0)<5?.45:1; }   // v7.9.94 เจ้าของ: Chapter 1 ได้ของสวมใส่เยอะเกิน → ดรอปน้อยลง
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
     const box='gift';   // ไอเทมปิดกล่องจนจบด่าน ใช้ภาพกล่องของขวัญจริง
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); } if(g)g._mag=false;

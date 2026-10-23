@@ -1,4 +1,8 @@
-# Latest delivery: v7.9.93 — Ruby guides counters, stars, Mutation/Evolution; feature-reveal fly fix (owner)
+# Latest delivery: v7.9.94 — Rarer early gear, tap-to-stop Forge, Lobby bubble over the head (owner)
+
+Gear: gearEnhanceCap iLv<12 +1 · <25 +3 · <45 +6 · else +10; rollAffixes caps drop mods 0/1/2/3 by iLv (<12/<25/<45); earlyLootMul() = .45 in Story stageIndex<5 on mini/elite/crate gear rolls (docs/GEAR_LEVEL_LIMITS.md). Forge: randomCraftSelected and autoRollToTarget use forgeRollOptions(…,1); forgeSpin loops a random-row light (75ms) with '👆 TAP to stop!' until handleTap → _forgeSpin.finish = stop → 7 slowing hops onto the paid result, tap again = finish, 10s auto-stop. Lobby: LOBBY_LINES rewritten short/cheeky; startLobbyVoice(hero,headX,headY,width,minY,left,right) from buildLobby (LOBBY_FACE head top, clamped ≤ zone top+10, between side buttons); tick sets root above the head, raster panel flipped Y so the tail points down, pop .8→1. Lobby + Forge real-browser checks pass locally.
+
+# Previous delivery: v7.9.93 — Ruby guides counters, stars, Mutation/Evolution; feature-reveal fly fix (owner)
 
 counterTeach(x,y) from spawnCounter: first counter per run (max 2 saves, d.counterTaught) → rubyTip('counter') + questFocus('counter',true,[target]) (questFocus now takes optional targets). starTeach() 900ms after buildLobby once (d.starTaught; waits for feature reveals, Weave tour, gearTut 0–1) → rubyTalk about 3 stars + Sugar + replay + mini wheel. pathTeach(kind) also for first mutation/evolution card (2 pages each). Feature reveal: second+ item used an empty tapZones → flew to the bottom; now keeps _featZones (Lobby zones) and hides every queued target's real icon (featHideAt bounds match) until its fly arrives (featShow).
 
@@ -14,11 +18,11 @@ GameLoader.set (patched in game.js) percent line: window.__dlPhase (set by downl
 
 Five built-in ImageGen originals (four event paintings + recipe paper), source/prompts/hash manifest and real Canvas proofs retained in assets/incoming/ruby_storybook/. Runtime451,184bytes; menu-lazy only, per-story image loading. Pre-stage C1-1 through C1-5 two-page stories, before first tutorial too; grandma/jar art reused. rubyTalk now opaque paper/black full-screen, contained event art, expression portrait, manual Back/Next/Skip,600ms debounce, deferred once-only completion/save and menu rebuild guard. Post-clear memories retained; no combat/balance changes. Required check/build and six real Canvas viewports passed; Pages CI includes story review. See docs/art_orders/43_RUBY_STORYBOOK.md and publication state in docs/SESSION_HANDOFF.md.
 
-# Latest delivery: v7.9.89 — Lobby layout and missing art
+# Previous delivery: v7.9.89 — Lobby layout and missing art
 
 Real Canvas audit repaired currency collisions, dimmed controls, dialogue over hero, locked shortcut gaps and stage title/power collisions. Two built-in ImageGen assets: painted Settings and empty currency panel,11,020 runtime bytes, existing Lobby lazy loader. Reused existing panels/hero/shadow. Source/prompt/hash manifest/review screenshots in assets/incoming/lobby_polish/; docs/art_orders/42_LOBBY_POLISH.md. Five portrait sizes × early/unlocked ×36 lines pass real Canvas bounds/collision/routes (360 dialogue states); check now in Pages CI. Required check/build passed; publication status in docs/SESSION_HANDOFF.md. Menu screenshots explicitly requested by owner; no combat simulation.
 
-# Latest delivery: v7.9.88 — ImageGen winter magic and Lobby panels
+# Previous delivery: v7.9.88 — ImageGen winter magic and Lobby panels
 
 Four original ImageGen assets retained with exact prompts in assets/incoming/mint_winter_update/. Runtime293,070bytes (~3.25MiB decoded):4-frame dash shard,8-frame snowstorm, cream/gold speech and blue cloud thought panels. FX are Mint-stage-only; panels Lobby-lazy. Sprite playback follows gameplay time, full fallback/cleanup, original damage/body/range unchanged. scripts/pack-mint-winter-art.py reproduces source-pixel packing; MANIFEST/QA and offline GIFs included. Added tests/winter-art.test.cjs. Owner phone visual/FPS remains pending; publication state in docs/SESSION_HANDOFF.md.
 

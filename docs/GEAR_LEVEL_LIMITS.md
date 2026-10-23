@@ -2,12 +2,14 @@
 
 Early gear has fewer active Forge rows and a lower enhancement ceiling. Limits follow the item's own level, independently of rarity and account progress.
 
-| Item level | Active Forge rows | Enhancement ceiling |
-| --- | --- | --- |
-| 1–11 | Power | +3 |
-| 12–24 | Power, Sustain | +5 |
-| 25–44 | Power, Sustain, Play | +7 |
-| 45–100 | Power, Sustain, Play | +10 |
+| Item level | Active Forge rows | Mods on a drop (max) | Enhancement ceiling |
+| --- | --- | --- | --- |
+| 1–11 | Power | 0 | +1 |
+| 12–24 | Power, Sustain | 1 | +3 |
+| 25–44 | Power, Sustain, Play | 2 | +6 |
+| 45–100 | Power, Sustain, Play | 3 | +10 |
+
+v7.9.94 (owner: early gear too plentiful and too strong): drops below iLv 12 come with no mods, enhancement ceilings lowered (+3/+5/+7 → +1/+3/+6), and in Story C1 (stages 1–5) mini, elite and crate gear drop chances are ×0.45 (`earlyLootMul`). A Forge Roll now gives one result (Take or Keep current) instead of three.
 
 The existing random-drop row thresholds (12 and 25) now apply to crafting too. The enhancement steps preserve a reason to replace early gear throughout Story progression. Implicits retain their existing item-level gates.
 

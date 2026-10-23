@@ -3,7 +3,7 @@ const {fixture,method,source}=require('./forge-fixture.cjs');
 const {ctx,base}=fixture(),plain=x=>JSON.parse(JSON.stringify(x));
 base.enh=true;base.apply=()=>{};
 const limits=ctx;
-for(const [level,mods,enh] of [[1,1,3],[11,1,3],[12,2,5],[24,2,5],[25,3,7],[44,3,7],[45,3,10],[60,3,10],[100,3,10]]){
+for(const [level,mods,enh] of [[1,1,1],[11,1,1],[12,2,3],[24,2,3],[25,3,6],[44,3,6],[45,3,10],[60,3,10],[100,3,10]]){
   const item={itemLevel:level,slot:'weapon'};
   assert.equal(limits.affixCountCap(level),mods);
   assert.equal(limits.gearEnhanceCap(item),enh);
@@ -17,13 +17,13 @@ let item={uid:'u',baseId:'test',slot:'weapon',grade:'rare',itemLevel:1,enhanceLv
   {id:'f_might',v:5,t:10,line:0},{id:'f_vital_dough',v:12,t:10,line:1},{id:'f_treasure_aroma',v:3,t:10,line:2}
 ]};
 const snap=JSON.stringify(item),legacy=plain(item);
-assert.equal(limits.gearActiveAffixes(item).length,1);assert.equal(limits.gearEffectiveEnhance(item),3);assert.equal(JSON.stringify(item),snap);
+assert.equal(limits.gearActiveAffixes(item).length,1);assert.equal(limits.gearEffectiveEnhance(item),1);assert.equal(JSON.stringify(item),snap);
 for(const level of [12,25])assert.equal(limits.gearActiveAffixes({...item,itemLevel:level}).length,level===12?2:3);
 // Compare and equipped stats use only active rows and the effective enhancement; never erase the saved investment.
 vm.runInContext(source.slice(source.indexOf('function gearBaseStats('),source.indexOf('function gearPool(')),ctx);
 vm.runInContext(source.slice(source.indexOf('function gearInstanceStats('),source.indexOf('function gearCompareRows(')),ctx);
-assert.deepEqual(plain(limits.gearBaseStats(item)),plain(limits.gearBaseStats({...item,enhanceLv:3})));
-assert.deepEqual(plain(limits.gearInstanceStats(item)),plain(limits.gearInstanceStats({...item,enhanceLv:3,affixes:[item.affixes[0]]})));
+assert.deepEqual(plain(limits.gearBaseStats(item)),plain(limits.gearBaseStats({...item,enhanceLv:1})));
+assert.deepEqual(plain(limits.gearInstanceStats(item)),plain(limits.gearInstanceStats({...item,enhanceLv:1,affixes:[item.affixes[0]]})));
 assert.deepEqual(item,legacy);
 let writes=0,randomCalls=0;
 ctx.Math=Object.assign(Object.create(Math),{random(){randomCalls++;return .99;}});
@@ -31,9 +31,9 @@ ctx.enhanceOdds=()=>({success:1,brk:0,destroy:0});
 const save=vm.runInContext('({'+['gearLv','enhance','ensureAffix'].map(method).join('\n')+'\n})',ctx);
 Object.assign(save,{data:{gearLv:{},gearItems:[item],equippedGear:{}},gearItem:id=>id==='u'?item:null,gearBase:()=>base,save(){writes++;}});
 ctx.Save=save;
-assert.equal(save.gearLv('u'),3);assert.equal(save.ensureAffix('u').length,1);
+assert.equal(save.gearLv('u'),1);assert.equal(save.ensureAffix('u').length,1);
 assert.equal(save.enhance('u').result,'capped');assert.equal(writes,0);assert.equal(randomCalls,0);assert.equal(item.enhanceLv,10);
-for(const [level,cap] of [[1,3],[12,5],[25,7],[45,10]]){
+for(const [level,cap] of [[1,1],[12,3],[25,6],[45,10]]){
   item.itemLevel=level;item.enhanceLv=cap-1;
   const before=writes;assert.equal(save.enhance('u').result,'success');assert.equal(item.enhanceLv,cap);
   assert.equal(writes,before+1);assert.equal(save.enhance('u').result,'capped');assert.equal(writes,before+1);
