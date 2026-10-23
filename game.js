@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.69';
+const GAME_VERSION = '7.9.70';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -86,6 +86,7 @@ const CARD_INTRO={path:['🛤','Build Path','Pick 1 of 3 fighting styles for thi
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.70',date:'2026-10-23',title:'Lobby art fix',items:['Fixed: Lobby frames, BATTLE button and side buttons could go plain after the storybook opening']},
   {v:'7.9.69',date:'2026-10-23',title:'New storybook opening art',items:['The storybook after TAP TO START now has its own art: the mochi crest moves, magic sparkles swirl, the gold clasp unlocks, the cover swings open in 12 frames, the pages riffle and light bursts out','New icons for the Bazaar and Upgrade tabs and the Mail button']},
   {v:'7.9.68',date:'2026-10-23',title:'Book opening, tutorial art and a new bottom bar',items:['After TAP TO START the storybook now floats in, glows, opens slowly and flips its pages (tap to skip)','Fixed: the tutorial card screen could freeze when you levelled up from sweets','New tutorial art: step icons, card frame, pointing hand, icing ring and a star stamp when you finish a step','Bottom bar: Gear is now Upgrade, and Bazaar takes the place of Stages','Tap the stage box above BATTLE to choose any stage','Inbox is now Mail, on the left under Awards']},
   {v:'7.9.67',date:'2026-10-23',title:'Shorter tutorial lines',items:['Every tutorial card now has just two short lines','Ruby’s lines tell the story: the Great Hunger is stealing Mochitopia’s flavors and you take them back']},
@@ -9697,8 +9698,8 @@ class Game extends Phaser.Scene {
     if(this.lhReady(k))go(); else this.lhLoad([k],go); }
   lhTap(){ const sp=this._lhSprite; if(!sp||!sp.active)return; const now=Date.now(); this._lhLastTap=now; const t=(this._lhTaps||[]).filter(x=>now-x<3000); t.push(now); this._lhTaps=t;
     if(sp._lhSet==='poke')return; if(t.length>=5){ this._lhTaps=[]; this.lhPlay('poke'); return; } if(sp._lhSet==='tap')return; this.lhPlay('tap'); }
-  loadLobbyArt(){ if(this._lbArt)return; const miss=LB_KEYS.filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]); if(!miss.length){this._lbArt=true;return;} this._lbArt=true;
-    try{ this.ensureGroup(k=>miss.includes(k),()=>{ if(this.state==='menu')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
+  loadLobbyArt(){ if(this._lbArt)return; const miss=LB_KEYS.filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length)return; this._lbArt=true;   // v7.9.70 เช็กทุกครั้ง (เดิมโหลดครั้งเดียว → ถูกคืนหน่วยความจำตอนเปิดหนังสือแล้วไม่โหลดกลับ = Lobby ไม่มีกรอบ)
+    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lbArt=false; if(this.state==='menu')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
   /* v7.9.64 หน้าเปิดเกม: ฉาก Hub เดิม (Strawberry ถือคทาแยกชิ้น ใบ 25) + โลโก้ + TAP TO START · แตะที่ไหนก็ได้ → Lobby (เปิดปกหนังสือ) */
   buildTitle(){ this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
