@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.97';
+const GAME_VERSION = '7.9.98';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'7.9.98',date:'2026-10-23',title:'The story, retold',items:['The whole story now follows one plot: long ago a Crown cursed the kingdom into mochi, and the Heart Seed turns you back into a person','Ruby’s stories, stage scenes, endings and hero arrivals now tell how each friend is freed from the curse','The ending: lift the Crown, plant the Heart Seed and break the curse for everyone']},
   {v:'7.9.97',date:'2026-10-24',title:'A sweeter discovery stage',items:['New painted confectionery theater for feature discoveries and item rewards','Calmer lighting, clearer reward focus and a refined Ruby message panel']},
   {v:'7.9.96',date:'2026-10-24',title:'Ruby motion stories and smoother guidance',items:['Story scenes focus on a moving painted shot with snow, embers, sound and a trail of previous memories','Training and upgrades use spotlights on the actual controls; the first story begins at the real pantry stage','Recovered memories now appear at stage clear, with a fourth beat leading toward the next floor','A stage-title curtain carries the story through loading into the arena; reduced motion and Skip remain available']},
   {v:'7.9.95',date:'2026-10-23',title:'Ruby’s story becomes a comic',items:['Each early story now has three distinct painted comic panels','Next reveals one new panel with a gentle fade while earlier pictures stay visible','Ruby’s memories also unfold in three panels; Back and Skip remain available','Previously read early stories can be seen once more in their new comic form']},
@@ -3947,13 +3948,13 @@ const CORE_UNLOCK_STAGE={mint:1,cocoa:4,taro:6,yuzu:9};   /* v7.9.78 เจ้�
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) — Mint ที่ Stage 3 · Cocoa ที่ C2-1 (เจ้าของสั่ง)
 const HERO_INTROS=[
   {idx:2,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
-    text:'The Chili Engine Room ahead is burning hot! My frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.'},
+    text:'Your seed broke my curse — I’m a person again! I was the village healer. The Chili Engine Room ahead is burning hot, and my frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.'},
   {idx:5,id:'cocoa',flag:'cocoaIntro',card:'card_cocoa',emoji:'🐻',name:'Cocoa',color:'#8a4b22',edge:0xd9a066,btn:0xa0612f,btnEdge:0xffe2bf,stroke:'#4a2410',label:'🐻 Choose Cocoa',
-    text:'The Fermented Canopy is choked with thick roots and armored Root Beetles — little seeds just bounce off their bark! My bear gauntlets punch straight through. Let me take the front line? Tap Heroes on the main menu any time to switch hero.'},
+    text:'Thanks for breaking my curse! I guarded the city gate before I became mochi. The Fermented Canopy is choked with thick roots and armored Root Beetles — little seeds just bounce off their bark! My bear gauntlets punch straight through. Let me take the front line? Tap Heroes on the main menu any time to switch hero.'},
   {idx:7,id:'taro',flag:'taroIntro',card:'card_taro',emoji:'⚡',name:'Taro',color:'#6a4fc8',edge:0xb9a3ff,btn:0x7c5ce0,btnEdge:0xeee6ff,stroke:'#2e1f66',label:'⚡ Choose Taro',
-    text:'Lightning led my compass here — the Hornet Queen’s hive hums with stolen flavor! Fast hornets? My sparks jump from one to the next. Tap Heroes on the main menu any time to switch hero.'},
+    text:'I’m me again! I used to map this whole kingdom. Lightning led my compass here — the Hornet Queen’s hive hums with stolen flavor! Fast hornets? My sparks jump from one to the next. Tap Heroes on the main menu any time to switch hero.'},
   {idx:10,id:'yuzu',flag:'yuzuIntro',card:'card_yuzu',emoji:'🍋',name:'Yuzu',color:'#c99a12',edge:0xffe07a,btn:0xe0b52a,btnEdge:0xfff4c4,stroke:'#5c4306',label:'🍋 Choose Yuzu',
-    text:'The Great Hunger drained my orchard dry… only my little Yuzlings escaped. Help me take these harvest fields back and we will plant it all again! Tap Heroes on the main menu any time to switch hero.'},
+    text:'My curse is gone! I grew oranges before the Crown drained my orchard dry… only my little Yuzlings escaped. Help me take these harvest fields back and we will plant it all again! Tap Heroes on the main menu any time to switch hero.'},
 ];
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
@@ -6483,23 +6484,23 @@ function stageThreat(i){const st=STAGES[i]||STAGES[0];   // v7.8.75 เจ้า
 function stageRecommendedPower(i){const t=stageThreat(i),b=stageThreat(0);return Math.round(100*RUN_CARD_MUL*Math.sqrt((t.hp/b.hp)*(t.dmg/b.dmg))/10)*10;}
 const STAGES = [
   { name:'The Sour Ant Nest', en:'The Sour Ant Nest', emoji:'🐜', grid:0x2d261f, tint:0x8ee04b,
-    lore:'Momo falls through a crack under the pantry into a nest where acid crystals are warping the whole ant kingdom',
+    lore:'A cursed strawberry mochi falls through a crack under the pantry, finds the waking Heart Seed and becomes a person again — in a nest where acid crystals warp the whole ant kingdom',
     waves:5, recommendedPower:100, miniAt:2, mini:'Ruby-Fang Guard',
     boss:'Emerald Acid Ant Empress', bossHp:920, bossDmg:25 },
   { name:'The Rotting Drain', en:'The Rotting Drain', emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
     lore:'Acid from the nest floods the ancient drains, raising creatures of foam, sewage and grate scraps into a new army',
     waves:5, recommendedPower:280, miniAt:2, mini:'Valve Maw, Pressure Warden', boss:'Clogmaw, Lord of Clogged Pipes', bossHp:1120, bossDmg:24 },
   { name:'Chili Engine Room', en:'Chili Engine Room', emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
-    lore:'The chili furnace siphons power from the ant nest to run the Bitter Chef cursed machine',
+    lore:'The chili furnace burns the stolen flavor of cursed mochi to feed a root of the Crown',
     waves:5, recommendedPower:560, miniAt:2, mini:'Boiling Pan', boss:'Mr. Griddle', bossHp:1000, bossDmg:28 },
   { name:'Sugar Frost Prison', en:'Sugar Frost Prison', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
-    lore:'Sweet flavor spirits are frozen as fuel, and the golem wardens let no one escape',
+    lore:'Cursed mochi are frozen as fuel — Grandma among them — and the golem wardens let no one escape',
     waves:5, recommendedPower:940, miniAt:2, mini:'Giant Ice Block', boss:'Ice Cream Golem', bossHp:1400, bossDmg:32 },
   { name:'The Crown Oven of Hunger', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
-    lore:'The royal oven opens — the Bitter Chef dissolves into a vessel, and The Great Hunger descends to devour all flavor itself',
+    lore:'A root of the Crown rises through the royal oven to drink the whole kitchen dry — and The Great Hunger speaks through it',
     waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
   { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1, ready:true,
-    lore:'The crown seed that survived The Great Hunger roots upward into the garden above the kitchen, forcing returned memories to bloom out of season',
+    lore:'The wounded root slides into the garden and starts growing the Hunger a new body from stolen memories',
     objectives:['survive','hunt','purge','capture'],
     waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:"Rootmother's Bud", bossHp:3600, bossDmg:46 },
   { name:'Mycelium Marsh', en:'Mycelium Marsh', emoji:'🍄', grid:0x20372d, tint:0x9ae66e, chapter:1, chapterStage:2, ready:true,
@@ -6515,16 +6516,16 @@ const STAGES = [
     objectives:['survive','hunt','seasonCycle'],
     waves:5, recommendedPower:5700, miniAt:2, mini:'Season Keeper', boss:'Chronobloom Orchid', bossHp:8200, bossDmg:82 },
   { name:'Root Throne', en:'Root Throne', emoji:'🌳', grid:0x24172b, tint:0xd56bff, chapter:1, chapterStage:5, ready:true,
-    lore:'All memory roots converge beneath the first crown seed, where their true planter waits on a living throne',
+    lore:'All memory roots converge on a living throne — and point onward to the one who planted the First Tree',
     objectives:['survive','hunt','breakRoots'],
     waves:5, recommendedPower:7600, miniAt:2, mini:'Ancient Root Knight', boss:'The True Rootmother', bossHp:11000, bossDmg:95 },
   // ===== Chapter 3 · Throne of the First Seed (v4.73 · อาร์ตยังเป็น placeholder ที่วาดด้วยโค้ด — key c3_* / bg11-15 รอ AI อีกตัวทำภาพจริงมาใส่ ASSET_IMAGES ทับได้เลย) =====
   { name:'Ashen Seedfields', en:'Ashen Seedfields', emoji:'🌾', grid:0x2e2622, tint:0xe0a86a, chapter:2, chapterStage:1, ready:true,
-    lore:'Beyond the Root Throne lie fields where every flavor was planted — now scorched grey by the crown planter',
+    lore:'Beyond the Root Throne lie the fields where every flavor was first planted — now scorched grey to feed the starving Crown',
     objectives:['survive','hunt','purge','capture'],
     waves:5, recommendedPower:9800, miniAt:2, mini:'Scarecrow Reaper', boss:'The Harvest Colossus', bossHp:13500, bossDmg:105 },
   { name:'Hollow Orchard', en:'Hollow Orchard', emoji:'🍎', grid:0x2a1f2e, tint:0xff7a8f, chapter:2, chapterStage:2, ready:true,
-    lore:'Fruit trees bloom with empty husks — the planter drank every drop of sweetness from them',
+    lore:'Fruit trees bloom with empty husks — the Crown drank every drop of sweetness from them',
     objectives:['survive','hunt','capture'],
     waves:5, recommendedPower:12500, miniAt:2, mini:'Husk Gardener', boss:'The Hollow Bloom', bossHp:16500, bossDmg:115 },
   { name:'Glass Greenhouse Ruins', en:'Glass Greenhouse Ruins', emoji:'🔮', grid:0x1d2b3a, tint:0x7fe6ff, chapter:2, chapterStage:3, ready:true,
@@ -6536,7 +6537,7 @@ const STAGES = [
     objectives:['survive','hunt','capture'],
     waves:5, recommendedPower:19800, miniAt:2, mini:'Vault Keeper', boss:'The Seedwarden', bossHp:24000, bossDmg:138 },
   { name:'Throne of the First Seed', en:'Throne of the First Seed', emoji:'👑', grid:0x160f1f, tint:0xb98cff, chapter:2, chapterStage:5, ready:true,
-    lore:'At the root of all hunger sits the one who planted the crown — end the cycle here',
+    lore:'At the First Tree sits the one who wears the Crown — take it off and break the curse',
     objectives:['survive','hunt','purge','capture'],
     waves:5, recommendedPower:24500, miniAt:2, mini:'Crown Thorn Knight', boss:'The First Planter', bossHp:30000, bossDmg:150 },
 ];
@@ -6663,11 +6664,11 @@ const BOSS_LINES = [
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
 const STAGE_STORY_BEATS = [
   [
-    {title:'Crack Beneath the Pantry',sub:'The acid crystal calls the workers to seal Momo\'s way back'},
+    {title:'Crack Beneath the Pantry',sub:'The acid crystal calls the workers to seal Strawberry’s way back'},
     {title:'A Sour Scent Buries Memory',sub:'The scouts forget their names, recalling only the crystal orders'},
     {title:'The Guard of the Egg Nest',sub:'Ruby Fang accepts the curse to protect the nest heirs'},
     {title:'The Empress Oath',sub:'The legion opens the hatchery — a pact trading freedom for her children lives'},
-    {title:'The Oven Mark Below',sub:'A crown-shaped burn shows the Bitter Chef siphoning acid upward'}
+    {title:'The Oven Mark Below',sub:'A crown-shaped burn shows a great root siphoning acid upward'}
   ],
   [
     {title:'Acid Floods the Old Drains',sub:'Nest waste ferments until foam and grates gain a will'},
@@ -6694,15 +6695,15 @@ const STAGE_STORY_BEATS = [
     {title:'Stairway to the Bitter Crown',sub:'Every path from below the kitchen meets at the highest oven'},
     {title:'A Banquet Without Flavor',sub:'Every dish is just a shape — Hunger has eaten the meaning'},
     {title:'The Banquet Executioner Seals the Door',sub:'It raises all six kitchen blades, cutting off escape to the crown oven'},
-    {title:'The Shadow Above the Chef',sub:'The voice from the oven calls itself The Great Hunger'},
-    {title:'The Bitter Chef Confession',sub:'He is not the origin, but a servant feeding all flavor to Hunger'}
+    {title:'The Shadow Above the Oven',sub:'The voice from the oven calls itself The Great Hunger'},
+    {title:'Only One Root',sub:'This is not the source — just one root of a Crown that drinks the whole kingdom'}
   ],
   [
-    {title:'Roots Pierce the Crown Oven',sub:'The golden seed hidden in the core wakes and drags all memory up to the garden'},
+    {title:'Roots Pierce the Crown Oven',sub:'The wounded root drags its stolen memories down into the garden'},
     {title:'Fruit That Remembers Its Owner',sub:'Ferment Sprouts grow from returned flavor, but every one calls a single name — Rootmother'},
     {title:'Sporewarden Seals the Canopy',sub:'The orchid mantis raises leaf scythes, letting no one near the crown seed'},
     {title:'All Four Seasons Bloom at Once',sub:'Ferment toxin speeds time — flowers are born, age and die in one breath'},
-    {title:'A Mother Voice Below the First Root',sub:'The one who planted the crown seed waits, calling The Great Hunger a lost child'}
+    {title:'A Mother Voice Below the First Root',sub:'The one who planted the First Tree waits, calling The Great Hunger a wish gone wrong'}
   ],
   [
     {title:'The Marsh Draws Its First Breath',sub:'Mycelium Drifters rise wherever the clean air passes'},
@@ -6721,10 +6722,10 @@ const STAGE_STORY_BEATS = [
   null,null,   // C2-4/C2-5 ใช้ cutscene เดิมของตัวเอง
   // v4.85: Chapter 3 story beats (index 10-14)
   [
-    {title:'Ash Where the Harvest Was',sub:'The seed Momo followed landed in fields that were burned to feed a single crown'},
+    {title:'Ash Where the Harvest Was',sub:'The root Strawberry followed ends in fields that were burned to feed a single crown'},
     {title:'Scarecrows Still Keep Watch',sub:'Straw guards swear an oath to a planter no one has seen in centuries'},
     {title:'The Reaper in the Rows',sub:'Its scythe remembers every harvest it was ordered to take'},
-    {title:'Soil That Hungers Back',sub:'The ground itself pulls at Momo’s feet, begging for one more seed'},
+    {title:'Soil That Hungers Back',sub:'The ground itself pulls at Strawberry’s feet, begging for one more seed'},
     {title:'The Colossus Wakes',sub:'The whole harvest rises as one body to guard the road inward'}
   ],
   [
@@ -6732,28 +6733,28 @@ const STAGE_STORY_BEATS = [
     {title:'Husks That Remember Sweetness',sub:'The empty fruit still whisper what they used to taste like'},
     {title:'The Gardener of Husks',sub:'It prunes the orchard so nothing can ever ripen again'},
     {title:'Sap Runs Toward the Glass',sub:'The last living sap flows uphill, toward a shining greenhouse'},
-    {title:'The Hollow Bloom Opens',sub:'A flower made of every stolen taste unfolds to stop Momo'}
+    {title:'The Hollow Bloom Opens',sub:'A flower made of every stolen taste unfolds to stop Strawberry'}
   ],
   [
     {title:'The Greenhouse Is Broken',sub:'Shattered glass reflects a thousand different futures'},
-    {title:'Prisms Split the Path',sub:'Light bends Momo’s way into false turns and mirrored foes'},
+    {title:'Prisms Split the Path',sub:'Light bends Strawberry’s way into false turns and mirrored foes'},
     {title:'The Prism Sentinel',sub:'It guards the only panes that still show the truth'},
-    {title:'Seeds Under Glass',sub:'Rows of crown seeds sleep in jars, waiting to be planted'},
+    {title:'The Kingdom Before',sub:'Old panes still show Mochitopia before the curse — people, not mochi'},
     {title:'The Glass Gardener',sub:'The keeper of the greenhouse chooses which future grows'}
   ],
   [
     {title:'The Seed Vault Doors',sub:'Behind these doors lies every crown seed the Planter ever made'},
-    {title:'Locks That Taste Fear',sub:'The vault opens only for those who crave — Momo must hold steady'},
+    {title:'Locks That Taste Fear',sub:'The vault opens only for those who crave — Strawberry must hold steady'},
     {title:'The Vault Keeper',sub:'It counts every seed and knows exactly one is missing'},
     {title:'Roots Beneath the Floor',sub:'The vault is not built on stone but on one ancient root'},
-    {title:'The Seedwarden Rises',sub:'The last guard of the vault would rather burn it than let Momo pass'}
+    {title:'The Seedwarden Rises',sub:'The last guard of the vault would rather burn it than let Strawberry pass'}
   ],
   [
     {title:'The Throne of the First Seed',sub:'The root leads to a quiet throne where the first crown was planted'},
     {title:'Thorns Grown From Oaths',sub:'Every knight here swore to keep the hunger cycle turning'},
     {title:'The Crown Thorn Knight',sub:'The Planter’s last champion blocks the final stair'},
-    {title:'The Planter Remembers Momo',sub:'A voice from the throne claims it once planted Momo too'},
-    {title:'The First Planter',sub:'End the cycle — or become the next seed'}
+    {title:'The Planter Knows the Seed',sub:'A voice from the throne knows the Heart Seed — it fell from his own tree'},
+    {title:'The First Planter',sub:'Take off the Crown — or let it eat the First Tree'}
   ]
 ];
 // สรุปเรื่องราวตอนล้มบอสจบด่าน (โชว์ก่อนหน้าสรุปสถิติ) — what happened + why press on
@@ -6764,22 +6765,22 @@ function epilogueLayout(w,h){
 }
 const STAGE_EPILOGUE = [
   { title:'The Empress Falls Silent',
-    body:'The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Momo toward the drains where the sour acid still flows.',
+    body:'The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Strawberry toward the drains where the sour acid still flows.',
     why:'Follow the poisoned current downstream to find its source.' },
   { title:'The Pipes Run Clear',
-    body:'Clogmaw bursts and the fermented flood drains away. In the last trickle Momo hears a furnace roar far below — something is boiling the stolen acid into raw power.',
+    body:'Clogmaw bursts and the fermented flood drains away. In the last trickle Strawberry hears a furnace roar far below — something is burning stolen flavor into raw power.',
     why:'Descend to the Chili Engine before it finishes stoking.' },
   { title:'The Furnace Goes Cold',
     body:'Mr. Griddle sputters out and his cursed engine stalls. But that heat was feeding a freezer above, where sweet flavor-spirits are being frozen as the next batch of fuel.',
     why:'Climb to the Sugar Frost Prison and free the captured flavors.' },
   { title:'The Ice Lets Go',
-    body:'The Golem melts into slush and the frozen spirits drift free, whispering their thanks. They warn of a crown-shaped oven higher up, where the Bitter Chef prepares his final course.',
-    why:'Ascend to the Crown Oven and end the Bitter Chef for good.' },
+    body:'The Golem melts into slush and the frozen mochi drift free, whispering their thanks. Grandma stays behind in the ice — her flavor is locked inside the Crown itself. She warns of an oven higher up, where a root of the Crown drinks the kitchen dry.',
+    why:'Ascend to the Crown Oven and cut the root.' },
   { title:'The Great Hunger Recedes',
-    body:'The Great Hunger collapses and taste floods back into Mochitopia in a rush of color and sound. Yet from the cooling oven a single crown seed rolls free — and roots upward, toward the garden above.',
-    why:'Chapter 1 is complete. Chase the seed into the Fermented Canopy.' },
+    body:'The Hunger’s mouth recoils and flavor floods back into the kitchen in a rush of color and sound. But the wounded root slides down through the floor — toward the garden, to grow a new body.',
+    why:'Chapter 1 is complete. Follow the root into the Fermented Canopy.' },
   { title:'The First Bloom Withers',
-    body:'Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown from the crown seed. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.',
+    body:'Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown by the root. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.',
     why:'Follow the moving pocket of clean air into the marsh and find the body feeding the colony.' },
   { title:'The Marsh Remembers',
     body:'The Mycelium Behemoth releases every memory trapped in its colony. Their scent leads upward to a royal hive feeding on the garden’s last nectar.',
@@ -6791,8 +6792,8 @@ const STAGE_EPILOGUE = [
     body:'Chronobloom Orchid returns each season to its rightful path. Beneath its clock, an ancient stair descends toward the first root and the throne that planted every curse.',
     why:'Descend to the Root Throne and face the True Rootmother.' },
   { title:'Memories Choose Their Own Shape',
-    body:'The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. Momo sees the crown seed bloom once more, now harmless and free.',
-    why:'Chapter 2 is complete. But the freed memories keep pointing somewhere older — to the fields where the first crown was planted.' },
+    body:'The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. The Heart Seed glows brighter in Strawberry’s hands — the First Tree is calling.',
+    why:'Chapter 2 is complete. The freed memories point somewhere older — to the fields where the First Tree grows.' },
   // v4.85: Chapter 3 epilogues (index 10-14)
   { title:'The Harvest Lies Down',
     body:'The Harvest Colossus crumbles back into ash and straw. Beneath it, rows of hollow trees stretch toward the horizon, their flavor carved out and carried away.',
@@ -6807,11 +6808,11 @@ const STAGE_EPILOGUE = [
     body:'The Seedwarden falls and the jars of crown seeds dim into ordinary seeds, harmless and small. Under the vault floor, a single ancient root pulses toward a quiet throne.',
     why:'Climb the root to the Throne of the First Seed and meet the Planter.' },
   { title:'The Cycle Ends With a Choice',
-    body:'The First Planter kneels as the last crown seed cracks in Momo’s hands. It was never a seed of hunger — only a seed of wanting, planted too deep. Momo plants it again, in the sun, and it grows into an ordinary sweet tree. Mochitopia is whole.',
-    why:'The story is complete. The endgame kitchens are open — Recipe Maps, the Atlas and the Pinnacle await.' },
+    body:'The First Planter lifts the Crown from the First Tree. Strawberry plants the Heart Seed in its place, and a new tree sends every stolen flavor home. The curse breaks — all across Mochitopia, mochi become people again. Grandma laughs, Ruby cries, and the Hunger sinks, sleeping, beneath the roots.',
+    why:'The story is complete. Each night the Hunger stirs below — the Delve and the Pinnacle await.' },
 ];
 const STORY_REACTIONS = {
-  momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Momo","The source is close — no retreat","End this and take back everyone's flavor"],
+  momo:["I'll follow the curse's scent myself","These voices don't want to fight... I must hurry","A warden is coming — stay focused, Strawberry","The source is close — no retreat","End this and take back everyone's flavor"],
   mint:["The air here is wrong — I'll calm it","Something still lives under the curse — I can feel it","The warden isn't evil — we must stop the curse","The pressure rises... make a safe space","I'll protect every memory that remains"],
   cocoa:["If it blocks the way, I'll smash it open","Something ahead is crying for help","A big one's coming — good, I'll get answers","The ground shakes harder — I can still stand","This last punch is for everyone whose flavor was stolen"],
   taro:["This trail loops back to the source — I remember the way","The echoes reveal a hidden path","The warden hides the truth behind the pressure","Every path converges right ahead","I'll trace the curse back to whoever made it"],
@@ -6850,48 +6851,48 @@ const RUBY_TIPS={
 /* Ruby ตอนเริ่มด่านครั้งแรก — เรื่องราวของ Ruby ต่อเนื่องทีละด่าน (ความทรงจำกลับมาเมื่อชนะบอสก่อนหน้า) */
 function rubyWrap(text,max){ const out=[]; for(const ln of String(text).split('\n')){ const words=ln.match(/\[[^\]]*\]\S*|\S+/g)||['']; let cur='';
   for(const w of words){ const len=(cur+' '+w).replace(/[\[\]]/g,'').length; if(cur&&len>max){ out.push(cur); cur=w; } else cur=cur?cur+' '+w:w; } out.push(cur); } return out; }   // v7.9.81 ตัดบรรทัดกล่อง Ruby (ไม่ตัดกลางคำใน [ ])
-const RUBY_STORY=[
-  'This is where I hid when the Hunger came…\nI’m Ruby! I used to keep every recipe in Mochitopia.',
-  'When the Ant Empress fell, I remembered something!\nGrandma’s jam jar… it fell down these pipes.',
-  'It’s so hot! The Hunger’s machine burns stolen flavor here.\nI can almost taste my old strawberry jam…',
-  'Brrr! Sweet spirits are frozen in here.\nOne of them sounds like my grandma… we have to hurry!',
-  'This is it — the Crown Oven. The Hunger lives here.\nIf we win, maybe I can finally wake up like you did.',
-  'We beat it… but it only ran away, deeper into the garden.\nI remember now: my real flavor is still inside it.',
-  'The marsh air makes my gem feel heavy…\nStay close to me, okay? I don’t like the dark spores.',
-  'Bees! They used to make honey for the whole kingdom.\nNow the Hunger makes them guard it. Poor things…',
-  'Time feels strange here — like a recipe stuck on one step.\nI think Grandma wrote about this garden once.',
-  'The roots all lead to one place. I can feel it.\nThe Hunger is growing a body from stolen flavors…',
-  'Look, the fields are empty. Not a single crumb left.\nIf we don’t stop it, the whole world goes bland.',
-  'Something here feels hollow… like a cake with no filling.\nKeep your eyes open. Things aren’t what they seem.',
-  'Glass flowers! So pretty… and so cold.\nThey reflect what you fear. Don’t look too long.',
-  'The seeds here are the very first flavors ever planted.\nI can hear my own flavor calling from up ahead!',
-  'This is the beginning of everything. The First Planter.\nWhatever happens… thank you for bringing me this far.'
+const RUBY_STORY=[   // v7.9.98 เรื่องหลัก docs/STORY_CANON.md
+  'You found the Heart Seed… and turned back into a person!\nI’m Ruby. I’ve guarded that seed for a very long time.',
+  'The Empress fell, and her flavor came home.\nGrandma hid her jam jar down these pipes — her recipes are inside!',
+  'It’s so hot! This machine burns everyone’s stolen flavor.\nYour seed freed Mint — let’s free the rest of them!',
+  'Brrr! The mochi frozen here were people once.\nOne of them sounds like Grandma… we have to hurry!',
+  'The Crown Oven. A root of the Crown drinks the whole kitchen here.\nIf we cut it, the Hunger will feel it.',
+  'We cut the root… but it slid down into the garden.\nGrandma’s flavor is still locked inside the Crown.',
+  'The marsh spores eat memories. Stay close to me, okay?\nDon’t forget who you are — your seed remembers.',
+  'Bees! They once made honey for the whole kingdom.\nNow the Hunger makes them guard it. Poor things…',
+  'Time stopped here on the day of the curse.\nGrandma wrote about this garden — it’s been waiting for us.',
+  'All the roots lead to one place. The Hunger is growing a body.\nAnd behind it… the one who planted the First Tree.',
+  'The fields are empty. Not a crumb left.\nThe Hunger is starving — that’s why it’s reaching for the First Tree.',
+  'These flowers were eaten down to their shells…\nThat’s what happens to everyone if we fail. Stay sharp.',
+  'The glass still shows the kingdom before the curse.\nLook — people, not mochi. That one is you, isn’t it?',
+  'The vault holds the first flavors ever planted.\nThe Heart Seed is glowing… the First Tree is close!',
+  'This is the First Tree, and the one who wears the Crown.\nWhatever happens… thank you for bringing me this far.'
 ];
 const RUBY_STORYBOOK=[
-  {title:'The Recipe Keeper',pages:[
-    {art:'ruby_comic_s1_1',text:'When the Hunger came, I hid beneath the pantry. I’m Ruby, the recipe keeper.',mood:'sad'},
-    {art:'ruby_comic_s1_2',text:'I held my recipe book close. Its pages survived, but so many memories were gone.',mood:'sad'},
-    {art:'ruby_comic_s1_3',text:'Then a little light found me. Will you help me bring our flavors home?',mood:'happy'}
+  {title:'The Heart Seed',pages:[
+    {art:'ruby_comic_s1_1',text:'Long ago, a Crown turned everyone in Mochitopia into mochi — and began eating their flavor.',mood:'sad'},
+    {art:'ruby_comic_s1_2',text:'I’m Ruby, a jam spirit. Grandma made me to guard her recipe book and one sleeping seed.',mood:'sad'},
+    {art:'ruby_comic_s1_3',text:'Today the floor cracked, you fell, and the Heart Seed woke in your hands. You’re a person again!',mood:'happy'}
   ]},
   {title:'Grandma’s Jam Jar',pages:[
-    {art:'ruby_comic_s2_1',text:'The pantry is safe. These pipes lead deeper down — the path Grandma’s jar took.',mood:'happy'},
-    {art:'ruby_comic_s2_2',text:'Her jam jar slipped into a crack beneath the pantry. I couldn’t catch it.',mood:'sad'},
-    {art:'ruby_comic_s2_3',text:'A page on the jar: Grandma’s Battle Recipes! Three seed styles; choose one on each floor.',mood:'happy'}
+    {art:'ruby_comic_s2_1',text:'The Empress is free and her flavor came home. These pipes lead to where Grandma hid her jar.',mood:'happy'},
+    {art:'ruby_comic_s2_2',text:'Before the Hunger caught her, Grandma dropped her jar into the cracks to keep it safe.',mood:'sad'},
+    {art:'ruby_comic_s2_3',text:'Inside: Grandma’s Battle Recipes! Three seed styles for your Heart Seed; choose one on each floor.',mood:'happy'}
   ]},
   {title:'The Stolen Flavor',pages:[
-    {art:'ruby_comic_s3_1',text:'This furnace burns the flavors the Hunger stole. Every spark once belonged to someone.',mood:'alert'},
-    {art:'ruby_comic_s3_2',text:'Look at those jars. The machine is pulling every last ribbon of sweetness from them.',mood:'sad'},
-    {art:'ruby_comic_s3_3',text:'That scent… my strawberry jam! If we stop the furnace, perhaps I’ll remember more.',mood:'normal'}
+    {art:'ruby_comic_s3_1',text:'This furnace burns the flavor the Hunger steals. Every spark is a piece of someone.',mood:'alert'},
+    {art:'ruby_comic_s3_2',text:'Look at those jars. Cursed mochi are trapped inside, drained of everything they are.',mood:'sad'},
+    {art:'ruby_comic_s3_3',text:'Stop the furnace and their flavor comes home — then your seed can break their curse!',mood:'normal'}
   ]},
   {title:'A Voice in the Ice',pages:[
-    {art:'ruby_comic_s4_1',text:'Sweet spirits are frozen inside this place. Their voices tremble beneath the frost.',mood:'sad'},
-    {art:'ruby_comic_s4_2',text:'That gentle voice… Grandma? I remember the warmth, even through all this ice.',mood:'sad'},
-    {art:'ruby_comic_s4_3',text:'Please, help me free them. I can’t leave those voices here in the cold.',mood:'alert'}
+    {art:'ruby_comic_s4_1',text:'Cursed mochi are frozen in here as fuel. Their voices tremble beneath the frost.',mood:'sad'},
+    {art:'ruby_comic_s4_2',text:'That gentle voice… Grandma! She froze herself so the Hunger could not eat her last page.',mood:'sad'},
+    {art:'ruby_comic_s4_3',text:'Her flavor is locked inside the Crown itself. We free the others now — then we go get hers.',mood:'alert'}
   ]},
   {title:'The Crown Oven',pages:[
-    {art:'ruby_comic_s5_1',text:'The Crown Oven. The Hunger waits inside, with all the flavor it took from our home.',mood:'alert'},
-    {art:'ruby_comic_s5_2',text:'I’m frightened. I hold Grandma’s recipe book and wish I could hear her again.',mood:'sad'},
-    {art:'ruby_comic_s5_3',text:'But I’m ready. If we win, maybe I can wake up like you did. Let’s go together.',mood:'happy'}
+    {art:'ruby_comic_s5_1',text:'The Crown Oven. A root of the Crown comes up here to drink the whole kitchen’s flavor.',mood:'alert'},
+    {art:'ruby_comic_s5_2',text:'I’m frightened. But Grandma is waiting, and the First Tree is starving.',mood:'sad'},
+    {art:'ruby_comic_s5_3',text:'Let’s cut this root together. Then we follow it — all the way to the Crown.',mood:'happy'}
   ]}
 ];
 const WAVE_OBJECTIVES = {
@@ -7118,7 +7119,7 @@ const ACHIEVEMENTS=[
   {id:'gear3',emoji:'🎒',name:'Kitted Out',desc:'Collect 3 pieces of equipment',reward:70,test:d=>(d.ownedGear||[]).length>=3},
   {id:'legend',emoji:'👑',name:'Legend Hunter',desc:'Find a Legendary item',reward:150,test:d=>(d.ownedGear||[]).some(id=>String(id).startsWith('lg_'))},
   {id:'collector',emoji:'💎',name:'Charm Collector',desc:'Collect at least 12 items',reward:160,test:d=>(d.ownedGear||[]).length>=12},
-  {id:'family',emoji:'🍡',name:'The Mochi Core Family',desc:'Unlock the five story fighters',reward:220,test:d=>['momo','mint','cocoa','taro','yuzu'].every(id=>(d.chars||[]).includes(id))},
+  {id:'family',emoji:'🍡',name:'The Freed Family',desc:'Unlock the five story fighters',reward:220,test:d=>['momo','mint','cocoa','taro','yuzu'].every(id=>(d.chars||[]).includes(id))},
   {id:'bond',emoji:'⭐',name:'Eternal Weave',desc:'Weave up to Rank 1',reward:200,test:d=>(d.rank||0)>=1},
 ];
 
@@ -13015,16 +13016,16 @@ class Game extends Phaser.Scene {
     if(this.state!=='play')return;
     if(this.usesStoryBudget?.()&&this._storyBudget&&!this._storyBudget.bossAdds){this._storyBudget.bossAdds=true;this._storyBudget.done=false;this._storyBudget.quota=this._storyBudget.spawned+[8,12,16][Math.min(2,Math.floor(this.stageIndex/5))];}
     if(this.stageIndex===4&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('story_final_hunger','FINAL ENCOUNTER','THE GREAT HUNGER','The crown shadow swallows all light — six eyes stare down, and the bottomless hunger awakens',()=>this.spawnFinalBoss());return;}
-    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · FIRST BLOOM',"ROOTMOTHER'S BUD",'The crown seed tears open a first avatar of the Rootmother — only a fragment of the power waiting deeper in the garden',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===5&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('chapter2_cover','CHAPTER 2 · FIRST BLOOM',"ROOTMOTHER'S BUD",'The root tears open a first avatar of the Rootmother — only a fragment of the body growing deeper in the garden',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===6&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg7','CHAPTER 2 · HEART OF THE MARSH','MYCELIUM BEHEMOTH','Every fungal thread pulls tight — the whole marsh rises around one ancient heart',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===7&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg8','CHAPTER 2 · ROYAL FERMENT','FERMENT HORNET QUEEN','The protected flowers ring one final warning as violet crystal reaches the royal honey',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===8&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg9','CHAPTER 2 · BROKEN EQUINOX','CHRONOBLOOM ORCHID','The greenhouse clock strikes every season at once — the Orchid opens where time should have ended',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===9&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg10','CHAPTER 2 · THE ROOT THRONE','THE TRUE ROOTMOTHER','Every stolen memory returns to the living cathedral — the crown opens its heart for one final judgment',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===10&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg11','CHAPTER 3 · ASHEN SEEDFIELDS','THE HARVEST COLOSSUS','Every burned row rises at once — the harvest has become a single giant body',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===11&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg12','CHAPTER 3 · HOLLOW ORCHARD','THE HOLLOW BLOOM','Every flavor carved from the orchard blooms together into one hungry flower',()=>this.spawnFinalBoss());return;}
-    if(this.stageIndex===12&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg13','CHAPTER 3 · GLASS GREENHOUSE','THE GLASS GARDENER','A thousand reflections turn toward Momo — the gardener chooses which future grows',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===12&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg13','CHAPTER 3 · GLASS GREENHOUSE','THE GLASS GARDENER','A thousand reflections turn toward Strawberry — the gardener chooses which future grows',()=>this.spawnFinalBoss());return;}
     if(this.stageIndex===13&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg14','CHAPTER 3 · THE SEED VAULT','THE SEEDWARDEN','The vault shakes as its last guardian lights every jar of crown seeds',()=>this.spawnFinalBoss());return;}
-    if(this.stageIndex===14&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg15','FINAL CHAPTER · THE FIRST SEED','THE FIRST PLANTER','The throne turns. The one who planted the first crown finally looks at Momo',()=>this.spawnFinalBoss());return;}
+    if(this.stageIndex===14&&!this._finalStoryShown){this._finalStoryShown=true;this.playStoryPanel('bg15','FINAL CHAPTER · THE FIRST SEED','THE FIRST PLANTER','The throne turns. The one who wears the Crown finally looks at the Heart Seed',()=>this.spawnFinalBoss());return;}
     const st=STAGES[this.stageIndex]; this.mode='boss';
     const ang=Math.random()*Math.PI*2, rad=Math.max(this.W,this.H)/this.viewZoom*0.55;
     const [bx,by]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
@@ -13744,7 +13745,7 @@ class Game extends Phaser.Scene {
     if(T.player&&this.player)T.player(this.player); this.time.delayedCall(4600,()=>{ if(this._runTrait===T&&(this.state==='play'||this.state==='levelup'))this.showBanner(T.emoji+' Run trait: '+T.name,T.desc,2600); }); }   /* v7.8.102 เลื่อน 2.3→4.6s ให้พ้นแบนเนอร์เริ่มด่าน/Replay */
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this._runTrait=null;this.traitTxt?.setVisible(false);this.startStage(this.stageIndex);this.rollRunTrait?.();this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
-    const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The pantry floor gives way — the strawberry mochi falls into the sour ant nest, where the curse of hunger begins to stir',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Seed Hunger Left Behind','When The Great Hunger shattered, the crown seed rooted skyward — the memories just returned now bloom out of season in the ferment garden',begin);}else begin();};
+    const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The starving Hunger’s roots crack the pantry floor — a cursed strawberry mochi falls, and the sleeping Heart Seed wakes in her hands',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Root Goes Deeper','The wounded root fled into the garden — now it grows the Hunger a new body from stolen memories',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
     // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
     if(this._forceCoachTutorial||!Save.data.tutorialDone){ this._rubyEntry?.destroy();this._forceCoachTutorial=false; this._inTutorial=true; begin(); this.startCoach(); return; }
@@ -13752,13 +13753,13 @@ class Game extends Phaser.Scene {
   }
   /* ---- 🍓 ครูBerryสอนเล่นแบบ interactive (พูด → ลองทำ → ผ่าน → ถัดไป) ---- */
   coachSteps(){ return [   // v7.9.66 เจ้าของ: สอนช้า ๆ เข้าใจง่าย → ทุกขั้นมีหน้าอธิบาย (เกมหยุด, แตะเพื่อไปต่อ) ก่อนให้ลองทำ · ทำได้แล้วชม 1.5 วิค่อยไปขั้นถัดไป
-    { id:'welcome', icon:'👋', title:'Hi, I’m Ruby!', body:'The Great Hunger is eating Mochitopia’s flavors.\nLet’s get you ready to fight back!', introOnly:true },
+    { id:'welcome', icon:'👋', title:'Hi, I’m Ruby!', body:'The Heart Seed broke your curse — you’re a person again!\nLet’s get you ready to save the others.', introOnly:true },
     { id:'move', icon:'👆', title:'Moving', body:'Slide one finger to walk.\nLift it to stop.', say:'Slide your finger to walk', sub:'Walk around a little', spot:'move', goal:c=>'Walk around · '+Math.min(100,Math.round((c.trav||0)/7))+'%', check:c=>(c.trav||0)>=700 },
-    { id:'attack', icon:'⚔️', title:'Attacking', body:'Your Mochi Core fights on its own.\nJust walk near the sour critters!', say:'Defeat the enemies', sub:'Walk near them — you attack on your own', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:3, check:c=>this.kills-c.kills>=3 },
+    { id:'attack', icon:'⚔️', title:'Attacking', body:'Your Heart Seed fights on its own.\nJust walk near the sour critters!', say:'Defeat the enemies', sub:'Walk near them — you attack on your own', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:3, check:c=>this.kills-c.kills>=3 },
     { id:'sweets', icon:'🍬', title:'Sweets = EXP', body:'Beaten foes drop stolen sweets.\nWalk over them to take them back!', say:'Pick up the sweets', sub:'Walk over the shiny drops', spot:null, orbs:4, goal:c=>'Collected '+Math.min(3,(this._coachOrbs||0)-c.orbs)+'/3', check:c=>(this._coachOrbs||0)-c.orbs>=3, timeout:30 },
     { id:'cards', icon:'🃏', title:'Level Up!', body:'Full EXP bar = 3 flavor cards.\nTap one to read, tap again to take it.', say:'Pick a card', sub:'Tap once to read, tap again to take', spot:'card', goal:'Pick a card', level:true, check:c=>(this._coachCardPick||0)-c.card>=1 },
     { id:'dash', icon:'💨', title:'Dash', body:'Green button: zoom past danger.\nIt needs a moment to recharge.', say:'TAP Dash two times', sub:'Wait for it to recharge between dashes', spot:'dash', label:'TAP', goal:c=>'Dash '+Math.min(2,(this._coachDash||0)-c.dash)+'/2', check:c=>(this._coachDash||0)-c.dash>=2 },
-    { id:'unique', icon:'⭐', title:'Your Unique', body:'Pink button: your Core’s big attack.\nIt charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
+    { id:'unique', icon:'⭐', title:'Your Unique', body:'Pink button: your seed’s big attack.\nIt charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
     { id:'hp', icon:'❤️', title:'Stay Healthy', body:'HP at zero ends the stage.\nPink mochi hearts heal you.', introOnly:true },
     { id:'ready', icon:'🎁', title:'You’re Ready!', body:'Training complete! Use your starter Sugar\nto upgrade one core, then enter the pantry.', introOnly:true },
   ]; }
@@ -13873,18 +13874,18 @@ class Game extends Phaser.Scene {
   rubyClearStory(last){const d=Save.data,idx=this.stageIndex;
     if(this.recipeMode||this.riftMode||this.bossRush||this._inTutorial||![0,4].includes(idx)||d.settings?.noRuby||d.rubyMemories?.[idx])return false;
     this.physics.pause();this.player?.setVelocity(0,0);this.over.setVisible(false);this.state='menu';this.menu.setVisible(true);
-    this.rubyTalk([],()=>{(d.rubyMemories||(d.rubyMemories={}))[idx]=1;Save.save();this.menu.setVisible(false);this.state='epilogue';this.showStageSummary(last);},{memory:idx===0?'ruby_memory_grandma':'ruby_memory_jar',bridge:(idx===0?'The freed ants point to the poisoned drains. ':'A crown seed escapes the oven and roots upward. ')+(STAGE_EPILOGUE[idx]?.why||'')});return true;
+    this.rubyTalk([],()=>{(d.rubyMemories||(d.rubyMemories={}))[idx]=1;Save.save();this.menu.setVisible(false);this.state='epilogue';this.showStageSummary(last);},{memory:idx===0?'ruby_memory_grandma':'ruby_memory_jar',bridge:(idx===0?'The freed ants point to the poisoned drains. ':'The cut root slithers away, down toward the garden. ')+(STAGE_EPILOGUE[idx]?.why||'')});return true;
   }
   rubyTalk(lines,done,opt={}){ if(this._rubyTalk?.active)return;
     if(!opt.memory&&!opt.pages?.some(p=>p.art))return this.rubyGuide(lines,done,opt);
     if(opt.memory&&!opt.pages){const jar=opt.memory==='ruby_memory_jar',pages=jar?[
-      {art:'ruby_comic_s2_2',text:'Grandma’s jar slipped through the pantry floor. The Hunger reached after it.',mood:'sad'},
-      {art:'ruby_comic_s2_3',text:'My flavor went with it. Now I remember the dark pipes beneath our home.',mood:'sad'},
-      {art:'ruby_comic_s5_3',text:'We drove it away from the Crown Oven. Let’s find the rest of my memories together!',mood:'normal'}
+      {art:'ruby_comic_s2_2',text:'Grandma’s jar slipped through the pantry floor just before the Hunger caught her.',mood:'sad'},
+      {art:'ruby_comic_s2_3',text:'The root we cut was only one of many. It slid down toward the garden to grow a new body.',mood:'sad'},
+      {art:'ruby_comic_s5_3',text:'Grandma’s flavor is still inside the Crown. Let’s follow the roots and find it!',mood:'normal'}
     ]:[
-      {art:'ruby_comic_s2_1',text:'Grandma taught me to stir ruby jam slowly, until its sweetness could find the way home.',mood:'happy'},
-      {art:'ruby_comic_s1_2',text:'She gave me this recipe book. It is the one thing the Hunger could not take away.',mood:'normal'},
-      {art:'ruby_comic_s1_3',text:'Even if I cannot fight, I can still help us bring those flavors back.',mood:'happy'}
+      {art:'ruby_comic_s2_1',text:'Grandma was the royal head cook. From her very last jar of ruby jam, she made me.',mood:'happy'},
+      {art:'ruby_comic_s1_2',text:'She gave me her recipe book and a sleeping seed. “Wait for the one brave enough,” she said.',mood:'normal'},
+      {art:'ruby_comic_s1_3',text:'I can’t fight, and I can’t use the seed. But I can guide you. Let’s bring everyone home.',mood:'happy'}
     ];if(opt.bridge)pages.push({art:pages.at(-1).art,text:opt.bridge,mood:'normal'});opt={...opt,pages};lines=pages.map(p=>p.text);}
     const W=this.W,H=this.H,c=this.add.container(0,0);this.menu.add(c);c._menuBackdrop=true;let i=0,at=Date.now(),finished=false,revealTweens=[],lastCue=-1;
     const clearReveal=()=>{for(const tw of revealTweens)tw.remove();revealTweens=[];};

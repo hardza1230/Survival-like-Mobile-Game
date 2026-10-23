@@ -3,12 +3,12 @@
   "epilogues": [
     {
       "title": "The Empress Falls Silent",
-      "body": "The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Momo toward the drains where the sour acid still flows.",
+      "body": "The Acid Ant Empress shatters and the crystal orders lose their grip. The freed ants remember their own names — and point Strawberry toward the drains where the sour acid still flows.",
       "why": "Follow the poisoned current downstream to find its source."
     },
     {
       "title": "The Pipes Run Clear",
-      "body": "Clogmaw bursts and the fermented flood drains away. In the last trickle Momo hears a furnace roar far below — something is boiling the stolen acid into raw power.",
+      "body": "Clogmaw bursts and the fermented flood drains away. In the last trickle Strawberry hears a furnace roar far below — something is burning stolen flavor into raw power.",
       "why": "Descend to the Chili Engine before it finishes stoking."
     },
     {
@@ -18,17 +18,17 @@
     },
     {
       "title": "The Ice Lets Go",
-      "body": "The Golem melts into slush and the frozen spirits drift free, whispering their thanks. They warn of a crown-shaped oven higher up, where the Bitter Chef prepares his final course.",
-      "why": "Ascend to the Crown Oven and end the Bitter Chef for good."
+      "body": "The Golem melts into slush and the frozen mochi drift free, whispering their thanks. Grandma stays behind in the ice — her flavor is locked inside the Crown itself. She warns of an oven higher up, where a root of the Crown drinks the kitchen dry.",
+      "why": "Ascend to the Crown Oven and cut the root."
     },
     {
       "title": "The Great Hunger Recedes",
-      "body": "The Great Hunger collapses and taste floods back into Mochitopia in a rush of color and sound. Yet from the cooling oven a single crown seed rolls free — and roots upward, toward the garden above.",
-      "why": "Chapter 1 is complete. Chase the seed into the Fermented Canopy."
+      "body": "The Hunger’s mouth recoils and flavor floods back into the kitchen in a rush of color and sound. But the wounded root slides down through the floor — toward the garden, to grow a new body.",
+      "why": "Chapter 1 is complete. Follow the root into the Fermented Canopy."
     },
     {
       "title": "The First Bloom Withers",
-      "body": "Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown from the crown seed. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.",
+      "body": "Rootmother’s Bud unwinds into drifting spores, revealing that it was only an avatar grown by the root. Beneath the canopy, a fungal pulse answers from the Mycelium Marsh.",
       "why": "Follow the moving pocket of clean air into the marsh and find the body feeding the colony."
     },
     {
@@ -48,8 +48,8 @@
     },
     {
       "title": "Memories Choose Their Own Shape",
-      "body": "The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. Momo sees the crown seed bloom once more, now harmless and free.",
-      "why": "Chapter 2 is complete. But the freed memories keep pointing somewhere older — to the fields where the first crown was planted."
+      "body": "The True Rootmother’s crown breaks. Every stolen memory escapes the roots and returns to Mochitopia—not as an order, but as a choice. The Heart Seed glows brighter in Strawberry’s hands — the First Tree is calling.",
+      "why": "Chapter 2 is complete. The freed memories point somewhere older — to the fields where the First Tree grows."
     },
     {
       "title": "The Harvest Lies Down",
@@ -73,8 +73,8 @@
     },
     {
       "title": "The Cycle Ends With a Choice",
-      "body": "The First Planter kneels as the last crown seed cracks in Momo’s hands. It was never a seed of hunger — only a seed of wanting, planted too deep. Momo plants it again, in the sun, and it grows into an ordinary sweet tree. Mochitopia is whole.",
-      "why": "The story is complete. The endgame kitchens are open — Recipe Maps, the Atlas and the Pinnacle await."
+      "body": "The First Planter lifts the Crown from the First Tree. Strawberry plants the Heart Seed in its place, and a new tree sends every stolen flavor home. The curse breaks — all across Mochitopia, mochi become people again. Grandma laughs, Ruby cries, and the Hunger sinks, sleeping, beneath the roots.",
+      "why": "The story is complete. Each night the Hunger stirs below — the Delve and the Pinnacle await."
     }
   ],
   "uniqueUpgrade": "  checkUniqueAutoUpgrade(){\n    let target=1;for(let lv=2;lv<=UNIQUE_MAX_LV;lv++)if(this.level>=uniqueAt[lv])target=lv;if(target<=(this.uniqueLevel||1))return;\n    const u=this.uniqueInfo();this.uniqueLevel=target;this.uniqueCd=0;this.refreshUniqueSkillUI();this.showBanner('✨ Unique auto-upgraded to Lv'+target,u.name+' · '+UNIQUE_TIERS[(CHARACTERS[this.character]||CHARACTERS.momo).unique][target],1900);Sfx.clear();\n  }\n",

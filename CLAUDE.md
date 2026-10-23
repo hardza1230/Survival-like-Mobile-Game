@@ -1,18 +1,22 @@
-# Latest delivery: v7.9.97 - Painted discovery theater
+# Latest delivery: v7.9.98 — One story canon + art order 45 (owner)
+
+docs/STORY_CANON.md (draft 2 + plot holes 7.1–7.13, owner approved): a Crown on the First Tree cursed the kingdom into mochi and eats their flavor (= The Great Hunger); the starving Hunger's roots crack the pantry, Strawberry finds the waking Heart Seed and becomes a person; each boss returns flavor so the seed frees the next friend; ending = Planter lifts the Crown, Heart Seed planted, curse breaks, Hunger sleeps (Delve/Pinnacle). Ruby = jam spirit made by Grandma (royal head cook, frozen in C1-4, flavor in the Crown), never cursed, never transforms. Text rewritten: RUBY_STORY, RUBY_STORYBOOK, clear memories + bridge, STAGE_STORY_BEATS, STAGE_EPILOGUE (fixture presentation-art-baseline regenerated), STAGES lore, playStoryPanel intro/ch2/boss lines, coachSteps welcome/attack/unique, HERO_INTROS, achievement family name; 'Momo' → 'Strawberry' in story text; Bitter Chef removed. docs/LORE.md points to the canon. Art order 45 docs/art_orders/45_STORY_MOTION_COMIC.md: layered motion-comic cutscenes S00–S17 (~100 files, 3 batches) + playMotionComic code notes. No combat changes.
+
+# Previous delivery: v7.9.97 - Painted discovery theater
 
 Built-in ImageGen confectionery theater replaces oversized combat-glow backgrounds for new features,Gacha,Bazaar/trade-in and stage rewards.512x768 WebP,menu lazy with owned late-load fallback. Full opaque plum/cream/gold backdrop,icons above pedestal,refined Ruby message panel and bounded highlights;original costs/rewards/claim/fly routing retained. Original source,exact prompt,manifest and real feature/item Canvas proofs in assets/incoming/reveal_theater/. See SESSION_HANDOFF.md for checks/publication.
 
-# Latest delivery: v7.9.96 - Cinematic Ruby stories and contextual teaching
+# Previous delivery: v7.9.96 - Cinematic Ruby stories and contextual teaching
 
 Stories focus on a large painted shot with a slow push-in, entrance motion, scene-specific snow/embers/memory motes, quiet story cues, dim moving background and previous-shot strip. Existing ImageGen art is reused; zero new runtime asset bytes. Narration accepts 2+ shots; clear memories use four beats including the next-stage cause/destination. Owned tween cleanup, missing-art fallback, manual Back/Follow/Skip and reduced motion retained. Read version3 is saved only on completion/Skip so older readers see the revised presentation once.
 
 Training no longer consumes the C1-1 story or opens the book cover. Live exercises use their existing spotlight coach, with welcome/health/finish notes retained. Weave lectures removed; stars use the actual stage-box spotlight and save on dismissal. Build/Mutation/Evolution hints occupy the reserved space below the actual choices, avoiding a second lecture over the cards. Post-clear memories now replace the relevant epilogue at the clear boundary, preserving its causal bridge; no old-memory backlog on arbitrary Hub rebuilds. Stage-title curtain spans asset preparation and hands off to a brief arena reveal, including replay entries. Other heroes/balance/rewards unchanged. See docs/RUBY_CINEMATIC_FLOW.md and SESSION_HANDOFF.md for validation/publication.
 
-# Latest delivery: v7.9.95 - Three-panel Ruby comics
+# Previous delivery: v7.9.95 - Three-panel Ruby comics
 
 Five built-in ImageGen originals /15 event shots retained in assets/incoming/ruby_comic/ with exact prompts, extraction/runtime hash manifest and gallery. Runtime1,050,148bytes, scene-specific menu loading. Early stories and both post-clear memories reveal three comic panels one at a time with420ms fade; earlier pictures remain, Back/Skip retained, reduced motion immediate, reveal tweens cleaned on rebuild/destroy. Short captions and paper/black background retained. Old read1 migrates to2 only on complete/skip so previous readers see revised comics once. Required check/build and six-view Canvas review; status in docs/SESSION_HANDOFF.md. See docs/art_orders/44_RUBY_COMIC.md. Concurrent v7.9.91-94 loading, Battle Recipes, Ruby guidance, feature reveal, gear/Forge and Lobby changes are preserved. No combat/balance changes.
 
-# Latest delivery: v7.9.94 — Rarer early gear, tap-to-stop Forge, Lobby bubble over the head (owner)
+# Previous delivery: v7.9.94 — Rarer early gear, tap-to-stop Forge, Lobby bubble over the head (owner)
 
 Gear: gearEnhanceCap iLv<12 +1 · <25 +3 · <45 +6 · else +10; rollAffixes caps drop mods 0/1/2/3 by iLv (<12/<25/<45); earlyLootMul() = .45 in Story stageIndex<5 on mini/elite/crate gear rolls (docs/GEAR_LEVEL_LIMITS.md). Forge: randomCraftSelected and autoRollToTarget use forgeRollOptions(…,1); forgeSpin loops a random-row light (75ms) with '👆 TAP to stop!' until handleTap → _forgeSpin.finish = stop → 7 slowing hops onto the paid result, tap again = finish, 10s auto-stop. Lobby: LOBBY_LINES rewritten short/cheeky; startLobbyVoice(hero,headX,headY,width,minY,left,right) from buildLobby (LOBBY_FACE head top, clamped ≤ zone top+10, between side buttons); tick sets root above the head, raster panel flipped Y so the tail points down, pop .8→1. Lobby + Forge real-browser checks pass locally.
 
