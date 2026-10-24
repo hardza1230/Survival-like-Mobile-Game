@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.23';
+const GAME_VERSION = '8.0.24';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.24',date:'2026-10-24',title:'7-day login calendar',items:['Daily login is now a 7-day calendar with a different gift each day: Sugar, Thread, crafting currency, a free Silver Chest, Thread, a big Sugar pile and a Gold Chest on day 7','Missed a day? The calendar just waits — you never lose your place','The gift pops up the first time you open the Lobby each day','The Daily page now shows only your quests']},
   {v:'8.0.23',date:'2026-10-24',title:'New Awards',items:['Awards are now split into Story, Heroes, Combat and Collection, each with ★ steps to climb','New goals for every chapter, chapter stars, each hero’s wins and all 3 Builds, kicks, Uniques, chests and more','Rewards grow each step: Sugar, Thread, a free Gold Chest and a Title on the last ★','Wear a Title and a coloured profile frame in the Lobby; the top of the page shows your 3 closest goals'] },
   {v:'8.0.22',date:'2026-10-24',title:'Rank Rewards',items:['Rank Perks and Special Cores are now one page: Rank Rewards','Each Rank 1–5 lets you pick 1 of 2 rewards (Dash, Unique, Revival Candle, speed, crit and more) — switch any time for free','Sugar and crafting currency bonuses now grow with your Rank automatically','Box Luck and the pickup/EXP/currency cores were removed; Thread spent on Special Cores was refunded'] },
   {v:'8.0.21',date:'2026-10-24',title:'Painted boss arena attacks',items:['Chapter 1–2 boss arena attacks now have painted art: burrowing shadow, sewer flood, hot griddle tiles, frost breath and ice pillars','Spore shield, poison fog with clean-air bubbles, golden clock hands and root surges got real art too','Timing, safe spots and damage are unchanged'] },
@@ -5998,6 +5999,23 @@ const DailyQ={
     if(fin){ const c=this.count(); if(c>=DQ_WEEK_NEED){ const w=this.week(); if(!w.days.includes(q.day)&&w.days.length<DQ_WEEK)w.days.push(q.day); } Save.save(); try{ const g=window.__g&&window.__g.scene.getScene('Game'); if(g&&g.showBanner)g.showBanner('📅 Daily Quest Complete',fin.name+' · '+c+' / '+q.quests.length,1600); }catch(e){} }
     else if(!this._t||Date.now()-this._t>4000){ this._t=Date.now(); Save.save(); } },
 };
+// v8.0.24 เจ้าของ: ปฏิทินเข้าเกม 7 วัน · รางวัลต่างกันทุกวัน · ขาดวันไม่รีเซ็ต (แค่รอ) · วันที่ 7 แล้ววนกลับวันที่ 1 · รับผ่านป๊อปอัปตอนเปิด Lobby ครั้งแรกของวัน
+const LOGIN_CAL=[{k:'sugar',n:150,emoji:'🍬',name:'Sugar'},{k:'thread',n:20,emoji:'🧶',name:'Thread'},{k:'cur',n:3,emoji:'✨',name:'Crafting'},{k:'silver',emoji:'🧰',name:'Silver Chest'},{k:'thread',n:30,emoji:'🧶',name:'Thread'},{k:'sugar',n:600,emoji:'🍬',name:'Big Sugar'},{k:'gold',emoji:'👑',name:'Gold Chest'}];
+const LoginCal={
+  data(){ let c=Save.data.loginCal; if(!c||typeof c.i!=='number'){ c=Save.data.loginCal={i:0,last:''}; } return c; },
+  ready(){ try{ return this.data().last!==localDayKey(); }catch(e){ return false; } },
+  amount(r){ const ch=Math.min(2,Math.floor(((Save.data&&Save.data.unlockedStage)||0)/5)); return r.k==='sugar'?Math.round(r.n*(1+ch*.5)):r.n; },
+  label(r){ return r.k==='silver'||r.k==='gold'?r.name:r.emoji+' '+this.amount(r); },
+  // รับรางวัลวันนี้ → {r, lines, chest} · chest = id หีบที่ต้องเปิด (ฉากเปิดหีบทำที่ Game)
+  claim(){ const c=this.data(),day=localDayKey(); if(c.last===day)return null; const i=((c.i%7)+7)%7,r=LOGIN_CAL[i],n=this.amount(r),lines=[]; let chest=null;
+    const dq=typeof DailyQ!=='undefined'?DailyQ:{}; dq._mute=true;
+    try{ if(r.k==='sugar'){ Save.addSugar(n); lines.push('🍬 +'+n+' Sugar'); }
+      else if(r.k==='thread'){ Save.addThreads(n); lines.push('🧶 +'+n+' Thread'); }
+      else if(r.k==='cur'){ const got={}; for(let k=0;k<n;k++){ const cu=CURRENCY[Math.floor(Math.random()*CURRENCY.length)]; Save.addCurrency(cu.key,1); got[cu.key]=(got[cu.key]||0)+1; } for(const k in got){ const cu=CURRENCY.find(x=>x.key===k); lines.push((cu.emoji||'✦')+' +'+got[k]+' '+cu.name); } }
+      else chest=r.k;
+    } finally { dq._mute=false; }
+    c.last=day; c.i=(i+1)%7; c.n=(c.n||0)+1; Save.save(); return {r,i,lines,chest}; },
+};
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
 const TIER_LABEL = { start:{name:'Starter',color:'#9a90ab'}, common:{name:'Common',color:'#8bd3a0'}, rare:{name:'Rare',color:'#ffcf5a'}, epic:{name:'Epic',color:'#c9a3ff'}, legend:{name:'Legend',color:'#ff8f3a'} };
 const FIELD_DROP_TABLE={
@@ -9799,17 +9817,11 @@ class Game extends Phaser.Scene {
   advanceDaily(kind,n=1){ if(typeof DailyQ!=='undefined')DailyQ.tick(kind,n); }   // v7.8.87 Daily เก่าตัดแล้ว เหลือ Daily Quests
   buildDaily(){   // v7.5 Daily Quests: รางวัลเข้าเกม + แต้มภารกิจ 5 ข้อ + กล่อง 3 ขั้น
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 Daily Quests','screen_daily');
-    const w=this.W,h=this.H,o=this.ensureDaily(),d=o.data,spec=o.spec,claimed=d.claimDay===spec.key,q=DailyQ.data(),pts=DailyQ.pts();
+    const w=this.W,h=this.H,q=DailyQ.data();
     const T=(x,y,t,sz,c,st,ox=0.5,oy=0.5)=>{const q2=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#ffffff'}).setOrigin(ox,oy);this.menu.add(q2);return q2;};
     const panel=(y,height,color)=>{const g=this.add.graphics();g.fillStyle(0x241d2d,0.97);g.fillRoundedRect(14,y,w-28,height,14);g.lineStyle(2,color,0.9);g.strokeRoundedRect(14,y,w-28,height,14);this.menu.add(g);return g;};
-    // 1) รางวัลเข้าเกมรายวัน (ของเดิม ย่อให้เตี้ยลง)
-    const y1=w<=h?84:62,h1=68;panel(y1,h1,0xffd166);
-    const streak=Math.max(0,d.streak||0),reward=50+Math.min(7,Math.max(1,streak+(claimed?0:1)))*15;
-    T(28,y1+16,'🎁 Login Reward',13,'#ffe08a','bold',0);
-    T(28,y1+36,Array.from({length:7},(_,i)=>i<streak?'●':'○').join(' '),14,'#ffcf5a','normal',0);
-    T(28,y1+55,claimed?'Claimed · streak '+streak+' days':'Today 🍬 '+reward+' · keep your streak',10,'#cfc2d5','normal',0);
-    const bw=Math.min(118,w*0.3),bx=w-28-bw,by=y1+h1/2,bg=this.add.graphics();bg.fillStyle(claimed?0x3b3541:0xffb020,1);bg.fillRoundedRect(bx,by-18,bw,36,12);this.menu.add(bg);T(bx+bw/2,by,claimed?'Claimed ✓':'Claim',13,claimed?'#8f849f':'#21131a','bold');
-    if(!claimed){this.drawBadgeDot(this.menu,bx+bw-6,by-16);this._zone(bx,by-18,bw,36,()=>{if(d.claimDay===spec.key)return;const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;const dq=typeof DailyQ!=='undefined'?DailyQ:{};dq._mute=true;try{Save.addSugar(50+d.streak*15);}finally{dq._mute=false;}Sfx.progress('daily');this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});}
+    // v8.0.24 รางวัลเข้าเกมย้ายไปเป็นป๊อปอัปปฏิทิน 7 วัน (loginPopup) · หน้านี้เหลือแต่ภารกิจ
+    const y1=w<=h?84:62,h1=-8;
     // 2) v8.0.20 ความคืบหน้า n/10 + กล่อง 3/6/8 ข้อ + Weekly 7 ช่อง (หีบทอง)
     const N=q.quests.length,cnt=DailyQ.count(),wk=DailyQ.week(),y2=y1+h1+8,h2=128;panel(y2,h2,0xd95cff);
     T(28,y2+18,'⭐ Today',14,'#e7b7ff','bold',0);T(w-28,y2+18,cnt+' / '+N+' done',13,'#ffffff','bold',1);
@@ -9837,7 +9849,7 @@ class Game extends Phaser.Scene {
         this._zone(rx-20,y,40,rh,()=>{ if(DailyQ.reroll(i)){ Sfx.select&&Sfx.select(); this.menuToast?.('🔄 Quest changed — next free change tomorrow','#cfe9ff'); } this.buildDaily(); }); } });
     const left=Math.max(0,new Date().setHours(24,0,0,0)-Date.now()),hh=Math.floor(left/3.6e6),mm=Math.floor(left%3.6e6/6e4);
     T(w/2,Math.min(h-10,y3+rows.length*(rh+gap)+8),'New quests in '+hh+'h '+mm+'m · '+(q.rr?'free change used today':'🔄 1 free change today'),10,'#a89cb6');
-    this.menu.setVisible(true);
+    this.menu.setVisible(true); if(typeof LoginCal!=='undefined'&&LoginCal.ready())this.time?.delayedCall(300,()=>{ if(this.menuScreen==='daily')this.loginPopup('daily'); });
   }
   // เปิดกล่อง Daily: ยิ่งกล่องใหญ่ ยิ่งได้มาก · ไม่นับเป็นความคืบหน้าภารกิจ (เช่น Sugar)
   dqOpenBox(i){ const q=DailyQ.data(),b=DQ_BOXES[i]; if(!b||q.boxes[i]||DailyQ.count()<b.n)return; q.boxes[i]=1;
@@ -10264,7 +10276,7 @@ class Game extends Phaser.Scene {
   }
   // ---- Quest chain + badge helpers ----
   hasTargetBadge(target){try{const d=Save.data,day=localDayKey();
-    if(target==='daily')return !d.daily||d.daily.claimDay!==day||(typeof DailyQ!=='undefined')&&DailyQ.claimable();   // v7.5 รางวัลเข้าเกม หรือกล่อง Daily พร้อมเปิด
+    if(target==='daily')return (typeof LoginCal!=='undefined'&&LoginCal.ready())||(typeof DailyQ!=='undefined')&&DailyQ.claimable();   // v7.5 รางวัลเข้าเกม หรือกล่อง Daily พร้อมเปิด
     if(target==='achievements')return awReady(d);   // v8.0.23 Awards ใหม่
     if(target==='gearInbox')return Save.gearInboxItems().length>0;
     if(target==='talents')return heroTalentSpendable(d.character||'momo');
@@ -10283,7 +10295,7 @@ class Game extends Phaser.Scene {
     for(const it of items){ if(!it||it.grade==='start'||it.forgeChoice||Save.isGearEquipped(it.uid))continue; if(gearPowerDelta(it,base)>0){v=true;break;} }
     this._gbSig=sig; this._gbVal=v; return v;}catch(e){return false;}}
   hasClaimableTarget(target){const d=Save.data;
-    if(target==='daily')return !d.daily||d.daily.claimDay!==localDayKey()||(typeof DailyQ!=='undefined')&&DailyQ.claimable();
+    if(target==='daily')return (typeof LoginCal!=='undefined'&&LoginCal.ready())||(typeof DailyQ!=='undefined')&&DailyQ.claimable();
     if(target==='achievements')return this.hasTargetBadge('achievements');
     if(target==='gearInbox')return this.hasTargetBadge('gearInbox');
     if(target==='dig')return this.hasTargetBadge('dig');
@@ -10403,7 +10415,37 @@ class Game extends Phaser.Scene {
       if(Math.abs(mx-cx)<=z.w/2+4&&Math.abs(my-cy)<=z.h/2+4){ out.push([o,o.alpha]); o.setAlpha(0); } }
     return out; }
   featShow(list,anim){ for(const [o,a] of list||[]){ if(!o.active)continue; if(anim&&this.tweens){ o.setAlpha(0); this.tweens.add({targets:o,alpha:a,duration:260}); } else o.setAlpha(a); } }
-  starTeach(){ const d=Save.data; if(!d||d.settings?.noRuby||d.starTaught||this.state!=='menu'||this.menuScreen!=='hub'||!(d.stageStars&&d.stageStars[0]!=null)||this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1))return;
+  // v8.0.24 ป๊อปอัปปฏิทินเข้าเกม 7 วัน ตอนเปิด Lobby ครั้งแรกของวัน (หรือเปิดหน้า Daily) · รอให้บทสอน/เปิดฟีเจอร์ใหม่จบก่อน
+  loginPopup(from){ const d=Save.data; if(!d||typeof LoginCal==='undefined'||!LoginCal.ready()||!d.tutorialDone||!featureOpen('daily')||this.state!=='menu'||this._loginC?.active||this._chestOpen||this._gachaBusy)return;
+    if(from!=='daily'&&this.menuScreen!=='hub')return;
+    if(this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1)||this._bookCover){ if(from!=='daily')this.time?.delayedCall(1500,()=>this.loginPopup()); return; }
+    const W=this.W,H=this.H,cal=LoginCal.data(),cur=((cal.i%7)+7)%7,c=this.add.container(0,0); c._menuBackdrop=true; this.menu.add(c); this._loginC=c;
+    const dim=this.add.rectangle(0,0,W,H,0x07040c,.82).setOrigin(0); c.add(dim);
+    const pw=Math.min(W-24,380),cell=Math.floor((pw-28-3*8)/4),ph=cell*2+8+176,px=(W-pw)/2,py=Math.max(40,(H-ph)/2-20),g=this.add.graphics();
+    g.fillStyle(0x241a30,1).fillRoundedRect(px,py,pw,ph,18).lineStyle(2.5,0xffd166,1).strokeRoundedRect(px,py,pw,ph,18); c.add(g);
+    const T=(x,y,t,sz,col,st,ox=.5)=>{ const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:col||'#fff',align:'center'}).setOrigin(ox,.5); c.add(q); return q; };
+    T(W/2,py+24,'📅 Daily Login',19,'#ffe08a','bold'); T(W/2,py+46,'Day '+(cur+1)+' of 7 · a new gift every day',11,'#cfc2d5');
+    const cells=[]; LOGIN_CAL.forEach((r,j)=>{ const row=j<4?0:1,col=j<4?j:j-4,big=j===6,cw=big?cell*2+8:cell,x=px+14+col*(cell+8),y=py+64+row*(cell+8),done=j<cur,today=j===cur,cg=this.add.graphics();
+      cg.fillStyle(today?0x5a3d1a:done?0x1f3328:0x1a1422,1).fillRoundedRect(x,y,cw,cell,12).lineStyle(2,today?0xffd166:done?0x7fe3a8:0x4a4059,1).strokeRoundedRect(x,y,cw,cell,12); c.add(cg);
+      T(x+cw/2,y+11,'Day '+(j+1),10,today?'#ffe08a':'#a89cb6','bold');
+      const ck=r.k==='silver'?'chest_silver':r.k==='gold'?'chest_gold':null,isz=cell*.42; let ic;
+      if(ck&&this.realTex(ck)){ ic=this.add.image(x+cw/2,y+cell*.48,ck); ic.setScale(isz*1.15/Math.max(ic.width,ic.height)); } else ic=this.add.text(x+cw/2,y+cell*.48,r.emoji,{fontSize:Math.round(isz*.8)+'px'}).setOrigin(.5);
+      ic.setAlpha(done?.45:1); c.add(ic); T(x+cw/2,y+cell-12,r.k==='silver'||r.k==='gold'?r.name:'+'+LoginCal.amount(r),r.k==='silver'||r.k==='gold'?9:11,done?'#7fe3a8':'#ffffff','bold');
+      if(done)T(x+cw-12,y+12,'✓',13,'#7fe3a8','bold');
+      if(today&&this.tweens)this.tweens.add({targets:ic,scaleX:ic.scaleX*1.12,scaleY:ic.scaleY*1.12,duration:480,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+      cells.push({x,y,cw}); });
+    const ny=py+64+cell*2+8+16; T(W/2,ny,'Missed a day? No problem — the calendar just waits for you.',10,'#a89cb6');
+    const bw=Math.min(pw-40,240),bh=46,bx=W/2-bw/2,by=py+ph-bh-18,bg=this.add.graphics(); bg.fillStyle(0xffb020,1).fillRoundedRect(bx,by,bw,bh,14).fillStyle(0xffffff,.2).fillRoundedRect(bx+3,by+3,bw-6,bh*.42,10); c.add(bg);
+    const bt=T(W/2,by+bh/2,'🎁 Claim Day '+(cur+1),16,'#21131a','bold'); const t0=Date.now();
+    this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<600)return; const res=LoginCal.claim(); this.tapZones=[]; if(!res){ c.destroy(); this._loginC=null; this.buildMenuScreen(); return; }
+      try{ Sfx.progress&&Sfx.progress('daily'); }catch(e){}
+      const at=cells[res.i]; if(at){ const ok=this.add.text(at.x+at.cw-12,at.y+12,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#7fe3a8'}).setOrigin(.5); c.add(ok); }
+      if(res.chest){ const ch=CHESTS.find(x=>x.id===res.chest)||CHESTS[0]; this.time?.delayedCall(350,()=>{ c.destroy(); this._loginC=null; this._gachaBusy=false; this.openChest(ch,'login'); }); return; }
+      bg.clear().fillStyle(0x7fe3a8,1).fillRoundedRect(bx,by,bw,bh,14); bt.setText(res.lines.join('  ')).setFontSize('14px'); let f=14; while(bt.width>bw-12&&f>9)bt.setFontSize((--f)+'px');
+      T(W/2,by-14,'Tap to continue',10,'#a89cb6'); const t1=Date.now();
+      this._zone(0,0,W,H,()=>{ if(Date.now()-t1<500)return; c.destroy(); this._loginC=null; this.buildMenuScreen(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='login_close'; });
+    const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='login_claim'; }
+  starTeach(){ const d=Save.data; if(!d||d.settings?.noRuby||d.starTaught||this._loginC||this.state!=='menu'||this.menuScreen!=='hub'||!(d.stageStars&&d.stageStars[0]!=null)||this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1))return;
     this.rubyGuide(['Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP.','New stars give bonus Sugar. Tap the stage box any time to replay a floor.'],()=>{d.starTaught=true;Save.save();if(this.state==='menu')this.buildMenuScreen();},{target:'chapter'}); }
   revealBackdrop(cont,W,H){const bg=this.add.rectangle(0,0,W,H,0x170c20,1).setOrigin(0);cont.add(bg);if(this.realTex('reveal_theater'))cont.add(this._coverImage(0,0,W,H,'reveal_theater'));else if(this.ensureGroup)this.ensureGroup(k=>k==='reveal_theater',()=>{if(bg.active&&cont.active&&this.realTex('reveal_theater'))cont.addAt(this._coverImage(0,0,W,H,'reveal_theater'),cont.getIndex(bg)+1);},{all:true,quiet:true});return bg;}
   loadRevealTheater(done){if(this.realTex('reveal_theater')||this._revealArtTried||!this.ensureGroup)return false;if(this._revealArtLoading)return true;this._revealArtLoading=true;const zones=this.tapZones;this.ensureGroup(k=>k==='reveal_theater',()=>{this._revealArtLoading=false;this._revealArtTried=true;if(this.state==='menu'&&this.tapZones===zones)done();},{all:true,quiet:true});return true;}
@@ -10432,7 +10474,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:ic,x:tx,y:ty,scale:s1*.32,duration:620,ease:'Cubic.inOut',onComplete:()=>{ this.featShow(hid,true); const ring=this.add.circle(tx,ty,30,0xffd36e,0).setStrokeStyle(4,0xffe08a,1); c.add(ring);
         this.tweens.add({targets:ring,scale:2.2,alpha:0,duration:520,onComplete:()=>{ c.destroy(); if(!this._featFly)return; this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); this.featRevealNext(); }}); this.tweens.add({targets:ic,alpha:0,duration:420,delay:120}); }}); });
     const z=this.tapZones[this.tapZones.length-1]; z.tag='feat_reveal'; z.noBounce=true; }
-  buildLobby(){ this.menu.setVisible(true); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
+  buildLobby(){ this.menu.setVisible(true); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(700,()=>this.loginPopup?.()); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk='card_'+c,miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]);
     if(miss.length&&!this._lobbyLoading){ this._lobbyLoading=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
@@ -11741,7 +11783,7 @@ class Game extends Phaser.Scene {
     this.menu.add(this.add.text(w/2,y+4,'Chests drop gear for your current item level · Thread comes from salvage, stages and the Dig',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',align:'center',wordWrap:{width:w-36}}).setOrigin(.5,0)); }
   chestVisual(c,x,y,sz){ for(const k of ['chest_'+c.id,'prize_chest','chest']){ if(this.realTex(k)){ const im=this.add.image(x,y,k); im.setScale(sz/Math.max(im.width,im.height)); if(k!=='chest_'+c.id&&c.id==='silver')im.setTint(0xd8e2f0); return im; } }
     return this.add.text(x,y,'🧰',{fontSize:Math.round(sz*.7)+'px'}).setOrigin(.5); }   // ใบสั่งอาร์ต 40 จะส่ง chest_silver/chest_gold
-  openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'||isFree==='gift'){ this._chestBack=isFree==='gift'?'achievements':'daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { if(Save.threads()<c.cost)return; d.threads=Save.threads()-c.cost; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest'); if(isFree!=='gift'&&isFree!=='weekly')d.chestsOpened=(d.chestsOpened||0)+1;
+  openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'||isFree==='gift'||isFree==='login'){ this._chestBack=isFree==='gift'?'achievements':isFree==='login'?'hub':'daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { if(Save.threads()<c.cost)return; d.threads=Save.threads()-c.cost; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest'); if(isFree!=='gift'&&isFree!=='weekly'&&isFree!=='login')d.chestsOpened=(d.chestsOpened||0)+1;
     let tier=pickWeighted(c.odds); if(c.id==='gold'){ d.chestPity=(d.chestPity||0)+1; if(tier==='legend'||d.chestPity>=CHEST_PITY){ tier='legend'; d.chestPity=0; } } Save.save();
     const lv=GACHA_LEVELS[Math.max(0,gachaMaxBand())],ilv=lv.lo+Math.floor(Math.random()*(lv.hi-lv.lo+1));
     this._gachaBusy=true; this.setMenuScroll(0); this.stopHubMotion?.(); this.menu.removeAll(true); this.tapZones=[]; this._chestOpen=true;

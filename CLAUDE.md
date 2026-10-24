@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.24, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.25, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.23 — New Awards (owner)
+# Latest delivery: v8.0.24 — 7-day login calendar (owner)
+
+LOGIN_CAL (before POWER_TUNING) 7 rows sugar 150 · thread 20 · cur 3 random CURRENCY · silver · thread 30 · sugar 600 · gold; Sugar ×(1+.5·chapter). LoginCal {data → Save.data.loginCal {i next index, last dayKey, n}, ready = last≠today, claim → {r,i,lines,chest}} (missed days never reset; after day 7 i wraps to 0; DailyQ muted). loginPopup(from) (before starTeach): first Lobby of the day (buildLobby delayedCall 700) or Daily page; waits (retry 1.5s) for Ruby/feature reveal/Weave tour/gearTut 0–1/book; 7 cells (4+3, day 7 wide), today pulses, full-screen zone tag login_claim → chest days openChest(c,'login') (_chestBack 'hub', not counted in chestsOpened) else lines on the button + login_close. starTeach waits for _loginC. buildDaily drops the old login panel (quests only). Badge daily = LoginCal.ready() || DailyQ.claimable. tests/login-calendar added; progress-sound drops the old daily claim case.
+
+# Previous delivery: v8.0.23 — New Awards (owner)
 
 awardList() (before ACHIEVEMENTS, which stays only for old-save ids): AW_CATS story/heroes/combat/collect · Story ch1–3 clears [1..5], stars1–3 [3,6,9,12,15], rank, pinnacle · Heroes per owned non-WIP hero hw_<h> wins [1,5,15,30,60] + hb_<h> Builds won [1,2,3], roster · Combat kills, bosses (bestiary boss\d+), minis, kicks (Save.data.kicks at counter launch), uniques (Save.data.uniqueCasts in uniqueCastFx) · Collection gear, legend, chests (d.chestsOpened in openChest, not gift/weekly), bestiary. Save.data.heroWins[h]={wins,builds} from Stats.end win (g.character, basicAttack.path). awReached/awClaimed (d.awards[id] = tiers claimed) · AW_REWARD ★1 🍬80 · ★2 🧶20 · ★3 🍬200+🧶25 · ★4 free Gold Chest (openChest(gold,'gift') → Collect returns to Awards) · last ★ 🧶60 + title (d.titles, d.title). awFrames = categories with any fully claimed award → d.frame. buildAchievements: ★ total, title chip + frame chip (tap cycles), ALMOST THERE (3 nearest unclaimed by %), 4 tabs with dots, rows (colour stripe, stars, bar, next goal, Claim + reward preview). awClaim mutes DailyQ. Lobby profile: 'Rank N · Title' + coloured frame stroke. Badge 'achievements' = awReady. tests/awards added; progress-sound keeps only the daily claim case.
 

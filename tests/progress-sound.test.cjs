@@ -1,11 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');const source=fs.readFileSync('game.js','utf8');
 function actionLine(marker){const at=source.indexOf(marker);assert(at>=0,marker);const line=source.slice(source.lastIndexOf('\n',at)+1,source.indexOf('\n',at));const start=line.indexOf('()=>{');return line.slice(start,line.lastIndexOf('});')+1);}
 function bind(code,context){vm.createContext(context);const factory=vm.runInContext('(function(){return '+code+';})',context);return factory.call({showBanner(){},menuToast(){},buildDaily(){},buildAchievements(){},buildMenuScreen(){}});}
-for(const type of ['daily']){   // v8.0.23 Awards claim audio is covered by tests/awards.test.cjs
- let total=0;const cues=[],d={streak:0,claimDay:''},achievement={id:'test',reward:25,emoji:'',name:'Test',test:()=>true};
- const context={d,spec:{key:'today'},localDayKey:()=> 'yesterday',a:achievement,Save:{data:{achievements:{}},addSugar:n=>total+=n},Sfx:{progress:k=>cues.push(k)}};
- const callback=bind(actionLine(type==='daily'?'if(d.claimDay===spec.key)return;':'if(Save.data.achievements[a.id]||!a.test'),context);callback();const reward=total;assert(reward>0);callback();assert.equal(total,reward);assert.deepEqual(cues,[type]);
-}
+// v8.0.24 login reward moved to LoginCal (tests/login-calendar.test.cjs)
 for(const [marker,cue] of [['if(Save.buyTal(k))','core']]){
  for(const success of [true,false]){const cues=[];const c={k:'hp',core:{id:'magnet',name:'Magnet'},u:{name:'HP'},cost:1,stn:0,cst:{stones:1,sugar:1},se:'',Save:{buyTal:()=>success,buySpecialCore:()=>success,buyOvercap:()=>success,overcap:()=>1},Sfx:{progress:k=>cues.push(k),select(){},error(){}}};bind(actionLine(marker),c)();assert.deepEqual(cues,success?[cue]:[]);}
 }
