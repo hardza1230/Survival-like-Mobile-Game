@@ -2,6 +2,10 @@
 
 Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.20, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
+# Art delivery48 - C1/C2 boss arena source kit
+
+12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
+
 # Latest delivery: v8.0.19 — Gear from the Bazaar, Delve after the story, chest lesson (owner)
 
 grantGear: non-gacha/non-trade Story drops (field boxes, stage-end boxes, wheel/boss gear) get affixes [] + craftState common while !Save.data._craftTutGift && storyCleared()<3 (chests/gacha keep 0–1 mod). earlyLootMul .45→.25 (Story stageIndex<5). featureOpen('recipes') = Save.endgameUnlocked() → Activities hides Recipe Maps until the story is done. applyGearTut step 0: gift CHESTS[0].cost Thread (was gacha Sugar), Bazaar tab forced to 'chests', zone = tag chest_silver (fallback /openChest\(/), label 'Open a Silver Chest for a new item!'.

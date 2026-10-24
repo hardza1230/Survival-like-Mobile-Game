@@ -1,0 +1,195 @@
+[
+  {
+    "key": "vfx_b01_burrow_shadow",
+    "preview": "preview_webp/vfx_b01_burrow_shadow.webp",
+    "target": "assets/art/boss_vfx/vfx_b01_burrow_shadow.webp",
+    "fw": 128,
+    "fh": 64,
+    "frames": 4,
+    "columns": 2,
+    "rate": 8,
+    "loop": true,
+    "anchor": "center",
+    "stage_indices": [
+      0
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b01_burrow_burst",
+    "preview": "preview_webp/vfx_b01_burrow_burst.webp",
+    "target": "assets/art/boss_vfx/vfx_b01_burrow_burst.webp",
+    "fw": 128,
+    "fh": 128,
+    "frames": 6,
+    "columns": 3,
+    "rate": 12,
+    "loop": false,
+    "anchor": "center",
+    "stage_indices": [
+      0
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b02_sludge_band",
+    "preview": "preview_webp/vfx_b02_sludge_band.webp",
+    "target": "assets/art/boss_vfx/vfx_b02_sludge_band.webp",
+    "fw": 256,
+    "fh": 64,
+    "frames": 4,
+    "columns": 1,
+    "rate": 8,
+    "loop": true,
+    "anchor": "left-center",
+    "stage_indices": [
+      1
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b03_hot_tile",
+    "preview": "preview_webp/vfx_b03_hot_tile.webp",
+    "target": "assets/art/boss_vfx/vfx_b03_hot_tile.webp",
+    "fw": 64,
+    "fh": 64,
+    "frames": 6,
+    "columns": 3,
+    "rate": 12,
+    "loop": false,
+    "anchor": "center",
+    "stage_indices": [
+      2
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b04_frost_breath",
+    "preview": "preview_webp/vfx_b04_frost_breath.webp",
+    "target": "assets/art/boss_vfx/vfx_b04_frost_breath.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "columns": 2,
+    "rate": 12,
+    "loop": false,
+    "anchor": "center",
+    "stage_indices": [
+      3
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b06_pod_shield",
+    "preview": "preview_webp/vfx_b06_pod_shield.webp",
+    "target": "assets/art/boss_vfx/vfx_b06_pod_shield.webp",
+    "fw": 128,
+    "fh": 128,
+    "frames": 4,
+    "columns": 2,
+    "rate": 8,
+    "loop": true,
+    "anchor": "center",
+    "stage_indices": [
+      5,
+      9
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b07_fog_tile",
+    "preview": "preview_webp/vfx_b07_fog_tile.webp",
+    "target": "assets/art/boss_vfx/vfx_b07_fog_tile.webp",
+    "fw": 128,
+    "fh": 128,
+    "frames": 4,
+    "columns": 2,
+    "rate": 8,
+    "loop": true,
+    "anchor": "tile",
+    "stage_indices": [
+      6
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b07_air_bubble",
+    "preview": "preview_webp/vfx_b07_air_bubble.webp",
+    "target": "assets/art/boss_vfx/vfx_b07_air_bubble.webp",
+    "fw": 128,
+    "fh": 128,
+    "frames": 4,
+    "columns": 2,
+    "rate": 8,
+    "loop": true,
+    "anchor": "center",
+    "stage_indices": [
+      6
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b09_clock_hand_long",
+    "preview": "preview_webp/vfx_b09_clock_hand_long.webp",
+    "target": "assets/art/boss_vfx/vfx_b09_clock_hand_long.webp",
+    "fw": 256,
+    "fh": 32,
+    "frames": 4,
+    "columns": 1,
+    "rate": 8,
+    "loop": true,
+    "anchor": "left-center",
+    "stage_indices": [
+      8
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b09_clock_hand_short",
+    "preview": "preview_webp/vfx_b09_clock_hand_short.webp",
+    "target": "assets/art/boss_vfx/vfx_b09_clock_hand_short.webp",
+    "fw": 192,
+    "fh": 32,
+    "frames": 4,
+    "columns": 1,
+    "rate": 8,
+    "loop": true,
+    "anchor": "left-center",
+    "stage_indices": [
+      8
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "vfx_b10_root_band",
+    "preview": "preview_webp/vfx_b10_root_band.webp",
+    "target": "assets/art/boss_vfx/vfx_b10_root_band.webp",
+    "fw": 256,
+    "fh": 64,
+    "frames": 4,
+    "columns": 1,
+    "rate": 8,
+    "loop": true,
+    "anchor": "left-center",
+    "stage_indices": [
+      9
+    ],
+    "requires_manual_runtime_registration": true
+  },
+  {
+    "key": "arena_b04_ice_pillar",
+    "preview": "preview_webp/arena_b04_ice_pillar.webp",
+    "target": "assets/art/counters/arena_b04_ice_pillar.webp",
+    "fw": 64,
+    "fh": 96,
+    "frames": 4,
+    "columns": 4,
+    "rate": 12,
+    "loop": false,
+    "anchor": "bottom",
+    "stage_indices": [
+      3
+    ],
+    "requires_manual_runtime_registration": true
+  }
+]

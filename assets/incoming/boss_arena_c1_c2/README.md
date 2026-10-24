@@ -1,0 +1,13 @@
+# Art48 - C1/C2 boss arena source kit
+
+12 ImageGen sprite sheets / 52 unique frames: 11 black-background VFX sheets and one true-alpha ice-pillar sheet. No text, characters, faces or UI arrows. MANIFEST.json records exact grids, dimensions, anchors, phases, SHA256 and byte sizes. All raw donors are retained in originals/, including the first hot-warning pass as _v1. PROMPTS.json and PROVENANCE.json retain initial prompts and the brighter warning-border revision.
+
+SOURCE ART ONLY: no runtime registration, damage, collision, timing, rewards or version bump. preview_webp/ contains 50% converted review sheets (558,292 bytes total, 3.15625 MiB decoded combined), not production registrations. Load per stage. Retain existing code fallback during later integration.
+
+Run pack_source.py then compose_floor_review.py. Writes are atomic and PNG/WebP streams are verified. A is opaque RGBA over black; preview conversion matches existing C3 packer: alpha=max(R,G,B)*1.35, alpha<8 removed, RGB unpremultiplied. B retains generated alpha. Fog and bands use mechanical reflection packing of generated paint for exact matching source edges; no painted-in fixes. Raw donors stay unchanged; CROP_LOG.json records adaptive black-gutter grid cuts and transforms. Preview resizing is per frame to prevent bleeding. Lossy WebP edge deltas are recorded separately; source PNG edges are pixel-exact.
+
+Hot tile: hold0-1 warning, active2-5. Frost: frame0 warning,1-3 active. Bubble/frost/shield center alpha is quantitatively low. Ice states share ground y180/192, origin .5,.9375. Burst uses a common ground line/scale; frost uses a normalized outer hazard radius. Left-center strips have no horizontal padding. Fog is periodic in both axes; bands horizontally and contain no center gap (the code makes the safety gap).
+
+QA_REPORT.json includes size/alpha/uniqueness/seams/clear-center checks. all_frames_review.png shows all52 states; contact_sheet.png and animation_review.gif are neutral-background reviews. floor_review_c1.png and floor_review_c2.png use actual game floors; white gap outlines are code-only composition guides. fog_3x3_seam_review.png shows source tiling. Offline source compositions, not live-game captures or phone/FPS tests.
+
+Later integration: follow order48 and RUNTIME_SUGGESTIONS.json. Pillar requires stage3 registration. Shared pod shield must ALSO load in stage9 for Rootmother round2 (vfx_b06 prefix only auto-loads stage5). Suggestions use 50%-size fw/fh when copying preview files. Existing b08 lane and c15 dishes need no replacement. Preserve geometry, timing, phases, hit tests and fallback.

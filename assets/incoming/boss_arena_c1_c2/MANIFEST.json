@@ -1,0 +1,394 @@
+[
+  {
+    "key": "vfx_b01_burrow_shadow",
+    "file": "vfx_b01_burrow_shadow.png",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 128,
+    "frameCount": 4,
+    "columns": 2,
+    "rows": 2,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "center",
+    "holdFrame": null,
+    "bytes": 154635,
+    "sha256": "6b0e8b5fb21d7ab1e11b1fa3bb03da2c8d2d3c69c39f4f97dd1255b0af970511",
+    "stage_index": 0,
+    "fill": [
+      0.9531,
+      0.7109
+    ],
+    "preview_file": "preview_webp/vfx_b01_burrow_shadow.webp",
+    "preview_bytes": 23450,
+    "preview_sha256": "6cce108c9f88215f9c8a00c6885dd1e14b1e3a2f768fc3ad0ba93e803a224b39",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      0
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b01_burrow_burst",
+    "file": "vfx_b01_burrow_burst.png",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 6,
+    "columns": 3,
+    "rows": 2,
+    "background": "#000000",
+    "loop": false,
+    "anchor": "center",
+    "holdFrame": null,
+    "bytes": 392513,
+    "sha256": "d1fc938eebf3bcf7ba00c5e204dc09e6ac518e00f0c46f62c8ca368bb8c45888",
+    "stage_index": 0,
+    "fill": [
+      0.9531,
+      0.8945
+    ],
+    "preview_file": "preview_webp/vfx_b01_burrow_burst.webp",
+    "preview_bytes": 57648,
+    "preview_sha256": "02db869f5a5c226300c56b54c65c62faf906e38f31886c65ec2c335173b999bc",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      0
+    ],
+    "suggested_rate": 12
+  },
+  {
+    "key": "vfx_b02_sludge_band",
+    "file": "vfx_b02_sludge_band.png",
+    "width": 512,
+    "height": 512,
+    "frameWidth": 512,
+    "frameHeight": 128,
+    "frameCount": 4,
+    "columns": 1,
+    "rows": 4,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "left-center",
+    "holdFrame": null,
+    "bytes": 509140,
+    "sha256": "d3b4e065c6d16e36cdead9070230292e0fefa593641985c58201aed00819f274",
+    "stage_index": 1,
+    "fill": [
+      1.0,
+      0.9375
+    ],
+    "preview_file": "preview_webp/vfx_b02_sludge_band.webp",
+    "preview_bytes": 68258,
+    "preview_sha256": "4b3c1f1dc03519a472e6b7b4335fb8b3b12cd624f5b226ac89c7c02367f857b9",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      1
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b03_hot_tile",
+    "file": "vfx_b03_hot_tile.png",
+    "width": 384,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 6,
+    "columns": 3,
+    "rows": 2,
+    "background": "#000000",
+    "loop": false,
+    "anchor": "center",
+    "holdFrame": 1,
+    "bytes": 135432,
+    "sha256": "82652d58a32c8153fc495ef85a6f1f3eaf01707a402cb9b53bd4767ee80d5155",
+    "stage_index": 2,
+    "fill": [
+      0.875,
+      0.7969
+    ],
+    "preview_file": "preview_webp/vfx_b03_hot_tile.webp",
+    "preview_bytes": 21518,
+    "preview_sha256": "f868797df1c894f60ae51bfecff275919dff6cc08c61825330d8f279660f467d",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      2
+    ],
+    "suggested_rate": 12,
+    "warningFrames": [
+      0,
+      1
+    ],
+    "activeFrames": [
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "key": "vfx_b04_frost_breath",
+    "file": "vfx_b04_frost_breath.png",
+    "width": 1024,
+    "height": 1024,
+    "frameWidth": 512,
+    "frameHeight": 512,
+    "frameCount": 4,
+    "columns": 2,
+    "rows": 2,
+    "background": "#000000",
+    "loop": false,
+    "anchor": "center",
+    "holdFrame": 0,
+    "bytes": 1202033,
+    "sha256": "a7f10290f282a1a00f24d118b2422bd8619184f57c0120cfb738acd98793863c",
+    "stage_index": 3,
+    "fill": [
+      0.9707,
+      0.7773
+    ],
+    "preview_file": "preview_webp/vfx_b04_frost_breath.webp",
+    "preview_bytes": 138188,
+    "preview_sha256": "de51cd7c298a5a7e5e2df87cd369700e7e3d73a8c17c0aa1fccaf93d9d17600a",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      3
+    ],
+    "suggested_rate": 12,
+    "warningFrames": [
+      0
+    ],
+    "activeFrames": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "key": "vfx_b06_pod_shield",
+    "file": "vfx_b06_pod_shield.png",
+    "width": 512,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 2,
+    "rows": 2,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "center",
+    "holdFrame": null,
+    "bytes": 250362,
+    "sha256": "6ba746b0b49e93657bee1bc53644b900e6857ca26f2a24eecc903663950f8d41",
+    "stage_index": 5,
+    "fill": [
+      0.9336,
+      0.6406
+    ],
+    "preview_file": "preview_webp/vfx_b06_pod_shield.webp",
+    "preview_bytes": 34614,
+    "preview_sha256": "176e6ce59945d1487a4e960c7bec3c144d39cd7d08356e8eef188dbb9ab2d454",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      5,
+      9
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b07_fog_tile",
+    "file": "vfx_b07_fog_tile.png",
+    "width": 512,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 2,
+    "rows": 2,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "tile",
+    "holdFrame": null,
+    "bytes": 528620,
+    "sha256": "3dc591c1b8cdf8551015736bdb5e1e0ec37fd059adfaa32e539dcc24219e7f27",
+    "stage_index": 6,
+    "fill": [
+      1.0,
+      1.0
+    ],
+    "preview_file": "preview_webp/vfx_b07_fog_tile.webp",
+    "preview_bytes": 49254,
+    "preview_sha256": "e425dbb5c11cf9fda4b572b02d9f87db7e7a6047096e75b41bb3e41b6e61e781",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      6
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b07_air_bubble",
+    "file": "vfx_b07_air_bubble.png",
+    "width": 512,
+    "height": 512,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 4,
+    "columns": 2,
+    "rows": 2,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "center",
+    "holdFrame": null,
+    "bytes": 277919,
+    "sha256": "97df7c337a52bc501b79e7912728f4d7faada7e7265051dd475e7d2bbbbdc86e",
+    "stage_index": 6,
+    "fill": [
+      0.9258,
+      0.9141
+    ],
+    "preview_file": "preview_webp/vfx_b07_air_bubble.webp",
+    "preview_bytes": 32792,
+    "preview_sha256": "c1f62ccb9cfffcb67a86d45eea84749036f191b8bc24ce3e23932897552303b3",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      6
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b09_clock_hand_long",
+    "file": "vfx_b09_clock_hand_long.png",
+    "width": 512,
+    "height": 256,
+    "frameWidth": 512,
+    "frameHeight": 64,
+    "frameCount": 4,
+    "columns": 1,
+    "rows": 4,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "left-center",
+    "holdFrame": null,
+    "bytes": 165878,
+    "sha256": "0a5df37dbb7a2d173dad330c90cb0a44819500da1bd26ab256318d31003da610",
+    "stage_index": 8,
+    "fill": [
+      0.998,
+      0.875
+    ],
+    "preview_file": "preview_webp/vfx_b09_clock_hand_long.webp",
+    "preview_bytes": 26190,
+    "preview_sha256": "3ea3fe4ebfa3ed3c6869fcf08b2b93bc790ec84c0548a0705c7b509fd0b7aa2d",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      8
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b09_clock_hand_short",
+    "file": "vfx_b09_clock_hand_short.png",
+    "width": 384,
+    "height": 256,
+    "frameWidth": 384,
+    "frameHeight": 64,
+    "frameCount": 4,
+    "columns": 1,
+    "rows": 4,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "left-center",
+    "holdFrame": null,
+    "bytes": 119407,
+    "sha256": "e1b7ca2ca2f675f0660e968e445c04474ba1bfa35f15eba91c8c5ea72fdc13b8",
+    "stage_index": 8,
+    "fill": [
+      1.0,
+      0.875
+    ],
+    "preview_file": "preview_webp/vfx_b09_clock_hand_short.webp",
+    "preview_bytes": 19802,
+    "preview_sha256": "c0f94532246dd1365b942ec35067f9ad3ebf02eab20853f1b7de6bba7e1fc70d",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      8
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "vfx_b10_root_band",
+    "file": "vfx_b10_root_band.png",
+    "width": 512,
+    "height": 512,
+    "frameWidth": 512,
+    "frameHeight": 128,
+    "frameCount": 4,
+    "columns": 1,
+    "rows": 4,
+    "background": "#000000",
+    "loop": true,
+    "anchor": "left-center",
+    "holdFrame": null,
+    "bytes": 449936,
+    "sha256": "5257cbd826d199f4d447c20f76894b577544f34a43c3540ef3eb2ec0ea2a1ef9",
+    "stage_index": 9,
+    "fill": [
+      1.0,
+      0.9375
+    ],
+    "preview_file": "preview_webp/vfx_b10_root_band.webp",
+    "preview_bytes": 73404,
+    "preview_sha256": "ddb5c883386599ede12c4007b94ee4faa733fb1582d25e96a4f09479e74c43cb",
+    "preview_scale": 0.5,
+    "stage_indices": [
+      9
+    ],
+    "suggested_rate": 8
+  },
+  {
+    "key": "arena_b04_ice_pillar",
+    "file": "arena_b04_ice_pillar.png",
+    "width": 512,
+    "height": 192,
+    "frameWidth": 128,
+    "frameHeight": 192,
+    "frameCount": 4,
+    "columns": 4,
+    "rows": 1,
+    "background": "transparent",
+    "loop": false,
+    "anchor": "bottom",
+    "holdFrame": 1,
+    "bytes": 113076,
+    "sha256": "0be7e4d31bce14597016bb7ab7906784a9b413cf825f26284148aee344814bca",
+    "stage_index": 3,
+    "fill": [
+      0.9062,
+      0.8177
+    ],
+    "preview_file": "preview_webp/arena_b04_ice_pillar.webp",
+    "preview_bytes": 13174,
+    "preview_sha256": "f6c94b3528a3eda91f6073498b165b079be1849e87c349c80701d8b2a9775b1d",
+    "preview_scale": 0.5,
+    "origin": [
+      0.5,
+      0.9375
+    ],
+    "ground_y": 180,
+    "stage_indices": [
+      3
+    ],
+    "suggested_rate": 12,
+    "states": {
+      "intact": 0,
+      "cracked": 1,
+      "breaking": [
+        2,
+        3
+      ]
+    }
+  }
+]

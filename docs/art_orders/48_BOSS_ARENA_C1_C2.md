@@ -1,6 +1,6 @@
 # 48 — กลไกสนามบอส C1–C2 (Arena Mechanics) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 24 ต.ค. 2026 · โค้ดกลไกพร้อมแล้วตั้งแต่ v7.9.13 / v7.9.15 (ตอนนี้ใช้สี่เหลี่ยม เส้น และวงที่โค้ดวาดเป็นภาพชั่วคราว)
+สถานะ: 🟢 อาร์ตต้นฉบับครบ12ไฟล์/52เฟรม (รอผูก runtime) · เขียน 24 ต.ค. 2026 · โค้ดกลไกพร้อมแล้วตั้งแต่ v7.9.13 / v7.9.15 (ตอนนี้ใช้สี่เหลี่ยม เส้น และวงที่โค้ดวาดเป็นภาพชั่วคราว)
 ส่งไฟล์ที่ `assets/incoming/boss_arena_c1_c2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` (รูปแบบเดียวกับใบ 22 / 30)
 สไตล์ตาม `00_STYLE_GUIDE.md` · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -103,4 +103,12 @@
 
 ## ส่งมอบ
 
-(ฝั่งอาร์ตกรอกตอนส่ง)
+ส่งมอบ 24 ต.ค. 2026: assets/incoming/boss_arena_c1_c2/ ครบ 12 PNG / 52 เฟรม กลุ่ม A พื้นดำ 11 ไฟล์ และ B เสาน้ำแข็ง alpha จริง พร้อม MANIFEST / PROMPTS / PROVENANCE / QA_REPORT และต้นฉบับ ImageGen ทุกชิ้น
+
+ตรวจทุกเฟรมและภาพประกอบบนพื้นด่านจริง: all_frames_review.png, floor_review_c1.png, floor_review_c2.png, animation_review.gif — เป็นภาพตรวจ source ออฟไลน์ ไม่ใช่ runtime capture
+
+หมอกต่อขอบได้ทั้งสี่ด้านและแถบกวาดต่อแนวนอนแบบ pixel-exact ใน PNG (จัดภาพซ้ำด้วย reflection จากงาน ImageGen มี crop log) ใจกลาง bubble/frost/shield โปร่ง พื้นร้อนสองเฟรมเตือนมีขอบ orange/ivory สว่างขึ้นเพื่อแยกจากรอยลาวา เสาน้ำแข็งทุกสถานะใช้ ground y180
+
+preview_webp/ เป็นตัวอย่างแพ็ก50% รวม558,292bytes / decoded3.15625MiB ยังไม่ลงทะเบียนในเกม ชุดนี้ส่ง source เท่านั้น ไม่แก้ damage/range/timing/hit test หรือเวอร์ชันเกม
+
+ตอนผูก: vfx_b06_pod_shield ต้องโหลด stage index9 ด้วยสำหรับ Rootmother รอบ2 นอกเหนือจาก index5 ที่ prefix จัดให้อัตโนมัติ; arena_b04_ice_pillar เพิ่ม stage3 ดู RUNTIME_SUGGESTIONS.json

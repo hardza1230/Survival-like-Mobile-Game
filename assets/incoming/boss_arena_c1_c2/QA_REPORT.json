@@ -1,0 +1,821 @@
+{
+  "all_pass": true,
+  "scope": "Source art + offline floor composites, not runtime/gameplay tests.",
+  "alpha_conversion": "A: max(R,G,B)*1.35, alpha<8 discarded, RGB unpremultiplied; matches existing C3 packer. B: original alpha retained.",
+  "periodic_packing": "Generated fog/strip paint assembled by mechanical reflections for exact tile edges; raw donors retained.",
+  "assets": [
+    {
+      "key": "vfx_b01_burrow_shadow",
+      "size": [
+        512,
+        256
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          6,
+          18,
+          250,
+          109
+        ],
+        [
+          6,
+          18,
+          250,
+          109
+        ],
+        [
+          6,
+          18,
+          250,
+          109
+        ],
+        [
+          6,
+          18,
+          250,
+          109
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.953125,
+          0.7109375
+        ],
+        [
+          0.953125,
+          0.7109375
+        ],
+        [
+          0.953125,
+          0.7109375
+        ],
+        [
+          0.953125,
+          0.7109375
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "key": "vfx_b01_burrow_burst",
+      "size": [
+        768,
+        512
+      ],
+      "frames": 6,
+      "frame_bounds_after_lum_alpha": [
+        [
+          6,
+          21,
+          250,
+          250
+        ],
+        [
+          13,
+          61,
+          243,
+          250
+        ],
+        [
+          9,
+          70,
+          246,
+          250
+        ],
+        [
+          12,
+          74,
+          243,
+          250
+        ],
+        [
+          13,
+          131,
+          243,
+          250
+        ],
+        [
+          20,
+          181,
+          235,
+          250
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.953125,
+          0.89453125
+        ],
+        [
+          0.8984375,
+          0.73828125
+        ],
+        [
+          0.92578125,
+          0.703125
+        ],
+        [
+          0.90234375,
+          0.6875
+        ],
+        [
+          0.8984375,
+          0.46484375
+        ],
+        [
+          0.83984375,
+          0.26953125
+        ]
+      ],
+      "unique_frames": 6,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "key": "vfx_b02_sludge_band",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          0,
+          4,
+          512,
+          124
+        ],
+        [
+          0,
+          4,
+          512,
+          124
+        ],
+        [
+          0,
+          4,
+          512,
+          124
+        ],
+        [
+          0,
+          4,
+          512,
+          124
+        ]
+      ],
+      "frame_fill": [
+        [
+          1.0,
+          0.9375
+        ],
+        [
+          1.0,
+          0.9375
+        ],
+        [
+          1.0,
+          0.9375
+        ],
+        [
+          1.0,
+          0.9375
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "horizontal_seam_exact": true,
+      "preview_lossy_horizontal_edge_max_delta": [
+        18,
+        16,
+        22,
+        11
+      ]
+    },
+    {
+      "key": "vfx_b03_hot_tile",
+      "size": [
+        384,
+        256
+      ],
+      "frames": 6,
+      "frame_bounds_after_lum_alpha": [
+        [
+          8,
+          26,
+          120,
+          122
+        ],
+        [
+          8,
+          28,
+          119,
+          122
+        ],
+        [
+          9,
+          20,
+          120,
+          122
+        ],
+        [
+          8,
+          22,
+          120,
+          122
+        ],
+        [
+          12,
+          32,
+          116,
+          122
+        ],
+        [
+          11,
+          32,
+          117,
+          122
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.875,
+          0.75
+        ],
+        [
+          0.8671875,
+          0.734375
+        ],
+        [
+          0.8671875,
+          0.796875
+        ],
+        [
+          0.875,
+          0.78125
+        ],
+        [
+          0.8125,
+          0.703125
+        ],
+        [
+          0.828125,
+          0.703125
+        ]
+      ],
+      "unique_frames": 6,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.0146,
+        0.0124,
+        0.9003,
+        0.9166,
+        0.575,
+        0.1255
+      ]
+    },
+    {
+      "key": "vfx_b04_frost_breath",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          7,
+          54,
+          502,
+          452
+        ],
+        [
+          6,
+          65,
+          503,
+          446
+        ],
+        [
+          7,
+          73,
+          503,
+          436
+        ],
+        [
+          8,
+          65,
+          504,
+          447
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.966796875,
+          0.77734375
+        ],
+        [
+          0.970703125,
+          0.744140625
+        ],
+        [
+          0.96875,
+          0.708984375
+        ],
+        [
+          0.96875,
+          0.74609375
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.0,
+        0.0106,
+        0.0365,
+        0.0
+      ]
+    },
+    {
+      "key": "vfx_b06_pod_shield",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          11,
+          48,
+          244,
+          207
+        ],
+        [
+          9,
+          46,
+          247,
+          208
+        ],
+        [
+          9,
+          44,
+          248,
+          208
+        ],
+        [
+          10,
+          47,
+          245,
+          207
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.91015625,
+          0.62109375
+        ],
+        [
+          0.9296875,
+          0.6328125
+        ],
+        [
+          0.93359375,
+          0.640625
+        ],
+        [
+          0.91796875,
+          0.625
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.0533,
+        0.0955,
+        0.0969,
+        0.0734
+      ]
+    },
+    {
+      "key": "vfx_b07_fog_tile",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          0,
+          0,
+          256,
+          256
+        ],
+        [
+          0,
+          0,
+          256,
+          256
+        ],
+        [
+          0,
+          0,
+          256,
+          256
+        ],
+        [
+          0,
+          0,
+          256,
+          256
+        ]
+      ],
+      "frame_fill": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "horizontal_seam_exact": true,
+      "preview_lossy_horizontal_edge_max_delta": [
+        11,
+        17,
+        10,
+        10
+      ],
+      "vertical_seam_exact": true
+    },
+    {
+      "key": "vfx_b07_air_bubble",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          9,
+          10,
+          246,
+          244
+        ],
+        [
+          9,
+          12,
+          246,
+          245
+        ],
+        [
+          9,
+          11,
+          246,
+          243
+        ],
+        [
+          9,
+          10,
+          246,
+          243
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.92578125,
+          0.9140625
+        ],
+        [
+          0.92578125,
+          0.91015625
+        ],
+        [
+          0.92578125,
+          0.90625
+        ],
+        [
+          0.92578125,
+          0.91015625
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "key": "vfx_b09_clock_hand_long",
+      "size": [
+        512,
+        256
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          1,
+          5,
+          512,
+          60
+        ],
+        [
+          2,
+          4,
+          512,
+          60
+        ],
+        [
+          1,
+          6,
+          512,
+          60
+        ],
+        [
+          2,
+          6,
+          512,
+          59
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.998046875,
+          0.859375
+        ],
+        [
+          0.99609375,
+          0.875
+        ],
+        [
+          0.998046875,
+          0.84375
+        ],
+        [
+          0.99609375,
+          0.828125
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "key": "vfx_b09_clock_hand_short",
+      "size": [
+        384,
+        256
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          0,
+          4,
+          384,
+          60
+        ],
+        [
+          0,
+          4,
+          384,
+          60
+        ],
+        [
+          0,
+          4,
+          384,
+          60
+        ],
+        [
+          0,
+          5,
+          384,
+          60
+        ]
+      ],
+      "frame_fill": [
+        [
+          1.0,
+          0.875
+        ],
+        [
+          1.0,
+          0.875
+        ],
+        [
+          1.0,
+          0.875
+        ],
+        [
+          1.0,
+          0.859375
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "key": "vfx_b10_root_band",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          0,
+          4,
+          512,
+          124
+        ],
+        [
+          0,
+          4,
+          512,
+          124
+        ],
+        [
+          0,
+          4,
+          512,
+          124
+        ],
+        [
+          0,
+          4,
+          512,
+          124
+        ]
+      ],
+      "frame_fill": [
+        [
+          1.0,
+          0.9375
+        ],
+        [
+          1.0,
+          0.9375
+        ],
+        [
+          1.0,
+          0.9375
+        ],
+        [
+          1.0,
+          0.9375
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        255,
+        255
+      ],
+      "horizontal_seam_exact": true,
+      "preview_lossy_horizontal_edge_max_delta": [
+        11,
+        13,
+        21,
+        14
+      ]
+    },
+    {
+      "key": "arena_b04_ice_pillar",
+      "size": [
+        512,
+        192
+      ],
+      "frames": 4,
+      "frame_bounds_after_lum_alpha": [
+        [
+          10,
+          25,
+          118,
+          181
+        ],
+        [
+          8,
+          24,
+          120,
+          181
+        ],
+        [
+          6,
+          37,
+          121,
+          181
+        ],
+        [
+          6,
+          114,
+          122,
+          181
+        ]
+      ],
+      "frame_fill": [
+        [
+          0.84375,
+          0.8125
+        ],
+        [
+          0.875,
+          0.8177083333333334
+        ],
+        [
+          0.8984375,
+          0.75
+        ],
+        [
+          0.90625,
+          0.3489583333333333
+        ]
+      ],
+      "unique_frames": 4,
+      "source_mode": "RGBA",
+      "source_alpha_extrema": [
+        0,
+        255
+      ],
+      "ground_line_y": 180
+    }
+  ],
+  "packed_preview_bytes": 558292,
+  "decoded_preview_bytes": 3309568,
+  "visual_review": "Manual source/frame/contact review passed: no faces/text/UI arrows; 52 unique states; hollow bubble/frost/shield centers; hot warning center clear; dark outlined ice pillar; source floor compositions checked separately. Bands show split safety gap as a code-only guide. Not a live runtime screenshot.",
+  "floor_reviews": [
+    {
+      "file": "floor_review_c1.png",
+      "keys": [
+        "vfx_b01_burrow_shadow",
+        "vfx_b01_burrow_burst",
+        "vfx_b02_sludge_band",
+        "vfx_b03_hot_tile",
+        "vfx_b04_frost_breath",
+        "arena_b04_ice_pillar"
+      ]
+    },
+    {
+      "file": "floor_review_c2.png",
+      "keys": [
+        "vfx_b06_pod_shield",
+        "vfx_b07_fog_tile",
+        "vfx_b07_air_bubble",
+        "vfx_b09_clock_hand_long",
+        "vfx_b09_clock_hand_short",
+        "vfx_b10_root_band"
+      ]
+    }
+  ],
+  "budget_note": "50% preview WebPs are source review files, not registered in runtime. Decoded preview size is 3.15625MiB across all12sheets; normally load per stage. Source fog/strips have pixel-exact periodic edges; lossy WebP edge deltas are recorded separately."
+}

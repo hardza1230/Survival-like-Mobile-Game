@@ -1,0 +1,169 @@
+{
+  "tool": "built-in image_gen",
+  "jobs": [
+    {
+      "key": "vfx_b01_burrow_shadow",
+      "fw": 256,
+      "fh": 128,
+      "cols": 2,
+      "rows": 2,
+      "n": 4,
+      "loop": true,
+      "anchor": "center",
+      "stage": 0,
+      "detail": "FOUR frame 2x2 loop. Flat oval earthen ground bulge with cracked concentric soil rim. Acid green #75ff4b thin light seeps through cracks, pulsing across four phases. Muted brown dirt, oval seen top-down, no volcano, no deep pit or tall object. Same oval size and center in all frames. Desired per-frame width:height 2:1.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frame 2x2 loop. Flat oval earthen ground bulge with cracked concentric soil rim. Acid green #75ff4b thin light seeps through cracks, pulsing across four phases. Muted brown dirt, oval seen top-down, no volcano, no deep pit or tall object. Same oval size and center in all frames. Desired per-frame width:height 2:1."
+    },
+    {
+      "key": "vfx_b01_burrow_burst",
+      "fw": 256,
+      "fh": 256,
+      "cols": 3,
+      "rows": 2,
+      "n": 6,
+      "loop": false,
+      "anchor": "center",
+      "stage": 0,
+      "detail": "SIX frame 3x2 one-shot dirt eruption. Frames1-2 strongest burst of warm brown soil chunks, tiny cream ant eggs and bright green acid droplets from a ground-centered flat impact. Frames3-4 falling chunks and dissipating soil, frames5-6 fading low dust and a few tiny crumbs. No creature inside. Common ground baseline and common scale; do not enlarge later fading frames.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. SIX frame 3x2 one-shot dirt eruption. Frames1-2 strongest burst of warm brown soil chunks, tiny cream ant eggs and bright green acid droplets from a ground-centered flat impact. Frames3-4 falling chunks and dissipating soil, frames5-6 fading low dust and a few tiny crumbs. No creature inside. Common ground baseline and common scale; do not enlarge later fading frames."
+    },
+    {
+      "key": "vfx_b02_sludge_band",
+      "fw": 512,
+      "fh": 128,
+      "cols": 1,
+      "rows": 4,
+      "n": 4,
+      "loop": true,
+      "anchor": "left-center",
+      "stage": 1,
+      "detail": "FOUR frames in ONE COLUMN FOUR ROWS. Each cell is a wide horizontal 4:1 sewage surge band, green #6bd07a luminous viscous foam with bubbles and tiny trash scraps. Continuous uniform hazard across ENTIRE width, flowing left to right; defined irregular upper/lower edges, NO gaps or focal center. Both left and right edges connect horizontally seamlessly. Stretchable length. Keep a small black gap above/below band INSIDE each frame. Consistent band thickness and placement in all four frames, foam shifts subtly.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frames in ONE COLUMN FOUR ROWS. Each cell is a wide horizontal 4:1 sewage surge band, green #6bd07a luminous viscous foam with bubbles and tiny trash scraps. Continuous uniform hazard across ENTIRE width, flowing left to right; defined irregular upper/lower edges, NO gaps or focal center. Both left and right edges connect horizontally seamlessly. Stretchable length. Keep a small black gap above/below band INSIDE each frame. Consistent band thickness and placement in all four frames, foam shifts subtly."
+    },
+    {
+      "key": "vfx_b03_hot_tile",
+      "fw": 128,
+      "fh": 128,
+      "cols": 3,
+      "rows": 2,
+      "n": 6,
+      "loop": false,
+      "anchor": "center",
+      "stage": 2,
+      "detail": "SIX frame 3x2 hot griddle tile. Nearly straight top-down square rounded iron tile frame. Frames1-2 thin red-orange #ff7a3a glowing rim/cracks with MOSTLY BLACK CLEAR center for warning, no opaque metal slab. Frames3-4 orange flame jets and oil sparks erupt inside same square; frame5 flames die down; frame6 dim orange cooling rim. Square hazard footprint stays constant, flames contained. No object or player.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. SIX frame 3x2 hot griddle tile. Nearly straight top-down square rounded iron tile frame. Frames1-2 thin red-orange #ff7a3a glowing rim/cracks with MOSTLY BLACK CLEAR center for warning, no opaque metal slab. Frames3-4 orange flame jets and oil sparks erupt inside same square; frame5 flames die down; frame6 dim orange cooling rim. Square hazard footprint stays constant, flames contained. No object or player."
+    },
+    {
+      "key": "vfx_b04_frost_breath",
+      "fw": 512,
+      "fh": 512,
+      "cols": 2,
+      "rows": 2,
+      "n": 4,
+      "loop": false,
+      "anchor": "center",
+      "stage": 3,
+      "detail": "FOUR frame 2x2 radial frost breath wave. Pale cyan-white #9fe0ff ice mist rushing outwards in ALL directions as an airy circular ring with sharp snowflakes; center MOSTLY PURE BLACK hollow and clear. Frame1 restrained forming thin frost ring (warning); frame2 stronger outward snowy breath; frame3 broad full icy wave; frame4 dissipating sparse snow. Same center and outer radius across cells, code expands the whole sprite. Not a filled opaque disk.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frame 2x2 radial frost breath wave. Pale cyan-white #9fe0ff ice mist rushing outwards in ALL directions as an airy circular ring with sharp snowflakes; center MOSTLY PURE BLACK hollow and clear. Frame1 restrained forming thin frost ring (warning); frame2 stronger outward snowy breath; frame3 broad full icy wave; frame4 dissipating sparse snow. Same center and outer radius across cells, code expands the whole sprite. Not a filled opaque disk."
+    },
+    {
+      "key": "vfx_b06_pod_shield",
+      "fw": 256,
+      "fh": 256,
+      "cols": 2,
+      "rows": 2,
+      "n": 4,
+      "loop": true,
+      "anchor": "center",
+      "stage": 5,
+      "detail": "FOUR frame 2x2 loop of a translucent pale leaf-green #9be86b seed husk shield DOME around an EMPTY BLACK center. Thin luminous hexagonal shell segments, leafy pointed silhouette on top, oval rim at base. Airy and transparent with bright perimeter; no seed character or boss inside. Four gentle breathing glow phases, dome shape and size identical, restrained sparse motes.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frame 2x2 loop of a translucent pale leaf-green #9be86b seed husk shield DOME around an EMPTY BLACK center. Thin luminous hexagonal shell segments, leafy pointed silhouette on top, oval rim at base. Airy and transparent with bright perimeter; no seed character or boss inside. Four gentle breathing glow phases, dome shape and size identical, restrained sparse motes."
+    },
+    {
+      "key": "vfx_b07_fog_tile",
+      "fw": 256,
+      "fh": 256,
+      "cols": 2,
+      "rows": 2,
+      "n": 4,
+      "loop": true,
+      "anchor": "tile",
+      "stage": 6,
+      "detail": "FOUR frame 2x2 POISON FOG TEXTURE TILE. Seamlessly tileable on ALL FOUR EDGES in EACH frame, edge-to-edge soft irregular purple #6a3a8a spore mist, subtle scattered luminous lavender spores. NO isolated cloud shape, NO border/vignette/outline, NO big dark holes or focal center, NO landscape. Dense even distribution, medium/dim purple brightness over pure black. Similar opacity and broad cloud structure across four frames, gentle drift of mist/spores. Low-frequency organic texture, intended to repeat across whole mobile screen at alpha .42.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frame 2x2 POISON FOG TEXTURE TILE. Seamlessly tileable on ALL FOUR EDGES in EACH frame, edge-to-edge soft irregular purple #6a3a8a spore mist, subtle scattered luminous lavender spores. NO isolated cloud shape, NO border/vignette/outline, NO big dark holes or focal center, NO landscape. Dense even distribution, medium/dim purple brightness over pure black. Similar opacity and broad cloud structure across four frames, gentle drift of mist/spores. Low-frequency organic texture, intended to repeat across whole mobile screen at alpha .42."
+    },
+    {
+      "key": "vfx_b07_air_bubble",
+      "fw": 256,
+      "fh": 256,
+      "cols": 2,
+      "rows": 2,
+      "n": 4,
+      "loop": true,
+      "anchor": "center",
+      "stage": 6,
+      "detail": "FOUR frame 2x2 loop of one perfectly round CLEAN AIR bubble. Mint #bfffe0 thick luminous rim, small glossy refractions, one tiny sparkle traveling clockwise around perimeter across4frames. Inside is ALMOST ENTIRELY PURE BLACK, not white/cyan filled, so monsters can be seen inside after alpha conversion. Same circle radius and center all frames. No shield grid or extra bubbles.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frame 2x2 loop of one perfectly round CLEAN AIR bubble. Mint #bfffe0 thick luminous rim, small glossy refractions, one tiny sparkle traveling clockwise around perimeter across4frames. Inside is ALMOST ENTIRELY PURE BLACK, not white/cyan filled, so monsters can be seen inside after alpha conversion. Same circle radius and center all frames. No shield grid or extra bubbles."
+    },
+    {
+      "key": "vfx_b09_clock_hand_long",
+      "fw": 512,
+      "fh": 64,
+      "cols": 1,
+      "rows": 4,
+      "n": 4,
+      "loop": true,
+      "anchor": "left-center",
+      "stage": 8,
+      "detail": "FOUR frames ONE COLUMN FOUR ROWS. Each cell is a horizontal long slender gold #ffd166 CLOCK HAND, shaped like a fine floral vine spear, rooted at LEFT MIDDLE pivot and sharp tip to RIGHT. Strong clean continuous golden shaft from left edge to right tip, very light repeating vine/leaf engraving, not an ornate central object. Tiny light spark flows LEFT TO RIGHT across4frames. Consistent shape, pivot, width8:height1 proportions, small black vertical margins; length can stretch without major focal decorations.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frames ONE COLUMN FOUR ROWS. Each cell is a horizontal long slender gold #ffd166 CLOCK HAND, shaped like a fine floral vine spear, rooted at LEFT MIDDLE pivot and sharp tip to RIGHT. Strong clean continuous golden shaft from left edge to right tip, very light repeating vine/leaf engraving, not an ornate central object. Tiny light spark flows LEFT TO RIGHT across4frames. Consistent shape, pivot, width8:height1 proportions, small black vertical margins; length can stretch without major focal decorations."
+    },
+    {
+      "key": "vfx_b09_clock_hand_short",
+      "fw": 384,
+      "fh": 64,
+      "cols": 1,
+      "rows": 4,
+      "n": 4,
+      "loop": true,
+      "anchor": "left-center",
+      "stage": 8,
+      "detail": "FOUR frames ONE COLUMN FOUR ROWS. Each cell horizontal SHORT thicker gold #ffd166 CLOCK HAND matching a floral vine spear style. LEFT MIDDLE pivot, continuous shaft towards RIGHT ending in one closed golden flower bud tip. Fine regular leafy engraving, restrained and clean. Tiny light spark flows LEFT TO RIGHT across4frames. Identical shape and anchor every frame. Width6:height1 proportions, small black vertical margins, no large pivot disk.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frames ONE COLUMN FOUR ROWS. Each cell horizontal SHORT thicker gold #ffd166 CLOCK HAND matching a floral vine spear style. LEFT MIDDLE pivot, continuous shaft towards RIGHT ending in one closed golden flower bud tip. Fine regular leafy engraving, restrained and clean. Tiny light spark flows LEFT TO RIGHT across4frames. Identical shape and anchor every frame. Width6:height1 proportions, small black vertical margins, no large pivot disk."
+    },
+    {
+      "key": "vfx_b10_root_band",
+      "fw": 512,
+      "fh": 128,
+      "cols": 1,
+      "rows": 4,
+      "n": 4,
+      "loop": true,
+      "anchor": "left-center",
+      "stage": 9,
+      "detail": "FOUR frames ONE COLUMN FOUR ROWS. Each cell is a wide horizontal 4:1 continuous thorny ROOT SURGE band. Brown #8a6a3a braided roots burst along ground in a straight continuous strip, pale gold rimlight, split earth chips along both long sides. Small thorns and cracks repeat uniformly along ENTIRE length; NO gap, NO focal center, NO mouth/face/head. Left/right edges connect horizontally; can stretch and split around a player safety gap in code. Subtle traveling cracks/soil movement across4loopframes, stable band placement.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. Pure solid BLACK #000000 behind each effect, zero environment scenery. Black inner holes intentionally remain black so luminance-alpha conversion makes them clear. Leave black gutters INSIDE each frame, but no gridlines. FOUR frames ONE COLUMN FOUR ROWS. Each cell is a wide horizontal 4:1 continuous thorny ROOT SURGE band. Brown #8a6a3a braided roots burst along ground in a straight continuous strip, pale gold rimlight, split earth chips along both long sides. Small thorns and cracks repeat uniformly along ENTIRE length; NO gap, NO focal center, NO mouth/face/head. Left/right edges connect horizontally; can stretch and split around a player safety gap in code. Subtle traveling cracks/soil movement across4loopframes, stable band placement."
+    },
+    {
+      "key": "arena_b04_ice_pillar",
+      "fw": 128,
+      "fh": 192,
+      "cols": 4,
+      "rows": 1,
+      "n": 4,
+      "loop": false,
+      "anchor": "bottom",
+      "stage": 3,
+      "transparent": true,
+      "detail": "FOUR square-width TALL cells in ONE ROW (4 columns x1row), each per-frame aspect2:3. One upright faceted icy pillar in 3/4 top-down view with dark navy outlines and white/cyan highlights, reads clearly on pale blue ice floor. Frame1 intact solid pillar. Frame2 same pillar with strong visible cracks. Frame3 breaking into a few larger icy shards. Frame4 collapsed low shards. Common ground contact at y180 of192px cell and common scale, not independently centered; each cell same camera and bottom ellipse shadow. TRUE TRANSPARENT background, no black backdrop. No snowfield or character.",
+      "prompt": "Use case: stylized-concept. Production game VFX sprite sheet for Mochi Mayhem, cute confectionery fantasy, polished hand-painted cartoon, soft dark outlines and candy-like highlights, 3/4 top-down, readable silhouette at small mobile size. No characters, no faces, no eyes, no boss, no UI arrows, no text/numerals/labels/separators/watermark. EXACT uniform frame grid and consistent camera/anchor/scale across frames; frame sequence reads LEFT TO RIGHT then TOP TO BOTTOM. Each cell's subject stays within cell, no overlap. TRUE TRANSPARENT background outside the object, no black/white/checkerboard backdrop. FOUR square-width TALL cells in ONE ROW (4 columns x1row), each per-frame aspect2:3. One upright faceted icy pillar in 3/4 top-down view with dark navy outlines and white/cyan highlights, reads clearly on pale blue ice floor. Frame1 intact solid pillar. Frame2 same pillar with strong visible cracks. Frame3 breaking into a few larger icy shards. Frame4 collapsed low shards. Common ground contact at y180 of192px cell and common scale, not independently centered; each cell same camera and bottom ellipse shadow. TRUE TRANSPARENT background, no black backdrop. No snowfield or character."
+    }
+  ],
+  "revisions": [
+    {
+      "key": "vfx_b03_hot_tile",
+      "prompt": "Use case: precise-object-edit. Edit this six-frame 3 columns x2 rows production game sprite sheet. Change ONLY the FIRST TWO WARNING FRAMES (top-left and top-middle). Their current red glowing rim is too hard to see on orange lava terrain. Make the inner square border 2-3 times thicker, a vivid #ff7a3a orange glow with a crisp very thin warm ivory-white hot core and a dark charcoal outer outline for clear contrast at 100px display. Add only a FEW small bright orange sparks hugging the rim. Keep the centers of these two frames PURE BLACK and mostly empty for seeing players, NO filling, NO flame jets during warning. Keep the rounded-square iron frame shape, size and placement identical. All remaining FOUR fire/cooling frames must remain the same. Keep EXACT 3x2 layout, all black #000 background, no labels, text, numbers, arrows, watermark, no faces/characters. Clean mobile cartoon style, no new scenery.",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-ba47b090-6b9e-4dda-abdd-35c787cbf7d0.png"
+    }
+  ]
+}
