@@ -34,4 +34,8 @@ t=mk(false);res=[];t.state='play';assert.equal(t.mcGate('s04',ok=>res.push(ok)),
 t=mk();res=[];t.mcGate('s16',ok=>res.push(ok));t._mc.ready=true;t._finishStoryCutscene({x:t._mc.skip?.x??0,y:0});t._mc.skip={x:280,y:10,w:80,h:40};t._finishStoryCutscene({x:300,y:20});assert.equal(res.join(),'true','Skip finishes and saves');
 g.Save.data.settings.noRuby=true;assert.equal(mk().mcGate('s05',()=>{}),false);g.Save.data.settings.noRuby=false;
 t=mk();g.Save.data.mcSeen={};t.mcGate('s01',()=>{});while(t._mc)t._finishStoryCutscene({x:1,y:400});assert.equal(g.Save.data.storyIntroSeen,true);assert.equal(g.Save.data.rubyStorybook[0],3);
+// 5. v8.0.4 คลังเรื่อง: ครบทุกฉากที่ผูก · แท็กบน Lobby · หน้า story
+{ const g=src.slice(src.indexOf('const MC_GALLERY='),src.indexOf('];',src.indexOf('const MC_GALLERY='))); const ids=[...g.matchAll(/\['(s\d\d)'/g)].map(m=>m[1]);
+  assert.equal(ids.slice().sort().join(),Object.keys(MOTION_COMICS).sort().join(),'gallery lists every scene once');
+  for(const s of ["tag='story'","else if(s==='story')this.buildStoryBook();","  buildStoryBook(){","  storyReplay(id){","tag='story_'+id"])assert(src.includes(s),'missing '+s); }
 console.log('Story motion comic: 103 MANIFEST-verified pieces menu-lazy, 17 scenes reference only registered art, hooks with fallbacks, gate/chain/skip/fail/save/texture-drop passed');

@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.4, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.5, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.3 — Cinematic title cards + comic effects (owner)
+# Latest delivery: v8.0.4 — Story gallery (owner)
+
+MC_GALLERY (before STAGE_TAGLINES) = story order [id, emoji, name, stageMastery index needed (−1 = tutorialDone)]; mcOpen(id) = mcSeen or that stage cleared. buildLobby: pink '📖 Story' pill at the stage box top-right (only when any scene is open; zone 64×44 tag 'story', added after the panel zone so it wins); NEW badge now centred in the space left of the pill. Route s==='story' → buildStoryBook(): screen_chapter bg, 'Story so far · n / 17', 2-column tiles (emoji, name, tagline; locked = 🔒 ??? 'Keep playing to unlock', toast on tap), tile tags story_<id> → storyReplay(id) (clears _mcFail, playMotionComic, toast if art fails, rebuild story screen). tests/story-motion-art checks the gallery covers every scene + route/pill. Real-browser: Lobby pill → gallery 10/17 → s02 replay → back, 0 errors.
+
+# Previous delivery: v8.0.3 — Cinematic title cards + comic effects (owner)
 
 cineTitle(parent,o,reg) (before mcShot): film-style title — 16 drifting ADD motes, kicker (letter-spaced gold) fades/rises at 300ms, title (glow shadow, padding so it is not clipped) rises+scales .95→1 at 800ms/1500ms, gold line grows at 1900ms, italic tagline at 2500ms/1400ms, all ×speed; returns {objs,dur,out(ms,cb)}. rubyEntryCurtain uses it with STAGE_TAGLINES[idx] (15 English lines, after MC_HERO_SCENE): first visit speed 1 + 700ms hold (~5.6s total incl. 1s fade-out), replays speed .55; rubyEnterStage waits via a counter tween until c._t0+c._need, then out(1000) → finish (camera fadeIn 650); tap anywhere skips (pointerdown top: _rubyEntry._skip → out 300). Motion Comic: mcTitle card before shot 0 (kicker MOCHITOPIA · STORY, sc.title, sc.tag, speed .72, tap skips); per-scene tag/mote/pow set in an IIFE after MOTION_COMICS (s01 CRACK!/THUD!/POP!, s04 SHATTER!, s16 KRAK!, heroes POOF! …). mcShot adds: mcMotes (dust/ember/snow/spark, 14), mcLines focus lines at shake (white wedges redrawn every 60ms) + sh.lines (s01 fall), mcRays at flash (14 ADD rays rotating), mcPow (comic word pop + Sfx.boom), vignette, top letterbox bar (slides in on shot 0), dip-from-black 320ms, typewriter caption (pre-wrapped, left-aligned block centred; first tap completes the line, mc.typing). Reduced motion skips motes/lines/rays/dip/typing. tests/story-motion-art stubs mcTitle; scripts/check-ruby-story-ui waits for the longer arrival (was a fixed 650ms). Real-browser: 17 scenes + curtain (5.66s), 0 errors.
 
