@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.7';
+const GAME_VERSION = '8.0.8';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.8',date:'2026-10-24',title:'New painted story shots',items:['New painting: the Hunger’s roots burst up through the pantry floor','New painting: the kingdom at night as the Crown’s curse pours down'] },
   {v:'8.0.7',date:'2026-10-24',title:'Cleaner battle screen',items:['Battle information now sits on clear, compact dark panels with gold trim','Wave markers, objectives, progress and bonus rewards have their own rows','Dash and Unique have solid backings so pickups do not hide the controls','Skill icons sit together in a small tray; left-handed controls and button sizes still work']},
   {v:'8.0.6',date:'2026-10-24',title:'Two story shots redone',items:['“In one night…” now happens at night, under the glowing Crown and its purple curse','The pantry floor cracks open with dark smoke instead of the silly root'] },
   {v:'8.0.5',date:'2026-10-24',title:'Smoother movement stick',items:['The movement stick reaches full speed with a shorter drag','The stick now follows your finger, so turning back is instant','Keeping your finger down while a card or story screen closes now moves you right away'] },
@@ -1566,6 +1567,7 @@ const Sfx = {
 const ASSET_IMAGES = {
   // v8.0.2 ใบ 45 Motion Comic (assets/art/story, menu-lazy ทีละฉาก)
   cs_s00_far_city:'assets/art/story/cs_s00_far_city.webp',
+  cs_s00_far_city_night:'assets/art/story/cs_s00_far_city_night.webp',cs_s01_far_roots_burst:'assets/art/story/cs_s01_far_roots_burst.webp',   // v8.0.8 ใบ 46
   cs_s00_far_tree:'assets/art/story/cs_s00_far_tree.webp',
   cs_s00_mid_city:'assets/art/story/cs_s00_mid_city.webp',
   cs_s00_fg_city:'assets/art/story/cs_s00_fg_city.webp',
@@ -2793,6 +2795,7 @@ const ASSET_SHEETS = {
 const BP_POSE_SCALE={char_cocoa_titan_slam:1/.74,char_cocoa_titan_hop:1/.76,char_cocoa_titan_charge:1/.8,char_cocoa_titan_walk:1/.88,char_cocoa_titan_colossus:1/.8,char_cocoa_fire_jab:1/.76,char_cocoa_fire_fin:1/.72,char_cocoa_rocket:1/.7,char_cocoa_dash_leap:1/.78,char_cocoa_dash_jab:1/.8,char_cocoa_phantom:1/.62,char_cocoa_hurt:1/.92,char_cocoa_victory:1/.82,char_mint_lance_charged:1/.66};
 const ASSET_FX = {
   // v8.0.2 ใบ 45 Motion Comic FX (โหลดทีละฉาก)
+  cs_fx_root_burst:{url:'assets/art/story/cs_fx_root_burst.webp',fw:270,fh:270,frames:6,rate:10,anchor:'center'},   // v8.0.8 ใบ 46 รากพุ่ง (ค้างเฟรมสุดท้าย)
   cs_fx_speedlines:{url:'assets/art/story/cs_fx_speedlines.webp',fw:540,fh:960,frames:4,rate:12,anchor:'center',add:true},
   cs_fx_transform:{url:'assets/art/story/cs_fx_transform.webp',fw:384,fh:384,frames:8,rate:12,anchor:'center',add:true},
   cs_fx_seed_glow:{url:'assets/art/story/cs_fx_seed_glow.webp',fw:192,fh:192,frames:6,rate:12,anchor:'center',add:true},
@@ -7019,9 +7022,10 @@ const MOTION_COMICS={
   s00:{title:'LONG AGO',shots:[
     {bg:MC_CITY,pan:[-28,28],cap:'Long ago, Mochitopia was a kingdom of people — and every home was full of flavor.',L:[['cs_pup_crowd_people',180,420,330,170]]},
     {bg:['cs_s00_far_tree','cs_s00_mid_tree','cs_s00_fg_tree'],zoom:[1,1.12],cap:'The First Planter set a Crown on the First Tree… and the Crown grew hungry.',L:[['cs_pup_planter_crown',180,400,250,250],['cs_pup_crown_glow',182,262,120,95,{at:900,glow:1}]]},
-    {bg:MC_CITY,tint:0x565aa8,night:.38,zoom:[1.03,1.09],flash:[750,0x9b5cff],mote:'snow',motes:10,cap:'In one night, everyone became mochi — and the Crown began to eat their flavor.',L:[['cs_pup_crown_glow',180,150,150,118,{glow:1,fade:700}],['cs_pup_crowd_people',180,420,330,170,{out:800}],['cs_pup_crowd_mochi',180,430,330,150,{at:800}],['cs_fx_curse_smoke',180,330,380,380,{fps:8,loop:false,at:350}],['cs_fx_curse_smoke',180,190,260,260,{fps:8,loop:false,at:900}]]}]},
+    {bg:['cs_s00_far_city_night'],zoom:[1,1.04],flash:[750,0x9b5cff],mote:'snow',motes:10,cap:'In one night, everyone became mochi — and the Crown began to eat their flavor.',L:[['cs_pup_crowd_people',180,430,330,170,{out:800}],['cs_pup_crowd_mochi',180,440,330,150,{at:800}],['cs_fx_curse_smoke',180,360,380,380,{fps:8,loop:false,at:350}]]}]},
   s01:{title:'THE HEART SEED',shots:[
-    {bg:MC_PANTRY,zoom:[1.015,1.06],shake:[950,650,.012],flash:[950,0x6a2fd6],cap:'Hundreds of years later, the starving Hunger’s roots crack the pantry floor…',L:[['cs_pup_mochi_berry_idle',145,350,150,150,{out:950}],['cs_pup_mochi_berry_scared',145,345,150,160,{at:950,sq:950}],['cs_fx_crack',200,465,330,185,{fps:7,loop:false,at:650,hold:1}],['cs_fx_curse_smoke',215,420,280,280,{fps:9,loop:false,at:1000}]]},
+    {bg:MC_PANTRY,zoom:[1,1.04],shake:[2100,400,.004],ms:2800,cap:'Hundreds of years later, a little strawberry mochi is tidying a quiet pantry…',L:[['cs_pup_mochi_berry_idle',145,350,150,150,{bob:3}],['cs_fx_crack',200,465,330,185,{fps:6,loop:false,at:2100,hold:1}]]},
+    {bg:['cs_s01_far_roots_burst'],zoom:[1.08,1.02],shake:[250,700,.014],flash:[250,0x6a2fd6],cap:'…when the starving Hunger’s roots burst up through the floor!',L:[['cs_pup_mochi_berry_scared',85,410,135,145,{sq:250}],['cs_fx_root_burst',215,337,230,230,{fps:10,loop:false,hold:1}],['cs_fx_curse_smoke',240,300,260,260,{fps:9,loop:false,at:300}]]},
     {bg:['cs_s01_far_shaft'],scroll:1,ms:2400,cap:'…and a little strawberry mochi falls into the dark!',L:[['cs_fx_speedlines',180,280,360,640,{fps:14}],['cs_pup_mochi_berry_fall',180,80,135,165,{to:[180,430],ms:2300,ease:'Sine.easeIn'}]]},
     {bg:MC_NEST,zoom:[1,1.04],shake:[420,250,.008],cap:'She lands with a thump in a sour ant nest. Something pale is moving in the dark…',L:[['cs_pup_mochi_berry_scared',180,230,140,150,{to:[180,390],ms:420,ease:'Quad.easeIn',sq:420}],['cs_fx_dust',180,470,235,118,{fps:12,loop:false,at:420}],['cs_pup_blank_mochi_walk',-30,420,80,80,{at:900,to:[40,420],ms:2200,fade:700}]]},
     {bg:MC_NEST,pan:[-10,24],zoom:[1.04,1.08],cap:'Blank, flavorless mochi creep closer — toward a little jam spirit hiding behind a crystal.',L:[['cs_pup_mochi_berry_scared',165,390,130,140],['cs_pup_blank_mochi_walk',10,420,80,80,{to:[75,425],ms:3000}],['cs_pup_blank_mochi_leap',-20,440,75,75,{at:500,to:[60,440],ms:2600}],['cs_pup_ruby_hide',390,370,105,115,{at:700,to:[300,370],ms:900,ease:'Back.easeOut',rot:6,fade:500}],['cs_fx_sparkle',300,320,60,60,{fps:9,at:1500}]]},
@@ -7082,11 +7086,11 @@ const MC_HERO_SCENE={mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09'},MC_STAGE_STOR
 const MC_GALLERY=[['s00','🏰','Long Ago',-1],['s01','🌱','The Heart Seed',-1],['s02','🫙','Grandma’s Jam Jar',0],['s06','🌿','Mint Returns',1],['s03','🔥','The Stolen Flavor',1],['s04','🧊','A Voice in the Ice',2],['s05','👑','The Crown Oven',3],['s11','🕳️','Chapter 1 Complete',4],['s12','🍄','Chapter 2',4],['s07','🐻','Cocoa Returns',4],['s08','⚡','Taro Returns',6],['s13','✨','Chapter 2 Complete',9],['s14','🌾','Chapter 3',9],['s09','🍊','Yuzu Returns',9],['s15','🪞','Memories in Glass',11],['s16','🌳','The First Tree',14],['s17','🌑','The Delve',14]];
 const STAGE_TAGLINES=['Every hero starts with a fall.','What the nest spills, the drains remember.','Somewhere below, a fire is eating flavor.','In the cold, someone is still waiting.','The Hunger is awake. And it is listening.','A root that runs can still grow.','Breathe while you still can.','The sweetest things are the first to be taken.','Four seasons. One broken garden.','Every root leads somewhere. This one leads to a throne.','Nothing grows where the Crown has fed.','Ripe on the outside. Empty within.','Glass remembers what people forget.','The last of every flavor sleeps here.','Take off the Crown. End the curse.'];
 // v8.0.3 คำโปรยการ์ดชื่อ (tag) · อนุภาคลอย (mote) · คำเสียงการ์ตูน (pow ต่อช็อต)
-(()=>{ const F={s00:['Before the mochi, there were people.','spark',{2:'POOF!'}],s01:['One small seed. One small hero.','dust',{0:'CRACK!',2:'THUD!',7:'POP!'}],s02:['Grandma left a recipe for every fight.','dust',{}],s03:['Flavor was never meant to be fuel.','ember',{0:'CLANK!'}],s04:['Some voices survive the cold.','snow',{2:'SHATTER!'}],s05:['The Hunger has a voice now.','ember',{1:'RUMBLE…'}],
+(()=>{ const F={s00:['Before the mochi, there were people.','spark',{2:'POOF!'}],s01:['One small seed. One small hero.','dust',{1:'CRACK!',3:'THUD!',8:'POP!'}],s02:['Grandma left a recipe for every fight.','dust',{}],s03:['Flavor was never meant to be fuel.','ember',{0:'CLANK!'}],s04:['Some voices survive the cold.','snow',{2:'SHATTER!'}],s05:['The Hunger has a voice now.','ember',{1:'RUMBLE…'}],
     s06:['One more friend comes home.','snow',{2:'POOF!'}],s07:['One more friend comes home.','spark',{2:'POOF!'}],s08:['One more friend comes home.','spark',{2:'POOF!'}],s09:['One more friend comes home.','ember',{2:'POOF!'}],
     s11:['The oven is cold. The root is running.','ember',{0:'RIIIP!'}],s12:['A new garden. An old Hunger.','spark',{}],s13:['The way home is lit.','spark',{}],s14:['The last road climbs toward the First Tree.','dust',{}],s15:['What was lost is not gone.','spark',{}],s16:['The curse ends where it began.','spark',{1:'KRAK!'}],s17:['Deep below, something stirs.','dust',{0:'RUMBLE…'}]};
   for(const id in F){ const sc=MOTION_COMICS[id]; if(!sc)continue; sc.tag=F[id][0]; sc.mote=F[id][1]; for(const i in F[id][2])if(sc.shots[i])sc.shots[i].pow=F[id][2][i]; }
-  for(const sh of MOTION_COMICS.s01.shots.slice(1,2))sh.lines=[0,2300]; MOTION_COMICS.s11.shots[0].powAt=500; })();
+  for(const sh of MOTION_COMICS.s01.shots.slice(2,3))sh.lines=[0,2300]; MOTION_COMICS.s11.shots[0].powAt=500; })();
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},

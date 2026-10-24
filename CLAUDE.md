@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.8, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.9, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.7 — Clear battle HUD
+# Latest delivery: v8.0.8 — Art order 46 wired (owner)
+
+scripts/pack-story-shot-redo.py (sha/bytes vs assets/incoming/story_shot_redo/MANIFEST, 50% WebP q84) → assets/art/story/ cs_s00_far_city_night (540×960, 138 KB), cs_s01_far_roots_burst (76 KB), cs_fx_root_burst (6×270, ASSET_FX rate 10, 126 KB); menu-lazy like order 45. S00 shot 3 = painted night city (crown painted, puppet removed; tint/night fields no longer used there), crowd people → mochi + curse smoke. S01 now 10 shots: calm pantry (berry idle, crack at 2.1s + small shake) → cut to roots_burst (shake + purple flash, berry scared x85, root_burst FX hold + curse smoke, CRACK! pow index 1) → fall (lines index 2) … POP index 8. tests/story-motion-art checks the order 46 MANIFEST + keys + menu class. Real-browser shots checked, 0 errors.
+
+# Previous delivery: v8.0.7 — Clear battle HUD
 
 Arena HUD now groups level/EXP, counters and quick controls on a dark plum/gold header, with a separate wave/objective/progress/bonus card. Wave pips no longer overlap objective text; long text fits narrow phones; seasonal icons share a bounded row. Boss information has its own backing, relic/trait lines move below it. Dash/Unique retain their hit circles/left-hand/size settings and gain solid backing discs; skills share a small tray. Display copy is shorter; gameplay/cooldowns/rewards unchanged. No new art bytes or boot textures. Static production Canvas checks four sizes × five display states, existing controls tests plus npm check/build. Proofs: docs/reviews/combat_hud/. Publication: SESSION_HANDOFF.
 
@@ -878,7 +882,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** ส่งครบ 13 ไฟล์ · ผูกครบแล้ว v7.9.68 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 39 (23 ต.ค.) เปิดหนังสือหลัง TAP TO START + ไอคอน Bazaar/Upgrade/Mail:** 9 ไฟล์ (`docs/art_orders/39_BOOK_OPENING_PLUS.md`) · ส่งครบ 9 ไฟล์ + ปกเรียบ · ผูกแล้ว v7.9.69 · รอ QA มือถือ · ใบ 37 ถูกยกเลิก (เลขว่าง)
 - **ใบสั่งอาร์ต 40 (23 ต.ค.) หีบใน Bazaar + ไอคอน Thread:** 7 ไฟล์ · ส่งครบ 7 ไฟล์ · ผูกแล้ว v7.9.79 · รอ QA มือถือ
-- **ใบสั่งอาร์ต 46 (24 ต.ค.) แก้ 2 ช็อตเรื่อง:** 3 ไฟล์ (`docs/art_orders/46_STORY_SHOT_REDO.md`) · โค้ดชั่วคราว v8.0.6 · รออาร์ต
+- **ใบสั่งอาร์ต 46 (24 ต.ค.) แก้ 2 ช็อตเรื่อง:** ส่งครบ 3 ไฟล์ · ผูกแล้ว v8.0.8 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 45 (Motion Comic):** ส่งครบ 103 ชิ้น · ผูกแล้ว v8.0.2 (S10 Sesame ยังไม่ผูก) · รอ QA มือถือ
 - **ใบสั่งอาร์ต 36 (23 ต.ค.) มาสคอต Ruby:** 5 หน้า (`docs/art_orders/36_RUBY_MASCOT.md`) · โค้ดพร้อม v7.9.60 ใช้ภาพวาดชั่วคราว · รออาร์ต
 - **ใบสั่งอาร์ต 32 (21 ต.ค.):** ส่งครบ 51 ไฟล์ (E4 Ice Breaker คงภาพเดิม) · ผูกแล้ว v7.9.31 · รอตรวจภาพบนมือถือ

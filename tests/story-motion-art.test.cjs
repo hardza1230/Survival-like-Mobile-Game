@@ -38,4 +38,7 @@ t=mk();g.Save.data.mcSeen={};t.mcGate('s01',()=>{});while(t._mc)t._finishStoryCu
 { const g=src.slice(src.indexOf('const MC_GALLERY='),src.indexOf('];',src.indexOf('const MC_GALLERY='))); const ids=[...g.matchAll(/\['(s\d\d)'/g)].map(m=>m[1]);
   assert.equal(ids.slice().sort().join(),Object.keys(MOTION_COMICS).sort().join(),'gallery lists every scene once');
   for(const s of ["tag='story'","else if(s==='story')this.buildStoryBook();","  buildStoryBook(){","  storyReplay(id){","tag='story_'+id"])assert(src.includes(s),'missing '+s); }
+// 6. v8.0.8 ใบ 46: ต้นฉบับตรง MANIFEST + WebP ลงทะเบียน menu-lazy
+for(const e of JSON.parse(fs.readFileSync('assets/incoming/story_shot_redo/MANIFEST.json','utf8')).assets){ const b=fs.readFileSync('assets/incoming/story_shot_redo/'+e.file);assert.equal(hash(b),e.sha256,e.key);
+  const url='assets/art/story/'+e.key+'.webp',reg=e.frames>1?ASSET_FX[e.key]:ASSET_IMAGES[e.key];assert(reg&&(reg.url||reg)===url,'order46 key '+e.key);assert(fs.readFileSync(url).subarray(8,12).toString()==='WEBP');assert.equal(artClass(e.key,url),'menu'); }
 console.log('Story motion comic: 103 MANIFEST-verified pieces menu-lazy, 17 scenes reference only registered art, hooks with fallbacks, gate/chain/skip/fail/save/texture-drop passed');
