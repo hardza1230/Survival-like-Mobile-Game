@@ -1,0 +1,187 @@
+{
+  "status": "PASS",
+  "commit": "cf4c93fd4ee875ee8b2678549ea457f8c58a18c9",
+  "verified_files": 23,
+  "verified_bytes": 16156101,
+  "method": "Actual immutable raw GitHub bytes read back; Git blob SHA1 equals staged object; SHA256 recorded; PNG chunk CRC verification and full pixel decode.",
+  "files": [
+    {
+      "file": "CLAUDE.md",
+      "bytes": 191465,
+      "git_blob_sha": "b077c466a81c012f7045f9ed8aa456c44e959af1",
+      "sha256": "d73a3b459fc5594894312604964904b60c23f2be83a25d4a324617be756474dc"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/MANIFEST.json",
+      "bytes": 2775,
+      "git_blob_sha": "f7bc419ab4cb5b0a82ea3d3c5fe52c0ef9bbc3f6",
+      "sha256": "402a5957d91f6882b7b4ca2bbe51a7fab78e2e3c206bf31a436ffc54c8de217e"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/PROMPTS.json",
+      "bytes": 4610,
+      "git_blob_sha": "7d5a3c30150039849d72a9250635a373fd7edbd6",
+      "sha256": "76d972b373f8519b4f323b22b9551e5299c5d2c8ee4bc7d4a12648b043d54381"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/QA_REPORT.json",
+      "bytes": 2066,
+      "git_blob_sha": "0583e912971c05ed084e76d214d52a3fc1501db1",
+      "sha256": "dbc7497ab7ece911f1e665039f98f9e8ef79b547dab5b77e9a6e519dbb48a6c0"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/README.md",
+      "bytes": 1625,
+      "git_blob_sha": "c1267d3ef17d6f23ea021a6f740e7c75782e823b",
+      "sha256": "7e28758dafdcb5f5a5e72f2fb4476f90771cffe01ddf1b57a9021ef2bbd1c730"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/city_night.json",
+      "bytes": 1367,
+      "git_blob_sha": "f3e06615b4a633b071f03dfbfe3c2e3004d2a06a",
+      "sha256": "6ee577f35df0c9310c7a775a999e220cb01972b9abce524c36f03a888f441e02"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/city_night.png",
+      "bytes": 2844782,
+      "git_blob_sha": "ffada5d95001ced908768b81e21c6cddf95cb099",
+      "sha256": "fbe9b06061d3de00b64b2da1ec5ce3d710bfc7e58df9351f87414a4deab37b93",
+      "png_crc_decode": "PASS",
+      "size": [
+        941,
+        1672
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/references.jpg",
+      "bytes": 66202,
+      "git_blob_sha": "d0cbacbd33fe4a6bfc0360cd3ac4305cdd29e956",
+      "sha256": "72a11630e393d2cb6366df291f66670a3dcc8283ec8a453f93ef325471aa62df"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/root_fx.json",
+      "bytes": 1319,
+      "git_blob_sha": "d5cd4e498844a595a16f59bbe6b46c48279293fd",
+      "sha256": "82049112bb90479d005b60d0e5ec2afd18dc67ae91d59226e3ae61277e94543e"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/root_fx.png",
+      "bytes": 2232947,
+      "git_blob_sha": "1fa35ec91991c3dfbfe5c228c4b9d31cdfa1e6b5",
+      "sha256": "a6ee88ea2897d82fb7171e21e3f000236ad647d4ff9be73787acf46868bfcfc4",
+      "png_crc_decode": "PASS",
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/roots_burst.json",
+      "bytes": 1296,
+      "git_blob_sha": "655d6ffb7aa6205a447882e6083803825a86ae50",
+      "sha256": "11089b11e74f99b44c51fbabb852a646c482cfa2b6352807d4062d0e37295f91"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/_sources/roots_burst.png",
+      "bytes": 2119931,
+      "git_blob_sha": "e7a3237b0d883111188d28f79410e241285dc2e9",
+      "sha256": "ebc383c9937c1f085aadf19dfc98e2a64a3ec1274d31c185f4cd70836b9b49d2",
+      "png_crc_decode": "PASS",
+      "size": [
+        941,
+        1672
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/cs_fx_root_burst.png",
+      "bytes": 1439472,
+      "git_blob_sha": "a7d8c1159bbc1acff270e21fe045590b9abb5053",
+      "sha256": "86208241d4eed9015b911b73373a8d19b413401b77403cc68d09d42eca24aa00",
+      "png_crc_decode": "PASS",
+      "size": [
+        3240,
+        540
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/cs_s00_far_city_night.png",
+      "bytes": 3462369,
+      "git_blob_sha": "6b83b1e8a7c0581605be99a40aa639d69a6c80b2",
+      "sha256": "b59cd73ff38d9029fe3e79d46fda8011edfb0f2bc8078d09915b579c0b13151c",
+      "png_crc_decode": "PASS",
+      "size": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/cs_s01_far_roots_burst.png",
+      "bytes": 2516774,
+      "git_blob_sha": "e6b1a6f96e60a750771038730abe20868df15332",
+      "sha256": "e2fff1dc3e9f19e2618c4781ccc1c345357476181c8205c78bcac613a1874dbf",
+      "png_crc_decode": "PASS",
+      "size": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/review/FX-gray-contact.jpg",
+      "bytes": 55439,
+      "git_blob_sha": "1e5347c273edbb5361d0c6493ff5655497e2a9f4",
+      "sha256": "8a1e215e9e9a6f8ebfb0fae7469ae1d812edacd0a437de227d1b48946db6f848"
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/review/cs_s00_far_city_night-360x780.png",
+      "bytes": 507507,
+      "git_blob_sha": "05e56e8ad3c1c26a52baaa9691d71f4574407051",
+      "sha256": "34c998f9e6ce9aa6fa3ccb6859285f1b7b196445096b1e7417632df267c7f19c",
+      "png_crc_decode": "PASS",
+      "size": [
+        360,
+        780
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/review/cs_s01_far_roots_burst-360x780.png",
+      "bytes": 419212,
+      "git_blob_sha": "33012b7d72e35b9a18d994efb44090042487d909",
+      "sha256": "128127d99899b95f063180a937963bb552a0b1dd634cce1400a6e59d53575c06",
+      "png_crc_decode": "PASS",
+      "size": [
+        360,
+        780
+      ]
+    },
+    {
+      "file": "assets/incoming/story_shot_redo/review/root-burst.gif",
+      "bytes": 242080,
+      "git_blob_sha": "2d7c4c7e45636d031b983dd0da1a19de869f8858",
+      "sha256": "27db88f336572de7c33a1bc82f40fa75896b48168a73be17ba310eaf044cdc09"
+    },
+    {
+      "file": "docs/SESSION_HANDOFF.md",
+      "bytes": 1398,
+      "git_blob_sha": "dd55bd300d3da716016cd1f4e7f9f48deb7c54cf",
+      "sha256": "b6309aa12dc5f7fad414d576c13d22ebd0df1e1fe7f00104528ecb5121fa43fc"
+    },
+    {
+      "file": "docs/art_orders/46_STORY_SHOT_REDO.md",
+      "bytes": 9152,
+      "git_blob_sha": "5fca9151a4637aa99a45c57b0611cfa71164988f",
+      "sha256": "44acac85a968be2f8357ff9d8597fdb8d963ce5eb376e85464737c47a5123012"
+    },
+    {
+      "file": "docs/art_orders/README.md",
+      "bytes": 26029,
+      "git_blob_sha": "ec9a7d52c804bb21d9169a20f054a45bc1c9833e",
+      "sha256": "2e9c9077d8a35e9cdb64d4765b7a198d057e642decb0ed916efa0c35a0e8d74f"
+    },
+    {
+      "file": "scripts/pack-story-shot-redo.py",
+      "bytes": 6284,
+      "git_blob_sha": "20c6d4efe7e1b8281a7af1acfae06ade9176fe6c",
+      "sha256": "a8162f5b221a0c633145da067695d625b2dd6830ca5073a62ab7ee2a1a365600"
+    }
+  ]
+}
