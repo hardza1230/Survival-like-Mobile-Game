@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.12, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.13, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.11 — Cleaner battle top (owner: top looked cluttered, no top EXP bar)
+# Latest delivery: v8.0.12 — Compact battle HUD
+
+Removed ornamental full-width header, counter/level frames and boss frame from runtime composition; retained painted small counter and control icons. Level/kills/Sugar share a 29px glass island, quick-control hit circles unchanged. Wave title and tiny pips share one row. Mission text has a narrow backing and 3px progress fill; bonus is a short separate line. Boss name and numeric HP share a row above a 4px bar in a 29px strip. Dynamic height follows visible objective/bonus/replay rows, with relic/trait lines below. Layout/text fits cache by display state to avoid rasterizing text every frame; resize invalidates cache. No combat balance, touch routing or extra boot assets changed. Existing Canvas review expanded to boss+mission and large counters at four sizes; full npm check and build passed. Screens: docs/reviews/combat_hud/ (offline production-renderer review; phone FPS/touch not asserted).
+
+# Previous delivery: v8.0.11 — Cleaner battle top (owner: top looked cluttered, no top EXP bar)
 
 Header is one row (10,8,w−20,40): lvlTxt (22,19) · killTxt after the Lv badge (y21) · runSugarTxt right-aligned at w−140 (left of the speed button) · buttons unchanged (cbY). Top EXP bar + xpIcon removed in both art and code modes (EXP stays under the player); stageTxt kept at alpha 0 (title curtain/Pause show the stage). Everything below moved up 22: HUD_ROWS {objective 69, progress 104, bossName 131, bossBg 149, bossBar 151, bossHp 156} (boss rows shift with the plate: plate y = card bottom+6, so a miniboss during an objective sits under the card), timeTxt 52, wave pips pad+58, mission bar 103/104, bonus 114, card bottom 133 (81 without objective), statTxt under the card or plate. Mission card = plain dark .62 rounded rect (hud_mission_card art no longer drawn); hud_exp_frame/fill unused. Combat HUD check 4 sizes × 5 states passed.
 

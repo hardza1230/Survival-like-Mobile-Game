@@ -12,16 +12,17 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
   validate(await check());
   fs.mkdirSync('docs/reviews/combat_hud',{recursive:true});await page.screenshot({path:`docs/reviews/combat_hud/${w}x${h}.png`});
   // Production renderers with changed display values; no state tick, targeting or gameplay.
-  for(const kind of ['hunt','season','boss','replay']){
-   await page.evaluate(kind=>{const s=window.hudReview;s.waveObjTxt.setVisible(false);s.waveBonusTxt.setVisible(false);s.bossName.setVisible(false);s.waveObjBg.setVisible(false);s.waveObjBar.setVisible(false);s.syncSeasonIcons(null);
+  for(const kind of ['hunt','season','boss','bossMission','replay','counters']){
+   await page.evaluate(kind=>{const s=window.hudReview;s.waveObjTxt.setVisible(false);s.waveBonusTxt.setVisible(false);s.bossName.setVisible(false);s.waveObjBg.setVisible(false);s.waveObjBar.setVisible(false);s.bossBgW.setVisible(false);s.bossBar.setVisible(false);s.bossHpTxt.setVisible(false);s.replayProgressFrame.setVisible(false);s.replayProgressFill.setVisible(false);s.syncSeasonIcons(null);
     if(kind==='hunt'){s.waveObjective={type:'hunt',name:'Elite Showdown',emoji:'🎯',color:0xffd166,progress:1,target:3,_huntPhase:'clear',_huntKills:20,_huntKillGoal:25};s.renderWaveObjectiveHUD();}
     if(kind==='season'){s.waveObjTxt.setText('Spring 10/12 · Next season 30s · 2/4 full').setVisible(true);s.syncSeasonIcons({type:'seasonCycle',storm:{cur:{idx:0},passed:[false,false,true,true]}});}
-    if(kind==='boss'){s.timeTxt.setText('Boss encounter');s.bossName.setText('Sour Ant Queen').setVisible(true);s.bossBgW.setVisible(true);s.bossBar.setVisible(true);s.bossHpTxt.setText('12,000 / 15,000').setVisible(true);}
+    if(kind==='boss'||kind==='bossMission'){s.timeTxt.setText('Boss encounter');s.bossName.setText('Sour Ant Queen').setVisible(true);s.bossBgW.setVisible(true);s.bossBar.setVisible(true);s.bossHpTxt.setText('12,000 / 15,000').setVisible(true);if(kind==='bossMission'){s.waveObjective={type:'survive',name:'Survive the Swarm',emoji:'⏳',color:0x9be36f,progress:25,target:30};s._bonus={id:'nohit',hits:0,maxHits:2,reward:'relic'};s.renderWaveObjectiveHUD();}}
     if(kind==='replay'){s.bossName.setVisible(false);s.timeTxt.setText('Survival replay');s.waveObjTxt.setText('Stage progress · 75%').setVisible(true);s.replayProgressFrame.setVisible(true);}
-    s.drawBars();},kind);validate(await check());
+    if(kind==='counters'){s.lvlTxt.setText('Lv 100');s.killTxt.setText('KOs 999999');s.runSugarTxt.setText('🍬 999999');}s.drawBars();s.drawBars();},kind);validate(await check());
+   if(kind==='bossMission'){const bottom=await page.evaluate(()=>window.hudReview._hudBottom);assert(bottom<=150,'Boss+mission HUD too tall: '+bottom);await page.screenshot({path:`docs/reviews/combat_hud/${w}x${h}_boss.png`});}
   }
   await page.evaluate(()=>{const s=window.hudReview;s.hudVisible(false);if(s.controlBase.visible)throw Error('control plate leaks while HUD hidden');s.hudVisible(true);s.layoutCombatHUD();});
-  assert.deepEqual(errors,[]);console.log(`Static production HUD ${w}x${h}: wave/hunt/season/boss/replay, text bounds, separation and hide/resume passed`);await page.close();
+  assert.deepEqual(errors,[]);console.log(`Static production HUD ${w}x${h}: wave/hunt/season/boss+mission/replay/large counters, compact height, text bounds, separation and hide/resume passed`);await page.close();
  }
  }finally{await browser?.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

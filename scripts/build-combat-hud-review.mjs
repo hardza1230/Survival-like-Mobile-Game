@@ -10,7 +10,7 @@ class CombatHUDReview extends Game{
   this.add.tileSprite(RW/2,RH/2,RW,RH,'bg1').setTileScale(.55);
   this.add.sprite(RW/2,RH/2-8,'hero',0).setDisplaySize(44,44);
   this.buildHUD();this.buildSkillBar();this.hudVisible(true);this.stageTxt.setText('C1-1 · Sour Ant Nest');this._stageTxtAt=10;this.lvlTxt.setText('Lv 10');this.killTxt.setText('KOs 220');this.runSugarTxt.setText('🍬 231');
-  this.waveObjective={type:'survive',name:'Survive the Swarm',emoji:'⏳',color:0x9be36f,progress:25,target:30};this._bonus={id:'nohit',hits:0,maxHits:2,reward:'relic'};this.renderWaveObjectiveHUD();this.timeTxt.setText('Wave 2/5 · 5s');this.drawWavePips();this.drawBars();this.drawDashRing();this.drawUniqueRing();this.drawOverheadStatus(1);
+  this.waveObjective={type:'survive',name:'Survive the Swarm',emoji:'⏳',color:0x9be36f,progress:25,target:30};this._bonus={id:'nohit',hits:0,maxHits:2,reward:'relic'};this.renderWaveObjectiveHUD();this.timeTxt.setText('Wave 2/5 · 5s');this.drawWavePips();this.drawBars();this.drawBars();this.drawDashRing();this.drawUniqueRing();this.drawOverheadStatus(1);
   window.hudReview=this;document.querySelector('#status').textContent='Ready';
  }
  checkCombos(){} update(){} camUI(o){return o;} syncUniqueIcon(){} realTex(k){return this.textures.exists(k);}

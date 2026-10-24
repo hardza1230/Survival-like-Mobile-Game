@@ -10,7 +10,7 @@ for(const e of man){ const b=fs.readFileSync(kit+e.file);assert.equal(b.length,e
   assert.equal(bootKeep(e.key),false);assert.equal(artClass(e.key,url),'stage',e.key);assert(STAGE_SHEETS.every(s=>s.includes(e.key)),'every stage loads '+e.key);
   assert.equal(JSON.stringify(TEMPLE_UI[e.key]),JSON.stringify([e.frame_width/2,e.frame_height/2,e.frames,e.nineSlice?e.nineSlice.map(v=>Math.floor(v/2)):null]),e.key); }
 // 2. hook ครบ · โค้ดวาดเดิมยังเป็น fallback
-for(const s of ['const art=this.hudArtSync?.();','if(this.xpIcon?.visible)this.xpIcon.setVisible(false);','g.fillStyle(0x1a1424,.62).fillRoundedRect(10,52,w-20,bottom-52,10);','const w=this.W,art=!!this._hudArt;','this.hudPipsArt?.(pips);','if(hit)this._hudPress=','this.hudBtnArtSync?.(); Sfx.select();'])assert(src.includes(s),'missing hook '+s);
+for(const s of ['const art=this.hudArtSync?.();','if(this.xpIcon?.visible)this.xpIcon.setVisible(false);','const w=this.W,art=!!this._hudArt;','this.hudPipsArt?.(pips);','if(hit)this._hudPress=','this.hudBtnArtSync?.(); Sfx.select();'])assert(src.includes(s),'missing hook '+s);
 // 3. ไม่มีไฟล์ = ไม่สร้างอะไร คืน false · ถูกลบกลางทาง = คืนข้อความ/ความทึบของเดิม
 const a=src.indexOf('  hudArtOn(){'),b=src.indexOf('  hudVisible(v){');assert(a>0&&b>a);
 const g={HUD_KEYS,Sfx:{muted:false},Phaser:{Math:{Clamp:(v,l,h)=>Math.max(l,Math.min(h,v))}}};vm.createContext(g);vm.runInContext('class T{'+src.slice(a,b)+'}; this.T=T;',g);
