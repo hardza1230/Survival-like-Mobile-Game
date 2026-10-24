@@ -25,7 +25,7 @@ const a=src.indexOf('  mcScene(id){'),b=src.indexOf('  mcShot(mc,i){');assert(a>
 const g={Save:{data:{settings:{}},save(){g.saved++;}},Sfx:{},MOTION_COMICS,saved:0};vm.createContext(g);vm.runInContext('class T{'+src.slice(a,b)+'}; this.T=T;',g);
 const mk=(real=true)=>{ const t=new g.T(),removed=[],tex=new Set(['cs_s02_far_drains','card_mint']); Object.assign(t,{W:360,H:780,state:'menu',add:{rectangle:()=>({setOrigin(){return this;}}),text:()=>({setOrigin(){return this;},setAlpha(){return this;}})},
   storyLayer:{removeAll(){},setVisible(v){t.vis=v;},add(){}},tweens:{add(){}},time:{delayedCall:()=>({remove(){}})},physics:{pause(){t.paused=1;},resume(){t.paused=0;}},anims:{exists:()=>false,remove(){}},
-  textures:{exists:k=>tex.has(k),remove:k=>{removed.push(k);tex.delete(k);}},realTex:()=>real,ensureGroup:(p,cb)=>cb(),shots:[],mcShot(mc,i){ mc.i=i; mc.shotAt=0; t.shots.push(mc.id+i); },hubMotionAllowed:()=>true}); t.removed=removed; return t; };
+  textures:{exists:k=>tex.has(k),remove:k=>{removed.push(k);tex.delete(k);}},realTex:()=>real,ensureGroup:(p,cb)=>cb(),shots:[],mcShot(mc,i){ mc.i=i; mc.shotAt=0; t.shots.push(mc.id+i); },mcTitle(mc){ this.mcShot(mc,0); },hubMotionAllowed:()=>true}); t.removed=removed; return t; };
 let t=mk(),res=[];assert.equal(t.mcGate('nope',()=>{}),false);
 assert.equal(t.mcGateList(['s02','s03'],ok=>res.push(ok)),true);assert.equal(t.state,'cinematic');assert.equal(t.shots.join(),'s020');
 for(let i=0;i<20&&t._mc;i++)t._finishStoryCutscene({x:10,y:400});assert.equal(res.join(),'true');assert.equal(t.state,'menu');assert.equal(g.Save.data.mcSeen.s02,1);assert.equal(g.Save.data.mcSeen.s03,1);

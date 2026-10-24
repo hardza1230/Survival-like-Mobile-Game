@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.2';
+const GAME_VERSION = '8.0.3';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.3',date:'2026-10-24',title:'More cinematic story',items:['Stage title cards now open like a film: the name slowly rises in with a gold line and a short tagline, then fades away (tap to skip)','Story scenes open with their own title card and now have comic effects: impact lines, sound words like CRACK!, light rays, drifting dust, embers or snow','Captions type out letter by letter — tap once to show the whole line, tap again for the next shot'] },
   {v:'8.0.2',date:'2026-10-24',title:'Story scenes come alive',items:['The story is now told in moving comic scenes: layered backgrounds, characters that fall, land and glow, and magic effects','New scenes for the opening, every Chapter 1 stage, each friend you free, the chapter starts and endings, the glass memories and the Delve','Tap to go to the next shot, Skip to jump ahead · each scene plays once'] },
   {v:'8.0.1',date:'2026-10-24',title:'Bottom menu always there',items:['The bottom menu bar now stays on every page, even after tapping buttons like Talents, Settings or the Forge','The old home screen is gone — new players see the new Lobby too']},
   {v:'8.0.0',date:'2026-10-24',title:'Mint Barrage toned down',items:['Mint’s Barrage Build lances now hit for 55% damage (was 62%)','Barrage shard bursts hit nearby enemies a little softer']},
@@ -7071,6 +7072,13 @@ const MOTION_COMICS={
     {bg:['cs_s17_far_delve'],zoom:[1,1.12],cap:'The way down is open. Together, the friends step into the Delve.',L:[['cs_s17_chr_team_back',180,470,345,265]]}]}
 };
 const MC_HERO_SCENE={mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09'},MC_STAGE_STORY=[['s00','s01'],['s02'],['s03'],['s04'],['s05']],MC_AFTER_STAGE={4:'s11',9:'s13',14:'s16'};
+const STAGE_TAGLINES=['Every hero starts with a fall.','What the nest spills, the drains remember.','Somewhere below, a fire is eating flavor.','In the cold, someone is still waiting.','The Hunger is awake. And it is listening.','A root that runs can still grow.','Breathe while you still can.','The sweetest things are the first to be taken.','Four seasons. One broken garden.','Every root leads somewhere. This one leads to a throne.','Nothing grows where the Crown has fed.','Ripe on the outside. Empty within.','Glass remembers what people forget.','The last of every flavor sleeps here.','Take off the Crown. End the curse.'];
+// v8.0.3 คำโปรยการ์ดชื่อ (tag) · อนุภาคลอย (mote) · คำเสียงการ์ตูน (pow ต่อช็อต)
+(()=>{ const F={s00:['Before the mochi, there were people.','spark',{2:'POOF!'}],s01:['One small seed. One small hero.','dust',{0:'CRACK!',2:'THUD!',5:'POP!'}],s02:['Grandma left a recipe for every fight.','dust',{}],s03:['Flavor was never meant to be fuel.','ember',{0:'CLANK!'}],s04:['Some voices survive the cold.','snow',{2:'SHATTER!'}],s05:['The Hunger has a voice now.','ember',{1:'RUMBLE…'}],
+    s06:['One more friend comes home.','snow',{2:'POOF!'}],s07:['One more friend comes home.','spark',{2:'POOF!'}],s08:['One more friend comes home.','spark',{2:'POOF!'}],s09:['One more friend comes home.','ember',{2:'POOF!'}],
+    s11:['The oven is cold. The root is running.','ember',{0:'RIIIP!'}],s12:['A new garden. An old Hunger.','spark',{}],s13:['The way home is lit.','spark',{}],s14:['The last road climbs toward the First Tree.','dust',{}],s15:['What was lost is not gone.','spark',{}],s16:['The curse ends where it began.','spark',{1:'KRAK!'}],s17:['Deep below, something stirs.','dust',{0:'RUMBLE…'}]};
+  for(const id in F){ const sc=MOTION_COMICS[id]; if(!sc)continue; sc.tag=F[id][0]; sc.mote=F[id][1]; for(const i in F[id][2])if(sc.shots[i])sc.shots[i].pow=F[id][2][i]; }
+  for(const sh of MOTION_COMICS.s01.shots.slice(1,2))sh.lines=[0,2300]; MOTION_COMICS.s11.shots[0].powAt=500; })();
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
@@ -7764,6 +7772,7 @@ class Game extends Phaser.Scene {
       if(p.rightButtonDown&&p.rightButtonDown()&&!p.wasTouch){ if(this.state==='play'&&this.uniqueBtn&&this.uniqueBtn.visible&&!this._kbUnique){ this._kbUnique=true; this.input.emit('pointerdown',{x:this.uniqueBtn.x*RENDER_DPR,y:this.uniqueBtn.y*RENDER_DPR,id:-77}); } return; }   // v7.2 PC: hold right mouse = Unique (aim with cursor)
       Sfx.unlock();
       if(this._adBusy)return;   // กำลังเล่นโฆษณา = บLockedอินพุตอื่น
+      if(this._rubyEntry?.active&&this._rubyEntry._skip){ this._rubyEntry._skip(); return; }   // v8.0.3 แตะข้ามม่านชื่อด่าน
       p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
       // mute toggle (มุมขวาบน)
       // v5.52: ปุ่มมุมขวาบน 3 ปุ่มอยู่ใกล้กัน → เลือก "ปุ่มที่ใกล้นิ้วที่สุด" แทนเช็คทีละปุ่ม (เดิมวงแตะ 28px ทับกัน กด pause โดน mute แทน)
@@ -12338,13 +12347,51 @@ class Game extends Phaser.Scene {
       drop(); if(this._mc===mc)this._mc=null; if(this.state==='cinematic')this.state=prev; if(wasPlay)this.physics.resume(); done&&done(!!seen); };
     mc.finish=finish; this._finishStoryCutscene=p=>this.mcTap(mc,p);
     to=this.time.delayedCall(12000,()=>{ if(!mc.ready)finish(false); });
-    this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ finish(false); return; } to.remove(false); mc.ready=true; this.mcShot(mc,0); },{all:true,quiet:true,fx:true});
+    this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ finish(false); return; } to.remove(false); mc.ready=true; this.mcTitle(mc); },{all:true,quiet:true,fx:true});
   }
   mcTap(mc,p){ if(mc.done)return; if(!mc.ready){ mc.finish(false); return; } const s=mc.skip;
     if(p&&s&&p.x>=s.x&&p.x<=s.x+s.w&&p.y>=s.y&&p.y<=s.y+s.h){ Sfx.select&&Sfx.select(); mc.finish(true); return; }
+    if(mc.typing){ mc.typing(); return; }   // แตะครั้งแรก = พิมพ์ข้อความให้ครบก่อน
     if(Date.now()-mc.shotAt<350)return; this.mcNext(mc); }
   mcNext(mc){ if(mc.done)return; if(mc.i+1>=mc.sc.shots.length){ mc.finish(true); return; } this.mcShot(mc,mc.i+1); }
-  mcClearShot(mc){ mc.tw.forEach(t=>t&&t.remove&&t.remove()); mc.ev.forEach(e=>e&&e.remove&&e.remove(false)); mc.objs.forEach(o=>o&&o.active&&o.destroy()); mc.tw=[]; mc.ev=[]; mc.objs=[]; mc.layer.removeAll(true); }
+  mcClearShot(mc){ mc.tw.forEach(t=>t&&t.remove&&t.remove()); mc.ev.forEach(e=>e&&e.remove&&e.remove(false)); mc.objs.forEach(o=>o&&o.active&&o.destroy()); mc.tw=[]; mc.ev=[]; mc.objs=[]; mc.typing=null; mc.layer.removeAll(true); }
+  /* v8.0.3 การ์ดชื่อแบบหนัง: ตัวหนังสือค่อย ๆ ลอยขึ้น + เส้นทอง + คำโปรย + ฝุ่นลอย · ใช้ทั้งตอนเข้าด่านและก่อนฉากเรื่อง · คืน {objs,dur,out(ms,cb)} */
+  cineTitle(parent,o={},reg){ const W=this.W,H=this.H,red=!(this.hubMotionAllowed?this.hubMotionAllowed():true),sp=o.speed||1,y0=o.y??H*.42,F='NunitoUI, sans-serif',objs=[],motes=[];
+    const T=c=>{ const t=this.tweens.add(c); reg&&reg(t); return t; },add=x=>{ parent.add(x); objs.push(x); return x; };
+    if(!red)for(let j=0;j<16;j++){ const x=Math.random()*W,y=H*(.3+Math.random()*.6),m=this.add.circle(x,y,.8+Math.random()*1.6,j%3?0xffe7c2:0xffc36b,1).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD); parent.add(m); motes.push(m); const d=3800+Math.random()*3200;
+      T({targets:m,y:y-(70+Math.random()*120),x:x+(Math.random()*40-20),duration:d,delay:Math.random()*1500,repeat:-1}); T({targets:m,alpha:.25+Math.random()*.45,duration:d/2,delay:Math.random()*1500,yoyo:true,repeat:-1}); }
+    const kick=add(this.add.text(W/2,y0-30,o.kicker||'',{fontFamily:F,fontStyle:'bold',fontSize:'12px',color:'#e0b981',letterSpacing:4}).setOrigin(.5));
+    const title=add(this.add.text(W/2,y0,o.title||'',{fontFamily:F,fontStyle:'bold',fontSize:Math.round(Math.min(30,W*.078))+'px',color:'#fff1df',align:'center',wordWrap:{width:W-80},padding:{x:22,y:14}}).setOrigin(.5,0)); title.setShadow(0,0,'#ff9e5e',14,true,true);
+    const ly=y0+title.height-6,line=add(this.add.graphics({x:W/2,y:ly})); line.lineStyle(2,0xe0b981,.85); line.lineBetween(-Math.min(120,W*.3),0,Math.min(120,W*.3),0); line.fillStyle(0xffd98a,1); line.fillCircle(0,0,3);
+    const tag=add(this.add.text(W/2,ly+16,o.tag||'',{fontFamily:F,fontStyle:'italic',fontSize:'15px',color:'#dccbe8',align:'center',wordWrap:{width:W-60},lineSpacing:4}).setOrigin(.5,0));
+    const dur=Math.round((o.tag?3900:2700)*sp);
+    if(red){ objs.forEach(x=>x.setAlpha(1)); }
+    else { [kick,title,tag].forEach(x=>x.setAlpha(0)); line.setScale(0,1);
+      T({targets:kick,alpha:1,y:kick.y,duration:900*sp,delay:300*sp,ease:'Sine.easeOut'}); kick.y+=8;
+      title.y+=18; title.setScale(.95); T({targets:title,alpha:1,y:y0,scale:1,duration:1500*sp,delay:800*sp,ease:'Sine.easeOut'});
+      T({targets:line,scaleX:1,duration:900*sp,delay:1900*sp,ease:'Cubic.easeOut'});
+      tag.y+=10; T({targets:tag,alpha:1,y:ly+16,duration:1400*sp,delay:2500*sp,ease:'Sine.easeOut'}); }
+    const out=(ms,cb)=>{ const all=[...objs,...motes]; if(red||!all.length){ cb&&cb(); return; } T({targets:objs,alpha:0,y:'-=10',duration:ms,ease:'Sine.easeIn'}); T({targets:motes,alpha:0,duration:ms,onComplete:()=>cb&&cb()}); };
+    return {objs:[...objs,...motes],dur,out};
+  }
+  mcTitle(mc){ this.mcClearShot(mc); mc.i=-1; mc.shotAt=Date.now(); const L=mc.layer,W=this.W,H=this.H,bg=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0); L.add(bg); mc.objs.push(bg);
+    const ct=this.cineTitle(L,{kicker:'MOCHITOPIA · STORY',title:mc.sc.title,tag:mc.sc.tag,speed:.72},t=>mc.tw.push(t)); mc.objs.push(...ct.objs);
+    mc.ev.push(this.time.delayedCall(ct.dur+800,()=>{ if(mc.done||mc.i!==-1)return; ct.out(650,()=>{ if(!mc.done&&mc.i===-1)this.mcNext(mc); }); })); }
+  mcMotes(mc,kind,n){ const W=this.W,H=this.H,C={dust:[0xfff1d6,.45],ember:[0xff8a3d,.9],snow:[0xffffff,.85],spark:[0xffe27a,.9]}[kind]||[0xfff1d6,.45],fall=kind==='snow';
+    for(let j=0;j<n;j++){ const x=Math.random()*W,y=Math.random()*H*.7,m=this.add.circle(x,y,fall?1.4+Math.random()*1.8:.8+Math.random()*1.5,C[0],1).setAlpha(0); if(kind==='ember'||kind==='spark')m.setBlendMode(Phaser.BlendModes.ADD);
+      mc.layer.add(m); mc.objs.push(m); const d=kind==='ember'?1800+Math.random()*1600:3200+Math.random()*3200,dl=Math.random()*1400;
+      mc.tw.push(this.tweens.add({targets:m,y:y+(fall?1:-1)*(90+Math.random()*160),x:x+(Math.random()*50-25),duration:d,delay:dl,repeat:-1}));
+      mc.tw.push(this.tweens.add({targets:m,alpha:C[1]*(.5+Math.random()*.5),duration:d/2,delay:dl,yoyo:true,repeat:-1})); } }
+  mcLines(mc,at,dur,cx,cy){ const W=this.W,H=this.H,R=Math.hypot(W,H)*.62,g=this.add.graphics().setAlpha(0); mc.layer.add(g); mc.objs.push(g);
+    const draw=()=>{ g.clear(); g.fillStyle(0xffffff,.9); for(let j=0;j<34;j++){ const a=Math.random()*Math.PI*2,w=.01+Math.random()*.018,r0=R*(.4+Math.random()*.24); g.beginPath(); g.moveTo(cx+Math.cos(a-w)*R,cy+Math.sin(a-w)*R); g.lineTo(cx+Math.cos(a)*r0,cy+Math.sin(a)*r0); g.lineTo(cx+Math.cos(a+w)*R,cy+Math.sin(a+w)*R); g.closePath(); g.fillPath(); } };
+    const go=()=>{ if(!g.active)return; g.setAlpha(.7); draw(); mc.ev.push(this.time.addEvent({delay:60,repeat:Math.ceil(dur/60),callback:()=>{ if(g.active)draw(); }})); mc.tw.push(this.tweens.add({targets:g,alpha:0,delay:dur*.55,duration:dur*.45})); };
+    if(at)mc.ev.push(this.time.delayedCall(at,go)); else go(); }
+  mcRays(mc,at,cx,cy,color){ const R=Math.hypot(this.W,this.H)*.7,g=this.add.graphics({x:cx,y:cy}).setAlpha(0).setBlendMode(Phaser.BlendModes.ADD); g.fillStyle(color||0xfff1c8,1);
+    for(let j=0;j<14;j++){ const a=j/14*Math.PI*2,w=.065; g.fillTriangle(0,0,Math.cos(a-w)*R,Math.sin(a-w)*R,Math.cos(a+w)*R,Math.sin(a+w)*R); } mc.layer.add(g); mc.objs.push(g);
+    mc.ev.push(this.time.delayedCall(Math.max(0,at-150),()=>{ if(!g.active)return; mc.tw.push(this.tweens.add({targets:g,alpha:.3,duration:420,yoyo:true,hold:700,ease:'Sine.inOut'})); mc.tw.push(this.tweens.add({targets:g,rotation:.45,duration:2000})); })); }
+  mcPow(mc,at,text,red){ const W=this.W,H=this.H,left=(mc.i%2)===0,t=this.add.text(left?W*.3:W*.7,H*.2,text,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(46,W*.12))+'px',color:'#ffd34d',stroke:'#2a0f1c',strokeThickness:8}).setOrigin(.5).setAngle(left?-10:9).setScale(0);
+    t.setShadow(3,4,'#000000',0,true,true); mc.layer.add(t); mc.objs.push(t);
+    mc.ev.push(this.time.delayedCall(at||0,()=>{ if(!t.active)return; if(red){ t.setScale(1); return; } Sfx.boom?.(); mc.tw.push(this.tweens.add({targets:t,scale:1.22,duration:140,ease:'Back.easeOut',onComplete:()=>{ if(t.active)mc.tw.push(this.tweens.add({targets:t,scale:1,duration:120})); }})); mc.tw.push(this.tweens.add({targets:t,alpha:0,y:t.y-14,delay:1100,duration:420})); })); }
   mcShot(mc,i){ this.mcClearShot(mc); const sc=mc.sc,sh=sc.shots[i],n=sc.shots.length,W=this.W,H=this.H,L=mc.layer,red=mc.red,ms=sh.ms||3200;
     mc.i=i; mc.shotAt=Date.now(); const k=Math.min(W/360,H/780),X=x=>W/2+(x-180)*k,Y=y=>H/2+(y-390)*k;
     const add=o=>{ L.add(o); mc.objs.push(o); return o; },at=(t,fn)=>{ if(!t){ fn(); return; } mc.ev.push(this.time.delayedCall(t,fn)); };
@@ -12369,13 +12416,23 @@ class Game extends Phaser.Scene {
       if(o.out)at(o.out,()=>{ if(im.active)tw({targets:im,alpha:0,duration:200}); }); }
     if(sh.shake&&!red)at(sh.shake[0],()=>this.uiCam?.shake(sh.shake[1],sh.shake[2]));
     if(sh.flash)at(sh.flash[0],()=>{ const r=add(this.add.rectangle(0,0,W,H,sh.flash[1],red?.35:.85).setOrigin(0)); tw({targets:r,alpha:0,duration:520}); });
+    if(!red){ this.mcMotes(mc,sh.mote||sc.mote||'dust',sh.motes??14);   // v8.0.3 ลูกเล่นการ์ตูน: ฝุ่น/ถ่านไฟ/หิมะลอย · เส้นโฟกัสตอนสั่น · แสงแฉกตอนวาบ · คำเสียง
+      if(sh.shake)this.mcLines(mc,sh.shake[0],Math.max(450,sh.shake[1]+250),W/2,H*.4);
+      if(sh.flash)this.mcRays(mc,sh.flash[0],W/2,H*.36,sh.flash[1]);
+      if(sh.lines)this.mcLines(mc,sh.lines[0]||0,sh.lines[1]||900,W/2,H*.4); }
+    if(sh.pow)this.mcPow(mc,sh.powAt??(sh.shake?sh.shake[0]:300),sh.pow,red);
+    { const vg=add(this.add.graphics()); vg.fillGradientStyle(0,0,0,0,.6,.6,0,0); vg.fillRect(0,0,W,H*.2); vg.fillGradientStyle(0,0,0,0,.45,0,.45,0); vg.fillRect(0,0,W*.14,H); vg.fillGradientStyle(0,0,0,0,0,.45,0,.45); vg.fillRect(W*.86,0,W*.14,H);
+      const bh=Math.round(H*.045),bar=add(this.add.rectangle(0,0,W,bh,0x000000,1).setOrigin(0)); if(i===0&&!red){ bar.y=-bh; tw({targets:bar,y:0,duration:500,ease:'Quad.easeOut'}); } }
     const by=H*.7,band=add(this.add.graphics()); band.fillGradientStyle(0x07040b,0x07040b,0x07040b,0x07040b,0,0,.94,.94); band.fillRect(0,by-40,W,40); band.fillStyle(0x07040b,.94); band.fillRect(0,by,W,H-by); band.lineStyle(2,0xffd166,.7); band.lineBetween(22,by+8,W-22,by+8);
     const fs=W<380?16:17,kick=add(this.add.text(W/2,by+24,sc.title+'  ·  '+(i+1)+' / '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',letterSpacing:2}).setOrigin(.5));
-    const cap=add(this.add.text(W/2,by+44,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'center',lineSpacing:5,wordWrap:{width:W-44},stroke:'#120a18',strokeThickness:3}).setOrigin(.5,0));
+    const cap=add(this.add.text(W/2,by+44,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'left',lineSpacing:5,wordWrap:{width:W-44},stroke:'#120a18',strokeThickness:3}).setOrigin(0,0));
+    { const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(W/2-cap.width/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
+      if(!red&&wrapped){ let n=0; const step=Math.max(1,Math.round(wrapped.length/95)); cap.setText(''); const ev=this.time.addEvent({delay:24,loop:true,callback:()=>{ n=Math.min(wrapped.length,n+step); if(cap.active)cap.setText(wrapped.slice(0,n)); if(n>=wrapped.length){ ev.remove(false); mc.typing=null; } }}); mc.ev.push(ev); mc.typing=()=>{ ev.remove(false); if(cap.active)cap.setText(wrapped); mc.typing=null; }; } }
     const hint=add(this.add.text(W-18,H-16,i+1<n?'Tap ▶':'Tap to continue ▶',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,1).setAlpha(.8));
     [kick,cap].forEach(t=>t.setAlpha(0)); tw({targets:[kick,cap],alpha:1,duration:380,delay:220}); tw({targets:hint,alpha:.35,duration:700,yoyo:true,repeat:-1},true);
     const pad=this._pad||14,sw=70,shh=30,sx=W-sw-12,sy=pad+8,sg=add(this.add.graphics()); sg.fillStyle(0x000000,.45); sg.fillRoundedRect(sx,sy,sw,shh,15); sg.lineStyle(2,0xffffff,.7); sg.strokeRoundedRect(sx,sy,sw,shh,15);
     add(this.add.text(sx+sw/2,sy+shh/2,'Skip ⏭',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(.5)); mc.skip={x:sx-8,y:sy-8,w:sw+16,h:shh+16};
+    if(!red){ const dip=add(this.add.rectangle(0,0,W,H,0x000000,1).setOrigin(0)); tw({targets:dip,alpha:0,duration:320,ease:'Quad.easeOut'}); }
     at(Math.max(ms+900,2200+(sh.cap||'').length*45),()=>this.mcNext(mc));
   }
   rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
@@ -14107,16 +14164,20 @@ class Game extends Phaser.Scene {
       this.tapZones=[{x:bx,y:by,w:bw,h:bh,tag:'ruby_guide_next',noBounce:true,fn:()=>{if(Date.now()-at<400)return;at=Date.now();if(++i>=lines.length)close();else render();}}];
     };render();
   }
+  /* v8.0.3 ม่านเข้าด่านแบบเปิดหนัง: ชื่อค่อย ๆ ลอยขึ้น + คำโปรย (ครั้งแรกเต็ม ~5 วิ · เล่นซ้ำสั้นลง) · แตะเพื่อข้าม */
   rubyEntryCurtain(idx){this.tapZones=[];this._rubyEntry?.destroy();const c=this.add.container(0,0).setDepth(10000);this.camUI(c);this._rubyEntry=c;
     c.add(this.add.rectangle(0,0,this.W,this.H,0x09070c,1).setOrigin(0));
-    c.add(this.add.text(this.W/2,this.H*.4,'CHAPTER '+((STAGES[idx]?.chapter||0)+1)+' · STAGE '+(STAGES[idx]?.chapterStage||idx+1),{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#e0b981'}).setOrigin(.5));
-    c.add(this.add.text(this.W/2,this.H*.48,STAGES[idx]?.name||'Into the pantry',{fontFamily:'NunitoUI, sans-serif',fontSize:'25px',color:'#fff1df',align:'center',wordWrap:{width:this.W-40}}).setOrigin(.5,0));
-    c.once('destroy',()=>{if(this._rubyEntry===c)this._rubyEntry=null;});
+    const st=STAGES[idx]||{},first=!(Save.data?.stageMastery||{})[idx],tag=typeof STAGE_TAGLINES!=='undefined'?STAGE_TAGLINES[idx]:'';
+    const ct=this.cineTitle?this.cineTitle(c,{kicker:'CHAPTER '+((st.chapter||0)+1)+' · STAGE '+(st.chapterStage||idx+1),title:st.name||'Into the pantry',tag,speed:first?1:.55},t=>(c._tw||(c._tw=[])).push(t)):null;
+    c._t0=Date.now(); c._need=ct?ct.dur+(first?700:250):0; c._ct=ct;
+    c.once('destroy',()=>{(c._tw||[]).forEach(t=>t.remove?.());if(this._rubyEntry===c)this._rubyEntry=null;});
   }
   rubyEnterStage(done){const c=this._rubyEntry;if(!c?.active){done();return;}let ended=false;
-    const finish=()=>{if(ended||!c.active)return;ended=true;c.destroy();done();if(this.hubMotionAllowed())this.cameras.main.fadeIn(450,9,7,12);};
+    const finish=()=>{if(ended||!c.active)return;ended=true;c._skip=null;c.destroy();done();if(this.hubMotionAllowed())this.cameras.main.fadeIn(650,9,7,12);};
     if(!this.hubMotionAllowed()){finish();return;}
-    this.tweens.add({targets:c,alpha:1,duration:500,onComplete:finish});
+    let leaving=false;const leave=ms=>{if(leaving)return;leaving=true;if(c._ct)c._ct.out(ms,finish);else finish();};
+    c._skip=()=>leave(300);
+    const wait=Math.max(0,(c._t0||0)+(c._need||0)-Date.now());this.tweens.add({targets:{v:0},v:1,duration:Math.max(1,wait),onComplete:()=>leave(1000)});
   }
   rubyClearStory(last){const d=Save.data,idx=this.stageIndex;
     if(this.recipeMode||this.riftMode||this.bossRush||this._inTutorial||![0,4].includes(idx)||d.settings?.noRuby||d.rubyMemories?.[idx])return false;
