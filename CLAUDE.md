@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.18, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.19, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.17 — Heavier boss kills, Unique glow, Dash squash (owner)
+# Latest delivery: v8.0.18 — Fairer missions, livelier Ruby, Momo hits, counters (owner)
+
+completeWaveObjective: zoneObj (purge/capture/cleanAir/breakRoots/defendNectar) → Sugar bonus ×1.5 + heal 20% max HP (banner '· ❤️ +20%'). captureBleed(dt,inside,o) after tickCaptureFX in the capture tick: o._out starts −2 (4.5s to reach the ring), bleed from 2.5s outside, stacks 1+floor((out−2.5)/1.5) ≤10, maxhp·.004·stack per .5s (same as Escort), inside → out decays ×4; banner once. spawnCounter: life 6→10, non-drift counters pushed to ≥260px from the boss (toward the player if on top of it); arenaPods life 8→11. castBerryBlaster power ×1.15 for sniper/shotgun. rubyReact(c,av,m,…) replaces the stiff avatar bob in rubyNext: alert = squash-jump + shake + '!' pop + box shake; happy/cheer = double hop; sad = droop; else squash breathing.
+
+# Previous delivery: v8.0.17 — Heavier boss kills, Unique glow, Dash squash (owner)
 
 killSlowmo(power) from the top of killEnemy for active boss (1) / mini (.6): _slowmo + _isHitStop guard, physics.world.timeScale 12 + tweens.timeScale .04 for 90+30·power ms (camera flash 110ms), then physics 1/(gs·.35) + tweens gs·.35 for 380+320·power ms, then setGameSpeed(gameSpeed) — real-time setTimeout so it does not depend on x1–x4 or scene timers. uniqueReadyGlow(g,b,col) from drawUniqueRing's ready branch: pulsing outer/inner rings, 2 orbiting white sparkles, one-shot expanding white ring for 600ms after it becomes ready (_uqReadyAt reset while on cooldown). dashPress() from the Dash-button tap (before doDash, state play; doDash text unchanged for the legacy hash tests): dashBtn/dashTxt scale .8 → 1 (Back.out 240ms, dashTxt keeps ctrlScale). Boss HP ghost now holds 180ms and shrinks ×.22/frame (was 380/.08). Mission card block moved down 8px (D in drawCombatHUDPanels: timeTxt, pips, objective, card, replay meter).
 
