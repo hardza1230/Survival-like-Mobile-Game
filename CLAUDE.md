@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.20, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.21, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.19 — Gear from the Bazaar, Delve after the story, chest lesson (owner)
+# Latest delivery: v8.0.20 — New Daily Quests (owner)
+
+DQ_POOL rows {id,k (tick kind),b (0 easy/1 medium/2 hard),target,go,req}; DQ_BAND picks 4/4/2 (seeded dqPick, no duplicate kind inside a band); dqDef('win_<hero>') builds 'Clear a stage with <hero>' (medium, only when ≥2 non-WIP heroes via dqHeroes). DQ_BOXES by done count 3/6/8 (DailyQ.count; pts() = count). DailyQ.reroll(i): 1 free per day (q.rr), same band, not finished. Weekly Save.data.dqWeek {wk Monday key, days, got}: a day is added when count ≥ DQ_WEEK_NEED 8; 7 days → Gold Chest via openChest(gold,'weekly') (no Thread, no free-silver use; _chestBack returns Collect to Daily). Old dailyQ without v:2 regenerates. New tick kinds: unique (uniqueCastFx), dash (dashPress = Dash button), kick (counter launched), star3 (evalStageStars mask 7), chest (openChest), objective (completeWaveObjective, story, not the fill→hunt step), win_<hero> (Stats.end win). buildDaily: login panel 68px, Today panel with bar + 3 boxes + Week strip + gold chest, 10 compact rows (band colour stripe, 🔄 button while the reroll is unused). tests/daily-quests rewritten.
+
+# Previous delivery: v8.0.19 — Gear from the Bazaar, Delve after the story, chest lesson (owner)
 
 grantGear: non-gacha/non-trade Story drops (field boxes, stage-end boxes, wheel/boss gear) get affixes [] + craftState common while !Save.data._craftTutGift && storyCleared()<3 (chests/gacha keep 0–1 mod). earlyLootMul .45→.25 (Story stageIndex<5). featureOpen('recipes') = Save.endgameUnlocked() → Activities hides Recipe Maps until the story is done. applyGearTut step 0: gift CHESTS[0].cost Thread (was gacha Sugar), Bazaar tab forced to 'chests', zone = tag chest_silver (fallback /openChest\(/), label 'Open a Silver Chest for a new item!'.
 

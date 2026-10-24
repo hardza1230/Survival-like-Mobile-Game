@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.19';
+const GAME_VERSION = '8.0.20';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.20',date:'2026-10-24',title:'New Daily Quests',items:['10 quests a day: 4 easy, 4 medium, 2 hard — finish 3, 6 and 8 for the three boxes','New goals: use your Unique, dash, kick objects into bosses, get all 3 stars, win with a certain hero, open a Bazaar chest','Change one unfinished quest for free each day (🔄)','Weekly: every day you finish 8 quests fills a slot — fill all 7 for a free Gold Chest'] },
   {v:'8.0.19',date:'2026-10-24',title:'Gear comes from the Bazaar',items:['Early stage drops are rarer and come without mods until the Forge lesson','The first gear lesson now opens a Silver Chest in the Bazaar (30 Thread gift)','Recipe Maps / Delve now unlock after you finish the story'] },
   {v:'8.0.18',date:'2026-10-24',title:'Fairer missions, livelier Ruby',items:['Escort, Capture, Clean Air, Root and Nectar missions now give +50% Sugar and heal 20% HP when you finish','Leaving the Capture ring makes you bleed, like Escort','Kickable objects last longer and appear farther from the boss','Ruby jumps and shakes when she is alarmed and hops when she is happy','Strawberry Sniper and Shotgun normal attacks deal 15% more damage'] },
   {v:'8.0.17',date:'2026-10-24',title:'Heavier boss kills',items:['Defeating a boss or miniboss freezes the screen for a moment, then plays a short slow-motion','The Unique button glows and sparkles when it is ready; the Dash button squashes when you press it','Lost boss HP shrinks away faster, and the mission box sits a little lower'] },
@@ -5916,31 +5917,60 @@ function dailySpec(){const key=localDayKey(),seed=Number(key.replace(/-/g,'')),m
   const kind=['clear','kills','dig'][seed%3],diff=max<3?1:2+(seed%2),target=kind==='kills'?60:kind==='dig'?5:1;
   return{key,kind,stage,diff,target}; }
 // v7.5 Daily Quests (เจ้าของ: แบบเกมทั่วไป) — ภารกิจ 5 ข้อ/วัน ข้อละ 20 แต้ม · แต้มสะสมเปิดกล่อง 40 / 70 / 100 (ครบทุกข้อ = กล่องใหญ่)
+// v8.0.20 เจ้าของ: Daily ใหม่ — 10 ข้อ/วัน (ง่าย 4 · กลาง 4 · ท้าทาย 2) · กล่อง 3/6/8 ข้อ · เปลี่ยนภารกิจฟรีวันละ 1 · Weekly 7 ช่อง (วันที่ทำครบ 8) → หีบทอง
+// k = ชนิดที่ DailyQ.tick(k) นับ · b = ระดับ 0 ง่าย 1 กลาง 2 ท้าทาย · req = ต้องผ่านด่านนั้นก่อน
 const DQ_POOL=[
-  {id:'kills',emoji:'⚔️',name:'Defeat 150 enemies',target:150,go:'stage'},
-  {id:'clear',emoji:'🏁',name:'Clear 2 stages',target:2,go:'stage'},
-  {id:'elite',emoji:'💀',name:'Defeat 3 elites or minibosses',target:3,go:'stage'},
-  {id:'boss',emoji:'👑',name:'Defeat a stage boss',target:1,go:'stage'},
-  {id:'cards',emoji:'🃏',name:'Pick 15 level-up cards',target:15,go:'stage'},
-  {id:'sugar',emoji:'🍬',name:'Earn 600 Sugar',target:600,go:'stage'},
-  {id:'gear',emoji:'🎁',name:'Collect 4 gear items',target:4,go:'stage',req:0},
-  {id:'shards',emoji:'♻️',name:'Salvage gear for 20 Thread',target:20,go:'gear',req:0},
-  {id:'dig',emoji:'⛏️',name:'Dig 5 Temple Depths tiles',target:5,go:'dig',req:1},
+  {id:'e_kills',k:'kills',b:0,emoji:'⚔️',name:'Defeat 120 enemies',target:120,go:'stage'},
+  {id:'e_cards',k:'cards',b:0,emoji:'🃏',name:'Pick 10 level-up cards',target:10,go:'stage'},
+  {id:'e_unique',k:'unique',b:0,emoji:'⭐',name:'Use your Unique 8 times',target:8,go:'stage'},
+  {id:'e_dash',k:'dash',b:0,emoji:'💨',name:'Dash 25 times',target:25,go:'stage'},
+  {id:'e_obj',k:'objective',b:0,emoji:'🎯',name:'Finish 2 wave missions',target:2,go:'stage'},
+  {id:'e_sugar',k:'sugar',b:0,emoji:'🍬',name:'Earn 400 Sugar',target:400,go:'stage'},
+  {id:'e_clear',k:'clear',b:0,emoji:'🏁',name:'Clear a stage',target:1,go:'stage'},
+  {id:'e_chest',k:'chest',b:0,emoji:'🧰',name:'Open a chest in the Bazaar',target:1,go:'bazaar',req:0},
+  {id:'m_kills',k:'kills',b:1,emoji:'⚔️',name:'Defeat 350 enemies',target:350,go:'stage'},
+  {id:'m_elite',k:'elite',b:1,emoji:'💀',name:'Defeat 3 elites or minibosses',target:3,go:'stage'},
+  {id:'m_kick',k:'kick',b:1,emoji:'🦶',name:'Kick 3 objects into a boss',target:3,go:'stage'},
+  {id:'m_boss',k:'boss',b:1,emoji:'👑',name:'Defeat a stage boss',target:1,go:'stage'},
+  {id:'m_clear',k:'clear',b:1,emoji:'🏁',name:'Clear 2 stages',target:2,go:'stage'},
+  {id:'m_obj',k:'objective',b:1,emoji:'🎯',name:'Finish 5 wave missions',target:5,go:'stage'},
+  {id:'m_salv',k:'shards',b:1,emoji:'♻️',name:'Salvage gear for 20 Thread',target:20,go:'gear',req:0},
+  {id:'m_dig',k:'dig',b:1,emoji:'⛏️',name:'Dig 5 Temple Depths tiles',target:5,go:'dig',req:1},
+  {id:'h_star',k:'star3',b:2,emoji:'🌟',name:'Get all 3 stars in a stage',target:1,go:'stage'},
+  {id:'h_boss',k:'boss',b:2,emoji:'👑',name:'Defeat 3 stage bosses',target:3,go:'stage'},
+  {id:'h_kills',k:'kills',b:2,emoji:'⚔️',name:'Defeat 900 enemies',target:900,go:'stage'},
+  {id:'h_kick',k:'kick',b:2,emoji:'🦶',name:'Kick 8 objects into bosses',target:8,go:'stage'},
+  {id:'h_clear',k:'clear',b:2,emoji:'🏁',name:'Clear 4 stages',target:4,go:'stage'},
 ];
-const DQ_PTS=20, DQ_BOXES=[{pts:40,art:'chest_badge_bronze',name:'Small Box'},{pts:70,art:'chest_badge_silver',name:'Big Box'},{pts:100,art:'chest_badge_gold',name:'Grand Box'}];
-function dqDef(id){ return DQ_POOL.find(d=>d.id===id)||DQ_POOL[0]; }
-// เลือกภารกิจประจำวันแบบ seed ตามวัน: ล้มศัตรู + ผ่านด่าน เสมอ · อีก 3 ข้อสุ่มจากที่ปลดล็อกแล้ว (gear หลังผ่านด่าน 1 · ขุดหลังผ่านด่าน 2)
-function dqPick(day){ const m=Save.data.stageMastery||{},ok=d=>d.req==null||!!m[d.req]; let seed=Number(String(day).replace(/-/g,''))||1; const rnd=()=>{ seed=(seed*1103515245+12345)%2147483648; return seed/2147483648; };
-  const rest=DQ_POOL.filter(d=>d.id!=='kills'&&d.id!=='clear'&&ok(d)).map(d=>d.id); for(let i=rest.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [rest[i],rest[j]]=[rest[j],rest[i]]; }
-  return ['kills','clear',...rest.slice(0,3)]; }
+const DQ_BAND=[{n:4,name:'Easy',col:0x7fe3a8},{n:4,name:'Medium',col:0xffcf5a},{n:2,name:'Hard',col:0xff7a8a}];
+const DQ_BOXES=[{n:3,art:'chest_badge_bronze',name:'Small Box'},{n:6,art:'chest_badge_silver',name:'Big Box'},{n:8,art:'chest_badge_gold',name:'Grand Box'}];
+const DQ_WEEK=7, DQ_WEEK_NEED=8;   // วันที่ทำครบ 8 ข้อ = 1 ช่อง · ครบ 7 ช่อง = หีบทอง
+function dqHeroes(){ const c=(Save.data&&Save.data.chars)||[],hs=['momo',...c.filter(x=>x!=='momo')]; return hs.filter((x,i)=>hs.indexOf(x)===i&&!(typeof HEROES_WIP!=='undefined'&&HEROES_WIP.includes(x))); }
+// ฮีโร่ = ภารกิจกลาง 'win_<hero>' (ชนะด่านด้วยฮีโร่ตัวนั้น) · มีเมื่อปลดฮีโร่ ≥2 ตัว
+function dqDef(id){ const d=DQ_POOL.find(x=>x.id===id); if(d)return d; if(String(id).startsWith('win_')){ const h=String(id).slice(4),C=typeof CHARACTERS!=='undefined'?CHARACTERS[h]:null; return {id,k:id,b:1,emoji:(C&&C.emoji)||'🏆',name:'Clear a stage with '+((C&&C.name)||h),target:1,go:'char'}; } return DQ_POOL[0]; }
+function dqOk(d){ const m=(Save.data&&Save.data.stageMastery)||{}; return d.req==null||!!m[d.req]; }
+function dqCands(band){ const L=DQ_POOL.filter(d=>d.b===band&&dqOk(d)).map(d=>d.id); if(band===1){ const hs=dqHeroes(); if(hs.length>1)L.push(...hs.map(h=>'win_'+h)); } return L; }
+// เลือกภารกิจประจำวันแบบ seed ตามวัน · ชนิด (k) ไม่ซ้ำในระดับเดียวกัน (ต่างระดับซ้ำได้ เช่น ฆ่า 120 กับ ฆ่า 900)
+function dqPick(day){ let seed=Number(String(day).replace(/-/g,''))||1; const rnd=()=>{ seed=(seed*1103515245+12345)%2147483648; return seed/2147483648; }, out=[];
+  DQ_BAND.forEach((bd,band)=>{ const L=dqCands(band),kinds=new Set(); for(let i=L.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; }
+    let n=0; for(const id of L){ if(n>=bd.n)break; const k=dqDef(id).k; if(kinds.has(k)||(k.startsWith('win_')&&[...kinds].some(x=>x.startsWith('win_'))))continue; kinds.add(k); out.push(id); n++; } });
+  return out; }
+function dqWeekKey(){ const d=new Date(),off=-((d.getDay()+6)%7); return localDayKey(off); }
 const DailyQ={
-  data(){ const day=localDayKey(); let q=Save.data.dailyQ; if(!q||q.day!==day||!Array.isArray(q.quests)){ q=Save.data.dailyQ={day,quests:dqPick(day).map(id=>({id,p:0})),boxes:[0,0,0]}; Save.save(); } return q; },
+  data(){ const day=localDayKey(); let q=Save.data.dailyQ; if(!q||q.day!==day||!Array.isArray(q.quests)||q.v!==2){ q=Save.data.dailyQ={v:2,day,quests:dqPick(day).map(id=>({id,p:0})),boxes:[0,0,0],rr:0}; Save.save(); } return q; },
   done(it){ return it.p>=dqDef(it.id).target; },
-  pts(){ return this.data().quests.filter(x=>this.done(x)).length*DQ_PTS; },
-  claimable(){ try{ const q=this.data(),p=this.pts(); return DQ_BOXES.some((b,i)=>p>=b.pts&&!q.boxes[i]); }catch(e){ return false; } },
-  tick(id,n=1){ if(this._mute||!(n>0)||!Save.data)return; let q; try{ q=this.data(); }catch(e){ return; } const it=q.quests.find(x=>x.id===id); if(!it||this.done(it))return; const d=dqDef(id);
-    it.p=Math.min(d.target,(it.p||0)+n);
-    if(this.done(it)){ Save.save(); try{ const g=window.__g&&window.__g.scene.getScene('Game'); if(g&&g.showBanner)g.showBanner('📅 Daily Quest Complete',d.name+' · +'+DQ_PTS+' pts',1600); }catch(e){} }
+  count(){ return this.data().quests.filter(x=>this.done(x)).length; },
+  pts(){ return this.count(); },
+  week(){ const wk=dqWeekKey(); let w=Save.data.dqWeek; if(!w||w.wk!==wk){ w=Save.data.dqWeek={wk,days:[],got:0}; } return w; },
+  weekReady(){ const w=this.week(); return w.days.length>=DQ_WEEK&&!w.got; },
+  claimable(){ try{ const q=this.data(),c=this.count(); return DQ_BOXES.some((b,i)=>c>=b.n&&!q.boxes[i])||this.weekReady(); }catch(e){ return false; } },
+  // เปลี่ยนภารกิจที่ยังไม่เสร็จ 1 ข้อ/วัน (ระดับเดิม ชนิดไม่ซ้ำข้ออื่น)
+  reroll(i){ const q=this.data(),it=q.quests[i]; if(q.rr||!it||this.done(it))return false; const band=dqDef(it.id).b,ids=new Set(q.quests.map(x=>x.id)),have=new Set(q.quests.filter(x=>dqDef(x.id).b===band).map(x=>dqDef(x.id).k));
+    const L=dqCands(band).filter(id=>!ids.has(id)&&!have.has(dqDef(id).k)); if(!L.length)return false; q.quests[i]={id:L[Math.floor(Math.random()*L.length)],p:0}; q.rr=1; Save.save(); return true; },
+  tick(kind,n=1){ if(this._mute||!(n>0)||!Save.data)return; let q; try{ q=this.data(); }catch(e){ return; } let hit=false,fin=null;
+    for(const it of q.quests){ const d=dqDef(it.id); if(d.k!==kind||this.done(it))continue; it.p=Math.min(d.target,(it.p||0)+n); hit=true; if(this.done(it))fin=d; }
+    if(!hit)return;
+    if(fin){ const c=this.count(); if(c>=DQ_WEEK_NEED){ const w=this.week(); if(!w.days.includes(q.day)&&w.days.length<DQ_WEEK)w.days.push(q.day); } Save.save(); try{ const g=window.__g&&window.__g.scene.getScene('Game'); if(g&&g.showBanner)g.showBanner('📅 Daily Quest Complete',fin.name+' · '+c+' / '+q.quests.length,1600); }catch(e){} }
     else if(!this._t||Date.now()-this._t>4000){ this._t=Date.now(); Save.save(); } },
 };
 const POWER_TUNING={recommended:[100,280,560,940,1450],mastery:[60,90,130,180,240]};
@@ -6330,7 +6360,7 @@ const Stats={
       return sl.slot+': '+(typeof gearAffixName==='function'?gearAffixName(b.name||it.baseId,it.affixes||[]):(b.name||it.baseId))+(it.enhanceLv?' +'+it.enhanceLv:'')+' iLv'+(it.itemLevel||'?')+' '+(it.grade||'')+(mods?' ['+mods+']':''); }).join(' / '); }catch(e){}
     return k; },
   card(title,kind){ const c=this._cur; if(!c||!title)return; if(typeof DailyQ!=='undefined')DailyQ.tick('cards'); if(c.cards.length<40)c.cards.push((kind&&kind!=='Basic Attack'?kind+': ':'')+title); },
-  end(g,result){ const c=this._cur; if(!c)return; this._cur=null; if(result==='win'&&typeof DailyQ!=='undefined')(typeof DailyQ!=='undefined')&&DailyQ.tick('clear');
+  end(g,result){ const c=this._cur; if(!c)return; this._cur=null; if(result==='win'&&typeof DailyQ!=='undefined'){ DailyQ.tick('clear'); if(g&&g.character)DailyQ.tick('win_'+g.character); }
     try{ const by=g._dmgBy||{},top=Object.keys(by).sort((a,b)=>by[b]-by[a])[0]||null;
       c.result=result; if(c.depth==null&&g._amapNode)c.depth=g._amapNode.d; c.sec=Math.round(g.elapsed||0); c.level=g.level||1; c.kills=g.kills||0; c.wave=(g.waveIndex|0)+1; c.boss=g.mode==='boss'||!!g.boss;
       c.path=(g.basicAttack&&g.basicAttack.path)||null; c.cause=result==='dead'?(g._lastHitSrc||top||'?'):null; c.topDmg=top;
@@ -7936,7 +7966,7 @@ class Game extends Phaser.Scene {
   sentryWardMul(){ const b=this.basicAttack,w=b?.path==='tempest'?(b.lv?.p_sentry_ward||0):0; if(!w||this.character!=='taro')return 1; const p=this.player; return (this._taro?.nodes||[]).some(n=>!n.beacon&&this.dist(n.x,n.y,p.x,p.y)<160)?1-.05*w:1; }   // v7.9.23 Sentry Ward
   uqGuardMul(){return (this.elapsed||0)<(this._uqGuardT||0)?(this._uqGuardM||1):1;}
   // v7.9.22 ⭐ Unique cards: นับการใช้ (เปิดการ์ดหลัง 3 ครั้ง) · Echo · Mutation ตอนกด
-  uniqueCastFx(){ const p=this.player; if(!p)return; this._uqUses=(this._uqUses||0)+1; const um=this.uqMul(),b=this.basicAttack,mut=this.uqMut(),T=this.elapsed||0;
+  uniqueCastFx(){ const p=this.player; if(!p)return; this._uqUses=(this._uqUses||0)+1; (typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('unique'); const um=this.uqMul(),b=this.basicAttack,mut=this.uqMut(),T=this.elapsed||0;
     if(this.uqLv('uq_echo')){ this.artDelay?.(400,()=>{ if(this.state!=='play')return; this.vfxHitRing?.(p.x,p.y,0xffd166,true); this.explodeAt(p.x,p.y,150,this.relicDmg(4)*um); }); }
     if(!mut||!b)return; const path=b.path;
     if(mut==='reb_shield'&&(this._shield||0)<2){this._shield=(this._shield||0)+1;this.floatText?.(p.x,p.y-44,'🫧 Sugar Shell',0x9fe8ff);}
@@ -8586,7 +8616,7 @@ class Game extends Phaser.Scene {
     this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:8}:null,bf,'_bossLiqF',bf<=.25?3:bf<=.5?2:1,0,{ghost:'_bossGhost'});
   }
   // v8.0.17 ปุ่ม Dash ยุบแล้วเด้งกลับตอนกด
-  dashPress(){ const b=this.dashBtn,t=this.dashTxt; if(!b||!this.tweens)return; const k=this.ctrlScale?.()||1;
+  dashPress(){ (typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('dash'); const b=this.dashBtn,t=this.dashTxt; if(!b||!this.tweens)return; const k=this.ctrlScale?.()||1;
     this.tweens.killTweensOf([b,t]); b.setScale(.8); t?.setScale(k*.8);
     this.tweens.add({targets:b,scale:1,duration:240,ease:'Back.easeOut'}); if(t)this.tweens.add({targets:t,scale:k,duration:240,ease:'Back.easeOut'}); }
   // v8.0.17 Unique พร้อมใช้ = ขอบเรืองเต้น + ประกายวิ่งรอบปุ่ม + วงแสงแวบตอนเพิ่งพร้อม
@@ -9714,37 +9744,44 @@ class Game extends Phaser.Scene {
     const T=(x,y,t,sz,c,st,ox=0.5,oy=0.5)=>{const q2=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#ffffff'}).setOrigin(ox,oy);this.menu.add(q2);return q2;};
     const panel=(y,height,color)=>{const g=this.add.graphics();g.fillStyle(0x241d2d,0.97);g.fillRoundedRect(14,y,w-28,height,14);g.lineStyle(2,color,0.9);g.strokeRoundedRect(14,y,w-28,height,14);this.menu.add(g);return g;};
     // 1) รางวัลเข้าเกมรายวัน (ของเดิม ย่อให้เตี้ยลง)
-    const y1=w<=h?88:62,h1=84;panel(y1,h1,0xffd166);
+    const y1=w<=h?84:62,h1=68;panel(y1,h1,0xffd166);
     const streak=Math.max(0,d.streak||0),reward=50+Math.min(7,Math.max(1,streak+(claimed?0:1)))*15;
-    T(28,y1+20,'🎁 Login Reward',14,'#ffe08a','bold',0);
-    T(28,y1+44,Array.from({length:7},(_,i)=>i<streak?'●':'○').join(' '),14,'#ffcf5a','normal',0);
-    T(28,y1+66,claimed?'Claimed · streak '+streak+' days':'Today 🍬 '+reward+' · keep your streak',10,'#cfc2d5','normal',0);
+    T(28,y1+16,'🎁 Login Reward',13,'#ffe08a','bold',0);
+    T(28,y1+36,Array.from({length:7},(_,i)=>i<streak?'●':'○').join(' '),14,'#ffcf5a','normal',0);
+    T(28,y1+55,claimed?'Claimed · streak '+streak+' days':'Today 🍬 '+reward+' · keep your streak',10,'#cfc2d5','normal',0);
     const bw=Math.min(118,w*0.3),bx=w-28-bw,by=y1+h1/2,bg=this.add.graphics();bg.fillStyle(claimed?0x3b3541:0xffb020,1);bg.fillRoundedRect(bx,by-18,bw,36,12);this.menu.add(bg);T(bx+bw/2,by,claimed?'Claimed ✓':'Claim',13,claimed?'#8f849f':'#21131a','bold');
     if(!claimed){this.drawBadgeDot(this.menu,bx+bw-6,by-16);this._zone(bx,by-18,bw,36,()=>{if(d.claimDay===spec.key)return;const yesterday=localDayKey(-1);d.streak=d.claimDay===yesterday?Math.min(7,(d.streak||0)+1):1;d.claimDay=spec.key;const dq=typeof DailyQ!=='undefined'?DailyQ:{};dq._mute=true;try{Save.addSugar(50+d.streak*15);}finally{dq._mute=false;}Sfx.progress('daily');this.showBanner('🎁 Daily Reward','Streak '+d.streak+' days · get 🍬 '+(50+d.streak*15),1700);this.buildDaily();});}
-    // 2) แต้มภารกิจ + กล่อง 40 / 70 / 100
-    const y2=y1+h1+10,h2=118;panel(y2,h2,0xd95cff);
-    T(28,y2+20,'⭐ Daily Points',14,'#e7b7ff','bold',0);T(w-28,y2+20,pts+' / 100',14,'#ffffff','bold',1);
-    const bx0=34,bw0=w-68,barY=y2+70,bar=this.add.graphics();bar.fillStyle(0x120d18,1);bar.fillRoundedRect(bx0,barY-6,bw0,12,6);if(pts>0){bar.fillStyle(0xd95cff,1);bar.fillRoundedRect(bx0,barY-6,Math.max(12,bw0*Math.min(1,pts/100)),12,6);}this.menu.add(bar);
-    DQ_BOXES.forEach((b,i)=>{ const sz=i===2?52:42,cx=Math.min(bx0+bw0*b.pts/100,w-22-sz*.62),opened=!!q.boxes[i],ready=!opened&&pts>=b.pts;   /* v7.8.70: กล่อง 100 ไม่ล้นขอบกรอบ */
+    // 2) v8.0.20 ความคืบหน้า n/10 + กล่อง 3/6/8 ข้อ + Weekly 7 ช่อง (หีบทอง)
+    const N=q.quests.length,cnt=DailyQ.count(),wk=DailyQ.week(),y2=y1+h1+8,h2=128;panel(y2,h2,0xd95cff);
+    T(28,y2+18,'⭐ Today',14,'#e7b7ff','bold',0);T(w-28,y2+18,cnt+' / '+N+' done',13,'#ffffff','bold',1);
+    const bx0=34,bw0=w-68,barY=y2+56,bar=this.add.graphics();bar.fillStyle(0x120d18,1);bar.fillRoundedRect(bx0,barY-5,bw0,10,5);if(cnt>0){bar.fillStyle(0xd95cff,1);bar.fillRoundedRect(bx0,barY-5,Math.max(10,bw0*Math.min(1,cnt/N)),10,5);}this.menu.add(bar);
+    DQ_BOXES.forEach((b,i)=>{ const sz=i===2?40:34,cx=Math.min(bx0+bw0*b.n/N,w-22-sz*.62),opened=!!q.boxes[i],ready=!opened&&cnt>=b.n;
       const ring=this.add.graphics();ring.fillStyle(ready?0xffd166:0x1d1724,ready?0.35:0.9);ring.fillCircle(cx,barY-2,sz*0.62);ring.lineStyle(2,ready?0xffe08a:opened?0x7fe3a8:0x4a4059,1);ring.strokeCircle(cx,barY-2,sz*0.62);this.menu.add(ring);
       const ic=this.textures.exists(b.art)?this.add.image(cx,barY-2,b.art).setDisplaySize(sz,sz):this.add.text(cx,barY-2,'🎁',{fontSize:Math.round(sz*0.6)+'px'}).setOrigin(0.5);ic.setAlpha(opened?0.45:ready?1:0.6);this.menu.add(ic);
-      T(cx,barY+52*0.62+9,opened?'✓ Opened':b.pts+' pts',10,opened?'#7fe3a8':ready?'#ffe08a':'#a89cb6','bold');
-      if(ready){ this.drawBadgeDot(this.menu,cx+sz*0.45,barY-sz*0.55); this.tweens.add({targets:ic,scaleX:ic.scaleX*1.12,scaleY:ic.scaleY*1.12,duration:420,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}); this._zone(cx-sz*0.7,barY-sz*0.7,sz*1.4,sz*1.4+16,()=>this.dqOpenBox(i)); } });
-    // 3) ภารกิจ 5 ข้อ
-    const y3=y2+h2+10,rows=q.quests,rh=Math.max(48,Math.min(64,(h-y3-34)/rows.length-6));
-    rows.forEach((it,i)=>{ const def=dqDef(it.id),done=DailyQ.done(it),y=y3+i*(rh+6),g=this.add.graphics();g.fillStyle(done?0x1f3328:0x221a2b,0.97);g.fillRoundedRect(14,y,w-28,rh,12);g.lineStyle(1.5,done?0x7fe3a8:0x4a4059,1);g.strokeRoundedRect(14,y,w-28,rh,12);this.menu.add(g);
-      T(36,y+rh/2,def.emoji,20,'#fff','normal',0.5);
-      T(58,y+rh*0.32,def.name,13,done?'#a8f0c0':'#ffffff','bold',0);
-      const pw=w-28-58-86,pb=this.add.graphics(),fr=Math.min(1,(it.p||0)/def.target);pb.fillStyle(0x120d18,1);pb.fillRoundedRect(58,y+rh*0.62,pw,8,4);if(fr>0){pb.fillStyle(done?0x7fe3a8:0xffb020,1);pb.fillRoundedRect(58,y+rh*0.62,Math.max(8,pw*fr),8,4);}this.menu.add(pb);
-      T(58+pw+6,y+rh*0.62+4,Math.min(it.p||0,def.target)+' / '+def.target,10,'#cfc2d5','normal',0);   // v7.8.70: ตัวนับอยู่ท้ายแถบ (เดิมทับชื่อภารกิจยาว)
-      T(w-40,y+rh/2,done?'✓':'+'+DQ_PTS,done?18:13,done?'#7fe3a8':'#e7b7ff','bold',0.5);
-      if(!done)this._zone(14,y,w-28,rh,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=def.go==='stage'?'chapter':def.go; this.buildMenuScreen(); }); });
+      T(cx,barY+sz*0.62+8,opened?'✓':b.n+' quests',9,opened?'#7fe3a8':ready?'#ffe08a':'#a89cb6','bold');
+      if(ready){ this.drawBadgeDot(this.menu,cx+sz*0.45,barY-sz*0.55); this.tweens.add({targets:ic,scaleX:ic.scaleX*1.12,scaleY:ic.scaleY*1.12,duration:420,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}); this._zone(cx-sz*0.7,barY-sz*0.7,sz*1.4,sz*1.4+14,()=>this.dqOpenBox(i)); } });
+    { const wy=y2+104,ss=Math.min(22,(w-150)/DQ_WEEK-4); T(28,wy,'📆 Week',11,'#ffe08a','bold',0,.5);
+      for(let k=0;k<DQ_WEEK;k++){ const cx=84+k*(ss+4)+ss/2,on=k<wk.days.length,gg=this.add.graphics(); gg.fillStyle(on?0xffcf5a:0x1d1724,1).fillRoundedRect(cx-ss/2,wy-ss/2,ss,ss,5); gg.lineStyle(1.5,on?0xffe08a:0x4a4059,1).strokeRoundedRect(cx-ss/2,wy-ss/2,ss,ss,5); this.menu.add(gg); if(on)T(cx,wy,'✓',11,'#2a1a08','bold'); }
+      const gx=w-44,ready=DailyQ.weekReady(),gk='chest_gold',gi=this.textures.exists(gk)?this.add.image(gx,wy,gk).setDisplaySize(32,32):this.add.text(gx,wy,'🧰',{fontSize:'22px'}).setOrigin(.5); gi.setAlpha(wk.got?.4:ready?1:.55); this.menu.add(gi);
+      T(gx,wy+19,wk.got?'✓':DQ_WEEK_NEED+'/'+N+' a day',8,'#a89cb6','normal');
+      if(ready){ this.drawBadgeDot(this.menu,gx+14,wy-14); this._zone(gx-22,wy-20,44,40,()=>{ if(!DailyQ.weekReady())return; DailyQ.week().got=1; Save.save(); this.openChest(CHESTS.find(c=>c.id==='gold')||CHESTS[CHESTS.length-1],'weekly'); }); } }
+    // 3) ภารกิจ 10 ข้อ · แถบสีซ้าย = ระดับ · 🔄 เปลี่ยนได้ฟรีวันละ 1
+    const y3=y2+h2+8,rows=q.quests,gap=4,rh=Math.max(30,Math.min(46,(h-y3-26)/rows.length-gap)),fs=rh<36?11:12;
+    rows.forEach((it,i)=>{ const def=dqDef(it.id),done=DailyQ.done(it),y=y3+i*(rh+gap),bd=DQ_BAND[def.b]||DQ_BAND[0],g=this.add.graphics();g.fillStyle(done?0x1f3328:0x221a2b,0.97);g.fillRoundedRect(14,y,w-28,rh,10);g.lineStyle(1.5,done?0x7fe3a8:0x4a4059,1);g.strokeRoundedRect(14,y,w-28,rh,10);g.fillStyle(bd.col,1);g.fillRoundedRect(14,y,5,rh,3);this.menu.add(g);
+      T(34,y+rh/2,def.emoji,rh<36?15:18,'#fff','normal',0.5);
+      const rr=!q.rr&&!done,right=rr?78:56,nm=T(52,y+rh*.36,def.name,fs,done?'#a8f0c0':'#ffffff','bold',0); const maxW=w-28-52-right-6; if(nm.width>maxW)nm.setScale(maxW/nm.width);
+      const pw=Math.min(150,w-28-52-right-60),pb=this.add.graphics(),fr=Math.min(1,(it.p||0)/def.target);pb.fillStyle(0x120d18,1);pb.fillRoundedRect(52,y+rh*.7-3,pw,6,3);if(fr>0){pb.fillStyle(done?0x7fe3a8:bd.col,1);pb.fillRoundedRect(52,y+rh*.7-3,Math.max(6,pw*fr),6,3);}this.menu.add(pb);
+      T(52+pw+6,y+rh*.7,Math.min(it.p||0,def.target)+' / '+def.target+' · '+bd.name,9,'#cfc2d5','normal',0);
+      T(w-28-(rr?44:20),y+rh/2,done?'✓':'›',done?16:16,done?'#7fe3a8':'#cbb8e0','bold',0.5);
+      if(!done)this._zone(14,y,w-28-(rr?40:0),rh,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=def.go==='stage'?'chapter':def.go; this.buildMenuScreen(); });
+      if(rr){ const rx=w-28-18,rb=this.add.graphics(); rb.fillStyle(0x3a2f50,1).fillRoundedRect(rx-17,y+rh/2-13,34,26,8); rb.lineStyle(1.5,0x8f7de8,1).strokeRoundedRect(rx-17,y+rh/2-13,34,26,8); this.menu.add(rb); T(rx,y+rh/2,'🔄',13,'#fff','normal');
+        this._zone(rx-20,y,40,rh,()=>{ if(DailyQ.reroll(i)){ Sfx.select&&Sfx.select(); this.menuToast?.('🔄 Quest changed — next free change tomorrow','#cfe9ff'); } this.buildDaily(); }); } });
     const left=Math.max(0,new Date().setHours(24,0,0,0)-Date.now()),hh=Math.floor(left/3.6e6),mm=Math.floor(left%3.6e6/6e4);
-    T(w/2,Math.min(h-14,y3+rows.length*(rh+6)+10),'New quests in '+hh+'h '+mm+'m · tap a quest to go there',10,'#a89cb6');
+    T(w/2,Math.min(h-10,y3+rows.length*(rh+gap)+8),'New quests in '+hh+'h '+mm+'m · '+(q.rr?'free change used today':'🔄 1 free change today'),10,'#a89cb6');
     this.menu.setVisible(true);
   }
   // เปิดกล่อง Daily: ยิ่งกล่องใหญ่ ยิ่งได้มาก · ไม่นับเป็นความคืบหน้าภารกิจ (เช่น Sugar)
-  dqOpenBox(i){ const q=DailyQ.data(),b=DQ_BOXES[i]; if(!b||q.boxes[i]||DailyQ.pts()<b.pts)return; q.boxes[i]=1;
+  dqOpenBox(i){ const q=DailyQ.data(),b=DQ_BOXES[i]; if(!b||q.boxes[i]||DailyQ.count()<b.n)return; q.boxes[i]=1;
     const ch=Math.min(2,Math.floor((Save.data.unlockedStage||0)/5)),m=Save.data.stageMastery||{},lines=[];
     DailyQ._mute=true; try{
       const sug=Math.round([80,160,320][i]*(1+ch*0.5)); Save.addSugar(sug); lines.push('🍬 +'+sug+' Sugar');
@@ -11666,7 +11703,7 @@ class Game extends Phaser.Scene {
     this.menu.add(this.add.text(w/2,y+4,'Chests drop gear for your current item level · Thread comes from salvage, stages and the Dig',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',align:'center',wordWrap:{width:w-36}}).setOrigin(.5,0)); }
   chestVisual(c,x,y,sz){ for(const k of ['chest_'+c.id,'prize_chest','chest']){ if(this.realTex(k)){ const im=this.add.image(x,y,k); im.setScale(sz/Math.max(im.width,im.height)); if(k!=='chest_'+c.id&&c.id==='silver')im.setTint(0xd8e2f0); return im; } }
     return this.add.text(x,y,'🧰',{fontSize:Math.round(sz*.7)+'px'}).setOrigin(.5); }   // ใบสั่งอาร์ต 40 จะส่ง chest_silver/chest_gold
-  openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree){ d.chestFreeDay=localDayKey(); } else { if(Save.threads()<c.cost)return; d.threads=Save.threads()-c.cost; }
+  openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'){ this._chestBack='daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { if(Save.threads()<c.cost)return; d.threads=Save.threads()-c.cost; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest');
     let tier=pickWeighted(c.odds); if(c.id==='gold'){ d.chestPity=(d.chestPity||0)+1; if(tier==='legend'||d.chestPity>=CHEST_PITY){ tier='legend'; d.chestPity=0; } } Save.save();
     const lv=GACHA_LEVELS[Math.max(0,gachaMaxBand())],ilv=lv.lo+Math.floor(Math.random()*(lv.hi-lv.lo+1));
     this._gachaBusy=true; this.setMenuScroll(0); this.stopHubMotion?.(); this.menu.removeAll(true); this.tapZones=[]; this._chestOpen=true;
@@ -11688,7 +11725,7 @@ class Game extends Phaser.Scene {
       title.setText(it?(t2==='legend'?'🌟 LEGEND 🌟':t2==='epic'?'✦ EPIC ✦':t2==='rare'?'★ RARE ★':'COMMON'):'All owned').setColor(hex);
       status.setText(it?(it.name+'\n'+TIER_LABEL[t2].name+gearDeliverySuffix(it)):'Refund 🧶'+Math.round(c.cost*.5)).setColor('#ffffff').setAlign('center').setFontSize('18px');
       const bw=Math.min(w-60,260),by=h*.82,btn=this.add.graphics(); btn.fillStyle(color,1).fillRoundedRect(w/2-bw/2,by-24,bw,48,16); const bt=this.add.text(w/2,by,'Collect',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#17101d'}).setOrigin(.5); this.menu.add([btn,bt]);
-      this._gachaBusy=false; this._zone(w/2-bw/2,by-24,bw,48,()=>{ this._chestOpen=false; this._bazTab='chests'; this.menuScreen='bazaar'; this.buildMenuScreen(); }); }); }
+      this._gachaBusy=false; this._zone(w/2-bw/2,by-24,bw,48,()=>{ this._chestOpen=false; const bk=this._chestBack; this._chestBack=null; if(bk){ this.menuScreen=bk; } else { this._bazTab='chests'; this.menuScreen='bazaar'; } this.buildMenuScreen(); }); }); }
   buildBazaar(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     const w=this.W,h=this.H,tab=(this._bazTab==='orders'?'buy':this._bazTab)||'chests',hs=this._hdrShift(),top=(tab==='buy'?153:121)+hs; if(tab==='chests'){ this.buildChestShop(top); this.menu.setVisible(true); return; }
@@ -13440,7 +13477,7 @@ class Game extends Phaser.Scene {
     this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;
-    this._liqPop=this.time?.now||0;   // v8.0.14 หลอดน้ำกระเพื่อม + เปล่งแสงตอนสำเร็จ
+    if(!this.recipeMode&&o.type!=='fill')(typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('objective'); this._liqPop=this.time?.now||0;   // v8.0.14 หลอดน้ำกระเพื่อม + เปล่งแสงตอนสำเร็จ
     if(o.type!=='fill'||!this.usesStoryBudget?.())this.rubySay?.('We did it! Another little piece of [flavor] is safe. Nice work!',2400,{face:'happy'});
     if(o.type==='hunt'&&o._huntPhase!=='clear')Sfx.rewardCue?.('sfx_event_hunt_threat_complete',.65);
     if(o.type==='fill'&&this.usesStoryBudget?.()){o.type='hunt';o.name='Elite Showdown';o.emoji='🎯';o.progress=0;o.target=1;o._huntPhase='elite';o._huntSpawnAt=this.time.now;o.desc='Defeat the marked Elite to finish this mission';this.renderWaveObjectiveHUD();this.showBanner('Step 2/2: Elite Showdown',o.desc,1800);return;}
@@ -14073,7 +14110,7 @@ class Game extends Phaser.Scene {
   evalStageStars(){ this._starRes=null; if(this._inTutorial||this.bossRush||this.riftMode||this.recipeMode||!this.player)return null; const p=this.player,hp=p.maxhp>0?Math.max(0,p.hp)/p.maxhp:0,min=Math.min(this._minHpPct??1,hp);
     const mask=1|(hp>=.7?2:0)|(min>=.3?4:0),all=Save.data.stageStars||(Save.data.stageStars={}),prev=all[this.stageIndex]|0,fresh=mask&~prev,n=[0,1,2].filter(b=>fresh&(1<<b)).length;
     const d=DIFFS[Math.max(0,Math.min(DIFFS.length-1,(this.stageDiff||1)-1))],bonus=n?Math.round(n*(STAGE_STAR_SUGAR+this.stageIndex*10)*(d.reward||1)):0;
-    all[this.stageIndex]=prev|mask; if(bonus)this.sugarStage=(this.sugarStage||0)+bonus; Save.save?.();
+    if(mask===7)(typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('star3'); all[this.stageIndex]=prev|mask; if(bonus)this.sugarStage=(this.sugarStage||0)+bonus; Save.save?.();
     return this._starRes={mask,fresh,bonus,hp,min}; }
   // แถวดาว ★★☆ (ทอง = ได้ · เทา = ยัง)
   starText(mask){ return [0,1,2].map(b=>mask&(1<<b)?'★':'☆').join(''); }
@@ -18374,7 +18411,7 @@ class Game extends Phaser.Scene {
         if(this.dist(c.x,c.y,b.x,b.y)<Math.max(48,(b.displayWidth||90)*.32)){ this.killCounter(c); this.screenShake?.(220,.012); Sfx.hit?.(); this.vfxHitRing?.(b.x,b.y,0xffe08a,true); this.heroFx?.('vfx_counter_hit',b.x,b.y,170,{must:true,depth:b.depth+2,tint:c.tint}); c.onHit?.(b); }   /* v7.9.30 ใบ 31 B2 */ continue; }
       if(c.drift){ const a=Math.atan2(b.y-c.y,b.x-c.x),sp=c.drift*dt; c.x+=Math.cos(a)*sp; c.y+=Math.sin(a)*sp; c.spr.setPosition(c.x,c.y); c.ring.setPosition(c.x,c.y);
         if(this.dist(c.x,c.y,b.x,b.y)<60){ this.killCounter(c); c.onArrive?.(b); continue; } }
-      if(p&&kick&&this.dist(p.x,p.y,c.x,c.y)<56){ c.launched=true; this.tweens.killTweensOf(c.ring); c.ring.setAlpha(.6); Sfx.select?.(); this.popDmg?.('KICK!',c.x,c.y-30,true); continue; }
+      if(p&&kick&&this.dist(p.x,p.y,c.x,c.y)<56){ c.launched=true; (typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('kick'); this.tweens.killTweensOf(c.ring); c.ring.setAlpha(.6); Sfx.select?.(); this.popDmg?.('KICK!',c.x,c.y-30,true); continue; }
       c.t-=dt; if(!c.drift&&c.t<1&&!c._warn){ c._warn=true; this.tweens.add({targets:c.spr,alpha:.35,yoyo:true,repeat:4,duration:100}); }
       if(c.t<=0){ this.killCounter(c); if(!c.drift){ this.vfxHitRing?.(c.x,c.y,0xff6b6b,false); this.arenaHurt(Math.round((b.dmg||30)*.35),c.x,c.y,70); } } }
     this._counters=L.filter(c=>!c.dead); }
