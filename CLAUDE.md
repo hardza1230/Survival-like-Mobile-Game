@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.11, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.12, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.10 — Art order 47 battle HUD wired (owner)
+# Latest delivery: v8.0.11 — Cleaner battle top (owner: top looked cluttered, no top EXP bar)
+
+Header is one row (10,8,w−20,40): lvlTxt (22,19) · killTxt after the Lv badge (y21) · runSugarTxt right-aligned at w−140 (left of the speed button) · buttons unchanged (cbY). Top EXP bar + xpIcon removed in both art and code modes (EXP stays under the player); stageTxt kept at alpha 0 (title curtain/Pause show the stage). Everything below moved up 22: HUD_ROWS {objective 69, progress 104, bossName 131, bossBg 149, bossBar 151, bossHp 156} (boss rows shift with the plate: plate y = card bottom+6, so a miniboss during an objective sits under the card), timeTxt 52, wave pips pad+58, mission bar 103/104, bonus 114, card bottom 133 (81 without objective), statTxt under the card or plate. Mission card = plain dark .62 rounded rect (hud_mission_card art no longer drawn); hud_exp_frame/fill unused. Combat HUD check 4 sizes × 5 states passed.
+
+# Previous delivery: v8.0.10 — Art order 47 battle HUD wired (owner)
 
 scripts/pack-battle-hud-top.py (sha/bytes vs assets/incoming/battle_hud_top/MANIFEST, 50% WebP q88) → assets/art/hud/ (18 files, 45 KB). HUD_KEYS pushed into every STAGE_SHEETS (stage-lazy, not boot); TEMPLE_UI cells/nineSlice halved. hudArtSync() from drawBars (checks realTex of all HUD_KEYS once per second; missing/evicted → hudArtClear restores the code HUD): containers hudArtC (depth 50.5, in hudList) / hudBtnC (58.5) hold tuPanel top panel / mission card / boss plate / EXP frame + cropped fill / mission bar (fill tinted by waveObjBar colour, rects alpha 0) / boss bar (crop by bossBar.width) / Lv badge (lvlTxt dark) / kill + Sugar pills with icons ('KOs '/'🍬 ' prefixes stripped while art is on). drawWavePips → hudPipsArt (done/current/upcoming frames). Buttons: hud_round_btn (frame 1 when speed>1, 2 for 140ms after a press via _hudPress), hud_speed_ring frame gameSpeed−1, hud_ic_pause (▶ text while paused), hud_ic_sound frame by Sfx.muted; circles alpha 0, hit areas unchanged. tests/battle-hud-art (in npm check); combat HUD review loads the art (?noart for the old look). Real-browser 4 sizes × 5 states + boss shot, 0 errors.
 

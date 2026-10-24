@@ -7,7 +7,7 @@
    - No Toast meter (kept basic). One-thumb, mobile-first.
    ============================================================ */
 
-const HUD_ROWS={objective:91,progress:126,bossName:152,bossBg:170,bossBar:172,bossHp:177};
+const HUD_ROWS={objective:69,progress:104,bossName:131,bossBg:149,bossBar:151,bossHp:156};   // v8.0.11 แถวหัวเดียว (เลื่อนขึ้น 22) · ไม่มีหลอด EXP ข้างบน
 function prizeWheelLayout(w,h,imageW,imageH){
   const cx=w/2,cy=h*0.47,R=Math.min(w*0.36,150);
   // Cover the viewport while keeping the painted ring's center under the wheel.
@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.10';
+const GAME_VERSION = '8.0.11';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.11',date:'2026-10-24',title:'Cleaner battle top',items:['The top bar is one slim row: level, kills, Sugar and the speed/pause/sound buttons','The EXP bar at the top is gone (your EXP is under your hero); the mission box is a plain dark panel and sits higher'] },
   {v:'8.0.10',date:'2026-10-24',title:'Painted battle HUD',items:['The top of the battle screen now has painted panels, EXP bar, level badge, kill and Sugar counters, wave dots and boss bar','Speed, pause and sound buttons are painted too; the speed button glows and shows rings for x2, x3 and x4'] },
   {v:'8.0.9',date:'2026-10-24',title:'Mint Lance Charges',items:['Crystal Impaler: Twin Lance is now Lance Charges — your Unique lance dash stores up to 3 charges (2 ranks)','Small dots above the Unique button show how many charges are ready; they refill one at a time'] },
   {v:'8.0.8',date:'2026-10-24',title:'New painted story shots',items:['New painting: the Hunger’s roots burst up through the pantry floor','New painting: the kingdom at night as the Crown’s curse pours down'] },
@@ -8470,16 +8471,16 @@ class Game extends Phaser.Scene {
   }
   layoutCombatHUD(){
     const w=this.W,font='NunitoUI, sans-serif';
-    this.lvlTxt.setPosition(22,17).setFontFamily(font).setFontSize(13).setColor('#fff0c7');
-    this.killTxt.setPosition(22,44).setFontFamily(font).setFontSize(11);
-    this.runSugarTxt.setPosition(w-22,44).setFontFamily(font).setFontSize(11);
-    this.stageTxt.setPosition(w/2,44).setFontFamily(font).setFontSize(10).setWordWrapWidth(Math.max(80,w-180)).setMaxLines(1);
-    this.timeTxt.setPosition(w/2,74).setFontFamily(font).setFontSize(13).setColor('#fff0cf').setWordWrapWidth(w-52);
+    this.lvlTxt.setPosition(22,19).setFontFamily(font).setFontSize(13).setColor('#fff0c7');
+    this.killTxt.setPosition(22+this.lvlTxt.width+12,21).setFontFamily(font).setFontSize(11);
+    this.runSugarTxt.setPosition(w-140,21).setFontFamily(font).setFontSize(11);
+    this.stageTxt.setPosition(w/2,54).setFontFamily(font).setFontSize(10).setWordWrapWidth(Math.max(80,w-180)).setMaxLines(1);
+    this.timeTxt.setPosition(w/2,52).setFontFamily(font).setFontSize(13).setColor('#fff0cf').setWordWrapWidth(w-52);
     this.waveObjTxt.setPosition(w/2,this._pad+HUD_ROWS.objective).setFontFamily(font).setFontSize(12).setStroke('#20172b',2).setWordWrapWidth(w-54);
-    this.waveObjBg.setPosition(w/2,139);this.waveObjBar.setPosition(w/2-Math.min(230,w-84)/2,140);
-    this.waveBonusTxt.setPosition(w/2,153).setFontFamily(font).setFontSize(10).setStroke('#20172b',2);
-    this.statTxt.setPosition(20,177).setFontSize(10).setWordWrapWidth(w-40);
-    this.traitTxt?.setPosition(20,194).setFontSize(10);
+    this.waveObjBg.setPosition(w/2,103);this.waveObjBar.setPosition(w/2-Math.min(230,w-84)/2,104);
+    this.waveBonusTxt.setPosition(w/2,114).setFontFamily(font).setFontSize(10).setStroke('#20172b',2);
+    this.statTxt.setPosition(20,137).setFontSize(10).setWordWrapWidth(w-40);
+    this.traitTxt?.setPosition(20,154).setFontSize(10);
     for(const [b,t] of [[this.speedBtn,this.speedTxt],[this.pauseBtn,this.pauseTxt],[this.muteBtn,this.muteTxt]]){
       b.setFillStyle(0x171422,.98).setStrokeStyle(1,0xc4a978,.65);t.setFontFamily(font);
     }
@@ -8496,22 +8497,22 @@ class Game extends Phaser.Scene {
   }
   drawCombatHUDPanels(g){
     const w=this.W,art=!!this._hudArt;
-    if(!art){g.fillStyle(0x120f1d,.38).fillRoundedRect(10,12,w-20,54,13);
-    g.fillStyle(0x241b30,.96).fillRoundedRect(10,8,w-20,54,13);
-    g.lineStyle(1,0xd4b178,.45).strokeRoundedRect(10,8,w-20,54,13);
-    g.lineStyle(1,0xf1dfb4,.12).lineBetween(21,39,w-21,39);
+    if(!art){g.fillStyle(0x120f1d,.38).fillRoundedRect(10,12,w-20,40,12);
+    g.fillStyle(0x241b30,.96).fillRoundedRect(10,8,w-20,40,12);
+    g.lineStyle(1,0xd4b178,.45).strokeRoundedRect(10,8,w-20,40,12);}
     const objective=!!this.waveObjTxt?.visible,progress=!!this.replayProgressFrame?.visible;
-    const bottom=objective||progress?173:103;
-    g.fillStyle(0x20182b,.92).fillRoundedRect(10,68,w-20,bottom-68,12);
-    g.lineStyle(1,0xbfa3d7,.3).strokeRoundedRect(10,68,w-20,bottom-68,12);
-    if(!art)g.fillStyle(0xe6bf7a,.9).fillRoundedRect(18,77,3,14,1);
-    if(this.bossName?.visible){g.fillStyle(0x281525,.94).fillRoundedRect(20,160,w-40,43,10);g.lineStyle(1,0xff8cac,.45).strokeRoundedRect(20,160,w-40,43,10);}}
+    const bottom=objective||progress?133:81,boss=!!this.bossName?.visible;
+    // v8.0.11 เจ้าของ: ข้างบนรก → การ์ดภารกิจเป็นพื้นมืดโปร่งเรียบ ๆ ไม่มีกรอบลาย
+    g.fillStyle(0x1a1424,.62).fillRoundedRect(10,52,w-20,bottom-52,10);
+    const py=bottom+6;   // แผ่นบอส/มินิอยู่ใต้การ์ดภารกิจเสมอ (มินิมาตอนมีภารกิจได้)
+    if(boss){ const pd=this._pad||0,dy=py-139; if(this.bossName.y!==pd+HUD_ROWS.bossName+dy){ this.bossName.setY(pd+HUD_ROWS.bossName+dy); this.bossBgW.setY(pd+HUD_ROWS.bossBg+dy); this.bossBar.setY(pd+HUD_ROWS.bossBar+dy); this.bossHpTxt?.setY(pd+HUD_ROWS.bossHp+dy); } }
+    if(boss&&!art){g.fillStyle(0x281525,.94).fillRoundedRect(20,py,w-40,43,10);g.lineStyle(1,0xff8cac,.45).strokeRoundedRect(20,py,w-40,43,10);}
     // Text can change every tick. Refit only when its value or the viewport changes.
     const fit=(t,max,size)=>{if(!t)return;const key=t.text+'|'+max;if(this._hudTextKeys?.[t.name]===key)return;
       this._hudTextKeys||={};this._hudTextKeys[t.name]=key;t.setFontSize(size);if(t.width>max)t.setFontSize(Math.max(9,Math.floor(size*max/t.width)));};
     this.timeTxt.name='phase';this.waveObjTxt.name='mission';this.waveBonusTxt.name='bonus';
     fit(this.timeTxt,w-52,13);fit(this.waveObjTxt,w-54-(this._seasonIconsOn?76:0),this._seasonIconsOn?11:12);fit(this.waveBonusTxt,w-54,10);
-    this.statTxt.setY(this.bossName?.visible?211:177);this.traitTxt?.setY(this.bossName?.visible?228:194);
+    this.statTxt.setY(boss?py+49:bottom+4);this.traitTxt?.setY(boss?py+66:bottom+21);
     this.drawCombatControlBase();
   }
   // v8.0.10 ใบ 47: อาร์ต HUD ส่วนบน วางทับตำแหน่ง/ขนาดเดิม · ไฟล์ไม่มา/ถูกลบ = กราฟิกโค้ดเดิม
@@ -8520,33 +8521,31 @@ class Game extends Phaser.Scene {
     this.hudBtnC?.removeAll(true); this._hudBtns=null;
     for(const o of [this.waveObjBg,this.waveObjBar,this.bossBgW,this.bossBar,this.speedBtn,this.pauseBtn,this.muteBtn,this.pauseTxt,this.muteTxt])o?.setAlpha?.(1);
     this.lvlTxt?.setColor?.('#fff0c7');
-    if(this.killTxt&&!/^KOs /.test(this.killTxt.text))this.killTxt.setText('KOs '+(this.stageKills||0)).setX(22);
-    if(this.runSugarTxt&&!/^🍬/.test(this.runSugarTxt.text))this.runSugarTxt.setText('🍬 '+(this.sugarRun||0)).setX(this.W-22); }
+    if(this.killTxt&&!/^KOs /.test(this.killTxt.text))this.killTxt.setText('KOs '+(this.stageKills||0));
+    if(this.runSugarTxt&&!/^🍬/.test(this.runSugarTxt.text))this.runSugarTxt.setText('🍬 '+(this.sugarRun||0)).setX(this.W-140); }
   hudArtSync(){ const C=this.hudArtC; if(!C||!this.realTex)return false; const now=this.time?.now||0;
     if(now>=(this._hudArtChk||0)){ this._hudArtChk=now+1000; const ok=this.hudArtOn(); if(ok!==!!this._hudArt){ this._hudArt=ok; this.hudArtClear(); this._hudPipRedo=true; } }
     if(!this._hudArt){ this.hudBtnArtSync(); if(this._hudPipRedo){ this._hudPipRedo=false; this.drawWavePips?.(); } return false; }
-    const w=this.W,pad=this._pad||0,boss=!!this.bossName?.visible,bottom=(this.waveObjTxt?.visible||this.replayProgressFrame?.visible)?173:103,bx=78,bw=Math.max(30,w-218),mw=Math.min(230,w-84);
-    const bg=this.bossBgW,bgW=Math.round(bg?.width||0),key=[w,pad,bottom,boss,bgW,bg?.y].join(':');
+    const w=this.W,pad=this._pad||0,boss=!!this.bossName?.visible,mw=Math.min(230,w-84);
+    const bg=this.bossBgW,bgW=Math.round(bg?.width||0),key=[w,pad,boss,bgW,bg?.y,this.waveObjBg?.y].join(':');
     let L=this._hudL; if(!L){ L=this._hudL={c0:this.add.container(0,0),c1:this.add.container(0,0),pips:[]}; C.add([L.c0,L.c1]); }
     if(L.key!==key){ L.key=key; L.c0.removeAll(true); const add=o=>{ if(o)L.c0.add(o); return o; };
-      add(this.tuPanel('hud_top_panel',0,10,8,w-20,54)); add(this.tuPanel('hud_mission_card',0,10,68,w-20,bottom-68)); if(boss)add(this.tuPanel('hud_boss_plate',0,20,160,w-40,43));
-      add(this.tuPanel('hud_exp_frame',0,bx-2,pad,bw+4,13)); L.xf=add(this.add.image(bx+2,pad+3,'hud_exp_fill').setOrigin(0).setDisplaySize(bw-4,7));
-      L.mf=add(this.tuPanel('hud_mission_bar_frame',0,w/2-mw/2-3,136.5,mw+6,12)); L.mb=add(this.add.image(w/2-mw/2,139.5,'hud_mission_bar_fill').setOrigin(0).setDisplaySize(mw,6)); L.mw=mw;
+      add(this.tuPanel('hud_top_panel',0,10,8,w-20,40)); if(boss)add(this.tuPanel('hud_boss_plate',0,20,(bg?.y??165)-24,w-40,43));
+      const my=this.waveObjBg?.y??103; L.mf=add(this.tuPanel('hud_mission_bar_frame',0,w/2-mw/2-3,my-2.5,mw+6,12)); L.mb=add(this.add.image(w/2-mw/2,my+.5,'hud_mission_bar_fill').setOrigin(0).setDisplaySize(mw,6)); L.mw=mw;
       if(bg){ const x0=bg.x-bgW/2; L.bf=add(this.tuPanel('hud_boss_bar_frame',0,x0-5,bg.y-3,bgW+10,18)); L.bb=add(this.add.image(x0+2,bg.y+2,'hud_boss_bar_fill').setOrigin(0).setDisplaySize(bgW-4,8)); L.bbw=bgW-4; } }
     const crop=(im,f)=>{ if(!im)return; f=Phaser.Math.Clamp(f||0,0,1); im.setVisible(f>0); if(f>0)im.setCrop(0,0,Math.max(1,im.frame.width*f),im.frame.height); };
-    crop(L.xf,(this.xp||0)/Math.max(1,this.xpNext||1));
     const mv=!!this.waveObjBg?.visible; L.mf?.setVisible(mv); this.waveObjBg?.setAlpha(0); this.waveObjBar?.setAlpha(0);
     if(L.mb){ if(mv&&this.waveObjBar?.visible){ L.mb.setTint(this.waveObjBar.fillColor); crop(L.mb,this.waveObjBar.width/L.mw); } else L.mb.setVisible(false); }
     const bv=!!bg?.visible; L.bf?.setVisible(bv); bg?.setAlpha(0); this.bossBar?.setAlpha(0); if(L.bb){ if(bv&&this.bossBar?.visible)crop(L.bb,this.bossBar.width/L.bbw); else L.bb.setVisible(false); }
     // Lv ป้าย + ตัวนับ (ไอคอนแทนคำ KOs / 🍬)
     const kt=this.killTxt,st=this.runSugarTxt,lt=this.lvlTxt;
     if(kt&&/^KOs /.test(kt.text))kt.setText(kt.text.slice(4)); if(st&&/^🍬 /.test(st.text))st.setText(st.text.slice(3));
-    kt?.setX(35); st?.setX(w-20); if(lt&&lt.style?.color!=='#4a2614')lt.setColor('#4a2614');
+    const bw2=lt?Math.max(42,lt.width+12):0,kx=(lt?lt.x-6:16)+bw2+6; kt?.setX(kx+21); st?.setX(w-140); if(lt&&lt.style?.color!=='#4a2614')lt.setColor('#4a2614');
     const ck=[Math.round(lt?.width||0),Math.round(kt?.width||0),Math.round(st?.width||0),w].join(':');
     if(L.ck!==ck){ L.ck=ck; L.c1.list.filter(o=>!o._pip).forEach(o=>o.destroy()); const add=o=>{ if(o)L.c1.add(o); return o; };
       if(lt)add(this.tuPanel('hud_level_badge',0,lt.x-6,lt.y-3,Math.max(42,lt.width+12),23));
-      if(kt){ add(this.tuPanel('hud_counter_pill',0,14,41.5,kt.width+29,20)); add(this.add.image(25,51.5,'hud_ic_kill').setDisplaySize(15,15)); }
-      if(st){ const l=w-20-st.width-21; add(this.tuPanel('hud_counter_pill',0,l,41.5,w-12-l,20)); add(this.add.image(w-20-st.width-10,51.5,'hud_ic_sugar').setDisplaySize(15,15)); } }
+      if(kt){ add(this.tuPanel('hud_counter_pill',0,kx,18.5,kt.width+29,20)); add(this.add.image(kx+11,28.5,'hud_ic_kill').setDisplaySize(15,15)); }
+      if(st){ const l=w-140-st.width-21; add(this.tuPanel('hud_counter_pill',0,l,18.5,w-132-l,20)); add(this.add.image(w-140-st.width-10,28.5,'hud_ic_sugar').setDisplaySize(15,15)); } }
     this.hudBtnArtSync(); if(this._hudPipRedo){ this._hudPipRedo=false; this.drawWavePips?.(); } return true; }
   hudPipsArt(list){ const L=this._hudL; if(!L)return; if(list&&list.length)this.tuFrames('hud_wave_pips');
     (list||[]).forEach((p,i)=>{ let im=L.pips[i]; if(!im||!im.active){ im=L.pips[i]=this.add.image(0,0,'hud_wave_pips','cell0'); im._pip=1; L.c1.add(im); }
@@ -8574,23 +8573,15 @@ class Game extends Phaser.Scene {
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
     // เอาหลอด HP ด้านบนออก (ย้ายไปNorthหัวผู้เล่นแทน) · เหลือแถบ XP บาง ๆ ไว้ดูความคืบหน้าเลเวล
-    if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon)this.xpIcon.setPosition(66,pad+7);
-    if(!art){g.fillStyle(0x101c25,0.82); g.fillRoundedRect(bx,pad+1,bw,11,5);}
-    if(xpf>0&&!art){ const fw=Math.min(bw-4,Math.max(5,(bw-4)*xpf));
-      g.fillStyle(0x58b98e,1);g.fillRoundedRect(bx+2,pad+3,fw,7,3);
-      g.fillStyle(0xc0ffe3,0.65);g.fillRoundedRect(bx+3,pad+3,Math.max(2,fw-2),2,1);
-      if(fw>18){const glint=bx+5+(fw-10)*(((this.elapsed||0)*0.45)%1);g.fillStyle(0xffffff,0.55);g.fillRoundedRect(glint,pad+3,3,7,2);}
-      if(xpf>=0.9){g.fillStyle(0xfff1ad,0.25+0.18*Math.sin((this.elapsed||0)*9));g.fillCircle(bx+2+fw,pad+6,6);}
-    }
-    if(!art)g.lineStyle(1,0xd9fff0,0.35).strokeRoundedRect(bx,pad+1,bw,11,5);
-    for(let mark=1;mark<4&&!art;mark++){const tx=bx+bw*mark/4;g.lineStyle(1,0xd9fff0,0.30);g.lineBetween(tx,pad+4,tx,pad+9);}
+    if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon?.visible)this.xpIcon.setVisible(false);   // v8.0.11 หลอด EXP ข้างบนเอาออก (มีใต้ตัวผู้เล่นแล้ว)
+    if(!art&&this.killTxt&&this.lvlTxt){const kx=Math.round(22+this.lvlTxt.width+12);if(this.killTxt.x!==kx)this.killTxt.setX(kx);}
     this.drawOverheadStatus(hpf);
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
     if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
 
       const fb=this._forgeState&&this._forgeState.barrierUntil>(this.elapsed||0)?this._forgeState.barrier:0;this.statTxt.setText([rel,sh,fb>0?'Barrier '+Math.ceil(fb):''].filter(Boolean).join('   ')); }
     // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
-    if(this.stageTxt&&this.stageTxt.visible){ const a=Phaser.Math.Clamp(((this._stageTxtAt??-99)+6-(this.elapsed||0))/1.2,0,1); this.stageTxt.setAlpha(a); }
+    if(this.stageTxt&&this.stageTxt.alpha)this.stageTxt.setAlpha(0);   // v8.0.11 ชื่อด่านอยู่ในม่านเปิดด่าน/หน้า Pause แล้ว
 
   }
   // หลอดเลือด+เลเวลNorthหัวผู้เล่น (แบบ Archero) — screen-space คำนวณจากกล้อง ให้ติดตัวเสมอ
@@ -12374,7 +12365,7 @@ class Game extends Phaser.Scene {
     if(this.recipeMode){ this.renderRecipeProgress(g); return; }
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=Math.min(20,(this.W*0.62)/n), w=seg-3, h=6;
-    const x0=this.W/2-(n*seg)/2, y=this._pad+80;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
+    const x0=this.W/2-(n*seg)/2, y=this._pad+58;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
     for(let i=0;i<n;i++){ const x=x0+i*seg;
       let col=0x4a4059, a=0.7;                       // ยังไม่ถึง
       if(i<this.waveIndex){ col=0x8bd3a0; a=0.9; }    // ผ่านแล้ว
