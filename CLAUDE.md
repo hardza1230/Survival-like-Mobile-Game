@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.14, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.15, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.13 — Minimal ImageGen battle HUD
+# Latest delivery: v8.0.14 — Flowing mission bar (owner)
+
+drawLiquidBar() from drawBars (graphics hudLiqG depth 53, camUI, hidden with hudVisible(false)): rounded tube r3 at this._liq {x,y,w,h 10} (set in drawCombatHUDPanels objective branch; mw=min(230,w−84)), fill = waveObjBar.width/mw eased ×.12, teal base 0x1fb5a8 + light top 0x52e3b8, moving diagonal stripes, sine surface line, 3 bubbles, glowing head; waveObjBg/Bar rects alpha 0 (still drive state). Mission card = one centred backing from y40 sized to content (wave row / mission text / bar +32, ≤ w−24) holding the wave title + pips row: timeTxt centred with pips right of it (this._pipX0/_pipY → drawWavePips seg 10, h 6; drawWavePips re-run on layout change). renderBonusHUD keeps text/state but never shows the line (bonus still counts/rewards). Combat HUD check 4 sizes passed.
+
+# Previous delivery: v8.0.13 — Minimal ImageGen battle HUD
 
 Four new text-free ImageGen donors in assets/incoming/battle_hud_minimal/ create soft plum glass with thin cream rims, small sugar glints, rose boss accent and mint active button state. Mechanically packed to four sibling WebPs (24,016 bytes) in assets/art/hud_minimal/; original art47 source/runtime files retained. Existing four HUD keys map to these files, with new matching nineSlice values. hudArtSync places cached stat/mission/boss panels behind live text and bars; compact8.0.12 geometry, stage-lazy registration, code fallback and hit targets preserved. Boss title inset accommodates the tiny candy accent. No gameplay changes or boot additions. Full npm check and build passed, original/packed alpha/dimensions/hash/decode QA passed. No new live screenshots or phone FPS/touch claim; owner reviews on phone.
 
