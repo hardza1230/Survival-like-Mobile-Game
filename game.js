@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.0';
+const GAME_VERSION = '8.0.1';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.1',date:'2026-10-24',title:'Bottom menu always there',items:['The bottom menu bar now stays on every page, even after tapping buttons like Talents, Settings or the Forge','The old home screen is gone — new players see the new Lobby too']},
   {v:'8.0.0',date:'2026-10-24',title:'Mint Barrage toned down',items:['Mint’s Barrage Build lances now hit for 55% damage (was 62%)','Barrage shard bursts hit nearby enemies a little softer']},
   {v:'7.9.98',date:'2026-10-23',title:'The story, retold',items:['The whole story now follows one plot: long ago a Crown cursed the kingdom into mochi, and the Heart Seed turns you back into a person','Ruby’s stories, stage scenes, endings and hero arrivals now tell how each friend is freed from the curse','The ending: lift the Crown, plant the Heart Seed and break the curse for everyone']},
   {v:'7.9.97',date:'2026-10-24',title:'A sweeter discovery stage',items:['New painted confectionery theater for feature discoveries and item rewards','Calmer lighting, clearer reward focus and a refined Ruby message panel']},
@@ -8550,7 +8551,10 @@ class Game extends Phaser.Scene {
   }
   // แตะเมนู: ตรงกรอบก่อน → ไม่โดนเลยค่อยขยายปุ่มเล็กให้ได้อย่างน้อย 44px (+slop) เลือกตัวที่ใกล้สุด
   // v7.9.47 เจ้าของ: แถบเมนูล่างแบบเกมทั่วไป (หน้าแนวตั้งหลังจบบทสอน · ไม่แสดงบนแผนที่ Delve)
-  navBarOn(s){ return this.state==='menu'&&s!=='title'&&this.W<this.H&&!!Save.data.tutorialDone&&!Save._cloudConflict&&!['atlas','rift','recipes','recipeprep'].includes(s); }
+  navBarOn(s){ return this.state==='menu'&&s!=='title'&&this.W<this.H&&!Save._cloudConflict&&!['atlas','rift','recipes','recipeprep'].includes(s); }
+  // v8.0.1 เจ้าของ: แท็บล่างหายเมื่อหน้าวาดตัวเองใหม่ตรง ๆ (ไม่ผ่าน buildMenuScreen) → ห่อ builder ทุกหน้า (ท้ายไฟล์ NAV_WRAP) ให้จัดความสูง + วาดแท็บล่างเหมือนกัน
+  navWrapBuild(f,a){ if(this._inMenuBuild||this.state!=='menu'||!this.menu)return f.apply(this,a); const s=this.menuScreen||'hub',nav=this.navBarOn(s),H0=this.H; if(nav)this.H=H0-NAV_H; this._navOn=nav; this._spotBuild=false; this._inMenuBuild=true; let r;
+    try{ r=f.apply(this,a); }finally{ this.H=H0; this._inMenuBuild=false; } if(this.state==='menu'){ this.menu.setVisible(true); if(nav&&!this._spotBuild)this.drawNavBar(s,H0); this.setupMenuScroll(s); } return r; }
   navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'hub'; if(['bazaar','tradein'].includes(s))return 'bazaar';   // v7.9.68 เจ้าของ: เลือกด่านจากกล่องด่านใน Lobby · Bazaar ได้แท็บของตัวเอง
     if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
   drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;}; this.loadLobbyArt?.();
@@ -8840,8 +8844,8 @@ class Game extends Phaser.Scene {
     // v6.49.3: เลิก fade เมนู — alpha 0 ทำให้เห็นพื้นกริดเขียวของโลกด้านหลังวาบ
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
-    const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
+    const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; this._inMenuBuild=true; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -18991,6 +18995,9 @@ const _textFactory=Phaser.GameObjects.GameObjectFactory.prototype.text;
 Phaser.GameObjects.GameObjectFactory.prototype.text=function(x,y,value,style){
   return _textFactory.call(this,x,y,value,style).setResolution(RENDER_DPR);
 };
+// v8.0.1 เจ้าของ: แท็บล่างต้องอยู่ทุกหน้า → builder ระดับหน้าทุกตัวผ่าน navWrapBuild (เรียกซ้อนใน buildMenuScreen = ทำงานตามเดิม)
+const NAV_WRAP=['buildAchievements','buildBazaar','buildBestiary','buildChapterSelect','buildCraftBench','buildDaily','buildDig','buildGear','buildGearInbox','buildHub','buildHubGroup','buildKitchen','buildNews','buildPlayStats','buildRankPerks','buildSettings','buildSkillArchive','buildStageSelect','buildTradeIn','buildUpgrade','buildChars','buildTalents','buildStats','buildLobby'];
+for(const n of NAV_WRAP){ const f=Game.prototype[n]; if(typeof f==='function')Game.prototype[n]=function(...a){ return this.navWrapBuild(f,a); }; }
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
   backgroundColor: '#3a3355',

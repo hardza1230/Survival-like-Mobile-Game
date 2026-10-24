@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.1, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.2, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.0 — Mint Barrage nerf (owner: most unbalanced build)
+# Latest delivery: v8.0.1 — Bottom bar on every page + no old hub (owner)
+
+Cause: many buttons rebuilt their page by calling the builder directly (buildSettings/buildTalents/buildCraftBench/…), skipping buildMenuScreen, so the page laid out at full H and drawNavBar never ran. navWrapBuild(f,a) + NAV_WRAP list (bottom of game.js, before new Phaser.Game) wraps every page builder: outside buildMenuScreen (_inMenuBuild flag) it sets H−NAV_H, _navOn, runs the builder, draws the bar and setupMenuScroll; inside buildMenuScreen it is a no-op pass-through. Old hub: navBarOn no longer requires tutorialDone, so portrait always uses buildLobby (BATTLE already routes to startChapterTutorial before the tutorial). Real-browser check 360×780: 19 screens + Talents keep 5 nav zones after direct rebuild, pre-tutorial hub = Lobby, 0 errors.
+
+# Previous delivery: v8.0.0 — Mint Barrage nerf (owner: most unbalanced build)
 
 BASIC_PATHS mint barrage base dmg 0.62→0.55 (desc '55% damage'; fixture cocoa-rework-baseline updated) and frostShatterBurst bloom AoE multiplier 1.6→1.3 only when basicAttack.path==='barrage' (Glacier/others keep 1.6; boss/mini ×.6 kept). Shards, cd .78, Echo/Chain/Wide Bloom, Hailstorm unchanged. Rough effect: lance hits −11%, bloom AoE −28%. Owner to compare on phone.
 
