@@ -1,12 +1,24 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.27, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.30, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.26 — Power summary page (owner)
+# Latest delivery: v8.0.29 — Recipe Book (owner)
+
+Codex screen titled 'Recipe Book'; first tab '📖 Builds' (old 'weapons' tab id maps to 'builds'; buildWeaponCodex now unused). recipeCards(hero,path) (before applyPathTalents) = BASIC_PATHS upgrades + UNIQUE_MUTS[path] ('uq:<id>'); recipeSeen → Save.data.recipeBook[hero][path] {cardId:1,_path,_done}. recipeNote(c) after mxPick in pickCardAt: Build Path pick marks _path, path/Unique Mutation picks mark the id (WIP heroes and tutorial skipped); all found → _done + Save.addThreads(RECIPE_PATH_THREAD 30) + banner. buildRecipeBook(top): hero chips (awHeroList with BASIC_PATHS, n/all) tags rb_hero_<h> · 3 Build chips tags rb_path_<id> · card rows (icon/name/headline + ✓, unseen '???'). HUB_GROUPS/FEATURE_NAME/FEAT_LINE say Recipe Book. tests/recipe-book added.
+
+# Previous delivery: v8.0.28 — Awards Claim all, secrets, hero rows (owner)
+
+awardList adds 7 secret:true awards (tiers [1] → title): story sec_week (loginCal.n≥7) · sec_deep (dig.best≥20) · combat sec_close (win ≤5% HP) · sec_x4 (win at gameSpeed 4) · collect sec_sugar (≥100k) · sec_silver (Legend from Silver Chest) · sec_titles (3 titles). Save.data.secrets {x4,close,silverLegend} set in Stats.end win / openChest. awHidden(a,d) → row '??? Secret award', excluded from ALMOST THERE and awFrames. awClaimAll(): loops every ready step except Gold Chest steps (r.chest stops that award), one banner with totals; button '🎁 Claim all (n)' tag aw_claim_all under the top row. Heroes tab: hw_/hb_ grouped per hero (tag aw_hero_<h>, this._awOpen expands the two rows indented). Art order 49 docs/art_orders/49_PROFILE_FRAMES.md (pf_frame_story/heroes/combat/collect 520×150 9-slice) awaits art. tests/awards extended.
+
+# Previous delivery: v8.0.27 — Temple Depths thinking + shovels (owner)
+
+digTable drops stone/scroll (weight → thread 54+.6·depth; DIG_ITEMS/resolve kept for old boards). buildDig: this._digLadder {x,y,N} while the ladder is unfound → drawDigCell (cont._i) shows the Chebyshev distance on dug empty/taken tiles (1 red · 2 orange · 3 yellow · 4+ blue; old 🌬️ draft only as fallback). 3 buttons: Daily/shop · 🔦 Light (d.lightUsed≠depth = free, toggles this._digLight; next tap → digLightAt(i): c.peek on the 3×3 unopened tiles, shown faint over the soil, no shovel) · ladder. Legend text updated. DIG_SHOP_DAILY_LIMIT 3→1. Shovels: Daily boxes [3,4,6] (all 3, after stage 2), AW_REWARD ★1 +2 ★2 +2 ★3 +3 (awClaim + preview), stage clear diff+2. Lobby: '🧶 +N ready' pill under the Thread pill while Save.minersReady() (tag miners_collect → minersCollect). tests/depths-polish added.
+
+# Previous delivery: v8.0.26 — Power summary page (owner)
 
 buildGearPower (gLoadout) rewritten: title 'Power'; panel = powerStatus(next ready stage from unlockedStage) cur vs Recommended + bar + label + 'N Power to go'; 'BEST WAYS TO GET STRONGER' = powerTips() top 3 (gear: sum of best gearPowerDelta per slot · weave: best talCanBuy core by simulated +1 level heroPower gain (upgrades restored) or Rank up when all max · tal: free TP (pri 30) · perk: rankUnpicked (26) · enh: equipped item with Thread for next +1, simulated gain · mail: inbox (15) · forge: has currency (6); score = gain or pri), tap → that page (enh sets gearSelectedUid), tags tip_<k>; bottom buttons Weave(upgrade)/Equipment(gear)/Forge(craft) keep tags + badges (Weave tour still finds 'upgrade'). Bazaar removed from this page. tests/power-summary added. scripts/check-gear-power-ui.cjs (old card art review, not in CI) is now stale.
 
@@ -958,6 +970,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** ส่งครบ 13 ไฟล์ · ผูกครบแล้ว v7.9.68 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 39 (23 ต.ค.) เปิดหนังสือหลัง TAP TO START + ไอคอน Bazaar/Upgrade/Mail:** 9 ไฟล์ (`docs/art_orders/39_BOOK_OPENING_PLUS.md`) · ส่งครบ 9 ไฟล์ + ปกเรียบ · ผูกแล้ว v7.9.69 · รอ QA มือถือ · ใบ 37 ถูกยกเลิก (เลขว่าง)
 - **ใบสั่งอาร์ต 40 (23 ต.ค.) หีบใน Bazaar + ไอคอน Thread:** 7 ไฟล์ · ส่งครบ 7 ไฟล์ · ผูกแล้ว v7.9.79 · รอ QA มือถือ
+- **ใบสั่งอาร์ต 49 (24 ต.ค.) กรอบโปรไฟล์ 4 แบบจาก Awards:** 4 ไฟล์ (`docs/art_orders/49_PROFILE_FRAMES.md`) · รออาร์ต (ตอนนี้เส้นสีโค้ด)
 - **ใบสั่งอาร์ต 48 (24 ต.ค.) กลไกสนามบอส C1–C2:** ส่งครบ 12 ชีต · ผูกแล้ว v8.0.21 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 47 (24 ต.ค.) HUD ส่วนบน + ปุ่มเร่งความเร็ว:** ส่งครบ 18 ไฟล์ · ผูกแล้ว v8.0.10 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 46 (24 ต.ค.) แก้ 2 ช็อตเรื่อง:** ส่งครบ 3 ไฟล์ · ผูกแล้ว v8.0.8 · รอ QA มือถือ
