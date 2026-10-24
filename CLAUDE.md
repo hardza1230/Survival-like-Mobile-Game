@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.30, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.31, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.29 — Recipe Book (owner)
+# Latest delivery: v8.0.30 — Bestiary 3 tiers + weak spots (owner)
+
+BESTIARY_THRESHOLDS [1,100,1000], bestiaryTiers(id) bosses/minis [1,5,25], BEST_MAX_TIER 3, BEST_TIER_SUGAR [30,80,200] (addKill pays per tier crossed). FIELD_CODEX (after bestiaryLv) adds C1-2…C2-5 field species 'f<stage>_<bestSlug(roleName)>' (C2 ones carry their c2N_*_animated tex, emoji fallback in menus); every entry gets role/lore (BEST_ROLE_LORE tips, boss/mini lines), stage and ord (sorted by stage, field → mini → boss); BESTIARY_IDS. Scene.bestiaryKey(e) (cached _bk/_bkS/_bkR; stage 1–9 roleName → field id, else old type logic) used by killEnemy; first kill → this._newSpecies. bestWeakMul(e) = BEST_WEAK_MUL 1.05 when the species is tier 3 (this._bestW built in startStage), applied inside condDmgMul (damage() itself unchanged). Summary: row '📖 New! Monsters found' (tap → continueFromSummary(id) → bestiary with _bestFocus/_bestSel; not on last-stage/Delve). buildBestiary rewritten: 2×6 cards (??? until met, 3 tier pips, next goal / weak spot), tap → detail panel (tiers + Sugar, note + weak spot or lock), tags best_<id>/best_close. tests/bestiary added.
+
+# Previous delivery: v8.0.29 — Recipe Book (owner)
 
 Codex screen titled 'Recipe Book'; first tab '📖 Builds' (old 'weapons' tab id maps to 'builds'; buildWeaponCodex now unused). recipeCards(hero,path) (before applyPathTalents) = BASIC_PATHS upgrades + UNIQUE_MUTS[path] ('uq:<id>'); recipeSeen → Save.data.recipeBook[hero][path] {cardId:1,_path,_done}. recipeNote(c) after mxPick in pickCardAt: Build Path pick marks _path, path/Unique Mutation picks mark the id (WIP heroes and tutorial skipped); all found → _done + Save.addThreads(RECIPE_PATH_THREAD 30) + banner. buildRecipeBook(top): hero chips (awHeroList with BASIC_PATHS, n/all) tags rb_hero_<h> · 3 Build chips tags rb_path_<id> · card rows (icon/name/headline + ✓, unseen '???'). HUB_GROUPS/FEATURE_NAME/FEAT_LINE say Recipe Book. tests/recipe-book added.
 

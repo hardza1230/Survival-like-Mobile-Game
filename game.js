@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.29';
+const GAME_VERSION = '8.0.30';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.30',date:'2026-10-24',title:'New Bestiary',items:['Each monster now has 3 tiers: first sight, 100 defeats and 1,000 defeats (bosses and minibosses: 1, 5 and 25)','Tier 3 unlocks a monster note and a real weak spot: +5% damage to that monster','All Chapter 1–2 field monsters now have their own pages, sorted by stage','Tap a monster to see its details','The stage summary shows “📖 New! Monsters found” — tap it to open that monster’s page']},
   {v:'8.0.29',date:'2026-10-24',title:'Recipe Book',items:['The Codex is now the Recipe Book','New Builds tab: pick a hero and a Build to see all of its cards — cards you have picked get a ✓, the rest stay “???”','Find every card of a Build (including its Unique Mutations) to earn 🧶 30 Thread','Relics, Items and Sets tabs stay the same']},
   {v:'8.0.28',date:'2026-10-24',title:'Awards: Claim all and secrets',items:['New “Claim all” button collects every ready award step at once (Gold Chest steps are still opened one by one)','7 secret awards hide their names until you earn them — each one gives a title','Each hero now has a single row in Heroes — tap it to see their Champion and Builds awards','Award steps now also give shovels']},
   {v:'8.0.27',date:'2026-10-24',title:'Smarter Temple Depths',items:['Dug tiles now show a number: how many steps away the ladder is','New 🔦 Light: once per floor, light up a 3×3 area for free to see what is buried','Old removed treasures (Core Stones, Scrolls) no longer appear','Collect your Miners’ Thread straight from the Lobby (“🧶 +N ready”)','More shovels from Daily boxes, Awards and stage bosses — Sugar shovel buys are now once a day']},
@@ -6371,7 +6372,7 @@ const Save = {
     this.data.bestiary[type]=after;
     // ปลดขั้น Bestiary = รับ Sugar (แทนที่โบนัสสแตตเดิม) — คืนจำนวน Sugar ที่ได้ให้ผู้เรียกโชว์ป้าย
     let sugar=0;
-    for(const t of BESTIARY_THRESHOLDS){ if(before<t&&after>=t)sugar+=40; }
+    bestiaryTiers(type).forEach((t,i)=>{ if(before<t&&after>=t)sugar+=BEST_TIER_SUGAR[i]||0; });
     if(sugar){ this.data.sugar=(this.data.sugar||0)+sugar; this.save(); }
     return sugar; },
 };
@@ -6521,8 +6522,9 @@ const Cloud = {
 };
 
 /* ---- BESTIARY: สมุดมอนสเตอร์ · ฆ่ามอนเก็บสถิติ → ปลดโบนัสถาวร 5 ระดับ ---- */
-const BESTIARY_THRESHOLDS = [25, 150, 500, 1500, 5000, 15000, 40000, 100000];   // 8 ระดับ · ระดับสูง (6-8) = รางวัลของการฆ่ามอนสะสมเยอะ ๆ
-const BEST_MAX_TIER = BESTIARY_THRESHOLDS.length;
+const BESTIARY_THRESHOLDS = [1, 100, 1000];   // v8.0.30 เจ้าของ: 3 ขั้น — พบครั้งแรก / ฆ่า 100 / ฆ่า 1,000 (บอส/มินิ 1/5/25)
+const BEST_MAX_TIER = 3, BEST_TIER_SUGAR=[30,80,200], BEST_WEAK_MUL=1.05;
+function bestiaryTiers(id){ return /^(boss|mini)\d+$/.test(String(id))?[1,5,25]:BESTIARY_THRESHOLDS; }
 const BESTIARY = [
   { id:'basic',   emoji:'🐜', name:'Sour Worker Ant',   tex:'e_ant_worker',  desc:'The nest basic worker',
     bonus:[{hp:1},{hp:2},{hp:3},{hp:5},{hp:9,def:0.01}] },
@@ -6607,7 +6609,28 @@ C3_BOSS_CODEX.forEach(([mini,boss],i)=>{
   BESTIARY.push({id:'boss'+(i+10),emoji:'👑',name:boss,tex:'codex_c3_boss'+n,desc:stage+' boss',bonus:[1,2,3,4,5].map(x=>({hp:x,dmg:x*0.004}))});
 });
 /* v6.78 C3: Bestiary gives Sugar/collection only, no stats */
-function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of BESTIARY_THRESHOLDS){ if(k>=t)lv++; else break; } return lv; }
+function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of bestiaryTiers(type)){ if(k>=t)lv++; else break; } return lv; }
+// v8.0.30 มอน C1-2…C2-5 แยกชนิดตามด่าน (เดิมนับรวมเป็นมด C1-1) · key = f<ด่าน>_<ชื่อ>
+const FIELD_CODEX=[
+  [1,'💧',[['Rotten Foam Spawn','basic'],['Backflow Fiend','fast'],['Sewage Spitter Bubble','shooter'],['Ferment Pressure Sac','bomber'],['Armored Grate Crab','tank'],['Loose Pipe Bubble','basic']]],
+  [2,'🌶️',[['Boiling Mochi Ember','basic'],['Dashing Chili','fast'],['Air-Gun Chili Grinder','shooter'],['Chili Pressure Pot','bomber'],['Charcoal Furnace Golem','tank']]],
+  [3,'🧊',[['Frozen Sugar Spirit','basic'],['Dashing Ice Shard','fast'],['Cold Syrup Turret','shooter'],['Frost Pressure Bubble','bomber'],['Frozen Gate Warden','tank']]],
+  [4,'🌑',[['Void Shard','basic'],['Crown-Ripper Fiend','fast'],['Banquet Eye','shooter'],['Bomb-Mouth Truffle','bomber'],['Crown Oven Guard','tank']]],
+  [5,'🌿',[['Ferment Sprout','basic','c21_sprout_animated'],['Vine Hunter','fast','c21_vine_hunter_animated'],['Spore Lantern','shooter','c21_spore_lantern_animated'],['Rotten Fruit Pod','bomber','c21_fruit_pod_animated'],['Root-Back Beetle','tank','c21_root_beetle_animated'],['Thorn Oracle','siege','c21_thorn_oracle_animated']]],
+  [6,'🍄',[['Mycelium Drifter','basic','c22_drifter_animated'],['Cap Hopper','fast','c22_hopper_animated'],['Puffcap Sniper','shooter','c22_sniper_animated'],['Mold Sac','bomber','c22_mold_sac_animated'],['Mycelium Bulwark','tank','c22_bulwark_animated'],['Threadweaver Oracle','siege','c22_oracle_animated'],['Sporeling','small','c22_sporeling_animated']]],
+  [7,'🐝',[['Nectar Drone','basic','c23_drone_animated'],['Dartwing','fast','c23_dartwing_animated'],['Pollen Sniper','shooter','c23_pollen_sniper_animated'],['Honey Bomb','bomber','c23_honey_bomb_animated'],['Wax Shieldbearer','tank','c23_wax_guard_animated'],['Choir Moth','siege','c23_choir_moth_animated'],['Tiny Grub','small','c23_grub_animated']]],
+  [8,'🍂',[['Spring Budling','basic','c24_budling_animated'],['Summer Sunscarab','fast','c24_sunscarab_animated'],['Autumn Leafblade','fast','c24_leafblade_animated'],['Winter Frostbell','shooter','c24_frostbell_animated'],['Stormcloud Fruit','bomber','c24_stormfruit_animated'],['Equinox Gardener','tank','c24_equinox_animated'],['Seasonal Wisp','siege','c24_season_wisp_animated'],['Bloom Sprout','small','c24_bloom_sprout_animated']]],
+  [9,'🌳',[['Crown Rootling','basic','c25_rootling_animated'],['Thorn Charger','fast','c25_thorn_charger_animated'],['Bramble Assassin','fast','c25_bramble_assassin_animated'],['Sap Oracle','shooter','c25_sap_oracle_animated'],['Memory Seed Bomb','bomber','c25_seed_bomb_animated'],['Bark Bulwark','tank','c25_bark_guard_animated'],['Root Choir Leech','siege','c25_root_choir_animated']]],
+];
+function bestSlug(n){ return String(n||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); }
+const BEST_ROLE_LORE={basic:'Comes in big groups — sweep them with wide attacks.',fast:'Rushes straight at you — dash sideways and let it overshoot.',shooter:'Keeps its distance and shoots — close in or break line of sight.',bomber:'Bursts when it falls — finish it from range.',tank:'Slow and heavy — keep moving and wear it down.',siege:'Tough backline caster — focus it before it builds up.',small:'Tiny and quick to fall — leave it to area hits.',acid:'Leaves acid pools — never fight inside them.'};
+const STAGE_LABEL=i=>'C'+(Math.floor(i/5)+1)+'-'+(i%5+1);
+for(const [si,em,list] of FIELD_CODEX)for(const [name,role,tex] of list)BESTIARY.push({id:'f'+si+'_'+bestSlug(name),emoji:em,name,tex:tex||'',desc:STAGE_LABEL(si)+' field enemy',role,stage:si});
+// เกร็ด (ปลดที่ขั้น 3 พร้อมจุดอ่อน +5% ดาเมจใส่ชนิดนั้น)
+for(const m of BESTIARY){ if(!m.role)m.role=/^boss/.test(m.id)?'boss':/^mini/.test(m.id)?'mini':m.id.startsWith('c3_')?m.id.slice(3):m.id;
+  m.lore=m.role==='boss'?'Watch its phases at 50% and 25% HP — kick the glowing objects into it for big damage.':m.role==='mini'?'Hits hard but alone — keep moving and use your Unique when it charges.':(BEST_ROLE_LORE[m.role]||BEST_ROLE_LORE.basic); }
+for(const m of BESTIARY){ if(m.stage==null){ const q=/^(?:boss|mini)(\d+)$/.exec(m.id); m.stage=q?+q[1]:m.id.startsWith('c3_')?10:0; } m.ord=m.stage*10+(/^mini/.test(m.id)?5:/^boss/.test(m.id)?8:0); }
+const BESTIARY_IDS=new Set(BESTIARY.map(m=>m.id));
 // โบนัสสแตตของ tier ที่ระบุ (tier 0-4 = ค่าใน bonus[] · tier 5-7 = สเกลจาก tier 5)
 
 /* ---- STAGES: 5 โซนครัว · แต่ละStage = Wave → Miniboss (กลางด่าน) → บอสใหญ่ (จบด่าน) ---- */
@@ -9599,63 +9622,44 @@ class Game extends Phaser.Scene {
     this.menu.setVisible(true);
   }
   // 🍳 สมุดสูตร — โชว์สูตร (COMBOS) แยกตามตัวละคร · ค้นพบแล้ว (Save.cookbook) / ยังไม่พบ / Signature Recipe ⭐
-  buildBestiary(){
+  buildBestiary(){   // v8.0.30 เจ้าของ: 3 ขั้น (พบ/100/1,000 · บอส 1/5/25) · ขั้น 3 = เกร็ด + จุดอ่อน +5% · เรียงตามด่าน · แตะดูรายละเอียด
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 Bestiary','screen_bestiary');
-    const w=this.W,h=this.H;
-    // สรุปโบนัสรวม (สแตตถาวร + Sugar)
-    const totLv=BESTIARY.reduce((a,m)=>a+bestiaryLv(m.id),0);
-    const bText='🍬 '+(totLv*40)+' Sugar earned';
-    const hs=this._hdrShift();
-    const sumTxt=this.add.text(w/2,50+hs,'Kill tiers ('+totLv+'/'+(BESTIARY.length*BEST_MAX_TIER)+') = 🍬 Sugar rewards',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5);
-    const sumBonus=this.add.text(w/2,64+hs,'Total: '+bText,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#8bd3ff',wordWrap:{width:w-28},align:'center'}).setOrigin(0.5,0);
-    this.menu.add([sumTxt,sumBonus]);
-    const portrait=w<=h, cols=portrait?2:3, gap=7,cardW=(w-28-gap*(cols-1))/cols,marginX=14;
-    const rows=portrait?5:3,perPage=cols*rows,pages=Math.max(1,Math.ceil(BESTIARY.length/perPage));this._bestPage=Phaser.Math.Clamp(this._bestPage||0,0,pages-1);   // v4.62: แบ่งหน้า (28 ตัว)
-    const pageItems=BESTIARY.slice(this._bestPage*perPage,this._bestPage*perPage+perPage), y0=portrait?(92+hs):72,cardH=Math.min(portrait?108:88,(h-y0-46-gap*(rows-1))/rows);
+    const w=this.W,h=this.H,hs=this._hdrShift(),L=BESTIARY.slice().sort((x,y)=>x.ord-y.ord),seen=L.filter(m=>Save.kills(m.id)>0).length,weak=L.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).length;
+    const T=(x,y,t,sz,c,st,ox=0,oy=0)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#fff'}).setOrigin(ox,oy);this.menu.add(q);return q;};
+    T(w/2,48+hs,'Found '+seen+' / '+L.length+' · Weak spots learned '+weak,11,'#ffe08a','bold',.5,.5);
+    T(w/2,63+hs,'Tier 1 = first sight · Tier 2 = 100 · Tier 3 = 1,000 defeats (bosses 1 / 5 / 25)',8.5,'#8bd3ff','normal',.5,.5);
+    const portrait=w<=h,cols=portrait?2:3,gap=7,cardW=(w-28-gap*(cols-1))/cols,rows=portrait?6:3,perPage=cols*rows,pages=Math.max(1,Math.ceil(L.length/perPage));
+    if(this._bestFocus){ const k=L.findIndex(m=>m.id===this._bestFocus); if(k>=0)this._bestPage=Math.floor(k/perPage); this._bestFocus=null; }
+    this._bestPage=Phaser.Math.Clamp(this._bestPage||0,0,pages-1);
+    const items=L.slice(this._bestPage*perPage,this._bestPage*perPage+perPage),y0=portrait?(78+hs):72,cardH=Math.min(portrait?84:80,(h-y0-46-gap*(rows-1))/rows);
     this._bestArtQueued=this._bestArtQueued||new Set();let queued=false;
-    for(const m of pageItems){if(!m.tex.startsWith('codex_c3_')||this.textures.exists(m.tex)||this._bestArtQueued.has(m.tex))continue;
+    for(const m of items){if(!m.tex||!m.tex.startsWith('codex_c3_')||this.textures.exists(m.tex)||this._bestArtQueued.has(m.tex))continue;
       this._bestArtQueued.add(m.tex);queued=true;
       this.load.once('filecomplete-image-'+m.tex,()=>{if(this.state!=='menu'||this.menuScreen!=='bestiary'||this._bestArtRebuild)return;
         this._bestArtRebuild=true;this.time.delayedCall(80,()=>{this._bestArtRebuild=false;if(this.state==='menu'&&this.menuScreen==='bestiary')this.buildBestiary();});});
-      this.load.image(m.tex,verUrl(ASSET_IMAGES[m.tex]));
-    }
+      this.load.image(m.tex,verUrl(ASSET_IMAGES[m.tex]));}
     if(queued&&!this.load.isLoading())this.load.start();
-    const starColors=['#4a4059','#8bd3a0','#7fc9ff','#b98cff','#ffd166','#ff8fb5','#ff9a5a','#ff5a6e','#ff3d8f'];
-    pageItems.forEach((m,idx)=>{
-      const col=idx%cols, row=Math.floor(idx/cols);
-      const cx=marginX+col*(cardW+gap), cy=y0+row*(cardH+gap);
-      const lv=bestiaryLv(m.id), kills=Save.kills(m.id);
-      const next=lv<BEST_MAX_TIER?BESTIARY_THRESHOLDS[lv]:null;
-      const g=this.add.graphics();
-      g.fillStyle(lv>0?0x2c2338:0x201a2a,1); g.fillRoundedRect(cx,cy,cardW,cardH,12);
-      g.lineStyle(2,lv>=BEST_MAX_TIER?0xffd166:(lv>0?0x4a4059:0x39304a),1); g.strokeRoundedRect(cx,cy,cardW,cardH,12);
-      if(lv>=BEST_MAX_TIER){ g.fillStyle(0xffd166,0.08); g.fillRoundedRect(cx,cy,cardW,cardH,12); }
-      // icon
-      const hasTex=this.textures.exists(m.tex);
-      const icon=hasTex?this.add.image(cx+25,cy+25,m.tex,ASSET_SHEETS[m.tex]?0:undefined).setDisplaySize(portrait?36:31,portrait?36:31):
-        this.add.text(cx+25,cy+25,m.emoji,{fontSize:portrait?'27px':'24px'}).setOrigin(0.5);
-      if(!hasTex)icon.setOrigin(0.5);
-      // ชื่อ
-      const nm=this.add.text(cx+47,cy+9,m.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:lv>0?'#ffffff':'#7a7088'}).setOrigin(0,0);
-      // ดาว ★
-      const stars=this.add.text(cx+47,cy+25,'★ Tier '+lv+'/'+BEST_MAX_TIER,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:starColors[lv]||'#4a4059'}).setOrigin(0,0);
-      // จำนวนฆ่า + progress
-      const killStr='Defeat: '+kills+(next?' / '+next:'');
-      const kt=this.add.text(cx+8,cy+44,killStr,{fontFamily:'sans-serif',fontSize:'9px',color:'#b7abc9'}).setOrigin(0,0);
-      // progress bar
-      const barW=cardW-16, barH=5, bx=cx+8, by=cy+57;
-      g.fillStyle(0x1a1420,1); g.fillRoundedRect(bx,by,barW,barH,3);
-      const pct=next?Math.min(1,kills/next):1;
-      const barColor=lv>=5?0xffd166:(lv>=3?0xb98cff:0x8bd3a0);
-      if(pct>0){ g.fillStyle(barColor,1); g.fillRoundedRect(bx,by,Math.max(6,barW*pct),barH,3); }
-      // bonus text — สแตตถาวรสะสม + Sugar
-      const bStat='';
-      const bLabel=lv>0?((bStat?bStat+'  · ':'')+'🍬+'+(lv*40)):'Tier 1 → 🍬+40';
-      const blT=this.add.text(cx+8,cy+66,bLabel,{fontFamily:'sans-serif',fontStyle:lv>0?'bold':'normal',fontSize:'8px',color:lv>0?'#8bd3ff':'#5a5268',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      const desc=this.add.text(cx+8,cy+cardH-13,m.desc.length>34?m.desc.slice(0,33)+'…':m.desc,{fontFamily:'sans-serif',fontSize:portrait?'8px':'7.5px',color:'#8f849f',wordWrap:{width:cardW-16}}).setOrigin(0,0);
-      this.menu.add([g,icon,nm,stars,kt,blT,desc]);
-    });
+    const icon=(m,x,y,sz,dark)=>{ const has=m.tex&&this.textures.exists(m.tex),o=has?this.add.image(x,y,m.tex,ASSET_SHEETS[m.tex]?0:undefined):this.add.text(x,y,dark?'❔':m.emoji,{fontSize:Math.round(sz*.75)+'px'}).setOrigin(.5); if(has){ o.setScale(sz/Math.max(o.width,o.height)); if(dark)o.setTint(0x000000).setAlpha(.7); } this.menu.add(o); return o; };
+    items.forEach((m,idx)=>{ const cx=14+(idx%cols)*(cardW+gap),cy=y0+Math.floor(idx/cols)*(cardH+gap),k=Save.kills(m.id),lv=bestiaryLv(m.id),tiers=bestiaryTiers(m.id),found=k>0,max=lv>=BEST_MAX_TIER,g=this.add.graphics();
+      g.fillStyle(found?0x2c2338:0x1a1520,1).fillRoundedRect(cx,cy,cardW,cardH,12).lineStyle(2,max?0xffd166:found?0x4a4059:0x2f283a,1).strokeRoundedRect(cx,cy,cardW,cardH,12); if(max){ g.fillStyle(0xffd166,.08).fillRoundedRect(cx,cy,cardW,cardH,12); } this.menu.add(g);
+      icon(m,cx+24,cy+26,portrait?34:30,!found);
+      const nm=T(cx+46,cy+10,found?m.name:'???',10.5,found?'#ffffff':'#6f6680','bold'); if(nm.width>cardW-52)nm.setScale((cardW-52)/nm.width);
+      T(cx+46,cy+26,found?STAGE_LABEL(Math.min(14,m.stage))+' · '+(/^boss/.test(m.id)?'Boss':/^mini/.test(m.id)?'Miniboss':'Field'):'Not met yet',8.5,'#a89cb6');
+      const px=cx+8,pw=(cardW-16-8)/3,py=cy+cardH-22; for(let t=0;t<3;t++){ const on=lv>t,pg=this.add.graphics(); pg.fillStyle(on?[0x8bd3a0,0x7fc9ff,0xffd166][t]:0x120d18,1).fillRoundedRect(px+t*(pw+4),py,pw,6,3); this.menu.add(pg); }
+      const next=lv<3?tiers[lv]:null; T(cx+8,cy+cardH-12,next?(k+' / '+next):'★ Weak spot +5% dmg',8,max?'#ffe08a':'#b7abc9','bold');
+      this._zone(cx,cy,cardW,cardH,()=>{ this._bestSel=m.id; Sfx.select&&Sfx.select(); this.buildBestiary(); }); this.tapZones[this.tapZones.length-1].tag='best_'+m.id; });
     this._codexNav(this._bestPage,pages,()=>{this._bestPage--;this.buildBestiary();},()=>{this._bestPage++;this.buildBestiary();});
+    // รายละเอียด (แตะการ์ด)
+    const sel=this._bestSel&&L.find(m=>m.id===this._bestSel);
+    if(sel){ const k=Save.kills(sel.id),lv=bestiaryLv(sel.id),tiers=bestiaryTiers(sel.id),found=k>0,pw=Math.min(w-28,380),ph=Math.min(h-120,330),px=(w-pw)/2,py=Math.max(70,(h-ph)/2),dim=this.add.rectangle(0,0,w,h,0x07040c,.78).setOrigin(0); dim._menuBackdrop=true; this.menu.add(dim);
+      const g=this.add.graphics(); g.fillStyle(0x241a30,1).fillRoundedRect(px,py,pw,ph,18).lineStyle(2.5,lv>=3?0xffd166:0x8f7de8,1).strokeRoundedRect(px,py,pw,ph,18); this.menu.add(g);
+      icon(sel,px+46,py+48,64,!found); T(px+90,py+26,found?sel.name:'???',16,'#ffffff','bold'); T(px+90,py+50,found?sel.desc:'Defeat it once to learn more',10,'#cfc2d5'); T(px+90,py+66,'Defeated: '+k,10,'#ffe08a','bold');
+      let yy=py+96; ['First sight','Tier 2','Tier 3'].forEach((lab,t)=>{ const on=lv>t; T(px+18,yy,(on?'✓ ':'○ ')+lab+' · '+tiers[t]+(tiers[t]===1?' defeat':' defeats'),11,on?'#8bffb4':'#a89cb6','bold'); T(px+pw-18,yy,'🍬 '+BEST_TIER_SUGAR[t],11,on?'#8bffb4':'#a89cb6','bold',1); yy+=20; });
+      yy+=6; const lg=this.add.graphics(); lg.fillStyle(lv>=3?0x3a2f18:0x1a1520,1).fillRoundedRect(px+12,yy,pw-24,ph-(yy-py)-52,12); this.menu.add(lg);
+      if(lv>=3){ T(px+24,yy+12,'📜 Monster note',11,'#ffe08a','bold'); const lt=this.add.text(px+24,yy+30,sel.lore,{fontFamily:'sans-serif',fontSize:'11px',color:'#fff5dd',wordWrap:{width:pw-48}}); this.menu.add(lt); T(px+24,yy+36+lt.height,'⚔️ Weak spot: +5% damage to '+sel.name,11,'#8dffb0','bold'); }
+      else T(px+pw/2,yy+(ph-(yy-py)-52)/2,'🔒 Reach Tier 3 to learn its weak spot\n(+5% damage to this monster)',11,'#a89cb6','bold',.5,.5).setAlign('center');
+      const bw=120,bx=w/2-bw/2,by=py+ph-42,bb=this.add.graphics(); bb.fillStyle(0x3c3048,1).fillRoundedRect(bx,by,bw,32,10).lineStyle(1.4,0xa98cf0,1).strokeRoundedRect(bx,by,bw,32,10); this.menu.add(bb); T(w/2,by+16,'Close',12,'#ffffff','bold',.5,.5);
+      this.tapZones=[]; this._zone(0,0,w,h,()=>{ this._bestSel=null; this.buildBestiary(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='best_close'; z.back=true; }
     this.menu.setVisible(true);
   }
   // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
@@ -12485,7 +12489,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.stopHubMotion?.(); this._pathTeach=null; this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -14339,12 +14343,14 @@ class Game extends Phaser.Scene {
       ['Boxes Opened',String((this._openedBoxes||[]).length)],
       ['Power',(this._powerBefore||Save.power(this.character))+' → '+(this._powerAfter||Save.power(this.character))],
       ['Character Level','Lv '+cp.lvl+(this._lastLvlUps>0?' · +'+this._lastLvlUps+' pts':'')],
+      ...((this._newSpecies||[]).length?[['📖 New! Monsters found',this._newSpecies.length+' new'+(this._summaryLast||this.recipeMode?'':' ›')]]:[]),   // v8.0.30 แตะ = เปิด Bestiary ที่ตัวนั้น
     ];
     let sugarText;const rewardGroups=[];
     const box=[bg,panel,t,...starBits],rowTop=starBits.length?.33:.275,step=ph*(.615-rowTop-.002)/Math.max(rows.length,1)*(starBits.length?1:.34/.338),rowFont=Math.min(font,step*.45);
     rows.forEach((r,i)=>{const y=py+ph*rowTop+i*step;
       const l=this.add.text(px+pw*.13,y,r[0],{fontFamily:'sans-serif',fontSize:rowFont+'px',color:'#d9c8e3',wordWrap:{width:pw*.33}}).setOrigin(0,.5);
-      const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);if(i===2)sugarText=v;
+      const v=this.add.text(px+pw*.87,y,r[1],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rowFont+'px',color:i===2?'#ffe18b':r[0].startsWith('📖')?'#9ff0c8':'#fff5dd',align:'right',wordWrap:{width:pw*.38}}).setOrigin(1,.5);box.push(l,v);if(i===2)sugarText=v;
+      if(r[0].startsWith('📖')){ l.setColor('#9ff0c8'); this._newRowZ={x:px+pw*.1,y:y-step/2,w:pw*.8,h:step}; }
     });
     if(this._firstMastery){box.push(this.add.text(w/2,py+ph*.613,'Stage Mastery earned!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(font-1)+'px',color:'#b9ffe1'}).setOrigin(.5));}
     this.buildSummaryExpBar(box,px,py,pw,ph,font,!this._summaryPresentationShown);
@@ -14356,6 +14362,7 @@ class Game extends Phaser.Scene {
         const qty=this.add.text(ex,ey+size*.62,'x'+cur[k],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(7,font-3)+'px',color:'#fff'}).setOrigin(.5);box.push(icon,qty);rewardGroups.push([icon,qty]);
       });}
     this._summaryBtns=[];this._summaryBonus=this.sugarStage;
+    if(this._newRowZ&&(this._newSpecies||[]).length&&!this._summaryLast&&!this.recipeMode){ const z=this._newRowZ; this._summaryBtns.push({...z,fn:()=>this.continueFromSummary(this._newSpecies[0])}); } this._newRowZ=null;
     if(this._summaryBonus>0&&!this._summaryDoubled){const dw=Math.min(w-28,pw*.9),dh=extra-6,dy=py+ph+extra/2;
       const zb=this._endBtn(box,w/2,dy,dw,dh,0xffb020,'📺 REWARD x2  (+'+this._summaryBonus+' 🍬)',{primary:true,pulse:true,dark:true,font:Math.min(17,dw*.05)});
       this._summaryBtns.push({...zb,fn:()=>this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>this.adDoubleSugar())});}
@@ -14384,12 +14391,12 @@ class Game extends Phaser.Scene {
     this.stopSummaryPresentation();
     if(this.showBanner)this.showBanner('🍬 Sugar x2!','Get an extra +'+bonus+' from an ad',1700);
     if(this.state==='summary')this.showStageSummary(this._summaryLast);if(bonus>0)Sfx.result('double'); }
-  continueFromSummary(){
+  continueFromSummary(focus){
     if(this.state!=='summary')return;
     this.stopSummaryPresentation();
     this.over.setVisible(false); this.physics.resume(); this.state='play';
     if(this._summaryLast&&!this._quitSummary){ this._quitSummary=false; this.victory(); return; }
-    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;const wasAtlas=!!this.recipeMode;this.exitStage();if(wasAtlas){this._atlasTab='board';this.menuScreen='atlas';}else this.menuScreen='hub';this.buildMenuScreen();   // v4.29 (v6.28: Atlas run กลับหน้า Atlas): จบด่านกลับหน้าเมนูหลักเสมอ
+    this._quitSummary=false;this._stageReward=null;this.sugarStage=0;const wasAtlas=!!this.recipeMode;this.exitStage();if(wasAtlas){this._atlasTab='board';this.menuScreen='atlas';}else if(typeof focus==='string'){this._bestFocus=focus;this._bestSel=focus;this.menuScreen='bestiary';}else this.menuScreen='hub';this.buildMenuScreen();   // v4.29 (v6.28: Atlas run กลับหน้า Atlas): จบด่านกลับหน้าเมนูหลักเสมอ
   }
   // v4.27: จบ tutorial → พาเข้าหน้า Flavor Weave ตรง ๆ + สอนให้ใช้ Sugar อัพแก่น (Weave เปิดตั้งแต่เริ่ม แม้ Gear&Power ตัวอื่นยังล็อก)
   openTutorialWeave(){
@@ -15683,7 +15690,14 @@ class Game extends Phaser.Scene {
     const D=[['c_streak','🔥','Kill Streak','+3% damage per kill in your streak (max +40%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
     if(!D.length)return null; const [id,emoji,title,desc]=Phaser.Utils.Array.GetRandom(D);
     return {type:'relic',key:'cond_'+id,lvl:1,max:1,kind:'Instinct',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }
-  condDmgMul(e){ const P=this.player,c=P&&P._cond; if(!c)return 1; let m=1; const f=P.hp/Math.max(1,P.maxhp);
+  bestiaryKey(e){ const si=this.stageIndex|0; if(e.isBoss)return 'boss'+si; if(e.isMini)return 'mini'+si;
+    if(e._bkS===si&&e._bkR===e.roleName&&e._bk)return e._bk; let k=null;
+    if(si>=1&&si<=9&&e.roleName){ const f='f'+si+'_'+bestSlug(e.roleName); if(BESTIARY_IDS.has(f))k=f; }
+    if(!k)k=e._bestiaryType||(e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture&&e.texture.key==='e_fast'?'fast':(e.texture&&e.texture.key==='e_tank')||e.isElite?'tank':'basic'));
+    e._bkS=si; e._bkR=e.roleName; e._bk=k; return k; }
+  // v8.0.30 จุดอ่อนจาก Bestiary ขั้น 3: +5% ดาเมจใส่ชนิดนั้น (ชุดคำนวณตอนเริ่มด่าน)
+  bestWeakMul(e){ const W=this._bestW; if(!W||!W.size||!e||e.isDummy)return 1; return W.has(this.bestiaryKey(e))?BEST_WEAK_MUL:1; }
+  condDmgMul(e){ const P=this.player,c=P&&P._cond; if(!c)return this.bestWeakMul?this.bestWeakMul(e):1; let m=this.bestWeakMul?this.bestWeakMul(e):1; const f=P.hp/Math.max(1,P.maxhp);
     if(c.c_low&&f<0.5)m+=0.20*c.c_low; if(c.c_full&&f>=0.9)m+=0.12*c.c_full;
     if(c.c_dash&&(this.elapsed||0)-(this._lastDashAt??-99)<2)m+=0.25*c.c_dash;
     if(c.c_still&&P.body&&P.body.velocity.length()<20)m+=0.15*c.c_still;
@@ -17577,8 +17591,8 @@ class Game extends Phaser.Scene {
     if(!big) Sfx.pop();
     // Bestiary: นับจำนวนที่ฆ่าตามชนิด
     const si=Math.min(STAGES.length-1,Math.max(0,this.stageIndex||0));   // v4.62: เดิม cap 5 → บอส/มินิ C2-2..C2-5 ถูกนับเป็นของ C2-1
-    const btype=isBoss?('boss'+si):isMini?('mini'+si):e._bestiaryType|| (e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture.key==='e_fast'?'fast':e.texture.key==='e_tank'||isElite?'tank':'basic'));
-    const bSugar=Save.addKill(btype);
+    const btype=this.bestiaryKey(e);
+    const bSugar=Save.addKill(btype); if(Save.kills(btype)===1&&!this._inTutorial)(this._newSpecies||(this._newSpecies=[])).push(btype);   // v8.0.30 ชนิดใหม่ → หน้าสรุปด่าน
     if(bSugar){ this.showBanner('📖 Codex Rank Unlocked','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
     this.burst(e.x,e.y,deathColor);
