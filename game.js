@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.15';
+const GAME_VERSION = '8.0.16';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.16',date:'2026-10-24',title:'Punchier battle HUD',items:['Kill and Sugar numbers bounce when they go up','Boss HP liquid turns darker and flows faster below 50% and 25%, and lost HP lingers as a white ghost before shrinking','Survive missions flash red in the last 5 seconds','Changing game speed shows a big x1–x4 pop in the middle of the screen'] },
   {v:'8.0.15',date:'2026-10-24',title:'Liquid boss bar and tidier top',items:['Boss HP is now a flowing pink-red liquid bar','The mission bar ripples and flashes when you finish a mission step','The Level/kills/Sugar bar is only as wide as it needs to be','A small skull marks the boss at the end of the wave dots'] },
   {v:'8.0.14',date:'2026-10-24',title:'Flowing mission bar',items:['The mission bar is now a rounded tube of flowing aqua-green liquid','Wave title and wave dots sit centred in the mission card; the Bonus line is gone from the top (bonus rewards still work)'] },
   {v:'8.0.13',date:'2026-10-24',title:'A little candy shine',items:['Minimal illustrated battle HUD with soft plum glass, fine cream edges and tiny sugar glints','Matching compact mission and boss strips, with clean buttons and a mint speed highlight'] },
@@ -7820,7 +7821,7 @@ class Game extends Phaser.Scene {
         if(hit)this._hudPress={k:hit,t:this.time?.now||0};
         if(hit==='mute'){ const m=Sfx.toggle(); this.muteTxt.setText(m?'🔇':'🔊'); this.hudBtnArtSync?.(); return; }
         if(hit==='pause'&&(this.state==='play'||this.state==='paused')){ this.togglePause(); return; }
-        if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=4?1:(this.gameSpeed||1)+1); Sfx.select(); return; } }
+        if(hit==='speed'&&this.state==='play'){ this.setGameSpeed((this.gameSpeed||1)>=4?1:(this.gameSpeed||1)+1); this.speedPopup?.(); Sfx.select(); return; } }
       if(this.state==='paused'){ // แตะปุ่มในเมนูหยุด
         for(const z of (this._pauseBtns||[])){ if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){ Sfx.uiAction('click',()=>z.fn()); return; } }
         return; }
@@ -8577,15 +8578,34 @@ class Game extends Phaser.Scene {
     const L=live?this._liq:(popK>0?this._liqLast:null);
     this.hudLiqG=this.liquidTube(this.hudLiqG,hud&&L?L:null,live?(this.waveObjBar?.width||0)/L.w:1,'_liqF',0,popK>0?popK:0);
     const bg=this.bossBgW,bv=!!(hud&&bg?.visible&&this.bossName?.visible),bw=bg?.width||0;
-    this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:8}:null,bw>4?(this.bossBar?.width||0)/(bw-4):0,'_bossLiqF',1,0);
+    const bf=bw>4?Phaser.Math.Clamp((this.bossBar?.width||0)/(bw-4),0,1):0;   // v8.0.16 เฟส 50%/25% = สีเข้ม + ไหลเร็ว · เงาขาวค้างตอนโดนตี
+    this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:8}:null,bf,'_bossLiqF',bf<=.25?3:bf<=.5?2:1,0,{ghost:'_bossGhost'});
   }
+  // v8.0.16 ตัวเลขฆ่า/Sugar เด้งตอนเปลี่ยน · Survive เหลือ <5 วิ กระพริบแดง
+  hudJuice(){ if(!this.tweens)return;
+    for(const t of [this.killTxt,this.runSugarTxt]){ if(!t)continue; const n=String(t.text||'').replace(/\D/g,'');
+      if(t._jn!=null&&n!==t._jn&&t.visible){ t._jt?.stop?.(); t.setScale(1); t._jt=this.tweens.add({targets:t,scale:1.3,duration:70,yoyo:true,ease:'Quad.easeOut',onComplete:()=>t.setScale(1)}); }
+      t._jn=n; }
+    const o=this.waveObjective,T=this.waveObjTxt; if(!T||!o)return;
+    const warn=!!(o&&!o.done&&o.type==='survive'&&T.visible&&this.state==='play'&&this.waveTimer>0&&this.waveTimer<5);
+    const on=warn&&Math.floor((this.time?.now||0)/220)%2===0, c=warn?(on?'#ff4d5e':'#ffd0d4'):('#'+((o&&o.color)||0xfff4b0).toString(16).padStart(6,'0'));
+    if(T._jc!==c){ T._jc=c; T.setColor(c); } }
+  // v8.0.16 กดเปลี่ยนความเร็ว → ป้าย x1–x4 เด้งกลางจอ
+  speedPopup(){ if(!this.add||!this.tweens)return; let t=this._spdPop;
+    if(!t||!t.active){ t=this._spdPop=this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'40px',color:'#bff5d8',stroke:'#14301f',strokeThickness:6}).setOrigin(.5).setScrollFactor(1).setDepth(70); this.camUI?.(t); }
+    const gs=this.gameSpeed||1; t._tw?.stop?.(); t.setText('x'+gs+(gs>1?' ⏩':'')).setColor(gs>1?'#bff5d8':'#fff0c7').setPosition(this.W/2,this.H*.38).setAlpha(1).setScale(.6).setVisible(true);
+    t._tw=this.tweens.add({targets:t,scale:{from:.6,to:1.12},duration:150,ease:'Back.easeOut',onComplete:()=>{ t._tw=this.tweens.add({targets:t,alpha:0,y:t.y-18,scale:1,delay:380,duration:320,onComplete:()=>t.setVisible(false)}); }}); }
   // หลอดน้ำมุมโค้งนิด ๆ · pal 0 = ฟ้าเขียว (ภารกิจ) · 1 = ชมพูแดง (เลือดบอส) · pop 1→0 = กระเพื่อม + แสงแวบ
-  liquidTube(g,L,tf,key,pal,pop){
+  liquidTube(g,L,tf,key,pal,pop,o={}){
     if(!g){ if(!L)return g; g=this.add.graphics().setScrollFactor(1).setDepth(53); this.camUI?.(g); }
-    g.clear(); g.setVisible(!!L); if(!L)return g;
-    const P=pal?[0x2a1018,0x3a1220,0xd93a6a,0xff7fa3,0xffd6e2,0xffeef3,0xffa3bf,0xffe0ea]:[0x0b1418,0x10242a,0x1fb5a8,0x52e3b8,0xc8fff0,0xe8fff8,0xa9f5e6,0xbffff0];
-    const {x,y,w,h}=L,r=3,t=(this.time?.now||0)/1000;tf=Phaser.Math.Clamp(tf||0,0,1);
-    let f=this[key]; f=f==null||Math.abs(tf-f)>.5?tf:f+(tf-f)*.12; this[key]=f; const fw=Math.max(0,w*f),amp=.8+pop*2.6;
+    g.clear(); g.setVisible(!!L); if(!L){ if(o.ghost)this[o.ghost]=null; return g; }
+    const PAL=[[0x0b1418,0x10242a,0x1fb5a8,0x52e3b8,0xc8fff0,0xe8fff8,0xa9f5e6,0xbffff0],[0x2a1018,0x3a1220,0xd93a6a,0xff7fa3,0xffd6e2,0xffeef3,0xffa3bf,0xffe0ea],
+      [0x2a0c12,0x3a1018,0xc42848,0xf0587a,0xffc2cf,0xffe2e8,0xff8aa4,0xffd0da],[0x24060a,0x340a10,0x9e1028,0xd8304e,0xffa8b4,0xffd4da,0xff6b80,0xffc0c8]];
+    const P=PAL[pal]||PAL[0],spd=pal===3?2.2:pal===2?1.5:1;
+    const {x,y,w,h}=L,r=3,t=(this.time?.now||0)/1000*spd,now=this.time?.now||0;tf=Phaser.Math.Clamp(tf||0,0,1);
+    let f=this[key]; f=f==null||Math.abs(tf-f)>.5?tf:f+(tf-f)*(o.ghost?.35:.12); this[key]=f; const fw=Math.max(0,w*f),amp=.8+pop*2.6;
+    let gw=0; if(o.ghost){ let G=this[o.ghost]; if(!G||tf>G.v+.001)G={v:tf,hitAt:0,last:tf}; if(tf<G.last-.0005)G.hitAt=now; G.last=tf;
+      if(now-G.hitAt>380)G.v+=(tf-G.v)*.08; this[o.ghost]=G; gw=Math.max(0,w*G.v); }
     g.fillStyle(P[0],.85).fillRoundedRect(x-1.5,y-1.5,w+3,h+3,r+1.5);
     g.fillStyle(P[1],1).fillRoundedRect(x,y,w,h,r);
     if(fw>=2){ const rr=Math.min(r,fw/2),a=x+rr,b=x+fw-rr;
@@ -8597,6 +8617,7 @@ class Game extends Phaser.Scene {
       for(let k=0;k<3;k++){ const bx=x+((t*18+k*w/3)%Math.max(4,fw-4))+2,by=y+h-2-((t*4+k*1.7)%Math.max(1,h-3)); if(bx<b)g.fillStyle(0xffffff,.35).fillCircle(bx,by,1); }
       if(f<.995)g.fillStyle(P[7],.35+.2*Math.sin(t*6)).fillCircle(x+fw,y+h/2,h*.55);
     }
+    if(gw>fw+.5)g.fillStyle(0xffffff,.72).fillRect(x+fw,y+1,gw-fw,h-2);   // เงาเลือดที่หาย ค้างแล้วค่อยหด
     g.lineStyle(1,P[6],.45).strokeRoundedRect(x,y,w,h,r);
     if(pop>0){ g.fillStyle(0xffffff,.55*pop).fillRoundedRect(x,y,w,h,r); g.lineStyle(2,P[7],.8*pop).strokeRoundedRect(x-2-4*(1-pop),y-2-4*(1-pop),w+4+8*(1-pop),h+4+8*(1-pop),r+3); }
     return g;
@@ -8647,7 +8668,7 @@ class Game extends Phaser.Scene {
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     this.drawCombatHUDPanels?.(g);
     const art=this.hudArtSync?.();
-    this.drawLiquidBar?.();
+    this.drawLiquidBar?.(); this.hudJuice?.();
     const bx=78, bw=Math.max(30,this.W-218);
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);

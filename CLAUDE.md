@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.16, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.17, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.15 — Liquid boss bar, mission pop, fitted top bar, boss skull (owner picked 1–4)
+# Latest delivery: v8.0.16 — Punchier battle HUD (owner picked 1–5)
+
+hudJuice() from drawBars: killTxt/runSugarTxt digits change → scale 1→1.3 yoyo 70ms; survive objective with waveTimer<5 → waveObjTxt blinks #ff4d5e/#ffd0d4 every 220ms (colour cached in T._jc, restores o.color). liquidTube(…,o) gains palettes 2/3 (boss ≤50% / ≤25%: darker reds, flow ×1.5 / ×2.2) and o.ghost: boss uses faster smoothing (.35) plus ghost {v,hitAt,last} — white strip from current fill to the old value, holds 380ms after the last drop then shrinks ×.08/frame, resets when HP rises/boss hidden. speedPopup() on the speed-button tap: big 'xN ⏩' text at H·.38, Back.out pop then fade up (reused object, depth 70). No gameplay changes.
+
+# Previous delivery: v8.0.15 — Liquid boss bar, mission pop, fitted top bar, boss skull (owner picked 1–4)
 
 drawLiquidBar → liquidTube(g,L,frac,key,pal,pop) shared drawer (pal 0 aqua-green mission, 1 pink-red boss). Boss: hudBossLiqG at bossBgW (x−w/2, y, w, h 8; bg y+16, rects alpha 0), frac bossBar.width/(bgW−4). completeWaveObjective sets _liqPop → 750ms ripple (amp .8→3.4, faster wave) + white flash + expanding glow ring, drawn from _liqLast even after the objective HUD clears. Top island width _hudTopW = sugar right edge (kill end +28+sugar width) +4, step 4, ≤ w−152; runSugarTxt right-aligned there; art hud_top_panel uses it. drawWavePips end marker = _bossPipImg (hud_ic_kill 12px tinted 0xff8fb0, else 💀 text; in hudList, hidden on early return/hudVisible(false)). Combat HUD check 4 sizes passed.
 
