@@ -1,0 +1,143 @@
+{
+  "art_order": 46,
+  "source_only": true,
+  "assets": [
+    {
+      "key": "cs_s01_far_roots_burst",
+      "file": "cs_s01_far_roots_burst.png",
+      "frames": 1,
+      "frame_width": 1080,
+      "frame_height": 1920,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "background": "opaque RGB",
+      "source": "_sources/roots_burst.png",
+      "dialogue_safe_from_y": 1380,
+      "bytes": 2516774,
+      "sha256": "e2fff1dc3e9f19e2618c4781ccc1c345357476181c8205c78bcac613a1874dbf",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "key": "cs_s00_far_city_night",
+      "file": "cs_s00_far_city_night.png",
+      "frames": 1,
+      "frame_width": 1080,
+      "frame_height": 1920,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "background": "opaque RGB",
+      "source": "_sources/city_night.png",
+      "dialogue_safe_from_y": 1380,
+      "bytes": 3462369,
+      "sha256": "b59cd73ff38d9029fe3e79d46fda8011edfb0f2bc8078d09915b579c0b13151c",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "key": "cs_fx_root_burst",
+      "file": "cs_fx_root_burst.png",
+      "frames": 6,
+      "frame_width": 540,
+      "frame_height": 540,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.8592592592592593
+      ],
+      "background": "transparent RGBA",
+      "source": "_sources/root_fx.png",
+      "source_boxes": [
+        [
+          0,
+          0,
+          512,
+          480
+        ],
+        [
+          512,
+          0,
+          1024,
+          480
+        ],
+        [
+          1024,
+          0,
+          1536,
+          480
+        ],
+        [
+          0,
+          480,
+          512,
+          1024
+        ],
+        [
+          512,
+          480,
+          1024,
+          1024
+        ],
+        [
+          1024,
+          480,
+          1536,
+          1024
+        ]
+      ],
+      "source_subjects": [
+        [
+          71,
+          333,
+          463,
+          465
+        ],
+        [
+          47,
+          251,
+          446,
+          467
+        ],
+        [
+          39,
+          80,
+          475,
+          466
+        ],
+        [
+          17,
+          27,
+          504,
+          474
+        ],
+        [
+          28,
+          30,
+          493,
+          474
+        ],
+        [
+          20,
+          24,
+          499,
+          479
+        ]
+      ],
+      "common_scale": 0.9846153846153847,
+      "padding": 16,
+      "registration": "Painted crack/wood baseline fixed at464; one scale for all six poses",
+      "loop": false,
+      "hold_last": true,
+      "bytes": 1439472,
+      "sha256": "86208241d4eed9015b911b73373a8d19b413401b77403cc68d09d42eca24aa00",
+      "width": 3240,
+      "height": 540
+    }
+  ]
+}

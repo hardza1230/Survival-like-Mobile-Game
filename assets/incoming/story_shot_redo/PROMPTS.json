@@ -1,0 +1,29 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "prompt": "Create ONE full-screen portrait 9:16 production painted scene for Mochi Mayhem. Reference collage: use ONLY its LEFT pantry as the SAME ROOM with wooden shelves, jam jars, warm lantern, same perspective. Dramatic moment: the floor bursts open at right-center (x65%,y60%); several massive nearly-black DARK PURPLE THORNY TREE ROOTS with thin magenta glowing veins thrust up and curl like grasping vines. Botanical roots ONLY: ABSOLUTELY NO MOUTHS, NO TEETH, NO EYES, NO FACES, NO ANIMAL HEADS. Splintered planks, dust and one toppled jam jar fly around the rupture. Cool purple light from crack contrasts with orange lanterns. Beautiful cinematic hand painted chibi fantasy game illustration, bold dark outlines, readable shapes, ominous but family-friendly cartoon, no blood/gore. No characters. Leave left middle x15-45%,y40-62% as clear intact floor for a separate scared mochi character. ALL important action above y70%; BOTTOM28% quiet shadowed wood floor with no important objects for captions. One continuous illustration, not panels, no interface, NO TEXT, no labels, no watermark. Opaque background.",
+      "original": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-d4c16d1e-2a67-4c9a-b8cc-6fee1ffd1ad8.png",
+      "reference": "references.jpg",
+      "id": "roots_burst",
+      "source": "_sources/roots_burst.png",
+      "source_sha256": "ebc383c9937c1f085aadf19dfc98e2a64a3ec1274d31c185f4cd70836b9b49d2"
+    },
+    {
+      "prompt": "Create ONE full-screen portrait 9:16 production painted scene for Mochi Mayhem. Reference collage: use the MIDDLE image as this SAME white-stone royal capital, red roofs, castle, central stairs and plaza, and RIGHT image for the EXACT golden branching crown design with pink heart gem. It is now unmistakably DARK NIGHT: deep navy violet starry sky, no sunlight/no sunset. A HUGE golden heart-gem Crown floats above the distant castle in the upper third, ominous VIOLET glow. Violet curse mist pours from the crown down onto roofs and streets as several flowing smoke waterfalls, making it clear the Crown is draining the city. Some windows still warm orange, others dim gray and extinguished. Keep the castle and crown readable with dark cool silhouettes and rim light. Empty plaza in lower middle for separate townspeople/mochi. Bottom28% quiet dark cobbled plaza for captions. NO PEOPLE, no main characters, NO RAINBOW, NO RAINBOW RIBBONS, NO SUN. Polished whimsical cartoon fantasy game painting with bold dark outlines, cinematic lighting, same established cute game style. One continuous scene, no split panels, no interface, NO LETTERS/TEXT/signatures. Opaque background.",
+      "original": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-8d694ecd-9eb8-400e-994b-f510f9ebb54b.png",
+      "reference": "references.jpg",
+      "id": "city_night",
+      "source": "_sources/city_night.png",
+      "source_sha256": "fbe9b06061d3de00b64b2da1ec5ce3d710bfc7e58df9351f87414a4deab37b93"
+    },
+    {
+      "prompt": "Production animated FX sprite donor sheet exactly SIX progressive frames in a strict3 columns x2 rows, all equal square cells, generous transparent gaps. Same nearly black dark-purple THORNY BOTANICAL TREE ROOT cluster, thin glowing magenta veins, erupting from a wooden floor crack. Consistent perspective, same crack center and ground line near lower85% in every cell, SAME SCALE across all six frames (do not zoom small stages to fill cells). Frame1 tiny splintered wood crack with violet light; frame2 tiny root tips emerging; frame3 half-height curling thorn roots; frame4 full tall root eruption with wood splinters flying; frame5 full roots flexing with debris; frame6 final tall held root pose and settled crack, no fading out. All roots fit fully inside each cell with10%margin, no overlap between cells. Roots have NO mouth, NO teeth, NO eyes, NO face, NO creature head. Polished painterly cartoon game VFX with crisp dark outlines and restrained glow, match purple roots in a warm pantry. NO background floor rectangle, NO shadow plate, no scenery, NO text/numbers/gridlines/watermark. True RGBA transparent background.",
+      "original": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-ce7c94a9-0454-4641-85a4-b9543edc6752.png",
+      "reference": "references.jpg",
+      "id": "root_fx",
+      "source": "_sources/root_fx.png",
+      "source_sha256": "a6ee88ea2897d82fb7171e21e3f000236ad647d4ff9be73787acf46868bfcfc4"
+    }
+  ]
+}

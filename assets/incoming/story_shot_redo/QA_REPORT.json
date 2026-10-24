@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "key": "cs_s01_far_roots_burst",
+      "png_crc_decode": "PASS",
+      "sha256": "e2fff1dc3e9f19e2618c4781ccc1c345357476181c8205c78bcac613a1874dbf",
+      "bytes": 2516774,
+      "size": [
+        1080,
+        1920
+      ],
+      "mode": "RGB"
+    },
+    {
+      "key": "cs_s00_far_city_night",
+      "png_crc_decode": "PASS",
+      "sha256": "b59cd73ff38d9029fe3e79d46fda8011edfb0f2bc8078d09915b579c0b13151c",
+      "bytes": 3462369,
+      "size": [
+        1080,
+        1920
+      ],
+      "mode": "RGB"
+    },
+    {
+      "key": "cs_fx_root_burst",
+      "png_crc_decode": "PASS",
+      "sha256": "86208241d4eed9015b911b73373a8d19b413401b77403cc68d09d42eca24aa00",
+      "bytes": 1439472,
+      "size": [
+        3240,
+        540
+      ],
+      "mode": "RGBA"
+    }
+  ],
+  "original_sources": [
+    {
+      "file": "_sources/roots_burst.png",
+      "sha256": "ebc383c9937c1f085aadf19dfc98e2a64a3ec1274d31c185f4cd70836b9b49d2",
+      "bytes": 2119931,
+      "size": [
+        941,
+        1672
+      ],
+      "png_crc_decode": "PASS"
+    },
+    {
+      "file": "_sources/city_night.png",
+      "sha256": "fbe9b06061d3de00b64b2da1ec5ce3d710bfc7e58df9351f87414a4deab37b93",
+      "bytes": 2844782,
+      "size": [
+        941,
+        1672
+      ],
+      "png_crc_decode": "PASS"
+    },
+    {
+      "file": "_sources/root_fx.png",
+      "sha256": "a6ee88ea2897d82fb7171e21e3f000236ad647d4ff9be73787acf46868bfcfc4",
+      "bytes": 2232947,
+      "size": [
+        1536,
+        1024
+      ],
+      "png_crc_decode": "PASS"
+    }
+  ],
+  "visual_review": [
+    "No text or watermarks",
+    "Roots have no mouth, eyes or face",
+    "City is dark starry night with crown and violet curse; no rainbow",
+    "Lower28% is quiet floor/plaza; pantry left-middle remains available for character"
+  ],
+  "method": "Original ImageGen pixels only; aspect-preserving sizing and uniform shared-scale FX registration; PNG chunk CRC/full decode, actual SHA256, dimensions, RGB opacity/RGBA transparency and16px per-frame gutters."
+}
