@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.14';
+const GAME_VERSION = '8.0.15';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.15',date:'2026-10-24',title:'Liquid boss bar and tidier top',items:['Boss HP is now a flowing pink-red liquid bar','The mission bar ripples and flashes when you finish a mission step','The Level/kills/Sugar bar is only as wide as it needs to be','A small skull marks the boss at the end of the wave dots'] },
   {v:'8.0.14',date:'2026-10-24',title:'Flowing mission bar',items:['The mission bar is now a rounded tube of flowing aqua-green liquid','Wave title and wave dots sit centred in the mission card; the Bonus line is gone from the top (bonus rewards still work)'] },
   {v:'8.0.13',date:'2026-10-24',title:'A little candy shine',items:['Minimal illustrated battle HUD with soft plum glass, fine cream edges and tiny sugar glints','Matching compact mission and boss strips, with clean buttons and a mint speed highlight'] },
   {v:'8.0.12',date:'2026-10-24',title:'More room to fight',items:['A compact battle HUD opens up the arena with small stat and control groups','Wave progress shares one row; missions use thin progress bars, and boss name, HP and health bar fit a compact strip'] },
@@ -8501,8 +8502,9 @@ class Game extends Phaser.Scene {
   drawCombatHUDPanels(g){
     const w=this.W,art=!!this._hudArt;
     // Compact glass islands: no full-width ornamental header or boss plate.
-    if(!art){g.fillStyle(0x171320,.83).fillRoundedRect(8,9,w-152,29,10);
-    g.lineStyle(1,0xd4b178,.22).strokeRoundedRect(8,9,w-152,29,10);}
+    const tw=this._hudTopW||w-152;   // v8.0.14 แถบ Lv/💀/🍬 กว้างพอดีเนื้อหา
+    if(!art){g.fillStyle(0x171320,.83).fillRoundedRect(8,9,tw,29,10);
+    g.lineStyle(1,0xd4b178,.22).strokeRoundedRect(8,9,tw,29,10);}
     const layoutKey=[w,art,this.lvlTxt.text,this.killTxt.text,this.runSugarTxt.text,this.timeTxt.text,this.waveObjTxt.text,this.waveObjTxt.visible,this.waveBonusTxt.text,this.waveBonusTxt.visible,this.bossName.text,this.bossName.visible,this.bossHpTxt.text,this._seasonIconsOn].join('|');
     if(this._hudLayoutKey!==layoutKey||this.replayProgressFrame?.visible){
     this._hudLayoutKey=layoutKey;this._hudBackings=[];
@@ -8516,6 +8518,7 @@ class Game extends Phaser.Scene {
       t.setFontSize(size);if(t.width>max)t.setFontSize(Math.max(8,Math.floor(size*max/t.width)));};
     this.killTxt.name='kills';this.runSugarTxt.name='sugar';
     fit(this.killTxt,Math.max(24,(sx-kx-24)/2),10);fit(this.runSugarTxt,Math.max(24,(sx-kx-24)/2),10);
+    { const sr=Math.min(sx,this.killTxt.x+this.killTxt.width+28+this.runSugarTxt.width); this.runSugarTxt.setX(Math.round(sr)); this._hudTopW=Math.min(w-152,Math.ceil((sr+12-8)/4)*4); }
     this.timeTxt.setOrigin(0,0).setWordWrapWidth(w-142).setMaxLines(1).setStroke('#191321',3);
     this.timeTxt.name='phase';fit(this.timeTxt,w-142,11);
     // v8.0.14 เจ้าของ: หัวเวฟ + จุดเวฟอยู่กลาง ในการ์ดเดียวกับภารกิจ
@@ -8555,8 +8558,8 @@ class Game extends Phaser.Scene {
       this.bossName.name='boss';fit(this.bossName,w-162,11);
       this.bossHpTxt?.setOrigin(1,0).setPosition(w-18,y+1).setFontSize(9);
       this._hudBackings.push([0x211522,.76,12,y-2,w-24,29,7]);
-      bg.setY(y+17).setDisplaySize(bg.width,6).setAlpha(.75);
-      this.bossBar.setY(y+18).setDisplaySize(this.bossBar.width,4).setAlpha(1);
+      bg.setY(y+16).setDisplaySize(bg.width,8).setAlpha(0);   // v8.0.14 หลอดน้ำชมพูแดง (liquidTube) แทนแถบ
+      this.bossBar.setY(y+18).setDisplaySize(this.bossBar.width,4).setAlpha(0);
       bottom=y+27;
     }
     if(!objective)this._liq=null;
@@ -8569,24 +8572,34 @@ class Game extends Phaser.Scene {
   }
   // v8.0.14 เจ้าของ: หลอดภารกิจ = สี่เหลี่ยมมุมโค้งนิด ๆ ด้านในเป็นน้ำฟ้าเขียวไหล (วาดด้วยโค้ด canvas-safe)
   drawLiquidBar(){
-    let g=this.hudLiqG; const L=this._liq,show=!!(L&&this.waveObjBg?.visible&&this.barG?.visible);
-    if(!g){ if(!show)return; g=this.hudLiqG=this.add.graphics().setScrollFactor(1).setDepth(53); this.camUI?.(g); }
-    g.clear(); g.setVisible(show); if(!show)return;
-    const {x,y,w,h}=L,r=3,t=(this.time?.now||0)/1000,tf=Phaser.Math.Clamp((this.waveObjBar?.width||0)/w,0,1);
-    this._liqF=this._liqF==null||Math.abs(tf-this._liqF)>.5?tf:this._liqF+(tf-this._liqF)*.12; const f=this._liqF,fw=Math.max(0,w*f);
-    g.fillStyle(0x0b1418,.85).fillRoundedRect(x-1.5,y-1.5,w+3,h+3,r+1.5);
-    g.fillStyle(0x10242a,1).fillRoundedRect(x,y,w,h,r);
-    if(fw>=2){ const rr=Math.min(r,fw/2);
-      g.fillStyle(0x1fb5a8,1).fillRoundedRect(x,y,fw,h,rr);                       // น้ำชั้นลึก
-      g.fillStyle(0x52e3b8,.9).fillRoundedRect(x,y,fw,h*.55,{tl:rr,tr:rr,bl:0,br:0}); // ชั้นบนสว่าง
-      const a=x+rr,b=x+fw-rr;
-      for(let k=0;k<Math.ceil(w/14)+2;k++){ const sx=x+((t*26+k*14)%(w+28))-14; const p=[sx,y+h,sx+6,y+h,sx+11,y,sx+5,y].map((v,i)=>i%2?v:Phaser.Math.Clamp(v,a,b));
-        if(p[2]-p[0]<.5&&p[4]-p[6]<.5)continue; g.fillStyle(0xc8fff0,.18).fillPoints([{x:p[0],y:p[1]},{x:p[2],y:p[3]},{x:p[4],y:p[5]},{x:p[6],y:p[7]}],true); }   // ลายน้ำไหล
-      g.lineStyle(1,0xe8fff8,.55).beginPath(); for(let px=a;px<=b;px+=3){ const py=y+1.6+Math.sin(px*.18-t*5)*.8; px===a?g.moveTo(px,py):g.lineTo(px,py); } g.strokePath();   // ผิวน้ำเป็นคลื่น
-      for(let k=0;k<3;k++){ const bx=x+((t*18+k*w/3)%Math.max(4,fw-4))+2,by=y+h-2-((t*4+k*1.7)%(h-3)); if(bx<b)g.fillStyle(0xffffff,.35).fillCircle(bx,by,1); }   // ฟอง
-      if(f<1){ g.fillStyle(0xbffff0,.35+.2*Math.sin(t*6)).fillCircle(x+fw,y+h/2,h*.55); }   // หัวน้ำเรือง
+    const now=this.time?.now||0,popK=this._liqPop!=null?1-(now-this._liqPop)/750:0,hud=!!this.barG?.visible;
+    const live=!!(this._liq&&this.waveObjBg?.visible); if(live)this._liqLast=this._liq;
+    const L=live?this._liq:(popK>0?this._liqLast:null);
+    this.hudLiqG=this.liquidTube(this.hudLiqG,hud&&L?L:null,live?(this.waveObjBar?.width||0)/L.w:1,'_liqF',0,popK>0?popK:0);
+    const bg=this.bossBgW,bv=!!(hud&&bg?.visible&&this.bossName?.visible),bw=bg?.width||0;
+    this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:8}:null,bw>4?(this.bossBar?.width||0)/(bw-4):0,'_bossLiqF',1,0);
+  }
+  // หลอดน้ำมุมโค้งนิด ๆ · pal 0 = ฟ้าเขียว (ภารกิจ) · 1 = ชมพูแดง (เลือดบอส) · pop 1→0 = กระเพื่อม + แสงแวบ
+  liquidTube(g,L,tf,key,pal,pop){
+    if(!g){ if(!L)return g; g=this.add.graphics().setScrollFactor(1).setDepth(53); this.camUI?.(g); }
+    g.clear(); g.setVisible(!!L); if(!L)return g;
+    const P=pal?[0x2a1018,0x3a1220,0xd93a6a,0xff7fa3,0xffd6e2,0xffeef3,0xffa3bf,0xffe0ea]:[0x0b1418,0x10242a,0x1fb5a8,0x52e3b8,0xc8fff0,0xe8fff8,0xa9f5e6,0xbffff0];
+    const {x,y,w,h}=L,r=3,t=(this.time?.now||0)/1000;tf=Phaser.Math.Clamp(tf||0,0,1);
+    let f=this[key]; f=f==null||Math.abs(tf-f)>.5?tf:f+(tf-f)*.12; this[key]=f; const fw=Math.max(0,w*f),amp=.8+pop*2.6;
+    g.fillStyle(P[0],.85).fillRoundedRect(x-1.5,y-1.5,w+3,h+3,r+1.5);
+    g.fillStyle(P[1],1).fillRoundedRect(x,y,w,h,r);
+    if(fw>=2){ const rr=Math.min(r,fw/2),a=x+rr,b=x+fw-rr;
+      g.fillStyle(P[2],1).fillRoundedRect(x,y,fw,h,rr);
+      g.fillStyle(P[3],.9).fillRoundedRect(x,y,fw,h*.55,{tl:rr,tr:rr,bl:0,br:0});
+      for(let k=0;k<Math.ceil(w/14)+2;k++){ const sx=x+((t*26+k*14)%(w+28))-14,q=[sx,sx+6,sx+11,sx+5].map(v=>Phaser.Math.Clamp(v,a,b));
+        if(q[1]-q[0]<.5&&q[2]-q[3]<.5)continue; g.fillStyle(P[4],.18).fillPoints([{x:q[0],y:y+h},{x:q[1],y:y+h},{x:q[2],y},{x:q[3],y}],true); }
+      g.lineStyle(1,P[5],.55).beginPath(); for(let px=a;px<=b;px+=3){ const py=y+1.6+Math.sin(px*.18-t*(5+pop*6))*amp; px===a?g.moveTo(px,Math.max(y,py)):g.lineTo(px,Math.max(y,py)); } g.strokePath();
+      for(let k=0;k<3;k++){ const bx=x+((t*18+k*w/3)%Math.max(4,fw-4))+2,by=y+h-2-((t*4+k*1.7)%Math.max(1,h-3)); if(bx<b)g.fillStyle(0xffffff,.35).fillCircle(bx,by,1); }
+      if(f<.995)g.fillStyle(P[7],.35+.2*Math.sin(t*6)).fillCircle(x+fw,y+h/2,h*.55);
     }
-    g.lineStyle(1,0xa9f5e6,.45).strokeRoundedRect(x,y,w,h,r);
+    g.lineStyle(1,P[6],.45).strokeRoundedRect(x,y,w,h,r);
+    if(pop>0){ g.fillStyle(0xffffff,.55*pop).fillRoundedRect(x,y,w,h,r); g.lineStyle(2,P[7],.8*pop).strokeRoundedRect(x-2-4*(1-pop),y-2-4*(1-pop),w+4+8*(1-pop),h+4+8*(1-pop),r+3); }
+    return g;
   }
   // v8.0.10 ใบ 47: อาร์ต HUD ส่วนบน วางทับตำแหน่ง/ขนาดเดิม · ไฟล์ไม่มา/ถูกลบ = กราฟิกโค้ดเดิม
   hudArtOn(){ return typeof HUD_KEYS!=='undefined'&&HUD_KEYS.every(k=>this.realTex(k)); }
@@ -8601,7 +8614,7 @@ class Game extends Phaser.Scene {
     if(!this._hudArt){ this.hudBtnArtSync(); if(this._hudPipRedo){ this._hudPipRedo=false; this.drawWavePips?.(); } return false; }
     const w=this.W;
     let L=this._hudL;if(!L){L=this._hudL={c0:this.add.container(0,0),c1:this.add.container(0,0),pips:[]};C.add([L.c0,L.c1]);}
-    const panels=[["hud_top_panel",8,9,w-152,29],...(this._hudBackings||[]).map(([col,alpha,x,y,pw,ph])=>[col===0x211522?'hud_boss_plate':'hud_mission_card',x,y,pw,ph])];
+    const panels=[["hud_top_panel",8,9,this._hudTopW||w-152,29],...(this._hudBackings||[]).map(([col,alpha,x,y,pw,ph])=>[col===0x211522?'hud_boss_plate':'hud_mission_card',x,y,pw,ph])];
     const pk=panels.map(p=>p.join(':')).join('|');
     if(L.pk!==pk){L.pk=pk;L.c0.removeAll(true);for(const [key,x,y,pw,ph] of panels){const p=this.tuPanel(key,0,x,y,pw,ph);if(p)L.c0.add(p);}}
     // Minimal ImageGen frames sit behind live text and code-drawn progress bars.
@@ -8629,7 +8642,7 @@ class Game extends Phaser.Scene {
     const showP=!!pb?.visible&&this.state!=='paused'; if(pb)H.pi.setPosition(pb.x,pb.y).setDisplaySize(17,17).setVisible(showP); this.pauseTxt?.setAlpha(showP?0:1);
     if(mb)H.mi.setFrame('cell'+(Sfx.muted?1:0)).setDisplaySize(18,18).setPosition(mb.x,mb.y).setVisible(!!mb.visible); this.muteTxt?.setAlpha(0);
   }
-  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v)this.hudLiqG?.setVisible(false); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
+  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v){this.hudLiqG?.setVisible(false);this.hudBossLiqG?.setVisible(false);this._bossPipImg?.setVisible(false);} if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     this.drawCombatHUDPanels?.(g);
@@ -12427,7 +12440,7 @@ class Game extends Phaser.Scene {
     this.drawWavePips();
   }
   drawWavePips(){
-    const g=this.pipG; if(!g)return; g.clear(); const pips=null; this.hudPipsArt?.(pips);
+    const g=this.pipG; if(!g)return; g.clear(); const pips=null; this.hudPipsArt?.(pips); this._bossPipImg?.setVisible(false);
     if(this.recipeMode){ this.renderRecipeProgress(g); return; }
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=this._pipX0!=null?10:Math.min(12,(this.W*.28)/n), w=seg-4, h=this._pipX0!=null?6:4;
@@ -12440,7 +12453,9 @@ class Game extends Phaser.Scene {
       if(i===st.miniAt){ g.fillStyle(0xff7ac0,1); g.fillCircle(x+w/2,y-3,1.5); } // pointsชมพู=Miniboss
     }
     // ปลายแถว = บอสใหญ่
-    g.fillStyle(0xff5f97,1); g.fillCircle(x0+n*seg+4,y+h/2,3);
+    const bx=x0+n*seg+5,by=y+h/2;   // v8.0.14 ท้ายแถว = หัวกะโหลกบอส
+    let sk=this._bossPipImg; if(!sk||!sk.active){ sk=this._bossPipImg=this.textures?.exists?.('hud_ic_kill')?this.add.image(0,0,'hud_ic_kill').setDisplaySize(12,12):this.add.text(0,0,'💀',{fontSize:'10px'}).setOrigin(.5); sk.setScrollFactor?.(1); sk.setDepth?.(52); this.camUI?.(sk); this.hudList?.push(sk); }
+    if(sk.type==='Image')sk.setTint(0xff8fb0); sk.setPosition(bx,by).setVisible(!!g.visible);
     if(pips)this.hudPipsArt(pips);
   }
   // Endgame: หลอดความคืบหน้า Recipe แบบเดียวกับจุดเวฟของด่าน (event / boss เป็นหมุดบนหลอด)
@@ -13366,6 +13381,7 @@ class Game extends Phaser.Scene {
     this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;
+    this._liqPop=this.time?.now||0;   // v8.0.14 หลอดน้ำกระเพื่อม + เปล่งแสงตอนสำเร็จ
     if(o.type!=='fill'||!this.usesStoryBudget?.())this.rubySay?.('We did it! Another little piece of [flavor] is safe. Nice work!',2400,{face:'happy'});
     if(o.type==='hunt'&&o._huntPhase!=='clear')Sfx.rewardCue?.('sfx_event_hunt_threat_complete',.65);
     if(o.type==='fill'&&this.usesStoryBudget?.()){o.type='hunt';o.name='Elite Showdown';o.emoji='🎯';o.progress=0;o.target=1;o._huntPhase='elite';o._huntSpawnAt=this.time.now;o.desc='Defeat the marked Elite to finish this mission';this.renderWaveObjectiveHUD();this.showBanner('Step 2/2: Elite Showdown',o.desc,1800);return;}
