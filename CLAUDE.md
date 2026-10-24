@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.25, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.26, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.24 — 7-day login calendar (owner)
+# Latest delivery: v8.0.25 — Bazaar 3 tabs (owner)
+
+buildBazaar tabs chests/shop/trade (old ids map TAB={buy,orders→shop, gamble→chests, sell→trade}). buildChestShop = Silver · Gold (pity line '🌟 N more opens → guaranteed Legend' + 10 pips) · Sugar Chest (= openGachaReveal, iLv band chip tag sugar_band, tag chest_sugar; Sugar chest now counts chestsOpened + DailyQ 'chest', Collect returns to Bazaar chests). bazaarStock = 4 gear (slot 0 = bazaarWeakSlot(): lowest equipped itemLevel+tier+enhance, empty = weakest → rec index, card '⭐ … Recommended · your weakest slot') + 2 materials. Save.bazaarFreeRefresh() (d.bazaarFreeDay vs bazaarDaySeed) → refreshBazaar uses it first ('🔄 Refresh · FREE' + dot), then the old 60/120/240 paid ones. Trade tab = Trade-in card + sell list. Lobby Bazaar default tab chests. tests/bazaar-tabs added; progression-polish uses the new tabs.
+
+# Previous delivery: v8.0.24 — 7-day login calendar (owner)
 
 LOGIN_CAL (before POWER_TUNING) 7 rows sugar 150 · thread 20 · cur 3 random CURRENCY · silver · thread 30 · sugar 600 · gold; Sugar ×(1+.5·chapter). LoginCal {data → Save.data.loginCal {i next index, last dayKey, n}, ready = last≠today, claim → {r,i,lines,chest}} (missed days never reset; after day 7 i wraps to 0; DailyQ muted). loginPopup(from) (before starTeach): first Lobby of the day (buildLobby delayedCall 700) or Daily page; waits (retry 1.5s) for Ruby/feature reveal/Weave tour/gearTut 0–1/book; 7 cells (4+3, day 7 wide), today pulses, full-screen zone tag login_claim → chest days openChest(c,'login') (_chestBack 'hub', not counted in chestsOpened) else lines on the button + login_close. starTeach waits for _loginC. buildDaily drops the old login panel (quests only). Badge daily = LoginCal.ready() || DailyQ.claimable. tests/login-calendar added; progress-sound drops the old daily claim case.
 
