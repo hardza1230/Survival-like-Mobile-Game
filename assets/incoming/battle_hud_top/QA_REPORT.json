@@ -1,0 +1,408 @@
+{
+  "scope": "Source art and offline compositions only; no runtime/gameplay verification.",
+  "assets": [
+    {
+      "key": "hud_top_panel",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 5744,
+      "opaque_pixels": 1023,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          678,
+          110
+        ]
+      ]
+    },
+    {
+      "key": "hud_mission_card",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 8318,
+      "opaque_pixels": 1382,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          678,
+          148
+        ]
+      ]
+    },
+    {
+      "key": "hud_exp_frame",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 2869,
+      "opaque_pixels": 1175,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          598,
+          26
+        ]
+      ]
+    },
+    {
+      "key": "hud_exp_fill",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 2325,
+      "opaque_pixels": 1104,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          558,
+          14
+        ]
+      ]
+    },
+    {
+      "key": "hud_level_badge",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 1086,
+      "opaque_pixels": 232,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          102,
+          62
+        ]
+      ]
+    },
+    {
+      "key": "hud_counter_pill",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 1231,
+      "opaque_pixels": 328,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          158,
+          54
+        ]
+      ]
+    },
+    {
+      "key": "hud_mission_bar_frame",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 2161,
+      "opaque_pixels": 932,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          478,
+          22
+        ]
+      ]
+    },
+    {
+      "key": "hud_mission_bar_fill",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 1926,
+      "opaque_pixels": 904,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          458,
+          14
+        ]
+      ]
+    },
+    {
+      "key": "hud_boss_bar_frame",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 3689,
+      "opaque_pixels": 1252,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          638,
+          42
+        ]
+      ]
+    },
+    {
+      "key": "hud_boss_bar_fill",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 2572,
+      "opaque_pixels": 1186,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          598,
+          22
+        ]
+      ]
+    },
+    {
+      "key": "hud_boss_plate",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 6290,
+      "opaque_pixels": 1253,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          2,
+          638,
+          98
+        ]
+      ]
+    },
+    {
+      "key": "hud_ic_kill",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 1150,
+      "opaque_pixels": 138,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          2,
+          3,
+          62,
+          61
+        ]
+      ]
+    },
+    {
+      "key": "hud_ic_sugar",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 2228,
+      "opaque_pixels": 156,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          3,
+          2,
+          61,
+          62
+        ]
+      ]
+    },
+    {
+      "key": "hud_wave_pips",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 3205,
+      "opaque_pixels": 291,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          3,
+          3,
+          45,
+          44
+        ],
+        [
+          3,
+          3,
+          45,
+          45
+        ],
+        [
+          3,
+          3,
+          45,
+          44
+        ]
+      ]
+    },
+    {
+      "key": "hud_ic_pause",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 1529,
+      "opaque_pixels": 182,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          9,
+          2,
+          55,
+          62
+        ]
+      ]
+    },
+    {
+      "key": "hud_ic_sound",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 4144,
+      "opaque_pixels": 380,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          3,
+          8,
+          61,
+          56
+        ],
+        [
+          3,
+          6,
+          61,
+          58
+        ]
+      ]
+    },
+    {
+      "key": "hud_round_btn",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 22048,
+      "opaque_pixels": 434,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        [
+          10,
+          13,
+          118,
+          115
+        ],
+        [
+          4,
+          10,
+          124,
+          118
+        ],
+        [
+          10,
+          17,
+          118,
+          110
+        ]
+      ]
+    },
+    {
+      "key": "hud_speed_ring",
+      "size_pass": true,
+      "mode": "RGBA",
+      "transparent_pixels": 58747,
+      "opaque_pixels": 230,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "frame_alpha_bounds": [
+        null,
+        [
+          37,
+          11,
+          91,
+          29
+        ],
+        [
+          19,
+          11,
+          109,
+          37
+        ],
+        [
+          8,
+          10,
+          120,
+          48
+        ]
+      ]
+    }
+  ],
+  "visual_review": "Manual inspection: no baked text/numerals/watermarks; blank panel/button centers; correct icon states and transparent exterior. Sprite states checked over neutral gray.",
+  "text_free": "Manual visual check passed; not an OCR guarantee.",
+  "proofs": [
+    {
+      "size": [
+        360,
+        780
+      ],
+      "state": "normal",
+      "header": [
+        10,
+        8,
+        340,
+        54
+      ],
+      "mission": [
+        10,
+        68,
+        340,
+        73
+      ],
+      "boss_plate": null,
+      "note": "Offline source composition over owner screenshot; text drawn separately. A code-rendered solid header underlay covers the screenshot baked HUD at the outer edges. Lower gameplay and controls are from reference. Not a live runtime capture."
+    },
+    {
+      "size": [
+        412,
+        915
+      ],
+      "state": "boss",
+      "header": [
+        10,
+        8,
+        392,
+        54
+      ],
+      "mission": [
+        10,
+        68,
+        392,
+        73
+      ],
+      "boss_plate": [
+        30,
+        147,
+        352,
+        43
+      ],
+      "note": "Offline source composition over owner screenshot; text drawn separately. A code-rendered solid header underlay covers the screenshot baked HUD at the outer edges. Lower gameplay and controls are from reference. Not a live runtime capture."
+    }
+  ],
+  "nine_slice": "All 11 panel/bar assets carry source-pixel margins. Two viewport compositions exercise 9-slice.",
+  "speed_ring": "Frame1 intentionally empty; frames2-4 show one/two/three arcs. Common round-button scale preserves disc size despite active glow.",
+  "all_pass": true
+}

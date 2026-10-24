@@ -1,0 +1,374 @@
+[
+  {
+    "key": "hud_top_panel",
+    "file": "hud_top_panel.png",
+    "bytes": 87058,
+    "sha256": "34ef4a4cb71f5bdb601960b6751f9bf60815b715953c6df382e551af83606d59",
+    "width": 680,
+    "height": 112,
+    "frames": 1,
+    "frame_width": 680,
+    "frame_height": 112,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      340,
+      56
+    ],
+    "nineSlice": [
+      30,
+      30,
+      30,
+      30
+    ]
+  },
+  {
+    "key": "hud_mission_card",
+    "file": "hud_mission_card.png",
+    "bytes": 119561,
+    "sha256": "6b20b2e61ba82c93b9fc85b908202c8d9cb0a737b73ecca8ee4f2df113f3ac5a",
+    "width": 680,
+    "height": 150,
+    "frames": 1,
+    "frame_width": 680,
+    "frame_height": 150,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      340,
+      75
+    ],
+    "nineSlice": [
+      32,
+      32,
+      32,
+      32
+    ]
+  },
+  {
+    "key": "hud_exp_frame",
+    "file": "hud_exp_frame.png",
+    "bytes": 16262,
+    "sha256": "074eee7d0802948fea2ae43694d7383343fd055b4da7c09e493b95aae8fd57df",
+    "width": 600,
+    "height": 28,
+    "frames": 1,
+    "frame_width": 600,
+    "frame_height": 28,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      280,
+      11
+    ],
+    "nineSlice": [
+      12,
+      10,
+      12,
+      10
+    ]
+  },
+  {
+    "key": "hud_exp_fill",
+    "file": "hud_exp_fill.png",
+    "bytes": 8794,
+    "sha256": "bb4c748a626471026b06754b1de1c9a368f9e831cacb9b546c4f349eb6bbe5bc",
+    "width": 560,
+    "height": 16,
+    "frames": 1,
+    "frame_width": 560,
+    "frame_height": 16,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      280,
+      8
+    ],
+    "nineSlice": [
+      6,
+      6,
+      6,
+      6
+    ]
+  },
+  {
+    "key": "hud_level_badge",
+    "file": "hud_level_badge.png",
+    "bytes": 10180,
+    "sha256": "3a392e7f877332011c0d0e3d71c5ab76a0db8f65542eca6d64072261e4b51eeb",
+    "width": 104,
+    "height": 64,
+    "frames": 1,
+    "frame_width": 104,
+    "frame_height": 64,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      52,
+      32
+    ],
+    "nineSlice": [
+      22,
+      22,
+      22,
+      22
+    ]
+  },
+  {
+    "key": "hud_counter_pill",
+    "file": "hud_counter_pill.png",
+    "bytes": 12006,
+    "sha256": "9e6f6651fc904e83594ed15001354e22411efb4b68b0bf3c57b8e0fda54b34c1",
+    "width": 160,
+    "height": 56,
+    "frames": 1,
+    "frame_width": 160,
+    "frame_height": 56,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      64,
+      24
+    ],
+    "nineSlice": [
+      24,
+      22,
+      24,
+      22
+    ]
+  },
+  {
+    "key": "hud_mission_bar_frame",
+    "file": "hud_mission_bar_frame.png",
+    "bytes": 11469,
+    "sha256": "bfaad5d09898de42ae0c3813bdadd7b83acba2d4638b1588013f47096c7a5bba",
+    "width": 480,
+    "height": 24,
+    "frames": 1,
+    "frame_width": 480,
+    "frame_height": 24,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      230,
+      9
+    ],
+    "nineSlice": [
+      10,
+      9,
+      10,
+      9
+    ]
+  },
+  {
+    "key": "hud_mission_bar_fill",
+    "file": "hud_mission_bar_fill.png",
+    "bytes": 5723,
+    "sha256": "fefd7f04a4927df879c608f208ade73e5db124ebfdac7957aa1134924569b9bf",
+    "width": 460,
+    "height": 16,
+    "frames": 1,
+    "frame_width": 460,
+    "frame_height": 16,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      230,
+      8
+    ],
+    "nineSlice": [
+      6,
+      6,
+      6,
+      6
+    ]
+  },
+  {
+    "key": "hud_boss_bar_frame",
+    "file": "hud_boss_bar_frame.png",
+    "bytes": 29223,
+    "sha256": "b4df205dd7d66e02af1706f79208da22afae6eb265145c9ee13f6c0204efb5f1",
+    "width": 640,
+    "height": 44,
+    "frames": 1,
+    "frame_width": 640,
+    "frame_height": 44,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      300,
+      18
+    ],
+    "nineSlice": [
+      30,
+      18,
+      30,
+      18
+    ]
+  },
+  {
+    "key": "hud_boss_bar_fill",
+    "file": "hud_boss_bar_fill.png",
+    "bytes": 14546,
+    "sha256": "ffef16cda91658efe96b4542046b23c25a785f601016651b85398de98f932f70",
+    "width": 600,
+    "height": 24,
+    "frames": 1,
+    "frame_width": 600,
+    "frame_height": 24,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      300,
+      12
+    ],
+    "nineSlice": [
+      10,
+      10,
+      10,
+      10
+    ]
+  },
+  {
+    "key": "hud_boss_plate",
+    "file": "hud_boss_plate.png",
+    "bytes": 68317,
+    "sha256": "71ecfa32cb08da9c14b683bae4235b13a6cdf7de7f1c7f77ceda7d151b34a2fb",
+    "width": 640,
+    "height": 100,
+    "frames": 1,
+    "frame_width": 640,
+    "frame_height": 100,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      300,
+      43
+    ],
+    "nineSlice": [
+      28,
+      28,
+      28,
+      28
+    ]
+  },
+  {
+    "key": "hud_ic_kill",
+    "file": "hud_ic_kill.png",
+    "bytes": 8087,
+    "sha256": "81815cf58b4040f78a5672940507f9d33eda5a5a651ab28c3560d9a93c4339df",
+    "width": 64,
+    "height": 64,
+    "frames": 1,
+    "frame_width": 64,
+    "frame_height": 64,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      18,
+      18
+    ]
+  },
+  {
+    "key": "hud_ic_sugar",
+    "file": "hud_ic_sugar.png",
+    "bytes": 6346,
+    "sha256": "5c2b08196a6406b0c9f6dd13c6b2da72ea30a08b67dcbd519c290544dece028a",
+    "width": 64,
+    "height": 64,
+    "frames": 1,
+    "frame_width": 64,
+    "frame_height": 64,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      18,
+      18
+    ]
+  },
+  {
+    "key": "hud_wave_pips",
+    "file": "hud_wave_pips.png",
+    "bytes": 12991,
+    "sha256": "1857a147e051e2c8d6f183f65dcc5531ef16c6d3fbba6622471a1cc948cf0fdb",
+    "width": 144,
+    "height": 48,
+    "frames": 3,
+    "frame_width": 48,
+    "frame_height": 48,
+    "columns": 3,
+    "background": "transparent",
+    "display_px": [
+      12,
+      12
+    ]
+  },
+  {
+    "key": "hud_ic_pause",
+    "file": "hud_ic_pause.png",
+    "bytes": 5674,
+    "sha256": "f65e842d72b41352dd37f8f5f52dd73c6e00691e3f851b8e9685631d4feb7855",
+    "width": 64,
+    "height": 64,
+    "frames": 1,
+    "frame_width": 64,
+    "frame_height": 64,
+    "columns": 1,
+    "background": "transparent",
+    "display_px": [
+      18,
+      18
+    ]
+  },
+  {
+    "key": "hud_ic_sound",
+    "file": "hud_ic_sound.png",
+    "bytes": 13264,
+    "sha256": "d349821d3771a81b21ac2c3640a9b4c5a46618f407763acf2712cd44edaa1785",
+    "width": 128,
+    "height": 64,
+    "frames": 2,
+    "frame_width": 64,
+    "frame_height": 64,
+    "columns": 2,
+    "background": "transparent",
+    "display_px": [
+      18,
+      18
+    ]
+  },
+  {
+    "key": "hud_round_btn",
+    "file": "hud_round_btn.png",
+    "bytes": 61444,
+    "sha256": "ce79be7d86df1a567575c82975b2b0719e14113c59db4866d4aaa9db7e20789b",
+    "width": 384,
+    "height": 128,
+    "frames": 3,
+    "frame_width": 128,
+    "frame_height": 128,
+    "columns": 3,
+    "background": "transparent",
+    "display_px": [
+      34,
+      34
+    ]
+  },
+  {
+    "key": "hud_speed_ring",
+    "file": "hud_speed_ring.png",
+    "bytes": 20353,
+    "sha256": "e5d788d5c0d6e6f2aed15c738f04165442bf77d2a8f6e941b1ebc5e07d3fb66b",
+    "width": 512,
+    "height": 128,
+    "frames": 4,
+    "frame_width": 128,
+    "frame_height": 128,
+    "columns": 4,
+    "background": "transparent",
+    "display_px": [
+      34,
+      34
+    ]
+  }
+]

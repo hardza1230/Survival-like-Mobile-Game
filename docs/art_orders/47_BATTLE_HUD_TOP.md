@@ -1,6 +1,6 @@
 # 47 — HUD ส่วนบนตอนเล่นด่าน + ปุ่มเร่งความเร็ว · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 24 ต.ค. 2026 · ตอนนี้ HUD วาดด้วยโค้ด (v8.0.7 `layoutCombatHUD` / `drawCombatHUDPanels` / `drawBars`)
+สถานะ: 🟢 อาร์ตต้นฉบับครบ 18 ไฟล์ (ยังไม่ผูก runtime) · เขียน 24 ต.ค. 2026 · ตอนนี้ HUD วาดด้วยโค้ด (v8.0.7 `layoutCombatHUD` / `drawCombatHUDPanels` / `drawBars`)
 ส่งไฟล์ที่ `assets/incoming/battle_hud_top/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` และให้เข้าชุดกับ UI ที่มีแล้ว: Lobby (`assets/art/lobby/` ใบ 33), หน้าหยุด (ใบ 24), Level Up (ใบ 23) — โทน **ม่วงเข้ม (plum) + ขอบทอง + ครีม** ของหวานน่ารัก · PNG32 alpha จริง · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ** (โค้ดเขียนเอง)
 
@@ -72,4 +72,8 @@
 - ทุกชิ้นยังมีของเดิม (กราฟิกโค้ด) เป็น fallback ถ้าไฟล์ไม่มา · ไม่เปลี่ยนตำแหน่งแตะ/ขนาด hit ของปุ่ม
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+ส่งมอบ 24 ต.ค. 2026: `assets/incoming/battle_hud_top/` ครบ 18 PNG32 alpha จริง ขนาดและเฟรมตรงตาราง, `MANIFEST.json` มี nineSlice ทุกชิ้น A และ hash/bytes, `PROMPTS.json`, `QA_REPORT.json`, original donors และสคริปต์แพ็ก/ตรวจเก็บไว้ครบ
+
+ภาพตรวจ: `contact_sheet.png`, `proof_360x780.png` (ปกติ), `proof_412x915.png` (บอส) — เป็นภาพประกอบออฟไลน์บนภาพอ้างอิง ไม่ใช่ภาพจาก runtime; แผงหัวมีพื้นรองที่โค้ดวาดเพื่อปิด HUD เดิมริมภาพอ้างอิง
+
+ใช้ built-in ImageGen ทุกชิ้น ไม่มีตัวหนังสือ/ตัวเลขฝังภาพ, speed ring x1 ว่างโปร่งใส, x2/x3/x4 มี 1/2/3 ขีด ปุ่ม 3 สถานะใช้สเกลเดียวกัน ชุดนี้ส่งเฉพาะ source; ขั้นต่อไปฝั่งโค้ดแพ็ก WebP 50% และผูกตามโน้ตข้างบน โดยคง fallback และ hit areas เดิม

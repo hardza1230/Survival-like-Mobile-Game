@@ -1,0 +1,241 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "assets/art/lobby/lb_stage_panel.webp",
+  "jobs": [
+    {
+      "key": "hud_top_panel",
+      "width": 680,
+      "height": 112,
+      "nineSlice": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "frames": 1,
+      "frame_width": 680,
+      "frame_height": 112,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single very wide shallow rounded rectangle plum almost opaque panel, thin warm gold border, soft bottom shadow. Smooth plain center. Rounded corner radius approximately 26px at target size. One single asset only, centered. Desired final asset proportions 680:112."
+    },
+    {
+      "key": "hud_mission_card",
+      "width": 680,
+      "height": 150,
+      "nineSlice": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "frames": 1,
+      "frame_width": 680,
+      "frame_height": 150,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single wide shallow rounded rectangle mission card, muted plum slightly lighter than header, subtle pinkish brass border, a SHORT vertical gold accent at upper left inside border. Plain smooth center. One single asset only, centered. Desired final asset proportions 680:150."
+    },
+    {
+      "key": "hud_exp_frame",
+      "width": 600,
+      "height": 28,
+      "nineSlice": [
+        12,
+        10,
+        12,
+        10
+      ],
+      "frames": 1,
+      "frame_width": 600,
+      "frame_height": 28,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single long ultra thin empty rounded bar trough, dark plum interior, faint cream rim. NO fill. No ticks. One single asset only, centered. Desired final asset proportions 600:28."
+    },
+    {
+      "key": "hud_exp_fill",
+      "width": 560,
+      "height": 16,
+      "nineSlice": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "frames": 1,
+      "frame_width": 560,
+      "frame_height": 16,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single long ultra thin mint green full bar, subtle glossy upper highlight, small rounded ends. No frame, no trough. One single asset only, centered. Desired final asset proportions 560:16."
+    },
+    {
+      "key": "hud_level_badge",
+      "width": 104,
+      "height": 64,
+      "nineSlice": [
+        22,
+        22,
+        22,
+        22
+      ],
+      "frames": 1,
+      "frame_width": 104,
+      "frame_height": 64,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single wide capsule badge of warm cream gold enamel, deeper gold border. Blank smooth center, no symbols. One single asset only, centered. Desired final asset proportions 104:64."
+    },
+    {
+      "key": "hud_counter_pill",
+      "width": 160,
+      "height": 56,
+      "nineSlice": [
+        24,
+        22,
+        24,
+        22
+      ],
+      "frames": 1,
+      "frame_width": 160,
+      "frame_height": 56,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single horizontal small dark plum capsule, almost opaque with subdued thin gold border. Empty plain center, no icon. One single asset only, centered. Desired final asset proportions 160:56."
+    },
+    {
+      "key": "hud_mission_bar_frame",
+      "width": 480,
+      "height": 24,
+      "nineSlice": [
+        10,
+        9,
+        10,
+        9
+      ],
+      "frames": 1,
+      "frame_width": 480,
+      "frame_height": 24,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single very long ultra thin empty dark plum rounded bar trough with subtle faint gold rim, no fill. One single asset only, centered. Desired final asset proportions 480:24."
+    },
+    {
+      "key": "hud_mission_bar_fill",
+      "width": 460,
+      "height": 16,
+      "nineSlice": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "frames": 1,
+      "frame_width": 460,
+      "frame_height": 16,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single very long ultra thin neutral ivory white full glossy rounded bar with subtle upper highlight, intended for runtime tinting. No gold, no colored accents, no frame. One single asset only, centered. Desired final asset proportions 460:16."
+    },
+    {
+      "key": "hud_boss_bar_frame",
+      "width": 640,
+      "height": 44,
+      "nineSlice": [
+        30,
+        18,
+        30,
+        18
+      ],
+      "frames": 1,
+      "frame_width": 640,
+      "frame_height": 44,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single very long thin empty dark plum health bar trough with dark gold border, tiny symmetric thorn horns at both extreme ends only. Empty smooth center. No fill. One single asset only, centered. Desired final asset proportions 640:44."
+    },
+    {
+      "key": "hud_boss_bar_fill",
+      "width": 600,
+      "height": 24,
+      "nineSlice": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "frames": 1,
+      "frame_width": 600,
+      "frame_height": 24,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single very long thin glossy rose red full health bar, pink upper highlight, small rounded ends, no frame. One single asset only, centered. Desired final asset proportions 600:24."
+    },
+    {
+      "key": "hud_boss_plate",
+      "width": 640,
+      "height": 100,
+      "nineSlice": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "frames": 1,
+      "frame_width": 640,
+      "frame_height": 100,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single wide shallow dark reddish plum rounded nameplate, faint muted pink border. Blank center. No horns or decoration in center. One single asset only, centered. Desired final asset proportions 640:100."
+    },
+    {
+      "key": "hud_ic_kill",
+      "width": 64,
+      "height": 64,
+      "nineSlice": null,
+      "frames": 1,
+      "frame_width": 64,
+      "frame_height": 64,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single cute cream cartoon skull icon with soft dark plum outlines, friendly and simple candy fantasy game silhouette. No bones, no text. One single asset only, centered. Desired final asset proportions 64:64."
+    },
+    {
+      "key": "hud_ic_sugar",
+      "width": 64,
+      "height": 64,
+      "nineSlice": null,
+      "frames": 1,
+      "frame_width": 64,
+      "frame_height": 64,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single bright pink wrapped candy icon, spherical candy center with one wrapper twist at upper left and one at lower right, glossy candy highlights, soft dark outline. One single asset only, centered. Desired final asset proportions 64:64."
+    },
+    {
+      "key": "hud_wave_pips",
+      "width": 144,
+      "height": 48,
+      "nineSlice": null,
+      "frames": 3,
+      "frame_width": 48,
+      "frame_height": 48,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Horizontal sprite sheet EXACTLY THREE equally spaced 48x48 cells, no gaps or separators. Cell 1 solid warm gold circular pip; cell 2 bright pink circular pip with soft pink glow; cell 3 hollow muted gray plum circular pip. SAME center and diameter in each cell. All icons isolated on transparent. No numbers. Requested sprite sheet layout must remain a straight horizontal row with exactly the specified number of cells."
+    },
+    {
+      "key": "hud_ic_pause",
+      "width": 64,
+      "height": 64,
+      "nineSlice": null,
+      "frames": 1,
+      "frame_width": 64,
+      "frame_height": 64,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Single pause SYMBOL consisting of exactly two vertical parallel cream gold rounded bars with dark plum outlines. No button or disc. One single asset only, centered. Desired final asset proportions 64:64."
+    },
+    {
+      "key": "hud_ic_sound",
+      "width": 128,
+      "height": 64,
+      "nineSlice": null,
+      "frames": 2,
+      "frame_width": 64,
+      "frame_height": 64,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Horizontal sprite sheet EXACTLY TWO equally sized square cells with no gap. Left cell simple cream gold speaker with two sound waves; right cell same speaker with diagonal mute slash. No discs or button backgrounds. Equal icon size, centered in each cell. Requested sprite sheet layout must remain a straight horizontal row with exactly the specified number of cells."
+    },
+    {
+      "key": "hud_round_btn",
+      "width": 384,
+      "height": 128,
+      "nineSlice": null,
+      "frames": 3,
+      "frame_width": 128,
+      "frame_height": 128,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Horizontal sprite sheet EXACTLY THREE equally sized square cells with no gaps. Each cell same centered EMPTY round button disc, dark almost opaque plum and clearly visible gold rim with soft bottom shadow. First normal. Second active brighter gold rim and mint glow outside rim. Third pressed slightly recessed with no bottom shadow. All discs same radius, aligned centers, entire glow inside cell. Absolutely blank centers with no symbols. Requested sprite sheet layout must remain a straight horizontal row with exactly the specified number of cells."
+    },
+    {
+      "key": "hud_speed_ring",
+      "width": 512,
+      "height": 128,
+      "nineSlice": null,
+      "frames": 4,
+      "frame_width": 128,
+      "frame_height": 128,
+      "prompt": "Use case: stylized-concept. Production 2D mobile game UI asset for Mochi Mayhem. Match the supplied lobby panel's plum, brass gold and warm cream enamel materials, but much lighter restrained trim for compact battle HUD. Front-on flat UI, no perspective. Clean soft dark outlines, subtle candy glossy highlights, polished hand-painted mobile fantasy game style. TRUE transparent background outside the asset, no baked checkerboard, no white backdrop. ABSOLUTELY NO text, letters, numerals, watermark, labels or logos. No extra objects. Keep generous transparent padding around subject. Horizontal sprite sheet EXACTLY FOUR equal square cells. Transparent overlay ONLY tiny glowing curved segments positioned around upper perimeter of an imaginary circle of diameter 104px within a128px cell. First cell COMPLETELY EMPTY transparent. Second cell one mint glowing short arc centered at top. Third cell two mint glowing short arcs across top. Fourth cell three warm orange gold glowing short arcs across top. No full ring, no circle, no disc, no letters/numbers. Consistent imaginary circle and centers. Layout precisely one row four cells. Requested sprite sheet layout must remain a straight horizontal row with exactly the specified number of cells."
+    }
+  ]
+}
