@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.9, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.10, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.8 — Art order 46 wired (owner)
+# Latest delivery: v8.0.9 — Mint Lance Charges (owner)
+
+Crystal Impaler card l_twin (id kept for saves) Twin Lance → Lance Charges: max 2 ranks, headline '+1 Unique charge'. lanceChMax() (after mintLv) = 1+min(2,l_twin) on Mint pierce path, else 1. tickLanceCharges(dt) from update after the uniqueCd decrement: while the Unique is ready (uniqueCd≤0) and _lnBank < max−1, _lnT counts up to uniqueCooldown → _lnBank+1. releaseFrostLance: old 2s second-dash window removed; if a banked charge exists → _lnBank−1 and uniqueCd .35 (instant re-use), else the normal full cd from mintUniqueStart. drawUniqueRing draws max pips above the button (filled = ready + banked). _lnBank/_lnT reset with _uqUses. Fixture cocoa-rework-baseline l_twin text updated. Real-browser: max 3, banked 2 → 3 dashes (cd .35, .35, 9.4), 0 errors.
+
+# Previous delivery: v8.0.8 — Art order 46 wired (owner)
 
 scripts/pack-story-shot-redo.py (sha/bytes vs assets/incoming/story_shot_redo/MANIFEST, 50% WebP q84) → assets/art/story/ cs_s00_far_city_night (540×960, 138 KB), cs_s01_far_roots_burst (76 KB), cs_fx_root_burst (6×270, ASSET_FX rate 10, 126 KB); menu-lazy like order 45. S00 shot 3 = painted night city (crown painted, puppet removed; tint/night fields no longer used there), crowd people → mochi + curse smoke. S01 now 10 shots: calm pantry (berry idle, crack at 2.1s + small shake) → cut to roots_burst (shake + purple flash, berry scared x85, root_burst FX hold + curse smoke, CRACK! pow index 1) → fall (lines index 2) … POP index 8. tests/story-motion-art checks the order 46 MANIFEST + keys + menu class. Real-browser shots checked, 0 errors.
 

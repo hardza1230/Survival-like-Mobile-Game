@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.8';
+const GAME_VERSION = '8.0.9';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.9',date:'2026-10-24',title:'Mint Lance Charges',items:['Crystal Impaler: Twin Lance is now Lance Charges — your Unique lance dash stores up to 3 charges (2 ranks)','Small dots above the Unique button show how many charges are ready; they refill one at a time'] },
   {v:'8.0.8',date:'2026-10-24',title:'New painted story shots',items:['New painting: the Hunger’s roots burst up through the pantry floor','New painting: the kingdom at night as the Crown’s curse pours down'] },
   {v:'8.0.7',date:'2026-10-24',title:'Cleaner battle screen',items:['Battle information now sits on clear, compact dark panels with gold trim','Wave markers, objectives, progress and bonus rewards have their own rows','Dash and Unique have solid backings so pickups do not hide the controls','Skill icons sit together in a small tray; left-handed controls and button sizes still work']},
   {v:'8.0.6',date:'2026-10-24',title:'Two story shots redone',items:['“In one night…” now happens at night, under the glowing Crown and its purple curse','The pantry floor cracks open with dark smoke instead of the silly root'] },
@@ -4274,7 +4275,7 @@ const BASIC_PATHS={
                 {id:'p_heavydraw',iconKey:'ic_card_l_far',name:'Heavy Draw',emoji:'🏹',max:3,headline:'Stronger full charge',desc:'A fully charged lance hits 18% harder per rank, but charging takes a little longer.'},
                 {id:'p_impaler',iconKey:'ic_path_p_coldblood',name:'Deep Impale',emoji:'🎯',max:1,headline:'Faster boss Rupture',desc:'Full lance hits on elites and bosses count twice toward Rupture.'},
                 {id:'l_far',iconKey:'ic_card_l_far',name:'Long Lance',emoji:'📏',max:3,headline:'Lance dash +30% distance',desc:'Your Unique lance dash goes 30% farther per rank, releasing more homing shards along the way.'},
-                {id:'l_twin',iconKey:'ic_card_l_twin',name:'Twin Lance',emoji:'✌️',max:1,headline:'Dash twice',desc:'After your Unique lance dash you can dash once more within 2s. Both dashes release homing shards.'},
+                {id:'l_twin',iconKey:'ic_card_l_twin',name:'Lance Charges',emoji:'✌️',max:2,headline:'+1 Unique charge',desc:'Your Unique lance dash stores 1 more charge per rank (up to 3). Used charges refill one at a time.'},
                 {id:'l_burst',iconKey:'ic_card_l_burst',name:'Lance Burst',emoji:'💥',max:2,headline:'Ice blast at the end',desc:'Your Unique lance dash ends with an ice blast (+50% damage per rank).'}]}],
   cocoa:[
     {id:'brawler',iconKey:'ic_path_brawler',name:'Fire Fist Build',emoji:'🔥',base:{dmg:0.72,cd:0.7,wave:1},desc:'Throw blazing fist projectiles at range. The 5th punch is a big piercing fireball that explodes. Tap Unique: Rocket Gauntlet',
@@ -7959,6 +7960,9 @@ class Game extends Phaser.Scene {
   // v6.55.61 ❄️ Mint: สาย glacier = Glacier Bloom · สาย pierce = Frost Lance Charge · อื่น ๆ (barrage) = Mint Gale เดิม
   mintChargeKind(){ if(this.character!=='mint'||!this.basicAttack)return null; const pa=this.basicAttack.path; return pa==='glacier'?'bloom':pa==='pierce'?'lance':null; }
   mintLv(){ return (this.basicAttack&&this.basicAttack.lv)||{}; }
+  /* v8.0.9 เจ้าของ: Twin Lance → ชาร์จ · Unique พุ่งหอกเก็บได้ 1+rank ครั้ง (สูงสุด 3) · ชาร์จเพิ่มทีละอันเท่าคูลดาวน์ปกติ ขณะที่ปุ่มพร้อมอยู่ */
+  lanceChMax(){ return this.character==='mint'&&this.basicAttack?.path==='pierce'?1+Math.min(2,this.mintLv().l_twin|0):1; }
+  tickLanceCharges(dt){ const mx=this.lanceChMax(); if(mx<=1){ this._lnBank=0; this._lnT=0; return; } if(this.uniqueCd>0||(this._lnBank|0)>=mx-1){ if((this._lnBank|0)>=mx-1)this._lnT=0; return; } this._lnT=(this._lnT||0)+dt; if(this._lnT>=this.uniqueCooldown(this.uniqueInfo())){ this._lnT=0; this._lnBank=(this._lnBank|0)+1; } }
   isBlastUnique(){ return this.character==='momo'&&this.basicAttack&&this.basicAttack.path==='shotgun'; }
   blastMods(){ const lv=(this.basicAttack&&this.basicAttack.lv)||{},w=lv.b_wide||0,r=lv.b_recoil||0;
     return {cone:(120+20*w)*Math.PI/180,pellets:11+2*w+(lv.buckshot||0),hop:80+40*r,iframe:0.35+0.3*r,double:(lv.b_double||0)>0}; }
@@ -8088,7 +8092,7 @@ class Game extends Phaser.Scene {
     }
   }
   releaseFrostLance(ang,c){ this.heroScreenEffect?.(1.2); this.uqMutHook?.('lance',{ang}); const {ul,unit}=this.mintUniqueStart(),pl=this.player,lv=this.mintLv(),L=this.lanceLen(),ca=Math.cos(ang),sa=Math.sin(ang),x0=pl.x,y0=pl.y,dmg=(40+ul*15)*unit*(0.7+0.3*c);
-    if(lv.l_twin&&!this._lanceTwin){ this._lanceTwin=true; this.uniqueCd=0.25; this.time.delayedCall(2000,()=>{ if(this._lanceTwin){ this._lanceTwin=false; this.uniqueCd=Math.max(this.uniqueCd,this.uniqueCooldown(this.uniqueInfo())-2); } }); } else this._lanceTwin=false;
+    if((this.lanceChMax?.()||1)>1&&(this._lnBank|0)>0){ this._lnBank--; this.uniqueCd=0.35; }   // v8.0.9 Lance Charges: ใช้ชาร์จที่เก็บไว้ = กดได้อีกเกือบทันที
     let hits=0; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,al=rx*ca+ry*sa; if(al<-20||al>L+20)return; if(Math.abs(-rx*sa+ry*ca)>34+(e.body?e.body.halfWidth:18))return; hits++; this._sgHit=true; try{ this.damage(e,dmg*(e.isBoss||e.isMini?1.8:1),e.x,e.y); } finally { this._sgHit=false; } if(e.active)this.mintChill(e,0.8); if(e.active&&this.basicAttack?.path==='pierce')this.applyImpale(e,dmg*(e.isBoss||e.isMini?1.8:1),c>=0.99); });
     pl.iframe=Math.max(pl.iframe||0,0.45); this.poseAttack(420,'char_mint_gale');
     const dash={x:x0,y:y0,carry:0,basic:this.basicAttack,epoch:this._artEpoch||0,power:dmg*.32,emitted:0};
@@ -8572,6 +8576,7 @@ class Game extends Phaser.Scene {
     if(this.uniqueImg?.active){this.uniqueImg.setVisible(!!want&&tx.visible).setPosition(tx.x,tx.y+6*tx.scaleY).setDisplaySize(52*tx.scaleX,52*tx.scaleY);}tx.setAlpha(want&&this.uniqueImg?.active?0:1);}
   drawUniqueRing(){
     const g=this.uniqueRing,b=this.uniqueBtn;this.syncUniqueIcon?.();if(!g||!b)return;g.clear();if(!b.visible)return;const u=this.uniqueInfo();this.updateUniqueHint();this.refreshFlickerUI();
+    { const mx=this.lanceChMax?.()||1; if(mx>1){ const have=(this.uniqueCd<=0?1:0)+(this._lnBank|0); for(let k=0;k<mx;k++){ const a=-Math.PI/2+(k-(mx-1)/2)*.42,px=b.x+Math.cos(a)*(b.radius+13),py=b.y+Math.sin(a)*(b.radius+13); g.fillStyle(k<have?0x9fe8ff:0x2a3a4a,1).fillCircle(px,py,4); g.lineStyle(1.5,0xffffff,.85).strokeCircle(px,py,4); } } }   // v8.0.9 จุดชาร์จ Lance
     if(this._snipe){const charge=this.snipeCharge();g.lineStyle(2,u.color,.35).strokeCircle(b.x,b.y,b.radius+4);g.lineStyle(4,charge>=1?0xffd166:0xffffff,1).beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+TAU*charge,false);g.strokePath();this.uniqueTxt.setAlpha(1);return;}
     if(this.uniqueCd>0){const frac=Phaser.Math.Clamp(1-this.uniqueCd/this.uniqueCooldown(u),0,1);g.lineStyle(3.5,u.color,0.95);g.beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false);g.strokePath();this.uniqueTxt.setAlpha(0.48);}else{g.lineStyle(2,u.color,0.42);g.strokeCircle(b.x,b.y,b.radius+4);this.uniqueTxt.setAlpha(1);}
   }
@@ -15142,7 +15147,7 @@ class Game extends Phaser.Scene {
       if(B.acc>=0.45){ B.acc=0; const e=this.nearestEnemy(420); if(e){ const b=this.getBullet(B.spr.x,B.spr.y,0xffffff,0.18); if(b){ b.setTexture('proj_sprinkle').setTint(0xffb3cd); b.dmg=this.relicDmg(0.7)*B.pw; b.life=1.2; b.homing=0; b.faceVel=true; this.physics.velocityFromRotation(Math.atan2(e.y-B.spr.y,e.x-B.spr.x),560,b.body.velocity); } } }
       if(B.t<=0){ B.spr.destroy(); this._frBuddy=null; } } }
   resetRelics(){ if(this._relCond&&this.player?._cond){for(const k in this._relCond)this.player._cond[k]=Math.max(0,(this.player._cond[k]||0)-this._relCond[k]);} this._relCond={};
-    this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._crownHits=0; this._rageStk=0; this._killChg=0; this._uqUses=0; this._uqGuardT=0; this._uqHotT=0; this._uqWinT=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
+    this.clearTaroCombat?.();this.clearCocoaCombat?.();this.frInit(); this._agUsed=false; this._swDone=false; this._shovelFind=0; this._dashChain=[]; this._tagTier={}; this.relics=[]; this._rel={}; this._shield=0; this._relicKills=0; this._coldSnapAt=0; this._crownHits=0; this._rageStk=0; this._killChg=0; this._uqUses=0;this._lnBank=0;this._lnT=0; this._uqGuardT=0; this._uqHotT=0; this._uqWinT=0; this._jamPools=[]; this._harvestKills=0; this._sparkHits=0; this._sparkUntil=0; this._lastBreathUsed=false; this._relicLvDone=false; this._relicLvN=0; this._leechT=0; this._burstT=0; this._burstN=0; this._taroCharge=0; this._cc=null; this._dashBuffT=0; this._dpCh=null; this._dpT=0; }
   relicSyn(a,b){ return !!(this._rel&&this._rel[a]&&this._rel[b]); }
   relicSlotsLeft(){ const b=this.basicAttack||{},m=(b.mods||[]).filter(id=>!id.startsWith('f_')).length+((b.trades||[]).length)+((b.condRelics||[]).length); return RELIC_CAP-((this.relics&&this.relics.length)||0)-m; }   // v6.72 A2/A3: Modifier + Trade-off share Relic slots
   // v5.30 🌀 Echo Dash: Dash 3 ครั้งใน 2.5 วิ = คลื่นกระแทก
@@ -19242,7 +19247,7 @@ class Game extends Phaser.Scene {
     if(this.dashBtn) this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
     this.drawDashRing();
     if(this.player.forgeMods)forgeTick(this,dt);this.updatePickupReadability(); this.tickLootMagnet(dt); this.tickProximityObjects(dt); this.animateProgressBar(dt);
-    if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
+    if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);this.tickLanceCharges?.(dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
     if(this._mintDashTween?.isPaused())this._mintDashTween.resume();this.tickGlacierSnow(dt);
     this.tickSnipe(); this.tickIceTrails(dt); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt); this.tickPathTalents(dt);
