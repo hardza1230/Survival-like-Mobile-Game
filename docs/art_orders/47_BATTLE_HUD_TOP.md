@@ -1,6 +1,6 @@
 # 47 — HUD ส่วนบนตอนเล่นด่าน + ปุ่มเร่งความเร็ว · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 อาร์ตต้นฉบับครบ 18 ไฟล์ (ยังไม่ผูก runtime) · เขียน 24 ต.ค. 2026 · ตอนนี้ HUD วาดด้วยโค้ด (v8.0.7 `layoutCombatHUD` / `drawCombatHUDPanels` / `drawBars`)
+สถานะ: 🟩 ผูกแล้ว v8.0.10 (`scripts/pack-battle-hud-top.py` → `assets/art/hud/` 50% WebP 45 KB, stage-lazy, `hudArtSync`/`hudPipsArt`/`hudBtnArtSync` คงกราฟิกโค้ดเป็น fallback) · รอ QA มือถือ · เดิม: อาร์ตต้นฉบับครบ 18 ไฟล์ · เขียน 24 ต.ค. 2026 · ตอนนี้ HUD วาดด้วยโค้ด (v8.0.7 `layoutCombatHUD` / `drawCombatHUDPanels` / `drawBars`)
 ส่งไฟล์ที่ `assets/incoming/battle_hud_top/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` และให้เข้าชุดกับ UI ที่มีแล้ว: Lobby (`assets/art/lobby/` ใบ 33), หน้าหยุด (ใบ 24), Level Up (ใบ 23) — โทน **ม่วงเข้ม (plum) + ขอบทอง + ครีม** ของหวานน่ารัก · PNG32 alpha จริง · **ห้ามมีตัวหนังสือหรือตัวเลขในภาพ** (โค้ดเขียนเอง)
 

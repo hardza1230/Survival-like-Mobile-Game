@@ -5,7 +5,7 @@ const tail=`
 const RENDER_DPR=1,params=new URLSearchParams(location.search),RW=Number(params.get('w'))||360,RH=Number(params.get('h'))||780;
 Save.save=()=>{};Save.data.settings={ctrlSize:Number(params.get('size'))||0,ctrlLeft:params.has('left')};
 class CombatHUDReview extends Game{
- preload(){for(const k of ['bg1','replay_progress_art','xp_bar_icon'])this.load.image(k,ASSET_IMAGES[k]);this.load.spritesheet('ui_c24_season_icons',ASSET_SHEETS.ui_c24_season_icons.url,{frameWidth:64,frameHeight:64});this.load.spritesheet('hero',ASSET_SHEETS.char_momo.url,{frameWidth:128,frameHeight:128});const k=SKILL_ICON.sprinkle;if(k&&ASSET_IMAGES[k])this.load.image(k,ASSET_IMAGES[k]);}
+ preload(){for(const k of ['bg1','replay_progress_art','xp_bar_icon'])this.load.image(k,ASSET_IMAGES[k]);this.load.spritesheet('ui_c24_season_icons',ASSET_SHEETS.ui_c24_season_icons.url,{frameWidth:64,frameHeight:64});this.load.spritesheet('hero',ASSET_SHEETS.char_momo.url,{frameWidth:128,frameHeight:128});if(!params.has('noart'))HUD_KEYS.forEach(k=>this.load.image(k,ASSET_IMAGES[k]));const k=SKILL_ICON.sprinkle;if(k&&ASSET_IMAGES[k])this.load.image(k,ASSET_IMAGES[k]);}
  create(){this.W=RW;this.H=RH;this.character='momo';this.basicAttack={path:'spread',lv:{},ranks:{}};this.gameSpeed=1;this.uniqueCd=2;this.dashReady=true;this.elapsed=10;this.level=10;this.xp=22;this.xpNext=100;this.stageIndex=0;this.waveIndex=1;this.waveTimer=5;this.mode='wave';this.state='play';this.skills={sprinkle:4};this.relics=[];this.player={hp:106,maxhp:106,x:RW/2,y:RH/2};
   this.add.tileSprite(RW/2,RH/2,RW,RH,'bg1').setTileScale(.55);
   this.add.sprite(RW/2,RH/2-8,'hero',0).setDisplaySize(44,44);

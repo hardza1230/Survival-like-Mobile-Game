@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.10, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.11, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.9 — Mint Lance Charges (owner)
+# Latest delivery: v8.0.10 — Art order 47 battle HUD wired (owner)
+
+scripts/pack-battle-hud-top.py (sha/bytes vs assets/incoming/battle_hud_top/MANIFEST, 50% WebP q88) → assets/art/hud/ (18 files, 45 KB). HUD_KEYS pushed into every STAGE_SHEETS (stage-lazy, not boot); TEMPLE_UI cells/nineSlice halved. hudArtSync() from drawBars (checks realTex of all HUD_KEYS once per second; missing/evicted → hudArtClear restores the code HUD): containers hudArtC (depth 50.5, in hudList) / hudBtnC (58.5) hold tuPanel top panel / mission card / boss plate / EXP frame + cropped fill / mission bar (fill tinted by waveObjBar colour, rects alpha 0) / boss bar (crop by bossBar.width) / Lv badge (lvlTxt dark) / kill + Sugar pills with icons ('KOs '/'🍬 ' prefixes stripped while art is on). drawWavePips → hudPipsArt (done/current/upcoming frames). Buttons: hud_round_btn (frame 1 when speed>1, 2 for 140ms after a press via _hudPress), hud_speed_ring frame gameSpeed−1, hud_ic_pause (▶ text while paused), hud_ic_sound frame by Sfx.muted; circles alpha 0, hit areas unchanged. tests/battle-hud-art (in npm check); combat HUD review loads the art (?noart for the old look). Real-browser 4 sizes × 5 states + boss shot, 0 errors.
+
+# Previous delivery: v8.0.9 — Mint Lance Charges (owner)
 
 Crystal Impaler card l_twin (id kept for saves) Twin Lance → Lance Charges: max 2 ranks, headline '+1 Unique charge'. lanceChMax() (after mintLv) = 1+min(2,l_twin) on Mint pierce path, else 1. tickLanceCharges(dt) from update after the uniqueCd decrement: while the Unique is ready (uniqueCd≤0) and _lnBank < max−1, _lnT counts up to uniqueCooldown → _lnBank+1. releaseFrostLance: old 2s second-dash window removed; if a banked charge exists → _lnBank−1 and uniqueCd .35 (instant re-use), else the normal full cd from mintUniqueStart. drawUniqueRing draws max pips above the button (filled = ready + banked). _lnBank/_lnT reset with _uqUses. Fixture cocoa-rework-baseline l_twin text updated. Real-browser: max 3, banked 2 → 3 dashes (cd .35, .35, 9.4), 0 errors.
 
@@ -886,7 +890,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** ส่งครบ 13 ไฟล์ · ผูกครบแล้ว v7.9.68 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 39 (23 ต.ค.) เปิดหนังสือหลัง TAP TO START + ไอคอน Bazaar/Upgrade/Mail:** 9 ไฟล์ (`docs/art_orders/39_BOOK_OPENING_PLUS.md`) · ส่งครบ 9 ไฟล์ + ปกเรียบ · ผูกแล้ว v7.9.69 · รอ QA มือถือ · ใบ 37 ถูกยกเลิก (เลขว่าง)
 - **ใบสั่งอาร์ต 40 (23 ต.ค.) หีบใน Bazaar + ไอคอน Thread:** 7 ไฟล์ · ส่งครบ 7 ไฟล์ · ผูกแล้ว v7.9.79 · รอ QA มือถือ
-- **ใบสั่งอาร์ต 47 (24 ต.ค.) HUD ส่วนบน + ปุ่มเร่งความเร็ว:** 18 ไฟล์ (`docs/art_orders/47_BATTLE_HUD_TOP.md`, ref `ref/47_hud_ref.webp`) · เฉพาะส่วนบน ไม่รวมปุ่มล่าง · รออาร์ต
+- **ใบสั่งอาร์ต 47 (24 ต.ค.) HUD ส่วนบน + ปุ่มเร่งความเร็ว:** ส่งครบ 18 ไฟล์ · ผูกแล้ว v8.0.10 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 46 (24 ต.ค.) แก้ 2 ช็อตเรื่อง:** ส่งครบ 3 ไฟล์ · ผูกแล้ว v8.0.8 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 45 (Motion Comic):** ส่งครบ 103 ชิ้น · ผูกแล้ว v8.0.2 (S10 Sesame ยังไม่ผูก) · รอ QA มือถือ
 - **ใบสั่งอาร์ต 36 (23 ต.ค.) มาสคอต Ruby:** 5 หน้า (`docs/art_orders/36_RUBY_MASCOT.md`) · โค้ดพร้อม v7.9.60 ใช้ภาพวาดชั่วคราว · รออาร์ต
