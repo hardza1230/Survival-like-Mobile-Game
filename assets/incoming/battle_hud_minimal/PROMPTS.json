@@ -1,0 +1,29 @@
+{
+  "tool": "built-in image_gen",
+  "jobs": [
+    {
+      "key": "hud_top_panel",
+      "w": 680,
+      "h": 112,
+      "prompt": "Use case: stylized-concept. Create a production raster UI asset for Mochi Mayhem, a cute premium candy fantasy mobile survival game. Minimal polished hand-painted enamel/glass, muted very dark plum, restrained cream/champagne hairline trim. Beautiful and playful through subtle material finish and a TINY sugar glint only. NO ornate gold, NO thick bevel, NO flowers, NO vines, NO wings, NO flourishes. ABSOLUTELY NO text, numbers, glyphs, icons or watermark. TRUE transparent exterior. Smooth plain center reserved for dynamic text. Front-on flat UI, no perspective. Single very wide shallow capsule dark plum stat island. Thin cream upper rim gently fades along the edges. Tiny mint sugar sparkle near left rim and tiny glossy highlight near upper right. Low soft shadow. Rounded corners. Feels lightweight, elegant, precise, not rectangular boxy. One asset only, centered with transparent padding."
+    },
+    {
+      "key": "hud_mission_card",
+      "w": 680,
+      "h": 150,
+      "prompt": "Use case: stylized-concept. Create a production raster UI asset for Mochi Mayhem, a cute premium candy fantasy mobile survival game. Minimal polished hand-painted enamel/glass, muted very dark plum, restrained cream/champagne hairline trim. Beautiful and playful through subtle material finish and a TINY sugar glint only. NO ornate gold, NO thick bevel, NO flowers, NO vines, NO wings, NO flourishes. ABSOLUTELY NO text, numbers, glyphs, icons or watermark. TRUE transparent exterior. Smooth plain center reserved for dynamic text. Front-on flat UI, no perspective. Single wide shallow rounded capsule mission strip. Very dark smoked plum smooth glass. Almost invisible fine lavender edge, small ivory diamond/sugar glint at LEFT endpoint, one subtle short mint highlight on upper edge. Minimal wide text-safe center. No separate objects. One asset only isolated with padding."
+    },
+    {
+      "key": "hud_boss_plate",
+      "w": 640,
+      "h": 100,
+      "prompt": "Use case: stylized-concept. Create a production raster UI asset for Mochi Mayhem, a cute premium candy fantasy mobile survival game. Minimal polished hand-painted enamel/glass, muted very dark plum, restrained cream/champagne hairline trim. Beautiful and playful through subtle material finish and a TINY sugar glint only. NO ornate gold, NO thick bevel, NO flowers, NO vines, NO wings, NO flourishes. ABSOLUTELY NO text, numbers, glyphs, icons or watermark. TRUE transparent exterior. Smooth plain center reserved for dynamic text. Front-on flat UI, no perspective. Single wide shallow rounded boss status strip. Dark muted berry-plum glass, ultra thin rose upper edge fading towards center, tiny faceted pink candy glint tucked at left edge, delicate rose dust glint at right end. Light elegant and compact. No horns or scary motifs. Smooth empty center. One asset only."
+    },
+    {
+      "key": "hud_round_btn",
+      "w": 384,
+      "h": 128,
+      "prompt": "Use case: stylized-concept. Create a production raster UI asset for Mochi Mayhem, a cute premium candy fantasy mobile survival game. Minimal polished hand-painted enamel/glass, muted very dark plum, restrained cream/champagne hairline trim. Beautiful and playful through subtle material finish and a TINY sugar glint only. NO ornate gold, NO thick bevel, NO flowers, NO vines, NO wings, NO flourishes. ABSOLUTELY NO text, numbers, glyphs, icons or watermark. TRUE transparent exterior. Smooth plain center reserved for dynamic text. Front-on flat UI, no perspective. Horizontal sprite sheet EXACTLY THREE equal square cells, no separators. SAME centered circular blank button diameter in each cell. Dark plum smoked enamel disc, thin ivory champagne rim, delicate highlight at upper left, NO ornaments. First normal. Second active mint hairline glow around rim, slightly brighter center. Third pressed recessed subtle darker finish and no shadow. Centers COMPLETELY EMPTY. All aligned and consistent scale, each state fits inside its cell with transparent margin."
+    }
+  ]
+}

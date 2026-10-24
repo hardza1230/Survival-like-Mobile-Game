@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.12';
+const GAME_VERSION = '8.0.13';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.13',date:'2026-10-24',title:'A little candy shine',items:['Minimal illustrated battle HUD with soft plum glass, fine cream edges and tiny sugar glints','Matching compact mission and boss strips, with clean buttons and a mint speed highlight'] },
   {v:'8.0.12',date:'2026-10-24',title:'More room to fight',items:['A compact battle HUD opens up the arena with small stat and control groups','Wave progress shares one row; missions use thin progress bars, and boss name, HP and health bar fit a compact strip'] },
   {v:'8.0.11',date:'2026-10-24',title:'Cleaner battle top',items:['The top bar is one slim row: level, kills, Sugar and the speed/pause/sound buttons','The EXP bar at the top is gone (your EXP is under your hero); the mission box is a plain dark panel and sits higher'] },
   {v:'8.0.10',date:'2026-10-24',title:'Painted battle HUD',items:['The top of the battle screen now has painted panels, EXP bar, level badge, kill and Sugar counters, wave dots and boss bar','Speed, pause and sound buttons are painted too; the speed button glows and shows rings for x2, x3 and x4'] },
@@ -1890,8 +1891,8 @@ const ASSET_IMAGES = {
   lvl_type_badge_sheet:'assets/art/levelup/lvl_type_badge_sheet.webp',
   lvl_sparkle_sheet:'assets/art/levelup/lvl_sparkle_sheet.webp',
   lvl_shine_strip:'assets/art/levelup/lvl_shine_strip.webp',
-  hud_top_panel:'assets/art/hud/hud_top_panel.webp',
-  hud_mission_card:'assets/art/hud/hud_mission_card.webp',
+  hud_top_panel:'assets/art/hud_minimal/hud_top_panel.webp',
+  hud_mission_card:'assets/art/hud_minimal/hud_mission_card.webp',
   hud_exp_frame:'assets/art/hud/hud_exp_frame.webp',
   hud_exp_fill:'assets/art/hud/hud_exp_fill.webp',
   hud_level_badge:'assets/art/hud/hud_level_badge.webp',
@@ -1900,13 +1901,13 @@ const ASSET_IMAGES = {
   hud_mission_bar_fill:'assets/art/hud/hud_mission_bar_fill.webp',
   hud_boss_bar_frame:'assets/art/hud/hud_boss_bar_frame.webp',
   hud_boss_bar_fill:'assets/art/hud/hud_boss_bar_fill.webp',
-  hud_boss_plate:'assets/art/hud/hud_boss_plate.webp',
+  hud_boss_plate:'assets/art/hud_minimal/hud_boss_plate.webp',
   hud_ic_kill:'assets/art/hud/hud_ic_kill.webp',
   hud_ic_sugar:'assets/art/hud/hud_ic_sugar.webp',
   hud_wave_pips:'assets/art/hud/hud_wave_pips.webp',
   hud_ic_pause:'assets/art/hud/hud_ic_pause.webp',
   hud_ic_sound:'assets/art/hud/hud_ic_sound.webp',
-  hud_round_btn:'assets/art/hud/hud_round_btn.webp',
+  hud_round_btn:'assets/art/hud_minimal/hud_round_btn.webp',
   hud_speed_ring:'assets/art/hud/hud_speed_ring.webp',
   pause_veil:'assets/art/pause/pause_veil.webp',
   pause_crest:'assets/art/pause/pause_crest.webp',
@@ -3502,7 +3503,7 @@ const JR_INK=(()=>{const I='#3b2416',S='#6b4a33',G='#2f7a3c',R='#a8323e',Y='#8a5
   put('#8a1f2c',['#ffb3cf','#ff7ba8','#ff9ec4']); put(Y,['#ffd166','#ffd9a0','#ffe39b','#ffe08a']); put(G,['#8bd3a0','#7de0a1','#a2e1bc','#a8f0bf','#9fd4bc','#5df08a','#7ee08f','#75ddb4']);
   put(R,['#ff8da2','#ff6b81']); put('#8a6400',['#ffcf5a']); put('#6d3aa8',['#c9a3ff','#c891ff']); put('#b4531a',['#ff8f3a','#ffae3d','#ffb27a']); put('#1f5fa8',['#6fb8ff','#8bd3ff']); put('#2a7a6a',['#8be0c8']); return m;})();
 Object.assign(TEMPLE_UI,{"bk_open_long":[432,768,4,null],"bk_page_riffle":[432,768,4,null],"bk_clasp":[256,256,6,null],"bk_emblem_spin":[256,256,8,null],"vfx_bk_magic":[256,256,8,null],"vfx_bk_burst":[512,512,6,null],"bk_cover_clean_plate":[432,768,1,null],"ic_nav_bazaar":[256,256,1,null],"ic_nav_upgrade":[256,256,1,null],"ic_side_mail":[256,256,1,null]});
-Object.assign(TEMPLE_UI,{"hud_top_panel":[340,56,1,[15,15,15,15]],"hud_mission_card":[340,75,1,[16,16,16,16]],"hud_exp_frame":[300,14,1,[6,5,6,5]],"hud_exp_fill":[280,8,1,[3,3,3,3]],"hud_level_badge":[52,32,1,[11,11,11,11]],"hud_counter_pill":[80,28,1,[12,11,12,11]],"hud_mission_bar_frame":[240,12,1,[5,4,5,4]],"hud_mission_bar_fill":[230,8,1,[3,3,3,3]],"hud_boss_bar_frame":[320,22,1,[15,9,15,9]],"hud_boss_bar_fill":[300,12,1,[5,5,5,5]],"hud_boss_plate":[320,50,1,[14,14,14,14]],"hud_ic_kill":[32,32,1,null],"hud_ic_sugar":[32,32,1,null],"hud_wave_pips":[24,24,3,null],"hud_ic_pause":[32,32,1,null],"hud_ic_sound":[32,32,2,null],"hud_round_btn":[64,64,3,null],"hud_speed_ring":[64,64,4,null]});   // v8.0.10 ใบ 47 (scripts/pack-battle-hud-top.py)
+Object.assign(TEMPLE_UI,{"hud_top_panel":[340,56,1,[30,20,30,20]],"hud_mission_card":[340,75,1,[40,30,40,30]],"hud_exp_frame":[300,14,1,[6,5,6,5]],"hud_exp_fill":[280,8,1,[3,3,3,3]],"hud_level_badge":[52,32,1,[11,11,11,11]],"hud_counter_pill":[80,28,1,[12,11,12,11]],"hud_mission_bar_frame":[240,12,1,[5,4,5,4]],"hud_mission_bar_fill":[230,8,1,[3,3,3,3]],"hud_boss_bar_frame":[320,22,1,[15,9,15,9]],"hud_boss_bar_fill":[300,12,1,[5,5,5,5]],"hud_boss_plate":[320,50,1,[30,20,30,20]],"hud_ic_kill":[32,32,1,null],"hud_ic_sugar":[32,32,1,null],"hud_wave_pips":[24,24,3,null],"hud_ic_pause":[32,32,1,null],"hud_ic_sound":[32,32,2,null],"hud_round_btn":[64,64,3,null],"hud_speed_ring":[64,64,4,null]});   // v8.0.10 ใบ 47 (scripts/pack-battle-hud-top.py)
 Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],vfx_chest_rays:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
 const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','vfx_chest_rays','bz_chest_card'];
 const RUBY_STAGE_KEYS=['mascot_ruby','mascot_ruby_happy','mascot_ruby_alert','mascot_ruby_think','mascot_ruby_cheer','mascot_ruby_sad','ruby_point','vfx_ruby_sparkle'];
@@ -8499,8 +8500,8 @@ class Game extends Phaser.Scene {
   drawCombatHUDPanels(g){
     const w=this.W,art=!!this._hudArt;
     // Compact glass islands: no full-width ornamental header or boss plate.
-    g.fillStyle(0x171320,.83).fillRoundedRect(8,9,w-152,29,10);
-    g.lineStyle(1,0xd4b178,.22).strokeRoundedRect(8,9,w-152,29,10);
+    if(!art){g.fillStyle(0x171320,.83).fillRoundedRect(8,9,w-152,29,10);
+    g.lineStyle(1,0xd4b178,.22).strokeRoundedRect(8,9,w-152,29,10);}
     const layoutKey=[w,art,this.lvlTxt.text,this.killTxt.text,this.runSugarTxt.text,this.timeTxt.text,this.waveObjTxt.text,this.waveObjTxt.visible,this.waveBonusTxt.text,this.waveBonusTxt.visible,this.bossName.text,this.bossName.visible,this.bossHpTxt.text,this._seasonIconsOn].join('|');
     if(this._hudLayoutKey!==layoutKey||this.replayProgressFrame?.visible){
     this._hudLayoutKey=layoutKey;this._hudBackings=[];
@@ -8543,8 +8544,8 @@ class Game extends Phaser.Scene {
     }
     if(this.bossName?.visible){
       const y=bottom+7,bg=this.bossBgW;
-      this.bossName.setOrigin(0,0).setPosition(18,y).setFontSize(11).setWordWrapWidth(w-152).setMaxLines(1).setStroke('#191321',2);
-      this.bossName.name='boss';fit(this.bossName,w-152,11);
+      this.bossName.setOrigin(0,0).setPosition(27,y).setFontSize(11).setWordWrapWidth(w-162).setMaxLines(1).setStroke('#191321',2);
+      this.bossName.name='boss';fit(this.bossName,w-162,11);
       this.bossHpTxt?.setOrigin(1,0).setPosition(w-18,y+1).setFontSize(9);
       this._hudBackings.push([0x211522,.76,12,y-2,w-24,29,7]);
       bg.setY(y+17).setDisplaySize(bg.width,6).setAlpha(.75);
@@ -8554,7 +8555,7 @@ class Game extends Phaser.Scene {
     this._hudBottom=bottom;
     this.statTxt.setY(bottom+5);this.traitTxt?.setY(bottom+22);
     }
-    for(const [col,alpha,x,y,rw,rh,r] of this._hudBackings||[])g.fillStyle(col,alpha).fillRoundedRect(x,y,rw,rh,r);
+    if(!art)for(const [col,alpha,x,y,rw,rh,r] of this._hudBackings||[])g.fillStyle(col,alpha).fillRoundedRect(x,y,rw,rh,r);
     this.drawCombatControlBase();
   }
   // v8.0.10 ใบ 47: อาร์ต HUD ส่วนบน วางทับตำแหน่ง/ขนาดเดิม · ไฟล์ไม่มา/ถูกลบ = กราฟิกโค้ดเดิม
@@ -8570,7 +8571,10 @@ class Game extends Phaser.Scene {
     if(!this._hudArt){ this.hudBtnArtSync(); if(this._hudPipRedo){ this._hudPipRedo=false; this.drawWavePips?.(); } return false; }
     const w=this.W;
     let L=this._hudL;if(!L){L=this._hudL={c0:this.add.container(0,0),c1:this.add.container(0,0),pips:[]};C.add([L.c0,L.c1]);}
-    // Keep the small painted icons/buttons; draw slim bars and plates in code.
+    const panels=[["hud_top_panel",8,9,w-152,29],...(this._hudBackings||[]).map(([col,alpha,x,y,pw,ph])=>[col===0x211522?'hud_boss_plate':'hud_mission_card',x,y,pw,ph])];
+    const pk=panels.map(p=>p.join(':')).join('|');
+    if(L.pk!==pk){L.pk=pk;L.c0.removeAll(true);for(const [key,x,y,pw,ph] of panels){const p=this.tuPanel(key,0,x,y,pw,ph);if(p)L.c0.add(p);}}
+    // Minimal ImageGen frames sit behind live text and code-drawn progress bars.
     const kt=this.killTxt,st=this.runSugarTxt;
     if(kt&&/^KOs /.test(kt.text))kt.setText(kt.text.slice(4));if(st&&/^🍬 /.test(st.text))st.setText(st.text.slice(3));
     const ck=[kt?.x,st?.x,kt?.width,st?.width,w].join(':');

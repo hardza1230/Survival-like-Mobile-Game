@@ -1,0 +1,94 @@
+{
+  "all_pass": true,
+  "assets": [
+    {
+      "key": "hud_top_panel",
+      "mode": "RGBA",
+      "size": [
+        680,
+        112
+      ],
+      "transparent_pixels": 6723,
+      "opaque_pixels": 1148,
+      "frames": 1,
+      "frame_bounds": [
+        [
+          2,
+          2,
+          678,
+          110
+        ]
+      ]
+    },
+    {
+      "key": "hud_mission_card",
+      "mode": "RGBA",
+      "size": [
+        680,
+        150
+      ],
+      "transparent_pixels": 7094,
+      "opaque_pixels": 1344,
+      "frames": 1,
+      "frame_bounds": [
+        [
+          2,
+          2,
+          678,
+          148
+        ]
+      ]
+    },
+    {
+      "key": "hud_boss_plate",
+      "mode": "RGBA",
+      "size": [
+        640,
+        100
+      ],
+      "transparent_pixels": 4505,
+      "opaque_pixels": 1254,
+      "frames": 1,
+      "frame_bounds": [
+        [
+          2,
+          2,
+          638,
+          98
+        ]
+      ]
+    },
+    {
+      "key": "hud_round_btn",
+      "mode": "RGBA",
+      "size": [
+        384,
+        128
+      ],
+      "transparent_pixels": 16229,
+      "opaque_pixels": 695,
+      "frames": 3,
+      "frame_bounds": [
+        [
+          9,
+          9,
+          119,
+          118
+        ],
+        [
+          4,
+          4,
+          124,
+          123
+        ],
+        [
+          9,
+          9,
+          119,
+          118
+        ]
+      ]
+    }
+  ],
+  "visual": "Manual neutral-background inspection: text-free, no checkerboard, empty centers, restrained plum/cream/mint/rose finish. Source alpha, dimensions, shared button scale and WebP decode verified. No phone/gameplay/FPS claim."
+}

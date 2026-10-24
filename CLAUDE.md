@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.13, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.14, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.12 — Compact battle HUD
+# Latest delivery: v8.0.13 — Minimal ImageGen battle HUD
+
+Four new text-free ImageGen donors in assets/incoming/battle_hud_minimal/ create soft plum glass with thin cream rims, small sugar glints, rose boss accent and mint active button state. Mechanically packed to four sibling WebPs (24,016 bytes) in assets/art/hud_minimal/; original art47 source/runtime files retained. Existing four HUD keys map to these files, with new matching nineSlice values. hudArtSync places cached stat/mission/boss panels behind live text and bars; compact8.0.12 geometry, stage-lazy registration, code fallback and hit targets preserved. Boss title inset accommodates the tiny candy accent. No gameplay changes or boot additions. Full npm check and build passed, original/packed alpha/dimensions/hash/decode QA passed. No new live screenshots or phone FPS/touch claim; owner reviews on phone.
+
+# Previous delivery: v8.0.12 — Compact battle HUD
 
 Removed ornamental full-width header, counter/level frames and boss frame from runtime composition; retained painted small counter and control icons. Level/kills/Sugar share a 29px glass island, quick-control hit circles unchanged. Wave title and tiny pips share one row. Mission text has a narrow backing and 3px progress fill; bonus is a short separate line. Boss name and numeric HP share a row above a 4px bar in a 29px strip. Dynamic height follows visible objective/bonus/replay rows, with relic/trait lines below. Layout/text fits cache by display state to avoid rasterizing text every frame; resize invalidates cache. No combat balance, touch routing or extra boot assets changed. Existing Canvas review expanded to boss+mission and large counters at four sizes; full npm check and build passed. Screens: docs/reviews/combat_hud/ (offline production-renderer review; phone FPS/touch not asserted).
 
