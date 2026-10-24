@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '7.9.98';
+const GAME_VERSION = '8.0.0';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.0',date:'2026-10-24',title:'Mint Barrage toned down',items:['Mint’s Barrage Build lances now hit for 55% damage (was 62%)','Barrage shard bursts hit nearby enemies a little softer']},
   {v:'7.9.98',date:'2026-10-23',title:'The story, retold',items:['The whole story now follows one plot: long ago a Crown cursed the kingdom into mochi, and the Heart Seed turns you back into a person','Ruby’s stories, stage scenes, endings and hero arrivals now tell how each friend is freed from the curse','The ending: lift the Crown, plant the Heart Seed and break the curse for everyone']},
   {v:'7.9.97',date:'2026-10-24',title:'A sweeter discovery stage',items:['New painted confectionery theater for feature discoveries and item rewards','Calmer lighting, clearer reward focus and a refined Ruby message panel']},
   {v:'7.9.96',date:'2026-10-24',title:'Ruby motion stories and smoother guidance',items:['Story scenes focus on a moving painted shot with snow, embers, sound and a trail of previous memories','Training and upgrades use spotlights on the actual controls; the first story begins at the real pantry stage','Recovered memories now appear at stage clear, with a fourth beat leading toward the next floor','A stage-title curtain carries the story through loading into the arena; reduced motion and Skip remain available']},
@@ -4146,7 +4147,7 @@ const BASIC_PATHS={
                 {id:'m_grow',iconKey:'ic_card_m_grow',name:'Wider Bloom',emoji:'🌸',max:3,headline:'Glacier Bloom +25% size',desc:'Glacier Bloom Unique: snowstorm area 25% larger per rank.'},
                 {id:'m_hold',iconKey:'ic_card_m_hold',name:'Long Winter',emoji:'⏳',max:2,headline:'Bloom freezes +0.6s',desc:'Glacier Bloom Unique: freeze lasts 0.6s longer per rank.'},
                 {id:'m_shard',iconKey:'ic_card_m_shard',name:'Shard Spray',emoji:'💎',max:2,headline:'+20% snowstorm damage',desc:'Glacier Bloom Unique: every snow pulse deals 20% more damage per rank.'}]},
-    {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.62,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 2 lances 22% faster, each at 62% damage. Lances burst into ice shards.',
+    {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.55,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 2 lances 22% faster, each at 55% damage. Lances burst into ice shards.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
                 {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'},
                 {id:'p_bar_wide',iconKey:'ic_path_p_bar_wide',name:'Wide Bloom',emoji:'❄️',max:3,fx:{},headline:'Bigger shard burst',desc:'Shard bursts cover 20% more area per rank.'},
@@ -16212,7 +16213,7 @@ class Game extends Phaser.Scene {
     const power=sdmg*(glacier?1+.08*Math.max(0,count-3):1+.12*Math.max(0,count-6));
     const bar=this.basicAttack?.path==='barrage'?this.basicAttack.lv||{}:{},bloomR=(118+lvl*8+(blizzard?40:0))*(1+.2*(bar.p_bar_wide||0));   /* v7.9.23 Wide Bloom */this.mintBurstFx(x,y,bloomR);
     let hits=0;this.enemies.children.iterate(e=>{if(hits>=24||!e?.active||this.dist(e.x,e.y,x,y)>bloomR)return;hits++;
-      this.damage(e,power*1.6*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);
+      this.damage(e,power*(this.basicAttack?.path==='barrage'?1.3:1.6)*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);   // v8.0.0 Barrage bloom 1.6→1.3 (owner nerf)
       if(e.active)this.mintChill(e,freeze*1.2);
     });
     if(bar.p_bar_chain&&!this._barChain&&Math.random()<.25*bar.p_bar_chain){let t=null,td=220;this.enemies.children.iterate(o=>{if(o&&o.active&&o.hp>0){const d=this.dist(o.x,o.y,x,y);if(d>40&&d<td){td=d;t=o;}}});if(t){const tx=t.x,ty=t.y;this.time.delayedCall(150,()=>{if(this.state!=='play')return;this._barChain=true;try{this.frostShatterBurst(tx,ty,baseAng,count,sdmg*.6,freeze,fb,blizzard,lvl);}finally{this._barChain=false;}});}}   // v7.9.23 Shard Chain
