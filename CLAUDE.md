@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.19, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.20, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.18 — Fairer missions, livelier Ruby, Momo hits, counters (owner)
+# Latest delivery: v8.0.19 — Gear from the Bazaar, Delve after the story, chest lesson (owner)
+
+grantGear: non-gacha/non-trade Story drops (field boxes, stage-end boxes, wheel/boss gear) get affixes [] + craftState common while !Save.data._craftTutGift && storyCleared()<3 (chests/gacha keep 0–1 mod). earlyLootMul .45→.25 (Story stageIndex<5). featureOpen('recipes') = Save.endgameUnlocked() → Activities hides Recipe Maps until the story is done. applyGearTut step 0: gift CHESTS[0].cost Thread (was gacha Sugar), Bazaar tab forced to 'chests', zone = tag chest_silver (fallback /openChest\(/), label 'Open a Silver Chest for a new item!'.
+
+# Previous delivery: v8.0.18 — Fairer missions, livelier Ruby, Momo hits, counters (owner)
 
 completeWaveObjective: zoneObj (purge/capture/cleanAir/breakRoots/defendNectar) → Sugar bonus ×1.5 + heal 20% max HP (banner '· ❤️ +20%'). captureBleed(dt,inside,o) after tickCaptureFX in the capture tick: o._out starts −2 (4.5s to reach the ring), bleed from 2.5s outside, stacks 1+floor((out−2.5)/1.5) ≤10, maxhp·.004·stack per .5s (same as Escort), inside → out decays ×4; banner once. spawnCounter: life 6→10, non-drift counters pushed to ≥260px from the boss (toward the player if on top of it); arenaPods life 8→11. castBerryBlaster power ×1.15 for sniper/shotgun. rubyReact(c,av,m,…) replaces the stiff avatar bob in rubyNext: alert = squash-jump + shake + '!' pop + box shake; happy/cheer = double hop; sad = droop; else squash breathing.
 

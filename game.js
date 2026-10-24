@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.18';
+const GAME_VERSION = '8.0.19';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.19',date:'2026-10-24',title:'Gear comes from the Bazaar',items:['Early stage drops are rarer and come without mods until the Forge lesson','The first gear lesson now opens a Silver Chest in the Bazaar (30 Thread gift)','Recipe Maps / Delve now unlock after you finish the story'] },
   {v:'8.0.18',date:'2026-10-24',title:'Fairer missions, livelier Ruby',items:['Escort, Capture, Clean Air, Root and Nectar missions now give +50% Sugar and heal 20% HP when you finish','Leaving the Capture ring makes you bleed, like Escort','Kickable objects last longer and appear farther from the boss','Ruby jumps and shakes when she is alarmed and hops when she is happy','Strawberry Sniper and Shotgun normal attacks deal 15% more damage'] },
   {v:'8.0.17',date:'2026-10-24',title:'Heavier boss kills',items:['Defeating a boss or miniboss freezes the screen for a moment, then plays a short slow-motion','The Unique button glows and sparkles when it is ready; the Dash button squashes when you press it','Lost boss HP shrinks away faster, and the mission box sits a little lower'] },
   {v:'8.0.16',date:'2026-10-24',title:'Punchier battle HUD',items:['Kill and Sugar numbers bounce when they go up','Boss HP liquid turns darker and flows faster below 50% and 25%, and lost HP lingers as a white ghost before shrinking','Survive missions flash red in the last 5 seconds','Changing game speed shows a big x1–x4 pop in the middle of the screen'] },
@@ -5200,7 +5201,7 @@ const FEAT_ICON={bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_n
 const FEAT_LINE={bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! Mint has joined — switch heroes and spend Talent points here.',gCodex:'The Codex remembers every weapon, relic and monster you meet.'};
 const FEATURE_NAME={bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Codex'};
 function storyCleared(){ const d=Save.data||{},sm=d.stageMastery||{}; return Math.max(d.unlockedStage||0,Object.keys(sm).filter(k=>sm[k]).length); }
-function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='gearInbox'&&(Save.data?.gearInbox||[]).length)return true; const n=FEATURE_OPEN[t]; return n==null||storyCleared()>=n; }
+function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='recipes')return !!Save.endgameUnlocked?.();   /* v8.0.19 เจ้าของ: Delve เปิดหลังจบเนื้อเรื่อง */ if(t==='gearInbox'&&(Save.data?.gearInbox||[]).length)return true; const n=FEATURE_OPEN[t]; return n==null||storyCleared()>=n; }
 const CHEST_PITY=10;
 const CHESTS=[{id:'silver',name:'Silver Chest',cost:30,odds:[['common',.5],['rare',.42],['epic',.075],['legend',.005]],tint:0xdfe6f0,bg:0x2a3346,edge:0xc9d6ea,title:'#e6eefb'},
   {id:'gold',name:'Gold Chest',cost:120,odds:[['rare',.3],['epic',.6],['legend',.1]],tint:0xffc43d,bg:0x3a2a12,edge:0xffc43d,title:'#ffe08a'}];
@@ -9308,16 +9309,16 @@ class Game extends Phaser.Scene {
     if(this._stage1Coach){ const z=this.tapZones.find(q=>q.tag==='stage_0'); if(!z)return; const fn=z.fn; z.fn=()=>{ this._stage1Coach=false; fn(); };
       this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,'Play Stage 1!'); return; }
     if(d.gearTut===undefined){ if(!(d.stageMastery||{})[0]||!d.tutorialDone||(d.unlockedStage||0)>1){ if((d.unlockedStage||0)>1)d.gearTut=-1; return; }
-      d.gearTut=0; Save.addSugar(GACHA_LEVELS[0].cost); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🍬'+GACHA_LEVELS[0].cost,'#ffd166'); }
+      d.gearTut=0; Save.addThreads(CHESTS[0].cost); Save.save(); this.menuToast('🎁 Gear tutorial gift: 🧶'+CHESTS[0].cost+' Thread','#ffd166'); }   // v8.0.19 เจ้าของ: สอนเปิดหีบเงิน/ทอง (ไม่ใช่ Gacha)
     const st=d.gearTut; if(st<0||st>4)return;
     // v7.8.90 กระจายบทแนะนำ: ด่าน 1 = ของ · ด่าน 2 = Forge (+3 Twist Cream) · ด่าน 3 = Talent
     const sm=d.stageMastery||{}; if(st>=2&&st<=3&&!sm[1])return; if(st===4&&!sm[2])return;
     if(st===2&&!d._craftTutGift){ d._craftTutGift=true; Save.addCurrency&&Save.addCurrency('transmute',3); Save.save(); this.menuToast('🎁 Forge unlocked: +3 🟢 Twist Cream','#ffd166'); } if(st===4){const cp=Save.cp(d.character||'momo');if((cp.tp||0)<1&&!d._talTutGift){cp.tp=(cp.tp||0)+1;d._talTutGift=true;Save.save();}}
     if(st===3&&this.menuScreen==='craft'){const {item}=this._craftContext();if(item&&!item.forgeChoice&&!forgeLineOpen(item,this.craftLineIndex??0)){this.craftLineIndex=0;this.craftTargets={};this.craftTargetId=null;this.buildMenuScreen();return;}}
-    const STEPS=[{m:/openGachaReveal\(\)/,t:'Roll a new item with Sugar!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/\.tal\[\w+\.id\]=\w+\+1/,t:'Spend a Talent Point — talents are permanent!'}];
-    if(st===0&&this.menuScreen==='bazaar'&&this._bazTab!=='gamble'){ this._bazTab='gamble'; this.buildMenuScreen(); return; }   // v7.9.35 กาชาอยู่แท็บ Gacha ของ Bazaar
+    const STEPS=[{m:/openChest\(/,t:'Open a Silver Chest for a new item!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/randomCraftSelected\(\)/,t:'Roll a random stat onto it!'},{m:/\.tal\[\w+\.id\]=\w+\+1/,t:'Spend a Talent Point — talents are permanent!'}];
+    if(st===0&&this.menuScreen==='bazaar'&&this._bazTab!=='chests'){ this._bazTab='chests'; this.buildMenuScreen(); return; }   // v8.0.19 เจ้าของ: บทสอนพาไปหน้าหีบเงิน/ทอง
     const cur=STEPS[st],src=z=>{try{return String(z.fn).replace(/"/g,"'")}catch(e){return ''}};   // v7.9.35 เวอร์ชัน live ย่อโค้ด (esbuild) → เครื่องหมายคำพูดเป็น " · ชื่อตัวแปรเปลี่ยน
-    let z=this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
+    let z=(st===0&&this.tapZones.find(q=>q.tag==='chest_silver'))||this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
     if(!z&&st===3&&this.menuScreen==='craft'){const pending=this._craftContext().item?.forgeChoice;if(pending){z=this.tapZones.find(q=>q.tag?.startsWith('choose_'));label='Choose your new mod';if(!z){z=this.tapZones.find(q=>q.tag==='choices_open'||q.tag==='choice_keep');adv=false;label=z?.tag==='choice_keep'?'Keep current and refund this locked roll':'Open your paid results';}}}
     if(!z&&st===4){ adv=false; z=this.tapZones.find(q=>q.tag==='tab_talents'); label='Open Talents'; if(!z){ z=this.tapZones.find(q=>/menuScreen='char'/.test(src(q))&&!/_heroesTab/.test(src(q))); label='Open Heroes'; } if(!z){ z=this.tapZones.find(q=>q.tag==='talents'||q.tag==='char'); label='Open Talents'; } if(!z){ z=this.tapZones.find(q=>q.back); label='Go back'; } }
     if(!z&&st<4){ adv=false; const want=st===0?'bazaar':st===3?'craft':'gear'; z=this.tapZones.find(q=>q.tag===want); label='Open '+(st===0?'Bazaar':st===3?'Crafting':'Equipment');   // v7.9.35 กาชาย้ายไป Bazaar แล้ว (v7.8.95)
@@ -17549,7 +17550,7 @@ class Game extends Phaser.Scene {
     this.orbs.children.iterate(o=>{ if(o&&o.active){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x); o.setVelocity(Math.cos(ang)*520,Math.sin(ang)*520); o._vac=true; } });
   }
   // ---- ของสวมใส่ดWaitป: rarity ตามStage ความยาก และชนิดศัตรู ----
-  earlyLootMul(){ return !this.recipeMode&&(this.stageIndex||0)<5?.45:1; }   // v7.9.94 เจ้าของ: Chapter 1 ได้ของสวมใส่เยอะเกิน → ดรอปน้อยลง
+  earlyLootMul(){ return !this.recipeMode&&(this.stageIndex||0)<5?.25:1; }   /* v8.0.19 เจ้าของ: .45 → .25 ให้ได้ของหลัก ๆ จาก Bazaar */   // v7.9.94 เจ้าของ: Chapter 1 ได้ของสวมใส่เยอะเกิน → ดรอปน้อยลง
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
     const box='gift';   // ไอเทมปิดกล่องจนจบด่าน ใช้ภาพกล่องของขวัญจริง
     if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); } if(g)g._mag=false;
@@ -17958,6 +17959,7 @@ class Game extends Phaser.Scene {
     const it=Phaser.Utils.Array.GetRandom(pool),
       itemLevel=inPlay?(this.endgameDropActive()?rollEndgameItemLevel(this.stageDiff||1,this.endgameDepth()):rollItemLevel(sourceStage,this.stageDiff||1)):((opts.gacha||opts.tradeLv)?gachaLv:Math.max(12,rollItemLevel(sourceStage,1))),
       extra={isNew:true,itemLevel,chapter};
+    /* v8.0.19 เจ้าของ: ของดรอป/กล่องท้ายด่านไม่มี mod จนกว่าจะสอน Forge (ร้าน/หีบ Bazaar ยังมี mod ได้) */ if(!opts.gacha&&!opts.tradeLv&&!opts.shop&&!this.recipeMode&&typeof Save!=='undefined'&&Save.data&&!Save.data._craftTutGift&&(typeof storyCleared!=='function'||storyCleared()<3)){ extra.affixes=[]; extra.craftState='common'; }
     // v4.32: gacha สุ่ม 0-1 mod เสมอ (50/50) · 0 mod = common (พื้นขาว) · 1 mod = magic
     if(opts.gacha){ const cnt=Math.random()<0.5?0:1, affs=cnt?rollAffixes(it.tier,itemLevel,it).slice(0,1):[]; extra.affixes=affs; extra.craftState=affs.length?'magic':'common'; }
     const delivery=Save.receiveGearInstance(it.id,extra); if(delivery&&!this._inTutorial)(typeof DailyQ!=='undefined')&&DailyQ.tick('gear');   // v7.5
