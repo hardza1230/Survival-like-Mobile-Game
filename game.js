@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.25';
+const GAME_VERSION = '8.0.26';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.26',date:'2026-10-24',title:'Power summary',items:['The Upgrade tab now opens a Power summary page','See your Power next to the Recommended Power of your next stage','3 cards show the best ways to get stronger right now (better gear +N, Weave, free Talent points, Enhance, Rank reward…)','Weave, Equipment and Forge buttons sit underneath — the Bazaar moved to its own tab']},
   {v:'8.0.25',date:'2026-10-24',title:'Simpler Bazaar',items:['The Bazaar now has 3 tabs: Chests, Shop and Trade','Chests: Silver, Gold and the new Sugar Chest (the old Gacha) side by side','The Gold Chest shows how many opens are left until a guaranteed Legend','Shop: 4 gear pieces for your chapter + 2 materials, with one free refresh every day','The first Shop slot is a ⭐ Recommended item for your weakest gear slot','Trade: Gear Trade-in (3 → 1) and selling spare materials in one place']},
   {v:'8.0.24',date:'2026-10-24',title:'7-day login calendar',items:['Daily login is now a 7-day calendar with a different gift each day: Sugar, Thread, crafting currency, a free Silver Chest, Thread, a big Sugar pile and a Gold Chest on day 7','Missed a day? The calendar just waits — you never lose your place','The gift pops up the first time you open the Lobby each day','The Daily page now shows only your quests']},
   {v:'8.0.23',date:'2026-10-24',title:'New Awards',items:['Awards are now split into Story, Heroes, Combat and Collection, each with ★ steps to climb','New goals for every chapter, chapter stars, each hero’s wins and all 3 Builds, kicks, Uniques, chests and more','Rewards grow each step: Sugar, Thread, a free Gold Chest and a Title on the last ★','Wear a Title and a coloured profile frame in the Lobby; the top of the page shows your 3 closest goals'] },
@@ -9442,19 +9443,51 @@ class Game extends Phaser.Scene {
     c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); }
   // หน้ากลุ่มเมนู (รวมปุ่มย่อยให้ Hub สะอาดขึ้น) — รายการจาก HUB_GROUPS
   gearPowerLayout(){const w=this.W,h=this.H,portrait=w<=h,bw=Math.min(w-28,520),x=(w-bw)/2,gap=10,cols=portrait?2:4,tw=(bw-gap*(cols-1))/cols,top=portrait?112:90,powerH=bw*231/768,tileH=tw*267/384,gearY=top+powerH+36;return{portrait,bw,x,top,gap,cols,tw,powerH,tileH,gearY};}
+  // v8.0.26 เจ้าของ: หน้าสรุปพลัง — Power ปัจจุบัน vs Power แนะนำด่านถัดไป · 3 ทางเพิ่มพลังที่คุ้มสุดตอนนี้ · ปุ่ม Weave/Equipment/Forge (ไม่มี Bazaar)
+  powerTips(){ const d=Save.data,cid=d.character||'momo',base=heroPower(cid,null),out=[],thr=Save.threads?Save.threads():(d.threads||0);
+    try{ let sum=0,n=0; for(const sd of GEAR_SLOTS){ let bv=0; for(const it of Save.gearItemsForSlot(sd.slot)||[]){ if(!it||it.grade==='start'||it.forgeChoice||Save.isGearEquipped(it.uid))continue; const v=gearPowerDelta(it,base); if(v>bv)bv=v; } if(bv>0){sum+=bv;n++;} }
+      if(sum>0)out.push({k:'gear',icon:'🎒',title:'Equip better gear',sub:n+' slot'+(n>1?'s':'')+' can be upgraded from your bag',gain:sum,go:'gear'}); }catch(e){}
+    try{ const up=d.upgrades||(d.upgrades={}); let bk=null,bg=0; for(const k of UPG_ORDER){ if(!Save.talCanBuy(k))continue; const was=up[k]; up[k]=(was||0)+1; let g=0; try{ g=heroPower(cid,null)-base; }finally{ if(was===undefined)delete up[k]; else up[k]=was; } if(g>=bg){bg=g;bk=k;} }
+      if(bk)out.push({k:'weave',icon:UPGRADES[bk].emoji,title:'Weave '+UPGRADES[bk].name+' is ready',sub:UPGRADES[bk].unit+' · 🍬 '+Save.talCost(bk),gain:bg,go:'upgrade'}); else if(Save.talAllMax?.()&&thr>=Save.promoteThreadCost())out.push({k:'rank',icon:'🎖',title:'Rank up your Weave',sub:'All cores are maxed · 🧶 '+Save.promoteThreadCost(),pri:22,go:'upgrade'}); }catch(e){}
+    try{ const cp=Save.cp(cid)||{}; if((cp.tp||0)>0&&heroTalentSpendable(cid))out.push({k:'tal',icon:'🌟',title:(cp.tp)+' Talent point'+(cp.tp>1?'s':'')+' to spend',sub:'Open Heroes → Talents',pri:30,go:'talents'}); }catch(e){}
+    try{ if(Save.rankUnpicked&&Save.rankUnpicked()>0)out.push({k:'perk',icon:'🎁',title:'Pick your Rank reward',sub:'A new Rank reward is waiting',pri:26,go:'perks'}); }catch(e){}
+    try{ let best=null,bg=0; for(const sd of GEAR_SLOTS){ const it=Save.equippedGearItem(sd.slot); if(!it||it.grade==='start')continue; const lv=gearEffectiveEnhance(it); if(lv>=gearEnhanceCap(it))continue; const cost=gearEnhShardCost(lv); if(thr<cost)continue; const was=it.enhanceLv; it.enhanceLv=lv+1; let g=0; try{ g=heroPower(cid,null)-base; }finally{ it.enhanceLv=was; } if(g>bg){bg=g;best={it,lv,cost};} }
+      if(best){ const b=GEAR_ALL.find(x=>x.id===best.it.baseId)||{name:'gear'}; out.push({k:'enh',icon:'⚒',title:'Enhance '+b.name+' to +'+(best.lv+1),sub:'🧶 '+best.cost+' Thread',gain:bg,go:'gear',uid:best.it.uid}); } }catch(e){}
+    try{ const nb=(Save.gearInboxItems?.()||[]).length; if(nb)out.push({k:'mail',icon:'📦',title:nb+' item'+(nb>1?'s':'')+' waiting in Mail',sub:'Claim them to your bag',pri:15,go:'gearInbox'}); }catch(e){}
+    try{ if(featureOpen('craft')&&CURRENCY.some(c=>Save.currency(c.key)>0))out.push({k:'forge',icon:'🧪',title:'Roll new mods in the Forge',sub:'You have crafting currency to use',pri:6,go:'craft'}); }catch(e){}
+    out.forEach(t=>t.score=t.gain!=null?t.gain:(t.pri||0)); out.sort((x,y)=>y.score-x.score); return out.slice(0,3); }
   buildGearPower(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Gear & Power','screen_gear_power_789','hub');
-    const L=this.gearPowerLayout(),afterS1=(Save.data.unlockedStage||0)>=1||!!Save.data.tutorialDone,nxt=this.hubNextStep();
-    const label=(y,t,c)=>{this.hubText(L.x+3,y,t,12,c);const line=this.add.rectangle(L.x+60,y,L.bw-62,1,parseInt(c.slice(1),16),.45).setOrigin(0,.5);this.menu.add(line);};label(L.top-14,'POWER','#ffdc91');label(L.gearY-14,'GEAR','#9de4d6');
-    const rows=[['upgrade','Weave & Rank'],['gear','Equipment'],['craft','Affix Forge'],['bazaar','Bazaar']].filter(r=>featureOpen(r[0]));   // v7.9.73 Inbox ย้ายไปปุ่ม Mail ใน Lobby
-    rows.forEach(([target,title],i)=>{const primary=i===0,j=i-1,x=primary?L.x:L.x+(j%L.cols)*(L.tw+L.gap),y=primary?L.top:L.gearY+Math.floor(j/L.cols)*(L.tileH+L.gap),w=primary?L.bw:L.tw,h=primary?L.powerH:L.tileH,locked=!primary&&!afterS1,key='mui_gear_card_'+target;
-      if(this.textures.exists(key)){const art=this.add.image(x+w/2,y+h/2,key).setDisplaySize(w,h).setAlpha(locked?.42:1);this.menu.add(art);}else this.hubPanel(x,y,w,h,this.hubTone(primary?3:2));
-      const tx=primary?x+w*.75:x+w/2,ty=primary?y+h*.53:y+h*.89,room=primary?w*.42:w-16;
-      const name=this.hubText(tx,ty,locked?'Locked: '+title:title,primary?Math.min(22,w*.05):Math.max(12,Math.min(19,w*.084)),'#fff5e6',.5);let f=parseFloat(name.style.fontSize);while(name.width>room&&f>10)name.setFontSize(--f+'px');
-      this._zone(x,y,w,h,()=>{if(locked){Sfx.select();this.menuToast('Clear Stage 1 of Chapter 1 to unlock this','#ffb4c7');return;}this.menuScreen=target;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag=target;
-      if(!locked&&this.hasTargetBadge(target))this.drawBadgeDot(this.menu,x+12,y+12);
-      if(!locked&&this.hasClaimableTarget(target))this.hubGuideTag({x,y,w,h},'Reward ready');else if(!locked&&nxt&&nxt.group==='gLoadout'&&nxt.target===target)this.hubGuideTag({x,y,w,h},nxt.tag);
-    });this.menu.setVisible(true);
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Power','screen_gear_power_789','hub');
+    const w=this.W,h=this.H,d=Save.data,portrait=w<=h,bw=Math.min(w-28,440),x=(w-bw)/2,hs=this._hdrShift?this._hdrShift():0,nxt=this.hubNextStep?.();
+    let si=Math.min(d.unlockedStage||0,STAGES.length-1); while(si>0&&!isStageReady(si))si--;
+    const ps=this.powerStatus(si),st=STAGES[si]||STAGES[0],code=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(si/5)+1)+'-'+(si%5+1));
+    const T=(tx,ty,t,sz,c,st2,ox=0,oy=.5)=>{ const q=this.add.text(tx,ty,t,{fontFamily:'sans-serif',fontStyle:st2||'normal',fontSize:sz+'px',color:c||'#fff'}).setOrigin(ox,oy); this.menu.add(q); return q; };
+    // 1) Power vs แนะนำ
+    let y=(portrait?92:70)+hs; const ph=112,g=this.add.graphics(); g.fillStyle(0x1f1729,.96).fillRoundedRect(x,y,bw,ph,16).lineStyle(2,ps.color,.95).strokeRoundedRect(x,y,bw,ph,16); this.menu.add(g);
+    T(x+16,y+20,'⚡ Your Power',12,'#cfc2d5','bold'); T(x+16,y+50,String(ps.cur),30,'#ffffff','bold');
+    T(x+bw-16,y+20,'Next: '+code+' '+(st.name||''),11,'#cfc2d5','bold',1); T(x+bw-16,y+50,'Recommended '+ps.rec,15,'#ffe08a','bold',1);
+    const bx=x+16,bwid=bw-32,by=y+80,bar=this.add.graphics(),fr=Math.min(1,ps.ratio); bar.fillStyle(0x120d18,1).fillRoundedRect(bx,by,bwid,12,6); bar.fillStyle(ps.color,1).fillRoundedRect(bx,by,Math.max(12,bwid*fr),12,6); this.menu.add(bar);
+    T(x+16,y+100,ps.label,11,ps.hex,'bold'); T(x+bw-16,y+100,ps.cur>=ps.rec?'You are ready!':(ps.rec-ps.cur)+' Power to go',11,'#cfc2d5','normal',1);
+    // 2) 3 ทางเพิ่มพลังที่คุ้มสุด
+    y+=ph+16; T(x+2,y,'BEST WAYS TO GET STRONGER',11,'#ffdc91','bold'); y+=14;
+    const tips=this.powerTips(),cardH=Math.min(70,Math.max(50,(h-y-120)/3-8));
+    if(!tips.length){ const eg=this.add.graphics(); eg.fillStyle(0x221a2b,.95).fillRoundedRect(x,y,bw,cardH,14); this.menu.add(eg); T(x+bw/2,y+cardH/2,'Nothing to upgrade right now — play stages to earn more!',12,'#cfc2d5','normal',.5); y+=cardH+8; }
+    tips.forEach((t,i)=>{ const cy=y+i*(cardH+8),cg=this.add.graphics(); cg.fillStyle(0x2a2036,.97).fillRoundedRect(x,cy,bw,cardH,14).lineStyle(1.8,i===0?0xffd166:0x6a5b86,1).strokeRoundedRect(x,cy,bw,cardH,14); cg.fillStyle(i===0?0xffd166:0x8f7de8,1).fillRoundedRect(x,cy,6,cardH,3); this.menu.add(cg);
+      T(x+32,cy+cardH/2,t.icon,22,'#fff','normal',.5);
+      const gainW=t.gain>0?70:24; const nm=T(x+56,cy+cardH*.36,t.title,14,'#ffffff','bold'); const room=bw-56-gainW-10; if(nm.width>room)nm.setScale(room/nm.width);
+      const sb=T(x+56,cy+cardH*.68,t.sub,10,'#c9bdd2'); if(sb.width>room)sb.setScale(room/sb.width);
+      if(t.gain>0)T(x+bw-14,cy+cardH/2,'+'+Math.round(t.gain),17,'#8dffb0','bold',1); else T(x+bw-14,cy+cardH/2,'›',20,'#cbb8e0','bold',1);
+      this._zone(x,cy,bw,cardH,()=>{ Sfx.select&&Sfx.select(); if(t.uid)this.gearSelectedUid=t.uid; this.menuScreen=t.go; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='tip_'+t.k; });
+    y+=Math.max(1,tips.length)*(cardH+8)+8;
+    // 3) ปุ่ม Weave / Equipment / Forge
+    const rows=[['upgrade','Weave','temple_life_core','✨'],['gear','Equipment','ic_nav_upgrade','🎒'],['craft','Forge','tile_craft','🧪']].filter(r=>featureOpen(r[0])),n=rows.length,gap=8,tw=(bw-gap*(n-1))/n,th=Math.min(92,Math.max(60,h-y-12));
+    rows.forEach(([target,title,ik,em],i)=>{ const tx=x+i*(tw+gap),key='mui_gear_card_'+target,tg=this.add.graphics(); tg.fillStyle(0x241a30,.97).fillRoundedRect(tx,y,tw,th,14).lineStyle(2,0x8f7de8,.9).strokeRoundedRect(tx,y,tw,th,14); this.menu.add(tg);
+      const isz=Math.min(40,th*.45); const ic=this.textures.exists(ik)?this.add.image(tx+tw/2,y+th*.4,ik):this.add.text(tx+tw/2,y+th*.4,em,{fontSize:Math.round(isz*.8)+'px'}).setOrigin(.5); if(ic.setDisplaySize&&ic.type==='Image')ic.setScale(isz/Math.max(ic.width,ic.height)); this.menu.add(ic);
+      T(tx+tw/2,y+th*.8,title,13,'#fff5e6','bold',.5);
+      this._zone(tx,y,tw,th,()=>{this.menuScreen=target;this.buildMenuScreen();}); this.tapZones[this.tapZones.length-1].tag=target;
+      if(this.hasTargetBadge(target))this.drawBadgeDot(this.menu,tx+tw-10,y+10);
+      if(this.hasClaimableTarget(target))this.hubGuideTag?.({x:tx,y,w:tw,h:th},'Reward ready'); else if(nxt&&nxt.group==='gLoadout'&&nxt.target===target)this.hubGuideTag?.({x:tx,y,w:tw,h:th},nxt.tag); });
+    this.menu.setVisible(true);
   }
   buildHubGroup(key){
     if(key==='gLoadout')return this.buildGearPower();

@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.26, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.27, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.25 — Bazaar 3 tabs (owner)
+# Latest delivery: v8.0.26 — Power summary page (owner)
+
+buildGearPower (gLoadout) rewritten: title 'Power'; panel = powerStatus(next ready stage from unlockedStage) cur vs Recommended + bar + label + 'N Power to go'; 'BEST WAYS TO GET STRONGER' = powerTips() top 3 (gear: sum of best gearPowerDelta per slot · weave: best talCanBuy core by simulated +1 level heroPower gain (upgrades restored) or Rank up when all max · tal: free TP (pri 30) · perk: rankUnpicked (26) · enh: equipped item with Thread for next +1, simulated gain · mail: inbox (15) · forge: has currency (6); score = gain or pri), tap → that page (enh sets gearSelectedUid), tags tip_<k>; bottom buttons Weave(upgrade)/Equipment(gear)/Forge(craft) keep tags + badges (Weave tour still finds 'upgrade'). Bazaar removed from this page. tests/power-summary added. scripts/check-gear-power-ui.cjs (old card art review, not in CI) is now stale.
+
+# Previous delivery: v8.0.25 — Bazaar 3 tabs (owner)
 
 buildBazaar tabs chests/shop/trade (old ids map TAB={buy,orders→shop, gamble→chests, sell→trade}). buildChestShop = Silver · Gold (pity line '🌟 N more opens → guaranteed Legend' + 10 pips) · Sugar Chest (= openGachaReveal, iLv band chip tag sugar_band, tag chest_sugar; Sugar chest now counts chestsOpened + DailyQ 'chest', Collect returns to Bazaar chests). bazaarStock = 4 gear (slot 0 = bazaarWeakSlot(): lowest equipped itemLevel+tier+enhance, empty = weakest → rec index, card '⭐ … Recommended · your weakest slot') + 2 materials. Save.bazaarFreeRefresh() (d.bazaarFreeDay vs bazaarDaySeed) → refreshBazaar uses it first ('🔄 Refresh · FREE' + dot), then the old 60/120/240 paid ones. Trade tab = Trade-in card + sell list. Lobby Bazaar default tab chests. tests/bazaar-tabs added; progression-polish uses the new tabs.
 
