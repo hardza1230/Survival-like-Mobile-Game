@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.5, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.6, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.4 — Story gallery (owner)
+# Latest delivery: v8.0.5 — Smoother movement stick (owner: sometimes it barely moves)
+
+Causes: speed = drag/60px linear (20px = 33%), fixed base (drifting finger had to come back 60+px to turn), and a finger already down when a card/story screen closed never started the stick (needed lift + retouch); pointerupoutside did not release it. Now joyStart/joyMove/joyEnd/joyBlocked (after the input setup, before update): dead zone 5px, full speed at 30px (20px = 60%), base follows the finger when dragged past 60px, joy.id −1 on end; pointermove adopts a held pointer (state play, p.isDown, not on Unique/Dash/Flicker, no titan/snipe hold); pointerupoutside ends the stick. Real-browser: 20px .6, 110px base follows, reverse −1 at once, held finger adopted, 0 errors.
+
+# Previous delivery: v8.0.4 — Story gallery (owner)
 
 MC_GALLERY (before STAGE_TAGLINES) = story order [id, emoji, name, stageMastery index needed (−1 = tutorialDone)]; mcOpen(id) = mcSeen or that stage cleared. buildLobby: pink '📖 Story' pill at the stage box top-right (only when any scene is open; zone 64×44 tag 'story', added after the panel zone so it wins); NEW badge now centred in the space left of the pill. Route s==='story' → buildStoryBook(): screen_chapter bg, 'Story so far · n / 17', 2-column tiles (emoji, name, tagline; locked = 🔒 ??? 'Keep playing to unlock', toast on tap), tile tags story_<id> → storyReplay(id) (clears _mcFail, playMotionComic, toast if art fails, rebuild story screen). tests/story-motion-art checks the gallery covers every scene + route/pill. Real-browser: Lobby pill → gallery 10/17 → s02 replay → back, 0 errors.
 

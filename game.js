@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.4';
+const GAME_VERSION = '8.0.5';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.5',date:'2026-10-24',title:'Smoother movement stick',items:['The movement stick reaches full speed with a shorter drag','The stick now follows your finger, so turning back is instant','Keeping your finger down while a card or story screen closes now moves you right away'] },
   {v:'8.0.4',date:'2026-10-24',title:'Rewatch the story',items:['New 📖 Story tag on the Lobby stage box opens the story so far','Rewatch any scene you have unlocked; new scenes open as you clear stages'] },
   {v:'8.0.3',date:'2026-10-24',title:'More cinematic story',items:['Stage title cards now open like a film: the name slowly rises in with a gold line and a short tagline, then fades away (tap to skip)','Story scenes open with their own title card and now have comic effects: impact lines, sound words like CRACK!, light rays, drifting dust, embers or snow','Captions type out letter by letter — tap once to show the whole line, tap again for the next shot'] },
   {v:'8.0.2',date:'2026-10-24',title:'Story scenes come alive',items:['The story is now told in moving comic scenes: layered backgrounds, characters that fall, land and glow, and magic effects','New scenes for the opening, every Chapter 1 stage, each friend you free, the chapter starts and endings, the glass memories and the Delve','Tap to go to the next shot, Skip to jump ahead · each scene plays once'] },
@@ -7809,34 +7810,36 @@ class Game extends Phaser.Scene {
       if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.mxDash?.();this.doDash(); return; }
 
       // แตะจุดอื่นทั้งหมดบนหน้าจอ = จอยสติ๊กลอย ควบคุมทิศทางเดินอิสระด้วยมือเดียว
-      this.joy.active=true; this.joy.id=p.id; this.joy.bx=p.x; this.joy.by=p.y; this.joy.dx=0; this.joy.dy=0;
-      this.joyBase.setPosition(p.x,p.y).setVisible(true);
-      this.joyKnob.setPosition(p.x,p.y).setVisible(true);
+      this.joyStart(p);
     });
     this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); else if(this.state==='menu'&&(this._mScrollMax||0)>0&&!this._craftRolling&&!this._bazBusy&&!this._gachaBusy){this._mVelocity=0;this.setMenuScroll((this._mScroll||0)+dy*0.6);} });
     this.input.on('pointermove',(p)=>{
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.moveSnipeAim({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR}); return; }
+      if(!this.joy.active&&this.state==='play'&&p.isDown&&!this._titanHold&&!this._snipe){ const q={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}; if(!this.joyBlocked(q))this.joyStart(q); }   // v8.0.5 นิ้วค้างไว้ตั้งแต่ก่อนปิดการ์ด/ฉาก = รับเป็นจอยเลย (เดิมต้องยกนิ้วแตะใหม่)
       if(!this.joy.active||p.id!==this.joy.id) return;
-      p={x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id};
-      let dx=p.x-this.joy.bx, dy=p.y-this.joy.by; const len=Math.hypot(dx,dy), max=60;
-      if(len>max){ dx=dx/len*max; dy=dy/len*max; }
-      this.joy.dx=dx/max; this.joy.dy=dy/max; this.joyKnob.setPosition(this.joy.bx+dx,this.joy.by+dy);
+      this.joyMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id});
     });
     this.input.on('gameout',()=>{if(this.state==='menu')this.cancelMenuMotion();});
-    this.input.on('pointerupoutside',p=>{if(this.state==='menu')this.cancelMenuMotion();else if(this._titanHold&&p.id===this._titanHold.id)this.releaseTitanCharge();else if(this._snipe&&p.id===this._snipe.id)this.releaseSnipe();});
+    this.input.on('pointerupoutside',p=>{if(p.id===this.joy.id)this.joyEnd();if(this.state==='menu')this.cancelMenuMotion();else if(this._titanHold&&p.id===this._titanHold.id)this.releaseTitanCharge();else if(this._snipe&&p.id===this._snipe.id)this.releaseSnipe();});
     this.input.on('pointerup',(p)=>{
       if(p.button===2&&!p.wasTouch){ if(this._kbUnique){ this._kbUnique=false; this.input.emit('pointerup',{x:this.uniqueBtn.x*RENDER_DPR,y:this.uniqueBtn.y*RENDER_DPR,id:-77}); } return; }
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._titanHold&&p.id===this._titanHold.id){ this.releaseTitanCharge(); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.releaseSnipe(); return; }
-      if(p.id===this.joy.id){ this.joy.active=false; this.joy.dx=0; this.joy.dy=0;
-        this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
+      if(p.id===this.joy.id)this.joyEnd();
     });
     this.setupKeyboard?.();
   }
+  /* v8.0.5 จอยลอยลื่นขึ้น (เจ้าของ: บางทีเลื่อนไม่ค่อยไป): ความเร็วเต็มตั้งแต่ลาก ~30px (เดิม 60) + โซนตาย 5px · ลากเกินวง ฐานจอยตามนิ้ว (กลับทิศได้ทันที) */
+  joyStart(p){ const j=this.joy; j.active=true; j.id=p.id; j.bx=p.x; j.by=p.y; j.dx=0; j.dy=0; this.joyBase.setPosition(p.x,p.y).setVisible(true); this.joyKnob.setPosition(p.x,p.y).setVisible(true); }
+  joyMove(p){ const j=this.joy,max=60,dead=5,full=30; let dx=p.x-j.bx,dy=p.y-j.by,len=Math.hypot(dx,dy);
+    if(len>max){ const k=(len-max)/len; j.bx+=dx*k; j.by+=dy*k; dx=p.x-j.bx; dy=p.y-j.by; len=max; this.joyBase.setPosition(j.bx,j.by); }
+    const m=len<=dead?0:Math.min(1,(len-dead)/(full-dead)); j.dx=len?dx/len*m:0; j.dy=len?dy/len*m:0; this.joyKnob.setPosition(j.bx+dx,j.by+dy); }
+  joyEnd(){ const j=this.joy; j.active=false; j.id=-1; j.dx=0; j.dy=0; this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
+  joyBlocked(p){ const near=(b,r)=>b&&b.visible&&this.dist(p.x,p.y,b.x,b.y)<r; return near(this.uniqueBtn,(this.uniqueBtn?.radius||0)+8)||near(this.dashBtn,(this.dashBtn?.radius||0)+8)||!!(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2); }
   // v7.0 KEYBOARD (เล่นบนเบราว์เซอร์คอม): WASD/ลูกศร=เดิน · Space/Shift=Dash · E/J (กดค้าง)=Unique · F=Flicker · Esc/P=หยุด · 1-4=เลือกการ์ด
   setupKeyboard(){ const kb=this.input.keyboard; if(!kb)return; this._kbKeys=kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT',false);
     const fake=(type,btn,id)=>{ if(!btn)return; this.input.emit(type,{x:btn.x*RENDER_DPR,y:btn.y*RENDER_DPR,id}); };
