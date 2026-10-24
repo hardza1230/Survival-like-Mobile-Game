@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.21';
+const GAME_VERSION = '8.0.22';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.22',date:'2026-10-24',title:'Rank Rewards',items:['Rank Perks and Special Cores are now one page: Rank Rewards','Each Rank 1–5 lets you pick 1 of 2 rewards (Dash, Unique, Revival Candle, speed, crit and more) — switch any time for free','Sugar and crafting currency bonuses now grow with your Rank automatically','Box Luck and the pickup/EXP/currency cores were removed; Thread spent on Special Cores was refunded'] },
   {v:'8.0.21',date:'2026-10-24',title:'Painted boss arena attacks',items:['Chapter 1–2 boss arena attacks now have painted art: burrowing shadow, sewer flood, hot griddle tiles, frost breath and ice pillars','Spore shield, poison fog with clean-air bubbles, golden clock hands and root surges got real art too','Timing, safe spots and damage are unchanged'] },
   {v:'8.0.20',date:'2026-10-24',title:'New Daily Quests',items:['10 quests a day: 4 easy, 4 medium, 2 hard — finish 3, 6 and 8 for the three boxes','New goals: use your Unique, dash, kick objects into bosses, get all 3 stars, win with a certain hero, open a Bazaar chest','Change one unfinished quest for free each day (🔄)','Weekly: every day you finish 8 quests fills a slot — fill all 7 for a free Gold Chest'] },
   {v:'8.0.19',date:'2026-10-24',title:'Gear comes from the Bazaar',items:['Early stage drops are rarer and come without mods until the Forge lesson','The first gear lesson now opens a Silver Chest in the Bazaar (30 Thread gift)','Recipe Maps / Delve now unlock after you finish the story'] },
@@ -5074,9 +5075,18 @@ const SPECIAL_CORES = [
   {id:'treasure',name:'Treasure Core',rank:4,mod:'orbfind',per:5,base:12,icon:'temple_special_cores',frame:3,desc:'+5% currency find / level',effect:n=>'+'+(n*5)+'% currency find'},
   {id:'signature',name:'Signature Core',rank:5,mod:'uniquecd',per:3,base:14,icon:'temple_special_cores',frame:4,desc:'-3% Unique cooldown / level',effect:n=>'-'+(n*3)+'% Unique cooldown'},
 ];
-function applySpecialCores(p){
-  for(const core of SPECIAL_CORES){ const n=Save.specialCoreLvl(core.id); if(n>0&&(Save.data.rank||0)>=core.rank){ const mod=affixDef(core.mod); if(mod)mod.apply(p,n*core.per); } }
-}
+// v8.0.22 เจ้าของ: Special Cores + Rank Perks รวมเป็น Rank Rewards · SPECIAL_CORES เหลือไว้คืน Thread ให้เซฟเก่า
+// ทุกยศ 1–5 เลือก 1 จาก 2 (เปลี่ยนได้ฟรี) · เหลือแต่ของที่เปลี่ยนวิธีเล่น · โบนัส Sugar/สกุลเงินตามยศเป็นอัตโนมัติ
+const RANK_REWARDS=[
+  {r:1,opts:[{id:'blink',emoji:'💨',name:'Blink',desc:'−15% Dash cooldown',apply:p=>{p.dashCdMul=(p.dashCdMul||1)*.85;}},{id:'signature',emoji:'⭐',name:'Signature',desc:'−12% Unique cooldown',apply:p=>{p.uniqueCdMul=(p.uniqueCdMul||1)*.88;}}]},
+  {r:2,opts:[{id:'revive',emoji:'🕯️',name:'Revival Candle',desc:'Revive once per stage at 45% HP'},{id:'laststand',emoji:'🛡️',name:'Last Stand',desc:'−25% damage taken below 30% HP',apply:p=>{p.lowHpGuard=(p.lowHpGuard||0)+.25;}}]},
+  {r:3,opts:[{id:'swift',emoji:'👟',name:'Swift Feet',desc:'+10% move speed',apply:p=>{p.baseSpeed=(p.baseSpeed||1)*1.1;}},{id:'feast',emoji:'🍖',name:'Feast',desc:'Heal 2 HP per kill',apply:p=>{p.lifeOnKill=(p.lifeOnKill||0)+2;}}]},
+  {r:4,opts:[{id:'blink2',emoji:'🌀',name:'Flash Step',desc:'−20% Dash cooldown',apply:p=>{p.dashCdMul=(p.dashCdMul||1)*.8;}},{id:'signature2',emoji:'🌟',name:'Encore',desc:'−18% Unique cooldown',apply:p=>{p.uniqueCdMul=(p.uniqueCdMul||1)*.82;}}]},
+  {r:5,opts:[{id:'giant',emoji:'👑',name:'Giant Slayer',desc:'+20% damage to bosses and minibosses',apply:p=>{p.bossDmg=(p.bossDmg||0)+.2;}},{id:'keen',emoji:'🎯',name:'Keen Eye',desc:'+8% crit chance',apply:p=>{p.critChance=(p.critChance||0)+.08;}}]},
+];
+function rankRewardOpt(id){ for(const row of RANK_REWARDS)for(const o of row.opts)if(o.id===id)return o; return null; }
+function rankAutoBonus(rank){ const r=Math.max(0,rank|0); return {sugar:.05*Math.min(8,r),cur:.05*Math.min(5,r)}; }
+function applySpecialCores(p){ const d=(typeof Save!=='undefined'&&Save.data)||{},pk=d.rankPick||{}; for(const row of RANK_REWARDS){ if((d.rank||0)<row.r)continue; const o=row.opts.find(x=>x.id===pk[row.r]); if(o&&o.apply)o.apply(p); } }
 /* ---- ยศ (rank): ไต่ไปเรื่อย ๆ · ชื่อวนถึงตัวสุดท้ายแล้วต่อท้าย +N ---- */
 const RANK_TIERS = [
   { name:'First Awakened Taste' }, { name:'Memory Listener' }, { name:'Core Binder' },
@@ -6063,6 +6073,7 @@ const Save = {
     if(this.data.bestiary.boss!=null){ this.data.bestiary.boss0=(this.data.bestiary.boss0||0)+this.data.bestiary.boss; delete this.data.bestiary.boss; }
     if(this.data.bestiary.mini!=null){ this.data.bestiary.mini0=(this.data.bestiary.mini0||0)+this.data.bestiary.mini; delete this.data.bestiary.mini; }
     if(!this.data.rankPerks)this.data.rankPerks={};
+    if(!this.data._rrMig){ this.data._rrMig=1; let th=0; for(const c of SPECIAL_CORES){ const n=Math.max(0,Math.min(3,Math.floor(Number((this.data.specialCores||{})[c.id])||0))); th+=c.base*n*(n+1)/2; } if(th>0)this.data.threads=(this.data.threads||0)+th; this.data.specialCores={}; if((this.data.rankPerks||{}).revive){ this.data.rankPick=Object.assign({},this.data.rankPick,{2:'revive'}); } this.data.rankPerks={}; }   // v8.0.22 Rank Rewards: คืน Thread ของ Special Cores · Rank Perk เดิม (Sugar/Box/Fortune → โบนัสอัตโนมัติ) · Revival Candle เดิมเลือกให้ที่ยศ 2
     for(const k in this.data.rankPerks){ if(!RANK_PERKS.some(p=>p.id===k))delete this.data.rankPerks[k]; }   // v7.8.101 perk ที่ถูกตัด (vigor/might/ironWill/reroll/banish) → คืนแต้ม RP
     if(!this.data.stageMastery)this.data.stageMastery={};
     if(!this.data.charUnlockNew)this.data.charUnlockNew={};
@@ -6270,11 +6281,7 @@ const Save = {
     this.data.threads-=this.kitchenResetCost();const p=this.frParts();for(const r of rs){for(const k of ['t','e','m']){if(r[k]){p[r[k]]=(p[r[k]]||0)+1;r[k]=null;}}}this.save();return true; },
   ancientHas(id){ return !!(this.data.ancient||{})[id]; },
   unlockAncient(id){ if(this.ancientHas(id)||!ANCIENT_PERKS.find(p=>p.id===id)||!this.spendThreads(ANCIENT_THREAD_COST))return false; if(!this.data.ancient)this.data.ancient={}; this.data.ancient[id]=1; this.save(); return true; },
-  specialCoreLvl(id){ const n=Number((this.data.specialCores||{})[id])||0;return Math.max(0,Math.min(3,Math.floor(n))); },
-  specialCoreCost(id){const core=SPECIAL_CORES.find(c=>c.id===id);return core?core.base*(this.specialCoreLvl(id)+1):0;},
-  buySpecialCore(id){const core=SPECIAL_CORES.find(c=>c.id===id);if(!core||(this.data.rank||0)<core.rank||this.specialCoreLvl(id)>=3)return false;
-    const cost=this.specialCoreCost(id);if(this.threads()<cost)return false;
-    this.data.threads=this.threads()-cost;this.data.specialCores=this.data.specialCores||{};this.data.specialCores[id]=this.specialCoreLvl(id)+1;this.save();return true;},
+  // v8.0.22 Special Cores ซื้อไม่ได้แล้ว (คืน Thread ตอนโหลดเซฟ · ดู _rrMig)
   talCost(k){ const lvl=this.talLvl(k), rank=this.data.rank||0; return Math.round(UPGRADES[k].base*WEAVE_COST_MUL*Math.pow(WEAVE_LV_GROWTH,lvl)*(1+rank)*Math.pow(1.25,rank)); },   // v6.90 เจ้าของ: แพงขึ้นทั้งหมด ×3 + โตตามเลเวล ×1.8/ขั้น (เดิม ×(lvl+1))   // v6.68: 1.15→1.25 per rank (Sugar upgrades nerfed)   // 🍬 Sugar · v6.55.28: (1+rank)×1.15^rank (เดิม 1+0.8·rank) ยศ 5 รวม ×1.7, ยศ 10 ×2.9
   talCanBuy(k){ return this.talLvl(k)<TAL_MAX&&(this.data.sugar||0)>=this.talCost(k); },
   promoteThreadCost(){ const rank=this.data.rank||0;return 8+4*rank+2*rank*rank; },
@@ -6298,6 +6305,10 @@ const Save = {
     this.data.sugar=(this.data.sugar||0)+rew; this.save(); return rew; },
   // ---- Rank Perks (RP = rank ทั้งหมด · ใช้ไปตามที่ลง perk) ----
   perkLvl(id){ return (this.data.rankPerks||{})[id]||0; },
+  rankPick(r){ return (this.data.rankPick||{})[r]||null; },
+  rankHas(id){ const row=RANK_REWARDS.find(x=>x.opts.some(o=>o.id===id)); return !!row&&(this.data.rank||0)>=row.r&&this.rankPick(row.r)===id; },
+  setRankPick(r,id){ const row=RANK_REWARDS.find(x=>x.r===r); if(!row||(this.data.rank||0)<r||!row.opts.some(o=>o.id===id))return false; if(!this.data.rankPick)this.data.rankPick={}; this.data.rankPick[r]=id; this.save(); return true; },
+  rankUnpicked(){ return RANK_REWARDS.filter(x=>(this.data.rank||0)>=x.r&&!this.rankPick(x.r)).length; },
   rankPointsTotal(){ return this.data.rank||0; },
   rankPointsSpent(){ let s=(this.data.frSlotRP||0); const rp=this.data.rankPerks||{}; for(const k in rp)s+=rp[k]||0; return s; },   // v5.38 +RP ที่ใช้ปลดช่องสูตร
   rankPointsFree(){ return this.rankPointsTotal()-this.rankPointsSpent(); },
@@ -10188,10 +10199,10 @@ class Game extends Phaser.Scene {
     if(target==='talents')return heroTalentSpendable(d.character||'momo');
     if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean)||this.hasTargetBadge('talents');
     if(target==='weave')return UPG_ORDER.some(k=>Save.talCanBuy(k))||(Save.talAllMax()&&Save.threads()>=Save.promoteThreadCost());   // v7.9.55 ซื้อ Core ได้ / เลื่อนยศได้
-    if(target==='specialCores')return (d.rank||0)>=1&&SPECIAL_CORES.some(c=>(d.rank||0)>=c.rank&&Save.specialCoreLvl(c.id)<3&&Save.threads()>=Save.specialCoreCost(c.id));
+    if(target==='specialCores')return false;   // v8.0.22 รวมเข้า Rank Rewards
     if(target==='gear')return (d.gearItems||[]).some(g=>g.isNew)||!!this._gearBetter?.();   // v7.9.56 +ของในกระเป๋าที่ดีกว่าที่สวม
     if(target==='kitchen')return kitchenOpen()&&Save.frRecipes().slice(0,Save.frSlots()).some(r=>['t','e'].some(k=>!(r&&r[k])&&Object.entries(Save.frParts()).some(([pk,n])=>n>0&&pk[0]===k&&!(frPart(pk)||{}).cut)));   // v7.9.56 ช่องสูตรว่าง + มีชิ้นส่วนวางได้
-    if(target==='perks')return Save.rankPointsFree()>0;
+    if(target==='perks')return Save.rankUnpicked()>0;   // v8.0.22 ยศใหม่ยังไม่เลือกรางวัล
     if(target==='dig')return Save.digFreeReady()||!!(Save.minersReady&&Save.minersReady());
     if(target==='upgrade')return this.hasTargetBadge('perks')||this.hasTargetBadge('dig')||this.hasTargetBadge('weave')||this.hasTargetBadge('specialCores');
     if(target==='news')return this.hasNewsBadge();
@@ -10850,7 +10861,7 @@ class Game extends Phaser.Scene {
     const t=this.add.text((cx+20*k+x+w-10)/2,y+h/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color,stroke:'#2a1020',strokeThickness:3}).setOrigin(0.5);
     const out=[p,t]; if(iconKey&&this.textures.exists(iconKey))out.push(this.add.image(cx,y+h/2,iconKey).setDisplaySize(h*.66,h*.66)); return out; }
   buildUpgrade(){
-    if(this._templeSpecial)return this.buildSpecialCores();
+    this._templeSpecial=false;   // v8.0.22 Special Cores → Rank Rewards
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple',ASSET_IMAGES.screen_temple_weave?'screen_temple_weave':'ui_talent_hall');   // v7.8.49 A1 (โหลดตอนเปิดหน้าใน _screenBg)
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     this.templeArtFrames();
@@ -10861,24 +10872,19 @@ class Game extends Phaser.Scene {
     this.menu.add([rk,rn]);
     if(this.textures.exists('temple_rank_emblems')){const badge=this.add.image(32,ry+13,'temple_rank_emblems','cell'+Math.min(5,rank)).setDisplaySize(42,42);this.menu.add(badge);rn.setFontSize(w<360?'14px':'17px');}
     // ปุ่มเข้าหน้า Rank Perks (โชว์ RP ที่ยังใช้ได้)
-    const rpFree=Save.rankPointsFree(), rkW=portrait?Math.min(124,(w-44)/3):124,rkH=30,rkX=portrait?w/2-rkW*1.5-6:w-14-rkW,rkY=portrait?ry+32:44;
+    const rpFree=Save.rankUnpicked(), rkW=portrait?Math.min(150,(w-40)/2):124,rkH=30,rkX=portrait?w/2-rkW-3:w-14-rkW,rkY=portrait?ry+32:44;   // v8.0.22 แท็บเหลือ 2 (Rank Rewards · Depths)
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
-    { const dg=Save.dig(),dx=portrait?w/2-rkW/2:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Depths · '+dg.shovels,'tile_dig','#fff1d6');
+    { const dg=Save.dig(),dx=portrait?w/2+3:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Depths · '+dg.shovels,'tile_dig','#fff1d6');
       if(art)this.menu.add(art); else { const g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
       const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); }
       this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
       if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
     // v5.37 🍳 ปุ่มเข้าครัวสูตร (Flavor Recipes)
-    // v7.8.90 Special Cores มีแท็บของตัวเอง (เดิมซ่อนหลังแบนเนอร์ใน Rank Perks) · Kitchen ย้ายไป Activities
-    { const kx=portrait?w/2+rkW/2+6:rkX-2*(rkW+8),scOpen=(Save.data.rank||0)>=1,art=this.tuTab(kx,rkY,rkW,rkH,2,scOpen?'Special Cores':'🔒 Special Cores','tile_special',scOpen?'#e6fff2':'#9c8ba9');
-      if(art)this.menu.add(art); else { const g3=this.add.graphics(); g3.fillStyle(0x1f3438,1); g3.fillRoundedRect(kx,rkY,rkW,rkH,9); g3.lineStyle(1.5,0x5ad1c4,1); g3.strokeRoundedRect(kx,rkY,rkW,rkH,9);
-      const t3=this.add.text(kx+rkW/2,rkY+rkH/2,scOpen?'💠 Special Cores':'🔒 Special Cores',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#a8f0e6'}).setOrigin(0.5);
-      this.menu.add([g3,t3]); }
-      this._zone(kx,rkY,rkW,rkH,()=>{ if(!scOpen){Sfx.select&&Sfx.select();this.menuToast?.('🔒 Special Cores unlock at Weave Rank 1','#ffb4c7');return;} this._templeSpecial=true; this._specialFrom=null; this._specialCorePage=0; this.buildMenuScreen(); }); if(scOpen&&this.hasTargetBadge?.('specialCores'))this.drawBadgeDot(this.menu,kx+rkW-6,rkY+6); }   // v7.8.96 เปิดหลังเลื่อนยศครั้งแรก
-    { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Perks · '+rpFree+' RP'):'Rank Perks','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
+    // v8.0.22 แท็บ Special Cores ถูกรวมเข้า Rank Rewards
+    { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Rank Rewards · '+rpFree+' new'):'Rank Rewards','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
       if(art)this.menu.add(art); else { const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
-      const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Perks · '+rpFree+' RP'):'🏅 Rank Perks',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
+      const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Rewards · '+rpFree+' new'):'🏅 Rank Rewards',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); }
       this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
       if(rpFree>0)this.drawBadgeDot(this.menu,rkX+rkW-6,rkY+6); }
@@ -10947,38 +10953,7 @@ class Game extends Phaser.Scene {
     if(this._spotZone){ const sp=this._spotZone; this._spotZone=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); this._weaveSpotAt=Date.now(); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,this._weaveTour?'Step 3/5 · Tap a core to spend your Sugar':'Tap to upgrade this core!'); }
     this.menu.setVisible(true);
   }
-  buildSpecialCores(){
-    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Special Temple Cores','ui_talent_hall');
-    this.templeArtFrames();
-    const w=this.W,h=this.H,top=w<=h?86:58,rank=Save.data.rank||0;
-    const note=this.add.text(w/2,top,'Rank '+rank+' · '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'12px',color:'#ffe08a'}).setOrigin(.5);
-    const hint=this.add.text(w/2,top+21,'Permanent bonuses · remain after promotion',{fontFamily:'sans-serif',fontSize:'10px',color:'#ddd1e7'}).setOrigin(.5);this.menu.add([note,hint]);
-    const cw=Math.min(w-24,450),rowH=cw/3,gap=10,start=top+39;
-    const count=Math.max(1,Math.min(SPECIAL_CORES.length,Math.floor((h-start-62+gap)/(rowH+gap))));
-    const pages=Math.ceil(SPECIAL_CORES.length/count),page=Math.max(0,Math.min(pages-1,this._specialCorePage||0)),left=(w-cw)/2;
-    SPECIAL_CORES.slice(page*count,page*count+count).forEach((core,i)=>{
-      const y=start+i*(rowH+gap),lvl=Save.specialCoreLvl(core.id),locked=rank<core.rank,maxed=lvl>=3,cost=Save.specialCoreCost(core.id),affordable=Save.threads()>=cost;
-      const panel=this.add.image(w/2,y+rowH/2,'temple_core_card').setDisplaySize(cw,rowH).setAlpha(locked?.6:1);this.menu.add(panel);
-      if(this.textures.exists(core.icon)){const im=this.add.image(left+cw*.135,y+rowH*.49,core.icon,'cell'+core.frame).setDisplaySize(cw*.14,rowH*.58).setAlpha(locked?.4:1);this.menu.add(im);}
-      const tx=left+cw*.285,tw=cw*.65,fs=Math.max(9,Math.min(12,cw*.033));
-      const name=this.add.text(tx,y+rowH*.20,core.name+' · '+lvl+'/3',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:locked?'#b4a5bd':'#fff1cc',wordWrap:{width:tw}});
-      const effect=this.add.text(tx,y+rowH*.40,core.effect(lvl),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:(fs-1)+'px',color:locked?'#a69aae':'#a9ffe2'});
-      const desc=this.add.text(tx,y+rowH*.57,locked?'Unlock at '+rankName(core.rank):core.desc,{fontFamily:'sans-serif',fontSize:(fs-2)+'px',color:'#d6c7df',wordWrap:{width:tw}});this.menu.add([name,effect,desc]);
-      for(let j=0;j<3;j++){const radius=cw*.017,gem=this.add.polygon(left+cw*(930/2172+j*156.25/2172),y+rowH*(572.5/724),[0,-radius,radius,0,0,radius,-radius,0],j<lvl?0xa5ffe3:0x33263e,j<lvl?1:.7).setStrokeStyle(Math.max(.7,cw*.002),j<lvl?0xd8fff1:0x80718e,1);this.menu.add(gem);}
-      const label=locked?'Rank '+core.rank:maxed?'MAX':cost+' Thread',bx=left+cw*.827,by=y+rowH*.735;
-      const buttonText=this.add.text(bx,by,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(9,fs-1)+'px',color:locked||maxed?'#d4cfdd':affordable?'#153b31':'#ffe4b4'}).setOrigin(.5);this.menu.add(buttonText);
-      if(!locked&&!maxed)this._zone(left+cw*.69,y+rowH*.635,cw*.275,rowH*.205,()=>{if(Save.buySpecialCore(core.id)){Sfx.progress('core');this.menuToast(core.name+' upgraded','#9ff0c8');}else this.menuToast('Need '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen();});
-    });
-    const footer=Math.min(h-61,start+count*(rowH+gap)+9);
-    const paintedButton=(cy,width,label,fn)=>{
-      const image=this.add.image(w/2,cy,'painted_nav_button').setDisplaySize(width,32),text=this.add.text(w/2,cy,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff0d3'}).setOrigin(.5);
-      this.menu.add([image,text]);this._zone(w/2-width/2,cy-16,width,32,fn);
-    };
-    if(pages>1)paintedButton(footer,180,'More cores · '+(page+1)+'/'+pages,()=>{this._specialCorePage=(page+1)%pages;this.buildMenuScreen();});
-    paintedButton(pages>1?footer+38:footer,210,this._specialFrom==='perks'?'Back to Rank Perks':'Back to main cores',()=>{this._templeSpecial=false;if(this._specialFrom==='perks'){this._specialFrom=null;this.menuScreen='perks';}this.buildMenuScreen();});
-    this.menu.setVisible(true);
-  }
-
+  // v8.0.22 buildSpecialCores ถูกรวมเข้า Rank Rewards (buildRankPerks)
   // ⛏️ v5.27 Temple Depths — หน้าขุด
   // ===== v5.37 🍳 Recipe Kitchen: ประกอบ perk เอง · แตะช่องสูตร → แตะชิ้นส่วนในถุง =====
   buildKitchen(){
@@ -11171,49 +11146,33 @@ class Game extends Phaser.Scene {
     if(this.tuHas('perk_tier_line')){ const lw=x+w-(x+bw+4); if(lw>20)this.menu.add(this.tuImg('perk_tier_line',0,x+bw+4,y+7,lw,6).setOrigin(0,0.5)); }
     return true; }
   buildRankPerks(){
-    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Flavor Passives',ASSET_IMAGES.screen_temple_perks?'screen_temple_perks':'screen_weave_perks');   // v7.8.49 B1
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('🏅 Rank Rewards',ASSET_IMAGES.screen_temple_perks?'screen_temple_perks':'screen_weave_perks');   // v7.8.49 B1
     const w=this.W,h=this.H;
-    const free=Save.rankPointsFree(),total=Save.rankPointsTotal();
-    const hs=this._hdrShift(),art=this.tuHas('perk_card_sheet');
-    const rpTxt=this.add.text(w/2,56+hs,'RP  '+free+' free / '+total,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:free>0?'#ffd166':(art?'#d8cce6':'#8f849f'),stroke:art?'#1d0f16':undefined,strokeThickness:art?3:0}).setOrigin(0.5);
-    const sub=this.add.text(w/2,73+hs,'Earn RP by ranking up the 3 cores · deeper tiers unlock as you invest',{fontFamily:'sans-serif',fontSize:'8.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
-    this.menu.add([rpTxt,sub]);
-    const tierName={1:'TIER 1 · Foundation',2:'TIER 2 · Utility',3:'TIER 3 · Mastery'};
-    // v7.8.50 ให้พอดีจอ: เนื้อหา ≈ 342+3·(การ์ด perk + การ์ด Ancient) · จอเตี้ยย่อการ์ดลง
-    const fitH=(h-hs-312)/3,cardH=art?Math.max(78,Math.min(90,fitH-50)):90,aFit=art?Math.max(46,Math.min(62,fitH-cardH)):58;
-    const cols=3,gap=7,cardW=(w-28-gap*(cols-1))/cols; let y=88+hs;
-    [1,2,3].forEach(tier=>{
-      const unlocked=Save.perkTierUnlocked(tier),req=PERK_TIER_REQ[tier]||0,priorSpent=tier===3?(Save.perkTierSpent(1)+Save.perkTierSpent(2)):Save.perkTierSpent(1),perks=RANK_PERKS.filter(p=>(p.tier||1)===tier);
-      if(!this.tuHeader('perk_tier_banner',14,y,w-28,tierName[tier].toUpperCase(),unlocked?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,tierName[tier],{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:unlocked?'#ffd9a8':'#7a7088'}).setOrigin(0,0));
-      if(!unlocked){ const lt='need '+priorSpent+'/'+req+' pts',cw2=lt.length*5.4+34,chip=this.tuPanel('perk_req_chip',0,w-14-cw2,y-3,cw2,19);   // B8 + B7
-        if(chip){ this.menu.add(chip); if(this.tuHas('ui_lock_icon'))this.menu.add(this.tuImg('ui_lock_icon',0,w-14-cw2+chip._tuK*30,y+6.5,14,14)); this.menu.add(this.add.text(w-20,y+6.5,lt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#ffd9a8'}).setOrigin(1,0.5)); }
-        else this.menu.add(this.add.text(w-14,y,'🔒 '+lt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8.5px',color:'#f0a0b0'}).setOrigin(1,0)); }
-      if(tier>1){ const cg=this.add.graphics(); cg.lineStyle(2,unlocked?0xffd166:0x4a4059,0.7); cg.lineBetween(w/2,y-9,w/2,y-2); this.menu.add(cg); }
-      y+=art?18:15;
-      perks.forEach((pk,i)=>{ const x=14+i*(cardW+gap),lvl=Save.perkLvl(pk.id),maxed=lvl>=pk.max,canBuy=unlocked&&!maxed&&free>0;
-        const cp=art?this.tuPanel('perk_card_sheet',!unlocked?2:(lvl>0?1:0),x,y,cardW,cardH):null;   // B4
-        let g=cp; if(!cp){ g=this.add.graphics(); g.fillStyle(unlocked?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,cardH,10); g.lineStyle(2,maxed?0x8bd3a0:(canBuy?0xffd166:(unlocked?0x4a4059:0x352b40)),0.9); g.strokeRoundedRect(x,y,cardW,cardH,10); }
-        else if(canBuy){ const glow=this.add.graphics(); glow.lineStyle(2,0xffe08a,.75).strokeRoundedRect(x+2,y+2,cardW-4,cardH-4,9); this.menu.add(glow); this.tweens.add({targets:glow,alpha:{from:.9,to:.25},yoyo:true,repeat:-1,duration:700}); }
-        const em=(this.textures.exists('perk_'+pk.id)?this.add.image(x+cardW/2,y+15,'perk_'+pk.id).setDisplaySize(26,26):this.add.text(x+cardW/2,y+15,pk.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(unlocked?1:0.4);
-        const nm=this.add.text(x+cardW/2,y+31,pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:unlocked?'#fff':'#9a8fa8'}).setOrigin(0.5);
-        const ds=this.add.text(x+cardW/2,y+(cardH<86?39:43),pk.desc,{fontFamily:'sans-serif',fontSize:cardH<86?'6.4px':'7px',lineSpacing:cardH<86?-1:0,color:unlocked?'#d6cae4':'#7a6f88',align:'center',wordWrap:{width:cardW-12}}).setOrigin(0.5,0);
-        const pipArt=this.tuHas('perk_pip_sheet'),pips=[]; let dots=''; for(let s=0;s<pk.max;s++)dots+=(s<lvl?'●':'○');
-        const dt=this.add.text(x+cardW/2,y+cardH-24,pipArt?'':dots,{fontFamily:'sans-serif',fontSize:'8px',color:maxed?'#8bd3a0':(unlocked?'#ffd166':'#5a4f68')}).setOrigin(0.5);
-        if(pipArt)for(let s=0;s<pk.max;s++)pips.push(this.tuImg('perk_pip_sheet',s<lvl?0:(unlocked?1:2),x+cardW/2+(s-(pk.max-1)/2)*11,y+cardH-25,9,9));   // B5
-        const bh=17,by=y+cardH-bh-(cp?5:3),bx=x+(cp?8:6),bw=cardW-(cp?16:12),bp=this.tuPanel('perk_btn_sheet',maxed?3:(!unlocked?2:(canBuy?1:0)),bx,by,bw,bh);   // B6
-        let bg=bp; if(!bp){ bg=this.add.graphics(); bg.fillStyle(maxed?0x2f4a38:(canBuy?0x4a3a1a:0x322a3a),1); bg.fillRoundedRect(bx,by,bw,bh,6); }
-        const lockArt=bp&&!unlocked&&this.tuHas('ui_lock_icon'),label=maxed?'MAX':(!unlocked?(lockArt?'Locked':'🔒 Locked'):(canBuy?('Spend →+'+(lvl+1)):(free<=0?'No RP':'Lv'+lvl+'/'+pk.max)));
-        const bt=this.add.text(x+cardW/2+(lockArt?5:0),by+bh/2,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'8px',color:bp?(canBuy?'#4a2300':(maxed?'#0d3b2c':'#e6dcef')):(maxed?'#8bd3a0':(canBuy?'#ffe08a':'#8d8195'))}).setOrigin(0.5);
-        this.menu.add([g,em,nm,ds,dt,...pips.filter(Boolean),bg,bt]); if(lockArt)this.menu.add(this.tuImg('ui_lock_icon',0,bt.x-bt.width/2-7,by+bh/2,10,10));
-        if(canBuy)this._zone(x,y,cardW,cardH,()=>{ if(Save.buyPerk(pk.id)){Sfx.progress('perk');if(this.tuSparkle)this.tuSparkle(x+cardW/2,y+cardH/2,44);}else Sfx.error(); this.buildRankPerks(); });
+    // v8.0.22 Rank Rewards: ทุกยศ 1–5 เลือก 1 จาก 2 (เปลี่ยนได้ฟรี) · โบนัส Sugar/สกุลเงินตามยศอัตโนมัติ
+    const rank=Save.data.rank||0,rb=rankAutoBonus(rank),hs=this._hdrShift(),art=this.tuHas('perk_card_sheet'),gap=7,cardW=(w-28-gap)/2;
+    const fitH=(h-hs-300)/3,aFit=art?Math.max(46,Math.min(62,fitH-40)):58;
+    const hd=this.add.text(w/2,56+hs,'Rank '+rank+'  ·  auto bonus +'+Math.round(rb.sugar*100)+'% Sugar · +'+Math.round(rb.cur*100)+'% crafting currency',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',stroke:art?'#1d0f16':undefined,strokeThickness:art?3:0}).setOrigin(0.5);
+    const sub=this.add.text(w/2,72+hs,'Each new Rank lets you pick 1 of 2 rewards · tap the other one any time to switch',{fontFamily:'sans-serif',fontSize:'8.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
+    if(hd.width>w-20)hd.setScale((w-20)/hd.width); if(sub.width>w-16)sub.setScale((w-16)/sub.width); this.menu.add([hd,sub]);
+    let y=86+hs; const rowH=Math.max(50,Math.min(60,(h-hs-86-3*aFit-70)/RANK_REWARDS.length-16));
+    RANK_REWARDS.forEach(row=>{ const open=rank>=row.r,pick=Save.rankPick(row.r);
+      const lbl=open?(pick?'RANK '+row.r:'RANK '+row.r+' · CHOOSE ONE'):'RANK '+row.r+' · 🔒 WEAVE UP TO RANK '+row.r;
+      if(!this.tuHeader('perk_tier_banner',14,y,w-28,lbl,open?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffd9a8':'#7a7088'}).setOrigin(0,0));
+      if(open&&!pick)this.drawBadgeDot(this.menu,w-20,y+6);
+      y+=art?17:14;
+      row.opts.forEach((o,i)=>{ const x=14+i*(cardW+gap),on=pick===o.id,cp=art?this.tuPanel('perk_card_sheet',!open?2:(on?1:0),x,y,cardW,rowH):null;
+        let g=cp; if(!cp){ g=this.add.graphics(); g.fillStyle(open?0x2c2338:0x201a28,1); g.fillRoundedRect(x,y,cardW,rowH,10); g.lineStyle(2,on?0x8bd3a0:(open?0x6a5b86:0x352b40),0.9); g.strokeRoundedRect(x,y,cardW,rowH,10); }
+        else if(on){ const gl=this.add.graphics(); gl.lineStyle(2.5,0x8bffb4,.9).strokeRoundedRect(x+2,y+2,cardW-4,rowH-4,9); this.menu.add(gl); }
+        else if(open&&!pick){ const gl=this.add.graphics(); gl.lineStyle(2,0xffe08a,.75).strokeRoundedRect(x+2,y+2,cardW-4,rowH-4,9); this.menu.add(gl); this.tweens.add({targets:gl,alpha:{from:.9,to:.25},yoyo:true,repeat:-1,duration:700}); }
+        const em=(this.textures.exists('perk_'+o.id)?this.add.image(x+22,y+rowH/2,'perk_'+o.id).setDisplaySize(26,26):this.add.text(x+22,y+rowH/2,o.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(open?1:.4);
+        const nm=this.add.text(x+42,y+rowH*.32,o.name+(on?'  ✓':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#a8ffc8':(open?'#ffffff':'#9a8fa8')}).setOrigin(0,0.5);
+        const ds=this.add.text(x+42,y+rowH*.64,o.desc,{fontFamily:'sans-serif',fontSize:'8.5px',color:open?'#d6cae4':'#7a6f88',wordWrap:{width:cardW-50}}).setOrigin(0,0.5);
+        if(nm.width>cardW-50)nm.setScale((cardW-50)/nm.width);
+        this.menu.add([g,em,nm,ds]);
+        if(open&&!on)this._zone(x,y,cardW,rowH,()=>{ if(Save.setRankPick(row.r,o.id)){ Sfx.progress('perk'); if(this.tuSparkle)this.tuSparkle(x+cardW/2,y+rowH/2,44); this.menuToast?.((pick?'🔄 Switched to ':'✨ ')+o.name,'#ffe08a'); } this.buildRankPerks(); });
+        else if(!open)this._zone(x,y,cardW,rowH,()=>{ Sfx.select&&Sfx.select(); this.menuToast?.('🔒 Weave Up to Rank '+row.r+' to unlock','#ffb4c7'); });
       });
-      y+=cardH+11;
-    });
-    { const sw=w-28,sh=art?30:26,sp=this.tuPanel('perk_special_banner',0,14,y,sw,sh);   // B9 + B10
-      let sg=sp; if(!sp){ sg=this.add.graphics(); sg.fillStyle(0x1f3438,1); sg.fillRoundedRect(14,y,sw,26,9); sg.lineStyle(1.5,0x5ad1c4,1); sg.strokeRoundedRect(14,y,sw,26,9); }
-      const stx=this.add.text(w/2+(sp?10:0),y+sh/2,(sp?'SPECIAL CORES':'💠 SPECIAL CORES')+' · Rank 1–5 · 🧶 '+Save.threads()+'  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:sp?'11px':'9.5px',color:sp?'#f2fffd':'#a8f0e6',stroke:sp?'#0b2f33':undefined,strokeThickness:sp?3:0}).setOrigin(0.5);
-      this.menu.add([sg,stx]); if(sp&&this.tuHas('perk_compass_icon'))this.menu.add(this.tuImg('perk_compass_icon',0,14+65*sp._tuK,y+sh/2,sh*1.15,sh*1.15));
-      this._zone(14,y,sw,sh,()=>{this._templeSpecial=true;this._specialFrom='perks';this._specialCorePage=0;this.menuScreen='upgrade';this.buildMenuScreen();}); y+=sh+6; }   // v6.78 C2
+      y+=rowH+8; });
     // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว) · v7.8.49 มีรูป = 2 คอลัมน์ (เหรียญซ้ายกินที่)
     { const sc=Save.threads(),aArt=this.tuHas('perk_ancient_card_sheet');
       if(!this.tuHeader('perk_ancient_banner',14,y,w*.7,'ANCIENT · from the Temple Depths','#f3e0ff'))this.menu.add(this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0));
@@ -11221,7 +11180,7 @@ class Game extends Phaser.Scene {
       if(chip){ this.menu.add(chip); this.menu.add(this.add.text(w-14-chW+chip._tuK*25,y+6.5,'🧶',{fontSize:'11px'}).setOrigin(0.5)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
       else this.menu.add(this.add.text(w-14,y,'🧶 '+scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#8d8195'}).setOrigin(1,0));
       y+=aArt?19:15;
-      const aCols=aArt?2:3,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?aFit:58;
+      const aCols=2,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?aFit:58;
       ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=ANCIENT_THREAD_COST;
         const ap=aArt?this.tuPanel('perk_ancient_card_sheet',own?2:(can?1:0),x,yy,aW,aH):null,ak=ap?ap._tuK:0;   // B12
         let g=ap; if(!ap){ g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,aW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,aW,aH,10); }
@@ -11233,13 +11192,6 @@ class Game extends Phaser.Scene {
         this.menu.add([g,icon,nm,ds]); if(lockA)this.menu.add(this.tuImg('ui_lock_icon',0,x+16*ak,yy+aH*.8,11,11));
         if(can)this._zone(x,yy,aW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); if(this.tuSparkle)this.tuSparkle(x+aW/2,yy+aH/2,44); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
       y+=Math.ceil(ANCIENT_PERKS.length/aCols)*(aH+6)+6; }
-    // ปุ่มรีเซ็ต perk (คืนแต้มทั้งหมด) · B15 + B16
-    const ry2=this.tuHas('perk_reset_btn')?y:Math.min(h-42,y),rw=Math.min(w-40,300),rp=this.tuPanel('perk_reset_btn',this._perkResetConfirm?1:0,w/2-rw/2,ry2,rw,34);
-    let rg=rp; if(!rp){ rg=this.add.graphics(); rg.fillStyle(0x3a2f38,1); rg.fillRoundedRect(w/2-rw/2,ry2,rw,34,10); rg.lineStyle(1.5,0x6a4055,0.8); rg.strokeRoundedRect(w/2-rw/2,ry2,rw,34,10); }
-    const rIco=rp&&this.tuHas('ic_reset');
-    const rt=this.add.text(w/2+(rIco?10:0),ry2+17,this._perkResetConfirm?'⚠ Confirm · spend 🧶'+Save.perkResetCost():((rIco?'':'♻️ ')+'Reset Perks · 🧶'+Save.perkResetCost()),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rp?'12px':'11px',color:rp?'#ffe9ef':'#f0a0b0',stroke:rp?'#3a0716':undefined,strokeThickness:rp?3:0}).setOrigin(0.5);
-    this.menu.add([rg,rt]); if(rIco)this.menu.add(this.tuImg('ic_reset',0,rt.x-rt.width/2-13,ry2+17,18,18));
-    this._zone(w/2-rw/2,ry2,rw,34,()=>{ if(this._perkResetConfirm){if(Save.respecPerks())Sfx.clear();else this.menuToast('Need perks and 🧶'+Save.perkResetCost()+' Weave Thread','#ff9bb5');this._perkResetConfirm=false;}else{this._perkResetConfirm=true;Sfx.select();} this.buildRankPerks(); });
     this.menu.setVisible(true);
   }
   /* v7.9.10 ใบ 27 ชุดสมุด (Equipment + Forge) · this._jrSkin ตั้งตอนสร้างหน้า · ยังโหลดไม่ครบ = ธีมม่วงเดิม */
@@ -11907,9 +11859,7 @@ class Game extends Phaser.Scene {
     // Rank Perks (ถาวร เลือกเอง) — vigor/might บวกสแตต · greed/boxLuck ตั้งตัวคูณรันนี้
     const rp=Save.data.rankPerks||{};
     if(Save.ancientHas('deepRoots')){ p.regen=(p.regen||0)+1; }   // v5.30 Ancient
-    this.rankSugarMul=1+0.08*(rp.greed||0);
-    this._boxLuckMul=1+0.30*(rp.boxLuck||0);
-    this._currencyLuckMul=1+0.10*(rp.fortune||0);
+    { const rb=rankAutoBonus(Save.data.rank||0); this.rankSugarMul=1+rb.sugar; this._boxLuckMul=1; this._currencyLuckMul=1+rb.cur; }   // v8.0.22 โบนัสอัตโนมัติตามยศ (แทน Sweet Greed / Fortune · ตัด Box Luck)
     //  เหลือ 3 เสาพลังที่ผู้เล่นเลือกเอง: Rank (พรถาวร) · Talent เฉพาะตัว · Gear
     applyFrUpkeep(p);
     clampPlayerStats(p);   // เพดานรวม (STAT_CAPS) — ความเร็ว/คูลดาวน์/คริ/ดาเมจ/เกราะ
@@ -12199,7 +12149,7 @@ class Game extends Phaser.Scene {
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this._cocoaRegenT=0; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
-        this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
+        this.banishedKeys={};this._boxAcc=null;this._reviveLeft=(Save.rankHas?.("revive")?1:0)+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
         this.clearStarGuardFx();
         this.refreshUniqueSkillUI();
         this.clearAuraFx(); this._auraTick=0;
@@ -13990,7 +13940,7 @@ class Game extends Phaser.Scene {
     this.clearFoes();this.clearEnemies();this.clearPickups(true);this.clearBossObjects();this.clearStarGuardFx();this.clearCharSignature();
     this.bullets.children.iterate(b=>{if(b&&b.active)this.killBullet(b);});this.clearAuraFx();
     this.clearYuzuCrew();this.skills={};this.basicAttack=null;this.passives={};this.resetRelics();this.comboFlags={};this.combosOwned={};this.dishCount=0;this.uniqueCd=0;this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this._cocoaRegenT=0;this.wardGuardT=0;this.pathHasteT=0;this.windRushT=0;this.stageKills=0;
-    this.banishedKeys={};this._boxAcc=null;this._reviveLeft=Save.perkLvl("revive")+Save.gearReviveCount();
+    this.banishedKeys={};this._boxAcc=null;this._reviveLeft=(Save.rankHas?.("revive")?1:0)+Save.gearReviveCount();
     this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;this.sugarStage=0;
     this.player.maxhp=90;this.player.baseSpeed=BALANCE.moveSpeed;this.player.pickup=105;this.player.dmgMul=1;this.applyMeta();this.equipSignatureWeapon();this.player.hp=this.player.maxhp;
     this.player.setPosition(0,0).setVelocity(0,0);this.buildSkillBar();this.lvlTxt.setText('Lv 1');
