@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.1';
+const GAME_VERSION = '8.0.2';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.2',date:'2026-10-24',title:'Story scenes come alive',items:['The story is now told in moving comic scenes: layered backgrounds, characters that fall, land and glow, and magic effects','New scenes for the opening, every Chapter 1 stage, each friend you free, the chapter starts and endings, the glass memories and the Delve','Tap to go to the next shot, Skip to jump ahead · each scene plays once'] },
   {v:'8.0.1',date:'2026-10-24',title:'Bottom menu always there',items:['The bottom menu bar now stays on every page, even after tapping buttons like Talents, Settings or the Forge','The old home screen is gone — new players see the new Lobby too']},
   {v:'8.0.0',date:'2026-10-24',title:'Mint Barrage toned down',items:['Mint’s Barrage Build lances now hit for 55% damage (was 62%)','Barrage shard bursts hit nearby enemies a little softer']},
   {v:'7.9.98',date:'2026-10-23',title:'The story, retold',items:['The whole story now follows one plot: long ago a Crown cursed the kingdom into mochi, and the Heart Seed turns you back into a person','Ruby’s stories, stage scenes, endings and hero arrivals now tell how each friend is freed from the curse','The ending: lift the Crown, plant the Heart Seed and break the curse for everyone']},
@@ -1558,6 +1559,101 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  // v8.0.2 ใบ 45 Motion Comic (assets/art/story, menu-lazy ทีละฉาก)
+  cs_s00_far_city:'assets/art/story/cs_s00_far_city.webp',
+  cs_s00_far_tree:'assets/art/story/cs_s00_far_tree.webp',
+  cs_s00_mid_city:'assets/art/story/cs_s00_mid_city.webp',
+  cs_s00_fg_city:'assets/art/story/cs_s00_fg_city.webp',
+  cs_s00_mid_tree:'assets/art/story/cs_s00_mid_tree.webp',
+  cs_s00_fg_tree:'assets/art/story/cs_s00_fg_tree.webp',
+  cs_s01_far_pantry:'assets/art/story/cs_s01_far_pantry.webp',
+  cs_s01_far_nest:'assets/art/story/cs_s01_far_nest.webp',
+  cs_s01_far_root_floor:'assets/art/story/cs_s01_far_root_floor.webp',
+  cs_s01_far_shaft:'assets/art/story/cs_s01_far_shaft.webp',
+  cs_s01_mid_pantry:'assets/art/story/cs_s01_mid_pantry.webp',
+  cs_s01_fg_pantry:'assets/art/story/cs_s01_fg_pantry.webp',
+  cs_s01_mid_nest:'assets/art/story/cs_s01_mid_nest.webp',
+  cs_s01_fg_nest:'assets/art/story/cs_s01_fg_nest.webp',
+  cs_s01_mid_root_floor:'assets/art/story/cs_s01_mid_root_floor.webp',
+  cs_s01_fg_root_floor:'assets/art/story/cs_s01_fg_root_floor.webp',
+  cs_s02_far_drains:'assets/art/story/cs_s02_far_drains.webp',
+  cs_s02_prop_jam_jar:'assets/art/story/cs_s02_prop_jam_jar.webp',
+  cs_s02_prop_recipe_rolled:'assets/art/story/cs_s02_prop_recipe_rolled.webp',
+  cs_s02_prop_recipe_open:'assets/art/story/cs_s02_prop_recipe_open.webp',
+  cs_s02_mid_drains:'assets/art/story/cs_s02_mid_drains.webp',
+  cs_s03_far_furnace:'assets/art/story/cs_s03_far_furnace.webp',
+  cs_s03_prop_gear:'assets/art/story/cs_s03_prop_gear.webp',
+  cs_s03_chr_prisoner:'assets/art/story/cs_s03_chr_prisoner.webp',
+  cs_s04_far_prison:'assets/art/story/cs_s04_far_prison.webp',
+  cs_s04_mid_prison:'assets/art/story/cs_s04_mid_prison.webp',
+  cs_s05_far_oven:'assets/art/story/cs_s05_far_oven.webp',
+  cs_s05_chr_berry_ruby_back:'assets/art/story/cs_s05_chr_berry_ruby_back.webp',
+  cs_s06_far_entrance:'assets/art/story/cs_s06_far_entrance.webp',
+  cs_s07_far_canopy:'assets/art/story/cs_s07_far_canopy.webp',
+  cs_s08_far_hive:'assets/art/story/cs_s08_far_hive.webp',
+  cs_s09_far_ash:'assets/art/story/cs_s09_far_ash.webp',
+  cs_s10_far_glass:'assets/art/story/cs_s10_far_glass.webp',
+  cs_s11_far_crosssection:'assets/art/story/cs_s11_far_crosssection.webp',
+  cs_s11_far_oven_cold:'assets/art/story/cs_s11_far_oven_cold.webp',
+  cs_s12_far_garden:'assets/art/story/cs_s12_far_garden.webp',
+  cs_s12_chr_hunger:'assets/art/story/cs_s12_chr_hunger.webp',
+  cs_s12_mid_garden:'assets/art/story/cs_s12_mid_garden.webp',
+  cs_s12_fg_garden:'assets/art/story/cs_s12_fg_garden.webp',
+  cs_s13_far_throne:'assets/art/story/cs_s13_far_throne.webp',
+  cs_s13_chr_berry_raise:'assets/art/story/cs_s13_chr_berry_raise.webp',
+  cs_s14_far_field:'assets/art/story/cs_s14_far_field.webp',
+  cs_s14_far_tree:'assets/art/story/cs_s14_far_tree.webp',
+  cs_s15_far_glasshall:'assets/art/story/cs_s15_far_glasshall.webp',
+  cs_s15_prop_memory_town:'assets/art/story/cs_s15_prop_memory_town.webp',
+  cs_s15_prop_memory_family:'assets/art/story/cs_s15_prop_memory_family.webp',
+  cs_s15_prop_memory_grandma:'assets/art/story/cs_s15_prop_memory_grandma.webp',
+  cs_s16_far_clearing:'assets/art/story/cs_s16_far_clearing.webp',
+  cs_s16_far_hunger_sleep:'assets/art/story/cs_s16_far_hunger_sleep.webp',
+  cs_s16_prop_sprout:'assets/art/story/cs_s16_prop_sprout.webp',
+  cs_s16_prop_sapling:'assets/art/story/cs_s16_prop_sapling.webp',
+  cs_s16_prop_young_tree:'assets/art/story/cs_s16_prop_young_tree.webp',
+  cs_s16_chr_berry_plant:'assets/art/story/cs_s16_chr_berry_plant.webp',
+  cs_s16_chr_grandma_ruby_hug:'assets/art/story/cs_s16_chr_grandma_ruby_hug.webp',
+  cs_s17_far_delve:'assets/art/story/cs_s17_far_delve.webp',
+  cs_s17_prop_eyes_half:'assets/art/story/cs_s17_prop_eyes_half.webp',
+  cs_s17_prop_eyes_open:'assets/art/story/cs_s17_prop_eyes_open.webp',
+  cs_s17_chr_team_back:'assets/art/story/cs_s17_chr_team_back.webp',
+  cs_pup_mochi_berry_idle:'assets/art/story/cs_pup_mochi_berry_idle.webp',
+  cs_pup_mochi_berry_scared:'assets/art/story/cs_pup_mochi_berry_scared.webp',
+  cs_pup_mochi_berry_fall:'assets/art/story/cs_pup_mochi_berry_fall.webp',
+  cs_pup_mochi_berry_reach:'assets/art/story/cs_pup_mochi_berry_reach.webp',
+  cs_pup_berry_land:'assets/art/story/cs_pup_berry_land.webp',
+  cs_pup_berry_hero:'assets/art/story/cs_pup_berry_hero.webp',
+  cs_pup_berry_look:'assets/art/story/cs_pup_berry_look.webp',
+  cs_pup_ruby_hide:'assets/art/story/cs_pup_ruby_hide.webp',
+  cs_pup_ruby_cry_happy:'assets/art/story/cs_pup_ruby_cry_happy.webp',
+  cs_pup_grandma_mochi_frozen:'assets/art/story/cs_pup_grandma_mochi_frozen.webp',
+  cs_pup_grandma_mochi:'assets/art/story/cs_pup_grandma_mochi.webp',
+  cs_pup_grandma_human:'assets/art/story/cs_pup_grandma_human.webp',
+  cs_pup_planter_crown:'assets/art/story/cs_pup_planter_crown.webp',
+  cs_pup_planter_kneel:'assets/art/story/cs_pup_planter_kneel.webp',
+  cs_pup_planter_old:'assets/art/story/cs_pup_planter_old.webp',
+  cs_pup_crown_glow:'assets/art/story/cs_pup_crown_glow.webp',
+  cs_pup_crown_crack:'assets/art/story/cs_pup_crown_crack.webp',
+  cs_pup_seed_sleep:'assets/art/story/cs_pup_seed_sleep.webp',
+  cs_pup_seed_wake:'assets/art/story/cs_pup_seed_wake.webp',
+  cs_pup_root_tip:'assets/art/story/cs_pup_root_tip.webp',
+  cs_pup_root_wound:'assets/art/story/cs_pup_root_wound.webp',
+  cs_pup_blank_mochi_walk:'assets/art/story/cs_pup_blank_mochi_walk.webp',
+  cs_pup_blank_mochi_leap:'assets/art/story/cs_pup_blank_mochi_leap.webp',
+  cs_pup_crowd_people:'assets/art/story/cs_pup_crowd_people.webp',
+  cs_pup_crowd_mochi:'assets/art/story/cs_pup_crowd_mochi.webp',
+  cs_pup_mochi_mint_trapped:'assets/art/story/cs_pup_mochi_mint_trapped.webp',
+  cs_pup_mochi_cocoa_trapped:'assets/art/story/cs_pup_mochi_cocoa_trapped.webp',
+  cs_pup_mochi_taro_trapped:'assets/art/story/cs_pup_mochi_taro_trapped.webp',
+  cs_pup_mochi_yuzu_trapped:'assets/art/story/cs_pup_mochi_yuzu_trapped.webp',
+  cs_pup_mochi_sesame_trapped:'assets/art/story/cs_pup_mochi_sesame_trapped.webp',
+  cs_pup_mochi_mint_free:'assets/art/story/cs_pup_mochi_mint_free.webp',
+  cs_pup_mochi_cocoa_free:'assets/art/story/cs_pup_mochi_cocoa_free.webp',
+  cs_pup_mochi_taro_free:'assets/art/story/cs_pup_mochi_taro_free.webp',
+  cs_pup_mochi_yuzu_free:'assets/art/story/cs_pup_mochi_yuzu_free.webp',
+  cs_pup_mochi_sesame_free:'assets/art/story/cs_pup_mochi_sesame_free.webp',
+  cs_fx_flash:'assets/art/story/cs_fx_flash.webp',
   reveal_theater:'assets/art/mobile_ui_789/reveal_theater.webp',
   lb_dialog_speech:'assets/art/lobby/lb_dialog_speech.webp',lb_dialog_thought:'assets/art/lobby/lb_dialog_thought.webp',
   ruby_comic_s1_1:'assets/art/ruby_comic/ruby_comic_s1_1.webp',ruby_comic_s1_2:'assets/art/ruby_comic/ruby_comic_s1_2.webp',ruby_comic_s1_3:'assets/art/ruby_comic/ruby_comic_s1_3.webp',ruby_comic_s2_1:'assets/art/ruby_comic/ruby_comic_s2_1.webp',ruby_comic_s2_2:'assets/art/ruby_comic/ruby_comic_s2_2.webp',ruby_comic_s2_3:'assets/art/ruby_comic/ruby_comic_s2_3.webp',ruby_comic_s3_1:'assets/art/ruby_comic/ruby_comic_s3_1.webp',ruby_comic_s3_2:'assets/art/ruby_comic/ruby_comic_s3_2.webp',ruby_comic_s3_3:'assets/art/ruby_comic/ruby_comic_s3_3.webp',ruby_comic_s4_1:'assets/art/ruby_comic/ruby_comic_s4_1.webp',ruby_comic_s4_2:'assets/art/ruby_comic/ruby_comic_s4_2.webp',ruby_comic_s4_3:'assets/art/ruby_comic/ruby_comic_s4_3.webp',ruby_comic_s5_1:'assets/art/ruby_comic/ruby_comic_s5_1.webp',ruby_comic_s5_2:'assets/art/ruby_comic/ruby_comic_s5_2.webp',ruby_comic_s5_3:'assets/art/ruby_comic/ruby_comic_s5_3.webp',
@@ -2691,6 +2787,16 @@ const ASSET_SHEETS = {
 // v6.60.3 build-path pose sheets are packed at half size; scale them back to the run sheet's on-screen size
 const BP_POSE_SCALE={char_cocoa_titan_slam:1/.74,char_cocoa_titan_hop:1/.76,char_cocoa_titan_charge:1/.8,char_cocoa_titan_walk:1/.88,char_cocoa_titan_colossus:1/.8,char_cocoa_fire_jab:1/.76,char_cocoa_fire_fin:1/.72,char_cocoa_rocket:1/.7,char_cocoa_dash_leap:1/.78,char_cocoa_dash_jab:1/.8,char_cocoa_phantom:1/.62,char_cocoa_hurt:1/.92,char_cocoa_victory:1/.82,char_mint_lance_charged:1/.66};
 const ASSET_FX = {
+  // v8.0.2 ใบ 45 Motion Comic FX (โหลดทีละฉาก)
+  cs_fx_speedlines:{url:'assets/art/story/cs_fx_speedlines.webp',fw:540,fh:960,frames:4,rate:12,anchor:'center',add:true},
+  cs_fx_transform:{url:'assets/art/story/cs_fx_transform.webp',fw:384,fh:384,frames:8,rate:12,anchor:'center',add:true},
+  cs_fx_seed_glow:{url:'assets/art/story/cs_fx_seed_glow.webp',fw:192,fh:192,frames:6,rate:12,anchor:'center',add:true},
+  cs_fx_flavor_ribbon:{url:'assets/art/story/cs_fx_flavor_ribbon.webp',fw:512,fh:128,frames:6,rate:12,anchor:'center',add:true},
+  cs_fx_crack:{url:'assets/art/story/cs_fx_crack.webp',fw:540,fh:300,frames:5,rate:12,anchor:'center'},
+  cs_fx_dust:{url:'assets/art/story/cs_fx_dust.webp',fw:256,fh:128,frames:6,rate:12,anchor:'center'},
+  cs_fx_frost_shatter:{url:'assets/art/story/cs_fx_frost_shatter.webp',fw:384,fh:384,frames:6,rate:12,anchor:'center'},
+  cs_fx_curse_smoke:{url:'assets/art/story/cs_fx_curse_smoke.webp',fw:384,fh:384,frames:6,rate:12,anchor:'center'},
+  cs_fx_sparkle:{url:'assets/art/story/cs_fx_sparkle.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center',add:true},
   fx_mint_dash_shard:{url:'assets/art/mint_winter/fx_mint_dash_shard.webp',fw:128,fh:128,frames:4,rate:16,anchor:'center',loop:true},
   fx_mint_snowstorm:{url:'assets/art/mint_winter/fx_mint_snowstorm.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
   // v6.60.3 Build path art (assets/art/bp_fx · scripts/pack-build-path-art.py): luminance-alpha, NORMAL blend
@@ -3397,12 +3503,12 @@ function stageCritical(k,u,ch,endgame){
   const m=/^(?:char|bpx)_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if(k.startsWith('minion_')&&ch!=='yuzu')return false;
   if(!endgame&&['mini_jelly_animated','feast_target_animated'].includes(k))return false;
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
-const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig|forge_ui|mobile_ui_789)\/|incoming\/|character_cards\/|ui\/temple\/)/;
+const MENU_ONLY_RE=/assets\/(?:art\/(?:temple|kitchen|delve|dig|forge_ui|mobile_ui_789|story)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('minion_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -6897,6 +7003,74 @@ const RUBY_STORYBOOK=[
     {art:'ruby_comic_s5_3',text:'Let’s cut this root together. Then we follow it — all the way to the Crown.',mood:'happy'}
   ]}
 ];
+// v8.0.2 ใบ 45 Motion Comic: ฉากแยกเลเยอร์ขยับได้ · พิกัดอ้างอิงจอ 360×780 (เหมือนภาพตรวจของฝั่งอาร์ต) · เลเยอร์ [key,x,y,กว้าง,สูง,{at,out,to,ms,ease,bob,glow,rot,sq,fps,loop,fr,a,fade}] · ภาพโหลดทีละฉาก เล่นจบคืน texture
+const MC_PANTRY=['cs_s01_far_pantry','cs_s01_mid_pantry','cs_s01_fg_pantry'],MC_NEST=['cs_s01_far_nest','cs_s01_mid_nest','cs_s01_fg_nest'],MC_ROOT=['cs_s01_far_root_floor','cs_s01_mid_root_floor','cs_s01_fg_root_floor'],MC_CITY=['cs_s00_far_city','cs_s00_mid_city','cs_s00_fg_city'];
+const mcHero=(bg,h,card,name,line)=>({title:'A FRIEND RETURNS',shots:[
+  {bg:[bg],zoom:[1,1.07],cap:'A cursed friend is trapped here, drained of flavor…',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240,{bob:3}]]},
+  {bg:[bg],zoom:[1.07,1.1],flash:[1300,0xffd6e8],cap:'The Heart Seed glows in Strawberry’s hands.',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240],['cs_fx_seed_glow',180,250,150,150,{fps:10}],['cs_pup_seed_wake',180,250,70,105,{glow:1}]]},
+  {bg:[bg],zoom:[1.1,1.04],shake:[300,350,.008],cap:'The curse breaks!',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240,{out:450}],['cs_pup_mochi_'+h+'_free',180,400,170,170,{at:450,out:1100}],['cs_fx_curse_smoke',180,360,300,300,{fps:10,loop:false}],['cs_fx_transform',180,360,340,340,{fps:12,loop:false,at:200}],[card,180,340,230,320,{at:1100,fade:420}]]},
+  {bg:[bg],zoom:[1.04,1],cap:line,L:[[card,180,330,240,330,{bob:6}],['cs_fx_sparkle',90,230,70,70,{fps:9}],['cs_fx_sparkle',275,290,55,55,{fps:9,fr:3}]]}]});
+const MOTION_COMICS={
+  s00:{title:'LONG AGO',shots:[
+    {bg:MC_CITY,pan:[-28,28],cap:'Long ago, Mochitopia was a kingdom of people — and every home was full of flavor.',L:[['cs_pup_crowd_people',180,420,330,170]]},
+    {bg:['cs_s00_far_tree','cs_s00_mid_tree','cs_s00_fg_tree'],zoom:[1,1.12],cap:'The First Planter set a Crown on the First Tree… and the Crown grew hungry.',L:[['cs_pup_planter_crown',180,400,250,250],['cs_pup_crown_glow',182,262,120,95,{at:900,glow:1}]]},
+    {bg:MC_CITY,zoom:[1.03,1.09],flash:[750,0x9b5cff],cap:'In one night, everyone became mochi — and the Crown began to eat their flavor.',L:[['cs_pup_crowd_people',180,420,330,170,{out:800}],['cs_pup_crowd_mochi',180,430,330,150,{at:800}],['cs_fx_curse_smoke',180,350,330,330,{fps:9,loop:false,at:450}],['cs_fx_flavor_ribbon',185,230,330,100,{fps:10,at:900,to:[185,120],ms:2200}]]}]},
+  s01:{title:'THE HEART SEED',shots:[
+    {bg:MC_PANTRY,zoom:[1.015,1.05],shake:[950,650,.012],cap:'Hundreds of years later, the starving Hunger’s roots crack the pantry floor…',L:[['cs_pup_root_tip',230,445,130,160,{at:350,to:[230,425],ms:900}],['cs_pup_mochi_berry_idle',145,350,150,150],['cs_fx_crack',180,465,320,180,{fps:7,loop:false,at:900,hold:1}]]},
+    {bg:['cs_s01_far_shaft'],scroll:1,ms:2400,cap:'…and a little strawberry mochi falls into the dark!',L:[['cs_fx_speedlines',180,280,360,640,{fps:14}],['cs_pup_mochi_berry_fall',180,80,135,165,{to:[180,430],ms:2300,ease:'Sine.easeIn'}]]},
+    {bg:MC_NEST,zoom:[1,1.04],shake:[420,250,.008],cap:'She lands in a sour ant nest. Blank, flavorless mochi creep toward a hiding jam spirit.',L:[['cs_pup_ruby_hide',280,360,110,120,{bob:3}],['cs_pup_blank_mochi_walk',40,420,80,80,{to:[80,420],ms:2600}],['cs_pup_blank_mochi_leap',100,435,75,75,{to:[140,435],ms:2600}],['cs_pup_mochi_berry_scared',195,230,140,150,{to:[195,385],ms:420,ease:'Quad.easeIn',sq:420}],['cs_fx_dust',190,465,235,118,{fps:12,loop:false,at:420}]]},
+    {bg:MC_ROOT,zoom:[1,1.08],cap:'Among the old roots, a single seed is sleeping.',L:[['cs_pup_mochi_berry_reach',115,350,230,180,{to:[140,350],ms:2400}],['cs_pup_seed_sleep',265,402,75,100,{glow:1}]]},
+    {bg:MC_ROOT,zoom:[1.08,1.12],flash:[1500,0xffd6e8],cap:'The Heart Seed wakes at her touch…',L:[['cs_pup_mochi_berry_reach',140,350,230,180],['cs_fx_seed_glow',265,382,175,175,{fps:10}],['cs_pup_seed_wake',265,382,85,130,{glow:1}]]},
+    {bg:MC_ROOT,zoom:[1.12,1.04],shake:[420,420,.012],cap:'…and the curse breaks. Strawberry is a person again!',L:[['cs_pup_mochi_berry_reach',180,345,230,280,{out:560}],['cs_pup_berry_land',180,345,230,280,{at:560,sq:560}],['cs_fx_transform',180,330,355,355,{fps:12,loop:false}]]},
+    {bg:MC_NEST,zoom:[1.1,1],cap:'“I’m Ruby, Grandma’s jam spirit! That seed can free everyone. Let’s go!”',L:[['cs_pup_berry_hero',170,310,230,330],['ruby_talk_proud',290,320,105,110,{bob:5}],['cs_fx_sparkle',70,220,75,75,{fps:9}]]}]},
+  s02:{title:'GRANDMA’S JAM JAR',shots:[
+    {bg:['cs_s02_far_drains','cs_s02_mid_drains'],pan:[-26,26],cap:RUBY_STORYBOOK[1].pages[0].text,L:[['cs_s02_prop_jam_jar',185,355,180,200,{at:600,fade:500}]]},
+    {bg:['cs_s02_far_drains','cs_s02_mid_drains'],zoom:[1.06,1.18],cap:RUBY_STORYBOOK[1].pages[1].text,L:[['cs_s02_prop_jam_jar',185,355,200,220],['cs_s02_prop_recipe_rolled',245,300,100,100,{bob:3}]]},
+    {bg:['cs_s02_far_drains','cs_s02_mid_drains'],zoom:[1.18,1.12],cap:RUBY_STORYBOOK[1].pages[2].text,L:[['cs_s02_prop_recipe_open',180,340,250,260,{fade:520}],['cs_fx_sparkle',180,230,80,80,{fps:9}],['cs_fx_sparkle',105,340,60,60,{fps:9,fr:3,at:400}]]}]},
+  s03:{title:'THE STOLEN FLAVOR',shots:[
+    {bg:['cs_s03_far_furnace'],zoom:[1,1.05],shake:[600,500,.004],cap:RUBY_STORYBOOK[2].pages[0].text,L:[['cs_s03_prop_gear',95,215,150,150,{rot:120}],['cs_s03_prop_gear',282,470,115,115,{rot:-160}]]},
+    {bg:['cs_s03_far_furnace'],zoom:[1.05,1.14],cap:RUBY_STORYBOOK[2].pages[1].text,L:[['cs_s03_chr_prisoner',180,370,200,230,{bob:2}],['cs_fx_flavor_ribbon',180,250,330,100,{fps:10,to:[180,150],ms:2600}]]},
+    {bg:['cs_s03_far_furnace'],zoom:[1.14,1.06],cap:RUBY_STORYBOOK[2].pages[2].text,L:[['cs_s03_chr_prisoner',180,370,200,230],['cs_fx_sparkle',115,280,70,70,{fps:9}],['cs_fx_sparkle',250,250,60,60,{fps:9,fr:2}]]}]},
+  s04:{title:'A VOICE IN THE ICE',shots:[
+    {bg:['cs_s04_far_prison','cs_s04_mid_prison'],pan:[-28,28],cap:RUBY_STORYBOOK[3].pages[0].text,L:[]},
+    {bg:['cs_s04_far_prison','cs_s04_mid_prison'],zoom:[1.04,1.14],cap:RUBY_STORYBOOK[3].pages[1].text,L:[['cs_pup_grandma_mochi_frozen',180,340,230,330,{glow:1}],['cs_pup_ruby_hide',290,430,105,110,{bob:3}]]},
+    {bg:['cs_s04_far_prison','cs_s04_mid_prison'],zoom:[1.14,1.06],shake:[250,300,.007],cap:RUBY_STORYBOOK[3].pages[2].text,L:[['cs_pup_grandma_mochi_frozen',180,340,230,330,{glow:1}],['cs_fx_frost_shatter',80,370,210,210,{fps:11,loop:false}],['cs_fx_frost_shatter',282,385,190,190,{fps:11,loop:false,at:350}]]}]},
+  s05:{title:'THE CROWN OVEN',shots:[
+    {bg:['cs_s05_far_oven'],zoom:[1,1.1],cap:RUBY_STORYBOOK[4].pages[0].text,L:[]},
+    {bg:['cs_s05_far_oven'],zoom:[1.1,1.14],shake:[700,500,.006],cap:RUBY_STORYBOOK[4].pages[1].text,L:[['cs_pup_root_tip',180,320,170,190,{to:[180,290],ms:1200}],['cs_fx_flavor_ribbon',180,440,330,100,{fps:10,to:[180,340],ms:2600}]]},
+    {bg:['cs_s05_far_oven'],zoom:[1.14,1],cap:RUBY_STORYBOOK[4].pages[2].text,L:[['cs_s05_chr_berry_ruby_back',180,430,280,270]]}]},
+  s06:mcHero('cs_s06_far_entrance','mint','card_mint','Mint','Mint, the village healer, is a person again — and her frost can cool the Chili Engine!'),
+  s07:mcHero('cs_s07_far_canopy','cocoa','card_cocoa','Cocoa','Cocoa, the old gate guard, is back — ready to punch through the thick roots!'),
+  s08:mcHero('cs_s08_far_hive','taro','card_taro','Taro','Taro, the kingdom’s mapmaker, is free — his lightning leaps from hornet to hornet!'),
+  s09:mcHero('cs_s09_far_ash','yuzu','card_yuzu','Yuzu','Yuzu, the orange grower, is herself again — with her little Yuzlings close by!'),
+  s11:{title:'CHAPTER 1 COMPLETE',shots:[
+    {bg:['cs_s11_far_oven_cold'],zoom:[1,1.06],cap:'The Crown Oven goes cold. The wounded root tears itself free…',L:[['cs_pup_root_wound',180,420,160,150,{at:500,to:[180,560],ms:900,ease:'Quad.easeIn'}],['cs_fx_dust',180,470,235,118,{fps:12,loop:false,at:900}]]},
+    {bg:['cs_s11_far_crosssection'],zoom:[1.04,1.1],cap:'…and burrows down through the earth, toward the garden below.',L:[['cs_pup_root_wound',180,230,120,110,{to:[180,520],ms:2600}]]}]},
+  s12:{title:'CHAPTER 2',shots:[
+    {bg:['cs_s12_far_garden','cs_s12_mid_garden','cs_s12_fg_garden'],pan:[-30,30],cap:'The wounded root fled into the Fermented Canopy…',L:[]},
+    {bg:['cs_s12_far_garden','cs_s12_mid_garden'],zoom:[1.02,1.12],cap:'…and there it grows the Hunger a new body from stolen memories.',L:[['cs_s12_chr_hunger',180,300,330,390,{fade:900,bob:3}],['cs_fx_flavor_ribbon',180,470,330,100,{fps:10,to:[180,340],ms:2600}]]}]},
+  s13:{title:'CHAPTER 2 COMPLETE',shots:[
+    {bg:['cs_s13_far_throne'],zoom:[1,1.05],cap:'The Root Throne falls. Freed memories drift home like tiny lights.',L:[['cs_fx_sparkle',100,430,70,70,{fps:9,to:[100,200],ms:2800}],['cs_fx_sparkle',260,400,60,60,{fps:9,fr:2,to:[260,170],ms:2800,at:300}],['cs_fx_sparkle',180,460,80,80,{fps:9,fr:4,to:[180,240],ms:2800,at:600}]]},
+    {bg:['cs_s13_far_throne'],zoom:[1.12,1],flash:[1000,0xffd166],cap:'The Heart Seed blazes and points the way — toward the First Tree.',L:[['cs_s13_chr_berry_raise',180,380,230,250],['cs_fx_seed_glow',205,235,170,170,{fps:10}]]}]},
+  s14:{title:'CHAPTER 3',shots:[
+    {bg:['cs_s14_far_field'],pan:[-24,24],cap:'Beyond the garden, the fields are grey. Every flavor here is already gone.',L:[]},
+    {bg:['cs_s14_far_tree'],zoom:[1,1.15],cap:'On the far hill stands the First Tree, black roots climbing its trunk. The Hunger is almost there.',L:[]}]},
+  s15:{title:'MEMORIES IN GLASS',shots:[
+    {bg:['cs_s15_far_glasshall'],zoom:[1,1.04],cap:'Broken mirrors hold the kingdom’s memories — people laughing, before the Crown.',L:[['cs_s15_prop_memory_town',75,210,120,150,{bob:4,rot:4}],['cs_s15_prop_memory_grandma',280,205,120,155,{bob:5,rot:-4}],['cs_s15_prop_memory_family',180,330,190,200,{bob:3}]]},
+    {bg:['cs_s15_far_glasshall'],zoom:[1.06,1.16],cap:'One mirror shows a pink-haired girl with her family. Strawberry remembers.',L:[['cs_s15_prop_memory_family',180,315,220,232,{bob:2}],['cs_pup_berry_look',85,440,135,180]]}]},
+  s16:{title:'THE FIRST TREE',shots:[
+    {bg:['cs_s16_far_clearing'],zoom:[1,1.08],cap:'The First Planter kneels and lifts the Crown from the First Tree.',L:[['cs_pup_planter_kneel',180,390,260,260],['cs_pup_crown_glow',190,255,120,95,{to:[190,205],ms:2400,glow:1}]]},
+    {bg:['cs_s16_far_clearing'],zoom:[1.08,1.1],shake:[650,520,.016],flash:[700,0xffffff],cap:'The Crown cracks apart!',L:[['cs_pup_crown_crack',180,280,170,130]]},
+    {bg:['cs_s16_far_clearing'],zoom:[1,1.12],cap:'Strawberry plants the Heart Seed at the roots.',L:[['cs_s16_chr_berry_plant',180,400,250,240],['cs_pup_seed_wake',212,470,48,72,{at:900,glow:1}]]},
+    {bg:['cs_s16_far_clearing'],zoom:[1.04,1.08],cap:'A new tree grows, and the stolen flavor rushes back to every home.',L:[['cs_s16_prop_sprout',180,470,100,120,{out:700}],['cs_s16_prop_sapling',180,450,150,170,{at:700,out:1400,sq:700}],['cs_s16_prop_young_tree',180,410,220,250,{at:1400,sq:1400}],['cs_fx_flavor_ribbon',180,330,330,100,{fps:10,at:1400}],['cs_fx_flavor_ribbon',180,250,300,90,{fps:10,fr:3,at:1700}]]},
+    {bg:MC_CITY,zoom:[1.02,1.08],cap:'One by one, the people of Mochitopia become themselves again.',L:[['cs_pup_crowd_mochi',180,430,330,150,{out:1250}],['cs_pup_crowd_people',180,420,330,170,{at:1250}],['cs_fx_transform',90,405,160,160,{fps:12,loop:false,at:250}],['cs_fx_transform',180,385,170,170,{fps:12,loop:false,at:650}],['cs_fx_transform',270,405,160,160,{fps:12,loop:false,at:1050}]]},
+    {bg:['cs_s16_far_clearing'],zoom:[1.08,1],cap:'Grandma is free. Ruby hugs her and will not let go.',L:[['cs_s16_prop_young_tree',265,240,190,290],['cs_pup_planter_old',290,360,110,180],['cs_s16_chr_grandma_ruby_hug',145,365,250,310,{bob:2}]]},
+    {bg:['cs_s16_far_hunger_sleep'],zoom:[1,1.06],cap:'Deep below, the Hunger curls up and falls asleep… for now.',L:[]}]},
+  s17:{title:'THE DELVE',shots:[
+    {bg:['cs_s16_far_hunger_sleep'],zoom:[1.04,1.1],shake:[1700,500,.01],cap:'In the dark beneath Mochitopia, the Hunger opens one eye.',L:[['cs_s17_prop_eyes_half',180,330,300,62,{at:400,out:1700,fade:500}],['cs_s17_prop_eyes_open',180,330,320,85,{at:1700,fade:300,glow:1}]]},
+    {bg:['cs_s17_far_delve'],zoom:[1,1.12],cap:'The way down is open. Together, the friends step into the Delve.',L:[['cs_s17_chr_team_back',180,470,345,265]]}]}
+};
+const MC_HERO_SCENE={mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09'},MC_STAGE_STORY=[['s00','s01'],['s02'],['s03'],['s04'],['s05']],MC_AFTER_STAGE={4:'s11',9:'s13',14:'s16'};
 const WAVE_OBJECTIVES = {
   survive:{emoji:'⏳',name:'Survive the Swarm',desc:'Survive until time runs out'},
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
@@ -7612,7 +7786,7 @@ class Game extends Phaser.Scene {
       if(this.state==='epilogue'){ for(const z of (this._epilogueBtns||[])){const q=10;if(p.x>=z.x-q&&p.x<=z.x+z.w+q&&p.y>=z.y-q&&p.y<=z.y+z.h+q){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // หน้าสรุปเรื่องราว — ไปต่อได้เฉพาะกดปุ่ม
       if(this.state==='summary'){ for(const z of (this._summaryBtns||[])){const q=10;if(p.x>=z.x-q&&p.x<=z.x+z.w+q&&p.y>=z.y-q&&p.y<=z.y+z.h+q){ Sfx.uiAction('click',()=>z.fn()); return; } } return; }   // ปิดได้เฉพาะกดปุ่ม (กันเผลอแตะแล้วหน้าสรุปหายไว)
       if(this.state==='rewardChoice'){for(const z of (this._rewardBtns||[])){if(p.x>=z.x&&p.x<=z.x+z.w&&p.y>=z.y&&p.y<=z.y+z.h){Sfx.uiAction('click',()=>z.fn());return;}}return;}
-      if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(); return; }
+      if(this.state==='cinematic'&&this._finishStoryCutscene){ this._finishStoryCutscene(p); return; }
       if(this.state==='startskill'){ this.pickStartingSkillAt(p.x,p.y); return; }
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
@@ -8826,7 +9000,8 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ if(this._chestOpen||this._rubyTalk?.active)return; this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._jrSkin=false; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
+  buildMenuScreen(){ if(this._chestOpen||this._rubyTalk?.active)return; this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._jrSkin=false; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s==='atlas'&&this.state==='menu'&&this.mcGate?.('s17',()=>this.buildMenuScreen()))return;   // v8.0.2 Motion Comic ก่อน Delve ครั้งแรก
+    if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
     // v6.49.5: เคยโหลดครบแล้ว (หรือกำลังโหลดเบื้องหลัง) = ไม่บล็อกหน้าเมนู · preloadAll จบแล้ว rebuild เอง
     /* v7.9.59 เจ้าของ: เปลี่ยนหน้าแล้วขึ้นจอ Loading = ติดขัด → ไม่บังจอแล้ว: รอเงียบ ๆ ≤300ms ถ้ายังไม่เสร็จก็วาดหน้าด้วยภาพสำรองก่อน แล้ววาดใหม่เมื่อภาพมาครบ */
@@ -10040,7 +10215,7 @@ class Game extends Phaser.Scene {
     this.hubText(w/2,h-Math.max(18,h*.03),'v'+GAME_VERSION,11,'#d9cce6',.5);
     this._zone(0,0,w,h,()=>{ if(this._titleGo)return; this._titleGo=true; Sfx.ui?.();
       if(Save.data.tutorialDone&&this.bookReady()&&this.hubMotionAllowed()&&this.bookOpening){ const tut=!Save.data.tutorialDone; this.bookOpening(()=>{ this._titleGo=false; if(this.state!=='menu')return; this.menuScreen='hub'; if(tut){ this.startChapterTutorial(); return; } this.buildMenuScreen(); },!tut); return; }   // v7.9.68 เปิดหนังสือช้า ๆ ก่อนเข้า Lobby / บทสอน
-      if(!Save.data.tutorialDone){ this._titleGo=false; this.menuScreen='hub'; this.startChapterTutorial(); return; }   // v7.9.66 ผู้เล่นใหม่: แตะ → เข้าบทสอนเลย
+      if(!Save.data.tutorialDone){ this._titleGo=false; this.menuScreen='hub'; if(this.mcGateList?.(['s00','s01'],()=>this.startChapterTutorial()))return; this.startChapterTutorial(); return; }   // v7.9.66 ผู้เล่นใหม่: แตะ → เข้าบทสอนเลย
       this.menuScreen='hub'; this.buildMenuScreen(); this._titleGo=false;
       });
     const z=this.tapZones[this.tapZones.length-1]; z.tag='title_start'; z.noBounce=true; }
@@ -10297,7 +10472,7 @@ class Game extends Phaser.Scene {
   startStoryStage(idx){
     if(!Save.data.tutorialDone){this.startChapterTutorial();return;}
     // Mint is an optional ally; Stage 3 accepts the player's selected hero.   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
-    { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===2?{idx:2,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
+    { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===2?{idx:2,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ if(typeof MC_HERO_SCENE!=='undefined'&&this.mcGate?.(MC_HERO_SCENE[hi.id],()=>this.startStoryStage(idx)))return; d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
     if(this.rubyStageStory(idx,()=>this.startStoryStage(idx)))return;
     if(!this._rubyEntry&&isStageReady(idx))this.rubyEntryCurtain?.(idx);
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);
@@ -12143,10 +12318,74 @@ class Game extends Phaser.Scene {
     done();
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
+  /* v8.0.2 ใบ 45 Motion Comic: เล่นฉากเรื่องราวแบบเลเยอร์ (ฉาก far/mid/fg ขยับ zoom/pan + หุ่น + FX) บน storyLayer · โหลดภาพทีละฉาก เล่นจบลบ texture cs_ · ภาพไม่มา = คืน false ให้ใช้ของเดิม */
+  mcScene(id){ return typeof MOTION_COMICS!=='undefined'?MOTION_COMICS[id]||null:null; }
+  mcKeys(sc){ const s=new Set(); for(const sh of sc.shots){ (sh.bg||[]).forEach(k=>s.add(k)); (sh.L||[]).forEach(l=>s.add(l[0])); } return [...s]; }
+  mcSeen(id){ return !!((Save.data||{}).mcSeen||{})[id]; }
+  mcStory(){ return !this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._inTutorial&&!this._pinnacleRun; }
+  mcGate(id,cont){ const d=Save.data||{}; if(!id||!this.mcScene(id)||!this.add||!this.storyLayer||d.settings?.noRuby||this.mcSeen(id)||(this._mcFail||{})[id])return false;
+    if(this._mc&&!this._mc.done)return true; this.playMotionComic(id,ok=>cont&&cont(ok)); return true; }
+  mcGateList(ids,cont){ let ok=true,started=false; const step=i=>{ for(;i<(ids||[]).length;i++){ if(this.mcGate(ids[i],r=>{ ok=ok&&r; step(i+1); })){ started=true; return; } } if(started&&cont)cont(ok); }; step(0); return started; }
+  playMotionComic(id,done){ const sc=this.mcScene(id),layer=this.storyLayer; if(!sc||!layer){ done&&done(false); return; }
+    const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,keys=this.mcKeys(sc); if(wasPlay)this.physics.pause(); this.state='cinematic';
+    layer.removeAll(true); layer.setVisible(true);
+    const mc={id,sc,layer,i:-1,objs:[],tw:[],ev:[],done:false,ready:false,shotAt:0,red:!(this.hubMotionAllowed?this.hubMotionAllowed():true)}; this._mc=mc;
+    const veil=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0),lt=this.add.text(W/2,H/2,'✦ Loading story…\nTap to skip',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166',align:'center',lineSpacing:6}).setOrigin(.5).setAlpha(0);
+    layer.add([veil,lt]); this.tweens.add({targets:lt,alpha:.85,duration:500,delay:700});
+    const drop=()=>keys.filter(k=>k.startsWith('cs_')&&this.textures.exists(k)).forEach(k=>{ if(this.anims.exists(k))this.anims.remove(k); this.textures.remove(k); });
+    let to=null; const finish=seen=>{ if(mc.done)return; mc.done=true; to&&to.remove(false); this.mcClearShot(mc); this._finishStoryCutscene=null; layer.removeAll(true); layer.setVisible(false);
+      const d=Save.data; if(seen){ (d.mcSeen||(d.mcSeen={}))[id]=1; if(id==='s01'){ d.storyIntroSeen=true; (d.rubyStorybook||(d.rubyStorybook={}))[0]=3; (d.rubyStory||(d.rubyStory={}))[0]=1; } Save.save(); } else (this._mcFail||(this._mcFail={}))[id]=1;
+      drop(); if(this._mc===mc)this._mc=null; if(this.state==='cinematic')this.state=prev; if(wasPlay)this.physics.resume(); done&&done(!!seen); };
+    mc.finish=finish; this._finishStoryCutscene=p=>this.mcTap(mc,p);
+    to=this.time.delayedCall(12000,()=>{ if(!mc.ready)finish(false); });
+    this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ finish(false); return; } to.remove(false); mc.ready=true; this.mcShot(mc,0); },{all:true,quiet:true,fx:true});
+  }
+  mcTap(mc,p){ if(mc.done)return; if(!mc.ready){ mc.finish(false); return; } const s=mc.skip;
+    if(p&&s&&p.x>=s.x&&p.x<=s.x+s.w&&p.y>=s.y&&p.y<=s.y+s.h){ Sfx.select&&Sfx.select(); mc.finish(true); return; }
+    if(Date.now()-mc.shotAt<350)return; this.mcNext(mc); }
+  mcNext(mc){ if(mc.done)return; if(mc.i+1>=mc.sc.shots.length){ mc.finish(true); return; } this.mcShot(mc,mc.i+1); }
+  mcClearShot(mc){ mc.tw.forEach(t=>t&&t.remove&&t.remove()); mc.ev.forEach(e=>e&&e.remove&&e.remove(false)); mc.objs.forEach(o=>o&&o.active&&o.destroy()); mc.tw=[]; mc.ev=[]; mc.objs=[]; mc.layer.removeAll(true); }
+  mcShot(mc,i){ this.mcClearShot(mc); const sc=mc.sc,sh=sc.shots[i],n=sc.shots.length,W=this.W,H=this.H,L=mc.layer,red=mc.red,ms=sh.ms||3200;
+    mc.i=i; mc.shotAt=Date.now(); const k=Math.min(W/360,H/780),X=x=>W/2+(x-180)*k,Y=y=>H/2+(y-390)*k;
+    const add=o=>{ L.add(o); mc.objs.push(o); return o; },at=(t,fn)=>{ if(!t){ fn(); return; } mc.ev.push(this.time.delayedCall(t,fn)); };
+    const tw=(c,loop)=>{ if(red){ if(loop)return null; for(const p in c)if(!['targets','duration','delay','ease','yoyo','repeat','onComplete','onUpdate'].includes(p))[].concat(c.targets).forEach(t=>{ t[p]=c[p]; }); c.onComplete&&c.onComplete(); return null; } const t=this.tweens.add(c); mc.tw.push(t); return t; };
+    add(this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0));
+    const z=sh.zoom||[1,1],pan=sh.pan||[0,0],bgs=sh.bg||[],par=[.35,.7,1.15],dur=ms+1200;
+    bgs.forEach((key,j)=>{ const im=add(this.add.image(W/2,H/2,key)),p=bgs.length>1?(par[j]??1):1;
+      if(sh.scroll){ im.setOrigin(.5,0).setScale(Math.max(W/im.width,H/im.height)); im.y=0; tw({targets:im,y:Math.min(0,H-im.displayHeight),duration:ms,ease:'Sine.easeIn'}); return; }
+      const mp=Math.max(Math.abs(pan[0]),Math.abs(pan[1]))*k*p,f=Math.max((W+mp*2+4)/im.width,(H+4)/im.height),zs=a=>f*(1+(a-1)*p);
+      im.setScale(zs(z[0])); im.x=W/2+pan[0]*k*p; tw({targets:im,scale:zs(z[1]),x:W/2+pan[1]*k*p,duration:dur,ease:'Sine.inOut'}); });
+    for(const l of sh.L||[]){ const [key,x,y,w,h,o={}]=l,fx=ASSET_FX[key]; if(!this.textures.exists(key))continue;
+      const im=add(fx?this.add.sprite(X(x),Y(y),key,o.fr||0):this.add.image(X(x),Y(y),key)),s=Math.min(w*k/im.width,h*k/im.height),a=o.a??1; im.setScale(s).setAlpha(0); if(fx&&fx.add)im.setBlendMode(Phaser.BlendModes.ADD);
+      const show=()=>{ if(!im.active)return; tw({targets:im,alpha:a,duration:o.fade||(o.at?160:260)});
+        if(fx){ const nf=fx.frames,loop=o.loop!==false; let f=o.fr||0; if(red){ if(!loop)im.setFrame(nf-1); if(!loop&&!o.hold)im.setAlpha(0); }
+          else { const ev=this.time.addEvent({delay:1000/(o.fps||fx.rate||12),loop:true,callback:()=>{ if(!im.active){ ev.remove(false); return; } f++; if(f>=nf){ if(loop)f=0; else { ev.remove(false); if(!o.hold)tw({targets:im,alpha:0,duration:240}); return; } } im.setFrame(f); }}); mc.ev.push(ev); } }
+        if(o.to)tw({targets:im,x:X(o.to[0]),y:Y(o.to[1]),duration:o.ms||ms,ease:o.ease||'Sine.inOut'});
+        if(o.bob)tw({targets:im,y:im.y-o.bob*k,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'},true);
+        if(o.glow)tw({targets:im,scale:s*1.05,duration:850,yoyo:true,repeat:-1,ease:'Sine.inOut'},true);
+        if(o.rot){ if(Math.abs(o.rot)<=15){ im.angle=-o.rot/2; tw({targets:im,angle:o.rot/2,duration:1600,yoyo:true,repeat:-1,ease:'Sine.inOut'},true); } else tw({targets:im,angle:o.rot,duration:dur,ease:'Linear'}); } };
+      at(o.at||0,show);
+      if(o.sq!=null)at(o.sq,()=>{ if(im.active)tw({targets:im,scaleX:s*1.14,scaleY:s*.82,duration:90,yoyo:true,ease:'Quad.easeOut',onComplete:()=>{ if(im.active)im.setScale(s); }},true); });
+      if(o.out)at(o.out,()=>{ if(im.active)tw({targets:im,alpha:0,duration:200}); }); }
+    if(sh.shake&&!red)at(sh.shake[0],()=>this.uiCam?.shake(sh.shake[1],sh.shake[2]));
+    if(sh.flash)at(sh.flash[0],()=>{ const r=add(this.add.rectangle(0,0,W,H,sh.flash[1],red?.35:.85).setOrigin(0)); tw({targets:r,alpha:0,duration:520}); });
+    const by=H*.7,band=add(this.add.graphics()); band.fillGradientStyle(0x07040b,0x07040b,0x07040b,0x07040b,0,0,.94,.94); band.fillRect(0,by-40,W,40); band.fillStyle(0x07040b,.94); band.fillRect(0,by,W,H-by); band.lineStyle(2,0xffd166,.7); band.lineBetween(22,by+8,W-22,by+8);
+    const fs=W<380?16:17,kick=add(this.add.text(W/2,by+24,sc.title+'  ·  '+(i+1)+' / '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',letterSpacing:2}).setOrigin(.5));
+    const cap=add(this.add.text(W/2,by+44,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'center',lineSpacing:5,wordWrap:{width:W-44},stroke:'#120a18',strokeThickness:3}).setOrigin(.5,0));
+    const hint=add(this.add.text(W-18,H-16,i+1<n?'Tap ▶':'Tap to continue ▶',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,1).setAlpha(.8));
+    [kick,cap].forEach(t=>t.setAlpha(0)); tw({targets:[kick,cap],alpha:1,duration:380,delay:220}); tw({targets:hint,alpha:.35,duration:700,yoyo:true,repeat:-1},true);
+    const pad=this._pad||14,sw=70,shh=30,sx=W-sw-12,sy=pad+8,sg=add(this.add.graphics()); sg.fillStyle(0x000000,.45); sg.fillRoundedRect(sx,sy,sw,shh,15); sg.lineStyle(2,0xffffff,.7); sg.strokeRoundedRect(sx,sy,sw,shh,15);
+    add(this.add.text(sx+sw/2,sy+shh/2,'Skip ⏭',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(.5)); mc.skip={x:sx-8,y:sy-8,w:sw+16,h:shh+16};
+    at(Math.max(ms+900,2200+(sh.cap||'').length*45),()=>this.mcNext(mc));
+  }
   rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
     if(!entry||d.settings?.noRuby||Number(d.rubyStorybook?.[idx])>=3||this.state!=='menu')return false;
-    if(this._rubyTalk)return true;
-    this.rubyTalk(entry.pages.map(p=>p.text),()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=3;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();this.rubyEntryCurtain?.(idx);if(done)done();},{title:entry.title,pages:entry.pages,storybook:true});return true;
+    if(this._rubyTalk||(this._mc&&!this._mc.done))return true;
+    const mark=()=>{(d.rubyStorybook||(d.rubyStorybook={}))[idx]=3;(d.rubyStory||(d.rubyStory={}))[idx]=1;if(idx===0)d.storyIntroSeen=true;Save.save();},fin=()=>{mark();this.rubyEntryCurtain?.(idx);if(done)done();};
+    const talk=()=>{ this.rubyTalk(entry.pages.map(p=>p.text),fin,{title:entry.title,pages:entry.pages,storybook:true}); };
+    const mcs=typeof MC_STAGE_STORY!=='undefined'?MC_STAGE_STORY[idx]:null;   // v8.0.2 ฉาก Motion Comic แทนหน้าหนังสือ (ภาพไม่มา = หน้าหนังสือเดิม)
+    if(mcs&&this.mcSeen){ if(mcs.every(id=>this.mcSeen(id))){ mark(); return false; } if(this.mcGateList(mcs,ok=>ok?fin():talk()))return true; }
+    talk();return true;
   }
   rubyStoryAt(i){ if(this.recipeMode||this.bossRush||this.riftMode||this._pinnacleRun||this._inTutorial||!RUBY_STORY[i]||!this.time)return; const d=Save.data,st=d.rubyStory||(d.rubyStory={}); if(st[i])return;
     this.time.delayedCall(300,()=>{ if(!this.rubyOn()||this.stageIndex!==i)return; st[i]=1; Save.save(); this.rubySay(RUBY_STORY[i],5600,{face:[1,3,6,10,11,14].includes(i)?'sad':'normal'}); }); }   // v7.9.81 เรื่องของ Ruby ทีละด่าน (ครั้งแรกเท่านั้น)
@@ -13016,7 +13255,8 @@ class Game extends Phaser.Scene {
       const z=this._shz,r=Math.max(360,950-(now-z.t0)*6.5); z.r=r; const g=this._shzG; g.clear(); g.lineStyle(6,0xff4d6d,0.75); g.strokeCircle(z.x,z.y,r); g.lineStyle(2,0xffffff,0.35); g.strokeCircle(z.x,z.y,r-8);
       if(this.dist(p.x,p.y,z.x,z.y)>r){ this._shAcc=(this._shAcc||0)+dt; if(this._shAcc>=0.25){ this._shAcc=0; if(!(p.iframe>0)){ p.hp=Math.max(1,p.hp-p.maxhp*0.015); this.drawBars&&this.drawBars(); } if(now-(this._shMsgAt||0)>3){ this._shMsgAt=now; this.floatText?.(p.x,p.y-60,'⭕ Back inside!',0xff4d6d); } } } } }
   clearDelveMods(){ if(this._shzG){ this._shzG.destroy(); this._shzG=null; } this._shz=null; this._stillT=0; }
-  spawnFinalBoss(){ if(!this.bossRush)this.rubyTip?.('boss',4200);
+  spawnFinalBoss(){ if(this.state==='play'&&this.stageIndex===12&&this.mcStory?.()&&this.mcGate?.('s15',()=>this.spawnFinalBoss()))return;   // v8.0.2 กระจกความทรงจำก่อนบอส C3-3
+    if(!this.bossRush)this.rubyTip?.('boss',4200);
     if(this.state==='levelup'){this._queuedBossIntro='final';return;}
     if(this.state!=='play')return;
     if(this.usesStoryBudget?.()&&this._storyBudget&&!this._storyBudget.bossAdds){this._storyBudget.bossAdds=true;this._storyBudget.done=false;this._storyBudget.quota=this._storyBudget.spawned+[8,12,16][Math.min(2,Math.floor(this.stageIndex/5))];}
@@ -13394,6 +13634,7 @@ class Game extends Phaser.Scene {
     fx.once('destroy',()=>this._summaryGrowthVfx&&this._summaryGrowthVfx.delete(fx));fx.once('animationcomplete',()=>fx.destroy());fx.play(key);
   }
   showStageEpilogue(last){
+    { const id=this.mcStory?.()&&typeof MC_AFTER_STAGE!=='undefined'?MC_AFTER_STAGE[this.stageIndex]:null; if(id&&this.mcGate?.(id,()=>this.showStageEpilogue(last)))return; }   // v8.0.2 Motion Comic จบบท
     if(this.rubyClearStory(last))return;
     const ep=this.riftMode?null:STAGE_EPILOGUE[this.stageIndex];
     if(!ep){this.showStageSummary(last);return;}
@@ -13750,7 +13991,8 @@ class Game extends Phaser.Scene {
     if(T.player&&this.player)T.player(this.player); this.time.delayedCall(4600,()=>{ if(this._runTrait===T&&(this.state==='play'||this.state==='levelup'))this.showBanner(T.emoji+' Run trait: '+T.name,T.desc,2600); }); }   /* v7.8.102 เลื่อน 2.3→4.6s ให้พ้นแบนเนอร์เริ่มด่าน/Replay */
   launchStageLoadout(extraSkillKey=null){const sw=this.signatureWeaponInfo(),basic=this.basicAttackInfo(),extra=extraSkillKey&&SKILLDEFS[extraSkillKey];
     const begin=()=>{this.physics.resume();this.state='play';this._runTrait=null;this.traitTxt?.setVisible(false);this.startStage(this.stageIndex);this.rollRunTrait?.();this.showBanner(sw.emoji+' '+(basic?basic.name:sw.name)+(extra?' + '+extra.emoji+' '+extra.name:''),basic?'Signature Basic Attack · '+this.uniqueInfo().emoji+' Unique ready':'Signature + secondary weapon ready · '+this.uniqueInfo().emoji+' Unique ready',1900);};
-    const launch=()=>{if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The starving Hunger’s roots crack the pantry floor — a cursed strawberry mochi falls, and the sleeping Heart Seed wakes in her hands',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Root Goes Deeper','The wounded root fled into the garden — now it grows the Hunger a new body from stolen memories',begin);}else begin();};
+    const launch=()=>{if(this.mcStory?.()){ if(this.stageIndex===5&&!Save.data.storyCh2Seen&&this.mcGate('s12',ok=>{ if(!ok){launch();return;} Save.data.storyCh2Seen=true;Save.save();begin(); }))return; if(this.stageIndex===10&&this.mcGate('s14',()=>begin()))return; }   // v8.0.2 Motion Comic เปิดบท 2/3
+      if(this.stageIndex===0&&!Save.data.storyIntroSeen){Save.data.storyIntroSeen=true;Save.save();this.playStoryPanel('story_intro_fall','CHAPTER 1 · PROLOGUE','Fall Below the Kitchen','The starving Hunger’s roots crack the pantry floor — a cursed strawberry mochi falls, and the sleeping Heart Seed wakes in her hands',begin);}else if(this.stageIndex===5&&!Save.data.storyCh2Seen){Save.data.storyCh2Seen=true;Save.save();this.playStoryPanel('chapter2_cover','CHAPTER 2 · PROLOGUE','The Root Goes Deeper','The wounded root fled into the garden — now it grows the Hunger a new body from stolen memories',begin);}else begin();};
     // ผู้เล่นใหม่: เข้าเล่นจริงเลย แล้วครูBerryสอนแบบ "Talk + try it + pass to continue"
     // ผู้เล่นใหม่ → เข้า Training Ground (พื้นที่เปล่า) ให้ครูBerryสอนก่อน · ไม่แตะ story intro (เก็บไว้เล่นตอนลงด่าน 1 จริง)
     if(this._forceCoachTutorial||!Save.data.tutorialDone){ this._rubyEntry?.destroy();this._forceCoachTutorial=false; this._inTutorial=true; begin(); this.startCoach(); return; }

@@ -1,6 +1,6 @@
 # 45 — ฉากเล่าเรื่องแบบแยกเลเยอร์ขยับได้ (Story Motion Comic) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่งอาร์ตครบ 3 ชุด (103 PNG32 · รอผูกตัวเล่นเข้าเกม) · เขียน 23 ต.ค. 2026 · เรื่องอ้างอิง `docs/STORY_CANON.md` (ร่าง 2 + ข้อ 7)
+สถานะ: 🟩 ผูกแล้ว v8.0.2 (`playMotionComic`, ข้อมูลฉาก `MOTION_COMICS`, แพ็ก `scripts/pack-story-motion.py` → `assets/art/story/` 50% WebP 4.9 MB, menu-lazy ทีละฉาก) · S10 Sesame ยังไม่ผูก (HEROES_WIP) · รอ QA มือถือ · เขียน 23 ต.ค. 2026 · เรื่องอ้างอิง `docs/STORY_CANON.md` (ร่าง 2 + ข้อ 7)
 ส่งไฟล์ที่ `assets/incoming/story_motion/<ฉาก>/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` (เส้นขอบเข้ม สีสด น่ารัก) · PNG32 พื้นโปร่งใสจริง · **ห้ามมีตัวหนังสือในภาพ** (ข้อความใส่ด้วยโค้ด)
 
