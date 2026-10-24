@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.7, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.8, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.6 — Story shots redone + art order 46 (owner)
+# Latest delivery: v8.0.7 — Clear battle HUD
+
+Arena HUD now groups level/EXP, counters and quick controls on a dark plum/gold header, with a separate wave/objective/progress/bonus card. Wave pips no longer overlap objective text; long text fits narrow phones; seasonal icons share a bounded row. Boss information has its own backing, relic/trait lines move below it. Dash/Unique retain their hit circles/left-hand/size settings and gain solid backing discs; skills share a small tray. Display copy is shorter; gameplay/cooldowns/rewards unchanged. No new art bytes or boot textures. Static production Canvas checks four sizes × five display states, existing controls tests plus npm check/build. Proofs: docs/reviews/combat_hud/. Publication: SESSION_HANDOFF.
+
+# Previous delivery: v8.0.6 — Story shots redone + art order 46 (owner)
 
 Owner on phone: S01 shot 1 cartoon root (cs_pup_root_tip with a mouth) looked silly; S00 shot 3 “In one night…” was daytime with an unexplained rainbow ribbon; S01 nest shot had Ruby and later the seed appear from nowhere. Data only: S00 shot 3 = MC_CITY with new shot fields tint 0x565aa8 + night .38 (mcShot: bg setTint, dark rect after bgs), crown_glow in the sky, curse_smoke ×2, no flavor ribbon, snow motes. S01 shot 1 = berry idle → scared at the shake, crack (hold) + purple curse smoke + purple flash, no root. S01 now 9 shots: land (THUD, blank mochi creeps in) → Ruby slides out from behind a crystal toward the blank mochi → “This way!” Ruby + Strawberry dash into the old roots → faint seed glow first, seed fades in → wake → transform (POP index 7) → Ruby talk. Art order 46 docs/art_orders/46_STORY_SHOT_REDO.md: cs_s01_far_roots_burst, cs_s00_far_city_night, cs_fx_root_burst (6×540) → assets/incoming/story_shot_redo/, awaits art (code notes in the order). Real-browser shots checked, 0 errors.
 

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.6';
+const GAME_VERSION = '8.0.7';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.7',date:'2026-10-24',title:'Cleaner battle screen',items:['Battle information now sits on clear, compact dark panels with gold trim','Wave markers, objectives, progress and bonus rewards have their own rows','Dash and Unique have solid backings so pickups do not hide the controls','Skill icons sit together in a small tray; left-handed controls and button sizes still work']},
   {v:'8.0.6',date:'2026-10-24',title:'Two story shots redone',items:['“In one night…” now happens at night, under the glowing Crown and its purple curse','The pantry floor cracks open with dark smoke instead of the silly root'] },
   {v:'8.0.5',date:'2026-10-24',title:'Smoother movement stick',items:['The movement stick reaches full speed with a shorter drag','The stick now follows your finger, so turning back is instant','Keeping your finger down while a card or story screen closes now moves you right away'] },
   {v:'8.0.4',date:'2026-10-24',title:'Rewatch the story',items:['New 📖 Story tag on the Lobby stage box opens the story so far','Rewatch any scene you have unlocked; new scenes open as you clear stages'] },
@@ -8355,13 +8356,14 @@ class Game extends Phaser.Scene {
   /* ---------- HUD ---------- */
   buildHUD(){
     const pad=14, w=this.W; this._pad=pad; this._barW=w-2*pad;
+    this.controlBase=this.add.graphics().setScrollFactor(1).setDepth(49);
     this.joyBase=this.add.circle(0,0,62,0xffffff,0.10).setScrollFactor(1).setDepth(50).setVisible(false).setStrokeStyle(2,0xffffff,0.25);
     this.joyKnob=this.add.circle(0,0,26,0xffffff,0.22).setScrollFactor(1).setDepth(51).setVisible(false);
 
     // dash button (มุมขวาล่าง) — ปุ่มพุ่งหลบสำหรับเล่นมือเดียว
     const dbX = w - 58, dbY = this.H - 78, dbR = 36;
     this.dashBtn=this.add.circle(dbX,dbY,dbR,COLORS.mint,0.22).setScrollFactor(1).setDepth(50).setStrokeStyle(2.5,COLORS.mint,0.85);
-    this.dashTxt=this.add.text(dbX,dbY,'💨\nDash',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#bff3e8',align:'center'}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
+    this.dashTxt=this.add.text(dbX,dbY,'»\nDASH',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#d7fff1',align:'center',lineSpacing:2}).setOrigin(0.5).setScrollFactor(1).setDepth(51);
     this.dashRing=this.add.graphics().setScrollFactor(1).setDepth(52);
     const ubX=w-58,ubY=this.H-78-80;   // ย้ายปุ่มเฉพาะตัวมาไว้ "North" ปุ่มพุ่ง (เดิมอยู่ซ้ายของพุ่ง)
     this.uniqueBtn=this.add.circle(ubX,ubY,36,0xff76a8,0.22).setScrollFactor(1).setDepth(50).setStrokeStyle(2.5,0xff76a8,0.85);
@@ -8379,7 +8381,7 @@ class Game extends Phaser.Scene {
 
     // แถวข้อมูล 2 บรรทัดใต้หลอด — ซ้าย: Lv/ฆ่า · กลาง: สถานะเวฟ/Stage · ขวาบน: ปุ่มควบคุม
     this.lvlTxt=this.add.text(pad,pad+34,'Lv 1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffffff'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
-    this.killTxt=this.add.text(pad,pad+56,'☠ 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9cff0'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
+    this.killTxt=this.add.text(pad,pad+56,'KOs 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#d9cff0'}).setOrigin(0,0).setScrollFactor(1).setDepth(51);
     this.traitTxt=this.camUI(this.add.text(pad,pad+74,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe08a',stroke:'#2a1830',strokeThickness:3}).setOrigin(0,0).setScrollFactor(1).setDepth(51).setVisible(false));   // v7.8.102 ป้าย Run trait ติดจอ (แบนเนอร์ถูกทับ)
     // สรุปสเตตย่อ ๆ ขณะเล่น (เลือด/ฟื้น/โจมตี/ป้องกัน)
     this.statTxt=this.add.text(pad,pad+75,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#bfe8d6',stroke:'#141018',strokeThickness:3}).setOrigin(0,0).setScrollFactor(1).setDepth(54);
@@ -8427,21 +8429,69 @@ class Game extends Phaser.Scene {
     this.pOverG=this.add.graphics().setScrollFactor(1).setDepth(80); this.camUI(this.pOverG);
     this.pOverLv=this.add.text(0,0,'1',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffe27a',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(82); this.camUI(this.pOverLv);
     this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
-    this.hudList=[this.uniqueHint,this.flickerBtn,this.flickerTxt,this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.replayProgressFrame,this.replayProgressFill,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp,this.muteBtn,this.muteTxt];
+    this.hudList=[this.controlBase,this.uniqueHint,this.flickerBtn,this.flickerTxt,this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.replayProgressFrame,this.replayProgressFill,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.waveBonusTxt,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp,this.muteBtn,this.muteTxt];
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
+    this.layoutCombatHUD();
     this.hudList.forEach(o=>o.setVisible(false));
     this.bossUI.forEach(o=>o.setVisible(false));
+  }
+  layoutCombatHUD(){
+    const w=this.W,font='NunitoUI, sans-serif';
+    this.lvlTxt.setPosition(22,17).setFontFamily(font).setFontSize(13).setColor('#fff0c7');
+    this.killTxt.setPosition(22,44).setFontFamily(font).setFontSize(11);
+    this.runSugarTxt.setPosition(w-22,44).setFontFamily(font).setFontSize(11);
+    this.stageTxt.setPosition(w/2,44).setFontFamily(font).setFontSize(10).setWordWrapWidth(Math.max(80,w-180)).setMaxLines(1);
+    this.timeTxt.setPosition(w/2,74).setFontFamily(font).setFontSize(13).setColor('#fff0cf').setWordWrapWidth(w-52);
+    this.waveObjTxt.setPosition(w/2,this._pad+HUD_ROWS.objective).setFontFamily(font).setFontSize(12).setStroke('#20172b',2).setWordWrapWidth(w-54);
+    this.waveObjBg.setPosition(w/2,139);this.waveObjBar.setPosition(w/2-Math.min(230,w-84)/2,140);
+    this.waveBonusTxt.setPosition(w/2,153).setFontFamily(font).setFontSize(10).setStroke('#20172b',2);
+    this.statTxt.setPosition(20,177).setFontSize(10).setWordWrapWidth(w-40);
+    this.traitTxt?.setPosition(20,194).setFontSize(10);
+    for(const [b,t] of [[this.speedBtn,this.speedTxt],[this.pauseBtn,this.pauseTxt],[this.muteBtn,this.muteTxt]]){
+      b.setFillStyle(0x171422,.98).setStrokeStyle(1,0xc4a978,.65);t.setFontFamily(font);
+    }
+    this.pauseTxt.setText('Ⅱ').setFontSize(19).setColor('#ffe2a1');
+    this.fpsTxt?.setPosition(w-20,245);
+    this.pOverLv.setFontFamily(font);this.pOverHp.setFontFamily(font);
+    this._hudTextKeys={};
+  }
+  drawCombatControlBase(){
+    const g=this.controlBase,d=this.dashBtn,u=this.uniqueBtn;if(!g||!d||!u)return;
+    const key=[d.x,d.y,d.radius,u.x,u.y,u.radius,u.fillColor].join(':');if(g._key===key)return;g._key=key;g.clear();
+    for(const b of [d,u]){g.fillStyle(0x100e1b,.92).fillCircle(b.x,b.y+3,b.radius+5);g.fillStyle(0x241d32,.98).fillCircle(b.x,b.y,b.radius);
+      g.lineStyle(1,0xffe2ad,.27).strokeCircle(b.x,b.y,b.radius-4);}
+  }
+  drawCombatHUDPanels(g){
+    const w=this.W;
+    g.fillStyle(0x120f1d,.38).fillRoundedRect(10,12,w-20,54,13);
+    g.fillStyle(0x241b30,.96).fillRoundedRect(10,8,w-20,54,13);
+    g.lineStyle(1,0xd4b178,.45).strokeRoundedRect(10,8,w-20,54,13);
+    g.lineStyle(1,0xf1dfb4,.12).lineBetween(21,39,w-21,39);
+    const objective=!!this.waveObjTxt?.visible,progress=!!this.replayProgressFrame?.visible;
+    const bottom=objective||progress?173:103;
+    g.fillStyle(0x20182b,.92).fillRoundedRect(10,68,w-20,bottom-68,12);
+    g.lineStyle(1,0xbfa3d7,.3).strokeRoundedRect(10,68,w-20,bottom-68,12);
+    g.fillStyle(0xe6bf7a,.9).fillRoundedRect(18,77,3,14,1);
+    if(this.bossName?.visible){g.fillStyle(0x281525,.94).fillRoundedRect(20,160,w-40,43,10);g.lineStyle(1,0xff8cac,.45).strokeRoundedRect(20,160,w-40,43,10);}
+    // Text can change every tick. Refit only when its value or the viewport changes.
+    const fit=(t,max,size)=>{if(!t)return;const key=t.text+'|'+max;if(this._hudTextKeys?.[t.name]===key)return;
+      this._hudTextKeys||={};this._hudTextKeys[t.name]=key;t.setFontSize(size);if(t.width>max)t.setFontSize(Math.max(9,Math.floor(size*max/t.width)));};
+    this.timeTxt.name='phase';this.waveObjTxt.name='mission';this.waveBonusTxt.name='bonus';
+    fit(this.timeTxt,w-52,13);fit(this.waveObjTxt,w-54-(this._seasonIconsOn?76:0),this._seasonIconsOn?11:12);fit(this.waveBonusTxt,w-54,10);
+    this.statTxt.setY(this.bossName?.visible?211:177);this.traitTxt?.setY(this.bossName?.visible?228:194);
+    this.drawCombatControlBase();
   }
   hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
-    const bx=pad+16, bw=(this.W-138)-bx;   // เว้นมุมขวาบน ~112px ให้ปุ่ม speed/pause/mute เป็นกลุ่มเดียว
+    this.drawCombatHUDPanels?.(g);
+    const bx=78, bw=Math.max(30,this.W-218);
     const hpf=Phaser.Math.Clamp(this.player.hp/this.player.maxhp,0,1);
     const xpf=Phaser.Math.Clamp(this.xp/this.xpNext,0,1);
     // เอาหลอด HP ด้านบนออก (ย้ายไปNorthหัวผู้เล่นแทน) · เหลือแถบ XP บาง ๆ ไว้ดูความคืบหน้าเลเวล
-    if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon)this.xpIcon.setPosition(pad+4,pad+6);
+    if(this.hpIcon)this.hpIcon.setVisible(false); if(this.xpIcon)this.xpIcon.setPosition(66,pad+7);
     g.fillStyle(0x101c25,0.82); g.fillRoundedRect(bx,pad+1,bw,11,5);
     if(xpf>0){ const fw=Math.min(bw-4,Math.max(5,(bw-4)*xpf));
       g.fillStyle(0x58b98e,1);g.fillRoundedRect(bx+2,pad+3,fw,7,3);
@@ -8495,7 +8545,7 @@ class Game extends Phaser.Scene {
     this.uniqueBtn.setPosition(x,uy).setRadius(r); this.uniqueTxt.setPosition(x,uy-6*k).setScale(k);
     this.uniqueHint?.setPosition(x,uy+19*k).setScale(k);
     const fx=x+(st.ctrlLeft?1:-1)*(r+12*k+31*k);
-    this.flickerBtn?.setPosition(fx,uy).setSize(62*k,46*k);this.flickerTxt?.setPosition(fx,uy).setScale(k); }
+    this.flickerBtn?.setPosition(fx,uy).setSize(62*k,46*k);this.flickerTxt?.setPosition(fx,uy).setScale(k);this.drawCombatControlBase?.(); }
   drawDashRing(){
     const g=this.dashRing; if(!g)return; const b=this.dashBtn; if(!b||!b.visible){ g.clear(); g._sk=NaN; this._dpTxt&&this._dpTxt.setVisible(false); return; }
     { let k; if(this.character==='cocoa'&&this._dpCh!=null){ const mx=this.cocoaDashMax(),ch=this._dpCh,f=ch<mx?Math.round(Phaser.Math.Clamp((this._dpT||0)/this.cocoaDashRecharge(),0,1)*120):121; k=1e7+((ch*16+mx)*16+(this._cocoaPhantom?.charges||0))*128+f; }
@@ -8563,6 +8613,7 @@ class Game extends Phaser.Scene {
     const keys=Object.keys(this.skills); if(!keys.length){ this.checkCombos(); return; }
     const cw=Math.min(38,Math.floor((this.W-16)/keys.length)), rad=Math.min(16,cw/2-3), fs=Math.round(rad)+'px';
     const total=keys.length*cw; let x=this.W/2-total/2+cw/2; const y=this.H-32;
+    const tray=this.add.graphics();tray.fillStyle(0x20182b,.94).fillRoundedRect(this.W/2-total/2-7,y-22,total+14,44,12);tray.lineStyle(1,0xd4b178,.4).strokeRoundedRect(this.W/2-total/2-7,y-22,total+14,44,12);this.skillBar.add(tray);
     keys.forEach(k=>{
       const d=SKILLDEFS[k], lvl=this.skills[k], awk=lvl>=SKILL_AWAKEN_LV, maxed=lvl>=d.max;
       const bg=this.add.circle(x,y,rad,0x2c2338,0.72).setStrokeStyle(2,awk?0xffb020:(maxed?0xffd166:0xff8fb5),awk?1:0.9);
@@ -8662,7 +8713,7 @@ class Game extends Phaser.Scene {
       this.bossName.setPosition(this.W/2,pad+HUD_ROWS.bossName); this.bossBgW.setPosition(this.W/2,pad+HUD_ROWS.bossBg); this.bossBgW.width=this._barW*0.8;
       this.bossBar.setPosition(this.W/2-(this._barW*0.8)/2+2,pad+HUD_ROWS.bossBar);
       if(this.bossHpTxt)this.bossHpTxt.setPosition(this.W/2,pad+HUD_ROWS.bossHp);
-      this.bannerT.setPosition(this.W/2,this.H*0.32); this.bannerS.setPosition(this.W/2,this.H*0.4); }
+      this.bannerT.setPosition(this.W/2,this.H*0.32); this.bannerS.setPosition(this.W/2,this.H*0.4); this.layoutCombatHUD(); }
     if(this.state==='menu') this.buildStartMenu();
     if(this.state==='startskill')this.openStartingSkillChoice();
     if(this.state==='dead') this.buildOver();
@@ -11893,7 +11944,7 @@ class Game extends Phaser.Scene {
         if(window.GameLoader)window.GameLoader.set(0.38,'Preparing character and skills...');
         this.hudVisible(true);
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
-        if(this.killTxt)this.killTxt.setText('☠ 0');
+        if(this.killTxt)this.killTxt.setText('KOs 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}
         Stats.start(this);   /* v6.99.1 direct (delayedCall could stall while time paused) */
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
@@ -12226,12 +12277,12 @@ class Game extends Phaser.Scene {
   updateWaveText(){
     const st=STAGES[this.stageIndex]; if(!st)return;
     if(this.mode==='boss') this.timeTxt.setText('👹 Boss');
-    else if(this.mode==='bossWarning') this.timeTxt.setText('⚠️ The boss is coming!');
-    else if(this.mode==='miniWarning') this.timeTxt.setText('⚠️ A miniboss is coming!');
-    else if(this.mode==='portal') this.timeTxt.setText('🌀 Enter the portal to the next stage');
-    else if(this.mode==='mini') this.timeTxt.setText('💢 Miniboss — take it down!');
+    else if(this.mode==='bossWarning') this.timeTxt.setText('Boss incoming');
+    else if(this.mode==='miniWarning') this.timeTxt.setText('Miniboss incoming');
+    else if(this.mode==='portal') this.timeTxt.setText('Enter the portal');
+    else if(this.mode==='mini') this.timeTxt.setText('Miniboss encounter');
     else if(this.mode==='breather') this.timeTxt.setText('Next wave…');
-    else this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer||0))+'s');
+    else this.timeTxt.setText('Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+Math.max(0,Math.ceil(this.waveTimer||0))+'s');
     this.drawWavePips();
   }
   drawWavePips(){
@@ -12239,7 +12290,7 @@ class Game extends Phaser.Scene {
     if(this.recipeMode){ this.renderRecipeProgress(g); return; }
     const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
     const n=st.waves, seg=Math.min(20,(this.W*0.62)/n), w=seg-3, h=6;
-    const x0=this.W/2-(n*seg)/2, y=this._pad+91;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
+    const x0=this.W/2-(n*seg)/2, y=this._pad+80;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
     for(let i=0;i<n;i++){ const x=x0+i*seg;
       let col=0x4a4059, a=0.7;                       // ยังไม่ถึง
       if(i<this.waveIndex){ col=0x8bd3a0; a=0.9; }    // ผ่านแล้ว
@@ -12897,10 +12948,8 @@ class Game extends Phaser.Scene {
   }
   renderBonusHUD(){
     const b=this._bonus,t=this.waveBonusTxt;if(!t)return;if(!b||!this.waveObjective){t.setVisible(false);return;}
-    if(b.failed){t.setText('✖ Bonus failed — ambush!').setColor('#ff8a8a').setVisible(true);return;}
-    const st=b.id==='speed'?('⏱ '+Math.max(0,Math.ceil(b.limit-b.t))+'s'):b.id==='nohit'?('💢 '+b.hits+'/'+b.maxHits+' hits'):('☠ '+b.kills+'/'+b.target);
-    const short=b.id==='speed'?'Finish fast':b.id==='nohit'?'≤2 hits':'Kill '+b.target;   // v4.64: บรรทัดสั้นลงสำหรับจอแนวตั้ง
-    t.setText('⭐ '+short+' · '+st+' → '+(b.reward==='relic'?'🔮/🧪':'🧪')).setColor('#ffe08a').setVisible(true);
+    if(b.failed){t.setText('Bonus lost · Ambush incoming').setColor('#ff8a8a').setVisible(true);return;}
+    t.setText('★ Bonus · '+(b.id==='nohit'?'Hits '+b.hits+'/'+b.maxHits:b.id==='speed'?Math.max(0,Math.ceil(b.limit-b.t))+'s left':b.kills+'/'+b.target+' defeats')+' · '+(b.reward==='relic'?'Relic / Potion':'Potion')).setColor('#ffe08a').setVisible(true);
   }
   tickBonusChallenge(dt){ const b=this._bonus;if(!b||b.failed)return;b.t+=dt;if(b.id==='speed'&&b.t>b.limit)this.failBonus('Too slow');this.renderBonusHUD(); }
   failBonus(reason){
@@ -13163,15 +13212,15 @@ class Game extends Phaser.Scene {
     this.renderBonusHUD();
     const frac=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1),value=o.type==='survive'?Math.ceil(Math.max(0,this.waveTimer))+'s':(o.type==='capture'||o.type==='cleanAir'||o.type==='defendNectar')?o.progress.toFixed(1)+' / '+o.target+'s':(o.type==='seasonCycle'?this.stormHudText(o,this.realTex?.('ui_c24_season_icons')):Math.floor(o.progress)+' / '+o.target);
     const step=o._huntPhase?'Step '+(o.progress*2+(o._huntPhase==='clear'?1:2))+'/'+(o.target*2)+' · '+(o._huntPhase==='clear'?'Clear '+o._huntKills+'/'+o._huntKillGoal:'Defeat marked Elite'):(o.type==='fill'&&this.usesStoryBudget?.()?'Step 1/2 · Clear '+Math.floor(o.progress)+'/'+o.target:null);
-    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||(o.type==='seasonCycle'?value:((o.emoji==='🎯'?'':'🎯 ')+o.emoji+' '+o.name+' · '+value))).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
+    const bw=Math.min(230,this.W-84);this.waveObjTxt.setText(step||(o.type==='seasonCycle'?value:(o.emoji+' '+o.name+' · '+value))).setVisible(true).setColor('#'+o.color.toString(16).padStart(6,'0'));this.waveObjBg.setVisible(true);this.waveObjBar.setVisible(true).setFillStyle(o.color);this.waveObjBar.width=Math.max(2,bw*(o._huntPhase?(o.progress*2+(o._huntPhase==='elite'?1:o._huntKills/o._huntKillGoal))/(o.target*2):(o.type==='fill'&&this.usesStoryBudget?.()?frac/2:frac)));
     this.syncSeasonIcons?.(o);
-    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.35,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._ruby&&(now-(this._rubyRemAt||0)>24000)){ this._rubyRemAt=now; const tp=RUBY_TIPS[wo._huntPhase?'huntClear':wo.type]; if(tp&&tp.short&&this.rubySay)this.rubySay(tp.short+(wo.target&&wo.type!=='seasonCycle'?'  ·  '+Math.floor(wo.progress)+'/'+wo.target:''),2600,{face:'cheer'}); else if(!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); } }   // v5.71 เตือนภารกิจทุก 12 วิ
+    const now=Date.now(); if(!this._objPulseAt)this._objPulseAt=now; if(now-this._objPulseAt>12000){ this._objPulseAt=now; this.tweens.add({targets:this.waveObjTxt,scale:{from:1.04,to:1},duration:450,ease:'Back.out'}); const wo=this.waveObjective; if(wo&&!wo.done&&!this._ruby&&(now-(this._rubyRemAt||0)>24000)){ this._rubyRemAt=now; const tp=RUBY_TIPS[wo._huntPhase?'huntClear':wo.type]; if(tp&&tp.short&&this.rubySay)this.rubySay(tp.short+(wo.target&&wo.type!=='seasonCycle'?'  ·  '+Math.floor(wo.progress)+'/'+wo.target:''),2600,{face:'cheer'}); else if(!this._speech)this.showSpeechBubble(wo.emoji+' '+wo.name+' · '+(wo.target?Math.floor(wo.progress)+'/'+wo.target:''),2400); } }   // v5.71 เตือนภารกิจทุก 12 วิ
   }
   /* v7.8.32 ไอคอนฤดู (อาร์ต A10) หน้าข้อความภารกิจ Season Storm: แถวบน=ยังไม่ผ่าน 0–3 · ผ่านแล้ว 4–7 */
   syncSeasonIcons(o){const T=this.waveObjTxt;if(!T)return;const on=!!(o&&o.type==='seasonCycle'&&o.storm&&T.visible&&this.realTex?.('ui_c24_season_icons'));
-    if(!on){if(this._seasonIcons)for(const i of this._seasonIcons)i.setVisible(false);if(this._seasonIconsOn){this._seasonIconsOn=false;T.setOrigin(.5,0).setX(this.W/2);}return;}
+    if(!on){if(this._seasonIcons)for(const i of this._seasonIcons)i.setVisible(false);if(this._seasonIconsOn){this._seasonIconsOn=false;T.setOrigin(.5,0).setX(this.W/2).setFontSize(12).setWordWrapWidth(this.W-54);}return;}
     if(!this._seasonIcons?.every(i=>i.active))this._seasonIcons=[0,1,2,3].map(()=>{const i=this.add.image(0,0,'ui_c24_season_icons',0).setScrollFactor(1).setDepth(54);this.camUI(i);return i;});
-    const sz=22,gap=3,iw=4*sz+3*gap,total=iw+6+T.width,x0=this.W/2-total/2,cy=T.y+T.height/2;this._seasonIconsOn=true;T.setOrigin(0,0).setX(x0+iw+6);
+    const sz=16,gap=2,iw=4*sz+3*gap;T.setFontSize(11).setWordWrapWidth(this.W-54-iw-6);const total=iw+6+T.width,x0=this.W/2-total/2,cy=T.y+T.height/2;this._seasonIconsOn=true;T.setOrigin(0,0).setX(x0+iw+6);
     this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;
@@ -13230,9 +13279,9 @@ class Game extends Phaser.Scene {
       if(this.waveAllowsElite){ this.eliteAcc-=dt; if(this.eliteAcc<=0){ this.eliteAcc=this.eliteEvery; if(this.enemies.countActive(true)<this.maxLive) this.spawnElite(); } }
       if(this.swarmAcc!=null&&(!this.usesStoryBudget?.()||this.storyTimedSwarm())){ this.swarmAcc-=dt; if(this.swarmAcc<=0){ this.swarmAcc=this.usesStoryBudget?.()?14:Phaser.Math.FloatBetween(14,22); this.spawnSwarm(); } }
       const st=STAGES[this.stageIndex]; if(this.recipeMode||this._replayMeter)return;
-      if(st){ if(_timed)this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · ⏳ '+Math.max(0,Math.ceil(this.waveTimer))+'s');
-        else this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+_obj.emoji+' '+_obj.name);
-        if(this.usesStoryBudget?.()&&this._storyBudget&&!this.storyTimedSwarm())this.timeTxt.setText(this.timeTxt.text+' · Reserves '+Math.max(0,this._storyBudget.quota-this._storyBudget.spawned)); }
+      if(st){ if(_timed)this.timeTxt.setText('Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+Math.max(0,Math.ceil(this.waveTimer))+'s');
+        else this.timeTxt.setText('Wave '+(this.waveIndex+1)+'/'+st.waves);
+        if(this.usesStoryBudget?.()&&this._storyBudget&&!this.storyTimedSwarm())this.timeTxt.setText(this.timeTxt.text+' · Left '+Math.max(0,this._storyBudget.quota-this._storyBudget.spawned)); }
       if(_timed&&this.waveTimer<=0){
         if(this.waveObjective)this.completeWaveObjective();   // survive ครบเวลา = สำเร็จ
         else{this.mode='waveclear';this.showBanner('⏳ Time’s Up!','Clear all remaining enemies to advance',1800);}
@@ -13242,7 +13291,7 @@ class Game extends Phaser.Scene {
       const st=STAGES[this.stageIndex], live=this.enemies.countActive(true);
       // v4.59: มอนธรรมดาที่เหลือหนีหายไปหลัง 4 วิ (ไม่ต้องไล่เก็บ 90 ตัว) · Elite/ของซุ่มโจมตียังต้องฆ่าเอง
       this._clearT=(this._clearT||0)+dt; if(this._clearT>=4&&!this._clearFled){ this._clearFled=true; this.fleeRemainingEnemies(); }
-      if(st)this.timeTxt.setText('⚔ Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+(this._clearFled?'🏃 Swarm retreating · '+live+' left':'🧹 Clear remaining '+live));
+      if(st)this.timeTxt.setText('Wave '+(this.waveIndex+1)+'/'+st.waves+' · '+(this._clearFled?'🏃 Swarm retreating · '+live+' left':'🧹 Clear remaining '+live));
       if(live<=0) this.onWaveCleared(false);
     } else if(this.mode==='mini'){
       // ระหว่างสู้มินิ = ยังมีลูกน้องไหลมาเรื่อย ๆ (กดดันต่อเนื่อง แต่เบากว่า)
@@ -17051,7 +17100,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
     } if(e._bloat){ e._bloat=false; this.bloatBurst(e.x,e.y); } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;
     if(e.active&&!this._inTutorial&&this.state!=='menu'){ if(isElite||isMini)(typeof DailyQ!=='undefined')&&DailyQ.tick('elite'); if(isBoss)(typeof DailyQ!=='undefined')&&DailyQ.tick('boss'); }   /* v7.5 Daily Quests (kills นับผ่าน advanceDaily) */if(this.player.forgeMods)forgeKill(this,e);this.kills++;if(e._eventCourier)this.onWaveEventCourier(e);if(this.state==='play')this.advanceDaily('kills');this.charPassiveOnKill(e);if(this._fr&&this._fr.length){this.fireRecipes('kill10');this.fireRecipes('kill25');if(isElite||isMini)this.fireRecipes('eliteKill');{const t=this.elapsed||0;this._frMk=(this._frMk||[]).filter(x=>t-x<1);this._frMk.push(t);if(this._frMk.length>=5){this._frMk=[];this.fireRecipes('multikill');}}}if(this._rel&&(this._rel.shell||this._rel.burst||this._rel.trophy||this._rel.harvest))this.relicOnKill(e);this.uqOnKill?.(e);this.yuzuOnKill?.(e);if(this.basicAttack&&this.basicAttack.mods)this.modOnKill(e);if(this.player.gearKillShell)this.gearKillShell();e._wispRaider=false;if(e._fleeing){e._fleeing=false;this.tweens.killTweensOf(e);e.setAlpha(1);}if(e._duelElite){e._duelElite=false;this.duelEliteDown();}this.replayOnKill(e);if(this.waveObjective&&!big)this.objOnKill(e);if(this.recipeMode&&!big){this.recipeOnKill(e);if(this.recipeHas('splitter')&&!e._splitKid){const x0=e.x,y0=e.y;for(let k=0;k<2;k++){const c=this.spawnEnemy('fast');if(c){c.setPosition(x0+(k?18:-18),y0);c._splitKid=true;c.hp*=0.35;c.maxhp=c.hp;c.setScale((c.baseScale||c.scaleX)*0.75);}}}e._splitKid=false;if(this.recipeHas('volatile')&&Math.random()<0.35)this.spawnHazard(e.x,e.y,70,Math.max(4,Math.round((e.dmg||8)*0.8)),0xff7a3d);else if(this._amapInf&&this._amapInf.spicy&&Math.random()<0.06*this._amapInf.spicy)this.spawnHazard(e.x,e.y,60,Math.max(3,Math.round((e.dmg||8)*0.6)),0xff6b4a);}
-    if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('☠ '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
+    if(!big){this.stageKills=(this.stageKills||0)+1;if(this.killTxt)this.killTxt.setText('KOs '+this.stageKills);if(this.boss&&this.boss.active)this.applyBossRage(this.boss,true);
       // Juice: kill-streak — ฆ่าต่อเนื่องเร็ว = คอมโบไต่ขึ้น เด้งป็อป + เสียง pitch สูงขึ้นที่หมุดหมาย
       if(this.elapsed-(this._lastKillAt??-9)>1.6)this.killStreak=0;
       this.killStreak=(this.killStreak||0)+1; this._lastKillAt=this.elapsed;
