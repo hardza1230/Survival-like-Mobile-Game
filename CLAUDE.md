@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.6, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.7, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.5 — Smoother movement stick (owner: sometimes it barely moves)
+# Latest delivery: v8.0.6 — Story shots redone + art order 46 (owner)
+
+Owner on phone: S01 shot 1 cartoon root (cs_pup_root_tip with a mouth) looked silly; S00 shot 3 “In one night…” was daytime with an unexplained rainbow ribbon; S01 nest shot had Ruby and later the seed appear from nowhere. Data only: S00 shot 3 = MC_CITY with new shot fields tint 0x565aa8 + night .38 (mcShot: bg setTint, dark rect after bgs), crown_glow in the sky, curse_smoke ×2, no flavor ribbon, snow motes. S01 shot 1 = berry idle → scared at the shake, crack (hold) + purple curse smoke + purple flash, no root. S01 now 9 shots: land (THUD, blank mochi creeps in) → Ruby slides out from behind a crystal toward the blank mochi → “This way!” Ruby + Strawberry dash into the old roots → faint seed glow first, seed fades in → wake → transform (POP index 7) → Ruby talk. Art order 46 docs/art_orders/46_STORY_SHOT_REDO.md: cs_s01_far_roots_burst, cs_s00_far_city_night, cs_fx_root_burst (6×540) → assets/incoming/story_shot_redo/, awaits art (code notes in the order). Real-browser shots checked, 0 errors.
+
+# Previous delivery: v8.0.5 — Smoother movement stick (owner: sometimes it barely moves)
 
 Causes: speed = drag/60px linear (20px = 33%), fixed base (drifting finger had to come back 60+px to turn), and a finger already down when a card/story screen closed never started the stick (needed lift + retouch); pointerupoutside did not release it. Now joyStart/joyMove/joyEnd/joyBlocked (after the input setup, before update): dead zone 5px, full speed at 30px (20px = 60%), base follows the finger when dragged past 60px, joy.id −1 on end; pointermove adopts a held pointer (state play, p.isDown, not on Unique/Dash/Flicker, no titan/snipe hold); pointerupoutside ends the stick. Real-browser: 20px .6, 110px base follows, reverse −1 at once, held finger adopted, 0 errors.
 
@@ -866,6 +870,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** ส่งครบ 13 ไฟล์ · ผูกครบแล้ว v7.9.68 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 39 (23 ต.ค.) เปิดหนังสือหลัง TAP TO START + ไอคอน Bazaar/Upgrade/Mail:** 9 ไฟล์ (`docs/art_orders/39_BOOK_OPENING_PLUS.md`) · ส่งครบ 9 ไฟล์ + ปกเรียบ · ผูกแล้ว v7.9.69 · รอ QA มือถือ · ใบ 37 ถูกยกเลิก (เลขว่าง)
 - **ใบสั่งอาร์ต 40 (23 ต.ค.) หีบใน Bazaar + ไอคอน Thread:** 7 ไฟล์ · ส่งครบ 7 ไฟล์ · ผูกแล้ว v7.9.79 · รอ QA มือถือ
+- **ใบสั่งอาร์ต 46 (24 ต.ค.) แก้ 2 ช็อตเรื่อง:** 3 ไฟล์ (`docs/art_orders/46_STORY_SHOT_REDO.md`) · โค้ดชั่วคราว v8.0.6 · รออาร์ต
 - **ใบสั่งอาร์ต 45 (Motion Comic):** ส่งครบ 103 ชิ้น · ผูกแล้ว v8.0.2 (S10 Sesame ยังไม่ผูก) · รอ QA มือถือ
 - **ใบสั่งอาร์ต 36 (23 ต.ค.) มาสคอต Ruby:** 5 หน้า (`docs/art_orders/36_RUBY_MASCOT.md`) · โค้ดพร้อม v7.9.60 ใช้ภาพวาดชั่วคราว · รออาร์ต
 - **ใบสั่งอาร์ต 32 (21 ต.ค.):** ส่งครบ 51 ไฟล์ (E4 Ice Breaker คงภาพเดิม) · ผูกแล้ว v7.9.31 · รอตรวจภาพบนมือถือ
