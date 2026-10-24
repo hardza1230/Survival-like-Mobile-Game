@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.17, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.18, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.16 — Punchier battle HUD (owner picked 1–5)
+# Latest delivery: v8.0.17 — Heavier boss kills, Unique glow, Dash squash (owner)
+
+killSlowmo(power) from the top of killEnemy for active boss (1) / mini (.6): _slowmo + _isHitStop guard, physics.world.timeScale 12 + tweens.timeScale .04 for 90+30·power ms (camera flash 110ms), then physics 1/(gs·.35) + tweens gs·.35 for 380+320·power ms, then setGameSpeed(gameSpeed) — real-time setTimeout so it does not depend on x1–x4 or scene timers. uniqueReadyGlow(g,b,col) from drawUniqueRing's ready branch: pulsing outer/inner rings, 2 orbiting white sparkles, one-shot expanding white ring for 600ms after it becomes ready (_uqReadyAt reset while on cooldown). dashPress() from the Dash-button tap (before doDash, state play; doDash text unchanged for the legacy hash tests): dashBtn/dashTxt scale .8 → 1 (Back.out 240ms, dashTxt keeps ctrlScale). Boss HP ghost now holds 180ms and shrinks ×.22/frame (was 380/.08). Mission card block moved down 8px (D in drawCombatHUDPanels: timeTxt, pips, objective, card, replay meter).
+
+# Previous delivery: v8.0.16 — Punchier battle HUD (owner picked 1–5)
 
 hudJuice() from drawBars: killTxt/runSugarTxt digits change → scale 1→1.3 yoyo 70ms; survive objective with waveTimer<5 → waveObjTxt blinks #ff4d5e/#ffd0d4 every 220ms (colour cached in T._jc, restores o.color). liquidTube(…,o) gains palettes 2/3 (boss ≤50% / ≤25%: darker reds, flow ×1.5 / ×2.2) and o.ghost: boss uses faster smoothing (.35) plus ghost {v,hitAt,last} — white strip from current fill to the old value, holds 380ms after the last drop then shrinks ×.08/frame, resets when HP rises/boss hidden. speedPopup() on the speed-button tap: big 'xN ⏩' text at H·.38, Back.out pop then fade up (reused object, depth 70). No gameplay changes.
 

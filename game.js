@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.16';
+const GAME_VERSION = '8.0.17';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.17',date:'2026-10-24',title:'Heavier boss kills',items:['Defeating a boss or miniboss freezes the screen for a moment, then plays a short slow-motion','The Unique button glows and sparkles when it is ready; the Dash button squashes when you press it','Lost boss HP shrinks away faster, and the mission box sits a little lower'] },
   {v:'8.0.16',date:'2026-10-24',title:'Punchier battle HUD',items:['Kill and Sugar numbers bounce when they go up','Boss HP liquid turns darker and flows faster below 50% and 25%, and lost HP lingers as a white ghost before shrinking','Survive missions flash red in the last 5 seconds','Changing game speed shows a big x1–x4 pop in the middle of the screen'] },
   {v:'8.0.15',date:'2026-10-24',title:'Liquid boss bar and tidier top',items:['Boss HP is now a flowing pink-red liquid bar','The mission bar ripples and flashes when you finish a mission step','The Level/kills/Sugar bar is only as wide as it needs to be','A small skull marks the boss at the end of the wave dots'] },
   {v:'8.0.14',date:'2026-10-24',title:'Flowing mission bar',items:['The mission bar is now a rounded tube of flowing aqua-green liquid','Wave title and wave dots sit centred in the mission card; the Bonus line is gone from the top (bonus rewards still work)'] },
@@ -7844,7 +7845,7 @@ class Game extends Phaser.Scene {
       if(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2){this.toggleCocoaFlicker();return;}
       if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.isTitanHold?.()){ if(this.uniqueCd<=0&&!this._titanHold)this._titanHold={id:p.id}; return; } if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
-      if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.mxDash?.();this.doDash(); return; }
+      if(this.dashBtn && this.dashBtn.visible && this.dist(p.x,p.y,this.dashBtn.x,this.dashBtn.y)<this.dashBtn.radius+8){ this.mxDash?.();if(this.state==='play')this.dashPress?.();this.doDash(); return; }   // v8.0.17 ปุ่มยุบตอนกด
 
       // แตะจุดอื่นทั้งหมดบนหน้าจอ = จอยสติ๊กลอย ควบคุมทิศทางเดินอิสระด้วยมือเดียว
       this.joyStart(p);
@@ -8525,13 +8526,14 @@ class Game extends Phaser.Scene {
     // v8.0.14 เจ้าของ: หัวเวฟ + จุดเวฟอยู่กลาง ในการ์ดเดียวกับภารกิจ
     const st0=typeof STAGES!=='undefined'?STAGES[this.stageIndex]:null,np=(!this.recipeMode&&st0&&this.mode!=='boss')?st0.waves:0,pipW=np?np*10+10:0;
     const rowW=this.timeTxt.width+(np?8+pipW:0),rowX=Math.round(w/2-rowW/2);
-    this.timeTxt.setPosition(rowX,45);this._pipX0=np?rowX+this.timeTxt.width+8:null;this._pipY=45+this.timeTxt.height/2;
-    let bottom=61;
+    const D=8;   // v8.0.17 เจ้าของ: เลื่อนพื้นที่ภารกิจลงอีกนิด
+    this.timeTxt.setPosition(rowX,45+D);this._pipX0=np?rowX+this.timeTxt.width+8:null;this._pipY=45+D+this.timeTxt.height/2;
+    let bottom=61+D;
     const objective=!!this.waveObjTxt?.visible,progress=!!this.replayProgressFrame?.visible;
     this.waveObjTxt.name='mission';this.waveBonusTxt.name='bonus';
     if(objective){
       const season=!!this._seasonIconsOn;
-      this.waveObjTxt.setY(64).setWordWrapWidth(w-36-(season?76:0)).setMaxLines(2).setStroke('#191321',2);
+      this.waveObjTxt.setY(64+D).setWordWrapWidth(w-36-(season?76:0)).setMaxLines(2).setStroke('#191321',2);
       fit(this.waveObjTxt,w-36-(season?76:0),11);
       if(!season)this.waveObjTxt.setOrigin(.5,0).setX(w/2);
       if(season&&this._seasonIcons){const cy=this.waveObjTxt.y+this.waveObjTxt.height/2;for(const im of this._seasonIcons)im.setY(cy);}
@@ -8540,11 +8542,11 @@ class Game extends Phaser.Scene {
       this.waveObjBar.setY(ty+5).setDisplaySize(this.waveObjBar.width,10).setAlpha(0);
       this._liq={x:w/2-mw/2,y:ty+5,w:mw,h:10};
       const cw=Math.min(w-24,Math.max(rowW,this.waveObjTxt.width+(this._seasonIconsOn?76:0),mw)+32);
-      this._hudBackings.push([0x171320,.62,Math.round(w/2-cw/2),40,Math.round(cw),ty+21-40,9]);
+      this._hudBackings.push([0x171320,.62,Math.round(w/2-cw/2),40+D,Math.round(cw),ty+21-40-D,9]);
       bottom=ty+21;
     }
     if(progress){
-      const y=objective?bottom+4:71,mw=Math.min(250,w-40);
+      const y=objective?bottom+4:71+D,mw=Math.min(250,w-40);
       this.replayProgressFrame.setPosition(w/2,y).setDisplaySize(mw,14);
       this.replayProgressFill.setPosition(w/2-mw*.435,y).setDisplaySize(mw*.87,6);
       bottom=y+10;
@@ -8581,6 +8583,24 @@ class Game extends Phaser.Scene {
     const bf=bw>4?Phaser.Math.Clamp((this.bossBar?.width||0)/(bw-4),0,1):0;   // v8.0.16 เฟส 50%/25% = สีเข้ม + ไหลเร็ว · เงาขาวค้างตอนโดนตี
     this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:8}:null,bf,'_bossLiqF',bf<=.25?3:bf<=.5?2:1,0,{ghost:'_bossGhost'});
   }
+  // v8.0.17 ปุ่ม Dash ยุบแล้วเด้งกลับตอนกด
+  dashPress(){ const b=this.dashBtn,t=this.dashTxt; if(!b||!this.tweens)return; const k=this.ctrlScale?.()||1;
+    this.tweens.killTweensOf([b,t]); b.setScale(.8); t?.setScale(k*.8);
+    this.tweens.add({targets:b,scale:1,duration:240,ease:'Back.easeOut'}); if(t)this.tweens.add({targets:t,scale:k,duration:240,ease:'Back.easeOut'}); }
+  // v8.0.17 Unique พร้อมใช้ = ขอบเรืองเต้น + ประกายวิ่งรอบปุ่ม + วงแสงแวบตอนเพิ่งพร้อม
+  uniqueReadyGlow(g,b,col){ const now=this.time?.now||0,t=now/1000,p=.5+.5*Math.sin(t*6),r=b.radius;
+    if(this._uqReadyAt==null)this._uqReadyAt=now; const fresh=Math.max(0,1-(now-this._uqReadyAt)/600);
+    g.lineStyle(7,col,.1+.14*p).strokeCircle(b.x,b.y,r+10+3*p);
+    g.lineStyle(3,col,.5+.4*p).strokeCircle(b.x,b.y,r+5+2*p);
+    for(let i=0;i<2;i++){ const a=t*2.6+i*Math.PI; g.fillStyle(0xffffff,.9).fillCircle(b.x+Math.cos(a)*(r+6),b.y+Math.sin(a)*(r+6),2.2); }
+    if(fresh>0){ g.lineStyle(3,0xffffff,.8*fresh).strokeCircle(b.x,b.y,r+6+26*(1-fresh)); } }
+  // v8.0.17 ฆ่าบอส/มินิ = ภาพค้าง ~0.1 วิ แล้วสโลว์โมชันสั้น ๆ (เวลาจริง ไม่ขึ้นกับ x1–x4)
+  killSlowmo(power=1){ if(!this.physics?.world||!this.tweens||this._slowmo)return; this._slowmo=true; this._isHitStop=true;
+    const w=this.physics.world,gs=this.gameSpeed||1,freeze=Math.round(90+30*power),slow=Math.round(380+320*power);
+    w.timeScale=12; this.tweens.timeScale=.04; this.cameras?.main?.flash?.(110,255,255,255,false);
+    const done=()=>{ this._slowmo=false; this._isHitStop=false; if(this.sys?.isActive?.()!==false)this.setGameSpeed(this.gameSpeed||gs); };
+    setTimeout(()=>{ if(!this.sys||this.sys.isActive?.()===false){done();return;} w.timeScale=1/(gs*.35); this.tweens.timeScale=gs*.35;
+      setTimeout(done,slow); },freeze); }
   // v8.0.16 ตัวเลขฆ่า/Sugar เด้งตอนเปลี่ยน · Survive เหลือ <5 วิ กระพริบแดง
   hudJuice(){ if(!this.tweens)return;
     for(const t of [this.killTxt,this.runSugarTxt]){ if(!t)continue; const n=String(t.text||'').replace(/\D/g,'');
@@ -8605,7 +8625,7 @@ class Game extends Phaser.Scene {
     const {x,y,w,h}=L,r=3,t=(this.time?.now||0)/1000*spd,now=this.time?.now||0;tf=Phaser.Math.Clamp(tf||0,0,1);
     let f=this[key]; f=f==null||Math.abs(tf-f)>.5?tf:f+(tf-f)*(o.ghost?.35:.12); this[key]=f; const fw=Math.max(0,w*f),amp=.8+pop*2.6;
     let gw=0; if(o.ghost){ let G=this[o.ghost]; if(!G||tf>G.v+.001)G={v:tf,hitAt:0,last:tf}; if(tf<G.last-.0005)G.hitAt=now; G.last=tf;
-      if(now-G.hitAt>380)G.v+=(tf-G.v)*.08; this[o.ghost]=G; gw=Math.max(0,w*G.v); }
+      if(now-G.hitAt>180)G.v+=(tf-G.v)*.22; this[o.ghost]=G; gw=Math.max(0,w*G.v); }
     g.fillStyle(P[0],.85).fillRoundedRect(x-1.5,y-1.5,w+3,h+3,r+1.5);
     g.fillStyle(P[1],1).fillRoundedRect(x,y,w,h,r);
     if(fw>=2){ const rr=Math.min(r,fw/2),a=x+rr,b=x+fw-rr;
@@ -8744,7 +8764,8 @@ class Game extends Phaser.Scene {
     const g=this.uniqueRing,b=this.uniqueBtn;this.syncUniqueIcon?.();if(!g||!b)return;g.clear();if(!b.visible)return;const u=this.uniqueInfo();this.updateUniqueHint();this.refreshFlickerUI();
     { const mx=this.lanceChMax?.()||1; if(mx>1){ const have=(this.uniqueCd<=0?1:0)+(this._lnBank|0); for(let k=0;k<mx;k++){ const a=-Math.PI/2+(k-(mx-1)/2)*.42,px=b.x+Math.cos(a)*(b.radius+13),py=b.y+Math.sin(a)*(b.radius+13); g.fillStyle(k<have?0x9fe8ff:0x2a3a4a,1).fillCircle(px,py,4); g.lineStyle(1.5,0xffffff,.85).strokeCircle(px,py,4); } } }   // v8.0.9 จุดชาร์จ Lance
     if(this._snipe){const charge=this.snipeCharge();g.lineStyle(2,u.color,.35).strokeCircle(b.x,b.y,b.radius+4);g.lineStyle(4,charge>=1?0xffd166:0xffffff,1).beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+TAU*charge,false);g.strokePath();this.uniqueTxt.setAlpha(1);return;}
-    if(this.uniqueCd>0){const frac=Phaser.Math.Clamp(1-this.uniqueCd/this.uniqueCooldown(u),0,1);g.lineStyle(3.5,u.color,0.95);g.beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false);g.strokePath();this.uniqueTxt.setAlpha(0.48);}else{g.lineStyle(2,u.color,0.42);g.strokeCircle(b.x,b.y,b.radius+4);this.uniqueTxt.setAlpha(1);}
+    if(this.uniqueCd>0){const frac=Phaser.Math.Clamp(1-this.uniqueCd/this.uniqueCooldown(u),0,1);g.lineStyle(3.5,u.color,0.95);g.beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false);g.strokePath();this.uniqueTxt.setAlpha(0.48);}else{g.lineStyle(2,u.color,0.42);g.strokeCircle(b.x,b.y,b.radius+4);this.uniqueTxt.setAlpha(1);this.uniqueReadyGlow?.(g,b,u.color);}
+    if(this.uniqueCd>0)this._uqReadyAt=null;
   }
   /* แถบ "Owned" — โชว์Attack Skill + Passiveที่มีตอนนี้ (ใช้ในเลเวลอัพ/หยุดเกม) · คืน y ล่างสุด */
   drawHeldBar(cont, topY){
@@ -17274,7 +17295,7 @@ class Game extends Phaser.Scene {
     this.vfxHitRing(x,y,crit?0xffd166:0xff9ec4,crit);
     if(this._sgHit)this.popDmg(Math.round(amount),x+Phaser.Math.Between(-16,16),y+Phaser.Math.Between(-12,8),crit,true);   // v6.50.1 เจ้าของ: เม็ด shotgun แสดงดาเมจทุกเม็ด (ไม่ติด throttle)
     else this.popDmg(Math.round(amount),x,y,crit); if(e.hp<=0&&(!taroDirect||(e.active&&e._taroSpawnId===taroDirect.token.id))) this.killEnemy(e); }
-  killEnemy(e){ if(e.active)this.mxKill?.(e); if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
+  killEnemy(e){ if(e.active&&(e.isBoss||e.isMini)&&!e.isDummy)this.killSlowmo?.(e.isBoss?1:.6); if(e.active)this.mxKill?.(e); if(e.active&&/^c3_(mini|boss)[1-5]$/.test(e.texture.key)){
       const fall=this.camWorld(this.add.sprite(e.x,e.y,e.texture.key,7).setDepth(e.depth||e.y).setScale(e.scaleX,e.scaleY));
       this.tweens.add({targets:fall,alpha:0,y:fall.y+12,duration:700,onComplete:()=>fall.destroy()});
     } if(e._bloat){ e._bloat=false; this.bloatBurst(e.x,e.y); } e._huntFlee=false; e._burnT=0;e._burnDps=0;e._sourT=0; if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;} if(e._memoryToken)this.resolveMemoryMark(e);const isBoss=e.isBoss,isMini=e.isMini,isElite=e.isElite,big=isBoss||isMini,wasWaveTarget=!!e._waveObjectiveTarget;
