@@ -1,0 +1,90 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s03_far_furnace",
+      "file": "cs_s03_far_furnace.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s03_furnace.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "0f1132f70631dc568c3da28f0f09950f3a92d06ac7240d6e7ed3653bf6d1b2ff",
+      "bytes": 3191002
+    },
+    {
+      "key": "cs_s03_prop_gear",
+      "file": "cs_s03_prop_gear.png",
+      "width": 454,
+      "height": 451,
+      "pivot": [
+        0.5,
+        0.9467849223946785
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        1324,
+        0,
+        1774,
+        435
+      ],
+      "source_subject": [
+        32,
+        16,
+        438,
+        419
+      ],
+      "sha256": "1a05298bc59e078de7c36248a3392ec08d8d6a666389657b1960fcc8a47c84a6",
+      "bytes": 279934
+    },
+    {
+      "key": "cs_s03_chr_prisoner",
+      "file": "cs_s03_chr_prisoner.png",
+      "width": 398,
+      "height": 456,
+      "pivot": [
+        0.5,
+        0.9473684210526315
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        0,
+        435,
+        445,
+        887
+      ],
+      "source_subject": [
+        49,
+        16,
+        399,
+        424
+      ],
+      "sha256": "ec0151aa657559fb1cee080f83677320ce876179d8abef78c1e4c94322d77846",
+      "bytes": 228044
+    }
+  ]
+}

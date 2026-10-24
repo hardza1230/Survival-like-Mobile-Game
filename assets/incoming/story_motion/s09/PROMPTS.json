@@ -1,0 +1,13 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s09_ash",
+      "tool": "built-in ImageGen",
+      "source": "s09_ash.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Ashen Seedfields: a once colorful citrus garden now dry and gray with burnt seed husks and a few wilted orange saplings, far-off soft pink sky, clear foreground stage for Yuzu hugging her baby orange. No characters or Yuzling painted into background. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "f8960a8007f9cd905b77a0e573b26dd7b0520d57d8fe637ab477ac9f77436cf8",
+      "bytes": 2195591
+    }
+  ]
+}

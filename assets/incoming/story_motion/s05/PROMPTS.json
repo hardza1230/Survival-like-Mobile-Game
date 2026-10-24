@@ -1,0 +1,20 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s05_oven",
+      "tool": "built-in ImageGen",
+      "source": "s05_oven.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. The Crown Oven, a giant royal confectionery oven shaped like a rounded gold crown, huge dark mouth with warm low fire glow inside, purple roots disappear behind oven structure but NO mouth-root creature painted in. Dramatic plum and warm orange scene; the actual Crown is NOT present here. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "f874b38e655a5c6ff0816192b3b45a61b2f8463c281d9fa5f10b12337a65e110",
+      "bytes": 2070296
+    },
+    {
+      "prompt": "Four narrative character cutouts for Mochi Mayhem, strict2x2 grid on TRUE transparent background. Use references ONLY for character identities: Strawberry pink side ponytail/green eyes/chocolate-red frilly dress/boots;Ruby tiny pink gem-headed jam spirit;Grandma HUMAN white bun/cream apron/red-brown dress. Each complete figure or pair stays well within its quadrant with very generous transparent margins and no aura or ground shadows. TOP LEFT: Strawberry and tiny Ruby together seen FROM BEHIND, facing a future oven off-screen, Strawberry stands with her strawberry seed gun lowered and Ruby floating beside her. TOP RIGHT: Strawberry front three-quarter, raising one empty open palm high as if holding a tiny seed;do NOT paint the seed or light beam. BOTTOM LEFT: Strawberry crouching gently at ground level, one gloved hand placing an invisible tiny seed into the ground;do not paint ground or seed. BOTTOM RIGHT: human Grandma gently hugging Ruby against her apron, both crying happy tears and smiling;Ruby remains a round jam spirit, never a human. Full boots, hair, Grandma shoes and Ruby gem visible in all cells. Polished cute chibi candy-fantasy painted outlines, no text,labels,borders,background scenery or watermark. The four cells become independent cutout files.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-2d652fca-e6f2-4a8d-bdfe-1e1800ba8798.png",
+      "source": "story_poses.png",
+      "sha256": "96434e1cb82e942bb3e0e0992ac2fbd2d6870c88a28ea327267d00c424f017ef",
+      "bytes": 2043145
+    }
+  ]
+}

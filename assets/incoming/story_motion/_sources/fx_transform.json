@@ -1,0 +1,6 @@
+{
+  "id": "fx_transform",
+  "source": "fx_transform.png",
+  "tool": "built-in ImageGen",
+  "prompt": "One 8-frame VFX sprite atlas for a cute confectionery fantasy transformation. Strict FOUR columns TWO rows, EIGHT equal square cells, chronological left-to-right then next row, all frames centered on the same pivot. Pure solid black background #000000 for ADD blend; no grid lines, no labels, no text. Animated pink-gold magical transformation burst: frame1 tiny heartlike light seed;2 expanding pink halo;3 golden ring radiates;4 bright central white-pink flash with sugar crystal shards;5 full pink-gold ring and flying sugar flecks;6 larger thinning ring;7 fading scattered small sparks;8 just a few near-extinguished sparks. Keep each effect within 70 percent of its cell, no edge clipping, no particles crossing into neighboring cells. Soft luminous painted game VFX, vivid but clean, glow falls completely to black around each cell's perimeter. No characters or physical items. Final sheet will be extracted and mechanically arranged into a horizontal8-frame768px-per-frame strip."
+}

@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s09/MANIFEST.json",
+      "key": "cs_s09_far_ash",
+      "errors": [],
+      "file": "s09/cs_s09_far_ash.png",
+      "bytes": 3234130,
+      "sha256": "b9903884579fbb1e0eaf4e9fddf1d2a6c5426c490dc4c9a1f7595a27d3cfc076",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    }
+  ]
+}

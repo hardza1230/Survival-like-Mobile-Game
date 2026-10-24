@@ -1,0 +1,84 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "berry_human",
+      "tool": "built-in ImageGen",
+      "prompt": "Production character pose sheet, exactly THREE isolated full-body drawings arranged left to right on a real transparent background. Use the attached image ONLY as the character identity reference, do not reproduce its pose or framing. Strawberry: pink side ponytail, green eyes, strawberry clip and tiny white flowers, dark chocolate red/white frilled outfit, dark red boots, strawberry-themed Heart Seed Gun. Cute chibi game illustration, crisp dark rose outlines and soft cel shading, no cast shadows, NO glow behind figures, no backdrop, no text. Left: landing crouch after transformation, one hand touching ground, full boots visible. Middle: triumphant upright hero pose holding her strawberry seed gun up. Right: standing relaxed, looking to her left thoughtfully. Entire figure visible in each isolated equally spaced column with wide transparent clearance, no cropped hair or feet. Sprite donor sheet for mechanical extraction into three separate cutout files.",
+      "source": "berry_human.png",
+      "references": [
+        "assets/character_cards/card_momo.png"
+      ],
+      "sha256": "9cb6240059a9c66c61e98f1e5ae7f3b2597bd78f2165c1ec1c75f1047b222a92",
+      "bytes": 2014366
+    },
+    {
+      "id": "berry_mochi_v1",
+      "source": "berry_mochi_v1.png",
+      "status": "review",
+      "prompt": "Production 2D cut-out sprite donor sheet for Mochi Mayhem motion comic. FOUR separate poses of the SAME cursed Strawberry mochi creature, in a strict 2x2 grid, one isolated complete sprite per quadrant, transparent background, no ground shadows, absolutely no lettering or grid lines. Round soft strawberry-pink mochi, green strawberry leaf tuft on top, tiny stub arms and feet, dark rose outlines, glossy candy highlight, cute expressive green eyes. This is cursed Strawberry, NOT Ruby: no gem, no book, no skirt, no humanoid hair. Top left: relaxed idle standing. Top right: scared, trembling, arms close to face. Bottom left: falling downward elongated squash-and-stretch silhouette, eyes shut, limbs spread. Bottom right: brave reaching toward the right, one arm fully extended. Keep each sprite entirely within its quadrant, generous transparent gap and 10 percent edge safety. Similar body sizes. Polished cute pastel chibi game illustration with crisp outlines, limited soft shading, mobile-readable silhouette. A true RGBA transparent sprite sheet, not checkerboard, no text, no watermark.",
+      "sha256": "22457e6114f846b0f525b80b932ab20a2087bf6508e8ff9fd6d52a72b75ebf44",
+      "bytes": 1671597
+    },
+    {
+      "id": "crowd",
+      "source": "crowd.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Paired crowd cutout sheet for a cute confectionery fantasy kingdom motion comic. TWO isolated groups, one group in the upper half, one group in the lower half, on a real transparent background with wide empty margins and a wide clear gap. Upper group: SIX ordinary HUMAN townspeople in a gently curved line, simple friendly faces and tiny chibi bodies, baker, gardener, mother, child, guard, merchant; pastel medieval kitchen-fantasy clothing, no weapons raised. Lower group: the EXACT same six positions and recognizable color palette but all SIX people have been cursed into round mochi with tiny feet, simple faces, small matching hats or apron hints, no human limbs. Keep crowd silhouettes low and wide, all members complete and visible. Crisp dark colored outlines, glossy soft pastel shading, charming storybook art. No background, no shadows, no magic effects, no letters or labels. Objects limited to clothing accessories. This is one two-state sprite sheet, to extract upper and lower crowds as two separate cutouts.",
+      "sha256": "ce8f33e41eba887c4070adb9bf09a7ad165e2a55fb43d162036f02467f6f35e6",
+      "bytes": 2452339
+    },
+    {
+      "id": "friends_free",
+      "source": "friends_free.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Make the FIVE mochi friends from the reference sheet again in the same left-to-right order, now FREE of their traps and happy, as a zoomed-out sprite layout. Each figure must be SMALL within its equal column, occupying only HALF the column width, with big transparent gutters and a generous100pixel outer transparent margin. Five independent complete cutouts, no overlap. Mint is mint-green with leaf tuft;Cocoa chocolate brown with bear ears;Taro lilac with explorer cap;Yuzu orange with green leaves still hugging baby orange Yuzling;Sesame charcoal gray with sesame speckles. Remove the fuel jar, all binding roots, honeycomb and mirror frame entirely. Happy relieved little mochi poses with stub hands open;keep color/face identity and cute painted candy outlines from reference. No human bodies. TRUE transparent background, no ground shadows, no auras, no scenery or text. Entire bodies and all leaves must be complete and well separated, avoid filling canvas edge to edge.",
+      "sha256": "09b77709c7ccb11f9036a4e3d37792dae37fc3b76ff592d70e90721115566ba0",
+      "bytes": 812848
+    },
+    {
+      "id": "friends_trapped",
+      "source": "friends_trapped.png",
+      "tool": "built-in ImageGen",
+      "prompt": "ONE production cutout donor sheet, five separate cursed MOCHI friends arranged left to right in FIVE equal columns, each fully contained with transparent margins. Cute soft round mochi blobs, NOT human characters, tiny stub feet and expressive faces, crisp dark colored outlines and glossy pastel candy shading. Column1 Mint: pale mint-green mochi with mint leaf tuft, trapped inside a clear round glass fuel jar with cork lid, worried face. Column2 Cocoa: chocolate-brown broad bear-eared mochi bound by a small bundle of purple roots around lower body. Column3 Taro: lilac taro mochi with a tiny explorer cap, trapped in a golden honeycomb cell. Column4 Yuzu: orange citrus mochi with green leaf tuft, sitting hugging a tiny baby orange Yuzling, sad face, no scenery. Column5 Sesame: dark gray sesame-speckled mochi trapped inside a small ornate oval mirror frame, worried face. TRUE transparent background, no ground scenery, no aura, no cast shadows, no text. Keep whole traps and all five figures separate with generous gaps. Each occupies at most70 percent of its column width. Colorful and reassuring, not horror. Final extraction makes five independent trapped-pose puppets.",
+      "sha256": "ef7119693dae694c532a0ac56d3fc4c637664e9e3534166b5a8b56ec380211f4",
+      "bytes": 1639576
+    },
+    {
+      "id": "grandma",
+      "tool": "built-in ImageGen",
+      "prompt": "Three isolated full-body poses of the SAME kindly elderly royal head cook for a cute confectionery fantasy motion comic, one per column on a truly transparent background. Left: round red-bean mochi grandma with a tiny white hair bun and small cream apron, enclosed inside a translucent pale blue faceted ice block; her gentle face can be seen through ice. Center: the same round red-bean mochi grandma FREE of ice, small white hair bun, little apron, kindly smile. Right: restored HUMAN grandma with warm brown eyes, white hair in a bun, cream royal kitchen apron over a warm red-brown dress, gentle smiling face, full shoes visible. Cute chibi proportions, dark warm outlines, soft pastel cel shading, glossy mochi materials, clean mobile-readable silhouettes. Large clear transparent gaps, full figure inside each column. No scenery, shadows, glow, text, letters, logos or watermark. Actual sprite donor sheet for extracting three separate cutouts.",
+      "source": "grandma.png",
+      "references": [],
+      "sha256": "e46ffcb6954815b4ace10e951043cf5e9b4b2bdce066b07af213404f625660ec",
+      "bytes": 2262228
+    },
+    {
+      "id": "planter",
+      "tool": "built-in ImageGen",
+      "source": "planter.png",
+      "prompt": "Three distinct full-body puppets on a transparent background in three evenly separated columns for a cute confectionery fantasy motion comic. The attached boss image is the design reference for the First Planter's golden thorn crown, pink heart-seed core and purple root armor. Left: the cursed First Planter seated on a compact root throne, golden crown high on his head, layered gold leaf armor and winding purple roots around an old royal robe, face mostly shaded, sad rather than evil. Middle: SAME First Planter kneeling repentantly, lifting his crown off with both hands, kind old bearded human face emerging beneath root armor; crown still held above his head. Right: the same restored elderly gardener standing with a warm humble smile, white hair and short beard, simple tan gardening tunic, brown trousers and shoes, no crown or magic armor. Cute chibi story art, crisp colored outlines, soft shaded candy-fantasy materials. Entire throne and all limbs inside each column, wide transparent gaps, no backdrop, shadows, aura, labels, text or watermark. This sheet is for extracting 3 independent cutout sprites.",
+      "sha256": "682cd87342369d5eb44932cec544b9821822a74ba6caf6514d587c88534fbe17",
+      "bytes": 2065687
+    },
+    {
+      "id": "props",
+      "tool": "built-in ImageGen",
+      "source": "props.png",
+      "prompt": "Production sprite donor sheet: EIGHT separate cutout props for a cute chibi confectionery fantasy story, strict FOUR columns by TWO rows, one complete object per cell, no object overlaps. TRUE transparent background, no words, no labels, no shadows. Top row left to right: (1) ancient gold thorn-and-leaf crown with central pink heart gem, softly lit; (2) SAME crown with deep visible cracks, still one intact object; (3) sleeping Heart Seed, a small dull brown-pink teardrop seed with a heart-shaped seam; (4) SAME seed awake, warm pink-gold luminous heart seam and a tiny gold shoot, compact silhouette with no external aura. Bottom row left to right: (5) dark purple twisting root tip with a cartoon hungry mouth, scary-cute and no gore; (6) SAME root wounded, curled retreating with small splintered bark edges, no blood; (7) one pale gray flavorless mochi blob with stubby feet, featureless face absolutely no eyes, walking; (8) SAME blank mochi pouncing in an elongated lunge. Consistent crisp colored outlines, pastel cel shading, glossy candy materials. Each object occupies at most 65 percent of cell width/height with plenty of transparent margin. Independent sprites for mechanical extraction. Do not add glow backgrounds, checkerboards or any typography.",
+      "sha256": "899b3524d8a3cdf3dd8c58c4a48f2530f91204b42a460122cde9ebdb596075dd",
+      "bytes": 1150458
+    },
+    {
+      "id": "ruby",
+      "tool": "built-in ImageGen",
+      "prompt": "Two isolated cutout poses of Ruby the tiny ruby-jam spirit from the attached identity reference, side by side on a truly transparent background. Preserve her round pink translucent candy body, red ruby gemstone on forehead, shining dark round eyes, little jam-red arms, striped frilly cream-and-red confectionery skirt. Ruby is a spirit, never a human. Left pose: she crouches hiding behind and tightly hugging a small closed brown recipe book with a berry embossed on its blank cover, worried expression. Right pose: she floats joyfully with happy tears in her eyes, arms open, beaming smile. Cute chibi confectionery fantasy mobile art with dark colored outlines, soft gradients, glossy candy highlights, clean crisp silhouette. No scenery, no glow halo, no floating extra objects, no ground shadows, no letters or numbers on book or anywhere else. Full sprites with ample transparent empty gap and edge margins. This two-pose donor sheet will be cropped into separate puppets.",
+      "source": "ruby.png",
+      "references": [
+        "assets/art/mascot/mascot_ruby.webp"
+      ],
+      "sha256": "2c18a93c49e6e2b4fb9074d9d1e6904d28db57a8ca50eaaafdf3b5cdca8a17a2",
+      "bytes": 1265403
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s07_far_canopy",
+      "file": "cs_s07_far_canopy.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s07_canopy.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "1c6ecb2f028d0366bea88e6c1aa6d9aa566a08386703a6172b07e32468642165",
+      "bytes": 3665713
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s01_layers",
+      "source": "s01_layers.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Six separate environment cutout pieces for a 2D cute confectionery fantasy motion comic, arranged in a clean THREE columns TWO rows grid on a TRUE transparent background, absolutely no text, numbers, background or ground shadows. Top left: a narrow tall wooden pantry shelf edge with a few small jam jars, warm amber/plum shading. Top middle: a broken dark wooden floor plank with splintered edge, diagonal. Top right: an irregular arched outcrop of translucent lime-green acid-sugar crystals, as a side frame around empty center. Bottom left: a cluster of large translucent acid-green sugar crystals, foreground framing. Bottom middle: a winding old brown root growing around a small patch of rocky soil, sideways open composition. Bottom right: a few dark rounded stones and one small old root fragment, low foreground strip. Clean silhouettes, complete objects with ample clear padding inside each cell. Soft dark outlines, warm pastel storybook painting, details readable on phone. These six source pieces will be mechanically placed along the sides of parallax layers, never over character center or bottom dialogue area. No scenery rectangles or glow halos.",
+      "sha256": "16dd30dd6da3f87cb60c14bd24fc46ad6b4b1dd1a785db0df1d46139cec4db27",
+      "bytes": 2315980
+    },
+    {
+      "id": "s01_nest",
+      "source": "s01_nest.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Opaque portrait2:3 far-background for a cute chibi fantasy motion comic: the Sour Ant Nest hidden below a giant royal pantry. Deep underground rounded chamber, huge translucent lime-green acid-sugar crystals embedded in far rock walls, old brown roots following ceiling, small luminous mint pools in distant alcoves. Clear empty center staging ground between35 and70percent height for mochi puppets and Ruby. Bottom28percent plain quiet dark earth, no important objects or focal details there, reserved for dialogue. Friendly cartoon adventure danger, rich plum/green palette, softly colored dark outlines, gentle painted two/three-level shading; warm faint light falls from a hole high above. No characters, ants, eyes, seed, foreground framing crystals, lettering, logo or watermark. Side-wall scenery extends beyond the center safe area for15percent horizontal camera overscan; foreground/mid crystals will be separate cutouts.",
+      "sha256": "f175351f88ffaf3e620cd57d521412e28a19be22bda5fd57e2ad33f9bbff03bc",
+      "bytes": 2105120
+    },
+    {
+      "id": "s01_pantry",
+      "tool": "built-in ImageGen",
+      "source": "s01_pantry.png",
+      "prompt": "Portrait background plate for a 2D layered motion-comic in Mochi Mayhem. A dark abandoned giant royal pantry seen at floor level by tiny mochi-sized characters: warm wooden shelving rises into shadows, old jam jars and flour sacks far back, gaps in floor planks suggest old roots underneath. Quiet anticipation before the floor cracks, charming rather than horror. Cute pastel confectionery fantasy, clean dark colored outlines, soft two/three-level painted shading, cinematic warm amber rim light and plum shadows, no photorealism. Empty center stage for separate animated characters, with floor surface clearly visible from 35 to 72 percent of image height. Bottom 28 percent is quiet uncluttered dark wood with NO important detail, reserved for code dialogue UI. No characters, no creatures, no seed, NO actual crack yet, no foreground floating objects, no text, logo or watermark. Opaque complete far-background, vertical 9:16 composition with 15 percent horizontal overscan for camera panning.",
+      "sha256": "77796788d9fb592fce9e9d0e7fbb564c2f4ed8685ba152819da802bbffcc160f",
+      "bytes": 1831124
+    },
+    {
+      "id": "s01_root_floor",
+      "tool": "built-in ImageGen",
+      "source": "s01_root_floor.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Close view of rocky ground in the Sour Ant Nest, old roots framing a clear flat stone at upper-center where a separate Heart Seed will be placed. Lime acid crystals far off to sides, a warm hint of light on center stone. No seed or characters. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "856b5324bfc0c0fb520ad094cd5f2e6a84829dde9ef685fa588348598c1d304c",
+      "bytes": 1934194
+    },
+    {
+      "id": "s01_shaft",
+      "source": "s01_shaft.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Extend this exact shaft illustration downward into an EXTRA TALL NARROW vertical background, aspect ratio9:32, approximately twice a phone screen's height. Preserve the same pantry opening high at the very top, same illustrated plum-brown earth walls and cyan crystal accents at the far sides. Outpaint a long continuous additional dark shaft below the original, with no second opening and no landing floor. Keep walls visible left and right all the way down, wide clear dark lane in center. This is one continuous descending shaft plate for vertical camera scrolling, NOT two panels and no seam. No people, speed lines, text, borders or watermark. Extra tall9:32 composition is essential; do not crop it into a regular portrait rectangle.",
+      "sha256": "1020e73e641ef1a585d277c63b64b0171b05128b68aebd9bac162912f5328fdd",
+      "bytes": 2090573
+    }
+  ]
+}

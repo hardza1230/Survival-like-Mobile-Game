@@ -1,0 +1,6 @@
+{
+  "id": "s01_layers",
+  "source": "s01_layers.png",
+  "tool": "built-in ImageGen",
+  "prompt": "Six separate environment cutout pieces for a 2D cute confectionery fantasy motion comic, arranged in a clean THREE columns TWO rows grid on a TRUE transparent background, absolutely no text, numbers, background or ground shadows. Top left: a narrow tall wooden pantry shelf edge with a few small jam jars, warm amber/plum shading. Top middle: a broken dark wooden floor plank with splintered edge, diagonal. Top right: an irregular arched outcrop of translucent lime-green acid-sugar crystals, as a side frame around empty center. Bottom left: a cluster of large translucent acid-green sugar crystals, foreground framing. Bottom middle: a winding old brown root growing around a small patch of rocky soil, sideways open composition. Bottom right: a few dark rounded stones and one small old root fragment, low foreground strip. Clean silhouettes, complete objects with ample clear padding inside each cell. Soft dark outlines, warm pastel storybook painting, details readable on phone. These six source pieces will be mechanically placed along the sides of parallax layers, never over character center or bottom dialogue area. No scenery rectangles or glow halos."
+}

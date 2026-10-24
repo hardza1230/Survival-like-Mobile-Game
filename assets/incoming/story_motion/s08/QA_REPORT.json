@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s08/MANIFEST.json",
+      "key": "cs_s08_far_hive",
+      "errors": [],
+      "file": "s08/cs_s08_far_hive.png",
+      "bytes": 3094120,
+      "sha256": "38899d977b44f5fe4d06620ea515a9cd1384be1d5150b997623a1890b0055d63",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    }
+  ]
+}

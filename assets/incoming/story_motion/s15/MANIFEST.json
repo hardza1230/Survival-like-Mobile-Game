@@ -1,0 +1,117 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s15_far_glasshall",
+      "file": "cs_s15_far_glasshall.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s15_glasshall.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "56f59869f5299393fd0da1e1698d9fa5bec2226f3ce85951e76f7d4b2c2028c4",
+      "bytes": 3656593
+    },
+    {
+      "key": "cs_s15_prop_memory_town",
+      "file": "cs_s15_prop_memory_town.png",
+      "width": 520,
+      "height": 1053,
+      "pivot": [
+        0.5,
+        0.9772079772079773
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/memory_mirrors.png",
+      "source_box": [
+        0,
+        0,
+        505,
+        1024
+      ],
+      "source_subject": [
+        16,
+        5,
+        488,
+        1010
+      ],
+      "sha256": "fc4e6c715f27bb0043bf83949677cde2d2e77614cfb705a2a2a90a12998d8acf",
+      "bytes": 983423
+    },
+    {
+      "key": "cs_s15_prop_memory_family",
+      "file": "cs_s15_prop_memory_family.png",
+      "width": 543,
+      "height": 1053,
+      "pivot": [
+        0.5,
+        0.9772079772079773
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/memory_mirrors.png",
+      "source_box": [
+        505,
+        0,
+        1027,
+        1024
+      ],
+      "source_subject": [
+        17,
+        7,
+        512,
+        1012
+      ],
+      "sha256": "4d2b94f2debbdbe8aa821f4b0b60803eff20ac0f037f02f92d216b20d046423f",
+      "bytes": 1004056
+    },
+    {
+      "key": "cs_s15_prop_memory_grandma",
+      "file": "cs_s15_prop_memory_grandma.png",
+      "width": 532,
+      "height": 1053,
+      "pivot": [
+        0.5,
+        0.9772079772079773
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/memory_mirrors.png",
+      "source_box": [
+        1027,
+        0,
+        1536,
+        1024
+      ],
+      "source_subject": [
+        10,
+        5,
+        494,
+        1010
+      ],
+      "sha256": "d136e8ac960f7b541db150da40d8d6472fdb84853ad80b5bba640648e489469e",
+      "bytes": 980946
+    }
+  ]
+}

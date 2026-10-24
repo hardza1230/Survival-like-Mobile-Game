@@ -1,0 +1,122 @@
+{
+  "art_order": 45,
+  "source_only": true,
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan": [
+    1242,
+    1920
+  ],
+  "folders": [
+    {
+      "folder": "s00",
+      "manifest": "s00/MANIFEST.json",
+      "assets": 6
+    },
+    {
+      "folder": "s01",
+      "manifest": "s01/MANIFEST.json",
+      "assets": 10
+    },
+    {
+      "folder": "s02",
+      "manifest": "s02/MANIFEST.json",
+      "assets": 5
+    },
+    {
+      "folder": "s03",
+      "manifest": "s03/MANIFEST.json",
+      "assets": 3
+    },
+    {
+      "folder": "s04",
+      "manifest": "s04/MANIFEST.json",
+      "assets": 2
+    },
+    {
+      "folder": "s05",
+      "manifest": "s05/MANIFEST.json",
+      "assets": 2
+    },
+    {
+      "folder": "s06",
+      "manifest": "s06/MANIFEST.json",
+      "assets": 1
+    },
+    {
+      "folder": "s07",
+      "manifest": "s07/MANIFEST.json",
+      "assets": 1
+    },
+    {
+      "folder": "s08",
+      "manifest": "s08/MANIFEST.json",
+      "assets": 1
+    },
+    {
+      "folder": "s09",
+      "manifest": "s09/MANIFEST.json",
+      "assets": 1
+    },
+    {
+      "folder": "s10",
+      "manifest": "s10/MANIFEST.json",
+      "assets": 1
+    },
+    {
+      "folder": "s11",
+      "manifest": "s11/MANIFEST.json",
+      "assets": 2
+    },
+    {
+      "folder": "s12",
+      "manifest": "s12/MANIFEST.json",
+      "assets": 4
+    },
+    {
+      "folder": "s13",
+      "manifest": "s13/MANIFEST.json",
+      "assets": 2
+    },
+    {
+      "folder": "s14",
+      "manifest": "s14/MANIFEST.json",
+      "assets": 2
+    },
+    {
+      "folder": "s15",
+      "manifest": "s15/MANIFEST.json",
+      "assets": 4
+    },
+    {
+      "folder": "s16",
+      "manifest": "s16/MANIFEST.json",
+      "assets": 7
+    },
+    {
+      "folder": "s17",
+      "manifest": "s17/MANIFEST.json",
+      "assets": 4
+    },
+    {
+      "folder": "shared",
+      "manifest": "shared/MANIFEST.json",
+      "assets": 35
+    },
+    {
+      "folder": "shared_fx",
+      "manifest": "shared_fx/MANIFEST.json",
+      "assets": 10
+    }
+  ],
+  "total_assets": 103,
+  "reused_assets": [
+    {
+      "key": "ruby_talk_proud",
+      "file": "assets/art/mascot/ruby_talk_proud.webp"
+    }
+  ],
+  "canon": "docs/STORY_CANON.md draft2 + section7"
+}

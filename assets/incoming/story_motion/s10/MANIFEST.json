@@ -1,0 +1,36 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s10_far_glass",
+      "file": "cs_s10_far_glass.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s10_glass.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "49d8f7992bf492dc9b92abbcdd809f55fa930f4acdac71688262aa7fd52f29da",
+      "bytes": 4144590
+    }
+  ]
+}

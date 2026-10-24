@@ -93,3 +93,8 @@ The Ruby review clock now uses native Date.now plus an offset for fast600ms debo
 ## Contextual Ruby narration review (24 Oct2026)
 
 The Ruby Canvas harness also exercises the production generic spotlight guide, reserved Build/Mutation/Evolution hint area,4-beat clear bridge and stage-title curtain without combat. The Lobby check additionally opens the real stars guide and verifies the highlighted stage box stays visible atfive phone sizes. A captured animation GIF should retain measured screenshot intervals and be labelled presentation capture,not gameplay. The GitHub fetch connector rejected percent-encoded slashes in branch names on this session;the literal slash branch URL worked. Blob creation/tree equality and immutable byte readback remain the proven publication route.
+
+
+## Order45 source packing (24 Oct2026)
+
+Built-in ImageGen previews can show RGB glow hidden under alpha0; judge cutouts composited onto gray/white before rejecting. Retain donors and exact prompts. Threshold alpha>=32 locates the subject crop; preserve original alpha inside and add24px transparent padding. Inspect grid valleys/manual boundaries rather than assuming generated sheets align perfectly. Full-screen overlays reserve the bottom28%; FX common scale preserves painted growth. When exec_command temporarily stalled in this Windows session, Node REPL fs plus child_process.execFile was verified for mechanical pack/QA and git read/fetch; use the terminal again when responsive.

@@ -1,0 +1,36 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s09_far_ash",
+      "file": "cs_s09_far_ash.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s09_ash.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "b9903884579fbb1e0eaf4e9fddf1d2a6c5426c490dc4c9a1f7595a27d3cfc076",
+      "bytes": 3234130
+    }
+  ]
+}

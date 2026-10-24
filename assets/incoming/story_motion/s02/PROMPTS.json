@@ -1,0 +1,27 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "prompt": "Eight separate cutout environment props arranged in strict 4 columns x 2 rows, generous transparent gaps. Top row: rounded sepia medieval house corner; small warm flower bush; golden First Tree leafy branch; old tree root with grass. Bottom row: giant teal fermented garden leaf and hanging vine; dark teal foreground leaves; bent rusty drain pipe with grate; icy prison arch. Cute polished hand painted anime mobile fantasy game, dark outlines, purple gold palette. Complete objects not touching cell edges, no text no labels no people. True transparent background.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-1ac70a6a-604f-4228-a6e8-6fcc141f70f6.png",
+      "source": "environment_kit.png",
+      "sha256": "58dfd2943b193b69d89061ab257f3d6eedc9a62b548fa1317020a600402b9c1d",
+      "bytes": 2846528
+    },
+    {
+      "id": "s02_drains",
+      "tool": "built-in ImageGen",
+      "source": "s02_drains.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Royal pantry drainage tunnels, curving tarnished pipes and shallow sour water leading toward a rusty grate at upper-middle. The grate has empty space for a separate jam jar to be attached in front. Cool mint/plum with small warm reflected light. NO jar or paper yet. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "5afbbbfb013227e7440d974463a09a14b2d8dedece372bf63685a767be2918d3",
+      "bytes": 2007014
+    },
+    {
+      "prompt": "Eight isolated story props for Mochi Mayhem, strict FOUR columns TWO rows, one complete cutout per cell on TRUE transparent background. Every item at most65percent of cell with generous clear gaps. Top row1: sealed old glass jam jar, ruby-red jam in bottom half, a dry rolled cream recipe paper visible inside its upper neck, no label.2: tightly rolled cream recipe scroll tied with red ribbon, no writing.3: unrolled cream recipe scroll showing ONLY THREE little colored seed illustrations: one large seed, a spray of tiny seeds, bouncing seed arrows represented by simple curved pictorial trails;absolutely NO letters/numbers/glyphs.4: a single dark cast-iron rounded gear with red chili/leaf motifs, open axle hole, perfect side-facing circular silhouette for rotation. Bottom row1: clear cylindrical glass flavor-extraction jar with a small sad pale pink mochi trapped inside, closed brass lid and pipe outlet.2: very small Heart Seed sprout with two pink-gold leaves and a little soil clump.3: same sprout as a young sapling with a few warm green/pink leaves.4: same sapling now a young leafy tree with round candy-like pink-gold foliage and a clear trunk/soil base. Consistent cute fantasy dark outlines and soft painted candy shading. No backdrop,cast shadows,aura halos,text,watermark or grid. This donor sheet is mechanically split into8 separate movable props.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-f29ce03d-e97f-41d7-82e2-d9bf387a2e1e.png",
+      "source": "scene_props.png",
+      "sha256": "72c72c4d316baaabe2ad1d7ee507324fb9067d40ababeeab6a5187814b2454a1",
+      "bytes": 1644998
+    }
+  ]
+}

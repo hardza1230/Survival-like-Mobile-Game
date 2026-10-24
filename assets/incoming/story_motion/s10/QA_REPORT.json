@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s10/MANIFEST.json",
+      "key": "cs_s10_far_glass",
+      "errors": [],
+      "file": "s10/cs_s10_far_glass.png",
+      "bytes": 4144590,
+      "sha256": "49d8f7992bf492dc9b92abbcdd809f55fa930f4acdac71688262aa7fd52f29da",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3001 @@
+{
+  "status": "PASS",
+  "manifest_count": 20,
+  "asset_count": 103,
+  "valid_asset_count": 103,
+  "total_bytes": 129081628,
+  "method": "Pillow PNG verify/CRC + full RGBA decode; SHA256; declared dimensions, alpha, padding, pivots and horizontal FX metadata. Contact sheets use actual retained pixels on gray.",
+  "errors": [],
+  "contact_sheets": [
+    "review/s00-01.jpg",
+    "review/s01-01.jpg",
+    "review/s02-01.jpg",
+    "review/s03-01.jpg",
+    "review/s04-01.jpg",
+    "review/s05-01.jpg",
+    "review/s06-01.jpg",
+    "review/s07-01.jpg",
+    "review/s08-01.jpg",
+    "review/s09-01.jpg",
+    "review/s10-01.jpg",
+    "review/s11-01.jpg",
+    "review/s12-01.jpg",
+    "review/s13-01.jpg",
+    "review/s14-01.jpg",
+    "review/s15-01.jpg",
+    "review/s16-01.jpg",
+    "review/s17-01.jpg",
+    "review/shared-01.jpg",
+    "review/shared-02.jpg",
+    "review/shared_fx-01.jpg"
+  ],
+  "assets": [
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_far_city",
+      "errors": [],
+      "file": "s00/cs_s00_far_city.png",
+      "bytes": 3959815,
+      "sha256": "7549cdea30c48fef84b4219f775b35f88f7fbfb5b9b4610f4a2e042335dbdc74",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_far_tree",
+      "errors": [],
+      "file": "s00/cs_s00_far_tree.png",
+      "bytes": 3883440,
+      "sha256": "e362791a617c472aa95e35b9b4446553f9cc19082c7e9b48758934fb5fa6a3e2",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_mid_city",
+      "errors": [],
+      "file": "s00/cs_s00_mid_city.png",
+      "bytes": 421070,
+      "sha256": "2a81d273bd13edebe2cbb1ffeae3b4658261413b99609ca12758adb06d3598b0",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        250,
+        1242,
+        637
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_fg_city",
+      "errors": [],
+      "file": "s00/cs_s00_fg_city.png",
+      "bytes": 325374,
+      "sha256": "e63d8c1c67f5c00149a089888026b7a1df9eb958c4fc1a42348a27bd42474f4c",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        1050,
+        1242,
+        1353
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_mid_tree",
+      "errors": [],
+      "file": "s00/cs_s00_mid_tree.png",
+      "bytes": 724252,
+      "sha256": "30e6cd09c8fca147a24278cce8dc1ece23690d23fe51e8ab62ed3a54e4242451",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        623
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_fg_tree",
+      "errors": [],
+      "file": "s00/cs_s00_fg_tree.png",
+      "bytes": 568126,
+      "sha256": "966901a89a285ab6c9a332fc8e3cf4b8151dcd060712a7ff9be60d6333b78cab",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        950,
+        1242,
+        1382
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_far_pantry",
+      "errors": [],
+      "file": "s01/cs_s01_far_pantry.png",
+      "bytes": 2594160,
+      "sha256": "5fb748271d0c5529bc3bff55526fecf7ec8b16aea7228d347eb4d017d52f4726",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_far_nest",
+      "errors": [],
+      "file": "s01/cs_s01_far_nest.png",
+      "bytes": 3092983,
+      "sha256": "2fcae62f3f79350e811cc747695480fc544122e35aced0101e0703d81ffd390d",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_far_root_floor",
+      "errors": [],
+      "file": "s01/cs_s01_far_root_floor.png",
+      "bytes": 2819549,
+      "sha256": "3d7ed04929a8783f1f204b1499a137883265d5828b7d8b6ebc99d02923bb02f5",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_far_shaft",
+      "errors": [],
+      "file": "s01/cs_s01_far_shaft.png",
+      "bytes": 5033306,
+      "sha256": "1fafaf7241d57a1aac78da989ed9626fccbe4f55fc4ab3cb98e032dd79042df8",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 3840,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        3840
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_mid_pantry",
+      "errors": [],
+      "file": "s01/cs_s01_mid_pantry.png",
+      "bytes": 155524,
+      "sha256": "2099f9630c6dd8ef38ad988eddef20d972bb5af5e2f6955756bfa11d5b3ec51d",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        100,
+        1242,
+        418
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_fg_pantry",
+      "errors": [],
+      "file": "s01/cs_s01_fg_pantry.png",
+      "bytes": 249246,
+      "sha256": "a798a776bebbe6d50e521693b685d5294a2c1e0601c1405ffb885f4abb2fd218",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        900,
+        1242,
+        1228
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_mid_nest",
+      "errors": [],
+      "file": "s01/cs_s01_mid_nest.png",
+      "bytes": 416117,
+      "sha256": "395b73e3c23af9085af450d581bf2fe4991dae9487260f95fa40fd7fede36c1c",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        220,
+        1242,
+        713
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_fg_nest",
+      "errors": [],
+      "file": "s01/cs_s01_fg_nest.png",
+      "bytes": 444861,
+      "sha256": "4b7db8730666db59017001dfd4c481ab8493c0d6faa250e5fe8205e4d6f156a4",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        850,
+        1242,
+        1274
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_mid_root_floor",
+      "errors": [],
+      "file": "s01/cs_s01_mid_root_floor.png",
+      "bytes": 360834,
+      "sha256": "47f2b6688b998c3a4fad6a2d1010d5067afa8dba9866f361d47f54352730e57d",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        650,
+        1242,
+        1118
+      ]
+    },
+    {
+      "manifest": "s01/MANIFEST.json",
+      "key": "cs_s01_fg_root_floor",
+      "errors": [],
+      "file": "s01/cs_s01_fg_root_floor.png",
+      "bytes": 262749,
+      "sha256": "2f7ae6fb0c9f87df4921597914b91a3aa11f0b5811a8f5665567118e28816f45",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        1020,
+        1242,
+        1291
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_far_drains",
+      "errors": [],
+      "file": "s02/cs_s02_far_drains.png",
+      "bytes": 2949668,
+      "sha256": "ff02a281922fbdc14240e52eb2c643b29342d4c47490c9792df9df81ed19b405",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_prop_jam_jar",
+      "errors": [],
+      "file": "s02/cs_s02_prop_jam_jar.png",
+      "bytes": 239446,
+      "sha256": "73ec1d2cb65317ac1a1839505b3a3503cc20e398e6797e6ab18d7641d4a65bda",
+      "mode": "RGBA",
+      "width": 352,
+      "height": 435,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        328,
+        411
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_prop_recipe_rolled",
+      "errors": [],
+      "file": "s02/cs_s02_prop_recipe_rolled.png",
+      "bytes": 138291,
+      "sha256": "1efe8ec87913097f4db12e57d0256cdb1d325f45488459e2a7da0f85f724e86b",
+      "mode": "RGBA",
+      "width": 359,
+      "height": 377,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        335,
+        353
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_prop_recipe_open",
+      "errors": [],
+      "file": "s02/cs_s02_prop_recipe_open.png",
+      "bytes": 240306,
+      "sha256": "d52158dad4b97aa607c1a6a7fd0338a1c9badba9dce0e2bb8689470261d08578",
+      "mode": "RGBA",
+      "width": 410,
+      "height": 432,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        386,
+        408
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_mid_drains",
+      "errors": [],
+      "file": "s02/cs_s02_mid_drains.png",
+      "bytes": 480515,
+      "sha256": "8107aaca4cd47ce0d21454ca3fc6d6c842939bf7a4a78b95e6d28f1ec581fb47",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        600,
+        1242,
+        1088
+      ]
+    },
+    {
+      "manifest": "s03/MANIFEST.json",
+      "key": "cs_s03_far_furnace",
+      "errors": [],
+      "file": "s03/cs_s03_far_furnace.png",
+      "bytes": 3191002,
+      "sha256": "0f1132f70631dc568c3da28f0f09950f3a92d06ac7240d6e7ed3653bf6d1b2ff",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s03/MANIFEST.json",
+      "key": "cs_s03_prop_gear",
+      "errors": [],
+      "file": "s03/cs_s03_prop_gear.png",
+      "bytes": 279934,
+      "sha256": "1a05298bc59e078de7c36248a3392ec08d8d6a666389657b1960fcc8a47c84a6",
+      "mode": "RGBA",
+      "width": 454,
+      "height": 451,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        430,
+        427
+      ]
+    },
+    {
+      "manifest": "s03/MANIFEST.json",
+      "key": "cs_s03_chr_prisoner",
+      "errors": [],
+      "file": "s03/cs_s03_chr_prisoner.png",
+      "bytes": 228044,
+      "sha256": "ec0151aa657559fb1cee080f83677320ce876179d8abef78c1e4c94322d77846",
+      "mode": "RGBA",
+      "width": 398,
+      "height": 456,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        374,
+        432
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "s04/MANIFEST.json",
+      "key": "cs_s04_far_prison",
+      "errors": [],
+      "file": "s04/cs_s04_far_prison.png",
+      "bytes": 2982251,
+      "sha256": "da6f53bdfb67fd00aa7a18b4ad3ce87e3b5cb7d9f670dc1043af4313752a0da1",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s04/MANIFEST.json",
+      "key": "cs_s04_mid_prison",
+      "errors": [],
+      "file": "s04/cs_s04_mid_prison.png",
+      "bytes": 500953,
+      "sha256": "e46a3354b5d3c809d9a3b6e4dbfd5fe0006e73307927955384d508a5d15d84fd",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        200,
+        1242,
+        666
+      ]
+    },
+    {
+      "manifest": "s05/MANIFEST.json",
+      "key": "cs_s05_far_oven",
+      "errors": [],
+      "file": "s05/cs_s05_far_oven.png",
+      "bytes": 3101402,
+      "sha256": "ae54da097c7d70507215b8a2d0a918bcd35808f7718716816247d2edb7c50967",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s05/MANIFEST.json",
+      "key": "cs_s05_chr_berry_ruby_back",
+      "errors": [],
+      "file": "s05/cs_s05_chr_berry_ruby_back.png",
+      "bytes": 527347,
+      "sha256": "958e362e2e8bf254c4bf8425c377bf99ff8cc953297339660c850812314e0de2",
+      "mode": "RGBA",
+      "width": 683,
+      "height": 654,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        659,
+        630
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "s06/MANIFEST.json",
+      "key": "cs_s06_far_entrance",
+      "errors": [],
+      "file": "s06/cs_s06_far_entrance.png",
+      "bytes": 2814361,
+      "sha256": "7bc1b4d32c973b73c668ae68495a67d441f348ed76a883e313b36b7e4361a3de",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s07/MANIFEST.json",
+      "key": "cs_s07_far_canopy",
+      "errors": [],
+      "file": "s07/cs_s07_far_canopy.png",
+      "bytes": 3665713,
+      "sha256": "1c6ecb2f028d0366bea88e6c1aa6d9aa566a08386703a6172b07e32468642165",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s08/MANIFEST.json",
+      "key": "cs_s08_far_hive",
+      "errors": [],
+      "file": "s08/cs_s08_far_hive.png",
+      "bytes": 3094120,
+      "sha256": "38899d977b44f5fe4d06620ea515a9cd1384be1d5150b997623a1890b0055d63",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s09/MANIFEST.json",
+      "key": "cs_s09_far_ash",
+      "errors": [],
+      "file": "s09/cs_s09_far_ash.png",
+      "bytes": 3234130,
+      "sha256": "b9903884579fbb1e0eaf4e9fddf1d2a6c5426c490dc4c9a1f7595a27d3cfc076",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s10/MANIFEST.json",
+      "key": "cs_s10_far_glass",
+      "errors": [],
+      "file": "s10/cs_s10_far_glass.png",
+      "bytes": 4144590,
+      "sha256": "49d8f7992bf492dc9b92abbcdd809f55fa930f4acdac71688262aa7fd52f29da",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s11/MANIFEST.json",
+      "key": "cs_s11_far_crosssection",
+      "errors": [],
+      "file": "s11/cs_s11_far_crosssection.png",
+      "bytes": 3561395,
+      "sha256": "23975c01d3bceb7da02b6dd6e248b662922ed3e05562ff6c7cbed6adf7893379",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s11/MANIFEST.json",
+      "key": "cs_s11_far_oven_cold",
+      "errors": [],
+      "file": "s11/cs_s11_far_oven_cold.png",
+      "bytes": 3241592,
+      "sha256": "2d93b6282425aeca6cdfe0c17f9a176e26173d8307cec3d71c20e88664ecdeef",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s12/MANIFEST.json",
+      "key": "cs_s12_far_garden",
+      "errors": [],
+      "file": "s12/cs_s12_far_garden.png",
+      "bytes": 3667510,
+      "sha256": "9cb80301b680ae2bbb411571e61c04e0816258a392c14c23dd7d8516a00d0225",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s12/MANIFEST.json",
+      "key": "cs_s12_chr_hunger",
+      "errors": [],
+      "file": "s12/cs_s12_chr_hunger.png",
+      "bytes": 2536479,
+      "sha256": "5652b013b5f51fe2ec228f095b9a87f5c5b054b14cab5f3fa97c3f0a9c640c59",
+      "mode": "RGBA",
+      "width": 1178,
+      "height": 1401,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1154,
+        1377
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "s12/MANIFEST.json",
+      "key": "cs_s12_mid_garden",
+      "errors": [],
+      "file": "s12/cs_s12_mid_garden.png",
+      "bytes": 511333,
+      "sha256": "6711ef43baa418397941d6f7921f67c48d3d054c7323dfc7c532d1af65270ae2",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        180,
+        1242,
+        742
+      ]
+    },
+    {
+      "manifest": "s12/MANIFEST.json",
+      "key": "cs_s12_fg_garden",
+      "errors": [],
+      "file": "s12/cs_s12_fg_garden.png",
+      "bytes": 458503,
+      "sha256": "a73119281eea9098717abae9e8c75338356d68b977eed91bda62e4d9ca7a6e91",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        900,
+        1242,
+        1341
+      ]
+    },
+    {
+      "manifest": "s13/MANIFEST.json",
+      "key": "cs_s13_far_throne",
+      "errors": [],
+      "file": "s13/cs_s13_far_throne.png",
+      "bytes": 3707635,
+      "sha256": "1f33019eff4fd56e6e1e25fa5de789078fcda38f71d43cc7de11745068f9cbf1",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s13/MANIFEST.json",
+      "key": "cs_s13_chr_berry_raise",
+      "errors": [],
+      "file": "s13/cs_s13_chr_berry_raise.png",
+      "bytes": 529581,
+      "sha256": "2ff03425c0f99085604e90040ce3d776f5da49af42bcb28480a8f7160d135bcd",
+      "mode": "RGBA",
+      "width": 620,
+      "height": 666,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        596,
+        642
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "s14/MANIFEST.json",
+      "key": "cs_s14_far_field",
+      "errors": [],
+      "file": "s14/cs_s14_far_field.png",
+      "bytes": 2963452,
+      "sha256": "dd81f2cf88571c747bf90bed61ff6100503e86f22737b554ad438326c4c31dde",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s14/MANIFEST.json",
+      "key": "cs_s14_far_tree",
+      "errors": [],
+      "file": "s14/cs_s14_far_tree.png",
+      "bytes": 3386793,
+      "sha256": "d30b3377616d4fe0200f6348171f80652d8a1be7264eb97d826bb9caa11534dd",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_far_glasshall",
+      "errors": [],
+      "file": "s15/cs_s15_far_glasshall.png",
+      "bytes": 3656593,
+      "sha256": "56f59869f5299393fd0da1e1698d9fa5bec2226f3ce85951e76f7d4b2c2028c4",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_prop_memory_town",
+      "errors": [],
+      "file": "s15/cs_s15_prop_memory_town.png",
+      "bytes": 983423,
+      "sha256": "fc4e6c715f27bb0043bf83949677cde2d2e77614cfb705a2a2a90a12998d8acf",
+      "mode": "RGBA",
+      "width": 520,
+      "height": 1053,
+      "alpha_range": [
+        0,
+        253
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        496,
+        1029
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_prop_memory_family",
+      "errors": [],
+      "file": "s15/cs_s15_prop_memory_family.png",
+      "bytes": 1004056,
+      "sha256": "4d2b94f2debbdbe8aa821f4b0b60803eff20ac0f037f02f92d216b20d046423f",
+      "mode": "RGBA",
+      "width": 543,
+      "height": 1053,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        519,
+        1029
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_prop_memory_grandma",
+      "errors": [],
+      "file": "s15/cs_s15_prop_memory_grandma.png",
+      "bytes": 980946,
+      "sha256": "d136e8ac960f7b541db150da40d8d6472fdb84853ad80b5bba640648e489469e",
+      "mode": "RGBA",
+      "width": 532,
+      "height": 1053,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        508,
+        1029
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_far_clearing",
+      "errors": [],
+      "file": "s16/cs_s16_far_clearing.png",
+      "bytes": 3633216,
+      "sha256": "5a2edbf46959fac339311ed310fd430441eb53d52c07b2503b5dfe4d896dea7d",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_far_hunger_sleep",
+      "errors": [],
+      "file": "s16/cs_s16_far_hunger_sleep.png",
+      "bytes": 3545623,
+      "sha256": "1f7dc9e7a038b22f94f8757128e1913d5e2d21f13643b273470bc04257beb40d",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_prop_sprout",
+      "errors": [],
+      "file": "s16/cs_s16_prop_sprout.png",
+      "bytes": 92642,
+      "sha256": "17004bb4103e96e4ee831478ce30559411032ee846df1602547f5313b460f352",
+      "mode": "RGBA",
+      "width": 270,
+      "height": 325,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        246,
+        301
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_prop_sapling",
+      "errors": [],
+      "file": "s16/cs_s16_prop_sapling.png",
+      "bytes": 155699,
+      "sha256": "54ad2d48aa234f0272ec889ffda0ef1b31e3975241f4a62637ad05971bf85cbe",
+      "mode": "RGBA",
+      "width": 358,
+      "height": 422,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        334,
+        398
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_prop_young_tree",
+      "errors": [],
+      "file": "s16/cs_s16_prop_young_tree.png",
+      "bytes": 270369,
+      "sha256": "13b3d3348030a8f61f089af9cb58e9f73c74a270a20f090a1861a7e245391bb1",
+      "mode": "RGBA",
+      "width": 440,
+      "height": 455,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        416,
+        431
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_chr_berry_plant",
+      "errors": [],
+      "file": "s16/cs_s16_chr_berry_plant.png",
+      "bytes": 542979,
+      "sha256": "6342b0b440fed90060c6f0dd6b60f62ac7e9a502c8f8b0d9f409f5138c276626",
+      "mode": "RGBA",
+      "width": 613,
+      "height": 583,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        589,
+        559
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "s16/MANIFEST.json",
+      "key": "cs_s16_chr_grandma_ruby_hug",
+      "errors": [],
+      "file": "s16/cs_s16_chr_grandma_ruby_hug.png",
+      "bytes": 395957,
+      "sha256": "bc618851d17f0318e28bc801ae037b219e1507ff6a50ebccb8b5fde7956e36ae",
+      "mode": "RGBA",
+      "width": 554,
+      "height": 590,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        530,
+        566
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_far_delve",
+      "errors": [],
+      "file": "s17/cs_s17_far_delve.png",
+      "bytes": 3371743,
+      "sha256": "29af30af8f9259ad76f9dbeb83294d2fb41105a59dd6a8c45244c09125104d24",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_prop_eyes_half",
+      "errors": [],
+      "file": "s17/cs_s17_prop_eyes_half.png",
+      "bytes": 168982,
+      "sha256": "53468638413f5b3543b066ee70acb0b46f49f47fe77314b3968c9f21558aad2e",
+      "mode": "RGBA",
+      "width": 1017,
+      "height": 208,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        993,
+        184
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_prop_eyes_open",
+      "errors": [],
+      "file": "s17/cs_s17_prop_eyes_open.png",
+      "bytes": 311269,
+      "sha256": "b0515e57d3166994def96652fe9dfa16707c241289660ce95cc071529752f193",
+      "mode": "RGBA",
+      "width": 1093,
+      "height": 289,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1069,
+        265
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_chr_team_back",
+      "errors": [],
+      "file": "s17/cs_s17_chr_team_back.png",
+      "bytes": 2241705,
+      "sha256": "6c38b907d0011497dac014adefd35ed97c3c3d1dd0a8ea1cbb56c4f98a79e514",
+      "mode": "RGBA",
+      "width": 1727,
+      "height": 834,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1703,
+        810
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_idle",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_idle.png",
+      "bytes": 217133,
+      "sha256": "7567a74adbd9f6094ea9e203835509b91d7497b3013175771b819740e3762f65",
+      "mode": "RGBA",
+      "width": 507,
+      "height": 471,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        483,
+        447
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_scared",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_scared.png",
+      "bytes": 228793,
+      "sha256": "da11edf43a59cd1caa13f85e5b53f89f9aad4a90b67010552c4bd2ff3e5f00fa",
+      "mode": "RGBA",
+      "width": 470,
+      "height": 482,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        446,
+        458
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_fall",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_fall.png",
+      "bytes": 214222,
+      "sha256": "cafc8132f01023e31ed69025df92c9f85dcf4cc05c5aba42cb06ddb109576eca",
+      "mode": "RGBA",
+      "width": 443,
+      "height": 543,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        419,
+        519
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_reach",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_reach.png",
+      "bytes": 220676,
+      "sha256": "018934a33a3fa1c7cb473df6f2ab498590cec16c764c4426b38c7f207f397178",
+      "mode": "RGBA",
+      "width": 598,
+      "height": 442,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        574,
+        418
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_berry_land",
+      "errors": [],
+      "file": "shared/cs_pup_berry_land.png",
+      "bytes": 653851,
+      "sha256": "34ed2fcd97dcf097dfb2124f7bb1ec275c52d5c2ffc04e74d4ef7045fec31915",
+      "mode": "RGBA",
+      "width": 760,
+      "height": 626,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        736,
+        602
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_berry_hero",
+      "errors": [],
+      "file": "shared/cs_pup_berry_hero.png",
+      "bytes": 700284,
+      "sha256": "89b25710234244a5fb2cb32312622895e355070e9c713ae2e848cb4f0b6daa0c",
+      "mode": "RGBA",
+      "width": 680,
+      "height": 759,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        656,
+        735
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_berry_look",
+      "errors": [],
+      "file": "shared/cs_pup_berry_look.png",
+      "bytes": 600442,
+      "sha256": "dec38a8fc71d5434c05e433103dc8545e48d05fe3d9aef674c88ceb4b8bb3895",
+      "mode": "RGBA",
+      "width": 609,
+      "height": 728,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        585,
+        704
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_ruby_hide",
+      "errors": [],
+      "file": "shared/cs_pup_ruby_hide.png",
+      "bytes": 596838,
+      "sha256": "be8b00b77df869d5fe91301f45fa590198f71ddeb7d51c90312c6ab30252028b",
+      "mode": "RGBA",
+      "width": 828,
+      "height": 705,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        804,
+        681
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_ruby_cry_happy",
+      "errors": [],
+      "file": "shared/cs_pup_ruby_cry_happy.png",
+      "bytes": 667156,
+      "sha256": "575cccc5bf9667778aea9a0cdebad278b7ce372f3128843936daa5c35a9b8b48",
+      "mode": "RGBA",
+      "width": 890,
+      "height": 780,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        866,
+        756
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_grandma_mochi_frozen",
+      "errors": [],
+      "file": "shared/cs_pup_grandma_mochi_frozen.png",
+      "bytes": 713681,
+      "sha256": "f0f44d46a6fda7c5d0f67f77869dfcf5a522d9b26fb457f1046f1dd5b0c9a85d",
+      "mode": "RGBA",
+      "width": 593,
+      "height": 842,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        569,
+        818
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_grandma_mochi",
+      "errors": [],
+      "file": "shared/cs_pup_grandma_mochi.png",
+      "bytes": 450600,
+      "sha256": "e75650dc0489f012b5e9672f17c2c92ad2c8d1a293653e1de710fb5035fa5bb2",
+      "mode": "RGBA",
+      "width": 555,
+      "height": 650,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        531,
+        626
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_grandma_human",
+      "errors": [],
+      "file": "shared/cs_pup_grandma_human.png",
+      "bytes": 547391,
+      "sha256": "b252ec2e5231e19aaa259d399b3feea1f3fa6361d255292fedd2632928235fec",
+      "mode": "RGBA",
+      "width": 504,
+      "height": 891,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        480,
+        867
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_planter_crown",
+      "errors": [],
+      "file": "shared/cs_pup_planter_crown.png",
+      "bytes": 869618,
+      "sha256": "4646df63082c4de960a48702fca0c54844588fcaca713a755ec1c59638b59c5a",
+      "mode": "RGBA",
+      "width": 776,
+      "height": 744,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        752,
+        720
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_planter_kneel",
+      "errors": [],
+      "file": "shared/cs_pup_planter_kneel.png",
+      "bytes": 722190,
+      "sha256": "7e508fe443157627fab1372c2a31e5ca3063f65f95f40a103145c3e92e622f43",
+      "mode": "RGBA",
+      "width": 778,
+      "height": 749,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        754,
+        725
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_planter_old",
+      "errors": [],
+      "file": "shared/cs_pup_planter_old.png",
+      "bytes": 446814,
+      "sha256": "e67599af2a59b24aef541b7f8a9ce27bc60fc2a8d92d4dbc828f804bf611c065",
+      "mode": "RGBA",
+      "width": 506,
+      "height": 730,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        482,
+        706
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crown_glow",
+      "errors": [],
+      "file": "shared/cs_pup_crown_glow.png",
+      "bytes": 202017,
+      "sha256": "b053af5d867993f22be10399a3fcb0631499fea34f0f68b92b61b9fce5b4cce7",
+      "mode": "RGBA",
+      "width": 450,
+      "height": 352,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        426,
+        328
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crown_crack",
+      "errors": [],
+      "file": "shared/cs_pup_crown_crack.png",
+      "bytes": 210187,
+      "sha256": "4274a861fbda095cb3d8fd5aa044141be0117f2ea3df04a15a5ce612615f3037",
+      "mode": "RGBA",
+      "width": 466,
+      "height": 341,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        442,
+        317
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_seed_sleep",
+      "errors": [],
+      "file": "shared/cs_pup_seed_sleep.png",
+      "bytes": 71937,
+      "sha256": "2edab2bff89a9025bfa7eba6f64c887a2af7f4d5519bf1f50d3d47204d2927e2",
+      "mode": "RGBA",
+      "width": 230,
+      "height": 282,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        206,
+        258
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_seed_wake",
+      "errors": [],
+      "file": "shared/cs_pup_seed_wake.png",
+      "bytes": 100617,
+      "sha256": "30cbc1ed430ccc2ec0807121ecc1bf5e12015862f7493dbb7ed1aa972747a3a3",
+      "mode": "RGBA",
+      "width": 237,
+      "height": 367,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        213,
+        343
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_root_tip",
+      "errors": [],
+      "file": "shared/cs_pup_root_tip.png",
+      "bytes": 171073,
+      "sha256": "78aef5f55de504dcc3f9166413efd5184e0e0724b677f33d43f928f06fd325ea",
+      "mode": "RGBA",
+      "width": 403,
+      "height": 447,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        379,
+        423
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_root_wound",
+      "errors": [],
+      "file": "shared/cs_pup_root_wound.png",
+      "bytes": 136360,
+      "sha256": "08e433c01337a4419525ba083c38431c397391818c6ae4b978d1c6e586f23110",
+      "mode": "RGBA",
+      "width": 385,
+      "height": 347,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        361,
+        323
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_blank_mochi_walk",
+      "errors": [],
+      "file": "shared/cs_pup_blank_mochi_walk.png",
+      "bytes": 81294,
+      "sha256": "023dd297c75b0d655a65df959f984397c4d7b90e5230322d51d095d6f0b8a035",
+      "mode": "RGBA",
+      "width": 323,
+      "height": 295,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        299,
+        271
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_blank_mochi_leap",
+      "errors": [],
+      "file": "shared/cs_pup_blank_mochi_leap.png",
+      "bytes": 98756,
+      "sha256": "9880740c9d369f197a80b1992dfdce0c04e404aee149ff8a6b824786b9d15758",
+      "mode": "RGBA",
+      "width": 415,
+      "height": 309,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        391,
+        285
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crowd_people",
+      "errors": [],
+      "file": "shared/cs_pup_crowd_people.png",
+      "bytes": 1272607,
+      "sha256": "ee2952c8c74191f59f35a39d9def7df9f66b14abb918932294eb5600efe05490",
+      "mode": "RGBA",
+      "width": 1533,
+      "height": 581,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1509,
+        557
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crowd_mochi",
+      "errors": [],
+      "file": "shared/cs_pup_crowd_mochi.png",
+      "bytes": 682610,
+      "sha256": "9e5063510b4461b4de432c9bea6bc5ad1362bf15c881af54c2342128dc66ab91",
+      "mode": "RGBA",
+      "width": 1539,
+      "height": 354,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1515,
+        330
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_mint_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_mint_trapped.png",
+      "bytes": 359819,
+      "sha256": "7e5e838a6394f269fe44773cafc12ac21a6ca49a2effd19ffca90a268c9e7838",
+      "mode": "RGBA",
+      "width": 467,
+      "height": 588,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        443,
+        564
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_cocoa_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_cocoa_trapped.png",
+      "bytes": 273712,
+      "sha256": "f536b2a67e93eeec5f238644c1190077cd89c9c2b413df511985917f10324638",
+      "mode": "RGBA",
+      "width": 438,
+      "height": 462,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        414,
+        438
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_taro_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_taro_trapped.png",
+      "bytes": 374476,
+      "sha256": "0e7c1fee43fc85cbdf0618a0ab9ed9c863dbf1d85d96722dfc731c68aafbd64d",
+      "mode": "RGBA",
+      "width": 488,
+      "height": 580,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        464,
+        556
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_yuzu_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_yuzu_trapped.png",
+      "bytes": 224819,
+      "sha256": "d7aa4c7b193c32726428f0c3721aa168ba62014e53bc2c1856d9404b7fd208d0",
+      "mode": "RGBA",
+      "width": 420,
+      "height": 469,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        396,
+        445
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_sesame_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_sesame_trapped.png",
+      "bytes": 387905,
+      "sha256": "905b78b1493ce57b67f11947a4b2859fca35895ce52808e927689f16cc272ca1",
+      "mode": "RGBA",
+      "width": 502,
+      "height": 646,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        478,
+        622
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_mint_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_mint_free.png",
+      "bytes": 143300,
+      "sha256": "8173d375d205c4fd0faa5227d4ffc8456ba6da22af3270b2d7d549435a04e1e5",
+      "mode": "RGBA",
+      "width": 393,
+      "height": 374,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        369,
+        350
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_cocoa_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_cocoa_free.png",
+      "bytes": 153339,
+      "sha256": "b1f102efe39088d896230f22ee51940063266d3d015fe2c6f7fd108d788043f0",
+      "mode": "RGBA",
+      "width": 399,
+      "height": 381,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        375,
+        357
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_taro_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_taro_free.png",
+      "bytes": 148349,
+      "sha256": "3e433333f0fb0e9836f32486e1b9a2f60cb6b19904f4a3502f515e1437a8f083",
+      "mode": "RGBA",
+      "width": 373,
+      "height": 374,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        349,
+        350
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_yuzu_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_yuzu_free.png",
+      "bytes": 195821,
+      "sha256": "50c0e83dff5682af17eec44767235195d781310ebb1621f7ae901237829c186e",
+      "mode": "RGBA",
+      "width": 379,
+      "height": 447,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        355,
+        423
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_sesame_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_sesame_free.png",
+      "bytes": 133892,
+      "sha256": "fe703822ff7108f9c7be9950d56130a97f6f218638aee971246ab63885de5838",
+      "mode": "RGBA",
+      "width": 382,
+      "height": 346,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        358,
+        322
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_speedlines",
+      "errors": [],
+      "file": "shared_fx/cs_fx_speedlines.png",
+      "bytes": 1702171,
+      "sha256": "793930da7db01eb0323df648630bab98220016cfd5e99a8e9f210e626ff7c0d1",
+      "mode": "RGBA",
+      "width": 4320,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        4320,
+        1920
+      ],
+      "frames": 4
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_flash",
+      "errors": [],
+      "file": "shared_fx/cs_fx_flash.png",
+      "bytes": 1717017,
+      "sha256": "b9e34586ae73c02d4d92cbf9e5285624fae4aae6a45786d3e28bfc13b26dd3c2",
+      "mode": "RGBA",
+      "width": 1080,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        253
+      ],
+      "alpha_bbox": [
+        8,
+        14,
+        1072,
+        1905
+      ],
+      "frames": 1
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_transform",
+      "errors": [],
+      "file": "shared_fx/cs_fx_transform.png",
+      "bytes": 3359434,
+      "sha256": "43b0b33d24091fffd1b423a96d6bccbe731980bf8d2f71f6701d7100d5d7e6ee",
+      "mode": "RGBA",
+      "width": 6144,
+      "height": 768,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        6144,
+        768
+      ],
+      "frames": 8
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_seed_glow",
+      "errors": [],
+      "file": "shared_fx/cs_fx_seed_glow.png",
+      "bytes": 579165,
+      "sha256": "1d23aab92bf8769b66403740241c2c6af89a64e876c359c4a406da0c5f8ca8b5",
+      "mode": "RGBA",
+      "width": 2304,
+      "height": 384,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        2304,
+        384
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_flavor_ribbon",
+      "errors": [],
+      "file": "shared_fx/cs_fx_flavor_ribbon.png",
+      "bytes": 684006,
+      "sha256": "a004cfb59ae59e6ef33e986930d41ecddba32532112c9aad588e293391ac014c",
+      "mode": "RGBA",
+      "width": 6144,
+      "height": 256,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        6144,
+        256
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_crack",
+      "errors": [],
+      "file": "shared_fx/cs_fx_crack.png",
+      "bytes": 549443,
+      "sha256": "7b37931db239f29db268d9250d99c5d5ca8fc0bfaadb653914e11b7ec613865f",
+      "mode": "RGBA",
+      "width": 5400,
+      "height": 600,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        302,
+        8,
+        5216,
+        592
+      ],
+      "frames": 5
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_dust",
+      "errors": [],
+      "file": "shared_fx/cs_fx_dust.png",
+      "bytes": 277706,
+      "sha256": "9df1c530f8dea0656bc38e22f44092a7f50dfa1609b2451f156a408a971f4dcb",
+      "mode": "RGBA",
+      "width": 3072,
+      "height": 256,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        70,
+        8,
+        3031,
+        248
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_frost_shatter",
+      "errors": [],
+      "file": "shared_fx/cs_fx_frost_shatter.png",
+      "bytes": 1721475,
+      "sha256": "96476233007bfb940457a31a74742d168f130b6f188a8d9f9ef39e338f904b26",
+      "mode": "RGBA",
+      "width": 4608,
+      "height": 768,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        8,
+        8,
+        4600,
+        760
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_curse_smoke",
+      "errors": [],
+      "file": "shared_fx/cs_fx_curse_smoke.png",
+      "bytes": 2035589,
+      "sha256": "191888315e9ee48df538978a1b51235e2cb035e5e733c4d88c388221b020acaa",
+      "mode": "RGBA",
+      "width": 4608,
+      "height": 768,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        39,
+        8,
+        4574,
+        760
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_sparkle",
+      "errors": [],
+      "file": "shared_fx/cs_fx_sparkle.png",
+      "bytes": 140089,
+      "sha256": "dbd978c40edc277626f861d6eb107ac38db712d636916da6f4425c13f0ea5301",
+      "mode": "RGBA",
+      "width": 1536,
+      "height": 256,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1536,
+        256
+      ],
+      "frames": 6
+    }
+  ],
+  "original_sources": [
+    {
+      "file": "_sources/berry_mochi_v1.png",
+      "sha256": "22457e6114f846b0f525b80b932ab20a2087bf6508e8ff9fd6d52a72b75ebf44",
+      "bytes": 1671597,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/berry_human.png",
+      "sha256": "9cb6240059a9c66c61e98f1e5ae7f3b2597bd78f2165c1ec1c75f1047b222a92",
+      "bytes": 2014366,
+      "size": [
+        2172,
+        724
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/crowd.png",
+      "sha256": "ce8f33e41eba887c4070adb9bf09a7ad165e2a55fb43d162036f02467f6f35e6",
+      "bytes": 2452339,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/environment_kit.png",
+      "sha256": "58dfd2943b193b69d89061ab257f3d6eedc9a62b548fa1317020a600402b9c1d",
+      "bytes": 2846528,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/friends_free.png",
+      "sha256": "09b77709c7ccb11f9036a4e3d37792dae37fc3b76ff592d70e90721115566ba0",
+      "bytes": 812848,
+      "size": [
+        2172,
+        724
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/friends_trapped.png",
+      "sha256": "ef7119693dae694c532a0ac56d3fc4c637664e9e3534166b5a8b56ec380211f4",
+      "bytes": 1639576,
+      "size": [
+        2172,
+        724
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_crack.png",
+      "sha256": "c0ee9c112ca1bcde1d384e52c697fafec23777e7b1852970cdeb488f95ebf2e5",
+      "bytes": 1218408,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_dust.png",
+      "sha256": "acf5dc709d05b11682fbeb184ca9cac7da2646b2358cf9b2aaec32b6f9ebddc4",
+      "bytes": 617746,
+      "size": [
+        2172,
+        724
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_flash.png",
+      "sha256": "cdfba52e9bb409a3a13d3dee13ee09cee28daf891a65494a3e57ca239d585bc3",
+      "bytes": 1680976,
+      "size": [
+        941,
+        1672
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_frost.png",
+      "sha256": "25784d6338d8b75002dbf54be533667d1b8dee35b722971b0664a8c799cb64a3",
+      "bytes": 1782601,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_ribbon.png",
+      "sha256": "4e237dc35d3f134428f57a3651ce87ecea488595bd52b28ecefb8718394e00f4",
+      "bytes": 1306902,
+      "size": [
+        2172,
+        724
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_seed.png",
+      "sha256": "98ae322d72e321788e13dcce8b426cbd8b482d18566108824a1a3ee4a8317dd1",
+      "bytes": 1002962,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_smoke.png",
+      "sha256": "7007c1835134c6f5b4362a414d9ff8779de5b221d2e9b750eb5cfe438a799462",
+      "bytes": 1853889,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_sparkle.png",
+      "sha256": "bc970db92e5ede62a6c6215697c82b9ebc038c63e1452c4debb1177231fbd40a",
+      "bytes": 619395,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_speed.png",
+      "sha256": "5d62dd2bd6f8aeb2ad4cb7fdab452feef0bca98f63157300393690698925fc95",
+      "bytes": 785442,
+      "size": [
+        1881,
+        836
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/fx_transform.png",
+      "sha256": "37c864f52a06ada1103a2899d2f852592c2b77efda39782c6a583f5ab608c630",
+      "bytes": 1493075,
+      "size": [
+        1774,
+        887
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/grandma.png",
+      "sha256": "e46ffcb6954815b4ace10e951043cf5e9b4b2bdce066b07af213404f625660ec",
+      "bytes": 2262228,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/hunger_eyes.png",
+      "sha256": "ab3670370406862addace49c85c0d5b87cf11c520d44fb9c110f3381231da99d",
+      "bytes": 545708,
+      "size": [
+        1145,
+        1374
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/hunger_silhouette.png",
+      "sha256": "9331f9d573aaef57cf61e047bdb03c1ab123479907075ffc88355f0d2f738e16",
+      "bytes": 2680481,
+      "size": [
+        1145,
+        1374
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/memory_mirrors.png",
+      "sha256": "5a7f73ec221aa2e5b34ddc90bc861d7489a3ccff9aa1edd0111c6af6a7afcd7b",
+      "bytes": 3283854,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/planter.png",
+      "sha256": "682cd87342369d5eb44932cec544b9821822a74ba6caf6514d587c88534fbe17",
+      "bytes": 2065687,
+      "size": [
+        2172,
+        724
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/props.png",
+      "sha256": "899b3524d8a3cdf3dd8c58c4a48f2530f91204b42a460122cde9ebdb596075dd",
+      "bytes": 1150458,
+      "size": [
+        1774,
+        887
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/ruby.png",
+      "sha256": "2c18a93c49e6e2b4fb9074d9d1e6904d28db57a8ca50eaaafdf3b5cdca8a17a2",
+      "bytes": 1265403,
+      "size": [
+        1774,
+        887
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s00_city.png",
+      "sha256": "d2c2ee14aed46a116ce029aed793f85d3a85d4db88f29b8c6a0767a50fe66b99",
+      "bytes": 2626374,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s00_tree.png",
+      "sha256": "4b682d55fee92c7675783c49439c4002162d2c8e63bf90b69878272757539094",
+      "bytes": 2550421,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s01_layers.png",
+      "sha256": "16dd30dd6da3f87cb60c14bd24fc46ad6b4b1dd1a785db0df1d46139cec4db27",
+      "bytes": 2315980,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s01_nest.png",
+      "sha256": "f175351f88ffaf3e620cd57d521412e28a19be22bda5fd57e2ad33f9bbff03bc",
+      "bytes": 2105120,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s01_pantry.png",
+      "sha256": "77796788d9fb592fce9e9d0e7fbb564c2f4ed8685ba152819da802bbffcc160f",
+      "bytes": 1831124,
+      "size": [
+        941,
+        1672
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s01_root_floor.png",
+      "sha256": "856b5324bfc0c0fb520ad094cd5f2e6a84829dde9ef685fa588348598c1d304c",
+      "bytes": 1934194,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s01_shaft.png",
+      "sha256": "1020e73e641ef1a585d277c63b64b0171b05128b68aebd9bac162912f5328fdd",
+      "bytes": 2090573,
+      "size": [
+        744,
+        2115
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s01_shaft_short.png",
+      "sha256": "8329ceb82b661226a4a2dc743e06732e2a2e21cd3c28f2de292f89233834595c",
+      "bytes": 2131987,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s02_drains.png",
+      "sha256": "5afbbbfb013227e7440d974463a09a14b2d8dedece372bf63685a767be2918d3",
+      "bytes": 2007014,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s03_furnace.png",
+      "sha256": "52ad65ab30b54ba01ef41c542735edc89bd8ad93beaec9a838470a083d364b8a",
+      "bytes": 2093022,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s04_prison.png",
+      "sha256": "e5e84298dfecb53302b111b85bcc195aad6f1e81c38021a0dfd50cc139bcfd28",
+      "bytes": 2017912,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s05_oven.png",
+      "sha256": "f874b38e655a5c6ff0816192b3b45a61b2f8463c281d9fa5f10b12337a65e110",
+      "bytes": 2070296,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s06_entrance.png",
+      "sha256": "e38b4b392fad3597ccb358f453c035d66e0b7228b0c2f134adb3f509fad2a8a6",
+      "bytes": 1895387,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s07_canopy.png",
+      "sha256": "79296a9539190cbe8829e57b99d04cbb2007f76c0ecad809f343cce33352eb5e",
+      "bytes": 2466417,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s08_hive.png",
+      "sha256": "ddb03ea06421b82fce418b170f88179f4ffbcde1699c70458d5e2b9cd0eefa80",
+      "bytes": 2067092,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s09_ash.png",
+      "sha256": "f8960a8007f9cd905b77a0e573b26dd7b0520d57d8fe637ab477ac9f77436cf8",
+      "bytes": 2195591,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s10_glass.png",
+      "sha256": "bfd416dfcc7f0c6b067e85b0b9beff7998be698479711c16b2ca0ce28df2ce07",
+      "bytes": 2816042,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s11_crosssection.png",
+      "sha256": "4aa1a348c07a6ace6419d624cbc22a32f33136350b58af76843a1e646240ffdb",
+      "bytes": 2395744,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s11_oven_cold.png",
+      "sha256": "234b60dfbbeddbd9c76fb0e696a51e0f6f821397c2190644d129c4f67e484c2f",
+      "bytes": 2198980,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s12_garden.png",
+      "sha256": "4ba2eeedb709cb7cc3fb565099e2a22b21bd961ffec17c308af5c3e3b56478e9",
+      "bytes": 2465170,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s13_throne.png",
+      "sha256": "c3fcdbdc34965e101dc712b32a6fb677815a71268a1870ad51c30630249df705",
+      "bytes": 2479322,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s14_field.png",
+      "sha256": "7236e41d218b7acc16d9435b0bf389b22231623dd83e99a8de2d514addee898e",
+      "bytes": 2098460,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s14_tree.png",
+      "sha256": "8f0d1637ded082cedf19f70c1ac180ba399c4025e56c63897aad0597c1263d6a",
+      "bytes": 2285266,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s15_glasshall.png",
+      "sha256": "4b1a199c0219138ad81dbf9ebfb0895b343b468e138a1d2935b22d4847eaf710",
+      "bytes": 2462222,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s16_clearing.png",
+      "sha256": "2f0152248a5491d64ad9e3c113e37336d95b5465fa99460856aa94eb4a462332",
+      "bytes": 2426989,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s16_hunger_sleep.png",
+      "sha256": "7e7bac8322ea6cd1ba31fee5a5b9ea1403cb771b60f937af0338753202bf80d0",
+      "bytes": 2338604,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/s17_delve.png",
+      "sha256": "3df879ae231e869f6dc746916d6fd85838bf1025f2086f61aeefb4218a415367",
+      "bytes": 2249998,
+      "size": [
+        1024,
+        1536
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/scene_props.png",
+      "sha256": "72c72c4d316baaabe2ad1d7ee507324fb9067d40ababeeab6a5187814b2454a1",
+      "bytes": 1644998,
+      "size": [
+        1774,
+        887
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/story_poses.png",
+      "sha256": "96434e1cb82e942bb3e0e0992ac2fbd2d6870c88a28ea327267d00c424f017ef",
+      "bytes": 2043145,
+      "size": [
+        1312,
+        1199
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/team_back.png",
+      "sha256": "64dfd2863a2ffc8ad7a055fcbbe8be63aafe2f4073f7345944589d2343b17dd8",
+      "bytes": 2988418,
+      "size": [
+        1536,
+        1024
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "_sources/team_back_complete.png",
+      "sha256": "fa3266f2399cbe23ec35ba2ac64b6edabab31ed0dcb1f80ba8c6806c426c9dc0",
+      "bytes": 2342101,
+      "size": [
+        1890,
+        832
+      ],
+      "status": "PASS"
+    }
+  ]
+}

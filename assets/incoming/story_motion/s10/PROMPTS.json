@@ -1,0 +1,13 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s10_glass",
+      "source": "s10_glass.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Royal Glass Greenhouse, a beautiful abandoned greenhouse of rounded clear glass panels, silver frames with sesame-like star motifs, a clear central stage for a separate mirror-trapped Sesame. Cool lavender and teal light;no trapped characters and no mirror panes floating in background. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "bfd416dfcc7f0c6b067e85b0b9beff7998be698479711c16b2ca0ce28df2ce07",
+      "bytes": 2816042
+    }
+  ]
+}

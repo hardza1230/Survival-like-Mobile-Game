@@ -1,0 +1,49 @@
+{
+  "method": "Mechanical 360x780 keyshot proofs from delivered story-motion PNG layers.",
+  "size": [
+    360,
+    780
+  ],
+  "narration_reserved_bottom": 219,
+  "outputs": [
+    "S00-curse-360x780.png",
+    "S02-jar-360x780.png",
+    "S04-GrandmaFrozen-360x780.png",
+    "S12-Hunger-360x780.png",
+    "S15-memorymirrors-360x780.png",
+    "S16-GrandmaRuby-360x780.png",
+    "S17-team-360x780.png"
+  ],
+  "assets": {
+    "cs_fx_curse_smoke": "191888315e9ee48df538978a1b51235e2cb035e5e733c4d88c388221b020acaa",
+    "cs_fx_flavor_ribbon": "a004cfb59ae59e6ef33e986930d41ecddba32532112c9aad588e293391ac014c",
+    "cs_fx_sparkle": "dbd978c40edc277626f861d6eb107ac38db712d636916da6f4425c13f0ea5301",
+    "cs_pup_berry_look": "dec38a8fc71d5434c05e433103dc8545e48d05fe3d9aef674c88ceb4b8bb3895",
+    "cs_pup_crowd_mochi": "9e5063510b4461b4de432c9bea6bc5ad1362bf15c881af54c2342128dc66ab91",
+    "cs_pup_grandma_mochi_frozen": "f0f44d46a6fda7c5d0f67f77869dfcf5a522d9b26fb457f1046f1dd5b0c9a85d",
+    "cs_pup_planter_old": "e67599af2a59b24aef541b7f8a9ce27bc60fc2a8d92d4dbc828f804bf611c065",
+    "cs_pup_ruby_hide": "be8b00b77df869d5fe91301f45fa590198f71ddeb7d51c90312c6ab30252028b",
+    "cs_s00_far_city": "7549cdea30c48fef84b4219f775b35f88f7fbfb5b9b4610f4a2e042335dbdc74",
+    "cs_s00_fg_city": "e63d8c1c67f5c00149a089888026b7a1df9eb958c4fc1a42348a27bd42474f4c",
+    "cs_s00_mid_city": "2a81d273bd13edebe2cbb1ffeae3b4658261413b99609ca12758adb06d3598b0",
+    "cs_s02_far_drains": "ff02a281922fbdc14240e52eb2c643b29342d4c47490c9792df9df81ed19b405",
+    "cs_s02_mid_drains": "8107aaca4cd47ce0d21454ca3fc6d6c842939bf7a4a78b95e6d28f1ec581fb47",
+    "cs_s02_prop_jam_jar": "73ec1d2cb65317ac1a1839505b3a3503cc20e398e6797e6ab18d7641d4a65bda",
+    "cs_s02_prop_recipe_rolled": "1efe8ec87913097f4db12e57d0256cdb1d325f45488459e2a7da0f85f724e86b",
+    "cs_s04_far_prison": "da6f53bdfb67fd00aa7a18b4ad3ce87e3b5cb7d9f670dc1043af4313752a0da1",
+    "cs_s04_mid_prison": "e46a3354b5d3c809d9a3b6e4dbfd5fe0006e73307927955384d508a5d15d84fd",
+    "cs_s12_chr_hunger": "5652b013b5f51fe2ec228f095b9a87f5c5b054b14cab5f3fa97c3f0a9c640c59",
+    "cs_s12_far_garden": "9cb80301b680ae2bbb411571e61c04e0816258a392c14c23dd7d8516a00d0225",
+    "cs_s12_fg_garden": "a73119281eea9098717abae9e8c75338356d68b977eed91bda62e4d9ca7a6e91",
+    "cs_s12_mid_garden": "6711ef43baa418397941d6f7921f67c48d3d054c7323dfc7c532d1af65270ae2",
+    "cs_s15_far_glasshall": "56f59869f5299393fd0da1e1698d9fa5bec2226f3ce85951e76f7d4b2c2028c4",
+    "cs_s15_prop_memory_family": "4d2b94f2debbdbe8aa821f4b0b60803eff20ac0f037f02f92d216b20d046423f",
+    "cs_s15_prop_memory_grandma": "d136e8ac960f7b541db150da40d8d6472fdb84853ad80b5bba640648e489469e",
+    "cs_s15_prop_memory_town": "fc4e6c715f27bb0043bf83949677cde2d2e77614cfb705a2a2a90a12998d8acf",
+    "cs_s16_chr_grandma_ruby_hug": "bc618851d17f0318e28bc801ae037b219e1507ff6a50ebccb8b5fde7956e36ae",
+    "cs_s16_far_clearing": "5a2edbf46959fac339311ed310fd430441eb53d52c07b2503b5dfe4d896dea7d",
+    "cs_s16_prop_young_tree": "13b3d3348030a8f61f089af9cb58e9f73c74a270a20f090a1861a7e245391bb1",
+    "cs_s17_chr_team_back": "6c38b907d0011497dac014adefd35ed97c3c3d1dd0a8ea1cbb56c4f98a79e514",
+    "cs_s17_far_delve": "29af30af8f9259ad76f9dbeb83294d2fb41105a59dd6a8c45244c09125104d24"
+  }
+}

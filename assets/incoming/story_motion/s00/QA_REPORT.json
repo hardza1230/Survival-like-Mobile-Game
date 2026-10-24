@@ -1,0 +1,131 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_far_city",
+      "errors": [],
+      "file": "s00/cs_s00_far_city.png",
+      "bytes": 3959815,
+      "sha256": "7549cdea30c48fef84b4219f775b35f88f7fbfb5b9b4610f4a2e042335dbdc74",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_far_tree",
+      "errors": [],
+      "file": "s00/cs_s00_far_tree.png",
+      "bytes": 3883440,
+      "sha256": "e362791a617c472aa95e35b9b4446553f9cc19082c7e9b48758934fb5fa6a3e2",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_mid_city",
+      "errors": [],
+      "file": "s00/cs_s00_mid_city.png",
+      "bytes": 421070,
+      "sha256": "2a81d273bd13edebe2cbb1ffeae3b4658261413b99609ca12758adb06d3598b0",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        250,
+        1242,
+        637
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_fg_city",
+      "errors": [],
+      "file": "s00/cs_s00_fg_city.png",
+      "bytes": 325374,
+      "sha256": "e63d8c1c67f5c00149a089888026b7a1df9eb958c4fc1a42348a27bd42474f4c",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        1050,
+        1242,
+        1353
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_mid_tree",
+      "errors": [],
+      "file": "s00/cs_s00_mid_tree.png",
+      "bytes": 724252,
+      "sha256": "30e6cd09c8fca147a24278cce8dc1ece23690d23fe51e8ab62ed3a54e4242451",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        623
+      ]
+    },
+    {
+      "manifest": "s00/MANIFEST.json",
+      "key": "cs_s00_fg_tree",
+      "errors": [],
+      "file": "s00/cs_s00_fg_tree.png",
+      "bytes": 568126,
+      "sha256": "966901a89a285ab6c9a332fc8e3cf4b8151dcd060712a7ff9be60d6333b78cab",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        950,
+        1242,
+        1382
+      ]
+    }
+  ]
+}

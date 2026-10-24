@@ -1,0 +1,48 @@
+{
+  "method": "Offline art-order preview assembled exclusively from delivered PNG layers.\n\nThis is a mechanical staging proof, not a gameplay capture or runtime player.\nCaptions and the reserved narration area are review annotations only.\n",
+  "size": [
+    360,
+    780
+  ],
+  "frames": 112,
+  "frame_ms": 100,
+  "narration_reserved_bottom": 219,
+  "assets": {
+    "cs_fx_crack": "7b37931db239f29db268d9250d99c5d5ca8fc0bfaadb653914e11b7ec613865f",
+    "cs_fx_dust": "9df1c530f8dea0656bc38e22f44092a7f50dfa1609b2451f156a408a971f4dcb",
+    "cs_fx_flash": "b9e34586ae73c02d4d92cbf9e5285624fae4aae6a45786d3e28bfc13b26dd3c2",
+    "cs_fx_seed_glow": "1d23aab92bf8769b66403740241c2c6af89a64e876c359c4a406da0c5f8ca8b5",
+    "cs_fx_sparkle": "dbd978c40edc277626f861d6eb107ac38db712d636916da6f4425c13f0ea5301",
+    "cs_fx_speedlines": "793930da7db01eb0323df648630bab98220016cfd5e99a8e9f210e626ff7c0d1",
+    "cs_fx_transform": "43b0b33d24091fffd1b423a96d6bccbe731980bf8d2f71f6701d7100d5d7e6ee",
+    "cs_pup_berry_hero": "89b25710234244a5fb2cb32312622895e355070e9c713ae2e848cb4f0b6daa0c",
+    "cs_pup_berry_land": "34ed2fcd97dcf097dfb2124f7bb1ec275c52d5c2ffc04e74d4ef7045fec31915",
+    "cs_pup_blank_mochi_leap": "9880740c9d369f197a80b1992dfdce0c04e404aee149ff8a6b824786b9d15758",
+    "cs_pup_blank_mochi_walk": "023dd297c75b0d655a65df959f984397c4d7b90e5230322d51d095d6f0b8a035",
+    "cs_pup_mochi_berry_fall": "cafc8132f01023e31ed69025df92c9f85dcf4cc05c5aba42cb06ddb109576eca",
+    "cs_pup_mochi_berry_idle": "7567a74adbd9f6094ea9e203835509b91d7497b3013175771b819740e3762f65",
+    "cs_pup_mochi_berry_reach": "018934a33a3fa1c7cb473df6f2ab498590cec16c764c4426b38c7f207f397178",
+    "cs_pup_mochi_berry_scared": "da11edf43a59cd1caa13f85e5b53f89f9aad4a90b67010552c4bd2ff3e5f00fa",
+    "cs_pup_root_tip": "78aef5f55de504dcc3f9166413efd5184e0e0724b677f33d43f928f06fd325ea",
+    "cs_pup_ruby_hide": "be8b00b77df869d5fe91301f45fa590198f71ddeb7d51c90312c6ab30252028b",
+    "cs_pup_seed_sleep": "2edab2bff89a9025bfa7eba6f64c887a2af7f4d5519bf1f50d3d47204d2927e2",
+    "cs_pup_seed_wake": "30cbc1ed430ccc2ec0807121ecc1bf5e12015862f7493dbb7ed1aa972747a3a3",
+    "cs_s01_far_nest": "2fcae62f3f79350e811cc747695480fc544122e35aced0101e0703d81ffd390d",
+    "cs_s01_far_pantry": "5fb748271d0c5529bc3bff55526fecf7ec8b16aea7228d347eb4d017d52f4726",
+    "cs_s01_far_root_floor": "3d7ed04929a8783f1f204b1499a137883265d5828b7d8b6ebc99d02923bb02f5",
+    "cs_s01_far_shaft": "1fafaf7241d57a1aac78da989ed9626fccbe4f55fc4ab3cb98e032dd79042df8",
+    "cs_s01_fg_nest": "4b7db8730666db59017001dfd4c481ab8493c0d6faa250e5fe8205e4d6f156a4",
+    "cs_s01_fg_pantry": "a798a776bebbe6d50e521693b685d5294a2c1e0601c1405ffb885f4abb2fd218",
+    "cs_s01_fg_root_floor": "2f7ae6fb0c9f87df4921597914b91a3aa11f0b5811a8f5665567118e28816f45",
+    "cs_s01_mid_nest": "395b73e3c23af9085af450d581bf2fe4991dae9487260f95fa40fd7fede36c1c",
+    "cs_s01_mid_pantry": "2099f9630c6dd8ef38ad988eddef20d972bb5af5e2f6955756bfa11d5b3ec51d",
+    "cs_s01_mid_root_floor": "47f2b6688b998c3a4fad6a2d1010d5067afa8dba9866f361d47f54352730e57d",
+    "ruby_talk_proud": "cd1e4f8d1939bdf613e6a834e87c5bcaf2162b30f51782a80577cbd94738528e"
+  },
+  "external_assets": {
+    "ruby_talk_proud": {
+      "path": "assets/art/mascot/ruby_talk_proud.webp",
+      "sha256": "cd1e4f8d1939bdf613e6a834e87c5bcaf2162b30f51782a80577cbd94738528e"
+    }
+  }
+}

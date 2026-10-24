@@ -1,0 +1,9 @@
+{
+  "id": "berry_human",
+  "tool": "built-in ImageGen",
+  "prompt": "Production character pose sheet, exactly THREE isolated full-body drawings arranged left to right on a real transparent background. Use the attached image ONLY as the character identity reference, do not reproduce its pose or framing. Strawberry: pink side ponytail, green eyes, strawberry clip and tiny white flowers, dark chocolate red/white frilled outfit, dark red boots, strawberry-themed Heart Seed Gun. Cute chibi game illustration, crisp dark rose outlines and soft cel shading, no cast shadows, NO glow behind figures, no backdrop, no text. Left: landing crouch after transformation, one hand touching ground, full boots visible. Middle: triumphant upright hero pose holding her strawberry seed gun up. Right: standing relaxed, looking to her left thoughtfully. Entire figure visible in each isolated equally spaced column with wide transparent clearance, no cropped hair or feet. Sprite donor sheet for mechanical extraction into three separate cutout files.",
+  "source": "berry_human.png",
+  "references": [
+    "assets/character_cards/card_momo.png"
+  ]
+}

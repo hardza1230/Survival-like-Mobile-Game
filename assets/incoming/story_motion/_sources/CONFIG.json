@@ -1,0 +1,1260 @@
+{
+  "jobs": [
+    {
+      "source": "berry_mochi_v1.png",
+      "cols": 2,
+      "rows": 2,
+      "items": [
+        {
+          "key": "cs_pup_mochi_berry_idle",
+          "floating": false,
+          "box": [
+            0,
+            0,
+            768,
+            480
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_berry_scared",
+          "floating": false,
+          "box": [
+            768,
+            0,
+            1536,
+            480
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_berry_fall",
+          "floating": true,
+          "box": [
+            0,
+            480,
+            768,
+            1024
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_berry_reach",
+          "floating": false,
+          "box": [
+            768,
+            480,
+            1536,
+            1024
+          ]
+        }
+      ]
+    },
+    {
+      "source": "berry_human.png",
+      "cols": 3,
+      "items": [
+        {
+          "key": "cs_pup_berry_land",
+          "box": [
+            0,
+            0,
+            750,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_berry_hero",
+          "box": [
+            750,
+            0,
+            1448,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_berry_look",
+          "box": [
+            1448,
+            0,
+            2172,
+            724
+          ]
+        }
+      ]
+    },
+    {
+      "source": "ruby.png",
+      "cols": 2,
+      "items": [
+        {
+          "key": "cs_pup_ruby_hide",
+          "floating": true
+        },
+        {
+          "key": "cs_pup_ruby_cry_happy",
+          "floating": true
+        }
+      ]
+    },
+    {
+      "source": "grandma.png",
+      "items": [
+        {
+          "key": "cs_pup_grandma_mochi_frozen",
+          "box": [
+            0,
+            0,
+            553,
+            1024
+          ]
+        },
+        {
+          "key": "cs_pup_grandma_mochi",
+          "box": [
+            553,
+            0,
+            1070,
+            1024
+          ]
+        },
+        {
+          "key": "cs_pup_grandma_human",
+          "box": [
+            1070,
+            0,
+            1536,
+            1024
+          ]
+        }
+      ]
+    },
+    {
+      "source": "planter.png",
+      "cols": 3,
+      "items": [
+        {
+          "key": "cs_pup_planter_crown",
+          "box": [
+            0,
+            0,
+            775,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_planter_kneel",
+          "box": [
+            775,
+            0,
+            1580,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_planter_old",
+          "box": [
+            1580,
+            0,
+            2172,
+            724
+          ]
+        }
+      ]
+    },
+    {
+      "source": "props.png",
+      "cols": 4,
+      "rows": 2,
+      "items": [
+        {
+          "key": "cs_pup_crown_glow",
+          "floating": true,
+          "box": [
+            0,
+            0,
+            463,
+            410
+          ]
+        },
+        {
+          "key": "cs_pup_crown_crack",
+          "floating": true,
+          "box": [
+            463,
+            0,
+            928,
+            410
+          ]
+        },
+        {
+          "key": "cs_pup_seed_sleep",
+          "floating": true,
+          "box": [
+            928,
+            0,
+            1294,
+            410
+          ]
+        },
+        {
+          "key": "cs_pup_seed_wake",
+          "floating": true,
+          "box": [
+            1294,
+            0,
+            1774,
+            410
+          ]
+        },
+        {
+          "key": "cs_pup_root_tip",
+          "floating": false,
+          "box": [
+            0,
+            410,
+            463,
+            887
+          ]
+        },
+        {
+          "key": "cs_pup_root_wound",
+          "floating": false,
+          "box": [
+            463,
+            410,
+            928,
+            887
+          ]
+        },
+        {
+          "key": "cs_pup_blank_mochi_walk",
+          "floating": false,
+          "box": [
+            928,
+            410,
+            1294,
+            887
+          ]
+        },
+        {
+          "key": "cs_pup_blank_mochi_leap",
+          "floating": false,
+          "box": [
+            1294,
+            410,
+            1774,
+            887
+          ]
+        }
+      ]
+    },
+    {
+      "source": "s01_pantry.png",
+      "folder": "s01",
+      "items": [
+        {
+          "key": "cs_s01_far_pantry",
+          "background": true
+        }
+      ]
+    },
+    {
+      "source": "crowd.png",
+      "cols": 1,
+      "rows": 2,
+      "items": [
+        {
+          "key": "cs_pup_crowd_people",
+          "box": [
+            0,
+            0,
+            1536,
+            592
+          ]
+        },
+        {
+          "key": "cs_pup_crowd_mochi",
+          "box": [
+            0,
+            592,
+            1536,
+            1024
+          ]
+        }
+      ]
+    },
+    {
+      "source": "friends_trapped.png",
+      "cols": 5,
+      "items": [
+        {
+          "key": "cs_pup_mochi_mint_trapped",
+          "box": [
+            0,
+            0,
+            438,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_cocoa_trapped",
+          "box": [
+            438,
+            0,
+            850,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_taro_trapped",
+          "box": [
+            850,
+            0,
+            1309,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_yuzu_trapped",
+          "box": [
+            1309,
+            0,
+            1702,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_sesame_trapped",
+          "box": [
+            1702,
+            0,
+            2172,
+            724
+          ]
+        }
+      ]
+    },
+    {
+      "source": "s00_city.png",
+      "folder": "s00",
+      "items": [
+        {
+          "key": "cs_s00_far_city",
+          "background": true
+        }
+      ]
+    },
+    {
+      "source": "s01_nest.png",
+      "folder": "s01",
+      "items": [
+        {
+          "key": "cs_s01_far_nest",
+          "background": true
+        }
+      ]
+    },
+    {
+      "source": "s00_tree.png",
+      "items": [
+        {
+          "key": "cs_s00_far_tree",
+          "folder": "s00",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s01_root_floor.png",
+      "items": [
+        {
+          "key": "cs_s01_far_root_floor",
+          "folder": "s01",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s01_shaft.png",
+      "items": [
+        {
+          "key": "cs_s01_far_shaft",
+          "folder": "s01",
+          "background": true,
+          "height": 3840
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s02_drains.png",
+      "items": [
+        {
+          "key": "cs_s02_far_drains",
+          "folder": "s02",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s03_furnace.png",
+      "items": [
+        {
+          "key": "cs_s03_far_furnace",
+          "folder": "s03",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s04_prison.png",
+      "items": [
+        {
+          "key": "cs_s04_far_prison",
+          "folder": "s04",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s05_oven.png",
+      "items": [
+        {
+          "key": "cs_s05_far_oven",
+          "folder": "s05",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s06_entrance.png",
+      "items": [
+        {
+          "key": "cs_s06_far_entrance",
+          "folder": "s06",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s07_canopy.png",
+      "items": [
+        {
+          "key": "cs_s07_far_canopy",
+          "folder": "s07",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s08_hive.png",
+      "items": [
+        {
+          "key": "cs_s08_far_hive",
+          "folder": "s08",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s09_ash.png",
+      "items": [
+        {
+          "key": "cs_s09_far_ash",
+          "folder": "s09",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s10_glass.png",
+      "items": [
+        {
+          "key": "cs_s10_far_glass",
+          "folder": "s10",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s11_crosssection.png",
+      "items": [
+        {
+          "key": "cs_s11_far_crosssection",
+          "folder": "s11",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s11_oven_cold.png",
+      "items": [
+        {
+          "key": "cs_s11_far_oven_cold",
+          "folder": "s11",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s12_garden.png",
+      "items": [
+        {
+          "key": "cs_s12_far_garden",
+          "folder": "s12",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s13_throne.png",
+      "items": [
+        {
+          "key": "cs_s13_far_throne",
+          "folder": "s13",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s14_field.png",
+      "items": [
+        {
+          "key": "cs_s14_far_field",
+          "folder": "s14",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s14_tree.png",
+      "items": [
+        {
+          "key": "cs_s14_far_tree",
+          "folder": "s14",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s15_glasshall.png",
+      "items": [
+        {
+          "key": "cs_s15_far_glasshall",
+          "folder": "s15",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s16_clearing.png",
+      "items": [
+        {
+          "key": "cs_s16_far_clearing",
+          "folder": "s16",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s16_hunger_sleep.png",
+      "items": [
+        {
+          "key": "cs_s16_far_hunger_sleep",
+          "folder": "s16",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s17_delve.png",
+      "items": [
+        {
+          "key": "cs_s17_far_delve",
+          "folder": "s17",
+          "background": true,
+          "height": 1920
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "friends_free.png",
+      "items": [
+        {
+          "key": "cs_pup_mochi_mint_free",
+          "box": [
+            0,
+            0,
+            473,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_cocoa_free",
+          "box": [
+            473,
+            0,
+            884,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_taro_free",
+          "box": [
+            884,
+            0,
+            1285,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_yuzu_free",
+          "box": [
+            1285,
+            0,
+            1700,
+            724
+          ]
+        },
+        {
+          "key": "cs_pup_mochi_sesame_free",
+          "box": [
+            1700,
+            0,
+            2172,
+            724
+          ]
+        }
+      ],
+      "cols": 5,
+      "rows": 1
+    },
+    {
+      "source": "scene_props.png",
+      "items": [
+        {
+          "key": "cs_s02_prop_jam_jar",
+          "box": [
+            0,
+            0,
+            445,
+            435
+          ],
+          "folder": "s02"
+        },
+        {
+          "key": "cs_s02_prop_recipe_rolled",
+          "box": [
+            445,
+            0,
+            867,
+            435
+          ],
+          "folder": "s02"
+        },
+        {
+          "key": "cs_s02_prop_recipe_open",
+          "box": [
+            867,
+            0,
+            1324,
+            435
+          ],
+          "folder": "s02"
+        },
+        {
+          "key": "cs_s03_prop_gear",
+          "box": [
+            1324,
+            0,
+            1774,
+            435
+          ],
+          "folder": "s03"
+        },
+        {
+          "key": "cs_s03_chr_prisoner",
+          "box": [
+            0,
+            435,
+            445,
+            887
+          ],
+          "folder": "s03"
+        },
+        {
+          "key": "cs_s16_prop_sprout",
+          "box": [
+            445,
+            435,
+            867,
+            887
+          ],
+          "folder": "s16"
+        },
+        {
+          "key": "cs_s16_prop_sapling",
+          "box": [
+            867,
+            435,
+            1324,
+            887
+          ],
+          "folder": "s16"
+        },
+        {
+          "key": "cs_s16_prop_young_tree",
+          "box": [
+            1324,
+            435,
+            1774,
+            887
+          ],
+          "folder": "s16"
+        }
+      ],
+      "cols": 4,
+      "rows": 2
+    },
+    {
+      "source": "story_poses.png",
+      "items": [
+        {
+          "key": "cs_s05_chr_berry_ruby_back",
+          "box": [
+            0,
+            0,
+            684,
+            635
+          ],
+          "folder": "s05"
+        },
+        {
+          "key": "cs_s13_chr_berry_raise",
+          "box": [
+            684,
+            0,
+            1312,
+            635
+          ],
+          "folder": "s13"
+        },
+        {
+          "key": "cs_s16_chr_berry_plant",
+          "box": [
+            0,
+            635,
+            684,
+            1199
+          ],
+          "folder": "s16"
+        },
+        {
+          "key": "cs_s16_chr_grandma_ruby_hug",
+          "box": [
+            684,
+            635,
+            1312,
+            1199
+          ],
+          "folder": "s16"
+        }
+      ],
+      "cols": 2,
+      "rows": 2
+    },
+    {
+      "source": "memory_mirrors.png",
+      "items": [
+        {
+          "key": "cs_s15_prop_memory_town",
+          "box": [
+            0,
+            0,
+            505,
+            1024
+          ],
+          "folder": "s15"
+        },
+        {
+          "key": "cs_s15_prop_memory_family",
+          "box": [
+            505,
+            0,
+            1027,
+            1024
+          ],
+          "folder": "s15"
+        },
+        {
+          "key": "cs_s15_prop_memory_grandma",
+          "box": [
+            1027,
+            0,
+            1536,
+            1024
+          ],
+          "folder": "s15"
+        }
+      ],
+      "cols": 3,
+      "rows": 1
+    },
+    {
+      "source": "hunger_silhouette.png",
+      "items": [
+        {
+          "key": "cs_s12_chr_hunger",
+          "folder": "s12"
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "hunger_eyes.png",
+      "items": [
+        {
+          "key": "cs_s17_prop_eyes_half",
+          "box": [
+            0,
+            0,
+            1145,
+            656
+          ],
+          "folder": "s17"
+        },
+        {
+          "key": "cs_s17_prop_eyes_open",
+          "box": [
+            0,
+            656,
+            1145,
+            1374
+          ],
+          "folder": "s17"
+        }
+      ],
+      "cols": 1,
+      "rows": 2
+    },
+    {
+      "source": "team_back_complete.png",
+      "items": [
+        {
+          "key": "cs_s17_chr_team_back",
+          "folder": "s17"
+        }
+      ],
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "source": "s01_layers.png",
+      "items": [
+        {
+          "key": "cs_s01_mid_pantry",
+          "folder": "s01",
+          "box": [
+            0,
+            0,
+            512,
+            530
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": 0,
+              "y": 100,
+              "width": 270
+            },
+            {
+              "x": 972,
+              "y": 130,
+              "width": 270,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s01_fg_pantry",
+          "folder": "s01",
+          "box": [
+            512,
+            0,
+            1024,
+            545
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -120,
+              "y": 900,
+              "width": 450
+            },
+            {
+              "x": 912,
+              "y": 930,
+              "width": 450,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s01_mid_nest",
+          "folder": "s01",
+          "box": [
+            1024,
+            0,
+            1536,
+            560
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -120,
+              "y": 220,
+              "width": 440
+            },
+            {
+              "x": 922,
+              "y": 250,
+              "width": 440,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s01_fg_nest",
+          "folder": "s01",
+          "box": [
+            0,
+            530,
+            512,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -120,
+              "y": 850,
+              "width": 440
+            },
+            {
+              "x": 922,
+              "y": 880,
+              "width": 440,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s01_mid_root_floor",
+          "folder": "s01",
+          "box": [
+            512,
+            545,
+            1024,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -150,
+              "y": 650,
+              "width": 500
+            },
+            {
+              "x": 892,
+              "y": 680,
+              "width": 500,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s01_fg_root_floor",
+          "folder": "s01",
+          "box": [
+            1024,
+            560,
+            1536,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -150,
+              "y": 1020,
+              "width": 500
+            },
+            {
+              "x": 892,
+              "y": 1050,
+              "width": 500,
+              "flip": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "environment_kit.png",
+      "items": [
+        {
+          "key": "cs_s00_mid_city",
+          "folder": "s00",
+          "box": [
+            0,
+            0,
+            442,
+            498
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -50,
+              "y": 250,
+              "width": 320
+            },
+            {
+              "x": 972,
+              "y": 280,
+              "width": 320,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s00_fg_city",
+          "folder": "s00",
+          "box": [
+            442,
+            0,
+            781,
+            498
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -60,
+              "y": 1050,
+              "width": 300
+            },
+            {
+              "x": 1002,
+              "y": 1080,
+              "width": 300,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s00_mid_tree",
+          "folder": "s00",
+          "box": [
+            781,
+            0,
+            1151,
+            498
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -120,
+              "y": 0,
+              "width": 500
+            },
+            {
+              "x": 862,
+              "y": 30,
+              "width": 500,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s00_fg_tree",
+          "folder": "s00",
+          "box": [
+            1151,
+            0,
+            1536,
+            498
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -120,
+              "y": 950,
+              "width": 500
+            },
+            {
+              "x": 862,
+              "y": 980,
+              "width": 500,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s12_mid_garden",
+          "folder": "s12",
+          "box": [
+            0,
+            498,
+            442,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -100,
+              "y": 180,
+              "width": 450
+            },
+            {
+              "x": 892,
+              "y": 210,
+              "width": 450,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s12_fg_garden",
+          "folder": "s12",
+          "box": [
+            442,
+            498,
+            781,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -120,
+              "y": 900,
+              "width": 400
+            },
+            {
+              "x": 962,
+              "y": 930,
+              "width": 400,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s02_mid_drains",
+          "folder": "s02",
+          "box": [
+            781,
+            498,
+            1151,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -100,
+              "y": 600,
+              "width": 350
+            },
+            {
+              "x": 992,
+              "y": 630,
+              "width": 350,
+              "flip": true
+            }
+          ]
+        },
+        {
+          "key": "cs_s04_mid_prison",
+          "folder": "s04",
+          "box": [
+            1151,
+            498,
+            1536,
+            1024
+          ],
+          "layer": true,
+          "placements": [
+            {
+              "x": -110,
+              "y": 200,
+              "width": 350
+            },
+            {
+              "x": 1002,
+              "y": 230,
+              "width": 350,
+              "flip": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

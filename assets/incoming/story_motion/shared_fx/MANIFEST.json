@@ -1,0 +1,906 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "assets": [
+    {
+      "key": "cs_fx_speedlines",
+      "file": "cs_fx_speedlines.png",
+      "width": 4320,
+      "height": 1920,
+      "frames": 4,
+      "frame_width": 1080,
+      "frame_height": 1920,
+      "blend": "ADD",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "793930da7db01eb0323df648630bab98220016cfd5e99a8e9f210e626ff7c0d1",
+      "bytes": 1702171,
+      "source": "../_sources/fx_speed.png",
+      "source_sha256": "5d62dd2bd6f8aeb2ad4cb7fdab452feef0bca98f63157300393690698925fc95",
+      "source_boxes": [
+        [
+          0,
+          0,
+          470,
+          836
+        ],
+        [
+          470,
+          0,
+          940,
+          836
+        ],
+        [
+          940,
+          0,
+          1411,
+          836
+        ],
+        [
+          1411,
+          0,
+          1881,
+          836
+        ]
+      ],
+      "common_scale": 2.259023354564756,
+      "frame_placements": [
+        [
+          9,
+          15,
+          1062,
+          1889
+        ],
+        [
+          9,
+          15,
+          1062,
+          1889
+        ],
+        [
+          8,
+          15,
+          1064,
+          1889
+        ],
+        [
+          9,
+          15,
+          1062,
+          1889
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_flash",
+      "file": "cs_fx_flash.png",
+      "width": 1080,
+      "height": 1920,
+      "frames": 1,
+      "frame_width": 1080,
+      "frame_height": 1920,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "b9e34586ae73c02d4d92cbf9e5285624fae4aae6a45786d3e28bfc13b26dd3c2",
+      "bytes": 1717017,
+      "source": "../_sources/fx_flash.png",
+      "source_sha256": "cdfba52e9bb409a3a13d3dee13ee09cee28daf891a65494a3e57ca239d585bc3",
+      "source_boxes": [
+        [
+          0,
+          0,
+          941,
+          1672
+        ]
+      ],
+      "common_scale": 1.130712008501594,
+      "frame_placements": [
+        [
+          8,
+          14,
+          1064,
+          1891
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_transform",
+      "file": "cs_fx_transform.png",
+      "width": 6144,
+      "height": 768,
+      "frames": 8,
+      "frame_width": 768,
+      "frame_height": 768,
+      "blend": "ADD",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "43b0b33d24091fffd1b423a96d6bccbe731980bf8d2f71f6701d7100d5d7e6ee",
+      "bytes": 3359434,
+      "source": "../_sources/fx_transform.png",
+      "source_sha256": "37c864f52a06ada1103a2899d2f852592c2b77efda39782c6a583f5ab608c630",
+      "source_boxes": [
+        [
+          0,
+          0,
+          444,
+          444
+        ],
+        [
+          444,
+          0,
+          887,
+          444
+        ],
+        [
+          887,
+          0,
+          1330,
+          444
+        ],
+        [
+          1330,
+          0,
+          1774,
+          444
+        ],
+        [
+          0,
+          444,
+          444,
+          887
+        ],
+        [
+          444,
+          444,
+          887,
+          887
+        ],
+        [
+          887,
+          444,
+          1330,
+          887
+        ],
+        [
+          1330,
+          444,
+          1774,
+          887
+        ]
+      ],
+      "common_scale": 1.6936936936936937,
+      "frame_placements": [
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          9,
+          8,
+          750,
+          752
+        ],
+        [
+          9,
+          8,
+          750,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          9,
+          752,
+          750
+        ],
+        [
+          9,
+          9,
+          750,
+          750
+        ],
+        [
+          9,
+          9,
+          750,
+          750
+        ],
+        [
+          8,
+          9,
+          752,
+          750
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_seed_glow",
+      "file": "cs_fx_seed_glow.png",
+      "width": 2304,
+      "height": 384,
+      "frames": 6,
+      "frame_width": 384,
+      "frame_height": 384,
+      "blend": "ADD",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "1d23aab92bf8769b66403740241c2c6af89a64e876c359c4a406da0c5f8ca8b5",
+      "bytes": 579165,
+      "source": "../_sources/fx_seed.png",
+      "source_sha256": "98ae322d72e321788e13dcce8b426cbd8b482d18566108824a1a3ee4a8317dd1",
+      "source_boxes": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          1024,
+          512
+        ],
+        [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          512,
+          1024
+        ],
+        [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        [
+          1024,
+          512,
+          1536,
+          1024
+        ]
+      ],
+      "common_scale": 0.71875,
+      "frame_placements": [
+        [
+          8,
+          8,
+          368,
+          368
+        ],
+        [
+          8,
+          8,
+          368,
+          368
+        ],
+        [
+          8,
+          8,
+          368,
+          368
+        ],
+        [
+          8,
+          8,
+          368,
+          368
+        ],
+        [
+          8,
+          8,
+          368,
+          368
+        ],
+        [
+          8,
+          8,
+          368,
+          368
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_flavor_ribbon",
+      "file": "cs_fx_flavor_ribbon.png",
+      "width": 6144,
+      "height": 256,
+      "frames": 6,
+      "frame_width": 1024,
+      "frame_height": 256,
+      "blend": "ADD",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "a004cfb59ae59e6ef33e986930d41ecddba32532112c9aad588e293391ac014c",
+      "bytes": 684006,
+      "source": "../_sources/fx_ribbon.png",
+      "source_sha256": "4e237dc35d3f134428f57a3651ce87ecea488595bd52b28ecefb8718394e00f4",
+      "source_boxes": [
+        [
+          0,
+          0,
+          724,
+          362
+        ],
+        [
+          724,
+          0,
+          1448,
+          362
+        ],
+        [
+          1448,
+          0,
+          2172,
+          362
+        ],
+        [
+          0,
+          362,
+          724,
+          724
+        ],
+        [
+          724,
+          362,
+          1448,
+          724
+        ],
+        [
+          1448,
+          362,
+          2172,
+          724
+        ]
+      ],
+      "common_scale": 0.6629834254143646,
+      "frame_placements": [
+        [
+          272,
+          8,
+          480,
+          240
+        ],
+        [
+          272,
+          8,
+          480,
+          240
+        ],
+        [
+          272,
+          8,
+          480,
+          240
+        ],
+        [
+          272,
+          8,
+          480,
+          240
+        ],
+        [
+          272,
+          8,
+          480,
+          240
+        ],
+        [
+          272,
+          8,
+          480,
+          240
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_crack",
+      "file": "cs_fx_crack.png",
+      "width": 5400,
+      "height": 600,
+      "frames": 5,
+      "frame_width": 1080,
+      "frame_height": 600,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "7b37931db239f29db268d9250d99c5d5ca8fc0bfaadb653914e11b7ec613865f",
+      "bytes": 549443,
+      "source": "../_sources/fx_crack.png",
+      "source_sha256": "c0ee9c112ca1bcde1d384e52c697fafec23777e7b1852970cdeb488f95ebf2e5",
+      "source_boxes": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          1024,
+          512
+        ],
+        [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          535,
+          1024
+        ],
+        [
+          535,
+          512,
+          1160,
+          1024
+        ]
+      ],
+      "common_scale": 1.140625,
+      "frame_placements": [
+        [
+          248,
+          8,
+          584,
+          584
+        ],
+        [
+          248,
+          8,
+          584,
+          584
+        ],
+        [
+          248,
+          8,
+          584,
+          584
+        ],
+        [
+          235,
+          8,
+          610,
+          584
+        ],
+        [
+          183,
+          8,
+          713,
+          584
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_dust",
+      "file": "cs_fx_dust.png",
+      "width": 3072,
+      "height": 256,
+      "frames": 6,
+      "frame_width": 512,
+      "frame_height": 256,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "9df1c530f8dea0656bc38e22f44092a7f50dfa1609b2451f156a408a971f4dcb",
+      "bytes": 277706,
+      "source": "../_sources/fx_dust.png",
+      "source_sha256": "acf5dc709d05b11682fbeb184ca9cac7da2646b2358cf9b2aaec32b6f9ebddc4",
+      "source_boxes": [
+        [
+          0,
+          0,
+          724,
+          362
+        ],
+        [
+          724,
+          0,
+          1448,
+          362
+        ],
+        [
+          1448,
+          0,
+          2172,
+          362
+        ],
+        [
+          0,
+          362,
+          724,
+          724
+        ],
+        [
+          724,
+          362,
+          1448,
+          724
+        ],
+        [
+          1448,
+          362,
+          2172,
+          724
+        ]
+      ],
+      "common_scale": 0.6629834254143646,
+      "frame_placements": [
+        [
+          16,
+          8,
+          480,
+          240
+        ],
+        [
+          16,
+          8,
+          480,
+          240
+        ],
+        [
+          16,
+          8,
+          480,
+          240
+        ],
+        [
+          16,
+          8,
+          480,
+          240
+        ],
+        [
+          16,
+          8,
+          480,
+          240
+        ],
+        [
+          16,
+          8,
+          480,
+          240
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_frost_shatter",
+      "file": "cs_fx_frost_shatter.png",
+      "width": 4608,
+      "height": 768,
+      "frames": 6,
+      "frame_width": 768,
+      "frame_height": 768,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "96476233007bfb940457a31a74742d168f130b6f188a8d9f9ef39e338f904b26",
+      "bytes": 1721475,
+      "source": "../_sources/fx_frost.png",
+      "source_sha256": "25784d6338d8b75002dbf54be533667d1b8dee35b722971b0664a8c799cb64a3",
+      "source_boxes": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          1024,
+          512
+        ],
+        [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          512,
+          1024
+        ],
+        [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        [
+          1024,
+          512,
+          1536,
+          1024
+        ]
+      ],
+      "common_scale": 1.46875,
+      "frame_placements": [
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_curse_smoke",
+      "file": "cs_fx_curse_smoke.png",
+      "width": 4608,
+      "height": 768,
+      "frames": 6,
+      "frame_width": 768,
+      "frame_height": 768,
+      "blend": "NORMAL",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "191888315e9ee48df538978a1b51235e2cb035e5e733c4d88c388221b020acaa",
+      "bytes": 2035589,
+      "source": "../_sources/fx_smoke.png",
+      "source_sha256": "7007c1835134c6f5b4362a414d9ff8779de5b221d2e9b750eb5cfe438a799462",
+      "source_boxes": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          1024,
+          512
+        ],
+        [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          512,
+          1024
+        ],
+        [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        [
+          1024,
+          512,
+          1536,
+          1024
+        ]
+      ],
+      "common_scale": 1.46875,
+      "frame_placements": [
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ],
+        [
+          8,
+          8,
+          752,
+          752
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    },
+    {
+      "key": "cs_fx_sparkle",
+      "file": "cs_fx_sparkle.png",
+      "width": 1536,
+      "height": 256,
+      "frames": 6,
+      "frame_width": 256,
+      "frame_height": 256,
+      "blend": "ADD",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 8,
+      "sha256": "dbd978c40edc277626f861d6eb107ac38db712d636916da6f4425c13f0ea5301",
+      "bytes": 140089,
+      "source": "../_sources/fx_sparkle.png",
+      "source_sha256": "bc970db92e5ede62a6c6215697c82b9ebc038c63e1452c4debb1177231fbd40a",
+      "source_boxes": [
+        [
+          0,
+          0,
+          512,
+          512
+        ],
+        [
+          512,
+          0,
+          1024,
+          512
+        ],
+        [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        [
+          0,
+          512,
+          512,
+          1024
+        ],
+        [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        [
+          1024,
+          512,
+          1536,
+          1024
+        ]
+      ],
+      "common_scale": 0.46875,
+      "frame_placements": [
+        [
+          8,
+          8,
+          240,
+          240
+        ],
+        [
+          8,
+          8,
+          240,
+          240
+        ],
+        [
+          8,
+          8,
+          240,
+          240
+        ],
+        [
+          8,
+          8,
+          240,
+          240
+        ],
+        [
+          8,
+          8,
+          240,
+          240
+        ],
+        [
+          8,
+          8,
+          240,
+          240
+        ]
+      ],
+      "method": "Uniform shared scale of complete donor cells; centered with >=8px clear gutters; original RGBA retained for NORMAL; black composite for ADD"
+    }
+  ]
+}

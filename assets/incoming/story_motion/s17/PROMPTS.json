@@ -1,0 +1,27 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "prompt": "Two separate pairs of magical creature eyes arranged vertically on transparent background. Upper pair barely half opened eyes narrow horizontal slits, lower pair fully open almond eyes. Purple dark eyelids, warm pink gold glow within. Each pair angled like a slumbering root dragon face looking forward with slight tilt. ONLY eyes and small eyelids no face no body. Cute mysterious anime fantasy mobile game, no words, generous empty transparent margin around both pairs.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-fbe09033-5864-4379-abf8-7baae1a631c1.png",
+      "source": "hunger_eyes.png",
+      "sha256": "ab3670370406862addace49c85c0d5b87cf11c520d44fb9c110f3381231da99d",
+      "bytes": 545708
+    },
+    {
+      "id": "s17_delve",
+      "source": "s17_delve.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Entrance to the Mochi Delve beneath huge ancient tree roots, a rounded cave mouth leads down into plum-black darkness with faint pink-gold flavor glints deep inside. Clear foreground ledge above72percent height for a separate team seen from behind. No people, text, torches in center or giant monster outside. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "3df879ae231e869f6dc746916d6fd85838bf1025f2086f61aeefb4218a415367",
+      "bytes": 2249998
+    },
+    {
+      "prompt": "Extend this exact six-human adventurer BACK VIEW team illustration canvas to the right and left with generous TRUE TRANSPARENT margins. Complete the rightmost charcoal-haired Sesame artisan's cape tip and skirt hem which are currently cropped at the right edge. Preserve all six existing characters, clothing, colors, poses, proportions, back view and polished hand-painted style. No new characters, no scenery, no words. Every complete silhouette including hair, sleeves, cape and feet must fit inside the image with at least 60px transparent breathing room. True transparent background.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-b71f1cf7-e4ff-4fb4-90ac-9f2aa585eab4.png",
+      "source": "team_back_complete.png",
+      "sha256": "fa3266f2399cbe23ec35ba2ac64b6edabab31ed0dcb1f80ba8c6806c426c9dc0",
+      "bytes": 2342101
+    }
+  ]
+}

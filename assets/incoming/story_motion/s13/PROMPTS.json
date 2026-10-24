@@ -1,0 +1,20 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s13_throne",
+      "source": "s13_throne.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. The root throne chamber after collapse, rounded old throne broken at back, violet roots loosened, warm gold light returning through canopy. Clear center for a separately composited Strawberry holding Heart Seed, no painted hero, seed beam or sparkles. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "c3fcdbdc34965e101dc712b32a6fb677815a71268a1870ad51c30630249df705",
+      "bytes": 2479322
+    },
+    {
+      "prompt": "Four narrative character cutouts for Mochi Mayhem, strict2x2 grid on TRUE transparent background. Use references ONLY for character identities: Strawberry pink side ponytail/green eyes/chocolate-red frilly dress/boots;Ruby tiny pink gem-headed jam spirit;Grandma HUMAN white bun/cream apron/red-brown dress. Each complete figure or pair stays well within its quadrant with very generous transparent margins and no aura or ground shadows. TOP LEFT: Strawberry and tiny Ruby together seen FROM BEHIND, facing a future oven off-screen, Strawberry stands with her strawberry seed gun lowered and Ruby floating beside her. TOP RIGHT: Strawberry front three-quarter, raising one empty open palm high as if holding a tiny seed;do NOT paint the seed or light beam. BOTTOM LEFT: Strawberry crouching gently at ground level, one gloved hand placing an invisible tiny seed into the ground;do not paint ground or seed. BOTTOM RIGHT: human Grandma gently hugging Ruby against her apron, both crying happy tears and smiling;Ruby remains a round jam spirit, never a human. Full boots, hair, Grandma shoes and Ruby gem visible in all cells. Polished cute chibi candy-fantasy painted outlines, no text,labels,borders,background scenery or watermark. The four cells become independent cutout files.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-2d652fca-e6f2-4a8d-bdfe-1e1800ba8798.png",
+      "source": "story_poses.png",
+      "sha256": "96434e1cb82e942bb3e0e0992ac2fbd2d6870c88a28ea327267d00c424f017ef",
+      "bytes": 2043145
+    }
+  ]
+}

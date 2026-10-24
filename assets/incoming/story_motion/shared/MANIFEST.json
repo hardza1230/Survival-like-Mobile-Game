@@ -1,0 +1,954 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_pup_mochi_berry_idle",
+      "file": "cs_pup_mochi_berry_idle.png",
+      "width": 507,
+      "height": 471,
+      "pivot": [
+        0.5,
+        0.9490445859872612
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_mochi_v1.png",
+      "source_box": [
+        0,
+        0,
+        768,
+        480
+      ],
+      "source_subject": [
+        193,
+        34,
+        652,
+        457
+      ],
+      "sha256": "7567a74adbd9f6094ea9e203835509b91d7497b3013175771b819740e3762f65",
+      "bytes": 217133
+    },
+    {
+      "key": "cs_pup_mochi_berry_scared",
+      "file": "cs_pup_mochi_berry_scared.png",
+      "width": 470,
+      "height": 482,
+      "pivot": [
+        0.5,
+        0.950207468879668
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_mochi_v1.png",
+      "source_box": [
+        768,
+        0,
+        1536,
+        480
+      ],
+      "source_subject": [
+        147,
+        41,
+        569,
+        475
+      ],
+      "sha256": "da11edf43a59cd1caa13f85e5b53f89f9aad4a90b67010552c4bd2ff3e5f00fa",
+      "bytes": 228793
+    },
+    {
+      "key": "cs_pup_mochi_berry_fall",
+      "file": "cs_pup_mochi_berry_fall.png",
+      "width": 443,
+      "height": 543,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_mochi_v1.png",
+      "source_box": [
+        0,
+        480,
+        768,
+        1024
+      ],
+      "source_subject": [
+        233,
+        15,
+        628,
+        510
+      ],
+      "sha256": "cafc8132f01023e31ed69025df92c9f85dcf4cc05c5aba42cb06ddb109576eca",
+      "bytes": 214222
+    },
+    {
+      "key": "cs_pup_mochi_berry_reach",
+      "file": "cs_pup_mochi_berry_reach.png",
+      "width": 598,
+      "height": 442,
+      "pivot": [
+        0.5,
+        0.9457013574660633
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_mochi_v1.png",
+      "source_box": [
+        768,
+        480,
+        1536,
+        1024
+      ],
+      "source_subject": [
+        101,
+        98,
+        651,
+        492
+      ],
+      "sha256": "018934a33a3fa1c7cb473df6f2ab498590cec16c764c4426b38c7f207f397178",
+      "bytes": 220676
+    },
+    {
+      "key": "cs_pup_berry_land",
+      "file": "cs_pup_berry_land.png",
+      "width": 760,
+      "height": 626,
+      "pivot": [
+        0.5,
+        0.9616613418530351
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_human.png",
+      "source_box": [
+        0,
+        0,
+        750,
+        724
+      ],
+      "source_subject": [
+        13,
+        99,
+        725,
+        677
+      ],
+      "sha256": "34ed2fcd97dcf097dfb2124f7bb1ec275c52d5c2ffc04e74d4ef7045fec31915",
+      "bytes": 653851
+    },
+    {
+      "key": "cs_pup_berry_hero",
+      "file": "cs_pup_berry_hero.png",
+      "width": 680,
+      "height": 759,
+      "pivot": [
+        0.5,
+        0.9683794466403162
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_human.png",
+      "source_box": [
+        750,
+        0,
+        1448,
+        724
+      ],
+      "source_subject": [
+        16,
+        7,
+        648,
+        718
+      ],
+      "sha256": "89b25710234244a5fb2cb32312622895e355070e9c713ae2e848cb4f0b6daa0c",
+      "bytes": 700284
+    },
+    {
+      "key": "cs_pup_berry_look",
+      "file": "cs_pup_berry_look.png",
+      "width": 609,
+      "height": 728,
+      "pivot": [
+        0.5,
+        0.967032967032967
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/berry_human.png",
+      "source_box": [
+        1448,
+        0,
+        2172,
+        724
+      ],
+      "source_subject": [
+        142,
+        28,
+        703,
+        708
+      ],
+      "sha256": "dec38a8fc71d5434c05e433103dc8545e48d05fe3d9aef674c88ceb4b8bb3895",
+      "bytes": 600442
+    },
+    {
+      "key": "cs_pup_ruby_hide",
+      "file": "cs_pup_ruby_hide.png",
+      "width": 828,
+      "height": 705,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/ruby.png",
+      "source_box": [
+        0,
+        0,
+        887,
+        887
+      ],
+      "source_subject": [
+        46,
+        122,
+        826,
+        779
+      ],
+      "sha256": "be8b00b77df869d5fe91301f45fa590198f71ddeb7d51c90312c6ab30252028b",
+      "bytes": 596838
+    },
+    {
+      "key": "cs_pup_ruby_cry_happy",
+      "file": "cs_pup_ruby_cry_happy.png",
+      "width": 890,
+      "height": 780,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/ruby.png",
+      "source_box": [
+        887,
+        0,
+        1774,
+        887
+      ],
+      "source_subject": [
+        3,
+        77,
+        845,
+        809
+      ],
+      "sha256": "575cccc5bf9667778aea9a0cdebad278b7ce372f3128843936daa5c35a9b8b48",
+      "bytes": 667156
+    },
+    {
+      "key": "cs_pup_grandma_mochi_frozen",
+      "file": "cs_pup_grandma_mochi_frozen.png",
+      "width": 593,
+      "height": 842,
+      "pivot": [
+        0.5,
+        0.9714964370546318
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/grandma.png",
+      "source_box": [
+        0,
+        0,
+        553,
+        1024
+      ],
+      "source_subject": [
+        5,
+        126,
+        550,
+        920
+      ],
+      "sha256": "f0f44d46a6fda7c5d0f67f77869dfcf5a522d9b26fb457f1046f1dd5b0c9a85d",
+      "bytes": 713681
+    },
+    {
+      "key": "cs_pup_grandma_mochi",
+      "file": "cs_pup_grandma_mochi.png",
+      "width": 555,
+      "height": 650,
+      "pivot": [
+        0.5,
+        0.963076923076923
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/grandma.png",
+      "source_box": [
+        553,
+        0,
+        1070,
+        1024
+      ],
+      "source_subject": [
+        5,
+        282,
+        512,
+        884
+      ],
+      "sha256": "e75650dc0489f012b5e9672f17c2c92ad2c8d1a293653e1de710fb5035fa5bb2",
+      "bytes": 450600
+    },
+    {
+      "key": "cs_pup_grandma_human",
+      "file": "cs_pup_grandma_human.png",
+      "width": 504,
+      "height": 891,
+      "pivot": [
+        0.5,
+        0.9730639730639731
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/grandma.png",
+      "source_box": [
+        1070,
+        0,
+        1536,
+        1024
+      ],
+      "source_subject": [
+        7,
+        96,
+        463,
+        939
+      ],
+      "sha256": "b252ec2e5231e19aaa259d399b3feea1f3fa6361d255292fedd2632928235fec",
+      "bytes": 547391
+    },
+    {
+      "key": "cs_pup_planter_crown",
+      "file": "cs_pup_planter_crown.png",
+      "width": 776,
+      "height": 744,
+      "pivot": [
+        0.5,
+        0.967741935483871
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/planter.png",
+      "source_box": [
+        0,
+        0,
+        775,
+        724
+      ],
+      "source_subject": [
+        16,
+        11,
+        744,
+        707
+      ],
+      "sha256": "4646df63082c4de960a48702fca0c54844588fcaca713a755ec1c59638b59c5a",
+      "bytes": 869618
+    },
+    {
+      "key": "cs_pup_planter_kneel",
+      "file": "cs_pup_planter_kneel.png",
+      "width": 778,
+      "height": 749,
+      "pivot": [
+        0.5,
+        0.9679572763684913
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/planter.png",
+      "source_box": [
+        775,
+        0,
+        1580,
+        724
+      ],
+      "source_subject": [
+        30,
+        7,
+        760,
+        708
+      ],
+      "sha256": "7e508fe443157627fab1372c2a31e5ca3063f65f95f40a103145c3e92e622f43",
+      "bytes": 722190
+    },
+    {
+      "key": "cs_pup_planter_old",
+      "file": "cs_pup_planter_old.png",
+      "width": 506,
+      "height": 730,
+      "pivot": [
+        0.5,
+        0.9671232876712329
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/planter.png",
+      "source_box": [
+        1580,
+        0,
+        2172,
+        724
+      ],
+      "source_subject": [
+        65,
+        25,
+        523,
+        707
+      ],
+      "sha256": "e67599af2a59b24aef541b7f8a9ce27bc60fc2a8d92d4dbc828f804bf611c065",
+      "bytes": 446814
+    },
+    {
+      "key": "cs_pup_crown_glow",
+      "file": "cs_pup_crown_glow.png",
+      "width": 450,
+      "height": 352,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        0,
+        0,
+        463,
+        410
+      ],
+      "source_subject": [
+        44,
+        81,
+        446,
+        385
+      ],
+      "sha256": "b053af5d867993f22be10399a3fcb0631499fea34f0f68b92b61b9fce5b4cce7",
+      "bytes": 202017
+    },
+    {
+      "key": "cs_pup_crown_crack",
+      "file": "cs_pup_crown_crack.png",
+      "width": 466,
+      "height": 341,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        463,
+        0,
+        928,
+        410
+      ],
+      "source_subject": [
+        18,
+        94,
+        436,
+        387
+      ],
+      "sha256": "4274a861fbda095cb3d8fd5aa044141be0117f2ea3df04a15a5ce612615f3037",
+      "bytes": 210187
+    },
+    {
+      "key": "cs_pup_seed_sleep",
+      "file": "cs_pup_seed_sleep.png",
+      "width": 230,
+      "height": 282,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        928,
+        0,
+        1294,
+        410
+      ],
+      "source_subject": [
+        120,
+        150,
+        302,
+        384
+      ],
+      "sha256": "2edab2bff89a9025bfa7eba6f64c887a2af7f4d5519bf1f50d3d47204d2927e2",
+      "bytes": 71937
+    },
+    {
+      "key": "cs_pup_seed_wake",
+      "file": "cs_pup_seed_wake.png",
+      "width": 237,
+      "height": 367,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        1294,
+        0,
+        1774,
+        410
+      ],
+      "source_subject": [
+        164,
+        73,
+        353,
+        392
+      ],
+      "sha256": "30cbc1ed430ccc2ec0807121ecc1bf5e12015862f7493dbb7ed1aa972747a3a3",
+      "bytes": 100617
+    },
+    {
+      "key": "cs_pup_root_tip",
+      "file": "cs_pup_root_tip.png",
+      "width": 403,
+      "height": 447,
+      "pivot": [
+        0.5,
+        0.9463087248322147
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        0,
+        410,
+        463,
+        887
+      ],
+      "source_subject": [
+        45,
+        22,
+        400,
+        421
+      ],
+      "sha256": "78aef5f55de504dcc3f9166413efd5184e0e0724b677f33d43f928f06fd325ea",
+      "bytes": 171073
+    },
+    {
+      "key": "cs_pup_root_wound",
+      "file": "cs_pup_root_wound.png",
+      "width": 385,
+      "height": 347,
+      "pivot": [
+        0.5,
+        0.930835734870317
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        463,
+        410,
+        928,
+        887
+      ],
+      "source_subject": [
+        60,
+        106,
+        397,
+        405
+      ],
+      "sha256": "08e433c01337a4419525ba083c38431c397391818c6ae4b978d1c6e586f23110",
+      "bytes": 136360
+    },
+    {
+      "key": "cs_pup_blank_mochi_walk",
+      "file": "cs_pup_blank_mochi_walk.png",
+      "width": 323,
+      "height": 295,
+      "pivot": [
+        0.5,
+        0.9186440677966101
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        928,
+        410,
+        1294,
+        887
+      ],
+      "source_subject": [
+        29,
+        138,
+        304,
+        385
+      ],
+      "sha256": "023dd297c75b0d655a65df959f984397c4d7b90e5230322d51d095d6f0b8a035",
+      "bytes": 81294
+    },
+    {
+      "key": "cs_pup_blank_mochi_leap",
+      "file": "cs_pup_blank_mochi_leap.png",
+      "width": 415,
+      "height": 309,
+      "pivot": [
+        0.5,
+        0.9223300970873787
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/props.png",
+      "source_box": [
+        1294,
+        410,
+        1774,
+        887
+      ],
+      "source_subject": [
+        63,
+        102,
+        430,
+        363
+      ],
+      "sha256": "9880740c9d369f197a80b1992dfdce0c04e404aee149ff8a6b824786b9d15758",
+      "bytes": 98756
+    },
+    {
+      "key": "cs_pup_crowd_people",
+      "file": "cs_pup_crowd_people.png",
+      "width": 1533,
+      "height": 581,
+      "pivot": [
+        0.5,
+        0.9586919104991394
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/crowd.png",
+      "source_box": [
+        0,
+        0,
+        1536,
+        592
+      ],
+      "source_subject": [
+        28,
+        38,
+        1513,
+        571
+      ],
+      "sha256": "ee2952c8c74191f59f35a39d9def7df9f66b14abb918932294eb5600efe05490",
+      "bytes": 1272607
+    },
+    {
+      "key": "cs_pup_crowd_mochi",
+      "file": "cs_pup_crowd_mochi.png",
+      "width": 1539,
+      "height": 354,
+      "pivot": [
+        0.5,
+        0.9322033898305084
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/crowd.png",
+      "source_box": [
+        0,
+        592,
+        1536,
+        1024
+      ],
+      "source_subject": [
+        21,
+        70,
+        1512,
+        376
+      ],
+      "sha256": "9e5063510b4461b4de432c9bea6bc5ad1362bf15c881af54c2342128dc66ab91",
+      "bytes": 682610
+    },
+    {
+      "key": "cs_pup_mochi_mint_trapped",
+      "file": "cs_pup_mochi_mint_trapped.png",
+      "width": 467,
+      "height": 588,
+      "pivot": [
+        0.5,
+        0.9591836734693877
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_trapped.png",
+      "source_box": [
+        0,
+        0,
+        438,
+        724
+      ],
+      "source_subject": [
+        9,
+        103,
+        428,
+        643
+      ],
+      "sha256": "7e5e838a6394f269fe44773cafc12ac21a6ca49a2effd19ffca90a268c9e7838",
+      "bytes": 359819
+    },
+    {
+      "key": "cs_pup_mochi_cocoa_trapped",
+      "file": "cs_pup_mochi_cocoa_trapped.png",
+      "width": 438,
+      "height": 462,
+      "pivot": [
+        0.5,
+        0.948051948051948
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_trapped.png",
+      "source_box": [
+        438,
+        0,
+        850,
+        724
+      ],
+      "source_subject": [
+        12,
+        207,
+        402,
+        621
+      ],
+      "sha256": "f536b2a67e93eeec5f238644c1190077cd89c9c2b413df511985917f10324638",
+      "bytes": 273712
+    },
+    {
+      "key": "cs_pup_mochi_taro_trapped",
+      "file": "cs_pup_mochi_taro_trapped.png",
+      "width": 488,
+      "height": 580,
+      "pivot": [
+        0.5,
+        0.9586206896551724
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_trapped.png",
+      "source_box": [
+        850,
+        0,
+        1309,
+        724
+      ],
+      "source_subject": [
+        10,
+        113,
+        450,
+        645
+      ],
+      "sha256": "0e7c1fee43fc85cbdf0618a0ab9ed9c863dbf1d85d96722dfc731c68aafbd64d",
+      "bytes": 374476
+    },
+    {
+      "key": "cs_pup_mochi_yuzu_trapped",
+      "file": "cs_pup_mochi_yuzu_trapped.png",
+      "width": 420,
+      "height": 469,
+      "pivot": [
+        0.5,
+        0.9488272921108742
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_trapped.png",
+      "source_box": [
+        1309,
+        0,
+        1702,
+        724
+      ],
+      "source_subject": [
+        10,
+        202,
+        382,
+        623
+      ],
+      "sha256": "d7aa4c7b193c32726428f0c3721aa168ba62014e53bc2c1856d9404b7fd208d0",
+      "bytes": 224819
+    },
+    {
+      "key": "cs_pup_mochi_sesame_trapped",
+      "file": "cs_pup_mochi_sesame_trapped.png",
+      "width": 502,
+      "height": 646,
+      "pivot": [
+        0.5,
+        0.9628482972136223
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_trapped.png",
+      "source_box": [
+        1702,
+        0,
+        2172,
+        724
+      ],
+      "source_subject": [
+        12,
+        79,
+        466,
+        677
+      ],
+      "sha256": "905b78b1493ce57b67f11947a4b2859fca35895ce52808e927689f16cc272ca1",
+      "bytes": 387905
+    },
+    {
+      "key": "cs_pup_mochi_mint_free",
+      "file": "cs_pup_mochi_mint_free.png",
+      "width": 393,
+      "height": 374,
+      "pivot": [
+        0.5,
+        0.9358288770053476
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_free.png",
+      "source_box": [
+        0,
+        0,
+        473,
+        724
+      ],
+      "source_subject": [
+        102,
+        269,
+        447,
+        595
+      ],
+      "sha256": "8173d375d205c4fd0faa5227d4ffc8456ba6da22af3270b2d7d549435a04e1e5",
+      "bytes": 143300
+    },
+    {
+      "key": "cs_pup_mochi_cocoa_free",
+      "file": "cs_pup_mochi_cocoa_free.png",
+      "width": 399,
+      "height": 381,
+      "pivot": [
+        0.5,
+        0.937007874015748
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_free.png",
+      "source_box": [
+        473,
+        0,
+        884,
+        724
+      ],
+      "source_subject": [
+        28,
+        242,
+        379,
+        575
+      ],
+      "sha256": "b1f102efe39088d896230f22ee51940063266d3d015fe2c6f7fd108d788043f0",
+      "bytes": 153339
+    },
+    {
+      "key": "cs_pup_mochi_taro_free",
+      "file": "cs_pup_mochi_taro_free.png",
+      "width": 373,
+      "height": 374,
+      "pivot": [
+        0.5,
+        0.9358288770053476
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_free.png",
+      "source_box": [
+        884,
+        0,
+        1285,
+        724
+      ],
+      "source_subject": [
+        33,
+        254,
+        358,
+        580
+      ],
+      "sha256": "3e433333f0fb0e9836f32486e1b9a2f60cb6b19904f4a3502f515e1437a8f083",
+      "bytes": 148349
+    },
+    {
+      "key": "cs_pup_mochi_yuzu_free",
+      "file": "cs_pup_mochi_yuzu_free.png",
+      "width": 379,
+      "height": 447,
+      "pivot": [
+        0.5,
+        0.9463087248322147
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_free.png",
+      "source_box": [
+        1285,
+        0,
+        1700,
+        724
+      ],
+      "source_subject": [
+        42,
+        196,
+        373,
+        595
+      ],
+      "sha256": "50c0e83dff5682af17eec44767235195d781310ebb1621f7ae901237829c186e",
+      "bytes": 195821
+    },
+    {
+      "key": "cs_pup_mochi_sesame_free",
+      "file": "cs_pup_mochi_sesame_free.png",
+      "width": 382,
+      "height": 346,
+      "pivot": [
+        0.5,
+        0.930635838150289
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/friends_free.png",
+      "source_box": [
+        1700,
+        0,
+        2172,
+        724
+      ],
+      "source_subject": [
+        42,
+        290,
+        376,
+        588
+      ],
+      "sha256": "fe703822ff7108f9c7be9950d56130a97f6f218638aee971246ab63885de5838",
+      "bytes": 133892
+    }
+  ]
+}

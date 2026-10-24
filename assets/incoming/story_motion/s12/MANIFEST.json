@@ -1,0 +1,117 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s12_far_garden",
+      "file": "cs_s12_far_garden.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s12_garden.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "9cb80301b680ae2bbb411571e61c04e0816258a392c14c23dd7d8516a00d0225",
+      "bytes": 3667510
+    },
+    {
+      "key": "cs_s12_chr_hunger",
+      "file": "cs_s12_chr_hunger.png",
+      "width": 1178,
+      "height": 1401,
+      "pivot": [
+        0.5,
+        0.9828693790149893
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/hunger_silhouette.png",
+      "source_box": [
+        0,
+        0,
+        1145,
+        1374
+      ],
+      "source_subject": [
+        9,
+        11,
+        1139,
+        1364
+      ],
+      "sha256": "5652b013b5f51fe2ec228f095b9a87f5c5b054b14cab5f3fa97c3f0a9c640c59",
+      "bytes": 2536479
+    },
+    {
+      "key": "cs_s12_mid_garden",
+      "file": "cs_s12_mid_garden.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        0,
+        498,
+        442,
+        1024
+      ],
+      "source_subject": [
+        14,
+        12,
+        442,
+        518
+      ],
+      "sha256": "6711ef43baa418397941d6f7921f67c48d3d054c7323dfc7c532d1af65270ae2",
+      "bytes": 511333
+    },
+    {
+      "key": "cs_s12_fg_garden",
+      "file": "cs_s12_fg_garden.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        442,
+        498,
+        781,
+        1024
+      ],
+      "source_subject": [
+        0,
+        133,
+        339,
+        481
+      ],
+      "sha256": "a73119281eea9098717abae9e8c75338356d68b977eed91bda62e4d9ca7a6e91",
+      "bytes": 458503
+    }
+  ]
+}

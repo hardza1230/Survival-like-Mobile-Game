@@ -1,0 +1,6 @@
+{
+  "id": "crowd",
+  "source": "crowd.png",
+  "tool": "built-in ImageGen",
+  "prompt": "Paired crowd cutout sheet for a cute confectionery fantasy kingdom motion comic. TWO isolated groups, one group in the upper half, one group in the lower half, on a real transparent background with wide empty margins and a wide clear gap. Upper group: SIX ordinary HUMAN townspeople in a gently curved line, simple friendly faces and tiny chibi bodies, baker, gardener, mother, child, guard, merchant; pastel medieval kitchen-fantasy clothing, no weapons raised. Lower group: the EXACT same six positions and recognizable color palette but all SIX people have been cursed into round mochi with tiny feet, simple faces, small matching hats or apron hints, no human limbs. Keep crowd silhouettes low and wide, all members complete and visible. Crisp dark colored outlines, glossy soft pastel shading, charming storybook art. No background, no shadows, no magic effects, no letters or labels. Objects limited to clothing accessories. This is one two-state sprite sheet, to extract upper and lower crowds as two separate cutouts."
+}

@@ -1,0 +1,6 @@
+{
+  "id": "fx_dust",
+  "source": "fx_dust.png",
+  "tool": "built-in ImageGen",
+  "prompt": "Six-frame animated landing DUST effect for a cute confectionery motion comic. Strict THREE columns TWO rows, equal cells, all frames grounded at same center-lower pivot, chronology across top row then bottom. TRUE transparent background. Frame1 tiny tan puff at bottom center;2 small spreading dust cloud;3 broad soft cream-brown dust plume with a few pebble specks;4 dust divides left and right as center clears;5 wisps dissipate outward;6 almost vanished faint wisps. Low wide horizontal silhouette in every frame, no tall explosion. Cute clean painted game VFX, soft dark-brown outlines on bigger puffs, real fading alpha on later wisps. Every frame comfortably within its cell with generous transparent clearance. NO floor plane, cast shadows, characters, labels, numbers, text, watermark or grid. Will be packed as six512x256 cells in a horizontal sprite strip."
+}

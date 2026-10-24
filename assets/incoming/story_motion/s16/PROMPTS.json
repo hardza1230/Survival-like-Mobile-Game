@@ -1,0 +1,35 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s16_clearing",
+      "source": "s16_clearing.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Final clearing at the base of the First Tree, ancient roots loosened and a small central patch of fertile earth ready for a separately planted Heart Seed. Warm rose-gold dawn starts returning, tree trunk frames sides and top. No crown, people, seedlings or magic ribbons in far plate. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "2f0152248a5491d64ad9e3c113e37336d95b5465fa99460856aa94eb4a462332",
+      "bytes": 2426989
+    },
+    {
+      "id": "s16_hunger_sleep",
+      "source": "s16_hunger_sleep.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Deep underground chamber below the oldest roots, a gigantic cute-cartoon dark purple Hunger creature coiled asleep in the upper half, both eyes firmly CLOSED, rounded root-like body with subtle chest rise implied, no active mouth or teeth bared. This sleeping silhouette is the far plate for the final teaser;leave eye area clear enough for a separate small glowing eye overlay. Lower28percent is quiet dark cavern, no hero. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "7e7bac8322ea6cd1ba31fee5a5b9ea1403cb771b60f937af0338753202bf80d0",
+      "bytes": 2338604
+    },
+    {
+      "prompt": "Eight isolated story props for Mochi Mayhem, strict FOUR columns TWO rows, one complete cutout per cell on TRUE transparent background. Every item at most65percent of cell with generous clear gaps. Top row1: sealed old glass jam jar, ruby-red jam in bottom half, a dry rolled cream recipe paper visible inside its upper neck, no label.2: tightly rolled cream recipe scroll tied with red ribbon, no writing.3: unrolled cream recipe scroll showing ONLY THREE little colored seed illustrations: one large seed, a spray of tiny seeds, bouncing seed arrows represented by simple curved pictorial trails;absolutely NO letters/numbers/glyphs.4: a single dark cast-iron rounded gear with red chili/leaf motifs, open axle hole, perfect side-facing circular silhouette for rotation. Bottom row1: clear cylindrical glass flavor-extraction jar with a small sad pale pink mochi trapped inside, closed brass lid and pipe outlet.2: very small Heart Seed sprout with two pink-gold leaves and a little soil clump.3: same sprout as a young sapling with a few warm green/pink leaves.4: same sapling now a young leafy tree with round candy-like pink-gold foliage and a clear trunk/soil base. Consistent cute fantasy dark outlines and soft painted candy shading. No backdrop,cast shadows,aura halos,text,watermark or grid. This donor sheet is mechanically split into8 separate movable props.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-f29ce03d-e97f-41d7-82e2-d9bf387a2e1e.png",
+      "source": "scene_props.png",
+      "sha256": "72c72c4d316baaabe2ad1d7ee507324fb9067d40ababeeab6a5187814b2454a1",
+      "bytes": 1644998
+    },
+    {
+      "prompt": "Four narrative character cutouts for Mochi Mayhem, strict2x2 grid on TRUE transparent background. Use references ONLY for character identities: Strawberry pink side ponytail/green eyes/chocolate-red frilly dress/boots;Ruby tiny pink gem-headed jam spirit;Grandma HUMAN white bun/cream apron/red-brown dress. Each complete figure or pair stays well within its quadrant with very generous transparent margins and no aura or ground shadows. TOP LEFT: Strawberry and tiny Ruby together seen FROM BEHIND, facing a future oven off-screen, Strawberry stands with her strawberry seed gun lowered and Ruby floating beside her. TOP RIGHT: Strawberry front three-quarter, raising one empty open palm high as if holding a tiny seed;do NOT paint the seed or light beam. BOTTOM LEFT: Strawberry crouching gently at ground level, one gloved hand placing an invisible tiny seed into the ground;do not paint ground or seed. BOTTOM RIGHT: human Grandma gently hugging Ruby against her apron, both crying happy tears and smiling;Ruby remains a round jam spirit, never a human. Full boots, hair, Grandma shoes and Ruby gem visible in all cells. Polished cute chibi candy-fantasy painted outlines, no text,labels,borders,background scenery or watermark. The four cells become independent cutout files.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-2d652fca-e6f2-4a8d-bdfe-1e1800ba8798.png",
+      "source": "story_poses.png",
+      "sha256": "96434e1cb82e942bb3e0e0992ac2fbd2d6870c88a28ea327267d00c424f017ef",
+      "bytes": 2043145
+    }
+  ]
+}

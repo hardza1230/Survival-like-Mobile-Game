@@ -1,0 +1,6 @@
+{
+  "id": "fx_speed",
+  "source": "fx_speed.png",
+  "tool": "built-in ImageGen",
+  "prompt": "Four-frame portrait speed-line effect atlas for a cute cartoon falling scene, arranged in FOUR equal vertical columns. Each cell is a tall9:16 frame with thin short white and pale pink VERTICAL DASHES sliding DOWN between frames, strongest near left and right edges, completely empty black central lane for the character, all cells pure black #000000 background for ADD blending. Frame1 dashes high,frame2 lower,frame3 lower,frame4 shifted loop phase so it cycles. No horizontal motion, no circles, no explosions, no physical objects or characters. Keep luminous marks away from each cell boundary with black margins so adjacent cells never merge. NO text, labels, numerals, watermark or dividing lines. One production VFX donor atlas, will be extracted into4 individual portrait frames and assembled as a horizontal strip of1080x1920 cells."
+}

@@ -1,0 +1,6 @@
+{
+  "id": "fx_flash",
+  "source": "fx_flash.png",
+  "tool": "built-in ImageGen",
+  "prompt": "One portrait9:16 magical FLASH overlay for a cute pink-gold transformation scene. A luminous white center fills most of canvas, feathering gently into a pale blush-pink soft edge at the perimeter, with transparent outermost corners. This is a simple painterly light-flash overlay, no rays, no rings, no objects, no sparkles, no text, no labels, no border. White center should be nearly fully opaque; outer falloff uses real smooth RGBA transparency rather than a painted black/white background. No checkerboard. The image will be used briefly as a soft white-pink screen flash, final canvas1080x1920."
+}

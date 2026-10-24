@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s03/MANIFEST.json",
+      "key": "cs_s03_far_furnace",
+      "errors": [],
+      "file": "s03/cs_s03_far_furnace.png",
+      "bytes": 3191002,
+      "sha256": "0f1132f70631dc568c3da28f0f09950f3a92d06ac7240d6e7ed3653bf6d1b2ff",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s03/MANIFEST.json",
+      "key": "cs_s03_prop_gear",
+      "errors": [],
+      "file": "s03/cs_s03_prop_gear.png",
+      "bytes": 279934,
+      "sha256": "1a05298bc59e078de7c36248a3392ec08d8d6a666389657b1960fcc8a47c84a6",
+      "mode": "RGBA",
+      "width": 454,
+      "height": 451,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        430,
+        427
+      ]
+    },
+    {
+      "manifest": "s03/MANIFEST.json",
+      "key": "cs_s03_chr_prisoner",
+      "errors": [],
+      "file": "s03/cs_s03_chr_prisoner.png",
+      "bytes": 228044,
+      "sha256": "ec0151aa657559fb1cee080f83677320ce876179d8abef78c1e4c94322d77846",
+      "mode": "RGBA",
+      "width": 398,
+      "height": 456,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        374,
+        432
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    }
+  ]
+}

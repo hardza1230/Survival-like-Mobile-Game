@@ -1,0 +1,144 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s02_far_drains",
+      "file": "cs_s02_far_drains.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s02_drains.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "ff02a281922fbdc14240e52eb2c643b29342d4c47490c9792df9df81ed19b405",
+      "bytes": 2949668
+    },
+    {
+      "key": "cs_s02_prop_jam_jar",
+      "file": "cs_s02_prop_jam_jar.png",
+      "width": 352,
+      "height": 435,
+      "pivot": [
+        0.5,
+        0.9448275862068966
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        0,
+        0,
+        445,
+        435
+      ],
+      "source_subject": [
+        73,
+        28,
+        377,
+        415
+      ],
+      "sha256": "73ec1d2cb65317ac1a1839505b3a3503cc20e398e6797e6ab18d7641d4a65bda",
+      "bytes": 239446
+    },
+    {
+      "key": "cs_s02_prop_recipe_rolled",
+      "file": "cs_s02_prop_recipe_rolled.png",
+      "width": 359,
+      "height": 377,
+      "pivot": [
+        0.5,
+        0.9363395225464191
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        445,
+        0,
+        867,
+        435
+      ],
+      "source_subject": [
+        47,
+        61,
+        358,
+        390
+      ],
+      "sha256": "1efe8ec87913097f4db12e57d0256cdb1d325f45488459e2a7da0f85f724e86b",
+      "bytes": 138291
+    },
+    {
+      "key": "cs_s02_prop_recipe_open",
+      "file": "cs_s02_prop_recipe_open.png",
+      "width": 410,
+      "height": 432,
+      "pivot": [
+        0.5,
+        0.9444444444444444
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        867,
+        0,
+        1324,
+        435
+      ],
+      "source_subject": [
+        64,
+        33,
+        426,
+        417
+      ],
+      "sha256": "d52158dad4b97aa607c1a6a7fd0338a1c9badba9dce0e2bb8689470261d08578",
+      "bytes": 240306
+    },
+    {
+      "key": "cs_s02_mid_drains",
+      "file": "cs_s02_mid_drains.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        781,
+        498,
+        1151,
+        1024
+      ],
+      "source_subject": [
+        0,
+        10,
+        370,
+        494
+      ],
+      "sha256": "8107aaca4cd47ce0d21454ca3fc6d6c842939bf7a4a78b95e6d28f1ec581fb47",
+      "bytes": 480515
+    }
+  ]
+}

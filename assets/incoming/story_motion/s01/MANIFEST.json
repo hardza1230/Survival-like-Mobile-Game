@@ -1,0 +1,279 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s01_far_pantry",
+      "file": "cs_s01_far_pantry.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_pantry.png",
+      "source_box": [
+        0,
+        0,
+        941,
+        1672
+      ],
+      "source_subject": [
+        0,
+        0,
+        941,
+        1672
+      ],
+      "sha256": "5fb748271d0c5529bc3bff55526fecf7ec8b16aea7228d347eb4d017d52f4726",
+      "bytes": 2594160
+    },
+    {
+      "key": "cs_s01_far_nest",
+      "file": "cs_s01_far_nest.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_nest.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "2fcae62f3f79350e811cc747695480fc544122e35aced0101e0703d81ffd390d",
+      "bytes": 3092983
+    },
+    {
+      "key": "cs_s01_far_root_floor",
+      "file": "cs_s01_far_root_floor.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_root_floor.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "3d7ed04929a8783f1f204b1499a137883265d5828b7d8b6ebc99d02923bb02f5",
+      "bytes": 2819549
+    },
+    {
+      "key": "cs_s01_far_shaft",
+      "file": "cs_s01_far_shaft.png",
+      "width": 1242,
+      "height": 3840,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_shaft.png",
+      "source_box": [
+        0,
+        0,
+        744,
+        2115
+      ],
+      "source_subject": [
+        0,
+        0,
+        744,
+        2115
+      ],
+      "sha256": "1fafaf7241d57a1aac78da989ed9626fccbe4f55fc4ab3cb98e032dd79042df8",
+      "bytes": 5033306
+    },
+    {
+      "key": "cs_s01_mid_pantry",
+      "file": "cs_s01_mid_pantry.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_layers.png",
+      "source_box": [
+        0,
+        0,
+        512,
+        530
+      ],
+      "source_subject": [
+        38,
+        17,
+        512,
+        523
+      ],
+      "sha256": "2099f9630c6dd8ef38ad988eddef20d972bb5af5e2f6955756bfa11d5b3ec51d",
+      "bytes": 155524
+    },
+    {
+      "key": "cs_s01_fg_pantry",
+      "file": "cs_s01_fg_pantry.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_layers.png",
+      "source_box": [
+        512,
+        0,
+        1024,
+        545
+      ],
+      "source_subject": [
+        0,
+        184,
+        502,
+        523
+      ],
+      "sha256": "a798a776bebbe6d50e521693b685d5294a2c1e0601c1405ffb885f4abb2fd218",
+      "bytes": 249246
+    },
+    {
+      "key": "cs_s01_mid_nest",
+      "file": "cs_s01_mid_nest.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_layers.png",
+      "source_box": [
+        1024,
+        0,
+        1536,
+        560
+      ],
+      "source_subject": [
+        5,
+        17,
+        506,
+        544
+      ],
+      "sha256": "395b73e3c23af9085af450d581bf2fe4991dae9487260f95fa40fd7fede36c1c",
+      "bytes": 416117
+    },
+    {
+      "key": "cs_s01_fg_nest",
+      "file": "cs_s01_fg_nest.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_layers.png",
+      "source_box": [
+        0,
+        530,
+        512,
+        1024
+      ],
+      "source_subject": [
+        0,
+        12,
+        512,
+        471
+      ],
+      "sha256": "4b7db8730666db59017001dfd4c481ab8493c0d6faa250e5fe8205e4d6f156a4",
+      "bytes": 444861
+    },
+    {
+      "key": "cs_s01_mid_root_floor",
+      "file": "cs_s01_mid_root_floor.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_layers.png",
+      "source_box": [
+        512,
+        545,
+        1024,
+        1024
+      ],
+      "source_subject": [
+        0,
+        8,
+        512,
+        456
+      ],
+      "sha256": "47f2b6688b998c3a4fad6a2d1010d5067afa8dba9866f361d47f54352730e57d",
+      "bytes": 360834
+    },
+    {
+      "key": "cs_s01_fg_root_floor",
+      "file": "cs_s01_fg_root_floor.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s01_layers.png",
+      "source_box": [
+        1024,
+        560,
+        1536,
+        1024
+      ],
+      "source_subject": [
+        0,
+        176,
+        506,
+        420
+      ],
+      "sha256": "2f7ae6fb0c9f87df4921597914b91a3aa11f0b5811a8f5665567118e28816f45",
+      "bytes": 262749
+    }
+  ]
+}

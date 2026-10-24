@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s11/MANIFEST.json",
+      "key": "cs_s11_far_crosssection",
+      "errors": [],
+      "file": "s11/cs_s11_far_crosssection.png",
+      "bytes": 3561395,
+      "sha256": "23975c01d3bceb7da02b6dd6e248b662922ed3e05562ff6c7cbed6adf7893379",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s11/MANIFEST.json",
+      "key": "cs_s11_far_oven_cold",
+      "errors": [],
+      "file": "s11/cs_s11_far_oven_cold.png",
+      "bytes": 3241592,
+      "sha256": "2d93b6282425aeca6cdfe0c17f9a176e26173d8307cec3d71c20e88664ecdeef",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    }
+  ]
+}

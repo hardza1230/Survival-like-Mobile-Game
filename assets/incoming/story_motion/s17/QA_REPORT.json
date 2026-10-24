@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_far_delve",
+      "errors": [],
+      "file": "s17/cs_s17_far_delve.png",
+      "bytes": 3371743,
+      "sha256": "29af30af8f9259ad76f9dbeb83294d2fb41105a59dd6a8c45244c09125104d24",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_prop_eyes_half",
+      "errors": [],
+      "file": "s17/cs_s17_prop_eyes_half.png",
+      "bytes": 168982,
+      "sha256": "53468638413f5b3543b066ee70acb0b46f49f47fe77314b3968c9f21558aad2e",
+      "mode": "RGBA",
+      "width": 1017,
+      "height": 208,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        993,
+        184
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_prop_eyes_open",
+      "errors": [],
+      "file": "s17/cs_s17_prop_eyes_open.png",
+      "bytes": 311269,
+      "sha256": "b0515e57d3166994def96652fe9dfa16707c241289660ce95cc071529752f193",
+      "mode": "RGBA",
+      "width": 1093,
+      "height": 289,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1069,
+        265
+      ]
+    },
+    {
+      "manifest": "s17/MANIFEST.json",
+      "key": "cs_s17_chr_team_back",
+      "errors": [],
+      "file": "s17/cs_s17_chr_team_back.png",
+      "bytes": 2241705,
+      "sha256": "6c38b907d0011497dac014adefd35ed97c3c3d1dd0a8ea1cbb56c4f98a79e514",
+      "mode": "RGBA",
+      "width": 1727,
+      "height": 834,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1703,
+        810
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    }
+  ]
+}

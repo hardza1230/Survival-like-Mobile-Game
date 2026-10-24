@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s14/MANIFEST.json",
+      "key": "cs_s14_far_field",
+      "errors": [],
+      "file": "s14/cs_s14_far_field.png",
+      "bytes": 2963452,
+      "sha256": "dd81f2cf88571c747bf90bed61ff6100503e86f22737b554ad438326c4c31dde",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s14/MANIFEST.json",
+      "key": "cs_s14_far_tree",
+      "errors": [],
+      "file": "s14/cs_s14_far_tree.png",
+      "bytes": 3386793,
+      "sha256": "d30b3377616d4fe0200f6348171f80652d8a1be7264eb97d826bb9caa11534dd",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    }
+  ]
+}

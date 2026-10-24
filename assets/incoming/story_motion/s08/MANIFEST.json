@@ -1,0 +1,36 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s08_far_hive",
+      "file": "cs_s08_far_hive.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s08_hive.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "38899d977b44f5fe4d06620ea515a9cd1384be1d5150b997623a1890b0055d63",
+      "bytes": 3094120
+    }
+  ]
+}

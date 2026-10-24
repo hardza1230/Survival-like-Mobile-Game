@@ -1,0 +1,6 @@
+{
+  "id": "fx_seed",
+  "source": "fx_seed.png",
+  "tool": "built-in ImageGen",
+  "prompt": "Six-frame looping magical Heart Seed glow VFX atlas for a cute confectionery fantasy game. Strict THREE columns TWO rows of equal square cells, chronological left-to-right then next row. Solid pure black #000000 background, ADD blending. Each cell has ONLY soft pink-gold concentric light rings and tiny warm sugar sparkles around an EMPTY center, no physical seed. Frame1 very faint small halo;2 a little brighter;3 broad warm halo;4 luminous pulse peak;5 contracting and dimming;6 returns almost exactly to frame1 for a seamless loop. Keep every frame same center with generous completely black margins, effect diameter at most65percent of cell, no overlap between cells. Smooth painterly emissive light, clean readable shapes, no smoke, scenery, labels, text, numbers or grid lines. Each extracted cell will be resized to384x384 and assembled horizontally."
+}

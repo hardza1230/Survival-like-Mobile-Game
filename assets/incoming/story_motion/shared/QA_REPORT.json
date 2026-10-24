@@ -1,0 +1,950 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_idle",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_idle.png",
+      "bytes": 217133,
+      "sha256": "7567a74adbd9f6094ea9e203835509b91d7497b3013175771b819740e3762f65",
+      "mode": "RGBA",
+      "width": 507,
+      "height": 471,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        483,
+        447
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_scared",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_scared.png",
+      "bytes": 228793,
+      "sha256": "da11edf43a59cd1caa13f85e5b53f89f9aad4a90b67010552c4bd2ff3e5f00fa",
+      "mode": "RGBA",
+      "width": 470,
+      "height": 482,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        446,
+        458
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_fall",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_fall.png",
+      "bytes": 214222,
+      "sha256": "cafc8132f01023e31ed69025df92c9f85dcf4cc05c5aba42cb06ddb109576eca",
+      "mode": "RGBA",
+      "width": 443,
+      "height": 543,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        419,
+        519
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_berry_reach",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_berry_reach.png",
+      "bytes": 220676,
+      "sha256": "018934a33a3fa1c7cb473df6f2ab498590cec16c764c4426b38c7f207f397178",
+      "mode": "RGBA",
+      "width": 598,
+      "height": 442,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        574,
+        418
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_berry_land",
+      "errors": [],
+      "file": "shared/cs_pup_berry_land.png",
+      "bytes": 653851,
+      "sha256": "34ed2fcd97dcf097dfb2124f7bb1ec275c52d5c2ffc04e74d4ef7045fec31915",
+      "mode": "RGBA",
+      "width": 760,
+      "height": 626,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        736,
+        602
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_berry_hero",
+      "errors": [],
+      "file": "shared/cs_pup_berry_hero.png",
+      "bytes": 700284,
+      "sha256": "89b25710234244a5fb2cb32312622895e355070e9c713ae2e848cb4f0b6daa0c",
+      "mode": "RGBA",
+      "width": 680,
+      "height": 759,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        656,
+        735
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_berry_look",
+      "errors": [],
+      "file": "shared/cs_pup_berry_look.png",
+      "bytes": 600442,
+      "sha256": "dec38a8fc71d5434c05e433103dc8545e48d05fe3d9aef674c88ceb4b8bb3895",
+      "mode": "RGBA",
+      "width": 609,
+      "height": 728,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        585,
+        704
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_ruby_hide",
+      "errors": [],
+      "file": "shared/cs_pup_ruby_hide.png",
+      "bytes": 596838,
+      "sha256": "be8b00b77df869d5fe91301f45fa590198f71ddeb7d51c90312c6ab30252028b",
+      "mode": "RGBA",
+      "width": 828,
+      "height": 705,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        804,
+        681
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_ruby_cry_happy",
+      "errors": [],
+      "file": "shared/cs_pup_ruby_cry_happy.png",
+      "bytes": 667156,
+      "sha256": "575cccc5bf9667778aea9a0cdebad278b7ce372f3128843936daa5c35a9b8b48",
+      "mode": "RGBA",
+      "width": 890,
+      "height": 780,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        866,
+        756
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_grandma_mochi_frozen",
+      "errors": [],
+      "file": "shared/cs_pup_grandma_mochi_frozen.png",
+      "bytes": 713681,
+      "sha256": "f0f44d46a6fda7c5d0f67f77869dfcf5a522d9b26fb457f1046f1dd5b0c9a85d",
+      "mode": "RGBA",
+      "width": 593,
+      "height": 842,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        569,
+        818
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_grandma_mochi",
+      "errors": [],
+      "file": "shared/cs_pup_grandma_mochi.png",
+      "bytes": 450600,
+      "sha256": "e75650dc0489f012b5e9672f17c2c92ad2c8d1a293653e1de710fb5035fa5bb2",
+      "mode": "RGBA",
+      "width": 555,
+      "height": 650,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        531,
+        626
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_grandma_human",
+      "errors": [],
+      "file": "shared/cs_pup_grandma_human.png",
+      "bytes": 547391,
+      "sha256": "b252ec2e5231e19aaa259d399b3feea1f3fa6361d255292fedd2632928235fec",
+      "mode": "RGBA",
+      "width": 504,
+      "height": 891,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        480,
+        867
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_planter_crown",
+      "errors": [],
+      "file": "shared/cs_pup_planter_crown.png",
+      "bytes": 869618,
+      "sha256": "4646df63082c4de960a48702fca0c54844588fcaca713a755ec1c59638b59c5a",
+      "mode": "RGBA",
+      "width": 776,
+      "height": 744,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        752,
+        720
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_planter_kneel",
+      "errors": [],
+      "file": "shared/cs_pup_planter_kneel.png",
+      "bytes": 722190,
+      "sha256": "7e508fe443157627fab1372c2a31e5ca3063f65f95f40a103145c3e92e622f43",
+      "mode": "RGBA",
+      "width": 778,
+      "height": 749,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        754,
+        725
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_planter_old",
+      "errors": [],
+      "file": "shared/cs_pup_planter_old.png",
+      "bytes": 446814,
+      "sha256": "e67599af2a59b24aef541b7f8a9ce27bc60fc2a8d92d4dbc828f804bf611c065",
+      "mode": "RGBA",
+      "width": 506,
+      "height": 730,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        482,
+        706
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crown_glow",
+      "errors": [],
+      "file": "shared/cs_pup_crown_glow.png",
+      "bytes": 202017,
+      "sha256": "b053af5d867993f22be10399a3fcb0631499fea34f0f68b92b61b9fce5b4cce7",
+      "mode": "RGBA",
+      "width": 450,
+      "height": 352,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        426,
+        328
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crown_crack",
+      "errors": [],
+      "file": "shared/cs_pup_crown_crack.png",
+      "bytes": 210187,
+      "sha256": "4274a861fbda095cb3d8fd5aa044141be0117f2ea3df04a15a5ce612615f3037",
+      "mode": "RGBA",
+      "width": 466,
+      "height": 341,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        442,
+        317
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_seed_sleep",
+      "errors": [],
+      "file": "shared/cs_pup_seed_sleep.png",
+      "bytes": 71937,
+      "sha256": "2edab2bff89a9025bfa7eba6f64c887a2af7f4d5519bf1f50d3d47204d2927e2",
+      "mode": "RGBA",
+      "width": 230,
+      "height": 282,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        206,
+        258
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_seed_wake",
+      "errors": [],
+      "file": "shared/cs_pup_seed_wake.png",
+      "bytes": 100617,
+      "sha256": "30cbc1ed430ccc2ec0807121ecc1bf5e12015862f7493dbb7ed1aa972747a3a3",
+      "mode": "RGBA",
+      "width": 237,
+      "height": 367,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        213,
+        343
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_root_tip",
+      "errors": [],
+      "file": "shared/cs_pup_root_tip.png",
+      "bytes": 171073,
+      "sha256": "78aef5f55de504dcc3f9166413efd5184e0e0724b677f33d43f928f06fd325ea",
+      "mode": "RGBA",
+      "width": 403,
+      "height": 447,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        379,
+        423
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_root_wound",
+      "errors": [],
+      "file": "shared/cs_pup_root_wound.png",
+      "bytes": 136360,
+      "sha256": "08e433c01337a4419525ba083c38431c397391818c6ae4b978d1c6e586f23110",
+      "mode": "RGBA",
+      "width": 385,
+      "height": 347,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        361,
+        323
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_blank_mochi_walk",
+      "errors": [],
+      "file": "shared/cs_pup_blank_mochi_walk.png",
+      "bytes": 81294,
+      "sha256": "023dd297c75b0d655a65df959f984397c4d7b90e5230322d51d095d6f0b8a035",
+      "mode": "RGBA",
+      "width": 323,
+      "height": 295,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        299,
+        271
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_blank_mochi_leap",
+      "errors": [],
+      "file": "shared/cs_pup_blank_mochi_leap.png",
+      "bytes": 98756,
+      "sha256": "9880740c9d369f197a80b1992dfdce0c04e404aee149ff8a6b824786b9d15758",
+      "mode": "RGBA",
+      "width": 415,
+      "height": 309,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        391,
+        285
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crowd_people",
+      "errors": [],
+      "file": "shared/cs_pup_crowd_people.png",
+      "bytes": 1272607,
+      "sha256": "ee2952c8c74191f59f35a39d9def7df9f66b14abb918932294eb5600efe05490",
+      "mode": "RGBA",
+      "width": 1533,
+      "height": 581,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1509,
+        557
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_crowd_mochi",
+      "errors": [],
+      "file": "shared/cs_pup_crowd_mochi.png",
+      "bytes": 682610,
+      "sha256": "9e5063510b4461b4de432c9bea6bc5ad1362bf15c881af54c2342128dc66ab91",
+      "mode": "RGBA",
+      "width": 1539,
+      "height": 354,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        1515,
+        330
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_mint_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_mint_trapped.png",
+      "bytes": 359819,
+      "sha256": "7e5e838a6394f269fe44773cafc12ac21a6ca49a2effd19ffca90a268c9e7838",
+      "mode": "RGBA",
+      "width": 467,
+      "height": 588,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        443,
+        564
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_cocoa_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_cocoa_trapped.png",
+      "bytes": 273712,
+      "sha256": "f536b2a67e93eeec5f238644c1190077cd89c9c2b413df511985917f10324638",
+      "mode": "RGBA",
+      "width": 438,
+      "height": 462,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        414,
+        438
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_taro_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_taro_trapped.png",
+      "bytes": 374476,
+      "sha256": "0e7c1fee43fc85cbdf0618a0ab9ed9c863dbf1d85d96722dfc731c68aafbd64d",
+      "mode": "RGBA",
+      "width": 488,
+      "height": 580,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        464,
+        556
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_yuzu_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_yuzu_trapped.png",
+      "bytes": 224819,
+      "sha256": "d7aa4c7b193c32726428f0c3721aa168ba62014e53bc2c1856d9404b7fd208d0",
+      "mode": "RGBA",
+      "width": 420,
+      "height": 469,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        396,
+        445
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_sesame_trapped",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_sesame_trapped.png",
+      "bytes": 387905,
+      "sha256": "905b78b1493ce57b67f11947a4b2859fca35895ce52808e927689f16cc272ca1",
+      "mode": "RGBA",
+      "width": 502,
+      "height": 646,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        478,
+        622
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_mint_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_mint_free.png",
+      "bytes": 143300,
+      "sha256": "8173d375d205c4fd0faa5227d4ffc8456ba6da22af3270b2d7d549435a04e1e5",
+      "mode": "RGBA",
+      "width": 393,
+      "height": 374,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        369,
+        350
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_cocoa_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_cocoa_free.png",
+      "bytes": 153339,
+      "sha256": "b1f102efe39088d896230f22ee51940063266d3d015fe2c6f7fd108d788043f0",
+      "mode": "RGBA",
+      "width": 399,
+      "height": 381,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        375,
+        357
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_taro_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_taro_free.png",
+      "bytes": 148349,
+      "sha256": "3e433333f0fb0e9836f32486e1b9a2f60cb6b19904f4a3502f515e1437a8f083",
+      "mode": "RGBA",
+      "width": 373,
+      "height": 374,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        349,
+        350
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_yuzu_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_yuzu_free.png",
+      "bytes": 195821,
+      "sha256": "50c0e83dff5682af17eec44767235195d781310ebb1621f7ae901237829c186e",
+      "mode": "RGBA",
+      "width": 379,
+      "height": 447,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        355,
+        423
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "manifest": "shared/MANIFEST.json",
+      "key": "cs_pup_mochi_sesame_free",
+      "errors": [],
+      "file": "shared/cs_pup_mochi_sesame_free.png",
+      "bytes": 133892,
+      "sha256": "fe703822ff7108f9c7be9950d56130a97f6f218638aee971246ab63885de5838",
+      "mode": "RGBA",
+      "width": 382,
+      "height": 346,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        358,
+        322
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_speedlines",
+      "errors": [],
+      "file": "shared_fx/cs_fx_speedlines.png",
+      "bytes": 1702171,
+      "sha256": "793930da7db01eb0323df648630bab98220016cfd5e99a8e9f210e626ff7c0d1",
+      "mode": "RGBA",
+      "width": 4320,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        4320,
+        1920
+      ],
+      "frames": 4
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_flash",
+      "errors": [],
+      "file": "shared_fx/cs_fx_flash.png",
+      "bytes": 1717017,
+      "sha256": "b9e34586ae73c02d4d92cbf9e5285624fae4aae6a45786d3e28bfc13b26dd3c2",
+      "mode": "RGBA",
+      "width": 1080,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        253
+      ],
+      "alpha_bbox": [
+        8,
+        14,
+        1072,
+        1905
+      ],
+      "frames": 1
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_transform",
+      "errors": [],
+      "file": "shared_fx/cs_fx_transform.png",
+      "bytes": 3359434,
+      "sha256": "43b0b33d24091fffd1b423a96d6bccbe731980bf8d2f71f6701d7100d5d7e6ee",
+      "mode": "RGBA",
+      "width": 6144,
+      "height": 768,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        6144,
+        768
+      ],
+      "frames": 8
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_seed_glow",
+      "errors": [],
+      "file": "shared_fx/cs_fx_seed_glow.png",
+      "bytes": 579165,
+      "sha256": "1d23aab92bf8769b66403740241c2c6af89a64e876c359c4a406da0c5f8ca8b5",
+      "mode": "RGBA",
+      "width": 2304,
+      "height": 384,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        2304,
+        384
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_flavor_ribbon",
+      "errors": [],
+      "file": "shared_fx/cs_fx_flavor_ribbon.png",
+      "bytes": 684006,
+      "sha256": "a004cfb59ae59e6ef33e986930d41ecddba32532112c9aad588e293391ac014c",
+      "mode": "RGBA",
+      "width": 6144,
+      "height": 256,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        6144,
+        256
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_crack",
+      "errors": [],
+      "file": "shared_fx/cs_fx_crack.png",
+      "bytes": 549443,
+      "sha256": "7b37931db239f29db268d9250d99c5d5ca8fc0bfaadb653914e11b7ec613865f",
+      "mode": "RGBA",
+      "width": 5400,
+      "height": 600,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        302,
+        8,
+        5216,
+        592
+      ],
+      "frames": 5
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_dust",
+      "errors": [],
+      "file": "shared_fx/cs_fx_dust.png",
+      "bytes": 277706,
+      "sha256": "9df1c530f8dea0656bc38e22f44092a7f50dfa1609b2451f156a408a971f4dcb",
+      "mode": "RGBA",
+      "width": 3072,
+      "height": 256,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        70,
+        8,
+        3031,
+        248
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_frost_shatter",
+      "errors": [],
+      "file": "shared_fx/cs_fx_frost_shatter.png",
+      "bytes": 1721475,
+      "sha256": "96476233007bfb940457a31a74742d168f130b6f188a8d9f9ef39e338f904b26",
+      "mode": "RGBA",
+      "width": 4608,
+      "height": 768,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        8,
+        8,
+        4600,
+        760
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_curse_smoke",
+      "errors": [],
+      "file": "shared_fx/cs_fx_curse_smoke.png",
+      "bytes": 2035589,
+      "sha256": "191888315e9ee48df538978a1b51235e2cb035e5e733c4d88c388221b020acaa",
+      "mode": "RGBA",
+      "width": 4608,
+      "height": 768,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        39,
+        8,
+        4574,
+        760
+      ],
+      "frames": 6
+    },
+    {
+      "manifest": "shared_fx/MANIFEST.json",
+      "key": "cs_fx_sparkle",
+      "errors": [],
+      "file": "shared_fx/cs_fx_sparkle.png",
+      "bytes": 140089,
+      "sha256": "dbd978c40edc277626f861d6eb107ac38db712d636916da6f4425c13f0ea5301",
+      "mode": "RGBA",
+      "width": 1536,
+      "height": 256,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1536,
+        256
+      ],
+      "frames": 6
+    }
+  ]
+}

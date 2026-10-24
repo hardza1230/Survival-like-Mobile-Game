@@ -1,0 +1,27 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "prompt": "Eight separate cutout environment props arranged in strict 4 columns x 2 rows, generous transparent gaps. Top row: rounded sepia medieval house corner; small warm flower bush; golden First Tree leafy branch; old tree root with grass. Bottom row: giant teal fermented garden leaf and hanging vine; dark teal foreground leaves; bent rusty drain pipe with grate; icy prison arch. Cute polished hand painted anime mobile fantasy game, dark outlines, purple gold palette. Complete objects not touching cell edges, no text no labels no people. True transparent background.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-1ac70a6a-604f-4228-a6e8-6fcc141f70f6.png",
+      "source": "environment_kit.png",
+      "sha256": "58dfd2943b193b69d89061ab257f3d6eedc9a62b548fa1317020a600402b9c1d",
+      "bytes": 2846528
+    },
+    {
+      "prompt": "Single full body large menacing but cute fantasy root creature silhouette, The Hunger formed from many tangled dark purple tree roots, enormous coiled torso with long root limbs and branch horns, small hungry mouth in root, subtle pink amber eyes. Readable expressive silhouette, polished hand painted anime fantasy mobile game dark outlines, no horror gore. Whole creature isolated with transparent margin, true transparent background. No scenery no text.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-fc5d8ec2-9ae7-4b50-8c41-da299ec8d898.png",
+      "source": "hunger_silhouette.png",
+      "sha256": "9331f9d573aaef57cf61e047bdb03c1ab123479907075ffc88355f0d2f738e16",
+      "bytes": 2680481
+    },
+    {
+      "id": "s12_garden",
+      "source": "s12_garden.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Wide view inside the Fermented Canopy garden below the kitchen: giant teal leaves, glowing purple mushrooms, old royal plant beds reclaimed by roots. A clear center clearing and distant dark space for a separately composited giant Hunger silhouette. No monster in far layer. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "4ba2eeedb709cb7cc3fb565099e2a22b21bd961ffec17c308af5c3e3b56478e9",
+      "bytes": 2465170
+    }
+  ]
+}

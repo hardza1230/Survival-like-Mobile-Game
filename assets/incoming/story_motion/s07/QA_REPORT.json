@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s07/MANIFEST.json",
+      "key": "cs_s07_far_canopy",
+      "errors": [],
+      "file": "s07/cs_s07_far_canopy.png",
+      "bytes": 3665713,
+      "sha256": "1c6ecb2f028d0366bea88e6c1aa6d9aa566a08386703a6172b07e32468642165",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    }
+  ]
+}

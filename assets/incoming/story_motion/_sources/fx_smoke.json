@@ -1,0 +1,6 @@
+{
+  "id": "fx_smoke",
+  "tool": "built-in ImageGen",
+  "source": "fx_smoke.png",
+  "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame purple curse smoke effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 compact curled violet smoke;2 curls widen;3 purple/plum smoke rises in soft spirals;4 smoke breaks into wisps drifting upward;5 pale translucent fading wisps;6 almost vanished delicate curls. Cute and magical, no faces or eyes, no scary monsters. Real transparent background with fading alpha. Keep each frame fully inside its cell with large empty margins. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip."
+}

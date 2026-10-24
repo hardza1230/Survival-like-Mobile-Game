@@ -1,0 +1,13 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "s06_entrance",
+      "tool": "built-in ImageGen",
+      "source": "s06_entrance.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Entrance passage to the Chili Engine, red copper fuel pipes and warm iron walls, a clear flat stone ledge for a separate glass fuel jar containing Mint. No jar or trapped character in background. Cool shadows and soft orange window light. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "e38b4b392fad3597ccb358f453c035d66e0b7228b0c2f134adb3f509fad2a8a6",
+      "bytes": 1895387
+    }
+  ]
+}

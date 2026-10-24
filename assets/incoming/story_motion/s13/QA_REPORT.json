@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s13/MANIFEST.json",
+      "key": "cs_s13_far_throne",
+      "errors": [],
+      "file": "s13/cs_s13_far_throne.png",
+      "bytes": 3707635,
+      "sha256": "1f33019eff4fd56e6e1e25fa5de789078fcda38f71d43cc7de11745068f9cbf1",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s13/MANIFEST.json",
+      "key": "cs_s13_chr_berry_raise",
+      "errors": [],
+      "file": "s13/cs_s13_chr_berry_raise.png",
+      "bytes": 529581,
+      "sha256": "2ff03425c0f99085604e90040ce3d776f5da49af42bcb28480a8f7160d135bcd",
+      "mode": "RGBA",
+      "width": 620,
+      "height": 666,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        596,
+        642
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    }
+  ]
+}

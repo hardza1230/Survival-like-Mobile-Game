@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s05/MANIFEST.json",
+      "key": "cs_s05_far_oven",
+      "errors": [],
+      "file": "s05/cs_s05_far_oven.png",
+      "bytes": 3101402,
+      "sha256": "ae54da097c7d70507215b8a2d0a918bcd35808f7718716816247d2edb7c50967",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s05/MANIFEST.json",
+      "key": "cs_s05_chr_berry_ruby_back",
+      "errors": [],
+      "file": "s05/cs_s05_chr_berry_ruby_back.png",
+      "bytes": 527347,
+      "sha256": "958e362e2e8bf254c4bf8425c377bf99ff8cc953297339660c850812314e0de2",
+      "mode": "RGBA",
+      "width": 683,
+      "height": 654,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        659,
+        630
+      ],
+      "transparent_margins": [
+        24,
+        24,
+        24,
+        24
+      ]
+    }
+  ]
+}

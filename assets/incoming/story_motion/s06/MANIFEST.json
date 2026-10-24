@@ -1,0 +1,36 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s06_far_entrance",
+      "file": "cs_s06_far_entrance.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s06_entrance.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "7bc1b4d32c973b73c668ae68495a67d441f348ed76a883e313b36b7e4361a3de",
+      "bytes": 2814361
+    }
+  ]
+}

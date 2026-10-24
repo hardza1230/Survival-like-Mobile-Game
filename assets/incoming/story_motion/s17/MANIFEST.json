@@ -1,0 +1,117 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s17_far_delve",
+      "file": "cs_s17_far_delve.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s17_delve.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "29af30af8f9259ad76f9dbeb83294d2fb41105a59dd6a8c45244c09125104d24",
+      "bytes": 3371743
+    },
+    {
+      "key": "cs_s17_prop_eyes_half",
+      "file": "cs_s17_prop_eyes_half.png",
+      "width": 1017,
+      "height": 208,
+      "pivot": [
+        0.5,
+        0.8846153846153846
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/hunger_eyes.png",
+      "source_box": [
+        0,
+        0,
+        1145,
+        656
+      ],
+      "source_subject": [
+        76,
+        355,
+        1045,
+        515
+      ],
+      "sha256": "53468638413f5b3543b066ee70acb0b46f49f47fe77314b3968c9f21558aad2e",
+      "bytes": 168982
+    },
+    {
+      "key": "cs_s17_prop_eyes_open",
+      "file": "cs_s17_prop_eyes_open.png",
+      "width": 1093,
+      "height": 289,
+      "pivot": [
+        0.5,
+        0.916955017301038
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/hunger_eyes.png",
+      "source_box": [
+        0,
+        656,
+        1145,
+        1374
+      ],
+      "source_subject": [
+        55,
+        115,
+        1100,
+        356
+      ],
+      "sha256": "b0515e57d3166994def96652fe9dfa16707c241289660ce95cc071529752f193",
+      "bytes": 311269
+    },
+    {
+      "key": "cs_s17_chr_team_back",
+      "file": "cs_s17_chr_team_back.png",
+      "width": 1727,
+      "height": 834,
+      "pivot": [
+        0.5,
+        0.9712230215827338
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/team_back_complete.png",
+      "source_box": [
+        0,
+        0,
+        1890,
+        832
+      ],
+      "source_subject": [
+        138,
+        14,
+        1817,
+        800
+      ],
+      "sha256": "6c38b907d0011497dac014adefd35ed97c3c3d1dd0a8ea1cbb56c4f98a79e514",
+      "bytes": 2241705
+    }
+  ]
+}

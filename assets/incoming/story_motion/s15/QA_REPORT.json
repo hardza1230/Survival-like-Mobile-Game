@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_far_glasshall",
+      "errors": [],
+      "file": "s15/cs_s15_far_glasshall.png",
+      "bytes": 3656593,
+      "sha256": "56f59869f5299393fd0da1e1698d9fa5bec2226f3ce85951e76f7d4b2c2028c4",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_prop_memory_town",
+      "errors": [],
+      "file": "s15/cs_s15_prop_memory_town.png",
+      "bytes": 983423,
+      "sha256": "fc4e6c715f27bb0043bf83949677cde2d2e77614cfb705a2a2a90a12998d8acf",
+      "mode": "RGBA",
+      "width": 520,
+      "height": 1053,
+      "alpha_range": [
+        0,
+        253
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        496,
+        1029
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_prop_memory_family",
+      "errors": [],
+      "file": "s15/cs_s15_prop_memory_family.png",
+      "bytes": 1004056,
+      "sha256": "4d2b94f2debbdbe8aa821f4b0b60803eff20ac0f037f02f92d216b20d046423f",
+      "mode": "RGBA",
+      "width": 543,
+      "height": 1053,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        519,
+        1029
+      ]
+    },
+    {
+      "manifest": "s15/MANIFEST.json",
+      "key": "cs_s15_prop_memory_grandma",
+      "errors": [],
+      "file": "s15/cs_s15_prop_memory_grandma.png",
+      "bytes": 980946,
+      "sha256": "d136e8ac960f7b541db150da40d8d6472fdb84853ad80b5bba640648e489469e",
+      "mode": "RGBA",
+      "width": 532,
+      "height": 1053,
+      "alpha_range": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        508,
+        1029
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s04_far_prison",
+      "file": "cs_s04_far_prison.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s04_prison.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "da6f53bdfb67fd00aa7a18b4ad3ce87e3b5cb7d9f670dc1043af4313752a0da1",
+      "bytes": 2982251
+    },
+    {
+      "key": "cs_s04_mid_prison",
+      "file": "cs_s04_mid_prison.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        1151,
+        498,
+        1536,
+        1024
+      ],
+      "source_subject": [
+        0,
+        13,
+        372,
+        476
+      ],
+      "sha256": "e46a3354b5d3c809d9a3b6e4dbfd5fe0006e73307927955384d508a5d15d84fd",
+      "bytes": 500953
+    }
+  ]
+}

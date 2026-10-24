@@ -1,0 +1,84 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "fx_crack",
+      "source": "fx_crack.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Five-step spreading floor CRACK effect donor atlas, arranged THREE columns TWO rows, last bottom-right cell must remain fully transparent and unused. Each occupied cell equal size, one independently painted timeline frame. Real transparent background;ONLY dark jagged cracks with small warm wooden splinters and thin purple depth inside, no intact floor rectangle or backdrop. Frame1 short thin center fissure;2 branches open left and right;3 wider branching fissure;4 large branching jagged tear with a few tiny splinters;5 widest fully opened final crack with a dark purple thin opening. Low wide horizontal composition, fixed center pivot and fixed scale: crack grows gradually within the same bounding area. Clean cartoon fantasy style matching a royal wooden pantry, no horror or gore. Big transparent clearance in each cell, no frame overlaps. No text, numbers, labels or grid. Will be extracted into5 horizontal1080x600 PNG frames packed as one strip.",
+      "sha256": "c0ee9c112ca1bcde1d384e52c697fafec23777e7b1852970cdeb488f95ebf2e5",
+      "bytes": 1218408
+    },
+    {
+      "id": "fx_dust",
+      "source": "fx_dust.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Six-frame animated landing DUST effect for a cute confectionery motion comic. Strict THREE columns TWO rows, equal cells, all frames grounded at same center-lower pivot, chronology across top row then bottom. TRUE transparent background. Frame1 tiny tan puff at bottom center;2 small spreading dust cloud;3 broad soft cream-brown dust plume with a few pebble specks;4 dust divides left and right as center clears;5 wisps dissipate outward;6 almost vanished faint wisps. Low wide horizontal silhouette in every frame, no tall explosion. Cute clean painted game VFX, soft dark-brown outlines on bigger puffs, real fading alpha on later wisps. Every frame comfortably within its cell with generous transparent clearance. NO floor plane, cast shadows, characters, labels, numbers, text, watermark or grid. Will be packed as six512x256 cells in a horizontal sprite strip.",
+      "sha256": "acf5dc709d05b11682fbeb184ca9cac7da2646b2358cf9b2aaec32b6f9ebddc4",
+      "bytes": 617746
+    },
+    {
+      "id": "fx_flash",
+      "source": "fx_flash.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One portrait9:16 magical FLASH overlay for a cute pink-gold transformation scene. A luminous white center fills most of canvas, feathering gently into a pale blush-pink soft edge at the perimeter, with transparent outermost corners. This is a simple painterly light-flash overlay, no rays, no rings, no objects, no sparkles, no text, no labels, no border. White center should be nearly fully opaque; outer falloff uses real smooth RGBA transparency rather than a painted black/white background. No checkerboard. The image will be used briefly as a soft white-pink screen flash, final canvas1080x1920.",
+      "sha256": "cdfba52e9bb409a3a13d3dee13ee09cee28daf891a65494a3e57ca239d585bc3",
+      "bytes": 1680976
+    },
+    {
+      "id": "fx_frost",
+      "tool": "built-in ImageGen",
+      "source": "fx_frost.png",
+      "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame ice-shatter effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 small pale cyan ice shell outline;2 shell splits;3 burst of clean angular blue translucent shards;4 shards scatter outward leaving center empty;5 fewer fading shards;6 tiny almost invisible remaining ice flecks. No character inside ice. Cute fantasy sparkle, not realistic dangerous glass. Real transparent background with fading alpha. Frame diameter below70percent of cell, ample empty gutters. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip.",
+      "sha256": "25784d6338d8b75002dbf54be533667d1b8dee35b722971b0664a8c799cb64a3",
+      "bytes": 1782601
+    },
+    {
+      "prompt": "Animation FX donor sprite sheet exactly 3 columns x 2 rows of six sequential equal wide horizontal frames. Rainbow flavor ribbon stream, soft red orange gold green cyan violet magical silk light trails flowing from left to right, progressively twisting and drifting, elegant curved stream with small sugar sparkles. Pure black background for ADD blend. Each ribbon contained inside its own wide 4:1 cell with generous black border and black gaps, no overlap between cells. Consistent scale and flow direction all frames, looping motion. Polished mobile anime fantasy spell effect, no text no characters.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-8b21913b-0d39-4697-b5d2-3fdd91443b0f.png",
+      "source": "fx_ribbon.png",
+      "sha256": "4e237dc35d3f134428f57a3651ce87ecea488595bd52b28ecefb8718394e00f4",
+      "bytes": 1306902
+    },
+    {
+      "id": "fx_seed",
+      "source": "fx_seed.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Six-frame looping magical Heart Seed glow VFX atlas for a cute confectionery fantasy game. Strict THREE columns TWO rows of equal square cells, chronological left-to-right then next row. Solid pure black #000000 background, ADD blending. Each cell has ONLY soft pink-gold concentric light rings and tiny warm sugar sparkles around an EMPTY center, no physical seed. Frame1 very faint small halo;2 a little brighter;3 broad warm halo;4 luminous pulse peak;5 contracting and dimming;6 returns almost exactly to frame1 for a seamless loop. Keep every frame same center with generous completely black margins, effect diameter at most65percent of cell, no overlap between cells. Smooth painterly emissive light, clean readable shapes, no smoke, scenery, labels, text, numbers or grid lines. Each extracted cell will be resized to384x384 and assembled horizontally.",
+      "sha256": "98ae322d72e321788e13dcce8b426cbd8b482d18566108824a1a3ee4a8317dd1",
+      "bytes": 1002962
+    },
+    {
+      "id": "fx_smoke",
+      "tool": "built-in ImageGen",
+      "source": "fx_smoke.png",
+      "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame purple curse smoke effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 compact curled violet smoke;2 curls widen;3 purple/plum smoke rises in soft spirals;4 smoke breaks into wisps drifting upward;5 pale translucent fading wisps;6 almost vanished delicate curls. Cute and magical, no faces or eyes, no scary monsters. Real transparent background with fading alpha. Keep each frame fully inside its cell with large empty margins. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip.",
+      "sha256": "7007c1835134c6f5b4362a414d9ff8779de5b221d2e9b750eb5cfe438a799462",
+      "bytes": 1853889
+    },
+    {
+      "id": "fx_sparkle",
+      "tool": "built-in ImageGen",
+      "source": "fx_sparkle.png",
+      "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame tiny golden-pink sparkle effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 a dim pinprick;2 small four-point star;3 bright medium star with tiny sugar motes;4 expanded soft pink-gold star;5 smaller fading star;6 returns to a dim pinprick. Solid pure black #000000 background for ADD blend. Effect diameter below55percent of each cell with completely black outer margins. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip.",
+      "sha256": "bc970db92e5ede62a6c6215697c82b9ebc038c63e1452c4debb1177231fbd40a",
+      "bytes": 619395
+    },
+    {
+      "id": "fx_speed",
+      "source": "fx_speed.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Four-frame portrait speed-line effect atlas for a cute cartoon falling scene, arranged in FOUR equal vertical columns. Each cell is a tall9:16 frame with thin short white and pale pink VERTICAL DASHES sliding DOWN between frames, strongest near left and right edges, completely empty black central lane for the character, all cells pure black #000000 background for ADD blending. Frame1 dashes high,frame2 lower,frame3 lower,frame4 shifted loop phase so it cycles. No horizontal motion, no circles, no explosions, no physical objects or characters. Keep luminous marks away from each cell boundary with black margins so adjacent cells never merge. NO text, labels, numerals, watermark or dividing lines. One production VFX donor atlas, will be extracted into4 individual portrait frames and assembled as a horizontal strip of1080x1920 cells.",
+      "sha256": "5d62dd2bd6f8aeb2ad4cb7fdab452feef0bca98f63157300393690698925fc95",
+      "bytes": 785442
+    },
+    {
+      "id": "fx_transform",
+      "source": "fx_transform.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One 8-frame VFX sprite atlas for a cute confectionery fantasy transformation. Strict FOUR columns TWO rows, EIGHT equal square cells, chronological left-to-right then next row, all frames centered on the same pivot. Pure solid black background #000000 for ADD blend; no grid lines, no labels, no text. Animated pink-gold magical transformation burst: frame1 tiny heartlike light seed;2 expanding pink halo;3 golden ring radiates;4 bright central white-pink flash with sugar crystal shards;5 full pink-gold ring and flying sugar flecks;6 larger thinning ring;7 fading scattered small sparks;8 just a few near-extinguished sparks. Keep each effect within 70 percent of its cell, no edge clipping, no particles crossing into neighboring cells. Soft luminous painted game VFX, vivid but clean, glow falls completely to black around each cell's perimeter. No characters or physical items. Final sheet will be extracted and mechanically arranged into a horizontal8-frame768px-per-frame strip.",
+      "sha256": "37c864f52a06ada1103a2899d2f852592c2b77efda39782c6a583f5ab608c630",
+      "bytes": 1493075
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "ruby",
+  "tool": "built-in ImageGen",
+  "prompt": "Two isolated cutout poses of Ruby the tiny ruby-jam spirit from the attached identity reference, side by side on a truly transparent background. Preserve her round pink translucent candy body, red ruby gemstone on forehead, shining dark round eyes, little jam-red arms, striped frilly cream-and-red confectionery skirt. Ruby is a spirit, never a human. Left pose: she crouches hiding behind and tightly hugging a small closed brown recipe book with a berry embossed on its blank cover, worried expression. Right pose: she floats joyfully with happy tears in her eyes, arms open, beaming smile. Cute chibi confectionery fantasy mobile art with dark colored outlines, soft gradients, glossy candy highlights, clean crisp silhouette. No scenery, no glow halo, no floating extra objects, no ground shadows, no letters or numbers on book or anywhere else. Full sprites with ample transparent empty gap and edge margins. This two-pose donor sheet will be cropped into separate puppets.",
+  "source": "ruby.png",
+  "references": [
+    "assets/art/mascot/mascot_ruby.webp"
+  ]
+}

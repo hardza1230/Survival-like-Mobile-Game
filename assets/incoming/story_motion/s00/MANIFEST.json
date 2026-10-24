@@ -1,0 +1,171 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s00_far_city",
+      "file": "cs_s00_far_city.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s00_city.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "7549cdea30c48fef84b4219f775b35f88f7fbfb5b9b4610f4a2e042335dbdc74",
+      "bytes": 3959815
+    },
+    {
+      "key": "cs_s00_far_tree",
+      "file": "cs_s00_far_tree.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s00_tree.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "e362791a617c472aa95e35b9b4446553f9cc19082c7e9b48758934fb5fa6a3e2",
+      "bytes": 3883440
+    },
+    {
+      "key": "cs_s00_mid_city",
+      "file": "cs_s00_mid_city.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        0,
+        0,
+        442,
+        498
+      ],
+      "source_subject": [
+        15,
+        5,
+        442,
+        481
+      ],
+      "sha256": "2a81d273bd13edebe2cbb1ffeae3b4658261413b99609ca12758adb06d3598b0",
+      "bytes": 421070
+    },
+    {
+      "key": "cs_s00_fg_city",
+      "file": "cs_s00_fg_city.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        442,
+        0,
+        781,
+        498
+      ],
+      "source_subject": [
+        0,
+        201,
+        314,
+        487
+      ],
+      "sha256": "e63d8c1c67f5c00149a089888026b7a1df9eb958c4fc1a42348a27bd42474f4c",
+      "bytes": 325374
+    },
+    {
+      "key": "cs_s00_mid_tree",
+      "file": "cs_s00_mid_tree.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        781,
+        0,
+        1151,
+        498
+      ],
+      "source_subject": [
+        0,
+        41,
+        370,
+        482
+      ],
+      "sha256": "30e6cd09c8fca147a24278cce8dc1ece23690d23fe51e8ab62ed3a54e4242451",
+      "bytes": 724252
+    },
+    {
+      "key": "cs_s00_fg_tree",
+      "file": "cs_s00_fg_tree.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/environment_kit.png",
+      "source_box": [
+        1151,
+        0,
+        1536,
+        498
+      ],
+      "source_subject": [
+        0,
+        105,
+        370,
+        489
+      ],
+      "sha256": "966901a89a285ab6c9a332fc8e3cf4b8151dcd060712a7ff9be60d6333b78cab",
+      "bytes": 568126
+    }
+  ]
+}

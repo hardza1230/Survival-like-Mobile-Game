@@ -1,0 +1,63 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s05_far_oven",
+      "file": "cs_s05_far_oven.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s05_oven.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "ae54da097c7d70507215b8a2d0a918bcd35808f7718716816247d2edb7c50967",
+      "bytes": 3101402
+    },
+    {
+      "key": "cs_s05_chr_berry_ruby_back",
+      "file": "cs_s05_chr_berry_ruby_back.png",
+      "width": 683,
+      "height": 654,
+      "pivot": [
+        0.5,
+        0.963302752293578
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/story_poses.png",
+      "source_box": [
+        0,
+        0,
+        684,
+        635
+      ],
+      "source_subject": [
+        21,
+        18,
+        656,
+        624
+      ],
+      "sha256": "958e362e2e8bf254c4bf8425c377bf99ff8cc953297339660c850812314e0de2",
+      "bytes": 527347
+    }
+  ]
+}

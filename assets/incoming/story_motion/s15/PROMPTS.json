@@ -1,0 +1,20 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "prompt": "Three separate tall broken magical glass memory panes side by side, generous transparent gap and margin. Each pane ornate purple brass frame and clearly visible painted memory inside. LEFT happy human townspeople in old fantasy capital, CENTER pink haired little girl with loving mother and father, RIGHT elderly white bun haired Grandma royal chef wearing cream apron cooking jam in old royal kitchen. Polished cute chibi anime fantasy mobile game illustration dark outlines, warm pastel memories, fractured glass sparkles. Each pane separate movable cutout on true transparency. No text no words no symbols resembling letters.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e7691e44-5eb2-4e32-a578-1ce225ef7649.png",
+      "source": "memory_mirrors.png",
+      "sha256": "5a7f73ec221aa2e5b34ddc90bc861d7489a3ccff9aa1edd0111c6af6a7afcd7b",
+      "bytes": 3283854
+    },
+    {
+      "id": "s15_glasshall",
+      "source": "s15_glasshall.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Inside the shattered royal greenhouse, elegant broken rounded window frames, pale lavender moonlight through panes, empty floating space between30 and60percent height for separately animated memory mirrors. No painted reflections, people or floating glass pieces. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "4b1a199c0219138ad81dbf9ebfb0895b343b468e138a1d2935b22d4847eaf710",
+      "bytes": 2462222
+    }
+  ]
+}

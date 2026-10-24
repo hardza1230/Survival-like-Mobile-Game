@@ -1,0 +1,198 @@
+{
+  "canvas": [
+    1080,
+    1920
+  ],
+  "background_overscan_width": 1242,
+  "assets": [
+    {
+      "key": "cs_s16_far_clearing",
+      "file": "cs_s16_far_clearing.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s16_clearing.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "5a2edbf46959fac339311ed310fd430441eb53d52c07b2503b5dfe4d896dea7d",
+      "bytes": 3633216
+    },
+    {
+      "key": "cs_s16_far_hunger_sleep",
+      "file": "cs_s16_far_hunger_sleep.png",
+      "width": 1242,
+      "height": 1920,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "padding": 0,
+      "blend": "NORMAL",
+      "source": "../_sources/s16_hunger_sleep.png",
+      "source_box": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "source_subject": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "sha256": "1f7dc9e7a038b22f94f8757128e1913d5e2d21f13643b273470bc04257beb40d",
+      "bytes": 3545623
+    },
+    {
+      "key": "cs_s16_prop_sprout",
+      "file": "cs_s16_prop_sprout.png",
+      "width": 270,
+      "height": 325,
+      "pivot": [
+        0.5,
+        0.9261538461538461
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        445,
+        435,
+        867,
+        887
+      ],
+      "source_subject": [
+        103,
+        123,
+        325,
+        400
+      ],
+      "sha256": "17004bb4103e96e4ee831478ce30559411032ee846df1602547f5313b460f352",
+      "bytes": 92642
+    },
+    {
+      "key": "cs_s16_prop_sapling",
+      "file": "cs_s16_prop_sapling.png",
+      "width": 358,
+      "height": 422,
+      "pivot": [
+        0.5,
+        0.943127962085308
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        867,
+        435,
+        1324,
+        887
+      ],
+      "source_subject": [
+        84,
+        40,
+        394,
+        414
+      ],
+      "sha256": "54ad2d48aa234f0272ec889ffda0ef1b31e3975241f4a62637ad05971bf85cbe",
+      "bytes": 155699
+    },
+    {
+      "key": "cs_s16_prop_young_tree",
+      "file": "cs_s16_prop_young_tree.png",
+      "width": 440,
+      "height": 455,
+      "pivot": [
+        0.5,
+        0.9472527472527472
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/scene_props.png",
+      "source_box": [
+        1324,
+        435,
+        1774,
+        887
+      ],
+      "source_subject": [
+        35,
+        21,
+        427,
+        428
+      ],
+      "sha256": "13b3d3348030a8f61f089af9cb58e9f73c74a270a20f090a1861a7e245391bb1",
+      "bytes": 270369
+    },
+    {
+      "key": "cs_s16_chr_berry_plant",
+      "file": "cs_s16_chr_berry_plant.png",
+      "width": 613,
+      "height": 583,
+      "pivot": [
+        0.5,
+        0.9588336192109777
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/story_poses.png",
+      "source_box": [
+        0,
+        635,
+        684,
+        1199
+      ],
+      "source_subject": [
+        62,
+        5,
+        627,
+        540
+      ],
+      "sha256": "6342b0b440fed90060c6f0dd6b60f62ac7e9a502c8f8b0d9f409f5138c276626",
+      "bytes": 542979
+    },
+    {
+      "key": "cs_s16_chr_grandma_ruby_hug",
+      "file": "cs_s16_chr_grandma_ruby_hug.png",
+      "width": 554,
+      "height": 590,
+      "pivot": [
+        0.5,
+        0.9593220338983051
+      ],
+      "padding": 24,
+      "blend": "NORMAL",
+      "source": "../_sources/story_poses.png",
+      "source_box": [
+        684,
+        635,
+        1312,
+        1199
+      ],
+      "source_subject": [
+        98,
+        9,
+        604,
+        551
+      ],
+      "sha256": "bc618851d17f0318e28bc801ae037b219e1507ff6a50ebccb8b5fde7956e36ae",
+      "bytes": 395957
+    }
+  ]
+}

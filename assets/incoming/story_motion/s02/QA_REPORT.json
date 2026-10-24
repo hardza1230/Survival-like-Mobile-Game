@@ -1,0 +1,110 @@
+{
+  "status": "PASS",
+  "assets": [
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_far_drains",
+      "errors": [],
+      "file": "s02/cs_s02_far_drains.png",
+      "bytes": 2949668,
+      "sha256": "ff02a281922fbdc14240e52eb2c643b29342d4c47490c9792df9df81ed19b405",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        1242,
+        1920
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_prop_jam_jar",
+      "errors": [],
+      "file": "s02/cs_s02_prop_jam_jar.png",
+      "bytes": 239446,
+      "sha256": "73ec1d2cb65317ac1a1839505b3a3503cc20e398e6797e6ab18d7641d4a65bda",
+      "mode": "RGBA",
+      "width": 352,
+      "height": 435,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        328,
+        411
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_prop_recipe_rolled",
+      "errors": [],
+      "file": "s02/cs_s02_prop_recipe_rolled.png",
+      "bytes": 138291,
+      "sha256": "1efe8ec87913097f4db12e57d0256cdb1d325f45488459e2a7da0f85f724e86b",
+      "mode": "RGBA",
+      "width": 359,
+      "height": 377,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        335,
+        353
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_prop_recipe_open",
+      "errors": [],
+      "file": "s02/cs_s02_prop_recipe_open.png",
+      "bytes": 240306,
+      "sha256": "d52158dad4b97aa607c1a6a7fd0338a1c9badba9dce0e2bb8689470261d08578",
+      "mode": "RGBA",
+      "width": 410,
+      "height": 432,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        24,
+        386,
+        408
+      ]
+    },
+    {
+      "manifest": "s02/MANIFEST.json",
+      "key": "cs_s02_mid_drains",
+      "errors": [],
+      "file": "s02/cs_s02_mid_drains.png",
+      "bytes": 480515,
+      "sha256": "8107aaca4cd47ce0d21454ca3fc6d6c842939bf7a4a78b95e6d28f1ec581fb47",
+      "mode": "RGBA",
+      "width": 1242,
+      "height": 1920,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        600,
+        1242,
+        1088
+      ]
+    }
+  ]
+}

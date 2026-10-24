@@ -1,0 +1,436 @@
+{
+  "tool": "built-in ImageGen",
+  "method": "Original generated donor PNGs retained. Final assets are mechanical crops, padding, uniform scaling and strip packing; no artwork synthesized by scripts.",
+  "jobs": [
+    {
+      "id": "berry_mochi_v1",
+      "source": "berry_mochi_v1.png",
+      "status": "review",
+      "prompt": "Production 2D cut-out sprite donor sheet for Mochi Mayhem motion comic. FOUR separate poses of the SAME cursed Strawberry mochi creature, in a strict 2x2 grid, one isolated complete sprite per quadrant, transparent background, no ground shadows, absolutely no lettering or grid lines. Round soft strawberry-pink mochi, green strawberry leaf tuft on top, tiny stub arms and feet, dark rose outlines, glossy candy highlight, cute expressive green eyes. This is cursed Strawberry, NOT Ruby: no gem, no book, no skirt, no humanoid hair. Top left: relaxed idle standing. Top right: scared, trembling, arms close to face. Bottom left: falling downward elongated squash-and-stretch silhouette, eyes shut, limbs spread. Bottom right: brave reaching toward the right, one arm fully extended. Keep each sprite entirely within its quadrant, generous transparent gap and 10 percent edge safety. Similar body sizes. Polished cute pastel chibi game illustration with crisp outlines, limited soft shading, mobile-readable silhouette. A true RGBA transparent sprite sheet, not checkerboard, no text, no watermark.",
+      "sha256": "22457e6114f846b0f525b80b932ab20a2087bf6508e8ff9fd6d52a72b75ebf44",
+      "bytes": 1671597
+    },
+    {
+      "id": "berry_human",
+      "tool": "built-in ImageGen",
+      "prompt": "Production character pose sheet, exactly THREE isolated full-body drawings arranged left to right on a real transparent background. Use the attached image ONLY as the character identity reference, do not reproduce its pose or framing. Strawberry: pink side ponytail, green eyes, strawberry clip and tiny white flowers, dark chocolate red/white frilled outfit, dark red boots, strawberry-themed Heart Seed Gun. Cute chibi game illustration, crisp dark rose outlines and soft cel shading, no cast shadows, NO glow behind figures, no backdrop, no text. Left: landing crouch after transformation, one hand touching ground, full boots visible. Middle: triumphant upright hero pose holding her strawberry seed gun up. Right: standing relaxed, looking to her left thoughtfully. Entire figure visible in each isolated equally spaced column with wide transparent clearance, no cropped hair or feet. Sprite donor sheet for mechanical extraction into three separate cutout files.",
+      "source": "berry_human.png",
+      "references": [
+        "assets/character_cards/card_momo.png"
+      ],
+      "sha256": "9cb6240059a9c66c61e98f1e5ae7f3b2597bd78f2165c1ec1c75f1047b222a92",
+      "bytes": 2014366
+    },
+    {
+      "id": "crowd",
+      "source": "crowd.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Paired crowd cutout sheet for a cute confectionery fantasy kingdom motion comic. TWO isolated groups, one group in the upper half, one group in the lower half, on a real transparent background with wide empty margins and a wide clear gap. Upper group: SIX ordinary HUMAN townspeople in a gently curved line, simple friendly faces and tiny chibi bodies, baker, gardener, mother, child, guard, merchant; pastel medieval kitchen-fantasy clothing, no weapons raised. Lower group: the EXACT same six positions and recognizable color palette but all SIX people have been cursed into round mochi with tiny feet, simple faces, small matching hats or apron hints, no human limbs. Keep crowd silhouettes low and wide, all members complete and visible. Crisp dark colored outlines, glossy soft pastel shading, charming storybook art. No background, no shadows, no magic effects, no letters or labels. Objects limited to clothing accessories. This is one two-state sprite sheet, to extract upper and lower crowds as two separate cutouts.",
+      "sha256": "ce8f33e41eba887c4070adb9bf09a7ad165e2a55fb43d162036f02467f6f35e6",
+      "bytes": 2452339
+    },
+    {
+      "prompt": "Eight separate cutout environment props arranged in strict 4 columns x 2 rows, generous transparent gaps. Top row: rounded sepia medieval house corner; small warm flower bush; golden First Tree leafy branch; old tree root with grass. Bottom row: giant teal fermented garden leaf and hanging vine; dark teal foreground leaves; bent rusty drain pipe with grate; icy prison arch. Cute polished hand painted anime mobile fantasy game, dark outlines, purple gold palette. Complete objects not touching cell edges, no text no labels no people. True transparent background.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-1ac70a6a-604f-4228-a6e8-6fcc141f70f6.png",
+      "source": "environment_kit.png",
+      "sha256": "58dfd2943b193b69d89061ab257f3d6eedc9a62b548fa1317020a600402b9c1d",
+      "bytes": 2846528
+    },
+    {
+      "id": "friends_free",
+      "source": "friends_free.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Make the FIVE mochi friends from the reference sheet again in the same left-to-right order, now FREE of their traps and happy, as a zoomed-out sprite layout. Each figure must be SMALL within its equal column, occupying only HALF the column width, with big transparent gutters and a generous100pixel outer transparent margin. Five independent complete cutouts, no overlap. Mint is mint-green with leaf tuft;Cocoa chocolate brown with bear ears;Taro lilac with explorer cap;Yuzu orange with green leaves still hugging baby orange Yuzling;Sesame charcoal gray with sesame speckles. Remove the fuel jar, all binding roots, honeycomb and mirror frame entirely. Happy relieved little mochi poses with stub hands open;keep color/face identity and cute painted candy outlines from reference. No human bodies. TRUE transparent background, no ground shadows, no auras, no scenery or text. Entire bodies and all leaves must be complete and well separated, avoid filling canvas edge to edge.",
+      "sha256": "09b77709c7ccb11f9036a4e3d37792dae37fc3b76ff592d70e90721115566ba0",
+      "bytes": 812848
+    },
+    {
+      "id": "friends_trapped",
+      "source": "friends_trapped.png",
+      "tool": "built-in ImageGen",
+      "prompt": "ONE production cutout donor sheet, five separate cursed MOCHI friends arranged left to right in FIVE equal columns, each fully contained with transparent margins. Cute soft round mochi blobs, NOT human characters, tiny stub feet and expressive faces, crisp dark colored outlines and glossy pastel candy shading. Column1 Mint: pale mint-green mochi with mint leaf tuft, trapped inside a clear round glass fuel jar with cork lid, worried face. Column2 Cocoa: chocolate-brown broad bear-eared mochi bound by a small bundle of purple roots around lower body. Column3 Taro: lilac taro mochi with a tiny explorer cap, trapped in a golden honeycomb cell. Column4 Yuzu: orange citrus mochi with green leaf tuft, sitting hugging a tiny baby orange Yuzling, sad face, no scenery. Column5 Sesame: dark gray sesame-speckled mochi trapped inside a small ornate oval mirror frame, worried face. TRUE transparent background, no ground scenery, no aura, no cast shadows, no text. Keep whole traps and all five figures separate with generous gaps. Each occupies at most70 percent of its column width. Colorful and reassuring, not horror. Final extraction makes five independent trapped-pose puppets.",
+      "sha256": "ef7119693dae694c532a0ac56d3fc4c637664e9e3534166b5a8b56ec380211f4",
+      "bytes": 1639576
+    },
+    {
+      "id": "fx_crack",
+      "source": "fx_crack.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Five-step spreading floor CRACK effect donor atlas, arranged THREE columns TWO rows, last bottom-right cell must remain fully transparent and unused. Each occupied cell equal size, one independently painted timeline frame. Real transparent background;ONLY dark jagged cracks with small warm wooden splinters and thin purple depth inside, no intact floor rectangle or backdrop. Frame1 short thin center fissure;2 branches open left and right;3 wider branching fissure;4 large branching jagged tear with a few tiny splinters;5 widest fully opened final crack with a dark purple thin opening. Low wide horizontal composition, fixed center pivot and fixed scale: crack grows gradually within the same bounding area. Clean cartoon fantasy style matching a royal wooden pantry, no horror or gore. Big transparent clearance in each cell, no frame overlaps. No text, numbers, labels or grid. Will be extracted into5 horizontal1080x600 PNG frames packed as one strip.",
+      "sha256": "c0ee9c112ca1bcde1d384e52c697fafec23777e7b1852970cdeb488f95ebf2e5",
+      "bytes": 1218408
+    },
+    {
+      "id": "fx_dust",
+      "source": "fx_dust.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Six-frame animated landing DUST effect for a cute confectionery motion comic. Strict THREE columns TWO rows, equal cells, all frames grounded at same center-lower pivot, chronology across top row then bottom. TRUE transparent background. Frame1 tiny tan puff at bottom center;2 small spreading dust cloud;3 broad soft cream-brown dust plume with a few pebble specks;4 dust divides left and right as center clears;5 wisps dissipate outward;6 almost vanished faint wisps. Low wide horizontal silhouette in every frame, no tall explosion. Cute clean painted game VFX, soft dark-brown outlines on bigger puffs, real fading alpha on later wisps. Every frame comfortably within its cell with generous transparent clearance. NO floor plane, cast shadows, characters, labels, numbers, text, watermark or grid. Will be packed as six512x256 cells in a horizontal sprite strip.",
+      "sha256": "acf5dc709d05b11682fbeb184ca9cac7da2646b2358cf9b2aaec32b6f9ebddc4",
+      "bytes": 617746
+    },
+    {
+      "id": "fx_flash",
+      "source": "fx_flash.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One portrait9:16 magical FLASH overlay for a cute pink-gold transformation scene. A luminous white center fills most of canvas, feathering gently into a pale blush-pink soft edge at the perimeter, with transparent outermost corners. This is a simple painterly light-flash overlay, no rays, no rings, no objects, no sparkles, no text, no labels, no border. White center should be nearly fully opaque; outer falloff uses real smooth RGBA transparency rather than a painted black/white background. No checkerboard. The image will be used briefly as a soft white-pink screen flash, final canvas1080x1920.",
+      "sha256": "cdfba52e9bb409a3a13d3dee13ee09cee28daf891a65494a3e57ca239d585bc3",
+      "bytes": 1680976
+    },
+    {
+      "id": "fx_frost",
+      "tool": "built-in ImageGen",
+      "source": "fx_frost.png",
+      "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame ice-shatter effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 small pale cyan ice shell outline;2 shell splits;3 burst of clean angular blue translucent shards;4 shards scatter outward leaving center empty;5 fewer fading shards;6 tiny almost invisible remaining ice flecks. No character inside ice. Cute fantasy sparkle, not realistic dangerous glass. Real transparent background with fading alpha. Frame diameter below70percent of cell, ample empty gutters. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip.",
+      "sha256": "25784d6338d8b75002dbf54be533667d1b8dee35b722971b0664a8c799cb64a3",
+      "bytes": 1782601
+    },
+    {
+      "prompt": "Animation FX donor sprite sheet exactly 3 columns x 2 rows of six sequential equal wide horizontal frames. Rainbow flavor ribbon stream, soft red orange gold green cyan violet magical silk light trails flowing from left to right, progressively twisting and drifting, elegant curved stream with small sugar sparkles. Pure black background for ADD blend. Each ribbon contained inside its own wide 4:1 cell with generous black border and black gaps, no overlap between cells. Consistent scale and flow direction all frames, looping motion. Polished mobile anime fantasy spell effect, no text no characters.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-8b21913b-0d39-4697-b5d2-3fdd91443b0f.png",
+      "source": "fx_ribbon.png",
+      "sha256": "4e237dc35d3f134428f57a3651ce87ecea488595bd52b28ecefb8718394e00f4",
+      "bytes": 1306902
+    },
+    {
+      "id": "fx_seed",
+      "source": "fx_seed.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Six-frame looping magical Heart Seed glow VFX atlas for a cute confectionery fantasy game. Strict THREE columns TWO rows of equal square cells, chronological left-to-right then next row. Solid pure black #000000 background, ADD blending. Each cell has ONLY soft pink-gold concentric light rings and tiny warm sugar sparkles around an EMPTY center, no physical seed. Frame1 very faint small halo;2 a little brighter;3 broad warm halo;4 luminous pulse peak;5 contracting and dimming;6 returns almost exactly to frame1 for a seamless loop. Keep every frame same center with generous completely black margins, effect diameter at most65percent of cell, no overlap between cells. Smooth painterly emissive light, clean readable shapes, no smoke, scenery, labels, text, numbers or grid lines. Each extracted cell will be resized to384x384 and assembled horizontally.",
+      "sha256": "98ae322d72e321788e13dcce8b426cbd8b482d18566108824a1a3ee4a8317dd1",
+      "bytes": 1002962
+    },
+    {
+      "id": "fx_smoke",
+      "tool": "built-in ImageGen",
+      "source": "fx_smoke.png",
+      "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame purple curse smoke effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 compact curled violet smoke;2 curls widen;3 purple/plum smoke rises in soft spirals;4 smoke breaks into wisps drifting upward;5 pale translucent fading wisps;6 almost vanished delicate curls. Cute and magical, no faces or eyes, no scary monsters. Real transparent background with fading alpha. Keep each frame fully inside its cell with large empty margins. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip.",
+      "sha256": "7007c1835134c6f5b4362a414d9ff8779de5b221d2e9b750eb5cfe438a799462",
+      "bytes": 1853889
+    },
+    {
+      "id": "fx_sparkle",
+      "tool": "built-in ImageGen",
+      "source": "fx_sparkle.png",
+      "prompt": "Production VFX donor atlas for Mochi Mayhem motion comic. 6-frame tiny golden-pink sparkle effect, THREE columns TWO rows, equal square cells, fixed center. Frame1 a dim pinprick;2 small four-point star;3 bright medium star with tiny sugar motes;4 expanded soft pink-gold star;5 smaller fading star;6 returns to a dim pinprick. Solid pure black #000000 background for ADD blend. Effect diameter below55percent of each cell with completely black outer margins. Chronology left to right across top row, then bottom. Paint each frame independently, no shared effects crossing boundaries. Consistent soft painted candy-fantasy light with clean shapes. NO floor, backgrounds, physical props, letters, labels, numbers, borders, gridlines or watermark. This sheet is extracted mechanically into a horizontal strip.",
+      "sha256": "bc970db92e5ede62a6c6215697c82b9ebc038c63e1452c4debb1177231fbd40a",
+      "bytes": 619395
+    },
+    {
+      "id": "fx_speed",
+      "source": "fx_speed.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Four-frame portrait speed-line effect atlas for a cute cartoon falling scene, arranged in FOUR equal vertical columns. Each cell is a tall9:16 frame with thin short white and pale pink VERTICAL DASHES sliding DOWN between frames, strongest near left and right edges, completely empty black central lane for the character, all cells pure black #000000 background for ADD blending. Frame1 dashes high,frame2 lower,frame3 lower,frame4 shifted loop phase so it cycles. No horizontal motion, no circles, no explosions, no physical objects or characters. Keep luminous marks away from each cell boundary with black margins so adjacent cells never merge. NO text, labels, numerals, watermark or dividing lines. One production VFX donor atlas, will be extracted into4 individual portrait frames and assembled as a horizontal strip of1080x1920 cells.",
+      "sha256": "5d62dd2bd6f8aeb2ad4cb7fdab452feef0bca98f63157300393690698925fc95",
+      "bytes": 785442
+    },
+    {
+      "id": "fx_transform",
+      "source": "fx_transform.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One 8-frame VFX sprite atlas for a cute confectionery fantasy transformation. Strict FOUR columns TWO rows, EIGHT equal square cells, chronological left-to-right then next row, all frames centered on the same pivot. Pure solid black background #000000 for ADD blend; no grid lines, no labels, no text. Animated pink-gold magical transformation burst: frame1 tiny heartlike light seed;2 expanding pink halo;3 golden ring radiates;4 bright central white-pink flash with sugar crystal shards;5 full pink-gold ring and flying sugar flecks;6 larger thinning ring;7 fading scattered small sparks;8 just a few near-extinguished sparks. Keep each effect within 70 percent of its cell, no edge clipping, no particles crossing into neighboring cells. Soft luminous painted game VFX, vivid but clean, glow falls completely to black around each cell's perimeter. No characters or physical items. Final sheet will be extracted and mechanically arranged into a horizontal8-frame768px-per-frame strip.",
+      "sha256": "37c864f52a06ada1103a2899d2f852592c2b77efda39782c6a583f5ab608c630",
+      "bytes": 1493075
+    },
+    {
+      "id": "grandma",
+      "tool": "built-in ImageGen",
+      "prompt": "Three isolated full-body poses of the SAME kindly elderly royal head cook for a cute confectionery fantasy motion comic, one per column on a truly transparent background. Left: round red-bean mochi grandma with a tiny white hair bun and small cream apron, enclosed inside a translucent pale blue faceted ice block; her gentle face can be seen through ice. Center: the same round red-bean mochi grandma FREE of ice, small white hair bun, little apron, kindly smile. Right: restored HUMAN grandma with warm brown eyes, white hair in a bun, cream royal kitchen apron over a warm red-brown dress, gentle smiling face, full shoes visible. Cute chibi proportions, dark warm outlines, soft pastel cel shading, glossy mochi materials, clean mobile-readable silhouettes. Large clear transparent gaps, full figure inside each column. No scenery, shadows, glow, text, letters, logos or watermark. Actual sprite donor sheet for extracting three separate cutouts.",
+      "source": "grandma.png",
+      "references": [],
+      "sha256": "e46ffcb6954815b4ace10e951043cf5e9b4b2bdce066b07af213404f625660ec",
+      "bytes": 2262228
+    },
+    {
+      "prompt": "Two separate pairs of magical creature eyes arranged vertically on transparent background. Upper pair barely half opened eyes narrow horizontal slits, lower pair fully open almond eyes. Purple dark eyelids, warm pink gold glow within. Each pair angled like a slumbering root dragon face looking forward with slight tilt. ONLY eyes and small eyelids no face no body. Cute mysterious anime fantasy mobile game, no words, generous empty transparent margin around both pairs.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-fbe09033-5864-4379-abf8-7baae1a631c1.png",
+      "source": "hunger_eyes.png",
+      "sha256": "ab3670370406862addace49c85c0d5b87cf11c520d44fb9c110f3381231da99d",
+      "bytes": 545708
+    },
+    {
+      "prompt": "Single full body large menacing but cute fantasy root creature silhouette, The Hunger formed from many tangled dark purple tree roots, enormous coiled torso with long root limbs and branch horns, small hungry mouth in root, subtle pink amber eyes. Readable expressive silhouette, polished hand painted anime fantasy mobile game dark outlines, no horror gore. Whole creature isolated with transparent margin, true transparent background. No scenery no text.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-fc5d8ec2-9ae7-4b50-8c41-da299ec8d898.png",
+      "source": "hunger_silhouette.png",
+      "sha256": "9331f9d573aaef57cf61e047bdb03c1ab123479907075ffc88355f0d2f738e16",
+      "bytes": 2680481
+    },
+    {
+      "prompt": "Three separate tall broken magical glass memory panes side by side, generous transparent gap and margin. Each pane ornate purple brass frame and clearly visible painted memory inside. LEFT happy human townspeople in old fantasy capital, CENTER pink haired little girl with loving mother and father, RIGHT elderly white bun haired Grandma royal chef wearing cream apron cooking jam in old royal kitchen. Polished cute chibi anime fantasy mobile game illustration dark outlines, warm pastel memories, fractured glass sparkles. Each pane separate movable cutout on true transparency. No text no words no symbols resembling letters.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e7691e44-5eb2-4e32-a578-1ce225ef7649.png",
+      "source": "memory_mirrors.png",
+      "sha256": "5a7f73ec221aa2e5b34ddc90bc861d7489a3ccff9aa1edd0111c6af6a7afcd7b",
+      "bytes": 3283854
+    },
+    {
+      "id": "planter",
+      "tool": "built-in ImageGen",
+      "source": "planter.png",
+      "prompt": "Three distinct full-body puppets on a transparent background in three evenly separated columns for a cute confectionery fantasy motion comic. The attached boss image is the design reference for the First Planter's golden thorn crown, pink heart-seed core and purple root armor. Left: the cursed First Planter seated on a compact root throne, golden crown high on his head, layered gold leaf armor and winding purple roots around an old royal robe, face mostly shaded, sad rather than evil. Middle: SAME First Planter kneeling repentantly, lifting his crown off with both hands, kind old bearded human face emerging beneath root armor; crown still held above his head. Right: the same restored elderly gardener standing with a warm humble smile, white hair and short beard, simple tan gardening tunic, brown trousers and shoes, no crown or magic armor. Cute chibi story art, crisp colored outlines, soft shaded candy-fantasy materials. Entire throne and all limbs inside each column, wide transparent gaps, no backdrop, shadows, aura, labels, text or watermark. This sheet is for extracting 3 independent cutout sprites.",
+      "sha256": "682cd87342369d5eb44932cec544b9821822a74ba6caf6514d587c88534fbe17",
+      "bytes": 2065687
+    },
+    {
+      "id": "props",
+      "tool": "built-in ImageGen",
+      "source": "props.png",
+      "prompt": "Production sprite donor sheet: EIGHT separate cutout props for a cute chibi confectionery fantasy story, strict FOUR columns by TWO rows, one complete object per cell, no object overlaps. TRUE transparent background, no words, no labels, no shadows. Top row left to right: (1) ancient gold thorn-and-leaf crown with central pink heart gem, softly lit; (2) SAME crown with deep visible cracks, still one intact object; (3) sleeping Heart Seed, a small dull brown-pink teardrop seed with a heart-shaped seam; (4) SAME seed awake, warm pink-gold luminous heart seam and a tiny gold shoot, compact silhouette with no external aura. Bottom row left to right: (5) dark purple twisting root tip with a cartoon hungry mouth, scary-cute and no gore; (6) SAME root wounded, curled retreating with small splintered bark edges, no blood; (7) one pale gray flavorless mochi blob with stubby feet, featureless face absolutely no eyes, walking; (8) SAME blank mochi pouncing in an elongated lunge. Consistent crisp colored outlines, pastel cel shading, glossy candy materials. Each object occupies at most 65 percent of cell width/height with plenty of transparent margin. Independent sprites for mechanical extraction. Do not add glow backgrounds, checkerboards or any typography.",
+      "sha256": "899b3524d8a3cdf3dd8c58c4a48f2530f91204b42a460122cde9ebdb596075dd",
+      "bytes": 1150458
+    },
+    {
+      "id": "ruby",
+      "tool": "built-in ImageGen",
+      "prompt": "Two isolated cutout poses of Ruby the tiny ruby-jam spirit from the attached identity reference, side by side on a truly transparent background. Preserve her round pink translucent candy body, red ruby gemstone on forehead, shining dark round eyes, little jam-red arms, striped frilly cream-and-red confectionery skirt. Ruby is a spirit, never a human. Left pose: she crouches hiding behind and tightly hugging a small closed brown recipe book with a berry embossed on its blank cover, worried expression. Right pose: she floats joyfully with happy tears in her eyes, arms open, beaming smile. Cute chibi confectionery fantasy mobile art with dark colored outlines, soft gradients, glossy candy highlights, clean crisp silhouette. No scenery, no glow halo, no floating extra objects, no ground shadows, no letters or numbers on book or anywhere else. Full sprites with ample transparent empty gap and edge margins. This two-pose donor sheet will be cropped into separate puppets.",
+      "source": "ruby.png",
+      "references": [
+        "assets/art/mascot/mascot_ruby.webp"
+      ],
+      "sha256": "2c18a93c49e6e2b4fb9074d9d1e6904d28db57a8ca50eaaafdf3b5cdca8a17a2",
+      "bytes": 1265403
+    },
+    {
+      "id": "s00_city",
+      "source": "s00_city.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Portrait2:3 opaque far-background for a cute Mochitopia motion-comic opening, an old warm sepia memory of the royal capital BEFORE the curse. Charming medieval confectionery town square, pastry-shaped tiled roofs and rounded cream stone towers, subtle strawberry/leaf motifs, a royal kitchen building in distance, sunrise over distant hills. No people yet: crowd puppets will be composited separately. Broad empty cobbled plaza in center between40 and70percent height, bottom28percent quiet uncluttered brown/sepia paving for dialogue. Crisp dark warm outlines and soft pastel storybook shading, whimsical and welcoming, not photorealistic. Composition has extra15percent lateral scenery for parallax. NO magical curses yet, no mochi creatures, no text, banners with writing, logos or watermark. Full opaque scene plate;foreground props will be separate layers.",
+      "sha256": "d2c2ee14aed46a116ce029aed793f85d3a85d4db88f29b8c6a0767a50fe66b99",
+      "bytes": 2626374
+    },
+    {
+      "id": "s00_tree",
+      "tool": "built-in ImageGen",
+      "source": "s00_tree.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. The First Tree on a gentle hill above the OLD royal kingdom, ancient enormous rounded tree with pastel golden foliage, dawn sepia memory, warm sky, open bare patch at tree base for a separate crown and kneeling Planter. NO crown or people painted into scene. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "4b682d55fee92c7675783c49439c4002162d2c8e63bf90b69878272757539094",
+      "bytes": 2550421
+    },
+    {
+      "id": "s01_layers",
+      "source": "s01_layers.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Six separate environment cutout pieces for a 2D cute confectionery fantasy motion comic, arranged in a clean THREE columns TWO rows grid on a TRUE transparent background, absolutely no text, numbers, background or ground shadows. Top left: a narrow tall wooden pantry shelf edge with a few small jam jars, warm amber/plum shading. Top middle: a broken dark wooden floor plank with splintered edge, diagonal. Top right: an irregular arched outcrop of translucent lime-green acid-sugar crystals, as a side frame around empty center. Bottom left: a cluster of large translucent acid-green sugar crystals, foreground framing. Bottom middle: a winding old brown root growing around a small patch of rocky soil, sideways open composition. Bottom right: a few dark rounded stones and one small old root fragment, low foreground strip. Clean silhouettes, complete objects with ample clear padding inside each cell. Soft dark outlines, warm pastel storybook painting, details readable on phone. These six source pieces will be mechanically placed along the sides of parallax layers, never over character center or bottom dialogue area. No scenery rectangles or glow halos.",
+      "sha256": "16dd30dd6da3f87cb60c14bd24fc46ad6b4b1dd1a785db0df1d46139cec4db27",
+      "bytes": 2315980
+    },
+    {
+      "id": "s01_nest",
+      "source": "s01_nest.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Opaque portrait2:3 far-background for a cute chibi fantasy motion comic: the Sour Ant Nest hidden below a giant royal pantry. Deep underground rounded chamber, huge translucent lime-green acid-sugar crystals embedded in far rock walls, old brown roots following ceiling, small luminous mint pools in distant alcoves. Clear empty center staging ground between35 and70percent height for mochi puppets and Ruby. Bottom28percent plain quiet dark earth, no important objects or focal details there, reserved for dialogue. Friendly cartoon adventure danger, rich plum/green palette, softly colored dark outlines, gentle painted two/three-level shading; warm faint light falls from a hole high above. No characters, ants, eyes, seed, foreground framing crystals, lettering, logo or watermark. Side-wall scenery extends beyond the center safe area for15percent horizontal camera overscan; foreground/mid crystals will be separate cutouts.",
+      "sha256": "f175351f88ffaf3e620cd57d521412e28a19be22bda5fd57e2ad33f9bbff03bc",
+      "bytes": 2105120
+    },
+    {
+      "id": "s01_pantry",
+      "tool": "built-in ImageGen",
+      "source": "s01_pantry.png",
+      "prompt": "Portrait background plate for a 2D layered motion-comic in Mochi Mayhem. A dark abandoned giant royal pantry seen at floor level by tiny mochi-sized characters: warm wooden shelving rises into shadows, old jam jars and flour sacks far back, gaps in floor planks suggest old roots underneath. Quiet anticipation before the floor cracks, charming rather than horror. Cute pastel confectionery fantasy, clean dark colored outlines, soft two/three-level painted shading, cinematic warm amber rim light and plum shadows, no photorealism. Empty center stage for separate animated characters, with floor surface clearly visible from 35 to 72 percent of image height. Bottom 28 percent is quiet uncluttered dark wood with NO important detail, reserved for code dialogue UI. No characters, no creatures, no seed, NO actual crack yet, no foreground floating objects, no text, logo or watermark. Opaque complete far-background, vertical 9:16 composition with 15 percent horizontal overscan for camera panning.",
+      "sha256": "77796788d9fb592fce9e9d0e7fbb564c2f4ed8685ba152819da802bbffcc160f",
+      "bytes": 1831124
+    },
+    {
+      "id": "s01_root_floor",
+      "tool": "built-in ImageGen",
+      "source": "s01_root_floor.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Close view of rocky ground in the Sour Ant Nest, old roots framing a clear flat stone at upper-center where a separate Heart Seed will be placed. Lime acid crystals far off to sides, a warm hint of light on center stone. No seed or characters. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "856b5324bfc0c0fb520ad094cd5f2e6a84829dde9ef685fa588348598c1d304c",
+      "bytes": 1934194
+    },
+    {
+      "id": "s01_shaft",
+      "source": "s01_shaft.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Extend this exact shaft illustration downward into an EXTRA TALL NARROW vertical background, aspect ratio9:32, approximately twice a phone screen's height. Preserve the same pantry opening high at the very top, same illustrated plum-brown earth walls and cyan crystal accents at the far sides. Outpaint a long continuous additional dark shaft below the original, with no second opening and no landing floor. Keep walls visible left and right all the way down, wide clear dark lane in center. This is one continuous descending shaft plate for vertical camera scrolling, NOT two panels and no seam. No people, speed lines, text, borders or watermark. Extra tall9:32 composition is essential; do not crop it into a regular portrait rectangle.",
+      "sha256": "1020e73e641ef1a585d277c63b64b0171b05128b68aebd9bac162912f5328fdd",
+      "bytes": 2090573
+    },
+    {
+      "id": "s01_shaft_short",
+      "source": "s01_shaft_short.png",
+      "tool": "built-in ImageGen",
+      "prompt": "Opaque far-background plate for a cute fantasy motion comic: a very deep vertical shaft below a royal pantry, seen straight down through dark irregular earthen walls and old roots. Portrait composition roughly2:3 with extra lateral overscan. Center is a wide clear plunging space for a falling mochi character; walls hug far left/right. Purple-brown earth, small turquoise acid crystal glints much deeper below, warm pantry light fading at the top, no bottom landing shown. The feeling is fast descent but NO painted speed lines: speed lines are separate effects. Rounded storybook forms, crisp dark colored outlines, soft two/three-level shading, charming danger not realistic horror. No characters, no seeds, no signs, no lettering or watermark. This vertical background will be scrolled upward and mechanically extended to a double-height1080x3840 view; give continuous earthy wall patterns, dark uncluttered middle and lower area, no important focal object near frame edges.",
+      "sha256": "8329ceb82b661226a4a2dc743e06732e2a2e21cd3c28f2de292f89233834595c",
+      "bytes": 2131987
+    },
+    {
+      "id": "s02_drains",
+      "tool": "built-in ImageGen",
+      "source": "s02_drains.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Royal pantry drainage tunnels, curving tarnished pipes and shallow sour water leading toward a rusty grate at upper-middle. The grate has empty space for a separate jam jar to be attached in front. Cool mint/plum with small warm reflected light. NO jar or paper yet. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "5afbbbfb013227e7440d974463a09a14b2d8dedece372bf63685a767be2918d3",
+      "bytes": 2007014
+    },
+    {
+      "id": "s03_furnace",
+      "tool": "built-in ImageGen",
+      "source": "s03_furnace.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Huge Chili Engine furnace hall, whimsical red pepper-shaped boilers, dark cast iron furnace mouths at back, rising amber heat light, EMPTY circular gear axle mounts at sides for separate animated gears. Foreground clear stage. No gears, prisoners, ribbon effects or characters painted in. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "52ad65ab30b54ba01ef41c542735edc89bd8ad93beaec9a838470a083d364b8a",
+      "bytes": 2093022
+    },
+    {
+      "id": "s04_prison",
+      "tool": "built-in ImageGen",
+      "source": "s04_prison.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Long Sugar Frost Prison corridor, translucent cyan ice arches and empty ice cells receding deep into distance, softly glowing frozen walls, gentle cold mist. One central empty cell location reserved for a separate frozen grandma mochi. NO humanoid ghosts or people. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "e5e84298dfecb53302b111b85bcc195aad6f1e81c38021a0dfd50cc139bcfd28",
+      "bytes": 2017912
+    },
+    {
+      "id": "s05_oven",
+      "tool": "built-in ImageGen",
+      "source": "s05_oven.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. The Crown Oven, a giant royal confectionery oven shaped like a rounded gold crown, huge dark mouth with warm low fire glow inside, purple roots disappear behind oven structure but NO mouth-root creature painted in. Dramatic plum and warm orange scene; the actual Crown is NOT present here. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "f874b38e655a5c6ff0816192b3b45a61b2f8463c281d9fa5f10b12337a65e110",
+      "bytes": 2070296
+    },
+    {
+      "id": "s06_entrance",
+      "tool": "built-in ImageGen",
+      "source": "s06_entrance.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Entrance passage to the Chili Engine, red copper fuel pipes and warm iron walls, a clear flat stone ledge for a separate glass fuel jar containing Mint. No jar or trapped character in background. Cool shadows and soft orange window light. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "e38b4b392fad3597ccb358f453c035d66e0b7228b0c2f134adb3f509fad2a8a6",
+      "bytes": 1895387
+    },
+    {
+      "id": "s07_canopy",
+      "tool": "built-in ImageGen",
+      "source": "s07_canopy.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. The Fermented Canopy, enchanted elevated forest of teal mushroom crowns and twisted soft purple roots, old royal city gate half-hidden in distant vines, a clear mossy central stage for a separately trapped Cocoa. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "79296a9539190cbe8829e57b99d04cbb2007f76c0ecad809f343cce33352eb5e",
+      "bytes": 2466417
+    },
+    {
+      "id": "s08_hive",
+      "tool": "built-in ImageGen",
+      "source": "s08_hive.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. The Nectar Hive interior, glowing amber honeycomb vaults and suspended honey jars at far back, a warm purple-gold magical explorer setting, clear center for separately trapped Taro, no prisoners or characters. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "ddb03ea06421b82fce418b170f88179f4ffbcde1699c70458d5e2b9cd0eefa80",
+      "bytes": 2067092
+    },
+    {
+      "id": "s09_ash",
+      "tool": "built-in ImageGen",
+      "source": "s09_ash.png",
+      "prompt": "One OPAQUE portrait2:3 far-background plate for Mochi Mayhem layered motion comic. Ashen Seedfields: a once colorful citrus garden now dry and gray with burnt seed husks and a few wilted orange saplings, far-off soft pink sky, clear foreground stage for Yuzu hugging her baby orange. No characters or Yuzling painted into background. Style: cute pastel confectionery fantasy, crisp warm dark colored outlines, soft painted cel shading, rounded forms, cinematic depth, no photorealism or horror. Leave clear character staging between35 and70percent height. Bottom28percent must be calm uncluttered dark ground for dialogue. All important scenic detail lies above this safe area.15percent lateral scenery overscan for parallax, no nearby foreground props because these are separate layers. No lettering, symbols resembling text, logos, labels, watermark or border. No hero characters. Complete clean scene, one image, not a panel sheet.",
+      "sha256": "f8960a8007f9cd905b77a0e573b26dd7b0520d57d8fe637ab477ac9f77436cf8",
+      "bytes": 2195591
+    },
+    {
+      "id": "s10_glass",
+      "source": "s10_glass.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Royal Glass Greenhouse, a beautiful abandoned greenhouse of rounded clear glass panels, silver frames with sesame-like star motifs, a clear central stage for a separate mirror-trapped Sesame. Cool lavender and teal light;no trapped characters and no mirror panes floating in background. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "bfd416dfcc7f0c6b067e85b0b9beff7998be698479711c16b2ca0ce28df2ce07",
+      "bytes": 2816042
+    },
+    {
+      "id": "s11_crosssection",
+      "source": "s11_crosssection.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. A vertical cutaway through underground royal kitchen foundations down toward a buried fermented garden: old stone kitchen floor at top, layers of soft brown soil and tunnels, distant teal garden opening lower down. Open winding corridor for a separate animated root to descend;do not paint the fleeing root itself. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "4aa1a348c07a6ace6419d624cbc22a32f33136350b58af76843a1e646240ffdb",
+      "bytes": 2395744
+    },
+    {
+      "id": "s11_oven_cold",
+      "source": "s11_oven_cold.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. The royal Crown Oven AFTER its flame dies, huge crown-shaped oven at back now cool and dark, pale gray ash, faint blue-purple residual warmth. Broken floor path where a separate wounded purple mouth-root can retreat. No living creature, flame or crown artifact painted in. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "234b60dfbbeddbd9c76fb0e696a51e0f6f821397c2190644d129c4f67e484c2f",
+      "bytes": 2198980
+    },
+    {
+      "id": "s12_garden",
+      "source": "s12_garden.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Wide view inside the Fermented Canopy garden below the kitchen: giant teal leaves, glowing purple mushrooms, old royal plant beds reclaimed by roots. A clear center clearing and distant dark space for a separately composited giant Hunger silhouette. No monster in far layer. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "4ba2eeedb709cb7cc3fb565099e2a22b21bd961ffec17c308af5c3e3b56478e9",
+      "bytes": 2465170
+    },
+    {
+      "id": "s13_throne",
+      "source": "s13_throne.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. The root throne chamber after collapse, rounded old throne broken at back, violet roots loosened, warm gold light returning through canopy. Clear center for a separately composited Strawberry holding Heart Seed, no painted hero, seed beam or sparkles. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "c3fcdbdc34965e101dc712b32a6fb677815a71268a1870ad51c30630249df705",
+      "bytes": 2479322
+    },
+    {
+      "id": "s14_field",
+      "source": "s14_field.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. An almost completely drained gray field, wilted seed husks, bare pale earth and faint charcoal silhouettes of dead orchard rows, quiet distant clouded sky, an empty long path toward a far hill. Subtle lavender hope at horizon;no characters or bright objects. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "7236e41d218b7acc16d9435b0bf389b22231623dd83e99a8de2d514addee898e",
+      "bytes": 2098460
+    },
+    {
+      "id": "s14_tree",
+      "source": "s14_tree.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. The First Tree on a distant hill in the PRESENT cursed era: huge old rounded tree, pale tired leaves, dark purple roots wrap around base and reach upward. Plum-gray sky with small warm golden rim light, sad but not horror. No crown artifact or heroes;empty center path toward hill. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "8f0d1637ded082cedf19f70c1ac180ba399c4025e56c63897aad0597c1263d6a",
+      "bytes": 2285266
+    },
+    {
+      "id": "s15_glasshall",
+      "source": "s15_glasshall.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Inside the shattered royal greenhouse, elegant broken rounded window frames, pale lavender moonlight through panes, empty floating space between30 and60percent height for separately animated memory mirrors. No painted reflections, people or floating glass pieces. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "4b1a199c0219138ad81dbf9ebfb0895b343b468e138a1d2935b22d4847eaf710",
+      "bytes": 2462222
+    },
+    {
+      "id": "s16_clearing",
+      "source": "s16_clearing.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Final clearing at the base of the First Tree, ancient roots loosened and a small central patch of fertile earth ready for a separately planted Heart Seed. Warm rose-gold dawn starts returning, tree trunk frames sides and top. No crown, people, seedlings or magic ribbons in far plate. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "2f0152248a5491d64ad9e3c113e37336d95b5465fa99460856aa94eb4a462332",
+      "bytes": 2426989
+    },
+    {
+      "id": "s16_hunger_sleep",
+      "source": "s16_hunger_sleep.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Deep underground chamber below the oldest roots, a gigantic cute-cartoon dark purple Hunger creature coiled asleep in the upper half, both eyes firmly CLOSED, rounded root-like body with subtle chest rise implied, no active mouth or teeth bared. This sleeping silhouette is the far plate for the final teaser;leave eye area clear enough for a separate small glowing eye overlay. Lower28percent is quiet dark cavern, no hero. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "7e7bac8322ea6cd1ba31fee5a5b9ea1403cb771b60f937af0338753202bf80d0",
+      "bytes": 2338604
+    },
+    {
+      "id": "s17_delve",
+      "source": "s17_delve.png",
+      "tool": "built-in ImageGen",
+      "prompt": "One opaque portrait2:3 far-background for Mochi Mayhem motion comic. Entrance to the Mochi Delve beneath huge ancient tree roots, a rounded cave mouth leads down into plum-black darkness with faint pink-gold flavor glints deep inside. Clear foreground ledge above72percent height for a separate team seen from behind. No people, text, torches in center or giant monster outside. Cute confectionery fantasy storybook painting, crisp dark colored outlines, soft cel-shaded rounded forms and warm readable contrasts. No photorealism,gore or scary horror. Keep the bottom28percent calm uncluttered dark ground/cavern for dialogue;all important action scenery above this area.15percent lateral overscan for camera panning, no foreground cutouts because those are separate layers. No letters,labels,numbers,logo,watermark or panel borders. Single complete scene.",
+      "sha256": "3df879ae231e869f6dc746916d6fd85838bf1025f2086f61aeefb4218a415367",
+      "bytes": 2249998
+    },
+    {
+      "prompt": "Eight isolated story props for Mochi Mayhem, strict FOUR columns TWO rows, one complete cutout per cell on TRUE transparent background. Every item at most65percent of cell with generous clear gaps. Top row1: sealed old glass jam jar, ruby-red jam in bottom half, a dry rolled cream recipe paper visible inside its upper neck, no label.2: tightly rolled cream recipe scroll tied with red ribbon, no writing.3: unrolled cream recipe scroll showing ONLY THREE little colored seed illustrations: one large seed, a spray of tiny seeds, bouncing seed arrows represented by simple curved pictorial trails;absolutely NO letters/numbers/glyphs.4: a single dark cast-iron rounded gear with red chili/leaf motifs, open axle hole, perfect side-facing circular silhouette for rotation. Bottom row1: clear cylindrical glass flavor-extraction jar with a small sad pale pink mochi trapped inside, closed brass lid and pipe outlet.2: very small Heart Seed sprout with two pink-gold leaves and a little soil clump.3: same sprout as a young sapling with a few warm green/pink leaves.4: same sapling now a young leafy tree with round candy-like pink-gold foliage and a clear trunk/soil base. Consistent cute fantasy dark outlines and soft painted candy shading. No backdrop,cast shadows,aura halos,text,watermark or grid. This donor sheet is mechanically split into8 separate movable props.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-f29ce03d-e97f-41d7-82e2-d9bf387a2e1e.png",
+      "source": "scene_props.png",
+      "sha256": "72c72c4d316baaabe2ad1d7ee507324fb9067d40ababeeab6a5187814b2454a1",
+      "bytes": 1644998
+    },
+    {
+      "prompt": "Four narrative character cutouts for Mochi Mayhem, strict2x2 grid on TRUE transparent background. Use references ONLY for character identities: Strawberry pink side ponytail/green eyes/chocolate-red frilly dress/boots;Ruby tiny pink gem-headed jam spirit;Grandma HUMAN white bun/cream apron/red-brown dress. Each complete figure or pair stays well within its quadrant with very generous transparent margins and no aura or ground shadows. TOP LEFT: Strawberry and tiny Ruby together seen FROM BEHIND, facing a future oven off-screen, Strawberry stands with her strawberry seed gun lowered and Ruby floating beside her. TOP RIGHT: Strawberry front three-quarter, raising one empty open palm high as if holding a tiny seed;do NOT paint the seed or light beam. BOTTOM LEFT: Strawberry crouching gently at ground level, one gloved hand placing an invisible tiny seed into the ground;do not paint ground or seed. BOTTOM RIGHT: human Grandma gently hugging Ruby against her apron, both crying happy tears and smiling;Ruby remains a round jam spirit, never a human. Full boots, hair, Grandma shoes and Ruby gem visible in all cells. Polished cute chibi candy-fantasy painted outlines, no text,labels,borders,background scenery or watermark. The four cells become independent cutout files.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-2d652fca-e6f2-4a8d-bdfe-1e1800ba8798.png",
+      "source": "story_poses.png",
+      "sha256": "96434e1cb82e942bb3e0e0992ac2fbd2d6870c88a28ea327267d00c424f017ef",
+      "bytes": 2043145
+    },
+    {
+      "prompt": "Six cute chibi HUMAN fantasy adventurers standing together seen entirely from BEHIND facing a cave offscreen, complete full bodies and feet with generous margin. Left to right: green haired Mint female apothecary carrying satchel; brown haired Cocoa guard with bear ears hood and shield; long pink haired Strawberry girl with strawberry ornament red white frilled adventurer dress and red boots; lilac haired Taro explorer wearing lilac expedition cap backpack; orange haired Yuzu gardener carrying tiny orange seedling companion; charcoal haired Sesame glass artisan with sesame speckled dark outfit and tool bag. Polished hand painted anime mobile fantasy art dark outlines purple gold accents. All six are human, exactly six figures, no faces front, true transparent background, no scenery no text.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-cb3025d5-cb92-4b33-8b98-4bc717319546.png",
+      "source": "team_back.png",
+      "sha256": "64dfd2863a2ffc8ad7a055fcbbe8be63aafe2f4073f7345944589d2343b17dd8",
+      "bytes": 2988418
+    },
+    {
+      "prompt": "Extend this exact six-human adventurer BACK VIEW team illustration canvas to the right and left with generous TRUE TRANSPARENT margins. Complete the rightmost charcoal-haired Sesame artisan's cape tip and skirt hem which are currently cropped at the right edge. Preserve all six existing characters, clothing, colors, poses, proportions, back view and polished hand-painted style. No new characters, no scenery, no words. Every complete silhouette including hair, sleeves, cape and feet must fit inside the image with at least 60px transparent breathing room. True transparent background.",
+      "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-b71f1cf7-e4ff-4fb4-90ac-9f2aa585eab4.png",
+      "source": "team_back_complete.png",
+      "sha256": "fa3266f2399cbe23ec35ba2ac64b6edabab31ed0dcb1f80ba8c6806c426c9dc0",
+      "bytes": 2342101
+    }
+  ]
+}
