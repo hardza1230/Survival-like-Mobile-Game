@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.21, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.22, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.20 — New Daily Quests (owner)
+# Latest delivery: v8.0.21 — Art order 48 wired (C1–C2 boss arena)
+
+scripts/pack-boss-arena-c1-c2.py (sha/bytes vs assets/incoming/boss_arena_c1_c2/MANIFEST, copies the delivered 50% WebP packs, same lum-alpha pipeline as order 30; pillar keeps alpha) → assets/art/boss_vfx/ 11 + assets/art/counters/arena_b04_ice_pillar (558 KB). ASSET_FX at half size; stage loop regex now /^(?:vfx|arena)_b(\d\d)_/ and vfx_b06_pod_shield also goes to STAGE_SHEETS[9]. Hooks (all keep the old graphics): antTunnel shadow sprites (fake = alpha .55 + grey tint, pulse keeps display scale) + bossSig 01_burrow_burst on the real eruption · Sewer Flood / Root Surge arenaSweep art · Hot Grid arenaGrid art · arenaPillars: invisible rect keeps geometry, arena_b04 sprite (origin .5/.9375, y+35) frames 1→2→3 + fade when it blocks; frost_breath sprite grows like the old circle then plays frames 1–3 · arenaPods: shield sprite follows the boss while _podShield>0 · arenaFog: tileSprite fog (frame by time, world-anchored tilePosition) + bubble sprites at r·2.1 · arenaHands: hand sprites origin (0,.5) rotated per hand. tests/boss-arena-art (in npm check). Real-browser: stages 0/1/2/3/5/6/8/9 × 2 phases with art loaded, 0 errors.
+
+# Previous delivery: v8.0.20 — New Daily Quests (owner)
 
 DQ_POOL rows {id,k (tick kind),b (0 easy/1 medium/2 hard),target,go,req}; DQ_BAND picks 4/4/2 (seeded dqPick, no duplicate kind inside a band); dqDef('win_<hero>') builds 'Clear a stage with <hero>' (medium, only when ≥2 non-WIP heroes via dqHeroes). DQ_BOXES by done count 3/6/8 (DailyQ.count; pts() = count). DailyQ.reroll(i): 1 free per day (q.rr), same band, not finished. Weekly Save.data.dqWeek {wk Monday key, days, got}: a day is added when count ≥ DQ_WEEK_NEED 8; 7 days → Gold Chest via openChest(gold,'weekly') (no Thread, no free-silver use; _chestBack returns Collect to Daily). Old dailyQ without v:2 regenerates. New tick kinds: unique (uniqueCastFx), dash (dashPress = Dash button), kick (counter launched), star3 (evalStageStars mask 7), chest (openChest), objective (completeWaveObjective, story, not the fill→hunt step), win_<hero> (Stats.end win). buildDaily: login panel 68px, Today panel with bar + 3 boxes + Week strip + gold chest, 10 compact rows (band colour stripe, 🔄 button while the reroll is unused). tests/daily-quests rewritten.
 
@@ -934,7 +938,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 38 (23 ต.ค.) บทสอน:** ส่งครบ 13 ไฟล์ · ผูกครบแล้ว v7.9.68 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 39 (23 ต.ค.) เปิดหนังสือหลัง TAP TO START + ไอคอน Bazaar/Upgrade/Mail:** 9 ไฟล์ (`docs/art_orders/39_BOOK_OPENING_PLUS.md`) · ส่งครบ 9 ไฟล์ + ปกเรียบ · ผูกแล้ว v7.9.69 · รอ QA มือถือ · ใบ 37 ถูกยกเลิก (เลขว่าง)
 - **ใบสั่งอาร์ต 40 (23 ต.ค.) หีบใน Bazaar + ไอคอน Thread:** 7 ไฟล์ · ส่งครบ 7 ไฟล์ · ผูกแล้ว v7.9.79 · รอ QA มือถือ
-- **ใบสั่งอาร์ต 48 (24 ต.ค.) กลไกสนามบอส C1–C2:** 12 ไฟล์ (`docs/art_orders/48_BOSS_ARENA_C1_C2.md`) แทนรูปทรงโค้ดใน antTunnel/arenaSweep/arenaGrid/arenaPillars/arenaPods/arenaFog/arenaHands · รออาร์ต
+- **ใบสั่งอาร์ต 48 (24 ต.ค.) กลไกสนามบอส C1–C2:** ส่งครบ 12 ชีต · ผูกแล้ว v8.0.21 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 47 (24 ต.ค.) HUD ส่วนบน + ปุ่มเร่งความเร็ว:** ส่งครบ 18 ไฟล์ · ผูกแล้ว v8.0.10 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 46 (24 ต.ค.) แก้ 2 ช็อตเรื่อง:** ส่งครบ 3 ไฟล์ · ผูกแล้ว v8.0.8 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 45 (Motion Comic):** ส่งครบ 103 ชิ้น · ผูกแล้ว v8.0.2 (S10 Sesame ยังไม่ผูก) · รอ QA มือถือ
