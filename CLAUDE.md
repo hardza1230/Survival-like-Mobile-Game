@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.31, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.32, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.30 — Bestiary 3 tiers + weak spots (owner)
+# Latest delivery: v8.0.31 — Power page A + C (owner)
+
+powerTips: every card scored by simulated heroPower gain (save restored after each try): gear (best bag item per slot), Weave (per core, buy as many levels as Sugar allows ≤TAL_MAX → total gain, 'Weave X ×n · Your Sugar buys n levels · 🍬cost'), Talent (best affordable core node incl. parent rule → 'Talent: name'), Enhance (+ 'may drop a level on a miss' from +3); sorted by gain, top 3. Non-Power items → top.wait: Mail, Rank reward, Talent only on Build trees, Weave Rank up → 'WAITING' pill row (tags wait_<k>, red dots). Forge tip removed. buildGearPower (C): this._pwShown {cid,v}; when Power rose since the last view the number counts up 900ms, bar fills from the old ratio, '+N ⚡' pops beside the final number, Sfx.progress('core'). tests/power-summary updated.
+
+# Previous delivery: v8.0.30 — Bestiary 3 tiers + weak spots (owner)
 
 BESTIARY_THRESHOLDS [1,100,1000], bestiaryTiers(id) bosses/minis [1,5,25], BEST_MAX_TIER 3, BEST_TIER_SUGAR [30,80,200] (addKill pays per tier crossed). FIELD_CODEX (after bestiaryLv) adds C1-2…C2-5 field species 'f<stage>_<bestSlug(roleName)>' (C2 ones carry their c2N_*_animated tex, emoji fallback in menus); every entry gets role/lore (BEST_ROLE_LORE tips, boss/mini lines), stage and ord (sorted by stage, field → mini → boss); BESTIARY_IDS. Scene.bestiaryKey(e) (cached _bk/_bkS/_bkR; stage 1–9 roleName → field id, else old type logic) used by killEnemy; first kill → this._newSpecies. bestWeakMul(e) = BEST_WEAK_MUL 1.05 when the species is tier 3 (this._bestW built in startStage), applied inside condDmgMul (damage() itself unchanged). Summary: row '📖 New! Monsters found' (tap → continueFromSummary(id) → bestiary with _bestFocus/_bestSel; not on last-stage/Delve). buildBestiary rewritten: 2×6 cards (??? until met, 3 tier pips, next goal / weak spot), tap → detail panel (tiers + Sugar, note + weak spot or lock), tags best_<id>/best_close. tests/bestiary added.
 
