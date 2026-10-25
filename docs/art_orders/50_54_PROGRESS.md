@@ -5,7 +5,7 @@ Owner asked25Oct2026 to work through these gradually. Complete and publish each 
 | Order | Folder | Named files | Frames | State |
 |---|---|---:|---:|---|
 |50|merge_forge|14|50|Complete: source art, alpha/state/stretch review passed; runtime separate|
-|51|login_daily|9|27|Queued|
+|51|login_daily|9|27|Complete: source art and visual QA; runtime separate|
 |52|awards|7|26|Queued|
 |53|codex_books|9|14|Queued|
 |54|depths_rank|5|26|Queued|

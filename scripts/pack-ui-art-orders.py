@@ -108,6 +108,18 @@ for row,j in enumerate(J):
     for i,f in enumerate(frames_by_key[j['key']]):
         f=f.copy();f.thumbnail((84,115),R);states.paste(f,(220+i*86+(84-f.width)//2,row*150+28+(115-f.height)//2),f)
 save(states,P/'states_review.png')
+small_jobs=[j for j in J if not j.get('black') and max(j.get('display',[999,999]))<=84]
+if small_jobs:
+    small=Image.new('RGB',(1100,len(small_jobs)*105),'#514454');d=ImageDraw.Draw(small)
+    for row,j in enumerate(small_jobs):
+        w,h=j['display'];d.text((8,row*105+5),j['key']+f' / {w}x{h} screen px',font=FONT,fill='white')
+        for i,f in enumerate(frames_by_key[j['key']]):
+            f=f.resize((w,h),R);small.paste(f,(220+i*86+(84-w)//2,row*105+24+(76-h)//2),f)
+        alt=22 if j['key'] in ('aw_medal','dig_miner') else 18 if j['key']=='ic_merge' else None
+        if alt:
+            d.text((8,row*105+50),f'Also {alt}px:',font=FONT,fill='white')
+            f=frames_by_key[j['key']][0].resize((alt,alt),R);small.paste(f,(135,row*105+52),f)
+    save(small,P/'readability_review.png')
 ns_jobs=[j for j in J if j.get('ns')]
 if ns_jobs:
     review=Image.new('RGB',(1080,len(ns_jobs)*210),'#6d6573');d=ImageDraw.Draw(review)

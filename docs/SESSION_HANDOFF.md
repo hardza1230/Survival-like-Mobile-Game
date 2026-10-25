@@ -1,5 +1,6 @@
 # Latest — Art orders 50–54
 
-User requested gradual delivery. Order 50 source kit complete: assets/incoming/merge_forge (14 sheets/50 frames), donor revisions, exact prompts/provenance, metadata, previews and QA. Alpha/hollow centers, rarity silhouettes, badge clearance and nine-slice stretch reviewed. Generic packing: scripts/pack-ui-art-orders.py. No runtime/version changes. Next order 51, then 52–54; specs cached .git/ui-orderNN-spec.json. Master: docs/art_orders/50_54_PROGRESS.md. Publish through GitHub connector with branch lease; preserve concurrent owner work. Unrelated old review files remain untracked.
+User requested gradual delivery. Completed source kits: 50: merge_forge (14 sheets); 51: login_daily (9 sheets); 52: awards (7 sheets). Exact donors/prompts/provenance/manifests, half-size previews and QA in each assets/incoming folder. No runtime/version changes. Last reviewed 51: Passed all-state, true alpha, actual phone-size readability and nine-slice review. Panel revised to remove baked slots; plain center and blank header preserved. Reward amounts/types and paired boxes distinguishable. Runtime/phone review separate. Next: order 52, then remaining orders through 54.
 
+Master docs/art_orders/50_54_PROGRESS.md; packing scripts/pack-ui-art-orders.py. Publish through GitHub connector with branch lease, verify immutable bytes, preserve concurrent owner work. Unrelated old concept/review files remain untracked.
 
