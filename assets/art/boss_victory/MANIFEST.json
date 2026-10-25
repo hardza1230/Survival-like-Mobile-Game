@@ -1,0 +1,13 @@
+{
+  "key": "bv46_key",
+  "source": "assets/incoming/boss_victory46/wayseed_key_source.png",
+  "source_sha256": "f446df0b9b8e9615cb2a467dc89af284f4ea8d1474fd5a143ec69d93f69d617c",
+  "path": "assets/art/boss_victory/bv46_key.webp",
+  "sha256": "beae428641021d4c8b16522acfb0293930ece7247fc6d1fbb035bec960c01634",
+  "bytes": 52340,
+  "size": [
+    256,
+    256
+  ],
+  "tool": "built-in image_gen"
+}

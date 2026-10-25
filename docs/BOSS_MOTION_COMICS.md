@@ -1,5 +1,7 @@
 # Boss aftermath Motion Comics · v8.0.45
 
+v8.0.46 adds the owned final-blow/curse-release/Wayseed Key transition BEFORE the boss memory and existing boss rewards; see BOSS_VICTORY.md. The route below also remains the safety net after rewards for any unseen comic.
+
 Campaign victory → boss memory b00–b14 (three shots each) → applicable original chapter comic → Stage Clear. No pre-fight story modal, old still-image/text recap, or Ruby clear-story popup. Existing chapter scenes and boss combat dialogue remain. Repeat clears skip seen comics; Bestiary replays the same scenes. Skip is an intentional completed viewing; cancellation/death/stage change/shutdown cannot mark seen or continue a stale sequence. Special modes and noRuby bypass this story route.
 
 Each boss has one original environment with three independently composed shots: remembered life, the Crown’s corruption, release and route onward. Existing framed boss sprites, worried/proud Ruby, crown/smoke/ribbon/sparkles move independently; reduced motion retains still layers. The final Planter beat leaves the Crown removal to existing s16.

@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.46, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.47, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.46 — boss final blow + Wayseed Key
+
+Campaign-only owned final-blow freeze, curse fragments/boss dissolve/freed-flavor light, new ImageGen Wayseed Key for next locked story stage, curtain into boss Motion Comic BEFORE existing boss rewards. Stage-lazy256px alpha key; sources/prompts/manifests under assets/incoming/boss_victory46 and assets/art/boss_victory; docs/BOSS_VICTORY.md. First14frontier bosses give persistent idempotent storyGateKeys[next] and unlock next stage; old progress/replays/finale/special modes retain behavior; separate from Rift/Pinnacle keys. No economy/EXP/damage changes. Copied boss pose independent of pool; suppress old duplicate ghosts/flash/slowmo only on this route. Real-time x1–x4 durations, reduced motion850/1150ms, normal1750/2100ms, Low/flash preferences, modal wait and owned cleanup/stale guards. Static Canvas24cases/3sizes/normal+reduced/3bosses+key, regression keys all14doors. Phone feel/audio/FPS owner review pending; no combat simulation.
 
 # Latest delivery: v8.0.45 — boss aftermath Motion Comics + heavier Impaler
 
