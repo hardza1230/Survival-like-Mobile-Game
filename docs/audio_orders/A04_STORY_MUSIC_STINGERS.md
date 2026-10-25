@@ -49,3 +49,9 @@
 
 ## ส่งมอบ
 (ฝั่งเสียงกรอกตอนส่ง)
+
+## Delivery v8.0.39 — 2026-10-25
+
+Delivered 15 original ElevenLabs Sound Effects files (actual expanded table count), technical QA and runtime integration. Kit: `assets/incoming/audio_story_music/`; runtime: `assets/audio/story_music/`. Untouched donors, actual prompts/request metadata, MANIFEST and QA_REPORT retained. Owner phone listening/artistic review pending.
+
+Six BGM files remain pending: owner enabled Sound Effects only. Existing music continues; no Music Generation request made. One combined 1.8s book_open was selected from the permitted alternatives.

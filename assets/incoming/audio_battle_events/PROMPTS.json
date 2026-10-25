@@ -1,0 +1,578 @@
+[
+  {
+    "key": "sfx_arena_warn",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A clear but friendly two note warning bell, low then high, cuts through battle noise without shrillness. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_arena_warn.mp3",
+    "bytes": 8820,
+    "sha256": "28e1d050fee654d26aa8552ae11af274eca93e939f6c63e45c44a8ec9766bd11"
+  },
+  {
+    "key": "sfx_arena_sweep",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A continuous broad flowing sweep of magical liquid intertwined with rustling roots, smooth even texture, seamless loop, no start or end accent. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 1.2,
+      "loop": true,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "12"
+    },
+    "file": "originals/sfx_arena_sweep.mp3",
+    "bytes": 27628,
+    "sha256": "a3e2b014ebe0fc149b238da554a9afe9151aebd314d29e51630de162e6e689d0"
+  },
+  {
+    "key": "sfx_arena_grid_burn",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small frying pan grid flares with a compact sizzling fwoosh, crisp immediate fire onset. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_arena_grid_burn.mp3",
+    "bytes": 8820,
+    "sha256": "cc9bcecc60d91bd0eac4c98b5e58bf3d043220653a42d838f4d6fd471caa5ac8"
+  },
+  {
+    "key": "sfx_arena_freeze_breath",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A cool long gust whistles gently and ends in scattered tiny ice crystals. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 1.0,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "10"
+    },
+    "file": "originals/sfx_arena_freeze_breath.mp3",
+    "bytes": 17179,
+    "sha256": "71504f59522dc1c0cd99338ea5ac1efcbfaee5fa030c251042f9527008856412"
+  },
+  {
+    "key": "sfx_arena_pillar_crack",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One chunky ice pillar cracks and crumbles, crisp crystalline crunch, no glass shriek. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_arena_pillar_crack.mp3",
+    "bytes": 8820,
+    "sha256": "df0161452b1bae404203e6d9ea9536452f5e257c3f07e263b785cf0b3e6d1247"
+  },
+  {
+    "key": "sfx_arena_pod_shield",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A quiet continuous organic spore shield hum, softly pulsing magical airy tone, seamless loop with no onset accent. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.8,
+      "loop": true,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "8"
+    },
+    "file": "originals/sfx_arena_pod_shield.mp3",
+    "bytes": 22612,
+    "sha256": "9d0d86cb9d1cdd8687306da7e052e653f9bb15eaf1f6353564442401dd8e6214"
+  },
+  {
+    "key": "sfx_arena_shield_break",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A jelly glass magical shield shatters softly and releases a small airy puff. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_arena_shield_break.mp3",
+    "bytes": 8820,
+    "sha256": "baffd358a37ca79e773417986586cb741a12e376a882723c1ba6f974e46653f7"
+  },
+  {
+    "key": "sfx_arena_fog",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Quiet continuous low soft poisonous mist hissing, fluffy and unobtrusive, seamless ambience loop, no scary voices or rumbling sub bass. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 2.0,
+      "loop": true,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "20"
+    },
+    "file": "originals/sfx_arena_fog.mp3",
+    "bytes": 37241,
+    "sha256": "0618878bce0b70ebb2b3305a29ac5aba5f17edd8b2ff03046e5915252977c135"
+  },
+  {
+    "key": "sfx_arena_clock_tick",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One dry wooden gear clock tick, compact and softly articulated. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_arena_clock_tick.mp3",
+    "bytes": 8820,
+    "sha256": "177f74b71deac3590eea019478b97aa052f1918f0e5cae8751447598ea2d0ae3"
+  },
+  {
+    "key": "sfx_arena_ring_close",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A thorny root ring contracts, woody creaks and soft friction rising in pitch toward one rounded finish. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 1.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "15"
+    },
+    "file": "originals/sfx_arena_ring_close.mp3",
+    "bytes": 24702,
+    "sha256": "73f50b93f3b720d1b42a6f7c0f33e00c69446497821ce3b8fd0efa00f0cd1f2b"
+  },
+  {
+    "key": "sfx_arena_scythe",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One broad heavy scythe sweeps through air, powerful clean low mid whoosh, no impact or gore. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "file": "originals/sfx_arena_scythe.mp3",
+    "bytes": 10492,
+    "sha256": "a859890b873ac16612ea6706140e7ddfc6503138cbb025461b9e8b645e1f8bc4"
+  },
+  {
+    "key": "sfx_arena_decoy_reveal",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A hollow magical flower decoy vanishes into bubbles, soft poof and several tiny pops. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_arena_decoy_reveal.mp3",
+    "bytes": 8820,
+    "sha256": "e794fa161bbc270d9ceb2c84c0fbf46de034ad4db8b25ad9d3cd4e5626970131"
+  },
+  {
+    "key": "sfx_counter_spawn",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A springy little wooden object bounces onto the ground with a distinct plonk and one tiny sparkle. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_counter_spawn.mp3",
+    "bytes": 8820,
+    "sha256": "70e4a6a44034915829790f2f948541f278cce03c9c44111fdc665ddef0c93cd7"
+  },
+  {
+    "key": "sfx_counter_kick",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A satisfying firm rounded kick impact followed by a short airy launch whoosh. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_counter_kick.mp3",
+    "bytes": 8820,
+    "sha256": "cfde2f3bc88afa0fa70015bb2ff9bebffc175430be9eef4401bdf1828390ca83"
+  },
+  {
+    "key": "sfx_counter_hit",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A kicked object crashes against a chunky candy monster shell, heavy but soft comic impact and wobble, no voice or pain. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "file": "originals/sfx_counter_hit.mp3",
+    "bytes": 10492,
+    "sha256": "863c0b486be84dba262df80a4edf18009b84f99d9b5562f4e9b6e7510bc56483"
+  },
+  {
+    "key": "sfx_counter_fuse",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A tiny mechanical fuse ticks faster and faster over less than one second, ends before explosion. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.9,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "9"
+    },
+    "file": "originals/sfx_counter_fuse.mp3",
+    "bytes": 15089,
+    "sha256": "fa527f7851ccece39afd715c11648d48d7c7edf526a615dc36c0390001bcac46"
+  },
+  {
+    "key": "sfx_kill_freeze",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A compact deep midrange cinematic impact, one soft weighty thung, audible without sub bass. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_kill_freeze.mp3",
+    "bytes": 8820,
+    "sha256": "e9f492bf15a0b46ca202693d693eb65e737b96bed45cef1a65a163b1eb8900b6"
+  },
+  {
+    "key": "sfx_kill_slowmo",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A smooth airy magical tape slowdown that bends downward and then springs back to normal, soft and short. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.9,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "9"
+    },
+    "file": "originals/sfx_kill_slowmo.mp3",
+    "bytes": 15089,
+    "sha256": "e1869ac754f6227011da46470f6dbec58aa5f81adbba8559c78038732c13e9e6"
+  },
+  {
+    "key": "sfx_mission_tube_pop",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A water bubble bursts at the top of a glass tube and a little bright completion bell rings. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_mission_tube_pop.mp3",
+    "bytes": 8820,
+    "sha256": "a1e37fb635f1a32aad381d920c310c1c542a8748ab42a059fbc27cbd27c99050"
+  },
+  {
+    "key": "sfx_wave_start",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Two compact soft drum strikes with a short directional whoosh, announces a new wave. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_wave_start.mp3",
+    "bytes": 8820,
+    "sha256": "42baee54f31f3c835a257b1a7e170c07e452efcc7ae525d7a12f810f0b5a7e99"
+  },
+  {
+    "key": "sfx_quest_focus",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A brief cinematic camera focus swoosh followed by a small clear pointing bell. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "file": "originals/sfx_quest_focus.mp3",
+    "bytes": 10492,
+    "sha256": "622b3c8383067ab3bbf99cf8a162b9ea456c6cad94840eae5eede54daca13289"
+  },
+  {
+    "key": "sfx_poison_tick",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One very quiet soft sticky poison bubble pops, compact dry transient for frequent use. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_poison_tick.mp3",
+    "bytes": 8820,
+    "sha256": "cc9ab91e4de21d9b679bb26159b3fa76bf80d14d5c69683da72afabcd2b5f43e"
+  },
+  {
+    "key": "sfx_bleed_tick",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One very quiet thick red syrup droplet lands with a soft wet tick, no gore. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_bleed_tick.mp3",
+    "bytes": 8820,
+    "sha256": "560da8c4d79b7e9ceabd6c139cd9e48c9a21f1ee8754c8fad4eddbb64f0579a2"
+  },
+  {
+    "key": "sfx_out_of_zone",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Two gentle short rounded warning beeps, helpful rather than alarming. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_out_of_zone.mp3",
+    "bytes": 8820,
+    "sha256": "a4fd22b340cd06caf98916e7c47b555f02c189a19f9eebe9a55909b5d3a1b727"
+  },
+  {
+    "key": "sfx_ruby_pop_in",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A tiny magical jam sprite pops into view with a springy bright ping. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_ruby_pop_in.mp3",
+    "bytes": 8820,
+    "sha256": "0835b888ea8afac6949cc1bab2c1c746c459caae831b7f3b0e1e21051604ffca"
+  },
+  {
+    "key": "sfx_ruby_alert",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Two quick bright magical pings, friendly urgent attention, no human voice. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_ruby_alert.mp3",
+    "bytes": 8820,
+    "sha256": "a4496d9d704f7caa8b46dffc96cb2431a831403ce29b16377e853db41d3e8e57"
+  },
+  {
+    "key": "sfx_speed_change_x2",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small airy acceleration swoosh rising to a moderately high pitch. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_speed_change_x2.mp3",
+    "bytes": 8820,
+    "sha256": "b08ec76c8414d150ec84067a3c7a2eb94ceef61417172717736c1ad486345b3d"
+  },
+  {
+    "key": "sfx_speed_change_x3",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small airy acceleration swoosh rising to a higher pitch, more energetic than double speed. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_speed_change_x3.mp3",
+    "bytes": 8820,
+    "sha256": "c2464be2132cf480b437c9aaa770215d9f976b9517025da266a4418c58749483"
+  },
+  {
+    "key": "sfx_speed_change_x4",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small airy acceleration swoosh rising to the highest pitch, compact and playful. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_speed_change_x4.mp3",
+    "bytes": 8820,
+    "sha256": "2b44905a8081848b35ac4a9be1d19d64d1d56449c31e560b54f08ee4e9a991f3"
+  },
+  {
+    "key": "sfx_run_trait",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A mysterious small curtain opens with a soft low shimmer and a few magic sparkles. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.7,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "file": "originals/sfx_run_trait.mp3",
+    "bytes": 12163,
+    "sha256": "b2405ff96d993ec8d49b9e062a60abeeb69363bf99a15c109061c1f06367132a"
+  },
+  {
+    "key": "sfx_stage_title",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A gentle flowing gust reveals a stage title, one warm sustained glass bell tone with room for text. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 1.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "15"
+    },
+    "file": "originals/sfx_stage_title.mp3",
+    "bytes": 24702,
+    "sha256": "e712a96c7b13d4c17defa15249189c141b3b9a7898a6d52a364667ba3c2f1eb0"
+  },
+  {
+    "key": "sfx_tutorial_great",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Tiny soft toy claps and a bright magical sparkle, encouraging success, no people. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "file": "originals/sfx_tutorial_great.mp3",
+    "bytes": 10492,
+    "sha256": "f7bdbd5c4bcc3b8b345d7fd11569a506d3224d1b3fdd7927869e1190a37af126"
+  }
+]

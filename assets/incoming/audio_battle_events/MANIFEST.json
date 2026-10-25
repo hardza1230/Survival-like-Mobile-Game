@@ -1,0 +1,290 @@
+[
+  {
+    "key": "sfx_arena_warn",
+    "file": "sfx_arena_warn.mp3",
+    "bytes": 7566,
+    "sha256": "4d9e263560b0c75527edc051e1b5363df4bf86c533829f919264a32d7c3ef3af",
+    "durationMs": 400.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_arena_sweep",
+    "file": "sfx_arena_sweep.mp3",
+    "bytes": 20105,
+    "sha256": "4dc9383ae1ce4f1fb1b33d026f0983664b7d15486722e41fb845a191f5e4e557",
+    "durationMs": 1200.0,
+    "loop": true,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_arena_grid_burn",
+    "file": "sfx_arena_grid_burn.mp3",
+    "bytes": 8402,
+    "sha256": "376fc98d85334ff03d48c43bd934cebcff98f98504510587c94c6aeac38b95ed",
+    "durationMs": 450.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_arena_freeze_breath",
+    "file": "sfx_arena_freeze_breath.mp3",
+    "bytes": 17179,
+    "sha256": "b038195bc6b3dd51f5feb3612465c0023d3534e43987f25a68b36b040fa799ef",
+    "durationMs": 1000.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_arena_pillar_crack",
+    "file": "sfx_arena_pillar_crack.mp3",
+    "bytes": 7566,
+    "sha256": "20922a144e4d8c335b6b854748be5451b56afccbd3194de45a13d41200bafaa2",
+    "durationMs": 400.0,
+    "loop": false,
+    "peakDbtp": -3.6
+  },
+  {
+    "key": "sfx_arena_pod_shield",
+    "file": "sfx_arena_pod_shield.mp3",
+    "bytes": 13835,
+    "sha256": "3a6188d8357eb81ed4febbd960c3ee04f498b0d1e18cde69570d33ebc29d4bd3",
+    "durationMs": 800.0,
+    "loop": true,
+    "peakDbtp": -3.3
+  },
+  {
+    "key": "sfx_arena_shield_break",
+    "file": "sfx_arena_shield_break.mp3",
+    "bytes": 9238,
+    "sha256": "0cd5938b3afe64fbf2837c86e447aacceb8a441316eeb393dfb27fbb1ff49786",
+    "durationMs": 500.0,
+    "loop": false,
+    "peakDbtp": -3.0
+  },
+  {
+    "key": "sfx_arena_fog",
+    "file": "sfx_arena_fog.mp3",
+    "bytes": 33061,
+    "sha256": "a1ef12c872e5071fcf6b67d83505be3c09bbcf182aa4aea111cb5fa938d9b485",
+    "durationMs": 2000.0,
+    "loop": true,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_arena_clock_tick",
+    "file": "sfx_arena_clock_tick.mp3",
+    "bytes": 2968,
+    "sha256": "2d16d3d2dacb80a479a4d4d1a81fdb30ba4f6620abf8582362fe03645653ae0f",
+    "durationMs": 120.0,
+    "loop": false,
+    "peakDbtp": -3.6
+  },
+  {
+    "key": "sfx_arena_ring_close",
+    "file": "sfx_arena_ring_close.mp3",
+    "bytes": 25120,
+    "sha256": "a5371a889f7d27e12278abb3c7333362248fc03dabd04de75fe154df1e3da2f0",
+    "durationMs": 1500.0,
+    "loop": false,
+    "peakDbtp": -3.3
+  },
+  {
+    "key": "sfx_arena_scythe",
+    "file": "sfx_arena_scythe.mp3",
+    "bytes": 10492,
+    "sha256": "fc67507f0804b6551460fe94b49448eb159a17de570cf41ab471ac89e6d33db8",
+    "durationMs": 600.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_arena_decoy_reveal",
+    "file": "sfx_arena_decoy_reveal.mp3",
+    "bytes": 9238,
+    "sha256": "d93ac065ad5f189f3cb7079ec1a1fdc71a415d743be3bafebd4af11ed6b9d9df",
+    "durationMs": 500.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_counter_spawn",
+    "file": "sfx_counter_spawn.mp3",
+    "bytes": 6730,
+    "sha256": "ad172f947d4fdf3e99d5c5133c75e37debbcd762b47febfa66b679381dee0b5d",
+    "durationMs": 350.0,
+    "loop": false,
+    "peakDbtp": -3.2
+  },
+  {
+    "key": "sfx_counter_kick",
+    "file": "sfx_counter_kick.mp3",
+    "bytes": 5058,
+    "sha256": "688b9d4d0e77b44cb26aa40f745835b07b202c7cadcd0544ce669f5d65863a81",
+    "durationMs": 250.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_counter_hit",
+    "file": "sfx_counter_hit.mp3",
+    "bytes": 10492,
+    "sha256": "eadae7fabe8e924b332362e8c7ec4eb426a4c83d17832fd35a6c5bd7e879b9f5",
+    "durationMs": 600.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_counter_fuse",
+    "file": "sfx_counter_fuse.mp3",
+    "bytes": 15507,
+    "sha256": "c701036c96d47d0a2000e1e3f8ab4b9aa860c93ba86e06988d4607f83dad3a7b",
+    "durationMs": 900.0,
+    "loop": false,
+    "peakDbtp": -3.2
+  },
+  {
+    "key": "sfx_kill_freeze",
+    "file": "sfx_kill_freeze.mp3",
+    "bytes": 3386,
+    "sha256": "aa726bc536537d71ecdb5ddc962a269c5c386cd735626c47fb44040377aa1697",
+    "durationMs": 150.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_kill_slowmo",
+    "file": "sfx_kill_slowmo.mp3",
+    "bytes": 15507,
+    "sha256": "b0692c7b62cb427483933ee5417d66a43e0c88aac9b97d466a9c6a246dd0b1b9",
+    "durationMs": 900.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_mission_tube_pop",
+    "file": "sfx_mission_tube_pop.mp3",
+    "bytes": 8402,
+    "sha256": "7d24664128b4a799f0b38cedec39a843c5d41cd92db51db772f726b89df7451e",
+    "durationMs": 450.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_wave_start",
+    "file": "sfx_wave_start.mp3",
+    "bytes": 9238,
+    "sha256": "aad2fb407d36bcd652002256aed3536290894067dd337e69a3877d26e4c1e3e0",
+    "durationMs": 500.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_quest_focus",
+    "file": "sfx_quest_focus.mp3",
+    "bytes": 10492,
+    "sha256": "937da969de21923aaf581b497d4158ec9267d3ee766e1b4c3a6d6f17c194eaa8",
+    "durationMs": 600.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_poison_tick",
+    "file": "sfx_poison_tick.mp3",
+    "bytes": 2968,
+    "sha256": "15dfdc353ab48792d27ad33fa2d7f7b9bab7ec71218bb25cdd078ab323df4789",
+    "durationMs": 120.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_bleed_tick",
+    "file": "sfx_bleed_tick.mp3",
+    "bytes": 2968,
+    "sha256": "15b70f2d526d8ccdd337374b7ce71d66a799bd455e83a68f70fadca8ae3af010",
+    "durationMs": 120.0,
+    "loop": false,
+    "peakDbtp": -2.4
+  },
+  {
+    "key": "sfx_out_of_zone",
+    "file": "sfx_out_of_zone.mp3",
+    "bytes": 9238,
+    "sha256": "97673fba30a8649072642f8cf1e04c64ea37c6c2842fca176b30b6aec2fae9f6",
+    "durationMs": 500.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_ruby_pop_in",
+    "file": "sfx_ruby_pop_in.mp3",
+    "bytes": 5058,
+    "sha256": "6a453adc875c2ab2a42dbf67dc7ec3587a541615c49d2a1ce8331f8c07a7826f",
+    "durationMs": 250.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_ruby_alert",
+    "file": "sfx_ruby_alert.mp3",
+    "bytes": 5894,
+    "sha256": "4750d2198b8989239c3bb879fe05e97eb4da77f3dcd9436b0522eeafdea30210",
+    "durationMs": 300.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_speed_change_x2",
+    "file": "sfx_speed_change_x2.mp3",
+    "bytes": 5058,
+    "sha256": "51ec1825f8c72316db1430ef89afc35ea225d9941ed1381251d960cc6fa001c6",
+    "durationMs": 250.0,
+    "loop": false,
+    "peakDbtp": -3.0
+  },
+  {
+    "key": "sfx_speed_change_x3",
+    "file": "sfx_speed_change_x3.mp3",
+    "bytes": 5058,
+    "sha256": "2105cd770844bd9d8d6bd19fc4e190a2ca79773ee2936c9767845ce957d00d52",
+    "durationMs": 250.0,
+    "loop": false,
+    "peakDbtp": -2.5
+  },
+  {
+    "key": "sfx_speed_change_x4",
+    "file": "sfx_speed_change_x4.mp3",
+    "bytes": 5058,
+    "sha256": "14659bac6b5cc15f477ce73c0f9706b2e752e5cae3be20623ac63e043b5636ec",
+    "durationMs": 250.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_run_trait",
+    "file": "sfx_run_trait.mp3",
+    "bytes": 12163,
+    "sha256": "db2e24719e1b530915132c2108d768c272323e7451b94e1c2105bf29cec407cd",
+    "durationMs": 700.0,
+    "loop": false,
+    "peakDbtp": -3.6
+  },
+  {
+    "key": "sfx_stage_title",
+    "file": "sfx_stage_title.mp3",
+    "bytes": 25120,
+    "sha256": "ff457cca2fa6df232ce7a50213fd3ba1c7810e8b69721793e31d2fbb5b00c288",
+    "durationMs": 1500.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_tutorial_great",
+    "file": "sfx_tutorial_great.mp3",
+    "bytes": 10492,
+    "sha256": "115170dba003ce449e55e1333be1b38dc11fa372ea7c353e5e4c9b4738c8f099",
+    "durationMs": 600.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  }
+]

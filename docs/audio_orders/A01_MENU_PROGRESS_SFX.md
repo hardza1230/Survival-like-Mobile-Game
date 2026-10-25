@@ -68,3 +68,9 @@
 
 ## ส่งมอบ
 (ฝั่งเสียงกรอกตอนส่ง)
+
+## Delivery v8.0.39 — 2026-10-25
+
+Delivered 39 original ElevenLabs Sound Effects files (actual expanded table count), technical QA and runtime integration. Kit: `assets/incoming/audio_menu_progress/`; runtime: `assets/audio/menu_progress/`. Untouched donors, actual prompts/request metadata, MANIFEST and QA_REPORT retained. Owner phone listening/artistic review pending.
+
+Actual table expands to39 files (35 named rows +2 extra Daily box variants +2 extra stage star variants); previous summary understated the count.

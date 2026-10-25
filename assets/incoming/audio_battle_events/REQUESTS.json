@@ -1,0 +1,322 @@
+[
+  {
+    "key": "sfx_arena_warn",
+    "file": "sfx_arena_warn.mp3",
+    "durationMs": 400,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A clear but friendly two note warning bell, low then high, cuts through battle noise without shrillness. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_sweep",
+    "file": "sfx_arena_sweep.mp3",
+    "durationMs": 1200,
+    "loop": true,
+    "provider": "ElevenLabs",
+    "prompt": "A continuous broad flowing sweep of magical liquid intertwined with rustling roots, smooth even texture, seamless loop, no start or end accent. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 1.2,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_grid_burn",
+    "file": "sfx_arena_grid_burn.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small frying pan grid flares with a compact sizzling fwoosh, crisp immediate fire onset. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_freeze_breath",
+    "file": "sfx_arena_freeze_breath.mp3",
+    "durationMs": 1000,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A cool long gust whistles gently and ends in scattered tiny ice crystals. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 1.0,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_pillar_crack",
+    "file": "sfx_arena_pillar_crack.mp3",
+    "durationMs": 400,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One chunky ice pillar cracks and crumbles, crisp crystalline crunch, no glass shriek. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_pod_shield",
+    "file": "sfx_arena_pod_shield.mp3",
+    "durationMs": 800,
+    "loop": true,
+    "provider": "ElevenLabs",
+    "prompt": "A quiet continuous organic spore shield hum, softly pulsing magical airy tone, seamless loop with no onset accent. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.8,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_shield_break",
+    "file": "sfx_arena_shield_break.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A jelly glass magical shield shatters softly and releases a small airy puff. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_fog",
+    "file": "sfx_arena_fog.mp3",
+    "durationMs": 2000,
+    "loop": true,
+    "provider": "ElevenLabs",
+    "prompt": "Quiet continuous low soft poisonous mist hissing, fluffy and unobtrusive, seamless ambience loop, no scary voices or rumbling sub bass. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 2.0,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_clock_tick",
+    "file": "sfx_arena_clock_tick.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One dry wooden gear clock tick, compact and softly articulated. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_ring_close",
+    "file": "sfx_arena_ring_close.mp3",
+    "durationMs": 1500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A thorny root ring contracts, woody creaks and soft friction rising in pitch toward one rounded finish. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 1.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_scythe",
+    "file": "sfx_arena_scythe.mp3",
+    "durationMs": 600,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One broad heavy scythe sweeps through air, powerful clean low mid whoosh, no impact or gore. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.6,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_arena_decoy_reveal",
+    "file": "sfx_arena_decoy_reveal.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A hollow magical flower decoy vanishes into bubbles, soft poof and several tiny pops. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_counter_spawn",
+    "file": "sfx_counter_spawn.mp3",
+    "durationMs": 350,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A springy little wooden object bounces onto the ground with a distinct plonk and one tiny sparkle. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_counter_kick",
+    "file": "sfx_counter_kick.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A satisfying firm rounded kick impact followed by a short airy launch whoosh. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_counter_hit",
+    "file": "sfx_counter_hit.mp3",
+    "durationMs": 600,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A kicked object crashes against a chunky candy monster shell, heavy but soft comic impact and wobble, no voice or pain. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.6,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_counter_fuse",
+    "file": "sfx_counter_fuse.mp3",
+    "durationMs": 900,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A tiny mechanical fuse ticks faster and faster over less than one second, ends before explosion. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.9,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_kill_freeze",
+    "file": "sfx_kill_freeze.mp3",
+    "durationMs": 150,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A compact deep midrange cinematic impact, one soft weighty thung, audible without sub bass. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_kill_slowmo",
+    "file": "sfx_kill_slowmo.mp3",
+    "durationMs": 900,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A smooth airy magical tape slowdown that bends downward and then springs back to normal, soft and short. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.9,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_mission_tube_pop",
+    "file": "sfx_mission_tube_pop.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A water bubble bursts at the top of a glass tube and a little bright completion bell rings. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_wave_start",
+    "file": "sfx_wave_start.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "Two compact soft drum strikes with a short directional whoosh, announces a new wave. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_quest_focus",
+    "file": "sfx_quest_focus.mp3",
+    "durationMs": 600,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A brief cinematic camera focus swoosh followed by a small clear pointing bell. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.6,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_poison_tick",
+    "file": "sfx_poison_tick.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One very quiet soft sticky poison bubble pops, compact dry transient for frequent use. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_bleed_tick",
+    "file": "sfx_bleed_tick.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One very quiet thick red syrup droplet lands with a soft wet tick, no gore. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_out_of_zone",
+    "file": "sfx_out_of_zone.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "Two gentle short rounded warning beeps, helpful rather than alarming. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_ruby_pop_in",
+    "file": "sfx_ruby_pop_in.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A tiny magical jam sprite pops into view with a springy bright ping. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_ruby_alert",
+    "file": "sfx_ruby_alert.mp3",
+    "durationMs": 300,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "Two quick bright magical pings, friendly urgent attention, no human voice. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_speed_change_x2",
+    "file": "sfx_speed_change_x2.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small airy acceleration swoosh rising to a moderately high pitch. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_speed_change_x3",
+    "file": "sfx_speed_change_x3.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small airy acceleration swoosh rising to a higher pitch, more energetic than double speed. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_speed_change_x4",
+    "file": "sfx_speed_change_x4.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small airy acceleration swoosh rising to the highest pitch, compact and playful. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_run_trait",
+    "file": "sfx_run_trait.mp3",
+    "durationMs": 700,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A mysterious small curtain opens with a soft low shimmer and a few magic sparkles. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.7,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_stage_title",
+    "file": "sfx_stage_title.mp3",
+    "durationMs": 1500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A gentle flowing gust reveals a stage title, one warm sustained glass bell tone with room for text. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 1.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_tutorial_great",
+    "file": "sfx_tutorial_great.mp3",
+    "durationMs": 600,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "Tiny soft toy claps and a bright magical sparkle, encouraging success, no people. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.6,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  }
+]

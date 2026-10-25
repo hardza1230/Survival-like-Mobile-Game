@@ -1,0 +1,152 @@
+[
+  {
+    "key": "sfx_pow_crack",
+    "file": "sfx_pow_crack.mp3",
+    "durationMs": 400,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A wooden floor suddenly cracks, crisp cartoon splintering snap, one clear impact. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_pow_thud",
+    "file": "sfx_pow_thud.mp3",
+    "durationMs": 350,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One soft heavy cartoon landing thud, round and cushioned, no voice. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_pow_pop",
+    "file": "sfx_pow_pop.mp3",
+    "durationMs": 300,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One clear springy magical bubble pop with a short bright tail. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_pow_shatter",
+    "file": "sfx_pow_shatter.mp3",
+    "durationMs": 600,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A sheet of magical ice breaks into many delicate crystalline fragments, clear but not piercing. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.6,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_pow_krak",
+    "file": "sfx_pow_krak.mp3",
+    "durationMs": 700,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One large gnarled wooden root breaks with a dramatic chunky crack and falling splinters, stylized cartoon impact. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.7,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_type_tick",
+    "file": "sfx_type_tick.mp3",
+    "durationMs": 35,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One extremely quiet dry wooden typewriter key tick, single tiny transient for repeated text typing. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_story_title",
+    "file": "sfx_story_title.mp3",
+    "durationMs": 2000,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A soft breeze, one long warm magical curtain opening tone and delicate sparkles, airy narrative title reveal. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 2.0,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_book_open",
+    "file": "sfx_book_open.mp3",
+    "durationMs": 1800,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "An old large storybook opens: small brass clasp clicks, thick cover creaks open, parchment pages riffle, warm magical shimmer. Complete compact sequence. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 1.8,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_stage_victory",
+    "file": "sfx_stage_victory.mp3",
+    "durationMs": 2500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original very short warm victory fanfare, toy horn and glass bells, ascending playful four note gesture and resolved final chord. Not a song, one reward stinger, no casino sound. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 2.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_stage_defeat",
+    "file": "sfx_stage_defeat.mp3",
+    "durationMs": 2000,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original very short tender defeat stinger, small soft descending music box tones, gently encouraging another try, no despair. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 2.0,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_chapter_clear",
+    "file": "sfx_chapter_clear.mp3",
+    "durationMs": 3500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original grand but cute short chapter completion flourish, warm small brass and golden bells, ascending playful four note gesture and proud resolved chord. A single reward stinger, no song. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 3.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_box_reveal_common",
+    "file": "sfx_box_reveal_common.mp3",
+    "durationMs": 300,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A plain little cardboard reward box opens with one soft papery pop. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_box_reveal_rare",
+    "file": "sfx_box_reveal_rare.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A little blue crystal reward box opens with a soft pop and two bright glass chimes. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_box_reveal_epic",
+    "file": "sfx_box_reveal_epic.mp3",
+    "durationMs": 650,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A violet magical reward box opens with a rounded pop and three rich crystal chimes. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.65,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "sfx_box_reveal_legend",
+    "file": "sfx_box_reveal_legend.mp3",
+    "durationMs": 900,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A golden magical reward box opens with a resonant soft pop, warm tiny horn and golden bell sparkle. Original cute premium candy fantasy game audio, clear on phone speakers, dry immediate attack, gentle short tail, no harsh highs, no background music or speech, no imitation of any existing game, artist or recording.",
+    "generationDurationSeconds": 0.9,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  }
+]

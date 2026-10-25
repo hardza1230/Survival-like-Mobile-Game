@@ -1,0 +1,362 @@
+[
+  {
+    "key": "sfx_yz_seed",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A tiny citrus seed spits forward with a light soft click and a short airy flick. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_seed.mp3",
+    "bytes": 8820,
+    "sha256": "e6b5a8d2f792d138b27dfc6176bc29d69886145ec00bc3123c90230a049f3f44"
+  },
+  {
+    "key": "sfx_yz_bite",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny cute citrus creature makes a juicy soft chomp and a small juice pop. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_bite.mp3",
+    "bytes": 8820,
+    "sha256": "f03367371117678bf2d6a9994c9c9a9b30f601da57c1a4495053c3bdd56014fa"
+  },
+  {
+    "key": "sfx_yz_pounce",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small bouncing fruit lands with a springy soft thump and two tiny leaf ticks. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_pounce.mp3",
+    "bytes": 8820,
+    "sha256": "3ffc90a206429fda4d10b74b85caf698c356ab96ee0274679b538bc14c3b5240"
+  },
+  {
+    "key": "sfx_yz_sweep",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A thick leafy gauntlet sweeps through the air with a rounded soft thwack. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_sweep.mp3",
+    "bytes": 8820,
+    "sha256": "9e2336d0d2123657bce061de91acf53cbfdfc45b7d014b1e1b020031f6a8b189"
+  },
+  {
+    "key": "sfx_yz_slam",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A heavy round pomelo lands in soft earth, deep but phone-readable thump, leaf scatter and juicy impact. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.65,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "file": "originals/sfx_yz_slam.mp3",
+    "bytes": 11327,
+    "sha256": "12ff49c908809afdd7e003ec70ed676024a575349a70003b85454c8406897cc6"
+  },
+  {
+    "key": "sfx_yz_roll",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A large round citrus fruit rolls quickly across earth with a short low rumble and leaves swishing. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.6,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "6"
+    },
+    "file": "originals/sfx_yz_roll.mp3",
+    "bytes": 10492,
+    "sha256": "6ffb7e1a2074fccd81b649fef00aee9ddba69499348e1a9ab741b40383f1da2a"
+  },
+  {
+    "key": "sfx_yz_rush",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One tiny fruit companion rushes past in a quick leafy whoosh, upbeat and clean. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_rush.mp3",
+    "bytes": 8820,
+    "sha256": "370a00e9e7ddb271b875aaafbadbdc7d4e603f66c22227f56601dc72807a92b7"
+  },
+  {
+    "key": "sfx_yz_grow",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A friendly citrus fruit grows one stage with a juicy pop and a small warm golden chime. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_grow.mp3",
+    "bytes": 8820,
+    "sha256": "c8d1e2a911bccff341efa42165534f5e9e12be3997a386f5b0b5d46c5084b0f0"
+  },
+  {
+    "key": "sfx_yz_arrow",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A little wooden leaf bow twangs once and a seed arrow whistles very briefly. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_arrow.mp3",
+    "bytes": 8820,
+    "sha256": "57cd72b276897f186b8ddc896facfcf2d23442406367b8ec7de4c8c576d769f3"
+  },
+  {
+    "key": "sfx_yz_volley",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small leaf bow releases a quick fan of seed arrows, layered gentle twangs and airy flicks. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_volley.mp3",
+    "bytes": 8820,
+    "sha256": "121d95724487720711a744b568e8f901cfb529aefd318417bcb30517ae42d7fa"
+  },
+  {
+    "key": "sfx_yz_trap",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A sour lime trap snaps open with a tiny twig click, juicy citrus splash and gentle root rustle. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_trap.mp3",
+    "bytes": 8820,
+    "sha256": "332a4d8fb5d7fb9d64a169f315143d90d3c3f5e7bb7d7042667cca4cf24c675d"
+  },
+  {
+    "key": "sfx_yz_orb",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small magical citrus orb launches with a soft velvety plop and a short herbal shimmer. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_orb.mp3",
+    "bytes": 8820,
+    "sha256": "c901327b11ff15d4dc08da589693e067093f6aee1ecf3f0a77e56add697da9bd"
+  },
+  {
+    "key": "sfx_yz_sweet",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Honey magic blooms with a warm bubble pop, two soft bell droplets and a soothing short tail. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_sweet.mp3",
+    "bytes": 8820,
+    "sha256": "42dec65e8ec9f86b91f76b0a352e7ad56c03f15ea59839d2149a396692dcc942"
+  },
+  {
+    "key": "sfx_yz_sour",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small citrus acid pool bubbles into place, a gentle fizzy splash with a few crisp herbal clicks. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_sour.mp3",
+    "bytes": 8820,
+    "sha256": "9fc19d01a3b869f4395e334b0f4833aa4a13408de286600f611b16ff288e335f"
+  },
+  {
+    "key": "sfx_yz_spicy",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A small spicy citrus firebolt whooshes forward with a warm dry crackle and soft burst. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_spicy.mp3",
+    "bytes": 8820,
+    "sha256": "297e57ea51161c4ab666f4e04570ef9277f680ab09e326079c0854e5f8406091"
+  },
+  {
+    "key": "sfx_yz_down",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A tiny fruit companion tumbles softly and becomes sleepy, gentle plop and leaf flop, no pain scream. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_down.mp3",
+    "bytes": 8820,
+    "sha256": "977ae86acdc28580181a3ad40fc7bc3cbc7a6042721da1414abefdfd5e8b2b40"
+  },
+  {
+    "key": "sfx_yz_revive",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A tiny fruit friend springs back up, cheerful juicy pop and a short rising warm chime. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/sfx_yz_revive.mp3",
+    "bytes": 8820,
+    "sha256": "993805216994c5a9ffdc336991ce64ec2fb2e702092254d5a2bfe3a7d90c458d"
+  },
+  {
+    "key": "sfx_yz_fortress",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A protective golden citrus shield rises, rounded low impact, warm bell and leafy swell. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.9,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "9"
+    },
+    "file": "originals/sfx_yz_fortress.mp3",
+    "bytes": 15089,
+    "sha256": "78f0be5312e4a474bfd1e7423c0dfcc4967f01b4e0d9206cd894073cf8d0db31"
+  },
+  {
+    "key": "sfx_yz_rain",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A brief shower of little seed arrows falls and strikes soft ground, airy ticks and tiny juice splashes. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 0.9,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "9"
+    },
+    "file": "originals/sfx_yz_rain.mp3",
+    "bytes": 15089,
+    "sha256": "e48971c425554c04303836383882ef6cf45f782fc8b6bdd1e816f2c46a76482b"
+  },
+  {
+    "key": "sfx_yz_infusion",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "Three herbal citrus magics blossom together: warm honey bells, sour bubbling and a soft fiery swish, short enchanting flourish. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+      "duration_seconds": 1.1,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "11"
+    },
+    "file": "originals/sfx_yz_infusion.mp3",
+    "bytes": 18433,
+    "sha256": "3fc07f65445c792d4554dae2af36f99bc370af3ace510ada6fa6ca0c6ab0555b"
+  }
+]

@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.39, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.40, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.39 — ElevenLabs audio orders A01–A05 (SFX)
+
+139 original ElevenLabs SFX v2 donors with exact prompts/response ids, mechanical packed mono44.1k128kbps MP3, measured decoded true peak<=-1dBTP/onset<5ms/target duration; source/final/QA manifests per incoming/audio kit. Runtime assets/audio/{menu_progress,battle_events,yuzu,story_music,voices}, literal ASSET_AUDIO paths. Menu/event/companion/story/wordless voice hooks use existing Sfx and volume/mute/throttle, menu max2 cues, global voice .14s minimum, Settings Character Voices toggle. Arena loops restart from simulation ticks, stop on pause/clear/death/mute/zero volume; Yuzu sounds only decoded for selected Yuzu. Owner enabled Sound Effects ONLY: six A04 background music tracks pending Music Generation permission, existing music retained. No new synthesis by code, no Runway. Subjective phone listening required (especially voice consistency/short transient crops); no gameplay simulation/screenshots. Reproduce scripts/prepare-audio-orders.py, generate-elevenlabs-orders.py (uses fresh Windows User credential, never tracked), pack-elevenlabs-orders.py; audio-orders contract added to npm check.
 
 # Latest delivery: v8.0.38 — Yuzu Citrus Companions
 

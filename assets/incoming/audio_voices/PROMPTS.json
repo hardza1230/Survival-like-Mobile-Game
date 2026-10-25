@@ -1,0 +1,596 @@
+[
+  {
+    "key": "vo_ruby_blip_1",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny rising ee-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_blip_1.mp3",
+    "bytes": 8820,
+    "sha256": "a24456cfe9a6b89804bcaf7ef9080026377353eb0519aedd4f21ef458e083bdb"
+  },
+  {
+    "key": "vo_ruby_blip_2",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny round pu-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_blip_2.mp3",
+    "bytes": 8820,
+    "sha256": "bea0a3fda45e654f2c4a995f4433ae800f62c24f349a52fb2c693fd9e468bf46"
+  },
+  {
+    "key": "vo_ruby_blip_3",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny soft ru-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_blip_3.mp3",
+    "bytes": 8820,
+    "sha256": "a0801250127c4f54127b80e63d2776d3e9182f58009420b0e41e379797377b23"
+  },
+  {
+    "key": "vo_ruby_blip_4",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny bright bi-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_blip_4.mp3",
+    "bytes": 8820,
+    "sha256": "f237a5cd67878b63d63cbbeeaaff6ef0edd476a4a8fb004d21acebf73f549fd8"
+  },
+  {
+    "key": "vo_ruby_happy",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny delighted giggle Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_happy.mp3",
+    "bytes": 8820,
+    "sha256": "296ab6ca6d81fb9b5e5279815f9befaacbc39a140b5bc531452c3eabd4099dae"
+  },
+  {
+    "key": "vo_ruby_alert",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. one surprised questioning squeak Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_alert.mp3",
+    "bytes": 8820,
+    "sha256": "2d4f4edef2dc0dba93bd47c49bd95ddd20e53a308484c9d2a212554875ef2acf"
+  },
+  {
+    "key": "vo_ruby_sad",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a soft tender sigh Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_sad.mp3",
+    "bytes": 8820,
+    "sha256": "6e57db7273de083baecc0723cb5a80a031be1592ad82aac862355235f965d99e"
+  },
+  {
+    "key": "vo_ruby_cheer",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a joyful wordless rising cheer Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_ruby_cheer.mp3",
+    "bytes": 8820,
+    "sha256": "365332183225c7a7b0710f7b2b74fa4b1bffea3df0954ff5c3a5e3e3370bd1e5"
+  },
+  {
+    "key": "vo_momo_greet",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A brave cheerful slightly clumsy young strawberry heroine with a bright warm voice. a joyful wordless greeting chirp Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_momo_greet.mp3",
+    "bytes": 8820,
+    "sha256": "4fce01a0d69d32d353bfc00f647f22b85d0203ce652269b0a066cdff7b96b086"
+  },
+  {
+    "key": "vo_momo_tap",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A brave cheerful slightly clumsy young strawberry heroine with a bright warm voice. a little determined effort squeak Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_momo_tap.mp3",
+    "bytes": 8820,
+    "sha256": "8fe59a9c784ca5d20237b64769566346f1e7fe85beb93fe7eaa3f0591d92b845"
+  },
+  {
+    "key": "vo_momo_poke",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A brave cheerful slightly clumsy young strawberry heroine with a bright warm voice. a surprised playful mildly pouty grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_momo_poke.mp3",
+    "bytes": 8820,
+    "sha256": "12dbe72e01834a403dfc49789e0eae1082a0f687af6a8c825cf999fc94555c4c"
+  },
+  {
+    "key": "vo_mint_greet",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A reserved kind ice mage with a soft low cool feminine voice. a quiet polite questioning hum Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_mint_greet.mp3",
+    "bytes": 8820,
+    "sha256": "a43d18340dc15fcbfaee81cb353e34499d8a17f9a90444668d36c81305217b1e"
+  },
+  {
+    "key": "vo_mint_tap",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A reserved kind ice mage with a soft low cool feminine voice. one small composed sigh Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_mint_tap.mp3",
+    "bytes": 8820,
+    "sha256": "6b771caeb6592f9d42f0730bc2a4159426d658be0bb33aa763c1761d317f8291"
+  },
+  {
+    "key": "vo_mint_poke",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A reserved kind ice mage with a soft low cool feminine voice. a restrained gently annoyed wordless murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_mint_poke.mp3",
+    "bytes": 8820,
+    "sha256": "1b4ffe7769ba78069750ee314ecd3185c141ee2b340ff695688aef3365d336c4"
+  },
+  {
+    "key": "vo_cocoa_greet",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A friendly broad chocolate bear with a warm deep rounded resonant voice. a jovial deep welcoming hoot Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_cocoa_greet.mp3",
+    "bytes": 8820,
+    "sha256": "9b937e2afd5b98e368048c400a4d4e73e65f43a6873ff89730410b73517c026b"
+  },
+  {
+    "key": "vo_cocoa_tap",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A friendly broad chocolate bear with a warm deep rounded resonant voice. a short powerful but gentle effort grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_cocoa_tap.mp3",
+    "bytes": 8820,
+    "sha256": "6e2e0c87decfc97fa7ef8b6160d283e4e434602a236185674fa9423d12ecfe59"
+  },
+  {
+    "key": "vo_cocoa_poke",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A friendly broad chocolate bear with a warm deep rounded resonant voice. a warm belly chuckle ending with a tiny comic sneeze Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_cocoa_poke.mp3",
+    "bytes": 8820,
+    "sha256": "1c25c0b11ab1aeced4417096ab1b08b09e9d17cab6b9e574cf6a30a6c7831a89"
+  },
+  {
+    "key": "vo_taro_greet",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A hyperactive lightning candy hero with a fast bright energetic voice and tiny soft static crackles. an excited wordless squeal with tiny electrical fizz Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_taro_greet.mp3",
+    "bytes": 8820,
+    "sha256": "92d724bc38006b35f60c8a3e0ba5a437530014bc354a0c0ce028627037c3b440"
+  },
+  {
+    "key": "vo_taro_tap",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A hyperactive lightning candy hero with a fast bright energetic voice and tiny soft static crackles. one tiny chirp and soft static tick Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_taro_tap.mp3",
+    "bytes": 8820,
+    "sha256": "57d33f6be445a34ab151aba728be5279ab452a18b98d548c51c61260071b1ce9"
+  },
+  {
+    "key": "vo_taro_poke",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A hyperactive lightning candy hero with a fast bright energetic voice and tiny soft static crackles. a rapid playful nonsensical babble with tiny electrical pops Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_taro_poke.mp3",
+    "bytes": 8820,
+    "sha256": "45e2115866cca940d2bf2ea7f9554addec1667e519003e1886da15de588851c9"
+  },
+  {
+    "key": "vo_yuzu_greet",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A warm playful citrus pack leader with a soft cheerful youthful voice and one tiny fruit companion with a higher squeak. a warm wordless call answered by a tiny companion squeak Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_yuzu_greet.mp3",
+    "bytes": 8820,
+    "sha256": "44feb8bd93a9e986894e5b32e0db7a8ba816be6d4d79759b5b04ba8636a9990d"
+  },
+  {
+    "key": "vo_yuzu_tap",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A warm playful citrus pack leader with a soft cheerful youthful voice and one tiny fruit companion with a higher squeak. one short warm playful hum Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_yuzu_tap.mp3",
+    "bytes": 8820,
+    "sha256": "b838043b7c6b3e47e2d81093e83aac61f6ffc01112f05586ceaf8f9bc2d67c01"
+  },
+  {
+    "key": "vo_yuzu_poke",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "A warm playful citrus pack leader with a soft cheerful youthful voice and one tiny fruit companion with a higher squeak. a little laugh answered by a tiny fruit creature chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_yuzu_poke.mp3",
+    "bytes": 8820,
+    "sha256": "4956f36ac6979d369638a1b688e8829bdef3ef18a8dd6cd178f63e096d372fb4"
+  },
+  {
+    "key": "vo_boss_c1_blip_1",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original a grumbly kitchen ant nest monster, dry crackly medium low register, one tiny questioning murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c1_blip_1.mp3",
+    "bytes": 8820,
+    "sha256": "ca4452b36fb4b6dfc873a6fb889f74598ec65cd3e1a63bb26800aa6aca8077aa"
+  },
+  {
+    "key": "vo_boss_c1_blip_2",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original a grumbly kitchen ant nest monster, dry crackly medium low register, one tiny descending grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c1_blip_2.mp3",
+    "bytes": 8820,
+    "sha256": "c26dc7f8287071b1c6b3967b96d09dec7c14f429066f3d53a4b3536629a3a51e"
+  },
+  {
+    "key": "vo_boss_c1_blip_3",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original a grumbly kitchen ant nest monster, dry crackly medium low register, one tiny emphatic rounded grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c1_blip_3.mp3",
+    "bytes": 8820,
+    "sha256": "9a412d95613caed5eebc709ae45fb0ddd34c3f910580424aa1408774fa90188b"
+  },
+  {
+    "key": "vo_boss_c2_blip_1",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original a damp mushroom bee forest monster, soft buzzy low register, one tiny questioning murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c2_blip_1.mp3",
+    "bytes": 8820,
+    "sha256": "2e25dd0c8bbbac9f6ed4c53341aa6addacc10357ab5f08019506f991198119d1"
+  },
+  {
+    "key": "vo_boss_c2_blip_2",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original a damp mushroom bee forest monster, soft buzzy low register, one tiny descending grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c2_blip_2.mp3",
+    "bytes": 8820,
+    "sha256": "7c5262e860895fff62c1fd999d5ffe055609c84d5460c6747b2a44b4a39c47d3"
+  },
+  {
+    "key": "vo_boss_c2_blip_3",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original a damp mushroom bee forest monster, soft buzzy low register, one tiny emphatic rounded grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c2_blip_3.mp3",
+    "bytes": 8820,
+    "sha256": "7c6e7ad0837220bef460ea465df324856ccc2cfca809cebc9a52d264586a62cc"
+  },
+  {
+    "key": "vo_boss_c3_blip_1",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original an ancient enchanted crown monster, resonant mysterious rounded register, whimsical not frightening, one tiny questioning murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c3_blip_1.mp3",
+    "bytes": 8820,
+    "sha256": "47dfbbd03231a055181de985a084a1acf335f04af7f44b35221a9d92b2cf5b07"
+  },
+  {
+    "key": "vo_boss_c3_blip_2",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original an ancient enchanted crown monster, resonant mysterious rounded register, whimsical not frightening, one tiny descending grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c3_blip_2.mp3",
+    "bytes": 8820,
+    "sha256": "2acd56e5a69ee2dd9f622fedd93f6adcd3e564d4b3cc22d1c2f9ecf9d86fe3ea"
+  },
+  {
+    "key": "vo_boss_c3_blip_3",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original an ancient enchanted crown monster, resonant mysterious rounded register, whimsical not frightening, one tiny emphatic rounded grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.5,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "5"
+    },
+    "file": "originals/vo_boss_c3_blip_3.mp3",
+    "bytes": 8820,
+    "sha256": "df2fcb3d389f30f952392a9d26cf04ffa69602c8aed69f01aeec6ee193cfd910"
+  },
+  {
+    "key": "vo_boss_defeat",
+    "provider": "ElevenLabs",
+    "endpoint": "sound-generation",
+    "parameters": {
+      "text": "One original chunky candy monster makes a comic deflated wordless surrender groan, funny and soft, no pain. Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+      "duration_seconds": 0.7,
+      "loop": false,
+      "prompt_influence": 0.5,
+      "model_id": "eleven_text_to_sound_v2"
+    },
+    "response": {
+      "character-cost": "7"
+    },
+    "file": "originals/vo_boss_defeat.mp3",
+    "bytes": 12163,
+    "sha256": "9425421d87d8bebfcfe10f6db73c8e3ad8db5668912c299445605b171ee28373"
+  }
+]

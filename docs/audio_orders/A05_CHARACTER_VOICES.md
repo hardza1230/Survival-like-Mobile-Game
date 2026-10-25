@@ -50,3 +50,9 @@
 
 ## ส่งมอบ
 (ฝั่งเสียงกรอกตอนส่ง)
+
+## Delivery v8.0.39 — 2026-10-25
+
+Delivered 33 original ElevenLabs Sound Effects files (actual expanded table count), technical QA and runtime integration. Kit: `assets/incoming/audio_voices/`; runtime: `assets/audio/voices/`. Untouched donors, actual prompts/request metadata, MANIFEST and QA_REPORT retained. Owner phone listening/artistic review pending.
+
+Actual table: Ruby8 + heroes15 + bosses10 =33 files; prior summary counts were inconsistent. These are original wordless SFX, no cloned actor voices. Voice identity consistency needs owner listening.

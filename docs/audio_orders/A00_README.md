@@ -18,3 +18,7 @@
 - ส่งที่ `assets/incoming/audio_<ชุด>/` ตามที่แต่ละใบระบุ พร้อม `MANIFEST.json` (ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `durationMs`, `loop`, `peakDbtp`, `lufs` ถ้าเป็นเพลง, `bpm` ถ้าเป็นเพลง), `PROMPTS.json` (prompt/พารามิเตอร์จริง), `QA_REPORT.json` (decode ได้, ไม่เงียบ, peak, ความยาว)
 - ฝั่งโค้ดผูกด้วย `ASSET_AUDIO` (path แบบ literal เท่านั้น — build-www คัดลอกเฉพาะ path ที่เขียนตรง ๆ) + `Sfx` เดิม (mute, สไลเดอร์ SFX/เพลง, จำกัดเสียงซ้อน) · ห้ามสร้าง AudioContext/HTML Audio ใหม่ · ไฟล์ไหนยังไม่มา = เสียงเดิมเล่นต่อ
 - เจ้าของฟังบนมือถือเองตอนสุดท้าย — การตรวจเทคนิคไม่ได้รับรองว่าเพราะ
+
+## Delivery v8.0.39
+
+139 original ElevenLabs SFX delivered: A01 39 / A02 32 / A03 20 / A04 non-music15 / A05 33. Actual expanded row counts override the approximate totals above. All direct ElevenLabs Sound Effects, mechanical postprocessing only. Six A04 music tracks pending Music Generation access. Source and final manifests in each incoming kit; phone listening remains owner review.

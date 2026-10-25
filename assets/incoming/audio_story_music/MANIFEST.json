@@ -1,0 +1,137 @@
+[
+  {
+    "key": "sfx_pow_crack",
+    "file": "sfx_pow_crack.mp3",
+    "bytes": 7566,
+    "sha256": "6e2bae2e88d4adbcd0a7f9ab90a70b8d1f2c3f6ada991229a4c91bf36d4f1d02",
+    "durationMs": 400.0,
+    "loop": false,
+    "peakDbtp": -3.3
+  },
+  {
+    "key": "sfx_pow_thud",
+    "file": "sfx_pow_thud.mp3",
+    "bytes": 6730,
+    "sha256": "87c27ae53fa8a5854123d8389508854b92fefd391c4f7a93d3cca51d6f704ce4",
+    "durationMs": 350.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_pow_pop",
+    "file": "sfx_pow_pop.mp3",
+    "bytes": 5894,
+    "sha256": "98cc2119c19bcadb8877f3613e309b6f853de4dd10ad727b85f11c142ce8a97e",
+    "durationMs": 300.0,
+    "loop": false,
+    "peakDbtp": -3.3
+  },
+  {
+    "key": "sfx_pow_shatter",
+    "file": "sfx_pow_shatter.mp3",
+    "bytes": 10492,
+    "sha256": "09ad6f0819913e9c7d95b52d0295ea613ee3223547858933228d9bfdefef4227",
+    "durationMs": 600.0,
+    "loop": false,
+    "peakDbtp": -3.7
+  },
+  {
+    "key": "sfx_pow_krak",
+    "file": "sfx_pow_krak.mp3",
+    "bytes": 12163,
+    "sha256": "8bb0d1670058f3f5eddfdf3145bccfb52b9e87741d3f472b91934e930ee2ddd2",
+    "durationMs": 700.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_type_tick",
+    "file": "sfx_type_tick.mp3",
+    "bytes": 1714,
+    "sha256": "3eabcffbd56aa484ac5818fd4bf0322bb53278b2b2de882c57b9ea3ab5aae1d9",
+    "durationMs": 35.011,
+    "loop": false,
+    "peakDbtp": -2.9
+  },
+  {
+    "key": "sfx_story_title",
+    "file": "sfx_story_title.mp3",
+    "bytes": 33061,
+    "sha256": "2befaed25a3a134f5219467def5fdecca72cad70616dcb1dec5c9173d10654cc",
+    "durationMs": 2000.0,
+    "loop": false,
+    "peakDbtp": -3.2
+  },
+  {
+    "key": "sfx_book_open",
+    "file": "sfx_book_open.mp3",
+    "bytes": 29718,
+    "sha256": "4bcfec6923903b9e716edb87b7e35d20a7f14f505633e7b41242713226a9f413",
+    "durationMs": 1800.0,
+    "loop": false,
+    "peakDbtp": -2.9
+  },
+  {
+    "key": "sfx_stage_victory",
+    "file": "sfx_stage_victory.mp3",
+    "bytes": 41003,
+    "sha256": "4943286bf309bbfbe27f2d95a73d96f202f60a0d5bc816a173d5e57bd5a71d16",
+    "durationMs": 2500.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_stage_defeat",
+    "file": "sfx_stage_defeat.mp3",
+    "bytes": 33061,
+    "sha256": "2b0bad9aa00f0c1a3588c4c45c9c29e78060074899557de6b1367db1919f43bd",
+    "durationMs": 2000.0,
+    "loop": false,
+    "peakDbtp": -3.4
+  },
+  {
+    "key": "sfx_chapter_clear",
+    "file": "sfx_chapter_clear.mp3",
+    "bytes": 56885,
+    "sha256": "07ebcb39662997d07622151c09756fa56fada932f21e97b668c26b270eac72dd",
+    "durationMs": 3500.0,
+    "loop": false,
+    "peakDbtp": -3.2
+  },
+  {
+    "key": "sfx_box_reveal_common",
+    "file": "sfx_box_reveal_common.mp3",
+    "bytes": 5894,
+    "sha256": "31a3bbe5094718f99acc777d3bb2b647c75d1f8418e0a9200a521e6587d4ce1b",
+    "durationMs": 300.0,
+    "loop": false,
+    "peakDbtp": -3.3
+  },
+  {
+    "key": "sfx_box_reveal_rare",
+    "file": "sfx_box_reveal_rare.mp3",
+    "bytes": 8402,
+    "sha256": "c0d1dcec8f2db8756974812bf21c3c883a802ea2d7b90c88e250dba18ef49b2b",
+    "durationMs": 450.0,
+    "loop": false,
+    "peakDbtp": -3.5
+  },
+  {
+    "key": "sfx_box_reveal_epic",
+    "file": "sfx_box_reveal_epic.mp3",
+    "bytes": 11327,
+    "sha256": "fb804d0ab380173c91a4bbc232be9860db822b995eb3241f668fa2f82781092b",
+    "durationMs": 650.0,
+    "loop": false,
+    "peakDbtp": -2.9
+  },
+  {
+    "key": "sfx_box_reveal_legend",
+    "file": "sfx_box_reveal_legend.mp3",
+    "bytes": 15507,
+    "sha256": "a8ed156c6af4d362cf6606826400742cd16d36f8c2324cef6bfa18ee08ec7cb8",
+    "durationMs": 900.0,
+    "loop": false,
+    "peakDbtp": -2.7
+  }
+]

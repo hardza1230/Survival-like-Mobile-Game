@@ -32,3 +32,7 @@
 Runtime: yuzuSound(name,gap,volume) → Sfx.bp('yz_'+name) → sfx_yz_*; ใช้ mute/master SFX/การจำกัดเสียงเดิม ไม่สร้าง AudioContext ใหม่ เสียงยิง/กัดจำกัดเป็นกลุ่ม ไม่เล่นทุกดอกใน Volley ไฟล์ที่ยังไม่มาจะไม่ลงทะเบียน path ปลอม และเสียงเดิมสำรองยังอยู่
 
 หลังได้ไฟล์จริง ส่ง MANIFEST.json (key,file,bytes,sha256,durationMs,loop,peakDbtp), PROMPTS.json (prompt/พารามิเตอร์/รหัสงานจริง), QA_REPORT.json (decode,ไม่เงียบ,peak,duration) · เจ้าของฟังบนมือถือขั้นสุดท้าย
+
+## Delivery v8.0.39 — 2026-10-25
+
+Delivered 20 original ElevenLabs Sound Effects files (actual expanded table count), technical QA and runtime integration. Kit: `assets/incoming/audio_yuzu/`; runtime: `assets/audio/yuzu/`. Untouched donors, actual prompts/request metadata, MANIFEST and QA_REPORT retained. Owner phone listening/artistic review pending.

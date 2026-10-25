@@ -1,0 +1,332 @@
+[
+  {
+    "key": "vo_ruby_blip_1",
+    "file": "vo_ruby_blip_1.mp3",
+    "durationMs": 75,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny rising ee-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_blip_2",
+    "file": "vo_ruby_blip_2.mp3",
+    "durationMs": 75,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny round pu-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_blip_3",
+    "file": "vo_ruby_blip_3.mp3",
+    "durationMs": 75,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny soft ru-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_blip_4",
+    "file": "vo_ruby_blip_4.mp3",
+    "durationMs": 75,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny bright bi-like chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_happy",
+    "file": "vo_ruby_happy.mp3",
+    "durationMs": 400,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a tiny delighted giggle Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_alert",
+    "file": "vo_ruby_alert.mp3",
+    "durationMs": 350,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. one surprised questioning squeak Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_sad",
+    "file": "vo_ruby_sad.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a soft tender sigh Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_ruby_cheer",
+    "file": "vo_ruby_cheer.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A single original tiny female jam spirit, light bright rounded high register, warm and playful, soft toy-like timbre. a joyful wordless rising cheer Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_momo_greet",
+    "file": "vo_momo_greet.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A brave cheerful slightly clumsy young strawberry heroine with a bright warm voice. a joyful wordless greeting chirp Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_momo_tap",
+    "file": "vo_momo_tap.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A brave cheerful slightly clumsy young strawberry heroine with a bright warm voice. a little determined effort squeak Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_momo_poke",
+    "file": "vo_momo_poke.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A brave cheerful slightly clumsy young strawberry heroine with a bright warm voice. a surprised playful mildly pouty grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_mint_greet",
+    "file": "vo_mint_greet.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A reserved kind ice mage with a soft low cool feminine voice. a quiet polite questioning hum Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_mint_tap",
+    "file": "vo_mint_tap.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A reserved kind ice mage with a soft low cool feminine voice. one small composed sigh Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_mint_poke",
+    "file": "vo_mint_poke.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A reserved kind ice mage with a soft low cool feminine voice. a restrained gently annoyed wordless murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_cocoa_greet",
+    "file": "vo_cocoa_greet.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A friendly broad chocolate bear with a warm deep rounded resonant voice. a jovial deep welcoming hoot Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_cocoa_tap",
+    "file": "vo_cocoa_tap.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A friendly broad chocolate bear with a warm deep rounded resonant voice. a short powerful but gentle effort grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_cocoa_poke",
+    "file": "vo_cocoa_poke.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A friendly broad chocolate bear with a warm deep rounded resonant voice. a warm belly chuckle ending with a tiny comic sneeze Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_taro_greet",
+    "file": "vo_taro_greet.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A hyperactive lightning candy hero with a fast bright energetic voice and tiny soft static crackles. an excited wordless squeal with tiny electrical fizz Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_taro_tap",
+    "file": "vo_taro_tap.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A hyperactive lightning candy hero with a fast bright energetic voice and tiny soft static crackles. one tiny chirp and soft static tick Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_taro_poke",
+    "file": "vo_taro_poke.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A hyperactive lightning candy hero with a fast bright energetic voice and tiny soft static crackles. a rapid playful nonsensical babble with tiny electrical pops Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_yuzu_greet",
+    "file": "vo_yuzu_greet.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A warm playful citrus pack leader with a soft cheerful youthful voice and one tiny fruit companion with a higher squeak. a warm wordless call answered by a tiny companion squeak Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_yuzu_tap",
+    "file": "vo_yuzu_tap.mp3",
+    "durationMs": 250,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A warm playful citrus pack leader with a soft cheerful youthful voice and one tiny fruit companion with a higher squeak. one short warm playful hum Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_yuzu_poke",
+    "file": "vo_yuzu_poke.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A warm playful citrus pack leader with a soft cheerful youthful voice and one tiny fruit companion with a higher squeak. a little laugh answered by a tiny fruit creature chirrup Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c1_blip_1",
+    "file": "vo_boss_c1_blip_1.mp3",
+    "durationMs": 110,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original a grumbly kitchen ant nest monster, dry crackly medium low register, one tiny questioning murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c1_blip_2",
+    "file": "vo_boss_c1_blip_2.mp3",
+    "durationMs": 110,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original a grumbly kitchen ant nest monster, dry crackly medium low register, one tiny descending grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c1_blip_3",
+    "file": "vo_boss_c1_blip_3.mp3",
+    "durationMs": 110,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original a grumbly kitchen ant nest monster, dry crackly medium low register, one tiny emphatic rounded grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c2_blip_1",
+    "file": "vo_boss_c2_blip_1.mp3",
+    "durationMs": 110,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original a damp mushroom bee forest monster, soft buzzy low register, one tiny questioning murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c2_blip_2",
+    "file": "vo_boss_c2_blip_2.mp3",
+    "durationMs": 110,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original a damp mushroom bee forest monster, soft buzzy low register, one tiny descending grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c2_blip_3",
+    "file": "vo_boss_c2_blip_3.mp3",
+    "durationMs": 110,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original a damp mushroom bee forest monster, soft buzzy low register, one tiny emphatic rounded grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c3_blip_1",
+    "file": "vo_boss_c3_blip_1.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original an ancient enchanted crown monster, resonant mysterious rounded register, whimsical not frightening, one tiny questioning murmur Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c3_blip_2",
+    "file": "vo_boss_c3_blip_2.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original an ancient enchanted crown monster, resonant mysterious rounded register, whimsical not frightening, one tiny descending grumble Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_c3_blip_3",
+    "file": "vo_boss_c3_blip_3.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original an ancient enchanted crown monster, resonant mysterious rounded register, whimsical not frightening, one tiny emphatic rounded grunt Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  },
+  {
+    "key": "vo_boss_defeat",
+    "file": "vo_boss_defeat.mp3",
+    "durationMs": 700,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One original chunky candy monster makes a comic deflated wordless surrender groan, funny and soft, no pain. Isolated original cartoon creature vocal sound effect, one compact gesture, dry close recording, gentle tail, no understandable words in any language, no music, no imitation of any actor or existing character, no screaming or pain.",
+    "generationDurationSeconds": 0.7,
+    "postprocess": "Mechanical onset trim and tail fade only; mono 44.1kHz MP3 128kbps, decoded true peak <= -1dBTP; retain original donor. Loop seam crossfade for loop beds."
+  }
+]
