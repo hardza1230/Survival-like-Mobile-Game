@@ -1,6 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.44, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.45, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.44 — Stage Clear celebration + post C1-2 tutorial recovery
+
+Stage Clear: responsive portrait/landscape, existing hero cheer, two new built-in ImageGen assets (quiet plum strawberry clearing + pale-gold reward frame), frame15-slice preserving corners/centre crest, Sugar/best gear/material highlights, permanent EXP/Power growth, optional paged Run/Loot/Stars and Bestiary link. Primary honest Lobby/Delve/final-summary action; secondary ad with stale-owner guard. Sub-second-ish reward reveals/short EXP, tap-empty reveals immediately, reduced-motion stills/cleanup. Collected boxes granted once by unchanged openRunBoxes, displayed in results rather than separate opening screen. First-time story/important chapter endings kept; ordinary seen recap skips on replay, marker saved only on arrival at results. Quit keeps distinct presentation, corrected growth snapshots and no stale stars/mastery. No battle/reward balance changes.
+
+Post C1-2 tutorial loop: old regex missed captured-route Power Forge entry and selected starter/locked/no-FP gear bounced between Equipment and Upgrade. Tag routing, eligible focus, direct Forge resume, nonblocking wait when no eligible item; one-time gift preserved. Forge internal rebuild reapplies mod spotlight; failed payment cannot complete lesson. Existing iLv/rarity caps retained. Tests cover route/focus/no-gear/no-FP recovery, paged details/all loot, late callbacks/ads/reduced motion, source hashes. scripts/build-results-review.mjs and check-results-live-ui.cjs render production UI only, no combat. Assets/provenance: assets/art/stage_clear and assets/incoming/stage_clear44/PROMPTS.json; mechanical pack-stage-clear.py. Owner phone visual/gameplay review pending.
 
 # Latest delivery: v8.0.43 — Sniper charge +20%
 

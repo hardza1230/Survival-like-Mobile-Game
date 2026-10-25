@@ -17,6 +17,6 @@ g.stageIndex=0;assert.equal(g.bestiaryKey({shooter:true,texture:{key:'x'}}),'sho
 g._bestW=new Set(['basic']);assert.equal(g.bestWeakMul({texture:{key:'e_basic'}}),X.BEST_WEAK_MUL);assert.equal(g.bestWeakMul({fast:1,texture:{key:'e_fast'}}),1);
 assert(method('condDmgMul').includes('this.bestWeakMul'),'weakness applied in damage');
 assert(method('startStage').includes('this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER)'),'weak spots refreshed each stage');
-assert(src.includes("[['📖 New! Monsters found'")&&src.includes("fn:()=>this.continueFromSummary(this._newSpecies[0])"),'summary link to the new monster');
+assert(src.includes("label:'New monsters discovered'")&&src.includes("()=>this.continueFromSummary(this._newSpecies[0])"),'summary link to the new monster');
 assert(method('continueFromSummary').includes("this.menuScreen='bestiary'"));
 console.log('Bestiary: 3 tiers (bosses 1/5/25), C1-2..C2-5 field species, notes, real +5% weak spot, summary New! link passed');

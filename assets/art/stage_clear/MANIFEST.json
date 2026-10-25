@@ -1,0 +1,31 @@
+[
+  {
+    "key": "sc44_background",
+    "source": "assets/incoming/stage_clear44/background_source.png",
+    "source_sha256": "474107a1887ee20136e0d6a47a2144c5d530e50b72d4250c4a0f3a1412efe833",
+    "source_crop": null,
+    "path": "assets/art/stage_clear/sc44_background.webp",
+    "width": 1024,
+    "height": 1536,
+    "sha256": "8d57ce0667fe5340040f6751914505a65ebc2c1ffd812e98d805b3081164a160",
+    "bytes": 210902,
+    "alpha": false
+  },
+  {
+    "key": "sc44_frame",
+    "source": "assets/incoming/stage_clear44/frame_source.png",
+    "source_sha256": "b59e6f74afb2ae0ad2c3870121d3b5d6ab13071833877179712ae45dcd96e727",
+    "source_crop": [
+      50,
+      57,
+      1725,
+      789
+    ],
+    "path": "assets/art/stage_clear/sc44_frame.webp",
+    "width": 1008,
+    "height": 441,
+    "sha256": "72662d78badced4d65ed0dffdfca7360f4c432bd60eacc43ae5c61baf69861dd",
+    "bytes": 285040,
+    "alpha": true
+  }
+]

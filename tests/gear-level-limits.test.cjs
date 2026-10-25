@@ -74,3 +74,15 @@ scene.craftLineIndex=2;scene.tapZones=[];scene.applyGearTut();assert.equal(scene
 scene.tapZones=[{x:0,y:0,w:120,h:44,tag:'pick_f_might',fn:()=>{scene.forgePick='f_might';}}];scene.applyGearTut();assert.equal(save.data.gearTut,3,'picking a mod does not finish the step');scene.tapZones[0].fn();
 item.affixes=item.affixes.filter(x=>x.line!==0);scene.tapZones=[{x:0,y:0,w:120,h:44,fn:()=>scene.forgeAct('add')}];scene.applyGearTut();scene.tapZones[0].fn();assert.equal(save.data.gearTut,4);assert.equal(limits.forgeLines(item)[0].id,'f_might');assert.equal(save.data.currency.transmute,2);
 console.log('Gear level limits: unlock boundaries, effective legacy stats, direct enhance/craft guards, Forge Points guards and stale callbacks passed');
+// Regression: the real Power Forge shortcut uses a captured route variable, not literal callback text.
+{const keep=save.data.gearItems,starter={uid:'starter',baseId:'starter',grade:'start',slot:'weapon'};ctx.GEAR_ALL.push({id:'starter',tier:'start',slot:'weapon'});
+ const good={uid:'good',baseId:'test',grade:'rare',slot:'armor',itemLevel:5,affixes:[]},locked={...good,uid:'locked',locked:true};
+ Object.assign(save.data,{gearTut:2,stageMastery:{0:true,1:true},gearItems:[starter,locked,good],_craftTutGift:false});
+ scene.gearSelectedUid='starter';scene.craftSelectedUid='starter';scene.menuScreen='gLoadout';let equipment=0,forge=0;const navigate=target=>{scene.menuScreen=target;if(target==='craft')forge++;else equipment++;};const target='craft';
+ scene.tapZones=[{tag:'gear',fn:()=>navigate('gear')},{tag:'craft',fn:()=>navigate(target)}];scene.applyGearTut();assert.equal(scene.gearSelectedUid,'good');assert.equal(scene.tapZones[0].tag,'craft');scene.tapZones[0].fn();assert.equal(forge,1);assert.equal(equipment,0);assert.equal(save.data.gearTut,3);
+ // No usable item: keep normal controls instead of trapping the owner in Upgrade/Equipment.
+ save.data.gearTut=2;save.data.gearItems=[starter,locked,{...good,uid:'spent',fp:0}];scene.menuScreen='gear';scene.tapZones=[{tag:'gLoadout',fn:()=>navigate('gLoadout')},{tag:'back',back:true,fn(){}}];const zones=scene.tapZones;scene.applyGearTut();assert.equal(scene.tapZones,zones);assert(scene._gearTutWaiting);assert.equal(save.data.gearTut,2);
+ // An already-open Forge resumes at the actual mod lesson; starter focus is repaired once.
+ save.data.gearItems=[good];scene.gearSelectedUid=scene.craftSelectedUid='good';scene.menuScreen='craft';scene._craftContext=()=>({item:good});scene.craftLineIndex=0;scene.forgePick=null;scene.tapZones=[{tag:'pick_f_might',x:0,y:0,w:100,h:44,fn(){}}];scene.applyGearTut();assert.equal(save.data.gearTut,3);assert.equal(scene.tapZones[0].tag,'pick_f_might');save.data.gearItems=keep;
+}
+console.log('Post C1-2 Forge tutorial: tagged shortcut beats Equipment, starter/locked focus recovery, no-gear/no-FP escape and direct Forge resume passed');
