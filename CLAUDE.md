@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.37, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.38, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.36 — remove wave Bonus Challenges
+# Latest delivery: v8.0.37 — Taro Arc nerf (owner: too strong + too fast)
+
+taroCombatProfile base storm {dmg .75→.6, cd 1→1.25}: Arc primaryDamage −20%, cast interval ×1.25 (rate −20%). Jump growth (≤×1.6), roots/victims, loop-back 60%, boss focus, Double Arc, shrapnel unchanged. Spark/Sentry untouched. tests/taro-foundation expects .6. Owner phone check pending.
+
+# Previous delivery: v8.0.36 — remove wave Bonus Challenges
 
 Owner explicitly requested removing hidden Bonus Challenges entirely. Removed speed/hit/kill challenge state, timers, hurt/kill hooks, random Relic/currency payouts, failure Elite ambushes and bonus HUD/layout. Main objective rewards/EXP/heal, Hunt targets and optional Supply Cache / Sugar Courier events retained. story-missions regression now rejects challenge payouts/ambushes and checks removed hooks; hunt recovery stub cleaned. Phone gameplay remains owner review.
 

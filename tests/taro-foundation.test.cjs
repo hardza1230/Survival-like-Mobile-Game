@@ -27,7 +27,7 @@ const origin={x:0,y:0};
  const p={dmgMul:2,cdMul:.9,weaponChains:1,gearCount:1,gearArea:.2,_pt:{fx:[[{dmg:1.05,cd:.96,range:.08},2]]}},b={path:'storm',ranks:{power:2,arc:2,surge:1,rate:1},lv:{p_squall:1,p_static:2},mutation:'stormcaller',evolved:true};
  const saved=JSON.stringify({p,b});const f=a.taroCombatProfile(b,p,4,paths,{skillPower:.8,weaponDamage:1.1,infusionDirect:.9});
  const d=(14+4*4.2)*2*.8*1.1*1.24*.9*1.2*1.2*Math.pow(1.08,2)*Math.pow(1.05,2);
- assert(Math.abs(f.unitD-d)<1e-9);assert.equal(f.primaryDamage,f.unitD*.75);assert.equal(f.roots,3);assert(f.rootBonus<=1.25);assert(f.victims<=10);assert(f.rootRange<=900);assert(f.jumpRange<=360);
+ assert(Math.abs(f.unitD-d)<1e-9);assert.equal(f.primaryDamage,f.unitD*.6);assert.equal(f.roots,3);assert(f.rootBonus<=1.25);assert(f.victims<=10);assert(f.rootRange<=900);assert(f.jumpRange<=360);
  assert.equal(JSON.stringify({p,b}),saved,'profile reads do not mutate save/rank inputs');assert.equal(JSON.stringify(a.taroCombatProfile(b,p,4,paths)),JSON.stringify(a.taroCombatProfile(b,p,4,paths)));
  const temp={path:'tempest',ranks:{arc:99,surge:99},lv:{p_gale:3},mutation:'chainlord',evolved:true};const t=a.taroCombatProfile(temp,{dmgMul:1},1,paths);
  assert.equal(t.roots,1);assert.equal(t.novaRadius,280);assert.equal(t.extraStrikeBonus,1.4);assert(Math.abs(t.interval-2.12*.85)<1e-9,'Gale changes Dash, not basic rate');assert(Math.abs(t.dashCooldownMul-Math.pow(.94,3))<1e-9);

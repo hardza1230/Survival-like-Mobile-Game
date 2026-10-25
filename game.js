@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.36';
+const GAME_VERSION = '8.0.37';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.37',date:'2026-10-25',title:'Calmer Taro Arc',items:['Taro Arc Build hits for 20% less damage','Arc fires 25% slower (longer time between casts)','Spark and Sentry Builds unchanged']},
   {v:'8.0.36',date:'2026-10-25',title:'No hidden bonus challenges',items:['Removed wave Bonus Challenges and their hidden speed, hit and kill conditions','Removed bonus-failure Elite ambushes and challenge-only rewards','Main missions, their rewards and optional Supply Cache / Sugar Courier events remain']},
   {v:'8.0.35',date:'2026-10-25',title:'Clearer combat',items:['Coral hostile bolts stand apart from EXP crystals','Clear-center attack warnings with a precise countdown rim','A subtle player outline and foot marker, plus Elite and windup cues','Large spell effects are lighter; common drops and damage numbers are quieter','New ImageGen combat art; damage, attack timing and rewards stay the same']},
   {v:'8.0.34',date:'2026-10-25',title:'Painted rewards and collections',items:['New rarity frames and Merge / Forge effects','Daily Login and Quests now use illustrated rewards and calendar art','Painted Awards medals, stars and secret rewards','New Bestiary cards and Recipe Book pages','New Temple lantern, Mochi Miners and Rank Reward icons']},
@@ -7623,7 +7624,7 @@ function taroCombatProfile(b,p,level,paths,options={}){
   const rawRoots=(aw?3:level>=4?2:1)+Math.max(0,r.surge||0)+(stormcaller?2:0)+(evo?2:0)+Math.max(0,inv.count)+(b.path==='storm'?1:0);
   const unitD=(14+level*4.2)*(p.dmgMul||1)*(options.skillPower??1)*(options.weaponDamage??1)*(1+Math.max(0,r.power||0)*.12)*(options.infusionDirect??1)*(stormcaller?1.2:1)*(evo?1.2:1)*inv.dmg;
   const unitC=Math.max(1.4,2.2-(aw?6:level)*.08)*(aw?.85:1)*Math.pow(.92,Math.max(0,r.rate||0))*Math.pow(.97,Math.max(0,r.tempo||0))*(p.cdMul||1)*(options.weaponCooldown??1)*(options.forgeCadence??1)*inv.cd;
-  const base={storm:{dmg:.75,cd:1},smite:{dmg:1.8,cd:1.35},tempest:{dmg:.65,cd:.85}}[b.path];
+  const base={storm:{dmg:.6,cd:1.25},smite:{dmg:1.8,cd:1.35},tempest:{dmg:.65,cd:.85}}[b.path];   // v8.0.37 เจ้าของ: Arc แรง+รัวเกิน → dmg .75→.6, cd 1→1.25
   if(!base)return null;
   const victims=Math.min(10,4+arc),chainExcess=Math.min(.15,Math.max(0,4+arc-10)*.03),rootExcess=Math.min(.25,Math.max(0,rawRoots-3)*.05);
   return {path:b.path,unitD,unitC,primaryDamage:unitD*base.dmg,interval:Math.max(.35,unitC*base.cd),rawRoots,arc,
