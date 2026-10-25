@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.36, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.37, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.36 — remove wave Bonus Challenges
+
+Owner explicitly requested removing hidden Bonus Challenges entirely. Removed speed/hit/kill challenge state, timers, hurt/kill hooks, random Relic/currency payouts, failure Elite ambushes and bonus HUD/layout. Main objective rewards/EXP/heal, Hunt targets and optional Supply Cache / Sugar Courier events retained. story-missions regression now rejects challenge payouts/ambushes and checks removed hooks; hunt recovery stub cleaned. Phone gameplay remains owner review.
 
 # Latest delivery: v8.0.35 — combat readability polish
 
