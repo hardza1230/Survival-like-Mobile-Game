@@ -1,0 +1,291 @@
+{
+  "order": 52,
+  "all_pass": true,
+  "scope": "Source art only; no runtime/phone gameplay claim.",
+  "assets": [
+    {
+      "key": "aw_medal",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99201,
+        0.99202,
+        0.99188,
+        0.99111,
+        0.992,
+        0.99165,
+        0.98942,
+        0.99013
+      ],
+      "frame_bounds": [
+        [
+          5,
+          4,
+          123,
+          123
+        ],
+        [
+          5,
+          4,
+          123,
+          123
+        ],
+        [
+          6,
+          4,
+          122,
+          124
+        ],
+        [
+          7,
+          4,
+          121,
+          124
+        ],
+        [
+          5,
+          4,
+          123,
+          119
+        ],
+        [
+          5,
+          4,
+          123,
+          119
+        ],
+        [
+          5,
+          5,
+          123,
+          120
+        ],
+        [
+          5,
+          5,
+          123,
+          120
+        ]
+      ],
+      "unique_frames": 8
+    },
+    {
+      "key": "aw_star",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.02799,
+        0.99214,
+        0.99216
+      ],
+      "frame_bounds": [
+        [
+          4,
+          6,
+          60,
+          58
+        ],
+        [
+          4,
+          6,
+          60,
+          58
+        ],
+        [
+          4,
+          6,
+          60,
+          58
+        ]
+      ],
+      "unique_frames": 3
+    },
+    {
+      "key": "aw_secret",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.98992
+      ],
+      "frame_bounds": [
+        [
+          4,
+          4,
+          124,
+          124
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "aw_secret_open",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.728,
+        0.91537,
+        0.96615,
+        0.92551,
+        0.87821,
+        0.4307
+      ],
+      "frame_bounds": [
+        [
+          11,
+          33,
+          176,
+          177
+        ],
+        [
+          6,
+          15,
+          185,
+          179
+        ],
+        [
+          6,
+          7,
+          187,
+          184
+        ],
+        [
+          6,
+          8,
+          186,
+          174
+        ],
+        [
+          14,
+          10,
+          180,
+          168
+        ],
+        [
+          29,
+          18,
+          170,
+          162
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "aw_title_ribbon",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99148
+      ],
+      "frame_bounds": [
+        [
+          2,
+          2,
+          318,
+          62
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "aw_claim_all",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99174
+      ],
+      "frame_bounds": [
+        [
+          4,
+          7,
+          124,
+          121
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "vfx_aw_claim",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.33622,
+        0.87319,
+        0.74168,
+        0.87511,
+        0.68584,
+        0.54709
+      ],
+      "frame_bounds": [
+        [
+          19,
+          92,
+          174,
+          178
+        ],
+        [
+          14,
+          44,
+          178,
+          182
+        ],
+        [
+          14,
+          11,
+          176,
+          182
+        ],
+        [
+          13,
+          9,
+          176,
+          165
+        ],
+        [
+          21,
+          7,
+          171,
+          180
+        ],
+        [
+          27,
+          7,
+          158,
+          185
+        ]
+      ],
+      "unique_frames": 6
+    }
+  ],
+  "preview_bytes": 124348,
+  "decoded_preview_bytes": 638976,
+  "visual_review": "Passed all-state and actual 16/22/34px readability review. Four category symbols and grayscale pairs retain identities. Hollow first star verified. Blank title ribbon, icing question shape and VFX progression inspected. Runtime/phone review separate.",
+  "count_note": null
+}

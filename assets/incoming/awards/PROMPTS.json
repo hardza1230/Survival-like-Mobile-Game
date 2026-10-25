@@ -1,0 +1,131 @@
+{
+  "order": 52,
+  "folder": "awards",
+  "title": "Awards and Title Ribbons",
+  "jobs": [
+    {
+      "key": "aw_medal",
+      "fw": 128,
+      "fh": 128,
+      "n": 8,
+      "cols": 8,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 2,
+      "detail": "EIGHT medal icons donor4x2, ORDER AS PAIRS:1colored GOLD STORYBOOK medal;2EXACT same storybook form in faded gray.3colored PINK MOCHI DANGO skewer medal;4same dango in faded gray.5colored CORAL ORANGE SHIELD with crossed SPOON+FORK;6same shield+utensils in faded gray.7colored MINT CANDY GEM medal;8same candy gem in faded gray. Paired locked states retain the same silhouette and details. Distinct category symbols at22px; no words.",
+      "display": [
+        34,
+        34
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 8 frame(s) in donor grid 4columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. EIGHT medal icons donor4x2, ORDER AS PAIRS:1colored GOLD STORYBOOK medal;2EXACT same storybook form in faded gray.3colored PINK MOCHI DANGO skewer medal;4same dango in faded gray.5colored CORAL ORANGE SHIELD with crossed SPOON+FORK;6same shield+utensils in faded gray.7colored MINT CANDY GEM medal;8same candy gem in faded gray. Paired locked states retain the same silhouette and details. Distinct category symbols at22px; no words."
+    },
+    {
+      "key": "aw_star",
+      "fw": 64,
+      "fh": 64,
+      "n": 3,
+      "cols": 3,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 1,
+      "detail": "THREE five-point achievement stars:1hollow gold outline star, center TRUE TRANSPARENT;2solid warm gold star;3same solid gold star with tiny white glints for final tier. Same size and center, no lettering.",
+      "hollowFrames": [
+        0
+      ],
+      "display": [
+        16,
+        16
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 3 frame(s) in donor grid 3columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. THREE five-point achievement stars:1hollow gold outline star, center TRUE TRANSPARENT;2solid warm gold star;3same solid gold star with tiny white glints for final tier. Same size and center, no lettering."
+    },
+    {
+      "key": "aw_secret",
+      "fw": 128,
+      "fh": 128,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "One mysterious dark plum wrapped confectionery gift box with ribbon bow and tiny HEART-shaped padlock. A small raised ivory ICING QUESTION-MARK SHAPE is piped on wrapping, physically made of icing (not printed typography). This icing question shape is the ONLY allowed glyph-like mark. No other letters/numbers.",
+      "display": [
+        34,
+        34
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 1 frame(s) in donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One mysterious dark plum wrapped confectionery gift box with ribbon bow and tiny HEART-shaped padlock. A small raised ivory ICING QUESTION-MARK SHAPE is piped on wrapping, physically made of icing (not printed typography). This icing question shape is the ONLY allowed glyph-like mark. No other letters/numbers."
+    },
+    {
+      "key": "aw_secret_open",
+      "fw": 192,
+      "fh": 192,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX frames donor3x2: a dark plum mystery candy gift box bursts open into purple-gold sparkling fragments, light peaks in middle, fragments and motes fade to black by last frames. Shared scale/center, no words or question marks in this VFX.",
+      "black": true,
+      "display": [
+        120,
+        120
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. PURE BLACK #000000 background, no gray canvas, no gridlines.EXACT 6 frame(s) in donor grid 3columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. SIX frames donor3x2: a dark plum mystery candy gift box bursts open into purple-gold sparkling fragments, light peaks in middle, fragments and motes fade to black by last frames. Shared scale/center, no words or question marks in this VFX."
+    },
+    {
+      "key": "aw_title_ribbon",
+      "fw": 320,
+      "fh": 64,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "One horizontal blank cream title ribbon with thin gold trim and split swallowtail ends. Calm plain center reserved for game-rendered title. No text, motifs or crest in center.",
+      "ns": [
+        60,
+        20,
+        60,
+        20
+      ],
+      "panel": true,
+      "display": [
+        160,
+        32
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 1 frame(s) in donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One horizontal blank cream title ribbon with thin gold trim and split swallowtail ends. Calm plain center reserved for game-rendered title. No text, motifs or crest in center."
+    },
+    {
+      "key": "aw_claim_all",
+      "fw": 128,
+      "fh": 128,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "One compact pile of THREE candy reward gift boxes with a tiny sparkle, cream/pink/gold, clear at22px. No captions.",
+      "display": [
+        22,
+        22
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 1 frame(s) in donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One compact pile of THREE candy reward gift boxes with a tiny sparkle, cream/pink/gold, clear at22px. No captions."
+    },
+    {
+      "key": "vfx_aw_claim",
+      "fw": 192,
+      "fh": 192,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX frames donor3x2: one golden achievement star flies upward from lower center with an expanding gold light ring, peaks then breaks into soft sparks and fades. Same anchor/camera/scale, preserve upward motion, no words.",
+      "black": true,
+      "display": [
+        110,
+        110
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. PURE BLACK #000000 background, no gray canvas, no gridlines.EXACT 6 frame(s) in donor grid 3columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. SIX frames donor3x2: one golden achievement star flies upward from lower center with an expanding gold light ring, peaks then breaks into soft sparks and fades. Same anchor/camera/scale, preserve upward motion, no words."
+    }
+  ]
+}
