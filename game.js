@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.39';
+const GAME_VERSION = '8.0.40';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.40',date:'2026-10-25',title:'Mint Lance Burst restored',items:['Lance Burst shows a dedicated ice explosion at the end of Frost Lance Charge, even with no enemy at the endpoint','A card or pause screen on the final dash frame no longer drops the finisher or ice blast','Both card ranks keep their existing damage and radius; interrupted runs cannot trigger a stale blast']},
   {v:'8.0.39',date:'2026-10-25',title:'A sweeter sound for every adventure',items:['139 new original sound effects for crafting, rewards, battles, Yuzu, stories and characters','Distinct boss arena warnings, Counter kicks and mission feedback','Wordless character voices with a separate Settings switch','Sound effects respect mute and volume; existing background music continues']},
   {v:'8.0.38',date:'2026-10-25',title:'Yuzu and her citrus companions',items:['Yuzu fires seeds beside one companion: Pomelo, Lime or Blood Orange','Companions have HP, recover after 5s, and revive immediately when Yuzu reaches them','New sweeps, slams, rolls, volleys, traps and three-flavor brews; each Build has its own Unique','Reworked cards, Evolutions, six Unique Mutations and 30 path Talents; saved IDs and points retained','New ImageGen companions and effects; dedicated ElevenLabs sound files are pending']},
   {v:'8.0.37',date:'2026-10-25',title:'Calmer Taro Arc',items:['Taro Arc Build hits for 20% less damage','Arc fires 25% slower (longer time between casts)','Spark and Sentry Builds unchanged']},
@@ -8524,18 +8525,46 @@ class Game extends Phaser.Scene {
     if((this.lanceChMax?.()||1)>1&&(this._lnBank|0)>0){ this._lnBank--; this.uniqueCd=0.35; }   // v8.0.9 Lance Charges: ใช้ชาร์จที่เก็บไว้ = กดได้อีกเกือบทันที
     let hits=0; this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-x0,ry=e.y-y0,al=rx*ca+ry*sa; if(al<-20||al>L+20)return; if(Math.abs(-rx*sa+ry*ca)>34+(e.body?e.body.halfWidth:18))return; hits++; this._sgHit=true; try{ this.damage(e,dmg*(e.isBoss||e.isMini?1.8:1),e.x,e.y); } finally { this._sgHit=false; } if(e.active)this.mintChill(e,0.8); if(e.active&&this.basicAttack?.path==='pierce')this.applyImpale(e,dmg*(e.isBoss||e.isMini?1.8:1),c>=0.99); });
     pl.iframe=Math.max(pl.iframe||0,0.45); this.poseAttack(420,'char_mint_gale');
-    const dash={x:x0,y:y0,carry:0,basic:this.basicAttack,epoch:this._artEpoch||0,power:dmg*.32,emitted:0};
+    const dash={x:x0,y:y0,carry:0,basic:this.basicAttack,epoch:this._artEpoch||0,power:dmg*.32,emitted:0,player:pl,ang,dmg,burstRank:Math.min(2,Math.max(0,lv.l_burst||0)),done:false};
+    this._mintDashFinish=null;
     this._mintDashTween?.stop();
     this._mintDashTween=this.tweens.add({targets:pl,x:x0+ca*L,y:y0+sa*L,duration:170,ease:'Quad.out',onUpdate:()=>{
       if((this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic){this._mintDashTween?.stop();return;}
       if(this.state!=='play'){this._mintDashTween?.pause();return;}if(pl.body)pl.body.reset(pl.x,pl.y);this.emitLanceDistanceShards(dash,pl.x,pl.y);
-    },onComplete:()=>{this._mintDashTween=null;if(this.state!=='play'||(this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic)return;
-      this.emitLanceDistanceShards(dash,pl.x,pl.y);this.frostLanceFinisher?.(pl,ang,dmg); if(lv.l_burst){ const bx=pl.x,by=pl.y; this.vfxHitRing(bx,by,0x9fe8ff,true); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,bx,by)<110)this.damage(e,dmg*(1+0.5*lv.l_burst)*0.6,e.x,e.y); }); Sfx.boom&&Sfx.boom(); } }});
+    },onComplete:()=>{this._mintDashTween=null;dash.endX=pl.x;dash.endY=pl.y;this.finishFrostLance(dash);}});
     let g;
     if(this.textures.exists('vfx_frost_lance_trail'))g=this.trackArtVfx(this.camWorld(this.add.image(x0,y0,'vfx_frost_lance_trail').setOrigin(0,0.5).setRotation(ang).setDepth(5).setBlendMode(Phaser.BlendModes.NORMAL).setDisplaySize(L,68)));
     else {g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(5))); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);}
     (this._iceTrails=this._iceTrails||[]).push({x0,y0,ca,sa,L,t:3,tick:0,g,dmg:dmg*0.12});
     this.screenShake(110,0.005); (this.fxLanceScreen?.(ang),Sfx.bp?.('uq_mint_lance_release',.6,.2))||(Sfx.dash&&Sfx.dash()); this.showBanner('🗡️ Frost Lance',hits+' pierced · homing shard every 70px',700); }
+  finishFrostLance(dash){
+    if(!dash||dash.done){if(this._mintDashFinish===dash)this._mintDashFinish=null;return;}
+    if((this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic||this.player!==dash.player||!dash.player?.active||this.state==='menu'||this.state==='dead'){
+      dash.done=true;if(this._mintDashFinish===dash)this._mintDashFinish=null;return;
+    }
+    // A tween can reach its last frame just as a card/pause overlay opens. Complete once play resumes.
+    if(this.state!=='play'){this._mintDashFinish=dash;return;}
+    if(!dash.finisherDone){dash.finisherDone=true;this.emitLanceDistanceShards(dash,dash.endX,dash.endY);this.frostLanceFinisher?.(dash.player,dash.ang,dash.dmg);}
+    if(dash.burstRank&&this.state!=='play'){
+      if((this._artEpoch||0)===dash.epoch&&this.basicAttack===dash.basic&&this.state!=='menu'&&this.state!=='dead')this._mintDashFinish=dash;
+      else{dash.done=true;if(this._mintDashFinish===dash)this._mintDashFinish=null;}
+      return;
+    }
+    dash.done=true;this._mintDashFinish=null;
+    if(dash.burstRank)this.frostLanceBlast(dash);
+  }
+  frostLanceBlast(dash){
+    if((this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic||!dash.player?.active||this.state==='menu'||this.state==='dead')return;
+    const x=dash.endX,y=dash.endY,r=110,src=this._mxSrc,sg=this._sgHit;
+    // Dedicated painted ice explosion, including on Low VFX and when no enemy is at the endpoint.
+    if(!this.heroFx?.('fx_mint_shatter',x,y,r*2,{must:true,depth:(dash.player.depth||7)+1}))this.vfxHitRing?.(x,y,0x9fe8ff,true);
+    Sfx.bp?.('mint_glacier_shatter',.55,.12)||(Sfx.boom&&Sfx.boom());
+    this._mxSrc='unique';this._sgHit=true;
+    try{this.enemies.children.iterate(e=>{
+      if((this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic||!e?.active||e.hp<=0||e._phaseGateLocked||(e._phaseInvuln||0)>0||this.dist(e.x,e.y,x,y)>=r)return;
+      this.damage(e,dash.dmg*(1+.5*dash.burstRank)*.6,e.x,e.y);
+    });}finally{this._mxSrc=src;this._sgHit=sg;}
+  }
   lanceShardTarget(x,y,range=760){
     let target=null,bd=range*range;
     this.enemies.children.iterate(e=>{if(!e?.active||e.hp<=0||e._phaseGateLocked||(e._phaseInvuln||0)>0)return;const d=(e.x-x)**2+(e.y-y)**2;if(d<bd){bd=d;target=e;}});return target;
@@ -18319,7 +18348,7 @@ class Game extends Phaser.Scene {
   }
   clearArtVfx(){this.clearStatusArt?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
     this.clearTaroCombat?.();this.clearCocoaCombat?.();this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
-    this._mintDashTween?.stop();this._mintDashTween=null;this._glacierStorms=[];
+    this._mintDashTween?.stop();this._mintDashTween=null;this._mintDashFinish=null;this._glacierStorms=[];
     this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
     if(this.basicAttack)this.basicAttack._impalerFullShots=0;
     this._glacierBusy=false;this._glacierWindow=null;this._glacierBursts=0;this._glacierVfx=0;
@@ -20032,7 +20061,7 @@ class Game extends Phaser.Scene {
     if(this.player.forgeMods)forgeTick(this,dt);this.updatePickupReadability(); this.tickLootMagnet(dt); this.tickProximityObjects(dt); this.animateProgressBar(dt);
     if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);this.tickLanceCharges?.(dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
     this.tickAura(dt);
-    if(this._mintDashTween?.isPaused())this._mintDashTween.resume();this.tickGlacierSnow(dt);
+    if(this._mintDashTween?.isPaused())this._mintDashTween.resume();if(this._mintDashFinish)this.finishFrostLance(this._mintDashFinish);this.tickGlacierSnow(dt);
     this.tickSnipe(); this.tickIceTrails(dt); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt); this.tickPathTalents(dt);
     if(this._coach)this.tickTutorialCoach(dt);
     this.tickStage(dt);

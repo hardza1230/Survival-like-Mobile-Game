@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.40, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.41, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.40 — Mint Lance Burst endpoint fix
+
+Owner reports Crystal Impaler card “Ice blast at the end” absent. Frost Lance completion used only generic hit ring and returned permanently on last-frame non-play overlay. Added finishFrostLance one-shot completion with pending resume, owned player/basic/epoch/death/menu guards and clearArtVfx cleanup; finisher runs once even if it opens a card overlay. frostLanceBlast uses forced existing fx_mint_shatter at220px (110px radius), including empty endpoint/Low VFX; existing shatter SFX, same damage .6*(1+.5*rank)*cast damage, phase exclusions, scoped unique/damage-number context restored with finally. No new assets, no damage/range buffs. tests/mint-storm-shards exercises rank0/1/2, empty/immune/outside, repeated callback, pause/card and finisher-induced card deferral, canceled runs. Phone visual review pending; no local gameplay simulation/screenshots.
 
 # Latest delivery: v8.0.39 — ElevenLabs audio orders A01–A05 (SFX)
 
