@@ -1,6 +1,6 @@
 # 54 — Temple Depths (ไฟฉาย/ตัวเลขระยะ/คนงานเหมือง) + ไอคอน Rank Rewards 10 อัน · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่ง source art 25 ต.ค. 2026 · 5 ไฟล์ / 26 เฟรม · ยังไม่ต่อ runtime
+สถานะ: 🟩 ผูกเข้าเกม v8.0.34 · source ImageGen ครบ · รอตรวจภาพ/FPS บนมือถือ
 ส่งไฟล์ที่ `assets/incoming/depths_rank/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` เข้าชุด `assets/art/dig/` และ Temple UI ใบ 21 · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ/ตัวเลขในภาพ**
 
@@ -38,3 +38,5 @@
 
 ## ส่งมอบ
 ส่งครบที่ assets/incoming/depths_rank/ — ImageGen ต้นฉบับ, PNG ตามขนาด/เฟรม, preview WebP 50%, MANIFEST/PROMPTS/PROVENANCE/QA และภาพตรวจทุกสถานะ ตรวจขนาด/alpha และภาพย่อแล้ว การต่อเกมและตรวจมือถือเป็นงานถัดไป
+
+Runtime: assets/art/menu_orders/ · scripts/pack-menu-orders-50-54.py · metadata/grid/hash และ fallback พร้อม · ตรวจอัตโนมัติใน tests/menu-orders-art.test.cjs

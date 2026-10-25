@@ -1,6 +1,6 @@
 # 50 — Merge + Forge Points (หน้ารวมของ, แต้มตี, ระดับความหายาก) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่ง source art 25 ต.ค. 2026 · 14 ไฟล์ / 50 เฟรม · ยังไม่ต่อ runtime
+สถานะ: 🟩 ผูกเข้าเกม v8.0.34 · source ImageGen ครบ · รอตรวจภาพ/FPS บนมือถือ
 ส่งไฟล์ที่ `assets/incoming/merge_forge/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` และเข้าชุดกับ Lobby UI ใบ 33 + หน้า Forge (สมุดบันทึก ใบ 27) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ** · UI วาด **2 เท่า** ของขนาดบนจอ
 
@@ -52,3 +52,5 @@
 
 ## ส่งมอบ
 ส่งครบที่ assets/incoming/merge_forge/ — ImageGen ต้นฉบับ, PNG ตามขนาด, preview WebP 50%, MANIFEST/PROMPTS/PROVENANCE/QA และภาพตรวจทุกสถานะ/9-slice/อนิเมชัน ตรวจ alpha และช่องกลางโปร่งแล้ว การต่อเกมและตรวจมือถือเป็นงานถัดไป
+
+Runtime: assets/art/menu_orders/ · scripts/pack-menu-orders-50-54.py · metadata/grid/hash และ fallback พร้อม · ตรวจอัตโนมัติใน tests/menu-orders-art.test.cjs
