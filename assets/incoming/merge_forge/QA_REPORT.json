@@ -1,0 +1,557 @@
+{
+  "order": 50,
+  "all_pass": true,
+  "scope": "Source art only; no runtime/phone gameplay claim.",
+  "assets": [
+    {
+      "key": "rar_frame",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.00002,
+        0,
+        0,
+        0
+      ],
+      "frame_bounds": [
+        [
+          6,
+          6,
+          205,
+          239
+        ],
+        [
+          3,
+          2,
+          206,
+          241
+        ],
+        [
+          2,
+          5,
+          205,
+          242
+        ],
+        [
+          3,
+          4,
+          198,
+          242
+        ]
+      ],
+      "unique_frames": 4
+    },
+    {
+      "key": "rar_cell",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "frame_bounds": [
+        [
+          6,
+          7,
+          114,
+          112
+        ],
+        [
+          2,
+          2,
+          114,
+          114
+        ],
+        [
+          2,
+          5,
+          113,
+          114
+        ],
+        [
+          3,
+          2,
+          114,
+          114
+        ]
+      ],
+      "unique_frames": 4
+    },
+    {
+      "key": "rar_gem",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99009,
+        0.99172,
+        0.98661,
+        0.97684
+      ],
+      "frame_bounds": [
+        [
+          8,
+          5,
+          40,
+          44
+        ],
+        [
+          8,
+          4,
+          40,
+          44
+        ],
+        [
+          8,
+          6,
+          40,
+          44
+        ],
+        [
+          8,
+          5,
+          40,
+          44
+        ]
+      ],
+      "unique_frames": 4
+    },
+    {
+      "key": "merge_slot_empty",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99221
+      ],
+      "frame_bounds": [
+        [
+          22,
+          4,
+          185,
+          240
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "ic_merge",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.65452
+      ],
+      "frame_bounds": [
+        [
+          4,
+          6,
+          124,
+          122
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "ic_forge_point",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.75222
+      ],
+      "frame_bounds": [
+        [
+          5,
+          4,
+          59,
+          60
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "ic_star_up",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99164
+      ],
+      "frame_bounds": [
+        [
+          6,
+          4,
+          57,
+          60
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "ic_mod_remove",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.33979
+      ],
+      "frame_bounds": [
+        [
+          4,
+          7,
+          60,
+          56
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "ic_lucky",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99061
+      ],
+      "frame_bounds": [
+        [
+          5,
+          4,
+          59,
+          60
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "vfx_merge_fuse",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.00988,
+        0.66967,
+        0.90406,
+        0.94696,
+        1,
+        0.90096,
+        0.41375,
+        0.08665
+      ],
+      "frame_bounds": [
+        [
+          29,
+          38,
+          351,
+          373
+        ],
+        [
+          18,
+          49,
+          351,
+          351
+        ],
+        [
+          33,
+          47,
+          358,
+          365
+        ],
+        [
+          28,
+          46,
+          373,
+          351
+        ],
+        [
+          18,
+          17,
+          366,
+          348
+        ],
+        [
+          15,
+          33,
+          359,
+          332
+        ],
+        [
+          40,
+          51,
+          365,
+          321
+        ],
+        [
+          43,
+          69,
+          355,
+          307
+        ]
+      ],
+      "unique_frames": 8
+    },
+    {
+      "key": "vfx_rarity_up",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.18388,
+        0.62997,
+        0.94242,
+        0.80536,
+        0.37931,
+        0.08222
+      ],
+      "frame_bounds": [
+        [
+          56,
+          62,
+          200,
+          231
+        ],
+        [
+          15,
+          34,
+          239,
+          236
+        ],
+        [
+          8,
+          4,
+          248,
+          241
+        ],
+        [
+          17,
+          4,
+          236,
+          230
+        ],
+        [
+          49,
+          26,
+          206,
+          223
+        ],
+        [
+          80,
+          68,
+          179,
+          219
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "vfx_star_up",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0,
+        0.75913,
+        0.95644,
+        0.3246,
+        0.075,
+        0.02056
+      ],
+      "frame_bounds": [
+        [
+          19,
+          16,
+          180,
+          187
+        ],
+        [
+          21,
+          25,
+          174,
+          181
+        ],
+        [
+          25,
+          22,
+          171,
+          177
+        ],
+        [
+          13,
+          16,
+          179,
+          176
+        ],
+        [
+          12,
+          6,
+          166,
+          169
+        ],
+        [
+          20,
+          17,
+          152,
+          164
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "vfx_lucky",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.44761,
+        0.78285,
+        0.80945,
+        0.65631,
+        0.34953,
+        0.16812
+      ],
+      "frame_bounds": [
+        [
+          47,
+          42,
+          224,
+          233
+        ],
+        [
+          20,
+          35,
+          246,
+          232
+        ],
+        [
+          6,
+          25,
+          236,
+          236
+        ],
+        [
+          31,
+          19,
+          240,
+          207
+        ],
+        [
+          22,
+          22,
+          249,
+          206
+        ],
+        [
+          32,
+          24,
+          220,
+          213
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "vfx_forge_hit",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.30454,
+        0.82758,
+        0.6676,
+        0.92552,
+        0.66187,
+        0.16146
+      ],
+      "frame_bounds": [
+        [
+          41,
+          5,
+          152,
+          126
+        ],
+        [
+          26,
+          13,
+          140,
+          150
+        ],
+        [
+          9,
+          44,
+          183,
+          186
+        ],
+        [
+          13,
+          14,
+          179,
+          176
+        ],
+        [
+          11,
+          13,
+          181,
+          176
+        ],
+        [
+          12,
+          52,
+          173,
+          175
+        ]
+      ],
+      "unique_frames": 6
+    }
+  ],
+  "preview_bytes": 334100,
+  "decoded_preview_bytes": 2758016,
+  "visual_review": "Passed contact, all states and nine-slice stretch review. Common frames simplified; portrait top-left badge area clear; four rarities have distinct silhouettes; transparent centers verified. VFX progression inspected. Runtime/phone review remains separate.",
+  "count_note": null
+}
