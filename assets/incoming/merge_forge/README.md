@@ -7,3 +7,5 @@ MANIFEST.json defines exact exported grids, frame sizes, nine-slice margins and 
 Reproduce mechanical crops and packing from repository root: python scripts/pack-ui-art-orders.py merge_forge. Black VFX sources are preserved; preview conversion uses luminance alpha and unpremultiplication. No programmatic painting. Contact, all-state, stretch and animated reviews included.
 
 Reviewed all states, transparent frame centers, top-left card badge clearance, ornament silhouettes, common frame simplicity and VFX progression. Owner phone readability/FPS review remains pending.
+
+Additional actual phone-size icon/frame review: readability_review.png (18–58px, plus Merge at18px).

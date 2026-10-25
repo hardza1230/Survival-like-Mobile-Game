@@ -552,6 +552,6 @@
   ],
   "preview_bytes": 334100,
   "decoded_preview_bytes": 2758016,
-  "visual_review": "Passed contact, all states and nine-slice stretch review. Common frames simplified; portrait top-left badge area clear; four rarities have distinct silhouettes; transparent centers verified. VFX progression inspected. Runtime/phone review remains separate.",
+  "visual_review": "Passed contact, all states and nine-slice stretch review. Common frames simplified; portrait top-left badge area clear; four rarities have distinct silhouettes; transparent centers verified. VFX progression inspected. Runtime/phone review remains separate. Actual18/24/40/58px readability review retained in readability_review.png.",
   "count_note": null
 }

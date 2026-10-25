@@ -1,6 +1,6 @@
 # 54 — Temple Depths (ไฟฉาย/ตัวเลขระยะ/คนงานเหมือง) + ไอคอน Rank Rewards 10 อัน · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 25 ต.ค. 2026 · โค้ดพร้อม v8.0.22 (Rank Rewards) / v8.0.27 (Depths) ใช้อีโมจิ 🔦 💨 ⭐ 🕯️ 🛡️ 👟 🍖 🌀 🌟 👑 🎯 + ตัวเลขสีวาดด้วยโค้ดแทน · ช่องดิน/หิน/บันไดใช้ภาพใบ 05 อยู่แล้ว
+สถานะ: 🟢 ส่ง source art 25 ต.ค. 2026 · 5 ไฟล์ / 26 เฟรม · ยังไม่ต่อ runtime
 ส่งไฟล์ที่ `assets/incoming/depths_rank/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` เข้าชุด `assets/art/dig/` และ Temple UI ใบ 21 · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ/ตัวเลขในภาพ**
 
@@ -37,4 +37,4 @@
 - เมนู lazy (กลุ่ม Temple) · ไม่มีรูป = อีโมจิเดิม
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+ส่งครบที่ assets/incoming/depths_rank/ — ImageGen ต้นฉบับ, PNG ตามขนาด/เฟรม, preview WebP 50%, MANIFEST/PROMPTS/PROVENANCE/QA และภาพตรวจทุกสถานะ ตรวจขนาด/alpha และภาพย่อแล้ว การต่อเกมและตรวจมือถือเป็นงานถัดไป

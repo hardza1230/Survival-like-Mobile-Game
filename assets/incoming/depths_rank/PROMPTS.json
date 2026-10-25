@@ -1,0 +1,98 @@
+{
+  "order": 54,
+  "folder": "depths_rank",
+  "title": "Temple Depths and Rank Rewards",
+  "count_note": "The listed table yields26frames (2+6+4+4+10), though summary says24. Use all26 listed states.",
+  "jobs": [
+    {
+      "key": "dig_lantern",
+      "fw": 128,
+      "fh": 128,
+      "n": 2,
+      "cols": 2,
+      "rows": 1,
+      "donor_cols": 2,
+      "donor_rows": 1,
+      "detail": "TWO states of the SAME candy lantern, a small glass jar containing candy fireflies with warm gold handle and cream/pink details.1OFF dim cool interior;2ON bright warm yellow candy fireflies glowing. Same outline, scale and camera, no extra sparkles outside silhouette.",
+      "display": [
+        28,
+        28
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 2 frame(s), donor grid 2columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. TWO states of the SAME candy lantern, a small glass jar containing candy fireflies with warm gold handle and cream/pink details.1OFF dim cool interior;2ON bright warm yellow candy fireflies glowing. Same outline, scale and camera, no extra sparkles outside silhouette."
+    },
+    {
+      "key": "vfx_dig_light",
+      "fw": 384,
+      "fh": 384,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX frames donor3x2: warm yellow lantern light expands into a rounded-SQUARE halo that outlines a3x3 dig-cell area, soft golden dust sparkles, gentle initial bloom then fading motes. CENTER mostly black and clear. No tile grid painted, no lantern object, no numbers. Shared anchor/scale, no opaque filled square.",
+      "black": true,
+      "blend": "ADD",
+      "display": [
+        144,
+        144
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. PURE BLACK #000000 background, no gray canvas, no gridlines.EXACT 6 frame(s), donor grid 3columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. SIX frames donor3x2: warm yellow lantern light expands into a rounded-SQUARE halo that outlines a3x3 dig-cell area, soft golden dust sparkles, gentle initial bloom then fading motes. CENTER mostly black and clear. No tile grid painted, no lantern object, no numbers. Shared anchor/scale, no opaque filled square."
+    },
+    {
+      "key": "dig_hint_badge",
+      "fw": 64,
+      "fh": 64,
+      "n": 4,
+      "cols": 4,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 1,
+      "detail": "FOUR small circular empty distance-number badges in one row. Colored gemstone/stone rims:1red,2orange,3yellow,4blue. Each has a PLAIN lightly tinted cream center reserved for game-rendered numeral, no number or symbol. Tiny faceted rim details only, readable at22px, consistent size.",
+      "display": [
+        22,
+        22
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 4 frame(s), donor grid 4columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. FOUR small circular empty distance-number badges in one row. Colored gemstone/stone rims:1red,2orange,3yellow,4blue. Each has a PLAIN lightly tinted cream center reserved for game-rendered numeral, no number or symbol. Tiny faceted rim details only, readable at22px, consistent size."
+    },
+    {
+      "key": "dig_miner",
+      "fw": 128,
+      "fh": 128,
+      "n": 4,
+      "cols": 4,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 1,
+      "detail": "FOUR animation frames in one row of the SAME tiny cream mochi miner wearing a candy hardhat with a lamp, holding a small shovel. Body, head, hat, face and feet remain IDENTICAL in position/scale in all4frames. ONLY arm/shovel moves in a digging cycle. Small cute simple eyes, no body redraw or bouncing, NO ground shadow or scenery. Readable at22-40px.",
+      "loop": true,
+      "display": [
+        40,
+        40
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 4 frame(s), donor grid 4columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. FOUR animation frames in one row of the SAME tiny cream mochi miner wearing a candy hardhat with a lamp, holding a small shovel. Body, head, hat, face and feet remain IDENTICAL in position/scale in all4frames. ONLY arm/shovel moves in a digging cycle. Small cute simple eyes, no body redraw or bouncing, NO ground shadow or scenery. Readable at22-40px."
+    },
+    {
+      "key": "rank_reward_icons",
+      "fw": 128,
+      "fh": 128,
+      "n": 10,
+      "cols": 5,
+      "rows": 2,
+      "donor_cols": 5,
+      "donor_rows": 2,
+      "detail": "TEN rank perk icons, EXACT donor grid5columns x2rows, order left-to-right then next row.1Blink: one round feather dashing with speed streaks.2Signature: ONE magic star inside a clean ring.3Revival Candle: birthday candle with heart flame.4Last Stand: biscuit shield bearing a half-cracked heart.5Swift Feet: cream shoe with small wings.6Feast: cute fried chicken drumstick plus small heart.7Flash Step: TWO concentric swirling BLUE WIND loops (NO feather).8Encore: TWO overlapping/crossed sparkling gold stars (NO ring).9Giant Slayer: broken crown and a sword shaped like a FORK.10Keen Eye: golden eye with target motif. Same visual weight at34px, no text or numerals, distinct pair silhouettes.",
+      "display": [
+        34,
+        34
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 10 frame(s), donor grid 5columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. TEN rank perk icons, EXACT donor grid5columns x2rows, order left-to-right then next row.1Blink: one round feather dashing with speed streaks.2Signature: ONE magic star inside a clean ring.3Revival Candle: birthday candle with heart flame.4Last Stand: biscuit shield bearing a half-cracked heart.5Swift Feet: cream shoe with small wings.6Feast: cute fried chicken drumstick plus small heart.7Flash Step: TWO concentric swirling BLUE WIND loops (NO feather).8Encore: TWO overlapping/crossed sparkling gold stars (NO ring).9Giant Slayer: broken crown and a sword shaped like a FORK.10Keen Eye: golden eye with target motif. Same visual weight at34px, no text or numerals, distinct pair silhouettes."
+    }
+  ],
+  "revisions": [
+    {
+      "key": "rank_reward_icons",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT ten-icon sheet. Preserve ALL TEN icon identities, colors and meanings, and the exact order, five columns by two rows. Correct only their SPACING: each icon and ALL its glow, speed streaks, debris and sparkles must fit inside the central75% of its equal rectangular cell, with generous fully transparent gutters on all four sides. No artwork may touch a cell boundary or overlap any adjacent icon. Keep the ten icons about equal optical size. Top row: feather, single star in ring, candle with heart flame, biscuit shield cracked heart, winged boot. Bottom: drumstick heart, double blue wind loops, TWO golden stars, broken crown with fork sword, gold eye target. These are separate icons for mechanical slicing. No visible grid, no words/numerals, true transparent background, no ground shadows. Maintain exact 5x2 grid and the premium confectionery illustration style.",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-3c494814-4cba-4c77-9f2d-c48847192c7b.png"
+    }
+  ]
+}
