@@ -39,28 +39,19 @@ for(const [level,cap] of [[1,1],[12,3],[25,6],[45,10]]){
   assert.equal(writes,before+1);assert.equal(save.enhance('u').result,'capped');assert.equal(writes,before+1);
 }
 assert.equal(save.enhance('missing').result,'capped');
-// All direct crafting routes reject locked and malformed rows before charging or changing a pending choice.
-ctx.Sfx={error(){},craft(){},back(){}};
-const Scene=vm.runInContext('class S{'+['_craftContext','randomCraftSelected','chooseForgeSustain','forgeKeepCurrent','autoRollToTarget','divineFocusedLine','applyGearTut'].map(method).join('\n')+'\n}S',ctx);
-const scene=new Scene();Object.assign(scene,{gearSlot:'weapon',craftSelectedUid:'u',craftLineIndex:1,craftTargets:{f_vital_dough:null},setMenuScroll(){},showBanner(){},buildCraftBench(){},screenFlash(){}});
+// v8.0.33 Forge Points: every craft action rejects locked and malformed rows before charging.
+ctx.Sfx={error(){},craft(){},back(){},select(){}};
+const Scene=vm.runInContext('class S{'+['_craftContext','forgeAct','applyGearTut'].map(method).join('\n')+'\n}S',ctx);
+const scene=new Scene();Object.assign(scene,{gearSlot:'weapon',craftSelectedUid:'u',craftLineIndex:1,setMenuScroll(){},showBanner(){},buildCraftBench(){},screenFlash(){}});
 save.currency=k=>save.data.currency[k]||0;save.equippedGearItem=()=>item;save.data.currency={transmute:20,divine:20};
 item.itemLevel=1;item.enhanceLv=10;
-for(const line of [-1,1,2,3,1.5,'1']){
-  scene.craftLineIndex=line;const balance=plain(save.data.currency),before=JSON.stringify(item);
-  scene.randomCraftSelected();scene.divineFocusedLine();scene.autoRollToTarget();
-  assert.deepEqual(save.data.currency,balance);assert.equal(JSON.stringify(item),before);assert(!scene._craftRolling);
+for(const line of [-1,1,2,3,1.5,'1'])for(const k of ['add','swap','up','remove']){
+  scene.craftLineIndex=line;scene.forgePick='f_vital_dough';const balance=plain(save.data.currency),before=JSON.stringify(item);
+  scene.forgeAct(k);assert.deepEqual(save.data.currency,balance);assert.equal(JSON.stringify(item),before);
 }
-// A pre-update paid roll on a now-locked row is retained, then refunded exactly once on keep/skip.
-for(const paid of [undefined,'transmute','alt']){
-  scene.craftLineIndex=1;item.forgeChoice={line:1,options:[{id:'f_vital_dough',v:12,t:10}],...(paid?{paid}:{})};
-  const pending=JSON.stringify(item.forgeChoice),before=JSON.stringify(item.affixes),balance=plain(save.data.currency),refund='transmute';
-  scene.chooseForgeSustain(0);assert.equal(JSON.stringify(item.forgeChoice),pending);assert.equal(JSON.stringify(item.affixes),before);
-  scene.forgeKeepCurrent();assert(!item.forgeChoice);assert.equal(save.data.currency[refund],balance[refund]+1);
-  const once=plain(save.data.currency);scene.forgeKeepCurrent();assert.deepEqual(save.data.currency,once);assert.equal(JSON.stringify(item.affixes),before);
-}
-// Valid rolls remain usable with one payment; selecting or double-tapping never charges again.
-scene.craftLineIndex=0;const before=save.data.currency.transmute;scene.randomCraftSelected();assert(item.forgeChoice);assert.equal(save.data.currency.transmute,before-1);
-const wallet=plain(save.data.currency);scene.chooseForgeSustain(0);assert(!item.forgeChoice);scene.chooseForgeSustain(0);assert.deepEqual(save.data.currency,wallet);
+// The open Power row works with one payment; the dormant rows stay saved.
+scene.craftLineIndex=0;scene.forgePick='f_might';scene.forgeAct('swap');assert.equal(save.data.currency.transmute,20,'same mod is not a swap');
+scene.forgeAct('up');assert.equal(save.data.currency.divine,20,'iLv 1 caps stars, no charge');
 assert.equal(limits.gearActiveAffixes(item).length,1);assert.equal(item.affixes.length,3,'legacy dormant rows are retained during Power crafting');
 // A stale inventory callback must not charge once the item reached its cap or disappeared.
 const start=source.indexOf('can?()=>{ if(!afford){Sfx.error();'),finish=source.indexOf('this.buildMenuScreen(); }:null',start),callback=source.slice(start+4,finish)+'this.buildMenuScreen(); }';
@@ -80,6 +71,6 @@ const craftZone=()=>({x:0,y:0,w:120,h:40,fn:craftFn});scene.tapZones=[craftZone(
 scene.tapZones=[craftZone()];scene.applyGearTut();assert.equal(save.data.currency.transmute,3,'tutorial gift is granted once');
 scene.craftLineIndex=1;scene.tapZones[0].fn();assert.equal(save.data.gearTut,3);assert.equal(scene.craftLineIndex,0);assert.equal(scene.menuScreen,'craft');
 scene.craftLineIndex=2;scene.tapZones=[];scene.applyGearTut();assert.equal(scene.craftLineIndex,0);assert.equal(save.data.currency.transmute,3);
-scene.tapZones=[{x:0,y:0,w:120,h:44,fn:()=>scene.randomCraftSelected()}];scene.applyGearTut();scene.tapZones[0].fn();assert.equal(save.data.gearTut,4);assert(item.forgeChoice);assert.equal(item.forgeChoice.line,0);assert.equal(save.data.currency.transmute,2);
-scene.chooseForgeSustain(0);assert(!item.forgeChoice);assert.equal(save.data.currency.transmute,2);
-console.log('Gear level limits: unlock boundaries, effective legacy stats, direct enhance/craft guards, paid-choice refunds and stale callbacks passed');
+scene.tapZones=[{x:0,y:0,w:120,h:44,tag:'pick_f_might',fn:()=>{scene.forgePick='f_might';}}];scene.applyGearTut();assert.equal(save.data.gearTut,3,'picking a mod does not finish the step');scene.tapZones[0].fn();
+item.affixes=item.affixes.filter(x=>x.line!==0);scene.tapZones=[{x:0,y:0,w:120,h:44,fn:()=>scene.forgeAct('add')}];scene.applyGearTut();scene.tapZones[0].fn();assert.equal(save.data.gearTut,4);assert.equal(limits.forgeLines(item)[0].id,'f_might');assert.equal(save.data.currency.transmute,2);
+console.log('Gear level limits: unlock boundaries, effective legacy stats, direct enhance/craft guards, Forge Points guards and stale callbacks passed');

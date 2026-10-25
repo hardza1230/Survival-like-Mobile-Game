@@ -32,7 +32,7 @@ class ForgeReview extends Phaser.Scene{
  buildMenuScreen(){this.menuScreen='craft';this._forgePanel=null;this.buildCraftBench();}
  screenFlash(){} screenShake(){} showBanner(){} drawMenuScrollIndicator(){}
 }
-for(const key of ['forgeFrame','forgeChrome','forgeText','forgeIcon','forgeButton','forgeResetPick','forgeSelectItem','forgeOpenPanel','buildCraftBench','_buildCraftBenchRaw','drawForgePanel','_screenBg','_coverImage','_zone','setupMenuScroll','setMenuScroll','_craftContext','randomCraftSelected','chooseForgeSustain','divineFocusedLine','_playAffixRoulette','affixHype','autoRollToTarget'])ForgeReview.prototype[key]=Game.prototype[key];
+for(const key of ['forgeFrame','forgeChrome','forgeText','forgeIcon','forgeButton','forgeResetPick','forgeSelectItem','forgeOpenPanel','buildCraftBench','_buildCraftBenchRaw','drawForgePanel','_screenBg','_coverImage','_zone','setupMenuScroll','setMenuScroll','_craftContext','forgeAct','affixHype'])ForgeReview.prototype[key]=Game.prototype[key];
 async function bootReview(){await document.fonts.load('700 16px NunitoUI');await document.fonts.load('400 12px NunitoUI');window.__forgeReviewGame=new Phaser.Game({type:Phaser.CANVAS,parent:'mount',width:RW,height:RH,backgroundColor:'#1a1420',render:{antialias:true},scene:[ForgeReview]});}
 window.addEventListener('error',e=>{document.getElementById('status').textContent='Error: '+e.message;});
 bootReview();
