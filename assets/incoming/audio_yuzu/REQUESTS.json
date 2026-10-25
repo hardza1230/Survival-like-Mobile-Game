@@ -1,0 +1,202 @@
+[
+  {
+    "key": "sfx_yz_seed",
+    "file": "sfx_yz_seed.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A tiny citrus seed spits forward with a light soft click and a short airy flick. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_bite",
+    "file": "sfx_yz_bite.mp3",
+    "durationMs": 120,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One tiny cute citrus creature makes a juicy soft chomp and a small juice pop. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_pounce",
+    "file": "sfx_yz_pounce.mp3",
+    "durationMs": 350,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small bouncing fruit lands with a springy soft thump and two tiny leaf ticks. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_sweep",
+    "file": "sfx_yz_sweep.mp3",
+    "durationMs": 220,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A thick leafy gauntlet sweeps through the air with a rounded soft thwack. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_slam",
+    "file": "sfx_yz_slam.mp3",
+    "durationMs": 650,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A heavy round pomelo lands in soft earth, deep but phone-readable thump, leaf scatter and juicy impact. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.65,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_roll",
+    "file": "sfx_yz_roll.mp3",
+    "durationMs": 600,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A large round citrus fruit rolls quickly across earth with a short low rumble and leaves swishing. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.6,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_rush",
+    "file": "sfx_yz_rush.mp3",
+    "durationMs": 350,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "One tiny fruit companion rushes past in a quick leafy whoosh, upbeat and clean. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_grow",
+    "file": "sfx_yz_grow.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A friendly citrus fruit grows one stage with a juicy pop and a small warm golden chime. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_arrow",
+    "file": "sfx_yz_arrow.mp3",
+    "durationMs": 150,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A little wooden leaf bow twangs once and a seed arrow whistles very briefly. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_volley",
+    "file": "sfx_yz_volley.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small leaf bow releases a quick fan of seed arrows, layered gentle twangs and airy flicks. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_trap",
+    "file": "sfx_yz_trap.mp3",
+    "durationMs": 400,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A sour lime trap snaps open with a tiny twig click, juicy citrus splash and gentle root rustle. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_orb",
+    "file": "sfx_yz_orb.mp3",
+    "durationMs": 180,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small magical citrus orb launches with a soft velvety plop and a short herbal shimmer. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_sweet",
+    "file": "sfx_yz_sweet.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "Honey magic blooms with a warm bubble pop, two soft bell droplets and a soothing short tail. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_sour",
+    "file": "sfx_yz_sour.mp3",
+    "durationMs": 500,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small citrus acid pool bubbles into place, a gentle fizzy splash with a few crisp herbal clicks. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_spicy",
+    "file": "sfx_yz_spicy.mp3",
+    "durationMs": 400,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A small spicy citrus firebolt whooshes forward with a warm dry crackle and soft burst. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_down",
+    "file": "sfx_yz_down.mp3",
+    "durationMs": 300,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A tiny fruit companion tumbles softly and becomes sleepy, gentle plop and leaf flop, no pain scream. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_revive",
+    "file": "sfx_yz_revive.mp3",
+    "durationMs": 450,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A tiny fruit friend springs back up, cheerful juicy pop and a short rising warm chime. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.5,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_fortress",
+    "file": "sfx_yz_fortress.mp3",
+    "durationMs": 900,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A protective golden citrus shield rises, rounded low impact, warm bell and leafy swell. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.9,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_rain",
+    "file": "sfx_yz_rain.mp3",
+    "durationMs": 900,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "A brief shower of little seed arrows falls and strikes soft ground, airy ticks and tiny juice splashes. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 0.9,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  },
+  {
+    "key": "sfx_yz_infusion",
+    "file": "sfx_yz_infusion.mp3",
+    "durationMs": 1100,
+    "loop": false,
+    "provider": "ElevenLabs",
+    "prompt": "Three herbal citrus magics blossom together: warm honey bells, sour bubbling and a soft fiery swish, short enchanting flourish. Original cute premium candy fantasy game SFX. Dry immediate attack, soft short tail, no speech, no music, no imitation of any artist, song or existing game.",
+    "generationDurationSeconds": 1.1,
+    "postprocess": "Mechanical trim/fade, mono 44.1kHz MP3 128–160kbps; true peak <= -1dBTP; preserve original donor."
+  }
+]

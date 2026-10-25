@@ -1,39 +1,34 @@
-# A03 — เสียงฝูง Yuzling ของ Yuzu · ใบสั่งเสียง
+# A03 — Yuzu Citrus Companions · ElevenLabs SFX
 
-สถานะ: 🟡 รอเสียง · เขียน 25 ต.ค. 2026 · ส่งที่ `assets/incoming/audio_yuzu/` · คู่กับใบอาร์ต 35 (`docs/art_orders/35_YUZU_ORCHARD.md`)
-กติการ่วมดู `A00_README.md` · SFX mono
+สถานะ: ปรับตามแผนคู่หู v8.0.38 · รอเชื่อม ElevenLabs/ไฟล์เสียง · แทนรายการ Orchard Swarm เดิม ไม่ต้องทำเสียง Toss/Sprout/Elder แล้ว
 
-## ตอนนี้เป็นยังไง (ตรวจจากโค้ด v8.0.33)
-Yuzu คุมฝูง Yuzling (ส้มยูซุตัวจิ๋ว 4–12+ ตัว) วิ่งกัดศัตรูเอง · สาย Ripen (สุกขึ้นทีละขั้น), Yuzling Toss (โยนเป็นวงโค้ง), Harvest Sprouts (ต้นกล้า/ต้นยูซุแก่) · **ทุกอย่างเงียบ** ยกเว้นตอนตก (`Sfx.boom` ทั่วไป) — ฝูงที่กัดอยู่ตลอดเลยไม่มีเสียงตอบสนอง
+ใช้ ElevenLabs โดยตรงตามคำสั่งเจ้าของ สร้างเสียงใหม่ ห้ามเลียนแบบเพลง ศิลปิน หรือเกมเดิม ไม่มีคำพูด ใช้กติกา A00 ทุกข้อ ส่ง assets/incoming/audio_yuzu/
 
-## รายการเสียง
-| key | ความยาว | เสียง | เล่นตอน |
-|---|---|---|---|
-| `sfx_yz_bite` | 3 ไฟล์ `_a/_b/_c` 80–120 ms | งับ "หงั่บ" น่ารักฉ่ำน้ำ (3 แบบสุ่มกันซ้ำ) | Yuzling กัด (โค้ดจำกัด ≤ 4 ครั้ง/วินาที) |
-| `sfx_yz_bite_big` | 150 ms | งับหนักขึ้น มีน้ำส้มกระเซ็น | Yuzling ขั้นสุก 3/Royal กัด |
-| `sfx_yz_rush` | 400 ms | ฝูงเท้าเล็ก ๆ วิ่งพรึ่บพร้อมกัน + "วี้" | Dash → ฝูงพุ่ง |
-| `sfx_yz_toss` | 250 ms | ขว้าง "ฟิ้ว" + หัวเราะเล็ก (ไม่มีคำ) | โยน Yuzling |
-| `sfx_yz_land` | 300 ms | ตก "แปะ" ฉ่ำ + น้ำส้มกระเซ็น | ตกใส่ศัตรู (แทน `Sfx.boom`) |
-| `sfx_yz_giant_land` | 700 ms | ตกยักษ์ "ตู้ม" นุ่มหนัก + คลื่นน้ำส้ม | โยนตัวยักษ์ (ทุก 25 kill) |
-| `sfx_yz_ripen` | 350 ms | ป๊อปสุก + ประกายทอง (pitch โค้ดไล่ตามขั้น) | Yuzling สุกขึ้นขั้น |
-| `sfx_yz_royal` | 700 ms | แตรจิ๋ว + มงกุฎใบไม้ "ติ๊ง" | ถึงขั้น Royal |
-| `sfx_yz_down` | 300 ms | "อุ๊ย" ไม่มีคำ + เมล็ดตกพื้น | Yuzling ล้มเป็นเมล็ด (ท่าบอสใหญ่) |
-| `sfx_yz_regrow` | 450 ms | ต้นอ่อนงอก "ฟุบ" + ใบคลี่ | เมล็ดงอกกลับมา |
-| `sfx_yz_grow` | 400 ms | ฝูงเพิ่ม 1 ตัว "ป๊อป" + ติ๊งดีใจ | ฝูงโตขึ้น (kill ครบ) |
-| `sfx_yz_sprout` | 250 ms | ต้นกล้าโผล่จากดิน "ปุ๊บ" | Harvest: ต้นกล้างอก |
-| `sfx_yz_elder` | 900 ms | ต้นไม้ใหญ่โผล่ ดินแยก + ใบไม้ไหว + โน้ตทุ้มอบอุ่น | ต้นยูซุแก่ (Elder) เกิด |
-| `sfx_yz_elder_slam` | 400 ms | ใบไม้ฟาดรอบตัว "วู้บ" | Elder ตีรอบตัว (ทุก 1 วินาที → ต้องเบา) |
-| `sfx_yz_parade` | 1.2 s | ขบวนฝูงวิ่ง + เป่าปี่ฉลองสั้น | Unique ขบวนยูซุ |
+| Key | ms | จังหวะ |
+|---|---:|---|
+| sfx_yz_seed | 120 | Yuzu seed shot |
+| sfx_yz_bite | 120 | Yuzling bite |
+| sfx_yz_pounce | 350 | Yuzling Pounce landing |
+| sfx_yz_sweep | 220 | Pomelo sweep |
+| sfx_yz_slam | 650 | Pomelo Pulp Slam |
+| sfx_yz_roll | 600 | Rolling Pomelo |
+| sfx_yz_rush | 350 | Companion Dash |
+| sfx_yz_grow | 450 | Pomelo growth |
+| sfx_yz_arrow | 150 | Lime seed arrow |
+| sfx_yz_volley | 450 | Lime Zest Volley |
+| sfx_yz_trap | 400 | Lime Sour Trap |
+| sfx_yz_orb | 180 | Blood Orange aroma orb |
+| sfx_yz_sweet | 450 | Sweet brew |
+| sfx_yz_sour | 500 | Sour brew |
+| sfx_yz_spicy | 400 | Spicy brew |
+| sfx_yz_down | 300 | Companion falls |
+| sfx_yz_revive | 450 | Companion revived |
+| sfx_yz_fortress | 900 | Pomelo Fortress |
+| sfx_yz_rain | 900 | Lime Rain of Rind |
+| sfx_yz_infusion | 1100 | Blood Orange Grand Infusion |
 
-**รวม 15 key (17 ไฟล์)**
+รวม20keys/20files · Prompt ภาษาอังกฤษและระยะเป้าหมายอยู่ assets/incoming/audio_yuzu/REQUESTS.json · สร้างเก็บ donor แล้วตัด/ปรับระดับแบบ mechanical เท่านั้น ห้ามใช้เสียงสังเคราะห์ด้วยโค้ดแทน AI ตามคำสั่งล่าสุด
 
-## ข้อห้าม
-- เสียงกัดเล่นบ่อยมาก (ฝูง 12 ตัว) → ต้องสั้น เบา ไม่แหลม · 3 แบบสลับกันกันน่ารำคาญ
-- เสียงฝูงไม่มีคำพูด · ไม่ซ้ำกับเสียงฮีโร่ตัวอื่น (Momo ยิงเมล็ด, Cocoa ต่อย)
+Runtime: yuzuSound(name,gap,volume) → Sfx.bp('yz_'+name) → sfx_yz_*; ใช้ mute/master SFX/การจำกัดเสียงเดิม ไม่สร้าง AudioContext ใหม่ เสียงยิง/กัดจำกัดเป็นกลุ่ม ไม่เล่นทุกดอกใน Volley ไฟล์ที่ยังไม่มาจะไม่ลงทะเบียน path ปลอม และเสียงเดิมสำรองยังอยู่
 
-## โน้ตฝั่งโค้ด
-- จุดผูก: bite block ใน `tickYuzuCrew` (lunge k .55) · `yuzuRush` · `yuzuThrow` · `yuzuLand` (แทน `Sfx.boom`) · `yuzuRipeLook` ขึ้นขั้น · `yuzuDown`/`yuzuRegrow` · `yuzuOnKill` ฝูงโต · `yuzuSprout` · `yuzuElder` + ตีรอบตัว · `yuzuParadeCast`
-- จำกัดเสียงกัด ≤ 4 ครั้ง/วินาทีรวมทั้งฝูง และ elder slam ≤ 1 ครั้ง/วินาที · โหลดเฉพาะตอนเล่น Yuzu
-
-## ส่งมอบ
-(ฝั่งเสียงกรอกตอนส่ง)
+หลังได้ไฟล์จริง ส่ง MANIFEST.json (key,file,bytes,sha256,durationMs,loop,peakDbtp), PROMPTS.json (prompt/พารามิเตอร์/รหัสงานจริง), QA_REPORT.json (decode,ไม่เงียบ,peak,duration) · เจ้าของฟังบนมือถือขั้นสุดท้าย

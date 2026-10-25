@@ -1,0 +1,3 @@
+# Yuzu Citrus Companions audio — awaiting ElevenLabs access
+
+No new sound files have been generated. Owner explicitly requires ElevenLabs. REQUESTS.json contains20 original prompts/target durations and runtime keys, matching revised A03. Never put an API key in this directory or commit it. Read ELEVENLABS_API_KEY from the environment. Runtime yuzuSound uses existing Sfx volume/mute/throttle and keeps old fallback cues when no file exists. Register literal ASSET_AUDIO paths only after actual files pass A00 technical QA. Supply MANIFEST/PROMPTS/QA_REPORT with real measurements after generation; do not invent delivery metadata.

@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.38, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.39, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.38 — Yuzu Citrus Companions
+
+Owner approved docs/YUZU_COMPANIONS.md: one Yuzling before Build, then Pomelo/Lime/Blood Orange (saved path ids citrusGuardian/zestSwarm/juiceWorkshop). Yuzu seed shots; owned HP/down5s/touch revive/Dash; Pomelo sweep/taunt/slam/own-kill growth3/roll, Lime first-arrow guaranteed crit/long-range bonus/volley/trap, Blood Orange homing2-bounce orbs/aura/Sweet→Sour→Spicy. Per-path Unique, five core/fifteen path cards/four Mutations/three Evolutions/six Unique Mutations/thirty path Talents reworked; saved ids/point allocations retained. No extra mob spawns or EXP changes. Seven ImageGen alpha sheets40frames (lossless256px) under assets/art/yuzu_companions, original donors/prompts/QA under incoming; scripts/pack-yuzu-companions.py. 48shot/10zone/8effect caps, swept collision and pooled target identity, central damage/procs, owned cleanup. Tests yuzu-companions plus full suite; owner phone balance/FPS review pending. Audio must use ElevenLabs directly per owner: semantic yz hooks and revised A03 order ready, no new audio generated yet; waiting API connection. Do not use Runway or procedural audio as a substitute.
 
 # Latest delivery: v8.0.37 — Taro Arc nerf (owner: too strong + too fast)
 

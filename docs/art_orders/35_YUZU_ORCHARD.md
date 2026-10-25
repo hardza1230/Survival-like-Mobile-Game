@@ -1,5 +1,7 @@
 # 35 — Yuzu Orchard Swarm (Yuzling สุก/เมล็ด/ต้นกล้า/ต้นแก่) · ใบสั่งงานอาร์ต
 
+> แผน Orchard Swarm เดิมถูกแทนโดย Citrus Companions v8.0.38 แล้ว ดู 55_YUZU_COMPANIONS.md ก่อนสร้างไฟล์ใหม่
+
 สถานะ: 🟡 รออาร์ต · เขียน 25 ต.ค. 2026 · โค้ดพร้อมตั้งแต่ v7.9.37–39 (ใช้ `minion_yuzling` ตัวเดิมย้อมสี + ย่อ/ขยายแทน)
 ส่งไฟล์ที่ `assets/incoming/yuzu_orchard/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง (ยกเว้น VFX ที่ระบุพื้นดำ) · **ห้ามมีตัวหนังสือในภาพ**

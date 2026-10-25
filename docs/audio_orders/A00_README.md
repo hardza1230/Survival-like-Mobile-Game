@@ -6,7 +6,7 @@
 |---|---|---|---|
 | `A01_MENU_PROGRESS_SFX.md` | หน้าเมนูใหม่: Merge, Forge Points, Login, Daily, Awards, Bestiary/Recipe Book, Depths, Rank Rewards, Power, ดาวด่าน, เปิดกล่องท้ายด่าน, ปลดฟีเจอร์ | 32 | 🟠 สูง |
 | `A02_BATTLE_EVENT_SFX.md` | กลไกสนามบอส, Counter เตะคืน, ฆ่าบอสสโลว์, ภารกิจคลื่น, พิษ/เลือดออก, Ruby ในด่าน, ปุ่มเร่งเวลา | 30 | 🟠 สูง |
-| `A03_YUZU_SFX.md` | ฝูง Yuzling: กัด, โยน, ตก, ยักษ์, สุก, ล้ม/งอก, ต้นกล้า, ต้นแก่, ขบวน | 15 | 🟢 กลาง |
+| `A03_YUZU_SFX.md` | Citrus Companions: Yuzling / Pomelo / Lime / Blood Orange, ฟื้น/สกิล/Unique · ElevenLabs | 20 | 🟢 กลาง |
 | `A04_STORY_MUSIC_STINGERS.md` | เพลงหน้าแรก, เพลงฉากเรื่อง 4 อารมณ์, เพลงร้าน/Lobby, เสียงคำการ์ตูน, ชื่อด่าน, ชนะ/แพ้ | 20 | 🟢 กลาง |
 | `A05_CHARACTER_VOICES.md` | เสียงพึมพำ (ไม่มีคำ) ของ Ruby, ฮีโร่ 5 ตัวใน Lobby, บอสตอนพูด | 31 | 🟡 ต่ำ–กลาง |
 

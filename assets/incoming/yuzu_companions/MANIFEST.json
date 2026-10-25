@@ -1,0 +1,236 @@
+[
+  {
+    "key": "yz_pomelo",
+    "file": "yz_pomelo.webp",
+    "width": 1024,
+    "height": 512,
+    "frame": 256,
+    "frames": 8,
+    "source": "assets/incoming/yuzu_companions/originals/pomelo.png",
+    "sourceSha256": "7193026810bcb9db798c97bf484494051618a0c41e88ea120cf03f530570a06f",
+    "crop": [
+      0,
+      26,
+      444,
+      416
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 403262,
+    "sha256": "579ae8a5c99d949b0ca04d97b91383c51ec261141c2ddc71f1ea32caed770de8"
+  },
+  {
+    "key": "yz_lime",
+    "file": "yz_lime.webp",
+    "width": 1024,
+    "height": 512,
+    "frame": 256,
+    "frames": 8,
+    "source": "assets/incoming/yuzu_companions/originals/lime.png",
+    "sourceSha256": "f1c6c2521cb724a7fa140c56e5f954d207997eeabeb6f4c6c4afa338b4861508",
+    "crop": [
+      0,
+      43,
+      444,
+      412
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 413408,
+    "sha256": "a3adc3d21bdcef7b4ff7d45edf454f9c0c64a26f6cd0fbfd40394990750d99fd"
+  },
+  {
+    "key": "yz_bloodorange",
+    "file": "yz_bloodorange.webp",
+    "width": 1024,
+    "height": 512,
+    "frame": 256,
+    "frames": 8,
+    "source": "assets/incoming/yuzu_companions/originals/bloodorange.png",
+    "sourceSha256": "a16557dadd8c7ffd9f5cba11b35590b1ea97edd5932a4791ab8f5c5c3b419a56",
+    "crop": [
+      0,
+      15,
+      444,
+      399
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 433170,
+    "sha256": "38a57e96098dd084beaab1b6e502694e68093d498b4efb3787fdb2c77208a2e9"
+  },
+  {
+    "key": "yz_fx_slam",
+    "file": "yz_fx_slam.webp",
+    "width": 1024,
+    "height": 256,
+    "frame": 256,
+    "frames": 4,
+    "source": "assets/incoming/yuzu_companions/originals/vfx.png",
+    "sourceSha256": "75215a93df3753c6220a1c4aa378e64839736c51acb8f7852ca5b5a2c97bb72b",
+    "sourceRects": [
+      [
+        0,
+        0,
+        329,
+        280
+      ],
+      [
+        329,
+        0,
+        670,
+        280
+      ],
+      [
+        670,
+        0,
+        1120,
+        280
+      ],
+      [
+        1120,
+        0,
+        1402,
+        280
+      ]
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 117086,
+    "sha256": "9dbda222f0b2e0de39c034618d8594a9bf716f1258b4d707c6b3f0e9fe804f13"
+  },
+  {
+    "key": "yz_fx_rain",
+    "file": "yz_fx_rain.webp",
+    "width": 1024,
+    "height": 256,
+    "frame": 256,
+    "frames": 4,
+    "source": "assets/incoming/yuzu_companions/originals/vfx.png",
+    "sourceSha256": "75215a93df3753c6220a1c4aa378e64839736c51acb8f7852ca5b5a2c97bb72b",
+    "sourceRects": [
+      [
+        0,
+        280,
+        350,
+        561
+      ],
+      [
+        350,
+        280,
+        701,
+        561
+      ],
+      [
+        701,
+        280,
+        1101,
+        561
+      ],
+      [
+        1101,
+        280,
+        1402,
+        561
+      ]
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 125806,
+    "sha256": "40aac4748cc66e544e30481d466bebe2f5e5b8cc70a561286413e2be2e79af1b"
+  },
+  {
+    "key": "yz_fx_infusion",
+    "file": "yz_fx_infusion.webp",
+    "width": 1024,
+    "height": 256,
+    "frame": 256,
+    "frames": 4,
+    "source": "assets/incoming/yuzu_companions/originals/vfx.png",
+    "sourceSha256": "75215a93df3753c6220a1c4aa378e64839736c51acb8f7852ca5b5a2c97bb72b",
+    "sourceRects": [
+      [
+        0,
+        561,
+        350,
+        842
+      ],
+      [
+        350,
+        561,
+        701,
+        842
+      ],
+      [
+        701,
+        561,
+        1052,
+        842
+      ],
+      [
+        1052,
+        561,
+        1402,
+        842
+      ]
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 207374,
+    "sha256": "e2788f02576dd7e66869f1cd854cf6859e5fcf0c61184f306021a71521c70b4c"
+  },
+  {
+    "key": "yz_fx_shield",
+    "file": "yz_fx_shield.webp",
+    "width": 1024,
+    "height": 256,
+    "frame": 256,
+    "frames": 4,
+    "source": "assets/incoming/yuzu_companions/originals/vfx.png",
+    "sourceSha256": "75215a93df3753c6220a1c4aa378e64839736c51acb8f7852ca5b5a2c97bb72b",
+    "sourceRects": [
+      [
+        0,
+        842,
+        350,
+        1122
+      ],
+      [
+        350,
+        842,
+        701,
+        1122
+      ],
+      [
+        701,
+        842,
+        1052,
+        1122
+      ],
+      [
+        1052,
+        842,
+        1402,
+        1122
+      ]
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 177096,
+    "sha256": "f78118a58398a1893d12e2b75407c038d2d3ae24bf4d90371429e82b72aff9a5"
+  }
+]
