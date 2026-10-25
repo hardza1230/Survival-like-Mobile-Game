@@ -1,6 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.34, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.36, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.35 — combat readability polish
+
+Seven ImageGen alpha sprites (68,324bytes) in assets/art/combat_readability; donors/prompts/revision/QA in incoming/combat_readability; scripts/pack-combat-readability.py. Hostile bolt uses same128x128 physics texture frame/scale/life/damage/velocity. Shared circular spawnHazard warnings gain exact-radius clear-center rim and760ms countdown arc; original r+8 damage/timing retained, themed art dimmed beneath. Player gets reused foot marker/5.5% silhouette outline; at most12Elite crests and10transient windup/crit sparks, central clearArtVfx/pool cleanup. Large friendly animated VFX opacity capped.68 (selected huge boss overlays.58), persistent Mint snow.62. Common gear/currency glow quieter, no beams; rarer gear retains beam plus small glint. Critical numbers throttled90ms/160ms dense, smaller stroke/scale/lifetime, painted spark replaces emoji; forced numbers preserved. No balance/rewards/colliders changed. tests/combat-readability added to npm check. Owner phone visual/FPS review pending, no local gameplay/screenshots.
+
+# Latest delivery: v8.0.34 — ImageGen menu art50–54 integrated
+
+44 source-verified half-size WebP sheets/143frames (797,626bytes) in assets/art/menu_orders; reproduce scripts/pack-menu-orders-50-54.py. Literal ASSET_IMAGES paths for build hashing; MENU_ORDER_ART + TEMPLE_UI cells/slices. Menu-group lazy loading, menu-only classification and eviction; Login popup retries after eviction. Hooks: Equipment/Merge rarity frames and Merge beams; Forge points/action icons and lucky/star/hammer FX; Login panel/cells/rewards/stamp/halo; Daily boxes/leaves/pips/reroll; Awards medals/stars/secrets/ribbon/claim FX plus Lobby title; Bestiary empty portrait cards/tiers/weak icon/detail and Recipe page/chips/unknown/seal; Depths lantern/light/badges/miner plus Rank10 icons/Lobby miner. Paper ink/layout adapted. Animation timers removed on image/container destruction, reduced motion stills. Existing gameplay/rewards/tap zones retained. tests/menu-orders-art covers44source hashes/half-size cells/slices/lazy isolation/timer lifecycle; included npm check. Owner phone visual/FPS review pending. Source kits/provenance preserved.
 
 # Art delivery48 - C1/C2 boss arena source kit
 

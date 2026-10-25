@@ -1,0 +1,263 @@
+{
+  "order": 54,
+  "all_pass": true,
+  "scope": "Source art only; no runtime/phone gameplay claim.",
+  "assets": [
+    {
+      "key": "dig_lantern",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99183,
+        0.99177
+      ],
+      "frame_bounds": [
+        [
+          26,
+          4,
+          111,
+          124
+        ],
+        [
+          16,
+          4,
+          101,
+          124
+        ]
+      ],
+      "unique_frames": 2
+    },
+    {
+      "key": "vfx_dig_light",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.71944,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "frame_bounds": [
+        [
+          68,
+          46,
+          320,
+          357
+        ],
+        [
+          16,
+          21,
+          361,
+          375
+        ],
+        [
+          20,
+          16,
+          357,
+          376
+        ],
+        [
+          17,
+          8,
+          367,
+          346
+        ],
+        [
+          15,
+          22,
+          361,
+          338
+        ],
+        [
+          25,
+          25,
+          354,
+          336
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "dig_hint_badge",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.98935,
+        0.98974,
+        0.98946,
+        0.98939
+      ],
+      "frame_bounds": [
+        [
+          4,
+          4,
+          60,
+          60
+        ],
+        [
+          4,
+          4,
+          60,
+          60
+        ],
+        [
+          4,
+          4,
+          60,
+          60
+        ],
+        [
+          4,
+          4,
+          60,
+          60
+        ]
+      ],
+      "unique_frames": 4
+    },
+    {
+      "key": "dig_miner",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99172,
+        0.99179,
+        0.9919,
+        0.99188
+      ],
+      "frame_bounds": [
+        [
+          8,
+          4,
+          119,
+          107
+        ],
+        [
+          11,
+          4,
+          119,
+          123
+        ],
+        [
+          10,
+          4,
+          119,
+          124
+        ],
+        [
+          10,
+          4,
+          120,
+          107
+        ]
+      ],
+      "unique_frames": 4
+    },
+    {
+      "key": "rank_reward_icons",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.87865,
+        0.72712,
+        0.90855,
+        0.99257,
+        0.97702,
+        0.98191,
+        0.76072,
+        0.89883,
+        0.78438,
+        0.99232
+      ],
+      "frame_bounds": [
+        [
+          18,
+          38,
+          113,
+          121
+        ],
+        [
+          15,
+          26,
+          115,
+          118
+        ],
+        [
+          18,
+          18,
+          106,
+          124
+        ],
+        [
+          18,
+          28,
+          110,
+          122
+        ],
+        [
+          13,
+          26,
+          110,
+          120
+        ],
+        [
+          24,
+          10,
+          111,
+          104
+        ],
+        [
+          18,
+          7,
+          112,
+          104
+        ],
+        [
+          14,
+          12,
+          114,
+          100
+        ],
+        [
+          14,
+          4,
+          117,
+          106
+        ],
+        [
+          11,
+          6,
+          112,
+          107
+        ]
+      ],
+      "unique_frames": 10
+    }
+  ],
+  "preview_bytes": 148868,
+  "decoded_preview_bytes": 1163264,
+  "visual_review": "Passed all 26 states and actual 22/28/34/40px readability review. Lantern off/on distinct; hint centers blank. Miner identity and foot baseline retained, no ground shadow. Rank icon gutters revised to prevent bleed; Blink/Flash Step and Signature/Encore distinct. Runtime/phone review separate.",
+  "count_note": "The listed table yields26frames (2+6+4+4+10), though summary says24. Use all26 listed states."
+}

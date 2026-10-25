@@ -1,6 +1,6 @@
 # 51 — ปฏิทินล็อกอิน 7 วัน + Daily Quests · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 25 ต.ค. 2026 · โค้ดพร้อม v8.0.20 (Daily) / v8.0.24 (Login) ใช้กรอบวาดด้วยโค้ด + อีโมจิ 📅 🎁 ✓ แทน (หีบเงิน/ทองใช้ภาพใบ 40 แล้ว)
+สถานะ: 🟩 ผูกเข้าเกม v8.0.34 · source ImageGen ครบ · รอตรวจภาพ/FPS บนมือถือ
 ส่งไฟล์ที่ `assets/incoming/login_daily/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` เข้าชุด Lobby UI ใบ 33 (ครีม/ทอง/พลัม) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ** · UI วาด **2 เท่า**
 
@@ -44,4 +44,6 @@
 - เมนู lazy (`LAZY_MENU_ART_RE`) · ไม่มีรูป = ของเดิม
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+ส่งครบที่ assets/incoming/login_daily/ — ImageGen ต้นฉบับ, PNG ตามขนาด/เฟรม, preview WebP 50%, MANIFEST/PROMPTS/PROVENANCE/QA และภาพตรวจทุกสถานะ ตรวจขนาด/alpha และภาพย่อแล้ว การต่อเกมและตรวจมือถือเป็นงานถัดไป
+
+Runtime: assets/art/menu_orders/ · scripts/pack-menu-orders-50-54.py · metadata/grid/hash และ fallback พร้อม · ตรวจอัตโนมัติใน tests/menu-orders-art.test.cjs

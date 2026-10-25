@@ -1,0 +1,122 @@
+[
+  {
+    "key": "dig_lantern",
+    "file": "dig_lantern.png",
+    "width": 256,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 2,
+    "columns": 2,
+    "rows": 1,
+    "background": "transparent",
+    "loop": false,
+    "blend": "NORMAL",
+    "bytes": 51943,
+    "sha256": "884fc64ed9f724351f029d2ed2eeb69bf08f2ab95785d16b936b4ca56f15dde3",
+    "display_px": [
+      28,
+      28
+    ],
+    "preview_file": "preview_webp/dig_lantern.webp",
+    "preview_bytes": 6452,
+    "preview_sha256": "e0865577353eba607fd0ef8eb0cc45833e635c9114e47a0aec2c6c94604cbe18",
+    "preview_scale": 0.5
+  },
+  {
+    "key": "vfx_dig_light",
+    "file": "vfx_dig_light.png",
+    "width": 2304,
+    "height": 384,
+    "frameWidth": 384,
+    "frameHeight": 384,
+    "frameCount": 6,
+    "columns": 6,
+    "rows": 1,
+    "background": "#000000",
+    "loop": false,
+    "blend": "ADD",
+    "bytes": 854718,
+    "sha256": "2d111230c95eac50d2154327751c4d735db1046272c0e01799beb8254f8539dd",
+    "display_px": [
+      144,
+      144
+    ],
+    "preview_file": "preview_webp/vfx_dig_light.webp",
+    "preview_bytes": 101088,
+    "preview_sha256": "f7eb89323e4a42fa7bdc35157d1939bded1316b183b9fb390ad0de8af91ca431",
+    "preview_scale": 0.5
+  },
+  {
+    "key": "dig_hint_badge",
+    "file": "dig_hint_badge.png",
+    "width": 256,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 4,
+    "columns": 4,
+    "rows": 1,
+    "background": "transparent",
+    "loop": false,
+    "blend": "NORMAL",
+    "bytes": 26974,
+    "sha256": "7f7a8ba8eccc06f71be37296263df80b17f31baf09b3947c4ea267cb68800c05",
+    "display_px": [
+      22,
+      22
+    ],
+    "preview_file": "preview_webp/dig_hint_badge.webp",
+    "preview_bytes": 4038,
+    "preview_sha256": "48ed9de352889a50cbd7d5a839f65738ffd8daf3f82f7ba6af331e0c6ddaf465",
+    "preview_scale": 0.5
+  },
+  {
+    "key": "dig_miner",
+    "file": "dig_miner.png",
+    "width": 512,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 4,
+    "columns": 4,
+    "rows": 1,
+    "background": "transparent",
+    "loop": true,
+    "blend": "NORMAL",
+    "bytes": 98883,
+    "sha256": "3c128eaf0cc0ef9dac68514f904054c13023906cc6910b9a6df11e28e3b6d78b",
+    "display_px": [
+      40,
+      40
+    ],
+    "preview_file": "preview_webp/dig_miner.webp",
+    "preview_bytes": 10616,
+    "preview_sha256": "c10371d9f65fed0a31b36f2f08bbe58b1461273669d7e018cb4e5034077207d0",
+    "preview_scale": 0.5
+  },
+  {
+    "key": "rank_reward_icons",
+    "file": "rank_reward_icons.png",
+    "width": 640,
+    "height": 256,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 10,
+    "columns": 5,
+    "rows": 2,
+    "background": "transparent",
+    "loop": false,
+    "blend": "NORMAL",
+    "bytes": 209754,
+    "sha256": "0dc35d5d649e3ceb56796a50f02bb63b2d8ed8fac770137ac0d9f05adf21d5dc",
+    "display_px": [
+      34,
+      34
+    ],
+    "preview_file": "preview_webp/rank_reward_icons.webp",
+    "preview_bytes": 26674,
+    "preview_sha256": "7cbf6100f562e8f323f046fa48eb590bafe8b91c3aa67efacf1fba6fceb87a57",
+    "preview_scale": 0.5
+  }
+]

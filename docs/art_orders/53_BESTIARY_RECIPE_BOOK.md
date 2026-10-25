@@ -1,6 +1,6 @@
 # 53 — Bestiary + Recipe Book · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 25 ต.ค. 2026 · โค้ดพร้อม v8.0.29 (Recipe Book) / v8.0.30 (Bestiary) ใช้กรอบวาดด้วยโค้ด + "???" + อีโมจิแทน · รูปมอนสเตอร์ใช้ภาพศัตรูที่มีอยู่แล้ว (ไม่สั่งใหม่)
+สถานะ: 🟩 ผูกเข้าเกม v8.0.34 · source ImageGen ครบ · รอตรวจภาพ/FPS บนมือถือ
 ส่งไฟล์ที่ `assets/incoming/codex_books/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` เข้าชุดสมุดบันทึกใบ 27 (กระดาษครีม หมึกน้ำตาล) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ** · UI วาด **2 เท่า**
 
@@ -39,4 +39,6 @@
 - เมนู lazy · ไม่มีรูป = กรอบโค้ดเดิม
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+ส่งครบที่ assets/incoming/codex_books/ — ImageGen ต้นฉบับ, PNG ตามขนาด/เฟรม, preview WebP 50%, MANIFEST/PROMPTS/PROVENANCE/QA และภาพตรวจทุกสถานะ ตรวจขนาด/alpha และภาพย่อแล้ว การต่อเกมและตรวจมือถือเป็นงานถัดไป
+
+Runtime: assets/art/menu_orders/ · scripts/pack-menu-orders-50-54.py · metadata/grid/hash และ fallback พร้อม · ตรวจอัตโนมัติใน tests/menu-orders-art.test.cjs

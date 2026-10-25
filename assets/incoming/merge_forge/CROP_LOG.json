@@ -1,0 +1,405 @@
+[
+  {
+    "key": "rar_frame",
+    "donor_size": [
+      2172,
+      724
+    ],
+    "donor_grid_x": [
+      0,
+      535,
+      1086,
+      1622,
+      2172
+    ],
+    "donor_grid_y": [
+      0,
+      724
+    ],
+    "donor_cell_normalized": [
+      551,
+      724
+    ],
+    "union_crop": [
+      16,
+      7,
+      536,
+      685
+    ],
+    "common_scale": 0.3480825958702065,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "rar_cell",
+    "donor_size": [
+      2172,
+      724
+    ],
+    "donor_grid_x": [
+      0,
+      540,
+      1085,
+      1625,
+      2172
+    ],
+    "donor_grid_y": [
+      0,
+      724
+    ],
+    "donor_cell_normalized": [
+      547,
+      724
+    ],
+    "union_crop": [
+      14,
+      79,
+      534,
+      602
+    ],
+    "common_scale": 0.20650095602294455,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "rar_gem",
+    "donor_size": [
+      2172,
+      724
+    ],
+    "donor_grid_x": [
+      0,
+      539,
+      1090,
+      1626,
+      2172
+    ],
+    "donor_grid_y": [
+      0,
+      724
+    ],
+    "donor_cell_normalized": [
+      551,
+      724
+    ],
+    "union_crop": [
+      31,
+      33,
+      523,
+      655
+    ],
+    "common_scale": 0.06430868167202572,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "merge_slot_empty",
+    "donor_size": [
+      1024,
+      1536
+    ],
+    "donor_grid_x": [
+      0,
+      1024
+    ],
+    "donor_grid_y": [
+      0,
+      1536
+    ],
+    "donor_cell_normalized": [
+      1024,
+      1536
+    ],
+    "union_crop": [
+      24,
+      50,
+      1002,
+      1467
+    ],
+    "common_scale": 0.16654904728299225,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "ic_merge",
+    "donor_size": [
+      1254,
+      1254
+    ],
+    "donor_grid_x": [
+      0,
+      1254
+    ],
+    "donor_grid_y": [
+      0,
+      1254
+    ],
+    "donor_cell_normalized": [
+      1254,
+      1254
+    ],
+    "union_crop": [
+      157,
+      96,
+      1177,
+      1084
+    ],
+    "common_scale": 0.11764705882352941,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "ic_forge_point",
+    "donor_size": [
+      1254,
+      1254
+    ],
+    "donor_grid_x": [
+      0,
+      1254
+    ],
+    "donor_grid_y": [
+      0,
+      1254
+    ],
+    "donor_cell_normalized": [
+      1254,
+      1254
+    ],
+    "union_crop": [
+      77,
+      57,
+      1169,
+      1195
+    ],
+    "common_scale": 0.0492091388400703,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "ic_star_up",
+    "donor_size": [
+      1254,
+      1254
+    ],
+    "donor_grid_x": [
+      0,
+      1254
+    ],
+    "donor_grid_y": [
+      0,
+      1254
+    ],
+    "donor_cell_normalized": [
+      1254,
+      1254
+    ],
+    "union_crop": [
+      123,
+      68,
+      1130,
+      1170
+    ],
+    "common_scale": 0.050816696914700546,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "ic_mod_remove",
+    "donor_size": [
+      1312,
+      1199
+    ],
+    "donor_grid_x": [
+      0,
+      1312
+    ],
+    "donor_grid_y": [
+      0,
+      1199
+    ],
+    "donor_cell_normalized": [
+      1312,
+      1199
+    ],
+    "union_crop": [
+      42,
+      45,
+      1294,
+      1165
+    ],
+    "common_scale": 0.04472843450479233,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "ic_lucky",
+    "donor_size": [
+      1254,
+      1254
+    ],
+    "donor_grid_x": [
+      0,
+      1254
+    ],
+    "donor_grid_y": [
+      0,
+      1254
+    ],
+    "donor_cell_normalized": [
+      1254,
+      1254
+    ],
+    "union_crop": [
+      131,
+      112,
+      1145,
+      1168
+    ],
+    "common_scale": 0.05303030303030303,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "vfx_merge_fuse",
+    "donor_size": [
+      1774,
+      887
+    ],
+    "donor_grid_x": [
+      0,
+      459,
+      892,
+      1317,
+      1774
+    ],
+    "donor_grid_y": [
+      0,
+      417,
+      887
+    ],
+    "donor_cell_normalized": [
+      459,
+      470
+    ],
+    "union_crop": [
+      34,
+      48,
+      414,
+      421
+    ],
+    "common_scale": 0.9894736842105263,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "vfx_rarity_up",
+    "donor_size": [
+      1536,
+      1024
+    ],
+    "donor_grid_x": [
+      0,
+      511,
+      1007,
+      1536
+    ],
+    "donor_grid_y": [
+      0,
+      512,
+      1024
+    ],
+    "donor_cell_normalized": [
+      529,
+      512
+    ],
+    "union_crop": [
+      20,
+      0,
+      523,
+      512
+    ],
+    "common_scale": 0.484375,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "vfx_star_up",
+    "donor_size": [
+      1536,
+      1024
+    ],
+    "donor_grid_x": [
+      0,
+      510,
+      1026,
+      1536
+    ],
+    "donor_grid_y": [
+      0,
+      478,
+      1024
+    ],
+    "donor_cell_normalized": [
+      516,
+      546
+    ],
+    "union_crop": [
+      43,
+      42,
+      467,
+      498
+    ],
+    "common_scale": 0.40350877192982454,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "vfx_lucky",
+    "donor_size": [
+      1536,
+      1024
+    ],
+    "donor_grid_x": [
+      0,
+      526,
+      988,
+      1536
+    ],
+    "donor_grid_y": [
+      0,
+      509,
+      1024
+    ],
+    "donor_cell_normalized": [
+      548,
+      515
+    ],
+    "union_crop": [
+      21,
+      32,
+      525,
+      484
+    ],
+    "common_scale": 0.49206349206349204,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  },
+  {
+    "key": "vfx_forge_hit",
+    "donor_size": [
+      1536,
+      1024
+    ],
+    "donor_grid_x": [
+      0,
+      520,
+      1019,
+      1536
+    ],
+    "donor_grid_y": [
+      0,
+      545,
+      1024
+    ],
+    "donor_cell_normalized": [
+      520,
+      545
+    ],
+    "union_crop": [
+      10,
+      0,
+      514,
+      522
+    ],
+    "common_scale": 0.3524904214559387,
+    "operation": "Common crop/scale preserves effect motion and state alignment; panels stretch mechanically to exact source dimensions."
+  }
+]

@@ -1,0 +1,326 @@
+{
+  "order": 51,
+  "all_pass": true,
+  "scope": "Source art only; no runtime/phone gameplay claim.",
+  "assets": [
+    {
+      "key": "login_panel",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99104
+      ],
+      "frame_bounds": [
+        [
+          2,
+          2,
+          670,
+          658
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "login_cell",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99225,
+        0.99215,
+        0.99137
+      ],
+      "frame_bounds": [
+        [
+          9,
+          5,
+          137,
+          135
+        ],
+        [
+          3,
+          2,
+          137,
+          137
+        ],
+        [
+          2,
+          5,
+          131,
+          135
+        ]
+      ],
+      "unique_frames": 3
+    },
+    {
+      "key": "login_stamp",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99144
+      ],
+      "frame_bounds": [
+        [
+          4,
+          8,
+          124,
+          120
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "login_glow",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "frame_bounds": [
+        [
+          11,
+          14,
+          182,
+          182
+        ],
+        [
+          10,
+          6,
+          182,
+          183
+        ],
+        [
+          10,
+          15,
+          181,
+          182
+        ],
+        [
+          9,
+          15,
+          184,
+          175
+        ],
+        [
+          9,
+          15,
+          183,
+          185
+        ],
+        [
+          9,
+          15,
+          181,
+          175
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "day_reward",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.98958,
+        0.98921,
+        0.98982,
+        0.98975
+      ],
+      "frame_bounds": [
+        [
+          12,
+          27,
+          124,
+          103
+        ],
+        [
+          5,
+          12,
+          124,
+          111
+        ],
+        [
+          6,
+          12,
+          124,
+          113
+        ],
+        [
+          4,
+          9,
+          123,
+          118
+        ]
+      ],
+      "unique_frames": 4
+    },
+    {
+      "key": "dq_box",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99212,
+        0.99203,
+        0.99123,
+        0.99193,
+        0.99169,
+        0.9919
+      ],
+      "frame_bounds": [
+        [
+          28,
+          33,
+          100,
+          121
+        ],
+        [
+          25,
+          13,
+          103,
+          124
+        ],
+        [
+          14,
+          15,
+          109,
+          123
+        ],
+        [
+          13,
+          15,
+          111,
+          114
+        ],
+        [
+          13,
+          16,
+          111,
+          109
+        ],
+        [
+          13,
+          4,
+          114,
+          115
+        ]
+      ],
+      "unique_frames": 6
+    },
+    {
+      "key": "dq_band",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99094,
+        0.99133,
+        0.99117
+      ],
+      "frame_bounds": [
+        [
+          4,
+          5,
+          60,
+          57
+        ],
+        [
+          4,
+          5,
+          60,
+          58
+        ],
+        [
+          4,
+          5,
+          60,
+          58
+        ]
+      ],
+      "unique_frames": 3
+    },
+    {
+      "key": "dq_week_pip",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.9921,
+        0.99195
+      ],
+      "frame_bounds": [
+        [
+          4,
+          5,
+          60,
+          58
+        ],
+        [
+          4,
+          5,
+          60,
+          58
+        ]
+      ],
+      "unique_frames": 2
+    },
+    {
+      "key": "ic_reroll",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99179
+      ],
+      "frame_bounds": [
+        [
+          4,
+          4,
+          60,
+          60
+        ]
+      ],
+      "unique_frames": 1
+    }
+  ],
+  "preview_bytes": 109956,
+  "decoded_preview_bytes": 928304,
+  "visual_review": "Passed all-state, true alpha, actual phone-size readability and nine-slice review. Panel revised to remove baked slots; plain center and blank header preserved. Reward amounts/types and paired boxes distinguishable. Runtime/phone review separate.",
+  "count_note": "The order summary says10files; its explicit table names9. Deliver the9named assets; no invented tenth file."
+}

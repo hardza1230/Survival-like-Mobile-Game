@@ -1,0 +1,58 @@
+{
+  "tool": "Built-in image_gen",
+  "date": "2026-10-25",
+  "jobs": [
+    {
+      "key": "login_panel",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-1b9b94fc-52bd-477f-8490-5d5d146eea8f.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 1 frame(s) in donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One cream confectionery calendar popup panel, thin warm gold border, blank ribbon at TOP for game text, a few tiny candies only at corners. Calm plain cream interior for7reward slots, no grid printed, no dates, no words."
+    },
+    {
+      "key": "login_cell",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-6b1d5f87-2b60-495b-ab24-70411de3c333.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 3 frame(s) in donor grid 3columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. THREE equal square calendar reward cells.1normal cream paper rounded square,2TODAY same square with brighter warm gold rim and fine glow,3claimed same cell muted/faded cream. Same core size, empty plain centers, no icons, text, checkmarks or dates."
+    },
+    {
+      "key": "login_stamp",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-77d2f672-0293-4c7c-8fd6-1f4b887accee.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 1 frame(s) in donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One slightly tilted cookie wax-like stamp bearing a sculpted pink CHECK SHAPE. Cookie scalloped edge, warm cream and pink, no words/numbers."
+    },
+    {
+      "key": "login_glow",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-f4e7f6de-cc72-4b9c-9a73-73c77bbbb61d.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. PURE BLACK #000000 background, no gray canvas, no gridlines.EXACT 6 frame(s) in donor grid 3columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. SIX frames donor3x2: a subtle warm-gold sparkle halo orbiting the OUTSIDE of a rounded-square reward cell, looping with tiny white glints traveling around perimeter. Center PURE BLACK and clear, no cell/icon. Same halo size all frames, frame6 connects to1."
+    },
+    {
+      "key": "day_reward",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-7b2dbab5-8db6-4827-a6d5-7b7a18fd8d0e.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 4 frame(s) in donor grid 4columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. FOUR reward icons in one row.1small pile of pink Sugar wrapped candies.2two spools of magical sewing thread.3small craft-material pouch with a swirl of Twist Cream and a blue Crystal Glaze shard sticking out.4MUCH larger heap of pink Sugar candies overflowing a little tray. Distinct amounts and silhouettes, no captions."
+    },
+    {
+      "key": "dq_box",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-7f9265d2-fa3a-4d94-bccf-d3ab3862bb05.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 6 frame(s) in donor grid 3columns x2rows, equal cells, left-to-right then top-to-bottom, no separators. SIX frames donor3x2 in exact order:1small pink paper gift box CLOSED;2SAME small pink box OPEN lid ajar with soft light;3medium blue reward box CLOSED;4SAME medium blue box OPEN;5large warm gold reward box CLOSED;6SAME large gold box OPEN. Three types differ by size and silhouette. Stable position within each pair, simple cute candy motif, no text."
+    },
+    {
+      "key": "dq_band",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-5262fc31-057f-43bc-9667-30224cdd6b43.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 3 frame(s) in donor grid 3columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. THREE quest difficulty leaf badges:1simple soft green leaf;2golden leaf;3red leaf with tiny thorned edges. Distinct silhouettes, clear at18px, no text."
+    },
+    {
+      "key": "dq_week_pip",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-25f1626f-5f4f-4d05-aaf9-0b1db6b05ebc.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 2 frame(s) in donor grid 2columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. TWO weekly progress coin pins:1empty muted shadow coin;2bright gold coin with one sculpted five-point star. Same core size, no words/numbers."
+    },
+    {
+      "key": "ic_reroll",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-a4b47096-869c-4ca2-bd24-a72ce4b873f4.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard or opaque backdrop. EXACT 1 frame(s) in donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One small candy die with dot pips (not numerals), curved circular arrow sweeping around it to suggest reroll. Simple pink cream gold icon at20px, no words."
+    }
+  ],
+  "revisions": [
+    {
+      "key": "login_panel",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT confectionery UI popup background. REMOVE all seven round reward-cell medallions completely, including all their outlines, shadows, little crowns, inner shapes. Replace the whole interior below the header with one smooth plain cream paper surface. There must be ZERO slots, ZERO circles, ZERO grid, ZERO embossed placeholder shapes inside the panel. Keep the outer silhouette, border, blank top ribbon, corner sweets and true transparent exterior unchanged. This is ONLY an EMPTY background on which game code places reward cells separately. No text, numbers, words or watermark. Calm unmarked center occupying at least70% of panel.",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e603a79c-be9b-40dd-a612-edc92be8f542.png"
+    }
+  ]
+}

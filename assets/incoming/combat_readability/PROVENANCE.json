@@ -1,0 +1,35 @@
+{
+  "tool": "Built-in image_gen",
+  "date": "2026-10-25",
+  "originals": [
+    {
+      "file": "combat_foe_bolt.png",
+      "bytes": 668096,
+      "sha256": "efb46931266785a1f9c956783403a0f22b47b1270da7d1566f3684c96718e71a"
+    },
+    {
+      "file": "combat_foe_bolt_v1.png",
+      "bytes": 340777,
+      "sha256": "b8de31f530668b305be9614e07bd7e61cdd306bd722d1a36f101a7ffd1a401e7"
+    },
+    {
+      "file": "combat_readability_atlas.png",
+      "bytes": 1542897,
+      "sha256": "585a396644d4cf4c574c11d6656af50f0d187f155f776ccb829414409e1bf753"
+    }
+  ],
+  "generated": [
+    {
+      "key": "combat_foe_bolt",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-42dd4287-23a7-4d79-afb6-754f7fb989f4.png"
+    },
+    {
+      "key": "combat_readability_atlas",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-21fbb7c0-734e-4e04-bc7b-3894aa3f7e36.png"
+    }
+  ],
+  "revision": {
+    "prompt": "Use case: precise-object-edit. Edit this same coral candy projectile into a COMPACT collision-readable game sprite. Preserve its candy style and dark plum/ivory outline. Make its broad pointed HEAD the dominant shape: head occupies central80% of canvas WIDTH and80% of canvas HEIGHT, centered exactly at50%,50%. Nose points RIGHT. SHORTEN its long left tail dramatically to only a tiny rear fin, entirely within left10%-25% of square canvas, attached to broad head. All artwork must fit inside square with at least8% fully transparent margin on every edge. NO long comet tail, NO external glow or particles. This will replace a round hostile bullet on the SAME128x128physics sprite: the visible head should fill almost the whole original circular hitbox, so must NOT be a tiny head on a long streak. One sprite, real transparent alpha. No words/labels/numbers/shadow/background.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-319e42ba-2c5f-48b1-a5f9-f17ce9f16845.png"
+  }
+}

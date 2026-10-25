@@ -1,0 +1,262 @@
+{
+  "order": 50,
+  "folder": "merge_forge",
+  "title": "Merge and Forge Points",
+  "jobs": [
+    {
+      "key": "rar_frame",
+      "fw": 208,
+      "fh": 244,
+      "n": 4,
+      "cols": 4,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 1,
+      "detail": "FOUR portrait item-card border frames, one horizontal row. Centers are TRUE TRANSPARENT HOLES, thin borders leave at least75% area open. Frame1 mint green plain rounded card border. Frame2 champagne gold border with one small bow at upper right. Frame3 purple crystalline border with faceted pointed corners. Frame4 orange-gold border with small flame/spark corner shapes. Keep TOP LEFT corner clear for a game badge in each frame. Exact same card size/alignment. The four silhouettes must differ by corner motif, not only hue.",
+      "ns": [
+        40,
+        40,
+        40,
+        40
+      ],
+      "hollow": true,
+      "display": [
+        104,
+        122
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 4 frame(s), donor grid 4 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. FOUR portrait item-card border frames, one horizontal row. Centers are TRUE TRANSPARENT HOLES, thin borders leave at least75% area open. Frame1 mint green plain rounded card border. Frame2 champagne gold border with one small bow at upper right. Frame3 purple crystalline border with faceted pointed corners. Frame4 orange-gold border with small flame/spark corner shapes. Keep TOP LEFT corner clear for a game badge in each frame. Exact same card size/alignment. The four silhouettes must differ by corner motif, not only hue."
+    },
+    {
+      "key": "rar_cell",
+      "fw": 116,
+      "fh": 116,
+      "n": 4,
+      "cols": 4,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 1,
+      "detail": "FOUR square rounded inventory cell borders in one row, centers TRUE TRANSPARENT HOLES. Same card size. Mint plain rounded corners; gold with tiny bow at upper right; purple faceted crystal corners; orange flame/spark corners. Thin rims, no item, no background fill. Readable at58px, differentiated corner shapes.",
+      "ns": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "hollow": true,
+      "display": [
+        58,
+        58
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 4 frame(s), donor grid 4 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. FOUR square rounded inventory cell borders in one row, centers TRUE TRANSPARENT HOLES. Same card size. Mint plain rounded corners; gold with tiny bow at upper right; purple faceted crystal corners; orange flame/spark corners. Thin rims, no item, no background fill. Readable at58px, differentiated corner shapes."
+    },
+    {
+      "key": "rar_gem",
+      "fw": 48,
+      "fh": 48,
+      "n": 4,
+      "cols": 4,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 1,
+      "detail": "FOUR isolated rarity gems in one row. 1 mint green teardrop;2 gold diamond;3 purple crystal cluster;4 orange flame-shaped star jewel. Same visual weight, distinct silhouettes, no borders or cards.",
+      "display": [
+        24,
+        24
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 4 frame(s), donor grid 4 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. FOUR isolated rarity gems in one row. 1 mint green teardrop;2 gold diamond;3 purple crystal cluster;4 orange flame-shaped star jewel. Same visual weight, distinct silhouettes, no borders or cards."
+    },
+    {
+      "key": "merge_slot_empty",
+      "fw": 208,
+      "fh": 244,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "Single portrait cream parchment empty material slot card with a soft dashed decorative rim, simple soft paper shading and a small raised sculpted PLUS CROSS at center (a geometric embossed shape, not typography). Rounded corners, empty paper apart from plus. No other marks.",
+      "display": [
+        104,
+        122
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 1 frame(s), donor grid 1 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. Single portrait cream parchment empty material slot card with a soft dashed decorative rim, simple soft paper shading and a small raised sculpted PLUS CROSS at center (a geometric embossed shape, not typography). Rounded corners, empty paper apart from plus. No other marks."
+    },
+    {
+      "key": "ic_merge",
+      "fw": 128,
+      "fh": 128,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "One compact icon: three small candy equipment fragments converge into one central polished gem, a single curved sweeping arrow and tiny sparkle imply merging. Very simple silhouette, readable at18px as well as40px. No words.",
+      "display": [
+        40,
+        40
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 1 frame(s), donor grid 1 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. One compact icon: three small candy equipment fragments converge into one central polished gem, a single curved sweeping arrow and tiny sparkle imply merging. Very simple silhouette, readable at18px as well as40px. No words."
+    },
+    {
+      "key": "ic_forge_point",
+      "fw": 64,
+      "fh": 64,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "Single candy smith hammer icon, pink candy head and warm gold handle, strong simple diagonal silhouette, readable at14-18px. No anvil, no badge.",
+      "display": [
+        18,
+        18
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 1 frame(s), donor grid 1 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. Single candy smith hammer icon, pink candy head and warm gold handle, strong simple diagonal silhouette, readable at14-18px. No anvil, no badge."
+    },
+    {
+      "key": "ic_star_up",
+      "fw": 64,
+      "fh": 64,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "One gold five-point star with a small sculpted upward arrow integrated beneath it. Simple clean iconic shape at18px. No words.",
+      "display": [
+        18,
+        18
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 1 frame(s), donor grid 1 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. One gold five-point star with a small sculpted upward arrow integrated beneath it. Simple clean iconic shape at18px. No words."
+    },
+    {
+      "key": "ic_mod_remove",
+      "fw": 64,
+      "fh": 64,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "One dessert spoon lifting away a few dissolving cream spark crumbs. Clear diagonal silver/cream spoon shape with pink-gold handle. NO garbage bin. Simple readable18px silhouette.",
+      "display": [
+        18,
+        18
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 1 frame(s), donor grid 1 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. One dessert spoon lifting away a few dissolving cream spark crumbs. Clear diagonal silver/cream spoon shape with pink-gold handle. NO garbage bin. Simple readable18px silhouette."
+    },
+    {
+      "key": "ic_lucky",
+      "fw": 64,
+      "fh": 64,
+      "n": 1,
+      "cols": 1,
+      "rows": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "detail": "Single four-leaf clover made of glossy green jelly hearts, tiny short stem, no background disc. Clear four lobes at18px.",
+      "display": [
+        24,
+        24
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects; no baked checkerboard/white/black backdrop. EXACTLY 1 frame(s), donor grid 1 columns x 1 rows, equal cells, order left to right then top to bottom, no separators. Single four-leaf clover made of glossy green jelly hearts, tiny short stem, no background disc. Clear four lobes at18px."
+    },
+    {
+      "key": "vfx_merge_fuse",
+      "fw": 384,
+      "fh": 384,
+      "n": 8,
+      "cols": 8,
+      "rows": 1,
+      "donor_cols": 4,
+      "donor_rows": 2,
+      "detail": "EIGHT animation frames in donor grid4columns x2rows. Two small WHITE-CREAM LIGHT fragments orbit and converge to center, merge into a circular bright flash, then small sparks disperse and fade. Frame1 two fragments apart;2-3 approaching;4 convergence;5 strongest round flash;6-8 diminishing sparks. All painted effect is neutral white/cream for runtime tinting; NO colored accents, no real equipment objects, no card. Stable common center/scale, preserve motion positions and fading.",
+      "black": true,
+      "display": [
+        200,
+        200
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. Pure BLACK #000000 background. No ambient scene. Effect separated clearly from black, no gray floor, no gridlines.EXACTLY 8 frame(s), donor grid 4 columns x 2 rows, equal cells, order left to right then top to bottom, no separators. EIGHT animation frames in donor grid4columns x2rows. Two small WHITE-CREAM LIGHT fragments orbit and converge to center, merge into a circular bright flash, then small sparks disperse and fade. Frame1 two fragments apart;2-3 approaching;4 convergence;5 strongest round flash;6-8 diminishing sparks. All painted effect is neutral white/cream for runtime tinting; NO colored accents, no real equipment objects, no card. Stable common center/scale, preserve motion positions and fading."
+    },
+    {
+      "key": "vfx_rarity_up",
+      "fw": 256,
+      "fh": 256,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX animation frames in donor grid3columns x2rows. A WHITE-CREAM vertical beam rises from lower center with a circular expanding ring and tiny neutral stars, blooms then fades. Entire effect monochrome white/cream for tinting. No card or text. Consistent ground source point and common scale, later frames sparse fading particles.",
+      "black": true,
+      "display": [
+        160,
+        160
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. Pure BLACK #000000 background. No ambient scene. Effect separated clearly from black, no gray floor, no gridlines.EXACTLY 6 frame(s), donor grid 3 columns x 2 rows, equal cells, order left to right then top to bottom, no separators. SIX animation frames in donor grid3columns x2rows. A WHITE-CREAM vertical beam rises from lower center with a circular expanding ring and tiny neutral stars, blooms then fades. Entire effect monochrome white/cream for tinting. No card or text. Consistent ground source point and common scale, later frames sparse fading particles."
+    },
+    {
+      "key": "vfx_star_up",
+      "fw": 192,
+      "fh": 192,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX animation frames donor3x2. Exactly five small pale-gold stars orbit in a compact circle, spiral together into one bright gold star that flies upward and sheds tiny sparks, last frames fade. Consistent shared frame origin/scale, no words or UI cards.",
+      "black": true,
+      "display": [
+        120,
+        120
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. Pure BLACK #000000 background. No ambient scene. Effect separated clearly from black, no gray floor, no gridlines.EXACTLY 6 frame(s), donor grid 3 columns x 2 rows, equal cells, order left to right then top to bottom, no separators. SIX animation frames donor3x2. Exactly five small pale-gold stars orbit in a compact circle, spiral together into one bright gold star that flies upward and sheds tiny sparks, last frames fade. Consistent shared frame origin/scale, no words or UI cards."
+    },
+    {
+      "key": "vfx_lucky",
+      "fw": 256,
+      "fh": 256,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX animation frames donor3x2. A four-leaf glossy green jelly clover pops outward with mint green sparkles, peaks as one large clear clover at middle frames, then dissolves into small green motes. Shared center/scale; clean one-shot, no text or backdrop disc.",
+      "black": true,
+      "display": [
+        180,
+        180
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. Pure BLACK #000000 background. No ambient scene. Effect separated clearly from black, no gray floor, no gridlines.EXACTLY 6 frame(s), donor grid 3 columns x 2 rows, equal cells, order left to right then top to bottom, no separators. SIX animation frames donor3x2. A four-leaf glossy green jelly clover pops outward with mint green sparkles, peaks as one large clear clover at middle frames, then dissolves into small green motes. Shared center/scale; clean one-shot, no text or backdrop disc."
+    },
+    {
+      "key": "vfx_forge_hit",
+      "fw": 192,
+      "fh": 192,
+      "n": 6,
+      "cols": 6,
+      "rows": 1,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "detail": "SIX animation frames donor3x2. A small pink-gold candy smith hammer swings down from above into lower-center impact, bright cream sparks burst, then sparks and hammer fade. Shared impact location and camera. No equipment card, no extra anvil, no words.",
+      "black": true,
+      "display": [
+        120,
+        120
+      ],
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. Pure BLACK #000000 background. No ambient scene. Effect separated clearly from black, no gray floor, no gridlines.EXACTLY 6 frame(s), donor grid 3 columns x 2 rows, equal cells, order left to right then top to bottom, no separators. SIX animation frames donor3x2. A small pink-gold candy smith hammer swings down from above into lower-center impact, bright cream sparks burst, then sparks and hammer fade. Shared impact location and camera. No equipment card, no extra anvil, no words."
+    }
+  ],
+  "revisions": [
+    {
+      "key": "rar_frame",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT four-rarity frame sheet, preserving its four equal cells, sizes, colors, thin outline and TRUE TRANSPARENT centers/exterior. Make COMMON, the FIRST mint-green frame, genuinely SIMPLE: a plain thin mint rounded rim, no leaves, gems, bows, pearls, side ornaments or extra decorative objects. Keep the common frame gentle green rather than gold. For ALL FOUR portrait frames, reserve the upper-left badge area: remove decorative objects from the top-left corner and the first20% along top/left edges, leaving only a thin smooth colored border there. Keep gold bow ONLY upper-right, purple crystal motifs on right/bottom corners, orange flame motifs on right/bottom corners. Keep the rest unchanged. NO filled center, NO text/numerals/labels/watermark, no baked checkerboard.",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-adf06bb3-781d-43bf-817a-98dd3dd74664.png"
+    },
+    {
+      "key": "rar_cell",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT four-rarity frame sheet, preserving its four equal cells, sizes, colors, thin outline and TRUE TRANSPARENT centers/exterior. Make COMMON, the FIRST mint-green frame, genuinely SIMPLE: a plain thin mint rounded rim, no leaves, gems, bows, pearls, side ornaments or extra decorative objects. Keep the common frame gentle green rather than gold. For the gold/purple/orange square frames keep their existing distinctive bow/crystal/flame corner silhouettes. Keep the rest unchanged. NO filled center, NO text/numerals/labels/watermark, no baked checkerboard.",
+      "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-9972b9d6-6a51-4fb9-b755-d74eb5d1066c.png"
+    }
+  ]
+}

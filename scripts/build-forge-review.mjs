@@ -17,6 +17,7 @@ class ForgeReview extends Phaser.Scene{
  constructor(){super('ForgeReview');}
  preload(){
   const wanted=new Set(['fg_ui_atlas','craft_bench_bg','hr_ic_candy','hr_ic_melee','hr_ic_control','hr_ic_precision',...CURRENCY.map(c=>c.asset),...Save.data.gearItems.map(it=>'gear_'+it.baseId)]);
+  for(const k of Object.keys(MENU_ORDER_ART))if(menuGroupRe('craft').test(ASSET_IMAGES[k]))wanted.add(k);
   for(const key of wanted)if(ASSET_IMAGES[key])this.load.image(key,ASSET_IMAGES[key]);
   this.load.on('loaderror',f=>{document.getElementById('status').textContent='Asset load failed: '+f.key;});
  }
@@ -32,7 +33,7 @@ class ForgeReview extends Phaser.Scene{
  buildMenuScreen(){this.menuScreen='craft';this._forgePanel=null;this.buildCraftBench();}
  screenFlash(){} screenShake(){} showBanner(){} drawMenuScrollIndicator(){}
 }
-for(const key of ['forgeFrame','forgeChrome','forgeText','forgeIcon','forgeButton','forgeResetPick','forgeSelectItem','forgeOpenPanel','buildCraftBench','_buildCraftBenchRaw','drawForgePanel','_screenBg','_coverImage','_zone','setupMenuScroll','setMenuScroll','_craftContext','forgeAct','affixHype'])ForgeReview.prototype[key]=Game.prototype[key];
+for(const key of ['menuArtFitButton','menuArtPanel','menuArtIcon','menuArtInk','menuArtFx','menuRarityFrame','tuHas','tuFrames','tuImg','tuPanel','hubMotionAllowed','forgeFrame','forgeChrome','forgeText','forgeIcon','forgeButton','forgeResetPick','forgeSelectItem','forgeOpenPanel','buildCraftBench','_buildCraftBenchRaw','drawForgePanel','_screenBg','_coverImage','_zone','setupMenuScroll','setMenuScroll','_craftContext','forgeAct','affixHype'])ForgeReview.prototype[key]=Game.prototype[key];
 async function bootReview(){await document.fonts.load('700 16px NunitoUI');await document.fonts.load('400 12px NunitoUI');window.__forgeReviewGame=new Phaser.Game({type:Phaser.CANVAS,parent:'mount',width:RW,height:RH,backgroundColor:'#1a1420',render:{antialias:true},scene:[ForgeReview]});}
 window.addEventListener('error',e=>{document.getElementById('status').textContent='Error: '+e.message;});
 bootReview();
