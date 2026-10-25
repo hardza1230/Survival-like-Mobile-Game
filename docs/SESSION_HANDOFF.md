@@ -1,7 +1,9 @@
-# Combat readability v8.0.35 — implementation complete
+# Combat readability v8.0.35 — delivered
 
-User approved all six recommendations. Implemented coral hostile bolts, clear-center warnings with exact 760ms countdown/radius, reused player ring/silhouette, lighter large friendly/boss VFX, bounded Elite/windup markers, quieter common loot and critical damage numbers. Seven ImageGen sprites and original/source/provenance/QA kit are in assets/art/combat_readability and assets/incoming/combat_readability; reproducible packer scripts/pack-combat-readability.py.
+User approved all six combat-art recommendations. Delivered seven ImageGen alpha sprites and wired coral hostile bolts, clear-center accurate warnings, reused player ring/silhouette, lighter large VFX, bounded Elite/windup cues, quieter common loot and critical damage numbers. No gameplay/balance/reward tuning.
 
-Validation: npm run check and npm run build:www passed; seven built sprites match manifest SHA256 and www/version.json is 8.0.35. Meaningful contracts cover projectile 128px physics parity, hazard radius/delay, object reuse and cleanup, cosmetic budgets, opacity and loot hierarchy. No gameplay/balance changes. No local gameplay/screenshots; owner phone review remains pending.
+Runtime published: 6294b6e2333c266cb9503155cc4f3ee3f8e0a15e on claude/vampire-survival-mobile-game-yo9e8w. Immutable remote readback verified all 32 changed files (5,890,000 bytes), including image decode. npm run check and npm run build:www passed. All seven built sprites match manifest SHA256 and built version is 8.0.35.
 
-Next: publish tested tree on claude/vampire-survival-mobile-game-yo9e8w, verify immutable remote bytes, check deployment once and leave background deploy running. Preserve unrelated untracked art review files. Previous checkpoint 553bdff9c73307f8e303aade9f68e2525c697def.
+Source/provenance/QA: assets/incoming/combat_readability; runtime: assets/art/combat_readability; reproducible packer: scripts/pack-combat-readability.py; scope: docs/art_orders/COMBAT_READABILITY_8_0_35.md. Contracts cover projectile 128px body/velocity parity, hazard radius/760ms, object reuse/cleanup, cosmetic budgets, opacity and loot hierarchy.
+
+Deployment checked once after publication: Pages run 40159120693 and Android run 40159120688 were in_progress; live website still 8.0.34 at that check. Let deployment continue in background; do not repeatedly wait. Owner phone visual/FPS review remains pending; no local gameplay/screenshots performed. Preserve unrelated untracked art review files.
