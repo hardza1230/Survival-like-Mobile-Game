@@ -1,0 +1,19 @@
+{
+  "tool": "Built-in image_gen",
+  "jobs": [
+    {
+      "key": "combat_foe_bolt",
+      "prompt": "Use case: stylized-concept. Production game sprite for Mochi Mayhem, cute confectionery fantasy top-down mobile combat. ONE tiny hostile candy magic projectile pointing exactly RIGHT, inside a SQUARE transparent canvas. The luminous compact coral-orange pointed candy HEAD is centered at the exact canvas center (50% x,50% y). Short tapering ivory-orange tail extends LEFT behind it, only from10% to45% canvas x. Head ends at70% canvas x. Dark plum crisp outer contour with thin ivory edge, coral hot center; simple 2-3 tone painted shading. Strong readable silhouette at20pixels. Balanced vertical symmetry, entire sprite inside15%-85% height, no excessive bloom, no particles beyond object, no shadows, no text, no numbers, no face. Real transparent background. NOT a green or blue EXP gemstone, not a teardrop. Head at exact center so physics remains unchanged.",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-42dd4287-23a7-4d79-afb6-754f7fb989f4.png"
+    },
+    {
+      "key": "combat_readability_atlas",
+      "prompt": "Use case: stylized-concept. Production UI/VFX sprite atlas for Mochi Mayhem, premium cute confectionery fantasy top-down mobile combat. EXACT SIX separate static sprites in an EXACT 3columns by2rows grid with equal SQUARE cells, read left-to-right top-to-bottom. Generous transparent gutters, each entire element fits central75% of its cell. Soft painted 2-3tone candy shading and crisp dark plum contours; restrained highlights, readable at16-40pixels. No words/letters/numbers/faces/background/ground shadows. TRUE transparent alpha outside all elements and in ring holes. Cell1: thin horizontal ELLIPTICAL player-foot marker, ivory/gold outer rim with small mint accents and four tiny diamond ticks, FULLY TRANSPARENT EMPTY center; width80%cell,height30%cell. Cell2: precise CIRCULAR danger perimeter, thin luminous coral-orange candy rim with thin ivory highlight and dark plum outer edge, FULLY TRANSPARENT center, no fill or central rays; ring fits central75%cell. Cell3: tiny violet ELITE shield crest with TWO small gold upward horns, strong simple silhouette, no letters or face. Cell4: small gold and ivory eight-point CRITICAL IMPACT spark, compact, no text, no broad bloom. Cell5: small orange windup flare with TWO short angled chevrons framing a white central glint, no exclamation mark or typography. Cell6: restrained white/champagne loot glint, one large four-point star and TWO tiny satellites. All six align center in their cells; no overlaps. Ring holes and cell gutters are genuinely transparent.",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-21fbb7c0-734e-4e04-bc7b-3894aa3f7e36.png"
+    }
+  ],
+  "revision": {
+    "prompt": "Use case: precise-object-edit. Edit this same coral candy projectile into a COMPACT collision-readable game sprite. Preserve its candy style and dark plum/ivory outline. Make its broad pointed HEAD the dominant shape: head occupies central80% of canvas WIDTH and80% of canvas HEIGHT, centered exactly at50%,50%. Nose points RIGHT. SHORTEN its long left tail dramatically to only a tiny rear fin, entirely within left10%-25% of square canvas, attached to broad head. All artwork must fit inside square with at least8% fully transparent margin on every edge. NO long comet tail, NO external glow or particles. This will replace a round hostile bullet on the SAME128x128physics sprite: the visible head should fill almost the whole original circular hitbox, so must NOT be a tiny head on a long streak. One sprite, real transparent alpha. No words/labels/numbers/shadow/background.",
+    "path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-319e42ba-2c5f-48b1-a5f9-f17ce9f16845.png"
+  }
+}

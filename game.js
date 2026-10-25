@@ -50,7 +50,8 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.34';
+const GAME_VERSION = '8.0.35';
+const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.35',date:'2026-10-25',title:'Clearer combat',items:['Coral hostile bolts stand apart from EXP crystals','Clear-center attack warnings with a precise countdown rim','A subtle player outline and foot marker, plus Elite and windup cues','Large spell effects are lighter; common drops and damage numbers are quieter','New ImageGen combat art; damage, attack timing and rewards stay the same']},
   {v:'8.0.34',date:'2026-10-25',title:'Painted rewards and collections',items:['New rarity frames and Merge / Forge effects','Daily Login and Quests now use illustrated rewards and calendar art','Painted Awards medals, stars and secret rewards','New Bestiary cards and Recipe Book pages','New Temple lantern, Mochi Miners and Rank Reward icons']},
   {v:'8.0.33',date:'2026-10-25',title:'New Forge: Forge Points',items:['No more random rolls: tap the mod you want, then Add it (or Swap an existing one)','Each item has 🔨 Forge Points: Common 8 · Rare 14 · Epic 20 · Legend 26','Add costs 4 · Swap 5 · Star up ★n→★n+1 costs n+1 · Remove 1','15% chance a craft is Lucky and uses no Forge Points','Out of points? Merge the item — it refills to full at the new rarity','Twist Cream adds or swaps mods, Crystal Glaze adds stars · crafting currency drops are halved because every craft now works','Any old unfinished roll was refunded'],},
   {v:'8.0.32',date:'2026-10-25',title:'Gear Merge',items:['New 🔗 Merge: combine 3 items of the same slot and rarity into 1 item of the next rarity (Common → Rare → Epic → Legend)','The merged item keeps the highest item level and enhance level of the three','Higher rarity means more mod slots (Common 1 · Rare 2 · Epic 3) and stronger base stats','Pick 1 mod from the materials to keep in the new slot','Open it from Equipment (🔗 Merge) or the Power page'],},
@@ -1591,6 +1593,15 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  // ImageGen combat readability: native-size projectile preserves its physics frame.
+  cr_player_ring:'assets/art/combat_readability/cr_player_ring.webp',
+  cr_warning_rim:'assets/art/combat_readability/cr_warning_rim.webp',
+  cr_elite_crest:'assets/art/combat_readability/cr_elite_crest.webp',
+  cr_crit_spark:'assets/art/combat_readability/cr_crit_spark.webp',
+  cr_windup:'assets/art/combat_readability/cr_windup.webp',
+  cr_loot_glint:'assets/art/combat_readability/cr_loot_glint.webp',
+  cr_foe_bolt:'assets/art/combat_readability/cr_foe_bolt.webp',
+
   // ImageGen menu orders50–54 (loaded per menu group).
   rar_frame:'assets/art/menu_orders/rar_frame.webp',
   rar_cell:'assets/art/menu_orders/rar_cell.webp',
@@ -3631,7 +3642,7 @@ const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:menu_orders|chest|journal|
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -8330,7 +8341,7 @@ class Game extends Phaser.Scene {
   drawGlacierSnow(storm){
     const g=storm.g;if(!g?.active)return;const {x,y,r,t}=storm,q=typeof Save==='undefined'?1:(Save.data.settings?.vfx??1);
     g.clear();g.fillStyle(0x84cff5,.10).fillCircle(x,y,r);g.lineStyle(2,0xd1f8ff,.55).strokeCircle(x,y,r);
-    if(storm.art?.active){storm.art.setVisible(q!==0).setFrame(Math.floor(t*12)%8).setAlpha(Math.min(1,(4-t)*3));if(q!==0)return;}
+    if(storm.art?.active){storm.art.setVisible(q!==0).setFrame(Math.floor(t*12)%8).setAlpha(Math.min(.62,(4-t)*3*.62));if(q!==0)return;}
     // Bounded procedural snow: a few streaks even on Low keep the damaging area readable.
     const n=q===0?8:q===1?18:28;
     for(let i=0;i<n;i++){
@@ -15981,6 +15992,7 @@ class Game extends Phaser.Scene {
     e.tintColor=null;e.clearTint();this.resetEnemyPresentation(e);return true;
   }
   stopEnemyPresentation(e){
+    e._readCrest?.destroy();e._readCrest=null;e._readWind=false;
     e._glacierLifeToken=(e._glacierLifeToken||0)+1;e._frostBurnStacks=0;e._trem=0;e._shock=0;e._frostBurnUntil=0;e._frostBurnPower=0;e._frostBurnTick=0;e._glacierFrost=0;e._glacierFrostAt=0;e._glacierBrittleUntil=0;e._mintImpale=0;e._mintImpaleAt=-Infinity;e._mintRuptureAt=-Infinity;e._glacierBurstAt=-Infinity;e._chill=0;e._chillAt=null;
     if(e.anims){e.anims.stop();e.anims.timeScale=1;}
     e._enemyAction=null;e._enemyActionT=0;e._enemyPlayed=null;e._enemyFrozen=false;
@@ -16000,7 +16012,7 @@ class Game extends Phaser.Scene {
     this.tickEnemyPresentation(e,0);
   }
   tickEnemyPresentation(e,dt){
-    if(!e||!e.active||e.isBoss||e.isMini)return;
+    if(!e||!e.active||e.isBoss||e.isMini)return;this.tickEnemyReadability?.(e);
     const key=e._enemyArtKey||e.texture.key,S=(this._presC||(this._presC={}))[key]||(this._presC[key]={walk:key+'_walk',a:{},g:{}}),hasWalk=this.anims.exists(S.walk);   // v7.8.92 perf: ข้อความชื่อ anim สร้างครั้งเดียวต่อ key
     // Frozen time does not consume an action pose or advance the sprite animation.
     if(e.frozen>0){if(e.anims&&e.anims.isPlaying&&!e.anims.isPaused)e.anims.pause();e._enemyFrozen=true;return;}
@@ -17283,7 +17295,7 @@ class Game extends Phaser.Scene {
     const ax=o.anchor||fx.anchor||'center'; s.setOrigin(ax==='left'?0:0.5, ax==='bottom'?1:0.5);
     if(o.rotation!=null)s.setRotation(o.rotation);
     s.setScale(o.scaleX!=null?o.scaleX:(o.scale!=null?o.scale:1), o.scaleY!=null?o.scaleY:(o.scale!=null?o.scale:1));
-    if(o.alpha!=null)s.setAlpha(o.alpha);
+    if(o.alpha!=null)s.setAlpha(o.alpha);if(this.combatFxAlpha)s.setAlpha(this.combatFxAlpha(key,s.displayWidth,s.alpha));
     if(o.tint!=null)s.setTint(o.tint);
     s.play(key); s.once('animationcomplete',()=>s.destroy()); return s;
   }
@@ -17733,7 +17745,7 @@ class Game extends Phaser.Scene {
   killBullet(b){ if(b._chargeFx){b._chargeFx.destroy();b._chargeFx=null;} b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
   showPickupCue(o,color,baseScale){
-    if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;
+    if(!o)return;this.hidePickupCue(o);o._pickupColor=color;o._pickupBaseScale=baseScale||1;o._pickupEmphasis=o.dropType==='currency'?.4:o.dropType==='gear'&&o.lootTier==='common'?.45:1;
     // ปรับให้ไอเทมมี "ขนาดบนสนาม" คงที่ตาม native width (กันอาร์ต PNG ความละเอียดสูงเช่น gear_gift.png 256px โผล่ใหญ่เกินจอ)
     const nativeW=(o.width||36),target=o._pickupBaseScale*36; o.setScale(nativeW>0?target/nativeW:o._pickupBaseScale).setDepth(80000);
     o._pickupGlow=this.camWorld(this.add.image(o.x,o.y,'vfx_glow').setTint(color).setDepth(79980).setAlpha(0.32).setScale(0.30));
@@ -17744,17 +17756,17 @@ class Game extends Phaser.Scene {
     this.loots.children.iterate(g=>{ if(!g||!g.active)return; const dx=p.x-g.x,dy=p.y-g.y,d2=dx*dx+dy*dy; if(d2>R2&&!g._mag)return;
       if(!g._mag){ g._mag=true; this.tweens.killTweensOf(g); this.hidePickupCue(g); }
       const d=Math.sqrt(d2)||1,sp=Math.min(d,(160+380*(1-Math.min(1,d/R)))*(1+forgeLootValue(this,139))*dt); g.x+=dx/d*sp; g.y+=dy/d*sp; if(g.body)g.body.reset(g.x,g.y); }); }
-  hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_curIcon','_pillar','_pillarCore']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
+  hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_pickupGlint','_curIcon','_pillar','_pillarCore']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
   // ลำแสงเล็ก ๆ ชี้จุดที่ไอเทม/currency ตก (มองเห็นง่ายขึ้น)
-  spawnDropBeam(o,color){ if(!o)return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
-    beam.setDisplaySize(16,120); o._dropBeam=beam;
+  spawnDropBeam(o,color){ if(!o||o.dropType==='currency'||(o.dropType==='gear'&&o.lootTier==='common'))return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
+    beam.setDisplaySize(12,96); o._dropBeam=beam;if(o.dropType==='gear'&&o.lootTier&&o.lootTier!=='common'&&this.textures.exists('cr_loot_glint'))o._pickupGlint=this.camWorld(this.add.image(o.x+12,o.y-24,'cr_loot_glint').setDisplaySize(16,16).setDepth(80002).setAlpha(.85));
     this.tweens.add({targets:beam,alpha:{from:0.5,to:0.16},displayWidth:10,yoyo:true,repeat:-1,duration:640,ease:'Sine.inOut'}); }
   updatePickupReadability(){
     const groups=[this.heals,this.vacs,this.loots,this.chests,this.gimmicks];
     for(const grp of groups){if(!grp)continue;grp.children.iterate(o=>{if(!o||!o.active)return;const pulse=1+Math.sin(this.elapsed*5+(o.x||0)*0.03)*0.12;
-      if(o._pickupGlow)o._pickupGlow.setPosition(o.x,o.y+3).setScale(0.30*pulse).setAlpha(0.25+0.10*pulse);
-      if(o._pickupRing)o._pickupRing.setPosition(o.x,o.y+5).setScale(0.20+0.035*pulse).setAlpha(0.48+0.16*pulse).setRotation(this.elapsed*0.7);
-      if(o._dropBeam)o._dropBeam.setPosition(o.x,o.y-52);
+      if(o._pickupGlow)o._pickupGlow.setPosition(o.x,o.y+3).setScale(0.30*pulse).setAlpha((0.25+0.10*pulse)*(o._pickupEmphasis??1));
+      if(o._pickupRing)o._pickupRing.setPosition(o.x,o.y+5).setScale(0.20+0.035*pulse).setAlpha((0.48+0.16*pulse)*(o._pickupEmphasis??1)).setRotation(this.elapsed*0.7);
+      if(o._dropBeam)o._dropBeam.setPosition(o.x,o.y-40);if(o._pickupGlint)o._pickupGlint.setPosition(o.x+12,o.y-24).setAlpha(.65+.2*pulse);
       if(o._curIcon)o._curIcon.setPosition(o.x,o.y-4).setScale(pulse);
       // ฮาโลและการลอยช่วยให้อ่านออก แต่ไม่ดึงไอเทมเข้าหาตัว ผู้เล่นจึงเก็บหัวใจ/Magnetไว้ใช้ภายหลังได้
       if(o.body)o.setVelocity(0,0);
@@ -18397,7 +18409,7 @@ class Game extends Phaser.Scene {
     if(!b) b=this.foeBullets.create(x,y,'proj_enemy'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
     if(!b)return null;   // pool Full → ข้ามการยิง กัน null crash
     if(b.anims?.isPlaying)b.anims.stop();   // v7.8.32 กระสุนอาร์ตบอส C2-4 เล่นอนิเมชัน → หยุดก่อนใช้ซ้ำ
-    b.setTexture(this.textures.exists('proj_foe')?'proj_foe':'proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
+    b.setTexture(this.textures.exists('cr_foe_bolt')?'cr_foe_bolt':this.textures.exists('proj_foe')?'proj_foe':'proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
     b.clearTint();   // v5.78 กระสุนศัตรูสีเดียวทั้งเกม (เขียวเรือง+ขอบเข้ม) ไม่ย้อมตามด่าน → อ่านง่ายบนทุกพื้น
     if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.frost=this.stageIndex===3; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
@@ -18411,7 +18423,8 @@ class Game extends Phaser.Scene {
     inner=this.camWorld(this.add.image(x,y,'vfx_glow').setDepth(2).setScale((r*0.65)/256).setTint(color).setAlpha(0.18));
     this.tweens.add({targets:warn,alpha:{from:0.4,to:0.92},scale:{from:(r*2)/256*0.92,to:(r*2)/256*1.03},duration:190,yoyo:true,repeat:1});
     this.tweens.add({targets:inner,scale:(r*1.75)/256,alpha:{from:0.12,to:0.48},duration:700,ease:'Linear'});}
-    this.time.delayedCall(760,()=>{ if(this.state!=='play'&&this.state!=='levelup'){ warn.destroy();inner.destroy();return; }
+    const readable=this.makeHazardReadability?.(x,y,r,760);if(readable){this.tweens.killTweensOf(warn);this.tweens.killTweensOf(inner);warn.setAlpha(.18);inner.setAlpha(0);}
+    this.time.delayedCall(760,()=>{ readable?.kill();if(this.state!=='play'&&this.state!=='levelup'){ warn.destroy();inner.destroy();return; }
       if(ik)this.heroFx(ik,x,y,r*2/.88,{must:true,depth:4});
       else if(this.anims.exists('fx_bossnova'))this.spawnFxAnim('fx_bossnova',x,y,{scale:(r*2)/ASSET_FX.fx_bossnova.fw,depth:4,anchor:'center'});
       else { const boom=this.camWorld(this.add.image(x,y,'vfx_ring').setDepth(4).setTint(color).setScale((r*2)/256).setAlpha(0.9));
@@ -19367,19 +19380,45 @@ class Game extends Phaser.Scene {
     });
   }
   // Juice: ป็อปคอมโบกลางจอตอนถึงหมุดหมาย (10/25/50/...) — เด้ง + เสียง + เขย่าเบา
+  // Presentation-only sprites: central clearArtVfx destroys all tracked world art on transitions.
+  combatReadSprite(key,x,y,w,h=w,depth=8){if(!this.textures?.exists?.(key))return null;const o=this.add.image(x,y,key).setDisplaySize(w,h).setDepth(depth);this.camWorld?.(o);this.trackArtVfx?.(o);return o;}
+  combatReadSpark(key,x,y,size){if((Save.data.settings?.vfx??1)===0)return null;const set=this._readSparks||(this._readSparks=new Set());if(set.size>=10)return null;
+    const o=this.combatReadSprite(key,x,y,size,size,93005);if(!o)return null;set.add(o);o.once('destroy',()=>{set.delete(o);this.tweens.killTweensOf(o);});this.tweens.add({targets:o,alpha:0,duration:200,onComplete:()=>o.destroy()});return o;}
+  tickPlayerReadability(){const p=this.player;if(this.state!=='play'||!p?.active)return;
+    let rim=this._readPlayerRing;if(!rim?.active)rim=this._readPlayerRing=this.combatReadSprite('cr_player_ring',p.x,p.y+31,68,28,p.depth-.1);
+    rim?.setPosition(p.x,p.y+31).setDepth(p.depth-.1).setAlpha(.75).setVisible(p.visible!==false);
+    let edge=this._readPlayerEdge;if(!edge?.active){edge=this._readPlayerEdge=this.add.image(p.x,p.y,p.texture.key,p.frame?.name??0);this.camWorld?.(edge);this.trackArtVfx?.(edge);}
+    edge.setTexture(p.texture.key,p.frame?.name??0).setOrigin(p.originX??.5,p.originY??.5).setPosition(p.x,p.y).setScale(p.scaleX*1.055,p.scaleY*1.055).setRotation(p.rotation).setFlipX(p.flipX).setDepth(p.depth-.05).setTintFill(0xfff5d6).setAlpha(.48*(p.alpha??1)).setVisible(p.visible!==false);
+  }
+  tickEnemyReadability(e){if(!e?.active)return;if(e.isElite){const set=this._readElites||(this._readElites=new Set());let crest=e._readCrest;
+      if(!crest?.active&&set.size<12){crest=e._readCrest=this.combatReadSprite('cr_elite_crest',e.x,e.y,20,20,93004);if(crest){set.add(crest);crest.once('destroy',()=>{set.delete(crest);if(e._readCrest===crest)e._readCrest=null;});}}
+      crest?.setPosition(e.x,e.y-Math.max(28,e.body?.halfHeight||28)-34).setAlpha(.92);
+    }else if(e._readCrest){e._readCrest.destroy();e._readCrest=null;}
+    const wind=e.frozen<=0&&(e._enemyAction?.state==='windup'||e.dashState==='wind');if(wind&&!e._readWind)this.combatReadSpark('cr_windup',e.x,e.y-Math.max(28,e.body?.halfHeight||28)-8,30);e._readWind=!!wind;
+  }
+  combatFxAlpha(key,w,alpha=1){if(w<180)return alpha;
+    if(/^(?:bpx_|fx_(?:momo|mint|cocoa|taro|sesame|yuzu|berry)|vfx_(?:glacier|frost|berry|recipe_))/.test(key))return Math.min(alpha,.68);
+    if(w>=500&&/^vfx_b(?:05_eclipse|10_memory_eclipse|06_full_bloom|07_heartstorm)$/.test(key))return Math.min(alpha,.58);return alpha;
+  }
+  makeHazardReadability(x,y,r,ms){if(!this.add?.graphics)return null;const g=this.add.graphics().setDepth(89001);this.camWorld?.(g);this.trackArtVfx?.(g);
+    const rim=this.combatReadSprite('cr_warning_rim',x,y,r*2/COMBAT_WARN_FILL,r*2/COMBAT_WARN_FILL,89000),clock={p:0};let tween,dead=false;
+    const draw=()=>{if(!g.active)return;g.clear().lineStyle(3,0x291124,.9).strokeCircle(x,y,r).lineStyle(1.5,0xff7352,.95).strokeCircle(x,y,r);if(clock.p>0)g.lineStyle(2.5,0xfff3ce,1).beginPath().arc(x,y,r,-Math.PI/2,-Math.PI/2+Math.PI*2*clock.p,false).strokePath();};
+    const kill=()=>{if(dead)return;dead=true;tween?.remove();if(g.active)g.destroy();if(rim?.active)rim.destroy();};
+    g.once('destroy',()=>{tween?.remove();if(rim?.active)rim.destroy();});draw();tween=this.tweens.add({targets:clock,p:1,duration:ms,ease:'Linear',onUpdate:draw});return{kill};
+  }
   popDmg(n,x,y,crit,force){
     if(Save.data.settings&&Save.data.settings.damageNumbers===false)return;
     // v5.23: ลดตัวเลขลอยรก · v6.49.4: 90ms (มอนเยอะ 200ms) · คริโชว์เสมอ
-    if(!crit&&!force){const now=this.time.now;if(now-(this._dmgNumAt||0)<(this.enemies.countActive()>60?200:90))return;this._dmgNumAt=now;}
+    if(!force){const now=this.time.now,dense=this.enemies.countActive()>60;if(crit){if(now-(this._critNumAt??-Infinity)<(dense?160:90))return;this._critNumAt=now;}else{if(now-(this._dmgNumAt||0)<(dense?200:90))return;this._dmgNumAt=now;}}
     let t=this.dmgPool.pop();
     if(!t){ t=this.add.text(x,y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px'}).setDepth(99999).setOrigin(0.5).setStroke('#2a1830',5).setShadow(0,2,'#000000',2,true,true); this.camWorld(t); }
     else t.setActive(true).setVisible(true);
     // v6.49.4: ใหญ่ขึ้น+ขอบเข้ม ชดเชยการซูมกล้องโลก ให้อ่านออกบนพื้นสว่าง
-    const z=Math.max(0.5,this.viewZoom||1), fs=Math.round((crit?23:16)/z);
-    const str = crit ? ('💥 '+n) : n;
-    t.setText(str).setColor(crit?'#ffd23f':'#fff6e0').setFontSize(fs+'px').setStroke('#2a1830',Math.round(5/z)).setPosition(x+Phaser.Math.Between(-8,8),y-14).setAlpha(1).setScale(crit?1.45:1.25);
+    const z=Math.max(0.5,this.viewZoom||1), fs=Math.round((crit?21:16)/z);
+    const str=n;if(crit)this.combatReadSpark?.('cr_crit_spark',x+14/z,y-20/z,16/z);
+    t.setText(str).setColor(crit?'#ffd23f':'#fff6e0').setFontSize(fs+'px').setStroke('#2a1830',Math.round(3/z)).setPosition(x+Phaser.Math.Between(-6,6),y-14).setAlpha(1).setScale(crit?1.22:1.1);
     this.tweens.add({targets:t,scale:1,duration:crit?140:110,ease:'Back.out'});
-    this.tweens.add({targets:t,y:y-(crit?70:50),alpha:0,delay:crit?420:330,duration:crit?520:420,ease:'Quad.easeIn',
+    this.tweens.add({targets:t,y:y-(crit?54:42),alpha:0,delay:crit?280:240,duration:crit?360:320,ease:'Quad.easeIn',
       onComplete:()=>{ t.setVisible(false); this.dmgPool.push(t); }});
   }
   spawnGhostTrail(){
@@ -19808,7 +19847,7 @@ class Game extends Phaser.Scene {
     this.tickStatusArt?.();this.tickTitanRage(dt);this.tickImpaleMarks?.();
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
-    this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);if(this._impalerCharge)this.tickImpalerCharge();if(this._berryCharge)this.tickBerryCharge();
+    this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);this.tickPlayerReadability?.();if(this._impalerCharge)this.tickImpalerCharge();if(this._berryCharge)this.tickBerryCharge();
     if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.tickCocoaCombat(dt);this.tickCocoaDash(dt);

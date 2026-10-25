@@ -1,0 +1,184 @@
+[
+  {
+    "key": "cr_player_ring",
+    "width": 128,
+    "height": 64,
+    "source": "combat_readability_atlas",
+    "sourceCell": 0,
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "crop": [
+      47,
+      166,
+      493,
+      400
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.0,
+    "hardFill": 0.765625,
+    "bytes": 6938,
+    "sha256": "231156ea96142e60b6f35c589bf1bba757060d29ccfbc559978e329b343d1836",
+    "source_png_sha256": "76a2058f4fe536c120d05dfb52f3e5451ccdb3f6491d37766436fed070fca881"
+  },
+  {
+    "key": "cr_warning_rim",
+    "width": 256,
+    "height": 256,
+    "source": "combat_readability_atlas",
+    "sourceCell": 1,
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "crop": [
+      43,
+      52,
+      473,
+      477
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.0,
+    "hardFill": 0.8515625,
+    "bytes": 35536,
+    "sha256": "9439e12f92658f136e3c7eb2740662f3c8e4f59d5b07e0cf6a6dff2da595875e",
+    "source_png_sha256": "0920e2858594266e3c5c12594b67e1878a873b7cf58e2711c1699b2090cc6389"
+  },
+  {
+    "key": "cr_elite_crest",
+    "width": 64,
+    "height": 64,
+    "source": "combat_readability_atlas",
+    "sourceCell": 2,
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "crop": [
+      123,
+      124,
+      383,
+      415
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.9921568627450981,
+    "hardFill": 0.8125,
+    "bytes": 5316,
+    "sha256": "34562ad4b9dfadce0e7a12af696ddf77255fe652455b0ca3c45f7ca316ed7976",
+    "source_png_sha256": "f39e1c875d3c9e45ce6306690ec2ed29b28cfd324ac1d9dfe49183e25cf05a65"
+  },
+  {
+    "key": "cr_crit_spark",
+    "width": 64,
+    "height": 64,
+    "source": "combat_readability_atlas",
+    "sourceCell": 3,
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "crop": [
+      100,
+      76,
+      438,
+      411
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.9923969587835133,
+    "hardFill": 0.8125,
+    "bytes": 3814,
+    "sha256": "e16671e13caa9dcd642ccec8ead5880eb44b258e4b5d144c37d2d6c04cb3680d",
+    "source_png_sha256": "7b4f4a9db47739952ed7199a6de49c95a880356da89facc8a69245259ac86418"
+  },
+  {
+    "key": "cr_windup",
+    "width": 64,
+    "height": 64,
+    "source": "combat_readability_atlas",
+    "sourceCell": 4,
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "crop": [
+      39,
+      111,
+      473,
+      371
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.9466986794717887,
+    "hardFill": 0.8125,
+    "bytes": 3042,
+    "sha256": "2af083e840ed0e80b385ad20f770d02295f32e0730fd5e2f71915d354c903b87",
+    "source_png_sha256": "7d3128817e3b06f309cba5f9ae4009a1e301964d27de502f26825439d6d5b35e"
+  },
+  {
+    "key": "cr_loot_glint",
+    "width": 64,
+    "height": 64,
+    "source": "combat_readability_atlas",
+    "sourceCell": 5,
+    "sourceGrid": [
+      3,
+      2
+    ],
+    "crop": [
+      104,
+      96,
+      403,
+      388
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.9937575030012005,
+    "hardFill": 0.8125,
+    "bytes": 3700,
+    "sha256": "19cdfe7aaa3da64a42eb6bace187643d7f70cb02b98975b6ac4513c8c86e6b2f",
+    "source_png_sha256": "fe0e584d6e3ee126c6ca32e0538900055770e47d9afb75aee413985d0d600e3c"
+  },
+  {
+    "key": "cr_foe_bolt",
+    "width": 128,
+    "height": 128,
+    "source": "combat_foe_bolt",
+    "sourceCell": 0,
+    "sourceGrid": [
+      1,
+      1
+    ],
+    "crop": [
+      -4,
+      194,
+      1274,
+      1049
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ],
+    "centerAlpha": 0.9895811579069497,
+    "hardFill": 0.828125,
+    "bytes": 9978,
+    "sha256": "a29b4075677ddb3645e5cf07aa9afd7b9b9f5818382c38ee58ef68cc259bafe8",
+    "source_png_sha256": "2c828dd93784127bdbd5dd92aa9e25ddbebef0ef7f3f2f5d90be8fd27666dc7c"
+  }
+]

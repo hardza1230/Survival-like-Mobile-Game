@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.35, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.36, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.35 — combat readability polish
+
+Seven ImageGen alpha sprites (68,324bytes) in assets/art/combat_readability; donors/prompts/revision/QA in incoming/combat_readability; scripts/pack-combat-readability.py. Hostile bolt uses same128x128 physics texture frame/scale/life/damage/velocity. Shared circular spawnHazard warnings gain exact-radius clear-center rim and760ms countdown arc; original r+8 damage/timing retained, themed art dimmed beneath. Player gets reused foot marker/5.5% silhouette outline; at most12Elite crests and10transient windup/crit sparks, central clearArtVfx/pool cleanup. Large friendly animated VFX opacity capped.68 (selected huge boss overlays.58), persistent Mint snow.62. Common gear/currency glow quieter, no beams; rarer gear retains beam plus small glint. Critical numbers throttled90ms/160ms dense, smaller stroke/scale/lifetime, painted spark replaces emoji; forced numbers preserved. No balance/rewards/colliders changed. tests/combat-readability added to npm check. Owner phone visual/FPS review pending, no local gameplay/screenshots.
 
 # Latest delivery: v8.0.34 — ImageGen menu art50–54 integrated
 

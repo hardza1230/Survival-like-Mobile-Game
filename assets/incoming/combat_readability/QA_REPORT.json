@@ -1,0 +1,7 @@
+{
+  "assets": 7,
+  "all_pass": true,
+  "checks": "PNG/WebP decode, original alpha retained, hollow ring centers, exact output sizes/hashes. Projectile uses same128x128 canvas as original physics texture.",
+  "visual_review": "Passed raw/donor and gray-background contact review at18/28/40px. Compact bolt keeps a broad visible head and short tail. Ring centers are transparent; warning outline hard fill0.8515625 used for scaling. No baked text/checkerboard. Phone visual/FPS review remains pending.",
+  "warningHardFill": 0.8515625
+}
