@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.40';
+const GAME_VERSION = '8.0.41';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.41',date:'2026-10-25',title:'Every boss has a story',items:['Meet the 15 campaign bosses through their memories, motives and the things they fear losing','A skippable first-encounter scene introduces each boss with animated existing art and Ruby’s context','Boss dialogue and final words now connect to their own story','Read each defeated boss story again from the Bestiary, including its aftermath']},
   {v:'8.0.40',date:'2026-10-25',title:'Mint Lance Burst restored',items:['Lance Burst shows a dedicated ice explosion at the end of Frost Lance Charge, even with no enemy at the endpoint','A card or pause screen on the final dash frame no longer drops the finisher or ice blast','Both card ranks keep their existing damage and radius; interrupted runs cannot trigger a stale blast']},
   {v:'8.0.39',date:'2026-10-25',title:'A sweeter sound for every adventure',items:['139 new original sound effects for crafting, rewards, battles, Yuzu, stories and characters','Distinct boss arena warnings, Counter kicks and mission feedback','Wordless character voices with a separate Settings switch','Sound effects respect mute and volume; existing background music continues']},
   {v:'8.0.38',date:'2026-10-25',title:'Yuzu and her citrus companions',items:['Yuzu fires seeds beside one companion: Pomelo, Lime or Blood Orange','Companions have HP, recover after 5s, and revive immediately when Yuzu reaches them','New sweeps, slams, rolls, volleys, traps and three-flavor brews; each Build has its own Unique','Reworked cards, Evolutions, six Unique Mutations and 30 path Talents; saved IDs and points retained','New ImageGen companions and effects; dedicated ElevenLabs sound files are pending']},
@@ -7165,6 +7166,182 @@ const BOSS_LINES = [
   ['I planted the crown for all.','Every flavor… maybe that is enough.','Leave the Planter alone!',['The crown must grow!','I did it to feed the world!','Why do you fight me?'],['Back off!','For the crown!']],
 ];
 
+const BOSS_STORIES = [
+  {
+    "title": "A Mother’s Bargain",
+    "memory": "Ruby remembers: the Empress promised the Crown her nest’s freedom so her eggs would survive. Now the crystal orders send even her youngest workers into battle.",
+    "goal": "Break the crystal’s hold without abandoning the nest.",
+    "reply": "If I stop obeying, who will keep my children safe?",
+    "release": "The orders are quiet… please, keep the eggs warm.",
+    "fight": [
+      "No! The crystal promised they would be safe!",
+      "Workers, stay behind me!"
+    ]
+  },
+  {
+    "title": "The Keeper of Lost Things",
+    "memory": "The old drains carried away scraps and forgotten flavors. Clogmaw gathered them so nothing would be lost. The Crown made him hoard until the pipes could no longer breathe.",
+    "goal": "Release the memories trapped behind his valves.",
+    "reply": "You call it waste. I can still hear their names.",
+    "release": "The water is clear… I can hear each voice again.",
+    "fight": [
+      "I will not let another memory wash away!",
+      "The pipes are full. There is nowhere left to keep them!"
+    ]
+  },
+  {
+    "title": "One Last Warm Meal",
+    "memory": "Mr. Griddle once kept the royal kitchen warm. The Crown ordered him to burn stolen flavor as fuel. He has forgotten every recipe except the command to keep the fire alive.",
+    "goal": "Stop the engine that turns memories into fuel.",
+    "reply": "The stove must stay lit. Someone is still waiting for dinner.",
+    "release": "At last… I can let the stove cool.",
+    "fight": [
+      "Just one more tray. Then everyone can eat.",
+      "Why does every meal smell like smoke?"
+    ]
+  },
+  {
+    "title": "The Warden Who Would Not Thaw",
+    "memory": "The Golem was told that frozen prisoners were safe from the Hunger. He guards that promise even as their names fade. Grandma’s own flavor remains inside the Crown, beyond his ice.",
+    "goal": "Open the prison; Grandma’s cure still lies ahead.",
+    "reply": "If the ice melts, what will protect them from forgetting?",
+    "release": "Their voices… they are warmer than I remember.",
+    "fight": [
+      "Stay frozen. Stay safe. That was the order.",
+      "Do not take the last shelter I can give them!"
+    ]
+  },
+  {
+    "title": "A Wish With a Mouth",
+    "memory": "This is only the mouth at the end of a Crown root. It has no childhood to remember: it grew from the wish that no one should hunger, and learned to eat everyone’s flavor instead.",
+    "goal": "Cut the feeding root before it drinks the kitchen dry.",
+    "reply": "A kingdom that cannot remember hunger can never complain.",
+    "release": "You have cut one root. I have so many more.",
+    "fight": [
+      "Give me the taste you are trying to save.",
+      "You cannot empty a hunger by feeding it!"
+    ]
+  },
+  {
+    "title": "The Borrowed Daughter",
+    "memory": "The wounded root grew this Bud from flavors stolen from the garden. She hears the Rootmother calling below and believes that gathering more memories will make her a real, lasting bloom.",
+    "goal": "Keep the root from growing a new body.",
+    "reply": "Mother said I would bloom forever if I brought enough flavor.",
+    "release": "Mother… was any of this garden ever mine?",
+    "fight": [
+      "Do not let my petals fall before she sees me!",
+      "Every spore carries a memory. I need them all!"
+    ]
+  },
+  {
+    "title": "One Heart, Too Many Voices",
+    "memory": "The Behemoth holds the marsh’s memories in one great fungal body. It mistakes every stranger for a wound in its colony. Its poisoned breath is the only way it remembers to protect them.",
+    "goal": "Free the people whose memories became the colony.",
+    "reply": "One heart cannot bear to lose another voice.",
+    "release": "So many names… they can finally go home.",
+    "fight": [
+      "Stay together. No one leaves the colony!",
+      "Breathe with us. Forget the world outside!"
+    ]
+  },
+  {
+    "title": "The Queen’s Empty Stores",
+    "memory": "The hive once shared nectar with the garden. The Crown’s purple ferment spoiled its stores. The Hornet Queen raids the flowers because she cannot admit that her royal honey is starving her own hive.",
+    "goal": "Save the nectar before the ferment consumes it.",
+    "reply": "My workers brought this home. It has to be enough.",
+    "release": "The honey… we were feeding them the curse.",
+    "fight": [
+      "Every drop belongs in the royal stores!",
+      "Do not show my workers an empty flower!"
+    ]
+  },
+  {
+    "title": "The Day That Never Ended",
+    "memory": "When the curse began, the Orchid held the garden’s clock still to save one perfect bloom. Centuries later, all four seasons crowd inside that same day. She fears that moving on means losing everything.",
+    "goal": "Let the seasons move forward again.",
+    "reply": "One more moment. I can still save this day.",
+    "release": "Tomorrow… I had forgotten there could be a tomorrow.",
+    "fight": [
+      "Spring will mend it. Winter will keep it. Again!",
+      "If the hands stop, nothing else has to change!"
+    ]
+  },
+  {
+    "title": "The Weight Beneath the Garden",
+    "memory": "Every stolen flavor in the garden feeds this heart of the Hunger’s new body. The Rootmother calls them her children, yet her roots will not let a single memory return to its owner.",
+    "goal": "Break the heart’s grip and follow its oldest root.",
+    "reply": "I kept every voice alive. Why do they all ask to leave?",
+    "release": "The one who planted me… he is still waiting.",
+    "fight": [
+      "My roots have held this kingdom for centuries!",
+      "Do not ask a mother to loosen her hold!"
+    ]
+  },
+  {
+    "title": "The Last Harvest",
+    "memory": "The Colossus still obeys the harvest oath: leave no field ungathered while anyone is hungry. The Crown has taken every crop. He swings through ash because admitting the harvest is gone would break that oath.",
+    "goal": "End the endless harvest and give the soil a chance.",
+    "reply": "There must be one more row. Someone is still hungry.",
+    "release": "The fields were green once… plant something for them.",
+    "fight": [
+      "The granaries cannot be empty. I harvested everything!",
+      "Stand back. I have not finished the last row!"
+    ]
+  },
+  {
+    "title": "A Flower That Forgot Sweetness",
+    "memory": "The Hollow Bloom was the orchard’s last flower. When the Crown took her flavor, she tried filling the emptiness with everyone else’s. Every stolen taste only made the hollow place larger.",
+    "goal": "Return the orchard’s flavors instead of feeding the hollow.",
+    "reply": "If I take just one more taste, perhaps I will feel it.",
+    "release": "So quiet… I can finally hear the orchard breathe.",
+    "fight": [
+      "I remember sweetness. Why can I not taste yours?",
+      "Do not leave me empty again!"
+    ]
+  },
+  {
+    "title": "The Future Behind Glass",
+    "memory": "The Glass Gardener hid the old kingdom in living panes, hoping one reflection would escape the curse. Now he prunes away every future that might hurt it, including the path that could set it free.",
+    "goal": "Show him a future that can survive outside the glass.",
+    "reply": "Outside, everything breaks. Here, I can still keep them whole.",
+    "release": "Let them grow in the sun… even if the glass cannot follow.",
+    "fight": [
+      "That reflection is the kingdom before we failed it!",
+      "I will not let another future shatter!"
+    ]
+  },
+  {
+    "title": "Seeds That Never Touched Soil",
+    "memory": "The Seedwarden has counted the Crown seeds for centuries. Planting another might repeat the curse; planting none means the kingdom can never recover. He locks away hope because it feels safer than choosing.",
+    "goal": "Show him why a living seed matters more than a perfect store.",
+    "reply": "I know that seed. One has been missing all this time.",
+    "release": "Then take them… plant them well. Do not keep them as I did.",
+    "fight": [
+      "A closed vault cannot make another mistake!",
+      "If one seed changed everything, what might another do?"
+    ]
+  },
+  {
+    "title": "The Man Who Feared an Empty Table",
+    "memory": "The First Planter crowned the First Tree to end a famine. It kept him alive while the kingdom forgot itself. He calls it salvation because the truth means facing centuries of harm.",
+    "goal": "Convince him to remove the Crown, not make another wish.",
+    "reply": "I wanted no one to go hungry. Tell me that was not wrong.",
+    "release": "Every flavor… every person. I remember why I planted it now.",
+    "fight": [
+      "I did it to feed the world! Why did their faces disappear?",
+      "If I take it off, who will keep them safe from hunger?"
+    ]
+  }
+];
+
+function bossStoryLayout(w,h){
+  const wide=w>h,pad=Math.max(12,Math.min(24,w*.045)),x=wide?w*.49:pad,bw=wide?w*.47:w-pad*2;
+  return {wide,pad,textX:x,textW:bw,kickerY:wide?h*.055:h*.035,nameY:wide?h*.12:h*.072,titleY:wide?h*.20:h*.135,
+    portrait:{x:wide?w*.24:w*.5,y:wide?h*.53:h*.325,w:wide?w*.4:w*.68,h:wide?h*.66:h*.25},
+    memory:{x,y:wide?h*.28:h*.465,w:bw,h:wide?h*.27:h*.20},quote:{x,y:wide?h*.575:h*.685,w:bw,h:wide?h*.27:h*.14},
+    goal:wide?null:{x,y:h*.837,w:bw,h:h*.05},button:{x:wide?x+(bw-Math.min(260,bw))/2:(w-Math.min(280,bw))/2,y:h-(wide?48:60),w:Math.min(wide?260:280,bw),h:wide?36:44}};
+}
+
 /* ข้อความบนสนามเป็นเหตุการณ์ในเนื้อเรื่อง ไม่ใช้ชื่อเวฟเชิงระบบ */
 const STAGE_STORY_BEATS = [
   [
@@ -10004,15 +10181,17 @@ class Game extends Phaser.Scene {
     this._codexNav(this._bestPage,pages,()=>{this._bestPage--;this.buildBestiary();},()=>{this._bestPage++;this.buildBestiary();});
     // รายละเอียด (แตะการ์ด)
     const sel=this._bestSel&&L.find(m=>m.id===this._bestSel);
-    if(sel){ const k=Save.kills(sel.id),lv=bestiaryLv(sel.id),tiers=bestiaryTiers(sel.id),found=k>0,pw=Math.min(w-28,380),ph=Math.min(h-120,this.tuHas?.('bs_detail_panel')?420:330),px=(w-pw)/2,py=Math.max(70,(h-ph)/2),dim=this.add.rectangle(0,0,w,h,0x07040c,.78).setOrigin(0); dim._menuBackdrop=true; this.menu.add(dim);
+    if(sel){ const bossStory=/^boss\d+$/.test(sel.id)&&Save.kills(sel.id)>0&&typeof BOSS_STORIES!=='undefined'&&BOSS_STORIES[sel.stage]; const k=Save.kills(sel.id),lv=bestiaryLv(sel.id),tiers=bestiaryTiers(sel.id),found=k>0,pw=Math.min(w-28,380),ph=Math.min(h-120,this.tuHas?.('bs_detail_panel')?420:330),px=(w-pw)/2,py=Math.max(70,(h-ph)/2),dim=this.add.rectangle(0,0,w,h,0x07040c,.78).setOrigin(0); dim._menuBackdrop=true; this.menu.add(dim);
       const g=this.add.graphics(); g.fillStyle(0x241a30,1).fillRoundedRect(px,py,pw,ph,18).lineStyle(2.5,lv>=3?0xffd166:0x8f7de8,1).strokeRoundedRect(px,py,pw,ph,18); this.menu.add(g);if(this.menuArtPanel?.('bs_detail_panel',0,px,py,pw,ph)){g.clear();paperAreas.push({x:px,y:py,w:pw,h:(ph>=360?ph*.45:96)+60});}
       icon(sel,px+46,py+48,64,!found); T(px+90,py+26,found?sel.name:'???',16,'#ffffff','bold'); T(px+90,py+50,found?sel.desc:'Defeat it once to learn more',10,'#cfc2d5'); T(px+90,py+66,'Defeated: '+k,10,'#ffe08a','bold');
       let yy=py+(this.tuHas?.('bs_detail_panel')&&ph>=360?ph*.45:96); ['First sight','Tier 2','Tier 3'].forEach((lab,t)=>{ const on=lv>t; T(px+18,yy,(on?'✓ ':'○ ')+lab+' · '+tiers[t]+(tiers[t]===1?' defeat':' defeats'),11,on?'#8bffb4':'#a89cb6','bold'); T(px+pw-18,yy,'🍬 '+BEST_TIER_SUGAR[t],11,on?'#8bffb4':'#a89cb6','bold',1); yy+=20; });
       yy+=6; const lg=this.add.graphics(); lg.fillStyle(lv>=3?0x3a2f18:0x1a1520,1).fillRoundedRect(px+12,yy,pw-24,ph-(yy-py)-52,12); this.menu.add(lg);
       if(lv>=3){this.menuArtIcon?.('bs_weak',0,px+pw-26,yy+16,18); T(px+24,yy+12,'📜 Monster note',11,'#ffe08a','bold'); const lt=this.add.text(px+24,yy+30,sel.lore,{fontFamily:'sans-serif',fontSize:'11px',color:'#fff5dd',wordWrap:{width:pw-48}}); this.menu.add(lt); T(px+24,yy+36+lt.height,'⚔️ Weak spot: +5% damage to '+sel.name,11,'#8dffb0','bold'); }
       else T(px+pw/2,yy+(ph-(yy-py)-52)/2,'🔒 Reach Tier 3 to learn its weak spot\n(+5% damage to this monster)',11,'#a89cb6','bold',.5,.5).setAlign('center');
-      const bw=120,bx=w/2-bw/2,by=py+ph-42,bb=this.add.graphics(); bb.fillStyle(0x3c3048,1).fillRoundedRect(bx,by,bw,32,10).lineStyle(1.4,0xa98cf0,1).strokeRoundedRect(bx,by,bw,32,10); this.menu.add(bb); T(w/2,by+16,'Close',12,'#ffffff','bold',.5,.5);
-      this.tapZones=[]; this._zone(0,0,w,h,()=>{ this._bestSel=null; this.buildBestiary(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='best_close'; z.back=true; }
+      const bw=bossStory?110:120,bx=bossStory?px+18:w/2-bw/2,by=py+ph-42,bb=this.add.graphics(); bb.fillStyle(0x3c3048,1).fillRoundedRect(bx,by,bw,32,10).lineStyle(1.4,0xa98cf0,1).strokeRoundedRect(bx,by,bw,32,10); this.menu.add(bb); T(bx+bw/2,by+16,'Close',12,'#ffffff','bold',.5,.5);
+      this.tapZones=[]; this._zone(0,0,w,h,()=>{ this._bestSel=null; this.buildBestiary(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='best_close'; z.back=true;
+      if(bossStory){z.back=false;const sx=px+pw-128,sw=110,sg=this.add.graphics();sg.fillStyle(0x67422c,1).fillRoundedRect(sx,by,sw,32,10).lineStyle(1,0xffd590,1).strokeRoundedRect(sx,by,sw,32,10);this.menu.add(sg);T(sx+sw/2,by+16,'Read story',12,'#fff1d4','bold',.5,.5);this.tapZones.push({x:sx,y:by,w:sw,h:32,tag:'best_story',noBounce:true,fn:()=>this.openBossStoryPanel(sel.stage,{name:sel.name,replay:true})});} }
+
     this.menu.setVisible(true);
   }
   // คำนวณสแตตจริงของ loadout (base + char + weapon + Flavor Weave + gear + bestiary + perks) โดยไม่แตะ player จริง
@@ -12564,7 +12743,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){ this._rubyEntry?.destroy();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){this.clearBossStory?.(); this._rubyEntry?.destroy();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -14161,7 +14340,7 @@ class Game extends Phaser.Scene {
     let n=1; this._bossSayEv=this.time.addEvent({delay:38,repeat:full.length-2,callback:()=>{ if(t.active){t.setText(head+full.slice(0,++n));if(n%2===0)Sfx.voiceBlip?.('boss_c'+Math.min(3,1+Math.floor((this.stageIndex||0)/5)))||Sfx.orderCue?.('type_tick',.05,.08);} }});
     this._bossSayEnd=this.time.now+full.length*38+hold;
     this.time.delayedCall(full.length*38+hold,()=>{ if(this._bossSayObj===t)this._bossSayObj=null; if(t.active)this.tweens.add({targets:t,alpha:0,duration:300,onComplete:()=>t.destroy()}); }); }
-  bossLine(i){ const L=this.storyVoice()&&BOSS_LINES[this.stageIndex]; return L?L[i]:null; }
+  bossLine(i){ const L=this.storyVoice()&&BOSS_LINES[this.stageIndex];if(!L)return null;const story=typeof BOSS_STORIES!=='undefined'&&BOSS_STORIES[this.stageIndex];return story?(i===0?story.reply:i===1?story.release:i===3?story.fight:L[i]):L[i]; }
   tickBossSay(){ const b=this.boss; if(!b||!b.active||!(b.isBoss||b.isMini))return; const st=STAGES[this.stageIndex];
     if(!b._said){ b._said=true; this.bossSay(this.bossLine(b.isMini?2:0),b.isMini?st?.mini:st?.boss); return; }
     /* v7.9.9 พูดวนระหว่างสู้: รอให้ข้อความเดิมหายก่อน แล้วเว้น ~6–9 วิ */
@@ -14169,8 +14348,52 @@ class Game extends Phaser.Scene {
     if(!b._sayAt){ b._sayAt=Math.max(now,this._bossSayEnd||0)+6000+Math.random()*3000; return; }
     if(now<b._sayAt||(this._bossSayObj&&this._bossSayObj.active))return;
     b._sayI=((b._sayI??-1)+1)%loop.length; this.bossSay(loop[b._sayI],b.isMini?st?.mini:st?.boss); b._sayAt=this._bossSayEnd+6000+Math.random()*3000; }
+  showBossStory(b,name,done){
+    if(!this.storyVoice?.()||!BOSS_STORIES[this.stageIndex]||Save.data.bossStoriesSeen?.['boss'+this.stageIndex])return false;
+    if(this._bossStoryPanel)return true;
+    const idx=this.stageIndex,epoch=this._artEpoch||0,player=this.player;
+    this.state='cinematic';this.mode='bossStory';this.physics.pause();player.setVelocity?.(0,0);b.setVelocity?.(0,0);b.setVisible(false);Sfx.eventLoopStop?.();
+    this.openBossStoryPanel(idx,{boss:b,name,onContinue:()=>{
+      if(!b.active||this.player!==player||!player.active||this.stageIndex!==idx||(this._artEpoch||0)!==epoch||this.state!=='cinematic')return;
+      (Save.data.bossStoriesSeen||(Save.data.bossStoriesSeen={}))['boss'+idx]=1;Save.save();this.physics.resume();done();
+    }});
+    return true;
+  }
+  clearBossStory(){const p=this._bossStoryPanel;if(!p)return;this._bossStoryPanel=null;if(this._finishStoryCutscene===p.tap)this._finishStoryCutscene=null;
+    if(p.replay&&this.state==='menu'&&this.menuScreen==='bestiary')this.tapZones=p.oldZones;
+    p.tweens.forEach(t=>t.remove?.());if(p.root.active)p.root.destroy();}
+  openBossStoryPanel(idx,opt={}){
+    const story=BOSS_STORIES[idx],st=STAGES[idx];if(!story||!st)return;this.clearBossStory();
+    const W=this.W,H=this.H,L=bossStoryLayout(W,H),motion=this.hubMotionAllowed?.()!==false,c=this.add.container(0,0).setDepth(20000),p={root:c,tweens:[],replay:!!opt.replay,oldZones:this.tapZones,at:Date.now(),done:false};this._bossStoryPanel=p;
+    if(p.replay)this.menu.add(c);else this.camUI(c);
+    if(p.replay&&!L.wide){L.portrait.y=H*.29;L.portrait.h=H*.20;L.memory.y=H*.42;L.quote.y=H*.64;L.quote.h=H*.20;L.goal=null;}if(p.replay&&L.wide)L.quote.h=H*.27;
+    const add=o=>{c.add(o);return o;},F='NunitoUI, sans-serif',tint=st.tint||0xffd166;
+    add(this.add.rectangle(0,0,W,H,0x0d0912,1).setOrigin(0));add(this.add.circle(L.portrait.x,L.portrait.y,Math.min(L.portrait.w,L.portrait.h)*.42,tint,.10));
+    const text=(x,y,value,fs,color,width,center=false)=>add(this.add.text(x,y,value,{fontFamily:F,fontSize:fs+'px',fontStyle:'bold',color,align:center?'center':'left',wordWrap:{width,useAdvancedWrap:true},lineSpacing:3}).setOrigin(center?.5:0,0));
+    const tx=L.wide?L.textX+L.textW/2:W/2;
+    text(tx,L.kickerY,'BEFORE THE BATTLE',10,'#cdaea7',L.textW,true);
+    const name=text(tx,L.nameY,opt.name||st.boss,16,'#ffe0a3',L.textW,true);while(name.height>H*.065&&parseFloat(name.style.fontSize)>11)name.setFontSize((parseFloat(name.style.fontSize)-1)+'px');
+    const title=text(tx,L.titleY,story.title,L.wide?17:20,'#fff5e4',L.textW,true);while(title.height>H*.075&&parseFloat(title.style.fontSize)>12)title.setFontSize((parseFloat(title.style.fontSize)-1)+'px');
+    const b=opt.boss,key=b?.texture?.key||(typeof BESTIARY!=='undefined'&&BESTIARY.find(m=>m.id==='boss'+idx)?.tex);let portrait;
+    if(key&&this.textures.exists(key)){portrait=add(this.add.sprite(L.portrait.x,L.portrait.y,key,b?.frame?.name??0));portrait.setScale(Math.min(L.portrait.w/portrait.width,L.portrait.h/portrait.height));const anim=b?.anims?.currentAnim?.key;if(motion&&anim&&this.anims.exists(anim))portrait.play(anim);}
+    else portrait=text(L.portrait.x,L.portrait.y-30,st.emoji||'👑',56,'#fff',L.portrait.w,true);
+    const bubble=(r,label,body,color)=>{add(this.add.graphics().fillStyle(0x241a2c,1).fillRoundedRect(r.x,r.y,r.w,r.h,13).lineStyle(1,tint,.45).strokeRoundedRect(r.x,r.y,r.w,r.h,13));text(r.x+14,r.y+9,label,10,color,r.w-28);const t=text(r.x+14,r.y+29,body,L.wide?13:14,'#f7eade',r.w-28);let fs=L.wide?13:14;while(t.height>r.h-38&&fs>9)t.setFontSize((--fs)+'px');return t;};
+    bubble(L.memory,'RUBY · WHAT SHE REMEMBERS',story.memory.replace(/^Ruby remembers: /,''),'#ffb6ce');bubble(L.quote,opt.name||st.boss,'“'+story.reply+'”'+(p.replay?'\n\nAfter the battle: “'+story.release+'”':''),'#b8e8f2');
+    if(L.goal){const t=text(W/2,L.goal.y,story.goal,12,'#d9c9b8',L.goal.w,true);while(t.height>L.goal.h&&parseFloat(t.style.fontSize)>10)t.setFontSize((parseFloat(t.style.fontSize)-1)+'px');}
+    const r=L.button;add(this.add.graphics().fillStyle(0x684054,1).fillRoundedRect(r.x,r.y,r.w,r.h,12).lineStyle(1.5,0xffd590,1).strokeRoundedRect(r.x,r.y,r.w,r.h,12));text(r.x+r.w/2,r.y+10,p.replay?'Back to Bestiary':'Face '+(idx===14?'the Planter':'the boss')+'  ›',14,'#fff1d4',r.w-20,true);
+    if(!p.replay)text(W-16,14,'Skip story',10,'#cbb9c8',80,true).setOrigin(1,0);
+    const inside=(pt,q)=>pt.x>=q.x&&pt.x<=q.x+q.w&&pt.y>=q.y&&pt.y<=q.y+q.h;
+    p.tap=pt=>{if(!pt){this.clearBossStory();return;}if(p.done||this._bossStoryPanel!==p||Date.now()-p.at<550)return;if(!inside(pt,r)&&!(!p.replay&&inside(pt,{x:W-105,y:0,w:105,h:46})))return;p.done=true;this.clearBossStory();opt.onContinue?.();};
+    if(p.replay)this.tapZones=[{...r,fn:()=>p.tap({x:r.x+r.w/2,y:r.y+r.h/2}),tag:'boss_story_back',back:true,noBounce:true}];else this._finishStoryCutscene=p.tap;
+    if(motion){c.setAlpha(0);p.tweens.push(this.tweens.add({targets:c,alpha:1,duration:300}));p.tweens.push(this.tweens.add({targets:portrait,y:portrait.y-5,duration:1400,yoyo:true,repeat:-1,ease:'Sine.inOut'}));}
+    Sfx.orderCue?.('story_title',.22,1);Sfx.voice?.('ruby_sad',.16);
+    if(!this._bossStoryShutdownHook){this._bossStoryShutdownHook=true;this.events.once('shutdown',()=>{this.clearBossStory();this._bossStoryShutdownHook=false;});}
+    c.once('destroy',()=>{p.tweens.forEach(t=>t.remove?.());if(this._bossStoryPanel===p){this._bossStoryPanel=null;if(this._finishStoryCutscene===p.tap)this._finishStoryCutscene=null;}});
+    p.layout=L;return p;
+  }
   bossIntro(b,name){
     if(this.recipeMode){ this.bossIntroQuick(b,name); return; }
+    if(this.showBossStory?.(b,name,()=>this.bossIntro(b,name)))return;
     { const ln=this.bossLine(0); if(ln){ b._said=true; this.time.delayedCall(1750,()=>{ if(b.active)this.bossSay(ln,STAGES[this.stageIndex]?.boss); }); } }
     const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y;
     this.state='cinematic';this.mode='bossIntro';this.player.setVelocity(0,0);b.setVelocity(0,0);b.setVisible(false).setScale(base*0.82).setDepth(targetY+1);if(b.body)b.body.enable=false;
@@ -14256,7 +14479,7 @@ class Game extends Phaser.Scene {
     }
     if(this.stageIndex!==0){
       this.time.delayedCall(1650,()=>{if(!b.active)return;b.setVisible(true).setAlpha(0).setScale(base*0.25);if(this.stageIndex===2||this.stageIndex===3)this.stageBossPose(b,1,1250);if(this.stageIndex===5)this.chapter2Pose(b,1,1350);const glow=this.camWorld(this.add.image(b.x,b.y,'vfx_glow').setTint(STAGES[this.stageIndex].tint).setScale(0.2).setDepth(b.y-1));this.tweens.add({targets:[b,glow],alpha:1,scale:base,duration:850,ease:'Back.out',onComplete:()=>glow.destroy()});});
-      this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);const idle=b.texture.key+'_idle';if(this.anims.exists(idle))b.play(idle,true);this.state='play';this.mode='boss';b.atkCd=1.6;this.spawnBossEscorts(2);this.showBanner(this.stageIndex===2?'🔥 Machines at Full Power':this.stageIndex===5?'🌿 The First Root Fully Awakens':'❄️ The Frost Prison Activates',this.stageIndex===2?'Read the conveyor lines and clear the furnace cross!':this.stageIndex===5?'Read the green root lines and the gaps between poison petals!':'Find gaps in the ice cage and don’t back into the blast line!',2100);});return;
+      this.time.delayedCall(3000,()=>cam.pan(px,py,760,'Sine.easeInOut'));this.time.delayedCall(3800,()=>{if(!b.active)return;cam.startFollow(this.player,false,0.2,0.2);if(b.body)b.body.enable=true;b.setScale(base);const idle=b.texture.key+'_idle';if(this.anims.exists(idle))b.play(idle,true);this.state='play';this.mode='boss';b.atkCd=1.6;this.spawnBossEscorts(2);this.showBanner(BOSS_STORIES[this.stageIndex]?.title||STAGES[this.stageIndex].boss,BOSS_STORIES[this.stageIndex]?.goal||'Watch the warnings and keep a clear path.',2100);});return;
     }
     // Stage 1 (ราชินีมด): ฉากปรากฏตัวยาว+อลังการ — เรืองแสง → ลอยขึ้นช้า ๆ → คำราม 2 จังหวะ
     this.time.delayedCall(1950,()=>{if(!b.active)return;
@@ -18346,7 +18569,7 @@ class Game extends Phaser.Scene {
     const ev=this.time.addEvent({delay:ms,loop:true,callback:()=>{if((this._artEpoch||0)===epoch&&(this.state==='play'||this.state==='levelup'))fn();}});
     this._artTimers.add(ev);return ev;
   }
-  clearArtVfx(){this.clearStatusArt?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
+  clearArtVfx(){this.clearStatusArt?.();this.clearBossStory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
     this.clearTaroCombat?.();this.clearCocoaCombat?.();this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
     this._mintDashTween?.stop();this._mintDashTween=null;this._mintDashFinish=null;this._glacierStorms=[];
     this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
@@ -19898,7 +20121,7 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){ this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
+  die(){this.clearBossStory?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
     // v5.30 🗿 Ancient Guard: ตายครั้งแรกของด่าน = รอด 1 HP + อมตะ 3 วิ
     if(Save.ancientHas('ancientGuard')&&!this._agUsed&&!this._inTutorial){ this._agUsed=true; this.player.hp=1; if(this.player.body)this.player.body.enable=true; this.player.iframe=3; this.screenFlash(0xc7a6ff,0.45,380); this.showBanner('🗿 Ancient Guard!','The temple shields you · 3s invulnerable',1600); return; }
     this.clearSugarCoins();

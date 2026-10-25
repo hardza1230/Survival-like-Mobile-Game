@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.41, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.42, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.41 — Stories for all15 campaign bosses
+
+BOSS_STORIES15 canon-linked profiles (past/motive/goal/intro/2battle lines/final words). First encounter before existing bossIntro gets a single opaque black theatrical scene with existing boss sprite/optional idle/bob, Ruby memory and boss quote, explicit Fight/Skip; saves bossStoriesSeen only on valid explicit continuation, never cancellation. Replays bypass automatically; defeated bosses have Read story in Bestiary (includes aftermath, no Tier3 grind). storyVoice excludes tutorial/Delve/Rift/BossRush/Pinnacle; miniboss dialogue kept. Modal physics pause/resume, pointer debounce/ownership, player/stage/epoch/dead guards, tween/sprite/scene/exit/death cleanup; reduced motion stills. Generic C3 intro no longer repeats Frost Prison hints. Existing boss reveal timings/AI/rewards/difficulty, campaign epilogues, hero unlocks and canon unchanged. No new image/audio assets. docs/BOSS_STORIES.md; tests/boss-stories added (15 identities,180 layouts, seen/skip/replay/special-mode/lifecycle). Owner phone visual/readability/story review pending; no local gameplay simulation/screenshots.
 
 # Latest delivery: v8.0.40 — Mint Lance Burst endpoint fix
 

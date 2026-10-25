@@ -126,3 +126,8 @@ The Hunger หนีลงราก ดูดรสจากสวนมาป�
 - `RUBY_STORY[5]`: "my real flavor is still inside it" → "Grandma’s flavor is still inside the crown"
 - เรื่องเล่ามีภาพ C1 ตอนที่ 1: "a little light found me" → แสงจากเมล็ดหัวใจตอน Strawberry คว้ามัน
 - เรื่องเล่ามีภาพ C1 ตอนที่ 5: "If we win, maybe I can wake up like you did" → เปลี่ยนแบบเดียวกับ `RUBY_STORY[4]`
+
+
+## 8. Boss character stories (v8.0.41)
+
+See `docs/BOSS_STORIES.md` and `BOSS_STORIES` in game.js for15 individual motives, memories and aftermath lines. They extend the existing route: eggs bargain / lost drain memories / forced furnace / protective prison / Hunger mouth / borrowed Bud / colony heart / spoiled royal stores / frozen day / rooted memories / endless harvest / hollow sweetness / protected futures / unplanted seeds / the Planter’s fear of famine. Existing hero unlock order, Grandma’s flavor inside the Crown, Ruby as an uncursed jam spirit and the final choice remain intact.
