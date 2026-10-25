@@ -1,0 +1,98 @@
+[
+  {
+    "key": "yz_47_pomelo",
+    "path": "assets/art/yuzu47/yz_47_pomelo.webp",
+    "source": "assets/incoming/yuzu47/pomelo_source.png",
+    "source_sha256": "9ccb2079e7f09744f4e174c22cccfc714669bd11b57748fd1f2f8fbd8161f7d1",
+    "sha256": "4d471e4e4905c5f9fdde2c9d0cc68c335a9c1aa64c62920a7d51898795134fd8",
+    "bytes": 359756,
+    "frames": 8,
+    "frame": 256,
+    "source_grid": [
+      4,
+      2
+    ],
+    "common_crop": [
+      20,
+      29,
+      440,
+      434
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_47_lime",
+    "path": "assets/art/yuzu47/yz_47_lime.webp",
+    "source": "assets/incoming/yuzu47/lime_source.png",
+    "source_sha256": "2d75c3cfea6ac7b14c5b6bf58892013bb12f43f8659f3914822d5da85d48f140",
+    "sha256": "186d09de36f146a85c8eff5343d4346e3d90e0b30e24f9633f3a6975193f4426",
+    "bytes": 361132,
+    "frames": 8,
+    "frame": 256,
+    "source_grid": [
+      4,
+      2
+    ],
+    "common_crop": [
+      0,
+      61,
+      443,
+      427
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_47_bloodorange",
+    "path": "assets/art/yuzu47/yz_47_bloodorange.webp",
+    "source": "assets/incoming/yuzu47/bloodorange_source_v2.png",
+    "source_sha256": "12eda99159d87d0f2a3c2daa6172016ab4c574bc891603e12fa12b711df2dbbd",
+    "sha256": "cd5b3937951fe2976b244d766d1c91cb9fae624807579eab5208ba30a49a3a01",
+    "bytes": 401254,
+    "frames": 8,
+    "frame": 256,
+    "source_grid": [
+      4,
+      2
+    ],
+    "common_crop": [
+      0,
+      42,
+      443,
+      440
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_47_attacks",
+    "path": "assets/art/yuzu47/yz_47_attacks.webp",
+    "source": "assets/incoming/yuzu47/attacks_source.png",
+    "source_sha256": "9e718d76f887ba5449d1341226e2a6a0ef8089f89148a92d993645dfd40d0bd6",
+    "sha256": "1cb616cc8fafd9b3837d592ef4d185c9d839ffe33bac8713dcd18fd54280b7f3",
+    "bytes": 195660,
+    "frames": 4,
+    "frame": 256,
+    "source_grid": [
+      2,
+      2
+    ],
+    "common_crop": [
+      0,
+      42,
+      627,
+      594
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  }
+]

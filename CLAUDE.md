@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.47, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.48, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.47 — Yuzu animation, AI and attack identity
+
+Three companions now have owned prepare→release→recover actions (normal shots/volley/brew/trap), frame-aligned once-only emissions, pause/cards/stale owner/clear/Dash cancellation. Explicit leap/roll/landing/hurt/down/revive poses, own down identity and old-art fallback; Pomelo sweep crescent/slam impact, Lime drawn seed arrows, Blood Orange distinct aroma/fire/three brews. Four ImageGen alpha sheets28frames/1,317,802bytes (7MiB decoded Yuzu-only), source+prompts+Blood Orange refinement preserved in incoming/yuzu47, manifest/runtime art/yuzu47; pack-yuzu-47.py. AI sticky550ms targets/pooled ids, player leash, ranger/mage range hysteresis, deliberate retreat, fast return and only extreme-distance recovery warp. Offensive brews/traps wait for targets; heal still useful between fights. Original damage/projectile/cooldown formulas/cards/talents/rewards/EXP/one-companion cap unchanged; actual cadence now includes prepare/recover/landing. docs/YUZU_POLISH.md. Existing contracts+new action/AI adapters and production static Canvas168poses/24projectiles/3sizes/normal+reduced. Phone pacing/balance/FPS owner review pending, no combat simulation.
 
 # Latest delivery: v8.0.46 — boss final blow + Wayseed Key
 

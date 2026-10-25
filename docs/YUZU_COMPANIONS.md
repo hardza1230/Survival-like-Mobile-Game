@@ -83,3 +83,7 @@
 - Pomelo โตด้วยขนาด/ท่าทางจากชีทใหม่เดียว ไม่เพิ่มจำนวน actor; ท่ากัด Yuzling ก่อนเลือกสายใช้แอนิเมชันเดิม
 - รางวัล/EXP/จำนวนมอนสเตอร์ไม่เปลี่ยน ไม่มีการฟาร์ม EXP เพิ่มจากการเรียกคู่หู
 - เสียงใหม่ใช้ ElevenLabs เท่านั้นตามคำสั่งล่าสุด รายการแก้เป็นคู่หูใน A03; ยังไม่ได้สร้างไฟล์ รอคีย์/การเชื่อมต่อ ใช้เสียงเดิมสำรอง
+
+## 8. Animation and AI polish · v8.0.47
+
+Frame-aligned owned ranged actions, deliberate casting/landing states, target retention and differentiated retreat/tether, painted sweep/arrow/orb/fire, original ImageGen supplementary poses including own down/revive. Existing damage formulas/cards/talents/one companion remain. See [YUZU_POLISH.md](YUZU_POLISH.md) for exact timings, limits, provenance and QA.
