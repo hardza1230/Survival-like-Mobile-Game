@@ -1,12 +1,16 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.32, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.33, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
 # Art delivery48 - C1/C2 boss arena source kit
 
 12 ImageGen source sheets /52frames complete under assets/incoming/boss_arena_c1_c2/.11black VFX +1true-alpha ice pillar; 13donors include the initial hot warning and a brighter rim edit. Exact dimensions/frames/anchors/ground and phases, source/preview hashes, center-alpha/seam QA, mechanical crop/periodic packing logs, all-frame/GIF and real-floor source compositions retained. Half-size preview WebPs558,292bytes;3.15625MiB decoded combined (per-stage loading intended). Fog source edges exact in both axes, bands horizontally. Source only: no runtime/version/gameplay edits. Integrator must also load shared b06 shield in stage9; pillar needs explicit stage3. Follow order48 and runtime suggestions, retain code fallback and all original hit tests/timings. No live gameplay/FPS claim.
 
-# Latest delivery: v8.0.31 — Power page A + C (owner)
+# Latest delivery: v8.0.32 — Gear Merge (owner: Survivor-style merge + Last Epoch forge, step 1)
+
+Rarity now per item: RAR_LINES {start 0, common 1, rare 2, epic 3, legend 3}, GRADE_NEXT, gearGrade(item) (item.grade, else base.tier). forgeLineOpen = iLv cap (affixCountCap) AND line < RAR_LINES[grade] (a line that already holds a mod stays open; items with no grade/base = no rarity limit). gearBaseStats quality and affixBestTierForItem use the item grade. Save.mergeCanMain / mergeFodder (same slot + grade, not equipped/locked/favorite/forgeChoice/starter, cheapest first) / mergeCarryOptions (fodder mods whose row fits an empty open line of the result) / mergeGear(main,[f1,f2],carry): grade +1, iLv + enhanceLv = max of the 3, carried mod via forgeSetLines, fodder removed, d.merges++. buildMerge (route 'merge', NAV_WRAP, nav tab gLoadout, FEATURE_OPEN merge 2): MAIN + 2 material cards (‹ › cycles mergeable mains), RESULT box (rarity, iLv, mod slots, 'More slots at iLv …'), KEEP 1 MOD rows, materials grid, '🔗 Merge → X' (tags merge_go / merge_f_<uid> / merge_mod_<id> / merge_slot_k / merge_prev|next); mergeNow flies the materials into MAIN then flash + banner. Entries: Equipment row 2 Craft | 🔗 Merge n/2 (dot when ready) | Salvage, Power page 4th tile. tests/gear-merge added; forge-redesign test items now epic. Next: v8.0.33 Forge Points (FP 8/14/20/26, pick mods, star up, lucky 15%, remove random roll).
+
+# Previous delivery: v8.0.31 — Power page A + C (owner)
 
 powerTips: every card scored by simulated heroPower gain (save restored after each try): gear (best bag item per slot), Weave (per core, buy as many levels as Sugar allows ≤TAL_MAX → total gain, 'Weave X ×n · Your Sugar buys n levels · 🍬cost'), Talent (best affordable core node incl. parent rule → 'Talent: name'), Enhance (+ 'may drop a level on a miss' from +3); sorted by gain, top 3. Non-Power items → top.wait: Mail, Rank reward, Talent only on Build trees, Weave Rank up → 'WAITING' pill row (tags wait_<k>, red dots). Forge tip removed. buildGearPower (C): this._pwShown {cid,v}; when Power rose since the last view the number counts up 900ms, bar fills from the old ratio, '+N ⚡' pops beside the final number, Sfx.progress('core'). tests/power-summary updated.
 

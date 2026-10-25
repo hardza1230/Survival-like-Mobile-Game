@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.31';
+const GAME_VERSION = '8.0.32';
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
 const RUN_TRAITS=[
@@ -89,6 +89,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.32',date:'2026-10-25',title:'Gear Merge',items:['New 🔗 Merge: combine 3 items of the same slot and rarity into 1 item of the next rarity (Common → Rare → Epic → Legend)','The merged item keeps the highest item level and enhance level of the three','Higher rarity means more mod slots (Common 1 · Rare 2 · Epic 3) and stronger base stats','Pick 1 mod from the materials to keep in the new slot','Open it from Equipment (🔗 Merge) or the Power page'],},
   {v:'8.0.31',date:'2026-10-25',title:'Smarter Power page',items:['Every “best way to get stronger” card now shows the real Power you gain, and they are sorted by it','Weave shows how many levels your Sugar can buy and the total gain; Talent shows the best point to spend','Mail, Rank rewards and other non-Power items moved to a small “Waiting” row','When your Power goes up, the number counts up, the bar fills and a +N pops out']},
   {v:'8.0.30',date:'2026-10-24',title:'New Bestiary',items:['Each monster now has 3 tiers: first sight, 100 defeats and 1,000 defeats (bosses and minibosses: 1, 5 and 25)','Tier 3 unlocks a monster note and a real weak spot: +5% damage to that monster','All Chapter 1–2 field monsters now have their own pages, sorted by stage','Tap a monster to see its details','The stage summary shows “📖 New! Monsters found” — tap it to open that monster’s page']},
   {v:'8.0.29',date:'2026-10-24',title:'Recipe Book',items:['The Codex is now the Recipe Book','New Builds tab: pick a hero and a Build to see all of its cards — cards you have picked get a ✓, the rest stay “???”','Find every card of a Build (including its Unique Mutations) to earn 🧶 30 Thread','Relics, Items and Sets tabs stay the same']},
@@ -5229,7 +5230,7 @@ function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); retur
 // v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
 /* v6.77 C4: Kitchen locked until Chapter 2 (stage 10) cleared */
 // v7.9.76 เจ้าของ: ระบบที่ยังไม่ปลดจะไม่แสดง แล้วค่อย ๆ โผล่ตามด่านที่ผ่าน (ค่า = จำนวนด่าน Story ที่ผ่านแล้ว)
-const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,news:1,gear:1,gearInbox:1,craft:2,char:2,gCodex:2,skills:2,bestiary:2};
+const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:2,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_daily',achievements:'side_achievements',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
 const FEAT_LINE={bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! Mint has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
@@ -5560,7 +5561,10 @@ function drawForgeModIcon(scene,mod,x,y,size=26){
 function forgeRowForMod(m){return m&&m.row||((m&&m.category)==='offense'?'power':(m&&m.category)==='defense'?'sustain':'play');}
 function forgeLines(item){const out=[null,null,null],rest=[];for(const a of (item&&item.affixes)||[]){if(Number.isInteger(a.line)&&a.line>=0&&a.line<3&&!out[a.line])out[a.line]=a;else rest.push(a);}for(const a of rest){const row=['power','sustain','play'].indexOf(forgeRowForMod(affixDef(a.id))),i=row>=0&&!out[row]?row:out.indexOf(null);if(i>=0)out[i]=a;}return out;}
 function forgeSetLines(item,lines){item.affixes=lines.map((a,i)=>a?Object.assign({},a,{line:i}):null).filter(Boolean);item.forgeSchema=1;}
-function forgeLineOpen(item,line){return !!item&&Number.isInteger(line)&&line>=0&&line<Math.min(3,affixCountCap(item.itemLevel));}
+// v8.0.32 เจ้าของ: รวมของ (หลัก + 2 ชิ้นช่อง/ระดับเดียวกัน → ระดับถัดไป) · ระดับต่อชิ้น = item.grade · ช่อง mod ตามระดับ (เพดาน iLv ยังอยู่)
+const RAR_LINES={start:0,common:1,rare:2,epic:3,legend:3},GRADE_NEXT={common:'rare',rare:'epic',epic:'legend'};
+function gearGrade(item){const g=item&&item.grade;if(g&&RAR_LINES[g]!=null)return g;const b=item&&GEAR_ALL.find(x=>x.id===item.baseId);return (b&&b.tier)||'common';}
+function forgeLineOpen(item,line){if(!item||!Number.isInteger(line)||line<0||line>=Math.min(3,affixCountCap(item.itemLevel)))return false;const n=(item.grade||GEAR_ALL.some(b=>b.id===item.baseId))?RAR_LINES[gearGrade(item)]:3;return line<(n==null?3:n)||!!forgeLines(item)[line];}
 function gearEnhanceCap(item){const l=Math.max(1,Number(item&&item.itemLevel)||1);return l<12?1:l<25?3:l<45?6:10;}   // v7.9.94 เจ้าของ: ของเลเวลต่ำตีบวกได้น้อยลง (เดิม 3/5/7/10)
 function gearEffectiveEnhance(item){return Math.min(gearEnhanceCap(item),Math.max(0,Math.floor(Number(item&&item.enhanceLv)||0)));}
 // Retain old rolls in saves; locked rows stay dormant until the item meets their level requirement.
@@ -5628,7 +5632,7 @@ function modDesc(d){if(!d)return '';{const t=MOD_EFFECT[d.id];if(t){const x=t.re
 
 // v4.91: tier ดีสุดที่สุ่มได้ = iLv (1→T10, 100→T0) + ออฟเซ็ตตามเกรดฐาน · สุ่มในหน้าต่าง best…best+4 (ไม่ล็อกที่ tier เดียว)
 const BASE_TIER_OFFSET={ start:6, common:2, rare:1, epic:1, legend:0 };
-function affixBestTierForItem(item,mod){const base=item&&GEAR_ALL.find(g=>g.id===item.baseId),grade=(base&&base.tier)||(item&&item.grade)||'common',lvl=Math.max(1,Math.min(100,(item&&item.itemLevel)||1));
+function affixBestTierForItem(item,mod){const base=item&&GEAR_ALL.find(g=>g.id===item.baseId),grade=(item&&RAR_LINES[item.grade]!=null&&item.grade)||(base&&base.tier)||'common',lvl=Math.max(1,Math.min(100,(item&&item.itemLevel)||1));
   const levelBest=Math.max(0,Math.round(AFFIX_TIER_MAX-lvl/9));const count=(mod&&mod.tiers&&mod.tiers.length)||11;return Math.min(count-1,Math.max(Math.round((levelBest+(BASE_TIER_OFFSET[grade]??3))*(count-1)/10),(mod&&mod.bestTier)||0));}
 // v4.29: เติมช่องว่าง — common/magic ใช้ Spark Sugar (transmute, ได้บ่อย) · rare ใช้ Wish Candy (exalt) · reroll ช่องเดิม: rare=Wild Jam, magic=Twist Cream
 function craftCurrencyForLine(line){return 'transmute';}
@@ -5855,7 +5859,7 @@ function rewardSourceStage(){return Math.max(0,((Save.data&&Save.data.unlockedSt
 function currentRewardItemLevel(rng=Math.random){return rollItemLevel(rewardSourceStage(),1,rng);}
 function gearBaseStats(item){
   const base=item&&GEAR_ALL.find(g=>g.id===item.baseId);if(!base||base.tier==='start')return{attackMin:0,attackMax:0,armor:0,hp:0,crit:0,critDmg:0,speed:0,dashCd:0,skillCd:0};
-  const level=Math.max(1,Math.min(100,Number(item.itemLevel)||1)),quality=({common:1,rare:1.12,epic:1.24,legend:1.4})[base.tier]||1;
+  const level=Math.max(1,Math.min(100,Number(item.itemLevel)||1)),quality=({common:1,rare:1.12,epic:1.24,legend:1.4})[gearGrade(item)]||1;
   let seed=0;for(const c of base.id)seed=(seed*31+c.charCodeAt(0))>>>0;const variation=1+(seed%9)/40,el=gearEffectiveEnhance(item),enhance=1+.12*el;   // +12% per effective enhancement; early gear obeys its iLv cap.
   const attack=['weapon','ring'].includes(item.slot)?(()=>{const b0=(1+level*.10)*quality*variation*(item.slot==='weapon'?1:.35);return Math.max(1,Math.round(b0*enhance));})():0;
   const armor=item.slot==='armor'?Math.max(1,Math.round((2+level*.15)*quality*variation*enhance)):0;
@@ -6292,6 +6296,18 @@ const Save = {
     if(item){ for(const s in this.data.equippedGear){ if(this.data.equippedGear[s]===item.uid){ delete this.data.equippedGear[s]; if(this.data.gear)delete this.data.gear[s]; } } this.data.gearItems=(this.data.gearItems||[]).filter(x=>x&&x.uid!==item.uid); }
     this.data.gearLv[id]=0; this.save(); return {result:'destroy',lv:0}; },
   // v7.8.84 เจ้าของ: รวม Sell+Dismantle เป็น Salvage ปุ่มเดียว — ได้ทั้ง 🔩 Shard และ 🍬 Sugar
+  // v8.0.32 รวมของ: หลัก + 2 ชิ้นช่อง/ระดับเดียวกัน (ไม่ได้สวม/ล็อก) → ระดับ +1 · iLv/ตีบวก = สูงสุด · เลือกย้าย mod จากของที่ใช้รวมได้ 1 อันลงช่องว่าง
+  mergeCanMain(item){const b=item&&GEAR_ALL.find(g=>g.id===item.baseId);return !!(b&&b.tier!=='start'&&!item.forgeChoice&&GRADE_NEXT[gearGrade(item)]&&(this.data.gearItems||[]).includes(item));},
+  mergeFodder(main){if(!this.mergeCanMain(main))return [];const g=gearGrade(main);return (this.data.gearItems||[]).filter(x=>x&&x!==main&&x.slot===main.slot&&gearGrade(x)===g&&!x.locked&&!x.favorite&&!x.forgeChoice&&!this.isGearEquipped(x.uid)&&GEAR_ALL.some(b=>b.id===x.baseId&&b.tier!=='start'))
+    .sort((a,b)=>((a.itemLevel||1)-(b.itemLevel||1))||((a.enhanceLv||0)-(b.enhanceLv||0))||((a.affixes||[]).length-(b.affixes||[]).length));},
+  mergeCarryOptions(main,fod){if(!main)return [];const res={baseId:main.baseId,slot:main.slot,grade:GRADE_NEXT[gearGrade(main)]||gearGrade(main),itemLevel:Math.max(main.itemLevel||1,...fod.map(f=>f.itemLevel||1)),affixes:main.affixes},cur=forgeLines(main),out=[];
+    for(const f of fod){forgeLines(f).forEach(a=>{const d=a&&affixDef(a.id),i=d?['power','sustain','play'].indexOf(forgeRowForMod(d)):-1;if(i>=0&&!cur[i]&&forgeLineOpen(res,i)&&(!d.slots||d.slots.includes(main.slot)))out.push({uid:f.uid,id:a.id,line:i,a});});}
+    return out.sort((x,y)=>(x.a.t??10)-(y.a.t??10));},
+  mergeGear(mainUid,fUids,carry){const main=this.gearItem(mainUid);if(!this.mergeCanMain(main)||!Array.isArray(fUids)||fUids.length!==2||fUids[0]===fUids[1])return null;const ok=this.mergeFodder(main),fod=fUids.map(u=>ok.find(x=>x.uid===u));if(fod.some(x=>!x))return null;
+    const pick=carry&&this.mergeCarryOptions(main,fod).find(o=>o.uid===carry.uid&&o.id===carry.id),from=gearGrade(main);
+    main.grade=GRADE_NEXT[from];main.itemLevel=Math.max(main.itemLevel||1,...fod.map(f=>f.itemLevel||1));main.enhanceLv=Math.max(main.enhanceLv||0,...fod.map(f=>f.enhanceLv||0));
+    if(pick){const ls=forgeLines(main);ls[pick.line]=Object.assign({},pick.a);forgeSetLines(main,ls);}
+    const gone=new Set(fUids);this.data.gearItems=this.data.gearItems.filter(x=>!gone.has(x.uid));this.data.merges=(this.data.merges||0)+1;this.save();return {item:main,from,to:main.grade,carried:pick?pick.id:null};},
   salvageGearInstance(uid){const item=this.gearItem(uid);if(!item||item.locked||item.forgeChoice||item.favorite||item.grade==='start'||this.isGearEquipped(uid))return null;const shards=gearDismantleValue(item),sugar=gearSellSugar(item);this.data.gearItems=this.data.gearItems.filter(x=>x&&x.uid!==uid);this.data.threads=(this.data.threads||0)+shards;this.data.sugar=(this.data.sugar||0)+sugar;this.save();(typeof DailyQ!=='undefined')&&DailyQ.tick('shards',shards);return {shards,sugar};},
   // ระบบยศ (prestige loop): rank ถาวร + เลเวลWaitบปัจจุบัน (0..TAL_MAX)
   talLvl(k){ return this.data.upgrades[k]||0; },
@@ -9149,7 +9165,7 @@ class Game extends Phaser.Scene {
   navWrapBuild(f,a){ if(this._inMenuBuild||this.state!=='menu'||!this.menu)return f.apply(this,a); const s=this.menuScreen||'hub',nav=this.navBarOn(s),H0=this.H; if(nav)this.H=H0-NAV_H; this._navOn=nav; this._spotBuild=false; this._inMenuBuild=true; let r;
     try{ r=f.apply(this,a); }finally{ this.H=H0; this._inMenuBuild=false; } if(this.state==='menu'){ this.menu.setVisible(true); if(nav&&!this._spotBuild)this.drawNavBar(s,H0); this.setupMenuScroll(s); } return r; }
   navTabOf(s){ if(s==='hub')return 'hub'; if(['char','stats','talents'].includes(s))return 'char'; if(['chapter','stage'].includes(s))return 'hub'; if(['bazaar','tradein'].includes(s))return 'bazaar';   // v7.9.68 เจ้าของ: เลือกด่านจากกล่องด่านใน Lobby · Bazaar ได้แท็บของตัวเอง
-    if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
+    if(['gLoadout','upgrade','perks','dig','gear','gearInbox','craft','merge'].includes(s))return 'gLoadout'; if(['gActivity','daily','achievements','kitchen','playstats'].includes(s))return 'gActivity'; return null; }
   drawNavBar(s,H0){ const W=this.W,y0=H0-NAV_H,act=this.navTabOf(s),fix=o=>{o._menuBackdrop=true;o._menuFixedY=o.y;this.menu.add(o);return o;}; this.loadLobbyArt?.();
     const g=fix(this.add.graphics()),bgArt=this.tuHas('lb_nav_bg'); g.fillStyle(0x000000,.35).fillRect(0,y0-6,W,6);
     if(bgArt){ const p=this.tuPanel('lb_nav_bg',0,0,y0,W,NAV_H); p._menuBackdrop=true;p._menuFixedY=y0;this.menu.add(p); }   // v7.9.51 ใบ 33 พื้นแถบ C1
@@ -9439,7 +9455,7 @@ class Game extends Phaser.Scene {
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
     const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; this._inMenuBuild=true; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='story')this.buildStoryBook(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='merge')this.buildMerge(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='story')this.buildStoryBook(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -9542,15 +9558,78 @@ class Game extends Phaser.Scene {
         this._zone(wx,y-8,pw,28,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=q.go; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='wait_'+q.k; wx+=pw+6; }
       y+=30; }
     // 3) ปุ่ม Weave / Equipment / Forge
-    const rows=[['upgrade','Weave','temple_life_core','✨'],['gear','Equipment','ic_nav_upgrade','🎒'],['craft','Forge','tile_craft','🧪']].filter(r=>featureOpen(r[0])),n=rows.length,gap=8,tw=(bw-gap*(n-1))/n,th=Math.min(92,Math.max(60,h-y-12));
+    const rows=[['upgrade','Weave','temple_life_core','✨'],['gear','Equipment','ic_nav_upgrade','🎒'],['merge','Merge','','🔗'],['craft','Forge','tile_craft','🧪']].filter(r=>featureOpen(r[0])),n=rows.length,gap=8,tw=(bw-gap*(n-1))/n,th=Math.min(92,Math.max(60,h-y-12));
     rows.forEach(([target,title,ik,em],i)=>{ const tx=x+i*(tw+gap),key='mui_gear_card_'+target,tg=this.add.graphics(); tg.fillStyle(0x241a30,.97).fillRoundedRect(tx,y,tw,th,14).lineStyle(2,0x8f7de8,.9).strokeRoundedRect(tx,y,tw,th,14); this.menu.add(tg);
       const isz=Math.min(40,th*.45); const ic=this.textures.exists(ik)?this.add.image(tx+tw/2,y+th*.4,ik):this.add.text(tx+tw/2,y+th*.4,em,{fontSize:Math.round(isz*.8)+'px'}).setOrigin(.5); if(ic.setDisplaySize&&ic.type==='Image')ic.setScale(isz/Math.max(ic.width,ic.height)); this.menu.add(ic);
       T(tx+tw/2,y+th*.8,title,13,'#fff5e6','bold',.5);
-      this._zone(tx,y,tw,th,()=>{this.menuScreen=target;this.buildMenuScreen();}); this.tapZones[this.tapZones.length-1].tag=target;
+      this._zone(tx,y,tw,th,()=>{if(target==='merge'){this._mergeBack='gLoadout';this._mergeMain=null;}this.menuScreen=target;this.buildMenuScreen();}); this.tapZones[this.tapZones.length-1].tag=target;
       if(this.hasTargetBadge(target))this.drawBadgeDot(this.menu,tx+tw-10,y+10);
       if(this.hasClaimableTarget(target))this.hubGuideTag?.({x:tx,y,w:tw,h:th},'Reward ready'); else if(nxt&&nxt.group==='gLoadout'&&nxt.target===target)this.hubGuideTag?.({x:tx,y,w:tw,h:th},nxt.tag); });
     this.menu.setVisible(true);
   }
+  // v8.0.32 เจ้าของ: 🔗 Merge แบบ Archero — หลัก + 2 ชิ้นช่อง/ระดับเดียวกัน → ระดับถัดไป · เลือกย้าย mod 1 อัน
+  mergeMains(){ return (Save.data.gearItems||[]).filter(x=>Save.mergeCanMain(x)&&Save.mergeFodder(x).length>=2).sort((a,b)=>((Save.isGearEquipped(b.uid)?1:0)-(Save.isGearEquipped(a.uid)?1:0))||((b.itemLevel||1)-(a.itemLevel||1))); }
+  buildMerge(){
+    this.menu.removeAll(true);this.tapZones=[];this._screenBg('Merge','craft_bench_bg',this._mergeBack||'gear');
+    const w=this.W,h=this.H,bw=Math.min(w-28,440),x=(w-bw)/2,hs=this._hdrShift?this._hdrShift():0,F='NunitoUI, sans-serif',RN=['common','rare','epic','legend'];
+    const T=(tx,ty,t,sz,c,bold,ox=0,oy=.5)=>{const q=this.add.text(tx,ty,t,{fontFamily:F,fontStyle:bold?'bold':'normal',fontSize:sz+'px',color:c||'#fff'}).setOrigin(ox,oy);this.menu.add(q);return q;};
+    const fit=(q,mw)=>{if(q.width>mw)q.setScale(mw/q.width);return q;};
+    const mains=this.mergeMains();let main=Save.gearItem(this._mergeMain);
+    if(!Save.mergeCanMain(main)){const s=Save.gearItem(this.gearSelectedUid);main=Save.mergeCanMain(s)&&Save.mergeFodder(s).length>=2?s:mains[0]||(Save.mergeCanMain(s)?s:null);this._mergeMain=main&&main.uid;this._mergeF=null;this._mergeCarry=undefined;}
+    let y=(w<=h?92:70)+hs;
+    T(w/2,y,'Merge 3 items of the same slot and rarity',13,'#fff0df',true,.5);T(w/2,y+18,'→ 1 item of the next rarity (more mod slots)',11,'#cdbfd8',false,.5);y+=40;
+    if(!main){const g=this.add.graphics();g.fillStyle(0x221a2b,.96).fillRoundedRect(x,y,bw,120,16);this.menu.add(g);
+      T(w/2,y+34,'Nothing to merge yet',16,'#ffffff',true,.5);T(w/2,y+60,'Collect 3 items of the same slot and rarity.',12,'#cdbfd8',false,.5);T(w/2,y+80,'Silver Chests in the Bazaar are a good source!',12,'#cdbfd8',false,.5);
+      this.heroButton(x,y+136,(bw-8)/2,40,'🎒 Equipment',()=>{this.menuScreen='gear';this.buildMenuScreen();});this.heroButton(x+(bw+8)/2,y+136,(bw-8)/2,40,'🏪 Bazaar',()=>{this._bazTab='chests';this.menuScreen='bazaar';this.buildMenuScreen();});
+      this.menu.setVisible(true);return;}
+    const fod=Save.mergeFodder(main);let sel=(this._mergeF||[]).filter(u=>fod.some(f=>f.uid===u));if(!this._mergeF)sel=fod.slice(0,2).map(f=>f.uid);this._mergeF=sel;
+    const fItems=sel.map(u=>fod.find(f=>f.uid===u)),from=gearGrade(main),to=GRADE_NEXT[from],tl=TIER_LABEL[from]||TIER_LABEL.common,tn=TIER_LABEL[to]||TIER_LABEL.common;
+    const card=(cx,cy,cw,ch,it,title,col,objs)=>{const g=this.add.graphics(),b=it&&GEAR_ALL.find(q=>q.id===it.baseId),c=Phaser.Display.Color.HexStringToColor(col||tl.color).color;g.fillStyle(it?0x2a2036:0x1b1523,.97).fillRoundedRect(cx,cy,cw,ch,14).lineStyle(2.4,it?c:0x5b4f6c,it?1:.7).strokeRoundedRect(cx,cy,cw,ch,14);this.menu.add(g);objs&&objs.push(g);
+      const sz=Math.min(cw-20,ch-44);if(b){const k='gear_'+b.id,ic=this.textures.exists(k)?this.add.image(cx+cw/2,cy+8+sz/2,k):this.add.text(cx+cw/2,cy+8+sz/2,b.emoji||'🎁',{fontSize:Math.round(sz*.7)+'px'}).setOrigin(.5);if(ic.type==='Image')ic.setScale(sz/Math.max(ic.width,ic.height));this.menu.add(ic);objs&&objs.push(ic);
+        const q=fit(T(cx+cw/2,cy+ch-26,'iLv '+(it.itemLevel||1)+(it.enhanceLv?' · +'+it.enhanceLv:''),11,'#e9dcff',true,.5),cw-8);objs&&objs.push(q);}
+      else{const q=T(cx+cw/2,cy+ch/2-8,'+',30,'#6f6283',true,.5);objs&&objs.push(q);}
+      const q2=fit(T(cx+cw/2,cy+ch-11,title,10,it?(col||tl.color):'#8f83a3',true,.5),cw-8);objs&&objs.push(q2);};
+    // แถวบน: หลัก + วัตถุดิบ 2 ชิ้น
+    const cw=Math.min(104,(bw-24)/3),ch=Math.round(cw*1.18),gx=(bw-cw*3)/2,fly=[[],[]],mainX=x;
+    card(mainX,y,cw,ch,main,'MAIN',tl.color);
+    if(mains.length>1){const i=Math.max(0,mains.findIndex(m=>m.uid===main.uid)),go=d=>{const m=mains[(i+d+mains.length)%mains.length];this._mergeMain=m.uid;this._mergeF=null;this._mergeCarry=undefined;Sfx.select?.();this.buildMerge();};
+      this.heroButton(mainX,y+ch+4,cw/2-2,26,'‹',()=>go(-1),{fontSize:14});this.tapZones[this.tapZones.length-1].tag='merge_prev';this.heroButton(mainX+cw/2+2,y+ch+4,cw/2-2,26,'›',()=>go(1),{fontSize:14});this.tapZones[this.tapZones.length-1].tag='merge_next';}
+    [0,1].forEach(k=>{const fx=x+cw+gx+k*(cw+gx);card(fx,y,cw,ch,fItems[k],fItems[k]?tl.name:'Material',tl.color,fly[k]);fly[k].forEach(o=>o._mdx=mainX-fx);if(fItems[k]){this._zone(fx,y,cw,ch,()=>{this._mergeF=sel.filter(u=>u!==fItems[k].uid);this._mergeCarry=undefined;Sfx.select?.();this.buildMerge();});this.tapZones[this.tapZones.length-1].tag='merge_slot_'+k;}});
+    T(x+cw+gx/2,y+ch/2,'+',18,'#ffd166',true,.5);T(x+2*cw+gx*1.5,y+ch/2,'+',18,'#ffd166',true,.5);
+    y+=ch+(mains.length>1?36:10);
+    // ผลลัพธ์
+    const res={baseId:main.baseId,slot:main.slot,grade:to,itemLevel:Math.max(main.itemLevel||1,...fItems.map(f=>f.itemLevel||1)),affixes:main.affixes},ln=it=>[0,1,2].filter(i=>forgeLineOpen(it,i)).length,base=GEAR_ALL.find(b=>b.id===main.baseId)||{name:main.baseId};
+    {const rh=58,g=this.add.graphics(),c=Phaser.Display.Color.HexStringToColor(tn.color).color;g.fillStyle(0x261c33,.97).fillRoundedRect(x,y,bw,rh,14).lineStyle(2.6,c,1).strokeRoundedRect(x,y,bw,rh,14);this.menu.add(g);
+      fit(T(x+14,y+18,'RESULT · '+base.name,13,'#ffffff',true),bw-28);const r1=T(x+14,y+40,tl.name,13,tl.color,true);const ar=T(x+18+r1.width,y+40,' → ',13,'#ffffff',true);T(x+18+r1.width+ar.width,y+40,tn.name,13,tn.color,true);
+      T(x+bw-14,y+40,'iLv '+res.itemLevel+' · Mod slots '+ln(main)+' → '+ln(res),11,'#e9dcff',true,1);if(ln(res)<(RAR_LINES[to]||0))T(x+bw-14,y+18,'More slots at iLv '+(res.itemLevel<12?12:25),10,'#ffc58a',false,1);this._mergeRes={x,y,w:bw,h:rh};y+=rh+10;}
+    // ย้าย mod 1 อัน
+    const opts=sel.length===2?Save.mergeCarryOptions(main,fItems):[];if(this._mergeCarry===undefined)this._mergeCarry=opts[0]?{uid:opts[0].uid,id:opts[0].id}:null;
+    if(opts.length){T(x+2,y+6,'KEEP 1 MOD FROM THE MATERIALS (tap to pick)',10,'#ffdc91',true);y+=16;const rh=30;
+      opts.slice(0,3).forEach(o=>{const d=affixDef(o.id),on=this._mergeCarry&&this._mergeCarry.uid===o.uid&&this._mergeCarry.id===o.id,g=this.add.graphics();g.fillStyle(on?0x3b2d52:0x221a2b,.97).fillRoundedRect(x,y,bw,rh,10).lineStyle(1.6,on?0xffd166:0x5b4f6c,1).strokeRoundedRect(x,y,bw,rh,10);this.menu.add(g);
+        T(x+12,y+rh/2,on?'✓':'○',14,on?'#ffd166':'#8f83a3',true);const st=tierStars(d,o.a.t);fit(T(x+32,y+rh/2,modLine(d,o.a.v),12,MOD_TIER_COLOR[st]||'#fff',true),bw-90);T(x+bw-12,y+rh/2,'★'+st,12,MOD_TIER_COLOR[st]||'#fff',true,1);
+        this._zone(x,y,bw,rh,()=>{this._mergeCarry=on?null:{uid:o.uid,id:o.id};Sfx.select?.();this.buildMerge();});this.tapZones[this.tapZones.length-1].tag='merge_mod_'+o.id;y+=rh+4;});y+=4;}
+    // รายการวัตถุดิบ
+    {const sd=GEAR_SLOTS.find(q=>q.slot===main.slot)||{};T(x+2,y+6,'MATERIALS · '+tl.name+' '+(sd.label||sd.name||main.slot)+' ('+fod.length+')',10,'#ffdc91',true);}y+=16;
+    if(!fod.length){T(x+2,y+8,'No more '+tl.name+' items for this slot — get more from chests and stages.',11,'#cdbfd8');y+=24;}
+    const btnH=46,room=h-y-btnH-14,cols=5,gap=6,cs=Math.min(58,(bw-gap*(cols-1))/cols),rows=Math.max(1,Math.floor((room+gap)/(cs+gap))),show=fod.slice(0,cols*rows);
+    show.forEach((f,i)=>{const cx=x+(i%cols)*(cs+gap),cy=y+Math.floor(i/cols)*(cs+gap),on=sel.includes(f.uid),b=GEAR_ALL.find(q=>q.id===f.baseId),g=this.add.graphics();g.fillStyle(0x2a2036,.97).fillRoundedRect(cx,cy,cs,cs,10).lineStyle(on?2.6:1.4,on?0xffd166:0x5b4f6c,1).strokeRoundedRect(cx,cy,cs,cs,10);this.menu.add(g);
+      const k=b&&'gear_'+b.id,ic=k&&this.textures.exists(k)?this.add.image(cx+cs/2,cy+cs/2-4,k):this.add.text(cx+cs/2,cy+cs/2-4,(b&&b.emoji)||'🎁',{fontSize:Math.round(cs*.42)+'px'}).setOrigin(.5);if(ic.type==='Image')ic.setScale((cs-20)/Math.max(ic.width,ic.height));this.menu.add(ic);
+      T(cx+cs/2,cy+cs-8,'Lv'+(f.itemLevel||1),9,'#e9dcff',true,.5);if(on)T(cx+cs-6,cy+8,'✓',12,'#ffd166',true,1);
+      this._zone(cx,cy,cs,cs,()=>{let s2=sel.slice();if(on)s2=s2.filter(u=>u!==f.uid);else{if(s2.length>=2)s2.pop();s2.push(f.uid);}this._mergeF=s2;this._mergeCarry=undefined;Sfx.select?.();this.buildMerge();});this.tapZones[this.tapZones.length-1].tag='merge_f_'+f.uid;});
+    // ปุ่ม Merge
+    const by=h-btnH-10,ready=sel.length===2&&!!to;
+    this.heroButton(x,by,bw,btnH,ready?'🔗 Merge → '+tn.name:'Pick 2 materials',ready?()=>this.mergeNow(fly):null,{active:ready,disabled:!ready,fontSize:16});this.tapZones[this.tapZones.length-1].tag='merge_go';
+    this.menu.setVisible(true);
+  }
+  mergeNow(fly){ if(this._mergeBusy)return; const main=Save.gearItem(this._mergeMain),sel=(this._mergeF||[]).slice(),carry=this._mergeCarry||null; if(!main||sel.length!==2)return;
+    const done=()=>{ this._mergeBusy=false; const r=Save.mergeGear(main.uid,sel,carry); if(!r){Sfx.error?.();this.buildMerge();return;}
+      this._adBase=null;this._mergeF=null;this._mergeCarry=undefined;this.gearSelectedUid=r.item.uid;try{Sfx.craft?.();}catch(e){} this.screenFlash?.(Phaser.Display.Color.HexStringToColor((TIER_LABEL[r.to]||TIER_LABEL.common).color).color,.45,320);
+      if(r.to==='legend')try{Sfx.legend?.();}catch(e){}
+      const keep=Save.mergeCanMain(r.item)&&Save.mergeFodder(r.item).length>=2;if(!keep)this._mergeMain=null; this.buildMerge();
+      const d=r.carried&&affixDef(r.carried); this.showBanner('🔗 Merged! '+(TIER_LABEL[r.from]||{}).name+' → '+(TIER_LABEL[r.to]||{}).name,d?'Kept mod: '+(d.label||r.carried):'iLv '+(r.item.itemLevel||1)+(r.item.enhanceLv?' · +'+r.item.enhanceLv:''),1600); };
+    const objs=[].concat(...(fly||[])),R=this._mergeRes; if(!this.tweens||!objs.length||!R)return done(); this._mergeBusy=true;
+    objs.forEach(o=>o.active&&this.tweens.add({targets:o,x:(o.x||0)+(o._mdx||0),alpha:.15,duration:260,ease:'Cubic.in'}));
+    this.time.delayedCall(280,done); }
   buildHubGroup(key){
     if(key==='gLoadout')return this.buildGearPower();
     this.menu.removeAll(true); this.tapZones=[]; const grp=HUB_GROUPS[key]; const groupArt={gLoadout:'screen_group_gear',gActivity:'screen_group_activity',gCodex:'screen_group_codex',gMore:'screen_group_more'}; this._screenBg(grp.title,groupArt[key]);
@@ -11580,7 +11659,7 @@ class Game extends Phaser.Scene {
       if(base.enh&&(selected.enhanceLv||0)<_enhCap){const od=enhanceOdds(selected.enhanceLv||0);if(od.destroy>0||od.brk>0){if(J)this.jrPanel('jr_warning_ribbon',0,18,y-4,w-36,22);const pc=v=>Math.round(v*100)+'%',wt=this.add.text(w/2,y,(od.destroy>0?'⚠ Risky: ':'⚠ ')+pc(od.success)+' success · '+pc(od.brk)+' drops a level'+(od.destroy>0?' · '+pc(od.destroy)+' DESTROYS the item':''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:od.destroy>0?'#ff8da2':'#ffd166',align:'center',wordWrap:{width:w-32}}).setOrigin(.5,0);this.menu.add(wt);y+=Math.max(16,wt.height+4);}}   /* v7.8.67 เจ้าของ: ตีบวกมีโอกาสพังต้องเตือน */
       // v6.55.50: ลำดับปุ่ม — หลักเต็มกว้าง (Equip/Enhance) · รอง Craft + ★/🔒 ไอคอน + ⋯ More · ขาย/ย่อยซ่อนใน More
       const bgap=6,full=w-28,bh=40,bh2=34,y1=y,y2=y+bh+bgap,y3=y2+bh2+bgap,cw2=Math.round(full*0.52),sw=(full-cw2-bgap*2)/2,hw=(full-bgap)/2,moreOpen=true;   // v7.6.4 เจ้าของ: เลิกปุ่ม ⋯ · ย่อย/ขาย แสดงตลอด
-      const cW=Math.round((full-bgap)*.36),dW=full-bgap-cW,SL={2:eq?[14,y1,full,bh]:[14,y1,hw,bh],e:[14+hw+bgap,y1,hw,bh],c:[14,y2,cW,bh2],3:[14+cW+bgap,y2,dW,bh2],s:[14,bagY,hw,30],m:[14+hw+bgap,bagY,hw,30]};   /* v7.9.3 R1 Equip|Enhance คู่กัน · C3 แถว 2 = Craft | Salvage/Unlock/Lock */
+      const cW=Math.round((full-bgap*2)*.25),dW=full-bgap*2-cW*2,SL={2:eq?[14,y1,full,bh]:[14,y1,hw,bh],e:[14+hw+bgap,y1,hw,bh],c:[14,y2,cW,bh2],g:[14+cW+bgap,y2,cW,bh2],3:[14+cW*2+bgap*2,y2,dW,bh2],s:[14,bagY,hw,30],m:[14+hw+bgap,bagY,hw,30]};   /* v7.9.3 R1 Equip|Enhance คู่กัน · C3 แถว 2 = Craft | Salvage/Unlock/Lock */
       const conf=(ck,label)=>this._gearConfirm===ck?'⚠ Tap again to confirm':label, arm=ck=>{this._gearConfirm=ck;Sfx.error();this.buildMenuScreen();};   /* v7.9.3 S2 ยืนยันที่ตัวปุ่ม */   // v7.8.94 ★ รวมกับ 🔒 · แถว 2 Craft|Lock|Salvage · แถว 3 Salvage weaker|Equip Best   // v7.8.84 แถวล่าง 3 ปุ่ม: Salvage · Salvage ▼ · Best
       const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i];this.heroButton(bx,by,bw,bhh,label,fn,{active:(i===2||i==='e')&&!!fn,disabled:!fn,fontSize:(i===2||i==='e')?(eq?15:13):12});if(fn)this.tapZones[this.tapZones.length-1].fn=fn;};
       if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
@@ -11594,8 +11673,9 @@ class Game extends Phaser.Scene {
       const togLock=()=>{if(Save.gearItem(selected.uid)){const l=Save.toggleGearLock(selected.uid);Sfx.equipment(l?'lock':'unlock');}this._gearConfirm=null;this.buildMenuScreen();};
       if(eq)drawAction(3,selected.locked?'🔒 Locked':'🔓 Lock',0x3a3550,togLock); else if(selected.locked||selected.favorite)drawAction(3,'🔓 Unlock to salvage',0x3a3550,togLock);
       if(canDis)drawAction(3,conf('sal:'+selected.uid,'♻ Salvage +'+gain+'🧶 +'+sv+'🍬'),0x8d4b3e,()=>{const ck='sal:'+selected.uid;if((selected.affixes||[]).length&&selected.craftedAt&&this._gearConfirm!==ck){arm(ck);return;}this._gearConfirm=null;const r=Save.salvageGearInstance(selected.uid);if(r){this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged','🧶 +'+r.shards+'   🍬 +'+r.sugar,1200);}});
-      { const fOpen=typeof featureOpen!=='function'||featureOpen('craft'),canCraft=fOpen&&selected.grade!=='start'&&!selected.locked; drawAction('c',fOpen?'🧪 Craft':'🔒 Forge after C1-2',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
-      if(!eq&&!selected.locked&&!selected.favorite&&!canDis){this.menu.add(this.add.text(14+cW+bgap+dW/2,y2+bh2/2,'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
+      { const fOpen=typeof featureOpen!=='function'||featureOpen('craft'),canCraft=fOpen&&selected.grade!=='start'&&!selected.locked; { const mOk=fOpen&&!!Save.mergeCanMain?.(selected),mN=mOk?Save.mergeFodder(selected).length:0; drawAction('g',fOpen?(selected.grade==='legend'?'Max rarity':'🔗 Merge'+(mOk?' '+Math.min(2,mN)+'/2':'')):'🔒 Merge',0x5a3f8c,mOk?()=>{this._mergeBack='gear';this._mergeMain=selected.uid;this._mergeF=null;this._mergeCarry=undefined;this.menuScreen='merge';this.buildMenuScreen();}:null); if(mN>=2)this.drawBadgeDot?.(this.menu,SL.g[0]+SL.g[2]-6,SL.g[1]+6); }
+        drawAction('c',fOpen?'🧪 Craft':'🔒 Forge',canCraft?0x5a3f8c:0x3a3550,canCraft?()=>{this.gearSlot=sel;this.craftSelectedUid=selected.uid;this.gearSelectedUid=selected.uid;this.craftLineIndex=0;this._craftRolledId=null;this.menuScreen='craft';this.buildMenuScreen();}:null,canCraft?'#e9dcff':'#8d8195'); }
+      if(!eq&&!selected.locked&&!selected.favorite&&!canDis){this.menu.add(this.add.text(SL[3][0]+dW/2,y2+bh2/2,'Starter items are protected',{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:'#b9abc5'}).setOrigin(.5));}
       y=y2+bh2;
     }
     this.jrInkPass?.(); this.menu.setVisible(true);
@@ -19880,7 +19960,7 @@ Phaser.GameObjects.GameObjectFactory.prototype.text=function(x,y,value,style){
   return _textFactory.call(this,x,y,value,style).setResolution(RENDER_DPR);
 };
 // v8.0.1 เจ้าของ: แท็บล่างต้องอยู่ทุกหน้า → builder ระดับหน้าทุกตัวผ่าน navWrapBuild (เรียกซ้อนใน buildMenuScreen = ทำงานตามเดิม)
-const NAV_WRAP=['buildAchievements','buildBazaar','buildBestiary','buildChapterSelect','buildCraftBench','buildDaily','buildDig','buildGear','buildGearInbox','buildHub','buildHubGroup','buildKitchen','buildNews','buildPlayStats','buildRankPerks','buildSettings','buildSkillArchive','buildStageSelect','buildTradeIn','buildUpgrade','buildChars','buildTalents','buildStats','buildLobby'];
+const NAV_WRAP=['buildAchievements','buildBazaar','buildBestiary','buildChapterSelect','buildCraftBench','buildMerge','buildDaily','buildDig','buildGear','buildGearInbox','buildHub','buildHubGroup','buildKitchen','buildNews','buildPlayStats','buildRankPerks','buildSettings','buildSkillArchive','buildStageSelect','buildTradeIn','buildUpgrade','buildChars','buildTalents','buildStats','buildLobby'];
 for(const n of NAV_WRAP){ const f=Game.prototype[n]; if(typeof f==='function')Game.prototype[n]=function(...a){ return this.navWrapBuild(f,a); }; }
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
