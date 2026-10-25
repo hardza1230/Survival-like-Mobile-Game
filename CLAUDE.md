@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.42, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.43, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.42 — Player outline depth fix
+
+Pale silhouette copied the prior frame depth before isometric Y sorting, so walking upward placed it over the player. tickPlayerReadability now runs after current player depth and shadow updates, retaining current pose/frame/transform and reusing both sprites. Regression executes the production presentation sequence across upward/downward/stationary movement, negative Y and non-iso, checking outline/ring depth and pose parity. No assets, physics or balance changes. Owner phone visual review pending; no local gameplay simulation/screenshots.
 
 # Latest delivery: v8.0.41 — Stories for all15 campaign bosses
 

@@ -19,6 +19,25 @@ const warning=sc.makeHazardReadability(12,30,86,760),g=nodes.findLast(n=>n.ops.l
 const hazard=method('spawnHazard');assert(hazard.includes('delayedCall(760'));assert(hazard.includes('this.dist(this.player.x,this.player.y,x,y)<r+8'));assert(hazard.includes('this.hurtPlayer(dmg,0.5)'));
 // Two player markers reuse art/frame and never modify the physics actor.
 sc.player={active:true,x:30,y:40,texture:{key:'char_momo'},frame:{name:2},originX:.5,originY:.5,scaleX:.5,scaleY:.5,rotation:.2,flipX:true,depth:40,body:{radius:18},alpha:1};const ps=JSON.stringify(sc.player);sc.tickPlayerReadability();const ring=sc._readPlayerRing,edge=sc._readPlayerEdge,count=nodes.length;sc.tickPlayerReadability();assert.equal(nodes.length,count);assert.equal(JSON.stringify(sc.player),ps);assert.equal(edge.frame,2);assert.equal(ring.y,71);
+// Run the production presentation ordering only (no combat simulation). Upward movement
+// used to leave the outline at the prior, higher Y depth, in front of the hero.
+const presentationStart=src.indexOf('    this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);');
+const presentationEnd=src.indexOf('    if(!this.dashReady)',presentationStart);
+assert(presentationStart>=0&&presentationEnd>presentationStart);
+const present=vm.runInNewContext('(function(dt){'+src.slice(presentationStart,presentationEnd)+'})');
+sc.tickCocoaFlicker=()=>{};sc.drawShadows=()=>{};
+sc.player=new Node(30,100);Object.assign(sc.player,{texture:{key:'char_momo'},frame:{name:0},originX:.5,originY:.7});
+let pose=0;
+sc.updatePose=()=>{sc.player.texture={key:pose%2?'char_momo_run':'char_momo'};sc.player.frame={name:pose%12};};
+sc.animatePlayer=()=>{Object.assign(sc.player,{scaleX:.4+pose*.001,scaleY:.5,rotation:pose*.01,flipX:!!(pose%2),alpha:pose%3?.7:1});};
+for(const iso of [true,false]){sc.iso=iso;sc.player.depth=100;
+ for(const y of [100,99,80,40,-20,-21,0,40,100,100]){pose++;sc.player.y=y;const priorDepth=sc.player.depth;present.call(sc,1/60);
+  const p=sc.player;assert.equal(p.depth,iso?y:priorDepth);assert.equal(edge.depth,p.depth-.05);assert(edge.depth<p.depth,'outline must stay behind hero');assert(ring.depth<edge.depth);
+  assert.equal(edge.key,p.texture.key);assert.equal(edge.frame,p.frame.name);assert.equal(edge.x,p.x);assert.equal(edge.y,p.y);assert.equal(ring.y,p.y+31);
+  assert.equal(edge.scaleX,p.scaleX*1.055);assert.equal(edge.scaleY,p.scaleY*1.055);assert.equal(edge.rotation,p.rotation);assert.equal(edge.flipX,p.flipX);assert.equal(edge.originY,p.originY);assert.equal(edge.alpha,.48*p.alpha);
+ }
+}
+assert.equal(nodes.length,count,'movement reuses both markers');
 // Elite cap and windup edge-trigger, including pooled ordinary-enemy reuse.
 for(let i=0;i<15;i++)sc.tickEnemyReadability({active:true,isElite:true,x:i,y:50,body:{halfHeight:25},frozen:0});assert.equal(sc._readElites.size,12);
 const enemy={active:true,x:1,y:2,isElite:false,frozen:0,_enemyAction:{state:'windup'}};sc.tickEnemyReadability(enemy);const n=nodes.length;sc.tickEnemyReadability(enemy);assert.equal(nodes.length,n,'one flash per windup');enemy._enemyAction=null;sc.tickEnemyReadability(enemy);enemy._enemyAction={state:'windup'};sc.tickEnemyReadability(enemy);assert(nodes.length>n);

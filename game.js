@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.41';
+const GAME_VERSION = '8.0.42';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.42',date:'2026-10-25',title:'Character outline layering fix',items:['The pale character outline stays behind your hero when moving up or down']},
   {v:'8.0.41',date:'2026-10-25',title:'Every boss has a story',items:['Meet the 15 campaign bosses through their memories, motives and the things they fear losing','A skippable first-encounter scene introduces each boss with animated existing art and Ruby’s context','Boss dialogue and final words now connect to their own story','Read each defeated boss story again from the Bestiary, including its aftermath']},
   {v:'8.0.40',date:'2026-10-25',title:'Mint Lance Burst restored',items:['Lance Burst shows a dedicated ice explosion at the end of Frost Lance Charge, even with no enemy at the endpoint','A card or pause screen on the final dash frame no longer drops the finisher or ice blast','Both card ranks keep their existing damage and radius; interrupted runs cannot trigger a stale blast']},
   {v:'8.0.39',date:'2026-10-25',title:'A sweeter sound for every adventure',items:['139 new original sound effects for crafting, rewards, battles, Yuzu, stories and characters','Distinct boss arena warnings, Counter kicks and mission feedback','Wordless character voices with a separate Settings switch','Sound effects respect mute and volume; existing background music continues']},
@@ -20275,8 +20276,10 @@ class Game extends Phaser.Scene {
     this.tickStatusArt?.();this.tickTitanRage(dt);this.tickImpaleMarks?.();
     this.tickNearDeath(dt);
     if(this.aura)this.aura.setPosition(this.player.x,this.player.y);
-    this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);this.tickPlayerReadability?.();if(this._impalerCharge)this.tickImpalerCharge();if(this._berryCharge)this.tickBerryCharge();
+    this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);if(this._impalerCharge)this.tickImpalerCharge();if(this._berryCharge)this.tickBerryCharge();
     if(this.iso){ this.player.setDepth(this.player.y); this.drawShadows(); }
+    // Copy the current depth after Y sorting; stale depth can cover the hero when walking upward.
+    this.tickPlayerReadability?.();
     if(!this.dashReady){ this.dashCd-=dt; if(this.dashCd<=0)this.dashReady=true; }
     this.tickCocoaCombat(dt);this.tickCocoaDash(dt);
     if(this.dashBtn) this.dashBtn.setFillStyle(COLORS.mint,this.dashReady?0.28:0.10);
