@@ -1,0 +1,242 @@
+[
+  {
+    "key": "cs_boss_00_memory",
+    "scene": "b00",
+    "source": "assets/incoming/boss_motion45/b00/background_source.png",
+    "source_sha256": "c7faf7b6551253ddc6bde4d67da53f20b0abeeaeac8b7c08d7cf61144a1ddd4c",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_00_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "4f9814997a0555322ecfd0716a9d371b94f97fabf6e0d6cdcc2dcea7f3f2b45b",
+    "bytes": 173338,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_01_memory",
+    "scene": "b01",
+    "source": "assets/incoming/boss_motion45/b01/background_source.png",
+    "source_sha256": "7fa9098da0af86c9f3efcbe123901014634ff88d16b9ae40c1d0a32032c6f53c",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_01_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "4673562121619610bb5a133d0b259551f9c4036984eeb960e602914de314ddc5",
+    "bytes": 174450,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_02_memory",
+    "scene": "b02",
+    "source": "assets/incoming/boss_motion45/b02/background_source.png",
+    "source_sha256": "f71aad5a6f5a080c4a40a5e131a7f1e5655b38b43a56810fc30f744366d9418f",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_02_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "9bc1b59ec0b511531ab1ac6478d4decf5bdb0d801b11b63d0179fe80b8f9e4d0",
+    "bytes": 187580,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_03_memory",
+    "scene": "b03",
+    "source": "assets/incoming/boss_motion45/b03/background_source.png",
+    "source_sha256": "31d4d2ebffa4315b5d781af8ca73eab390129cf7fe98671663b8c407339fca4d",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_03_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "d28afb0e0a2669bf3e7e7ca35f7a3212bed7432d63a06de1fea22982e4442c77",
+    "bytes": 186376,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_04_memory",
+    "scene": "b04",
+    "source": "assets/incoming/boss_motion45/b04/background_source.png",
+    "source_sha256": "d8e533286aedb1fc36f3bf052128d54dee4968b915f9f963f9bf1b093de85c3e",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_04_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "e9286f031f57354bdb47af345150ea17a79f1b7d1f196e2c934451b9a39daf2d",
+    "bytes": 189334,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_05_memory",
+    "scene": "b05",
+    "source": "assets/incoming/boss_motion45/b05/background_source.png",
+    "source_sha256": "ddd1a18ac5427ab04b87d68f29eb53890fa3a3eb11f6d773eb4fccd6d6063bca",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_05_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "265953aa992ec4a8565bfa2dd09f4e3681b9bf754590ab06e644786e59f7b1c5",
+    "bytes": 162088,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_06_memory",
+    "scene": "b06",
+    "source": "assets/incoming/boss_motion45/b06/background_source.png",
+    "source_sha256": "3bc8ae1aea474d3e16806cfb13d0aa0f32082a2c1ede7fc7b45ef64f89c881a3",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_06_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "2ca64ca6691b73f4aa4d5db317fb4300a7e0c7a9697922710b66bc380c3b1e41",
+    "bytes": 255898,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_07_memory",
+    "scene": "b07",
+    "source": "assets/incoming/boss_motion45/b07/background_source.png",
+    "source_sha256": "e962a9fab98718a87eba721ce77ee9ebd4c46a014123442ecad3be2db4bf6ec5",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_07_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "bd2ab2cf5877d3918fb5baea1dbda067dba81a120d7d6bf2b5795b1572925f89",
+    "bytes": 158614,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_08_memory",
+    "scene": "b08",
+    "source": "assets/incoming/boss_motion45/b08/background_source_v2.png",
+    "source_sha256": "68cc201820f695c4a4ae9934b450d68ec45af4fb268573cbd040306d5827e941",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_08_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "7ba9d0524d6ecf2746d9810f86b1254970a2531eb38cfa045b118fb81e2ea03d",
+    "bytes": 249478,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_09_memory",
+    "scene": "b09",
+    "source": "assets/incoming/boss_motion45/b09/background_source.png",
+    "source_sha256": "6de25ae12a34ef8f51979970c7608df4b47367875263823032c0a558c0320ddb",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_09_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "13c6b65858d033194a1b85888b057033f28c82c01cf1a95c33ce28d4ed35322f",
+    "bytes": 192944,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_10_memory",
+    "scene": "b10",
+    "source": "assets/incoming/boss_motion45/b10/background_source.png",
+    "source_sha256": "824a9a7b9820da2adfa10e8829212e9eb6982fed25b2b26043f07966aa9fc297",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_10_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "964109c6471c3f5660732804d35fb8f0a259b2c86eab8dc8791d4a85cce7c2ff",
+    "bytes": 182114,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_11_memory",
+    "scene": "b11",
+    "source": "assets/incoming/boss_motion45/b11/background_source.png",
+    "source_sha256": "d60e8d5f802d04d29a1a29da05859a0677235790d7cbe89496a0caa623befddd",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_11_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "dba1e7813abbfdbdb8ac115f03ddcec96ba05a79a5c09821f3cb4c135bf1dd65",
+    "bytes": 151726,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_12_memory",
+    "scene": "b12",
+    "source": "assets/incoming/boss_motion45/b12/background_source.png",
+    "source_sha256": "6f6b0f9ebae15c6d0b43c63560d53f322a2a622ccd156a2f4419e1af1d390917",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_12_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "e97fc6d9840c0d0dceb9019ca5f809e7591387a82dc034ae74f22169f49f2f93",
+    "bytes": 236798,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_13_memory",
+    "scene": "b13",
+    "source": "assets/incoming/boss_motion45/b13/background_source.png",
+    "source_sha256": "bbe8a60ac93121dc3fee29bba03e91eb56a3a4dec55156baacbe7c717136309a",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_13_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "67032e29409353641421e656869de48ec2a4459859cf04b7798dcd0cd0c0b55b",
+    "bytes": 165692,
+    "tool": "built-in image_gen"
+  },
+  {
+    "key": "cs_boss_14_memory",
+    "scene": "b14",
+    "source": "assets/incoming/boss_motion45/b14/background_source.png",
+    "source_sha256": "13606fe6c07b52fd34e7c14d02f445ebc34419d04301142d9e9a8398c3046e48",
+    "source_size": [
+      1024,
+      1536
+    ],
+    "path": "assets/art/story/boss45/cs_boss_14_memory.webp",
+    "width": 768,
+    "height": 1152,
+    "sha256": "c9a4d895ca6d6ae62252588ff2eba243f0b21ae1592ff5132bc16b4f6846692f",
+    "bytes": 176530,
+    "tool": "built-in image_gen"
+  }
+]

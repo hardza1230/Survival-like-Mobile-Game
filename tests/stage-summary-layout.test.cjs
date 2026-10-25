@@ -24,7 +24,7 @@ for(const [w,h]of [[320,568],[360,640],[390,844],[430,932],[691,1536],[768,1024]
 {const{s}=setup(390,844);s.showStageSummary(false);click(s,'details');let guard=0;while(!s._summaryBtns.some(z=>z.tag==='bestiary')&&guard++<20)click(s,'next');click(s,'bestiary');assert.equal(s.continued,'a');}
 {const{s}=setup(390,844);s.showStageSummary(false);click(s,'ad');s.state='menu';s.adCallback();assert(!s.doubled,'late ad callback cannot grant in another screen');}
 {const{s,timers}=setup(390,844);s.hubMotionAllowed=()=>true;s.showStageSummary(false);const r=s._summaryReveal;assert(r);s.finishSummaryPresentation();assert(!s._summaryReveal);assert(r.rewards.flat().every(o=>o.alpha===1));assert(r.stars.every(o=>o.alpha===1));const text=r.sugarText.text;timers.forEach(t=>t.fn());assert.equal(r.sugarText.text,text,'late reveals do not overwrite completed presentation');assert(timers.every(t=>t.removed));}
-{const{s}=setup(390,844);Save.data.stageEpiloguesSeen={0:1};s.showStageEpilogue(false);assert.equal(s.state,'summary','ordinary replay goes straight to rewards');}
+assert(!method('showStageEpilogue').includes('this.add.text')&&!method('showStageEpilogue').includes('rubyClearStory'),'legacy still/caption recaps removed');
 assert(!method('onStageClear').includes('this.playBoxOpening('),'no separate duplicate box presentation');assert(method('onStageClear').includes('this._openedBoxes=this.openRunBoxes()'),'original single reward grant retained');
 console.log('Stage results:8 viewports, quit/clear, hero/best gear/growth, all23 boxes+12materials+shovels in paged details, stars, Bestiary, stale/late ad guards, instant reveal/cleanup and recap replay passed');
 // Original generated donors and packed runtime files must match the delivered provenance.

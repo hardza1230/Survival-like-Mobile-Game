@@ -1,0 +1,9 @@
+{
+  "i": 5,
+  "id": "b05",
+  "key": "cs_boss_05_memory",
+  "title": "The Borrowed Daughter",
+  "prompt": "Use case: illustration-story. Original 2D layered motion-comic BACKGROUND for Mochi Mayhem, portrait 2:3, 1024x1536-like. Cute confectionery fantasy, softly painted rich pastel color, crisp dark plum outlines, simple readable storybook shapes, glossy candy highlights, emotional and mysterious rather than horror. This is one full opaque environment only, NOT a mockup, not a comic sheet. Camera: gently elevated frontal theatrical staging so separate boss and Ruby puppets can move over it. Keep centre 45% width around middle 35–66% of canvas fairly empty and flat-lit for moving puppets; place narrative props at left/right and upper half. Bottom 28% is quiet dark plum/soft ground reserved for live Ruby narration. No text, no labels, no letters, no numbers, no logos, no watermark, no border, no UI, no drawn heroes, no drawn monsters, no bosses baked into the image. No extra mouths or eyes on roots/props. Render a complete polished environment, no empty transparency. Scene: Fermented candy forest clearing. An unfinished blossom cradle of purple petals at left; glowing stolen flavor droplets in fruit skins, a dark root cord going beneath soil on right. Teal mushrooms and mauve canopy beyond. Empty centre for a moving flower-boss puppet. Emotional theme: a borrowed flower trying to become real by collecting stolen memories.",
+  "tool": "built-in image_gen",
+  "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-aec0d551-fd28-4fac-b03b-9cd1bbac19bf.png"
+}

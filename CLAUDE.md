@@ -1,6 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.45, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.46, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.45 — boss aftermath Motion Comics + heavier Impaler
+
+All15 campaign boss stories now play AFTER victory as45 layered shots, with15 original built-in ImageGen backgrounds, independently animated existing boss/Ruby actors and bounded existing curse/release FX. Boss comic then applicable original chapter ending then Stage Clear; no old still-image/text recap or pre-fight story modal. First viewing/skip uses existing Motion Comic seen state; Bestiary replays same scenes. Player/stage/epoch/death/shutdown ownership prevents stale continuation or marking seen. Special modes/noRuby bypass. Boss art is menu/scene-lazy and evicted between scenes; reduced motion keeps still layers. Original17 chapter comics/canon/rewards/hero unlocks retained. Sources/prompts: assets/incoming/boss_motion45; manifest/runtime: assets/art/story/boss45; docs/BOSS_MOTION_COMICS.md. Static production Canvas review630shots across7viewports and normal/reduced motion, including actual registered Ruby actor and atlas-frame checks; no combat simulation.
+
+Crystal Impaler normal lances +35% damage full/partial; existing charge/CD/speed/pierce/collider unchanged. Painted lance size full68+6rank, giant108, partial38; full impact uses bounded Mint shatter and existing big-target hitstop/shake throttles. Crystal Rupture inherits stronger hit; Unique formulas unchanged. Owner phone gameplay/balance/FPS review remains pending.
 
 # Latest delivery: v8.0.44 — Stage Clear celebration + post C1-2 tutorial recovery
 

@@ -1,0 +1,9 @@
+{
+  "i": 12,
+  "id": "b12",
+  "key": "cs_boss_12_memory",
+  "title": "The Future Behind Glass",
+  "prompt": "Use case: illustration-story. Original 2D layered motion-comic BACKGROUND for Mochi Mayhem, portrait 2:3, 1024x1536-like. Cute confectionery fantasy, softly painted rich pastel color, crisp dark plum outlines, simple readable storybook shapes, glossy candy highlights, emotional and mysterious rather than horror. This is one full opaque environment only, NOT a mockup, not a comic sheet. Camera: gently elevated frontal theatrical staging so separate boss and Ruby puppets can move over it. Keep centre 45% width around middle 35–66% of canvas fairly empty and flat-lit for moving puppets; place narrative props at left/right and upper half. Bottom 28% is quiet dark plum/soft ground reserved for live Ruby narration. No text, no labels, no letters, no numbers, no logos, no watermark, no border, no UI, no drawn heroes, no drawn monsters, no bosses baked into the image. No extra mouths or eyes on roots/props. Render a complete polished environment, no empty transparency. Scene: Ruined magical glass greenhouse. Framed glass panes at sides show warm tiny distant silhouettes of an old happy candy town and a sunlit garden as reflections, indistinct memories only. Cracks in glass catch violet light; small new plants grow outside broken panes. Empty centre for glass gardener puppet. Emotional theme: a living future cannot be protected by keeping it behind glass forever.",
+  "tool": "built-in image_gen",
+  "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-3838725f-c35f-4389-8ce9-62cfb5aa5247.png"
+}

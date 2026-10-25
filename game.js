@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.44';
+const GAME_VERSION = '8.0.45';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.45',date:'2026-10-25',title:'Boss memories after victory',items:['Each campaign boss reveals a layered Motion Comic memory after defeat, with new original illustrated scenes','Boss story interruptions before battle and the old still-image stage recaps are removed','Replay defeated boss memories from the Bestiary or Story gallery','Crystal Impaler normal lances deal 35% more damage, with larger painted lances and sharper ice impacts; charge time stays the same']},
   {v:'8.0.44',date:'2026-10-25',title:'A clearer stage celebration',items:['Rewards, your hero and permanent character growth take centre stage','See every item, material and star condition in optional details','Collected boxes appear with your rewards, removing a separate opening screen','Continue is the main action; repeat ordinary-stage story recaps skip after the first viewing','Tap to finish the short reward reveal immediately']},
   {v:'8.0.43',date:'2026-10-25',title:'Stronger Sniper charges',items:['Strawberry Sniper automatic charged seeds and held Unique beams deal 20% more damage','Charge time and cooldown stay the same']},
   {v:'8.0.42',date:'2026-10-25',title:'Character outline layering fix',items:['The pale character outline stays behind your hero when moving up or down']},
@@ -1770,6 +1771,21 @@ const ASSET_IMAGES = {
   bpx_mint_impale1:'assets/art/bp_fx/vfx_impale_stack_1.webp',
   bpx_mint_impale2:'assets/art/bp_fx/vfx_impale_stack_2.webp',
   bpx_mint_impale3:'assets/art/bp_fx/vfx_impale_stack_3.webp',
+  cs_boss_00_memory:'assets/art/story/boss45/cs_boss_00_memory.webp',
+  cs_boss_01_memory:'assets/art/story/boss45/cs_boss_01_memory.webp',
+  cs_boss_02_memory:'assets/art/story/boss45/cs_boss_02_memory.webp',
+  cs_boss_03_memory:'assets/art/story/boss45/cs_boss_03_memory.webp',
+  cs_boss_04_memory:'assets/art/story/boss45/cs_boss_04_memory.webp',
+  cs_boss_05_memory:'assets/art/story/boss45/cs_boss_05_memory.webp',
+  cs_boss_06_memory:'assets/art/story/boss45/cs_boss_06_memory.webp',
+  cs_boss_07_memory:'assets/art/story/boss45/cs_boss_07_memory.webp',
+  cs_boss_08_memory:'assets/art/story/boss45/cs_boss_08_memory.webp',
+  cs_boss_09_memory:'assets/art/story/boss45/cs_boss_09_memory.webp',
+  cs_boss_10_memory:'assets/art/story/boss45/cs_boss_10_memory.webp',
+  cs_boss_11_memory:'assets/art/story/boss45/cs_boss_11_memory.webp',
+  cs_boss_12_memory:'assets/art/story/boss45/cs_boss_12_memory.webp',
+  cs_boss_13_memory:'assets/art/story/boss45/cs_boss_13_memory.webp',
+  cs_boss_14_memory:'assets/art/story/boss45/cs_boss_14_memory.webp',
   sc44_background:'assets/art/stage_clear/sc44_background.webp',
   sc44_frame:'assets/art/stage_clear/sc44_frame.webp',
   result_victory:'assets/ui/results/result_victory.webp',
@@ -4552,7 +4568,7 @@ const BASIC_PATHS={
                 {id:'p_bar_wide',iconKey:'ic_path_p_bar_wide',name:'Wide Bloom',emoji:'❄️',max:3,fx:{},headline:'Bigger shard burst',desc:'Shard bursts cover 20% more area per rank.'},
                 {id:'p_bar_chain',iconKey:'ic_path_p_bar_chain',name:'Shard Chain',emoji:'🔗',max:3,fx:{},headline:'Bursts chain on',desc:'Each shard burst has a 25% chance per rank to burst again on a nearby enemy at 60% power.'},
                 {id:'p_bar_echo',iconKey:'ic_path_p_bar_echo',name:'Lance Echo',emoji:'🔁',max:2,fx:{},headline:'Every few volleys fire twice',desc:'Every 4th volley (every 3rd at rank 2) fires again 0.25s later.'}]},
-    {id:'pierce',iconKey:'ic_path_pierce',name:'Crystal Impaler Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Charge → Impale → Rupture',desc:'Charge one heavy lance by itself: +75% damage, +30% range, but 40% slower. It goes through enemies. 3 full hits on a boss trigger Rupture for big damage. Dashing or getting hit fires it early, weaker.',
+    {id:'pierce',iconKey:'ic_path_pierce',name:'Crystal Impaler Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Charge → Impale → Rupture',desc:'Charge one powerful lance automatically: +30% range, but 40% slower. It goes through enemies. Full hits build Impale; the next full hit against 3 stacks triggers Crystal Rupture. Dashing or getting hit fires it early, weaker.',
       upgrades:[{id:'p_shatterpt',iconKey:'ic_path_p_shatterpt',name:'Shatterpoint',emoji:'🎯',max:3,fx:{big:0.15},headline:'+15% Boss / +10% Rupture',desc:'+15% damage to elites/minibosses/bosses and +10% Crystal Rupture damage per rank.'},
                 {id:'p_coldblood',iconKey:'ic_path_p_coldblood',name:'Overpenetration',emoji:'💎',max:3,headline:'+1 pierce',desc:'Lances go through 1 more enemy per rank, and hit 6% harder for each enemy they already went through (max 3).'},
                 {id:'p_heavydraw',iconKey:'ic_card_l_far',name:'Heavy Draw',emoji:'🏹',max:3,headline:'Stronger full charge',desc:'A fully charged lance hits 18% harder per rank, but charging takes a little longer.'},
@@ -7667,6 +7683,80 @@ const MOTION_COMICS={
 const MC_HERO_SCENE={mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09'},MC_STAGE_STORY=[['s00','s01'],['s02'],['s03'],['s04'],['s05']],MC_AFTER_STAGE={4:'s11',9:'s13',14:'s16'};
 // v8.0.4 คลังเรื่อง (Lobby แท็ก 📖 Story): ลำดับตามเนื้อเรื่อง · [id, อีโมจิ, ชื่อ, ด่านที่ต้องผ่าน (stageMastery) ถึงดูได้ · −1 = หลังบทสอน] · เคยดูแล้ว (mcSeen) ดูได้เสมอ
 const MC_GALLERY=[['s00','🏰','Long Ago',-1],['s01','🌱','The Heart Seed',-1],['s02','🫙','Grandma’s Jam Jar',0],['s06','🌿','Mint Returns',1],['s03','🔥','The Stolen Flavor',1],['s04','🧊','A Voice in the Ice',2],['s05','👑','The Crown Oven',3],['s11','🕳️','Chapter 1 Complete',4],['s12','🍄','Chapter 2',4],['s07','🐻','Cocoa Returns',4],['s08','⚡','Taro Returns',6],['s13','✨','Chapter 2 Complete',9],['s14','🌾','Chapter 3',9],['s09','🍊','Yuzu Returns',9],['s15','🪞','Memories in Glass',11],['s16','🌳','The First Tree',14],['s17','🌑','The Delve',14]];
+const BOSS_MOTION_BEATS=[
+  [
+    "The Empress once bargained with the Crown to keep her eggs alive.",
+    "The crystal saved the nursery — then ordered even its youngest workers into battle."
+  ],
+  [
+    "Clogmaw kept the scraps and forgotten flavors that washed into the drains.",
+    "The Crown twisted his care into hoarding, until no water or memory could escape."
+  ],
+  [
+    "Mr. Griddle once kept the royal kitchen warm for everyone.",
+    "The Crown made him burn stolen memories. He forgot every recipe except: keep the fire alive."
+  ],
+  [
+    "The Golem believed that people frozen in his prison would be safe from the Hunger.",
+    "But the ice could not stop their names from fading. Grandma’s cure still lay beyond it, inside the Crown."
+  ],
+  [
+    "This creature was only the mouth of one root beneath the Crown Oven.",
+    "It grew from a wish to end hunger, then learned to feed on the kingdom’s flavor."
+  ],
+  [
+    "The wounded root grew a daughter from flavors stolen from the garden.",
+    "The Bud gathered more memories, hoping her mother would finally call her a real flower."
+  ],
+  [
+    "The Behemoth held the marsh’s memories together inside one great fungal body.",
+    "Every stranger felt like a wound. Poison became the only protection the colony remembered."
+  ],
+  [
+    "The Hornet Queen once shared her hive’s nectar with the whole garden.",
+    "The Crown spoiled the royal stores. Too proud to admit it, she fed her workers the curse."
+  ],
+  [
+    "When the curse began, the Orchid stopped time to save one perfect bloom.",
+    "Centuries passed outside. Inside, all four seasons struggled through the same unfinished day."
+  ],
+  [
+    "The garden’s stolen flavors gathered inside the Hunger’s new heart.",
+    "The Rootmother called them her children — and would not let a single memory go home."
+  ],
+  [
+    "The Colossus had sworn to leave no field ungathered while anyone was hungry.",
+    "Even after the Crown took every crop, he kept harvesting ash rather than break his oath."
+  ],
+  [
+    "She had been the orchard’s last flower before the Crown stole her sweetness.",
+    "She tried filling that empty place with other flavors. Every stolen taste made it larger."
+  ],
+  [
+    "The Gardener hid the old kingdom’s memories inside living glass.",
+    "He cut away every future that might hurt them — including the path that could set them free."
+  ],
+  [
+    "For centuries, the Seedwarden counted seeds that had never touched soil.",
+    "A new seed might repeat the curse. A locked vault felt safer than choosing hope."
+  ],
+  [
+    "The First Planter crowned the First Tree because he feared another famine.",
+    "He called the Crown salvation. Defeat finally made him face what his wish had cost."
+  ]
+];
+const BOSS_MOTION_TEX=['boss1','boss2','boss3','boss4','boss5_sovereign','boss6_rootmother','boss7_mycelium_behemoth','boss8_hornet_queen','boss9_chronobloom_orchid','boss10_true_rootmother','c3_boss1','c3_boss2','c3_boss3','c3_boss4','c3_boss5'];
+function bossMotionId(idx){return Number.isInteger(idx)&&idx>=0&&idx<15?'b'+String(idx).padStart(2,'0'):null;}
+function bossMotionScene(idx){
+  const id=bossMotionId(idx),story=BOSS_STORIES[idx],beats=BOSS_MOTION_BEATS[idx];if(!id||!story||!beats)return null;
+  const bg=['cs_boss_'+String(idx).padStart(2,'0')+'_memory'],key=BOSS_MOTION_TEX[idx],mote=idx===3?'snow':idx===2||idx===4?'ember':'spark',actor=(x,y,size,o={})=>[key,x,y,size,size,{frames:[0,1],fps:3,...o}],ruby=['ruby_talk_worried',302,480,78,86,{bob:2}];
+  return{title:story.title,tag:'A memory released after the battle',boss:true,mote,shots:[
+    {bg,pan:[-16,10],zoom:[1,1.05],ms:3200,cap:beats[0],L:[actor(190,350,240,{to:[180,330],ms:2600,bob:2}),ruby]},
+    {bg,zoom:[1.05,1.12],ms:3400,flash:[600,0x9265cf],cap:beats[1],L:[actor(180,325,280,{rot:4}),['cs_pup_crown_glow',180,190,86,70,{glow:1}],['cs_fx_curse_smoke',180,335,290,290,{fps:8,a:.42}],ruby]},
+    {bg,zoom:[1.1,1.01],ms:3600,flash:[550,0xffe2b3],cap:'“'+story.release+'”\n'+(idx===14?'The First Tree waits. The Crown must come off.':STAGE_EPILOGUE[idx]?.why||story.goal),L:[actor(180,340,240,idx===14?{to:[180,355],ms:1800}:{out:1900,to:[180,350],ms:1800}),['cs_fx_sparkle',180,280,160,160,{fps:10,at:600}],...(idx===14?[]:[['cs_fx_flavor_ribbon',180,330,270,86,{fps:9,at:700,to:[180,180],ms:2400}]]),['ruby_talk_proud',302,480,78,86,{bob:3}]]}
+  ]};
+}
+for(let i=0;i<15;i++)MC_GALLERY.push([bossMotionId(i),'👑',BOSS_STORIES[i].title,i]);
 const STAGE_TAGLINES=['Every hero starts with a fall.','What the nest spills, the drains remember.','Somewhere below, a fire is eating flavor.','In the cold, someone is still waiting.','The Hunger is awake. And it is listening.','A root that runs can still grow.','Breathe while you still can.','The sweetest things are the first to be taken.','Four seasons. One broken garden.','Every root leads somewhere. This one leads to a throne.','Nothing grows where the Crown has fed.','Ripe on the outside. Empty within.','Glass remembers what people forget.','The last of every flavor sleeps here.','Take off the Crown. End the curse.'];
 // v8.0.3 คำโปรยการ์ดชื่อ (tag) · อนุภาคลอย (mote) · คำเสียงการ์ตูน (pow ต่อช็อต)
 (()=>{ const F={s00:['Before the mochi, there were people.','spark',{2:'POOF!'}],s01:['One small seed. One small hero.','dust',{1:'CRACK!',3:'THUD!',8:'POP!'}],s02:['Grandma left a recipe for every fight.','dust',{}],s03:['Flavor was never meant to be fuel.','ember',{0:'CLANK!'}],s04:['Some voices survive the cold.','snow',{2:'SHATTER!'}],s05:['The Hunger has a voice now.','ember',{1:'RUMBLE…'}],
@@ -8279,7 +8369,7 @@ class Game extends Phaser.Scene {
     const chk=(k,u)=>{ if(re.test(u||'')&&(!['gear','craft'].includes(s)||this.equipmentAssetNeeded(k,u||''))&&lazyArt(k,u,ch)&&artClass(k,u)!=='hero'&&!k.startsWith('screen_')&&!this.realTex(k))out.push(k); };
     for(const k in ASSET_IMAGES)chk(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)chk(k,ASSET_SHEETS[k].url); return out; }
   stageArtKeys(idx){
-    const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'epilogue_s'+(idx+1),'result_victory','result_defeat','sc44_background','sc44_frame',...RUBY_STAGE_KEYS];
+    const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'result_victory','result_defeat','sc44_background','sc44_frame',...RUBY_STAGE_KEYS];
     if((this.character||Save.data.character)==='mint')keys.push('fx_mint_dash_shard','fx_mint_snowstorm');
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
@@ -13329,7 +13419,7 @@ class Game extends Phaser.Scene {
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
   /* v8.0.2 ใบ 45 Motion Comic: เล่นฉากเรื่องราวแบบเลเยอร์ (ฉาก far/mid/fg ขยับ zoom/pan + หุ่น + FX) บน storyLayer · โหลดภาพทีละฉาก เล่นจบลบ texture cs_ · ภาพไม่มา = คืน false ให้ใช้ของเดิม */
-  mcScene(id){ return typeof MOTION_COMICS!=='undefined'?MOTION_COMICS[id]||null:null; }
+  mcScene(id){const m=/^b(\d{2})$/.exec(id||'');if(m)return bossMotionScene(Number(m[1]));return typeof MOTION_COMICS!=='undefined'?MOTION_COMICS[id]||null:null;}
   mcKeys(sc){ const s=new Set(); for(const sh of sc.shots){ (sh.bg||[]).forEach(k=>s.add(k)); (sh.L||[]).forEach(l=>s.add(l[0])); } return [...s]; }
   mcSeen(id){ return !!((Save.data||{}).mcSeen||{})[id]; }
   mcStory(){ return !this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._inTutorial&&!this._pinnacleRun; }
@@ -13337,15 +13427,15 @@ class Game extends Phaser.Scene {
     if(this._mc&&!this._mc.done)return true; this.playMotionComic(id,ok=>cont&&cont(ok)); return true; }
   mcGateList(ids,cont){ let ok=true,started=false; const step=i=>{ for(;i<(ids||[]).length;i++){ if(this.mcGate(ids[i],r=>{ ok=ok&&r; step(i+1); })){ started=true; return; } } if(started&&cont)cont(ok); }; step(0); return started; }
   playMotionComic(id,done){ const sc=this.mcScene(id),layer=this.storyLayer; if(!sc||!layer){ done&&done(false); return; }
-    const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,keys=this.mcKeys(sc); if(wasPlay)this.physics.pause(); this.state='cinematic';
+    const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,keys=this.mcKeys(sc),owner=this._bossComicOwner; if(wasPlay)this.physics.pause(); this.state='cinematic';
     layer.removeAll(true); layer.setVisible(true);
     const mc={id,sc,layer,i:-1,objs:[],tw:[],ev:[],done:false,ready:false,shotAt:0,red:!(this.hubMotionAllowed?this.hubMotionAllowed():true)}; this._mc=mc;
     const veil=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0),lt=this.add.text(W/2,H/2,'✦ Loading story…\nTap to skip',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166',align:'center',lineSpacing:6}).setOrigin(.5).setAlpha(0);
     layer.add([veil,lt]); this.tweens.add({targets:lt,alpha:.85,duration:500,delay:700});
     const drop=()=>keys.filter(k=>k.startsWith('cs_')&&this.textures.exists(k)).forEach(k=>{ if(this.anims.exists(k))this.anims.remove(k); this.textures.remove(k); });
-    let to=null; const finish=seen=>{ if(mc.done)return; mc.done=true; to&&to.remove(false); this.mcClearShot(mc); this._finishStoryCutscene=null; layer.removeAll(true); layer.setVisible(false);
+    let to=null; const finish=seen=>{ if(mc.done)return;const owned=!owner||this.bossComicValid(owner);if(!owned)seen=false; mc.done=true; to&&to.remove(false); this.mcClearShot(mc); this._finishStoryCutscene=null; layer.removeAll(true); layer.setVisible(false);
       const d=Save.data; if(seen){ (d.mcSeen||(d.mcSeen={}))[id]=1; if(id==='s01'){ d.storyIntroSeen=true; (d.rubyStorybook||(d.rubyStorybook={}))[0]=3; (d.rubyStory||(d.rubyStory={}))[0]=1; } Save.save(); } else (this._mcFail||(this._mcFail={}))[id]=1;
-      drop(); if(this._mc===mc)this._mc=null; if(this.state==='cinematic')this.state=prev; if(wasPlay)this.physics.resume(); done&&done(!!seen); };
+      drop(); if(this._mc===mc)this._mc=null; if(owned){if(this.state==='cinematic')this.state=prev;if(wasPlay)this.physics.resume();done&&done(!!seen);} };
     mc.finish=finish; this._finishStoryCutscene=p=>this.mcTap(mc,p);
     to=this.time.delayedCall(12000,()=>{ if(!mc.ready)finish(false); });
     this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ finish(false); return; } to.remove(false); mc.ready=true; this.mcTitle(mc); },{all:true,quiet:true,fx:true});
@@ -13409,7 +13499,7 @@ class Game extends Phaser.Scene {
     t.setShadow(3,4,'#000000',0,true,true); mc.layer.add(t); mc.objs.push(t);
     mc.ev.push(this.time.delayedCall(at||0,()=>{ if(!t.active)return; const cue=String(text).toLowerCase().replace(/[^a-z]/g,'');Sfx.orderCue?.('pow_'+({poof:'pop'}[cue]||cue),.45,.12)||Sfx.boom?.();if(red){ t.setScale(1); return; } mc.tw.push(this.tweens.add({targets:t,scale:1.22,duration:140,ease:'Back.easeOut',onComplete:()=>{ if(t.active)mc.tw.push(this.tweens.add({targets:t,scale:1,duration:120})); }})); mc.tw.push(this.tweens.add({targets:t,alpha:0,y:t.y-14,delay:1100,duration:420})); })); }
   mcShot(mc,i){ this.mcClearShot(mc); const sc=mc.sc,sh=sc.shots[i],n=sc.shots.length,W=this.W,H=this.H,L=mc.layer,red=mc.red,ms=sh.ms||3200;
-    mc.i=i; mc.shotAt=Date.now(); const k=Math.min(W/360,H/780),X=x=>W/2+(x-180)*k,Y=y=>H/2+(y-390)*k;
+    mc.i=i; mc.shotAt=Date.now(); const bossWide=!!sc.boss&&W>H,viewW=bossWide?W*.58:W,k=Math.min(viewW/360,H/780),X=x=>viewW/2+(x-180)*k,Y=y=>H/2+(y-390)*k;
     const add=o=>{ L.add(o); mc.objs.push(o); return o; },at=(t,fn)=>{ if(!t){ fn(); return; } mc.ev.push(this.time.delayedCall(t,fn)); };
     const tw=(c,loop)=>{ if(red){ if(loop)return null; for(const p in c)if(!['targets','duration','delay','ease','yoyo','repeat','onComplete','onUpdate'].includes(p))[].concat(c.targets).forEach(t=>{ t[p]=c[p]; }); c.onComplete&&c.onComplete(); return null; } const t=this.tweens.add(c); mc.tw.push(t); return t; };
     add(this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0));
@@ -13419,11 +13509,12 @@ class Game extends Phaser.Scene {
       const mp=Math.max(Math.abs(pan[0]),Math.abs(pan[1]))*k*p,f=Math.max((W+mp*2+4)/im.width,(H+4)/im.height),zs=a=>f*(1+(a-1)*p);
       if(sh.tint)im.setTint(sh.tint); im.setScale(zs(z[0])); im.x=W/2+pan[0]*k*p; tw({targets:im,scale:zs(z[1]),x:W/2+pan[1]*k*p,duration:dur,ease:'Sine.inOut'}); });
     if(sh.night)add(this.add.rectangle(0,0,W,H,0x0a0822,sh.night).setOrigin(0));   // v8.0.6 โทนกลางคืนชั่วคราว (ใบ 46 จะมีฉากกลางคืนจริง)
-    for(const l of sh.L||[]){ const [key,x,y,w,h,o={}]=l,fx=ASSET_FX[key]; if(!this.textures.exists(key))continue;
-      const im=add(fx?this.add.sprite(X(x),Y(y),key,o.fr||0):this.add.image(X(x),Y(y),key)),s=Math.min(w*k/im.width,h*k/im.height),a=o.a??1; im.setScale(s).setAlpha(0); if(fx&&fx.add)im.setBlendMode(Phaser.BlendModes.ADD);
+    for(const l of sh.L||[]){ const [key,x,y,w,h,o={}]=l,fx=ASSET_FX[key],sheet=ASSET_SHEETS[key]; if(!this.textures.exists(key))continue;
+      const im=add(fx||sheet?this.add.sprite(X(x),Y(y),key,o.fr||0):this.add.image(X(x),Y(y),key)),s=Math.min(w*k/im.width,h*k/im.height),a=o.a??1; im.setScale(s).setAlpha(0); if(fx&&fx.add)im.setBlendMode(Phaser.BlendModes.ADD);
       const show=()=>{ if(!im.active)return; tw({targets:im,alpha:a,duration:o.fade||(o.at?160:260)});
         if(fx){ const nf=fx.frames,loop=o.loop!==false; let f=o.fr||0; if(red){ if(!loop)im.setFrame(nf-1); if(!loop&&!o.hold)im.setAlpha(0); }
           else { const ev=this.time.addEvent({delay:1000/(o.fps||fx.rate||12),loop:true,callback:()=>{ if(!im.active){ ev.remove(false); return; } f++; if(f>=nf){ if(loop)f=0; else { ev.remove(false); if(!o.hold)tw({targets:im,alpha:0,duration:240}); return; } } im.setFrame(f); }}); mc.ev.push(ev); } }
+        if(sheet&&o.frames&&!red){let f=0;mc.ev.push(this.time.addEvent({delay:1000/(o.fps||3),loop:true,callback:()=>{if(im.active)im.setFrame(o.frames[(++f)%o.frames.length]);}}));}
         if(o.to)tw({targets:im,x:X(o.to[0]),y:Y(o.to[1]),duration:o.ms||ms,ease:o.ease||'Sine.inOut'});
         if(o.bob)tw({targets:im,y:im.y-o.bob*k,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'},true);
         if(o.glow)tw({targets:im,scale:s*1.05,duration:850,yoyo:true,repeat:-1,ease:'Sine.inOut'},true);
@@ -13440,10 +13531,13 @@ class Game extends Phaser.Scene {
     if(sh.pow)this.mcPow(mc,sh.powAt??(sh.shake?sh.shake[0]:300),sh.pow,red);
     { const vg=add(this.add.graphics()); vg.fillGradientStyle(0,0,0,0,.6,.6,0,0); vg.fillRect(0,0,W,H*.2); vg.fillGradientStyle(0,0,0,0,.45,0,.45,0); vg.fillRect(0,0,W*.14,H); vg.fillGradientStyle(0,0,0,0,0,.45,0,.45); vg.fillRect(W*.86,0,W*.14,H);
       const bh=Math.round(H*.045),bar=add(this.add.rectangle(0,0,W,bh,0x000000,1).setOrigin(0)); if(i===0&&!red){ bar.y=-bh; tw({targets:bar,y:0,duration:500,ease:'Quad.easeOut'}); } }
-    const by=H*.7,band=add(this.add.graphics()); band.fillGradientStyle(0x07040b,0x07040b,0x07040b,0x07040b,0,0,.94,.94); band.fillRect(0,by-40,W,40); band.fillStyle(0x07040b,.94); band.fillRect(0,by,W,H-by); band.lineStyle(2,0xffd166,.7); band.lineBetween(22,by+8,W-22,by+8);
-    const fs=W<380?16:17,kick=add(this.add.text(W/2,by+24,sc.title+'  ·  '+(i+1)+' / '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',letterSpacing:2}).setOrigin(.5));
-    const cap=add(this.add.text(W/2,by+44,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'left',lineSpacing:5,wordWrap:{width:W-44},stroke:'#120a18',strokeThickness:3}).setOrigin(0,0));
-    { const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(W/2-cap.width/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
+    const by=sc.boss?H*.68:H*.7,panelX=bossWide?viewW:0,panelW=bossWide?W-viewW:W,bodyY=bossWide?116:by+44,band=add(this.add.graphics());
+    if(bossWide){band.fillStyle(0x07040b,.97).fillRect(panelX,0,panelW,H);band.lineStyle(1,0xffd166,.65).lineBetween(panelX,0,panelX,H);}
+    else{band.fillGradientStyle(0x07040b,0x07040b,0x07040b,0x07040b,0,0,.94,.94);band.fillRect(0,by-40,W,40);band.fillStyle(0x07040b,.96).fillRect(0,by,W,H-by);band.lineStyle(2,0xffd166,.7).lineBetween(22,by+8,W-22,by+8);}
+    const fs=bossWide?14:W<380?16:17,kick=add(this.add.text(panelX+panelW/2,bossWide?74:by+24,sc.title+'  ·  '+(i+1)+' / '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',align:'center',wordWrap:{width:panelW-32}}).setOrigin(.5));
+    const cap=add(this.add.text(panelX+22,bodyY,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'left',lineSpacing:5,wordWrap:{width:panelW-44},stroke:'#120a18',strokeThickness:3}).setOrigin(0,0));
+    if(sc.boss){let fit=fs;while(cap.height>H-bodyY-44&&fit>11)cap.setFontSize(--fit);}
+    { const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(panelX+(panelW-cap.width)/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
       if(!red&&wrapped){ let n=0; const step=Math.max(1,Math.round(wrapped.length/95)); cap.setText(''); const ev=this.time.addEvent({delay:24,loop:true,callback:()=>{ n=Math.min(wrapped.length,n+step); if(cap.active){cap.setText(wrapped.slice(0,n));if(n%2===0){Sfx.voiceBlip?.('ruby')||Sfx.orderCue?.('type_tick',.06,.08);}} if(n>=wrapped.length){ ev.remove(false); mc.typing=null; } }}); mc.ev.push(ev); mc.typing=()=>{ ev.remove(false); if(cap.active)cap.setText(wrapped); mc.typing=null; }; } }
     const hint=add(this.add.text(W-18,H-16,i+1<n?'Tap ▶':'Tap to continue ▶',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,1).setAlpha(.8));
     [kick,cap].forEach(t=>t.setAlpha(0)); tw({targets:[kick,cap],alpha:1,duration:380,delay:220}); tw({targets:hint,alpha:.35,duration:700,yoyo:true,repeat:-1},true);
@@ -14376,52 +14470,17 @@ class Game extends Phaser.Scene {
     if(!b._sayAt){ b._sayAt=Math.max(now,this._bossSayEnd||0)+6000+Math.random()*3000; return; }
     if(now<b._sayAt||(this._bossSayObj&&this._bossSayObj.active))return;
     b._sayI=((b._sayI??-1)+1)%loop.length; this.bossSay(loop[b._sayI],b.isMini?st?.mini:st?.boss); b._sayAt=this._bossSayEnd+6000+Math.random()*3000; }
-  showBossStory(b,name,done){
-    if(!this.storyVoice?.()||!BOSS_STORIES[this.stageIndex]||Save.data.bossStoriesSeen?.['boss'+this.stageIndex])return false;
-    if(this._bossStoryPanel)return true;
-    const idx=this.stageIndex,epoch=this._artEpoch||0,player=this.player;
-    this.state='cinematic';this.mode='bossStory';this.physics.pause();player.setVelocity?.(0,0);b.setVelocity?.(0,0);b.setVisible(false);Sfx.eventLoopStop?.();
-    this.openBossStoryPanel(idx,{boss:b,name,onContinue:()=>{
-      if(!b.active||this.player!==player||!player.active||this.stageIndex!==idx||(this._artEpoch||0)!==epoch||this.state!=='cinematic')return;
-      (Save.data.bossStoriesSeen||(Save.data.bossStoriesSeen={}))['boss'+idx]=1;Save.save();this.physics.resume();done();
-    }});
-    return true;
+  bossComicValid(owner){return this._bossComicOwner===owner&&this.player===owner.player&&(!owner.player||owner.player.active!==false)&&this.stageIndex===owner.stage&&(this._artEpoch||0)===owner.epoch&&this.state!=='dead';}
+  ownBossComic(replay=false){this.clearBossStory();const owner=this._bossComicOwner={player:this.player,stage:this.stageIndex,epoch:this._artEpoch||0,replay};
+    if(!this._bossStoryShutdownHook){this._bossStoryShutdownHook=true;this.events.once('shutdown',()=>{this.clearBossStory();this._bossStoryShutdownHook=false;});}return owner;
   }
-  clearBossStory(){const p=this._bossStoryPanel;if(!p)return;this._bossStoryPanel=null;if(this._finishStoryCutscene===p.tap)this._finishStoryCutscene=null;
-    if(p.replay&&this.state==='menu'&&this.menuScreen==='bestiary')this.tapZones=p.oldZones;
-    p.tweens.forEach(t=>t.remove?.());if(p.root.active)p.root.destroy();}
-  openBossStoryPanel(idx,opt={}){
-    const story=BOSS_STORIES[idx],st=STAGES[idx];if(!story||!st)return;this.clearBossStory();
-    const W=this.W,H=this.H,L=bossStoryLayout(W,H),motion=this.hubMotionAllowed?.()!==false,c=this.add.container(0,0).setDepth(20000),p={root:c,tweens:[],replay:!!opt.replay,oldZones:this.tapZones,at:Date.now(),done:false};this._bossStoryPanel=p;
-    if(p.replay)this.menu.add(c);else this.camUI(c);
-    if(p.replay&&!L.wide){L.portrait.y=H*.29;L.portrait.h=H*.20;L.memory.y=H*.42;L.quote.y=H*.64;L.quote.h=H*.20;L.goal=null;}if(p.replay&&L.wide)L.quote.h=H*.27;
-    const add=o=>{c.add(o);return o;},F='NunitoUI, sans-serif',tint=st.tint||0xffd166;
-    add(this.add.rectangle(0,0,W,H,0x0d0912,1).setOrigin(0));add(this.add.circle(L.portrait.x,L.portrait.y,Math.min(L.portrait.w,L.portrait.h)*.42,tint,.10));
-    const text=(x,y,value,fs,color,width,center=false)=>add(this.add.text(x,y,value,{fontFamily:F,fontSize:fs+'px',fontStyle:'bold',color,align:center?'center':'left',wordWrap:{width,useAdvancedWrap:true},lineSpacing:3}).setOrigin(center?.5:0,0));
-    const tx=L.wide?L.textX+L.textW/2:W/2;
-    text(tx,L.kickerY,'BEFORE THE BATTLE',10,'#cdaea7',L.textW,true);
-    const name=text(tx,L.nameY,opt.name||st.boss,16,'#ffe0a3',L.textW,true);while(name.height>H*.065&&parseFloat(name.style.fontSize)>11)name.setFontSize((parseFloat(name.style.fontSize)-1)+'px');
-    const title=text(tx,L.titleY,story.title,L.wide?17:20,'#fff5e4',L.textW,true);while(title.height>H*.075&&parseFloat(title.style.fontSize)>12)title.setFontSize((parseFloat(title.style.fontSize)-1)+'px');
-    const b=opt.boss,key=b?.texture?.key||(typeof BESTIARY!=='undefined'&&BESTIARY.find(m=>m.id==='boss'+idx)?.tex);let portrait;
-    if(key&&this.textures.exists(key)){portrait=add(this.add.sprite(L.portrait.x,L.portrait.y,key,b?.frame?.name??0));portrait.setScale(Math.min(L.portrait.w/portrait.width,L.portrait.h/portrait.height));const anim=b?.anims?.currentAnim?.key;if(motion&&anim&&this.anims.exists(anim))portrait.play(anim);}
-    else portrait=text(L.portrait.x,L.portrait.y-30,st.emoji||'👑',56,'#fff',L.portrait.w,true);
-    const bubble=(r,label,body,color)=>{add(this.add.graphics().fillStyle(0x241a2c,1).fillRoundedRect(r.x,r.y,r.w,r.h,13).lineStyle(1,tint,.45).strokeRoundedRect(r.x,r.y,r.w,r.h,13));text(r.x+14,r.y+9,label,10,color,r.w-28);const t=text(r.x+14,r.y+29,body,L.wide?13:14,'#f7eade',r.w-28);let fs=L.wide?13:14;while(t.height>r.h-38&&fs>9)t.setFontSize((--fs)+'px');return t;};
-    bubble(L.memory,'RUBY · WHAT SHE REMEMBERS',story.memory.replace(/^Ruby remembers: /,''),'#ffb6ce');bubble(L.quote,opt.name||st.boss,'“'+story.reply+'”'+(p.replay?'\n\nAfter the battle: “'+story.release+'”':''),'#b8e8f2');
-    if(L.goal){const t=text(W/2,L.goal.y,story.goal,12,'#d9c9b8',L.goal.w,true);while(t.height>L.goal.h&&parseFloat(t.style.fontSize)>10)t.setFontSize((parseFloat(t.style.fontSize)-1)+'px');}
-    const r=L.button;add(this.add.graphics().fillStyle(0x684054,1).fillRoundedRect(r.x,r.y,r.w,r.h,12).lineStyle(1.5,0xffd590,1).strokeRoundedRect(r.x,r.y,r.w,r.h,12));text(r.x+r.w/2,r.y+10,p.replay?'Back to Bestiary':'Face '+(idx===14?'the Planter':'the boss')+'  ›',14,'#fff1d4',r.w-20,true);
-    if(!p.replay)text(W-16,14,'Skip story',10,'#cbb9c8',80,true).setOrigin(1,0);
-    const inside=(pt,q)=>pt.x>=q.x&&pt.x<=q.x+q.w&&pt.y>=q.y&&pt.y<=q.y+q.h;
-    p.tap=pt=>{if(!pt){this.clearBossStory();return;}if(p.done||this._bossStoryPanel!==p||Date.now()-p.at<550)return;if(!inside(pt,r)&&!(!p.replay&&inside(pt,{x:W-105,y:0,w:105,h:46})))return;p.done=true;this.clearBossStory();opt.onContinue?.();};
-    if(p.replay)this.tapZones=[{...r,fn:()=>p.tap({x:r.x+r.w/2,y:r.y+r.h/2}),tag:'boss_story_back',back:true,noBounce:true}];else this._finishStoryCutscene=p.tap;
-    if(motion){c.setAlpha(0);p.tweens.push(this.tweens.add({targets:c,alpha:1,duration:300}));p.tweens.push(this.tweens.add({targets:portrait,y:portrait.y-5,duration:1400,yoyo:true,repeat:-1,ease:'Sine.inOut'}));}
-    Sfx.orderCue?.('story_title',.22,1);Sfx.voice?.('ruby_sad',.16);
-    if(!this._bossStoryShutdownHook){this._bossStoryShutdownHook=true;this.events.once('shutdown',()=>{this.clearBossStory();this._bossStoryShutdownHook=false;});}
-    c.once('destroy',()=>{p.tweens.forEach(t=>t.remove?.());if(this._bossStoryPanel===p){this._bossStoryPanel=null;if(this._finishStoryCutscene===p.tap)this._finishStoryCutscene=null;}});
-    p.layout=L;return p;
+  clearBossStory(){const owner=this._bossComicOwner;if(!owner)return;this._bossComicOwner=null;if(this._mc&&!this._mc.done)this._mc.finish(false);}
+  openBossStoryPanel(idx,opt={}){if(!opt.replay||this.state!=='menu'||Save.kills('boss'+idx)<1)return;const id=bossMotionId(idx);if(!id)return;
+    const owner=this.ownBossComic(true);if(this._mcFail)delete this._mcFail[id];
+    this.playMotionComic(id,ok=>{if(!this.bossComicValid(owner)||this.state!=='menu')return;this._bossComicOwner=null;this.menuScreen='bestiary';this.buildMenuScreen();if(!ok)this.menuToast?.('Story art could not load. Tap Read story to retry.');});
   }
   bossIntro(b,name){
     if(this.recipeMode){ this.bossIntroQuick(b,name); return; }
-    if(this.showBossStory?.(b,name,()=>this.bossIntro(b,name)))return;
     { const ln=this.bossLine(0); if(ln){ b._said=true; this.time.delayedCall(1750,()=>{ if(b.active)this.bossSay(ln,STAGES[this.stageIndex]?.boss); }); } }
     const cam=this.cameras.main,px=this.player.x,py=this.player.y,base=b.baseScale||1.55,targetY=b.y;
     this.state='cinematic';this.mode='bossIntro';this.player.setVelocity(0,0);b.setVelocity(0,0);b.setVisible(false).setScale(base*0.82).setDepth(targetY+1);if(b.body)b.body.enable=false;
@@ -14735,26 +14794,14 @@ class Game extends Phaser.Scene {
     fx.once('destroy',()=>this._summaryGrowthVfx&&this._summaryGrowthVfx.delete(fx));fx.once('animationcomplete',()=>fx.destroy());fx.play(key);
   }
   showStageEpilogue(last){
-    // Seen ordinary-stage recaps skip on replays; chapter endings and first-time stories remain.
-    if(typeof Save!=='undefined'&&Save.data?.stageEpiloguesSeen?.[this.stageIndex]&&!last&&(this.stageIndex+1)%5!==0){this.showStageSummary(last);return;}
-    { const id=this.mcStory?.()&&typeof MC_AFTER_STAGE!=='undefined'?MC_AFTER_STAGE[this.stageIndex]:null; if(id&&this.mcGate?.(id,()=>this.showStageEpilogue(last)))return; }   // v8.0.2 Motion Comic จบบท
-    if(this.rubyClearStory(last))return;
-    const ep=this.riftMode?null:STAGE_EPILOGUE[this.stageIndex];
-    if(!ep){this.showStageSummary(last);return;}
-    this.state='epilogue';this.physics.pause();this.player.setVelocity(0,0);
-    const w=this.W,h=this.H,st=STAGES[this.stageIndex],tint=st.tint||0xffd166,L=epilogueLayout(w,h);this.over.removeAll(true);
-    const bg=this.add.rectangle(0,0,w,h,0x0d0a14,0.97).setOrigin(0,0),box=[bg],key='epilogue_s'+(this.stageIndex+1);
-    if(this.textures.exists(key)){const art=this.add.image(L.artX,L.artY,key).setDisplaySize(L.artW,L.artH);box.push(art);}
-    else box.push(this.add.image(L.artX,L.artY,'vfx_glow').setTint(tint).setDisplaySize(L.artW,L.artH).setAlpha(.25));
-    const kicker=this.add.text(L.tx,L.kickerY,st.name+' · Cleared',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#d9b9e8',align:'center',wordWrap:{width:L.textW}}).setOrigin(.5);
-    const title=this.add.text(L.tx,L.titleY,ep.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:L.titleFont+'px',color:'#ffe08a',align:'center',wordWrap:{width:L.textW}}).setOrigin(.5);
-    const body=this.add.text(L.tx,L.bodyY,ep.body,{fontFamily:'sans-serif',fontSize:L.bodyFont+'px',color:'#e6ddef',align:'center',lineSpacing:3,wordWrap:{width:L.textW}}).setOrigin(.5);
-    const why=this.add.text(L.tx,L.whyY,ep.why,{fontFamily:'sans-serif',fontStyle:'bold italic',fontSize:L.whyFont+'px',color:'#ffffff',align:'center',wordWrap:{width:L.textW}}).setOrigin(.5);
-    box.push(kicker,title,body,why);
-    const z=this._endBtn(box,L.tx,L.buttonY,L.buttonW,L.buttonH,COLORS.pink,last?'View Summary':'Continue',{primary:true,font:16});
-    this.over.add(box);this.over.setVisible(true);
-    this._epilogueBtns=[{...z,fn:()=>{if(this.state!=='epilogue')return;this.showStageSummary(last);}}];
-    title.setAlpha(0);body.setAlpha(0);this.tweens.add({targets:title,alpha:1,duration:400,ease:'Cubic.out'});this.tweens.add({targets:body,alpha:1,duration:500,delay:180});this.screenFlash(tint,.18,350);
+    // Post-victory boss memory, then the existing chapter ending, then rewards. No legacy still/caption recap.
+    const owner=this._bossComicOwner||this.ownBossComic();if(!this.bossComicValid(owner))return;
+    const next=()=>{if(this.bossComicValid(owner))this.showStageEpilogue(last);};
+    if(this.mcStory?.()){
+      if(this.mcGate?.(bossMotionId(this.stageIndex),next))return;
+      const chapter=typeof MC_AFTER_STAGE!=='undefined'?MC_AFTER_STAGE[this.stageIndex]:null;if(chapter&&this.mcGate?.(chapter,next))return;
+    }
+    this._bossComicOwner=null;this.showStageSummary(last);
   }
   /* หน้าสรุปStage — แตะเพื่อไปต่อ */
   /* v7.9.9 ฉากเปิดกล่องตอนจบด่าน: กล่องเรียงเป็นตาราง เปิดทีละใบ (สั่น → แสง → ของ) · แตะ = เปิดที่เหลือทันที · Continue ไปต่อ */
@@ -17487,7 +17534,7 @@ class Game extends Phaser.Scene {
     const target=this.impalerTarget(1100),angle=target?Math.atan2(target.y-this.player.y,target.x-this.player.x):c.angle;
     this._lanceAng=angle;this.poseAttack(360,full?'char_mint_lance_charged':undefined);
     const raw=(basic.evolved?3:(lvl>=4?2:1))+(basic._pm?.count||0),countBonus=1+0.12*Math.max(0,raw-1);
-    const damage=(16+lvl*4)*dm*(aw?1.2:1)*(basic.mutation==='permafrost'?1.15:1)*(.65+(.65+.18*(basic.lv.p_heavydraw||0))*progress)*countBonus;
+    const damage=(16+lvl*4)*dm*(aw?1.2:1)*(basic.mutation==='permafrost'?1.15:1)*(.65+(.65+.18*(basic.lv.p_heavydraw||0))*progress)*countBonus*1.35;
     const range=(340+lvl*22)*(aw?1.28:1)*(1+.1*(basic.ranks.chill||0))*(1+(basic._pm?.range||0)),speed=1000;
     const b=this.mintBullet(this.player.x,this.player.y,0xffffff,0.4+lvl*.028);if(!b)return;
     if(full&&basic.evolved)basic._impalerFullShots=(basic._impalerFullShots||0)+1;
@@ -17495,7 +17542,7 @@ class Game extends Phaser.Scene {
     b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xcaf3ff);b.faceVel=true;b.dmg=damage*(giant?1.35:1);b.life=range/speed;b.homing=0;
     b.impaler={full,giant,targets:new Set(),hits:0,pierces:(giant?8:2)+(basic.lv.p_coldblood||0),epoch:c.epoch,basic};
     // Larger painted lance is independent of its unchanged projectile collider.
-    if(this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?80:full?44+4*(basic.lv.p_heavydraw||0):30);
+    if(this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?108:full?68+6*(basic.lv.p_heavydraw||0):38);
     this.physics.velocityFromRotation(angle,speed,b.body.velocity);Sfx.bp?.('mint_lance_launch',full?.62:.45,.09)||Sfx.frost();
   }
   tickImpaleMarks(){const S=this._impMarked;if(!S?.size)return;for(const e of S){const n=e.active&&this.basicAttack?.path==='pierce'?this.impaleStacks(e):0,key=n?'bpx_mint_impale'+n:null;let m=e._impMark;
@@ -17533,7 +17580,7 @@ class Game extends Phaser.Scene {
     if(i.basic.mutation==='blizzard'){
       let n=0;this.enemies.children.iterate(o=>{if(n>=16||!o||!o.active||o===e||this.dist(o.x,o.y,b.x,b.y)>60)return;n++;this.damage(o,damage*.25,o.x,o.y);});
     }
-    if(i.giant)this.mintHeavyImpact();
+    if(i.full){const big=e.isBoss||e.isMini||e.isElite;this.mintBurstFx(e.x,e.y,i.giant?74:52);if(big||i.giant)this.mintHeavyImpact();}
     i.hits++;if(i.hits>=i.pierces||e.isBoss||e.isMini)this.killBullet(b);
   }
   castFrostLance(lvl,aw,dm,basic){

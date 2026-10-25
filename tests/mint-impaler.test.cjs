@@ -12,7 +12,7 @@ function scene(foes=[]){
 function shot(s,full=true){s.castImpalerLance(1,false,1,s.basicAttack);if(full)s.advance(320+80*(s.basicAttack.lv.p_heavydraw||0));else{s.advance(100);s.releaseImpalerCharge(false);}return s.shots.at(-1);}
 if(require.main===module){
 // Charge is automatic, one pending charge, target priority is reacquired at release.
-{const near=enemy({x:1}),elite=enemy({x:100,isElite:true}),boss=enemy({x:0,y:200,isBoss:true,active:false}),s=scene([near,elite,boss]);assert.equal(s.impalerTarget(1100),elite);s.castImpalerLance(1,false,1,s.basicAttack);s.castImpalerLance(1,false,1,s.basicAttack);assert.equal(s.queue.length,1);assert.equal(s.shots.length,0);boss.active=true;s.advance(320);assert.equal(s.shots.length,1);assert.equal(s.shots[0].body.velocity.x,Math.cos(Math.PI/2)*1000);assert.equal(s.shots[0].impaler.full,true);assert.equal(s.shots[0].dmg,26);assert.equal(s._impalerCharge,null);}
+{const near=enemy({x:1}),elite=enemy({x:100,isElite:true}),boss=enemy({x:0,y:200,isBoss:true,active:false}),s=scene([near,elite,boss]);assert.equal(s.impalerTarget(1100),elite);s.castImpalerLance(1,false,1,s.basicAttack);s.castImpalerLance(1,false,1,s.basicAttack);assert.equal(s.queue.length,1);assert.equal(s.shots.length,0);boss.active=true;s.advance(320);assert.equal(s.shots.length,1);assert.equal(s.shots[0].body.velocity.x,Math.cos(Math.PI/2)*1000);assert.equal(s.shots[0].impaler.full,true);assert(Math.abs(s.shots[0].dmg-26*1.35)<1e-9);assert.equal(s._impalerCharge,null);}
 // Heavy Draw tradeoff, partial release and hurt: no later full duplicate or stacks.
 {const s=scene(),full=shot(s),a=scene(),partial=shot(a,false);assert(partial.dmg<full.dmg);assert.equal(partial.impaler.full,false);a.advance(1000);assert.equal(a.shots.length,1);
  const heavy=scene();heavy.basicAttack.lv.p_heavydraw=3;heavy.castImpalerLance(1,false,1,heavy.basicAttack);heavy.advance(320);assert.equal(heavy.shots.length,0);heavy.advance(240);assert(heavy.shots[0].dmg>full.dmg);assert(heavy.shots[0].artHeight>full.artHeight);}
@@ -27,9 +27,9 @@ for(const role of [{},{isElite:true},{isMini:true},{isBoss:true}]){
 {const e=enemy({isBoss:true,_mintImpale:3,_mintImpaleAt:0}),s=scene([e]);s.hitImpaler(shot(s,false),e);assert.equal(e._mintImpale,3);assert.equal(s.hits.length,1);s.time.now=6000;s.hitImpaler(shot(s),e);assert.equal(e._mintImpale,1);assert.equal(s.hits.length,2);}
 // Overpenetration retains damage, grows later impacts within a cap; no splash marking.
 {const foes=Array.from({length:5},(_,i)=>enemy({x:i*10})),s=scene(foes);s.basicAttack.lv.p_coldblood=3;const b=shot(s);for(const e of foes)s.hitImpaler(b,e);assert.equal(b.active,false);assert.equal(s.hits.length,5);assert(Math.abs(s.hits[3].n/s.hits[0].n-1.54)<1e-9);assert.equal(s.hits[4].n,s.hits[3].n);}
-{const e=enemy({hp:20,maxhp:100}),s=scene([e]);s.basicAttack.lv.p_executioner=3;s.hitImpaler(shot(s),e);assert.equal(s.hits[0].n,26*1.24);}
+{const e=enemy({hp:20,maxhp:100}),s=scene([e]);s.basicAttack.lv.p_executioner=3;s.hitImpaler(shot(s),e);assert(Math.abs(s.hits[0].n-26*1.35*1.24)<1e-9);}
 // Evolution/extra lance and Permafrost investments remain useful without extra projectiles.
-{const s=scene();s.basicAttack.evolved=true;s.basicAttack._pm.count=2;s.basicAttack.mutation='permafrost';const b=shot(s);assert.equal(s.shots.length,1);assert(Math.abs(b.dmg-26*1.48*1.15)<1e-9);const e=enemy();s.hitImpaler(b,e);assert.equal(e.chill,.96);}
+{const s=scene();s.basicAttack.evolved=true;s.basicAttack._pm.count=2;s.basicAttack.mutation='permafrost';const b=shot(s);assert.equal(s.shots.length,1);assert(Math.abs(b.dmg-26*1.35*1.48*1.15)<1e-9);const e=enemy();s.hitImpaler(b,e);assert.equal(e.chill,.96);}
 // Phase immunity cannot add/consume; a phase crossed by direct hit defers Rupture.
 {const e=enemy({isBoss:true,_phaseInvuln:1,_mintImpale:3,_mintImpaleAt:0}),s=scene([e]);s.hitImpaler(shot(s),e);assert.equal(s.hits.length,0);assert.equal(e._mintImpale,3);}
 {const e=enemy({isBoss:true,_mintImpale:3,_mintImpaleAt:0}),s=scene([e]);s.damage=()=>{e._phaseGateLocked=true;};s.hitImpaler(shot(s),e);assert.equal(e._mintImpale,3);}
@@ -44,3 +44,12 @@ console.log('Impaler M3: actual charge/release/collision, priority, partial/hurt
 
 }
 module.exports={scene,enemy,object,shot};
+if(require.main===module){
+// Slow Impaler damage increases35% at every rank/charge; duration and projectile body remain unchanged.
+for(const lvl of [1,4,8])for(const rank of [0,1,3])for(const full of [false,true]){
+ const s=scene();s.basicAttack.lv.p_heavydraw=rank;s.castImpalerLance(lvl,false,1,s.basicAttack);if(full)s.advance(320+80*rank);else{s.advance(100);s.releaseImpalerCharge(false);}const b=s.shots[0],p=full?1:100/(320+80*rank),old=(16+lvl*4)*(.65+(.65+.18*rank)*p)*(1+.12*Math.max(0,(lvl>=4?2:1)-1));
+ assert(Math.abs(b.dmg/old-1.35)<1e-9);assert.equal(b.scale,.4+lvl*.028);assert.equal(b.body.velocity.x,1000);assert.equal(b.artHeight,full?68+6*rank:38);
+}
+console.log('Impaler heavy normal: +35% across levels/ranks/full/partial, larger separate painted lance, original charge duration/speed/collider passed');
+
+}

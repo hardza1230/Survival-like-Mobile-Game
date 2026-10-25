@@ -1,0 +1,9 @@
+{
+  "i": 13,
+  "id": "b13",
+  "key": "cs_boss_13_memory",
+  "title": "Seeds That Never Touched Soil",
+  "prompt": "Use case: illustration-story. Original 2D layered motion-comic BACKGROUND for Mochi Mayhem, portrait 2:3, 1024x1536-like. Cute confectionery fantasy, softly painted rich pastel color, crisp dark plum outlines, simple readable storybook shapes, glossy candy highlights, emotional and mysterious rather than horror. This is one full opaque environment only, NOT a mockup, not a comic sheet. Camera: gently elevated frontal theatrical staging so separate boss and Ruby puppets can move over it. Keep centre 45% width around middle 35–66% of canvas fairly empty and flat-lit for moving puppets; place narrative props at left/right and upper half. Bottom 28% is quiet dark plum/soft ground reserved for live Ruby narration. No text, no labels, no letters, no numbers, no logos, no watermark, no border, no UI, no drawn heroes, no drawn monsters, no bosses baked into the image. No extra mouths or eyes on roots/props. Render a complete polished environment, no empty transparency. Scene: Ancient seed vault in the First Tree's roots. Carefully arranged tiny glowing golden seed jars on shelves at left, one clearly empty unlabelled jar. A large stone vault doorway on right, patch of real soil just beyond threshold with soft sunlight. Violet seal-vines on door. Empty centre for Seedwarden puppet. Emotional theme: locked-away hope is safe but can never grow.",
+  "tool": "built-in image_gen",
+  "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-075cbec1-5b00-4335-89c9-a7db38e92d35.png"
+}

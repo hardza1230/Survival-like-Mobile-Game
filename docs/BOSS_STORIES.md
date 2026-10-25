@@ -1,12 +1,8 @@
-# Campaign boss stories · v8.0.41
+# Campaign boss stories · v8.0.45
 
-A character story for each of the 15 campaign bosses, extending docs/STORY_CANON.md without changing the campaign route, hero unlocks, Grandma/Ruby identities or the ending.
+A character story for each of the15 campaign bosses, extending docs/STORY_CANON.md without changing route, hero unlocks, Grandma/Ruby identities or ending.
 
-Presentation: first encounter only, one continuous theatrical scene using the existing boss art. Ruby gives context; the boss answers. Fight/Skip continues into the existing reveal. Seen state is saved only on explicit continuation. Replays skip the introduction. Defeat unlocks Read story in Bestiary, including aftermath, without requiring Tier3. Special modes and minibosses retain their existing flow.
-
-Boss dialogue during battle and the final line use these profiles. Existing epilogues still explain the route onward. The C3 generic intro now uses its own story goal instead of the unrelated Frost Prison text.
-
-No new media assets; existing sprite motion respects reduced motion. Canon/text review and phone readability remain owner review. Automated contracts are not a gameplay or visual playtest.
+Presentation: after campaign victory, the existing Motion Comic system presents three layered shots per boss, using an original ImageGen environment, independently moving boss and Ruby, and existing curse/release effects. Then the applicable original chapter ending plays, followed by Stage Clear. The old pre-fight modal and still-image/caption stage recap have been removed. Existing battle dialogue remains. First viewing/skip uses Motion Comic seen state; Bestiary Read story replays the same comic after defeating that boss. Special modes retain direct results. See BOSS_MOTION_COMICS.md for assets and validation. Phone gameplay review remains owner QA.
 
 ## C1-1 · A Mother’s Bargain
 

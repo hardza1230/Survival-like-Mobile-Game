@@ -1,0 +1,9 @@
+{
+  "i": 8,
+  "id": "b08",
+  "key": "cs_boss_08_memory",
+  "title": "The Day That Never Ended",
+  "prompt": "Use case: illustration-story. Original 2D layered motion-comic BACKGROUND for Mochi Mayhem, portrait 2:3, 1024x1536-like. Cute confectionery fantasy, softly painted rich pastel color, crisp dark plum outlines, simple readable storybook shapes, glossy candy highlights, emotional and mysterious rather than horror. This is one full opaque environment only, NOT a mockup, not a comic sheet. Camera: gently elevated frontal theatrical staging so separate boss and Ruby puppets can move over it. Keep centre 45% width around middle 35–66% of canvas fairly empty and flat-lit for moving puppets; place narrative props at left/right and upper half. Bottom 28% is quiet dark plum/soft ground reserved for live Ruby narration. No text, no labels, no letters, no numbers, no logos, no watermark, no border, no UI, no drawn heroes, no drawn monsters, no bosses baked into the image. No extra mouths or eyes on roots/props. Render a complete polished environment, no empty transparency. Scene: Enchanting round garden greenhouse with a broken unnumbered clock motif high at back (no digits). At edges the same garden is split into spring buds, summer leaves, autumn amber and winter frost, all held within one suspended day. A single perfect orchid bloom behind glass on left, no creature-faced flowers. Empty centre for orchid boss puppet. Emotional theme: fear of tomorrow stopped all four seasons.",
+  "tool": "built-in image_gen",
+  "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-773a6032-bfbc-4e87-a56a-9bbaab8d13ce.png"
+}

@@ -1,0 +1,9 @@
+{
+  "i": 10,
+  "id": "b10",
+  "key": "cs_boss_10_memory",
+  "title": "The Last Harvest",
+  "prompt": "Use case: illustration-story. Original 2D layered motion-comic BACKGROUND for Mochi Mayhem, portrait 2:3, 1024x1536-like. Cute confectionery fantasy, softly painted rich pastel color, crisp dark plum outlines, simple readable storybook shapes, glossy candy highlights, emotional and mysterious rather than horror. This is one full opaque environment only, NOT a mockup, not a comic sheet. Camera: gently elevated frontal theatrical staging so separate boss and Ruby puppets can move over it. Keep centre 45% width around middle 35–66% of canvas fairly empty and flat-lit for moving puppets; place narrative props at left/right and upper half. Bottom 28% is quiet dark plum/soft ground reserved for live Ruby narration. No text, no labels, no letters, no numbers, no logos, no watermark, no border, no UI, no drawn heroes, no drawn monsters, no bosses baked into the image. No extra mouths or eyes on roots/props. Render a complete polished environment, no empty transparency. Scene: Quiet ash-grey candy farmlands under violet dusk. Empty planting furrows converge toward a small abandoned granary at far left; a worn harvest basket and bundle of dry wheat on right. A tiny green sprout sheltered behind a stone, the only hope. Empty centre for harvest colossus puppet. Emotional theme: an oath to harvest for everyone continues even after every crop is gone.",
+  "tool": "built-in image_gen",
+  "sourcePath": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-09df291b-a133-4023-a64a-4f3622cad2b0.png"
+}
