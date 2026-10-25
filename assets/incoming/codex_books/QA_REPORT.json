@@ -1,0 +1,235 @@
+{
+  "order": 53,
+  "all_pass": true,
+  "scope": "Source art only; no runtime/phone gameplay claim.",
+  "assets": [
+    {
+      "key": "bs_card",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.63205,
+        0.69279,
+        0.7027
+      ],
+      "frame_bounds": [
+        [
+          10,
+          6,
+          318,
+          166
+        ],
+        [
+          2,
+          2,
+          316,
+          166
+        ],
+        [
+          3,
+          6,
+          312,
+          166
+        ]
+      ],
+      "unique_frames": 3
+    },
+    {
+      "key": "bs_unknown",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99061
+      ],
+      "frame_bounds": [
+        [
+          4,
+          20,
+          124,
+          107
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "bs_tier_pip",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.0,
+        0.99137,
+        0.98643
+      ],
+      "frame_bounds": [
+        [
+          5,
+          4,
+          44,
+          44
+        ],
+        [
+          4,
+          4,
+          44,
+          44
+        ],
+        [
+          4,
+          4,
+          43,
+          44
+        ]
+      ],
+      "unique_frames": 3
+    },
+    {
+      "key": "bs_weak",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.98997
+      ],
+      "frame_bounds": [
+        [
+          4,
+          9,
+          60,
+          55
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "bs_detail_panel",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99215
+      ],
+      "frame_bounds": [
+        [
+          2,
+          2,
+          638,
+          758
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "rb_page",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "center_alpha_mean": [
+        1.0
+      ],
+      "frame_bounds": [
+        [
+          0,
+          0,
+          720,
+          1280
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "rb_chip",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99248,
+        0.9926
+      ],
+      "frame_bounds": [
+        [
+          7,
+          2,
+          218,
+          86
+        ],
+        [
+          2,
+          2,
+          212,
+          86
+        ]
+      ],
+      "unique_frames": 2
+    },
+    {
+      "key": "rb_unknown",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.9913
+      ],
+      "frame_bounds": [
+        [
+          16,
+          4,
+          80,
+          92
+        ]
+      ],
+      "unique_frames": 1
+    },
+    {
+      "key": "rb_complete",
+      "RGBA": true,
+      "dimensions_ok": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "center_alpha_mean": [
+        0.99187
+      ],
+      "frame_bounds": [
+        [
+          4,
+          4,
+          124,
+          124
+        ]
+      ],
+      "unique_frames": 1
+    }
+  ],
+  "preview_bytes": 80354,
+  "decoded_preview_bytes": 1660992,
+  "visual_review": "Passed all-state, actual 14/18/32/48px readability and nine-slice review. Portrait circles empty; normal/boss/unknown cards distinct. Opaque recipe page and blank writing areas checked. No real monster art or text baked into panels. Runtime/phone review separate.",
+  "count_note": null
+}

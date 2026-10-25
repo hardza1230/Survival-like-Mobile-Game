@@ -1,0 +1,51 @@
+{
+  "tool": "Built-in image_gen",
+  "date": "2026-10-25",
+  "jobs": [
+    {
+      "key": "bs_card",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-641331d8-ae0f-4475-ac6d-8bb81ae42c5c.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 3 frame(s), donor grid 3columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. THREE horizontal naturalist scrapbook cards in one row.1normal cream paper card;2boss/miniboss same card with red-gold rim and tiny crown at upper right;3undiscovered same layout in muted gray parchment. Each card has an EMPTY circular portrait well at LEFT, and calm blank writing area on RIGHT. No monster, icons, text or marks in portrait well. No printed lines of text. Same size/layout, subtle brown ink borders."
+    },
+    {
+      "key": "bs_unknown",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-90f5922b-c3f6-421e-8d3e-fb336ce5030f.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 1 frame(s), donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One generic mysterious mochi blob silhouette in deep shadow purple, only two small softly glowing eyes. Rounded anonymous lump, not a recognizable existing monster, no limbs/features/species motif. Clear at48px."
+    },
+    {
+      "key": "bs_tier_pip",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-27d59bd4-0aa8-4ba6-ab40-ecf948ef3dc9.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 3 frame(s), donor grid 3columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. THREE small tier pins:1empty circular bronze outline pin with transparent center;2filled bronze-gold pin;3bright gold pin with one tiny glint. Same size, simple round silhouettes, no text/numbers."
+    },
+    {
+      "key": "bs_weak",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-5c80b7c1-9ef3-43c8-9a55-dffb3d59646c.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 1 frame(s), donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One tiny weak-spot icon: a heart-shaped target cracked through center with a small pointing arrow, cream/red/gold, bold readable silhouette at18px, not a printed UI word."
+    },
+    {
+      "key": "bs_detail_panel",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-67826038-81d3-46a5-a96c-5c790df9db86.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 1 frame(s), donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One portrait cream naturalist field-journal page panel, soft gold-brown border. Large EMPTY rectangular portrait well near top, faint thin horizontal ruled lines ONLY in lower half, otherwise clean blank cream writing space. No monsters, handwriting, numbers or symbols. Mild paper texture and soft rounded corners."
+    },
+    {
+      "key": "rb_page",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-cc1db7d5-62c9-4b92-b5fc-5d8c844a971b.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. Entire canvas opaque warm cream parchment as described.EXACT 1 frame(s), donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One full-page portrait grandmother recipe-paper BACKGROUND, warm plain cream parchment, a few very faint jam stains confined to outer edges, slightly toasted edges, one small red ribbon bookmark at upper edge. Center VERY CLEAN and blank for dark-brown text. Complete opaque flat background covering entire image, no surrounding desk/book frame, no writing, no diagrams."
+    },
+    {
+      "key": "rb_chip",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-a54859c1-c97f-4fce-90b9-03432daadbd1.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 2 frame(s), donor grid 2columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. TWO horizontal small recipe-card choice chips.1normal cream paper chip with restrained brown rim;2same chip selected with brighter gold rim and tiny edge highlight. Plain blank centers, no icons or words, same size and silhouette."
+    },
+    {
+      "key": "rb_unknown",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-f684ae6f-17f4-45b3-bfd2-a74f7e3cd507.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 1 frame(s), donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One small face-down recipe card, cream/plum back with a decorative crossed SPOON AND FORK motif, simple warm gold border. No words or question mark. Clear at32px."
+    },
+    {
+      "key": "rb_complete",
+      "generated_path": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-76660226-a485-4b04-a967-84d209e3563c.png",
+      "prompt": "Use case: stylized-concept. Production raster asset for Mochi Mayhem, a cute premium confectionery fantasy mobile game. Soft dark plum-brown outline, softly painted 2-3 level shading, gentle glossy candy highlights, warm cream/champagne gold/plum UI palette with requested accent colors. Readable clean silhouettes on a small phone. No words, letters, numbers, watermark or labels. All paper centers blank for game-rendered text. No extra characters or scene. TRUE transparent background outside objects, no baked checkerboard, no white/black backdrop. EXACT 1 frame(s), donor grid 1columns x1rows, equal cells, left-to-right then top-to-bottom, no separators. One red wax recipe-completion seal with a raised strawberry HEART shape and short ribbon tails. Warm confectionery wax highlights, clean silhouette at48px, no text or letters."
+    }
+  ]
+}

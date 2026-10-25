@@ -7,7 +7,7 @@ Owner asked25Oct2026 to work through these gradually. Complete and publish each 
 |50|merge_forge|14|50|Complete: source art, alpha/state/stretch review passed; runtime separate|
 |51|login_daily|9|27|Complete: source art and visual QA; runtime separate|
 |52|awards|7|26|Complete: source art and visual QA; runtime separate|
-|53|codex_books|9|14|Queued|
+|53|codex_books|9|14|Complete: source art and visual QA; runtime separate|
 |54|depths_rank|5|26|Queued|
 
 Total44 named assets /143frames. Follow the explicit file tables: order51 summary says10 but names9 files; order54 summary says24frames but its listed states total26. No extra unnamed file is invented. Order35 and49 are outside the current request.
