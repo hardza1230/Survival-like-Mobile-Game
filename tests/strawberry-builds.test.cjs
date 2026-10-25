@@ -29,13 +29,13 @@ for(const path of ['sniper','shotgun','ricochet']){
 // Statistical weights are per draw, exhausted pools are already covered by Mint's common sampler.
 {const s=scene('ricochet'),counts={path:0,shared:0,universal:0};for(let k=0;k<10000;k++)counts[s.rollBasicAttackUpgrades(1,{noSpecial:true})[0].poolGroup]++;assert(counts.path>6000&&counts.path<7000);assert(counts.shared>1700&&counts.shared<2300);assert(counts.universal>1200&&counts.universal<1800);}
 // S3: one automatic charge, only successful release, count investment always changes power.
-{const s=scene('sniper',[enemy()]);s.castBerryBlaster(1,false,1,s.basicAttack);s.castBerryBlaster(1,false,1,s.basicAttack);assert.equal(s.queue.length,1);assert.equal(s.shots.length,0);s.advance(340);assert.equal(s.shots.length,1);assert(Math.abs(s.shots[0].dmg-6.75*1.15*3.2)<1e-9);assert(s.shots[0].berrySeed.full);}
+{const s=scene('sniper',[enemy()]);s.castBerryBlaster(1,false,1,s.basicAttack);s.castBerryBlaster(1,false,1,s.basicAttack);assert.equal(s.queue.length,1);assert.equal(s.shots.length,0);s.advance(340);assert.equal(s.shots.length,1);assert(Math.abs(s.shots[0].dmg-6.75*1.15*3.84)<1e-9);assert(s.shots[0].berrySeed.full);}
 {const a=scene('sniper',[enemy()]),b=scene('sniper',[enemy()]);b.basicAttack.ranks.volley=1;const x=fire(a)[0],y=fire(b)[0];assert(Math.abs(y.dmg/x.dmg-1.12)<1e-9);assert.equal(b.shots.length,1);}
-{const s=scene('sniper',[enemy()]);s.basicAttack.lv.s_draw=3;s.castBerryBlaster(1,false,1,s.basicAttack);s.advance(340);assert.equal(s.shots.length,0);s.advance(180);assert(Math.abs(s.shots[0].dmg-(21.6*1.15)*1.45)<1e-9);}
-for(const partial of ['release','hurt']){const s=scene('sniper',[enemy()]);s.castBerryBlaster(1,false,1,s.basicAttack);s.advance(100);if(partial==='hurt')s.poseFlash(5,160);else s.releaseBerryCharge(false);assert.equal(s.shots.length,1);assert(s.shots[0].dmg<(21.6*1.15));assert(!s.shots[0].berrySeed.full);s.advance(1000);assert.equal(s.shots.length,1);}
-{const s=scene('sniper',[enemy()]);s.basicAttack.evolved=true;const b=fire(s)[0];assert(Math.abs(b.dmg-(21.6*1.15)*1.24*1.3)<1e-9);assert.equal(b.berrySeed.pierces,10);assert.equal(s.basicAttackInfo().evolution,'Heart Railgun');}
+{const s=scene('sniper',[enemy()]);s.basicAttack.lv.s_draw=3;s.castBerryBlaster(1,false,1,s.basicAttack);s.advance(340);assert.equal(s.shots.length,0);s.advance(180);assert(Math.abs(s.shots[0].dmg-(25.92*1.15)*1.45)<1e-9);}
+for(const partial of ['release','hurt']){const s=scene('sniper',[enemy()]);s.castBerryBlaster(1,false,1,s.basicAttack);s.advance(100);if(partial==='hurt')s.poseFlash(5,160);else s.releaseBerryCharge(false);assert.equal(s.shots.length,1);assert(s.shots[0].dmg<(25.92*1.15));assert(!s.shots[0].berrySeed.full);s.advance(1000);assert.equal(s.shots.length,1);}
+{const s=scene('sniper',[enemy()]);s.basicAttack.evolved=true;const b=fire(s)[0];assert(Math.abs(b.dmg-(25.92*1.15)*1.24*1.3)<1e-9);assert.equal(b.berrySeed.pierces,10);assert.equal(s.basicAttackInfo().evolution,'Heart Railgun');}
 // Focused Chamber remains one straight shot; old gear/Talent investments are kept.
-{const s=scene('sniper',[enemy({x:100})]);s.basicAttack.mutation='fan';s.player.gearCount=2;s.player._pt={sDmg:.2,big:.15,hs:.1};const b=fire(s)[0];assert.equal(s.shots.length,1);assert(Math.abs(b.dmg-(21.6*1.15)*1.48*1.2)<1e-9);assert.equal(b.bigMul,.15);assert.equal(b.headshot,.1);}
+{const s=scene('sniper',[enemy({x:100})]);s.basicAttack.mutation='fan';s.player.gearCount=2;s.player._pt={sDmg:.2,big:.15,hs:.1};const b=fire(s)[0];assert.equal(s.shots.length,1);assert(Math.abs(b.dmg-(25.92*1.15)*1.48*1.2)<1e-9);assert.equal(b.bigMul,.15);assert.equal(b.headshot,.1);}
 // S2: evolved Ricochet still bounces; same lifetime never hits twice, growth is additive and capped.
 {const foes=Array.from({length:12},(_,i)=>enemy({x:20*i,_glacierLifeToken:1})),s=scene('ricochet',foes);s.basicAttack.evolved=true;s.basicAttack.lv.carom=3;s.basicAttack.ranks.gather=3;s.basicAttack.mutation='ricochet';const b=fire(s)[0];assert(!b.pierce);assert.equal(b.bounce,8);const base=b.dmg;
  for(let k=0;k<9;k++){b.x=foes[k].x;s.hitBerrySeed(b,foes[k]);const n=s.hits.length;s.hitBerrySeed(b,foes[k]);assert.equal(s.hits.length,n);assert(b.dmg<=base*2.2+1e-9);}assert(!b.active);assert.equal(b.berrySeed.visited.size,9);assert(Math.abs(b.dmg-base*2.2)<1e-9);}
@@ -58,7 +58,17 @@ for(const path of ['sniper','shotgun','ricochet'])for(const leave of ['clear','m
 // S5: 500 foes/100 casts cannot exceed 32 active Strawberry shots; splash max16, VFX max3/200ms.
 {const foes=Array.from({length:500},(_,i)=>enemy({x:i%20})),s=scene('ricochet',foes);s.basicAttack.ranks.volley=3;s.basicAttack.evolved=true;for(let k=0;k<100;k++)s.castBerryBlaster(1,false,1,s.basicAttack);s.advance(1000);assert.equal(s.shots.filter(b=>b.active).length,32);let fx=0;s.vfxHitRing=()=>fx++;for(let k=0;k<100;k++)s.berrySplash(0,0,1,100);assert.equal(s.hits.length,1600);assert.equal(fx,3);}
 // Actual manual Unique: evolved Perfect Shot gains 40%; charge cards stay Unique-only.
-for(const evo of [false,true]){const e=enemy({isBoss:true,x:100}),s=scene('sniper',[e]);s.basicAttack.evolved=evo;s._snipe={ang:0,blast:false,kind:null};s.releaseSnipe();assert(Math.abs(s.hits[0].n-82*2*1.25*1.2*(evo?1.4:1))<1e-9);}
+for(const evo of [false,true]){const e=enemy({isBoss:true,x:100}),s=scene('sniper',[e]);s.basicAttack.evolved=evo;s._snipe={ang:0,blast:false,kind:null};s.releaseSnipe();assert(Math.abs(s.hits[0].n-82*1.2*2*1.25*1.2*(evo?1.4:1))<1e-9);}
+// Both charge families gain exactly20% at partial/full charge, retaining charge/card scaling.
+for(const charge of [0,.35,.75,1])for(const evo of [false,true]){
+ const s=scene('sniper',[enemy({x:100})]);s.basicAttack.evolved=evo;s.basicAttack.lv.s_heavy=2;s.basicAttack.lv.s_split=1;s.snipeCharge=()=>charge;s._snipe={ang:0,kind:null};
+ const mods=s.snipeMods(),old=(60+22)*(.45+1.55*charge)*(charge>=1?1.25:1)*mods.dmg*(evo&&charge>=1?1.4:1);
+ s.releaseSnipe();assert(Math.abs(s.hits[0].n/old-1.2)<1e-9);assert.equal(s.uniqueCd,8*mods.cd);
+}
+for(const fraction of [0,.3,.8]){
+ const s=scene('sniper',[enemy()]);s.castBerryBlaster(1,false,1,s.basicAttack);s.advance(340*fraction);s.releaseBerryCharge(false);
+ const old=6.75*1.15*3.2*(.55+.45*fraction);assert(Math.abs(s.shots[0].dmg/old-1.2)<1e-9);assert.equal(s.shots.length,1);
+}
 {const s=scene('sniper',[enemy({x:100})]);s.player._pt.railgun=true;s._snipe={ang:0,kind:null};s.releaseSnipe();const n=s.hits.length;s.clearArtVfx();s.advance(500);assert.equal(s.hits.length,n);}
 assert(src.includes("if(basic&&this.character==='momo'){this.castBerryBlaster(lvl,aw,dm,basic);return;}"));
 console.log('Strawberry S1–S5: focused rolls/previews, saved ranks, charge/count conversion, evolved bounce/lifetimes, boss fallback/phase gates, non-piercing shotgun, Unique and dense-crowd lifecycle budgets passed');

@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.43, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.44, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.43 — Sniper charge +20%
+
+Owner requested both automatic charge and held Unique stronger. Sniper seed multiplier3.2→3.84 (current Basic), manual beam base×1.2 including split/Railgun scaling. Partial/full charge both+20%; same charge time/CD, ranks/Talents/Evolution scaling, pierce and other builds. Updated Build description and strawberry-builds expected values plus partial/full/evolved/card regression. Cocoa isolation snapshot updated only for the new Sniper description; legacy fallback unchanged. v8.0.42 outline fix retained. Owner phone balance review pending.
 
 # Latest delivery: v8.0.42 — Player outline depth fix
 
