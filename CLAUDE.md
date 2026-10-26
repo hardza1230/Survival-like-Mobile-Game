@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.51, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.52, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.51 — companion buff/finisher spectacle
+
+3built-in ImageGen donors/24frames: golden peel armor/ground rupture, leaf bow/light arrow, three-flavor wreath/petal bloom. Source+exact prompts+matte alpha proof incoming/yuzu51; runtime3lossless1536×192 sheets/876,448bytes/3.375MiB in art/yuzu51, manifest source/cell-crop/hash records, mechanical pack-yuzu-51.py. Yuzu297MB<300GPUcap, other heroes unchanged. Opening/brief active accent/last.6s gathering/real-time finisher; new painted heavy arrow keeps old projectile physics. Small hit/trail/bounce accents and existing ElevenLabs low-volume pow_thud/pop plus gathering/release; no new sound synthesis. Reuse shared4FX cap/420px/.5large/.68small/NORMAL, finisher priority, buff-owned opening/recast/clear, pooled marker identity/follow depth, Low old projectile/fallback and reduced still≤.35s. v50 damage/timing/AI/immortality/cards/EXP unchanged. docs/YUZU_UNIQUE_SPECTACLE.md; expanded helper/frame/lifecycle/hash adapters and fullcheck/build required; source alpha inspected, no combat simulation/screenshots. Owner phone subjective sound/readability/FPS pending.
 
 # Latest delivery: v8.0.50 — always-ready companions / buff Uniques / mission AI
 

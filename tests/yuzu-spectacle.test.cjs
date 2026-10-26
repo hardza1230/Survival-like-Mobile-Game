@@ -15,3 +15,23 @@ const manifest=JSON.parse(fs.readFileSync('assets/art/yuzu49/MANIFEST.json','utf
 for(const a of manifest){for(const[p,h]of[[a.path,a.sha256],[a.source,a.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);assert.equal(a.frames,4);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
 assert(src.includes('this.clearYuzuSkillFx?.();'));assert(src.includes('yuzuTickFx(dt){this.yuzuTickSkillFx(dt);'));
 console.log('Yuzu spectacle:7original clips/28frames,4effect cap,420px size cap, pause/Low/reduced/missing art, player/basic/epoch/death/menu/shutdown/follow cleanup and30/60/120FPS expiry passed');
+
+// v51: real production FX helpers only; no combat update or gameplay simulation.
+for(const kind of ['pomelo','lime','bloodorange'])for(const phase of ['open','finish'])for(const fps of [30,60,120]){
+ const s=scene(),q=s.yuzuEmpowerFx(kind,phase,5,9,900),start=phase==='finish'?4:0,seen=new Set([q.spr.frame]);
+ assert.equal(q.spr.key,'yz_51_'+kind);assert.equal(q.spr.w,420);assert.equal(q.spr.alpha,.5);assert.equal(q.spr.frame,start);
+ for(let i=0;i<fps;i++){s.yuzuTickSkillFx(1/fps);seen.add(q.spr.frame);}assert.deepEqual([...seen],[start,start+1,start+2,start+3]);assert(!q.spr.active);
+}
+{const s=scene();for(let i=0;i<4;i++)s.yuzuSkillFx('rain',0,0,100);const before=[...s._yzShow],q=s.yuzuEmpowerFx('pomelo','finish',0,0,380);assert(q);assert.equal(s._yzShow.length,4);assert(!before[0].spr.active);assert.equal(s.yuzuSkillFx('rain',0,0,100),null);assert(q.spr.active);}
+{const s=scene();for(let i=0;i<4;i++)s.yuzuEmpowerFx('lime','open',0,0,100,0,{important:true});assert(s.yuzuEmpowerFx('lime','finish',0,0,210));assert.equal(s._yzShow.length,4);}
+{const s=scene(true),q=s.yuzuEmpowerFx('bloodorange','finish',0,0,350);assert.equal(q.spr.frame,6);assert(q.life<=.35);s.yuzuTickSkillFx(.2);assert.equal(q.spr.frame,6);s.state='paused';s.yuzuTickSkillFx(10);assert.equal(q.t,.2);}
+{const s=scene(),q=s.yuzuEmpowerFx('pomelo','open',0,0,100,0,{hold:2,life:.4});s.yuzuTickSkillFx(.2);assert.equal(q.spr.frame,2);}
+{const s=scene();Save.data.settings.vfx=0;assert.equal(s.yuzuEmpowerFx('pomelo','finish',0,0,350),null);Save.data.settings.vfx=1;s.textures.exists=()=>false;assert.equal(s.yuzuEmpowerFx('lime','open',0,0,100),null);assert.equal(s.yuzuEmpowerFx('yuzling','open',0,0,100),null);}
+{const s=scene(),e={active:true,x:10,y:20,_yzSpawnId:9},q=s.yuzuSkillFx('rain',e.x,e.y,50,0,{follow:{spr:e},ground:true});e._yzSpawnId++;s.yuzuTickSkillFx(.01);assert(!q.spr.active);}
+{const s=scene(),m={kind:'lime',spr:{active:true,x:10,y:20},down:0};s._yuzuCrew=[m];s.basicAttack.path='zestSwarm';const u=s._yzBuff={m,player:s.player,basic:s.basicAttack,epoch:1,kind:'lime',t:6};const q=s.yuzuEmpowerFx('lime','open',0,0,165,0,{follow:m});assert.equal(q.buff,u);s.clearYuzuBuff();s.yuzuTickSkillFx(.01);assert(!q.spr.active);}
+{const s=scene(),m={kind:'pomelo',spr:{active:true,x:0,y:0}},u={m,t:.5};let art=0,sound=0;s.yuzuEmpowerFx=()=>art++;s.yuzuSound=()=>sound++;s.yuzuBuffArt(u,.01);s.yuzuBuffArt(u,.01);assert.equal(art,1);assert.equal(sound,1);assert.equal(u.t,.5,'paint never changes buff time');}
+const impactCalls=[];ctx.Sfx={bp:(...a)=>impactCalls.push(a)};
+{const s=scene(),m={kind:'lime'},e={x:3,y:4};s.elapsed=1;s.yuzuImpactFx(m,e,'arrow');s.yuzuImpactFx(m,e,'arrow');assert.equal(impactCalls.length,1);s.elapsed=1.2;s.yuzuImpactFx(m,e,'focus_arrow');assert.equal(impactCalls.length,2);s.yuzuImpactFx(null,e,'seed');assert.equal(impactCalls.length,2);assert.equal(impactCalls[0][0],'pow_pop');}
+const added=JSON.parse(fs.readFileSync('assets/art/yuzu51/MANIFEST.json','utf8'));assert.equal(added.length,3);assert.equal(added.reduce((s,a)=>s+a.frames,0),24);
+for(const a of added){assert.equal(a.frames,8);assert.equal(a.frame,192);assert(src.includes("url:'"+a.path+"',frame:192"));assert.equal(a.alpha[0],0);for(const [p,h]of[[a.path,a.sha256],[a.source,a.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);const prompt=JSON.parse(fs.readFileSync(a.source.replace('_source.png','_PROMPT.json'),'utf8'));assert.equal(prompt.tool,'built-in image_gen');assert(prompt.prompt.length>500);}
+console.log('Yuzu51:3ImageGen atlases/24frames,192px/source hashes, both clip offsets at30/60/120FPS, finisher priority/shared4cap, Low/reduced/pause/hold, pooled follow/buff cancellation, one-shot prefinish cue and throttled impact/ElevenLabs alignment passed');
