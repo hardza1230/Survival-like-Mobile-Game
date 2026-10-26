@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.51';
+const GAME_VERSION = '8.0.52';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.52',date:'2026-10-26',title:'Every step has weight',items:['Heroes settle naturally after movement and Dash; charged attacks hold their preparation before a distinct release','Sniper and Impaler gain heavier recoil while rapid attacks keep their animation flowing','Heavy, swift and ranged enemies move with distinct cadence and react directionally to hits without hiding attack warnings']},
   {v:'8.0.51',date:'2026-10-26',title:'Citrus power, painted in motion',items:['Golden peel armor, a luminous leaf bow and a three-flavor spell wreath announce companion buffs','Each Unique builds toward its own painted finisher: Pomelo’s ground rupture, Lime’s piercing light arrow and Blood Orange’s citrus bloom','Sharper hit accents and existing ElevenLabs cues follow real releases and impacts; damage and cooldowns stay the same']},
   {v:'8.0.50',date:'2026-10-26',title:'Always by your side',items:['Citrus companions no longer fall, need revival, or absorb enemy bullets','Golden Peel Armor, Hunter’s Focus and Perfect Blend empower each companion and end with a finisher','Companions prioritize mission enemies and bosses while their sweeps, piercing volleys and bouncing orbs clear crowds','Former companion health/revival upgrades now improve shields, skills and teamwork; saved upgrade IDs stay intact']},
   {v:'8.0.49',date:'2026-10-26',title:'Citrus skill spectacle',items:['Pomelo unleashes painted peel sweeps and ground-shattering citrus impacts','Lime fires luminous seed-arrow volleys and a coordinated arrow rain','Blood Orange blooms with honey magic, sour rings and spicy flame bursts; existing combat balance stays the same']},
@@ -16852,6 +16853,7 @@ class Game extends Phaser.Scene {
     e.tintColor=null;e.clearTint();this.resetEnemyPresentation(e);return true;
   }
   stopEnemyPresentation(e){
+    e._enemyWeight=null;
     e._readCrest?.destroy();e._readCrest=null;e._readWind=false;
     e._glacierLifeToken=(e._glacierLifeToken||0)+1;e._frostBurnStacks=0;e._trem=0;e._shock=0;e._frostBurnUntil=0;e._frostBurnPower=0;e._frostBurnTick=0;e._glacierFrost=0;e._glacierFrostAt=0;e._glacierBrittleUntil=0;e._mintImpale=0;e._mintImpaleAt=-Infinity;e._mintRuptureAt=-Infinity;e._glacierBurstAt=-Infinity;e._chill=0;e._chillAt=null;
     if(e.anims){e.anims.stop();e.anims.timeScale=1;}
@@ -16871,7 +16873,30 @@ class Game extends Phaser.Scene {
     e._enemyAction={state,frame};e._enemyActionT=Math.max(0,ms/1000);e._enemyPlayed=null;
     this.tickEnemyPresentation(e,0);
   }
+  enemyMotionWeight(e){
+    const key=e._enemyArtKey||e.texture.key;let u=e._enemyWeight;
+    if(!u||u.key!==key){const role=e.siege||e.spd>0&&e.spd<=40||/tank|guard|bulwark|beetle|sentinel/.test(key)?'heavy':e.dasher||e.spd>=100?'swift':e.shooter||e.acid?'ranged':'normal';u=e._enemyWeight={key,role,clock:0,hit:0,hitSide:1,hitPower:0};}return u;
+  }
+  enemyWeightHit(e,amount,x,critical=false){
+    if(!e?.active||e.isBoss||e.isMini||e.hp<=0)return;const u=this.enemyMotionWeight(e);
+    const from=Number.isFinite(x)&&x!==e.x?x:this.player?.x??e.x-1;
+    u.hit=.16;u.hitSide=e.x>=from?1:-1;u.hitPower=Math.min(1,(critical?.7:.35)+amount/Math.max(1,e.maxhp)*2);
+  }
+  tickEnemyWeight(e,dt,state,speed){
+    if(this.state&&this.state!=='play')return;
+    const u=this.enemyMotionWeight(e),span=Math.max(0,Math.min(.1,dt)),red=this.hubMotionAllowed?.()===false;
+    u.hit=Math.max(0,u.hit-span);u.clock+=speed>8?span:0;
+    if(red){e.rotation=0;return;}
+    const role=u.role,rate=role==='heavy'?.78:role==='swift'?1.3:role==='ranged'?.95:1;
+    if(state==='walk'&&e.anims)e.anims.timeScale=Math.max(.55,Math.min(1.65,speed/Math.max(36,e.spd||70)*rate));
+    const protectedPose=['windup','attack','dash'].includes(state),side=e.flipX?-1:1;
+    const sway=state==='walk'?Math.sin(u.clock*(role==='swift'?17:role==='heavy'?7:11))*(role==='heavy'?.009:role==='swift'?.022:.014):0;
+    const brace=state==='windup'?-side*.025:state==='attack'?side*.018:0;
+    const hit=!protectedPose&&u.hit>0?Math.sin(u.hit/.16*Math.PI)*u.hitPower*u.hitSide*(role==='heavy'?.018:.045):0;
+    e.rotation=sway+brace+hit;
+  }
   tickEnemyPresentation(e,dt){
+    if(this.state&&this.state!=='play')return;
     if(!e||!e.active||e.isBoss||e.isMini)return;this.tickEnemyReadability?.(e);
     const key=e._enemyArtKey||e.texture.key,S=(this._presC||(this._presC={}))[key]||(this._presC[key]={walk:key+'_walk',a:{},g:{}}),hasWalk=this.anims.exists(S.walk);   // v7.8.92 perf: ข้อความชื่อ anim สร้างครั้งเดียวต่อ key
     // Frozen time does not consume an action pose or advance the sprite animation.
@@ -16894,6 +16919,7 @@ class Game extends Phaser.Scene {
     const perspective=this._chapter25D?Math.max(0.94,Math.min(1.07,1+(e.y-this.player.y)*0.00010)):1,sc=(e.baseScale||1)*perspective;
     // Keep authored silhouettes stable; retain only a small, brief hit reaction.
     const limit=hasWalk?0.03:0.08;e.setScale(sc*Math.max(1-limit,Math.min(1+limit,e._sqX)),sc*Math.max(1-limit,Math.min(1+limit,e._sqY)));
+    this.tickEnemyWeight?.(e,dt,state,speed);
   }
   playEnemyDeath(e){
     const key=e._enemyArtKey||e.texture.key,anim=key+'_death',def=ASSET_SHEETS[key],flip=def&&def.deathFlip?!e.flipX:!!e.flipX;
@@ -18523,6 +18549,7 @@ class Game extends Phaser.Scene {
     if(e.hp>0&&Math.random()<0.24)this.c3BossPose(e,5,240);
     if(RL&&RL.chill&&e.hp>0&&(this.elapsed||0)>=(this._coldSnapAt||0)){ this._coldSnapAt=(this.elapsed||0)+6; this.relicColdSnap(e); }
     if(!e.isBoss&&!e.isMini&&e.hp>0)this.enemyAction(e,'hurt',120);
+    this.enemyWeightHit?.(e,amount,x,crit);
     this.warnAntBomber(e);
     e._sqX = 1.35; e._sqY = 0.70;   // Effectยุบตัวเมื่อโดนตี (Hit squash)
     if(crit){ this.hitStop(35); this.screenShake(90, 0.005); this.fireRecipes('crit'); }
@@ -20396,11 +20423,55 @@ class Game extends Phaser.Scene {
     this.resetCharacterRenderer();
   }
   resetCharacterRenderer(){
+    this._actorWeight=null;
     this.player.setVisible(true);
+  }
+  actorMotionStyle(){
+    const styles=this._actorStyles||(this._actorStyles={normal:{kick:.045,duration:.18,wind:.12,sway:.02},sniper:{kick:.11,duration:.26,wind:.22,sway:.012},pierce:{kick:.085,duration:.25,wind:.23,sway:.014},shotgun:{kick:.09,duration:.22,wind:.14,sway:.018},titan:{kick:.065,duration:.28,wind:.25,sway:.012},magic:{kick:.035,duration:.2,wind:.14,sway:.016}});
+    const path=this.basicAttack?.path;return styles[path]||(this.character==='taro'||this.character==='yuzu'||this.character==='sesame'?styles.magic:styles.normal);
+  }
+  actorMotionState(){
+    const p=this.player,path=this.basicAttack?.path,epoch=this._artEpoch||0;let u=this._actorWeight;
+    if(!u||u.player!==p||u.hero!==this.character||u.path!==path||u.epoch!==epoch)u=this._actorWeight={player:p,hero:this.character,path,epoch,clock:0,speed:0,lean:0,stop:0,land:0,kick:0,kickTotal:.18};return u;
+  }
+  actorAttackKick(){
+    if(this.state&&this.state!=='play')return;
+    const u=this.actorMotionState();if(this._impalerCharge||this._berryCharge||this._snipe){u.charging=true;return;}
+    const style=this.actorMotionStyle();u.fromCharge=!!u.charging;u.charging=false;u.kick=u.kickTotal=style.duration;
+  }
+  actorGaitStep(dt,moving){const u=this.actorMotionState();if(moving){const speed=this.player.body.velocity.length(),rate=Math.max(.35,Math.min(1.6,speed/(this.player.baseSpeed||160)));u.gait=(u.gait||0)+dt*rate*(this.character==='cocoa'&&this.dashTime>0?1.6:1);}return u.gait||0;}
+  actorDashLand(){const u=this.actorMotionState();u.land=.2;} // Visual recovery never holds a walking pose.
+  actorAttackFrame(progress,n){
+    const p=Math.max(0,Math.min(1,progress));if(this.hubMotionAllowed?.()===false)return Math.min(n-1,Math.floor(p*n));
+    if(this.actorMotionState().fromCharge)return Math.min(n-1,Math.floor((.3+.7*p)*n));
+    const wind=this.actorMotionStyle().wind,release=wind+.2;
+    const phase=p<wind?p/wind*.18:p<release?.18+(p-wind)/.2*.45:.63+(p-release)/(1-release)*.37;
+    return Math.min(n-1,Math.floor(phase*n));
+  }
+  actorChargePose(){
+    const c=this._impalerCharge||this._berryCharge||this._snipe;if(!c||this._poseHold>0||this.player?.active===false||c.basic&&c.basic!==this.basicAttack||c.epoch!=null&&c.epoch!==(this._artEpoch||0))return false;
+    const key='char_'+this.character+'_attack';if(!this.textures.exists(key))return false;
+    this.actorMotionState().charging=true;
+    const n=Math.max(1,(this.textures.get?.(key)?.frameTotal||9)-1),progress=c.ms?Math.max(0,Math.min(1,((this.time?.now||0)-c.start)/c.ms)):(this.snipeCharge?.()||0);
+    this.player.setTexture(key).setFrame(Math.min(n-1,progress<.4?0:1));return true;
+  }
+  tickActorWeight(dt){
+    const p=this.player;if(!p?.body||this.state&&this.state!=='play')return;
+    const u=this.actorMotionState(),style=this.actorMotionStyle(),span=Math.max(0,Math.min(.1,dt)),v=p.body.velocity,speed=Math.hypot(v.x,v.y),moving=speed>24,red=this.hubMotionAllowed?.()===false;
+    if(u.speed>24&&!moving)u.stop=.2;u.speed=speed;u.stop=Math.max(0,u.stop-span);u.land=Math.max(0,u.land-span);u.kick=Math.max(0,u.kick-span);
+    u.clock+=moving?span*Math.max(.5,Math.min(1.6,speed/160)):0;
+    const target=moving?Math.max(-.09,Math.min(.09,v.x/1800)):0;u.lean+=(target-u.lean)*(1-Math.exp(-span*10));
+    if(red){p.rotation=0;return;}
+    const c=this._impalerCharge||this._berryCharge||this._snipe,angle=c?.angle??c?.ang,side=angle!=null?Math.cos(angle):(p.flipX?-1:1);
+    const kick=u.kick>0?Math.sin(Math.PI*(1-u.kick/u.kickTotal))*style.kick:0;
+    const settle=(u.stop>0?Math.sin(u.stop/.2*Math.PI)*.018:0)+(u.land>0?Math.sin(u.land/.2*Math.PI)*.035:0);
+    const charge=c&&!moving?-.025*side:0,gait=moving?Math.sin(u.clock*14)*style.sway:0;
+    p.rotation=Math.max(-.17,Math.min(.17,u.lean+gait-kick*side+settle*(p.flipX?-1:1)+charge));
   }
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
   bpPose(key,d){if(this.textures?.exists?.(key)){this._bpPose={key,t:0,d};this._attackPoseTime=0;}}
   updatePose(dt){
+    if(this.state&&this.state!=='play')return;
     if(!this._hasFrames)return;
     if(this._bpPose){const q=this._bpPose;q.t+=dt;if(q.t<q.d&&this.textures.exists(q.key)){if(this.player.texture.key!==q.key)this.player.setTexture(q.key);const n=Math.max(1,(this.textures.get?.(q.key)?.frameTotal||9)-1);this.player.setFrame(Math.min(n-1,Math.floor(q.t/q.d*n)));return;}this._bpPose=null;}
     if(this.character==='cocoa'&&this._titanHold&&this.textures.exists('char_cocoa_titan_charge')){const mv=this.player.body&&this.player.body.velocity.length()>24,k=mv&&this.textures.exists('char_cocoa_titan_walk')?'char_cocoa_titan_walk':'char_cocoa_titan_charge';this._bpLoopT=(this._bpLoopT||0)+dt;if(this.player.texture.key!==k)this.player.setTexture(k);this.player.setFrame(Math.floor(this._bpLoopT*10)%(k==='char_cocoa_titan_walk'?12:8));return;}
@@ -20409,8 +20480,10 @@ class Game extends Phaser.Scene {
       if(this.textures.exists('char_cocoa_attack')){if(this.player.texture.key!=='char_cocoa_attack')this.player.setTexture('char_cocoa_attack');this.player.setFrame(pose.t<pose.wind?0:pose.t<pose.wind+.04?1:pose.t<pose.wind+.08?2:3);return;}
     }
     const moving=this.player.body&&this.player.body.velocity.length()>24;
+    if(!moving&&this.dashTime<=0&&this.actorChargePose?.())return;
     // Keep gait phase through casts, hits and Dash; Chocolate accelerates its cadence during Dash.
     this._charRunT=(this._charRunT||0)+(moving?dt*(this.character==='cocoa'&&this.dashTime>0?1.6:1):0);
+    const gait=this.actorGaitStep?this.actorGaitStep(dt,moving):this._charRunT;
     // A suppressed Chocolate punch must not appear halfway through when movement stops.
     if(this.character==='cocoa'&&(moving||this.dashTime>0)){this._attackPoseTime=0;this._attackTextureKey=null;}
     if(this._attackPoseTime>0){
@@ -20418,7 +20491,7 @@ class Game extends Phaser.Scene {
       const attackKey=this._attackTextureKey||'char_'+this.character+'_attack';
       if(this.textures.exists(attackKey)&&!(moving||this.dashTime>0)){
         if(this.player.texture.key!==attackKey)this.player.setTexture(attackKey);
-        {const n=Math.max(1,(this.textures.get?.(attackKey)?.frameTotal||9)-1);this.player.setFrame(Math.min(n-1,Math.floor((1-this._attackPoseTime/this._attackPoseDuration)*n)));}
+        {const n=Math.max(1,(this.textures.get?.(attackKey)?.frameTotal||9)-1),progress=1-this._attackPoseTime/this._attackPoseDuration;this.player.setFrame(this.actorAttackFrame?this.actorAttackFrame(progress,n):Math.min(n-1,Math.floor(progress*n)));}
         if(this._attackPoseTime>0)return;
       }
     }
@@ -20434,7 +20507,7 @@ class Game extends Phaser.Scene {
     if(this.dashTime>0){
       if(this.character==='cocoa'&&hasRun){
         if(this.player.texture.key!==runCharKey)this.player.setTexture(runCharKey);
-        this.player.setFrame(Math.floor(this._charRunT*16)%12);return;
+        this.player.setFrame(Math.floor(gait*16)%12);return;
       }
       if(this.character==='momo'&&this.textures.exists('char_momo_dash')){
         if(this.player.texture.key!=='char_momo_dash'){this.player.setTexture('char_momo_dash');this._momoDashT=0;}
@@ -20446,7 +20519,7 @@ class Game extends Phaser.Scene {
     if(moving){
       if(hasRun){
         if(this.player.texture.key!==runCharKey)this.player.setTexture(runCharKey);
-        this.player.setFrame(Math.floor(this._charRunT*16)%12);
+        this.player.setFrame(Math.floor(gait*16)%12);
       }else{
         if(this.player.texture.key!==baseCharKey)this.player.setTexture(baseCharKey);
         const stepIdx = Math.floor((this._wob / (Math.PI * 0.5)) % 4);
@@ -20475,7 +20548,9 @@ class Game extends Phaser.Scene {
   poseAttack(ms,textureKey){
     const key=textureKey&&this.textures?.exists?.(textureKey)?textureKey:'char_'+this.character+'_attack';
     if(!this._hasFrames)return;
+    this.actorAttackKick?.();
     const moving=this.player.body&&this.player.body.velocity.length()>24;
+    if(this.character!=='cocoa'&&!moving&&this._attackTextureKey===key&&this._attackPoseTime>this._attackPoseDuration*.55&&!this._impalerCharge&&!this._berryCharge&&!this._snipe&&!this._actorWeight?.fromCharge)return;
     if(this.character!=='cocoa')this._castRecoilT=0.18;
     // No full-body pose should interrupt locomotion, including fallback casts.
     if(!this.textures.exists(key)){
@@ -20496,20 +20571,17 @@ class Game extends Phaser.Scene {
   // อนิเมชันตัวละคร: สปริงเจลลี่ + หายใจ + หันหน้าตามทิศ + ควันฝุ่น + เงา Dash
   animatePlayer(dt){
     const p=this.player; if(!p||!p.body)return;
+    if(this.state&&this.state!=='play')return;
     if(this._sqVX===undefined){ this._sqVX=0; this._sqVY=0; this._wob=0; this._lean=0; }
     const stiff=210, damp=12;
-    if(this.character==='cocoa'){
-      // Bound long-frame recovery and integrate the visual spring in small steps.
-      const span=Math.min(dt,.1),steps=Math.max(1,Math.ceil(span*120)),step=span/steps;
+    {
+      // All heroes share stable, bounded visual spring integration on slow frames.
+      const span=Math.max(0,Math.min(dt,.1)),steps=Math.max(1,Math.ceil(span*120)),step=span/steps;
       for(let i=0;i<steps;i++){
         this._sqVX += (-(this._sqX-1)*stiff-this._sqVX*damp)*step;
         this._sqVY += (-(this._sqY-1)*stiff-this._sqVY*damp)*step;
         this._sqX += this._sqVX*step;this._sqY += this._sqVY*step;
       }
-    }else{
-      this._sqVX += (-(this._sqX-1)*stiff - this._sqVX*damp)*dt;
-      this._sqVY += (-(this._sqY-1)*stiff - this._sqVY*damp)*dt;
-      this._sqX += this._sqVX*dt; this._sqY += this._sqVY*dt;
     }
     this._sqX=Phaser.Math.Clamp(this._sqX,0.55,1.6); this._sqY=Phaser.Math.Clamp(this._sqY,0.55,1.6);
     const sp=p.body.velocity.length(), moving=sp>24;
@@ -20535,13 +20607,14 @@ class Game extends Phaser.Scene {
     const sqX=Phaser.Math.Clamp(this._sqX,0.94,1.06);
     const sqY=Phaser.Math.Clamp(this._sqY,0.94,1.06);
     p.setScale(base*sqX*(1-breathe), base*sqY*(1+breathe));
+    const motion=this.hubMotionAllowed?.()!==false;if(!motion)p.setScale(base,base);this.tickActorWeight?.(dt);
     // ปล่อยฝุ่นละอองน้ำตาลใต้เท้าขณะวิ่ง
-    if(moving){
+    if(moving&&motion){
       this._dustT = (this._dustT || 0) - dt;
       if(this._dustT <= 0){ this._dustT = 0.16; this.spawnDust(p.x,p.y+32); }
     }
     // ปล่อยเงาตามตัว (Ghost Trail) + เส้นความเร็ว ตอนพุ่ง Dash
-    if(this.dashTime > 0){
+    if(this.dashTime > 0&&motion){
       this._ghostT = (this._ghostT || 0) - dt;
       if(this._ghostT <= 0){ this._ghostT = 0.04; this.spawnGhostTrail(); }
       this._lineT = (this._lineT || 0) - dt;
@@ -20688,7 +20761,7 @@ class Game extends Phaser.Scene {
 
     if(this.joy.active&&(this.joy.dx||this.joy.dy)){ this.moveDir.set(this.joy.dx,this.joy.dy); if(this.moveDir.lengthSq()>0.04)this.moveDir.normalize(); }
 
-    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; this.poseFlash(CF.squash,150); } }
+    if(this.dashTime>0){ this.dashTime-=dt; if(this.dashTime<=0){ this._sqX=0.8; this._sqY=1.22; this._sqVX=0; this._sqVY=0; if(this.actorDashLand)this.actorDashLand();else this.poseFlash(CF.squash,150); } }
     else {
       const spd=this.player.baseSpeed*(1+((this.elapsed||0)<(this._forgeState&&this._forgeState.pickupUntil||0)?Math.min(.3,forgeValue(this.player,45)/100):0))*(this.moveSlowT>0?0.52:1)*(this.pathHasteT>0?1.18:1)*(this.uqReady?.()?1.15:1)*(this.windRushT>0?(this.windRushMul||1.5):1)*(this._frHasteT>0?1.35:1);
       if(this.joy.active&&(Math.abs(this.joy.dx)+Math.abs(this.joy.dy))>0.12) this.player.setVelocity(this.joy.dx*spd,this.joy.dy*spd);

@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.52, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.53, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.52 — hero/enemy motion weight
+
+Owner priorities1+2. Reuse original hero/enemy action sheets; no new ImageGen/texture/audio/GPU cost needed. Seven heroes continuous12frame speed-driven gait (16FPS base), stop/Dash settle without150ms squash hold, Sniper/Impaler/Shotgun/Titan/magic recoil profiles, stationary charge holds first2frames then real release skips repeated preparation, rapid stationary clips retain first55%, moving casts keep running. Existing Chocolate bespoke poses retained; all-hero bounded120Hz spring integration. Owned player/hero/path/epoch/reset, pause/reduced motion. Enemy cached heavy/swift/ranged/normal cadence/sway and160ms directional hit weight, without overriding windup/attack/Dash; freeze/pool/death/boss exclusion. Configured colliders/world coords/AI/attacks/EXP untouched; no new position offsets or scale limits. docs/ACTOR_MOTION_WEIGHT.md. New isolated actor-weight tests7heroes30/60/120FPS and existing motion contracts; Taro damage hash strips only cosmetic hook, validator tracks continuous gait. Required fullcheck/build and exact publish; no combat simulation/screenshots, owner phone feel/alignment/FPS pending.
 
 # Latest delivery: v8.0.51 — companion buff/finisher spectacle
 

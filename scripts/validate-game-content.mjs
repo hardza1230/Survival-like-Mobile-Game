@@ -126,8 +126,8 @@ for(const contract of ["iconKey:'ic_momo_power'","iconKey:'ic_cocoa_combo'","ico
 if(source.includes("(!big&&Math.random()<0.015)"))throw new Error('Normal monsters must not drop healing hearts');
 if(!source.includes("isElite&&Math.random()<0.18"))throw new Error('Elite healing-heart reward contract is missing');
 
-if (!source.includes('Math.floor(this._charRunT*16)%12')) {
-  throw new Error('Fighter run cycles must play all 12 frames at 16 FPS');
+if (!source.includes('Math.floor(gait*16)%12') || !source.includes('actorGaitStep(dt,moving)')) {
+  throw new Error('Fighter run cycles must retain all 12 frames with continuous speed-driven gait (16 FPS at base speed)');
 }
 
 for (const fighter of ['momo', 'mint', 'cocoa', 'berry']) {
