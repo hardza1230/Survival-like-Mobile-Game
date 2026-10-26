@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.53, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.54, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.53 — subtle stage life
+
+15campaign theme profiles reuse existing stage-lazy leaf/pollen/spore art or tiny glow for dust/drips/embers/snow/ash.6reused images max/Auto reduced3/boss2/Low+reduced0,12px painted/3–4px motes/3×9drips, alpha≤.22, side rim bands and player165/boss220/Wisp120 exclusion, background depth only. Up to8visible streamed background props sway≤.025rad (roots.006) or slowly pulse88–100%original opacity; boss3, flash-off static opacity. Sample.5s, deterministic local visual noise/no gameplay RNG, unscaled real-time play clock. Owned stage/player/epoch/shutdown/clear, original transform metadata guard on recycled props, tutorial/Recipe bypass, missing-art fallback. Existing solid props/physics/AI/hazards/rewards/parallax untouched. No new ImageGen/audio/textures/GPU cost. docs/STAGE_LIFE.md, stage-life isolated15theme/budget/pause/reduced/owner/pool/RNG tests; fullcheck/build required. No combat simulation/screenshots; phone subtlety/FPS owner review pending.
 
 # Latest delivery: v8.0.52 — hero/enemy motion weight
 

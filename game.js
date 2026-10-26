@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.52';
+const GAME_VERSION = '8.0.53';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.53',date:'2026-10-26',title:'A little life in every room',items:['Sparse dust, drips, embers, snow, leaves and pollen bring each campaign setting to life','Selected background foliage, roots, water and lamps move gently while the battle area stays readable','Ambient motion respects reduced motion, low effects, pause and stage cleanup, with less decoration during bosses']},
   {v:'8.0.52',date:'2026-10-26',title:'Every step has weight',items:['Heroes settle naturally after movement and Dash; charged attacks hold their preparation before a distinct release','Sniper and Impaler gain heavier recoil while rapid attacks keep their animation flowing','Heavy, swift and ranged enemies move with distinct cadence and react directionally to hits without hiding attack warnings']},
   {v:'8.0.51',date:'2026-10-26',title:'Citrus power, painted in motion',items:['Golden peel armor, a luminous leaf bow and a three-flavor spell wreath announce companion buffs','Each Unique builds toward its own painted finisher: Pomelo’s ground rupture, Lime’s piercing light arrow and Blood Orange’s citrus bloom','Sharper hit accents and existing ElevenLabs cues follow real releases and impacts; damage and cooldowns stay the same']},
   {v:'8.0.50',date:'2026-10-26',title:'Always by your side',items:['Citrus companions no longer fall, need revival, or absorb enemy bullets','Golden Peel Armor, Hunter’s Focus and Perfect Blend empower each companion and end with a finisher','Companions prioritize mission enemies and bosses while their sweeps, piercing volleys and bouncing orbs clear crowds','Former companion health/revival upgrades now improve shields, skills and teamwork; saved upgrade IDs stay intact']},
@@ -13063,12 +13064,60 @@ class Game extends Phaser.Scene {
     ct.refresh();
   }
   buildDecor(i){
-    this.clearDecor(); const cfg=STAGE_DECOR[i]; if(!cfg)return;
+    this.clearDecor();this.buildStageLife?.(i); const cfg=STAGE_DECOR[i]; if(!cfg)return;
     cfg.items.forEach(it=>this.makeDecorTexture(it)); const tw=cfg.items.reduce((a,b)=>a+b.w,0);
     this._decor={cfg,tw,chunks:new Map(),pool:[],acc:1};
   }
-  clearDecor(){ const d=this._decor; if(!d)return; for(const arr of d.chunks.values())arr.forEach(o=>o.destroy()); d.pool.forEach(o=>o.destroy()); this._decor=null; }
+  clearDecor(){this.clearStageLife?.(); const d=this._decor; if(!d)return; for(const arr of d.chunks.values())arr.forEach(o=>o.destroy()); d.pool.forEach(o=>o.destroy()); this._decor=null; }
+  stageLifeNoise(n){const v=Math.sin(n*12.9898+78.233)*43758.5453;return v-Math.floor(v);} // Local visual seed never consumes gameplay RNG.
+  stageLifeBudget(){
+    const st=typeof Save==='undefined'?{}:Save.data?.settings||{},perf=typeof PERF==='undefined'?0:PERF.lvl;
+    if(st.vfx===0||st.quality===1||perf>=2||this.hubMotionAllowed?.()===false)return 0;
+    return this.mode==='boss'||this.boss?.active?2:perf>=1?3:6;
+  }
+  buildStageLife(i){
+    this.clearStageLife();if(this._inTutorial||this.recipeMode||!Number.isInteger(i)||i<0||i>14)return;
+    const profiles=this._stageLifeProfiles||(this._stageLifeProfiles=[
+      ['dust',0xcdb588],['drip',0x8ababa],['ember',0xeeb16f],['snow',0xc8dce4],['dust',0xbca7c0],
+      ['leaf',0xb4cfab,'dec_c21_leaf'],['spore',0xb9c9ae,'dec_c22_spore_puff'],['pollen',0xd3bd83,'dec_c23_pollen'],['leaf',0xc0bcac,'dec_c24_spring_petals'],['spore',0xb4a2bd],
+      ['ash',0xaaa39c],['leaf',0xb1ab8a,'dec_c32_fallen_leaves'],['dust',0xb8cec2],['dust',0xd1c395],['spore',0xb8a6cb]
+    ]);
+    this._stageLife={stage:i,player:this.player,epoch:this._artEpoch||0,profile:profiles[i],clock:0,slots:[],props:[],scan:0};
+    if(!this._stageLifeHook&&this.events?.once){this._stageLifeHook=true;this.events.once('shutdown',()=>{this.clearStageLife();this._stageLifeHook=false;});}
+  }
+  restoreStageLifeProps(u){for(const q of u?.props||[])if(q.o.active&&q.o._stageLifeBase===q.base)q.o.setRotation(q.base.rotation).setAlpha(q.base.alpha);if(u)u.props=[];}
+  clearStageLife(){const u=this._stageLife;if(!u)return;this.restoreStageLifeProps(u);for(const q of u.slots)q.o.destroy();this._stageLife=null;}
+  tickStageLife(dt){
+    if(this.state!=='play'||!this.player?.active)return;
+    let u=this._stageLife;if(u&&(u.player!==this.player||u.stage!==this.stageIndex||u.epoch!==(this._artEpoch||0))){this.clearStageLife();u=null;}
+    if(!u){this.buildStageLife(this.stageIndex);u=this._stageLife;}if(!u)return;
+    const budget=this.stageLifeBudget();if(!budget){for(const q of u.slots)q.o.setVisible(false);this.restoreStageLifeProps(u);u.scan=0;return;}
+    if(u.budget!==budget){u.budget=budget;u.scan=0;}
+    const span=Math.max(0,Math.min(.1,dt));u.clock+=span;u.scan-=span;
+    const p=this.player,v=this.cameras?.main?.worldView,w=v?.width||this.W/(this.viewZoom||1)||400,h=v?.height||this.H/(this.viewZoom||1)||700,rect={x:v?.x??p.x-w/2,y:v?.y??p.y-h/2,w,h},profile=u.profile;
+    const tex=profile[2]&&this.textures.exists(profile[2])?profile[2]:'vfx_glow';
+    if(this.textures.exists(tex))while(u.slots.length<budget){const id=u.slots.length,o=this.camWorld(this.add.image(0,0,tex).setDepth(-99400).setVisible(false));if(tex==='vfx_glow')o.setTint(profile[1]);u.slots.push({o,id,phase:-1,cycle:0});}
+    for(const q of u.slots){if(q.id>=budget){q.o.setVisible(false);continue;}
+      if(q.o.texture.key!==tex){q.o.setTexture(tex);if(tex==='vfx_glow')q.o.setTint(profile[1]);else q.o.clearTint?.();}
+      const phase=(u.clock+q.id*1.37)%8,alive=phase<4.5;
+      if(q.phase<0||phase<q.phase||q.x==null||Math.abs(q.x-(rect.x+w/2))>w*.8||Math.abs(q.y-(rect.y+h/2))>h*.8){
+        const seed=u.stage*97+q.id*19+(q.cycle++)*7;q.x=rect.x+w*(q.id%2?.84+.1*this.stageLifeNoise(seed):.06+.1*this.stageLifeNoise(seed));q.y=rect.y+h*(.08+.8*this.stageLifeNoise(seed+3));
+      }q.phase=phase;
+      const kind=profile[0],fall=kind==='drip'?18:kind==='snow'?7:kind==='leaf'?5:kind==='ash'?3:-4,x=q.x+Math.sin(phase*.8+q.id)*5,y=q.y+phase*fall;
+      const clear=(x-p.x)**2+(y-p.y)**2<165**2||this.boss?.active&&(x-this.boss.x)**2+(y-this.boss.y)**2<220**2||this._wisp?.active&&(x-this._wisp.x)**2+(y-this._wisp.y)**2<120**2;
+      if(!alive||clear||x<rect.x||x>rect.x+w||y<rect.y||y>rect.y+h){q.o.setVisible(false);continue;}
+      const painted=tex!=='vfx_glow',size=painted?12:kind==='snow'?4:3,alpha=(painted?.18:.22)*Math.min(1,phase/.7,(4.5-phase)/.9);
+      q.o.setPosition(x,y).setDisplaySize(size,painted?size:kind==='drip'?9:kind==='ember'?5:size).setRotation(painted?Math.sin(phase*.5+q.id)*.35:0).setAlpha(Math.max(0,alpha)).setVisible(true);
+    }
+    if(u.scan<=0){this.restoreStageLifeProps(u);u.scan=.5;const cap=budget===2?3:8;
+      for(const arr of this._decor?.chunks?.values()||[]){for(const o of arr){const b=o._stageLifeBase;if(!o.active||o.visible===false||!b||o.x<rect.x||o.x>rect.x+w||o.y<rect.y||o.y>rect.y+h||!/(leaf|leaves|reed|grass|flower|petal|vine|root|lamp|glow|crystal|drip|puddle|spore)/.test(b.key))continue;u.props.push({o,base:b,phase:this.stageLifeNoise(o.x+o.y)*6.28});if(u.props.length>=cap)break;}if(u.props.length>=cap)break;}
+    }
+    for(const q of u.props){const o=q.o,b=q.base;if(!o.active||o.visible===false||o._stageLifeBase!==b)continue;
+      const t=u.clock*.7+q.phase,pulse=/(lamp|glow|crystal|puddle|drip|spore)/.test(b.key),light=typeof Save==='undefined'||Save.data?.settings?.flash!==false;o.setRotation(b.rotation+(pulse?0:Math.sin(t)*(/root/.test(b.key)?.006:.025))).setAlpha(b.alpha*(pulse&&light?.94+.06*Math.sin(t):1));
+    }
+  }
   tickDecor(dt){
+    this.tickStageLife?.(dt);
     const d=this._decor; if(!d)return; d.acc+=dt; if(d.acc<0.2)return; d.acc=0;
     const C=DECOR_CHUNK,px=this.player.x,py=this.player.y,view=Math.max(this.W,this.H)/(this.viewZoom||1),R=Math.ceil(view/C/2)+1,pcx=Math.floor(px/C),pcy=Math.floor(py/C),want=new Set(),half=WORLD/2;
     for(let cx=pcx-R;cx<=pcx+R;cx++)for(let cy=pcy-R;cy<=pcy+R;cy++){ if(cx*C>=half||(cx+1)*C<=-half||cy*C>=half||(cy+1)*C<=-half)continue; const k=cx+','+cy; want.add(k); if(d.chunks.has(k))continue;
@@ -13076,7 +13125,7 @@ class Game extends Phaser.Scene {
       for(let j=0;j<n;j++){ let r=rng()*d.tw,it=d.cfg.items[0]; for(const q of d.cfg.items){r-=q.w;if(r<=0){it=q;break;}}
         const x=cx*C+rng()*C,y=cy*C+rng()*C,sc=(it.size/128)*(0.8+rng()*0.5),flip=rng()<0.5,rot=it.rot?rng()*6.28:(rng()-0.5)*0.2,al=0.78+rng()*0.2;
         if(Math.abs(x)>half-30||Math.abs(y)>half-30||Math.hypot(x,y)<(d.cfg.clearR||0))continue;
-        let o=d.pool.pop(); if(!o)o=this.camWorld(this.add.image(0,0,it.key)); o.setTexture(it.key).setPosition(x,y).setScale(sc).setFlipX(flip).setRotation(rot).setAlpha(al).setDepth(-99500).setVisible(true); arr.push(o); }
+        let o=d.pool.pop(); if(!o)o=this.camWorld(this.add.image(0,0,it.key)); o.setTexture(it.key).setPosition(x,y).setScale(sc).setFlipX(flip).setRotation(rot).setAlpha(al).setDepth(-99500).setVisible(true);o._stageLifeBase={key:it.key,rotation:rot,alpha:al}; arr.push(o); }
       d.chunks.set(k,arr); }
     for(const [k,arr] of d.chunks){ if(want.has(k))continue; arr.forEach(o=>{o.setVisible(false);d.pool.push(o);}); d.chunks.delete(k); }
   }
@@ -19029,7 +19078,7 @@ class Game extends Phaser.Scene {
     const ev=this.time.addEvent({delay:ms,loop:true,callback:()=>{if((this._artEpoch||0)===epoch&&(this.state==='play'||this.state==='levelup'))fn();}});
     this._artTimers.add(ev);return ev;
   }
-  clearArtVfx(){this.clearStatusArt?.();this.clearYuzuSkillFx?.();this.clearYuzuBuff?.();this.clearBossStory?.();this.clearBossVictory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
+  clearArtVfx(){this.clearStatusArt?.();this.clearStageLife?.();this.clearYuzuSkillFx?.();this.clearYuzuBuff?.();this.clearBossStory?.();this.clearBossVictory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
     this.clearTaroCombat?.();this.clearCocoaCombat?.();this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
     this._mintDashTween?.stop();this._mintDashTween=null;this._mintDashFinish=null;this._glacierStorms=[];
     this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
