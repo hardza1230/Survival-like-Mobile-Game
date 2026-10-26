@@ -23,3 +23,13 @@ for(const kind of['pomelo','lime','bloodorange']){
 const manifest=JSON.parse(fs.readFileSync('assets/art/yuzu48/MANIFEST.json','utf8'));assert.equal(manifest.length,3);
 for(const a of manifest){for(const[p,h]of[[a.path,a.sha256],[a.source,a.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);assert.equal(a.frames,16);assert.equal(a.frame,256);assert.equal(a.alpha[0],0);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
 console.log('Yuzu animation:48frames/hash contracts,30/60/120FPS anchored feet, movement-driven gait/no treadmill, pause/reduced motion/shadow cleanup, release-frame parity/fallback/flavors and untouched gameplay coordinates passed');
+// v50 production presentation: no HP bar, one small timed-buff ring, stable foot/shadow.
+for(const kind of ['pomelo','lime','bloodorange'])for(const red of [false,true]){
+ const{s,m}=scene(kind,red);s.character='yuzu';s.basicAttack={path:({pomelo:'citrusGuardian',lime:'zestSwarm',bloodorange:'juiceWorkshop'})[kind]};
+ let rectangles=0,circles=0,arc=null,text='';m.bar.fillRect=m.bar.fillRoundedRect=()=>{rectangles++;return m.bar;};m.bar.strokeCircle=(x,y,r)=>{circles++;assert.equal(r,11);return m.bar;};
+ m.bar.beginPath=()=>m.bar;m.bar.arc=(x,y,r,a,b)=>{arc={r,a,b};return m.bar;};m.bar.strokePath=()=>m.bar;m.label.setText=v=>{text=v;return m.label;};
+ s.yuzuVisual(m,0);assert.equal(rectangles,0);assert.equal(circles,0);
+ const u=s._yzBuff={m,player:s.player,basic:s.basicAttack,epoch:0,kind,t:2.2,total:6};s.yuzuVisual(m,.01);assert.equal(rectangles,0);assert.equal(circles,1);assert(text.endsWith('3s'));assert.equal(arc.r,11);assert(Math.abs((arc.b-arc.a)/(Math.PI*2)-2.2/6)<1e-8);
+ s.state='paused';s.yuzuVisual(m,10);assert.equal(u.t,2.2);s.clearYuzuBuff();circles=0;s.yuzuVisual(m,0);assert.equal(circles,0);
+}
+console.log('Yuzu v50 presentation: all three identities normal/reduced retain anchored animation and shadow, hide HP, display one11px countdown ring and remaining seconds, pause/clear passed');

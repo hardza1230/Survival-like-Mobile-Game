@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.50, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.51, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.50 — always-ready companions / buff Uniques / mission AI
+
+Companions immortal, no down/touch rescue/HP gauge and no enemy bullet interception. Golden Peel Armor6s (shield/heavy wide sweeps/push/slam finisher), Hunter’s Focus6s (piercing short bursts/transferable marks/heavy arrow finisher), Perfect Blend7s (shield/stronger bouncing orbs/Sour tags/terminal fire burst/flavor wave). Owned simulation-time pause/recast/stale/death/path/epoch/clear guards and one-shot finishers; countdown ring/label; reuse48/49art, no added GPU assets. Target mission→active Wisp raider→boss→mini→elite→mob, .15s priority scans with same-tier stickiness, ranged priority approach/longer bounded pursuit; density-aware slam/pierce/bounces retain crowd clearance. Saved IDs/points intact; HP/recovery/Hardy/Bodyguard/KeepRipe/Unique mutations/talents repurposed for useful shields/skills/damage. Existing48shots/10zones/8FX/4painted caps; Focus queue8, Sour tags64/pool-safe. docs/YUZU_BUFFS.md supersedes old HP/revival/Unique rules. Isolated helper regression, fullcheck/build required; no gameplay simulation/screenshots. Owner phone balance/feel review pending.
 
 # Latest delivery: v8.0.49 — companion skill spectacle
 
