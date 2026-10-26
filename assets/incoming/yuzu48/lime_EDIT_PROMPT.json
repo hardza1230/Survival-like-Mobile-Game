@@ -1,0 +1,4 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Edit this EXACT sixteen-frame Lime sprite atlas. Preserve identity/style/transparent background and FOUR columns by FOUR rows equal-cell layout, same16poses, consistent scale and foot baseline. Critical correction: bottom row columns1 and2 are RELEASE and FOLLOW-THROUGH; REMOVE THE NOCKED ARROW from those TWO frames, show the bow string relaxed and the drawing hand pulled back after release. No arrow can remain crossing the bow or in flight in these two frames. Other ready/walking frames may hold the seed arrow as before. Ensure EVERY pose including fully drawn bows/arrows fits entirely inside its own cell with 7% clear margin, no clipping at outer right edge and nothing crosses cell boundaries. Do not change walk sequence, character or clothing. No text, no gridlines. True alpha."
+}

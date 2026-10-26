@@ -1,0 +1,4 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Edit this EXACT sixteen-frame Blood Orange sprite atlas. Preserve character/style/transparent background, FOUR columns by FOUR rows equal-cell layout and16poses. Critical corrections: remove ALL large purple glowing balls/halos from the staff in rows3 and4. Keep ONLY a tiny pinpoint purple glow at the staff tip in the RELEASE pose at row4 column1; no projectile or flame or orb is drawn in any cell. Row3 column4 is still the held anticipation, not the release. All staff tips, hats, cloak and tiny glows must fit fully inside their own equal grid cells with 7% transparent padding and never cross a row/column boundary or outer edge. Keep consistent character body volume, scale and foot baseline across frames; neutral ready start/end. Do not introduce poses, text, borders or other characters. True alpha."
+}

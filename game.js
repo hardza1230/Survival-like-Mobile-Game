@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.47';
+const GAME_VERSION = '8.0.48';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.48',date:'2026-10-26',title:'Smoother citrus companions',items:['Companions gain longer walking and attacking animation clips','Steps follow movement, feet stay grounded, and attacks ease through anticipation, recoil and recovery','Subtle breathing, weight shifts and ground shadows give each companion more life; combat timing stays the same']},
   {v:'8.0.47',date:'2026-10-25',title:'Citrus companions come alive',items:['Companions prepare, strike and recover in sync with their attacks, with dedicated movement and recovery poses','Pomelo sweeps and slams, Lime draws precise arrows, and Blood Orange casts distinct citrus magic','Companions hold targets and maintain their own fighting positions closer to Yuzu']},
   {v:'8.0.46',date:'2026-10-25',title:'The Crown breaks',items:['Campaign boss victories now pause on the final blow, break the curse into fragments, and release stolen flavor before the boss memory','Boss memories flow directly from the battlefield before boss rewards','Campaign bosses drop a Wayseed Key that automatically opens the next story stage; previously unlocked stages stay open','Reduced motion uses a short quiet release; special modes and reward amounts stay the same']},
   {v:'8.0.45',date:'2026-10-25',title:'Boss memories after victory',items:['Each campaign boss reveals a layered Motion Comic memory after defeat, with new original illustrated scenes','Boss story interruptions before battle and the old still-image stage recaps are removed','Replay defeated boss memories from the Bestiary or Story gallery','Crystal Impaler normal lances deal 35% more damage, with larger painted lances and sharper ice impacts; charge time stays the same']},
@@ -2807,6 +2808,9 @@ const ASSET_SHEETS = {
   yz_fx_rain:{url:'assets/art/yuzu_companions/yz_fx_rain.webp',frame:256},
   yz_fx_infusion:{url:'assets/art/yuzu_companions/yz_fx_infusion.webp',frame:256},
   yz_fx_shield:{url:'assets/art/yuzu_companions/yz_fx_shield.webp',frame:256},
+  yz_48_pomelo:{url:'assets/art/yuzu48/yz_48_pomelo.webp',frame:256},
+  yz_48_lime:{url:'assets/art/yuzu48/yz_48_lime.webp',frame:256},
+  yz_48_bloodorange:{url:'assets/art/yuzu48/yz_48_bloodorange.webp',frame:256},
   yz_47_pomelo:{url:'assets/art/yuzu47/yz_47_pomelo.webp',frame:256},
   yz_47_lime:{url:'assets/art/yuzu47/yz_47_lime.webp',frame:256},
   yz_47_bloodorange:{url:'assets/art/yuzu47/yz_47_bloodorange.webp',frame:256},
@@ -16118,7 +16122,7 @@ class Game extends Phaser.Scene {
     } }
   // Citrus Companions: one owned actor, bounded shots/zones, no extra physics bodies.
   clearYuzuCrew(){
-    for(const m of this._yuzuCrew||[])for(const o of [m.spr,m.label,m.bar])o?.destroy();
+    for(const m of this._yuzuCrew||[])for(const o of [m.spr,m.label,m.bar,m.shadow])o?.destroy();
     for(const o of [...(this._yzShots||[]),...(this._yzZones||[]),...(this._yzFx||[])])o.spr?.destroy();
     this._yuzuCrew=[];this._yzShots=[];this._yzZones=[];this._yzFx=[];this._yzShield=null;this._yzHitOwner=null;this._yzForceCrit=false;this._yzRain=null;this._yzInfusion=null;this._yzSeedCd=0;this._yuzuOrch=null;this._yuzuParadeT=0;
   }
@@ -16174,6 +16178,44 @@ class Game extends Phaser.Scene {
     if(!this.textures.exists('yz_47_attacks'))return;const L=this._yzFx||(this._yzFx=[]);if(L.length>=8)return;
     const spr=this.camWorld(this.add.sprite(x,y,'yz_47_attacks',frame).setDisplaySize(size,size).setRotation(angle).setAlpha(.7).setDepth(y+4));L.push({spr,t:0,life,staticFrame:true});
   }
+
+  // Presentation only: positions remain the gameplay anchor used by targeting and collision.
+  yuzuAnimate(m,dt,pose){
+    const t=this.state==='play'?Math.max(0,Math.min(.1,dt||0)):0;
+    const v=m._yzVisual||(m._yzVisual={x:m.spr.x,y:m.spr.y,gait:0,clock:0,sx:1,sy:1,bob:0,rot:0,recoil:0,state:''});
+    const dx=m.spr.x-v.x,dy=m.spr.y-v.y,d=Math.hypot(dx,dy),walking=pose.state==='move'||pose.state==='retreat';
+    if(t>0){if(walking&&d<110)v.gait+=d/(m.kind==='pomelo'?110:100)*Math.PI*2;v.clock+=t;
+      if(pose.state==='release'&&v.state!=='release')v.recoil=1;v.recoil*=Math.exp(-18*t);
+    }
+    v.x=m.spr.x;v.y=m.spr.y;v.state=pose.state;
+    const red=this.hubMotionAllowed?.()===false,face=m.spr.flipX?-1:1;
+    let sx=1,sy=1,bob=0,rot=0;
+    if(!red){
+      if(pose.state==='idle'){sy+=Math.sin(v.clock*2.8)*.012;sx-=Math.sin(v.clock*2.8)*.006;}
+      if(walking){const weight=m.kind==='pomelo'?1.6:1.1;bob=-Math.abs(Math.sin(v.gait))*weight;rot=Math.max(-.035,Math.min(.035,(m.vx||0)/7000));sy+=Math.cos(v.gait*2)*.018;sx-=Math.cos(v.gait*2)*.012;}
+      if(pose.state==='windup'){sx=.96;sy=1.045;rot=-.025*face;}
+      if(pose.state==='land'){sx=1.08;sy=.91;}
+      if(pose.state==='hurt'){rot=-.07*face;sx=.96;sy=1.025;}
+      sx+=v.recoil*.095;sy-=v.recoil*.075;rot-=v.recoil*.035*face;
+      const f=1-Math.exp(-18*t);v.sx+=(sx-v.sx)*f;v.sy+=(sy-v.sy)*f;v.bob+=(bob-v.bob)*f;v.rot+=(rot-v.rot)*f;
+    }else{v.sx=v.sy=1;v.bob=v.rot=v.recoil=0;}
+    return v;
+  }
+  yuzuAnimationFrame(m,pose){
+    const key='yz_48_'+m.kind;if(!this.textures.exists(key))return pose;const paintScale=({pomelo:1.0769,lime:1.1006,bloodorange:1.1325})[m.kind]||1;
+    const v=m._yzVisual;
+    if(pose.state==='idle')return{...pose,key,paintScale,frame:0};
+    if(pose.state==='move'||pose.state==='retreat'){const step=Math.floor((v?.gait||0)/Math.PI/2*8)%8;return{...pose,key,paintScale,frame:pose.state==='retreat'?(8-step)%8:step};}
+    if(m.lunge){const wind=.3*.55,t=m.lunge.t;return{...pose,key,paintScale,frame:t<wind?8+Math.min(3,Math.floor(t/wind*4)):12+Math.min(3,Math.floor((t-wind)/(.3-wind)*4))};}
+    const a=m.action;
+    if(a&&['arrow','volley','orb','brew'].includes(a.kind)){
+      if(a.kind==='brew'&&a.t>=a.wind)return pose; // Retain the three authored flavor release poses.
+      const frame=a.t<a.wind?8+Math.min(3,Math.floor(a.t/a.wind*4)):12+Math.min(3,Math.floor((a.t-a.wind)/Math.max(.001,a.end-a.wind)*4));
+      return{...pose,key,paintScale,frame};
+    }
+    return pose;
+  }
+
   yuzuVisualPose(m){
     const special='yz_47_'+m.kind,base='yz_'+m.kind;
     if(m.down>0)return{key:special,frame:5,state:'down'};
@@ -16204,7 +16246,8 @@ class Game extends Phaser.Scene {
       const spr=this.camWorld(this.add.sprite(x,y,'minion_yuzling',0).setDepth(7));
       const label=this.camWorld(this.add.text(x,y,'',{fontFamily:'sans-serif',fontSize:'10px',color:'#fff2cf',stroke:'#26162c',strokeThickness:2}).setOrigin(.5).setDepth(95003));
       const bar=this.camWorld(this.add.graphics().setDepth(95002));
-      m={kind,spr,label,bar,hp:1,maxhp:1,down:0,iframe:0,cd:.35,skill:1.5,second:4,growth:0,kills:0,bites:0,brew:0,vx:0,vy:0,seen:new WeakMap()};this._yuzuCrew=[m];
+      const shadow=this.camWorld(this.add.graphics().setDepth(y+1));
+      m={kind,spr,label,bar,shadow,hp:1,maxhp:1,down:0,iframe:0,cd:.35,skill:1.5,second:4,growth:0,kills:0,bites:0,brew:0,vx:0,vy:0,seen:new WeakMap()};this._yuzuCrew=[m];
       this.yuzuMaxHp(m,true);this.floatText?.(x,y-45,kind==='yuzling'?'Yuzling ready!':({pomelo:'Pomelo',lime:'Lime',bloodorange:'Blood Orange'})[kind]+' joins!',0xffdc7a);
     }
     this.yuzuMaxHp(m);return m;
@@ -16322,16 +16365,20 @@ class Game extends Phaser.Scene {
     }
   }
   yuzuVisual(m,dt){
-    const sp=m.spr;m.anim=(m.anim||0)+dt;m.attack=Math.max(0,(m.attack||0)-dt);
-    if(m.lunge)m.spr.setFlipX(Math.cos(m.lunge.a)<0);
-    const pose=this.yuzuVisualPose(m),base='yz_'+m.kind,painted=this.textures.exists(base),key=this.textures.exists(pose.key)?pose.key:painted?base:'minion_yuzling';
-    const frame=key===pose.key?pose.frame:painted?(m.down>0?7:pose.frame%8):m.down>0?6:pose.frame%8;
+    const sp=m.spr;const paintDt=this.state==='play'?dt:0;m.anim=(m.anim||0)+paintDt;m.attack=Math.max(0,(m.attack||0)-paintDt);
+    if(m.lunge)sp.setFlipX(Math.cos(m.lunge.a)<0);
+    const pose=this.yuzuVisualPose(m),v=this.yuzuAnimate(m,dt,pose),clip=this.yuzuAnimationFrame(m,pose),base='yz_'+m.kind,painted=this.textures.exists(base),key=this.textures.exists(clip.key)?clip.key:painted?base:'minion_yuzling';
+    const frame=key===clip.key?clip.frame:painted?(m.down>0?7:pose.frame%8):m.down>0?6:pose.frame%8;
     if(sp.texture.key!==key)sp.setTexture(key,frame);else sp.setFrame(frame);
     if(painted)sp.clearTint();else sp.setTint(({pomelo:0xffd173,lime:0x9bd65e,bloodorange:0xc9719d})[m.kind]||0xffffff);
-    const red=this.hubMotionAllowed?.()===false,size=m.kind==='pomelo'?64*(1+.14*m.growth):m.kind==='yuzling'?45:53;
-    let sx=size,sy=size;if(!red&&m.action){const a=m.action;if(a.t<a.wind){sx*=.96;sy*=1.04;}else if(a.t<a.wind+.08){sx*=1.08;sy*=.94;}}
-    sp.setDisplaySize(sx,sy).setRotation(!red&&pose.state==='roll'?(m.motion.t-m.motion.prep)*14:0).setAlpha(m.down>0?.68:1).setDepth((m.groundY??sp.y)+2);
+    const red=this.hubMotionAllowed?.()===false,size=m.kind==='pomelo'?64*(1+.14*m.growth):m.kind==='yuzling'?45:53,foot=248/256;
+    const paintScale=clip.paintScale||1;sp.setDisplaySize(size*paintScale*v.sx,size*paintScale*v.sy);
+    // Stretch/breath/recoil move the paint around a stable foot; never move the logical actor.
+    sp.setOrigin(.5,foot-((foot-.5)*size+v.bob)/(size*paintScale*v.sy));
+    sp.setRotation(!red&&pose.state==='roll'?(m.motion.t-m.motion.prep)*14:v.rot).setAlpha(m.down>0?.68:1).setDepth((m.groundY??sp.y)+2);
     m.visualState=pose.state;
+    if(m.shadow){const air=Math.min(1,Math.max(0,((m.groundY??sp.y)-sp.y)/75)),gy=(m.groundY??sp.y)+size*(foot-.5);
+      m.shadow.clear().setDepth((m.groundY??sp.y)+1);m.shadow.fillStyle(0x160d20,.2-air*.13).fillEllipse(sp.x,gy,size*.62*(1-air*.35),Math.max(5,size*.15*(1-air*.3)));}
     m.label.setText(m.down>0?'Help · '+m.down.toFixed(1)+'s':({pomelo:'Pomelo '+m.growth+'/3',lime:'Lime',bloodorange:'Blood Orange',yuzling:'Yuzling'})[m.kind]).setPosition(sp.x,sp.y-size*.58-14);
     const w=42,x=sp.x-w/2,y=sp.y-size*.58-4,f=m.down>0?1-m.down/m.recoverFor:m.hp/m.maxhp;
     m.bar.clear();if(this._yzShield&&!this.textures.exists('yz_fx_shield'))m.bar.lineStyle(2,0xffe3a0,.65).strokeCircle(this.player.x,this.player.y,32);m.bar.fillStyle(0x21162c,.85).fillRoundedRect(x-1,y-1,w+2,6,3).fillStyle(m.down>0?0xffd67d:0x96de8f,1).fillRect(x,y,w*Math.max(0,Math.min(1,f)),4);

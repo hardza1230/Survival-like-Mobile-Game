@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.48, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.49, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.48 — smoother companion animation
+
+Presentation-only refinement before mini-minions:3ImageGen atlases48frames (8walk+8attack per companion),2,241,182bytes/12MiB decoded Yuzu-only. Exact prompts/originals/refined Lime/Blood Orange retained incoming/yuzu48; source/final hashes/crops/scales in art/yuzu48/MANIFEST; mechanical pack-yuzu-48.py removes neighboring-row scraps by subject crop, aligns248px foot baseline and normalizes old apparent size. Movement-driven gait, damped breathing/weight/recoil/settle, stable visual foot origin and one reused ground shadow per companion; reduced-motion/paused stillness, prior47special/flavor/fallback poses retained.18production gameplay helpers byte-identical to47, including attack release timing, AI, damage, CD, projectile/motion logic; gameplay coordinates unchanged. No mini-minions. Existing168pose+24projectile Canvas review plus new72frame normal/reduced continuous clip viewer passed; 30/60/120FPS visual contracts, fullcheck/build passed (2294assets). Preview incoming/yuzu48/animation_preview.gif is deterministic2× presentation, not gameplay. docs/YUZU_ANIMATION.md; phone feel/FPS owner QA pending.
 
 # Latest delivery: v8.0.47 — Yuzu animation, AI and attack identity
 

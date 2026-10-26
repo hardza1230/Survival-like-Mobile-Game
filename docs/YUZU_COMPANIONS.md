@@ -87,3 +87,7 @@
 ## 8. Animation and AI polish · v8.0.47
 
 Frame-aligned owned ranged actions, deliberate casting/landing states, target retention and differentiated retreat/tether, painted sweep/arrow/orb/fire, original ImageGen supplementary poses including own down/revive. Existing damage formulas/cards/talents/one companion remain. See [YUZU_POLISH.md](YUZU_POLISH.md) for exact timings, limits, provenance and QA.
+
+## 9. Continuous animation refinement · v8.0.48
+
+48new identity-matched walk/attack frames, movement-driven gait, anchored feet, breathing/weight/recoil and owned ground shadow. Gameplay/AI/action timing unchanged; mini-minions remain ideas only. See [YUZU_ANIMATION.md](YUZU_ANIMATION.md) for assets, prompts and presentation preview.
