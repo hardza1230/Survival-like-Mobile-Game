@@ -1,0 +1,324 @@
+[
+  {
+    "key": "yz_49_peel",
+    "path": "assets/art/yuzu49/yz_49_peel.webp",
+    "source": "assets/incoming/yuzu49/pomelo_source.png",
+    "source_sha256": "2c35e172d6076050659c9f66c3ab532b9aebda824fb850628fd604cd79e83e24",
+    "sha256": "9c14f32cd1fde4336342c8ff1771a9f9e578cfbb469e8cb375ef12b3d2dbc84b",
+    "bytes": 234638,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        0,
+        444,
+        444
+      ],
+      [
+        444,
+        0,
+        887,
+        444
+      ],
+      [
+        887,
+        0,
+        1330,
+        444
+      ],
+      [
+        1330,
+        0,
+        1774,
+        444
+      ]
+    ],
+    "common_crop": [
+      0,
+      25,
+      444,
+      444
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_49_slam",
+    "path": "assets/art/yuzu49/yz_49_slam.webp",
+    "source": "assets/incoming/yuzu49/pomelo_source.png",
+    "source_sha256": "2c35e172d6076050659c9f66c3ab532b9aebda824fb850628fd604cd79e83e24",
+    "sha256": "7d995750b4d3848a7d333f71d52c6b282434a8fa8e9a5179a8e70c6f4324789f",
+    "bytes": 229614,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        444,
+        444,
+        887
+      ],
+      [
+        444,
+        444,
+        887,
+        887
+      ],
+      [
+        887,
+        444,
+        1330,
+        887
+      ],
+      [
+        1330,
+        444,
+        1774,
+        887
+      ]
+    ],
+    "common_crop": [
+      0,
+      0,
+      444,
+      401
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_49_volley",
+    "path": "assets/art/yuzu49/yz_49_volley.webp",
+    "source": "assets/incoming/yuzu49/lime_source.png",
+    "source_sha256": "83e05a0a4fcfbefa2a7075fe0e7a03714f6ecef3c48f734b137007318f42c63c",
+    "sha256": "a73d0d9364ce21be1e3ccd9ecc2cc74733306fd9d226f384d4a5b9f1408dae54",
+    "bytes": 196640,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        0,
+        444,
+        444
+      ],
+      [
+        444,
+        0,
+        887,
+        444
+      ],
+      [
+        887,
+        0,
+        1330,
+        444
+      ],
+      [
+        1330,
+        0,
+        1774,
+        444
+      ]
+    ],
+    "common_crop": [
+      13,
+      65,
+      444,
+      384
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_49_rain",
+    "path": "assets/art/yuzu49/yz_49_rain.webp",
+    "source": "assets/incoming/yuzu49/lime_source.png",
+    "source_sha256": "83e05a0a4fcfbefa2a7075fe0e7a03714f6ecef3c48f734b137007318f42c63c",
+    "sha256": "5108689226840d1afa60b4853da94b82803c00cc6e48c2bb1a70479a0ee4895c",
+    "bytes": 288604,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        444,
+        444,
+        887
+      ],
+      [
+        444,
+        444,
+        887,
+        887
+      ],
+      [
+        887,
+        444,
+        1330,
+        887
+      ],
+      [
+        1330,
+        444,
+        1774,
+        887
+      ]
+    ],
+    "common_crop": [
+      17,
+      0,
+      443,
+      405
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_49_sweet",
+    "path": "assets/art/yuzu49/yz_49_sweet.webp",
+    "source": "assets/incoming/yuzu49/bloodorange_source.png",
+    "source_sha256": "eceadf530726257048c8aaeb2f0089cb833846240df0dc494b972d1e866dfbdb",
+    "sha256": "58f452e71464da975f7bd990afc318de78ea90364e5b2c0b70e7005334f6e4ab",
+    "bytes": 198062,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        0,
+        384,
+        341
+      ],
+      [
+        384,
+        0,
+        768,
+        341
+      ],
+      [
+        768,
+        0,
+        1152,
+        341
+      ],
+      [
+        1152,
+        0,
+        1536,
+        341
+      ]
+    ],
+    "common_crop": [
+      0,
+      46,
+      384,
+      341
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_49_sour",
+    "path": "assets/art/yuzu49/yz_49_sour.webp",
+    "source": "assets/incoming/yuzu49/bloodorange_source.png",
+    "source_sha256": "eceadf530726257048c8aaeb2f0089cb833846240df0dc494b972d1e866dfbdb",
+    "sha256": "14961b9c66ae8201493db385457a665611ad70af4ccf99c29e53f53d0f27a758",
+    "bytes": 235436,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        341,
+        384,
+        683
+      ],
+      [
+        384,
+        341,
+        768,
+        683
+      ],
+      [
+        768,
+        341,
+        1152,
+        683
+      ],
+      [
+        1152,
+        341,
+        1536,
+        683
+      ]
+    ],
+    "common_crop": [
+      0,
+      0,
+      384,
+      342
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "yz_49_spicy",
+    "path": "assets/art/yuzu49/yz_49_spicy.webp",
+    "source": "assets/incoming/yuzu49/bloodorange_source.png",
+    "source_sha256": "eceadf530726257048c8aaeb2f0089cb833846240df0dc494b972d1e866dfbdb",
+    "sha256": "cb06b144ab4737e3f5c89e66c6de17a416cbed5ed238f45af72777704b322149",
+    "bytes": 142764,
+    "frames": 4,
+    "frame": 256,
+    "source_rects": [
+      [
+        0,
+        683,
+        384,
+        1024
+      ],
+      [
+        384,
+        683,
+        768,
+        1024
+      ],
+      [
+        768,
+        683,
+        1152,
+        1024
+      ],
+      [
+        1152,
+        683,
+        1536,
+        1024
+      ]
+    ],
+    "common_crop": [
+      0,
+      0,
+      384,
+      285
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  }
+]

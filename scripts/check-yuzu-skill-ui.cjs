@@ -1,0 +1,13 @@
+const{chromium}=require('playwright'),assert=require('node:assert/strict'),http=require('node:http'),fs=require('node:fs'),path=require('node:path');
+(async()=>{const root=path.resolve('www'),server=http.createServer((req,res)=>{const f=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]));if(!f.startsWith(root+path.sep)){res.writeHead(403).end();return;}fs.readFile(f,(e,b)=>{if(e){res.writeHead(404).end();return;}res.end(b);});});await new Promise(r=>server.listen(8105,'127.0.0.1',r));let browser;
+try{browser=await chromium.launch({channel:'chrome',headless:true});for(const red of[false,true])for(const[w,h]of[[320,568],[390,844],[844,390]]){
+ const page=await browser.newPage({viewport:{width:w,height:h},reducedMotion:red?'reduce':'no-preference'}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});await page.goto('http://127.0.0.1:8105/yuzu-skill-review.html?w='+w+'&h='+h);await page.waitForFunction(()=>window.skillView);
+ for(const[kind,moves]of[['pomelo',['sweep','slam','roll','unique']],['lime',['normal','volley','rain','unique']],['bloodorange',['orb','sweet','sour','spicy','unique']]])for(const move of moves){
+ await page.evaluate(({kind,move})=>skillView.show(kind,move),{kind,move});await page.evaluate(()=>skillView.step(.15));
+ const metrics=await page.evaluate(()=>({count:skillView.children.list.length,fx:(skillView._yzShow||[]).map(q=>({frame:q.spr.frame.name,w:q.spr.displayWidth,alpha:q.spr.alpha,cell:q.spr.frame.width})),texts:[skillView.title,skillView.note].map(t=>t.getBounds())}));assert(metrics.count<30);assert(metrics.fx.length<=4);for(const q of metrics.fx){assert.equal(q.cell,256);assert(q.w<=420);assert(q.alpha<=.68);if(red)assert.equal(q.frame,2);}for(const b of metrics.texts)assert(b.x>=0&&b.x+b.width<=w+.5&&b.y>=0&&b.y+b.height<=h+.5);
+ if(process.env.YUZU_SKILL_SHOT_DIR&&w===390&&!red&&['slam','volley','rain','unique','spicy'].includes(move)){fs.mkdirSync(process.env.YUZU_SKILL_SHOT_DIR,{recursive:true});await page.screenshot({path:path.join(process.env.YUZU_SKILL_SHOT_DIR,kind+'-'+move+'.png')});}
+ await page.evaluate(()=>{skillView.step(2);skillView.clearYuzuCrew();});assert.equal(await page.evaluate(()=>skillView.children.list.length),3);
+ await page.evaluate(({kind,move})=>skillView.show(kind,move,true),{kind,move});assert.equal(await page.evaluate(()=>skillView._yzShow?.length||0),0);
+ }
+ assert.deepEqual(errors,[]);await page.close();console.log('Skill spectacle Canvas '+w+'x'+h+' reduced='+red+'13skills/Low/caps/cleanup passed');
+}}finally{await browser?.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

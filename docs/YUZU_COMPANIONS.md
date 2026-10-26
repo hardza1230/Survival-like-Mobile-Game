@@ -91,3 +91,7 @@ Frame-aligned owned ranged actions, deliberate casting/landing states, target re
 ## 9. Continuous animation refinement · v8.0.48
 
 48new identity-matched walk/attack frames, movement-driven gait, anchored feet, breathing/weight/recoil and owned ground shadow. Gameplay/AI/action timing unchanged; mini-minions remain ideas only. See [YUZU_ANIMATION.md](YUZU_ANIMATION.md) for assets, prompts and presentation preview.
+
+## 10. Skill spectacle · v8.0.49
+
+Seven new animated painted VFX reinforce each companion’s normal/special/Unique attacks, with owned bounded lifecycle and Low/reduced fallback. Existing combat rules and48animation preserved. See [YUZU_SKILL_SPECTACLE.md](YUZU_SKILL_SPECTACLE.md) for art, hooks, limits and QA.

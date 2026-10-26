@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.49, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.50, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.49 — companion skill spectacle
+
+Original ImageGen7clips28frames/3donors enhance normal/special/Unique releases: Pomelo peel sweep/slam/Fortress/roll; Lime arrow muzzle/volley/rain; Blood Orange honey/Sour/flame and Infusion accents. Visual-only hooks preserve all damage/range/CD/hit/AI/card/EXP/reward formulas and48animation; no mini-minions/new Unique mechanics.4new decorative sprites max,420px cap, finite frames, large alpha.5/small.68, NORMAL, Low skip/reduced brief still, pause/owner/player/basic/epoch/down-follow/shutdown/central clear guards. Existing8FX/48shots/10zones caps retained. Hero-lazy7MiB/1,525,758bytes in art/yuzu49 with hashes; donors/exact prompts incoming/yuzu49; pack-yuzu-49.py. docs/YUZU_SKILL_SPECTACLE.md. Fullcheck/build2301assets, Yuzu293MB within300cap; static production Canvas13showcases×3sizes×normal/reduced+Low, lifecycle/hash regressions passed. No combat simulation; phone crowd-readability/feel/FPS owner review pending.
 
 # Latest delivery: v8.0.48 — smoother companion animation
 
