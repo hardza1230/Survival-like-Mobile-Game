@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.57, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.58, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.57 — restrained header consistency pass
+
+Owner priority: original game, more orderly visuals. Small pilot only: headerTheme shared NunitoUI/cream/warm-gold/ink roles in existing generic headers, Heroes, journal Equipment/Forge and fallback Forge text. Generic native Back slightly warmer plum/thinner border; title strokes quieter. Keeps original page content, backgrounds/art/painted controls/coordinates/fit rules/tap zones/Back stack/currency format/tutorial tags/navigation/gameplay/economy. Paper remains paper with dark ink; no layout mockup recreation, no new ImageGen/assets/GPU cost. docs/UI_THEME_POLISH.md. Existing targeted roster/Power/Forge checks passed, fullcheck/build required. No screenshots/headless combat. Phone appearance review pending; this is pass1, not an entire-game redesign.42design previews remain local reference only, not approved replacement screens.
 
 # Latest delivery: v8.0.56 — illustrated Power hub
 
@@ -998,6 +1002,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
   (เจ้าของเป็นผู้กำกับ/โปรดิวเซอร์ ไม่เขียนโค้ดเอง)
 
 ## 2. การตัดสินใจที่ล็อกแล้ว (อย่าเปลี่ยนโดยไม่ถาม)
+- **🎨 คุมธีมโดยรักษาเกมเดิม (เจ้าของย้ำ 27 ต.ค. 2026): “เกมเดิมที่งานภาพเป็นระเบียบขึ้น” สำคัญที่สุด** — งานคุมธีมให้เก็บโครงหน้า ตำแหน่งปุ่ม เส้นทางใช้งาน ระบบ ตัวละคร ฉาก และอาร์ตเดิม ปรับเฉพาะฟอนต์ สีแผง ขอบ วัสดุ และสถานะของปุ่ม/Back/ช่องเงินให้เข้าชุดกัน ใช้ ImageGen เฉพาะชิ้นที่ขาดหรือหลุดชัดเจน ชุดภาพ42มุมมองใน docs/design/unified_theme เป็นภาพสำรวจสี/วัสดุเท่านั้น ไม่ใช่แบบอนุมัติให้รื้อหน้า เปลี่ยนเกม หรือสร้างอาร์ตทั้งหมดใหม่ การเปลี่ยนโครงหน้า/ขั้นตอน/ระบบต้องมีคำขอที่ครอบคลุมการเปลี่ยนนั้นจากเจ้าของ
 - **เอนจิน:** Phaser 3 (เกมเว็บ/HTML5, TypeScript/JS) — เลือกเพราะทำบนมือถือล้วนได้
   (โค้ดอยู่บนคลาวด์ของ Claude, เจ้าของแค่เปิดลิงก์เทสในเบราว์เซอร์มือถือ)
 - **เส้นทางขึ้นสโตร์:** เกมเว็บ → ห่อเป็นแอปด้วย **Capacitor** → build APK ผ่าน cloud → Play Store
