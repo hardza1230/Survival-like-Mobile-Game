@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.58, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.59, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.58 — existing controls consistency pass
+
+Owner said continue after57header pilot, while preserving original game. controlTheme reuses existing header roles; native uiPillBtn/paintedNavButton/Heroes tabs/journal labels/Forge fallback and menuToast typography/outlines aligned. Native gloss20→10%, softer label shadow and1.5pxborder; painted tabs retain original textures/geometry/active alpha, quieter gold halo. Original caller base/semantic/hero colors, light-paper ink/disabled states, assets, positions/sizes/corners/fit rules/tap zones/tags/callbacks/sounds/costs/navigation/2600mstoast lifecycle retained. No new ImageGen/assets/GPU/gameplay, no42mockup replacement. docs/UI_THEME_POLISH.md pass2. Existing roster/progression/Forge7layouts/menu-motion passed; fullcheck/build required. No game captures/headless combat; phone appearance review pending.
 
 # Latest delivery: v8.0.57 — restrained header consistency pass
 

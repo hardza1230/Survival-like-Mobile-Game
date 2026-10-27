@@ -1,3 +1,7 @@
+# v8.0.58 — original-game controls polish, ready to publish
+
+Owner requested “ทำต่อ” while57delivery was finishing. Completed57checkpoint93093e9c68996668c69a9846d54baa2f2f08ebbe with exact bytes/tree verification first.58adds small in-place controlTheme text/outline roles across native pill/painted navigation/Heroes tabs/journal/Forge labels/toasts, softer native gloss/shadows/borders, preserving source geometry/positions/material art/caller colors/disabled states/tags/routes/costs/callbacks. Targeted existing roster/store/Forge/menu motion checks passed; full npm run check and build:www passed2311assets/300.1MB, optional npx ENOENT fallback. Next scoped4filecommit/exact publication/readback/ONE deployment check/finalcheckpoint. Base93093e9 fetched; next release8.0.59. Owner original-game constraint remains highest priority. No newImageGen/assets/mockup recreation/gameplay/game captures/headless combat/subagents. Leave local design books and unrelated HUD/arena files untracked/unpublished.
+
 # v8.0.57 — original-game header polish pilot delivered
 
 Latest human priority: “เกมเดิมที่งานภาพเป็นระเบียบขึ้น นี่สำคัญ”. User then authorized “ครับลองดู”. Implemented a deliberately small in-place first pass, not the42mockup redesign. This priority is now a locked CLAUDE.md decision.
