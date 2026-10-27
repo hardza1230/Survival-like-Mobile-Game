@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.54';
+const GAME_VERSION = '8.0.55';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.55',date:'2026-10-27',title:'Mint draws the lance',items:['Impaler charging now animates Mint herself through preparation, moving charge and release sprite sheets','The large floating charge glow is removed; the lance energy stays inside her authored pose','Charge timing, lance damage and projectile behavior stay the same']},
   {v:'8.0.54',date:'2026-10-27',title:'Three companions, three fighting styles',items:['Blood Orange casts ground Flavor Sigils and chooses Comet, Sour Garden, Spicy Bloom or Honey Rescue','Pomelo chains three distinct punches and sends Rind Breaker through the frontline','Lime gains arcing Vaulting Shots and a marked Pin & Pierce follow-up; all three retain their buff Uniques','Forty new original painted effect frames bring the new attacks to life']},
   {v:'8.0.53',date:'2026-10-26',title:'A little life in every room',items:['Sparse dust, drips, embers, snow, leaves and pollen bring each campaign setting to life','Selected background foliage, roots, water and lamps move gently while the battle area stays readable','Ambient motion respects reduced motion, low effects, pause and stage cleanup, with less decoration during bosses']},
   {v:'8.0.52',date:'2026-10-26',title:'Every step has weight',items:['Heroes settle naturally after movement and Dash; charged attacks hold their preparation before a distinct release','Sniper and Impaler gain heavier recoil while rapid attacks keep their animation flowing','Heavy, swift and ranged enemies move with distinct cadence and react directionally to hits without hiding attack warnings']},
@@ -2870,6 +2871,9 @@ const ASSET_SHEETS = {
   char_cocoa_hurt:{ url:'assets/art/bp_fx/cocoa_hurt_sheet.webp', frame:128 },
   char_cocoa_victory:{ url:'assets/art/bp_fx/cocoa_victory_sheet.webp', frame:128 },
   char_mint_lance_charged:{ url:'assets/art/bp_fx/mint_lance_throw_charged_sheet.webp', frame:128 },
+  char_mint_impaler_charge:{url:'assets/art/mint55/char_mint_impaler_charge.webp',frame:128},
+  char_mint_impaler_move:{url:'assets/art/mint55/char_mint_impaler_move.webp',frame:128},
+  char_mint_impaler_release:{url:'assets/art/mint55/char_mint_impaler_release.webp',frame:128},
   char_berry: { url:'assets/char_berry_core_sheet.png', frame:128 },
   char_berry_run:{ url:'assets/char_berry_core_run_sheet.png', frame:128 },
   char_taro:  { url:'assets/char_taro_awakened_sheet.png', frame:128 },
@@ -17998,24 +18002,22 @@ class Game extends Phaser.Scene {
     if(this._impalerCharge||!this.player?.active||(this.state!=='play'&&this.state!=='levelup'))return;
     const ms=320+80*(basic.lv.p_heavydraw||0),target=this.impalerTarget(1100);
     const angle=target?Math.atan2(target.y-this.player.y,target.x-this.player.x):(this._lanceAng||0);
-    const glow=this.textures.exists('vfx_glow')?this.trackArtVfx(this.camWorld(this.add.image(this.player.x,this.player.y,'vfx_glow').setTint(0xbdf0ff).setDepth(this.player.y+2).setScale(0.3).setAlpha(0.5))):null;
-    const c=this._impalerCharge={basic,lvl,aw,dm,ms,start:this.time.now,angle,glow,epoch:this._artEpoch||0};c.bp=this.bpLoop?.('bpx_mint_impcharge',this.player.x+Math.cos(angle)*30,this.player.y+Math.sin(angle)*30,110,this.player.y+3)||null;
+    const c=this._impalerCharge={basic,player:this.player,lvl,aw,dm,ms,start:this.time.now,angle,glow:null,bp:null,epoch:this._artEpoch||0};
     this.poseAttack(ms+200);this.tickImpalerCharge();Sfx.bpLoopStart?.('mint_impaler_charge',.22);
     c.timer=this.artDelay(ms,()=>{if(this._impalerCharge===c)this.releaseImpalerCharge(true);});
   }
   tickImpalerCharge(){
-    const c=this._impalerCharge;if(!c||!c.glow?.active||!this.player)return;
-    const progress=Math.max(0,Math.min(1,(this.time.now-c.start)/c.ms));
-    c.glow.setPosition(this.player.x+Math.cos(c.angle)*26,this.player.y+Math.sin(c.angle)*26).setDepth(this.player.y+2).setScale(0.3+progress*0.4).setAlpha(0.45+progress*0.35);
+    // Charge is painted on the player sprite, not on a separate glow or VFX plane.
+    const c=this._impalerCharge;if(!c||!this.player)return;
   }
   releaseImpalerCharge(complete){
     const c=this._impalerCharge;if(!c)return;this._impalerCharge=null;Sfx.bpLoopStop?.('mint_impaler_charge');
     if(c.timer){c.timer.remove(false);this._artTimers?.delete(c.timer);}
     if(c.glow?.active)c.glow.destroy();if(c.bp?.active)c.bp.destroy();
-    if(!this.player?.active||(this.state!=='play'&&this.state!=='levelup')||(this._artEpoch||0)!==c.epoch||this.basicAttack!==c.basic||c.basic.path!=='pierce')return;
+    if(!this.player?.active||c.player&&c.player!==this.player||(this.state!=='play'&&this.state!=='levelup')||(this._artEpoch||0)!==c.epoch||this.basicAttack!==c.basic||c.basic.path!=='pierce')return;
     const {basic,lvl,aw,dm}=c,progress=complete?1:Math.max(0,Math.min(0.98,(this.time.now-c.start)/c.ms)),full=!!complete;
     const target=this.impalerTarget(1100),angle=target?Math.atan2(target.y-this.player.y,target.x-this.player.x):c.angle;
-    this._lanceAng=angle;this.poseAttack(360,full?'char_mint_lance_charged':undefined);
+    this._lanceAng=angle;if(Math.abs(Math.cos(angle))>.1)this.player.setFlipX?.(Math.cos(angle)<0);this.poseAttack(360,this.textures?.exists?.('char_mint_impaler_release')?'char_mint_impaler_release':full?'char_mint_lance_charged':undefined);
     const raw=(basic.evolved?3:(lvl>=4?2:1))+(basic._pm?.count||0),countBonus=1+0.12*Math.max(0,raw-1);
     const damage=(16+lvl*4)*dm*(aw?1.2:1)*(basic.mutation==='permafrost'?1.15:1)*(.65+(.65+.18*(basic.lv.p_heavydraw||0))*progress)*countBonus*1.35;
     const range=(340+lvl*22)*(aw?1.28:1)*(1+.1*(basic.ranks.chill||0))*(1+(basic._pm?.range||0)),speed=1000;
@@ -19174,6 +19176,8 @@ class Game extends Phaser.Scene {
     this._artTimers.add(ev);return ev;
   }
   clearArtVfx(){this.clearStatusArt?.();this.clearStageLife?.();this.clearYuzuSkillFx?.();this.clearYuzuBuff?.();this.clearBossStory?.();this.clearBossVictory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
+    if(this._impalerCharge&&typeof Sfx!=='undefined')Sfx.bpLoopStop?.('mint_impaler_charge');
+    if(['char_mint_impaler_charge','char_mint_impaler_move'].includes(this.player?.texture?.key)){this._attackPoseTime=0;this._attackTextureKey=null;}
     this.clearTaroCombat?.();this.clearCocoaCombat?.();this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
     this._mintDashTween?.stop();this._mintDashTween=null;this._mintDashFinish=null;this._glacierStorms=[];
     this._mintArsenalAt=-Infinity;this._mintVfxWindow=null;this._mintVfxCount=0;this._mintShardWindow=null;this._mintShardCount=0;this._mintImpactAt=-Infinity;
@@ -20599,6 +20603,14 @@ class Game extends Phaser.Scene {
     const n=Math.max(1,(this.textures.get?.(key)?.frameTotal||9)-1),progress=c.ms?Math.max(0,Math.min(1,((this.time?.now||0)-c.start)/c.ms)):(this.snipeCharge?.()||0);
     this.player.setTexture(key).setFrame(Math.min(n-1,progress<.4?0:1));return true;
   }
+  mintImpalerPose(dt,moving){
+    const c=this._impalerCharge,p=this.player;if(this.state&&this.state!=='play'||this.character!=='mint'||!c||!p?.active||p.hp<=0||c.player&&c.player!==p||this._poseHold>0||this.dashTime>0||this.basicAttack!==c.basic||c.basic?.path!=='pierce'||(this._artEpoch||0)!==c.epoch)return false;
+    const key=moving?'char_mint_impaler_move':'char_mint_impaler_charge';if(!this.textures.exists(key))return false;
+    const progress=Math.max(0,Math.min(1,((this.time?.now||0)-c.start)/Math.max(1,c.ms))),red=this.hubMotionAllowed?.()===false;
+    this.actorMotionState().charging=true;
+    let frame;if(moving){this._charRunT=(this._charRunT||0)+dt;const gait=this.actorGaitStep(dt,true);frame=red?5:Math.floor(gait*32/3)%8;}else frame=red?5:Math.min(7,Math.floor(progress*8));
+    if(p.texture.key!==key)p.setTexture(key);p.setFrame(frame);if(!moving&&Math.abs(Math.cos(c.angle))>.1)p.setFlipX(Math.cos(c.angle)<0);return true;
+  }
   tickActorWeight(dt){
     const p=this.player;if(!p?.body||this.state&&this.state!=='play')return;
     const u=this.actorMotionState(),style=this.actorMotionStyle(),span=Math.max(0,Math.min(.1,dt)),v=p.body.velocity,speed=Math.hypot(v.x,v.y),moving=speed>24,red=this.hubMotionAllowed?.()===false;
@@ -20624,6 +20636,7 @@ class Game extends Phaser.Scene {
       if(this.textures.exists('char_cocoa_attack')){if(this.player.texture.key!=='char_cocoa_attack')this.player.setTexture('char_cocoa_attack');this.player.setFrame(pose.t<pose.wind?0:pose.t<pose.wind+.04?1:pose.t<pose.wind+.08?2:3);return;}
     }
     const moving=this.player.body&&this.player.body.velocity.length()>24;
+    if(this.mintImpalerPose?.(dt,moving))return;
     if(!moving&&this.dashTime<=0&&this.actorChargePose?.())return;
     // Keep gait phase through casts, hits and Dash; Chocolate accelerates its cadence during Dash.
     this._charRunT=(this._charRunT||0)+(moving?dt*(this.character==='cocoa'&&this.dashTime>0?1.6:1):0);

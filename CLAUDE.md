@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.55, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.56, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.55 — Mint Impaler character charge sheets
+
+Replace floating glow/charge VFX plane with one actual player sprite using24built-in ImageGen frames: stationary charge8, moving charge8, release/recovery8. Generated Mint identity references, original+refinement+exact prompts incoming/mint55, mechanical component bounding crop/common scale/122px foot baseline/128px cells via scripts/pack-mint-55.py, runtime3lossless1024×128 alpha sheets/1.5MiB hero-lazy in art/mint55 with hashes. Stationary frames follow original320+80HeavyDraw ms, moving charge follows existing speed-driven gait, release uses new owned pose and skips repeated preparation. Reduced charge stillframe5, pause/hurt/Dash/stale player/basic/path/epoch/death/missing-sheet guards and clear sound cleanup. No second character or charge PNG layer; no changed damage/CD/charge/projectile/collider/world coordinates. docs/MINT_IMPALER_POSE.md. Isolated pose/casting adapters30/60/120FPS and existing numerical contracts; fullcheck/build required. Source matte inspected; no combat simulation/screenshots. Owner phone pacing/appearance/FPS review pending.
 
 # Latest delivery: v8.0.54 — full companion arsenals +40ImageGen frames
 

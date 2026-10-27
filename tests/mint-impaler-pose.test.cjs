@@ -1,0 +1,29 @@
+// Isolated production presentation and casting adapters, never the combat update loop.
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const src=fs.readFileSync('game.js','utf8');
+function method(n){const at=src.indexOf('  '+n+'('),tail=src.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,n);return src.slice(at,at+1+next.index);}
+const names=['actorMotionStyle','actorMotionState','actorAttackKick','actorGaitStep','actorAttackFrame','actorChargePose','mintImpalerPose','tickActorWeight','updatePose','poseAttack','poseFlash','animatePlayer'];
+const C=vm.runInNewContext('class C{'+names.map(method).join('\n')+'}C',{Math,CF:{idle:0,blink:1,stretch:3,hurt:5,cast:7},CHAR_ACTION_SCALE:{},Phaser:{Math:{Clamp:(x,a,b)=>Math.max(a,Math.min(b,x)),FloatBetween:(a,b)=>(a+b)/2}}});
+function scene(red=false){const s=new C(),v={x:0,y:0,length(){return Math.hypot(this.x,this.y);}},p={active:true,hp:100,x:12,y:24,baseSpeed:160,texture:{key:'char_mint'},body:{radius:24,velocity:v},setTexture(k){this.texture.key=k;return this;},setFrame(f){this.frame=f;return this;},setFlipX(f){this.flipX=f;return this;},setScale(x,y=x){this.scaleX=x;this.scaleY=y;return this;}};
+ Object.assign(s,{state:'play',character:'mint',player:p,basicAttack:{path:'pierce'},_artEpoch:1,_hasFrames:true,_poseHold:0,_attackPoseTime:0,_blinkT:3,_pBase:.5,_sqX:1,_sqY:1,dashTime:0,time:{now:0},textures:{exists:()=>true,get:()=>({frameTotal:9})},hubMotionAllowed:()=>!red,spawnDust(){},spawnGhostTrail(){},vfxSpeedLine(){}});
+ s._impalerCharge={player:p,basic:s.basicAttack,epoch:1,start:0,ms:560,angle:Math.PI};s.poseAttack(760);return s;
+}
+for(const fps of [30,60,120]){
+ const s=scene(),p=s.player,frames=new Set();for(let i=0;i<fps;i++){s.time.now=i*560/fps;s.updatePose(1/fps);s.animatePlayer(1/fps);frames.add(p.frame);assert.equal(p.texture.key,'char_mint_impaler_charge');assert(p.frame>=0&&p.frame<8);}
+ assert.equal(frames.size,8);assert.equal(p.flipX,true);assert.equal(p.x,12);assert.equal(p.y,24);assert.equal(p.body.radius,24);assert.equal(p.body.velocity.x,0);assert(Math.abs(p.scaleX-.5)<.031);
+ p.body.velocity.x=160;frames.clear();for(let i=0;i<fps;i++){s.updatePose(1/fps);frames.add(p.frame);assert.equal(p.texture.key,'char_mint_impaler_move');}assert.equal(frames.size,8);assert(Math.abs(s._actorWeight.gait-1)<1e-8);assert.equal(p.body.velocity.x,160);
+ const frame=p.frame,gait=s._actorWeight.gait;s.state='paused';s.updatePose(20);assert.equal(p.frame,frame);assert.equal(s._actorWeight.gait,gait);assert.equal(s.mintImpalerPose(20,true),false);
+ s.state='play';p.body.velocity.x=0;s._impalerCharge=null;s.poseAttack(360,'char_mint_impaler_release');s.updatePose(.01);assert.equal(p.texture.key,'char_mint_impaler_release');assert.equal(p.frame,2);s.updatePose(.29);assert(p.frame>=6);s.updatePose(.1);assert.equal(p.texture.key,'char_mint');
+}
+for(const moving of [false,true]){const s=scene(true);s.player.body.velocity.x=moving?160:0;for(let i=0;i<10;i++){s.time.now=i*50;s.updatePose(.05);s.animatePlayer(.05);assert.equal(s.player.frame,5);assert.equal(s.player.rotation,0);}}
+for(const change of [s=>s.player.active=false,s=>s.player.hp=0,s=>s._impalerCharge.player={},s=>s._impalerCharge.basic={},s=>s.basicAttack.path='barrage',s=>s._artEpoch++,s=>s._poseHold=.1,s=>s.dashTime=.1,s=>s.character='taro',s=>s.state='dead']){const s=scene();change(s);assert.equal(s.mintImpalerPose(.1,false),false);}
+{const s=scene();s.releaseImpalerCharge=()=>s._impalerCharge=null;s.poseFlash(5,160);s.updatePose(.01);assert.equal(s.player.frame,5);assert.notEqual(s.player.texture.key,'char_mint_impaler_charge');}
+{const s=scene();s.dashTime=.1;s.updatePose(.01);assert.equal(s.player.texture.key,'char_mint');assert.equal(s.player.frame,3);}
+{const s=scene();s.textures.exists=k=>!k.startsWith('char_mint_impaler_');s.time.now=400;s.updatePose(.1);assert.equal(s.player.texture.key,'char_mint_attack');assert.equal(s.player.frame,1);}
+const {scene:castScene}=require('./mint-impaler.test.cjs');
+for(const complete of [false,true]){const s=castScene(),poses=[];s.poseAttack=(...args)=>poses.push(args);s.bpLoop=()=>assert.fail('separate charge plane');s.add.image=()=>assert.fail('charge PNG overlay');s.castImpalerLance(1,false,1,s.basicAttack);s.time.now=complete?320:100;s.releaseImpalerCharge(complete);assert.equal(poses.at(-1)[1],'char_mint_impaler_release');assert.equal(s.shots.length,1);s.advance(1000);assert.equal(s.shots.length,1);}
+{const s=castScene();s.castImpalerLance(1,false,1,s.basicAttack);s.player={active:true,x:0,y:0};s.advance(1000);assert.equal(s.shots.length,0);}
+const manifest=JSON.parse(fs.readFileSync('assets/art/mint55/MANIFEST.json'));
+assert.equal(manifest.length,3);for(const a of manifest){const data=fs.readFileSync(a.path);assert.equal(crypto.createHash('sha256').update(data).digest('hex'),a.sha256);assert.equal(crypto.createHash('sha256').update(fs.readFileSync(a.source)).digest('hex'),a.source_sha256);assert.equal(crypto.createHash('sha256').update(fs.readFileSync('assets/incoming/mint55/charge_original.png')).digest('hex'),a.original_sha256);assert.equal(a.frames,8);assert.equal(a.frame,128);assert.equal(a.paint_scale,1);assert.equal(a.foot_baseline,122);assert.deepEqual(a.alpha,[0,255]);assert.equal(a.cells.length,8);for(const c of a.cells){const[x,y,w,h]=c.destination;assert(x>=0&&x+w<=128&&y>=0&&y+h===122);}assert(src.includes(a.key+":{url:'"+a.path+"',frame:128}"));}
+assert(!/add\.image|bpLoop\(/.test(method('castImpalerLance')));assert(!/add\.|setVelocity|setPosition|damage\(/.test(method('mintImpalerPose')));
+console.log('Mint Impaler pose:24authored frames, standing/moving30/60/120FPS, release/partial, one player/no overlay, feet/scale/collider, pause/reduced/hurt/Dash/stale/fallback and source/art hashes passed');

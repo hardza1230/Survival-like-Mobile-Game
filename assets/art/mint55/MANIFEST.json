@@ -1,0 +1,566 @@
+[
+  {
+    "key": "char_mint_impaler_charge",
+    "path": "assets/art/mint55/char_mint_impaler_charge.webp",
+    "source": "assets/incoming/mint55/charge_source.png",
+    "source_sha256": "e993f665eb1c04ed9110962201fa5c7a1e96d00491fc505d25abea86453b8a99",
+    "original_sha256": "8cd49c96e7010a00ec595e9199d01910bca8536f6f825671d04fe324a4ff04cd",
+    "sha256": "777da6a1b4cb4cd75d446d4ecdbfbb2f4a09c93ab68cee7fbf20c50c7da9df13",
+    "bytes": 144352,
+    "frames": 8,
+    "frame": 128,
+    "foot_baseline": 122,
+    "paint_scale": 1,
+    "source_scale": 0.5213270142180095,
+    "cells": [
+      {
+        "source_rect": [
+          0,
+          0,
+          222,
+          329
+        ],
+        "subject_crop": [
+          14,
+          114,
+          217,
+          306
+        ],
+        "body_anchor": 105.0,
+        "destination": [
+          11,
+          22,
+          106,
+          100
+        ]
+      },
+      {
+        "source_rect": [
+          222,
+          0,
+          444,
+          329
+        ],
+        "subject_crop": [
+          13,
+          111,
+          213,
+          306
+        ],
+        "body_anchor": 102.0,
+        "destination": [
+          12,
+          20,
+          104,
+          102
+        ]
+      },
+      {
+        "source_rect": [
+          444,
+          0,
+          665,
+          329
+        ],
+        "subject_crop": [
+          9,
+          111,
+          217,
+          306
+        ],
+        "body_anchor": 102.0,
+        "destination": [
+          10,
+          20,
+          108,
+          102
+        ]
+      },
+      {
+        "source_rect": [
+          665,
+          0,
+          887,
+          329
+        ],
+        "subject_crop": [
+          9,
+          112,
+          222,
+          306
+        ],
+        "body_anchor": 100.0,
+        "destination": [
+          8,
+          21,
+          111,
+          101
+        ]
+      },
+      {
+        "source_rect": [
+          887,
+          0,
+          1109,
+          329
+        ],
+        "subject_crop": [
+          17,
+          111,
+          211,
+          306
+        ],
+        "body_anchor": 109.0,
+        "destination": [
+          13,
+          20,
+          101,
+          102
+        ]
+      },
+      {
+        "source_rect": [
+          1109,
+          0,
+          1330,
+          329
+        ],
+        "subject_crop": [
+          0,
+          103,
+          196,
+          306
+        ],
+        "body_anchor": 112.0,
+        "destination": [
+          13,
+          16,
+          102,
+          106
+        ]
+      },
+      {
+        "source_rect": [
+          1330,
+          0,
+          1552,
+          329
+        ],
+        "subject_crop": [
+          0,
+          111,
+          201,
+          306
+        ],
+        "body_anchor": 104.0,
+        "destination": [
+          11,
+          20,
+          105,
+          102
+        ]
+      },
+      {
+        "source_rect": [
+          1552,
+          0,
+          1774,
+          329
+        ],
+        "subject_crop": [
+          0,
+          111,
+          214,
+          306
+        ],
+        "body_anchor": 110.0,
+        "destination": [
+          8,
+          20,
+          112,
+          102
+        ]
+      }
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "char_mint_impaler_move",
+    "path": "assets/art/mint55/char_mint_impaler_move.webp",
+    "source": "assets/incoming/mint55/charge_source.png",
+    "source_sha256": "e993f665eb1c04ed9110962201fa5c7a1e96d00491fc505d25abea86453b8a99",
+    "original_sha256": "8cd49c96e7010a00ec595e9199d01910bca8536f6f825671d04fe324a4ff04cd",
+    "sha256": "c5e403827f7d47ee0738f7761ca60fbe931cf5d40904b7fc7293d3ed566b5779",
+    "bytes": 151064,
+    "frames": 8,
+    "frame": 128,
+    "foot_baseline": 122,
+    "paint_scale": 1,
+    "source_scale": 0.5213270142180095,
+    "cells": [
+      {
+        "source_rect": [
+          0,
+          329,
+          222,
+          607
+        ],
+        "subject_crop": [
+          17,
+          47,
+          222,
+          251
+        ],
+        "body_anchor": 124.0,
+        "destination": [
+          10,
+          16,
+          107,
+          106
+        ]
+      },
+      {
+        "source_rect": [
+          222,
+          329,
+          444,
+          607
+        ],
+        "subject_crop": [
+          15,
+          47,
+          222,
+          253
+        ],
+        "body_anchor": 119.0,
+        "destination": [
+          10,
+          15,
+          108,
+          107
+        ]
+      },
+      {
+        "source_rect": [
+          444,
+          329,
+          665,
+          607
+        ],
+        "subject_crop": [
+          16,
+          46,
+          221,
+          255
+        ],
+        "body_anchor": 123.0,
+        "destination": [
+          10,
+          13,
+          107,
+          109
+        ]
+      },
+      {
+        "source_rect": [
+          665,
+          329,
+          887,
+          607
+        ],
+        "subject_crop": [
+          17,
+          47,
+          222,
+          256
+        ],
+        "body_anchor": 123.0,
+        "destination": [
+          10,
+          13,
+          107,
+          109
+        ]
+      },
+      {
+        "source_rect": [
+          887,
+          329,
+          1109,
+          607
+        ],
+        "subject_crop": [
+          16,
+          52,
+          222,
+          257
+        ],
+        "body_anchor": 119.0,
+        "destination": [
+          10,
+          15,
+          107,
+          107
+        ]
+      },
+      {
+        "source_rect": [
+          1109,
+          329,
+          1330,
+          607
+        ],
+        "subject_crop": [
+          4,
+          55,
+          221,
+          257
+        ],
+        "body_anchor": 116.0,
+        "destination": [
+          7,
+          17,
+          113,
+          105
+        ]
+      },
+      {
+        "source_rect": [
+          1330,
+          329,
+          1552,
+          607
+        ],
+        "subject_crop": [
+          13,
+          47,
+          222,
+          258
+        ],
+        "body_anchor": 122.0,
+        "destination": [
+          9,
+          12,
+          109,
+          110
+        ]
+      },
+      {
+        "source_rect": [
+          1552,
+          329,
+          1774,
+          607
+        ],
+        "subject_crop": [
+          13,
+          56,
+          222,
+          254
+        ],
+        "body_anchor": 117.0,
+        "destination": [
+          9,
+          19,
+          109,
+          103
+        ]
+      }
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  },
+  {
+    "key": "char_mint_impaler_release",
+    "path": "assets/art/mint55/char_mint_impaler_release.webp",
+    "source": "assets/incoming/mint55/charge_source.png",
+    "source_sha256": "e993f665eb1c04ed9110962201fa5c7a1e96d00491fc505d25abea86453b8a99",
+    "original_sha256": "8cd49c96e7010a00ec595e9199d01910bca8536f6f825671d04fe324a4ff04cd",
+    "sha256": "a64df29a0b26a7913444e63bdd785f70ad1a1d78bbf28b3ec383fc872f826c66",
+    "bytes": 141664,
+    "frames": 8,
+    "frame": 128,
+    "foot_baseline": 122,
+    "paint_scale": 1,
+    "source_scale": 0.5213270142180095,
+    "cells": [
+      {
+        "source_rect": [
+          0,
+          607,
+          222,
+          887
+        ],
+        "subject_crop": [
+          19,
+          32,
+          216,
+          233
+        ],
+        "body_anchor": 112.0,
+        "destination": [
+          12,
+          17,
+          103,
+          105
+        ]
+      },
+      {
+        "source_rect": [
+          222,
+          607,
+          444,
+          887
+        ],
+        "subject_crop": [
+          8,
+          38,
+          222,
+          233
+        ],
+        "body_anchor": 105.0,
+        "destination": [
+          8,
+          20,
+          112,
+          102
+        ]
+      },
+      {
+        "source_rect": [
+          444,
+          607,
+          665,
+          887
+        ],
+        "subject_crop": [
+          29,
+          38,
+          221,
+          234
+        ],
+        "body_anchor": 136.0,
+        "destination": [
+          14,
+          20,
+          100,
+          102
+        ]
+      },
+      {
+        "source_rect": [
+          665,
+          607,
+          887,
+          887
+        ],
+        "subject_crop": [
+          0,
+          37,
+          222,
+          235
+        ],
+        "body_anchor": 122.0,
+        "destination": [
+          6,
+          19,
+          116,
+          103
+        ]
+      },
+      {
+        "source_rect": [
+          887,
+          607,
+          1109,
+          887
+        ],
+        "subject_crop": [
+          27,
+          39,
+          220,
+          237
+        ],
+        "body_anchor": 136.0,
+        "destination": [
+          13,
+          19,
+          101,
+          103
+        ]
+      },
+      {
+        "source_rect": [
+          1109,
+          607,
+          1330,
+          887
+        ],
+        "subject_crop": [
+          29,
+          38,
+          204,
+          236
+        ],
+        "body_anchor": 120.0,
+        "destination": [
+          18,
+          19,
+          91,
+          103
+        ]
+      },
+      {
+        "source_rect": [
+          1330,
+          607,
+          1552,
+          887
+        ],
+        "subject_crop": [
+          16,
+          38,
+          188,
+          236
+        ],
+        "body_anchor": 109.0,
+        "destination": [
+          19,
+          19,
+          90,
+          103
+        ]
+      },
+      {
+        "source_rect": [
+          1552,
+          607,
+          1774,
+          887
+        ],
+        "subject_crop": [
+          15,
+          37,
+          186,
+          236
+        ],
+        "body_anchor": 107.0,
+        "destination": [
+          19,
+          18,
+          89,
+          104
+        ]
+      }
+    ],
+    "alpha": [
+      0,
+      255
+    ]
+  }
+]
