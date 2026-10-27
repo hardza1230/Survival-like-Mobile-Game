@@ -1,0 +1,150 @@
+{
+  "source": "assets/incoming/power56/icons_source.png",
+  "source_sha256": "60108f456b3e810f9c5c25bb97da94438d41490a476968155924a204cb224007",
+  "path": "assets/art/mobile_ui_789/gear_power56_icons.webp",
+  "sha256": "7d08d8ecb6018857402d160e8e98d164bd9d555ca06f885e17c5b87a88171c1d",
+  "bytes": 183310,
+  "size": [
+    576,
+    384
+  ],
+  "frame": 192,
+  "alpha": [
+    0,
+    255
+  ],
+  "cells": [
+    {
+      "name": "power",
+      "frame": 0,
+      "source_rect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "crop": [
+        73,
+        75,
+        471,
+        469
+      ],
+      "destination": [
+        14,
+        15,
+        164,
+        162
+      ]
+    },
+    {
+      "name": "weave",
+      "frame": 1,
+      "source_rect": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "crop": [
+        58,
+        70,
+        454,
+        480
+      ],
+      "destination": [
+        17,
+        14,
+        158,
+        164
+      ]
+    },
+    {
+      "name": "equipment",
+      "frame": 2,
+      "source_rect": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "crop": [
+        47,
+        70,
+        476,
+        479
+      ],
+      "destination": [
+        14,
+        18,
+        164,
+        156
+      ]
+    },
+    {
+      "name": "merge",
+      "frame": 3,
+      "source_rect": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "crop": [
+        30,
+        94,
+        497,
+        374
+      ],
+      "destination": [
+        14,
+        47,
+        164,
+        98
+      ]
+    },
+    {
+      "name": "forge",
+      "frame": 4,
+      "source_rect": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "crop": [
+        10,
+        46,
+        494,
+        429
+      ],
+      "destination": [
+        14,
+        31,
+        164,
+        130
+      ]
+    },
+    {
+      "name": "talent",
+      "frame": 5,
+      "source_rect": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "crop": [
+        42,
+        46,
+        470,
+        429
+      ],
+      "destination": [
+        14,
+        22,
+        164,
+        147
+      ]
+    }
+  ]
+}

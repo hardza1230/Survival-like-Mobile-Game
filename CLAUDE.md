@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.56, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.57, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.56 — illustrated Power hub
+
+Owner approved docs/design/power_hub concept. Live buildGearPower uses calm plum/cream/mint panels, compact crystal Power summary, real sorted3tips with first highlighted, complete wrapped cost/risk descriptions measured before layout, all pending-action chips wrapping instead of disappearing, portrait2×2/landscape4shortcuts. Six built-in ImageGen icons (crest/Weave/equipment/3matching shields→higher shield/Forge/Talent), source/exact prompt/alpha proof/hash incoming/power56, mechanical pack-power-56.py, menu-lazy576×384/192cells/183,310B/.844MiB atlas art/mobile_ui_789/gear_power56_icons.webp. Reuses existing scenic background with quiet content veil; no new background or flattened UI. Live text/progress/rounded surfaces/hit targets in code, normal navigation/routes/save/cost/sorted gains unchanged (powerTips hash verified). Short phones scroll naturally; min66shortcut/42pending tap heights, no hidden Mail/Rank/Talent/Weave actions. Gain counter+fill only if motion allowed; no full-screen glow or infinite FX. Isolated menu helpers6sizes/empty/missing-art/long-risk/allroutes/huge-values/reduced/stale contract passed; fullcheck/build required. No game screenshots/headless combat. Phone aesthetic/touch review owner pending.
 
 # Latest delivery: v8.0.55 — Mint Impaler character charge sheets
 

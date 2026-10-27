@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.55';
+const GAME_VERSION = '8.0.56';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.56',date:'2026-10-27',title:'A clearer path to Power',items:['The Power hub has a calmer illustrated design with clearer next steps and real Power gains','Six original painted icons bring Weave, Equipment, Merge, Forge and Talents together','Portrait shortcuts use a larger two-column layout; pending rewards remain separate from Power upgrades']},
   {v:'8.0.55',date:'2026-10-27',title:'Mint draws the lance',items:['Impaler charging now animates Mint herself through preparation, moving charge and release sprite sheets','The large floating charge glow is removed; the lance energy stays inside her authored pose','Charge timing, lance damage and projectile behavior stay the same']},
   {v:'8.0.54',date:'2026-10-27',title:'Three companions, three fighting styles',items:['Blood Orange casts ground Flavor Sigils and chooses Comet, Sour Garden, Spicy Bloom or Honey Rescue','Pomelo chains three distinct punches and sends Rind Breaker through the frontline','Lime gains arcing Vaulting Shots and a marked Pin & Pierce follow-up; all three retain their buff Uniques','Forty new original painted effect frames bring the new attacks to life']},
   {v:'8.0.53',date:'2026-10-26',title:'A little life in every room',items:['Sparse dust, drips, embers, snow, leaves and pollen bring each campaign setting to life','Selected background foliage, roots, water and lamps move gently while the battle area stays readable','Ambient motion respects reduced motion, low effects, pause and stage cleanup, with less decoration during bosses']},
@@ -2744,6 +2745,7 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
   }
 }
 const ASSET_SHEETS = {
+  power56_icons:{url:'assets/art/mobile_ui_789/gear_power56_icons.webp',frame:192},
   xp_orbs:{url:'assets/art/exp/xp_orbs.webp',frame:96},   // v7.9.26 ใบ 29 Flavor Drops: 6 แถว = T1–T6 × 6 เฟรม (anim xp_t1…xp_t6 สร้างใน xpOrbAnim)
   p1_skill_edges:{url:'assets/art/p1_feedback/skill_edges.webp',frame:256},
   talent_momo:{url:'assets/art/talents/momo_talents.webp',frame:128},
@@ -10107,48 +10109,72 @@ class Game extends Phaser.Scene {
     try{ if(Save.rankUnpicked&&Save.rankUnpicked()>0)wait.push({k:'perk',icon:'🎁',label:'Rank reward',go:'perks'}); }catch(e){}
     try{ const nb=(Save.gearInboxItems?.()||[]).length; if(nb)wait.push({k:'mail',icon:'📦',label:nb+' in Mail',go:'gearInbox'}); }catch(e){}
     out.sort((x,y)=>y.gain-x.gain); const top=out.slice(0,3); top.wait=wait; return top; }
+  powerHubLayout(tipCount=3,waitCount=0,routeCount=4,heights=[]){
+    const w=this.W,h=this.H,portrait=w<=h,bw=Math.min(w-28,portrait?480:800),x=(w-bw)/2,top=(portrait?82:68)+(this._hdrShift?.()||0),gap=8;
+    const roomy=portrait&&h>=820,summaryH=112,tipH=roomy?80:74,tileH=roomy?84:66,cols=portrait?2:4,waitCols=portrait?2:4;
+    const tipsY=top+summaryH+28,tipHeights=Array.from({length:Math.max(1,tipCount)},(_,i)=>Math.max(tipH,heights[i]||0)),tipYs=[];let at=tipsY;for(const ph of tipHeights){tipYs.push(at);at+=ph+gap;}
+    const tipsBottom=at-gap,waitY=tipsBottom+12,waitRows=Math.ceil(waitCount/waitCols),optionsY=waitY+(waitRows?waitRows*48+8:0)+26,rows=Math.ceil(routeCount/cols),bottom=optionsY+rows*(tileH+gap)-gap+8;
+    return{portrait,bw,x,top,gap,summaryH,tipH,tipHeights,tipYs,tileH,cols,waitCols,tipsY,waitY,optionsY,bottom};
+  }
+  powerHubIcon(kind,x,y,size){
+    const frames={power:0,weave:1,gear:2,merge:3,enh:4,craft:4,tal:5},fallback={power:'lb_star',weave:'temple_life_core',gear:'ic_nav_upgrade',merge:'tile_gear',enh:'tile_craft',craft:'tile_craft',tal:'tile_talents'};
+    let o=null;if(this.textures.exists('power56_icons')&&frames[kind]!=null)o=this.add.image(x,y,'power56_icons',frames[kind]);
+    else if(this.textures.exists(fallback[kind]))o=this.add.image(x,y,fallback[kind]);
+    if(o){o.setScale(size/Math.max(o.width,o.height));this.menu.add(o);}return o;
+  }
   buildGearPower(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Power','screen_gear_power_789','hub');
-    const w=this.W,h=this.H,d=Save.data,portrait=w<=h,bw=Math.min(w-28,440),x=(w-bw)/2,hs=this._hdrShift?this._hdrShift():0,nxt=this.hubNextStep?.();
-    let si=Math.min(d.unlockedStage||0,STAGES.length-1); while(si>0&&!isStageReady(si))si--;
+    const d=Save.data,w=this.W,h=this.H,nxt=this.hubNextStep?.();
+    const tips=this.powerTips(),waiting=tips.wait||[];
+    const rows=[['upgrade','Weave','weave'],['gear','Equipment','gear'],['merge','Merge','merge'],['craft','Forge','craft']].filter(r=>featureOpen(r[0]));
+    const L=this.powerHubLayout(tips.length,waiting.length,rows.length),{bw,x,top,gap,tipH,tileH}=L,F='NunitoUI, sans-serif';
+    const T=(tx,ty,t,sz=12,color='#fff1e7',bold=false,ox=0)=>{const o=this.add.text(tx,ty,t,{fontFamily:F,fontSize:sz+'px',fontStyle:bold?'bold':'normal',color}).setOrigin(ox,.5);this.menu.add(o);return o;};
+    const fit=(o,width,min=11)=>{let fs=parseFloat(o.style.fontSize);while(o.width>width&&fs>min){fs-=.5;o.setFontSize(fs);}if(o.width>width){const original=o.text;let text=original;while(text.length>1&&o.width>width){text=text.slice(0,-1);o.setText(text+'…');}}return o;};
+    const panel=(px,py,pw,ph,accent=false)=>{const g=this.add.graphics();g.fillStyle(accent?0x423039:0x261e30,.97).fillRoundedRect(px,py,pw,ph,16).lineStyle(accent?1.8:1,accent?0xf4d9a1:0x6d536d,accent?.95:.8).strokeRoundedRect(px,py,pw,ph,16);this.menu.add(g);return g;};
+    const metrics=tips.map(t=>{const gain=String(Math.round(t.gain||0)),gainW=Math.max(54,Math.min(bw*.24,gain.length*10+20)),room=bw-60-gainW-21,title=this.add.text(0,0,t.title,{fontFamily:F,fontSize:'13px',fontStyle:'bold',wordWrap:{width:room}}),probe=this.add.text(0,0,t.sub,{fontFamily:F,fontSize:'11px',wordWrap:{width:room}}),descY=16+Math.ceil(title.height),height=descY+Math.ceil(probe.height)+10;title.destroy();probe.destroy();return{gain,gainW,room,height,descY};});
+    Object.assign(L,this.powerHubLayout(tips.length,waiting.length,rows.length,metrics.map(m=>m.height)));
+    // Keep existing scenic painting; the quiet content veil stays fixed during scrolling.
+    const veil=this.add.rectangle(0,80,w,Math.max(0,h-80),0x1b1424,.22).setOrigin(0);veil._menuBackdrop=true;veil._menuFixedY=80;this.menu.add(veil);
+    let si=Math.min(d.unlockedStage||0,STAGES.length-1);while(si>0&&!isStageReady(si))si--;
     const ps=this.powerStatus(si),st=STAGES[si]||STAGES[0],code=st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):('C'+(Math.floor(si/5)+1)+'-'+(si%5+1));
-    const T=(tx,ty,t,sz,c,st2,ox=0,oy=.5)=>{ const q=this.add.text(tx,ty,t,{fontFamily:'sans-serif',fontStyle:st2||'normal',fontSize:sz+'px',color:c||'#fff'}).setOrigin(ox,oy); this.menu.add(q); return q; };
-    // 1) Power vs แนะนำ
-    let y=(portrait?92:70)+hs; const ph=112,g=this.add.graphics(); g.fillStyle(0x1f1729,.96).fillRoundedRect(x,y,bw,ph,16).lineStyle(2,ps.color,.95).strokeRoundedRect(x,y,bw,ph,16); this.menu.add(g);
-    T(x+16,y+20,'⚡ Your Power',12,'#cfc2d5','bold'); const cid=d.character||'momo',prev=this._pwShown&&this._pwShown.cid===cid?this._pwShown.v:ps.cur,pt=T(x+16,y+50,String(prev),30,'#ffffff','bold'); this._pwShown={cid,v:ps.cur};
-    T(x+bw-16,y+20,'Next: '+code+' '+(st.name||''),11,'#cfc2d5','bold',1); T(x+bw-16,y+50,'Recommended '+ps.rec,15,'#ffe08a','bold',1);
-    const bx=x+16,bwid=bw-32,by=y+80,bar=this.add.graphics(),fr=Math.min(1,ps.ratio),fr0=Math.min(1,prev/Math.max(1,ps.rec)),drawBar=f=>{ bar.clear(); bar.fillStyle(0x120d18,1).fillRoundedRect(bx,by,bwid,12,6); bar.fillStyle(ps.color,1).fillRoundedRect(bx,by,Math.max(12,bwid*f),12,6); }; drawBar(fr0); this.menu.add(bar);
-    // v8.0.31 เจ้าของ (C): Power เพิ่มขึ้น → ตัวเลขวิ่ง + หลอดเติม + ป้าย +N เด้ง
-    if(ps.cur>prev&&this.tweens){ const gain=ps.cur-prev,o={v:0}; this.tweens.add({targets:o,v:1,duration:900,delay:250,ease:'Cubic.out',onUpdate:()=>{ if(!pt.active)return; pt.setText(String(Math.round(prev+gain*o.v)));const tick=Math.floor(o.v*8);if(tick!==(o.tick??-1)){o.tick=tick;Sfx.menuCue?.('power_tick',.1,.08);} drawBar(fr0+(fr-fr0)*o.v); },onComplete:()=>{ if(pt.active){ pt.setText(String(ps.cur)); this.tweens.add({targets:pt,scale:1.18,duration:120,yoyo:true}); } }});
-      pt.setText(String(ps.cur)); const fw=pt.width; pt.setText(String(prev)); const pop=T(x+16+fw+10,y+44,'+'+gain+' ⚡',16,'#8dffb0','bold'); pop.setAlpha(0); this.tweens.add({targets:pop,alpha:1,y:y+36,duration:300,delay:250,ease:'Back.out'}); this.tweens.add({targets:pop,alpha:0,y:y+26,duration:500,delay:1900}); try{ Sfx.menuCue?.('power_up',.4)||Sfx.progress&&Sfx.progress('core'); }catch(e){} }
-    else pt.setText(String(ps.cur));
-    T(x+16,y+100,ps.label,11,ps.hex,'bold'); T(x+bw-16,y+100,ps.cur>=ps.rec?'You are ready!':(ps.rec-ps.cur)+' Power to go',11,'#cfc2d5','normal',1);
-    // 2) 3 ทางเพิ่มพลังที่คุ้มสุด
-    y+=ph+16; T(x+2,y,'BEST WAYS TO GET STRONGER',11,'#ffdc91','bold'); y+=14;
-    const tips=this.powerTips(),cardH=Math.min(70,Math.max(50,(h-y-120)/3-8));
-    if(!tips.length){ const eg=this.add.graphics(); eg.fillStyle(0x221a2b,.95).fillRoundedRect(x,y,bw,cardH,14); this.menu.add(eg); T(x+bw/2,y+cardH/2,'Nothing gives Power right now — replay a stage for Sugar and loot!',12,'#cfc2d5','normal',.5); y+=cardH+8; }
-    tips.forEach((t,i)=>{ const cy=y+i*(cardH+8),cg=this.add.graphics(); cg.fillStyle(0x2a2036,.97).fillRoundedRect(x,cy,bw,cardH,14).lineStyle(1.8,i===0?0xffd166:0x6a5b86,1).strokeRoundedRect(x,cy,bw,cardH,14); cg.fillStyle(i===0?0xffd166:0x8f7de8,1).fillRoundedRect(x,cy,6,cardH,3); this.menu.add(cg);
-      T(x+32,cy+cardH/2,t.icon,22,'#fff','normal',.5);
-      const gainW=t.gain>0?70:24; const nm=T(x+56,cy+cardH*.36,t.title,14,'#ffffff','bold'); const room=bw-56-gainW-10; if(nm.width>room)nm.setScale(room/nm.width);
-      const sb=T(x+56,cy+cardH*.68,t.sub,10,'#c9bdd2'); if(sb.width>room)sb.setScale(room/sb.width);
-      if(t.gain>0)T(x+bw-14,cy+cardH/2,'+'+Math.round(t.gain),17,'#8dffb0','bold',1); else T(x+bw-14,cy+cardH/2,'›',20,'#cbb8e0','bold',1);
-      this._zone(x,cy,bw,cardH,()=>{ Sfx.select&&Sfx.select(); if(t.uid)this.gearSelectedUid=t.uid; this.menuScreen=t.go; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='tip_'+t.k; });
-    y+=Math.max(1,tips.length)*(cardH+8)+8;
-    // แถบ "รออยู่": ของที่ไม่ใช่ Power (Mail / Rank reward / Talent สาย Build / เลื่อนยศ Weave)
-    if((tips.wait||[]).length){ let wx=x; T(x+2,y+6,'WAITING',9,'#a89cb6','bold'); wx=x+58;
-      for(const q of tips.wait){ const tw=this.add.text(0,0,q.icon+' '+q.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffffff'}),pw=tw.width+18; if(wx+pw>x+bw){ tw.destroy(); break; } const pg=this.add.graphics(); pg.fillStyle(0x3a2f50,1).fillRoundedRect(wx,y-6,pw,24,12).lineStyle(1.4,0x8f7de8,1).strokeRoundedRect(wx,y-6,pw,24,12); this.menu.add(pg); tw.setPosition(wx+9,y+6).setOrigin(0,.5); this.menu.add(tw); this.drawBadgeDot?.(this.menu,wx+pw-4,y-4);
-        this._zone(wx,y-8,pw,28,()=>{ Sfx.select&&Sfx.select(); this.menuScreen=q.go; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='wait_'+q.k; wx+=pw+6; }
-      y+=30; }
-    // 3) ปุ่ม Weave / Equipment / Forge
-    const rows=[['upgrade','Weave','temple_life_core','✨'],['gear','Equipment','ic_nav_upgrade','🎒'],['merge','Merge','','🔗'],['craft','Forge','tile_craft','🧪']].filter(r=>featureOpen(r[0])),n=rows.length,gap=8,tw=(bw-gap*(n-1))/n,th=Math.min(92,Math.max(60,h-y-12));
-    rows.forEach(([target,title,ik,em],i)=>{ const tx=x+i*(tw+gap),key='mui_gear_card_'+target,tg=this.add.graphics(); tg.fillStyle(0x241a30,.97).fillRoundedRect(tx,y,tw,th,14).lineStyle(2,0x8f7de8,.9).strokeRoundedRect(tx,y,tw,th,14); this.menu.add(tg);
-      const isz=Math.min(40,th*.45); const ic=this.textures.exists(ik)?this.add.image(tx+tw/2,y+th*.4,ik):this.add.text(tx+tw/2,y+th*.4,em,{fontSize:Math.round(isz*.8)+'px'}).setOrigin(.5); if(ic.setDisplaySize&&ic.type==='Image')ic.setScale(isz/Math.max(ic.width,ic.height)); this.menu.add(ic);
-      T(tx+tw/2,y+th*.8,title,13,'#fff5e6','bold',.5);
-      this._zone(tx,y,tw,th,()=>{if(target==='merge'){this._mergeBack='gLoadout';this._mergeMain=null;}this.menuScreen=target;this.buildMenuScreen();}); this.tapZones[this.tapZones.length-1].tag=target;
-      if(this.hasTargetBadge(target))this.drawBadgeDot(this.menu,tx+tw-10,y+10);
-      if(this.hasClaimableTarget(target))this.hubGuideTag?.({x:tx,y,w:tw,h:th},'Reward ready'); else if(nxt&&nxt.group==='gLoadout'&&nxt.target===target)this.hubGuideTag?.({x:tx,y,w:tw,h:th},nxt.tag); });
+    panel(x,top,bw,L.summaryH);this.powerHubIcon('power',x+34,top+43,52);
+    T(x+68,top+17,'Your Power',11,'#d9cadb',true);
+    const cid=d.character||'momo',prev=this._pwShown&&this._pwShown.cid===cid?this._pwShown.v:ps.cur;this._pwShown={cid,v:ps.cur};
+    const valueWidth=bw*.51-70,pt=fit(T(x+68,top+44,String(ps.cur),28,'#fff3d7',true),valueWidth,18),numberFont=parseFloat(pt.style.fontSize);
+    fit(T(x+bw-16,top+18,'Next stage '+code,11,'#d9cadb',true,1),bw*.45);
+    fit(T(x+bw-16,top+42,'Recommended '+ps.rec,13,'#f5ddb6',true,1),bw*.44,11);
+    const bx=x+16,bwid=bw-32,by=top+79,bar=this.add.graphics(),fr=Math.max(0,Math.min(1,ps.ratio)),fr0=Math.max(0,Math.min(1,prev/Math.max(1,ps.rec)));
+    const drawBar=f=>{bar.clear().fillStyle(0x17121d,1).fillRoundedRect(bx,by,bwid,9,4);if(f>0)bar.fillStyle(0x85d5b2,1).fillRoundedRect(bx,by,Math.max(3,bwid*f),9,4);};this.menu.add(bar);drawBar(fr);
+    fit(T(x+16,top+101,ps.label,11,ps.hex,true),bw*.4);
+    fit(T(x+bw-16,top+101,ps.cur>=ps.rec?'Ready for the next stage':(ps.rec-ps.cur)+' Power to go',11,'#d4c4d7',false,1),bw*.53);
+    if(ps.cur>prev){const gain=ps.cur-prev,pop=fit(T(x+68,top+65,'+'+gain+' ⚡',11,'#9ceac2',true),valueWidth,10),motion=this.hubMotionAllowed?.()!==false;
+      if(motion&&this.tweens){const o={v:0};pt.setText(String(prev));drawBar(fr0);this.tweens.add({targets:o,v:1,duration:700,ease:'Cubic.out',onUpdate:()=>{if(!pt.active||this.state!=='menu'||this.menuScreen!=='gLoadout')return;pt.setFontSize(numberFont);fit(pt.setText(String(Math.round(prev+gain*o.v))),valueWidth,18);drawBar(fr0+(fr-fr0)*o.v);},onComplete:()=>{if(pt.active){pt.setText(String(ps.cur));drawBar(fr);}}});this.tweens.add({targets:pop,alpha:0,duration:300,delay:1800});}
+      Sfx.menuCue?.('power_up',.35);
+    }
+    T(x+2,L.tipsY-15,'BEST NEXT STEPS',11,'#e9d6be',true);
+    if(!tips.length){panel(x,L.tipsY,bw,tipH);const o=T(x+16,L.tipsY+tipH/2,'No Power upgrades available. Replay a stage for Sugar and gear.',12,'#d9cadb');o.setWordWrapWidth(bw-32);}
+    tips.forEach((t,i)=>{const cy=L.tipYs[i],rowH=L.tipHeights[i],{gain,gainW,room,descY}=metrics[i],tx=x+60;
+      panel(x,cy,bw,rowH,i===0);this.powerHubIcon(t.k==='weave'?'weave':t.k,x+29,cy+rowH/2,43);
+      const title=T(tx,cy+10,t.title,13,'#fff3e6',true);title.setWordWrapWidth(room);title.setOrigin(0,0);
+      // Measure complete cost/risk text first; long descriptions expand the row and scroll naturally.
+      const sub=T(tx,cy+descY,t.sub,11,'#cfc1d4');sub.setWordWrapWidth(room);sub.setOrigin(0,0);
+      fit(T(x+bw-27,cy+rowH/2,t.gain>0?'+'+gain:'',17,'#9ceac2',true,1),gainW-10,13);T(x+bw-12,cy+rowH/2,'›',21,'#ceb6cc',false,1);
+      this._zone(x,cy,bw,rowH,()=>{Sfx.select?.();if(t.uid)this.gearSelectedUid=t.uid;this.menuScreen=t.go;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='tip_'+t.k;
+    });
+    waiting.forEach((q,i)=>{const cw=(bw-gap*(L.waitCols-1))/L.waitCols,cx=x+(i%L.waitCols)*(cw+gap),cy=L.waitY+Math.floor(i/L.waitCols)*48;
+      panel(cx,cy,cw,42);fit(T(cx+10,cy+21,q.label,11,'#e9d6be',true),cw-31);T(cx+cw-10,cy+21,'›',18,'#d6bad3',false,1);
+      this._zone(cx,cy,cw,42,()=>{Sfx.select?.();this.menuScreen=q.go;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='wait_'+q.k;
+    });
+    T(x+2,L.optionsY-15,'ALL POWER OPTIONS',11,'#e9d6be',true);
+    rows.forEach(([target,title,kind],i)=>{const tw=(bw-gap*(L.cols-1))/L.cols,tx=x+(i%L.cols)*(tw+gap),ty=L.optionsY+Math.floor(i/L.cols)*(tileH+gap),size=Math.min(64,tileH-8,tw*.44);
+      panel(tx,ty,tw,tileH);this.powerHubIcon(kind,tx+size/2+5,ty+tileH/2,size);fit(T(tx+size+5,ty+tileH/2,title,13,'#fff1e7',true),tw-size-23,11);T(tx+tw-10,ty+tileH/2,'›',19,'#ceb6cc',false,1);
+      this._zone(tx,ty,tw,tileH,()=>{if(target==='merge'){this._mergeBack='gLoadout';this._mergeMain=null;}this.menuScreen=target;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag=target;
+      if(this.hasTargetBadge(target))this.drawBadgeDot(this.menu,tx+tw-9,ty+9);
+      if(this.hasClaimableTarget(target))this.drawBadgeDot(this.menu,tx+tw-9,ty+9);else if(nxt&&nxt.group==='gLoadout'&&nxt.target===target){const mark=this.add.graphics();mark.lineStyle(1.5,0xf4d9a1,.85).strokeRoundedRect(tx+2,ty+2,tw-4,tileH-4,14);this.menu.add(mark);}
+    });
     this.menu.setVisible(true);
   }
+
   // v8.0.32 เจ้าของ: 🔗 Merge แบบ Archero — หลัก + 2 ชิ้นช่อง/ระดับเดียวกัน → ระดับถัดไป · เลือกย้าย mod 1 อัน
   mergeMains(){ return (Save.data.gearItems||[]).filter(x=>Save.mergeCanMain(x)&&Save.mergeFodder(x).length>=2).sort((a,b)=>((Save.isGearEquipped(b.uid)?1:0)-(Save.isGearEquipped(a.uid)?1:0))||((b.itemLevel||1)-(a.itemLevel||1))); }
   buildMerge(){
