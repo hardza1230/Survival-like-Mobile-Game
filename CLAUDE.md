@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.54, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.55, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.54 — full companion arsenals +40ImageGen frames
+
+Blood Orange live normal becomes captured-ground delayed Flavor Sigil (no orb normal), AI Comet/Garden/Bloom/Honey, one large spell lock; Perfect Blend strengthens Sigils/spells and defers one final wave until active big spell ends. Pomelo3-hit Peel Combo (.85/1/1.45, third radial) +forward Rind Breaker, retains Slam/Roll/growth. Lime arcing Vaulting Shot bypasses screens +spawn-safe Pin&Pierce, retains arrows/Volley/Trap/Focus. Immortal single buddy/mission-boss priority and saved IDs/talent points/Recipe remain; descriptors converted. Owned bounded sim-time12spell queue, interrupted-event victim cursor, stale/death/path/epoch/clear, serial windup/release; no new physics bodies/EXP/mob spawns. Existing48shots/10zones/8FX/4painted cap, quiet flower zones/.18, essential Low Sigil still, reduced/fallback; old orb/brew helpers compatibility-only. Three built-in ImageGen donors concurrently generated20mage+8Pomelo+12Lime frames. Runtime3lossless128px-cell WebPs531,640bytes/2.5MiB hero-only, Yuzu299MB<300cap; source/exact prompts/matte proof incoming/yuzu54, hashes/clips/crops art/yuzu54/MANIFEST, mechanical pack-yuzu-54.py. Existing ElevenLabs reused. docs/YUZU_ARSENAL.md. Component timing/AI/ownership/overlay/geometry/mark/combo/art hash tests plus fullcheck/build required, no combat simulation/screenshots. New mechanics change balance; phone pacing/strength/FPS owner QA pending.
 
 # Latest delivery: v8.0.53 — subtle stage life
 

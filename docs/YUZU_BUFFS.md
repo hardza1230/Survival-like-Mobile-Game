@@ -1,5 +1,7 @@
 # Yuzu: always-ready companions · v8.0.50
 
+Current arsenal v8.0.54: [YUZU_ARSENAL.md](YUZU_ARSENAL.md) supersedes Blood Orange orb-normal details with ground Sigils and new flavor spells, adds Pomelo/Lime skills and retains immortal companions/buff Uniques.
+
 Visual refinement v8.0.51: [YUZU_UNIQUE_SPECTACLE.md](YUZU_UNIQUE_SPECTACLE.md) adds ImageGen opening/finishing clips, active accents, small impact/trails and aligned existing ElevenLabs cues. Mechanics below remain unchanged.
 
 Approved direction: empower the single existing companion with a timed Unique. No extra minions. This supersedes companion HP, down/revival and the three old Unique mechanics in the original companion plan.

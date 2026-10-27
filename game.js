@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.53';
+const GAME_VERSION = '8.0.54';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.54',date:'2026-10-27',title:'Three companions, three fighting styles',items:['Blood Orange casts ground Flavor Sigils and chooses Comet, Sour Garden, Spicy Bloom or Honey Rescue','Pomelo chains three distinct punches and sends Rind Breaker through the frontline','Lime gains arcing Vaulting Shots and a marked Pin & Pierce follow-up; all three retain their buff Uniques','Forty new original painted effect frames bring the new attacks to life']},
   {v:'8.0.53',date:'2026-10-26',title:'A little life in every room',items:['Sparse dust, drips, embers, snow, leaves and pollen bring each campaign setting to life','Selected background foliage, roots, water and lamps move gently while the battle area stays readable','Ambient motion respects reduced motion, low effects, pause and stage cleanup, with less decoration during bosses']},
   {v:'8.0.52',date:'2026-10-26',title:'Every step has weight',items:['Heroes settle naturally after movement and Dash; charged attacks hold their preparation before a distinct release','Sniper and Impaler gain heavier recoil while rapid attacks keep their animation flowing','Heavy, swift and ranged enemies move with distinct cadence and react directionally to hits without hiding attack warnings']},
   {v:'8.0.51',date:'2026-10-26',title:'Citrus power, painted in motion',items:['Golden peel armor, a luminous leaf bow and a three-flavor spell wreath announce companion buffs','Each Unique builds toward its own painted finisher: Pomelo’s ground rupture, Lime’s piercing light arrow and Blood Orange’s citrus bloom','Sharper hit accents and existing ElevenLabs cues follow real releases and impacts; damage and cooldowns stay the same']},
@@ -2823,6 +2824,9 @@ const ASSET_SHEETS = {
   yz_51_pomelo:{url:'assets/art/yuzu51/yz_51_pomelo.webp',frame:192},
   yz_51_lime:{url:'assets/art/yuzu51/yz_51_lime.webp',frame:192},
   yz_51_bloodorange:{url:'assets/art/yuzu51/yz_51_bloodorange.webp',frame:192},
+  yz_54_pomelo:{url:'assets/art/yuzu54/yz_54_pomelo.webp',frame:128},
+  yz_54_lime:{url:'assets/art/yuzu54/yz_54_lime.webp',frame:128},
+  yz_54_bloodorange:{url:'assets/art/yuzu54/yz_54_bloodorange.webp',frame:128},
   yz_48_pomelo:{url:'assets/art/yuzu48/yz_48_pomelo.webp',frame:256},
   yz_48_lime:{url:'assets/art/yuzu48/yz_48_lime.webp',frame:256},
   yz_48_bloodorange:{url:'assets/art/yuzu48/yz_48_bloodorange.webp',frame:256},
@@ -4410,12 +4414,12 @@ const SIGNATURE_WEAPONS = {
 const YUZU_EVOLUTIONS={
   citrusGuardian:{name:'Pomelo Colossus',desc:'Pulp Slam gains 25% power and a wider aftershock.'},
   zestSwarm:{name:'Lime Windranger',desc:'Lime fires twin piercing arrows with every basic attack.'},
-  juiceWorkshop:{name:'Blood Orange Archwitch',desc:'Brews cycle faster and homing orbs hit harder.'}};
+  juiceWorkshop:{name:'Blood Orange Archwitch',desc:'Flavor spells recharge 20% sooner and ground Sigils hit harder.'}};
 const YUZU_UNIQUES={
   citrusGuardian:{name:'Golden Peel Armor',emoji:'🛡️',cd:13,color:0xffd77b,desc:'For 6s, gain a shield while Pomelo uses stronger, wider sweeps and pushes crowds away. Ends with a heavy slam.',tiers:{2:'Stronger shield and impact',3:'Stronger shield and impact',4:'Strongest shield and impact'}},
   zestSwarm:{name:"Hunter's Focus",emoji:'🏹',cd:13,color:0xafe57a,desc:'For 6s, Lime fires piercing arrow bursts that build up to 12 focus marks. Ends with a heavy piercing arrow; marks carry to new targets.',tiers:{2:'Stronger focus burst and finisher',3:'Stronger focus burst and finisher',4:'Strongest focus burst and finisher'}},
-  juiceWorkshop:{name:'Perfect Blend',emoji:'🔮',cd:13,color:0xdf87a7,desc:'For 7s, gain a shield; stronger orbs leave 3s Sour marks and burst into fire after their final bounce. Ends with a flavor wave.',tiers:{2:'Stronger blend and finisher',3:'Stronger blend and finisher',4:'Strongest blend and finisher'}}};
-const BASIC_EVO_DESC={yuzling:'Evolve your companion: Pomelo aftershocks, twin Lime arrows, or stronger Blood Orange brews',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Evolves the chosen Taro path: longer chains, stronger priority strikes or wider movement nova',frost:'Evolves your selected path: Hailstorm Arsenal, Absolute Zero or Heaven Piercer; earlier upgrades remain active',meteor:'Evolves the chosen Chocolate path: Overdrive flurry, Colossus aftershock or a Phantom follow-up',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
+  juiceWorkshop:{name:'Perfect Blend',emoji:'🔮',cd:13,color:0xdf87a7,desc:'For 7s, gain a shield; stronger ground Sigils leave Sour marks and a fire burst. Comet leaves Sour ground and flavor spells grow stronger. Ends with a flavor wave.',tiers:{2:'Stronger blend and finisher',3:'Stronger blend and finisher',4:'Strongest blend and finisher'}}};
+const BASIC_EVO_DESC={yuzling:'Evolve your companion: Pomelo aftershocks, twin Lime arrows, or stronger Blood Orange sigils and spells',sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Evolves the chosen Taro path: longer chains, stronger priority strikes or wider movement nova',frost:'Evolves your selected path: Hailstorm Arsenal, Absolute Zero or Heaven Piercer; earlier upgrades remain active',meteor:'Evolves the chosen Chocolate path: Overdrive flurry, Colossus aftershock or a Phantom follow-up',mirror:'An extra mirror beam + longer, wider, harder-hitting shots',rocket:'Bigger blasts and a denser lock-on barrage'};
 const MINT_EVOLUTIONS={
   barrage:{name:'Hailstorm Arsenal',desc:'Every 4s, queue 6 compact lances at 70% power, 90ms apart. Normal volley stays capped at 2; excess lances still strengthen shards.'},
   glacier:{name:'Absolute Zero',desc:'Opening Shatter radius +65%; chain gains 1 step (max 3). Still at most 6 bursts per reaction; shard investment strengthens the frost bloom.'},
@@ -4555,7 +4559,7 @@ function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.r
 
 // 🛤 Build Path (v4.94) — เลเวล 5 เลือก 1 ใน 3 สาย · ปิดอีก 2 สาย · สายเปลี่ยน "รูปแบบ" ดาเมจ ไม่ได้บวกเพิ่มรวม
 const BASIC_PATHS={
-  yuzu:[{"id":"zestSwarm","iconKey":"ic_path_zestSwarm","name":"Lime","emoji":"🏹","base":{"dmg":1},"desc":"One leaf-hooded archer keeps its distance, fires piercing seed volleys and leaves sour traps. The first arrow to each enemy is a critical hit; distant targets take more damage.","upgrades":[{"id":"p_pulp","name":"Swift Ranger","emoji":"✦","max":3,"fx":{},"headline":"Lime moves 10% faster and Volley gains 10% base power per rank.","desc":"Lime moves 10% faster and Volley gains 10% base power per rank."},{"id":"p_feast","name":"Quick Draw","emoji":"✦","max":3,"fx":{},"headline":"Lime kills cut its basic attack cooldown by 0.3s per rank.","desc":"Lime kills cut its basic attack cooldown by 0.3s per rank."},{"id":"y_strongarm","name":"Ready Quiver","emoji":"✦","max":3,"fx":{},"headline":"Zest Volley recharges 10% sooner per rank.","desc":"Zest Volley recharges 10% sooner per rank."},{"id":"y_bigsplat","name":"Sour Snare","emoji":"✦","max":3,"fx":{},"headline":"Traps gain 15px radius, 0.25s root duration and 30% base power per rank.","desc":"Traps gain 15px radius, 0.25s root duration and 30% base power per rank."},{"id":"y_double","name":"Wide Volley","emoji":"✦","max":2,"fx":{},"headline":"Zest Volley fires 2 more arrows per rank.","desc":"Zest Volley fires 2 more arrows per rank."}]},{"id":"citrusGuardian","iconKey":"ic_path_citrusGuardian","name":"Pomelo","emoji":"🍊","base":{"dmg":1.2},"desc":"One sturdy Pomelo sweeps foes, draws nearby enemies away and leaps into groups. Its own kills grow it three stages; full-grown Pomelo can roll through enemies.","upgrades":[{"id":"p_heavyPeel","name":"Pulp Power","emoji":"✦","max":3,"fx":{},"headline":"Pulp Slam gains 15% power and sweeps gain 10% power per rank.","desc":"Pulp Slam gains 15% power and sweeps gain 10% power per rank."},{"id":"p_bodyguard","name":"Close Guard","emoji":"✦","max":3,"fx":{},"headline":"Yuzu takes 3% less damage per rank while within 170px of Pomelo.","desc":"Yuzu takes 3% less damage per rank while within 170px of Pomelo."},{"id":"y_fastripe","name":"Sun Kissed","emoji":"✦","max":3,"fx":{},"headline":"Pomelo needs 20% fewer own kills per rank to grow.","desc":"Pomelo needs 20% fewer own kills per rank to grow."},{"id":"y_keepripe","name":"Golden Reach","emoji":"✦","max":3,"fx":{},"headline":"Pomelo sweeps gain 8px radius per rank. Growth is never lost.","desc":"Pomelo sweeps gain 8px radius per rank. Growth is never lost."},{"id":"y_giantslam","name":"Wide Slam","emoji":"✦","max":3,"fx":{},"headline":"Pulp Slam radius grows 20% per rank.","desc":"Pulp Slam radius grows 20% per rank."}]},{"id":"juiceWorkshop","iconKey":"ic_path_juiceWorkshop","name":"Blood Orange","emoji":"🔮","base":{"dmg":1},"desc":"One citrus witch fires homing orbs that bounce twice. Brews cycle Sweet (heal/shield), Sour (acid and vulnerability), Spicy (piercing fire). Her aroma slows foes near Yuzu.","upgrades":[{"id":"p_sourMixer","name":"Potent Brew","emoji":"✦","max":3,"fx":{},"headline":"Sour vulnerability gains 4 percentage points and Spicy gains 20% base power per rank.","desc":"Sour vulnerability gains 4 percentage points and Spicy gains 20% base power per rank."},{"id":"p_sweetHelper","name":"Quick Stir","emoji":"✦","max":3,"fx":{},"headline":"Flavor Brew recharges 10% sooner per rank.","desc":"Flavor Brew recharges 10% sooner per rank."},{"id":"y_seedluck","name":"Sweet Care","emoji":"✦","max":3,"fx":{},"headline":"Sweet heals 1% more max HP and shields 2% more max HP per rank.","desc":"Sweet heals 1% more max HP and shields 2% more max HP per rank."},{"id":"y_longroot","name":"Steeped Flavor","emoji":"✦","max":3,"fx":{},"headline":"Sour patches last 1s longer per rank.","desc":"Sour patches last 1s longer per rank."},{"id":"y_elder","name":"Aroma Garden","emoji":"✦","max":3,"fx":{},"headline":"Aroma radius grows 30px and Sour radius grows 15px per rank.","desc":"Aroma radius grows 30px and Sour radius grows 15px per rank."}]}],
+  yuzu:[{"id":"zestSwarm","iconKey":"ic_path_zestSwarm","name":"Lime","emoji":"🏹","base":{"dmg":1},"desc":"Lime fires precise seed arrows, piercing volleys, arcing Vaulting Shots and Pin & Pierce against priority enemies. Sour Trap protects its retreat.","upgrades":[{"id":"p_pulp","name":"Swift Ranger","emoji":"✦","max":3,"fx":{},"headline":"Lime moves 10% faster and Volley gains 10% base power per rank.","desc":"Lime moves 10% faster and Volley gains 10% base power per rank."},{"id":"p_feast","name":"Quick Draw","emoji":"✦","max":3,"fx":{},"headline":"Lime kills cut its basic attack cooldown by 0.3s per rank.","desc":"Lime kills cut its basic attack cooldown by 0.3s per rank."},{"id":"y_strongarm","name":"Ready Quiver","emoji":"✦","max":3,"fx":{},"headline":"Zest Volley recharges 10% sooner per rank.","desc":"Zest Volley recharges 10% sooner per rank."},{"id":"y_bigsplat","name":"Sour Snare","emoji":"✦","max":3,"fx":{},"headline":"Traps gain 15px radius, 0.25s root duration and 30% base power per rank.","desc":"Traps gain 15px radius, 0.25s root duration and 30% base power per rank."},{"id":"y_double","name":"Wide Volley","emoji":"✦","max":2,"fx":{},"headline":"Zest Volley fires 2 more arrows per rank.","desc":"Zest Volley fires 2 more arrows per rank."}]},{"id":"citrusGuardian","iconKey":"ic_path_citrusGuardian","name":"Pomelo","emoji":"🍊","base":{"dmg":1.2},"desc":"Pomelo fights with a three-hit Peel Combo, Pulp Slam and a forward Rind Breaker. Full growth unlocks Rolling Pomelo.","upgrades":[{"id":"p_heavyPeel","name":"Pulp Power","emoji":"✦","max":3,"fx":{},"headline":"Pulp Slam gains 15% power and sweeps gain 10% power per rank.","desc":"Pulp Slam gains 15% power and sweeps gain 10% power per rank."},{"id":"p_bodyguard","name":"Close Guard","emoji":"✦","max":3,"fx":{},"headline":"Yuzu takes 3% less damage per rank while within 170px of Pomelo.","desc":"Yuzu takes 3% less damage per rank while within 170px of Pomelo."},{"id":"y_fastripe","name":"Sun Kissed","emoji":"✦","max":3,"fx":{},"headline":"Pomelo needs 20% fewer own kills per rank to grow.","desc":"Pomelo needs 20% fewer own kills per rank to grow."},{"id":"y_keepripe","name":"Golden Reach","emoji":"✦","max":3,"fx":{},"headline":"Pomelo sweeps gain 8px radius per rank. Growth is never lost.","desc":"Pomelo sweeps gain 8px radius per rank. Growth is never lost."},{"id":"y_giantslam","name":"Wide Slam","emoji":"✦","max":3,"fx":{},"headline":"Pulp Slam radius grows 20% per rank.","desc":"Pulp Slam radius grows 20% per rank."}]},{"id":"juiceWorkshop","iconKey":"ic_path_juiceWorkshop","name":"Blood Orange","emoji":"🔮","base":{"dmg":1},"desc":"Blood Orange casts delayed ground Flavor Sigils, Crimson Comet, Sour Garden and Spicy Bloom. Honey Rescue protects an injured Yuzu.","upgrades":[{"id":"p_sourMixer","name":"Acid Notes","emoji":"✦","max":3,"fx":{},"headline":"Stronger Comet, Sour damage and vulnerability per rank.","desc":"Stronger Comet, Sour damage and vulnerability per rank."},{"id":"p_sweetHelper","name":"Spell Rhythm","emoji":"✦","max":3,"fx":{},"headline":"Flavor spells recharge 10% sooner per rank.","desc":"Flavor spells recharge 10% sooner per rank."},{"id":"y_seedluck","name":"Honey Alchemy","emoji":"✦","max":3,"fx":{},"headline":"Honey Rescue heals 1% more max HP and shields 2% more per rank.","desc":"Honey Rescue heals 1% more max HP and shields 2% more per rank."},{"id":"y_longroot","name":"Steeped Flavor","emoji":"✦","max":3,"fx":{},"headline":"Sour Garden patches last 1s longer per rank.","desc":"Sour Garden patches last 1s longer per rank."},{"id":"y_elder","name":"Bloom Reach","emoji":"✦","max":3,"fx":{},"headline":"Aroma grows 30px, Sigils 5px, Comet 10px and Garden 8px per rank.","desc":"Aroma grows 30px, Sigils 5px, Comet 10px and Garden 8px per rank."}],"headline":"Ground sigils and grand flavor spells"}],
   momo:[
     {id:'sniper',iconKey:'ic_path_sniper',name:'Sniper Build',emoji:'🎯',desc:'Fire one big charged seed instead of many small ones. It charges by itself and hits ×3.84 as hard. A full charge goes through enemies. Dashing or getting hit fires it early, weaker.',
       upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,headline:'Chance for ×2.5 hit',desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
@@ -16193,11 +16197,11 @@ class Game extends Phaser.Scene {
   clearYuzuSkillFx(){for(const q of this._yzShow||[])q.spr?.destroy();this._yzShow=[];this._yzShowFlavor=0;}
   yuzuSkillFx(kind,x,y,size,angle=0,opt={}){
     const settings=typeof Save==='undefined'?{}:Save.data?.settings||{};
-    if(settings.vfx===0||this.character!=='yuzu')return null;
+    if(settings.vfx===0&&!opt.essential||this.character!=='yuzu')return null;
     const key=opt.key||'yz_49_'+kind;if(!this.textures.exists(key))return null;
     const L=this._yzShow||(this._yzShow=[]);if(L.length>=4){let i=opt.important?L.findIndex(q=>!q.important):-1;if(i<0&&opt.finisher)i=0;if(i<0)return null;L[i].spr.destroy();L.splice(i,1);}
     if(!this._yzShowHook&&this.events?.once){this._yzShowHook=true;this.events.once('shutdown',()=>{this.clearYuzuSkillFx();this._yzShowHook=false;});}
-    const red=this.hubMotionAllowed?.()===false,cone=kind==='volley'||kind==='spicy',life=red?Math.min(.35,opt.life||.55):opt.life||.55,start=opt.start||0,hold=Number.isInteger(opt.hold)?opt.hold:null;
+    const red=this.hubMotionAllowed?.()===false||settings.vfx===0,cone=kind==='volley'||kind==='spicy',life=red?Math.min(.35,opt.life||.55):opt.life||.55,start=opt.start||0,hold=Number.isInteger(opt.hold)?opt.hold:null;
     const spr=this.camWorld(this.add.sprite(x,y,key,start+(hold??(red?2:0))).setOrigin(cone?.22:.5,.5).setDisplaySize(Math.min(420,size),Math.min(420,size)).setRotation(angle).setAlpha(size>250?.5:.68).setDepth(opt.ground?4:y+5));
     const q={spr,t:0,life,red,start,hold,buff:opt.buff||null,important:!!opt.important,ground:!!opt.ground,alpha:size>250?.5:.68,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0,follow:opt.follow||null,followId:opt.follow?.spr?._yzSpawnId};L.push(q);return q;
   }
@@ -16205,7 +16209,7 @@ class Game extends Phaser.Scene {
     if(this.state==='menu'||this.state==='dead'){this.clearYuzuSkillFx();return;}
     if(this.state!=='play')return;
     const L=this._yzShow||[];for(let i=L.length-1;i>=0;i--){const q=L[i];
-      const bad=this.character!=='yuzu'||this.player!==q.player||q.player?.active===false||this.basicAttack!==q.basic||(this._artEpoch||0)!==q.epoch||q.buff&&(this._yzBuff!==q.buff||!this.yuzuBuffValid(q.buff))||q.follow&&(q.follow.spr?.active===false||q.follow.down>0||q.followId!=null&&q.follow.spr?._yzSpawnId!==q.followId);
+      const bad=q.spr?.active===false||this.character!=='yuzu'||this.player!==q.player||q.player?.active===false||this.basicAttack!==q.basic||(this._artEpoch||0)!==q.epoch||q.buff&&(this._yzBuff!==q.buff||!this.yuzuBuffValid(q.buff))||q.follow&&(q.follow.spr?.active===false||q.follow.down>0||q.followId!=null&&q.follow.spr?._yzSpawnId!==q.followId);
       if(!bad){q.t+=Math.max(0,dt);if(q.follow){const p=q.follow==='player'?this.player:q.follow.spr;q.spr.setPosition(p.x,p.y);if(!q.ground)q.spr.setDepth(p.y+5);}
         if(!q.red&&q.hold==null)q.spr.setFrame((q.start||0)+Math.min(3,Math.floor(q.t/q.life*4)));q.spr.setAlpha(q.alpha*Math.min(1,Math.max(0,(q.life-q.t)/Math.min(.16,q.life*.4))));}
       if(bad||q.t>=q.life){q.spr.destroy();L.splice(i,1);}
@@ -16244,7 +16248,7 @@ class Game extends Phaser.Scene {
   yuzuActionValid(m,a){return this.character==='yuzu'&&this._yuzuCrew?.[0]===m&&m.down<=0&&this.player===a.player&&a.player?.active!==false&&this.basicAttack===a.basic&&(this._artEpoch||0)===a.epoch&&this.yuzuKind()===m.kind;}
   yuzuBeginAction(m,kind,release,target=null,period=1){
     if(m.down>0||m.action||m.motion||m.lunge||m.revive>0)return false;
-    const timing=({arrow:[.16,.2],orb:[.24,.22],volley:[.26,.3],brew:[.32,.25],trap:[.2,.18]})[kind]||[.18,.2],tempo=Math.max(.35,Math.min(1,period/(timing[0]+timing[1])));
+    const timing=({arrow:[.16,.2],orb:[.24,.22],volley:[.26,.3],brew:[.32,.25],trap:[.2,.18],sigil:[.24,.22],comet:[.4,.25],garden:[.34,.25],bloom:[.38,.25],honey:[.28,.2],vault:[.24,.22],pin:[.22,.28],breaker:[.3,.26]})[kind]||[.18,.2],tempo=Math.max(.35,Math.min(1,period/(timing[0]+timing[1])));
     const angle=target?Math.atan2(target.y-m.spr.y,target.x-m.spr.x):m.aim||0;
     m.action={kind,t:0,wind:timing[0]*tempo,end:(timing[0]+timing[1])*tempo,release,fired:false,angle,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0};
     m.aim=angle;m.vx=m.vy=0;if(Math.abs(Math.cos(angle))>.1)m.spr.setFlipX(Math.cos(angle)<0);return true;
@@ -16311,10 +16315,10 @@ class Game extends Phaser.Scene {
     const v=m._yzVisual;
     if(pose.state==='idle')return{...pose,key,paintScale,frame:0};
     if(pose.state==='move'||pose.state==='retreat'){const step=Math.floor((v?.gait||0)/Math.PI/2*8)%8;return{...pose,key,paintScale,frame:pose.state==='retreat'?(8-step)%8:step};}
-    if(m.lunge){const wind=.3*.55,t=m.lunge.t;return{...pose,key,paintScale,frame:t<wind?8+Math.min(3,Math.floor(t/wind*4)):12+Math.min(3,Math.floor((t-wind)/(.3-wind)*4))};}
+    if(m.lunge){const duration=m.lunge.duration||.3,wind=duration*.55,t=m.lunge.t;return{...pose,key,paintScale,frame:t<wind?8+Math.min(3,Math.floor(t/wind*4)):12+Math.min(3,Math.floor((t-wind)/(duration-wind)*4))};}
     const a=m.action;
-    if(a&&['arrow','volley','orb','brew'].includes(a.kind)){
-      if(a.kind==='brew'&&a.t>=a.wind)return pose; // Retain the three authored flavor release poses.
+    if(a&&['arrow','volley','orb','brew','sigil','comet','garden','bloom','honey','vault','pin','breaker'].includes(a.kind)){
+      if(['brew','comet','garden','bloom','honey'].includes(a.kind)&&a.t>=a.wind)return pose; // Retain the three authored flavor release poses.
       const frame=a.t<a.wind?8+Math.min(3,Math.floor(a.t/a.wind*4)):12+Math.min(3,Math.floor((a.t-a.wind)/Math.max(.001,a.end-a.wind)*4));
       return{...pose,key,paintScale,frame};
     }
@@ -16329,11 +16333,11 @@ class Game extends Phaser.Scene {
       if(q.kind==='roll')return{key:special,frame:2,state:'roll'};
       return{key:special,frame:m.kind==='pomelo'?1:3,state:q.kind};
     }
-    if(m.lunge){const f=m.lunge.t/.3;return{key:base,frame:f<.3?4:f<.55?5:f<.78?6:7,state:f<.55?'windup':'release'};}
+    if(m.lunge){const f=m.lunge.t/(m.lunge.duration||.3);return{key:base,frame:f<.3?4:f<.55?5:f<.78?6:7,state:f<.55?'windup':'release'};}
     if(m.action){const a=m.action,wind=a.t<a.wind;
-      if(m.kind==='bloodorange'&&a.kind==='brew'){const flavor=m.castFlavor||0;return{key:wind?base:special,frame:wind?(a.t<a.wind*.5?4:5):flavor,state:wind?'windup':'release'};}
-      if(m.kind==='bloodorange'&&a.kind==='orb')return{key:wind?base:special,frame:wind?5:0,state:wind?'windup':'release'};
-      if(m.kind==='lime'&&(a.kind==='arrow'||a.kind==='volley'))return{key:special,frame:wind?(a.t<a.wind*.5?0:1):(a.t<a.wind+(a.end-a.wind)*.6?2:7),state:wind?'windup':'release'};
+      if(m.kind==='bloodorange'&&['brew','comet','garden','bloom','honey'].includes(a.kind)){const flavor=m.castFlavor||0;return{key:wind?base:special,frame:wind?(a.t<a.wind*.5?4:5):flavor,state:wind?'windup':'release'};}
+      if(m.kind==='bloodorange'&&['orb','sigil'].includes(a.kind))return{key:wind?base:special,frame:wind?5:0,state:wind?'windup':'release'};
+      if(m.kind==='lime'&&['arrow','volley','vault','pin'].includes(a.kind))return{key:special,frame:wind?(a.t<a.wind*.5?0:1):(a.t<a.wind+(a.end-a.wind)*.6?2:7),state:wind?'windup':'release'};
       return{key:base,frame:wind?(a.t<a.wind*.5?4:5):(a.t<a.wind+(a.end-a.wind)*.5?6:7),state:wind?'windup':'release'};
     }
     if(m.land>0)return{key:special,frame:3,state:'land'};
@@ -16347,7 +16351,7 @@ class Game extends Phaser.Scene {
   yuzuCombatTarget(e){return !!(e?.active&&e.hp>0&&!e.isDummy&&!e._coreLocked&&!e._waveObjectiveNode&&!e._phaseGateLocked&&!(e._phaseInvuln>0));}
   yuzuBuffValid(u){return !!u&&!u.finished&&this.character==='yuzu'&&this._yuzuCrew?.[0]===u.m&&u.m.spr?.active!==false&&this.player===u.player&&u.player?.active!==false&&!(u.player.hp<=0)&&this.basicAttack===u.basic&&(this._artEpoch||0)===u.epoch&&this.yuzuKind()===u.kind;}
   yuzuBuff(){const u=this._yzBuff;return this.yuzuBuffValid(u)&&u.t>0?u:null;}
-  clearYuzuBuff(){if(this._yzBuff)this._yzBuff.finished=true;this._yzBuff=null;this._yzBurst=[];this._yzSourTags?.clear();}
+  clearYuzuBuff(){this.clearYuzuArsenal();if(this._yzBuff)this._yzBuff.finished=true;this._yzBuff=null;this._yzBurst=[];this._yzSourTags?.clear();}
   yuzuTickBuff(dt){
     if(this.state!=='play')return;
     for(const[e,tag]of this._yzSourTags||[]){tag.t-=dt;if(tag.t<=0||!e.active||e._yzSpawnId!==tag.id)this._yzSourTags.delete(e);}
@@ -16374,7 +16378,7 @@ class Game extends Phaser.Scene {
     const m=u.m,p=this.player,target=this.yuzuTarget(m.spr.x,m.spr.y,780),angle=target?Math.atan2(target.y-m.spr.y,target.x-m.spr.x):m.aim||0;m.aim=angle;m.attack=.45;
     if(u.kind==='pomelo'||u.kind==='yuzling'){this.yuzuArea(m,m.spr.x,m.spr.y,180+this.yuzuTalent('Slam'),(4+.45*(u.ul-1))*u.power,'golden_final',.45);if(!this.yuzuEmpowerFx(u.kind,'finish',m.spr.x,m.spr.y,380,0,{ground:true,life:.72}))this.yuzuSkillFx('slam',m.spr.x,m.spr.y,380,0,{ground:true,life:.7});this.yuzuSound('slam',.3,.6);}
     if(u.kind==='lime'){this.yuzuShot(m,m.spr.x,m.spr.y,angle,this.yuzuPower()*(4+.25*u.marks)*u.power,{pierce:6,source:'focus_final',speed:620,life:1.5,seek:u.mut==='toss_home',focusFinal:true,finalSplash:55+this.yuzuTalent('Rain')});if(!this.yuzuEmpowerFx('lime','finish',m.spr.x,m.spr.y,210,angle,{life:.42}))this.yuzuSkillFx('volley',m.spr.x,m.spr.y,210,angle,{life:.45});this.yuzuSound('volley',.4,.6);}
-    if(u.kind==='bloodorange'){const r=180+(u.mut==='grow_burst'?50:0);this.yuzuArea(m,p.x,p.y,r,(3.6+.4*(u.ul-1)+(u.mut==='grow_burst'?.5:0))*u.power,'blend_final');if(!this.yuzuEmpowerFx('bloodorange','finish',p.x,p.y,r*1.9,0,{ground:true,life:.8})){this.yuzuSkillFx('sweet',p.x-24,p.y,r*1.6,0,{life:.7});this.yuzuSkillFx('sour',p.x+24,p.y,r*1.8,0,{ground:true,life:.7});}this.yuzuSound('infusion',.5,.6);}
+    if(u.kind==='bloodorange'){const q={...u,ownerKind:u.kind};if(this.yuzuBigBusy())this._yzPendingBlend=q;else this.yuzuBlendFinish(q);}
     this.yuzuSound('grow',.5,.3);
   }
   yuzuFinishInfusedShot(q){
@@ -16401,6 +16405,94 @@ class Game extends Phaser.Scene {
   yuzuMaxHp(m){m.maxhp=1;m.hp=1;m.down=0;m.revive=0;}
   yuzuOrchFrac(){if(this.character!=='yuzu')return -1;const u=this.yuzuBuff();return u?u.t/u.total:-1;}
   yuzuPower(){const b=this.basicAttack;return 24*(1+.12*(b.ranks?.power||0))*(b._pm?.dmg||1)*(this.player.dmgMul||1)*(1+this.yuzuTalent('Dmg'))*(1+.04*this.yuzuRank('family'));}
+  clearYuzuArsenal(){for(const q of this._yzSpells||[]){q.canceled=true;q.art?.spr?.destroy();}this._yzSpells=[];this._yzPendingBlend=null;if(this._yuzuCrew?.[0])this._yuzuCrew[0].pin=null;}
+  yuzuSpellValid(q){return !!q&&!q.canceled&&this.character==='yuzu'&&this.player===q.player&&q.player?.active!==false&&!(q.player.hp<=0)&&this.basicAttack===q.basic&&(this._artEpoch||0)===q.epoch&&this._yuzuCrew?.[0]===q.m&&this.yuzuKind()===q.ownerKind;}
+  yuzuBigBusy(){return (this._yzSpells||[]).some(q=>q.big&&q.t<q.life&&this.yuzuSpellValid(q));}
+  yuzuArsenalFx(kind,x,y,size,angle=0,opt={}){
+    const table={sigil:['bloodorange',0],comet:['bloodorange',4],garden:['bloodorange',8],bloom:['bloodorange',12],honey:['bloodorange',16],combo:['pomelo',0],breaker:['pomelo',4],vault:['lime',0],pin:['lime',4],pierce:['lime',8]},a=table[kind];if(!a)return null;
+    const fx=this.yuzuSkillFx('arsenal',x,y,size,angle,{...opt,essential:kind==='sigil',key:'yz_54_'+a[0],start:a[1]});
+    if(!fx)return this.yuzuSkillFx(a[0]==='lime'?'volley':a[0]==='pomelo'?'slam':kind==='garden'?'sour':kind==='honey'?'sweet':'spicy',x,y,size,angle,{...opt,essential:kind==='sigil'});return fx;
+  }
+  yuzuQueueSpell(m,kind,target){
+    const big=['comet','garden','bloom'].includes(kind),L=this._yzSpells||(this._yzSpells=[]);if(L.length>=12||big&&this.yuzuBigBusy())return false;
+    const p=this.player,b=this.basicAttack,u=this.yuzuBuff(),infused=m.kind==='bloodorange'&&u?.kind==='bloodorange',x=target?.x??p.x,y=target?.y??p.y,angle=Math.atan2(y-m.spr.y,x-m.spr.x);
+    const q={m,kind,big,player:p,basic:b,epoch:this._artEpoch||0,ownerKind:m.kind,t:0,index:0,events:[],x,y,sx:m.spr.x,sy:m.spr.y,angle,hit:new Map(),infused,power:infused?u.power:1,ul:infused?u.ul:1,target,id:target?._yzSpawnId};
+    const add=(at,dx,dy,r,mul,source,extra={})=>q.events.push({at,x:dx,y:dy,r,mul,source,...extra});
+    if(kind==='sigil'){const r=48+8*this.yuzuRank('splash')+5*this.yuzuRank('y_elder'),mul=(b.evolved?1.1:.9)*(infused?1.25+.05*(u.ul-1):1);add(.24,x,y,r,mul,'sigil',{tag:infused});if(infused)add(.36,x,y,r+10,.35*q.power,'blend_fire');q.art=this.yuzuArsenalFx(kind,x,y,r*2,0,{ground:true,life:.55});}
+    if(kind==='comet'){add(.6,x,y,105+10*this.yuzuRank('y_elder'),3.4+.25*this.yuzuRank('p_sourMixer'),'comet',{sour:infused,burn:infused});q.art=this.yuzuArsenalFx(kind,x,y-130,220,0,{life:.95,important:true});}
+    if(kind==='garden'){for(let i=0;i<3;i++){const a=angle+(i-1)*.45;add(.18+i*.16,x+Math.cos(a)*45,y+Math.sin(a)*45,65+8*this.yuzuRank('y_elder'),.6,'garden',{sour:true});}q.art=this.yuzuArsenalFx(kind,x,y,270,0,{ground:true,life:.95,important:true});}
+    if(kind==='bloom'){for(let i=0;i<3;i++)add(.18+i*.18,x,y,65+i*55,1.8-i*.3,'bloom_petals',{inner:i?65+(i-1)*55:0,once:true,burn:true});if(infused)add(.8,x,y,160,.35*q.power,'blend_fire');q.art=this.yuzuArsenalFx(kind,x,y,350,0,{ground:true,life:1.1,important:true});}
+    if(kind==='honey'){add(.22,p.x,p.y,0,0,'honey',{heal:true});q.art=this.yuzuArsenalFx(kind,p.x,p.y,150,0,{follow:'player',life:.7});}
+    if(kind==='breaker'){for(let i=1;i<=4;i++)add(.09*i,m.spr.x+Math.cos(angle)*i*75,m.spr.y+Math.sin(angle)*i*75,48+this.yuzuTalent('Slam')/2,2.6*Math.pow(1.4,m.growth),'breaker',{once:true});q.art=this.yuzuArsenalFx(kind,m.spr.x+Math.cos(angle)*145,m.spr.y+Math.sin(angle)*145,300,angle,{ground:true,life:.7,important:true});}
+    if(kind==='vault'){add(.55,x,y,48+this.yuzuRank('splash')*8,1.9+.12*this.yuzuRank('p_pulp'),'vault',{critical:true});q.art=this.yuzuArsenalFx(kind,m.spr.x,m.spr.y,110,angle,{life:.7,important:true});}
+    if(kind==='pin'){add(.2,x,y,25,.65,'pin',{critical:true,mark:true});add(.75,x,y,30,2.35+.15*this.yuzuRank('p_pulp'),'pierce',{line:true,critical:true,once:true});q.art=this.yuzuArsenalFx(kind,x,y,74,0,{life:.7,follow:target?{spr:target}:null});}
+    if(!q.events.length)return false;q.life=Math.max(q.events.at(-1).at+.3,q.art?.life||0);L.push(q);m.attack=.45;this.yuzuSound(({sigil:'sour',comet:'infusion',garden:'sour',bloom:'spicy',honey:'sweet',breaker:'slam',vault:'volley',pin:'arrow'})[kind],.25,kind==='sigil'?.23:.45);return true;
+  }
+  yuzuSpellImpact(q,event){
+    const m=q.m,p=this.player;
+    if(event.heal){const rank=this.yuzuRank('y_seedluck'),h=p.maxhp*(.04+.01*rank+this.yuzuTalent('Heal'));p.hp=Math.min(p.maxhp,p.hp+h);this.popHeal?.(p.x,p.y,Math.round(h));this.yuzuShield(.08+.02*rank,4+this.yuzuTalent('ShieldTime'));return true;}
+    if(event.line&&!event.artDone){event.artDone=true;this.yuzuArsenalFx('pierce',q.sx+Math.cos(q.angle)*150,q.sy+Math.sin(q.angle)*150,300,q.angle,{life:.4,important:true});}
+    const visited=event.visited||(event.visited=new Map());for(const e of this.yuzuEnemies()){if(!this.yuzuSpellValid(q)||this.state!=='play')return false;
+      const d=this.dist(e.x,e.y,event.x,event.y);let inside=d<=event.r+(e.body?.halfWidth||0)&&!(event.inner&&d<event.inner);
+      if(event.line){const dx=e.x-q.sx,dy=e.y-q.sy,along=dx*Math.cos(q.angle)+dy*Math.sin(q.angle),side=Math.abs(-dx*Math.sin(q.angle)+dy*Math.cos(q.angle));inside=along>=0&&along<=650&&side<=event.r+(e.body?.halfWidth||0);}
+      const id=e._yzSpawnId||0;if(!inside||visited.get(e)===id||event.once&&q.hit.get(e)===id)continue;visited.set(e,id);if(event.once)q.hit.set(e,id);
+      let mul=event.mul*(q.infused&&q.big?1+.15*q.power:1),critical=false;if(event.critical){const id=e._yzSpawnId||0;if(m.seen.get(e)!==id){critical=true;mul*=1+this.yuzuTalent('Opener');m.seen.set(e,id);}if(this.dist(e.x,e.y,m.spr.x,m.spr.y)>250)mul*=1.3+this.yuzuTalent('Far');}
+      if(event.line&&m.pin?.e===e&&m.pin.id===e._yzSpawnId)mul*=1.25;
+      this.yuzuHit(m,e,this.yuzuPower()*mul,event.source,critical);if(event.tag&&e.active&&(e._yzSpawnId||0)===id)this.yuzuTagSour(e);
+      if(event.burn&&e.active&&(e._yzSpawnId||0)===id)this.applyBurn?.(e,this.yuzuPower()*mul*.15,this.yuzuPower()*mul*.45,3);
+      if(event.mark&&e===q.target&&e._yzSpawnId===q.id)m.pin={e,id:q.id,t:2};
+    }
+    if(this.state!=='play'||!this.yuzuSpellValid(q))return false;
+    if(event.sour)this.yuzuZone(m,'sour',event.x,event.y,event.r,3+this.yuzuRank('y_longroot')+this.yuzuTalent('Duration'),.14+.02*this.yuzuRank('p_sourMixer'));
+    if(q.kind==='comet'){this.yuzuSound('slam',.25,.5);this.yuzuArsenalFx('sigil',event.x,event.y,180,0,{ground:true,life:.4});}
+    if(event.line)m.pin=null;
+    return true;
+  }
+  yuzuTickSpells(dt){
+    if(this.state!=='play')return;const L=this._yzSpells||[];
+    for(let i=L.length-1;i>=0;i--){const q=L[i];if(!this.yuzuSpellValid(q)){q.art?.spr?.destroy();L.splice(i,1);continue;}q.t+=Math.max(0,dt);
+      if(q.art?.spr?.active&&q.kind==='comet')q.art.spr.setPosition(q.x,q.y-130*(1-Math.min(1,q.t/.6)));
+      if(q.art?.spr?.active&&q.kind==='vault'){const k=Math.min(1,q.t/.55);q.art.spr.setPosition(q.sx+(q.x-q.sx)*k,q.sy+(q.y-q.sy)*k-Math.sin(Math.PI*k)*90);}
+      while(q.index<q.events.length&&q.events[q.index].at<=q.t){const event=q.events[q.index];if(this.yuzuSpellImpact(q,event)===false)return;q.index++;if(this.state!=='play'||!this.yuzuSpellValid(q))return;}
+      if(q.t>=q.life)L.splice(i,1);
+    }
+    const pending=this._yzPendingBlend;if(pending&&!this.yuzuSpellValid(pending))this._yzPendingBlend=null;else if(pending&&!this.yuzuBigBusy()){this._yzPendingBlend=null;this.yuzuBlendFinish(pending);}
+  }
+  yuzuBlendFinish(q){const p=this.player,r=180+(q.mut==='grow_burst'?50:0);this.yuzuArea(q.m,p.x,p.y,r,(3.6+.4*(q.ul-1)+(q.mut==='grow_burst'?.5:0))*q.power,'blend_final');this.yuzuEmpowerFx('bloodorange','finish',p.x,p.y,r*1.9,0,{ground:true,life:.8});this.yuzuSound('infusion',.5,.6);}
+  yuzuArsenalClock(m,dt){
+    const cds=m.arsenal||(m.arsenal={comet:2,garden:4,bloom:6,honey:0,breaker:3,vault:3,pin:5});for(const k of Object.keys(cds))cds[k]=Math.max(0,cds[k]-dt);
+    if(m.pin){m.pin.t-=dt;if(m.pin.t<=0||!m.pin.e.active||m.pin.e._yzSpawnId!==m.pin.id)m.pin=null;}
+  }
+  yuzuPeelStrike(m,q,mul){
+    const step=q.step||1,r=step===1?78:step===2?110:125;
+    this.yuzuArea(m,m.spr.x,m.spr.y,r+10*this.yuzuRank('splash')+8*this.yuzuRank('y_keepripe')+(this.yuzuBuff()?.kind==='pomelo'?35:0),mul*(step===1?.85:step===3?1.45:1),'sweep',0,step===3?null:q.a);
+    this.yuzuArsenalFx('combo',m.spr.x+Math.cos(q.a)*35,m.spr.y+Math.sin(q.a)*35,step===3?190:125,q.a,{life:.28,hold:step-1,important:true});
+  }
+  yuzuArsenalThink(m,target,rate,dt){
+    if(!m.arsenal)this.yuzuArsenalClock(m,0);const cds=m.arsenal;
+    if(m.action||m.motion||m.lunge||m.returning)return false;
+    const p=this.player,rank=target?this.yuzuEnemyPriority(target):0,near=target?this.yuzuEnemies().filter(e=>(e.x-target.x)**2+(e.y-target.y)**2<150**2).length:0;
+    let kind=null,cd=0,aim=target;
+    if(m.kind==='bloodorange'){
+      if(p.hp/p.maxhp<.7&&cds.honey<=0){kind='honey';cd=10;aim=p;}
+      else if(target&&!this.yuzuBigBusy()){
+        if(cds.comet<=0&&(rank>0||near<3)){kind='comet';cd=9;}
+        else if(cds.garden<=0&&(near>=3||rank>0&&this.yuzuVulnerable(target)<=1)){kind='garden';cd=10;}
+        else if(cds.bloom<=0){kind='bloom';cd=9;}
+        else if(cds.comet<=0){kind='comet';cd=9;}
+      }
+    }
+    if(m.kind==='pomelo'&&target&&this.dist(m.spr.x,m.spr.y,target.x,target.y)<=380&&cds.breaker<=0&&(rank>0||near>=3)){kind='breaker';cd=9;}
+    if(m.kind==='lime'&&target){const d=this.dist(m.spr.x,m.spr.y,target.x,target.y),a=Math.atan2(target.y-m.spr.y,target.x-m.spr.x);let screen=0;
+      for(const e of this.yuzuEnemies()){if(e===target)continue;const dx=e.x-m.spr.x,dy=e.y-m.spr.y,along=dx*Math.cos(a)+dy*Math.sin(a);if(along>0&&along<d-35&&Math.abs(-dx*Math.sin(a)+dy*Math.cos(a))<45)screen++;}
+      if(cds.vault<=0&&(screen>=2||d>320)){kind='vault';cd=8;}
+      else if(cds.pin<=0&&rank>0&&d<=600){kind='pin';cd=10;}
+      else if(cds.vault<=0&&near>=3){kind='vault';cd=8;}
+    }
+    if(!kind)return false;m.castFlavor=kind==='garden'?1:kind==='bloom'?2:0;
+    const point=aim?{x:aim.x,y:aim.y}:null;
+    if(this.yuzuBeginAction(m,kind,()=>this.yuzuQueueSpell(m,kind,kind==='pin'?target:point),point)){cds[kind]=this.yuzuCd(cd)*rate*(m.kind==='bloodorange'&&this.basicAttack.evolved?.8:1);return true;}return false;
+  }
   yuzuBite(){return this.yuzuPower();}
   yuzuCd(base){return Math.max(.22,base*Math.pow(.92,this.basicAttack.ranks?.rate||0)/(this.uqReady?.()?1.15:1)*(this.basicAttack._pm?.cd||1)*(this.player.cdMul||1)*(1-this.yuzuTalent('Tempo')));}
   yuzuHit(m,e,amount,source,critical=false,shot=null){
@@ -16457,7 +16549,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<n;i++)this.yuzuShot(m,m.spr.x,m.spr.y,a+(i-(n-1)/2)*spread,this.yuzuPower()*mul,{pierce:3,source,first:true});
     m.attack=.35;this.yuzuSound('volley',.4);
   }
-  yuzuZone(m,kind,x,y,r,life,mul=0){const L=this._yzZones||(this._yzZones=[]);if(L.length>=10){const o=L.shift();o.spr?.destroy();}const spr=this.camWorld(this.add.circle(x,y,r,kind==='trap'?0xa6e56e:kind==='sour'?0xbee96a:0xf6a45c,.12).setStrokeStyle(2,kind==='sour'?0xc2ee78:0xffce88,.7).setDepth(3));L.push({m,kind,x,y,r,life,tick:0,mul,spr});}
+  yuzuZone(m,kind,x,y,r,life,mul=0){const L=this._yzZones||(this._yzZones=[]);if(L.length>=10){const o=L.shift();o.spr?.destroy();}const painted=kind==='sour'&&this.textures.exists('yz_54_bloodorange'),spr=this.camWorld(painted?this.add.sprite(x,y,'yz_54_bloodorange',10).setDisplaySize(r*2,r*2).setAlpha(.18).setDepth(3):this.add.circle(x,y,r,kind==='trap'?0xa6e56e:kind==='sour'?0xbee96a:0xf6a45c,.12).setStrokeStyle(2,kind==='sour'?0xc2ee78:0xffce88,.7).setDepth(3));L.push({m,kind,x,y,r,life,tick:0,mul,spr,alpha:painted?.18:1,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0});}
   yuzuSlow(e){
     if(this.character!=='yuzu')return 1;let f=1;const m=this._yuzuCrew?.[0];
     if(m?.kind==='bloodorange'&&m.down<=0&&this.dist(e.x,e.y,this.player.x,this.player.y)<=160+30*this.yuzuRank('y_elder'))f=.85-this.yuzuTalent('Aroma');
@@ -16480,7 +16572,7 @@ class Game extends Phaser.Scene {
     if(this.yuzuTalent('DashShield'))this.yuzuShield(.08,2);
   }
   yuzuParadeCast(ul){
-    const m=this.yuzuEnsure();if(!m)return;
+    const m=this.yuzuEnsure();if(!m)return;this._yzPendingBlend=null;
     if(this._yzBuff)this.yuzuEndBuff(this._yzBuff,false);
     m.action=null;m.lunge=null;m.down=0;m.revive=0;m.boost=0;
     const p=this.player,b=this.basicAttack,k=m.kind,mut=b.uqMut,total=(k==='bloodorange'?7:6)+(p.yuzuParade?2:0)+this.yuzuTalent('UniqueTime')+(k==='lime'&&mut==='toss_rain'?1.5:0);
@@ -16514,7 +16606,7 @@ class Game extends Phaser.Scene {
       if(q.life<=0){this.yuzuFinishInfusedShot(q);q.spr.destroy();L.splice(i,1);}
     }
   }
-  yuzuTickZones(dt){const L=this._yzZones||[];for(let i=L.length-1;i>=0;i--){const z=L[i];z.life-=dt;z.tick-=dt;z.spr.setAlpha(Math.min(1,z.life*2));
+  yuzuTickZones(dt){const L=this._yzZones||[];for(let i=L.length-1;i>=0;i--){const z=L[i];if(z.player&&(z.player!==this.player||z.basic!==this.basicAttack||z.epoch!==(this._artEpoch||0))){z.spr.destroy();L.splice(i,1);continue;}z.life-=dt;z.tick-=dt;z.spr.setAlpha((z.alpha??1)*Math.min(1,z.life*2));
       if(z.kind==='trap'){const e=this.yuzuTarget(z.x,z.y,z.r);if(e){this.yuzuSound('trap',.3);this.yuzuArea(z.m,z.x,z.y,z.r,2+.3*this.yuzuRank('y_bigsplat'),'trap');this.yuzuZone(z.m,'root',z.x,z.y,z.r,1+.25*this.yuzuRank('y_bigsplat'));z.life=0;}}
       else if(z.kind==='sour'&&z.tick<=0){z.tick=.6;this.yuzuArea(z.m,z.x,z.y,z.r,z.mul,'sour');}
       if(z.life<=0){z.spr.destroy();L.splice(i,1);}
@@ -16543,21 +16635,23 @@ class Game extends Phaser.Scene {
   tickYuzuCrew(dt){
     if(this.character!=='yuzu'||this.state!=='play'||!this.basicAttack||!this.player)return;const m=this.yuzuEnsure(),p=this.player,b=this.basicAttack;
     if(this._yzShield){this._yzShield.t-=dt;if(this._yzShield.t<=0)this._yzShield=null;}
-    this.yuzuTickFx(dt);this.yuzuTickShots(dt);if(this.state!=='play')return;this.yuzuTickZones(dt);if(this.state!=='play')return;
+    this.yuzuTickSpells(dt);if(this.state!=='play')return;this.yuzuTickFx(dt);this.yuzuTickShots(dt);if(this.state!=='play')return;this.yuzuTickZones(dt);if(this.state!=='play')return;
     this.yuzuTickBuff(dt);if(this.state!=='play')return;
     this._yzSeedCd=Math.max(0,(this._yzSeedCd||0)-dt);const seedTarget=this.yuzuTarget(p.x,p.y,440);
     if(seedTarget&&this._yzSeedCd<=0){this._yzSeedCd=this.yuzuCd(.85);this.yuzuShot(null,p.x,p.y,Math.atan2(seedTarget.y-p.y,seedTarget.x-p.x),9.6*(p.dmgMul||1)*(1+.12*(b.ranks.power||0)),{seed:true,source:'seed'});this.poseAttack?.(220);}
     m.down=0;m.hp=m.maxhp||1;m.groundY=null;m.hurt=0;m.land=Math.max(0,(m.land||0)-dt);m.revive=0;m.cd-=dt;m.skill-=dt;m.second-=dt;
     const target=this.yuzuPickTarget(m,dt);
+    this.yuzuArsenalClock(m,dt);
     if(m.revive>0||m.land>0){this.yuzuVisual(m,dt);return;}
     if(m.action){this.yuzuTickAction(m,dt);this.yuzuVisual(m,dt);return;}
     const tooFar=this.dist(m.spr.x,m.spr.y,p.x,p.y)>(target&&this.yuzuEnemyPriority(target)>0?740:440);if(tooFar)m.returning=true;
     const pm=b._pm||{},skillRate=Math.pow(.9,m.kind==='bloodorange'?this.yuzuRank('p_sweetHelper'):m.kind==='lime'?this.yuzuRank('y_strongarm'):0)*Math.max(.35,1-this.yuzuTalent('Skill')-this.yuzuTalent('Recover'));
+    if(this.yuzuArsenalThink(m,target,skillRate,dt)){this.yuzuVisual(m,dt);return;}
     if(m.skill<=0&&!m.motion&&!m.lunge&&!m.returning){
       if(m.kind==='yuzling'){const t=this.yuzuTarget(m.spr.x,m.spr.y,260,true);if(t){this.yuzuMotion(m,t.x,t.y,'pounce',2.5,65);m.skill=this.yuzuCd(6);}}
       if(m.kind==='pomelo'){const t=this.yuzuCluster(480);if(t){this.yuzuMotion(m,t.x,t.y,'slam',2.6*(1+.15*this.yuzuRank('p_heavyPeel'))*(b.evolved?1.25:1),130*(1+.2*this.yuzuRank('y_giantslam'))+this.yuzuTalent('Slam'));m.skill=this.yuzuCd(8)*skillRate;}}
       if(m.kind==='lime'&&target&&this.dist(target.x,target.y,m.spr.x,m.spr.y)>=110){const aim={x:target.x,y:target.y};this.yuzuBeginAction(m,'volley',()=>this.yuzuShootFan(m,aim,5+2*this.yuzuRank('y_double')+this.yuzuTalent('Arrows'),.7+.1*this.yuzuRank('p_pulp')),aim);m.skill=this.yuzuCd(7)*skillRate;}
-      if(m.kind==='bloodorange'&&(target||m.brew===0&&p.hp<p.maxhp)){const flavor=m.brew;m.castFlavor=flavor;this.yuzuBeginAction(m,'brew',()=>{this.yuzuBrew(m,flavor);m.brew=(flavor+1)%3;},target);m.skill=this.yuzuCd(8)*skillRate*(b.evolved?.8:1);}
+      // Blood Orange selects its new spells through yuzuArsenalThink.
     }
     if(m.second<=0&&!m.motion&&!m.action&&!m.lunge&&!m.returning){
       if(m.kind==='pomelo'&&m.growth>=3&&target){const a=Math.atan2(target.y-m.spr.y,target.x-m.spr.x);this.yuzuMotion(m,m.spr.x+Math.cos(a)*400,m.spr.y+Math.sin(a)*400,'roll',2.7,55,.65);m.second=this.yuzuCd(12)*(1-this.yuzuTalent('Roll'));}
@@ -16572,9 +16666,10 @@ class Game extends Phaser.Scene {
     let [tx,ty]=this.yuzuFormation(m,target);
     if(target&&!m.returning){const a=Math.atan2(target.y-m.spr.y,target.x-m.spr.x),d=this.dist(target.x,target.y,m.spr.x,m.spr.y),reach=m.kind==='pomelo'?75:58;
       if(m.kind==='pomelo'||m.kind==='yuzling'){m.aim=a;
-        if(d<reach+(target.body?.halfWidth||0)&&m.cd<=0&&!m.lunge){m.lunge={t:0,ax:m.spr.x,ay:m.spr.y,a,target,targetId:target._yzSpawnId,hit:false};m.cd=this.yuzuCd(m.kind==='pomelo'?1.15:1.25);}}
-      else if(m.cd<=0&&d>=95){const period=this.yuzuCd(m.kind==='lime'?1.05:1.25),kind=m.kind==='lime'?'arrow':'orb';
+        if(d<reach+(target.body?.halfWidth||0)&&m.cd<=0&&!m.lunge){if(m.kind==='pomelo')m.peelStep=(m.peelStep||0)%3+1;m.lunge={step:m.peelStep||1,duration:m.kind==='pomelo'?(m.peelStep===3?.4:m.peelStep===1?.26:.3):.3,t:0,ax:m.spr.x,ay:m.spr.y,a,target,targetId:target._yzSpawnId,hit:false};m.cd=this.yuzuCd(m.kind==='pomelo'?1.15:1.25);}}
+      else if(m.cd<=0&&d>=95){const period=this.yuzuCd(m.kind==='lime'?1.05:1.25),kind=m.kind==='lime'?'arrow':'sigil';
         if(this.yuzuBeginAction(m,kind,()=>{const angle=m.action.angle,dx=Math.cos(angle)*16,dy=Math.sin(angle)*16;
+          if(m.kind==='bloodorange'){this.yuzuQueueSpell(m,'sigil',{x:target.x,y:target.y});return;}
           const baseHit=this.yuzuPower()*(m.kind==='lime'?.8:(b.evolved?.9:.7));if(m.kind==='lime'&&this.yuzuFocusBurst(m,angle,baseHit,b.evolved))return;
           this.yuzuShot(m,m.spr.x+dx,m.spr.y+dy,angle,this.yuzuPower()*(m.kind==='lime'?.8:(b.evolved?.9:.7)),{first:m.kind==='lime',orb:m.kind==='bloodorange',source:m.kind==='lime'?'arrow':'aroma',pierce:m.kind==='lime'&&b.evolved?2:0});
           if(m.kind==='lime'&&b.evolved)this.yuzuShot(m,m.spr.x+dx,m.spr.y+dy,angle+.12,this.yuzuPower()*.55,{first:true,pierce:2,source:'twinArrow'});
@@ -16583,9 +16678,9 @@ class Game extends Phaser.Scene {
       if(Math.abs(target.x-m.spr.x)>12)m.spr.setFlipX(target.x<m.spr.x);
     }
     if(m.action){this.yuzuVisual(m,dt);return;}
-    if(m.lunge){const q=m.lunge;q.t+=dt;const k=Math.min(1,q.t/.3),off=k<.3?-8*k/.3:k<.65?22*(k-.3)/.35:22*(1-k)/.35;m.spr.setPosition(q.ax+Math.cos(q.a)*off,q.ay+Math.sin(q.a)*off);m.attack=.3;
+    if(m.lunge){const q=m.lunge;q.t+=dt;const k=Math.min(1,q.t/(q.duration||.3)),off=k<.3?-8*k/.3:k<.65?22*(k-.3)/.35:22*(1-k)/.35;m.spr.setPosition(q.ax+Math.cos(q.a)*off,q.ay+Math.sin(q.a)*off);m.attack=.3;
       if(k>=.55&&!q.hit){q.hit=true;m.bites++;this.yuzuSound(m.kind==='pomelo'?'sweep':'bite',.25,.28);const mul=Math.pow(1.4,m.growth)*(1+.1*this.yuzuRank('p_heavyPeel'));
-        if(q.target.active&&q.target._yzSpawnId===q.targetId&&this.dist(m.spr.x,m.spr.y,q.target.x,q.target.y)<125+(q.target.body?.halfWidth||0)){if(m.kind==='pomelo')this.yuzuArea(m,m.spr.x,m.spr.y,100+10*this.yuzuRank('splash')+8*this.yuzuRank('y_keepripe')+(this.yuzuBuff()?.kind==='pomelo'?35:0),mul,'sweep',0,q.a);else this.yuzuHit(m,q.target,this.yuzuPower()*mul,'bite');}}
+        if(q.target.active&&q.target._yzSpawnId===q.targetId&&this.dist(m.spr.x,m.spr.y,q.target.x,q.target.y)<125+(q.target.body?.halfWidth||0)){if(m.kind==='pomelo')this.yuzuPeelStrike(m,q,mul);else this.yuzuHit(m,q.target,this.yuzuPower()*mul,'bite');}}
       if(k>=1)m.lunge=null;
     }else{const d=this.dist(m.spr.x,m.spr.y,tx,ty),speed=(m.returning?520:300)*(1+.1*this.yuzuRank('p_pulp')),v=d>20?Math.min(speed,d*5):0,k=1-Math.exp(-9*dt);
       m.vx+=(d>1?(tx-m.spr.x)/d*v-m.vx:-m.vx)*k;m.vy+=(d>1?(ty-m.spr.y)/d*v-m.vy:-m.vy)*k;const bounded=inMapPt(m.spr.x+m.vx*dt,m.spr.y+m.vy*dt);m.spr.setPosition(bounded[0],bounded[1]);
