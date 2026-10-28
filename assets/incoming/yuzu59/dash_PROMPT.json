@@ -1,0 +1,6 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "reference": "assets/art/build_cards/yuzu59/m_zest.webp",
+  "prompt": "Use case: stylized-concept. One isolated production game ability icon on true transparent background. Three small orange citrus juice bombs with leaf fuses, arranged along a short curved diagonal dash swoosh. EXACTLY three bombs, single compact composition. Warm hand-painted polished cartoon fantasy citrus style, strong dark plum outline, lush green leaves, gold highlights, orange juice motion trail. No text, frame, tile, border or ground. Entire subject including every soft glow and trail must fit within central 65 percent of square canvas, very generous empty transparent margin all four sides. Nothing clipped. Bold readable at 64 pixels. Match reference icon visual style; reference is style only, do not copy its objects."
+}

@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "references": [
+    "assets/art/yuzu_companions/yz_pomelo.webp",
+    "assets/art/yuzu_companions/yz_lime.webp",
+    "assets/art/yuzu_companions/yz_bloodorange.webp"
+  ],
+  "prompt": "Use case: stylized-concept. Production raster game ability icon atlas, not a UI mockup. Create EXACTLY 16 isolated icons in a precise 4 columns by 4 rows regular square grid, row-major order listed below. Entire canvas square. Every cell has the same size, each icon centered in its own cell and fully contained within central 72 percent, generous empty transparent gutters. True transparent background, no checkerboard, no solid matte, no cell borders or tiles, no words, letters, numbers, labels or watermark. Hand-painted polished cartoon fantasy citrus game, warm cream highlights, clear dark plum outlines, lush leaf greens, honey gold and crimson accents. Strong readable silhouettes at 64px, restrained glow, tactile painted shading, consistent lighting and perspective. Reference images are IDENTITY and STYLE references only: first is the pale-yellow stout Pomelo boxer with leaf mitts; second the green Lime leaf-hood archer; third the red Blood Orange plum-hat witch. Do not copy animation strips or multiple poses. Each character icon contains exactly ONE companion, never a mob or summoned minion. Other icons are symbolic ability objects, no tiny details. Each of 16 icons distinct. Row-major cell subjects:\nRow 1, column 1: one heroic green Lime ranger in leaf hood drawing two luminous parallel seed arrows.\nRow 1, column 2: one red Blood Orange archwitch in plum witch hat above a powerful red and green ground sigil.\nRow 1, column 3: three golden pomelo growth leaves rising under a harvest sun.\nRow 1, column 4: thick golden citrus peel shield with bright armored heart.\nRow 2, column 1: green leaf bow surrounding a glowing extended clock arc.\nRow 2, column 2: large green arrow curving into a bright priority target.\nRow 2, column 3: large three-color flavor blossom exploding outward.\nRow 2, column 4: honey-gold leaf dome shielding a small heart.\nRow 3, column 1: orange peel exploding into short citrus fragments.\nRow 3, column 2: gold seed impact chaining through two green sparks.\nRow 3, column 3: citrus seed emitting three evenly spaced expanding wave arcs.\nRow 3, column 4: dark cracked citrus wedge hit by a sharp finishing green blade.\nRow 4, column 1: three orange citrus bombs trailing along a dash streak.\nRow 4, column 2: one enormous citrus bite with a bold gold impact star.\nRow 4, column 3: gold harvest crown over an explosive orange peel.\nRow 4, column 4: red jam jar emitting broad gold and green rhythm rings.",
+  "cells": [
+    "evo_lime",
+    "evo_bloodorange",
+    "ripe_fest",
+    "ripe_shield",
+    "toss_rain",
+    "toss_home",
+    "grow_burst",
+    "grow_grove",
+    "m_zest",
+    "m_crew",
+    "m_rally",
+    "m_sour",
+    "m_splash",
+    "m_bite",
+    "f_harvest",
+    "f_parade"
+  ]
+}

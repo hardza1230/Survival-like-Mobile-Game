@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.58';
+const GAME_VERSION = '8.0.59';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.59',date:'2026-10-28',title:'Yuzu cards, freshly picked',items:['Yuzu cards and Recipe entries now describe the current companion arsenals and buffs','48 new painted citrus icons distinguish Pomelo, Lime, Blood Orange and their upgrades']},
   {v:'8.0.58',date:'2026-10-27',title:'Familiar controls, calmer details',items:['Existing menu buttons and tabs share rounded typography and warmer labels','Button highlights and text outlines are softer while each control keeps its original place and purpose']},
   {v:'8.0.57',date:'2026-10-27',title:'A little more together',items:['Menu headings, Back labels and Sugar text share warmer colors and a consistent rounded font','Existing page layouts, controls, backgrounds and illustrations stay in place']},
   {v:'8.0.56',date:'2026-10-27',title:'A clearer path to Power',items:['The Power hub has a calmer illustrated design with clearer next steps and real Power gains','Six original painted icons bring Weave, Equipment, Merge, Forge and Talents together','Portrait shortcuts use a larger two-column layout; pending rewards remain separate from Power upgrades']},
@@ -1620,6 +1621,53 @@ const Sfx = {
    · ASSET_IMAGES = รูปนิ่งเฟรมเดียว · ASSET_SHEETS = สไปรต์สตริปหลายเฟรม (frame=ขนาดเฟรม px)
      เฟรมเรียง [0 idle, 1 squash(ย่อกว้าง), 2 stretch(ยืดสูง), 3 blink(หลับตา)] */
 const ASSET_IMAGES = {
+  // v8.0.59 Yuzu card art: stage-lazy, also available to the existing Recipe loader.
+  yc59_starter:'assets/art/build_cards/yuzu59/starter.webp',
+  yc59_power:'assets/art/build_cards/yuzu59/power.webp',
+  yc59_rate:'assets/art/build_cards/yuzu59/rate.webp',
+  yc59_family:'assets/art/build_cards/yuzu59/family.webp',
+  yc59_splash:'assets/art/build_cards/yuzu59/splash.webp',
+  yc59_loyal:'assets/art/build_cards/yuzu59/loyal.webp',
+  yc59_mut_parting:'assets/art/build_cards/yuzu59/mut_parting.webp',
+  yc59_mut_pack:'assets/art/build_cards/yuzu59/mut_pack.webp',
+  yc59_mut_second:'assets/art/build_cards/yuzu59/mut_second.webp',
+  yc59_mut_hardy:'assets/art/build_cards/yuzu59/mut_hardy.webp',
+  yc59_unique_pomelo:'assets/art/build_cards/yuzu59/unique_pomelo.webp',
+  yc59_unique_lime:'assets/art/build_cards/yuzu59/unique_lime.webp',
+  yc59_unique_bloodorange:'assets/art/build_cards/yuzu59/unique_bloodorange.webp',
+  yc59_p_heavyPeel:'assets/art/build_cards/yuzu59/p_heavyPeel.webp',
+  yc59_p_bodyguard:'assets/art/build_cards/yuzu59/p_bodyguard.webp',
+  yc59_y_fastripe:'assets/art/build_cards/yuzu59/y_fastripe.webp',
+  yc59_y_keepripe:'assets/art/build_cards/yuzu59/y_keepripe.webp',
+  yc59_y_giantslam:'assets/art/build_cards/yuzu59/y_giantslam.webp',
+  yc59_p_pulp:'assets/art/build_cards/yuzu59/p_pulp.webp',
+  yc59_p_feast:'assets/art/build_cards/yuzu59/p_feast.webp',
+  yc59_y_strongarm:'assets/art/build_cards/yuzu59/y_strongarm.webp',
+  yc59_y_bigsplat:'assets/art/build_cards/yuzu59/y_bigsplat.webp',
+  yc59_y_double:'assets/art/build_cards/yuzu59/y_double.webp',
+  yc59_p_sourMixer:'assets/art/build_cards/yuzu59/p_sourMixer.webp',
+  yc59_p_sweetHelper:'assets/art/build_cards/yuzu59/p_sweetHelper.webp',
+  yc59_y_seedluck:'assets/art/build_cards/yuzu59/y_seedluck.webp',
+  yc59_y_longroot:'assets/art/build_cards/yuzu59/y_longroot.webp',
+  yc59_y_elder:'assets/art/build_cards/yuzu59/y_elder.webp',
+  yc59_evo_pomelo:'assets/art/build_cards/yuzu59/evo_pomelo.webp',
+  yc59_evo_lime:'assets/art/build_cards/yuzu59/evo_lime.webp',
+  yc59_evo_bloodorange:'assets/art/build_cards/yuzu59/evo_bloodorange.webp',
+  yc59_ripe_fest:'assets/art/build_cards/yuzu59/ripe_fest.webp',
+  yc59_ripe_shield:'assets/art/build_cards/yuzu59/ripe_shield.webp',
+  yc59_toss_rain:'assets/art/build_cards/yuzu59/toss_rain.webp',
+  yc59_toss_home:'assets/art/build_cards/yuzu59/toss_home.webp',
+  yc59_grow_burst:'assets/art/build_cards/yuzu59/grow_burst.webp',
+  yc59_grow_grove:'assets/art/build_cards/yuzu59/grow_grove.webp',
+  yc59_m_zest:'assets/art/build_cards/yuzu59/m_zest.webp',
+  yc59_m_crew:'assets/art/build_cards/yuzu59/m_crew.webp',
+  yc59_m_rally:'assets/art/build_cards/yuzu59/m_rally.webp',
+  yc59_m_sour:'assets/art/build_cards/yuzu59/m_sour.webp',
+  yc59_m_splash:'assets/art/build_cards/yuzu59/m_splash.webp',
+  yc59_m_bite:'assets/art/build_cards/yuzu59/m_bite.webp',
+  yc59_f_harvest:'assets/art/build_cards/yuzu59/f_harvest.webp',
+  yc59_f_parade:'assets/art/build_cards/yuzu59/f_parade.webp',
+
   // ImageGen combat readability: native-size projectile preserves its physics frame.
   cr_player_ring:'assets/art/combat_readability/cr_player_ring.webp',
   cr_warning_rim:'assets/art/combat_readability/cr_warning_rim.webp',
@@ -1894,9 +1942,9 @@ const ASSET_IMAGES = {
   ic_path_p_refract:'assets/art/build_paths/p_refract.webp',
   ic_path_p_steady:'assets/art/build_paths/p_steady.webp',
   ic_path_p_swift:'assets/art/build_paths/p_swift.webp',
-  ic_path_zestSwarm:'assets/art/build_paths/zestSwarm.webp',
-  ic_path_citrusGuardian:'assets/art/build_paths/citrusGuardian.webp',
-  ic_path_juiceWorkshop:'assets/art/build_paths/juiceWorkshop.webp',
+  ic_path_zestSwarm:'assets/art/build_cards/yuzu59/path_lime.webp',
+  ic_path_citrusGuardian:'assets/art/build_cards/yuzu59/path_pomelo.webp',
+  ic_path_juiceWorkshop:'assets/art/build_cards/yuzu59/path_bloodorange.webp',
   ic_path_p_pulp:'assets/art/build_paths/p_pulp.webp',
   ic_path_p_heavyPeel:'assets/art/build_paths/p_heavyPeel.webp',
   ic_path_p_sourMixer:'assets/art/build_paths/p_sourMixer.webp',
@@ -2728,7 +2776,7 @@ const ASSET_IMAGES = {
 const SKILL_ICON = { sprinkle:'ic_sprinkle', star:'ic_star', frost:'ic_frost', bubble:'ic_bubble',
   thunder:'ic_thunder', whirl:'ic_whirl', boomer:'ic_boomer', popcorn:'ic_popcorn',
   mine:'ic_mine', beam:'ic_beam', meteor:'ic_bear_donut', cloud:'ic_cloud', rocket:'ic_rocket',
-  mirror:'ic_mirror', decoy:'ic_decoy', yuzling:'ic_path_zestSwarm' };   // v7.9.15 Yuzu เคยไม่มีไอคอนการ์ดเลย
+  mirror:'ic_mirror', decoy:'ic_decoy', yuzling:'yc59_starter' };   // v7.9.15 Yuzu เคยไม่มีไอคอนการ์ดเลย
 const SKILL_CARD_COLOR = {
   sprinkle:0xff76ae, star:0xffc447, thunder:0xffd84d, whirl:0x7ac7ff, boomer:0xf0a13b,
   frost:0x76d8ff, popcorn:0xffb64d, bubble:0x67dec4, mine:0xff7cae, beam:0xffd166,
@@ -3858,7 +3906,7 @@ const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:menu_orders|chest|journal|
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -4227,7 +4275,7 @@ class Opening extends Phaser.Scene {
 
 /* ---- SKILLS: auto-cast, flashy, stackable ---- */
 const SKILLDEFS = {
-  yuzling:{name:'Citrus Crew',emoji:'🍋',role:'Citrus companion',max:5,desc:'One citrus friend fights beside Yuzu and can be helped up after falling',orbit:true,awaken:{name:'The Citrus Court',emoji:'👑',desc:'The crew evolves with its Build Path'}},
+  yuzling:{name:'Citrus Crew',emoji:'🍋',role:'Citrus companion',max:5,desc:'One always-ready citrus companion fights beside Yuzu; choose a boxer, archer or mage',orbit:true,awaken:{name:'The Citrus Court',emoji:'👑',desc:'The crew evolves with its Build Path'}},
   sprinkle:{ name:'Sprinkle Spray', emoji:'🍬', role:'Machine gun · fast, light', max:5, desc:'Sprays rainbow seeds at the nearest enemies — fast but light · single hit',
     awaken:{ name:'Rainbow Storm', emoji:'🌈', desc:'16 homing rainbow seeds, blazing fast!' } },
   star:    { name:'Star Guard',     emoji:'🌟', role:'Defense · close range', max:5, desc:'Orbiting stars deal damage and block incoming bullets', orbit:true,
@@ -4364,7 +4412,7 @@ const CHARACTERS = {
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'A sturdy boxer: Brawler sweeps crowds, Titan crushes marked targets, Dash Boxer strikes through movement. Toggle Flicker to warp into short punch chains and return; Dash cancels. Each path has a one-tap Unique',stats:{hp:46,dmg:1.03,spd:0.94,def:0.84,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
   sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Dash to drop mirrors (up to 3). The Mirror Beam bounces through every mirror, oldest first, then out to the nearest enemy — bosses first. Each bounce hits harder, so place mirrors to cross the beam through big groups',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
-  yuzu:{name:'Yuzu',emoji:'🍋',unique:'citrusParade',weapon:'yuzuCrew',cost:0,color:0xffd85e,role:'Companion commander',desc:'Fights beside one citrus companion. Fire seeds, Dash together and help your friend back up. Choose Pomelo, Lime or Blood Orange.',stats:{hp:12,dmg:0.98,spd:1.04,def:0.96,crit:0.03,cdr:0.98,regenFlat:0.4},rating:{hp:3,atk:4,spd:3,def:3}},
+  yuzu:{name:'Yuzu',emoji:'🍋',unique:'citrusParade',weapon:'yuzuCrew',cost:0,color:0xffd85e,role:'Companion commander',desc:'Fights beside one citrus companion. Fire seeds, Dash together and empower your partner with Unique buffs. Choose Pomelo, Lime or Blood Orange.',stats:{hp:12,dmg:0.98,spd:1.04,def:0.96,crit:0.03,cdr:0.98,regenFlat:0.4},rating:{hp:3,atk:4,spd:3,def:3}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
 const CHAR_ORDER=['momo','mint','cocoa','taro','yuzu','sesame'];   // Berryคอร์ถูกพักไว้ก่อน (v2.46.0) — ยังคงนิยามใน CHARACTERS กันเซฟเก่าพัง
@@ -4388,7 +4436,7 @@ const UNIQUE_MUTS={
   storm:[{id:'plasma_wide',emoji:'🔵',name:'Wide Field',desc:'Plasma Field reaches 35% farther.'},{id:'plasma_twin',emoji:'🔁',name:'Twin Field',desc:'A second Plasma Field follows at 60% damage.'}],
   smite:[{id:'mark_jump',emoji:'🎯',name:'Leaping Mark',desc:'If the marked enemy dies, the mark jumps to a new target once.'},{id:'mark_nova',emoji:'💥',name:'Mark Nova',desc:'When the mark ends, it explodes in a much bigger ring.'}],
   citrusGuardian:[{id:'ripe_fest',emoji:'🎉',name:'Harvest Festival',desc:'Golden Peel Armor grows Pomelo one stage.'},{id:'ripe_shield',emoji:'🛡️',name:'Ripe Shield',desc:'Golden Peel Armor grants an extra 15% max-HP shield.'}],
-  zestSwarm:[{id:'toss_rain',emoji:'🌧️',name:'Juice Rain',desc:"Hunter's Focus lasts 1.5s longer."},{id:'toss_home',emoji:'🎯',name:'Homing Hop',desc:'The Focus finishing arrow homes toward priority enemies.'}],
+  zestSwarm:[{id:'toss_rain',emoji:'🌧️',name:'Extended Focus',desc:"Hunter's Focus lasts 1.5s longer."},{id:'toss_home',emoji:'🎯',name:'Seeking Arrow',desc:'The Focus finishing arrow homes toward priority enemies.'}],
   juiceWorkshop:[{id:'grow_burst',emoji:'💥',name:'Bloom Burst',desc:'Perfect Blend ends with a wider, stronger flavor wave.'},{id:'grow_grove',emoji:'🌳',name:'Sacred Grove',desc:'Perfect Blend also grants a 20% max-HP shield.'}],
   tempest:[{id:'over_long',emoji:'⏱️',name:'Long Overdrive',desc:'Overdrive lasts 1.5s longer.'},{id:'over_finale',emoji:'🎆',name:'Finale Burst',desc:'When Overdrive ends, every sentry fires a double-damage ring.'}]};
 // v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md)
@@ -4419,6 +4467,8 @@ const SIGNATURE_WEAPONS = {
   jamCannon:{name:'Jam Core Cannon',emoji:'💗',skill:'rocket',dmgMul:1.10,cdMul:0.92,trait:'+10% blast · -8% cooldown'},
 };
 // v4.62: คำอธิบาย Evolution ต่อสกิล (ใช้ทั้งการ์ดเลเวลอัพและ Codex)
+const YUZU_CARD_ICONS={"starter":"yc59_starter","power":"yc59_power","rate":"yc59_rate","family":"yc59_family","splash":"yc59_splash","loyal":"yc59_loyal","p_heavyPeel":"yc59_p_heavyPeel","p_bodyguard":"yc59_p_bodyguard","y_fastripe":"yc59_y_fastripe","y_keepripe":"yc59_y_keepripe","y_giantslam":"yc59_y_giantslam","p_pulp":"yc59_p_pulp","p_feast":"yc59_p_feast","y_strongarm":"yc59_y_strongarm","y_bigsplat":"yc59_y_bigsplat","y_double":"yc59_y_double","p_sourMixer":"yc59_p_sourMixer","p_sweetHelper":"yc59_p_sweetHelper","y_seedluck":"yc59_y_seedluck","y_longroot":"yc59_y_longroot","y_elder":"yc59_y_elder","ripe_fest":"yc59_ripe_fest","ripe_shield":"yc59_ripe_shield","toss_rain":"yc59_toss_rain","toss_home":"yc59_toss_home","grow_burst":"yc59_grow_burst","grow_grove":"yc59_grow_grove","m_zest":"yc59_m_zest","m_crew":"yc59_m_crew","m_rally":"yc59_m_rally","m_sour":"yc59_m_sour","m_splash":"yc59_m_splash","m_bite":"yc59_m_bite","f_harvest":"yc59_f_harvest","f_parade":"yc59_f_parade","parting":"yc59_mut_parting","pack":"yc59_mut_pack","second":"yc59_mut_second","hardy":"yc59_mut_hardy","citrusGuardian":"ic_path_citrusGuardian","zestSwarm":"ic_path_zestSwarm","juiceWorkshop":"ic_path_juiceWorkshop"};
+function yuzuCardArt(path,key){const kind=({citrusGuardian:'pomelo',zestSwarm:'lime',juiceWorkshop:'bloodorange'})[path];return key==='evolution'&&kind?'yc59_evo_'+kind:key==='uq_power'&&kind?'yc59_unique_'+kind:YUZU_CARD_ICONS[key]||null;}
 const YUZU_EVOLUTIONS={
   citrusGuardian:{name:'Pomelo Colossus',desc:'Pulp Slam gains 25% power and a wider aftershock.'},
   zestSwarm:{name:'Lime Windranger',desc:'Lime fires twin piercing arrows with every basic attack.'},
@@ -4477,15 +4527,15 @@ function berryAttackInfo(d,b){
 /* ---- BASIC ATTACK PROTOTYPE: ตัวละครเป็นแกน build แทนการสะสม auto-skill หลายชนิด ---- */
 const BASIC_ATTACKS = {
   yuzu:{name:'Citrus Companions',emoji:'🍋',skill:'yuzling',color:0xffd85e,evolution:'Best Friends Forever',upgrades:[
-    {id:'power',name:'Juicy Bite',emoji:'🍋',max:5,headline:'+12% companion hit',desc:'Companion hits and Yuzu seeds gain 12% base power per rank.'},
-    {id:'rate',name:'Quick Feet',emoji:'👟',max:5,desc:'Companion attacks, skills and Yuzu seeds recharge 8% sooner per rank.'},
-    {id:'family',name:'Best Friends',emoji:'💛',max:3,headline:'Stronger teamwork and shields',desc:'+4% companion damage and +8% shield strength per rank. Never adds companions.'},
-    {id:'splash',name:'Zest Splash',emoji:'💦',max:3,desc:'Companion arrows and orbs splash nearby foes; Pomelo sweeps a wider area.'},
-    {id:'loyal',name:'Loyal Guard',emoji:'🛡️',max:3,desc:'Take 6% less damage per rank while within 170px of your active companion.'}],
-    mutations:[{id:'parting',name:'Citrus Footprints',emoji:'💥',desc:'Dashing leaves a short-lived sour patch behind your companion.'},
-      {id:'pack',name:'Side by Side',emoji:'💛',desc:'Your companion hits 20% harder while within 200px of Yuzu.'},
-      {id:'second',name:'Second Serving',emoji:'♻️',desc:'Every fourth companion hit deals 50% more damage.'},
-      {id:'hardy',name:'Hardy Peel',emoji:'🥝',desc:'Using Unique grants an extra shield equal to 12% of Yuzu max HP.'}]},
+    {id:'power',iconKey:'yc59_power',name:'Juicy Bite',emoji:'🍋',max:5,headline:"+12% seeds and companion power",desc:'Companion hits and Yuzu seeds gain 12% base power per rank.'},
+    {id:'rate',iconKey:'yc59_rate',name:'Quick Feet',emoji:'👟',max:5,headline:"Attacks and skills recharge sooner",desc:'Companion attacks, skills and Yuzu seeds recharge 8% sooner per rank.'},
+    {id:'family',iconKey:'yc59_family',name:'Best Friends',emoji:'💛',max:3,headline:"Stronger companion and shields",desc:'+4% companion damage and +8% shield strength per rank.'},
+    {id:'splash',iconKey:'yc59_splash',name:'Zest Splash',emoji:'💦',max:3,headline:"Wider companion attacks",desc:"Pomelo sweeps reach farther, Lime arrows splash nearby foes, and Blood Orange ground Sigils cover a wider area."},
+    {id:'loyal',iconKey:'yc59_loyal',name:'Loyal Guard',emoji:'🛡️',max:3,headline:"Damage reduction near your partner",desc:'Take 6% less damage per rank while within 170px of your active companion.'}],
+    mutations:[{id:'parting',iconKey:'yc59_mut_parting',name:'Citrus Footprints',emoji:'💥',desc:'Dashing leaves a short-lived sour patch behind your companion.'},
+      {id:'pack',iconKey:'yc59_mut_pack',name:'Side by Side',emoji:'💛',desc:'Your companion hits 20% harder while within 200px of Yuzu.'},
+      {id:'second',iconKey:'yc59_mut_second',name:'Second Serving',emoji:'♻️',desc:'Every fourth companion hit deals 50% more damage.'},
+      {id:'hardy',iconKey:'yc59_mut_hardy',name:'Hardy Peel',emoji:'🥝',desc:'Using Unique grants an extra shield equal to 12% of Yuzu max HP.'}]},
   momo:{name:'Heart Seed Blaster',emoji:'🍓',skill:'sprinkle',color:0xff76a8,evolution:'Heartstorm Blaster',
     upgrades:[
       {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic Attack damage per rank. Multiplies with your “+% damage” total.'},
@@ -4567,7 +4617,7 @@ function taroGaleCooldown(b){return Math.pow(.94,Math.max(0,Math.min(3*1.55,b?.r
 
 // 🛤 Build Path (v4.94) — เลเวล 5 เลือก 1 ใน 3 สาย · ปิดอีก 2 สาย · สายเปลี่ยน "รูปแบบ" ดาเมจ ไม่ได้บวกเพิ่มรวม
 const BASIC_PATHS={
-  yuzu:[{"id":"zestSwarm","iconKey":"ic_path_zestSwarm","name":"Lime","emoji":"🏹","base":{"dmg":1},"desc":"Lime fires precise seed arrows, piercing volleys, arcing Vaulting Shots and Pin & Pierce against priority enemies. Sour Trap protects its retreat.","upgrades":[{"id":"p_pulp","name":"Swift Ranger","emoji":"✦","max":3,"fx":{},"headline":"Lime moves 10% faster and Volley gains 10% base power per rank.","desc":"Lime moves 10% faster and Volley gains 10% base power per rank."},{"id":"p_feast","name":"Quick Draw","emoji":"✦","max":3,"fx":{},"headline":"Lime kills cut its basic attack cooldown by 0.3s per rank.","desc":"Lime kills cut its basic attack cooldown by 0.3s per rank."},{"id":"y_strongarm","name":"Ready Quiver","emoji":"✦","max":3,"fx":{},"headline":"Zest Volley recharges 10% sooner per rank.","desc":"Zest Volley recharges 10% sooner per rank."},{"id":"y_bigsplat","name":"Sour Snare","emoji":"✦","max":3,"fx":{},"headline":"Traps gain 15px radius, 0.25s root duration and 30% base power per rank.","desc":"Traps gain 15px radius, 0.25s root duration and 30% base power per rank."},{"id":"y_double","name":"Wide Volley","emoji":"✦","max":2,"fx":{},"headline":"Zest Volley fires 2 more arrows per rank.","desc":"Zest Volley fires 2 more arrows per rank."}]},{"id":"citrusGuardian","iconKey":"ic_path_citrusGuardian","name":"Pomelo","emoji":"🍊","base":{"dmg":1.2},"desc":"Pomelo fights with a three-hit Peel Combo, Pulp Slam and a forward Rind Breaker. Full growth unlocks Rolling Pomelo.","upgrades":[{"id":"p_heavyPeel","name":"Pulp Power","emoji":"✦","max":3,"fx":{},"headline":"Pulp Slam gains 15% power and sweeps gain 10% power per rank.","desc":"Pulp Slam gains 15% power and sweeps gain 10% power per rank."},{"id":"p_bodyguard","name":"Close Guard","emoji":"✦","max":3,"fx":{},"headline":"Yuzu takes 3% less damage per rank while within 170px of Pomelo.","desc":"Yuzu takes 3% less damage per rank while within 170px of Pomelo."},{"id":"y_fastripe","name":"Sun Kissed","emoji":"✦","max":3,"fx":{},"headline":"Pomelo needs 20% fewer own kills per rank to grow.","desc":"Pomelo needs 20% fewer own kills per rank to grow."},{"id":"y_keepripe","name":"Golden Reach","emoji":"✦","max":3,"fx":{},"headline":"Pomelo sweeps gain 8px radius per rank. Growth is never lost.","desc":"Pomelo sweeps gain 8px radius per rank. Growth is never lost."},{"id":"y_giantslam","name":"Wide Slam","emoji":"✦","max":3,"fx":{},"headline":"Pulp Slam radius grows 20% per rank.","desc":"Pulp Slam radius grows 20% per rank."}]},{"id":"juiceWorkshop","iconKey":"ic_path_juiceWorkshop","name":"Blood Orange","emoji":"🔮","base":{"dmg":1},"desc":"Blood Orange casts delayed ground Flavor Sigils, Crimson Comet, Sour Garden and Spicy Bloom. Honey Rescue protects an injured Yuzu.","upgrades":[{"id":"p_sourMixer","name":"Acid Notes","emoji":"✦","max":3,"fx":{},"headline":"Stronger Comet, Sour damage and vulnerability per rank.","desc":"Stronger Comet, Sour damage and vulnerability per rank."},{"id":"p_sweetHelper","name":"Spell Rhythm","emoji":"✦","max":3,"fx":{},"headline":"Flavor spells recharge 10% sooner per rank.","desc":"Flavor spells recharge 10% sooner per rank."},{"id":"y_seedluck","name":"Honey Alchemy","emoji":"✦","max":3,"fx":{},"headline":"Honey Rescue heals 1% more max HP and shields 2% more per rank.","desc":"Honey Rescue heals 1% more max HP and shields 2% more per rank."},{"id":"y_longroot","name":"Steeped Flavor","emoji":"✦","max":3,"fx":{},"headline":"Sour Garden patches last 1s longer per rank.","desc":"Sour Garden patches last 1s longer per rank."},{"id":"y_elder","name":"Bloom Reach","emoji":"✦","max":3,"fx":{},"headline":"Aroma grows 30px, Sigils 5px, Comet 10px and Garden 8px per rank.","desc":"Aroma grows 30px, Sigils 5px, Comet 10px and Garden 8px per rank."}],"headline":"Ground sigils and grand flavor spells"}],
+  yuzu:[{"id":"zestSwarm","iconKey":"ic_path_zestSwarm","name":"Lime","emoji":"🏹","base":{"dmg":1},"desc":"Lime fires precise seed arrows, piercing volleys, arcing Vaulting Shots and Pin & Pierce against priority enemies. Sour Trap protects its retreat.","upgrades":[{"id":"p_pulp","name":"Swift Ranger","emoji":"✦","max":3,"fx":{},"headline":"Faster ranger, stronger skills","desc":"Per rank: Lime moves 10% faster; Volley gains +0.10, Vaulting Shot +0.12 and Pin & Pierce +0.15 companion power.","iconKey":"yc59_p_pulp"},{"id":"p_feast","name":"Quick Draw","emoji":"✦","max":3,"fx":{},"headline":"Kills speed up the next arrow","desc":"Lime kills cut its basic attack cooldown by 0.3s per rank.","iconKey":"yc59_p_feast"},{"id":"y_strongarm","name":"Ready Quiver","emoji":"✦","max":3,"fx":{},"headline":"All Lime skills recharge sooner","desc":"Lime skills recharge 10% sooner per rank: Zest Volley, Sour Trap, Vaulting Shot and Pin & Pierce.","iconKey":"yc59_y_strongarm"},{"id":"y_bigsplat","name":"Sour Snare","emoji":"✦","max":3,"fx":{},"headline":"Wider, stronger rooting traps","desc":"Per rank: Sour Trap gains 15px radius, 0.25s root duration and +0.30 companion power.","iconKey":"yc59_y_bigsplat"},{"id":"y_double","name":"Wide Volley","emoji":"✦","max":2,"fx":{},"headline":"+2 Zest Volley arrows","desc":"Zest Volley fires 2 more arrows per rank.","iconKey":"yc59_y_double"}],"headline":"Piercing arrows, vaults and priority shots"},{"id":"citrusGuardian","iconKey":"ic_path_citrusGuardian","name":"Pomelo","emoji":"🍊","base":{"dmg":1.2},"desc":"Pomelo fights with a three-hit Peel Combo, Pulp Slam and a forward Rind Breaker. Full growth unlocks Rolling Pomelo.","upgrades":[{"id":"p_heavyPeel","name":"Pulp Power","emoji":"✦","max":3,"fx":{},"headline":"+15% Slam / +10% sweeps","desc":"Pulp Slam gains 15% power and sweeps gain 10% power per rank.","iconKey":"yc59_p_heavyPeel"},{"id":"p_bodyguard","name":"Close Guard","emoji":"✦","max":3,"fx":{},"headline":"Guard Yuzu near Pomelo","desc":"Yuzu takes 3% less damage per rank while within 170px of Pomelo.","iconKey":"yc59_p_bodyguard"},{"id":"y_fastripe","name":"Sun Kissed","emoji":"✦","max":3,"fx":{},"headline":"Reach full growth sooner","desc":"Pomelo needs 20% fewer own kills per rank to grow.","iconKey":"yc59_y_fastripe"},{"id":"y_keepripe","name":"Golden Reach","emoji":"✦","max":3,"fx":{},"headline":"+8px sweep reach","desc":"Pomelo sweeps gain 8px radius per rank. Growth is never lost.","iconKey":"yc59_y_keepripe"},{"id":"y_giantslam","name":"Wide Slam","emoji":"✦","max":3,"fx":{},"headline":"+20% Pulp Slam radius","desc":"Pulp Slam radius grows 20% per rank.","iconKey":"yc59_y_giantslam"}],"headline":"Peel Combo, ground breaks and rolling slams"},{"id":"juiceWorkshop","iconKey":"ic_path_juiceWorkshop","name":"Blood Orange","emoji":"🔮","base":{"dmg":1},"desc":"Blood Orange casts delayed ground Flavor Sigils, Crimson Comet, Sour Garden and Spicy Bloom. Honey Rescue protects an injured Yuzu.","upgrades":[{"id":"p_sourMixer","name":"Acid Notes","emoji":"✦","max":3,"fx":{},"headline":"Stronger Comet and Sour","desc":"Per rank: +0.25 Comet power, +0.02 Sour tick power, +2 points mark vulnerability and +4 points patch vulnerability.","iconKey":"yc59_p_sourMixer"},{"id":"p_sweetHelper","name":"Spell Rhythm","emoji":"✦","max":3,"fx":{},"headline":"All flavor spells recharge sooner","desc":"Flavor spells recharge 10% sooner per rank.","iconKey":"yc59_p_sweetHelper"},{"id":"y_seedluck","name":"Honey Alchemy","emoji":"✦","max":3,"fx":{},"headline":"Stronger Honey Rescue","desc":"Honey Rescue heals 1% more max HP and shields 2% more per rank.","iconKey":"yc59_y_seedluck"},{"id":"y_longroot","name":"Steeped Flavor","emoji":"✦","max":3,"fx":{},"headline":"Longer Sour Garden patches","desc":"Sour Garden patches last 1s longer per rank.","iconKey":"yc59_y_longroot"},{"id":"y_elder","name":"Bloom Reach","emoji":"✦","max":3,"fx":{},"headline":"Wider Sigils and flavor spells","desc":"Aroma grows 30px, Sigils 5px, Comet 10px and Garden 8px per rank.","iconKey":"yc59_y_elder"}],"headline":"Ground Sigils and grand flavor spells"}],
   momo:[
     {id:'sniper',iconKey:'ic_path_sniper',name:'Sniper Build',emoji:'🎯',desc:'Fire one big charged seed instead of many small ones. It charges by itself and hits ×3.84 as hard. A full charge goes through enemies. Dashing or getting hit fires it early, weaker.',
       upgrades:[{id:'headshot',iconKey:'ic_path_headshot',name:'Headshot',emoji:'🎯',max:3,headline:'Chance for ×2.5 hit',desc:'+7% chance per rank for a seed to deal ×2.5 damage'},
@@ -5150,9 +5200,9 @@ const _K=(k,v)=>(p,r)=>{p._pt=p._pt||{};p._pt[k]=(p._pt[k]||0)+v*r;};
 const _P=(fx)=>(p,r)=>{p._pt=p._pt||{};(p._pt.fx=p._pt.fx||[]).push([fx,r]);};
 function ptMergeFx(m,P){ for(const [fx,n] of ((P&&P.fx)||[]))for(const k in fx){ if(k==='dmg'||k==='cd')m[k]*=Math.pow(fx[k],n); else m[k]=(m[k]||0)+fx[k]*n; } return m; }
 const PATH_TALENTS={
-  citrusGuardian:{root:{soon:false,emoji:'✦',name:"Pomelo Strength",max:3,per:"+6% companion hit",apply:_K('yzDmg',0.06)},a1:{soon:false,emoji:'✦',name:"Thick Heart",max:3,per:"+15% Yuzu shield strength",apply:_K('yzHp',0.15)},a2:{soon:false,emoji:'✦',name:"Wide Landing",max:3,per:"+12px Pulp Slam radius",apply:_K('yzSlam',12)},b1:{soon:false,emoji:'✦',name:"Slam Rhythm",max:3,per:"Pulp Slam recharges 5% sooner",apply:_K('yzSkill',0.05)},b2:{soon:false,emoji:'✦',name:"Orchard Lessons",max:3,per:"8% fewer kills needed to grow",apply:_K('yzRipen',0.08)},c1:{soon:false,emoji:'✦',name:"Sheltering Peel",max:3,per:"4% less damage near Pomelo",apply:_K('yzGuard',0.04)},c2:{soon:false,emoji:'✦',name:"Quick Reunion",max:2,per:"Companion skills recharge 4% sooner",apply:_K('yzRecover',0.04)},capA:{soon:false,emoji:'✦',name:"Rolling Champion",max:1,per:"Rolling Pomelo recharges 30% sooner",apply:_K('yzRoll',0.3)},capB:{soon:false,emoji:'✦',name:"Fortress Captain",max:1,per:"Golden Peel Armor lasts 2s longer",apply:_K('yzUniqueTime',2)},capC:{soon:false,emoji:'✦',name:"Welcome Back",max:1,per:"Unique grants an extra 12% max-HP shield",apply:_K('yzReviveShield',1)}},
-  zestSwarm:{root:{soon:false,emoji:'✦',name:"Lime Strength",max:3,per:"+6% companion hit",apply:_K('yzDmg',0.06)},a1:{soon:false,emoji:'✦',name:"Longbow",max:3,per:"+8% damage beyond 250px",apply:_K('yzFar',0.08)},a2:{soon:false,emoji:'✦',name:"Full Quiver",max:3,per:"+1 Zest Volley arrow",apply:_K('yzArrows',1)},b1:{soon:false,emoji:'✦',name:"Volley Rhythm",max:3,per:"Zest Volley recharges 5% sooner",apply:_K('yzSkill',0.05)},b2:{soon:false,emoji:'✦',name:"Trap Setter",max:3,per:"Sour Trap recharges 6% sooner",apply:_K('yzTrap',0.06)},c1:{soon:false,emoji:'✦',name:"Green Heart",max:3,per:"+15% Yuzu shield strength",apply:_K('yzHp',0.15)},c2:{soon:false,emoji:'✦',name:"Quick Reunion",max:2,per:"Companion skills recharge 4% sooner",apply:_K('yzRecover',0.04)},capA:{soon:false,emoji:'✦',name:"Raincaller",max:1,per:"+35px Focus finisher burst radius",apply:_K('yzRain',35)},capB:{soon:false,emoji:'✦',name:"First Impression",max:1,per:"First-hit critical arrows deal 25% more damage",apply:_K('yzOpener',0.25)},capC:{soon:false,emoji:'✦',name:"Leaf Shelter",max:1,per:"Dash grants an 8% max-HP shield for 2s",apply:_K('yzDashShield',1)}},
-  juiceWorkshop:{root:{soon:false,emoji:'✦',name:"Blood Orange Strength",max:3,per:"+6% companion hit",apply:_K('yzDmg',0.06)},a1:{soon:false,emoji:'✦',name:"Acid Notes",max:3,per:"Sour vulnerability gains 4 percentage points",apply:_K('yzSour',0.04)},a2:{soon:false,emoji:'✦',name:"Sweet Notes",max:3,per:"Sweet heals 1% more max HP",apply:_K('yzHeal',0.01)},b1:{soon:false,emoji:'✦',name:"Brew Rhythm",max:3,per:"Flavor Brew recharges 5% sooner",apply:_K('yzSkill',0.05)},b2:{soon:false,emoji:'✦',name:"Slow Steep",max:3,per:"Sour patches last 0.5s longer",apply:_K('yzDuration',0.5)},c1:{soon:false,emoji:'✦',name:"Crimson Heart",max:3,per:"+15% Yuzu shield strength",apply:_K('yzHp',0.15)},c2:{soon:false,emoji:'✦',name:"Quick Reunion",max:2,per:"Companion skills recharge 4% sooner",apply:_K('yzRecover',0.04)},capA:{soon:false,emoji:'✦',name:"Fragrant Garden",max:1,per:"Aroma slows enemies 10% more",apply:_K('yzAroma',0.1)},capB:{soon:false,emoji:'✦',name:"Grand Alchemist",max:1,per:"Perfect Blend lasts 2s longer",apply:_K('yzUniqueTime',2)},capC:{soon:false,emoji:'✦',name:"Lasting Sweetness",max:1,per:"Sweet shields last 2s longer",apply:_K('yzShieldTime',2)}},
+  citrusGuardian:{root:{soon:false,emoji:'✦',name:"Pomelo Strength",max:3,per:"+6% companion hit",apply:_K('yzDmg',0.06)},a1:{soon:false,emoji:'✦',name:"Thick Heart",max:3,per:"+15% Yuzu shield strength",apply:_K('yzHp',0.15)},a2:{soon:false,emoji:'✦',name:"Wide Landing",max:3,per:"+12px Pulp Slam radius",apply:_K('yzSlam',12)},b1:{soon:false,emoji:'✦',name:"Slam Rhythm",max:3,per:"Pomelo skills recharge 5% sooner",apply:_K('yzSkill',0.05)},b2:{soon:false,emoji:'✦',name:"Orchard Lessons",max:3,per:"8% fewer kills needed to grow",apply:_K('yzRipen',0.08)},c1:{soon:false,emoji:'✦',name:"Sheltering Peel",max:3,per:"4% less damage near Pomelo",apply:_K('yzGuard',0.04)},c2:{soon:false,emoji:'✦',name:"Quick Reunion",max:2,per:"Companion skills recharge 4% sooner",apply:_K('yzRecover',0.04)},capA:{soon:false,emoji:'✦',name:"Rolling Champion",max:1,per:"Rolling Pomelo recharges 30% sooner",apply:_K('yzRoll',0.3)},capB:{soon:false,emoji:'✦',name:"Fortress Captain",max:1,per:"Golden Peel Armor lasts 2s longer",apply:_K('yzUniqueTime',2)},capC:{soon:false,emoji:'✦',name:"Peel Promise",max:1,per:"Unique grants an extra 12% max-HP shield",apply:_K('yzReviveShield',1)}},
+  zestSwarm:{root:{soon:false,emoji:'✦',name:"Lime Strength",max:3,per:"+6% companion hit",apply:_K('yzDmg',0.06)},a1:{soon:false,emoji:'✦',name:"Longbow",max:3,per:"+8% damage beyond 250px",apply:_K('yzFar',0.08)},a2:{soon:false,emoji:'✦',name:"Full Quiver",max:3,per:"+1 Zest Volley arrow",apply:_K('yzArrows',1)},b1:{soon:false,emoji:'✦',name:"Volley Rhythm",max:3,per:"Lime skills recharge 5% sooner",apply:_K('yzSkill',0.05)},b2:{soon:false,emoji:'✦',name:"Trap Setter",max:3,per:"Sour Trap recharges 6% sooner",apply:_K('yzTrap',0.06)},c1:{soon:false,emoji:'✦',name:"Green Heart",max:3,per:"+15% Yuzu shield strength",apply:_K('yzHp',0.15)},c2:{soon:false,emoji:'✦',name:"Quick Reunion",max:2,per:"Companion skills recharge 4% sooner",apply:_K('yzRecover',0.04)},capA:{soon:false,emoji:'✦',name:"Raincaller",max:1,per:"+35px Focus finisher burst radius",apply:_K('yzRain',35)},capB:{soon:false,emoji:'✦',name:"First Impression",max:1,per:"First-hit critical arrows deal 25% more damage",apply:_K('yzOpener',0.25)},capC:{soon:false,emoji:'✦',name:"Leaf Shelter",max:1,per:"Dash grants an 8% max-HP shield for 2s",apply:_K('yzDashShield',1)}},
+  juiceWorkshop:{root:{soon:false,emoji:'✦',name:"Blood Orange Strength",max:3,per:"+6% companion hit",apply:_K('yzDmg',0.06)},a1:{soon:false,emoji:'✦',name:"Acid Notes",max:3,per:"Sour vulnerability gains 4 percentage points",apply:_K('yzSour',0.04)},a2:{soon:false,emoji:'✦',name:"Honey Notes",max:3,per:"Honey Rescue heals 1% more max HP",apply:_K('yzHeal',0.01)},b1:{soon:false,emoji:'✦',name:"Spell Rhythm",max:3,per:"Flavor spells recharge 5% sooner",apply:_K('yzSkill',0.05)},b2:{soon:false,emoji:'✦',name:"Slow Steep",max:3,per:"Sour patches last 0.5s longer",apply:_K('yzDuration',0.5)},c1:{soon:false,emoji:'✦',name:"Crimson Heart",max:3,per:"+15% Yuzu shield strength",apply:_K('yzHp',0.15)},c2:{soon:false,emoji:'✦',name:"Quick Reunion",max:2,per:"Companion skills recharge 4% sooner",apply:_K('yzRecover',0.04)},capA:{soon:false,emoji:'✦',name:"Fragrant Garden",max:1,per:"Aroma slows enemies 10% more",apply:_K('yzAroma',0.1)},capB:{soon:false,emoji:'✦',name:"Grand Alchemist",max:1,per:"Perfect Blend lasts 2s longer",apply:_K('yzUniqueTime',2)},capC:{soon:false,emoji:'✦',name:"Lasting Sweetness",max:1,per:"Citrus shields last 2s longer",apply:_K('yzShieldTime',2)}},
   sniper:{root:{emoji:'🎯',name:'Steady Aim',max:3,per:'+10% Sniper seed damage',apply:_K('sDmg',0.10)},
     a1:{emoji:'💀',name:'Headhunter',max:3,per:'+5% headshot chance',apply:_K('hs',0.05)},
     a2:{emoji:'🔩',name:'Overpenetration',max:3,per:'+10% damage per enemy already pierced',apply:_K('pen',0.10)},
@@ -5521,8 +5571,8 @@ const FEAT_LINE={bazaar:'The Bazaar is open! Open treasure chests and shop for g
 const FEATURE_NAME={bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
 // v8.0.29 เจ้าของ: Recipe Book — การ์ดทุกใบของแต่ละ Build (การ์ดสาย + Unique Mutation) · เคยเลือก = ✓ · ครบสายได้ Thread
 const RECIPE_PATH_THREAD=30;
-function recipeCards(hero,pid){ const pt=(BASIC_PATHS[hero]||[]).find(x=>x.id===pid); if(!pt)return []; const L=(pt.upgrades||[]).map(u=>({id:u.id,name:u.name,emoji:u.emoji,iconKey:u.iconKey,desc:u.headline||u.desc}));
-  for(const m of ((typeof UNIQUE_MUTS!=='undefined'&&UNIQUE_MUTS[pid])||[]))L.push({id:'uq:'+m.id,name:m.name,emoji:m.emoji,iconKey:'ic_uqm_'+m.id,desc:'⭐ Unique Mutation · '+m.desc,uq:true}); return L; }
+function recipeCards(hero,pid){ const pt=(BASIC_PATHS[hero]||[]).find(x=>x.id===pid); if(!pt)return []; const L=(pt.upgrades||[]).map(u=>({id:u.id,name:u.name,emoji:u.emoji,iconKey:u.iconKey,desc:hero==='yuzu'?u.desc:u.headline||u.desc}));
+  for(const m of ((typeof UNIQUE_MUTS!=='undefined'&&UNIQUE_MUTS[pid])||[]))L.push({id:'uq:'+m.id,name:m.name,emoji:m.emoji,iconKey:hero==='yuzu'?yuzuCardArt(pid,m.id):'ic_uqm_'+m.id,desc:'⭐ Unique Mutation · '+m.desc,uq:true}); return L; }
 function recipeSeen(hero,pid){ const R=(Save.data&&Save.data.recipeBook)||{}; return ((R[hero]||{})[pid])||{}; }
 function storyCleared(){ const d=Save.data||{},sm=d.stageMastery||{}; return Math.max(d.unlockedStage||0,Object.keys(sm).filter(k=>sm[k]).length); }
 function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='recipes')return !!Save.endgameUnlocked?.();   /* v8.0.19 เจ้าของ: Delve เปิดหลังจบเนื้อเรื่อง */ if(t==='gearInbox'&&(Save.data?.gearInbox||[]).length)return true; const n=FEATURE_OPEN[t]; return n==null||storyCleared()>=n; }
@@ -8408,6 +8458,7 @@ class Game extends Phaser.Scene {
     for(const k in ASSET_IMAGES)chk(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)chk(k,ASSET_SHEETS[k].url); return out; }
   stageArtKeys(idx){
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'result_victory','result_defeat','sc44_background','sc44_frame','bv46_key',...RUBY_STAGE_KEYS];
+    if((this.character||Save.data.character)==='yuzu')keys.push(...Object.keys(ASSET_IMAGES).filter(k=>k.startsWith('yc59_')));
     if((this.character||Save.data.character)==='mint')keys.push('fx_mint_dash_shard','fx_mint_snowstorm');
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
@@ -15257,6 +15308,7 @@ class Game extends Phaser.Scene {
     return {...hl,t:f(cur)+' → '+f(cur+1)+(m[4]||''),prog:true};}
   // v7.8.68 ใบ 26: การ์ดที่เดิมยืมไอคอนอาวุธ → ไอคอนของตัวเอง (ไม่มีภาพ = ใช้ของเดิม)
   cardArtKey(o){ if(!o||o.type!=='basic'||!this.textures)return null; const k=String(o.key||''),h=(this.basicAttack&&this.basicAttack.character)||'',kind=o.kind||'';
+    const yz=h==='yuzu'&&yuzuCardArt(this.basicAttack?.path,k);if(yz&&this.textures.exists(yz))return yz;
     const c=o.uniqueCard?(kind==='⭐ Unique Mutation'?'ic_uqm_'+k:'ic_uq_'+k.replace(/^uq_/,'')):kind==='Modifier'?'ic_mod_'+k.replace(/^m_/,''):kind==='Fusion'?'ic_fus_'+k.replace(/^f_/,''):kind==='Trade-off'?'ic_trade_'+k.replace(/^t_/,''):kind==='Flavor Infusion'?'ic_inf_'+k:o.mutation?'ic_mut_'+h+'_'+k:o.evolution?'ic_evo_'+h:h==='cocoa'&&(k==='dashp'||k==='drum')?'ic_cocoa_'+k:null;
     return c&&this.textures.exists(c)?c:null; }
   drawReadableChoiceCard(group,o,x,y,w,h,options={}){
@@ -15377,7 +15429,7 @@ class Game extends Phaser.Scene {
     const parts=own.map(u=>{const v=(info.upgrades||[]).find(x=>x.id===u.id)||u;return (v.name!==u.name?u.name+' → '+v.name:v.name)+' ×'+b.lv[u.id];});
     if(b.mutation){const m=(info.mutations||[]).find(x=>x.id===b.mutation)||(d0.mutations||[]).find(x=>x.id===b.mutation);if(m)parts.push(m.name);}
     return parts.length?'↪ Keeps: '+parts.slice(0,3).join(' · ')+(parts.length>3?' +'+(parts.length-3)+' more':''):'';}
-  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);if(this.character==='yuzu'){const ye=YUZU_EVOLUTIONS[b?.path];return ye?{...d,evolution:ye.name,evolutionDesc:ye.desc}:d;}const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='pierce'?{...u,name:'Rupture Shards',headline:'+8% Rupture damage',desc:'Crystal Impaler Rupture deals +8% damage per rank. Ranks taken before the build carry over.'}:u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
+  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);if(this.character==='yuzu'){const ye=YUZU_EVOLUTIONS[b?.path],splash=({citrusGuardian:'Pomelo sweeps gain 10px radius per rank.',zestSwarm:'Arrow impacts splash for 18% companion power per rank (24px + 12px per rank). Vaulting Shot gains 8px radius per rank.',juiceWorkshop:'Blood Orange ground Sigils gain 8px radius per rank.'})[b?.path];return {...d,...(ye?{evolution:ye.name,evolutionDesc:ye.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='splash'&&splash?{...u,desc:splash}:u)};}const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='pierce'?{...u,name:'Rupture Shards',headline:'+8% Rupture damage',desc:'Crystal Impaler Rupture deals +8% damage per rank. Ranks taken before the build carry over.'}:u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
@@ -16863,7 +16915,7 @@ class Game extends Phaser.Scene {
     const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return [];
     const noSpecial=opts&&opts.noSpecial;
    // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
-    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};return c;};
+    const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};if(b.character==='yuzu'){c.iconKey=yuzuCardArt(b.path,u.id)||c.iconKey;if(u.id==='uq_power'){c.headline='+20% Unique power';c.desc='Increase the power of empowered companion hits and the Unique finisher by 20% per rank.';}}return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation) · v7.8.90 เดิม 6 ชนกับ Relic → สายเลื่อนเป็น 7 ทุกครั้ง
     const PATHS=BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5&&this.cardOpen?.('path')!==false){

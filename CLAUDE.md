@@ -1,6 +1,10 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.59, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.60, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+
+# Latest delivery: v8.0.59 — Yuzu card copy and48ImageGen icons
+
+Owner requests all Yuzu cards reviewed after54arsenals. Preserve original card layout, IDs, rank caps, stats and all combat methods. Starter/hero copy now always-ready single buddy; path-aware Zest Splash describes sweeps/Lime splash+Vault/Sigils, Swift Ranger covers Volley/Vault/Pin, Ready Quiver all4Lime skills, Sour Snare uses companion-power units, Acid Notes quantified, Honey/Spell talents renamed, display-only Focus mutation names and Peel Promise. Full Recipe effects and matching art.48built-in ImageGen icons (3donors+Dash refinement), sources/exact prompts incoming/yuzu59; mechanical scripts/pack-yuzu-59.py,96px lossless icons art/build_cards/yuzu59 with hashes/crops. Existing3path keys now accurate single companions;45new keys stage-lazy/Yuzu-only, all48used including path-specific Evolution and Unique Power. Generic Unique/infusion/trade icons reused. No new battle VFX/AI/balance/companions. docs/YUZU_CARDS.md. New isolated48bindings/Recipe/3paths/cold-art/other-hero checks, existing draft fixture loads new presentation helper; fullcheck/build required. No game screenshots/headless combat; owner phone appearance review pending.
 
 # Latest delivery: v8.0.58 — existing controls consistency pass
 

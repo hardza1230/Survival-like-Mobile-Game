@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "references": [
+    "assets/art/yuzu_companions/yz_pomelo.webp",
+    "assets/art/yuzu_companions/yz_lime.webp",
+    "assets/art/yuzu_companions/yz_bloodorange.webp"
+  ],
+  "prompt": "Use case: stylized-concept. Production raster game ability icon atlas, not a UI mockup. Create EXACTLY 16 isolated icons in a precise 4 columns by 4 rows regular square grid, row-major order listed below. Entire canvas square. Every cell has the same size, each icon centered in its own cell and fully contained within central 72 percent, generous empty transparent gutters. True transparent background, no checkerboard, no solid matte, no cell borders or tiles, no words, letters, numbers, labels or watermark. Hand-painted polished cartoon fantasy citrus game, warm cream highlights, clear dark plum outlines, lush leaf greens, honey gold and crimson accents. Strong readable silhouettes at 64px, restrained glow, tactile painted shading, consistent lighting and perspective. Reference images are IDENTITY and STYLE references only: first is the pale-yellow stout Pomelo boxer with leaf mitts; second the green Lime leaf-hood archer; third the red Blood Orange plum-hat witch. Do not copy animation strips or multiple poses. Each character icon contains exactly ONE companion, never a mob or summoned minion. Other icons are symbolic ability objects, no tiny details. Each of 16 icons distinct. Row-major cell subjects:\nRow 1, column 1: heavy green leaf boxing fist smashing a golden peel impact.\nRow 1, column 2: leaf boxing mitt sheltering a small yellow citrus seed.\nRow 1, column 3: small pale yellow pomelo growing toward a golden sun.\nRow 1, column 4: boxing mitt with wide golden crescent sweep.\nRow 2, column 1: large boxing fist hitting ground with expanding orange shock ring.\nRow 2, column 2: leaf bow with wind-swept feather and swift arrow.\nRow 2, column 3: seed arrow beside a small green rewinding clock.\nRow 2, column 4: full green leaf quiver with a circular refresh arrow.\nRow 3, column 1: thorny green sour trap snapping around a root.\nRow 3, column 2: fan of seven wooden seed arrows.\nRow 3, column 3: crimson citrus comet crossing a sour green sigil.\nRow 3, column 4: glowing citrus staff beside three rhythmic small clock sparks.\nRow 4, column 1: gold honey drop healing a heart within a leaf shield.\nRow 4, column 2: three roots holding a persistent green garden magic circle.\nRow 4, column 3: wide blossoming crimson flower magic sigil with spreading green petals.\nRow 4, column 4: one mighty pale gold Pomelo boxer with leaf scarf, huge leaf mitts and double ground shock ring.",
+  "cells": [
+    "p_heavyPeel",
+    "p_bodyguard",
+    "y_fastripe",
+    "y_keepripe",
+    "y_giantslam",
+    "p_pulp",
+    "p_feast",
+    "y_strongarm",
+    "y_bigsplat",
+    "y_double",
+    "p_sourMixer",
+    "p_sweetHelper",
+    "y_seedluck",
+    "y_longroot",
+    "y_elder",
+    "evo_pomelo"
+  ]
+}

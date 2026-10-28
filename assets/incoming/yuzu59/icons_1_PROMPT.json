@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "references": [
+    "assets/art/yuzu_companions/yz_pomelo.webp",
+    "assets/art/yuzu_companions/yz_lime.webp",
+    "assets/art/yuzu_companions/yz_bloodorange.webp"
+  ],
+  "prompt": "Use case: stylized-concept. Production raster game ability icon atlas, not a UI mockup. Create EXACTLY 16 isolated icons in a precise 4 columns by 4 rows regular square grid, row-major order listed below. Entire canvas square. Every cell has the same size, each icon centered in its own cell and fully contained within central 72 percent, generous empty transparent gutters. True transparent background, no checkerboard, no solid matte, no cell borders or tiles, no words, letters, numbers, labels or watermark. Hand-painted polished cartoon fantasy citrus game, warm cream highlights, clear dark plum outlines, lush leaf greens, honey gold and crimson accents. Strong readable silhouettes at 64px, restrained glow, tactile painted shading, consistent lighting and perspective. Reference images are IDENTITY and STYLE references only: first is the pale-yellow stout Pomelo boxer with leaf mitts; second the green Lime leaf-hood archer; third the red Blood Orange plum-hat witch. Do not copy animation strips or multiple poses. Each character icon contains exactly ONE companion, never a mob or summoned minion. Other icons are symbolic ability objects, no tiny details. Each of 16 icons distinct. Row-major cell subjects:\nRow 1, column 1: one bright yellow citrus seed with a small protective leaf, friendship emblem.\nRow 1, column 2: one stout pale yellow Pomelo guardian, leaf scarf and large green leaf boxing mitts, determined kind face.\nRow 1, column 3: one green Lime ranger in pointed leaf hood, holding a wooden bow with one seed arrow.\nRow 1, column 4: one red Blood Orange mage in plum pointed witch hat with citrus slice brooch and glowing citrus staff.\nRow 2, column 1: bitten golden citrus wedge striking with an impact star.\nRow 2, column 2: two green leaf shoes with short motion streaks.\nRow 2, column 3: one golden heart embraced by two green leaves.\nRow 2, column 4: orange seed striking a small spreading citrus splash.\nRow 3, column 1: green leaf shield with small gold heart.\nRow 3, column 2: three leaf footprints leaving a sour green ground patch.\nRow 3, column 3: two touching orange and green citrus wedges inside one warm halo.\nRow 3, column 4: four gold seeds in arc with fourth bursting brighter.\nRow 4, column 1: thick curled orange peel protecting a heart.\nRow 4, column 2: large golden armored leaf boxing fist with protective peel ring.\nRow 4, column 3: leaf bow pulled taut with a brilliant green piercing arrow and focused reticle.\nRow 4, column 4: three interlocking flavor petals of honey gold sour green and spicy crimson around a ground magic sigil.",
+  "cells": [
+    "starter",
+    "path_pomelo",
+    "path_lime",
+    "path_bloodorange",
+    "power",
+    "rate",
+    "family",
+    "splash",
+    "loyal",
+    "mut_parting",
+    "mut_pack",
+    "mut_second",
+    "mut_hardy",
+    "unique_pomelo",
+    "unique_lime",
+    "unique_bloodorange"
+  ]
+}

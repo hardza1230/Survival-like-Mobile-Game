@@ -1,0 +1,1112 @@
+{
+  "generator": "built-in image_gen",
+  "packing": "scripts/pack-yuzu-59.py",
+  "icons": [
+    {
+      "id": "starter",
+      "file": "assets/art/build_cards/yuzu59/starter.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        0,
+        0,
+        300,
+        330
+      ],
+      "alphaBounds": [
+        36,
+        89,
+        277,
+        313
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "b656609bf7a01d3be3fc2317ee24773f78e0bfa9aec9627da3a196744aa56787"
+    },
+    {
+      "id": "path_pomelo",
+      "file": "assets/art/build_cards/yuzu59/path_pomelo.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        300,
+        0,
+        626,
+        330
+      ],
+      "alphaBounds": [
+        3,
+        51,
+        311,
+        318
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "4c20e806b4ef4f0639154517720f156ef3d236730e3633c62ef5f97714763d9c"
+    },
+    {
+      "id": "path_lime",
+      "file": "assets/art/build_cards/yuzu59/path_lime.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        626,
+        0,
+        941,
+        330
+      ],
+      "alphaBounds": [
+        8,
+        64,
+        315,
+        320
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "ad7e3fae0a84d710ce84bbdff7563faf9ec19c175e9fdcc708264d2a01d52cde"
+    },
+    {
+      "id": "path_bloodorange",
+      "file": "assets/art/build_cards/yuzu59/path_bloodorange.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        941,
+        0,
+        1254,
+        330
+      ],
+      "alphaBounds": [
+        0,
+        52,
+        304,
+        324
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "bb63304c5d87196c04a09e2242092fd75a29e1e2c4ada7abf1b398e868ca9754"
+    },
+    {
+      "id": "power",
+      "file": "assets/art/build_cards/yuzu59/power.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        0,
+        330,
+        316,
+        623
+      ],
+      "alphaBounds": [
+        31,
+        23,
+        311,
+        271
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "f8efca427f30f0d1556e65319587ec4c078ca5226af0f1c7038fecb9aae95c70"
+    },
+    {
+      "id": "rate",
+      "file": "assets/art/build_cards/yuzu59/rate.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        316,
+        330,
+        626,
+        623
+      ],
+      "alphaBounds": [
+        4,
+        71,
+        295,
+        267
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "15a43996b0850197727c1294283474f77eafd78aaa3e2254aa186e04d5866547"
+    },
+    {
+      "id": "family",
+      "file": "assets/art/build_cards/yuzu59/family.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        626,
+        330,
+        935,
+        623
+      ],
+      "alphaBounds": [
+        19,
+        25,
+        288,
+        283
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "7dab735a9621d1f00b2273c52dffcaa8c8522101828975ecbd181cd347c17b6c"
+    },
+    {
+      "id": "splash",
+      "file": "assets/art/build_cards/yuzu59/splash.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        935,
+        330,
+        1254,
+        623
+      ],
+      "alphaBounds": [
+        10,
+        52,
+        294,
+        275
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "0023e1ec1efa84b92994a86133d1f9ddc795953911d05a508a32d58987f996ff"
+    },
+    {
+      "id": "loyal",
+      "file": "assets/art/build_cards/yuzu59/loyal.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        0,
+        623,
+        316,
+        915
+      ],
+      "alphaBounds": [
+        30,
+        24,
+        291,
+        280
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "12d7d29faf5ecae809e55c3c4907e1249a88957a00572a7292dd7d55cc72042f"
+    },
+    {
+      "id": "mut_parting",
+      "file": "assets/art/build_cards/yuzu59/mut_parting.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        316,
+        623,
+        626,
+        915
+      ],
+      "alphaBounds": [
+        5,
+        26,
+        297,
+        277
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "8c7fd8a00a69d488c159385023e6b2d3d498adc30eb503d2b984c69b791c81b4"
+    },
+    {
+      "id": "mut_pack",
+      "file": "assets/art/build_cards/yuzu59/mut_pack.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        626,
+        623,
+        940,
+        915
+      ],
+      "alphaBounds": [
+        13,
+        9,
+        292,
+        288
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "ada73ef11f50e3802215c7414574fb3759a1583fec8e85ce6c910f435c1a0793"
+    },
+    {
+      "id": "mut_second",
+      "file": "assets/art/build_cards/yuzu59/mut_second.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        940,
+        623,
+        1254,
+        915
+      ],
+      "alphaBounds": [
+        16,
+        13,
+        300,
+        286
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "24ac2a6b7fbf75f9e47501c587ed9d17bd41d7f0fb3b378f0b008a328cf2976d"
+    },
+    {
+      "id": "mut_hardy",
+      "file": "assets/art/build_cards/yuzu59/mut_hardy.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        0,
+        915,
+        318,
+        1254
+      ],
+      "alphaBounds": [
+        26,
+        13,
+        310,
+        291
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "d1725b31506ddbfae97079e0b8898707ea2727d54c29eaa08cf4351e3c386417"
+    },
+    {
+      "id": "unique_pomelo",
+      "file": "assets/art/build_cards/yuzu59/unique_pomelo.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        318,
+        915,
+        625,
+        1254
+      ],
+      "alphaBounds": [
+        6,
+        10,
+        299,
+        290
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "1ff42ddf302a07faa740c81fb6d641ea9d821c3b07873a88c5233a7f16fecb46"
+    },
+    {
+      "id": "unique_lime",
+      "file": "assets/art/build_cards/yuzu59/unique_lime.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        625,
+        915,
+        943,
+        1254
+      ],
+      "alphaBounds": [
+        7,
+        9,
+        318,
+        296
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "7a652bb80c25e01b096396a739e31803ce935af2d478177010a871bd35391901"
+    },
+    {
+      "id": "unique_bloodorange",
+      "file": "assets/art/build_cards/yuzu59/unique_bloodorange.webp",
+      "source": "assets/incoming/yuzu59/icons_1_source.png",
+      "sourceSha256": "db69d29ab644aa0a0517526e2cb55bc301c37cdd3f3e040ceaed4d8eba64843d",
+      "crop": [
+        943,
+        915,
+        1254,
+        1254
+      ],
+      "alphaBounds": [
+        5,
+        8,
+        297,
+        289
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "e188c3ce3597b8186b6b1c930833e1e4cf6a2ac66a84de0e81e8468f2935525f"
+    },
+    {
+      "id": "p_heavyPeel",
+      "file": "assets/art/build_cards/yuzu59/p_heavyPeel.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        0,
+        0,
+        335,
+        321
+      ],
+      "alphaBounds": [
+        18,
+        49,
+        325,
+        311
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "24332aa19b8bff4cc76879c9c8797fc882f7dd6509dbc74df7a11c8efa79b023"
+    },
+    {
+      "id": "p_bodyguard",
+      "file": "assets/art/build_cards/yuzu59/p_bodyguard.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        335,
+        0,
+        631,
+        321
+      ],
+      "alphaBounds": [
+        13,
+        51,
+        274,
+        310
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "f83f0cd6d5e2ca1d3efeaf70f49100360dc1098531b50ee8b92bdd8ff0d65c2b"
+    },
+    {
+      "id": "y_fastripe",
+      "file": "assets/art/build_cards/yuzu59/y_fastripe.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        631,
+        0,
+        949,
+        321
+      ],
+      "alphaBounds": [
+        21,
+        33,
+        307,
+        311
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "8a15024512d88ca447d148ea0ad18c52203e992fa93d80ea4c96da7c374961f2"
+    },
+    {
+      "id": "y_keepripe",
+      "file": "assets/art/build_cards/yuzu59/y_keepripe.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        949,
+        0,
+        1254,
+        321
+      ],
+      "alphaBounds": [
+        9,
+        50,
+        290,
+        309
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "259079d55346bc5aaef1a0735ad69639503570512925e020b521d791e3e6e0cc"
+    },
+    {
+      "id": "y_giantslam",
+      "file": "assets/art/build_cards/yuzu59/y_giantslam.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        0,
+        321,
+        330,
+        628
+      ],
+      "alphaBounds": [
+        17,
+        10,
+        320,
+        292
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "9a5fd3dd64235882f4b8b66abdef332ee55bae8266b53a8793fefc51bbdf7c17"
+    },
+    {
+      "id": "p_pulp",
+      "file": "assets/art/build_cards/yuzu59/p_pulp.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        330,
+        321,
+        646,
+        628
+      ],
+      "alphaBounds": [
+        6,
+        18,
+        316,
+        295
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "5dfeb585e6b84532e4911bb931e2e891538e2681b911aee37e82422643965cfe"
+    },
+    {
+      "id": "p_feast",
+      "file": "assets/art/build_cards/yuzu59/p_feast.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        646,
+        321,
+        946,
+        628
+      ],
+      "alphaBounds": [
+        0,
+        43,
+        277,
+        292
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "cf7f3806a4aadb4f5a2cb5ff12f36a38fea87b08fd98d0fbfce2363065d281e5"
+    },
+    {
+      "id": "y_strongarm",
+      "file": "assets/art/build_cards/yuzu59/y_strongarm.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        946,
+        321,
+        1254,
+        628
+      ],
+      "alphaBounds": [
+        29,
+        18,
+        279,
+        291
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "30b261f009a355b37f6b88fb5e1efebb2c6034df15c7b76049d194f1ab6d1e03"
+    },
+    {
+      "id": "y_bigsplat",
+      "file": "assets/art/build_cards/yuzu59/y_bigsplat.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        0,
+        628,
+        330,
+        916
+      ],
+      "alphaBounds": [
+        24,
+        12,
+        314,
+        276
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "eb28790f997bd85e052b658294a91c2330cb3d4acda40504e186b32e6d0a7f96"
+    },
+    {
+      "id": "y_double",
+      "file": "assets/art/build_cards/yuzu59/y_double.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        330,
+        628,
+        630,
+        916
+      ],
+      "alphaBounds": [
+        9,
+        17,
+        292,
+        277
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "3b67b2301a4aa36f82fdaeafb3a57ff583c832c4971822a4ae10e1594c1cc08b"
+    },
+    {
+      "id": "p_sourMixer",
+      "file": "assets/art/build_cards/yuzu59/p_sourMixer.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        630,
+        628,
+        950,
+        916
+      ],
+      "alphaBounds": [
+        8,
+        17,
+        313,
+        285
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "610aebb8571ff3079c73e0c109c37c706ebfd376ac75f8343c76acaa645bf74b"
+    },
+    {
+      "id": "p_sweetHelper",
+      "file": "assets/art/build_cards/yuzu59/p_sweetHelper.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        950,
+        628,
+        1254,
+        916
+      ],
+      "alphaBounds": [
+        10,
+        10,
+        285,
+        278
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "4d142462a9819f048982b1e705cdbbc88f7295130b97d3d3885a3c9c1fb02355"
+    },
+    {
+      "id": "y_seedluck",
+      "file": "assets/art/build_cards/yuzu59/y_seedluck.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        0,
+        916,
+        328,
+        1254
+      ],
+      "alphaBounds": [
+        30,
+        8,
+        308,
+        294
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "516a50ff3afb90a4a6a5ae0103abb833a3c76693790e5c1adc7333d7b7f90481"
+    },
+    {
+      "id": "y_longroot",
+      "file": "assets/art/build_cards/yuzu59/y_longroot.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        328,
+        916,
+        622,
+        1254
+      ],
+      "alphaBounds": [
+        13,
+        3,
+        292,
+        298
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "91bd92f82fb566d76f27be7e066c9f567f5bac5106fa08686076d98eb0381d21"
+    },
+    {
+      "id": "y_elder",
+      "file": "assets/art/build_cards/yuzu59/y_elder.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        622,
+        916,
+        942,
+        1254
+      ],
+      "alphaBounds": [
+        1,
+        20,
+        316,
+        298
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "b8912a9e4f6001f7423b9fb87eb9a89f91ab49439477e6f9c77d4e2d2c14132c"
+    },
+    {
+      "id": "evo_pomelo",
+      "file": "assets/art/build_cards/yuzu59/evo_pomelo.webp",
+      "source": "assets/incoming/yuzu59/icons_2_source.png",
+      "sourceSha256": "b7e8a696e53a019c9169eeb80f1a7e90f7d127e7c0cf4ac60965c042648dfa66",
+      "crop": [
+        942,
+        916,
+        1254,
+        1254
+      ],
+      "alphaBounds": [
+        4,
+        4,
+        300,
+        294
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "7526ed5b0e5b011d617af1841291cc5467e800f156c9d010c5aa80e0f73f8ff4"
+    },
+    {
+      "id": "evo_lime",
+      "file": "assets/art/build_cards/yuzu59/evo_lime.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        0,
+        0,
+        343,
+        338
+      ],
+      "alphaBounds": [
+        27,
+        74,
+        343,
+        325
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "a752fcb2932fc35c4e6dbdd7428bdc5bb62e5344dc0c980f231b0da2a414bbcf"
+    },
+    {
+      "id": "evo_bloodorange",
+      "file": "assets/art/build_cards/yuzu59/evo_bloodorange.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        343,
+        0,
+        647,
+        338
+      ],
+      "alphaBounds": [
+        0,
+        48,
+        293,
+        338
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "9d879fa4e3936554885f38f2861763427b0459d7962bf0cabf91cb7ec991dee8"
+    },
+    {
+      "id": "ripe_fest",
+      "file": "assets/art/build_cards/yuzu59/ripe_fest.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        647,
+        0,
+        951,
+        338
+      ],
+      "alphaBounds": [
+        15,
+        44,
+        293,
+        335
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "b1de150f6fa79883bd3628c81760a2c52f976d15c44ffb6097859a465c020686"
+    },
+    {
+      "id": "ripe_shield",
+      "file": "assets/art/build_cards/yuzu59/ripe_shield.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        951,
+        0,
+        1254,
+        338
+      ],
+      "alphaBounds": [
+        16,
+        67,
+        278,
+        334
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "ade6d295fb6ef5178f23b0004f2a35aa32d74267771ef07c7525ee2ff2a17060"
+    },
+    {
+      "id": "toss_rain",
+      "file": "assets/art/build_cards/yuzu59/toss_rain.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        0,
+        338,
+        347,
+        646
+      ],
+      "alphaBounds": [
+        24,
+        2,
+        336,
+        301
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "7eab5c1a5a82cfca5104a63e5321c6b4d14bd69359f5b7cfa77fe20904f7faf1"
+    },
+    {
+      "id": "toss_home",
+      "file": "assets/art/build_cards/yuzu59/toss_home.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        347,
+        338,
+        641,
+        646
+      ],
+      "alphaBounds": [
+        10,
+        0,
+        294,
+        295
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "e76c22cfb2d010d87d13fb7f81ec7fea7f96f31eb3c1ed074ab827f165830200"
+    },
+    {
+      "id": "grow_burst",
+      "file": "assets/art/build_cards/yuzu59/grow_burst.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        641,
+        338,
+        943,
+        646
+      ],
+      "alphaBounds": [
+        0,
+        22,
+        294,
+        307
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "2abd8c4191a87779e6f02f7179306dc8ba40d86e47fa219a5b64c1fd4a39ea2d"
+    },
+    {
+      "id": "grow_grove",
+      "file": "assets/art/build_cards/yuzu59/grow_grove.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        943,
+        338,
+        1254,
+        646
+      ],
+      "alphaBounds": [
+        4,
+        52,
+        303,
+        290
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "7a8a17ebfaf2a68d3aed4d573612fe4a6e9a22fdf13e746efd863e3bcae4dc58"
+    },
+    {
+      "id": "m_zest",
+      "file": "assets/art/build_cards/yuzu59/m_zest.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        0,
+        646,
+        328,
+        932
+      ],
+      "alphaBounds": [
+        17,
+        15,
+        316,
+        268
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "5e86c6289359a187a9747717e22940ef522940b111e85ef7f2e561afb2d24de0"
+    },
+    {
+      "id": "m_crew",
+      "file": "assets/art/build_cards/yuzu59/m_crew.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        328,
+        646,
+        642,
+        932
+      ],
+      "alphaBounds": [
+        4,
+        55,
+        304,
+        249
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "e7a3048624f9e3119169bf3778543ffc17adf26d9cd49691869d5036a877a174"
+    },
+    {
+      "id": "m_rally",
+      "file": "assets/art/build_cards/yuzu59/m_rally.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        642,
+        646,
+        946,
+        932
+      ],
+      "alphaBounds": [
+        6,
+        16,
+        291,
+        286
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "ebfb0c695f75f5ec71aacaed11b7b55fe1a1f0df32ff1371f7458f6e64ff0e80"
+    },
+    {
+      "id": "m_sour",
+      "file": "assets/art/build_cards/yuzu59/m_sour.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        946,
+        646,
+        1254,
+        932
+      ],
+      "alphaBounds": [
+        11,
+        2,
+        290,
+        277
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "f608fa5d9ac5889647e9c6c19df07049afe9d9b04fd1f3467cefff6dcae5e3f8"
+    },
+    {
+      "id": "m_splash",
+      "file": "assets/art/build_cards/yuzu59/m_splash.webp",
+      "source": "assets/incoming/yuzu59/dash_source.png",
+      "sourceSha256": "b4a687b669216d9c32215b39731cdfb652c33ae21bcc884a591fa1602c847b3c",
+      "crop": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBounds": [
+        157,
+        200,
+        1132,
+        1038
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "40697ce13b476261e58e94b79d1f75cf6d006346add87771e3716f82bce4cedf"
+    },
+    {
+      "id": "m_bite",
+      "file": "assets/art/build_cards/yuzu59/m_bite.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        329,
+        932,
+        641,
+        1254
+      ],
+      "alphaBounds": [
+        0,
+        7,
+        312,
+        291
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "e861ea5209fdfdf133966debacdc96ec264425496783d74b2e4fc7327f95b7fe"
+    },
+    {
+      "id": "f_harvest",
+      "file": "assets/art/build_cards/yuzu59/f_harvest.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        641,
+        932,
+        943,
+        1254
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        298,
+        288
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "595afe9d4e843ee4dc8b08054ff12a24ddcc2ad0a56bf20252070d09ce35c853"
+    },
+    {
+      "id": "f_parade",
+      "file": "assets/art/build_cards/yuzu59/f_parade.webp",
+      "source": "assets/incoming/yuzu59/icons_3_source.png",
+      "sourceSha256": "0d795a848f8291814589a5ab45b159ed105c00d57e92d6e697857464d7dde2a5",
+      "crop": [
+        943,
+        932,
+        1254,
+        1254
+      ],
+      "alphaBounds": [
+        1,
+        17,
+        300,
+        289
+      ],
+      "size": [
+        96,
+        96
+      ],
+      "sha256": "05d77348731abbc6a37cfd91eb50596f63a5c708d36b0faaeb64f11aa7d45880"
+    }
+  ],
+  "decodedBytes": 1769472,
+  "downloadBytes": 698850
+}

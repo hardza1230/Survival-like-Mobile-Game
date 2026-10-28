@@ -5,7 +5,7 @@ function block(from,to){return source.slice(source.indexOf(from),source.indexOf(
 let seed=7;const rng=Object.create(Math);rng.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
 const ctx={Math:rng,Phaser:{Utils:{Array:{Shuffle:a=>a}},Math:{FloatBetween:(a,b)=>(a+b)/2}},SKILL_ICON:{frost:'ic_frost'},tagList:()=>[],tagLabel:()=>'',TAG_TIERS:[],TAG_SETS:{},WEAPON_TAGS:{},Sfx:{clear(){},frost(){},heal(){}},rollRarity:()=>({color:1,potency:1,ranks:1}),STAT_CAPS:{dmgMul:10,critChance:.8,cdMulMin:.3,speedMul:3,dmgTakenMin:.35},BALANCE:{moveSpeed:180}};
 vm.createContext(ctx);
-vm.runInContext(block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const INFUSION_UP=', '// 🏷️ Tag Sets')+block('const MINT_CARD_WEIGHTS=', 'const CHARACTER_UNIQUES = {')+block('const BUILD_PATH_STYLES=', '// Mint M1:')+block('const BASIC_EVO_DESC=', '/* ---- BASIC ATTACK PROTOTYPE'),ctx);
+vm.runInContext(block('const YUZU_CARD_ICONS=','const BASIC_EVO_DESC=')+block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const INFUSION_UP=', '// 🏷️ Tag Sets')+block('const MINT_CARD_WEIGHTS=', 'const CHARACTER_UNIQUES = {')+block('const BUILD_PATH_STYLES=', '// Mint M1:')+block('const BASIC_EVO_DESC=', '/* ---- BASIC ATTACK PROTOTYPE'),ctx);
 const api=vm.runInContext('({BASIC_ATTACKS,BASIC_PATHS,mintUpgradeGroup,mintVolleyProfile,pickMintCards,pathMods})',ctx);
 const Scene=vm.runInContext('class Scene{'+['rollBasicAttackUpgrades','endlessCards','endlessStatDefs','castFrostLance','usesStoryBudget','storySpawnPace','storyTimedSwarm','storyLiveCap','storyCanSpawn'].map(method).join('\n')+'\n}Scene',ctx);
 function scene(path,character='mint'){
