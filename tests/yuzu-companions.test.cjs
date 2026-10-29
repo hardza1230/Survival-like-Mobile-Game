@@ -110,7 +110,7 @@ for(const step of [1,2,3]){const front=enemy(50,25,1000),back=enemy(-110,25,1000
 
 // v8.0.60 ก: Yuzu seed marks one target; the companion focuses it and hits it ×1.25 for 4s.
 {const mob=enemy(60,0,1000),boss=enemy(300,0,1000),s=scene('zestSwarm',[mob,boss]),m=s.yuzuEnsure(),es=[mob,boss];boss.isBoss=true;s.enemies.children.iterate=f=>es.forEach(f);
- assert.equal(s.yuzuPickTarget(m,.16),boss);s.yuzuMark(mob);assert.equal(s.yuzuMarked(),mob);assert.equal(s.yuzuEnemyPriority(mob),1.5);assert.equal(s.yuzuPickTarget(m,.16),boss,'v61: boss stays above the mark');boss.isBoss=false;m.target=null;assert.equal(s.yuzuPickTarget(m,.16),mob,'mark wins among mobs');boss.isBoss=true;
+ assert.equal(s.yuzuPickTarget(m,.16),boss);s.yuzuMark(mob);assert.equal(s.yuzuMarked(),mob);assert.equal(s.yuzuFocusRank(mob),1.5);assert.equal(s.yuzuEnemyPriority(mob),0,'v62: mark does not widen leash/skill gating');assert.equal(s.yuzuPickTarget(m,.16),boss,'v61: boss stays above the mark');boss.isBoss=false;m.target=null;assert.equal(s.yuzuPickTarget(m,.16),mob,'mark wins among mobs');boss.isBoss=true;
  s.yuzuHit(m,mob,10,'arrow');assert.equal(s.hits.at(-1).n,12.5);s.yuzuHit(null,mob,10,'seed');assert.equal(s.hits.at(-1).n,10,'Yuzu seeds get no mark bonus');
  s.yuzuTickMark(4.1);assert.equal(s.yuzuMarked(),null);s.yuzuMark(mob);mob._yzSpawnId++;assert.equal(s.yuzuMarked(),null,'pooled reuse clears the mark');s.clearYuzuCrew();assert.equal(s._yzMark,null);}
 {const left=enemy(-150,0),right=enemy(200,0),s=scene('zestSwarm',[left,right]),es=[left,right];s.enemies.children.iterate=f=>es.forEach(f);s.yuzuEnsure();
@@ -133,5 +133,9 @@ for(const step of [1,2,3]){const front=enemy(50,25,1000),back=enemy(-110,25,1000
  let out=[card('a'),card('b'),card('c')];s.yuzuUnlockGuard(out,atk);assert(!out.some(c=>c.key==='p_pulp'),'first miss allowed');
  out=[card('a'),card('b'),{type:'heal',key:'sweetRecovery'}];s.yuzuUnlockGuard(out,atk);assert(out.some(c=>c.key==='p_pulp'),'second level forces an unlock card');assert(out.some(c=>c.type==='heal'),'heal kept');
  s.basicAttack.lv.p_pulp=1;out=[card('a')];s.yuzuUnlockGuard(out,atk);s.yuzuUnlockGuard(out,atk);assert.equal(out[0].key,'a','nothing left to unlock');}
+// v8.0.62 ก/ง/ค: mark lifts only target choice; unlock cards say what they unlock; Ruby teaches aiming once.
+{const mob=enemy(60,0,1000),s=scene('zestSwarm',[mob]);let tip=null;s.rubyOnce=k=>{tip=k;};s.yuzuEnsure();s.yuzuMark(mob);assert.equal(tip,'yuzuAim');assert.equal(s.yuzuEnemyPriority(mob),0);assert.equal(s.yuzuFocusRank(mob),1.5);
+ assert(src.includes("c.headline='🔓 Unlocks '+unl"));assert(src.includes('yuzuAim:{say:'));for(const n of ['needs the Sour Snare card','needs the Honey Alchemy card','needs the Steeped Flavor card'])assert(src.includes(n),n);}
+console.log('Yuzu v62: mark-only target choice, unlock headlines, locked-talent notes and Ruby aim tip passed');
 console.log('Yuzu v61: steady mark, mission/boss above mark, unlock-card guarantee passed');
 console.log('Yuzu v60: seed mark focus/×1.25/expiry/pool safety, walk-direction aim, card skill unlocks + Evolution, Dash keeps an engaged companion and rush cooldown passed');

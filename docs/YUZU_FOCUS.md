@@ -30,3 +30,9 @@ No balance numbers changed except the new ×1.25 mark bonus. Owner phone review 
 - ก Steady mark: `yuzuMark` keeps the current mark for at least 2s (`age`), and moves only after 2 seed hits in a row on the same new enemy (`pend`). A hit on the current mark refreshes it to 4s and resets the pending count.
 - ข1 Priority: `yuzuEnemyPriority` order is mission 5 → active Wisp raider 4 → boss 3 → mini 2 → **mark 1.5** → elite/courier 1 → mob 0. The mark only lifts a mob/elite; a marked boss keeps 3. The ×1.25 companion bonus still applies to any marked enemy.
 - ง Guarantee: `yuzuUnlockGuard(out,atk)` runs on every normal card roll. After the Build is picked, if a skill-unlock card (`y_bigsplat p_pulp y_strongarm y_giantslam y_longroot y_elder y_seedluck`) is still at rank 0 in the pool and one level-up passed without offering it, the next roll replaces a non-heal, non-path card (or any non-heal card) with one. Counter resets on companion change/clear.
+
+## v8.0.62 — owner picked ก + ง + ค (third critique)
+- ก `yuzuEnemyPriority` is back to the plain order (mark not included). New `yuzuFocusRank` = priority + mark 1.5, used only in `yuzuPickTarget` and `yuzuTarget`. Leash/pursuit range, `yuzuArsenalThink` gating (Pin/Garden/Breaker `rank>0`), `yuzuCluster` and Lime rain FX ignore the mark.
+- ง Unlock cards at rank 0 get headline `🔓 Unlocks <skill>` (makeCard, Yuzu only, not after Evolution). Talents Trap Setter / Honey Notes / Slow Steep say which card they need.
+- ค `RUBY_TIPS.yuzuAim`, shown once (`rubyOnce`) the first time a seed creates a mark.
+- New Unique design draft: docs/YUZU_UNIQUE_V2.md (awaiting owner pick).

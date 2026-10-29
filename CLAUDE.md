@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.62, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.63, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.61 — Yuzu steady mark + mission-first priority + unlock-card guarantee (owner picked ก+ข+ง)
+# Latest delivery: v8.0.62 — Yuzu mark scope fix + unlock headlines + Ruby aim tip (owner picked ก+ง+ค) + Unique v2 draft
+
+ก: yuzuEnemyPriority plain again; yuzuFocusRank (mark 1.5) only in yuzuPickTarget/yuzuTarget, so leash 740/800, arsenal rank>0 gating, cluster and FX ignore the mark. ง: rank-0 unlock cards headline '🔓 Unlocks X' (makeCard, not after Evolution); Trap Setter/Honey Notes/Slow Steep talents name their needed card. ค: RUBY_TIPS.yuzuAim via rubyOnce on first mark. docs/YUZU_UNIQUE_V2.md: Citrus Command (hold-aim leap move per path + 4s In Sync, reuses yuzu51/54 art) recommended, Ripe Meter / Juice Swap alternatives — awaiting owner. tests yuzu-companions v62 block. Owner phone review pending.
+
+# Previous delivery: v8.0.61 — Yuzu steady mark + mission-first priority + unlock-card guarantee (owner picked ก+ข+ง)
 
 ก: yuzuMark holds ≥2s (k.age) and moves only after 2 consecutive seed hits on the same new enemy (k.pend); hit on the mark refreshes 4s. ข1: yuzuEnemyPriority mission5 → Wisp4 → boss3 → mini2 → mark1.5 → elite1 → mob0 (mark lifts only mobs/elites, ×1.25 stays). ง: yuzuUnlockGuard(out,atk) at both rollBasicAttackUpgrades returns: after Build, if a rank-0 unlock card is in the pool and one level-up missed it, next roll swaps a non-heal/non-path card for one (_yzUnlockMiss, reset in clearYuzuCrew). docs/YUZU_FOCUS.md; tests/yuzu-companions v61 block. Owner phone review pending.
 
