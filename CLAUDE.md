@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.63, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.64, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.62 — Yuzu mark scope fix + unlock headlines + Ruby aim tip (owner picked ก+ง+ค) + Unique v2 draft
+# Latest delivery: v8.0.63 — C3-3…C3-5 boss/mini HP nerf (owner: too much HP)
+
+_bStoryC and _mStoryC (mini = 25% of it) indices 12–14: 96.76/152.67/240.88 → 82.25/114.5/159 (−15/−25/−34%), Story only; Recipe/Delve and stageThreat (Recommended Power) unchanged. Owner phone check pending.
+
+# Previous delivery: v8.0.62 — Yuzu mark scope fix + unlock headlines + Ruby aim tip (owner picked ก+ง+ค) + Unique v2 draft
 
 ก: yuzuEnemyPriority plain again; yuzuFocusRank (mark 1.5) only in yuzuPickTarget/yuzuTarget, so leash 740/800, arsenal rank>0 gating, cluster and FX ignore the mark. ง: rank-0 unlock cards headline '🔓 Unlocks X' (makeCard, not after Evolution); Trap Setter/Honey Notes/Slow Steep talents name their needed card. ค: RUBY_TIPS.yuzuAim via rubyOnce on first mark. docs/YUZU_UNIQUE_V2.md: Citrus Command (hold-aim leap move per path + 4s In Sync, reuses yuzu51/54 art) recommended, Ripe Meter / Juice Swap alternatives — awaiting owner. tests yuzu-companions v62 block. Owner phone review pending.
 
