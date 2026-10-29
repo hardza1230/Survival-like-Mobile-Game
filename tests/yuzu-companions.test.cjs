@@ -19,30 +19,30 @@ function scene(path=null,es=[]){
 // Single ownership is invariant under every old count upgrade and gear investment.
 for(const path of [null,'citrusGuardian','zestSwarm','juiceWorkshop']){
  const s=scene(path),m=s.yuzuEnsure();s.basicAttack.lv.family=3;s.basicAttack._pm.count=20;
- assert.equal(s.yuzuEnsure(),m);assert.equal(s._yuzuCrew.length,1);assert(m.maxhp>0);assert(m.hp<=m.maxhp);
+ assert.equal(s.yuzuEnsure(),m);assert.equal(s._yuzuCrew.length,1);assert(!('hp' in m)&&!('down' in m)&&!('revive' in m));
  assert.equal(m.kind,({citrusGuardian:'pomelo',zestSwarm:'lime',juiceWorkshop:'bloodorange'})[path]||'yuzling');
 }
-// Companions are always ready; damage and old down/recovery entry points never disable them.
-{const s=scene(),m=s.yuzuEnsure();m.spr.setPosition(200,0);s.yuzuHurt(m,1e9);assert.equal(m.hp,m.maxhp);assert.equal(m.down,0);s.yuzuKnock(()=>true);s.yuzuDown(m);s.yuzuRecovery(m,5);assert.equal(m.down,0);assert.equal(m.hp,m.maxhp);assert.equal(m.spr.x,200);}
-{const s=scene(),m=s.yuzuEnsure();s.basicAttack.mutation='hardy';s.yuzuHurt(m,1e9);s.yuzuParadeCast(1);assert.equal(m.down,0);assert(s._yzShield.hp>=22);}
+// v8.0.60: the old down/revive/HP, Flavor Brew and orb compatibility helpers are gone.
+{const s=scene();s.yuzuEnsure();for(const k of ['yuzuHurt','yuzuKnock','yuzuDown','yuzuRecovery','yuzuRegrow','yuzuMaxHp','yuzuBrew','yuzuFinishInfusedShot'])assert.equal(s[k],undefined,k+' legacy helper removed');assert(!src.includes('yuzuKnock'));}
+{const s=scene(),m=s.yuzuEnsure();s.basicAttack.mutation='hardy';s.yuzuParadeCast(1);assert(s._yzShield.hp>=22);}
 // Growth is attributed only to the active Pomelo, never to Yuzu seeds or passive stage kills.
-{const s=scene('citrusGuardian'),m=s.yuzuEnsure();for(let i=0;i<20;i++)s.yuzuOnKill();assert.equal(m.growth,0);s._yzHitOwner=m;for(let i=0;i<4;i++)s.yuzuOnKill();assert.equal(m.growth,1);for(let i=0;i<40;i++)s.yuzuOnKill();assert.equal(m.growth,3);s._yzHitOwner=null;s.basicAttack.lv.y_keepripe=4;s.yuzuDown(m);assert.equal(m.growth,3);}
+{const s=scene('citrusGuardian'),m=s.yuzuEnsure();for(let i=0;i<20;i++)s.yuzuOnKill();assert.equal(m.growth,0);s._yzHitOwner=m;for(let i=0;i<4;i++)s.yuzuOnKill();assert.equal(m.growth,1);for(let i=0;i<40;i++)s.yuzuOnKill();assert.equal(m.growth,3);s._yzHitOwner=null;s.basicAttack.lv.y_keepripe=4;assert.equal(m.growth,3);}
 // Legacy HP/family investment now improves hits and shields without introducing a down state.
-{const s=scene('citrusGuardian'),m=s.yuzuEnsure(),old=s.yuzuPower();s.basicAttack.lv.family=2;s.yuzuMaxHp(m);assert.equal(m.hp,m.maxhp);assert.equal(s.yuzuPower(),old*1.08);s.yuzuShield(.2,4);assert(Math.abs(s._yzShield.hp-23.2)<1e-8);}
+{const s=scene('citrusGuardian'),m=s.yuzuEnsure(),old=s.yuzuPower();s.basicAttack.lv.family=2;assert.equal(s.yuzuPower(),old*1.08);s.yuzuShield(.2,4);assert(Math.abs(s._yzShield.hp-23.2)<1e-8);}
 // Taunt is scoped to ordinary foes and cannot hijack story targets or Wisp raiders.
-{const s=scene('citrusGuardian'),m=s.yuzuEnsure(),e=enemy(m.spr.x+20,m.spr.y);assert.equal(s.yuzuTaunt(e),m.spr);for(const flag of ['isBoss','isMini','_waveObjectiveTarget','_wispRaider','_fleeing']){e[flag]=true;assert.equal(s.yuzuTaunt(e),null);e[flag]=false;}m.down=1;assert.equal(s.yuzuTaunt(e),null);}
-// Sweet -> Sour -> Spicy are individually deterministic, bounded and keep their authored roles.
-{const e=enemy(80,0),s=scene('juiceWorkshop',[e]),m=s.yuzuEnsure();s.player.hp=50;s.yuzuBrew(m,0);assert.equal(s.player.hp,54);assert.equal(s._yzShield.hp,8);s.yuzuBrew(m,1);assert.equal(s._yzZones[0].kind,'sour');assert.equal(s.yuzuVulnerable(e),1.2);s.yuzuBrew(m,2);assert.equal(s._yzShots[0].burn,true);assert.equal(s._yzShots[0].pierce,5);assert.equal(s.yuzuSlow(enemy(20,0)),.85);s.character='momo';assert.equal(s.yuzuSlow(e),1);assert.equal(s.yuzuVulnerable(e),1);assert.equal(s.yuzuGuard(),1);}
+{const s=scene('citrusGuardian'),m=s.yuzuEnsure(),e=enemy(m.spr.x+20,m.spr.y);assert.equal(s.yuzuTaunt(e),m.spr);for(const flag of ['isBoss','isMini','_waveObjectiveTarget','_wispRaider','_fleeing']){e[flag]=true;assert.equal(s.yuzuTaunt(e),null);e[flag]=false;}}
+// Sour patches, Aroma slow and Guard stay scoped to Yuzu.
+{const e=enemy(80,0),s=scene('juiceWorkshop',[e]),m=s.yuzuEnsure();s.yuzuZone(m,'sour',80,0,120,4,.25);assert.equal(s.yuzuVulnerable(e),1.2);assert.equal(s.yuzuSlow(enemy(20,0)),.85);s.character='momo';assert.equal(s.yuzuSlow(e),1);assert.equal(s.yuzuVulnerable(e),1);assert.equal(s.yuzuGuard(),1);}
 // Shield consumes its own pool, never steals a relic shell or heals the player.
 {const s=scene();s.yuzuShield(.2,4);assert.equal(s.yuzuAbsorb(12),0);assert.equal(s.yuzuAbsorb(12),4);assert.equal(s._yzShield,null);assert.equal(s.player.hp,100);}
 // Swept collision prevents high-speed arrows tunnelling. First crit resets on pool reuse.
 {const e=enemy(80,0,1000),s=scene('zestSwarm',[e]),m=s.yuzuEnsure();for(let i=0;i<2;i++){s.yuzuShot(m,0,0,0,10,{first:true});s.yuzuTickShots(.3);}assert.equal(s.hits.length,2);assert.equal(s.hits[0].critical,true);assert.equal(s.hits[1].critical,false);e._yzSpawnId++;s.yuzuShot(m,0,0,0,10,{first:true});s.yuzuTickShots(.3);assert.equal(s.hits.at(-1).critical,true);assert.equal(s._yzHitOwner,null);assert.equal(s._yzForceCrit,false);}
-// Orbs hit one initial target and two distinct bounce victims; pierce hits each once.
-{const es=[enemy(40,0,1000),enemy(100,0,1000),enemy(160,0,1000)],s=scene('juiceWorkshop',es),m=s.yuzuEnsure();s.yuzuShot(m,0,0,0,10,{orb:true});for(let i=0;i<5;i++)s.yuzuTickShots(.1);assert.equal(s.hits.length,3);assert.equal(new Set(s.hits.map(h=>h.e)).size,3);}
+// Piercing arrows hit each victim once.
+{const es=[enemy(40,0,1000),enemy(100,0,1000),enemy(160,0,1000)],s=scene('zestSwarm',es),m=s.yuzuEnsure();s.yuzuShot(m,0,0,0,10,{pierce:2});for(let i=0;i<5;i++)s.yuzuTickShots(.1);assert.equal(s.hits.length,3);assert.equal(new Set(s.hits.map(h=>h.e)).size,3);}
 // Context always restores on nested adapters and failures; player seeds cannot grow Pomelo.
 {const e=enemy(0,0),s=scene('citrusGuardian',[e]),m=s.yuzuEnsure();s.damage=()=>{throw Error('adapter');};assert.throws(()=>s.yuzuHit(m,e,5,'sweep',true),/adapter/);assert.equal(s._yzHitOwner,null);assert.equal(s._yzForceCrit,false);}
 // Each saved Build now starts its own timed buff, retaining one companion.
-for(const path of ['citrusGuardian','zestSwarm','juiceWorkshop']){const s=scene(path),m=s.yuzuEnsure();s.yuzuParadeCast(2);assert.equal(m.down,0);assert.equal(s.yuzuBuff().m,m);assert.equal(s.yuzuBuff().total,path==='juiceWorkshop'?7:6);assert.equal(s._yzRain,null);assert.equal(s._yzInfusion,null);if(path==='citrusGuardian')assert(s._yzShield.hp>=28.99);if(path==='juiceWorkshop')assert(s._yzShield.hp>=21);}
+for(const path of ['citrusGuardian','zestSwarm','juiceWorkshop']){const s=scene(path),m=s.yuzuEnsure();s.yuzuParadeCast(2);assert.equal(s.yuzuBuff().m,m);assert.equal(s.yuzuBuff().total,path==='juiceWorkshop'?7:6);assert.equal(s._yzRain,null);assert.equal(s._yzInfusion,null);if(path==='citrusGuardian')assert(s._yzShield.hp>=28.99);if(path==='juiceWorkshop')assert(s._yzShield.hp>=21);}
 // Bounded allocations and final cleanup cover paths, menus, retry and remaining projectiles/zones.
 {const s=scene('zestSwarm'),m=s.yuzuEnsure();for(let i=0;i<60;i++)s.yuzuShot(m,0,0,0,1);assert.equal(s._yzShots.length,48);for(let i=0;i<20;i++)s.yuzuZone(m,'sour',0,0,20,2,.1);assert.equal(s._yzZones.length,10);const objects=[m.spr,m.bar,m.label,...s._yzShots.map(q=>q.spr),...s._yzZones.map(q=>q.spr)];s.clearYuzuCrew();assert(objects.every(o=>o.destroyed));assert.equal(s._yzShots.length,0);assert.equal(s._yzZones.length,0);assert.equal(s._yuzuCrew.length,0);s.clearYuzuCrew();}
 // Saved path ids, card ids and all 30 authored talent ids survive the redesign.
@@ -60,7 +60,7 @@ for(const path of ['citrusGuardian','zestSwarm','juiceWorkshop'])for(const fps o
  s.yuzuArea=()=>finishes++;s.yuzuShot=()=>finishes++;
  s.state='paused';s.yuzuTickBuff(100);assert.equal(u.t,u.total);assert.equal(finishes,0);
  s.state='play';for(let i=0;i<fps*u.total+2;i++)s.yuzuTickBuff(1/fps);
- assert.equal(finishes,1);assert.equal(s.yuzuBuff(),null);s.yuzuEndBuff(u,true);assert.equal(finishes,1);assert.equal(m.down,0);
+ assert.equal(finishes,1);assert.equal(s.yuzuBuff(),null);s.yuzuEndBuff(u,true);assert.equal(finishes,1);
 }
 for(const change of [s=>s.player={},s=>s.player.hp=0,s=>s.player.active=false,s=>s.basicAttack={},s=>s.basicAttack.path='juiceWorkshop',s=>s._artEpoch=10,s=>s.character='mint',s=>s._yuzuCrew=[]]){
  const s=scene('zestSwarm');s.yuzuEnsure();s.yuzuParadeCast(1);let n=0;s.yuzuArea=()=>n++;s.yuzuShot=()=>n++;change(s);s.yuzuTickBuff(99);assert.equal(n,0);assert.equal(s._yzBuff,null);
@@ -83,12 +83,8 @@ for(const change of [s=>s.player={},s=>s.player.hp=0,s=>s.player.active=false,s=
  for(let i=0;i<20;i++)s.yuzuFocusBurst(m,0,1);assert(s._yzBurst.length<=8);s.yuzuEndBuff(s._yzBuff,false);assert.equal(s._yzBurst.length,0);
 }
 {const s=scene('zestSwarm');s.basicAttack.uqMut='toss_home';s.player.yuzuParade=true;s.player._pt.yzUniqueTime=2;s.yuzuParadeCast(1);assert.equal(s._yzBuff.total,10);s.yuzuTickBuff(100);assert(s._yzShots[0].focusFinal);assert(s._yzShots[0].seek);assert.equal(s._yzShots[0].pierce,6);}
-// Perfect Blend strengthens bouncing orbs, tags pooled targets briefly and finishes each orb once.
-{const e=enemy(80,0,10000),s=scene('juiceWorkshop',[e]),m=s.yuzuEnsure();s.yuzuParadeCast(1);s.yuzuShot(m,0,0,0,100,{orb:true});const q=s._yzShots[0];assert.equal(q.amount,125);assert.equal(q.bounce,2);assert(q.infused);
- s.yuzuHit(m,e,1,'aroma',false,q);assert.equal(s.yuzuVulnerable(e),1.15);e._yzSpawnId++;assert.equal(s.yuzuVulnerable(e),1);s.yuzuTagSour(e);s.yuzuTickBuff(3.1);assert.equal(s.yuzuVulnerable(e),1);
- let n=0;s.yuzuArea=()=>n++;s.yuzuFinishInfusedShot(q);s.yuzuFinishInfusedShot(q);assert.equal(n,1);q.ended=false;s._artEpoch=8;s.yuzuFinishInfusedShot(q);assert.equal(n,1);
- for(let i=0;i<80;i++)s.yuzuTagSour(enemy(i,0));assert.equal(s._yzSourTags.size,64);s.clearYuzuBuff();assert.equal(s._yzSourTags.size,0);
-}
+// Sour tags are pooled, expire and stay capped.
+{const e=enemy(80,0,10000),s=scene('juiceWorkshop',[e]);s.yuzuEnsure();s.yuzuTagSour(e);assert.equal(s.yuzuVulnerable(e),1.15);e._yzSpawnId++;assert.equal(s.yuzuVulnerable(e),1);s.yuzuTagSour(e);s.yuzuTickBuff(3.1);assert.equal(s.yuzuVulnerable(e),1);for(let i=0;i<80;i++)s.yuzuTagSour(enemy(i,0));assert.equal(s._yzSourTags.size,64);s.clearYuzuBuff();assert.equal(s._yzSourTags.size,0);}
 // Live crew no longer checks body contact or consumes hostile projectiles for an immortal shield.
 const tick=block('  tickYuzuCrew(dt){','  tickFR(dt){');assert(!tick.includes('killFoe('));assert(!tick.includes('yuzuHurt('));assert(!tick.includes('yuzuRecovery('));
 console.log('Yuzu v50: timed three-buff finishers30/60/120FPS, pause/stale/recast/clear, objective/boss priority/phase immunity/ranged approach/crowds, bounded Focus bursts/marks and pooled Sour tags/once-only orb blast passed');
@@ -104,10 +100,28 @@ for(const cancel of [s=>s.player={},s=>s.player.hp=0,s=>s._artEpoch++,s=>s.basic
 {const e=enemy(112,0,1000),s=scene('citrusGuardian',[e]),m=s.yuzuEnsure();s.yuzuQueueSpell(m,'breaker',e);s.yuzuTickSpells(2);assert.equal(s.hits.length,1,'overlapping ground-wave samples hit each spawn once');}
 {const e=enemy(300,0,1000),s=scene('zestSwarm',[e]),m=s.yuzuEnsure();e.isBoss=true;s.yuzuQueueSpell(m,'pin',e);s.yuzuTickSpells(.25);assert.equal(m.pin.e,e);e._yzSpawnId++;s.yuzuArsenalClock(m,.01);assert.equal(m.pin,null);s.yuzuTickSpells(1);assert.equal(m.pin,null);assert.equal(s.hits.length,2);assert(s.hits.every(h=>h.critical));}
 {const e=enemy(80,0,10000),s=scene('juiceWorkshop',[e]),m=s.yuzuEnsure();s.yuzuParadeCast(1);s.yuzuQueueSpell(m,'comet',e);s.yuzuTickBuff(7);assert(s._yzPendingBlend);assert.equal(s.hits.length,0);s.yuzuTickSpells(1);assert.equal(s._yzPendingBlend,null);assert.equal(s.hits.filter(h=>h.source==='yuzu.blend_final').length,1);s.yuzuTickSpells(10);assert.equal(s.hits.filter(h=>h.source==='yuzu.blend_final').length,1);}
-for(const [path,kind]of [['juiceWorkshop','comet'],['citrusGuardian','breaker'],['zestSwarm','pin']]){const e=enemy(200,0,1000),s=scene(path,[e]),m=s.yuzuEnsure();e.isBoss=true;s.yuzuArsenalClock(m,100);assert(s.yuzuArsenalThink(m,e,1,0));assert.equal(m.action.kind,kind);s.yuzuTickAction(m,1);assert.equal(s._yzSpells[0].kind,kind);}
-{const s=scene('juiceWorkshop'),m=s.yuzuEnsure();s.yuzuArsenalClock(m,100);assert(!s.yuzuArsenalThink(m,null,1,0));s.player.hp=40;assert(s.yuzuArsenalThink(m,null,1,0));assert.equal(m.action.kind,'honey');}
-{const es=[enemy(100,0),enemy(180,0),enemy(400,0)],s=scene('zestSwarm',es),m=s.yuzuEnsure();es[2].isBoss=true;s.yuzuArsenalClock(m,100);assert(s.yuzuArsenalThink(m,es[2],1,0));assert.equal(m.action.kind,'vault');}
+for(const [path,kind,card]of [['juiceWorkshop','comet',null],['citrusGuardian','breaker','y_giantslam'],['zestSwarm','pin','y_strongarm']]){const e=enemy(200,0,1000),s=scene(path,[e]),m=s.yuzuEnsure();e.isBoss=true;if(card){s.yuzuArsenalClock(m,100);assert(!s.yuzuArsenalThink(m,e,1,0),kind+' stays locked until its card');s.basicAttack.lv[card]=1;}s.yuzuArsenalClock(m,100);assert(s.yuzuArsenalThink(m,e,1,0));assert.equal(m.action.kind,kind);s.yuzuTickAction(m,1);assert.equal(s._yzSpells[0].kind,kind);}
+{const s=scene('juiceWorkshop'),m=s.yuzuEnsure();s.yuzuArsenalClock(m,100);assert(!s.yuzuArsenalThink(m,null,1,0));s.player.hp=40;assert(!s.yuzuArsenalThink(m,null,1,0),'Honey Rescue locked');s.basicAttack.lv.y_seedluck=1;assert(s.yuzuArsenalThink(m,null,1,0));assert.equal(m.action.kind,'honey');}
+{const es=[enemy(100,0),enemy(180,0),enemy(400,0)],s=scene('zestSwarm',es),m=s.yuzuEnsure();es[2].isBoss=true;s.basicAttack.lv.p_pulp=1;s.yuzuArsenalClock(m,100);assert(s.yuzuArsenalThink(m,es[2],1,0));assert.equal(m.action.kind,'vault');}
 {const s=scene('juiceWorkshop'),m=s.yuzuEnsure();for(let i=0;i<30;i++)s.yuzuQueueSpell(m,'sigil',{x:80,y:0});assert.equal(s._yzSpells.length,12);s.clearYuzuCrew();assert.equal(s._yzSpells.length,0);}
 console.log('Yuzu54 arsenal: ground-only delayed/dodgeable sigils,3FPS comet timing/large-spell lock, pause/stale/dead/clear, overlay-resumed once-only victims, ring bands/burn/garden/honey, breaker dedup, pooled pin, deferred Unique, situation AI and12spell cap passed');
 for(const step of [1,2,3]){const front=enemy(50,25,1000),back=enemy(-110,25,1000),s=scene('citrusGuardian',[front,back]),m=s.yuzuEnsure();m.spr.setPosition(0,0);s.yuzuPeelStrike(m,{step,a:0},1);assert(s.hits.some(h=>h.e===front));assert.equal(s.hits.some(h=>h.e===back),step===3);const hit=s.hits.find(h=>h.e===front);assert(Math.abs(hit.n-24*(step===1?.85:step===3?1.45:1))<1e-8);}
 {const s=scene('juiceWorkshop'),m=s.yuzuEnsure();s.yuzuArsenalClock(m,0);m.action={};const t=m.arsenal.comet;s.yuzuArsenalClock(m,.5);assert.equal(m.arsenal.comet,t-.5);}
+
+// v8.0.60 ก: Yuzu seed marks one target; the companion focuses it and hits it ×1.25 for 4s.
+{const mob=enemy(60,0,1000),boss=enemy(300,0,1000),s=scene('zestSwarm',[mob,boss]),m=s.yuzuEnsure(),es=[mob,boss];boss.isBoss=true;s.enemies.children.iterate=f=>es.forEach(f);
+ assert.equal(s.yuzuPickTarget(m,.16),boss);s.yuzuMark(mob);assert.equal(s.yuzuMarked(),mob);assert.equal(s.yuzuEnemyPriority(mob),6);assert.equal(s.yuzuPickTarget(m,.16),mob,'mark overrides boss priority');
+ s.yuzuHit(m,mob,10,'arrow');assert.equal(s.hits.at(-1).n,12.5);s.yuzuHit(null,mob,10,'seed');assert.equal(s.hits.at(-1).n,10,'Yuzu seeds get no mark bonus');
+ s.yuzuTickMark(4.1);assert.equal(s.yuzuMarked(),null);s.yuzuMark(mob);mob._yzSpawnId++;assert.equal(s.yuzuMarked(),null,'pooled reuse clears the mark');s.clearYuzuCrew();assert.equal(s._yzMark,null);}
+{const left=enemy(-150,0),right=enemy(200,0),s=scene('zestSwarm',[left,right]),es=[left,right];s.enemies.children.iterate=f=>es.forEach(f);s.yuzuEnsure();
+ s.player.body={velocity:{x:-200,y:0}};assert.equal(s.yuzuSeedAim(s.player),left,'walking left aims left');s.player.body.velocity={x:200,y:0};assert.equal(s.yuzuSeedAim(s.player),right);s.player.body.velocity={x:0,y:0};assert.equal(s.yuzuSeedAim(s.player),left,'standing still = nearest');
+ s.yuzuShot(null,0,0,Math.PI,10,{seed:true,source:'seed'});s.yuzuTickShots(.5);assert.equal(s.yuzuMarked(),left);}
+// v8.0.60 ข: each path starts with normal + one skill; the matching card unlocks each extra skill, Evolution unlocks all.
+{const s=scene('zestSwarm');for(const k of ['trap','vault','pin','breaker','garden','bloom','honey'])assert(!s.yuzuHasSkill(k),k);assert(s.yuzuHasSkill('comet')&&s.yuzuHasSkill('volley'));
+ for(const[k,id]of[['trap','y_bigsplat'],['vault','p_pulp'],['pin','y_strongarm'],['breaker','y_giantslam'],['garden','y_longroot'],['bloom','y_elder'],['honey','y_seedluck']]){s.basicAttack.lv[id]=1;assert(s.yuzuHasSkill(k));s.basicAttack.lv[id]=0;}
+ s.basicAttack.evolved=true;assert(['trap','vault','pin','breaker','garden','bloom','honey'].every(k=>s.yuzuHasSkill(k)));
+ const text=JSON.stringify(a.BASIC_PATHS.yuzu);for(const n of ['Unlocks Sour Trap','Unlocks Vaulting Shot','Unlocks Pin & Pierce','Unlocks Rind Breaker','Unlocks Sour Garden','Unlocks Spicy Bloom','Unlocks Honey Rescue'])assert(text.includes(n),n);}
+// v8.0.60 Dash: an engaged companion keeps fighting; a free one rushes at most once per 1.2s.
+{const boss=enemy(300,0,1000),s=scene('zestSwarm',[boss]),m=s.yuzuEnsure();boss.isBoss=true;s.elapsed=10;s.yuzuPickTarget(m,.16);const x=m.spr.x;s.yuzuRush();assert.equal(m.motion,undefined);assert.equal(m.spr.x,x,'engaged ranged buddy stays on its target');
+ m.target=null;s.yuzuRush();assert(m.motion,'free buddy follows the Dash');m.motion=null;s.elapsed=10.5;s.yuzuRush();assert(!m.motion,'rush cooldown');s.elapsed=11.3;s.yuzuRush();assert(m.motion);}
+console.log('Yuzu v60: seed mark focus/×1.25/expiry/pool safety, walk-direction aim, card skill unlocks + Evolution, Dash keeps an engaged companion and rush cooldown passed');

@@ -1,5 +1,7 @@
 # 🍋 Yuzu — Citrus Companions · เอกสารออกแบบที่อนุมัติแล้ว
 
+> **v8.0.60:** seed mark focus, smaller starting kit with card unlocks, Dash fix and legacy cleanup — see [YUZU_FOCUS.md](YUZU_FOCUS.md).
+>
 > **Current behavior v8.0.50:** companions cannot fall. Unique skills are timed buffs Golden Peel Armor / Hunter’s Focus / Perfect Blend with finishers, plus objective/boss priority AI. Former HP/revival investments now improve shields/skills. See [YUZU_BUFFS.md](YUZU_BUFFS.md); the original plan and past delivery notes below describe earlier releases.
 
 สถานะ: อนุมัติ 25 ต.ค. 2026 · ลงระบบ v8.0.38 แทน Orchard Swarm · โทรศัพท์จริงรอเจ้าของทดลอง

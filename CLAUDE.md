@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.60, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.61, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.59 — Yuzu card copy and48ImageGen icons
+# Latest delivery: v8.0.60 — Yuzu seed focus + card skill unlocks + Dash fix + cleanup (owner picked ก+ข+ง)
+
+ก: yuzuSeedAim (nearest enemy in ±.6 rad of player velocity, else old target); seed hit → yuzuMark (4s, one mark, pooled-id safe, owned _yzMarkG gold arcs); yuzuEnemyPriority marked=6 (above mission 5); companion hits on the mark ×1.25. ข: yuzuHasSkill — start normal + Pulp Slam / Zest Volley / Crimson Comet + Unique; rank 1 of y_giantslam→Rind Breaker, y_bigsplat→Sour Trap, p_pulp→Vaulting Shot, y_strongarm→Pin & Pierce, y_longroot→Sour Garden, y_elder→Spicy Bloom, y_seedluck→Honey Rescue; Evolution unlocks all; card/path/evo texts updated, ids unchanged. Dash: yuzuRush skips while the companion has a valid target or action/motion, else ≤1 rush/1.2s (Footprints/Dash shield still every Dash). ง: removed yuzuHurt/Knock/Down/Recovery/Regrow/MaxHp/Brew/FinishInfusedShot, companion hp/down/revive/hurt/brew fields, Help label, down/revive/hurt poses, old orb/infused shots, boss-hazard yuzuKnock calls. docs/YUZU_FOCUS.md; tests yuzu-companions (v60 block) + animation/polish/spectacle updated. Owner phone review pending.
+
+# Previous delivery: v8.0.59 — Yuzu card copy and48ImageGen icons
 
 Owner requests all Yuzu cards reviewed after54arsenals. Preserve original card layout, IDs, rank caps, stats and all combat methods. Starter/hero copy now always-ready single buddy; path-aware Zest Splash describes sweeps/Lime splash+Vault/Sigils, Swift Ranger covers Volley/Vault/Pin, Ready Quiver all4Lime skills, Sour Snare uses companion-power units, Acid Notes quantified, Honey/Spell talents renamed, display-only Focus mutation names and Peel Promise. Full Recipe effects and matching art.48built-in ImageGen icons (3donors+Dash refinement), sources/exact prompts incoming/yuzu59; mechanical scripts/pack-yuzu-59.py,96px lossless icons art/build_cards/yuzu59 with hashes/crops. Existing3path keys now accurate single companions;45new keys stage-lazy/Yuzu-only, all48used including path-specific Evolution and Unique Power. Generic Unique/infusion/trade icons reused. No new battle VFX/AI/balance/companions. docs/YUZU_CARDS.md. New isolated48bindings/Recipe/3paths/cold-art/other-hero checks, existing draft fixture loads new presentation helper; fullcheck/build required. No game screenshots/headless combat; owner phone appearance review pending.
 

@@ -11,12 +11,12 @@ for(const kind of['pomelo','lime','bloodorange'])for(const fps of[30,60,120]){
 }
 for(const fps of[30,60,120]){const{s,m}=scene('pomelo');m.vx=100;s.yuzuVisual(m,0);for(let i=0;i<fps;i++){m.spr.x+=110/fps;s.yuzuVisual(m,1/fps);}assert(Math.abs(m._yzVisual.gait-Math.PI*2)<.000001);const gait=m._yzVisual.gait;for(let i=0;i<10;i++)s.yuzuVisual(m,1/fps);assert.equal(m._yzVisual.gait,gait,'stationary actor does not treadmill');}
 for(const kind of['pomelo','lime','bloodorange']){
- const{s,m}=scene(kind);let released=0;m.action={kind:kind==='lime'?'arrow':'orb',t:0,wind:.2,end:.5,release:()=>released++};
+ const{s,m}=scene(kind);let released=0;m.action={kind:kind==='lime'?'arrow':'sigil',t:0,wind:.2,end:.5,release:()=>released++};
  for(const[t,frame]of[[0,8],[.06,9],[.11,10],[.19,11],[.2,12],[.29,13],[.36,14],[.49,15]]){m.action.t=t;s.yuzuVisual(m,1/60);assert.equal(m.spr.texture.key,'yz_48_'+kind);assert.equal(m.spr.frame,frame);}
- assert.equal(released,0,'rendering never emits damage/projectiles');m.action=null;m.down=2;m.recoverFor=5;s.yuzuVisual(m,0);assert.equal(m.spr.texture.key,'yz_47_'+kind);assert.equal(m.spr.frame,5);
+ assert.equal(released,0,'rendering never emits damage/projectiles');
 }
 {const{s,m}=scene('pomelo');m.lunge={t:.164,a:0};s.yuzuVisual(m,0);assert.equal(m.spr.frame,11);m.lunge.t=.165;s.yuzuVisual(m,1/60);assert.equal(m.spr.frame,12,'painted strike matches existing55% damage threshold');}
-{const{s,m}=scene('bloodorange');m.castFlavor=1;m.action={kind:'brew',t:.4,wind:.32,end:.57};s.yuzuVisual(m,0);assert.equal(m.spr.texture.key,'yz_47_bloodorange');assert.equal(m.spr.frame,1);}
+{const{s,m}=scene('bloodorange');m.castFlavor=1;m.action={kind:'garden',t:.4,wind:.32,end:.57};s.yuzuVisual(m,0);assert.equal(m.spr.texture.key,'yz_47_bloodorange');assert.equal(m.spr.frame,1);}
 {const{s,m}=scene('lime');s.textures.exists=k=>!k.startsWith('yz_48_');m.action={kind:'arrow',t:.2,wind:.16,end:.36};s.yuzuVisual(m,.02);assert.equal(m.spr.texture.key,'yz_47_lime');}
 {const{s,m}=scene('pomelo',true);m.motion={kind:'roll',t:.4,prep:.12};for(let i=0;i<30;i++)s.yuzuVisual(m,1/30);assert.equal(m.spr.rotation,0);assert.equal(m._yzVisual.sx,1);assert.equal(m._yzVisual.bob,0);m.motion=null;m.groundY=m.spr.y+75;s.yuzuVisual(m,.03);assert(m.shadow.ellipse.w<64*.62);}
 {const{s,m}=scene();s.yuzuVisual(m,.02);const all=[m.spr,m.shadow,m.label,m.bar];s.clearYuzuCrew();assert(all.every(o=>!o.active));}
