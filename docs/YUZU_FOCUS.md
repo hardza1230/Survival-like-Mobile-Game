@@ -25,3 +25,8 @@ Start: normal attack + one skill + Unique. Rank 1 of the matching existing card 
 `yuzuHurt / yuzuKnock / yuzuDown / yuzuRecovery / yuzuRegrow / yuzuMaxHp`, companion `hp/maxhp/down/revive/iframe/brew/hurt` fields, the 'Help' label, down/revive/hurt poses, the old Flavor Brew helper and the old bouncing orb projectile (`orb`, `infused` shots, `yuzuFinishInfusedShot`). Boss hazards no longer call `yuzuKnock`. Painted sheets are unchanged (unused cells only).
 
 No balance numbers changed except the new ×1.25 mark bonus. Owner phone review pending.
+
+## v8.0.61 — owner picked ก + ข1 + ง (second critique)
+- ก Steady mark: `yuzuMark` keeps the current mark for at least 2s (`age`), and moves only after 2 seed hits in a row on the same new enemy (`pend`). A hit on the current mark refreshes it to 4s and resets the pending count.
+- ข1 Priority: `yuzuEnemyPriority` order is mission 5 → active Wisp raider 4 → boss 3 → mini 2 → **mark 1.5** → elite/courier 1 → mob 0. The mark only lifts a mob/elite; a marked boss keeps 3. The ×1.25 companion bonus still applies to any marked enemy.
+- ง Guarantee: `yuzuUnlockGuard(out,atk)` runs on every normal card roll. After the Build is picked, if a skill-unlock card (`y_bigsplat p_pulp y_strongarm y_giantslam y_longroot y_elder y_seedluck`) is still at rank 0 in the pool and one level-up passed without offering it, the next roll replaces a non-heal, non-path card (or any non-heal card) with one. Counter resets on companion change/clear.

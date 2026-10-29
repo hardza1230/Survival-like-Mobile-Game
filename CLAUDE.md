@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.61, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.62, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.60 — Yuzu seed focus + card skill unlocks + Dash fix + cleanup (owner picked ก+ข+ง)
+# Latest delivery: v8.0.61 — Yuzu steady mark + mission-first priority + unlock-card guarantee (owner picked ก+ข+ง)
+
+ก: yuzuMark holds ≥2s (k.age) and moves only after 2 consecutive seed hits on the same new enemy (k.pend); hit on the mark refreshes 4s. ข1: yuzuEnemyPriority mission5 → Wisp4 → boss3 → mini2 → mark1.5 → elite1 → mob0 (mark lifts only mobs/elites, ×1.25 stays). ง: yuzuUnlockGuard(out,atk) at both rollBasicAttackUpgrades returns: after Build, if a rank-0 unlock card is in the pool and one level-up missed it, next roll swaps a non-heal/non-path card for one (_yzUnlockMiss, reset in clearYuzuCrew). docs/YUZU_FOCUS.md; tests/yuzu-companions v61 block. Owner phone review pending.
+
+# Previous delivery: v8.0.60 — Yuzu seed focus + card skill unlocks + Dash fix + cleanup (owner picked ก+ข+ง)
 
 ก: yuzuSeedAim (nearest enemy in ±.6 rad of player velocity, else old target); seed hit → yuzuMark (4s, one mark, pooled-id safe, owned _yzMarkG gold arcs); yuzuEnemyPriority marked=6 (above mission 5); companion hits on the mark ×1.25. ข: yuzuHasSkill — start normal + Pulp Slam / Zest Volley / Crimson Comet + Unique; rank 1 of y_giantslam→Rind Breaker, y_bigsplat→Sour Trap, p_pulp→Vaulting Shot, y_strongarm→Pin & Pierce, y_longroot→Sour Garden, y_elder→Spicy Bloom, y_seedluck→Honey Rescue; Evolution unlocks all; card/path/evo texts updated, ids unchanged. Dash: yuzuRush skips while the companion has a valid target or action/motion, else ≤1 rush/1.2s (Footprints/Dash shield still every Dash). ง: removed yuzuHurt/Knock/Down/Recovery/Regrow/MaxHp/Brew/FinishInfusedShot, companion hp/down/revive/hurt/brew fields, Help label, down/revive/hurt poses, old orb/infused shots, boss-hazard yuzuKnock calls. docs/YUZU_FOCUS.md; tests yuzu-companions (v60 block) + animation/polish/spectacle updated. Owner phone review pending.
 

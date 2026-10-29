@@ -110,7 +110,7 @@ for(const step of [1,2,3]){const front=enemy(50,25,1000),back=enemy(-110,25,1000
 
 // v8.0.60 ก: Yuzu seed marks one target; the companion focuses it and hits it ×1.25 for 4s.
 {const mob=enemy(60,0,1000),boss=enemy(300,0,1000),s=scene('zestSwarm',[mob,boss]),m=s.yuzuEnsure(),es=[mob,boss];boss.isBoss=true;s.enemies.children.iterate=f=>es.forEach(f);
- assert.equal(s.yuzuPickTarget(m,.16),boss);s.yuzuMark(mob);assert.equal(s.yuzuMarked(),mob);assert.equal(s.yuzuEnemyPriority(mob),6);assert.equal(s.yuzuPickTarget(m,.16),mob,'mark overrides boss priority');
+ assert.equal(s.yuzuPickTarget(m,.16),boss);s.yuzuMark(mob);assert.equal(s.yuzuMarked(),mob);assert.equal(s.yuzuEnemyPriority(mob),1.5);assert.equal(s.yuzuPickTarget(m,.16),boss,'v61: boss stays above the mark');boss.isBoss=false;m.target=null;assert.equal(s.yuzuPickTarget(m,.16),mob,'mark wins among mobs');boss.isBoss=true;
  s.yuzuHit(m,mob,10,'arrow');assert.equal(s.hits.at(-1).n,12.5);s.yuzuHit(null,mob,10,'seed');assert.equal(s.hits.at(-1).n,10,'Yuzu seeds get no mark bonus');
  s.yuzuTickMark(4.1);assert.equal(s.yuzuMarked(),null);s.yuzuMark(mob);mob._yzSpawnId++;assert.equal(s.yuzuMarked(),null,'pooled reuse clears the mark');s.clearYuzuCrew();assert.equal(s._yzMark,null);}
 {const left=enemy(-150,0),right=enemy(200,0),s=scene('zestSwarm',[left,right]),es=[left,right];s.enemies.children.iterate=f=>es.forEach(f);s.yuzuEnsure();
@@ -124,4 +124,14 @@ for(const step of [1,2,3]){const front=enemy(50,25,1000),back=enemy(-110,25,1000
 // v8.0.60 Dash: an engaged companion keeps fighting; a free one rushes at most once per 1.2s.
 {const boss=enemy(300,0,1000),s=scene('zestSwarm',[boss]),m=s.yuzuEnsure();boss.isBoss=true;s.elapsed=10;s.yuzuPickTarget(m,.16);const x=m.spr.x;s.yuzuRush();assert.equal(m.motion,undefined);assert.equal(m.spr.x,x,'engaged ranged buddy stays on its target');
  m.target=null;s.yuzuRush();assert(m.motion,'free buddy follows the Dash');m.motion=null;s.elapsed=10.5;s.yuzuRush();assert(!m.motion,'rush cooldown');s.elapsed=11.3;s.yuzuRush();assert(m.motion);}
+// v8.0.61 ก: mark holds 2s and moves only after 2 seed hits in a row · ข1: mission target above the mark · ง: unlock card within 2 level-ups.
+{const a1=enemy(60,0,1000),a2=enemy(120,0,1000),a3=enemy(180,0,1000),s=scene('zestSwarm',[a1,a2,a3]);s.yuzuEnsure();
+ s.yuzuMark(a1);s.yuzuMark(a2);s.yuzuMark(a2);assert.equal(s.yuzuMarked(),a1,'young mark holds');s.yuzuTickMark(2.1);s.yuzuMark(a2);assert.equal(s.yuzuMarked(),a2,'2 hits + 2s moves it');
+ s.yuzuTickMark(2.1);s.yuzuMark(a3);s.yuzuMark(a2);s.yuzuMark(a3);assert.equal(s.yuzuMarked(),a2,'hits must be in a row');assert.equal(s._yzMark.t,4,'hit on the mark refreshes it');
+ a3._waveObjectiveTarget=true;assert.equal(s.yuzuEnemyPriority(a3),5);a3.isElite=true;a3._waveObjectiveTarget=false;assert.equal(s.yuzuEnemyPriority(a3),1);}
+{const s=scene('zestSwarm');s.yuzuEnsure();const card=k=>({type:'basic',key:k}),atk=[{card:card('p_pulp')},{card:card('y_double')}];
+ let out=[card('a'),card('b'),card('c')];s.yuzuUnlockGuard(out,atk);assert(!out.some(c=>c.key==='p_pulp'),'first miss allowed');
+ out=[card('a'),card('b'),{type:'heal',key:'sweetRecovery'}];s.yuzuUnlockGuard(out,atk);assert(out.some(c=>c.key==='p_pulp'),'second level forces an unlock card');assert(out.some(c=>c.type==='heal'),'heal kept');
+ s.basicAttack.lv.p_pulp=1;out=[card('a')];s.yuzuUnlockGuard(out,atk);s.yuzuUnlockGuard(out,atk);assert.equal(out[0].key,'a','nothing left to unlock');}
+console.log('Yuzu v61: steady mark, mission/boss above mark, unlock-card guarantee passed');
 console.log('Yuzu v60: seed mark focus/×1.25/expiry/pool safety, walk-direction aim, card skill unlocks + Evolution, Dash keeps an engaged companion and rush cooldown passed');

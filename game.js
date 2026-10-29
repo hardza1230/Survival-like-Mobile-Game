@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.60';
+const GAME_VERSION = '8.0.61';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.61',date:'2026-10-29',title:'Yuzu: steadier focus',items:['The seed mark now holds at least 2s and only moves after 2 seed hits in a row on a new enemy','Mission targets, Wisp raiders, bosses and minibosses now come before the mark; the mark picks among normal enemies and elites','After you pick a Build, a card that unlocks a companion skill shows up within 2 level-ups'],},
   {v:'8.0.60',date:'2026-10-29',title:'Yuzu: aim your companion',items:['Yuzu’s seeds aim the way you walk and mark the enemy they hit','Your companion attacks the marked enemy first and deals 25% more damage to it','Companions start with one skill; path cards unlock the rest (Evolution unlocks all)','Dashing no longer pulls your companion away from a fight'],},
   {v:'8.0.59',date:'2026-10-28',title:'Yuzu cards, freshly picked',items:['Yuzu cards and Recipe entries now describe the current companion arsenals and buffs','48 new painted citrus icons distinguish Pomelo, Lime, Blood Orange and their upgrades']},
   {v:'8.0.58',date:'2026-10-27',title:'Familiar controls, calmer details',items:['Existing menu buttons and tabs share rounded typography and warmer labels','Button highlights and text outlines are softer while each control keeps its original place and purpose']},
@@ -16285,7 +16286,7 @@ class Game extends Phaser.Scene {
   clearYuzuCrew(){this.clearYuzuBuff();this.clearYuzuSkillFx();
     for(const m of this._yuzuCrew||[])for(const o of [m.spr,m.label,m.bar,m.shadow])o?.destroy();
     for(const o of [...(this._yzShots||[]),...(this._yzZones||[]),...(this._yzFx||[])])o.spr?.destroy();
-    this._yuzuCrew=[];this._yzShots=[];this._yzZones=[];this._yzFx=[];this._yzShield=null;this._yzHitOwner=null;this._yzForceCrit=false;this._yzRain=null;this._yzInfusion=null;this._yzSeedCd=0;this._yzTrailAt=-10;this._yuzuOrch=null;this._yuzuParadeT=0;this._yzMark=null;this._yzMarkG?.destroy?.();this._yzMarkG=null;
+    this._yuzuCrew=[];this._yzShots=[];this._yzZones=[];this._yzFx=[];this._yzShield=null;this._yzHitOwner=null;this._yzForceCrit=false;this._yzRain=null;this._yzInfusion=null;this._yzSeedCd=0;this._yzTrailAt=-10;this._yuzuOrch=null;this._yuzuParadeT=0;this._yzMark=null;this._yzUnlockMiss=0;this._yzMarkG?.destroy?.();this._yzMarkG=null;
   }
 
   clearYuzuSkillFx(){for(const q of this._yzShow||[])q.spr?.destroy();this._yzShow=[];this._yzShowFlavor=0;}
@@ -16437,7 +16438,7 @@ class Game extends Phaser.Scene {
   }
 
 
-  yuzuEnemyPriority(e){if(e&&this._yzMark?.e===e&&this.yuzuMarked()===e)return 6;if(e._waveObjectiveTarget)return 5;if(e._wispRaider&&this.waveObjective?.type==='purge'&&!this.waveObjective.done)return 4;return e.isBoss?3:e.isMini?2:e.isElite||e._eventCourier?1:0;}
+  yuzuEnemyPriority(e){const r=e._waveObjectiveTarget?5:e._wispRaider&&this.waveObjective?.type==='purge'&&!this.waveObjective.done?4:e.isBoss?3:e.isMini?2:e.isElite||e._eventCourier?1:0;return r<=1&&this._yzMark?.e===e&&this.yuzuMarked()===e?1.5:r;}   // v8.0.61 ข1: mission/Wisp/boss/mini stay first; the mark only picks among mobs/elites
   yuzuCombatTarget(e){return !!(e?.active&&e.hp>0&&!e.isDummy&&!e._coreLocked&&!e._waveObjectiveNode&&!e._phaseGateLocked&&!(e._phaseInvuln>0));}
   yuzuBuffValid(u){return !!u&&!u.finished&&this.character==='yuzu'&&this._yuzuCrew?.[0]===u.m&&u.m.spr?.active!==false&&this.player===u.player&&u.player?.active!==false&&!(u.player.hp<=0)&&this.basicAttack===u.basic&&(this._artEpoch||0)===u.epoch&&this.yuzuKind()===u.kind;}
   yuzuBuff(){const u=this._yzBuff;return this.yuzuBuffValid(u)&&u.t>0?u:null;}
@@ -16461,9 +16462,11 @@ class Game extends Phaser.Scene {
     return true;
   }
   // v8.0.60 owner: Yuzu's seed marks one enemy (aimed by walking direction); the companion focuses it and hits it ×1.25 for 4s.
-  yuzuMark(e){if(!this.yuzuCombatTarget(e))return;this._yzMark={e,id:e._yzSpawnId||0,t:4};}
+  yuzuMark(e){if(!this.yuzuCombatTarget(e))return;const id=e._yzSpawnId||0,cur=this.yuzuMarked(),k=this._yzMark;   // v8.0.61 ก: a mark holds ≥2s and moves only after 2 seed hits in a row on the new enemy
+    if(!cur){this._yzMark={e,id,t:4,age:0,pend:null};return;}if(cur===e){k.t=4;k.pend=null;return;}
+    const q=k.pend&&k.pend.e===e&&k.pend.id===id?k.pend:(k.pend={e,id,n:0});q.n++;if(q.n>=2&&(k.age||0)>=2)this._yzMark={e,id,t:4,age:0,pend:null};}
   yuzuMarked(){const k=this._yzMark;if(!k)return null;if(k.t<=0||!this.yuzuCombatTarget(k.e)||(k.e._yzSpawnId||0)!==k.id){this._yzMark=null;return null;}return k.e;}
-  yuzuTickMark(dt){const k=this._yzMark;if(k)k.t-=dt;const e=this.yuzuMarked();let g=this._yzMarkG;if(!e){g?.clear?.();return;}
+  yuzuTickMark(dt){const k=this._yzMark;if(k){k.t-=dt;k.age=(k.age||0)+dt;}const e=this.yuzuMarked();let g=this._yzMarkG;if(!e){g?.clear?.();return;}
     if(!g||g.active===false)g=this._yzMarkG=this.camWorld(this.add.graphics());const r=(e.body?.halfWidth||16)+12,s=(this.elapsed||0)*3;g.clear().setDepth((e.depth||e.y||0)+1);g.lineStyle(2.5,0xffd34d,.9);
     for(let i=0;i<4;i++){const a=s+i*Math.PI/2;g.beginPath?.();g.arc?.(e.x,e.y,r,a,a+.9);g.strokePath?.();}g.fillStyle?.(0xffd34d,.9);g.fillTriangle?.(e.x,e.y-r-4,e.x-6,e.y-r-14,e.x+6,e.y-r-14);}
   yuzuSeedAim(p){const v=p.body?.velocity,vx=v?.x||0,vy=v?.y||0;
@@ -16471,6 +16474,10 @@ class Game extends Phaser.Scene {
     return this.yuzuTarget(p.x,p.y,440);}
   // v8.0.60 owner: start with normal + one skill + Unique; the matching path card unlocks each extra skill (Evolution = all).
   yuzuHasSkill(k){if(this.basicAttack?.evolved)return true;const id=({trap:'y_bigsplat',vault:'p_pulp',pin:'y_strongarm',breaker:'y_giantslam',garden:'y_longroot',bloom:'y_elder',honey:'y_seedluck'})[k];return !id||this.yuzuRank(id)>0;}
+  // v8.0.61 ง: after the Build, a card that unlocks a skill shows up within 2 level-ups (while one is still locked).
+  yuzuUnlockGuard(out,atk){const b=this.basicAttack;if(b?.character!=='yuzu'||!b.path||b.evolved||!out?.length)return;const ids=['y_bigsplat','p_pulp','y_strongarm','y_giantslam','y_longroot','y_elder','y_seedluck'],locked=c=>c&&ids.includes(c.key)&&!(b.lv?.[c.key]>0);
+    const cand=(atk||[]).map(x=>x.card).filter(locked);if(!cand.length||out.some(locked)){this._yzUnlockMiss=0;return;}
+    if(!this._yzUnlockMiss){this._yzUnlockMiss=1;return;}let at=out.findIndex(c=>c.type!=='heal'&&c.poolGroup!=='path');if(at<0)at=out.findIndex(c=>c.type!=='heal');if(at<0)at=out.length-1;out[at]=cand[Math.floor(Math.random()*cand.length)];this._yzUnlockMiss=0;}
   yuzuTagSour(e){const tags=this._yzSourTags||(this._yzSourTags=new Map());if(tags.size>=64&&!tags.has(e))tags.delete(tags.keys().next().value);tags.set(e,{id:e._yzSpawnId,t:3});}
   yuzuEndBuff(u,fire){
     if(this._yzBuff!==u||!this.yuzuBuffValid(u))return;
@@ -16964,7 +16971,7 @@ class Game extends Phaser.Scene {
       const buildDraft=storyCards||cocoaLocked;
       out.push(...pickMintCards(pool,n,buildDraft));
       if(hpFrac<0.40&&healCard&&!out.some(c=>c.key===healCard.key)){if(out.length<n)out.push(healCard);else{const protectedChoice=buildDraft?(out.find(c=>c.poolGroup==='path')||out.find(c=>c.poolGroup==='shared'&&c.type==='basic'&&!c.special)):null,at=buildDraft?out.findLastIndex(c=>c!==protectedChoice):n-1;if(at>=0)out[at]=healCard;}}
-      Phaser.Utils.Array.Shuffle(out);return out.slice(0,n);
+      Phaser.Utils.Array.Shuffle(out);const res=out.slice(0,n);this.yuzuUnlockGuard?.(res,atk);return res;
     }
     while(out.length<n&&atk.length){const c=pick(atk);if(c)out.push(c);else break;}
     if(hpFrac<0.40&&healCard){ out.length>=n?out[n-1]=healCard:out.push(healCard); }   // เลือดวิกฤต = การันตีการ์ดฟื้น
@@ -16979,7 +16986,7 @@ class Game extends Phaser.Scene {
       }
     }
     Phaser.Utils.Array.Shuffle(out);
-    return out.slice(0,n);
+    const res=out.slice(0,n);this.yuzuUnlockGuard?.(res,atk);return res;
   }
   rollUpgrades(n,opts){ return this.rollBasicAttackUpgrades(n,opts); }   // v7.8.93 กองการ์ดสกิล/Passive/Awaken ยุคเก่าตัดแล้ว (ทุกฮีโร่ใช้ Basic Attack)
   clearStarGuardFx(){
