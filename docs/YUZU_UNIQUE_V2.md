@@ -1,4 +1,4 @@
-# Yuzu Unique v2 — design draft (awaiting owner pick)
+# Yuzu Unique v2 — owner picked A (Citrus Command), implemented v8.0.64
 
 Problem with the current Unique (Golden Peel Armor / Hunter's Focus / Perfect Blend):
 press → the companion is buffed for 6–7s → finisher. The player does not choose anything,
@@ -36,3 +36,10 @@ Tap → Yuzu and the companion swap places with a burst at both points (escape +
 Strong survival, little damage identity; conflicts with Dash.
 
 Recommendation: **A** (B's idea can be added later as "In Sync" lasting longer per mark hit).
+
+## Implemented (v8.0.64)
+- Input reuses the hold-charge path (`_snipe.kind='yuzu'`): `isYuzuCommand`, `yuzuCmdAim` draws the aim (circle / Lime line), `yuzuCmdPoint` = drag direction × min(380, max(160, drag×2.2)) or auto (🎯 mark → `yuzuTarget` 440 → 220px walking direction), clamped 380 + `inMapPt`. Release → `_yzCmdPt` → `useCharacterSkill` → `yuzuParadeCast` → `yuzuCommand`. Button text 'AIM'; camera zoom-out while aiming (shared).
+- Pomelo/Yuzling: `yuzuMotion(...,'command')` leap (air arc), landing `yuzuCommandLand` r160/120 (+Slam talent), ×6/×3 (+.5/Unique level) × uniquePower, stun .8s on small enemies (taunt from the draft replaced by stun — no taunt system now).
+- Lime: one `command_arrow` (yz_51 art, 98px, pierce 99, speed 950, focusFinal splash 55+Raincaller), ×5 (+.4/level); first boss/mini/elite/mission hit gets the 🎯 for 6s. Seeking Arrow mutation = homing.
+- Blood Orange: `u.storm` 3 pulses (4 with Bloom Burst) every .45s, r150 ×2.2 (+.2/level), pulls small enemies 14px per pulse (`yuzuTickStorm` inside `yuzuTickBuff`, paused/stale-safe).
+- In Sync = the old buff (`_yzBuff`, `cmd:true`) for 4s (+2 Royal Parade, +UniqueTime, +1.5 Extended Focus); old end finishers skipped (`yuzuEndBuff(u,!u.cmd)`); 🎯 bonus ×1.5 while it lasts. Shields/Unique Mutations as before; texts renamed (Meteor Peel / Piercing Shot / Flavor Storm), talents Fortress Captain / Raincaller / Grand Alchemist reworded. No new art.

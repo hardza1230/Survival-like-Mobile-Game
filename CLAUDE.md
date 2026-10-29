@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.64, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.65, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.63 — C3-3…C3-5 boss/mini HP nerf (owner: too much HP)
+# Latest delivery: v8.0.64 — Yuzu Citrus Command Unique (owner picked A)
+
+Hold Unique = aim (shared _snipe hold, kind 'yuzu', yuzuCmdAim/yuzuCmdPoint: drag ≤380 or auto 🎯/priority/walk dir), release/tap → yuzuCommand: Pomelo/Yuzling leap 'command' motion + yuzuCommandLand slam r160 ×6 stun .8; Lime command_arrow pierce 99 ×5 + 6s 🎯 on first big hit; Blood Orange u.storm 3 pulses r150 ×2.2 + pull (yuzuTickStorm). Then 4s In Sync (old buff, cmd:true, no old end finisher), 🎯 ×1.5. Names Meteor Peel / Piercing Shot / Flavor Storm; Unique Mutations + 3 talents reworded, ids kept, no new art. docs/YUZU_UNIQUE_V2.md; tests yuzu-companions v64 block + old finisher tests updated. Owner phone feel/balance pending.
+
+# Previous delivery: v8.0.63 — C3-3…C3-5 boss/mini HP nerf (owner: too much HP)
 
 _bStoryC and _mStoryC (mini = 25% of it) indices 12–14: 96.76/152.67/240.88 → 82.25/114.5/159 (−15/−25/−34%), Story only; Recipe/Delve and stageThreat (Recommended Power) unchanged. Owner phone check pending.
 
