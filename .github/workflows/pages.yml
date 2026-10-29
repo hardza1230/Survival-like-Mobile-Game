@@ -30,7 +30,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # ubuntu-latest = 26.04: Playwright 1.51.1 cannot install Chromium there
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
