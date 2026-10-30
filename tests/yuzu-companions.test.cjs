@@ -144,6 +144,11 @@ for(const step of [1,2,3]){const front=enemy(50,25,1000),back=enemy(-110,25,1000
  s.yuzuCommandLand(m,m.motion);assert(s.hits.some(h=>h.e===mob&&h.source==='yuzu.command'));const n=s.hits.length;s.yuzuHit(m,mob,10,'arrow');assert.equal(s.hits.at(-1).n,15,'In Sync 🎯 ×1.5');}
 {const mob=enemy(100,0,1e4),elite=enemy(200,0,1e4),s=scene('zestSwarm',[mob,elite]),m=s.yuzuEnsure();elite.isElite=true;m.spr.setPosition(0,0);s._yzCmdPt={x:300,y:0};s.yuzuParadeCast(1);
  const q=s._yzShots.find(q=>q.source==='command_arrow');assert(q&&q.pierce===99&&q.cmdMark);for(let i=0;i<10;i++)s.yuzuTickShots(.05);assert(s.hits.some(h=>h.e===mob)&&s.hits.some(h=>h.e===elite),'pierces the line');assert.equal(s.yuzuMarked(),elite);assert.equal(s._yzMark.t,6);}
+// v8.0.65: Pomelo leap ≤450px with distance-based time, Lime follows the drag direction, Flavor Storm pulls 35px.
+{const s=scene('citrusGuardian'),m=s.yuzuEnsure();m.spr.setPosition(0,0);s._yzCmdPt={x:900,y:0};s.yuzuParadeCast(1);assert(Math.abs(m.motion.tx-450)<1e-6,'leap capped at 450');assert(Math.abs(m.motion.duration-.725)>0&&m.motion.duration<=.7&&m.motion.duration>.35);}
+{const s=scene('zestSwarm'),m=s.yuzuEnsure();m.spr.setPosition(-200,0);const pt=s.yuzuCmdPoint({dragged:true,ang:Math.PI/2,dl:100});assert.equal(pt.ang,Math.PI/2);s._yzCmdPt=pt;s.yuzuParadeCast(1);const q=s._yzShots.find(q=>q.source==='command_arrow');assert(Math.abs(q.angle-Math.PI/2)<1e-9,'arrow uses drag direction, not companion→point');}
+{const e=enemy(100,0,1e6);e.setPosition=function(x,y){this.x=x;this.y=y;};const s=scene('juiceWorkshop',[e]);s.yuzuEnsure();s._yzCmdPt={x:0,y:0};s.yuzuParadeCast(1);s.yuzuTickBuff(.31);assert(Math.abs(e.x-65)<1e-6,'pull 35px');}
+console.log('Yuzu v65: leap cap/duration, Lime drag direction, Storm pull passed');
 console.log('Yuzu v64: Citrus Command aim point (auto/mark/drag), Pomelo leap slam, Lime piercing arrow + 6s mark, Blood Orange storm, In Sync ×1.5 passed');
 console.log('Yuzu v62: mark-only target choice, unlock headlines, locked-talent notes and Ruby aim tip passed');
 console.log('Yuzu v61: steady mark, mission/boss above mark, unlock-card guarantee passed');

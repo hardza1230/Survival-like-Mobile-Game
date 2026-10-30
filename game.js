@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.64';
+const GAME_VERSION = '8.0.65';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.65',date:'2026-10-30',title:'Citrus Command polish',items:['A quick tap on the Unique no longer zooms the camera in and out','Lime’s Piercing Shot now fires in the direction you drag','Pomelo’s leap takes longer for longer jumps and goes at most 450px','Flavor Storm pulls enemies in much harder'],},
   {v:'8.0.64',date:'2026-10-29',title:'Yuzu: Citrus Command',items:['New Unique: hold to aim a spot, release and your companion does its big move there (tap = aim at 🎯 / the main target)','Pomelo Meteor Peel leaps and slams · Lime Piercing Shot pierces the whole line and 🎯 marks the first big enemy · Blood Orange Flavor Storm bursts 3 times and pulls enemies in','Then 4s In Sync: the old buffs plus a stronger 🎯 bonus (+50%)'],},
   {v:'8.0.63',date:'2026-10-29',title:'Softer C3 bosses',items:['C3-3, C3-4 and C3-5 bosses and minibosses have less HP (−15%, −25%, −34%)'],},
   {v:'8.0.62',date:'2026-10-29',title:'Yuzu: clearer focus',items:['A marked normal enemy no longer pulls your companion far away or makes it spend big skills on it','Cards that unlock a companion skill now say so at the top','Talents that need a skill card now say which card','Ruby explains walk-to-aim the first time your seeds mark an enemy'],},
@@ -9675,7 +9676,7 @@ class Game extends Phaser.Scene {
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
-    const want=(this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1))*(this._snipe?0.72:1);   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
+    const want=(this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1))*(this._snipe&&(this._snipe.kind!=='yuzu'||performance.now()-this._snipe.t0>250)?0.72:1);   // v8.0.65 Yuzu tap = no zoom pulse   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
     if(this._bossZoom==null)this._bossZoom=1;
     if(Math.abs(this._bossZoom-want)>0.003){this._bossZoom+=(want-this._bossZoom)*0.10;this.applyMainZoom();}
     else if(this._bossZoom!==want){this._bossZoom=want;this.applyMainZoom();}
@@ -16691,20 +16692,22 @@ class Game extends Phaser.Scene {
   yuzuCmdPoint(s){const p=this.player;if(!p)return{x:0,y:0};const R=380;let x,y;
     if(s?.dragged){const d=Math.min(R,Math.max(160,(s.dl||0)*2.2));x=p.x+Math.cos(s.ang)*d;y=p.y+Math.sin(s.ang)*d;}
     else{const t=this.yuzuMarked()||this.yuzuTarget(p.x,p.y,440);if(t){x=t.x;y=t.y;}else{const mv=this.moveDir||{},a=mv.x||mv.y?Math.atan2(mv.y,mv.x):(p.flipX?Math.PI:0);x=p.x+Math.cos(a)*220;y=p.y+Math.sin(a)*220;}}
-    const d=this.dist(p.x,p.y,x,y);if(d>R){x=p.x+(x-p.x)*R/d;y=p.y+(y-p.y)*R/d;}const q=typeof inMapPt==='function'?inMapPt(x,y):[x,y];return{x:q[0],y:q[1]};}
+    const d=this.dist(p.x,p.y,x,y);if(d>R){x=p.x+(x-p.x)*R/d;y=p.y+(y-p.y)*R/d;}const q=typeof inMapPt==='function'?inMapPt(x,y):[x,y];return{x:q[0],y:q[1],ang:s?.dragged?s.ang:null};}
+  // v8.0.65 ค: Pomelo leaps at most 450px from where it stands
+  yuzuCmdLeapPt(m,pt){const d=this.dist(m.spr.x,m.spr.y,pt.x,pt.y);if(d<=450)return{x:pt.x,y:pt.y,d};const k=450/d;return{x:m.spr.x+(pt.x-m.spr.x)*k,y:m.spr.y+(pt.y-m.spr.y)*k,d:450};}
   yuzuCmdAim(s){const m=this.yuzuEnsure(),g=s.g;if(!m||!g)return;const pt=s.pt=this.yuzuCmdPoint(s),k=m.kind,t=this.elapsed||0;g.clear();
-    if(k==='lime'){const a=Math.atan2(pt.y-m.spr.y,pt.x-m.spr.x),L=this.dist(m.spr.x,m.spr.y,pt.x,pt.y)+400,ex=m.spr.x+Math.cos(a)*L,ey=m.spr.y+Math.sin(a)*L;g.lineStyle(26,0xafe57a,.16);g.lineBetween(m.spr.x,m.spr.y,ex,ey);g.lineStyle(3,0xeaffc8,.8);g.lineBetween(m.spr.x,m.spr.y,ex,ey);}
-    else{const r=k==='pomelo'?160:k==='bloodorange'?150:120,c=k==='bloodorange'?0xdf87a7:0xffd77b;g.fillStyle(c,.14);g.fillCircle(pt.x,pt.y,r);g.lineStyle(3,c,.75+.2*Math.sin(t*10));g.strokeCircle(pt.x,pt.y,r);g.lineStyle(2,0xffffff,.35);g.lineBetween(m.spr.x,m.spr.y,pt.x,pt.y);}
+    if(k==='lime'){const a=pt.ang??Math.atan2(pt.y-m.spr.y,pt.x-m.spr.x),L=pt.ang!=null?800:this.dist(m.spr.x,m.spr.y,pt.x,pt.y)+400,ex=m.spr.x+Math.cos(a)*L,ey=m.spr.y+Math.sin(a)*L;g.lineStyle(26,0xafe57a,.16);g.lineBetween(m.spr.x,m.spr.y,ex,ey);g.lineStyle(3,0xeaffc8,.8);g.lineBetween(m.spr.x,m.spr.y,ex,ey);}
+    else{const q=k==='bloodorange'?pt:this.yuzuCmdLeapPt(m,pt),r=k==='pomelo'?160:k==='bloodorange'?150:120,c=k==='bloodorange'?0xdf87a7:0xffd77b;g.fillStyle(c,.14);g.fillCircle(q.x,q.y,r);g.lineStyle(3,c,.75+.2*Math.sin(t*10));g.strokeCircle(q.x,q.y,r);g.lineStyle(2,0xffffff,.35);g.lineBetween(m.spr.x,m.spr.y,q.x,q.y);g.fillStyle(0xffffff,.85);g.fillCircle(q.x,q.y,5);return;}
     g.fillStyle(0xffffff,.85);g.fillCircle(pt.x,pt.y,5);}
   yuzuCommand(u,pt){const m=u.m,k=u.kind,pw=u.power,ul=u.ul;
-    if(k==='pomelo'||k==='yuzling'){this.yuzuMotion(m,pt.x,pt.y,'command',(k==='pomelo'?6:3)+.5*(ul-1),(k==='pomelo'?160:120)+this.yuzuTalent('Slam'),.42);if(m.motion)m.motion.cmd=u;return;}
-    if(k==='lime'){const a=Math.atan2(pt.y-m.spr.y,pt.x-m.spr.x),L=this.dist(m.spr.x,m.spr.y,pt.x,pt.y)+400;m.aim=a;m.attack=.45;m.action=null;
+    if(k==='pomelo'||k==='yuzling'){const q=this.yuzuCmdLeapPt(m,pt);this.yuzuMotion(m,q.x,q.y,'command',(k==='pomelo'?6:3)+.5*(ul-1),(k==='pomelo'?160:120)+this.yuzuTalent('Slam'),Math.max(.35,Math.min(.7,.35+q.d/1200)));if(m.motion)m.motion.cmd=u;return;}
+    if(k==='lime'){const a=pt.ang??Math.atan2(pt.y-m.spr.y,pt.x-m.spr.x),L=pt.ang!=null?800:this.dist(m.spr.x,m.spr.y,pt.x,pt.y)+400;m.aim=a;m.attack=.45;m.action=null;
       this.yuzuShot(m,m.spr.x+Math.cos(a)*16,m.spr.y+Math.sin(a)*16,a,this.yuzuPower()*(5+.4*(ul-1))*pw,{pierce:99,source:'command_arrow',speed:950,life:L/950,seek:u.mut==='toss_home',cmdMark:true,focusFinal:true,finalSplash:55+this.yuzuTalent('Rain')});
       if(!this.yuzuEmpowerFx('lime','finish',m.spr.x,m.spr.y,210,a,{life:.42}))this.yuzuSkillFx('volley',m.spr.x,m.spr.y,210,a,{life:.45});this.yuzuSound('volley',.4,.6);return;}
     u.storm={x:pt.x,y:pt.y,n:u.mut==='grow_burst'?4:3,t:.3};this.yuzuArsenalFx('sigil',pt.x,pt.y,300,0,{ground:true,life:1.4});}
   yuzuCommandLand(m,q){const u=q.cmd;this.yuzuArea(m,q.tx,q.ty,q.r,q.mul*(u?.power||1),'command',.8);if(!this.yuzuEmpowerFx(m.kind==='pomelo'?'pomelo':'yuzling','finish',q.tx,q.ty,q.r*2.2,0,{ground:true,life:.72}))this.yuzuSkillFx('slam',q.tx,q.ty,q.r*2.2,0,{ground:true,life:.7});if(!this.yuzuSound('slam',.4,.6))Sfx.boom?.();}
   yuzuTickStorm(u,dt){const s=u.storm;if(!s||s.n<=0)return;s.t-=dt;if(s.t>0)return;s.n--;s.t=.45;this.yuzuArea(u.m,s.x,s.y,150,(2.2+.2*(u.ul-1))*u.power,'command');this.yuzuArsenalFx('sigil',s.x,s.y,300,0,{ground:true,life:.45});this.yuzuSound('slam',.25,.4);
-    for(const e of this.yuzuEnemies()){if(e.isBoss||e.isMini||e._waveObjectiveTarget)continue;const d=this.dist(e.x,e.y,s.x,s.y);if(d>150||d<10)continue;const a=Math.atan2(s.y-e.y,s.x-e.x),q=inMapPt(e.x+Math.cos(a)*14,e.y+Math.sin(a)*14);e.setPosition?.(q[0],q[1]);}}
+    for(const e of this.yuzuEnemies()){if(e.isBoss||e.isMini||e._waveObjectiveTarget)continue;const d=this.dist(e.x,e.y,s.x,s.y);if(d>150||d<10)continue;const a=Math.atan2(s.y-e.y,s.x-e.x),pull=Math.min(35,d-10),q=inMapPt(e.x+Math.cos(a)*pull,e.y+Math.sin(a)*pull);e.setPosition?.(q[0],q[1]);}}
   yuzuTickShots(dt){
     const L=this._yzShots||[];for(let i=L.length-1;i>=0;i--){const q=L[i];q.life-=dt;
       if(q.seek){const t=this.yuzuTarget(q.x,q.y,420,false,q.hit);if(t){const a=Math.atan2(t.y-q.y,t.x-q.x),diff=Phaser.Math.Angle.Wrap(a-q.angle);q.angle+=Math.max(-dt*7,Math.min(dt*7,diff));}}

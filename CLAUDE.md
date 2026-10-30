@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.65, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.66, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.64 — Yuzu Citrus Command Unique (owner picked A)
+# Latest delivery: v8.0.65 — Citrus Command polish (owner picked ก+ข+ค+ง)
+
+Aim zoom-out only after 250ms hold (tap = no pulse); Lime drag aim fires along pt.ang (800px); yuzuCmdLeapPt caps Pomelo/Yuzling leap 450px, duration .35+d/1200 ≤.7, aim circle at capped spot; Flavor Storm pull 35px/pulse (min d−10). In Sync still 4s (จ waits for Combat Meter data). tests yuzu-companions v65 block. Owner phone review pending.
+
+# Previous delivery: v8.0.64 — Yuzu Citrus Command Unique (owner picked A)
 
 Hold Unique = aim (shared _snipe hold, kind 'yuzu', yuzuCmdAim/yuzuCmdPoint: drag ≤380 or auto 🎯/priority/walk dir), release/tap → yuzuCommand: Pomelo/Yuzling leap 'command' motion + yuzuCommandLand slam r160 ×6 stun .8; Lime command_arrow pierce 99 ×5 + 6s 🎯 on first big hit; Blood Orange u.storm 3 pulses r150 ×2.2 + pull (yuzuTickStorm). Then 4s In Sync (old buff, cmd:true, no old end finisher), 🎯 ×1.5. Names Meteor Peel / Piercing Shot / Flavor Storm; Unique Mutations + 3 talents reworded, ids kept, no new art. docs/YUZU_UNIQUE_V2.md; tests yuzu-companions v64 block + old finisher tests updated. Owner phone feel/balance pending.
 

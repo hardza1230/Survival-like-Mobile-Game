@@ -43,3 +43,9 @@ Recommendation: **A** (B's idea can be added later as "In Sync" lasting longer p
 - Lime: one `command_arrow` (yz_51 art, 98px, pierce 99, speed 950, focusFinal splash 55+Raincaller), ×5 (+.4/level); first boss/mini/elite/mission hit gets the 🎯 for 6s. Seeking Arrow mutation = homing.
 - Blood Orange: `u.storm` 3 pulses (4 with Bloom Burst) every .45s, r150 ×2.2 (+.2/level), pulls small enemies 14px per pulse (`yuzuTickStorm` inside `yuzuTickBuff`, paused/stale-safe).
 - In Sync = the old buff (`_yzBuff`, `cmd:true`) for 4s (+2 Royal Parade, +UniqueTime, +1.5 Extended Focus); old end finishers skipped (`yuzuEndBuff(u,!u.cmd)`); 🎯 bonus ×1.5 while it lasts. Shields/Unique Mutations as before; texts renamed (Meteor Peel / Piercing Shot / Flavor Storm), talents Fortress Captain / Raincaller / Grand Alchemist reworded. No new art.
+
+## v8.0.65 polish (owner picked ก+ข+ค+ง)
+- Camera zoom-out while aiming only after 250ms of holding (a quick tap no longer pulses the zoom).
+- Lime: a dragged aim fires along the drag angle (`pt.ang`, 800px line) instead of companion → point.
+- Pomelo/Yuzling: `yuzuCmdLeapPt` caps the leap at 450px from the companion; duration .35 + d/1200 (≤.7s); aim circle drawn at the capped spot.
+- Flavor Storm pull 14 → 35px per pulse (never past 10px from the centre).
