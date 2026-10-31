@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.65';
+const GAME_VERSION = '8.0.66';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.66',date:'2026-10-31',title:'Every hero joins in Chapter 1',items:['Mint now joins at C1-2, Cocoa at C1-3, Taro at C1-4 and Yuzu at C1-5 — one new friend after each early boss','Hero introductions and their story scenes now take place in the Chapter 1 stage where each friend is freed','The Heroes tab opens after your first clear so you can switch right away','Already past these stages? Your heroes unlock the moment you open the game']},
   {v:'8.0.65',date:'2026-10-30',title:'Citrus Command polish',items:['A quick tap on the Unique no longer zooms the camera in and out','Lime’s Piercing Shot now fires in the direction you drag','Pomelo’s leap takes longer for longer jumps and goes at most 450px','Flavor Storm pulls enemies in much harder'],},
   {v:'8.0.64',date:'2026-10-29',title:'Yuzu: Citrus Command',items:['New Unique: hold to aim a spot, release and your companion does its big move there (tap = aim at 🎯 / the main target)','Pomelo Meteor Peel leaps and slams · Lime Piercing Shot pierces the whole line and 🎯 marks the first big enemy · Blood Orange Flavor Storm bursts 3 times and pulls enemies in','Then 4s In Sync: the old buffs plus a stronger 🎯 bonus (+50%)'],},
   {v:'8.0.63',date:'2026-10-29',title:'Softer C3 bosses',items:['C3-3, C3-4 and C3-5 bosses and minibosses have less HP (−15%, −25%, −34%)'],},
@@ -4451,17 +4452,17 @@ const NAV_H=62;   // v7.9.47 ความสูงแถบเมนูล่า
 // Citrus Companions replaces Orchard Swarm; saved path/card/talent ids stay stable.
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
-const CORE_UNLOCK_STAGE={mint:1,cocoa:4,taro:6,yuzu:9};   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame ซ่อนจนทำเสร็จ (ต่อไป C3-3) */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
-// v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) — Mint ที่ Stage 3 · Cocoa ที่ C2-1 (เจ้าของสั่ง)
+const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3};   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame ซ่อนจนทำเสร็จ (ต่อไป C3-3) */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
+// v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) · v8.0.66 idx = ด่านที่เล่นได้ครั้งแรก (C1-2…C1-5)
 const HERO_INTROS=[
-  {idx:2,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
-    text:'Your seed broke my curse — I’m a person again! I was the village healer. The Chili Engine Room ahead is burning hot, and my frost can cool it down. Want to try me? Tap Heroes on the main menu any time to switch hero.'},
-  {idx:5,id:'cocoa',flag:'cocoaIntro',card:'card_cocoa',emoji:'🐻',name:'Cocoa',color:'#8a4b22',edge:0xd9a066,btn:0xa0612f,btnEdge:0xffe2bf,stroke:'#4a2410',label:'🐻 Choose Cocoa',
-    text:'Thanks for breaking my curse! I guarded the city gate before I became mochi. The Fermented Canopy is choked with thick roots and armored Root Beetles — little seeds just bounce off their bark! My bear gauntlets punch straight through. Let me take the front line? Tap Heroes on the main menu any time to switch hero.'},
-  {idx:7,id:'taro',flag:'taroIntro',card:'card_taro',emoji:'⚡',name:'Taro',color:'#6a4fc8',edge:0xb9a3ff,btn:0x7c5ce0,btnEdge:0xeee6ff,stroke:'#2e1f66',label:'⚡ Choose Taro',
-    text:'I’m me again! I used to map this whole kingdom. Lightning led my compass here — the Hornet Queen’s hive hums with stolen flavor! Fast hornets? My sparks jump from one to the next. Tap Heroes on the main menu any time to switch hero.'},
-  {idx:10,id:'yuzu',flag:'yuzuIntro',card:'card_yuzu',emoji:'🍋',name:'Yuzu',color:'#c99a12',edge:0xffe07a,btn:0xe0b52a,btnEdge:0xfff4c4,stroke:'#5c4306',label:'🍋 Choose Yuzu',
-    text:'My curse is gone! I grew oranges before the Crown drained my orchard dry… only my little Yuzlings escaped. Help me take these harvest fields back and we will plant it all again! Tap Heroes on the main menu any time to switch hero.'},
+  {idx:1,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
+    text:'The Empress’s flavor came home and your seed broke my curse — I’m a person again! I was the village healer. The Rotting Drain ahead is thick with sour sludge, and my frost freezes it solid. Want to try me? Tap Heroes on the main menu any time to switch hero.'},
+  {idx:2,id:'cocoa',flag:'cocoaIntro',card:'card_cocoa',emoji:'🐻',name:'Cocoa',color:'#8a4b22',edge:0xd9a066,btn:0xa0612f,btnEdge:0xffe2bf,stroke:'#4a2410',label:'🐻 Choose Cocoa',
+    text:'Thanks for breaking my curse! I guarded the city gate before I became mochi. The Chili Engine Room ahead is packed with iron machines and hot-headed guards — little seeds just bounce off! My bear gauntlets punch straight through. Let me take the front line? Tap Heroes on the main menu any time to switch hero.'},
+  {idx:3,id:'taro',flag:'taroIntro',card:'card_taro',emoji:'⚡',name:'Taro',color:'#6a4fc8',edge:0xb9a3ff,btn:0x7c5ce0,btnEdge:0xeee6ff,stroke:'#2e1f66',label:'⚡ Choose Taro',
+    text:'I’m me again! I used to map this whole kingdom. Lightning led my compass here — the Sugar Frost Prison is a maze of icy cells, and I know the way through. Crowds of frozen guards? My sparks jump from one to the next. Tap Heroes on the main menu any time to switch hero.'},
+  {idx:4,id:'yuzu',flag:'yuzuIntro',card:'card_yuzu',emoji:'🍋',name:'Yuzu',color:'#c99a12',edge:0xffe07a,btn:0xe0b52a,btnEdge:0xfff4c4,stroke:'#5c4306',label:'🍋 Choose Yuzu',
+    text:'My curse is gone! I grew oranges before the Crown drained my orchard dry… only my little Yuzling escaped. The Crown’s root drinks from the oven ahead — let’s cut it, and one day we will plant it all again! Tap Heroes on the main menu any time to switch hero.'},
 ];
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
@@ -5570,10 +5571,10 @@ function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); retur
 // v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
 /* v6.77 C4: Kitchen locked until Chapter 2 (stage 10) cleared */
 // v7.9.76 เจ้าของ: ระบบที่ยังไม่ปลดจะไม่แสดง แล้วค่อย ๆ โผล่ตามด่านที่ผ่าน (ค่า = จำนวนด่าน Story ที่ผ่านแล้ว)
-const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:2,gCodex:2,skills:2,bestiary:2};
+const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_daily',achievements:'side_achievements',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
-const FEAT_LINE={bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! Mint has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
+const FEAT_LINE={bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
 const FEATURE_NAME={bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
 // v8.0.29 เจ้าของ: Recipe Book — การ์ดทุกใบของแต่ละ Build (การ์ดสาย + Unique Mutation) · เคยเลือก = ✓ · ครบสายได้ Thread
 const RECIPE_PATH_THREAD=30;
@@ -7663,10 +7664,10 @@ function rubyWrap(text,max){ const out=[]; for(const ln of String(text).split('\
   for(const w of words){ const len=(cur+' '+w).replace(/[\[\]]/g,'').length; if(cur&&len>max){ out.push(cur); cur=w; } else cur=cur?cur+' '+w:w; } out.push(cur); } return out; }   // v7.9.81 ตัดบรรทัดกล่อง Ruby (ไม่ตัดกลางคำใน [ ])
 const RUBY_STORY=[   // v7.9.98 เรื่องหลัก docs/STORY_CANON.md
   'You found the Heart Seed… and turned back into a person!\nI’m Ruby. I’ve guarded that seed for a very long time.',
-  'The Empress fell, and her flavor came home.\nGrandma hid her jam jar down these pipes — her recipes are inside!',
-  'It’s so hot! This machine burns everyone’s stolen flavor.\nYour seed freed Mint — let’s free the rest of them!',
-  'Brrr! The mochi frozen here were people once.\nOne of them sounds like Grandma… we have to hurry!',
-  'The Crown Oven. A root of the Crown drinks the whole kitchen here.\nIf we cut it, the Hunger will feel it.',
+  'The Empress fell, and her flavor freed Mint!\nGrandma hid her jam jar down these pipes — her recipes are inside!',
+  'It’s so hot! This machine burns everyone’s stolen flavor.\nYour seed freed Cocoa — let’s free the rest of them!',
+  'Brrr! The mochi frozen here were people once.\nTaro is free — and one of them sounds like Grandma… hurry!',
+  'The Crown Oven. A root of the Crown drinks the whole kitchen here.\nYuzu is with us now. If we cut it, the Hunger will feel it.',
   'We cut the root… but it slid down into the garden.\nGrandma’s flavor is still locked inside the Crown.',
   'The marsh spores eat memories. Stay close to me, okay?\nDon’t forget who you are — your seed remembers.',
   'Bees! They once made honey for the whole kingdom.\nNow the Hunger makes them guard it. Poor things…',
@@ -7744,10 +7745,10 @@ const MOTION_COMICS={
     {bg:['cs_s05_far_oven'],zoom:[1,1.1],cap:RUBY_STORYBOOK[4].pages[0].text,L:[]},
     {bg:['cs_s05_far_oven'],zoom:[1.1,1.14],shake:[700,500,.006],cap:RUBY_STORYBOOK[4].pages[1].text,L:[['cs_pup_root_tip',180,320,170,190,{to:[180,290],ms:1200}],['cs_fx_flavor_ribbon',180,440,330,100,{fps:10,to:[180,340],ms:2600}]]},
     {bg:['cs_s05_far_oven'],zoom:[1.14,1],cap:RUBY_STORYBOOK[4].pages[2].text,L:[['cs_s05_chr_berry_ruby_back',180,430,280,270]]}]},
-  s06:mcHero('cs_s06_far_entrance','mint','card_mint','Mint','Mint, the village healer, is a person again — and her frost can cool the Chili Engine!'),
-  s07:mcHero('cs_s07_far_canopy','cocoa','card_cocoa','Cocoa','Cocoa, the old gate guard, is back — ready to punch through the thick roots!'),
-  s08:mcHero('cs_s08_far_hive','taro','card_taro','Taro','Taro, the kingdom’s mapmaker, is free — his lightning leaps from hornet to hornet!'),
-  s09:mcHero('cs_s09_far_ash','yuzu','card_yuzu','Yuzu','Yuzu, the orange grower, is herself again — with her little Yuzlings close by!'),
+  s06:mcHero('cs_s02_far_drains','mint','card_mint','Mint','Mint, the village healer, is a person again — and her frost can freeze the sour drains!'),
+  s07:mcHero('cs_s03_far_furnace','cocoa','card_cocoa','Cocoa','Cocoa, the old gate guard, is back — ready to punch through the iron machines!'),
+  s08:mcHero('cs_s04_far_prison','taro','card_taro','Taro','Taro, the kingdom’s mapmaker, is free — his lightning leaps from guard to guard!'),
+  s09:mcHero('cs_s05_far_oven','yuzu','card_yuzu','Yuzu','Yuzu, the orange grower, is herself again — with her little Yuzling close by!'),
   s11:{title:'CHAPTER 1 COMPLETE',shots:[
     {bg:['cs_s11_far_oven_cold'],zoom:[1,1.06],cap:'The Crown Oven goes cold. The wounded root tears itself free…',L:[['cs_pup_root_wound',180,420,160,150,{at:500,to:[180,560],ms:900,ease:'Quad.easeIn'}],['cs_fx_dust',180,470,235,118,{fps:12,loop:false,at:900}]]},
     {bg:['cs_s11_far_crosssection'],zoom:[1.04,1.1],cap:'…and burrows down through the earth, toward the garden below.',L:[['cs_pup_root_wound',180,230,120,110,{to:[180,520],ms:2600}]]}]},
@@ -11809,7 +11810,7 @@ class Game extends Phaser.Scene {
   startStoryStage(idx){
     if(!Save.data.tutorialDone){this.startChapterTutorial();return;}
     // Mint is an optional ally; Stage 3 accepts the player's selected hero.   // v6.55.4 Mint เตือนก่อนเข้าด่าน 3
-    { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===2?{idx:2,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ if(typeof MC_HERO_SCENE!=='undefined'&&this.mcGate?.(MC_HERO_SCENE[hi.id],()=>this.startStoryStage(idx)))return; d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
+    { const hi=typeof HERO_INTROS!=='undefined'?HERO_INTROS.find(x=>x.idx===idx):(idx===1?{idx:1,id:'mint',flag:'mintIntro'}:null),d=Save.data; if(hi&&!d[hi.flag]&&!(d.stageMastery||{})[idx]){ if(typeof MC_HERO_SCENE!=='undefined'&&this.mcGate?.(MC_HERO_SCENE[hi.id],()=>this.startStoryStage(idx)))return; d[hi.flag]=1; Save.save(); const owned=(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL)||(d.chars||[]).includes(hi.id)||hi.id==='mint'; if(owned&&(this.character||d.character)!==hi.id){ this._mintIntroIdx=idx; this.showMintWarning(hi); return; } } }   // v6.85 แนะนำ Mint · v7.6.3 + Cocoa (ข้ามถ้ายังไม่ปลดหรือใช้ตัวนั้นอยู่แล้ว)
     if(this.rubyStageStory(idx,()=>this.startStoryStage(idx)))return;
     if(!this._rubyEntry&&isStageReady(idx))this.rubyEntryCurtain?.(idx);
     this._dailyRun=false;this._challengeChoice=null;this._challengeRequested=null;this.stageDiff=1;this.startRun(idx);

@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.66, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.67, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.65 — Citrus Command polish (owner picked ก+ข+ค+ง)
+# Latest delivery: v8.0.66 — every hero unlocks in Chapter 1 (owner picked ข)
+
+CORE_UNLOCK_STAGE {mint:0,cocoa:1,taro:2,yuzu:3} → playable C1-2/C1-3/C1-4/C1-5 (Sesame still WIP/hidden). HERO_INTROS idx 1–4 with texts for Rotting Drain / Chili Engine / Frost Prison / Crown Oven; Motion Comic s06–s09 reuse cs_s02/03/04/05 far backgrounds (old cs_s06–09 far art registered but unused). RUBY_STORY[1–4] name the freed friend; FEATURE_OPEN.char 2→1; FEAT_LINE char generic. Old saves unlock on load (unlockCoreCharacters). docs/STORY_CANON.md tables + 7.4 updated. tests/hero-unlock-ch1 (in npm check). Owner phone review pending.
+
+# Previous delivery: v8.0.65 — Citrus Command polish (owner picked ก+ข+ค+ง)
 
 Aim zoom-out only after 250ms hold (tap = no pulse); Lime drag aim fires along pt.ang (800px); yuzuCmdLeapPt caps Pomelo/Yuzling leap 450px, duration .35+d/1200 ≤.7, aim circle at capped spot; Flavor Storm pull 35px/pulse (min d−10). In Sync still 4s (จ waits for Combat Meter data). tests yuzu-companions v65 block. Owner phone review pending.
 
