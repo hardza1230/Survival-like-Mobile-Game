@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.68, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.69, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.67 — Yuzu Seedlings minions (owner picked 1ก 2ก 3ก 4ข)
+# Latest delivery: v8.0.68 — Yuzu talent text fixes + art order 56
+
+Talents checked against code: Royal Parade 'In Sync lasts 2s longer' (was old buff text), three path roots '+6% companion and Seedling hits' (yzDmg is in yuzuPower), Wide Landing names Meteor Peel too, Acid Notes 'Sour-marked enemies take 4% more damage' (no 'percentage points'). Numbers unchanged; tests/talent-icons royalLabel updated. Art order docs/art_orders/56_YUZU_SEEDLINGS.md (9 files: 4 Seedling sheets 8×128, pop/regrow/seed shot/sour burst, card icon) awaits art.
+
+# Previous delivery: v8.0.67 — Yuzu Seedlings minions (owner picked 1ก 2ก 3ก 4ข)
 
 New shared Yuzu card seedling (max 3, icon yc59_starter): YZ_SEED_COUNT 1/3/5 + Evolution 2 (max 7). Weak (×.12–.18 yuzuPower), mortal (contact −1 HP/.6s, boss 3), pop → regrow 8s. YZ_SEED_KIND: pre-Build bite · Pomelo tank hp8 + yuzuTaunt 110px · Lime throw (yuzuShot mini, no splash) · Blood Orange pop burst r70 ×.6 + Sour. Reuses minion_yuzling 30px tinted, no new art. yuzuTickSeeds from tickYuzuCrew, clearYuzuSeeds in clearYuzuCrew. docs/YUZU_SEEDLINGS.md; tests yuzu-companions v67. Owner phone balance/FPS pending.
 
@@ -1129,6 +1133,7 @@ Owner pasted all 33 runs; chat cut it off and all were pre-meter. Play Stats now
 - **ใบสั่งอาร์ต 40 (23 ต.ค.) หีบใน Bazaar + ไอคอน Thread:** 7 ไฟล์ · ส่งครบ 7 ไฟล์ · ผูกแล้ว v7.9.79 · รอ QA มือถือ
 - **ใบสั่งเสียงชุด A (25 ต.ค.) `docs/audio_orders/A00–A05`:** A01 เสียงเมนูใหม่ (Merge/Forge Points/Login/Daily/Awards/Codex/Depths/Rank/Power, 32) · A02 เสียงในด่าน (กลไกสนามบอส/Counter/ฆ่าบอส/ภารกิจ/สถานะ/Ruby, 30) · A03 Yuzu (15) · A04 เพลงหน้าแรก + เพลงฉากเรื่อง 4 อารมณ์ + Bazaar + คำการ์ตูน + ชนะ/แพ้ (20) · A05 เสียงพึมพำ Ruby/ฮีโร่ Lobby/บอส (31, ไม่รวม Sesame) · รอเสียง (โน้ตผูกโค้ดท้ายแต่ละใบ)
 - **ใบสั่งอาร์ต 35, 50–54 (25 ต.ค.) ของที่ยังใช้อีโมจิ/กรอบโค้ด:** 35 Yuzu Orchard (17) · 50 Merge + Forge Points (14) · 51 Login + Daily (10) · 52 Awards (7) · 53 Bestiary + Recipe Book (9) · 54 Depths + Rank Rewards (5) · รออาร์ต (โน้ตผูกโค้ดอยู่ท้ายแต่ละใบ)
+- **ใบสั่งอาร์ต 56 (31 ต.ค.) Yuzu Seedlings:** 9 ไฟล์ (`docs/art_orders/56_YUZU_SEEDLINGS.md`) · โค้ด v8.0.67 ใช้ Yuzling ย้อมสีชั่วคราว · ระวังงบ GPU Yuzu 299/300 · รออาร์ต
 - **ใบสั่งอาร์ต 49 (24 ต.ค.) กรอบโปรไฟล์ 4 แบบจาก Awards:** 4 ไฟล์ (`docs/art_orders/49_PROFILE_FRAMES.md`) · รออาร์ต (ตอนนี้เส้นสีโค้ด)
 - **ใบสั่งอาร์ต 48 (24 ต.ค.) กลไกสนามบอส C1–C2:** ส่งครบ 12 ชีต · ผูกแล้ว v8.0.21 · รอ QA มือถือ
 - **ใบสั่งอาร์ต 47 (24 ต.ค.) HUD ส่วนบน + ปุ่มเร่งความเร็ว:** ส่งครบ 18 ไฟล์ · ผูกแล้ว v8.0.10 · รอ QA มือถือ
