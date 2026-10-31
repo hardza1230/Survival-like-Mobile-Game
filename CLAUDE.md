@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.73, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.74, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.72 — boss bullet identity (owner picked colour/shape + behaviours)
+# Latest delivery: v8.0.73 — boss victory comics shorter/clearer/varied (owner)
+
+bossMotionScene: 2 shots (👑 title + beats[0] · “release” + STAGE_EPILOGUE why + 'Next: C?-? · name' if total <118 chars), noTitle (mcTitle skips to shot 0), fast advance max(ms+600,1700+34/char) vs old 2200+45/char. 4 stagings by idx%4 (actor/Ruby side, entrance offset, pan/zoom), flash = BOSS_SHOT[idx].c, shake idx%3==1, pow word per variant, mote per idx. Same art/keys. tests/boss-stories (2 shots), check-boss-motion-ui j<2 (run with FORGE_BROWSER_CHANNEL=chromium). docs/BOSS_MOTION_COMICS.md. Owner phone pacing review pending.
+
+# Previous delivery: v8.0.72 — boss bullet identity (owner picked colour/shape + behaviours)
 
 Code-drawn 128px white textures boss_orb/boss_shard/boss_star (dark outline, tinted; same size as cr_foe_bolt so hitbox unchanged). BOSS_SHOT[stageIndex 0–14] + BOSS_SHOT_PIN {k,c,s,b}. foeShot → bossShotStyleAt(x,y): shot born within .6·size+40px of an active boss/mini (not delveBoss, not _bsChild) gets bossShotApply (texture/tint/scale, beh). bossShotTick from the foe tick: wave (sine ±.55), home (1.7 rad/s for 1.3s), boomer (reverse at .85s), bounce (camera edges ≤2), split (3 kids at .7s, ×.55 dmg), delay (stop .55s, blink, 6-ring at 1.25s ×.5 dmg); bossShotKids capped at 210 active. killFoe resets beh/spin/alpha. Mob shots unchanged. tests/boss-shots. Headless smoke 16 styles 0 errors. Owner phone feel/difficulty review pending (split/delay add small bullets).
-
-# Previous delivery: v8.0.71 — Rewards hub (owner: merge Daily + Login + Awards)
-
-Lobby right side News · 🎁 Rewards (tag side_rewards, route 'rewards' → daily or achievements by _rwLast/badges), left Codex · Mail. rewardsTabs(active) draws 📅 Login (loginPopup('daily') or 'Day n claimed' toast) · 📋 Daily · 🏆 Awards (tags rw_<k>, red dots) under the header and returns its height; buildDaily/buildAchievements shift content by it. FEATURE_OPEN rewards 1, reveal targets side_rewards, daily/achievements skipped in featureReveal (new 'rewards' card instead). hasTargetBadge('rewards'). gActivity rows unchanged. tests/rewards-hub. Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
@@ -63,7 +63,6 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- v8.0.73 motion comic หลังชนะบอส: สั้นลง เล่าเรื่องต่อเนื่องชัด ไม่ซ้ำทุกด่าน (`docs/BOSS_MOTION_COMICS.md`)
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame Mirror Network: ขั้น 1 เสร็จ v7.9.40 · ขั้น 2 (สาย + Glass World) รอเจ้าของเริ่ม

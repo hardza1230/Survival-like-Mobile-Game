@@ -1,5 +1,7 @@
 # Boss aftermath Motion Comics · v8.0.45
 
+**v8.0.73 (owner: too long, confusing, same every stage):** 2 shots per boss instead of 3, no title card (sc.noTitle), faster auto-advance (sc.fast: max(ms+600, 1700+34/char)). Shot 1 = 👑 boss name + who they were; shot 2 = their last words + where the trail leads (+ 'Next: C?-? · name' when the caption stays short enough for 12px text). Four rotating stagings per boss (actor/Ruby side, entrance from left/top/bottom/right, camera pan/zoom), flash tinted by the boss's BOSS_SHOT colour, shake on some, comic word POP!/POOF!/SHINE!/FREE!. Same art; check-boss-motion-ui now checks 2 shots (30 per viewport).
+
 v8.0.46 adds the owned final-blow/curse-release/Wayseed Key transition BEFORE the boss memory and existing boss rewards; see BOSS_VICTORY.md. The route below also remains the safety net after rewards for any unseen comic.
 
 Campaign victory → boss memory b00–b14 (three shots each) → applicable original chapter comic → Stage Clear. No pre-fight story modal, old still-image/text recap, or Ruby clear-story popup. Existing chapter scenes and boss combat dialogue remain. Repeat clears skip seen comics; Bestiary replays the same scenes. Skip is an intentional completed viewing; cancellation/death/stage change/shutdown cannot mark seen or continue a stale sequence. Special modes and noRuby bypass this story route.

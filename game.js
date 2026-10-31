@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.72';
+const GAME_VERSION = '8.0.73';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.73',date:'2026-10-31',title:'Shorter, clearer boss stories',items:['After each boss: two quick scenes instead of three, no title card — who the boss was, then their last words and where to go next','Each boss story is staged differently, with its own colours and camera moves']},
   {v:'8.0.72',date:'2026-10-31',title:'Every boss shoots its own way',items:['Each boss and miniboss now fires its own colour and shape: orbs, shards or spinning stars','Bullets move differently per boss: weaving, bouncing off the screen edge, splitting in three, homing, flying back like a boomerang, or stopping and bursting into a ring','Damage and attack timing are unchanged; normal enemies keep their usual shots']},
   {v:'8.0.71',date:'2026-10-31',title:'All rewards in one place',items:['New 🎁 Rewards button in the Lobby replaces Daily and Awards','Tabs: 📅 Login gift · 📋 Daily Quests · 🏆 Awards, with red dots when something is ready']},
   {v:'8.0.70',date:'2026-10-31',title:'Twin Seed and clearer menus',items:['Strawberry: Juicy Burst is now Twin Seed — each volley has a chance to fire 1 extra seed (Sniper: stronger Heavy Seed)','Stage-end Watch Ad button is bigger, green and moves so you can find it','Equipment lesson now points at the Equip button, then teaches ⚡ Quick Equip','Chest opening shows how much Thread you have','Flavor Weave and Rank Rewards use the same header and font as other pages','Mission spotlights can no longer be skipped by accident while moving']},
@@ -7878,10 +7879,13 @@ function bossMotionId(idx){return Number.isInteger(idx)&&idx>=0&&idx<15?'b'+Stri
 function bossMotionScene(idx){
   const id=bossMotionId(idx),story=BOSS_STORIES[idx],beats=BOSS_MOTION_BEATS[idx];if(!id||!story||!beats)return null;
   const bg=['cs_boss_'+String(idx).padStart(2,'0')+'_memory'],key=BOSS_MOTION_TEX[idx],mote=idx===3?'snow':idx===2||idx===4?'ember':'spark',actor=(x,y,size,o={})=>[key,x,y,size,size,{frames:[0,1],fps:3,...o}],ruby=['ruby_talk_worried',302,480,78,86,{bob:2}];
-  return{title:story.title,tag:'A memory released after the battle',boss:true,mote,shots:[
-    {bg,pan:[-16,10],zoom:[1,1.05],ms:3200,cap:beats[0],L:[actor(190,350,240,{to:[180,330],ms:2600,bob:2}),ruby]},
-    {bg,zoom:[1.05,1.12],ms:3400,flash:[600,0x9265cf],cap:beats[1],L:[actor(180,325,280,{rot:4}),['cs_pup_crown_glow',180,190,86,70,{glow:1}],['cs_fx_curse_smoke',180,335,290,290,{fps:8,a:.42}],ruby]},
-    {bg,zoom:[1.1,1.01],ms:3600,flash:[550,0xffe2b3],cap:'“'+story.release+'”\n'+(idx===14?'The First Tree waits. The Crown must come off.':STAGE_EPILOGUE[idx]?.why||story.goal),L:[actor(180,340,240,idx===14?{to:[180,355],ms:1800}:{out:1900,to:[180,350],ms:1800}),['cs_fx_sparkle',180,280,160,160,{fps:10,at:600}],...(idx===14?[]:[['cs_fx_flavor_ribbon',180,330,270,86,{fps:9,at:700,to:[180,180],ms:2400}]]),['ruby_talk_proud',302,480,78,86,{bob:3}]]}
+  // v8.0.73 เจ้าของ: เรื่องหลังชนะบอสยาว/ซ้ำ/งง → 2 ช็อต ไม่มีการ์ดชื่อ · ช็อต 1 = ชื่อบอส + อดีต · ช็อต 2 = คำสุดท้าย + ไปที่ไหนต่อ · ท่าเปลี่ยน 4 แบบตามบอส สีแฟลชตามกระสุนบอส
+  const V=[{ax:118,rx:300,pan:[-18,12],z:[1,1.08],enter:[-90,0]},{ax:242,rx:66,pan:[18,-10],z:[1.08,1],enter:[0,-170]},{ax:180,rx:300,pan:[0,-18],z:[1,1.12],enter:[0,160]},{ax:180,rx:66,pan:[-12,14],z:[1.12,1.02],enter:[110,0]}][idx%4];
+  const col=(typeof BOSS_SHOT!=='undefined'&&BOSS_SHOT[idx]?.c)||0x9265cf,ay=idx%2?330:345,sz=idx%3===0?270:250,rb=(k,b)=>[k,V.rx,480,78,86,{bob:b}],nx=typeof STAGES!=='undefined'&&STAGES[idx+1],nl=nx?'C'+((nx.chapter|0)+1)+'-'+(nx.chapterStage||((idx+1)%5+1))+' · '+nx.name:'';
+  const why=idx===14?'The First Tree waits. The Crown must come off.':(STAGE_EPILOGUE[idx]?.why||story.goal),where=nl&&(story.release.length+why.length+nl.length)<118?why+'\nNext: '+nl:why;   // ยาวเกิน = ไม่ใส่บรรทัด Next (ตัวอักษรต้อง ≥12px บนจอเล็ก)
+  return{title:story.title,tag:'A memory released after the battle',boss:true,noTitle:true,fast:true,mote:idx===3?'snow':idx===2||idx===4?'ember':idx%2?'spark':'dust',shots:[
+    {bg,pan:V.pan,zoom:V.z,ms:2600,flash:[520,col],shake:idx%3===1?[500,.006]:undefined,cap:'👑 '+story.title+'\n'+beats[0],L:[actor(V.ax+V.enter[0],ay+V.enter[1],sz,{to:[V.ax,ay],ms:900,bob:2,rot:idx%2?4:0}),['cs_pup_crown_glow',V.ax,ay-150,80,66,{glow:1,at:500}],['cs_fx_curse_smoke',V.ax,ay,sz+30,sz+30,{fps:8,a:.4,at:300}],rb('ruby_talk_worried',2)]},
+    {bg,zoom:[V.z[1],V.z[0]],ms:2800,flash:[500,0xffe2b3],pow:['POP!','POOF!','SHINE!','FREE!'][idx%4],cap:'“'+story.release+'”\n'+where,L:[actor(V.ax,ay,sz-20,idx===14?{to:[V.ax,ay+15],ms:1500}:{out:1500,to:[V.ax,ay+10],ms:1400}),['cs_fx_sparkle',V.ax,ay-60,160,160,{fps:10,at:450}],...(idx===14?[]:[['cs_fx_flavor_ribbon',V.ax,ay,250,80,{fps:9,at:550,to:[V.rx<180?320:40,170],ms:2000}]]),rb('ruby_talk_proud',3)]}
   ]};
 }
 for(let i=0;i<15;i++)MC_GALLERY.push([bossMotionId(i),'👑',BOSS_STORIES[i].title,i]);
@@ -13708,7 +13712,7 @@ class Game extends Phaser.Scene {
     const out=(ms,cb)=>{ const all=[...objs,...motes]; if(red||!all.length){ cb&&cb(); return; } T({targets:objs,alpha:0,y:'-=10',duration:ms,ease:'Sine.easeIn'}); T({targets:motes,alpha:0,duration:ms,onComplete:()=>cb&&cb()}); };
     return {objs:[...objs,...motes],dur,out};
   }
-  mcTitle(mc){ this.mcClearShot(mc); mc.i=-1; mc.shotAt=Date.now(); const L=mc.layer,W=this.W,H=this.H,bg=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0); L.add(bg); mc.objs.push(bg);
+  mcTitle(mc){ if(mc.sc.noTitle){ mc.i=-1; this.mcNext(mc); return; } this.mcClearShot(mc); mc.i=-1; mc.shotAt=Date.now(); const L=mc.layer,W=this.W,H=this.H,bg=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0); L.add(bg); mc.objs.push(bg);
     const ct=this.cineTitle(L,{kicker:'MOCHITOPIA · STORY',title:mc.sc.title,tag:mc.sc.tag,speed:.72},t=>mc.tw.push(t)); mc.objs.push(...ct.objs);
     mc.ev.push(this.time.delayedCall(ct.dur+800,()=>{ if(mc.done||mc.i!==-1)return; ct.out(650,()=>{ if(!mc.done&&mc.i===-1)this.mcNext(mc); }); })); }
   mcMotes(mc,kind,n){ const W=this.W,H=this.H,C={dust:[0xfff1d6,.45],ember:[0xff8a3d,.9],snow:[0xffffff,.85],spark:[0xffe27a,.9]}[kind]||[0xfff1d6,.45],fall=kind==='snow';
@@ -13772,7 +13776,7 @@ class Game extends Phaser.Scene {
     const pad=this._pad||14,sw=70,shh=30,sx=W-sw-12,sy=pad+8,sg=add(this.add.graphics()); sg.fillStyle(0x000000,.45); sg.fillRoundedRect(sx,sy,sw,shh,15); sg.lineStyle(2,0xffffff,.7); sg.strokeRoundedRect(sx,sy,sw,shh,15);
     add(this.add.text(sx+sw/2,sy+shh/2,'Skip ⏭',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(.5)); mc.skip={x:sx-8,y:sy-8,w:sw+16,h:shh+16};
     if(!red){ const dip=add(this.add.rectangle(0,0,W,H,0x000000,1).setOrigin(0)); tw({targets:dip,alpha:0,duration:320,ease:'Quad.easeOut'}); }
-    at(Math.max(ms+900,2200+(sh.cap||'').length*45),()=>this.mcNext(mc));
+    at(mc.sc.fast?Math.max(ms+600,1700+(sh.cap||'').length*34):Math.max(ms+900,2200+(sh.cap||'').length*45),()=>this.mcNext(mc));   // v8.0.73 เรื่องบอสเดินเร็วขึ้น
   }
   rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
     if(!entry||d.settings?.noRuby||Number(d.rubyStorybook?.[idx])>=3||this.state!=='menu')return false;
