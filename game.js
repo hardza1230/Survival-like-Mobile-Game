@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.69';
+const GAME_VERSION = '8.0.70';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.70',date:'2026-10-31',title:'Twin Seed and clearer menus',items:['Strawberry: Juicy Burst is now Twin Seed — each volley has a chance to fire 1 extra seed (Sniper: stronger Heavy Seed)','Stage-end Watch Ad button is bigger, green and moves so you can find it','Equipment lesson now points at the Equip button, then teaches ⚡ Quick Equip','Chest opening shows how much Thread you have','Flavor Weave and Rank Rewards use the same header and font as other pages','Mission spotlights can no longer be skipped by accident while moving']},
   {v:'8.0.69',date:'2026-10-31',title:'Little sprouts, big personalities',items:['Yuzu Seedlings now have distinct Bite, Tank, Throw and Pop animations','New seed shots, soft pop and regrowth effects, sour bursts and Seedling Sprout card art']},
   {v:'8.0.68',date:'2026-10-31',title:'Yuzu Talent text fixes',items:['Royal Parade now says In Sync lasts 2 seconds longer','Strength Talents say they also boost Seedlings','Wide Landing also names Meteor Peel; Acid Notes reads more clearly']},
   {v:'8.0.67',date:'2026-10-31',title:'Yuzu Seedlings',items:['New Yuzu card Seedling Sprout: ranks bring 1/3/5 tiny Seedlings, and Evolution adds 2 more','Seedlings are weak and pop when enemies bump them, then regrow after 8 seconds','Before a Build they bite; Pomelo Seedlings are sturdy and pull enemies; Lime Seedlings throw seeds; Blood Orange Seedlings burst in a sour blast']},
@@ -4528,7 +4529,7 @@ function berryCardHeadline(b,id,lvl,player){
   const r=b.ranks||{},v=b.lv||{},pct=n=>Math.round(n*100)+'%';
   if(id==='power')return 'Basic power '+pct(1+.12*(r.power||0))+' → '+pct(1+.12*((r.power||0)+1));
   if(id==='rate')return 'Basic interval '+pct(.92**(r.rate||0))+' → '+pct(.92**((r.rate||0)+1));
-  if(id==='size')return 'Splash radius '+(r.size?46+14*r.size:0)+' → '+(46+14*((r.size||0)+1))+'px';
+  if(id==='size')return b.path==='sniper'?'Heavy Seed power +'+Math.round(10*(v.size||0))+'% → +'+Math.round(10*((v.size||0)+1))+'%':'Extra seed chance '+15*(v.size||0)+'% → '+15*((v.size||0)+1)+'%';
   if(id==='s_draw')return 'Basic charge '+(340+60*(v.s_draw||0))+' → '+(400+60*(v.s_draw||0))+'ms';
   if(id==='volley'||id==='buckshot'){
     const before=berryShotProfile(lvl,false,b,player),next={...b,ranks:{...r,[id]:(r[id]||0)+1},lv:{...v,[id]:(v[id]||0)+1}},after=berryShotProfile(lvl,false,next,player);
@@ -4541,7 +4542,7 @@ function berryAttackInfo(d,b){
   return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>{
     if(u.id==='rate')return {...u,headline:'Basic interval −8%',desc:'Basic Attack fires 8% sooner per rank on every build (offered again only on Ricochet). Does not shorten manual Unique charge.'};
     if(u.id==='volley')return {...u,name:path==='sniper'?'Dense Chamber':u.name,headline:path==='sniper'?'+12% Heavy Seed power':'+1 Basic seed / overflow power',desc:path==='sniper'?'+12% base Heavy Seed power per rank; remains one shot, including after Evolution.':'+1 Basic seed per rank. Cap '+(path==='shotgun'?12:8)+'; each excess seed adds +8% base volley power.'};
-    if(u.id==='size')return {...u,headline:'Basic impact splash',desc:'Basic hits splash at 25% +12% per rank; radius 46px +14px per rank. Max 16 nearby targets per impact. Ricochet splashes each ordinary target once per seed; bosses and minibosses take direct hits.'};
+    if(u.id==='size')return path==='sniper'?{...u,headline:'+10% Heavy Seed power',desc:'Sniper fires one seed, so Twin Seed adds +10% Heavy Seed power per rank instead.'}:{...u,headline:'15% chance per rank: +1 seed',desc:'Each volley has a 15% chance per rank to fire 1 extra seed (also above the seed cap).'};
     return u;
   }),mutations:d.mutations.map(m=>path==='shotgun'&&m.id==='fan'?{...m,desc:'+2 pellets per blast (the Shotgun spread stays the same); past 12 pellets each extra adds +8% power.'}:path==='sniper'?{...m,name:m.id==='fan'?'Focused Chamber':'Fracture Seed',desc:m.id==='fan'?'+2 planned seeds convert to +24% base Heavy Seed power; no spread.':'+2 Heavy Seed penetrations; preserves Sniper precision instead of bouncing.'}:m)};
 }
@@ -4562,7 +4563,7 @@ const BASIC_ATTACKS = {
     upgrades:[
       {id:'power',name:'Dense Seeds',emoji:'💥',iconKey:'ic_momo_power',max:5,headline:'+12% Basic hit (multiplies)',desc:'+12% Basic Attack damage per rank. Multiplies with your “+% damage” total.'},
       {id:'rate',name:'Mochi Trigger',emoji:'⏩',iconKey:'ic_momo_rate',max:5,headline:'+8% attack speed',desc:'Basic Attack fires 8% sooner per rank (the manual Unique charge is not affected).'},
-      {id:'size',name:'Juicy Burst',emoji:'💥',iconKey:'ic_momo_size',max:3,headline:'Seeds splash on hit',desc:'Seeds pop on hit, splashing nearby enemies (bigger splash per rank)'},
+      {id:'size',name:'Twin Seed',emoji:'🍓',iconKey:'ic_momo_size',max:3,headline:'15% chance per rank: +1 seed',desc:'Each volley has a 15% chance per rank to fire 1 extra seed.'},
       {id:'volley',name:'Sweet Branching',emoji:'🌱',iconKey:'ic_momo_volley',max:3,headline:'+1 seed',desc:'+1 seed per shot per rank. Sniper: the heavy seed gets 12% stronger instead. Once you have the most seeds, extra ranks add +8% damage.'}],
     mutations:[
       {id:'ricochet',name:'Heart Ricochet',emoji:'💞',headline:'Seeds bounce twice',desc:'Seeds bounce to 2 new targets'},
@@ -10077,8 +10078,8 @@ class Game extends Phaser.Scene {
     const sugar=this.add.text(w-14,headY,'🍬 '+(Save.data.sugar||0),{fontFamily:chrome.font,fontStyle:'bold',fontSize:compact?'14px':'16px',color:chrome.currency}).setOrigin(1,0.5);
     // v4.63: ชื่อหน้าต้องอยู่ระหว่างปุ่ม Back (ขวาสุด x=94) กับตัวนับ Sugar — ยาวเกินให้ย่อฟอนต์ลง (เดิมจอแนวตั้งชื่อยาววิ่งทับปุ่ม)
     const room=2*Math.min(w/2-94-8,(w-14-sugar.width-8)-w/2);let fs=compact?20:22;while(t.width>room&&fs>12){fs--;t.setFontSize(fs+'px');}
-    const temple=!!artKey&&artKey.startsWith('screen_temple_')&&this.tuHas?.('temple_back_btn');   // v7.8.49 art order 21 หัวหน้าวิหาร
-    if(temple&&veil)veil.setAlpha(.22);
+    const temple=false;   // v8.0.70 เจ้าของ: หน้า Weave ไม่เข้ากับหน้าอื่น → ใช้หัวหน้าแบบเดียวกับทุกหน้า (โค้ดกรอบวิหารเก็บไว้)
+    // veil = .54 เหมือนหน้าอื่น
     this.menu.add(veil?[bg,veil]:[bg]);
     if(temple){ t.setColor(chrome.text).setStroke(chrome.shadow,1.5);sugar.setText(String(Save.data.sugar||0));
       const cwid=Math.max(78,sugar.width+40),room2=2*Math.min(w/2-104,(w-12-cwid)-w/2-4);while(t.width>room2&&fs>12){fs--;t.setFontSize(fs+'px');}if(t.width>room2)t.setScale(room2/t.width);
@@ -10155,6 +10156,14 @@ class Game extends Phaser.Scene {
     if(st===3&&this.menuScreen==='craft'){const {item}=this._craftContext();if(item&&!forgeLineOpen(item,this.craftLineIndex??0)){this.craftLineIndex=0;this.forgePick=null;this.buildMenuScreen();return;}}
     const STEPS=[{m:/openChest\(/,t:'Open a Silver Chest for a new item!'},{m:/equipGearInstance/,t:'Equip your new item!'},{m:/menuScreen='craft'/,t:'Now craft it — add a stat!'},{m:/forgeAct\(.(add|swap).\)/,t:'Add it! It uses 🔨 Forge Points'},{m:/\.tal\[\w+\.id\]=\w+\+1/,t:'Spend a Talent Point — talents are permanent!'}];
     if(st===0&&this.menuScreen==='bazaar'&&this._bazTab!=='chests'){ this._bazTab='chests'; this.buildMenuScreen(); return; }   // v8.0.19 เจ้าของ: บทสอนพาไปหน้าหีบเงิน/ทอง
+    // v8.0.70 เจ้าของ: บทสอนสวมของต้องชี้ปุ่ม Equip จริง (ไม่ใช่ช่องในกระเป๋า) แล้วสอนปุ่ม ⚡ Quick Equip ต่อ
+    if(st===1&&this.menuScreen==='gear'){ const sk={x:this.W-96,y:this.H-40,w:86,h:30,fn:()=>{ d.gearTut=-1; delete d._gearTutQE; Save.save(); this.buildMenuScreen(); }};
+      const show=(z,label)=>{ this._gearTutLabel=label; this.tapZones=[z,sk]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label); c.add(this.add.text(this.W-14,this.H-25,'Skip ›',{fontFamily:'sans-serif',fontSize:'12px',color:'#aaa0b8'}).setOrigin(1,0.5)); };
+      if(d._gearTutQE){ const q=this.tapZones.find(t=>t.tag==='gear_best'); if(!q){ d.gearTut=2; delete d._gearTutQE; Save.save(); return; } const f=q.fn; q.fn=()=>{ d.gearTut=2; delete d._gearTutQE; Save.save(); f(); this.time?.delayedCall(1800,()=>this.menuToast('🌟 Next: the Forge opens after Stage 2','#ffd166')); }; show(q,'⚡ Quick Equip: wear your best gear in one tap'); return; }
+      const items=d.gearItems||[],it=[...items].reverse().find(x=>x&&x.grade!=='start'&&!Save.isGearEquipped(x.uid));
+      if(it&&this.gearSelectedUid!==it.uid){ this.gearSlot=it.slot; this.gearFilter=null; this.gearSelectedUid=it.uid; this.buildMenuScreen(); return; }
+      const e=it&&this.tapZones.find(t=>t.tag==='gear_equip'); if(!e){ d._gearTutQE=1; Save.save(); this.buildMenuScreen(); return; }
+      const f=e.fn; e.fn=()=>{ d._gearTutQE=1; Save.save(); f(); }; show(e,'Tap ⚔ Equip to wear your new item!'); return; }
     const cur=STEPS[st],src=z=>{try{return String(z.fn).replace(/"/g,"'")}catch(e){return ''}};   // v7.9.35 เวอร์ชัน live ย่อโค้ด (esbuild) → เครื่องหมายคำพูดเป็น " · ชื่อตัวแปรเปลี่ยน
     let z=(st===0&&this.tapZones.find(q=>q.tag==='chest_silver'))||(st===1&&this.tapZones.find(q=>q.tag==='gear_equip'))||(st===2&&this.tapZones.find(q=>q.tag==='craft'||q.tag==='gear_craft'))||(st===3&&this.tapZones.find(q=>q.tag==='add'||q.tag==='swap'))||this.tapZones.find(q=>cur.m.test(src(q))),label=cur.t,adv=true;
     if(!z&&st===3&&this.menuScreen==='craft'&&!this.forgePick){z=this.tapZones.find(q=>q.tag?.startsWith('pick_'));adv=false;label='Pick a stat for your item';}   // v8.0.33 เลือก mod ก่อน แล้วกด Add
@@ -11906,8 +11915,8 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     this.templeArtFrames();
     const portrait=w<=h,ry=portrait?82:55;
-    const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'sans-serif',fontSize:'10px',color:'#efe4f7',stroke:'#1d0f16',strokeThickness:3}).setOrigin(0.5);
-    const rn=this.add.text(w/2,ry+17,rankName(rank),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
+    const rk=this.add.text(w/2,ry,'Current weave rank   ·   🧶 '+Save.threads()+' Weave Thread',{fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:'#efe4f7',stroke:'#1d0f16',strokeThickness:3}).setOrigin(0.5);
+    const rn=this.add.text(w/2,ry+17,rankName(rank),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffd166'}).setOrigin(0.5);
     { const rbw=Math.min(w-80,Math.max(200,rn.width+90)),rb=this.tuPanel('temple_rank_ribbon',0,w/2-rbw/2,ry+17-12,rbw,24); if(rb)this.menu.add(rb); }   // A5
     this.menu.add([rk,rn]);
     if(this.textures.exists('temple_rank_emblems')){const badge=this.add.image(32,ry+13,'temple_rank_emblems','cell'+Math.min(5,rank)).setDisplaySize(42,42);this.menu.add(badge);rn.setFontSize(w<360?'14px':'17px');}
@@ -11916,7 +11925,7 @@ class Game extends Phaser.Scene {
     // v5.27 ⛏️ ปุ่มลงห้องลับใต้วิหาร (ข้างปุ่ม Perks)
     { const dg=Save.dig(),dx=portrait?w/2+3:rkX-rkW-8,glow=dg.shovels>0||Save.digFreeReady(),art=this.tuTab(dx,rkY,rkW,rkH,glow?3:1,'Depths · '+dg.shovels,'tile_dig','#fff1d6');
       if(art)this.menu.add(art); else { const g2=this.add.graphics(); g2.fillStyle(glow?0x3a2a1a:0x2c2338,1); g2.fillRoundedRect(dx,rkY,rkW,rkH,9); g2.lineStyle(1.5,glow?0xe0a060:0x4a4059,1); g2.strokeRoundedRect(dx,rkY,rkW,rkH,9);
-      const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
+      const t2=this.add.text(dx+rkW/2,rkY+rkH/2,'⛏️ Depths · '+dg.shovels,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:glow?'#ffd9a8':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([g2,t2]); this._smallBtnIcon(t2,'tile_dig'); }
       this._zone(dx,rkY,rkW,rkH,()=>{ this.menuScreen='dig'; this.buildMenuScreen(); });
       if(Save.digFreeReady()&&this.drawBadgeDot)this.drawBadgeDot(this.menu,dx+rkW-6,rkY+6); }
@@ -11924,7 +11933,7 @@ class Game extends Phaser.Scene {
     // v8.0.22 แท็บ Special Cores ถูกรวมเข้า Rank Rewards
     { const art=this.tuTab(rkX,rkY,rkW,rkH,rpFree>0?3:0,rpFree>0?('Rank Rewards · '+rpFree+' new'):'Rank Rewards','tile_perks',rpFree>0?'#fff4c8':'#f1e4ff');
       if(art)this.menu.add(art); else { const rkg=this.add.graphics(); rkg.fillStyle(rpFree>0?0x4a3a1a:0x2c2338,1); rkg.fillRoundedRect(rkX,rkY,rkW,rkH,9); rkg.lineStyle(1.5,rpFree>0?0xffd166:0x4a4059,1); rkg.strokeRoundedRect(rkX,rkY,rkW,rkH,9);
-      const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Rewards · '+rpFree+' new'):'🏅 Rank Rewards',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
+      const rkt=this.add.text(rkX+rkW/2,rkY+rkH/2,rpFree>0?('🏅 Rewards · '+rpFree+' new'):'🏅 Rank Rewards',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:rpFree>0?'#ffe08a':'#cbbfda'}).setOrigin(0.5);
       this.menu.add([rkg,rkt]); this._smallBtnIcon(rkt,'tile_perks'); }
       this._zone(rkX,rkY,rkW,rkH,()=>{ this.menuScreen='perks'; this.buildMenuScreen(); });
       if(rpFree>0)this.drawBadgeDot(this.menu,rkX+rkW-6,rkY+6); }
@@ -11942,7 +11951,7 @@ class Game extends Phaser.Scene {
         bg.fillStyle(allMax?0x8bd3a0:0xffc24a,1); if(frac>0)bg.fillRoundedRect(bx,by,Math.max(barH,barW*frac),barH,6);
         this.menu.add(bg); } }
     const prog=this.add.text(w/2,by+19,'Woven core power '+Save.talFilled()+' / '+need+(allMax?' · ready to weave':''),
-      {fontFamily:'sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':(artCard?'#e8dcf2':'#8f849f')}).setOrigin(0.5);
+      {fontFamily:'NunitoUI, sans-serif',fontSize:'10px',color:allMax?'#8bd3a0':(artCard?'#e8dcf2':'#8f849f')}).setOrigin(0.5);
     this.menu.add(prog);
     if(this._tutorialWeaveCoach){ prog.setText('🍓 Tap a core below to spend your Sugar!').setColor('#ffe08a'); this.tweens.add({targets:prog,alpha:{from:0.55,to:1},yoyo:true,repeat:-1,duration:640}); }
     /* v6.78 C2: Special cores moved to Rank Perks screen */
@@ -11959,19 +11968,19 @@ class Game extends Phaser.Scene {
       const em=this.textures.exists(u.iconKey)?this.add.image(icx,icy,u.iconKey).setDisplaySize(isz,isz):this.add.text(icx,icy,u.emoji,{fontSize:'29px'}).setOrigin(0.5);
       let stars=''; for(let s=0;s<TAL_MAX;s++) stars+=(s<lvl?'★':'☆');
       const starArt=this.tuHas('temple_star_sheet'),ss=card?Math.max(11,Math.min(15,cardH*.13)):12,sy=card?y+cardH-ss*.8:y+61;
-      const st=this.add.text(icx+(starArt?ss*1.5+4:0),sy,starArt?'':stars,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:maxed?'#8bd3a0':'#ffd166'}).setOrigin(starArt?0:0.5,0.5);
+      const st=this.add.text(icx+(starArt?ss*1.5+4:0),sy,starArt?'':stars,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:maxed?'#8bd3a0':'#ffd166'}).setOrigin(starArt?0:0.5,0.5);
       const starImgs=[]; if(starArt)for(let s=0;s<TAL_MAX;s++)starImgs.push(this.tuImg('temple_star_sheet',s<lvl?0:1,icx+(s-1)*ss*1.05,sy,ss,ss));   // A11
-      const tag=this.add.text(tx,y+13,u.tag+' · Lv '+lvl+'/'+TAL_MAX,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:card?'#'+u.color.toString(16).padStart(6,'0'):'#cbbfda'}).setOrigin(0,0);
-      const nm=this.add.text(tx,y+29,u.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0);
-      const gain=this.add.text(tx,y+49,'Total: '+u.show(tot),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10.5px',color:'#8bd3a0'}).setOrigin(0,0);
+      const tag=this.add.text(tx,y+13,u.tag+' · Lv '+lvl+'/'+TAL_MAX,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:card?'#'+u.color.toString(16).padStart(6,'0'):'#cbbfda'}).setOrigin(0,0);
+      const nm=this.add.text(tx,y+29,u.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(0,0);
+      const gain=this.add.text(tx,y+49,'Total: '+u.show(tot),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10.5px',color:'#8bd3a0'}).setOrigin(0,0);
       if(card){ const room=x+cardW-rightW-tx-6; for(const [o,mn] of [[nm,11],[gain,8],[tag,8]]){ let fz=parseFloat(o.style.fontSize); while(o.width>room&&fz>mn){fz-=.5;o.setFontSize(fz+'px');} } }
       const buyArt=this.tuHas('temple_buy_btn_sheet'),pw=card?Math.min(118,rightW-18):Math.min(100,cardW-82),ph=card?31:29,ppx=card?x+cardW-rightW/2-pw/2+4:x+cardW-pw-10,ppy=y+cardH-ph-(card?Math.max(10,cardH*.14):10);
       const bp=buyArt?this.tuPanel('temple_buy_btn_sheet',maxed?2:(afford?0:1),ppx,ppy,pw,ph):null,bk=bp?bp._tuK:0;   // A12
       let pg=bp; if(!bp){ pg=this.add.graphics(); pg.fillStyle(maxed?0x3a3550:(afford?0x2f4a38:0x4a2f38),1); pg.fillRoundedRect(ppx,ppy,pw,ph,10); }
       const tcx=bp?(ppx+66*bk+ppx+pw-8)/2:ppx+pw/2;
-      const pt=this.add.text(tcx,ppy+ph/2,maxed?'Full ✓':((bp?'':'🍬')+cost),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:bp?'13px':'11px',color:bp?'#ffffff':(maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')),stroke:bp?'#1d0f16':undefined,strokeThickness:bp?3:0}).setOrigin(0.5);
+      const pt=this.add.text(tcx,ppy+ph/2,maxed?'Full ✓':((bp?'':'🍬')+cost),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:bp?'13px':'11px',color:bp?'#ffffff':(maxed?'#8bd3a0':(afford?'#a8f0c0':'#f0a0b0')),stroke:bp?'#1d0f16':undefined,strokeThickness:bp?3:0}).setOrigin(0.5);
       const coin=bp&&!maxed&&this.textures.exists('ic_sugar')?this.add.image(ppx+40*bk,ppy+ph/2,'ic_sugar').setDisplaySize(32*bk,32*bk):null;
-      const nx=maxed?null:this.add.text(bp?ppx+pw/2:ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
+      const nx=maxed?null:this.add.text(bp?ppx+pw/2:ppx+pw/2,ppy-3,'Upgrade: '+u.show(1),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe08a'}).setOrigin(0.5,1);
       this.menu.add([g,em,st,...starImgs.filter(Boolean),tag,nm,gain,pg,pt]); if(coin)this.menu.add(coin); if(nx)this.menu.add(nx);
       if(this._tutorialWeaveCoach&&!maxed&&afford&&!this._coachSpot)this._coachSpot={x:ppx,y:ppy,w:pw,h:ph};
       if(!maxed) this._zone(ppx,ppy,pw,ph,()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this.tuSparkle)this.tuSparkle(ppx+pw/2,ppy+ph/2); if(this._tutorialWeaveCoach){ if(this._weaveTour){ this._weaveTour='back'; this.menuToast('✨ Core upgraded! Your hero is stronger in every stage','#8dffb0'); } else { this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); });
@@ -11984,9 +11993,9 @@ class Game extends Phaser.Scene {
       pg.lineStyle(2,allMax?0xffe08a:0x4a4059,allMax?1:0.6); pg.strokeRoundedRect(pbx-bw/2,py,bw,ph,14); }
     const lx=wb?pbx+40*wk:pbx;
     const pl=this.add.text(lx,py+ph/2-(wb?7:6),(wb?'':'⭐ ')+(allMax?('Weave up → '+rankName(rank+1)):(wb?'Weave Up':'Weave up · max the cores first')),
-      {fontFamily:'sans-serif',fontStyle:'bold',fontSize:wb?'15px':'13px',color:allMax?'#fff':(wb?'#efe6f5':'#7a7088'),stroke:wb?(allMax?'#7a3b00':'#2a2236'):undefined,strokeThickness:wb?3:0}).setOrigin(0.5);
+      {fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:wb?'15px':'13px',color:allMax?'#fff':(wb?'#efe6f5':'#7a7088'),stroke:wb?(allMax?'#7a3b00':'#2a2236'):undefined,strokeThickness:wb?3:0}).setOrigin(0.5);
     const psub=this.add.text(lx,py+ph/2+(wb?10:9),allMax?('Spend 🧶'+Save.promoteThreadCost()+' · get 🍬'+promoteReward(rank)):(wb?'Max all 3 cores to unlock':'Max all 3: CORE / FLAVOR / BOND'),
-      {fontFamily:'sans-serif',fontSize:'9px',color:allMax?'#ffe9c2':(wb?'#d8cde3':'#8f849f')}).setOrigin(0.5);
+      {fontFamily:'NunitoUI, sans-serif',fontSize:'9px',color:allMax?'#ffe9c2':(wb?'#d8cde3':'#8f849f')}).setOrigin(0.5);
     this.menu.add([pg,pl,psub]);
     if(allMax) this._zone(pbx-bw/2,py,bw,ph,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(pbx,py+ph/2,72);
       if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5');this.buildMenuScreen(); });
@@ -12198,13 +12207,13 @@ class Game extends Phaser.Scene {
     // v8.0.22 Rank Rewards: ทุกยศ 1–5 เลือก 1 จาก 2 (เปลี่ยนได้ฟรี) · โบนัส Sugar/สกุลเงินตามยศอัตโนมัติ
     const rank=Save.data.rank||0,rb=rankAutoBonus(rank),hs=this._hdrShift(),art=this.tuHas('perk_card_sheet'),gap=7,cardW=(w-28-gap)/2;
     const fitH=(h-hs-300)/3,aFit=art?Math.max(46,Math.min(62,fitH-40)):58;
-    const hd=this.add.text(w/2,56+hs,'Rank '+rank+'  ·  auto bonus +'+Math.round(rb.sugar*100)+'% Sugar · +'+Math.round(rb.cur*100)+'% crafting currency',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',stroke:art?'#1d0f16':undefined,strokeThickness:art?3:0}).setOrigin(0.5);
-    const sub=this.add.text(w/2,72+hs,'Each new Rank lets you pick 1 of 2 rewards · tap the other one any time to switch',{fontFamily:'sans-serif',fontSize:'8.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
+    const hd=this.add.text(w/2,56+hs,'Rank '+rank+'  ·  auto bonus +'+Math.round(rb.sugar*100)+'% Sugar · +'+Math.round(rb.cur*100)+'% crafting currency',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',stroke:art?'#1d0f16':undefined,strokeThickness:art?3:0}).setOrigin(0.5);
+    const sub=this.add.text(w/2,72+hs,'Each new Rank lets you pick 1 of 2 rewards · tap the other one any time to switch',{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:art?'#e2d6ee':'#b7abc9'}).setOrigin(0.5);
     if(hd.width>w-20)hd.setScale((w-20)/hd.width); if(sub.width>w-16)sub.setScale((w-16)/sub.width); this.menu.add([hd,sub]);
     let y=86+hs; const rowH=Math.max(50,Math.min(60,(h-hs-86-3*aFit-70)/RANK_REWARDS.length-16));
     RANK_REWARDS.forEach(row=>{ const open=rank>=row.r,pick=Save.rankPick(row.r);
       const lbl=open?(pick?'RANK '+row.r:'RANK '+row.r+' · CHOOSE ONE'):'RANK '+row.r+' · 🔒 WEAVE UP TO RANK '+row.r;
-      if(!this.tuHeader('perk_tier_banner',14,y,w-28,lbl,open?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,lbl,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffd9a8':'#7a7088'}).setOrigin(0,0));
+      if(!this.tuHeader('perk_tier_banner',14,y,w-28,lbl,open?'#fff0e0':'#c9bcd6'))this.menu.add(this.add.text(14,y,lbl,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:open?'#ffd9a8':'#7a7088'}).setOrigin(0,0));
       if(open&&!pick)this.drawBadgeDot(this.menu,w-20,y+6);
       y+=art?17:14;
       row.opts.forEach((o,i)=>{ const x=14+i*(cardW+gap),on=pick===o.id,cp=art?this.tuPanel('perk_card_sheet',!open?2:(on?1:0),x,y,cardW,rowH):null;
@@ -12212,8 +12221,8 @@ class Game extends Phaser.Scene {
         else if(on){ const gl=this.add.graphics(); gl.lineStyle(2.5,0x8bffb4,.9).strokeRoundedRect(x+2,y+2,cardW-4,rowH-4,9); this.menu.add(gl); }
         else if(open&&!pick){ const gl=this.add.graphics(); gl.lineStyle(2,0xffe08a,.75).strokeRoundedRect(x+2,y+2,cardW-4,rowH-4,9); this.menu.add(gl); this.tweens.add({targets:gl,alpha:{from:.9,to:.25},yoyo:true,repeat:-1,duration:700}); }
         const em=this.menuArtIcon?.('rank_reward_icons',(row.r-1)*2+i,x+22,y+rowH/2,34)?.setAlpha(open?1:.4)||(this.textures.exists('perk_'+o.id)?this.add.image(x+22,y+rowH/2,'perk_'+o.id).setDisplaySize(26,26):this.add.text(x+22,y+rowH/2,o.emoji,{fontSize:'20px'}).setOrigin(0.5)).setAlpha(open?1:.4);
-        const nm=this.add.text(x+42,y+rowH*.32,o.name+(on?'  ✓':''),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#a8ffc8':(open?'#ffffff':'#9a8fa8')}).setOrigin(0,0.5);
-        const ds=this.add.text(x+42,y+rowH*.64,o.desc,{fontFamily:'sans-serif',fontSize:'8.5px',color:open?'#d6cae4':'#7a6f88',wordWrap:{width:cardW-50}}).setOrigin(0,0.5);
+        const nm=this.add.text(x+42,y+rowH*.32,o.name+(on?'  ✓':''),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:on?'#a8ffc8':(open?'#ffffff':'#9a8fa8')}).setOrigin(0,0.5);
+        const ds=this.add.text(x+42,y+rowH*.64,o.desc,{fontFamily:'NunitoUI, sans-serif',fontSize:'8.5px',color:open?'#d6cae4':'#7a6f88',wordWrap:{width:cardW-50}}).setOrigin(0,0.5);
         if(nm.width>cardW-50)nm.setScale((cardW-50)/nm.width);
         this.menu.add([g,em,nm,ds]);
         if(open&&!on)this._zone(x,y,cardW,rowH,()=>{ if(Save.setRankPick(row.r,o.id)){ Sfx.menuCue?.('rank_pick',.4)||Sfx.progress('perk'); if(this.tuSparkle)this.tuSparkle(x+cardW/2,y+rowH/2,44); this.menuToast?.((pick?'🔄 Switched to ':'✨ ')+o.name,'#ffe08a'); } this.buildRankPerks(); });
@@ -12222,10 +12231,10 @@ class Game extends Phaser.Scene {
       y+=rowH+8; });
     // v5.30 🗿 ANCIENT: Perk ลับจากใต้วิหาร (ใช้คัมภีร์ 4 ชิ้น/ตัว) · v7.8.49 มีรูป = 2 คอลัมน์ (เหรียญซ้ายกินที่)
     { const sc=Save.threads(),aArt=this.tuHas('perk_ancient_card_sheet');
-      if(!this.tuHeader('perk_ancient_banner',14,y,w*.7,'ANCIENT · from the Temple Depths','#f3e0ff'))this.menu.add(this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0));
+      if(!this.tuHeader('perk_ancient_banner',14,y,w*.7,'ANCIENT · from the Temple Depths','#f3e0ff'))this.menu.add(this.add.text(14,y,'ANCIENT · from the Temple Depths',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#e0b0ff'}).setOrigin(0,0));
       const scTxt=sc+' ('+ANCIENT_THREAD_COST+' per perk)',chW=scTxt.length*5.2+30,chip=this.tuPanel('perk_scroll_chip',0,w-14-chW,y-3,chW,19);   // B13 + B14
-      if(chip){ this.menu.add(chip); this.menu.add(this.add.text(w-14-chW+chip._tuK*25,y+6.5,'🧶',{fontSize:'11px'}).setOrigin(0.5)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
-      else this.menu.add(this.add.text(w-14,y,'🧶 '+scTxt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#8d8195'}).setOrigin(1,0));
+      if(chip){ this.menu.add(chip); this.menu.add(this.add.text(w-14-chW+chip._tuK*25,y+6.5,'🧶',{fontSize:'11px'}).setOrigin(0.5)); this.menu.add(this.add.text(w-20,y+6.5,scTxt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#e2d6ee'}).setOrigin(1,0.5)); }
+      else this.menu.add(this.add.text(w-14,y,'🧶 '+scTxt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:sc>=ANCIENT_THREAD_COST?'#ffe08a':'#8d8195'}).setOrigin(1,0));
       y+=aArt?19:15;
       const aCols=2,aW=aArt?(w-28-gap)/2:cardW,aH=aArt?aFit:58;
       ANCIENT_PERKS.forEach((pk,i)=>{ const x=14+(i%aCols)*(aW+gap),yy=y+Math.floor(i/aCols)*(aH+6),own=Save.ancientHas(pk.id),can=!own&&sc>=ANCIENT_THREAD_COST;
@@ -12233,9 +12242,9 @@ class Game extends Phaser.Scene {
         let g=ap; if(!ap){ g=this.add.graphics(); g.fillStyle(own?0x2e2440:0x201a28,1); g.fillRoundedRect(x,yy,aW,aH,10); g.lineStyle(2,own?0xc7a6ff:(can?0xffd166:0x352b40),0.9); g.strokeRoundedRect(x,yy,aW,aH,10); }
         const icx=ap?x+50*ak:x+16,icy=ap?yy+aH*.45:yy+17,isz=ap?Math.min(34,58*ak):22,tx=ap?x+100*ak+4:x+30;
         const icon=this.textures.exists('perk_'+pk.id)?this.add.image(icx,icy,'perk_'+pk.id).setDisplaySize(isz,isz):this.add.text(icx,icy,pk.emoji,{fontSize:ap?'20px':'16px'}).setOrigin(0.5); icon.setAlpha(own||can?1:0.45);
-        const nm=this.add.text(tx,yy+(ap?9:10),pk.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:ap?'10px':'8.5px',color:own?'#fff3c8':'#efe4fa',wordWrap:{width:ap?x+aW-tx-8:aW-34}}).setOrigin(0,0);
+        const nm=this.add.text(tx,yy+(ap?9:10),pk.name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:ap?'10px':'8.5px',color:own?'#fff3c8':'#efe4fa',wordWrap:{width:ap?x+aW-tx-8:aW-34}}).setOrigin(0,0);
         const lockA=ap&&!own&&!can&&this.tuHas('ui_lock_icon');
-        const ds=this.add.text(ap?tx:x+6,ap?yy+24:yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:(lockA?'':'🔒 ')+pk.desc),{fontFamily:'sans-serif',fontSize:ap?'7.5px':'6.8px',color:own?'#e6d6ff':(ap?'#cfc3dc':'#7f748d'),wordWrap:{width:ap?x+aW-tx-8:aW-10}}).setOrigin(0,0);
+        const ds=this.add.text(ap?tx:x+6,ap?yy+24:yy+31,own?'✓ '+pk.desc:(can?'Tap to unlock · '+pk.desc:(lockA?'':'🔒 ')+pk.desc),{fontFamily:'NunitoUI, sans-serif',fontSize:ap?'7.5px':'6.8px',color:own?'#e6d6ff':(ap?'#cfc3dc':'#7f748d'),wordWrap:{width:ap?x+aW-tx-8:aW-10}}).setOrigin(0,0);
         this.menu.add([g,icon,nm,ds]); if(lockA)this.menu.add(this.tuImg('ui_lock_icon',0,x+16*ak,yy+aH*.8,11,11));
         if(can)this._zone(x,yy,aW,aH,()=>{ if(Save.unlockAncient(pk.id)){ Sfx.progress('ancient'); if(this.tuSparkle)this.tuSparkle(x+aW/2,yy+aH/2,44); this.menuToast('🗿 '+pk.name+' unlocked!','#e0b0ff'); } this.buildRankPerks(); }); });
       y+=Math.ceil(ANCIENT_PERKS.length/aCols)*(aH+6)+6; }
@@ -12321,7 +12330,7 @@ class Game extends Phaser.Scene {
     this.heroButton(ix1,y-3,ib,26,salArm?'⚠':'♻',()=>{const worse=this.gearWorseItems();if(!worse.length){this._gearConfirm=null;this.showBanner('♻ Nothing to salvage','No weaker unlocked items in the bag',1300);return;}
       if(this._gearConfirm!=='salw'){const t=worse.reduce((o,it)=>({sh:o.sh+gearDismantleValue(it),su:o.su+gearSellSugar(it)}),{sh:0,su:0});this._gearConfirm='salw';Sfx.error();this.buildMenuScreen();this.showBanner('♻ Salvage '+worse.length+' weaker items?','🧶 +'+t.sh+'  🍬 +'+t.su+' · tap ⚠ again to confirm (locked kept)',2200);return;}
       this._gearConfirm=null;let sh=0,su=0;for(const it of worse){const r=Save.salvageGearInstance(it.uid);if(r){sh+=r.shards;su+=r.sugar;}}this.gearSelectedUid=null;this._adBase=null;Sfx.equipment('dismantle');this.buildMenuScreen();this.showBanner('♻ Salvaged '+worse.length+' items','🧶 +'+sh+'   🍬 +'+su,1600);},{fontSize:14});
-    this.heroButton(ix2,y-3,ib,26,'⚡',()=>{this._gearConfirm=null;this.gearEquipBest();},{fontSize:14});
+    this.heroButton(ix2,y-3,ib,26,'⚡',()=>{this._gearConfirm=null;this.gearEquipBest();},{fontSize:14});{const qz=this.tapZones[this.tapZones.length-1];if(qz)qz.tag='gear_best';}
     if(this._gearBetter?.())this.drawBadgeDot?.(this.menu,ix2+ib-3,y);   // v7.9.56 มีของที่ดีกว่าให้สวม
     const count=this.add.text(ix1-8,y+4,Save.gearInventoryCount()+' / '+cap,{fontFamily:'NunitoUI, sans-serif',fontSize:'11px',color:Save.gearInventoryFull()?'#ff8da2':'#b9abc5'}).setOrigin(1,0);this.menu.add([hdr,count]);
     let rightX=count.x-count.width; const inboxN=Save.gearInboxCount();
@@ -12656,10 +12665,10 @@ class Game extends Phaser.Scene {
     const glow=this.add.image(w/2,h*.47,'vfx_glow').setScale(.4).setAlpha(.3).setTint(c.tint),chest=anim?this.add.image(w/2,h*.47,ok,'cell0').setDisplaySize(230,230):this.chestVisual(c,w/2,h*.47,170),cs=chest.scale;
     if(anim){ let t=620; [100,90,90,110,140].forEach((ms,i)=>{ t+=ms; this.time.delayedCall(t,()=>{ if(chest.active)chest.setFrame('cell'+(i+1)); }); }); }   // ใบ 40: สั่น → ฝาเด้ง → แสง → ค้างเปิด
     const status=this.add.text(w/2,h*.66,'Tap… the lid is shaking!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(.5);
-    glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.();
+    glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.(); { const tt=this.add.text(w/2,Math.max(26,h*.065),'🧶 Thread '+Save.threads(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#cfe9ff',stroke:'#1a0f1e',strokeThickness:4,backgroundColor:'#2a1d3acc',padding:{x:12,y:5}}).setOrigin(.5); this.menu.add(tt); this._chestThrTxt=tt; }   // v8.0.70 เจ้าของ: หน้าเปิดหีบบอก Thread ที่เหลือ
     this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:anim?3:10});
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.4,alpha:{from:.2,to:.85},duration:1100,ease:'Cubic.in'});
-    this.time.delayedCall(1150,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addThreads(Math.round(c.cost*.5)); }
+    this.time.delayedCall(1150,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addThreads(Math.round(c.cost*.5)); } if(this._chestThrTxt?.active)this._chestThrTxt.setText('🧶 Thread '+Save.threads());
       if(!status.active||this.state!=='menu'){ this._gachaBusy=false; this._chestOpen=false; return; }
       const t2=it?it.tier:'common',color=t2==='legend'?0xff8f3a:t2==='epic'?0xc9a3ff:t2==='rare'?0xffcf5a:0x8bd3a0,hex='#'+color.toString(16).padStart(6,'0');
       if(anim){ chest.setAngle(0); this.tweens.add({targets:chest,y:h*.57,scale:cs*.62,alpha:.85,duration:260}); status.setY(h*.71); } else this.tweens.add({targets:chest,scale:cs*1.25,alpha:0,angle:0,duration:220});
@@ -14344,7 +14353,7 @@ class Game extends Phaser.Scene {
     if(!force&&(seen[type]||0)>=3)return; const tg=tgs||this.questFocusTargets(type); if(!tg.length)return; seen[type]=(seen[type]||0)+1;Sfx.orderCue?.('quest_focus',.3,.7);
     const cam=this.cameras.main,vz=this.viewZoom||cam.zoom||1; this.state='cinematic'; this.physics.pause(); this.player.setVelocity?.(0,0); cam.stopFollow();
     const g=this.camWorld(this.add.graphics().setDepth(95000)),lab=this.camUI(this.add.text(this.W/2,this.H*.24,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#fff1a8',stroke:'#1a0f1e',strokeThickness:6,align:'center'}).setOrigin(.5).setDepth(130).setAlpha(0));
-    const hint=this.camUI(this.add.text(this.W/2,this.H*.24+30,'tap to skip',{fontFamily:'sans-serif',fontSize:'11px',color:'#d9cce6'}).setOrigin(.5).setDepth(130).setAlpha(.6));
+    const hint=this.camUI(this.add.text(this.W/2,this.H*.24+30,'',{fontFamily:'sans-serif',fontSize:'11px',color:'#d9cce6'}).setOrigin(.5).setDepth(130).setAlpha(0));   /* v8.0.70 เจ้าของ: สอนในด่านแตะข้ามไม่ได้ (นิ้วแตะเดินบ่อย ข้ามก่อนได้อ่าน) */
     const ruby=this.camUI(this.add.container(this.W-86,this.H*.24+60).setDepth(131)); let pointTick=null;
     ruby.once('destroy',()=>pointTick?.remove());
     if(this.tuHas('ruby_point')){ const im=this.tuImg('ruby_point',0,0,0,84,84); ruby.add(im); let frame=0; pointTick=this.time.addEvent({delay:180,loop:true,callback:()=>{ if(im.active)im.setFrame('cell'+(++frame%4)); }}); }
@@ -14354,7 +14363,7 @@ class Game extends Phaser.Scene {
     const tw=this.tweens.addCounter({from:0,to:1,duration:1e9,onUpdate:draw});
     const finish=()=>{ if(done)return; done=true; timers.forEach(t=>t.remove?.()); pointTick?.remove(); ruby.destroy(); tw.remove(); g.destroy(); lab.destroy(); hint.destroy(); this._finishStoryCutscene=null;
       cam.pan(this.player.x,this.player.y,380,'Sine.easeInOut',true,(c,k)=>{ if(k<1)return; cam.startFollow(this.player,false,.2,.2); if(this.state==='cinematic'){ this.state='play'; this.physics.resume(); } }); };
-    this._finishStoryCutscene=finish; let t=0;
+    this._finishStoryCutscene=()=>{}; let t=0;
     tg.forEach((q,i)=>{ timers.push(this.time.delayedCall(t,()=>{ if(done)return; cur=q; cam.pan(q.x,q.y,i?420:520,'Sine.easeInOut',true); spot.r=Math.max(420,q.r*4); spot.a=0;
       this.tweens.add({targets:spot,r:q.r,a:1,duration:520,delay:i?260:360,ease:'Cubic.out'}); lab.setText(q.l).setAlpha(0); this.tweens.add({targets:lab,alpha:1,duration:220,delay:i?300:420}); Sfx.ui?.(); })); t+=i?1350:1550; });
     timers.push(this.time.delayedCall(t+150,finish)); }
@@ -15175,6 +15184,18 @@ class Game extends Phaser.Scene {
     const dx=[r.x-6,r.x-6+xs[1]*k,r.x-6+xs[1]*k+stretch,r.x-6+xs[1]*k+stretch+(xs[3]-xs[2])*k,r.x+r.w+6-(W-xs[4])*k,r.x+r.w+6],dy=[r.y-6,r.y-6+ys[1]*k,r.y+r.h+6-(H-ys[2])*k,r.y+r.h+6];
     box.push(this.add.graphics().fillStyle(0x231a2c,1).fillRoundedRect(r.x,r.y,r.w,r.h,12));const c=this.add.container();for(let j=0;j<3;j++)for(let i=0;i<5;i++){if(j===1&&i>0&&i<4)continue;const f='result_'+i+'_'+j;if(!tex.has(f))tex.add(f,0,xs[i],ys[j],xs[i+1]-xs[i],ys[j+1]-ys[j]);c.add(this.add.image(dx[i],dy[j],key,f).setOrigin(0).setDisplaySize(dx[i+1]-dx[i]+.25,dy[j+1]-dy[j]+.25));}box.push(c);return c;
   }
+  // v8.0.70 เจ้าของ: ปุ่มดูโฆษณาไม่เด่น → ปุ่มเขียวสด ใหญ่ เด้ง + ส่ายเป็นจังหวะ (ปิดเมื่อลดการเคลื่อนไหว)
+  summaryAdButton(box,r,label,fn){
+    const cx=r.x+r.w/2,cy=r.y+r.h/2,w=r.w,h=r.h,c=this.add.container(cx,cy),g=this.add.graphics();
+    g.fillStyle(0x0b4f27,1).fillRoundedRect(-w/2,-h/2+4,w,h,16);g.fillStyle(0x27c265,1).fillRoundedRect(-w/2,-h/2,w,h,16);g.fillStyle(0xffffff,.24).fillRoundedRect(-w/2+6,-h/2+4,w-12,h*.4,12);g.lineStyle(2.5,0xeaffd9,1).strokeRoundedRect(-w/2,-h/2,w,h,16);
+    const t=this.add.text(0,0,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff',stroke:'#0b4f27',strokeThickness:4}).setOrigin(.5);if(t.width>w-18)t.setScale((w-18)/t.width);
+    const shine=this.add.graphics();shine.fillStyle(0xffffff,.32).fillRoundedRect(-10,-h/2,20,h,4);shine.x=-w/2-30;c.add([g,shine,t]);box.push(c);
+    if(this.hubMotionAllowed?.()!==false&&this.tweens){const tw=[this.tweens.add({targets:c,scale:{from:1,to:1.07},duration:620,yoyo:true,repeat:-1,ease:'Sine.inOut'}),
+      this.tweens.add({targets:c,angle:{from:-3.5,to:3.5},duration:70,yoyo:true,repeat:5,repeatDelay:0,loop:-1,loopDelay:1900}),
+      this.tweens.add({targets:shine,x:w/2+30,duration:700,repeat:-1,repeatDelay:1600,ease:'Sine.inOut',onRepeat:()=>{shine.x=-w/2-30;}})];
+      c.once?.('destroy',()=>tw.forEach(x=>x.remove?.()));shine.visible=true;}else shine.visible=false;
+    const generation=this._summaryView;const z={...r,tag:'ad',fn:()=>{if(this.state==='summary'&&generation===this._summaryView&&this._summaryBtns.includes(z))fn();}};this._summaryBtns.push(z);return[c,t];
+  }
   summaryButton(box,r,label,fn,primary=false,tag=''){
     const g=this.summaryCard(box,r,primary?0xf5c879:0x241c32,primary?0xffecbf:0x84718a),t=this.summaryText(box,r.x+r.w/2,r.y+r.h/2,label,primary?16:12,primary?'#33202c':'#dfcfe4',r.w-20,.5);
     const generation=this._summaryView;const z={...r,tag,fn:()=>{if(this.state==='summary'&&generation===this._summaryView&&this._summaryBtns.includes(z))fn();}};this._summaryBtns.push(z);return[g,t];
@@ -15225,7 +15246,7 @@ class Game extends Phaser.Scene {
     this.summaryButton(box,primary,last&&!this._quitSummary?'View Adventure Summary':this.recipeMode?'Back to Delve':'Back to Lobby',()=>this.continueFromSummary(),true,'continue');
     this._summaryBonus=this.sugarStage;
     if(hasAd){const ad=L.land?{x:F.x+F.w*.58+12,y:F.y,w:F.w*.42-12,h:48}:{x:F.x,y:F.y+60,w:F.w,h:44};const owner=this._summaryOwner;
-      this.summaryButton(box,ad,'Watch ad · +'+this._summaryBonus+' Sugar',()=>{if(this._adBusy)return;this.finishSummaryPresentation();this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>{if(this.state!=='summary'||this._summaryOwner!==owner)return;this.adDoubleSugar();});},false,'ad');
+      this.summaryAdButton(box,ad,'📺 Watch Ad · ×2 Sugar (+'+this._summaryBonus+')',()=>{if(this._adBusy)return;this.finishSummaryPresentation();this.showRewardedAd('Get double Sugar (+'+this._summaryBonus+')',()=>{if(this.state!=='summary'||this._summaryOwner!==owner)return;this.adDoubleSugar();});});
     }else if(!L.land)this.summaryText(box,F.x+F.w/2,F.y+79,'Rewards saved · ready when you are',11,'#af9ebc',F.w-24,.5);
     this.over.add(box);this.over.setVisible(true);
     if(!this._summaryPresentationShown){this._summaryPresentationShown=true;this.animateSummaryRewards(sugarText,rewardGroups);}
@@ -17429,7 +17450,7 @@ class Game extends Phaser.Scene {
       // ปืนกล: รัวเมล็ดรุ้งเป็นชุด ยิงเร็ว/เบา · โดน 1 ตัวแล้วหายไปเลย (ไม่ทะลุ ไม่เด้ง) · เก็บทีละตัวรัว ๆ
       let shots=aw?6:lvl>=6?4:lvl>=5?3:lvl>=3?2:1;   // v4.20 nerf ต่อ: multishot หายากขึ้นมาก (ส่วนใหญ่ 1-2 นัด) — ลดความ "ยิงรัวโกง"
       if(basic)shots=Math.min(12,shots+(basic.ranks.volley||0)+(basic.mutation==='fan'?2:0)+(basic.evolved?2:0));
-      if(this.player.twinSprinkle) shots+=3;shots+=this.player.gearCount||0;if(sw.skill===key)shots+=this.player.weaponShots||0;if(basic)shots=Math.min(12,shots);
+      if(this.player.twinSprinkle) shots+=3;shots+=this.player.gearCount||0;if(sw.skill===key)shots+=this.player.weaponShots||0;if(basic)shots=Math.min(12,shots);if(basic&&Math.random()<.15*(basic.lv?.size||0))shots++;   /* v8.0.70 Twin Seed */
       const path=basic?basic.path:null,R=basic?basic.ranks:{}; if(path==='sniper')shots=Math.max(1,Math.ceil(shots/2)); else if(path==='shotgun')shots=Math.min(18,shots+5+(R.buckshot||0));
       const RAINBOW=[0xff5a6e,0xff9e3d,0xffe14d,0x66e06a,0x5ad1ff,0x8f7bff,0xff7bd5];
       const speed=(aw?1180:980)*(path==='sniper'?1.35:1), gap=path==='shotgun'?0:(aw?38:52);   // เร็ว + รัวถี่ (machine gun) ·s่งตรง ไม่โค้ง
@@ -17437,7 +17458,7 @@ class Game extends Phaser.Scene {
       let _sgBig=null; if(path==='shotgun'){ let bd=430; this.enemies.children.iterate(e=>{ if(e&&e.active&&(e.isBoss||e.isMini||e.isElite)){ const dd=this.dist(e.x,e.y,this.player.x,this.player.y); if(dd<bd){bd=dd;_sgBig=e;} } }); }   // v6.50: เดิมเล็งลูกน้องที่ยืนใกล้กว่าบอส
       const PT=this.player._pt||{}; let _vol=0; if(path==='shotgun'){this._sgVol=(this._sgVol||0)+1;_vol=this._sgVol;} if(path==='shotgun')shots=Math.min(18,shots+(PT.shell||0));
       const fireOne=()=>{ if(this.state!=='play')return; const t=(_sgBig&&_sgBig.active)?_sgBig:this.nearestEnemy(aw?900:640); if(!t)return;
-        const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return; const pop=basic?(basic.ranks.size||0):0; if(pop>0)b.seedPop=pop;   // ตัวเล็กลงอีก
+        const shotIndex=idx++,b=this.getBullet(this.player.x,this.player.y,0xffffff,0.12+lvl*0.008+(aw?0.03:0)); if(!b)return;    // ตัวเล็กลงอีก
         b.setTexture('proj_sprinkle').setTint(RAINBOW[shotIndex%RAINBOW.length]); b.faceVel=true;
         const evo=basic&&basic.evolved;
         b.dmg=(5.25+lvl*1.5)*dm*(aw?1.12:1)*(this.player.twinSprinkle?1.2:1)*(evo?1.35:1)*(this.character==='momo'&&basic&&!basic.path?1.5:1); b.life=aw?2.2:1.9; b.pierce=!!evo; b.hitGapV=evo?0.12:0.16; b.bounce=(basic?(basic.mutation==='ricochet'?2:0):0)+(this.player.gearBounce||0); b.homing=0;
@@ -18093,13 +18114,13 @@ class Game extends Phaser.Scene {
       const c={basic,lvl,aw,power,ms,start:this.time.now,angle:a,epoch:this._artEpoch||0,glow};this._berryCharge=c;Sfx.bpLoopStart?.('strawberry_sniper_charge',.2);
       this.poseAttack(ms+200);c.timer=this.artDelay(ms,()=>{if(this._berryCharge===c)this.releaseBerryCharge(true);});return;
     }
-    this.poseAttack(340);const epoch=this._artEpoch||0,shots=profile.count;
+    this.poseAttack(340);const epoch=this._artEpoch||0,shots=profile.count+(Math.random()<.15*(basic.lv?.size||0)?1:0);   /* v8.0.70 Twin Seed */
     const fire=(idx)=>{
       if(!this.player?.active||this.state!=='play'||this.basicAttack!==basic||(this._artEpoch||0)!==epoch)return;
       const t=this.nearestEnemy(900);if(!t)return;
       const b=this.berryBullet(this.player.x,this.player.y,.12+lvl*.008+(aw?.03:0),basic);if(!b)return;
       b.setTexture('proj_sprinkle').setTint(idx%2?0xffd166:0xff76a8);b.faceVel=true;b.dmg=power;b.life=aw?2.2:1.9;b.homing=0;
-      b.seedPop=basic.ranks.size||0;b.pierce=false;b.bounce=(basic.mutation==='ricochet'?2:0)+(this.player.gearBounce||0);b.bounceGain=0;b.seekMul=1;
+      b.seedPop=0;b.pierce=false;b.bounce=(basic.mutation==='ricochet'?2:0)+(this.player.gearBounce||0);b.bounceGain=0;b.seekMul=1;
       const meta=b.berrySeed;meta.path=path;meta.evolved=!!basic.evolved;
       if(path==='shotgun'){
         b.dmg*=.45*(basic.evolved?1.35:1);b.life=.3;b.sgPellet=true;b.closeMul=.4+.15*(basic.ranks.pointblank||0)+(PT.close||0);b.cqMul=PT.cq||0;b.knockback=110+(PT.kb||0)*60;b.dragon=!!PT.dragon;
@@ -18132,10 +18153,10 @@ class Game extends Phaser.Scene {
     const b=this.berryBullet(this.player.x,this.player.y,.12+c.lvl*.008+(c.aw?.03:0),b0);if(!b)return;
     const p=complete?1:Math.max(0,Math.min(.98,(this.time.now-c.start)/c.ms)),PT=this.player._pt||{};
     b.setTexture('proj_sprinkle').setTint(complete?0xffd166:0xff9ec4);b.faceVel=true;
-    b.dmg=c.power*3.84*(.55+(.45+.15*(b0.lv.s_draw||0))*p)*(complete&&b0.evolved?1.3:1)*(1+(PT.sDmg||0));
+    b.dmg=c.power*3.84*(.55+(.45+.15*(b0.lv.s_draw||0))*p)*(complete&&b0.evolved?1.3:1)*(1+(PT.sDmg||0))*(1+.1*(b0.lv.size||0));
     b.headshot=.07*(b0.ranks.headshot||0)+(PT.hs||0);b.bigMul=.15*(b0.ranks.deadeye||0)+(PT.big||0);b.penGain=PT.pen||0;b.oneShot=!!PT.oneShot;b._ptSniper=true;
     if(this._ptHsNext){b.forceHs=true;this._ptHsNext=false;}if(PT.ghillie&&(this._ptStill||0)>=1.5&&!this._ptGhUsed){b.dmg*=2;this._ptGhUsed=true;}
-    b.pierce=true;b.seedPierce=true;b.hitTargets=new Set();b.seedPop=b0.ranks.size||0;b.life=c.aw?2.2:1.9;b.homing=0;
+    b.pierce=true;b.seedPierce=true;b.hitTargets=new Set();b.seedPop=0;b.life=c.aw?2.2:1.9;b.homing=0;
     Object.assign(b.berrySeed,{path:'sniper',full:!!complete,base:b.dmg,pierces:(complete&&b0.evolved?10:6)+(b0.mutation==='ricochet'?2:0)+Math.min(6,this.player.gearBounce||0)});
     const t=this.nearestEnemy(1100),a=t?Math.atan2(t.y-this.player.y,t.x-this.player.x):c.angle;this.attachChargedSeed(b,complete&&b0.evolved?64:38+c.lvl*2);
     this.physics.velocityFromRotation(a,(c.aw?1180:980)*1.35,b.body.velocity);this.poseAttack(340);Sfx.bp?.('strawberry_sniper_shot',complete?.62:.45,.1)||Sfx.shoot();
