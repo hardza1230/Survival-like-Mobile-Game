@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.70';
+const GAME_VERSION = '8.0.71';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.71',date:'2026-10-31',title:'All rewards in one place',items:['New 🎁 Rewards button in the Lobby replaces Daily and Awards','Tabs: 📅 Login gift · 📋 Daily Quests · 🏆 Awards, with red dots when something is ready']},
   {v:'8.0.70',date:'2026-10-31',title:'Twin Seed and clearer menus',items:['Strawberry: Juicy Burst is now Twin Seed — each volley has a chance to fire 1 extra seed (Sniper: stronger Heavy Seed)','Stage-end Watch Ad button is bigger, green and moves so you can find it','Equipment lesson now points at the Equip button, then teaches ⚡ Quick Equip','Chest opening shows how much Thread you have','Flavor Weave and Rank Rewards use the same header and font as other pages','Mission spotlights can no longer be skipped by accident while moving']},
   {v:'8.0.69',date:'2026-10-31',title:'Little sprouts, big personalities',items:['Yuzu Seedlings now have distinct Bite, Tank, Throw and Pop animations','New seed shots, soft pop and regrowth effects, sour bursts and Seedling Sprout card art']},
   {v:'8.0.68',date:'2026-10-31',title:'Yuzu Talent text fixes',items:['Royal Parade now says In Sync lasts 2 seconds longer','Strength Talents say they also boost Seedlings','Wide Landing also names Meteor Peel; Acid Notes reads more clearly']},
@@ -5591,11 +5592,11 @@ function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); retur
 // v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
 /* v6.77 C4: Kitchen locked until Chapter 2 (stage 10) cleared */
 // v7.9.76 เจ้าของ: ระบบที่ยังไม่ปลดจะไม่แสดง แล้วค่อย ๆ โผล่ตามด่านที่ผ่าน (ค่า = จำนวนด่าน Story ที่ผ่านแล้ว)
-const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
-const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_daily',achievements:'side_achievements',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
-const FEAT_ICON={bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
-const FEAT_LINE={bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
-const FEATURE_NAME={bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
+const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
+const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
+const FEAT_ICON={rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
+const FEAT_LINE={rewards:'Rewards is open! Your daily login gift, Daily Quests and Awards are all here.',bazaar:'The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.',gActivity:'Activities: daily goals and side fun that pay out rewards.',daily:'Daily Quests reset every day — finish them for reward boxes!',achievements:'Awards count your big moments and pay Sugar for each one.',news:'News shows what changed in each update.',gearInbox:'Mail keeps loot that did not fit your bag. Check it often!',gear:'Equipment! Put on the gear you find — it lives in the Upgrade tab.',craft:'The Affix Forge lets you reroll the powers on your gear (Upgrade tab).',char:'Heroes! A new friend has joined — switch heroes and spend Talent points here.',gCodex:'The Recipe Book remembers every Build card, relic and monster you meet.'};
+const FEATURE_NAME={rewards:'🎁 Rewards',bazaar:'🛒 Bazaar',gActivity:'🎯 Activities',daily:'📋 Daily Quests',achievements:'🏆 Awards',news:'📰 News',gear:'🎒 Equipment',gearInbox:'📦 Mail',craft:'🧪 Affix Forge',char:'🧸 Heroes',gCodex:'📖 Recipe Book'};
 // v8.0.29 เจ้าของ: Recipe Book — การ์ดทุกใบของแต่ละ Build (การ์ดสาย + Unique Mutation) · เคยเลือก = ✓ · ครบสายได้ Thread
 const RECIPE_PATH_THREAD=30;
 function recipeCards(hero,pid){ const pt=(BASIC_PATHS[hero]||[]).find(x=>x.id===pid); if(!pt)return []; const L=(pt.upgrades||[]).map(u=>({id:u.id,name:u.name,emoji:u.emoji,iconKey:u.iconKey,desc:hero==='yuzu'?u.desc:u.headline||u.desc}));
@@ -10116,7 +10117,7 @@ class Game extends Phaser.Scene {
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
     const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; this._inMenuBuild=true; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='merge')this.buildMerge(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='story')this.buildStoryBook(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily();  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade')this.buildUpgrade(); else if(s==='perks')this.buildRankPerks(); else if(s==='dig')this.buildDig(); else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='merge')this.buildMerge(); else if(s==='bazaar')this.buildBazaar(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='story')this.buildStoryBook(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='rewards'){ this.menuScreen=this._rwLast==='achievements'||(!this.hasTargetBadge('daily')&&this.hasTargetBadge('achievements'))?'achievements':'daily'; if(this.menuScreen==='daily')this.buildDaily(); else this.buildAchievements(); }  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -10700,13 +10701,20 @@ class Game extends Phaser.Scene {
     return{data:d,spec:d.challengeSpec};
   }
   advanceDaily(kind,n=1){ if(typeof DailyQ!=='undefined')DailyQ.tick(kind,n); }   // v7.8.87 Daily เก่าตัดแล้ว เหลือ Daily Quests
+  // v8.0.71 เจ้าของ: หน้า Rewards = แท็บ Login (ปฏิทิน 7 วัน) · Daily · Awards — คืนความสูงที่ใช้
+  rewardsTabs(active){ if(typeof featureOpen==='function'&&!featureOpen('rewards'))return 0; this._rwLast=active; const w=this.W,y=w<=this.H?80:46,h=32,gap=6,bw=Math.min(118,(w-28-gap*2)/3),x0=(w-(bw*3+gap*2))/2,cal=typeof LoginCal!=='undefined'?LoginCal.data():null,ready=typeof LoginCal!=='undefined'&&LoginCal.ready();
+    const tabs=[['login','📅 Login',ready],['daily','📋 Daily',typeof DailyQ!=='undefined'&&DailyQ.claimable()],['achievements','🏆 Awards',this.hasTargetBadge('achievements')]];
+    tabs.forEach(([k,lab,dot],i)=>{ const x=x0+i*(bw+gap),on=k===active,g=this.add.graphics(); g.fillStyle(on?0xf4d9a1:0x261e30,on?1:.94).fillRoundedRect(x,y,bw,h,12).lineStyle(1.5,on?0xfff1e7:0x6d536d,1).strokeRoundedRect(x,y,bw,h,12); this.menu.add(g);
+      const t=this.add.text(x+bw/2,y+h/2,lab,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:on?'#3b2416':'#fff1e7'}).setOrigin(.5); if(t.width>bw-10)t.setScale((bw-10)/t.width); this.menu.add(t); if(dot)this.drawBadgeDot?.(this.menu,x+bw-6,y+5);
+      this._zone(x,y,bw,h,()=>{ if(k==='login'){ if(ready)this.loginPopup('daily'); else this.menuToast?.('📅 Day '+((((cal?.i||0)%7)+7)%7||7)+' of 7 claimed · next gift tomorrow','#ffe08a'); return; } if(k===active)return; Sfx.select?.(); this.menuScreen=k; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='rw_'+k; });
+    return h+10; }
   buildDaily(){   // v7.5 Daily Quests: รางวัลเข้าเกม + แต้มภารกิจ 5 ข้อ + กล่อง 3 ขั้น
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 Daily Quests','screen_daily');
     const w=this.W,h=this.H,q=DailyQ.data();const seen=this._dqSoundSeen||(this._dqSoundSeen=new Set());let freshDone=false;for(const it of q.quests){const id=q.day+':'+it.id;if(DailyQ.done(it)&&!seen.has(id)){seen.add(id);freshDone=true;}}if(freshDone)Sfx.menuCue?.('dq_done',.25);
     const T=(x,y,t,sz,c,st,ox=0.5,oy=0.5)=>{const q2=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#ffffff'}).setOrigin(ox,oy);this.menu.add(q2);return q2;};
     const panel=(y,height,color)=>{const g=this.add.graphics();g.fillStyle(0x241d2d,0.97);g.fillRoundedRect(14,y,w-28,height,14);g.lineStyle(2,color,0.9);g.strokeRoundedRect(14,y,w-28,height,14);this.menu.add(g);return g;};
     // v8.0.24 รางวัลเข้าเกมย้ายไปเป็นป๊อปอัปปฏิทิน 7 วัน (loginPopup) · หน้านี้เหลือแต่ภารกิจ
-    const y1=w<=h?84:62,h1=-8;
+    const y1=(w<=h?84:62)+(this.rewardsTabs?.('daily')||0),h1=-8;
     // 2) v8.0.20 ความคืบหน้า n/10 + กล่อง 3/6/8 ข้อ + Weekly 7 ช่อง (หีบทอง)
     const N=q.quests.length,cnt=DailyQ.count(),wk=DailyQ.week(),y2=y1+h1+8,h2=128;panel(y2,h2,0xd95cff);
     T(28,y2+18,'⭐ Today',14,'#e7b7ff','bold',0);T(w-28,y2+18,cnt+' / '+N+' done',13,'#ffffff','bold',1);
@@ -11009,7 +11017,7 @@ class Game extends Phaser.Scene {
   }
   buildAchievements(){   // v8.0.23 Awards ใหม่: ใกล้สำเร็จ 3 รายการ · 4 หมวด · ขั้น ★ · รับทีละขั้น
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Awards','screen_achievements');
-    const w=this.W,h=this.H,d=Save.data,L=awardList(),cat=this._awCat||'story',top=w<=h?78:52;
+    const w=this.W,h=this.H,d=Save.data,L=awardList(),cat=this._awCat||'story',top=(w<=h?78:52)+(this.rewardsTabs?.('achievements')||0);
     if(!d.awards)d.awards={}; if(!d.titles)d.titles=[];
     const T=(x,y,t,sz,c,st,ox=0,oy=0.5)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:c||'#ffffff'}).setOrigin(ox,oy);this.menu.add(q);return q;};
     const box=(x,y,bw,bh,fill,line,a=.97)=>{const g=this.add.graphics();g.fillStyle(fill,a).fillRoundedRect(x,y,bw,bh,10);g.lineStyle(1.5,line,1).strokeRoundedRect(x,y,bw,bh,10);this.menu.add(g);return g;};
@@ -11188,6 +11196,7 @@ class Game extends Phaser.Scene {
   hasTargetBadge(target){try{const d=Save.data,day=localDayKey();
     if(target==='daily')return (typeof LoginCal!=='undefined'&&LoginCal.ready())||(typeof DailyQ!=='undefined')&&DailyQ.claimable();   // v7.5 รางวัลเข้าเกม หรือกล่อง Daily พร้อมเปิด
     if(target==='achievements')return awReady(d);   // v8.0.23 Awards ใหม่
+    if(target==='rewards')return this.hasTargetBadge('daily')||this.hasTargetBadge('achievements');
     if(target==='gearInbox')return Save.gearInboxItems().length>0;
     if(target==='talents')return heroTalentSpendable(d.character||'momo');
     if(target==='char')return Object.values(d.charUnlockNew||{}).some(Boolean)||this.hasTargetBadge('talents');
@@ -11312,7 +11321,7 @@ class Game extends Phaser.Scene {
   // v7.9.48 เจ้าของ (อ้างอิงเกมอื่น ข้อ 1–4): Lobby = ฮีโร่ยืนในฉากด่านถัดไป + ป้ายด่านใหญ่ (กดเข้าด่าน) + ปุ่มทางลัดข้างจอ + ป้ายโปรไฟล์ · เมนูอื่นอยู่แถบล่าง
   lobbyStage(){ const us=Math.min(STAGES.length-1,Save.data.unlockedStage||0); let i=this._lobbyStage; if(i==null||i>us||i<0){ i=us; const m=Save.data.stageMastery||{}; while(i>0&&!isStageReady(i))i--; if(m[i]&&i<us)i++; } return i; }
   // v7.9.76 ระบบใหม่ที่เพิ่งปลด → แจ้งครั้งเดียว (เซฟเก่า: นับของที่เปิดอยู่แล้วว่าเห็นแล้ว ไม่แจ้งย้อนหลัง)
-  featureReveal(){ const d=Save.data; if(!d||!d.tutorialDone)return; const open=Object.keys(FEATURE_NAME).filter(t=>featureOpen(t)&&FEATURE_OPEN[t]!=null);
+  featureReveal(){ const d=Save.data; if(!d||!d.tutorialDone)return; const open=Object.keys(FEATURE_NAME).filter(t=>featureOpen(t)&&FEATURE_OPEN[t]!=null&&t!=='daily'&&t!=='achievements');   // v8.0.71 รวมใน Rewards
     if(!d.featSeen){ d.featSeen={}; open.forEach(t=>d.featSeen[t]=1); Save.save(); return; }
     const nw=open.filter(t=>!d.featSeen[t]&&!(this._featQ||[]).includes(t)); if(!nw.length&&!(this._featQ||[]).length)return; if(!this._featQ)this._featQ=[]; this._featQ.push(...nw);
     this.time.delayedCall(350,()=>{ if(!(this._featC&&this._featC.active)&&!this._featFly){ this._featBusy=false; this.featRevealNext(); } }); }   // หน้าเมนูถูกสร้างใหม่ระหว่างแนะนำ (ภาพโหลดเสร็จ) → เริ่มตัวเดิมต่อ
@@ -11435,8 +11444,8 @@ class Game extends Phaser.Scene {
       this._zone(x,y,s0,s0,()=>{this.menuScreen=t;this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='side_'+t; if(badge)this.drawBadgeDot(this.menu,x+s0-5,y+5); };
     // v7.9.63 ขวา 3 (ของรายวัน) · ซ้าย 2 (สะสม) ให้สมดุล
     const shortcuts=(x,rows)=>rows.filter(q=>featureOpen(q[2])).forEach(([em,lab,t,ik],i)=>sideBtn(x,top+ph+28+i*62,em,lab,t,ik,t==='gCodex'?false:this.hasTargetBadge(t)));
-    shortcuts(w-side-54,[['📰','News','news','ic_side_news'],['📋','Daily','daily','ic_side_daily']]);
-    shortcuts(side,[['📖','Codex','gCodex','ic_side_codex'],['🏆','Awards','achievements','ic_side_awards'],['📦','Mail','gearInbox',this.textures.exists('ic_side_mail')?'ic_side_mail':'ic_side_inbox']]);
+    shortcuts(w-side-54,[['📰','News','news','ic_side_news'],['🎁','Rewards','rewards','ic_side_daily']]);   // v8.0.71 เจ้าของ: Daily + Login + Awards รวมเป็นปุ่มเดียว
+    shortcuts(side,[['📖','Codex','gCodex','ic_side_codex'],['📦','Mail','gearInbox',this.textures.exists('ic_side_mail')?'ic_side_mail':'ic_side_inbox']]);
     // ── v7.9.51 ใบ 33: กล่องด่าน (ข้อมูล) แยกจากปุ่ม BATTLE (กดเล่น) · ฮีโร่ยืนเหนือกล่อง
     const ready=isStageReady(si),btnW=Math.min(w*.78,300),btnH=Math.round(btnW*90/320),btnY=h-btnH-Math.max(10,h*.014),bx=(w-btnW)/2;
     const arW=36,panW=Math.min(300,w-2*(side+arW+6)),panH=Math.max(80,Math.min(96,h*.115)),panY=btnY-panH-8,px=(w-panW)/2;

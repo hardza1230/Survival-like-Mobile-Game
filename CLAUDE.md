@@ -1,16 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.71, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.72, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.70 — Twin Seed, ad button, equip lesson, chest Thread, Weave header (owner batch)
+# Latest delivery: v8.0.71 — Rewards hub (owner: merge Daily + Login + Awards)
+
+Lobby right side News · 🎁 Rewards (tag side_rewards, route 'rewards' → daily or achievements by _rwLast/badges), left Codex · Mail. rewardsTabs(active) draws 📅 Login (loginPopup('daily') or 'Day n claimed' toast) · 📋 Daily · 🏆 Awards (tags rw_<k>, red dots) under the header and returns its height; buildDaily/buildAchievements shift content by it. FEATURE_OPEN rewards 1, reveal targets side_rewards, daily/achievements skipped in featureReveal (new 'rewards' card instead). hasTargetBadge('rewards'). gActivity rows unchanged. tests/rewards-hub. Owner phone review pending.
+
+# Previous delivery: v8.0.70 — Twin Seed, ad button, equip lesson, chest Thread, Weave header (owner batch)
 
 Strawberry card id size (saves kept) Juicy Burst → Twin Seed: pre-path/path volleys +1 seed at 15%/rank (pre-path also above the 12 cap), seedPop off; Sniper charge ×(1+.1·rank). summaryAdButton: green container, scale yoyo + wiggle + shine (off with reduced motion), tag ad. questFocus spotlight no longer tap-skippable (taps during movement skipped it); its own timer ends it. Gear tutorial step 1 on Equipment: selects newest unequipped item, spotlights gear_equip only (old regex could hit a bag cell and pass the step), then d._gearTutQE → spotlight ⚡ (tag gear_best) → gearTut 2. openChest reveal shows '🧶 Thread N' pill (updates on refund). _screenBg temple header art off (shared header, veil .54); buildUpgrade/buildRankPerks fonts NunitoUI; layout/art unchanged. tests: stage-summary-layout, taro-foundation castSkill strip, momo fixture. Owner phone review pending.
-
-# Previous delivery: v8.0.69 — art order56 Seedlings
-
-Nine built-in ImageGen deliverables:4eight-frame baby citrus actors,6frame pop/regrow/sourburst,4frame seed projectile, Seedling Sprout icon. Exact128/64/256cell PNG32 sheets incoming/yuzu_seedlings with originals/PROMPTS/MANIFEST/QA/source-only previews; mechanically aligned foot120/common scale, no invented frames. Runtime9lossless half-size WebPs265,294B/1.14MiB decoded in art/yuzu_seedlings, hash manifest. New keys Yuzu-stage-only (not selected-hero boot), retains299MBboot<300cap. Movement-driven4walk frames, anticipation from existingCD then release/recover5–7, pause/reduced/stale/missing-art fallback, soft hurt tint, owned7max tiny shadows, same8sregrow with last.45s reused actor sprite showing regrowth. Shared4FXcap extended6frames; all death pops tint neutral cream, Pop sourburst straight-alpha NORMAL;18pxseed projectile4frame loop; card usesic_yz_seedling. Actual67counts/HP/CD/damage/contact/timer/gates/AI/64Citrus Command unchanged. Tests/yuzu-seedlings-art all9hashes/pose30–120FPS/pause/Low/reduced/stale/FXcap/spawn/projectile; old49card bindings checked. Fullcheck/build required. No game capture/headless combat; owner phone appearance/FPS pending.
-
-Older delivery / art delivery notes: docs/CLAUDE_HISTORY.md (search there for a version or art order number).
 
 # ⚠️ DEPLOY BRANCH — read first
 
