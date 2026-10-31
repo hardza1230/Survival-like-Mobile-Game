@@ -1,0 +1,18 @@
+const assert=require('assert'),fs=require('fs'),vm=require('vm');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
+const grab=re=>{const m=src.match(re);assert(m,'missing '+re);return m[0];};
+const ctx={Math,Phaser:{Math:{Angle:{Wrap:a=>Math.atan2(Math.sin(a),Math.cos(a))}}}};vm.createContext(ctx);
+vm.runInContext(grab(/const BOSS_SHOT=\[[\s\S]*?\];\nconst BOSS_SHOT_PIN=\{[^}]*\};/)+';this.BOSS_SHOT=BOSS_SHOT;this.PIN=BOSS_SHOT_PIN;',ctx);
+assert.equal(ctx.BOSS_SHOT.length,15,'15 campaign bosses');
+const behs=new Set(ctx.BOSS_SHOT.map(x=>x.b));for(const k of ['wave','bounce','split','home','boomer','delay'])assert(behs.has(k),'behaviour '+k);
+assert(new Set(ctx.BOSS_SHOT.map(x=>x.c)).size===15,'every boss has its own colour');
+const method=n=>{const i=src.indexOf('\n  '+n+'(');assert(i>0,n);const m=/\n  [A-Za-z_$][\w$]*\(/g;m.lastIndex=i+3;const j=m.exec(src).index;return src.slice(i+3,j);};
+const G={};vm.runInContext('G.f={'+method('bossShotStyleAt')+'}',Object.assign(ctx,{G}));const f=G.f;
+const boss={x:0,y:0,displayWidth:200,displayHeight:200};const S=Object.assign(Object.create(f),{stageIndex:3,_bigsNow:()=>[boss]});
+assert.equal(S.bossShotStyleAt(50,0),ctx.BOSS_SHOT[3],'shot near boss uses its style');
+assert.equal(S.bossShotStyleAt(900,0),null,'far shot (mobs) unchanged');
+S._bsChild=true;assert.equal(S.bossShotStyleAt(0,0),null,'children do not restyle');S._bsChild=false;
+boss.delveBoss=true;assert.equal(S.bossShotStyleAt(0,0),null,'Delve bosses keep their own shots');delete boss.delveBoss;
+boss._pinnacleArt=true;assert.equal(S.bossShotStyleAt(0,0),ctx.PIN,'Pinnacle style');
+assert(/if\(b\.beh\)this\.bossShotTick\(b,dt\)/.test(src),'tick hooked');assert(/killFoe\(b\)\{ b\.beh=null;/.test(src),'pool reset');
+assert(/countActive\?\.\(true\)\|\|0\)>210\)return;/.test(src),'child cap');
+console.log('Boss shots: 15 + Pinnacle styles, 6 behaviours, near-boss only, Delve/children excluded, pool reset and cap passed');

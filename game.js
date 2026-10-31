@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.71';
+const GAME_VERSION = '8.0.72';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.72',date:'2026-10-31',title:'Every boss shoots its own way',items:['Each boss and miniboss now fires its own colour and shape: orbs, shards or spinning stars','Bullets move differently per boss: weaving, bouncing off the screen edge, splitting in three, homing, flying back like a boomerang, or stopping and bursting into a ring','Damage and attack timing are unchanged; normal enemies keep their usual shots']},
   {v:'8.0.71',date:'2026-10-31',title:'All rewards in one place',items:['New 🎁 Rewards button in the Lobby replaces Daily and Awards','Tabs: 📅 Login gift · 📋 Daily Quests · 🏆 Awards, with red dots when something is ready']},
   {v:'8.0.70',date:'2026-10-31',title:'Twin Seed and clearer menus',items:['Strawberry: Juicy Burst is now Twin Seed — each volley has a chance to fire 1 extra seed (Sniper: stronger Heavy Seed)','Stage-end Watch Ad button is bigger, green and moves so you can find it','Equipment lesson now points at the Equip button, then teaches ⚡ Quick Equip','Chest opening shows how much Thread you have','Flavor Weave and Rank Rewards use the same header and font as other pages','Mission spotlights can no longer be skipped by accident while moving']},
   {v:'8.0.69',date:'2026-10-31',title:'Little sprouts, big personalities',items:['Yuzu Seedlings now have distinct Bite, Tank, Throw and Pop animations','New seed shots, soft pop and regrowth effects, sour bursts and Seedling Sprout card art']},
@@ -4096,6 +4097,10 @@ class Boot extends Phaser.Scene {
       g.addColorStop(0,'#fff3b0'); g.addColorStop(1,'#f0a92e'); c.fillStyle=g; c.beginPath(); c.arc(cx,cx,r,0,TAU); c.fill();
       c.strokeStyle='#c9832a'; c.lineWidth=1.3; c.stroke();
       c.fillStyle='rgba(255,255,255,0.85)'; c.beginPath(); c.arc(cx-r*0.35,cx-r*0.35,r*0.22,0,TAU); c.fill(); });
+    // v8.0.72 กระสุนบอสเฉพาะตัว: รูปขาว + ขอบเข้ม (ย้อมสีตามบอส ขอบยังเข้ม อ่านง่าย) ขนาด 128 = เท่า cr_foe_bolt → hitbox เดิม
+    mk('boss_orb',128,(c,s)=>{ const cx=s/2; c.fillStyle='#2a1430'; c.beginPath(); c.arc(cx,cx,s*.3,0,TAU); c.fill(); const g=c.createRadialGradient(cx-8,cx-8,2,cx,cx,s*.25); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#e8e8e8'); c.fillStyle=g; c.beginPath(); c.arc(cx,cx,s*.24,0,TAU); c.fill(); c.fillStyle='rgba(255,255,255,.9)'; c.beginPath(); c.arc(cx-10,cx-10,s*.06,0,TAU); c.fill(); });
+    mk('boss_shard',128,(c,s)=>{ const cx=s/2,P=(r,w)=>{ c.beginPath(); c.moveTo(cx+r,cx); c.lineTo(cx,cx-w); c.lineTo(cx-r*.75,cx); c.lineTo(cx,cx+w); c.closePath(); c.fill(); }; c.fillStyle='#2a1430'; P(s*.4,s*.2); c.fillStyle='#f4f4f4'; P(s*.32,s*.13); });
+    mk('boss_star',128,(c,s)=>{ const cx=s/2,P=(ro,ri)=>{ c.beginPath(); for(let i=0;i<10;i++){ const a=-Math.PI/2+i*Math.PI/5,r=i%2?ri:ro; c.lineTo(cx+Math.cos(a)*r,cx+Math.sin(a)*r); } c.closePath(); c.fill(); }; c.fillStyle='#2a1430'; P(s*.36,s*.17); c.fillStyle='#f4f4f4'; P(s*.28,s*.12); });
     mk('spark',16,(c,s)=>{ const cx=s/2; const g=c.createRadialGradient(cx,cx,0,cx,cx,cx);
       g.addColorStop(0,'#ffffff'); g.addColorStop(0.55,'rgba(255,255,255,0.9)'); g.addColorStop(1,'rgba(255,255,255,0)');
       c.fillStyle=g; c.beginPath(); c.arc(cx,cx,cx,0,TAU); c.fill(); });
@@ -5592,6 +5597,12 @@ function frPart(key){ if(!key)return null; const k=key[0],id=key.slice(2); retur
 // v6.69 Kitchen upkeep: ทุกสูตรที่ใช้งานต้องแลก −6% Max HP / −4% AP (+2% ต่อ ★ ของ DO, +2% signature)
 /* v6.77 C4: Kitchen locked until Chapter 2 (stage 10) cleared */
 // v7.9.76 เจ้าของ: ระบบที่ยังไม่ปลดจะไม่แสดง แล้วค่อย ๆ โผล่ตามด่านที่ผ่าน (ค่า = จำนวนด่าน Story ที่ผ่านแล้ว)
+// v8.0.72 เจ้าของ: กระสุนบอสทุกตัวเหมือนกัน → แต่ละด่านมีสี/รูป/ขนาด + พฤติกรรมของตัวเอง (ดาเมจ/จำนวนลูก/จังหวะเดิม)
+// k รูป · c สี · s ขนาด · b พฤติกรรม: wave ส่าย · bounce เด้งขอบจอ · split แตก 3 · home เลี้ยวตาม · boomer ย้อนกลับ · delay หยุดแล้วระเบิดเป็นวง
+const BOSS_SHOT=[{k:'boss_orb',c:0x9dff5a,s:1,b:'wave'},{k:'boss_orb',c:0x5fd8c8,s:1.1,b:'bounce'},{k:'boss_star',c:0xff9a3c,s:1.05,b:'split'},{k:'boss_shard',c:0x9fe4ff,s:1,b:'delay'},{k:'boss_orb',c:0xc28bff,s:1.1,b:'home'},
+  {k:'boss_star',c:0xff8fc8,s:1,b:'boomer'},{k:'boss_orb',c:0xd8f05a,s:1.05,b:'split'},{k:'boss_shard',c:0xffc23d,s:1,b:'home'},{k:'boss_star',c:0xd6b4ff,s:1,b:'boomer'},{k:'boss_shard',c:0xe07a5a,s:1.05,b:'wave'},
+  {k:'boss_orb',c:0xffe08a,s:1.1,b:'bounce'},{k:'boss_star',c:0xffb59a,s:1,b:'delay'},{k:'boss_shard',c:0x7ff0ff,s:1,b:'bounce'},{k:'boss_orb',c:0x7fe38f,s:1.05,b:'split'},{k:'boss_star',c:0xff5a6e,s:1.1,b:'home'}];
+const BOSS_SHOT_PIN={k:'boss_star',c:0xe05aff,s:1.15,b:'delay'};
 const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
@@ -19667,7 +19678,7 @@ class Game extends Phaser.Scene {
     this.player.setTintFill(0xff8080); this.time.delayedCall(90,()=>{ if(this.player.active)this.player.clearTint(); });
     if(this.player.hp<=0) this.die(); }
   hitByFoe(player,b){ if(!b.active)return; if(b.frost)this.moveSlowT=Math.max(this.moveSlowT||0,0.9); this.killFoe(b); this.hurtPlayer(b.dmg||10,0.5); }
-  killFoe(b){ b.setActive(false).setVisible(false); if(b.body){ b.body.enable=false; b.body.stop(); } }
+  killFoe(b){ b.beh=null; b.spin=0; b._bst=null; b.setAlpha?.(1); b.setActive(false).setVisible(false); if(b.body){ b.body.enable=false; b.body.stop(); } }
   // ยิงกระสุนศัตรู 1 นัด
   foeShot(x,y,ang,speed,dmg,tint,scale){
     let b=this.foeBullets.getFirstDead(false);
@@ -19677,7 +19688,20 @@ class Game extends Phaser.Scene {
     b.setTexture(this.textures.exists('cr_foe_bolt')?'cr_foe_bolt':this.textures.exists('proj_foe')?'proj_foe':'proj_enemy').setScale((scale||1.4)*0.34).setRotation(ang).setDepth(90000);
     b.clearTint();   // v5.78 กระสุนศัตรูสีเดียวทั้งเกม (เขียวเรือง+ขอบเข้ม) ไม่ย้อมตามด่าน → อ่านง่ายบนทุกพื้น
     if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.frost=this.stageIndex===3; b.life=3.0; this.camWorld(b);
-    if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); return b; }
+    if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); b.beh=null; const st=this.bossShotStyleAt?.(x,y); if(st)this.bossShotApply(b,st,ang,speed,true); return b; }
+  // v8.0.72 กระสุนที่เกิดใกล้บอส/มินิบอส (รวมท่าหน่วงเวลา) = กระสุนของบอสนั้น
+  bossShotStyleAt(x,y){ if(this._bsChild||typeof BOSS_SHOT==='undefined')return null; const L=this._bigsNow?.()||[]; for(const e of L){ if(e.delveBoss)continue; const r=Math.max(e.displayWidth||0,e.displayHeight||0)*.6+40,dx=x-e.x,dy=y-e.y; if(dx*dx+dy*dy<=r*r)return (e._pinnacleArt||this._pinnacleRun)?BOSS_SHOT_PIN:BOSS_SHOT[Math.max(0,Math.min(BOSS_SHOT.length-1,this.stageIndex|0))]; } return null; }
+  bossShotApply(b,st,ang,speed,beh){ if(!this.textures.exists(st.k))return; b.setTexture(st.k).setTint(st.c); if(st.s!==1)b.setScale(b.scaleX*st.s); b.beh=beh?st.b:null; b._bst=st; b.bt=0; b.ba=ang; b.bspd=speed; b._bn=0; b._bdone=0; b.spin=st.k==='boss_star'?6:0; }
+  bossShotKids(p,n,spread,base,spdMul,dmgMul){ if((this.foeBullets.countActive?.(true)||0)>210)return; this._bsChild=true; try{ for(let i=0;i<n;i++){ const a=base+(n===1?0:spread*(i/(n-1)-.5)),c=this.foeShot(p.x,p.y,a,p.bspd*spdMul,Math.max(1,Math.round(p.dmg*dmgMul)),null,1.4); if(c){ this.bossShotApply(c,p._bst,a,p.bspd*spdMul,false); c.setScale(c.scaleX*.72); c.frost=p.frost; c.life=1.8; } } } finally{ this._bsChild=false; } }
+  bossShotTick(b,dt){ const v=b.body?.velocity; if(!v)return; b.bt+=dt; if(b.spin)b.rotation+=b.spin*dt;
+    switch(b.beh){
+      case 'wave':{ const a=b.ba+Math.sin(b.bt*7)*.55; this.physics.velocityFromRotation(a,b.bspd,v); if(!b.spin)b.rotation=a; break; }
+      case 'home':{ if(b.bt>1.3||!this.player)break; const want=Math.atan2(this.player.y-b.y,this.player.x-b.x),cur=Math.atan2(v.y,v.x),d=Phaser.Math.Angle.Wrap(want-cur),a=cur+Math.max(-1.7*dt,Math.min(1.7*dt,d)); this.physics.velocityFromRotation(a,b.bspd,v); if(!b.spin)b.rotation=a; break; }
+      case 'boomer':{ if(!b._bdone&&b.bt>=.85){ b._bdone=1; v.x*=-.9; v.y*=-.9; b.life=Math.max(b.life,1.7); if(!b.spin)b.rotation+=Math.PI; } break; }
+      case 'bounce':{ const V=this.cameras.main.worldView; if(b._bn>=2)break; if((b.x<V.x&&v.x<0)||(b.x>V.right&&v.x>0)){ v.x=-v.x; b._bn++; } if((b.y<V.y&&v.y<0)||(b.y>V.bottom&&v.y>0)){ v.y=-v.y; b._bn++; } if(!b.spin)b.rotation=Math.atan2(v.y,v.x); break; }
+      case 'split':{ if(b.bt>=.7){ b.beh=null; this.bossShotKids(b,3,.9,Math.atan2(v.y,v.x),.9,.55); this.killFoe(b); } break; }
+      case 'delay':{ if(b.bt>=.55&&!b._bdone){ b._bdone=1; v.x=0; v.y=0; } if(b._bdone)b.setAlpha(.55+.45*Math.abs(Math.sin(b.bt*18))); if(b.bt>=1.25){ b.beh=null; b.setAlpha(1); this.bossShotKids(b,6,Math.PI*2*5/6,Math.random()*Math.PI,.7,.5); this.killFoe(b); } break; }
+    } }
   // hazard บอส: วงเตือน vector โปร่งใสจริง → ระเบิดหลัง 760ms
   spawnHazard(x,y,r,dmg,tint){
     const color=tint||0xff5a4d,wk=this.bossKit('warn'),ik=this.bossKit('impact');let warn,inner;
@@ -21280,7 +21304,7 @@ class Game extends Phaser.Scene {
     this.enemies.children.iterate(e=>{if(e&&e.active&&e._memoryMarkObj&&e._memoryMarkObj.active)e._memoryMarkObj.setPosition(e.x,e.y-8);});
 
     // กระสุนศัตรู (อายุ)
-    this.foeBullets.children.iterate(b=>{ if(!b||!b.active)return; b.life-=dt; if(b.life<=0)this.killFoe(b); });
+    this.foeBullets.children.iterate(b=>{ if(!b||!b.active)return; if(b.beh)this.bossShotTick(b,dt); else if(b.spin)b.rotation+=b.spin*dt; if(!b.active)return; b.life-=dt; if(b.life<=0)this.killFoe(b); });
 
     // boss/mini HP bar + AI แพทเทิร์นโจมตี
     if(this.boss && this.boss.active){

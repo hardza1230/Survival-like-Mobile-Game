@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.72, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.73, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.71 — Rewards hub (owner: merge Daily + Login + Awards)
+# Latest delivery: v8.0.72 — boss bullet identity (owner picked colour/shape + behaviours)
+
+Code-drawn 128px white textures boss_orb/boss_shard/boss_star (dark outline, tinted; same size as cr_foe_bolt so hitbox unchanged). BOSS_SHOT[stageIndex 0–14] + BOSS_SHOT_PIN {k,c,s,b}. foeShot → bossShotStyleAt(x,y): shot born within .6·size+40px of an active boss/mini (not delveBoss, not _bsChild) gets bossShotApply (texture/tint/scale, beh). bossShotTick from the foe tick: wave (sine ±.55), home (1.7 rad/s for 1.3s), boomer (reverse at .85s), bounce (camera edges ≤2), split (3 kids at .7s, ×.55 dmg), delay (stop .55s, blink, 6-ring at 1.25s ×.5 dmg); bossShotKids capped at 210 active. killFoe resets beh/spin/alpha. Mob shots unchanged. tests/boss-shots. Headless smoke 16 styles 0 errors. Owner phone feel/difficulty review pending (split/delay add small bullets).
+
+# Previous delivery: v8.0.71 — Rewards hub (owner: merge Daily + Login + Awards)
 
 Lobby right side News · 🎁 Rewards (tag side_rewards, route 'rewards' → daily or achievements by _rwLast/badges), left Codex · Mail. rewardsTabs(active) draws 📅 Login (loginPopup('daily') or 'Day n claimed' toast) · 📋 Daily · 🏆 Awards (tags rw_<k>, red dots) under the header and returns its height; buildDaily/buildAchievements shift content by it. FEATURE_OPEN rewards 1, reveal targets side_rewards, daily/achievements skipped in featureReveal (new 'rewards' card instead). hasTargetBadge('rewards'). gActivity rows unchanged. tests/rewards-hub. Owner phone review pending.
-
-# Previous delivery: v8.0.70 — Twin Seed, ad button, equip lesson, chest Thread, Weave header (owner batch)
-
-Strawberry card id size (saves kept) Juicy Burst → Twin Seed: pre-path/path volleys +1 seed at 15%/rank (pre-path also above the 12 cap), seedPop off; Sniper charge ×(1+.1·rank). summaryAdButton: green container, scale yoyo + wiggle + shine (off with reduced motion), tag ad. questFocus spotlight no longer tap-skippable (taps during movement skipped it); its own timer ends it. Gear tutorial step 1 on Equipment: selects newest unequipped item, spotlights gear_equip only (old regex could hit a bag cell and pass the step), then d._gearTutQE → spotlight ⚡ (tag gear_best) → gearTut 2. openChest reveal shows '🧶 Thread N' pill (updates on refund). _screenBg temple header art off (shared header, veil .54); buildUpgrade/buildRankPerks fonts NunitoUI; layout/art unchanged. tests: stage-summary-layout, taro-foundation castSkill strip, momo fixture. Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
@@ -63,7 +63,6 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- v8.0.72 กระสุนบอสเฉพาะตัว (สี/รูปร่าง/ขนาด + พฤติกรรม เด้ง/แตก/ไล่/บูมเมอแรง/ตกจากฟ้า/ระเบิดหน่วง; BOSS_KITS ctx ring/fan/lane + drainBossAttack) — เจ้าของเลือกทั้งสองแบบ
 - v8.0.73 motion comic หลังชนะบอส: สั้นลง เล่าเรื่องต่อเนื่องชัด ไม่ซ้ำทุกด่าน (`docs/BOSS_MOTION_COMICS.md`)
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub

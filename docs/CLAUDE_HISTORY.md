@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.70 — Twin Seed, ad button, equip lesson, chest Thread, Weave header (owner batch)
+
+Strawberry card id size (saves kept) Juicy Burst → Twin Seed: pre-path/path volleys +1 seed at 15%/rank (pre-path also above the 12 cap), seedPop off; Sniper charge ×(1+.1·rank). summaryAdButton: green container, scale yoyo + wiggle + shine (off with reduced motion), tag ad. questFocus spotlight no longer tap-skippable (taps during movement skipped it); its own timer ends it. Gear tutorial step 1 on Equipment: selects newest unequipped item, spotlights gear_equip only (old regex could hit a bag cell and pass the step), then d._gearTutQE → spotlight ⚡ (tag gear_best) → gearTut 2. openChest reveal shows '🧶 Thread N' pill (updates on refund). _screenBg temple header art off (shared header, veil .54); buildUpgrade/buildRankPerks fonts NunitoUI; layout/art unchanged. tests: stage-summary-layout, taro-foundation castSkill strip, momo fixture. Owner phone review pending.
+
+
 # CLAUDE.md — สมองของโปรเจกต์ (อ่านไฟล์นี้ก่อนเริ่มงานทุกครั้ง)
 
 > ไฟล์นี้คือ "ความจำถาวร" ของโปรเจกต์ ถ้าเปิดเซสชันใหม่/เพิ่ง `/clear` มา
