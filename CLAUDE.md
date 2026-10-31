@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.67, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.68, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.66 — every hero unlocks in Chapter 1 (owner picked ข)
+# Latest delivery: v8.0.67 — Yuzu Seedlings minions (owner picked 1ก 2ก 3ก 4ข)
+
+New shared Yuzu card seedling (max 3, icon yc59_starter): YZ_SEED_COUNT 1/3/5 + Evolution 2 (max 7). Weak (×.12–.18 yuzuPower), mortal (contact −1 HP/.6s, boss 3), pop → regrow 8s. YZ_SEED_KIND: pre-Build bite · Pomelo tank hp8 + yuzuTaunt 110px · Lime throw (yuzuShot mini, no splash) · Blood Orange pop burst r70 ×.6 + Sour. Reuses minion_yuzling 30px tinted, no new art. yuzuTickSeeds from tickYuzuCrew, clearYuzuSeeds in clearYuzuCrew. docs/YUZU_SEEDLINGS.md; tests yuzu-companions v67. Owner phone balance/FPS pending.
+
+# Previous delivery: v8.0.66 — every hero unlocks in Chapter 1 (owner picked ข)
 
 CORE_UNLOCK_STAGE {mint:0,cocoa:1,taro:2,yuzu:3} → playable C1-2/C1-3/C1-4/C1-5 (Sesame still WIP/hidden). HERO_INTROS idx 1–4 with texts for Rotting Drain / Chili Engine / Frost Prison / Crown Oven; Motion Comic s06–s09 reuse cs_s02/03/04/05 far backgrounds (old cs_s06–09 far art registered but unused). RUBY_STORY[1–4] name the freed friend; FEATURE_OPEN.char 2→1; FEAT_LINE char generic. Old saves unlock on load (unlockCoreCharacters). docs/STORY_CANON.md tables + 7.4 updated. tests/hero-unlock-ch1 (in npm check). Owner phone review pending.
 

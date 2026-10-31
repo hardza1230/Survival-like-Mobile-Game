@@ -8,7 +8,7 @@ const methods=block('  // Citrus Companions: one owned actor','  tickFR(dt){');
 const Scene=vm.runInContext('class Scene{'+methods+'\n}Scene',ctx),a=ctx.api;
 function node(x=0,y=0,key='minion_yuzling'){
  const n={x,y,texture:{key},active:true,alpha:1,destroy(){this.active=false;this.destroyed=true;},setPosition(x,y){this.x=x;this.y=y;return this;},setTexture(key,frame){this.texture={key};this.frame=frame;return this;},setFrame(f){this.frame=f;return this;}};
- for(const k of ['setDepth','setOrigin','setDisplaySize','setRotation','setTint','clearTint','setFlipX','setStrokeStyle','clear','fillStyle','fillRoundedRect','fillRect','lineStyle','strokeCircle'])n[k]=function(){return this;};
+ for(const k of ['setVisible','setScale','setTintFill','play','setDepth','setOrigin','setDisplaySize','setRotation','setTint','clearTint','setFlipX','setStrokeStyle','clear','fillStyle','fillRoundedRect','fillRect','lineStyle','strokeCircle'])n[k]=function(){return this;};
  n.setAlpha=function(v){this.alpha=v;return this;};n.setText=function(v){this.text=v;return this;};return n;
 }
 function enemy(x,y,hp=100){return {x,y,hp,maxhp:hp,active:true,_yzSpawnId:1,body:{halfWidth:14},dmg:8,setVelocity(){}};}
@@ -46,7 +46,7 @@ for(const path of ['citrusGuardian','zestSwarm','juiceWorkshop']){const s=scene(
 // Bounded allocations and final cleanup cover paths, menus, retry and remaining projectiles/zones.
 {const s=scene('zestSwarm'),m=s.yuzuEnsure();for(let i=0;i<60;i++)s.yuzuShot(m,0,0,0,1);assert.equal(s._yzShots.length,48);for(let i=0;i<20;i++)s.yuzuZone(m,'sour',0,0,20,2,.1);assert.equal(s._yzZones.length,10);const objects=[m.spr,m.bar,m.label,...s._yzShots.map(q=>q.spr),...s._yzZones.map(q=>q.spr)];s.clearYuzuCrew();assert(objects.every(o=>o.destroyed));assert.equal(s._yzShots.length,0);assert.equal(s._yzZones.length,0);assert.equal(s._yuzuCrew.length,0);s.clearYuzuCrew();}
 // Saved path ids, card ids and all 30 authored talent ids survive the redesign.
-const paths=a.BASIC_PATHS.yuzu;assert.deepEqual(Array.from(paths,p=>p.id),['zestSwarm','citrusGuardian','juiceWorkshop']);assert.deepEqual(Array.from(a.BASIC_ATTACKS.yuzu.upgrades,u=>u.id),['power','rate','family','splash','loyal']);
+const paths=a.BASIC_PATHS.yuzu;assert.deepEqual(Array.from(paths,p=>p.id),['zestSwarm','citrusGuardian','juiceWorkshop']);assert.deepEqual(Array.from(a.BASIC_ATTACKS.yuzu.upgrades,u=>u.id),['power','rate','family','splash','loyal','seedling']);
 for(const path of paths){assert.equal(path.upgrades.length,5);const nodes=a.talentBranch(path);assert.equal(nodes.length,10);const tal={};for(const n of nodes){assert(!n.soon);assert.equal(typeof n.apply,'function');tal[n.id]=1;}const p={};a.applyPathTalents(p,'yuzu',path.id,tal);assert.equal(Object.keys(p._pt).length,10);assert(nodes.every(n=>n.id.startsWith('pt_'+path.id+'_')));}
 // All runtime cells are source verified alpha and hero-lazy, keeping boot / other heroes isolated.
 for(const m of JSON.parse(fs.readFileSync('assets/art/yuzu_companions/MANIFEST.json'))){const p='assets/art/yuzu_companions/'+m.file,b=fs.readFileSync(p);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),m.sha256);assert(src.includes("url:'"+p+"',frame:256"));assert.equal(m.frames,m.key.startsWith('yz_fx_')?4:8);assert.equal(m.alpha[0],0);}
@@ -153,3 +153,22 @@ console.log('Yuzu v64: Citrus Command aim point (auto/mark/drag), Pomelo leap sl
 console.log('Yuzu v62: mark-only target choice, unlock headlines, locked-talent notes and Ruby aim tip passed');
 console.log('Yuzu v61: steady mark, mission/boss above mark, unlock-card guarantee passed');
 console.log('Yuzu v60: seed mark focus/×1.25/expiry/pool safety, walk-direction aim, card skill unlocks + Evolution, Dash keeps an engaged companion and rush cooldown passed');
+
+// v8.0.67 Seedlings: card 1/3/5 (+2 Evolution), weak hits, pop + 8s regrow, per-path kinds.
+{const up=a.BASIC_ATTACKS.yuzu.upgrades.find(u=>u.id==='seedling');assert.equal(up.max,3);
+ const s0=scene(null,[]);s0.time={delayedCall(){}};assert.equal(s0.yuzuSeedMax(),0);s0.yuzuTickSeeds(.1);assert.equal((s0._yzSeeds||[]).length,0,'no card = no Seedlings');
+ for(const [r,n] of [[1,1],[2,3],[3,5]]){s0.basicAttack.lv.seedling=r;assert.equal(s0.yuzuSeedMax(),n);}
+ s0.basicAttack.evolved=true;assert.equal(s0.yuzuSeedMax(),7);}
+{const e=enemy(40,0,1000),s=scene(null,[e]);s.time={delayedCall(){}};s.basicAttack.lv.seedling=1;s.yuzuEnsure();
+ s.yuzuTickSeeds(.01);assert.equal(s._yzSeeds.length,1);const q=s._yzSeeds[0];assert.equal(q.kind,'bite');q.spr.setPosition(40,0);q.cd=0;q.hurtT=99;q.retarget=0;
+ s.yuzuTickSeeds(.01);const h=s.hits.find(x=>x.source==='yuzu.seedling');assert(h,'Seedling bites');assert(Math.abs(h.n-s.yuzuPower()*.18)<1e-6,'about 15–18% of companion power');
+ q.hurtT=0;q.hp=1;s.yuzuTickSeeds(.01);assert.equal(q.alive,false,'contact pops it');assert.equal(q.regrow,8);
+ e.active=false;s.yuzuTickSeeds(8.1);assert.equal(q.alive,true,'regrows after 8s');}
+{const e=enemy(60,0,1000),s=scene('juiceWorkshop',[e]);s.time={delayedCall(){}};s.basicAttack.lv.seedling=1;s.yuzuEnsure();s.yuzuTickSeeds(.01);const q=s._yzSeeds[0];assert.equal(q.kind,'pop');
+ q.spr.setPosition(60,0);s.yuzuSeedPop(q);assert(s.hits.some(x=>x.source==='yuzu.seedling_pop'),'Blood Orange Seedlings burst');}
+{const e=enemy(150,0,1000),s=scene('zestSwarm',[e]);s.time={delayedCall(){}};s.basicAttack.lv.seedling=1;s.yuzuEnsure();s.yuzuTickSeeds(.01);const q=s._yzSeeds[0];assert.equal(q.kind,'throw');
+ q.spr.setPosition(0,0);q.cd=0;q.retarget=0;q.hurtT=99;s.yuzuTickSeeds(.01);const shot=s._yzShots.find(x=>x.source==='seedling');assert(shot&&shot.mini,'Lime Seedlings throw seeds');}
+{const e=enemy(50,0,1000),s=scene('citrusGuardian',[e]);s.time={delayedCall(){}};s.basicAttack.lv.seedling=1;const m=s.yuzuEnsure();m.spr.setPosition(900,900);s.yuzuTickSeeds(.01);const q=s._yzSeeds[0];assert.equal(q.kind,'tank');assert.equal(q.maxhp,8);
+ q.spr.setPosition(60,0);assert.equal(s.yuzuTaunt(e),q.spr,'Pomelo Seedlings pull enemies');
+ s.clearYuzuCrew();assert.equal(s._yzSeeds.length,0);}
+console.log('Yuzu v67: Seedlings card counts/Evolution, weak bite, pop + regrow, Lime throw, Blood Orange burst, Pomelo taunt passed');
