@@ -1,0 +1,1295 @@
+[
+  {
+    "key": "yzs_seed_bite",
+    "file": "yzs_seed_bite.png",
+    "bytes": 133318,
+    "sha256": "01bddeeb87a8115e4a674faa65f6ae34165a0e3f1c25ad0652d3372628306805",
+    "width": 1024,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 120
+    },
+    "background": "transparent",
+    "source": "sources/yzs_seed_bite_source.png",
+    "sourceSha256": "3304936677976ab28c866b48cb201fff040f2964825c9ad0c417a5259ec965d1",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          444,
+          444
+        ],
+        "subjectBounds": [
+          119,
+          86,
+          389,
+          420
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          23,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          444,
+          0,
+          887,
+          444
+        ],
+        "subjectBounds": [
+          110,
+          85,
+          381,
+          422
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          23,
+          19
+        ]
+      },
+      {
+        "sourceCell": [
+          887,
+          0,
+          1330,
+          444
+        ],
+        "subjectBounds": [
+          97,
+          88,
+          378,
+          423
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          22,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          1330,
+          0,
+          1774,
+          444
+        ],
+        "subjectBounds": [
+          85,
+          86,
+          355,
+          419
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          23,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          444,
+          444,
+          887
+        ],
+        "subjectBounds": [
+          119,
+          67,
+          390,
+          381
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          23,
+          26
+        ]
+      },
+      {
+        "sourceCell": [
+          444,
+          444,
+          887,
+          887
+        ],
+        "subjectBounds": [
+          102,
+          57,
+          390,
+          382
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          21,
+          23
+        ]
+      },
+      {
+        "sourceCell": [
+          887,
+          444,
+          1330,
+          887
+        ],
+        "subjectBounds": [
+          91,
+          65,
+          381,
+          382
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          20,
+          25
+        ]
+      },
+      {
+        "sourceCell": [
+          1330,
+          444,
+          1774,
+          887
+        ],
+        "subjectBounds": [
+          82,
+          48,
+          355,
+          384
+        ],
+        "scale": 0.3003003003003003,
+        "paste": [
+          23,
+          20
+        ]
+      }
+    ],
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    }
+  },
+  {
+    "key": "yzs_seed_tank",
+    "file": "yzs_seed_tank.png",
+    "bytes": 168149,
+    "sha256": "44aa272adf2e7657a5f3bd2b331623cce73095687690b9356a44e21a03b7712e",
+    "width": 1024,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 120
+    },
+    "background": "transparent",
+    "source": "sources/yzs_seed_tank_source.png",
+    "sourceSha256": "dc3d801ff747f8837ac96a9a741b76f1587cf12217ede606d6f55e6d7374c9c2",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          384,
+          512
+        ],
+        "subjectBounds": [
+          23,
+          115,
+          365,
+          455
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          14,
+          22
+        ]
+      },
+      {
+        "sourceCell": [
+          384,
+          0,
+          768,
+          512
+        ],
+        "subjectBounds": [
+          22,
+          111,
+          365,
+          455
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          14,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          768,
+          0,
+          1152,
+          512
+        ],
+        "subjectBounds": [
+          25,
+          119,
+          367,
+          456
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          14,
+          23
+        ]
+      },
+      {
+        "sourceCell": [
+          1152,
+          0,
+          1536,
+          512
+        ],
+        "subjectBounds": [
+          22,
+          119,
+          362,
+          456
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          15,
+          23
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          512,
+          384,
+          1024
+        ],
+        "subjectBounds": [
+          21,
+          102,
+          365,
+          427
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          14,
+          26
+        ]
+      },
+      {
+        "sourceCell": [
+          384,
+          512,
+          768,
+          1024
+        ],
+        "subjectBounds": [
+          16,
+          79,
+          373,
+          427
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          12,
+          19
+        ]
+      },
+      {
+        "sourceCell": [
+          768,
+          512,
+          1152,
+          1024
+        ],
+        "subjectBounds": [
+          0,
+          124,
+          365,
+          427
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          11,
+          32
+        ]
+      },
+      {
+        "sourceCell": [
+          1152,
+          512,
+          1536,
+          1024
+        ],
+        "subjectBounds": [
+          26,
+          89,
+          366,
+          428
+        ],
+        "scale": 0.29069767441860467,
+        "paste": [
+          15,
+          22
+        ]
+      }
+    ],
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    }
+  },
+  {
+    "key": "yzs_seed_throw",
+    "file": "yzs_seed_throw.png",
+    "bytes": 121928,
+    "sha256": "c5a1025ec73e0e8c98703528782f59567dd5b943183ed099719c4904123fb4b3",
+    "width": 1024,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 120
+    },
+    "background": "transparent",
+    "source": "sources/yzs_seed_throw_source.png",
+    "sourceSha256": "423efbfcd718a72f2f2cdea79366d874cab86d76fb4dde80c345b3fb6a753df1",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          384,
+          512
+        ],
+        "subjectBounds": [
+          40,
+          77,
+          357,
+          461
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          23,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          384,
+          0,
+          768,
+          512
+        ],
+        "subjectBounds": [
+          37,
+          77,
+          354,
+          459
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          23,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          768,
+          0,
+          1152,
+          512
+        ],
+        "subjectBounds": [
+          34,
+          74,
+          355,
+          461
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          22,
+          19
+        ]
+      },
+      {
+        "sourceCell": [
+          1152,
+          0,
+          1536,
+          512
+        ],
+        "subjectBounds": [
+          36,
+          74,
+          346,
+          461
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          24,
+          19
+        ]
+      },
+      {
+        "sourceCell": [
+          384,
+          512,
+          768,
+          1024
+        ],
+        "subjectBounds": [
+          14,
+          48,
+          372,
+          431
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          17,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          768,
+          512,
+          1152,
+          1024
+        ],
+        "subjectBounds": [
+          0,
+          47,
+          355,
+          431
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          18,
+          20
+        ],
+        "releaseSeedSourceCrop": [
+          1163,
+          748,
+          1218,
+          806
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          512,
+          384,
+          1024
+        ],
+        "subjectBounds": [
+          37,
+          44,
+          357,
+          430
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          22,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          1152,
+          512,
+          1536,
+          1024
+        ],
+        "subjectBounds": [
+          33,
+          44,
+          352,
+          431
+        ],
+        "scale": 0.26109660574412535,
+        "paste": [
+          22,
+          19
+        ]
+      }
+    ],
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    }
+  },
+  {
+    "key": "yzs_seed_pop",
+    "file": "yzs_seed_pop.png",
+    "bytes": 133274,
+    "sha256": "b0d35935140ab41b6ce9702d5d2ef71658b2f2282f3223f3d62959cd7394ac34",
+    "width": 1024,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 120
+    },
+    "background": "transparent",
+    "source": "sources/yzs_seed_pop_refined.png",
+    "sourceSha256": "837aade66c1a2d068c8788542946e6ad2c05639d4de97187eaa4d79a4b9f8fc7",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          384,
+          512
+        ],
+        "subjectBounds": [
+          42,
+          81,
+          364,
+          460
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          22,
+          22
+        ]
+      },
+      {
+        "sourceCell": [
+          384,
+          0,
+          768,
+          512
+        ],
+        "subjectBounds": [
+          46,
+          78,
+          372,
+          458
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          22,
+          22
+        ]
+      },
+      {
+        "sourceCell": [
+          768,
+          0,
+          1152,
+          512
+        ],
+        "subjectBounds": [
+          46,
+          82,
+          363,
+          459
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          23,
+          22
+        ]
+      },
+      {
+        "sourceCell": [
+          1152,
+          0,
+          1536,
+          512
+        ],
+        "subjectBounds": [
+          37,
+          78,
+          354,
+          460
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          23,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          512,
+          384,
+          1024
+        ],
+        "subjectBounds": [
+          38,
+          16,
+          375,
+          401
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          20,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          384,
+          512,
+          768,
+          1024
+        ],
+        "subjectBounds": [
+          46,
+          15,
+          384,
+          399
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          20,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          768,
+          512,
+          1152,
+          1024
+        ],
+        "subjectBounds": [
+          41,
+          31,
+          371,
+          399
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          21,
+          25
+        ]
+      },
+      {
+        "sourceCell": [
+          1152,
+          512,
+          1536,
+          1024
+        ],
+        "subjectBounds": [
+          32,
+          12,
+          357,
+          400
+        ],
+        "scale": 0.2604166666666667,
+        "paste": [
+          22,
+          19
+        ]
+      }
+    ],
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    }
+  },
+  {
+    "key": "yzs_pop",
+    "file": "yzs_pop.png",
+    "bytes": 56281,
+    "sha256": "219e1b9c109200f5c83aaadaa0cce000b8ce8629d90e685a32d456e16ea89809",
+    "width": 768,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "sources/yzs_pop_source.png",
+    "sourceSha256": "11a7b252b468870fa448313c49665d4edf515007190b1cb018774a6e4b26f5ca",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "subjectBounds": [
+          180,
+          228,
+          368,
+          390
+        ],
+        "scale": 0.2621359223300971,
+        "paste": [
+          40,
+          43
+        ]
+      },
+      {
+        "sourceCell": [
+          512,
+          0,
+          1024,
+          512
+        ],
+        "subjectBounds": [
+          80,
+          158,
+          406,
+          421
+        ],
+        "scale": 0.2621359223300971,
+        "paste": [
+          22,
+          30
+        ]
+      },
+      {
+        "sourceCell": [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        "subjectBounds": [
+          42,
+          126,
+          454,
+          454
+        ],
+        "scale": 0.2621359223300971,
+        "paste": [
+          10,
+          21
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          512,
+          512,
+          1024
+        ],
+        "subjectBounds": [
+          97,
+          104,
+          486,
+          411
+        ],
+        "scale": 0.2621359223300971,
+        "paste": [
+          13,
+          24
+        ]
+      },
+      {
+        "sourceCell": [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        "subjectBounds": [
+          135,
+          148,
+          443,
+          381
+        ],
+        "scale": 0.2621359223300971,
+        "paste": [
+          24,
+          34
+        ]
+      },
+      {
+        "sourceCell": [
+          1024,
+          512,
+          1536,
+          1024
+        ],
+        "subjectBounds": [
+          159,
+          209,
+          329,
+          329
+        ],
+        "scale": 0.2621359223300971,
+        "paste": [
+          42,
+          48
+        ]
+      }
+    ]
+  },
+  {
+    "key": "yzs_regrow",
+    "file": "yzs_regrow.png",
+    "bytes": 68757,
+    "sha256": "bacd4c0a438e37ed0c4b30a6f82c6dbf0da24448cb7950f74054e154bfdef6fe",
+    "width": 768,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": {
+      "type": "foot",
+      "y": 120
+    },
+    "background": "transparent",
+    "source": "sources/yzs_regrow_source.png",
+    "sourceSha256": "ed03a57d0c077420fac1c0ec07a09c5bb3340a7b6b9204f5fbf7a939f0d3dc21",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "subjectBounds": [
+          180,
+          386,
+          338,
+          499
+        ],
+        "scale": 0.30864197530864196,
+        "paste": [
+          40,
+          85
+        ]
+      },
+      {
+        "sourceCell": [
+          512,
+          0,
+          1024,
+          512
+        ],
+        "subjectBounds": [
+          169,
+          284,
+          333,
+          499
+        ],
+        "scale": 0.30864197530864196,
+        "paste": [
+          38,
+          54
+        ]
+      },
+      {
+        "sourceCell": [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        "subjectBounds": [
+          195,
+          209,
+          332,
+          498
+        ],
+        "scale": 0.30864197530864196,
+        "paste": [
+          43,
+          31
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          512,
+          512,
+          1024
+        ],
+        "subjectBounds": [
+          101,
+          154,
+          437,
+          421
+        ],
+        "scale": 0.30864197530864196,
+        "paste": [
+          12,
+          38
+        ]
+      },
+      {
+        "sourceCell": [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        "subjectBounds": [
+          88,
+          123,
+          423,
+          423
+        ],
+        "scale": 0.30864197530864196,
+        "paste": [
+          12,
+          27
+        ]
+      },
+      {
+        "sourceCell": [
+          1024,
+          512,
+          1536,
+          1024
+        ],
+        "subjectBounds": [
+          101,
+          97,
+          432,
+          421
+        ],
+        "scale": 0.30864197530864196,
+        "paste": [
+          13,
+          20
+        ]
+      }
+    ]
+  },
+  {
+    "key": "yzs_seed_shot",
+    "file": "yzs_seed_shot.png",
+    "bytes": 10469,
+    "sha256": "af6c06d698fdfc04e57b0bcc7bf5056f3a77987a67d284322a449d54e6d2e3af",
+    "width": 256,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "sources/yzs_seed_shot_source.png",
+    "sourceSha256": "91e14af9e1183711c14194be52f1df0d8d8c6584dabdca3ef765e3040338af08",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          543,
+          724
+        ],
+        "subjectBounds": [
+          156,
+          261,
+          500,
+          461
+        ],
+        "scale": 0.12716763005780346,
+        "paste": [
+          10,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          543,
+          0,
+          1086,
+          724
+        ],
+        "subjectBounds": [
+          118,
+          261,
+          464,
+          457
+        ],
+        "scale": 0.12716763005780346,
+        "paste": [
+          10,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          1086,
+          0,
+          1629,
+          724
+        ],
+        "subjectBounds": [
+          80,
+          262,
+          426,
+          455
+        ],
+        "scale": 0.12716763005780346,
+        "paste": [
+          10,
+          20
+        ]
+      },
+      {
+        "sourceCell": [
+          1629,
+          0,
+          2172,
+          724
+        ],
+        "subjectBounds": [
+          43,
+          261,
+          387,
+          457
+        ],
+        "scale": 0.12716763005780346,
+        "paste": [
+          10,
+          20
+        ]
+      }
+    ]
+  },
+  {
+    "key": "vfx_yzs_sour_burst",
+    "file": "vfx_yzs_sour_burst.png",
+    "bytes": 219200,
+    "sha256": "566151e612b91ed7d3be2595612b7cb13536d5d4dd1d0f45ef9057ae1f65d005",
+    "width": 1536,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "black",
+    "source": "sources/vfx_yzs_sour_burst_source.png",
+    "sourceSha256": "21fb8ed885d11fed9da90b9c9ea8ceef04abe39126272a81994635dfd7e17a99",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "subjectBounds": [
+          116,
+          159,
+          416,
+          397
+        ],
+        "scale": 0.5053533190578159,
+        "paste": [
+          52,
+          68
+        ]
+      },
+      {
+        "sourceCell": [
+          512,
+          0,
+          1024,
+          512
+        ],
+        "subjectBounds": [
+          62,
+          129,
+          512,
+          416
+        ],
+        "scale": 0.5053533190578159,
+        "paste": [
+          14,
+          56
+        ]
+      },
+      {
+        "sourceCell": [
+          1024,
+          0,
+          1536,
+          512
+        ],
+        "subjectBounds": [
+          0,
+          104,
+          467,
+          433
+        ],
+        "scale": 0.5053533190578159,
+        "paste": [
+          10,
+          45
+        ]
+      },
+      {
+        "sourceCell": [
+          0,
+          512,
+          512,
+          1024
+        ],
+        "subjectBounds": [
+          43,
+          42,
+          495,
+          369
+        ],
+        "scale": 0.5053533190578159,
+        "paste": [
+          14,
+          46
+        ]
+      },
+      {
+        "sourceCell": [
+          512,
+          512,
+          1024,
+          1024
+        ],
+        "subjectBounds": [
+          52,
+          73,
+          457,
+          362
+        ],
+        "scale": 0.5053533190578159,
+        "paste": [
+          26,
+          55
+        ]
+      },
+      {
+        "sourceCell": [
+          1024,
+          512,
+          1536,
+          1024
+        ],
+        "subjectBounds": [
+          63,
+          88,
+          408,
+          352
+        ],
+        "scale": 0.5053533190578159,
+        "paste": [
+          41,
+          62
+        ]
+      }
+    ]
+  },
+  {
+    "key": "ic_yz_seedling",
+    "file": "ic_yz_seedling.png",
+    "bytes": 105373,
+    "sha256": "77aa3916c9110e8e429821bbdadee122d47714251166cb89ac9efdbe06e3c510",
+    "width": 256,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "sources/ic_yz_seedling_source.png",
+    "sourceSha256": "d8fe3547edd62ac4f97c3273aca858e60c6c03f59b4694b951a64d297c4ddf29",
+    "crops": [
+      {
+        "sourceCell": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "subjectBounds": [
+          179,
+          165,
+          1075,
+          1067
+        ],
+        "scale": 0.2616407982261641,
+        "paste": [
+          11,
+          10
+        ]
+      }
+    ]
+  }
+]

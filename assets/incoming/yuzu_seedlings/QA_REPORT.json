@@ -1,0 +1,120 @@
+{
+  "order": 56,
+  "tool": "built-in image_gen",
+  "files": [
+    {
+      "key": "yzs_seed_bite",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "yzs_seed_tank",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "yzs_seed_throw",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "yzs_seed_pop",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "yzs_pop",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "yzs_regrow",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "yzs_seed_shot",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "vfx_yzs_sour_burst",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "transparentEdges": null,
+      "allFrameEdgesClear": null,
+      "blackCorner": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "generatedSourcePreserved": true
+    },
+    {
+      "key": "ic_yz_seedling",
+      "decoded": true,
+      "exactSize": true,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "transparentEdges": true,
+      "allFrameEdgesClear": true,
+      "blackCorner": null,
+      "generatedSourcePreserved": true
+    }
+  ],
+  "runtimeBytes": 265294,
+  "runtimeDecodedBytes": 1196032,
+  "notes": [
+    "All9exact PNG deliverables packed from unmodified retained generated sources",
+    "Actor foot line120; uniform per-character scale, no synthetic animation frames",
+    "Throw donor attack reordered to release at frame5",
+    "Source black VFX converted mechanically to straight alpha for NORMAL blending",
+    "Review/GIF are source-art previews, no game screenshots or simulated combat",
+    "Owner phone readability/FPS review remains pending"
+  ]
+}

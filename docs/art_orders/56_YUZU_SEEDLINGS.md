@@ -1,6 +1,6 @@
 # 56 — Yuzu Seedlings (ลูกกระจ๊อกส้มจิ๋ว) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 31 ต.ค. 2026 · โค้ดพร้อมแล้วใน v8.0.67 (ตอนนี้ใช้ภาพ Yuzling เดิม `minion_yuzling` ย่อ 30px ย้อมสี)
+สถานะ: 🟢 ส่งครบ 9 ไฟล์และผูกโค้ด v8.0.69 (รอตรวจบนมือถือ) · เขียน 31 ต.ค. 2026 · โค้ดพร้อมแล้วใน v8.0.67 (ตอนนี้ใช้ภาพ Yuzling เดิม `minion_yuzling` ย่อ 30px ย้อมสี)
 ส่งไฟล์ที่ `assets/incoming/yuzu_seedlings/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` (มุมมอง ¾ จากด้านบน เส้นขอบเข้ม โทนขนมน่ารัก) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -66,3 +66,13 @@ Seedling ต้องดูเป็น "ลูกน้องตัวจิ๋
 
 ## ส่งมอบ
 (ฝั่งอาร์ตกรอกตอนส่ง)
+
+### ส่งมอบ 31 ต.ค. 2026 — v8.0.69
+
+- ครบ9PNGตามขนาด/ชื่อในตาราง + MANIFEST.json, PROMPTS.json, QA_REPORT.json ที่ assets/incoming/yuzu_seedlings/
+- Built-in ImageGen; เก็บต้นฉบับและการปรับมุม Pop ใน sources/ ท่าเดิน0–3/โจมตี4–7อยู่ใน clips ของ manifest เท้า120px; ใช้ scripts/pack-yuzu-seedlings-56.py ครอป/จัดศูนย์/แพ็ก ไม่วาดท่าขึ้นแทน
+- เกมใช้9WebPครึ่งขนาด รวม265,294bytes/1,196,032bytesถอดรหัส ที่ assets/art/yuzu_seedlings/ โหลดเฉพาะด่านของYuzu ไม่เพิ่มboot299MB
+- เดินตามระยะเคลื่อนที่, windupจากCDเดิม, ตีจริงที่releaseแล้วกลับidle, Pause/Reduced/Low/fallback, เงาตามตัวและล้างพร้อมowner; งอกช่วงท้าย8วินาทีเดิม ใช้spriteเดิมขณะตาย ไม่เพิ่มtimerหรือdamage
+- Pop/ระเบิดใช้โควตา4FXเดิม, NORMAL alphaแปลงจากพื้นดำ; กระสุนเมล็ด18pxไม่เปลี่ยนhitbox/velocity/damage; ไอคอนการ์ดใหม่ic_yz_seedling
+- review.png กับ animation_preview.gif เป็นพรีวิวอาร์ตต้นทาง ไม่ใช่ภาพจับเกมหรือจำลองสู้
+- ผลตรวจชุดใหญ่/สถานะเผยแพร่ดู docs/SESSION_HANDOFF.md; ยังรอเจ้าของตรวจความชัดและFPSบนโทรศัพท์

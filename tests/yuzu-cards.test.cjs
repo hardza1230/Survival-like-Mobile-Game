@@ -27,7 +27,8 @@ for(const path of pathIds){
  assert.equal(info.evolution,a.YUZU_EVOLUTIONS[path].name);
 }
 for(const id of ['starter','m_zest','m_crew','m_rally','m_sour','m_splash','m_bite','f_harvest','f_parade']){const k=a.yuzuCardArt(null,id);assert(a.ASSET_IMAGES[k],id);covered.add(k);}
-assert.equal(covered.size,48,'all generated icons are consumed');
+assert.equal(covered.size,49,'48original icons plus Seedling Sprout are consumed');
+assert.equal(a.yuzuCardArt(null,'seedling'),'ic_yz_seedling');
 assert(!/help.*up|falling|orbs|Juice Rain|Homing Hop/i.test(JSON.stringify([a.BASIC_ATTACKS.yuzu,a.BASIC_PATHS.yuzu,...pathIds.map(p=>a.UNIQUE_MUTS[p])])));
 assert.equal(a.yuzuCardArt('zestSwarm','unknown'),null);
 assert.equal(a.yuzuCardArt(null,'evolution'),null,'no fabricated pre-path evolution');

@@ -1,0 +1,226 @@
+[
+  {
+    "key": "yzs_seed_bite",
+    "file": "yzs_seed_bite.webp",
+    "bytes": 35890,
+    "sha256": "c023f8d6eb93cffca4369e7cf6d9882b28e62668945ad74ed544d894dd1aafb5",
+    "width": 512,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 60
+    },
+    "background": "transparent",
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    },
+    "source": "yzs_seed_bite.png",
+    "sourceSha256": "01bddeeb87a8115e4a674faa65f6ae34165a0e3f1c25ad0652d3372628306805"
+  },
+  {
+    "key": "yzs_seed_tank",
+    "file": "yzs_seed_tank.webp",
+    "bytes": 42698,
+    "sha256": "8435fd8cdf917268f062a264eac443289bab0e77e2e9330ac63e5d6f0745d0c2",
+    "width": 512,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 60
+    },
+    "background": "transparent",
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    },
+    "source": "yzs_seed_tank.png",
+    "sourceSha256": "44aa272adf2e7657a5f3bd2b331623cce73095687690b9356a44e21a03b7712e"
+  },
+  {
+    "key": "yzs_seed_throw",
+    "file": "yzs_seed_throw.webp",
+    "bytes": 33302,
+    "sha256": "c707d5b81b60f4f7dc235bb0329280dcaa91d9196397c4baa090b1ab7481528a",
+    "width": 512,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 60
+    },
+    "background": "transparent",
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    },
+    "source": "yzs_seed_throw.png",
+    "sourceSha256": "c5a1025ec73e0e8c98703528782f59567dd5b943183ed099719c4904123fb4b3"
+  },
+  {
+    "key": "yzs_seed_pop",
+    "file": "yzs_seed_pop.webp",
+    "bytes": 35670,
+    "sha256": "f548c8329af1fc7886ad63b1837dd2a2d5d89815a16f9197842426683d4d868c",
+    "width": 512,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 8,
+    "columns": 8,
+    "loop": true,
+    "anchor": {
+      "type": "foot",
+      "y": 60
+    },
+    "background": "transparent",
+    "clips": {
+      "walk": {
+        "start": 0,
+        "frames": 4,
+        "loop": true
+      },
+      "attack": {
+        "start": 4,
+        "frames": 4,
+        "loop": false
+      }
+    },
+    "source": "yzs_seed_pop.png",
+    "sourceSha256": "b0d35935140ab41b6ce9702d5d2ef71658b2f2282f3223f3d62959cd7394ac34"
+  },
+  {
+    "key": "yzs_pop",
+    "file": "yzs_pop.webp",
+    "bytes": 12694,
+    "sha256": "1fa1576bd339c988dbe4d58d0187c56838de7e60f9d1ec641273b56a976eee92",
+    "width": 384,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "yzs_pop.png",
+    "sourceSha256": "219e1b9c109200f5c83aaadaa0cce000b8ce8629d90e685a32d456e16ea89809"
+  },
+  {
+    "key": "yzs_regrow",
+    "file": "yzs_regrow.webp",
+    "bytes": 18282,
+    "sha256": "6fa8b6c0a798e15b7b8f9038fa18625a81118aa732b8d7b9373a626f7bed4642",
+    "width": 384,
+    "height": 64,
+    "frameWidth": 64,
+    "frameHeight": 64,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": {
+      "type": "foot",
+      "y": 60
+    },
+    "background": "transparent",
+    "source": "yzs_regrow.png",
+    "sourceSha256": "bacd4c0a438e37ed0c4b30a6f82c6dbf0da24448cb7950f74054e154bfdef6fe"
+  },
+  {
+    "key": "yzs_seed_shot",
+    "file": "yzs_seed_shot.webp",
+    "bytes": 3314,
+    "sha256": "03e41f81d28f4c5ed0d0dc1e60b2ba89cbd6b9c4ad27952224c0152187a6b2f2",
+    "width": 128,
+    "height": 32,
+    "frameWidth": 32,
+    "frameHeight": 32,
+    "frameCount": 4,
+    "columns": 4,
+    "loop": true,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "yzs_seed_shot.png",
+    "sourceSha256": "af6c06d698fdfc04e57b0bcc7bf5056f3a77987a67d284322a449d54e6d2e3af"
+  },
+  {
+    "key": "vfx_yzs_sour_burst",
+    "file": "vfx_yzs_sour_burst.webp",
+    "bytes": 57066,
+    "sha256": "95895104a7498debc184233e2d49b445765d44e9bca920a653e399bb27633f9c",
+    "width": 768,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 6,
+    "columns": 6,
+    "loop": false,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "vfx_yzs_sour_burst.png",
+    "sourceSha256": "566151e612b91ed7d3be2595612b7cb13536d5d4dd1d0f45ef9057ae1f65d005"
+  },
+  {
+    "key": "ic_yz_seedling",
+    "file": "ic_yz_seedling.webp",
+    "bytes": 26378,
+    "sha256": "e59efabfbb9155569b61ce3eff134bd897b4d22af31ed368d4091e878a2c4351",
+    "width": 128,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 1,
+    "columns": 1,
+    "loop": false,
+    "anchor": {
+      "type": "center"
+    },
+    "background": "transparent",
+    "source": "ic_yz_seedling.png",
+    "sourceSha256": "77aa3916c9110e8e429821bbdadee122d47714251166cb89ac9efdbe06e3c510"
+  }
+]
