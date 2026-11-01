@@ -9,7 +9,7 @@ assert.deepEqual(p1.map(id=>dqDef(id).b),[0,0,0,0,1,1,1,1,2,2],'4 easy / 4 mediu
 for(const bb of [0,1,2]){const ks=p1.filter(id=>dqDef(id).b===bb).map(id=>dqDef(id).k);assert.equal(new Set(ks).size,ks.length,'no duplicate kind in a band');}
 assert(!p1.some(id=>['e_chest','m_salv','m_dig'].includes(id)),'locked quests hidden before stage 1: '+p1);
 assert(!p1.some(id=>id.startsWith('win_')),'no hero quest with one hero');
-Save.data.stageMastery={0:true,1:true};Save.data.chars=['mint','cocoa'];const seen=new Set();for(let d=1;d<=28;d++)dqPick('2026-11-'+String(d).padStart(2,'0')).forEach(id=>seen.add(id));
+Save.data.stageMastery={0:true,1:true};{const early=new Set();for(let d=1;d<=28;d++)dqPick('2026-10-'+String(d).padStart(2,'0')).forEach(id=>early.add(id));assert(!early.has('m_dig'),'v8.0.86 Depths quest waits for Chapter 1');}Save.data.stageMastery={0:true,1:true,2:true,3:true,4:true};Save.data.chars=['mint','cocoa'];const seen=new Set();for(let d=1;d<=28;d++)dqPick('2026-11-'+String(d).padStart(2,'0')).forEach(id=>seen.add(id));
 assert(['e_chest','m_salv','m_dig'].every(id=>seen.has(id))&&[...seen].some(id=>id.startsWith('win_')),'unlocked + hero quests rotate in');
 assert.equal(dqDef('win_mint').k,'win_mint');assert(/with /.test(dqDef('win_mint').name));
 Save.data.stageMastery={};Save.data.chars=[];const q=DailyQ.data();assert.equal(q.quests.length,10);assert.equal(DailyQ.count(),0);assert(!DailyQ.claimable());

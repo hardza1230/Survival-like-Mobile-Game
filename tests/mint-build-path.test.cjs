@@ -42,10 +42,13 @@ const b=scene('barrage');b.syncBasicAttack();const cards=b.rollBasicAttackUpgrad
 assert.equal(api.mintVolleyProfile(1,false,2,'barrage').count,2);assert.equal(api.mintVolleyProfile(4,false,2,'barrage').shardMul.toFixed(2),'1.36');
 assert(Math.abs(api.mintVolleyProfile(5,true,2,'barrage').shardMul-1.54)<1e-9);
 assert.equal(api.mintVolleyProfile(5,true,4,'barrage').count,2);
-for(const path of ['glacier','pierce',null]){assert.equal(api.mintVolleyProfile(5,true,4,path).count,4);assert.equal(api.mintVolleyProfile(5,true,4,path).shardMul,1);}
-// Actual cast output: cap, converted shard damage and unchanged direct lance damage.
+for(const path of ['pierce',null]){assert.equal(api.mintVolleyProfile(5,true,4,path).count,4);assert.equal(api.mintVolleyProfile(5,true,4,path).shardMul,1);assert.equal(api.mintVolleyProfile(5,true,4,path).hitMul,1);}
+// v8.0.86 owner: Glacier throws one lance (extra count → bloom power); Barrage −15% per lance past 2 (min 40%)
+{const g=api.mintVolleyProfile(5,true,4,'glacier');assert.equal(g.count,1);assert(Math.abs(g.bloomMul-(1+.12*6))<1e-9);assert.equal(api.mintVolleyProfile(1,false,0,'glacier').count,1);}
+assert.equal(api.mintVolleyProfile(1,false,1,'barrage').hitMul,1);assert(Math.abs(api.mintVolleyProfile(1,false,2,'barrage').hitMul-.85)<1e-9);assert(Math.abs(api.mintVolleyProfile(5,true,4,'barrage').hitMul-.4)<1e-9);
+// Actual cast output: cap, converted shard damage and the v8.0.86 per-lance penalty.
 function cast(count,evolved){const s=scene('barrage'),shots=[];Object.assign(s,{nearestEnemy:()=>null,trackArtVfx:o=>o,mintBullet(...a){return this.getBullet(...a);},artDelay(){},queueHailstorm(){},poseAttack(){},camWorld:o=>o,add:{image:()=>({setTint(){return this;},setDepth(){return this;},setScale(){return this;},setAlpha(){return this;}})},textures:{exists:()=>true},tweens:{add(){}},time:{delayedCall(){}},physics:{velocityFromRotation(){}},state:'play',hitCratesInRadius(){},getBullet(){const b={body:{velocity:{}},setTexture(){return this;},setTint(){return this;},setScale(){return this;}};shots.push(b);return b;}});s.castFrostLance(5,false,1,{path:'barrage',lv:{},ranks:{},_pm:{count},evolved});return shots;}
-const base=cast(1,true),extra=cast(2,true);assert.equal(extra.length,2);assert.equal(extra[0].dmg,base[0].dmg);assert(Math.abs(extra[0].shatterInfo.dmg/base[0].shatterInfo.dmg-1.54/1.36)<1e-9);
+const base=cast(1,true),extra=cast(2,true);assert.equal(extra.length,2);assert(Math.abs(extra[0].dmg/base[0].dmg-.55/.7)<1e-9,'v8.0.86 more lances = weaker each');assert(Math.abs(extra[0].shatterInfo.dmg/base[0].shatterInfo.dmg-(1.54*.55)/(1.36*.7))<1e-9);
 // Endgame saves keep, count and apply previously invested off-path ranks; new builds cannot add them.
 
 
