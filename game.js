@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.76';
+const GAME_VERSION = '8.0.77';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.77',date:'2026-11-01',title:'Flavor Weave in the Power style',items:['Flavor Weave now matches the Power page: rank summary, three core rows with clear prices and gains, Rank Up and quick links to Rank Rewards and Depths','New painted icons for cores, Thread and rank']},
   {v:'8.0.76',date:'2026-11-01',title:'Full stage names in the Lobby',items:['The stage box shows the whole stage name instead of cutting it off (two lines if it is very long)']},
   {v:'8.0.75',date:'2026-11-01',title:'Tidier menus',items:['Every page uses the same Back button and Sugar chip; page titles drop their emoji','Equipment and Forge now use the same plum panels as the rest of the menus','Red dots on the bottom bar only appear when there is something to claim','Bigger, brighter text on Rank Rewards, Awards and Daily Quests','Activities shows one Rewards row instead of separate Daily and Achievements','Gold Chest text no longer overlaps; loading screen is fully in English']},
   {v:'8.0.74',date:'2026-11-01',title:'Bosses that fight with their bodies',items:['Ant Empress, Frost Golem, Behemoth, Colossus and the First Planter (and their minibosses) no longer shoot bullets','Instead they take turns: ground shockwave toward you, a charge, heavy things falling around you, or a wide sweep in front of them — all with warning circles']},
@@ -2824,6 +2825,7 @@ const ASSET_SHEETS = {
   vfx_yzs_sour_burst:{url:'assets/art/yuzu_seedlings/vfx_yzs_sour_burst.webp',frame:128},
 
   power56_icons:{url:'assets/art/mobile_ui_789/gear_power56_icons.webp',frame:192},
+  power57_icons:{url:'assets/art/mobile_ui_789/gear_power57_icons.webp',frame:192},   // v8.0.77 ใบ 57 ไอคอนหน้า Weave/Equipment/Merge/Forge (6×4)
   xp_orbs:{url:'assets/art/exp/xp_orbs.webp',frame:96},   // v7.9.26 ใบ 29 Flavor Drops: 6 แถว = T1–T6 × 6 เฟรม (anim xp_t1…xp_t6 สร้างใน xpOrbAnim)
   p1_skill_edges:{url:'assets/art/p1_feedback/skill_edges.webp',frame:256},
   talent_momo:{url:'assets/art/talents/momo_talents.webp',frame:128},
@@ -5608,6 +5610,7 @@ const BOSS_SHOT=[{k:'boss_orb',c:0x9dff5a,s:1,b:'wave'},{k:'boss_orb',c:0x5fd8c8
   {k:'boss_orb',c:0xffe08a,s:1.1,b:'bounce'},{k:'boss_star',c:0xffb59a,s:1,b:'delay'},{k:'boss_shard',c:0x7ff0ff,s:1,b:'bounce'},{k:'boss_orb',c:0x7fe38f,s:1.05,b:'split'},{k:'boss_star',c:0xff5a6e,s:1.1,b:'home'}];
 const BOSS_SHOT_PIN={k:'boss_star',c:0xe05aff,s:1.15,b:'delay'};
 // v8.0.74 เจ้าของ: บอสสายร่างกายไม่ยิงกระสุน → ท่ายิงทุกท่ากลายเป็นท่ากาย (คลื่นพื้น · พุ่งชน · ของตกจากฟ้า · ปัดกวาด) สลับกัน ≤1 ท่า/1.1s
+const PW57=['core_life','core_flavor','core_bond','weave_crest','thread_knot','weave_up','slot_weapon','slot_armor','slot_gloves','slot_amulet','slot_ring','slot_boots','equip_best','salvage','gear_sets','gear_lock','merge_keep','rarity_up','fp_hammer','mod_add','mod_swap','star_up','mod_remove','lucky'];   // ใบ 57 ลำดับเซลล์
 const BOSS_NO_SHOT=new Set([0,3,6,10,14]);   // C1-1 Ant Empress · C1-4 Frost Golem · C2-2 Behemoth · C3-1 Colossus · C3-5 First Planter (บอส + มินิด่านนั้น; Pinnacle/Delve ยิงเหมือนเดิม)
 const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
@@ -10238,6 +10241,14 @@ class Game extends Phaser.Scene {
     else if(this.textures.exists(fallback[kind]))o=this.add.image(x,y,fallback[kind]);
     if(o){o.setScale(size/Math.max(o.width,o.height));this.menu.add(o);}return o;
   }
+  // v8.0.77 ใบ 57: ไอคอน Power family · โหลดเมื่อเปิดหน้า (ไม่ใช่ boot) · ยังไม่มี = ไอคอนเดิม/อีโมจิ
+  pwIcon(key,x,y,size){ const i=PW57.indexOf(key); if(i<0)return null; if(!this.textures.exists('power57_icons')){ this.loadPower57?.(); return null; }
+    const o=this.add.image(x,y,'power57_icons',i); o.setScale(size/192); this.menu.add(o); return o; }
+  loadPower57(){ if(this._pw57Loading||this.textures.exists('power57_icons')||!this.load)return; this._pw57Loading=true; const scr=this.menuScreen;
+    this.load.once('filecomplete-spritesheet-power57_icons',()=>{ this._pw57Loading=false; if(this.state==='menu'&&this.menuScreen===scr)this.buildMenuScreen(); });
+    this.load.spritesheet('power57_icons',verUrl(ASSET_SHEETS.power57_icons.url),{frameWidth:192,frameHeight:192}); if(!this.load.isLoading())this.load.start(); }
+  pwCard(x,y,w,h,accent){ const g=this.add.graphics(); g.fillStyle(accent?0x423039:0x261e30,.97).fillRoundedRect(x,y,w,h,14).lineStyle(accent?1.8:1,accent?0xf4d9a1:0x6d536d,accent?.95:.8).strokeRoundedRect(x,y,w,h,14); this.menu.add(g); return g; }
+  pwSection(label,x,y){ const t=this.add.text(x,y,label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff1e7'}).setOrigin(0,.5); this.menu.add(t); return t; }
   buildGearPower(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Power','screen_gear_power_789','hub');
     const d=Save.data,w=this.W,h=this.H,nxt=this.hubNextStep?.();
@@ -11947,6 +11958,7 @@ class Game extends Phaser.Scene {
     const out=[p,t]; if(iconKey&&this.textures.exists(iconKey))out.push(this.add.image(cx,y+h/2,iconKey).setDisplaySize(h*.66,h*.66)); return out; }
   buildUpgrade(){
     this._templeSpecial=false;   // v8.0.22 Special Cores → Rank Rewards
+    if(this.W<=this.H&&this.buildWeavePW?.())return;   // v8.0.77 เจ้าของ: หน้า Weave ธีมเดียวกับหน้า Power (แนวนอนใช้แบบเดิม)
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave Temple',ASSET_IMAGES.screen_temple_weave?'screen_temple_weave':'ui_talent_hall');   // v7.8.49 A1 (โหลดตอนเปิดหน้าใน _screenBg)
     const w=this.W,h=this.H, rank=Save.data.rank||0, allMax=Save.talAllMax();
     this.templeArtFrames();
@@ -12038,6 +12050,47 @@ class Game extends Phaser.Scene {
     if(this._spotZone){ const sp=this._spotZone; this._spotZone=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); this._weaveSpotAt=Date.now(); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,this._weaveTour?'Step 3/5 · Tap a core to spend your Sugar':'Tap to upgrade this core!'); }
     this.menu.setVisible(true);
   }
+  // v8.0.77 Weave ธีม Power: การ์ดสรุป · YOUR CORES 3 แถว · RANK UP · ทางไป Rank Rewards / Depths · ระบบ/ราคา/บทสอนเดิม
+  buildWeavePW(){
+    this.menu.removeAll(true); this.tapZones=[]; this._screenBg('Flavor Weave','screen_gear_power_789');
+    const w=this.W,h=this.H,d=Save.data,rank=d.rank||0,allMax=Save.talAllMax(),bw=Math.min(w-28,480),x=(w-bw)/2,F='NunitoUI, sans-serif',gap=8;
+    const T=(tx,ty,str,sz,col,bold,ox=0,oy=.5)=>{ const t=this.add.text(tx,ty,str,{fontFamily:F,fontStyle:bold?'bold':'normal',fontSize:sz+'px',color:col}).setOrigin(ox,oy); this.menu.add(t); return t; };
+    const icon=(k,ix,iy,sz,fb)=>this.pwIcon(k,ix,iy,sz)||T(ix,iy,fb,Math.round(sz*.6),'#fff',false,.5);
+    const pill=(px,py,pw,ph,label,on,fn,ic)=>{ const g=this.add.graphics(); g.fillStyle(on?0x2f6b55:0x2c2338,1).fillRoundedRect(px,py,pw,ph,ph/2).lineStyle(1.5,on?0x85d5b2:0x6d536d,.9).strokeRoundedRect(px,py,pw,ph,ph/2); this.menu.add(g);
+      const hasIc=ic&&this.textures.exists(ic),t=T(px+pw/2+(hasIc?9:0),py+ph/2,label,13,on?'#ffffff':'#cfc1d4',true,.5); if(hasIc)this.menu.add(this.add.image(t.x-t.width/2-11,py+ph/2,ic).setDisplaySize(18,18)); if(t.width>pw-(hasIc?34:14))t.setScale((pw-(hasIc?34:14))/t.width); if(fn)this._zone(px,py,pw,ph,fn); return t; };
+    let y=82+(this._hdrShift?.()||0);
+    // สรุป: ตรา · ชื่ออันดับ · แถบพลังแก่น · Thread
+    const need=UPG_ORDER.length*TAL_MAX,filled=Save.talFilled(),frac=Phaser.Math.Clamp(filled/need,0,1),sh=104; this.pwCard(x,y,bw,sh,false);
+    icon('weave_crest',x+36,y+40,56,'⭐'); T(x+72,y+22,'Weave rank',11,'#cfc1d4',true); { const rnT=T(x+72,y+44,rankName(rank),20,'#fff1e7',true),rr=bw-72-112; if(rnT.width>rr)rnT.setScale(rr/rnT.width); }
+    { const thr=Save.threads(),tt=T(x+bw-14,y+22,String(thr),15,'#fff1e7',true,1); icon('thread_knot',tt.x-tt.width-14,y+22,26,'🧶'); T(x+bw-14,y+44,'Weave Thread',11,'#cfc1d4',false,1); }
+    { const g=this.add.graphics(),bx=x+16,bwid=bw-32,byy=y+68; g.fillStyle(0x17121d,1).fillRoundedRect(bx,byy,bwid,8,4); if(frac>0)g.fillStyle(0x85d5b2,1).fillRoundedRect(bx,byy,Math.max(8,bwid*frac),8,4); this.menu.add(g); }
+    T(x+16,y+90,'Woven core power '+filled+' / '+need,11,'#cfc1d4',false); if(allMax)T(x+bw-16,y+90,'Ready to weave up',11,'#85d5b2',true,1);
+    y+=sh+28; const tip=this.pwSection('YOUR CORES',x+2,y-12); if(this._tutorialWeaveCoach){ tip.setText('YOUR CORES · tap a price to spend Sugar').setColor('#ffe08a'); }
+    // แถวแก่น 3 แถว · แถวที่คุ้มสุด (ซื้อได้ก่อน) = ขอบทอง
+    const best=UPG_ORDER.findIndex(k=>Save.talLvl(k)<TAL_MAX&&Save.talCanBuy(k)),rh=78,cores=['core_life','core_flavor','core_bond'];
+    UPG_ORDER.forEach((k,i)=>{ const u=UPGRADES[k],lvl=Save.talLvl(k),maxed=lvl>=TAL_MAX,cost=maxed?0:Save.talCost(k),afford=Save.talCanBuy(k),ry=y+i*(rh+gap);
+      this.pwCard(x,ry,bw,rh,i===best); icon(cores[i],x+34,ry+rh/2,50,u.emoji);
+      const pw=Math.min(104,bw*.3),ph=34,ppx=x+bw-pw-12,ppy=ry+rh-ph-10,room=ppx-(x+68)-8;
+      const nm=T(x+68,ry+18,u.name,15,'#fff1e7',true);
+      const sub=T(x+68,ry+39,'Lv '+lvl+'/'+TAL_MAX,11,maxed?'#85d5b2':'#ffd98a',true); { let sx=sub.x+sub.width+8; for(let s2=0;s2<TAL_MAX;s2++){ const st=T(sx,ry+39,'★',12,s2<lvl?'#ffd166':'#4f4360',true); sx+=st.width+1; } }   /* ดาวที่ยังไม่ได้ = สีเข้ม */ const tot=T(x+68,ry+58,'Total: '+u.show(Save.talTotal(k)),11,'#cfc1d4',false);
+      for(const o of [nm,sub,tot])if(o.width>room)o.setScale(room/o.width);
+      if(!maxed)T(x+bw-14,ry+18,'+'+u.show(1).replace(/^\+/,''),14,'#85d5b2',true,1);
+      const buy=()=>{ if(Save.buyTal(k)){ Sfx.progress('core'); if(this.tuSparkle)this.tuSparkle(ppx+pw/2,ppy+ph/2); if(this._tutorialWeaveCoach){ if(this._weaveTour){ this._weaveTour='back'; this.menuToast('✨ Core upgraded! Your hero is stronger in every stage','#8dffb0'); } else { this._stage1Coach=true; this.menuToast('✨ Core upgraded! Now try Stage 1','#8dffb0'); this.time.delayedCall(900,()=>{ if(this.state==='menu'&&this._stage1Coach){ this.selectedChapter=0; this.menuScreen='stage'; this.buildMenuScreen(); } }); } } this._tutorialWeaveCoach=false; } else { Sfx.select(); this.menuToast('Need 🍬 '+cost+' Sugar','#ff9bb5'); } this.buildMenuScreen(); };
+      pill(ppx,ppy,pw,ph,maxed?'Full ✓':String(cost),afford&&!maxed,maxed?null:buy,maxed?null:(this.textures.exists('hr_ic_candy')?'hr_ic_candy':'ic_sugar'));
+      if(this._tutorialWeaveCoach&&!maxed&&afford&&!this._coachSpot)this._coachSpot={x:ppx,y:ppy,w:pw,h:ph}; });
+    y+=3*(rh+gap)-gap+28; this.pwSection('RANK UP',x+2,y-12);
+    { const rh2=70; this.pwCard(x,y,bw,rh2,allMax); icon('weave_up',x+34,y+rh2/2,48,'⭐');
+      T(x+68,y+22,allMax?('Weave up → '+rankName(rank+1)):'Weave Up',15,'#fff1e7',true); const sub=T(x+68,y+46,allMax?('Spend 🧶'+Save.promoteThreadCost()+' · get 🍬'+promoteReward(rank)):'Max all 3 cores to unlock',11,allMax?'#85d5b2':'#cfc1d4',false);
+      const room=bw-68-(allMax?118:20); if(sub.width>room)sub.setScale(room/sub.width);
+      if(allMax)pill(x+bw-110,y+rh2/2-17,98,34,'Weave',true,()=>{ const cost=Save.promoteThreadCost(),rew=Save.promote(); if(rew){ Sfx.progress('promotion'); if(this.tuSparkle)this.tuSparkle(x+bw-61,y+rh2/2,72); if(this.showBanner)this.showBanner('⭐ The weave grows stronger! '+rankName(Save.data.rank),'Memory and flavor become one · get 🍬 '+rew,2400); }else this.menuToast('Need 🧶 '+cost+' Weave Thread','#ff9bb5'); this.buildMenuScreen(); });
+      y+=rh2+28; }
+    this.pwSection('MORE',x+2,y-12);
+    { const tw=(bw-gap)/2,th=60,rpFree=Save.rankUnpicked(),dg=Save.dig(),tiles=[['perks','Rank Rewards',rpFree>0?rpFree+' new':'Rank perks','tile_perks','🏅',rpFree>0],['dig','Depths','⛏️ '+dg.shovels+' shovels','tile_dig','⛏️',Save.digFreeReady()]];
+      tiles.forEach(([to,name,sub,ik,em,dot],i)=>{ const tx=x+i*(tw+gap); this.pwCard(tx,y,tw,th,false); if(this.textures.exists(ik))this.menu.add(this.add.image(tx+28,y+th/2,ik).setDisplaySize(38,38)); else T(tx+28,y+th/2,em,22,'#fff',false,.5);
+        const nt=T(tx+54,y+22,name,13,'#fff1e7',true),st=T(tx+54,y+41,sub,11,'#cfc1d4',false); for(const o of [nt,st])if(o.width>tw-74)o.setScale((tw-74)/o.width); T(tx+tw-12,y+th/2,'›',18,'#cfc1d4',true,1);
+        if(dot&&this.drawBadgeDot)this.drawBadgeDot(this.menu,tx+tw-8,y+8); this._zone(tx,y,tw,th,()=>{ this.menuScreen=to; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='weave_'+to; }); }
+    if(this._coachSpot){ const sp=this._coachSpot; this._coachSpot=null; this.tapZones=this.tapZones.filter(z=>z.x===sp.x&&z.y===sp.y); this._weaveSpotAt=Date.now(); const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,sp.x,sp.y,sp.w,sp.h,this._weaveTour?'Step 3/5 · Tap a core to spend your Sugar':'Tap to upgrade this core!'); }
+    this.menu.setVisible(true); return true; }
   // v8.0.22 buildSpecialCores ถูกรวมเข้า Rank Rewards (buildRankPerks)
   // ⛏️ v5.27 Temple Depths — หน้าขุด
   // ===== v5.37 🍳 Recipe Kitchen: ประกอบ perk เอง · แตะช่องสูตร → แตะชิ้นส่วนในถุง =====

@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.77, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.78, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.76 — Lobby stage name not cut (owner)
+# Latest delivery: v8.0.77 — art order 57 + Weave in the Power theme (owner)
+
+Order 57 atlas (24 icons, 6×4) packed by scripts/pack-power-57.py (sha check, 384→192 cells, WebP q90 alpha 100) → assets/art/mobile_ui_789/gear_power57_icons.webp (316,750 B, 1152×768). ASSET_SHEETS.power57_icons, PW57 = cell order. pwIcon(key) lazy-loads via loadPower57 (rebuilds the screen) and returns null → callers fall back to emoji. Shared pwCard/pwSection (Power palette). buildUpgrade portrait → buildWeavePW: Power bg, summary (weave_crest, rank name, Thread, mint core-power bar), YOUR CORES 3 rows (core icons, Lv + stars, total, mint gain, sugar price pill; first affordable row gold), RANK UP row (Weave pill when all max), MORE tiles Rank Rewards/Depths (tags weave_perks/weave_dig). Same buy/promote/tutorial/spotlight logic; landscape keeps old page. tests/power-family. Next: Equipment → Merge → Forge in the same style (docs/design/power_family). Owner phone review pending.
+
+# Previous delivery: v8.0.76 — Lobby stage name not cut (owner)
 
 buildLobby stage box: after the power line (pw2) the name is re-laid left-aligned at px+20 with room up to the power text (−10); 11→10px, then 2-line wrap at 10px from below the C?-? label to panel bottom −8, ellipsis only as last resort. Owner phone review pending.
-
-# Previous delivery: v8.0.75 — tidier menus (owner: UI looked messy; picked all 4 fixes + one Rewards row)
-
-_screenBg strips leading emoji from titles; generic header = Back pill + Sugar chip (0x291733 fill, 0xe5bb6b border, hr_ic_candy/ic_sugar icon) matching drawRosterHeader. Equipment/Forge _jrSkin=false (plum fallback; journal code/jrOn kept). drawNavBar dots via navBadge: char = new hero only, gLoadout = Mail/shovels/unpicked rank reward, gActivity = Login/Daily/Awards claimable (no more 'upgrade possible' dots). Rank Rewards fonts 8.5–10 → 10.5–11px, greys → #c3b8d0; Awards/Daily T() min 11px, #a89cb6 → #cfc1d4. HUB_GROUPS gActivity: one 'rewards' row (hasClaimableTarget('rewards')). Gold Chest pity pips skipped when they would hit the button. index.html Thai strings → English. Equipment 'No items yet' brighter. Lobby stage name fixed in v8.0.76. Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 

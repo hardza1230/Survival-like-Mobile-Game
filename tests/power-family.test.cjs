@@ -1,0 +1,13 @@
+const assert=require('assert'),fs=require('fs'),crypto=require('crypto'),path=require('path');const root=path.join(__dirname,'..');const src=fs.readFileSync(root+'/game.js','utf8');
+const m=JSON.parse(fs.readFileSync(root+'/assets/incoming/power57/MANIFEST.json','utf8'));const b=fs.readFileSync(root+'/assets/incoming/power57/'+m.file);
+assert.equal(b.length,m.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),m.sha256,'order 57 source hash');
+const wb=fs.readFileSync(root+'/assets/art/mobile_ui_789/gear_power57_icons.webp');assert.equal(wb.slice(0,4).toString(),'RIFF');assert.equal(wb.slice(8,12).toString(),'WEBP');
+const pw=src.match(/const PW57=\[([^\]]+)\]/);assert(pw,'PW57');const keys=pw[1].split(',').map(s=>s.trim().replace(/'/g,''));
+assert.deepEqual(keys,m.icons.map(i=>i.key),'PW57 order = MANIFEST cell order');
+assert(/power57_icons:\{url:'assets\/art\/mobile_ui_789\/gear_power57_icons\.webp',frame:192\}/.test(src),'literal sheet url');
+assert(!/bootKeep[^\n]*power57/.test(src),'not boot');
+assert(/if\(this\.W<=this\.H&&this\.buildWeavePW\?\.\(\)\)return;/.test(src),'portrait Weave uses Power theme');
+const i=src.indexOf('\n  buildWeavePW(){'),j=src.indexOf('\n  // v8.0.22 buildSpecialCores',i),wv=src.slice(i,j);
+for(const k of ['Save.buyTal(k)','_tutorialWeaveCoach','_weaveTour','_stage1Coach','drawSpotlight','Save.promote()','Save.promoteThreadCost()',"'weave_'+to","screen_gear_power_789","pwCard(","pwSection(","pwIcon("])assert(wv.includes(k),'Weave keeps '+k);
+assert(/pwIcon\(key,x,y,size\)\{ const i=PW57\.indexOf\(key\); if\(i<0\)return null; if\(!this\.textures\.exists\('power57_icons'\)\)\{ this\.loadPower57\?\.\(\); return null; \}/.test(src),'missing art → fallback + lazy load');
+console.log('Power family: order 57 atlas hash/WebP/cell order, lazy loader + fallback, Weave Power-theme page keeps buy/tutorial/rank-up/routes passed');

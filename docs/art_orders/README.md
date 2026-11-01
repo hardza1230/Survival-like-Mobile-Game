@@ -19,7 +19,7 @@
 | # | ไฟล์ | เนื้อหา | จำนวน | ลำดับความสำคัญ | สถานะ |
 |---|---|---|---|---|---|
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟡 รออาร์ต (โค้ดใช้ภาพชั่วคราว v8.0.67) |
-| 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | ส่งครบ 24 ไอคอน · รอผูกโค้ด |
+| 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 54 | `54_DEPTHS_RANK_REWARDS.md` | Depths ตะเกียง/แสง 3×3/ป้ายเลขระยะ/คนงานเหมือง + ไอคอน Rank Rewards 10 อัน | 5 / 24 เฟรม | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |
 | 53 | `53_BESTIARY_RECIPE_BOOK.md` | Bestiary การ์ด/เงาปริศนา/หมุดขั้น/จุดอ่อน/แผง + Recipe Book หน้า/ปุ่ม Build/การ์ดคว่ำ/ตราครบ | 9 | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |
 | 52 | `52_AWARDS_TITLES.md` | Awards เหรียญหมวด 4×2, ดาวขั้น, กล่องรางวัลลับ+เปิด, ริบบิ้นฉายา, Claim all, VFX รับดาว | 7 | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |

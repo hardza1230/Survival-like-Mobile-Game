@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.75 — tidier menus (owner: UI looked messy; picked all 4 fixes + one Rewards row)
+
+_screenBg strips leading emoji from titles; generic header = Back pill + Sugar chip (0x291733 fill, 0xe5bb6b border, hr_ic_candy/ic_sugar icon) matching drawRosterHeader. Equipment/Forge _jrSkin=false (plum fallback; journal code/jrOn kept). drawNavBar dots via navBadge: char = new hero only, gLoadout = Mail/shovels/unpicked rank reward, gActivity = Login/Daily/Awards claimable (no more 'upgrade possible' dots). Rank Rewards fonts 8.5–10 → 10.5–11px, greys → #c3b8d0; Awards/Daily T() min 11px, #a89cb6 → #cfc1d4. HUB_GROUPS gActivity: one 'rewards' row (hasClaimableTarget('rewards')). Gold Chest pity pips skipped when they would hit the button. index.html Thai strings → English. Equipment 'No items yet' brighter. Lobby stage name fixed in v8.0.76. Owner phone review pending.
+
+
 # Previous delivery: v8.0.74 — body-type bosses without bullets (owner picked 5 bosses + all 4 moves)
 
 BOSS_NO_SHOT {0,3,6,10,14} (C1-1 Ant Empress, C1-4 Frost Golem, C2-2 Behemoth, C3-1 Colossus, C3-5 First Planter; their minis too; Pinnacle/Delve excluded). foeShot first calls bossNoShotAt: a shot born near such a boss/mini is dropped; at most one bossBodyMove per 1.1s per boss (e._nsAt) rotating e._nsK: shockwave (6 spawnHazard r46 along the line to the player, 110ms apart) · charge (chargeTelegraph 650/700/26, ≤1 per 1.6s, else hazard on player) · sky drop (3 hazards r64 around the player's position, 180ms apart) · sweep (5 hazards r56 on a 140px ±60° arc). Hazard dmg = shot dmg ×2, tint = BOSS_SHOT colour. Kit timing/other moves unchanged. tests/boss-shots extended; headless smoke 0 errors. Owner phone difficulty/feel review pending.
