@@ -113,12 +113,12 @@
     var txt = document.getElementById('err-msg');
     if(box && txt){
       box.style.display = 'block';
-      txt.textContent = 'เกิดข้อผิดพลาด: ' + (e.message || e);
+      txt.textContent = 'Error: ' + (e.message || e);
     }
   });
   window.addEventListener('unhandledrejection',function(e){
     var box=document.getElementById('err-box'), txt=document.getElementById('err-msg');
-    if(box&&txt){ box.style.display='block'; txt.textContent='เปิดเกมไม่สำเร็จ: '+((e.reason&&e.reason.message)||e.reason||'กรุณาลองใหม่'); }
+    if(box&&txt){ box.style.display='block'; txt.textContent='Could not start the game: '+((e.reason&&e.reason.message)||e.reason||'please try again'); }
   });
   function clearCacheAndReload(){
     if('caches' in window){ caches.keys().then(function(names){ return Promise.all(names.map(function(n){return caches.delete(n);})); }).finally(function(){window.location.reload();}); }
@@ -149,7 +149,7 @@
     </div>
     <div class="k-transition-light"></div><div class="k-menu-light"></div>
   </div>
-  <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">ข้ามฉากเปิด ›</button>
+  <button id="entry-skip" type="button" onclick="window.GameLoader.skipIntro()">Skip intro ›</button>
   <div class="card">
     <div class="status" id="load-status">💡 Keep moving — standing still lets the swarm surround you.</div>
     <div class="track"><div class="fill" id="load-fill"></div></div>
@@ -157,8 +157,8 @@
   </div>
 </div>
 <div id="err-box">
-  <div id="err-msg">เกิดข้อผิดพลาดในการโหลดเกม</div>
-  <button onclick="clearCacheAndReload()">↻ ล้างแคชแล้วโหลดใหม่</button>
+  <div id="err-msg">Something went wrong while loading the game</div>
+  <button onclick="clearCacheAndReload()">↻ Clear cache and reload</button>
 </div>
 <!-- Supabase JS SDK (cloud save) — โหลดจาก CDN · ถ้าโหลดไม่ได้เกมยังเล่นได้ (เซฟ localStorage) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

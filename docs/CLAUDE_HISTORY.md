@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.73 — boss victory comics shorter/clearer/varied (owner)
+
+bossMotionScene: 2 shots (👑 title + beats[0] · “release” + STAGE_EPILOGUE why + 'Next: C?-? · name' if total <118 chars), noTitle (mcTitle skips to shot 0), fast advance max(ms+600,1700+34/char) vs old 2200+45/char. 4 stagings by idx%4 (actor/Ruby side, entrance offset, pan/zoom), flash = BOSS_SHOT[idx].c, shake idx%3==1, pow word per variant, mote per idx. Same art/keys. tests/boss-stories (2 shots), check-boss-motion-ui j<2 (run with FORGE_BROWSER_CHANNEL=chromium). docs/BOSS_MOTION_COMICS.md. Owner phone pacing review pending.
+
+
 # Previous delivery: v8.0.72 — boss bullet identity (owner picked colour/shape + behaviours)
 
 Code-drawn 128px white textures boss_orb/boss_shard/boss_star (dark outline, tinted; same size as cr_foe_bolt so hitbox unchanged). BOSS_SHOT[stageIndex 0–14] + BOSS_SHOT_PIN {k,c,s,b}. foeShot → bossShotStyleAt(x,y): shot born within .6·size+40px of an active boss/mini (not delveBoss, not _bsChild) gets bossShotApply (texture/tint/scale, beh). bossShotTick from the foe tick: wave (sine ±.55), home (1.7 rad/s for 1.3s), boomer (reverse at .85s), bounce (camera edges ≤2), split (3 kids at .7s, ×.55 dmg), delay (stop .55s, blink, 6-ring at 1.25s ×.5 dmg); bossShotKids capped at 210 active. killFoe resets beh/spin/alpha. Mob shots unchanged. tests/boss-shots. Headless smoke 16 styles 0 errors. Owner phone feel/difficulty review pending (split/delay add small bullets).
