@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.79 — Taro Arc nerf + art orders 58/59 wired (owner)
+
+Arc (owner: cheats vs lone boss, strong at build start): taroCombatProfile storm +1 root removed (Lv1 = 1 root × 4 jumps; roots still +Lv4/Lv6/cards); boss focus jumps j>0 ×TARO_ARC_LOOP .6 (×(1+.15·Overload)) instead of 100% each (Lv1 boss hits 8×100% → 1+3×.6). Tests: taro-chain (4 hits), taro-progression rawRoots 1, taro-feedback strip. Orders 58/59: scripts/pack-menu-58-59.py (sha check, 50%, WebP q90 alpha) → mobile_ui_789 pw_hero_* (384×192), pw_empty_* (192), menu59_icons (1152×768, 264,784 B). ASSET_IMAGES literals + ASSET_SHEETS.menu59_icons; MENU59 order, M59_ROW (hub rows), M59_EMOJI (_rowBtn settings). Helpers m59Img / loadMenuSheet / pwArt (lazy, rebuild on load, null fallback). Hooks: rewardsTabs icons, buildHubGroup rows, _rowBtn emoji icons, Weave summary art α.3, empty Equipment/Merge/Forge pictures. Bazaar/Heroes tab icons and Lobby side buttons not yet wired. tests/power-family extended. Owner phone review pending.
+
+
 # Previous delivery: v8.0.78 — Equipment in the Power theme (owner)
 
 buildGear restyled in place (layout/logic/tags unchanged): bg screen_gear_power_789; summary bar, slots, bag cells and item/mod panels use the Power palette (0x261e30 + 0x6d536d border; selected 0x423039 + gold 0xf4d9a1; equipped mint 0x85d5b2). Slots without gear art show pwIcon slot_<slot> (α .9 equipped starter / .5 empty, brought to top over the slot frame). Bag header ⚡/♻ draw pwIcon equip_best/salvage when power57 is loaded (zone labels '⚡'/'♻' kept for tests/tutorial). tests/power-family extended. Next: Merge → Forge. Owner phone review pending.
