@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.90, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.91, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.89 — 8 new build-targeted Relics (owner: more variety, some builds want them)
+# Latest delivery: v8.0.90 — Yuzu companion forms, stronger Yuzu Uniques, effect-free cutscenes (owner)
+
+Cutscenes: mcScene → mcPlain (MC_FX_RE /^(cs_fx_|vfx_)/ layers removed so they don't load, flash/pow/lines dropped, motes 0, sc.plain skips mcMotes) for every motion comic incl. boss 61 (crown shatter/flavor return gone). Yuzu forms: YUZU_FORMS names ×3 per companion, YUZU_FORM_KILLS [14,32] (y_fastripe/Ripen scale), yuzuForm (Pomelo = growth map [1,2,2,3]), yuzuFormKills from yuzuOnKill (Lime/Blood Orange), yuzuEvolveFx (banner/flash/ring/grow sound); yuzuPower ×(1+.2·(form-1)) for Lime/Blood Orange; sprite uses yz_<kind>_f<form> when present (art order 63) else base art scaled ×(1+.12·(form-1)); label = form name. Uniques: Pomelo land → hitStop + 2 aftershocks (350ms r×1.5 ×.6, 700ms r×2 ×.45); Lime 2 side arrows ±.16 rad (300%); Blood Orange last storm burst r230 ×2.4 + shake. Tests: new yuzu-forms-90. Art order 63 + audio order A06 written by helper (docs). Owner phone check pending.
+
+# Previous delivery: v8.0.89 — 8 new build-targeted Relics (owner: more variety, some builds want them)
 
 RELICS +8 (22 total) with for (card hint '👍 …') and paths (rollRelicChoices weight ×1.8 when basicAttack.path matches): heavydough (+30% dmg, cdMul×1.2), sugarrush (−15% dmg, cdMul×.8), frostcandy (+30% vs frozen/chill/Brittle), copperwhisk (+30% vs Tempest shock/Static Shock), longspoon (+25% >350px), crowdcrush (+25% <160px), twinbake (Unique +40% via _mxSrc 'unique', uniqueCdMul×.85), giantslayer (+25% elite/mini/boss, −10% others). Synergies Deadeye (heavydough+longspoon → +50%), Frenzy (sugarrush+crowdcrush → +50%), Deep Freeze (frostcandy+chill → +60%). Hook: damage() RL block → relicDmg89(e,RL); gain effects in gainRelic. No art yet (emoji fallback; relic_<key> icons can be ordered). Tests: new relics-89; damage hash in tests/fixtures/taro-t5-resolvers.json updated. Sesame not targeted. Owner phone check pending.
-
-# Previous delivery: v8.0.88 — Taro Sentry: 1 sentry + Extra Sentry card, Reserve Cell = fire rate (owner)
-
-taroSwarmProfile tempest: sentries=min(TARO_SENTRY_MAX 3, 1+rank surge+stormcaller 1+evolved 1); fire=1+.10·min(6,base.arc) → pulse=max(.3,unitC·.62/fire); nodeLife fixed 5 (was 5+arc·.35). castTaroSentry keeps f.sentries (Overdrive Unique still fills to 3 temporarily). TARO_PROGRESSION.tempest: arc 'Reserve Cell — Sentries fire 10% faster', surge 'Extra Sentry +1 sentry (max 3)', chainlord/stormcaller/evolution texts updated; path desc. Test: taro-swarm (1 sentry start, surge 2 → 3, fire/pulse). Owner phone check pending (balance feel at Lv1).
 
 # ⚠️ DEPLOY BRANCH — read first
 
