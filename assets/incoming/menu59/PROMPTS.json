@@ -1,0 +1,137 @@
+{
+  "generator": "built-in image_gen",
+  "transparent_background": true,
+  "references": [
+    {
+      "file": "docs/art_orders/ref/57_power56_icon_style_ref.webp",
+      "role": "painted style and material family"
+    },
+    {
+      "file": "assets/incoming/power57/preview_96px.png",
+      "role": "palette, small-size silhouette and optical weight"
+    }
+  ],
+  "prompt": "Use case: stylized-concept. ONE production mobile game menu ICON ATLAS. EXACTLY SIX columns by FOUR rows, TWENTY FOUR distinct isolated icons in the specified row-major order. Landscape3:2 canvas, target2304x1536 with equal384x384 square cells. Both input images are STYLE REFERENCES ONLY, existing Power56/57 painted icons; do NOT copy their original subjects or sheet layouts. Make the NEW24MENU subjects below. Faithfully match the SAME softly raised hand-painted forms, matte pastry/crystal/cloth materials, thin dark brown/plum contours, warm pale-gold bevels and small warm highlights, soft internal plum shadows, cream/rose/lavender/mint accents. Polished cozy confectionery fantasy, slight3/4 overhead, not photorealistic, not flat vector or emoji, not thick black outline or glossy plastic3D. These are used as SMALL28–40px menu icons, so strong simple silhouettes and very few tiny details; avoid unnecessary gem or leaf ornament. Each icon centered in its own equal cell and about75–80percent of cell, at least10percent completely transparent margin on EVERY edge. Equal apparent optical weight, no touching or overlap between cells. TRUE transparent RGBA background, no checkerboard/gray/white/plum matte, NO ground scenery, hard ground shadows, glow clouds, outer frames, borders, tile backgrounds or grid dividers. NO letters, words, digits, labels, logo, watermark or fake handwriting anywhere. All books/scrolls/calendar/newspaper/phone surfaces blank except specified physical pictograms. Requested musical notes/checkmark/arrow/star/paw are painted object motifs, not text. Calendar board, graph board, phone bezel and book cover are intrinsic objects, never an enclosing icon-card frame. Nothing clipped. Row-major content:\nRow1 column1: A small cream CLOTH CALENDAR with a rose ribbon BOW, six simple blank day dots and one GOLD RING around a day. Absolutely no digits or lettering.\nRow1 column2: One small rolled cream QUEST parchment, a large simple GOLD CHECKMARK as a physical raised mark. Entire rest of scroll blank.\nRow1 column3: One friendly GOLD TROPHY with a small candy-shaped decoration on its bowl, clear handles and short base.\nRow1 column4: One small rose-and-cream GIFT BOX with its lid OPEN and two restrained golden sparkles above the empty opening.\nRow1 column5: One little warm gray/lilac SOUP POT with round handles, a gentle cream fragrant STEAM curl, tiny gold rim. Cozy cooking.\nRow1 column6: One partly rolled cream MAP with a prominent GOLD STAR PIN, just one simple curved route, no writing or letters.\nRow2 column1: One compact warm-wood TREASURE CHEST with pale gold edging and simple candy jewel clasp, slightly closed lid. Not a wrapped gift box.\nRow2 column2: One little candy-shop STRIPED AWNING, cream and rose canopy with two tiny supports, no signage, no lettering.\nRow2 column3: Two simple soft cream MITTEN HANDS facing one another, exchanging one wrapped ROSE CANDY and one tiny pastry equipment item. Clear exchange silhouette, no detailed fingers.\nRow2 column4: Exactly THREE overlapping smiling round MOCHI FACES, one cream, one pastel pink, one pale mint. Simple cute expressive eyes, no body, no elaborate costume.\nRow2 column5: One small soft-gold and mint SAPLING with leaves shaped like GOLD STARS, short cream roots/base.\nRow2 column6: One small warm-plum statistics BOARD carrying exactly THREE CANDY BAR GRAPH columns of different heights in rose/cream/mint. No axes labels, numbers or lettering.\nRow3 column1: One compact rose-cream SEASHELL shaped as a SPEAKER with a single tiny warm-gold musical-note ornament; shell shape dominates, not the note.\nRow3 column2: One clearly recognizable PAIR OF JOINED MUSICAL NOTES made of matte CHOCOLATE with delicate pale-gold edges. The connected double note silhouette dominates.\nRow3 column3: One soft cream MOCHI-SHAPED SPEECH BUBBLE with a little speech tail and subtle rosy cheeks, empty inside. No words, dots or writing.\nRow3 column4: One small pale-gold SMARTPHONE with blank plum screen and two pairs of short soft curved VIBRATION STROKES at its sides. No screen content or text.\nRow3 column5: One SINGLE large soft CREAM four-point blinking STAR with warm pale-gold edge and one restrained short halo accent. Clearly one primary star.\nRow3 column6: Exactly THREE separate small four-point SPARKLES clustered together, cream/gold/soft mint, clearly three primary stars rather than one.\nRow4 column1: One soft CREAM CLOUD with one substantial warm-gold UP ARROW rising through its middle. Compact clear silhouette.\nRow4 column2: One little GRADUATION CAP in strawberry-rose with a small recognizable STRAWBERRY motif and tiny golden tassel; friendly pastry school cap, no lettering.\nRow4 column3: One closed cream ENVELOPE sealed with a raised ROSE HEART at center. Simple folds, no address or words.\nRow4 column4: One small rolled NEWSPAPER carrying a prominent GOLD STAR badge; blank cream paper, only two simple rectangular panel divisions, absolutely no printed words, letters, numbers or fake writing.\nRow4 column5: One small warm-brown LEATHER RECIPE BOOK with cream page edges and a SILVER DESSERT SPOON used as a bookmark. Blank cover, no lettering.\nRow4 column6: One small PLUM LEATHER MONSTER PICTURE BOOK with a single bold cream-and-rose PAW / three-toed monster FOOTPRINT embossed on cover. No writing, no scary teeth.",
+  "icons": [
+    {
+      "index": 0,
+      "key": "tab_login",
+      "name": "Login"
+    },
+    {
+      "index": 1,
+      "key": "tab_daily",
+      "name": "Daily"
+    },
+    {
+      "index": 2,
+      "key": "tab_awards",
+      "name": "Awards"
+    },
+    {
+      "index": 3,
+      "key": "row_rewards",
+      "name": "Rewards"
+    },
+    {
+      "index": 4,
+      "key": "row_kitchen",
+      "name": "Kitchen"
+    },
+    {
+      "index": 5,
+      "key": "row_recipe_maps",
+      "name": "Recipe Maps"
+    },
+    {
+      "index": 6,
+      "key": "tab_chests",
+      "name": "Chests"
+    },
+    {
+      "index": 7,
+      "key": "tab_shop",
+      "name": "Shop"
+    },
+    {
+      "index": 8,
+      "key": "tab_trade",
+      "name": "Trade"
+    },
+    {
+      "index": 9,
+      "key": "tab_heroes",
+      "name": "Heroes"
+    },
+    {
+      "index": 10,
+      "key": "tab_talents",
+      "name": "Talents"
+    },
+    {
+      "index": 11,
+      "key": "tab_stats",
+      "name": "Stats"
+    },
+    {
+      "index": 12,
+      "key": "set_sound",
+      "name": "Sound Effects"
+    },
+    {
+      "index": 13,
+      "key": "set_music",
+      "name": "Music"
+    },
+    {
+      "index": 14,
+      "key": "set_voice",
+      "name": "Character Voice"
+    },
+    {
+      "index": 15,
+      "key": "set_shake",
+      "name": "Screen Shake"
+    },
+    {
+      "index": 16,
+      "key": "set_flash",
+      "name": "Flash"
+    },
+    {
+      "index": 17,
+      "key": "set_vfx",
+      "name": "Effects"
+    },
+    {
+      "index": 18,
+      "key": "set_cloud",
+      "name": "Cloud Save"
+    },
+    {
+      "index": 19,
+      "key": "set_tutorial",
+      "name": "How to Play"
+    },
+    {
+      "index": 20,
+      "key": "mail",
+      "name": "Mail"
+    },
+    {
+      "index": 21,
+      "key": "news",
+      "name": "News"
+    },
+    {
+      "index": 22,
+      "key": "codex_recipe",
+      "name": "Recipe Book"
+    },
+    {
+      "index": 23,
+      "key": "codex_bestiary",
+      "name": "Bestiary"
+    }
+  ]
+}

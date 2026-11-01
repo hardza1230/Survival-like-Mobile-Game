@@ -21,7 +21,7 @@
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | ส่งครบ 7 · รอผูกโค้ด |
-| 59 | `59_MENU_ICONS.md` | ไอคอนเมนูแทนอีโมจิ: แท็บ Rewards/Bazaar/Heroes, แถว Activities, Settings, Mail/News/Codex (1 atlas 6×4) | 24 | กลาง | 🟡 รออาร์ต |
+| 59 | `59_MENU_ICONS.md` | ไอคอนเมนูแทนอีโมจิ: แท็บ Rewards/Bazaar/Heroes, แถว Activities, Settings, Mail/News/Codex (1 atlas 6×4) | 24 | กลาง | ส่งครบ 24 · รอผูกโค้ด |
 | 60 | `60_BOSS_BODY_MOVES_AND_SHOTS.md` | ท่าบอสสายร่างกาย 4 FX (คลื่นพื้น/ตกจากฟ้า/ปัดกวาด/พุ่งชน) + กระสุนบอสภาพวาด 16 แบบ | 20 | กลาง | 🟡 รออาร์ต |
 | 61 | `61_BOSS_DEFEAT_CUTSCENES.md` | Cutscene หลังล้มบอส 15 ตัว: ฉากล้ม (ทึบ) + รูปจริงที่ถูกปลดปล่อย (alpha) ต่อบอส, ฉากเดินต่อ 3 บท, FX มงกุฎแตก/แสงรสชาติคืน | 35 | ใหญ่ | 🟡 รออาร์ต |
 | 54 | `54_DEPTHS_RANK_REWARDS.md` | Depths ตะเกียง/แสง 3×3/ป้ายเลขระยะ/คนงานเหมือง + ไอคอน Rank Rewards 10 อัน | 5 / 24 เฟรม | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |

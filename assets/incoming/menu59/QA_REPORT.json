@@ -1,0 +1,627 @@
+{
+  "order": 59,
+  "status": "all24 menu icon sources complete; awaiting code integration",
+  "generator": "built-in image_gen",
+  "atlas": {
+    "file": "menu59_icons.png",
+    "dimensions": [
+      2304,
+      1536
+    ],
+    "mode": "RGBA",
+    "cell": [
+      384,
+      384
+    ],
+    "cols": 6,
+    "rows": 4,
+    "icons": 24,
+    "actual_alpha": [
+      0,
+      255
+    ],
+    "sha256": "11ed37578db75a1c24fc95b1b17f5770cfc757cd1aca1a2d7715c0ab19ab2a21",
+    "bytes": 3154945,
+    "transparent_background": true
+  },
+  "cells": [
+    {
+      "index": 0,
+      "key": "tab_login",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        52,
+        345,
+        331
+      ],
+      "margins_px": [
+        38,
+        52,
+        39,
+        53
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 1,
+      "key": "tab_daily",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        43,
+        345,
+        340
+      ],
+      "margins_px": [
+        38,
+        43,
+        39,
+        44
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 2,
+      "key": "tab_awards",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        52,
+        345,
+        332
+      ],
+      "margins_px": [
+        38,
+        52,
+        39,
+        52
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 3,
+      "key": "row_rewards",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        57,
+        38,
+        326,
+        345
+      ],
+      "margins_px": [
+        57,
+        38,
+        58,
+        39
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 4,
+      "key": "row_kitchen",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        46,
+        38,
+        337,
+        345
+      ],
+      "margins_px": [
+        46,
+        38,
+        47,
+        39
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 5,
+      "key": "row_recipe_maps",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        49,
+        345,
+        335
+      ],
+      "margins_px": [
+        38,
+        49,
+        39,
+        49
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 6,
+      "key": "tab_chests",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        61,
+        345,
+        322
+      ],
+      "margins_px": [
+        38,
+        61,
+        39,
+        62
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 7,
+      "key": "tab_shop",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        49,
+        345,
+        335
+      ],
+      "margins_px": [
+        38,
+        49,
+        39,
+        49
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 8,
+      "key": "tab_trade",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        91,
+        345,
+        293
+      ],
+      "margins_px": [
+        38,
+        91,
+        39,
+        91
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 9,
+      "key": "tab_heroes",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        75,
+        345,
+        309
+      ],
+      "margins_px": [
+        38,
+        75,
+        39,
+        75
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 10,
+      "key": "tab_talents",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        57,
+        38,
+        326,
+        345
+      ],
+      "margins_px": [
+        57,
+        38,
+        58,
+        39
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 11,
+      "key": "tab_stats",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        51,
+        345,
+        332
+      ],
+      "margins_px": [
+        38,
+        51,
+        39,
+        52
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 12,
+      "key": "set_sound",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        48,
+        345,
+        336
+      ],
+      "margins_px": [
+        38,
+        48,
+        39,
+        48
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 13,
+      "key": "set_music",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        47,
+        345,
+        336
+      ],
+      "margins_px": [
+        38,
+        47,
+        39,
+        48
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 14,
+      "key": "set_voice",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        65,
+        345,
+        318
+      ],
+      "margins_px": [
+        38,
+        65,
+        39,
+        66
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 15,
+      "key": "set_shake",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        49,
+        345,
+        334
+      ],
+      "margins_px": [
+        38,
+        49,
+        39,
+        50
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 16,
+      "key": "set_flash",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        43,
+        345,
+        340
+      ],
+      "margins_px": [
+        38,
+        43,
+        39,
+        44
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 17,
+      "key": "set_vfx",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        46,
+        345,
+        338
+      ],
+      "margins_px": [
+        38,
+        46,
+        39,
+        46
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 18,
+      "key": "set_cloud",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        62,
+        345,
+        321
+      ],
+      "margins_px": [
+        38,
+        62,
+        39,
+        63
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 19,
+      "key": "set_tutorial",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        83,
+        345,
+        300
+      ],
+      "margins_px": [
+        38,
+        83,
+        39,
+        84
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 20,
+      "key": "mail",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        78,
+        345,
+        306
+      ],
+      "margins_px": [
+        38,
+        78,
+        39,
+        78
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 21,
+      "key": "news",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        68,
+        345,
+        315
+      ],
+      "margins_px": [
+        38,
+        68,
+        39,
+        69
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 22,
+      "key": "codex_recipe",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        41,
+        38,
+        342,
+        345
+      ],
+      "margins_px": [
+        41,
+        38,
+        42,
+        39
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    },
+    {
+      "index": 23,
+      "key": "codex_bestiary",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "content_bounds": [
+        38,
+        40,
+        345,
+        344
+      ],
+      "margins_px": [
+        38,
+        40,
+        39,
+        40
+      ],
+      "max_extent_px": 307,
+      "max_extent_fraction": 0.7994791666666666,
+      "cell_edge_clear": true,
+      "overflow": false
+    }
+  ],
+  "previews": [
+    {
+      "file": "preview_28px.png",
+      "bytes": 28865,
+      "sha256": "f0e40affbd789236a9c0a02c8f92cc7470142c13a40a9e2c481570530dcf1af2",
+      "cell_display_px": 28,
+      "background": "#261e30"
+    },
+    {
+      "file": "preview_40px.png",
+      "bytes": 50709,
+      "sha256": "6ba055571dc5bd42644131b0540ee1b6bb9182395963c199abd596a2812ad707",
+      "cell_display_px": 40,
+      "background": "#261e30"
+    },
+    {
+      "file": "preview_96px.png",
+      "bytes": 221219,
+      "sha256": "cdd0724d2753f3f9a359693ee1438ad9fa8daeeee5291b34ca2d014b38e07ba9",
+      "cell_display_px": 96,
+      "background": "#261e30"
+    }
+  ],
+  "source_dimensions": [
+    1536,
+    1024
+  ],
+  "processing": [
+    "Measured donor gutters cropped without repainting",
+    "Uniform fit307px maximum extent (79.95%) in384px cells; original generated alpha preserved",
+    "PNG32 exact2304x1536; no runtime image/registration/code output"
+  ],
+  "visual_review": {
+    "pending": false,
+    "previews": [
+      "preview_28px.png",
+      "preview_40px.png",
+      "preview_96px.png"
+    ],
+    "background": "#261e30",
+    "passed": [
+      "24index/key assignments match the order59table exactly",
+      "Distinct menu silhouettes at28\u201340px with96px detail review",
+      "Sound shell / chocolate double music note / mochi voice bubble are distinct",
+      "Flash one primary star / VFX three stars are distinct",
+      "All books/calendar/news/phone are free of words/numbers/pseudo-writing",
+      "No surrounding frames, opaque matte, clipping or neighbor fragments",
+      "Warm painted material/contour/gold accents match Power56/57"
+    ]
+  },
+  "runtime_changes": false,
+  "validation": {
+    "exact_dimensions_png_stream": "passed",
+    "alpha_and38px_cell_margins": "passed",
+    "source_output_preview_sha256": "passed",
+    "project_check": {
+      "command": "npm run check",
+      "exit_code": 0,
+      "note": "Read-only canonical-LF text-read shim used for existing Windows CRLF checkout; no runtime file written."
+    }
+  },
+  "scope": {
+    "base_commit": "54347dd958dd2e2b133f516836087d7e6a064d7d",
+    "allowed_changes": [
+      "assets/incoming/menu59/**",
+      "docs/art_orders/README.md row59"
+    ],
+    "runtime_files_changed": false,
+    "version_bump": false
+  }
+}

@@ -1,0 +1,949 @@
+{
+  "key": "menu59_icons",
+  "file": "menu59_icons.png",
+  "bytes": 3154945,
+  "sha256": "11ed37578db75a1c24fc95b1b17f5770cfc757cd1aca1a2d7715c0ab19ab2a21",
+  "width": 2304,
+  "height": 1536,
+  "cell": 384,
+  "cols": 6,
+  "rows": 4,
+  "format": "PNG32 RGBA",
+  "icons": [
+    {
+      "index": 0,
+      "key": "tab_login",
+      "name": "Login",
+      "row": 0,
+      "column": 0,
+      "rect": [
+        0,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        0,
+        0,
+        278,
+        310
+      ],
+      "source_alpha_crop": [
+        26,
+        74,
+        263,
+        289
+      ],
+      "scale": 1.2953586497890295,
+      "paste": [
+        38,
+        52
+      ],
+      "alpha_bounds": [
+        38,
+        52,
+        345,
+        331
+      ]
+    },
+    {
+      "index": 1,
+      "key": "tab_daily",
+      "name": "Daily",
+      "row": 0,
+      "column": 1,
+      "rect": [
+        384,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        278,
+        0,
+        523,
+        310
+      ],
+      "source_alpha_crop": [
+        16,
+        77,
+        241,
+        295
+      ],
+      "scale": 1.3644444444444443,
+      "paste": [
+        38,
+        43
+      ],
+      "alpha_bounds": [
+        38,
+        43,
+        345,
+        340
+      ]
+    },
+    {
+      "index": 2,
+      "key": "tab_awards",
+      "name": "Awards",
+      "row": 0,
+      "column": 2,
+      "rect": [
+        768,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        523,
+        0,
+        780,
+        310
+      ],
+      "source_alpha_crop": [
+        4,
+        79,
+        241,
+        295
+      ],
+      "scale": 1.2953586497890295,
+      "paste": [
+        38,
+        52
+      ],
+      "alpha_bounds": [
+        38,
+        52,
+        345,
+        332
+      ]
+    },
+    {
+      "index": 3,
+      "key": "row_rewards",
+      "name": "Rewards",
+      "row": 0,
+      "column": 3,
+      "rect": [
+        1152,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        780,
+        0,
+        1020,
+        310
+      ],
+      "source_alpha_crop": [
+        15,
+        61,
+        226,
+        302
+      ],
+      "scale": 1.2738589211618256,
+      "paste": [
+        57,
+        38
+      ],
+      "alpha_bounds": [
+        57,
+        38,
+        326,
+        345
+      ]
+    },
+    {
+      "index": 4,
+      "key": "row_kitchen",
+      "name": "Kitchen",
+      "row": 0,
+      "column": 4,
+      "rect": [
+        1536,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1020,
+        0,
+        1276,
+        310
+      ],
+      "source_alpha_crop": [
+        12,
+        48,
+        245,
+        294
+      ],
+      "scale": 1.2479674796747968,
+      "paste": [
+        46,
+        38
+      ],
+      "alpha_bounds": [
+        46,
+        38,
+        337,
+        345
+      ]
+    },
+    {
+      "index": 5,
+      "key": "row_recipe_maps",
+      "name": "Recipe Maps",
+      "row": 0,
+      "column": 5,
+      "rect": [
+        1920,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1276,
+        0,
+        1536,
+        310
+      ],
+      "source_alpha_crop": [
+        13,
+        75,
+        247,
+        293
+      ],
+      "scale": 1.311965811965812,
+      "paste": [
+        38,
+        49
+      ],
+      "alpha_bounds": [
+        38,
+        49,
+        345,
+        335
+      ]
+    },
+    {
+      "index": 6,
+      "key": "tab_chests",
+      "name": "Chests",
+      "row": 1,
+      "column": 0,
+      "rect": [
+        0,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        0,
+        310,
+        270,
+        544
+      ],
+      "source_alpha_crop": [
+        27,
+        26,
+        256,
+        221
+      ],
+      "scale": 1.3406113537117903,
+      "paste": [
+        38,
+        61
+      ],
+      "alpha_bounds": [
+        38,
+        61,
+        345,
+        322
+      ]
+    },
+    {
+      "index": 7,
+      "key": "tab_shop",
+      "name": "Shop",
+      "row": 1,
+      "column": 1,
+      "rect": [
+        384,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        270,
+        310,
+        503,
+        544
+      ],
+      "source_alpha_crop": [
+        13,
+        21,
+        231,
+        224
+      ],
+      "scale": 1.408256880733945,
+      "paste": [
+        38,
+        49
+      ],
+      "alpha_bounds": [
+        38,
+        49,
+        345,
+        335
+      ]
+    },
+    {
+      "index": 8,
+      "key": "tab_trade",
+      "name": "Trade",
+      "row": 1,
+      "column": 2,
+      "rect": [
+        768,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        503,
+        310,
+        780,
+        544
+      ],
+      "source_alpha_crop": [
+        2,
+        43,
+        275,
+        223
+      ],
+      "scale": 1.1245421245421245,
+      "paste": [
+        38,
+        91
+      ],
+      "alpha_bounds": [
+        38,
+        91,
+        345,
+        293
+      ]
+    },
+    {
+      "index": 9,
+      "key": "tab_heroes",
+      "name": "Heroes",
+      "row": 1,
+      "column": 3,
+      "rect": [
+        1152,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        780,
+        310,
+        1038,
+        544
+      ],
+      "source_alpha_crop": [
+        3,
+        34,
+        244,
+        218
+      ],
+      "scale": 1.2738589211618256,
+      "paste": [
+        38,
+        75
+      ],
+      "alpha_bounds": [
+        38,
+        75,
+        345,
+        309
+      ]
+    },
+    {
+      "index": 10,
+      "key": "tab_talents",
+      "name": "Talents",
+      "row": 1,
+      "column": 4,
+      "rect": [
+        1536,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1038,
+        310,
+        1274,
+        544
+      ],
+      "source_alpha_crop": [
+        16,
+        6,
+        212,
+        230
+      ],
+      "scale": 1.3705357142857142,
+      "paste": [
+        57,
+        38
+      ],
+      "alpha_bounds": [
+        57,
+        38,
+        326,
+        345
+      ]
+    },
+    {
+      "index": 11,
+      "key": "tab_stats",
+      "name": "Stats",
+      "row": 1,
+      "column": 5,
+      "rect": [
+        1920,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1274,
+        310,
+        1536,
+        544
+      ],
+      "source_alpha_crop": [
+        24,
+        26,
+        235,
+        219
+      ],
+      "scale": 1.4549763033175356,
+      "paste": [
+        38,
+        51
+      ],
+      "alpha_bounds": [
+        38,
+        51,
+        345,
+        332
+      ]
+    },
+    {
+      "index": 12,
+      "key": "set_sound",
+      "name": "Sound Effects",
+      "row": 2,
+      "column": 0,
+      "rect": [
+        0,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        0,
+        544,
+        280,
+        774
+      ],
+      "source_alpha_crop": [
+        38,
+        3,
+        263,
+        214
+      ],
+      "scale": 1.3644444444444443,
+      "paste": [
+        38,
+        48
+      ],
+      "alpha_bounds": [
+        38,
+        48,
+        345,
+        336
+      ]
+    },
+    {
+      "index": 13,
+      "key": "set_music",
+      "name": "Music",
+      "row": 2,
+      "column": 1,
+      "rect": [
+        384,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        280,
+        544,
+        523,
+        774
+      ],
+      "source_alpha_crop": [
+        19,
+        22,
+        210,
+        202
+      ],
+      "scale": 1.6073298429319371,
+      "paste": [
+        38,
+        47
+      ],
+      "alpha_bounds": [
+        38,
+        47,
+        345,
+        336
+      ]
+    },
+    {
+      "index": 14,
+      "key": "set_voice",
+      "name": "Character Voice",
+      "row": 2,
+      "column": 2,
+      "rect": [
+        768,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        523,
+        544,
+        776,
+        774
+      ],
+      "source_alpha_crop": [
+        22,
+        38,
+        234,
+        213
+      ],
+      "scale": 1.4481132075471699,
+      "paste": [
+        38,
+        65
+      ],
+      "alpha_bounds": [
+        38,
+        65,
+        345,
+        318
+      ]
+    },
+    {
+      "index": 15,
+      "key": "set_shake",
+      "name": "Screen Shake",
+      "row": 2,
+      "column": 3,
+      "rect": [
+        1152,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        776,
+        544,
+        1033,
+        774
+      ],
+      "source_alpha_crop": [
+        13,
+        11,
+        236,
+        218
+      ],
+      "scale": 1.3766816143497758,
+      "paste": [
+        38,
+        49
+      ],
+      "alpha_bounds": [
+        38,
+        49,
+        345,
+        334
+      ]
+    },
+    {
+      "index": 16,
+      "key": "set_flash",
+      "name": "Flash",
+      "row": 2,
+      "column": 4,
+      "rect": [
+        1536,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1033,
+        544,
+        1270,
+        774
+      ],
+      "source_alpha_crop": [
+        19,
+        28,
+        208,
+        211
+      ],
+      "scale": 1.6243386243386244,
+      "paste": [
+        38,
+        43
+      ],
+      "alpha_bounds": [
+        38,
+        43,
+        345,
+        340
+      ]
+    },
+    {
+      "index": 17,
+      "key": "set_vfx",
+      "name": "Effects",
+      "row": 2,
+      "column": 5,
+      "rect": [
+        1920,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1270,
+        544,
+        1536,
+        774
+      ],
+      "source_alpha_crop": [
+        34,
+        16,
+        235,
+        207
+      ],
+      "scale": 1.527363184079602,
+      "paste": [
+        38,
+        46
+      ],
+      "alpha_bounds": [
+        38,
+        46,
+        345,
+        338
+      ]
+    },
+    {
+      "index": 18,
+      "key": "set_cloud",
+      "name": "Cloud Save",
+      "row": 3,
+      "column": 0,
+      "rect": [
+        0,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        0,
+        774,
+        270,
+        1024
+      ],
+      "source_alpha_crop": [
+        28,
+        14,
+        256,
+        206
+      ],
+      "scale": 1.3464912280701755,
+      "paste": [
+        38,
+        62
+      ],
+      "alpha_bounds": [
+        38,
+        62,
+        345,
+        321
+      ]
+    },
+    {
+      "index": 19,
+      "key": "set_tutorial",
+      "name": "How to Play",
+      "row": 3,
+      "column": 1,
+      "rect": [
+        384,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        270,
+        774,
+        540,
+        1024
+      ],
+      "source_alpha_crop": [
+        14,
+        18,
+        257,
+        190
+      ],
+      "scale": 1.2633744855967077,
+      "paste": [
+        38,
+        83
+      ],
+      "alpha_bounds": [
+        38,
+        83,
+        345,
+        300
+      ]
+    },
+    {
+      "index": 20,
+      "key": "mail",
+      "name": "Mail",
+      "row": 3,
+      "column": 2,
+      "rect": [
+        768,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        540,
+        774,
+        768,
+        1024
+      ],
+      "source_alpha_crop": [
+        12,
+        29,
+        217,
+        181
+      ],
+      "scale": 1.497560975609756,
+      "paste": [
+        38,
+        78
+      ],
+      "alpha_bounds": [
+        38,
+        78,
+        345,
+        306
+      ]
+    },
+    {
+      "index": 21,
+      "key": "news",
+      "name": "News",
+      "row": 3,
+      "column": 3,
+      "rect": [
+        1152,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        768,
+        774,
+        1034,
+        1024
+      ],
+      "source_alpha_crop": [
+        12,
+        12,
+        251,
+        204
+      ],
+      "scale": 1.284518828451883,
+      "paste": [
+        38,
+        68
+      ],
+      "alpha_bounds": [
+        38,
+        68,
+        345,
+        315
+      ]
+    },
+    {
+      "index": 22,
+      "key": "codex_recipe",
+      "name": "Recipe Book",
+      "row": 3,
+      "column": 4,
+      "rect": [
+        1536,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1034,
+        774,
+        1280,
+        1024
+      ],
+      "source_alpha_crop": [
+        15,
+        6,
+        225,
+        220
+      ],
+      "scale": 1.4345794392523366,
+      "paste": [
+        41,
+        38
+      ],
+      "alpha_bounds": [
+        41,
+        38,
+        342,
+        345
+      ]
+    },
+    {
+      "index": 23,
+      "key": "codex_bestiary",
+      "name": "Bestiary",
+      "row": 3,
+      "column": 5,
+      "rect": [
+        1920,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/menu59_generated.png",
+      "source_sha256": "b92bc5e010519d80d79ec49ff7e90bb315207971530cc9fa25e7ee593d33397c",
+      "source_rect": [
+        1280,
+        774,
+        1536,
+        1024
+      ],
+      "source_alpha_crop": [
+        22,
+        7,
+        223,
+        206
+      ],
+      "scale": 1.527363184079602,
+      "paste": [
+        38,
+        40
+      ],
+      "alpha_bounds": [
+        38,
+        40,
+        345,
+        344
+      ]
+    }
+  ],
+  "previews": [
+    {
+      "file": "preview_28px.png",
+      "bytes": 28865,
+      "sha256": "f0e40affbd789236a9c0a02c8f92cc7470142c13a40a9e2c481570530dcf1af2",
+      "cell_display_px": 28,
+      "background": "#261e30"
+    },
+    {
+      "file": "preview_40px.png",
+      "bytes": 50709,
+      "sha256": "6ba055571dc5bd42644131b0540ee1b6bb9182395963c199abd596a2812ad707",
+      "cell_display_px": 40,
+      "background": "#261e30"
+    },
+    {
+      "file": "preview_96px.png",
+      "bytes": 221219,
+      "sha256": "cdd0724d2753f3f9a359693ee1438ad9fa8daeeee5291b34ca2d014b38e07ba9",
+      "cell_display_px": 96,
+      "background": "#261e30"
+    }
+  ]
+}
