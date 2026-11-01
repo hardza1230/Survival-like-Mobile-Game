@@ -66,6 +66,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
 - ใบสั่ง 62 สถานะติดตัว ผูกแล้ว v8.0.85 · รอ QA มือถือ
 - อาร์ต 61 ฉากหลังล้มบอส ผูกแล้ว v8.0.84 · รอ QA มือถือ
+- ใบสั่ง 63 ร่างคู่หู Yuzu (f2/f3 + yz_fx_evolve) รออาร์ต `assets/incoming/yuzu_forms63/` · ตอนผูก: แพ็ก 50% (งบ Yuzu ~299 MB) และ remap เฟรม yz_48 · ใบสั่งเสียง A06 (29 เสียง) รอส่ง `assets/incoming/audio_new_features/`
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame Mirror Network: ขั้น 1 เสร็จ v7.9.40 · ขั้น 2 (สาย + Glass World) รอเจ้าของเริ่ม
