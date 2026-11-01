@@ -1,0 +1,254 @@
+[
+  {
+    "key": "sfx_forge_roll_good",
+    "file": "sfx_forge_roll_good.mp3",
+    "durationMs": 600,
+    "targetLufsS": -16.0,
+    "briefPrompt": "cute candy forge, soft sugar hammer tap then a quick rising sparkle shimmer and a bright two-note glass chime, magical reward, playful, clean, no voice",
+    "group": "A",
+    "loop": false
+  },
+  {
+    "key": "sfx_forge_roll_bad",
+    "file": "sfx_forge_roll_bad.mp3",
+    "durationMs": 800,
+    "targetLufsS": -17.0,
+    "briefPrompt": "comic ominous little cartoon sting, soft hammer tap then a descending wobbly bassoon-like toot and a tiny puff of smoke, spooky but cute and funny, candy world, no voice",
+    "group": "A",
+    "loop": false
+  },
+  {
+    "key": "sfx_forge_lv_up",
+    "file": "sfx_forge_lv_up.mp3",
+    "durationMs": 500,
+    "targetLufsS": -16.0,
+    "briefPrompt": "quick ascending three-note crystal arpeggio with a soft candy pop at the top and short glitter tail, level up, bright and cute, no voice",
+    "group": "A",
+    "loop": false
+  },
+  {
+    "key": "sfx_forge_remove_paid",
+    "file": "sfx_forge_remove_paid.mp3",
+    "durationMs": 500,
+    "targetLufsS": -18.0,
+    "briefPrompt": "small spoon scoop pulling something out, soft bubbly pop, then two tiny coins clinking away, gentle and tidy, candy kitchen, no voice",
+    "group": "A",
+    "loop": false
+  },
+  {
+    "key": "sfx_merge_rarity_mythic",
+    "file": "sfx_merge_rarity_mythic.mp3",
+    "durationMs": 1300,
+    "targetLufsS": -15.0,
+    "briefPrompt": "magical rarity reveal fanfare, short warm brass flourish with shimmering harp glissando and deep pink-purple crystal chord, sparkles, triumphant but cute candy fantasy, no voice",
+    "group": "B",
+    "loop": false
+  },
+  {
+    "key": "sfx_merge_rarity_ancient",
+    "file": "sfx_merge_rarity_ancient.mp3",
+    "durationMs": 1500,
+    "targetLufsS": -14.0,
+    "briefPrompt": "ancient treasure rarity reveal, low soft gong swell then golden bells and a bold short brass fanfare, dusty sparkle, grand and mysterious, cute fantasy game, no voice",
+    "group": "B",
+    "loop": false
+  },
+  {
+    "key": "sfx_merge_rarity_divine",
+    "file": "sfx_merge_rarity_divine.mp3",
+    "durationMs": 1800,
+    "targetLufsS": -14.0,
+    "briefPrompt": "divine heavenly rarity reveal, rising airy shimmer into a radiant major chord of choir-like synth pad (no words) with bright bells and a big sparkling fanfare finish, epic but sweet candy fantasy, no voice",
+    "group": "B",
+    "loop": false
+  },
+  {
+    "key": "sfx_relic_synergy",
+    "file": "sfx_relic_synergy.mp3",
+    "durationMs": 900,
+    "targetLufsS": -16.0,
+    "briefPrompt": "two magical charms clicking together then a resonant linked chime and a swirling sparkle burst, combo unlocked, satisfying, candy fantasy, no voice",
+    "group": "C",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_burn",
+    "file": "sfx_st_burn.mp3",
+    "durationMs": 250,
+    "targetLufsS": -22.0,
+    "briefPrompt": "tiny soft fire ignite whoosh, small candle flame puff, short and cute, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_chill",
+    "file": "sfx_st_chill.mp3",
+    "durationMs": 250,
+    "targetLufsS": -22.0,
+    "briefPrompt": "tiny frosty sparkle tinkle, light icy breath, short and gentle, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_freeze",
+    "file": "sfx_st_freeze.mp3",
+    "durationMs": 350,
+    "targetLufsS": -20.0,
+    "briefPrompt": "quick crisp ice crackle locking solid with a small glassy clink, cute candy ice, short, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_shock",
+    "file": "sfx_st_shock.mp3",
+    "durationMs": 250,
+    "targetLufsS": -22.0,
+    "briefPrompt": "small electric crackle zap, tiny static sparks buzzing briefly, soft not harsh, short, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_stun",
+    "file": "sfx_st_stun.mp3",
+    "durationMs": 350,
+    "targetLufsS": -21.0,
+    "briefPrompt": "cartoon dizzy stun, soft bonk then tiny circling bird tweets as short twinkle, comic and cute, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_mark",
+    "file": "sfx_st_mark.mp3",
+    "durationMs": 300,
+    "targetLufsS": -21.0,
+    "briefPrompt": "small target lock-on ping, soft high bell ding with a tiny whoosh, clear and short, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_sour",
+    "file": "sfx_st_sour.mp3",
+    "durationMs": 300,
+    "targetLufsS": -22.0,
+    "briefPrompt": "tiny sour juice splash with a fizzy bubbly pop, citrus squirt, cute and short, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_cleanse",
+    "file": "sfx_st_cleanse.mp3",
+    "durationMs": 500,
+    "targetLufsS": -19.0,
+    "briefPrompt": "gentle purifying sparkle wash, soft airy whoosh upward with a clean bright chime, relief, cute, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_st_barrier_break",
+    "file": "sfx_st_barrier_break.mp3",
+    "durationMs": 500,
+    "targetLufsS": -18.0,
+    "briefPrompt": "candy glass bubble shield cracking and shattering into small sugary shards, crisp but soft, short tail, no voice",
+    "group": "D",
+    "loop": false
+  },
+  {
+    "key": "sfx_yz_evolve_f2",
+    "file": "sfx_yz_evolve_f2.mp3",
+    "durationMs": 1000,
+    "targetLufsS": -16.0,
+    "briefPrompt": "cute creature transformation, swirling leaves and rising magical shimmer building up, then a bright pop and sparkling chime, evolving, playful fantasy, no voice",
+    "group": "E",
+    "loop": false
+  },
+  {
+    "key": "sfx_yz_evolve_f3",
+    "file": "sfx_yz_evolve_f3.mp3",
+    "durationMs": 1400,
+    "targetLufsS": -15.0,
+    "briefPrompt": "powerful cute creature transformation, longer rising magical swirl with deep whoosh and building sparkles, then a big radiant burst with heroic short fanfare chord, final evolution, no voice",
+    "group": "E",
+    "loop": false
+  },
+  {
+    "key": "sfx_yz_aftershock",
+    "file": "sfx_yz_aftershock.mp3",
+    "durationMs": 600,
+    "targetLufsS": -17.0,
+    "briefPrompt": "soft heavy ground rumble aftershock, thick fruit thump into the ground with rolling low tremor and pebbles, punchy but cute, no voice",
+    "group": "E",
+    "loop": false
+  },
+  {
+    "key": "sfx_yz_triple_arrow",
+    "file": "sfx_yz_triple_arrow.mp3",
+    "durationMs": 500,
+    "targetLufsS": -17.0,
+    "briefPrompt": "three quick bow arrows released in a fan almost together, sharp twangs and whooshing seed arrows, crisp, cute fantasy, no voice",
+    "group": "E",
+    "loop": false
+  },
+  {
+    "key": "sfx_yz_storm_final",
+    "file": "sfx_yz_storm_final.mp3",
+    "durationMs": 900,
+    "targetLufsS": -15.0,
+    "briefPrompt": "big magical juice explosion, swirling sigil charge then a bursting splash boom with fizzy sparkles raining down, grand finale, cute candy fantasy, no voice",
+    "group": "E",
+    "loop": false
+  },
+  {
+    "key": "sfx_taro_deploy",
+    "file": "sfx_taro_deploy.mp3",
+    "durationMs": 500,
+    "targetLufsS": -18.0,
+    "briefPrompt": "small magical turret landing on ground with a soft thunk, then electric hum powering on and a tiny spark ping, cute candy gadget, no voice",
+    "group": "F",
+    "loop": false
+  },
+  {
+    "key": "sfx_taro_extra_sentry",
+    "file": "sfx_taro_extra_sentry.mp3",
+    "durationMs": 600,
+    "targetLufsS": -17.0,
+    "briefPrompt": "second magical turret popping into place beside another, quick double thunk and a rising electric chime, upgrade added, cute, no voice",
+    "group": "F",
+    "loop": false
+  },
+  {
+    "key": "sfx_login_day30",
+    "file": "sfx_login_day30.mp3",
+    "durationMs": 1600,
+    "targetLufsS": -14.0,
+    "briefPrompt": "big treasure chest unlocking with heavy latch click, lid creaks open, golden coins and gems burst out with grand sparkling fanfare, month reward celebration, cute candy fantasy, no voice",
+    "group": "G",
+    "loop": false
+  },
+  {
+    "key": "sfx_dig_unlock",
+    "file": "sfx_dig_unlock.mp3",
+    "durationMs": 1000,
+    "targetLufsS": -16.0,
+    "briefPrompt": "underground cave entrance opening, rumbling stone slide and pebbles, then a lantern lights up with warm chime and sparkles, new area unlocked, cute, no voice",
+    "group": "G",
+    "loop": false
+  },
+  {
+    "key": "sfx_dig_ancient_locked",
+    "file": "sfx_dig_ancient_locked.mp3",
+    "durationMs": 400,
+    "targetLufsS": -20.0,
+    "briefPrompt": "small locked treasure chest rattling, chain and padlock jiggle, short dull clunk, not opening, cute and comic, no voice",
+    "group": "G",
+    "loop": false
+  },
+  {
+    "key": "sfx_dig_ancient_open",
+    "file": "sfx_dig_ancient_open.mp3",
+    "durationMs": 800,
+    "targetLufsS": -17.0,
+    "briefPrompt": "ancient padlock clicking open with a deep satisfying clunk, chains falling away, mysterious golden shimmer, cute fantasy, no voice",
+    "group": "G",
+    "loop": false
+  }
+]

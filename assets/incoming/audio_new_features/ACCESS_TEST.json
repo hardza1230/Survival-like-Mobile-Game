@@ -1,0 +1,17 @@
+{
+  "testedAtUtc": "2026-11-01T14:22:24.353151+00:00",
+  "provider": "ElevenLabs",
+  "endpoint": "POST /v1/sound-generation",
+  "attempts": [],
+  "accessible": true,
+  "httpStatus": 200,
+  "credentialSource": "process environment",
+  "contentType": "audio/mpeg",
+  "decode": true,
+  "file": "assets/incoming/audio_new_features/donors/sfx_forge_roll_good_01.mp3",
+  "bytes": 15089,
+  "sha256": "d08b49df70f8d637bfaa6cdaff2faf01da61241976c16a7cd39f0bd21de16667",
+  "response": {
+    "character-cost": "10"
+  }
+}

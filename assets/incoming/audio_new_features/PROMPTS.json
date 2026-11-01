@@ -1,0 +1,2641 @@
+{
+  "provider": "ElevenLabs",
+  "endpoint": "https://api.elevenlabs.io/v1/sound-generation?output_format=mp3_44100_128",
+  "generations": [
+    {
+      "key": "sfx_forge_roll_good",
+      "variant": 1,
+      "parameters": {
+        "text": "cute candy forge, soft sugar hammer tap then a quick rising sparkle shimmer and a bright two-note glass chime, magical reward, playful, clean, no voice. Original sound design, no imitation of any existing game or artist, no human sounds, dry immediate attack, soft short tail, clear on mobile phone speakers.",
+        "duration_seconds": 0.9,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_roll_good_01.mp3",
+      "bytes": 15089,
+      "sha256": "d08b49df70f8d637bfaa6cdaff2faf01da61241976c16a7cd39f0bd21de16667",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:22:24.353151+00:00",
+      "reusedAccessTest": true
+    },
+    {
+      "key": "sfx_forge_roll_good",
+      "variant": 3,
+      "parameters": {
+        "text": "cute candy forge, soft sugar hammer tap then a quick rising sparkle shimmer and a bright two-note glass chime, magical reward, playful, clean, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_roll_good_03.mp3",
+      "bytes": 15089,
+      "sha256": "399573e847b00440f7d1405923e7288818880d988dd4e51ca70c9155c2e2b091",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:40:47.098980+00:00"
+    },
+    {
+      "key": "sfx_forge_roll_good",
+      "variant": 2,
+      "parameters": {
+        "text": "cute candy forge, soft sugar hammer tap then a quick rising sparkle shimmer and a bright two-note glass chime, magical reward, playful, clean, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_roll_good_02.mp3",
+      "bytes": 15089,
+      "sha256": "77617bca53886d999675251c42fcd3016d7645678cf5695bbd8b5f67206ffc53",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:40:47.317909+00:00"
+    },
+    {
+      "key": "sfx_forge_roll_bad",
+      "variant": 1,
+      "parameters": {
+        "text": "comic ominous little cartoon sting, soft hammer tap then a descending wobbly bassoon-like toot and a tiny puff of smoke, spooky but cute and funny, candy world, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.8s, then soft decay.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_roll_bad_01.mp3",
+      "bytes": 18433,
+      "sha256": "4d199ae258ada74839501c2bb720ca07a3a2b435d4e476bbc36a0c40dfe9eac6",
+      "response": {
+        "character-cost": "12"
+      },
+      "createdAtUtc": "2026-11-01T14:40:49.210211+00:00"
+    },
+    {
+      "key": "sfx_forge_roll_bad",
+      "variant": 2,
+      "parameters": {
+        "text": "comic ominous little cartoon sting, soft hammer tap then a descending wobbly bassoon-like toot and a tiny puff of smoke, spooky but cute and funny, candy world, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.8s, then soft decay. Rounder take.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_roll_bad_02.mp3",
+      "bytes": 18433,
+      "sha256": "a77f011a6232d2a69a6c62e9c4806695608a1f25ab0ce124f9ce3ca0b342c34a",
+      "response": {
+        "character-cost": "12"
+      },
+      "createdAtUtc": "2026-11-01T14:40:49.567176+00:00"
+    },
+    {
+      "key": "sfx_forge_roll_bad",
+      "variant": 3,
+      "parameters": {
+        "text": "comic ominous little cartoon sting, soft hammer tap then a descending wobbly bassoon-like toot and a tiny puff of smoke, spooky but cute and funny, candy world, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.8s, then soft decay. Crisper take.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_roll_bad_03.mp3",
+      "bytes": 18433,
+      "sha256": "c00e05baa27be716ffdd99465a92231ded02a3fd073504873f7caca7e16d07cc",
+      "response": {
+        "character-cost": "12"
+      },
+      "createdAtUtc": "2026-11-01T14:40:51.424348+00:00"
+    },
+    {
+      "key": "sfx_forge_lv_up",
+      "variant": 1,
+      "parameters": {
+        "text": "quick ascending three-note crystal arpeggio with a soft candy pop at the top and short glitter tail, level up, bright and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_lv_up_01.mp3",
+      "bytes": 13835,
+      "sha256": "22ed63d0a365314ecd20f40368b670500bf26b28f134e491a2ffab0d5dae20c6",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:40:52.089767+00:00"
+    },
+    {
+      "key": "sfx_forge_lv_up",
+      "variant": 2,
+      "parameters": {
+        "text": "quick ascending three-note crystal arpeggio with a soft candy pop at the top and short glitter tail, level up, bright and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_lv_up_02.mp3",
+      "bytes": 13835,
+      "sha256": "693eea6a5acec796379ad57c155d33f6bdbcfaf957127181db882df8e98a1d76",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:40:53.810545+00:00"
+    },
+    {
+      "key": "sfx_forge_lv_up",
+      "variant": 3,
+      "parameters": {
+        "text": "quick ascending three-note crystal arpeggio with a soft candy pop at the top and short glitter tail, level up, bright and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_lv_up_03.mp3",
+      "bytes": 13835,
+      "sha256": "5d072f9a2b0fc0d9e6b40b4a3b7720362e06cce935b212853de1ec0c65356a2f",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:40:54.140404+00:00"
+    },
+    {
+      "key": "sfx_forge_remove_paid",
+      "variant": 1,
+      "parameters": {
+        "text": "small spoon scoop pulling something out, soft bubbly pop, then two tiny coins clinking away, gentle and tidy, candy kitchen, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_remove_paid_01.mp3",
+      "bytes": 13835,
+      "sha256": "594ca21b4b661e2a15e4088d0fa462d3e89056e884914499def5ac73a75774bc",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:40:56.097613+00:00"
+    },
+    {
+      "key": "sfx_forge_remove_paid",
+      "variant": 2,
+      "parameters": {
+        "text": "small spoon scoop pulling something out, soft bubbly pop, then two tiny coins clinking away, gentle and tidy, candy kitchen, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_remove_paid_02.mp3",
+      "bytes": 13835,
+      "sha256": "c57b9ba084cf604616606861246a034f843cadfd1d6fc5022ba7a00701a5557c",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:40:56.240929+00:00"
+    },
+    {
+      "key": "sfx_forge_remove_paid",
+      "variant": 3,
+      "parameters": {
+        "text": "small spoon scoop pulling something out, soft bubbly pop, then two tiny coins clinking away, gentle and tidy, candy kitchen, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_forge_remove_paid_03.mp3",
+      "bytes": 13835,
+      "sha256": "3cc09f15875da9828d2929e142fe070296d1a4adf1879ab9258f26e253d18f2e",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:40:58.913265+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_mythic",
+      "variant": 1,
+      "parameters": {
+        "text": "magical rarity reveal fanfare, short warm brass flourish with shimmering harp glissando and deep pink-purple crystal chord, sparkles, triumphant but cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.3s, then soft decay.",
+        "duration_seconds": 1.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_mythic_01.mp3",
+      "bytes": 26792,
+      "sha256": "8edf5f819a70712c73074743f18ad126dc6e70cbb720cd5afcf3e7c517792bfb",
+      "response": {
+        "character-cost": "18"
+      },
+      "createdAtUtc": "2026-11-01T14:40:59.327515+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_mythic",
+      "variant": 2,
+      "parameters": {
+        "text": "magical rarity reveal fanfare, short warm brass flourish with shimmering harp glissando and deep pink-purple crystal chord, sparkles, triumphant but cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.3s, then soft decay. Rounder take.",
+        "duration_seconds": 1.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_mythic_02.mp3",
+      "bytes": 26792,
+      "sha256": "f1313c2e70c23b0389ddf458a2dfbc2db8a7b19df23ab3982f0d91b82fbe051e",
+      "response": {
+        "character-cost": "18"
+      },
+      "createdAtUtc": "2026-11-01T14:41:01.205934+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_mythic",
+      "variant": 3,
+      "parameters": {
+        "text": "magical rarity reveal fanfare, short warm brass flourish with shimmering harp glissando and deep pink-purple crystal chord, sparkles, triumphant but cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.3s, then soft decay. Crisper take.",
+        "duration_seconds": 1.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_mythic_03.mp3",
+      "bytes": 26792,
+      "sha256": "667bf3c4f629eb700a0f48c26512b0204bbd347b946c08bf83edce1d7ecc7a82",
+      "response": {
+        "character-cost": "18"
+      },
+      "createdAtUtc": "2026-11-01T14:41:01.551037+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_ancient",
+      "variant": 1,
+      "parameters": {
+        "text": "ancient treasure rarity reveal, low soft gong swell then golden bells and a bold short brass fanfare, dusty sparkle, grand and mysterious, cute fantasy game, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.5s, then soft decay.",
+        "duration_seconds": 1.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_ancient_01.mp3",
+      "bytes": 29300,
+      "sha256": "890ffc8af72a1cb09b711c64d4a6c69571f65e8094f5ddccc1ede00fb5fa1863",
+      "response": {
+        "character-cost": "20"
+      },
+      "createdAtUtc": "2026-11-01T14:41:03.509604+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_ancient",
+      "variant": 2,
+      "parameters": {
+        "text": "ancient treasure rarity reveal, low soft gong swell then golden bells and a bold short brass fanfare, dusty sparkle, grand and mysterious, cute fantasy game, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.5s, then soft decay. Rounder take.",
+        "duration_seconds": 1.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_ancient_02.mp3",
+      "bytes": 29300,
+      "sha256": "2066aaf5e716541f9f6f7a6786d9a3e18fdc551011a7a0a7c9bdd8a74a9a6b66",
+      "response": {
+        "character-cost": "20"
+      },
+      "createdAtUtc": "2026-11-01T14:41:05.884111+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_ancient",
+      "variant": 3,
+      "parameters": {
+        "text": "ancient treasure rarity reveal, low soft gong swell then golden bells and a bold short brass fanfare, dusty sparkle, grand and mysterious, cute fantasy game, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.5s, then soft decay. Crisper take.",
+        "duration_seconds": 1.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_ancient_03.mp3",
+      "bytes": 29300,
+      "sha256": "72d3f2ddd5218af3d0d59ff8df8bf190e298b019457c9aa7686d4d421ebba694",
+      "response": {
+        "character-cost": "20"
+      },
+      "createdAtUtc": "2026-11-01T14:41:05.950974+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_divine",
+      "variant": 1,
+      "parameters": {
+        "text": "divine heavenly rarity reveal, rising airy shimmer into a radiant major chord of choir-like synth pad (no words) with bright bells and a big sparkling fanfare finish, epic but sweet candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.8s, then soft decay.",
+        "duration_seconds": 2.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_divine_01.mp3",
+      "bytes": 34315,
+      "sha256": "e3c8f9c11cfbe6cb8c37baa23779620ad87d3a0ca5a05705e9f396cada7ceb72",
+      "response": {
+        "character-cost": "23"
+      },
+      "createdAtUtc": "2026-11-01T14:41:08.143694+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_divine",
+      "variant": 2,
+      "parameters": {
+        "text": "divine heavenly rarity reveal, rising airy shimmer into a radiant major chord of choir-like synth pad (no words) with bright bells and a big sparkling fanfare finish, epic but sweet candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.8s, then soft decay. Rounder take.",
+        "duration_seconds": 2.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_divine_02.mp3",
+      "bytes": 34315,
+      "sha256": "f0117fa2f0eec32fb46cbffdaf8677264b835b4951e6416a89d9883cc0da6be3",
+      "response": {
+        "character-cost": "23"
+      },
+      "createdAtUtc": "2026-11-01T14:41:08.495153+00:00"
+    },
+    {
+      "key": "sfx_merge_rarity_divine",
+      "variant": 3,
+      "parameters": {
+        "text": "divine heavenly rarity reveal, rising airy shimmer into a radiant major chord of choir-like synth pad (no words) with bright bells and a big sparkling fanfare finish, epic but sweet candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.8s, then soft decay. Crisper take.",
+        "duration_seconds": 2.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_merge_rarity_divine_03.mp3",
+      "bytes": 34315,
+      "sha256": "8f6c719a0285e79ffc7b117097e8e4e08ae2036dc3e4e9cd1584805ea56cd6fa",
+      "response": {
+        "character-cost": "23"
+      },
+      "createdAtUtc": "2026-11-01T14:41:10.490610+00:00"
+    },
+    {
+      "key": "sfx_relic_synergy",
+      "variant": 1,
+      "parameters": {
+        "text": "two magical charms clicking together then a resonant linked chime and a swirling sparkle burst, combo unlocked, satisfying, candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.9s, then soft decay.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_relic_synergy_01.mp3",
+      "bytes": 20105,
+      "sha256": "bf63e428d98545e62408403375d5ee308ee08c614994c430ded014dcf35ab22d",
+      "response": {
+        "character-cost": "13"
+      },
+      "createdAtUtc": "2026-11-01T14:41:11.734671+00:00"
+    },
+    {
+      "key": "sfx_relic_synergy",
+      "variant": 2,
+      "parameters": {
+        "text": "two magical charms clicking together then a resonant linked chime and a swirling sparkle burst, combo unlocked, satisfying, candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.9s, then soft decay. Rounder take.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_relic_synergy_02.mp3",
+      "bytes": 20105,
+      "sha256": "f1f486774180b9288f1f5c5576b3981edded03a2fcf11a6d4b71daab04c9f619",
+      "response": {
+        "character-cost": "13"
+      },
+      "createdAtUtc": "2026-11-01T14:41:12.527248+00:00"
+    },
+    {
+      "key": "sfx_relic_synergy",
+      "variant": 3,
+      "parameters": {
+        "text": "two magical charms clicking together then a resonant linked chime and a swirling sparkle burst, combo unlocked, satisfying, candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.9s, then soft decay. Crisper take.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_relic_synergy_03.mp3",
+      "bytes": 20105,
+      "sha256": "57d35b205ddd4c541e9a2f6b7093239461cb2f84c21cc4d694da36b2958d8844",
+      "response": {
+        "character-cost": "13"
+      },
+      "createdAtUtc": "2026-11-01T14:41:13.745895+00:00"
+    },
+    {
+      "key": "sfx_st_burn",
+      "variant": 1,
+      "parameters": {
+        "text": "tiny soft fire ignite whoosh, small candle flame puff, short and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_burn_01.mp3",
+      "bytes": 9238,
+      "sha256": "d0e4f95802df0bc45c255566baadb3d58096d36e3a5a764d1d6134712ba6a89e",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:14.401225+00:00"
+    },
+    {
+      "key": "sfx_st_burn",
+      "variant": 2,
+      "parameters": {
+        "text": "tiny soft fire ignite whoosh, small candle flame puff, short and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay. Rounder take.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_burn_02.mp3",
+      "bytes": 9238,
+      "sha256": "e8abdf841034e24fc88de158126bcdf44077ee94d788cb232606e68cff521adf",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:15.978697+00:00"
+    },
+    {
+      "key": "sfx_st_burn",
+      "variant": 3,
+      "parameters": {
+        "text": "tiny soft fire ignite whoosh, small candle flame puff, short and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay. Crisper take.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_burn_03.mp3",
+      "bytes": 9238,
+      "sha256": "3cc6a8f3bcb99a989171b0baa6fdf227dc43a9c31198daf7dd3e2c42587204f3",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:16.394937+00:00"
+    },
+    {
+      "key": "sfx_st_chill",
+      "variant": 1,
+      "parameters": {
+        "text": "tiny frosty sparkle tinkle, light icy breath, short and gentle, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_chill_01.mp3",
+      "bytes": 9238,
+      "sha256": "e11ab35efedf5964a20ba87d323f6773059f0a8e293822d52e708f83846c93d8",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:17.730904+00:00"
+    },
+    {
+      "key": "sfx_st_chill",
+      "variant": 2,
+      "parameters": {
+        "text": "tiny frosty sparkle tinkle, light icy breath, short and gentle, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay. Rounder take.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_chill_02.mp3",
+      "bytes": 9238,
+      "sha256": "6af42aa7b561913293335500b8e5437770f58dcbfc534fa2e98be1f51d7a1d87",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:19.799820+00:00"
+    },
+    {
+      "key": "sfx_st_chill",
+      "variant": 3,
+      "parameters": {
+        "text": "tiny frosty sparkle tinkle, light icy breath, short and gentle, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay. Crisper take.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_chill_03.mp3",
+      "bytes": 9238,
+      "sha256": "f0af13b93abc8dd78ca61ff45090404beb2dcf5022799ba181d4dce22d20ee61",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:21.001597+00:00"
+    },
+    {
+      "key": "sfx_st_freeze",
+      "variant": 1,
+      "parameters": {
+        "text": "quick crisp ice crackle locking solid with a small glassy clink, cute candy ice, short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.35s, then soft decay.",
+        "duration_seconds": 0.6499999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_freeze_01.mp3",
+      "bytes": 11327,
+      "sha256": "c4e18c5df7de6043f6fa212f615ed9c987a8df8c4f091349c943ff81de27677f",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:22.252347+00:00"
+    },
+    {
+      "key": "sfx_st_freeze",
+      "variant": 2,
+      "parameters": {
+        "text": "quick crisp ice crackle locking solid with a small glassy clink, cute candy ice, short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.35s, then soft decay. Rounder take.",
+        "duration_seconds": 0.6499999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_freeze_02.mp3",
+      "bytes": 11327,
+      "sha256": "024621b6c85ef6c8bbd500a3273ed73b5aa67490826a0dd8b97dc210248d6b60",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:23.950387+00:00"
+    },
+    {
+      "key": "sfx_st_freeze",
+      "variant": 3,
+      "parameters": {
+        "text": "quick crisp ice crackle locking solid with a small glassy clink, cute candy ice, short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.35s, then soft decay. Crisper take.",
+        "duration_seconds": 0.6499999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_freeze_03.mp3",
+      "bytes": 11327,
+      "sha256": "70e21842085dfb9d4fcc8d799aea6c7a4e795c39ba390f129907df2deda602f1",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:24.644058+00:00"
+    },
+    {
+      "key": "sfx_st_shock",
+      "variant": 1,
+      "parameters": {
+        "text": "small electric crackle zap, tiny static sparks buzzing briefly, soft not harsh, short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_shock_01.mp3",
+      "bytes": 9238,
+      "sha256": "c81968c89c763af3f864ecc3b7d6a4e0e43ef1d83a3f2c61a4c64d06d2e482f4",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:26.078659+00:00"
+    },
+    {
+      "key": "sfx_st_shock",
+      "variant": 2,
+      "parameters": {
+        "text": "small electric crackle zap, tiny static sparks buzzing briefly, soft not harsh, short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay. Rounder take.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_shock_02.mp3",
+      "bytes": 9238,
+      "sha256": "e32d9e074c5e553f1968af1c8e5966c54a24afb4354f863a37933f49d30e2637",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:26.953490+00:00"
+    },
+    {
+      "key": "sfx_st_stun",
+      "variant": 1,
+      "parameters": {
+        "text": "cartoon dizzy stun, soft bonk then tiny circling bird tweets as short twinkle, comic and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.35s, then soft decay.",
+        "duration_seconds": 0.6499999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_stun_01.mp3",
+      "bytes": 11327,
+      "sha256": "5f76eb085df947131c1c7adf65f0141601741d8a472b6d40962812d35b306e65",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:29.125814+00:00"
+    },
+    {
+      "key": "sfx_st_shock",
+      "variant": 3,
+      "parameters": {
+        "text": "small electric crackle zap, tiny static sparks buzzing briefly, soft not harsh, short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.25s, then soft decay. Crisper take.",
+        "duration_seconds": 0.55,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_shock_03.mp3",
+      "bytes": 9238,
+      "sha256": "853ecdb7a1c2e254abe83d671cf817c85e32b7255d0b7ec96dcb7ba5e4a437af",
+      "response": {
+        "character-cost": "6"
+      },
+      "createdAtUtc": "2026-11-01T14:41:29.169407+00:00"
+    },
+    {
+      "key": "sfx_st_stun",
+      "variant": 2,
+      "parameters": {
+        "text": "cartoon dizzy stun, soft bonk then tiny circling bird tweets as short twinkle, comic and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.35s, then soft decay. Rounder take.",
+        "duration_seconds": 0.6499999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_stun_02.mp3",
+      "bytes": 11327,
+      "sha256": "ea63dcfbd5cfe52c4cb4876bc983c678c1aee1cdf79a17caf8cec9f3f6d940f9",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:31.356039+00:00"
+    },
+    {
+      "key": "sfx_st_stun",
+      "variant": 3,
+      "parameters": {
+        "text": "cartoon dizzy stun, soft bonk then tiny circling bird tweets as short twinkle, comic and cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.35s, then soft decay. Crisper take.",
+        "duration_seconds": 0.6499999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_stun_03.mp3",
+      "bytes": 11327,
+      "sha256": "06ef2cf91b1824f284414d9193cd685e084928865f68b462931d5d4b982ca720",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:31.613665+00:00"
+    },
+    {
+      "key": "sfx_st_mark",
+      "variant": 1,
+      "parameters": {
+        "text": "small target lock-on ping, soft high bell ding with a tiny whoosh, clear and short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.3s, then soft decay.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_mark_01.mp3",
+      "bytes": 10492,
+      "sha256": "acec5c1da7f9d18502d36d62f1875a4b6195a54919ba1f35420db027c65686a6",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:33.433067+00:00"
+    },
+    {
+      "key": "sfx_st_mark",
+      "variant": 2,
+      "parameters": {
+        "text": "small target lock-on ping, soft high bell ding with a tiny whoosh, clear and short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.3s, then soft decay. Rounder take.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_mark_02.mp3",
+      "bytes": 10492,
+      "sha256": "5e365379673c2402f1d2eec0a457a1ea947111aeb584a4ac8e392d5f7e7ebeb6",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:33.721058+00:00"
+    },
+    {
+      "key": "sfx_st_mark",
+      "variant": 3,
+      "parameters": {
+        "text": "small target lock-on ping, soft high bell ding with a tiny whoosh, clear and short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.3s, then soft decay. Crisper take.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_mark_03.mp3",
+      "bytes": 10492,
+      "sha256": "7afb9587e414a6166a5349314befacd2605501e421ed7e6e242fe3860e189a00",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:35.706252+00:00"
+    },
+    {
+      "key": "sfx_st_sour",
+      "variant": 1,
+      "parameters": {
+        "text": "tiny sour juice splash with a fizzy bubbly pop, citrus squirt, cute and short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.3s, then soft decay.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_sour_01.mp3",
+      "bytes": 10492,
+      "sha256": "91cb68b9dd548bd929847fa47c43fc68c4b11b252dae451c7b3fa685cca2ab1e",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:35.792408+00:00"
+    },
+    {
+      "key": "sfx_st_sour",
+      "variant": 2,
+      "parameters": {
+        "text": "tiny sour juice splash with a fizzy bubbly pop, citrus squirt, cute and short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.3s, then soft decay. Rounder take.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_sour_02.mp3",
+      "bytes": 10492,
+      "sha256": "e1fd875fffc1fce813bcedc69519f8004aaf79c9887ef1533e8fef9e025e9365",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:38.107142+00:00"
+    },
+    {
+      "key": "sfx_st_sour",
+      "variant": 3,
+      "parameters": {
+        "text": "tiny sour juice splash with a fizzy bubbly pop, citrus squirt, cute and short, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.3s, then soft decay. Crisper take.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_sour_03.mp3",
+      "bytes": 10492,
+      "sha256": "2dae73470fad4fbb31c7567cb188ed6033c3c4db29a572f5b40687bc89cd4402",
+      "response": {
+        "character-cost": "7"
+      },
+      "createdAtUtc": "2026-11-01T14:41:38.278087+00:00"
+    },
+    {
+      "key": "sfx_st_cleanse",
+      "variant": 1,
+      "parameters": {
+        "text": "gentle purifying sparkle wash, soft airy whoosh upward with a clean bright chime, relief, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_cleanse_01.mp3",
+      "bytes": 13835,
+      "sha256": "2dd3f69a8320b5f0f592c94afb6a44112fb423185ec1c5a6b4a3e888c61966ab",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:40.321480+00:00"
+    },
+    {
+      "key": "sfx_st_cleanse",
+      "variant": 2,
+      "parameters": {
+        "text": "gentle purifying sparkle wash, soft airy whoosh upward with a clean bright chime, relief, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_cleanse_02.mp3",
+      "bytes": 13835,
+      "sha256": "ecbb321375999edd6eb47beb514bec85ef88f1d0f81675525e4724c5680c1a16",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:41.252403+00:00"
+    },
+    {
+      "key": "sfx_st_cleanse",
+      "variant": 3,
+      "parameters": {
+        "text": "gentle purifying sparkle wash, soft airy whoosh upward with a clean bright chime, relief, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_cleanse_03.mp3",
+      "bytes": 13835,
+      "sha256": "f48b4eedc2709639327e1a1f33a0d62f3d3074a7da0e6099810fcc6217574a62",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:42.698935+00:00"
+    },
+    {
+      "key": "sfx_st_barrier_break",
+      "variant": 1,
+      "parameters": {
+        "text": "candy glass bubble shield cracking and shattering into small sugary shards, crisp but soft, short tail, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_barrier_break_01.mp3",
+      "bytes": 13835,
+      "sha256": "d1b6b12acafc78089dd465662cab3d3cb688edca199d512fd5d8dad2f9670f28",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:43.624015+00:00"
+    },
+    {
+      "key": "sfx_st_barrier_break",
+      "variant": 2,
+      "parameters": {
+        "text": "candy glass bubble shield cracking and shattering into small sugary shards, crisp but soft, short tail, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_barrier_break_02.mp3",
+      "bytes": 13835,
+      "sha256": "52346fd5116240fa5af37ce8a2a907fcb36b2d0a024848f1dcd3d980da7a7f25",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:45.014413+00:00"
+    },
+    {
+      "key": "sfx_st_barrier_break",
+      "variant": 3,
+      "parameters": {
+        "text": "candy glass bubble shield cracking and shattering into small sugary shards, crisp but soft, short tail, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_st_barrier_break_03.mp3",
+      "bytes": 13835,
+      "sha256": "6b0d1087f2547f07d4a1412fff0f86d9c5fb34ca6f4e72b2fbdfcf67511e0d34",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:45.981267+00:00"
+    },
+    {
+      "key": "sfx_yz_evolve_f2",
+      "variant": 1,
+      "parameters": {
+        "text": "cute creature transformation, swirling leaves and rising magical shimmer building up, then a bright pop and sparkling chime, evolving, playful fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1s, then soft decay.",
+        "duration_seconds": 1.3,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_evolve_f2_01.mp3",
+      "bytes": 21358,
+      "sha256": "5dcf3e9238353646880934f1f1c8bed887a76c05f0d9625dfb7d6c2d4298d69f",
+      "response": {
+        "character-cost": "14"
+      },
+      "createdAtUtc": "2026-11-01T14:41:47.235937+00:00"
+    },
+    {
+      "key": "sfx_yz_evolve_f2",
+      "variant": 2,
+      "parameters": {
+        "text": "cute creature transformation, swirling leaves and rising magical shimmer building up, then a bright pop and sparkling chime, evolving, playful fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1s, then soft decay. Rounder take.",
+        "duration_seconds": 1.3,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_evolve_f2_02.mp3",
+      "bytes": 21358,
+      "sha256": "52a1a9387da316f4f767cb847c7a81f718e5b77031332deff9972f19f3d9bd1b",
+      "response": {
+        "character-cost": "14"
+      },
+      "createdAtUtc": "2026-11-01T14:41:48.155789+00:00"
+    },
+    {
+      "key": "sfx_yz_evolve_f2",
+      "variant": 3,
+      "parameters": {
+        "text": "cute creature transformation, swirling leaves and rising magical shimmer building up, then a bright pop and sparkling chime, evolving, playful fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1s, then soft decay. Crisper take.",
+        "duration_seconds": 1.3,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_evolve_f2_03.mp3",
+      "bytes": 21358,
+      "sha256": "5cca1f8a6288a711d5ce2109e5f7f8df5f56331770e71b476cb9dfe4b94ad5ab",
+      "response": {
+        "character-cost": "14"
+      },
+      "createdAtUtc": "2026-11-01T14:41:49.408580+00:00"
+    },
+    {
+      "key": "sfx_yz_evolve_f3",
+      "variant": 1,
+      "parameters": {
+        "text": "powerful cute creature transformation, longer rising magical swirl with deep whoosh and building sparkles, then a big radiant burst with heroic short fanfare chord, final evolution, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.4s, then soft decay.",
+        "duration_seconds": 1.7,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_evolve_f3_01.mp3",
+      "bytes": 28046,
+      "sha256": "a44073afe9a73af46143fdca9cefdbe64d8195b10f6f0ca698b0c89b0477bd5a",
+      "response": {
+        "character-cost": "19"
+      },
+      "createdAtUtc": "2026-11-01T14:41:50.446193+00:00"
+    },
+    {
+      "key": "sfx_yz_evolve_f3",
+      "variant": 2,
+      "parameters": {
+        "text": "powerful cute creature transformation, longer rising magical swirl with deep whoosh and building sparkles, then a big radiant burst with heroic short fanfare chord, final evolution, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.4s, then soft decay. Rounder take.",
+        "duration_seconds": 1.7,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_evolve_f3_02.mp3",
+      "bytes": 28046,
+      "sha256": "03d6ffe65e76b1c1f284257909d99972bcc086770e12da8a4075627993e2e7b6",
+      "response": {
+        "character-cost": "19"
+      },
+      "createdAtUtc": "2026-11-01T14:41:51.713052+00:00"
+    },
+    {
+      "key": "sfx_yz_evolve_f3",
+      "variant": 3,
+      "parameters": {
+        "text": "powerful cute creature transformation, longer rising magical swirl with deep whoosh and building sparkles, then a big radiant burst with heroic short fanfare chord, final evolution, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.4s, then soft decay. Crisper take.",
+        "duration_seconds": 1.7,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_evolve_f3_03.mp3",
+      "bytes": 28046,
+      "sha256": "f455d7a88dca78e2c4b485d641695eab0820e7670191fd747aad63d19dd96fb8",
+      "response": {
+        "character-cost": "19"
+      },
+      "createdAtUtc": "2026-11-01T14:41:52.655284+00:00"
+    },
+    {
+      "key": "sfx_yz_aftershock",
+      "variant": 2,
+      "parameters": {
+        "text": "soft heavy ground rumble aftershock, thick fruit thump into the ground with rolling low tremor and pebbles, punchy but cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_aftershock_02.mp3",
+      "bytes": 15089,
+      "sha256": "d959a4e7f59975bf9967edbb179fe315f28306b3c304f585d8eea9067f6561c3",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:41:54.614001+00:00"
+    },
+    {
+      "key": "sfx_yz_aftershock",
+      "variant": 1,
+      "parameters": {
+        "text": "soft heavy ground rumble aftershock, thick fruit thump into the ground with rolling low tremor and pebbles, punchy but cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_aftershock_01.mp3",
+      "bytes": 15089,
+      "sha256": "78d44d33aa120d13409d126a84adb0f858a733618efce92640c835592b22c1fa",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:41:55.360618+00:00"
+    },
+    {
+      "key": "sfx_yz_aftershock",
+      "variant": 3,
+      "parameters": {
+        "text": "soft heavy ground rumble aftershock, thick fruit thump into the ground with rolling low tremor and pebbles, punchy but cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_aftershock_03.mp3",
+      "bytes": 15089,
+      "sha256": "ae37609245a662137a15c42a420f4808b1a4a53c765ce01c10f230050331b017",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:41:56.572024+00:00"
+    },
+    {
+      "key": "sfx_yz_triple_arrow",
+      "variant": 1,
+      "parameters": {
+        "text": "three quick bow arrows released in a fan almost together, sharp twangs and whooshing seed arrows, crisp, cute fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_triple_arrow_01.mp3",
+      "bytes": 13835,
+      "sha256": "81d8f69d03ac7419f263f606edb3fdf02320610e0f3c725b516d6973b1dca7d5",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:41:57.976264+00:00"
+    },
+    {
+      "key": "sfx_yz_triple_arrow",
+      "variant": 3,
+      "parameters": {
+        "text": "three quick bow arrows released in a fan almost together, sharp twangs and whooshing seed arrows, crisp, cute fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_triple_arrow_03.mp3",
+      "bytes": 13835,
+      "sha256": "8b367a4af11cdc199bea74e68d9463d363405ef569e4a72f7c4c1f91119cf769",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:42:00.272674+00:00"
+    },
+    {
+      "key": "sfx_yz_triple_arrow",
+      "variant": 2,
+      "parameters": {
+        "text": "three quick bow arrows released in a fan almost together, sharp twangs and whooshing seed arrows, crisp, cute fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_triple_arrow_02.mp3",
+      "bytes": 13835,
+      "sha256": "6257377f299dd23d5f44a48055b24b9cdcfe4165e3361faa7a60316421b96cb5",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:42:01.023802+00:00"
+    },
+    {
+      "key": "sfx_yz_storm_final",
+      "variant": 1,
+      "parameters": {
+        "text": "big magical juice explosion, swirling sigil charge then a bursting splash boom with fizzy sparkles raining down, grand finale, cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.9s, then soft decay.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_storm_final_01.mp3",
+      "bytes": 20105,
+      "sha256": "07ef7cd93ee76faec1165df1c5a5adc98010b4f060b4c21c5d1ee653a79627ec",
+      "response": {
+        "character-cost": "13"
+      },
+      "createdAtUtc": "2026-11-01T14:42:02.468998+00:00"
+    },
+    {
+      "key": "sfx_yz_storm_final",
+      "variant": 2,
+      "parameters": {
+        "text": "big magical juice explosion, swirling sigil charge then a bursting splash boom with fizzy sparkles raining down, grand finale, cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.9s, then soft decay. Rounder take.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_storm_final_02.mp3",
+      "bytes": 20105,
+      "sha256": "2818e88566fe5d1770b2e47865c990d201dacb9ec63c7e406102c6aeafbb851a",
+      "response": {
+        "character-cost": "13"
+      },
+      "createdAtUtc": "2026-11-01T14:42:03.329919+00:00"
+    },
+    {
+      "key": "sfx_taro_deploy",
+      "variant": 1,
+      "parameters": {
+        "text": "small magical turret landing on ground with a soft thunk, then electric hum powering on and a tiny spark ping, cute candy gadget, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_taro_deploy_01.mp3",
+      "bytes": 13835,
+      "sha256": "1a5ae066cdeab38e44fbdb1769263f2f6d28dceea60619d25f7e2fa9351d5453",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:42:05.409805+00:00"
+    },
+    {
+      "key": "sfx_yz_storm_final",
+      "variant": 3,
+      "parameters": {
+        "text": "big magical juice explosion, swirling sigil charge then a bursting splash boom with fizzy sparkles raining down, grand finale, cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.9s, then soft decay. Crisper take.",
+        "duration_seconds": 1.2,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_yz_storm_final_03.mp3",
+      "bytes": 20105,
+      "sha256": "559052d84188b0d18d58c98b3a394919d7a1bb8ce266f6bf1bf9b7fbc8ec0d41",
+      "response": {
+        "character-cost": "13"
+      },
+      "createdAtUtc": "2026-11-01T14:42:06.764479+00:00"
+    },
+    {
+      "key": "sfx_taro_deploy",
+      "variant": 2,
+      "parameters": {
+        "text": "small magical turret landing on ground with a soft thunk, then electric hum powering on and a tiny spark ping, cute candy gadget, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_taro_deploy_02.mp3",
+      "bytes": 13835,
+      "sha256": "2d51a7679747099c9f6948dd0b2c12d53ea446bf652daba0f0f5bf88fe595274",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:42:07.442814+00:00"
+    },
+    {
+      "key": "sfx_taro_extra_sentry",
+      "variant": 1,
+      "parameters": {
+        "text": "second magical turret popping into place beside another, quick double thunk and a rising electric chime, upgrade added, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_taro_extra_sentry_01.mp3",
+      "bytes": 15089,
+      "sha256": "5bbb2b6caa589c14e6577b9f3cad8f9351e450d4a3e213503dbe764e3f45d1e6",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:42:09.786377+00:00"
+    },
+    {
+      "key": "sfx_taro_deploy",
+      "variant": 3,
+      "parameters": {
+        "text": "small magical turret landing on ground with a soft thunk, then electric hum powering on and a tiny spark ping, cute candy gadget, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.5s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_taro_deploy_03.mp3",
+      "bytes": 13835,
+      "sha256": "83aaccab19192b94942fa6cb9a4677b44eb2306d826ed3975c06195a891fb2a9",
+      "response": {
+        "character-cost": "9"
+      },
+      "createdAtUtc": "2026-11-01T14:42:10.303685+00:00"
+    },
+    {
+      "key": "sfx_taro_extra_sentry",
+      "variant": 2,
+      "parameters": {
+        "text": "second magical turret popping into place beside another, quick double thunk and a rising electric chime, upgrade added, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay. Rounder take.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_taro_extra_sentry_02.mp3",
+      "bytes": 15089,
+      "sha256": "a847bb1df9425791902c7ccbb6b2d7bc920373a85cc1c11d9885b1c22a671036",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:42:11.998032+00:00"
+    },
+    {
+      "key": "sfx_taro_extra_sentry",
+      "variant": 3,
+      "parameters": {
+        "text": "second magical turret popping into place beside another, quick double thunk and a rising electric chime, upgrade added, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.6s, then soft decay. Crisper take.",
+        "duration_seconds": 0.8999999999999999,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_taro_extra_sentry_03.mp3",
+      "bytes": 15089,
+      "sha256": "0bfde999703d83f9e90601a302b84c71f5b70ffd019b4bf9aef420d4b4e05b6d",
+      "response": {
+        "character-cost": "10"
+      },
+      "createdAtUtc": "2026-11-01T14:42:12.296787+00:00"
+    },
+    {
+      "key": "sfx_login_day30",
+      "variant": 1,
+      "parameters": {
+        "text": "big treasure chest unlocking with heavy latch click, lid creaks open, golden coins and gems burst out with grand sparkling fanfare, month reward celebration, cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.6s, then soft decay.",
+        "duration_seconds": 1.9000000000000001,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_login_day30_01.mp3",
+      "bytes": 30972,
+      "sha256": "6c9415d1e271a4af9bacccb58a720513145ca53535ea93b4a0ffd9519d435a3d",
+      "response": {
+        "character-cost": "21"
+      },
+      "createdAtUtc": "2026-11-01T14:42:14.346650+00:00"
+    },
+    {
+      "key": "sfx_login_day30",
+      "variant": 2,
+      "parameters": {
+        "text": "big treasure chest unlocking with heavy latch click, lid creaks open, golden coins and gems burst out with grand sparkling fanfare, month reward celebration, cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.6s, then soft decay. Rounder take.",
+        "duration_seconds": 1.9000000000000001,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_login_day30_02.mp3",
+      "bytes": 30972,
+      "sha256": "1123f3911529224dc528134df03640a4dab734f9c9e1d260c2561cdf05035d83",
+      "response": {
+        "character-cost": "21"
+      },
+      "createdAtUtc": "2026-11-01T14:42:15.209974+00:00"
+    },
+    {
+      "key": "sfx_login_day30",
+      "variant": 3,
+      "parameters": {
+        "text": "big treasure chest unlocking with heavy latch click, lid creaks open, golden coins and gems burst out with grand sparkling fanfare, month reward celebration, cute candy fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1.6s, then soft decay. Crisper take.",
+        "duration_seconds": 1.9000000000000001,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_login_day30_03.mp3",
+      "bytes": 30972,
+      "sha256": "56ee00a43b0421449d13cfb8a8e3fa6838fa19c58aa4a0e6663c5ec3e954a884",
+      "response": {
+        "character-cost": "21"
+      },
+      "createdAtUtc": "2026-11-01T14:42:16.682843+00:00"
+    },
+    {
+      "key": "sfx_dig_unlock",
+      "variant": 1,
+      "parameters": {
+        "text": "underground cave entrance opening, rumbling stone slide and pebbles, then a lantern lights up with warm chime and sparkles, new area unlocked, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1s, then soft decay.",
+        "duration_seconds": 1.3,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_unlock_01.mp3",
+      "bytes": 21358,
+      "sha256": "a302aefb92069296b488c2fe700eee1f1a80c708a39fae3be8809cf1ef2ea007",
+      "response": {
+        "character-cost": "14"
+      },
+      "createdAtUtc": "2026-11-01T14:42:17.274366+00:00"
+    },
+    {
+      "key": "sfx_dig_unlock",
+      "variant": 2,
+      "parameters": {
+        "text": "underground cave entrance opening, rumbling stone slide and pebbles, then a lantern lights up with warm chime and sparkles, new area unlocked, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1s, then soft decay. Rounder take.",
+        "duration_seconds": 1.3,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_unlock_02.mp3",
+      "bytes": 21358,
+      "sha256": "ed2cf645985616262ef7f5adb0a44fee5e9bcc22531b607e357976f261b5750f",
+      "response": {
+        "character-cost": "14"
+      },
+      "createdAtUtc": "2026-11-01T14:42:18.747526+00:00"
+    },
+    {
+      "key": "sfx_dig_unlock",
+      "variant": 3,
+      "parameters": {
+        "text": "underground cave entrance opening, rumbling stone slide and pebbles, then a lantern lights up with warm chime and sparkles, new area unlocked, cute, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 1s, then soft decay. Crisper take.",
+        "duration_seconds": 1.3,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_unlock_03.mp3",
+      "bytes": 21358,
+      "sha256": "ca2ce6664d4685db770087d8643567e775e8149f132593d6b83b5321e1222f63",
+      "response": {
+        "character-cost": "14"
+      },
+      "createdAtUtc": "2026-11-01T14:42:19.431565+00:00"
+    },
+    {
+      "key": "sfx_dig_ancient_locked",
+      "variant": 1,
+      "parameters": {
+        "text": "small locked treasure chest rattling, chain and padlock jiggle, short dull clunk, not opening, cute and comic, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.4s, then soft decay.",
+        "duration_seconds": 0.7,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_ancient_locked_01.mp3",
+      "bytes": 12163,
+      "sha256": "dfb054b810d37682eb8657795230f106445bbd2ed6ee44e35748c25a0a4dc036",
+      "response": {
+        "character-cost": "8"
+      },
+      "createdAtUtc": "2026-11-01T14:42:21.099154+00:00"
+    },
+    {
+      "key": "sfx_dig_ancient_locked",
+      "variant": 2,
+      "parameters": {
+        "text": "small locked treasure chest rattling, chain and padlock jiggle, short dull clunk, not opening, cute and comic, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.4s, then soft decay. Rounder take.",
+        "duration_seconds": 0.7,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_ancient_locked_02.mp3",
+      "bytes": 12163,
+      "sha256": "e8c137d57d9bce8224159c283a1c7b5de73577b1b67aff6b8fb378aa6ff70d89",
+      "response": {
+        "character-cost": "8"
+      },
+      "createdAtUtc": "2026-11-01T14:42:21.936785+00:00"
+    },
+    {
+      "key": "sfx_dig_ancient_locked",
+      "variant": 3,
+      "parameters": {
+        "text": "small locked treasure chest rattling, chain and padlock jiggle, short dull clunk, not opening, cute and comic, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.4s, then soft decay. Crisper take.",
+        "duration_seconds": 0.7,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_ancient_locked_03.mp3",
+      "bytes": 12163,
+      "sha256": "5be6ea4e9ca0e402fc4f512f6cb3a2d780fbc23ef32fd7ef59d5fb91501641d9",
+      "response": {
+        "character-cost": "8"
+      },
+      "createdAtUtc": "2026-11-01T14:42:23.496873+00:00"
+    },
+    {
+      "key": "sfx_dig_ancient_open",
+      "variant": 1,
+      "parameters": {
+        "text": "ancient padlock clicking open with a deep satisfying clunk, chains falling away, mysterious golden shimmer, cute fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.8s, then soft decay.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_ancient_open_01.mp3",
+      "bytes": 18433,
+      "sha256": "71ecbfef13e644c05ae24b18a29f68f306f0880794dc2d963c6a5c629238e4e1",
+      "response": {
+        "character-cost": "12"
+      },
+      "createdAtUtc": "2026-11-01T14:42:24.078950+00:00"
+    },
+    {
+      "key": "sfx_dig_ancient_open",
+      "variant": 2,
+      "parameters": {
+        "text": "ancient padlock clicking open with a deep satisfying clunk, chains falling away, mysterious golden shimmer, cute fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.8s, then soft decay. Rounder take.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_ancient_open_02.mp3",
+      "bytes": 18433,
+      "sha256": "c6505a34671656bce640ccc2fd137c5564b88684363bde93ca42cde17f2f1b75",
+      "response": {
+        "character-cost": "12"
+      },
+      "createdAtUtc": "2026-11-01T14:42:25.675717+00:00"
+    },
+    {
+      "key": "sfx_dig_ancient_open",
+      "variant": 3,
+      "parameters": {
+        "text": "ancient padlock clicking open with a deep satisfying clunk, chains falling away, mysterious golden shimmer, cute fantasy, no voice Original candy-fantasy SFX. No human sounds, lyrics, casino, imitation or music bed. Immediate attack, gentle highs, clear on phones. Gesture ends by 0.8s, then soft decay. Crisper take.",
+        "duration_seconds": 1.1,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "file": "donors/sfx_dig_ancient_open_03.mp3",
+      "bytes": 18433,
+      "sha256": "94547543d42a7a9fc4cadf38bee28163f6dafd783152caa3ff39c222dd911638",
+      "response": {
+        "character-cost": "12"
+      },
+      "createdAtUtc": "2026-11-01T14:42:26.510940+00:00"
+    }
+  ],
+  "selected": {
+    "sfx_forge_roll_good": {
+      "donor": "donors/sfx_forge_roll_good_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.1793,
+          "score": 0.10758
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.3595,
+          "score": 0.21573
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0035,
+          "above10kHzEnergyFraction": 0.8962,
+          "score": 0.53803
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 600,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.005,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_forge_roll_bad": {
+      "donor": "donors/sfx_forge_roll_bad_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0001,
+          "score": 0.00024
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.002,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.00033
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0007,
+          "score": 0.0004
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 800,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 2,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_forge_lv_up": {
+      "donor": "donors/sfx_forge_lv_up_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0027,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.0002
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9986,
+          "tailEnergyRatio": 0.002,
+          "above10kHzEnergyFraction": 0.0447,
+          "score": 0.031
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.986,
+          "tailEnergyRatio": 0.2091,
+          "above10kHzEnergyFraction": 0.0299,
+          "score": 0.05997
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 4,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_forge_remove_paid": {
+      "donor": "donors/sfx_forge_remove_paid_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 74.036,
+          "retainedEnergyFraction": 0.9997,
+          "tailEnergyRatio": 0.0002,
+          "above10kHzEnergyFraction": 0.3558,
+          "score": 0.21575
+        },
+        {
+          "variant": 2,
+          "onsetMs": 4.422,
+          "retainedEnergyFraction": 0.993,
+          "tailEnergyRatio": 0.0531,
+          "above10kHzEnergyFraction": 0.5988,
+          "score": 0.38038
+        },
+        {
+          "variant": 1,
+          "onsetMs": 13.9,
+          "retainedEnergyFraction": 0.8936,
+          "tailEnergyRatio": 0.102,
+          "above10kHzEnergyFraction": 0.4015,
+          "score": 0.56052
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 74.036,
+        "durationMs": 500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 20,
+        "threshold": 0.002,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_merge_rarity_mythic": {
+      "donor": "donors/sfx_merge_rarity_mythic_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0007,
+          "score": 0.00046
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0008,
+          "score": 0.00052
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0002,
+          "above10kHzEnergyFraction": 0.015,
+          "score": 0.00903
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 1300,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_merge_rarity_ancient": {
+      "donor": "donors/sfx_merge_rarity_ancient_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 1e-05
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 1e-05
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 1e-05
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 1500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_merge_rarity_divine": {
+      "donor": "donors/sfx_merge_rarity_divine_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0041,
+          "score": 0.00247
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0002,
+          "above10kHzEnergyFraction": 0.0218,
+          "score": 0.01308
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0002,
+          "above10kHzEnergyFraction": 0.044,
+          "score": 0.02644
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 1800,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 4,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_relic_synergy": {
+      "donor": "donors/sfx_relic_synergy_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 7.551,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0065,
+          "above10kHzEnergyFraction": 0.2039,
+          "score": 0.12268
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.2911,
+          "score": 0.17468
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.3532,
+          "score": 0.21194
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 7.551,
+        "durationMs": 900,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_st_burn": {
+      "donor": "donors/sfx_st_burn_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9998,
+          "tailEnergyRatio": 0.004,
+          "above10kHzEnergyFraction": 0.0014,
+          "score": 0.00127
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9998,
+          "tailEnergyRatio": 0.0016,
+          "above10kHzEnergyFraction": 0.0015,
+          "score": 0.00162
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0003,
+          "above10kHzEnergyFraction": 0.0023,
+          "score": 0.00172
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 250,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_st_chill": {
+      "donor": "donors/sfx_st_chill_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9879,
+          "tailEnergyRatio": 0.0868,
+          "above10kHzEnergyFraction": 0.4847,
+          "score": 0.32699
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.8898,
+          "tailEnergyRatio": 0.2241,
+          "above10kHzEnergyFraction": 0.457,
+          "score": 0.60487
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.7273,
+          "tailEnergyRatio": 3.7196,
+          "above10kHzEnergyFraction": 0.2599,
+          "score": 2.3619
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 250,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_st_freeze": {
+      "donor": "donors/sfx_st_freeze_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 5.51,
+          "retainedEnergyFraction": 0.9987,
+          "tailEnergyRatio": 0.0008,
+          "above10kHzEnergyFraction": 0.1563,
+          "score": 0.09775
+        },
+        {
+          "variant": 2,
+          "onsetMs": 13.356,
+          "retainedEnergyFraction": 0.999,
+          "tailEnergyRatio": 0.231,
+          "above10kHzEnergyFraction": 0.216,
+          "score": 0.13273
+        },
+        {
+          "variant": 1,
+          "onsetMs": 3.129,
+          "retainedEnergyFraction": 0.7984,
+          "tailEnergyRatio": 0.0068,
+          "above10kHzEnergyFraction": 0.2942,
+          "score": 0.78132
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 5.51,
+        "durationMs": 350,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 20,
+        "threshold": 0.002,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_st_shock": {
+      "donor": "donors/sfx_st_shock_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0003,
+          "above10kHzEnergyFraction": 0.1966,
+          "score": 0.11822
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.8672,
+          "tailEnergyRatio": 1.1078,
+          "above10kHzEnergyFraction": 0.3906,
+          "score": 0.97601
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.8415,
+          "tailEnergyRatio": 1.1411,
+          "above10kHzEnergyFraction": 0.2712,
+          "score": 0.99481
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 250,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_st_stun": {
+      "donor": "donors/sfx_st_stun_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9805,
+          "tailEnergyRatio": 0.0238,
+          "above10kHzEnergyFraction": 0.0528,
+          "score": 0.09027
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9973,
+          "tailEnergyRatio": 0.0572,
+          "above10kHzEnergyFraction": 0.2049,
+          "score": 0.1311
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9538,
+          "tailEnergyRatio": 0.0264,
+          "above10kHzEnergyFraction": 0.0119,
+          "score": 0.14583
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 350,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 2,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_st_mark": {
+      "donor": "donors/sfx_st_mark_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9993,
+          "tailEnergyRatio": 0.0353,
+          "above10kHzEnergyFraction": 0.1773,
+          "score": 0.10837
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9915,
+          "tailEnergyRatio": 0.044,
+          "above10kHzEnergyFraction": 0.415,
+          "score": 0.27458
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9984,
+          "tailEnergyRatio": 0.0015,
+          "above10kHzEnergyFraction": 0.8495,
+          "score": 0.51439
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 300,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 4,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_st_sour": {
+      "donor": "donors/sfx_st_sour_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9987,
+          "tailEnergyRatio": 0.0033,
+          "above10kHzEnergyFraction": 0.0204,
+          "score": 0.01621
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9913,
+          "tailEnergyRatio": 0.0963,
+          "above10kHzEnergyFraction": 0.0073,
+          "score": 0.03046
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9786,
+          "tailEnergyRatio": 0.0081,
+          "above10kHzEnergyFraction": 0.0103,
+          "score": 0.07052
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 300,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_st_cleanse": {
+      "donor": "donors/sfx_st_cleanse_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9994,
+          "tailEnergyRatio": 0.0086,
+          "above10kHzEnergyFraction": 0.1199,
+          "score": 0.07374
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9988,
+          "tailEnergyRatio": 0.0177,
+          "above10kHzEnergyFraction": 0.2925,
+          "score": 0.17903
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9025,
+          "tailEnergyRatio": 0.3224,
+          "above10kHzEnergyFraction": 0.1316,
+          "score": 0.40041
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 2,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_st_barrier_break": {
+      "donor": "donors/sfx_st_barrier_break_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.2024,
+          "score": 0.12156
+        },
+        {
+          "variant": 3,
+          "onsetMs": 14.785,
+          "retainedEnergyFraction": 0.9983,
+          "tailEnergyRatio": 0.2927,
+          "above10kHzEnergyFraction": 0.2021,
+          "score": 0.14361
+        },
+        {
+          "variant": 1,
+          "onsetMs": 4.331,
+          "retainedEnergyFraction": 0.9963,
+          "tailEnergyRatio": 0.0054,
+          "above10kHzEnergyFraction": 0.341,
+          "score": 0.21587
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 14.785,
+        "durationMs": 500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.005,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_yz_evolve_f2": {
+      "donor": "donors/sfx_yz_evolve_f2_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9997,
+          "tailEnergyRatio": 0.0086,
+          "above10kHzEnergyFraction": 0.14,
+          "score": 0.08474
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0016,
+          "above10kHzEnergyFraction": 0.2306,
+          "score": 0.13848
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9997,
+          "tailEnergyRatio": 0.0188,
+          "above10kHzEnergyFraction": 0.2563,
+          "score": 0.15473
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 1000,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 2,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_yz_evolve_f3": {
+      "donor": "donors/sfx_yz_evolve_f3_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0259,
+          "score": 0.01557
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0268,
+          "score": 0.01607
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.0313,
+          "score": 0.0188
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 1400,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 2,
+        "threshold": 0.08,
+        "attackMs": 0.25,
+        "releaseMs": 30
+      }
+    },
+    "sfx_yz_aftershock": {
+      "donor": "donors/sfx_yz_aftershock_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9989,
+          "tailEnergyRatio": 0.0086,
+          "above10kHzEnergyFraction": 0.0001,
+          "score": 0.00325
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9986,
+          "tailEnergyRatio": 0.0193,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.00421
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9972,
+          "tailEnergyRatio": 0.0158,
+          "above10kHzEnergyFraction": 0.0003,
+          "score": 0.00844
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 600,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_yz_triple_arrow": {
+      "donor": "donors/sfx_yz_triple_arrow_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0002,
+          "above10kHzEnergyFraction": 0.0054,
+          "score": 0.00331
+        },
+        {
+          "variant": 1,
+          "onsetMs": 68.073,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0095,
+          "score": 0.00723
+        },
+        {
+          "variant": 2,
+          "onsetMs": 48.254,
+          "retainedEnergyFraction": 0.9998,
+          "tailEnergyRatio": 0.0002,
+          "above10kHzEnergyFraction": 0.0253,
+          "score": 0.01672
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_yz_storm_final": {
+      "donor": "donors/sfx_yz_storm_final_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0003,
+          "above10kHzEnergyFraction": 0.0045,
+          "score": 0.00272
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9998,
+          "tailEnergyRatio": 0.0045,
+          "above10kHzEnergyFraction": 0.0096,
+          "score": 0.00634
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9994,
+          "tailEnergyRatio": 0.0036,
+          "above10kHzEnergyFraction": 0.0247,
+          "score": 0.01655
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 900,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_taro_deploy": {
+      "donor": "donors/sfx_taro_deploy_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0009,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.00012
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9996,
+          "tailEnergyRatio": 0.0059,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.00118
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9987,
+          "tailEnergyRatio": 0.0239,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.00387
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 500,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 20,
+        "threshold": 0.002,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_taro_extra_sentry": {
+      "donor": "donors/sfx_taro_extra_sentry_03.mp3",
+      "variant": 3,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0013,
+          "above10kHzEnergyFraction": 0.0,
+          "score": 0.00019
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0006,
+          "score": 0.00037
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0034,
+          "above10kHzEnergyFraction": 0.0009,
+          "score": 0.00097
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 600,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_login_day30": {
+      "donor": "donors/sfx_login_day30_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 3.583,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.0392,
+          "score": 0.02364
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.023,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.4288,
+          "score": 0.2573
+        },
+        {
+          "variant": 2,
+          "onsetMs": 57.8,
+          "retainedEnergyFraction": 0.9991,
+          "tailEnergyRatio": 0.0351,
+          "above10kHzEnergyFraction": 0.4931,
+          "score": 0.29967
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 3.583,
+        "durationMs": 1600,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_dig_unlock": {
+      "donor": "donors/sfx_dig_unlock_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.018,
+          "score": 0.01082
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0053,
+          "above10kHzEnergyFraction": 0.0752,
+          "score": 0.04552
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9999,
+          "tailEnergyRatio": 0.0021,
+          "above10kHzEnergyFraction": 0.3805,
+          "score": 0.22854
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 1000,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_dig_ancient_locked": {
+      "donor": "donors/sfx_dig_ancient_locked_02.mp3",
+      "variant": 2,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9933,
+          "tailEnergyRatio": 0.0057,
+          "above10kHzEnergyFraction": 0.0314,
+          "score": 0.03882
+        },
+        {
+          "variant": 1,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.9998,
+          "tailEnergyRatio": 0.0079,
+          "above10kHzEnergyFraction": 0.0824,
+          "score": 0.05012
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.977,
+          "tailEnergyRatio": 0.0029,
+          "above10kHzEnergyFraction": 0.4653,
+          "score": 0.34806
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 0.0,
+        "durationMs": 400,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    },
+    "sfx_dig_ancient_open": {
+      "donor": "donors/sfx_dig_ancient_open_01.mp3",
+      "variant": 1,
+      "selectionBasis": "signal quality: retained event energy, tail cutoff, restrained high frequency and least adequate compression; semantic listening remains owner review",
+      "candidates": [
+        {
+          "variant": 1,
+          "onsetMs": 74.717,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0,
+          "above10kHzEnergyFraction": 0.7981,
+          "score": 0.48045
+        },
+        {
+          "variant": 2,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 1.0,
+          "tailEnergyRatio": 0.0001,
+          "above10kHzEnergyFraction": 0.9357,
+          "score": 0.56142
+        },
+        {
+          "variant": 3,
+          "onsetMs": 0.0,
+          "retainedEnergyFraction": 0.8527,
+          "tailEnergyRatio": 0.506,
+          "above10kHzEnergyFraction": 0.4532,
+          "score": 0.81617
+        }
+      ],
+      "mechanicalProcessing": {
+        "cropStartMs": 74.717,
+        "durationMs": 800,
+        "tailFadeMs": 18.005,
+        "compressionRatio": 8,
+        "threshold": 0.02,
+        "attackMs": 0.01,
+        "releaseMs": 10
+      }
+    }
+  }
+}

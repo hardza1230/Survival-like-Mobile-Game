@@ -1,0 +1,15 @@
+{
+  "key": "sfx_forge_roll_good",
+  "provider": "ElevenLabs",
+  "parameters": {
+    "text": "cute candy forge, soft sugar hammer tap then a quick rising sparkle shimmer and a bright two-note glass chime, magical reward, playful, clean, no voice. Original sound design, no imitation of any existing game or artist, no human sounds, dry immediate attack, soft short tail, clear on mobile phone speakers.",
+    "duration_seconds": 0.9,
+    "prompt_influence": 0.6,
+    "model_id": "eleven_text_to_sound_v2",
+    "loop": false
+  },
+  "selectedDonor": "donors/sfx_forge_roll_good_01.mp3",
+  "response": {
+    "character-cost": "10"
+  }
+}

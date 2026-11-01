@@ -1,6 +1,6 @@
 # A06 — เสียงฟีเจอร์ใหม่ v8.0.85–v8.0.90 (Forge สุ่ม mod · Merge Mythic/Ancient/Divine · Relic Synergy · สถานะติดตัว · Yuzu วิวัฒนาการ · Taro Sentry · Login 30 วัน · Depths) · ใบสั่งเสียง ElevenLabs
 
-สถานะ: 🟡 รอเสียง · เขียน 1 พ.ย. 2026 · ส่งที่ `assets/incoming/audio_new_features/` → runtime `assets/audio/new_features/`
+สถานะ: 🟢 ส่งครบ 28 เสียงตามตาราง · รอผูกโค้ด · เขียน 1 พ.ย. 2026 · ส่งที่ `assets/incoming/audio_new_features/` → runtime `assets/audio/new_features/`
 ทำด้วย **ElevenLabs Sound Effects** โดยตรงตามคำสั่งเจ้าของ (ห้ามเสียงสร้างด้วยโค้ด/Runway แทน) · กติการ่วมดู `A00_README.md` ทุกข้อ · ทั้งหมดเป็น SFX mono · **ไม่มีเสียงพูด เนื้อร้อง หรือเสียงคน**
 
 ## ตอนนี้เป็นยังไง (ตรวจจากโค้ด v8.0.90)
@@ -73,7 +73,7 @@
 | `sfx_dig_ancient_locked` | `sfx_dig_ancient_locked.mp3` | 0.4 s | −20 LUFS-S | `small locked treasure chest rattling, chain and padlock jiggle, short dull clunk, not opening, cute and comic, no voice` | แตะแถว Ancient Chest ที่ยังล็อก (ชั้น < 15) ในหน้า Depths |
 | `sfx_dig_ancient_open` | `sfx_dig_ancient_open.mp3` | 0.8 s | −17 LUFS-S | `ancient padlock clicking open with a deep satisfying clunk, chains falling away, mysterious golden shimmer, cute fantasy, no voice` | ลงถึงชั้น 15 ครั้งแรก (`d.depth` ข้าม `DIG_ANCIENT_FLOOR`) |
 
-**รวม 29 key / 29 ไฟล์** (A 4 · B 3 · C 1 · D 9 · E 5 · F 2 · G 4)
+**รวม 28 key / 28 ไฟล์** (A 4 · B 3 · C 1 · D 9 · E 5 · F 2 · G 4)
 
 ไม่สั่งเพราะมีแล้ว: `sfx_event_relic_acquire` (เก็บ Relic), `sfx_poison_tick` / `sfx_bleed_tick` / `sfx_event_poison_apply` (พิษ/เลือดฮีโร่), `sfx_login_claim` (รับวันปกติ), `sfx_feature_unlock` (ปลดฟีเจอร์อื่น)
 
@@ -103,4 +103,4 @@
 - `QA_REPORT.json` (decode ได้, ไม่เงียบ, peak ≤ −1 dBTP, ความยาวตรง ±15%, mono 44.1 kHz)
 - `AUDITION.html` หรือรายการฟังเทียบชุด B/E (ไม่บังคับ)
 
-(ฝั่งเสียงกรอกตอนส่ง)
+ส่งแล้ว: 28 MP3 mono 44.1 kHz /128 kbps จาก ElevenLabs โดยตรง · 84 donor (3 แบบต่อ key) · MANIFEST/PROMPTS/QA/AUDITION อยู่ใน assets/incoming/audio_new_features/ · ทุกไฟล์ผ่าน decode, peak ≤ −1.2 dBTP, ความยาวตรงตาราง, เงียบหัว <5ms, LUFS-S ต่างจากเป้าไม่เกิน1.5LU · รอเจ้าของฟังบนมือถือและรอผูก runtime · แก้ยอดรวม29→28 ให้ตรงกับทุกแถวจริง

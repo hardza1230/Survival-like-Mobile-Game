@@ -10,7 +10,7 @@
 | `A04_STORY_MUSIC_STINGERS.md` | เพลงหน้าแรก, เพลงฉากเรื่อง 4 อารมณ์, เพลงร้าน/Lobby, เสียงคำการ์ตูน, ชื่อด่าน, ชนะ/แพ้ | 20 | 🟢 กลาง |
 | `A05_CHARACTER_VOICES.md` | เสียงพึมพำ (ไม่มีคำ) ของ Ruby, ฮีโร่ 5 ตัวใน Lobby, บอสตอนพูด | 31 | 🟡 ต่ำ–กลาง |
 | `A07_VOICE_ACTING.md` | เสียงพากย์ตัวละครแบบ PoE (ร่างรอเจ้าของดู): ออกแบบเสียง, ฉากเรื่อง, Ruby, บอส 2 เสียง, ฮีโร่ต่อสู้, ปลดล็อก/Lobby | ~317 | 📝 ร่าง |
-| `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 29 | 🟢 กลาง |
+| `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ส่งครบ · รอผูกโค้ด |
 
 ## กติการ่วม (ทุกใบ)
 - ทำด้วย **AI สร้างเสียง (เช่น ElevenLabs SFX/Music แบบ instrumental)** หรือ **สคริปต์สร้างเสียงด้วยโค้ด** (`scripts/gen_*_sfx.py`, jsfxr) — เลือกตามความเหมาะสมของแต่ละเสียง · **ห้ามเลียนแบบเพลง/ศิลปิน/เกมที่มีอยู่จริง** · ห้ามเสียงพูดเป็นคำ (ยกเว้นระบุ)
@@ -24,3 +24,7 @@
 ## Delivery v8.0.39
 
 139 original ElevenLabs SFX delivered: A01 39 / A02 32 / A03 20 / A04 non-music15 / A05 33. Actual expanded row counts override the approximate totals above. All direct ElevenLabs Sound Effects, mechanical postprocessing only. Six A04 music tracks pending Music Generation access. Source and final manifests in each incoming kit; phone listening remains owner review.
+
+## Delivery A06
+
+28 new-feature SFX delivered from84 direct ElevenLabs donors in assets/incoming/audio_new_features/. All table rows covered; the printed29 count was corrected to28. Source-only: runtime integration and owner phone listening pending. See MANIFEST/PROMPTS/QA_REPORT/AUDITION in that directory.
