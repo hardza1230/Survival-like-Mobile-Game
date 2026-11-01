@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.82 — Taro Arc loop cap (owner: Arc still too strong vs bosses)
+
+TARO_ARC_LOOP_MAX 2: boss focus per root = min(victims, 3) hits (100% + 2×60%·Overload), normal loop-back onto the last target ≤2, pre-path Static Arc loops ≤2. Late Arc vs boss ≈ 3 roots × 2.2 = 6.6 hit-units (v8.0.79: 19.2). Mob chains unchanged (new targets still jump up to victims). Tests: taro-chain (3 hits), taro-needle-arc (3), taro-feedback strip. Owner phone check pending.
+
+
 # Previous delivery: v8.0.81 — Merge in the Power theme (owner)
 
 buildMerge restyled in place (logic/tags unchanged): bg screen_gear_power_789; intro = pwCard summary with rarity_up icon + pw_hero_merge α.3; item cards/material cells 0x261e30; RESULT card 0x423039 with rarity border; keep-mod rows Power palette (selected gold 0xf4d9a1); section labels 11px cream + merge_keep icon. Next: Forge (owner finds Forge the most confusing system — redesign discussion pending). Owner phone review pending.

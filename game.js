@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.83';
+const GAME_VERSION = '8.0.84';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.84',date:'2026-11-01',title:'Boss defeat cutscenes',items:['After every boss falls, a new painted 3-scene cutscene plays: the curse crown shatters, the boss returns to their true form, and the flavor light shows the way onward','Replay them any time in the Story book']},
   {v:'8.0.83',date:'2026-11-01',title:'Simple Forge',items:['Forge is simpler: tap + Add a mod and pick 1 of 3 cards, or tap Upgrade ★ to raise a mod by one star','One currency: Twist Cream. Each craft on an item costs a little more (1, 1, 2, 2, 3…); Merging the item resets the price','No more Forge Points or Crystal Glaze: your Glaze became 3 Twist Cream each','Mod rows now open by rarity only; item level only limits stars (the button shows when the next star unlocks)']},
   {v:'8.0.82',date:'2026-11-01',title:'Arc bounces limited',items:['Taro Arc: each stream can loop back onto the same target at most 2 times (was up to 9), so lone bosses no longer melt']},
   {v:'8.0.81',date:'2026-11-01',title:'Merge in the Power style',items:['Merge uses the Power page background, plum cards with gold highlights and painted icons']},
@@ -1876,6 +1877,16 @@ const ASSET_IMAGES = {
   cs_boss_12_memory:'assets/art/story/boss45/cs_boss_12_memory.webp',
   cs_boss_13_memory:'assets/art/story/boss45/cs_boss_13_memory.webp',
   cs_boss_14_memory:'assets/art/story/boss45/cs_boss_14_memory.webp',
+  // v8.0.84 ใบ 61: ฉากหลังล้มบอส (Fall ทึบ / Freed alpha ต่อบอส · Onward ต่อบท) · โหลดตอนเล่นฉากแล้วลบ (story lazy)
+  cs61_b01_fall:'assets/art/story/boss61/cs61_b01_fall.webp', cs61_b01_freed:'assets/art/story/boss61/cs61_b01_freed.webp', cs61_b02_fall:'assets/art/story/boss61/cs61_b02_fall.webp', cs61_b02_freed:'assets/art/story/boss61/cs61_b02_freed.webp',
+  cs61_b03_fall:'assets/art/story/boss61/cs61_b03_fall.webp', cs61_b03_freed:'assets/art/story/boss61/cs61_b03_freed.webp', cs61_b04_fall:'assets/art/story/boss61/cs61_b04_fall.webp', cs61_b04_freed:'assets/art/story/boss61/cs61_b04_freed.webp',
+  cs61_b05_fall:'assets/art/story/boss61/cs61_b05_fall.webp', cs61_b05_freed:'assets/art/story/boss61/cs61_b05_freed.webp', cs61_b06_fall:'assets/art/story/boss61/cs61_b06_fall.webp', cs61_b06_freed:'assets/art/story/boss61/cs61_b06_freed.webp',
+  cs61_b07_fall:'assets/art/story/boss61/cs61_b07_fall.webp', cs61_b07_freed:'assets/art/story/boss61/cs61_b07_freed.webp', cs61_b08_fall:'assets/art/story/boss61/cs61_b08_fall.webp', cs61_b08_freed:'assets/art/story/boss61/cs61_b08_freed.webp',
+  cs61_b09_fall:'assets/art/story/boss61/cs61_b09_fall.webp', cs61_b09_freed:'assets/art/story/boss61/cs61_b09_freed.webp', cs61_b10_fall:'assets/art/story/boss61/cs61_b10_fall.webp', cs61_b10_freed:'assets/art/story/boss61/cs61_b10_freed.webp',
+  cs61_b11_fall:'assets/art/story/boss61/cs61_b11_fall.webp', cs61_b11_freed:'assets/art/story/boss61/cs61_b11_freed.webp', cs61_b12_fall:'assets/art/story/boss61/cs61_b12_fall.webp', cs61_b12_freed:'assets/art/story/boss61/cs61_b12_freed.webp',
+  cs61_b13_fall:'assets/art/story/boss61/cs61_b13_fall.webp', cs61_b13_freed:'assets/art/story/boss61/cs61_b13_freed.webp', cs61_b14_fall:'assets/art/story/boss61/cs61_b14_fall.webp', cs61_b14_freed:'assets/art/story/boss61/cs61_b14_freed.webp',
+  cs61_b15_fall:'assets/art/story/boss61/cs61_b15_fall.webp', cs61_b15_freed:'assets/art/story/boss61/cs61_b15_freed.webp', cs61_ch1_onward:'assets/art/story/boss61/cs61_ch1_onward.webp', cs61_ch2_onward:'assets/art/story/boss61/cs61_ch2_onward.webp',
+  cs61_ch3_onward:'assets/art/story/boss61/cs61_ch3_onward.webp',
   bv46_key:'assets/art/boss_victory/bv46_key.webp',
   sc44_background:'assets/art/stage_clear/sc44_background.webp',
   sc44_frame:'assets/art/stage_clear/sc44_frame.webp',
@@ -3071,6 +3082,8 @@ const ASSET_FX = {
   cs_fx_frost_shatter:{url:'assets/art/story/cs_fx_frost_shatter.webp',fw:384,fh:384,frames:6,rate:12,anchor:'center'},
   cs_fx_curse_smoke:{url:'assets/art/story/cs_fx_curse_smoke.webp',fw:384,fh:384,frames:6,rate:12,anchor:'center'},
   cs_fx_sparkle:{url:'assets/art/story/cs_fx_sparkle.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center',add:true},
+  vfx_cs61_crown_shatter:{url:'assets/art/story/boss61/vfx_cs61_crown_shatter.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},   // v8.0.84 ใบ 61
+  vfx_cs61_flavor_return:{url:'assets/art/story/boss61/vfx_cs61_flavor_return.webp',fw:256,fh:512,frames:8,rate:10,anchor:'center'},
   fx_mint_dash_shard:{url:'assets/art/mint_winter/fx_mint_dash_shard.webp',fw:128,fh:128,frames:4,rate:16,anchor:'center',loop:true},
   fx_mint_snowstorm:{url:'assets/art/mint_winter/fx_mint_snowstorm.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
   // v6.60.3 Build path art (assets/art/bp_fx · scripts/pack-build-path-art.py): luminance-alpha, NORMAL blend
@@ -7902,10 +7915,24 @@ const BOSS_MOTION_BEATS=[
     "He called the Crown salvation. Defeat finally made him face what his wish had cost."
   ]
 ];
+// v8.0.84 ใบ 61 (เจ้าของ): ฉากหลังล้มบอสจริง 3 ช็อต — Fall (ภาพทรุด + มงกุฎแตกที่จุด crown) · Freed (ความทรงจำเดิม + รูปจริงลอยขึ้น + คำสุดท้าย) · Onward (ทางเดินของบท + แสงรสชาติ + ไปไหนต่อ)
+function bossCutscene61(idx,story,beats){
+  const n=String(idx+1).padStart(2,'0'),fall='cs61_b'+n+'_fall',freed='cs61_b'+n+'_freed',on='cs61_ch'+(Math.floor(idx/5)+1)+'_onward',mem='cs_boss_'+String(idx).padStart(2,'0')+'_memory';
+  if(typeof ASSET_IMAGES==='undefined'||![fall,freed,on,mem].every(k=>ASSET_IMAGES[k])||typeof ASSET_FX==='undefined'||!ASSET_FX.vfx_cs61_crown_shatter||!ASSET_FX.vfx_cs61_flavor_return)return null;
+  const col=(typeof BOSS_SHOT!=='undefined'&&BOSS_SHOT[idx]?.c)||0x9265cf,cr=CS61_CROWN[idx]||[.5,.35],nx=typeof STAGES!=='undefined'&&STAGES[idx+1],nl=nx?'C'+((nx.chapter|0)+1)+'-'+(nx.chapterStage||((idx+1)%5+1))+' · '+nx.name:'';
+  const why=idx===14?'The First Tree waits. The Crown must come off.':((typeof STAGE_EPILOGUE!=='undefined'&&STAGE_EPILOGUE[idx]?.why)||story.goal),where=nl?why+'\nNext: '+nl:why;
+  return{title:story.title,tag:'A memory released after the battle',boss:true,noTitle:true,fast:true,v61:true,mote:idx===3?'snow':idx===2||idx===4?'ember':'spark',shots:[
+    {bg:[fall],fit:'portrait',zoom:[1,1.05],ms:2600,shake:[650,380,.008],flash:[640,col],pow:['CRACK!','KRAK!','SHATTER!','CRACK!'][idx%4],powAt:650,cap:'👑 '+story.title+'\n'+beats[0],L:[['vfx_cs61_crown_shatter',0,0,0,0,{bgPt:cr,bgW:.42,at:520,loop:false,fps:12}]]},
+    {bg:[mem],zoom:[1.06,1],ms:2900,flash:[420,0xffe2b3],pow:['POP!','POOF!','SHINE!','FREE!'][idx%4],cap:'“'+story.release+'”',L:[[freed,180,330,250,333,{at:300,fade:700,to:[180,300],ms:2400,bob:3}],['cs_fx_sparkle',180,250,170,170,{fps:10,at:500}]]},
+    {bg:[on],fit:'portrait',zoom:[1.04,1],ms:2700,cap:where,L:[['vfx_cs61_flavor_return',180,300,210,420,{at:250,loop:false,hold:true,fps:10}]]}
+  ]};
+}
 const BOSS_MOTION_TEX=['boss1','boss2','boss3','boss4','boss5_sovereign','boss6_rootmother','boss7_mycelium_behemoth','boss8_hornet_queen','boss9_chronobloom_orchid','boss10_true_rootmother','c3_boss1','c3_boss2','c3_boss3','c3_boss4','c3_boss5'];
+const CS61_CROWN=[[0.37,0.344],[0.515,0.31],[0.491,0.299],[0.505,0.297],[0.5,0.237],[0.515,0.297],[0.546,0.24],[0.528,0.219],[0.546,0.367],[0.52,0.227],[0.542,0.334],[0.584,0.263],[0.542,0.287],[0.583,0.391],[0.563,0.323]];   // v8.0.84 ใบ 61: จุดกลางมงกุฎในภาพ Fall (สัดส่วน กว้าง/สูง จาก MANIFEST crown)
 function bossMotionId(idx){return Number.isInteger(idx)&&idx>=0&&idx<15?'b'+String(idx).padStart(2,'0'):null;}
-function bossMotionScene(idx){
+function bossMotionScene(idx,legacy){
   const id=bossMotionId(idx),story=BOSS_STORIES[idx],beats=BOSS_MOTION_BEATS[idx];if(!id||!story||!beats)return null;
+  if(!legacy){const v=bossCutscene61(idx,story,beats);if(v)return v;}   // v8.0.84 ใบ 61 ครบ → 3 ช็อตใหม่ · ขาด/โหลดไม่ได้ = 2 ช็อตเดิม
   const bg=['cs_boss_'+String(idx).padStart(2,'0')+'_memory'],key=BOSS_MOTION_TEX[idx],mote=idx===3?'snow':idx===2||idx===4?'ember':'spark',actor=(x,y,size,o={})=>[key,x,y,size,size,{frames:[0,1],fps:3,...o}],ruby=['ruby_talk_worried',302,480,78,86,{bob:2}];
   // v8.0.73 เจ้าของ: เรื่องหลังชนะบอสยาว/ซ้ำ/งง → 2 ช็อต ไม่มีการ์ดชื่อ · ช็อต 1 = ชื่อบอส + อดีต · ช็อต 2 = คำสุดท้าย + ไปที่ไหนต่อ · ท่าเปลี่ยน 4 แบบตามบอส สีแฟลชตามกระสุนบอส
   const V=[{ax:118,rx:300,pan:[-18,12],z:[1,1.08],enter:[-90,0]},{ax:242,rx:66,pan:[18,-10],z:[1.08,1],enter:[0,-170]},{ax:180,rx:300,pan:[0,-18],z:[1,1.12],enter:[0,160]},{ax:180,rx:66,pan:[-12,14],z:[1.12,1.02],enter:[110,0]}][idx%4];
@@ -13748,7 +13775,7 @@ class Game extends Phaser.Scene {
   }
   /* v7.9.60 Ruby: กรอบดำขอบขาว + รูปมาสคอต (ภาพ mascot_ruby ถ้ามี ไม่งั้นวาดโมจิชั่วคราว) + ป้ายชื่อ · [คำ] = สีทอง/เขียวสลับ · คิวทีละข้อความ */
   /* v8.0.2 ใบ 45 Motion Comic: เล่นฉากเรื่องราวแบบเลเยอร์ (ฉาก far/mid/fg ขยับ zoom/pan + หุ่น + FX) บน storyLayer · โหลดภาพทีละฉาก เล่นจบลบ texture cs_ · ภาพไม่มา = คืน false ให้ใช้ของเดิม */
-  mcScene(id){const m=/^b(\d{2})$/.exec(id||'');if(m)return bossMotionScene(Number(m[1]));return typeof MOTION_COMICS!=='undefined'?MOTION_COMICS[id]||null:null;}
+  mcScene(id){const m=/^b(\d{2})$/.exec(id||'');if(m)return bossMotionScene(Number(m[1]),!!(this._mc61Off&&this._mc61Off[id]));return typeof MOTION_COMICS!=='undefined'?MOTION_COMICS[id]||null:null;}
   mcKeys(sc){ const s=new Set(); for(const sh of sc.shots){ (sh.bg||[]).forEach(k=>s.add(k)); (sh.L||[]).forEach(l=>s.add(l[0])); } return [...s]; }
   mcSeen(id){ return !!((Save.data||{}).mcSeen||{})[id]; }
   mcStory(){ return !this.recipeMode&&!this.riftMode&&!this.bossRush&&!this._inTutorial&&!this._pinnacleRun; }
@@ -13756,18 +13783,19 @@ class Game extends Phaser.Scene {
     if(this._mc&&!this._mc.done)return true; this.playMotionComic(id,ok=>cont&&cont(ok)); return true; }
   mcGateList(ids,cont){ let ok=true,started=false; const step=i=>{ for(;i<(ids||[]).length;i++){ if(this.mcGate(ids[i],r=>{ ok=ok&&r; step(i+1); })){ started=true; return; } } if(started&&cont)cont(ok); }; step(0); return started; }
   playMotionComic(id,done){ const sc=this.mcScene(id),layer=this.storyLayer; if(!sc||!layer){ done&&done(false); return; }
-    const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,keys=this.mcKeys(sc),owner=this._bossComicOwner; if(wasPlay)this.physics.pause(); this.state='cinematic';
+    const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,owner=this._bossComicOwner; if(wasPlay)this.physics.pause(); this.state='cinematic';
     layer.removeAll(true); layer.setVisible(true);
     const mc={id,sc,layer,i:-1,objs:[],tw:[],ev:[],done:false,ready:false,shotAt:0,red:!(this.hubMotionAllowed?this.hubMotionAllowed():true)}; this._mc=mc;
     const veil=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0),lt=this.add.text(W/2,H/2,'✦ Loading story…\nTap to skip',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166',align:'center',lineSpacing:6}).setOrigin(.5).setAlpha(0);
     layer.add([veil,lt]); this.tweens.add({targets:lt,alpha:.85,duration:500,delay:700});
-    const drop=()=>keys.filter(k=>k.startsWith('cs_')&&this.textures.exists(k)).forEach(k=>{ if(this.anims.exists(k))this.anims.remove(k); this.textures.remove(k); });
+    let keys=this.mcKeys(sc);const drop=()=>keys.filter(k=>/^(cs_|cs61_|vfx_cs61_)/.test(k)&&this.textures.exists(k)).forEach(k=>{ if(this.anims.exists(k))this.anims.remove(k); this.textures.remove(k); });
     let to=null; const finish=seen=>{ if(mc.done)return;const owned=!owner||this.bossComicValid(owner);if(!owned)seen=false; mc.done=true; to&&to.remove(false); this.mcClearShot(mc); this._finishStoryCutscene=null; layer.removeAll(true); layer.setVisible(false);
       const d=Save.data; if(seen){ (d.mcSeen||(d.mcSeen={}))[id]=1; if(id==='s01'){ d.storyIntroSeen=true; (d.rubyStorybook||(d.rubyStorybook={}))[0]=3; (d.rubyStory||(d.rubyStory={}))[0]=1; } Save.save(); } else (this._mcFail||(this._mcFail={}))[id]=1;
       drop(); if(this._mc===mc)this._mc=null; if(owned){if(this.state==='cinematic')this.state=prev;if(wasPlay)this.physics.resume();done&&done(!!seen);} };
     mc.finish=finish; this._finishStoryCutscene=p=>this.mcTap(mc,p);
     to=this.time.delayedCall(12000,()=>{ if(!mc.ready)finish(false); });
-    this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ finish(false); return; } to.remove(false); mc.ready=true; this.mcTitle(mc); },{all:true,quiet:true,fx:true});
+    const go=()=>this.ensureGroup(k=>keys.includes(k),()=>{ if(mc.done){ drop(); return; } if(keys.some(k=>!this.realTex(k))){ if(mc.sc.v61){ const lg=bossMotionScene(Number(String(id).slice(1)),true); if(lg){ drop(); (this._mc61Off||(this._mc61Off={}))[id]=1; mc.sc=lg; keys=this.mcKeys(lg); go(); return; } } finish(false); return; } to.remove(false); mc.ready=true; this.mcTitle(mc); },{all:true,quiet:true,fx:true});   // v8.0.84 ใบ 61 โหลดไม่ได้ → ฉาก 2 ช็อตเดิม
+    go();
   }
   mcTap(mc,p){ if(mc.done)return; if(!mc.ready){ mc.finish(false); return; } const s=mc.skip;
     if(p&&s&&p.x>=s.x&&p.x<=s.x+s.w&&p.y>=s.y&&p.y<=s.y+s.h){ Sfx.select&&Sfx.select(); mc.finish(true); return; }
@@ -13833,13 +13861,14 @@ class Game extends Phaser.Scene {
     const tw=(c,loop)=>{ if(red){ if(loop)return null; for(const p in c)if(!['targets','duration','delay','ease','yoyo','repeat','onComplete','onUpdate'].includes(p))[].concat(c.targets).forEach(t=>{ t[p]=c[p]; }); c.onComplete&&c.onComplete(); return null; } const t=this.tweens.add(c); mc.tw.push(t); return t; };
     add(this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0));
     const z=sh.zoom||[1,1],pan=sh.pan||[0,0],bgs=sh.bg||[],par=[.35,.7,1.15],dur=ms+1200;
-    bgs.forEach((key,j)=>{ const im=add(this.add.image(W/2,H/2,key)),p=bgs.length>1?(par[j]??1):1;
+    let bg0=null;bgs.forEach((key,j)=>{ const im=add(this.add.image(W/2,H/2,key)),p=bgs.length>1?(par[j]??1):1;if(!j)bg0=im;
+      if(sh.fit==='portrait'&&W>H&&im.width<im.height){ im.setScale(Math.max(W/im.width,H/im.height)).setAlpha(.28);const c=add(this.add.image(viewW/2,H/2,key)),f=H/c.height;c.setScale(f*z[0]);tw({targets:c,scale:f*z[1],duration:dur,ease:'Sine.inOut'});bg0=c;return; }   // v8.0.84 ภาพแนวตั้งบนจอแนวนอน: วางทั้งภาพ (ไม่ตัดมงกุฎ) + ภาพเดียวกันจางด้านหลัง
       if(sh.scroll){ im.setOrigin(.5,0).setScale(Math.max(W/im.width,H/im.height)); im.y=0; tw({targets:im,y:Math.min(0,H-im.displayHeight),duration:ms,ease:'Sine.easeIn'}); return; }
       const mp=Math.max(Math.abs(pan[0]),Math.abs(pan[1]))*k*p,f=Math.max((W+mp*2+4)/im.width,(H+4)/im.height),zs=a=>f*(1+(a-1)*p);
       if(sh.tint)im.setTint(sh.tint); im.setScale(zs(z[0])); im.x=W/2+pan[0]*k*p; tw({targets:im,scale:zs(z[1]),x:W/2+pan[1]*k*p,duration:dur,ease:'Sine.inOut'}); });
     if(sh.night)add(this.add.rectangle(0,0,W,H,0x0a0822,sh.night).setOrigin(0));   // v8.0.6 โทนกลางคืนชั่วคราว (ใบ 46 จะมีฉากกลางคืนจริง)
     for(const l of sh.L||[]){ const [key,x,y,w,h,o={}]=l,fx=ASSET_FX[key],sheet=ASSET_SHEETS[key]; if(!this.textures.exists(key))continue;
-      const im=add(fx||sheet?this.add.sprite(X(x),Y(y),key,o.fr||0):this.add.image(X(x),Y(y),key)),s=Math.min(w*k/im.width,h*k/im.height),a=o.a??1; im.setScale(s).setAlpha(0); if(fx&&fx.add)im.setBlendMode(Phaser.BlendModes.ADD);
+      const pt=o.bgPt&&bg0?[bg0.x+(o.bgPt[0]-.5)*bg0.displayWidth,bg0.y+(o.bgPt[1]-.5)*bg0.displayHeight]:null,im=add(fx||sheet?this.add.sprite(pt?pt[0]:X(x),pt?pt[1]:Y(y),key,o.fr||0):this.add.image(pt?pt[0]:X(x),pt?pt[1]:Y(y),key)),s=pt?(o.bgW||.4)*bg0.displayWidth/im.width:Math.min(w*k/im.width,h*k/im.height),a=o.a??1;   /* bgPt = จุดบนภาพพื้นหลัง (สัดส่วน) */ im.setScale(s).setAlpha(0); if(fx&&fx.add)im.setBlendMode(Phaser.BlendModes.ADD);
       const show=()=>{ if(!im.active)return; tw({targets:im,alpha:a,duration:o.fade||(o.at?160:260)});
         if(fx){ const nf=fx.frames,loop=o.loop!==false; let f=o.fr||0; if(red){ if(!loop)im.setFrame(nf-1); if(!loop&&!o.hold)im.setAlpha(0); }
           else { const ev=this.time.addEvent({delay:1000/(o.fps||fx.rate||12),loop:true,callback:()=>{ if(!im.active){ ev.remove(false); return; } f++; if(f>=nf){ if(loop)f=0; else { ev.remove(false); if(!o.hold)tw({targets:im,alpha:0,duration:240}); return; } } im.setFrame(f); }}); mc.ev.push(ev); } }
