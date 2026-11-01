@@ -13,7 +13,7 @@ assert.equal(JSON.stringify(base),saved);assert.equal(a.taroAttackInfo(base,{pat
 // Rolled scalar rank, not purchase count, controls path power/conditional bonuses.
 for(const [path,id] of [['storm','p_static'],['smite','p_overload']]){const b={character:'taro',path,lv:{[id]:1},ranks:{[id]:1.55}};assert.equal(a.pathMods(b).dmg,path==='storm'?.75:1.8);}   // v7.9.21 Static Shards = kill shards, Spark Power removed: no path damage multiplier
 {const b={character:'taro',path:'smite',lv:{p_judge:1},ranks:{p_judge:1.55}};assert(Math.abs(a.pathMods(b).big-.15*1.55)<1e-10);}
-{const b={character:'taro',path:'storm',lv:{},ranks:{}};assert.equal(a.pathMods(b).count,1);assert.equal(a.taroCombatProfile(b,{dmgMul:1},1,a.BASIC_PATHS.taro).rawRoots,2);}   // v7.9.17 Forked Arc removed (duplicate of Arc Streams)
+{const b={character:'taro',path:'storm',lv:{},ranks:{}};assert.equal(a.pathMods(b).count,1);assert.equal(a.taroCombatProfile(b,{dmgMul:1},1,a.BASIC_PATHS.taro).rawRoots,1);}   /* v8.0.79 storm +1 root removed */   // v7.9.17 Forked Arc removed (duplicate of Arc Streams)
 {const b={character:'taro',path:'tempest',lv:{p_gale:1},ranks:{p_gale:1.55}},f=a.taroCombatProfile(b,{dmgMul:1},1,a.BASIC_PATHS.taro);assert.equal(f.dashCooldownMul,.94**1.55);assert.equal(f.interval,2.12*.85);assert.equal(a.taroGaleCooldown({lv:{p_gale:3}}),.94**3);}
 assert.equal(a.talSpent({unique:3,pt_storm_capA:1,pt_smite_root:3}),27);
 assert(src.includes("if(this.character==='taro')return taroAttackInfo(d,b)"));assert(src.includes("this._codexTaroPath=path.id"));

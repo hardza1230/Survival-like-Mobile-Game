@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.77 — art order 57 + Weave in the Power theme (owner)
+
+Order 57 atlas (24 icons, 6×4) packed by scripts/pack-power-57.py (sha check, 384→192 cells, WebP q90 alpha 100) → assets/art/mobile_ui_789/gear_power57_icons.webp (316,750 B, 1152×768). ASSET_SHEETS.power57_icons, PW57 = cell order. pwIcon(key) lazy-loads via loadPower57 (rebuilds the screen) and returns null → callers fall back to emoji. Shared pwCard/pwSection (Power palette). buildUpgrade portrait → buildWeavePW: Power bg, summary (weave_crest, rank name, Thread, mint core-power bar), YOUR CORES 3 rows (core icons, Lv + stars, total, mint gain, sugar price pill; first affordable row gold), RANK UP row (Weave pill when all max), MORE tiles Rank Rewards/Depths (tags weave_perks/weave_dig). Same buy/promote/tutorial/spotlight logic; landscape keeps old page. tests/power-family. Next: Equipment → Merge → Forge in the same style (docs/design/power_family). Owner phone review pending.
+
+
 # Previous delivery: v8.0.76 — Lobby stage name not cut (owner)
 
 buildLobby stage box: after the power line (pw2) the name is re-laid left-aligned at px+20 with room up to the power text (−10); 11→10px, then 2-line wrap at 10px from below the C?-? label to panel bottom −8, ellipsis only as last resort. Owner phone review pending.

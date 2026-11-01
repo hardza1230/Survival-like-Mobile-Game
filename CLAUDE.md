@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.79, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.80, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.78 — Equipment in the Power theme (owner)
+# Latest delivery: v8.0.79 — Taro Arc nerf + art orders 58/59 wired (owner)
+
+Arc (owner: cheats vs lone boss, strong at build start): taroCombatProfile storm +1 root removed (Lv1 = 1 root × 4 jumps; roots still +Lv4/Lv6/cards); boss focus jumps j>0 ×TARO_ARC_LOOP .6 (×(1+.15·Overload)) instead of 100% each (Lv1 boss hits 8×100% → 1+3×.6). Tests: taro-chain (4 hits), taro-progression rawRoots 1, taro-feedback strip. Orders 58/59: scripts/pack-menu-58-59.py (sha check, 50%, WebP q90 alpha) → mobile_ui_789 pw_hero_* (384×192), pw_empty_* (192), menu59_icons (1152×768, 264,784 B). ASSET_IMAGES literals + ASSET_SHEETS.menu59_icons; MENU59 order, M59_ROW (hub rows), M59_EMOJI (_rowBtn settings). Helpers m59Img / loadMenuSheet / pwArt (lazy, rebuild on load, null fallback). Hooks: rewardsTabs icons, buildHubGroup rows, _rowBtn emoji icons, Weave summary art α.3, empty Equipment/Merge/Forge pictures. Bazaar/Heroes tab icons and Lobby side buttons not yet wired. tests/power-family extended. Owner phone review pending.
+
+# Previous delivery: v8.0.78 — Equipment in the Power theme (owner)
 
 buildGear restyled in place (layout/logic/tags unchanged): bg screen_gear_power_789; summary bar, slots, bag cells and item/mod panels use the Power palette (0x261e30 + 0x6d536d border; selected 0x423039 + gold 0xf4d9a1; equipped mint 0x85d5b2). Slots without gear art show pwIcon slot_<slot> (α .9 equipped starter / .5 empty, brought to top over the slot frame). Bag header ⚡/♻ draw pwIcon equip_best/salvage when power57 is loaded (zone labels '⚡'/'♻' kept for tests/tutorial). tests/power-family extended. Next: Merge → Forge. Owner phone review pending.
-
-# Previous delivery: v8.0.77 — art order 57 + Weave in the Power theme (owner)
-
-Order 57 atlas (24 icons, 6×4) packed by scripts/pack-power-57.py (sha check, 384→192 cells, WebP q90 alpha 100) → assets/art/mobile_ui_789/gear_power57_icons.webp (316,750 B, 1152×768). ASSET_SHEETS.power57_icons, PW57 = cell order. pwIcon(key) lazy-loads via loadPower57 (rebuilds the screen) and returns null → callers fall back to emoji. Shared pwCard/pwSection (Power palette). buildUpgrade portrait → buildWeavePW: Power bg, summary (weave_crest, rank name, Thread, mint core-power bar), YOUR CORES 3 rows (core icons, Lv + stars, total, mint gain, sugar price pill; first affordable row gold), RANK UP row (Weave pill when all max), MORE tiles Rank Rewards/Depths (tags weave_perks/weave_dig). Same buy/promote/tutorial/spotlight logic; landscape keeps old page. tests/power-family. Next: Equipment → Merge → Forge in the same style (docs/design/power_family). Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
