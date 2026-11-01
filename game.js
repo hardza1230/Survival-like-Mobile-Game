@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.91';
+const GAME_VERSION = '8.0.92';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.92',date:'2026-11-01',title:'Readable Forge mods',items:['Forge: mod text now uses the whole row, with the Upgrade button on its own line below, so mods are no longer cut off']},
   {v:'8.0.91',date:'2026-11-01',title:'New sounds',items:['28 new sounds: Forge rolls (good and bad), mod Lv up and remove, Mythic/Ancient/Divine merges, Relic pairs, status effects, Yuzu evolutions and big moves, Taro sentries, day-30 login and Depths']},
   {v:'8.0.90',date:'2026-11-01',title:'Companions evolve',items:['Yuzu’s companions now evolve through 3 forms as they defeat enemies (e.g. Lime Sprout → Lime Archer → Lime Skyhunter). Each new form is bigger and hits 20% harder','Stronger Citrus Command: Pomelo’s slam sends 2 aftershock waves, Lime fires a fan of 3 arrows, Blood Orange’s storm ends in a huge blast','Cutscenes are cleaner: no light beams, rainbow ribbons or sparkles — just the scenes and characters']},
   {v:'8.0.89',date:'2026-11-01',title:'8 new Relics',items:['New Relics: Heavy Dough, Sugar Rush, Frost Candy, Copper Whisk, Long Spoon, Crowd Crusher, Twin Bake and Giant Slayer','Each new Relic suits certain builds (the card shows 👍 who it is for), and Relics that fit your build show up more often','New Relic pairs: Deadeye, Frenzy and Deep Freeze']},
@@ -12783,9 +12784,9 @@ class Game extends Phaser.Scene {
     let ry=M.y+30;vis.forEach(i=>{const a=affs[i],open=forgeLineOpen(selected,i),mod=a&&affixDef(a.id),bad=!!mod?.bad,st=mod?tierStars(mod,a.t):0,col=bad?'#ff7a85':mod?(MOD_TIER_COLOR[st]||'#fff0df'):'#a99fbb',g=this.add.graphics();this._forgeRowRects[i]={x:rx,y:ry,w:rw,h:rowH};
       g.fillStyle(bad?0x3a1e26:mod?0x2f2438:0x221a2b,.97).fillRoundedRect(rx,ry,rw,rowH,12).lineStyle(mod?1.4:1,mod?Phaser.Display.Color.HexStringToColor(col).color:0x6d536d,mod?.85:.7).strokeRoundedRect(rx,ry,rw,rowH,12);this.menu.add(g);
       this.forgeText(rx+10,ry+4,'MOD '+(i+1)+(bad?'  ·  💀 BAD':mod?'  ·  Lv '+st+' / '+forgeStarCap(selected,mod):''),10,bad?'#ff9aa3':'#bfaecd',true,rw*.5);
-      const ph=Math.min(34,rowH-14),py=ry+rowH-ph-6,pw=Math.min(190,Math.floor(rw*.5));
+      const two=rowH>=66,ph=two?Math.max(26,Math.min(34,rowH-42)):Math.min(34,rowH-14),py=ry+rowH-ph-6,pw=Math.min(190,Math.floor(rw*.5));
       if(mod){ const cap=forgeStarCap(selected,mod),rm=this._forgeRm&&this._forgeRm.uid===selected.uid&&this._forgeRm.line===i;drawForgeModIcon(this,mod,rx+22,ry+rowH/2+6,24);
-        this.forgeText(rx+40,ry+Math.min(19,rowH-20),modLine(mod,a.v),13,col,true,rw-40-pw-46);
+        {const tw=two?rw-50:rw-40-pw-46,t=this.forgeText(rx+40,ry+Math.min(19,rowH-20),modLine(mod,a.v),13,col,true,0);if(t.width>tw){const k=Math.max(.75,tw/t.width);t.setScale?.(k);let q=String(t.text);while(q.length>4&&t.width*k>tw){q=q.slice(0,-1);t.setText(q+'…');}}}   /* v8.0.92 เจ้าของ: mod อ่านไม่ออก (ถูกตัด) → แถวสูงพอ = ข้อความเต็มบรรทัด ปุ่มอยู่บรรทัดล่าง */
         if(bad)pill(rx+rw-pw-42,py,pw,ph,'Remove it with 🗑',false,null,lockedItem?null:()=>this.forgeUpgrade(i),'cap_'+i);
         else if(st>=cap)pill(rx+rw-pw-42,py,pw,ph,forgeStarCapText(selected,mod),false,null,lockedItem?null:()=>this.forgeUpgrade(i),'cap_'+i);
         else pill(rx+rw-pw-42,py,pw,ph,'Upgrade · 🟢'+price,!lockedItem&&have>=price,'star_up',lockedItem?null:()=>this.forgeUpgrade(i),'up_'+i);

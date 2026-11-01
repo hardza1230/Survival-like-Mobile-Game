@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.92, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.93, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.91 — audio order A06 wired (28 ElevenLabs SFX)
+# Latest delivery: v8.0.92 — Forge mod text readable (owner screenshot)
+
+_buildCraftBenchRaw rows: when rowH≥66 (two=true) the pill height is rowH−42 (26–34) and the mod line gets the full row width (rw−50), scaled down to 75% then ellipsized; short rows keep the old side-by-side layout. Owner phone check pending.
+
+# Previous delivery: v8.0.91 — audio order A06 wired (28 ElevenLabs SFX)
 
 assets/incoming/audio_new_features → assets/audio/new_features/ (ASSET_AUDIO, background-loaded with other SFX). Hooks via Sfx.orderCue/menuCue ('sfx_'+cue) with old sounds as fallback: _forgeDone forge_roll_good/bad, forge_lv_up, forge_remove_paid · merge_rarity_mythic/ancient/divine (existing mergeNow cue) · relic_synergy in gainRelic · status pop st_<k> (frozen→freeze, brittle→chill, 1 per frame) + st_cleanse/st_barrier_break · yz_evolve_f2/f3, yz_aftershock, yz_triple_arrow, yz_storm_final · taro_deploy, taro_extra_sentry (sentry cap rises) · login_day30 · dig_unlock (featRevealNext 'dig'), dig_ancient_open, dig_ancient_locked (once per session in Depths below floor 15). New calls guarded with typeof Sfx. Test: audio-a06. Owner phone listen pending.
-
-# Previous delivery: v8.0.90 — Yuzu companion forms, stronger Yuzu Uniques, effect-free cutscenes (owner)
-
-Cutscenes: mcScene → mcPlain (MC_FX_RE /^(cs_fx_|vfx_)/ layers removed so they don't load, flash/pow/lines dropped, motes 0, sc.plain skips mcMotes) for every motion comic incl. boss 61 (crown shatter/flavor return gone). Yuzu forms: YUZU_FORMS names ×3 per companion, YUZU_FORM_KILLS [14,32] (y_fastripe/Ripen scale), yuzuForm (Pomelo = growth map [1,2,2,3]), yuzuFormKills from yuzuOnKill (Lime/Blood Orange), yuzuEvolveFx (banner/flash/ring/grow sound); yuzuPower ×(1+.2·(form-1)) for Lime/Blood Orange; sprite uses yz_<kind>_f<form> when present (art order 63) else base art scaled ×(1+.12·(form-1)); label = form name. Uniques: Pomelo land → hitStop + 2 aftershocks (350ms r×1.5 ×.6, 700ms r×2 ×.45); Lime 2 side arrows ±.16 rad (300%); Blood Orange last storm burst r230 ×2.4 + shake. Tests: new yuzu-forms-90. Art order 63 + audio order A06 written by helper (docs). Owner phone check pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
