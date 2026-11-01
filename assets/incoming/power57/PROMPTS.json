@@ -1,0 +1,148 @@
+{
+  "generator": "built-in image_gen",
+  "transparent_background": true,
+  "reference_roles": [
+    {
+      "file": "docs/art_orders/ref/57_power56_icon_style_ref.webp",
+      "role": "style"
+    },
+    {
+      "file": "docs/art_orders/ref/57_power_page_ref.webp",
+      "role": "context only"
+    }
+  ],
+  "prompt": "Use case: stylized-concept. ONE production game UI ICON ATLAS, exactly SIX columns by FOUR rows, TWENTY FOUR distinct isolated icons total, row-major order below. Landscape canvas aspect3:2, target2304x1536 with384x384 equal square cells. Input reference1 is STYLE ONLY: existing Power56 six-icon sprite sheet. DO NOT reproduce its six-icon layout or copy its six subjects; make the NEW24subjects on a6x4grid. Reference2 is the Power page for CONTEXT ONLY, do not generate a screen, text, panel, frame or UI. Match reference1's SAME painterly visual language faithfully: softly raised hand-painted forms, matte faceted candy/crystal materials, thin dark plum/brown contours, warm pale-gold bevels and gentle golden highlights, soft plum shadows WITHIN the objects, restrained rose/lavender/turquoise/mint accents. NOT vector glyphs, NOT flat emoji, NOT photorealistic metal, NOT shiny plastic3D, NO heavy black cartoon outlines. Each icon centered in its own equal square cell, clean bold readable silhouette at40px on #261e30. Same apparent optical weight; object occupies about75\u201380percent of cell, at least10percent clear transparent margin on every edge. Keep all icons separated with wide transparent gutters. TRUE transparent RGBA background, no baked checkerboard/white/gray/plum, NO scenery, NO panels, NO outer frames, NO cell dividers, NO ground shadows or glow clouds, NO words/letters/numbers/labels/logos/watermark. Medallion rims are intrinsic circular objects, never a square icon frame. All scrolls blank. Requested cream plus/X and gold arrows are small physical painted objects, not typographic labels. All cooking tools BLUNT and friendly. First row Weave colorful gems/threads; second row six equipment slots muted pale pewter silver with warm soft edges, still enough light contrast to read at40px; third/fourth rows warm gold/cream/rose with mint lucky clover. EXACT row-major cell contents:\nRow1 column1: Round rose-ruby core medallion with faceted pink crystal HEART at center, a delicate warm-gold thread wrapped around its rim.\nRow1 column2: Round orange-amber core medallion with amber FLAME / flavor spark at center, delicate warm-gold thread around rim.\nRow1 column3: Round turquoise-blue core medallion with a small pale SHIELD at center, delicate warm-gold thread around rim.\nRow1 column4: Three distinct pink, orange, and turquoise THREADS woven together into a warm GOLD STAR rank crest.\nRow1 column5: One compact magical cream-and-gold THREAD SPOOL with a visibly tied looping KNOT; no needle.\nRow1 column6: Three pink orange and turquoise core crystals floating in a TRIANGLE, one small upward golden beam / uplift ray between them.\nRow2 column1: Crossed egg WHISK and broad rounded BAKING SPATULA. Muted pale pewter silver and lavender, subtle warm rim highlights.\nRow2 column2: Cute sturdy pastry APRON shaped like light cloth armor, tiny simple candy motif. Muted pale pewter silver and lavender.\nRow2 column3: One matching PAIR of plush oven MITTENS. Muted pale pewter silver and lavender.\nRow2 column4: Delicate NECKLACE with a wrapped candy PENDANT. Muted pale pewter silver and lavender.\nRow2 column5: One chunky silver RING with a faceted molded-sugar GEM. Muted pale pewter silver and lavender.\nRow2 column6: One matching PAIR of soft marshmallow BOOTS. Muted pale pewter silver and lavender.\nRow3 column1: Warm rose-gold SHIELD backed by crossed BLUNT pastry spatulas (sword-like baking tools, rounded ends), small GOLD LIGHTNING accent. No sharp blade.\nRow3 column2: Small wooden crafting HAMMER breaking one simple item into a cream thread coil and two bright candy pieces; cute, no violence.\nRow3 column3: Exactly THREE small equipment pieces (apron, mitten, boot) connected together by one flowing warm gold RIBBON.\nRow3 column4: One small cookie-shaped PADLOCK, recognizable gold shackle, warm biscuit body and simple keyhole. No text.\nRow3 column5: One rolled cream recipe SCROLL held open by a small GOLD STAR PIN. Entire parchment blank, no writing.\nRow3 column6: Two faceted jewels, one lavender and one rose, with a substantial golden UP ARROW passing upward between them.\nRow4 column1: One compact warm-gold crafting HAMMER with a restrained tiny golden sparkle.\nRow4 column2: One NEW blank rolled cream recipe SCROLL, beside a plus sign made from soft piped CREAM. Cream plus is a physical object, not a label.\nRow4 column3: Exactly TWO small blank cream recipe SCROLLS connected by two curved warm-gold swapping arrows forming a circular exchange.\nRow4 column4: One beveled GOLD STAR with a small substantial golden UP ARROW beside it. Strong clear simple silhouette.\nRow4 column5: One blank cream recipe SCROLL folded closed for storage, beside a soft piped CREAM X mark. Friendly cream, no red warning or sharp cross.\nRow4 column6: One FOUR-LEAF CLOVER made from translucent MINT-GREEN JELLY, rounded candy leaves with subtle painted highlights.",
+  "icons": [
+    {
+      "index": 0,
+      "key": "core_life",
+      "name": "Life Core"
+    },
+    {
+      "index": 1,
+      "key": "core_flavor",
+      "name": "Flavor Core"
+    },
+    {
+      "index": 2,
+      "key": "core_bond",
+      "name": "Bond Core"
+    },
+    {
+      "index": 3,
+      "key": "weave_crest",
+      "name": "Weave Crest"
+    },
+    {
+      "index": 4,
+      "key": "thread_knot",
+      "name": "Thread Knot"
+    },
+    {
+      "index": 5,
+      "key": "weave_up",
+      "name": "Weave Up"
+    },
+    {
+      "index": 6,
+      "key": "slot_weapon",
+      "name": "Weapon Slot"
+    },
+    {
+      "index": 7,
+      "key": "slot_armor",
+      "name": "Armor Slot"
+    },
+    {
+      "index": 8,
+      "key": "slot_gloves",
+      "name": "Glove Slot"
+    },
+    {
+      "index": 9,
+      "key": "slot_amulet",
+      "name": "Amulet Slot"
+    },
+    {
+      "index": 10,
+      "key": "slot_ring",
+      "name": "Ring Slot"
+    },
+    {
+      "index": 11,
+      "key": "slot_boots",
+      "name": "Boot Slot"
+    },
+    {
+      "index": 12,
+      "key": "equip_best",
+      "name": "Equip Best"
+    },
+    {
+      "index": 13,
+      "key": "salvage",
+      "name": "Salvage"
+    },
+    {
+      "index": 14,
+      "key": "gear_sets",
+      "name": "Gear Sets"
+    },
+    {
+      "index": 15,
+      "key": "gear_lock",
+      "name": "Gear Lock"
+    },
+    {
+      "index": 16,
+      "key": "merge_keep",
+      "name": "Keep Mod"
+    },
+    {
+      "index": 17,
+      "key": "rarity_up",
+      "name": "Rarity Up"
+    },
+    {
+      "index": 18,
+      "key": "fp_hammer",
+      "name": "Forge Points"
+    },
+    {
+      "index": 19,
+      "key": "mod_add",
+      "name": "Add Mod"
+    },
+    {
+      "index": 20,
+      "key": "mod_swap",
+      "name": "Swap Mod"
+    },
+    {
+      "index": 21,
+      "key": "star_up",
+      "name": "Star Up"
+    },
+    {
+      "index": 22,
+      "key": "mod_remove",
+      "name": "Remove Mod"
+    },
+    {
+      "index": 23,
+      "key": "lucky",
+      "name": "Lucky"
+    }
+  ],
+  "refinements": [
+    {
+      "cell": 13,
+      "key": "salvage",
+      "input": "sources/salvage_edit_input.png",
+      "role": "precise-object-edit target",
+      "selected_output": "sources/salvage_refined.png",
+      "transparent_background": true,
+      "prompt": "Use case: precise-object-edit. Edit this one small game icon only. Keep the exact warm hand-painted matte illustration style, thin dark brown/plum contours, pale gold bevel lighting, composition, wooden/red-grip small hammer and cream-gold thread coil. Replace ONLY the sharp pink and blue faceted gemstones in the lower right with TWO small recognizable WRAPPED CANDIES, one soft rose candy and one mint-blue candy, with a rounded center and simple twisted wrapper ends. They must look like candy salvage materials rather than jewels. Keep the composition compact and bold at40px. Original objects remain unbroken cute crafting materials, no sharp weapons. Preserve true transparent RGBA background, no ground/shadow/cloud, no text/letters/numbers/frame/grid/watermark. Entire icon fully inside canvas with empty transparent margins."
+    }
+  ]
+}

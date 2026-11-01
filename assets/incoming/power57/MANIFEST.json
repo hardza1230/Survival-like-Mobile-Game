@@ -1,0 +1,942 @@
+{
+  "key": "power57_icons",
+  "file": "power57_icons.png",
+  "bytes": 3495708,
+  "sha256": "0f25105b5f0505f6bf81c8769431e26600b47466db9e870b95877337f900878e",
+  "width": 2304,
+  "height": 1536,
+  "cell": 384,
+  "cols": 6,
+  "rows": 4,
+  "format": "PNG32 RGBA",
+  "icons": [
+    {
+      "index": 0,
+      "key": "core_life",
+      "name": "Life Core",
+      "row": 0,
+      "column": 0,
+      "rect": [
+        0,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        0,
+        0,
+        265,
+        290
+      ],
+      "source_alpha_crop": [
+        23,
+        39,
+        251,
+        281
+      ],
+      "scale": 1.2685950413223142,
+      "paste": [
+        47,
+        38
+      ],
+      "alpha_bounds": [
+        47,
+        38,
+        336,
+        345
+      ]
+    },
+    {
+      "index": 1,
+      "key": "core_flavor",
+      "name": "Flavor Core",
+      "row": 0,
+      "column": 1,
+      "rect": [
+        384,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        265,
+        0,
+        517,
+        290
+      ],
+      "source_alpha_crop": [
+        14,
+        43,
+        238,
+        281
+      ],
+      "scale": 1.2899159663865547,
+      "paste": [
+        47,
+        38
+      ],
+      "alpha_bounds": [
+        47,
+        38,
+        336,
+        345
+      ]
+    },
+    {
+      "index": 2,
+      "key": "core_bond",
+      "name": "Bond Core",
+      "row": 0,
+      "column": 2,
+      "rect": [
+        768,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        517,
+        0,
+        765,
+        290
+      ],
+      "source_alpha_crop": [
+        13,
+        43,
+        236,
+        282
+      ],
+      "scale": 1.284518828451883,
+      "paste": [
+        49,
+        38
+      ],
+      "alpha_bounds": [
+        49,
+        38,
+        335,
+        345
+      ]
+    },
+    {
+      "index": 3,
+      "key": "weave_crest",
+      "name": "Weave Crest",
+      "row": 0,
+      "column": 3,
+      "rect": [
+        1152,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        765,
+        0,
+        1030,
+        290
+      ],
+      "source_alpha_crop": [
+        12,
+        39,
+        255,
+        275
+      ],
+      "scale": 1.2633744855967077,
+      "paste": [
+        38,
+        43
+      ],
+      "alpha_bounds": [
+        38,
+        43,
+        345,
+        341
+      ]
+    },
+    {
+      "index": 4,
+      "key": "thread_knot",
+      "name": "Thread Knot",
+      "row": 0,
+      "column": 4,
+      "rect": [
+        1536,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1030,
+        0,
+        1297,
+        290
+      ],
+      "source_alpha_crop": [
+        8,
+        49,
+        255,
+        279
+      ],
+      "scale": 1.242914979757085,
+      "paste": [
+        38,
+        49
+      ],
+      "alpha_bounds": [
+        38,
+        49,
+        345,
+        335
+      ]
+    },
+    {
+      "index": 5,
+      "key": "weave_up",
+      "name": "Weave Up",
+      "row": 0,
+      "column": 5,
+      "rect": [
+        1920,
+        0,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1297,
+        0,
+        1536,
+        290
+      ],
+      "source_alpha_crop": [
+        13,
+        40,
+        214,
+        274
+      ],
+      "scale": 1.311965811965812,
+      "paste": [
+        60,
+        38
+      ],
+      "alpha_bounds": [
+        60,
+        38,
+        324,
+        345
+      ]
+    },
+    {
+      "index": 6,
+      "key": "slot_weapon",
+      "name": "Weapon Slot",
+      "row": 1,
+      "column": 0,
+      "rect": [
+        0,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        0,
+        290,
+        264,
+        549
+      ],
+      "source_alpha_crop": [
+        24,
+        14,
+        254,
+        245
+      ],
+      "scale": 1.329004329004329,
+      "paste": [
+        39,
+        38
+      ],
+      "alpha_bounds": [
+        39,
+        38,
+        345,
+        345
+      ]
+    },
+    {
+      "index": 7,
+      "key": "slot_armor",
+      "name": "Armor Slot",
+      "row": 1,
+      "column": 1,
+      "rect": [
+        384,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        264,
+        290,
+        514,
+        549
+      ],
+      "source_alpha_crop": [
+        10,
+        14,
+        238,
+        255
+      ],
+      "scale": 1.2738589211618256,
+      "paste": [
+        47,
+        38
+      ],
+      "alpha_bounds": [
+        47,
+        38,
+        337,
+        345
+      ]
+    },
+    {
+      "index": 8,
+      "key": "slot_gloves",
+      "name": "Glove Slot",
+      "row": 1,
+      "column": 2,
+      "rect": [
+        768,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        514,
+        290,
+        780,
+        549
+      ],
+      "source_alpha_crop": [
+        12,
+        24,
+        258,
+        254
+      ],
+      "scale": 1.2479674796747968,
+      "paste": [
+        38,
+        48
+      ],
+      "alpha_bounds": [
+        38,
+        48,
+        345,
+        335
+      ]
+    },
+    {
+      "index": 9,
+      "key": "slot_amulet",
+      "name": "Amulet Slot",
+      "row": 1,
+      "column": 3,
+      "rect": [
+        1152,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        780,
+        290,
+        1034,
+        549
+      ],
+      "source_alpha_crop": [
+        8,
+        6,
+        234,
+        232
+      ],
+      "scale": 1.3584070796460177,
+      "paste": [
+        38,
+        38
+      ],
+      "alpha_bounds": [
+        38,
+        38,
+        345,
+        345
+      ]
+    },
+    {
+      "index": 10,
+      "key": "slot_ring",
+      "name": "Ring Slot",
+      "row": 1,
+      "column": 4,
+      "rect": [
+        1536,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1034,
+        290,
+        1278,
+        549
+      ],
+      "source_alpha_crop": [
+        21,
+        42,
+        231,
+        239
+      ],
+      "scale": 1.4619047619047618,
+      "paste": [
+        38,
+        48
+      ],
+      "alpha_bounds": [
+        38,
+        48,
+        345,
+        336
+      ]
+    },
+    {
+      "index": 11,
+      "key": "slot_boots",
+      "name": "Boot Slot",
+      "row": 1,
+      "column": 5,
+      "rect": [
+        1920,
+        384,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1278,
+        290,
+        1536,
+        549
+      ],
+      "source_alpha_crop": [
+        13,
+        36,
+        236,
+        238
+      ],
+      "scale": 1.3766816143497758,
+      "paste": [
+        38,
+        53
+      ],
+      "alpha_bounds": [
+        38,
+        53,
+        345,
+        331
+      ]
+    },
+    {
+      "index": 12,
+      "key": "equip_best",
+      "name": "Equip Best",
+      "row": 2,
+      "column": 0,
+      "rect": [
+        0,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        0,
+        549,
+        261,
+        779
+      ],
+      "source_alpha_crop": [
+        21,
+        4,
+        255,
+        220
+      ],
+      "scale": 1.311965811965812,
+      "paste": [
+        38,
+        50
+      ],
+      "alpha_bounds": [
+        38,
+        50,
+        345,
+        333
+      ]
+    },
+    {
+      "index": 13,
+      "key": "salvage",
+      "name": "Salvage",
+      "row": 2,
+      "column": 1,
+      "rect": [
+        384,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/salvage_refined.png",
+      "source_sha256": "ef0684c88fcca550abbc2b68b73f69f8075628129ee605bf29f50ccf9e601d91",
+      "source_rect": [
+        0,
+        0,
+        1302,
+        1208
+      ],
+      "source_alpha_crop": [
+        28,
+        27,
+        1283,
+        1087
+      ],
+      "scale": 0.2446215139442231,
+      "paste": [
+        38,
+        62
+      ],
+      "alpha_bounds": [
+        38,
+        62,
+        345,
+        321
+      ]
+    },
+    {
+      "index": 14,
+      "key": "gear_sets",
+      "name": "Gear Sets",
+      "row": 2,
+      "column": 2,
+      "rect": [
+        768,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        509,
+        549,
+        798,
+        779
+      ],
+      "source_alpha_crop": [
+        6,
+        5,
+        276,
+        220
+      ],
+      "scale": 1.137037037037037,
+      "paste": [
+        38,
+        70
+      ],
+      "alpha_bounds": [
+        38,
+        70,
+        345,
+        314
+      ]
+    },
+    {
+      "index": 15,
+      "key": "gear_lock",
+      "name": "Gear Lock",
+      "row": 2,
+      "column": 3,
+      "rect": [
+        1152,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        798,
+        549,
+        1032,
+        779
+      ],
+      "source_alpha_crop": [
+        12,
+        7,
+        190,
+        226
+      ],
+      "scale": 1.4018264840182648,
+      "paste": [
+        67,
+        38
+      ],
+      "alpha_bounds": [
+        67,
+        38,
+        317,
+        345
+      ]
+    },
+    {
+      "index": 16,
+      "key": "merge_keep",
+      "name": "Keep Mod",
+      "row": 2,
+      "column": 4,
+      "rect": [
+        1536,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1032,
+        549,
+        1290,
+        779
+      ],
+      "source_alpha_crop": [
+        16,
+        4,
+        251,
+        220
+      ],
+      "scale": 1.3063829787234043,
+      "paste": [
+        38,
+        51
+      ],
+      "alpha_bounds": [
+        38,
+        51,
+        345,
+        333
+      ]
+    },
+    {
+      "index": 17,
+      "key": "rarity_up",
+      "name": "Rarity Up",
+      "row": 2,
+      "column": 5,
+      "rect": [
+        1920,
+        768,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1290,
+        549,
+        1536,
+        779
+      ],
+      "source_alpha_crop": [
+        8,
+        14,
+        230,
+        212
+      ],
+      "scale": 1.382882882882883,
+      "paste": [
+        38,
+        55
+      ],
+      "alpha_bounds": [
+        38,
+        55,
+        345,
+        329
+      ]
+    },
+    {
+      "index": 18,
+      "key": "fp_hammer",
+      "name": "Forge Points",
+      "row": 3,
+      "column": 0,
+      "rect": [
+        0,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        0,
+        779,
+        258,
+        1024
+      ],
+      "source_alpha_crop": [
+        29,
+        4,
+        242,
+        215
+      ],
+      "scale": 1.4413145539906103,
+      "paste": [
+        38,
+        40
+      ],
+      "alpha_bounds": [
+        38,
+        40,
+        345,
+        344
+      ]
+    },
+    {
+      "index": 19,
+      "key": "mod_add",
+      "name": "Add Mod",
+      "row": 3,
+      "column": 1,
+      "rect": [
+        384,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        258,
+        779,
+        523,
+        1024
+      ],
+      "source_alpha_crop": [
+        7,
+        16,
+        256,
+        215
+      ],
+      "scale": 1.2329317269076305,
+      "paste": [
+        38,
+        69
+      ],
+      "alpha_bounds": [
+        38,
+        69,
+        345,
+        314
+      ]
+    },
+    {
+      "index": 20,
+      "key": "mod_swap",
+      "name": "Swap Mod",
+      "row": 3,
+      "column": 2,
+      "rect": [
+        768,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        523,
+        779,
+        785,
+        1024
+      ],
+      "source_alpha_crop": [
+        8,
+        6,
+        256,
+        219
+      ],
+      "scale": 1.2379032258064515,
+      "paste": [
+        38,
+        60
+      ],
+      "alpha_bounds": [
+        38,
+        60,
+        345,
+        324
+      ]
+    },
+    {
+      "index": 21,
+      "key": "star_up",
+      "name": "Star Up",
+      "row": 3,
+      "column": 3,
+      "rect": [
+        1152,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        785,
+        779,
+        1036,
+        1024
+      ],
+      "source_alpha_crop": [
+        7,
+        21,
+        239,
+        202
+      ],
+      "scale": 1.3232758620689655,
+      "paste": [
+        38,
+        72
+      ],
+      "alpha_bounds": [
+        38,
+        72,
+        345,
+        312
+      ]
+    },
+    {
+      "index": 22,
+      "key": "mod_remove",
+      "name": "Remove Mod",
+      "row": 3,
+      "column": 4,
+      "rect": [
+        1536,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1036,
+        779,
+        1305,
+        1024
+      ],
+      "source_alpha_crop": [
+        11,
+        33,
+        257,
+        204
+      ],
+      "scale": 1.2479674796747968,
+      "paste": [
+        38,
+        85
+      ],
+      "alpha_bounds": [
+        38,
+        85,
+        345,
+        298
+      ]
+    },
+    {
+      "index": 23,
+      "key": "lucky",
+      "name": "Lucky",
+      "row": 3,
+      "column": 5,
+      "rect": [
+        1920,
+        1152,
+        384,
+        384
+      ],
+      "source": "sources/power57_generated.png",
+      "source_sha256": "3ae568cb60e217ce075a9fe75dff2149162aa7375553e49d9de0e29f7d6a16ec",
+      "source_rect": [
+        1305,
+        779,
+        1536,
+        1024
+      ],
+      "source_alpha_crop": [
+        12,
+        13,
+        202,
+        217
+      ],
+      "scale": 1.5049019607843137,
+      "paste": [
+        49,
+        38
+      ],
+      "alpha_bounds": [
+        49,
+        38,
+        335,
+        345
+      ]
+    }
+  ],
+  "previews": [
+    {
+      "file": "preview_40px.png",
+      "bytes": 51595,
+      "sha256": "d7ad2934d1e5b5bb41ceb5c64654060fe87a2b5c9520a511b6cd20dd8acd4fa5",
+      "cell_display_px": 40,
+      "background": "#261e30"
+    },
+    {
+      "file": "preview_96px.png",
+      "bytes": 230921,
+      "sha256": "902512a3a351dddffef6e67a120e21ef89b4bda51c1b4bc746e1a40642f68eda",
+      "cell_display_px": 96,
+      "background": "#261e30"
+    }
+  ]
+}
