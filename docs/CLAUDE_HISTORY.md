@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.78 — Equipment in the Power theme (owner)
+
+buildGear restyled in place (layout/logic/tags unchanged): bg screen_gear_power_789; summary bar, slots, bag cells and item/mod panels use the Power palette (0x261e30 + 0x6d536d border; selected 0x423039 + gold 0xf4d9a1; equipped mint 0x85d5b2). Slots without gear art show pwIcon slot_<slot> (α .9 equipped starter / .5 empty, brought to top over the slot frame). Bag header ⚡/♻ draw pwIcon equip_best/salvage when power57 is loaded (zone labels '⚡'/'♻' kept for tests/tutorial). tests/power-family extended. Next: Merge → Forge. Owner phone review pending.
+
+
 # Previous delivery: v8.0.77 — art order 57 + Weave in the Power theme (owner)
 
 Order 57 atlas (24 icons, 6×4) packed by scripts/pack-power-57.py (sha check, 384→192 cells, WebP q90 alpha 100) → assets/art/mobile_ui_789/gear_power57_icons.webp (316,750 B, 1152×768). ASSET_SHEETS.power57_icons, PW57 = cell order. pwIcon(key) lazy-loads via loadPower57 (rebuilds the screen) and returns null → callers fall back to emoji. Shared pwCard/pwSection (Power palette). buildUpgrade portrait → buildWeavePW: Power bg, summary (weave_crest, rank name, Thread, mint core-power bar), YOUR CORES 3 rows (core icons, Lv + stars, total, mint gain, sugar price pill; first affordable row gold), RANK UP row (Weave pill when all max), MORE tiles Rank Rewards/Depths (tags weave_perks/weave_dig). Same buy/promote/tutorial/spotlight logic; landscape keeps old page. tests/power-family. Next: Equipment → Merge → Forge in the same style (docs/design/power_family). Owner phone review pending.
