@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.76 — Lobby stage name not cut (owner)
+
+buildLobby stage box: after the power line (pw2) the name is re-laid left-aligned at px+20 with room up to the power text (−10); 11→10px, then 2-line wrap at 10px from below the C?-? label to panel bottom −8, ellipsis only as last resort. Owner phone review pending.
+
+
 # Previous delivery: v8.0.75 — tidier menus (owner: UI looked messy; picked all 4 fixes + one Rewards row)
 
 _screenBg strips leading emoji from titles; generic header = Back pill + Sugar chip (0x291733 fill, 0xe5bb6b border, hr_ic_candy/ic_sugar icon) matching drawRosterHeader. Equipment/Forge _jrSkin=false (plum fallback; journal code/jrOn kept). drawNavBar dots via navBadge: char = new hero only, gLoadout = Mail/shovels/unpicked rank reward, gActivity = Login/Daily/Awards claimable (no more 'upgrade possible' dots). Rank Rewards fonts 8.5–10 → 10.5–11px, greys → #c3b8d0; Awards/Daily T() min 11px, #a89cb6 → #cfc1d4. HUB_GROUPS gActivity: one 'rewards' row (hasClaimableTarget('rewards')). Gold Chest pity pips skipped when they would hit the button. index.html Thai strings → English. Equipment 'No items yet' brighter. Lobby stage name fixed in v8.0.76. Owner phone review pending.

@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.78, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.79, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.77 — art order 57 + Weave in the Power theme (owner)
+# Latest delivery: v8.0.78 — Equipment in the Power theme (owner)
+
+buildGear restyled in place (layout/logic/tags unchanged): bg screen_gear_power_789; summary bar, slots, bag cells and item/mod panels use the Power palette (0x261e30 + 0x6d536d border; selected 0x423039 + gold 0xf4d9a1; equipped mint 0x85d5b2). Slots without gear art show pwIcon slot_<slot> (α .9 equipped starter / .5 empty, brought to top over the slot frame). Bag header ⚡/♻ draw pwIcon equip_best/salvage when power57 is loaded (zone labels '⚡'/'♻' kept for tests/tutorial). tests/power-family extended. Next: Merge → Forge. Owner phone review pending.
+
+# Previous delivery: v8.0.77 — art order 57 + Weave in the Power theme (owner)
 
 Order 57 atlas (24 icons, 6×4) packed by scripts/pack-power-57.py (sha check, 384→192 cells, WebP q90 alpha 100) → assets/art/mobile_ui_789/gear_power57_icons.webp (316,750 B, 1152×768). ASSET_SHEETS.power57_icons, PW57 = cell order. pwIcon(key) lazy-loads via loadPower57 (rebuilds the screen) and returns null → callers fall back to emoji. Shared pwCard/pwSection (Power palette). buildUpgrade portrait → buildWeavePW: Power bg, summary (weave_crest, rank name, Thread, mint core-power bar), YOUR CORES 3 rows (core icons, Lv + stars, total, mint gain, sugar price pill; first affordable row gold), RANK UP row (Weave pill when all max), MORE tiles Rank Rewards/Depths (tags weave_perks/weave_dig). Same buy/promote/tutorial/spotlight logic; landscape keeps old page. tests/power-family. Next: Equipment → Merge → Forge in the same style (docs/design/power_family). Owner phone review pending.
-
-# Previous delivery: v8.0.76 — Lobby stage name not cut (owner)
-
-buildLobby stage box: after the power line (pw2) the name is re-laid left-aligned at px+20 with room up to the power text (−10); 11→10px, then 2-line wrap at 10px from below the C?-? label to panel bottom −8, ellipsis only as last resort. Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
