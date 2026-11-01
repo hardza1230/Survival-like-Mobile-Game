@@ -1,8 +1,8 @@
 {
   "order": 61,
   "result": "pass",
-  "completed_chapters": 2,
-  "asset_count": 24,
+  "completed_chapters": 3,
+  "asset_count": 35,
   "checks": [
     {
       "key": "cs61_b01_fall",
@@ -335,6 +335,171 @@
       "crown": null
     },
     {
+      "key": "cs61_b11_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        585,
+        642
+      ]
+    },
+    {
+      "key": "cs61_b11_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b12_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        631,
+        505
+      ]
+    },
+    {
+      "key": "cs61_b12_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b13_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        585,
+        551
+      ]
+    },
+    {
+      "key": "cs61_b13_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b14_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        630,
+        750
+      ]
+    },
+    {
+      "key": "cs61_b14_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b15_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        608,
+        620
+      ]
+    },
+    {
+      "key": "cs61_b15_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
       "key": "cs61_ch1_onward",
       "decode": "pass",
       "dimensions": "pass",
@@ -351,6 +516,21 @@
     },
     {
       "key": "cs61_ch2_onward",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_ch3_onward",
       "decode": "pass",
       "dimensions": "pass",
       "mode": "RGBA",
@@ -545,6 +725,81 @@
         145
       ],
       "memory_background": "assets/art/story/boss45/cs_boss_09_memory.webp"
+    },
+    {
+      "boss": 11,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b11/preview_360x780.png",
+      "sha256": "f85b84c32c90bc642152ff2d96e8f5a1df241b57872e6e1b942bec0ccd322abf",
+      "three_shots": "b11/preview_three_shots.png",
+      "crown_viewport": [
+        195,
+        214
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_10_memory.webp"
+    },
+    {
+      "boss": 12,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b12/preview_360x780.png",
+      "sha256": "cdcb3912877faf924c91ad4a0951397b1ccc1c0bd0ce3e5ac89b020974cb010a",
+      "three_shots": "b12/preview_three_shots.png",
+      "crown_viewport": [
+        210,
+        168
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_11_memory.webp"
+    },
+    {
+      "boss": 13,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b13/preview_360x780.png",
+      "sha256": "515c43d0ef1c2b42bcd3f38a82fb7b13c821aa00d3a11c77e9912665029b3eee",
+      "three_shots": "b13/preview_three_shots.png",
+      "crown_viewport": [
+        195,
+        184
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_12_memory.webp"
+    },
+    {
+      "boss": 14,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b14/preview_360x780.png",
+      "sha256": "9626355bdd9612ab7b8583dcd17d4a522b750370bd7b5cc03cc7ebfd6ba708b7",
+      "three_shots": "b14/preview_three_shots.png",
+      "crown_viewport": [
+        210,
+        250
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_13_memory.webp"
+    },
+    {
+      "boss": 15,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b15/preview_360x780.png",
+      "sha256": "7e1f757722531a0f923a2c03c380a709faf52fb661421861bd02e728d85d230f",
+      "three_shots": "b15/preview_three_shots.png",
+      "crown_viewport": [
+        203,
+        207
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_14_memory.webp"
     }
   ],
   "visual_review": [
@@ -559,5 +814,154 @@
     "Opaque portrait art is 9:16; 360x780 viewport proof preserves full art in top 360x640 with blurred footer extension only in proofs. Actual consumer controls framing.",
     "Dark proof panels and labels exist only in previews, never in final art."
   ],
-  "scope": "Only incoming/boss_cutscene61 and art-order status. No game.js/runtime/versions changed."
+  "scope": "Only incoming/boss_cutscene61 and art-order status. No game.js/runtime/versions changed.",
+  "final_inventory": {
+    "fall": 15,
+    "freed": 15,
+    "onward": 3,
+    "fx": 2,
+    "total": 35,
+    "exact_file_and_source_hashes": "pass"
+  },
+  "crown_color_samples": [
+    {
+      "key": "cs61_b01_fall",
+      "purple_pixels_within_128px_box": 6117
+    },
+    {
+      "key": "cs61_b02_fall",
+      "purple_pixels_within_128px_box": 14447
+    },
+    {
+      "key": "cs61_b03_fall",
+      "purple_pixels_within_128px_box": 12968
+    },
+    {
+      "key": "cs61_b04_fall",
+      "purple_pixels_within_128px_box": 10532
+    },
+    {
+      "key": "cs61_b05_fall",
+      "purple_pixels_within_128px_box": 5208
+    },
+    {
+      "key": "cs61_b06_fall",
+      "purple_pixels_within_128px_box": 7638
+    },
+    {
+      "key": "cs61_b07_fall",
+      "purple_pixels_within_128px_box": 11271
+    },
+    {
+      "key": "cs61_b08_fall",
+      "purple_pixels_within_128px_box": 14802
+    },
+    {
+      "key": "cs61_b09_fall",
+      "purple_pixels_within_128px_box": 7887
+    },
+    {
+      "key": "cs61_b10_fall",
+      "purple_pixels_within_128px_box": 11085
+    },
+    {
+      "key": "cs61_b11_fall",
+      "purple_pixels_within_128px_box": 9929
+    },
+    {
+      "key": "cs61_b12_fall",
+      "purple_pixels_within_128px_box": 8073
+    },
+    {
+      "key": "cs61_b13_fall",
+      "purple_pixels_within_128px_box": 7556
+    },
+    {
+      "key": "cs61_b14_fall",
+      "purple_pixels_within_128px_box": 6058
+    },
+    {
+      "key": "cs61_b15_fall",
+      "purple_pixels_within_128px_box": 4884
+    }
+  ],
+  "reference_hashes": [
+    {
+      "file": "references/b01.png",
+      "sha256": "03043cff043ca49a523cbf238c39c9db386de170580876ddd1a16a2bf6b912c3"
+    },
+    {
+      "file": "references/b02.png",
+      "sha256": "59c9fbbcc5a3a0a090e116178b8997430f333f6bea8007b87dde610ca3080cfd"
+    },
+    {
+      "file": "references/b03.png",
+      "sha256": "009e9f0d842e4fd2d70f769405c34adb9524659d2b3b9243de65e0eb3be6a74e"
+    },
+    {
+      "file": "references/b04.png",
+      "sha256": "2d2f9109293ee5f6894dc31166d5bdf6bbb00bce08e86a43c13abe3cb9711f3b"
+    },
+    {
+      "file": "references/b05.png",
+      "sha256": "bbe2cd93c697f84e5471d9aca35aa4d543794c1378f9c721229e9dd153e22a31"
+    },
+    {
+      "file": "references/b06.png",
+      "sha256": "3ec057ec5d9697ae8e0c3cea842a5e8794f2e6dd6d8f99820ab1749c4487d4df"
+    },
+    {
+      "file": "references/b07.png",
+      "sha256": "d1889e972587c540496eeef25638663ba09608af233ce8b6d79e41776ba4cb35"
+    },
+    {
+      "file": "references/b08.png",
+      "sha256": "c87ec3a74a3ce0e1bc142e2baa71e942c8be3638b712e1294fcd53c27f58aa69"
+    },
+    {
+      "file": "references/b09.png",
+      "sha256": "63eee4ebbcf9179f9c4fe6b18b1440a914e63996728949e29a61410b09402bce"
+    },
+    {
+      "file": "references/b10.png",
+      "sha256": "ce35fd8a8f44c429914ab7fa34ebbab7381c0a8b424b9db5028396d781a37372"
+    },
+    {
+      "file": "references/b11.png",
+      "sha256": "01c033d132648d9e0d18645bed0f896557322cc0d65358e9b9e25f221b5f6db6"
+    },
+    {
+      "file": "references/b12.png",
+      "sha256": "f7580a8931ae7a6cadafe934b68d2a9145dc894a9bce1922dc71ce427c8fc387"
+    },
+    {
+      "file": "references/b13.png",
+      "sha256": "5521477b9bf8702918c00e30be18eb4ae8191c0829bba01f25fa315b91642857"
+    },
+    {
+      "file": "references/b14.png",
+      "sha256": "2a5e139e0daa068dd7c005d783fba8adbf21aab4b295c5b0322888cd90ba442b"
+    },
+    {
+      "file": "references/b15.png",
+      "sha256": "b4970525ec759006d7f7a5a94a2650b18d7c66a7519b37c2b38ff5b7e1fa8016"
+    },
+    {
+      "file": "references/planter_kneel_s16.webp",
+      "sha256": "24e24623bd266a8de26340374c227086ea73bdc3ec4cd84c26aaa60fa34bb325"
+    },
+    {
+      "file": "references/planter_old_s16.webp",
+      "sha256": "102ebffc13a1e32af5542360b88cd612d53098b4f6516a0095aec0cd678a4957"
+    },
+    {
+      "file": "references/ruby_talk_normal.webp",
+      "sha256": "65fdba183a8dc0a1d8e1285e22123df980ed77910c78a02431937b910fe280f2"
+    }
+  ],
+  "refinements": {
+    "count": 4,
+    "details": "REFINEMENTS.json",
+    "purpose": "Bud/mushroom full framing; clock-orchid no numerals and safe margins"
+  }
 }

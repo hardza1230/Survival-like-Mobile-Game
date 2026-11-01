@@ -1,7 +1,7 @@
 {
   "order": 61,
-  "completed_chapters": 2,
-  "assets_delivered": 24,
+  "completed_chapters": 3,
+  "assets_delivered": 35,
   "total_order_assets": 35,
   "delivery": "source only; not registered or wired",
   "assets": [
@@ -636,6 +636,321 @@
       }
     },
     {
+      "key": "cs61_b11_fall",
+      "file": "b11/cs61_b11_fall.png",
+      "bytes": 3293129,
+      "sha256": "b3705d40e740ba15c41c5a4b540da74e8a2d4a8932d2abe5e544ce55823b43f8",
+      "size": [
+        1080,
+        1920
+      ],
+      "alpha": false,
+      "background": "opaque",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b11/cs61_b11_fall_source.png",
+      "source_sha256": "53123ec33912c9a749dbbb80220cd28ae9330d84425b0e884ef80472bdf04a5a",
+      "transform": {
+        "opaque_resize": "uniform centered cover",
+        "source_size": [
+          941,
+          1672
+        ]
+      },
+      "crown": [
+        585,
+        642
+      ],
+      "text_safe": [
+        0,
+        1440,
+        1080,
+        480
+      ]
+    },
+    {
+      "key": "cs61_b11_freed",
+      "file": "b11/cs61_b11_freed.png",
+      "bytes": 957107,
+      "sha256": "2e381a08b440477021f5ae4ecc17f97770ee6a0a8b2513ed0eec96b1004be23e",
+      "size": [
+        768,
+        1024
+      ],
+      "alpha": true,
+      "background": "transparent",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b11/cs61_b11_freed_source.png",
+      "source_sha256": "9a7f5e3e1b1a4dc0bf9d10cb15800cf03daac10d1178c7b82b59dc7a3ffd59cd",
+      "transform": {
+        "alpha_crop": [
+          23,
+          39,
+          1070,
+          1384
+        ],
+        "uniform_fit": [
+          640,
+          860
+        ],
+        "placement": "center",
+        "alpha": "generated alpha preserved; invisible RGB zeroed"
+      }
+    },
+    {
+      "key": "cs61_b12_fall",
+      "file": "b12/cs61_b12_fall.png",
+      "bytes": 3796850,
+      "sha256": "66a21e565fe088760bea8f7bc136bba971a66a3e5e2d06b0b3017ada732c56f7",
+      "size": [
+        1080,
+        1920
+      ],
+      "alpha": false,
+      "background": "opaque",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b12/cs61_b12_fall_source.png",
+      "source_sha256": "c5e62d11d975de46f6ce9fa9925ce86f3b973cef05aaee5e037a4eb9bf515cb3",
+      "transform": {
+        "opaque_resize": "uniform centered cover",
+        "source_size": [
+          941,
+          1672
+        ]
+      },
+      "crown": [
+        631,
+        505
+      ],
+      "text_safe": [
+        0,
+        1440,
+        1080,
+        480
+      ]
+    },
+    {
+      "key": "cs61_b12_freed",
+      "file": "b12/cs61_b12_freed.png",
+      "bytes": 979323,
+      "sha256": "577d85b7903325281ca940b65683ac47a9ae3f8e4b213c97c4c2c98263a4f0a7",
+      "size": [
+        768,
+        1024
+      ],
+      "alpha": true,
+      "background": "transparent",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b12/cs61_b12_freed_source.png",
+      "source_sha256": "d93b88edc93a55a792c5c8becb194923c3b9c395f5483ffd29c3835c16441867",
+      "transform": {
+        "alpha_crop": [
+          64,
+          49,
+          1070,
+          1418
+        ],
+        "uniform_fit": [
+          640,
+          860
+        ],
+        "placement": "center",
+        "alpha": "generated alpha preserved; invisible RGB zeroed"
+      }
+    },
+    {
+      "key": "cs61_b13_fall",
+      "file": "b13/cs61_b13_fall.png",
+      "bytes": 4093432,
+      "sha256": "ccd0973bb40887e276d6f8239ec37b3e357eebebe56457ddc08c24ef9ad19d7c",
+      "size": [
+        1080,
+        1920
+      ],
+      "alpha": false,
+      "background": "opaque",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b13/cs61_b13_fall_source.png",
+      "source_sha256": "1a119c67ed09ca07e0baf3dc9f2694874fa0d3811c98e6740388d2dd472b5822",
+      "transform": {
+        "opaque_resize": "uniform centered cover",
+        "source_size": [
+          941,
+          1672
+        ]
+      },
+      "crown": [
+        585,
+        551
+      ],
+      "text_safe": [
+        0,
+        1440,
+        1080,
+        480
+      ]
+    },
+    {
+      "key": "cs61_b13_freed",
+      "file": "b13/cs61_b13_freed.png",
+      "bytes": 929465,
+      "sha256": "ce9c41b87477cf153d75ec9fe7409c02db009cb658cd5f041531dbf08ea2f0e0",
+      "size": [
+        768,
+        1024
+      ],
+      "alpha": true,
+      "background": "transparent",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b13/cs61_b13_freed_source.png",
+      "source_sha256": "d15e7f895a8dfce4a0e69cbcb0cb4b0811bb6728072eb74aea5260126a2c7de0",
+      "transform": {
+        "alpha_crop": [
+          27,
+          6,
+          1069,
+          1440
+        ],
+        "uniform_fit": [
+          640,
+          860
+        ],
+        "placement": "center",
+        "alpha": "generated alpha preserved; invisible RGB zeroed"
+      }
+    },
+    {
+      "key": "cs61_b14_fall",
+      "file": "b14/cs61_b14_fall.png",
+      "bytes": 3070788,
+      "sha256": "bf682cd07ae75d275917e961f4c4de4aa9398bc01c1d01c5d2d72f00a331805d",
+      "size": [
+        1080,
+        1920
+      ],
+      "alpha": false,
+      "background": "opaque",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b14/cs61_b14_fall_source.png",
+      "source_sha256": "b1a330b61fea4a3dfbdbb54409e14546f367a8f679e6dd515891ae5e21835ebe",
+      "transform": {
+        "opaque_resize": "uniform centered cover",
+        "source_size": [
+          941,
+          1672
+        ]
+      },
+      "crown": [
+        630,
+        750
+      ],
+      "text_safe": [
+        0,
+        1440,
+        1080,
+        480
+      ]
+    },
+    {
+      "key": "cs61_b14_freed",
+      "file": "b14/cs61_b14_freed.png",
+      "bytes": 817988,
+      "sha256": "9fcb73add5f3cfc8b0463b8864e4f57eec3d420444b42777568687ad61c841aa",
+      "size": [
+        768,
+        1024
+      ],
+      "alpha": true,
+      "background": "transparent",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b14/cs61_b14_freed_source.png",
+      "source_sha256": "27a85d9e83711f08b8a265b2dc99b90fd4e47d3db140e0cb0e269956e6f03cef",
+      "transform": {
+        "alpha_crop": [
+          34,
+          19,
+          1053,
+          1414
+        ],
+        "uniform_fit": [
+          640,
+          860
+        ],
+        "placement": "center",
+        "alpha": "generated alpha preserved; invisible RGB zeroed"
+      }
+    },
+    {
+      "key": "cs61_b15_fall",
+      "file": "b15/cs61_b15_fall.png",
+      "bytes": 3724818,
+      "sha256": "ff8ba8d6dbd90cefe4adbe81350d1c1301af377a488b1c0642070d22b7063e39",
+      "size": [
+        1080,
+        1920
+      ],
+      "alpha": false,
+      "background": "opaque",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b15/cs61_b15_fall_source.png",
+      "source_sha256": "e4e574205bb4c97b945fdc75c06020c1f5b3afb1ffd65bd559e1b54a447af191",
+      "transform": {
+        "opaque_resize": "uniform centered cover",
+        "source_size": [
+          941,
+          1672
+        ]
+      },
+      "crown": [
+        608,
+        620
+      ],
+      "text_safe": [
+        0,
+        1440,
+        1080,
+        480
+      ]
+    },
+    {
+      "key": "cs61_b15_freed",
+      "file": "b15/cs61_b15_freed.png",
+      "bytes": 587101,
+      "sha256": "0a9e2301519d829e590dae47b97e4a349823eab2d550641578f32391b7a20c2f",
+      "size": [
+        768,
+        1024
+      ],
+      "alpha": true,
+      "background": "transparent",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/b15/cs61_b15_freed_source.png",
+      "source_sha256": "b37f9c962aaa37f5084bd3d73627bcec7395790c581397fd93113380bb539f2c",
+      "transform": {
+        "alpha_crop": [
+          214,
+          25,
+          922,
+          1400
+        ],
+        "uniform_fit": [
+          640,
+          860
+        ],
+        "placement": "center",
+        "alpha": "generated alpha preserved; invisible RGB zeroed"
+      }
+    },
+    {
       "key": "cs61_ch1_onward",
       "file": "shared/cs61_ch1_onward.png",
       "bytes": 2989341,
@@ -673,6 +988,29 @@
       "mode": "RGBA",
       "source": "sources/shared/cs61_ch2_onward_source.png",
       "source_sha256": "63fda4f3cc43683fc885d47df928475568dc43c2757d901b1bab491cb30ebb3f",
+      "transform": {
+        "opaque_resize": "uniform centered cover",
+        "source_size": [
+          941,
+          1672
+        ]
+      }
+    },
+    {
+      "key": "cs61_ch3_onward",
+      "file": "shared/cs61_ch3_onward.png",
+      "bytes": 3874017,
+      "sha256": "e760c0defe8823a2e1bf799ae3f8f841c1320ff421b361f543badd93e9f6433c",
+      "size": [
+        1080,
+        1920
+      ],
+      "alpha": false,
+      "background": "opaque",
+      "frames": 1,
+      "mode": "RGBA",
+      "source": "sources/shared/cs61_ch3_onward_source.png",
+      "source_sha256": "0433402d5c98cf659889fdeebc070979e36aee9c18eccd42ea3086f9937bcdcf",
       "transform": {
         "opaque_resize": "uniform centered cover",
         "source_size": [

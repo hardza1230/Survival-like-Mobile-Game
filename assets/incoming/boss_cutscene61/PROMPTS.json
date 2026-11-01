@@ -389,9 +389,10 @@
       "background": "transparent",
       "frames": 1,
       "refs": [
-        "E:/Heart/TT/survival-mobile/.git/art61_refs/b15.png"
+        "E:/Heart/TT/survival-mobile/assets/art/story/cs_pup_planter_old.webp",
+        "E:/Heart/TT/survival-mobile/assets/art/story/cs_pup_planter_kneel.webp"
       ],
-      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind HUMAN ELDER, the First Planter finally free: small elderly gardener with gentle wrinkled face, silver hair/beard, simple warm cream-and-earth gardener robes and root-colored sash; tearful relieved smile. Holds the REMOVED ornate golden crown with dark purple crystal safely in BOTH hands below chest. No crown on head, no armored monster casing. Echo original gold/purple color accents without curse. Full body. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind HUMAN ELDER, the First Planter finally free: small elderly gardener with gentle wrinkled face, silver hair/beard, simple warm cream-and-earth gardener robes and root-colored sash; tearful relieved smile. Holds the REMOVED ornate golden crown with dark purple crystal safely in BOTH hands below chest. No crown on head, no armored monster casing. Echo original gold/purple color accents without curse. Full body. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death. IMPORTANT existing S16 continuity: reference1 is his EXACT freed human face/outfit, reference2 supplies the EXACT removed leaf-gold crown with central purple crystal. Preserve wavy swept silver-white hair, short white beard/moustache, cream rolled-sleeve shirt and cream gardener apron with botanical ornament (pictorial leaf only), brown trousers/boots, brown waist sash with green leaves. Same friendly chibi elderly man, now BOTH hands hold the removed crown at waist/chest and eyes tearful with relief. No basket this time, no crown on head, no extra figure. Entire hair and boots inside safe alpha margin."
     },
     {
       "key": "cs61_ch1_onward",
@@ -484,14 +485,28 @@
       "cs61_b09_freed",
       "cs61_b10_fall",
       "cs61_b10_freed",
+      "cs61_b11_fall",
+      "cs61_b11_freed",
+      "cs61_b12_fall",
+      "cs61_b12_freed",
+      "cs61_b13_fall",
+      "cs61_b13_freed",
+      "cs61_b14_fall",
+      "cs61_b14_freed",
+      "cs61_b15_fall",
+      "cs61_b15_freed",
       "cs61_ch1_onward",
       "cs61_ch2_onward",
+      "cs61_ch3_onward",
       "vfx_cs61_crown_shatter",
       "vfx_cs61_flavor_return"
     ],
-    "remaining_jobs": "Other job prompts are planned and not yet delivered in this batch.",
+    "remaining_jobs": [],
     "identity_inputs": "refs are actual paths passed to imagegen; matching reference crops are preserved in references/",
     "references_crops": "boss01 first160px cell; other bosses first256px cell of original sprite in order61 table",
-    "refinements": "REFINEMENTS.json contains four actual framing/dial edit calls"
+    "refinements": "REFINEMENTS.json contains four actual framing/dial edit calls",
+    "generation_calls": 35,
+    "refinement_calls": 4,
+    "identity_continuity": "FirstPlanter freed uses existing s16 old/kneel portraits in addition to boss sprite morphology; delivered in references/"
   }
 }
