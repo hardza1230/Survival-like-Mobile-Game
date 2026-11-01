@@ -1,8 +1,8 @@
 {
   "order": 61,
   "result": "pass",
-  "completed_chapters": 1,
-  "asset_count": 13,
+  "completed_chapters": 2,
+  "asset_count": 24,
   "checks": [
     {
       "key": "cs61_b01_fall",
@@ -170,7 +170,187 @@
       "crown": null
     },
     {
+      "key": "cs61_b06_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        556,
+        570
+      ]
+    },
+    {
+      "key": "cs61_b06_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b07_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        590,
+        460
+      ]
+    },
+    {
+      "key": "cs61_b07_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b08_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        570,
+        420
+      ]
+    },
+    {
+      "key": "cs61_b08_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b09_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        590,
+        705
+      ]
+    },
+    {
+      "key": "cs61_b09_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b10_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        562,
+        435
+      ]
+    },
+    {
+      "key": "cs61_b10_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
       "key": "cs61_ch1_onward",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_ch2_onward",
       "decode": "pass",
       "dimensions": "pass",
       "mode": "RGBA",
@@ -290,6 +470,81 @@
         152
       ],
       "memory_background": "assets/art/story/boss45/cs_boss_04_memory.webp"
+    },
+    {
+      "boss": 6,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b06/preview_360x780.png",
+      "sha256": "d392b2442f1ea8c4fd14331fea91c5f0b477e9d05f32e15f30d092d71438e0b6",
+      "three_shots": "b06/preview_three_shots.png",
+      "crown_viewport": [
+        185,
+        190
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_05_memory.webp"
+    },
+    {
+      "boss": 7,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b07/preview_360x780.png",
+      "sha256": "f05e6c19304c63137816c0fc83862a36b2dcc080a7778e5370ee832387c77b0b",
+      "three_shots": "b07/preview_three_shots.png",
+      "crown_viewport": [
+        197,
+        153
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_06_memory.webp"
+    },
+    {
+      "boss": 8,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b08/preview_360x780.png",
+      "sha256": "4730b4415523f77807cb897da15903c753437c48366380ce4469a13a383528bd",
+      "three_shots": "b08/preview_three_shots.png",
+      "crown_viewport": [
+        190,
+        140
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_07_memory.webp"
+    },
+    {
+      "boss": 9,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b09/preview_360x780.png",
+      "sha256": "ffae8d780156914e1c0c098d55f8bdac97152df5e291f1c7ebb303aedba8f96b",
+      "three_shots": "b09/preview_three_shots.png",
+      "crown_viewport": [
+        197,
+        235
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_08_memory.webp"
+    },
+    {
+      "boss": 10,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b10/preview_360x780.png",
+      "sha256": "6e75c8a36cdbac1137c3d2a531dbb5c19015625b0e079db49a5ef57236bfe453",
+      "three_shots": "b10/preview_three_shots.png",
+      "crown_viewport": [
+        187,
+        145
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_09_memory.webp"
     }
   ],
   "visual_review": [
