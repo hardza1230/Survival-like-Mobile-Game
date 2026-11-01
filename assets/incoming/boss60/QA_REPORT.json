@@ -1,0 +1,813 @@
+{
+  "order": 60,
+  "result": "pass",
+  "asset_count": 20,
+  "technical_checks": [
+    {
+      "key": "vfx_body_shockwave",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            61,
+            130,
+            199,
+            172
+          ],
+          "visible_pixels": 1847,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            45,
+            108,
+            214,
+            183
+          ],
+          "visible_pixels": 5997,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            22,
+            95,
+            232,
+            199
+          ],
+          "visible_pixels": 10431,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            19,
+            66,
+            239,
+            187
+          ],
+          "visible_pixels": 15332,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            28,
+            63,
+            232,
+            177
+          ],
+          "visible_pixels": 9534,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            35,
+            87,
+            220,
+            170
+          ],
+          "visible_pixels": 3923,
+          "brightest_rgb": 255
+        }
+      ]
+    },
+    {
+      "key": "vfx_body_skydrop",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            63,
+            143,
+            193,
+            177
+          ],
+          "visible_pixels": 3431,
+          "brightest_rgb": 31
+        },
+        {
+          "bbox": [
+            53,
+            140,
+            204,
+            180
+          ],
+          "visible_pixels": 4740,
+          "brightest_rgb": 41
+        },
+        {
+          "bbox": [
+            44,
+            137,
+            214,
+            183
+          ],
+          "visible_pixels": 6117,
+          "brightest_rgb": 41
+        },
+        {
+          "bbox": [
+            34,
+            133,
+            224,
+            187
+          ],
+          "visible_pixels": 8049,
+          "brightest_rgb": 43
+        },
+        {
+          "bbox": [
+            31,
+            53,
+            222,
+            191
+          ],
+          "visible_pixels": 16837,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            31,
+            75,
+            221,
+            190
+          ],
+          "visible_pixels": 12995,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            44,
+            124,
+            215,
+            186
+          ],
+          "visible_pixels": 6138,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            60,
+            136,
+            199,
+            183
+          ],
+          "visible_pixels": 3464,
+          "brightest_rgb": 242
+        }
+      ]
+    },
+    {
+      "key": "vfx_body_sweep",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            60,
+            97,
+            278,
+            192
+          ],
+          "visible_pixels": 3118,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            51,
+            93,
+            345,
+            200
+          ],
+          "visible_pixels": 9679,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            38,
+            39,
+            361,
+            194
+          ],
+          "visible_pixels": 19275,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            27,
+            38,
+            357,
+            213
+          ],
+          "visible_pixels": 28404,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            53,
+            62,
+            339,
+            167
+          ],
+          "visible_pixels": 6042,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            54,
+            71,
+            313,
+            166
+          ],
+          "visible_pixels": 2046,
+          "brightest_rgb": 255
+        }
+      ]
+    },
+    {
+      "key": "vfx_body_charge",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            143,
+            74,
+            230,
+            103
+          ],
+          "visible_pixels": 1066,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            32,
+            71,
+            227,
+            105
+          ],
+          "visible_pixels": 3274,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            22,
+            46,
+            230,
+            90
+          ],
+          "visible_pixels": 5650,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            21,
+            52,
+            228,
+            89
+          ],
+          "visible_pixels": 3971,
+          "brightest_rgb": 255
+        },
+        {
+          "bbox": [
+            34,
+            44,
+            227,
+            71
+          ],
+          "visible_pixels": 1703,
+          "brightest_rgb": 252
+        },
+        {
+          "bbox": [
+            79,
+            47,
+            220,
+            67
+          ],
+          "visible_pixels": 650,
+          "brightest_rgb": 226
+        }
+      ]
+    },
+    {
+      "key": "bshot_01",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            37,
+            119,
+            91
+          ],
+          "visible_pixels": 3088,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.705,
+      "bright_core_pixels": 1714,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_02",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            34,
+            119,
+            94
+          ],
+          "visible_pixels": 3740,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.902,
+      "bright_core_pixels": 1450,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_03",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            28,
+            118,
+            99
+          ],
+          "visible_pixels": 3205,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.563,
+      "bright_core_pixels": 2255,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_04",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            10,
+            29,
+            118,
+            98
+          ],
+          "visible_pixels": 2834,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.706,
+      "bright_core_pixels": 1832,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_05",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            22,
+            119,
+            105
+          ],
+          "visible_pixels": 5782,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.909,
+      "bright_core_pixels": 1750,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_06",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            24,
+            118,
+            103
+          ],
+          "visible_pixels": 4150,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.594,
+      "bright_core_pixels": 1835,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_07",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            35,
+            119,
+            93
+          ],
+          "visible_pixels": 2947,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.748,
+      "bright_core_pixels": 1190,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_08",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            44,
+            118,
+            83
+          ],
+          "visible_pixels": 2061,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.62,
+      "bright_core_pixels": 968,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_09",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            11,
+            23,
+            119,
+            104
+          ],
+          "visible_pixels": 3453,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.739,
+      "bright_core_pixels": 1552,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_10",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            10,
+            41,
+            118,
+            86
+          ],
+          "visible_pixels": 1966,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.822,
+      "bright_core_pixels": 178,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_11",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            43,
+            119,
+            85
+          ],
+          "visible_pixels": 2798,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.775,
+      "bright_core_pixels": 1526,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_12",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            39,
+            119,
+            89
+          ],
+          "visible_pixels": 2891,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.619,
+      "bright_core_pixels": 2266,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_13",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            38,
+            118,
+            90
+          ],
+          "visible_pixels": 2651,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.714,
+      "bright_core_pixels": 1128,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_14",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            9,
+            34,
+            119,
+            94
+          ],
+          "visible_pixels": 4185,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.957,
+      "bright_core_pixels": 628,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_15",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            10,
+            28,
+            119,
+            99
+          ],
+          "visible_pixels": 2990,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.765,
+      "bright_core_pixels": 1604,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    },
+    {
+      "key": "bshot_pin",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "cell_boundary": "pass",
+      "frames": [
+        {
+          "bbox": [
+            10,
+            22,
+            119,
+            106
+          ],
+          "visible_pixels": 3225,
+          "brightest_rgb": 255
+        }
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "dark_boundary_fraction_max_rgb_below_150": 0.976,
+      "bright_core_pixels": 1163,
+      "visual_direction": "right, inspected ImageGen donor and floor contact sheet"
+    }
+  ],
+  "previews": [
+    {
+      "file": "preview_alpha_128_60.png",
+      "bytes": 235392,
+      "sha256": "6b5bc55e8e8b5bb034c6f05e0670061cb10ab9793d5f34071d418e2dca1ebf1a",
+      "size": [
+        768,
+        768
+      ],
+      "frames": 1,
+      "decode": "pass"
+    },
+    {
+      "file": "preview_body_moves.png",
+      "bytes": 412112,
+      "sha256": "bcda01524b0091ff3c282038ea5df6d302928592fd2bbc86ba9d0bee8a5df75c",
+      "size": [
+        640,
+        400
+      ],
+      "frames": 1,
+      "decode": "pass"
+    },
+    {
+      "file": "preview_body_moves_floor.gif",
+      "bytes": 2304459,
+      "sha256": "f3108a0c85468de3e63410054a69cbd00e7425d2c097411e1f7439ffb34f53d8",
+      "size": [
+        640,
+        400
+      ],
+      "frames": 12,
+      "decode": "pass"
+    },
+    {
+      "file": "preview_bullets_60px.png",
+      "bytes": 219357,
+      "sha256": "65b84fee3b1f29995f03e8cf07a25d2b84026d68255795bb429938055f63deb6",
+      "size": [
+        640,
+        448
+      ],
+      "frames": 1,
+      "decode": "pass"
+    },
+    {
+      "file": "preview_bullets_floor.gif",
+      "bytes": 1950981,
+      "sha256": "20daa244ed230d9c8da1a903365c51c26985cada684a281912eba6466e4cc218",
+      "size": [
+        640,
+        448
+      ],
+      "frames": 12,
+      "decode": "pass"
+    }
+  ],
+  "floor_references": [
+    {
+      "file": "assets/generated/bg1_sour_ant_nest.webp",
+      "sha256": "cb4f7b48b6915a61605ecbb8f3e95364585788aa6f7efeb3a4a4049f0ed1be6c"
+    },
+    {
+      "file": "assets/art/floors/floor_c21.webp",
+      "sha256": "08bc433fb74af6acadc0bc49a6f33315a85ee4650ec5091114cd4b43a96a69b5"
+    },
+    {
+      "file": "assets/art/floors/floor_c31.webp",
+      "sha256": "7a5b5a238fa4ed599db1b9cf8d670044c351126e543a199e9a7959ba4d488659"
+    }
+  ],
+  "visual_review": {
+    "silhouettes": "16 distinct subjects; all leading noses right; no text or badges",
+    "palette": "Deep violet/fuchsia and cranberry rose with dark rims; no pale lavender EXP body, candy wrapper or bubblegum pink sugar look. Ice/glass directional shard silhouettes differ from upright EXP diamonds.",
+    "body_moves": "Neutral ivory/stone/dust, black opaque sheets; phase growth retained; final frames fade."
+  },
+  "notes": [
+    "GIFs are source-art composites on unchanged actual stage floor textures, not gameplay captures or runtime timing validation.",
+    "Skydrop frames 0-3 encode warning shadow density in low-gray mask. Preview uses dark tint; future code must dark-tint these four mask frames separately. Black-on-black cannot encode a visible shadow under luminance-to-alpha.",
+    "VFX preview follows existing max-RGB x1.35 alpha/unpremultiplication; black sheets remain intact in deliverables.",
+    "One separate built-in ImageGen call per requested asset (20 calls). Sources preserved; only mechanical crop/resize/grid repacking performed.",
+    "Runtime files, GAME_VERSION and asset registration unchanged.",
+    "npm run check passed on unchanged runtime with read-only canonical-LF fs shim (.git/art57-canonical-lf.cjs); working tree runtime bytes were not normalized."
+  ],
+  "runtime_integration_tested": false,
+  "repository_validation": {
+    "baseline_commit": "a28d27b36564d68f9219b3a65411a270510531bd",
+    "baseline_version": "8.0.79",
+    "command": "npm run check",
+    "exit_code": 0,
+    "log": ".git/art60-latest-check.log",
+    "canonical_lf_read_shim": ".git/art57-canonical-lf.cjs",
+    "runtime_files_modified": false
+  }
+}

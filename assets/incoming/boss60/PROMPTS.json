@@ -1,0 +1,348 @@
+{
+  "order": 60,
+  "generator": "built-in image_gen",
+  "references": [
+    {
+      "file": "assets/incoming/boss_vfx_c1_c2/vfx_b01_impact.png",
+      "role": "painted boss VFX style, not subject"
+    },
+    {
+      "file": "assets/incoming/boss_vfx_c3/vfx_b11_stampede_trail.png",
+      "role": "low horizontal dust dynamics style"
+    },
+    {
+      "file": "assets/incoming/exp_orbs/xp_orbs.png",
+      "role": "negative reference inspected, avoid collectible silhouettes/pale palettes"
+    },
+    {
+      "file": "assets/icons/icon_sugar.png",
+      "role": "negative reference inspected, avoid candy pickup identity"
+    }
+  ],
+  "jobs": [
+    {
+      "key": "vfx_body_shockwave",
+      "frame_w": 256,
+      "frame_h": 256,
+      "frames": 6,
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "background": "black",
+      "prompt": "Use case: stylized-concept. Production animation sprite sheet for Mochi Mayhem boss combat. Cute confectionery fantasy, 3/4 top-down, hand-painted soft candy/stone shading, clean mobile-readable effect silhouettes, restrained warm ivory/cream and neutral gray ONLY so future code can tint per boss. Match existing boss VFX references in painted finish, NOT their exact subject or grid. PURE SOLID OPAQUE BLACK #000000 background across every empty area and all gutters. No colored matte, no gray haze outside effect, no ground scenery, NO text/letters/numbers/logo/watermark/border/dividers. Fixed center/pivot and consistent camera/scale across frames; all particles safely inside cells with15percent black margins. Each frame is a different chronological animation phase, not identical copies. No body/hero/boss character drawing. No pastel pink/lilac collectible colors or rainbow sparkles. EXACTLY SIX square frames in THREE columns by TWO rows, whole canvas3:2. Read row-major. One ground CRACK SHOCKWAVE, centered at same point every frame; very flat ground ellipse width80percent cell, height48percent cell. Phase1 tiny impact crack, phase2 cracks open into small ring with a few sugar-stone crumbs, phase3 wider fractured ring and little pale crumbs jumping, phase4 broad ring with radiating ivory fissures, phase5 crumbling fading broken ring, phase6 almost gone few small faint crumbs. Hard visible fracture rim and restrained luminous cream edges, black ground interior open; no mound or permanent terrain chunk. Cracks remain within ring footprint, suitable to repeat these rings along a line. Only this six-phase ground rupture effect."
+    },
+    {
+      "key": "vfx_body_skydrop",
+      "frame_w": 256,
+      "frame_h": 256,
+      "frames": 8,
+      "donor_cols": 4,
+      "donor_rows": 2,
+      "background": "black",
+      "prompt": "Use case: stylized-concept. Production animation sprite sheet for Mochi Mayhem boss combat. Cute confectionery fantasy, 3/4 top-down, hand-painted soft candy/stone shading, clean mobile-readable effect silhouettes, restrained warm ivory/cream and neutral gray ONLY so future code can tint per boss. Match existing boss VFX references in painted finish, NOT their exact subject or grid. PURE SOLID OPAQUE BLACK #000000 background across every empty area and all gutters. No colored matte, no gray haze outside effect, no ground scenery, NO text/letters/numbers/logo/watermark/border/dividers. Fixed center/pivot and consistent camera/scale across frames; all particles safely inside cells with15percent black margins. Each frame is a different chronological animation phase, not identical copies. No body/hero/boss character drawing. No pastel pink/lilac collectible colors or rainbow sparkles. EXACTLY EIGHT square frames in FOUR columns by TWO rows, whole canvas2:1. Read row-major. Shared ground pivot at50percent X and68percent Y in each cell. Frame1 a faint low-neutral-gray flat elliptical SHADOW MASK on black, frame2 shadow ellipse a little denser, frame3 denser shadow, frame4 darkest/heaviest shadow represented by higher mask coverage (all first4are flat featureless gray shadow ellipses only, NO rock or dust). Masks low-gray visible on black, intensity encodes opacity for dark-tinted ground shadow later. Frame5 ONE generic heavy neutral gray faceted sugar-stone block drops onto exact ground pivot with a compact ivory impact burst. Frame6 block disappears behind low cream dust and crumbs, frame7 thinner lower fading dust at same pivot, frame8 almost vanished tiny faint dust. Final impact/dust must not change center. No ice-blue or root colors; generic tintable stone. No floating warning arrows or symbols."
+    },
+    {
+      "key": "vfx_body_sweep",
+      "frame_w": 384,
+      "frame_h": 256,
+      "frames": 6,
+      "donor_cols": 2,
+      "donor_rows": 3,
+      "background": "black",
+      "prompt": "Use case: stylized-concept. Production animation sprite sheet for Mochi Mayhem boss combat. Cute confectionery fantasy, 3/4 top-down, hand-painted soft candy/stone shading, clean mobile-readable effect silhouettes, restrained warm ivory/cream and neutral gray ONLY so future code can tint per boss. Match existing boss VFX references in painted finish, NOT their exact subject or grid. PURE SOLID OPAQUE BLACK #000000 background across every empty area and all gutters. No colored matte, no gray haze outside effect, no ground scenery, NO text/letters/numbers/logo/watermark/border/dividers. Fixed center/pivot and consistent camera/scale across frames; all particles safely inside cells with15percent black margins. Each frame is a different chronological animation phase, not identical copies. No body/hero/boss character drawing. No pastel pink/lilac collectible colors or rainbow sparkles. EXACTLY SIX WIDE RECTANGULAR frames, TWO columns by THREE rows. EACH cell aspect3:2, whole atlas SQUARE. Read row-major. One broad curved ARM/TAIL SWEEP light trail, neutral ivory-white/cream, shallow top-down crescent occupying80percent of wide cell, same pivot every frame. Frame1 short thin gathering arc, frame2 lengthening curved swipe, frame3 strong sweeping wide ivory crescent with visible brush-like streaks, frame4 broadest crescent finishing across right side and a few tiny crumbs, frame5 broken thin fading arc, frame6 near-empty faint curved streak. NOT a full circular ring, NOT a straight beam, no literal arm/tail or weapon; just curved kinetic light trace. Broad horizontal footprint, clean black center/negative space. Do not make six square panels."
+    },
+    {
+      "key": "vfx_body_charge",
+      "frame_w": 256,
+      "frame_h": 128,
+      "frames": 6,
+      "donor_cols": 2,
+      "donor_rows": 3,
+      "background": "black",
+      "prompt": "Use case: stylized-concept. Production animation sprite sheet for Mochi Mayhem boss combat. Cute confectionery fantasy, 3/4 top-down, hand-painted soft candy/stone shading, clean mobile-readable effect silhouettes, restrained warm ivory/cream and neutral gray ONLY so future code can tint per boss. Match existing boss VFX references in painted finish, NOT their exact subject or grid. PURE SOLID OPAQUE BLACK #000000 background across every empty area and all gutters. No colored matte, no gray haze outside effect, no ground scenery, NO text/letters/numbers/logo/watermark/border/dividers. Fixed center/pivot and consistent camera/scale across frames; all particles safely inside cells with15percent black margins. Each frame is a different chronological animation phase, not identical copies. No body/hero/boss character drawing. No pastel pink/lilac collectible colors or rainbow sparkles. EXACTLY SIX VERY WIDE RECTANGULAR frames in TWO columns by THREE rows. EACH cell2:1, whole atlas4:3. Read row-major. One low horizontal dust wake and speed streaks BEHIND a boss charging RIGHT; forward tip/pivot at80percent cell width and50percent height, dust trail stretches LEFT behind this point. Frame1 small compact dust puff near right pivot, frame2 two low cream puffs spreading left, frame3 longest low dust plume plus thin horizontal speed streaks toward right, frame4 broken trail traveling right with low dust curls behind, frame5 sparse fading dust/streaks, frame6 nearly gone wisps. No character or vehicle, no arrow icon, no tall explosion, no ground slab. Low horizontal dust maximum70percent cell height, never clipping cell edges."
+    },
+    {
+      "key": "bshot_01",
+      "boss": "C1-1 Ant Empress",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One LIME-GREEN ACID TEARDROP, fat rear on left, clear sharp fluid nose right. Chartreuse/yellow-green body, bright cream core and deep olive edge. A little trailing acid flick left, not a gem."
+    },
+    {
+      "key": "bshot_02",
+      "boss": "C1-2 Clogmaw",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One ROTTEN FOAM BUBBLE projectile, dirty turquoise/teal-green oval with a pointed leading foam nose right and two tiny rear bubble lobes left. Bright pale-yellow inner highlight, dark forest-teal thick rim; not a collectible cyan diamond."
+    },
+    {
+      "key": "bshot_03",
+      "boss": "C1-3 Griddle",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One HOT ORANGE FIRE STAR, asymmetric flame-star with longest leading point RIGHT and short flame tongues streaming left, amber-cream hot core, burnt deep rust-red outline. Not symmetric gold reward sparkle."
+    },
+    {
+      "key": "bshot_04",
+      "boss": "C1-4 Frost Golem",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One JAGGED ICE FLAKE / SHARD, icy sky-blue asymmetrical snowflake spear with longest ice point RIGHT, two short angular prongs behind, ivory bright core, thick deep navy edges. No violet, no tall symmetric EXP crystal."
+    },
+    {
+      "key": "bshot_05",
+      "boss": "C1-5 Great Hunger",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One DEEP PLUM/VIOLET energy orb with a comically hungry OPEN MOUTH facing RIGHT and a few rounded cream teeth, a small bright cream energy core visible in the rear half. Dark indigo perimeter, subtle violet body, short rough tail left. No pale-lavender exterior, no red tongue/blood, no horror fangs."
+    },
+    {
+      "key": "bshot_06",
+      "boss": "C2-1 Bud",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One spinning cluster of THREE CORAL-ROSE PETALS, pointed petal tips leading RIGHT and curling shorter petal tails left, ivory pollen core. Use rich dark coral/cranberry rose with thick oxblood edges, NOT bubblegum Sugar pink, no candy wrappers or round crystal-loot shape."
+    },
+    {
+      "key": "bshot_07",
+      "boss": "C2-2 Behemoth",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One YELLOW-GREEN SPORE, small irregular seed-like spore body with tiny blunt nodules, ivory luminous core, dark moss/olive edge, longer leading spore point RIGHT and little wisps behind left. Not an EXP droplet."
+    },
+    {
+      "key": "bshot_08",
+      "boss": "C2-3 Hornet Queen",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One AMBER HONEY STINGER, compact tapered needle of thick honey, long pointed nose RIGHT, two very short amber tail vanes left, bright cream stripe through center and dark umber rim. Candy-fantasy stinger, no blood or actual insect."
+    },
+    {
+      "key": "bshot_09",
+      "boss": "C2-4 Chronobloom",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One LAVENDER CLOCK STAR projectile, asymmetric star with its longest point RIGHT, dark clock hands visible on a small bright ivory dial at center, no clock numerals or tick letters. Main mass deep saturated periwinkle/indigo-violet with muted lavender highlights, heavy charcoal-violet perimeter; NOT the pale lilac EXP star or orbit crystal. Short tiny angular violet streak behind left."
+    },
+    {
+      "key": "bshot_10",
+      "boss": "C2-5 True Rootmother",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One RED-BROWN ROOT THORN, twisted woody root spike with long sharp nose RIGHT and two small root forks trailing left, warm ivory sap-energy seam, deep walnut outline. No mouth or face, no gore."
+    },
+    {
+      "key": "bshot_11",
+      "boss": "C3-1 Colossus",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One GOLDEN WHEAT KERNEL dart, elongated pointed grain nose RIGHT, visible dark center grain crease, subtle ivory inner light, matte toasted-gold husk and thick brown rim. No foil, wrappers, faceted gem or symmetrical loot star."
+    },
+    {
+      "key": "bshot_12",
+      "boss": "C3-2 Hollow Bloom",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One PEACH NECTAR DROP, smooth asymmetric fluid dart with point RIGHT and short syrup tail left, luminous ivory core, warm apricot/peach-orange body with deep caramel outline. No pale pink Sugar coloration, not a faceted gem."
+    },
+    {
+      "key": "bshot_13",
+      "boss": "C3-3 Glass Gardener",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One CLEAR CYAN GLASS SPLINTER cluster, long narrow triangular leading shard RIGHT with two small angular broken slivers behind left, cream-white light through center and thick dark teal/navy edges. Transparent-looking painted glass but solid readable core, no violet EXP crystal silhouette."
+    },
+    {
+      "key": "bshot_14",
+      "boss": "C3-4 Seedwarden",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One GREEN SEED IN ITS HUSK, elongated emerald kernel poking through a split hard moss-green shell, leading kernel point RIGHT and short husk flaps trailing left. Bright ivory seed seam, dark forest-brown perimeter. Not a leaf pickup, no gem facets."
+    },
+    {
+      "key": "bshot_15",
+      "boss": "C3-5 First Planter",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One RED FLAME STAR, asymmetric charred-crimson/red-orange star with long point RIGHT and a few short embers trailing left, hot ivory core and dark maroon/near-black boundary. No pastel pink, no Sugar wrappers or symmetric golden EXP-star shape."
+    },
+    {
+      "key": "bshot_pin",
+      "boss": "Pinnacle",
+      "frame_w": 128,
+      "frame_h": 128,
+      "frames": 1,
+      "donor_cols": 1,
+      "donor_rows": 1,
+      "background": "transparent",
+      "prompt": "Use case: stylized-concept. ONE isolated painted ENEMY BOSS PROJECTILE, single frame, target128x128, true transparent RGBA background. NOT an icon badge, not a loot pickup, not a sheet. Cute confectionery fantasy combat matching legacy Mochi Mayhem boss effects: soft hand-painted shading, slightly top-down3/4, simple strong silhouette, BRIGHT IVORY/CREAM inner energy core and a substantial very DARK color-matched outline band (about6percent projectile width) so it reads on light and dark floors at60px. Main projectile points/travels RIGHT: front/nose/longest leading point on right, short trailing shape only on left. Centered compact body fits inside central82percent of square, complete empty transparent border; any trail stays short and inside safe margin. No external white glow cloud, ground shadow, scenery, letters/numbers/symbol labels/frame/watermark. Friendly but clearly dangerous enemy shot, not frightening, no blood/gore. Do NOT resemble EXP drops or Sugar: no pale lilac crystal, no bubblegum-pink candy, no wrappers, collectible orbit rings, rainbow facets or circular item medallion. Preserve directional silhouette and dark boundary rather than a plain glowing orb. Subject: One DEEP FUCHSIA / PURPLE STAR projectile with a broad BLACK RAY HALO tightly hugging its asymmetrical star outline. Long leading point RIGHT, short back rays left, luminous ivory inner core with saturated dark magenta-violet body, charcoal-black perimeter rays. NOT bubblegum pink Sugar, not pale lilac EXP, not a loot badge, no orbit ring."
+    }
+  ],
+  "execution": {
+    "tool": "built-in image_gen",
+    "calls": 20,
+    "referenced_image_paths": [],
+    "reference_note": "Listed repository references were visually inspected to author prompts, not passed as image inputs.",
+    "source_files": [
+      {
+        "key": "vfx_body_shockwave",
+        "file": "sources/vfx_body_shockwave_source.png",
+        "transparent_background": false
+      },
+      {
+        "key": "vfx_body_skydrop",
+        "file": "sources/vfx_body_skydrop_source.png",
+        "transparent_background": false
+      },
+      {
+        "key": "vfx_body_sweep",
+        "file": "sources/vfx_body_sweep_source.png",
+        "transparent_background": false
+      },
+      {
+        "key": "vfx_body_charge",
+        "file": "sources/vfx_body_charge_source.png",
+        "transparent_background": false
+      },
+      {
+        "key": "bshot_01",
+        "file": "sources/bshot_01_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_02",
+        "file": "sources/bshot_02_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_03",
+        "file": "sources/bshot_03_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_04",
+        "file": "sources/bshot_04_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_05",
+        "file": "sources/bshot_05_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_06",
+        "file": "sources/bshot_06_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_07",
+        "file": "sources/bshot_07_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_08",
+        "file": "sources/bshot_08_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_09",
+        "file": "sources/bshot_09_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_10",
+        "file": "sources/bshot_10_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_11",
+        "file": "sources/bshot_11_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_12",
+        "file": "sources/bshot_12_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_13",
+        "file": "sources/bshot_13_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_14",
+        "file": "sources/bshot_14_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_15",
+        "file": "sources/bshot_15_source.png",
+        "transparent_background": true
+      },
+      {
+        "key": "bshot_pin",
+        "file": "sources/bshot_pin_source.png",
+        "transparent_background": true
+      }
+    ]
+  }
+}
