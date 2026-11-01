@@ -63,6 +63,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
+- **Simple Forge (เจ้าของเลือก 1 พ.ย.)** ทำตาม `docs/FORGE_SIMPLE.md` (2 ท่า เพิ่ม mod เลือก 1 ใน 3 / อัปดาว · ไม่มี FP · สกุลเงินเดียว Twist Cream · ช่องเปิดตามความหายาก) + หน้า Forge ธีม Power
+- อาร์ต 61 บท 1 (b01–b05 + shared) ส่งแล้ว รอผูก (`assets/incoming/boss_cutscene61/`) · บท 2–3 รออาร์ต
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame Mirror Network: ขั้น 1 เสร็จ v7.9.40 · ขั้น 2 (สาย + Glass World) รอเจ้าของเริ่ม
