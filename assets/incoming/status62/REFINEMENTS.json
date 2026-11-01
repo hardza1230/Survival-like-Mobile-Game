@@ -1,0 +1,19 @@
+{
+  "tool": "built-in image_gen",
+  "refinements": [
+    {
+      "key": "st_p_barrier",
+      "prompt": "Edit this exact six-frame honey-glass BARRIER LOOP sheet. Preserve3columns x2rows equal square cells, original6 phase order, honey-gold material and tiny top hexagon/foot ellipse. REQUIRED: make the hexagon border/segments VERY THIN, about2percent of cell width, positioned on outer perimeter near x8percent/92percent and y8percent/92percent. The centered circular disc of radius35percent of cell width must be COMPLETELY EMPTY TRUE ALPHA0 in every frame. No amber fill, no interior mist, no large solid panels. Steady-state loop of a thin hexagonal glass OUTLINE with small moving edge glints. No text, actors, grid lines or colored backdrop. Real RGBA transparency. Every frame fully contained with4percent transparent outer margin.",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-d59ad3ad-dca5-416c-b5a4-363504bf602b.png"
+      ]
+    },
+    {
+      "key": "st_fx_barrier_break",
+      "prompt": "Edit this exact six-frame honey-glass BARRIER BREAK sheet. Preserve3columns x2rows equal square cells, original6 phase order, honey-gold material and tiny top hexagon/foot ellipse. REQUIRED: make the hexagon border/segments VERY THIN, about2percent of cell width, positioned on outer perimeter near x8percent/92percent and y8percent/92percent. The centered circular disc of radius35percent of cell width must be COMPLETELY EMPTY TRUE ALPHA0 in every frame. No amber fill, no interior mist, no large solid panels. Six phases: thin outline; tiny cracks;6-8 TINY narrow rim pieces separate; pieces move outward; pieces fade;few faint glints. Keep every tiny shard outside radius35percent clear center. No text, actors, grid lines or colored backdrop. Real RGBA transparency. Every frame fully contained with4percent transparent outer margin.",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-583299f8-a962-45a6-8162-d257ad1b8a16.png"
+      ]
+    }
+  ]
+}

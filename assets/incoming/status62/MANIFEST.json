@@ -1,0 +1,687 @@
+{
+  "order": 62,
+  "delivery": "source only; waiting for runtime integration",
+  "files": [
+    {
+      "key": "st_burn",
+      "file": "st_burn.png",
+      "bytes": 42212,
+      "sha256": "9f4eb0319845b250b9538b3b94bb5e244adf35c63240fc5ff2ed55f755bb0bab",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "source": "sources/st_burn_source.png",
+      "source_sha256": "8e97e1f7701047b0aa685163bb56e4e4d9ace652ad9ff2b9dd83698e3fc5efa0",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 2,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_chill",
+      "file": "st_chill.png",
+      "bytes": 79051,
+      "sha256": "82498654b79a599be96e894d750ac9356d8be359a000f3cf31e7c541c2de2176",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "feet",
+      "background": "transparent",
+      "source": "sources/st_chill_source.png",
+      "source_sha256": "cb251262967ad83509e65a5a64ed3c660e310e432d5ba41d40ba362e18bda83f",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_brittle",
+      "file": "st_brittle.png",
+      "bytes": 92257,
+      "sha256": "2d57f665a1d016a90d655b8a2a0748c8add786d54b2c91b794081349a52f4695",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_brittle_source.png",
+      "source_sha256": "cf2004389b540c9d2cf85b6cd2a787faea07d429ea94664d3724baaf4250df68",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_sour",
+      "file": "st_sour.png",
+      "bytes": 70191,
+      "sha256": "b4c0a7d6c027d48b4e17a432390bbd022ad5506cf8360f44a6e9894d7a9bf180",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_sour_source.png",
+      "source_sha256": "5f85264cd10550e6299bc633dc24d96df8c5c5915406e557cd1a4e56f894c694",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_stun",
+      "file": "st_stun.png",
+      "bytes": 15007,
+      "sha256": "1716bdafe40f2cbd4e3f7b3c68f1ef2c6e173fefbff2087bb7a0fc99f7cd8ff3",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_stun_source.png",
+      "source_sha256": "11a057db6c1948e0a53e766572ac59c3c5cdb06f6d3af098d8924e78ae3e9e08",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": "max18percent height, y3.5percent",
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_shock",
+      "file": "st_shock.png",
+      "bytes": 31309,
+      "sha256": "2056af0d33aba4faefd3ee0a3a8a5421ac313e2040b1f3742f19c249fa37b784",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "source": "sources/st_shock_source.png",
+      "source_sha256": "5962fb9621c5eb5bf87bc0f4e8700ac761d9e99362a4f015d4a2d1c541935696",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 2,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_mark",
+      "file": "st_mark.png",
+      "bytes": 13083,
+      "sha256": "3c8823c82ddec68eec8d7c71d31114522db0aea3ea93ae2f651d8435f7c41ae6",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_mark_source.png",
+      "source_sha256": "aa475b2696178260db84371f60866efc0e60307e7e3f3a25ba8582b714752895",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": "max18percent height, y3.5percent",
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_p_slow",
+      "file": "st_p_slow.png",
+      "bytes": 87716,
+      "sha256": "1c0013046b2517d804fc6909eeab73b3c566bdde6ffc0446a6f0fbef4d6f9439",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_p_slow_source.png",
+      "source_sha256": "13650fbe19345ba2067156d797e80d06392e8349bcc474d5bdc98fbd19f8dabc",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_p_poison",
+      "file": "st_p_poison.png",
+      "bytes": 167333,
+      "sha256": "fd610c023faf58c7c67348394c0da13d10c99943bb22732bd0da9116cf4ae2a0",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_p_poison_source.png",
+      "source_sha256": "7431389f6e54835081ced3dab045dbecc4fbeab67f554bd939f896719e03edf7",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_p_bleed",
+      "file": "st_p_bleed.png",
+      "bytes": 86187,
+      "sha256": "389c8e63d0c5c6d5340abb16a23de0c633c9d9450f94197c21f848499c8bd0f1",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_p_bleed_source.png",
+      "source_sha256": "545297ecb8a06a1a97209cbfee9208eaaf3aa4abbb65814e7b8e54360e2ac393",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_p_haste",
+      "file": "st_p_haste.png",
+      "bytes": 138087,
+      "sha256": "fca77d44bde8172dfc8f075453d6811c04a0d1493288752f9fdacd0415e1e76b",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "source": "sources/st_p_haste_source.png",
+      "source_sha256": "bdf2d19fc81f920c4b93a88599bceb1b2ce4860ddcadd06d352974d09dee0638",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 2,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_p_guard",
+      "file": "st_p_guard.png",
+      "bytes": 118790,
+      "sha256": "0edabf6a6c4b57ba2455518a34426fc9531a187b67c1282494624350697cbd2b",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "source": "sources/st_p_guard_source.png",
+      "source_sha256": "fa97f384d843a0b8b423d4b6778055489cd2b71e15f97d9b6f20a4df191356e0",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 2,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_p_barrier",
+      "file": "st_p_barrier.png",
+      "bytes": 191063,
+      "sha256": "73c5af1b21f051ea59d13844db979bedcffe05800d4a0091995850e67a35d3df",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_p_barrier_source.png",
+      "source_sha256": "02892aabc4e032e4172f0811fdb462ede9ebda86cf25189e869529e145a1154d",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": [
+        0.5,
+        0.85
+      ]
+    },
+    {
+      "key": "st_fx_apply",
+      "file": "st_fx_apply.png",
+      "bytes": 48563,
+      "sha256": "aacfec42a87e1317a4bb15cb489c8d1bbf542a8d19d486d6349c73faa363337a",
+      "width": 768,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "black",
+      "source": "sources/st_fx_apply_source.png",
+      "source_sha256": "d3b6a5b511d1f7a7ae5ede6dfacd2069fb172cce946140a57c2422cdff73ebac",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 2,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_fx_barrier_break",
+      "file": "st_fx_barrier_break.png",
+      "bytes": 154921,
+      "sha256": "2315e8bb9ad41b353a9b318ef3778ac1c1b7e14ffd746adb8bb3bbd6ee6b8acb",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_fx_barrier_break_source.png",
+      "source_sha256": "8107ac371bf659fb4f0d0272b2fdafef539c6aec8f8a82ff720610b3e9ab6962",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_fx_cleanse",
+      "file": "st_fx_cleanse.png",
+      "bytes": 118168,
+      "sha256": "43c95ca8a263792c252549e2ec51ea199f4196064f3d0e09f6f73f9bd5172fec",
+      "width": 960,
+      "height": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "black",
+      "source": "sources/st_fx_cleanse_source.png",
+      "source_sha256": "50847c384180070c586a03869155e455ed13dce669ef648e956fe680d8904697",
+      "packing": {
+        "donor_grid": [
+          3,
+          2
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 2,
+        "icon_fit_px": null,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "centerPoint": [
+        0.5,
+        0.5
+      ],
+      "feetPoint": null
+    },
+    {
+      "key": "st_icons",
+      "file": "st_icons.png",
+      "bytes": 449499,
+      "sha256": "68d96109465cd95765601fb16ddcad1b5a6fafe4c48ffbc8ce60a66cb264b625",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 24,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "transparent",
+      "source": "sources/st_icons_source.png",
+      "source_sha256": "ce36503865bf79b51e5cca358b07e85ecc2e2848cc0fbae0db6f8f8501f447c8",
+      "packing": {
+        "donor_grid": [
+          6,
+          4
+        ],
+        "gutter_trim_px": 8,
+        "black_border_px": 0,
+        "icon_fit_px": 110,
+        "top_fit": null,
+        "alpha_noise_threshold": 3
+      },
+      "cells": [
+        {
+          "subkey": "frozen",
+          "row": 0,
+          "col": 0
+        },
+        {
+          "subkey": "chill",
+          "row": 0,
+          "col": 1
+        },
+        {
+          "subkey": "brittle",
+          "row": 0,
+          "col": 2
+        },
+        {
+          "subkey": "burn",
+          "row": 0,
+          "col": 3
+        },
+        {
+          "subkey": "sour",
+          "row": 0,
+          "col": 4
+        },
+        {
+          "subkey": "stun",
+          "row": 0,
+          "col": 5
+        },
+        {
+          "subkey": "mark",
+          "row": 1,
+          "col": 0
+        },
+        {
+          "subkey": "lured",
+          "row": 1,
+          "col": 1
+        },
+        {
+          "subkey": "enraged",
+          "row": 1,
+          "col": 2
+        },
+        {
+          "subkey": "p_slow",
+          "row": 1,
+          "col": 3
+        },
+        {
+          "subkey": "p_poison",
+          "row": 1,
+          "col": 4
+        },
+        {
+          "subkey": "p_bleed",
+          "row": 1,
+          "col": 5
+        },
+        {
+          "subkey": "p_haste",
+          "row": 2,
+          "col": 0
+        },
+        {
+          "subkey": "p_guard",
+          "row": 2,
+          "col": 1
+        },
+        {
+          "subkey": "p_barrier",
+          "row": 2,
+          "col": 2
+        },
+        {
+          "subkey": "p_shell",
+          "row": 2,
+          "col": 3
+        },
+        {
+          "subkey": "p_regen",
+          "row": 2,
+          "col": 4
+        },
+        {
+          "subkey": "p_starving",
+          "row": 2,
+          "col": 5
+        },
+        {
+          "subkey": "shock",
+          "row": 3,
+          "col": 0
+        }
+      ],
+      "unused_cells": [
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    }
+  ]
+}

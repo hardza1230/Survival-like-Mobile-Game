@@ -1,0 +1,373 @@
+{
+  "order": 62,
+  "tool": "built-in image_gen",
+  "calls": 17,
+  "jobs": [
+    {
+      "key": "st_burn",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: SOLID OPAQUE PURE BLACK #000000 across the entire sheet, including empty central discs. Small deep-orange and burnt-red glossy candy flames, exactly3-4 short tongues along lower-left/lower-right outer body perimeter and a few embers. Restrained low flame, never a bonfire, avoid coral/salmon enemy warning colors. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_chill",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "feet",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Pale ice-blue chilled wisps and2-3 small snowflakes circulate only around a thin FOOT ellipse centered x50%,y85%, ellipse radius x32%,y4%. Delicate chill mist much lighter than a frozen shell; absolutely no ice block. Feet anchor. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_brittle",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Thin angular ice-white/cyan CRACKED ice scales on left and right outer body rim, x10% and90%, with tiny twinkles. Brittle crystalline fractures, not a solid block or shield. No central crisscross cracks. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_sour",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Bright lemon-yellow #fff27a lime juice droplets descend along LEFT and RIGHT outside edges, few fizzy little bubbles; yellow-green colored outlines. Sour citrus tang, NOT green poison, NOT gold loot. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_stun",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "orbit",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Exactly THREE tiny warm pale-gold candy stars and ONE miniature cream mochi bird orbit in a shallow ellipse ABOVE the head, entirely in TOP quarter of each cell. Six clockwise phases separated by60degrees, frame5 continues naturally into0. No skulls, no actual monster/hero."
+    },
+    {
+      "key": "st_shock",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: SOLID OPAQUE PURE BLACK #000000 across the entire sheet, including empty central discs. Exactly3-4 short bright electric-CYAN #8ff3ff zigzag arcs with white cores jump between points ONLY on outer ellipse/body perimeter, plus2-3 pinprick sparks. Sharp angular ELECTRIC discharge, no mist. MUCH thinner and smaller/quieter than existing Taro full-stack aura reference; no complete filled halo, no cross-body bolt. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam. Reference shows FULL-STACK aura STYLE only. New normal shock is much thinner and electric CYAN, not a copy of complete purple ring.",
+      "refs": [
+        "E:/Heart/TT/survival-mobile/assets/art/taro_unique/vfx_taro_shock_aura.webp"
+      ]
+    },
+    {
+      "key": "st_mark",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "orbit",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. ONE small cherry-red confectionery targeting seal with subtle pale-gold rim, round crosshair with FOUR short points. Floating entirely within TOP quarter of cell ABOVE the head; empty underneath. Slow six-phase slight rotation/breathing pulse, not a damage projectile or danger circle."
+    },
+    {
+      "key": "st_p_slow",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Hero slow status: shallow sticky ICE-BLUE SYRUP FOOT ellipse at y85%, radius x32%,y4%, two stretchy syrup tethers on outer left/right edge and2 small ice crystals. Tiny pale ice mote ABOVE head. Hollow sticky edge, never a solid pool across torso. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_p_poison",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Hero poison: bright lime-green #7dff6a to deep-green candy bubbles rise/pop around outer left/right sides from thin FOOT ellipse at y85%, radius x32%,y4%; small faint mist ABOVE head only. NO skull or chemical label, no central green fog. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_p_bleed",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Hero bleeding shown as GLOSSY STRAWBERRY JAM/SYRUP #ff4a5a droplets, rounded translucent jelly drops slide down outside left/right edges into thin FOOT ellipse at y85%,radius x32%,y4%. One tiny jam droplet above head. Candy glaze highlights, NO blood, wounds, splatter, gore or dripping from a body. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_p_haste",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: SOLID OPAQUE PURE BLACK #000000 across the entire sheet, including empty central discs. Hero haste: restrained white-MINT sweeping SPEED streaks flow around outer left/right perimeter and tiny mint-leaf sparks circle a thin FOOT ellipse y85%,radius x32%,y4%. A small mint wisp ABOVE head. No weapon blades, no neon full aura. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_p_guard",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "black",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: SOLID OPAQUE PURE BLACK #000000 across the entire sheet, including empty central discs. Hero guard: extremely THIN open warm cream-gold half-dome outline around outer body, sparse tiny icing-lace curls on perimeter ONLY; subtle slow glints. Thin FOOT ellipse y85%,radius x32%,y4% and tiny pale shield glint above head. Dome INTERIOR COMPLETELY EMPTY, no golden veil covering actor; softer paler than rare-loot gold. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_p_barrier",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "loop",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. Hero barrier: transparent HONEY-GOLD GLASS HEXAGON rim segments around body perimeter, crisp six-sided angular silhouette, small glints travel along outer edge. Thin FOOT ellipse y85%,radius x32%,y4% plus ONE tiny hexagon above head. Central hexagon window genuinely EMPTY TRANSPARENT, no amber fill; distinct from round blue Sugar Shell. Six phases of a subtle steady-state LOOP: tiny position/flicker changes only, stable footprint, no growing intro or disappearing end. Frame5 must flow back to0 with a small adjacent step, same effect amount at seam."
+    },
+    {
+      "key": "st_fx_apply",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "black",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "oneshot",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: SOLID OPAQUE PURE BLACK #000000 across the entire sheet, including empty central discs. One-shot STATUS APPLY pop: small thin NEUTRAL IVORY-CREAM ring expands around clear center with FOUR short four-point sparkles scattered outward, then fades to nearly nothing. Neutral white tintable, no colored core/explosion. Six phases: hint,small ring,medium ring,large thin ring,sparse sparks,last faint sparks."
+    },
+    {
+      "key": "st_fx_barrier_break",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "transparent",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "oneshot",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: GENUINELY TRANSPARENT RGBA, including empty central discs and all gutters. No white/gray/checkerboard matte. One-shot BARRIER BREAK matching honey-gold transparent HEXAGON shell: frame0 intact thin outer hexagon;1 small rim fractures;2 rim separates into6-8 rounded golden glass pieces;3 pieces spread outward;4 pieces fade;5 a few very faint bits. Every phase leaves central body circle clear. No sharp violent shrapnel, no actor. Input reference is the matching intact barrier loop: copy only its honey-gold segmented hexagon MATERIAL/SILHOUETTE. New sheet is a DIFFERENT one-shot break sequence, not the loop. Preserve a hollow clear center. All six cells fit inside safe margin, final phase faint.",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-d59ad3ad-dca5-416c-b5a4-363504bf602b.png"
+      ]
+    },
+    {
+      "key": "st_fx_cleanse",
+      "size": 160,
+      "frameWidth": 160,
+      "frameHeight": 160,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "black",
+      "donor_cols": 3,
+      "donor_rows": 2,
+      "kind": "oneshot",
+      "prompt": "Use case: stylized-concept. Painted mobile-game STATUS EFFECT sprite sheet for Mochi Mayhem, confectionery fantasy, slightly top-down3/4, soft dark color-matched outlines, glossy candy highlights, clean small-scale readable shapes. NO CHARACTERS (no hero, monster, mannequin or face), only the effect. No letters/numbers/labels/watermarks/grid lines. EXACTLY6 equal SQUARE frames arranged3columns x2rows, row-major. Each cell is a fixed canvas with identical scale and anchor; keep all artwork within8-92percent margins. CRITICAL NEGATIVE SPACE: the central circular disc centered at(50%,50%) with RADIUS30percent of cell width is COMPLETELY EMPTY background in EVERY cell. Put effects only at outer sides, above y20percent, or foot ellipse below y80percent. Never span across the center, never fill an aura disk. Draw strokes thick enough to read when whole cell is56px, but restrained so the hero remains the brightest figure. Background: SOLID OPAQUE PURE BLACK #000000 across the entire sheet, including empty central discs. One-shot CLEANSE: delicate WHITE-PALE-CYAN clear sparkles rise UP from thin foot ellipse at y85%; a clear soap-bubble OUTLINE gently pops around outer body rim. Six phases footglint,rising side bubbles,thin outer bubble,sidesparkles rise,sparse high glints,last faint motes. Tintable neutral, compassionate clean effect not healing cross, no central flash."
+    },
+    {
+      "key": "st_icons",
+      "size": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 24,
+      "columns": 6,
+      "rows": 4,
+      "loop": false,
+      "anchor": "center",
+      "background": "transparent",
+      "kind": "icons",
+      "cells": [
+        {
+          "subkey": "frozen",
+          "row": 0,
+          "col": 0
+        },
+        {
+          "subkey": "chill",
+          "row": 0,
+          "col": 1
+        },
+        {
+          "subkey": "brittle",
+          "row": 0,
+          "col": 2
+        },
+        {
+          "subkey": "burn",
+          "row": 0,
+          "col": 3
+        },
+        {
+          "subkey": "sour",
+          "row": 0,
+          "col": 4
+        },
+        {
+          "subkey": "stun",
+          "row": 0,
+          "col": 5
+        },
+        {
+          "subkey": "mark",
+          "row": 1,
+          "col": 0
+        },
+        {
+          "subkey": "lured",
+          "row": 1,
+          "col": 1
+        },
+        {
+          "subkey": "enraged",
+          "row": 1,
+          "col": 2
+        },
+        {
+          "subkey": "p_slow",
+          "row": 1,
+          "col": 3
+        },
+        {
+          "subkey": "p_poison",
+          "row": 1,
+          "col": 4
+        },
+        {
+          "subkey": "p_bleed",
+          "row": 1,
+          "col": 5
+        },
+        {
+          "subkey": "p_haste",
+          "row": 2,
+          "col": 0
+        },
+        {
+          "subkey": "p_guard",
+          "row": 2,
+          "col": 1
+        },
+        {
+          "subkey": "p_barrier",
+          "row": 2,
+          "col": 2
+        },
+        {
+          "subkey": "p_shell",
+          "row": 2,
+          "col": 3
+        },
+        {
+          "subkey": "p_regen",
+          "row": 2,
+          "col": 4
+        },
+        {
+          "subkey": "p_starving",
+          "row": 2,
+          "col": 5
+        },
+        {
+          "subkey": "shock",
+          "row": 3,
+          "col": 0
+        }
+      ],
+      "prompt": "Use case: stylized-concept. ONE STATUS ICON ATLAS for Mochi Mayhem. TRUE TRANSPARENT RGBA background. EXACT6columns x4rows square cells, overall3:2 landscape, intended final768x512 with128px cells. Cute painted glossy candy emblems matching attached frost-burn/tremor icons: bold dark color-matched outer rim, very simple single readable symbol, 2-3 soft shade levels, NO fine filigree. Must read at18px. Each icon centered within central80percent of its own cell, no cell lines/borders or text. Icons are small round candy BEADS with subject symbol; enemy icons no extra gold frame, PLAYER icons indices9-17 have a distinct CREAM-GOLD outer ring. Empty transparent gutters. EXACT cell order rowmajor: 0 frozen: angular clear blue ice cube; 1 chill: pale-blue simple snowflake; 2 brittle: blue ice scale with ONE bold fracture; 3 burn: deep orange-red candy flame; 4 sour: bright lemon slice with ONE juice droplet; 5 stun: soft pale-gold star with spiral; 6 mark: cherry-red four-point targeting seal with gold accents; 7 lured: peach candy heart with curved lure trail; 8 enraged: simple red angry-brow shape on deep-red bead, NOT a whole face; 9 p_slow: one mochi boot stuck in ice-blue syrup; 10 p_poison: lime-green bubbly poison droplet, NO skull; 11 p_bleed: glossy strawberry-jam red droplet, NOT blood; 12 p_haste: mint-leaf wing with two white speed streaks; 13 p_guard: cream-gold shield with one icing curl; 14 p_barrier: honey-gold GLASS HEXAGON, angular; 15 p_shell: clear blue ROUND sugar-shell bubble; 16 p_regen: green heart with two sprouting leaves; 17 p_starving: muted gray EMPTY BOWL with crossed spoons, no lettering; 18 shock: short electric-CYAN white-core angular lightning bolt on deep-blue round bead. Last row has ONLY shock in first cell index18; cells19,20,21,22,23 MUST be completely transparent empty. No skulls, blood, letters, numbers, labels, badges with text, logos or watermark. Do not draw a sheet background or checkerboard. No pale-lavender EXP gems or pink wrapped candy. Keep the icons consistent and simplify aggressively for18px.",
+      "refs": [
+        "E:/Heart/TT/survival-mobile/assets/art/p1_feedback/frost_burn.webp",
+        "E:/Heart/TT/survival-mobile/assets/art/p1_feedback/tremor.webp"
+      ]
+    }
+  ],
+  "refinement_log": "REFINEMENTS.json",
+  "refinement_input_copies": [
+    "sources/inputs/st_p_barrier_before_refinement.png",
+    "sources/inputs/st_fx_barrier_break_before_refinement.png"
+  ]
+}
