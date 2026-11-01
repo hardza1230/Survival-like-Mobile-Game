@@ -255,5 +255,37 @@
       ]
     }
   ],
-  "note": "Generated preview IDs are candidates, not saved persistent TTS voice IDs. Save only owner-selected candidates using POST /v1/text-to-voice. Chapter boss candidates are provisional chapter-level voices, not fifteen approved boss identities."
+  "note": "Generated preview IDs are candidates, not saved persistent TTS voice IDs. Save only owner-selected candidates using POST /v1/text-to-voice. Chapter boss candidates are provisional chapter-level voices, not fifteen approved boss identities.",
+  "selection": {
+    "by": "assistant (owner delegated 1 Nov 2026) — chosen by measured pitch/speech rate vs voice description; owner may swap after listening",
+    "takes": {
+      "strawberry": 3,
+      "ruby": 2,
+      "mint": 1,
+      "cocoa": 1,
+      "taro": 3,
+      "yuzu": 1,
+      "grandma": 3,
+      "planter": 1,
+      "hunger": 3,
+      "boss_c1": 3,
+      "boss_c2": 1,
+      "boss_c3": 2
+    },
+    "generated_voice_ids": {
+      "strawberry": "8QUnEwwZ6IwX142WE9ER",
+      "ruby": "VPVzanPKu6Ksn7gnLPAQ",
+      "mint": "XrKsw80Bq3N7rO3ILfGi",
+      "cocoa": "uZv1Etduw4mQOvBD6ts3",
+      "taro": "tzEq6ZCmkFbcMzuViLBr",
+      "yuzu": "btJ4Akzt1AM5gCVF3ZEz",
+      "grandma": "xb0L4Y0ib2WcLtsomVgh",
+      "planter": "pnxOWvSDwUN2WZ61vdNd",
+      "hunger": "28il0sof6cI10oTkYDVB",
+      "boss_c1": "U151T7gGgvqdzNItsCx9",
+      "boss_c2": "1fQG71AjI2V2lnywmnx0",
+      "boss_c3": "PjTGYOyoRXwwmKk0xOJL"
+    },
+    "next": "save these 12 with POST /v1/text-to-voice, record VOICES.json savedVoiceIds, then record categories 2-6"
+  }
 }
