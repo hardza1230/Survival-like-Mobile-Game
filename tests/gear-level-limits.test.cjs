@@ -51,7 +51,7 @@ for(const line of [-1,3,1.5,'1',NaN]){const balance=plain(save.data.currency),be
   assert.deepEqual(save.data.currency,balance);assert.equal(JSON.stringify(item),before);assert(!scene._forgePanel);}
 item.locked=true;{const before=JSON.stringify(item);scene.forgeUpgrade(0);scene.forgeRemove(0);scene.forgeRemove(0);assert.equal(JSON.stringify(item),before,'locked items never change');}item.locked=false;
 // A filled row cannot be added to; iLv 1 caps stars without charging.
-scene.forgeOpenAdd(0);assert(!scene._forgePanel,'filled row has no Add');assert.equal(scene.forgeAdd(0,'f_might'),false);
+assert.equal(scene.forgeAdd(0),false,'filled row has no Add');
 assert.equal(scene.forgeUpgrade(0),false);assert.equal(save.data.currency.transmute,20,'iLv 1 caps stars, no charge');
 assert.equal(item.affixes.length,3,'legacy rows are retained');
 // A stale inventory callback must not charge once the item reached its cap or disappeared.
@@ -72,8 +72,7 @@ scene.buildMenuScreen=()=>{};
 const craftZone=()=>({x:0,y:0,w:120,h:40,fn:craftFn});scene.tapZones=[craftZone()];scene.applyGearTut();assert.equal(save.data.currency.transmute,3);
 scene.tapZones=[craftZone()];scene.applyGearTut();assert.equal(save.data.currency.transmute,3,'tutorial gift is granted once');
 scene.craftLineIndex=1;scene.tapZones[0].fn();assert.equal(save.data.gearTut,3);assert.equal(scene.craftLineIndex,0);assert.equal(scene.menuScreen,'craft');
-let opened=0;scene.tapZones=[{x:0,y:0,w:120,h:44,tag:'add_0',fn:()=>{opened++;}}];scene.applyGearTut();assert.equal(save.data.gearTut,3,'opening the 3-card picker does not finish the step');scene.tapZones[0].fn();assert.equal(opened,1);
-item.forgeOffers={0:['f_might']};scene.craftLineIndex=0;scene.tapZones=[{x:0,y:0,w:120,h:60,tag:'offer_f_might',fn:()=>scene.forgeAdd(0,'f_might')}];scene.applyGearTut();scene.tapZones[0].fn();assert.equal(save.data.gearTut,4);assert.equal(limits.forgeLines(item)[0].id,'f_might');assert.equal(save.data.currency.transmute,2);assert.equal(item.crafts,1);assert(!item.forgeOffers[0],'offer used up');
+scene.craftLineIndex=2;scene.tapZones=[{x:0,y:0,w:120,h:44,tag:'add_0',fn:()=>scene.forgeAdd(0)}];scene.applyGearTut();assert.equal(save.data.gearTut,3,'spotlight waits for the tap');scene.tapZones[0].fn();assert.equal(save.data.gearTut,4,'v8.0.87 one tap on + Add random mod finishes the step');assert(limits.forgeLines(item)[0],'a random mod was added');assert.equal(save.data.currency.transmute,2);assert.equal(item.crafts,1);
 console.log('Gear level limits: rarity rows, effective legacy stats, direct enhance/craft guards, Simple Forge guards and stale callbacks passed');
 // Regression: the real Power Forge shortcut uses a captured route variable, not literal callback text.
 {const keep=save.data.gearItems,starter={uid:'starter',baseId:'starter',grade:'start',slot:'weapon'};ctx.GEAR_ALL.push({id:'starter',tier:'start',slot:'weapon'});

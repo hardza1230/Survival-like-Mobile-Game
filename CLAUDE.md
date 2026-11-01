@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.87, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.88, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.86 — owner list: Depths gate/intro, 30-day login, Talent/Rank guides, short lines, Mint Glacier/Barrage
+# Latest delivery: v8.0.87 — Forge random mods + bad mods, Lv text, 3 rarities above Legend (owner)
+
+Forge (owner reversed parts of FORGE_SIMPLE.md): forgeAdd(line) pays then rolls forgeRollMod (FORGE_BAD_CHANCE .2 → FORGE_BAD_DEFS b_dull/b_frail/b_soft/b_shaky/b_slow_prep/b_sour_cure, negative bands through forgeApply numbers 1/13/14/3/57/63, def.effect text, bad:true; else pickWeightedMod) — no 1-of-3 picker (drawForgeOffer/forgeRollOffer gone, forgeOpenAdd = alias). forgePool ignores rows (any mod any row, duplicates stack). Bad mods: no upgrade ('Remove it with 🗑'), row '💀 BAD'. forgeRemove double-tap now pays forgePrice (not a craft, _forgeDone noCraft). tierStarText → 'Lv n'/'Bad', forgeStarCapText 'Max Lv n at iLv x · next at iLv y', row label 'MOD i · Lv a / cap'. Grades: GRADE_ORDER/gradeRank, RAR_LINES mythic 4/ancient 5/divine 6, GRADE_NEXT legend→mythic→ancient→divine (Merge only), TIER_LABEL colors, quality 1.6/1.8/2.0, BASE_TIER_OFFSET 0/-1/-1, dismantle base, protection gradeRank≥3, sort maps; forgeLineCount (3..6) in forgeLines, forgeLineOpen <6, Forge UI shows open rows + next locked row ('Needs X+') with rowH fitted; Merge carry → first free row (no bad mods); rarity frame/gem clamp + tint for new grades. Enhance tip: powerTips skips enh once d.enhDone (set in Save.enhance). Tutorial step 3: tap add_ = done. Tests rewritten: affix-sound, forge-150, forge-redesign (divine 6 rows on 7 screens, bad row), forge-simple, gear-level-limits, power-hub-layout hash, check-forge-live-ui. Owner phone check pending.
+
+# Previous delivery: v8.0.86 — owner list: Depths gate/intro, 30-day login, Talent/Rank guides, short lines, Mint Glacier/Barrage
 
 Depths: FEATURE_OPEN.dig=5 (storyCleared, = Chapter 1) + FEAT_TAG/ICON/LINE/NAME → featureReveal intro; Weave tile shows '🔒 After Chapter 1' + toast, Rank page Depths tab hidden, route 'dig' falls back to upgrade, m_dig quest req:4, dailySpec dig→kills while locked, dig badge gated. DIG_ANCIENT_FLOOR=15: digTable chest weight 0 below floor 15 (legend shows lock). Login: LOGIN_CAL = 7-day week ×4 + day 29 cur 6 + day 30 gold (big), LOGIN_DAYS; popup 6×5 grid sized to screen. talentsOpen() (sm[2] or unlockedStage≥3): Talents tab 🔒 + toast, buildHeroes falls back to roster, badge gated. rankTeach(): first visit to Weave with an unpicked Rank Reward → rubyGuide on 'weave_perks' (d.rankTaught). Text: HERO_INTROS, RUBY_TIPS say/short and RUBY_STORY rewritten to one short simple line. Mint: mintVolleyProfile glacier cap 1 (extra → bloomMul), barrage hitMul max(.4,1-.15·(raw-2)) on lance + shard dmg (descs + cocoa-rework-baseline fixture updated); Glacier Bloom draws no ground ring and no vfx_glacier_bloom when the snowstorm art shows (fallback keeps both). Fix: buildLobby stage-name wrap width ≥48 (landscape boot threw 'wordWrapWidth < a single character', which also blocked story art in landscape). Tests updated: daily-quests, login-calendar, mint-build-path, mint-evolutions. Owner phone check pending.
-
-# Previous delivery: v8.0.85 — order 62 status effects wired + Forge double-header fix (owner screenshot)
-
-scripts/pack-status-62.py → assets/art/status_fx/ (438 KB, 3.75 MiB decoded): 16 ASSET_FX 96px×6 (st_burn/chill/brittle/sour/stun/shock/mark loops, st_p_* hero loops, st_fx_apply/barrier_break/cleanse) + ASSET_SHEETS st_icons 64px 6×4 (ST62_ICON map). artClass st_ = stage; stageArtKeys pushes them for every stage. tickStatusArt: statusList62(e) priority stun(knock≥.4, not boss)>frozen>shock(Tempest _shock live or Static _arcShockT)>mark>sour>burn>brittle>chill>lured>enraged; 1 loop/enemy (ST62_LOOP, ≤24 total, chill at feet, Tempest with aura → no st_shock), ≤3 icons/enemy in the same row as Tremor/Frost Burn (shock icon hidden while the Tempest marker shows), st_fx_apply tinted (ST62_COL) when a status starts (≤6/frame). tickHeroStatus62: ≤2 loops (poison/bleed>slow>barrier>guard>haste), cleanse/barrier-break one-shots, HUD icon row after statTxt (shell/barrier text dropped when icons exist); bleed via _heroBleed/_heroBleedAt in captureBleed/escort. Stale objects after scene.restart rebuilt. Not done: old full-body poison/bleed tint kept, no starving/quakestun icon use. Forge fix: _screenBg(drawHeader=false) now returns before the standard title/sugar header (only Forge passes false). Tests: new status62-art; p1-feedback extracts statusList62; forge-simple header regression. Owner phone check pending (readability, FPS with many statuses).
 
 # ⚠️ DEPLOY BRANCH — read first
 
@@ -52,7 +52,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 4. สถานะปัจจุบัน
 - ดูเวอร์ชันที่ `GAME_VERSION` + บล็อก Latest delivery ด้านบน · ประวัติทุกเวอร์ชัน `docs/CLAUDE_HISTORY.md`
-- ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Pinnacle, Temple Weave/Depths/Rank Rewards, Gear+Merge+Forge Points, Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame WIP), Rewards hub (Login/Daily/Awards)
+- ระบบหลักครบ: Story 3 Chapter 15 ด่าน → Mochi Delve/Pinnacle, Temple Weave/Depths/Rank Rewards, Gear+Merge (Common→Divine)+Forge (random mods, Twist Cream), Talent ราย Build, ฮีโร่ 6 ตัว ×3 Build (Sesame WIP), Rewards hub (Login/Daily/Awards)
 
 ### บั๊กที่เคยเจอ (กันพลาดซ้ำ)
 - Scale.RESIZE คืน logical CSS px แล้ว — อย่าคูณ/หาร DPR เอง ใช้ `config.resolution=RENDER_DPR`

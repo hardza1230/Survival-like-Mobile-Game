@@ -17,15 +17,16 @@ const run=data=>vm.runInNewContext('(function(){'+mig+'\n})',{}).call({data});
 assert.deepEqual([0,1,2,3,4,5,9,undefined,-3].map(n=>R('forgePrice')({crafts:n})),[1,1,2,2,3,3,5,1,1]);
 assert(/main\.grade=GRADE_NEXT\[from\];delete main\.crafts;delete main\.forgeOffers;/.test(source),'Merge resets crafts');
 // Rows open by rarity only (iLv no longer gates rows)
-const open=(grade,itemLevel)=>[0,1,2].filter(i=>R('forgeLineOpen')({baseId:'test',grade,itemLevel,affixes:[]},i)).length;
-for(const lv of [1,11,12,25,60])assert.deepEqual(['common','rare','epic','legend'].map(g=>open(g,lv)),[1,2,3,3]);
+const open=(grade,itemLevel)=>[0,1,2,3,4,5].filter(i=>R('forgeLineOpen')({baseId:'test',grade,itemLevel,affixes:[]},i)).length;
+for(const lv of [1,11,12,25,60])assert.deepEqual(['common','rare','epic','legend','mythic','ancient','divine'].map(g=>open(g,lv)),[1,2,3,3,4,5,6],'v8.0.87 +1 row per new tier');
 // 3-choice offer: distinct mods from the row pool, fewer only if the pool is smaller
-for(let line=0;line<3;line++)for(let i=0;i<30;i++){const item={baseId:'test',slot:'weapon',grade:'legend',itemLevel:40,affixes:[]},ids=R('forgeRollOffer')(item,line),pool=api.forgePool(item,line);assert.equal(ids.length,Math.min(3,pool.length));assert.equal(new Set(ids).size,ids.length);assert(ids.every(id=>pool.some(m=>m.id===id)));}
+{const it={baseId:'test',slot:'weapon',grade:'divine',itemLevel:40,affixes:[]};let bad=0,rows=new Set();for(let i=0;i<4000;i++){const m=R('forgeRollMod')(it,5);if(m.bad){bad++;assert(m.tiers[0][1]<0);}else rows.add(m.row);}assert(bad>600&&bad<1000,'~20% bad: '+bad);assert.equal(rows.size,3,'any category on any row');assert.equal(R("typeof forgeRollOffer"),'undefined');assert.equal(R("forgeLines({grade:'divine',affixes:[]}).length"),6);assert.equal(R("GRADE_NEXT.legend+GRADE_NEXT.mythic+GRADE_NEXT.ancient"),'mythicancientdivine');}
 // Star cap message names the current iLv and the next level that raises it
-{const mod=api.affixDef('f_might'),it={baseId:'test',grade:'rare',itemLevel:1},cap=R('forgeStarCap')(it,mod),nx=R('forgeNextStarLevel')(it,mod);assert(nx>1);assert(R('forgeStarCap')({...it,itemLevel:nx},mod)>cap);assert(R('forgeStarCap')({...it,itemLevel:nx-1},mod)===cap);assert.equal(R('forgeStarCapText')(it,mod),'Max ★'+cap+' at iLv 1 · next ★ at iLv '+nx);
+{const mod=api.affixDef('f_might'),it={baseId:'test',grade:'rare',itemLevel:1},cap=R('forgeStarCap')(it,mod),nx=R('forgeNextStarLevel')(it,mod);assert(nx>1);assert(R('forgeStarCap')({...it,itemLevel:nx},mod)>cap);assert(R('forgeStarCap')({...it,itemLevel:nx-1},mod)===cap);assert.equal(R('forgeStarCapText')(it,mod),'Max Lv '+cap+' at iLv 1 · next at iLv '+nx);
  const top={baseId:'test',grade:'legend',itemLevel:100};assert.equal(R('forgeNextStarLevel')(top,mod),0);assert(!/next/.test(R('forgeStarCapText')(top,mod)));}
 // Tutorial keeps the one-time +3 Twist Cream gift and points at + Add a mod → card
-assert(/Save\.addCurrency\('transmute',3\)/.test(source));assert(/tag\?\.startsWith\('add_'\)\);adv=false;label='Tap \+ Add a mod'/.test(source));assert(/\{m:\/forgeAdd\\\(\/,t:'Pick one! It costs 🟢 Twist Cream'\}/.test(source));
+assert(/Save\.addCurrency\('transmute',3\)/.test(source));assert(/\(st===3&&this\.tapZones\.find\(q=>q\.tag\?\.startsWith\('add_'\)\)\)/.test(source));assert(/\{m:\/forgeAdd\\\(\/,t:'Add a random mod! It costs 🟢 Twist Cream'\}/.test(source));
 // v8.0.85 regression (owner screenshot): Forge draws its own header, so the standard header must not be drawn on top
 assert(/if\(!drawHeader\)\{this\.menu\.add\(veil\?\[bg,veil\]:\[bg\]\);return;\}/.test(source),'no double header');assert(/this\._screenBg\('Forge','screen_gear_power_789','gLoadout',false\)/.test(source));
+assert(/if\(!d\.enhDone\)try\{ let best=null/.test(source)&&/let result; this\.data\.enhDone=1;/.test(source),'v8.0.87 enhance tip only until the first enhance');
 console.log('Forge simple: no FP, Twist Cream only, Glaze ×3 migration once, price growth, Merge reset, rarity rows, 3-choice offers, star-cap text and tutorial passed');

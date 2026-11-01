@@ -24,14 +24,13 @@ const {chromium}=require('playwright');
   /* v8.0.83 Simple Forge: + Add a mod → 3-card picker → buy · Upgrade ★ · double-tap Remove · one currency */
   const tags=async()=>page.evaluate(()=>window.__forgeReviewGame.scene.getScene('ForgeReview').tapZones.map(z=>z.tag));const cash=()=>page.evaluate(()=>Save.currency('transmute'));const price=()=>page.evaluate(()=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview');return forgePrice(Save.gearItem(s.craftSelectedUid));});
   assert(!metrics.texts.some(t=>/🔨|Forge Points|Glaze/.test(t.text)),'no Forge Points / Glaze text');assert(metrics.texts.some(t=>t.text==='MOD ROWS'));
-  if(state==='power'){const ad=(await tags()).find(t=>t&&t.startsWith('add_'));assert(ad,'empty row offers + Add');await clickTag(ad);const offers=(await tags()).filter(t=>t&&t.startsWith('offer_'));assert.equal(offers.length,3,'3-card picker');
-   const p0=await price(),c0=await cash();await clickTag(offers[0]);assert.equal(await cash(),c0-p0);assert(!(await tags()).some(t=>t&&t.startsWith('offer_')),'picker closes after buying');
+  if(state==='power'){const ad=(await tags()).find(t=>t&&t.startsWith('add_'));assert(ad,'empty row offers + Add');const p0=await price(),c0=await cash();await clickTag(ad);assert.equal(await cash(),c0-p0,'v8.0.87 + Add random mod pays and adds at once');assert(!(await tags()).some(t=>t&&t.startsWith('offer_')),'no picker');
    const up=(await tags()).find(t=>t&&t.startsWith('up_'));if(up){const p1=await price(),c1=await cash();await clickTag(up);assert.equal(await cash(),c1-p1);}}
   if(state==='utility'){await clickTag('gear_browse');await clickTag('panel_close');await clickTag('equip');}
-  if(state==='sustain'){assert.equal(await page.evaluate(()=>Save.data.gearItems.filter(i=>i.forgeChoice).length),0,'old pending roll refunded');const rm=(await tags()).find(t=>t&&t.startsWith('rm_'));if(rm){const c=await cash();await clickTag(rm);await clickTag(rm);assert((await tags()).includes('add_'+rm.slice(3)),'removed row is empty');assert.equal(await cash(),c,'remove is free');}}
+  if(state==='sustain'){assert.equal(await page.evaluate(()=>Save.data.gearItems.filter(i=>i.forgeChoice).length),0,'old pending roll refunded');const rm=(await tags()).find(t=>t&&t.startsWith('rm_'));if(rm){const c=await cash(),p1=await price();await clickTag(rm);await clickTag(rm);assert((await tags()).includes('add_'+rm.slice(3)),'removed row is empty');assert.equal(await cash(),c-p1,'remove costs the craft price');}}
   assert.equal(errors.length,0,errors.join('\n'));console.log('Forge live menu passed '+w+'x'+h+' '+state);await page.close();
  }
  for(const shot of shots){const data=shot.bytes.toString('base64');console.log('FORGE_SHOT_BEGIN:'+shot.state);for(let i=0;i<data.length;i+=8000)console.log('FORGE_SHOT_CHUNK:'+data.slice(i,i+8000));console.log('FORGE_SHOT_END:'+shot.state);}
- console.log('Forge real-browser UI: 21 states, text/hit bounds, atlas loading, Equip, Simple Forge add (3-card picker)/upgrade/remove, enlarged controls and modal navigation passed.');
+ console.log('Forge real-browser UI: 21 states, text/hit bounds, atlas loading, Equip, Forge random add/upgrade/paid remove, enlarged controls and modal navigation passed.');
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

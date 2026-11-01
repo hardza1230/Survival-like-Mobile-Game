@@ -1,5 +1,7 @@
 # Simple Forge — spec (owner picked 1 Nov 2026, "Forge is the most confusing system")
 
+> **v8.0.87 owner changes (supersede rules below):** Add = random mod (no 1-of-3), no row categories (any mod on any row, duplicates ok), ~20% bad mods (no upgrade), Remove costs the craft price, Lv instead of ★, rarities Mythic/Ancient/Divine (4/5/6 rows, Merge only).
+
 Replaces the v8.0.33 Forge Points (Last Epoch) version. Implement as one release; keep save compatibility.
 
 ## Rules
