@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.74 — body-type bosses without bullets (owner picked 5 bosses + all 4 moves)
+
+BOSS_NO_SHOT {0,3,6,10,14} (C1-1 Ant Empress, C1-4 Frost Golem, C2-2 Behemoth, C3-1 Colossus, C3-5 First Planter; their minis too; Pinnacle/Delve excluded). foeShot first calls bossNoShotAt: a shot born near such a boss/mini is dropped; at most one bossBodyMove per 1.1s per boss (e._nsAt) rotating e._nsK: shockwave (6 spawnHazard r46 along the line to the player, 110ms apart) · charge (chargeTelegraph 650/700/26, ≤1 per 1.6s, else hazard on player) · sky drop (3 hazards r64 around the player's position, 180ms apart) · sweep (5 hazards r56 on a 140px ±60° arc). Hazard dmg = shot dmg ×2, tint = BOSS_SHOT colour. Kit timing/other moves unchanged. tests/boss-shots extended; headless smoke 0 errors. Owner phone difficulty/feel review pending.
+
+
 # Previous delivery: v8.0.73 — boss victory comics shorter/clearer/varied (owner)
 
 bossMotionScene: 2 shots (👑 title + beats[0] · “release” + STAGE_EPILOGUE why + 'Next: C?-? · name' if total <118 chars), noTitle (mcTitle skips to shot 0), fast advance max(ms+600,1700+34/char) vs old 2200+45/char. 4 stagings by idx%4 (actor/Ruby side, entrance offset, pan/zoom), flash = BOSS_SHOT[idx].c, shake idx%3==1, pow word per variant, mote per idx. Same art/keys. tests/boss-stories (2 shots), check-boss-motion-ui j<2 (run with FORGE_BROWSER_CHANNEL=chromium). docs/BOSS_MOTION_COMICS.md. Owner phone pacing review pending.

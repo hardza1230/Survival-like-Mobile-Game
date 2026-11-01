@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.75';
+const GAME_VERSION = '8.0.76';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.76',date:'2026-11-01',title:'Full stage names in the Lobby',items:['The stage box shows the whole stage name instead of cutting it off (two lines if it is very long)']},
   {v:'8.0.75',date:'2026-11-01',title:'Tidier menus',items:['Every page uses the same Back button and Sugar chip; page titles drop their emoji','Equipment and Forge now use the same plum panels as the rest of the menus','Red dots on the bottom bar only appear when there is something to claim','Bigger, brighter text on Rank Rewards, Awards and Daily Quests','Activities shows one Rewards row instead of separate Daily and Achievements','Gold Chest text no longer overlaps; loading screen is fully in English']},
   {v:'8.0.74',date:'2026-11-01',title:'Bosses that fight with their bodies',items:['Ant Empress, Frost Golem, Behemoth, Colossus and the First Planter (and their minibosses) no longer shoot bullets','Instead they take turns: ground shockwave toward you, a charge, heavy things falling around you, or a wide sweep in front of them — all with warning circles']},
   {v:'8.0.73',date:'2026-10-31',title:'Shorter, clearer boss stories',items:['After each boss: two quick scenes instead of three, no title card — who the boss was, then their last words and where to go next','Each boss story is staged differently, with its own colours and camera moves']},
@@ -11504,6 +11505,7 @@ class Game extends Phaser.Scene {
       if(!(stars&b)){ const og=this.add.graphics(),pts=[],R1=starW*.43,R2=R1*.45;for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?R2:R1;pts.push(new Phaser.Math.Vector2(sx0+Math.cos(a)*r,sy0+Math.sin(a)*r+starW*.03));} og.lineStyle(1.6,0xffd98a,.8).strokePoints(pts,true,true);this.menu.add(og); } });   // v7.9.63 ดาวที่ยังไม่ได้ = ขอบทอง (เดิมม่วงเข้มบนแผงม่วง)
     // v7.9.62 พลังย้ายเข้ากล่องด่าน (ใต้ดาว) · การ์ดใหม่ = ป้ายเล็กบนขอบกล่อง
     const pw2=this.hubText(px+panW-SM,panY+panH*.76,'⚡ '+Math.round(ps.cur)+' / '+Math.round(ps.rec),11,ps.ratio<.9?'#ffc58a':ps.hex,1);let f3=11;while(pw2.width>starW*3+16&&f3>8)pw2.setFontSize(--f3+'px');
+    { const L0=px+20,room=(px+panW-SM-pw2.width)-L0-10; nm.setOrigin(0,.5).setX(L0).setText(st.name||'').setFontSize('11px'); let fs=11; while(nm.width>room&&fs>10)nm.setFontSize(--fs+'px'); if(nm.width>room){ const top=big.y+big.displayHeight/2,maxH=panY+panH-8-top; nm.setFontSize('10px').setWordWrapWidth(room,true).setLineSpacing(-3).setOrigin(0,0).setY(top); if(nm.height>maxH){ let n2=st.name||''; while(nm.height>maxH&&n2.length>1){ n2=n2.slice(0,-1); nm.setText(n2+'…'); } } } }   // v8.0.75 เจ้าของ: ชื่อด่านถูกตัด → ชิดซ้าย ใช้ที่จนถึงตัวเลขพลัง · ยาวเกิน = 2 บรรทัด
     { const cy0=panY+panH-1,ct=this.add.text(w/2,cy0,'📜 All stages ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#3a2208'}).setOrigin(.5),cbw=ct.width+18,cg=this.add.graphics();   // v7.9.68 เจ้าของ: แตะกล่องด่าน = เลือกด่าน (แทนแท็บ Stages)
       cg.fillStyle(0x000000,.35).fillRoundedRect(w/2-cbw/2+1,cy0-8,cbw,17,8).fillStyle(0xffe08a,1).fillRoundedRect(w/2-cbw/2,cy0-9,cbw,17,8).lineStyle(1.5,0x8a5a12,1).strokeRoundedRect(w/2-cbw/2,cy0-9,cbw,17,8);this.menu.add(cg);this.menu.add(ct);
       this._zone(px,panY,panW,panH+8,()=>{ this.selectedChapter=chN; this.menuScreen='chapter'; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='chapter'; }
