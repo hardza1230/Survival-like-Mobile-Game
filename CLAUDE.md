@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.82, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.83, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.81 — Merge in the Power theme (owner)
+# Latest delivery: v8.0.82 — Taro Arc loop cap (owner: Arc still too strong vs bosses)
+
+TARO_ARC_LOOP_MAX 2: boss focus per root = min(victims, 3) hits (100% + 2×60%·Overload), normal loop-back onto the last target ≤2, pre-path Static Arc loops ≤2. Late Arc vs boss ≈ 3 roots × 2.2 = 6.6 hit-units (v8.0.79: 19.2). Mob chains unchanged (new targets still jump up to victims). Tests: taro-chain (3 hits), taro-needle-arc (3), taro-feedback strip. Owner phone check pending.
+
+# Previous delivery: v8.0.81 — Merge in the Power theme (owner)
 
 buildMerge restyled in place (logic/tags unchanged): bg screen_gear_power_789; intro = pwCard summary with rarity_up icon + pw_hero_merge α.3; item cards/material cells 0x261e30; RESULT card 0x423039 with rarity border; keep-mod rows Power palette (selected gold 0xf4d9a1); section labels 11px cream + merge_keep icon. Next: Forge (owner finds Forge the most confusing system — redesign discussion pending). Owner phone review pending.
-
-# Previous delivery: v8.0.80 — art order 60 wired (painted boss bullets + body-move FX)
-
-scripts/pack-boss-60.py (MANIFEST bytes/sha; black sheets lum×1.35 unpremultiplied alpha; bullets kept 128px so scale/hitbox unchanged) → assets/art/boss_vfx/ vfx_body_* (ASSET_FX shockwave 6×256 · skydrop 8×256 rate 8 · sweep 6×384×256 · charge 6×256×128) + bshot_01…15/pin (ASSET_IMAGES), 312 KB. Loading per stage: STAGE_SHEETS[i] gets bshot_NN, body FX only for stages 0/3/6/10/14, pin → [14]. BOSS_SHOT[i].p / PIN.p → bossShotApply uses the painted texture (no tint, rotated to direction, no spin) when loaded, else the v8.0.72 code shapes. bossBodyMove overlays heroFx on the same hazards (timings/radii unchanged): shockwave at impact (700ms) per circle, skydrop with each circle, sweep arc at impact, charge dust following the boss. tests/boss-shots extended; headless smoke 0 errors. Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 

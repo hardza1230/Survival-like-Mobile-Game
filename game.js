@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.81';
+const GAME_VERSION = '8.0.82';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.82',date:'2026-11-01',title:'Arc bounces limited',items:['Taro Arc: each stream can loop back onto the same target at most 2 times (was up to 9), so lone bosses no longer melt']},
   {v:'8.0.81',date:'2026-11-01',title:'Merge in the Power style',items:['Merge uses the Power page background, plum cards with gold highlights and painted icons']},
   {v:'8.0.80',date:'2026-11-01',title:'Painted boss attacks',items:['Every boss and miniboss fires its own painted bullet','Body-type bosses now show ground cracks, falling rocks, wide sweeps and charge dust on their moves']},
   {v:'8.0.79',date:'2026-11-01',title:'Fairer Arc + painted menu icons',items:['Taro Arc: vs a lone boss only the first jump hits fully, the rest 60% (+15% per Overload)','Arc Build no longer starts with an extra stream — more streams come at Lv 4/6 and from cards','Painted icons for Rewards tabs, Activities, Codex and Settings rows','New pictures on Flavor Weave and on empty Equipment, Merge and Forge pages']},
@@ -8260,7 +8261,7 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
   const radius=Math.min(140,105*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;   /* v7.8.63 เจ้าของ: วงช็อตเริ่มใหญ่ขึ้น 85→105 · ลูกบอลเร็วขึ้น 110→145 */   // v7.8.24 Ball Lightning แบบ PoE: ลูกเล็กลอยช้า ช็อตทุกตัวในรัศมีนี้ทุก 0.15 วิ
   return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
-const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=3,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=145,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=60,TARO_SENTRY_MAX=3,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
+const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_ARC_LOOP_MAX=2,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=3,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=145,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=60,TARO_SENTRY_MAX=3,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
 // v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
 const STAGE_STARS=[{name:'Clear the stage'},{name:'Finish with 70%+ HP'},{name:'Never drop below 30% HP'}],STAGE_STAR_SUGAR=30;
 const LEVELUP_DELAY_MS=650;   // v7.8.58 หน่วงก่อนเปิดการ์ดเลเวลอัพ
@@ -16204,7 +16205,7 @@ class Game extends Phaser.Scene {
     const hopMs=this.time?.delayedCall?TARO_ARC_HOP_MS:0,at=(i,fn)=>{if(!i||!hopMs)return fn();this.time.delayedCall(i*hopMs,()=>{if(this.state==='play'&&this.player===p&&this.basicAttack===b)fn();});};
     for(const root of targets){if(this.state!=='play'||this.player!==p||this._taro!==t||this.basicAttack!==b||b?.path)break;if(!taroTargetValid(root,p,f.range)||hit.has(root.id))continue;let from={x:p.x,y:p.y},token=root,last=null,j=0,prev=null;
       for(;j<jumps&&token;j++){if(this.state!=='play'||this.player!==p||!taroTargetValid(token,from,j?TARO_ARC_JUMP:f.range))break;const tk=token,src=from,jj=j,pv=prev;hit.add(token.id);at(j,()=>{if(!taroTargetValid(tk,p,Infinity))return;const e=tk.enemy,sx=pv?.enemy?.active?pv.enemy.x:src.x,sy=pv?.enemy?.active?pv.enemy.y:src.y;(this.taroArcBolt||this.chainBolt)?.call(this,sx,sy,e.x,e.y);this.damage(e,f.damage*TARO_ARC_STARTER*Math.min(1.6,1+.12*jj),e.x,e.y);});from={x:token.enemy.x,y:token.enemy.y};prev=token;last=token;token=this.taroNearestUnused(all,from,TARO_ARC_JUMP,hit);}
-      for(let k=0;last&&!token&&j<jumps&&k<jumps;k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const lt=last;at(j,()=>{if(!taroTargetValid(lt,p,Infinity))return;(this.taroArcLoopHop||((tk,fn)=>fn())).call(this,lt,()=>{if(this.state==='play'&&taroTargetValid(lt,p,Infinity))this.damage(lt.enemy,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,lt.enemy.x,lt.enemy.y);});});}}
+      for(let k=0;last&&!token&&j<jumps&&k<Math.min(jumps,TARO_ARC_LOOP_MAX);k++,j++){if(this.state!=='play'||!taroTargetValid(last,p,Infinity))break;const lt=last;at(j,()=>{if(!taroTargetValid(lt,p,Infinity))return;(this.taroArcLoopHop||((tk,fn)=>fn())).call(this,lt,()=>{if(this.state==='play'&&taroTargetValid(lt,p,Infinity))this.damage(lt.enemy,f.damage*TARO_ARC_STARTER*TARO_ARC_LOOP,lt.enemy.x,lt.enemy.y);});});}}
     Sfx.bp?.('taro_chain',.22,.18,1.25);
   }
   castTaroChainBasic(level,_echo){
@@ -16215,7 +16216,7 @@ class Game extends Phaser.Scene {
     const hopMs=this.time?.delayedCall?TARO_ARC_HOP_MS:0,at=(i,fn)=>{if(!i||!hopMs)return fn();this.time.delayedCall(i*hopMs,()=>{if(this._taro===t&&this.state==='play')fn();});};
     /* v7.8.31 เจ้าของ: Arc ตีเป้าเดี่ยวเบา → มีบอส/มินิในระยะ = ทุกสายทุกกระโดดรวมเข้าบอส 100% (+15%/ใบ Overload) */
     const focus=this.taroArcFocus?.(candidates,f.rootRange);if(focus){const fm=1+.15*Math.max(0,this.basicAttack?.lv?.p_arc_overload??this.basicAttack?.ranks?.p_arc_overload??0);
-      for(let root=0;root<f.roots;root++)for(let j=0;j<f.victims;j++){if(this._taro!==t||this.state!=='play'||!taroTargetValid(focus,this.player,Infinity))break;at(j,()=>{if(!taroTargetValid(focus,this.player,Infinity))return;const hit=()=>{if(this._taro===t&&taroTargetValid(focus,this.player,Infinity))this.taroDealDamage(focus,f.primaryDamage*f.chainBonus*f.rootBonus*(j?TARO_ARC_LOOP*fm:1)*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});};   /* v8.0.79 เจ้าของ: Arc ตีบอสตัวเดียวโกง → กระโดดแรกเต็ม ที่เหลือ 60% (+15%/Overload) เหมือนเด้งกลับปกติ */if(!j){this.taroArcBolt?.(this.player.x,this.player.y,focus.enemy.x,focus.enemy.y,false);hit();}else (this.taroArcLoopHop||((tk,fn)=>fn())).call(this,focus,hit);});}
+      for(let root=0;root<f.roots;root++)for(let j=0;j<Math.min(f.victims,1+TARO_ARC_LOOP_MAX);j++){if(this._taro!==t||this.state!=='play'||!taroTargetValid(focus,this.player,Infinity))break;   /* v8.0.82 เจ้าของ: จำกัดการเด้งบนบอส = ตีเต็ม 1 + เด้งกลับ ≤2 ต่อสาย */at(j,()=>{if(!taroTargetValid(focus,this.player,Infinity))return;const hit=()=>{if(this._taro===t&&taroTargetValid(focus,this.player,Infinity))this.taroDealDamage(focus,f.primaryDamage*f.chainBonus*f.rootBonus*(j?TARO_ARC_LOOP*fm:1)*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});};   /* v8.0.79 เจ้าของ: Arc ตีบอสตัวเดียวโกง → กระโดดแรกเต็ม ที่เหลือ 60% (+15%/Overload) เหมือนเด้งกลับปกติ */if(!j){this.taroArcBolt?.(this.player.x,this.player.y,focus.enemy.x,focus.enemy.y,false);hit();}else (this.taroArcLoopHop||((tk,fn)=>fn())).call(this,focus,hit);});}
       if(this._taro===t&&this.state==='play')this.hitCratesInRadius(this.player.x,this.player.y,f.rootRange,f.primaryDamage);this.taroSound?.('chain')||Sfx.thunder();return;}
     for(let root=0;root<f.roots;root++){
       if(this._taro!==t||this.state!=='play')break;
@@ -16228,7 +16229,7 @@ class Game extends Phaser.Scene {
       }
       /* v7.8.27 Overload Loop: remaining jumps loop back into the last target at 60% (+15% per Overload card) so a lone boss takes every jump */
       const ov=TARO_ARC_LOOP*(1+.15*Math.max(0,this.basicAttack?.lv?.p_arc_overload??this.basicAttack?.ranks?.p_arc_overload??0));
-      for(let k=0;last&&!token&&j<f.victims;k++,j++){if(this._taro!==t||this.state!=='play'||!taroTargetValid(last,this.player,Infinity))break;const lt=last;at(j,()=>{if(!taroTargetValid(lt,this.player,Infinity))return;(this.taroArcLoopHop||((tk,fn)=>fn())).call(this,lt,()=>{if(this._taro===t&&taroTargetValid(lt,this.player,Infinity))this.taroDealDamage(lt,f.primaryDamage*f.chainBonus*f.rootBonus*ov*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});});});}
+      for(let k=0;last&&!token&&j<f.victims&&k<TARO_ARC_LOOP_MAX;k++,j++){   /* v8.0.82 เด้งกลับเป้าเดิม ≤2 */if(this._taro!==t||this.state!=='play'||!taroTargetValid(last,this.player,Infinity))break;const lt=last;at(j,()=>{if(!taroTargetValid(lt,this.player,Infinity))return;(this.taroArcLoopHop||((tk,fn)=>fn())).call(this,lt,()=>{if(this._taro===t&&taroTargetValid(lt,this.player,Infinity))this.taroDealDamage(lt,f.primaryDamage*f.chainBonus*f.rootBonus*ov*taroLightningRoll(),'chain',{attackId,shrapnelD:f.unitD});});});}
     }
     if(this._taro===t&&this.state==='play')this.hitCratesInRadius(this.player.x,this.player.y,f.rootRange,f.primaryDamage);this.taroSound?.('chain')||Sfx.thunder();
   }

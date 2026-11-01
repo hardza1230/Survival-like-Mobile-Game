@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.80 — art order 60 wired (painted boss bullets + body-move FX)
+
+scripts/pack-boss-60.py (MANIFEST bytes/sha; black sheets lum×1.35 unpremultiplied alpha; bullets kept 128px so scale/hitbox unchanged) → assets/art/boss_vfx/ vfx_body_* (ASSET_FX shockwave 6×256 · skydrop 8×256 rate 8 · sweep 6×384×256 · charge 6×256×128) + bshot_01…15/pin (ASSET_IMAGES), 312 KB. Loading per stage: STAGE_SHEETS[i] gets bshot_NN, body FX only for stages 0/3/6/10/14, pin → [14]. BOSS_SHOT[i].p / PIN.p → bossShotApply uses the painted texture (no tint, rotated to direction, no spin) when loaded, else the v8.0.72 code shapes. bossBodyMove overlays heroFx on the same hazards (timings/radii unchanged): shockwave at impact (700ms) per circle, skydrop with each circle, sweep arc at impact, charge dust following the boss. tests/boss-shots extended; headless smoke 0 errors. Owner phone review pending.
+
+
 # Previous delivery: v8.0.79 — Taro Arc nerf + art orders 58/59 wired (owner)
 
 Arc (owner: cheats vs lone boss, strong at build start): taroCombatProfile storm +1 root removed (Lv1 = 1 root × 4 jumps; roots still +Lv4/Lv6/cards); boss focus jumps j>0 ×TARO_ARC_LOOP .6 (×(1+.15·Overload)) instead of 100% each (Lv1 boss hits 8×100% → 1+3×.6). Tests: taro-chain (4 hits), taro-progression rawRoots 1, taro-feedback strip. Orders 58/59: scripts/pack-menu-58-59.py (sha check, 50%, WebP q90 alpha) → mobile_ui_789 pw_hero_* (384×192), pw_empty_* (192), menu59_icons (1152×768, 264,784 B). ASSET_IMAGES literals + ASSET_SHEETS.menu59_icons; MENU59 order, M59_ROW (hub rows), M59_EMOJI (_rowBtn settings). Helpers m59Img / loadMenuSheet / pwArt (lazy, rebuild on load, null fallback). Hooks: rewardsTabs icons, buildHubGroup rows, _rowBtn emoji icons, Weave summary art α.3, empty Equipment/Merge/Forge pictures. Bazaar/Heroes tab icons and Lobby side buttons not yet wired. tests/power-family extended. Owner phone review pending.
