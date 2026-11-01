@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.85, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.86, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.84 — order 61 boss defeat cutscenes wired (owner: ImageGen delivered all 35)
+# Latest delivery: v8.0.85 — order 62 status effects wired + Forge double-header fix (owner screenshot)
+
+scripts/pack-status-62.py → assets/art/status_fx/ (438 KB, 3.75 MiB decoded): 16 ASSET_FX 96px×6 (st_burn/chill/brittle/sour/stun/shock/mark loops, st_p_* hero loops, st_fx_apply/barrier_break/cleanse) + ASSET_SHEETS st_icons 64px 6×4 (ST62_ICON map). artClass st_ = stage; stageArtKeys pushes them for every stage. tickStatusArt: statusList62(e) priority stun(knock≥.4, not boss)>frozen>shock(Tempest _shock live or Static _arcShockT)>mark>sour>burn>brittle>chill>lured>enraged; 1 loop/enemy (ST62_LOOP, ≤24 total, chill at feet, Tempest with aura → no st_shock), ≤3 icons/enemy in the same row as Tremor/Frost Burn (shock icon hidden while the Tempest marker shows), st_fx_apply tinted (ST62_COL) when a status starts (≤6/frame). tickHeroStatus62: ≤2 loops (poison/bleed>slow>barrier>guard>haste), cleanse/barrier-break one-shots, HUD icon row after statTxt (shell/barrier text dropped when icons exist); bleed via _heroBleed/_heroBleedAt in captureBleed/escort. Stale objects after scene.restart rebuilt. Not done: old full-body poison/bleed tint kept, no starving/quakestun icon use. Forge fix: _screenBg(drawHeader=false) now returns before the standard title/sugar header (only Forge passes false). Tests: new status62-art; p1-feedback extracts statusList62; forge-simple header regression. Owner phone check pending (readability, FPS with many statuses).
+
+# Previous delivery: v8.0.84 — order 61 boss defeat cutscenes wired (owner: ImageGen delivered all 35)
 
 scripts/pack-boss-cutscene-61.py (MANIFEST bytes/sha) → assets/art/story/boss61/ 3.4 MB: Fall/Onward 540×960 q84, Freed 384×512 alpha, FX lum×1.35 alpha 256px frames (crown_shatter 8×256², flavor_return 8×256×512). Keys in ASSET_IMAGES/ASSET_FX = story-lazy 'menu' class, dropped after playing (drop regex cs_|cs61_|vfx_cs61_). bossCutscene61(idx) → bossMotionScene 3 shots (v61): Fall (+crown_shatter at CS61_CROWN via new layer opt bgPt/bgW, shake + pow), Freed (old cs_boss_NN_memory bg + freed rising + release line), Onward (chapter path + flavor_return + why/Next). mcShot: sh.fit='portrait' on landscape = whole portrait image at viewW (cover copy α.28 behind) so the crown is never cropped. Fallback: art fails to load → playMotionComic swaps to bossMotionScene(idx,true) (v8.0.73 2 shots) and remembers _mc61Off. Flow/rewards/seen/replay unchanged. Test: new boss-cutscene61-art. Owner phone check pending (timing ~8s, FPS, landscape).
-
-# Previous delivery: v8.0.83 — Simple Forge (owner picked docs/FORGE_SIMPLE.md) + art order 62
-
-Forge Points gone (FP_*, gearFP, fpStarCost, forgeAct, lucky). New actions: forgeOpenAdd(line) → 3 distinct weighted offers saved on item.forgeOffers[line] (no free reroll) → drawForgeOffer cards → forgeAdd(line,id) at ★1; forgeUpgrade(line) +1★ (cap reason forgeStarCapText 'Max ★n at iLv x · next ★ at iLv y'); forgeRemove(line) free double-tap. Price forgePrice=1+floor(crafts/2), Merge deletes crafts/forgeOffers. Glaze retired: CURRENCY = Twist Cream only, CUR_ALIAS divine→transmute, drops/Bazaar transmute only, save _glazeMig 1 Glaze→3 Twist Cream. forgeLineOpen = rarity only (Equipment free-slot count too). Page: Power theme (screen_gear_power_789, pwCard summary + pw_hero_forge, MOD ROWS add_/up_/cap_/rm_/merge_ tags, icons mod_add/star_up/mod_remove; ic_lucky/vfx_lucky no longer loaded). Tutorial step 3 = add_ → offer_. Tests: new forge-simple; rewrote affix-sound, forge-redesign, forge-150, gear-level-limits (rows/active legacy rows now rarity-based), gear-merge, menu-orders-art (retired lucky), check-forge-live-ui/build-forge-review. Art order 62 status effects (16 files, assets/incoming/status62/) written, waiting for art. Owner phone check pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
@@ -64,7 +64,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 - Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
-- ใบสั่ง 62 สถานะติดตัว (มอน+ฮีโร่+ไอคอน) รออาร์ต `assets/incoming/status62/`
+- ใบสั่ง 62 สถานะติดตัว ผูกแล้ว v8.0.85 · รอ QA มือถือ
 - อาร์ต 61 ฉากหลังล้มบอส ผูกแล้ว v8.0.84 · รอ QA มือถือ
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub

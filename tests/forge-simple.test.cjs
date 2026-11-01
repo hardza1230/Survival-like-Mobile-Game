@@ -26,4 +26,6 @@ for(let line=0;line<3;line++)for(let i=0;i<30;i++){const item={baseId:'test',slo
  const top={baseId:'test',grade:'legend',itemLevel:100};assert.equal(R('forgeNextStarLevel')(top,mod),0);assert(!/next/.test(R('forgeStarCapText')(top,mod)));}
 // Tutorial keeps the one-time +3 Twist Cream gift and points at + Add a mod → card
 assert(/Save\.addCurrency\('transmute',3\)/.test(source));assert(/tag\?\.startsWith\('add_'\)\);adv=false;label='Tap \+ Add a mod'/.test(source));assert(/\{m:\/forgeAdd\\\(\/,t:'Pick one! It costs 🟢 Twist Cream'\}/.test(source));
+// v8.0.85 regression (owner screenshot): Forge draws its own header, so the standard header must not be drawn on top
+assert(/if\(!drawHeader\)\{this\.menu\.add\(veil\?\[bg,veil\]:\[bg\]\);return;\}/.test(source),'no double header');assert(/this\._screenBg\('Forge','screen_gear_power_789','gLoadout',false\)/.test(source));
 console.log('Forge simple: no FP, Twist Cream only, Glaze ×3 migration once, price growth, Merge reset, rarity rows, 3-choice offers, star-cap text and tutorial passed');

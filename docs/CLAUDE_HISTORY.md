@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.83 — Simple Forge (owner picked docs/FORGE_SIMPLE.md) + art order 62
+
+Forge Points gone (FP_*, gearFP, fpStarCost, forgeAct, lucky). New actions: forgeOpenAdd(line) → 3 distinct weighted offers saved on item.forgeOffers[line] (no free reroll) → drawForgeOffer cards → forgeAdd(line,id) at ★1; forgeUpgrade(line) +1★ (cap reason forgeStarCapText 'Max ★n at iLv x · next ★ at iLv y'); forgeRemove(line) free double-tap. Price forgePrice=1+floor(crafts/2), Merge deletes crafts/forgeOffers. Glaze retired: CURRENCY = Twist Cream only, CUR_ALIAS divine→transmute, drops/Bazaar transmute only, save _glazeMig 1 Glaze→3 Twist Cream. forgeLineOpen = rarity only (Equipment free-slot count too). Page: Power theme (screen_gear_power_789, pwCard summary + pw_hero_forge, MOD ROWS add_/up_/cap_/rm_/merge_ tags, icons mod_add/star_up/mod_remove; ic_lucky/vfx_lucky no longer loaded). Tutorial step 3 = add_ → offer_. Tests: new forge-simple; rewrote affix-sound, forge-redesign, forge-150, gear-level-limits (rows/active legacy rows now rarity-based), gear-merge, menu-orders-art (retired lucky), check-forge-live-ui/build-forge-review. Art order 62 status effects (16 files, assets/incoming/status62/) written, waiting for art. Owner phone check pending.
+
+
 # Previous delivery: v8.0.82 — Taro Arc loop cap (owner: Arc still too strong vs bosses)
 
 TARO_ARC_LOOP_MAX 2: boss focus per root = min(victims, 3) hits (100% + 2×60%·Overload), normal loop-back onto the last target ≤2, pre-path Static Arc loops ≤2. Late Arc vs boss ≈ 3 roots × 2.2 = 6.6 hit-units (v8.0.79: 19.2). Mob chains unchanged (new targets still jump up to victims). Tests: taro-chain (3 hits), taro-needle-arc (3), taro-feedback strip. Owner phone check pending.

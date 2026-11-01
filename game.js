@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.84';
+const GAME_VERSION = '8.0.85';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.85',date:'2026-11-01',title:'See every status',items:['Enemies now show what they are suffering: burning, sour, shocked (small electric arcs), stunned, marked, brittle and chilled each have their own look, plus small icons above their heads','Your hero shows poison, bleeding, slow, barrier, guard and haste on the body, and status icons sit next to your relics on the HUD','Fixed: the Forge page showed its header twice']},
   {v:'8.0.84',date:'2026-11-01',title:'Boss defeat cutscenes',items:['After every boss falls, a new painted 3-scene cutscene plays: the curse crown shatters, the boss returns to their true form, and the flavor light shows the way onward','Replay them any time in the Story book']},
   {v:'8.0.83',date:'2026-11-01',title:'Simple Forge',items:['Forge is simpler: tap + Add a mod and pick 1 of 3 cards, or tap Upgrade ★ to raise a mod by one star','One currency: Twist Cream. Each craft on an item costs a little more (1, 1, 2, 2, 3…); Merging the item resets the price','No more Forge Points or Crystal Glaze: your Glaze became 3 Twist Cream each','Mod rows now open by rarity only; item level only limits stars (the button shows when the next star unlocks)']},
   {v:'8.0.82',date:'2026-11-01',title:'Arc bounces limited',items:['Taro Arc: each stream can loop back onto the same target at most 2 times (was up to 9), so lone bosses no longer melt']},
@@ -2847,6 +2848,7 @@ const ASSET_SHEETS = {
 
   power56_icons:{url:'assets/art/mobile_ui_789/gear_power56_icons.webp',frame:192},
   power57_icons:{url:'assets/art/mobile_ui_789/gear_power57_icons.webp',frame:192},
+  st_icons:{url:'assets/art/status_fx/st_icons.webp',frame:64},   // v8.0.85 ใบ 62 ไอคอนสถานะ 6×4 (ST62_ICON)
   menu59_icons:{url:'assets/art/mobile_ui_789/menu59_icons.webp',frame:192},   // v8.0.79 ใบ 59 ไอคอนเมนู (6×4)   // v8.0.77 ใบ 57 ไอคอนหน้า Weave/Equipment/Merge/Forge (6×4)
   xp_orbs:{url:'assets/art/exp/xp_orbs.webp',frame:96},   // v7.9.26 ใบ 29 Flavor Drops: 6 แถว = T1–T6 × 6 เฟรม (anim xp_t1…xp_t6 สร้างใน xpOrbAnim)
   p1_skill_edges:{url:'assets/art/p1_feedback/skill_edges.webp',frame:256},
@@ -3082,6 +3084,23 @@ const ASSET_FX = {
   cs_fx_frost_shatter:{url:'assets/art/story/cs_fx_frost_shatter.webp',fw:384,fh:384,frames:6,rate:12,anchor:'center'},
   cs_fx_curse_smoke:{url:'assets/art/story/cs_fx_curse_smoke.webp',fw:384,fh:384,frames:6,rate:12,anchor:'center'},
   cs_fx_sparkle:{url:'assets/art/story/cs_fx_sparkle.webp',fw:128,fh:128,frames:6,rate:12,anchor:'center',add:true},
+  // v8.0.85 ใบ 62 สถานะติดตัว (stage-lazy · artClass st_)
+  st_burn:{url:'assets/art/status_fx/st_burn.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_chill:{url:'assets/art/status_fx/st_chill.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_brittle:{url:'assets/art/status_fx/st_brittle.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_sour:{url:'assets/art/status_fx/st_sour.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_stun:{url:'assets/art/status_fx/st_stun.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_shock:{url:'assets/art/status_fx/st_shock.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_mark:{url:'assets/art/status_fx/st_mark.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_p_slow:{url:'assets/art/status_fx/st_p_slow.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_p_poison:{url:'assets/art/status_fx/st_p_poison.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_p_bleed:{url:'assets/art/status_fx/st_p_bleed.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_p_haste:{url:'assets/art/status_fx/st_p_haste.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_p_guard:{url:'assets/art/status_fx/st_p_guard.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_p_barrier:{url:'assets/art/status_fx/st_p_barrier.webp',fw:96,fh:96,frames:6,rate:10,anchor:'center',loop:true},
+  st_fx_apply:{url:'assets/art/status_fx/st_fx_apply.webp',fw:96,fh:96,frames:6,rate:14,anchor:'center'},
+  st_fx_barrier_break:{url:'assets/art/status_fx/st_fx_barrier_break.webp',fw:96,fh:96,frames:6,rate:14,anchor:'center'},
+  st_fx_cleanse:{url:'assets/art/status_fx/st_fx_cleanse.webp',fw:96,fh:96,frames:6,rate:14,anchor:'center'},
   vfx_cs61_crown_shatter:{url:'assets/art/story/boss61/vfx_cs61_crown_shatter.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},   // v8.0.84 ใบ 61
   vfx_cs61_flavor_return:{url:'assets/art/story/boss61/vfx_cs61_flavor_return.webp',fw:256,fh:512,frames:8,rate:10,anchor:'center'},
   fx_mint_dash_shard:{url:'assets/art/mint_winter/fx_mint_dash_shard.webp',fw:128,fh:128,frames:4,rate:16,anchor:'center',loop:true},
@@ -3965,7 +3984,9 @@ const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:menu_orders|chest|journal|
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+const ST62_ICON={frozen:0,chill:1,brittle:2,burn:3,sour:4,stun:5,mark:6,lured:7,enraged:8,p_slow:9,p_poison:10,p_bleed:11,p_haste:12,p_guard:13,p_barrier:14,p_shell:15,p_regen:16,p_starving:17,shock:18};   // v8.0.85 ใบ 62 ช่องใน st_icons
+const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',burn:'st_burn',brittle:'st_brittle',chill:'st_chill'},ST62_COL={stun:0xffe08a,frozen:0x9fe8ff,shock:0x8ff3ff,mark:0xff5d73,sour:0xfff27a,burn:0xff8a3d,brittle:0xd8f4ff,chill:0xbfe6ff};
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -8559,6 +8580,7 @@ class Game extends Phaser.Scene {
     const keys=['bg'+(idx+1),...(STAGE_SHEETS[idx]||[]),'result_victory','result_defeat','sc44_background','sc44_frame','bv46_key',...RUBY_STAGE_KEYS];
     if((this.character||Save.data.character)==='yuzu')keys.push(...Object.keys(ASSET_IMAGES).filter(k=>k.startsWith('yc59_')),...YUZU_SEEDLING_ART_KEYS);
     if((this.character||Save.data.character)==='mint')keys.push('fx_mint_dash_shard','fx_mint_snowstorm');
+    keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('st_')),'st_icons');   // v8.0.85 ใบ 62 สถานะติดตัว ทุกด่านใช้ร่วม (≈3.8 MiB)
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
     return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]||ASSET_FX[k]);   // v7.8.32 ASSET_FX เฉพาะด่าน (C2-4) โหลดพร้อมด่าน
@@ -9597,7 +9619,7 @@ class Game extends Phaser.Scene {
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
     if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
 
-      const fb=this._forgeState&&this._forgeState.barrierUntil>(this.elapsed||0)?this._forgeState.barrier:0;this.statTxt.setText([rel,sh,fb>0?'Barrier '+Math.ceil(fb):''].filter(Boolean).join('   ')); }
+      const fb=this._forgeState&&this._forgeState.barrierUntil>(this.elapsed||0)?this._forgeState.barrier:0;this.statTxt.setText((this._hudStatusIcons?[rel]:[rel,sh,fb>0?'Barrier '+Math.ceil(fb):'']).filter(Boolean).join('   '));   /* v8.0.85 มีไอคอนใบ 62 = โล่/Barrier เป็นไอคอนแทน */ }
     // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
     if(this.stageTxt&&this.stageTxt.alpha)this.stageTxt.setAlpha(0);   // v8.0.11 ชื่อด่านอยู่ในม่านเปิดด่าน/หน้า Pause แล้ว
 
@@ -10144,6 +10166,7 @@ class Game extends Phaser.Scene {
       this.load.image(artKey,verUrl(url));if(!this.load.isLoading())this.load.start();
     }
     if(artKey==='screen_heroes'||title==='Equipment'||title==='Affix Forge'){if(title==='Affix Forge'&&veil)veil.setFillStyle(0x110c19,.84).setAlpha(1);else if(title!=='Heroes'&&veil)veil.setAlpha(.84);this.menu.add(veil?[bg,veil]:[bg]);if(drawHeader)this.drawRosterHeader(backScreen,artKey==='screen_heroes'?'Heroes':title);return;}
+    if(!drawHeader){this.menu.add(veil?[bg,veil]:[bg]);return;}   // v8.0.85 หน้าที่วาดหัวเอง (Forge) ไม่ให้หัวมาตรฐานซ้อน
     const headY=compact?27:52;
     const chrome=this.headerTheme?.()||{font:'NunitoUI, sans-serif',text:'#fff1e7',currency:'#f4d9a1',shadow:'#27182f',surface:0x261e30,border:0x6d536d};
     const t=this.add.text(w/2,headY,title,{fontFamily:chrome.font,fontStyle:'bold',fontSize:compact?'20px':'22px',color:chrome.text}).setOrigin(0.5);
@@ -14385,7 +14408,7 @@ class Game extends Phaser.Scene {
   // v8.0.18 เจ้าของ: ไม่ยืนในวง = เลือดไหลเหมือน Escort · ผ่อนผัน 2.5 วิ (เริ่มภารกิจ 4.5 วิ ให้เดินไปถึงวง) · กลับเข้าวง = ชั้นลดเร็ว
   captureBleed(dt,inside,o){ const P=this.player; if(!P||this._inTutorial||this.state!=='play')return; if(o._out==null)o._out=-2;
     if(inside){o._zoneWarn=false; if(o._out>0){ o._out=Math.max(0,o._out-dt*4); if(!o._out){ o._bleedStk=0; o._bleedT=0; } } return; }
-    if(o._out<=0&&!o._zoneWarn){o._zoneWarn=true;Sfx.orderCue?.('out_of_zone',.22,1);}o._out+=dt; if(o._out<2.5)return; const stk=Math.min(10,1+Math.floor((o._out-2.5)/1.5)); if(stk!==o._bleedStk){ o._bleedStk=stk; this.floatText(P.x,P.y-60,'🩸 Bleeding ×'+stk,0xff4a5a); if(stk===1)this.showBanner('🩸 Get back in the ring!','Standing outside the ring makes you bleed',1400); }
+    if(o._out<=0&&!o._zoneWarn){o._zoneWarn=true;Sfx.orderCue?.('out_of_zone',.22,1);}o._out+=dt; if(o._out<2.5)return; const stk=Math.min(10,1+Math.floor((o._out-2.5)/1.5));this._heroBleed=o;this._heroBleedAt=this.elapsed||0; if(stk!==o._bleedStk){ o._bleedStk=stk; this.floatText(P.x,P.y-60,'🩸 Bleeding ×'+stk,0xff4a5a); if(stk===1)this.showBanner('🩸 Get back in the ring!','Standing outside the ring makes you bleed',1400); }
     o._bleedT=(o._bleedT||0)+dt; if(o._bleedT>=.5){ o._bleedT=0;Sfx.orderCue?.('bleed_tick',.12,.45); P.hp-=P.maxhp*.004*stk; P.setTint?.(0xff6a6a); this.time.delayedCall(120,()=>{ if(P.active)P.clearTint?.(); }); if(P.hp<=0)this.die(); } }
   tickCaptureFX(dt,inside,o){ const z=this._captureZone;if(!z)return;if(inside&&this.state==='play'&&!o.done){const f=Math.min(1,o.progress/Math.max(1,o.target));Sfx.eventLoopStart?.('event_capture_charge',.16+.18*f,.8+.5*f);}else Sfx.eventLoopStop?.('event_capture_charge');const f=Phaser.Math.Clamp(o.progress/Math.max(1,o.target),0,1);
     const r0=z.r0||110,want=r0+f*120;z.radiusGoal+=(want-z.radiusGoal)*Math.min(1,dt*3);const R=z.radiusGoal;z.setRadius(R);if(this._captureRing)this._captureRing.setDisplaySize(R*2,R*1.72);
@@ -14446,7 +14469,7 @@ class Game extends Phaser.Scene {
     const w=this._wisp,near=this.dist(this.player.x,this.player.y,w.x,w.y)<=t.escortR;
     if(!near){w._awayHint=(w._awayHint||0)-dt;if(w._awayHint<=0){w._awayHint=5;this.floatText(w.x,w.y-70,'Stay near the Wisp!',0xffc6a2);}}else w._awayHint=0;
     // v7.9.82 เจ้าของ: ยืนนอกวง Wisp = เลือดไหล ซ้อนแรงขึ้นทุก 1.5 วิ (สูงสุด 10) · กลับเข้าวง = หายเร็ว
-    { const P=this.player; if(!near&&!this._inTutorial){ w._out=(w._out||0)+dt; const stk=Math.min(10,1+Math.floor(w._out/1.5)); if(stk!==w._bleedStk){ w._bleedStk=stk; this.floatText(P.x,P.y-60,'🩸 Bleeding ×'+stk,0xff4a5a); }
+    { const P=this.player; if(!near&&!this._inTutorial){ w._out=(w._out||0)+dt; const stk=Math.min(10,1+Math.floor(w._out/1.5));this._heroBleed=w;this._heroBleedAt=this.elapsed||0; if(stk!==w._bleedStk){ w._bleedStk=stk; this.floatText(P.x,P.y-60,'🩸 Bleeding ×'+stk,0xff4a5a); }
         w._bleedT=(w._bleedT||0)+dt; if(w._bleedT>=.5){ w._bleedT=0; P.hp-=P.maxhp*.004*stk; P.setTint?.(0xff6a6a); this.time.delayedCall(120,()=>{ if(P.active)P.clearTint?.(); }); if(P.hp<=0){ this.die(); return; } } }
       else if(w._out){ w._out=Math.max(0,w._out-dt*4); if(!w._out){ w._bleedStk=0; w._bleedT=0; } } }
     // 🕯️ Raiders: ทุก ~7s ส่งมอนแดง 2 ตัวพุ่งเข้าหา Wisp (ต้องคอยสกัด)
@@ -17960,15 +17983,56 @@ class Game extends Phaser.Scene {
     const step=()=>{if(fx.dead)return;const v=cam.worldView,k=Math.min(1,(this.time.now-t0)/(life*1000)),size=Math.min(150,v.width*.18,v.height*.24);images.forEach((im,i)=>{if(im.active)im.setPosition(v.x+(i?v.width:0),v.y+v.height*.72).setDisplaySize(size,size).setAlpha(alpha*Math.sin(Math.PI*k));});if(k>=1)fx.kill();};
     fx.kill=()=>{if(fx.dead)return;fx.dead=true;this.events.off('postupdate',step);for(const im of images)if(im.active)im.destroy();if(this._heroScreen===fx)this._heroScreen=null;};this._heroScreen=fx;this.events.on('postupdate',step);step();return fx;
   }
-  clearStatusArt(){for(const pack of this._statusArt?.values()||[])for(const o of pack.items)o.destroy();this._statusArt?.clear();}
+  clearStatusArt(){for(const pack of this._statusArt?.values()||[]){for(const o of pack.items)o.destroy();for(const o of pack.icons||[])o.destroy();pack.loop?.destroy();}this._statusArt?.clear();this.clearHeroStatus62?.();}
+  statusList62(e,now,el){   /* v8.0.85 ใบ 62: สถานะบนตัวมอน (ลำดับสำคัญ) — ลูปบนตัว 1 อัน/ตัว (รวม ≤24) + ไอคอน ≤3 เหนือหัว ต่อแถวกับ Tremor/Frost Burn เดิม */
+   const L=[],t=this._taro;
+    if(!e.isBoss&&!e.isMini&&(e.knock||0)>=.4)L.push('stun');if((e.frozen||0)>0)L.push('frozen');
+    if((e._shock>0&&t&&typeof TARO_SHOCK_LIFE!=='undefined'&&t.time-(e._shockAt??-1e9)<=TARO_SHOCK_LIFE)||(e._arcShockT||0)>el)L.push('shock');
+    if((e._titanMarkT||0)>el||(this._forgeState&&this._forgeState.mark===e))L.push('mark');if(e._sourT>0)L.push('sour');if(e._burnT>0)L.push('burn');
+    if((e._glacierBrittleUntil||0)>now)L.push('brittle');if(e._chill>0&&e._chillAt!=null&&now-e._chillAt<2500&&!(e.frozen>0))L.push('chill');if(e._decoyT>0)L.push('lured');if(e._enraged)L.push('enraged');return L;}
   tickStatusArt(){
     if((Save.data.settings?.vfx??2)===0){this.clearStatusArt();return;}if(!this.enemies?.children)return;
-    const map=this._statusArt||(this._statusArt=new Map()),seen=new Set(),now=this.time.now;let count=0;
-    this.enemies.children.iterate(e=>{if(!e?.active||count>=40)return;const frost=e._frostBurnUntil>now?e._frostBurnStacks||0:0,tremor=now-(e._tremT??-1e9)<=3000?e._trem||0:0;if(!frost&&!tremor)return;seen.add(e);count++;
-      let pack=map.get(e);if(!pack){const pairs=['ic_status_tremor','ic_status_frostburn'].map(key=>({im:this.textures.exists(key)?this.camWorld(this.add.image(0,0,key).setDisplaySize(18,18).setDepth(93000)):null,tx:this.camWorld(this.add.text(0,0,'',{fontSize:'11px',fontStyle:'bold',color:'#ffffff',stroke:'#201526',strokeThickness:3}).setDepth(93001).setOrigin(0,.5))}));pack={pairs,items:pairs.flatMap(p=>[p.im,p.tx].filter(Boolean))};map.set(e,pack);}
-      const active=[tremor,frost].filter(Boolean).length;let col=0;[tremor,frost].forEach((n,i)=>{const pair=pack.pairs[i];pair.im?.setVisible(n>0);pair.tx.setVisible(n>0);if(n){const x=e.x+(col++-(active-1)/2)*34,y=e.y-Math.min(75,Math.max(28,e.body?.halfHeight||28))-12;pair.im?.setPosition(x-6,y).setAlpha(i===1?.8+.15*Math.sin(now*.006):.95);pair.tx.setPosition(x+5,y).setText(String(n));}});
-    });for(const [e,pack] of map)if(!seen.has(e)){for(const o of pack.items)o.destroy();map.delete(e);}
+    const map=this._statusArt||(this._statusArt=new Map()),seen=new Set(),now=this.time.now,el=this.elapsed||0,ic=this.textures.exists('st_icons');let count=0,loops=0,pops=0;
+    this.enemies.children.iterate(e=>{if(!e?.active||count>=40)return;const frost=e._frostBurnUntil>now?e._frostBurnStacks||0:0,tremor=now-(e._tremT??-1e9)<=3000?e._trem||0:0,st=this.statusList62(e,now,el);if(!frost&&!tremor&&!st.length)return;seen.add(e);count++;
+      let pack=map.get(e);if(pack&&pack.icons.some(o=>!o.active)){for(const o of pack.items)o.destroy();pack.loop?.destroy();map.delete(e);pack=null;}if(!pack){const pairs=['ic_status_tremor','ic_status_frostburn'].map(key=>({im:this.textures.exists(key)?this.camWorld(this.add.image(0,0,key).setDisplaySize(18,18).setDepth(93000)):null,tx:this.camWorld(this.add.text(0,0,'',{fontSize:'11px',fontStyle:'bold',color:'#ffffff',stroke:'#201526',strokeThickness:3}).setDepth(93001).setOrigin(0,.5))}));pack={pairs,items:pairs.flatMap(p=>[p.im,p.tx].filter(Boolean)),icons:[],loop:null,loopKey:null,prev:new Set()};map.set(e,pack);}
+      // ไอคอน: Tempest มีตัวนับ marker อยู่แล้ว → ไม่ซ้ำไอคอน shock
+      const show=ic?st.filter(k=>ST62_ICON[k]!=null&&!(k==='shock'&&e._shockFx?.active)).slice(0,3):[];
+      while(pack.icons.length<show.length)pack.icons.push(this.camWorld(this.add.image(0,0,'st_icons',0).setDisplaySize(18,18).setDepth(93000)));
+      const row=[...[tremor,frost].map((n,i)=>n?{w:34,i,n}:null).filter(Boolean),...show.map((k,j)=>({w:22,k,j}))],tw=row.reduce((a,r)=>a+r.w,0),y=e.y-Math.min(75,Math.max(28,e.body?.halfHeight||28))-12;let x0=e.x-tw/2;
+      pack.pairs.forEach((p,i)=>{const on=row.some(r=>r.i===i);p.im?.setVisible(on);p.tx.setVisible(on);});pack.icons.forEach((o,j)=>o.setVisible(j<show.length));
+      for(const r of row){const cx=x0+r.w/2;x0+=r.w;if(r.k){pack.icons[r.j].setFrame(ST62_ICON[r.k]).setPosition(cx,y).setDisplaySize(18,18);continue;}const pair=pack.pairs[r.i];pair.im?.setPosition(cx-6,y).setAlpha(r.i===1?.8+.15*Math.sin(now*.006):.95);pair.tx.setPosition(cx+5,y).setText(String(r.n));}
+      // ลูปบนตัว: Tempest ครบ 5 สแตกใช้ aura เดิมแทน st_shock
+      let lk=null;if(loops<24)for(const k of st){const key=ST62_LOOP[k];if(!key||(k==='shock'&&e._shockAura?.active))continue;if(this.bpAnim?.(key)){lk=key;break;}}
+      if(lk){loops++;if(pack.loopKey!==lk||!pack.loop?.active){pack.loop?.destroy();const sp=this.camWorld(this.add.sprite(e.x,e.y,lk,0));sp.play(lk);pack.loop=sp;pack.loopKey=lk;}
+        const big=e.isBoss||e.isMini,sz=Math.max(56,Math.min(160,(e.body?.halfWidth||20)*2.6)),feet=lk==='st_chill';pack.loop.setDisplaySize(sz,sz).setOrigin(.5,feet?.85:.5).setPosition(e.x,feet?e.y+(e.body?.halfHeight||20)*.8:e.y).setDepth((e.depth||0)+(feet?-1:1)).setAlpha(big?.85:1);}
+      else if(pack.loop){pack.loop.destroy();pack.loop=null;pack.loopKey=null;}
+      // เพิ่งติดสถานะ → วงสีสั้น ๆ (≤6 ต่อเฟรม)
+      for(const k of st)if(!pack.prev.has(k)&&pops<6&&ST62_COL[k]!=null&&this.bpAnim?.('st_fx_apply')){pops++;this.heroFx?.('st_fx_apply',e.x,e.y,Math.max(48,Math.min(120,(e.body?.halfWidth||20)*2.4)),{tint:ST62_COL[k],depth:(e.depth||0)+2});}
+      pack.prev=new Set(st);
+    });for(const [e,pack] of map)if(!seen.has(e)){for(const o of pack.items)o.destroy();for(const o of pack.icons)o.destroy();pack.loop?.destroy();map.delete(e);}
+    this.tickHeroStatus62?.(el);
   }
+  heroStatus62(el){   /* v8.0.85 ใบ 62: สถานะฮีโร่ — ลูปบนตัวสูงสุด 2 อัน (poison/bleed > slow > barrier > guard > haste) + แถวไอคอน HUD ต่อท้ายข้อความ relic */
+   const P=this.player,o=[];if(!P)return o;const fs=this._forgeState,bo=this._heroBleed;
+    if(this._huntCursed)o.push(['poison',this._huntStk||1]);if(bo&&bo._bleedStk>0&&el-(this._heroBleedAt??-9)<.3)o.push(['bleed',bo._bleedStk]);if((this.moveSlowT||0)>0)o.push(['slow',0]);
+    if(fs&&fs.barrierUntil>el&&fs.barrier>0)o.push(['barrier',Math.ceil(fs.barrier)]);if((P.wardGuardT||0)>0)o.push(['guard',0]);if((this.pathHasteT||0)>0||(this.windRushT||0)>0)o.push(['haste',0]);
+    if((this._shield||0)>0)o.push(['shell',this._shield]);if((this._cocoaRegenT||0)>0)o.push(['regen',0]);return o;}
+  clearHeroStatus62(){const h=this._hst62;if(!h)return;for(const o of [...h.loops,...h.icons,...h.nums])o?.destroy?.();this._hst62=null;}
+  tickHeroStatus62(el){const P=this.player;if(!P?.active||this.state!=='play'){if(this._hst62&&!P?.active)this.clearHeroStatus62();return;}
+    if(this._hst62&&[...this._hst62.icons,...this._hst62.nums].some(o=>!o.active))this.clearHeroStatus62();   /* scene.restart เก็บฟิลด์เดิม → ของเก่าถูกทำลายแล้ว */
+    const h=this._hst62||(this._hst62={loops:[],keys:[],icons:[],nums:[],prev:new Set(),fb:0}),st=this.heroStatus62(el),has=new Set(st.map(s=>s[0]));
+    const want=['poison','bleed','slow','barrier','guard','haste'].filter(k=>has.has(k)).slice(0,2).map(k=>'st_p_'+k).filter(k=>this.bpAnim?.(k));
+    for(let i=0;i<2;i++){const k=want[i];if(!k){if(h.loops[i]){h.loops[i].destroy();h.loops[i]=null;h.keys[i]=null;}continue;}
+      if(h.keys[i]!==k||!h.loops[i]?.active){h.loops[i]?.destroy();const sp=this.camWorld(this.add.sprite(P.x,P.y,k,0));sp.play(k);h.loops[i]=sp;h.keys[i]=k;}
+      const sz=Math.max(84,(P.body?.halfWidth||22)*4);h.loops[i].setDisplaySize(sz,sz).setOrigin(.5,.85).setPosition(P.x,P.y+(P.body?.halfHeight||22)).setDepth((P.depth||0)+1+i);}
+    // หายจากพิษ/เลือด/ช้า → cleanse · Barrier แตก → barrier_break
+    if(['poison','bleed','slow'].some(k=>h.prev.has(k)&&!has.has(k)))this.heroFx?.('st_fx_cleanse',P.x,P.y,110,{must:true,depth:(P.depth||0)+3});
+    const fb=this._forgeState?.barrier||0;if(h.fb>0&&!(fb>0)&&h.prev.has('barrier'))this.heroFx?.('st_fx_barrier_break',P.x,P.y,120,{must:true,depth:(P.depth||0)+3});h.fb=fb;h.prev=has;
+    // แถวไอคอน HUD (แทน '🫧×n' / 'Barrier N' ใน statTxt)
+    const T=this.statTxt,ic=this.textures.exists('st_icons')&&T;this._hudStatusIcons=!!ic;if(!ic)return;const vis=T.visible!==false&&(this.hudList?.[0]?.visible!==false);
+    while(h.icons.length<st.length){const im=this.camUI?this.camUI(this.add.image(0,0,'st_icons',0)):this.add.image(0,0,'st_icons',0);im.setScrollFactor?.(1);im.setDepth(54);const tx=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#fff1df',stroke:'#141018',strokeThickness:3}).setOrigin(0,.5).setDepth(55);this.camUI?.(tx);tx.setScrollFactor?.(1);h.icons.push(im);h.nums.push(tx);}
+    let x=T.x+(T.text?T.width+8:0);const y=T.y+(T.height||14)/2;
+    h.icons.forEach((im,i)=>{const s=st[i];im.setVisible(!!s&&vis);h.nums[i].setVisible(!!s&&vis&&!!(s&&s[1]));if(!s)return;im.setFrame(ST62_ICON['p_'+s[0]]).setDisplaySize(22,22).setPosition(x+11,y);let w=26;if(s[1]){h.nums[i].setText(String(s[1])).setPosition(x+23,y);w+=h.nums[i].width+2;}x+=w;});}
   screenFx(life,draw,{fadeIn=0,hold=null}={}){ try{ const cam=this.cameras.main,g=this.camWorld(this.add.graphics().setDepth(95000)),t0=this.time.now,fx={g,dead:false};
     const step=()=>{ if(fx.dead||!g.active)return; const v=cam.worldView,el=(this.time.now-t0)/1000,k=life>0?Math.min(1,el/life):0; g.setPosition(v.x,v.y); g.clear(); try{draw(g,v.width,v.height,k,el);}catch(e){} if(life>0&&el>=life)fx.kill(); };
     fx.kill=()=>{ if(fx.dead)return; fx.dead=true; this.events.off('postupdate',step); if(g.active)g.destroy(); };

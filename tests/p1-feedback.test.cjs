@@ -1,8 +1,8 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
 const s=fs.readFileSync('game.js','utf8');
 function method(n){const a=s.indexOf('  '+n+'('),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(s.slice(a+1));assert(a>=0&&next);return s.slice(a,a+1+next.index);}
-const Save={data:{settings:{vfx:2}}},ctx={Save,Map,Set,Math};vm.createContext(ctx);
-const Scene=vm.runInContext('class Scene{'+['heroScreenEffect','clearStatusArt','tickStatusArt'].map(method).join('\n')+'}Scene',ctx);
+const Save={data:{settings:{vfx:2}}},ctx={Save,Map,Set,Math};vm.createContext(ctx);vm.runInContext(s.slice(s.indexOf('const ST62_ICON='),s.indexOf('function artClass(k,u){')),ctx);
+const Scene=vm.runInContext('class Scene{'+['heroScreenEffect','clearStatusArt','statusList62','tickStatusArt'].map(method).join('\n')+'}Scene',ctx);
 let objects=[],hook=null;
 function obj(){const o={active:true,destroy(){this.active=false},setText(t){this.text=t;return this},setVisible(v){this.visible=v;return this},setAlpha(v){this.alpha=v;return this},setPosition(x,y){this.x=x;this.y=y;return this},setDisplaySize(w,h){this.w=w;this.h=h;return this}};const p=new Proxy(o,{get(t,k){return k in t?t[k]:()=>p}});objects.push(p);return p;}
 const scene=new Scene();Object.assign(scene,{time:{now:0},textures:{exists:()=>true},camWorld:o=>o,add:{image:(x,y,k,f)=>{const o=obj();o.frame=f;o.key=k;return o},text:()=>obj()},cameras:{main:{worldView:{x:20,y:30,width:644,height:1080}}},events:{on:(n,f)=>hook=f,off:()=>hook=null}});
