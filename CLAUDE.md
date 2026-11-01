@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.83, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.84, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.82 — Taro Arc loop cap (owner: Arc still too strong vs bosses)
+# Latest delivery: v8.0.83 — Simple Forge (owner picked docs/FORGE_SIMPLE.md) + art order 62
+
+Forge Points gone (FP_*, gearFP, fpStarCost, forgeAct, lucky). New actions: forgeOpenAdd(line) → 3 distinct weighted offers saved on item.forgeOffers[line] (no free reroll) → drawForgeOffer cards → forgeAdd(line,id) at ★1; forgeUpgrade(line) +1★ (cap reason forgeStarCapText 'Max ★n at iLv x · next ★ at iLv y'); forgeRemove(line) free double-tap. Price forgePrice=1+floor(crafts/2), Merge deletes crafts/forgeOffers. Glaze retired: CURRENCY = Twist Cream only, CUR_ALIAS divine→transmute, drops/Bazaar transmute only, save _glazeMig 1 Glaze→3 Twist Cream. forgeLineOpen = rarity only (Equipment free-slot count too). Page: Power theme (screen_gear_power_789, pwCard summary + pw_hero_forge, MOD ROWS add_/up_/cap_/rm_/merge_ tags, icons mod_add/star_up/mod_remove; ic_lucky/vfx_lucky no longer loaded). Tutorial step 3 = add_ → offer_. Tests: new forge-simple; rewrote affix-sound, forge-redesign, forge-150, gear-level-limits (rows/active legacy rows now rarity-based), gear-merge, menu-orders-art (retired lucky), check-forge-live-ui/build-forge-review. Art order 62 status effects (16 files, assets/incoming/status62/) written, waiting for art. Owner phone check pending.
+
+# Previous delivery: v8.0.82 — Taro Arc loop cap (owner: Arc still too strong vs bosses)
 
 TARO_ARC_LOOP_MAX 2: boss focus per root = min(victims, 3) hits (100% + 2×60%·Overload), normal loop-back onto the last target ≤2, pre-path Static Arc loops ≤2. Late Arc vs boss ≈ 3 roots × 2.2 = 6.6 hit-units (v8.0.79: 19.2). Mob chains unchanged (new targets still jump up to victims). Tests: taro-chain (3 hits), taro-needle-arc (3), taro-feedback strip. Owner phone check pending.
-
-# Previous delivery: v8.0.81 — Merge in the Power theme (owner)
-
-buildMerge restyled in place (logic/tags unchanged): bg screen_gear_power_789; intro = pwCard summary with rarity_up icon + pw_hero_merge α.3; item cards/material cells 0x261e30; RESULT card 0x423039 with rarity border; keep-mod rows Power palette (selected gold 0xf4d9a1); section labels 11px cream + merge_keep icon. Next: Forge (owner finds Forge the most confusing system — redesign discussion pending). Owner phone review pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
@@ -63,7 +63,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- **Simple Forge (เจ้าของเลือก 1 พ.ย.)** ทำตาม `docs/FORGE_SIMPLE.md` (2 ท่า เพิ่ม mod เลือก 1 ใน 3 / อัปดาว · ไม่มี FP · สกุลเงินเดียว Twist Cream · ช่องเปิดตามความหายาก) + หน้า Forge ธีม Power
+- Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
+- ใบสั่ง 62 สถานะติดตัว (มอน+ฮีโร่+ไอคอน) รออาร์ต `assets/incoming/status62/`
 - อาร์ต 61 บท 1 (b01–b05 + shared) ส่งแล้ว รอผูก (`assets/incoming/boss_cutscene61/`) · บท 2–3 รออาร์ต
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub

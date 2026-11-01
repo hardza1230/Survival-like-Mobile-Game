@@ -6,7 +6,8 @@ assert.equal(rows.length,44);assert.equal(rows.reduce((n,r)=>n+r.frames,0),143);
 const ctx={};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('const MENU_GROUPS='),src.indexOf('// v6.45: ของ tier1'))+';this.group=menuGroupRe;',ctx);
 const page={merge_forge:'merge',login_daily:'daily',awards:'achievements',codex_books:'skills',depths_rank:'dig'};
-for(const r of rows){
+const RETIRED=new Set(['ic_lucky','vfx_lucky']);   // v8.0.83 Simple Forge has no lucky refund: art kept on disk, no longer loaded
+for(const r of rows){if(RETIRED.has(r.key)){assert(!ctx.group('craft').test('assets/art/menu_orders/'+r.key+'.webp'),r.key+' retired: not decoded on Forge');continue;}
   const url='assets/art/menu_orders/'+r.key+'.webp',bytes=fs.readFileSync(url);
   assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256,r.key+' runtime bytes');
   assert(src.includes(r.key+":'"+url+"'"),'literal path required by web build: '+r.key);

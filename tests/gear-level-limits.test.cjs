@@ -8,7 +8,7 @@ for(const [level,mods,enh] of [[1,1,1],[11,1,1],[12,2,3],[24,2,3],[25,3,6],[44,3
   assert.equal(limits.affixCountCap(level),mods);
   assert.equal(limits.gearEnhanceCap(item),enh);
   for(const slot of ['weapon','armor','gloves','boots','amulet','ring'])for(let line=0;line<3;line++){
-    const pool=limits.forgePool({...item,slot},line);assert.equal(pool.length>0,line<mods,`${slot} iLv${level} row${line}`);
+    const pool=limits.forgePool({...item,slot},line);assert(pool.length>0,`${slot} iLv${level} row${line}: v8.0.83 rows open by rarity, not iLv`);
   }
   for(const line of [-1,3,NaN,1.5,'1'])assert.equal(limits.forgePool(item,line).length,0);
   for(let i=0;i<10;i++)assert(limits.rollAffixes('legend',level,base).length<=mods);
@@ -17,13 +17,14 @@ let item={uid:'u',baseId:'test',slot:'weapon',grade:'rare',itemLevel:1,enhanceLv
   {id:'f_might',v:5,t:10,line:0},{id:'f_vital_dough',v:12,t:10,line:1},{id:'f_treasure_aroma',v:3,t:10,line:2}
 ]};
 const snap=JSON.stringify(item),legacy=plain(item);
-assert.equal(limits.gearActiveAffixes(item).length,1);assert.equal(limits.gearEffectiveEnhance(item),1);assert.equal(JSON.stringify(item),snap);
-for(const level of [12,25])assert.equal(limits.gearActiveAffixes({...item,itemLevel:level}).length,level===12?2:3);
+assert.equal(limits.gearActiveAffixes(item).length,3,'filled legacy rows stay active');assert.equal(limits.gearEffectiveEnhance(item),1);assert.equal(JSON.stringify(item),snap);
+for(const level of [12,25])assert.equal(limits.gearActiveAffixes({...item,itemLevel:level}).length,3);
+assert.equal(limits.gearActiveAffixes({...item,affixes:[]}).length,0);assert.equal(limits.forgeLineOpen({...item,affixes:[]},1),true,'rare opens 2 rows at iLv 1');assert.equal(limits.forgeLineOpen({...item,affixes:[]},2),false,'rare row 3 needs Merge');
 // Compare and equipped stats use only active rows and the effective enhancement; never erase the saved investment.
 vm.runInContext(source.slice(source.indexOf('function gearBaseStats('),source.indexOf('function gearPool(')),ctx);
 vm.runInContext(source.slice(source.indexOf('function gearInstanceStats('),source.indexOf('function gearCompareRows(')),ctx);
 assert.deepEqual(plain(limits.gearBaseStats(item)),plain(limits.gearBaseStats({...item,enhanceLv:1})));
-assert.deepEqual(plain(limits.gearInstanceStats(item)),plain(limits.gearInstanceStats({...item,enhanceLv:1,affixes:[item.affixes[0]]})));
+assert.deepEqual(plain(limits.gearInstanceStats(item)),plain(limits.gearInstanceStats({...item,enhanceLv:1})));
 assert.deepEqual(item,legacy);
 let writes=0,randomCalls=0;
 ctx.Math=Object.assign(Object.create(Math),{random(){randomCalls++;return .99;}});
@@ -31,7 +32,7 @@ ctx.enhanceOdds=()=>({success:1,brk:0,destroy:0});
 const save=vm.runInContext('({'+['gearLv','enhance','ensureAffix'].map(method).join('\n')+'\n})',ctx);
 Object.assign(save,{data:{gearLv:{},gearItems:[item],equippedGear:{}},gearItem:id=>id==='u'?item:null,gearBase:()=>base,save(){writes++;}});
 ctx.Save=save;
-assert.equal(save.gearLv('u'),1);assert.equal(save.ensureAffix('u').length,1);
+assert.equal(save.gearLv('u'),1);assert.equal(save.ensureAffix('u').length,3);
 assert.equal(save.enhance('u').result,'capped');assert.equal(writes,0);assert.equal(randomCalls,0);assert.equal(item.enhanceLv,10);
 for(const [level,cap] of [[1,1],[12,3],[25,6],[45,10]]){
   item.itemLevel=level;item.enhanceLv=cap-1;
@@ -39,26 +40,27 @@ for(const [level,cap] of [[1,1],[12,3],[25,6],[45,10]]){
   assert.equal(writes,before+1);assert.equal(save.enhance('u').result,'capped');assert.equal(writes,before+1);
 }
 assert.equal(save.enhance('missing').result,'capped');
-// v8.0.33 Forge Points: every craft action rejects locked and malformed rows before charging.
+// v8.0.83 Simple Forge: every craft action rejects locked and malformed rows before charging.
 ctx.Sfx={error(){},craft(){},back(){},select(){}};
-const Scene=vm.runInContext('class S{'+['_craftContext','forgeAct','applyGearTut'].map(method).join('\n')+'\n}S',ctx);
-const scene=new Scene();Object.assign(scene,{gearSlot:'weapon',craftSelectedUid:'u',craftLineIndex:1,setMenuScroll(){},showBanner(){},buildCraftBench(){},screenFlash(){}});
-save.currency=k=>save.data.currency[k]||0;save.equippedGearItem=()=>item;save.data.currency={transmute:20,divine:20};
+const Scene=vm.runInContext('class S{'+['_craftContext','_forgeItem','_forgePay','_forgeDone','forgeOpenAdd','forgeAdd','forgeUpgrade','forgeRemove','applyGearTut'].map(method).join('\n')+'\n}S',ctx);
+const scene=new Scene();Object.assign(scene,{gearSlot:'weapon',craftSelectedUid:'u',craftLineIndex:1,setMenuScroll(){},showBanner(){},buildCraftBench(){},screenFlash(){},menuToast(){}});
+save.currency=k=>save.data.currency[k]||0;save.equippedGearItem=()=>item;save.data.currency={transmute:20};
 item.itemLevel=1;item.enhanceLv=10;
-for(const line of [-1,1,2,3,1.5,'1'])for(const k of ['add','swap','up','remove']){
-  scene.craftLineIndex=line;scene.forgePick='f_vital_dough';const balance=plain(save.data.currency),before=JSON.stringify(item);
-  scene.forgeAct(k);assert.deepEqual(save.data.currency,balance);assert.equal(JSON.stringify(item),before);
-}
-// The open Power row works with one payment; the dormant rows stay saved.
-scene.craftLineIndex=0;scene.forgePick='f_might';scene.forgeAct('swap');assert.equal(save.data.currency.transmute,20,'same mod is not a swap');
-scene.forgeAct('up');assert.equal(save.data.currency.divine,20,'iLv 1 caps stars, no charge');
-assert.equal(limits.gearActiveAffixes(item).length,1);assert.equal(item.affixes.length,3,'legacy dormant rows are retained during Power crafting');
+for(const line of [-1,3,1.5,'1',NaN]){const balance=plain(save.data.currency),before=JSON.stringify(item);
+  scene.forgeOpenAdd(line);scene.forgeAdd(line,'f_might');scene.forgeUpgrade(line);scene.forgeRemove(line);scene.forgeRemove(line);
+  assert.deepEqual(save.data.currency,balance);assert.equal(JSON.stringify(item),before);assert(!scene._forgePanel);}
+item.locked=true;{const before=JSON.stringify(item);scene.forgeUpgrade(0);scene.forgeRemove(0);scene.forgeRemove(0);assert.equal(JSON.stringify(item),before,'locked items never change');}item.locked=false;
+// A filled row cannot be added to; iLv 1 caps stars without charging.
+scene.forgeOpenAdd(0);assert(!scene._forgePanel,'filled row has no Add');assert.equal(scene.forgeAdd(0,'f_might'),false);
+assert.equal(scene.forgeUpgrade(0),false);assert.equal(save.data.currency.transmute,20,'iLv 1 caps stars, no charge');
+assert.equal(item.affixes.length,3,'legacy rows are retained');
 // A stale inventory callback must not charge once the item reached its cap or disappeared.
 const start=source.indexOf('can?()=>{ if(!afford){Sfx.error();'),finish=source.indexOf('this.buildMenuScreen(); }:null',start),callback=source.slice(start+4,finish)+'this.buildMenuScreen(); }';
 for(const current of [null,{itemLevel:1,enhanceLv:3},{itemLevel:1,enhanceLv:2}]){
   let charges=0;const cbctx={afford:true,lv:1,cost:3,selected:{uid:'u'},gearEnhanceCap:limits.gearEnhanceCap,gearEffectiveEnhance:limits.gearEffectiveEnhance,Save:{gearItem:()=>current,spendShards(){charges++;return true;}},Sfx:{error(){}}};
   const cb=vm.runInNewContext('(function(){return '+callback+';})',cbctx).call({buildMenuScreen(){},showBanner(){}});cb();assert.equal(charges,0);
 }
+item.affixes=item.affixes.filter(x=>x.line!==0);
 // First Forge lesson: gift once, Equipment opens Power, stale locked focus recovers, then one paid roll.
 Object.assign(save.data,{gearTut:2,stageMastery:{0:true,1:true},settings:{noRuby:true}});
 save.data.currency.transmute=0;save.addCurrency=(key,n)=>save.data.currency[key]=(save.data.currency[key]||0)+n;
@@ -70,10 +72,9 @@ scene.buildMenuScreen=()=>{};
 const craftZone=()=>({x:0,y:0,w:120,h:40,fn:craftFn});scene.tapZones=[craftZone()];scene.applyGearTut();assert.equal(save.data.currency.transmute,3);
 scene.tapZones=[craftZone()];scene.applyGearTut();assert.equal(save.data.currency.transmute,3,'tutorial gift is granted once');
 scene.craftLineIndex=1;scene.tapZones[0].fn();assert.equal(save.data.gearTut,3);assert.equal(scene.craftLineIndex,0);assert.equal(scene.menuScreen,'craft');
-scene.craftLineIndex=2;scene.tapZones=[];scene.applyGearTut();assert.equal(scene.craftLineIndex,0);assert.equal(save.data.currency.transmute,3);
-scene.tapZones=[{x:0,y:0,w:120,h:44,tag:'pick_f_might',fn:()=>{scene.forgePick='f_might';}}];scene.applyGearTut();assert.equal(save.data.gearTut,3,'picking a mod does not finish the step');scene.tapZones[0].fn();
-item.affixes=item.affixes.filter(x=>x.line!==0);scene.tapZones=[{x:0,y:0,w:120,h:44,fn:()=>scene.forgeAct('add')}];scene.applyGearTut();scene.tapZones[0].fn();assert.equal(save.data.gearTut,4);assert.equal(limits.forgeLines(item)[0].id,'f_might');assert.equal(save.data.currency.transmute,2);
-console.log('Gear level limits: unlock boundaries, effective legacy stats, direct enhance/craft guards, Forge Points guards and stale callbacks passed');
+let opened=0;scene.tapZones=[{x:0,y:0,w:120,h:44,tag:'add_0',fn:()=>{opened++;}}];scene.applyGearTut();assert.equal(save.data.gearTut,3,'opening the 3-card picker does not finish the step');scene.tapZones[0].fn();assert.equal(opened,1);
+item.forgeOffers={0:['f_might']};scene.craftLineIndex=0;scene.tapZones=[{x:0,y:0,w:120,h:60,tag:'offer_f_might',fn:()=>scene.forgeAdd(0,'f_might')}];scene.applyGearTut();scene.tapZones[0].fn();assert.equal(save.data.gearTut,4);assert.equal(limits.forgeLines(item)[0].id,'f_might');assert.equal(save.data.currency.transmute,2);assert.equal(item.crafts,1);assert(!item.forgeOffers[0],'offer used up');
+console.log('Gear level limits: rarity rows, effective legacy stats, direct enhance/craft guards, Simple Forge guards and stale callbacks passed');
 // Regression: the real Power Forge shortcut uses a captured route variable, not literal callback text.
 {const keep=save.data.gearItems,starter={uid:'starter',baseId:'starter',grade:'start',slot:'weapon'};ctx.GEAR_ALL.push({id:'starter',tier:'start',slot:'weapon'});
  const good={uid:'good',baseId:'test',grade:'rare',slot:'armor',itemLevel:5,affixes:[]},locked={...good,uid:'locked',locked:true};
@@ -81,8 +82,8 @@ console.log('Gear level limits: unlock boundaries, effective legacy stats, direc
  scene.gearSelectedUid='starter';scene.craftSelectedUid='starter';scene.menuScreen='gLoadout';let equipment=0,forge=0;const navigate=target=>{scene.menuScreen=target;if(target==='craft')forge++;else equipment++;};const target='craft';
  scene.tapZones=[{tag:'gear',fn:()=>navigate('gear')},{tag:'craft',fn:()=>navigate(target)}];scene.applyGearTut();assert.equal(scene.gearSelectedUid,'good');assert.equal(scene.tapZones[0].tag,'craft');scene.tapZones[0].fn();assert.equal(forge,1);assert.equal(equipment,0);assert.equal(save.data.gearTut,3);
  // No usable item: keep normal controls instead of trapping the owner in Upgrade/Equipment.
- save.data.gearTut=2;save.data.gearItems=[starter,locked,{...good,uid:'spent',fp:0}];scene.menuScreen='gear';scene.tapZones=[{tag:'gLoadout',fn:()=>navigate('gLoadout')},{tag:'back',back:true,fn(){}}];const zones=scene.tapZones;scene.applyGearTut();assert.equal(scene.tapZones,zones);assert(scene._gearTutWaiting);assert.equal(save.data.gearTut,2);
+ save.data.gearTut=2;save.data.gearItems=[starter,locked,{...good,uid:'spent',affixes:[{id:'f_might',v:5,t:10,line:0},{id:'f_vital_dough',v:12,t:10,line:1}]}];scene.menuScreen='gear';scene.tapZones=[{tag:'gLoadout',fn:()=>navigate('gLoadout')},{tag:'back',back:true,fn(){}}];const zones=scene.tapZones;scene.applyGearTut();assert.equal(scene.tapZones,zones);assert(scene._gearTutWaiting);assert.equal(save.data.gearTut,2);
  // An already-open Forge resumes at the actual mod lesson; starter focus is repaired once.
- save.data.gearItems=[good];scene.gearSelectedUid=scene.craftSelectedUid='good';scene.menuScreen='craft';scene._craftContext=()=>({item:good});scene.craftLineIndex=0;scene.forgePick=null;scene.tapZones=[{tag:'pick_f_might',x:0,y:0,w:100,h:44,fn(){}}];scene.applyGearTut();assert.equal(save.data.gearTut,3);assert.equal(scene.tapZones[0].tag,'pick_f_might');save.data.gearItems=keep;
+ save.data.gearItems=[good];scene.gearSelectedUid=scene.craftSelectedUid='good';scene.menuScreen='craft';scene._craftContext=()=>({item:good});scene.craftLineIndex=0;scene.forgePick=null;scene.tapZones=[{tag:'add_0',x:0,y:0,w:100,h:44,fn(){}}];scene.applyGearTut();assert.equal(save.data.gearTut,3);assert.equal(scene.tapZones[0].tag,'add_0');save.data.gearItems=keep;
 }
-console.log('Post C1-2 Forge tutorial: tagged shortcut beats Equipment, starter/locked focus recovery, no-gear/no-FP escape and direct Forge resume passed');
+console.log('Post C1-2 Forge tutorial: tagged shortcut beats Equipment, starter/locked focus recovery, no-gear/full-rows escape and direct Forge resume passed');

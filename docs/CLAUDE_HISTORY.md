@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.81 — Merge in the Power theme (owner)
+
+buildMerge restyled in place (logic/tags unchanged): bg screen_gear_power_789; intro = pwCard summary with rarity_up icon + pw_hero_merge α.3; item cards/material cells 0x261e30; RESULT card 0x423039 with rarity border; keep-mod rows Power palette (selected gold 0xf4d9a1); section labels 11px cream + merge_keep icon. Next: Forge (owner finds Forge the most confusing system — redesign discussion pending). Owner phone review pending.
+
+
 # Previous delivery: v8.0.80 — art order 60 wired (painted boss bullets + body-move FX)
 
 scripts/pack-boss-60.py (MANIFEST bytes/sha; black sheets lum×1.35 unpremultiplied alpha; bullets kept 128px so scale/hitbox unchanged) → assets/art/boss_vfx/ vfx_body_* (ASSET_FX shockwave 6×256 · skydrop 8×256 rate 8 · sweep 6×384×256 · charge 6×256×128) + bshot_01…15/pin (ASSET_IMAGES), 312 KB. Loading per stage: STAGE_SHEETS[i] gets bshot_NN, body FX only for stages 0/3/6/10/14, pin → [14]. BOSS_SHOT[i].p / PIN.p → bossShotApply uses the painted texture (no tint, rotated to direction, no spin) when loaded, else the v8.0.72 code shapes. bossBodyMove overlays heroFx on the same hazards (timings/radii unchanged): shockwave at impact (700ms) per circle, skydrop with each circle, sweep arc at impact, charge dust following the boss. tests/boss-shots extended; headless smoke 0 errors. Owner phone review pending.

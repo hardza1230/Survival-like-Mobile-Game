@@ -11,7 +11,7 @@ const {chromium}=require('playwright');
   await page.goto('http://127.0.0.1:8088/forge-review.html?w='+w+'&h='+h+'&state='+state);
   await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Ready'),{timeout:30000});
   const metrics=await page.evaluate(()=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview'),texts=s.menu.list.filter(n=>n.type==='Text');return{scroll:s._mScrollMax,W:s.W,H:s.H,atlas:s.textures.exists('fg_ui_atlas'),zones:s.tapZones.map(z=>({x:z.x,y:z.y,w:z.w,h:z.h,tag:z.tag})),texts:texts.map(t=>({text:t.text,box:{x:t.getBounds().x,y:t.getBounds().y,w:t.getBounds().width,h:t.getBounds().height}}))};});
-  assert(!metrics.texts.some(t=>/^T\d+ \(/.test(t.text)));if(state!=='sustain'){assert(!metrics.texts.some(t=>/^\d+(\.\d+)?%$/.test(t.text)));assert(!metrics.texts.some(t=>t.text==='Might'));}for(const z of metrics.zones.filter(z=>z.tag?.startsWith('info_')))assert(z.w>=44&&z.h>=44);for(const z of metrics.zones.filter(z=>['add','swap','up','remove'].includes(z.tag)))assert(z.h>=44);assert(!metrics.zones.some(z=>['roll','tier','auto'].includes(z.tag)),'random roll removed');
+  assert(!metrics.texts.some(t=>/^T\d+ \(/.test(t.text)));if(state!=='sustain'){assert(!metrics.texts.some(t=>/^\d+(\.\d+)?%$/.test(t.text)));assert(!metrics.texts.some(t=>t.text==='Might'));}for(const z of metrics.zones.filter(z=>z.tag?.startsWith('info_')))assert(z.w>=44&&z.h>=44);for(const z of metrics.zones.filter(z=>/^(add|up|rm)_/.test(z.tag||'')))assert(z.h>=30);assert(!metrics.zones.some(z=>['roll','tier','auto'].includes(z.tag)),'random roll removed');
   assert.equal(metrics.scroll,0);assert(metrics.atlas);assert.equal(errors.length,0,errors.join('\n'));
   for(const z of metrics.zones)assert(z.x>=0&&z.y>=0&&z.x+z.w<=w+.5&&z.y+z.h<=h+.5,JSON.stringify({w,h,state,z}));
   for(const t of metrics.texts)assert(t.box.x>=-.5&&t.box.y>=-.5&&t.box.x+t.box.w<=w+.5&&t.box.y+t.box.h<=h+.5,JSON.stringify({w,h,state,text:t}));
@@ -21,15 +21,17 @@ const {chromium}=require('playwright');
    const z=await page.evaluate(tag=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview'),z=s.tapZones.find(z=>z.tag===tag);return z?{x:z.x+z.w/2,y:z.y+z.h/2}:null;},tag);assert(z,'Missing '+tag);
    const b=await page.locator('#mount canvas').boundingBox();await page.mouse.click(b.x+z.x,b.y+z.y);await page.waitForTimeout(350);
   }
-  /* v8.0.33 Forge Points: pick a mod, Add/Swap with Twist Cream, Star up with Glaze, Remove */
-  const S=()=>'window.__forgeReviewGame.scene.getScene("ForgeReview")';const tags=async()=>page.evaluate(()=>window.__forgeReviewGame.scene.getScene('ForgeReview').tapZones.map(z=>z.tag));
-  if(state==='power'){const fp0=await page.evaluate(()=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview');return gearFP(Save.gearItem(s.craftSelectedUid));});const pk=(await tags()).find(t=>t&&t.startsWith('pick_'));assert(pk,'pick row');await clickTag(pk);const t1=await tags();const act=t1.includes('swap')?'swap':'add';assert(t1.includes(act));const before=await page.evaluate(()=>Save.currency('transmute'));await clickTag(act);assert.equal(await page.evaluate(()=>Save.currency('transmute')),before-1);const fp1=await page.evaluate(()=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview');return gearFP(Save.gearItem(s.craftSelectedUid));});assert(fp1===fp0||fp1===fp0-(act==='swap'?5:4),'Forge Points spent '+fp0+'→'+fp1);
-   if((await tags()).includes('up')){const glaze=await page.evaluate(()=>Save.currency('divine'));await clickTag('up');assert.equal(await page.evaluate(()=>Save.currency('divine')),glaze-1);}}
-  if(state==='utility'){if(metrics.zones.some(z=>z.tag==='family_picker')){await clickTag('family_picker');await clickTag('panel_close');}else if(metrics.zones.some(z=>z.tag==='family_next'))await clickTag('family_next');await clickTag('equip');}
-  if(state==='sustain'){assert.equal(await page.evaluate(()=>Save.data.gearItems.filter(i=>i.forgeChoice).length),0,'old pending roll refunded');if((await tags()).includes('remove')){await clickTag('remove');const pk=(await tags()).find(t=>t&&t.startsWith('pick_'));if(pk){await clickTag(pk);assert((await tags()).includes('add'));}}}
+  /* v8.0.83 Simple Forge: + Add a mod → 3-card picker → buy · Upgrade ★ · double-tap Remove · one currency */
+  const tags=async()=>page.evaluate(()=>window.__forgeReviewGame.scene.getScene('ForgeReview').tapZones.map(z=>z.tag));const cash=()=>page.evaluate(()=>Save.currency('transmute'));const price=()=>page.evaluate(()=>{const s=window.__forgeReviewGame.scene.getScene('ForgeReview');return forgePrice(Save.gearItem(s.craftSelectedUid));});
+  assert(!metrics.texts.some(t=>/🔨|Forge Points|Glaze/.test(t.text)),'no Forge Points / Glaze text');assert(metrics.texts.some(t=>t.text==='MOD ROWS'));
+  if(state==='power'){const ad=(await tags()).find(t=>t&&t.startsWith('add_'));assert(ad,'empty row offers + Add');await clickTag(ad);const offers=(await tags()).filter(t=>t&&t.startsWith('offer_'));assert.equal(offers.length,3,'3-card picker');
+   const p0=await price(),c0=await cash();await clickTag(offers[0]);assert.equal(await cash(),c0-p0);assert(!(await tags()).some(t=>t&&t.startsWith('offer_')),'picker closes after buying');
+   const up=(await tags()).find(t=>t&&t.startsWith('up_'));if(up){const p1=await price(),c1=await cash();await clickTag(up);assert.equal(await cash(),c1-p1);}}
+  if(state==='utility'){await clickTag('gear_browse');await clickTag('panel_close');await clickTag('equip');}
+  if(state==='sustain'){assert.equal(await page.evaluate(()=>Save.data.gearItems.filter(i=>i.forgeChoice).length),0,'old pending roll refunded');const rm=(await tags()).find(t=>t&&t.startsWith('rm_'));if(rm){const c=await cash();await clickTag(rm);await clickTag(rm);assert((await tags()).includes('add_'+rm.slice(3)),'removed row is empty');assert.equal(await cash(),c,'remove is free');}}
   assert.equal(errors.length,0,errors.join('\n'));console.log('Forge live menu passed '+w+'x'+h+' '+state);await page.close();
  }
  for(const shot of shots){const data=shot.bytes.toString('base64');console.log('FORGE_SHOT_BEGIN:'+shot.state);for(let i=0;i<data.length;i+=8000)console.log('FORGE_SHOT_CHUNK:'+data.slice(i,i+8000));console.log('FORGE_SHOT_END:'+shot.state);}
- console.log('Forge real-browser UI: 21 states, text/hit bounds, atlas loading, Equip, Forge Points pick/add/swap/star up/remove, enlarged controls and modal navigation passed.');
+ console.log('Forge real-browser UI: 21 states, text/hit bounds, atlas loading, Equip, Simple Forge add (3-card picker)/upgrade/remove, enlarged controls and modal navigation passed.');
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

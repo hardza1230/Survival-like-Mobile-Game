@@ -11,7 +11,7 @@ const it=(uid,base,grade,o={})=>Object.assign({uid,baseId:base,slot:ctx.GEAR_ALL
 // ช่อง mod ตามระดับ (เพดาน iLv ยังอยู่)
 assert.equal(vm.runInContext('forgeLineOpen',ctx)(it('x','w1','common',{itemLevel:30}),1),false,'common = 1 mod slot');
 assert.equal(vm.runInContext('forgeLineOpen',ctx)(it('x','w1','rare',{itemLevel:30}),1),true,'rare = 2 mod slots');
-assert.equal(vm.runInContext('forgeLineOpen',ctx)(it('x','w1','epic',{itemLevel:5}),1),false,'iLv cap still applies');
+assert.equal(vm.runInContext('forgeLineOpen',ctx)(it('x','w1','epic',{itemLevel:5}),2),true,'v8.0.83 rows open by rarity only (no iLv gate)');
 assert.equal(vm.runInContext('forgeLineOpen',ctx)(it('x','w1','common',{itemLevel:30,affixes:[{id:'s1',line:1}]}),1),true,'old saves keep filled lines');
 const m=it('m','w1','common',{itemLevel:14,affixes:[{id:'p1',line:0,t:5}]}),f1=it('f1','w2','common',{itemLevel:20,enhanceLv:2,affixes:[{id:'s1',line:1,t:3}]}),f2=it('f2','w1','common',{itemLevel:3}),eq=it('e','w1','common'),lk=it('l','w1','common',{locked:true}),ar=it('a','a1','common'),rr=it('r','w1','rare');
 S.data.gearItems=[m,f1,f2,eq,lk,ar,rr];S.data.equippedGear={weapon:'e'};

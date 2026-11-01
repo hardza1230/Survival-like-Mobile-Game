@@ -6,17 +6,17 @@ const RENDER_DPR=1;
 const params=new URLSearchParams(location.search),RW=Math.max(320,Math.min(1000,Number(params.get('w'))||390)),RH=Math.max(390,Math.min(1700,Number(params.get('h'))||844)),reviewState=params.get('state')||'power';
 function seedReview(){
  const weapons=['w_knife','w_chop','w_whisk'].map(id=>GEAR_ALL.find(b=>b.id===id)),owned=[];
- for(const sd of GEAR_SLOTS){const b=sd.slot==='weapon'?weapons[0]:GEAR_ALL.find(b=>b.slot===sd.slot&&b.tier!=='start'&&!b.unique);if(b)owned.push({uid:'review-'+sd.slot,baseId:b.id,slot:sd.slot,grade:b.tier,itemLevel:55,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]});}
+ for(const sd of GEAR_SLOTS){const b=sd.slot==='weapon'?weapons[0]:GEAR_ALL.find(b=>b.slot===sd.slot&&b.tier!=='start'&&!b.unique);if(b)owned.push({uid:'review-'+sd.slot,baseId:b.id,slot:sd.slot,grade:sd.slot==='weapon'?'legend':b.tier,itemLevel:55,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]});}
  weapons.slice(1).forEach((b,i)=>owned.push({uid:'review-extra-'+i,baseId:b.id,slot:'weapon',grade:b.tier,itemLevel:reviewState==='utility'?25:16+i,affixes:[{id:'f_might',v:8,t:5,line:0},{id:'f_vital_dough',v:30,t:5,line:1}]}));
  for(const it of owned)for(const a of it.affixes){const m=affixDef(a.id);a.t=Math.max(5,affixBestTierForItem(it,m));a.v=m.tiers[a.t][0];}
- Save.data={sugar:554,currency:{transmute:24,alt:18,chaos:12,divine:10},gearItems:owned,equippedGear:Object.fromEntries(owned.filter(i=>!i.uid.includes('extra')).map(i=>[i.slot,i.uid])),gear:Object.fromEntries(owned.map(i=>[i.slot,i.baseId])),gearLv:{},forgeEconomyVersion:1};
+ Save.data={sugar:554,currency:{transmute:24},gearItems:owned,equippedGear:Object.fromEntries(owned.filter(i=>!i.uid.includes('extra')).map(i=>[i.slot,i.uid])),gear:Object.fromEntries(owned.map(i=>[i.slot,i.baseId])),gearLv:{},forgeEconomyVersion:1};
  Save.save=()=>{};for(const k of Object.keys(Sfx))if(typeof Sfx[k]==='function')Sfx[k]=()=>{};
 }
 seedReview();
 class ForgeReview extends Phaser.Scene{
  constructor(){super('ForgeReview');}
  preload(){
-  const wanted=new Set(['fg_ui_atlas','craft_bench_bg','hr_ic_candy','hr_ic_melee','hr_ic_control','hr_ic_precision',...CURRENCY.map(c=>c.asset),...Save.data.gearItems.map(it=>'gear_'+it.baseId)]);
+  const wanted=new Set(['fg_ui_atlas','craft_bench_bg','screen_gear_power_789','pw_hero_forge','hr_ic_candy','hr_ic_melee','hr_ic_control','hr_ic_precision',...CURRENCY.map(c=>c.asset),...Save.data.gearItems.map(it=>'gear_'+it.baseId)]);
   for(const k of Object.keys(MENU_ORDER_ART))if(menuGroupRe('craft').test(ASSET_IMAGES[k]))wanted.add(k);
   for(const key of wanted)if(ASSET_IMAGES[key])this.load.image(key,ASSET_IMAGES[key]);
   this.load.on('loaderror',f=>{document.getElementById('status').textContent='Asset load failed: '+f.key;});
@@ -31,9 +31,9 @@ class ForgeReview extends Phaser.Scene{
  }
  status(){document.getElementById('status').textContent='Ready · '+RW+'×'+RH+' · '+reviewState+' · menu scroll '+(this._mScrollMax||0)+' · '+this.tapZones.length+' controls';}
  buildMenuScreen(){this.menuScreen='craft';this._forgePanel=null;this.buildCraftBench();}
- screenFlash(){} screenShake(){} showBanner(){} drawMenuScrollIndicator(){}
+ screenFlash(){} screenShake(){} showBanner(){} menuToast(){} drawMenuScrollIndicator(){}
 }
-for(const key of ['menuArtFitButton','menuArtPanel','menuArtIcon','menuArtInk','menuArtFx','menuRarityFrame','tuHas','tuFrames','tuImg','tuPanel','hubMotionAllowed','forgeFrame','forgeChrome','forgeText','forgeIcon','forgeButton','forgeResetPick','forgeSelectItem','forgeOpenPanel','buildCraftBench','_buildCraftBenchRaw','drawForgePanel','_screenBg','_coverImage','_zone','setupMenuScroll','setMenuScroll','_craftContext','forgeAct','affixHype'])ForgeReview.prototype[key]=Game.prototype[key];
+for(const key of ['menuArtFitButton','menuArtPanel','menuArtIcon','menuArtInk','menuArtFx','menuRarityFrame','tuHas','tuFrames','tuImg','tuPanel','hubMotionAllowed','forgeFrame','forgeChrome','forgeText','forgeIcon','forgeButton','forgeResetPick','forgeSelectItem','forgeOpenPanel','buildCraftBench','_buildCraftBenchRaw','drawForgePanel','_screenBg','_coverImage','_zone','setupMenuScroll','setMenuScroll','_craftContext','_forgeItem','_forgePay','_forgeDone','forgeOpenAdd','forgeAdd','forgeUpgrade','forgeRemove','drawForgeOffer','pwCard','pwSection','pwArt','pwIcon','loadPower57','affixHype'])ForgeReview.prototype[key]=Game.prototype[key];
 async function bootReview(){await document.fonts.load('700 16px NunitoUI');await document.fonts.load('400 12px NunitoUI');window.__forgeReviewGame=new Phaser.Game({type:Phaser.CANVAS,parent:'mount',width:RW,height:RH,backgroundColor:'#1a1420',render:{antialias:true},scene:[ForgeReview]});}
 window.addEventListener('error',e=>{document.getElementById('status').textContent='Error: '+e.message;});
 bootReview();
