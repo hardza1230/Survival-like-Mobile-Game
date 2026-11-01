@@ -1,0 +1,308 @@
+{
+  "order": 61,
+  "result": "pass",
+  "completed_chapters": 1,
+  "asset_count": 13,
+  "checks": [
+    {
+      "key": "cs61_b01_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        400,
+        660
+      ]
+    },
+    {
+      "key": "cs61_b01_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b02_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        556,
+        595
+      ]
+    },
+    {
+      "key": "cs61_b02_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b03_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        530,
+        575
+      ]
+    },
+    {
+      "key": "cs61_b03_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b04_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        545,
+        570
+      ]
+    },
+    {
+      "key": "cs61_b04_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_b05_fall",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": [
+        540,
+        455
+      ]
+    },
+    {
+      "key": "cs61_b05_freed",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "edge_alpha": [
+        0
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "cs61_ch1_onward",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": null,
+      "crown": null
+    },
+    {
+      "key": "vfx_cs61_crown_shatter",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": "pass",
+      "crown": null
+    },
+    {
+      "key": "vfx_cs61_flavor_return",
+      "decode": "pass",
+      "dimensions": "pass",
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "edge_alpha": [
+        255
+      ],
+      "black_cell_edges": "pass",
+      "crown": null
+    }
+  ],
+  "previews": [
+    {
+      "boss": 1,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b01/preview_360x780.png",
+      "sha256": "66483a3c3d6cb29ed4477081450a15358820c37841532deeaa07425f15e99503",
+      "three_shots": "b01/preview_three_shots.png",
+      "crown_viewport": [
+        133,
+        220
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_00_memory.webp"
+    },
+    {
+      "boss": 2,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b02/preview_360x780.png",
+      "sha256": "31c8fc2f618fb5986e9a6ec9b8ac264d16de48590e1871cffb785a52d9fa6917",
+      "three_shots": "b02/preview_three_shots.png",
+      "crown_viewport": [
+        185,
+        198
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_01_memory.webp"
+    },
+    {
+      "boss": 3,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b03/preview_360x780.png",
+      "sha256": "7afc9977c310cbc4a530048df86382dcdf5734dc6301ab426831fb08cf887bf6",
+      "three_shots": "b03/preview_three_shots.png",
+      "crown_viewport": [
+        177,
+        192
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_02_memory.webp"
+    },
+    {
+      "boss": 4,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b04/preview_360x780.png",
+      "sha256": "595c2316e2cafa4be5d7006ef945ef46fca87014c7ea715aa660350093971192",
+      "three_shots": "b04/preview_three_shots.png",
+      "crown_viewport": [
+        182,
+        190
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_03_memory.webp"
+    },
+    {
+      "boss": 5,
+      "viewport": [
+        360,
+        780
+      ],
+      "file": "b05/preview_360x780.png",
+      "sha256": "6e587bc46ecb49c33ba71c5e9c4d75024bf8864ad396155201a3459cca43f88e",
+      "three_shots": "b05/preview_three_shots.png",
+      "crown_viewport": [
+        180,
+        152
+      ],
+      "memory_background": "assets/art/story/boss45/cs_boss_04_memory.webp"
+    }
+  ],
+  "visual_review": [
+    "Fall identities compared with original boss sprite first frames; original nonhumanoid forms retained where descriptions differ.",
+    "No dead bosses, blood or violent wounds; exhaustion, drooping poses and easing curse light convey defeat.",
+    "Ruby remains original round jam-spirit mascot, apron/book/gem intact; no transformation.",
+    "Fall/onward bottom quarter kept free of actors; runtime dialogue not baked into art.",
+    "Freed forms checked as full cutouts, no background or text; boss05 intentionally remains a small seed, not a person."
+  ],
+  "limitations": [
+    "Source-art composites only, not runtime screenshots or timing tests.",
+    "Opaque portrait art is 9:16; 360x780 viewport proof preserves full art in top 360x640 with blurred footer extension only in proofs. Actual consumer controls framing.",
+    "Dark proof panels and labels exist only in previews, never in final art."
+  ],
+  "scope": "Only incoming/boss_cutscene61 and art-order status. No game.js/runtime/versions changed."
+}

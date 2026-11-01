@@ -1,0 +1,485 @@
+{
+  "order": 61,
+  "generator": "built-in image_gen",
+  "references": "Exact boss first-frame crops from order61 sprite paths; Ruby normal mascot; references passed to tool as identity only.",
+  "jobs": [
+    {
+      "key": "cs61_b01_fall",
+      "boss": 1,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b01.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: emerald-green ant queen with glossy bulbous abdomen, segmented dark-green limbs, gold mandibles, thin antennae, gold crown surrounding a tall green/red forehead crystal. Depict the SAME boss now alive, weary and gently slumped, NOT dying. Inside a sour ant crystal nest: the queen lowers her bent legs protectively around warm pale eggs, exhausted but alive; green nest crystals and egg clusters frame the middle distance. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b01_freed",
+      "boss": 1,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b01.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: Kind MOTHER ANT QUEEN, same emerald ant anatomy and golden face details, face gentle with soft eyes, translucent wings, arms hugging ONE warm cream egg; crown curse removed. Maternal full-body pose, not a human. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b02_fall",
+      "boss": 2,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b02.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: round turquoise sludge-and-foam pipe creature, large circular SILVER GRATE mouth, stubby metal pipe elbows, copper valve wheels, small teal eyes. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In an old brick drain junction: Clogmaw slumps in shallow clearing teal wastewater, pipe pressure gone; a little collection of lost spoons, buttons and unmarked keepsakes gently spills beside him. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b02_freed",
+      "boss": 2,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b02.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: Kind clean-water PIPE KEEPER, preserve round teal body, silver round grate mouth, pipe elbows and valves from reference, now clean with clear-water bubbles and relaxed eyes; holds a small open cloth bag of found spoons/buttons to return. No background. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b03_fall",
+      "boss": 3,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b03.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: round charcoal-black and brass kitchen FURNACE MACHINE, glowing orange front grill, wheel feet, two side frying pans, tall chimney and tray of red chilies. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In a royal underground chili kitchen: the wheeled stove body tilts gently onto one side, frying pans droop, chimney fire nearly out, a few red embers cooling on the floor; no violent crash. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b03_freed",
+      "boss": 3,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b03.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: Royal kitchen PAN CHEF, retain the round brass/black stove-and-pan identity of the reference, now warm friendly eyes, clean cream apron tied around round body, holds a wooden ladle, fire safely low. Not an unrelated human chef. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b04_fall",
+      "boss": 4,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b04.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: stocky pale-blue ice-and-whipped-cream golem, blue eyes, cream swirl head topped with a red cherry, chunky ice limbs, waffle-cone handled blue spiked mace. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In the sugar-ice prison: the golem kneels on one knee, lowers its cone-handled mace, icy columns begin thawing with small warm mochi prisoners visible safely behind; do not show Grandma freed. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b04_freed",
+      "boss": 4,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b04.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: Kind pale-blue GOLEM, same whipped-ice swirl/cherry and chunky ice limbs, smiling and kneeling with an open hand; 2 tiny warm round mochi former prisoners sit safely beside the thawed hand. No Grandma, no human redesign. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b05_fall",
+      "boss": 5,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b05.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: deep burgundy ROOT creature with ONE central round mouth ring, many waving root tendrils, six tiny pink eyes above it, floating dark-gold crown spikes; keep original silhouette but mouth relaxed closed and non-scary. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In the crown oven chamber: the central mouth has closed as dry roots relax and shrink down across the stone floor, purple feeding glow fades. This is only a root mouth, not the Crown itself; it retreats rather than dies. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b05_freed",
+      "boss": 5,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b05.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: ONE SMALL glowing ivory-gold SEED with a few harmless withered dark root curls shrinking around it. No face, no person or ghost: this mouth of Hunger never had an original person. Compact seed vignette about one quarter canvas width, generous real alpha. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b06_fall",
+      "boss": 6,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b06.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: purple root-and-flower maiden seated in a mass of looping thorn roots, central small female face, violet blossoms, crownlike dry branches and vertical teal sap streams; not a new generic pink princess. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In the fermented canopy garden: the purple root maiden bows her tired head and sinks gently among fallen violet petals; looping root silhouette, flowers and teal drips still identifiable. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b06_freed",
+      "boss": 6,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b06.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A shy FLOWER GIRL, gentle childlike fantasy plant maiden, violet-pink flower hair and a tiny sprig crown referencing the root maiden, simple leaf dress, smiling bashfully while hugging a fallen petal. Full body, warm peach/gold light. No adult glamor, no new weapons. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b07_fall",
+      "boss": 7,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b07.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: bulky moss-and-root mushroom guardian, large red cap with cream dots, ivory antlerlike branches framing a long bark face, teal eyes, stone fists and tiny mushrooms. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In a misty mushroom marsh: the red-capped guardian stoops to the ground, its massive moss body softly settles, thin spore haze disperses and tiny red mushrooms remain safe. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b07_freed",
+      "boss": 7,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b07.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A small GROUP OF FIVE LITTLE MUSHROOM PEOPLE holding hands, varied red-and-cream caps echoing the giant guardian, small moss/wood bodies and kind teal eyes; reunited former marsh memories going home. All five fully visible as one compact group, no ground. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b08_fall",
+      "boss": 8,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b08.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: gold and burgundy hornet queen, broad striped abdomen ending in a stinger, translucent honey-gold wings, gold crown, two long curling antennae, cream fur collar. Depict the SAME boss now alive, weary and gently slumped, NOT dying. On violet-spoiled honeycomb terraces: the hornet queen rests on bent legs with wings lowered, amber honey returning at the edges, no detached body parts. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b08_freed",
+      "boss": 8,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b08.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind GOLDEN BEE QUEEN, reference hornet proportions/antennae/wings/crown and cream collar softened, friendly face, rich honey-gold abdomen, holds ONE clear unlabelled honey jar filled with clean amber honey. No purple corruption. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b09_fall",
+      "boss": 9,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b09.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: ornate pink orchid and green leaf clock construct, central flower face, huge circular clock halo, golden vine frame and four seasonal colored leaf pendants. Depict the SAME boss now alive, weary and gently slumped, NOT dying. Inside the four-season glasshouse: the clock orchid bows, one clock hand is bent down harmlessly and pink/gold/green/ice seasonal petals fall; the clock itself has NO digits or letters. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b09_freed",
+      "boss": 9,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b09.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A fully blooming CLOCK ORCHID matching the reference flower/clock structure, healthy pink petals, four seasonal leaf colors (spring green, summer gold, autumn coral, winter pale blue), two clock hands restored and moving-ready, no digits/lettering; warm living flower. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b10_fall",
+      "boss": 10,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b10.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: motherly pale face nested in an enormous reddish-brown braided root throne/body, gold branch crown, pink heart sap crystal, tiny pale mochi faces nestled in roots. Depict the SAME boss now alive, weary and gently slumped, NOT dying. At the root throne below the garden: huge braided root body relaxes around the central heart, thorn tips droop, warm memory lights slip out through open gaps, tired mother face alive and relieved. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b10_freed",
+      "boss": 10,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b10.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind MOTHER TREE, same pale mother face, woven reddish-brown roots and golden branches, thorn-free open branches releasing 3 tiny warm mochi children back into the world. Gentle full-body tree silhouette, joyful relief. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b11_fall",
+      "boss": 11,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b11.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: BRASS AND DARK IRON HARVESTER MACHINE as in sprite, low wide wheeled chassis, fanglike orange-gold front harvesting blades, two exhausts, purple crystal on top, thorn-root wrapped wheels. It is NOT a humanoid straw giant. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In the ash seed field: the referenced mechanical harvester settles its low chassis onto the soil, wheels at rest, a detached harvesting scythe/tool lies safely beside it; pale stubble and drifting ash behind. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b11_freed",
+      "boss": 11,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b11.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind GOLDEN STRAW FIELD GUARDIAN revealed from the mechanical curse: small stout straw-and-wheat guardian with warm eyes, golden grain/hat silhouette echoing harvester brass, holds a handful of SEEDS instead of a scythe, no weapon. Full body. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b12_fall",
+      "boss": 12,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b12.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: woody peach-blossom ROOT TREE creature, branching arms, pale-pink flowers, purple/pink hanging fruit, glowing heart center, twisting exposed roots. It is NOT a generic floating flower. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In a hollow orchard: the peach-blossom root tree droops its branching arms; a few pale nectar beads drip from hollow-looking fruit, foliage weary, not dead. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b12_freed",
+      "boss": 12,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b12.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: The orchard's LAST PEACH BLOSSOM, full plump pink-peach petals, golden fragrant center and healthy small woody stem/root body echoing reference tree, a few peach leaves, no hollow maw, no human. Whole living bloom visible. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b13_fall",
+      "boss": 13,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b13.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: symmetrical GOLD-FRAMED GLASS GOLEM, angular white and lavender glass panels, bulky segmented shoulders, gold articulated limbs, purple central glass heart and a smaller head gem. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In the broken royal greenhouse: the glass golem kneels with superficial hairline cracks across glass panels, intact kind face, harmless fallen panes on the ground, soft daylight begins entering. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b13_freed",
+      "boss": 13,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b13.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind GLASS GARDENER, preserve glass-panel and gold articulated guardian identity, softened clear blue/cream panes, gentle face, holds a terracotta pot with ONE green seedling in sunshine-colored rim light. No background. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b14_fall",
+      "boss": 14,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b14.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: small kindly-owl shaped warden, large PURPLE eyes, golden feather/husk armor, brown leaf wings, jewel on forehead, stocky bird feet. NOT a human guard. Depict the SAME boss now alive, weary and gently slumped, NOT dying. In the seed vault: owl warden sits tired beside a huge newly open vault, leaf wings lowered, blank seed drawers and warm light inside, never any numbers or lettering. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b14_freed",
+      "boss": 14,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b14.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind OWL SEEDWARDEN matching large purple eyes, golden husk-feather armor and brown leaf wings; offers an open small cloth bag of living seeds toward camera, relaxed smile, no weapon. Full owl body/feet. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_b15_fall",
+      "boss": 15,
+      "type": "fall",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b15.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene, final1080x1920, portrait9:16. Input reference is the EXACT boss identity to preserve: tall gold seed-pod and purple thorn-root armored TREE guardian form, oval gold body/pod halves, purple glowing central stem, thin crown branches and wrapped root base. Fall MUST preserve this sprite form; only Freed reveals a human elder. Depict the SAME boss now alive, weary and gently slumped, NOT dying. Under the First Tree: original gold seed-pod / purple thorn-root guardian form stoops with the central stem bowed, the gold halves opening slightly; the cracked crown above the central stem remains visible, not yet a human. Boss fits safely in central region between x20-80percent and y35-72percent; leave bottom25percent a subdued uncluttered continuation of floor for later runtime dialogue, no UI drawn. Airy atmospheric upper third, environment establishes location. A clearly visible cracked PURPLE CURSE CRYSTAL/CROWN is centered above/on boss head or upper core, ideally x50percent,y43percent, unobscured for later shatter VFX; retain the reference's existing crown when present and show purple cracks within it. No hero or Ruby in this shot, no battle projectiles. Tired relieved eyes, intact body, all extremities within the frame. Preserve reference species, key silhouette, materials, face and colors; never substitute a generic humanoid."
+    },
+    {
+      "key": "cs61_b15_freed",
+      "boss": 15,
+      "type": "freed",
+      "width": 768,
+      "height": 1024,
+      "background": "transparent",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/.git/art61_refs/b15.png"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE isolated FULL-BODY freed-form character illustration, final768x1024 portrait3:4, TRUE TRANSPARENT RGBA background. Input boss reference establishes identity and motifs; show the KIND RELEASED form described here: A kind HUMAN ELDER, the First Planter finally free: small elderly gardener with gentle wrinkled face, silver hair/beard, simple warm cream-and-earth gardener robes and root-colored sash; tearful relieved smile. Holds the REMOVED ornate golden crown with dark purple crystal safely in BOTH hands below chest. No crown on head, no armored monster casing. Echo original gold/purple color accents without curse. Full body. Facing camera at a slight three-quarter angle. Whole body/appendages/props fit inside central82percent canvas, feet comfortably above bottom8percent. Soft small warm rimlight INSIDE contour, crisp clean transparent cutout, no broad external glow cloud, no ground/scenery/shadow disk/background. No additional characters except the explicitly specified eggs/mochi/mushroom group. This is a compassionate restoration scene, not a combat attack or death."
+    },
+    {
+      "key": "cs61_ch1_onward",
+      "chapter": 1,
+      "type": "onward",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/assets/art/mascot/ruby_talk_normal.webp"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene final1080x1920 portrait9:16. an underground royal-kitchen route connecting warm pantry shelves, a round drain tunnel and distant softly lit kitchen doorway. Winding path leads from center foreground into far upper-center distance. Keep central x40-65percent OPEN for later runtime flavor light ribbon; faint scattered warm motes only, do not paint a giant beam. RUBY stands in foreground LEFT at x25percent,y64percent looking toward the path/light: exactly the attached mascot, tiny round glossy pink-red POMEGRANATE JAM SPIRIT with single faceted ruby gem on top, large reddish-brown eyes, tiny round hands/feet, red-and-cream gingham apron with cream frill and side ribbons, carries a small brown recipe book. Preserve mascot proportions and face. Ruby NEVER becomes human, never tall/humanoid, no hair or princess outfit, no jar body. Full Ruby visible above bottom25percent; bottom quarter calm subdued floor reserved for future dialogue, no UI. Hopeful emotional continuation, same story world, no other hero."
+    },
+    {
+      "key": "cs61_ch2_onward",
+      "chapter": 2,
+      "type": "onward",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/assets/art/mascot/ruby_talk_normal.webp"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene final1080x1920 portrait9:16. a fermented enchanted garden route, mossy roots and mushrooms yielding to a sunlit garden passage. Winding path leads from center foreground into far upper-center distance. Keep central x40-65percent OPEN for later runtime flavor light ribbon; faint scattered warm motes only, do not paint a giant beam. RUBY stands in foreground LEFT at x25percent,y64percent looking toward the path/light: exactly the attached mascot, tiny round glossy pink-red POMEGRANATE JAM SPIRIT with single faceted ruby gem on top, large reddish-brown eyes, tiny round hands/feet, red-and-cream gingham apron with cream frill and side ribbons, carries a small brown recipe book. Preserve mascot proportions and face. Ruby NEVER becomes human, never tall/humanoid, no hair or princess outfit, no jar body. Full Ruby visible above bottom25percent; bottom quarter calm subdued floor reserved for future dialogue, no UI. Hopeful emotional continuation, same story world, no other hero."
+    },
+    {
+      "key": "cs61_ch3_onward",
+      "chapter": 3,
+      "type": "onward",
+      "width": 1080,
+      "height": 1920,
+      "background": "opaque",
+      "frames": 1,
+      "refs": [
+        "E:/Heart/TT/survival-mobile/assets/art/mascot/ruby_talk_normal.webp"
+      ],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. ONE FULL-BLEED OPAQUE VERTICAL cinematic scene final1080x1920 portrait9:16. an ash field gradually becoming golden seedlings, the First Tree ahead under a hopeful dawn. Winding path leads from center foreground into far upper-center distance. Keep central x40-65percent OPEN for later runtime flavor light ribbon; faint scattered warm motes only, do not paint a giant beam. RUBY stands in foreground LEFT at x25percent,y64percent looking toward the path/light: exactly the attached mascot, tiny round glossy pink-red POMEGRANATE JAM SPIRIT with single faceted ruby gem on top, large reddish-brown eyes, tiny round hands/feet, red-and-cream gingham apron with cream frill and side ribbons, carries a small brown recipe book. Preserve mascot proportions and face. Ruby NEVER becomes human, never tall/humanoid, no hair or princess outfit, no jar body. Full Ruby visible above bottom25percent; bottom quarter calm subdued floor reserved for future dialogue, no UI. Hopeful emotional continuation, same story world, no other hero."
+    },
+    {
+      "key": "vfx_cs61_crown_shatter",
+      "type": "fx",
+      "width": 4096,
+      "height": 512,
+      "frame_w": 512,
+      "frame_h": 512,
+      "frames": 8,
+      "donor_cols": 4,
+      "donor_rows": 2,
+      "background": "black",
+      "refs": [],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. A neutral VFX ANIMATION sprite sheet on SOLID PURE BLACK #000000 opaque background, NO scenery. EXACTLY8 frames arranged4columns x2rows, equal SQUARE cells, overall2:1 landscape. One small PURPLE CRYSTAL CURSE CROWN in each cell, fixed center pivot and identical camera. Read LEFT to RIGHT then next row: frame0 intact dark-purple crystal crown with faint hairline;1 cracks brighten gold;2 cracks spread;3 crown separates into rounded violet shards;4 shards move outward;5 purple shards turn into GOLDEN sparkles;6 few warm gold particles;7 very faint last gold motes. No violence/no sharp dangerous shards flying at camera. Clearly evolving shape and fading final phases. All content contained central75percent each cell with generous pureblack gutters, no cell borders/dividers, no text. Designed to mechanically repack into one horizontal8frame strip512px cells; do not paint8crowns inside any one cell."
+    },
+    {
+      "key": "vfx_cs61_flavor_return",
+      "type": "fx",
+      "width": 4096,
+      "height": 1024,
+      "frame_w": 512,
+      "frame_h": 1024,
+      "frames": 8,
+      "donor_cols": 4,
+      "donor_rows": 2,
+      "background": "black",
+      "refs": [],
+      "prompt": "Use case: illustration-story. Original Mochi Mayhem cute confectionery fantasy, cinematic hand-painted animated-film illustration, softly dark outlined shapes, rounded readable forms, polished soft painterly shading, warm golden shafts of light, emotional compassionate aftermath, no photorealism. NO words, letters, numbers, glyph text, labels, subtitles, logos or watermark. NO blood, gore, death, corpse, injury or violent action. A flavor-return VFX ANIMATION sprite sheet, SOLID OPAQUE PURE BLACK #000 background, no scenery. EXACTLY8frames arranged4columns x2rows of equal TALL2:1 height:width cells, overall canvas SQUARE. Fixed bottom-center origin x50percent,y85percent in every cell. Sequence lefttoright then nextrow:0 tiny ivory-gold seedglow;1 a short bright warm stream rises;2 stream grows upward with strawberry-red,mint-cyan,honey-gold,lilac flavor strands;3 tall multicolor light stream;4 stream bends into graceful flowing ribbon;5 ribbon arcs upward with gold motes;6 ribbon thins and trails away;7 faint gold flavor sparks fade. Soft hand-painted luminous ribbons, clear soft dark color separation, no laser weapon/explosion, no solid rainbow rectangle. Keep within central75percent width and8-90percent height of each cell, consistent anchor, no clipping, no border/text. Designed to repack as horizontal8frame strip512x1024 cells."
+    }
+  ],
+  "execution": {
+    "mode": "built-in ImageGen, one call per asset",
+    "completed_keys": [
+      "cs61_b01_fall",
+      "cs61_b01_freed",
+      "cs61_b02_fall",
+      "cs61_b02_freed",
+      "cs61_b03_fall",
+      "cs61_b03_freed",
+      "cs61_b04_fall",
+      "cs61_b04_freed",
+      "cs61_b05_fall",
+      "cs61_b05_freed",
+      "cs61_ch1_onward",
+      "vfx_cs61_crown_shatter",
+      "vfx_cs61_flavor_return"
+    ],
+    "remaining_jobs": "Other job prompts are planned and not yet delivered in this batch.",
+    "identity_inputs": "refs are actual paths passed to imagegen; matching reference crops are preserved in references/",
+    "references_crops": "boss01 first160px cell; other bosses first256px cell of original sprite in order61 table"
+  }
+}
