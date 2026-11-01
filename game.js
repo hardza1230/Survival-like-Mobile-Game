@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.90';
+const GAME_VERSION = '8.0.91';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.91',date:'2026-11-01',title:'New sounds',items:['28 new sounds: Forge rolls (good and bad), mod Lv up and remove, Mythic/Ancient/Divine merges, Relic pairs, status effects, Yuzu evolutions and big moves, Taro sentries, day-30 login and Depths']},
   {v:'8.0.90',date:'2026-11-01',title:'Companions evolve',items:['Yuzu’s companions now evolve through 3 forms as they defeat enemies (e.g. Lime Sprout → Lime Archer → Lime Skyhunter). Each new form is bigger and hits 20% harder','Stronger Citrus Command: Pomelo’s slam sends 2 aftershock waves, Lime fires a fan of 3 arrows, Blood Orange’s storm ends in a huge blast','Cutscenes are cleaner: no light beams, rainbow ribbons or sparkles — just the scenes and characters']},
   {v:'8.0.89',date:'2026-11-01',title:'8 new Relics',items:['New Relics: Heavy Dough, Sugar Rush, Frost Candy, Copper Whisk, Long Spoon, Crowd Crusher, Twin Bake and Giant Slayer','Each new Relic suits certain builds (the card shows 👍 who it is for), and Relics that fit your build show up more often','New Relic pairs: Deadeye, Frenzy and Deep Freeze']},
   {v:'8.0.88',date:'2026-11-01',title:'Taro Sentry: build your towers',items:['Sentry Build starts with 1 sentry. The new Extra Sentry card adds 1 more each time (max 3)','Reserve Cell now makes sentries fire 10% faster per rank (max +60%) instead of lasting longer']},
@@ -3409,6 +3410,35 @@ const ASSET_FX = {
 
 /* ---- ไฟล์เสียงจริง (SFX + BGM) ---- */
 const ASSET_AUDIO = {
+  // v8.0.91 ใบเสียง A06 (ElevenLabs 28 เสียง)
+  sfx_forge_roll_good:'assets/audio/new_features/sfx_forge_roll_good.mp3',
+  sfx_forge_roll_bad:'assets/audio/new_features/sfx_forge_roll_bad.mp3',
+  sfx_forge_lv_up:'assets/audio/new_features/sfx_forge_lv_up.mp3',
+  sfx_forge_remove_paid:'assets/audio/new_features/sfx_forge_remove_paid.mp3',
+  sfx_merge_rarity_mythic:'assets/audio/new_features/sfx_merge_rarity_mythic.mp3',
+  sfx_merge_rarity_ancient:'assets/audio/new_features/sfx_merge_rarity_ancient.mp3',
+  sfx_merge_rarity_divine:'assets/audio/new_features/sfx_merge_rarity_divine.mp3',
+  sfx_relic_synergy:'assets/audio/new_features/sfx_relic_synergy.mp3',
+  sfx_st_burn:'assets/audio/new_features/sfx_st_burn.mp3',
+  sfx_st_chill:'assets/audio/new_features/sfx_st_chill.mp3',
+  sfx_st_freeze:'assets/audio/new_features/sfx_st_freeze.mp3',
+  sfx_st_shock:'assets/audio/new_features/sfx_st_shock.mp3',
+  sfx_st_stun:'assets/audio/new_features/sfx_st_stun.mp3',
+  sfx_st_mark:'assets/audio/new_features/sfx_st_mark.mp3',
+  sfx_st_sour:'assets/audio/new_features/sfx_st_sour.mp3',
+  sfx_st_cleanse:'assets/audio/new_features/sfx_st_cleanse.mp3',
+  sfx_st_barrier_break:'assets/audio/new_features/sfx_st_barrier_break.mp3',
+  sfx_yz_evolve_f2:'assets/audio/new_features/sfx_yz_evolve_f2.mp3',
+  sfx_yz_evolve_f3:'assets/audio/new_features/sfx_yz_evolve_f3.mp3',
+  sfx_yz_aftershock:'assets/audio/new_features/sfx_yz_aftershock.mp3',
+  sfx_yz_triple_arrow:'assets/audio/new_features/sfx_yz_triple_arrow.mp3',
+  sfx_yz_storm_final:'assets/audio/new_features/sfx_yz_storm_final.mp3',
+  sfx_taro_deploy:'assets/audio/new_features/sfx_taro_deploy.mp3',
+  sfx_taro_extra_sentry:'assets/audio/new_features/sfx_taro_extra_sentry.mp3',
+  sfx_login_day30:'assets/audio/new_features/sfx_login_day30.mp3',
+  sfx_dig_unlock:'assets/audio/new_features/sfx_dig_unlock.mp3',
+  sfx_dig_ancient_locked:'assets/audio/new_features/sfx_dig_ancient_locked.mp3',
+  sfx_dig_ancient_open:'assets/audio/new_features/sfx_dig_ancient_open.mp3',
   // Original ElevenLabs SFX: A01–A05, music pending separate access.
   sfx_merge_select:'assets/audio/menu_progress/sfx_merge_select.mp3',
   sfx_merge_fuse:'assets/audio/menu_progress/sfx_merge_fuse.mp3',
@@ -11502,7 +11532,7 @@ class Game extends Phaser.Scene {
     const bw=Math.min(pw-40,240),bh=46,bx=W/2-bw/2,by=py+ph-bh-18,bg=this.add.graphics(); bg.fillStyle(0xffb020,1).fillRoundedRect(bx,by,bw,bh,14).fillStyle(0xffffff,.2).fillRoundedRect(bx+3,by+3,bw-6,bh*.42,10); c.add(bg);
     const bt=T(W/2,by+bh/2,'🎁 Claim Day '+(cur+1),16,'#21131a','bold'); const t0=Date.now();
     this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<600)return; const res=LoginCal.claim(); this.tapZones=[]; if(!res){ c.destroy(); this._loginC=null; this.buildMenuScreen(); return; }
-      try{ Sfx.menuCue?.(LOGIN_CAL[res.i]?.k==='gold'?'login_day7':'login_claim',.45)||Sfx.progress&&Sfx.progress('daily'); }catch(e){}
+      try{ (res.i===LOGIN_DAYS-1&&Sfx.menuCue?.('login_day30',.5))||Sfx.menuCue?.(LOGIN_CAL[res.i]?.k==='gold'?'login_day7':'login_claim',.45)||Sfx.progress&&Sfx.progress('daily'); }catch(e){}
       const at=cells[res.i]; if(at&&!this.menuArtIcon?.('login_stamp',0,at.x+at.cw-16,at.y+16,32,32,c)){ const ok=this.add.text(at.x+at.cw-12,at.y+12,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#7fe3a8'}).setOrigin(.5); c.add(ok); }
       if(res.chest){ const ch=CHESTS.find(x=>x.id===res.chest)||CHESTS[0]; this.time?.delayedCall(350,()=>{ c.destroy(); this._loginC=null; this._gachaBusy=false; this.openChest(ch,'login'); }); return; }
       bg.clear().fillStyle(0x7fe3a8,1).fillRoundedRect(bx,by,bw,bh,14); bt.setText(res.lines.join('  ')).setFontSize('14px'); let f=14; while(bt.width>bw-12&&f>9)bt.setFontSize((--f)+'px');
@@ -11519,6 +11549,7 @@ class Game extends Phaser.Scene {
   featRevealNext(){ const q=this._featQ||[]; if(!q.length){ this._featQ=null; this._featBusy=false; this._featHid=null; this._featZones=null; if(this.state==='menu')this.buildMenuScreen(); return; }
     if(this.state!=='menu'||this.menuScreen!=='hub'){ this._featBusy=false; return; }
     if(this._bookCover||this._bookSkip){ this.time.delayedCall(400,()=>this.featRevealNext()); return; }
+    if(q[0]==='dig')(typeof Sfx!=='undefined'&&Sfx.orderCue?.('dig_unlock',.45,1));   // v8.0.91
     if(this.loadRevealTheater(()=>this.featRevealNext()))return;
     this._featBusy=true; const t=q[0],d=Save.data; d.featSeen[t]=1; Save.save();
     const W=this.W,H=this.H,zs=(this.tapZones.length>1?this.tapZones:(this._featZones||[])).slice(),tag=FEAT_TAG[t]||t,tz=zs.find(z=>z.tag===tag&&z.nav)||zs.find(z=>z.tag===tag); this._featZones=zs;   // v7.9.93 ตัวที่ 2 เป็นต้นไป tapZones ถูกล้างแล้ว → ใช้ชุดเดิมของ Lobby (เดิมหาไม่เจอ = ลอยลงล่างจอ)
@@ -12284,7 +12315,7 @@ class Game extends Phaser.Scene {
     const lit=d.lightUsed!==d.depth; { const lt=btn(w/2-bw/2,this._digLight?'✖ Cancel light':lit?'🔦 Light · FREE':'🔦 Used this floor',0x3a4a6a,lit||this._digLight,()=>{ this._digLight=!this._digLight; Sfx.select&&Sfx.select(); this.buildDig(); }); this.menuArtIcon?.('dig_lantern',lit?1:0,w/2-bw/2+16,by+bh/2,28);if(this.tuHas?.('dig_lantern')){lt.setText(this._digLight?'Cancel light':lit?'Light · FREE':'Used this floor');lt.setX(w/2+8);lt.setFontSize('10px');}if(lit&&!this._digLight)this.drawBadgeDot?.(this.menu,w/2+bw/2-6,by+4); if(this._digLight)this.digTween({targets:lt,alpha:{from:.6,to:1},yoyo:true,repeat:-1,duration:500}); }
     const canGo=d.gemFound||d.stairFound,dt=btn(w/2+bw/2+6,d.stairFound?'🕳️ Secret descent':(d.gemFound?'🪜 Go down':'🪜 Find the ladder'),d.stairFound?0x6a3a8a:0x5a3a7a,!!canGo,()=>this.digDescend());
     if(canGo)this.digTween({targets:dt,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420});
-    const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest'+((typeof DIG_ANCIENT_FLOOR==='number'&&d.depth<DIG_ANCIENT_FLOOR)?' (floor '+DIG_ANCIENT_FLOOR+'+ 🔒)':'')+'  🧩 Part  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret\n1 = next to the ladder · ✦ = something rare · 🔦 1 free light per floor',{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
+    const leg=this.add.text(w/2,by+bh+22,'🧶 Thread  🍬 Ore  🏺 Chest'+((typeof DIG_ANCIENT_FLOOR==='number'&&d.depth<DIG_ANCIENT_FLOOR&&!this._digLockCue&&(this._digLockCue=1)&&(typeof Sfx!=='undefined'&&Sfx.orderCue?.('dig_ancient_locked',.3,1))),'')+((typeof DIG_ANCIENT_FLOOR==='number'&&d.depth<DIG_ANCIENT_FLOOR)?' (floor '+DIG_ANCIENT_FLOOR+'+ 🔒)':'')+'  🧩 Part  🎁 Gift  🪜 Ladder  🪤 Trap  🕳️ Secret\n1 = next to the ladder · ✦ = something rare · 🔦 1 free light per floor',{align:'center',fontFamily:'sans-serif',fontSize:'10px',color:'#9d91ad'}).setOrigin(0.5); this.menu.add(leg);
     if(Save.minersTick){ // 👷 Mochi Miners (idle) — แถวล่างสุด
       const m=Save.minersTick(),L=MINER_LEVELS[m.lv],nx=MINER_LEVELS[m.lv+1],my=Math.min(h-48,by+bh+64),rw=Math.min(w-32,420),rx=w/2-rw/2;
       const g=this.add.graphics(); g.fillStyle(0x241a2e,0.95); g.fillRoundedRect(rx,my,rw,40,12); g.lineStyle(1.5,0x8a6a4a,1); g.strokeRoundedRect(rx,my,rw,40,12); this.menu.add(g);
@@ -12372,7 +12403,7 @@ class Game extends Phaser.Scene {
       if(c.c==='gem'){ const G=this._digGeo,sz=G.cs*G.N+G.gap*(G.N-1),gl=this.add.graphics(); gl.lineStyle(6,0xc7a6ff,1); gl.strokeRoundedRect(G.gx-10,G.gy-10,sz+20,sz+20,18); this.menu.add(gl); this.digTween({targets:gl,alpha:{from:1,to:0},duration:900,onComplete:()=>this.digDestroy(gl)}); } }); }
   digResolve(c){ if(!c||c.taken)return null;const d=Save.dig(); c.taken=true;
     if(c.c==='thread'||c.c==='sugar'){ const n=digThreadAmt(d.depth); Save.data.threads=Save.threads()+n; (Sfx.ev?.('dig_find_thread',.5,.1)||Sfx.digFind()); return {t:'🧶 +'+n+' Weave Thread',c:'#ffe08a'}; }
-    if(c.c==='chest'){ Sfx.digRare(); const roll=Math.random();
+    if(c.c==='chest'){ (typeof Sfx!=='undefined'&&Sfx.orderCue?.('dig_ancient_open',.5,.3))||Sfx.digRare(); const roll=Math.random();
             if(roll<0.55){ const n=digThreadAmt(d.depth)*4; Save.data.threads=Save.threads()+n; return {t:'🏺 Ancient Chest! 🧶 +'+n+' Weave Thread',c:'#ffd166'}; }
       const k=rollWeightedCurrency(d.depth>=6?'epic':'rare'),n=Phaser.Math.Between(2,4); if(k){ Save.addCurrency(k,n); const cd=currencyDef(k); return {t:'🏺 Ancient Chest! '+(cd?cd.emoji+' '+cd.name:'Currency')+' ×'+n,c:'#ffd166'}; }
       return {t:'🏺 Ancient Chest!',c:'#ffd166'}; }
@@ -12640,7 +12671,7 @@ class Game extends Phaser.Scene {
   _forgePay(item){const p=forgePrice(item),have=Save.currency('transmute');if(have<p){Sfx.menuCue?.('forge_no_points')||Sfx.error();this.showBanner('🟢 Need '+p+' Twist Cream','You have '+have+' · find more in stages, chests and the Bazaar',1700);return 0;}return p;}
   _forgeDone(item,price,kind,title,before,na,noCraft){const cur=Save.data.currency||(Save.data.currency={});if(price){cur.transmute=Save.currency('transmute')-price;if(!noCraft)item.crafts=(Number(item.crafts)||0)+1;}item.craftedAt=Date.now();this.gearSelectedUid=item.uid;this._forgePanel=null;this._forgeRm=null;Save.save();
     const m=na&&affixDef(na.id);this._craftRolledId=m?m.id:null;this._craftResult={uid:item.uid,title,before,after:m?modLine(m,na.v)+' · '+tierStarText(m,na.t):'Empty'};
-    try{Sfx.menuCue?.(kind==='up'?'forge_star_up':kind==='bad'?'forge_no_points':'forge_'+kind,.45)||Sfx.craft(kind==='up'?'reroll':'rare');}catch(e){} if(kind!=='remove')this.screenFlash?.(kind==='bad'?0xff5d6a:0xffffff,.34,240);
+    try{Sfx.menuCue?.(({add:'forge_roll_good',bad:'forge_roll_bad',up:'forge_lv_up',remove:'forge_remove_paid'})[kind],.45)||Sfx.menuCue?.(kind==='up'?'forge_star_up':kind==='bad'?'forge_no_points':'forge_'+kind,.45)||Sfx.craft(kind==='up'?'reroll':'rare');}catch(e){} if(kind!=='remove')this.screenFlash?.(kind==='bad'?0xff5d6a:0xffffff,.34,240);
     this.showBanner(kind==='up'?'⬆ Upgraded':kind==='add'?'✨ Mod added':kind==='bad'?'💀 Bad mod!':'🗑 Mod removed',(m?modLine(m,na.v)+' · '+tierStarText(m,na.t)+'  ·  ':'')+'🟢 '+Save.currency('transmute')+' left',1500);
     this.buildCraftBench();const R=this._forgeRowRects&&this._forgeRowRects[this.craftLineIndex],fy=R?R.y+R.h/2:this.H*.45;if(kind!=='remove'&&kind!=='bad')this.menuArtFx?.(kind==='up'?'vfx_star_up':'vfx_forge_hit',this.W/2,fy,120);}
   forgeOpenAdd(line){return this.forgeAdd(line);}   // v8.0.87 เจ้าของ: ไม่ให้เลือก 1 ใน 3 แล้ว — Add = สุ่ม mod ทันที
@@ -16097,7 +16128,7 @@ class Game extends Phaser.Scene {
     /* v7.8.19 วางใหม่เฉพาะตอนป้อมไม่ครบ 2 หรือ Taro เดินห่างป้อมไกลสุดเกิน 350px → ป้อมอยู่ครบอายุ · ป้อมเดิมรับค่าการ์ดใหม่ทุกรอบ */
     const p=this.player,regular=(t.nodes||[]).filter(n=>!n.beacon);for(const n of regular)Object.assign(n,{interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,overload:f.overload,link:f.link});
     if(regular.length>=(f.sentries||TARO_SENTRY_MAX)){const far=regular.reduce((m,n)=>Math.hypot(n.x-p.x,n.y-p.y)>Math.hypot(m.x-p.x,m.y-p.y)?n:m);if(Math.hypot(far.x-p.x,far.y-p.y)<=TARO_SENTRY_LEASH)return;this.taroRemoveNode(far,true);}
-    const a=[-.7,.7,Math.PI/2+.6][(++t.attackSeq)%3],x=p.x+Math.cos(a)*40,y=p.y+Math.sin(a)*40;this.taroPlaceNode({x,y,life:f.nodeLife,interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,overload:f.overload,link:f.link,speed:TARO_BL_SPEED,beacon:false});this.poseAttack?.(300);this.taroSound('deploy');
+    const a=[-.7,.7,Math.PI/2+.6][(++t.attackSeq)%3],x=p.x+Math.cos(a)*40,y=p.y+Math.sin(a)*40;this.taroPlaceNode({x,y,life:f.nodeLife,interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,overload:f.overload,link:f.link,speed:TARO_BL_SPEED,beacon:false});this.poseAttack?.(300);if((f.sentries||1)>(t._sentryCap||1)&&t._sentryCap)(typeof Sfx!=='undefined'&&Sfx.orderCue?.('taro_extra_sentry',.45,.5));t._sentryCap=f.sentries||1;(typeof Sfx!=='undefined'&&Sfx.orderCue?.('taro_deploy',.4,.3))||this.taroSound('deploy');
   }
   /* v7.8.41 ตัวเลขจาก Combat Meter: Unique ทั้ง 3 ทำแค่ 0–3% ของดาเมจ → โตตามเลเวลรอบ (+12%/เลเวล) ให้ตามพลังตีปกติทัน */
   taroUniqueGrowth(){return 1+TARO_UQ_GROW*Math.max(0,(this.level||1)-1);}
@@ -16851,7 +16882,7 @@ class Game extends Phaser.Scene {
   }
   yuzuForm(m){if(!m)return 1;return m.kind==='pomelo'?[1,2,2,3][Math.min(3,m.growth||0)]:Math.max(1,Math.min(3,m.form||1));}
   yuzuFormKills(m){if(m.kind!=='lime'&&m.kind!=='bloodorange'||(m.form||1)>=3)return;const need=Math.max(4,Math.ceil((typeof YUZU_FORM_KILLS!=='undefined'?YUZU_FORM_KILLS:[14,32])[(m.form||1)-1]*Math.pow(.8,this.yuzuRank('y_fastripe'))*(1-this.yuzuTalent('Ripen'))));if(++m.formKills>=need){m.formKills=0;m.form=(m.form||1)+1;this.yuzuEvolveFx(m);}}
-  yuzuEvolveFx(m){const f=this.yuzuForm(m),name=((typeof YUZU_FORMS!=='undefined'?YUZU_FORMS:{})[m.kind]||[])[f-1]||'Companion',col=({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffdc88;this.showBanner?.('✨ Evolved!',name,1400);this.screenFlash?.(col,.3,260);this.vfxHitRing?.(m.spr.x,m.spr.y,col,true);this.yuzuSound('grow',.6);}
+  yuzuEvolveFx(m){const f=this.yuzuForm(m),name=((typeof YUZU_FORMS!=='undefined'?YUZU_FORMS:{})[m.kind]||[])[f-1]||'Companion',col=({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffdc88;this.showBanner?.('✨ Evolved!',name,1400);this.screenFlash?.(col,.3,260);this.vfxHitRing?.(m.spr.x,m.spr.y,col,true);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_evolve_f'+Math.max(2,f),.55,.5))||this.yuzuSound('grow',.6);}
   yuzuGuard(){
     if(this.character!=='yuzu')return 1;const m=this._yuzuCrew?.[0];if(!m)return 1;
     return this.dist(this.player.x,this.player.y,m.spr.x,m.spr.y)<170?Math.max(.55,1-.06*this.yuzuRank('loyal')-this.yuzuTalent('Guard')-(m.kind==='pomelo'?.03*this.yuzuRank('p_bodyguard'):0)):1;
@@ -16993,11 +17024,11 @@ class Game extends Phaser.Scene {
   yuzuCommand(u,pt){const m=u.m,k=u.kind,pw=u.power,ul=u.ul;
     if(k==='pomelo'||k==='yuzling'){const q=this.yuzuCmdLeapPt(m,pt);this.yuzuMotion(m,q.x,q.y,'command',(k==='pomelo'?6:3)+.5*(ul-1),(k==='pomelo'?160:120)+this.yuzuTalent('Slam'),Math.max(.35,Math.min(.7,.35+q.d/1200)));if(m.motion)m.motion.cmd=u;return;}
     if(k==='lime'){const a=pt.ang??Math.atan2(pt.y-m.spr.y,pt.x-m.spr.x),L=pt.ang!=null?800:this.dist(m.spr.x,m.spr.y,pt.x,pt.y)+400;m.aim=a;m.attack=.45;m.action=null;
-      this.yuzuShot(m,m.spr.x+Math.cos(a)*16,m.spr.y+Math.sin(a)*16,a,this.yuzuPower()*(5+.4*(ul-1))*pw,{pierce:99,source:'command_arrow',speed:950,life:L/950,seek:u.mut==='toss_home',cmdMark:true,focusFinal:true,finalSplash:55+this.yuzuTalent('Rain')});for(const da of [-.16,.16])this.yuzuShot(m,m.spr.x+Math.cos(a+da)*16,m.spr.y+Math.sin(a+da)*16,a+da,this.yuzuPower()*(3+.25*(ul-1))*pw,{pierce:99,source:'command_arrow',speed:950,life:L/950,finalSplash:45});this.screenShake?.(160,.008);   /* v8.0.90 เจ้าของ: Piercing Shot แรงขึ้น — ยิง 3 ดอกแบบพัด */
+      this.yuzuShot(m,m.spr.x+Math.cos(a)*16,m.spr.y+Math.sin(a)*16,a,this.yuzuPower()*(5+.4*(ul-1))*pw,{pierce:99,source:'command_arrow',speed:950,life:L/950,seek:u.mut==='toss_home',cmdMark:true,focusFinal:true,finalSplash:55+this.yuzuTalent('Rain')});for(const da of [-.16,.16])this.yuzuShot(m,m.spr.x+Math.cos(a+da)*16,m.spr.y+Math.sin(a+da)*16,a+da,this.yuzuPower()*(3+.25*(ul-1))*pw,{pierce:99,source:'command_arrow',speed:950,life:L/950,finalSplash:45});this.screenShake?.(160,.008);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_triple_arrow',.5,.3));   /* v8.0.90 เจ้าของ: Piercing Shot แรงขึ้น — ยิง 3 ดอกแบบพัด */
       if(!this.yuzuEmpowerFx('lime','finish',m.spr.x,m.spr.y,210,a,{life:.42}))this.yuzuSkillFx('volley',m.spr.x,m.spr.y,210,a,{life:.45});this.yuzuSound('volley',.4,.6);return;}
     u.storm={x:pt.x,y:pt.y,n:u.mut==='grow_burst'?4:3,t:.3};this.yuzuArsenalFx('sigil',pt.x,pt.y,300,0,{ground:true,life:1.4});}
-  yuzuCommandLand(m,q){const u=q.cmd;this.yuzuArea(m,q.tx,q.ty,q.r,q.mul*(u?.power||1),'command',.8);if(m.kind==='pomelo'){this.screenShake?.(260,.014);this.hitStop?.(70);const ep=this._artEpoch||0;[[350,1.5,.6],[700,2,.45]].forEach(([ms,rk,mk])=>this.time?.delayedCall?.(ms,()=>{if(this.state!=='play'||(this._artEpoch||0)!==ep||!m.spr?.active)return;this.yuzuArea(m,q.tx,q.ty,q.r*rk,q.mul*mk*(u?.power||1),'command',.5);this.yuzuSkillFx('slam',q.tx,q.ty,q.r*rk*2.2,0,{ground:true,life:.5});this.screenShake?.(140,.007);this.yuzuSound('slam',.25,.3);}));}   /* v8.0.90 เจ้าของ: Meteor Peel แรงขึ้น — แผ่นดินไหวต่อ 2 วง */if(!this.yuzuEmpowerFx(m.kind==='pomelo'?'pomelo':'yuzling','finish',q.tx,q.ty,q.r*2.2,0,{ground:true,life:.72}))this.yuzuSkillFx('slam',q.tx,q.ty,q.r*2.2,0,{ground:true,life:.7});if(!this.yuzuSound('slam',.4,.6))Sfx.boom?.();}
-  yuzuTickStorm(u,dt){const s=u.storm;if(!s||s.n<=0)return;s.t-=dt;if(s.t>0)return;s.n--;s.t=.45;const fin=s.n===0;this.yuzuArea(u.m,s.x,s.y,fin?230:150,(fin?2.4:1)*(2.2+.2*(u.ul-1))*u.power,'command',fin?.6:0);if(fin){this.screenShake?.(240,.012);this.hitStop?.(60);this.yuzuArsenalFx('sigil',s.x,s.y,460,0,{ground:true,life:.6});}   /* v8.0.90 เจ้าของ: Flavor Storm แรงขึ้น — ระเบิดสุดท้ายใหญ่ ×2.4 วงกว้าง 230 */this.yuzuArsenalFx('sigil',s.x,s.y,300,0,{ground:true,life:.45});this.yuzuSound('slam',.25,.4);
+  yuzuCommandLand(m,q){const u=q.cmd;this.yuzuArea(m,q.tx,q.ty,q.r,q.mul*(u?.power||1),'command',.8);if(m.kind==='pomelo'){this.screenShake?.(260,.014);this.hitStop?.(70);const ep=this._artEpoch||0;[[350,1.5,.6],[700,2,.45]].forEach(([ms,rk,mk])=>this.time?.delayedCall?.(ms,()=>{if(this.state!=='play'||(this._artEpoch||0)!==ep||!m.spr?.active)return;this.yuzuArea(m,q.tx,q.ty,q.r*rk,q.mul*mk*(u?.power||1),'command',.5);this.yuzuSkillFx('slam',q.tx,q.ty,q.r*rk*2.2,0,{ground:true,life:.5});this.screenShake?.(140,.007);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_aftershock',.4,.2))||this.yuzuSound('slam',.25,.3);}));}   /* v8.0.90 เจ้าของ: Meteor Peel แรงขึ้น — แผ่นดินไหวต่อ 2 วง */if(!this.yuzuEmpowerFx(m.kind==='pomelo'?'pomelo':'yuzling','finish',q.tx,q.ty,q.r*2.2,0,{ground:true,life:.72}))this.yuzuSkillFx('slam',q.tx,q.ty,q.r*2.2,0,{ground:true,life:.7});if(!this.yuzuSound('slam',.4,.6))Sfx.boom?.();}
+  yuzuTickStorm(u,dt){const s=u.storm;if(!s||s.n<=0)return;s.t-=dt;if(s.t>0)return;s.n--;s.t=.45;const fin=s.n===0;this.yuzuArea(u.m,s.x,s.y,fin?230:150,(fin?2.4:1)*(2.2+.2*(u.ul-1))*u.power,'command',fin?.6:0);if(fin){this.screenShake?.(240,.012);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_storm_final',.55,.3));this.hitStop?.(60);this.yuzuArsenalFx('sigil',s.x,s.y,460,0,{ground:true,life:.6});}   /* v8.0.90 เจ้าของ: Flavor Storm แรงขึ้น — ระเบิดสุดท้ายใหญ่ ×2.4 วงกว้าง 230 */this.yuzuArsenalFx('sigil',s.x,s.y,300,0,{ground:true,life:.45});this.yuzuSound('slam',.25,.4);
     for(const e of this.yuzuEnemies()){if(e.isBoss||e.isMini||e._waveObjectiveTarget)continue;const d=this.dist(e.x,e.y,s.x,s.y);if(d>150||d<10)continue;const a=Math.atan2(s.y-e.y,s.x-e.x),pull=Math.min(35,d-10),q=inMapPt(e.x+Math.cos(a)*pull,e.y+Math.sin(a)*pull);e.setPosition?.(q[0],q[1]);}}
   yuzuTickShots(dt){
     const L=this._yzShots||[];for(let i=L.length-1;i>=0;i--){const q=L[i];q.life-=dt;if(q.seedArt){q.seedArtTime+=dt;q.spr.setFrame(Math.floor(q.seedArtTime*12)%4);}
@@ -17159,7 +17190,7 @@ class Game extends Phaser.Scene {
     const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
     if(syn&&syn.a==='jam')p.dashCdMul=(p.dashCdMul||1)*0.65;   // Sticky Rush
     this.showBanner(syn?('🔗 '+syn.name+'!'):(d.emoji+' Relic: '+d.name),syn?syn.desc:d.desc,syn?2200:1700);
-    if(syn)this.screenFlash(0xc07bff,0.35,300);
+    if(syn){this.screenFlash(0xc07bff,0.35,300);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('relic_synergy',.5,.3));}
   }
   relicDmg89(e,RL){ let m=1; const P=this.player,now=this.time?.now||0,el=this.elapsed||0,d=P?Math.hypot(e.x-P.x,e.y-P.y):0;   /* v8.0.89 Relic ใหม่ที่ขึ้นกับเป้า/ระยะ/ที่มา */
     if(RL.frostcandy&&((e.frozen||0)>0||(e._chill>0&&now-(e._chillAt??-1e9)<2500)||(e._glacierBrittleUntil||0)>now))m*=this.relicSyn('frostcandy','chill')?1.6:1.3;
@@ -18034,7 +18065,7 @@ class Game extends Phaser.Scene {
         const big=e.isBoss||e.isMini,sz=Math.max(56,Math.min(160,(e.body?.halfWidth||20)*2.6)),feet=lk==='st_chill';pack.loop.setDisplaySize(sz,sz).setOrigin(.5,feet?.85:.5).setPosition(e.x,feet?e.y+(e.body?.halfHeight||20)*.8:e.y).setDepth((e.depth||0)+(feet?-1:1)).setAlpha(big?.85:1);}
       else if(pack.loop){pack.loop.destroy();pack.loop=null;pack.loopKey=null;}
       // เพิ่งติดสถานะ → วงสีสั้น ๆ (≤6 ต่อเฟรม)
-      for(const k of st)if(!pack.prev.has(k)&&pops<6&&ST62_COL[k]!=null&&this.bpAnim?.('st_fx_apply')){pops++;this.heroFx?.('st_fx_apply',e.x,e.y,Math.max(48,Math.min(120,(e.body?.halfWidth||20)*2.4)),{tint:ST62_COL[k],depth:(e.depth||0)+2});}
+      for(const k of st)if(!pack.prev.has(k)&&pops<6&&ST62_COL[k]!=null&&this.bpAnim?.('st_fx_apply')){pops++;if(pops===1)(typeof Sfx!=='undefined'&&Sfx.orderCue?.('st_'+(k==='frozen'?'freeze':k==='brittle'?'chill':k),.22,.25));this.heroFx?.('st_fx_apply',e.x,e.y,Math.max(48,Math.min(120,(e.body?.halfWidth||20)*2.4)),{tint:ST62_COL[k],depth:(e.depth||0)+2});}
       pack.prev=new Set(st);
     });for(const [e,pack] of map)if(!seen.has(e)){for(const o of pack.items)o.destroy();for(const o of pack.icons)o.destroy();pack.loop?.destroy();map.delete(e);}
     this.tickHeroStatus62?.(el);
@@ -18053,8 +18084,8 @@ class Game extends Phaser.Scene {
       if(h.keys[i]!==k||!h.loops[i]?.active){h.loops[i]?.destroy();const sp=this.camWorld(this.add.sprite(P.x,P.y,k,0));sp.play(k);h.loops[i]=sp;h.keys[i]=k;}
       const sz=Math.max(84,(P.body?.halfWidth||22)*4);h.loops[i].setDisplaySize(sz,sz).setOrigin(.5,.85).setPosition(P.x,P.y+(P.body?.halfHeight||22)).setDepth((P.depth||0)+1+i);}
     // หายจากพิษ/เลือด/ช้า → cleanse · Barrier แตก → barrier_break
-    if(['poison','bleed','slow'].some(k=>h.prev.has(k)&&!has.has(k)))this.heroFx?.('st_fx_cleanse',P.x,P.y,110,{must:true,depth:(P.depth||0)+3});
-    const fb=this._forgeState?.barrier||0;if(h.fb>0&&!(fb>0)&&h.prev.has('barrier'))this.heroFx?.('st_fx_barrier_break',P.x,P.y,120,{must:true,depth:(P.depth||0)+3});h.fb=fb;h.prev=has;
+    if(['poison','bleed','slow'].some(k=>h.prev.has(k)&&!has.has(k))){this.heroFx?.('st_fx_cleanse',P.x,P.y,110,{must:true,depth:(P.depth||0)+3});(typeof Sfx!=='undefined'&&Sfx.orderCue?.('st_cleanse',.35,.5));}
+    const fb=this._forgeState?.barrier||0;if(h.fb>0&&!(fb>0)&&h.prev.has('barrier')){this.heroFx?.('st_fx_barrier_break',P.x,P.y,120,{must:true,depth:(P.depth||0)+3});(typeof Sfx!=='undefined'&&Sfx.orderCue?.('st_barrier_break',.4,.5));}h.fb=fb;h.prev=has;
     // แถวไอคอน HUD (แทน '🫧×n' / 'Barrier N' ใน statTxt)
     const T=this.statTxt,ic=this.textures.exists('st_icons')&&T;this._hudStatusIcons=!!ic;if(!ic)return;const vis=T.visible!==false&&(this.hudList?.[0]?.visible!==false);
     while(h.icons.length<st.length){const im=this.camUI?this.camUI(this.add.image(0,0,'st_icons',0)):this.add.image(0,0,'st_icons',0);im.setScrollFactor?.(1);im.setDepth(54);const tx=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#fff1df',stroke:'#141018',strokeThickness:3}).setOrigin(0,.5).setDepth(55);this.camUI?.(tx);tx.setScrollFactor?.(1);h.icons.push(im);h.nums.push(tx);}

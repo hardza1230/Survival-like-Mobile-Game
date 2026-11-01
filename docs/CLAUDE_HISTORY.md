@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.89 — 8 new build-targeted Relics (owner: more variety, some builds want them)
+
+RELICS +8 (22 total) with for (card hint '👍 …') and paths (rollRelicChoices weight ×1.8 when basicAttack.path matches): heavydough (+30% dmg, cdMul×1.2), sugarrush (−15% dmg, cdMul×.8), frostcandy (+30% vs frozen/chill/Brittle), copperwhisk (+30% vs Tempest shock/Static Shock), longspoon (+25% >350px), crowdcrush (+25% <160px), twinbake (Unique +40% via _mxSrc 'unique', uniqueCdMul×.85), giantslayer (+25% elite/mini/boss, −10% others). Synergies Deadeye (heavydough+longspoon → +50%), Frenzy (sugarrush+crowdcrush → +50%), Deep Freeze (frostcandy+chill → +60%). Hook: damage() RL block → relicDmg89(e,RL); gain effects in gainRelic. No art yet (emoji fallback; relic_<key> icons can be ordered). Tests: new relics-89; damage hash in tests/fixtures/taro-t5-resolvers.json updated. Sesame not targeted. Owner phone check pending.
+
+
 # Previous delivery: v8.0.88 — Taro Sentry: 1 sentry + Extra Sentry card, Reserve Cell = fire rate (owner)
 
 taroSwarmProfile tempest: sentries=min(TARO_SENTRY_MAX 3, 1+rank surge+stormcaller 1+evolved 1); fire=1+.10·min(6,base.arc) → pulse=max(.3,unitC·.62/fire); nodeLife fixed 5 (was 5+arc·.35). castTaroSentry keeps f.sentries (Overdrive Unique still fills to 3 temporarily). TARO_PROGRESSION.tempest: arc 'Reserve Cell — Sentries fire 10% faster', surge 'Extra Sentry +1 sentry (max 3)', chainlord/stormcaller/evolution texts updated; path desc. Test: taro-swarm (1 sentry start, surge 2 → 3, fire/pulse). Owner phone check pending (balance feel at Lv1).
