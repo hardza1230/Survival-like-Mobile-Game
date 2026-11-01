@@ -1,0 +1,35 @@
+{
+  "tool": "built-in image_gen",
+  "refinements": [
+    {
+      "key": "cs61_b06_freed",
+      "prompt": "Edit this exact freed flower-girl cutout: preserve her face, shy petal-hugging pose, long violet floral hair, modest leaf-and-petal dress, warm painterly style and all character identity. Fix ONLY framing: show the COMPLETE topmost sprig crown and both feet, with generous transparent space on every side (at least12percent of entire canvas). Nothing may touch or be cut by any image edge. One whole character, true transparent RGBA background, portrait3:4. No letters, no scenery, no new accessories.",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-522c2eb5-c11b-403a-a458-7a22aa4fe743.png"
+      ]
+    },
+    {
+      "key": "cs61_b07_freed",
+      "prompt": "Edit the exact five friendly mushroom people group in this cutout. Keep all five characters, red white-spotted caps, teal eyes, moss-and-wood bodies, joyful hand-holding poses and same painterly identity. Fix framing ONLY: reduce the entire group to fit inside central70percent of canvas with at least12percent fully transparent empty space on ALL FOUR sides. Show every mushroom cap/hand/foot COMPLETE. No part touches image edge. True RGBA transparency, no scenery or ground, no letters. All five remain small friends reunited, none becomes a giant.",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e1cf4517-abbe-4782-bafe-e85067fb3643.png"
+      ]
+    },
+    {
+      "key": "cs61_b09_fall_refined",
+      "background": "opaque",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-841fc264-8723-498d-a4ef-09124ddb1bf2.png"
+      ],
+      "prompt": "Edit this exact opaque portrait scene. Preserve the entire character identity, pink orchid, ornate gold vine frame, four-season leaves, same pose and warm painterly style, environment, cracked purple crown and all composition. REQUIRED CORRECTION: remove EVERY Roman numeral, number, letter, tick mark and textlike glyph from the CLOCK FACE. Replace the dial with plain clean cream-colored translucent glass with only TWO CLOCK HANDS and their central pivot. Absolutely NO hour markers, no numerals, no symbols or writing anywhere. Keep opaque9:16 composition and lower quarter calm for runtime dialogue; no UI or text."
+    },
+    {
+      "key": "cs61_b09_freed_refined",
+      "background": "transparent",
+      "refs": [
+        "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-7e9a4d37-96b5-4dcd-9f29-b7c2ec8d624e.png"
+      ],
+      "prompt": "Edit this exact transparent full-body clock-orchid cutout. Preserve the entire character identity, pink orchid, ornate gold vine frame, four-season leaves, same pose and warm painterly style. REQUIRED CORRECTION: remove EVERY Roman numeral, number, letter, tick mark and textlike glyph from the CLOCK FACE. Replace the dial with plain clean cream-colored translucent glass with only TWO CLOCK HANDS and their central pivot. Absolutely NO hour markers, no numerals, no symbols or writing anywhere. Also reframe the complete character slightly smaller so the topmost gold finial, every pendant and lowest root have at least10percent empty true-alpha margin on all four sides; no appendage may touch/cross image boundary. Retain genuine transparent RGBA, no scenery."
+    }
+  ]
+}

@@ -474,12 +474,24 @@
       "cs61_b04_freed",
       "cs61_b05_fall",
       "cs61_b05_freed",
+      "cs61_b06_fall",
+      "cs61_b06_freed",
+      "cs61_b07_fall",
+      "cs61_b07_freed",
+      "cs61_b08_fall",
+      "cs61_b08_freed",
+      "cs61_b09_fall",
+      "cs61_b09_freed",
+      "cs61_b10_fall",
+      "cs61_b10_freed",
       "cs61_ch1_onward",
+      "cs61_ch2_onward",
       "vfx_cs61_crown_shatter",
       "vfx_cs61_flavor_return"
     ],
     "remaining_jobs": "Other job prompts are planned and not yet delivered in this batch.",
     "identity_inputs": "refs are actual paths passed to imagegen; matching reference crops are preserved in references/",
-    "references_crops": "boss01 first160px cell; other bosses first256px cell of original sprite in order61 table"
+    "references_crops": "boss01 first160px cell; other bosses first256px cell of original sprite in order61 table",
+    "refinements": "REFINEMENTS.json contains four actual framing/dial edit calls"
   }
 }
