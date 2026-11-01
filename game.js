@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.92';
+const GAME_VERSION = '8.0.93';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.93',date:'2026-11-01',title:'Each gear type has its own mods',items:['Weapons and gloves roll attack mods, armor rolls defense mods, boots roll movement and playstyle mods','Amulets mix defense and utility, rings mix attack and utility','Mods already on your gear stay as they are']},
   {v:'8.0.92',date:'2026-11-01',title:'Readable Forge mods',items:['Forge: mod text now uses the whole row, with the Upgrade button on its own line below, so mods are no longer cut off']},
   {v:'8.0.91',date:'2026-11-01',title:'New sounds',items:['28 new sounds: Forge rolls (good and bad), mod Lv up and remove, Mythic/Ancient/Divine merges, Relic pairs, status effects, Yuzu evolutions and big moves, Taro sentries, day-30 login and Depths']},
   {v:'8.0.90',date:'2026-11-01',title:'Companions evolve',items:['Yuzu’s companions now evolve through 3 forms as they defeat enemies (e.g. Lime Sprout → Lime Archer → Lime Skyhunter). Each new form is bigger and hits 20% harder','Stronger Citrus Command: Pomelo’s slam sends 2 aftershock waves, Lime fires a fan of 3 arrows, Blood Orange’s storm ends in a huge blast','Cutscenes are cleaner: no light beams, rainbow ribbons or sparkles — just the scenes and characters']},
@@ -6057,7 +6058,8 @@ function gearEnhanceCap(item){const l=Math.max(1,Number(item&&item.itemLevel)||1
 function gearEffectiveEnhance(item){return Math.min(gearEnhanceCap(item),Math.max(0,Math.floor(Number(item&&item.enhanceLv)||0)));}
 // Retain old rolls in saves; locked rows stay dormant until the item meets their level requirement.
 function gearActiveAffixes(item){return forgeLines(item).filter((a,i)=>a&&forgeLineOpen(item,i));}
-function forgePool(item,line,group){if(!forgeLineOpen(item,line))return [];return FORGE_DEFS.filter(m=>m.enabled&&m.slots.includes(item.slot));}   // v8.0.87 เจ้าของ: ไม่แบ่งหมวด — ทุกแถวสุ่มได้ทุก mod (ซ้ำได้)
+const FORGE_SLOT_ROWS={weapon:['power'],gloves:['power'],armor:['sustain'],boots:['play'],amulet:['sustain','play'],ring:['power','play']};   // v8.0.93 เจ้าของ: ชนิดไอเทมกำหนดกลุ่ม mod (อาวุธ/ถุงมือ=โจมตี · เกราะ=ป้องกัน · รองเท้า=เล่น/เคลื่อนที่ · สร้อย=ป้องกัน+เล่น · แหวน=โจมตี+เล่น)
+function forgePool(item,line,group){if(!forgeLineOpen(item,line))return [];const rows=FORGE_SLOT_ROWS[item.slot];return FORGE_DEFS.filter(m=>m.enabled&&m.slots.includes(item.slot)&&(!rows||rows.includes(m.row)));}   // v8.0.87 เจ้าของ: ไม่แบ่งหมวด — ทุกแถวสุ่มได้ทุก mod (ซ้ำได้)
 function forgeRollMod(item,line,rnd=Math.random){const pool=forgePool(item,line);if(!pool.length)return null;if(typeof FORGE_BAD_DEFS!=='undefined'&&rnd()<FORGE_BAD_CHANCE){const bad=FORGE_BAD_DEFS.filter(m=>m.slots.includes(item.slot));if(bad.length)return bad[Math.floor(rnd()*bad.length)%bad.length];}return pickWeightedMod(pool);}
 function forgeRollOptions(item,line,pool,n,forceId){const left=pool.slice(),out=[];if(forceId){const f=left.find(m=>m.id===forceId);if(f){out.push(forgeRoll(item,line,f));left.splice(left.indexOf(f),1);}}while(out.length<n&&left.length){const m=pickWeightedMod(left);if(!m)break;out.push(forgeRoll(item,line,m));left.splice(left.indexOf(m),1);}return out;}
 const FORGE_PITY=20;   // v7.8.84 Auto-roll: ครบ 20 ครั้งไม่ได้ → ครั้งที่ 20 ได้เป้าแน่นอน
