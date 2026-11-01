@@ -1,0 +1,262 @@
+{
+  "order": 58,
+  "status": "all7source illustrations complete; awaiting code integration",
+  "generator": "built-in image_gen",
+  "files": [
+    {
+      "key": "pw_hero_weave",
+      "size": [
+        768,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        436,
+        28,
+        715,
+        356
+      ],
+      "margins_px": [
+        436,
+        28,
+        53,
+        28
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": true
+    },
+    {
+      "key": "pw_hero_equipment",
+      "size": [
+        768,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        418,
+        28,
+        733,
+        356
+      ],
+      "margins_px": [
+        418,
+        28,
+        35,
+        28
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": true
+    },
+    {
+      "key": "pw_hero_merge",
+      "size": [
+        768,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        406,
+        31,
+        746,
+        353
+      ],
+      "margins_px": [
+        406,
+        31,
+        22,
+        31
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": true
+    },
+    {
+      "key": "pw_hero_forge",
+      "size": [
+        768,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        406,
+        54,
+        746,
+        329
+      ],
+      "margins_px": [
+        406,
+        54,
+        22,
+        55
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": true
+    },
+    {
+      "key": "pw_empty_bag",
+      "size": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        55,
+        38,
+        329,
+        345
+      ],
+      "margins_px": [
+        55,
+        38,
+        55,
+        39
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": null
+    },
+    {
+      "key": "pw_empty_merge",
+      "size": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        38,
+        60,
+        345,
+        323
+      ],
+      "margins_px": [
+        38,
+        60,
+        39,
+        61
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": null
+    },
+    {
+      "key": "pw_empty_forge",
+      "size": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "content_bounds": [
+        38,
+        68,
+        345,
+        315
+      ],
+      "margins_px": [
+        38,
+        68,
+        39,
+        69
+      ],
+      "all_edges_clear": true,
+      "overflow": false,
+      "left_half_fully_transparent": null
+    }
+  ],
+  "previews": [
+    {
+      "file": "preview.png",
+      "size": [
+        800,
+        696
+      ],
+      "background": "#261e30",
+      "bytes": 309351,
+      "sha256": "941bcd2edec6597418321140b2b9286722da686d80269ad33ff5cc426c9898cb"
+    },
+    {
+      "file": "preview_usage.png",
+      "size": [
+        800,
+        244
+      ],
+      "background": "#261e30",
+      "bytes": 65189,
+      "sha256": "772a83dd5a054b3f0687d7dc2c920c12fbd93bc2f8963dc96d95f7c99d86c855"
+    }
+  ],
+  "processing": [
+    "Unmodified original generated PNGs retained in sources/",
+    "Measured alpha crop and uniform resampling only; no redrawing or synthetic art",
+    "Four768x384headers place the complete group wholly in the right half; left384px completely transparent",
+    "Three384x384empty states centered with transparent margins",
+    "Generated alpha retained within the measured crop",
+    "Usage proof: headers90px high atalpha.55; empty motifs96px; background#261e30"
+  ],
+  "visual_review": {
+    "pending": false,
+    "references": [
+      "docs/art_orders/ref/57_power56_icon_style_ref.webp",
+      "assets/incoming/power57/preview_96px.png"
+    ],
+    "passed": [
+      "All7subjects follow order58",
+      "Weave pink/orange/turquoise cores, Equipment4pastry equipment kinds, Merge3matching redshields to1purple, Forge scroll/spark accents",
+      "Empty bag mouth/merge3sockets/anvil carry no inventory item",
+      "Painted warm gold/cream/plum family matches56/57",
+      "No letters/numbers/outerframes/opaque matte",
+      "Whole objects fit safely inside each output",
+      "Headers remain readable at90px high / alpha.55; empty states at96px"
+    ]
+  },
+  "runtime_changes": false,
+  "scope": {
+    "base_commit": "cff364fb014940b8835923320b5568d4a9e41e37",
+    "allowed_changes": [
+      "assets/incoming/power58/**",
+      "docs/art_orders/README.md row58"
+    ],
+    "runtime_files_changed": false,
+    "runtime_version_bump": false
+  },
+  "validation": {
+    "png_streams_dimensions_alpha_edges": "passed",
+    "sha256_sources_and_outputs": "passed",
+    "headers_left384px_empty": "passed",
+    "project_check": {
+      "command": "npm run check",
+      "exit_code": 0,
+      "note": "Read-only canonical-LF text-read shim used for Windows CRLF checkout; no runtime file written."
+    }
+  }
+}

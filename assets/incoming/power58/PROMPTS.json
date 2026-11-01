@@ -1,0 +1,72 @@
+{
+  "generator": "built-in image_gen",
+  "transparent_background": true,
+  "references": [
+    {
+      "path": "docs/art_orders/ref/57_power56_icon_style_ref.webp",
+      "role": "painted style and material reference"
+    },
+    {
+      "path": "assets/incoming/power57/preview_96px.png",
+      "role": "palette and painted object family reference"
+    }
+  ],
+  "items": [
+    {
+      "key": "pw_hero_weave",
+      "size": [
+        768,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. LANDSCAPE composition, target768x384 (aspect2:1). Entire object group confined to the RIGHT HALF of the canvas; LEFT HALF completely empty transparent negative space for later text overlay. Compact attractive tableau, object group visually coherent and balanced in right half, no strands/rays/props reaching into left half. No text is drawn. The translucent placement will be controlled later by game code, so preserve clean painted object opacity. Subject: one SMALL DELICATE LOOM / thread-weaving stand, warm wood and pale golden fittings. Three faceted core jewels floating above it, exactly one rose-pink, one orange-amber, one turquoise-blue. Fine GOLD THREADS connect the three jewels and weave through the little loom. Simple compact triangular arrangement, a little cream-gold spool near base, no written cloth or banners. The three-colored cores and weaving threads dominate, restrained few highlights."
+    },
+    {
+      "key": "pw_hero_equipment",
+      "size": [
+        768,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. LANDSCAPE composition, target768x384 (aspect2:1). Entire object group confined to the RIGHT HALF of the canvas; LEFT HALF completely empty transparent negative space for later text overlay. Compact attractive tableau, object group visually coherent and balanced in right half, no strands/rays/props reaching into left half. No text is drawn. The translucent placement will be controlled later by game code, so preserve clean painted object opacity. Subject: one little warm wooden pastry EQUIPMENT RACK. Neatly holds exactly an EGG WHISK, one PAIR of lilac-silver OVEN MITTENS, one soft cream/lavender APRON shaped like light pastry armor, and one PAIR of plush marshmallow BOOTS resting below. Pale pewter and soft lavender cloth with tiny warm-gold fittings, like equipment-slot family in Power57. No sword, no helmet, no extra tools, no character. Organize clear silhouettes without clutter."
+    },
+    {
+      "key": "pw_hero_merge",
+      "size": [
+        768,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. LANDSCAPE composition, target768x384 (aspect2:1). Entire object group confined to the RIGHT HALF of the canvas; LEFT HALF completely empty transparent negative space for later text overlay. Compact attractive tableau, object group visually coherent and balanced in right half, no strands/rays/props reaching into left half. No text is drawn. The translucent placement will be controlled later by game code, so preserve clean painted object opacity. Subject: one small confectionery ALCHEMY MELTING POT / candy distilling cauldron, warm gray-plum body with pale-gold lip and small rounded handles. Above it exactly THREE small IDENTICAL rose-red shields with gold rims are combining through short delicate gold ribbons into ONE larger ornate violet higher-rarity shield. Show three matching small shields visibly grouped together on the left-upper side of this right-half tableau, resulting one purple shield on right-upper side. Small pot below them anchors the composition. Only4shields total; no text, numbers or explosive fire. Gentle magical confectionery crafting."
+    },
+    {
+      "key": "pw_hero_forge",
+      "size": [
+        768,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. LANDSCAPE composition, target768x384 (aspect2:1). Entire object group confined to the RIGHT HALF of the canvas; LEFT HALF completely empty transparent negative space for later text overlay. Compact attractive tableau, object group visually coherent and balanced in right half, no strands/rays/props reaching into left half. No text is drawn. The translucent placement will be controlled later by game code, so preserve clean painted object opacity. Subject: one warm-gray candy-smith ANVIL with soft plum shadows and little pale-gold bevel, one GOLDEN CRAFTING HAMMER resting diagonally across it, one small blank CREAM RECIPE SCROLL with a few tiny restrained gold sparkles near the anvil. No writing, flames, furnace, background workshop or extra potions. Compact tactile cluster; simple clear crafting silhouette."
+    },
+    {
+      "key": "pw_empty_bag",
+      "size": [
+        384,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. SQUARE composition, target384x384. One compact centered empty-state motif, about78percent of canvas, clear silhouettes when displayed at96px. It must genuinely look EMPTY with no rewards or equipped gear hiding inside. No surrounding card frame, no text. Subject: one EMPTY cloth inventory SATCHEL / soft bag with its mouth open, warm cream fabric with gentle lilac shadows and a small pale-gold clasp, its hollow dark-plum interior clearly EMPTY. A few tiny warm-gold sparkles just above the opening. Soft folds and simple stitching, no face, no coins/gems/candy/items inside, no surrounding frame."
+    },
+    {
+      "key": "pw_empty_merge",
+      "size": [
+        384,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. SQUARE composition, target384x384. One compact centered empty-state motif, about78percent of canvas, clear silhouettes when displayed at96px. It must genuinely look EMPTY with no rewards or equipped gear hiding inside. No surrounding card frame, no text. Subject: EXACTLY THREE EMPTY item-placement sockets, small round shallow stone or enamel trays with thin warm gold rims and subtle lavender-gray empty centers, arranged as two lower input sockets and one upper result socket, linked by two short soft curved warm-gold arrows pointing toward the upper socket. Each socket empty. Delicate crafting motif, NOT boxed UI panels or item cards, no outer frame or enclosing slab, no equipment, no jewels, no text."
+    },
+    {
+      "key": "pw_empty_forge",
+      "size": [
+        384,
+        384
+      ],
+      "prompt": "Use case: stylized-concept. ONE standalone source illustration for Mochi Mayhem Power menu, NOT an atlas or a screen. Reference images are STYLE REFERENCES ONLY: existing Power56/57 painted objects; do not reproduce their sheets or layouts. Match their softly raised hand-painted forms, matte candy/crystal materials, thin dark brown/plum contours, warm pale-gold beveled edges, gentle warm highlights and soft internal plum shadows, cream parchment, rose/lavender/mint/turquoise accents. Charming polished confectionery fantasy, slight 3/4 overhead view, clear mobile silhouette, restrained detail. No photorealism, no flat vector glyph, no thick black outline, no shiny plastic3D. TRUE TRANSPARENT RGBA background with no baked matte or checkerboard. NO text, letters, numbers, logos, watermark, square outer frame, interface panel, floor, scenery, cast ground shadow or glow cloud. All objects complete and safely inside edges with generous transparent margins. All implements are friendly blunt pastry/crafting tools, never a sharp weapon. SQUARE composition, target384x384. One compact centered empty-state motif, about78percent of canvas, clear silhouettes when displayed at96px. It must genuinely look EMPTY with no rewards or equipped gear hiding inside. No surrounding card frame, no text. Subject: one EMPTY warm-gray confectionery ANVIL with gentle lavender/plum shaded sides and thin warm gold bevels. One small blunt wooden-handled GOLD CRAFTING HAMMER lying at rest across its edge. Calm idle forging station, no item to forge, no scrolls, jewels, sparks or flames. No workbench, pedestal or room background. Compact tactile silhouette, same anvil family as Power56."
+    }
+  ]
+}

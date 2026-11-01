@@ -1,0 +1,212 @@
+[
+  {
+    "key": "pw_hero_weave",
+    "file": "pw_hero_weave.png",
+    "bytes": 170427,
+    "sha256": "7dea0c23e43ecae01ea962b619c0ad41fd642e11827e96d4aa67ea3d332f4438",
+    "size": [
+      768,
+      384
+    ],
+    "width": 768,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_hero_weave_source.png",
+    "source_sha256": "0c02c4a8a3f5ee2b76e38106bbb61ea89964b5dd43b8a6ea5ae8a8fa16684e4d",
+    "source_size": [
+      1774,
+      887
+    ],
+    "source_alpha_crop": [
+      970,
+      28,
+      1656,
+      834
+    ],
+    "scale": 0.40694789081885857,
+    "paste": [
+      436,
+      28
+    ]
+  },
+  {
+    "key": "pw_hero_equipment",
+    "file": "pw_hero_equipment.png",
+    "bytes": 215237,
+    "sha256": "ae4acbdec83c4fdce187ef7bb0a9dd906dacc0377e224ef1af42e3a67c012c9c",
+    "size": [
+      768,
+      384
+    ],
+    "width": 768,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_hero_equipment_source.png",
+    "source_sha256": "dc797770f3499e1b81d2c42137ab1fe8c9aad0f13a63bea98cd7bdaa1b9ae9ed",
+    "source_size": [
+      1774,
+      887
+    ],
+    "source_alpha_crop": [
+      913,
+      31,
+      1707,
+      857
+    ],
+    "scale": 0.39709443099273606,
+    "paste": [
+      418,
+      28
+    ]
+  },
+  {
+    "key": "pw_hero_merge",
+    "file": "pw_hero_merge.png",
+    "bytes": 198879,
+    "sha256": "8dcad8f63086d783d6342c5be63989939d4183d41e8abb9767dde28e981a2e94",
+    "size": [
+      768,
+      384
+    ],
+    "width": 768,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_hero_merge_source.png",
+    "source_sha256": "1289400cf260293b93b9db8eb5bc3b832a875cbdd8f7ae289f592582c3e2638d",
+    "source_size": [
+      1774,
+      887
+    ],
+    "source_alpha_crop": [
+      890,
+      65,
+      1704,
+      837
+    ],
+    "scale": 0.4176904176904177,
+    "paste": [
+      406,
+      31
+    ]
+  },
+  {
+    "key": "pw_hero_forge",
+    "file": "pw_hero_forge.png",
+    "bytes": 148240,
+    "sha256": "6167823d49b1744645260f378a5b8d57d59b905519a06aa5c9698b9fbd0f3969",
+    "size": [
+      768,
+      384
+    ],
+    "width": 768,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_hero_forge_source.png",
+    "source_sha256": "ba438d06ccf846fbb5aa733d52a4dc7538a230671be77e39f00ec138bc39a926",
+    "source_size": [
+      1774,
+      887
+    ],
+    "source_alpha_crop": [
+      830,
+      84,
+      1726,
+      808
+    ],
+    "scale": 0.3794642857142857,
+    "paste": [
+      406,
+      54
+    ]
+  },
+  {
+    "key": "pw_empty_bag",
+    "file": "pw_empty_bag.png",
+    "bytes": 129503,
+    "sha256": "923741668281656c8ea35ee11a8ed864726ec8319316cf3c54a816d7b6c6131d",
+    "size": [
+      384,
+      384
+    ],
+    "width": 384,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_empty_bag_source.png",
+    "source_sha256": "63bd505d76559338b1ba1ae58a63823da205d23a9a5cef13093090880b761274",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_alpha_crop": [
+      158,
+      97,
+      1082,
+      1132
+    ],
+    "scale": 0.2966183574879227,
+    "paste": [
+      55,
+      38
+    ]
+  },
+  {
+    "key": "pw_empty_merge",
+    "file": "pw_empty_merge.png",
+    "bytes": 102733,
+    "sha256": "0d48d8209fde6da930e074d3bf9d8ca2ced5cc0f229ca863793744d614e693eb",
+    "size": [
+      384,
+      384
+    ],
+    "width": 384,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_empty_merge_source.png",
+    "source_sha256": "5dc0f31b2156c1e482d22ef0a6994c9f94c9f151a7e2ff5b403ef1ae036f380b",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_alpha_crop": [
+      43,
+      91,
+      1211,
+      1090
+    ],
+    "scale": 0.2628424657534247,
+    "paste": [
+      38,
+      60
+    ]
+  },
+  {
+    "key": "pw_empty_forge",
+    "file": "pw_empty_forge.png",
+    "bytes": 100595,
+    "sha256": "b63f9ef9f71655beb1bcb33913da0dc8e68ad22d5a400c619f30a80f496a2e7e",
+    "size": [
+      384,
+      384
+    ],
+    "width": 384,
+    "height": 384,
+    "format": "PNG32 RGBA",
+    "source": "sources/pw_empty_forge_source.png",
+    "source_sha256": "9948ef5ff42b68e966924865b712d5ce3f90702b6f558909f47cd8316b0b7f92",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "source_alpha_crop": [
+      135,
+      248,
+      1138,
+      1055
+    ],
+    "scale": 0.30608175473579263,
+    "paste": [
+      38,
+      68
+    ]
+  }
+]
