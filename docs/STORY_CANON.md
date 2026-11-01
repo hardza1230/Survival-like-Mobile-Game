@@ -133,3 +133,21 @@ The Hunger หนีลงราก ดูดรสจากสวนมาป�
 Presentation now follows victory as layered Motion Comics; old static stage recaps and pre-fight story modals are removed. See `docs/BOSS_MOTION_COMICS.md` for sequencing and art provenance.
 
 See `docs/BOSS_STORIES.md` and `BOSS_STORIES` in game.js for15 individual motives, memories and aftermath lines. They extend the existing route: eggs bargain / lost drain memories / forced furnace / protective prison / Hunger mouth / borrowed Bud / colony heart / spoiled royal stores / frozen day / rooted memories / endless harvest / hollow sweetness / protected futures / unplanted seeds / the Planter’s fear of famine. Existing hero unlock order, Grandma’s flavor inside the Crown, Ruby as an uncursed jam spirit and the final choice remain intact.
+
+## 9. ร่าง 3 — ช่องโหว่รอบ 2 (เจ้าของอนุมัติ 1 พ.ย. 2026)
+
+> ข้อ "ฮีโร่เป็นโมจิ" ตกไป — ในเกมฮีโร่เป็นคนอยู่แล้ว ตรงกับเรื่อง
+
+| # | ช่องโหว่ | ทางออกที่ใช้ |
+|---|---|---|
+| 9.1 | บอส C2–C3 ไม่ปลดใครเพิ่ม รสที่ได้คืนหายไปไหน | ตั้งแต่ Chapter 2 รสที่คืนมา **เลี้ยงเมล็ดหัวใจให้โตพอจะปลูกแทนต้นไม้ต้นแรก** (= ตอนจบ) · Ruby บอกตอนจบ C1-5: "The seed must grow big enough to plant." |
+| 9.2 | Strawberry เป็นใคร / ทำไมเมล็ดเลือกเธอ | **Strawberry คือลูกมือของคุณยายในครัวหลวง** · คืนคำสาป คุณยายฝากเมล็ดไว้กับเธอ เมล็ดจำเธอได้จึงตอบสนอง (แทนเหตุผล "ความกล้า" ใน 7.3) · เฉลยที่ C3-3: กระจกโชว์ Strawberry ยืนข้างคุณยายในครัว |
+| 9.3 | คุณยายซ่อนเมล็ดทั้งที่คำสาปมาในคืนเดียว | คุณยายรู้ตัวก่อนคำสาปถึงครัวไม่กี่ชั่วโมง → ปรุง Ruby จากแยมโถสุดท้าย · ฝากเมล็ดให้ลูกมือ (Strawberry) ซ่อนในรังมดเปรี้ยว (กลิ่นกรดกลบ) · แล้วแช่แข็งตัวเองในคุกน้ำตาลเพื่อรักษาสติ (แทน 7.2) |
+| 9.4 | คุณยายแช่แข็งตัวเอง แต่รสอยู่ในมงกุฎ | น้ำแข็งเก็บ **ใจ** ไว้ได้ แต่ **รส** ถูกมงกุฎดึงไปตั้งแต่คืนแรก → คุยได้ แต่ปลดคำสาปไม่ได้จนมงกุฎถูกถอด |
+
+ยังรอเจ้าของตัดสิน: (ก) เล่นซ้ำหลังจบเรื่อง = "ฝันร้ายของ The Hunger" ที่หลับใต้ราก (ขัดกับ 7.10 หลังจบ) · (ข) ร่างจริงของบอสสัตว์ (มด ผึ้ง) เป็นสัตว์มีชีวิต ไม่ใช่คน
+
+### ข้อความในเกมที่ต้องตามแก้ (ยังไม่ได้แก้)
+- `RUBY_STORY[4]` (C1-5) เติม "เมล็ดต้องโตพอจะปลูก" · `RUBY_STORY[12]` (C3-3) เฉลยลูกมือคุณยาย
+- ฉากเปิด s01 / Ruby storybook ตอน 1–2: เมล็ดอยู่กับ Strawberry เพราะคุณยายฝาก
+- `BOSS_STORIES` / epilogue ของ C1-4 (คุณยาย): ใจอยู่ในน้ำแข็ง รสอยู่ในมงกุฎ
