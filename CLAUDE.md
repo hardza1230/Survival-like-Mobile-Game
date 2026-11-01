@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.94, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.95, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.93 — Mod groups by gear slot (owner)
+# Latest delivery: v8.0.94 — 25 mods per gear type (owner)
+
+FORGE_SLOT_POOL (mod numbers) overrides forgePool for weapon/gloves (same 25: 11 power + heavy batter/point blank/focused/crowd/reliable/clean + hit-rhythm & mark play mods), armor (sustain 22 + claimed reward/heavy recipe/breaking point), boots (play 14 + loot/currency/medic/stored sweetness/elite lesson/hunter mark). Turns on already-coded mods outside FORGE_ROLLABLE; #133 Crystal Glaze skipped (no effect). Amulet/ring keep the v8.0.93 row rule. Tests: forge-simple (25 per slot), forge-150. Owner phone check pending.
+
+# Previous delivery: v8.0.93 — Mod groups by gear slot (owner)
 
 FORGE_SLOT_ROWS filters forgePool by item slot: weapon/gloves power · armor sustain · boots play · amulet sustain+play · ring power+play (active pools 11–25). Existing mods untouched. Tests: forge-simple (weapon rolls power only), forge-150 (pool rows ⊆ slot group). Owner phone check pending.
-
-# Previous delivery: v8.0.92 — Forge mod text readable (owner screenshot)
-
-_buildCraftBenchRaw rows: when rowH≥66 (two=true) the pill height is rowH−42 (26–34) and the mod line gets the full row width (rw−50), scaled down to 75% then ellipsized; short rows keep the old side-by-side layout. Owner phone check pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 

@@ -3296,3 +3296,8 @@ Settings → 📈 Combat Meter (st.mx, also in pause settings) shows a live over
 
 assets/incoming/audio_new_features → assets/audio/new_features/ (ASSET_AUDIO, background-loaded with other SFX). Hooks via Sfx.orderCue/menuCue ('sfx_'+cue) with old sounds as fallback: _forgeDone forge_roll_good/bad, forge_lv_up, forge_remove_paid · merge_rarity_mythic/ancient/divine (existing mergeNow cue) · relic_synergy in gainRelic · status pop st_<k> (frozen→freeze, brittle→chill, 1 per frame) + st_cleanse/st_barrier_break · yz_evolve_f2/f3, yz_aftershock, yz_triple_arrow, yz_storm_final · taro_deploy, taro_extra_sentry (sentry cap rises) · login_day30 · dig_unlock (featRevealNext 'dig'), dig_ancient_open, dig_ancient_locked (once per session in Depths below floor 15). New calls guarded with typeof Sfx. Test: audio-a06. Owner phone listen pending.
 
+
+# Previous delivery: v8.0.92 — Forge mod text readable (owner screenshot)
+
+_buildCraftBenchRaw rows: when rowH≥66 (two=true) the pill height is rowH−42 (26–34) and the mod line gets the full row width (rw−50), scaled down to 75% then ellipsized; short rows keep the old side-by-side layout. Owner phone check pending.
+
