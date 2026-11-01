@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.88';
+const GAME_VERSION = '8.0.89';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.89',date:'2026-11-01',title:'8 new Relics',items:['New Relics: Heavy Dough, Sugar Rush, Frost Candy, Copper Whisk, Long Spoon, Crowd Crusher, Twin Bake and Giant Slayer','Each new Relic suits certain builds (the card shows 👍 who it is for), and Relics that fit your build show up more often','New Relic pairs: Deadeye, Frenzy and Deep Freeze']},
   {v:'8.0.88',date:'2026-11-01',title:'Taro Sentry: build your towers',items:['Sentry Build starts with 1 sentry. The new Extra Sentry card adds 1 more each time (max 3)','Reserve Cell now makes sentries fire 10% faster per rank (max +60%) instead of lasting longer']},
   {v:'8.0.87',date:'2026-11-01',title:'Forge: random mods and new rarities',items:['Forge: + Add random mod now rolls a random mod at once. Any row can roll any mod, even the same one twice','Watch out: about 1 in 5 new mods is a bad mod (less damage, HP, armor…). Bad mods can’t be upgraded. Removing any mod now costs the same Twist Cream as a craft','Mod strength now shows as Lv instead of stars','Three new rarities above Legend, made only by Merge: Mythic (4 mod rows), Ancient (5) and Divine (6)','The Power page enhance tip now shows only until your first enhance']},
   {v:'8.0.86',date:'2026-11-01',title:'Smoother guides, 30-day login',items:['Depths now opens after Chapter 1, with a short intro. Ancient Chests are locked until floor 15','Daily Login is now a 30-day calendar (Gold Chests on days 7, 14, 21, 28 and 30)','Talents unlock when the guide teaches them (after Stage 3), and your first Rank up shows where to pick Rank Rewards','Shorter, simpler lines from new heroes and from Ruby during stages','Mint Glacier Bloom: one lance only (extra lances power up the Bloom) and just the snowstorm, no ground ring. Barrage: each lance past 2 makes every lance and shard 15% weaker','Fixed: the Lobby could fail to open in landscape']},
@@ -4470,6 +4471,15 @@ const RELICS = {
   streak:    { emoji:'🔥', name:'Kill Streak',    headline:'Kills stack damage', desc:'+3% damage per kill in your streak (max +40%).' },   // v7.9.23 จาก Instinct
   laststand: { emoji:'🛡️', name:'Last Stand',     headline:'Tougher at low HP', desc:'Take 30% less damage while HP is below 35%.' },
   harvest:   { emoji:'🍵', name:'Mochi Harvest',  headline:'Heal every 20 kills', desc:'Every 20 enemy kills restore 5% max HP.' },
+  // v8.0.89 เจ้าของ: Relic หลากหลายขึ้น · แต่ละอันเข้ากับบางสาย (for = บิลด์ที่ได้ประโยชน์ โชว์บนการ์ด)
+  heavydough:{ emoji:'🥖', name:'Heavy Dough',    headline:'+30% damage · −20% attack speed', desc:'+30% damage, but you attack 20% slower. Great for big single hits.', for:'Sniper · Titan · Crystal Impaler', paths:['sniper','titan','pierce'] },
+  sugarrush: { emoji:'🍭', name:'Sugar Rush',     headline:'+25% attack speed · −15% damage', desc:'Attack 25% faster, but each hit deals 15% less. Great for many small hits.', for:'Shotgun · Barrage · Spark', paths:['shotgun','barrage','smite','brawler'] },
+  frostcandy:{ emoji:'🧊', name:'Frost Candy',    headline:'+30% vs frozen/chilled', desc:'+30% damage to frozen, chilled or Brittle enemies.', for:'Mint · Cold Snap', paths:['glacier','barrage','pierce'] },
+  copperwhisk:{emoji:'🔌', name:'Copper Whisk',   headline:'+30% vs shocked', desc:'+30% damage to shocked enemies (Taro shock or Static Shock).', for:'Taro Sentry · Arc · Spark', paths:['tempest','storm','smite'] },
+  longspoon: { emoji:'🥄', name:'Long Spoon',     headline:'+25% far away', desc:'+25% damage to enemies more than 350px away.', for:'Sniper · Arc · Sentry', paths:['sniper','storm','tempest','pierce'] },
+  crowdcrush:{ emoji:'🍩', name:'Crowd Crusher',  headline:'+25% up close', desc:'+25% damage to enemies within 160px.', for:'Shotgun · Brawler · Dash Boxer', paths:['shotgun','brawler','dashboxer'] },
+  twinbake:  { emoji:'🧁', name:'Twin Bake',      headline:'Unique +40% · −15% cooldown', desc:'Your Unique skill deals 40% more damage and recharges 15% faster.', for:'Unique-heavy builds', paths:['dashboxer','titan','glacier'] },
+  giantslayer:{emoji:'🗡️', name:'Giant Slayer',   headline:'+25% vs big foes · −10% others', desc:'+25% damage to elites, minibosses and bosses, but 10% less to normal enemies.', for:'Titan · Sniper · Impaler', paths:['titan','sniper','pierce'] },
 };
 // คู่ synergy — ถือครบทั้งคู่ = ผลพิเศษเพิ่ม (โชว์ในการ์ดเมื่อถืออีกครึ่งอยู่แล้ว)
 const RELIC_SYNERGIES = [
@@ -4480,6 +4490,9 @@ const RELIC_SYNERGIES = [
   { a:'harvest',  b:'shell',     name:'Full Belly',     desc:'Mochi Harvest heals also grant a shield' },   // v7.9.19 RR2
   { a:'chill',    b:'jam',       name:'Frozen Jam',     desc:'Enemies stuck in Sticky Jam freeze for 1s' },
   { a:'firstbite',b:'glass',     name:'Sharp Edge',     desc:'First Bite bonus doubles to +70%' },
+  { a:'heavydough',b:'longspoon', name:'Deadeye',        desc:'Long Spoon bonus doubles to +50%' },   // v8.0.89
+  { a:'sugarrush', b:'crowdcrush',name:'Frenzy',         desc:'Crowd Crusher bonus doubles to +50%' },
+  { a:'frostcandy',b:'chill',     name:'Deep Freeze',    desc:'Frost Candy bonus doubles to +60%' },
 ];
 /* ---- CHARACTER COMBAT PROFILES: บทบาท + Stats + อาวุธประจำตัว ---- */
 // v7.9.62 จุดกลางหน้า [x/กว้าง, y/สูง, ขนาด/สูง] ใน card_<hero> สำหรับรูปโปรไฟล์ Lobby
@@ -17116,10 +17129,10 @@ class Game extends Phaser.Scene {
     if(this.relicSlotsLeft()<=0)return [];
     const own=this._rel||{},pool=Object.keys(RELICS).filter(k=>!own[k]);
     // ถืออีกครึ่งของคู่ synergy อยู่ → น้ำหนัก ×2.5 ให้เจอบ่อยขึ้น
-    const fr=((FUSIONS[(this.basicAttack||{}).character]||[]).map(f=>f.relic)),w=pool.map(k=>(RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1)*(fr.includes(k)?2:1)),out=[];
+    const fr=((FUSIONS[(this.basicAttack||{}).character]||[]).map(f=>f.relic)),w=pool.map(k=>(RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1)*(fr.includes(k)?2:1)*((RELICS[k].paths||[]).includes((this.basicAttack||{}).path)?1.8:1)),out=[];   // v8.0.89 Relic ที่เข้ากับสายที่เล่นอยู่ ออกบ่อยขึ้น
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a])),fu=(FUSIONS[(this.basicAttack||{}).character]||[]).find(f=>f.relic===k);   // v7.8.88 บอกล่วงหน้าว่า Relic นี้ + Evolution = Fusion
-      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:[syn?'🔗 '+syn.name+': '+syn.desc:'',fu?'🧬 + Evolution → '+fu.name:'',d.headline||''].filter(Boolean).join('  ')||undefined,apply:()=>this.gainRelic(k)}); }
+      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:[syn?'🔗 '+syn.name+': '+syn.desc:'',fu?'🧬 + Evolution → '+fu.name:'',d.headline||'',d.for?'👍 '+d.for:''].filter(Boolean).join('  ')||undefined,apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
     if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(this.cardOpen?.('mod')!==false&&Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&this.cardOpen?.('trade')!==false&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
@@ -17131,11 +17144,22 @@ class Game extends Phaser.Scene {
     this.relics.push(k); this._rel[k]=true; const p=this.player,d=RELICS[k];
     if(k==='streak'||k==='laststand'){ const ck=k==='streak'?'c_streak':'c_close'; p._cond=p._cond||{}; p._cond[ck]=(p._cond[ck]||0)+2; (this._relCond=this._relCond||{})[ck]=(this._relCond[ck]||0)+2; }
     if(k==='glass'){ p.dmgMul+=(1.4)-1; clampPlayerStats(p); p.maxhp=Math.max(1,Math.round(p.maxhp*0.75)); p.hp=Math.min(p.hp,p.maxhp); }
+    if(k==='heavydough'){ p.dmgMul+=.30; p.cdMul=(p.cdMul||1)*1.2; clampPlayerStats(p); }   // v8.0.89
+    if(k==='sugarrush'){ p.dmgMul=Math.max(.2,p.dmgMul-.15); p.cdMul=(p.cdMul||1)*.8; clampPlayerStats(p); }
+    if(k==='twinbake'){ p.uniqueCdMul=(p.uniqueCdMul||1)*.85; }
     const syn=RELIC_SYNERGIES.find(s=>(s.a===k||s.b===k)&&this._rel[s.a]&&this._rel[s.b]);
     if(syn&&syn.a==='jam')p.dashCdMul=(p.dashCdMul||1)*0.65;   // Sticky Rush
     this.showBanner(syn?('🔗 '+syn.name+'!'):(d.emoji+' Relic: '+d.name),syn?syn.desc:d.desc,syn?2200:1700);
     if(syn)this.screenFlash(0xc07bff,0.35,300);
   }
+  relicDmg89(e,RL){ let m=1; const P=this.player,now=this.time?.now||0,el=this.elapsed||0,d=P?Math.hypot(e.x-P.x,e.y-P.y):0;   /* v8.0.89 Relic ใหม่ที่ขึ้นกับเป้า/ระยะ/ที่มา */
+    if(RL.frostcandy&&((e.frozen||0)>0||(e._chill>0&&now-(e._chillAt??-1e9)<2500)||(e._glacierBrittleUntil||0)>now))m*=this.relicSyn('frostcandy','chill')?1.6:1.3;
+    if(RL.copperwhisk&&((e._shock>0&&this._taro&&typeof TARO_SHOCK_LIFE!=='undefined'&&this._taro.time-(e._shockAt??-1e9)<=TARO_SHOCK_LIFE)||(e._arcShockT||0)>el))m*=1.3;
+    if(RL.longspoon&&d>350)m*=this.relicSyn('heavydough','longspoon')?1.5:1.25;
+    if(RL.crowdcrush&&d<160)m*=this.relicSyn('sugarrush','crowdcrush')?1.5:1.25;
+    if(RL.twinbake&&this._mxSrc==='unique')m*=1.4;
+    if(RL.giantslayer)m*=(e.isBoss||e.isMini||e.isElite)?1.25:.9;
+    return m; }
   relicOnCrit(e,amount,x,y){ const R=this._rel;
     if(R.splinter&&!this._inSplinter&&!this.taroIsSecondary?.()){ const near=[];
       this.enemies.children.iterate(o=>{ if(o&&o.active&&o!==e){ const dd=this.dist(o.x,o.y,x,y); if(dd<180)near.push([dd,o]); } });
@@ -19098,7 +19122,7 @@ class Game extends Phaser.Scene {
     /* v7.8.79 เจ้าของ: การ์ดฮิตแล้วฮีล/ทำให้โดนแรงขึ้น — เดิมข้ามดาเมจรองของ Taro (ลูกแตก Spark = 73% ของดาเมจ, ลูกบอล Sentry/Beacon ทั้งหมด) · Infusion ไม่ทำดาเมจทันที (ไม่วนซ้ำ) และ Sweet มีคูลดาวน์ 0.3 วิ จึงให้ติดทุกฮิต */{ const inf=this.basicAttack&&this.basicAttack.infusion; if(inf&&!this._infTick&&!e.isDummy)this.infusionOnHit(e,amount,inf); } if(!this._infTick&&!e.isDummy){ const P=this.player; if(P._tagIgnite&&Math.random()<P._tagIgnite)this.infusionOnHit(e,amount,'spicy'); if(P._tagChill&&Math.random()<P._tagChill)this.applyFreeze(e,0.35,false); } if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)this.modOnHit(e);
     if(this.player.lowHpDmg&&this.player.hp/this.player.maxhp<0.40)amount*=1+this.player.lowHpDmg;
     if(this._taro?.mag&&!e.isDummy)amount*=this.taroMagMul?.(e)||1;   // v7.8.69 Magnetic Field
-    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=this.relicSyn('firstbite','glass')?1.70:1.35; if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini)&&!this._crownTick&&!this.taroIsSecondary?.()&&++this._crownHits>=40&&(this.elapsed||0)>=(this._crownAt||0)){ this._crownHits=0; this._crownAt=(this.elapsed||0)+6; this._crownTick=true; try{ e.knock=Math.max(e.knock||0,0.8); e.setVelocity?.(0,0); e.atkCd=Math.max(e.atkCd||0,1.2); this.floatText?.(e.x,e.y-70,'👑 CROWN BREAK',0xffd166); this.damage(e,this.relicDmg(6),e.x,e.y); } finally{ this._crownTick=false; } } if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
+    if(!this._infTick&&!e.isDummy&&this.basicAttack&&this.basicAttack.mods)amount*=this.modDmgMul(e); if(!this._infTick&&!e.isDummy)amount*=this.condDmgMul(e)*(this._frDmg?1:(this.player.powerMul||1)); if(this.player._tdBerserk)amount*=1+Math.max(0,1-this.player.hp/Math.max(1,this.player.maxhp)); const RL=this._rel; if(RL){ if(RL.firstbite&&e.hp>=e.maxhp)amount*=this.relicSyn('firstbite','glass')?1.70:1.35; if(!e.isDummy)amount*=this.relicDmg89(e,RL); if(!this.taroIsSecondary?.()&&RL.dashcharge&&this._sparkHits>0&&(this.elapsed||0)<this._sparkUntil&&!this._infTick){amount*=1.25;this._sparkHits--;} if(RL.crown&&(e.isBoss||e.isMini)&&!this._crownTick&&!this.taroIsSecondary?.()&&++this._crownHits>=40&&(this.elapsed||0)>=(this._crownAt||0)){ this._crownHits=0; this._crownAt=(this.elapsed||0)+6; this._crownTick=true; try{ e.knock=Math.max(e.knock||0,0.8); e.setVelocity?.(0,0); e.atkCd=Math.max(e.atkCd||0,1.2); this.floatText?.(e.x,e.y-70,'👑 CROWN BREAK',0xffd166); this.damage(e,this.relicDmg(6),e.x,e.y); } finally{ this._crownTick=false; } } if(RL.jam&&this._jamPools&&this._jamPools.length&&this.inJamPool(e))amount*=1.25; }
     if(e._arcShockT>(this.elapsed||0))amount*=1+(e._arcShockM||0);   // v7.9.23 Static Shock/Sparks
     const CP=this._cpas; if(CP&&CP.id==='sesame'&&this._sesMirrors&&this._sesMirrors.length)amount*=1+0.06*Math.min(3,this._sesMirrors.length)*CP.s;   // v7.9.40 Oath Focus = +6%/กระจก
     if(!this._infTick&&!e.isDummy){ const P=this.player; if(P.gearStillDmg&&P.body&&P.body.velocity.length()<25)amount*=1+P.gearStillDmg; if(P.gearOpener&&e.hp>=e.maxhp)amount*=1+P.gearOpener; }   // 🪞 Oath Focus

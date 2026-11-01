@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.89, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.90, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.88 — Taro Sentry: 1 sentry + Extra Sentry card, Reserve Cell = fire rate (owner)
+# Latest delivery: v8.0.89 — 8 new build-targeted Relics (owner: more variety, some builds want them)
+
+RELICS +8 (22 total) with for (card hint '👍 …') and paths (rollRelicChoices weight ×1.8 when basicAttack.path matches): heavydough (+30% dmg, cdMul×1.2), sugarrush (−15% dmg, cdMul×.8), frostcandy (+30% vs frozen/chill/Brittle), copperwhisk (+30% vs Tempest shock/Static Shock), longspoon (+25% >350px), crowdcrush (+25% <160px), twinbake (Unique +40% via _mxSrc 'unique', uniqueCdMul×.85), giantslayer (+25% elite/mini/boss, −10% others). Synergies Deadeye (heavydough+longspoon → +50%), Frenzy (sugarrush+crowdcrush → +50%), Deep Freeze (frostcandy+chill → +60%). Hook: damage() RL block → relicDmg89(e,RL); gain effects in gainRelic. No art yet (emoji fallback; relic_<key> icons can be ordered). Tests: new relics-89; damage hash in tests/fixtures/taro-t5-resolvers.json updated. Sesame not targeted. Owner phone check pending.
+
+# Previous delivery: v8.0.88 — Taro Sentry: 1 sentry + Extra Sentry card, Reserve Cell = fire rate (owner)
 
 taroSwarmProfile tempest: sentries=min(TARO_SENTRY_MAX 3, 1+rank surge+stormcaller 1+evolved 1); fire=1+.10·min(6,base.arc) → pulse=max(.3,unitC·.62/fire); nodeLife fixed 5 (was 5+arc·.35). castTaroSentry keeps f.sentries (Overdrive Unique still fills to 3 temporarily). TARO_PROGRESSION.tempest: arc 'Reserve Cell — Sentries fire 10% faster', surge 'Extra Sentry +1 sentry (max 3)', chainlord/stormcaller/evolution texts updated; path desc. Test: taro-swarm (1 sentry start, surge 2 → 3, fire/pulse). Owner phone check pending (balance feel at Lv1).
-
-# Previous delivery: v8.0.87 — Forge random mods + bad mods, Lv text, 3 rarities above Legend (owner)
-
-Forge (owner reversed parts of FORGE_SIMPLE.md): forgeAdd(line) pays then rolls forgeRollMod (FORGE_BAD_CHANCE .2 → FORGE_BAD_DEFS b_dull/b_frail/b_soft/b_shaky/b_slow_prep/b_sour_cure, negative bands through forgeApply numbers 1/13/14/3/57/63, def.effect text, bad:true; else pickWeightedMod) — no 1-of-3 picker (drawForgeOffer/forgeRollOffer gone, forgeOpenAdd = alias). forgePool ignores rows (any mod any row, duplicates stack). Bad mods: no upgrade ('Remove it with 🗑'), row '💀 BAD'. forgeRemove double-tap now pays forgePrice (not a craft, _forgeDone noCraft). tierStarText → 'Lv n'/'Bad', forgeStarCapText 'Max Lv n at iLv x · next at iLv y', row label 'MOD i · Lv a / cap'. Grades: GRADE_ORDER/gradeRank, RAR_LINES mythic 4/ancient 5/divine 6, GRADE_NEXT legend→mythic→ancient→divine (Merge only), TIER_LABEL colors, quality 1.6/1.8/2.0, BASE_TIER_OFFSET 0/-1/-1, dismantle base, protection gradeRank≥3, sort maps; forgeLineCount (3..6) in forgeLines, forgeLineOpen <6, Forge UI shows open rows + next locked row ('Needs X+') with rowH fitted; Merge carry → first free row (no bad mods); rarity frame/gem clamp + tint for new grades. Enhance tip: powerTips skips enh once d.enhDone (set in Save.enhance). Tutorial step 3: tap add_ = done. Tests rewritten: affix-sound, forge-150, forge-redesign (divine 6 rows on 7 screens, bad row), forge-simple, gear-level-limits, power-hub-layout hash, check-forge-live-ui. Owner phone check pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
