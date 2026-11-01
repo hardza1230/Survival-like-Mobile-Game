@@ -1,0 +1,259 @@
+{
+  "status": "awaiting_owner_selection",
+  "savedVoiceIds": {},
+  "voices": [
+    {
+      "speaker": "strawberry",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "CIn3Lujven9FOgEizTXF",
+          "file": "design/strawberry_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "NQFqcKCutSVMZ9LZpq4a",
+          "file": "design/strawberry_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "8QUnEwwZ6IwX142WE9ER",
+          "file": "design/strawberry_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "ruby",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+          "file": "design/ruby_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "VPVzanPKu6Ksn7gnLPAQ",
+          "file": "design/ruby_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "uZjXljbpMm77b3LqZcLn",
+          "file": "design/ruby_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "mint",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "XrKsw80Bq3N7rO3ILfGi",
+          "file": "design/mint_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "lFn5sEah1TTMnFz019Ud",
+          "file": "design/mint_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "OyoIBKTRvcT7HQCgWxiA",
+          "file": "design/mint_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "cocoa",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "uZv1Etduw4mQOvBD6ts3",
+          "file": "design/cocoa_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "5vWv8peXaACZL5MBr4lk",
+          "file": "design/cocoa_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "hioJCEXWdjFENlvd3DHU",
+          "file": "design/cocoa_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "taro",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "X8xk6RJXMn8GUYmIqiSK",
+          "file": "design/taro_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "AXpLJHKdhbBxCgjHeG4p",
+          "file": "design/taro_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "tzEq6ZCmkFbcMzuViLBr",
+          "file": "design/taro_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "yuzu",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+          "file": "design/yuzu_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "Zuk41bOCsAnrvWiwwSHm",
+          "file": "design/yuzu_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "u7DWNRFCjk9KjhAfEcCw",
+          "file": "design/yuzu_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "grandma",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "X1J2ed2VTL9KmvGhBbkY",
+          "file": "design/grandma_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "b0E874xfN0QYb0afpQYo",
+          "file": "design/grandma_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "xb0L4Y0ib2WcLtsomVgh",
+          "file": "design/grandma_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "planter",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "pnxOWvSDwUN2WZ61vdNd",
+          "file": "design/planter_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "UwJAytCluYQY2lh7VUlC",
+          "file": "design/planter_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "jMimqvQDdlWyrXxpCnFf",
+          "file": "design/planter_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "hunger",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "Wm3zbk05bRXj9I33qN3Z",
+          "file": "design/hunger_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "dvE2iHKDqlJasdT0rfzj",
+          "file": "design/hunger_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "28il0sof6cI10oTkYDVB",
+          "file": "design/hunger_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "boss_c1",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "RfcFM4jK4RYas2wQz4pd",
+          "file": "design/boss_c1_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "qEfwBd0yTUR1DUcyuWGS",
+          "file": "design/boss_c1_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "U151T7gGgvqdzNItsCx9",
+          "file": "design/boss_c1_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "boss_c2",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "1fQG71AjI2V2lnywmnx0",
+          "file": "design/boss_c2_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "EhjEz0EOL2veAJ6nbG2N",
+          "file": "design/boss_c2_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "qSqxt5VsBOPQd7DRa8qy",
+          "file": "design/boss_c2_take3.mp3"
+        }
+      ]
+    },
+    {
+      "speaker": "boss_c3",
+      "selected": null,
+      "candidates": [
+        {
+          "take": 1,
+          "generated_voice_id": "akO64UeBz1XW95nNmuVW",
+          "file": "design/boss_c3_take1.mp3"
+        },
+        {
+          "take": 2,
+          "generated_voice_id": "PjTGYOyoRXwwmKk0xOJL",
+          "file": "design/boss_c3_take2.mp3"
+        },
+        {
+          "take": 3,
+          "generated_voice_id": "FLr5Dcfi6SR132Yj3nH8",
+          "file": "design/boss_c3_take3.mp3"
+        }
+      ]
+    }
+  ],
+  "note": "Generated preview IDs are candidates, not saved persistent TTS voice IDs. Save only owner-selected candidates using POST /v1/text-to-voice. Chapter boss candidates are provisional chapter-level voices, not fifteen approved boss identities."
+}

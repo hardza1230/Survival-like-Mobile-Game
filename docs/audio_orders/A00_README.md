@@ -9,7 +9,7 @@
 | `A03_YUZU_SFX.md` | Citrus Companions: Yuzling / Pomelo / Lime / Blood Orange, ฟื้น/สกิล/Unique · ElevenLabs | 20 | 🟢 กลาง |
 | `A04_STORY_MUSIC_STINGERS.md` | เพลงหน้าแรก, เพลงฉากเรื่อง 4 อารมณ์, เพลงร้าน/Lobby, เสียงคำการ์ตูน, ชื่อด่าน, ชนะ/แพ้ | 20 | 🟢 กลาง |
 | `A05_CHARACTER_VOICES.md` | เสียงพึมพำ (ไม่มีคำ) ของ Ruby, ฮีโร่ 5 ตัวใน Lobby, บอสตอนพูด | 31 | 🟡 ต่ำ–กลาง |
-| `A07_VOICE_ACTING.md` | เสียงพากย์ตัวละครแบบ PoE (ร่างรอเจ้าของดู): ออกแบบเสียง, ฉากเรื่อง, Ruby, บอส 2 เสียง, ฮีโร่ต่อสู้, ปลดล็อก/Lobby | ~317 | 📝 ร่าง |
+| `A07_VOICE_ACTING.md` | เสียงพากย์ตัวละครแบบ PoE: ออกแบบเสียง, ฉากเรื่อง, Ruby, บอส 2 เสียง, ฮีโร่ต่อสู้, ปลดล็อก/Lobby | ~317 | 🎧 หมวด1 ส่ง12เสียง ×3ตัวเลือก · รอเลือกเสียง |
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 
 ## กติการ่วม (ทุกใบ)

@@ -1,0 +1,45 @@
+{
+  "speaker": "boss_c1",
+  "provider": "ElevenLabs",
+  "endpoint": "/v1/text-to-voice/design",
+  "createdAtUtc": "2026-11-01T15:20:50.079836+00:00",
+  "parameters": {
+    "voice_description": "Original fantasy game character. original chapter one cursed creature voice, adult female contralto, sharp commanding protective queen, can soften into a gentle worried mother, child-friendly fantasy acting. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+    "model_id": "eleven_multilingual_ttv_v2",
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+    "auto_generate_text": false
+  },
+  "result": {
+    "previews": [
+      {
+        "generated_voice_id": "RfcFM4jK4RYas2wQz4pd",
+        "media_type": "audio/mpeg",
+        "duration_secs": 12.358625,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/boss_c1_take1.mp3"
+      },
+      {
+        "generated_voice_id": "qEfwBd0yTUR1DUcyuWGS",
+        "media_type": "audio/mpeg",
+        "duration_secs": 11.41825,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/boss_c1_take2.mp3"
+      },
+      {
+        "generated_voice_id": "U151T7gGgvqdzNItsCx9",
+        "media_type": "audio/mpeg",
+        "duration_secs": 12.358625,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/boss_c1_take3.mp3"
+      }
+    ],
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+  },
+  "status": "awaiting_owner_voice_selection"
+}

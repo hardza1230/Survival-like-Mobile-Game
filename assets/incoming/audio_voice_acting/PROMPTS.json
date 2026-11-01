@@ -1,0 +1,546 @@
+{
+  "provider": "ElevenLabs",
+  "scope": "A07 category1 only; owner must select voices before recording other categories",
+  "generations": [
+    {
+      "speaker": "strawberry",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:19:31.310227+00:00",
+      "parameters": {
+        "voice_description": "An original young adult woman fantasy adventurer: bright and brave, slightly clumsy warmth, clear mid pitch, light British-neutral English accent. Natural clean studio speech, no effects or music.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "CIn3Lujven9FOgEizTXF",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.2949375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/strawberry_take1.mp3"
+          },
+          {
+            "generated_voice_id": "NQFqcKCutSVMZ9LZpq4a",
+            "media_type": "audio/mpeg",
+            "duration_secs": 8.597,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/strawberry_take2.mp3"
+          },
+          {
+            "generated_voice_id": "8QUnEwwZ6IwX142WE9ER",
+            "media_type": "audio/mpeg",
+            "duration_secs": 8.3096875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/strawberry_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "ruby",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:26.261508+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. tiny female jam spirit, sparkling and fast cheerful delivery, high light pitch, airy magical vocal quality, clear intelligible words. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.235375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/ruby_take1.mp3"
+          },
+          {
+            "generated_voice_id": "VPVzanPKu6Ksn7gnLPAQ",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.235375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/ruby_take2.mp3"
+          },
+          {
+            "generated_voice_id": "uZjXljbpMm77b3LqZcLn",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.7839375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/ruby_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "mint",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:26.479709+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. calm young adult woman, low soft voice, dry humor, slow precise words, cool but caring. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "XrKsw80Bq3N7rO3ILfGi",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.2239375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/mint_take1.mp3"
+          },
+          {
+            "generated_voice_id": "lFn5sEah1TTMnFz019Ud",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.0933125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/mint_take2.mp3"
+          },
+          {
+            "generated_voice_id": "OyoIBKTRvcT7HQCgWxiA",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.2239375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/mint_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "cocoa",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:32.184081+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. big gentle adult man, deep warm voice with a smile and gentle laugh, sleepy relaxed pace. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "uZv1Etduw4mQOvBD6ts3",
+            "media_type": "audio/mpeg",
+            "duration_secs": 12.437,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/cocoa_take1.mp3"
+          },
+          {
+            "generated_voice_id": "5vWv8peXaACZL5MBr4lk",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.112125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/cocoa_take2.mp3"
+          },
+          {
+            "generated_voice_id": "hioJCEXWdjFENlvd3DHU",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.0149375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/cocoa_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "taro",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:32.961845+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. energetic young adult man, quick excited clear speech, a little scatterbrained, curious cartographer. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "X8xk6RJXMn8GUYmIqiSK",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.3994375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/taro_take1.mp3"
+          },
+          {
+            "generated_voice_id": "AXpLJHKdhbBxCgjHeG4p",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.164375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/taro_take2.mp3"
+          },
+          {
+            "generated_voice_id": "tzEq6ZCmkFbcMzuViLBr",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.2761875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/taro_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "yuzu",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:38.175446+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. warm cheerful young adult woman, sunny confident gardener, playful cute commander, decisive and friendly. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.059875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/yuzu_take1.mp3"
+          },
+          {
+            "generated_voice_id": "Zuk41bOCsAnrvWiwwSHm",
+            "media_type": "audio/mpeg",
+            "duration_secs": 8.1268125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/yuzu_take2.mp3"
+          },
+          {
+            "generated_voice_id": "u7DWNRFCjk9KjhAfEcCw",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.694125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/yuzu_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "grandma",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:38.554395+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. kind elderly woman, gentle wise voice, a little frail but firm, comforting royal kitchen grandmother. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "X1J2ed2VTL9KmvGhBbkY",
+            "media_type": "audio/mpeg",
+            "duration_secs": 12.0713125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/grandma_take1.mp3"
+          },
+          {
+            "generated_voice_id": "b0E874xfN0QYb0afpQYo",
+            "media_type": "audio/mpeg",
+            "duration_secs": 7.47375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/grandma_take2.mp3"
+          },
+          {
+            "generated_voice_id": "xb0L4Y0ib2WcLtsomVgh",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.2949375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/grandma_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "planter",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:44.008190+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. elderly man, tired regal voice, grief under pride, restrained emotional depth, weary dignity. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "pnxOWvSDwUN2WZ61vdNd",
+            "media_type": "audio/mpeg",
+            "duration_secs": 13.4035625,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/planter_take1.mp3"
+          },
+          {
+            "generated_voice_id": "UwJAytCluYQY2lh7VUlC",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.2949375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/planter_take2.mp3"
+          },
+          {
+            "generated_voice_id": "jMimqvQDdlWyrXxpCnFf",
+            "media_type": "audio/mpeg",
+            "duration_secs": 12.1496875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/planter_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "hunger",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:45.874216+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. deep hollow male whisper, slow and hungry, mysterious fantasy presence but child-friendly, a single clear performer with resonant vocal texture. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "Wm3zbk05bRXj9I33qN3Z",
+            "media_type": "audio/mpeg",
+            "duration_secs": 13.508,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/hunger_take1.mp3"
+          },
+          {
+            "generated_voice_id": "dvE2iHKDqlJasdT0rfzj",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.366,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/hunger_take2.mp3"
+          },
+          {
+            "generated_voice_id": "28il0sof6cI10oTkYDVB",
+            "media_type": "audio/mpeg",
+            "duration_secs": 12.437,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/hunger_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "boss_c1",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:50.079836+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. original chapter one cursed creature voice, adult female contralto, sharp commanding protective queen, can soften into a gentle worried mother, child-friendly fantasy acting. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "RfcFM4jK4RYas2wQz4pd",
+            "media_type": "audio/mpeg",
+            "duration_secs": 12.358625,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c1_take1.mp3"
+          },
+          {
+            "generated_voice_id": "qEfwBd0yTUR1DUcyuWGS",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.41825,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c1_take2.mp3"
+          },
+          {
+            "generated_voice_id": "U151T7gGgvqdzNItsCx9",
+            "media_type": "audio/mpeg",
+            "duration_secs": 12.358625,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c1_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "boss_c2",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:51.839518+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. original chapter two cursed creature voice, adult masculine mid-low pitch, stern brittle commanding pride, can soften into vulnerable weary relief, child-friendly fantasy acting. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "1fQG71AjI2V2lnywmnx0",
+            "media_type": "audio/mpeg",
+            "duration_secs": 14.8925,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c2_take1.mp3"
+          },
+          {
+            "generated_voice_id": "EhjEz0EOL2veAJ6nbG2N",
+            "media_type": "audio/mpeg",
+            "duration_secs": 7.656625,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c2_take2.mp3"
+          },
+          {
+            "generated_voice_id": "qSqxt5VsBOPQd7DRa8qy",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.5823125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c2_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    },
+    {
+      "speaker": "boss_c3",
+      "provider": "ElevenLabs",
+      "endpoint": "/v1/text-to-voice/design",
+      "createdAtUtc": "2026-11-01T15:20:55.626086+00:00",
+      "parameters": {
+        "voice_description": "Original fantasy game character. original chapter three root guardian voice, mature feminine low resonant pitch, ancient calm authority with grief, can soften into caring warmth, child-friendly fantasy acting. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "akO64UeBz1XW95nNmuVW",
+            "media_type": "audio/mpeg",
+            "duration_secs": 8.44025,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c3_take1.mp3"
+          },
+          {
+            "generated_voice_id": "PjTGYOyoRXwwmKk0xOJL",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.4329375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c3_take2.mp3"
+          },
+          {
+            "generated_voice_id": "FLr5Dcfi6SR132Yj3nH8",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.0149375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "design/boss_c3_take3.mp3"
+          }
+        ],
+        "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+      },
+      "status": "awaiting_owner_voice_selection"
+    }
+  ]
+}

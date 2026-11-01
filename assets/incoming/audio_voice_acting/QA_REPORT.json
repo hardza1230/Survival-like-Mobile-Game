@@ -1,0 +1,19 @@
+{
+  "status": "technical_pass_owner_audition_pending",
+  "roles": 12,
+  "candidates": 36,
+  "allDecode": true,
+  "peakLimitDbtp": -1,
+  "worstPeakDbtp": -2.7,
+  "maxLeadingSilenceMs": 6.485,
+  "format": "MP3 mono44100Hz128kbps",
+  "processing": "leading silence crop with5ms safety lead, tiny fades, loudnorm -20LUFS TP-2, MP3 encoding; no synthesized replacement speech",
+  "textVerification": "Exact submitted and returned provider text recorded. Spoken word accuracy and character performance require owner audition.",
+  "scopeNotes": [
+    "Not317 final lines. Category1 only.",
+    "No persistent voices saved and no runtime integration.",
+    "API Voice Design minimum100 characters requires expanded sample text; first sentence is the requested phrase.",
+    "vd_<speaker>.mp3 is take1 for audition, not an approved selection.",
+    "boss_c1/c2/c3 are provisional chapter voices, not15 individual identities."
+  ]
+}

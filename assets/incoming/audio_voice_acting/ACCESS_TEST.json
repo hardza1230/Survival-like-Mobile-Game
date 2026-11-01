@@ -1,0 +1,44 @@
+{
+  "testedAtUtc": "2026-11-01T15:19:31.310227+00:00",
+  "endpoint": "/v1/text-to-voice/design",
+  "credentialSource": "process environment or user environment fallback",
+  "parameters": {
+    "voice_description": "An original young adult woman fantasy adventurer: bright and brave, slightly clumsy warmth, clear mid pitch, light British-neutral English accent. Natural clean studio speech, no effects or music.",
+    "model_id": "eleven_multilingual_ttv_v2",
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+    "auto_generate_text": false
+  },
+  "httpStatus": 200,
+  "result": {
+    "previews": [
+      {
+        "generated_voice_id": "CIn3Lujven9FOgEizTXF",
+        "media_type": "audio/mpeg",
+        "duration_secs": 10.2949375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/strawberry_take1.mp3"
+      },
+      {
+        "generated_voice_id": "NQFqcKCutSVMZ9LZpq4a",
+        "media_type": "audio/mpeg",
+        "duration_secs": 8.597,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/strawberry_take2.mp3"
+      },
+      {
+        "generated_voice_id": "8QUnEwwZ6IwX142WE9ER",
+        "media_type": "audio/mpeg",
+        "duration_secs": 8.3096875,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/strawberry_take3.mp3"
+      }
+    ],
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+  }
+}

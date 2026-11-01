@@ -1,6 +1,6 @@
 # A07 — เสียงพากย์ตัวละคร (แบบ Path of Exile) · ใบสั่งเสียง · ร่าง 1 รอเจ้าของดู
 
-สถานะ: 📝 ร่างให้เจ้าของตรวจ · เขียน 1 พ.ย. 2026 · **ยังไม่ส่งให้ AI ทำ** จนกว่าเจ้าของอนุมัติบท
+สถานะ: 🎧 เจ้าของสั่งเริ่มทำ 1 พ.ย. 2026 · หมวด 1 ส่งตัวอย่างครบ 12 บทบาท × 3 ตัวเลือก · รอเจ้าของเลือกเสียงก่อนอัดหมวด 2–6
 เครื่องมือ: **ElevenLabs Voice Design** (ออกแบบเสียงตัวละครละ 1 เสียง ใช้ทั้งเกม) + **Text to Speech** (รุ่น multilingual v2 / v3 ใส่อารมณ์ได้) · ภาษาอังกฤษ
 อ้างอิงเรื่อง: `docs/STORY_CANON.md` (ร่าง 3) · กติการ่วม `A00_README.md` (ไฟล์ mono 44.1 kHz · peak ≤ −1 dBTP · ตัดเงียบหัว < 20 ms)
 
@@ -110,3 +110,10 @@ key `vo_<hero>_<event>_1…2` · บทของทุกฮีโร่ต้�
 
 ## ส่งมอบ
 `assets/incoming/audio_voice_acting/<หมวด>/` + `MANIFEST.json` (key, file, bytes, sha256, duration_ms, speaker, text **ตรงตัวอักษรกับบท**) + `VOICES.json` (voice ID ต่อตัวละคร) + `PROMPTS.json`
+
+## Delivery — category 1 voice casting
+
+Direct ElevenLabs Voice Design access verified HTTP200. Delivered12 roles, each with3 original candidates (36 processed audition MP3s plus36 unchanged provider previews) in `assets/incoming/audio_voice_acting/`. Open `AUDITION.html` to compare. `vd_<speaker>.mp3` means candidate1, not an approved selection. No persistent voices have been saved; `VOICES.json` records generated preview IDs separately from future saved TTS IDs.
+
+Voice Design requires at least100 characters, so auditions begin with the requested sentence and continue with the exact shared script recorded in MANIFEST/PROMPTS. Chapter boss voices are provisional options permitted by the brief, not15 approved individual identities. Technical decode/mono44.1kHz128kbps/peak/leading-silence checks passed. Owner performance and word-accuracy listening remains pending. Categories2–6, new dialogue approval and runtime integration remain outstanding.
+

@@ -1,0 +1,45 @@
+{
+  "speaker": "grandma",
+  "provider": "ElevenLabs",
+  "endpoint": "/v1/text-to-voice/design",
+  "createdAtUtc": "2026-11-01T15:20:38.554395+00:00",
+  "parameters": {
+    "voice_description": "Original fantasy game character. kind elderly woman, gentle wise voice, a little frail but firm, comforting royal kitchen grandmother. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+    "model_id": "eleven_multilingual_ttv_v2",
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+    "auto_generate_text": false
+  },
+  "result": {
+    "previews": [
+      {
+        "generated_voice_id": "X1J2ed2VTL9KmvGhBbkY",
+        "media_type": "audio/mpeg",
+        "duration_secs": 12.0713125,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/grandma_take1.mp3"
+      },
+      {
+        "generated_voice_id": "b0E874xfN0QYb0afpQYo",
+        "media_type": "audio/mpeg",
+        "duration_secs": 7.47375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/grandma_take2.mp3"
+      },
+      {
+        "generated_voice_id": "xb0L4Y0ib2WcLtsomVgh",
+        "media_type": "audio/mpeg",
+        "duration_secs": 10.2949375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/grandma_take3.mp3"
+      }
+    ],
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+  },
+  "status": "awaiting_owner_voice_selection"
+}

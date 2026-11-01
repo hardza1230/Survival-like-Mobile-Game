@@ -1,0 +1,45 @@
+{
+  "speaker": "mint",
+  "provider": "ElevenLabs",
+  "endpoint": "/v1/text-to-voice/design",
+  "createdAtUtc": "2026-11-01T15:20:26.479709+00:00",
+  "parameters": {
+    "voice_description": "Original fantasy game character. calm young adult woman, low soft voice, dry humor, slow precise words, cool but caring. Natural clean English studio speech. No music, sound effects, reverb, or celebrity imitation.",
+    "model_id": "eleven_multilingual_ttv_v2",
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+    "auto_generate_text": false
+  },
+  "result": {
+    "previews": [
+      {
+        "generated_voice_id": "XrKsw80Bq3N7rO3ILfGi",
+        "media_type": "audio/mpeg",
+        "duration_secs": 9.2239375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/mint_take1.mp3"
+      },
+      {
+        "generated_voice_id": "lFn5sEah1TTMnFz019Ud",
+        "media_type": "audio/mpeg",
+        "duration_secs": 9.0933125,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/mint_take2.mp3"
+      },
+      {
+        "generated_voice_id": "OyoIBKTRvcT7HQCgWxiA",
+        "media_type": "audio/mpeg",
+        "duration_secs": 9.2239375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/mint_take3.mp3"
+      }
+    ],
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+  },
+  "status": "awaiting_owner_voice_selection"
+}
