@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.87';
+const GAME_VERSION = '8.0.88';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.88',date:'2026-11-01',title:'Taro Sentry: build your towers',items:['Sentry Build starts with 1 sentry. The new Extra Sentry card adds 1 more each time (max 3)','Reserve Cell now makes sentries fire 10% faster per rank (max +60%) instead of lasting longer']},
   {v:'8.0.87',date:'2026-11-01',title:'Forge: random mods and new rarities',items:['Forge: + Add random mod now rolls a random mod at once. Any row can roll any mod, even the same one twice','Watch out: about 1 in 5 new mods is a bad mod (less damage, HP, armor…). Bad mods can’t be upgraded. Removing any mod now costs the same Twist Cream as a craft','Mod strength now shows as Lv instead of stars','Three new rarities above Legend, made only by Merge: Mythic (4 mod rows), Ancient (5) and Divine (6)','The Power page enhance tip now shows only until your first enhance']},
   {v:'8.0.86',date:'2026-11-01',title:'Smoother guides, 30-day login',items:['Depths now opens after Chapter 1, with a short intro. Ancient Chests are locked until floor 15','Daily Login is now a 30-day calendar (Gold Chests on days 7, 14, 21, 28 and 30)','Talents unlock when the guide teaches them (after Stage 3), and your first Rank up shows where to pick Rank Rewards','Shorter, simpler lines from new heroes and from Ruby during stages','Mint Glacier Bloom: one lance only (extra lances power up the Bloom) and just the snowstorm, no ground ring. Barrage: each lance past 2 makes every lance and shard 15% weaker','Fixed: the Lobby could fail to open in landscape']},
   {v:'8.0.85',date:'2026-11-01',title:'See every status',items:['Enemies now show what they are suffering: burning, sour, shocked (small electric arcs), stunned, marked, brittle and chilled each have their own look, plus small icons above their heads','Your hero shows poison, bleeding, slow, barrier, guard and haste on the body, and status icons sit next to your relics on the HUD','Fixed: the Forge page showed its header twice']},
@@ -4688,7 +4689,7 @@ const TARO_PROGRESSION={
     chainlord:'+2 jumps, and jumps reach 40% farther.',stormcaller:'+2 Arcs at once and +20% damage.',
     evolution:'+20% damage, +3 jumps, +2 Arcs at once, and jumps reach 50% farther.'},
   smite:{arc:['High Voltage','+10% Spark damage','+10% Spark damage per rank.'],surge:['Extra Sparks','+1 Spark','+1 Spark per cast (max 10). Past the max, Sparks deal +4% damage per rank.'],chainlord:'+20% Spark damage, and Sparks find enemies from 40% farther.',stormcaller:'+2 Sparks and +20% Spark damage.',evolution:'+50% Spark damage, +2 Sparks, and Sparks find enemies from 50% farther.'},
-  tempest:{arc:['Reserve Cell','+0.35s sentry life','Sentries last 0.35s longer per rank (max 8s).'],surge:['Wide Conductor','+8% zap area','Ball Lightning zaps an 8% bigger area per rank (max +40%).'],chainlord:'Sentries last 0.7s longer.',stormcaller:'+20% sentry damage and bigger Ball Lightning.',evolution:'+20% sentry damage, sentries last 1s longer, and bigger Ball Lightning.'}
+  tempest:{arc:['Reserve Cell','Sentries fire 10% faster','Sentries fire Ball Lightning 10% faster per rank (max +60%).'],surge:['Extra Sentry','+1 sentry','+1 sentry on the field per rank (max 3). Ball Lightning also zaps a bit wider.'],chainlord:'Sentries fire 20% faster.',stormcaller:'+1 sentry, +20% sentry damage and bigger Ball Lightning.',evolution:'+1 sentry, +20% sentry damage, sentries fire 30% faster, and bigger Ball Lightning.'}
 };
 function taroAttackInfo(d,b){if(!d)return d;
   if(!b?.path)return {...d,name:'Static Arc',upgrades:d.upgrades.map(u=>{
@@ -4789,7 +4790,7 @@ const BASIC_PATHS={
                 {id:'p_spark_speed',iconKey:'ic_taro_fast_sparks',name:'Fast Sparks',emoji:'💨',max:3,fx:{},headline:'Sparks fly faster',desc:'+12% Spark movement speed per rank; max 640'},
                 {id:'p_spark_split',iconKey:'ic_taro_split_spark',name:'Split Spark',emoji:'🔱',max:1,fx:{},headline:'Stronger split sparks',desc:'Split sparks keep 65% power instead of 45% (second split 42% instead of 20%)'},
                 {id:'p_spark_shock',iconKey:'ic_path_p_spark_shock',name:'Static Sparks',emoji:'✨',max:3,fx:{},headline:'Spark hits shock',desc:'Enemies hit by Sparks take 3% more damage per rank from everything for 2s.'}]},
-    {id:'tempest',iconKey:'ic_path_tempest_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Place up to 3 sentries that stay until they expire or you walk far away. They fire slow Ball Lightning that zaps every enemy around it many times per second.',
+    {id:'tempest',iconKey:'ic_path_tempest_sentry',name:'Sentry Build',emoji:'🗼',base:{dmg:0.65,cd:0.85},headline:'Set Ball Lightning sentries',desc:'Place 1 sentry (Extra Sentry cards add more, up to 3). Sentries stay until they expire or you walk far away. They fire slow Ball Lightning that zaps every enemy around it many times per second.',
       upgrades:[{id:'p_sentry_overload',iconKey:'ic_path_tempest',name:'Fade Burst',emoji:'💥',max:2,fx:{},headline:'Orbs burst on fade',desc:'When a Ball Lightning disappears, it explodes for 150% damage per rank.'},
                 {id:'p_sentry_link',iconKey:'ic_path_smite',name:'Tesla Link',emoji:'🔗',max:2,fx:{},headline:'Sentries link up',desc:'Two sentries close together (420px) are linked by lightning; enemies touching the line take 80% orb damage per rank every 0.5s.'},
                 {id:'p_farstrike',iconKey:'ic_taro_long_current',name:'Long-Range Current',emoji:'🔭',max:3,fx:{far:0.12},headline:'+12% beyond 300px',desc:'Hits 300px or more away from Taro deal 12% more per rank.'},
@@ -8319,7 +8320,9 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
     /* v7.8.77 เจ้าของ: โจมตีปกติเริ่มต้นลดจำนวน (+3→+1 ลูก: Lv1 2 ลูก, Lv4+ 3 ลูก, เดิม 4/5) และยิงห่างขึ้น ×1.3 */ /* v7.8.21 เจ้าของ: อยู่นานขึ้น เร็วขึ้น ทะลุศัตรู (pierce พื้น 2) · แตกตัว 2 รุ่น: บิน 0.42 วิ แตก 2 ลูก ลูกลูกแตกอีก 2 ลูกเล็ก */
     return {interval:Math.max(.45,base.unitC*1.3),damage:base.unitD*.75*(1+Math.min(.25,excess*.04))*(1+.10*Math.min(6,Math.max(0,pierce))),   /* v7.8.69 เจ้าของ: Spark ไม่หายตอนโดนแล้ว pierce ไร้ความหมาย → ทุกขั้นของ arc = +10% ดาเมจ */count:Math.min(10,Math.floor(count+1)),pierce:Math.min(5,2+Math.floor(pierce)),speed:Math.min(640,460*(1+.12*rank('p_spark_speed'))),life:Math.min(5,3.5*(1+.15*rank('p_spark_life'))*range/520),range,split:rank('p_spark_split')>0?.65:.45};}
   const radius=Math.min(140,105*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;   /* v7.8.63 เจ้าของ: วงช็อตเริ่มใหญ่ขึ้น 85→105 · ลูกบอลเร็วขึ้น 110→145 */   // v7.8.24 Ball Lightning แบบ PoE: ลูกเล็กลอยช้า ช็อตทุกตัวในรัศมีนี้ทุก 0.15 วิ
-  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.35,base.unitC*.62),nodeLife:Math.min(8,5+base.arc*.35),radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
+  // v8.0.88 เจ้าของ: Sentry เริ่ม 1 ต้น · การ์ด +1 (surge) เพิ่มต้น (สูงสุด 3) · Reserve Cell (arc) = ยิงถี่ขึ้น 10%/ขั้น (สูงสุด +60%) แทนอายุยาวขึ้น
+  const sentries=Math.min(TARO_SENTRY_MAX,1+rank('surge')+(b.mutation==='stormcaller'?1:0)+(b.evolved?1:0)),fire=1+.10*Math.min(6,Math.max(0,base.arc||0));
+  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.3,base.unitC*.62/fire),nodeLife:5,sentries,fire,radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
 const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_ARC_LOOP_MAX=2,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=3,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=145,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=60,TARO_SENTRY_MAX=3,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
 // v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
@@ -16074,7 +16077,7 @@ class Game extends Phaser.Scene {
   castTaroSentry(level){const t=this.syncTaroCombat();if(!t?.enabled||t.path!=='tempest'||this.state!=='play')return;const f=this.taroSwarmProfile(level);if(!this.taroCandidates(this.player,f.range).length)return;
     /* v7.8.19 วางใหม่เฉพาะตอนป้อมไม่ครบ 2 หรือ Taro เดินห่างป้อมไกลสุดเกิน 350px → ป้อมอยู่ครบอายุ · ป้อมเดิมรับค่าการ์ดใหม่ทุกรอบ */
     const p=this.player,regular=(t.nodes||[]).filter(n=>!n.beacon);for(const n of regular)Object.assign(n,{interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,overload:f.overload,link:f.link});
-    if(regular.length>=TARO_SENTRY_MAX){const far=regular.reduce((m,n)=>Math.hypot(n.x-p.x,n.y-p.y)>Math.hypot(m.x-p.x,m.y-p.y)?n:m);if(Math.hypot(far.x-p.x,far.y-p.y)<=TARO_SENTRY_LEASH)return;this.taroRemoveNode(far,true);}
+    if(regular.length>=(f.sentries||TARO_SENTRY_MAX)){const far=regular.reduce((m,n)=>Math.hypot(n.x-p.x,n.y-p.y)>Math.hypot(m.x-p.x,m.y-p.y)?n:m);if(Math.hypot(far.x-p.x,far.y-p.y)<=TARO_SENTRY_LEASH)return;this.taroRemoveNode(far,true);}
     const a=[-.7,.7,Math.PI/2+.6][(++t.attackSeq)%3],x=p.x+Math.cos(a)*40,y=p.y+Math.sin(a)*40;this.taroPlaceNode({x,y,life:f.nodeLife,interval:f.pulse,range:f.range,damage:f.damage,orbRadius:f.radius,orbLife:f.orbLife,overload:f.overload,link:f.link,speed:TARO_BL_SPEED,beacon:false});this.poseAttack?.(300);this.taroSound('deploy');
   }
   /* v7.8.41 ตัวเลขจาก Combat Meter: Unique ทั้ง 3 ทำแค่ 0–3% ของดาเมจ → โตตามเลเวลรอบ (+12%/เลเวล) ให้ตามพลังตีปกติทัน */

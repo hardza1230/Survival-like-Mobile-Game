@@ -1,14 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.88, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.89, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.87 — Forge random mods + bad mods, Lv text, 3 rarities above Legend (owner)
+# Latest delivery: v8.0.88 — Taro Sentry: 1 sentry + Extra Sentry card, Reserve Cell = fire rate (owner)
+
+taroSwarmProfile tempest: sentries=min(TARO_SENTRY_MAX 3, 1+rank surge+stormcaller 1+evolved 1); fire=1+.10·min(6,base.arc) → pulse=max(.3,unitC·.62/fire); nodeLife fixed 5 (was 5+arc·.35). castTaroSentry keeps f.sentries (Overdrive Unique still fills to 3 temporarily). TARO_PROGRESSION.tempest: arc 'Reserve Cell — Sentries fire 10% faster', surge 'Extra Sentry +1 sentry (max 3)', chainlord/stormcaller/evolution texts updated; path desc. Test: taro-swarm (1 sentry start, surge 2 → 3, fire/pulse). Owner phone check pending (balance feel at Lv1).
+
+# Previous delivery: v8.0.87 — Forge random mods + bad mods, Lv text, 3 rarities above Legend (owner)
 
 Forge (owner reversed parts of FORGE_SIMPLE.md): forgeAdd(line) pays then rolls forgeRollMod (FORGE_BAD_CHANCE .2 → FORGE_BAD_DEFS b_dull/b_frail/b_soft/b_shaky/b_slow_prep/b_sour_cure, negative bands through forgeApply numbers 1/13/14/3/57/63, def.effect text, bad:true; else pickWeightedMod) — no 1-of-3 picker (drawForgeOffer/forgeRollOffer gone, forgeOpenAdd = alias). forgePool ignores rows (any mod any row, duplicates stack). Bad mods: no upgrade ('Remove it with 🗑'), row '💀 BAD'. forgeRemove double-tap now pays forgePrice (not a craft, _forgeDone noCraft). tierStarText → 'Lv n'/'Bad', forgeStarCapText 'Max Lv n at iLv x · next at iLv y', row label 'MOD i · Lv a / cap'. Grades: GRADE_ORDER/gradeRank, RAR_LINES mythic 4/ancient 5/divine 6, GRADE_NEXT legend→mythic→ancient→divine (Merge only), TIER_LABEL colors, quality 1.6/1.8/2.0, BASE_TIER_OFFSET 0/-1/-1, dismantle base, protection gradeRank≥3, sort maps; forgeLineCount (3..6) in forgeLines, forgeLineOpen <6, Forge UI shows open rows + next locked row ('Needs X+') with rowH fitted; Merge carry → first free row (no bad mods); rarity frame/gem clamp + tint for new grades. Enhance tip: powerTips skips enh once d.enhDone (set in Save.enhance). Tutorial step 3: tap add_ = done. Tests rewritten: affix-sound, forge-150, forge-redesign (divine 6 rows on 7 screens, bad row), forge-simple, gear-level-limits, power-hub-layout hash, check-forge-live-ui. Owner phone check pending.
-
-# Previous delivery: v8.0.86 — owner list: Depths gate/intro, 30-day login, Talent/Rank guides, short lines, Mint Glacier/Barrage
-
-Depths: FEATURE_OPEN.dig=5 (storyCleared, = Chapter 1) + FEAT_TAG/ICON/LINE/NAME → featureReveal intro; Weave tile shows '🔒 After Chapter 1' + toast, Rank page Depths tab hidden, route 'dig' falls back to upgrade, m_dig quest req:4, dailySpec dig→kills while locked, dig badge gated. DIG_ANCIENT_FLOOR=15: digTable chest weight 0 below floor 15 (legend shows lock). Login: LOGIN_CAL = 7-day week ×4 + day 29 cur 6 + day 30 gold (big), LOGIN_DAYS; popup 6×5 grid sized to screen. talentsOpen() (sm[2] or unlockedStage≥3): Talents tab 🔒 + toast, buildHeroes falls back to roster, badge gated. rankTeach(): first visit to Weave with an unpicked Rank Reward → rubyGuide on 'weave_perks' (d.rankTaught). Text: HERO_INTROS, RUBY_TIPS say/short and RUBY_STORY rewritten to one short simple line. Mint: mintVolleyProfile glacier cap 1 (extra → bloomMul), barrage hitMul max(.4,1-.15·(raw-2)) on lance + shard dmg (descs + cocoa-rework-baseline fixture updated); Glacier Bloom draws no ground ring and no vfx_glacier_bloom when the snowstorm art shows (fallback keeps both). Fix: buildLobby stage-name wrap width ≥48 (landscape boot threw 'wordWrapWidth < a single character', which also blocked story art in landscape). Tests updated: daily-quests, login-calendar, mint-build-path, mint-evolutions. Owner phone check pending.
 
 # ⚠️ DEPLOY BRANCH — read first
 
