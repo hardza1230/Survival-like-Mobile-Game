@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.73';
+const GAME_VERSION = '8.0.74';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.74',date:'2026-11-01',title:'Bosses that fight with their bodies',items:['Ant Empress, Frost Golem, Behemoth, Colossus and the First Planter (and their minibosses) no longer shoot bullets','Instead they take turns: ground shockwave toward you, a charge, heavy things falling around you, or a wide sweep in front of them — all with warning circles']},
   {v:'8.0.73',date:'2026-10-31',title:'Shorter, clearer boss stories',items:['After each boss: two quick scenes instead of three, no title card — who the boss was, then their last words and where to go next','Each boss story is staged differently, with its own colours and camera moves']},
   {v:'8.0.72',date:'2026-10-31',title:'Every boss shoots its own way',items:['Each boss and miniboss now fires its own colour and shape: orbs, shards or spinning stars','Bullets move differently per boss: weaving, bouncing off the screen edge, splitting in three, homing, flying back like a boomerang, or stopping and bursting into a ring','Damage and attack timing are unchanged; normal enemies keep their usual shots']},
   {v:'8.0.71',date:'2026-10-31',title:'All rewards in one place',items:['New 🎁 Rewards button in the Lobby replaces Daily and Awards','Tabs: 📅 Login gift · 📋 Daily Quests · 🏆 Awards, with red dots when something is ready']},
@@ -5604,6 +5605,8 @@ const BOSS_SHOT=[{k:'boss_orb',c:0x9dff5a,s:1,b:'wave'},{k:'boss_orb',c:0x5fd8c8
   {k:'boss_star',c:0xff8fc8,s:1,b:'boomer'},{k:'boss_orb',c:0xd8f05a,s:1.05,b:'split'},{k:'boss_shard',c:0xffc23d,s:1,b:'home'},{k:'boss_star',c:0xd6b4ff,s:1,b:'boomer'},{k:'boss_shard',c:0xe07a5a,s:1.05,b:'wave'},
   {k:'boss_orb',c:0xffe08a,s:1.1,b:'bounce'},{k:'boss_star',c:0xffb59a,s:1,b:'delay'},{k:'boss_shard',c:0x7ff0ff,s:1,b:'bounce'},{k:'boss_orb',c:0x7fe38f,s:1.05,b:'split'},{k:'boss_star',c:0xff5a6e,s:1.1,b:'home'}];
 const BOSS_SHOT_PIN={k:'boss_star',c:0xe05aff,s:1.15,b:'delay'};
+// v8.0.74 เจ้าของ: บอสสายร่างกายไม่ยิงกระสุน → ท่ายิงทุกท่ากลายเป็นท่ากาย (คลื่นพื้น · พุ่งชน · ของตกจากฟ้า · ปัดกวาด) สลับกัน ≤1 ท่า/1.1s
+const BOSS_NO_SHOT=new Set([0,3,6,10,14]);   // C1-1 Ant Empress · C1-4 Frost Golem · C2-2 Behemoth · C3-1 Colossus · C3-5 First Planter (บอส + มินิด่านนั้น; Pinnacle/Delve ยิงเหมือนเดิม)
 const FEATURE_OPEN={bazaar:1,gActivity:1,daily:1,achievements:1,rewards:1,news:1,gear:1,gearInbox:1,craft:2,merge:2,char:1,gCodex:2,skills:2,bestiary:2};
 const FEAT_TAG={bazaar:'bazaar',gActivity:'gActivity',char:'char',daily:'side_rewards',achievements:'side_rewards',rewards:'side_rewards',news:'side_news',gearInbox:'side_gearInbox',gCodex:'side_gCodex',gear:'gLoadout',craft:'gLoadout'};
 const FEAT_ICON={rewards:'ic_side_daily',bazaar:'ic_nav_bazaar',gActivity:'ic_nav_activities',char:'ic_nav_heroes',daily:'ic_side_daily',achievements:'ic_side_awards',news:'ic_side_news',gearInbox:'ic_side_mail',gCodex:'ic_side_codex',gear:'ic_nav_upgrade',craft:'ic_nav_upgrade'};
@@ -19685,6 +19688,7 @@ class Game extends Phaser.Scene {
   killFoe(b){ b.beh=null; b.spin=0; b._bst=null; b.setAlpha?.(1); b.setActive(false).setVisible(false); if(b.body){ b.body.enable=false; b.body.stop(); } }
   // ยิงกระสุนศัตรู 1 นัด
   foeShot(x,y,ang,speed,dmg,tint,scale){
+    if(this.bossNoShotAt?.(x,y,dmg))return null;   // v8.0.74 บอสสายร่างกาย: ไม่มีกระสุน
     let b=this.foeBullets.getFirstDead(false);
     if(!b) b=this.foeBullets.create(x,y,'proj_enemy'); else { b.setActive(true).setVisible(true); if(b.body)b.body.enable=true; b.setPosition(x,y); }
     if(!b)return null;   // pool Full → ข้ามการยิง กัน null crash
@@ -19693,6 +19697,13 @@ class Game extends Phaser.Scene {
     b.clearTint();   // v5.78 กระสุนศัตรูสีเดียวทั้งเกม (เขียวเรือง+ขอบเข้ม) ไม่ย้อมตามด่าน → อ่านง่ายบนทุกพื้น
     if(b.body){b.body.setAllowGravity(false);} b.dmg=dmg; b.frost=this.stageIndex===3; b.life=3.0; this.camWorld(b);
     if(b.body)this.physics.velocityFromRotation(ang,speed,b.body.velocity); b.beh=null; const st=this.bossShotStyleAt?.(x,y); if(st)this.bossShotApply(b,st,ang,speed,true); return b; }
+  bossNoShotAt(x,y,dmg){ if(this._bsChild||this._pinnacleRun||typeof BOSS_NO_SHOT==='undefined'||!BOSS_NO_SHOT.has(this.stageIndex|0))return false; const L=this._bigsNow?.()||[];
+    for(const e of L){ if(e.delveBoss||e._pinnacleArt)continue; const r=Math.max(e.displayWidth||0,e.displayHeight||0)*.6+40,dx=x-e.x,dy=y-e.y; if(dx*dx+dy*dy>r*r)continue; const now=this.time?.now??Date.now(); if(now-(e._nsAt||-1e9)>1100){ e._nsAt=now; this.bossBodyMove(e,dmg); } return true; } return false; }
+  bossBodyMove(e,dmg){ const p=this.player; if(!p||!e.active)return; const k=e._nsK=((e._nsK||0)+1)%4,dm=Math.max(1,Math.round((dmg||10)*2)),c=BOSS_SHOT[this.stageIndex|0]?.c||0xff5a4d,a=Math.atan2(p.y-e.y,p.x-e.x),T=(ms,f)=>this.time.delayedCall(ms,()=>{ if(e.active&&this.state==='play')f(); });
+    if(k===0){ for(let i=1;i<=6;i++)T(i*110,()=>this.spawnHazard(e.x+Math.cos(a)*i*72,e.y+Math.sin(a)*i*72,46,dm,c)); }   // คลื่นพื้นเป็นเส้นตรงไปหาผู้เล่น
+    else if(k===1){ const n=this.time?.now??0; if(n>(e._nsChg||0)&&typeof this.chargeTelegraph==='function'){ e._nsChg=n+1600; this.chargeTelegraph(e,650,700,26); } else this.spawnHazard(p.x,p.y,80,dm,c); }   // พุ่งชน
+    else if(k===2){ const px=p.x,py=p.y; for(let i=0;i<3;i++){ const r=Math.random()*110,t=Math.random()*Math.PI*2; T(i*180,()=>this.spawnHazard(px+Math.cos(t)*r,py+Math.sin(t)*r,64,dm,c)); } }   // ของตกจากฟ้ารอบตัวผู้เล่น
+    else { for(let i=0;i<5;i++){ const t=a+(i/4-.5)*Math.PI*.67; this.spawnHazard(e.x+Math.cos(t)*140,e.y+Math.sin(t)*140,56,dm,c); } } }   // ปัดกวาดเป็นโค้งหน้าบอส
   // v8.0.72 กระสุนที่เกิดใกล้บอส/มินิบอส (รวมท่าหน่วงเวลา) = กระสุนของบอสนั้น
   bossShotStyleAt(x,y){ if(this._bsChild||typeof BOSS_SHOT==='undefined')return null; const L=this._bigsNow?.()||[]; for(const e of L){ if(e.delveBoss)continue; const r=Math.max(e.displayWidth||0,e.displayHeight||0)*.6+40,dx=x-e.x,dy=y-e.y; if(dx*dx+dy*dy<=r*r)return (e._pinnacleArt||this._pinnacleRun)?BOSS_SHOT_PIN:BOSS_SHOT[Math.max(0,Math.min(BOSS_SHOT.length-1,this.stageIndex|0))]; } return null; }
   bossShotApply(b,st,ang,speed,beh){ if(!this.textures.exists(st.k))return; b.setTexture(st.k).setTint(st.c); if(st.s!==1)b.setScale(b.scaleX*st.s); b.beh=beh?st.b:null; b._bst=st; b.bt=0; b.ba=ang; b.bspd=speed; b._bn=0; b._bdone=0; b.spin=st.k==='boss_star'?6:0; }

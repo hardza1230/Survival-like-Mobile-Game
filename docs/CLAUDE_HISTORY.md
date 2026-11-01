@@ -1,5 +1,10 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.0.72 — boss bullet identity (owner picked colour/shape + behaviours)
+
+Code-drawn 128px white textures boss_orb/boss_shard/boss_star (dark outline, tinted; same size as cr_foe_bolt so hitbox unchanged). BOSS_SHOT[stageIndex 0–14] + BOSS_SHOT_PIN {k,c,s,b}. foeShot → bossShotStyleAt(x,y): shot born within .6·size+40px of an active boss/mini (not delveBoss, not _bsChild) gets bossShotApply (texture/tint/scale, beh). bossShotTick from the foe tick: wave (sine ±.55), home (1.7 rad/s for 1.3s), boomer (reverse at .85s), bounce (camera edges ≤2), split (3 kids at .7s, ×.55 dmg), delay (stop .55s, blink, 6-ring at 1.25s ×.5 dmg); bossShotKids capped at 210 active. killFoe resets beh/spin/alpha. Mob shots unchanged. tests/boss-shots. Headless smoke 16 styles 0 errors. Owner phone feel/difficulty review pending (split/delay add small bullets).
+
+
 # Previous delivery: v8.0.71 — Rewards hub (owner: merge Daily + Login + Awards)
 
 Lobby right side News · 🎁 Rewards (tag side_rewards, route 'rewards' → daily or achievements by _rwLast/badges), left Codex · Mail. rewardsTabs(active) draws 📅 Login (loginPopup('daily') or 'Day n claimed' toast) · 📋 Daily · 🏆 Awards (tags rw_<k>, red dots) under the header and returns its height; buildDaily/buildAchievements shift content by it. FEATURE_OPEN rewards 1, reveal targets side_rewards, daily/achievements skipped in featureReveal (new 'rewards' card instead). hasTargetBadge('rewards'). gActivity rows unchanged. tests/rewards-hub. Owner phone review pending.

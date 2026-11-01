@@ -15,4 +15,10 @@ boss.delveBoss=true;assert.equal(S.bossShotStyleAt(0,0),null,'Delve bosses keep 
 boss._pinnacleArt=true;assert.equal(S.bossShotStyleAt(0,0),ctx.PIN,'Pinnacle style');
 assert(/if\(b\.beh\)this\.bossShotTick\(b,dt\)/.test(src),'tick hooked');assert(/killFoe\(b\)\{ b\.beh=null;/.test(src),'pool reset');
 assert(/countActive\?\.\(true\)\|\|0\)>210\)return;/.test(src),'child cap');
-console.log('Boss shots: 15 + Pinnacle styles, 6 behaviours, near-boss only, Delve/children excluded, pool reset and cap passed');
+const ns=src.match(/const BOSS_NO_SHOT=new Set\(\[([\d,]+)\]\)/);assert(ns&&ns[1]==='0,3,6,10,14','body-type bosses 0,3,6,10,14');
+assert(/foeShot\(x,y,ang,speed,dmg,tint,scale\)\{\n    if\(this\.bossNoShotAt\?\.\(x,y,dmg\)\)return null;/.test(src),'body bosses suppress bullets');
+const H={};vm.runInContext('H.f={'+method('bossNoShotAt')+'}',Object.assign(ctx,{H,BOSS_NO_SHOT:new Set([0,3,6,10,14])}));const moves=[];
+const N=Object.assign(Object.create(H.f),{stageIndex:0,time:{now:5000},_bigsNow:()=>[boss],bossBodyMove:()=>moves.push(1)});delete boss._pinnacleArt;
+assert.equal(N.bossNoShotAt(10,0,8),true);assert.equal(N.bossNoShotAt(10,0,8),true);assert.equal(moves.length,1,'one body move per 1.1s, the rest of the volley is dropped');
+assert.equal(N.bossNoShotAt(900,0,8),false,'mob shots far away still fire');N.stageIndex=1;assert.equal(N.bossNoShotAt(10,0,8),false,'other bosses keep bullets');N.stageIndex=0;N._pinnacleRun=true;assert.equal(N.bossNoShotAt(10,0,8),false,'Pinnacle keeps bullets');
+console.log('Boss shots: 15 + Pinnacle styles, 6 behaviours, near-boss only, Delve/children excluded, pool reset and cap passed; 5 body-type bosses use shockwave/charge/sky drop/sweep instead');
