@@ -104,3 +104,8 @@ For order45 the GitHub create_tree call over330 deep repository paths timed out4
 ## Recovering a missing checkout (31 Oct2026)
 
 The original E:/Heart/TT checkout was absent. A filtered shallow clone restored68metadata/core quickly; a full asset pack stalled. A bounded parallel download of missing files from the immutable68raw URL restored5284asset files plus78support files, verifying both byte lengths and Git blob SHA-1 before atomic placement. For a partial clone, read-only Git commands may still try to fetch missing baseline blobs. Restoring verified loose blobs locally (standard blob header+zlib, deduplicate identical OIDs before parallel writes) resolved that. Preserve a partial clone instead of deleting it, never overwrite a dirty checkout, and use this as a recovery fallback rather than a normal checkout workflow. Fullcheck/build then passed.
+
+
+## Windows browser contracts without installing Playwright (verified2 Nov2026)
+
+This Codex desktop installation bundles Playwright under AppData/Local/OpenAI/Codex/runtimes/cua_node/<runtime>/bin/node_modules. Workspace require.resolve may fail even though this bundled package exists. Locate the installed package.json, set NODE_PATH to that node_modules for check-forge-live-ui/check-lobby-live-ui/check-ruby-story-ui, and set FORGE_BROWSER_CHANNEL=chrome to use installed Chrome. Verified allthree contracts for8.0.95/96. Runtime directoryhash can change; find actualpath ratherthan assuming this machine path everywhere. No npm or browser installation needed. Keepgame.js LF onWindows (Path.write_bytes); text-mode write_text defaults can introduceCRLF andbreakexistingmultiline sourcecontractregexes.
