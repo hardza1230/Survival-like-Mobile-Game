@@ -50,3 +50,15 @@ for(const character of remaining.concat('berry'))for(const flag of ['riftMode','
  const s=scene(api.BASIC_PATHS[character]?.[0].id,character);if(flag!=='noSpecial')s[flag]=true;const out=s.rollBasicAttackUpgrades(3,flag==='noSpecial'?{noSpecial:true}:undefined);if(character==='cocoa')assert(out.some(c=>c.poolGroup==='path'));else assert(!out.some(c=>c.poolGroup));
 }
 console.log('P5: twelve remaining paths, all seven heroes before path selection, Berry core choices, recovery and n=1/2/3, authored rank/effect application, caps/banish/exhaustion, stage-local path replacement, special milestones and mode/loot isolation passed');
+
+// Sesame811 pathless drafts use the actual new orb-card catalog, never old Mirror paths.
+vm.runInContext(block('// Sesame Rune Invoker helpers:', '// End Sesame Rune Invoker helpers.'),ctx);
+const runeCards=vm.runInContext('SES_RUNE_CARDS',ctx);
+{const s=scene(null,'sesame');s.isSesRune=()=>true;s.level=7;s.stageIndex=2;s.skills.mirror=1;s.basicAttackInfo=()=>({name:'Rainbow Flare',skill:'mirror',color:1,upgrades:runeCards,mutations:[]});
+ const allowed=new Set(runeCards.map(c=>c.id)),seen=new Set();
+ for(let i=0;i<80;i++){const cards=s.rollBasicAttackUpgrades(3);assert.equal(cards.length,3);assert(cards.some(c=>allowed.has(c.key)));for(const c of cards){if(c.key.startsWith('endless_'))continue;assert(allowed.has(c.key),JSON.stringify(c));seen.add(c.key);assert.equal(c.iconKey,'ic_ses811_'+c.key);}}
+ assert.equal(seen.size,8);s.player.hp=20;assert(s.rollBasicAttackUpgrades(3).some(c=>c.type==='heal'));
+ s.player.hp=100;s.basicAttack.mastery=99;const cards=s.rollBasicAttackUpgrades(3,{noSpecial:true});assert(cards.every(c=>!c.mutation&&!c.evolution&&c.kind!=='Build Path'));
+ const card=cards.find(c=>allowed.has(c.key));card.apply();assert.equal(s.basicAttack.lv[card.key],1);assert.equal(s.basicAttack.ranks[card.key],1);
+}
+console.log('Sesame811 draft: eight orb families/art keys, no Mirror path/mutation/evolution, actual apply and critical heal preserved');

@@ -1,0 +1,264 @@
+{
+  "cells": [
+    {
+      "cell": 0,
+      "sourceBox": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "alphaBox": [
+        24,
+        14,
+        168,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 1,
+      "sourceBox": [
+        314,
+        0,
+        627,
+        314
+      ],
+      "alphaBox": [
+        18,
+        14,
+        174,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 2,
+      "sourceBox": [
+        627,
+        0,
+        940,
+        314
+      ],
+      "alphaBox": [
+        14,
+        17,
+        178,
+        174
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 3,
+      "sourceBox": [
+        940,
+        0,
+        1254,
+        314
+      ],
+      "alphaBox": [
+        14,
+        36,
+        178,
+        155
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 4,
+      "sourceBox": [
+        0,
+        314,
+        314,
+        627
+      ],
+      "alphaBox": [
+        19,
+        14,
+        172,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 5,
+      "sourceBox": [
+        314,
+        314,
+        627,
+        627
+      ],
+      "alphaBox": [
+        20,
+        14,
+        172,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 6,
+      "sourceBox": [
+        627,
+        314,
+        940,
+        627
+      ],
+      "alphaBox": [
+        17,
+        14,
+        175,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 7,
+      "sourceBox": [
+        940,
+        314,
+        1254,
+        627
+      ],
+      "alphaBox": [
+        17,
+        14,
+        175,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 8,
+      "sourceBox": [
+        0,
+        627,
+        314,
+        940
+      ],
+      "alphaBox": [
+        14,
+        22,
+        178,
+        169
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 9,
+      "sourceBox": [
+        314,
+        627,
+        627,
+        940
+      ],
+      "alphaBox": [
+        14,
+        14,
+        177,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 10,
+      "sourceBox": [
+        627,
+        627,
+        940,
+        940
+      ],
+      "alphaBox": [
+        19,
+        14,
+        172,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 11,
+      "sourceBox": [
+        940,
+        627,
+        1254,
+        940
+      ],
+      "alphaBox": [
+        18,
+        14,
+        173,
+        178
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 12,
+      "sourceBox": [
+        0,
+        940,
+        314,
+        1254
+      ],
+      "alphaBox": [
+        14,
+        17,
+        178,
+        175
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 13,
+      "sourceBox": [
+        314,
+        940,
+        627,
+        1254
+      ],
+      "alphaBox": [
+        14,
+        24,
+        178,
+        167
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 14,
+      "sourceBox": [
+        627,
+        940,
+        940,
+        1254
+      ],
+      "alphaBox": [
+        14,
+        20,
+        178,
+        171
+      ],
+      "borderClear": true
+    },
+    {
+      "cell": 15,
+      "sourceBox": [
+        940,
+        940,
+        1254,
+        1254
+      ],
+      "alphaBox": [
+        14,
+        15,
+        178,
+        176
+      ],
+      "borderClear": true
+    }
+  ],
+  "alphaPreserved": true,
+  "runtimeFrame": 192,
+  "decodedAtlasBytes": 2359296,
+  "allBordersClear": true
+}

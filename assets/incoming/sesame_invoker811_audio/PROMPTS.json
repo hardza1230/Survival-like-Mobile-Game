@@ -1,0 +1,210 @@
+{
+  "provider": "ElevenLabs",
+  "endpoint": "https://api.elevenlabs.io/v1/sound-generation?output_format=mp3_44100_128",
+  "generations": [
+    {
+      "key": "sfx_ses811_tap_p",
+      "file": "donors/tap_p_1.mp3",
+      "parameters": {
+        "text": "A single soft fiery ruby bead click, warm low wooden pop with tiny ember sparkle. One gesture finishes in 120 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "fb69dce21b860edc88597cd391b4c1c6b0380d92cf6c8e9c259cd4f5ef96e2ce"
+    },
+    {
+      "key": "sfx_ses811_tap_p",
+      "file": "donors/tap_p_2.mp3",
+      "parameters": {
+        "text": "A single soft fiery ruby bead click, warm low wooden pop with tiny ember sparkle. One gesture finishes in 120 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "45f5bc5e9a717477dc8767e8ee1b8bc96c4360af5397b3a81f232b6ec9664579"
+    },
+    {
+      "key": "sfx_ses811_tap_m",
+      "file": "donors/tap_m_1.mp3",
+      "parameters": {
+        "text": "A single emerald wind bead click, airy round whoop and tiny soft chime. One gesture finishes in 120 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "6cab963d476e327b0f446109ef9c0f03662f57a0434732c2785c580698ffaa53"
+    },
+    {
+      "key": "sfx_ses811_tap_m",
+      "file": "donors/tap_m_2.mp3",
+      "parameters": {
+        "text": "A single emerald wind bead click, airy round whoop and tiny soft chime. One gesture finishes in 120 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "61c7dcd9e108b4a7780743a9cddd84034adcbfe4d2181391cacf840ade17264e"
+    },
+    {
+      "key": "sfx_ses811_tap_b",
+      "file": "donors/tap_b_1.mp3",
+      "parameters": {
+        "text": "A single sapphire water bead click, clear mellow droplet plink, rounded and gentle. One gesture finishes in 140 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "eeffbb62eb2017e5785404c4b57baf052b468c6757cde44f21f804d65db84c68"
+    },
+    {
+      "key": "sfx_ses811_tap_b",
+      "file": "donors/tap_b_2.mp3",
+      "parameters": {
+        "text": "A single sapphire water bead click, clear mellow droplet plink, rounded and gentle. One gesture finishes in 140 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "546342f98f7f0ee23ded79eb2d34a97c047b2c974239932ab51ab7ed73f78501"
+    },
+    {
+      "key": "sfx_ses811_recipe",
+      "file": "donors/recipe_1.mp3",
+      "parameters": {
+        "text": "Three tiny magical beads converge into one satisfying short ascending crystalline confirmation, clear final soft bell. Entire gesture 350 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "7"
+      },
+      "bytes": 10492,
+      "sha256": "5b3124ebfb15bcca6df20128d44e5ed2e8d7d532b41cee71020a50b4fb7427e6"
+    },
+    {
+      "key": "sfx_ses811_recipe",
+      "file": "donors/recipe_2.mp3",
+      "parameters": {
+        "text": "Three tiny magical beads converge into one satisfying short ascending crystalline confirmation, clear final soft bell. Entire gesture 350 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "7"
+      },
+      "bytes": 10492,
+      "sha256": "c4630cdf96e35cf7f905c760d9c871182b26262ef86320b866e822b3ce4f8e11"
+    },
+    {
+      "key": "sfx_ses811_cast",
+      "file": "donors/cast_1.mp3",
+      "parameters": {
+        "text": "A powerful compact elemental magic invocation: three bright beads open into one warm rushing burst, immediate attack and short tail. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.7000000000000001,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "8"
+      },
+      "bytes": 12163,
+      "sha256": "14bbfb6fdb21657eb6366c9e14a2e1de172ea8774b3983ecc59f0dbead5d8652"
+    },
+    {
+      "key": "sfx_ses811_cast",
+      "file": "donors/cast_2.mp3",
+      "parameters": {
+        "text": "A powerful compact elemental magic invocation: three bright beads open into one warm rushing burst, immediate attack and short tail. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.7000000000000001,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "8"
+      },
+      "bytes": 12163,
+      "sha256": "962002b605576951d54dfa318de51de8af5fd43964c790db2be5b19126ea500e"
+    },
+    {
+      "key": "sfx_ses811_impact",
+      "file": "donors/impact_1.mp3",
+      "parameters": {
+        "text": "One rich fantasy elemental shockwave impact: rounded low thump, crisp glassy sparkle and airy outward rush, no long rumble. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "9"
+      },
+      "bytes": 13835,
+      "sha256": "2caaa9a792f1214d8d3573babe1af3e1ee24a635f1d803b892dd7e8feb100554"
+    },
+    {
+      "key": "sfx_ses811_impact",
+      "file": "donors/impact_2.mp3",
+      "parameters": {
+        "text": "One rich fantasy elemental shockwave impact: rounded low thump, crisp glassy sparkle and airy outward rush, no long rumble. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.8,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "9"
+      },
+      "bytes": 13835,
+      "sha256": "72b558aa3a39649073cd9bc0427242a43a4e3dad7c9988dbde95b91902a70b32"
+    }
+  ]
+}

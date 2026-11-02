@@ -1,5 +1,7 @@
 # Sesame — Rune Invoker
 
+> Current implementation: [revision8.1.1](SESAME_INVOKER_811.md). Owner replaced the shared cooldown/four-spell/Brand prototype with ten independent elemental invocations and orb cards on2Nov2026. The prototype record below is historical; use the newer document for implementation.
+
 Status: core concept approved by the owner, 2 November 2026. Four-spell runtime prototype released in v8.0.98; release verification is recorded in SESSION_HANDOFF.md. Full hero is not complete.
 
 This replaces the planned Mirror Network paths/Glass World direction in [the previous design](../SESAME_MIRROR_NETWORK.md). Keep the previous document as implementation history. Do not continue those three paths by default.

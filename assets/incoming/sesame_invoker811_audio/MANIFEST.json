@@ -1,0 +1,52 @@
+{
+  "assets": [
+    {
+      "key": "sfx_ses811_tap_p",
+      "path": "assets/audio/sfx/sesame_invoker811/ses811_tap_p.mp3",
+      "bytes": 3387,
+      "sha256": "a9c197d1caaa067bd792009db62c82bb078a648e9d4b53621f7c1178d0a740cd",
+      "selected": "donors/tap_p_1.mp3",
+      "duration": 0.2089795918367347
+    },
+    {
+      "key": "sfx_ses811_tap_m",
+      "path": "assets/audio/sfx/sesame_invoker811/ses811_tap_m.mp3",
+      "bytes": 3387,
+      "sha256": "09791df470b10cd84e66d40528752d1a5b598388d92a7eb08f8d7c0cd43a749a",
+      "selected": "donors/tap_m_2.mp3",
+      "duration": 0.2089795918367347
+    },
+    {
+      "key": "sfx_ses811_tap_b",
+      "path": "assets/audio/sfx/sesame_invoker811/ses811_tap_b.mp3",
+      "bytes": 3805,
+      "sha256": "9068f014b2771fa150f81f8523b5cac8bd90917142bc874850d8a025b70ed178",
+      "selected": "donors/tap_b_2.mp3",
+      "duration": 0.23510204081632652
+    },
+    {
+      "key": "sfx_ses811_recipe",
+      "path": "assets/audio/sfx/sesame_invoker811/ses811_recipe.mp3",
+      "bytes": 7985,
+      "sha256": "87aa8d213619c38a0ea2e2686db12fe613c53a7466a12f40abfd16744fd6b0f7",
+      "selected": "donors/recipe_2.mp3",
+      "duration": 0.4963265306122449
+    },
+    {
+      "key": "sfx_ses811_cast",
+      "path": "assets/audio/sfx/sesame_invoker811/ses811_cast.mp3",
+      "bytes": 9657,
+      "sha256": "7a733e182a7ae771046c8c5364cef9a186d096d68c58ba460a5e0ea0b9149d70",
+      "selected": "donors/cast_2.mp3",
+      "duration": 0.6008163265306122
+    },
+    {
+      "key": "sfx_ses811_impact",
+      "path": "assets/audio/sfx/sesame_invoker811/ses811_impact.mp3",
+      "bytes": 10910,
+      "sha256": "ea7c63b128bc1b3117b3d9ece1e69ab18d4716b2fd1a22891794a883165a9ecd",
+      "selected": "donors/impact_1.mp3",
+      "duration": 0.6791836734693878
+    }
+  ]
+}

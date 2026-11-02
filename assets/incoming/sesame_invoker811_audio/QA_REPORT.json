@@ -1,0 +1,61 @@
+{
+  "provider": "ElevenLabs",
+  "processing": "Mechanical onset trim, DC removal, gain and fades only; no synthesized layers.",
+  "ownerListening": "Phone semantic/loudness review pending; technical decode/peak/DC checked.",
+  "files": [
+    {
+      "key": "sfx_ses811_tap_p",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.5630547404289246,
+      "dc": 0.00013424393546301872,
+      "rms": 0.031732507050037384,
+      "retainedDonorEnergy": 0.990533709526062
+    },
+    {
+      "key": "sfx_ses811_tap_m",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.5711095333099365,
+      "dc": -8.419977530138567e-05,
+      "rms": 0.041926655918359756,
+      "retainedDonorEnergy": 0.9983100295066833
+    },
+    {
+      "key": "sfx_ses811_tap_b",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.5696169137954712,
+      "dc": 3.1235236974680447e-07,
+      "rms": 0.06953735649585724,
+      "retainedDonorEnergy": 0.9922568798065186
+    },
+    {
+      "key": "sfx_ses811_recipe",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.5581965446472168,
+      "dc": 2.03532435989473e-05,
+      "rms": 0.06651057302951813,
+      "retainedDonorEnergy": 0.9993556141853333
+    },
+    {
+      "key": "sfx_ses811_cast",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.5777114629745483,
+      "dc": 5.5087053624447435e-05,
+      "rms": 0.0723094716668129,
+      "retainedDonorEnergy": 0.9999978542327881
+    },
+    {
+      "key": "sfx_ses811_impact",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.5507718920707703,
+      "dc": 4.605223148246296e-05,
+      "rms": 0.08577501028776169,
+      "retainedDonorEnergy": 0.9999987483024597
+    }
+  ]
+}

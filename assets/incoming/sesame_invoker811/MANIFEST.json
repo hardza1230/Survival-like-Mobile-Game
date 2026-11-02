@@ -1,0 +1,74 @@
+{
+  "source": {
+    "path": "assets/incoming/sesame_invoker811/original.png",
+    "bytes": 2698606,
+    "sha256": "42d90d4e93e023767fcfd808a239489019044412b41ee601ca3dec9414e1ca1c"
+  },
+  "runtime": [
+    {
+      "key": "fx_sesame_invoker811",
+      "path": "assets/art/sesame_invoker811/fx_sesame_invoker811.webp",
+      "bytes": 705580,
+      "sha256": "afe144161dcacc007bdd9444449cd2d8c93dd0a38c4b4c945c195f52d3eba3b9",
+      "frame": 192,
+      "frames": 16,
+      "cols": 4
+    },
+    {
+      "key": "ic_ses811_ember",
+      "path": "assets/art/sesame_invoker811/ic_ses811_ember.webp",
+      "bytes": 5182,
+      "sha256": "0fd514023a1359fa4bde400563df2abd56a4ce4a1904dff97df94e2cb34c087e",
+      "cell": 0
+    },
+    {
+      "key": "ic_ses811_gale",
+      "path": "assets/art/sesame_invoker811/ic_ses811_gale.webp",
+      "bytes": 7158,
+      "sha256": "aa60df036acc6eba1543cc70c907c46b9f3b1a76ef14a37c3c5649fe81651650",
+      "cell": 1
+    },
+    {
+      "key": "ic_ses811_tide",
+      "path": "assets/art/sesame_invoker811/ic_ses811_tide.webp",
+      "bytes": 6008,
+      "sha256": "af1feb40db4fc1eec299e0cf7fbff2f66eee46332e43413403e57bba1cea0646",
+      "cell": 2
+    },
+    {
+      "key": "ic_ses811_reach",
+      "path": "assets/art/sesame_invoker811/ic_ses811_reach.webp",
+      "bytes": 8426,
+      "sha256": "d332cac04090bda2be8ff32174f1311c33665188981055dca504017cbae82044",
+      "cell": 14
+    },
+    {
+      "key": "ic_ses811_resonance",
+      "path": "assets/art/sesame_invoker811/ic_ses811_resonance.webp",
+      "bytes": 7658,
+      "sha256": "76b1ec28bab0a491859da4e6b51c8129ef96b8071c706bfe3b76b1d70e5f0a09",
+      "cell": 15
+    },
+    {
+      "key": "ic_ses811_pulse",
+      "path": "assets/art/sesame_invoker811/ic_ses811_pulse.webp",
+      "bytes": 8970,
+      "sha256": "580346d4954c3f6504674caf7684e1af0b573d014a11685cbb65477ebc652136",
+      "cell": 12
+    },
+    {
+      "key": "ic_ses811_flow",
+      "path": "assets/art/sesame_invoker811/ic_ses811_flow.webp",
+      "bytes": 6134,
+      "sha256": "5e5dbbdcbc21548d8b4299d9a400cacb88f4eeaa7b728a742f9793685e557c5b",
+      "cell": 5
+    },
+    {
+      "key": "ic_ses811_ward",
+      "path": "assets/art/sesame_invoker811/ic_ses811_ward.webp",
+      "bytes": 7086,
+      "sha256": "f364ebdde3740f2b5344d6584b58eef97d50e9378a5bd80907308fa05f726ccb",
+      "cell": 11
+    }
+  ]
+}

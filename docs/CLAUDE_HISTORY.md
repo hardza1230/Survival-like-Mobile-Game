@@ -3301,3 +3301,29 @@ assets/incoming/audio_new_features → assets/audio/new_features/ (ASSET_AUDIO, 
 
 _buildCraftBenchRaw rows: when rowH≥66 (two=true) the pill height is rowH−42 (26–34) and the mod line gets the full row width (rw−50), scaled down to 75% then ellipsized; short rows keep the old side-by-side layout. Owner phone check pending.
 
+
+
+# Previous delivery: v8.0.98 — Sesame Rune Invoker prototype (owner)
+
+Normal Story Sesame after tutorial: three44px rune buttons P/M/B, persistent3orbs/FIFO, ten count recipes/fourready (PPP impact, MMM returningchakram, BBB Brand, MMB gatheringring), liveUniqueicon/name/NOTREADY, shared8sbaseCD. No pathdraft/mutation/evolution inprototype; fourbaseupgradefamilies andsharedUnique/Infusion/stats/heals. Oldsave/talentfields preserved; no pathtalents selected inStory; endgame/tutorial retainMirrorkit. Actorscap4, castsnapshot/poolgeneration/retarget0.2s/segmenthits/bosspullimmunity andrun/menu/death/shutdowncleanup. Code-drawnplaceholderart, existingElevenLabscues; nofinalart. Newrunecontracts and24staticCanvaslayouts, finalfullnpmcheck/build andForge21/Lobby360/Rubysixsize contracts passed; ownerphonecontrols/balance/readability/FPSpending. See docs/design/SESAME_RUNE_INVOKER.md. Still HEROES_WIP; fullten-spell progression/talents/migration/art remain.
+
+# Previous delivery: v8.0.97 — Yuzu > Companion > Minions (owner)
+
+Immortal Minions: base1/beforebuild,2/after; +2/seedlingrank(max3),+1/familyrank(max3),+1/form2,+2more/form3,+2BuildEvolution,cap16. No contactdamage/pop/regrow/decoytaunt; indexed formation follows Companion, priority/objective/boss targeting, staggered retarget/windup andpool-safe releases. Fighters punch, archers shoot, mages cyclefire/frost/lightning withshared2sfreezecooldown/no bossfreeze and0.5sone-bouncearccooldown.24mini shotsreservedwithin48total; ownership/build/epoch cleanup. New3ImageGenactors+8cellboltsatlas32frames,64/32pxlossless113954bytes/425984decoded;folderbattlelazy,bootYuzu299MB. SeparateCompanionEvolution cardsguaranteedonnormaldraftslevel7/11(noSpecial/tutorial/specialprecedence honored),protectedheal/skillunlock,once-onlystale-buildguard. Formsno longerauto fromkills/HarvestFestival. Pomelogrowth0/1/3 andshieldfinishers;Lime1/2/3piercingarrows;BloodOrangeSigil+0/1/3elementbolts. Attacktempo1/.8/.62(min0.18s),skilltempo1/.9/.78,SunKissed/Ripenrecharge. ExistingBuildEvolution retainedandstacks (Limeevolvedform+20%arrowpower/+pierce);skills/cards/talentcopy aligned. Testsnewyuzu-hierarchy-97 plusupdatedoldgrowth/Minionsemantics passed;Fullnpmcheck/build,Forge21/Lobby360/Rubysixsize browsercontracts andnewYuzu97ninecardlayouts/32framebrowserdecode passed. Ownerphonebalance/visual/FPS review pending.
+
+# Previous delivery: v8.0.96 — clearer Blood Orange spells (owner)
+
+New reference-guided ImageGen VFX for all5BloodOrange skills(sigil/comet/garden/bloom/honey) plus Uniqueopen/finish:2lossless128px-frame atlases/28frames in assets/art/bloodorange_skill96 (489768bytes;1.835MB decoded). Rich red-orange/ivory cores, burgundy contours and larger silhouettes replace faint multi-flavor detail. yuzuArsenalFx/yuzuEmpowerFx choose new sheets with old51/54fall back. OnlynewBloodOrange clips use0.9alpha(large0.82), preserved by tick; garden usesnewpeakframe10at0.38instead0.18. Sharedcaps/lifetimes/depth/geometry/damage/AI unchanged. HeroYuzulazy andalwaysdeferred atboot; selectedYuzuboot299MB. Newbloodorange-skill-96test checks28frames/hash/selection/opacity/fallback/VFXoff/pause/reduced/epoch/cap andothercompanions. Existing spectaclefixture explicitly testslegacyfallback. Fullnpmcheck/build andForge21/Lobby360/Rubysixsize browserchecks passed. Updatedoldgardenopacity assertion to0.38; old0.18fallback separatelyverified. Ownerphonevisual/FPS pending.
+
+# Previous delivery: v8.0.95 — Yuzu evolved companion art (owner)
+
+Art63 eight verified sheets packed50% lossless: six128px-frame character sheets,128px-frame8shot evolutionFX and32px-frame3leaf badge (876944bytes;3.68MB decoded). Hero class remains Yuzu, but forms63 always lazy at boot even when Yuzu selected; runArtKeys loads before battle. yuzuFormFrame maps16frame walk0–7→0–3, windup8–11→4–5, release12–15→6–7, plus special47 release/land; keeps existing art fallback and stable feet. EvolutionFX is one-shot0.6s (reducedstatic4/0.25s), NORMAL/tinted, shared8cap, owner/player/build/epoch validity, pause and clearCrew cleanup; badge allocated once and destroyed with owner. No damage/evolution thresholds changed. New tests/yuzu-forms-63.test.cjs covers mapping/fallback/loading/lifecycle; full npmcheck,build andForge21/Lobby360/Rubysixsize browser contracts passed. Phone visual/FPS review pending.
+
+# Previous delivery: v8.0.94 — 25 mods per gear type (owner)
+
+FORGE_SLOT_POOL (mod numbers) overrides forgePool for weapon/gloves (same 25: 11 power + heavy batter/point blank/focused/crowd/reliable/clean + hit-rhythm & mark play mods), armor (sustain 22 + claimed reward/heavy recipe/breaking point), boots (play 14 + loot/currency/medic/stored sweetness/elite lesson/hunter mark). Turns on already-coded mods outside FORGE_ROLLABLE; #133 Crystal Glaze skipped (no effect). Amulet/ring keep the v8.0.93 row rule. Tests: forge-simple (25 per slot), forge-150. Owner phone check pending.
+
+# Previous delivery: v8.0.93 — Mod groups by gear slot (owner)
+
+FORGE_SLOT_ROWS filters forgePool by item slot: weapon/gloves power · armor sustain · boots play · amulet sustain+play · ring power+play (active pools 11–25). Existing mods untouched. Tests: forge-simple (weapon rolls power only), forge-150 (pool rows ⊆ slot group). Owner phone check pending.
+
