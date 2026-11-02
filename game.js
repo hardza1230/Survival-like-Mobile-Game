@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.95';
+const GAME_VERSION = '8.0.96';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.96',date:'2026-11-02',title:'Brighter Blood Orange magic',items:['Blood Orange spells and Unique now use bold blood-orange petals, bright nectar cores and clear citrus silhouettes','Large spells and lingering gardens are easier to see against the battlefield']},
   {v:'8.0.95',date:'2026-11-02',title:'Yuzu companions grow into new forms',items:['Pomelo, Lime and Blood Orange now wear distinct evolved outfits as they grow','Evolution blooms with citrus light and a small leaf crest shows each companion form','Evolved attacks keep their windup and release poses']},
   {v:'8.0.94',date:'2026-11-01',title:'25 mods for each gear type',items:['Weapons, gloves, armor and boots can now roll 25 different mods each','More attack mods on weapons and gloves, more defense mods on armor, more loot and movement mods on boots']},
   {v:'8.0.93',date:'2026-11-01',title:'Each gear type has its own mods',items:['Weapons and gloves roll attack mods, armor rolls defense mods, boots roll movement and playstyle mods','Amulets mix defense and utility, rings mix attack and utility','Mods already on your gear stay as they are']},
@@ -2944,6 +2945,8 @@ const ASSET_SHEETS = {
   yz_54_pomelo:{url:'assets/art/yuzu54/yz_54_pomelo.webp',frame:128},
   yz_54_lime:{url:'assets/art/yuzu54/yz_54_lime.webp',frame:128},
   yz_54_bloodorange:{url:'assets/art/yuzu54/yz_54_bloodorange.webp',frame:128},
+  yz_bo96_arsenal:{url:'assets/art/bloodorange_skill96/yz_bo96_arsenal.webp',frame:128},
+  yz_bo96_unique:{url:'assets/art/bloodorange_skill96/yz_bo96_unique.webp',frame:128},
   yz_pomelo_f2:{url:'assets/art/yuzu_forms63/yz_pomelo_f2.webp',frame:128},
   yz_pomelo_f3:{url:'assets/art/yuzu_forms63/yz_pomelo_f3.webp',frame:128},
   yz_lime_f2:{url:'assets/art/yuzu_forms63/yz_lime_f2.webp',frame:128},
@@ -4036,7 +4039,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return (u||artUrl(k)).includes('/yuzu_forms63/')||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
@@ -16578,9 +16581,10 @@ class Game extends Phaser.Scene {
     const L=this._yzShow||(this._yzShow=[]);if(L.length>=4){let i=opt.important?L.findIndex(q=>!q.important):-1;if(i<0&&opt.finisher)i=0;if(i<0)return null;L[i].spr.destroy();L.splice(i,1);}
     if(!this._yzShowHook&&this.events?.once){this._yzShowHook=true;this.events.once('shutdown',()=>{this.clearYuzuSkillFx();this._yzShowHook=false;});}
     const red=this.hubMotionAllowed?.()===false||settings.vfx===0,cone=kind==='volley'||kind==='spicy',life=red?Math.min(.35,opt.life||.55):opt.life||.55,start=opt.start||0,frames=opt.frames||4,hold=Number.isInteger(opt.hold)?opt.hold:null;
-    const spr=this.camWorld(this.add.sprite(x,y,key,start+(hold??(red?2:0))).setOrigin(cone?.22:.5,.5).setDisplaySize(Math.min(420,size),Math.min(420,size)).setRotation(angle).setAlpha(size>250?.5:.68).setDepth(opt.ground?4:y+5));
+    const alpha=opt.alpha==null?(size>250?.5:.68):Math.max(0,Math.min(.95,opt.alpha));
+    const spr=this.camWorld(this.add.sprite(x,y,key,start+(hold??(red?2:0))).setOrigin(cone?.22:.5,.5).setDisplaySize(Math.min(420,size),Math.min(420,size)).setRotation(angle).setAlpha(alpha).setDepth(opt.ground?4:y+5));
     if(opt.tint!=null)spr.setTint(opt.tint);spr.setBlendMode?.(0);
-    const q={spr,t:0,life,red,start,frames,hold,buff:opt.buff||null,important:!!opt.important,ground:!!opt.ground,alpha:size>250?.5:.68,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0,follow:opt.follow||null,followId:opt.follow?.spr?._yzSpawnId};L.push(q);return q;
+    const q={spr,t:0,life,red,start,frames,hold,buff:opt.buff||null,important:!!opt.important,ground:!!opt.ground,alpha,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0,follow:opt.follow||null,followId:opt.follow?.spr?._yzSpawnId};L.push(q);return q;
   }
   yuzuTickSkillFx(dt){
     if(this.state==='menu'||this.state==='dead'){this.clearYuzuSkillFx();return;}
@@ -16618,7 +16622,8 @@ class Game extends Phaser.Scene {
   // Presentation-only: one shared four-sprite budget; finishers replace incidental accents.
   yuzuEmpowerFx(kind,phase,x,y,size,angle=0,opt={}){
     if(kind==='yuzling')return null;
-    return this.yuzuSkillFx('empower',x,y,size,angle,{...opt,buff:phase==='open'?this._yzBuff:null,key:'yz_51_'+kind,start:phase==='finish'?4:0,finisher:phase==='finish',important:phase==='finish'||!!opt.important});
+    const painted=kind==='bloodorange'&&this.textures.exists('yz_bo96_unique');
+    return this.yuzuSkillFx('empower',x,y,size,angle,{...opt,alpha:painted?(size>250?.82:.9):opt.alpha,buff:phase==='open'?this._yzBuff:null,key:painted?'yz_bo96_unique':'yz_51_'+kind,start:phase==='finish'?4:0,finisher:phase==='finish',important:phase==='finish'||!!opt.important});
   }
   yuzuBuffArt(u,dt){
     u.artWait=(u.artWait??.9)-dt;
@@ -16808,7 +16813,8 @@ class Game extends Phaser.Scene {
   yuzuBigBusy(){return (this._yzSpells||[]).some(q=>q.big&&q.t<q.life&&this.yuzuSpellValid(q));}
   yuzuArsenalFx(kind,x,y,size,angle=0,opt={}){
     const table={sigil:['bloodorange',0],comet:['bloodorange',4],garden:['bloodorange',8],bloom:['bloodorange',12],honey:['bloodorange',16],combo:['pomelo',0],breaker:['pomelo',4],vault:['lime',0],pin:['lime',4],pierce:['lime',8]},a=table[kind];if(!a)return null;
-    const fx=this.yuzuSkillFx('arsenal',x,y,size,angle,{...opt,essential:kind==='sigil',key:'yz_54_'+a[0],start:a[1]});
+    const painted=a[0]==='bloodorange'&&this.textures.exists('yz_bo96_arsenal');
+    const fx=this.yuzuSkillFx('arsenal',x,y,size,angle,{...opt,alpha:painted?(size>250?.82:.9):opt.alpha,essential:kind==='sigil',key:painted?'yz_bo96_arsenal':'yz_54_'+a[0],start:a[1]});
     if(!fx)return this.yuzuSkillFx(a[0]==='lime'?'volley':a[0]==='pomelo'?'slam':kind==='garden'?'sour':kind==='honey'?'sweet':'spicy',x,y,size,angle,{...opt,essential:kind==='sigil'});return fx;
   }
   yuzuQueueSpell(m,kind,target){
@@ -16953,7 +16959,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<n;i++)this.yuzuShot(m,m.spr.x,m.spr.y,a+(i-(n-1)/2)*spread,this.yuzuPower()*mul,{pierce:3,source,first:true});
     m.attack=.35;this.yuzuSound('volley',.4);
   }
-  yuzuZone(m,kind,x,y,r,life,mul=0){const L=this._yzZones||(this._yzZones=[]);if(L.length>=10){const o=L.shift();o.spr?.destroy();}const painted=kind==='sour'&&this.textures.exists('yz_54_bloodorange'),spr=this.camWorld(painted?this.add.sprite(x,y,'yz_54_bloodorange',10).setDisplaySize(r*2,r*2).setAlpha(.18).setDepth(3):this.add.circle(x,y,r,kind==='trap'?0xa6e56e:kind==='sour'?0xbee96a:0xf6a45c,.12).setStrokeStyle(2,kind==='sour'?0xc2ee78:0xffce88,.7).setDepth(3));L.push({m,kind,x,y,r,life,tick:0,mul,spr,alpha:painted?.18:1,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0});}
+  yuzuZone(m,kind,x,y,r,life,mul=0){const L=this._yzZones||(this._yzZones=[]);if(L.length>=10){const o=L.shift();o.spr?.destroy();}const fresh=kind==='sour'&&this.textures.exists('yz_bo96_arsenal'),painted=kind==='sour'&&(fresh||this.textures.exists('yz_54_bloodorange')),alpha=fresh?.38:.18,spr=this.camWorld(painted?this.add.sprite(x,y,fresh?'yz_bo96_arsenal':'yz_54_bloodorange',10).setDisplaySize(r*2,r*2).setAlpha(alpha).setDepth(3):this.add.circle(x,y,r,kind==='trap'?0xa6e56e:kind==='sour'?0xbee96a:0xf6a45c,.12).setStrokeStyle(2,kind==='sour'?0xc2ee78:0xffce88,.7).setDepth(3));L.push({m,kind,x,y,r,life,tick:0,mul,spr,alpha:painted?alpha:1,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0});}
   yuzuSlow(e){
     if(this.character!=='yuzu')return 1;let f=1;const m=this._yuzuCrew?.[0];
     if(m?.kind==='bloodorange'&&this.dist(e.x,e.y,this.player.x,this.player.y)<=160+30*this.yuzuRank('y_elder'))f=.85-this.yuzuTalent('Aroma');

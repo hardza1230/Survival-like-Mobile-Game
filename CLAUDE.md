@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.96, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.97, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.95 — Yuzu evolved companion art (owner)
+# Latest delivery: v8.0.96 — clearer Blood Orange spells (owner)
+
+New reference-guided ImageGen VFX for all5BloodOrange skills(sigil/comet/garden/bloom/honey) plus Uniqueopen/finish:2lossless128px-frame atlases/28frames in assets/art/bloodorange_skill96 (489768bytes;1.835MB decoded). Rich red-orange/ivory cores, burgundy contours and larger silhouettes replace faint multi-flavor detail. yuzuArsenalFx/yuzuEmpowerFx choose new sheets with old51/54fall back. OnlynewBloodOrange clips use0.9alpha(large0.82), preserved by tick; garden usesnewpeakframe10at0.38instead0.18. Sharedcaps/lifetimes/depth/geometry/damage/AI unchanged. HeroYuzulazy andalwaysdeferred atboot; selectedYuzuboot299MB. Newbloodorange-skill-96test checks28frames/hash/selection/opacity/fallback/VFXoff/pause/reduced/epoch/cap andothercompanions. Existing spectaclefixture explicitly testslegacyfallback. Fullnpmcheck/build andForge21/Lobby360/Rubysixsize browserchecks passed. Updatedoldgardenopacity assertion to0.38; old0.18fallback separatelyverified. Ownerphonevisual/FPS pending.
+
+# Previous delivery: v8.0.95 — Yuzu evolved companion art (owner)
 
 Art63 eight verified sheets packed50% lossless: six128px-frame character sheets,128px-frame8shot evolutionFX and32px-frame3leaf badge (876944bytes;3.68MB decoded). Hero class remains Yuzu, but forms63 always lazy at boot even when Yuzu selected; runArtKeys loads before battle. yuzuFormFrame maps16frame walk0–7→0–3, windup8–11→4–5, release12–15→6–7, plus special47 release/land; keeps existing art fallback and stable feet. EvolutionFX is one-shot0.6s (reducedstatic4/0.25s), NORMAL/tinted, shared8cap, owner/player/build/epoch validity, pause and clearCrew cleanup; badge allocated once and destroyed with owner. No damage/evolution thresholds changed. New tests/yuzu-forms-63.test.cjs covers mapping/fallback/loading/lifecycle; full npmcheck,build andForge21/Lobby360/Rubysixsize browser contracts passed. Phone visual/FPS review pending.
 

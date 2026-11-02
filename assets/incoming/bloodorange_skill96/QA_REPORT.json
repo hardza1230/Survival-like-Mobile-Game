@@ -1,0 +1,35 @@
+{
+  "technicalPass": true,
+  "files": [
+    {
+      "key": "yz_bo96_arsenal",
+      "uniqueFrames": 20,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "allFrameEdgesClear": true,
+      "decodedBytes": 1310720,
+      "passed": true
+    },
+    {
+      "key": "yz_bo96_unique",
+      "uniqueFrames": 8,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "allFrameEdgesClear": true,
+      "decodedBytes": 524288,
+      "passed": true
+    }
+  ],
+  "ownerPhoneReadabilityAndFPS": "pending",
+  "processing": "Only cell extraction/common-per-clip scale; true generated alpha retained. No painted/synthetic replacement VFX.",
+  "runtimeOpacity": {
+    "short": 0.9,
+    "large": 0.82,
+    "garden": 0.38
+  },
+  "scope": "presentation only; old fallbacks retained"
+}
