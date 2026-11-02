@@ -1,0 +1,197 @@
+{
+  "technicalPass": true,
+  "assets": [
+    {
+      "key": "yz_pomelo_f2",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "feetBottomExclusive": [
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248
+      ],
+      "edgeAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uniqueFrames": 8,
+      "pass": true
+    },
+    {
+      "key": "yz_pomelo_f3",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "feetBottomExclusive": [
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248
+      ],
+      "edgeAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uniqueFrames": 8,
+      "pass": true
+    },
+    {
+      "key": "yz_lime_f2",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "feetBottomExclusive": [
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248
+      ],
+      "edgeAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uniqueFrames": 8,
+      "pass": true
+    },
+    {
+      "key": "yz_lime_f3",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "feetBottomExclusive": [
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248
+      ],
+      "edgeAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uniqueFrames": 8,
+      "pass": true
+    },
+    {
+      "key": "yz_bloodorange_f2",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "feetBottomExclusive": [
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248
+      ],
+      "edgeAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uniqueFrames": 8,
+      "pass": true
+    },
+    {
+      "key": "yz_bloodorange_f3",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "feetBottomExclusive": [
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248,
+        248
+      ],
+      "edgeAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "uniqueFrames": 8,
+      "pass": true
+    },
+    {
+      "key": "yz_fx_evolve",
+      "background": "#000000",
+      "blackPerimeterPx": 3,
+      "pass": true
+    },
+    {
+      "key": "yz_form_badge",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "pass": true
+    }
+  ],
+  "source": "Built-in ImageGen; mechanical crop/scale/alignment only",
+  "runtimeIntegration": "pending; pack characters andFX50% and check GPU budget before integration",
+  "mobileVisualAndFPS": "pending owner review",
+  "poseReview": "Contact sheets and GIFs provided; owner phone motion review remains pending."
+}

@@ -1,0 +1,876 @@
+{
+  "batch": 63,
+  "scope": "source_art_only_runtime_integration_pending",
+  "assets": [
+    {
+      "key": "yz_pomelo_f2",
+      "file": "yz_pomelo_f2.png",
+      "bytes": 602488,
+      "sha256": "ebef9676bd1756f670d431edcb10684f4ac21ff31280557f7ccedefdbcd32d2c",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "walk": [
+          0,
+          3
+        ],
+        "attack": [
+          4,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "foot",
+        "x": 128,
+        "y": 248
+      },
+      "background": "transparent",
+      "form": 2,
+      "baseKey": "yz_pomelo",
+      "source": "originals/yz_pomelo_f2.png",
+      "sourceSha256": "5519c2d9037f041d10b9d1f8d8717d6dc57e2cb4df4047b5fa7c6784d30ffea6",
+      "packing": {
+        "commonScale": 0.5633802816901409,
+        "sourceBoxes": [
+          [
+            55,
+            86,
+            437,
+            430
+          ],
+          [
+            49,
+            85,
+            428,
+            436
+          ],
+          [
+            38,
+            81,
+            427,
+            436
+          ],
+          [
+            49,
+            87,
+            431,
+            431
+          ],
+          [
+            32,
+            60,
+            436,
+            395
+          ],
+          [
+            22,
+            57,
+            448,
+            398
+          ],
+          [
+            37,
+            58,
+            461,
+            400
+          ],
+          [
+            41,
+            63,
+            421,
+            400
+          ]
+        ],
+        "sourceRects": [
+          [
+            0,
+            0,
+            444,
+            444
+          ],
+          [
+            444,
+            0,
+            887,
+            444
+          ],
+          [
+            887,
+            0,
+            1330,
+            444
+          ],
+          [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          [
+            0,
+            444,
+            444,
+            887
+          ],
+          [
+            444,
+            444,
+            892,
+            887
+          ],
+          [
+            887,
+            444,
+            1350,
+            887
+          ],
+          [
+            1330,
+            444,
+            1774,
+            887
+          ]
+        ]
+      }
+    },
+    {
+      "key": "yz_pomelo_f3",
+      "file": "yz_pomelo_f3.png",
+      "bytes": 528084,
+      "sha256": "da0a4cd95e742746911d190b279eaeaef38957664195cb72f07cfc34b0e542f4",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "walk": [
+          0,
+          3
+        ],
+        "attack": [
+          4,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "foot",
+        "x": 128,
+        "y": 248
+      },
+      "background": "transparent",
+      "form": 3,
+      "baseKey": "yz_pomelo",
+      "source": "originals/yz_pomelo_f3.png",
+      "sourceSha256": "be0b95fff7ef41b86eea39b653ebf2bbe586d978e9e838965dbead7ab9523d0f",
+      "packing": {
+        "commonScale": 0.47058823529411764,
+        "sourceBoxes": [
+          [
+            17,
+            37,
+            431,
+            436
+          ],
+          [
+            2,
+            39,
+            444,
+            441
+          ],
+          [
+            14,
+            37,
+            440,
+            441
+          ],
+          [
+            17,
+            38,
+            429,
+            437
+          ],
+          [
+            12,
+            51,
+            515,
+            401
+          ],
+          [
+            30,
+            31,
+            407,
+            409
+          ],
+          [
+            1,
+            27,
+            511,
+            408
+          ],
+          [
+            48,
+            27,
+            441,
+            406
+          ]
+        ],
+        "sourceRects": [
+          [
+            0,
+            0,
+            444,
+            444
+          ],
+          [
+            442,
+            0,
+            887,
+            444
+          ],
+          [
+            887,
+            0,
+            1330,
+            444
+          ],
+          [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          [
+            0,
+            444,
+            515,
+            887
+          ],
+          [
+            444,
+            444,
+            887,
+            887
+          ],
+          [
+            871,
+            444,
+            1388,
+            887
+          ],
+          [
+            1330,
+            444,
+            1774,
+            887
+          ]
+        ]
+      }
+    },
+    {
+      "key": "yz_lime_f2",
+      "file": "yz_lime_f2.png",
+      "bytes": 621208,
+      "sha256": "d9557871db478d49a042ef65e109a856c1e90877cde0a38b08d91078c731a3ce",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "walk": [
+          0,
+          3
+        ],
+        "attack": [
+          4,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "foot",
+        "x": 128,
+        "y": 248
+      },
+      "background": "transparent",
+      "form": 2,
+      "baseKey": "yz_lime",
+      "source": "originals/yz_lime_f2.png",
+      "sourceSha256": "b7767b6b99104a15f8cb8db6773feea15ee647e766d66c68fdc21750d4dbc3b0",
+      "packing": {
+        "commonScale": 0.5673758865248227,
+        "sourceBoxes": [
+          [
+            45,
+            52,
+            423,
+            414
+          ],
+          [
+            46,
+            52,
+            424,
+            415
+          ],
+          [
+            52,
+            52,
+            432,
+            420
+          ],
+          [
+            51,
+            50,
+            420,
+            414
+          ],
+          [
+            26,
+            24,
+            445,
+            390
+          ],
+          [
+            40,
+            28,
+            463,
+            390
+          ],
+          [
+            37,
+            25,
+            434,
+            390
+          ],
+          [
+            49,
+            27,
+            422,
+            389
+          ]
+        ],
+        "sourceRects": [
+          [
+            0,
+            0,
+            444,
+            444
+          ],
+          [
+            444,
+            0,
+            887,
+            444
+          ],
+          [
+            887,
+            0,
+            1330,
+            444
+          ],
+          [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          [
+            0,
+            444,
+            445,
+            887
+          ],
+          [
+            444,
+            444,
+            907,
+            887
+          ],
+          [
+            887,
+            444,
+            1330,
+            887
+          ],
+          [
+            1330,
+            444,
+            1774,
+            887
+          ]
+        ]
+      }
+    },
+    {
+      "key": "yz_lime_f3",
+      "file": "yz_lime_f3.png",
+      "bytes": 685529,
+      "sha256": "ab2c815f1dfaa95317c3f06db275d2ed2c56b35eba1e285549e8e80291e65033",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "walk": [
+          0,
+          3
+        ],
+        "attack": [
+          4,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "foot",
+        "x": 128,
+        "y": 248
+      },
+      "background": "transparent",
+      "form": 3,
+      "baseKey": "yz_lime",
+      "source": "originals/yz_lime_f3.png",
+      "sourceSha256": "d523b00ec62bb26fae9b2025ec7cbea96992db64c13f6c488e9d2c6b8193ed23",
+      "packing": {
+        "commonScale": 0.5529953917050692,
+        "sourceBoxes": [
+          [
+            25,
+            53,
+            434,
+            425
+          ],
+          [
+            22,
+            53,
+            431,
+            426
+          ],
+          [
+            29,
+            57,
+            431,
+            426
+          ],
+          [
+            27,
+            53,
+            431,
+            425
+          ],
+          [
+            20,
+            32,
+            454,
+            394
+          ],
+          [
+            27,
+            30,
+            451,
+            394
+          ],
+          [
+            30,
+            32,
+            433,
+            394
+          ],
+          [
+            38,
+            28,
+            431,
+            394
+          ]
+        ],
+        "sourceRects": [
+          [
+            0,
+            0,
+            444,
+            444
+          ],
+          [
+            444,
+            0,
+            887,
+            444
+          ],
+          [
+            887,
+            0,
+            1330,
+            444
+          ],
+          [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          [
+            0,
+            444,
+            454,
+            887
+          ],
+          [
+            444,
+            444,
+            902,
+            887
+          ],
+          [
+            887,
+            444,
+            1330,
+            887
+          ],
+          [
+            1330,
+            444,
+            1774,
+            887
+          ]
+        ]
+      }
+    },
+    {
+      "key": "yz_bloodorange_f2",
+      "file": "yz_bloodorange_f2.png",
+      "bytes": 443211,
+      "sha256": "2a071e0fe56ec219bd2f3ef57064b85427576e3a05a922570d6f5f2cba330a22",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "walk": [
+          0,
+          3
+        ],
+        "attack": [
+          4,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "foot",
+        "x": 128,
+        "y": 248
+      },
+      "background": "transparent",
+      "form": 2,
+      "baseKey": "yz_bloodorange",
+      "source": "originals/yz_bloodorange_f2.png",
+      "sourceSha256": "fab4e0b6aeb2083919edf197a30aa18ea0d7f4e021c8d7761c8b0b159d8fe652",
+      "packing": {
+        "commonScale": 0.47904191616766467,
+        "sourceBoxes": [
+          [
+            46,
+            102,
+            416,
+            436
+          ],
+          [
+            44,
+            100,
+            421,
+            434
+          ],
+          [
+            25,
+            103,
+            422,
+            435
+          ],
+          [
+            56,
+            104,
+            419,
+            433
+          ],
+          [
+            22,
+            115,
+            403,
+            416
+          ],
+          [
+            7,
+            24,
+            392,
+            420
+          ],
+          [
+            2,
+            111,
+            503,
+            418
+          ],
+          [
+            64,
+            104,
+            425,
+            420
+          ]
+        ],
+        "sourceRects": [
+          [
+            0,
+            0,
+            444,
+            444
+          ],
+          [
+            444,
+            0,
+            887,
+            444
+          ],
+          [
+            887,
+            0,
+            1330,
+            444
+          ],
+          [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          [
+            0,
+            444,
+            444,
+            887
+          ],
+          [
+            444,
+            444,
+            887,
+            887
+          ],
+          [
+            848,
+            444,
+            1356,
+            887
+          ],
+          [
+            1330,
+            444,
+            1774,
+            887
+          ]
+        ]
+      }
+    },
+    {
+      "key": "yz_bloodorange_f3",
+      "file": "yz_bloodorange_f3.png",
+      "bytes": 557905,
+      "sha256": "170ebbf883e0c970e6264e6622dde4449ff63ca840c7307f8dfd75ad93ea10ec",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "walk": [
+          0,
+          3
+        ],
+        "attack": [
+          4,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "foot",
+        "x": 128,
+        "y": 248
+      },
+      "background": "transparent",
+      "form": 3,
+      "baseKey": "yz_bloodorange",
+      "source": "originals/yz_bloodorange_f3.png",
+      "sourceSha256": "31b5d5e4359a80d9e553cf7626bd08f8bf716bfcbbdfd8c52f9151ddc0f68451",
+      "packing": {
+        "commonScale": 0.46065259117082535,
+        "sourceBoxes": [
+          [
+            20,
+            47,
+            431,
+            413
+          ],
+          [
+            10,
+            41,
+            439,
+            444
+          ],
+          [
+            21,
+            50,
+            437,
+            415
+          ],
+          [
+            24,
+            49,
+            424,
+            413
+          ],
+          [
+            17,
+            47,
+            473,
+            391
+          ],
+          [
+            19,
+            0,
+            425,
+            397
+          ],
+          [
+            2,
+            44,
+            523,
+            395
+          ],
+          [
+            30,
+            39,
+            432,
+            397
+          ]
+        ],
+        "sourceRects": [
+          [
+            0,
+            0,
+            444,
+            444
+          ],
+          [
+            444,
+            0,
+            887,
+            444
+          ],
+          [
+            887,
+            0,
+            1330,
+            444
+          ],
+          [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          [
+            0,
+            444,
+            473,
+            887
+          ],
+          [
+            443,
+            444,
+            888,
+            887
+          ],
+          [
+            870,
+            444,
+            1398,
+            887
+          ],
+          [
+            1329,
+            444,
+            1774,
+            887
+          ]
+        ]
+      }
+    },
+    {
+      "key": "yz_fx_evolve",
+      "file": "yz_fx_evolve.png",
+      "bytes": 255108,
+      "sha256": "2f49dfe75f7a3582211a95a0ad7b75a89856af924487eb603f4b8cb6ea90d322",
+      "width": 1024,
+      "height": 512,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 8,
+      "columns": 4,
+      "loop": false,
+      "clips": {
+        "once": [
+          0,
+          7
+        ]
+      },
+      "anchor": {
+        "type": "center",
+        "x": 128,
+        "y": 128
+      },
+      "background": "black",
+      "source": "originals/yz_fx_evolve.png",
+      "sourceSha256": "e5e7af2906f1b4b00f7d807b2a44cee4a6bce95b8975d1e34970f7ed67d4aaa2"
+    },
+    {
+      "key": "yz_form_badge",
+      "file": "yz_form_badge.png",
+      "bytes": 18595,
+      "sha256": "dada95bf74cb005627253ae2cf565dde69b0e96d1eddd27d83f267465f0e5451",
+      "width": 192,
+      "height": 64,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frameCount": 3,
+      "columns": 3,
+      "loop": false,
+      "clips": {
+        "forms": [
+          0,
+          2
+        ]
+      },
+      "anchor": {
+        "type": "center",
+        "x": 32,
+        "y": 32
+      },
+      "background": "transparent",
+      "source": "originals/yz_form_badge.png",
+      "sourceSha256": "febf919907f9f1b7b578e1be870be223aafdd049b8309db0646f351c38a71392"
+    }
+  ]
+}

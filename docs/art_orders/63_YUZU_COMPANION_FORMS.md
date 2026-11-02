@@ -1,6 +1,6 @@
 # 63 — Yuzu Companion Forms (คู่หูส้มวิวัฒนาการ 3 ร่าง) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 1 พ.ย. 2026 · โค้ดพร้อมแล้ว v8.0.90 (ตอนนี้ร่าง 2–3 ใช้ภาพร่าง 1 ขยายขนาดแทน)
+สถานะ: 🟢 ส่งครบ 8 · รอผูกโค้ด · 2 พ.ย. 2026 · รวมป้ายร่างไม่บังคับ · runtime ยังใช้ภาพร่าง 1 ขยายจนกว่าจะผูกชุดนี้
 ส่งไฟล์ที่ `assets/incoming/yuzu_forms63/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` + `review.png` (ร่าง 1→2→3 วางเรียงกันที่ขนาดจริงบนพื้นด่าน)
 สไตล์ตาม `00_STYLE_GUIDE.md` (¾ จากด้านบน เส้นขอบเข้มโทนเดียวกับสี ไม่ใช่ดำสนิท ไฮไลต์วาวแบบขนม) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ/ตัวเลขในภาพ**
 
@@ -84,4 +84,4 @@ Yuzu มีคู่หูส้ม 1 ตัวตามสายที่เล
 - FX: `8-frame one-shot magical evolution burst, spiral of citrus leaves and petals converging, light pillar, ground ring ellipse, white flash, sparkles dispersing, white cream and pale gold tones, pure black background, open center`
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอกตอนส่ง)
+ส่งครบ8 PNG /59เฟรมที่ assets/incoming/yuzu_forms63/:6ชีตตัวละครRGBA1024×512,FX8เฟรมพื้นดำ,ป้าย3ช่องRGBA192×64 พร้อมต้นฉบับImageGen,MANIFEST/PROMPTS/QA_REPORT,review360px,contact sheetsและGIFเดิน/โจมตี/FX. ตรวจขนาดalpha/เท้าy248/ขอบช่องไม่ล้นครบแล้ว. ใช้built-inImageGenตามภาพร่างเดิม,สคริปต์ทำเฉพาะตัด/ย่อ/จัดแนว. งานsourceเท่านั้น ยังไม่แก้runtime/version;รอตรวจมือถือและผูกตามโน้ตGPU/frame remapด้านบน.
