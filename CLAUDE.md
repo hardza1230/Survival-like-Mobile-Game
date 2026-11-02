@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.97, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.98, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.96 — clearer Blood Orange spells (owner)
+# Latest delivery: v8.0.97 — Yuzu > Companion > Minions (owner)
+
+Immortal Minions: base1/beforebuild,2/after; +2/seedlingrank(max3),+1/familyrank(max3),+1/form2,+2more/form3,+2BuildEvolution,cap16. No contactdamage/pop/regrow/decoytaunt; indexed formation follows Companion, priority/objective/boss targeting, staggered retarget/windup andpool-safe releases. Fighters punch, archers shoot, mages cyclefire/frost/lightning withshared2sfreezecooldown/no bossfreeze and0.5sone-bouncearccooldown.24mini shotsreservedwithin48total; ownership/build/epoch cleanup. New3ImageGenactors+8cellboltsatlas32frames,64/32pxlossless113954bytes/425984decoded;folderbattlelazy,bootYuzu299MB. SeparateCompanionEvolution cardsguaranteedonnormaldraftslevel7/11(noSpecial/tutorial/specialprecedence honored),protectedheal/skillunlock,once-onlystale-buildguard. Formsno longerauto fromkills/HarvestFestival. Pomelogrowth0/1/3 andshieldfinishers;Lime1/2/3piercingarrows;BloodOrangeSigil+0/1/3elementbolts. Attacktempo1/.8/.62(min0.18s),skilltempo1/.9/.78,SunKissed/Ripenrecharge. ExistingBuildEvolution retainedandstacks (Limeevolvedform+20%arrowpower/+pierce);skills/cards/talentcopy aligned. Testsnewyuzu-hierarchy-97 plusupdatedoldgrowth/Minionsemantics passed;Fullnpmcheck/build,Forge21/Lobby360/Rubysixsize browsercontracts andnewYuzu97ninecardlayouts/32framebrowserdecode passed. Ownerphonebalance/visual/FPS review pending.
+
+# Previous delivery: v8.0.96 — clearer Blood Orange spells (owner)
 
 New reference-guided ImageGen VFX for all5BloodOrange skills(sigil/comet/garden/bloom/honey) plus Uniqueopen/finish:2lossless128px-frame atlases/28frames in assets/art/bloodorange_skill96 (489768bytes;1.835MB decoded). Rich red-orange/ivory cores, burgundy contours and larger silhouettes replace faint multi-flavor detail. yuzuArsenalFx/yuzuEmpowerFx choose new sheets with old51/54fall back. OnlynewBloodOrange clips use0.9alpha(large0.82), preserved by tick; garden usesnewpeakframe10at0.38instead0.18. Sharedcaps/lifetimes/depth/geometry/damage/AI unchanged. HeroYuzulazy andalwaysdeferred atboot; selectedYuzuboot299MB. Newbloodorange-skill-96test checks28frames/hash/selection/opacity/fallback/VFXoff/pause/reduced/epoch/cap andothercompanions. Existing spectaclefixture explicitly testslegacyfallback. Fullnpmcheck/build andForge21/Lobby360/Rubysixsize browserchecks passed. Updatedoldgardenopacity assertion to0.38; old0.18fallback separatelyverified. Ownerphonevisual/FPS pending.
 

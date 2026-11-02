@@ -19,7 +19,7 @@ for(const path of pathIds){
  for(const u of [...info.upgrades,...info.mutations,...pt.upgrades,...a.UNIQUE_MUTS[path],pt]){
   const key=s.cardArtKey({type:'basic',key:u.id});assert(key,u.id+' art');covered.add(key);
  }
- const evo=s.cardArtKey({type:'basic',key:'evolution',evolution:true});assert(evo.includes('evo_'));covered.add(evo);
+ const evo=s.cardArtKey({type:'basic',key:'evolution',evolution:true});assert(evo.includes('evo_'));assert.equal(s.cardArtKey({type:'basic',key:'companion_form'}),evo,'Companion evolution uses the selected partner portrait');covered.add(evo);
  const power=s.cardArtKey({type:'basic',key:'uq_power',uniqueCard:true,kind:'⭐ Unique'});assert(power.includes('unique_'));covered.add(power);
  const recipe=a.recipeCards('yuzu',path);assert.equal(recipe.length,7);
  for(const c of recipe){assert(a.ASSET_IMAGES[c.iconKey],c.id+' Recipe art');if(!c.uq)assert.equal(c.desc,pt.upgrades.find(u=>u.id===c.id).desc,'Recipe shows full effect');}

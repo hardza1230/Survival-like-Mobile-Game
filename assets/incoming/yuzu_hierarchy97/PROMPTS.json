@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "generations": [
+    {
+      "key": "yz_mn97_guard",
+      "prompt": "Use case: stylized-concept. Production SMALL Minion sprite sheet for Mochi Mayhem. Reference is existing tiny Minion identity and painterly candy artstyle. Tiny POMELO FIGHTER Minion serving Pomelo Knight, same cute cream-yellow fruit and friendly dark eyes as reference, peel helmet with greenleaf top, little gold rind gauntlets, thick cream tummy, stout small feet. Distinct tiny martial brawler, not carrying a ranged weapon. EXACTLY8 separate fullbody poses in4equalcolumns x2equalrows; landscape2:1. TOProw4 walkposes: idle, leftstep,rightstep,return. BOTTOMrow4 attackposes: pull one gauntlet back, wind up both arms, punch forcefully towardRIGHT with front gauntlet extended, recoverguardstance. AllfaceRIGHT 3/4topdown. Sameface/body/outfit size inall8poses. Feet on same low baseline; centered with8% transparentpadding EVERYside includingweapon/hat/cape. True transparent alpha, no groundshadows. Bold darkcolored outlines, glossy confection highlights, clean chunky silhouettes readable at28px. Small headbody proportions sameas reference, cute notmenacing. No death/fall/hurt poses, flying projectiles, scenery,text,digits,dividers,watermark. Each frame entirely within owncell, no cropping or identical copiedposes.",
+      "reference": "assets/art/yuzu_seedlings/yzs_seed_tank.webp",
+      "source": "originals/yz_mn97_guard.png"
+    },
+    {
+      "key": "yz_mn97_archer",
+      "prompt": "Use case: stylized-concept. Production SMALL Minion sprite sheet for Mochi Mayhem. Reference is existing tiny Minion identity and painterly candy artstyle. Tiny LIME ARCHER Minion serving Lime Skyhunter, original green lime fruitface/large friendly dark eyes, little pointed limeleaf hood and short leaf cape, unmistakable curved TWIG BOW and tiny seed quiver. Must visibly be archer, not a seedthrower. EXACTLY8 separate fullbody poses in4equalcolumns x2equalrows; landscape2:1. TOProw4 walkposes: idle, leftstep,rightstep,return. BOTTOMrow4 attackposes: draw twigbow, full draw with one nocked seedarrow, release STRING with no flying arrow, lower bow recovery. AllfaceRIGHT 3/4topdown. Sameface/body/outfit size inall8poses. Feet on same low baseline; centered with8% transparentpadding EVERYside includingweapon/hat/cape. True transparent alpha, no groundshadows. Bold darkcolored outlines, glossy confection highlights, clean chunky silhouettes readable at28px. Small headbody proportions sameas reference, cute notmenacing. No death/fall/hurt poses, flying projectiles, scenery,text,digits,dividers,watermark. Each frame entirely within owncell, no cropping or identical copiedposes.",
+      "reference": "assets/art/yuzu_seedlings/yzs_seed_throw.webp",
+      "source": "originals/yz_mn97_archer.png"
+    },
+    {
+      "key": "yz_mn97_mage",
+      "prompt": "Use case: stylized-concept. Production SMALL Minion sprite sheet for Mochi Mayhem. Reference is existing tiny Minion identity and painterly candy artstyle. Tiny BLOOD ORANGE ELEMENTAL MAGE Minion serving Blood Orange Archmage, original orange-red fruitface with big friendly eyes, little burgundy bent wizardhat and tiny cape, short wooden staff with citrus crystal. Mageidentity clearly distinct from Lime archer. Warm orange-red skin, not pink genericblob. EXACTLY8 separate fullbody poses in4equalcolumns x2equalrows; landscape2:1. TOProw4 walkposes: idle, leftstep,rightstep,return. BOTTOMrow4 attackposes: draw staff back, raise staff overhead gathering a SMALL ivory sparkle, point staffRIGHT releasing with a tiny sparkle atstafftip only, lowerstaff toidle. AllfaceRIGHT 3/4topdown. Sameface/body/outfit size inall8poses. Feet on same low baseline; centered with8% transparentpadding EVERYside includingweapon/hat/cape. True transparent alpha, no groundshadows. Bold darkcolored outlines, glossy confection highlights, clean chunky silhouettes readable at28px. Small headbody proportions sameas reference, cute notmenacing. No death/fall/hurt poses, flying projectiles, scenery,text,digits,dividers,watermark. Each frame entirely within owncell, no cropping or identical copiedposes.",
+      "reference": "assets/art/yuzu_seedlings/yzs_seed_pop.webp",
+      "source": "originals/yz_mn97_mage.png"
+    },
+    {
+      "key": "yz_mn97_shots",
+      "prompt": "Use case: stylized-concept. One production SMALL combat projectile/impact atlas for cute candyfantasy Mochi Mayhem, EXACTLY8 separate icons in4equalcolumns x2equalrows, alltrue TRANSPARENT alpha. All directional bolts pointRIGHT horizontally. Cell0 small limegreen twig SEED ARROW, cell1 upgraded goldlime doubleleaf ARROW, cell2 large whitegold limeSKYHUNTER ARROW with3leaf tail, cell3 warm ruby-orange FIREBOLT withshortflame tail andivorycore, cell4 icyCYAN faceted FROSTBOLT withivorycore andshortchilltail, cell5 GOLD-white jagged LIGHTNINGBOLT withshorttail, cell6 tiny GOLD POMELO crescentpunchimpact, cell7 rubyORANGE citruspetalstarimpact. Softdarkcolored contour makesallvisible onbusyground. Chunky handpainted candygloss, strongsilhouettes at16-28px. No wispyhaze, no EXP-purple orpastelpink, no characters,weapons heldbyhands,text,digits,runes,watermarks,gridlines orshadows. Center each object, leave15% puretransparentmargin inEVERYcell; never touchborder. True8different designs, no flyinglooseobjects outsidecells. Landscape2:1 spritesheet.",
+      "source": "originals/yz_mn97_shots.png"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# Yuzu → Companion → Minions (owner request,2 Nov2026)
+
+Owner requests: immortal Minions, easier recruitment/higher maximum/more sources, attacks matching Companion, and card-selected Companion evolution with stronger/faster/different attacks.
+
+Implementation target8.0.97 (fetch before release):
+
+- One Companion remains the leader. Minions do not take contact damage, fall, explode on death or wait to regrow; clear normally on build/run/owner changes. Pomelo Companion keeps tank role; tiny Minions no longer redirect enemy aggro into immortal decoys.
+- Minion count: beforebuild1, selectedbuild2; +2per Minion Squad card(max3),+1per Best Friends rank(max3),+1at Companionform2/+2moreatform3,+2BuildEvolution. Hardcap16. Recruitcard gets extra draftweight; countcard and BestFriends tooltips show actual source. No enemy-kill/EXP spawning; bounded actor/projectile/FX counts.
+- Formation follows Companion, not an orbit around Yuzu. Stable indexed slots, ranged backline, melee front/flank, priority target from Companion with objective/boss preference, bounded leash and deterministic separation. No free-roaming random movement.
+- Pomelo Minions punch; Lime Minions fire seedarrows; BloodOrange Minions fire fire/frost/lightning bolts, cycling elements. Existing owned-projectile/swept-hit/pooled-enemy safety used. Small elemental secondary effects have shared per-enemy cooldowns; no boss/miniboss freeze.
+- Companion evolution is a choice offered in normal level-up drafts atplayerlevels7and11 after Buildselection; no automatic form changes from kills. SpecialBuild/Infusion/Mutation screens retain precedence. Evolutioncard guaranteed among normaldraftchoices until selected, not in randomchest(noSpecial) or tutorial. Cardapplication is once-only/idempotent and tied to currentbuild; applying updates level state and visuals.
+- Pomelo forms map growth0/1/3, preserving growth-based heavyattack identity; SunKissed/Ripen repurposed into Companionattack/skilltempo rather than dead killrequirements. Lime/BloodOrange gain+30%powerperformstep. Attacktempo1/.8/.62,skilltempo1/.9/.78, movement slightlyfaster inlaterforms. Pomelothirdcombo gainsa shockwave, Limeform2twin/form3triple piercingarrows, BloodOrangeform2addsanelementbolt/form3elementfan alongside groundSigil. Cardtext statesactualchanges.
+- All new visuals generated with built-inImageGen:3roleMinionwalk/attack sheets and8cellprojectileatlas. Reuseexisting form2/3 character art and spellFX. Oldassets retained asfallback, lazybattle loading, no bootGPUincrease.
+
+Validation: productionadapter tests for counts/immortality/order/leash/priority/roleattacks, projectileelements/lifecycle/caps, evolutiondrafteligibility/order/noSpecial/idempotence, per-formpatterns/tempo andlegacyfallback. Update oldtests expecting dyingMinions/kill-autoevolution with newownerrequested semantics; preserve underlying non-Yuzu contracts. No headlessbalance simulation. Fullcheck/build/menucontracts/release/liveverification; ownerphone gameplay/FPS remains finalreview.

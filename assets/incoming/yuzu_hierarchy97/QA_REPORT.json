@@ -1,0 +1,11 @@
+{
+  "technicalPass": true,
+  "files": 4,
+  "authoredFrames": 32,
+  "trueAlpha": true,
+  "transparentCellEdges": true,
+  "actorFootY": 60,
+  "decodedBytes": 425984,
+  "processing": "Only crop/common-scale/align; original ImageGen pixels retained",
+  "phoneMotionReadabilityFPS": "pending owner review"
+}
