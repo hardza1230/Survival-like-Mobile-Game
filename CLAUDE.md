@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release after 8.0.98: owner preference is to skip patch99/100; confirm next line before a subsequent release. Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.1; fetch the deploy branch first.
 
-# Latest delivery: v8.0.98 — Sesame Rune Invoker prototype (owner)
+# Latest delivery: v8.1.0 — Sesame unlock after C1-5 (owner)
+
+CORE_UNLOCK_STAGE.sesame=4: normal firstclear and existing Save.load repair grant Sesame free after C1-5, playable from C2-1/replays. FIGHTER_PLAYTEST_ALL remains false; other heroes retain their gates. Rune prototype98 and WIP remain; no talent/save-point migration or extra lore scene. Canon gameplay availability updated. New real-unlock-helper coverage in hero-unlock-ch1 verifies pre-gate/firstclear/oldsave/idempotence/no currency or talent loss. Fullnpmcheck/build andForge21/Lobby360/Rubysixsizes/Heroessevensizes browser contracts passed. Roster now labels Sesame Invoker; browser selection test measures exactly one save relative to the existing menu-save count, then confirms repeat idempotence. Ownerphone controls/balance/FPS pending.
+
+# Previous delivery: v8.0.98 — Sesame Rune Invoker prototype (owner)
 
 Normal Story Sesame after tutorial: three44px rune buttons P/M/B, persistent3orbs/FIFO, ten count recipes/fourready (PPP impact, MMM returningchakram, BBB Brand, MMB gatheringring), liveUniqueicon/name/NOTREADY, shared8sbaseCD. No pathdraft/mutation/evolution inprototype; fourbaseupgradefamilies andsharedUnique/Infusion/stats/heals. Oldsave/talentfields preserved; no pathtalents selected inStory; endgame/tutorial retainMirrorkit. Actorscap4, castsnapshot/poolgeneration/retarget0.2s/segmenthits/bosspullimmunity andrun/menu/death/shutdowncleanup. Code-drawnplaceholderart, existingElevenLabscues; nofinalart. Newrunecontracts and24staticCanvaslayouts, finalfullnpmcheck/build andForge21/Lobby360/Rubysixsize contracts passed; ownerphonecontrols/balance/readability/FPSpending. See docs/design/SESAME_RUNE_INVOKER.md. Still HEROES_WIP; fullten-spell progression/talents/migration/art remain.
 

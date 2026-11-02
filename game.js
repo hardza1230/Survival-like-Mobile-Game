@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.98';
+const GAME_VERSION = '8.1.0';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.0',date:'2026-11-02',title:'Sesame joins after Chapter 1',items:['Clear C1-5 to unlock Sesame for C2-1 and replay earlier Story stages with the Rune Invoker prototype','Already cleared C1-5? Sesame joins automatically when you load your save; no purchase needed','Sesame remains in development with four playable rune recipes']},
   {v:'8.0.98',date:'2026-11-02',title:'Sesame: Rune Invoker playtest',items:['Try Sesame in normal Story stages: compose P / M / B with three rune buttons, then CAST','Four recipes ready: PPP impact, MMM returning chakram, BBB travelling Brand and MMB gathering ring','Runes stay after casting; new runes replace the oldest. Unfinished recipes show NOT READY and spend no cooldown','Prototype has no Build paths. Existing talent investments are preserved; endgame retains the Mirror kit']},
   {v:'8.0.97',date:'2026-11-02',title:'Yuzu and the citrus squad',items:['Minions stay in the fight and follow their Companion in formation: fighters, archers and elemental mages','Recruit up to 16 Minions through Squad cards, Best Friends, Companion forms and Build Evolution','Choose Companion evolution cards from level 7 and 11: heavier combos, twin and triple arrows, and elemental spell fans','Later Companion forms attack and cast faster']},
   {v:'8.0.96',date:'2026-11-02',title:'Brighter Blood Orange magic',items:['Blood Orange spells and Unique now use bold blood-orange petals, bright nectar cores and clear citrus silhouettes','Large spells and lingering gardens are easier to see against the battlefield']},
@@ -4622,7 +4623,7 @@ const NAV_H=62;   // v7.9.47 ความสูงแถบเมนูล่า
 // Citrus Companions replaces Orchard Swarm; saved path/card/talent ids stay stable.
 const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orchard Swarm)   // v7.9.18 เจ้าของ: ตัวละครยังพัฒนาไม่เสร็จ → ป้าย In development · ห้ามแก้การ์ด/บาลานซ์ของตัวนี้จนกว่าเจ้าของจะเริ่มงานตัวละครนั้น
 const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
-const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3};   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame ซ่อนจนทำเสร็จ (ต่อไป C3-3) */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
+const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3,sesame:4};   /* v8.1.0 Sesame: จบ C1-5 -> เล่นตั้งแต่ C2-1; Rune Invoker prototype ยัง WIP */   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame เดิมวางแผน C3-3; ถูกแทนด้วยเกณฑ์ C1-5 ใน v8.1.0 */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) · v8.0.66 idx = ด่านที่เล่นได้ครั้งแรก (C1-2…C1-5)
 const HERO_INTROS=[
   {idx:1,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
@@ -6681,7 +6682,7 @@ const Save = {
     return this.data; },
   save(){ this.data.sugar=clampSugar(this.data.sugar);this.data.rev=(this.data.rev||0)+1;this.data.savedAt=Date.now();try{this.data.lastDev=Tele.id();}catch(e){} try{ localStorage.setItem('mochi_save',JSON.stringify(this.data)); }catch(e){} if(typeof Cloud!=='undefined')Cloud.queuePush(this.data); },
   unlockCoreCharacters(notify=true){let changed=false;if(!Array.isArray(this.data.chars))this.data.chars=['momo'];
-    for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(this.data.stageMastery&&this.data.stageMastery[stage]&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
+    for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(((this.data.stageMastery&&this.data.stageMastery[stage])||(id==='sesame'&&(this.data.unlockedStage||0)>=5))&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----
   async syncCloud(){ if(typeof Cloud==='undefined')return; const ok=await Cloud.init(); if(!ok)return;
@@ -11971,7 +11972,7 @@ class Game extends Phaser.Scene {
     const roster=CHAR_ORDER.filter(id=>id==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(id));   // v7.9.83 เจ้าของ: ซ่อนฮีโร่ที่ยังไม่ปลด (ไม่โชว์ล็อก) จนกว่าจะถึงด่าน
     if(!roster.includes(this._heroPreview))this._heroPreview=roster.includes(Save.data.character)?Save.data.character:roster[0];
     const id=this._heroPreview,c=CHARACTERS[id];
-    const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Arc, Sparks and sentries.\nControl the battlefield.',0xd1a0ff],yuzu:['Summoner','Summoner','Seeds and one citrus friend.\nChoose tank, ranger or witch.',0xf5ec83],sesame:['Precision','Precision','Charged mirror beams.\nPrecise boss damage.',0xe4e0eb]};
+    const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Arc, Sparks and sentries.\nControl the battlefield.',0xd1a0ff],yuzu:['Summoner','Summoner','Seeds and one citrus friend.\nChoose tank, ranger or witch.',0xf5ec83],sesame:['Invoker','Invoker','Mix P / M / B runes.\nFour spell recipes to try.',0xe4e0eb]};
     const detail=info[id],cols=landscape?Math.max(2,Math.min(4,Math.floor(w/215))):2;
     const panelW=w-side*2,top=this.heroesContentTop(),panelH=landscape?160:368*p+extra*.35,g=this.add.graphics();
     this.rosterChrome('preview',side,top,panelW,panelH);this.menu.add(g);
