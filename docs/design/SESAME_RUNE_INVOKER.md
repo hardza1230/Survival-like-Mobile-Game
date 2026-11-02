@@ -1,6 +1,6 @@
 # Sesame — Rune Invoker
 
-Status: core concept approved by the owner, 2 November 2026. Design only; runtime still uses Mirror Network phase 1 in v8.0.97.
+Status: core concept approved by the owner, 2 November 2026. Four-spell runtime prototype prepared for v8.0.98; release verification is recorded in SESSION_HANDOFF.md. Full hero is not complete.
 
 This replaces the planned Mirror Network paths/Glass World direction in [the previous design](../SESAME_MIRROR_NETWORK.md). Keep the previous document as implementation history. Do not continue those three paths by default.
 
@@ -96,3 +96,13 @@ Keep current live behavior until the new mode's contract and migration are teste
 5. Produce the missing original art/audio, integrate lazily and run required release checks.
 
 Use isolated production-method/state tests and real static UI checks as appropriate. Do not use headless combat to judge balance or screenshots to approve visuals; the owner reviews phone gameplay/readability/FPS. This design commit does not bump the game version, deploy gameplay or claim implementation.
+
+## Prototype98 implementation checkpoint
+
+- Normal Story runs with Sesame after tutorial completion use Rune Invoker automatically. Explicit tutorial and endgame preparation/runs retain the old Mirror kit for this prototype.
+- Production state/input/HUD, three persistent FIFO orbs and ten count-based recipe identities are implemented; PPP, MMM, BBB and MMB cast, the other six display NOT READY and cannot spend cooldown. All four share base8s cooldown with existing Unique cooldown modifiers. Rune changes never reset it.
+- Auto attack is a simple Rune Needle, with four basic card families (needle damage/rate, shared reach, spell power). No Build choice, old mutation or old Evolution in prototype drafts. Shared Infusion/Unique/stat/recovery cards retain normal precedence.
+- No old save fields/points are deleted, refunded or remapped. Path talent effects are not selected in the pathless Story prototype; the old kit still uses those investments in endgame. A permanent migration and replacement talent interface remain future work.
+- Actor lifetime/cap, cast power/recipe snapshot, generation-safe Brand retargeting, chakram outbound/return hit ownership, boss/runner/Wisp pull exclusions, shared source restoration and run/menu/death/shutdown cleanup are bounded. Orbs use stable positions under reduced motion; gameplay telegraphs stay readable with VFX off.
+- Art is temporary code-drawn telegraphs/runes plus existing beam/audio cues; no final ImageGen art or new audio was produced. Phone readability/thumb reach, fun, damage balance and FPS need the owner playtest. No headless balance simulation or screenshots were used for visual approval.
+- Tests: tests/sesame-runes.test.cjs; static production Canvas review scripts/build-sesame-rune-review.mjs and scripts/check-sesame-rune-ui.cjs. Retained Taro legacy hash adapter strips only the new Sesame guard when comparing pre-existing bodies.

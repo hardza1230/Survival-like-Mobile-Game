@@ -99,6 +99,7 @@ const origin={x:0,y:0};
 // Undo only explicit Tempest dispatch additions to verify the retained legacy bodies.
 const baseline=JSON.parse(fs.readFileSync('tests/fixtures/taro-t1-baseline.json','utf8'));
 function legacyMethod(name){return method(name)
+ .replaceAll('!this.isSesRune?.()&&','') // Rune prototype only suppresses Sesame mirror hooks; Taro stays identical.
  .replace("    if(this.character==='taro')return this.castStormBeacon(dm,ul);\n",'')
  .replace('this.castTaroSpark(lvl)','this.castTaroSmiteBasic(lvl)').replace('this.castTaroSentry(lvl)','this.castTempestBasic(lvl)')
  .split('this.taroSwarmProfile(lvl)').join('this.taroTempestProfile(lvl)').replace("      if(this.character==='taro'&&!basic?.path){this.castTaroNeedle(lvl,dm);return;}\n",'').replace('taroGaleCooldown(this.basicAttack)','Math.pow(.94,Math.max(0,Math.min(3,this.basicAttack.lv?.p_gale||0)))')

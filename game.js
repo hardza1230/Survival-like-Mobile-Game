@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.97';
+const GAME_VERSION = '8.0.98';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.98',date:'2026-11-02',title:'Sesame: Rune Invoker playtest',items:['Try Sesame in normal Story stages: compose P / M / B with three rune buttons, then CAST','Four recipes ready: PPP impact, MMM returning chakram, BBB travelling Brand and MMB gathering ring','Runes stay after casting; new runes replace the oldest. Unfinished recipes show NOT READY and spend no cooldown','Prototype has no Build paths. Existing talent investments are preserved; endgame retains the Mirror kit']},
   {v:'8.0.97',date:'2026-11-02',title:'Yuzu and the citrus squad',items:['Minions stay in the fight and follow their Companion in formation: fighters, archers and elemental mages','Recruit up to 16 Minions through Squad cards, Best Friends, Companion forms and Build Evolution','Choose Companion evolution cards from level 7 and 11: heavier combos, twin and triple arrows, and elemental spell fans','Later Companion forms attack and cast faster']},
   {v:'8.0.96',date:'2026-11-02',title:'Brighter Blood Orange magic',items:['Blood Orange spells and Unique now use bold blood-orange petals, bright nectar cores and clear citrus silhouettes','Large spells and lingering gardens are easier to see against the battlefield']},
   {v:'8.0.95',date:'2026-11-02',title:'Yuzu companions grow into new forms',items:['Pomelo, Lime and Blood Orange now wear distinct evolved outfits as they grow','Evolution blooms with citrus light and a small leaf crest shows each companion form','Evolved attacks keep their windup and release poses']},
@@ -4562,7 +4563,7 @@ const CHARACTERS = {
   mint:{name:'Mint',emoji:'🌿',unique:'mintSanctuary',weapon:'mintNova',cost:150,color:0x8fd0ff,role:'Crowd controller',desc:'Cool and Agile — lances stack Chill (slow); 4 stacks freeze the enemy solid. Chilled bosses take more damage',stats:{hp:18,dmg:1.00,spd:1.12,def:0.90,crit:0.05,cdr:0.94,regenFlat:0.45},rating:{hp:4,atk:2,spd:5,def:4}},
   cocoa:{name:'Cocoa',emoji:'🍫',unique:'flickerStrike',weapon:'bearGauntlet',cost:400,color:0x8b5cf0,role:'Frontline bruiser',desc:'A sturdy boxer: Brawler sweeps crowds, Titan crushes marked targets, Dash Boxer strikes through movement. Toggle Flicker to warp into short punch chains and return; Dash cancels. Each path has a one-tap Unique',stats:{hp:46,dmg:1.03,spd:0.94,def:0.84,crit:0.03,cdr:1.02,regenFlat:1.2},rating:{hp:5,atk:3,spd:2,def:5}},
   taro:{name:'Taro',emoji:'🍠',unique:'pathRecall',weapon:'riftCompass',cost:250,color:0xb388ff,role:'Storm explorer',desc:'Reads paths, dodges fast, and chains lightning across targets',stats:{hp:-5,dmg:1.02,spd:1.14,def:1.04,crit:0.06,cdr:0.90,regenFlat:0.15},rating:{hp:2,atk:4,spd:5,def:2}},
-  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Mirror sniper',desc:'Dash to drop mirrors (up to 3). The Mirror Beam bounces through every mirror, oldest first, then out to the nearest enemy — bosses first. Each bounce hits harder, so place mirrors to cross the beam through big groups',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
+  sesame:{name:'Sesame',emoji:'⚫',unique:'oathMirror',weapon:'oathMirror',cost:550,color:0x8a8f9c,role:'Rune Invoker prototype',desc:'Story playtest: tap P / M / B to compose three orbiting runes, then cast. PPP: impact, MMM: returning chakram, BBB: Brand, MMB: gathering ring. Four of ten recipes ready; other recipes are marked NOT READY. No Build paths in this prototype; old talents are preserved. Endgame still uses the old Mirror kit',stats:{hp:34,dmg:0.96,spd:0.96,def:0.94,crit:0.01,cdr:0.98,regenFlat:0.5},rating:{hp:4,atk:4,spd:3,def:4}},
   yuzu:{name:'Yuzu',emoji:'🍋',unique:'citrusParade',weapon:'yuzuCrew',cost:0,color:0xffd85e,role:'Companion commander',desc:'Fights beside one citrus companion. Your seeds mark a target: walk toward an enemy to aim, and your partner focuses the mark. Unique empowers your partner. Choose Pomelo, Lime or Blood Orange.',stats:{hp:12,dmg:0.98,spd:1.04,def:0.96,crit:0.03,cdr:0.98,regenFlat:0.4},rating:{hp:3,atk:4,spd:3,def:3}},
   berry:{name:'Berry Core',emoji:'💗',unique:'jamOverdrive',weapon:'jamCannon',cost:700,color:0xff5f88,role:'Mobile turret',desc:'Round but Relentless — heavy blasts and lock-on barrages that sweep crowds',stats:{hp:10,dmg:1.07,spd:0.98,def:0.96,crit:0.04,cdr:0.97,regenFlat:0.30},rating:{hp:3,atk:5,spd:3,def:3}},
 };
@@ -4591,6 +4592,31 @@ const UNIQUE_MUTS={
   juiceWorkshop:[{id:'grow_burst',emoji:'💥',name:'Bloom Burst',desc:'Flavor Storm bursts a 4th time.'},{id:'grow_grove',emoji:'🌳',name:'Sacred Grove',desc:'Flavor Storm also grants a 20% max-HP shield.'}],
   tempest:[{id:'over_long',emoji:'⏱️',name:'Long Overdrive',desc:'Overdrive lasts 1.5s longer.'},{id:'over_finale',emoji:'🎆',name:'Finale Burst',desc:'When Overdrive ends, every sentry fires a double-damage ring.'}]};
 // v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md)
+// Sesame Rune Invoker prototype helpers: no Phaser/save dependencies.
+const SES_RUNE_TYPES=[['p','P',0xffc277],['m','M',0x7de0c4],['b','B',0xaebcfa]];
+const SES_RUNE_RECIPES={
+ ppp:{name:'Core Collapse',emoji:'✹',color:0xffc277,ready:true},
+ mmm:{name:'Return Chakram',emoji:'✥',color:0x7de0c4,ready:true},
+ bbb:{name:'Pursuing Brand',emoji:'◇',color:0xaebcfa,ready:true},
+ mmb:{name:'Gathering Ring',emoji:'◎',color:0x7de0c4,ready:true},
+ ppm:{name:'Driving Lance',emoji:'?',color:0xffc277},ppb:{name:'Rupture Brand',emoji:'?',color:0xffc277},
+ pmm:{name:'Orbit Release',emoji:'?',color:0x7de0c4},pbb:{name:'Linked Verdict',emoji:'?',color:0xaebcfa},
+ mbb:{name:'Warding Passage',emoji:'?',color:0xaebcfa},pmb:{name:'Threefold Rite',emoji:'?',color:0xffe0a3}
+};
+function sesRunePush(orbs,key){return ['p','m','b'].includes(key)?[...orbs.slice(-2),key]:orbs.slice();}
+function sesRuneRecipe(orbs){
+ const key=['p','m','b'].map(k=>orbs.filter(x=>x===k).join('')).join(''),r=orbs.length===3?SES_RUNE_RECIPES[key]:null;
+ return {key,cd:8,tiers:{2:'Stronger rune spells',3:'Faster shared recharge',4:'Greater rune power'},...(r||{name:'Compose 3 runes',emoji:'?',color:0x999099}),ready:!!r?.ready};
+}
+function sesRuneEnemyValid(e){return !!(e?.active&&e.hp>0&&!e.isDummy&&!e._phaseGateLocked&&!(e._phaseInvuln>0)&&Number.isFinite(e.x)&&Number.isFinite(e.y));}
+function sesRuneSegmentDistance(x,y,ax,ay,bx,by){const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-ax-dx*t,y-ay-dy*t);}
+function sesRuneControlLayout(w,h,k,left,u,d){
+ const r=22,gap=50,land=h<500&&w>h;
+ const cx=land?(left?d.x+d.radius+90:d.x-d.radius-90):Math.max(78,Math.min(w-78,u.x)),cy=land?d.y:u.y-u.radius-32;
+ const boxes=[-1,0,1].map(i=>({x:cx+i*gap,y:cy,r}));boxes.label={x:cx,y:cy-29};return boxes;
+}
+// End Sesame Rune Invoker prototype helpers.
+
 const SES_MIRROR_MAX=3, SES_MIRROR_LIFE=20, SES_MIRROR_REACH=700, SES_BOUNCE=0.15, SES_PRISM=0xc86bff;
 const NAV_H=62;   // v7.9.47 ความสูงแถบเมนูล่าง
 // Citrus Companions replaces Orchard Swarm; saved path/card/talent ids stay stable.
@@ -8821,6 +8847,7 @@ class Game extends Phaser.Scene {
       if(this.state==='levelup'){ this.pickCardAt(p.x,p.y); return; }
       if(this.state!=='play') return;
 
+      if(this.sesRunePointerDown?.(p))return;
       if(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2){this.toggleCocoaFlicker();return;}
       if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.isTitanHold?.()){ if(this.uniqueCd<=0&&!this._titanHold)this._titanHold={id:p.id}; return; } if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()||this.isYuzuCommand?.()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
       // กดปุ่ม Dash เฉพาะในขอบเขตปุ่ม (มุมขวาล่าง)
@@ -8831,6 +8858,7 @@ class Game extends Phaser.Scene {
     });
     this.input.on('wheel',(p,o,dx,dy)=>{ if(this.state==='menu'&&this.menuScreen==='atlas'&&this._amRect&&this._amv)this.atlasZoomAt(p.x/RENDER_DPR,p.y/RENDER_DPR,this._amv.s*(dy>0?0.88:1.14)); else if(this.state==='menu'&&(this._mScrollMax||0)>0&&!this._craftRolling&&!this._bazBusy&&!this._gachaBusy){this._mVelocity=0;this.setMenuScroll((this._mScroll||0)+dy*0.6);} });
     this.input.on('pointermove',(p)=>{
+      if(this._sesRunePointers?.has(p.id))return;
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this._snipe&&p.id===this._snipe.id){ this.moveSnipeAim({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR}); return; }
@@ -8839,8 +8867,10 @@ class Game extends Phaser.Scene {
       this.joyMove({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id});
     });
     this.input.on('gameout',()=>{if(this.state==='menu')this.cancelMenuMotion();});
-    this.input.on('pointerupoutside',p=>{if(p.id===this.joy.id)this.joyEnd();if(this.state==='menu')this.cancelMenuMotion();else if(this._titanHold&&p.id===this._titanHold.id)this.releaseTitanCharge();else if(this._snipe&&p.id===this._snipe.id)this.releaseSnipe();});
+    this.input.on('pointerupoutside',p=>{if(this._sesRunePointers?.delete(p.id))return;if(p.id===this.joy.id)this.joyEnd();if(this.state==='menu')this.cancelMenuMotion();else if(this._titanHold&&p.id===this._titanHold.id)this.releaseTitanCharge();else if(this._snipe&&p.id===this._snipe.id)this.releaseSnipe();});
+    this.input.on('pointercancel',p=>{this._sesRunePointers?.delete(p.id);if(p.id===this.joy.id)this.joyEnd();});
     this.input.on('pointerup',(p)=>{
+      if(this._sesRunePointers?.delete(p.id))return;
       if(p.button===2&&!p.wasTouch){ if(this._kbUnique){ this._kbUnique=false; this.input.emit('pointerup',{x:this.uniqueBtn.x*RENDER_DPR,y:this.uniqueBtn.y*RENDER_DPR,id:-77}); } return; }
       if(this.state==='menu'&&this._amDrag){ this.atlasPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
       if(this.state==='menu'&&this._mDrag&&p.id===this._mDrag.id){ this.menuPointerUp({x:p.x/RENDER_DPR,y:p.y/RENDER_DPR,id:p.id}); return; }
@@ -8856,7 +8886,7 @@ class Game extends Phaser.Scene {
     if(len>max){ const k=(len-max)/len; j.bx+=dx*k; j.by+=dy*k; dx=p.x-j.bx; dy=p.y-j.by; len=max; this.joyBase.setPosition(j.bx,j.by); }
     const m=len<=dead?0:Math.min(1,(len-dead)/(full-dead)); j.dx=len?dx/len*m:0; j.dy=len?dy/len*m:0; this.joyKnob.setPosition(j.bx+dx,j.by+dy); }
   joyEnd(){ const j=this.joy; j.active=false; j.id=-1; j.dx=0; j.dy=0; this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
-  joyBlocked(p){ const near=(b,r)=>b&&b.visible&&this.dist(p.x,p.y,b.x,b.y)<r; return near(this.uniqueBtn,(this.uniqueBtn?.radius||0)+8)||near(this.dashBtn,(this.dashBtn?.radius||0)+8)||!!(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2); }
+  joyBlocked(p){ if(this.sesRuneHit?.(p))return true;const near=(b,r)=>b&&b.visible&&this.dist(p.x,p.y,b.x,b.y)<r; return near(this.uniqueBtn,(this.uniqueBtn?.radius||0)+8)||near(this.dashBtn,(this.dashBtn?.radius||0)+8)||!!(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2); }
   // v7.0 KEYBOARD (เล่นบนเบราว์เซอร์คอม): WASD/ลูกศร=เดิน · Space/Shift=Dash · E/J (กดค้าง)=Unique · F=Flicker · Esc/P=หยุด · 1-4=เลือกการ์ด
   setupKeyboard(){ const kb=this.input.keyboard; if(!kb)return; this._kbKeys=kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT',false);
     const fake=(type,btn,id)=>{ if(!btn)return; this.input.emit(type,{x:btn.x*RENDER_DPR,y:btn.y*RENDER_DPR,id}); };
@@ -8903,7 +8933,7 @@ class Game extends Phaser.Scene {
     if(this._rel&&this._rel.dashcharge){this._sparkHits=3;this._sparkUntil=(this.elapsed||0)+3;}   // 🔮 Spark Step
   }
 
-  uniqueInfo(){ if(this.character==='yuzu'&&YUZU_UNIQUES[this.basicAttack?.path])return YUZU_UNIQUES[this.basicAttack.path];if(this.character==='cocoa'&&COCOA_UNIQUES[this.basicAttack?.path])return COCOA_UNIQUES[this.basicAttack.path];if(this.character==='taro'){const tp=this.basicAttack?.path;if(!tp||tp==='storm')return TARO_UNIQUES.plasma;if(tp==='tempest')return TARO_UNIQUES.overcharge;if(tp==='smite')return TARO_UNIQUES.stormmark;}const c=CHARACTERS[this.character]||CHARACTERS.momo; return CHARACTER_UNIQUES[c.unique]||CHARACTER_UNIQUES.berryRebound; }
+  uniqueInfo(){ if(this.isSesRune?.())return this.sesRuneRecipe();if(this.character==='yuzu'&&YUZU_UNIQUES[this.basicAttack?.path])return YUZU_UNIQUES[this.basicAttack.path];if(this.character==='cocoa'&&COCOA_UNIQUES[this.basicAttack?.path])return COCOA_UNIQUES[this.basicAttack.path];if(this.character==='taro'){const tp=this.basicAttack?.path;if(!tp||tp==='storm')return TARO_UNIQUES.plasma;if(tp==='tempest')return TARO_UNIQUES.overcharge;if(tp==='smite')return TARO_UNIQUES.stormmark;}const c=CHARACTERS[this.character]||CHARACTERS.momo; return CHARACTER_UNIQUES[c.unique]||CHARACTER_UNIQUES.berryRebound; }
   uniqueCooldown(u){const lv=this.uniqueLevel||1;return u.cd*Math.max(0.80,1-(lv-1)*0.055)*(this.player.cdMul||1)*Math.max(0.6,this.player.uniqueCdMul||1)*Math.pow(.9,this.uqLv?.('uq_cd')||0);}
   uniquePower(){return (1+((this.uniqueLevel||1)-1)*0.24)*(this.uqMul?.()||1);}
   uqLv(id){return this.basicAttack?.lv?.[id]||0;}
@@ -9218,6 +9248,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:gw,x:nx*side*(26+c*30),y:ny*side*(26+c*30),alpha:0,duration:480+Math.random()*320,ease:'Cubic.out',onComplete:()=>gw.destroy()}); }
     this.burst&&this.burst(x0,y0,0xffffff); }
   useCharacterSkill(){
+    if(this.isSesRune?.())return this.sesRuneCast();
     if(this.state!=='play'||this.uniqueCd>0||(this.character==='cocoa'&&this._cocoaUniqueT>0))return;
     const c=CHARACTERS[this.character]||CHARACTERS.momo,u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1;
     this.heroScreenEffect?.(1.4);this.uniqueCd=this.uniqueCooldown(u);this.flashBtn(this.uniqueBtn);this.poseAttack(520);this._coachUnique=(this._coachUnique||0)+1;if(!(this.character==='momo'&&this.basicAttack?.path==='sniper'))this.uniqueCastFx?.();this._mxSrc='unique';this.fireRecipes('unique');
@@ -9476,6 +9507,7 @@ class Game extends Phaser.Scene {
     this.pOverHp=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',stroke:'#2a1830',strokeThickness:3}).setOrigin(0.5,0.5).setScrollFactor(1).setDepth(83); this.camUI(this.pOverHp);
     this.hudArtC=this.add.container(0,0).setScrollFactor(1).setDepth(50.5); this.hudBtnC=this.add.container(0,0).setScrollFactor(1).setDepth(58.5);   // v8.0.10 ใบ 47 อาร์ต HUD
     this.hudList=[this.hudArtC,this.hudBtnC,this.controlBase,this.uniqueHint,this.flickerBtn,this.flickerTxt,this.dashBtn,this.dashTxt,this.dashRing,this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.barG,this.hpIcon,this.xpIcon,this.timeTxt,this.killTxt,this.statTxt,this.runSugarTxt,this.lvlTxt,this.stageTxt,this.pipG,this.replayProgressFrame,this.replayProgressFill,this.waveObjTxt,this.waveObjBg,this.waveObjBar,this.pauseBtn,this.pauseTxt,this.speedBtn,this.speedTxt,this.pOverG,this.pOverLv,this.pOverHp,this.muteBtn,this.muteTxt];
+    this.sesRuneCreateControls();
     this.objectiveArrow=this.add.text(w/2,pad+184,'➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'32px',color:'#ffef7a',stroke:'#3b2148',strokeThickness:5}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.objectiveDist=this.add.text(w/2,pad+210,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff4b0',stroke:'#27172f',strokeThickness:3}).setOrigin(0.5).setScrollFactor(1).setDepth(69);
     this.bossUI=[this.bossName,this.bossBgW,this.bossBar,this.bossHpTxt,this.objectiveArrow,this.objectiveDist];
@@ -9686,7 +9718,7 @@ class Game extends Phaser.Scene {
     const showP=!!pb?.visible&&this.state!=='paused'; if(pb)H.pi.setPosition(pb.x,pb.y).setDisplaySize(17,17).setVisible(showP); this.pauseTxt?.setAlpha(showP?0:1);
     if(mb)H.mi.setFrame('cell'+(Sfx.muted?1:0)).setDisplaySize(18,18).setPosition(mb.x,mb.y).setVisible(!!mb.visible); this.muteTxt?.setAlpha(0);
   }
-  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v)); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v){this.hudLiqG?.setVisible(false);this.hudBossLiqG?.setVisible(false);this._bossPipImg?.setVisible(false);} if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
+  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v));this.sesRuneRefreshUI?.(v); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v){this.hudLiqG?.setVisible(false);this.hudBossLiqG?.setVisible(false);this._bossPipImg?.setVisible(false);} if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     this.drawCombatHUDPanels?.(g);
@@ -9742,7 +9774,7 @@ class Game extends Phaser.Scene {
     this.uniqueBtn.setPosition(x,uy).setRadius(r); this.uniqueTxt.setPosition(x,uy-6*k).setScale(k);
     this.uniqueHint?.setPosition(x,uy+19*k).setScale(k);
     const fx=x+(st.ctrlLeft?1:-1)*(r+12*k+31*k);
-    this.flickerBtn?.setPosition(fx,uy).setSize(62*k,46*k);this.flickerTxt?.setPosition(fx,uy).setScale(k);this.drawCombatControlBase?.(); }
+    this.sesRuneLayout?.();this.flickerBtn?.setPosition(fx,uy).setSize(62*k,46*k);this.flickerTxt?.setPosition(fx,uy).setScale(k);this.drawCombatControlBase?.(); }
   drawDashRing(){
     const g=this.dashRing; if(!g)return; const b=this.dashBtn; if(!b||!b.visible){ g.clear(); g._sk=NaN; this._dpTxt&&this._dpTxt.setVisible(false); return; }
     { let k; if(this.character==='cocoa'&&this._dpCh!=null){ const mx=this.cocoaDashMax(),ch=this._dpCh,f=ch<mx?Math.round(Phaser.Math.Clamp((this._dpT||0)/this.cocoaDashRecharge(),0,1)*120):121; k=1e7+((ch*16+mx)*16+(this._cocoaPhantom?.charges||0))*128+f; }
@@ -9764,7 +9796,9 @@ class Game extends Phaser.Scene {
     if(want&&!this.uniqueImg?.active)this.uniqueImg=this.camUI(this.add.image(tx.x,tx.y,ik).setScrollFactor(1).setDepth(51));if(want&&this.uniqueImg?.active&&this.uniqueImg.texture.key!==ik)this.uniqueImg.setTexture(ik);
     if(this.uniqueImg?.active){this.uniqueImg.setVisible(!!want&&tx.visible).setPosition(tx.x,tx.y+6*tx.scaleY).setDisplaySize(52*tx.scaleX,52*tx.scaleY);}tx.setAlpha(want&&this.uniqueImg?.active?0:1);}
   drawUniqueRing(){
+    this.sesRuneRefreshUI?.();
     const g=this.uniqueRing,b=this.uniqueBtn;this.syncUniqueIcon?.();if(!g||!b)return;g.clear();if(!b.visible)return;const u=this.uniqueInfo();this.updateUniqueHint();this.refreshFlickerUI();
+    if(this.isSesRune?.()&&!u.ready){this.uniqueTxt.setAlpha(.35);g.lineStyle(1,0x7d7285,.5).strokeCircle(b.x,b.y,b.radius+4);return;}
     { const mx=this.lanceChMax?.()||1; if(mx>1){ const have=(this.uniqueCd<=0?1:0)+(this._lnBank|0); for(let k=0;k<mx;k++){ const a=-Math.PI/2+(k-(mx-1)/2)*.42,px=b.x+Math.cos(a)*(b.radius+13),py=b.y+Math.sin(a)*(b.radius+13); g.fillStyle(k<have?0x9fe8ff:0x2a3a4a,1).fillCircle(px,py,4); g.lineStyle(1.5,0xffffff,.85).strokeCircle(px,py,4); } } }   // v8.0.9 จุดชาร์จ Lance
     if(this._snipe){const charge=this.snipeCharge();g.lineStyle(2,u.color,.35).strokeCircle(b.x,b.y,b.radius+4);g.lineStyle(4,charge>=1?0xffd166:0xffffff,1).beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+TAU*charge,false);g.strokePath();this.uniqueTxt.setAlpha(1);return;}
     if(this.uniqueCd>0){const frac=Phaser.Math.Clamp(1-this.uniqueCd/this.uniqueCooldown(u),0,1);g.lineStyle(3.5,u.color,0.95);g.beginPath();g.arc(b.x,b.y,b.radius+4,-Math.PI/2,-Math.PI/2+Math.PI*2*frac,false);g.strokePath();this.uniqueTxt.setAlpha(0.48);}else{g.lineStyle(2,u.color,0.42);g.strokeCircle(b.x,b.y,b.radius+4);this.uniqueTxt.setAlpha(1);this.uniqueReadyGlow?.(g,b,u.color);}
@@ -13371,6 +13405,7 @@ class Game extends Phaser.Scene {
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}
         Stats.start(this);   /* v6.99.1 direct (delayedCall could stall while time paused) */
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
+        this._sesRuneMode=this.character==='sesame'&&!endgameRequested&&!this._forceCoachTutorial&&!!Save.data.tutorialDone;
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this._cocoaRegenT=0; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
         this.skillCd={};for(const k in SKILLDEFS)this.skillCd[k]=0;this.level=1;this.xp=0;this.xpNext=12;this.pendingLvl=0;this._queuedBossIntro=null;
         this.banishedKeys={};this._boxAcc=null;this._reviveLeft=(Save.rankHas?.("revive")?1:0)+Save.gearReviveCount();this._adRevived=false;   // โควตาสุ่มใหม่/ลบสกิล + สิทธิ์ฟื้นด้วยโฆษณา ต่อWaitบ
@@ -15719,7 +15754,7 @@ class Game extends Phaser.Scene {
     const parts=own.map(u=>{const v=(info.upgrades||[]).find(x=>x.id===u.id)||u;return (v.name!==u.name?u.name+' → '+v.name:v.name)+' ×'+b.lv[u.id];});
     if(b.mutation){const m=(info.mutations||[]).find(x=>x.id===b.mutation)||(d0.mutations||[]).find(x=>x.id===b.mutation);if(m)parts.push(m.name);}
     return parts.length?'↪ Keeps: '+parts.slice(0,3).join(' · ')+(parts.length>3?' +'+(parts.length-3)+' more':''):'';}
-  basicAttackInfo(){const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);if(this.character==='yuzu'){const ye=YUZU_EVOLUTIONS[b?.path],splash=({citrusGuardian:'Pomelo sweeps gain 10px radius per rank.',zestSwarm:'Arrow impacts splash for 18% companion power per rank (24px + 12px per rank). Vaulting Shot gains 8px radius per rank.',juiceWorkshop:'Blood Orange ground Sigils gain 8px radius per rank.'})[b?.path];const sd=YZ_SEED_DESC[b?.path]||YZ_SEED_DESC.none;return {...d,...(ye?{evolution:ye.name,evolutionDesc:ye.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='splash'&&splash?{...u,desc:splash}:u.id==='seedling'?{...u,desc:u.desc+' '+sd}:u)};}const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='pierce'?{...u,name:'Rupture Shards',headline:'+8% Rupture damage',desc:'Crystal Impaler Rupture deals +8% damage per rank. Ranks taken before the build carry over.'}:u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
+  basicAttackInfo(){if(this.isSesRune?.())return {name:'Rune Needle',emoji:'✧',skill:'mirror',color:0xffe0a3,evolution:'Rune Invoker',mutations:[],upgrades:[{id:'power',name:'Needle Power',emoji:'✧',max:5,desc:'Rune Needle deals 12% more damage per rank.'},{id:'rate',name:'Quick Needle',emoji:'✧',max:5,desc:'Rune Needle fires 8% faster per rank.'},{id:'radius',name:'Runic Reach',emoji:'◎',max:3,desc:'Needle reach and rune spell areas grow 12% per rank.'},{id:'runePower',name:'Rune Power',emoji:'✹',max:5,desc:'All four prototype spells deal 12% more damage per rank.'}]};const d=BASIC_ATTACKS[this.character]||null,b=this.basicAttack;if(this.character==='momo')return berryAttackInfo(d,b);if(this.character==='cocoa')return cocoaAttackInfo(d,b);if(this.character==='taro')return taroAttackInfo(d,b);if(this.character==='yuzu'){const ye=YUZU_EVOLUTIONS[b?.path],splash=({citrusGuardian:'Pomelo sweeps gain 10px radius per rank.',zestSwarm:'Arrow impacts splash for 18% companion power per rank (24px + 12px per rank). Vaulting Shot gains 8px radius per rank.',juiceWorkshop:'Blood Orange ground Sigils gain 8px radius per rank.'})[b?.path];const sd=YZ_SEED_DESC[b?.path]||YZ_SEED_DESC.none;return {...d,...(ye?{evolution:ye.name,evolutionDesc:ye.desc}:{}),upgrades:d.upgrades.map(u=>u.id==='splash'&&splash?{...u,desc:splash}:u.id==='seedling'?{...u,desc:u.desc+' '+sd}:u)};}const e=this.character==='mint'&&MINT_EVOLUTIONS[b?.path];if(!e)return d;return {...d,evolution:e.name,evolutionDesc:e.desc,upgrades:d.upgrades.map(u=>u.id==='linger'&&b.path==='pierce'?{...u,name:'Rupture Shards',headline:'+8% Rupture damage',desc:'Crystal Impaler Rupture deals +8% damage per rank. Ranks taken before the build carry over.'}:u.id==='linger'&&b.path==='glacier'?{...u,name:'Frost Bloom',headline:'+8% Bloom splash',desc:'Glacier frost-bloom splash gains +8% base power per rank. Shatter chains remain bounded; no shard projectiles.'}:u)};}
   initBasicAttack(){const d=this.basicAttackInfo();if(!d){this.basicAttack=null;return;}this.basicAttack={character:this.character,ranks:{},lv:{},mutation:null,evolved:false,mastery:0,comboStep:0,lastComboAt:-9,endless:{}};this.syncBasicAttack();}
   // v4.25: b.ranks[id] = magnitude ถ่วง potency (ใช้กับค่า scalar) · b.lv[id] = เลเวลจำนวนเต็ม (display/mastery/gate + upgrade แบบนับนัด)
   syncBasicAttack(){if(this.character==='taro')this.syncTaroCombat?.();const d=this.basicAttackInfo(),b=this.basicAttack;if(!d||!b)return;if(this.character==='cocoa'&&b._cocoaPath!==b.path){this.clearCocoaCombat?.();b._cocoaPath=b.path;}if(b.path&&b._ptal!==b.path&&this.player){applyPathTalents(this.player,this.character,b.path,(Save.cp(this.character)||{}).tal);b._ptal=b.path;}b._pm=pathMods(b);if(this.player){ptMergeFx(b._pm,this.player._pt);b._pm.count+=this.player.gearCount||0;b._pm.range+=this.player.gearArea||0;}{const tk=b._pm.taken,prev=b._takenApplied||0;if(tk!==prev&&this.player){this.player.dmgTakenMul=Math.max(STAT_CAPS.dmgTakenMin||0.35,(this.player.dmgTakenMul||1)*(1-tk)/(1-prev));b._takenApplied=tk;}}b.mastery=Object.values(b.lv||{}).reduce((s,v)=>s+(v||0),0)+(b.mutation?1:0);this.skills[d.skill]=Math.min(5,1+Math.floor(b.mastery/3));this.skillCd[d.skill]=Math.min(this.skillCd[d.skill]||0,0.15);this.buildSkillBar();if(this.character==='cocoa')this.refreshUniqueSkillUI();}
@@ -16114,7 +16149,7 @@ class Game extends Phaser.Scene {
     if(this.events&&!this._taroShutdownHook){this._taroShutdownHook=true;this.events.once('shutdown',()=>{this.events.off('postupdate',this.taroPostPhysics,this);this.clearTaroCombat();this._taroShutdownHook=false;});}
     return this._taro;
   }
-  tagTaroEnemy(e){if(e&&this.character==='yuzu')e._yzSpawnId=this._yzSpawnSeq=(this._yzSpawnSeq||0)+1;if(e&&this.character==='taro'){e._taroSpawnId=this._taroSpawnSeq=(this._taroSpawnSeq||0)+1;}return e;}
+  tagTaroEnemy(e){if(e&&this.character==='sesame')e._sesSpawnId=this._sesSpawnSeq=(this._sesSpawnSeq||0)+1;if(e&&this.character==='yuzu')e._yzSpawnId=this._yzSpawnSeq=(this._yzSpawnSeq||0)+1;if(e&&this.character==='taro'){e._taroSpawnId=this._taroSpawnSeq=(this._taroSpawnSeq||0)+1;}return e;}
   taroProfile(level,options={}){return this.character==='taro'&&this.basicAttack?taroCombatProfile(this.basicAttack,this.player,level,BASIC_PATHS.taro,options):null;}
   taroPickTarget(range){const t=this.syncTaroCombat();if(!t)return null;t.mark=taroPriorityTarget(this.enemies.getChildren(),this.player,range,t.mark);return t.mark;}
   suspendTaroCombat(){const t=this._taro;if(t){t.sample=null;t.motion=null;if(t.sweep)t.sweep.from={x:this.player.x,y:this.player.y};for(const fx of t.fx){if(fx.visible){fx._taroSuspended=true;fx.setVisible(false);}}}}
@@ -17367,7 +17402,7 @@ class Game extends Phaser.Scene {
    // กล่องสุ่ม: ข้ามช่วง mutation/evolution (กันสุ่มได้อันเดิมซ้ำ)
     const fallbackIcon=SKILL_ICON[d.skill],makeCard=(u,extra={})=>{const c={type:'basic',key:u.id,lvl:extra.lvl||1,max:extra.max||u.max||1,kind:'Basic Attack',color:d.color,emoji:u.emoji,title:u.name,desc:u.desc,headline:u.headline,iconKey:u.iconKey||fallbackIcon,...extra};if(b.character==='yuzu'){c.iconKey=yuzuCardArt(b.path,u.id)||c.iconKey;const unl=({y_bigsplat:'Sour Trap',p_pulp:'Vaulting Shot',y_strongarm:'Pin & Pierce',y_giantslam:'Rind Breaker',y_longroot:'Sour Garden',y_elder:'Spicy Bloom',y_seedluck:'Honey Rescue'})[u.id];if(unl&&!b.evolved&&!(b.lv?.[u.id]>0))c.headline='🔓 Unlocks '+unl;if(u.id==='seedling'||u.id==='family'){const count=this.yuzuSeedMax?.()||0,add=u.id==='seedling'?2:1;c.headline='+'+add+(add===1?' Minion · ':' Minions · ')+count+' → '+Math.min(16,count+add);}if(u.id==='uq_power'){c.headline='+20% Unique power';c.desc='Increase the power of empowered companion hits and the Unique finisher by 20% per rank.';}}return c;};
     // 🛤 Build Path: เลเวล 5 เลือกสายครั้งเดียว (ก่อน mutation) · v7.8.90 เดิม 6 ชนกับ Relic → สายเลื่อนเป็น 7 ทุกครั้ง
-    const PATHS=BASIC_PATHS[b.character];
+    const PATHS=this.isSesRune?.()?null:BASIC_PATHS[b.character];
     if(!noSpecial&&PATHS&&!b.path&&!this._inTutorial&&(this.level||1)>=5&&this.cardOpen?.('path')!==false){
       this.showBanner('🛤 Choose your Build Path','Pick one · the other two lock for this stage',1600);
       return PATHS.map(pt=>makeCard(pt,{desc:pt.desc,carry:this.pathCarryText?.(pt)||'',headline:pt.headline,kind:'Build Path',pathStyle:BUILD_PATH_STYLES[pt.id]||'New combat style',special:true,color:0x7fd4ff,apply:()=>{b.path=pt.id;this.syncBasicAttack();this.showBanner(pt.emoji+' '+pt.name,'Build path locked in · new upgrades unlocked',1800);Sfx.clear();this.playGrowthWorld?.('unlock');}}));
@@ -17385,7 +17420,7 @@ class Game extends Phaser.Scene {
     }
     // ✨ ช่วงพิเศษ #2 — Evolution timesเดียว: การ์ดเดียวเด่น ๆ ให้รู้สึกใหญ่
     const evoAt=Math.min(16,d.upgrades.reduce((s,u)=>s+(this.banishedKeys?.['b:'+u.id]?(b.lv[u.id]||0):u.max),0)+1);   // v4.54: เดิม 20 แต่ mastery สูงสุดได้แค่ 17 (16 อัพ+1 mutation) = evolution ไม่มีวันออก
-    if(!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']&&this.cardOpen?.('evolution')!==false){
+    if(!this.isSesRune?.()&&!noSpecial&&b.mastery>=evoAt&&!b.evolved&&!this.banishedKeys?.['b:evolution']&&this.cardOpen?.('evolution')!==false){
       this.showBanner('✨ Ready to Evolve!','Ultimate upgrade for your Basic Attack',1600);
       const EVO_DESC=BASIC_EVO_DESC||{sprinkle:'Seeds fly straight and fast, piercing everything (no homing)',thunder:'Screen-wide lightning storm — multiple strikes, far longer chains',frost:'Fires 3 piercing lances (trident), each shattering ice shards at the end',meteor:'Bear Slam echoes, heals 2% HP, and Dash recharges 30% faster',mirror:'An extra mirror beam + longer, wider, harder-hitting shots'};
       const evo={id:'evolution',name:d.evolution,emoji:'✨',desc:'✨ '+(d.evolutionDesc||EVO_DESC[d.skill]||'Upgrades the whole Basic Attack!')+(()=>{const L=(typeof FUSIONS!=='undefined'&&FUSIONS[b.character])||[];return L.length?'  🧬 Fusion with '+L.map(f=>((typeof RELICS!=='undefined'&&RELICS[f.relic])||{}).name||f.relic).join(' / '):'';})()};
@@ -17394,7 +17429,7 @@ class Game extends Phaser.Scene {
     // ----- WaitบNormal: ผสมสาย attack + passive + heal ให้หลากหลาย (แก้ปัญfind +ยิง ออกถี่) -----
     // สายอัพเกรด attack — ยิ่ง rank สูง โอกาสยิ่งน้อย (กันเจอใบเดิมซ้ำ)
     const mintLocked=b.character==='mint'&&!!b.path,berryLocked=b.character==='momo'&&!!b.path,cocoaLocked=b.character==='cocoa'&&!!b.path,storyCards=!noSpecial&&(this.usesStoryBudget?.()||(this.recipeMode&&!this._inTutorial)),chosenPath=PATHS?.find(pt=>pt.id===b.path);
-    const focused=mintLocked||berryLocked||cocoaLocked||storyCards,groupOf=id=>mintLocked?mintUpgradeGroup(b.path,id):berryLocked?berryUpgradeGroup(b.path,id):chosenPath?.upgrades.some(u=>u.id===id)?'path':'shared';
+    const focused=mintLocked||berryLocked||cocoaLocked||storyCards,groupOf=id=>this.isSesRune?.()?'shared':mintLocked?mintUpgradeGroup(b.path,id):berryLocked?berryUpgradeGroup(b.path,id):chosenPath?.upgrades.some(u=>u.id===id)?'path':'shared';
     const atk=[];
     const COUNT_IDS={seedling:1,s_slug:1,s_seek:1,s_return:1,p_heavydraw:1,p_impaler:1,p_executioner:1,p_froststack:1,p_chainshatter:1,p_quiver:1,family:1,p_pulp:1,volley:1,arc:1,surge:1,cluster:1,pane:1,buckshot:1,m_grow:1,m_hold:1,m_shard:1,l_far:1,l_twin:1,l_burst:1,b_wide:1,b_recoil:1,b_double:1,carom:1,p_shock:1,p_squall:1,p_facet:1};   // อัพเกรดแบบ "นับนัด" → +1 เต็มเสมอ (potency ใช้ไม่ได้กับจำนวน)
     const pathUps=(PATHS&&b.path)?(PATHS.find(x=>x.id===b.path)||{upgrades:[]}).upgrades.slice():[];
@@ -17921,7 +17956,7 @@ class Game extends Phaser.Scene {
       for(let k=0;k<rings;k++) this.creamWave(maxR,dmg,k*180,aw?520:390); Sfx.boom(); }
   }
   updateUniqueHint(){
-    if(!this.uniqueHint)return;const hold=this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()||!!this.isTitanHold?.()||!!this.isYuzuCommand?.();
+    if(!this.uniqueHint)return;if(this.isSesRune?.()){const r=this.sesRuneRecipe();this.uniqueHint.setText(!r.ready?'NOT READY':this.uniqueCd>0?Math.ceil(this.uniqueCd)+'s':'CAST').setAlpha(r.ready?1:.5);return;}const hold=this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()||!!this.isTitanHold?.()||!!this.isYuzuCommand?.();
     const text=this._titanHold?('RAGE '+Math.floor(this._titanRage||0)+'/3'):this._snipe?(this._snipe.kind==='yuzu'?'AIM':this.snipeCharge()>=1?'RELEASE':'CHARGE '+Math.round(this.snipeCharge()*100)+'%'):this.uniqueCd>0?Math.ceil(this.uniqueCd)+'s':hold?'HOLD':'TAP';
     if(this._uniqueHintLabel!==text){this._uniqueHintLabel=text;this.uniqueHint.setText(text);}this.uniqueHint.setAlpha(this.uniqueCd>0?.65:1);
   }
@@ -18418,6 +18453,7 @@ class Game extends Phaser.Scene {
   // 🪞 Mirror Beam — งาดำยิง "ลำแสงกระจก" ใส่เป้า (ดาเมจเต็มกับบอส · แรงขึ้นตาม Focus ที่ชาร์จจากการยืนนิ่ง)
   // แก้ปัญหางาดำเอาบอสไม่อยู่: field เดิม tick เบา → beam ลงดาเมจก้อนใหญ่ single-line เจาะทะลุ โดนบอสเต็ม
   castMirrorBeam(lvl,aw,dm,basic){
+    if(this.isSesRune?.())return this.castSesRuneNeedle(lvl,dm,basic);
     const evo=basic&&basic.evolved, px=this.player.x, py=this.player.y;
     // v7.9.40 Mirror Network: เส้นแสง งาดำ → กระจกเก่าสุด → … → ใหม่สุด → ศัตรู (บอส/มินิก่อน) · กระจกเกิน 700px ไม่นับ · ไม่มีกระจก = ยิงตรงแบบเดิม
     const pts=[{x:px,y:py}]; for(const m of this._sesMirrors||[])if(m.ring&&m.ring.active&&this.dist(m.x,m.y,px,py)<=SES_MIRROR_REACH)pts.push(m);
@@ -18933,7 +18969,7 @@ class Game extends Phaser.Scene {
   }
   // Sakura Aura: กลีบอ่านระยะได้ + สะสม Bloom แทนการเผาดาเมจฟรีทุกเฟรม
   // ---- Signature aura ประจำตัว (rework Mint + งาดำ ให้แข็งแรงขึ้น มี DPS always-on) ----
-  clearCharSignature(){this._toxicSfxAt=-Infinity;this._uniqueRankSfxAt=-Infinity; if(this._frostStreams){this._frostStreams.forEach(s=>s&&s.img&&s.img.destroy());this._frostStreams=null;} if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} this.clearSesMirrors(); }
+  clearCharSignature(){this.clearSesRune?.();this._toxicSfxAt=-Infinity;this._uniqueRankSfxAt=-Infinity; if(this._frostStreams){this._frostStreams.forEach(s=>s&&s.img&&s.img.destroy());this._frostStreams=null;} if(this._mintOrbs){this._mintOrbs.forEach(o=>o&&o.destroy());this._mintOrbs=null;} if(this._mintField){this._mintField.destroy();this._mintField=null;} if(this._sesField){this._sesField.destroy();this._sesField=null;} if(this._sesShards){this._sesShards.forEach(s=>s&&s.destroy());this._sesShards=null;} this.clearSesMirrors(); }
   tickCharSignature(dt){
     const ch=this.character;
     // ❄️ Mint — Frost Lance เป็น Basic Attack แล้ว (ยิงเป็นจังหวะใน castSkill) · signature นี้แค่ดูแล "Ice Torrent" ที่หอกทิ้งไว้
@@ -18941,12 +18977,124 @@ class Game extends Phaser.Scene {
     if(ch!=='mint'&&this._frostStreams&&this._frostStreams.length){ this._frostStreams.forEach(s=>s.img&&s.img.active&&s.img.destroy()); this._frostStreams=null; }
     // 🪞 งาดำ — วงเวทกระจกถาวรWaitบตัว (aura ไม่หาย): ทำดาเมจศัตรูในเขต + ลบกระสุนศัตรูที่เข้าเขต (ward) · Noneจรวด/ไม่ยิง projectile
     if(ch==='sesame'){
+      if(this.isSesRune()){this.tickSesRune(dt);return;}
       // เอาวงแหวน/field ออกแล้ว (v4.20) — เหลือแค่ Focus: ยืนนิ่งชาร์จ → Mirror Beam แรง+กว้างขึ้น · ขยับ = Focus สลาย
       this.tickSesMirrors(dt);   // v7.9.40 Focus แบบยืนนิ่งเลิกใช้ → Oath Focus = +6%/กระจก (ใน damage())
       if(this._sesField){ this._sesField.destroy(); this._sesField=null; }
     } else { if(this._sesField){ this._sesField.destroy(); this._sesField=null; } if(this._sesMirrors&&this._sesMirrors.length)this.clearSesMirrors(); }
   }
   // 🪞 v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md) — Dash วางกระจก · Mirror Beam เด้งผ่านกระจกเก่า→ใหม่ แล้วออกไปหาศัตรู
+  // Rune Invoker prototype: run-owned state, no timers or save migration.
+  isSesRune(){return this.character==='sesame'&&!!this._sesRuneMode;}
+  sesRuneEnsure(){
+    if(!this._sesRuneShutdownHook&&this.events?.once){this._sesRuneShutdownHook=true;this.events.once('shutdown',()=>{this.clearSesRune();this._sesRuneShutdownHook=false;});}
+    if(!this.isSesRune()||!this.player||!this.basicAttack)return null;
+    if(this._sesRune&&(this._sesRune.player!==this.player||this._sesRune.basic!==this.basicAttack))this.clearSesRune();
+    if(!this._sesRune)this._sesRune={player:this.player,basic:this.basicAttack,orbs:['p','p','p'],phase:0,actors:[],g:this.camWorld(this.add.graphics().setDepth(this.player.y+4))};
+    return this._sesRune;
+  }
+  sesRuneRecipe(){return sesRuneRecipe(this._sesRune?.orbs||['p','p','p']);}
+  sesRuneCreateControls(){
+    this._sesRuneButtons=[];this._sesRuneUI=[];
+    for(const [key,symbol,color] of SES_RUNE_TYPES){
+      const b=this.camUI(this.add.circle(0,0,22,0x261e30,.94).setScrollFactor(1).setDepth(54).setStrokeStyle(2,color,.95));
+      const t=this.camUI(this.add.text(0,0,symbol+'\n'+({p:'Power',m:'Motion',b:'Bind'})[key],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff4dc',align:'center'}).setOrigin(.5).setScrollFactor(1).setDepth(55));
+      this._sesRuneButtons.push({key,b,t});this._sesRuneUI.push(b,t);
+    }
+    this._sesRuneLabel=this.camUI(this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#fff0cd',align:'center',lineSpacing:2}).setOrigin(.5,1).setScrollFactor(1).setDepth(55));
+    this._sesRuneUI.push(this._sesRuneLabel);this.hudList?.push(...this._sesRuneUI);this.sesRuneLayout();this.sesRuneRefreshUI();
+  }
+  sesRuneLayout(){
+    if(!this._sesRuneButtons?.length||!this.uniqueBtn)return;
+    const boxes=sesRuneControlLayout(this.W,this.H,this.ctrlScale(),!!Save.data.settings?.ctrlLeft,this.uniqueBtn,this.dashBtn);
+    this._sesRuneButtons.forEach((q,i)=>{const a=boxes[i];q.b.setPosition(a.x,a.y).setRadius(a.r);q.t.setPosition(a.x,a.y);});
+    this._sesRuneLabel.setPosition(boxes.label.x,boxes.label.y);
+  }
+  sesRuneRefreshUI(show){
+    if(!this._sesRuneUI)return;
+    const on=!!(this.isSesRune()&&(show??this.uniqueBtn?.visible)&&this.state!=='menu');
+    this._sesRuneUI.forEach(o=>o.setVisible(on));if(!on)return;
+    const r=this.sesRuneRecipe(),orbs=this._sesRune?.orbs||['p','p','p'],code=orbs.map(x=>x.toUpperCase()).join(' '),text=r.name+'\n'+code+'  ·  oldest first';
+    if(this._sesRuneLabel.text!==text)this._sesRuneLabel.setText(text);
+    this._sesRuneButtons.forEach(q=>q.b.setFillStyle(0x261e30,.94));
+    if(this.uniqueTxt?.text!==r.emoji)this.uniqueTxt?.setText(r.emoji);
+  }
+  sesRuneHit(p){return this.isSesRune()&&this._sesRuneButtons?.find(q=>q.b.visible&&Math.hypot(p.x-q.b.x,p.y-q.b.y)<=q.b.radius);}
+  sesRunePointerDown(p){
+    const q=this.sesRuneHit(p);if(!q)return false;
+    this.sesRuneAdd(q.key);(this._sesRunePointers||(this._sesRunePointers=new Set())).add(p.id);return true;
+  }
+  sesRuneAdd(key){
+    if(this.state!=='play'||this._adBusy||this._rubyEntry?.active||!SES_RUNE_TYPES.some(t=>t[0]===key))return false;
+    const s=this.sesRuneEnsure();if(!s)return false;s.orbs=sesRunePush(s.orbs,key);this.sesRuneRefreshUI();this.refreshUniqueSkillUI();return true;
+  }
+  sesRuneTarget(x,y,range){
+    let best=null,score=-Infinity;this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e))return;const d=Math.hypot(e.x-x,e.y-y);if(d>range)return;const rank=e.isBoss?4:e.isMini?3:e._waveObjectiveTarget||e._objectiveMark?2:e.isElite?1:0,v=rank*2000-d;if(v>score){score=v;best=e;}});return best;
+  }
+  sesRuneDamage(e,d,key){
+    if(!sesRuneEnemyValid(e))return;const prev=this._mxSrc;this._mxSrc='sesame.rune.'+key;try{this.damage(e,d,e.x,e.y);}finally{this._mxSrc=prev;}
+  }
+  sesRuneArea(x,y,r,d,key){this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&Math.hypot(e.x-x,e.y-y)<=r+(e.body?.halfWidth||0))this.sesRuneDamage(e,d,key);});this.hitCratesInRadius?.(x,y,r,d);}
+  sesRuneCast(){
+    if(this.state!=='play'||!this.isSesRune()||this.uniqueCd>0||this._adBusy||this._rubyEntry?.active)return false;
+    const s=this.sesRuneEnsure(),r=this.sesRuneRecipe();if(!s||!r.ready)return false;
+    if(s.actors.length>=4)return false;
+    const p=this.player,target=this.sesRuneTarget(p.x,p.y,620),angle=target?Math.atan2(target.y-p.y,target.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1),dm=(p.dmgMul||1)*this.uniquePower()*(1+.12*(this.basicAttack.ranks.runePower||0)),area=1+.12*(this.basicAttack.ranks.radius||0);
+    const q={key:r.key,ul:this.uniqueLevel||1,t:0,next:0,x:p.x,y:p.y,sx:p.x,sy:p.y,angle,dm,area,target,id:target?._sesSpawnId,hit:[new Map(),new Map()],g:this.camWorld(this.add.graphics().setDepth(8))};
+    if(r.key==='ppp'){q.x=target?.x??p.x+Math.cos(angle)*180;q.y=target?.y??p.y+Math.sin(angle)*180;q.life=.65;}
+    else if(r.key==='mmm'){q.life=2.5;}
+    else if(r.key==='bbb'){q.life=6;}
+    else{q.life=3.2;q.ex=p.x+Math.cos(angle)*Math.min(300,target?Math.hypot(target.x-p.x,target.y-p.y):260);q.ey=p.y+Math.sin(angle)*Math.min(300,target?Math.hypot(target.x-p.x,target.y-p.y):260);}
+    s.actors.push(q);this.sesRunePaint(q,r.color);this.uniqueCd=this.uniqueCooldown(r);this.flashBtn?.(this.uniqueBtn);this.poseAttack?.(360);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this.fireRecipes?.('unique');this.sesRuneRefreshUI();Sfx.bp?.('uq_sesame_prism_charge',.4,.3);return true;
+  }
+  sesRunePaint(q,color){
+    const g=q.g;g.clear();g.lineStyle(2,color,.9);const size=q.key==='ppp'?105*q.area:q.key==='mmm'?23:q.key==='bbb'?21:125*q.area;
+    g.strokeCircle(0,0,size);g.lineStyle(1,0xfff2d2,.65);g.strokeCircle(0,0,size*.72);
+    if(q.key==='mmm'){for(let i=0;i<4;i++){const a=i*Math.PI/2;g.lineBetween(Math.cos(a)*8,Math.sin(a)*8,Math.cos(a+.5)*30,Math.sin(a+.5)*30);}}
+    else{g.lineBetween(-size*.35,0,size*.35,0);g.lineBetween(0,-size*.35,0,size*.35);}
+    g.setPosition(q.x,q.y);
+  }
+  sesRuneDrawOrbs(s,dt){
+    const p=this.player,red=this.hubMotionAllowed?.()===false||Save.data.settings?.vfx===0;
+    s.phase+=red?0:dt*1.8;s.g.clear().setDepth(p.y+4);
+    s.orbs.forEach((key,i)=>{const a=s.phase+i*TAU/3,x=p.x+Math.cos(a)*27,y=p.y-16+Math.sin(a)*12,c=SES_RUNE_TYPES.find(t=>t[0]===key)[2];s.g.fillStyle(c,.95).fillCircle(x,y,5);s.g.lineStyle(i===0?2:1,i===0?0xffffff:0x261e30,1).strokeCircle(x,y,7);if(key==='m')s.g.lineStyle(1,0x261e30,1).lineBetween(x-3,y,x+3,y);if(key==='b')s.g.lineStyle(1,0x261e30,1).strokeRect(x-2,y-2,4,4);});
+  }
+  tickSesRune(dt){
+    if(!this.isSesRune()){if(this._sesRune)this.clearSesRune();return;}
+    if(this.state!=='play')return;
+    const s=this.sesRuneEnsure();if(!s)return;const p=this.player,red=this.hubMotionAllowed?.()===false||Save.data.settings?.vfx===0;
+    this.sesRuneDrawOrbs(s,dt);
+    const step=Math.min(dt,.1); // no burst catch-up after a long frame
+    for(let i=s.actors.length-1;i>=0;i--){const q=s.actors[i];q.t+=dt;q.life-=dt;let done=false;
+      if(q.key==='ppp'){
+        q.g.setScale(.7+.3*Math.min(1,q.t/.65));
+        if(q.t>=.65){this.sesRuneArea(q.x,q.y,105*q.area,(70+20*q.ul)*q.dm,q.key);this.vfxHitRing?.(q.x,q.y,0xffc277,true);Sfx.bp?.('uq_sesame_prism_volley',.4,.3);done=true;}
+      }else if(q.key==='mmm'){
+        const ox=q.x,oy=q.y,back=q.t>=.65,a=back?Math.atan2(p.y-q.y,p.x-q.x):q.angle;q.x+=Math.cos(a)*460*step;q.y+=Math.sin(a)*460*step;
+        if(back&&Math.hypot(q.x-p.x,q.y-p.y)<28)done=true;
+        this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e)||q.hit[back?1:0].has(e)&&q.hit[back?1:0].get(e)===e._sesSpawnId)return;if(sesRuneSegmentDistance(e.x,e.y,ox,oy,q.x,q.y)>30*q.area+(e.body?.halfWidth||0))return;q.hit[back?1:0].set(e,e._sesSpawnId);this.sesRuneDamage(e,42*q.dm,q.key);});
+        q.g.setPosition(q.x,q.y).setRotation(red?0:q.t*12);
+      }else if(q.key==='bbb'){
+        q.seek=(q.seek||0)-dt;if(!sesRuneEnemyValid(q.target)||q.target._sesSpawnId!==q.id){q.target=null;if(q.seek<=0){q.seek=.2;q.target=this.sesRuneTarget(q.x,q.y,250);q.id=q.target?._sesSpawnId;}}
+        if(q.target){q.x=q.target.x;q.y=q.target.y;q.g.setPosition(q.x,q.y-22);}
+        q.next-=dt;if(q.next<=0){q.next=.5;if(q.target){this.sesRuneDamage(q.target,20*q.dm,q.key);this.sesRuneArea(q.x,q.y,65*q.area,8*q.dm,q.key);}}
+      }else{
+        const f=Math.min(1,q.t/.4);q.x=q.sx+(q.ex-q.sx)*f;q.y=q.sy+(q.ey-q.sy)*f;q.g.setPosition(q.x,q.y).setRotation(red?0:q.t*.6);
+        if(f>=1){this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e)||e.isBoss||e.isMini||e.body?.immovable||e.frozen>0||e._fleeing||e._huntFlee||e._wispRaider)return;const d=Math.hypot(e.x-q.x,e.y-q.y);if(d<125*q.area&&d>22){const a=Math.atan2(q.y-e.y,q.x-e.x);e.setVelocity(Math.cos(a)*110,Math.sin(a)*110);e.knock=Math.max(e.knock||0,.12);}});
+          q.next-=dt;if(q.next<=0){q.next=.3;this.sesRuneArea(q.x,q.y,125*q.area,12*q.dm,q.key);}}
+      }
+      if(done||q.life<=0||!q.g.active){q.g.destroy();s.actors.splice(i,1);}
+    }
+  }
+  clearSesRune(){
+    const s=this._sesRune;if(s){s.actors.forEach(q=>q.g?.destroy());s.g?.destroy();}this._sesRune=null;this._sesRunePointers?.clear();
+    this._sesRuneUI?.forEach(o=>o.setVisible(false));
+  }
+  castSesRuneNeedle(lvl,dm,basic){
+    const p=this.player,t=this.sesRuneTarget(p.x,p.y,650),a=t?Math.atan2(t.y-p.y,t.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1),rank=basic?.ranks||{};
+    const prev=this._mxSrc;this._mxSrc='sesame.needle';try{this.fireBeam(a,(360+lvl*26)*(1+.12*(rank.radius||0)),8+lvl*.7,(18+lvl*5)*dm*(1+.12*(rank.power||0)),{tint:0xffe0a3});}finally{this._mxSrc=prev;}
+  }
+
   sesPlaceMirror(x,y){
     const M=this._sesMirrors||(this._sesMirrors=[]); while(M.length>=SES_MIRROR_MAX)this.sesMirrorGone(M.shift(),false);
     const ring=this.camWorld(this.add.image(x,y,this.textures.exists('vfx_magic_circle')?'vfx_magic_circle':'vfx_glow').setDisplaySize(64,64).setTint(SES_PRISM).setAlpha(.5).setDepth(4));
@@ -19756,6 +19904,7 @@ class Game extends Phaser.Scene {
     this._artTimers.add(ev);return ev;
   }
   clearArtVfx(){this.clearStatusArt?.();this.clearStageLife?.();this.clearYuzuSkillFx?.();this.clearYuzuBuff?.();this.clearBossStory?.();this.clearBossVictory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
+    this.clearSesRune?.();
     if(this._impalerCharge&&typeof Sfx!=='undefined')Sfx.bpLoopStop?.('mint_impaler_charge');
     if(['char_mint_impaler_charge','char_mint_impaler_move'].includes(this.player?.texture?.key)){this._attackPoseTime=0;this._attackTextureKey=null;}
     this.clearTaroCombat?.();this.clearCocoaCombat?.();this._impalerCharge=null;this._berryCharge=null;this._berryFxAt=null;this._berryFxCount=0;this._growthVfxAt=null;
@@ -20713,8 +20862,8 @@ class Game extends Phaser.Scene {
   charPassiveOnHurt(){ if(this._rageStk)this._rageStk=0;   // v7.9.19 Rolling Rage หายเมื่อโดนตี
     if(this.player.gearThorns&&(this.elapsed||0)>=(this._thornsAt||0)){this._thornsAt=(this.elapsed||0)+1;this.gearModBoom(this.player.x,this.player.y,130,this.player.gearThorns,0x9be37a);} this.fireRecipes('hurt'); this.ptSkinBurst(); this.cocoaBeatCharge(0.6); const CP=this._cpas; if(!CP||CP.id!=='mint'||(this.elapsed||0)<(CP.cd||0))return; CP.cd=(this.elapsed||0)+1.2; const px=this.player.x,py=this.player.y,r=110+20*CP.s;
     this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<r)this.applyFreeze(e,0.9*CP.s); }); this.burst(px,py,0x8fe7ff); }
-  charPassiveOnDash(){ if(this.character==='sesame'&&this.basicAttack?.lv?.p_swift)this._sesRetreatT=(this.elapsed||0)+2;   // v7.9.17 Retreat Shot
-    if(this.character==='sesame'&&this.state==='play'&&this.player)this.sesPlaceMirror(this.player.x,this.player.y);   // v7.9.40 Mirror Network: Dash ทิ้งกระจก
+  charPassiveOnDash(){ if(!this.isSesRune?.()&&this.character==='sesame'&&this.basicAttack?.lv?.p_swift)this._sesRetreatT=(this.elapsed||0)+2;   // v7.9.17 Retreat Shot
+    if(!this.isSesRune?.()&&this.character==='sesame'&&this.state==='play'&&this.player)this.sesPlaceMirror(this.player.x,this.player.y);   // v7.9.40 Mirror Network: Dash ทิ้งกระจก
     if(this.character==='yuzu'&&this.state==='play'&&this.player)this.yuzuRush();   // v7.9.41 Dash = ฝูงพุ่งตาม
     const CP=this._cpas; if(!CP||CP.id!=='taro'||this.state!=='play')return; const px=this.player.x,py=this.player.y,d=(10+(this.stageIndex||0)*4)*(this.player.dmgMul||1)*CP.s;
     if(!this.heroFx?.('bpx_taro_rift_step',px,py,120,{must:true,depth:this.player.depth-1}))this.burst(px,py,0xc9a2ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&this.dist(e.x,e.y,px,py)<95)this.damage(e,d,e.x,e.y); }); }
@@ -21385,7 +21534,7 @@ class Game extends Phaser.Scene {
   jelly(vx,vy){ this._sqVX=(this._sqVX||0)+vx; this._sqVY=(this._sqVY||0)+vy; }
 
   /* ---------- DEATH ---------- */
-  die(){this.clearBossStory?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
+  die(){this.clearBossStory?.();this.clearSesRune?.(); this.clearTaroCombat?.();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); if(this.state==='dead')return; Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.cancelBeat();
     // v5.30 🗿 Ancient Guard: ตายครั้งแรกของด่าน = รอด 1 HP + อมตะ 3 วิ
     if(Save.ancientHas('ancientGuard')&&!this._agUsed&&!this._inTutorial){ this._agUsed=true; this.player.hp=1; if(this.player.body)this.player.body.enable=true; this.player.iframe=3; this.screenFlash(0xc7a6ff,0.45,380); this.showBanner('🗿 Ancient Guard!','The temple shields you · 3s invulnerable',1600); return; }
     this.clearSugarCoins();

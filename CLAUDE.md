@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.98, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release after 8.0.98: owner preference is to skip patch99/100; confirm next line before a subsequent release. Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.97 — Yuzu > Companion > Minions (owner)
+# Latest delivery: v8.0.98 — Sesame Rune Invoker prototype (owner)
+
+Normal Story Sesame after tutorial: three44px rune buttons P/M/B, persistent3orbs/FIFO, ten count recipes/fourready (PPP impact, MMM returningchakram, BBB Brand, MMB gatheringring), liveUniqueicon/name/NOTREADY, shared8sbaseCD. No pathdraft/mutation/evolution inprototype; fourbaseupgradefamilies andsharedUnique/Infusion/stats/heals. Oldsave/talentfields preserved; no pathtalents selected inStory; endgame/tutorial retainMirrorkit. Actorscap4, castsnapshot/poolgeneration/retarget0.2s/segmenthits/bosspullimmunity andrun/menu/death/shutdowncleanup. Code-drawnplaceholderart, existingElevenLabscues; nofinalart. Newrunecontracts and24staticCanvaslayouts, finalfullnpmcheck/build andForge21/Lobby360/Rubysixsize contracts passed; ownerphonecontrols/balance/readability/FPSpending. See docs/design/SESAME_RUNE_INVOKER.md. Still HEROES_WIP; fullten-spell progression/talents/migration/art remain.
+
+# Previous delivery: v8.0.97 — Yuzu > Companion > Minions (owner)
 
 Immortal Minions: base1/beforebuild,2/after; +2/seedlingrank(max3),+1/familyrank(max3),+1/form2,+2more/form3,+2BuildEvolution,cap16. No contactdamage/pop/regrow/decoytaunt; indexed formation follows Companion, priority/objective/boss targeting, staggered retarget/windup andpool-safe releases. Fighters punch, archers shoot, mages cyclefire/frost/lightning withshared2sfreezecooldown/no bossfreeze and0.5sone-bouncearccooldown.24mini shotsreservedwithin48total; ownership/build/epoch cleanup. New3ImageGenactors+8cellboltsatlas32frames,64/32pxlossless113954bytes/425984decoded;folderbattlelazy,bootYuzu299MB. SeparateCompanionEvolution cardsguaranteedonnormaldraftslevel7/11(noSpecial/tutorial/specialprecedence honored),protectedheal/skillunlock,once-onlystale-buildguard. Formsno longerauto fromkills/HarvestFestival. Pomelogrowth0/1/3 andshieldfinishers;Lime1/2/3piercingarrows;BloodOrangeSigil+0/1/3elementbolts. Attacktempo1/.8/.62(min0.18s),skilltempo1/.9/.78,SunKissed/Ripenrecharge. ExistingBuildEvolution retainedandstacks (Limeevolvedform+20%arrowpower/+pierce);skills/cards/talentcopy aligned. Testsnewyuzu-hierarchy-97 plusupdatedoldgrowth/Minionsemantics passed;Fullnpmcheck/build,Forge21/Lobby360/Rubysixsize browsercontracts andnewYuzu97ninecardlayouts/32framebrowserdecode passed. Ownerphonebalance/visual/FPS review pending.
 
@@ -38,7 +42,7 @@ Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). 
 
 # 🚧 HEROES IN DEVELOPMENT — Sesame — read first
 
-Owner started Sesame work and approved a replacement concept on 2 Nov2026: **pathless Rune Invoker**, three rune buttons, max three orbiting orbs, FIFO replacement, recipe by counts (not order), Unique previews/casts current recipe and retains orbs. Current design: `docs/design/SESAME_RUNE_INVOKER.md`; Mirror Network remaining phases are superseded. This is design approval, not implemented gameplay. Audit existing saves/talent investment before enabling the replacement. Earlier restriction below describes the pre-start state; Sesame-specific work for this new concept is now authorized. Keep WIP until implementation is complete.
+Owner started Sesame work and approved a replacement concept on 2 Nov2026: **pathless Rune Invoker**, three rune buttons, max three orbiting orbs, FIFO replacement, recipe by counts (not order), Unique previews/casts current recipe and retains orbs. Current design: `docs/design/SESAME_RUNE_INVOKER.md`; Mirror Network remaining phases are superseded. The approved controls and four-spell Story prototype are implemented in8.0.98; the full hero is not complete. Audit existing saves/talent investment before enabling the replacement. Earlier restriction below describes the pre-start state; Sesame-specific work for this new concept is now authorized. Keep WIP until implementation is complete.
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
@@ -83,7 +87,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ใบสั่ง 63 ผูกครบ 8 แล้ว v8.0.95 · รอ QA มือถือ · A06 เสียง 28 ผูกแล้ว v8.0.91
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
-- Sesame: เจ้าของอนุมัติ Rune Invoker ไม่มีสาย (2 Nov2026) · ดู `docs/design/SESAME_RUNE_INVOKER.md` · ถัดไป rune state/FIFO/10-recipe lookup + ปุ่ม/preview แล้ว prototype 4 เวท · ยังไม่ได้เปลี่ยน runtime; ไม่ทำ Mirror Network ขั้น 2 ตามแผนเก่า
+- Sesame: เจ้าของอนุมัติ Rune Invoker ไม่มีสาย (2 Nov2026) · ดู `docs/design/SESAME_RUNE_INVOKER.md` · ต้นแบบ 4 เวทใน Story v8.0.98 รอมือถือ · ถัดไปจูนปุ่ม/การผสม แล้วต่ออีก 6 เวท/การ์ด/Talent/migration/art; ไม่ทำ Mirror Network ขั้น 2 ตามแผนเก่า
 - เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ และไม่ต้องถ่ายภาพหน้าจอตรวจ UI — เจ้าของตรวจบนมือถือเอง (headless หาบั๊กได้)
 
 ## 6. เอกสาร
