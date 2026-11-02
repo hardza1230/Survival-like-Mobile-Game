@@ -13,7 +13,7 @@ for(const change of[s=>s.player={},s=>s.player.active=false,s=>s.basicAttack={},
 for(const fps of[30,60,120]){const s=scene(),q=s.yuzuSkillFx('spicy',0,0,100);for(let n=0;n<fps;n++)s.yuzuTickSkillFx(1/fps);assert(!q.spr.active);assert.equal(s._yzShow.length,0);}
 const manifest=JSON.parse(fs.readFileSync('assets/art/yuzu49/MANIFEST.json','utf8'));assert.equal(manifest.length,7);assert.equal(manifest.reduce((n,a)=>n+a.frames,0),28);
 for(const a of manifest){for(const[p,h]of[[a.path,a.sha256],[a.source,a.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);assert.equal(a.frames,4);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
-assert(src.includes('this.clearYuzuSkillFx?.();'));assert(src.includes('yuzuTickFx(dt){this.yuzuTickSkillFx(dt);'));
+assert(src.includes('this.clearYuzuSkillFx?.();'));assert(/yuzuTickFx\(dt\)\{[\s\S]{0,120}this\.yuzuTickSkillFx\(dt\);/.test(src),'skill effects still tick after the pause guard');
 console.log('Yuzu spectacle:7original clips/28frames,4effect cap,420px size cap, pause/Low/reduced/missing art, player/basic/epoch/death/menu/shutdown/follow cleanup and30/60/120FPS expiry passed');
 
 // v51: real production FX helpers only; no combat update or gameplay simulation.

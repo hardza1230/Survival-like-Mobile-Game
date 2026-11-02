@@ -1,6 +1,6 @@
 # 63 — Yuzu Companion Forms (คู่หูส้มวิวัฒนาการ 3 ร่าง) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่งครบ 8 · รอผูกโค้ด · 2 พ.ย. 2026 · รวมป้ายร่างไม่บังคับ · runtime ยังใช้ภาพร่าง 1 ขยายจนกว่าจะผูกชุดนี้
+สถานะ: 🟢 ผูกครบ 8 แล้ว v8.0.95 · 2 พ.ย. 2026 · รอตรวจมือถือ
 ส่งไฟล์ที่ `assets/incoming/yuzu_forms63/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` + `review.png` (ร่าง 1→2→3 วางเรียงกันที่ขนาดจริงบนพื้นด่าน)
 สไตล์ตาม `00_STYLE_GUIDE.md` (¾ จากด้านบน เส้นขอบเข้มโทนเดียวกับสี ไม่ใช่ดำสนิท ไฮไลต์วาวแบบขนม) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ/ตัวเลขในภาพ**
 
@@ -85,3 +85,8 @@ Yuzu มีคู่หูส้ม 1 ตัวตามสายที่เล
 
 ## ส่งมอบ
 ส่งครบ8 PNG /59เฟรมที่ assets/incoming/yuzu_forms63/:6ชีตตัวละครRGBA1024×512,FX8เฟรมพื้นดำ,ป้าย3ช่องRGBA192×64 พร้อมต้นฉบับImageGen,MANIFEST/PROMPTS/QA_REPORT,review360px,contact sheetsและGIFเดิน/โจมตี/FX. ตรวจขนาดalpha/เท้าy248/ขอบช่องไม่ล้นครบแล้ว. ใช้built-inImageGenตามภาพร่างเดิม,สคริปต์ทำเฉพาะตัด/ย่อ/จัดแนว. งานsourceเท่านั้น ยังไม่แก้runtime/version;รอตรวจมือถือและผูกตามโน้ตGPU/frame remapด้านบน.
+
+
+## Runtime integration — v8.0.95
+
+Packed all8 losslessWebP50% using scripts/pack-yuzu-forms-63.py into assets/art/yuzu_forms63/. Characters/FX128px cells;badge32px. BlackFX mechanically converted to straight alpha for NORMAL blend. Total876944bytes/3682304decodedbytes. All literalURLs hero-classYuzu, additionally deferred at boot even when Yuzu selected; existing runArtKeys loads before battle (bootYuzu remains299MB).16frame art is mapped by attack phase, not blindlymod8; distinct new8frame sheets retain neutral scale and foot248/256. Existing missing-texture fallback retained. Evolutionone-shot follows owner, shared8cap, checksowner/player/build/epoch and clears withcrew; reduced motion/staticframe4, vfx-offfallback and pause supported. Leaf badges trackform beside label, one allocation peractor, cleanup withcrew. Thresholds/damage/hitboxes unchanged. Regressiontests in tests/yuzu-forms-63.test.cjs. Owner phone visual/FPS review pending.

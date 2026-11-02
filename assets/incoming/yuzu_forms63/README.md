@@ -11,3 +11,7 @@ MANIFEST records full file hashes, dimensions, source rectangles, clips and anch
 Review review.png at native360px width for mobile-size form comparisons. Per-form contact sheets show all8 poses. Walk/attack GIFs and yz_fx_evolve.gif show frame timing. Owner phone visual/FPS review remains pending.
 
 Runtime handoff: follow63_YUZU_COMPANION_FORMS.md. Pack six characters andFX50% to128px frames, NORMAL blend luminance-to-alpha forblackFX, retain base fallback and hero-lazy loading. Remap yz_48 attack8–15 into4–7, not frame%8 blindly. Verify GPU budget before release; do not boot-load these sheets. This source delivery has no game.js changes, version bump or deployment claim.
+
+## Integration update
+
+All8 assets integrated in runtime8.0.95 using scripts/pack-yuzu-forms-63.py; productionfiles/manifest in assets/art/yuzu_forms63/. Original sourcekit above remains unchanged. Phonevisual/FPSreview pending.

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.0.94';
+const GAME_VERSION = '8.0.95';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.0.95',date:'2026-11-02',title:'Yuzu companions grow into new forms',items:['Pomelo, Lime and Blood Orange now wear distinct evolved outfits as they grow','Evolution blooms with citrus light and a small leaf crest shows each companion form','Evolved attacks keep their windup and release poses']},
   {v:'8.0.94',date:'2026-11-01',title:'25 mods for each gear type',items:['Weapons, gloves, armor and boots can now roll 25 different mods each','More attack mods on weapons and gloves, more defense mods on armor, more loot and movement mods on boots']},
   {v:'8.0.93',date:'2026-11-01',title:'Each gear type has its own mods',items:['Weapons and gloves roll attack mods, armor rolls defense mods, boots roll movement and playstyle mods','Amulets mix defense and utility, rings mix attack and utility','Mods already on your gear stay as they are']},
   {v:'8.0.92',date:'2026-11-01',title:'Readable Forge mods',items:['Forge: mod text now uses the whole row, with the Upgrade button on its own line below, so mods are no longer cut off']},
@@ -2943,6 +2944,14 @@ const ASSET_SHEETS = {
   yz_54_pomelo:{url:'assets/art/yuzu54/yz_54_pomelo.webp',frame:128},
   yz_54_lime:{url:'assets/art/yuzu54/yz_54_lime.webp',frame:128},
   yz_54_bloodorange:{url:'assets/art/yuzu54/yz_54_bloodorange.webp',frame:128},
+  yz_pomelo_f2:{url:'assets/art/yuzu_forms63/yz_pomelo_f2.webp',frame:128},
+  yz_pomelo_f3:{url:'assets/art/yuzu_forms63/yz_pomelo_f3.webp',frame:128},
+  yz_lime_f2:{url:'assets/art/yuzu_forms63/yz_lime_f2.webp',frame:128},
+  yz_lime_f3:{url:'assets/art/yuzu_forms63/yz_lime_f3.webp',frame:128},
+  yz_bloodorange_f2:{url:'assets/art/yuzu_forms63/yz_bloodorange_f2.webp',frame:128},
+  yz_bloodorange_f3:{url:'assets/art/yuzu_forms63/yz_bloodorange_f3.webp',frame:128},
+  yz_fx_evolve:{url:'assets/art/yuzu_forms63/yz_fx_evolve.webp',frame:128},
+  yz_form_badge:{url:'assets/art/yuzu_forms63/yz_form_badge.webp',frame:32},
   yz_48_pomelo:{url:'assets/art/yuzu48/yz_48_pomelo.webp',frame:256},
   yz_48_lime:{url:'assets/art/yuzu48/yz_48_lime.webp',frame:256},
   yz_48_bloodorange:{url:'assets/art/yuzu48/yz_48_bloodorange.webp',frame:256},
@@ -4027,7 +4036,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return !!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return (u||artUrl(k)).includes('/yuzu_forms63/')||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
@@ -16556,7 +16565,7 @@ class Game extends Phaser.Scene {
   // Citrus Companions: one owned actor, bounded shots/zones, no extra physics bodies.
   clearYuzuSeeds(){for(const q of this._yzSeeds||[]){q.spr?.destroy();q.shadow?.destroy();}this._yzSeeds=[];}
   clearYuzuCrew(){this.clearYuzuBuff();this.clearYuzuSkillFx();this.clearYuzuSeeds();
-    for(const m of this._yuzuCrew||[])for(const o of [m.spr,m.label,m.bar,m.shadow])o?.destroy();
+    for(const m of this._yuzuCrew||[])for(const o of [m.spr,m.label,m.bar,m.shadow,m.formBadge])o?.destroy();
     for(const o of [...(this._yzShots||[]),...(this._yzZones||[]),...(this._yzFx||[])])o.spr?.destroy();
     this._yuzuCrew=[];this._yzShots=[];this._yzZones=[];this._yzFx=[];this._yzShield=null;this._yzHitOwner=null;this._yzForceCrit=false;this._yzRain=null;this._yzInfusion=null;this._yzSeedCd=0;this._yzTrailAt=-10;this._yuzuOrch=null;this._yuzuParadeT=0;this._yzMark=null;this._yzUnlockMiss=0;this._yzMarkG?.destroy?.();this._yzMarkG=null;
   }
@@ -16588,7 +16597,19 @@ class Game extends Phaser.Scene {
     const key='yz_fx_'+kind;if(!this.textures.exists(key))return null;const L=this._yzFx||(this._yzFx=[]);if(L.length>=8){const old=L.shift();old.spr.destroy();}
     const spr=this.camWorld(this.add.sprite(x,y,key,0).setDisplaySize(size,size).setAlpha(.62).setDepth(follow?95001:5));const q={spr,t:0,life,follow};L.push(q);return q;
   }
-  yuzuTickFx(dt){this.yuzuTickSkillFx(dt);const L=this._yzFx||[];for(let i=L.length-1;i>=0;i--){const q=L[i];q.t+=dt;if(q.follow){q.spr.setPosition(this.player.x,this.player.y);if(q.follow==='shield'&&!this._yzShield)q.t=q.life;}if(q.staticFrame)q.spr.setAlpha(.7*Math.max(0,1-q.t/q.life));else q.spr.setFrame(Math.min(3,Math.floor(q.t*8)%4));if(q.t>=q.life){q.spr.destroy();L.splice(i,1);}}}
+  yuzuTickFx(dt){
+    if(this.state&&this.state!=='play')return;
+    this.yuzuTickSkillFx(dt);const L=this._yzFx||[];
+    for(let i=L.length-1;i>=0;i--){const q=L[i];
+      if(q.evolve){
+        const bad=this.character!=='yuzu'||this._yuzuCrew?.[0]!==q.owner||q.owner.spr?.active===false||this.player!==q.player||q.player?.active===false||this.basicAttack!==q.basic||(this._artEpoch||0)!==q.epoch||q.spr.active===false;
+        if(bad){q.spr.destroy();L.splice(i,1);continue;}
+        q.t+=Math.max(0,dt);q.spr.setPosition(q.owner.spr.x,q.owner.spr.y).setDepth(q.owner.spr.y+5);
+        q.spr.setFrame(q.red?4:Math.min(7,Math.floor(q.t/q.life*8))).setAlpha(.85*Math.min(1,Math.max(0,(q.life-q.t)/.12)));
+      }else{q.t+=dt;if(q.follow){q.spr.setPosition(this.player.x,this.player.y);if(q.follow==='shield'&&!this._yzShield)q.t=q.life;}if(q.staticFrame)q.spr.setAlpha(.7*Math.max(0,1-q.t/q.life));else q.spr.setFrame(Math.min(3,Math.floor(q.t*8)%4));}
+      if(q.t>=q.life){q.spr.destroy();L.splice(i,1);}
+    }
+  }
   yuzuSound(name,gap=.2,volume=.4){return Sfx.bp?.('yz_'+name,volume,gap)||false;}
   yuzuKind(){return ({citrusGuardian:'pomelo',zestSwarm:'lime',juiceWorkshop:'bloodorange'})[this.basicAttack?.path]||'yuzling';}
   yuzuTalent(k){return this.player?._pt?.['yz'+k]||0;}
@@ -16888,7 +16909,15 @@ class Game extends Phaser.Scene {
   }
   yuzuForm(m){if(!m)return 1;return m.kind==='pomelo'?[1,2,2,3][Math.min(3,m.growth||0)]:Math.max(1,Math.min(3,m.form||1));}
   yuzuFormKills(m){if(m.kind!=='lime'&&m.kind!=='bloodorange'||(m.form||1)>=3)return;const need=Math.max(4,Math.ceil((typeof YUZU_FORM_KILLS!=='undefined'?YUZU_FORM_KILLS:[14,32])[(m.form||1)-1]*Math.pow(.8,this.yuzuRank('y_fastripe'))*(1-this.yuzuTalent('Ripen'))));if(++m.formKills>=need){m.formKills=0;m.form=(m.form||1)+1;this.yuzuEvolveFx(m);}}
-  yuzuEvolveFx(m){const f=this.yuzuForm(m),name=((typeof YUZU_FORMS!=='undefined'?YUZU_FORMS:{})[m.kind]||[])[f-1]||'Companion',col=({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffdc88;this.showBanner?.('✨ Evolved!',name,1400);this.screenFlash?.(col,.3,260);this.vfxHitRing?.(m.spr.x,m.spr.y,col,true);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_evolve_f'+Math.max(2,f),.55,.5))||this.yuzuSound('grow',.6);}
+  yuzuEvolutionArt(m,col){
+    const settings=typeof Save==='undefined'?{}:Save.data?.settings||{};
+    if(settings.vfx===0||!this.textures?.exists('yz_fx_evolve'))return false;
+    const L=this._yzFx||(this._yzFx=[]);if(L.length>=8)L.shift().spr.destroy();
+    const red=this.hubMotionAllowed?.()===false,size=m.kind==='pomelo'?180:150;
+    const spr=this.camWorld(this.add.sprite(m.spr.x,m.spr.y,'yz_fx_evolve',red?4:0).setDisplaySize(size,size).setTint(col).setAlpha(.85).setDepth(m.spr.y+5));
+    spr.setBlendMode?.('NORMAL');L.push({spr,evolve:true,t:0,life:red?.25:.6,red,owner:m,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0});return true;
+  }
+  yuzuEvolveFx(m){const f=this.yuzuForm(m),name=((typeof YUZU_FORMS!=='undefined'?YUZU_FORMS:{})[m.kind]||[])[f-1]||'Companion',col=({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffdc88;this.showBanner?.('✨ Evolved!',name,1400);if(!this.yuzuEvolutionArt?.(m,col)){this.screenFlash?.(col,.3,260);this.vfxHitRing?.(m.spr.x,m.spr.y,col,true);}(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_evolve_f'+Math.max(2,f),.55,.5))||this.yuzuSound('grow',.6);}
   yuzuGuard(){
     if(this.character!=='yuzu')return 1;const m=this._yuzuCrew?.[0];if(!m)return 1;
     return this.dist(this.player.x,this.player.y,m.spr.x,m.spr.y)<170?Math.max(.55,1-.06*this.yuzuRank('loyal')-this.yuzuTalent('Guard')-(m.kind==='pomelo'?.03*this.yuzuRank('p_bodyguard'):0)):1;
@@ -17061,15 +17090,31 @@ class Game extends Phaser.Scene {
       if(z.life<=0){z.spr.destroy();L.splice(i,1);}
     }
   }
+  yuzuFormFrame(m,pose,clip){
+    if(clip.key==='yz_48_'+m.kind){const f=Math.max(0,Math.min(15,clip.frame));return f<8?Math.floor(f/2):f<12?4+Math.floor((f-8)/2):6+Math.floor((f-12)/2);}
+    if(pose.key==='yz_47_'+m.kind){
+      if(pose.state==='windup'){const a=m.action,q=m.motion;return a?(a.t<a.wind*.5?4:5):q&&q.t<(q.prep||0)*.5?4:5;}
+      if(pose.state==='release'){const a=m.action;return a&&a.t>=a.wind+(a.end-a.wind)*.6?7:6;}
+      if(pose.state==='land'||pose.state==='roll')return 6;
+      if(m.motion)return 5;
+      return pose.frame%4;
+    }
+    return pose.frame%8;
+  }
+  yuzuFormBadge(m,form){
+    if(m.kind==='yuzling'||!this.add?.image||!this.textures.exists('yz_form_badge')){m.formBadge?.destroy();m.formBadge=null;return;}
+    if(!m.formBadge?.active)m.formBadge=this.camWorld(this.add.image(0,0,'yz_form_badge',form-1).setDisplaySize(16,16).setDepth(95003));
+    m.formBadge.setFrame(form-1).setTint(({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffffff).setPosition(m.spr.x-(m.label.width||0)/2-12,m.label.y);
+  }
   yuzuVisual(m,dt){
     const sp=m.spr;const paintDt=this.state==='play'?dt:0;m.anim=(m.anim||0)+paintDt;m.attack=Math.max(0,(m.attack||0)-paintDt);
     if(m.lunge)sp.setFlipX(Math.cos(m.lunge.a)<0);
     const pose=this.yuzuVisualPose(m),v=this.yuzuAnimate(m,dt,pose),clip=this.yuzuAnimationFrame(m,pose),base='yz_'+m.kind,painted=this.textures.exists(base),form=this.yuzuForm?.(m)||1,fk='yz_'+m.kind+'_f'+form,key=form>1&&this.textures.exists(fk)?fk:this.textures.exists(clip.key)?clip.key:painted?base:'minion_yuzling';
-    const frame=key===clip.key?clip.frame:pose.frame%8;
+    const frame=key===fk?this.yuzuFormFrame(m,pose,clip):key===clip.key?clip.frame:pose.frame%8;
     if(sp.texture.key!==key)sp.setTexture(key,frame);else sp.setFrame(frame);
     if(painted)sp.clearTint();else sp.setTint(({pomelo:0xffd173,lime:0x9bd65e,bloodorange:0xc9719d})[m.kind]||0xffffff);
     const red=this.hubMotionAllowed?.()===false,size=m.kind==='pomelo'?64*(1+.14*m.growth):m.kind==='yuzling'?45:53*(1+.12*(form-1)),foot=248/256;
-    const paintScale=clip.paintScale||1;sp.setDisplaySize(size*paintScale*v.sx,size*paintScale*v.sy);
+    const paintScale=key===fk?1:clip.paintScale||1;sp.setDisplaySize(size*paintScale*v.sx,size*paintScale*v.sy);
     // Stretch/breath/recoil move the paint around a stable foot; never move the logical actor.
     sp.setOrigin(.5,foot-((foot-.5)*size+v.bob)/(size*paintScale*v.sy));
     sp.setRotation(!red&&pose.state==='roll'?(m.motion.t-m.motion.prep)*14:v.rot).setAlpha(1).setDepth((m.groundY??sp.y)+2);
@@ -17079,6 +17124,7 @@ class Game extends Phaser.Scene {
     m.label.setText((()=>{const F=typeof YUZU_FORMS!=='undefined'?YUZU_FORMS:{};return m.kind==='pomelo'?((F.pomelo||['Pomelo'])[form-1]||'Pomelo')+' '+m.growth+'/3':((F[m.kind]||[])[form-1]||({lime:'Lime',bloodorange:'Blood Orange',yuzling:'Yuzling'})[m.kind]);})()).setPosition(sp.x,sp.y-size*.58-14);
     const w=42,x=sp.x-w/2,y=sp.y-size*.58-4,u=this.yuzuBuff(),f=u?u.t/u.total:0;
     m.bar.clear();if(u){const color=({pomelo:0xffd466,lime:0xb7ff7c,bloodorange:0xef91c8})[m.kind]||0xffdc88;sp.setTint(color);m.label.setText(({pomelo:'Pomelo',lime:'Lime',bloodorange:'Blood Orange',yuzling:'Yuzling'})[m.kind]+' · '+Math.ceil(u.t)+'s');const gy=(m.groundY??sp.y)+size*(foot-.5)+7;m.bar.lineStyle(2,color,.7).strokeCircle(sp.x,gy,11);m.bar.lineStyle(3,color,.95);m.bar.beginPath?.();m.bar.arc?.(sp.x,gy,11,-Math.PI/2,-Math.PI/2+Math.PI*2*f);m.bar.strokePath?.();}
+    this.yuzuFormBadge(m,form);
 
   }
   tickYuzuCrew(dt){

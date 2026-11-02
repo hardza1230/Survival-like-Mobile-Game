@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.95, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
+Now on the 8.0.x line (owner skipped 7.9.99/100). Next release = 8.0.96, … Fetch the vampire branch first; if it already has a higher 8.0.x, take the next patch.
 
-# Latest delivery: v8.0.94 — 25 mods per gear type (owner)
+# Latest delivery: v8.0.95 — Yuzu evolved companion art (owner)
+
+Art63 eight verified sheets packed50% lossless: six128px-frame character sheets,128px-frame8shot evolutionFX and32px-frame3leaf badge (876944bytes;3.68MB decoded). Hero class remains Yuzu, but forms63 always lazy at boot even when Yuzu selected; runArtKeys loads before battle. yuzuFormFrame maps16frame walk0–7→0–3, windup8–11→4–5, release12–15→6–7, plus special47 release/land; keeps existing art fallback and stable feet. EvolutionFX is one-shot0.6s (reducedstatic4/0.25s), NORMAL/tinted, shared8cap, owner/player/build/epoch validity, pause and clearCrew cleanup; badge allocated once and destroyed with owner. No damage/evolution thresholds changed. New tests/yuzu-forms-63.test.cjs covers mapping/fallback/loading/lifecycle; full npmcheck,build andForge21/Lobby360/Rubysixsize browser contracts passed. Phone visual/FPS review pending.
+
+# Previous delivery: v8.0.94 — 25 mods per gear type (owner)
 
 FORGE_SLOT_POOL (mod numbers) overrides forgePool for weapon/gloves (same 25: 11 power + heavy batter/point blank/focused/crowd/reliable/clean + hit-rhythm & mark play mods), armor (sustain 22 + claimed reward/heavy recipe/breaking point), boots (play 14 + loot/currency/medic/stored sweetness/elite lesson/hunter mark). Turns on already-coded mods outside FORGE_ROLLABLE; #133 Crystal Glaze skipped (no effect). Amulet/ring keep the v8.0.93 row rule. Tests: forge-simple (25 per slot), forge-150. Owner phone check pending.
 
@@ -66,7 +70,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
 - ใบสั่ง 62 สถานะติดตัว ผูกแล้ว v8.0.85 · รอ QA มือถือ
 - อาร์ต 61 ฉากหลังล้มบอส ผูกแล้ว v8.0.84 · รอ QA มือถือ
-- ใบสั่ง 63 ร่างคู่หู Yuzu (f2/f3 + yz_fx_evolve) รออาร์ต `assets/incoming/yuzu_forms63/` · ตอนผูก: แพ็ก 50% (งบ Yuzu ~299 MB) และ remap เฟรม yz_48 · ใบสั่งเสียง A06 (29 เสียง) รอส่ง `assets/incoming/audio_new_features/`
+- ใบสั่ง 63 ผูกครบ 8 แล้ว v8.0.95 · รอ QA มือถือ · A06 เสียง 28 ผูกแล้ว v8.0.91
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame Mirror Network: ขั้น 1 เสร็จ v7.9.40 · ขั้น 2 (สาย + Glass World) รอเจ้าของเริ่ม
