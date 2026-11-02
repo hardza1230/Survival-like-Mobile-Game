@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.1';
+const GAME_VERSION = '8.1.2';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.2',date:'2026-11-02',title:'Sesame sound clarity',items:['Balanced the three rune sounds and separated the recipe confirmation','Prismatic Blast now has a stronger impact sound']},
   {v:'8.1.1',date:'2026-11-02',title:'Sesame: ten elemental invocations',items:['All ten recipes now cast with separate cooldowns, brief rune input recovery and cast recovery','Red orbs boost damage, green boost speed and blue regenerate HP; new cards strengthen orb effects','Rainbow Flare replaces the basic beam. PMB releases Prismatic Blast in every direction; Brand is reserved for a future hero','New original painted spell and orb art plus six original ElevenLabs rune, recipe and spell cues']},
   {v:'8.1.0',date:'2026-11-02',title:'Sesame joins after Chapter 1',items:['Clear C1-5 to unlock Sesame for C2-1 and replay earlier Story stages with the Rune Invoker prototype','Already cleared C1-5? Sesame joins automatically when you load your save; no purchase needed','Sesame remains in development with four playable rune recipes']},
   {v:'8.0.98',date:'2026-11-02',title:'Sesame: Rune Invoker playtest',items:['Try Sesame in normal Story stages: compose P / M / B with three rune buttons, then CAST','Four recipes ready: PPP impact, MMM returning chakram, BBB travelling Brand and MMB gathering ring','Runes stay after casting; new runes replace the oldest. Unfinished recipes show NOT READY and spend no cooldown','Prototype has no Build paths. Existing talent investments are preserved; endgame retains the Mirror kit']},
@@ -19039,7 +19040,7 @@ class Game extends Phaser.Scene {
   sesRuneHit(p){return this.isSesRune()&&this._sesRuneButtons?.find(q=>q.b.visible&&Math.hypot(p.x-q.b.x,p.y-q.b.y)<=q.b.radius);}
   sesRunePointerDown(p){const q=this.sesRuneHit(p);if(!q)return false;if(!this._sesRunePointers?.has(p.id))this.sesRuneAdd(q.key);(this._sesRunePointers||(this._sesRunePointers=new Set())).add(p.id);return true;}
   sesRuneAdd(key){
-    if(this.state!=='play'||this._adBusy||this._rubyEntry?.active||!SES_RUNE_TYPES.some(t=>t[0]===key))return false;const s=this.sesRuneEnsure();if(!s||s.inputCd>0)return false;this.sesRuneCommitCooldown();const old=this.sesRuneRecipe().key;s.orbs=sesRunePush(s.orbs,key);s.inputCd=.16;s.lastTap=key;s.orbFlash=.25;const now=this.sesRuneRecipe().key;if(now!==old){s.readySound=.06;s.readyKey=now;}this.sesRuneProjectCooldown();this.sesRuneSound('tap_'+key,.34);this.sesRuneRefreshUI();this.refreshUniqueSkillUI();return true;
+    if(this.state!=='play'||this._adBusy||this._rubyEntry?.active||!SES_RUNE_TYPES.some(t=>t[0]===key))return false;const s=this.sesRuneEnsure();if(!s||s.inputCd>0)return false;this.sesRuneCommitCooldown();const old=this.sesRuneRecipe().key;s.orbs=sesRunePush(s.orbs,key);s.inputCd=.16;s.lastTap=key;s.orbFlash=.25;const now=this.sesRuneRecipe().key;if(now!==old){s.readySound=.14;s.readyKey=now;}this.sesRuneProjectCooldown();this.sesRuneSound('tap_'+key,{p:.38,m:.30,b:.20}[key]);this.sesRuneRefreshUI();this.refreshUniqueSkillUI();return true;
   }
   sesRuneTarget(x,y,range){let best=null,score=-Infinity;this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e))return;const d=Math.hypot(e.x-x,e.y-y);if(d>range)return;const rank=e.isBoss?4:e.isMini?3:e._waveObjectiveTarget||e._objectiveMark?2:e.isElite?1:0,v=rank*2000-d;if(v>score){score=v;best=e;}});return best;}
   sesRuneCrowd(x,y,range){const a=[];this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&Math.hypot(e.x-x,e.y-y)<range)a.push(e);});let best=null,n=0;for(const e of a.slice(0,24)){let count=0;for(const o of a)if((e.x-o.x)**2+(e.y-o.y)**2<22500)count++;if(count>n){n=count;best=e;}}return best||this.sesRuneTarget(x,y,range);}
@@ -19059,7 +19060,7 @@ class Game extends Phaser.Scene {
     if(r.key==='bbb'){this.sesRuneHeal(.08);s.guardT=2;s.guard=Math.max(v.guard,.2);}
     if(r.key==='mbb'){p.iframe=Math.max(p.iframe||0,.65);s.mistT=2.6;this.dashReady=true;this.dashCd=0;}
     if(v.guard){s.guardT=2;s.guard=Math.max(s.guard||0,v.guard);}
-    s.cooldowns[r.key]=s.cdMax[r.key]=this.uniqueCooldown(r)*v.cooldown;s.castLock=.38;s.actors.push(q);this.sesRuneProjectCooldown();this.flashBtn?.(this.uniqueBtn);this.poseAttack?.(420);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this.fireRecipes?.('unique');this.sesRuneSound('cast',.5);this.sesRuneBurst(s,15,p.x,p.y,145,.45);
+    s.cooldowns[r.key]=s.cdMax[r.key]=this.uniqueCooldown(r)*v.cooldown;s.castLock=.38;s.actors.push(q);this.sesRuneProjectCooldown();this.flashBtn?.(this.uniqueBtn);this.poseAttack?.(420);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this.fireRecipes?.('unique');this.sesRuneSound(r.key==='pmb'?'impact':'cast',r.key==='pmb'?.62:.5);this.sesRuneBurst(s,15,p.x,p.y,145,.45);
     const rank=this.basicAttack.ranks.pulse||0;if(rank){this.sesRuneArea(p.x,p.y,105*v.area,18*rank*q.dm,'orb_reprise');this.sesRuneBurst(s,14,p.x,p.y,210*v.area,.4);}this.sesRuneRefreshUI();return true;
   }
   sesRuneDrawOrbs(s,dt){

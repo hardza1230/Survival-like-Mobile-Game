@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.2; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.3; fetch the deploy branch first.
 
-# Latest delivery: v8.1.1 — ten elemental invocations and orb cards (owner)
+# Latest delivery: v8.1.2 — Sesame sound clarity (owner)
+
+Sesame red/green/blue rune volumes balanced to existing ElevenLabs clips, recipe cue delayed to reduce overlap, and PMB uses a louder impact cue. Rune input/cast contract tests cover timing and PMB routing; phone listening and mix review remain pending.
+
+# Previous delivery: v8.1.1 — ten elemental invocations and orb cards (owner)
 
 Sesame normal/endgame aftertutorial now ten recipes with independent10–18sbaseCDs,0.16srune/0.38scastrecovery, persistentFIFOorbs, live selectedCD/ring and existingrechargeprojection/KillChargealltimers. Red+6%damage/orb,green+4%speed,blue+0.15%maxHP/s withinhealingrules/cap; eightorbcardfamilies. PMB360-degreeone-hit/generationconcussivewave, Brandremoved, BBBhealingward, MBBsurvival; sixclear/twoboss/twosurvivalspells. RainbowFlare basic/projectilepool18,actorcap8/flashcap12, nooldpath/mutation/evolutiondraft. OriginalImageGen16motifs/eighticons,762202runtimebytes/2.36MBatlasGPU; hero-lazy/alwaysbootdeferred. DirectElevenLabs6cues/12donors, admittedtap/canonicalrecipe/cast/impactfeedback, no synthfallback. SharedTaro damage-snapshot test stripsonlynewSesamepassivehook; Rune/draft/UI tests updated for superseding prototype semantics. Finalfullnpmcheck/build, Forge21/Lobby360/Rubysixsizes/Heroes7 andRune24layouts/tenpreviews/16frames/sixMP3browserdecode passed. Permanenttalents stillstored/WIP; ownerphonequality/balance/FPSpending. Design docs/design/SESAME_INVOKER_811.md.
 
