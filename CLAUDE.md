@@ -36,7 +36,9 @@ Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). 
 - **Main (Opus) itself:** design and owner questions, unclear bugs, balance, new mechanics, multi-system features, final review.
 - Skip delegation when the job is one or two tool calls (spawning costs more than doing it). Always read the subagent's diff (`git diff`) before committing.
 
-# 🚧 HEROES IN DEVELOPMENT — Sesame (owner 21 Oct) — read first
+# 🚧 HEROES IN DEVELOPMENT — Sesame — read first
+
+Owner started Sesame work and approved a replacement concept on 2 Nov2026: **pathless Rune Invoker**, three rune buttons, max three orbiting orbs, FIFO replacement, recipe by counts (not order), Unique previews/casts current recipe and retains orbs. Current design: `docs/design/SESAME_RUNE_INVOKER.md`; Mirror Network remaining phases are superseded. This is design approval, not implemented gameplay. Audit existing saves/talent investment before enabling the replacement. Earlier restriction below describes the pre-start state; Sesame-specific work for this new concept is now authorized. Keep WIP until implementation is complete.
 
 Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
 
@@ -81,7 +83,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ใบสั่ง 63 ผูกครบ 8 แล้ว v8.0.95 · รอ QA มือถือ · A06 เสียง 28 ผูกแล้ว v8.0.91
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
-- Sesame Mirror Network: ขั้น 1 เสร็จ v7.9.40 · ขั้น 2 (สาย + Glass World) รอเจ้าของเริ่ม
+- Sesame: เจ้าของอนุมัติ Rune Invoker ไม่มีสาย (2 Nov2026) · ดู `docs/design/SESAME_RUNE_INVOKER.md` · ถัดไป rune state/FIFO/10-recipe lookup + ปุ่ม/preview แล้ว prototype 4 เวท · ยังไม่ได้เปลี่ยน runtime; ไม่ทำ Mirror Network ขั้น 2 ตามแผนเก่า
 - เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ และไม่ต้องถ่ายภาพหน้าจอตรวจ UI — เจ้าของตรวจบนมือถือเอง (headless หาบั๊กได้)
 
 ## 6. เอกสาร
