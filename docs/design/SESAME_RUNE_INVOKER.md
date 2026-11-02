@@ -1,6 +1,6 @@
 # Sesame — Rune Invoker
 
-Status: core concept approved by the owner, 2 November 2026. Four-spell runtime prototype prepared for v8.0.98; release verification is recorded in SESSION_HANDOFF.md. Full hero is not complete.
+Status: core concept approved by the owner, 2 November 2026. Four-spell runtime prototype released in v8.0.98; release verification is recorded in SESSION_HANDOFF.md. Full hero is not complete.
 
 This replaces the planned Mirror Network paths/Glass World direction in [the previous design](../SESAME_MIRROR_NETWORK.md). Keep the previous document as implementation history. Do not continue those three paths by default.
 

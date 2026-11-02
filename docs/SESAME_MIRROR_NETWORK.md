@@ -1,6 +1,6 @@
 # ⚫ Sesame — Mirror Network · เอกสารออกแบบ
 
-> Superseded on 2 November 2026: the owner approved pathless Rune Invoker with three rune buttons and count-based three-orb recipes. See [current approved concept](design/SESAME_RUNE_INVOKER.md). Rune Invoker four-spell Story prototype is prepared for8.0.98; phase1 below remains the endgame/tutorial fallback and implementation history; do not implement the remaining Mirror Network phases by default.
+> Superseded on 2 November 2026: the owner approved pathless Rune Invoker with three rune buttons and count-based three-orb recipes. See [current approved concept](design/SESAME_RUNE_INVOKER.md). Rune Invoker four-spell Story prototype is live in8.0.98; phase1 below remains the endgame/tutorial fallback and implementation history; do not implement the remaining Mirror Network phases by default.
 
 สถานะ: เจ้าของเลือกแนวทาง 21 ต.ค. 2026 — แก่น **1 Mirror Network** + สาย **12 Mirror Maze / 14 Reflect / 36 Phase Swap** + Unique **44 Glass World** · ✅ อนุมัติ (เจ้าของ: ตามแนะนำทุกข้อ) · **ขั้น 1 ทำแล้ว v7.9.40**
 
