@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.5; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.6; fetch the deploy branch first.
 
-# Latest delivery: v8.1.4 — Sesame spell identity and controls (owner)
+# Latest delivery: v8.1.5 — Sesame buffs, orb identity and movement ownership (owner)
+
+PMM Prismatic Armament6s +40%basic damage/+30%basic attack rate; BBB Tidal Armor6s 20%HP shield plus0.5%HP/s regen (normal healing rules), no stationary damage/bullet clearing. Red10%damage/orb and larger splash, green6%move/8%basicrate perorb, blue0.25%HP/s and12%echo/orb; Gale/Tide ranks extend new bonuses. Echo60%damage, once per primary volley,0.14s delay/run-owned queue4/projectiles18; no recursion. Buffs refresh without stacking, expire/clear with run. PPP tracks live target generation until120ms before each meteor; Boss-role multiplier1.35→1.65 for PPP/PPM only. New original ElevenLabs3distinct taps/6donors, peak/RMS/decode/hash metadata. All heroes: action half cannot start movement, active joystick cannot be stolen, action pointer stays reserved through drag until release; mirrored controls covered. Tests cover shield/buff/echo/rate/boss aim and real input routing. Existing art reused; owner phone balance/loudness/FPS approval pending.
+
+# Previous delivery: v8.1.4 — Sesame spell identity and controls (owner)
 
 First three approved recommendations: cast-time red-orb multiplier passed explicitly per spell hit, leaving basic attacks live and other hero damage unchanged; 44–61.6px rune buttons follow control scale, compact readiness/FIFO label, pause recipe reference with stats and ten cooldowns; PPB five eruptions leave4s ground with8power/.5s nonstacking overlapping burns, initial hit36 instead of52, PPM renamed Sunlance. Independent cooldowns retained. No mana, new cards or talent migration in this first pass. Tests include delayed orb snapshot, ground damage, mobile controls/pause guide; phone balance/readability still owner review.
 

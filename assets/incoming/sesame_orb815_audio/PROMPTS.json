@@ -1,0 +1,108 @@
+{
+  "provider": "ElevenLabs",
+  "endpoint": "https://api.elevenlabs.io/v1/sound-generation?output_format=mp3_44100_128",
+  "generations": [
+    {
+      "key": "sfx_ses815_tap_p",
+      "file": "donors/tap_p_2.mp3",
+      "parameters": {
+        "text": "ONE firm low-mid wooden drum TOK with a crunchy fiery snap. Dry percussive attack, warm 300 to 700 Hz body, not a bell, no airy wash. Must be recognizable on phone speakers. Finish in 150 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "10dcd9a6d0ff1d645e4f4a7e6a9372070b7a61433fc3f66305ff59eded1eabdc"
+    },
+    {
+      "key": "sfx_ses815_tap_p",
+      "file": "donors/tap_p_1.mp3",
+      "parameters": {
+        "text": "ONE firm low-mid wooden drum TOK with a crunchy fiery snap. Dry percussive attack, warm 300 to 700 Hz body, not a bell, no airy wash. Must be recognizable on phone speakers. Finish in 150 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "8a56e4874bb0ee9a6ee51f0c767f3af1d1cfcd1757d1faabc0f5a851ddbe68c7"
+    },
+    {
+      "key": "sfx_ses815_tap_m",
+      "file": "donors/tap_m_2.mp3",
+      "parameters": {
+        "text": "ONE clean bright high metallic TING from a tiny triangle. Immediate high pitched attack around 1500 to 2500 Hz and short sharply damped ring. Not a low thump or a water drop. Finish in 170 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "3cf7c90a143ab828be63523aa604834e97ff3c34c78c1b5990fd2c6c8e9b302f"
+    },
+    {
+      "key": "sfx_ses815_tap_m",
+      "file": "donors/tap_m_1.mp3",
+      "parameters": {
+        "text": "ONE clean bright high metallic TING from a tiny triangle. Immediate high pitched attack around 1500 to 2500 Hz and short sharply damped ring. Not a low thump or a water drop. Finish in 170 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "7ad64f16494373b0bd7579e0546965988c8c690af96b532f02908f4bf7d1c46f"
+    },
+    {
+      "key": "sfx_ses815_tap_b",
+      "file": "donors/tap_b_1.mp3",
+      "parameters": {
+        "text": "ONE rounded watery PLOOP with an obvious downward pitch bend, liquid bubble body around 600 to 1000 Hz. Immediate onset, not a bell and not a wooden knock. Clear on phone speakers. Finish in 190 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "6c3ab4eb673b90b7e7b5f9532741382cf967dbac6da4a74be0603cf50111b36c"
+    },
+    {
+      "key": "sfx_ses815_tap_b",
+      "file": "donors/tap_b_2.mp3",
+      "parameters": {
+        "text": "ONE rounded watery PLOOP with an obvious downward pitch bend, liquid bubble body around 600 to 1000 Hz. Immediate onset, not a bell and not a wooden knock. Clear on phone speakers. Finish in 190 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "25ef89c9c53a454950fbfdec65583f5c992bf7d629fa74fdf4ca091d1de03552"
+    }
+  ]
+}

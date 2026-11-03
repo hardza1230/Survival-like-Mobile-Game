@@ -1,0 +1,28 @@
+{
+  "assets": [
+    {
+      "key": "sfx_ses815_tap_p",
+      "path": "assets/audio/sfx/sesame_orb815/ses811_tap_p.mp3",
+      "bytes": 3805,
+      "sha256": "13988ecaffd341fae1170545eace11cb26b69458b6bc0c5208bb18314c07bdbf",
+      "selected": "donors/tap_p_1.mp3",
+      "duration": 0.23510204081632652
+    },
+    {
+      "key": "sfx_ses815_tap_m",
+      "path": "assets/audio/sfx/sesame_orb815/ses811_tap_m.mp3",
+      "bytes": 3805,
+      "sha256": "434fb0f80245fe25598934721c129f586a3f5835a86c85f1e877ff5b4d8454e2",
+      "selected": "donors/tap_m_2.mp3",
+      "duration": 0.23510204081632652
+    },
+    {
+      "key": "sfx_ses815_tap_b",
+      "path": "assets/audio/sfx/sesame_orb815/ses811_tap_b.mp3",
+      "bytes": 4223,
+      "sha256": "842376fa71dec652d0961ac4abedc25ca27e47369d5c08acf0138406e1a61f9a",
+      "selected": "donors/tap_b_1.mp3",
+      "duration": 0.2612244897959184
+    }
+  ]
+}
