@@ -1,10 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.10; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.11; fetch the deploy branch first.
 
-# Latest delivery: v8.1.9 — Mint painted-outline VFX (owner)
+# Latest delivery: v8.1.10 — remaining hero painted-outline VFX (owner)
 
-First Sesame-style battle batch:2original ImageGen sources/8clips/48painted frames with truealpha, exact prompts/manifests/hash/border QA/source previews in mint_outline819. Runtime8WebPs2,004,790bytes/9,043,968decoded hero-lazy/alwaysbootdeferred. Glacier Bloom owns6frame snowstorm clock and cosmetic final bloom; four-second/eight-pulse gameplay retained. Impaler/normal lances and shards use owned-frame overlays on original bullets; animated dash trail, rupture/blast/charge/compact hits. Pause/Low/reduced frame hold, oldart/geometry fallback/pool+scene cleanup and budgets retained. Mint55 player charge/move sprites and damage/hitboxes/targets/range/speed/cards/audio unchanged. New asset/ownership and real Canvas gallery contracts. Owner phone visual/footprint/timing/FPS pending before Chocolate/Taro/Yuzu. Design docs/design/MINT_OUTLINE819.md.
+Owner explicitly requested completing Chocolate→Taro→Yuzu Companion+Minion→Strawberry without waiting between batches. Original built-in ImageGen11selected source atlases/44clips264authored frames; exact prompts/alpha/hash/border QA/source previews and reproducible packing. Runtime44WebPs13,840,032bytes/69,206,016decoded total, selected-hero lazy/always bootdeferred; Yuzu3element routes borrow Cocoa/Mint/Taro clips. Owned gameplay-time animation preserves old clip periods, loops and one completion, pause/Low/reduced and pool/player/basic/epoch/shutdown cleanup. Companion shared4majorFX and compact Minion hit3/120ms preserved; Strawberry shared48overlaycap. Existing character bodies, aim guides, damage, collisions, targeting, AI, cards and audio retained. New exact-asset/event/factory tests and static real Canvas47route/282loadedframe gallery added to CI. Phone visual/timing/readability/FPS review pending. See docs/design/OUTLINE_REMAINING_810.md.
+
+# Previous delivery: v8.1.9 — Mint painted-outline VFX (owner)
+
+First Sesame-style battle batch:2original ImageGen sources/8clips/48painted frames with truealpha, exact prompts/manifests/hash/border QA/source previews in mint_outline819. Runtime8WebPs2,004,790bytes/9,043,968decoded hero-lazy/alwaysbootdeferred. Glacier Bloom owns6frame snowstorm clock and cosmetic final bloom; four-second/eight-pulse gameplay retained. Impaler/normal lances and shards use owned-frame overlays on original bullets; animated dash trail, rupture/blast/charge/compact hits. Pause/Low/reduced frame hold, oldart/geometry fallback/pool+scene cleanup and budgets retained. Mint55 player charge/move sprites and damage/hitboxes/targets/range/speed/cards/audio unchanged. New asset/ownership and real Canvas gallery contracts. Owner phone visual/footprint/timing/FPS pending; remaining hero batches authorized without a review gate. Design docs/design/MINT_OUTLINE819.md.
 
 # Previous delivery: v8.1.8 — boss shelter, smaller Yuzu squad and nectar defense (owner)
 

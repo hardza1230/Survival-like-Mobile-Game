@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.9';
+const GAME_VERSION = '8.1.10';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.10',date:'2026-11-03',title:'Painted action for every hero',items:['Chocolate: animated Titan impacts, flame fists and Rocket Gauntlet.','Taro: crisp lightning, Spark, plasma and electric finishers.','Yuzu: new Pomelo, Lime and Blood Orange magic, plus compact Minion attacks.','Strawberry: animated Sniper, Berry Blast, Ricochet and seed effects.']},
   {v:'8.1.9',date:'2026-11-03',title:'Mint in painted ice',items:['Glacier Bloom swirls with animated ink-edged snow and ice.','Impaler lances, homing shards and the Frost Lance trail now share a sharper painted style.','New crystal ruptures and the Lance Burst finish keep their original gameplay effects.']},
   {v:'8.1.8',date:'2026-11-03',title:'Clearer boss shelter and companion battles',items:['Mycelium Behemoth now holds still and charges a powerful blast. Reach the fixed air bubble before the countdown ends.','Yuzu fields up to 10 Minions with spread attack timing and targets. Companion and Minion damage is slightly lower.','Defend one tougher nectar flower. Losing it costs one third max HP, then a fresh flower blooms elsewhere.']},
   {v:'8.1.7',date:'2026-11-03',title:'Elemental invocations in motion',items:['Steam Cannon unleashes three forward steam pulses. Tidal Serpent hunts a priority target, bites three times and ends in a water burst.','Sesame spells and Rainbow Flare now use animated painted elemental effects.','New flame ribbons, curling waves and prismatic impacts share the game’s colorful fantasy style.']},
@@ -3121,6 +3122,7 @@ const ASSET_SHEETS = {
    frames=จำนวนเฟรม · rate=fps · anchor=จุดยึด origin ('left'=ยิงจากตัวออกไป, 'center'=ระเบิดกลาง) */
 // v6.60.3 build-path pose sheets are packed at half size; scale them back to the run sheet's on-screen size
 const BP_POSE_SCALE={char_cocoa_titan_slam:1/.74,char_cocoa_titan_hop:1/.76,char_cocoa_titan_charge:1/.8,char_cocoa_titan_walk:1/.88,char_cocoa_titan_colossus:1/.8,char_cocoa_fire_jab:1/.76,char_cocoa_fire_fin:1/.72,char_cocoa_rocket:1/.7,char_cocoa_dash_leap:1/.78,char_cocoa_dash_jab:1/.8,char_cocoa_phantom:1/.62,char_cocoa_hurt:1/.92,char_cocoa_victory:1/.82,char_mint_lance_charged:1/.66};
+const BATTLE_OUTLINE810_MAP={"bpx_cocoa_titan_slam":"bpx_cocoa810_slam","bpx_cocoa_crush":"bpx_cocoa810_slam","bpx_cocoa_crack":"bpx_cocoa810_shockwave","bpx_cocoa_shockwave":"bpx_cocoa810_shockwave","bpx_cocoa_landing_dust":"bpx_cocoa810_shockwave","bpx_cocoa_dashring":"bpx_cocoa810_dashring","bpx_cocoa_crater":"bpx_cocoa810_crater","bpx_cocoa_rage1":"bpx_cocoa810_rage","bpx_cocoa_rage2":"bpx_cocoa810_rage","bpx_cocoa_rage3":"bpx_cocoa810_rage","bpx_cocoa_fist":"bpx_cocoa810_fist","bpx_cocoa_fireball":"bpx_cocoa810_fireball","bpx_cocoa_gauntlet":"bpx_cocoa810_gauntlet","bpx_cocoa_explode":"bpx_cocoa810_explosion","bpx_cocoa_stick":"bpx_cocoa810_explosion","bpx_cocoa_shadowfist":"bpx_cocoa810_shadowfist","bpx_cocoa_dash_trail":"bpx_cocoa810_dashtrail","fx_cocoa_punch":"bpx_cocoa810_punch","bpx_taro_arc_bolt":"bpx_taro810_bolt","bpx_taro_arc_loop":"bpx_taro810_bolt","bpx_taro_ball_zap":"bpx_taro810_bolt","bpx_taro_tesla":"bpx_taro810_bolt","bpx_taro_sentry_bolt":"bpx_taro810_bolt","bpx_taro_arc_hit":"bpx_taro810_hit","bpx_taro_spark_hit":"bpx_taro810_hit","bpx_taro_spark_split":"bpx_taro810_hit","bpx_taro_spark_bounce":"bpx_taro810_hit","bpx_taro_ball_zap_hit":"bpx_taro810_hit","bpx_taro_plasma_hit":"bpx_taro810_hit","bpx_taro_spark":"bpx_taro810_spark","bpx_taro_spark_burst":"bpx_taro810_burst","bpx_taro_orb_burst":"bpx_taro810_burst","bpx_taro_ball_fade":"bpx_taro810_burst","bpx_taro_sentry_detonate":"bpx_taro810_burst","bpx_taro_sentry_overload":"bpx_taro810_burst","bpx_taro_sentry_expire":"bpx_taro810_burst","bpx_taro_arc_overload_hit":"bpx_taro810_burst","bpx_taro_plasma_cast":"bpx_taro810_burst","bpx_taro_ball_core":"bpx_taro810_core","bpx_taro_ball_gold":"bpx_taro810_core","bpx_taro_ball_field":"bpx_taro810_field","bpx_taro_plasma_ring":"bpx_taro810_plasma","bpx_taro_shock_aura":"bpx_taro810_plasma","bpx_taro_beacon_strike":"bpx_taro810_strike","bpx_momo_sniperhit":"bpx_momo810_sniperhit","bpx_momo_pellethit":"bpx_momo810_pellethit","bpx_momo_seed_pop":"bpx_momo810_seedpop","bpx_momo_pinball":"bpx_momo810_pinball","bpx_momo_dash":"bpx_momo810_dash","bpx_momo_bounce":"bpx_momo810_bounce","bpx_momo_link":"bpx_momo810_link"};
 const ASSET_FX = {
   // v8.0.2 ใบ 45 Motion Comic FX (โหลดทีละฉาก)
   cs_fx_root_burst:{url:'assets/art/story/cs_fx_root_burst.webp',fw:270,fh:270,frames:6,rate:10,anchor:'center'},   // v8.0.8 ใบ 46 รากพุ่ง (ค้างเฟรมสุดท้าย)
@@ -3378,6 +3380,53 @@ const ASSET_FX = {
   bpx_taro_beacon_ring:{url:'assets/art/taro_sentry/vfx_taro_beacon_ring.webp',fw:256,fh:256,frames:6,rate:16,anchor:'center'},
   bpx_taro_overcharge:{url:'assets/art/taro_sentry/vfx_taro_overcharge_aura.webp',fw:128,fh:128,frames:4,rate:10,anchor:'center',loop:true},
   bpx_taro_tesla:{url:'assets/art/taro_sentry/vfx_taro_tesla_link.webp',fw:512,fh:64,frames:4,rate:14,anchor:'left',loop:true},
+  bpx_cocoa810_shadowfist:{url:'assets/art/cocoa_outline810/bpx_cocoa810_shadowfist.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_cocoa810_dashtrail:{url:'assets/art/cocoa_outline810/bpx_cocoa810_dashtrail.webp',fw:256,fh:256,frames:6,rate:18,anchor:'left',loop:true},
+  bpx_cocoa810_dashring:{url:'assets/art/cocoa_outline810/bpx_cocoa810_dashring.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_cocoa810_punch:{url:'assets/art/cocoa_outline810/bpx_cocoa810_punch.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_taro810_bolt:{url:'assets/art/taro_outline810/bpx_taro810_bolt.webp',fw:256,fh:256,frames:6,rate:18,anchor:'left',loop:true},
+  bpx_taro810_hit:{url:'assets/art/taro_outline810/bpx_taro810_hit.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_taro810_spark:{url:'assets/art/taro_outline810/bpx_taro810_spark.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_taro810_burst:{url:'assets/art/taro_outline810/bpx_taro810_burst.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_taro810_core:{url:'assets/art/taro_outline810/bpx_taro810_core.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_taro810_field:{url:'assets/art/taro_outline810/bpx_taro810_field.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_taro810_plasma:{url:'assets/art/taro_outline810/bpx_taro810_plasma.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_taro810_strike:{url:'assets/art/taro_outline810/bpx_taro810_strike.webp',fw:256,fh:256,frames:6,rate:22,anchor:'bottom'},
+  bpx_yuzu810_slam:{url:'assets/art/yuzu_outline810/bpx_yuzu810_slam.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_yuzu810_peel:{url:'assets/art/yuzu_outline810/bpx_yuzu810_peel.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_yuzu810_roll:{url:'assets/art/yuzu_outline810/bpx_yuzu810_roll.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_guardian:{url:'assets/art/yuzu_outline810/bpx_yuzu810_guardian.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_arrow:{url:'assets/art/yuzu_outline810/bpx_yuzu810_arrow.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_volley:{url:'assets/art/yuzu_outline810/bpx_yuzu810_volley.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_yuzu810_pierce:{url:'assets/art/yuzu_outline810/bpx_yuzu810_pierce.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_trap:{url:'assets/art/yuzu_outline810/bpx_yuzu810_trap.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_comet:{url:'assets/art/yuzu_outline810/bpx_yuzu810_comet.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_yuzu810_sigil:{url:'assets/art/yuzu_outline810/bpx_yuzu810_sigil.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_bloom:{url:'assets/art/yuzu_outline810/bpx_yuzu810_bloom.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_yuzu810_honey:{url:'assets/art/yuzu_outline810/bpx_yuzu810_honey.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_fire:{url:'assets/art/cocoa_outline810/bpx_cocoa810_fireball.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_frost:{url:'assets/art/mint_outline819/bpx_mint819_shard.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_yuzu810_lightning:{url:'assets/art/taro_outline810/bpx_taro810_spark.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_momo810_sniperhit:{url:'assets/art/momo_outline810/bpx_momo810_sniperhit.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_momo810_pellethit:{url:'assets/art/momo_outline810/bpx_momo810_pellethit.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_momo810_seedpop:{url:'assets/art/momo_outline810/bpx_momo810_seedpop.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_momo810_pinball:{url:'assets/art/momo_outline810/bpx_momo810_pinball.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_momo810_charged:{url:'assets/art/momo_outline810/bpx_momo810_charged.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_momo810_dash:{url:'assets/art/momo_outline810/bpx_momo810_dash.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_momo810_bounce:{url:'assets/art/momo_outline810/bpx_momo810_bounce.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_momo810_link:{url:'assets/art/momo_outline810/bpx_momo810_link.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_momo810_muzzle:{url:'assets/art/momo_outline810/bpx_momo810_muzzle.webp',fw:256,fh:256,frames:6,rate:22,anchor:'left'},
+  bpx_momo810_blast:{url:'assets/art/momo_outline810/bpx_momo810_blast.webp',fw:256,fh:256,frames:6,rate:22,anchor:'left'},
+  bpx_momo810_scope:{url:'assets/art/momo_outline810/bpx_momo810_scope.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_momo810_seed:{url:'assets/art/momo_outline810/bpx_momo810_seed.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_cocoa810_slam:{url:'assets/art/cocoa_outline810/bpx_cocoa810_slam.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_cocoa810_shockwave:{url:'assets/art/cocoa_outline810/bpx_cocoa810_shockwave.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_cocoa810_rage:{url:'assets/art/cocoa_outline810/bpx_cocoa810_rage.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_cocoa810_crater:{url:'assets/art/cocoa_outline810/bpx_cocoa810_crater.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_cocoa810_fist:{url:'assets/art/cocoa_outline810/bpx_cocoa810_fist.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_cocoa810_fireball:{url:'assets/art/cocoa_outline810/bpx_cocoa810_fireball.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_cocoa810_gauntlet:{url:'assets/art/cocoa_outline810/bpx_cocoa810_gauntlet.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_cocoa810_explosion:{url:'assets/art/cocoa_outline810/bpx_cocoa810_explosion.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
   bpx_cocoa_crack:{url:'assets/art/bp_fx/vfx_titan_landing_crack.webp',fw:256,fh:256,frames:8,rate:20,anchor:'center'},
   bpx_cocoa_shockwave:{url:'assets/art/bp_fx/vfx_titan_shockwave.webp',fw:256,fh:256,frames:8,rate:24,anchor:'center'},
   bpx_cocoa_rage1:{url:'assets/art/bp_fx/vfx_titan_rage_aura_lv1.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
@@ -4086,7 +4135,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
@@ -9042,7 +9091,8 @@ class Game extends Phaser.Scene {
   startSnipeCharge(p){ if(this.state!=='play'||this.uniqueCd>0||this._snipe)return;const pl=this.player,a=(this.isBlastUnique()||this.mintChargeKind())?(this.nearestEnemy?this.nearestEnemy(500):null)||this.strongestEnemy(900):this.strongestEnemy(900);
     this._snipe={id:p.id,t0:performance.now(),sx:p.x,sy:p.y,ang:a?Math.atan2(a.y-pl.y,a.x-pl.x):Math.atan2(this.moveDir?this.moveDir.y:-1,this.moveDir?this.moveDir.x:0),dragged:false,full:false,blast:this.isBlastUnique(),kind:this.isYuzuCommand?.()?'yuzu':this.mintChargeKind(),
       g:this.camWorld(this.add.graphics().setDepth(90500))};
-    if(this._snipe.kind!=='yuzu'&&this.textures.exists('vfx_strawberry_charge'))this._snipe.aura=this.trackArtVfx(this.camWorld(this.add.image(pl.x,pl.y-24,'vfx_strawberry_charge').setDepth(90490).setDisplaySize(90,90).setAlpha(0.45)));
+    if(this.character==='momo'&&this.realTex?.('bpx_momo810_scope'))this._snipe.aura=this.heroFx?.('bpx_momo810_scope',pl.x,pl.y-24,90,{must:true,depth:90490,alpha:.45});
+    else if(this._snipe.kind!=='yuzu'&&this.textures.exists('vfx_strawberry_charge'))this._snipe.aura=this.trackArtVfx(this.camWorld(this.add.image(pl.x,pl.y-24,'vfx_strawberry_charge').setDepth(90490).setDisplaySize(90,90).setAlpha(0.45)));
     if(this._snipe.blast)Sfx.bp?.('uq_shotgun_pump',.6,.2); else if(this._snipe.kind==='yuzu'){Sfx.bp?.('shared_unique_charge_start',.5,.2);} else if(!this._snipe.kind){ Sfx.bpLoopStart?.('uq_sniper_charge',.22); this.fxScopeStart?.(); } else {Sfx.eventLoopStart?.('event_mint_ice_charge',.22);Sfx.bp?.('shared_unique_charge_start',.5,.2)||(Sfx.beatFx&&Sfx.beatFx('hold'));} }   /* v6.82 Unique SFX */
   moveSnipeAim(p){ const s=this._snipe;if(!s)return; const dx=p.x-s.sx,dy=p.y-s.sy; s.dl=Math.hypot(dx,dy); if(s.dl>18){ s.ang=Math.atan2(dy,dx); s.dragged=true; } }
   snipeArt(s,key,x,y){let a=s.art;if(a&&(!a.active||a.texture.key!==key)){if(a.active)a.destroy();a=s.art=null;}if(!a&&this.bpAnim(key))a=s.art=this.heroFx(key,x,y,ASSET_FX[key].fw,{must:true,depth:90499});return a;}   // v7.8.45 S2/S3/M5/M6 aim art (null = code fallback)
@@ -9249,7 +9299,8 @@ class Game extends Phaser.Scene {
         const n=Math.max(1,Math.round(bm.pellets*(1-d/(R*1.6))*0.5)); hits++;
         this._sgHit=true; try{ this.damage(e,unit*n*(d<120?2*pb:1)*(e.isBoss||e.isMini?2:1),e.x,e.y); } finally { this._sgHit=false; }
         if(e.active&&!e.isBoss&&!e.isMini&&e.body){ const k=(d<120?520:320)/Math.max(1,d); e.body.velocity.x+=dx*k; e.body.velocity.y+=dy*k; } });
-      if(this.textures.exists('vfx_berry_blast'))this.trackArtVfx(this.spawnFxAnim('vfx_berry_blast',pl.x,pl.y,{scaleX:R/384,scaleY:Math.min(600,2*R*Math.sin(Math.min(Math.PI/2,h)))/256,rotation:ang,depth:90450,normal:true}));
+      if(this.realTex?.('bpx_momo810_blast')&&this.heroFx?.('bpx_momo810_blast',pl.x,pl.y,R*1.33,{h:Math.min(600,2*R*Math.sin(Math.min(Math.PI/2,h))),rot:ang,depth:90450,life:.27,fade:0})){}
+      else if(this.textures.exists('vfx_berry_blast'))this.trackArtVfx(this.spawnFxAnim('vfx_berry_blast',pl.x,pl.y,{scaleX:R/384,scaleY:Math.min(600,2*R*Math.sin(Math.min(Math.PI/2,h)))/256,rotation:ang,depth:90450,normal:true}));
       else for(let i=0;i<bm.pellets;i++){ const a=ang-h+bm.cone*(i+0.5)/bm.pellets+(Math.random()-0.5)*0.08,len=200+Math.random()*100;
         const dot=this.camWorld(this.add.circle(pl.x,pl.y,4,[0xff5c8a,0xffd166,0xffffff][i%3]).setDepth(90450));
         this.tweens.add({targets:dot,x:pl.x+Math.cos(a)*len,y:pl.y+Math.sin(a)*len,alpha:0,duration:220,ease:'Quad.out',onComplete:()=>dot.destroy()}); }
@@ -16258,14 +16309,14 @@ class Game extends Phaser.Scene {
   taroRemoveNode(node,fade=false){const t=this._taro;if(!t)return;if(fade&&t.enabled&&this.state==='play')this.taroArt?.(node.beacon?'bpx_taro_orb_burst':'bpx_taro_sentry_expire',node.x,node.y-(node.beacon?24:14),node.beacon?100:58,{life:.45});this.taroRemoveFx(node.fx);t.nodes=(t.nodes||[]).filter(n=>n!==node);}
   // v7.8.20 Taro art sprite: anim from ASSET_FX, display size in px, tracked by Taro's own FX set (life 0 = persistent, owner removes)
   /* v7.8.30 sprite FX ที่ไม่ต้องพึ่งสถานะ Taro (ใช้ก่อนเลือก Build ได้) · เพดาน 28 ชิ้น · จางเองแล้วลบ */
-  taroFx(key,x,y,w,o={}){if(!this.bpAnim?.(key)||(this._taroFxLive||0)>=28||!this.add)return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.rot!=null)s.setRotation(o.rot);if(o.tint)s.setTint(o.tint);s.play(key);this._taroFxLive=(this._taroFxLive||0)+1;const life=o.life||.25;this.tweens.add({targets:s,alpha:0,delay:life*600,duration:life*400,onComplete:()=>{this._taroFxLive=Math.max(0,(this._taroFxLive||1)-1);s.destroy();}});return s;}
+  taroFx(key,x,y,w,o={}){const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim?.(key)||(this._taroFxLive||0)>=28||!this.add)return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.rot!=null)s.setRotation(o.rot);if(o.tint)s.setTint(o.tint);s.play(key);this.battleOutlineTrack?.(s,oldKey,key);this._taroFxLive=(this._taroFxLive||0)+1;const life=o.life||.25;this.tweens.add({targets:s,alpha:0,delay:life*600,duration:life*400,onComplete:()=>{this._taroFxLive=Math.max(0,(this._taroFxLive||1)-1);s.destroy();}});return s;}
   /* v7.8.69 เจ้าของ: เหลือศัตรูตัวเดียว → Arc วนโค้งออกไปก่อนแล้วค่อยกลับมาชิ่งใส่ตัวเดิม (ดาเมจตอนกลับถึง) */
   taroArcLoopHop(token,fn){const e=token?.enemy;if(!e?.active)return;const a=(e._arcLoopA=(e._arcLoopA??Math.random()*Math.PI*2)+2.3),r=90+Math.min(40,(e.displayWidth||40)*.3),px=e.x+Math.cos(a)*r,py=e.y+Math.sin(a)*r;
     if(!this.time?.delayedCall){fn();return;}const mx=(e.x+px)/2+Math.cos(a+1.57)*r*.45,my=(e.y+py)/2+Math.sin(a+1.57)*r*.45;this.taroArcBolt?.(e.x,e.y,mx,my);this.time.delayedCall(TARO_ARC_HOP_MS*.2,()=>{if(this.state==='play')this.taroArcBolt?.(mx,my,px,py);});
     this.time.delayedCall(TARO_ARC_HOP_MS*.45,()=>{if(this.state!=='play'||!e.active)return;this.taroArcBolt?.(px,py,e.x,e.y,true);fn();});}
   taroArcBolt(x1,y1,x2,y2,loop=false){const d=Math.hypot(x2-x1,y2-y1);if(d<4||!this.taroFx(loop?'bpx_taro_arc_loop':'bpx_taro_arc_bolt',x1,y1,d,{h:loop?40:26,rot:Math.atan2(y2-y1,x2-x1),life:.22}))return this.chainBolt?.(x1,y1,x2,y2);this.taroFx(loop?'bpx_taro_arc_overload_hit':'bpx_taro_arc_hit',x2,y2,loop?90:44,{life:.25});}
-  taroArt(key,x,y,w,o={}){const t=this._taro;if(!t?.enabled||!this.bpAnim?.(key))return null;if(o.life>0&&!this.taroVisualBudget(true))return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);
-    s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.tint)s.setTint(o.tint);if(o.rot!=null)s.setRotation(o.rot);if(o.alpha!=null)s.setAlpha(o.alpha);s.play(key);if(o.then&&this.bpAnim(o.then))s.chain(o.then);return o.track===false?s:this.taroTrackVisual(s,o.life||0);}
+  taroArt(key,x,y,w,o={}){const oldKey=key;key=this.battleOutlineKey?.(key)||key;const t=this._taro;if(!t?.enabled||!this.bpAnim?.(key))return null;if(o.life>0&&!this.taroVisualBudget(true))return null;const fd=ASSET_FX[key],s=this.camWorld(this.add.sprite(x,y,key,0)).setDepth(o.depth??90400);
+    s.setOrigin(fd.anchor==='left'?0:.5,fd.anchor==='bottom'?1:.5).setDisplaySize(w,o.h??w*fd.fh/fd.fw);if(o.tint)s.setTint(o.tint);if(o.rot!=null)s.setRotation(o.rot);if(o.alpha!=null)s.setAlpha(o.alpha);s.play(key);this.battleOutlineTrack?.(s,oldKey,key);if(o.then&&this.bpAnim(o.then))s.chain(o.then);return o.track===false?s:this.taroTrackVisual(s,o.life||0);}
   taroNodeVisual(node){const t=this._taro;if(!t?.enabled)return null;const c=this.camWorld(this.add.container(node.x,node.y).setDepth(89990)),ring=this.add.circle(0,0,28,0x241c38,.12).setStrokeStyle(2,node.beacon?0xffda89:0xc6a2ed,.9),anim=this.bpAnim?.(node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy'),art=anim?this.add.sprite(0,node.beacon?-24:-14,node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy',0).setDisplaySize(node.beacon?80:58,node.beacon?80:58):this.textures.exists('fx_taro_sentry')?this.add.image(0,-14,'fx_taro_sentry').setDisplaySize(58,58):this.add.circle(0,-14,16,0xa98cf0,.9),bar=this.add.rectangle(-22,29,44,3,node.beacon?0xffda89:0xbba0ed).setOrigin(0,.5);c.add([ring,art,bar]);c._bar=bar;if(anim){c._art=art;art.play(node.beacon?'bpx_taro_beacon_idle':'bpx_taro_sentry_deploy');if(!node.beacon&&this.bpAnim('bpx_taro_sentry_idle'))art.chain('bpx_taro_sentry_idle');}c._taroDuration=node.life;this.taroTrackVisual(c,0);return c;}
   taroProjectileVisual(p){if(!this._taro?.enabled||this.state!=='play'||!this.add)return null;/* v7.8.76 เจ้าของ: Spark มีดาเมจแต่มองไม่เห็น — เดิมภาพลูกกระสุนใช้โควตาเดียวกับเอฟเฟกต์ตอนโดน (20 ชิ้น) · ตอนนี้ลูกกระสุนมีภาพเสมอ (จำนวนลูกถูกคุมด้วยเพดานอยู่แล้ว) */{const sp=p.kind==='spark'||p.kind==='sparkChild';if(sp&&this.bpAnim?.('bpx_taro_spark')){const s=this.taroArt('bpx_taro_spark',p.x,p.y,46*(TARO_SPARK_SCALE[p.gen||0]||.65),{rot:p.angle});if(s)return s;}
       if(!sp&&this.bpAnim?.('bpx_taro_ball_core')){const gold=p.kind==='beacon',s=this.taroArt(gold?'bpx_taro_ball_gold':'bpx_taro_ball_core',p.x,p.y,gold?44:38);if(s){const fl=this.bpAnim('bpx_taro_ball_field')?this.taroArt('bpx_taro_ball_field',p.x,p.y,Math.max(40,(p.radius||40)*2/.9),{alpha:.85,depth:90380,tint:gold?0xffe7a8:null}):null;if(fl)s._taroAttached=[fl];return s;}}}const g=this.camWorld(this.add.graphics().setDepth(90400));if(p.kind==='spark'||p.kind==='sparkChild'){g.setScale(TARO_SPARK_SCALE[p.gen||0]||.65);g.lineStyle(4,0x34234d,.9);g.strokePoints([{x:-14,y:3},{x:-5,y:-3},{x:0,y:0},{x:6,y:-2}]);g.lineStyle(2,0xc6e9ff,1);g.strokePoints([{x:-14,y:3},{x:-5,y:-3},{x:0,y:0},{x:6,y:-2}]);g.fillStyle(0xf4edff,1);g.fillCircle(0,0,2);}else{const R=Math.max(15,p.radius||15),col=p.kind==='beacon'?0xffda89:0xa9e8ee;g.fillStyle(col,.05);g.fillCircle(0,0,R);g.lineStyle(1,col,.22);g.strokeCircle(0,0,R);g.fillStyle(col,.35);g.fillCircle(0,0,17);g.lineStyle(4,0x34234d,.85);g.strokeCircle(0,0,11);g.lineStyle(2.5,col,1);g.strokeCircle(0,0,11);g.fillStyle(0xffffff,.95);g.fillCircle(0,0,6);}/* v7.8.24 ลูกเล็ก + วงจาง = ระยะช็อต */this.taroTrackVisual(g,0);g.setPosition(p.x,p.y).setRotation(p.angle);return g;}
@@ -16651,13 +16702,18 @@ class Game extends Phaser.Scene {
   }
 
   clearYuzuSkillFx(){for(const q of this._yzShow||[])q.spr?.destroy();this._yzShow=[];this._yzShowFlavor=0;}
+  yuzuOutlineKey(kind,opt={}){
+    const k=opt.key||'',row=Math.floor((opt.start||0)/4),a=k==='yz_54_pomelo'?['peel','peel']:k==='yz_54_lime'?['volley','trap','pierce']:k==='yz_54_bloodorange'||k==='yz_bo96_arsenal'?['sigil','comet','sigil','bloom','honey']:null;
+    const clip=a?a[row]:k==='yz_51_pomelo'?(row?'slam':'guardian'):k==='yz_51_lime'?(row?'pierce':'volley'):k==='yz_51_bloodorange'||k==='yz_bo96_unique'?(row?'bloom':'honey'):({slam:'slam',peel:'peel',volley:'volley',rain:'trap',sweet:'honey',sour:'sigil',spicy:'bloom',roll:'roll'})[kind];
+    const next=clip&&'bpx_yuzu810_'+clip;return next&&this.realTex?.(next)?next:null;
+  }
   yuzuSkillFx(kind,x,y,size,angle=0,opt={}){
     const settings=typeof Save==='undefined'?{}:Save.data?.settings||{};
     if(settings.vfx===0&&!opt.essential||this.character!=='yuzu')return null;
-    const key=opt.key||'yz_49_'+kind;if(!this.textures.exists(key))return null;
+    const outline=this.yuzuOutlineKey?.(kind,opt),key=outline||opt.key||'yz_49_'+kind;if(!this.textures.exists(key))return null;if(outline)opt={...opt,start:0,frames:6,hold:null};
     const L=this._yzShow||(this._yzShow=[]);if(L.length>=4){let i=opt.important?L.findIndex(q=>!q.important):-1;if(i<0&&opt.finisher)i=0;if(i<0)return null;L[i].spr.destroy();L.splice(i,1);}
     if(!this._yzShowHook&&this.events?.once){this._yzShowHook=true;this.events.once('shutdown',()=>{this.clearYuzuSkillFx();this._yzShowHook=false;});}
-    const red=this.hubMotionAllowed?.()===false||settings.vfx===0,cone=kind==='volley'||kind==='spicy',life=red?Math.min(.35,opt.life||.55):opt.life||.55,start=opt.start||0,frames=opt.frames||4,hold=Number.isInteger(opt.hold)?opt.hold:null;
+    const red=this.hubMotionAllowed?.()===false||settings.vfx===0,cone=outline?/_(?:volley|pierce)$/.test(outline):kind==='volley'||kind==='spicy',life=red?Math.min(.35,opt.life||.55):opt.life||.55,start=opt.start||0,frames=opt.frames||4,hold=Number.isInteger(opt.hold)?opt.hold:null;
     const alpha=opt.alpha==null?(size>250?.5:.68):Math.max(0,Math.min(.95,opt.alpha));
     const spr=this.camWorld(this.add.sprite(x,y,key,start+(hold??(red?2:0))).setOrigin(cone?.22:.5,.5).setDisplaySize(Math.min(420,size),Math.min(420,size)).setRotation(angle).setAlpha(alpha).setDepth(opt.ground?4:y+5));
     if(opt.tint!=null)spr.setTint(opt.tint);spr.setBlendMode?.(0);
@@ -16755,6 +16811,7 @@ class Game extends Phaser.Scene {
     return [m.spr.x,m.spr.y];
   }
   yuzuAttackFx(frame,x,y,size,angle=0,life=.28){
+    const outline=this.yuzuOutlineKey?.(frame===0?'peel':frame===3?'spicy':'volley');if(outline&&this.heroFxThrottle?.('yzSmall',3,120))return this.heroFx?.(outline,x,y,size,{rot:angle,depth:y+4,life,alpha:.7});
     if(!this.textures.exists('yz_47_attacks'))return;const L=this._yzFx||(this._yzFx=[]);if(L.length>=8)return;
     const spr=this.camWorld(this.add.sprite(x,y,'yz_47_attacks',frame).setDisplaySize(size,size).setRotation(angle).setAlpha(.7).setDepth(y+4));L.push({spr,t:0,life,staticFrame:true});
   }
@@ -17032,11 +17089,13 @@ class Game extends Phaser.Scene {
   }
   yuzuShot(m,x,y,angle,amount,opt={}){
     const L=this._yzShots||(this._yzShots=[]);if(L.length>=48||opt.mini&&L.filter(q=>q.mini).length>=24)return;this.yuzuSound(opt.seed?'seed':opt.burn?'spicy':'arrow',.15,.22);
-    const roleArt=!!(opt.minionRole||opt.element||opt.formArrow)&&this.textures.exists('yz_mn97_shots'),roleFrame=opt.element?({fire:3,frost:4,lightning:5})[opt.element]:Math.max(0,Math.min(2,(opt.formArrow||1)-1)),seedArt=!roleArt&&opt.mini&&opt.source==='seedling'&&this.textures.exists('yzs_seed_shot');
-    const finalArt=(opt.focusFinal||opt.source==='command_arrow')&&this.textures.exists('yz_51_lime')&&(typeof Save==='undefined'||Save.data?.settings?.vfx!==0),painted=roleArt||seedArt||finalArt||!opt.seed&&this.textures.exists('yz_47_attacks'),key=roleArt?'yz_mn97_shots':seedArt?'yzs_seed_shot':finalArt?'yz_51_lime':painted?'yz_47_attacks':this.textures.exists('proj_yuzu')?'proj_yuzu':this.textures.exists('proj_sprinkle')?'proj_sprinkle':'vfx_glow';
-    const frame=roleArt?roleFrame:seedArt?0:finalArt?6:opt.burn?3:1,u=this.yuzuBuff();
+    const shotClip=opt.element||((opt.focusFinal||opt.source==='command_arrow')?'pierce':opt.burn?'comet':!opt.seed?'arrow':null),outline=shotClip&&'bpx_yuzu810_'+shotClip,outlined=!!(outline&&this.realTex?.(outline));
+    const roleArt=!!(opt.minionRole||opt.element||opt.formArrow)&&this.textures.exists('yz_mn97_shots'),roleFrame=opt.element?({fire:3,frost:4,lightning:5})[opt.element]:Math.max(0,Math.min(2,(opt.formArrow||1)-1)),seedArt=!outlined&&!roleArt&&opt.mini&&opt.source==='seedling'&&this.textures.exists('yzs_seed_shot');
+    const finalArt=(opt.focusFinal||opt.source==='command_arrow')&&this.textures.exists('yz_51_lime')&&(typeof Save==='undefined'||Save.data?.settings?.vfx!==0),painted=outlined||roleArt||seedArt||finalArt||!opt.seed&&this.textures.exists('yz_47_attacks'),key=outlined?outline:roleArt?'yz_mn97_shots':seedArt?'yzs_seed_shot':finalArt?'yz_51_lime':painted?'yz_47_attacks':this.textures.exists('proj_yuzu')?'proj_yuzu':this.textures.exists('proj_sprinkle')?'proj_sprinkle':'vfx_glow';
+    const frame=outlined?0:roleArt?roleFrame:seedArt?0:finalArt?6:opt.burn?3:1,u=this.yuzuBuff();
     const shotSize=opt.size||(opt.focusFinal||opt.source==='command_arrow'?98:opt.source==='focus_arrow'?52:null);
     const spr=this.camWorld((painted?this.add.sprite(x,y,key,frame):this.add.image(x,y,key)).setDisplaySize(shotSize||(painted?(opt.burn?45:42):opt.seed?11:20),shotSize||(painted?(opt.burn?45:42):8)).setRotation(angle).setDepth(90000));
+    if(outlined)this.battleOutlineTrack?.(spr,key,key,null,true);
     if(!painted)spr.setTint(opt.seed?0xffd975:0xb8ef85);
     if(m&&!opt.seed&&opt.source==='arrow')this.yuzuSkillFx('volley',x,y,72,angle,{life:.24});
     if(m&&opt.burn)this.yuzuSkillFx('spicy',x,y,148,angle,{life:.42});
@@ -17047,7 +17106,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<n;i++)this.yuzuShot(m,m.spr.x,m.spr.y,a+(i-(n-1)/2)*spread,this.yuzuPower()*mul,{pierce:3,source,first:true});
     m.attack=.35;this.yuzuSound('volley',.4);
   }
-  yuzuZone(m,kind,x,y,r,life,mul=0){const L=this._yzZones||(this._yzZones=[]);if(L.length>=10){const o=L.shift();o.spr?.destroy();}const fresh=kind==='sour'&&this.textures.exists('yz_bo96_arsenal'),painted=kind==='sour'&&(fresh||this.textures.exists('yz_54_bloodorange')),alpha=fresh?.38:.18,spr=this.camWorld(painted?this.add.sprite(x,y,fresh?'yz_bo96_arsenal':'yz_54_bloodorange',10).setDisplaySize(r*2,r*2).setAlpha(alpha).setDepth(3):this.add.circle(x,y,r,kind==='trap'?0xa6e56e:kind==='sour'?0xbee96a:0xf6a45c,.12).setStrokeStyle(2,kind==='sour'?0xc2ee78:0xffce88,.7).setDepth(3));L.push({m,kind,x,y,r,life,tick:0,mul,spr,alpha:painted?alpha:1,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0});}
+  yuzuZone(m,kind,x,y,r,life,mul=0){const L=this._yzZones||(this._yzZones=[]);if(L.length>=10){const o=L.shift();o.spr?.destroy();}const outline=this.yuzuOutlineKey?.(kind==='trap'?'rain':kind==='sour'?'sour':'sweet'),fresh=kind==='sour'&&this.textures.exists('yz_bo96_arsenal'),painted=kind==='sour'&&(fresh||this.textures.exists('yz_54_bloodorange')),alpha=fresh?.38:.18,spr=this.camWorld(outline?this.add.sprite(x,y,outline,0).setDisplaySize(r*2,r*2).setAlpha(.3).setDepth(3):painted?this.add.sprite(x,y,fresh?'yz_bo96_arsenal':'yz_54_bloodorange',10).setDisplaySize(r*2,r*2).setAlpha(alpha).setDepth(3):this.add.circle(x,y,r,kind==='trap'?0xa6e56e:kind==='sour'?0xbee96a:0xf6a45c,.12).setStrokeStyle(2,kind==='sour'?0xc2ee78:0xffce88,.7).setDepth(3));if(outline)this.battleOutlineTrack?.(spr,outline,outline,null,true);L.push({m,kind,x,y,r,life,tick:0,mul,spr,alpha:painted?alpha:1,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0});}
   yuzuSlow(e){
     if(this.character!=='yuzu')return 1;let f=1;const m=this._yuzuCrew?.[0];
     if(m?.kind==='bloodorange'&&this.dist(e.x,e.y,this.player.x,this.player.y)<=160+30*this.yuzuRank('y_elder'))f=.85-this.yuzuTalent('Aroma');
@@ -17088,7 +17147,7 @@ class Game extends Phaser.Scene {
   }
   yuzuMinionStrike(q,t){
     const role=q.cfg.role||'fighter';
-    if(role==='fighter')this.yuzuHit(q,t,this.yuzuPower()*q.cfg.mul*.95,'minion_punch');
+    if(role==='fighter'){this.yuzuHit(q,t,this.yuzuPower()*q.cfg.mul*.95,'minion_punch');const k=this.yuzuOutlineKey?.('peel');if(k&&this.heroFxThrottle?.('yzMini',3,120))this.heroFx?.(k,t.x,t.y,32,{rot:Math.atan2(t.y-q.spr.y,t.x-q.spr.x),depth:t.y+4,life:.18,alpha:.65});}
     else{const element=role==='mage'?['fire','frost','lightning'][((q.casts||0)+q.idx)%3]:null;q.casts=(q.casts||0)+1;this.yuzuShot(q,q.spr.x,q.spr.y,Math.atan2(t.y-q.spr.y,t.x-q.spr.x),this.yuzuPower()*q.cfg.mul*.95,{source:'seedling',mini:true,minionRole:role,element,size:role==='archer'?24:20,speed:role==='archer'?500:440,life:1.1,pierce:role==='archer'&&(this.basicAttack.lv?.companion_form||0)>=2?1:0});}
   }
   yuzuMinionArt(q){const key=({tank:'yz_mn97_guard',throw:'yz_mn97_archer',pop:'yz_mn97_mage'})[q.kind];return key&&this.textures.exists(key)?key:'yzs_seed_'+q.kind;}
@@ -17127,7 +17186,7 @@ class Game extends Phaser.Scene {
 
   yuzuSeedPop(q){if(!q)return;q.alive=true;q.hp=q.maxhp||1;q.regrow=0;q.spr?.setVisible(true);q.shadow?.setVisible(true);} // Compatibility: old damage callers cannot down a Minion.
 
-  yuzuMotion(m,x,y,kind,mul=2.5,r=90,duration=.45){if(kind==='roll')this.yuzuSound('roll',.4);const p=inMapPt(x,y);m.action=null;m.aim=Math.atan2(p[1]-m.spr.y,p[0]-m.spr.x);m.spr.setFlipX(Math.cos(m.aim)<0);m.motion={sx:m.spr.x,sy:m.spr.y,tx:p[0],ty:p[1],t:0,duration,prep:kind==='rush'?0:kind==='roll'?.12:.16,kind,mul,r,hit:new Map()};m.lunge=null;m.vx=m.vy=0;if(kind==='roll'||kind==='rush')this.yuzuSkillFx(m.kind==='pomelo'?'peel':m.kind==='lime'?'volley':'spicy',m.spr.x,m.spr.y,kind==='roll'?150:100,m.aim,{life:Math.min(.85,duration+.12),follow:m});}
+  yuzuMotion(m,x,y,kind,mul=2.5,r=90,duration=.45){if(kind==='roll')this.yuzuSound('roll',.4);const p=inMapPt(x,y);m.action=null;m.aim=Math.atan2(p[1]-m.spr.y,p[0]-m.spr.x);m.spr.setFlipX(Math.cos(m.aim)<0);m.motion={sx:m.spr.x,sy:m.spr.y,tx:p[0],ty:p[1],t:0,duration,prep:kind==='rush'?0:kind==='roll'?.12:.16,kind,mul,r,hit:new Map()};m.lunge=null;m.vx=m.vy=0;if(kind==='roll'||kind==='rush')this.yuzuSkillFx(m.kind==='pomelo'?'roll':m.kind==='lime'?'volley':'spicy',m.spr.x,m.spr.y,kind==='roll'?150:100,m.aim,{life:Math.min(.85,duration+.12),follow:m});}
   // v8.0.60 owner: frequent Dashes kept yanking the companion off its target. Rush only when it is not fighting, at most once per 1.2s.
   yuzuRush(){const m=this.yuzuEnsure();if(!m)return;
     if(this.basicAttack.mutation==='parting')this.yuzuZone(m,'sour',m.spr.x,m.spr.y,65,2,.3);if(this.yuzuTalent('DashShield'))this.yuzuShield(.08,2);
@@ -18078,6 +18137,7 @@ class Game extends Phaser.Scene {
   }
   cocoaVisual(x,y,r,kind='wave',color=0xffb347){
     if(!this.fxOk())return;const now=this.elapsed||0;if(now-(this._cocoaFxAt??-99)>.2){this._cocoaFxAt=now;this._cocoaFxN=0;}if((this._cocoaFxN||0)>=6)return;this._cocoaFxN=(this._cocoaFxN||0)+1;
+    const fresh=kind==='punch'?'bpx_cocoa810_punch':kind==='shadow'?'bpx_cocoa810_dashring':kind==='fist'?'bpx_cocoa810_slam':'bpx_cocoa810_shockwave';if((this.realTex?.(fresh)??this.textures?.exists(fresh))&&this.heroFx?.(fresh,x,y,r*2,{depth:8,ts:r>150?.7:1}))return;
     if(kind==='punch'){this.spawnFxAnim('fx_cocoa_punch',x,y,{scale:Math.min(1.3,r/100),depth:8,normal:true,tint:color});return;}
     const key=kind==='shadow'?'char_cocoa_attack':kind==='fist'?'proj_bear_donut':'vfx_bear_shockwave';if(!this.textures.exists(key)){this.vfxHitRing(x,y,color,kind!=='punch');return;}
     const fx=this.trackArtVfx(this.camWorld(this.add.image(x,y-(kind==='fist'?110:0),key).setDepth(8).setTint(color).setAlpha(.8).setDisplaySize(r*2,r*2)));
@@ -18147,7 +18207,7 @@ class Game extends Phaser.Scene {
     else{r=0;this._rageCharging=false;Sfx.bpLoopStop?.('uq_titan_charge');
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron+this.ptv('trRegen'))*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}
-    {const want=r>0.02?'bpx_cocoa_rage'+Math.min(3,Math.max(1,lv||1)):null,au=this._rageAura;if(au&&(!au.active||au.texture.key!==want)){if(au.active)au.destroy();this._rageAura=null;}if(want&&!this._rageAura)this._rageAura=this.bpLoop?.(want,p.x,p.y,150,p.depth-1)||null;if(this._rageAura)this._rageAura.setPosition(p.x,p.y-10).setDepth(p.y-1).setScale((150+r*30)/256);}
+    {const base=r>0.02?'bpx_cocoa_rage'+Math.min(3,Math.max(1,lv||1)):null,want=base?(this.battleOutlineKey?.(base)||base):null,au=this._rageAura;if(au&&(!au.active||au.texture.key!==want)){if(au.active)au.destroy();this._rageAura=null;}if(want&&!this._rageAura)this._rageAura=this.bpLoop?.(want,p.x,p.y,150,p.depth-1)||null;if(this._rageAura)this._rageAura.setPosition(p.x,p.y-10).setDepth(p.y-1).setScale((150+r*30)/256);}
     const G=this._rageG;G.clear();if(r<=0.02){this.titanRageArtOff?.();return;}
     const t=this.time.now/1000,col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347,rad=34+r*12+Math.sin(t*(6+lv*4))*3;
     G.lineStyle(3+lv,col,.55+lv*.12).strokeCircle(p.x,p.y+6,rad);G.fillStyle(col,.08+lv*.05).fillCircle(p.x,p.y+6,rad);
@@ -18294,7 +18354,7 @@ class Game extends Phaser.Scene {
       for(const f of lv){ const t=(el-f.d)/.9; if(t<0||t>1)continue; g.fillStyle(0x6fe0a8,.85*Math.sin(t*Math.PI)).fillEllipse((-.1+t*1.2)*w,f.y*h+Math.sin(t*12)*14,f.r*2.4,f.r); } }); }
   // v6.86 เส้นเชื่อม Ricochet: รูปนิ่งเฟรมเดียว จางหายใน .25 วิ แล้วทำลายเสมอ (เดิมเป็น anim loop ไม่ถูกลบ → ค้างจอ) · จำกัด 6 เส้นพร้อมกัน
   ricochetLink(x,y,tx,ty){ try{ if(!this.textures.exists('bpx_momo_link'))return; this._rlN=this._rlN||0; if(this._rlN>=6)return; const d=Math.hypot(tx-x,ty-y); if(d<12)return;
-    const im=this.trackArtVfx(this.camWorld(this.add.image(x,y,'bpx_momo_link',0).setOrigin(.1,.5).setRotation(Math.atan2(ty-y,tx-x)).setScale(d/205,.35).setDepth(90400).setAlpha(.9))); this._rlN++;
+    const im=this.trackArtVfx(this.camWorld(this.add.sprite(x,y,this.battleOutlineKey?.('bpx_momo_link')||'bpx_momo_link',0).setOrigin(.1,.5).setRotation(Math.atan2(ty-y,tx-x)).setScale(d/205,.35).setDepth(90400).setAlpha(.9)));this.battleOutlineTrack?.(im,'bpx_momo_link',this.battleOutlineKey?.('bpx_momo_link')||'bpx_momo_link',null,true); this._rlN++;
     let done=false; const kill=()=>{ if(done)return; done=true; this._rlN=Math.max(0,this._rlN-1); if(im&&im.active)im.destroy(); };
     this.tweens.add({targets:im,alpha:0,duration:250,ease:'Quad.in',onComplete:kill}); this.time.delayedCall(600,kill); }catch(e){} }
   // v6.88 แจ้งเตือน APK เก่า: เทียบ versionName ของแอป (App.getInfo) กับ GitHub Release ล่าสุด · เฉพาะในแอป · วันละครั้ง
@@ -18567,6 +18627,7 @@ class Game extends Phaser.Scene {
       const spread=path==='shotgun'?(idx-(shots-1)/2)*(closeBig?.11:.16):(basic.mutation==='fan'?(idx-(shots-1)/2)*.055:0);
       const a=Math.atan2(t.y-this.player.y,t.x-this.player.x)+spread+Phaser.Math.FloatBetween(closeBig?-.04:-.08,closeBig?.04:.08);
       this.physics.velocityFromRotation(a,aw?1180:980,b.body.velocity);
+      if(path!=='shotgun'&&!b._chargeFx)this.momoOutlineSeed?.(b,'seed',24);
       if(path==='shotgun'&&idx===0)this.shotgunKick(a);else if(path!=='shotgun')Sfx.strawberryShoot();
     };
     if(path==='shotgun'){
@@ -19431,7 +19492,8 @@ class Game extends Phaser.Scene {
       if(e._sourT>0)e._sourT-=step;
       if(e._burnT>0){ e._burnT-=step; this._infTick=true; this.damage(e,(e._burnDps||0)*step,e.x,e.y); this._infTick=false; if(Math.random()<0.3)this.burst&&this.burst(e.x,e.y,0xff5a3d); if(e._burnT<=0)e._burnDps=0; } }); }
   shotgunKick(ang){ const pl=this.player;
-    if(this.textures.exists('vfx_shotgun_muzzle'))this.trackArtVfx(this.spawnFxAnim('vfx_shotgun_muzzle',pl.x+Math.cos(ang)*20,pl.y+Math.sin(ang)*20,{scale:0.55,rotation:ang,depth:90450,normal:true}));
+    if(this.realTex?.('bpx_momo810_muzzle')&&this.heroFx?.('bpx_momo810_muzzle',pl.x+Math.cos(ang)*20,pl.y+Math.sin(ang)*20,140,{rot:ang,depth:90450,life:.15,fade:0})){}
+    else if(this.textures.exists('vfx_shotgun_muzzle'))this.trackArtVfx(this.spawnFxAnim('vfx_shotgun_muzzle',pl.x+Math.cos(ang)*20,pl.y+Math.sin(ang)*20,{scale:0.55,rotation:ang,depth:90450,normal:true}));
     else {const g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(90450))); g.fillStyle(0xfff1a8,0.75); g.slice(pl.x,pl.y,70,ang-0.45,ang+0.45,false); g.fillPath(); g.fillStyle(0xffffff,0.9); g.fillCircle(pl.x+Math.cos(ang)*26,pl.y+Math.sin(ang)*26,9);
     this.tweens.add({targets:g,alpha:0,duration:120,onComplete:()=>g.destroy()});} this.screenShake(130,0.0075); if(Sfx.shotgun)Sfx.shotgun(); this.jelly&&this.jelly(-Math.cos(ang)*0.18,-Math.sin(ang)*0.18); }
   pathBulletDmg(b,e){ let d=b.dmg;
@@ -19931,14 +19993,20 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(250,hop);
   }
   // Independent random event: three cards, one jackpot.
-  attachChargedSeed(b,height){this.attachProjectileArt(b,'proj_strawberry_charge',height,0.78,0.52);}
+  attachChargedSeed(b,height){if(this.momoOutlineSeed?.(b,'charged',height*2.5))return;this.attachProjectileArt(b,'proj_strawberry_charge',height,0.78,0.52);}
+  momoOutlineSeed(b,clip,size){const k='bpx_momo810_'+clip;if(!this.realTex?.(k)||(this._battlePaintFx?.size||0)>=48)return false;return this.attachProjectileAnim?.(b,k,size)||false;}
+  battleOutlineKey(key){const next=BATTLE_OUTLINE810_MAP[key];return next&&(this.realTex?.(next)??this.textures?.exists(next))?next:key;}
+  battleOutlineTrack(image,oldKey,newKey,bullet=null,loop){if(!image||oldKey===newKey&&!/^bpx_(?:cocoa|taro|yuzu|momo)810_/.test(newKey))return image;const prev=ASSET_FX[oldKey],fd=ASSET_FX[newKey];if(!fd)return image;const set=this._battlePaintFx||(this._battlePaintFx=new Set());image.anims?.stop();image._battleOutline810={t:0,rate:fd.frames/(prev?prev.frames/prev.rate:fd.frames/fd.rate),frames:fd.frames,loop:loop??!!prev?.loop,player:this.player,basic:this.basicAttack,epoch:this._artEpoch||0,frame:-1,bullet,done:false};set.add(image);image.once('destroy',()=>{set.delete(image);if(bullet?._chargeFx===image){bullet._chargeFx=null;bullet.setAlpha?.(1);}});if(!this._battlePaintHook&&this.events?.once){this._battlePaintHook=true;this.events.once('shutdown',()=>{this.clearBattleOutline();this._battlePaintHook=false;});}this.battleOutlineFrame(image,0);return image;}
+  battleOutlineFrame(image,dt){const m=image?._battleOutline810;if(!image?.active||!m||m.done||this.state!=='play')return;m.t+=dt*(image.anims?.timeScale??1);const still=this.hubMotionAllowed?.()===false||(typeof Save!=='undefined'&&Save.data.settings?.vfx===0),at=Math.floor(m.t*m.rate),frame=still?2:m.loop?at%m.frames:Math.min(m.frames-1,at);if(m.frame!==frame){m.frame=frame;image.setFrame(frame);}if(!m.loop&&at>=m.frames){m.done=true;image.emit('animationcomplete');}}
+  tickBattleOutlineFx(dt){if(this.state!=='play')return;for(const image of this._battlePaintFx||[]){const m=image._battleOutline810;if(!image.active){this._battlePaintFx.delete(image);continue;}if(!m||m.player!==this.player||m.basic!==this.basicAttack||m.epoch!==(this._artEpoch||0)){image.destroy();continue;}this.battleOutlineFrame(image,dt);}}
+  clearBattleOutline(){for(const image of [...(this._battlePaintFx||[])])if(image.active)image.destroy();this._battlePaintFx?.clear();}
   bpAnim(key){if(!this.textures?.exists?.(key))return false;if(!this.anims.exists(key)){const fd=ASSET_FX[key];if(!fd)return false;this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate,repeat:fd.loop?-1:0});}return true;}
   // v6.60.3 one-shot painted build-path effect; size = on-screen cell width in px
-  bpFx(key,x,y,size,o={}){if(!this.bpAnim(key))return null;const s=this.spawnFxAnim(key,x,y,{scale:size/256,scaleX:o.scaleX,scaleY:o.scaleY,rotation:o.rotation,anchor:o.anchor,depth:o.depth??8,normal:true,force:o.force});if(s)this.trackArtVfx(s);return s;}
+  bpFx(key,x,y,size,o={}){const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return null;const s=this.spawnFxAnim(key,x,y,{scale:size/256,scaleX:o.scaleX,scaleY:o.scaleY,rotation:o.rotation,anchor:o.anchor,depth:o.depth??8,normal:true,force:o.force});if(s){this.trackArtVfx(s);this.battleOutlineTrack?.(s,oldKey,key);}return s;}
   // v7.8.45 art order 20: hero VFX · w = on-screen width px (h defaults to frame aspect) · must = ignore fxOk budget (⭐⭐⭐) · loop sheets stay until destroyed or life · hold = keep last frame N sec then fade · follow = stick to an object
-  heroFx(key,x,y,w,o={}){if(!this.bpAnim(key))return null;const fd=ASSET_FX[key];if(!o.must&&(this._artVfx?.size||0)>48)return null;const h=o.h??w*fd.fh/fd.fw;
+  heroFx(key,x,y,w,o={}){const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return null;const fd=ASSET_FX[key];if(!o.must&&(this._artVfx?.size||0)>48)return null;const h=o.h??w*fd.fh/fd.fw;
     const s=this.spawnFxAnim(key,x,y,{scaleX:w/fd.fw,scaleY:h/fd.fh,rotation:o.rot,anchor:o.anchor,depth:o.depth??8,normal:true,force:o.must,tint:o.tint,alpha:o.alpha});if(!s)return null;this.trackArtVfx(s);
-    if(o.ts&&s.anims)s.anims.timeScale=o.ts;
+    this.battleOutlineTrack?.(s,oldKey,key);if(o.ts&&s.anims)s.anims.timeScale=o.ts;
     if(o.hold!=null){s.off('animationcomplete');s.once('animationcomplete',()=>{if(!s.active)return;this.tweens.add({targets:s,alpha:0,delay:o.hold*1000,duration:o.fade??400,onComplete:()=>s.destroy()});});}
     if(o.life!=null)this.tweens.add({targets:s,alpha:0,delay:o.life*1000,duration:o.fade??200,onComplete:()=>s.destroy()});
     if(o.follow){const f=o.follow,dy=o.dy||0,tk=()=>{if(!s.active||!f.active){this.events.off('postupdate',tk);return;}s.setPosition(f.x,f.y+dy);};this.events.on('postupdate',tk);}
@@ -19950,8 +20018,8 @@ class Game extends Phaser.Scene {
   mintFreezeFx(e){if(e._frzFx?.active)return true;const set=this._frzFx||(this._frzFx=new Set());if(set.size>=24)return !!this.bpAnim('bpx_mint_freeze');const s=this.heroFx('bpx_mint_freeze',e.x,e.y,Math.max(70,(e.body?.halfWidth||20)*3.2),{must:true,depth:e.depth+1});if(!s)return false;
     s._frzE=e;e._frzFx=s;set.add(s);s.once('destroy',()=>{set.delete(s);if(e._frzFx===s)e._frzFx=null;});return true;}
   heroFxTick(){const set=this._frzFx;if(!set||!set.size)return;set.forEach(s=>{const e=s._frzE;if(!s.active)return;const on=e&&e.active&&(e.frozen||0)>0;if(on){s.setPosition(e.x,e.y).setDepth(e.depth+1);if(!s.anims.isPaused&&+s.frame.name>=4)s.anims.pause();}else if(s.anims.isPaused)s.anims.resume();});}
-  bpLoop(key,x,y,size,depth=6){if(!this.bpAnim(key))return null;const s=this.trackArtVfx(this.camWorld(this.add.sprite(x,y,key,0).setDepth(depth).setScale(size/256)));s.play(key);return s;}
-  attachProjectileAnim(b,key,size){if(!this.bpAnim(key))return false;if(b._chargeFx){b._chargeFx.destroy();b._chargeFx=null;}b._chargeFx=this.camWorld(this.add.sprite(b.x,b.y,key,0).setDepth(90000).setScale(size/256));b._chargeFx.play(key);b.setAlpha(0);return true;}
+  bpLoop(key,x,y,size,depth=6){const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return null;const s=this.trackArtVfx(this.camWorld(this.add.sprite(x,y,key,0).setDepth(depth).setScale(size/256)));s.play(key);this.battleOutlineTrack?.(s,oldKey,key,null,true);return s;}
+  attachProjectileAnim(b,key,size){const oldKey=key;key=this.battleOutlineKey?.(key)||key;if(!this.bpAnim(key))return false;if(b._chargeFx){b._chargeFx.destroy();b._chargeFx=null;}b._chargeFx=this.camWorld(this.add.sprite(b.x,b.y,key,0).setDepth(90000).setScale(size/256));b._chargeFx.play(key);this.battleOutlineTrack?.(b._chargeFx,oldKey,key,b,true);b.setAlpha(0);return true;}
   attachProjectileArt(b,key,height,ox=0.5,oy=0.5){
     if(!this.textures.exists(key))return;
     b._chargeFx=this.camWorld(this.add.image(b.x,b.y,key).setOrigin(ox,oy).setDepth(90000));
@@ -19975,7 +20043,7 @@ class Game extends Phaser.Scene {
     const ev=this.time.addEvent({delay:ms,loop:true,callback:()=>{if((this._artEpoch||0)===epoch&&(this.state==='play'||this.state==='levelup'))fn();}});
     this._artTimers.add(ev);return ev;
   }
-  clearArtVfx(){this.clearStatusArt?.();this.clearStageLife?.();this.clearYuzuSkillFx?.();this.clearYuzuBuff?.();this.clearBossStory?.();this.clearBossVictory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
+  clearArtVfx(){this.clearStatusArt?.();this.clearStageLife?.();this.clearBattleOutline?.();this.clearYuzuSkillFx?.();this.clearYuzuBuff?.();this.clearBossStory?.();this.clearBossVictory?.();if(typeof Sfx!=='undefined')Sfx.eventLoopStop?.();this._heroScreen?.kill();
     this.clearSesRune?.();
     if(this._impalerCharge&&typeof Sfx!=='undefined')Sfx.bpLoopStop?.('mint_impaler_charge');
     if(['char_mint_impaler_charge','char_mint_impaler_move'].includes(this.player?.texture?.key)){this._attackPoseTime=0;this._attackTextureKey=null;}
@@ -19990,6 +20058,7 @@ class Game extends Phaser.Scene {
     if(this._artVfx)this._artVfx.clear();this._iceTrails=[];this._shellArt=null;this._frZones=[];this._frBuddy=null;this._frOrbit=null;
   }
   drawChargedSeed(x,y,ang,len,width){
+    const k='bpx_momo810_charged';if(this.realTex?.(k)){const a=this.heroFx?.(k,x,y,Math.min(220,width*3.4),{rot:ang,life:.26,fade:0,depth:90410});if(a){this.tweens.add({targets:a,x:x+Math.cos(ang)*len,y:y+Math.sin(ang)*len,duration:260,ease:'Quad.in'});return;}}
     if(!this.textures.exists('proj_strawberry_charge'))return;
     const fx=this.trackArtVfx(this.camWorld(this.add.image(x,y,'proj_strawberry_charge').setOrigin(0.78,0.52).setRotation(ang).setDepth(90410)));
     fx.setScale(Math.min(110,width*1.7)/this.textures.get('proj_strawberry_charge').getSourceImage().height);
@@ -21745,7 +21814,7 @@ class Game extends Phaser.Scene {
   }
   update(time,delta){
     let dt=delta/1000; if(this.state!==this._stSeen){ this._stSeen=this.state; this._stAt=Date.now(); }   // v7.9.45 เวลาเริ่มของแต่ละ state (ล็อกหน้าจบด่านนับจากตอนเปิด)
-    this.tickMenuMotion(dt); this.tickLobbyVoice(dt); if(this.state!=='play'){this.suspendTaroCombat?.();return;} this.tickBossSay(); this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;this.tickTaroCombat?.(delta/1000); if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
+    this.tickMenuMotion(dt); this.tickLobbyVoice(dt); if(this.state!=='play'){this.suspendTaroCombat?.();return;} this.tickBossSay(); this.tickKeyboard(); this.tickPerf(delta/1000); this.tickDecor(delta/1000); dt*=(this.gameSpeed||1); this.elapsed+=dt;this.tickBattleOutlineFx?.(dt);this.tickTaroCombat?.(delta/1000); if(this._rushOn)this.tickSugarRush(); if(this.recipeMode)this.tickDelveMods(dt);   // gameSpeed = ปุ่มเร่งเวลา
     this.tickWindRush(dt);this.moveSlowT=Math.max(0,(this.moveSlowT||0)-dt);this.pathHasteT=Math.max(0,(this.pathHasteT||0)-dt);this.player.wardGuardT=Math.max(0,(this.player.wardGuardT||0)-dt);this._lifeOnKillCd=Math.max(0,(this._lifeOnKillCd||0)-dt);
     this._echoTrailAcc=(this._echoTrailAcc||0)+dt;if(this._echoTrailAcc>=0.08){this._echoTrailAcc=0;if(!this._echoTrail)this._echoTrail=[];this._echoTrail.push({x:this.player.x,y:this.player.y});if(this._echoTrail.length>80)this._echoTrail.shift();}
 

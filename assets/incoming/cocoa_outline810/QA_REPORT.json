@@ -1,0 +1,947 @@
+{
+  "provider": "built-in ImageGen",
+  "frames": 72,
+  "clips": 12,
+  "alphaPreserved": true,
+  "allBordersClear": true,
+  "decodedBytes": 18874368,
+  "framesQA": [
+    {
+      "clip": "slam",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        25,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "421ede9bf99f4f6361616913d61f94eead7cc1af8fc2924e1b66ea1b05860a0d"
+    },
+    {
+      "clip": "slam",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "773f54a5a0f55c11413d992095ddb0767d9f7ed974a5f734d750feaeb529a603"
+    },
+    {
+      "clip": "slam",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "4f7172a865a3b0fc8bfd7cd90ae63110dd1350254b136fbbd9a095ce5713bb30"
+    },
+    {
+      "clip": "slam",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "76814b8094607d4a4dcebfa5caba5102561d114a83d6f9bf0ead9cb1b9e73959"
+    },
+    {
+      "clip": "slam",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        25,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "efd528f9171f7215ddc85c1f86acd3798ba836eea3b2475c7362f447f462f07e"
+    },
+    {
+      "clip": "slam",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        24,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "0c7da8df2fb5f825d7dfb5bcf8c56a3f58541fc240f4098df127a8e9aacc73dd"
+    },
+    {
+      "clip": "shockwave",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "dde362d7140ac048b2ec7bd20ccafe98ce4f31e4a8b23aa431a7ca44651e17d3"
+    },
+    {
+      "clip": "shockwave",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "98598f5b47e61219640041a838d15d3e4cd9a7cb720727e412986bb8b49b2518"
+    },
+    {
+      "clip": "shockwave",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "8cc4e54a0ea164539b86ebca5e4c3e5e037bbd80356251cc7f028ad0efce6abf"
+    },
+    {
+      "clip": "shockwave",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "08af84690448c9b00fb2f5c5477bf78f971544109c7754c4df7327df8b2de9db"
+    },
+    {
+      "clip": "shockwave",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "6cd3e7fc5492e34d31372a51bcc7c5cd5711a8b94877cc0db9be670cf142c0f8"
+    },
+    {
+      "clip": "shockwave",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "103119d42e9b28398ba6652f90c2449ce69f3b5378c0fda270f85e6146b904e6"
+    },
+    {
+      "clip": "rage",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "65575c06dbcca3ac885fbeefa2c4326fc203e52674ca879da7aef8b4c601b010"
+    },
+    {
+      "clip": "rage",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "807f57dc1432ba90e5e87ae1d6ff5fd7aeb375d9c7e879893fb5fa079fde6547"
+    },
+    {
+      "clip": "rage",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "7352b07f0b2b578ac6e08472eaeebf660ff760155e1043d9abc25ea4ec8d3a31"
+    },
+    {
+      "clip": "rage",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "d776a328c5c0f30f3f6bc77eb4f2768041110d8a8acb9676c16d59f9a086ff72"
+    },
+    {
+      "clip": "rage",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "27b1214c45a4a62327eb795f8947383e0b1136807cb0df3856d1acd1b1c5d9e4"
+    },
+    {
+      "clip": "rage",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "9392f12e82b4689942e5ee9da31f3dea39fdd2e3c800b3299593bf9ff1504c89"
+    },
+    {
+      "clip": "crater",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "6629ba90db128a4b2c2147f82a7f6fb329c19da16971823630508bcf3d44d9e1"
+    },
+    {
+      "clip": "crater",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "178f77371b28a82289ab15fae790ec67d8af9e6ed5cd93dc3d44e6ced5e7bb22"
+    },
+    {
+      "clip": "crater",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "ad57080dafeedc3a73effe66465c359bf06b4704385358804d27891a0fb2b27d"
+    },
+    {
+      "clip": "crater",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "0849ff52e6dfc3db6fc9da3b3f2b359f43aac226a096a45cd7491cdb32b52878"
+    },
+    {
+      "clip": "crater",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "cd4c6f1b8c771f52c5e192301aeeef1584831698eb599d7cfae22df67b13cd48"
+    },
+    {
+      "clip": "crater",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        230,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "3ab2314f9a81e19fe4d9fed6a90298aae7d62bf10e471ebe98f2f1fc49aabed8"
+    },
+    {
+      "clip": "fist",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        19,
+        68,
+        240,
+        199
+      ],
+      "clearBorder": true,
+      "visibleHash": "20af903d52a577a5ffb14af1382a5214309e8dfdadb5de879b647bf7b89a46a3"
+    },
+    {
+      "clip": "fist",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        17,
+        56,
+        240,
+        200
+      ],
+      "clearBorder": true,
+      "visibleHash": "d9db9c4f3cc3f215fd0b4cb4a059b1741c3582654ec718675e8ebb6c95f058af"
+    },
+    {
+      "clip": "fist",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        52,
+        240,
+        203
+      ],
+      "clearBorder": true,
+      "visibleHash": "220bf318372ef40db18153e940bf1daaf6ef074b7c9a7b6031964be9735c180c"
+    },
+    {
+      "clip": "fist",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        55,
+        240,
+        200
+      ],
+      "clearBorder": true,
+      "visibleHash": "4d59f5c0e361a03a3062d9a51d744b185c7cd1984a466951de26d4782c8b0e0d"
+    },
+    {
+      "clip": "fist",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        17,
+        57,
+        240,
+        203
+      ],
+      "clearBorder": true,
+      "visibleHash": "9257d0ddd33b5eb34e08cd244213e52903c4ba1631bf9112d0f343db6c02df36"
+    },
+    {
+      "clip": "fist",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        52,
+        240,
+        199
+      ],
+      "clearBorder": true,
+      "visibleHash": "2ecbaf2718626a1d53a11c20a112d110d4aef38e13f128e0705aa5228b8b8b11"
+    },
+    {
+      "clip": "fireball",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        22,
+        46,
+        236,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "a32cd8ddbce5da5f349d5511e3036a9bfb5d98121ff168613fc619bd005195d5"
+    },
+    {
+      "clip": "fireball",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        18,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "6416ca4db447a19979532cc5c7bc790fe3e40639ab823fdcf3e6d282945f104a"
+    },
+    {
+      "clip": "fireball",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "487b9e630b910269ee237317be9b8927fe9503cac75108d311821b8505d0eb17"
+    },
+    {
+      "clip": "fireball",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "4bb28816005f454e4402f11179418875b1fc3a3855ffa4ec21c4a7518296d192"
+    },
+    {
+      "clip": "fireball",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        234,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "dafb55cb299dae9912b8ab0485f8d3887b2e5a1efa7e714a21126c119121a4c3"
+    },
+    {
+      "clip": "fireball",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        40,
+        232,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "7cff6bcca2fb1100f3cf9af39b96ff5ff560d63564547a87260167fbd27e7a53"
+    },
+    {
+      "clip": "gauntlet",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        19,
+        19,
+        240,
+        172
+      ],
+      "clearBorder": true,
+      "visibleHash": "6434ff361284883dcb101ac47e6cc2a74590e9850475f868765ba922e788bd9d"
+    },
+    {
+      "clip": "gauntlet",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        19,
+        20,
+        240,
+        232
+      ],
+      "clearBorder": true,
+      "visibleHash": "1e9c39c0998165c40894579865dfeeba706ad2c8d873446a6912f03d9b263d49"
+    },
+    {
+      "clip": "gauntlet",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        19,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "ff802d490af2af4a4b91ca09a8b311f4f358ad1c84eaf7824df24993c63d9f02"
+    },
+    {
+      "clip": "gauntlet",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        19,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "d5866666ed96a753ada4be11ce6d92101668f7edcce2aec64c6161779e8dad64"
+    },
+    {
+      "clip": "gauntlet",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        19,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "212ef63003d90c9badf60b2da14f8972fa71552af5eda1bf5c1efe57b7d3e4a3"
+    },
+    {
+      "clip": "gauntlet",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        18,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "febfd9506c0d8a00d2b48215b5da3f2de5d3dc82b8c566610803ddfaa3586924"
+    },
+    {
+      "clip": "explosion",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        36,
+        45,
+        240,
+        205
+      ],
+      "clearBorder": true,
+      "visibleHash": "a38ed4456c3ed83a367cfc7bb0d412c25cb3b58805922bcdb96ce2dab4ea4b70"
+    },
+    {
+      "clip": "explosion",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        21,
+        30,
+        240,
+        229
+      ],
+      "clearBorder": true,
+      "visibleHash": "d3e3c6f4a90506393272932477a0a215bd16449b6d886d56602c1716b27b1541"
+    },
+    {
+      "clip": "explosion",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        240,
+        229
+      ],
+      "clearBorder": true,
+      "visibleHash": "ff322f2f54ca959f209bac650e98f3e3019635923de5823fd9a922852697d861"
+    },
+    {
+      "clip": "explosion",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        235,
+        229
+      ],
+      "clearBorder": true,
+      "visibleHash": "1194c1fa8e0f196b373a376f79b8336b9c3e808d55e9b58e203a02ecdd8e48fa"
+    },
+    {
+      "clip": "explosion",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        18,
+        33,
+        235,
+        229
+      ],
+      "clearBorder": true,
+      "visibleHash": "1af6cfed24729b5695ee692fee2ee97609ed26bd5bb0c04a8fe60abeaf4d2c49"
+    },
+    {
+      "clip": "explosion",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        27,
+        232,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "3903f9d7ef03616081d4b0545cb694e977aded98e6b47aba56fd97ae0ac001a9"
+    },
+    {
+      "clip": "shadowfist",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        20,
+        45,
+        236,
+        211
+      ],
+      "clearBorder": true,
+      "visibleHash": "de44c7158087d6440b3693abbf25a2fff92284203465ca609b86ea23cb6c9287"
+    },
+    {
+      "clip": "shadowfist",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        20,
+        45,
+        236,
+        211
+      ],
+      "clearBorder": true,
+      "visibleHash": "ba4396b748423c4af7cf0fea57fa246ed187d6572dc795d3e704cfa30e6da200"
+    },
+    {
+      "clip": "shadowfist",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        20,
+        45,
+        236,
+        211
+      ],
+      "clearBorder": true,
+      "visibleHash": "d443e67a3f45f2786868b2480aebf7d27a7b81ad0a077a0f007e9cf7123aa2ce"
+    },
+    {
+      "clip": "shadowfist",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        20,
+        45,
+        236,
+        211
+      ],
+      "clearBorder": true,
+      "visibleHash": "cb3e7a9243cb4b2850e4b1a4c5d90a0c3e05a7c5c3a1ae1d5fc387b10a21eaa1"
+    },
+    {
+      "clip": "shadowfist",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        20,
+        45,
+        236,
+        211
+      ],
+      "clearBorder": true,
+      "visibleHash": "c0c0d5b01b52fd414f26ff7e1931564522a5c44a60a2259a94c5c9c8f25b33d7"
+    },
+    {
+      "clip": "shadowfist",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        20,
+        45,
+        236,
+        211
+      ],
+      "clearBorder": true,
+      "visibleHash": "b72048d95fffebf1dc45e53f6f51facb98f4ee265abbc21d8976022d9c322a82"
+    },
+    {
+      "clip": "dashtrail",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        19,
+        89,
+        237,
+        167
+      ],
+      "clearBorder": true,
+      "visibleHash": "1d9b4519a68b29d68d2fa881a5455519a46320dabe09017cdb17c2438083aa02"
+    },
+    {
+      "clip": "dashtrail",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        19,
+        89,
+        237,
+        167
+      ],
+      "clearBorder": true,
+      "visibleHash": "15aceb58502a00e18fb3e0f37070892757b52b20aaab7fd7dcfa2eba1cb5fb3a"
+    },
+    {
+      "clip": "dashtrail",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        19,
+        89,
+        237,
+        167
+      ],
+      "clearBorder": true,
+      "visibleHash": "1bd1e7953169a6680e8541953b51b4b3fac1c6536c556104a950070c43960ab8"
+    },
+    {
+      "clip": "dashtrail",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        19,
+        89,
+        237,
+        167
+      ],
+      "clearBorder": true,
+      "visibleHash": "893df5e91ca48a359622868f37b7baa3c8651bfc60dd15193bbd94ff7dc3bab6"
+    },
+    {
+      "clip": "dashtrail",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        19,
+        89,
+        237,
+        167
+      ],
+      "clearBorder": true,
+      "visibleHash": "1da652da3a4f86684051bd300b37bb648d92996c90e721ed85642c081d858f3e"
+    },
+    {
+      "clip": "dashtrail",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        19,
+        89,
+        237,
+        167
+      ],
+      "clearBorder": true,
+      "visibleHash": "25d2c3a2a15e35b902d164ade0263ea87fefcec0fdf237250eef567f21b76957"
+    },
+    {
+      "clip": "dashring",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "c513a36e62591384eaae950de098767f02f35d47728edbd6a3dbb97e2b97b595"
+    },
+    {
+      "clip": "dashring",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "e722b1e13e384a43979a83c2d8950b0be03d5d885ce02c89d7f3e91efa85c7ef"
+    },
+    {
+      "clip": "dashring",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "4ae0abdfd83f09ca1a95274f392fa6c3b143357c50830000dc41d92c74f96e48"
+    },
+    {
+      "clip": "dashring",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "e33b4fec62e51127bc040164f3a121f026eaf706517531db56bbff6d1bcccb93"
+    },
+    {
+      "clip": "dashring",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "f8a0d3de365fb3d252b60833e97142c1adac90d1835cdaa0477e828d9c5bb983"
+    },
+    {
+      "clip": "dashring",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        26,
+        240,
+        230
+      ],
+      "clearBorder": true,
+      "visibleHash": "a128cd99bb322a47e453db9b652c23a1e49841ba82746356843ee6c2d8cade5c"
+    },
+    {
+      "clip": "punch",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        25,
+        33,
+        230,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "9b8e1a34b4bf76c066a774afb65b3dbda852efb17fa2f6b2bd9e748e34112d41"
+    },
+    {
+      "clip": "punch",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        25,
+        33,
+        230,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "dc80a8d3876d9008f0b476cfa87511ae0d3bdf9ccab364090b3ac756219e0dea"
+    },
+    {
+      "clip": "punch",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        25,
+        33,
+        230,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "4ba477d7c240fecb14622bb2d3f7f59cbfb0fbcdf361fce3d1a6881dc1b3ac97"
+    },
+    {
+      "clip": "punch",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        25,
+        33,
+        230,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "271ccc3dc7cdb9fffee902aa06d51914343146d0011309fca777f8a525a07fab"
+    },
+    {
+      "clip": "punch",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        25,
+        33,
+        230,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "470d5bd465fdc545f745f0a2b307515f9d58d7045e4e38cb8aa257833ad6ddd9"
+    },
+    {
+      "clip": "punch",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        25,
+        33,
+        230,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "8909a70c4257abd3f02c302d1ee669e7c05395acd33b2a859a22352746a94864"
+    }
+  ],
+  "ownerPhoneReview": "Visual preference/readability/FPS pending; preview is source-frame playback, not gameplay."
+}

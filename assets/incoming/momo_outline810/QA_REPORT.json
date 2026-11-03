@@ -1,0 +1,947 @@
+{
+  "provider": "built-in ImageGen",
+  "frames": 72,
+  "clips": 12,
+  "alphaPreserved": true,
+  "allBordersClear": true,
+  "decodedBytes": 18874368,
+  "framesQA": [
+    {
+      "clip": "sniperhit",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        35,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "1dac9f86f2181f2d0666c0c66328d5363b0739a612890df6f7fb38b7196d60d7"
+    },
+    {
+      "clip": "sniperhit",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "310def309c0f51d1f25aee2d2f6831af3f531c8ef6e24e89f38d618ff79e743f"
+    },
+    {
+      "clip": "sniperhit",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "6530b77fe74d024600a6a12d5650df8c30a2ed96d957229b39ce6737c022deaf"
+    },
+    {
+      "clip": "sniperhit",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "73b3b124eefe3efbf9a76f34cdae04aafd18302584df425986d91f5c00578c44"
+    },
+    {
+      "clip": "sniperhit",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "cb0d2720a8bbc2ddb0e52e9a9a1255886c421d23e9eff8842f8f12ee739d827d"
+    },
+    {
+      "clip": "sniperhit",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        231,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "0901c6d7c7dd28202808c319f1cb0b9ef381eeac7a4a277d5bda384908b9124f"
+    },
+    {
+      "clip": "pellethit",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        18,
+        35,
+        240,
+        220
+      ],
+      "clearBorder": true,
+      "visibleHash": "1a145c2da745ef9664140ec1115f5f2a6c8769a5e71edad77c52968fda33d527"
+    },
+    {
+      "clip": "pellethit",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        35,
+        240,
+        220
+      ],
+      "clearBorder": true,
+      "visibleHash": "c18ed335718c53fa3c8bafe76364997d59959defcbddd38012bbadd1e8ea748a"
+    },
+    {
+      "clip": "pellethit",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        35,
+        240,
+        220
+      ],
+      "clearBorder": true,
+      "visibleHash": "845b5d6998a91c8e3425543a3740a3063b6a78c49dac434b220273905acf11ab"
+    },
+    {
+      "clip": "pellethit",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        35,
+        240,
+        220
+      ],
+      "clearBorder": true,
+      "visibleHash": "915017e94cbf05847fbe79f389d4792ce417dd646027e1ae5a602e37c4f3ccc6"
+    },
+    {
+      "clip": "pellethit",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        35,
+        240,
+        220
+      ],
+      "clearBorder": true,
+      "visibleHash": "6cd92298ce23e6e1f0263b2420a85a422469e29931cd3dd67f8b4cc15c06fa3d"
+    },
+    {
+      "clip": "pellethit",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        35,
+        240,
+        220
+      ],
+      "clearBorder": true,
+      "visibleHash": "a8db09ab34592e0e7aaa5d76196e4818da3603668754e553f6b7c43b1e530477"
+    },
+    {
+      "clip": "seedpop",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "552b0fdbd2ba4d3e1cc7d130eb27667d05ef288d0a73641f27dba359a167abfb"
+    },
+    {
+      "clip": "seedpop",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "b7b6ee7bfdec9b9850d89d52b4e0461bc1847a226dc1cd77d0a7b8643d660de6"
+    },
+    {
+      "clip": "seedpop",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "f7cefa4d4424760ec6f0efc16ba483f8855f3ea8df964d4e71669b6d89b532af"
+    },
+    {
+      "clip": "seedpop",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "de15ec7f655a644def95edbd63da5d94b350d8d1db3f2e037fe6685c983aefd7"
+    },
+    {
+      "clip": "seedpop",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "3e0b8e9beb559f78cee2cf686b70129326489063a9c56125d9a6022531d7e726"
+    },
+    {
+      "clip": "seedpop",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        31,
+        240,
+        225
+      ],
+      "clearBorder": true,
+      "visibleHash": "b2f145336cfa6d7a2303ee213ec2477914b56743ebdb6798c3521b6a7b68f9c9"
+    },
+    {
+      "clip": "pinball",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "f133cdfefd6130d2e75d0580bfeafd76457874f3218e4e304160b9836297611b"
+    },
+    {
+      "clip": "pinball",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "11e146876108c02709e8deb2e031ae0ad859ed36471d1929c5eae9c301a8a33b"
+    },
+    {
+      "clip": "pinball",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "c146998529ceb0b291d8a2fbe39a334a3b6885e22d2e700c7695d0c1bd00f143"
+    },
+    {
+      "clip": "pinball",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "c33a2a786d531feef725a3573ac3824c6f2e56d8a65ad2d7c24ac766d33394b6"
+    },
+    {
+      "clip": "pinball",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "70974da1305be2f92b793392f2110699b0db823f20d05716e7c6e63e336fae4e"
+    },
+    {
+      "clip": "pinball",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "b7cbe06905642ad55b632ef8782f13dfbb829ae585977bccfae91f979d1ee42d"
+    },
+    {
+      "clip": "charged",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "a2820c83e5fe67ecda5763b413c1e5fa15d4af426626ba896654397cccf104f6"
+    },
+    {
+      "clip": "charged",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "f8b7713b3391166b93a5de725f67f1f08491a22a95d963a8fe5d7e1c205a0796"
+    },
+    {
+      "clip": "charged",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "cb03af4b3d703129ca968f5227134b463d55fe46238775d19c0e4f46c918bdd1"
+    },
+    {
+      "clip": "charged",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "6715d1fb87a9d3996a9e443b277a38d385dd26bd8679baf57b59c5f95419b98c"
+    },
+    {
+      "clip": "charged",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "7ae43f407e6dd2a9285420711d6b593f3be74d1e4bab6f03a03d1545b0cc7f8e"
+    },
+    {
+      "clip": "charged",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "ec9ab808787c7be916ffc29cf5e1f6dbf9dcf9cf5703fdc7bc8451f698451676"
+    },
+    {
+      "clip": "dash",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "c5d703a887de64abab117eaa97d1d99adbf12f3f05131c67b8da17d905827d8f"
+    },
+    {
+      "clip": "dash",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "0cab0c5e1e2ce5291b29abdd4385da7f88572997d362b8306e383ef12711c956"
+    },
+    {
+      "clip": "dash",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "1fcdbbe504f38b98ef1c0ea67f87ef85138158be2da20f10ed02025d3935ccdd"
+    },
+    {
+      "clip": "dash",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "8c56df78db3406bf9811d168742c7ff17c92d78c7d41b9e6a701b201c580e9f5"
+    },
+    {
+      "clip": "dash",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "233aa9d942be6b43b15ab77d58f6d626286f48981514b1c570a4e64de39ef7d3"
+    },
+    {
+      "clip": "dash",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "9a9c4f7bd9629d92e38683e4ad86ced360392c10f136f70497cc92b14d28aba6"
+    },
+    {
+      "clip": "bounce",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "a369f953ebd25e4e622c8bec67e4ff29d791a0b6a48f7e30de6c26aa4bd9f019"
+    },
+    {
+      "clip": "bounce",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "94cb3f97ed3ea19cf1450c2c3dd4ff6b5d617e280964b696563bc85d0366ac67"
+    },
+    {
+      "clip": "bounce",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "aea72e34518f66b097a604ed58658abd7a729aacfffcb02300c4a3ca3edafa35"
+    },
+    {
+      "clip": "bounce",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "25f87992dec08c8227e91a26785597bcffa22fe529941739511669a2509c47d2"
+    },
+    {
+      "clip": "bounce",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "c3aec8eedf211b659f9b54a442dc78aa78bd346447754cc0a52ac62a3950e68e"
+    },
+    {
+      "clip": "bounce",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        33,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "a16123e3093e7342726ed5d087d7185483a8304a0501d38ccb71fe3ba47438c9"
+    },
+    {
+      "clip": "link",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        75,
+        240,
+        180
+      ],
+      "clearBorder": true,
+      "visibleHash": "7cec980839ae450e5c1a60d344a0a94a0c022162a3a45284eb3082c282c02cea"
+    },
+    {
+      "clip": "link",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        75,
+        240,
+        180
+      ],
+      "clearBorder": true,
+      "visibleHash": "84410ba0cdba89fa0ec6495942475d54d085800ac922b4d90768c486bfce02bb"
+    },
+    {
+      "clip": "link",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        75,
+        240,
+        180
+      ],
+      "clearBorder": true,
+      "visibleHash": "a9748fc30dc3d8900441aca714659894c8d48eb094934b8f875c7ad681a5c6fd"
+    },
+    {
+      "clip": "link",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        75,
+        240,
+        180
+      ],
+      "clearBorder": true,
+      "visibleHash": "de28f7bfdae4236edfb01e39da535dc599f3a975ec5b29784693c316f3de5423"
+    },
+    {
+      "clip": "link",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        75,
+        240,
+        180
+      ],
+      "clearBorder": true,
+      "visibleHash": "3c987daf6accfafd7e9641e123f4f8fa653fd454050b31103880d0a958f06916"
+    },
+    {
+      "clip": "link",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        75,
+        240,
+        180
+      ],
+      "clearBorder": true,
+      "visibleHash": "1d7d8512a8103c053f688c3ff7d378bf51cb8eed41005c6f77724239d285ab7a"
+    },
+    {
+      "clip": "muzzle",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "clearBorder": true,
+      "visibleHash": "7815152591842031fbab64ba0a882fe429f037e8fa900da235006dbf525f94fc"
+    },
+    {
+      "clip": "muzzle",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "clearBorder": true,
+      "visibleHash": "e726dc1125cea5feb66d56c8c9f4f20e61932c9189dd7efae42335fe614a2f37"
+    },
+    {
+      "clip": "muzzle",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "clearBorder": true,
+      "visibleHash": "eae19aef719b0d9bbd9361059758a9eda92fc9a3be7dc338094103da5a8e716c"
+    },
+    {
+      "clip": "muzzle",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "clearBorder": true,
+      "visibleHash": "a2873198a46f0b6f34ff9566b756c41a1f8173da1c1392da3b3fcf80ba578e30"
+    },
+    {
+      "clip": "muzzle",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "clearBorder": true,
+      "visibleHash": "95002d75f6128c8f32e1516f740b5a1a2c8791edc5abe196a4943ced228683f1"
+    },
+    {
+      "clip": "muzzle",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        30,
+        240,
+        226
+      ],
+      "clearBorder": true,
+      "visibleHash": "8a295748a356a14c087643174d5f21336317b181a3f53d45e1911e17a87d85f7"
+    },
+    {
+      "clip": "blast",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "1e16120dc85ecc1a43b71a3d9ea8007698e05ac6472fad5aa1248b66dbd1d6c9"
+    },
+    {
+      "clip": "blast",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "86e803876ef6e12a91cbd2ba4333090f0d77fd293d8323b4e8a487f3961f5b05"
+    },
+    {
+      "clip": "blast",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "f896377708efc0636ddb2da2ff7191d2797ba7041bccab6870bdc192e38a46c5"
+    },
+    {
+      "clip": "blast",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "af1d0e3c122b1960b9d0362656eed73b9b05a7f048e16298e03b5b871ad836f3"
+    },
+    {
+      "clip": "blast",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "9d7e4ecabbc085057f22ccbcf8b377e41436e3315c05ca6a813e629fc90b11be"
+    },
+    {
+      "clip": "blast",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        28,
+        240,
+        227
+      ],
+      "clearBorder": true,
+      "visibleHash": "5b6ef79b0dd8839491bbdd78cbc52308a796cb6d39a2f737010ccb1e0080fb30"
+    },
+    {
+      "clip": "scope",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "9bfb02f966b8f0cdc5d38c489fb6f5ad19c14ed384e900fe20dfd0e5418c97e1"
+    },
+    {
+      "clip": "scope",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "ddf67b0b4684b8cc596434f00e694ba31316e3552802ec0ac057fe7b0d4f8fa4"
+    },
+    {
+      "clip": "scope",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "b640c4bf76793ee48678dc558c0d81ca4e11196abfdd24201a7537468c8c93b9"
+    },
+    {
+      "clip": "scope",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "74627d6f8fef00bb78b38802fb274b52b7524141c0efa830e78eb22797b42fcd"
+    },
+    {
+      "clip": "scope",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "e7bf3de0cd522f38ec3c8123d70b190a1f7db441a39e1e08e3e8fded6f639dc6"
+    },
+    {
+      "clip": "scope",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "c3808397171c087dc63cf82860ae23369947a68d0e985a7efb8e501bd02dd82c"
+    },
+    {
+      "clip": "seed",
+      "frame": 0,
+      "size": 256,
+      "alphaBox": [
+        16,
+        54,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "72032f4f107c4accc559b29887621fe2003f1751af7bd8a7d829c23609b4b677"
+    },
+    {
+      "clip": "seed",
+      "frame": 1,
+      "size": 256,
+      "alphaBox": [
+        16,
+        54,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "5a4afd13e48c0f31b16c0a226ae274df6f9da201cdc992d01070e9ddc271fcdf"
+    },
+    {
+      "clip": "seed",
+      "frame": 2,
+      "size": 256,
+      "alphaBox": [
+        16,
+        54,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "bc65d8f93dcfbc101e96bcefc7ace699db117d602afff9764b8e4ee1ee346685"
+    },
+    {
+      "clip": "seed",
+      "frame": 3,
+      "size": 256,
+      "alphaBox": [
+        16,
+        54,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "eac0ebf8df4ee85e82f882eaef6575b463bf94dfa79c20db3ee7c29d8eec53bc"
+    },
+    {
+      "clip": "seed",
+      "frame": 4,
+      "size": 256,
+      "alphaBox": [
+        16,
+        54,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "1ad1f2cbd5f451c1c91bb080d8560bc38a7b5f55d14f20ce515c24b7c31e2d7b"
+    },
+    {
+      "clip": "seed",
+      "frame": 5,
+      "size": 256,
+      "alphaBox": [
+        16,
+        54,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "623881ee189ae0da0d5d9cdf50a1c2c260a436b3dc4e82bfabd672556d01fe6b"
+    }
+  ],
+  "ownerPhoneReview": "Visual preference/readability/FPS pending; preview is source-frame playback, not gameplay."
+}

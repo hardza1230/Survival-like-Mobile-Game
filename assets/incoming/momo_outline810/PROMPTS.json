@@ -1,0 +1,23 @@
+{
+  "provider": "built-in ImageGen",
+  "generations": [
+    {
+      "group": "impact",
+      "prompt": "Create original game VFX PNG32 atlas1536x1024 exactly6columns x4rows of256x256 cells. Genuine transparency alpha0 in every blank/gutter/corner;18px clear cell padding. Reference image STYLE ONLY: powerful sculpted painted anime action with thin dark burgundy/navy outlines, clean cream glints, expressive curved brush shapes; not a copy of a franchise. No characters, scenes, letters, numbers, UI, cell borders or background wash.24 different authored frames,6per row left-to-right, same pivot/scale, no overlapping cells. Strawberry hero palette deep cherry red, rose pink, warm honey-gold and cream, green leaf accents. ROW1 SNIPER IMPACT: six ONE-SHOT tiny sharp contact star, growing cream/gold jagged punch, full red/gold elongated starburst, separating pointed arcs, fragments, fading spark flecks. ROW2 PELLET HIT: six ONE-SHOT small pink/gold impact pop and broken cream petal arcs, distinct from stronger sniper. ROW3 SEED POP: six ONE-SHOT strawberry-red seed puff breaking into small gold/green leaf-edged curls, compact clean hit. ROW4 PINBALL FINISHER: six ONE-SHOT grand hollow rose/cream heart-petal ring explosion, full expanding split crescents and fading berry sparks; negative space keeps characters visible.",
+      "reference": "assets/incoming/mint_outline819/field_source.png",
+      "role": "style reference only"
+    },
+    {
+      "group": "motion",
+      "prompt": "Create original game VFX PNG32 atlas1536x1024 exactly6columns x4rows of256x256 cells. Genuine transparency alpha0 in every blank/gutter/corner;18px clear cell padding. Reference image STYLE ONLY: powerful sculpted painted anime action with thin dark burgundy/navy outlines, clean cream glints, expressive curved brush shapes; not a copy of a franchise. No characters, scenes, letters, numbers, UI, cell borders or background wash.24 different authored frames,6per row left-to-right, same pivot/scale, no overlapping cells. Strawberry hero palette deep cherry red, rose pink, warm honey-gold and cream, green leaf accents. ROW1 CHARGED SEED: six LOOPABLE flight poses of right-facing sharp strawberry-red seed projectile with gold cream pointed head and twisting rose wind tail to left, stable head/endpoints. ROW2 DASH: six ONE-SHOT overhead sweep of pink-red wind petals and leaf ribbons, thin ghosted speed curls without any body/person silhouette, shrinking into leaf sparks. ROW3 BOUNCE: six ONE-SHOT gold/rose angular rebound star with two sharp turning ribbons, contact then break-apart arcs. ROW4 LINK: six LOOPABLE horizontally oriented slim rose-gold wind/light ribbon with several separated diamond seed glints, both endpoints fixed, transparent around the narrow middle, no arrow or text; can be stretched between bounce targets.",
+      "reference": "assets/incoming/mint_outline819/field_source.png",
+      "role": "style reference only"
+    },
+    {
+      "group": "release",
+      "prompt": "Original Strawberry hero combat VFX matching supporting reference STYLE ONLY. Transparent PNG32 atlas1536x1024 EXACT6columns x4rows cells256x256 with18px empty padding, alpha0 in gutters/blank corners, no backdrop/matte. Thin deep burgundy/navy action-animation outlines, rose/cherry-red fruit fantasy, warm gold, cream and green leaf glints.24 distinct painted drawings,6sequential each row, stable pivot. No words, labels, numbers, UI, characters, guns or cell borders. ROW1 SHOTGUN MUZZLE: right-facing compact gold/rose forked wind flare, six ONE-SHOT coil/contact/full flash/split petals/ember fragments/fade, fixed LEFT emission anchor. ROW2 BERRY BLAST: broad right-facing cone of outlined curved rose-red wind petals with cream/gold sharp high-power streaks and green leaf tips; six ONE-SHOT gathering/release/full powerful fan/splitting outward ribbons/fragmented petals/few small fading wisps. Fixed LEFT emitter and same cone opening angle, transparent negative spaces, no opaque cloud. ROW3 SCOPE CHARGE: overhead open-center thin rose/gold petal wreath with four pointed glints, six LOOPABLE gathering pulse phases, entirely transparent center radius65px so a hero remains visible. ROW4 SEED: right-facing small strawberry-red/gold seed-shaped magical projectile with a clean bright cream sharp point and short green leaf/ribbon tail, six LOOPABLE changing flight poses, stable tip/endpoints, recognizable at20px. Bright sculpted clear contour without diffuse bloom.",
+      "reference": "assets/incoming/mint_outline819/field_source.png",
+      "role": "style reference only"
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "sources": [
+    {
+      "group": "arcs",
+      "path": "assets/incoming/taro_outline810/arcs_source.png",
+      "bytes": 2190222,
+      "sha256": "5d4a190ff326ccf067e3259cd00d215307f20466c77fa05666da8524dc5625c1",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        253
+      ]
+    },
+    {
+      "group": "fields",
+      "path": "assets/incoming/taro_outline810/fields_source.png",
+      "bytes": 2536204,
+      "sha256": "ac38514b1b3c751a993fb2b5a371859217168a5c8116b6843dbf1424f78183b8",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        253
+      ]
+    }
+  ],
+  "runtime": [
+    {
+      "key": "bpx_taro810_bolt",
+      "path": "assets/art/taro_outline810/bpx_taro810_bolt.webp",
+      "bytes": 237438,
+      "sha256": "fd85ff5500eea9d480f3d56be83d5c0179cc80b578b89af7cc65af4e8b90fdc0",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_hit",
+      "path": "assets/art/taro_outline810/bpx_taro810_hit.webp",
+      "bytes": 277620,
+      "sha256": "cc97caea8ad91dfd3f35a9590bc1978e5aad97468a697e9313cc9a8a51339a81",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_spark",
+      "path": "assets/art/taro_outline810/bpx_taro810_spark.webp",
+      "bytes": 269374,
+      "sha256": "99f31e2c89817dc96f67544b3b1d28b07d7cf510e95546c3217462c6606b974e",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_burst",
+      "path": "assets/art/taro_outline810/bpx_taro810_burst.webp",
+      "bytes": 317930,
+      "sha256": "2b2bb781d9549a85165e42d50f32f1375607c6ce6de8fd01c5e58c05dc7a2219",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_core",
+      "path": "assets/art/taro_outline810/bpx_taro810_core.webp",
+      "bytes": 368598,
+      "sha256": "0fb07371cbdcdc2ef3a10b833bf1ba856f9c940d0a51796f9fc936b3eb10af99",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_field",
+      "path": "assets/art/taro_outline810/bpx_taro810_field.webp",
+      "bytes": 384212,
+      "sha256": "e8388ce8872e6e08bf7601bb3ec04cf1caccd4781db441de959e94ad46300789",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_plasma",
+      "path": "assets/art/taro_outline810/bpx_taro810_plasma.webp",
+      "bytes": 449034,
+      "sha256": "1c235a2bee2954e9943ca9bb88452018ddffbddee2f338f05131d11c48463d5d",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_taro810_strike",
+      "path": "assets/art/taro_outline810/bpx_taro810_strike.webp",
+      "bytes": 255402,
+      "sha256": "057cf33e4c439672296ac9de49b79068affb078a761fcc12b1cb98c0ea2af686",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    }
+  ]
+}

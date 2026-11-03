@@ -1,6 +1,6 @@
 # Shared painted-outline battle VFX direction
 
-Owner likes Sesame8.1.7 and asks whether the same linework/animation can cover Mint, Chocolate, Taro, Companions/Minions and other battle effects. This is the accepted visual direction and proposed delivery sequence. Implementation of the other hero art batches is pending; this document does not claim those assets exist.
+Owner likes Sesame8.1.7 and asks whether the same linework/animation can cover Mint, Chocolate, Taro, Companions/Minions and other battle effects. This is the accepted visual direction and proposed delivery sequence. Mint shipped in8.1.9; all remaining approved hero batches are implemented in8.1.10 (OUTLINE_REMAINING_810.md). Enemy/boss art beyond these hero effects is a separate future scope.
 
 ## Reference and identity
 
@@ -21,4 +21,4 @@ One readable sequence: anticipation → release/contact → residue/recovery. Au
 - VFX-only batches preserve damage, hitbox, duration, target selection, audio and authored attack-release timing. Any gameplay request is a separate explicit scope.
 - Use existing clip timing/anchors where possible; choose frame count per motion rather than forcing every effect into the same grid. Typical large clips6–8 frames, small repeated effects3–4 frames. Source alpha and complete frame borders, exact prompts/manifests/previews retained.
 - Hero/stage-lazy loading only, no boot additions. Reuse atlases and existing owned actor/flash/projectile budgets; no new per-hit timer storms. Pool repeated small effects and preserve pause/owner/epoch/death/shutdown cleanup, missing-art fallback and Low/reduced-motion behavior.
-- Start with Mint as the representative ice/charge/field batch. Review its actual phone timing, clarity and FPS before expanding the remaining visual vocabulary. Contract tests can check frames, anchors, ownership and loading; they do not establish phone visual quality or performance.
+- Start with Mint as the representative ice/charge/field batch. Owner subsequently authorized completing the remaining heroes without waiting for phone review. Actual phone timing, clarity and FPS review still remains. Contract tests can check frames, anchors, ownership and loading; they do not establish phone visual quality or performance.

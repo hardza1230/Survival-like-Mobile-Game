@@ -1,0 +1,210 @@
+{
+  "sources": [
+    {
+      "group": "pomelo",
+      "path": "assets/incoming/yuzu_outline810/pomelo_source.png",
+      "bytes": 2694329,
+      "sha256": "fc0d267ae89f7a49e4248ff021847da721244161bc54027c4de1a3029ff4ea58",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        253
+      ]
+    },
+    {
+      "group": "lime",
+      "path": "assets/incoming/yuzu_outline810/lime_source.png",
+      "bytes": 2302329,
+      "sha256": "a9dc5766ec73ca72cfaf2067fc79af4f20f48a30dd1bce57b3cbf3300076ea14",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        254
+      ]
+    },
+    {
+      "group": "alchemy",
+      "path": "assets/incoming/yuzu_outline810/alchemy_source.png",
+      "bytes": 2808355,
+      "sha256": "e8081ac1c9606af9cd18e961a4a2c8ae4cfcfac63ad12b0ee2f5d8b2f728f1df",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        253
+      ]
+    }
+  ],
+  "runtime": [
+    {
+      "key": "bpx_yuzu810_slam",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_slam.webp",
+      "bytes": 398980,
+      "sha256": "c6b0813b34360c847df40e500cf6166d4d168227c96a829ee7f6ff7b9e32504d",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_peel",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_peel.webp",
+      "bytes": 309768,
+      "sha256": "f0df28faca2fe0ac059f6ace0e10217c0ea21ff78270d9eb9f28b1e0d08702df",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_roll",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_roll.webp",
+      "bytes": 337440,
+      "sha256": "efa51bcc7bace96165018da945f7685278bdf2a3a9a166e0bb3e2df244ce829e",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_guardian",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_guardian.webp",
+      "bytes": 416764,
+      "sha256": "470c94d94c93a116697a0ab6109ca56c2a8e7b6e58fc67550d92ccd9cdfcf7a8",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_arrow",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_arrow.webp",
+      "bytes": 184474,
+      "sha256": "b64a1fc7052cab6b6c598fb46a98f6cbda53c1bb85d3ad6c4b5aacf454b22aa5",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_volley",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_volley.webp",
+      "bytes": 287050,
+      "sha256": "a984b2c504691b48371afb0d624d001c050e4f448b602a3a79670cf6097509ed",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_pierce",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_pierce.webp",
+      "bytes": 217966,
+      "sha256": "d743f2351514375f79d5aa4238d6225f0420352b72d6f79fcf3061808a8839f2",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_trap",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_trap.webp",
+      "bytes": 437754,
+      "sha256": "5803928db8356ead7892f920a26cf93e678cfabc7683af1d8e316a835e7b2273",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_comet",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_comet.webp",
+      "bytes": 357290,
+      "sha256": "97339568036e9e76d2153e39ec9fe39c0b671ba0b091055ab842302e74acb94e",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_sigil",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_sigil.webp",
+      "bytes": 408434,
+      "sha256": "bf7800ff95c8613515d4f61fe34a25b4731c6c1697c7e7c5bdabd3955b1447dc",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_bloom",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_bloom.webp",
+      "bytes": 372186,
+      "sha256": "990c9d3dc99ecea6929732f28fbde789f77bb5797cbe09a1e318c1acff6cb9c6",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 22,
+      "loop": false,
+      "decodedBytes": 1572864
+    },
+    {
+      "key": "bpx_yuzu810_honey",
+      "path": "assets/art/yuzu_outline810/bpx_yuzu810_honey.webp",
+      "bytes": 468508,
+      "sha256": "6222608d62798751a990a291b1d9539cff508f2a76bff67b13cbc5f2d9ff7b57",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "cols": 6,
+      "rows": 1,
+      "rate": 18,
+      "loop": true,
+      "decodedBytes": 1572864
+    }
+  ]
+}
