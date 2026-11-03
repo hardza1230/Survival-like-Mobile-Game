@@ -34,6 +34,7 @@ jobs:
     runs-on: ubuntu-24.04   # ubuntu-latest = 26.04: Playwright 1.51.1 cannot install Chromium there
     steps:
       - uses: actions/checkout@v4
+        timeout-minutes: 5
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
