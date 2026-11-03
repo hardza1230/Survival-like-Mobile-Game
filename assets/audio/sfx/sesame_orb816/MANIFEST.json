@@ -1,0 +1,20 @@
+{
+  "assets": [
+    {
+      "key": "sfx_ses816_tap_p",
+      "path": "assets/audio/sfx/sesame_orb816/ses811_tap_p.mp3",
+      "bytes": 3805,
+      "sha256": "4bec85d199a01861b96e07f133e560ac1f5d78b4e5d62947174a3bfeb278f458",
+      "selected": "donors/tap_p_1.mp3",
+      "duration": 0.23510204081632652
+    },
+    {
+      "key": "sfx_ses816_tap_m",
+      "path": "assets/audio/sfx/sesame_orb816/ses811_tap_m.mp3",
+      "bytes": 4223,
+      "sha256": "87635c88b21190a20d0db215c6e95fe0d5f832e1558e69a30fd81c89162a79bc",
+      "selected": "donors/tap_m_1.mp3",
+      "duration": 0.2612244897959184
+    }
+  ]
+}

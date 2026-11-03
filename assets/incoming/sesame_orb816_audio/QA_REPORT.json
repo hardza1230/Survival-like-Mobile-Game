@@ -1,0 +1,29 @@
+{
+  "provider": "ElevenLabs",
+  "processing": "Mechanical onset trim, DC removal, gain and fades only; no synthesized layers. Level matching targets RMS0.07 with pre-encode peak cap0.65.",
+  "ownerListening": "Phone semantic/loudness review pending; technical decode/peak/DC checked.",
+  "files": [
+    {
+      "key": "sfx_ses816_tap_p",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.6187794208526611,
+      "dc": 0.00041921381489373744,
+      "rms": 0.06306852400302887,
+      "retainedDonorEnergy": 0.9997440576553345
+    },
+    {
+      "key": "sfx_ses816_tap_m",
+      "sampleRate": 44100,
+      "channels": 1,
+      "peak": 0.16937042772769928,
+      "dc": -0.0016480075428262353,
+      "rms": 0.0630592554807663,
+      "retainedDonorEnergy": 0.9684335589408875
+    }
+  ],
+  "approvedBlueUnchanged": {
+    "path": "assets/audio/sfx/sesame_orb815/ses811_tap_b.mp3",
+    "sha256": "842376fa71dec652d0961ac4abedc25ca27e47369d5c08acf0138406e1a61f9a"
+  }
+}

@@ -1,5 +1,7 @@
 # Sesame — elemental invocations, revision 8.1.5
 
+Audio revision8.1.6: red is now a short fire ignition/crackle; green is an airy wind gust. Two new original ElevenLabs cues/four donors in sesame_orb816_audio. The owner's approved blue815 water cue remains byte-identical. Other sounds/gameplay unchanged. Phone listening of the two new cues remains pending.
+
 Revision8.1.5 replaces PMM with Prismatic Armament (6s, basic damage×1.4 and attack rate×1.3) and BBB with Tidal Armor (6s, shield20%maxHP plus0.5%maxHP/s regeneration under existing healing restrictions/cap). Both follow the hero and refresh without stacking; BBB no longer deals damage, clears bullets or heals instantly. MBB remains the emergency escape. Eight other spells keep their identities. PPP tracks its original target/generation until120ms before each impact, then locks its ground point; PPP/PPM boss/miniboss multiplier is1.65 (prior1.35), ordinary foe damage unchanged.
 
 Red now grants10%damage perorb and adds8px base Flare splash radius; green6%movement and8%basic attack rate perorb; blue0.25%maxHP/s and12%echo chance perorb. Gale ranks add1.5%movement and1%basic rate perorb; Tide ranks add0.075%regen and1%echo chance perorb. Echo chance capped50%; one60%-damage repeated volley per primary attack after0.14s, never recursive; queue4/projectiles18. Current-orb bonuses stay live for basic attacks, cast-time red snapshot remains for spells. Buff state/echo queue are run-owned, paused with gameplay, cleared on transitions. No new meter or mana.

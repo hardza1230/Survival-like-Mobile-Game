@@ -1,4 +1,8 @@
-# Current checkpoint — Sesame buffs/orbs/touch8.1.5 (3 Nov2026)
+# Current checkpoint — Sesame fire/wind audio8.1.6 (3 Nov2026)
+
+LOCAL COMPLETE: fullnpmcheck/build2508assets and Forge/Lobby/Ruby/Rune24layouts+11MP3decode/cache browser checks all passed. Blue exact hash and route preserved; no gameplay changes. Next commit/CASpush/readback/Pages/live verification. New audition order fire/wind/approved water.
+
+IN PROGRESS: owner asks red fire, green wind, blue approved unchanged. Generated two original ElevenLabs cues/four donors via scripts/generate-sesame-orb816-audio.py, source assets/incoming/sesame_orb816_audio, runtime assets/audio/sfx/sesame_orb816. Exactprompts/QA/hash/audition retained; blue SHA842376fa71dec652d0961ac4abedc25ca27e47369d5c08acf0138406e1a61f9a unchanged. Newroute red/green816, blue815; tests pass targeted route/decode/hash; fullnpmcheck in progress. First API validation rejected over450char prompt, shortened prompts and resumed saved successful take, no duplicate regeneration. Next finishchecks/build/browsers, commit/push/liveverify. No phone semantic/loudness approval claimed for new sounds; no gameplay changes. Earlier checkpoints below historical; live8.1.5 before release.
 
 FINAL: Published runtime2e6cf1049e008edfe8c812bc2ffb1e19ab0ebafe; all24files/3263129bytes immutable readback verified. Pages41631120857 SUCCESS; live8.1.5 code markers verified (both buffs, echo, meteor lock, action-pointer ownership) and all3newtapMP3 SHA256 matched. Fullnpmcheck/build and all5browser contracts passed. No pending release work. Owner phone balance, thumb comfort, loudness/discrimination and FPS remain unclaimed. Final user asks full10spell/orb summary after push. Prior pending notes below are historical. No further APIs/extra art needed.
 

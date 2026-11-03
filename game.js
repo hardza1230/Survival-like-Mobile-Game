@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.5';
+const GAME_VERSION = '8.1.6';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.6',date:'2026-11-03',title:'Elemental rune sounds',items:['Red rune taps now flare with fire; green taps sweep with wind','The approved blue water sound stays the same']},
   {v:'8.1.5',date:'2026-11-03',title:'Sesame orb power and spell buffs',items:['Red orbs hit harder, green orbs speed up basic attacks, blue orbs can repeat a shot','PMM empowers Rainbow Flare for 6 seconds; BBB grants moving water armor and regeneration','Basic attacks have clearer empowered and echo effects; active buffs appear beside the recipe']},
   {v:'8.1.4',date:'2026-11-03',title:'Sesame spell identity and controls',items:['Spell orb bonuses stay fixed when cast','Rune buttons follow your control size; clearer recipe and readiness','Magma Garden leaves burning ground and Sunlance has a clearer quick-strike identity']},
   {v:'8.1.3',date:'2026-11-03',title:'Faster startup and reusable downloads',items:['Start without downloading the entire game','Visited menus and stages keep their downloaded assets on your device; changed files update when needed']},
@@ -3640,6 +3641,8 @@ const ASSET_AUDIO = {
   sfx_uq_rocket_salvo: 'assets/audio/sfx/unique_skills/uq_rocket_salvo.mp3',
   sfx_ses811_tap_p: 'assets/audio/sfx/sesame_invoker811/ses811_tap_p.mp3',
   sfx_ses815_tap_p: 'assets/audio/sfx/sesame_orb815/ses811_tap_p.mp3',
+  sfx_ses816_tap_p: 'assets/audio/sfx/sesame_orb816/ses811_tap_p.mp3',
+  sfx_ses816_tap_m: 'assets/audio/sfx/sesame_orb816/ses811_tap_m.mp3',
   sfx_ses815_tap_m: 'assets/audio/sfx/sesame_orb815/ses811_tap_m.mp3',
   sfx_ses815_tap_b: 'assets/audio/sfx/sesame_orb815/ses811_tap_b.mp3',
   sfx_ses811_tap_m: 'assets/audio/sfx/sesame_invoker811/ses811_tap_m.mp3',
@@ -19013,7 +19016,7 @@ class Game extends Phaser.Scene {
   sesRuneProjectCooldown(){const s=this._sesRune;if(!s)return;const key=this.sesRuneRecipe().key;s.projectKey=key;this.uniqueCd=s.projectValue=s.cooldowns[key]||0;}
   sesRuneCooldownTick(dt){const s=this.sesRuneEnsure();if(!s)return;this.sesRuneCommitCooldown();for(const key in s.cooldowns)s.cooldowns[key]=Math.max(0,s.cooldowns[key]-dt);for(const k of ['inputCd','castLock','guardT','mistT','orbFlash','tapFlash','empowerT','tideT'])s[k]=Math.max(0,(s[k]||0)-dt);if(s.tideT<=0)s.shieldHp=0;this.sesRuneProjectCooldown();}
   sesRuneReduceCooldowns(amount){const s=this._sesRune;if(!s||!(amount>0))return;this.sesRuneCommitCooldown();for(const key in s.cooldowns)s.cooldowns[key]=Math.max(0,s.cooldowns[key]-amount);this.sesRuneProjectCooldown();}
-  sesRuneSound(kind,vol=.4){if(typeof Sfx!=='undefined')Sfx.orderCue?.((kind.startsWith('tap_')?'ses815_':'ses811_')+kind,vol,kind.startsWith('tap_')?.08:.18);}
+  sesRuneSound(kind,vol=.4){if(typeof Sfx!=='undefined')Sfx.orderCue?.((kind==='tap_p'||kind==='tap_m'?'ses816_':kind==='tap_b'?'ses815_':'ses811_')+kind,vol,kind.startsWith('tap_')?.08:.18);}
   buildSesRunePause(){
     const w=this.W,h=this.H,v=this.sesRuneStats(),short=h<500,top=short?90:112,step=Math.min(58,(h-top-100)/5),cw=(w-32)/2;
     this.pauseUI.add(this.add.rectangle(w/2,h/2,w,h,0x171020,.97));

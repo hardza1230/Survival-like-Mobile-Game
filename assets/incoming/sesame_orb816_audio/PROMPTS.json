@@ -1,0 +1,74 @@
+{
+  "provider": "ElevenLabs",
+  "endpoint": "https://api.elevenlabs.io/v1/sound-generation?output_format=mp3_44100_128",
+  "generations": [
+    {
+      "key": "sfx_ses816_tap_m",
+      "file": "donors/tap_m_1.mp3",
+      "parameters": {
+        "text": "One tiny WIND spell: a clean airy SHWISH of rushing wind sweeping past, with a quick upward breathy gust and smooth short taper. Clearly recognizable flowing air, light and agile, audible on phone speakers. No flame crackle, percussion, metallic hit, bell, musical chime or voice. One compact gesture finishing in 190 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "2c68e4433efb497b96007bfaec064a599d761e5a207b15f6be87e9b9370f42a1"
+    },
+    {
+      "key": "sfx_ses816_tap_p",
+      "file": "donors/tap_p_2.mp3",
+      "parameters": {
+        "text": "One tiny FIRE ignition: FWOFF, flame flaring with a crackling ember tail. Immediate warm midrange fire texture, clear on phone speakers. No wood, drum, bell or chime. One compact gesture finishing in 170 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "1cc9ce1cb78bba99e006f185d7ad0474c7eb475b36f5b72a4eb2d86037c285b7"
+    },
+    {
+      "key": "sfx_ses816_tap_p",
+      "file": "donors/tap_p_1.mp3",
+      "parameters": {
+        "text": "One tiny FIRE ignition: FWOFF, flame flaring with a crackling ember tail. Immediate warm midrange fire texture, clear on phone speakers. No wood, drum, bell or chime. One compact gesture finishing in 170 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "ab70d7e9099ad231dd9b1c8a66ed0595db35807e9443c2d47f73376495a3187c"
+    },
+    {
+      "key": "sfx_ses816_tap_m",
+      "file": "donors/tap_m_2.mp3",
+      "parameters": {
+        "text": "One tiny WIND spell: airy SHWISH of rushing air with a quick upward gust and smooth taper. Light and agile, clear on phone speakers. No crackle, percussion, metal, bell or chime. One gesture finishing in 190 milliseconds. Original cute painted candy-fantasy mobile game sound. No speech, music, imitation, harsh highs or repeated clicks. Softer rounded alternate take.",
+        "duration_seconds": 0.5,
+        "prompt_influence": 0.6,
+        "model_id": "eleven_text_to_sound_v2",
+        "loop": false
+      },
+      "response": {
+        "request-id": null,
+        "character-cost": "6"
+      },
+      "bytes": 8820,
+      "sha256": "9da8e58c681476eafdb59d305d161ee8dd089a7937f531053f248ff3f80694f8"
+    }
+  ]
+}
