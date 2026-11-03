@@ -3,12 +3,12 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 function method(n){const a=src.indexOf('  '+n+'(',src.indexOf('class Game extends')),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0&&m,n);return src.slice(a,a+1+m.index);}
 const ctx={};vm.createContext(ctx);vm.runInContext(src.slice(src.indexOf('const YUZU_FORMS='),src.indexOf('const YUZU_UNIQUES={'))+';this.F=YUZU_FORMS;this.K=YUZU_FORM_KILLS;',ctx);
 for(const k of ['pomelo','lime','bloodorange'])assert.equal(ctx.F[k].length,3,k);
-const S=vm.runInContext('(class{'+['yuzuForm','yuzuFormKills','yuzuChooseForm','yuzuEvolveFx'].map(method).join('\n')+'})',ctx);const s=new S();const ev=[];
+const S=vm.runInContext('(class{'+['yuzuForm','yuzuFormKills','yuzuChooseForm','yuzuEvolveFx','yuzuPower'].map(method).join('\n')+'})',ctx);const s=new S();const ev=[];
 Object.assign(s,{yuzuRank:()=>0,yuzuTalent:()=>0,showBanner:(a,b)=>ev.push(b),screenFlash(){},vfxHitRing(){},yuzuSound(){}});
 s.basicAttack={character:'yuzu',path:'zestSwarm',lv:{},ranks:{}};s.syncBasicAttack=()=>{};
 assert.deepEqual([0,1,2,3].map(g=>s.yuzuForm({kind:'pomelo',growth:g})),[1,1,1,1],'growth cannot auto-evolve');
 const m={kind:'lime',form:1,formKills:0,spr:{x:0,y:0}};s._yuzuCrew=[m];for(let i=0;i<100;i++)s.yuzuFormKills(m);assert.equal(s.yuzuForm(m),1);assert(s.yuzuChooseForm(s.basicAttack,1));assert.equal(s.yuzuForm(m),2);assert.equal(ev.pop(),'Lime Archer');assert(s.yuzuChooseForm(s.basicAttack,2));assert.equal(s.yuzuForm(m),3);assert.equal(ev.pop(),'Lime Skyhunter');assert(!s.yuzuChooseForm(s.basicAttack,2),'card idempotent');
-assert(src.includes("fm=cm&&cm.kind!=='pomelo'?1+.3*(this.yuzuForm(cm)-1):1;return fm*24"),'+30% power per card form for Lime/Blood Orange');
+s.player={dmgMul:1};assert(Math.abs(s.yuzuPower()-21.6*1.6)<1e-8,'third form keeps +60% power over the reduced base');s.basicAttack.lv.companion_form=1;assert(Math.abs(s.yuzuPower()-21.6*1.3)<1e-8,'second form keeps +30% power');s.basicAttack.lv.companion_form=2;
 assert(/fk='yz_'\+m\.kind\+'_f'\+form,key=form>1&&this\.textures\.exists\(fk\)\?fk:/.test(src),'form art when delivered');
 // Stronger Uniques
 assert(/\[\[350,1\.5,\.6\],\[700,2,\.45\]\]\.forEach/.test(method('yuzuCommandLand')),'Pomelo aftershocks');

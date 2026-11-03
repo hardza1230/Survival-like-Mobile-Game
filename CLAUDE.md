@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.8; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.9; fetch the deploy branch first.
 
-# Latest delivery: v8.1.7 — animated elemental invocations (owner)
+# Latest delivery: v8.1.8 — boss shelter, smaller Yuzu squad and nectar defense (owner)
+
+C2-2 air pocket stationary/prop-aware, radius+boss body+80px clearance; Behemoth pinned movement+attack/follow-up gate,4s charge/countdown,1.6×arena blast only outside,0.6s recovery, owned pause/player/stage/epoch/cleanup. Existing fog/bubble art preserved. Yuzu cap16→10, Squad+1/rank/evolution+1/forms+1each, companion power×.9/minions additional×.95, spawn/acquisition/cycle stagger, curved homes, crowded normal targets distributed and every third minion may cover close mobs; mission priority preserved. Nectar3×100HP→1×300HP; exact one third max-HP life loss bypasses armor/shields/iframe then fullHP relocation if alive, normal death flow. Visible descriptions/cards updated, no save/talent changes. New event contracts and hierarchy tests; owner phone timing/readability/balance pending. Design docs/design/C2_FOG_YUZU_NECTAR_818.md.
+
+# Previous delivery: v8.1.7 — animated elemental invocations (owner)
 
 Owner approved PPB Steam Cannon (three forward cone pulses .18/.42/.66s, follows player/captured direction, 300px base range) and PBB Tidal Serpent (priority chase, three bites and water finisher, Boss role). Independent CDs/orb snapshots retained; other eight spell mechanics unchanged. Original ImageGen three atlases/72 painted frames for all ten spells/basic/shared casts; exact prompts/raws/QA/previews retained. Three hero-lazy WebPs 4,340,638bytes/18,874,368decoded, normal alpha, old-art/geometry fallback. Owned-time frame stepping, reduced-motion peak pose, existing actor/projectile/flash caps and cleanup. No audio/input/save/talent changes. Event/packing/real Canvas checks expanded. Owner phone art/timing/balance/FPS review pending.
 

@@ -1,0 +1,9 @@
+# Encounter and companion readability — 8.1.8
+
+Owner request: the moving Mycelium Behemoth makes its air bubble unusable; too many Yuzu Minions attack in identical rows; defending three fragile flowers is unwieldy.
+
+- C2-2: fixed air shelter at least its120px radius + boss body radius +80px from boss center, avoids solid props and prefers reachable visible positions near player. Boss pins its position and suppresses movement/attacks/follow-up while charging4s, then one1.6×arena-power blast outside shelter and0.6s recovery. Existing fog/bubble art, charge ring/countdown/directional cue, standard boss damage mitigation/Dash invulnerability. If no valid pocket exists, skip the attack. Owned-time pause/scene/player/stage/epoch/death cleanup, no attack timers.
+- Yuzu:10Minions max, Minion Squad +1/rank, evolution +1, forms +1 each; other recruitment sources/immortality preserved. Companion power -10%; Minions get an additional5% reduction (14.5% total). Deterministic spread of spawn/target acquisition/attack cadence, curved homes and crowd-aware normal targets. Every third Minion can cover nearby ordinary threats; mission targets remain highest priority and other Minions prioritize bosses.
+- Nectar: one300HP flower (was three100HP flowers), same enemy drain/proximity healing. On destruction lose exactly one third maximum HP (objective life loss bypasses armor/shields/hit invulnerability), normal death handling; survivor gets a full-health flower at a newly selected position. Objective timer continues and existing HP bar/direction helper follows the new flower. Visible mission text states the penalty.
+
+No new art required; existing sprites/animations and audio retained. No save/talent migration. Event/state contracts and real menu checks verify implementation; phone timing/readability/balance/FPS remain owner review.
