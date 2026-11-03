@@ -1,4 +1,6 @@
-# Sesame — elemental invocations, revision 8.1.1
+# Sesame — elemental invocations, revision 8.1.4
+
+Revision8.1.4 implements the first three approved polish priorities. Rune buttons follow control size (44–61.6px diameter); combat label prioritizes spell readiness and FIFO replacement. Sesame pause page lists allten recipes/cooldowns and current orb stats. Red-orb damage is captured when a spell is cast and passed explicitly through delayed hits; normal attacks retain live bonuses. Other enemy/gear/relic conditions keep their normal hit-time behavior. Sunlance is the accurate name for the single fast piercing PPM lance. PPB retains its five staggered eruptions (36power each), leaves burning patches until4s from cast (8power every.5s, overlapping patches never stack within one cast). No mana/cooldown restriction, new orb cards, or permanent talent migration in this first pass; those follow phone feedback.
 
 Owner feedback, 2 November 2026: independent spell cooldowns; short rune/cast recovery and audible composition; red damage/green speed/blue regeneration; orb-focused cards; radial PMB blast; more spectacle; Rainbow Flare basic; no Brand; all ten recipes. This revision supersedes the four-spell prototype and its shared cooldown.
 
@@ -10,7 +12,7 @@ Existing Unique cooldown modifiers apply at cast time. Wind Memory reduces newly
 
 ## Orb passives and cards
 
-Per orb: P/red +6% damage, M/green +4% move speed, B/blue +0.15% max HP regeneration per second. Bonuses are derived from the current three orbs, never repeatedly applied to permanent player stats. Red damage applies on hit; changing the orbs can change this live passive, while queued spell identity/base power remain captured. Blue regeneration obeys No Heal, healing modifiers and the normal 3% max HP/s shared regeneration cap. Green orb speed is capped at +30% before other temporary movement effects.
+Per orb: P/red +6% damage, M/green +4% move speed, B/blue +0.15% max HP regeneration per second. Bonuses are derived from the current three orbs, never repeatedly applied to permanent player stats. Spells retain red damage from cast time; basic attacks use the current passive. Blue regeneration obeys No Heal, healing modifiers and the normal 3% max HP/s shared regeneration cap. Green orb speed is capped at +30% before other temporary movement effects.
 
 | Card | Effect per rank | Max |
 |---|---|---:|
@@ -34,8 +36,8 @@ Codes below use canonical count order P → M → B. Other input orders with the
 | PPP | Solar Cataclysm | 14s | Boss: three delayed meteor impacts around the priority target |
 | MMM | Tempest Chakram | 10s | Clear: three spreading chakrams return toward the moving hero; separate hit ownership per arm/leg |
 | BBB | Tidal Sanctuary | 18s | Survival: heal8%, stationary protective water field, brief guard and local projectile clearing |
-| PPM | Sunlance Barrage | 12s | Boss: a large, fast piercing solar lance with impact bursts |
-| PPB | Magma Garden | 14s | Clear: five staggered ground eruptions around the densest nearby crowd |
+| PPM | Sunlance | 12s | Boss: a large, fast piercing solar lance with impact bursts |
+| PPB | Magma Garden | 14s | Clear: five staggered eruptions leave burning ground until4s from cast; overlapping patches do not stack their periodic hit |
 | PMM | Orbit Reaver | 12s | Clear: orbiting blades cut a ring around the hero, then release a final burst |
 | MMB | Cyclone Confluence | 12s | Clear: a travelling vortex settles on the crowd and pulls ordinary foes inward |
 | PBB | Crystal Fault | 12s | Clear: five sequential crystal breaks along the attack line |

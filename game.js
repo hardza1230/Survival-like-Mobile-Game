@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.3';
+const GAME_VERSION = '8.1.4';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.4',date:'2026-11-03',title:'Sesame spell identity and controls',items:['Spell orb bonuses stay fixed when cast','Rune buttons follow your control size; clearer recipe and readiness','Magma Garden leaves burning ground and Sunlance has a clearer quick-strike identity']},
   {v:'8.1.3',date:'2026-11-03',title:'Faster startup and reusable downloads',items:['Start without downloading the entire game','Visited menus and stages keep their downloaded assets on your device; changed files update when needed']},
   {v:'8.1.2',date:'2026-11-02',title:'Sesame sound clarity',items:['Balanced the three rune sounds and separated the recipe confirmation','Prismatic Blast now has a stronger impact sound']},
   {v:'8.1.1',date:'2026-11-02',title:'Sesame: ten elemental invocations',items:['All ten recipes now cast with separate cooldowns, brief rune input recovery and cast recovery','Red orbs boost damage, green boost speed and blue regenerate HP; new cards strengthen orb effects','Rainbow Flare replaces the basic beam. PMB releases Prismatic Blast in every direction; Brand is reserved for a future hero','New original painted spell and orb art plus six original ElevenLabs rune, recipe and spell cues']},
@@ -4606,8 +4607,8 @@ const SES_RUNE_RECIPES={
  ppp:{name:'Solar Cataclysm',emoji:'☄',color:0xff5547,cd:14,frame:4,life:1.45,role:'Boss'},
  mmm:{name:'Tempest Chakram',emoji:'✥',color:0x60e68b,cd:10,frame:5,life:2.5,role:'Clear'},
  bbb:{name:'Tidal Sanctuary',emoji:'❋',color:0x51baff,cd:18,frame:6,life:3.5,role:'Survival'},
- ppm:{name:'Sunlance Barrage',emoji:'➶',color:0xffad4d,cd:12,frame:8,life:1.05,role:'Boss'},
- ppb:{name:'Magma Garden',emoji:'✹',color:0xff7761,cd:14,frame:9,life:1.7,role:'Clear'},
+ ppm:{name:'Sunlance',emoji:'➶',color:0xffad4d,cd:12,frame:8,life:1.05,role:'Boss'},
+ ppb:{name:'Magma Garden',emoji:'✹',color:0xff7761,cd:14,frame:9,life:4,role:'Clear'},
  pmm:{name:'Orbit Reaver',emoji:'✧',color:0x75e9c3,cd:12,frame:10,life:2.8,role:'Clear'},
  mmb:{name:'Cyclone Confluence',emoji:'◎',color:0x60e68b,cd:12,frame:7,life:3.2,role:'Clear'},
  pbb:{name:'Crystal Fault',emoji:'✦',color:0x9bdfff,cd:12,frame:12,life:1.2,role:'Clear'},
@@ -4629,7 +4630,7 @@ function sesRuneRecipe(orbs){const key=['p','m','b'].map(k=>orbs.filter(x=>x===k
 function sesRuneBonuses(orbs,r={}){const n=k=>orbs.filter(x=>x===k).length,p=n('p'),m=n('m'),b=n('b'),colors=new Set(orbs).size;return {p,m,b,damage:1+p*(.06+.02*(r.ember||0)),speed:1+Math.min(.3,m*(.04+.015*(r.gale||0))),regen:b*(.0015+.00075*(r.tide||0)),area:1+.1*(r.reach||0),spell:1+.04*colors*(r.resonance||0),cooldown:1-Math.min(.18,m*.02*(r.flow||0)),guard:Math.min(.45,b*.05*(r.ward||0))};}
 function sesRuneEnemyValid(e){return !!(e?.active&&e.hp>0&&!e.isDummy&&!e._phaseGateLocked&&!(e._phaseInvuln>0)&&Number.isFinite(e.x)&&Number.isFinite(e.y));}
 function sesRuneSegmentDistance(x,y,ax,ay,bx,by){const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-ax-dx*t,y-ay-dy*t);}
-function sesRuneControlLayout(w,h,k,left,u,d){const r=22,gap=50,land=h<500&&w>h,cx=land?(left?d.x+d.radius+90:d.x-d.radius-90):Math.max(78,Math.min(w-78,u.x)),cy=land?d.y:u.y-u.radius-32,boxes=[-1,0,1].map(i=>({x:cx+i*gap,y:cy,r}));boxes.label={x:Math.max(100,Math.min(w-100,cx)),y:cy-29};return boxes;}
+function sesRuneControlLayout(w,h,k,left,u,d){const r=22*Math.min(1.4,Math.max(1,k)),gap=r*2+6,land=h<500&&w>h,cx=land?(left?d.x+d.radius+3*r+24:d.x-d.radius-3*r-24):Math.max(gap+r+4,Math.min(w-gap-r-4,u.x)),cy=land?d.y:u.y-u.radius-r-14,boxes=[-1,0,1].map(i=>({x:cx+i*gap,y:cy,r}));boxes.label={x:Math.max(100,Math.min(w-100,cx)),y:cy-r-9};return boxes;}
 // End Sesame Rune Invoker helpers.
 
 
@@ -13158,6 +13159,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H;
     if(!this.pauseUI){ this.pauseUI=this.add.container(0,0).setScrollFactor(1).setDepth(90); this.camUI(this.pauseUI); }
     this.pauseUI.removeAll(true); this._pauseBtns=[];
+    if(this.isSesRune?.()){this.buildSesRunePause();this.pauseUI.setVisible(true);return;}
     if(w<=h&&this.tuHas('pause_panel')&&this.buildPauseArt?.()){this.pauseUI.setVisible(true);return;}   // v7.8.59 ใบ 24: หน้าหยุดตามภาพอ้างอิง
     const bg=this.add.rectangle(0,0,w,h,0x1a1420,0.85).setOrigin(0,0);
     const t=this.add.text(w/2,38,'⏸ Paused',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ff8fb5'}).setOrigin(0.5);
@@ -19005,15 +19007,24 @@ class Game extends Phaser.Scene {
   sesRuneCooldownTick(dt){const s=this.sesRuneEnsure();if(!s)return;this.sesRuneCommitCooldown();for(const key in s.cooldowns)s.cooldowns[key]=Math.max(0,s.cooldowns[key]-dt);for(const k of ['inputCd','castLock','guardT','mistT','orbFlash'])s[k]=Math.max(0,(s[k]||0)-dt);this.sesRuneProjectCooldown();}
   sesRuneReduceCooldowns(amount){const s=this._sesRune;if(!s||!(amount>0))return;this.sesRuneCommitCooldown();for(const key in s.cooldowns)s.cooldowns[key]=Math.max(0,s.cooldowns[key]-amount);this.sesRuneProjectCooldown();}
   sesRuneSound(kind,vol=.4){if(typeof Sfx!=='undefined')Sfx.orderCue?.('ses811_'+kind,vol,kind.startsWith('tap_')?.08:.18);}
+  buildSesRunePause(){
+    const w=this.W,h=this.H,v=this.sesRuneStats(),short=h<500,top=short?74:105,step=Math.min(58,(h-top-100)/5),cw=(w-32)/2;
+    this.pauseUI.add(this.add.rectangle(w/2,h/2,w,h,0x171020,.97));
+    const text=(x,y,t,size=12,color='#fff0cd',width=cw-12)=>{const n=this.add.text(x,y,t,{fontFamily:'NunitoUI, sans-serif',fontSize:size+'px',color,wordWrap:{width}}).setOrigin(0,0);this.pauseUI.add(n);};
+    text(16,16,'Sesame · Recipes',18,'#fff0cd',w-32);text(16,44,'ATK +'+Math.round((v.damage-1)*100)+'% · SPD +'+Math.round((v.speed-1)*100)+'% · Regen '+(v.regen*100).toFixed(2)+'%/s',11,'#fff0cd',w-32);
+    Object.entries(SES_RUNE_RECIPES).forEach(([key,r],i)=>{const x=16+(i%2)*cw,y=top+Math.floor(i/2)*step,cd=this._sesRune?.cooldowns[key]||0;text(x,y,key.toUpperCase()+' · '+(cd>0?cd.toFixed(1)+'s':'READY'),12,cd>0?'#cbbfda':'#8de4ba');text(x,y+17,r.name+' · '+r.role,short?10:11);});
+    const bw=(w-48)/3,by=h-38;
+    [['Resume',()=>this.togglePause()],['Settings',()=>this.buildPauseSettings()],['Quit stage',()=>this.quitStage()]].forEach(([name,fn],i)=>{const x=16+bw/2+i*(bw+8);this.uiPillBtn(this.pauseUI,x,by,bw,42,i===0?COLORS.mint:COLORS.grape,'',name,null);this._pauseBtns.push({x:x-bw/2,y:by-21,w:bw,h:42,fn});});
+  }
   sesRuneCreateControls(){
     this._sesRuneButtons=[];this._sesRuneUI=[];
     for(const [key,symbol,color] of SES_RUNE_TYPES){const b=this.camUI(this.add.circle(0,0,22,0x261e30,.94).setScrollFactor(1).setDepth(54).setStrokeStyle(2,color,.95)),t=this.camUI(this.add.text(0,0,symbol+'\n'+({p:'Power',m:'Motion',b:'Regen'})[key],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff4dc',align:'center'}).setOrigin(.5).setScrollFactor(1).setDepth(55));this._sesRuneButtons.push({key,b,t});this._sesRuneUI.push(b,t);}
-    this._sesRuneLabel=this.camUI(this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:'#fff0cd',align:'center',lineSpacing:2}).setOrigin(.5,1).setScrollFactor(1).setDepth(55));this._sesRuneUI.push(this._sesRuneLabel);this.hudList?.push(...this._sesRuneUI);this.sesRuneLayout();this.sesRuneRefreshUI();
+    this._sesRuneLabel=this.camUI(this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff0cd',align:'center',lineSpacing:2}).setOrigin(.5,1).setScrollFactor(1).setDepth(55));this._sesRuneUI.push(this._sesRuneLabel);this.hudList?.push(...this._sesRuneUI);this.sesRuneLayout();this.sesRuneRefreshUI();
   }
   sesRuneLayout(){if(!this._sesRuneButtons?.length||!this.uniqueBtn)return;const boxes=sesRuneControlLayout(this.W,this.H,this.ctrlScale(),!!Save.data.settings?.ctrlLeft,this.uniqueBtn,this.dashBtn);this._sesRuneButtons.forEach((q,i)=>{const a=boxes[i];q.b.setPosition(a.x,a.y).setRadius(a.r);q.t.setPosition(a.x,a.y);});this._sesRuneLabel.setPosition(boxes.label.x,boxes.label.y);}
   sesRuneRefreshUI(show){
     if(!this._sesRuneUI)return;const on=!!(this.isSesRune()&&(show??this.uniqueBtn?.visible)&&this.state!=='menu');this._sesRuneUI.forEach(o=>o.setVisible(on));if(!on)return;
-    const r=this.sesRuneRecipe(),s=this._sesRune,v=this.sesRuneStats(),code=(s?.orbs||['p','p','p']).map(x=>x.toUpperCase()).join(' '),text=r.name+' · '+r.role+'\n'+code+' · oldest first\nATK +'+Math.round((v.damage-1)*100)+'%  SPD +'+Math.round((v.speed-1)*100)+'%  RGN '+(v.regen*100).toFixed(2)+'%/s';if(this._sesRuneLabel.text!==text)this._sesRuneLabel.setText(text);
+    const r=this.sesRuneRecipe(),s=this._sesRune,code=(s?.orbs||['p','p','p']).map((x,i)=>i===0?'['+x.toUpperCase()+']':x.toUpperCase()).join('  '),cd=s?.cooldowns[r.key]||0,status=s?.castLock>0?'RECOVER':cd>0?cd.toFixed(1)+'s':'READY',text=r.name+' · '+status+'\n'+code+'  → replace [first]';if(this._sesRuneLabel.text!==text)this._sesRuneLabel.setText(text);
     this._sesRuneButtons.forEach(q=>q.b.setAlpha((s?.inputCd||0)>0?.55:1).setStrokeStyle(s?.lastTap===q.key&&s.inputCd>0?3:2,SES_RUNE_TYPES.find(t=>t[0]===q.key)[2],1));if(this.uniqueTxt?.text!==r.emoji)this.uniqueTxt?.setText(r.emoji);
   }
   sesRuneHit(p){return this.isSesRune()&&this._sesRuneButtons?.find(q=>q.b.visible&&Math.hypot(p.x-q.b.x,p.y-q.b.y)<=q.b.radius);}
@@ -19023,15 +19034,15 @@ class Game extends Phaser.Scene {
   }
   sesRuneTarget(x,y,range){let best=null,score=-Infinity;this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e))return;const d=Math.hypot(e.x-x,e.y-y);if(d>range)return;const rank=e.isBoss?4:e.isMini?3:e._waveObjectiveTarget||e._objectiveMark?2:e.isElite?1:0,v=rank*2000-d;if(v>score){score=v;best=e;}});return best;}
   sesRuneCrowd(x,y,range){const a=[];this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&Math.hypot(e.x-x,e.y-y)<range)a.push(e);});let best=null,n=0;for(const e of a.slice(0,24)){let count=0;for(const o of a)if((e.x-o.x)**2+(e.y-o.y)**2<22500)count++;if(count>n){n=count;best=e;}}return best||this.sesRuneTarget(x,y,range);}
-  sesRuneDamage(e,d,key){if(this.state!=='play'||!this._sesRune||!sesRuneEnemyValid(e))return;const prev=this._mxSrc;this._mxSrc='sesame.rune.'+key;try{const role=SES_RUNE_RECIPES[key]?.role;this.damage(e,d*((e.isBoss||e.isMini)?role==='Boss'?1.35:role==='Clear'?.8:1:1),e.x,e.y);}finally{this._mxSrc=prev;}}
-  sesRuneArea(x,y,r,d,key){this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&Math.hypot(e.x-x,e.y-y)<=r+(e.body?.halfWidth||0))this.sesRuneDamage(e,d,key);});this.hitCratesInRadius?.(x,y,r,d);}
+  sesRuneDamage(e,d,key,orbDamage){if(this.state!=='play'||!this._sesRune||!sesRuneEnemyValid(e))return;const prev=this._mxSrc;this._mxSrc='sesame.rune.'+key;try{const role=SES_RUNE_RECIPES[key]?.role;this.damage(e,d*((e.isBoss||e.isMini)?role==='Boss'?1.35:role==='Clear'?.8:1:1),e.x,e.y,orbDamage);}finally{this._mxSrc=prev;}}
+  sesRuneArea(x,y,r,d,key,orbDamage){this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&Math.hypot(e.x-x,e.y-y)<=r+(e.body?.halfWidth||0))this.sesRuneDamage(e,d,key,orbDamage);});this.hitCratesInRadius?.(x,y,r,d);}
   sesRunePushEnemy(e,x,y,force=200,sec=.25){if(!sesRuneEnemyValid(e)||e.isBoss||e.isMini||e.body?.immovable||e.frozen>0||e._fleeing||e._huntFlee||e._wispRaider)return;const a=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(a)*force,Math.sin(a)*force);e.knock=Math.max(e.knock||0,sec);}
   sesRuneHeal(fraction){const p=this.player;if(this.recipeHas?.('noheal')||p._uqNoRegen)return;const amount=p.maxhp*fraction*(this.pactHealMul?.()||1),before=p.hp;p.hp=Math.min(p.maxhp,p.hp+amount);if(p.hp>before)this.popHeal?.(p.x,p.y,Math.round(p.hp-before));}
   sesRuneImage(frame,x,y,size,depth=8){if(!this.textures?.exists('fx_sesame_invoker811'))return null;return this.camWorld(this.add.image(x,y,'fx_sesame_invoker811',frame).setDisplaySize(size,size).setDepth(depth));}
   sesRuneBurst(s,frame,x,y,size,life=.45){if(s!==this._sesRune||this.state!=='play'||s.fx.length>=12)return;const image=this.sesRuneImage(frame,x,y,size,y+6);if(image)s.fx.push({image,life,total:life,size});}
   sesRuneCast(){
     if(this.state!=='play'||!this.isSesRune()||this._adBusy||this._rubyEntry?.active)return false;const s=this.sesRuneEnsure();if(!s)return false;this.sesRuneCommitCooldown();const r=this.sesRuneRecipe();if(!r.ready||s.castLock>0||(s.cooldowns[r.key]||0)>0||s.actors.length>=8)return false;
-    const p=this.player,v=this.sesRuneStats(),target=r.role==='Clear'?this.sesRuneCrowd(p.x,p.y,620):this.sesRuneTarget(p.x,p.y,620),angle=target?Math.atan2(target.y-p.y,target.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1),q={key:r.key,ul:this.uniqueLevel||1,t:0,next:0,index:0,x:p.x,y:p.y,sx:p.x,sy:p.y,angle,dm:(p.dmgMul||1)*this.uniquePower()*v.spell,area:v.area,life:r.life,hit:new Map(),phaseHits:[new Map(),new Map()],g:this.camWorld(this.add.graphics().setDepth(8)),images:[]};
+    const p=this.player,v=this.sesRuneStats(),target=r.role==='Clear'?this.sesRuneCrowd(p.x,p.y,620):this.sesRuneTarget(p.x,p.y,620),angle=target?Math.atan2(target.y-p.y,target.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1),q={key:r.key,ul:this.uniqueLevel||1,t:0,next:0,index:0,x:p.x,y:p.y,sx:p.x,sy:p.y,angle,dm:(p.dmgMul||1)*this.uniquePower()*v.spell,orbDamage:v.damage,area:v.area,life:r.life,hit:new Map(),phaseHits:[new Map(),new Map()],g:this.camWorld(this.add.graphics().setDepth(8)),images:[]};
     q.ex=target?.x??p.x+Math.cos(angle)*260;q.ey=target?.y??p.y+Math.sin(angle)*260;
     const image=this.sesRuneImage(r.frame,q.x,q.y,150);if(image)q.images.push(image);
     if(r.key==='mmm')for(let i=0;i<2;i++){const img=this.sesRuneImage(r.frame,p.x,p.y,85);if(img)q.images.push(img);}
@@ -19040,7 +19051,7 @@ class Game extends Phaser.Scene {
     if(r.key==='mbb'){p.iframe=Math.max(p.iframe||0,.65);s.mistT=2.6;this.dashReady=true;this.dashCd=0;}
     if(v.guard){s.guardT=2;s.guard=Math.max(s.guard||0,v.guard);}
     s.cooldowns[r.key]=s.cdMax[r.key]=this.uniqueCooldown(r)*v.cooldown;s.castLock=.38;s.actors.push(q);this.sesRuneProjectCooldown();this.flashBtn?.(this.uniqueBtn);this.poseAttack?.(420);this._coachUnique=(this._coachUnique||0)+1;this.uniqueCastFx?.();this.fireRecipes?.('unique');this.sesRuneSound(r.key==='pmb'?'impact':'cast',r.key==='pmb'?.62:.5);this.sesRuneBurst(s,15,p.x,p.y,145,.45);
-    const rank=this.basicAttack.ranks.pulse||0;if(rank){this.sesRuneArea(p.x,p.y,105*v.area,18*rank*q.dm,'orb_reprise');this.sesRuneBurst(s,14,p.x,p.y,210*v.area,.4);}this.sesRuneRefreshUI();return true;
+    const rank=this.basicAttack.ranks.pulse||0;if(rank){this.sesRuneArea(p.x,p.y,105*v.area,18*rank*q.dm,'orb_reprise',q.orbDamage);this.sesRuneBurst(s,14,p.x,p.y,210*v.area,.4);}this.sesRuneRefreshUI();return true;
   }
   sesRuneDrawOrbs(s,dt){
     const p=this.player,red=this.hubMotionAllowed?.()===false||Save.data.settings?.vfx===0;s.phase+=red?0:dt*1.8;s.g.clear().setDepth(p.y+4);
@@ -19053,7 +19064,7 @@ class Game extends Phaser.Scene {
       this.enemies.children.iterate(e=>{if(!hit&&sesRuneEnemyValid(e)&&sesRuneSegmentDistance(e.x,e.y,ox,oy,f.x,f.y)<18+(e.body?.halfWidth||0))hit=e;});if(hit){this.sesRuneArea(hit.x,hit.y,f.radius,f.dmg,'rainbow_flare');if(s!==this._sesRune)return;this.sesRuneBurst(s,3,hit.x,hit.y,65,.2);}
       if(hit||f.life<=0){f.image?.destroy();s.flares.splice(i,1);}}
   }
-  sesRuneWave(q,radius,damage,push=false){this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e)||q.hit.get(e)===e._sesSpawnId&&q.hit.has(e))return;if(Math.hypot(e.x-q.x,e.y-q.y)>radius+(e.body?.halfWidth||0))return;q.hit.set(e,e._sesSpawnId);this.sesRuneDamage(e,damage*q.dm,q.key);if(push){this.sesRunePushEnemy(e,q.x,q.y,290,.4);if(!e.isBoss&&!e.isMini&&typeof e.shootCd==='number')e.shootCd=Math.max(e.shootCd,1.2);}});}
+  sesRuneWave(q,radius,damage,push=false){this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e)||q.hit.get(e)===e._sesSpawnId&&q.hit.has(e))return;if(Math.hypot(e.x-q.x,e.y-q.y)>radius+(e.body?.halfWidth||0))return;q.hit.set(e,e._sesSpawnId);this.sesRuneDamage(e,damage*q.dm,q.key,q.orbDamage);if(push){this.sesRunePushEnemy(e,q.x,q.y,290,.4);if(!e.isBoss&&!e.isMini&&typeof e.shootCd==='number')e.shootCd=Math.max(e.shootCd,1.2);}});}
   tickSesRune(dt){
     if(!this.isSesRune()){if(this._sesRune)this.clearSesRune();return;}if(this.state!=='play')return;const s=this.sesRuneEnsure();if(!s)return;const p=this.player,red=this.hubMotionAllowed?.()===false||Save.data.settings?.vfx===0;this.sesRuneDrawOrbs(s,dt);this.sesRuneTickFlares(s,dt);
     if(s.readySound>0){s.readySound-=dt;if(s.readySound<=0&&s.readyKey===this.sesRuneRecipe().key)this.sesRuneSound('recipe',.38);}
@@ -19061,30 +19072,33 @@ class Game extends Phaser.Scene {
     const step=Math.min(dt,.1);
     for(let i=s.actors.length-1;i>=0;i--){const q=s.actors[i],r=SES_RUNE_RECIPES[q.key];q.t+=dt;q.life-=dt;q.next-=dt;let done=false;
       if(q.key==='ppp'||q.key==='ppb'||q.key==='pbb'){
+        if(q.key==='ppb'&&q.patches&&q.burnAt<=q.t){q.burnAt=q.t+.5;this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&q.patches.some(patch=>Math.hypot(e.x-patch.x,e.y-patch.y)<=70*q.area+(e.body?.halfWidth||0)))this.sesRuneDamage(e,8*q.dm,q.key,q.orbDamage);});if(!q.g.active)return;}
+
         const count=q.key==='ppp'?3:5,delay=q.key==='ppp'?.4:.16;
         if(q.t>=.35+q.index*delay&&q.index<count){const n=q.index++,off=q.key==='ppp'?[(n-1)*55,0]:q.key==='ppb'?[Math.cos(n*TAU/5)*95,Math.sin(n*TAU/5)*95]:[Math.cos(q.angle)*(n*85-170),Math.sin(q.angle)*(n*85-170)],x=q.ex+off[0],y=q.ey+off[1],radius=(q.key==='ppp'?115:q.key==='ppb'?105:80)*q.area;
-          this.sesRuneArea(x,y,radius,(q.key==='ppp'?65+q.ul*12:q.key==='ppb'?52:48)*q.dm,q.key);this.sesRuneBurst(s,q.key==='ppp'?4:r.frame,x,y,radius*2,.5);this.sesRuneSound('impact',.4);q.x=x;q.y=y;}
-        if(!q.g.active)return;q.g.clear().lineStyle(2,r.color,.55).strokeCircle(q.ex,q.ey,105*q.area);if(q.key==='ppp'){const f=Math.min(1,((q.t+.05)%delay)/delay);q.images[0]?.setPosition(q.ex-90*(1-f),q.ey-220*(1-f)).setDisplaySize(200,200);}
+          if(q.key==='ppb'){(q.patches||(q.patches=[])).push({x,y});q.burnAt??=q.t+.5;}
+          this.sesRuneArea(x,y,radius,(q.key==='ppp'?65+q.ul*12:q.key==='ppb'?36:48)*q.dm,q.key,q.orbDamage);this.sesRuneBurst(s,q.key==='ppp'?4:r.frame,x,y,radius*2,.5);this.sesRuneSound('impact',.4);q.x=x;q.y=y;}
+        if(!q.g.active)return;q.g.clear();if(q.patches)for(const patch of q.patches)q.g.lineStyle(2,0xff9b43,.55).strokeCircle(patch.x,patch.y,70*q.area);q.g.lineStyle(2,r.color,.55).strokeCircle(q.ex,q.ey,105*q.area);if(q.key==='ppp'){const f=Math.min(1,((q.t+.05)%delay)/delay);q.images[0]?.setPosition(q.ex-90*(1-f),q.ey-220*(1-f)).setDisplaySize(200,200);}
       }else if(q.key==='mmm'){
         const back=q.t>=.65;
         for(let arm=0;arm<3;arm++){if(!q.g.active)return;const angle=q.angle+(arm-1)*.28,prev=q.positions?.[arm]||{x:q.sx,y:q.sy};q.positions=q.positions||[];const a=back?Math.atan2(p.y-prev.y,p.x-prev.x):angle,x=prev.x+Math.cos(a)*460*step,y=prev.y+Math.sin(a)*460*step;q.positions[arm]={x,y};q.images[arm]?.setPosition(x,y).setRotation(red?0:q.t*12).setDisplaySize(85,85);
-          this.enemies.children.iterate(e=>{const hit=q.phaseHits[back?1:0],token=e._sesSpawnId+'_'+arm;if(!sesRuneEnemyValid(e)||hit.get(e)?.has(token)||sesRuneSegmentDistance(e.x,e.y,prev.x,prev.y,x,y)>32*q.area+(e.body?.halfWidth||0))return;const ids=hit.get(e)||new Set();ids.add(token);hit.set(e,ids);this.sesRuneDamage(e,35*q.dm,q.key);});}
+          this.enemies.children.iterate(e=>{const hit=q.phaseHits[back?1:0],token=e._sesSpawnId+'_'+arm;if(!sesRuneEnemyValid(e)||hit.get(e)?.has(token)||sesRuneSegmentDistance(e.x,e.y,prev.x,prev.y,x,y)>32*q.area+(e.body?.halfWidth||0))return;const ids=hit.get(e)||new Set();ids.add(token);hit.set(e,ids);this.sesRuneDamage(e,35*q.dm,q.key,q.orbDamage);});}
         if(back&&q.positions.every(v=>Math.hypot(v.x-p.x,v.y-p.y)<30))done=true;
       }else if(q.key==='ppm'){
         const ox=q.x,oy=q.y;q.x+=Math.cos(q.angle)*850*step;q.y+=Math.sin(q.angle)*850*step;
-        this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e)||q.hit.get(e)===e._sesSpawnId&&q.hit.has(e)||sesRuneSegmentDistance(e.x,e.y,ox,oy,q.x,q.y)>32*q.area+(e.body?.halfWidth||0))return;q.hit.set(e,e._sesSpawnId);this.sesRuneDamage(e,(120+q.ul*25)*q.dm,q.key);this.sesRuneBurst(s,12,e.x,e.y,110,.3);});
+        this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e)||q.hit.get(e)===e._sesSpawnId&&q.hit.has(e)||sesRuneSegmentDistance(e.x,e.y,ox,oy,q.x,q.y)>32*q.area+(e.body?.halfWidth||0))return;q.hit.set(e,e._sesSpawnId);this.sesRuneDamage(e,(120+q.ul*25)*q.dm,q.key,q.orbDamage);this.sesRuneBurst(s,12,e.x,e.y,110,.3);});
         if(!q.g.active)return;q.images[0]?.setPosition(q.x,q.y).setRotation(q.angle).setDisplaySize(210,90);
       }else if(q.key==='pmm'){
         q.x=p.x;q.y=p.y;const radius=105*q.area;for(let arm=0;arm<3;arm++){const a=q.t*5+arm*TAU/3;q.images[arm]?.setPosition(p.x+Math.cos(a)*radius,p.y+Math.sin(a)*radius).setRotation(a).setDisplaySize(90,90);}
-        if(q.next<=0){q.next=.22;this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e))return;const d=Math.hypot(e.x-p.x,e.y-p.y);if(Math.abs(d-radius)<48)this.sesRuneDamage(e,22*q.dm,q.key);});}
-        if(q.life<=.15){this.sesRuneArea(p.x,p.y,190*q.area,45*q.dm,q.key);this.sesRuneBurst(s,10,p.x,p.y,330*q.area,.45);done=true;}
+        if(q.next<=0){q.next=.22;this.enemies.children.iterate(e=>{if(!sesRuneEnemyValid(e))return;const d=Math.hypot(e.x-p.x,e.y-p.y);if(Math.abs(d-radius)<48)this.sesRuneDamage(e,22*q.dm,q.key,q.orbDamage);});}
+        if(q.life<=.15){this.sesRuneArea(p.x,p.y,190*q.area,45*q.dm,q.key,q.orbDamage);this.sesRuneBurst(s,10,p.x,p.y,330*q.area,.45);done=true;}
       }else if(q.key==='pmb'){
         const radius=Math.min(1,q.t/.65)*330*q.area;q.g.clear();for(let j=0;j<3;j++)q.g.lineStyle(5-j,SES_RUNE_TYPES[j][2],.8).strokeCircle(q.x,q.y,Math.max(1,radius-j*13));q.images[0]?.setPosition(q.x,q.y).setDisplaySize(Math.max(30,radius*2),Math.max(30,radius*2)).setAlpha(Math.max(.15,1-q.t/.85));this.sesRuneWave(q,radius,(100+q.ul*15),true);
       }else{
         if(q.key==='mmb'){const f=Math.min(1,q.t/.45);q.x=q.sx+(q.ex-q.sx)*f;q.y=q.sy+(q.ey-q.sy)*f;this.enemies.children.iterate(e=>{const d=Math.hypot(e.x-q.x,e.y-q.y);if(d<145*q.area&&d>25)this.sesRunePushEnemy(e,q.x,q.y,-130,.12);});}
         if(q.key==='mbb'){q.x=p.x;q.y=p.y;}
         const radius=(q.key==='mmb'?145:q.key==='bbb'?155:135)*q.area;q.images[0]?.setPosition(q.x,q.y).setDisplaySize(radius*2,radius*2).setAlpha(q.key==='bbb'?.5:.78).setRotation(red?0:q.t*.8);
-        if(q.next<=0){q.next=.45;this.sesRuneArea(q.x,q.y,radius,(q.key==='mmb'?18:10)*q.dm,q.key);if(q.key!=='mmb'){this.enemies.children.iterate(e=>{if(Math.hypot(e.x-q.x,e.y-q.y)<radius)this.sesRunePushEnemy(e,q.x,q.y,150,.2);});this.foeBullets?.children.iterate(f=>{if(f?.active&&Math.hypot(f.x-q.x,f.y-q.y)<radius)this.killFoe(f);});}}
+        if(q.next<=0){q.next=.45;this.sesRuneArea(q.x,q.y,radius,(q.key==='mmb'?18:10)*q.dm,q.key,q.orbDamage);if(q.key!=='mmb'){this.enemies.children.iterate(e=>{if(Math.hypot(e.x-q.x,e.y-q.y)<radius)this.sesRunePushEnemy(e,q.x,q.y,150,.2);});this.foeBullets?.children.iterate(f=>{if(f?.active&&Math.hypot(f.x-q.x,f.y-q.y)<radius)this.killFoe(f);});}}
       }
       if(s!==this._sesRune||!q.g.active)return;
       if(!q.images.length)q.g.clear().lineStyle(3,r.color,.9).strokeCircle(q.x,q.y,(q.key==='pmb'?Math.min(1,q.t/.65)*330:q.key==='mmm'?40:110)*q.area);
@@ -19374,7 +19388,7 @@ class Game extends Phaser.Scene {
     if(b.dragon)this.infusionOnHit(e,d,'spicy');
     if(b.lastMul&&(b.bounce||0)===0&&b._bounced)d*=1+b.lastMul;
     return d; }
-  damage(e,amount,x,y){ if(!e.active)return;if(this.isSesRune?.())amount*=this.sesRuneStats().damage;const taroDirect=this.taroTakeDirect?.(e);
+  damage(e,amount,x,y,sesameOrbDamage){ if(!e.active)return;if(this.isSesRune?.())amount*=sesameOrbDamage??this.sesRuneStats().damage;const taroDirect=this.taroTakeDirect?.(e);
     // Phase Gate: Lockedดาเมจทันทีที่ชนเส้นเลือด และInvincibleจนแอนิเมชันเปลี่ยนเฟสจบ
     if((e.isBoss||e.isMini)&&(e._phaseGateLocked||(e._phaseInvuln||0)>0)){
       const now=this.elapsed||0;if(now>=(e._phaseImmunePopAt||0)){e._phaseImmunePopAt=now+0.38;this.popDmg('Invincible',x,y,false);}return;

@@ -1,4 +1,8 @@
-# Current checkpoint — startup caching8.1.3 (3 Nov2026)
+# Current checkpoint — Sesame polish8.1.4 (3 Nov2026)
+
+Shared Forge/Lobby/Ruby and cache Chrome checks passed; expanded Rune24layouts includes allten paused recipes/bounds and Resume/Settings/Quit callback routing. Final guide header wrap fix undergoing targeted browser recheck; no other failing checks. Publish after this check completes.
+
+Owner approved recommendations; implementing firstthree priorities as announced: fixed cast-time redorb multiplier via optional fifth damage argument, scalable rune buttons/compact readiness+FIFO label and paused10recipe reference, PPB sustained nonstacking burning ground/PPM accurate name. Existing8other spells already have their distinct intended roles. No new cards/talent migration/mana. Fullnpmcheck/build and first24layout Rune browser check passed; expanded pause reference + shared Forge/Lobby/Ruby browser checks in progress. New tests for delayed orb snapshot and later magma hit, Taro snapshot normalization excludes only Sesame signature/hook change. Next: finishchecks, review, commit/publish/liveverify. Current changes local; live8.1.3. Old checkpoint below is historical.
 
 FINAL: Published runtime e9c4a9945633b2ef39eac855dc22514ed4c35ac0; Pages41603586980 SUCCESS; live version8.1.3 verified. All9 changed repository files byte-verified after upload; live SW equals source bytes, index contains early cache control, game has8.1.3 and no old bulk download barrier. Full npm check/build, Forge/Lobby/Ruby and actual Chrome cache lifecycle passed. Phone time-to-menu remains unmeasured. Prior pending notes below are historical; no release blocker remains.
 

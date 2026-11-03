@@ -19,8 +19,10 @@ class SesameRuneReview extends Phaser.Scene{
   window.sesameRuneReview=this;
  }
  camUI(o){return o;}camWorld(o){return o;}refreshFlickerUI(){}drawCombatControlBase(){}
+ uiPillBtn(group,x,y,w,h,color,icon,label){group.add(this.add.rectangle(x,y,w,h,color));group.add(this.add.text(x,y,label,{fontSize:'11px'}).setOrigin(.5));}
+ togglePause(){this.pauseAction='resume';}buildPauseSettings(){this.pauseAction='settings';}quitStage(){this.pauseAction='quit';}
 }
-for(const name of ['sesRuneStats','sesRuneImage','sesRuneSound','sesRuneCommitCooldown','sesRuneProjectCooldown','isSesRune','sesRuneEnsure','sesRuneRecipe','sesRuneCreateControls','sesRuneLayout','sesRuneRefreshUI','sesRuneHit','sesRunePointerDown','sesRuneAdd','sesRuneDrawOrbs','uniqueInfo','refreshUniqueSkillUI','updateUniqueHint','ctrlScale','layoutControls'])SesameRuneReview.prototype[name]=Game.prototype[name];
+for(const name of ['buildSesRunePause','sesRuneStats','sesRuneImage','sesRuneSound','sesRuneCommitCooldown','sesRuneProjectCooldown','isSesRune','sesRuneEnsure','sesRuneRecipe','sesRuneCreateControls','sesRuneLayout','sesRuneRefreshUI','sesRuneHit','sesRunePointerDown','sesRuneAdd','sesRuneDrawOrbs','uniqueInfo','refreshUniqueSkillUI','updateUniqueHint','ctrlScale','layoutControls'])SesameRuneReview.prototype[name]=Game.prototype[name];
 async function boot(){await document.fonts.load('700 12px NunitoUI');new Phaser.Game({type:Phaser.CANVAS,parent:'mount',width:RW,height:RH,scene:[SesameRuneReview]});}boot();
 `;
 writeFileSync('www/sesame-rune-review.js',src.slice(0,end)+tail);
