@@ -6,6 +6,6 @@ for(const folder of ['assets/art/sesame_vfx817','assets/incoming/sesame_vfx817']
 }
 const qa=JSON.parse(fs.readFileSync('assets/incoming/sesame_vfx817/QA_REPORT.json'));assert(qa.alphaPreserved&&qa.allBordersClear);assert.equal(qa.framesQA.length,72);assert.equal(qa.decodedBytes,3*1536*1024*4);
 for(const clip of new Set(qa.framesQA.map(f=>f.clip))){const frames=qa.framesQA.filter(f=>f.clip===clip);assert.equal(frames.length,6);assert.equal(new Set(frames.map(f=>f.visibleHash)).size,6);for(const f of frames){assert(f.clearBorder);const [x,y,r,b]=f.runtimeAlphaBox;assert(x>=8&&y>=8&&r<=248&&b<=248);}}
-assert(src.includes('|sesame_vfx817|sesame_invoker811)'));
+{const vm=require('node:vm'),ctx={artClass:()=> 'hero',artHero:()=> 'sesame',artUrl:()=>''};vm.createContext(ctx);vm.runInContext(src.match(/^function lazyArt.*$/m)[0]+';this.defer=lazyArt;',ctx);assert(ctx.defer('fx_sesame_vfx817_water','assets/art/sesame_vfx817/fx.webp','sesame'));}
 assert(!src.includes("ppb:{name:'Magma Garden'"));assert(!src.includes("pbb:{name:'Crystal Fault'"));
 console.log('Sesame817: three exact alpha atlases, 72 distinct painted frames, clear cell borders, hero-lazy registration passed');

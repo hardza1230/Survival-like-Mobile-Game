@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.9; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.10; fetch the deploy branch first.
 
-# Latest delivery: v8.1.8 — boss shelter, smaller Yuzu squad and nectar defense (owner)
+# Latest delivery: v8.1.9 — Mint painted-outline VFX (owner)
+
+First Sesame-style battle batch:2original ImageGen sources/8clips/48painted frames with truealpha, exact prompts/manifests/hash/border QA/source previews in mint_outline819. Runtime8WebPs2,004,790bytes/9,043,968decoded hero-lazy/alwaysbootdeferred. Glacier Bloom owns6frame snowstorm clock and cosmetic final bloom; four-second/eight-pulse gameplay retained. Impaler/normal lances and shards use owned-frame overlays on original bullets; animated dash trail, rupture/blast/charge/compact hits. Pause/Low/reduced frame hold, oldart/geometry fallback/pool+scene cleanup and budgets retained. Mint55 player charge/move sprites and damage/hitboxes/targets/range/speed/cards/audio unchanged. New asset/ownership and real Canvas gallery contracts. Owner phone visual/footprint/timing/FPS pending before Chocolate/Taro/Yuzu. Design docs/design/MINT_OUTLINE819.md.
+
+# Previous delivery: v8.1.8 — boss shelter, smaller Yuzu squad and nectar defense (owner)
 
 C2-2 air pocket stationary/prop-aware, radius+boss body+80px clearance; Behemoth pinned movement+attack/follow-up gate,4s charge/countdown,1.6×arena blast only outside,0.6s recovery, owned pause/player/stage/epoch/cleanup. Existing fog/bubble art preserved. Yuzu cap16→10, Squad+1/rank/evolution+1/forms+1each, companion power×.9/minions additional×.95, spawn/acquisition/cycle stagger, curved homes, crowded normal targets distributed and every third minion may cover close mobs; mission priority preserved. Nectar3×100HP→1×300HP; exact one third max-HP life loss bypasses armor/shields/iframe then fullHP relocation if alive, normal death flow. Visible descriptions/cards updated, no save/talent changes. New event contracts and hierarchy tests; owner phone timing/readability/balance pending. Design docs/design/C2_FOG_YUZU_NECTAR_818.md.
 

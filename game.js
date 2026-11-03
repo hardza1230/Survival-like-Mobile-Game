@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.8';
+const GAME_VERSION = '8.1.9';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.9',date:'2026-11-03',title:'Mint in painted ice',items:['Glacier Bloom swirls with animated ink-edged snow and ice.','Impaler lances, homing shards and the Frost Lance trail now share a sharper painted style.','New crystal ruptures and the Lance Burst finish keep their original gameplay effects.']},
   {v:'8.1.8',date:'2026-11-03',title:'Clearer boss shelter and companion battles',items:['Mycelium Behemoth now holds still and charges a powerful blast. Reach the fixed air bubble before the countdown ends.','Yuzu fields up to 10 Minions with spread attack timing and targets. Companion and Minion damage is slightly lower.','Defend one tougher nectar flower. Losing it costs one third max HP, then a fresh flower blooms elsewhere.']},
   {v:'8.1.7',date:'2026-11-03',title:'Elemental invocations in motion',items:['Steam Cannon unleashes three forward steam pulses. Tidal Serpent hunts a priority target, bites three times and ends in a water burst.','Sesame spells and Rainbow Flare now use animated painted elemental effects.','New flame ribbons, curling waves and prismatic impacts share the game’s colorful fantasy style.']},
   {v:'8.1.6',date:'2026-11-03',title:'Elemental rune sounds',items:['Red rune taps now flare with fire; green taps sweep with wind','The approved blue water sound stays the same']},
@@ -3151,6 +3152,14 @@ const ASSET_FX = {
   st_fx_cleanse:{url:'assets/art/status_fx/st_fx_cleanse.webp',fw:96,fh:96,frames:6,rate:14,anchor:'center'},
   vfx_cs61_crown_shatter:{url:'assets/art/story/boss61/vfx_cs61_crown_shatter.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center'},   // v8.0.84 ใบ 61
   vfx_cs61_flavor_return:{url:'assets/art/story/boss61/vfx_cs61_flavor_return.webp',fw:256,fh:512,frames:8,rate:10,anchor:'center'},
+  bpx_mint819_snowstorm:{url:'assets/art/mint_outline819/bpx_mint819_snowstorm.webp',fw:256,fh:256,frames:6,rate:12,anchor:'center',loop:true},
+  bpx_mint819_bloom:{url:'assets/art/mint_outline819/bpx_mint819_bloom.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_mint819_dash:{url:'assets/art/mint_outline819/bpx_mint819_dash.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_mint819_blast:{url:'assets/art/mint_outline819/bpx_mint819_blast.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
+  bpx_mint819_charge:{url:'assets/art/mint_outline819/bpx_mint819_charge.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_mint819_lance:{url:'assets/art/mint_outline819/bpx_mint819_lance.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_mint819_shard:{url:'assets/art/mint_outline819/bpx_mint819_shard.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_mint819_hit:{url:'assets/art/mint_outline819/bpx_mint819_hit.webp',fw:128,fh:128,frames:6,rate:22,anchor:'center'},
   fx_mint_dash_shard:{url:'assets/art/mint_winter/fx_mint_dash_shard.webp',fw:128,fh:128,frames:4,rate:16,anchor:'center',loop:true},
   fx_mint_snowstorm:{url:'assets/art/mint_winter/fx_mint_snowstorm.webp',fw:256,fh:256,frames:8,rate:12,anchor:'center',loop:true},
   // v6.60.3 Build path art (assets/art/bp_fx · scripts/pack-build-path-art.py): luminance-alpha, NORMAL blend
@@ -4077,7 +4086,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
@@ -9097,7 +9106,8 @@ class Game extends Phaser.Scene {
     // One stationary field; gameplay time advances only in play, so card/pause screens cannot consume it.
     for(const old of this._glacierStorms||[]){if(old.g?.active)old.g.destroy();if(old.art?.active)old.art.destroy();}
     this._glacierStorms=[storm];
-    if(this.realTex?.('fx_mint_snowstorm'))storm.art=this.trackArtVfx(this.camWorld(this.add.sprite(storm.x,storm.y,'fx_mint_snowstorm',0).setOrigin(.5,.78).setDepth(6).setDisplaySize(r*3,r*3)));
+    const stormKey=this.mintOutlineKey?.('fx_mint_snowstorm')||'fx_mint_snowstorm';storm.frames=stormKey==='bpx_mint819_snowstorm'?6:8;
+    if(this.realTex?.(stormKey))storm.art=this.trackArtVfx(this.camWorld(this.add.sprite(storm.x,storm.y,stormKey,0).setOrigin(.5,.78).setDepth(6).setDisplaySize(r*(storm.frames===6?2.5:3),r*(storm.frames===6?2.5:3))));
     if(!storm.art&&this.textures.exists('vfx_glacier_bloom'))this.trackArtVfx(this.spawnFxAnim('vfx_glacier_bloom',storm.x,storm.y,{scale:r*2/384,depth:6,normal:true}));   // v8.0.86 เจ้าของ: มีภาพพายุหิมะ = ไม่มีวงบานที่พื้น
     this.glacierSnowPulse(storm);
     this.uqMutHook?.('bloom',{cx:storm.x,cy:storm.y,r,n:storm.frozen.size,storm});
@@ -9132,7 +9142,7 @@ class Game extends Phaser.Scene {
   drawGlacierSnow(storm){
     const g=storm.g;if(!g?.active)return;const {x,y,r,t}=storm,q=typeof Save==='undefined'?1:(Save.data.settings?.vfx??1);
     g.clear();const art=storm.art?.active&&q!==0;if(!art){g.fillStyle(0x84cff5,.10).fillCircle(x,y,r);g.lineStyle(2,0xd1f8ff,.55).strokeCircle(x,y,r);}   // v8.0.86 เจ้าของ: เหลือแค่ภาพพายุหิมะ (วงที่พื้นเฉพาะตอนไม่มีภาพ)
-    if(storm.art?.active){storm.art.setVisible(q!==0).setFrame(Math.floor(t*12)%8).setAlpha(Math.min(.62,(4-t)*3*.62));if(q!==0)return;}
+    if(storm.art?.active){storm.art.setVisible(q!==0).setFrame(this.hubMotionAllowed?.()===false?2:Math.floor(t*12)%(storm.frames||8)).setAlpha(Math.min(.62,(4-t)*3*.62));if(q!==0)return;}
     // Bounded procedural snow: a few streaks even on Low keep the damaging area readable.
     const n=q===0?8:q===1?18:28;
     for(let i=0;i<n;i++){
@@ -9149,7 +9159,7 @@ class Game extends Phaser.Scene {
       s.t+=dt;
       // Exactly eight pulses, including release, at 0 / .5 / ... / 3.5s. New arrivals are checked each pulse.
       while(this.state==='play'&&s.epoch===(this._artEpoch||0)&&s.pulses<8&&s.t+1e-8>=s.pulses*.5)this.glacierSnowPulse(s);
-      if(s.t>=4){if(s.g?.active)s.g.destroy();if(s.art?.active)s.art.destroy();storms.splice(i,1);continue;}
+      if(s.t>=4){if(s.frames===6)this.heroFx?.('bpx_mint819_bloom',s.x,s.y,s.r*2,{alpha:.65,depth:6});if(s.g?.active)s.g.destroy();if(s.art?.active)s.art.destroy();storms.splice(i,1);continue;}
       this.drawGlacierSnow(s);
     }
   }
@@ -9164,9 +9174,9 @@ class Game extends Phaser.Scene {
       if((this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic){this._mintDashTween?.stop();return;}
       if(this.state!=='play'){this._mintDashTween?.pause();return;}if(pl.body)pl.body.reset(pl.x,pl.y);this.emitLanceDistanceShards(dash,pl.x,pl.y);
     },onComplete:()=>{this._mintDashTween=null;dash.endX=pl.x;dash.endY=pl.y;this.finishFrostLance(dash);}});
-    let g;
-    if(this.textures.exists('vfx_frost_lance_trail'))g=this.trackArtVfx(this.camWorld(this.add.image(x0,y0,'vfx_frost_lance_trail').setOrigin(0,0.5).setRotation(ang).setDepth(5).setBlendMode(Phaser.BlendModes.NORMAL).setDisplaySize(L,68)));
-    else {g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(5))); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);}
+    let g=this.mintOutlineTrail?.(x0,y0,ang,L);
+    if(!g&&this.textures.exists('vfx_frost_lance_trail'))g=this.trackArtVfx(this.camWorld(this.add.image(x0,y0,'vfx_frost_lance_trail').setOrigin(0,0.5).setRotation(ang).setDepth(5).setBlendMode(Phaser.BlendModes.NORMAL).setDisplaySize(L,68)));
+    else if(!g){g=this.trackArtVfx(this.camWorld(this.add.graphics().setDepth(5))); g.lineStyle(36,0xbdf0ff,0.35); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L); g.lineStyle(10,0xffffff,0.6); g.lineBetween(x0,y0,x0+ca*L,y0+sa*L);}
     (this._iceTrails=this._iceTrails||[]).push({x0,y0,ca,sa,L,t:3,tick:0,g,dmg:dmg*0.12});
     this.screenShake(110,0.005); (this.fxLanceScreen?.(ang),Sfx.bp?.('uq_mint_lance_release',.6,.2))||(Sfx.dash&&Sfx.dash()); this.showBanner('🗡️ Frost Lance',hits+' pierced · homing shard every 70px',700); }
   finishFrostLance(dash){
@@ -9189,7 +9199,7 @@ class Game extends Phaser.Scene {
     if((this._artEpoch||0)!==dash.epoch||this.basicAttack!==dash.basic||!dash.player?.active||this.state==='menu'||this.state==='dead')return;
     const x=dash.endX,y=dash.endY,r=110,src=this._mxSrc,sg=this._sgHit;
     // Dedicated painted ice explosion, including on Low VFX and when no enemy is at the endpoint.
-    if(!this.heroFx?.('fx_mint_shatter',x,y,r*2,{must:true,depth:(dash.player.depth||7)+1}))this.vfxHitRing?.(x,y,0x9fe8ff,true);
+    if(!this.heroFx?.(this.mintOutlineKey?.('fx_mint_shatter')||'fx_mint_shatter',x,y,r*2,{must:true,depth:(dash.player.depth||7)+1}))this.vfxHitRing?.(x,y,0x9fe8ff,true);
     Sfx.bp?.('mint_glacier_shatter',.55,.12)||(Sfx.boom&&Sfx.boom());
     this._mxSrc='unique';this._sgHit=true;
     try{this.enemies.children.iterate(e=>{
@@ -9211,7 +9221,8 @@ class Game extends Phaser.Scene {
       const b=this.mintBullet(sx,sy,0xc8f5ff,.18);if(!b)continue;
       const angle=Math.atan2(t.y-sy,t.x-sx);
       b.setTexture('proj_sprinkle').setTint(0xc8f5ff);
-      if(this.attachProjectileAnim?.(b,'fx_mint_dash_shard',128))b._chargeFx.setDisplaySize(64,64);
+      if(this.mintOutlineProjectile?.(b,'shard',64)){}
+      else if(this.attachProjectileAnim?.(b,'fx_mint_dash_shard',128))b._chargeFx.setDisplaySize(64,64);
       else this.attachProjectileArt?.(b,'proj_mint_shard',26,.67,.5);
       b.dmg=dash.power;b.life=1.6;b.faceVel=true;b.homing=650;b.homeSpeed=600;b.homeRange=760;b.mintDashShard=true;
       b.iceNeedle={freeze:.6,frozenBonus:1.2,shatter:false,dmg:b.dmg,lvl:1};b.pierceLeft=1;
@@ -9223,9 +9234,9 @@ class Game extends Phaser.Scene {
   frostLanceFinisher(pl,ang,dmg){ if(this.state!=='play'||!pl?.active)return; let tg=null,bd=160; this.enemies.children.iterate(e=>{ if(!e||!e.active||e._phaseGateLocked||(e._phaseInvuln||0)>0)return; const d=this.dist(e.x,e.y,pl.x,pl.y); if(d<bd){bd=d;tg=e;} }); if(!tg)return;
     const a=Math.atan2(tg.y-pl.y,tg.x-pl.x),hit=dmg*1.4*(tg.isBoss||tg.isMini?1.8:1),hp0=tg.hp; this._sgHit=true; try{ this.damage(tg,hit,tg.x,tg.y); } finally { this._sgHit=false; }
     const dealt=Math.max(0,hp0-Math.max(0,tg.hp||0))||hit,heal=Math.min(pl.maxhp*.08,dealt*.3); if(heal>=1&&pl.hp>0){ pl.hp=Math.min(pl.maxhp,pl.hp+heal); this.floatText?.(pl.x,pl.y-46,'+'+Math.round(heal),0x7dffa8); }
-    if(!this.heroFx?.('bpx_mint_needle_hit',tg.x,tg.y,110,{must:true,rot:a})&&this.textures.exists('fx_slash'))this.spawnFxAnim('fx_slash',pl.x,pl.y,{rotation:a,scaleX:bd/352+.3,scaleY:.35,anchor:'left',depth:8,normal:true,force:true});
+    if(!this.heroFx?.(this.mintOutlineKey?.('bpx_mint_needle_hit')||'bpx_mint_needle_hit',tg.x,tg.y,110,{must:true,rot:a})&&this.textures.exists('fx_slash'))this.spawnFxAnim('fx_slash',pl.x,pl.y,{rotation:a,scaleX:bd/352+.3,scaleY:.35,anchor:'left',depth:8,normal:true,force:true});
     this.vfxHitRing?.(tg.x,tg.y,0x9fe8ff,true); this.screenShake(90,0.004); Sfx.bp?.('mint_glacier_shatter',.45,.2)||(Sfx.boom&&Sfx.boom()); }
-  tickIceTrails(dt){ const T=this._iceTrails; if(!T||!T.length)return; for(let i=T.length-1;i>=0;i--){ const tr=T[i]; tr.t-=dt; if(!tr.g?.active){T.splice(i,1);continue;} tr.g.setAlpha(Math.min(1,tr.t)); if(tr.t<=0||this.state==='menu'){ tr.g.destroy(); T.splice(i,1); continue; }
+  tickIceTrails(dt){ const T=this._iceTrails; if(!T||!T.length)return; for(let i=T.length-1;i>=0;i--){ const tr=T[i]; tr.t-=dt; if(!tr.g?.active){T.splice(i,1);continue;} this.mintOutlineFrame?.(tr.g,dt);tr.g.setAlpha(Math.min(1,tr.t)); if(tr.t<=0||this.state==='menu'){ tr.g.destroy(); T.splice(i,1); continue; }
       tr.tick-=dt; if(tr.tick>0||this.state!=='play')continue; tr.tick=0.4;
       this.enemies.children.iterate(e=>{ if(!e||!e.active)return; const rx=e.x-tr.x0,ry=e.y-tr.y0,al=rx*tr.ca+ry*tr.sa; if(al<0||al>tr.L||Math.abs(-rx*tr.sa+ry*tr.ca)>30)return; this.damage(e,tr.dmg,e.x,e.y); if(e.active&&e.body)e.setVelocity(e.body.velocity.x*0.5,e.body.velocity.y*0.5); }); } }
   releaseBerryBlast(ang,c){ this.heroScreenEffect?.(1.2); const u=this.uniqueInfo(),ul=this.uniqueLevel||1,up=this.uniquePower(),dm=this.player.dmgMul||1,pl=this.player,bm=this.blastMods(),basic=this.basicAttack;
@@ -18607,10 +18618,15 @@ class Game extends Phaser.Scene {
     if(active>=24)return null;
     const b=this.getBullet(x,y,tint,scale);if(b)b.mintEpoch=this._artEpoch||0;return b;
   }
+  mintOutlineKey(key){const map={fx_mint_snowstorm:'snowstorm',fx_mint_shatter:'blast',fx_mint_dash_shard:'shard',bpx_mint_rupture:'bloom',bpx_mint_needle_hit:'hit',bpx_mint_chill_hit:'hit',bpx_mint_lance_charge:'charge'},clip=map[key],next=clip&&'bpx_mint819_'+clip;return next&&(this.realTex?.(next)??this.textures?.exists(next))?next:key;}
+  mintOutlineFrame(image,dt){const m=image?._mintOutline819;if(!image?.active||!m||this.state!=='play')return;m.t+=dt;const still=this.hubMotionAllowed?.()===false||(typeof Save!=='undefined'&&Save.data.settings?.vfx===0),frame=still?2:Math.floor(m.t*m.rate)%6;if(m.frame!==frame){m.frame=frame;image.setFrame(frame);}}
+  mintOutlineProjectile(b,clip,w,h=w){const key='bpx_mint819_'+clip;if(!(this.realTex?.(key)??this.textures?.exists(key)))return false;if(b._chargeFx?.active)b._chargeFx.destroy();const image=b._chargeFx=this.camWorld(this.add.sprite(b.x,b.y,key,0).setDisplaySize(w,h).setDepth(90000));image._mintOutline819={t:0,rate:18,frame:-1};this.mintOutlineFrame(image,0);b.setAlpha(0);return true;}
+  mintOutlineTrail(x,y,a,L){const key='bpx_mint819_dash';if(!(this.realTex?.(key)??this.textures?.exists(key)))return null;const image=this.trackArtVfx(this.camWorld(this.add.sprite(x,y,key,0).setOrigin(.0625,.5).setRotation(a).setDepth(5).setDisplaySize(L/.875,108)));image._mintOutline819={t:0,rate:14,frame:-1};this.mintOutlineFrame(image,0);return image;}
   mintBurstFx(x,y,r=110){
     const now=this.time.now;
     if(this._mintVfxWindow==null||now-this._mintVfxWindow>=200){this._mintVfxWindow=now;this._mintVfxCount=0;}
     if(this._mintVfxCount>=3)return;this._mintVfxCount++;
+    const fresh=this.mintOutlineKey?.('bpx_mint_rupture');if(fresh==='bpx_mint819_bloom'&&this.heroFx?.(fresh,x,y,r*2,{depth:6}))return;
     const painted=this.basicAttack?.path==='glacier'&&this.textures.exists('vfx_glacier_shatter'),key=painted?'vfx_glacier_shatter':'fx_mint_shatter';
     if(this.textures.exists(key))this.trackArtVfx(this.spawnFxAnim(key,x,y,{scale:r*2/(painted?192:320),depth:6,normal:true}));
     else this.vfxHitRing(x,y,0xbdf0ff,true);
@@ -18668,7 +18684,7 @@ class Game extends Phaser.Scene {
     b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xcaf3ff);b.faceVel=true;b.dmg=damage*(giant?1.35:1);b.life=range/speed;b.homing=0;
     b.impaler={full,giant,targets:new Set(),hits:0,pierces:(giant?8:2)+(basic.lv.p_coldblood||0),epoch:c.epoch,basic};
     // Larger painted lance is independent of its unchanged projectile collider.
-    if(this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?108:full?68+6*(basic.lv.p_heavydraw||0):38);
+    if(!this.mintOutlineProjectile?.(b,'lance',(giant?108:full?68+6*(basic.lv.p_heavydraw||0):38)*2.2)&&this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?108:full?68+6*(basic.lv.p_heavydraw||0):38);
     this.physics.velocityFromRotation(angle,speed,b.body.velocity);Sfx.bp?.('mint_lance_launch',full?.62:.45,.09)||Sfx.frost();
   }
   tickImpaleMarks(){const S=this._impMarked;if(!S?.size)return;for(const e of S){const n=e.active&&this.basicAttack?.path==='pierce'?this.impaleStacks(e):0,key=n?'bpx_mint_impale'+n:null;let m=e._impMark;
@@ -18687,7 +18703,7 @@ class Game extends Phaser.Scene {
       e._mintImpale=0;e._mintRuptureAt=now;
       const rupture=power*(big?1.8:1.2)*(1+.1*(b.lv.p_shatterpt||0)+.08*(b.lv.linger||0))*ruptureBonus;
       this.damage(e,rupture,e.x,e.y);
-      this.bpFx?.('bpx_mint_rupture',e.x,e.y,220,{force:true});this.mintBurstFx(e.x,e.y,120);this.mintHeavyImpact();Sfx.bp?.('mint_crystal_rupture',.7,.15);
+      const ruptureKey=this.mintOutlineKey?.('bpx_mint_rupture')||'bpx_mint_rupture',ruptureArt=this.bpFx?.(ruptureKey,e.x,e.y,220,{force:true});if(ruptureKey!=='bpx_mint819_bloom'||!ruptureArt)this.mintBurstFx(e.x,e.y,120);this.mintHeavyImpact();Sfx.bp?.('mint_crystal_rupture',.7,.15);
       if(this.floatText)this.floatText(e.x,e.y-28,'CRYSTAL RUPTURE',0xbdf0ff);
     }else{
       e._mintImpale=Math.min(3,stacks+1+(big?(b.lv.p_impaler||0):0));if(e._mintImpale>stacks)Sfx.bp?.('mint_impale_stack',.45,.08,0.94+0.06*e._mintImpale);(this._impMarked||(this._impMarked=new Set())).add(e);
@@ -18726,7 +18742,7 @@ class Game extends Phaser.Scene {
     const shardPer=shardBase;   // M4: keep every Shard Bloom rank useful after Evolution; shared budgets bound spawning.
     const hitMul=volley.hitMul??1,shardDmg=dmg*hitMul*0.55*(1+0.12*(basic?.ranks.p_splinter||0))*volley.shardMul*volley.bloomMul, shardFreeze=(0.45+lvl*0.05)*(permafrost?1.7:1), shardFB=permafrost?1.4:1.2;
     // ท่าชาร์จ (ทางภาพ): เรืองแสงหุบเข้าที่ปลายหอกก่อนพุ่ง
-    if(!this.heroFx?.('bpx_mint_lance_charge',this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,70,{depth:this.player.y+2,life:.12,fade:90})){const chg=this.trackArtVfx(this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9)));
+    if(!this.heroFx?.(this.mintOutlineKey?.('bpx_mint_lance_charge')||'bpx_mint_lance_charge',this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,70,{depth:this.player.y+2,life:.12,fade:90})){const chg=this.trackArtVfx(this.camWorld(this.add.image(this.player.x+Math.cos(ang)*26,this.player.y+Math.sin(ang)*26,'vfx_glow').setTint(0x9fe8ff).setDepth(this.player.y+2).setScale(0.55).setAlpha(0.9)));
     this.tweens.add({targets:chg,scale:0.12,alpha:0,duration:150,onComplete:()=>chg.destroy()});}
     const launch=()=>{
     if(!this.player?.active||(this.state!=='play'&&this.state!=='levelup'))return;
@@ -18738,6 +18754,7 @@ class Game extends Phaser.Scene {
       const b=this.mintBullet(this.player.x,this.player.y,0xffffff,0.5); if(!b)continue; {
         b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.4+lvl*0.028); b.faceVel=true; b.dmg=dmg*hitMul; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=0;   // ยิงตรง ไม่ตามเป้า + หอกเล็กลง
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg:dmg*hitMul,lvl};
+        this.mintOutlineProjectile?.(b,'lance',130+lvl*6);
         b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a,pierces:basic?.path==='pierce'?2+(basic.lv.p_coldblood||0):1};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
       // ถ้าพลาดทุกตัว → แตกที่สุดระยะ (fallback)
@@ -18805,7 +18822,7 @@ class Game extends Phaser.Scene {
     if(e._chill>=need){e._chill=0;e.frozen=Math.max(e.frozen||0,freeze+0.5);e.setVelocity(e.body.velocity.x*0.2,e.body.velocity.y*0.2);e.setTint(COLORS.ice);
       if(!echo){this.ptOnFreeze(e);if(glacier&&e.active)this.glacierEcho(e,freeze);}
       if(e.active&&!this.mintFreezeFx?.(e)){this.burst(e.x,e.y,0xbdf0ff);if(this.floatText)this.floatText(e.x,e.y-26,'FROZEN',0xbdf0ff);}}
-    else{e.setVelocity(e.body.velocity.x*0.7,e.body.velocity.y*0.7);if(!echo&&now-(e._chillFxAt??-1e9)>450&&this.heroFxThrottle?.('chill',5,100)){e._chillFxAt=now;this.heroFx?.('bpx_mint_chill_hit',e.x,e.y,Math.max(56,(e.body?.halfWidth||18)*2.6),{alpha:.85,depth:e.depth+1});}}
+    else{e.setVelocity(e.body.velocity.x*0.7,e.body.velocity.y*0.7);if(!echo&&now-(e._chillFxAt??-1e9)>450&&this.heroFxThrottle?.('chill',5,100)){e._chillFxAt=now;this.heroFx?.(this.mintOutlineKey?.('bpx_mint_chill_hit')||'bpx_mint_chill_hit',e.x,e.y,Math.max(56,(e.body?.halfWidth||18)*2.6),{alpha:.85,depth:e.depth+1});}}
     if(primed&&!echo&&e.active)this.glacierFrostHit(e);
   }
   glacierShatter(root){
@@ -18853,7 +18870,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<shardCount;i++){
       const a=baseAng+(i/(shardCount-1||1)-.5)*arc+Phaser.Math.FloatBetween(-.06,.06),b=this.mintBullet(x,y,0xffffff,.28);if(!b)break;
       this._mintShardCount++;
-      b.setTexture('proj_sprinkle').setTint(0xcaf3ff);this.attachProjectileArt(b,'proj_mint_shard',24,.67,.5);
+      b.setTexture('proj_sprinkle').setTint(0xcaf3ff);if(!this.mintOutlineProjectile?.(b,'shard',48))this.attachProjectileArt(b,'proj_mint_shard',24,.67,.5);
       b.faceVel=true;b.dmg=power;b.life=.5;b.pierce=true;b.hitGapV=.1;b.homing=0;
       b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:power,lvl};
       this.physics.velocityFromRotation(a,760+Math.random()*140,b.body.velocity);
@@ -19294,7 +19311,7 @@ class Game extends Phaser.Scene {
     if(bullet.iceNeedle){ if(bullet.shatterState?.targets.has(enemy))return; if(!bullet.shatterInfo&&bullet.hitCd>0)return; bullet.hitCd=bullet.shatterInfo?0:(bullet.hitGapV||0.10); const nd=bullet.iceNeedle;
       const frozenNow=enemy.frozen>0||this.glacierBrittle(enemy);
       this.damage(enemy,bullet.dmg*(frozenNow?nd.frozenBonus*(nd.shatter?1.25:1):1),bullet.x,bullet.y);
-      if(enemy.active)this.mintChill(enemy,nd.freeze);if(this.heroFxThrottle?.('needle',4,100))this.heroFx?.('bpx_mint_needle_hit',bullet.x,bullet.y,34);
+      if(enemy.active)this.mintChill(enemy,nd.freeze);if(this.heroFxThrottle?.('needle',4,100))this.heroFx?.(this.mintOutlineKey?.('bpx_mint_needle_hit')||'bpx_mint_needle_hit',bullet.x,bullet.y,34);
       if(nd.shatter){ const r=52+nd.lvl*5; this.burst(bullet.x,bullet.y,0x8fd0ff); this.enemies.children.iterate(e=>{ if(e&&e.active&&e!==enemy&&this.dist(e.x,e.y,bullet.x,bullet.y)<r)this.damage(e,nd.dmg*0.5,e.x,e.y); }); }
       // Frost Lance: แตกเมื่อครบจำนวนเป้าที่เจาะได้ หรือทันทีเมื่อโดนบอส
       if(bullet.shatterInfo&&bullet.shatterState&&!bullet.shatterState.done){ const si=bullet.shatterInfo,st=bullet.shatterState; st.targets.add(enemy); st.hits++;
@@ -21852,7 +21869,7 @@ class Game extends Phaser.Scene {
             const t=this.nearestEnemy(760), ang=t?Math.atan2(t.y-b.y,t.x-b.x):this.moveDir.angle();
             this.physics.velocityFromRotation(ang,440,b.body.velocity); }
           else {if(this.skillCd&&this.skillCd.boomer!=null)this.skillCd.boomer=Math.max(0,this.skillCd.boomer-0.32);this.killBullet(b); return; } } }
-      if(b._chargeFx)b._chargeFx.setPosition(b.x,b.y).setRotation(b.rotation);
+      if(b._chargeFx){if(b._chargeFx._mintOutline819)this.mintOutlineFrame(b._chargeFx,dt);b._chargeFx.setPosition(b.x,b.y).setRotation(b.rotation);}
       if(b.life<=0)this.killBullet(b); });
 
     // auto-cast skills tick
