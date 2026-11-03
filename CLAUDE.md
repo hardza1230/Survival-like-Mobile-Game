@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.11; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.12; fetch the deploy branch first.
 
-# Latest delivery: v8.1.10 — remaining hero painted-outline VFX (owner)
+# Latest delivery: v8.1.11 — smaller projectiles and clearer Taro fields (owner)
+
+Owner phone feedback: Strawberry charged Sniper overlay×.7, charge aura removed in painted and old-art paths; Mint normal Impaler lance2.2→1.45visual multiplier/shards64→52 and48→40; Cocoa normal/finisher fists96/150→76/120, Rocket120→96 plus1rocket at every Unique level (4/5/5/6), Titan charge aura×.8. Taro Ball core38→26 (gold44→30), field capped80px/.3alpha; zap one visual bolt14px/.32alpha and hit18px/.35alpha with original damage/zap cadence preserved. Taro owned lifetime fade preserves initial alpha. Sentry base cap2/max3, launch interval .62→.84 coefficient (about26%fewer launches per sentry); Overdrive respects current card cap instead of always filling3. Plasma and Magnetic rings/floor removed, interior lightning retained with original gameplay radius/out-and-back damage. No new assets/audio/save changes. Existing swarm/Cocoa count fixtures updated for owner-requested counts; new isolated rendering/alpha adapters. Mobile visual/FPS review still needed.
+
+# Previous delivery: v8.1.10 — remaining hero painted-outline VFX (owner)
 
 Owner explicitly requested completing Chocolate→Taro→Yuzu Companion+Minion→Strawberry without waiting between batches. Original built-in ImageGen11selected source atlases/44clips264authored frames; exact prompts/alpha/hash/border QA/source previews and reproducible packing. Runtime44WebPs13,840,032bytes/69,206,016decoded total, selected-hero lazy/always bootdeferred; Yuzu3element routes borrow Cocoa/Mint/Taro clips. Owned gameplay-time animation preserves old clip periods, loops and one completion, pause/Low/reduced and pool/player/basic/epoch/shutdown cleanup. Companion shared4majorFX and compact Minion hit3/120ms preserved; Strawberry shared48overlaycap. Existing character bodies, aim guides, damage, collisions, targeting, AI, cards and audio retained. New exact-asset/event/factory tests and static real Canvas47route/282loadedframe gallery added to CI. Phone visual/timing/readability/FPS review pending. See docs/design/OUTLINE_REMAINING_810.md.
 
