@@ -27,6 +27,12 @@ Verified 2026-10-13 in Codex desktop on Windows:
 - Respect the repository's line-ending normalization. For this repository the committed text blobs used LF. Compare the constructed remote tree SHA with the local committed tree SHA before updating the branch; they must match if uploading the same changes.
 - Do not store credentials, access tokens or temporary login links in these documents.
 
+### One stalled Pages checkout (verified 2026-11-03)
+
+- Mint8.1.9 Pages41646209601 hung inside initial shallow Git fetch for10min, while same-source Android41646209525 succeeded. The canceled job log confirmed it never reached code validation; this did not indicate an art/game-code failure.
+- A CI-only commit added a5min timeout to the Pages checkout step and started a fresh runner, deliberately canceling our stalled run via existing concurrency. Pages41647720647 succeeded; live8.1.9/all8art hashes verified. Use bounded recovery for an observed stuck runner; avoid repeatedly pushing or changing runtime/version numbers just to retry.
+- Preserve source readback evidence before generating metadata for CI/docs-only commits; the helper overwrites default .git/ses811-* filenames. Verify the new final tree/head and published result again.
+
 ## Local environment: observations, not prerequisites
 
 - Ask the app's workspace-dependency discovery tool for runtime/library paths instead of guessing old absolute paths.
