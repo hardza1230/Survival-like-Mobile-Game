@@ -1,0 +1,93 @@
+{
+  "sources": [
+    {
+      "group": "water",
+      "path": "assets/incoming/sesame_vfx817/water_source.png",
+      "bytes": 2487476,
+      "sha256": "86f1499eaa0b7e91370da24c5578f5b97557b49c72ebfc12e18e8f6b3932dc0d",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        254
+      ]
+    },
+    {
+      "group": "offense",
+      "path": "assets/incoming/sesame_vfx817/offense_source.png",
+      "bytes": 2701831,
+      "sha256": "0100a15a3f517ede629e63380d15c7d09993fddea1d579a66f00c4fc2c0ac07c",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        254
+      ]
+    },
+    {
+      "group": "prism",
+      "path": "assets/incoming/sesame_vfx817/prism_source.png",
+      "bytes": 2413384,
+      "sha256": "99f496feac3b5d53181cd974910388c6020ebc5952052723a22d6471464f5e6c",
+      "width": 1536,
+      "height": 1024,
+      "alpha": [
+        0,
+        254
+      ]
+    }
+  ],
+  "runtime": [
+    {
+      "key": "fx_sesame_vfx817_water",
+      "path": "assets/art/sesame_vfx817/fx_sesame_vfx817_water.webp",
+      "bytes": 1289808,
+      "sha256": "4c3a4a6c90de47d6a92ba3b5c2f754668927b8bef49da9b0cbd9331d819236d3",
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "clips": [
+        "ppb",
+        "pbb",
+        "bbb",
+        "mbb"
+      ],
+      "decodedBytes": 6291456
+    },
+    {
+      "key": "fx_sesame_vfx817_offense",
+      "path": "assets/art/sesame_vfx817/fx_sesame_vfx817_offense.webp",
+      "bytes": 1689866,
+      "sha256": "8eac0cc9c4f4ea48e60b0f61a8f134463809ad9157a26e3c84f47ead7f10635b",
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "clips": [
+        "ppp",
+        "ppm",
+        "mmm",
+        "mmb"
+      ],
+      "decodedBytes": 6291456
+    },
+    {
+      "key": "fx_sesame_vfx817_prism",
+      "path": "assets/art/sesame_vfx817/fx_sesame_vfx817_prism.webp",
+      "bytes": 1360964,
+      "sha256": "d452d8a6da8b5e0a4201730739b04421033559dbdbf57a606db5242f55d043cd",
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "clips": [
+        "pmb",
+        "pmm",
+        "flare",
+        "impact"
+      ],
+      "decodedBytes": 6291456
+    }
+  ]
+}

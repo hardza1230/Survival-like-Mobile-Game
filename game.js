@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.6';
+const GAME_VERSION = '8.1.7';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.7',date:'2026-11-03',title:'Elemental invocations in motion',items:['Steam Cannon unleashes three forward steam pulses. Tidal Serpent hunts a priority target, bites three times and ends in a water burst.','Sesame spells and Rainbow Flare now use animated painted elemental effects.','New flame ribbons, curling waves and prismatic impacts share the game’s colorful fantasy style.']},
   {v:'8.1.6',date:'2026-11-03',title:'Elemental rune sounds',items:['Red rune taps now flare with fire; green taps sweep with wind','The approved blue water sound stays the same']},
   {v:'8.1.5',date:'2026-11-03',title:'Sesame orb power and spell buffs',items:['Red orbs hit harder, green orbs speed up basic attacks, blue orbs can repeat a shot','PMM empowers Rainbow Flare for 6 seconds; BBB grants moving water armor and regeneration','Basic attacks have clearer empowered and echo effects; active buffs appear beside the recipe']},
   {v:'8.1.4',date:'2026-11-03',title:'Sesame spell identity and controls',items:['Spell orb bonuses stay fixed when cast','Rune buttons follow your control size; clearer recipe and readiness','Magma Garden leaves burning ground and Sunlance has a clearer quick-strike identity']},
@@ -2966,6 +2967,9 @@ const ASSET_SHEETS = {
   yz_mn97_archer:{url:'assets/art/yuzu_hierarchy97/yz_mn97_archer.webp',frame:64},
   yz_mn97_mage:{url:'assets/art/yuzu_hierarchy97/yz_mn97_mage.webp',frame:64},
   yz_mn97_shots:{url:'assets/art/yuzu_hierarchy97/yz_mn97_shots.webp',frame:32},
+  fx_sesame_vfx817_water:{url:'assets/art/sesame_vfx817/fx_sesame_vfx817_water.webp',frame:256},
+  fx_sesame_vfx817_offense:{url:'assets/art/sesame_vfx817/fx_sesame_vfx817_offense.webp',frame:256},
+  fx_sesame_vfx817_prism:{url:'assets/art/sesame_vfx817/fx_sesame_vfx817_prism.webp',frame:256},
   fx_sesame_invoker811:{url:'assets/art/sesame_invoker811/fx_sesame_invoker811.webp',frame:192},
   yz_bo96_arsenal:{url:'assets/art/bloodorange_skill96/yz_bo96_arsenal.webp',frame:128},
   yz_bo96_unique:{url:'assets/art/bloodorange_skill96/yz_bo96_unique.webp',frame:128},
@@ -4072,7 +4076,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
@@ -4609,16 +4613,17 @@ const UNIQUE_MUTS={
   tempest:[{id:'over_long',emoji:'⏱️',name:'Long Overdrive',desc:'Overdrive lasts 1.5s longer.'},{id:'over_finale',emoji:'🎆',name:'Finale Burst',desc:'When Overdrive ends, every sentry fires a double-damage ring.'}]};
 // v7.9.40 Sesame Mirror Network (docs/SESAME_MIRROR_NETWORK.md)
 // Sesame Rune Invoker helpers: pure recipes, orb bonuses and progression.
+const SES_RUNE_VFX817={ppb:['water',0],pbb:['water',1],bbb:['water',2],mbb:['water',3],ppp:['offense',0],ppm:['offense',1],mmm:['offense',2],mmb:['offense',3],pmb:['prism',0],pmm:['prism',1],flare:['prism',2],impact:['prism',3]};
 const SES_RUNE_TYPES=[['p','P',0xff5547],['m','M',0x60e68b],['b','B',0x51baff]];
 const SES_RUNE_RECIPES={
  ppp:{name:'Solar Cataclysm',emoji:'☄',color:0xff5547,cd:14,frame:4,life:1.45,role:'Boss'},
  mmm:{name:'Tempest Chakram',emoji:'✥',color:0x60e68b,cd:10,frame:5,life:2.5,role:'Clear'},
  bbb:{name:'Tidal Armor',emoji:'❋',color:0x51baff,cd:18,frame:11,life:6,role:'Buff'},
  ppm:{name:'Sunlance',emoji:'➶',color:0xffad4d,cd:12,frame:8,life:1.05,role:'Boss'},
- ppb:{name:'Magma Garden',emoji:'✹',color:0xff7761,cd:14,frame:9,life:4,role:'Clear'},
+ ppb:{name:'Steam Cannon',emoji:'♨',color:0xffd6a0,cd:14,frame:9,life:1.15,role:'Clear'},
  pmm:{name:'Prismatic Armament',emoji:'✧',color:0x75e9c3,cd:12,frame:10,life:6,role:'Buff'},
  mmb:{name:'Cyclone Confluence',emoji:'◎',color:0x60e68b,cd:12,frame:7,life:3.2,role:'Clear'},
- pbb:{name:'Crystal Fault',emoji:'✦',color:0x9bdfff,cd:12,frame:12,life:1.2,role:'Clear'},
+ pbb:{name:'Tidal Serpent',emoji:'🐉',color:0x9bdfff,cd:12,frame:12,life:3.1,role:'Boss'},
  mbb:{name:'Mistwalk Aegis',emoji:'◈',color:0x51baff,cd:18,frame:11,life:2.6,role:'Survival'},
  pmb:{name:'Prismatic Blast',emoji:'✺',color:0xffe5b0,cd:16,frame:14,life:.85,role:'Clear'}
 };
@@ -19049,15 +19054,19 @@ class Game extends Phaser.Scene {
   sesRuneArea(x,y,r,d,key,orbDamage){this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&Math.hypot(e.x-x,e.y-y)<=r+(e.body?.halfWidth||0))this.sesRuneDamage(e,d,key,orbDamage);});this.hitCratesInRadius?.(x,y,r,d);}
   sesRunePushEnemy(e,x,y,force=200,sec=.25){if(!sesRuneEnemyValid(e)||e.isBoss||e.isMini||e.body?.immovable||e.frozen>0||e._fleeing||e._huntFlee||e._wispRaider)return;const a=Math.atan2(e.y-y,e.x-x);e.setVelocity(Math.cos(a)*force,Math.sin(a)*force);e.knock=Math.max(e.knock||0,sec);}
   sesRuneHeal(fraction){const p=this.player;if(this.recipeHas?.('noheal')||p._uqNoRegen)return;const amount=p.maxhp*fraction*(this.pactHealMul?.()||1),before=p.hp;p.hp=Math.min(p.maxhp,p.hp+amount);if(p.hp>before)this.popHeal?.(p.x,p.y,Math.round(p.hp-before));}
-  sesRuneImage(frame,x,y,size,depth=8){if(!this.textures?.exists('fx_sesame_invoker811'))return null;return this.camWorld(this.add.image(x,y,'fx_sesame_invoker811',frame).setDisplaySize(size,size).setDepth(depth));}
-  sesRuneBurst(s,frame,x,y,size,life=.45){if(s!==this._sesRune||this.state!=='play'||s.fx.length>=12)return;const image=this.sesRuneImage(frame,x,y,size,y+6);if(image)s.fx.push({image,life,total:life,size});}
+  sesRuneImage(frame,x,y,size,depth=8,clip){
+    const spec=SES_RUNE_VFX817[clip],key=spec&&'fx_sesame_vfx817_'+spec[0],animated=key&&this.textures?.exists(key);if(!animated&&!this.textures?.exists('fx_sesame_invoker811'))return null;
+    const image=this.camWorld(this.add.image(x,y,animated?key:'fx_sesame_invoker811',animated?spec[1]*6:frame).setDisplaySize(size,size).setDepth(depth));if(animated)image._ses817={row:spec[1],frame:-1};return image;
+  }
+  sesRuneFrame(image,progress,loop=true){const v=image?._ses817;if(!v)return;const still=Save.data.settings?.vfx===0||this.hubMotionAllowed?.()===false,t=loop?((progress%1)+1)%1:Math.max(0,Math.min(1,progress)),frame=v.row*6+(still?3:Math.min(5,Math.floor(t*6)));if(v.frame!==frame){v.frame=frame;image.setFrame(frame);}}
+  sesRuneBurst(s,frame,x,y,size,life=.45,clip){if(s!==this._sesRune||this.state!=='play'||s.fx.length>=12)return;const image=this.sesRuneImage(frame,x,y,size,y+6,clip||(frame>=3?'impact':null));if(image)s.fx.push({image,life,total:life,size});}
   sesRuneCast(){
     if(this.state!=='play'||!this.isSesRune()||this._adBusy||this._rubyEntry?.active)return false;const s=this.sesRuneEnsure();if(!s)return false;this.sesRuneCommitCooldown();const r=this.sesRuneRecipe();if(!r.ready||s.castLock>0||(s.cooldowns[r.key]||0)>0||s.actors.length>=8)return false;
     if(r.role==='Buff'){for(let i=s.actors.length-1;i>=0;i--)if(s.actors[i].key===r.key){s.actors[i].g.destroy();s.actors[i].images.forEach(o=>o?.destroy());s.actors.splice(i,1);}}
     const p=this.player,v=this.sesRuneStats(),target=r.role==='Clear'?this.sesRuneCrowd(p.x,p.y,620):this.sesRuneTarget(p.x,p.y,620),angle=target?Math.atan2(target.y-p.y,target.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1),q={key:r.key,ul:this.uniqueLevel||1,t:0,next:0,index:0,x:p.x,y:p.y,sx:p.x,sy:p.y,angle,dm:(p.dmgMul||1)*this.uniquePower()*v.spell,orbDamage:v.damage,area:v.area,life:r.life,hit:new Map(),phaseHits:[new Map(),new Map()],g:this.camWorld(this.add.graphics().setDepth(8)),images:[]};
     q.target=target;q.targetId=target?._sesSpawnId;q.ex=target?.x??p.x+Math.cos(angle)*260;q.ey=target?.y??p.y+Math.sin(angle)*260;
-    const image=this.sesRuneImage(r.frame,q.x,q.y,150);if(image)q.images.push(image);
-    if(r.key==='mmm')for(let i=0;i<2;i++){const img=this.sesRuneImage(r.frame,p.x,p.y,85);if(img)q.images.push(img);}
+    const image=this.sesRuneImage(r.frame,q.x,q.y,150,8,r.key);if(image)q.images.push(image);
+    if(r.key==='mmm')for(let i=0;i<2;i++){const img=this.sesRuneImage(r.frame,p.x,p.y,85,8,'mmm');if(img)q.images.push(img);}
     if(r.key==='pmm')s.empowerT=6;
     if(r.key==='bbb'){s.tideT=6;s.shieldHp=Math.max(s.shieldHp||0,p.maxhp*.2);}
     if(r.key==='mbb'){p.iframe=Math.max(p.iframe||0,.65);s.mistT=2.6;this.dashReady=true;this.dashCd=0;}
@@ -19072,7 +19081,7 @@ class Game extends Phaser.Scene {
     });
   }
   sesRuneTickFlares(s,dt){
-    const step=Math.min(dt,.1);for(let i=(s.echoes||[]).length-1;i>=0;i--){const echo=s.echoes[i];echo.delay-=dt;if(echo.delay<=0){s.echoes.splice(i,1);this.sesRuneFireFlares(s,echo);this.sesRuneBurst(s,2,this.player.x,this.player.y,44,.2);this.sesRuneSound('tap_b',.14);}}for(let i=s.flares.length-1;i>=0;i--){const f=s.flares[i],ox=f.x,oy=f.y;f.life-=dt;f.x+=Math.cos(f.angle)*540*step;f.y+=Math.sin(f.angle)*540*step;f.image?.setPosition(f.x,f.y).setRotation(f.angle).setDepth(f.y+2);let hit=null;
+    const step=Math.min(dt,.1);for(let i=(s.echoes||[]).length-1;i>=0;i--){const echo=s.echoes[i];echo.delay-=dt;if(echo.delay<=0){s.echoes.splice(i,1);this.sesRuneFireFlares(s,echo);this.sesRuneBurst(s,2,this.player.x,this.player.y,44,.2);this.sesRuneSound('tap_b',.14);}}for(let i=s.flares.length-1;i>=0;i--){const f=s.flares[i],ox=f.x,oy=f.y;f.life-=dt;f.x+=Math.cos(f.angle)*540*step;f.y+=Math.sin(f.angle)*540*step;f.image?.setPosition(f.x,f.y).setRotation(f.angle).setDepth(f.y+2);this.sesRuneFrame(f.image,(1.3-f.life)/.36);let hit=null;
       this.enemies.children.iterate(e=>{if(!hit&&sesRuneEnemyValid(e)&&sesRuneSegmentDistance(e.x,e.y,ox,oy,f.x,f.y)<18+(e.body?.halfWidth||0))hit=e;});if(hit){this.sesRuneArea(hit.x,hit.y,f.radius,f.dmg,'rainbow_flare');if(s!==this._sesRune)return;this.sesRuneBurst(s,3,hit.x,hit.y,65,.2);}
       if(hit||f.life<=0){f.image?.destroy();s.flares.splice(i,1);}}
   }
@@ -19080,19 +19089,30 @@ class Game extends Phaser.Scene {
   tickSesRune(dt){
     if(!this.isSesRune()){if(this._sesRune)this.clearSesRune();return;}if(this.state!=='play')return;const s=this.sesRuneEnsure();if(!s)return;const p=this.player,red=this.hubMotionAllowed?.()===false||Save.data.settings?.vfx===0;this.sesRuneDrawOrbs(s,dt);this.sesRuneTickFlares(s,dt);if(s!==this._sesRune)return;
     if(s.readySound>0){s.readySound-=dt;if(s.readySound<=0&&s.readyKey===this.sesRuneRecipe().key)this.sesRuneSound('recipe',.38);}
-    for(let i=s.fx.length-1;i>=0;i--){const f=s.fx[i];f.life-=dt;f.image.setAlpha(Math.max(0,f.life/f.total)).setDisplaySize(f.size*(red?1:1+.3*(1-f.life/f.total)),f.size*(red?1:1+.3*(1-f.life/f.total)));if(f.life<=0){f.image.destroy();s.fx.splice(i,1);}}
+    for(let i=s.fx.length-1;i>=0;i--){const f=s.fx[i];f.life-=dt;this.sesRuneFrame(f.image,1-f.life/f.total,false);f.image.setAlpha(Math.max(0,f.life/f.total)).setDisplaySize(f.size*(red?1:1+.3*(1-f.life/f.total)),f.size*(red?1:1+.3*(1-f.life/f.total)));if(f.life<=0){f.image.destroy();s.fx.splice(i,1);}}
     const step=Math.min(dt,.1);
     for(let i=s.actors.length-1;i>=0;i--){const q=s.actors[i],r=SES_RUNE_RECIPES[q.key];q.t+=dt;q.life-=dt;q.next-=dt;let done=false;
       if(q.key==='pmm'||q.key==='bbb'){q.x=p.x;q.y=p.y;const armor=q.key==='bbb';q.images[0]?.setPosition(p.x,p.y-8).setDepth(p.y+3).setDisplaySize(armor?112:92,armor?112:92).setAlpha(armor?.38:.65).setRotation(red?0:q.t*(armor?.3:1.2));q.g.clear().lineStyle(2,armor?0x51baff:0xffe5b0,.7).strokeCircle(p.x,p.y-8,armor?42:35);
-      }else if(q.key==='ppp'||q.key==='ppb'||q.key==='pbb'){
-        if(q.key==='ppb'&&q.patches&&q.burnAt<=q.t){q.burnAt=q.t+.5;this.enemies.children.iterate(e=>{if(sesRuneEnemyValid(e)&&q.patches.some(patch=>Math.hypot(e.x-patch.x,e.y-patch.y)<=70*q.area+(e.body?.halfWidth||0)))this.sesRuneDamage(e,8*q.dm,q.key,q.orbDamage);});if(!q.g.active)return;}
-
-        const count=q.key==='ppp'?3:5,delay=q.key==='ppp'?.4:.16;
-        if(q.key==='ppp'&&q.index<3&&q.lockedIndex!==q.index&&sesRuneEnemyValid(q.target)&&q.target._sesSpawnId===q.targetId){q.ex=q.target.x;q.ey=q.target.y;if(q.t>=.35+q.index*.4-.12)q.lockedIndex=q.index;}
-        if(q.t>=.35+q.index*delay&&q.index<count){const n=q.index++,off=q.key==='ppp'?[(n-1)*55,0]:q.key==='ppb'?[Math.cos(n*TAU/5)*95,Math.sin(n*TAU/5)*95]:[Math.cos(q.angle)*(n*85-170),Math.sin(q.angle)*(n*85-170)],x=q.ex+off[0],y=q.ey+off[1],radius=(q.key==='ppp'?115:q.key==='ppb'?105:80)*q.area;
-          if(q.key==='ppb'){(q.patches||(q.patches=[])).push({x,y});q.burnAt??=q.t+.5;}
-          this.sesRuneArea(x,y,radius,(q.key==='ppp'?65+q.ul*12:q.key==='ppb'?36:48)*q.dm,q.key,q.orbDamage);this.sesRuneBurst(s,q.key==='ppp'?4:r.frame,x,y,radius*2,.5);this.sesRuneSound('impact',.4);q.x=x;q.y=y;}
-        if(!q.g.active)return;q.g.clear();if(q.patches)for(const patch of q.patches)q.g.lineStyle(2,0xff9b43,.55).strokeCircle(patch.x,patch.y,70*q.area);q.g.lineStyle(2,r.color,.55).strokeCircle(q.ex,q.ey,105*q.area);if(q.key==='ppp'){const f=Math.min(1,((q.t+.05)%delay)/delay);q.images[0]?.setPosition(q.ex-90*(1-f),q.ey-220*(1-f)).setDisplaySize(200,200);}
+      }else if(q.key==='ppb'){
+        q.x=p.x;q.y=p.y;const range=300*q.area;
+        while(q.index<3&&q.t>=.18+q.index*.24){q.index++;
+          this.enemies.children.iterate(e=>{if(s!==this._sesRune||!sesRuneEnemyValid(e))return;const dx=e.x-q.x,dy=e.y-q.y,d=Math.hypot(dx,dy),body=e.body?.halfWidth||0,along=dx*Math.cos(q.angle)+dy*Math.sin(q.angle),side=Math.abs(-dx*Math.sin(q.angle)+dy*Math.cos(q.angle));if(d<=range+body&&(d<=45+body||along>=-body&&side<=Math.max(0,along)*Math.tan(.58)+body)){this.sesRuneDamage(e,(60+q.ul*6)*q.dm,q.key,q.orbDamage);this.sesRunePushEnemy(e,q.x,q.y,180,.18);}});
+          if(s!==this._sesRune||!q.g.active)return;this.sesRuneSound('impact',.28);
+        }
+        const phase=q.index?Math.min(1,.34+(q.t-(.18+(q.index-1)*.24))/.3*.66):q.t/.18*.3;
+        this.sesRuneFrame(q.images[0],phase,false);q.images[0]?.setOrigin(.15,.5).setPosition(q.x,q.y).setRotation(q.angle).setDepth(p.y+4).setDisplaySize(range/.78,range/.78).setAlpha(q.t>.85?Math.max(0,(1.15-q.t)/.3):.9);
+      }else if(q.key==='pbb'){
+        if(!sesRuneEnemyValid(q.target)||q.target._sesSpawnId!==q.targetId){q.target=this.sesRuneTarget(q.x,q.y,800);q.targetId=q.target?._sesSpawnId;}
+        const target=q.target;
+        if(target&&q.index<3){const dx=target.x-q.x,dy=target.y-q.y,d=Math.hypot(dx,dy),reach=85+(target.body?.halfWidth||0),travel=Math.min(Math.max(0,d-reach*.6),760*step);q.angle=Math.atan2(dy,dx);q.x+=Math.cos(q.angle)*travel;q.y+=Math.sin(q.angle)*travel;
+          if(q.t>=.35&&q.next<=0&&d-travel<=reach){q.index++;q.next=.52;q.biteAt=q.t;this.sesRuneDamage(target,(48+q.ul*6)*q.dm,q.key,q.orbDamage);if(s!==this._sesRune||!q.g.active)return;this.sesRuneBurst(s,12,target.x,target.y,110,.25,'mbb');this.sesRuneSound('impact',.32);if(q.index===3){q.finishAt=q.t+.24;q.finishX=target.x;q.finishY=target.y;}}
+        }
+        this.sesRuneFrame(q.images[0],q.biteAt!==undefined&&q.t-q.biteAt<.3?.5+(q.t-q.biteAt)/.6:(q.t%.6)/1.2,false);q.images[0]?.setPosition(q.x,q.y).setRotation(q.angle).setDepth(q.y+4).setDisplaySize(230*q.area,230*q.area);
+        if(q.finishAt!==undefined&&q.t>=q.finishAt){this.sesRuneArea(q.finishX,q.finishY,140*q.area,35*q.dm,q.key,q.orbDamage);if(s!==this._sesRune||!q.g.active)return;this.sesRuneBurst(s,12,q.finishX,q.finishY,300*q.area,.5,'mbb');done=true;}
+      }else if(q.key==='ppp'){
+        if(q.index<3&&q.lockedIndex!==q.index&&sesRuneEnemyValid(q.target)&&q.target._sesSpawnId===q.targetId){q.ex=q.target.x;q.ey=q.target.y;if(q.t>=.35+q.index*.4-.12)q.lockedIndex=q.index;}
+        if(q.t>=.35+q.index*.4&&q.index<3){const n=q.index++,x=q.ex+(n-1)*55,y=q.ey,radius=115*q.area;this.sesRuneArea(x,y,radius,(65+q.ul*12)*q.dm,q.key,q.orbDamage);this.sesRuneBurst(s,4,x,y,radius*2,.5);this.sesRuneSound('impact',.4);q.x=x;q.y=y;}
+        if(!q.g.active)return;q.g.clear();if(q.index<3){q.g.lineStyle(2,r.color,.55).strokeCircle(q.ex,q.ey,105*q.area);const f=Math.max(0,Math.min(1,1-(.35+q.index*.4-q.t)/.35));this.sesRuneFrame(q.images[0],f,false);q.images[0]?.setPosition(q.ex-90*(1-f),q.ey-220*(1-f)).setDisplaySize(220,220);}else q.images[0]?.setAlpha(0);
       }else if(q.key==='mmm'){
         const back=q.t>=.65;
         for(let arm=0;arm<3;arm++){if(!q.g.active)return;const angle=q.angle+(arm-1)*.28,prev=q.positions?.[arm]||{x:q.sx,y:q.sy};q.positions=q.positions||[];const a=back?Math.atan2(p.y-prev.y,p.x-prev.x):angle,x=prev.x+Math.cos(a)*460*step,y=prev.y+Math.sin(a)*460*step;q.positions[arm]={x,y};q.images[arm]?.setPosition(x,y).setRotation(red?0:q.t*12).setDisplaySize(85,85);
@@ -19112,14 +19132,14 @@ class Game extends Phaser.Scene {
       }
       if(s!==this._sesRune||!q.g.active)return;
       if(!q.images.length)q.g.clear().lineStyle(3,r.color,.9).strokeCircle(q.x,q.y,(q.key==='pmb'?Math.min(1,q.t/.65)*330:q.key==='mmm'?40:110)*q.area);
-      if(!['ppp','mmm','ppm','pmm','pmb','bbb','mmb','mbb'].includes(q.key))q.images[0]?.setPosition(q.x,q.y).setDisplaySize(170,170).setAlpha(Math.max(.15,Math.min(1,q.life)));
+      if(!['ppp','ppb','pbb'].includes(q.key))for(const image of q.images)this.sesRuneFrame(image,q.t/(q.key==='pmb'?.85:.55),q.key!=='pmb');
       if(done||q.life<=0||!q.g.active){q.g.destroy();q.images.forEach(img=>img?.destroy());s.actors.splice(i,1);}
     }
   }
   clearSesRune(){const s=this._sesRune;if(s){s.actors.forEach(q=>{q.g?.destroy();q.images?.forEach(i=>i?.destroy());});s.flares?.forEach(f=>f.image?.destroy());s.fx?.forEach(f=>f.image?.destroy());s.orbSprites?.forEach(o=>o?.destroy());s.g?.destroy();}this._sesRune=null;this._sesRunePointers?.clear();this._sesRuneUI?.forEach(o=>o.setVisible(false));}
   sesRuneFireFlares(s,shot){
     if(s!==this._sesRune||this.state!=='play')return;const p=this.player,t=this.sesRuneTarget(p.x,p.y,650),a=t?Math.atan2(t.y-p.y,t.x-p.x):Math.atan2(this.moveDir?.y||0,this.moveDir?.x||1);
-    for(let i=0;i<shot.count&&s.flares.length<18;i++){const angle=a+(i-(shot.count-1)/2)*.16,image=this.sesRuneImage(3,p.x,p.y,shot.empowered?64:48,p.y+2);image?.setDisplaySize(shot.empowered?72:54,shot.empowered?38:28).setRotation(angle).setAlpha(shot.echo?.65:1);s.flares.push({x:p.x,y:p.y,angle,life:1.3,dmg:shot.dmg,radius:shot.radius,image});}
+    for(let i=0;i<shot.count&&s.flares.length<18;i++){const angle=a+(i-(shot.count-1)/2)*.16,image=this.sesRuneImage(3,p.x,p.y,shot.empowered?64:48,p.y+2,'flare');image?.setDisplaySize(shot.empowered?72:54,shot.empowered?38:28).setRotation(angle).setAlpha(shot.echo?.65:1);s.flares.push({x:p.x,y:p.y,angle,life:1.3,dmg:shot.dmg,radius:shot.radius,image});}
   }
   castSesRuneFlare(lvl,dm,basic){
     if(this.state!=='play')return;const s=this.sesRuneEnsure();if(!s)return;const v=this.sesRuneStats(),shot={count:Math.min(3,1+Math.max(0,Math.floor(basic?._pm?.count||0))),dmg:(19+lvl*5)*dm*v.basicDamage,radius:(36+v.p*8)*v.area,empowered:s.empowerT>0};this.sesRuneFireFlares(s,shot);

@@ -1,0 +1,1309 @@
+{
+  "provider": "built-in ImageGen",
+  "sourceSheets": 3,
+  "clips": 12,
+  "frames": 72,
+  "runtimeFrame": 256,
+  "alphaPreserved": true,
+  "allBordersClear": true,
+  "decodedBytes": 18874368,
+  "framesQA": [
+    {
+      "clip": "ppb",
+      "frame": 0,
+      "sourceBox": [
+        0,
+        10,
+        256,
+        231
+      ],
+      "runtimeAlphaBox": [
+        16,
+        31,
+        240,
+        216
+      ],
+      "clearBorder": true,
+      "visibleHash": "0890c119196f0d260b6ee7d491ca4c7837b5990128acce26133dfb18061a69e0"
+    },
+    {
+      "clip": "ppb",
+      "frame": 1,
+      "sourceBox": [
+        0,
+        10,
+        256,
+        231
+      ],
+      "runtimeAlphaBox": [
+        16,
+        40,
+        240,
+        223
+      ],
+      "clearBorder": true,
+      "visibleHash": "509887429c75b72bfa2b9d4e434bb4fc674317e6505938e869ea1af858625f5e"
+    },
+    {
+      "clip": "ppb",
+      "frame": 2,
+      "sourceBox": [
+        0,
+        10,
+        256,
+        231
+      ],
+      "runtimeAlphaBox": [
+        16,
+        35,
+        240,
+        224
+      ],
+      "clearBorder": true,
+      "visibleHash": "097daf52d4522f8f64505a306c8cda6689de4d58b858bba22c1e1eb3c6cc54f7"
+    },
+    {
+      "clip": "ppb",
+      "frame": 3,
+      "sourceBox": [
+        0,
+        10,
+        256,
+        231
+      ],
+      "runtimeAlphaBox": [
+        16,
+        31,
+        240,
+        224
+      ],
+      "clearBorder": true,
+      "visibleHash": "740104c9da92e52ec8c8d0c17e7aded6233ebbfe83206ac686b8858ad151784b"
+    },
+    {
+      "clip": "ppb",
+      "frame": 4,
+      "sourceBox": [
+        0,
+        10,
+        256,
+        231
+      ],
+      "runtimeAlphaBox": [
+        16,
+        35,
+        240,
+        224
+      ],
+      "clearBorder": true,
+      "visibleHash": "92bad769ae357a94630089697d0816b124a290125834eb09d34c973a4091aab1"
+    },
+    {
+      "clip": "ppb",
+      "frame": 5,
+      "sourceBox": [
+        0,
+        10,
+        256,
+        231
+      ],
+      "runtimeAlphaBox": [
+        16,
+        32,
+        239,
+        224
+      ],
+      "clearBorder": true,
+      "visibleHash": "0f50c9236ef45b127f268920da6207d6cd4eb7c48f6baf24db134adbf92ff880"
+    },
+    {
+      "clip": "pbb",
+      "frame": 0,
+      "sourceBox": [
+        0,
+        19,
+        256,
+        225
+      ],
+      "runtimeAlphaBox": [
+        16,
+        41,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "1017d27a58ab6ceec639a6daff20a51f0795e279c7dc6f36a241746227f8bd52"
+    },
+    {
+      "clip": "pbb",
+      "frame": 1,
+      "sourceBox": [
+        0,
+        19,
+        256,
+        225
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        215
+      ],
+      "clearBorder": true,
+      "visibleHash": "0d86cbf29e84be059b12797f3c6ea694a03a5cd8ae5c1613bba89f928a56421a"
+    },
+    {
+      "clip": "pbb",
+      "frame": 2,
+      "sourceBox": [
+        0,
+        19,
+        256,
+        225
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "0cf8616b5dc34dc96cd2a3045e7bec65f3b97e0f5a11e4faf3e25aae073a446a"
+    },
+    {
+      "clip": "pbb",
+      "frame": 3,
+      "sourceBox": [
+        0,
+        19,
+        256,
+        225
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "3ede30bbb297778bbaa63421dfe9342fd58d304255b7d2a65eb965c897315049"
+    },
+    {
+      "clip": "pbb",
+      "frame": 4,
+      "sourceBox": [
+        0,
+        19,
+        256,
+        225
+      ],
+      "runtimeAlphaBox": [
+        16,
+        48,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "bc7f09ce23798c18e8207e14dc77d1f2cb61a6e5645528f8f47ada4b84491ada"
+    },
+    {
+      "clip": "pbb",
+      "frame": 5,
+      "sourceBox": [
+        0,
+        19,
+        256,
+        225
+      ],
+      "runtimeAlphaBox": [
+        16,
+        41,
+        230,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "2c30097ef817b17d9e141aabf4fe04d77bee1a6793da07ad6e99140a6a4e7f6a"
+    },
+    {
+      "clip": "bbb",
+      "frame": 0,
+      "sourceBox": [
+        11,
+        13,
+        245,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        22,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "94787191d5db84a33067897b9fd590add02f904504447c6c1a816086bd5c4af8"
+    },
+    {
+      "clip": "bbb",
+      "frame": 1,
+      "sourceBox": [
+        11,
+        13,
+        245,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        22,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "612785e9c5b3f437ce50915b01a90ea700183ab226ed8b91d1096e74b92d4dea"
+    },
+    {
+      "clip": "bbb",
+      "frame": 2,
+      "sourceBox": [
+        11,
+        13,
+        245,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        22,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "d434ff041266126f0a330dbdba4a9cc3072dd8a14b4bd2c909531906d306cabf"
+    },
+    {
+      "clip": "bbb",
+      "frame": 3,
+      "sourceBox": [
+        11,
+        13,
+        245,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        22,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "daba6230c9901b5f83fc95f796fc51c283f0fff1a3d0ec8d9c7d244299f5e261"
+    },
+    {
+      "clip": "bbb",
+      "frame": 4,
+      "sourceBox": [
+        11,
+        13,
+        245,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        22,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "4dcb1a0c213543e8a75840d9e357d9342c67fee6a6d96528dc336dd5f7e3acab"
+    },
+    {
+      "clip": "bbb",
+      "frame": 5,
+      "sourceBox": [
+        11,
+        13,
+        245,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        22,
+        238,
+        232
+      ],
+      "clearBorder": true,
+      "visibleHash": "9f25a152470c4e74e67256938d1f2ba5d0a1eff0e88d3e96b344dd058bdd4eab"
+    },
+    {
+      "clip": "mbb",
+      "frame": 0,
+      "sourceBox": [
+        0,
+        18,
+        256,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "ac1dd1477d4d9511ac4656a819f4c486f8f037c30533f733ae44aa95ea5ef43e"
+    },
+    {
+      "clip": "mbb",
+      "frame": 1,
+      "sourceBox": [
+        0,
+        18,
+        256,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        35,
+        240,
+        219
+      ],
+      "clearBorder": true,
+      "visibleHash": "254d761c3498025c304e88c629e7ba461edd489de6243dff771f6eafe1ffb07a"
+    },
+    {
+      "clip": "mbb",
+      "frame": 2,
+      "sourceBox": [
+        0,
+        18,
+        256,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "89eefc13f5cb0081688a3f7c518aa6994404642d00f752c1a9caef0c33ed089e"
+    },
+    {
+      "clip": "mbb",
+      "frame": 3,
+      "sourceBox": [
+        0,
+        18,
+        256,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "ddf96fbbef1b9f3a17c751040aab4007be7b121be2a74beb7e6565d5ac3f64f1"
+    },
+    {
+      "clip": "mbb",
+      "frame": 4,
+      "sourceBox": [
+        0,
+        18,
+        256,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        34,
+        240,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "1782097dac9831fd2903b1c16d18654c1dd4ca370038d2f790d664c2543b35a8"
+    },
+    {
+      "clip": "mbb",
+      "frame": 5,
+      "sourceBox": [
+        0,
+        18,
+        256,
+        233
+      ],
+      "runtimeAlphaBox": [
+        16,
+        34,
+        228,
+        222
+      ],
+      "clearBorder": true,
+      "visibleHash": "b356e989fbc1c34b5c2a503ff98888c2661a15f1bdd3e8538a24ece7eb4181de"
+    },
+    {
+      "clip": "ppp",
+      "frame": 0,
+      "sourceBox": [
+        14,
+        5,
+        244,
+        235
+      ],
+      "runtimeAlphaBox": [
+        31,
+        41,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "768290ef6b11a25bbf1a9c74017388d581404bea99019f4280c72ec1b8de9691"
+    },
+    {
+      "clip": "ppp",
+      "frame": 1,
+      "sourceBox": [
+        14,
+        5,
+        244,
+        235
+      ],
+      "runtimeAlphaBox": [
+        16,
+        26,
+        228,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "54e4973566432aa66d2e84c89625bb845b759b18c160cbfc54bd9f8c64a84a2f"
+    },
+    {
+      "clip": "ppp",
+      "frame": 2,
+      "sourceBox": [
+        14,
+        5,
+        244,
+        235
+      ],
+      "runtimeAlphaBox": [
+        16,
+        26,
+        240,
+        239
+      ],
+      "clearBorder": true,
+      "visibleHash": "d0f43154ee76ba742e7887f8be71822a4ffe7bd0e7ad779f6a25d347f18a7452"
+    },
+    {
+      "clip": "ppp",
+      "frame": 3,
+      "sourceBox": [
+        14,
+        5,
+        244,
+        235
+      ],
+      "runtimeAlphaBox": [
+        16,
+        16,
+        240,
+        240
+      ],
+      "clearBorder": true,
+      "visibleHash": "94412c1e33b69b8195ff885d90edcb4b04ed574a7ad35366a1f7a75aefff073a"
+    },
+    {
+      "clip": "ppp",
+      "frame": 4,
+      "sourceBox": [
+        14,
+        5,
+        244,
+        235
+      ],
+      "runtimeAlphaBox": [
+        16,
+        16,
+        240,
+        240
+      ],
+      "clearBorder": true,
+      "visibleHash": "b533e69fc83dd26c34223b1854fa9578d4e31750c0e34b5f910c7ca40595da3c"
+    },
+    {
+      "clip": "ppp",
+      "frame": 5,
+      "sourceBox": [
+        14,
+        5,
+        244,
+        235
+      ],
+      "runtimeAlphaBox": [
+        16,
+        16,
+        240,
+        240
+      ],
+      "clearBorder": true,
+      "visibleHash": "9d3caa16078b0b4b37df69d1c0235ad89ae12e5dec6c413cbfbbfefeebb6afb8"
+    },
+    {
+      "clip": "ppm",
+      "frame": 0,
+      "sourceBox": [
+        0,
+        24,
+        256,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        208
+      ],
+      "clearBorder": true,
+      "visibleHash": "51b6659a9e628041e6ad19c689c4722e5b288bfe6a251fac43410e815e2a2c99"
+    },
+    {
+      "clip": "ppm",
+      "frame": 1,
+      "sourceBox": [
+        0,
+        24,
+        256,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        39,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "e8068b3836247ffd0aab9d5e34de96ae828481c67b8c39fc2caa16cb9fbd7ad1"
+    },
+    {
+      "clip": "ppm",
+      "frame": 2,
+      "sourceBox": [
+        0,
+        24,
+        256,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "1e9c584488a0279421dc3b8db215fe8b4c6d6e03f4269b1318b84a9af3bad4d5"
+    },
+    {
+      "clip": "ppm",
+      "frame": 3,
+      "sourceBox": [
+        0,
+        24,
+        256,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "1c869bf6372df4124511c89c58d8834fc043964da2547b0a97285f68481d2cac"
+    },
+    {
+      "clip": "ppm",
+      "frame": 4,
+      "sourceBox": [
+        0,
+        24,
+        256,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        240,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "7e7c11ee174c9876390302a620e96bb3aa6d07766ce470bd75c593519b41f12a"
+    },
+    {
+      "clip": "ppm",
+      "frame": 5,
+      "sourceBox": [
+        0,
+        24,
+        256,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        38,
+        239,
+        213
+      ],
+      "clearBorder": true,
+      "visibleHash": "3c46d69f43b2fe1aaf0ba0b94ca40d0cac70ff30e62a033474366a031c2ef066"
+    },
+    {
+      "clip": "mmm",
+      "frame": 0,
+      "sourceBox": [
+        11,
+        7,
+        240,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        27,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "253a505b7c12eba8612c986606ad1806de331241abeeef956dbc72748d53299a"
+    },
+    {
+      "clip": "mmm",
+      "frame": 1,
+      "sourceBox": [
+        11,
+        7,
+        240,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "89a3c0b232fd8b01217c6cdd02e736b7455846ff5e283626103090af2f70f354"
+    },
+    {
+      "clip": "mmm",
+      "frame": 2,
+      "sourceBox": [
+        11,
+        7,
+        240,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "6e39622056d438a91a1e414b2c9fdcc32e9b608f1e96600edc03cca562ecebc8"
+    },
+    {
+      "clip": "mmm",
+      "frame": 3,
+      "sourceBox": [
+        11,
+        7,
+        240,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "122a8bdfa3ac2479f4d5bed2be5c5ff7bf356b208fc21ab6e587d0134be87443"
+    },
+    {
+      "clip": "mmm",
+      "frame": 4,
+      "sourceBox": [
+        11,
+        7,
+        240,
+        230
+      ],
+      "runtimeAlphaBox": [
+        16,
+        19,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "visibleHash": "1b4de69ff0fec32719be9a197c8ed2749869c120615171fe4f0c94654eec64c5"
+    },
+    {
+      "clip": "mmm",
+      "frame": 5,
+      "sourceBox": [
+        11,
+        7,
+        240,
+        230
+      ],
+      "runtimeAlphaBox": [
+        18,
+        25,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "86ba7d4d265b0e8ce299568fa939ac07bfffa89ace1575f98fa4a3e5f77196ba"
+    },
+    {
+      "clip": "mmb",
+      "frame": 0,
+      "sourceBox": [
+        7,
+        14,
+        243,
+        242
+      ],
+      "runtimeAlphaBox": [
+        20,
+        23,
+        237,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "7b99693b815c3f599e02287de457d1797b56473cf4f25e1183614f085fcad77a"
+    },
+    {
+      "clip": "mmb",
+      "frame": 1,
+      "sourceBox": [
+        7,
+        14,
+        243,
+        242
+      ],
+      "runtimeAlphaBox": [
+        18,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "244f9b9729c31bf6215f444a51c44f0b63f1c424385a52d059eb3b4462ba736f"
+    },
+    {
+      "clip": "mmb",
+      "frame": 2,
+      "sourceBox": [
+        7,
+        14,
+        243,
+        242
+      ],
+      "runtimeAlphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "97690283fb9671bed530fe7f63dc104c876b5eeab4f0a7eb35b346034f26f611"
+    },
+    {
+      "clip": "mmb",
+      "frame": 3,
+      "sourceBox": [
+        7,
+        14,
+        243,
+        242
+      ],
+      "runtimeAlphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "46376376477ecdcccf533c646ea81db194b4b924ad104227c8686d12cce514a0"
+    },
+    {
+      "clip": "mmb",
+      "frame": 4,
+      "sourceBox": [
+        7,
+        14,
+        243,
+        242
+      ],
+      "runtimeAlphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "c7f9175b3b906095f1d43182929c23473aedbd63053c01dafbb7a411e93ee0bb"
+    },
+    {
+      "clip": "mmb",
+      "frame": 5,
+      "sourceBox": [
+        7,
+        14,
+        243,
+        242
+      ],
+      "runtimeAlphaBox": [
+        16,
+        20,
+        240,
+        236
+      ],
+      "clearBorder": true,
+      "visibleHash": "97a0a8264a06f5cec4370d5bba04ef96329ef85e70b91ff76c4b4dfe748df6bd"
+    },
+    {
+      "clip": "pmb",
+      "frame": 0,
+      "sourceBox": [
+        63,
+        72,
+        199,
+        201
+      ],
+      "runtimeAlphaBox": [
+        60,
+        63,
+        196,
+        192
+      ],
+      "clearBorder": true,
+      "visibleHash": "0b4644e85abb95400c5b41a67dde68abfd3e94d86b93f149e6f789c5251e495c"
+    },
+    {
+      "clip": "pmb",
+      "frame": 1,
+      "sourceBox": [
+        41,
+        53,
+        211,
+        216
+      ],
+      "runtimeAlphaBox": [
+        43,
+        46,
+        213,
+        209
+      ],
+      "clearBorder": true,
+      "visibleHash": "4e941af2eeb5e30afef8f31854a4ee4b778bc653a8c38102adb757484b0b698e"
+    },
+    {
+      "clip": "pmb",
+      "frame": 2,
+      "sourceBox": [
+        14,
+        35,
+        226,
+        235
+      ],
+      "runtimeAlphaBox": [
+        22,
+        28,
+        234,
+        228
+      ],
+      "clearBorder": true,
+      "visibleHash": "b16bb42cb97bcd012b18460f9c1f29df430c80483e66b8cad2f79d0eef0d263f"
+    },
+    {
+      "clip": "pmb",
+      "frame": 3,
+      "sourceBox": [
+        8,
+        21,
+        239,
+        248
+      ],
+      "runtimeAlphaBox": [
+        16,
+        18,
+        240,
+        238
+      ],
+      "clearBorder": true,
+      "visibleHash": "ca15cae21c8309e212eecda34fc621886ab10e61ab04481873d691d5c251f4c6"
+    },
+    {
+      "clip": "pmb",
+      "frame": 4,
+      "sourceBox": [
+        1,
+        9,
+        256,
+        248
+      ],
+      "runtimeAlphaBox": [
+        16,
+        23,
+        240,
+        233
+      ],
+      "clearBorder": true,
+      "visibleHash": "c80ca675b07a612e92471e55ed4318d001f838f0f59e3a9bf58187b5b4916599"
+    },
+    {
+      "clip": "pmb",
+      "frame": 5,
+      "sourceBox": [
+        0,
+        8,
+        251,
+        248
+      ],
+      "runtimeAlphaBox": [
+        16,
+        21,
+        240,
+        235
+      ],
+      "clearBorder": true,
+      "visibleHash": "c0bdead8f247a136e9168799752ad2e4711b3acb6c4bc664e0efc9eecd0c2e3d"
+    },
+    {
+      "clip": "pmm",
+      "frame": 0,
+      "sourceBox": [
+        22,
+        32,
+        225,
+        215
+      ],
+      "runtimeAlphaBox": [
+        44,
+        49,
+        220,
+        219
+      ],
+      "clearBorder": true,
+      "visibleHash": "70da53e9233fc1df5ef39c6f90efb4cd7a193625171f3737e758f70f49401a0f"
+    },
+    {
+      "clip": "pmm",
+      "frame": 1,
+      "sourceBox": [
+        22,
+        32,
+        225,
+        215
+      ],
+      "runtimeAlphaBox": [
+        37,
+        41,
+        229,
+        214
+      ],
+      "clearBorder": true,
+      "visibleHash": "932f2c28e0d3f847d629083cc9175aa1a72718f83f612c27a4559982550eaa34"
+    },
+    {
+      "clip": "pmm",
+      "frame": 2,
+      "sourceBox": [
+        22,
+        32,
+        225,
+        215
+      ],
+      "runtimeAlphaBox": [
+        29,
+        36,
+        226,
+        218
+      ],
+      "clearBorder": true,
+      "visibleHash": "3ea348bc150806f1f07867ec2e693ebc5471a95fe1d98f83b95bffe66e9e6866"
+    },
+    {
+      "clip": "pmm",
+      "frame": 3,
+      "sourceBox": [
+        22,
+        32,
+        225,
+        215
+      ],
+      "runtimeAlphaBox": [
+        26,
+        36,
+        228,
+        219
+      ],
+      "clearBorder": true,
+      "visibleHash": "9a95c0b1715b29f5b3fe94e3f70279218e96eb81f1ad8291d764da653fc5e324"
+    },
+    {
+      "clip": "pmm",
+      "frame": 4,
+      "sourceBox": [
+        22,
+        32,
+        225,
+        215
+      ],
+      "runtimeAlphaBox": [
+        26,
+        36,
+        229,
+        219
+      ],
+      "clearBorder": true,
+      "visibleHash": "c86342d3f4e70b71a50582a82a72ae3f300522c23141afeead0dbf7ea289704a"
+    },
+    {
+      "clip": "pmm",
+      "frame": 5,
+      "sourceBox": [
+        22,
+        32,
+        225,
+        215
+      ],
+      "runtimeAlphaBox": [
+        26,
+        36,
+        229,
+        219
+      ],
+      "clearBorder": true,
+      "visibleHash": "5dfb25860b346f0b04a51961fbb0d5c807326225d6a5ca58efe101e725376676"
+    },
+    {
+      "clip": "flare",
+      "frame": 0,
+      "sourceBox": [
+        6,
+        37,
+        250,
+        203
+      ],
+      "runtimeAlphaBox": [
+        21,
+        83,
+        240,
+        201
+      ],
+      "clearBorder": true,
+      "visibleHash": "26fe0db0092edacf56b586872ad999460be126269df92b59ec228b1edba533cd"
+    },
+    {
+      "clip": "flare",
+      "frame": 1,
+      "sourceBox": [
+        6,
+        37,
+        250,
+        203
+      ],
+      "runtimeAlphaBox": [
+        16,
+        52,
+        240,
+        203
+      ],
+      "clearBorder": true,
+      "visibleHash": "7a3a41c72935e41624fcc1abad9230c9b9d887b4fcc5fa3996204c1f511ad87f"
+    },
+    {
+      "clip": "flare",
+      "frame": 2,
+      "sourceBox": [
+        6,
+        37,
+        250,
+        203
+      ],
+      "runtimeAlphaBox": [
+        16,
+        54,
+        240,
+        203
+      ],
+      "clearBorder": true,
+      "visibleHash": "1a23c63a07c30917854b72e945aeb29e8fffae8ce86293f704b285668cd9d2da"
+    },
+    {
+      "clip": "flare",
+      "frame": 3,
+      "sourceBox": [
+        6,
+        37,
+        250,
+        203
+      ],
+      "runtimeAlphaBox": [
+        16,
+        53,
+        240,
+        196
+      ],
+      "clearBorder": true,
+      "visibleHash": "a52ee4cf923c47627c6235563b0bed204d08a8bee74628c834b4d8fb227caf6e"
+    },
+    {
+      "clip": "flare",
+      "frame": 4,
+      "sourceBox": [
+        6,
+        37,
+        250,
+        203
+      ],
+      "runtimeAlphaBox": [
+        16,
+        52,
+        240,
+        204
+      ],
+      "clearBorder": true,
+      "visibleHash": "57e697314cc73359da2288c77fac8d6172d26b886afdf47af448f575cf813adc"
+    },
+    {
+      "clip": "flare",
+      "frame": 5,
+      "sourceBox": [
+        6,
+        37,
+        250,
+        203
+      ],
+      "runtimeAlphaBox": [
+        16,
+        52,
+        240,
+        204
+      ],
+      "clearBorder": true,
+      "visibleHash": "4d184e34117fc612ec789654ab37f63591de08eb71e4090a873dc623b8d76e42"
+    },
+    {
+      "clip": "impact",
+      "frame": 0,
+      "sourceBox": [
+        9,
+        12,
+        241,
+        227
+      ],
+      "runtimeAlphaBox": [
+        45,
+        58,
+        224,
+        214
+      ],
+      "clearBorder": true,
+      "visibleHash": "ed03d13941e5e88f445445ce86a6744c62a27e87232bf83f595ecef08205a4f2"
+    },
+    {
+      "clip": "impact",
+      "frame": 1,
+      "sourceBox": [
+        9,
+        12,
+        241,
+        227
+      ],
+      "runtimeAlphaBox": [
+        16,
+        44,
+        224,
+        216
+      ],
+      "clearBorder": true,
+      "visibleHash": "a9dcf3dd1aaf2c2daaf23435699d75a4090d628bae12ce2725cab0bc88c85dcf"
+    },
+    {
+      "clip": "impact",
+      "frame": 2,
+      "sourceBox": [
+        9,
+        12,
+        241,
+        227
+      ],
+      "runtimeAlphaBox": [
+        16,
+        25,
+        227,
+        232
+      ],
+      "clearBorder": true,
+      "visibleHash": "20ad4108004da59ab4277fb23a003d1f53d03a080b1d6e1163741dd1c009a3de"
+    },
+    {
+      "clip": "impact",
+      "frame": 3,
+      "sourceBox": [
+        9,
+        12,
+        241,
+        227
+      ],
+      "runtimeAlphaBox": [
+        16,
+        24,
+        240,
+        232
+      ],
+      "clearBorder": true,
+      "visibleHash": "474b2ad338ec26813b8d9016534ed8c02f4c55497604ac3b5a5edfcdfdbfa0ba"
+    },
+    {
+      "clip": "impact",
+      "frame": 4,
+      "sourceBox": [
+        9,
+        12,
+        241,
+        227
+      ],
+      "runtimeAlphaBox": [
+        16,
+        27,
+        240,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "dfa625dc22d429d73b24a4ad9e5538a83f8e50ee4668deb0273635a37a8f9558"
+    },
+    {
+      "clip": "impact",
+      "frame": 5,
+      "sourceBox": [
+        9,
+        12,
+        241,
+        227
+      ],
+      "runtimeAlphaBox": [
+        18,
+        27,
+        239,
+        231
+      ],
+      "clearBorder": true,
+      "visibleHash": "aee0662f5ff29ef00479c63c38f9f910f9dabda2ac3bae1f49a10ed84492bbda"
+    }
+  ],
+  "ownerPhoneReview": "Animation preference, readability and FPS pending; preview GIF is source-frame playback, not gameplay."
+}

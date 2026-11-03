@@ -1,0 +1,55 @@
+{
+  "assets": [
+    {
+      "key": "fx_sesame_vfx817_water",
+      "path": "assets/art/sesame_vfx817/fx_sesame_vfx817_water.webp",
+      "bytes": 1289808,
+      "sha256": "4c3a4a6c90de47d6a92ba3b5c2f754668927b8bef49da9b0cbd9331d819236d3",
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "clips": [
+        "ppb",
+        "pbb",
+        "bbb",
+        "mbb"
+      ],
+      "decodedBytes": 6291456
+    },
+    {
+      "key": "fx_sesame_vfx817_offense",
+      "path": "assets/art/sesame_vfx817/fx_sesame_vfx817_offense.webp",
+      "bytes": 1689866,
+      "sha256": "8eac0cc9c4f4ea48e60b0f61a8f134463809ad9157a26e3c84f47ead7f10635b",
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "clips": [
+        "ppp",
+        "ppm",
+        "mmm",
+        "mmb"
+      ],
+      "decodedBytes": 6291456
+    },
+    {
+      "key": "fx_sesame_vfx817_prism",
+      "path": "assets/art/sesame_vfx817/fx_sesame_vfx817_prism.webp",
+      "bytes": 1360964,
+      "sha256": "d452d8a6da8b5e0a4201730739b04421033559dbdbf57a606db5242f55d043cd",
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "clips": [
+        "pmb",
+        "pmm",
+        "flare",
+        "impact"
+      ],
+      "decodedBytes": 6291456
+    }
+  ]
+}

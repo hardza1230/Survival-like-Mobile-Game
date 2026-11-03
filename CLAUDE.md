@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.7; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.8; fetch the deploy branch first.
 
-# Latest delivery: v8.1.6 — fire and wind rune sounds (owner)
+# Latest delivery: v8.1.7 — animated elemental invocations (owner)
+
+Owner approved PPB Steam Cannon (three forward cone pulses .18/.42/.66s, follows player/captured direction, 300px base range) and PBB Tidal Serpent (priority chase, three bites and water finisher, Boss role). Independent CDs/orb snapshots retained; other eight spell mechanics unchanged. Original ImageGen three atlases/72 painted frames for all ten spells/basic/shared casts; exact prompts/raws/QA/previews retained. Three hero-lazy WebPs 4,340,638bytes/18,874,368decoded, normal alpha, old-art/geometry fallback. Owned-time frame stepping, reduced-motion peak pose, existing actor/projectile/flash caps and cleanup. No audio/input/save/talent changes. Event/packing/real Canvas checks expanded. Owner phone art/timing/balance/FPS review pending.
+
+# Previous delivery: v8.1.6 — fire and wind rune sounds (owner)
 
 Owner changed red from knock to actual fire flare and green from metallic ting to wind gust. Two original ElevenLabs cues/four donors in sesame_orb816_audio and runtime sesame_orb816; source prompts/request provenance, gain/decode/peak/hash QA and audition retained. sesRuneSound routes red/green to816, blue remains815 byte-for-byte as approved, other cues unchanged. Tests verify routing/new audio and exact blue hash; browser decodes all11 cues. Phone approval of new fire/wind sounds pending.
 
