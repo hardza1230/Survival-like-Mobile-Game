@@ -1,4 +1,8 @@
-# Current checkpoint — Sesame ten invocations8.1.1 (2 Nov2026)
+# Current checkpoint — startup caching8.1.3 (3 Nov2026)
+
+All local release checks complete: full npm check/build, Forge/Lobby/Ruby browser contracts and actual SW Chrome lifecycle test passed. Publishing next; no live8.1.3 claim yet.
+
+Owner reports first startup downloads whole game and later launches revisit thousands of files. Implemented: remove Opening bulk barrier; preloadAll skips lazy art and music rather than fetching; remove post-menu fill sweep; progress plan counts core assets. Keep existing on-demand menu/stage/hero/audio loaders. Preserve mochi-assets-v1 including existing files; SW exact-hash cache-first, await cache writes, shared in-flight requests, quota fallback. Register SW before game script with bounded3s initial control wait. No save/cache wipe. SW-only changes now trigger Pages. Unit cache tests included through GPU budget; actual Chrome cache check added to CI. Full npm check, build and actual Chrome first/repeat/offline/hash/concurrent tests passed. Forge/Lobby/Ruby browser checks in progress. Phone timing not measured; no guaranteed5s claim. Next: finish browser checks, commit/publish, immutable readback, Pages/live verify. Previous notes below are historical; live8.1.2 before this release.
 
 IN PROGRESS v8.1.2: Owner selected audio polish. PMB cast uses existing ElevenLabs impact cue .62; per-orb levels .38/.30/.20 compensate different measured clip RMS and recipe cue waits .14s to reduce overlap. Existing three original clips remain distinct; phone listening and loudness review pending. Full npm check, build and Forge/Lobby/Ruby browser contracts passed; test covers delayed confirmation and PMB audio routing. Next: commit, publish and verify live. Current change is local only.
 

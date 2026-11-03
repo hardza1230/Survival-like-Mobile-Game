@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.3; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.4; fetch the deploy branch first.
 
-# Latest delivery: v8.1.2 — Sesame sound clarity (owner)
+# Latest delivery: v8.1.3 — on-demand persistent assets (owner)
+
+Owner supersedes whole-game startup download policy. Opening no longer downloads every asset; preloadAll skips lazy art/music without fetching and no fillAssetCache sweep. Existing ensureGroup/ensureStageArt/ensureStageAudio load on demand. SW retains existing cache, awaits writes, deduplicates simultaneous requests and serves exact hash hits without network. Early SW registration controls first asset loads. Tests cover offline/repeat/hash/quota/cache concurrency. Phone startup timings remain unmeasured.
+
+# Previous delivery: v8.1.2 — Sesame sound clarity (owner)
 
 Sesame red/green/blue rune volumes balanced to existing ElevenLabs clips, recipe cue delayed to reduce overlap, and PMB uses a louder impact cue. Rune input/cast contract tests cover timing and PMB routing; phone listening and mix review remain pending.
 

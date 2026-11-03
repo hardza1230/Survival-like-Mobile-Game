@@ -1,5 +1,6 @@
 // v7.4 GPU memory plan: ภาพที่ถอดรหัสตอนบูต (core) ต้องอยู่ในงบ · ภาพหน้าเมนูย่อย/ฮีโร่ตัวอื่น/endgame เป็น lazy
 const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('assert');
+require('./asset-cache.test.cjs');
 const root=path.join(__dirname,'..'),src=fs.readFileSync(path.join(root,'game.js'),'utf8');
 const block=(start,end)=>{ const a=src.indexOf(start); assert(a>=0,start); const b=src.indexOf(end,a); assert(b>a,end); return src.slice(a,b+end.length); };
 const ctx={navigator:{},localStorage:{getItem:()=>null},console,location:{search:'',href:'http://x/'},document:{},Phaser:{}};ctx.window=ctx;vm.createContext(ctx);
@@ -28,7 +29,7 @@ assert.equal(R.artHero('bpx_cocoa_crack'),'cocoa'); assert.equal(R.artHero('mini
 assert(R.lazyArt('char_mint_run',R.ASSET_SHEETS.char_mint_run.url,'momo')&&!R.lazyArt('char_mint_run',R.ASSET_SHEETS.char_mint_run.url,'mint'));
 assert([250,400].includes(R.TEX_BUDGET_MB));
 // โค้ดผูกครบ: preloadAll ดาวน์โหลดอย่างเดียว · เข้าด่านคืนภาพเมนู · เมนูคุมงบ · โหมดหน่วยความจำต่ำหลังกราฟิกดับ
-assert(/lz\(k,ASSET_IMAGES\[k\]\)\)\{ if\(!only\)dl\(/.test(src),'preloadAll downloads lazy art without decoding');
+assert(/lz\(k,ASSET_IMAGES\[k\]\)\)\{  continue;/.test(src),'startup leaves lazy art to the existing on-demand loaders');
 assert(src.includes('this.menu.removeAll(true); this.texFreeForRun();'),'startRun frees menu art');
 assert(src.includes('this.texTouch(this.texInUse()); this.texBudget();'),'menu enforces texture budget');
 assert(src.includes("localStorage.setItem('mochi_lowmem','1')"),'context loss turns on low-memory mode');

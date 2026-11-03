@@ -1,7 +1,18 @@
-// Mochi Mayhem service worker (v7.9.14)
+// Mochi Mayhem service worker: persistent, on-demand hashed assets (v8.1.3).
 // assets/*?v=<hash> = cache-first (URL เปลี่ยนเมื่อไฟล์เปลี่ยน)
 // หน้า/โค้ดเกม (index.html, game.js, phaser) = network-first มี timeout → ออนไลน์ได้เวอร์ชันใหม่ทันที · เน็ตช้า/ออฟไลน์ใช้ตัวในเครื่อง
 const CACHE='mochi-assets-v1', SHELL='mochi-shell-v1', SHELL_TIMEOUT=3500, FRESH_TIMEOUT=6000;
+const assetPending=new Map();
+async function cachedAsset(req){
+  const c=await caches.open(CACHE),hit=await c.match(req);
+  if(hit){const h=new Headers(hit.headers);h.set('x-mochi-cache','hit');return new Response(hit.body,{status:hit.status,headers:h});}
+  if(!assetPending.has(req.url))assetPending.set(req.url,(async()=>{
+    const res=await fetch(req);
+    if(res.ok&&res.status===200){try{await c.put(req,res.clone());}catch(e){/* Storage full: still return the downloaded file. */}}
+    return res;
+  })().finally(()=>assetPending.delete(req.url)));
+  return (await assetPending.get(req.url)).clone();
+}
 self.addEventListener('install',e=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
 function isShell(url,req){ return req.mode==='navigate'||/\/(index\.html)?$/.test(url.pathname)||/\.(js|css|json|webmanifest)$/.test(url.pathname)&&!/\/assets\//.test(url.pathname); }
@@ -24,11 +35,5 @@ self.addEventListener('fetch',e=>{
       if(!hit)return net.catch(()=>Response.error());
       return Promise.race([net.catch(()=>hit),new Promise(r=>setTimeout(()=>r(hit),FRESH_TIMEOUT))]); })); return; }   // v7.9.14 มีเวอร์ชันใหม่: รอเน็ตได้ไม่เกิน 6 วิ แล้วเล่นตัวในเครื่องไปก่อน (โหลดต่อเบื้องหลัง ครั้งหน้าได้ของใหม่)   // v7.8.104 มีเวอร์ชันใหม่ = รอโหลดจากเน็ตให้จบ
   if(!isAsset){ if(isShell(url,req))e.respondWith(shellFetch(req)); return; }
-  e.respondWith(caches.open(CACHE).then(async c=>{
-    const hit=await c.match(req); if(hit){ const h=new Headers(hit.headers); h.set('x-mochi-cache','hit'); return new Response(hit.body,{status:hit.status,statusText:hit.statusText,headers:h}); }
-    const res=await fetch(req);
-    if(res&&res.ok&&res.status===200){ c.put(req,res.clone()).catch(()=>{});
-      c.keys(url.origin+url.pathname,{ignoreSearch:true}).then(ks=>ks.forEach(k=>{if(new URL(k.url).search!==url.search)c.delete(k);})).catch(()=>{}); }
-    return res;
-  }));
+  const response=cachedAsset(req);e.respondWith(response);e.waitUntil(response.then(()=>{},()=>{}));
 });

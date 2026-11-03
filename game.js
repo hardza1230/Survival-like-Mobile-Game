@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.2';
+const GAME_VERSION = '8.1.3';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.3',date:'2026-11-03',title:'Faster startup and reusable downloads',items:['Start without downloading the entire game','Visited menus and stages keep their downloaded assets on your device; changed files update when needed']},
   {v:'8.1.2',date:'2026-11-02',title:'Sesame sound clarity',items:['Balanced the three rune sounds and separated the recipe confirmation','Prismatic Blast now has a stronger impact sound']},
   {v:'8.1.1',date:'2026-11-02',title:'Sesame: ten elemental invocations',items:['All ten recipes now cast with separate cooldowns, brief rune input recovery and cast recovery','Red orbs boost damage, green boost speed and blue regenerate HP; new cards strengthen orb effects','Rainbow Flare replaces the basic beam. PMB releases Prismatic Blast in every direction; Brand is reserved for a future hero','New original painted spell and orb art plus six original ElevenLabs rune, recipe and spell cues']},
   {v:'8.1.0',date:'2026-11-02',title:'Sesame joins after Chapter 1',items:['Clear C1-5 to unlock Sesame for C2-1 and replay earlier Story stages with the Rune Invoker prototype','Already cleared C1-5? Sesame joins automatically when you load your save; no purchase needed','Sesame remains in development with four playable rune recipes']},
@@ -3937,7 +3938,7 @@ let ASSET_FILE_VERSIONS = null; // build-www ใส่ hash ของแต่�
 let ASSET_FILE_SIZES = null; // v6.48.2 build-www ใส่ขนาดไฟล์ (byte) → หลอดโหลดเดียวบอก MB ที่เหลือ/ความเร็ว
 const LoadMeter={ total:0, done:0, dev:0, seen:new Set(), t0:0, hist:[],
   sizeOf(u){ const k=String(u||'').split('?')[0]; return (ASSET_FILE_SIZES&&ASSET_FILE_SIZES[k])||0; },
-  plan(){ if(this.total)return; const urls=new Set(); const add=u=>u&&urls.add(String(u)); for(const k in ASSET_IMAGES)add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(ASSET_FX[k].url); for(const k in ASSET_AUDIO)add(ASSET_AUDIO[k]); let t=0; urls.forEach(u=>t+=this.sizeOf(u)); this.total=t; this.count=urls.size; this.t0=performance.now(); },
+  plan(){ if(this.total)return; const urls=new Set(),hero=Save.data.character||'momo',SO=stageOnlyArtKeys(),add=(k,u)=>{if(u&&!SO.has(k)&&!lazyArt(k,u,hero))urls.add(u);}; for(const k in ASSET_IMAGES)add(k,ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(k,ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(k,ASSET_FX[k].url); for(const k in ASSET_AUDIO)if(!/^bgm_/.test(k)&&(!k.startsWith('sfx_yz_')||hero==='yuzu'))urls.add(ASSET_AUDIO[k]); let t=0;urls.forEach(u=>t+=this.sizeOf(u));this.total=t;this.count=urls.size;this.t0=performance.now(); },
   mark(u,fromDev){ const k=String(u||'').split('?')[0]; if(!k||this.seen.has(k))return; this.seen.add(k); const z=this.sizeOf(k); this.done+=z; if(fromDev)this.dev+=z; const n=performance.now(); this.hist.push([n,this.done]); while(this.hist.length>2&&n-this.hist[0][0]>3000)this.hist.shift(); },
   show(){ const L=window.GameLoader; if(!L)return; this.plan(); const mb=b=>(b/1048576).toFixed(1);
     if(!this.total){ const p=this.count?this.seen.size/this.count:0; L.set(p,'Loading game data… '+this.seen.size+' / '+this.count+' files'); return; }
@@ -4404,23 +4405,12 @@ class Boot extends Phaser.Scene {
   }
 }
 
-/* v7.9.74 เจ้าของเลือก ข: ดาวน์โหลดไฟล์ภาพ/เสียงทั้งเกมครั้งเดียวตั้งแต่หน้าโหลดแรก → เก็บใน cache ของ service worker (cache-first ตาม ?v=) · ครั้งต่อไปเช็กแค่ไฟล์ใหม่ของเวอร์ชันนั้น */
+/* v8.1.3: whole-game sweeps replaced by on-demand persistent asset caching. */
 function allAssetUrls(){ const set=new Set(),add=u=>{ if(typeof u==='string'&&u.startsWith('assets/'))set.add(verUrl(u)); };
   for(const k in ASSET_IMAGES)add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)add(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url); for(const k in ASSET_FX)add(ASSET_FX[k]&&ASSET_FX[k].url); for(const k in ASSET_AUDIO)add(ASSET_AUDIO[k]);
   if(typeof LH_USE_SHEETS!=='undefined'&&LH_USE_SHEETS)for(const k in LH_SHEETS)add(LH_SHEETS[k]); return [...set]; }
-async function downloadAllAssets(done){ let fin=false; const go=()=>{ if(fin)return; fin=true; try{ done(); }catch(e){ console.error(e); } };
-  try{ navigator.storage?.persist?.().catch?.(()=>{}); }catch(e){}   // v7.9.91 เจ้าของ: ขอให้เครื่องเก็บข้อมูลเกมถาวร (ลดโอกาส Android ลบแคชเอง)
-  try{ if(typeof fetch!=='function'||!navigator.onLine)return go(); const urls=allAssetUrls(),key='mochi_dl_'+GAME_VERSION+'_'+ASSET_VER+'_'+urls.length;
-    let doneKey=null; try{ doneKey=localStorage.getItem('mochi_dl_done'); }catch(e){} if(doneKey===key)return go();
-    try{ const sw=navigator.serviceWorker; if(sw&&!sw.controller)await Promise.race([new Promise(r=>sw.addEventListener('controllerchange',r,{once:true})),new Promise(r=>setTimeout(r,3000))]); }catch(e){}   // เครื่องใหม่: รอ SW คุมหน้าก่อน ไม่งั้นไฟล์ไม่เข้า cache
-    let have=null; try{ if(window.caches){ const c=await caches.open('mochi-assets-v1'),ks=await c.keys(); have=new Set(ks.map(r=>{ const u=new URL(r.url); return u.pathname.replace(/^.*?\/assets\//,'assets/')+u.search; })); } }catch(e){}
-    const todo=have?urls.filter(u=>!have.has(u)):urls; if(!todo.length){ try{ localStorage.setItem('mochi_dl_done',key); }catch(e){} return go(); }
-    let n=0,fail=0,i=0; const N=todo.length,show=()=>{ window.__dlPhase={n,N}; try{ GameLoader.show&&GameLoader.show('Downloading game data (one time) · '+n+' / '+N,n/N); }catch(e){} }; show();
-    const worker=async()=>{ while(i<N){ const u=todo[i++]; try{ const r=await fetch(u); if(!r.ok)fail++; else await r.arrayBuffer(); }catch(e){ fail++; } n++; if(n%8===0||n===N)show(); } };
-    await Promise.all(Array.from({length:8},worker));
-    window.__dlPhase=null;
-    if(!fail){ try{ localStorage.setItem('mochi_dl_done',key); }catch(e){} }   // ไฟล์ที่ล้มเหลว → ลองใหม่ครั้งหน้า
-  }catch(e){ console.warn('[dl]',e); } go(); }
+// Assets are fetched on demand and persisted by the service worker, never swept at startup.
+function downloadAllAssets(done){ done(); }
 
 /* ---- OPENING: hand off to the game beneath the kitchen loading animation ---- */
 class Opening extends Phaser.Scene {
@@ -8587,13 +8577,11 @@ class Game extends Phaser.Scene {
     this.scale.on('resize',this.onResize,this);
     if(!this._texHook){ this._texHook=true; this.load.on('filecomplete',k=>this.texTouch([k])); }   // v7.4 LRU: เวลาที่ภาพถูกถอดรหัส
     // รอซูมฉากเปิดจบก่อนถอดรหัสภาพด่านเบื้องหลัง (แย่งเฟรมบนมือถือ)
-    const warm=()=>this.time.delayedCall(60,()=>this.preloadAll());   // v6.47 เจ้าของเลือก: โหลดทั้งเกมตั้งแต่หน้าแรก (ครั้งต่อไปมาจาก cache ในเครื่อง)
-    // v6.49: เคยโหลดครบแล้ว = ไฟล์อยู่ในเครื่อง → เข้าเมนูเลย เตรียมที่เหลือเบื้องหลัง · ครั้งแรกโหลดครบก่อน (v6.48)
-    let cached=false; try{cached=localStorage.getItem('mochi_full_cached')==='1';}catch(e){}
-    if(cached)this.time.delayedCall(60,()=>this.preloadAll(null,false,UI_ART_RE)); else warm();   // v6.54.6: ครั้งต่อไป รอแค่ภาพเมนู/UI ก่อน แล้วภาพในด่านโหลดต่อเบื้องหลัง · v6.54.3 เจ้าของ: บังคับโหลดทั้งหมดที่หน้าแรกทุกครั้ง (ไฟล์อยู่ในเครื่องแล้ว = เร็ว) ไม่โหลดเบื้องหลังระหว่างเล่น
+    this.time.delayedCall(60,()=>this.preloadAll());
+
   }
 
-  // v6.47: โหลดทุก asset ครั้งเดียวหลังหน้าแรก (Service Worker เก็บไว้ในเครื่อง → เปิดครั้งต่อไปเร็ว) แล้วไม่มีการรอโหลดระหว่างเล่นอีก
+  // Prepare core assets only. Lazy pages, stages and music load through their existing scoped loaders.
   preloadAll(done,quiet,only){
     if(this._allLoaded){done&&done();return;} if(this._allLoading){ if(done){ this._allWait.push(done); if(this._preloadQuiet){ this._preloadQuiet=false; const G=window.GameLoader; if(G){G.show('Preparing game data…',0);LoadMeter.show();} } } return;}
     this._preloadQuiet=!!quiet;
@@ -8602,15 +8590,15 @@ class Game extends Phaser.Scene {
     const drop=k=>{ if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } };
     let n=0;
     const skip=u=>only&&!only.test(u); let skipped=0;
-    // v6.93 ภาพเฉพาะในด่าน (ศัตรู/บอส/ของตกแต่ง/พื้น) = ดาวน์โหลดเก็บลงเครื่องอย่างเดียว ไม่ถอดรหัสเข้า GPU · ensureStageArt โหลดตอนเข้าด่าน
-    const SO=stageOnlyArtKeys(),dl=u=>{ if(!window.fetch)return; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); };
-    // v7.4 ทุกภาพที่ไม่ใช่ core (หน้าเมนูย่อย/ฮีโร่ตัวอื่น/endgame/ด่าน) = ดาวน์โหลดอย่างเดียว · ถอดรหัสตอนเปิดหน้านั้น/เข้าด่าน (ensureGroup/ensureStageArt/runArt)
+    // Stage assets are requested by ensureStageArt when entering that stage.
+    const SO=stageOnlyArtKeys();
+    // Non-core art is requested only when opening its page or selected hero/stage.
     const hero=this.character||Save.data.character||'momo',lz=(k,u)=>SO.has(k)||lazyArt(k,u,hero);
-    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} if(lz(k,ASSET_IMAGES[k])){ if(!only)dl(ASSET_IMAGES[k]); continue; } drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
-    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} if(lz(k,sh.url)){ dl(sh.url); continue; } drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
-    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; if(only){skipped++;continue;} if(lz(k,fx.url)){ dl(fx.url); continue; } drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
-    // เพลง (bgm_) ไฟล์ใหญ่ decode นาน → แค่ดาวน์โหลดเก็บลงเครื่อง (Service Worker) ไม่ decode · ถอดรหัสตอนจะเล่นผ่าน ensureStageAudio/menuMusic
-    for(const k in ASSET_AUDIO){ if(k.startsWith('sfx_yz_')&&(this.character||Save.data.character||'momo')!=='yuzu')continue; if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k)){ if(window.fetch){ const u=ASSET_AUDIO[k]; let dv=false; fetch(verUrl(u)).then(r=>{ dv=r.headers.get('x-mochi-cache')==='hit'; return r.arrayBuffer(); }).catch(()=>{}).then(()=>{ LoadMeter.mark(u,dv); if(!this._allLoaded&&!this._preloadQuiet)LoadMeter.show(); }); } continue; } this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
+    for(const k in ASSET_IMAGES){ if(real(k))continue; if(skip(ASSET_IMAGES[k])){skipped++;continue;} if(lz(k,ASSET_IMAGES[k])){  continue; } drop(k); this.load.image(k,verUrl(ASSET_IMAGES[k])); n++; }
+    for(const k in ASSET_SHEETS){ if(real(k))continue; const sh=ASSET_SHEETS[k]; if(only){skipped++;continue;} if(lz(k,sh.url)){ continue; } drop(k); this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame}); n++; }
+    for(const k in ASSET_FX){ if(real(k))continue; const fx=ASSET_FX[k]; if(only){skipped++;continue;} if(lz(k,fx.url)){ continue; } drop(k); this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh}); n++; }
+    // Music is downloaded and decoded on demand through ensureStageAudio/menuMusic.
+    for(const k in ASSET_AUDIO){ if(k.startsWith('sfx_yz_')&&(this.character||Save.data.character||'momo')!=='yuzu')continue; if(this.cache.audio.exists(k))continue; if(/^bgm_/.test(k))continue; this.load.audio(k,verUrl(ASSET_AUDIO[k])); n++; }
     // finalize = ทุกไฟล์โหลดเสร็จจริง (loader 'complete') → ถือว่าพร้อมทั้งเกม + จำไว้ว่าเครื่องมีไฟล์ครบ
     const finalize=()=>{ if(this._allComplete)return; this._allComplete=true; this.load.off('load',mk);this.load.off('loaderror',mk);this.load.off('fileprogress',tick); this.buildDeferredAnims();
       this._deferDone=true;
@@ -8618,7 +8606,7 @@ class Game extends Phaser.Scene {
       const real=k=>this.textures.exists(k)&&!(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement);
       this._stageArtReady=new Set(STAGES.map((_,i)=>i).filter(i=>this.stageArtKeys(i).every(real)));
       try{localStorage.setItem('mochi_full_cached','1');}catch(e){}
-      this.time.delayedCall(4000,()=>this.fillAssetCache()); };
+       };
     // fin = ปล่อยผู้เล่นไปต่อ (ปิดหน้าโหลด/เข้าฉากเปิด) · partial = watchdog ตัดเพราะ loader เงียบนาน → ของที่ขาดโหลดตอนใช้ผ่าน ensureStageArt/ensureGroup
     const fin=partial=>{ if(finDone)return; finDone=true; clearInterval(wd); this.buildDeferredAnims();
       this._allLoaded=true;this._allLoading=false;
@@ -8638,16 +8626,7 @@ class Game extends Phaser.Scene {
     this.load.once('complete',()=>setTimeout(()=>{ if(!finDone)fin(); else{ finalize(); if(this.state==='menu')this.buildMenuScreen(); } },0)); if(!this.load.isLoading())this.load.start();
   }
   // v6.49.6: เติมไฟล์ที่ยังไม่อยู่ใน cache ของ Service Worker (ครั้งแรกบางไฟล์โหลดก่อน SW ทำงาน → เปิดครั้งต่อไปต้องดาวน์โหลดซ้ำ)
-  fillAssetCache(){
-    if(this._cacheFilling||!window.caches||!window.fetch||!navigator.serviceWorker||!navigator.serviceWorker.controller)return; this._cacheFilling=true;
-    const us=new Set(); for(const k in ASSET_IMAGES)us.add(ASSET_IMAGES[k]); for(const k in ASSET_SHEETS)us.add(ASSET_SHEETS[k].url); for(const k in ASSET_FX)us.add(ASSET_FX[k].url); for(const k in ASSET_AUDIO)us.add(ASSET_AUDIO[k]);
-    const list=[...us].map(verUrl).filter(u=>/[?&]v=/.test(u));
-    caches.open('mochi-assets-v1').then(c=>c.keys().then(ks=>{ const have=new Set(ks.map(r=>{ const x=new URL(r.url); return x.pathname+x.search; }));
-      const miss=list.filter(u=>{ const x=new URL(u,location.href); return !have.has(x.pathname+x.search); }); let i=0;
-      const next=()=>{ if(i>=miss.length)return Promise.resolve(); const u=miss[i++]; return fetch(u).catch(()=>{}).then(next); }; // fetch ผ่าน SW → SW เก็บลง cache เอง
-      return Promise.all([next(),next(),next()]).then(()=>{ this._cacheFilled=miss.length; }); }))
-    .catch(()=>{}).then(()=>{ this._cacheFilling=false; });
-  }
+  fillAssetCache(){ /* On-demand cache only; no background whole-game sweep. */ }
   // v6.91 ปล่อย texture ของด่านอื่น (เดิมโหลดทั้งเกม ~940MB เข้า GPU → มือถือจอขาว) · ไฟล์ยังอยู่ใน cache เครื่อง โหลดกลับเร็วตอนเข้าด่านนั้น
   freeOtherStageArt(idx){ try{ const keep=new Set(this.stageArtKeys(idx)),drop=new Set();
       for(let j=0;j<(STAGES||[]).length;j++){ if(j===idx)continue; for(const k of this.stageArtKeys(j))if(!keep.has(k)&&!bootKeep(k))drop.add(k); }
