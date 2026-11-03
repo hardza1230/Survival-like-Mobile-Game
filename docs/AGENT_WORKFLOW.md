@@ -27,6 +27,10 @@ Verified 2026-10-13 in Codex desktop on Windows:
 - Respect the repository's line-ending normalization. For this repository the committed text blobs used LF. Compare the constructed remote tree SHA with the local committed tree SHA before updating the branch; they must match if uploading the same changes.
 - Do not store credentials, access tokens or temporary login links in these documents.
 
+### Exact binary release through the connector (verified 3 Nov 2026, 8.1.10)
+
+The existing checkout plus Node REPL can transfer `git cat-file blob <sha>` bytes as base64 in bounded 400,000-character chunks directly into the orchestration store without printing image/source data. Join in order, require `4 * ceil(bytes / 3)` characters, create each blob with base64 encoding and require its Git SHA to equal the local blob. Compose changed directories from leaves upward with `create_tree(tree_elements, base_tree_sha)`; require every tree and the full root to equal the local committed tree before `create_commit` and `update_ref(branch_name, expected_sha, force:false)`. Current write tools use `repository_full_name`; workflow read tools use `repo_full_name`. A transient disconnected blob response was safely retried because blobs are immutable; require the same SHA on retry. The 8.1.10 release verified all98 remote files/52,123,689bytes against local Git bytes, fully decoded every changed image, fetched and soft-aligned the identical tree. Preserve runtime metadata/readback evidence before the helper overwrites its default names for a later docs-only commit. These are proven tool details for this session, not prerequisites for a working native push.
+
 ### One stalled Pages checkout (verified 2026-11-03)
 
 - Mint8.1.9 Pages41646209601 hung inside initial shallow Git fetch for10min, while same-source Android41646209525 succeeded. The canceled job log confirmed it never reached code validation; this did not indicate an art/game-code failure.

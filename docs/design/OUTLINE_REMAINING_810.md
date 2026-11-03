@@ -20,3 +20,12 @@ Chocolate: Titan landing/shockwave/rage/crater, fire fist/fireball/rocket/explos
 Battle-outline alias selection falls back to previous art when unavailable. Common six-frame clocks use existing gameplay dt and preserve original mapped clip periods, one completion event and loop ownership. Low/reduced holds a peak pose. Scene/player/basic/epoch changes and projectile pool cleanup destroy overlays. Taro strike remains bottom anchored, dash wakes left anchored. Yuzu retains its shared4-sprite/420px major FX cap; Minion hits3/120ms, projectile caps48/24 retained. Strawberry normal seed overlays share48effect budget. Existing character sprites, Taro sentry bodies and stack-count markers, functional Sniper aim guides and all combat geometry/damage/AI/cards/audio unchanged.
 
 Production adapter tests verify assets, ownership, fallback, pause, event completion, hold/fade/pool semantics, Yuzu sixframes and role shots. Static real Canvas gallery exercises47texture routes/282loaded frames in six layouts; it does not run combat or judge appearance. Existing checks still apply. Owner phone review: one build per hero, major/compact scale, telegraph visibility, pause/Low/reduced and busy-scene FPS.
+
+## Saved source prompts and previews
+
+- cocoa: [actual prompts](../../assets/incoming/cocoa_outline810/PROMPTS.json), [source-frame preview](../../assets/incoming/cocoa_outline810/preview.gif), [delivery notes](../../assets/incoming/cocoa_outline810/README.md).
+- taro: [actual prompts](../../assets/incoming/taro_outline810/PROMPTS.json), [source-frame preview](../../assets/incoming/taro_outline810/preview.gif), [delivery notes](../../assets/incoming/taro_outline810/README.md).
+- yuzu: [actual prompts](../../assets/incoming/yuzu_outline810/PROMPTS.json), [source-frame preview](../../assets/incoming/yuzu_outline810/preview.gif), [delivery notes](../../assets/incoming/yuzu_outline810/README.md).
+- momo: [actual prompts](../../assets/incoming/momo_outline810/PROMPTS.json), [source-frame preview](../../assets/incoming/momo_outline810/preview.gif), [delivery notes](../../assets/incoming/momo_outline810/README.md).
+
+Published runtime68a4e00fcada75b0af6b3d18439ca802e9cd76bf. Pages41657279007 and APK41657280135 succeeded; live8.1.10 and all44newWebP SHA256 verified.
