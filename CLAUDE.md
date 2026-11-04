@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.12; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.13; fetch the deploy branch first.
 
-# Latest delivery: v8.1.11 — smaller projectiles and clearer Taro fields (owner)
+# Latest delivery: v8.1.12 — restore painted Plasma and audit boss art (owner)
+
+Owner clarified remove only pale-blue area guide, not Plasma artwork. Restored bpx_taro_plasma_ring→bpx_taro810_plasma sixframe loop following original radius/out-and-back; retained no pale floor/circles in Magnetic Field and interior-lightning fallback. Recast now removes both old loop and graphics; expiry/scene cleanup and original damage/timing/debuff geometry preserved. Clarity811 test extends loaded-art/fallback/recast/expiry contracts. Source audit decodes152registered files:15mainbosses/5C3minis/116VFX/16shots; all mainbosses8distinct nonempty cells. Source-contact PNGs/hash/dimension inventory and prioritized art direction docs/design/battle_art_audit812; reproducible script scripts/audit-battle-art812.py. Existing boss shots/body VFX are wired despite old source-only delivery notes. Findings: shared neutral body FX, mixed glow/outline styles, similar B05/B06 silhouette,160pxB01 and held-pose vs sequence gaps. Boss redraw is proposed next work, not claimed delivered here. No new runtime images/audio/gameplay changes; owner phone visuals/FPS pending.
+
+# Previous delivery: v8.1.11 — smaller projectiles and clearer Taro fields (owner)
 
 Owner phone feedback: Strawberry charged Sniper overlay×.7, charge aura removed in painted and old-art paths; Mint normal Impaler lance2.2→1.45visual multiplier/shards64→52 and48→40; Cocoa normal/finisher fists96/150→76/120, Rocket120→96 plus1rocket at every Unique level (4/5/5/6), Titan charge aura×.8. Taro Ball core38→26 (gold44→30), field capped80px/.3alpha; zap one visual bolt14px/.32alpha and hit18px/.35alpha with original damage/zap cadence preserved. Taro owned lifetime fade preserves initial alpha. Sentry base cap2/max3, launch interval .62→.84 coefficient (about26%fewer launches per sentry); Overdrive respects current card cap instead of always filling3. Plasma and Magnetic rings/floor removed, interior lightning retained with original gameplay radius/out-and-back damage. No new assets/audio/save changes. Existing swarm/Cocoa count fixtures updated for owner-requested counts; new isolated rendering/alpha adapters. Mobile visual/FPS review still needed.
 
