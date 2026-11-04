@@ -16,7 +16,7 @@ function dims(file){ const b=fs.readFileSync(file);
   if(b[0]===0xff&&b[1]===0xd8){ let i=2; while(i<b.length){ if(b[i]!==0xff){i++;continue;} const m=b[i+1],len=b.readUInt16BE(i+2); if(m>=0xc0&&m<=0xcf&&m!==0xc4&&m!==0xc8&&m!==0xcc)return [b.readUInt16BE(i+7),b.readUInt16BE(i+5)]; i+=2+len; } }
   return null; }
 const all=[]; for(const [t,tab] of [['I',R.ASSET_IMAGES],['S',R.ASSET_SHEETS],['F',R.ASSET_FX]])for(const k in tab){ const u=typeof tab[k]==='string'?tab[k]:tab[k].url,f=path.join(root,u); if(!fs.existsSync(f))continue; const d=dims(f); assert(d,'unreadable image header '+u); all.push({k,u,mb:d[0]*d[1]*4/1e6}); }
-for(const k of Object.keys(R.ASSET_FX).filter(k=>k.startsWith('vfx813_'))){assert.equal(R.artClass(k),'stage',k+' must be stage-only');assert(R.lazyArt(k,R.ASSET_FX[k].url,'momo'));}
+for(const k of Object.keys(R.ASSET_FX).filter(k=>/^vfx81[34]_/.test(k))){assert.equal(R.artClass(k),'stage',k+' must be stage-only');assert(R.lazyArt(k,R.ASSET_FX[k].url,'momo'));}
 const heroes=['momo','mint','cocoa','taro','sesame','yuzu'];
 const sum=pred=>all.filter(pred).reduce((s,a)=>s+a.mb,0);
 const total=sum(()=>true);

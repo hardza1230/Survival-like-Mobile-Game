@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.14; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.15; fetch the deploy branch first.
 
-# Latest delivery: v8.1.13 — C1 boss painted-outline effects (owner)
+# Latest delivery: v8.1.14 — C2 boss painted-outline effects (owner)
+
+Seven original ImageGen atlases/28clips168authored frames in boss_outline814. Rootmother bud/cream sage growth, teal fungal spores, amber honey, brass orchid clock and thorn-root memory effects. C2-only stage-lazy aliases5–9, shared B06podshield also9, reuse four813bodyclips onC2; bodyimpact formatting handlesB10. Existing ownedclock/Low/reduced/pause/epoch cleanup expanded814, honeywall holds retain lifetime; directarenaHands/Pods nowresolveandtrack actual sprites. Original warn/fogtile/airbubble/attack timings/damage/colliders/safe gaps preserved. Large boss-effects alpha cap recognizes aliases, including original C1eclipse cap. New isolated adapter/hash/geometry/stage tests; GPU asserts bothgroups stage-lazy; static Canvas gallery expands60clips360frames with same6layout contracts. Source/QA/previews retained. No boss body pose redraw or C3art completion; owner phone appearance/FPS pending.
+
+# Previous delivery: v8.1.13 — C1 boss painted-outline effects (owner)
 
 Built-in ImageGen eight source atlases/32 clips/192 distinct authored frames in boss_outline813, genuine alpha and original legacy projected geometry; four shared body moves and C1 elemental/signature VFX. Stage-lazy aliases only stages0–4, old art fallback/Pinnacle excluded. Owned wall-clock sprite progression, hold-aware ice bars, wave720ms and skydrop760ms damage-aligned cosmetic impact with player/stage/epoch cleanup. Warning shapes, safe gaps, damage and attack cadence preserved. Source radial frost breath corrected from directional draft, then transparent matte correction; drafts retained for provenance. Exact prompts/manifests/alpha/hash/frame/border QA, static Canvas gallery and isolated production helper tests. GPU test now asserts all32keys remain stage-lazy; elite-stage extraction fixture includes the new registry dependency. Runtime8.65MB/41.25MiB decoded across whole kit, per-stage lazy subsets. Boss body poses, later chapters and phone appearance/FPS review remain future work.
 

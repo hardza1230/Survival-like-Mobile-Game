@@ -1,0 +1,421 @@
+{
+  "groups": {
+    "root": [
+      "b06_impact",
+      "b06_wave",
+      "b06_lane",
+      "b06_root_breach"
+    ],
+    "spore": [
+      "b07_impact",
+      "b07_wave",
+      "b07_lane",
+      "b07_spore_mortar"
+    ],
+    "honey": [
+      "b08_impact",
+      "b08_wave",
+      "b08_lane",
+      "b08_honey_wall"
+    ],
+    "clock": [
+      "b09_impact",
+      "b09_wave",
+      "b09_lane",
+      "b09_clock_hand_long"
+    ],
+    "memory": [
+      "b10_impact",
+      "b10_wave",
+      "b10_lane",
+      "b10_crown_cage"
+    ],
+    "signature_a": [
+      "b06_full_bloom",
+      "b07_heartstorm",
+      "b08_dive_trail",
+      "b09_clock_hand_short"
+    ],
+    "signature_b": [
+      "b10_choir_note",
+      "b10_memory_eclipse",
+      "b06_pod_shield",
+      "b10_root_band"
+    ]
+  },
+  "clips": [
+    {
+      "name": "b06_impact",
+      "group": "root",
+      "row": 0,
+      "old": "vfx_b06_impact",
+      "key": "vfx814_b06_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b06_wave",
+      "group": "root",
+      "row": 1,
+      "old": "vfx_b06_wave",
+      "key": "vfx814_b06_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.89,
+        0.51
+      ]
+    },
+    {
+      "name": "b06_lane",
+      "group": "root",
+      "row": 2,
+      "old": "vfx_b06_lane",
+      "key": "vfx814_b06_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b06_root_breach",
+      "group": "root",
+      "row": 3,
+      "old": "vfx_b06_root_breach",
+      "key": "vfx814_b06_root_breach",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b07_impact",
+      "group": "spore",
+      "row": 0,
+      "old": "vfx_b07_impact",
+      "key": "vfx814_b07_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b07_wave",
+      "group": "spore",
+      "row": 1,
+      "old": "vfx_b07_wave",
+      "key": "vfx814_b07_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.91,
+        0.46
+      ]
+    },
+    {
+      "name": "b07_lane",
+      "group": "spore",
+      "row": 2,
+      "old": "vfx_b07_lane",
+      "key": "vfx814_b07_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b07_spore_mortar",
+      "group": "spore",
+      "row": 3,
+      "old": "vfx_b07_spore_mortar",
+      "key": "vfx814_b07_spore_mortar",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b08_impact",
+      "group": "honey",
+      "row": 0,
+      "old": "vfx_b08_impact",
+      "key": "vfx814_b08_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b08_wave",
+      "group": "honey",
+      "row": 1,
+      "old": "vfx_b08_wave",
+      "key": "vfx814_b08_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.95,
+        0.49
+      ]
+    },
+    {
+      "name": "b08_lane",
+      "group": "honey",
+      "row": 2,
+      "old": "vfx_b08_lane",
+      "key": "vfx814_b08_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b08_honey_wall",
+      "group": "honey",
+      "row": 3,
+      "old": "vfx_b08_honey_wall",
+      "key": "vfx814_b08_honey_wall",
+      "fw": 128,
+      "fh": 192,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b09_impact",
+      "group": "clock",
+      "row": 0,
+      "old": "vfx_b09_impact",
+      "key": "vfx814_b09_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b09_wave",
+      "group": "clock",
+      "row": 1,
+      "old": "vfx_b09_wave",
+      "key": "vfx814_b09_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.95,
+        0.6
+      ]
+    },
+    {
+      "name": "b09_lane",
+      "group": "clock",
+      "row": 2,
+      "old": "vfx_b09_lane",
+      "key": "vfx814_b09_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b09_clock_hand_long",
+      "group": "clock",
+      "row": 3,
+      "old": "vfx_b09_clock_hand_long",
+      "key": "vfx814_b09_clock_hand_long",
+      "fw": 256,
+      "fh": 32,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b10_impact",
+      "group": "memory",
+      "row": 0,
+      "old": "vfx_b10_impact",
+      "key": "vfx814_b10_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b10_wave",
+      "group": "memory",
+      "row": 1,
+      "old": "vfx_b10_wave",
+      "key": "vfx814_b10_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.94,
+        0.51
+      ]
+    },
+    {
+      "name": "b10_lane",
+      "group": "memory",
+      "row": 2,
+      "old": "vfx_b10_lane",
+      "key": "vfx814_b10_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b10_crown_cage",
+      "group": "memory",
+      "row": 3,
+      "old": "vfx_b10_crown_cage",
+      "key": "vfx814_b10_crown_cage",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.91,
+        0.75
+      ]
+    },
+    {
+      "name": "b06_full_bloom",
+      "group": "signature_a",
+      "row": 0,
+      "old": "vfx_b06_full_bloom",
+      "key": "vfx814_b06_full_bloom",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b07_heartstorm",
+      "group": "signature_a",
+      "row": 1,
+      "old": "vfx_b07_heartstorm",
+      "key": "vfx814_b07_heartstorm",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true
+    },
+    {
+      "name": "b08_dive_trail",
+      "group": "signature_a",
+      "row": 2,
+      "old": "vfx_b08_dive_trail",
+      "key": "vfx814_b08_dive_trail",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b09_clock_hand_short",
+      "group": "signature_a",
+      "row": 3,
+      "old": "vfx_b09_clock_hand_short",
+      "key": "vfx814_b09_clock_hand_short",
+      "fw": 192,
+      "fh": 32,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b10_choir_note",
+      "group": "signature_b",
+      "row": 0,
+      "old": "vfx_b10_choir_note",
+      "key": "vfx814_b10_choir_note",
+      "fw": 96,
+      "fh": 96,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true
+    },
+    {
+      "name": "b10_memory_eclipse",
+      "group": "signature_b",
+      "row": 1,
+      "old": "vfx_b10_memory_eclipse",
+      "key": "vfx814_b10_memory_eclipse",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center"
+    },
+    {
+      "name": "b06_pod_shield",
+      "group": "signature_b",
+      "row": 2,
+      "old": "vfx_b06_pod_shield",
+      "key": "vfx814_b06_pod_shield",
+      "fw": 128,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true
+    },
+    {
+      "name": "b10_root_band",
+      "group": "signature_b",
+      "row": 3,
+      "old": "vfx_b10_root_band",
+      "key": "vfx814_b10_root_band",
+      "fw": 256,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    }
+  ]
+}

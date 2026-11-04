@@ -1,0 +1,263 @@
+{
+  "vfx_b06_impact": {
+    "url": "assets/art/boss_vfx/vfx_b06_impact.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 14,
+    "anchor": "center"
+  },
+  "vfx_b06_wave": {
+    "url": "assets/art/boss_vfx/vfx_b06_wave.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 5.6,
+    "anchor": "center",
+    "fill": [
+      0.89,
+      0.51
+    ]
+  },
+  "vfx_b06_lane": {
+    "url": "assets/art/boss_vfx/vfx_b06_lane.webp",
+    "fw": 512,
+    "fh": 64,
+    "frames": 4,
+    "rate": 10,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b06_root_breach": {
+    "url": "assets/art/boss_vfx/vfx_b06_root_breach.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 12,
+    "anchor": "center"
+  },
+  "vfx_b07_impact": {
+    "url": "assets/art/boss_vfx/vfx_b07_impact.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 14,
+    "anchor": "center"
+  },
+  "vfx_b07_wave": {
+    "url": "assets/art/boss_vfx/vfx_b07_wave.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 5.6,
+    "anchor": "center",
+    "fill": [
+      0.91,
+      0.46
+    ]
+  },
+  "vfx_b07_lane": {
+    "url": "assets/art/boss_vfx/vfx_b07_lane.webp",
+    "fw": 512,
+    "fh": 64,
+    "frames": 4,
+    "rate": 10,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b07_spore_mortar": {
+    "url": "assets/art/boss_vfx/vfx_b07_spore_mortar.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 12,
+    "anchor": "center"
+  },
+  "vfx_b08_impact": {
+    "url": "assets/art/boss_vfx/vfx_b08_impact.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 14,
+    "anchor": "center"
+  },
+  "vfx_b08_wave": {
+    "url": "assets/art/boss_vfx/vfx_b08_wave.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 5.6,
+    "anchor": "center",
+    "fill": [
+      0.95,
+      0.49
+    ]
+  },
+  "vfx_b08_lane": {
+    "url": "assets/art/boss_vfx/vfx_b08_lane.webp",
+    "fw": 512,
+    "fh": 64,
+    "frames": 4,
+    "rate": 10,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b08_honey_wall": {
+    "url": "assets/art/boss_vfx/vfx_b08_honey_wall.webp",
+    "fw": 128,
+    "fh": 192,
+    "frames": 6,
+    "rate": 12,
+    "anchor": "center"
+  },
+  "vfx_b09_impact": {
+    "url": "assets/art/boss_vfx/vfx_b09_impact.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 14,
+    "anchor": "center"
+  },
+  "vfx_b09_wave": {
+    "url": "assets/art/boss_vfx/vfx_b09_wave.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 5.6,
+    "anchor": "center",
+    "fill": [
+      0.95,
+      0.6
+    ]
+  },
+  "vfx_b09_lane": {
+    "url": "assets/art/boss_vfx/vfx_b09_lane.webp",
+    "fw": 512,
+    "fh": 64,
+    "frames": 4,
+    "rate": 10,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b09_clock_hand_long": {
+    "url": "assets/art/boss_vfx/vfx_b09_clock_hand_long.webp",
+    "fw": 256,
+    "fh": 32,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b10_impact": {
+    "url": "assets/art/boss_vfx/vfx_b10_impact.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 14,
+    "anchor": "center"
+  },
+  "vfx_b10_wave": {
+    "url": "assets/art/boss_vfx/vfx_b10_wave.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 5.6,
+    "anchor": "center",
+    "fill": [
+      0.94,
+      0.51
+    ]
+  },
+  "vfx_b10_lane": {
+    "url": "assets/art/boss_vfx/vfx_b10_lane.webp",
+    "fw": 512,
+    "fh": 64,
+    "frames": 4,
+    "rate": 10,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b10_crown_cage": {
+    "url": "assets/art/boss_vfx/vfx_b10_crown_cage.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "center",
+    "loop": true,
+    "fill": [
+      0.91,
+      0.75
+    ]
+  },
+  "vfx_b06_full_bloom": {
+    "url": "assets/art/boss_vfx/vfx_b06_full_bloom.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 6,
+    "rate": 12,
+    "anchor": "center"
+  },
+  "vfx_b07_heartstorm": {
+    "url": "assets/art/boss_vfx/vfx_b07_heartstorm.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "center",
+    "loop": true
+  },
+  "vfx_b08_dive_trail": {
+    "url": "assets/art/boss_vfx/vfx_b08_dive_trail.webp",
+    "fw": 512,
+    "fh": 64,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b09_clock_hand_short": {
+    "url": "assets/art/boss_vfx/vfx_b09_clock_hand_short.webp",
+    "fw": 192,
+    "fh": 32,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "left",
+    "loop": true
+  },
+  "vfx_b10_choir_note": {
+    "url": "assets/art/boss_vfx/vfx_b10_choir_note.webp",
+    "fw": 96,
+    "fh": 96,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "center",
+    "loop": true
+  },
+  "vfx_b10_memory_eclipse": {
+    "url": "assets/art/boss_vfx/vfx_b10_memory_eclipse.webp",
+    "fw": 256,
+    "fh": 256,
+    "frames": 8,
+    "rate": 10,
+    "anchor": "center"
+  },
+  "vfx_b06_pod_shield": {
+    "url": "assets/art/boss_vfx/vfx_b06_pod_shield.webp",
+    "fw": 128,
+    "fh": 128,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "center",
+    "loop": true
+  },
+  "vfx_b10_root_band": {
+    "url": "assets/art/boss_vfx/vfx_b10_root_band.webp",
+    "fw": 256,
+    "fh": 64,
+    "frames": 4,
+    "rate": 8,
+    "anchor": "left",
+    "loop": true
+  }
+}

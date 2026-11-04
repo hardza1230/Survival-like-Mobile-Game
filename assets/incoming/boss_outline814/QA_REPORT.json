@@ -1,0 +1,2029 @@
+{
+  "provider": "built-in ImageGen",
+  "clips": 28,
+  "authoredFrames": 168,
+  "alphaPreserved": true,
+  "clearBorders": true,
+  "runtimeBytes": 6206150,
+  "decodedBytes": 31825920,
+  "method": "shared six-frame crop, mechanical resize to legacy visible FX projection; original alpha retained; no repaint/background subtraction",
+  "frames": [
+    {
+      "key": "vfx814_b06_impact",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        29,
+        60,
+        244,
+        241
+      ],
+      "visibleHash": "1068d050e95b0b436fad4e298b7c05892b495d410aa90326f58305385a07d85f"
+    },
+    {
+      "key": "vfx814_b06_impact",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        18,
+        52,
+        248,
+        242
+      ],
+      "visibleHash": "9a4e5e1231e9a0c373b9339984c8f102eb6225ed1b3e04f05d4cfa46bfb8c725"
+    },
+    {
+      "key": "vfx814_b06_impact",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        15,
+        248,
+        242
+      ],
+      "visibleHash": "9ad74f858cf231edeab9d67f571e0c5c005b658185575865d89e4edf0ff5865f"
+    },
+    {
+      "key": "vfx814_b06_impact",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        15,
+        248,
+        242
+      ],
+      "visibleHash": "09bc7856f1de3a5f870f6d95f43317b8b611669fcea64769e241562b296561cc"
+    },
+    {
+      "key": "vfx814_b06_impact",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        27,
+        248,
+        242
+      ],
+      "visibleHash": "3727cec90eeda3d84004cf6057fb394cbd4f0f5784daa2ddf46c71dc86de22cf"
+    },
+    {
+      "key": "vfx814_b06_impact",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        33,
+        243,
+        242
+      ],
+      "visibleHash": "60993a867db2d923aac616b4627f7eb8fae3e598ea9b3bca64047b0e62a299ea"
+    },
+    {
+      "key": "vfx814_b06_wave",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        71,
+        251,
+        209
+      ],
+      "visibleHash": "127033bf3e72a5f4a38894e48a436afa1b0774d67259eaf8d343e14f21e0dd70"
+    },
+    {
+      "key": "vfx814_b06_wave",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        71,
+        251,
+        220
+      ],
+      "visibleHash": "3c176abffd9fb857a280c7649f83db6aea7ab431b464e59950b2a1bd08017d84"
+    },
+    {
+      "key": "vfx814_b06_wave",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        71,
+        251,
+        220
+      ],
+      "visibleHash": "25ba681c7d1ce1b81b1c7f3a424900d8a8120ee4710f8489b44790d4be1cf934"
+    },
+    {
+      "key": "vfx814_b06_wave",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        71,
+        251,
+        220
+      ],
+      "visibleHash": "56243abae4a710400c06ad9b3a14e9d58a5cfeb72cc71e120a2ab1ab9fca17d7"
+    },
+    {
+      "key": "vfx814_b06_wave",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        71,
+        251,
+        220
+      ],
+      "visibleHash": "c8280c909ecd0b708e4b86c92cf0d9cb2217473ab24e4670334c952371caf27d"
+    },
+    {
+      "key": "vfx814_b06_wave",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        71,
+        243,
+        218
+      ],
+      "visibleHash": "a8d107548cece24f7f83782fd5ed70cc4e0775b334e8773baac9894911eb44ce"
+    },
+    {
+      "key": "vfx814_b06_lane",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        10,
+        508,
+        49
+      ],
+      "visibleHash": "3790100773d7da2579125e48135952de74ebf6047d8608cdc97fc7af5e1443d1"
+    },
+    {
+      "key": "vfx814_b06_lane",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        10,
+        508,
+        57
+      ],
+      "visibleHash": "4ce2e63173171ad7679bf48f84ae18707b7a72e8a698762eb70ea48c935bea94"
+    },
+    {
+      "key": "vfx814_b06_lane",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        10,
+        508,
+        58
+      ],
+      "visibleHash": "5f918bf74b35ea73f0756eca89444dd09f8148892e6027711de60c6c80a105e2"
+    },
+    {
+      "key": "vfx814_b06_lane",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        10,
+        508,
+        58
+      ],
+      "visibleHash": "3ba71aef0b16c08364cca9cf67e450da527aab960e05f91eff9d13079d618dee"
+    },
+    {
+      "key": "vfx814_b06_lane",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        10,
+        508,
+        58
+      ],
+      "visibleHash": "0be521ee879c54093f080c59380ba7e966f7088d8d4c06a26ca059e93a1020b4"
+    },
+    {
+      "key": "vfx814_b06_lane",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        10,
+        508,
+        56
+      ],
+      "visibleHash": "3831f3ee95b46daf1e931d529f9485a41320020a5355c9e0e58756199917a362"
+    },
+    {
+      "key": "vfx814_b06_root_breach",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        31,
+        248,
+        241
+      ],
+      "visibleHash": "d66ec0a8b25589a7119336d9d586d8fe9178d07fc03d68173be7a73d9f0c4e40"
+    },
+    {
+      "key": "vfx814_b06_root_breach",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        15,
+        252,
+        238
+      ],
+      "visibleHash": "c5a87474214a4e84b9b5cd5e069d88887779d70df46df0419f8e73e2ff420843"
+    },
+    {
+      "key": "vfx814_b06_root_breach",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        15,
+        252,
+        241
+      ],
+      "visibleHash": "6cc6e8870dd0399324e312469720bb29a0888488b32715c8153102a2987c7042"
+    },
+    {
+      "key": "vfx814_b06_root_breach",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        15,
+        252,
+        238
+      ],
+      "visibleHash": "7395fe246d73a636618fbcb9d559519884527b8623a74a179cddfaa47f958af5"
+    },
+    {
+      "key": "vfx814_b06_root_breach",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        15,
+        252,
+        241
+      ],
+      "visibleHash": "b47ac9cafc2ed8cef37dc888a01dadcb0819bbe6fe3c4afabf8799e063fa2414"
+    },
+    {
+      "key": "vfx814_b06_root_breach",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        5,
+        16,
+        237,
+        236
+      ],
+      "visibleHash": "e172fb5adc9c4b39d7b1d4b700afad6275b51e41c40d6fa3001d1b6d2e49c199"
+    },
+    {
+      "key": "vfx814_b07_impact",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        42,
+        18,
+        247,
+        235
+      ],
+      "visibleHash": "e41a31bb247d2b487d339537b22daa0292284227c6bf970523e9461e2a761a09"
+    },
+    {
+      "key": "vfx814_b07_impact",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        8,
+        248,
+        235
+      ],
+      "visibleHash": "da1629f64a0026c8e7982fc9e6048b4d5eb72f5e43b44c23dbdfdb74dc812e60"
+    },
+    {
+      "key": "vfx814_b07_impact",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        8,
+        248,
+        235
+      ],
+      "visibleHash": "c2077d0f578cce629457e9ac86ab0f698c3b5786a8b8479e8d2944b08ecf04c6"
+    },
+    {
+      "key": "vfx814_b07_impact",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        10,
+        248,
+        235
+      ],
+      "visibleHash": "09dd9fbfc72dc98a67d602fbc350ba115bc9d7434080528ade6a9f5e2c987bba"
+    },
+    {
+      "key": "vfx814_b07_impact",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        10,
+        248,
+        235
+      ],
+      "visibleHash": "b7a414aebc909deb5bc7b22b8f05a71d2b5cfe72be8937e538ad060c4bb811ac"
+    },
+    {
+      "key": "vfx814_b07_impact",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        14,
+        240,
+        235
+      ],
+      "visibleHash": "2261fe61944daaef8acf99994eb034a5f055015d79a6d927b0d146cac109df6e"
+    },
+    {
+      "key": "vfx814_b07_wave",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        20,
+        72,
+        249,
+        199
+      ],
+      "visibleHash": "c86f08c460c94b6695dbc02e880d2b3021d9d22f74a0f37b1dccd07057766a09"
+    },
+    {
+      "key": "vfx814_b07_wave",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        72,
+        249,
+        199
+      ],
+      "visibleHash": "6d1efcfb17aad08ab1d174f690ff737a8d572c654c4ec8a3076c45a6018c72d4"
+    },
+    {
+      "key": "vfx814_b07_wave",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        72,
+        249,
+        199
+      ],
+      "visibleHash": "89dc5aa62d7541790a7de36f2c146b681522bcee121be385a98802a867bdf5b1"
+    },
+    {
+      "key": "vfx814_b07_wave",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        72,
+        249,
+        199
+      ],
+      "visibleHash": "97bafe81ce4a3a7463be9a85537a2639dc65d20a308bb5542de173b66b4e69cc"
+    },
+    {
+      "key": "vfx814_b07_wave",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        72,
+        249,
+        199
+      ],
+      "visibleHash": "03b763059f6a97fbc2f7a0a9fa314efffdd02ae4e66e783ad5410971a77d9359"
+    },
+    {
+      "key": "vfx814_b07_wave",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        73,
+        238,
+        199
+      ],
+      "visibleHash": "bb65420bfba8ca01741cb2a121bbabafa73d6dd13daf135fedce767c3f5307f9"
+    },
+    {
+      "key": "vfx814_b07_lane",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        18,
+        8,
+        508,
+        56
+      ],
+      "visibleHash": "4d040101ab79c43313532d1d31b33070b3aee19a75a0c9d3eea37d33eafc3238"
+    },
+    {
+      "key": "vfx814_b07_lane",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        7,
+        508,
+        57
+      ],
+      "visibleHash": "20dbb41ba1a67e809ccd2cd54b542143c5a396d0a9a841624042a2ae68980c4f"
+    },
+    {
+      "key": "vfx814_b07_lane",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        7,
+        508,
+        57
+      ],
+      "visibleHash": "b6f5f3dd2b2d576c03f1b1edb09cccaeef90cb1cf5cdc3c23b9def3c23045a74"
+    },
+    {
+      "key": "vfx814_b07_lane",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "c8038b0237415b5daa04249e01e0e18894d283caa3ef725cbcf7865a758a55f1"
+    },
+    {
+      "key": "vfx814_b07_lane",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        7,
+        508,
+        57
+      ],
+      "visibleHash": "c01106da538c9b5eea5e18b2c6c34514549d85f99f89cd297fe29c0025da6ecc"
+    },
+    {
+      "key": "vfx814_b07_lane",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        10,
+        508,
+        56
+      ],
+      "visibleHash": "4fd35fe6fcff4382cc1d18f44eb2d0dfa0a4c591fdc57f5251e1e97a59be04f1"
+    },
+    {
+      "key": "vfx814_b07_spore_mortar",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        16,
+        249,
+        234
+      ],
+      "visibleHash": "fa3d14aba2a7c0439e853d803d22db90bf2346a9186c2d3595f6b6c72a9a7a22"
+    },
+    {
+      "key": "vfx814_b07_spore_mortar",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        15,
+        249,
+        234
+      ],
+      "visibleHash": "555b756dcb8670119f60114d46c79d31d676aa69fbf5e813682ef54f60d8edbc"
+    },
+    {
+      "key": "vfx814_b07_spore_mortar",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        15,
+        249,
+        234
+      ],
+      "visibleHash": "3639b09bf85ede359a33979123653a1986d66fc6cf1f27dc8e92756c9920f651"
+    },
+    {
+      "key": "vfx814_b07_spore_mortar",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        15,
+        249,
+        234
+      ],
+      "visibleHash": "040f0e4e9ab98968e765594d22058ea76fef7c179758088e3502537b62a169bf"
+    },
+    {
+      "key": "vfx814_b07_spore_mortar",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        15,
+        249,
+        234
+      ],
+      "visibleHash": "f5a4c9ccf0c722e1a4be9eebc950db48cd0564d4876b55e2f16cadf21d923ca4"
+    },
+    {
+      "key": "vfx814_b07_spore_mortar",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        15,
+        235,
+        228
+      ],
+      "visibleHash": "f510b995914143a4caf78423f8ecb176807b59f7e3cf435fc058991371bfd7f1"
+    },
+    {
+      "key": "vfx814_b08_impact",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        19,
+        245,
+        237
+      ],
+      "visibleHash": "2af9fd318404dd641b3d824a952df4d354f1855f16582666806ec11c645c57ee"
+    },
+    {
+      "key": "vfx814_b08_impact",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        19,
+        245,
+        237
+      ],
+      "visibleHash": "cabf7cdb4ecad6c057a09e10d1caf2353fbbc093bf8653c6f5eb175de65d0064"
+    },
+    {
+      "key": "vfx814_b08_impact",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        19,
+        245,
+        237
+      ],
+      "visibleHash": "1a946218ba5242b4f1000039b1c1e555fa25e77689d84fbeb10c2743f77b8afb"
+    },
+    {
+      "key": "vfx814_b08_impact",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        19,
+        245,
+        237
+      ],
+      "visibleHash": "f6c9a8fc948141228f99ea59bc605b61a29e2310ffb403e51d5b34ff53211500"
+    },
+    {
+      "key": "vfx814_b08_impact",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        19,
+        245,
+        237
+      ],
+      "visibleHash": "ea757a4ef5ed724ce91dc4b42a3606da9824146bfc7220fe2c7c4c61e3cc9e89"
+    },
+    {
+      "key": "vfx814_b08_impact",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        19,
+        245,
+        237
+      ],
+      "visibleHash": "e1d612ed62edf87d056f8dd513f1743ea30c45529016b02d78d7da80c4e725df"
+    },
+    {
+      "key": "vfx814_b08_wave",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        64,
+        252,
+        204
+      ],
+      "visibleHash": "553619f2aeb553fab07ae986b6aaf0f24a615ad057e564c57e24d676862d8494"
+    },
+    {
+      "key": "vfx814_b08_wave",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        64,
+        252,
+        204
+      ],
+      "visibleHash": "6191cf945847a7ab4b348b6407c36fd28ee79c83e0a2043c8f31d7a39c97489c"
+    },
+    {
+      "key": "vfx814_b08_wave",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        64,
+        252,
+        204
+      ],
+      "visibleHash": "1840d24ef11113bd1e8dc72ded4a206561d1b3b2185ae60a0b7969ff5349daf0"
+    },
+    {
+      "key": "vfx814_b08_wave",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        64,
+        252,
+        204
+      ],
+      "visibleHash": "443c008d52845fcb7d05b52f9980a63a2dad5005ac8c81309a7bc13931bd2b20"
+    },
+    {
+      "key": "vfx814_b08_wave",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        64,
+        252,
+        204
+      ],
+      "visibleHash": "de28f649c71f0b0b9165355bce9f537ead514d0d225b8b08b8722f85d1d5bb20"
+    },
+    {
+      "key": "vfx814_b08_wave",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        64,
+        252,
+        204
+      ],
+      "visibleHash": "6bd5fc0843d19a185cd43fde531e6deab941a44117f6da87faf3af8b1fb076e3"
+    },
+    {
+      "key": "vfx814_b08_lane",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "3502a4f08e3b87fa1eb40a63901ef3bf425127050ee849637c9c430428c80dc7"
+    },
+    {
+      "key": "vfx814_b08_lane",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "f316558066bd853676c836f9729e6cfb36c16c32b61848ffd69629789be1c1f5"
+    },
+    {
+      "key": "vfx814_b08_lane",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "6e81568e0e0ed4a9443a412551105d2dc2a231fa0fa9c12d42ea36ffc7e2313b"
+    },
+    {
+      "key": "vfx814_b08_lane",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "15e40622115a3d1adbbdac1fe231c23b95327c6ac6f3afec931322218f04f7e6"
+    },
+    {
+      "key": "vfx814_b08_lane",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "8efd43bc30fb9fbbf3a621c86a09c3ca1bae35e603fd25ec8ba993408975d5b8"
+    },
+    {
+      "key": "vfx814_b08_lane",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        57
+      ],
+      "visibleHash": "1f98a7c7e8f00b49e1935917f6f15f0ef174f3f34cd75cb74ce99ea01a6c5f8b"
+    },
+    {
+      "key": "vfx814_b08_honey_wall",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        30,
+        122,
+        168
+      ],
+      "visibleHash": "6d974a293fdde75fc796bb933b4b558d6f70f273214547a15f779714b6441e2b"
+    },
+    {
+      "key": "vfx814_b08_honey_wall",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        30,
+        122,
+        168
+      ],
+      "visibleHash": "f55b618efcaff454e96fd2cb5cc433758882fd72241930aa549cf37fdfa4b037"
+    },
+    {
+      "key": "vfx814_b08_honey_wall",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        30,
+        122,
+        168
+      ],
+      "visibleHash": "a48e7215a117cd7013b1fb10fdf3932c30e5e2d210a7bbf66ff447c70d08e9ba"
+    },
+    {
+      "key": "vfx814_b08_honey_wall",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        30,
+        122,
+        168
+      ],
+      "visibleHash": "e6d9841fe4aa35e66d958e04055b2bf16a7b67316eefc5d1dfc5f49a52b9dc58"
+    },
+    {
+      "key": "vfx814_b08_honey_wall",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        30,
+        122,
+        168
+      ],
+      "visibleHash": "8116d9f55896d0b1670f117763c25ea5d46d17c60489c2fe0df072fc3248bb2e"
+    },
+    {
+      "key": "vfx814_b08_honey_wall",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        6,
+        30,
+        122,
+        168
+      ],
+      "visibleHash": "b27ea29807a9274ab34bba4f48427f34e69c8fce83f7279943f4fe8e6ea60dd3"
+    },
+    {
+      "key": "vfx814_b09_impact",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        18,
+        245,
+        238
+      ],
+      "visibleHash": "17b80c87c8ce21e002a379228f716baae077b1ff97fb7c1392262f857146fd5a"
+    },
+    {
+      "key": "vfx814_b09_impact",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        14,
+        245,
+        238
+      ],
+      "visibleHash": "832da1b3d94aeb943695503acea9c2d9c28d9cfa285f04a307ecfa87a2af1091"
+    },
+    {
+      "key": "vfx814_b09_impact",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        13,
+        245,
+        238
+      ],
+      "visibleHash": "6acc0af4089d622547d664345a9f6b2678b944af608ad769e965368676415381"
+    },
+    {
+      "key": "vfx814_b09_impact",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        13,
+        245,
+        238
+      ],
+      "visibleHash": "d6ceb1358cc758e0a5a16cc32945f1bca51ec60b07940a8525a57f29b2971638"
+    },
+    {
+      "key": "vfx814_b09_impact",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        13,
+        245,
+        238
+      ],
+      "visibleHash": "f04e7f3f29c25bac0b44b621fdab35f4e9d66ed8fcd794f875869fd270597ee3"
+    },
+    {
+      "key": "vfx814_b09_impact",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        13,
+        245,
+        238
+      ],
+      "visibleHash": "f80a426dd13540f762d5826626b0a48223393c37aa38c6c2779a161b5c0b1e9f"
+    },
+    {
+      "key": "vfx814_b09_wave",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        46,
+        252,
+        223
+      ],
+      "visibleHash": "b7fd2ef216976a1805d710d7e410f15ca20f3b5493cf19799488f3cd850e8856"
+    },
+    {
+      "key": "vfx814_b09_wave",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        46,
+        252,
+        223
+      ],
+      "visibleHash": "b35b3f7a145ebe835966cb7c4d1e50eaaf782dadb30f2a092c90b28fd911675c"
+    },
+    {
+      "key": "vfx814_b09_wave",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        46,
+        252,
+        223
+      ],
+      "visibleHash": "36c0f3da97eed45e603b48844067a6fe2aee69e77bdf22c6f6ab41b38802af13"
+    },
+    {
+      "key": "vfx814_b09_wave",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        46,
+        252,
+        223
+      ],
+      "visibleHash": "ca30e18686be9a44123bca716b48d37360017b13cd3b0aaec73af9184bf70949"
+    },
+    {
+      "key": "vfx814_b09_wave",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        46,
+        252,
+        223
+      ],
+      "visibleHash": "5805031e66c2f695c848e928b387137ad1b30309bc25d4fdc8d9d55bc9ef92e9"
+    },
+    {
+      "key": "vfx814_b09_wave",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        46,
+        252,
+        223
+      ],
+      "visibleHash": "a062bdb238d04d0d97656a90788b07bd82f05ea8e38b214f9bbb29dff995cccc"
+    },
+    {
+      "key": "vfx814_b09_lane",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        508,
+        56
+      ],
+      "visibleHash": "b021a6288711b409eeae04cae3d8024100cf38381b32170333185c7250545cd8"
+    },
+    {
+      "key": "vfx814_b09_lane",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        508,
+        56
+      ],
+      "visibleHash": "fc24c7b35e11a62a6c28d5ff2c56fe9710baa43fb0bca68857af4272411edbde"
+    },
+    {
+      "key": "vfx814_b09_lane",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        508,
+        56
+      ],
+      "visibleHash": "e005e23acbecf3d761f12c8db491e5eea5ea7456ca6bf177d69f15fe9b6bb93a"
+    },
+    {
+      "key": "vfx814_b09_lane",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        508,
+        56
+      ],
+      "visibleHash": "9a6941dba3bf1a4a282cf1be79f0a3377a7b7d033f607f1a688e8a2159fc8ff2"
+    },
+    {
+      "key": "vfx814_b09_lane",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        508,
+        56
+      ],
+      "visibleHash": "9c028a49fff3cffad29d89c40a51e8c8ff3855c2c098fb619c8f9bb4a1c1cb42"
+    },
+    {
+      "key": "vfx814_b09_lane",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        508,
+        56
+      ],
+      "visibleHash": "75930950cf4c17572475c90c4ce4ab4742e03b2db3244eb1215defe65ae21bbf"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_long",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        28
+      ],
+      "visibleHash": "92f7e9a9c675889125d1d076498d4ee19d83812cdf656c29c45b3ddea29ad9b4"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_long",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        28
+      ],
+      "visibleHash": "fea04d62acd3371728e76dc9df7329da9c2d1d9ac47f146999faf999be90aefd"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_long",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        28
+      ],
+      "visibleHash": "44f97b031e75146955da202c2429b8c716217dcf6e22272d304a053a5955c37a"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_long",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        28
+      ],
+      "visibleHash": "e2cb0b8cb0ab3e6cb9fb109029e988e14c4f4b72171bb3310898168bc6eb7975"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_long",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        28
+      ],
+      "visibleHash": "21b527b3c5d6f46346dbd68230648fe71e03bfbb8278f80e7d97d29afab8b5d7"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_long",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        28
+      ],
+      "visibleHash": "2fb88ca7f75a3fc18b442b688bcbd2596cf45937ab0f2fab9ea695c7c2bf9922"
+    },
+    {
+      "key": "vfx814_b10_impact",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        18,
+        249,
+        242
+      ],
+      "visibleHash": "eb3c5702e3f0a267639bea6dfb47c6434e4dabe4318915b9efd05272cce1f551"
+    },
+    {
+      "key": "vfx814_b10_impact",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        26,
+        249,
+        242
+      ],
+      "visibleHash": "18cd91f152ebec46e0e5122344ee60f0f479e1cf9cf454454c2875e8988da379"
+    },
+    {
+      "key": "vfx814_b10_impact",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        17,
+        249,
+        242
+      ],
+      "visibleHash": "d8d528d6387e2d1fe8e83aa1347d02849bba85d53f414d797a19ef5b7fc7794d"
+    },
+    {
+      "key": "vfx814_b10_impact",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        17,
+        249,
+        242
+      ],
+      "visibleHash": "ca6a3ca674943e1e5f18ac537296ee26b96152e98467588c548dd8722fc5fcdf"
+    },
+    {
+      "key": "vfx814_b10_impact",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        18,
+        249,
+        242
+      ],
+      "visibleHash": "0fac85604f344bee2cd6376f460530108f2c93aae291db004f9eeb3dffd075a2"
+    },
+    {
+      "key": "vfx814_b10_impact",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        24,
+        248,
+        242
+      ],
+      "visibleHash": "b76e3061c8f32ccc5e10b573e921bf51934919166d13755b0113004248b184e7"
+    },
+    {
+      "key": "vfx814_b10_wave",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        63,
+        252,
+        206
+      ],
+      "visibleHash": "6335f211126743af9e53741f9408cc836cdbb393d0a583453afd8c4312baa5bf"
+    },
+    {
+      "key": "vfx814_b10_wave",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        62,
+        252,
+        205
+      ],
+      "visibleHash": "aec816f2d3656de642c03e3e78f2d8dd7371fd66f2e560edf709936f53fc8142"
+    },
+    {
+      "key": "vfx814_b10_wave",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        62,
+        252,
+        206
+      ],
+      "visibleHash": "f5acfb17dd2a9a536fd6373f3f6e32ca597f6bcc62e4ae673ea557986dca48e5"
+    },
+    {
+      "key": "vfx814_b10_wave",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        62,
+        252,
+        206
+      ],
+      "visibleHash": "0132077bc02d1b9ef53e194c3563d11c1a0c1396ff54eba98d600b6c23a5b0fb"
+    },
+    {
+      "key": "vfx814_b10_wave",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        62,
+        252,
+        206
+      ],
+      "visibleHash": "54e8c439ee59cf53b9d7cb210842449efdd24a5dcd89f7f252593ec1e4492b3e"
+    },
+    {
+      "key": "vfx814_b10_wave",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        62,
+        251,
+        206
+      ],
+      "visibleHash": "2f8beed76b45d4de147d4483a314d9d7de7bec1f4f71d4d03fad2cabc7135dfb"
+    },
+    {
+      "key": "vfx814_b10_lane",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        22,
+        5,
+        508,
+        57
+      ],
+      "visibleHash": "496b4d98852395741bf63bfe98f8bbae6a3bf5963dd5d0306fc116b4aaef8d7b"
+    },
+    {
+      "key": "vfx814_b10_lane",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        5,
+        508,
+        57
+      ],
+      "visibleHash": "a8ca3da5011df25f38210524d7cdd0e6921840dabd714e6b5ecba64bceb06202"
+    },
+    {
+      "key": "vfx814_b10_lane",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        5,
+        508,
+        57
+      ],
+      "visibleHash": "edc0ff42d2de0b867accdaf7e2eba57413a84c4222b13ae032e154a01103ed15"
+    },
+    {
+      "key": "vfx814_b10_lane",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        5,
+        508,
+        57
+      ],
+      "visibleHash": "f012c6d20945132f2223378d471c9f5dc7586642a666bd969a7d4a567e73edad"
+    },
+    {
+      "key": "vfx814_b10_lane",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        5,
+        508,
+        57
+      ],
+      "visibleHash": "3141e6fb84a196f769e19abed068de3635f460471632c239e2500c6f49eb5ffd"
+    },
+    {
+      "key": "vfx814_b10_lane",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        506,
+        57
+      ],
+      "visibleHash": "d884fbbddc7339b654ea9f69a628d63d1e0b2351cfc93e30a8493444ae67bf6f"
+    },
+    {
+      "key": "vfx814_b10_crown_cage",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        16,
+        4,
+        252,
+        224
+      ],
+      "visibleHash": "b0b8eafa64e7e35102a6d6e713e1b8b7774f91c1b34b98a4d72919dd48cd569f"
+    },
+    {
+      "key": "vfx814_b10_crown_cage",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        4,
+        252,
+        232
+      ],
+      "visibleHash": "a67a647c35f96fa5ae08472d5cd8652d26630f20a5bac6f2d7c898b6c6799fc5"
+    },
+    {
+      "key": "vfx814_b10_crown_cage",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        4,
+        252,
+        232
+      ],
+      "visibleHash": "d718c27520963e83e7d7fb1320a307ca74c8711f0bcc9ba0189e8f8078061db6"
+    },
+    {
+      "key": "vfx814_b10_crown_cage",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        4,
+        252,
+        232
+      ],
+      "visibleHash": "fc7c81619bff7ecb3398704b6cc4bb6de5fdaf93d71bc1f494df987191ef4c4e"
+    },
+    {
+      "key": "vfx814_b10_crown_cage",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        4,
+        252,
+        230
+      ],
+      "visibleHash": "2c11aa8354446a533ad6133b6942838f632eb999a37dedbdd17cce0768bc22f8"
+    },
+    {
+      "key": "vfx814_b10_crown_cage",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        7,
+        4,
+        251,
+        232
+      ],
+      "visibleHash": "a188e016e05b274ada20633bbd3d50603d6c6f86f964b33f45ba181272f367c9"
+    },
+    {
+      "key": "vfx814_b06_full_bloom",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        21,
+        12,
+        252,
+        231
+      ],
+      "visibleHash": "82ee269005ef89f4070f8a5bbbb47ce3a960c7db91d81883e3a6a0373f7f694d"
+    },
+    {
+      "key": "vfx814_b06_full_bloom",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        5,
+        13,
+        252,
+        233
+      ],
+      "visibleHash": "11c9b099814cac94a4187b3e196d6359b9a0bdd75777df7dd64cf4354d6a5c53"
+    },
+    {
+      "key": "vfx814_b06_full_bloom",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        5,
+        11,
+        252,
+        233
+      ],
+      "visibleHash": "266461c7f17321da3133b1a4906cbb897a713301f71aed1da3aa27815bacebff"
+    },
+    {
+      "key": "vfx814_b06_full_bloom",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        5,
+        11,
+        252,
+        233
+      ],
+      "visibleHash": "af7a424e9633a479acd8952ce47382166bad52f9ef70baa6635aef56531ffbd0"
+    },
+    {
+      "key": "vfx814_b06_full_bloom",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        5,
+        11,
+        252,
+        233
+      ],
+      "visibleHash": "e8d97e5aff58515010800349598cc3c436f20d66e15ba0110cfb00c91d004fdd"
+    },
+    {
+      "key": "vfx814_b06_full_bloom",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        5,
+        17,
+        241,
+        231
+      ],
+      "visibleHash": "4797d4cf64f59fc59600f07dee8a09145cf953989320215a3922008be7a9d1c3"
+    },
+    {
+      "key": "vfx814_b07_heartstorm",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        252,
+        243
+      ],
+      "visibleHash": "227d13f5b98f0201d13a6d0a4fe30301e3d3b74b1991352843e523c95f9ebff1"
+    },
+    {
+      "key": "vfx814_b07_heartstorm",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        6,
+        252,
+        239
+      ],
+      "visibleHash": "1136e477bd1078c2b2502b396d0e4572ed5469402ba7f9a98d6982ff42650cc5"
+    },
+    {
+      "key": "vfx814_b07_heartstorm",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        243
+      ],
+      "visibleHash": "892f2108f458e4a761687de36dcc56dc7b429d41578ef0e6760eb301f524b849"
+    },
+    {
+      "key": "vfx814_b07_heartstorm",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        243
+      ],
+      "visibleHash": "d8f7393e9578b77b2c3a62901c5e1f7751df1ede3b8277c9d2cdb64da753828e"
+    },
+    {
+      "key": "vfx814_b07_heartstorm",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        243
+      ],
+      "visibleHash": "00db9220e587fde4402f60ce0158db79624ffd4158d3754e3f4c6c3c43dca5be"
+    },
+    {
+      "key": "vfx814_b07_heartstorm",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        242,
+        243
+      ],
+      "visibleHash": "dc471629648fa2570ec18aef11cb555df161a4ef14921be46bbdd9f6f0ba4df4"
+    },
+    {
+      "key": "vfx814_b08_dive_trail",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        33,
+        4,
+        508,
+        59
+      ],
+      "visibleHash": "115687705fc0b4bb3189f114e8e16cea2c8507446c3efdef9421a52f37da4c31"
+    },
+    {
+      "key": "vfx814_b08_dive_trail",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        5,
+        508,
+        59
+      ],
+      "visibleHash": "28cc27091801a3765bbdb2ddc2d9804dc58811bd5c32c99d279f28c6d43e36f0"
+    },
+    {
+      "key": "vfx814_b08_dive_trail",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        508,
+        59
+      ],
+      "visibleHash": "1534fc2924deb0a2d32fbdba03ce98cee87d706e2dbcad6f1a6648ceb33b7825"
+    },
+    {
+      "key": "vfx814_b08_dive_trail",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        508,
+        59
+      ],
+      "visibleHash": "9b8dfc3886b5025756ad15643d80c86e6cca6350182fb94ca9f5a96679e1edda"
+    },
+    {
+      "key": "vfx814_b08_dive_trail",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        8,
+        508,
+        59
+      ],
+      "visibleHash": "58fdab4dd3b4afbfde1833a9cc2e70121caae35756404b27bc825d69bdf684ab"
+    },
+    {
+      "key": "vfx814_b08_dive_trail",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        481,
+        53
+      ],
+      "visibleHash": "2ec795df867198c1a295de1b383732825d7a9dc2a738ebf4dc7af8dc5f403ecf"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_short",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        13,
+        4,
+        188,
+        28
+      ],
+      "visibleHash": "f34f428e86436bf1d5c3949b63b4151a732094c32ebf871df3989c74176db163"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_short",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        188,
+        28
+      ],
+      "visibleHash": "42b5b3ee6c47d17a16bf68faaa4bfd82945e2d602625163a7201383210596771"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_short",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        188,
+        28
+      ],
+      "visibleHash": "58bbaa841224fc94b9cc0b1810d1852162ffbd3cbd94db72c3914280911a801a"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_short",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        188,
+        28
+      ],
+      "visibleHash": "f3a49603679503a66878084ac0af60e90a91c88809c884b68ada745a5319e3e0"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_short",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        188,
+        28
+      ],
+      "visibleHash": "e21f88af036457cd0fe55744c37024cd1e8b7a5fd32b705e24b614104392da4a"
+    },
+    {
+      "key": "vfx814_b09_clock_hand_short",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        176,
+        28
+      ],
+      "visibleHash": "185317f11fe6bf0e91c0242ad3ab25dced54c7301a654a50807866ec0196260c"
+    },
+    {
+      "key": "vfx814_b10_choir_note",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        8,
+        86,
+        86
+      ],
+      "visibleHash": "536490a5a9bf6f316f424bc4464e5607f9a2dd4e178dd12a773001df547a6275"
+    },
+    {
+      "key": "vfx814_b10_choir_note",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        17,
+        6,
+        86,
+        86
+      ],
+      "visibleHash": "d9d53ceeceebbfc6c671bf7146d4ddb01fda466e996dc97c781317eb6c41d346"
+    },
+    {
+      "key": "vfx814_b10_choir_note",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        6,
+        86,
+        86
+      ],
+      "visibleHash": "dbd61cabd5548f0f8c2439bf8c464943ca1561e9d6afcded6176f6e6d91450be"
+    },
+    {
+      "key": "vfx814_b10_choir_note",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        6,
+        86,
+        86
+      ],
+      "visibleHash": "e340fa91be414bbf2f2e900da1ccdfb7b198127390243c28b2a3b385b5eb00ca"
+    },
+    {
+      "key": "vfx814_b10_choir_note",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        7,
+        86,
+        86
+      ],
+      "visibleHash": "898a1927810630dc1aae98ce8f03b6ced9dad20a6d3e07253dd8bff3d054d5e3"
+    },
+    {
+      "key": "vfx814_b10_choir_note",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        12,
+        86,
+        86
+      ],
+      "visibleHash": "109cf9a356c6dd81eb0913673353cd334870a6ce90ab50861dc4f511d2e17784"
+    },
+    {
+      "key": "vfx814_b10_memory_eclipse",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        8,
+        247,
+        234
+      ],
+      "visibleHash": "1f2098ed23f046b847089aeaca0738954578e23c22dad57d2687b3b1e5425140"
+    },
+    {
+      "key": "vfx814_b10_memory_eclipse",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        8,
+        247,
+        234
+      ],
+      "visibleHash": "166f5ead5ee516bd679b7e17eb34157973423b8cbcd23404000a04c58b049218"
+    },
+    {
+      "key": "vfx814_b10_memory_eclipse",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        8,
+        247,
+        234
+      ],
+      "visibleHash": "1aed1813d6554d55178d905053831e97f3815dae3eb2b1d9ad073280bc0d92ea"
+    },
+    {
+      "key": "vfx814_b10_memory_eclipse",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        8,
+        247,
+        234
+      ],
+      "visibleHash": "560498a285965bc34c44967cdbc5bf4bb6cd15d9c7a43173977635347d79225f"
+    },
+    {
+      "key": "vfx814_b10_memory_eclipse",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        8,
+        247,
+        234
+      ],
+      "visibleHash": "b759517a15f7a92ecc15313cabdcc3013aa2eaa7f8f9216c4c0952995441ac7a"
+    },
+    {
+      "key": "vfx814_b10_memory_eclipse",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        8,
+        242,
+        234
+      ],
+      "visibleHash": "93f8991d42549e302c81f32e3b288d707fcc7d6b39f7671ca825bb855ffd8c15"
+    },
+    {
+      "key": "vfx814_b06_pod_shield",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        22,
+        124,
+        105
+      ],
+      "visibleHash": "4d806141d22cdf33d11e2f9b5c4cb5e8acff04106bd81c0c3b16f6257f8ff155"
+    },
+    {
+      "key": "vfx814_b06_pod_shield",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        22,
+        124,
+        105
+      ],
+      "visibleHash": "c1221a42987391494591bd18b738f472e03eb96f3c5f7b49c75b96ae869b34fc"
+    },
+    {
+      "key": "vfx814_b06_pod_shield",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        22,
+        124,
+        105
+      ],
+      "visibleHash": "5cddf7bdbd7cfac54a5cc70536a1b9917395c80cd2c4afb7d40d2dd320828296"
+    },
+    {
+      "key": "vfx814_b06_pod_shield",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        22,
+        124,
+        105
+      ],
+      "visibleHash": "d75b49f0d98f3998dd474fef1691b028336fbff104611f3812e681542755e6ef"
+    },
+    {
+      "key": "vfx814_b06_pod_shield",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        22,
+        124,
+        105
+      ],
+      "visibleHash": "3249db3a0b40f1ba864625f38997b75a7e88b8c0cf60620fcad7d8d39b97e8a3"
+    },
+    {
+      "key": "vfx814_b06_pod_shield",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        22,
+        124,
+        105
+      ],
+      "visibleHash": "d95d8386288df8fa63de0311258be30f3b31015efcb8bb8e3c303f19feca638e"
+    },
+    {
+      "key": "vfx814_b10_root_band",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        4,
+        252,
+        60
+      ],
+      "visibleHash": "526cace806436d832b38eb367f4318c4c3ff2b5c03d82a5e784bbdfbe98bbdb6"
+    },
+    {
+      "key": "vfx814_b10_root_band",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        60
+      ],
+      "visibleHash": "425d5c7e00a27f3798d43c9bc373dfd3e77477fc19b4431fca226ac10fd3e7d0"
+    },
+    {
+      "key": "vfx814_b10_root_band",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        60
+      ],
+      "visibleHash": "ce8bc700381ad596a648f4adcf11f291fac5da8f3e94b684c354c39daa7487fa"
+    },
+    {
+      "key": "vfx814_b10_root_band",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        60
+      ],
+      "visibleHash": "ee860af65a333d2a1c6ed12335210b430c9abd600f17bc3fa7bc1b3eda7a91a5"
+    },
+    {
+      "key": "vfx814_b10_root_band",
+      "frame": 4,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        60
+      ],
+      "visibleHash": "41674ef30608081be7f337be2846c65aa6df9f824005e083a36e727c45e28483"
+    },
+    {
+      "key": "vfx814_b10_root_band",
+      "frame": 5,
+      "clearBorder": true,
+      "alphaBox": [
+        4,
+        4,
+        243,
+        60
+      ],
+      "visibleHash": "c88dc04f2beea777edbebc42cc3efff4f99c3c83fc6b07729197a90d2dc0a06c"
+    }
+  ],
+  "phoneReview": "pending; preview is source frame playback, not gameplay"
+}
