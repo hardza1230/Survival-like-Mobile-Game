@@ -18,3 +18,13 @@ Validation: production-method parity tests for16styles, explicit damage/lifetime
 Combined boss-art work813–817:96VFX clips /576frames +264body frames +64projectile frames =904authored frames. Original identities, AI, attack intervals, damage and physical bounds are retained. Explicit charge wind/strike cues follow existing release callbacks; other body pose sequences interpolate within their original pose intervals.
 
 Owner review suggestions: B01 edge clarity; B05 versus B06 silhouettes; C2-2 fog shelter visibility; C3/Pinnacle warning gaps; projectile readability during dense attacks; pause/resume and Low effects. No device-specific performance claim is made.
+
+## Final publication verified — 5November2026
+
+- Game/art commit:e01180437ba078508b8458b0d3dd31123099a836. All47changed files /9,317,351bytes were fetched from the immutable commit, compared byte-for-byte and fully decoded where applicable. Local and remote Git trees matched.
+- CI-only recovery:53ff71c49b2eee6c842e145394b111b05426fbbd, both changed files /8,232bytes verified. Original game/art bytes remain identical.
+- [Pages41890956493](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/41890956493) and [Android41887138733](https://github.com/hardza1230/Survival-like-Mobile-Game/actions/runs/41887138733) succeeded.
+- [Live game](https://hardza1230.github.io/Survival-like-Mobile-Game/) reports8.1.17. Version/code registries and ALL133boss-art files /904frames /44,333,442bytes match source-manifest byte counts and SHA-256. This includes all813/814/815VFX,816bodies and817projectiles.
+- Full npmcheck, web build and all ten browser contracts passed locally; the published run repeated these checks successfully.
+- First deployment attempt stalled in updating_pages and timed out after600seconds. Re-running that workflow exposed duplicate artifacts from different attempts. Upload/deployment artifact names now include github.run_attempt and publishing permits1200000ms; the fresh run succeeded. No game or art changes were required for the recovery.
+- Ordered tasks1–5 are complete. Agent phone tests were explicitly waived; owner device appearance, feel and FPS review remains with the owner.

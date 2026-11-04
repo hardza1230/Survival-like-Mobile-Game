@@ -1,14 +1,18 @@
-# 🔢 Version line
+# Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.18; fetch the deploy branch first.
+Current release: **8.1.17**. Next release:8.1.18. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.17 — animated painted boss projectiles (owner)
+# Latest delivery: v8.1.17 — completed boss battle art pass
 
-16original projectile silhouettes /64new authored frames from4ImageGen atlases; source native1254square retained, normalized only while packing. Stage-lazy four-frame128px WebPs total575,618bytes; real alpha, exact prompts/hashes/border QA and PNG/GIF previews. Owned wall clock attaches to original pooled bullet without extra sprites/timers; damage/life/speed/scale/rotation/circle/behaviour unchanged, Low/reduced keyframe, pause/stage/player/epoch/reuse/shutdown guards, cleanup never destroys pooled actors. Source/unit adapters and actual Arcade Canvas bounds/pool contracts cover16profiles across6layouts. All ordered boss-art work completed in813–817; see docs/design/battle_art_audit812/DELIVERY817.md. Owner waived agent phone testing and will playtest himself.
+All ordered boss-art tasks1–5 are delivered. The owner explicitly waived agent phone testing and will playtest himself. Final game/art commit:e01180437ba078508b8458b0d3dd31123099a836; CI recovery commit:53ff71c49b2eee6c842e145394b111b05426fbbd. Pages41890956493 and APK41887138733 succeeded. Live version/code and **all133 new boss-art files /904 authored frames /44,333,442bytes** match their source manifests by SHA-256. Exact immutable readback also verified all47 release files and both CI recovery files. Full npmcheck, build and ten browser contracts passed locally and in CI.
 
-# Previous delivery: v8.1.16 — animated painted boss bodies (owner)
+Sixteen original painted projectile silhouettes now have four-frame128px loops,575,618runtime bytes, loaded per stage. The original pooled physics bullet is reused: damage, lifetime, speed, circle, scale, rotation and behaviour remain unchanged. Owned frame clocks respect pause/Low/reduced and pool/player/stage/epoch/shutdown cleanup without destroying actors. Original1254-square ImageGen sources, exact prompts, alpha/hash/border QA, previews and mechanical packer are retained. See docs/design/battle_art_audit812/DELIVERY817.md.
 
-21original identities/22forms264authoredframes from11ImageGen pairedatlases plusoneactualalpha correction;15campaignbosses/Pinnacle/5C3minis. Actualsprite replacement, notoverlays;256px runtimeframes restoreB01source160→256 atsameprojectedworldsize. Uniformcommonbodycrop/footanchor andratio-normalizedcircle/offset/baseScale preservephysicalworldbounds; B05maw/eyes vsB06uprightbudthrone retaincanonandreadseparately. Stage-lazy newtextures, missingart/Delve/dummyfallback, originaldeath/cutscene paths preserved withcurrent-poseghost. Ownedidle/wind/strike/recoverclock respectsplay/bossintro/pause/freeze/Low/reduced/player/stage/spawn/epoch/pool cleanup, chargewind→strike cuedatoldreleaseevent. OriginalAI/damage/cooldowns/position/velocity retained. Unit21bodygeometrytests andactualArcadeworldboundsCanvasreview +existingchecks. Source/QA/previews/promptroles retained;12prompts includingtruealphafix. Userwillphoneplaytesthimself. C3/Pinnacle815runtimec973d8d published/71files40,940,240bytes immutableverified; Pages41877052587/APK41877052203SUCCESS andlive15/all36WebPshashesverified.
+Publication recovery: one Pages attempt timed out while updating_pages; re-running the old workflow produced duplicate github-pages artifacts. The workflow now isolates upload/deployment artifact names by github.run_attempt and allows20minutes for publishing the large site. A fresh run succeeded. Game/art bytes were unchanged by this CI fix.
+
+# Previous delivery: v8.1.16 — painted boss body animation and clarity
+
+21 original identities /22 visual forms /264 authored frames cover15 campaign bosses, Pinnacle and5 C3 minibosses. Actual Sprite replacements provide idle, wind-up, strike and recovery. B01 uses256px source frames at the same world size; B05 mouth/eyes and B06 upright bud/face/roots have distinct silhouettes. Ratio-normalized scale/circle offsets preserve real Arcade world geometry. Stage-lazy textures, fallback, freeze/pause/intro/Low/reduced, phase2 and pool cleanup are tested. Explicit charge cues follow existing release callbacks; other sequences interpolate within original pose intervals. AI, damage, cooldowns, positions and velocities remain unchanged. Pages41885436348 /APK41885436096 and live16/all21 body asset hashes verified. See DELIVERY816.md.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

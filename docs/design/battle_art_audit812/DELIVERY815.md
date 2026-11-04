@@ -9,3 +9,5 @@ Pinnacle aliases apply only to its own keys; campaign aliases follow stages10–
 Production-helper adapter tests cover C3/Pinnacle aliases/fallback/stage ownership, held shards, original dimensions/anchors/periods and the warning-to-strike seed event. Combined static real Canvas gallery verifies96clips /576loaded frames across six layouts, pause and Low/reduced settings. No gameplay simulation or phone performance claim. Owner explicitly waived agent phone testing and will playtest himself.
 
 Owner's remaining ordered tasks continue after this batch: actual boss-body animation frames and B01/B05/B06 clarity, then16animated boss projectiles and C3 miniboss body polish. No completion of those later tasks is claimed here.
+
+Publication closure: runtimec973d8d7a856b9d54ce11ad5914d9875c0b93263; Pages41877052587 /APK41877052203 succeeded. Live8.1.15 and all36new WebP hashes verified. The full family was reverified on final8.1.17; see DELIVERY817.md.

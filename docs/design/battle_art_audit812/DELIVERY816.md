@@ -11,3 +11,5 @@ Validation includes exact source/runtime hashes and264distinct cells; analytic g
 Owner waived agent phone testing and will playtest himself. The remaining ordered batch is16animated boss projectiles; C3 miniboss art is included in this body delivery.
 
 Publication verified: runtime8c6de8c6649458d693e6fc7936cedccfff1c38fd; Pages41885436348 /APK41885436096 successful. All65changed files (68,490,747bytes) fetched from the immutable commit and decoded; local/remote Git trees match.
+
+Live8.1.16 code and all21new body WebPs verified by exact byte length and SHA-256 (19,902,866bytes). All body files were reverified on final8.1.17.
