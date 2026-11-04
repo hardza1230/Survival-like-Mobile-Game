@@ -1,0 +1,1141 @@
+{
+  "assets": [
+    {
+      "name": "b11_impact",
+      "group": "harvest",
+      "row": 0,
+      "old": "vfx_b11_impact",
+      "key": "vfx815_b11_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b11_impact.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 378022,
+      "sha256": "13644e974ee57337cb50d13b420266ff4a27446c61b7aafd027b78939d675414",
+      "legacyFootprint": [
+        10,
+        14,
+        245,
+        236
+      ],
+      "packedFootprint": [
+        10,
+        14,
+        245,
+        236
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b11_wave",
+      "group": "harvest",
+      "row": 1,
+      "old": "vfx_b11_wave",
+      "key": "vfx815_b11_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.99,
+        0.58
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b11_wave.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 267188,
+      "sha256": "071d35f7c6ccd14ed7bba1492436ff99c729c4ccde10e634c507142ced7c236b",
+      "legacyFootprint": [
+        0,
+        51,
+        254,
+        201
+      ],
+      "packedFootprint": [
+        4,
+        51,
+        252,
+        201
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b11_lane",
+      "group": "harvest",
+      "row": 2,
+      "old": "vfx_b11_lane",
+      "key": "vfx815_b11_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b11_lane.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 97830,
+      "sha256": "4b2f66e32f77ce1c9a82091338791c5dc833120eb5cfff21ecaccc814670cde6",
+      "legacyFootprint": [
+        0,
+        12,
+        512,
+        51
+      ],
+      "packedFootprint": [
+        4,
+        12,
+        508,
+        51
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b11_scythe_cut",
+      "group": "harvest",
+      "row": 3,
+      "old": "vfx_b11_scythe_cut",
+      "key": "vfx815_b11_scythe_cut",
+      "fw": 512,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b11_scythe_cut.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 830972,
+      "sha256": "0173f1323b9b472f588f503730144bd24f1d7638c00c49005f66b55d6cd3194a",
+      "legacyFootprint": [
+        0,
+        0,
+        512,
+        256
+      ],
+      "packedFootprint": [
+        4,
+        4,
+        508,
+        252
+      ],
+      "decodedBytes": 3145728
+    },
+    {
+      "name": "b12_impact",
+      "group": "hollow",
+      "row": 0,
+      "old": "vfx_b12_impact",
+      "key": "vfx815_b12_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b12_impact.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 309646,
+      "sha256": "09d63d2d7342a96a2297ffe557ab4e76618246d5e26484a8d7ceac22dd4e5baf",
+      "legacyFootprint": [
+        12,
+        25,
+        240,
+        234
+      ],
+      "packedFootprint": [
+        12,
+        25,
+        240,
+        234
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b12_wave",
+      "group": "hollow",
+      "row": 1,
+      "old": "vfx_b12_wave",
+      "key": "vfx815_b12_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.96,
+        0.7
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b12_wave.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 292276,
+      "sha256": "29b9e250352b7994e1b2def68b0d5de57c448d4723da8a82f2c398e5104532a4",
+      "legacyFootprint": [
+        5,
+        29,
+        253,
+        210
+      ],
+      "packedFootprint": [
+        5,
+        29,
+        252,
+        210
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b12_lane",
+      "group": "hollow",
+      "row": 2,
+      "old": "vfx_b12_lane",
+      "key": "vfx815_b12_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b12_lane.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 96368,
+      "sha256": "7882fee1f796e5d0501633f6fbf278eab2ea36cfb73296d75fa883a35c625e42",
+      "legacyFootprint": [
+        0,
+        9,
+        512,
+        53
+      ],
+      "packedFootprint": [
+        4,
+        9,
+        508,
+        53
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b12_wither_pull",
+      "group": "hollow",
+      "row": 3,
+      "old": "vfx_b12_wither_pull",
+      "key": "vfx815_b12_wither_pull",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.89,
+        0.81
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b12_wither_pull.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 379166,
+      "sha256": "22cd9eac05a437016406ab943870694099d1da1b47103f20fd2adc25da5641c5",
+      "legacyFootprint": [
+        11,
+        21,
+        245,
+        228
+      ],
+      "packedFootprint": [
+        11,
+        21,
+        245,
+        228
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b13_impact",
+      "group": "glass",
+      "row": 0,
+      "old": "vfx_b13_impact",
+      "key": "vfx815_b13_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b13_impact.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 290756,
+      "sha256": "81ace9740317a8b51ca82a094a7b6a43bb5ef0510b80a40c48b3564092ba6a8c",
+      "legacyFootprint": [
+        12,
+        12,
+        244,
+        237
+      ],
+      "packedFootprint": [
+        12,
+        12,
+        244,
+        237
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b13_wave",
+      "group": "glass",
+      "row": 1,
+      "old": "vfx_b13_wave",
+      "key": "vfx815_b13_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.95,
+        0.66
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b13_wave.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 275588,
+      "sha256": "514373609b3f2c2b127f4d5ae30dbd2cf454a8065250043e94065f308633e5be",
+      "legacyFootprint": [
+        5,
+        39,
+        250,
+        210
+      ],
+      "packedFootprint": [
+        5,
+        39,
+        250,
+        210
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b13_lane",
+      "group": "glass",
+      "row": 2,
+      "old": "vfx_b13_lane",
+      "key": "vfx815_b13_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b13_lane.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 121976,
+      "sha256": "cb201858cc1e987584a7af6a73c93c54f3b1629fa28c26f588812682be70c5d5",
+      "legacyFootprint": [
+        0,
+        23,
+        512,
+        62
+      ],
+      "packedFootprint": [
+        4,
+        23,
+        508,
+        60
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b13_prism_beam",
+      "group": "glass",
+      "row": 3,
+      "old": "vfx_b13_prism_beam",
+      "key": "vfx815_b13_prism_beam",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b13_prism_beam.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 127294,
+      "sha256": "1db41901ac5fc3a5319eaa92214a9d4f9287c363399e71a03fb32593f3834dd7",
+      "legacyFootprint": [
+        0,
+        16,
+        512,
+        52
+      ],
+      "packedFootprint": [
+        4,
+        16,
+        508,
+        52
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b14_impact",
+      "group": "vault",
+      "row": 0,
+      "old": "vfx_b14_impact",
+      "key": "vfx815_b14_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b14_impact.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 356030,
+      "sha256": "7a643936d4a25f90e6c40048f3f7285b311e4739380ffd339342de521e5126ae",
+      "legacyFootprint": [
+        10,
+        12,
+        244,
+        231
+      ],
+      "packedFootprint": [
+        10,
+        12,
+        244,
+        231
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b14_wave",
+      "group": "vault",
+      "row": 1,
+      "old": "vfx_b14_wave",
+      "key": "vfx815_b14_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.95,
+        0.72
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b14_wave.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 306076,
+      "sha256": "9fe96e5d59b7e69efa86019ebddbc11312fde61b3288650e4ff0d89854f93e14",
+      "legacyFootprint": [
+        4,
+        34,
+        249,
+        219
+      ],
+      "packedFootprint": [
+        4,
+        34,
+        249,
+        219
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b14_lane",
+      "group": "vault",
+      "row": 2,
+      "old": "vfx_b14_lane",
+      "key": "vfx815_b14_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b14_lane.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 131814,
+      "sha256": "ae7cb372826caa829719fbae67b1463461ac64371b7415d9df8b70726399a505",
+      "legacyFootprint": [
+        0,
+        19,
+        512,
+        56
+      ],
+      "packedFootprint": [
+        4,
+        19,
+        508,
+        56
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b14_vault_ring",
+      "group": "vault",
+      "row": 3,
+      "old": "vfx_b14_vault_ring",
+      "key": "vfx815_b14_vault_ring",
+      "fw": 128,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b14_vault_ring.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 43954,
+      "sha256": "1a3264c8241359957f7c58ba1e5bc6955a204cbb780af8183bc9b34b44747967",
+      "legacyFootprint": [
+        0,
+        9,
+        128,
+        55
+      ],
+      "packedFootprint": [
+        4,
+        9,
+        124,
+        55
+      ],
+      "decodedBytes": 196608
+    },
+    {
+      "name": "b15_impact",
+      "group": "planter",
+      "row": 0,
+      "old": "vfx_b15_impact",
+      "key": "vfx815_b15_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b15_impact.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 377770,
+      "sha256": "afa3d8d8c7451d6787df25db11e756246250c398e77a00cebf1e198438e7e422",
+      "legacyFootprint": [
+        7,
+        7,
+        245,
+        237
+      ],
+      "packedFootprint": [
+        7,
+        7,
+        245,
+        237
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b15_wave",
+      "group": "planter",
+      "row": 1,
+      "old": "vfx_b15_wave",
+      "key": "vfx815_b15_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.98,
+        0.75
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b15_wave.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 331112,
+      "sha256": "026cc81adbaa50b86f6b6d54ee11624363aeff6251ca8efcf6b71584f6daa72b",
+      "legacyFootprint": [
+        1,
+        24,
+        254,
+        217
+      ],
+      "packedFootprint": [
+        4,
+        24,
+        252,
+        217
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b15_lane",
+      "group": "planter",
+      "row": 2,
+      "old": "vfx_b15_lane",
+      "key": "vfx815_b15_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b15_lane.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 103634,
+      "sha256": "e9c544f09b749d15ca5db871bc1389ff40fa5e7c96206e74f4a6e4f5120654a1",
+      "legacyFootprint": [
+        0,
+        11,
+        512,
+        55
+      ],
+      "packedFootprint": [
+        4,
+        11,
+        508,
+        55
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b15_root_cage",
+      "group": "planter",
+      "row": 3,
+      "old": "vfx_b15_root_cage",
+      "key": "vfx815_b15_root_cage",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.96,
+        0.75
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b15_root_cage.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 409014,
+      "sha256": "76fe8d416b3fa30c7f0ed30a9717520e272c2fbfc66368b83cc0571388943037",
+      "legacyFootprint": [
+        2,
+        5,
+        255,
+        200
+      ],
+      "packedFootprint": [
+        4,
+        5,
+        252,
+        200
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "bpin_impact",
+      "group": "pinnacle",
+      "row": 0,
+      "old": "vfx_bpin_impact",
+      "key": "vfx815_bpin_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_bpin_impact.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 300836,
+      "sha256": "2dc12ba1fdd13225166581f0233bc56ecc5d3b4317a69588cefb10e1197c6a79",
+      "legacyFootprint": [
+        5,
+        13,
+        247,
+        243
+      ],
+      "packedFootprint": [
+        5,
+        13,
+        247,
+        243
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "bpin_wave",
+      "group": "pinnacle",
+      "row": 1,
+      "old": "vfx_bpin_wave",
+      "key": "vfx815_bpin_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.94,
+        0.64
+      ],
+      "path": "assets/art/boss_outline815/vfx815_bpin_wave.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 227644,
+      "sha256": "eef5b9f1efbcf5ce045e2893094ab74027fa60368a8bbc21df09373676946a6f",
+      "legacyFootprint": [
+        8,
+        39,
+        249,
+        203
+      ],
+      "packedFootprint": [
+        8,
+        39,
+        249,
+        203
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "bpin_lane",
+      "group": "pinnacle",
+      "row": 2,
+      "old": "vfx_bpin_lane",
+      "key": "vfx815_bpin_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_bpin_lane.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 109482,
+      "sha256": "68d89450f206ddf5cd53528948444966941b675378f9594affa29d4201aedd8d",
+      "legacyFootprint": [
+        0,
+        14,
+        512,
+        51
+      ],
+      "packedFootprint": [
+        4,
+        14,
+        508,
+        51
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "bpin_maw",
+      "group": "pinnacle",
+      "row": 3,
+      "old": "vfx_bpin_maw",
+      "key": "vfx815_bpin_maw",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.94,
+        0.8
+      ],
+      "path": "assets/art/boss_outline815/vfx815_bpin_maw.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 415122,
+      "sha256": "0dcdabc932e81ec117589aa3737a1e86c582cd6ab6da22bafece7aff6566295d",
+      "legacyFootprint": [
+        7,
+        24,
+        249,
+        230
+      ],
+      "packedFootprint": [
+        7,
+        24,
+        249,
+        230
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b11_harvest_moon",
+      "group": "signature_a",
+      "row": 0,
+      "old": "vfx_b11_harvest_moon",
+      "key": "vfx815_b11_harvest_moon",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b11_harvest_moon.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 336160,
+      "sha256": "acb709598b47b02d40856f9eddf4d276278194e04f28fe6af5e4201d467af1d7",
+      "legacyFootprint": [
+        0,
+        13,
+        253,
+        241
+      ],
+      "packedFootprint": [
+        4,
+        13,
+        252,
+        241
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b11_stampede_trail",
+      "group": "signature_a",
+      "row": 1,
+      "old": "vfx_b11_stampede_trail",
+      "key": "vfx815_b11_stampede_trail",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b11_stampede_trail.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 165298,
+      "sha256": "ba117decddc550bb578c71255dba07800dcf386dc7b3a3b59118d777e9effe7f",
+      "legacyFootprint": [
+        0,
+        4,
+        512,
+        58
+      ],
+      "packedFootprint": [
+        4,
+        4,
+        508,
+        58
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b12_nectar_drip",
+      "group": "signature_a",
+      "row": 2,
+      "old": "vfx_b12_nectar_drip",
+      "key": "vfx815_b12_nectar_drip",
+      "fw": 128,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b12_nectar_drip.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 48382,
+      "sha256": "6af8d840afa302f91163dcaaf60f21de9c75ad5c869e882d3201e49efff56756",
+      "legacyFootprint": [
+        14,
+        14,
+        113,
+        111
+      ],
+      "packedFootprint": [
+        14,
+        14,
+        113,
+        111
+      ],
+      "decodedBytes": 393216
+    },
+    {
+      "name": "b12_empty_heart",
+      "group": "signature_a",
+      "row": 3,
+      "old": "vfx_b12_empty_heart",
+      "key": "vfx815_b12_empty_heart",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b12_empty_heart.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 338582,
+      "sha256": "a9ec34daaf675c4e3295a58e46459cef1e6f9199766f7e89b169d248cafc6733",
+      "legacyFootprint": [
+        5,
+        24,
+        246,
+        239
+      ],
+      "packedFootprint": [
+        5,
+        24,
+        246,
+        239
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b13_dome_shard",
+      "group": "signature_b",
+      "row": 0,
+      "old": "vfx_b13_dome_shard",
+      "key": "vfx815_b13_dome_shard",
+      "fw": 128,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b13_dome_shard.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 136142,
+      "sha256": "b3837e0106c1177e8445f5ea4ff401dc53a73ab90fdf24356160f355948923d8",
+      "legacyFootprint": [
+        17,
+        8,
+        109,
+        222
+      ],
+      "packedFootprint": [
+        17,
+        8,
+        109,
+        222
+      ],
+      "decodedBytes": 786432
+    },
+    {
+      "name": "b14_last_seed",
+      "group": "signature_b",
+      "row": 1,
+      "old": "vfx_b14_last_seed",
+      "key": "vfx815_b14_last_seed",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.89,
+        0.87
+      ],
+      "path": "assets/art/boss_outline815/vfx815_b14_last_seed.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 316868,
+      "sha256": "97960325defc7222487805647ae9309b6900578adc6d6d388e6a2a7000a076ca",
+      "legacyFootprint": [
+        14,
+        8,
+        242,
+        234
+      ],
+      "packedFootprint": [
+        14,
+        8,
+        242,
+        234
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "b15_seed_tile",
+      "group": "signature_b",
+      "row": 2,
+      "old": "vfx_b15_seed_tile",
+      "key": "vfx815_b15_seed_tile",
+      "fw": 128,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b15_seed_tile.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 66824,
+      "sha256": "4d45bba7514a0ac1d0f764e8bb6808760441500b483ece01c01c91ffefbe39c2",
+      "legacyFootprint": [
+        9,
+        5,
+        121,
+        108
+      ],
+      "packedFootprint": [
+        9,
+        5,
+        121,
+        108
+      ],
+      "decodedBytes": 393216
+    },
+    {
+      "name": "b15_crown_sweep",
+      "group": "signature_b",
+      "row": 3,
+      "old": "vfx_b15_crown_sweep",
+      "key": "vfx815_b15_crown_sweep",
+      "fw": 512,
+      "fh": 96,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_b15_crown_sweep.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 250606,
+      "sha256": "de988bbd58c665dd696aba062bd2a114dfdee6d481a644b9376925a554cb7932",
+      "legacyFootprint": [
+        0,
+        10,
+        512,
+        85
+      ],
+      "packedFootprint": [
+        4,
+        10,
+        508,
+        85
+      ],
+      "decodedBytes": 1179648
+    },
+    {
+      "name": "b15_first_bloom",
+      "group": "signature_c",
+      "row": 0,
+      "old": "vfx_b15_first_bloom",
+      "key": "vfx815_b15_first_bloom",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_b15_first_bloom.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 329280,
+      "sha256": "26d8c50ed77498e7b0ed229ed92c4a2189935d5684adfccd7260222ac9521585",
+      "legacyFootprint": [
+        9,
+        0,
+        248,
+        242
+      ],
+      "packedFootprint": [
+        9,
+        4,
+        248,
+        242
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "bpin_jaw_ring",
+      "group": "signature_c",
+      "row": 1,
+      "old": "vfx_bpin_jaw_ring",
+      "key": "vfx815_bpin_jaw_ring",
+      "fw": 128,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_bpin_jaw_ring.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 36604,
+      "sha256": "69c16a0325f36b5149a63dbe3f85bae69868b223de300d0f7cbf27b46b9791e6",
+      "legacyFootprint": [
+        0,
+        16,
+        128,
+        50
+      ],
+      "packedFootprint": [
+        4,
+        16,
+        124,
+        50
+      ],
+      "decodedBytes": 196608
+    },
+    {
+      "name": "bpin_tongue",
+      "group": "signature_c",
+      "row": 2,
+      "old": "vfx_bpin_tongue",
+      "key": "vfx815_bpin_tongue",
+      "fw": 512,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true,
+      "path": "assets/art/boss_outline815/vfx815_bpin_tongue.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 136246,
+      "sha256": "826102dd362f7dd7489b8af19c65b169247afa3b76177fee7f6552b7d2aa47a5",
+      "legacyFootprint": [
+        0,
+        29,
+        512,
+        105
+      ],
+      "packedFootprint": [
+        4,
+        29,
+        508,
+        105
+      ],
+      "decodedBytes": 1572864
+    },
+    {
+      "name": "bpin_eclipse",
+      "group": "signature_c",
+      "row": 3,
+      "old": "vfx_bpin_eclipse",
+      "key": "vfx815_bpin_eclipse",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center",
+      "path": "assets/art/boss_outline815/vfx815_bpin_eclipse.webp",
+      "cols": 6,
+      "rows": 1,
+      "bytes": 254348,
+      "sha256": "c87f79fa43f06ec5321ed99149b669dd668c9e690bd1383c6d8a6ca315ac7acf",
+      "legacyFootprint": [
+        2,
+        10,
+        255,
+        240
+      ],
+      "packedFootprint": [
+        4,
+        10,
+        252,
+        240
+      ],
+      "decodedBytes": 1572864
+    }
+  ]
+}

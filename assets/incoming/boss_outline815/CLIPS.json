@@ -1,0 +1,549 @@
+{
+  "groups": {
+    "harvest": [
+      "b11_impact",
+      "b11_wave",
+      "b11_lane",
+      "b11_scythe_cut"
+    ],
+    "hollow": [
+      "b12_impact",
+      "b12_wave",
+      "b12_lane",
+      "b12_wither_pull"
+    ],
+    "glass": [
+      "b13_impact",
+      "b13_wave",
+      "b13_lane",
+      "b13_prism_beam"
+    ],
+    "vault": [
+      "b14_impact",
+      "b14_wave",
+      "b14_lane",
+      "b14_vault_ring"
+    ],
+    "planter": [
+      "b15_impact",
+      "b15_wave",
+      "b15_lane",
+      "b15_root_cage"
+    ],
+    "pinnacle": [
+      "bpin_impact",
+      "bpin_wave",
+      "bpin_lane",
+      "bpin_maw"
+    ],
+    "signature_a": [
+      "b11_harvest_moon",
+      "b11_stampede_trail",
+      "b12_nectar_drip",
+      "b12_empty_heart"
+    ],
+    "signature_b": [
+      "b13_dome_shard",
+      "b14_last_seed",
+      "b15_seed_tile",
+      "b15_crown_sweep"
+    ],
+    "signature_c": [
+      "b15_first_bloom",
+      "bpin_jaw_ring",
+      "bpin_tongue",
+      "bpin_eclipse"
+    ]
+  },
+  "clips": [
+    {
+      "name": "b11_impact",
+      "group": "harvest",
+      "row": 0,
+      "old": "vfx_b11_impact",
+      "key": "vfx815_b11_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b11_wave",
+      "group": "harvest",
+      "row": 1,
+      "old": "vfx_b11_wave",
+      "key": "vfx815_b11_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.99,
+        0.58
+      ]
+    },
+    {
+      "name": "b11_lane",
+      "group": "harvest",
+      "row": 2,
+      "old": "vfx_b11_lane",
+      "key": "vfx815_b11_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b11_scythe_cut",
+      "group": "harvest",
+      "row": 3,
+      "old": "vfx_b11_scythe_cut",
+      "key": "vfx815_b11_scythe_cut",
+      "fw": 512,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b12_impact",
+      "group": "hollow",
+      "row": 0,
+      "old": "vfx_b12_impact",
+      "key": "vfx815_b12_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b12_wave",
+      "group": "hollow",
+      "row": 1,
+      "old": "vfx_b12_wave",
+      "key": "vfx815_b12_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.96,
+        0.7
+      ]
+    },
+    {
+      "name": "b12_lane",
+      "group": "hollow",
+      "row": 2,
+      "old": "vfx_b12_lane",
+      "key": "vfx815_b12_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b12_wither_pull",
+      "group": "hollow",
+      "row": 3,
+      "old": "vfx_b12_wither_pull",
+      "key": "vfx815_b12_wither_pull",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.89,
+        0.81
+      ]
+    },
+    {
+      "name": "b13_impact",
+      "group": "glass",
+      "row": 0,
+      "old": "vfx_b13_impact",
+      "key": "vfx815_b13_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b13_wave",
+      "group": "glass",
+      "row": 1,
+      "old": "vfx_b13_wave",
+      "key": "vfx815_b13_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.95,
+        0.66
+      ]
+    },
+    {
+      "name": "b13_lane",
+      "group": "glass",
+      "row": 2,
+      "old": "vfx_b13_lane",
+      "key": "vfx815_b13_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b13_prism_beam",
+      "group": "glass",
+      "row": 3,
+      "old": "vfx_b13_prism_beam",
+      "key": "vfx815_b13_prism_beam",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b14_impact",
+      "group": "vault",
+      "row": 0,
+      "old": "vfx_b14_impact",
+      "key": "vfx815_b14_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b14_wave",
+      "group": "vault",
+      "row": 1,
+      "old": "vfx_b14_wave",
+      "key": "vfx815_b14_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.95,
+        0.72
+      ]
+    },
+    {
+      "name": "b14_lane",
+      "group": "vault",
+      "row": 2,
+      "old": "vfx_b14_lane",
+      "key": "vfx815_b14_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b14_vault_ring",
+      "group": "vault",
+      "row": 3,
+      "old": "vfx_b14_vault_ring",
+      "key": "vfx815_b14_vault_ring",
+      "fw": 128,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true
+    },
+    {
+      "name": "b15_impact",
+      "group": "planter",
+      "row": 0,
+      "old": "vfx_b15_impact",
+      "key": "vfx815_b15_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "b15_wave",
+      "group": "planter",
+      "row": 1,
+      "old": "vfx_b15_wave",
+      "key": "vfx815_b15_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.98,
+        0.75
+      ]
+    },
+    {
+      "name": "b15_lane",
+      "group": "planter",
+      "row": 2,
+      "old": "vfx_b15_lane",
+      "key": "vfx815_b15_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b15_root_cage",
+      "group": "planter",
+      "row": 3,
+      "old": "vfx_b15_root_cage",
+      "key": "vfx815_b15_root_cage",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.96,
+        0.75
+      ]
+    },
+    {
+      "name": "bpin_impact",
+      "group": "pinnacle",
+      "row": 0,
+      "old": "vfx_bpin_impact",
+      "key": "vfx815_bpin_impact",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 14,
+      "anchor": "center"
+    },
+    {
+      "name": "bpin_wave",
+      "group": "pinnacle",
+      "row": 1,
+      "old": "vfx_bpin_wave",
+      "key": "vfx815_bpin_wave",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 8.4,
+      "anchor": "center",
+      "fill": [
+        0.94,
+        0.64
+      ]
+    },
+    {
+      "name": "bpin_lane",
+      "group": "pinnacle",
+      "row": 2,
+      "old": "vfx_bpin_lane",
+      "key": "vfx815_bpin_lane",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 15,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "bpin_maw",
+      "group": "pinnacle",
+      "row": 3,
+      "old": "vfx_bpin_maw",
+      "key": "vfx815_bpin_maw",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.94,
+        0.8
+      ]
+    },
+    {
+      "name": "b11_harvest_moon",
+      "group": "signature_a",
+      "row": 0,
+      "old": "vfx_b11_harvest_moon",
+      "key": "vfx815_b11_harvest_moon",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center"
+    },
+    {
+      "name": "b11_stampede_trail",
+      "group": "signature_a",
+      "row": 1,
+      "old": "vfx_b11_stampede_trail",
+      "key": "vfx815_b11_stampede_trail",
+      "fw": 512,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b12_nectar_drip",
+      "group": "signature_a",
+      "row": 2,
+      "old": "vfx_b12_nectar_drip",
+      "key": "vfx815_b12_nectar_drip",
+      "fw": 128,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true
+    },
+    {
+      "name": "b12_empty_heart",
+      "group": "signature_a",
+      "row": 3,
+      "old": "vfx_b12_empty_heart",
+      "key": "vfx815_b12_empty_heart",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center"
+    },
+    {
+      "name": "b13_dome_shard",
+      "group": "signature_b",
+      "row": 0,
+      "old": "vfx_b13_dome_shard",
+      "key": "vfx815_b13_dome_shard",
+      "fw": 128,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b14_last_seed",
+      "group": "signature_b",
+      "row": 1,
+      "old": "vfx_b14_last_seed",
+      "key": "vfx815_b14_last_seed",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true,
+      "fill": [
+        0.89,
+        0.87
+      ]
+    },
+    {
+      "name": "b15_seed_tile",
+      "group": "signature_b",
+      "row": 2,
+      "old": "vfx_b15_seed_tile",
+      "key": "vfx815_b15_seed_tile",
+      "fw": 128,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center"
+    },
+    {
+      "name": "b15_crown_sweep",
+      "group": "signature_b",
+      "row": 3,
+      "old": "vfx_b15_crown_sweep",
+      "key": "vfx815_b15_crown_sweep",
+      "fw": 512,
+      "fh": 96,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "b15_first_bloom",
+      "group": "signature_c",
+      "row": 0,
+      "old": "vfx_b15_first_bloom",
+      "key": "vfx815_b15_first_bloom",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center"
+    },
+    {
+      "name": "bpin_jaw_ring",
+      "group": "signature_c",
+      "row": 1,
+      "old": "vfx_bpin_jaw_ring",
+      "key": "vfx815_bpin_jaw_ring",
+      "fw": 128,
+      "fh": 64,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "center",
+      "loop": true
+    },
+    {
+      "name": "bpin_tongue",
+      "group": "signature_c",
+      "row": 2,
+      "old": "vfx_bpin_tongue",
+      "key": "vfx815_bpin_tongue",
+      "fw": 512,
+      "fh": 128,
+      "frames": 6,
+      "rate": 12,
+      "anchor": "left",
+      "loop": true
+    },
+    {
+      "name": "bpin_eclipse",
+      "group": "signature_c",
+      "row": 3,
+      "old": "vfx_bpin_eclipse",
+      "key": "vfx815_bpin_eclipse",
+      "fw": 256,
+      "fh": 256,
+      "frames": 6,
+      "rate": 7.5,
+      "anchor": "center"
+    }
+  ]
+}

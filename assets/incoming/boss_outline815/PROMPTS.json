@@ -1,0 +1,87 @@
+{
+  "provider": "built-in ImageGen",
+  "generations": [
+    {
+      "group": "harvest",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. Harvest Colossus: heavy bronze farm iron, amber grain/cream wheat dust, deep brown ink. ROW1 impact one-shot mechanical earth/wheat smash. ROW2 overhead hollow oval wave one-shot from grain/bronze arcs, no disk. ROW3 narrow horizontal lane loop LEFT origin→RIGHT end. ROW4 scythe cut one-shot broad horizontal curved bronze blade arc sweeping clockwise with cream wheat tips, no actual character or complete weapon.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "hollow",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. Hollow Bloom: muted dusty rose/ivory wilted petals with amber nectar and deep burgundy ink, not sugary pink collectible. ROW1 petal impact one-shot. ROW2 overhead hollow oval petal wave one-shot. ROW3 thin horizontal nectar/petal lane loop left-to-right. ROW4 wither pull loop overhead hollow inward spiral of wilted ivory petals/dark wine stems, large empty center.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "glass",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. Glass Gardener: angular ice-cyan crystal and ivory glass highlights, deep petrol-blue ink, no round EXP gems. ROW1 shard impact one-shot. ROW2 overhead hollow oval angular prism wave one-shot. ROW3 narrow horizontal broken-ray lane loop left-to-right. ROW4 prism beam loop horizontal sharp folded glass ribbon fixed LEFT emitter/RIGHT endpoint, thin with empty space above/below, no arrow or background glow.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "vault",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. Seedwarden: brass/gold vault armor, dark brown ink, cream seed dust, muted sage details. ROW1 heavy seed/metal impact one-shot. ROW2 overhead hollow oval vault wave one-shot. ROW3 narrow horizontal gold seed lane loop left-to-right. ROW4 vault ring SEGMENT loop: a SHORT broad curved metallic golden arc, not fullcircle, fits horizontal cell, used repeated along gameplay ring, six flowing highlight phases.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "planter",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. First Planter: coral-red ancient roots with muted gold crown/cream seed light, dark crimson ink, not pink Sugar collectible. ROW1 root/crown impact one-shot. ROW2 overhead hollow oval root wave one-shot. ROW3 narrow horizontal root lane loop left-to-right. ROW4 root cage loop: overhead hollow circular thorn enclosure, EMPTY center, small crownlike root branches at top, visual breathing phases, not a soliddisk or UIframe.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "pinnacle",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. Pinnacle Hunger Maw: deep aubergine/navy void ribbons, old ivory toothlike shards, muted amber glints; no blood, pale EXPpurple or candy pink. ROW1 compact dark maw impact one-shot. ROW2 overhead hollow oval void wave one-shot. ROW3 narrow horizontal void lane loop left-to-right. ROW4 maw loop hollow round swirl of curved toothlike ivory chunks/deep indigo folds, EMPTY center, no face/eyes or creature body.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "signature_a",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. FOUR effects: ROW1 Harvest Moon one-shot overhead hollow gold/bronze wheat-blade crescent grows to open ring and breaks into grain dust, no fullmoon disk. ROW2 Stampede Trail loop narrow horizontal bronze/cream earth-dust speed ribbon LEFT origin/RIGHT end. ROW3 Hollow Nectar Drip loop compact amber droplet descending with ivory wilted petals, no face. ROW4 Empty Heart one-shot hollow wilted ivory/rose petal ring grows and shatters, deep burgundy contour, NOT a literal heart icon.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "signature_b",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. FOUR effects: ROW1 Dome Shard one-shot VERTICAL ice-cyan prism pillar grows→peak→cracks→breaks into sharp fragments, navy ink. ROW2 Last Seed loop overhead hollow brass/sage seed-husk ring, six breathing highlights, transparent center. ROW3 Seed Tile one-shot special REQUIRED phase order: frame0 tiny dormant coral/gold seed on sparse ground crack; frame1 small glowing seed/cracks, still LOW/DORMANT warning only; frame2 tall root sprout burst STRIKES; frame3 peak sprout; frame4 breaking chunks; frame5 sparse falling fragments. No tile square or floor fill. ROW4 Crown Sweep loop narrow horizontal coral-red/gold thorn root ribbon LEFT emitter/RIGHT end.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "signature_c",
+      "prompt": "Original Mochi Mayhem candy-fantasy BOSS VFX, matching attached painted ink-outline reference (STYLE ONLY, not edit target). New1536x1024 PNG32 atlas,6columns x4rows,256x256 cells. Genuine alpha0 blank background/corners/gutters/open centers, no white/gray/black/colored matte, haze or checkerboard.18px transparent padding inside EACH cell, no crossing. Six authored sequential drawings per row, changing silhouettes/fragments, fixed pivot and scale, not rotation copies. Crisp dark ink contours, chunky colored shapes, tiny cream bright glints, clear at60px. No characters/faces, text/numbers/UI/grid/borders. One-shot: small contact→growth→peak→split→fragments→sparse. Loops: stable footprint with changing flow, seamless end-to-start. Wide hollow centers for rings. FOUR effects: ROW1 First Bloom one-shot cream/gold ancient flower on coral roots opening then petals scatter, no face. ROW2 Pinnacle Jaw Ring SEGMENT loop a short horizontal curved ivory tooth-lined arc with deep indigo roots, not fullcircle, no blood. ROW3 Tongue loop thin horizontal deep wine/indigo folded ribbon with muted ivory/gold edges LEFT origin/RIGHT end, stylized magic no organic gore. ROW4 Pinnacle Eclipse one-shot overhead hollow ring of deep-indigo folds and ivory shard crescents, grows→peak→breaks→sparse, no disk/eye/face.",
+      "reference": "assets/incoming/boss_outline814/memory_source.png",
+      "role": "style only"
+    },
+    {
+      "group": "pinnacle",
+      "prompt": "Create a BRAND NEW original game VFX PNG32 sprite atlas1536x1024, 6columns4rows,256cells, actual transparent alpha0 blank background/no matte or haze. First reference is BOSS IDENTITY only, do NOT draw the boss body. Second reference is DARK INK/PAINT EDGE STYLE only, do NOT copy its rocks/fire/colors. Exactly SIX sequential different drawings per ROW, common pivot/scale,18px transparent inside-cell padding. No text/numbers/grid/UI/labels. Crisp dark contours, broad ivory and deep-indigo shapes, tiny muted gold glints, empty ring centers, no blood/gore. Do NOT reuse a four-row root impact/wave/lane/cage template. Read distinct row instructions carefully. Pinnacle Hunger uses LARGE IVORY TEETH, NOT woody plant roots! ROW1 impact: a compact burst of curved IVORY TOOTH-SHAPED shards and deep navy ribbons; contact→growth→peak→split→fragments→few. ROW2 wave: overhead hollow oval rim of ivory tooth shards/deep navy ribbons expands thenbreaks, centertransparent. ROW3 lane: THIN HORIZONTAL flowing deep indigo ribbon with a few tooth shards traveling right, fixedleft/right endpoints sixphase loop. ROW4 maw loop: hollow circular tooth-lined magical opening made of pronounced white/ivory fang crescents on indigo folds, empty transparent hole, six flowing stable-footprint phases. No brown burgundy roots or royal crown crests anywhere.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_outline815/pinnacle_identity_ref.png",
+          "role": "boss identity only"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink/paint edge style only"
+        }
+      ]
+    },
+    {
+      "group": "signature_c",
+      "prompt": "Create a BRAND NEW original game VFX PNG32 sprite atlas1536x1024, 6columns4rows,256cells, actual transparent alpha0 blank background/no matte or haze. First reference is BOSS IDENTITY only, do NOT draw the boss body. Second reference is DARK INK/PAINT EDGE STYLE only, do NOT copy its rocks/fire/colors. Exactly SIX sequential different drawings per ROW, common pivot/scale,18px transparent inside-cell padding. No text/numbers/grid/UI/labels. Crisp dark contours, broad ivory and deep-indigo shapes, tiny muted gold glints, empty ring centers, no blood/gore. Do NOT reuse a four-row root impact/wave/lane/cage template. Read distinct row instructions carefully. FOUR ENTIRELY DIFFERENT effects, NOT impact/wave/lane/cage rows. ROW1 First Bloom: pale IVORY FLOWER atop a few coral roots, opening from bud to full flower then breaking into separate PETALS, one-shot6drawings; no mouth or tooth on thisrow. ROW2 Jaw Ring SEGMENT: ONE SHORT HORIZONTAL CURVED IVORY BONE ARC with6distinct IVORY TEETH pointing inward/downward, deep indigo rim, six loopflow phases, NOT fullcircle/no crowncrest. ROW3 Tongue: LONG THIN HORIZONTAL DARK WINE/INDIGO FLEXIBLE RIBBON left emitter/right tip, ivory edge, six wavy loopphases, no spikes/roots/floralcrests. ROW4 Eclipse: overhead HOLLOW ROUND RING of large ivory fang crescents plus indigo folds, small→growth→peakopenring→brokenarcs→fragments→sparse, no flower, no full disk.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_outline815/pinnacle_identity_ref.png",
+          "role": "boss identity only"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink/paint edge style only"
+        }
+      ]
+    }
+  ]
+}
