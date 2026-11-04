@@ -1,0 +1,169 @@
+{
+  "provider": "built-in ImageGen",
+  "generations": [
+    {
+      "group": "pair01",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=green ant queen with six insect legs/jade abdomen/gold crown/claws. CharacterB=teal bubble sewer beast with pipe arms and round grate mouth.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair01.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair02",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=bronze wheeled grill machine with pan shoulders/chimney. CharacterB=white ice-cream golem with blue face/cherry and ice mace.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair02.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair03",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=Great Hunger dark radial eye-loops, HUGE central fanged mouth and crown; retain mouth dominant/no flowers. CharacterB=Rootmother's Bud original upright root-throne queen and flower-bud crown; keep small humanoid face, slimmer upright petal silhouette/sage accents; NO giant mouth or orbiting eye loops, distinct fromA.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair03.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair04",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=red mushroom-capped moss/rock behemoth with ivory antler-mask face. CharacterB=amber/gold crowned hornet queen with wings and stinger.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair04.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair05",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=pink orchid-flower brass clock ornament with hanging smallglass lanterns. CharacterB=original rooted humanoid queen with goldcrown and thorn wood arms.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair05.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair06",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=bronze harvest machine/teeth wheels and purple core. CharacterB=original twisted tree giant with canopy blossoms and hanging nectar pods.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair06.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair07",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=original articulated glass/prism armor garden guardian with violetcore. CharacterB=original cute big-eyed gold armored owl, intactowl anatomy.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair07.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair08",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=original round gold/ivory seed guardian with thorn crown/purplecore. CharacterB=original darkpurple crowned fanged Maw, HUGE IVORY TEETH, no flower or humanoidface.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair08.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair09",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=original straw scarecrow with crescent scythe and pumpkinface. CharacterB=original two-headed carnivorous cream flower rootedbeast, keep TWOheads.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair09.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair10",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=original prismatic insect mantis with blade forearms. CharacterB=original bronze/gold windup vault guardian with key and shield-door torso.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair10.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair11",
+      "prompt": "Create BRAND NEW original Mochi Mayhem CHARACTER ANIMATION atlas1536x1024 PNG32 transparent alpha0. Reference1 is EXACT CHARACTER IDENTITY: A top reference row, B bottom reference row. Reference2 is ONLY ink/paint edge treatment, do NOT copy its flame/rocks or turn characters into effects. Preserve each character's silhouette, face, body parts, props and palette fromidentity reference; original cute candy-fantasy, crisp dark ink outlines/controlled coloredpaint/soft small cream highlights. Reduce tiny ornament noise so character reads at96px. No redesign into othercharacters, no text/labels/numbers/borders, no ground disk/shadow sheet, no baked big VFX, blood or gore. EXACT6columns×4rows,256×256cells,18px clear alpha padding everycell, wholebody+weapon contained. FIXED front/three-quarter camera, identical scale and planted footpoint atbottomy224 within eachrow, NO camera/body translation. ALL24frames are separately drawn and visibly distinct. ROW1: characterA six-frame seamless idle breathing/weight/cloth/appendage animation, stable footprint. ROW2: SAMEcharacterA complete six-frame attack: f0 low anticipation; f1 deeper loadedwindup; f2 decisive strike/cast/forward weight; f3 followthrough; f4 recover; f5 settles intoidle. ROW3: characterB six distinct seamless idleframes. ROW4: SAMEcharacterB fullsix-frame attack withsamewindup/strike/recover sequence. Keep original scale/face; motion comes frombodyposes, not projectile effects or globalrotation copies. CharacterA=original thorn-armored sword/shield knight, normalphase. CharacterB=SAME knight asA, same geometry/armor/weapons, only slightlybrighter violet/goldcore phase2 highlights; no newequipment.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/ref/pair11.png",
+          "role": "exact identity A/B and existing poses"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge style only"
+        }
+      ]
+    },
+    {
+      "group": "pair02_alpha_correction",
+      "prompt": "TRANSPARENCY CORRECTION ONLY on supplied1536x1024 PNG sprite atlas. Preserve ALL24painted character drawings/poses, sixcolumns/fourrows, exactsize/location/palette and clean ink contours. Remove the entire pale gray/cream backdrop, diffuse colored haze and ground cast shadows from ALL blank spaces, all gutters and ALL FOURCORNERS. Blank space must be actual alpha0 (currently everypixelhasalpha>=4), not translucent gray/white, not black or checkerboard. Keep ONLY the painted characters and small authored strike shapes, clean anti-aliased transparent edges. No redraw of figures or extra objects, words, labels/grid. Return genuine PNG32 TRANSPARENT BACKGROUND.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_body816/pair02_alpha_draft.png",
+          "role": "transparency-only edit target"
+        }
+      ]
+    }
+  ]
+}

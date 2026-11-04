@@ -1,0 +1,3181 @@
+{
+  "characters": 21,
+  "forms": 22,
+  "authoredFrames": 264,
+  "alphaPreserved": true,
+  "clearBorders": true,
+  "method": "one common uniform crop/scale per actor, original projected root/foot anchor; true alpha retained; no repaint/background removal",
+  "runtimeBytes": 19902866,
+  "decodedBytes": 69206016,
+  "frames": [
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 0,
+      "alphaBox": [
+        24,
+        28,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "f640ee23b8bd9f5d031bf4dd82bfe90044314cafad90276acd755fd505956469"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 1,
+      "alphaBox": [
+        13,
+        49,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "73c74503a05cab91874aed49626d09093075a1810263116c36d192c16db177da"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 2,
+      "alphaBox": [
+        14,
+        39,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "4938085ed955959fc7dce51d2f207ddd2934a8610db52387bc8fcd675718629b"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 3,
+      "alphaBox": [
+        14,
+        41,
+        235,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "34c4060517ac62618aac5b2fe38442c589107f9895149ddace202805efb12647"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 4,
+      "alphaBox": [
+        14,
+        38,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "bbc7ee0249cc076b266a9cfa3cbec1b6d08e01115add290a0536eade792b8d71"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 5,
+      "alphaBox": [
+        13,
+        41,
+        220,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "af7a39bdb2de082f73321609fce07d07e5547579fc8d6a967a968af6c8ac0be9"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 6,
+      "alphaBox": [
+        41,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "22e1d9d780f802e3ae3909f6a1bff44c6c5aaa48b2e8dda0fd14860d114c2368"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 7,
+      "alphaBox": [
+        13,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "739c068d5c3fa0a69c59724be5333b516a24a1df6eeb26c15a3a1b2639232be5"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 8,
+      "alphaBox": [
+        14,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "8627265b77acc596eb5a3a32546689976d8e4e17da8f0298a7e10ead6da83146"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 9,
+      "alphaBox": [
+        13,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "ebc46d7086b9d2f0c2a01673b1c14dcdbae570853e4c63b19354553c30709240"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 10,
+      "alphaBox": [
+        13,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "57f496febccac9d76967ef00ec9f0dead113b869e06a8d331e6f50bcd15a84c9"
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 11,
+      "alphaBox": [
+        13,
+        24,
+        228,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "f3b33e6fc547cc03e1323eaad6b36c183047b6e82a9590155f1151e820baaae8"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 0,
+      "alphaBox": [
+        53,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "0bb64ec73b98570c34514891ca1cb21408c951e57328f1a41c352117af8940ff"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 1,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "f549a3240de3ce49216837a19218c2f14219a131a2449f05c7aedf14b8d63854"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 2,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "0cce835a88a855b154f3cfe4c48e2231cbe14e5b3ad7423007c23020696eadfb"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 3,
+      "alphaBox": [
+        12,
+        32,
+        242,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "ed20e927048e68d65f6f3590f3b851232142745d261524dcc031b4eddc749e77"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 4,
+      "alphaBox": [
+        15,
+        33,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "35da1fdb8859b15f5d36bfed49bc080bc48c28a0ff26c174c63fb774e92e0af4"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 5,
+      "alphaBox": [
+        13,
+        32,
+        226,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "a76ffe23ab5fc122e034eb2b3da027d290bfcd37064954463acf91274624e2ba"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 6,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "8bbfaad4d8181fa2713327c309489725020734b57e82486f457fdf2a9bf060c3"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 7,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "5d9b9d9c8efd7e93b5b89ca3004e2289b8d5ba334110e26d3b94098c8d4318c4"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 8,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "ada06d3a8df8dea665935f8cf34a0b1726ee64e8ea4b14c93f8d3598df708cb8"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 9,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "b9b4a88f60ab58e968bc259f17c55978d08d38897a4ffaf156e84ae8023a5aed"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 10,
+      "alphaBox": [
+        12,
+        32,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "fb6f264eaec76aa295f23b98549e48ab7fab3e6244bf46aaa8e8c3d1dcfc5796"
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 11,
+      "alphaBox": [
+        12,
+        33,
+        228,
+        235
+      ],
+      "clearBorder": true,
+      "sha256": "fd36effc0b7e076a1dc9903fdbbabe6998333ffa8d42dbbfb64b04719fda603f"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 0,
+      "alphaBox": [
+        26,
+        33,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "37a9f813fee7b9619b84712c1b6fe00e2490ee4b7be8a0dc30f00aac107bb1ac"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 1,
+      "alphaBox": [
+        26,
+        32,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "43831ee225fd7e89fcbb9a4abc688b704833082cc3cf49c63c7e3e8f1a1f40a5"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 2,
+      "alphaBox": [
+        16,
+        25,
+        234,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "fad7f388c94c34088c232788ee061ee07f20035b45e290eeca3cb0d72149a687"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 3,
+      "alphaBox": [
+        22,
+        35,
+        232,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "cca71d08dba2b3681f76bc8d911657ac8cbb738b4d4ae468a33da78e706e2390"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 4,
+      "alphaBox": [
+        14,
+        38,
+        233,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "b19fcc3d80d6375ccc536d8d7635abe8e5f1e5f427e308688e9e1aba5f8e7650"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 5,
+      "alphaBox": [
+        14,
+        39,
+        227,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "c87c5d4a74f72a5bb4b5085fc1db75bb1be6e97cbe620003e0442fd6d355d5db"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 6,
+      "alphaBox": [
+        24,
+        32,
+        238,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "3fea8336db1174ddef89bf221ba7a6fdcb8ad047dba6df0e72e305df23cd7c09"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 7,
+      "alphaBox": [
+        14,
+        37,
+        230,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "7ebd276dfb448dfc1886219ed329d32945c39ce4c8d99646c8f2478f25fe9b93"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 8,
+      "alphaBox": [
+        14,
+        25,
+        233,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "9d0fd2c9b05ff1206dc6c2c95670994e9d7bab7ed9cf50b0ccef3496b88bc110"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 9,
+      "alphaBox": [
+        14,
+        25,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "f4afca02e0d3bcde9321bf7ea44cb225005b19bfd44ae83238fbbcb009cbcba7"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 10,
+      "alphaBox": [
+        14,
+        35,
+        232,
+        236
+      ],
+      "clearBorder": true,
+      "sha256": "02c709ab746c7f47d4db9fefb5db44c27f456d1eb7b4283d410d1e9920d23704"
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 11,
+      "alphaBox": [
+        14,
+        38,
+        225,
+        237
+      ],
+      "clearBorder": true,
+      "sha256": "7a1b1f17be0465f8ab59ee999fc80b9ac9e74fb9d298e0dddbcbafc3c18fdbc8"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 0,
+      "alphaBox": [
+        36,
+        21,
+        243,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "d839aa2017b20d591cef54c36eddf432ef857ca9fdc5a7ad552da9d844984f0e"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 1,
+      "alphaBox": [
+        15,
+        19,
+        239,
+        223
+      ],
+      "clearBorder": true,
+      "sha256": "79a34efc52e4d64c0aeedfec01293cef9309a8a8174b7a12af0e19cea61fc22a"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 2,
+      "alphaBox": [
+        14,
+        7,
+        235,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "fa0fcb5522c4b3ff174910961b354c8880aaa958c75e7ecc49a14a76d4685d31"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 3,
+      "alphaBox": [
+        15,
+        20,
+        235,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "06cdca8f1f98341aa4f7930ee8640c0ffb4d10864f82e654878af4d436d3dfb4"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 4,
+      "alphaBox": [
+        15,
+        33,
+        237,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "806ca7455e359dc2cbde5329d0971fe3fbcfd1901c2be3513b0fe5e4d5a82b5a"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 5,
+      "alphaBox": [
+        21,
+        24,
+        232,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "f616674dcbbb5f729bfb2db6fb5fabbba490bceb6cd4a13c8830d1e949a551ba"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 6,
+      "alphaBox": [
+        34,
+        5,
+        243,
+        226
+      ],
+      "clearBorder": true,
+      "sha256": "0160f3ec233d53629ddfaf619d6b55dad80bcef0cac4f4a123e385e563738c52"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 7,
+      "alphaBox": [
+        30,
+        12,
+        235,
+        223
+      ],
+      "clearBorder": true,
+      "sha256": "82142d16b50b5ac5e74a311445beee8849778b9c1f51d7f9b9e0c1e57353581b"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 8,
+      "alphaBox": [
+        19,
+        4,
+        225,
+        223
+      ],
+      "clearBorder": true,
+      "sha256": "a2920b1be21d1133fd6770c29db39b4ab23de1969567d769b4752240be553093"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 9,
+      "alphaBox": [
+        14,
+        32,
+        238,
+        225
+      ],
+      "clearBorder": true,
+      "sha256": "b2d8bcff42543a8160e55cb6091c959f0270bdd2a61acc97208e494c73c2f88d"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 10,
+      "alphaBox": [
+        27,
+        36,
+        235,
+        223
+      ],
+      "clearBorder": true,
+      "sha256": "bfa14201debdbb9f4f61042de7ff99b910fb24546fd5c49bb1fbb8d1c5a88ee5"
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 11,
+      "alphaBox": [
+        19,
+        25,
+        232,
+        223
+      ],
+      "clearBorder": true,
+      "sha256": "76e3d159e9ecc0dca1349b18862b600ae246d0982a9f2389eabd455735caaaac"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 0,
+      "alphaBox": [
+        8,
+        16,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "2d427830e6bdc11eed8284867b6f9d3e7a3f894a9b66c044c25d1f36ea4f4078"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 1,
+      "alphaBox": [
+        8,
+        11,
+        249,
+        250
+      ],
+      "clearBorder": true,
+      "sha256": "dabc816e2bce94d96e444db5794d8a60a28fc00b09547dc63ecd8126dfb8190e"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 2,
+      "alphaBox": [
+        8,
+        10,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "972228c13812d7a9dfd599ad054981c4c8d23f4cddad8378af69d1d44e7d920a"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 3,
+      "alphaBox": [
+        8,
+        20,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "09572828dfc54dfd54d2e731739028892fa726656ffba61f5b65e304f0e424b0"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 4,
+      "alphaBox": [
+        8,
+        25,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "1c35a01d233455e7f9534154acf2bb10510c22cb2b0a943a052b41ae4965abf8"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 5,
+      "alphaBox": [
+        8,
+        20,
+        249,
+        250
+      ],
+      "clearBorder": true,
+      "sha256": "e47759ca3342e784543c63889c5125b89a7f6495a4c73a047e6418d6d7fdd606"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 6,
+      "alphaBox": [
+        8,
+        4,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "f0ece9ed3ad24d895ed6646d9d859f53740f2bebdaa85c19fe92868a69fb166e"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 7,
+      "alphaBox": [
+        8,
+        20,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "23238a076519ecfbd0c0f71e882e38f7172f344af031b7c37e95853d84fbec68"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 8,
+      "alphaBox": [
+        8,
+        4,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "54e1d61065186f136932033d22ef3eed9432643099429f69c099ead06e08c29c"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 9,
+      "alphaBox": [
+        8,
+        4,
+        249,
+        239
+      ],
+      "clearBorder": true,
+      "sha256": "e28bf172f28b0cab735ce1aa899c3391a76158f3fd4a28e8b796d894611474ff"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 10,
+      "alphaBox": [
+        8,
+        7,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "8461217926e9f22ede06dea5f4409a46abe88c216fca67e7476a00312f68ce3f"
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 11,
+      "alphaBox": [
+        8,
+        13,
+        249,
+        250
+      ],
+      "clearBorder": true,
+      "sha256": "c0656992b4119764f333051316f8b81104a2f28b85ae527b090388eb5d627448"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "1e1fd2fdccb7cac8605eb0474480f433de37a0b75187b91ab2321f34b890b24a"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 1,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "59482e595e6edf5fd98c59e47268671aeadcb050329568162214c7dcbeb1fa8a"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "11f6214daf0afdd3cf0d19bd533199b699b83deccc3f06a2bacc7f718f748fef"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        12,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "8c5204a594353cffc32ce9fb753d500095f7005869959dac9c0d25dd9e5a1e1d"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "f032799d4c1658b543ffb53ebff48ae45555c90c7958283df571cdb704c9b38a"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 5,
+      "alphaBox": [
+        4,
+        11,
+        252,
+        250
+      ],
+      "clearBorder": true,
+      "sha256": "9a84f637eddd10afe19b412b517c1d3efc3aae80b980de5c28a2ba6f35b904e8"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        11,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "1f6360d3477a59b61000b3c3503e0b015e2b0f345e3fdf23dd4fe5c8ab9ad8f6"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "eedd4a1d982ae9102ad00f8d09e5225470f154c53e089147a83565938cade38d"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "a576a63c206c5cfc61e856f71250cde9758a7009cf7dc7aa0335289524b3d674"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "987952d1dd29a226c51ee7eb935257ec9c4653ba7ff09541755b5a55c62ace3c"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        16,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "8e388033be8d4cd7d42a1688c3c7257246efbf621d1458bdc4af819c1bbaa1f6"
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        11,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "68c8e8f0e52db6ee73e4f4203038850f9b50f902e2fd1c07ac048725b21218f2"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 0,
+      "alphaBox": [
+        23,
+        22,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "0ff364faf733b75b08b2e182525dd1aa73e426fd85b1377f780ccb64e1f5c3b2"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 1,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "25eb4b03c45e5a7614516fe8c75174a7985a7f3e1393de605b0afba430339940"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 2,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "e5ed51c2aca2a3d2435163cb01ea779003aabccdca5bd266de38915c35c5ba53"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 3,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "c2bbffeb4136e1fff5db7551d88b0579427d106bc21a525f166a5dab868727bc"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 4,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "a384a41107b9bdfbb77c580c9fd900b55f490b44185ae294cf897117d4948338"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 5,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "f42347639f6f84e15bbccdac3eae0e0e9f4d1ffff9c88f11d903f49d7c45dbaa"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 6,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "33221377a782528fb41900b2ff1e5827ca92b5c0cc3f39ea53bd69a141367bc4"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 7,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "9994d085796eede2439771abf742c7e3bcca10b60bcc00b27292194495d6d4e0"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 8,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "f6a0b4b83a78f0db143d5a806b644999ac60ee191947c3109df5d6dec5bbbb2c"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 9,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "9f7dc7ecaebf9e706bc88850cb839252ab7e9038060f71a75223a283467eba63"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 10,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "fee0102ee0740918e1f7267cc281a009cc8e4cf406ddf278e81dcfde051e81d6"
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 11,
+      "alphaBox": [
+        22,
+        19,
+        232,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "9956ba158246ac4250fe4fd9cfcd1ee2f8dc20836daf575136e96b0dcb1515e2"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 0,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "147f7693a80bc644a35bee1909eb3fd1b5d44f09eae55269911dfccff3470d65"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 1,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "4d36feaf07cbb9d4ede692525825deae37d9ef161a636c7bf9a4e838197e7e25"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 2,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "0654d39b6e691925e6c1f22868f7cb6de743bf83ad8a7496b271ef8c14047526"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 3,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "c1c70a519f6d062dcd3f4981680e5ffc422d7e37bd89b72201cbf2eb448481f7"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 4,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "7ee55a71de7c1b1bba6402c19edbcd6209d400028a1dc042790195fd2878036d"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 5,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "6bc95db263105727c2586525811437aad5f36474b34be7c8d2a539ee8a053a1c"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 6,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "b53f1d96bd86e9043372ffcce061848c0692d7f9c308cf59d04f6cea2b946992"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 7,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "3d8a384a60c15f2ce542a1b6c04368ae2392a73fe56e23aed7f2f9a57092c02c"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 8,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "2d6df882e087042f98a1cfc7e17078c81966f9a9cb2d729bd71c92e8a3f03335"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 9,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "c11545854fc113ba9f2b11f59f73830658cd5fc37ef79ce1cac33381f0fabde2"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 10,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "d4f3d32d69b9a09e5d71a44fbb1c92d8f5bf6eae19ccdd3e4bb032fa9e167525"
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 11,
+      "alphaBox": [
+        14,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "1d17a2be6e03f3f9da60872c5315974b6d995d78d4ff4c596dfd601b3bf75b98"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 0,
+      "alphaBox": [
+        26,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "3cbc1e1dad718c9a57f8c0f915abd901ddc2f17c69ada25fb05b2ace71b7e084"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 1,
+      "alphaBox": [
+        11,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "3eae037f2a1134f203b19e98e3fd79a8045e863872bac934d7eef8e22640b6c8"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 2,
+      "alphaBox": [
+        11,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "950676b8da3b3b3d9611bf9f5b6929658004f8998613aa2f7b28227815a021f1"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 3,
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "323e1a6704515ff27cadd5e9a49bbe954bb9e1595f531564d11427e4214dbe58"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 4,
+      "alphaBox": [
+        11,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "580d00f1fb64c9d238136856a22ad3971749059f9a7692bd5be8668326ff7574"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 5,
+      "alphaBox": [
+        10,
+        27,
+        222,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "4f0c733c1efb82faf0dd5e77f5e44f8a1411d4762445306f12b180c004f6c271"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 6,
+      "alphaBox": [
+        24,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "61cb3604223b43cf581608e31f439f431ad8d0aaa7b70bcb3fae83fa34dddd0e"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 7,
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "d2e3886e971ef00e0de4df24e9530c30fe7e29207a44f2ec93a365fb4967d0a1"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 8,
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "47d5d386d3689aebfef7e713cb7f24dae4058545996b5bce10af2eca2df720d0"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 9,
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "ea8d98ceed9281654dfe50b2754270b3ef9b90da6f169187dbcf8be53299b05f"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 10,
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "dfa133d0e92f126de8f0c24075d6ac8782d2a10fd9f08f9f6ffc6a38a66725f9"
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 11,
+      "alphaBox": [
+        10,
+        27,
+        235,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "dccbfd3161962dfada2be30d704fdf8e9c4779a25f93b20d5d042cf8bfaf2e26"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 0,
+      "alphaBox": [
+        34,
+        10,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "b60158cba864eee4af0f2829bf767b36cdf8c3704c99946bf67263c2b498f280"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 1,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "ad0b34893a6e24407ec65b38455ffeb5d78c2432542f0f73f8b3ac0966b02171"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 2,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "a3e7cab8b5e15a5bb32fe412d9626172d5164dea7186f4148d1d0da6094d72f8"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 3,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "72d6d69cfb7adfcba309ba1147c6207ca19b7e7f7a5650b5e1859664e76960e3"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 4,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "a9fef49bf07cd571b97f60d6484348568828900dd32f2460368f86b7a1d1a849"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 5,
+      "alphaBox": [
+        14,
+        10,
+        231,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "544f0f31f82fa57161b7264ac105362808805480fc18e429d505eff76c180e34"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 6,
+      "alphaBox": [
+        27,
+        10,
+        242,
+        222
+      ],
+      "clearBorder": true,
+      "sha256": "c55a839b142dcd7ab2873de54a3a6a55706f7615b0a2a6b4ced2ee10d363e6d2"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 7,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        221
+      ],
+      "clearBorder": true,
+      "sha256": "a7b8a1c748a5dc96bdb4673b378c1136689020085b8af08c1d1e05232fdf6f33"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 8,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        220
+      ],
+      "clearBorder": true,
+      "sha256": "fd7dbcca5525412d23d93fd8efe50cdb16a6aed7f864c40a795e4e844c63c6d1"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 9,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        220
+      ],
+      "clearBorder": true,
+      "sha256": "470bec6a416d75be0cfaeff07d56e74c15c664c538bd64da017decb158fb842b"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 10,
+      "alphaBox": [
+        14,
+        10,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "72b058914569e6c5f72ce2203667657a590dfb568966a0350dddcc9068e2bc1c"
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 11,
+      "alphaBox": [
+        14,
+        10,
+        225,
+        220
+      ],
+      "clearBorder": true,
+      "sha256": "dc3f7a5bc838c0c5b7ad6eba9a4476e3701f65762ebcf8632f3122f63efbbba5"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "0a1bdb119f0eb5460bc2a6947058b2a676f87748c193b6e56ffc92cd72d5aa2a"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 1,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "3fabac22a53536fb8536705c27d98271e3461811baa2060ad3a70c1b6d2eb53c"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "f144e0b482049fe190e2f6848f9594c3de7ba95a33e9144c67b6dcb2d2391fd9"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "167b4e29d4522ab57709481db606efd29ccfcdef6106e86f0d7bf4c4e392a2d2"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "2e9087a793feb1f549ddd4411d7acb9cf88e27b233363b3b31940e09a514d812"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 5,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "1bf65f0131fd73179ac4c9ab8136ee5a2e2607ff05c4bedd97e172ad6af84629"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "d64ec88ac8e5387363ac5bf752ec11e4f8a08da8a07945edb2c8591b12c59fa2"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "b5b31416d73fd86796fc59271c473339f15737c5ea64a1f0eb6c6d8ce74b612c"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "a50d2832e9507108e48fd4b9f3e65ad5c51ec4aba60412673d0c3f17bc942323"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "2e849f30fa7fee787d6cad725f7de00e556968e9fb3182565208aa07d23cb102"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "39991516d8e5fec66eec9b16168070fe5cc082e6bc3438e8ed2147a12ac5210b"
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "6f01f92954318713c8b2347634dbffbdca3d23fdf7678233811dcb67c484f385"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "f577f6924012d7163db82afc4821394b71a06309bba6c3c8402b54dc6523aa1b"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 1,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "bb5f0d51e8a06bd0bf5c955d8e42d0764ef942d371f1a9f5e1c5af59b8c8a777"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "3c8fbf39c3559b6e17854e975ff47a2ed2e0d7ac9d6df6a10c4b2e4fd520c064"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "33f0594aaa404641b223d72d7385c16e87a37f7e8ddfc56a2e8485408994f49b"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "4ba79e1b6260bc1023adf3d027202e8f8505cb14df404a9cc0f2aec5266d5319"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 5,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "5a3ccefd4b58128ae4af51d4ecf7d4b1bafb8d6586ab9d874dc84bedc1cee0c6"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "f4b720596097f540cee61312ed1a1b3538a1c13a3829a005e281a36c313a248b"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "8405d6d487744989e88c1a2b9faa3e2ffea7f4160070cdb3827dc11728fcb1e8"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "e266fd0d534998632ab9d76c75706e59d06711021e0b01cc436799ee5264d27d"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "a9462f5a996cb421eec65c24f6edd656d8a078c024620f15f6d23efd0104ca79"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "03759cf929996159fa26b40a66add5f8a8d94d8ff86abe044b72887fe4ccce14"
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "be3356c3aeba4d44de455dcd5096fe0aae2ec2a70e55aa83b97595d668ef350b"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        24,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "1dd1c588144bc16952402211fb49ad62e3655f3e84bc0ac4122d430461e620c2"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 1,
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "51ba286013635b5631c237b53bb928a51b7c5b085ab61a40762c9ab53077270d"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "195da3c610e9761f56f8df447a0b8a0c7a7b40112d47e5eab0be2b5aacda3e45"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        23,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "b1af8c948184c78abf1d631822d03d0b95e4b87745b67d831cba558c9159984e"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        23,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "fed882a82c5cd9b89171353c4f53116a024da70e0449525f265824c5986899a0"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 5,
+      "alphaBox": [
+        5,
+        24,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "f281bd3c4b4526fdd29a4ed1a387a1ba5355d0b18df689f1524d1db143a76b4f"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        24,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "e6be8961463cbfe0d8cde43d05122626c50f970ca3e132b44727600d84a117d1"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "09fabd2c16dda143b258e817f7cfd4165cf0bd169f8a9d48799de6690eee31df"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "7dde2959334ac94c53e6f2eb290bad7eac035043540f730f66fe6d3f1e4da96c"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "cd1807d04614ebc9c482a5c28c0ef2d242cfea0efc7deed94b2c5acc26a50288"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "caddc5ea23a9fd3f4ea222afe4fe62d10d5155ab0cc0c1de09f4bb2860a0767e"
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        22,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "fbb923804950a69311bd5eecf860bb89696c5772d3b95812d2a9d1cf42e6fdc3"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        33,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "ed7eb385e6575bd5d6712f7cca94aba60d8563cb1798d807b69006757bf948ea"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 1,
+      "alphaBox": [
+        5,
+        33,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "03d0471180bfeb3b92e1391a980ee180b968f9c41a09aa78a1ec51ca4bc87485"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 2,
+      "alphaBox": [
+        5,
+        33,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "07745283f9e5d7c5ae258eefda31de01f853810bb808a9d43e97ca1058278d7a"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        33,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "943648d7287cfad92035225029dc79c256c0f2ca96f0713c5eb391ce02f839f3"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        33,
+        240,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "4797e4131ae7f2ae08ed625507c1b1a2599079a45576cf796c217fa7876244a6"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 5,
+      "alphaBox": [
+        5,
+        33,
+        224,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "66c2c52bd6250873639e43ec16bfc0b00384bfa48f4a158284faa10f6d098754"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        34,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "71682817af4e06838e58930d52c17ec5a63cbee20b4dc6cfaf6d5bbeba5e6130"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        35,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "ea417deed7d0967d5f15ab4a7af6af2b0202c84010f6f26663f636d25db1281b"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        33,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "f67f2638d6545513e4c376cdbb00f29008d7d1538dc46250b9b037491b21ad3e"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        33,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "b89a87f258dcfc60a7714707c3b661f58bedd01df1cee72b0ae102c6f88480b3"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        34,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "8747d19be7fa18f51fd268c9411bd9e7badc9377e14fe17def8939e5e494aea6"
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 11,
+      "alphaBox": [
+        5,
+        33,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "28831d2e26db82a4a9f548916db7e691574836aa2cb1cc4b8289cf67d0f33b92"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 0,
+      "alphaBox": [
+        28,
+        32,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "db2bf49b49f0d60fc931673533fe025e2bcad80271781f40e91731d0f7fcc6fb"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 1,
+      "alphaBox": [
+        6,
+        31,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "c577a08f6465763740688b89cf56d82942672a5951b50a9ac3983ead134cb846"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        31,
+        248,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "4e978b6b2ca65bcf43d09ab870a3a94d7388a30fca5ef87ae69e3445e2b9beab"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 3,
+      "alphaBox": [
+        8,
+        26,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "08165a2ad323de14e4f1cd48cadc5f6add6878792fa533b5fef66b6ee232d036"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        32,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "53ca6838798624b3edb59876abe8f0cb0f91355d4cc31a4bab2fc62907f43197"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 5,
+      "alphaBox": [
+        4,
+        27,
+        219,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "09dc0695b5a63f414a4282b38730a5c109b94d2876ccb7f6b71603fe3de8dab5"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 6,
+      "alphaBox": [
+        30,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "e486d933918a2699807117b825f8f770f4a7bd7573c65ea11f4f8ffc13ea3c38"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "3c986ed69fab9ddd9e63570c371ba46f736541fd91dd7c144beca0f3f0c7ec40"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "fb6c6ea76e06e2aa8233826a00ca769d91551d12f75a8c6d368ee080d6922475"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "472e6fb5ff48a3faf57b3bfedb2f3fcff9f16dba90b94fbe9d6b9c0c90b50113"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "41dee25f8b7176668d8b8e06b90fd5e33de0c2986a3d6757c5a78339a24c2792"
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        26,
+        230,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "530fa5d68010b723ff450c5ddc61c06fa111eae13405cf4b7ede79cd0550ad50"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 0,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "27746ab5b0277adff986453b6a56d7c69ca0f88b503b23b95f4d4b1abaa898a0"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 1,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "262064fd7e9c61f54e09971010b588af1e0f71b7fb4c087a5594abdacee9be7a"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 2,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "a54889f34845dc6520508d14de4e3b1e2dc8c98eab88fc54070c0cf5ee6d8176"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 3,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "2198d17723691fa4c3f232135f42358a8174533d98b050bcbd2dc5bae3a36cab"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 4,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "3625e2ddf0c0e7c773b06afb376288dfaaaa42f3c794cbc79bcdbc32d0d9a637"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 5,
+      "alphaBox": [
+        5,
+        6,
+        236,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "055537e16549e12db9d6c649f7dfaa2bf2db7264f2df0bfd1297b6bee1fbc2a2"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 6,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        224
+      ],
+      "clearBorder": true,
+      "sha256": "02b917525e5c1068af5d511d5cf8835082960d81c6c0348cf739e1af3d67c272"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 7,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        225
+      ],
+      "clearBorder": true,
+      "sha256": "40dad41c318e791f8c89d4f058390fc1f936581e3eb5ca6bda033a33e5534d5a"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 8,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        233
+      ],
+      "clearBorder": true,
+      "sha256": "ce43897b680e90c877762c4918c6b2120e419d5faa86e41c8a58b71fe5338205"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 9,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        242
+      ],
+      "clearBorder": true,
+      "sha256": "523117e23ee658ad70df26bdef014ca033a90655491bcb9927977e460a0862a8"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 10,
+      "alphaBox": [
+        5,
+        6,
+        251,
+        225
+      ],
+      "clearBorder": true,
+      "sha256": "58c2a5e1ed1d2ca29073b4cf2fce1f68d7589e995748961d5616648b8e99c12e"
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 11,
+      "alphaBox": [
+        5,
+        6,
+        234,
+        233
+      ],
+      "clearBorder": true,
+      "sha256": "b91a7c466e354cdec86d74306fa26adf81ec72d7233186bf3e10597fca767c18"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 0,
+      "alphaBox": [
+        14,
+        14,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "6b85d8b641940e14112b4d09c07eed4eb889a204db2b39de99f857af513932c9"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 1,
+      "alphaBox": [
+        14,
+        26,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "003029c732fee9bef08e9c8df8b07d1d02cbb56703a60f85ee2b63a03e2e7bbe"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 2,
+      "alphaBox": [
+        14,
+        13,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "57fd9df4c933a7bc778a6dff3f2c35be583ff90fe53200d32e8d9553c55ec352"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 3,
+      "alphaBox": [
+        14,
+        25,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "48213ec63331ec9eb0b383bc4d55cb483cc7191c9ce30e4f8d79cbc5196a48c0"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 4,
+      "alphaBox": [
+        18,
+        29,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "109537717501ea9d8f0ee0b5e518570ffc5413738e2c91c13df5b726187a102c"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 5,
+      "alphaBox": [
+        14,
+        19,
+        241,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "7c5e82adbdd09633f367c99611a64ad11a87faddd357617cbc9dc922661b6a48"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 6,
+      "alphaBox": [
+        14,
+        12,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "4a6cec691745247cb8de740e5e57d4cab694ba08bd58c7a01e0e117681a3a029"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 7,
+      "alphaBox": [
+        20,
+        12,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "0edfbb259c1d4348048dd0755ac67f4b117b275d3541d012e2888709b29986aa"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 8,
+      "alphaBox": [
+        14,
+        12,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "bc7d568aea847e82d6cc369d9ed26eb839786ec6d08e988bb1a06f3c1377cd06"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 9,
+      "alphaBox": [
+        14,
+        17,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "f19f655154ffc4bfac4e4bb18ac64a64558e8f41e318f2f92764716c3d7707c8"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 10,
+      "alphaBox": [
+        14,
+        12,
+        249,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "e544c3d7c31fc135d3cbe06b52156f53d8af81aa49bc2dfcc4ab7610c7b45baa"
+    },
+    {
+      "key": "boss_ink816_c3_mini1",
+      "frame": 11,
+      "alphaBox": [
+        14,
+        21,
+        239,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "e9495e9b87eb13821012fe9b10e8b5736a4354664b7e767a6c9e596bf44e0927"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "cc51e853d52797012e71eca1c38a084289f3cde464ae59d99e7a902ebfa1ed6c"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 1,
+      "alphaBox": [
+        5,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "73868f2444f19222148b2b95f665704b6ad2e32b9250671fe5815cfae54b6c66"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "133e5c9b7c395d5781a5ece6155bd6086b7711bb4b60cb826901698dfe0ad2e6"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        43,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "2d115cac75351e5c7410fd39f879c07a8198f16da4ccd4718b1206675726dc91"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 4,
+      "alphaBox": [
+        5,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "475ff0cc7923bb50b4553f13da9073d26cf5e751b63a6f5b1f65861f5b768f02"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 5,
+      "alphaBox": [
+        5,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "5df250f764e78037c6fd49dbab3b49dcadddfca51bb3cb91b0a11692fb807463"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "8d1255dc14d71a2002333a3d3ccbebc02e3b6bd6871d96d0aa19b352b6291f87"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "d4e0de47103e11fc6b657007d656d3f0f492b1dcad98c3022a9a3658943f83a1"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 8,
+      "alphaBox": [
+        5,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "9d8dfb4ad7c88575160ed5eebd658db02134a3c4d31e2fe35beb2281106b996b"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "2debb82f9de0c728508025a21de702efe65c9943b7fc39b37e684ee50bff3d62"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "faccfe5d40aa22ca6137e4d58d2c3db459d6116ab7fb23d6a27012d874b19824"
+    },
+    {
+      "key": "boss_ink816_c3_mini2",
+      "frame": 11,
+      "alphaBox": [
+        5,
+        43,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "a9b0f8afe3ed69f8bee28f6c766250d3304789f6b99fd57895b768d85a2f7cfb"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "5abb4d2fc7e6d42260a4d3cd87f7c6572e7a1289c0b008fb09de4f8a389158d6"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 1,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "09a7ebbcf46ae4e45e00b9d4fc6ab74163406d10acc057a9391f4cfc1a873ca9"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "7cf40b32cf3a43e8422da15eaafa6057e11c9abd21c3e0e5614cd27e77486991"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "6a3420a7745caeaa1d0f5d2e5f28911b9562c6619c4bd6700ebbb2754b422c34"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "d3905f003267ee514b59bd6298bc92f31b1a981a8a2347f42c09eb55530c3b4a"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 5,
+      "alphaBox": [
+        4,
+        4,
+        244,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "9c8f790d5a0bdafce2a25a36d0f0792524f8eda5d8cc55697e8cddb98dc99e5f"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "3e61081655a807f77dc242de1b98ee3cf91265fb0e4224785d0775112cf507b0"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "5e7be61e949209d36706fb35904438147f9111bbd863e6bf7c041ea0895e476f"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "0797ba37f130d5bcb2df954f52faee6e5333d83adbb39f867f4497b6a0665894"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "8c0b5c7b99868b804d8ee7dd3f97197ae4b9d57dd2defd2c38a62f217907c007"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        4,
+        251,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "01455c7bd54a849316ef50375cc63a8da5ceab4ccb29cce2697fed552d49f299"
+    },
+    {
+      "key": "boss_ink816_c3_mini3",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        4,
+        242,
+        244
+      ],
+      "clearBorder": true,
+      "sha256": "0e9dd70c80e0ee5e9bfb472c2ad10f4cb385fb5c61b280b4522a8abdc36d8c2b"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 0,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "abb9713ed4537c4b933ccfeddacff6c94c9edd96b51ebd15a19a588ec0021f6f"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 1,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "0e8b0961ed99b311bdbb9ee223ceacea89c6ccfa546c6d9cb428c42a3a5266bf"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 2,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "53494fcf4cbab3984e9de7df28a9d50be5b0b0af474da1f653b2a8123b8a2777"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "50a24184fe0aee64436947ebbd0462a1e4ffad3253a85fa519fda17f16109ed2"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 4,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "af6e39ce7747eb84fc489feb7a7d6fdc276490348a4f2049155c1473109b0e16"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 5,
+      "alphaBox": [
+        4,
+        37,
+        244,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "f7e0fe843db0882f9e53fb040fc852a96ee0c6ff485aaa523f14603b7e332f10"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "e1e3b00f01195923c889fb186f519c9bb0f0bec97fc0a3c33c33403b19984f94"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 7,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "5606b676f03cbdf959211f686aea6a58e0aa2c539475c14314cf8570bd44935a"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "2b475bc1158f3f58ebd847222e0e29923d3b6cb0f721ada449433f0d4fa4b330"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 9,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "1bc07dcf77eb089f1b6ca5e164bcd97f5892ef11b9f28f3eaa464bde4b2cd8e2"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        37,
+        252,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "55ac6bc64b2f8315ae470058b90d223be1bfdccc7eefc42e67514301035c5f38"
+    },
+    {
+      "key": "boss_ink816_c3_mini4",
+      "frame": 11,
+      "alphaBox": [
+        4,
+        37,
+        244,
+        248
+      ],
+      "clearBorder": true,
+      "sha256": "997f2b39f6f3cd8975d29d07b18c4f9b923a45298464ec405f83c7bd3a65af8b"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 0,
+      "alphaBox": [
+        22,
+        43,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "43e63380f37fc727b8a80eec31e5346fc6d3e3e1845891ce071f4bb3e1fdd1df"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 1,
+      "alphaBox": [
+        5,
+        39,
+        252,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "2f9b266725df36bab7ce8338ad40f88ed11c841a108dd0c6557d66956441d767"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 2,
+      "alphaBox": [
+        16,
+        36,
+        252,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "9b6785a4c032965dbdab5aac54a6b4ed9cc286e93a11a5b117394589878bad84"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 3,
+      "alphaBox": [
+        4,
+        40,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "d45b613a331c9c8688faba71ded0f11bf9ec9d4a152dce2c5fb8bd9da6cb102d"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 4,
+      "alphaBox": [
+        5,
+        50,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "9631844a89bf5a72e9957495b9adec3a776b08aa31ff65b16274717acd51bd94"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 5,
+      "alphaBox": [
+        5,
+        45,
+        239,
+        243
+      ],
+      "clearBorder": true,
+      "sha256": "01a3981f2cab8c41ddcd4e3f449c379eae96cc4b4f4253c1d53626bd824011fc"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 6,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "805641a2853d70ce8a90039d5139fe2299dbb95778fefb224a50abb4b619550a"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 7,
+      "alphaBox": [
+        5,
+        36,
+        252,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "383f137f042a1dd5eed2ca50d514a36822f79bb6de41dfc67151940a794a1bf0"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 8,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "4c5ac5de2a707da68e8f11a8ae2c2b52c5b4a501d3ff77f3bccf16dd910c89e0"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 9,
+      "alphaBox": [
+        11,
+        37,
+        252,
+        245
+      ],
+      "clearBorder": true,
+      "sha256": "8ac879059bce0863064533ec1f5ccdc97e7833358a9e53176ca311dae8087cb4"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 10,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "3f0a3333d26ae954a297e1786388000b72f7fed7049347c87c308b8eaf576aa2"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 11,
+      "alphaBox": [
+        5,
+        36,
+        239,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "e5cbe46ae807da5ee54116ea173922e37db7c7dc2298b68d8b850f8d1319edf2"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 12,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "dca0ef54ab59a13e588b0bfa19f7b0c9f5eb7fa1755c093e7aadffe2cd04dea0"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 13,
+      "alphaBox": [
+        5,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "90f8f61d01b40e70f7a716a270e0a700641e45607984e27149591543eb277ae1"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 14,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        249
+      ],
+      "clearBorder": true,
+      "sha256": "d45cf5a02acc7395dc36e2e54a093ba9ea6d8dc17c31f22e8391619b040b7df1"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 15,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "21db671f8173741c69d7eca8a6a04ffbf2b76cbc79854c3102a63a039dab27a1"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 16,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "f8083a829394c584596fe247ca02b61de2e36465795daa4083116e61b5180365"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 17,
+      "alphaBox": [
+        4,
+        36,
+        242,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "56d689b9cbb112a41e4e6183e6ee0cdaba039cdfb4aaf45e1e68c42343b5e8c8"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 18,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "sha256": "01c4986fcf686724b1b7536bd2f2ddfabf82585a8314831d7f80b97d0388d2e2"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 19,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        251
+      ],
+      "clearBorder": true,
+      "sha256": "532616ed5dd122f64b6bb4a60dae262f52b4facc4b78789201d833637e2c329e"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 20,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "d09e0db191c9d9483d4fad1abed28e4b5c8f597f23fe4f952879d1fe1bed2d04"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 21,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        246
+      ],
+      "clearBorder": true,
+      "sha256": "448064f0f48c36aebe69b4d3f67c9d7c77dcf5c815d745a4daa58f77cf486d08"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 22,
+      "alphaBox": [
+        4,
+        36,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "30a7fb49de388d375c88b53a8fe1efe574a7e7ec6a2a32e8320e96d3a431b297"
+    },
+    {
+      "key": "boss_ink816_c3_mini5",
+      "frame": 23,
+      "alphaBox": [
+        7,
+        36,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "sha256": "e2403ee19f42989ae17d8f5f656dc57e5a7652615dadcc7b78335f5bb1610ba6"
+    }
+  ],
+  "phoneReview": "owner will test; source playback is not gameplay"
+}

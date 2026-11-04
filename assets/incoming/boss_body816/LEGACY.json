@@ -1,0 +1,111 @@
+{
+  "boss1": {
+    "url": "assets/generated/boss1_green_ant_queen_sheet.png",
+    "frame": 160
+  },
+  "boss2": {
+    "url": "assets/generated/boss2_clogmaw_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 3,
+      "yoyo": true
+    }
+  },
+  "boss3": {
+    "url": "assets/boss3_sheet.png",
+    "frame": 256
+  },
+  "boss4": {
+    "url": "assets/boss4_sheet.png",
+    "frame": 256
+  },
+  "boss5_sovereign": {
+    "url": "assets/boss5_sovereign_sheet.png",
+    "frame": 256
+  },
+  "boss6_rootmother": {
+    "url": "assets/boss6_rootmother_sheet.png",
+    "frame": 256
+  },
+  "boss7_mycelium_behemoth": {
+    "url": "assets/boss7_mycelium_behemoth_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 3,
+      "yoyo": true
+    }
+  },
+  "boss8_hornet_queen": {
+    "url": "assets/boss8_hornet_queen_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 4,
+      "yoyo": true
+    }
+  },
+  "boss9_chronobloom_orchid": {
+    "url": "assets/boss9_chronobloom_orchid_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 4,
+      "yoyo": true
+    }
+  },
+  "boss10_true_rootmother": {
+    "url": "assets/boss10_true_rootmother_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 4,
+      "yoyo": true
+    }
+  },
+  "c3_boss1": {
+    "url": "assets/art/ch3_bosses/c3_boss1_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss2": {
+    "url": "assets/art/ch3_bosses/c3_boss2_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss3": {
+    "url": "assets/art/ch3_bosses/c3_boss3_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss4": {
+    "url": "assets/art/ch3_bosses/c3_boss4_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss5": {
+    "url": "assets/art/ch3_bosses/c3_boss5_sheet.webp",
+    "frame": 256
+  },
+  "boss_pinnacle": {
+    "url": "assets/art/pinnacle/boss_pinnacle_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini1": {
+    "url": "assets/art/ch3_bosses/c3_mini1_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini2": {
+    "url": "assets/art/ch3_bosses/c3_mini2_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini3": {
+    "url": "assets/art/ch3_bosses/c3_mini3_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini4": {
+    "url": "assets/art/ch3_bosses/c3_mini4_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini5": {
+    "url": "assets/art/ch3_bosses/c3_mini5_sheet.webp",
+    "frame": 256
+  }
+}

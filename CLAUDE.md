@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.16; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.17; fetch the deploy branch first.
 
-# Latest delivery: v8.1.15 — C3 and Pinnacle painted boss effects (owner)
+# Latest delivery: v8.1.16 — animated painted boss bodies (owner)
+
+21original identities/22forms264authoredframes from11ImageGen pairedatlases plusoneactualalpha correction;15campaignbosses/Pinnacle/5C3minis. Actualsprite replacement, notoverlays;256px runtimeframes restoreB01source160→256 atsameprojectedworldsize. Uniformcommonbodycrop/footanchor andratio-normalizedcircle/offset/baseScale preservephysicalworldbounds; B05maw/eyes vsB06uprightbudthrone retaincanonandreadseparately. Stage-lazy newtextures, missingart/Delve/dummyfallback, originaldeath/cutscene paths preserved withcurrent-poseghost. Ownedidle/wind/strike/recoverclock respectsplay/bossintro/pause/freeze/Low/reduced/player/stage/spawn/epoch/pool cleanup, chargewind→strike cuedatoldreleaseevent. OriginalAI/damage/cooldowns/position/velocity retained. Unit21bodygeometrytests andactualArcadeworldboundsCanvasreview +existingchecks. Source/QA/previews/promptroles retained;12prompts includingtruealphafix. Userwillphoneplaytesthimself. C3/Pinnacle815runtimec973d8d published/71files40,940,240bytes immutableverified; Pages41877052587/APK41877052203SUCCESS andlive15/all36WebPshashesverified.
+
+# Previous delivery: v8.1.15 — C3 and Pinnacle painted boss effects (owner)
 
 36clips216authoredframes across9selected ImageGen atlases inboss_outline815; harvest/wiltedpetals/prism/vault/root/Pinnaclemaw. Pinnaclefang/jawidentity corrections useactualbossidentity plusisolatedinkstyle references, draftsretained. Perstage10–14lazy aliases andPinnacle branch, oldwarn/counter/safezonefallthrough; shared813bodymovesreused. Ownedwallclock expanded815; directringsegments/prism/nectardrip tracked, seedgrid retainsstaticwarning0/1 and beginsframe2 onlyat originalstrike. Original geometry/anchors/periods/damage/collisions/gaps retained; largebossFXopacitygate recognizesnewfamily. Combined96clips576frames realCanvascontracts andisolatedseedgrid/event/alias/hash tests. Existing814 Pages41864376182/APK41864376011SUCCESS; live14/all28hashesverified afterGitHubservicequeue cleared. User requests allremainingart insequence; bodyposes/B01/B05-B06/animatedbullets/C3minis next. Userwaived phone testing andwillplay himself.
 
