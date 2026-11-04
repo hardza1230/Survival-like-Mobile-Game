@@ -1,3 +1,5 @@
+> 4 Nov 2026: current boss/battle art audit (15 main bosses,5 C3 minis,116 VFX,16 shots), actual runtime evidence, source contact sheets and priorities: [battle_art_audit812](../design/battle_art_audit812/README.md). Existing boss art is delivered/wired; follow the audit for style and action-sequence improvements rather than recreating older completed orders.
+
 > 18 ต.ค. 2026: งานใหม่ Page transition + Card icons (82 ไฟล์) ดู [26_TRANSITION_AND_CARD_ICONS.md](26_TRANSITION_AND_CARD_ICONS.md) · ส่งที่ `assets/incoming/transition_card_icons/`
 > 18 ต.ค. 2026: งานใหม่ Hub Menu Motion (20+5 ไฟล์) ดู [25_HUB_MENU_MOTION.md](25_HUB_MENU_MOTION.md) · ส่งที่ `assets/incoming/hub_motion/`
 > 18 ต.ค. 2026: งานใหม่ Pause Screen UI (19 ไฟล์) ดู [24_PAUSE_SCREEN_UI.md](24_PAUSE_SCREEN_UI.md) · ส่งที่ `assets/incoming/pause_ui/`
