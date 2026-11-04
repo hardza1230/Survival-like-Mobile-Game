@@ -1,8 +1,12 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.13; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.14; fetch the deploy branch first.
 
-# Latest delivery: v8.1.12 — restore painted Plasma and audit boss art (owner)
+# Latest delivery: v8.1.13 — C1 boss painted-outline effects (owner)
+
+Built-in ImageGen eight source atlases/32 clips/192 distinct authored frames in boss_outline813, genuine alpha and original legacy projected geometry; four shared body moves and C1 elemental/signature VFX. Stage-lazy aliases only stages0–4, old art fallback/Pinnacle excluded. Owned wall-clock sprite progression, hold-aware ice bars, wave720ms and skydrop760ms damage-aligned cosmetic impact with player/stage/epoch cleanup. Warning shapes, safe gaps, damage and attack cadence preserved. Source radial frost breath corrected from directional draft, then transparent matte correction; drafts retained for provenance. Exact prompts/manifests/alpha/hash/frame/border QA, static Canvas gallery and isolated production helper tests. GPU test now asserts all32keys remain stage-lazy; elite-stage extraction fixture includes the new registry dependency. Runtime8.65MB/41.25MiB decoded across whole kit, per-stage lazy subsets. Boss body poses, later chapters and phone appearance/FPS review remain future work.
+
+# Previous delivery: v8.1.12 — restore painted Plasma and audit boss art (owner)
 
 Owner clarified remove only pale-blue area guide, not Plasma artwork. Restored bpx_taro_plasma_ring→bpx_taro810_plasma sixframe loop following original radius/out-and-back; retained no pale floor/circles in Magnetic Field and interior-lightning fallback. Recast now removes both old loop and graphics; expiry/scene cleanup and original damage/timing/debuff geometry preserved. Clarity811 test extends loaded-art/fallback/recast/expiry contracts. Source audit decodes152registered files:15mainbosses/5C3minis/116VFX/16shots; all mainbosses8distinct nonempty cells. Source-contact PNGs/hash/dimension inventory and prioritized art direction docs/design/battle_art_audit812; reproducible script scripts/audit-battle-art812.py. Existing boss shots/body VFX are wired despite old source-only delivery notes. Findings: shared neutral body FX, mixed glow/outline styles, similar B05/B06 silhouette,160pxB01 and held-pose vs sequence gaps. Boss redraw is proposed next work, not claimed delivered here. No new runtime images/audio/gameplay changes; owner phone visuals/FPS pending.
 

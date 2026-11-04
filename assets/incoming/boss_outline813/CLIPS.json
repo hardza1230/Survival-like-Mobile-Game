@@ -1,0 +1,494 @@
+{
+  "groups": {
+    "acid": [
+      "b01_impact",
+      "b01_wave",
+      "b01_lane",
+      "b01_nest_collapse"
+    ],
+    "drain": [
+      "b02_impact",
+      "b02_wave",
+      "b02_lane",
+      "b02_suction"
+    ],
+    "fire": [
+      "b03_impact",
+      "b03_wave",
+      "b03_lane",
+      "b03_grinder_blade"
+    ],
+    "ice": [
+      "b04_impact",
+      "b04_wave",
+      "b04_lane",
+      "b04_blizzard"
+    ],
+    "crown": [
+      "b05_impact",
+      "b05_wave",
+      "b05_lane",
+      "b05_void_maw"
+    ],
+    "signature_a": [
+      "b02_bubble_cage",
+      "b03_fire_cross",
+      "b04_ice_bars",
+      "b05_crown_blade"
+    ],
+    "signature_b": [
+      "b05_eclipse",
+      "b01_burrow_burst",
+      "b04_frost_breath",
+      "b02_sludge_band"
+    ],
+    "body": [
+      "body_shockwave",
+      "body_skydrop",
+      "body_sweep",
+      "body_charge"
+    ]
+  },
+  "clips": [
+    {
+      "group": "acid",
+      "row": 0,
+      "name": "b01_impact",
+      "key": "vfx813_b01_impact",
+      "old": "vfx_b01_impact",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    },
+    {
+      "group": "acid",
+      "row": 1,
+      "name": "b01_wave",
+      "key": "vfx813_b01_wave",
+      "old": "vfx_b01_wave",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "fill": [
+        0.93,
+        0.48
+      ],
+      "loop": false,
+      "rate": 8.4,
+      "oldFrames": 4
+    },
+    {
+      "group": "acid",
+      "row": 2,
+      "name": "b01_lane",
+      "key": "vfx813_b01_lane",
+      "old": "vfx_b01_lane",
+      "fw": 512,
+      "fh": 64,
+      "anchor": "left",
+      "loop": true,
+      "rate": 15,
+      "oldFrames": 4
+    },
+    {
+      "group": "acid",
+      "row": 3,
+      "name": "b01_nest_collapse",
+      "key": "vfx813_b01_nest_collapse",
+      "old": "vfx_b01_nest_collapse",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 12,
+      "oldFrames": 6
+    },
+    {
+      "group": "drain",
+      "row": 0,
+      "name": "b02_impact",
+      "key": "vfx813_b02_impact",
+      "old": "vfx_b02_impact",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    },
+    {
+      "group": "drain",
+      "row": 1,
+      "name": "b02_wave",
+      "key": "vfx813_b02_wave",
+      "old": "vfx_b02_wave",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "fill": [
+        0.91,
+        0.46
+      ],
+      "loop": false,
+      "rate": 8.4,
+      "oldFrames": 4
+    },
+    {
+      "group": "drain",
+      "row": 2,
+      "name": "b02_lane",
+      "key": "vfx813_b02_lane",
+      "old": "vfx_b02_lane",
+      "fw": 512,
+      "fh": 64,
+      "anchor": "left",
+      "loop": true,
+      "rate": 15,
+      "oldFrames": 4
+    },
+    {
+      "group": "drain",
+      "row": 3,
+      "name": "b02_suction",
+      "key": "vfx813_b02_suction",
+      "old": "vfx_b02_suction",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": true,
+      "rate": 12,
+      "oldFrames": 4
+    },
+    {
+      "group": "fire",
+      "row": 0,
+      "name": "b03_impact",
+      "key": "vfx813_b03_impact",
+      "old": "vfx_b03_impact",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    },
+    {
+      "group": "fire",
+      "row": 1,
+      "name": "b03_wave",
+      "key": "vfx813_b03_wave",
+      "old": "vfx_b03_wave",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "fill": [
+        0.94,
+        0.46
+      ],
+      "loop": false,
+      "rate": 8.4,
+      "oldFrames": 4
+    },
+    {
+      "group": "fire",
+      "row": 2,
+      "name": "b03_lane",
+      "key": "vfx813_b03_lane",
+      "old": "vfx_b03_lane",
+      "fw": 512,
+      "fh": 64,
+      "anchor": "left",
+      "loop": true,
+      "rate": 15,
+      "oldFrames": 4
+    },
+    {
+      "group": "fire",
+      "row": 3,
+      "name": "b03_grinder_blade",
+      "key": "vfx813_b03_grinder_blade",
+      "old": "vfx_b03_grinder_blade",
+      "fw": 128,
+      "fh": 128,
+      "anchor": "center",
+      "loop": true,
+      "rate": 18,
+      "oldFrames": 4
+    },
+    {
+      "group": "ice",
+      "row": 0,
+      "name": "b04_impact",
+      "key": "vfx813_b04_impact",
+      "old": "vfx_b04_impact",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    },
+    {
+      "group": "ice",
+      "row": 1,
+      "name": "b04_wave",
+      "key": "vfx813_b04_wave",
+      "old": "vfx_b04_wave",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "fill": [
+        0.92,
+        0.5
+      ],
+      "loop": false,
+      "rate": 8.4,
+      "oldFrames": 4
+    },
+    {
+      "group": "ice",
+      "row": 2,
+      "name": "b04_lane",
+      "key": "vfx813_b04_lane",
+      "old": "vfx_b04_lane",
+      "fw": 512,
+      "fh": 64,
+      "anchor": "left",
+      "loop": true,
+      "rate": 15,
+      "oldFrames": 4
+    },
+    {
+      "group": "ice",
+      "row": 3,
+      "name": "b04_blizzard",
+      "key": "vfx813_b04_blizzard",
+      "old": "vfx_b04_blizzard",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": true,
+      "rate": 12,
+      "oldFrames": 4
+    },
+    {
+      "group": "crown",
+      "row": 0,
+      "name": "b05_impact",
+      "key": "vfx813_b05_impact",
+      "old": "vfx_b05_impact",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    },
+    {
+      "group": "crown",
+      "row": 1,
+      "name": "b05_wave",
+      "key": "vfx813_b05_wave",
+      "old": "vfx_b05_wave",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "fill": [
+        0.91,
+        0.53
+      ],
+      "loop": false,
+      "rate": 8.4,
+      "oldFrames": 4
+    },
+    {
+      "group": "crown",
+      "row": 2,
+      "name": "b05_lane",
+      "key": "vfx813_b05_lane",
+      "old": "vfx_b05_lane",
+      "fw": 512,
+      "fh": 64,
+      "anchor": "left",
+      "loop": true,
+      "rate": 15,
+      "oldFrames": 4
+    },
+    {
+      "group": "crown",
+      "row": 3,
+      "name": "b05_void_maw",
+      "key": "vfx813_b05_void_maw",
+      "old": "vfx_b05_void_maw",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": true,
+      "rate": 12,
+      "oldFrames": 4
+    },
+    {
+      "group": "signature_a",
+      "row": 0,
+      "name": "b02_bubble_cage",
+      "key": "vfx813_b02_bubble_cage",
+      "old": "vfx_b02_bubble_cage",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "fill": [
+        0.86,
+        0.8
+      ],
+      "loop": true,
+      "rate": 12,
+      "oldFrames": 4
+    },
+    {
+      "group": "signature_a",
+      "row": 1,
+      "name": "b03_fire_cross",
+      "key": "vfx813_b03_fire_cross",
+      "old": "vfx_b03_fire_cross",
+      "fw": 512,
+      "fh": 96,
+      "anchor": "left",
+      "loop": true,
+      "rate": 12,
+      "oldFrames": 4
+    },
+    {
+      "group": "signature_a",
+      "row": 2,
+      "name": "b04_ice_bars",
+      "key": "vfx813_b04_ice_bars",
+      "old": "vfx_b04_ice_bars",
+      "fw": 128,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 12,
+      "oldFrames": 6
+    },
+    {
+      "group": "signature_a",
+      "row": 3,
+      "name": "b05_crown_blade",
+      "key": "vfx813_b05_crown_blade",
+      "old": "vfx_b05_crown_blade",
+      "fw": 512,
+      "fh": 256,
+      "anchor": "left",
+      "loop": false,
+      "rate": 12,
+      "oldFrames": 6
+    },
+    {
+      "group": "signature_b",
+      "row": 0,
+      "name": "b05_eclipse",
+      "key": "vfx813_b05_eclipse",
+      "old": "vfx_b05_eclipse",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 7.5,
+      "oldFrames": 8
+    },
+    {
+      "group": "signature_b",
+      "row": 1,
+      "name": "b01_burrow_burst",
+      "key": "vfx813_b01_burrow_burst",
+      "old": "vfx_b01_burrow_burst",
+      "fw": 128,
+      "fh": 128,
+      "anchor": "center",
+      "loop": false,
+      "rate": 12,
+      "oldFrames": 6
+    },
+    {
+      "group": "signature_b",
+      "row": 2,
+      "name": "b04_frost_breath",
+      "key": "vfx813_b04_frost_breath",
+      "old": "vfx_b04_frost_breath",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 18,
+      "oldFrames": 4
+    },
+    {
+      "group": "signature_b",
+      "row": 3,
+      "name": "b02_sludge_band",
+      "key": "vfx813_b02_sludge_band",
+      "old": "vfx_b02_sludge_band",
+      "fw": 256,
+      "fh": 64,
+      "anchor": "left",
+      "loop": true,
+      "rate": 12,
+      "oldFrames": 4
+    },
+    {
+      "group": "body",
+      "row": 0,
+      "name": "body_shockwave",
+      "key": "vfx813_body_shockwave",
+      "old": "vfx_body_shockwave",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    },
+    {
+      "group": "body",
+      "row": 1,
+      "name": "body_skydrop",
+      "key": "vfx813_body_skydrop",
+      "old": "vfx_body_skydrop",
+      "fw": 256,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 18,
+      "oldFrames": 8
+    },
+    {
+      "group": "body",
+      "row": 2,
+      "name": "body_sweep",
+      "key": "vfx813_body_sweep",
+      "old": "vfx_body_sweep",
+      "fw": 384,
+      "fh": 256,
+      "anchor": "center",
+      "loop": false,
+      "rate": 16,
+      "oldFrames": 6
+    },
+    {
+      "group": "body",
+      "row": 3,
+      "name": "body_charge",
+      "key": "vfx813_body_charge",
+      "old": "vfx_body_charge",
+      "fw": 256,
+      "fh": 128,
+      "anchor": "center",
+      "loop": false,
+      "rate": 14,
+      "oldFrames": 6
+    }
+  ]
+}
