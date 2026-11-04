@@ -43,7 +43,7 @@ jobs:
       - name: Validate game and UI contracts
         run: npm run check
       - name: Assemble web assets (www/)
-        run: node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs && node scripts/build-ruby-story-review.mjs && node scripts/build-sesame-rune-review.mjs && node scripts/build-mint-vfx-review.mjs && node scripts/build-battle-vfx-review.mjs && node scripts/build-boss-vfx-review.mjs && node scripts/build-boss-body-review.mjs
+        run: node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs && node scripts/build-ruby-story-review.mjs && node scripts/build-sesame-rune-review.mjs && node scripts/build-mint-vfx-review.mjs && node scripts/build-battle-vfx-review.mjs && node scripts/build-boss-vfx-review.mjs && node scripts/build-boss-body-review.mjs && node scripts/build-boss-shot-review.mjs
       - name: Verify menu visuals
         run: |
           npm install --prefix /tmp/forge-browser --no-save playwright@1.51.1
@@ -57,6 +57,7 @@ jobs:
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-battle-vfx-ui.cjs
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-boss-vfx-ui.cjs
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-boss-body-ui.cjs
+          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-boss-shot-ui.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

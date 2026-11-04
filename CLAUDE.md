@@ -1,97 +1,14 @@
 # 🔢 Version line
 
-Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.17; fetch the deploy branch first.
+Now on the 8.1.x line: skipped patch99/100 after8.0.98 following the existing owner preference. Next release =8.1.18; fetch the deploy branch first.
 
-# Latest delivery: v8.1.16 — animated painted boss bodies (owner)
+# Latest delivery: v8.1.17 — animated painted boss projectiles (owner)
+
+16original projectile silhouettes /64new authored frames from4ImageGen atlases; source native1254square retained, normalized only while packing. Stage-lazy four-frame128px WebPs total575,618bytes; real alpha, exact prompts/hashes/border QA and PNG/GIF previews. Owned wall clock attaches to original pooled bullet without extra sprites/timers; damage/life/speed/scale/rotation/circle/behaviour unchanged, Low/reduced keyframe, pause/stage/player/epoch/reuse/shutdown guards, cleanup never destroys pooled actors. Source/unit adapters and actual Arcade Canvas bounds/pool contracts cover16profiles across6layouts. All ordered boss-art work completed in813–817; see docs/design/battle_art_audit812/DELIVERY817.md. Owner waived agent phone testing and will playtest himself.
+
+# Previous delivery: v8.1.16 — animated painted boss bodies (owner)
 
 21original identities/22forms264authoredframes from11ImageGen pairedatlases plusoneactualalpha correction;15campaignbosses/Pinnacle/5C3minis. Actualsprite replacement, notoverlays;256px runtimeframes restoreB01source160→256 atsameprojectedworldsize. Uniformcommonbodycrop/footanchor andratio-normalizedcircle/offset/baseScale preservephysicalworldbounds; B05maw/eyes vsB06uprightbudthrone retaincanonandreadseparately. Stage-lazy newtextures, missingart/Delve/dummyfallback, originaldeath/cutscene paths preserved withcurrent-poseghost. Ownedidle/wind/strike/recoverclock respectsplay/bossintro/pause/freeze/Low/reduced/player/stage/spawn/epoch/pool cleanup, chargewind→strike cuedatoldreleaseevent. OriginalAI/damage/cooldowns/position/velocity retained. Unit21bodygeometrytests andactualArcadeworldboundsCanvasreview +existingchecks. Source/QA/previews/promptroles retained;12prompts includingtruealphafix. Userwillphoneplaytesthimself. C3/Pinnacle815runtimec973d8d published/71files40,940,240bytes immutableverified; Pages41877052587/APK41877052203SUCCESS andlive15/all36WebPshashesverified.
-
-# Previous delivery: v8.1.15 — C3 and Pinnacle painted boss effects (owner)
-
-36clips216authoredframes across9selected ImageGen atlases inboss_outline815; harvest/wiltedpetals/prism/vault/root/Pinnaclemaw. Pinnaclefang/jawidentity corrections useactualbossidentity plusisolatedinkstyle references, draftsretained. Perstage10–14lazy aliases andPinnacle branch, oldwarn/counter/safezonefallthrough; shared813bodymovesreused. Ownedwallclock expanded815; directringsegments/prism/nectardrip tracked, seedgrid retainsstaticwarning0/1 and beginsframe2 onlyat originalstrike. Original geometry/anchors/periods/damage/collisions/gaps retained; largebossFXopacitygate recognizesnewfamily. Combined96clips576frames realCanvascontracts andisolatedseedgrid/event/alias/hash tests. Existing814 Pages41864376182/APK41864376011SUCCESS; live14/all28hashesverified afterGitHubservicequeue cleared. User requests allremainingart insequence; bodyposes/B01/B05-B06/animatedbullets/C3minis next. Userwaived phone testing andwillplay himself.
-
-# Previous delivery: v8.1.14 — C2 boss painted-outline effects (owner)
-
-Seven original ImageGen atlases/28clips168authored frames in boss_outline814. Rootmother bud/cream sage growth, teal fungal spores, amber honey, brass orchid clock and thorn-root memory effects. C2-only stage-lazy aliases5–9, shared B06podshield also9, reuse four813bodyclips onC2; bodyimpact formatting handlesB10. Existing ownedclock/Low/reduced/pause/epoch cleanup expanded814, honeywall holds retain lifetime; directarenaHands/Pods nowresolveandtrack actual sprites. Original warn/fogtile/airbubble/attack timings/damage/colliders/safe gaps preserved. Large boss-effects alpha cap recognizes aliases, including original C1eclipse cap. New isolated adapter/hash/geometry/stage tests; GPU asserts bothgroups stage-lazy; static Canvas gallery expands60clips360frames with same6layout contracts. Source/QA/previews retained. No boss body pose redraw or C3art completion; owner phone appearance/FPS pending. Runtime214c24d pushed/exactreadback56files; localcheck/build/all8browsercontracts passed. Publication completed: Pages41864376182/APK41864376011SUCCESS; live8.1.14 andall28newasset bytes/hash verified afterGitHubincidentqueuecleared.
-
-# Previous delivery: v8.1.13 — C1 boss painted-outline effects (owner)
-
-Built-in ImageGen eight source atlases/32 clips/192 distinct authored frames in boss_outline813, genuine alpha and original legacy projected geometry; four shared body moves and C1 elemental/signature VFX. Stage-lazy aliases only stages0–4, old art fallback/Pinnacle excluded. Owned wall-clock sprite progression, hold-aware ice bars, wave720ms and skydrop760ms damage-aligned cosmetic impact with player/stage/epoch cleanup. Warning shapes, safe gaps, damage and attack cadence preserved. Source radial frost breath corrected from directional draft, then transparent matte correction; drafts retained for provenance. Exact prompts/manifests/alpha/hash/frame/border QA, static Canvas gallery and isolated production helper tests. GPU test now asserts all32keys remain stage-lazy; elite-stage extraction fixture includes the new registry dependency. Runtime8.65MB/41.25MiB decoded across whole kit, per-stage lazy subsets. Boss body poses, later chapters and phone appearance/FPS review remain future work.
-
-# Previous delivery: v8.1.12 — restore painted Plasma and audit boss art (owner)
-
-Owner clarified remove only pale-blue area guide, not Plasma artwork. Restored bpx_taro_plasma_ring→bpx_taro810_plasma sixframe loop following original radius/out-and-back; retained no pale floor/circles in Magnetic Field and interior-lightning fallback. Recast now removes both old loop and graphics; expiry/scene cleanup and original damage/timing/debuff geometry preserved. Clarity811 test extends loaded-art/fallback/recast/expiry contracts. Source audit decodes152registered files:15mainbosses/5C3minis/116VFX/16shots; all mainbosses8distinct nonempty cells. Source-contact PNGs/hash/dimension inventory and prioritized art direction docs/design/battle_art_audit812; reproducible script scripts/audit-battle-art812.py. Existing boss shots/body VFX are wired despite old source-only delivery notes. Findings: shared neutral body FX, mixed glow/outline styles, similar B05/B06 silhouette,160pxB01 and held-pose vs sequence gaps. Boss redraw is proposed next work, not claimed delivered here. No new runtime images/audio/gameplay changes; owner phone visuals/FPS pending.
-
-# Previous delivery: v8.1.11 — smaller projectiles and clearer Taro fields (owner)
-
-Owner phone feedback: Strawberry charged Sniper overlay×.7, charge aura removed in painted and old-art paths; Mint normal Impaler lance2.2→1.45visual multiplier/shards64→52 and48→40; Cocoa normal/finisher fists96/150→76/120, Rocket120→96 plus1rocket at every Unique level (4/5/5/6), Titan charge aura×.8. Taro Ball core38→26 (gold44→30), field capped80px/.3alpha; zap one visual bolt14px/.32alpha and hit18px/.35alpha with original damage/zap cadence preserved. Taro owned lifetime fade preserves initial alpha. Sentry base cap2/max3, launch interval .62→.84 coefficient (about26%fewer launches per sentry); Overdrive respects current card cap instead of always filling3. Plasma and Magnetic rings/floor removed, interior lightning retained with original gameplay radius/out-and-back damage. No new assets/audio/save changes. Existing swarm/Cocoa count fixtures updated for owner-requested counts; new isolated rendering/alpha adapters. Mobile visual/FPS review still needed.
-
-# Previous delivery: v8.1.10 — remaining hero painted-outline VFX (owner)
-
-Owner explicitly requested completing Chocolate→Taro→Yuzu Companion+Minion→Strawberry without waiting between batches. Original built-in ImageGen11selected source atlases/44clips264authored frames; exact prompts/alpha/hash/border QA/source previews and reproducible packing. Runtime44WebPs13,840,032bytes/69,206,016decoded total, selected-hero lazy/always bootdeferred; Yuzu3element routes borrow Cocoa/Mint/Taro clips. Owned gameplay-time animation preserves old clip periods, loops and one completion, pause/Low/reduced and pool/player/basic/epoch/shutdown cleanup. Companion shared4majorFX and compact Minion hit3/120ms preserved; Strawberry shared48overlaycap. Existing character bodies, aim guides, damage, collisions, targeting, AI, cards and audio retained. New exact-asset/event/factory tests and static real Canvas47route/282loadedframe gallery added to CI. Phone visual/timing/readability/FPS review pending. See docs/design/OUTLINE_REMAINING_810.md.
-
-# Previous delivery: v8.1.9 — Mint painted-outline VFX (owner)
-
-First Sesame-style battle batch:2original ImageGen sources/8clips/48painted frames with truealpha, exact prompts/manifests/hash/border QA/source previews in mint_outline819. Runtime8WebPs2,004,790bytes/9,043,968decoded hero-lazy/alwaysbootdeferred. Glacier Bloom owns6frame snowstorm clock and cosmetic final bloom; four-second/eight-pulse gameplay retained. Impaler/normal lances and shards use owned-frame overlays on original bullets; animated dash trail, rupture/blast/charge/compact hits. Pause/Low/reduced frame hold, oldart/geometry fallback/pool+scene cleanup and budgets retained. Mint55 player charge/move sprites and damage/hitboxes/targets/range/speed/cards/audio unchanged. New asset/ownership and real Canvas gallery contracts. Owner phone visual/footprint/timing/FPS pending; remaining hero batches authorized without a review gate. Design docs/design/MINT_OUTLINE819.md.
-
-# Previous delivery: v8.1.8 — boss shelter, smaller Yuzu squad and nectar defense (owner)
-
-C2-2 air pocket stationary/prop-aware, radius+boss body+80px clearance; Behemoth pinned movement+attack/follow-up gate,4s charge/countdown,1.6×arena blast only outside,0.6s recovery, owned pause/player/stage/epoch/cleanup. Existing fog/bubble art preserved. Yuzu cap16→10, Squad+1/rank/evolution+1/forms+1each, companion power×.9/minions additional×.95, spawn/acquisition/cycle stagger, curved homes, crowded normal targets distributed and every third minion may cover close mobs; mission priority preserved. Nectar3×100HP→1×300HP; exact one third max-HP life loss bypasses armor/shields/iframe then fullHP relocation if alive, normal death flow. Visible descriptions/cards updated, no save/talent changes. New event contracts and hierarchy tests; owner phone timing/readability/balance pending. Design docs/design/C2_FOG_YUZU_NECTAR_818.md.
-
-# Previous delivery: v8.1.7 — animated elemental invocations (owner)
-
-Owner approved PPB Steam Cannon (three forward cone pulses .18/.42/.66s, follows player/captured direction, 300px base range) and PBB Tidal Serpent (priority chase, three bites and water finisher, Boss role). Independent CDs/orb snapshots retained; other eight spell mechanics unchanged. Original ImageGen three atlases/72 painted frames for all ten spells/basic/shared casts; exact prompts/raws/QA/previews retained. Three hero-lazy WebPs 4,340,638bytes/18,874,368decoded, normal alpha, old-art/geometry fallback. Owned-time frame stepping, reduced-motion peak pose, existing actor/projectile/flash caps and cleanup. No audio/input/save/talent changes. Event/packing/real Canvas checks expanded. Owner phone art/timing/balance/FPS review pending.
-
-# Previous delivery: v8.1.6 — fire and wind rune sounds (owner)
-
-Owner changed red from knock to actual fire flare and green from metallic ting to wind gust. Two original ElevenLabs cues/four donors in sesame_orb816_audio and runtime sesame_orb816; source prompts/request provenance, gain/decode/peak/hash QA and audition retained. sesRuneSound routes red/green to816, blue remains815 byte-for-byte as approved, other cues unchanged. Tests verify routing/new audio and exact blue hash; browser decodes all11 cues. Phone approval of new fire/wind sounds pending.
-
-# Previous delivery: v8.1.5 — Sesame buffs, orb identity and movement ownership (owner)
-
-PMM Prismatic Armament6s +40%basic damage/+30%basic attack rate; BBB Tidal Armor6s 20%HP shield plus0.5%HP/s regen (normal healing rules), no stationary damage/bullet clearing. Red10%damage/orb and larger splash, green6%move/8%basicrate perorb, blue0.25%HP/s and12%echo/orb; Gale/Tide ranks extend new bonuses. Echo60%damage, once per primary volley,0.14s delay/run-owned queue4/projectiles18; no recursion. Buffs refresh without stacking, expire/clear with run. PPP tracks live target generation until120ms before each meteor; Boss-role multiplier1.35→1.65 for PPP/PPM only. New original ElevenLabs3distinct taps/6donors, peak/RMS/decode/hash metadata. All heroes: action half cannot start movement, active joystick cannot be stolen, action pointer stays reserved through drag until release; mirrored controls covered. Tests cover shield/buff/echo/rate/boss aim and real input routing. Existing art reused; owner phone balance/loudness/FPS approval pending.
-
-# Previous delivery: v8.1.4 — Sesame spell identity and controls (owner)
-
-First three approved recommendations: cast-time red-orb multiplier passed explicitly per spell hit, leaving basic attacks live and other hero damage unchanged; 44–61.6px rune buttons follow control scale, compact readiness/FIFO label, pause recipe reference with stats and ten cooldowns; PPB five eruptions leave4s ground with8power/.5s nonstacking overlapping burns, initial hit36 instead of52, PPM renamed Sunlance. Independent cooldowns retained. No mana, new cards or talent migration in this first pass. Tests include delayed orb snapshot, ground damage, mobile controls/pause guide; phone balance/readability still owner review.
-
-# Previous delivery: v8.1.3 — on-demand persistent assets (owner)
-
-Owner supersedes whole-game startup download policy. Opening no longer downloads every asset; preloadAll skips lazy art/music without fetching and no fillAssetCache sweep. Existing ensureGroup/ensureStageArt/ensureStageAudio load on demand. SW retains existing cache, awaits writes, deduplicates simultaneous requests and serves exact hash hits without network. Early SW registration controls first asset loads. Tests cover offline/repeat/hash/quota/cache concurrency. Phone startup timings remain unmeasured.
-
-# Previous delivery: v8.1.2 — Sesame sound clarity (owner)
-
-Sesame red/green/blue rune volumes balanced to existing ElevenLabs clips, recipe cue delayed to reduce overlap, and PMB uses a louder impact cue. Rune input/cast contract tests cover timing and PMB routing; phone listening and mix review remain pending.
-
-# Previous delivery: v8.1.1 — ten elemental invocations and orb cards (owner)
-
-Sesame normal/endgame aftertutorial now ten recipes with independent10–18sbaseCDs,0.16srune/0.38scastrecovery, persistentFIFOorbs, live selectedCD/ring and existingrechargeprojection/KillChargealltimers. Red+6%damage/orb,green+4%speed,blue+0.15%maxHP/s withinhealingrules/cap; eightorbcardfamilies. PMB360-degreeone-hit/generationconcussivewave, Brandremoved, BBBhealingward, MBBsurvival; sixclear/twoboss/twosurvivalspells. RainbowFlare basic/projectilepool18,actorcap8/flashcap12, nooldpath/mutation/evolutiondraft. OriginalImageGen16motifs/eighticons,762202runtimebytes/2.36MBatlasGPU; hero-lazy/alwaysbootdeferred. DirectElevenLabs6cues/12donors, admittedtap/canonicalrecipe/cast/impactfeedback, no synthfallback. SharedTaro damage-snapshot test stripsonlynewSesamepassivehook; Rune/draft/UI tests updated for superseding prototype semantics. Finalfullnpmcheck/build, Forge21/Lobby360/Rubysixsizes/Heroes7 andRune24layouts/tenpreviews/16frames/sixMP3browserdecode passed. Permanenttalents stillstored/WIP; ownerphonequality/balance/FPSpending. Design docs/design/SESAME_INVOKER_811.md.
-
-# Previous delivery: v8.1.0 — Sesame unlock after C1-5 (owner)
-
-CORE_UNLOCK_STAGE.sesame=4: normal firstclear and existing Save.load repair grant Sesame free after C1-5, playable from C2-1/replays. FIGHTER_PLAYTEST_ALL remains false; other heroes retain their gates. Rune prototype98 and WIP remain; no talent/save-point migration or extra lore scene. Canon gameplay availability updated. New real-unlock-helper coverage in hero-unlock-ch1 verifies pre-gate/firstclear/oldsave/idempotence/no currency or talent loss. Fullnpmcheck/build andForge21/Lobby360/Rubysixsizes/Heroessevensizes browser contracts passed. Roster now labels Sesame Invoker; browser selection test measures exactly one save relative to the existing menu-save count, then confirms repeat idempotence. Ownerphone controls/balance/FPS pending.
-
-# ⚠️ DEPLOY BRANCH — read first
-
-Use the project skill `.claude/skills/release/SKILL.md` (`/release`) for every version: it holds the full bump → checks → deploy → verify order below.
-
-The live game (GitHub Pages / APK live update) deploys ONLY from `claude/vampire-survival-mobile-game-yo9e8w`. Pushes to any other branch (session branches like `ccr-*` or `claude/*`) run the Pages workflow but it fails, so the game stays on the old version. Owner has approved this permanently: after committing, always push to the vampire branch too (`git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`, fast-forward only; if it is not an ancestor, merge it in first, never force). Push the vampire branch ALONE (not in the same moment as the session branch): both runs share the Pages concurrency group, so the session-branch run cancels the vampire deploy (v7.0.0/7.0.1 got cancelled this way). Then confirm the "Deploy Web (GitHub Pages)" run for that branch succeeded and the in-game version matches `GAME_VERSION`.
-
-# 🧭 Model routing (owner 23 Oct) — pick the cheapest model that fits
-
-Owner approved delegating simple work to cheaper subagents (`.claude/agents/`). The main session (Opus) plans, decides, reviews diffs, bumps GAME_VERSION/CHANGELOG, commits and deploys.
-- **quick (Haiku):** look-ups in game.js, "did art arrive?", Actions run status, file lists, small exact doc edits (CLAUDE.md blocks, README rows).
-- **builder (Sonnet):** clear code changes where what/where is already known — given numbers, text rewording, wiring delivered art by an existing pack script/pattern, copy-an-existing-UI-piece, art order docs from an outline.
-- **Main (Opus) itself:** design and owner questions, unclear bugs, balance, new mechanics, multi-system features, final review.
-- Skip delegation when the job is one or two tool calls (spawning costs more than doing it). Always read the subagent's diff (`git diff`) before committing.
-
-# 🚧 HEROES IN DEVELOPMENT — Sesame — read first
-
-Owner started Sesame work and approved a replacement concept on 2 Nov2026: **pathless Rune Invoker**, three rune buttons, max three orbiting orbs, FIFO replacement, recipe by counts (not order), Unique previews/casts current recipe and retains orbs. Current design: `docs/design/SESAME_INVOKER_811.md`; Mirror Network remaining phases are superseded. Ten spells, orb cards and generated feedback are implemented in8.1.1 for normalStory/endgame; permanent talent rework remains separate. Audit existing saves/talent investment before enabling the replacement. Earlier restriction below describes the pre-start state; Sesame-specific work for this new concept is now authorized. Keep WIP until implementation is complete.
-
-Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from HEROES_WIP. Owner: Sesame is not finished. Do NOT change Sesame's cards, paths, talents, mods, fusions, balance or art wiring (and leave them out of card/relic audits and ECRS passes) until the owner starts work on that hero. game.js `HEROES_WIP=['sesame']` shows a '🚧 In development' badge on its roster card; remove an id from it when the owner says that hero is being finished. Shared systems (relics, trade-offs, infusions) may still change, but do not add Sesame-specific fixes. Note: v7.9.17 already changed Yuzu Chain Feast/Quick Paws and Sesame Prism Echo/Retreat Shot before this rule.
-
-# CLAUDE.md — สมองของโปรเจกต์
-อ่านก่อนเริ่มงาน · จบงานแต่ละก้อนให้ปรับข้อ 4–5 · ประวัติเก่าทั้งหมด `docs/CLAUDE_HISTORY.md`
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

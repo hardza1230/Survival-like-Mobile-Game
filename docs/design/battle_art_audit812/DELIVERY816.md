@@ -9,3 +9,5 @@ Idle, anticipation, strike and recovery use an owned wall clock. Explicit charge
 Validation includes exact source/runtime hashes and264distinct cells; analytic geometry, actor ownership, pause/freeze/intro/Low/phase2 and pool restoration tests; real Phaser Arcade/Canvas before/after/restore world bounds for21sprites across six layouts. This is a static rendering/physics contract, not combat simulation or a phone FPS measurement. Runtime19,902,866bytes /69,206,016decoded across the full family; stage-lazy subsets preserve boot loading budgets.
 
 Owner waived agent phone testing and will playtest himself. The remaining ordered batch is16animated boss projectiles; C3 miniboss art is included in this body delivery.
+
+Publication verified: runtime8c6de8c6649458d693e6fc7936cedccfff1c38fd; Pages41885436348 /APK41885436096 successful. All65changed files (68,490,747bytes) fetched from the immutable commit and decoded; local/remote Git trees match.

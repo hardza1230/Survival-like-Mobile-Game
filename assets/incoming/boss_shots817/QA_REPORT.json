@@ -1,0 +1,780 @@
+{
+  "shots": 16,
+  "authoredFrames": 64,
+  "alphaPreserved": true,
+  "clearBorders": true,
+  "method": "retain native1254px generated sources; normalize4x4grid to1024px only during packing, common uniform four-frame transform to original128px bounds/right tip; no repaint/background removal",
+  "runtimeBytes": 575618,
+  "decodedBytes": 4194304,
+  "frames": [
+    {
+      "key": "bshot_anim817_01",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        38,
+        119,
+        90
+      ],
+      "sha256": "c129a24ab3f961f9c74cc45e133d85968f151052bdfd925c093d036c0dc9004a"
+    },
+    {
+      "key": "bshot_anim817_01",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        38,
+        119,
+        90
+      ],
+      "sha256": "df3841a3f565bfe479c40e13bdcc8108a192a32190cc80fdfa784e3c8f17eca5"
+    },
+    {
+      "key": "bshot_anim817_01",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        38,
+        119,
+        90
+      ],
+      "sha256": "b37f035795a53c1eb2c4a5f2e8a56aef251e29afaaeebcd6d0b425f5a030949b"
+    },
+    {
+      "key": "bshot_anim817_01",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        38,
+        119,
+        90
+      ],
+      "sha256": "f7300ce97902f7942d56a3fa6b65b8b9f814e9ce499ffa69cf90ddbe856bc424"
+    },
+    {
+      "key": "bshot_anim817_02",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        16,
+        36,
+        119,
+        92
+      ],
+      "sha256": "66189844b34c901522864089abb21d3dd5da7d5806e4dec32e142c9262fc6fd7"
+    },
+    {
+      "key": "bshot_anim817_02",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        36,
+        118,
+        92
+      ],
+      "sha256": "7384f2429fa2494557de3dadaa059119b53bd116f3bc0f885014516dcbf9b8e2"
+    },
+    {
+      "key": "bshot_anim817_02",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        36,
+        116,
+        92
+      ],
+      "sha256": "bdde54c30949be8fb5fdf9bb0819ed22be1b039d183681cf6a60b448efdc7638"
+    },
+    {
+      "key": "bshot_anim817_02",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        36,
+        118,
+        92
+      ],
+      "sha256": "013ce1ea094fb5c17a3c86290f2c3195ba3a77efc5325d8fa3dfceb0a2214efe"
+    },
+    {
+      "key": "bshot_anim817_03",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        31,
+        119,
+        96
+      ],
+      "sha256": "f6e2f14241921caf924b1488604678ac7f0b846e0bd50d9348cb2e9265fca600"
+    },
+    {
+      "key": "bshot_anim817_03",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        31,
+        119,
+        96
+      ],
+      "sha256": "6884179b25c542643954be9e274f547f8e81344aa65a0940c5c8b2a30e3d43b6"
+    },
+    {
+      "key": "bshot_anim817_03",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        31,
+        119,
+        96
+      ],
+      "sha256": "f691efa952e5a9f70668e4cdbb7c371166620ef933d45c7625c6bdcd4c06504e"
+    },
+    {
+      "key": "bshot_anim817_03",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        31,
+        117,
+        96
+      ],
+      "sha256": "0980baa3cb381829831ab54954a75465728bb3d641f6b2e1e98a4c02abc26fe9"
+    },
+    {
+      "key": "bshot_anim817_04",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        16,
+        31,
+        119,
+        96
+      ],
+      "sha256": "05314883c64a11c8e607bec914ef80bff98e6788f6051a663a10fda99351acd5"
+    },
+    {
+      "key": "bshot_anim817_04",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        31,
+        119,
+        96
+      ],
+      "sha256": "c03f740ca3d261660375f6f5cf2a003577a9dde41154d635412727d552af2b4c"
+    },
+    {
+      "key": "bshot_anim817_04",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        31,
+        119,
+        96
+      ],
+      "sha256": "bbc0ae78a7b964f8427739dff2fe57354c2bd1cd2656d202ed6716ffd7e84083"
+    },
+    {
+      "key": "bshot_anim817_04",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        31,
+        119,
+        96
+      ],
+      "sha256": "e47a94c6f387d349aa80ce802b3cf1520ec60957f1426e89c1bccabaee5d2640"
+    },
+    {
+      "key": "bshot_anim817_05",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        26,
+        119,
+        102
+      ],
+      "sha256": "78dbd8e0dba61dccfca25e18c742ba72a01ea6aba17ae7d5146c33a3d1955081"
+    },
+    {
+      "key": "bshot_anim817_05",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        26,
+        119,
+        102
+      ],
+      "sha256": "d1566bbf9b365e814cc5b31514ba9416d71312017f5f308e057eb4f540dac987"
+    },
+    {
+      "key": "bshot_anim817_05",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        26,
+        116,
+        102
+      ],
+      "sha256": "33a7439e5b03e358f7d805e1eddf521aa3c43803dbe3ae323ce19521434954ed"
+    },
+    {
+      "key": "bshot_anim817_05",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        26,
+        118,
+        102
+      ],
+      "sha256": "1cac02c07b54687b52ba3a89e0bbac36193479bcd2cc6ddffad49298d9389fc3"
+    },
+    {
+      "key": "bshot_anim817_06",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        26,
+        119,
+        101
+      ],
+      "sha256": "0665d9154348ade9b47a2965bc9d86c721d681217c7d9d32b6496bd1b67bbacf"
+    },
+    {
+      "key": "bshot_anim817_06",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        26,
+        118,
+        101
+      ],
+      "sha256": "5770a22c19e751558d87cbd81c0bd4596d448244045276776e560a4a36e04958"
+    },
+    {
+      "key": "bshot_anim817_06",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        26,
+        119,
+        101
+      ],
+      "sha256": "54263d9ddea09a027f6a2b725e6b0198691b50f8ea9bb5ac334266e99569ccd8"
+    },
+    {
+      "key": "bshot_anim817_06",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        26,
+        114,
+        101
+      ],
+      "sha256": "d530225e3be74c246fc74298e9b93c76aeefd1af81e17fee4954c148e3ecc4cb"
+    },
+    {
+      "key": "bshot_anim817_07",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        36,
+        119,
+        93
+      ],
+      "sha256": "4a65994ffc1c1a5fa6a1cbc7af78add8f694d15e84a764347e2929cc6365cfcb"
+    },
+    {
+      "key": "bshot_anim817_07",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        36,
+        119,
+        93
+      ],
+      "sha256": "60151d0995786d8475e95929eaccf720cbe8fb34df1bd1c1c2f930fe9c8a0be5"
+    },
+    {
+      "key": "bshot_anim817_07",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        36,
+        119,
+        93
+      ],
+      "sha256": "c878be3876520d5904662e2f21d49374425470a4524c55abc9e4b5c9be53b77b"
+    },
+    {
+      "key": "bshot_anim817_07",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        36,
+        118,
+        93
+      ],
+      "sha256": "b8f17627839a197795e6f0aac9871c2f518ad91645f13cbe5f612da1e4ca7a14"
+    },
+    {
+      "key": "bshot_anim817_08",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        16,
+        44,
+        119,
+        83
+      ],
+      "sha256": "fd8698c7652151b7e59391d1ceb33e0c5c1256b676d2793b89b2bc93f66a9dfa"
+    },
+    {
+      "key": "bshot_anim817_08",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        15,
+        44,
+        119,
+        83
+      ],
+      "sha256": "a8694cffc9d860419e85a91645e041d0faa080e54a3daaaa8ff807cb0550ff09"
+    },
+    {
+      "key": "bshot_anim817_08",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        44,
+        118,
+        83
+      ],
+      "sha256": "f8e0de10724bbb0bb28c89c4d1c5f86ad5070aacba8e6b2768245ff154846551"
+    },
+    {
+      "key": "bshot_anim817_08",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        44,
+        118,
+        83
+      ],
+      "sha256": "9f069ac480563f34c8a2de67c76a3d04ab34b40c158bea643852bb5947ec5602"
+    },
+    {
+      "key": "bshot_anim817_09",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        24,
+        119,
+        103
+      ],
+      "sha256": "2145b096c693f81434f7f5d7d40b248318075c8e6181486014fc8b2ead106778"
+    },
+    {
+      "key": "bshot_anim817_09",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        24,
+        119,
+        103
+      ],
+      "sha256": "e27a7b14a09ec942d512f0f3ad2338a5cbf8a04dff4a9e993e8223a6945fc919"
+    },
+    {
+      "key": "bshot_anim817_09",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        24,
+        119,
+        103
+      ],
+      "sha256": "37cefbbe6eec023b02b0bc7dc395894d17154526d43d35006802982428d1b5b3"
+    },
+    {
+      "key": "bshot_anim817_09",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        24,
+        118,
+        103
+      ],
+      "sha256": "4a816d813349c786bb2c577ed0029e50a507ea53227612bc5563eece20088ab4"
+    },
+    {
+      "key": "bshot_anim817_10",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        41,
+        119,
+        86
+      ],
+      "sha256": "2b844358dc27eb68da2e70697141673f68160e87e5c201e0062071748ed124c7"
+    },
+    {
+      "key": "bshot_anim817_10",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        14,
+        41,
+        119,
+        86
+      ],
+      "sha256": "c841a3433b4548c581527d4b93261073d30e5e6e8686d8eab6cdeb42c929dcae"
+    },
+    {
+      "key": "bshot_anim817_10",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        13,
+        41,
+        119,
+        86
+      ],
+      "sha256": "f774f1e7e26e542ff1bdfd01c1ed4aa61f6df46cb301d9022d68fa1e4dba102e"
+    },
+    {
+      "key": "bshot_anim817_10",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        13,
+        41,
+        118,
+        86
+      ],
+      "sha256": "b4e234a15038c2eb0a211fe5ea4a235c3631137fe59182a860b21bc059e79bc7"
+    },
+    {
+      "key": "bshot_anim817_11",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        43,
+        119,
+        85
+      ],
+      "sha256": "e03b4b393bc2c69681028c38d4e1fd1751cf6bb3500a90406d1e54087c47d029"
+    },
+    {
+      "key": "bshot_anim817_11",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        43,
+        119,
+        85
+      ],
+      "sha256": "1f08e7d301d95040285464db08bdeb0993f590f6552fcd93fd48587ce0b419e6"
+    },
+    {
+      "key": "bshot_anim817_11",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        43,
+        119,
+        85
+      ],
+      "sha256": "7b967c9333c72aa5e5eb62347b3d13eadc81f5c10616819254d9a4a1864ce8d5"
+    },
+    {
+      "key": "bshot_anim817_11",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        43,
+        117,
+        85
+      ],
+      "sha256": "383658ee174600373986f45ae1ef0f7f6ca230782fa7c3b60cf45842ff01f570"
+    },
+    {
+      "key": "bshot_anim817_12",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        39,
+        119,
+        89
+      ],
+      "sha256": "63d2a25ddf2b7d54a37b0b57c439f96605bcd0b64ee8b7d1c9bf06314f844162"
+    },
+    {
+      "key": "bshot_anim817_12",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        13,
+        39,
+        119,
+        89
+      ],
+      "sha256": "63a0fb7ee0b10efe8ab5164bb0af25cdd39bf1ab02d610c40c7fb31e45c9b7ad"
+    },
+    {
+      "key": "bshot_anim817_12",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        39,
+        119,
+        89
+      ],
+      "sha256": "5f32751bc4265c7ea168f066f69e86e82463f2dfabb3b44294a3d2ee4267893e"
+    },
+    {
+      "key": "bshot_anim817_12",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        12,
+        39,
+        117,
+        89
+      ],
+      "sha256": "401182c9baf65f42143fab4d89b0f8acb12d1c89a4d07d370fb1b6bbe984fb47"
+    },
+    {
+      "key": "bshot_anim817_13",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        19,
+        38,
+        119,
+        90
+      ],
+      "sha256": "223c3e67a0d9c6329d509a5b3130c4bda98866c1e20eb6d0acdc682c96e4f707"
+    },
+    {
+      "key": "bshot_anim817_13",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        19,
+        38,
+        119,
+        90
+      ],
+      "sha256": "6a6cba400321119253a218deda77379ef47f09312058c07185b95fb76526c532"
+    },
+    {
+      "key": "bshot_anim817_13",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        19,
+        38,
+        119,
+        90
+      ],
+      "sha256": "53e97f8292a820aebe8d44e527191dd7dc4659ad2baaa48eb312ca11705bc4b7"
+    },
+    {
+      "key": "bshot_anim817_13",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        19,
+        38,
+        119,
+        90
+      ],
+      "sha256": "5c805cfc2f81d54d45ff6a4112a089528c49c727e97fa5faa29e00d90867c4eb"
+    },
+    {
+      "key": "bshot_anim817_14",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        34,
+        119,
+        93
+      ],
+      "sha256": "14c3e3d7e10ab81087f9c8480b5d911f841bd143f12b2300b2a5b8e451d699a1"
+    },
+    {
+      "key": "bshot_anim817_14",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        34,
+        119,
+        93
+      ],
+      "sha256": "77f12a2ed0aa4aa4753d054a0997e6337d3cac8be820f102e57f55d81289e164"
+    },
+    {
+      "key": "bshot_anim817_14",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        34,
+        119,
+        93
+      ],
+      "sha256": "1b0ec7379d8b69d6028f6f90507cbef182ea59a83b088dd74a16e1276e50947e"
+    },
+    {
+      "key": "bshot_anim817_14",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        34,
+        119,
+        93
+      ],
+      "sha256": "05aa2c77b88e5a3a7cefdcf115082269705d9ba8172c536f43c30c1eea0cbc61"
+    },
+    {
+      "key": "bshot_anim817_15",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        11,
+        28,
+        119,
+        100
+      ],
+      "sha256": "0552f339571ded18598b00b72e99c31aba27818531171f272f8179a98e4696ff"
+    },
+    {
+      "key": "bshot_anim817_15",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        28,
+        119,
+        100
+      ],
+      "sha256": "171273a197a8c154b7543a9e362d6fbb89a5b277b3534f7b26d5d9f0805cc5b6"
+    },
+    {
+      "key": "bshot_anim817_15",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        28,
+        119,
+        100
+      ],
+      "sha256": "0fb6bdaf6a45a0bec50830d175eebdedac2ae5166942a7cc06b98a546849fb89"
+    },
+    {
+      "key": "bshot_anim817_15",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        10,
+        28,
+        119,
+        100
+      ],
+      "sha256": "10c4d98a5da61751bc53d62371f5d2a820d533fd1fc9fc6e37f10512ce0e3cbe"
+    },
+    {
+      "key": "bshot_anim817_pin",
+      "frame": 0,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        23,
+        119,
+        105
+      ],
+      "sha256": "55caf4b2e814bc626095136e27205671177407996b0d33ad368af0fbab79af1e"
+    },
+    {
+      "key": "bshot_anim817_pin",
+      "frame": 1,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        23,
+        119,
+        105
+      ],
+      "sha256": "aaee2c2c39dcd2c5128e0c940c2df75fd114e96cc9c06f3041918cf6c2cfc097"
+    },
+    {
+      "key": "bshot_anim817_pin",
+      "frame": 2,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        23,
+        119,
+        105
+      ],
+      "sha256": "0ea63cfee7867ef5544c605fe39d046a1509e00ea591fad682d97cd69f96bf4d"
+    },
+    {
+      "key": "bshot_anim817_pin",
+      "frame": 3,
+      "clearBorder": true,
+      "alphaBox": [
+        9,
+        23,
+        119,
+        105
+      ],
+      "sha256": "7b323b314e3424fd4c5047874200b29b8363b40baa32f40b15073c415b6c2e48"
+    }
+  ],
+  "phoneReview": "owner will test; source frame playback is not gameplay"
+}

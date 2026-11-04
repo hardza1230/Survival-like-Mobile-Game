@@ -1,0 +1,61 @@
+{
+  "provider": "built-in ImageGen",
+  "generations": [
+    {
+      "group": "group1",
+      "prompt": "Create a BRAND NEW original Mochi Mayhem ENEMY PROJECTILE ANIMATION atlas1024x1024 PNG32 actual TRANSPARENT alpha0. Reference1 is EXACT silhouette/color/identity forFOURprojectiles, one per row; Reference2 is ONLY crisp dark ink edge and painted highlight style (do NOT copy fire/rocks). EXACT4columns×4rows,256cells, FOUR DIFFERENT sequential loopframes per ROW. Row1 same projectile as referenceROW1, row2sameROW2, row3sameROW3, row4sameROW4. Preserve each projectile's outline proportions, themedfeatures, colorfamily and RIGHT-facing orientation. StablecoreandRIGHTtip, gently flowing surface highlights/ribbons/tail details within originalsilhouette; four distinctly drawn flowphases, no spinning or globalrotation copies, seamlessend-to-start. No sizegrowth, bloom/aura cloud, faces/characters except original mawshape, newweapons, circles/UI/text/numbers/labels/grid/borders. Originalenemyshots readat24px: deep darkcontour, controlledcreamcore, strongcolor, no EXP-like softpastel blob or sugarypinkpickup. Leave24px alpha0padding inEVERYcell includingfourcorners/gutters, NO white/gray/black/colored background or checkerboard. Draw all16cells, keepstablecamera/pivot andcommon scale acrossfourframes.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_shots817/ref/group1.png",
+          "role": "exact four projectile identities, one per row"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge/paint treatment only"
+        }
+      ]
+    },
+    {
+      "group": "group2",
+      "prompt": "Create a BRAND NEW original Mochi Mayhem ENEMY PROJECTILE ANIMATION atlas1024x1024 PNG32 actual TRANSPARENT alpha0. Reference1 is EXACT silhouette/color/identity forFOURprojectiles, one per row; Reference2 is ONLY crisp dark ink edge and painted highlight style (do NOT copy fire/rocks). EXACT4columns×4rows,256cells, FOUR DIFFERENT sequential loopframes per ROW. Row1 same projectile as referenceROW1, row2sameROW2, row3sameROW3, row4sameROW4. Preserve each projectile's outline proportions, themedfeatures, colorfamily and RIGHT-facing orientation. StablecoreandRIGHTtip, gently flowing surface highlights/ribbons/tail details within originalsilhouette; four distinctly drawn flowphases, no spinning or globalrotation copies, seamlessend-to-start. No sizegrowth, bloom/aura cloud, faces/characters except original mawshape, newweapons, circles/UI/text/numbers/labels/grid/borders. Originalenemyshots readat24px: deep darkcontour, controlledcreamcore, strongcolor, no EXP-like softpastel blob or sugarypinkpickup. Leave24px alpha0padding inEVERYcell includingfourcorners/gutters, NO white/gray/black/colored background or checkerboard. Draw all16cells, keepstablecamera/pivot andcommon scale acrossfourframes.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_shots817/ref/group2.png",
+          "role": "exact four projectile identities, one per row"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge/paint treatment only"
+        }
+      ]
+    },
+    {
+      "group": "group3",
+      "prompt": "Create a BRAND NEW original Mochi Mayhem ENEMY PROJECTILE ANIMATION atlas1024x1024 PNG32 actual TRANSPARENT alpha0. Reference1 is EXACT silhouette/color/identity forFOURprojectiles, one per row; Reference2 is ONLY crisp dark ink edge and painted highlight style (do NOT copy fire/rocks). EXACT4columns×4rows,256cells, FOUR DIFFERENT sequential loopframes per ROW. Row1 same projectile as referenceROW1, row2sameROW2, row3sameROW3, row4sameROW4. Preserve each projectile's outline proportions, themedfeatures, colorfamily and RIGHT-facing orientation. StablecoreandRIGHTtip, gently flowing surface highlights/ribbons/tail details within originalsilhouette; four distinctly drawn flowphases, no spinning or globalrotation copies, seamlessend-to-start. No sizegrowth, bloom/aura cloud, faces/characters except original mawshape, newweapons, circles/UI/text/numbers/labels/grid/borders. Originalenemyshots readat24px: deep darkcontour, controlledcreamcore, strongcolor, no EXP-like softpastel blob or sugarypinkpickup. Leave24px alpha0padding inEVERYcell includingfourcorners/gutters, NO white/gray/black/colored background or checkerboard. Draw all16cells, keepstablecamera/pivot andcommon scale acrossfourframes.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_shots817/ref/group3.png",
+          "role": "exact four projectile identities, one per row"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge/paint treatment only"
+        }
+      ]
+    },
+    {
+      "group": "group4",
+      "prompt": "Create a BRAND NEW original Mochi Mayhem ENEMY PROJECTILE ANIMATION atlas1024x1024 PNG32 actual TRANSPARENT alpha0. Reference1 is EXACT silhouette/color/identity forFOURprojectiles, one per row; Reference2 is ONLY crisp dark ink edge and painted highlight style (do NOT copy fire/rocks). EXACT4columns×4rows,256cells, FOUR DIFFERENT sequential loopframes per ROW. Row1 same projectile as referenceROW1, row2sameROW2, row3sameROW3, row4sameROW4. Preserve each projectile's outline proportions, themedfeatures, colorfamily and RIGHT-facing orientation. StablecoreandRIGHTtip, gently flowing surface highlights/ribbons/tail details within originalsilhouette; four distinctly drawn flowphases, no spinning or globalrotation copies, seamlessend-to-start. No sizegrowth, bloom/aura cloud, faces/characters except original mawshape, newweapons, circles/UI/text/numbers/labels/grid/borders. Originalenemyshots readat24px: deep darkcontour, controlledcreamcore, strongcolor, no EXP-like softpastel blob or sugarypinkpickup. Leave24px alpha0padding inEVERYcell includingfourcorners/gutters, NO white/gray/black/colored background or checkerboard. Draw all16cells, keepstablecamera/pivot andcommon scale acrossfourframes.",
+      "references": [
+        {
+          "path": "assets/incoming/boss_shots817/ref/group4.png",
+          "role": "exact four projectile identities, one per row"
+        },
+        {
+          "path": "assets/incoming/boss_outline815/ink_style_ref.png",
+          "role": "ink edge/paint treatment only"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "sources": [
+    {
+      "group": "group1",
+      "path": "assets/incoming/boss_shots817/group1_source.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 1037292,
+      "sha256": "6a2c7e84b61feddb0f08e170b35d43ed3c0bb7b8682e1a9d9be38ce486580156",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "group": "group2",
+      "path": "assets/incoming/boss_shots817/group2_source.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 1087328,
+      "sha256": "f82aec8874aa1eff3aaa49284550b3f8ec8bfa431ff9d56859f5a47094c18bde",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "group": "group3",
+      "path": "assets/incoming/boss_shots817/group3_source.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 967319,
+      "sha256": "31ef496b5294bdafbe7dfffed2bd3045486e0a0f0f3b7205d487ce6620431bad",
+      "alpha": [
+        0,
+        255
+      ]
+    },
+    {
+      "group": "group4",
+      "path": "assets/incoming/boss_shots817/group4_source.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 942939,
+      "sha256": "37b637b063b560bbfa48336f26d239005e9990483c68dc02c1a6ba46f981e8af",
+      "alpha": [
+        0,
+        255
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "old": "bshot_01",
+      "key": "bshot_anim817_01",
+      "path": "assets/art/boss_shots817/bshot_anim817_01.webp",
+      "source": "group1",
+      "sourceRow": 0,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        37,
+        119,
+        91
+      ],
+      "targetBounds": [
+        9,
+        37,
+        119,
+        91
+      ],
+      "bytes": 32662,
+      "sha256": "8ba3af7950eac24d6c5d9d70390dd5b7b59d7720ec166959a058244f3f2f8567",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_02",
+      "key": "bshot_anim817_02",
+      "path": "assets/art/boss_shots817/bshot_anim817_02.webp",
+      "source": "group1",
+      "sourceRow": 1,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        34,
+        119,
+        94
+      ],
+      "targetBounds": [
+        9,
+        34,
+        119,
+        94
+      ],
+      "bytes": 36700,
+      "sha256": "2b6dba62e099ecf8274d62a83970060d0595f521fd0130244b44f20b1fa12bed",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_03",
+      "key": "bshot_anim817_03",
+      "path": "assets/art/boss_shots817/bshot_anim817_03.webp",
+      "source": "group1",
+      "sourceRow": 2,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        28,
+        119,
+        99
+      ],
+      "targetBounds": [
+        9,
+        28,
+        119,
+        99
+      ],
+      "bytes": 35962,
+      "sha256": "8f888bee2039fa4d40e1768b2aaf8cde321f51a38d97754f873fd5a3ff902053",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_04",
+      "key": "bshot_anim817_04",
+      "path": "assets/art/boss_shots817/bshot_anim817_04.webp",
+      "source": "group1",
+      "sourceRow": 3,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        29,
+        119,
+        98
+      ],
+      "targetBounds": [
+        9,
+        29,
+        119,
+        98
+      ],
+      "bytes": 36852,
+      "sha256": "c98f866f4ecf05115d86358921382e6a480bd9047f2b4ee952da0fa2922cb0d8",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_05",
+      "key": "bshot_anim817_05",
+      "path": "assets/art/boss_shots817/bshot_anim817_05.webp",
+      "source": "group2",
+      "sourceRow": 0,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        22,
+        119,
+        105
+      ],
+      "targetBounds": [
+        9,
+        22,
+        119,
+        105
+      ],
+      "bytes": 50592,
+      "sha256": "62ba2847a3c2e655f9ab8199e2b09f32ed596ef6f053bdf36344d1a356844d03",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_06",
+      "key": "bshot_anim817_06",
+      "path": "assets/art/boss_shots817/bshot_anim817_06.webp",
+      "source": "group2",
+      "sourceRow": 1,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        24,
+        119,
+        103
+      ],
+      "targetBounds": [
+        9,
+        24,
+        119,
+        103
+      ],
+      "bytes": 47902,
+      "sha256": "fd06bab66494e2042611887da61bb91a056ff292f74852904672bab4faaf5485",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_07",
+      "key": "bshot_anim817_07",
+      "path": "assets/art/boss_shots817/bshot_anim817_07.webp",
+      "source": "group2",
+      "sourceRow": 2,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        35,
+        119,
+        93
+      ],
+      "targetBounds": [
+        9,
+        35,
+        119,
+        93
+      ],
+      "bytes": 33590,
+      "sha256": "89fdaa129b4fedfe9e01982a02751f061fc1cdde0157fb0d0245e412c1e9e8c0",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_08",
+      "key": "bshot_anim817_08",
+      "path": "assets/art/boss_shots817/bshot_anim817_08.webp",
+      "source": "group2",
+      "sourceRow": 3,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        44,
+        119,
+        83
+      ],
+      "targetBounds": [
+        9,
+        44,
+        119,
+        83
+      ],
+      "bytes": 24446,
+      "sha256": "19d3d3891a959a11bdd12cf36490be4d6b8c1cc341b98ebf7fdd17c7c4cfa3bc",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_09",
+      "key": "bshot_anim817_09",
+      "path": "assets/art/boss_shots817/bshot_anim817_09.webp",
+      "source": "group3",
+      "sourceRow": 0,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        23,
+        119,
+        104
+      ],
+      "targetBounds": [
+        9,
+        23,
+        119,
+        104
+      ],
+      "bytes": 41784,
+      "sha256": "40c9348ceae82ae22cdf2402eb7baf67b25dec82a2ecb15e9a344e5fe1e5e617",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_10",
+      "key": "bshot_anim817_10",
+      "path": "assets/art/boss_shots817/bshot_anim817_10.webp",
+      "source": "group3",
+      "sourceRow": 1,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        41,
+        119,
+        86
+      ],
+      "targetBounds": [
+        9,
+        41,
+        119,
+        86
+      ],
+      "bytes": 24564,
+      "sha256": "dbd8b229d84949dabeb4bd9cfda5bf2efb437619e249aeef6d0cf85f53250da5",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_11",
+      "key": "bshot_anim817_11",
+      "path": "assets/art/boss_shots817/bshot_anim817_11.webp",
+      "source": "group3",
+      "sourceRow": 2,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        43,
+        119,
+        85
+      ],
+      "targetBounds": [
+        9,
+        43,
+        119,
+        85
+      ],
+      "bytes": 28292,
+      "sha256": "9148f9dc462778b7fe9264fb0094ad552cfea01746fea90dafd903aaa27ee0c5",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_12",
+      "key": "bshot_anim817_12",
+      "path": "assets/art/boss_shots817/bshot_anim817_12.webp",
+      "source": "group3",
+      "sourceRow": 3,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        39,
+        119,
+        89
+      ],
+      "targetBounds": [
+        9,
+        39,
+        119,
+        89
+      ],
+      "bytes": 30962,
+      "sha256": "e858ff7dd0c60ca6d3dc46efa5b7a702020b2fd4e50217cdff8724f7ffb1c01b",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_13",
+      "key": "bshot_anim817_13",
+      "path": "assets/art/boss_shots817/bshot_anim817_13.webp",
+      "source": "group4",
+      "sourceRow": 0,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        38,
+        119,
+        90
+      ],
+      "targetBounds": [
+        9,
+        38,
+        119,
+        90
+      ],
+      "bytes": 32710,
+      "sha256": "0990bc1560459285e76eb7c9b9fa7f713e56db1747e6f422aabd956b8017da6c",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_14",
+      "key": "bshot_anim817_14",
+      "path": "assets/art/boss_shots817/bshot_anim817_14.webp",
+      "source": "group4",
+      "sourceRow": 1,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        34,
+        119,
+        94
+      ],
+      "targetBounds": [
+        9,
+        34,
+        119,
+        94
+      ],
+      "bytes": 41922,
+      "sha256": "679f73c4cbb72307efe56c2308784f31b4cbd8c157c2d560d56dbdb97ef09107",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_15",
+      "key": "bshot_anim817_15",
+      "path": "assets/art/boss_shots817/bshot_anim817_15.webp",
+      "source": "group4",
+      "sourceRow": 2,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        28,
+        119,
+        100
+      ],
+      "targetBounds": [
+        9,
+        28,
+        119,
+        100
+      ],
+      "bytes": 39298,
+      "sha256": "63ad26807905be8295d5d19bcc19fd6bc75aeab8353c6bb8cf47d1fbc664e35e",
+      "decodedBytes": 262144
+    },
+    {
+      "old": "bshot_pin",
+      "key": "bshot_anim817_pin",
+      "path": "assets/art/boss_shots817/bshot_anim817_pin.webp",
+      "source": "group4",
+      "sourceRow": 3,
+      "fw": 128,
+      "fh": 128,
+      "frames": 4,
+      "cols": 4,
+      "rate": 8,
+      "loop": true,
+      "legacyBounds": [
+        9,
+        22,
+        119,
+        106
+      ],
+      "targetBounds": [
+        9,
+        22,
+        119,
+        106
+      ],
+      "bytes": 37380,
+      "sha256": "64c31dbac9a4471d5297979ff9d3bddfa93a021fd8ab8d88b406529834cbc396",
+      "decodedBytes": 262144
+    }
+  ]
+}

@@ -18,6 +18,7 @@ function dims(file){ const b=fs.readFileSync(file);
 const all=[]; for(const [t,tab] of [['I',R.ASSET_IMAGES],['S',R.ASSET_SHEETS],['F',R.ASSET_FX]])for(const k in tab){ const u=typeof tab[k]==='string'?tab[k]:tab[k].url,f=path.join(root,u); if(!fs.existsSync(f))continue; const d=dims(f); assert(d,'unreadable image header '+u); all.push({k,u,mb:d[0]*d[1]*4/1e6}); }
 for(const k of Object.keys(R.ASSET_FX).filter(k=>/^vfx81[345]_/.test(k))){assert.equal(R.artClass(k),'stage',k+' must be stage-only');assert(R.lazyArt(k,R.ASSET_FX[k].url,'momo'));}
 for(const k of Object.keys(R.ASSET_SHEETS).filter(k=>k.startsWith('boss_ink816_')))assert.equal(R.artClass(k),'stage',k+' must stay stage-only');
+for(const k of Object.keys(R.ASSET_FX).filter(k=>k.startsWith('bshot_anim817_')))assert.equal(R.artClass(k),'stage',k+' must stay stage-only');
 const heroes=['momo','mint','cocoa','taro','sesame','yuzu'];
 const sum=pred=>all.filter(pred).reduce((s,a)=>s+a.mb,0);
 const total=sum(()=>true);

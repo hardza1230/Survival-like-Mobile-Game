@@ -1,0 +1,42 @@
+[
+  {
+    "group": "group1",
+    "keys": [
+      "bshot_01",
+      "bshot_02",
+      "bshot_03",
+      "bshot_04"
+    ],
+    "reference": "assets/incoming/boss_shots817/ref/group1.png"
+  },
+  {
+    "group": "group2",
+    "keys": [
+      "bshot_05",
+      "bshot_06",
+      "bshot_07",
+      "bshot_08"
+    ],
+    "reference": "assets/incoming/boss_shots817/ref/group2.png"
+  },
+  {
+    "group": "group3",
+    "keys": [
+      "bshot_09",
+      "bshot_10",
+      "bshot_11",
+      "bshot_12"
+    ],
+    "reference": "assets/incoming/boss_shots817/ref/group3.png"
+  },
+  {
+    "group": "group4",
+    "keys": [
+      "bshot_13",
+      "bshot_14",
+      "bshot_15",
+      "bshot_pin"
+    ],
+    "reference": "assets/incoming/boss_shots817/ref/group4.png"
+  }
+]
