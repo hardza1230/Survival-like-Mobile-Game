@@ -3415,3 +3415,8 @@ Yuzu finished in v7.9.37–39 (Orchard Swarm, owner-approved) and removed from H
 # CLAUDE.md — สมองของโปรเจกต์
 อ่านก่อนเริ่มงาน · จบงานแต่ละก้อนให้ปรับข้อ 4–5 · ประวัติเก่าทั้งหมด `docs/CLAUDE_HISTORY.md`
 
+
+# Previous delivery: v8.1.16 — painted boss body animation and clarity
+
+21 original identities /22 visual forms /264 authored frames cover15 campaign bosses, Pinnacle and5 C3 minibosses. Actual Sprite replacements provide idle, wind-up, strike and recovery. B01 uses256px source frames at the same world size; B05 mouth/eyes and B06 upright bud/face/roots have distinct silhouettes. Ratio-normalized scale/circle offsets preserve real Arcade world geometry. Stage-lazy textures, fallback, freeze/pause/intro/Low/reduced, phase2 and pool cleanup are tested. Explicit charge cues follow existing release callbacks; other sequences interpolate within original pose intervals. AI, damage, cooldowns, positions and velocities remain unchanged. Pages41885436348 /APK41885436096 and live16/all21 body asset hashes verified. See DELIVERY816.md.
+

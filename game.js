@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.17';
+const GAME_VERSION = '8.1.18';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.18',date:'2026-11-05',title:'Complete boss sprites',items:['Boss sprite sheets recover clipped weapon tips, crowns and limbs without neighboring-frame scraps.','Early minibosses gain complete idle, wind-up, strike and recovery animation.','The Ancient Root Knight keeps its full walking and attack animation set.']},
   {v:'8.1.17',date:'2026-11-05',title:'Boss shots come alive',items:['Sixteen painted boss projectiles gain compact four-frame elemental animation.','Their previous size, speed, damage and hitboxes stay the same.','Animation holds correctly when paused and uses a steady pose on Low effects.']},
   {v:'8.1.16',date:'2026-11-05',title:'Bosses move with weight',items:['Bosses and Chapter 3 minibosses gain painted idle, wind-up, strike and recovery frames.','The first boss has a sharper sprite; the Great Hunger and Rootmother’s Bud have clearer silhouettes.','Original hitboxes, attack damage and movement rules are preserved.']},
   {v:'8.1.15',date:'2026-11-04',title:'Painted boss magic across every chapter',items:['Chapter 3 and Pinnacle gain animated ink-edged harvest, petal, prism, vault, root and maw effects.','Seed warnings, closing-ring gaps and boss attack timing keep their familiar rules.']},
@@ -2875,29 +2876,38 @@ function registerEnemyActionAnimations(scene,keys=Object.keys(ASSET_SHEETS)){
     }
   }
 }
-const BOSS_BODY816_MAP={"boss1":{"key":"boss_ink816_boss1","stage":0,"oldFrame":160,"frames":12},"boss2":{"key":"boss_ink816_boss2","stage":1,"oldFrame":256,"frames":12},"boss3":{"key":"boss_ink816_boss3","stage":2,"oldFrame":256,"frames":12},"boss4":{"key":"boss_ink816_boss4","stage":3,"oldFrame":256,"frames":12},"boss5_sovereign":{"key":"boss_ink816_boss5_sovereign","stage":4,"oldFrame":256,"frames":12},"boss6_rootmother":{"key":"boss_ink816_boss6_rootmother","stage":5,"oldFrame":256,"frames":12},"boss7_mycelium_behemoth":{"key":"boss_ink816_boss7_mycelium_behemoth","stage":6,"oldFrame":256,"frames":12},"boss8_hornet_queen":{"key":"boss_ink816_boss8_hornet_queen","stage":7,"oldFrame":256,"frames":12},"boss9_chronobloom_orchid":{"key":"boss_ink816_boss9_chronobloom_orchid","stage":8,"oldFrame":256,"frames":12},"boss10_true_rootmother":{"key":"boss_ink816_boss10_true_rootmother","stage":9,"oldFrame":256,"frames":12},"c3_boss1":{"key":"boss_ink816_c3_boss1","stage":10,"oldFrame":256,"frames":12},"c3_boss2":{"key":"boss_ink816_c3_boss2","stage":11,"oldFrame":256,"frames":12},"c3_boss3":{"key":"boss_ink816_c3_boss3","stage":12,"oldFrame":256,"frames":12},"c3_boss4":{"key":"boss_ink816_c3_boss4","stage":13,"oldFrame":256,"frames":12},"c3_boss5":{"key":"boss_ink816_c3_boss5","stage":14,"oldFrame":256,"frames":12},"boss_pinnacle":{"key":"boss_ink816_boss_pinnacle","stage":14,"oldFrame":256,"frames":12},"c3_mini1":{"key":"boss_ink816_c3_mini1","stage":10,"oldFrame":256,"frames":12},"c3_mini2":{"key":"boss_ink816_c3_mini2","stage":11,"oldFrame":256,"frames":12},"c3_mini3":{"key":"boss_ink816_c3_mini3","stage":12,"oldFrame":256,"frames":12},"c3_mini4":{"key":"boss_ink816_c3_mini4","stage":13,"oldFrame":256,"frames":12},"c3_mini5":{"key":"boss_ink816_c3_mini5","stage":14,"oldFrame":256,"frames":24}};
+const BOSS_BODY816_MAP={"boss1":{"key":"boss_ink816_boss1","stage":0,"oldFrame":160,"frames":12},"boss2":{"key":"boss_ink816_boss2","stage":1,"oldFrame":256,"frames":12},"boss3":{"key":"boss_ink816_boss3","stage":2,"oldFrame":256,"frames":12},"boss4":{"key":"boss_ink816_boss4","stage":3,"oldFrame":256,"frames":12},"boss5_sovereign":{"key":"boss_ink816_boss5_sovereign","stage":4,"oldFrame":256,"frames":12},"boss6_rootmother":{"key":"boss_ink816_boss6_rootmother","stage":5,"oldFrame":256,"frames":12},"boss7_mycelium_behemoth":{"key":"boss_ink816_boss7_mycelium_behemoth","stage":6,"oldFrame":256,"frames":12},"boss8_hornet_queen":{"key":"boss_ink816_boss8_hornet_queen","stage":7,"oldFrame":256,"frames":12},"boss9_chronobloom_orchid":{"key":"boss_ink816_boss9_chronobloom_orchid","stage":8,"oldFrame":256,"frames":12},"boss10_true_rootmother":{"key":"boss_ink816_boss10_true_rootmother","stage":9,"oldFrame":256,"frames":12},"c3_boss1":{"key":"boss_ink816_c3_boss1","stage":10,"oldFrame":256,"frames":12},"c3_boss2":{"key":"boss_ink816_c3_boss2","stage":11,"oldFrame":256,"frames":12},"c3_boss3":{"key":"boss_ink816_c3_boss3","stage":12,"oldFrame":256,"frames":12},"c3_boss4":{"key":"boss_ink816_c3_boss4","stage":13,"oldFrame":256,"frames":12},"c3_boss5":{"key":"boss_ink816_c3_boss5","stage":14,"oldFrame":256,"frames":12},"boss_pinnacle":{"key":"boss_ink816_boss_pinnacle","stage":14,"oldFrame":256,"frames":12},"c3_mini1":{"key":"boss_ink816_c3_mini1","stage":10,"oldFrame":256,"frames":12},"c3_mini2":{"key":"boss_ink816_c3_mini2","stage":11,"oldFrame":256,"frames":12},"c3_mini3":{"key":"boss_ink816_c3_mini3","stage":12,"oldFrame":256,"frames":12},"c3_mini4":{"key":"boss_ink816_c3_mini4","stage":13,"oldFrame":256,"frames":12},"c3_mini5":{"key":"boss_ink816_c3_mini5","stage":14,"oldFrame":256,"frames":24},"mb1":{"key":"boss_ink816_mb1","stage":0,"oldFrame":160,"frames":12},"mb2":{"key":"boss_ink816_mb2","stage":1,"oldFrame":192,"frames":12},"mb3":{"key":"boss_ink816_mb3","stage":2,"oldFrame":140,"frames":12},"mb4":{"key":"boss_ink816_mb4","stage":3,"oldFrame":140,"frames":12},"mb5_banquet_executioner":{"key":"boss_ink816_mb5_banquet_executioner","stage":4,"oldFrame":256,"frames":12},"mb6_sporewarden":{"key":"boss_ink816_mb6_sporewarden","stage":5,"oldFrame":256,"frames":12},"mb7_fungal_juggernaut":{"key":"boss_ink816_mb7_fungal_juggernaut","stage":6,"oldFrame":256,"frames":12},"mb8_royal_stinger":{"key":"boss_ink816_mb8_royal_stinger","stage":7,"oldFrame":256,"frames":12},"mb9_season_keeper":{"key":"boss_ink816_mb9_season_keeper","stage":8,"oldFrame":256,"frames":12}};
 const ASSET_SHEETS = {
-  boss_ink816_boss1:{url:'assets/art/boss_body816/boss_ink816_boss1.webp',frame:256},
-  boss_ink816_boss2:{url:'assets/art/boss_body816/boss_ink816_boss2.webp',frame:256},
-  boss_ink816_boss3:{url:'assets/art/boss_body816/boss_ink816_boss3.webp',frame:256},
-  boss_ink816_boss4:{url:'assets/art/boss_body816/boss_ink816_boss4.webp',frame:256},
-  boss_ink816_boss5_sovereign:{url:'assets/art/boss_body816/boss_ink816_boss5_sovereign.webp',frame:256},
-  boss_ink816_boss6_rootmother:{url:'assets/art/boss_body816/boss_ink816_boss6_rootmother.webp',frame:256},
-  boss_ink816_boss7_mycelium_behemoth:{url:'assets/art/boss_body816/boss_ink816_boss7_mycelium_behemoth.webp',frame:256},
-  boss_ink816_boss8_hornet_queen:{url:'assets/art/boss_body816/boss_ink816_boss8_hornet_queen.webp',frame:256},
-  boss_ink816_boss9_chronobloom_orchid:{url:'assets/art/boss_body816/boss_ink816_boss9_chronobloom_orchid.webp',frame:256},
-  boss_ink816_boss10_true_rootmother:{url:'assets/art/boss_body816/boss_ink816_boss10_true_rootmother.webp',frame:256},
-  boss_ink816_c3_boss1:{url:'assets/art/boss_body816/boss_ink816_c3_boss1.webp',frame:256},
-  boss_ink816_c3_boss2:{url:'assets/art/boss_body816/boss_ink816_c3_boss2.webp',frame:256},
-  boss_ink816_c3_boss3:{url:'assets/art/boss_body816/boss_ink816_c3_boss3.webp',frame:256},
-  boss_ink816_c3_boss4:{url:'assets/art/boss_body816/boss_ink816_c3_boss4.webp',frame:256},
-  boss_ink816_c3_boss5:{url:'assets/art/boss_body816/boss_ink816_c3_boss5.webp',frame:256},
-  boss_ink816_boss_pinnacle:{url:'assets/art/boss_body816/boss_ink816_boss_pinnacle.webp',frame:256},
-  boss_ink816_c3_mini1:{url:'assets/art/boss_body816/boss_ink816_c3_mini1.webp',frame:256},
-  boss_ink816_c3_mini2:{url:'assets/art/boss_body816/boss_ink816_c3_mini2.webp',frame:256},
-  boss_ink816_c3_mini3:{url:'assets/art/boss_body816/boss_ink816_c3_mini3.webp',frame:256},
-  boss_ink816_c3_mini4:{url:'assets/art/boss_body816/boss_ink816_c3_mini4.webp',frame:256},
-  boss_ink816_c3_mini5:{url:'assets/art/boss_body816/boss_ink816_c3_mini5.webp',frame:256},
+  boss_ink816_mb1:{url:'assets/art/boss_body818/boss_ink816_mb1.webp',frame:256},
+  boss_ink816_mb2:{url:'assets/art/boss_body818/boss_ink816_mb2.webp',frame:256},
+  boss_ink816_mb3:{url:'assets/art/boss_body818/boss_ink816_mb3.webp',frame:256},
+  boss_ink816_mb4:{url:'assets/art/boss_body818/boss_ink816_mb4.webp',frame:256},
+  boss_ink816_mb5_banquet_executioner:{url:'assets/art/boss_body818/boss_ink816_mb5_banquet_executioner.webp',frame:256},
+  boss_ink816_mb6_sporewarden:{url:'assets/art/boss_body818/boss_ink816_mb6_sporewarden.webp',frame:256},
+  boss_ink816_mb7_fungal_juggernaut:{url:'assets/art/boss_body818/boss_ink816_mb7_fungal_juggernaut.webp',frame:256},
+  boss_ink816_mb8_royal_stinger:{url:'assets/art/boss_body818/boss_ink816_mb8_royal_stinger.webp',frame:256},
+  boss_ink816_mb9_season_keeper:{url:'assets/art/boss_body818/boss_ink816_mb9_season_keeper.webp',frame:256},
+  boss_ink816_boss1:{url:'assets/art/boss_body818/boss_ink816_boss1.webp',frame:256},
+  boss_ink816_boss2:{url:'assets/art/boss_body818/boss_ink816_boss2.webp',frame:256},
+  boss_ink816_boss3:{url:'assets/art/boss_body818/boss_ink816_boss3.webp',frame:256},
+  boss_ink816_boss4:{url:'assets/art/boss_body818/boss_ink816_boss4.webp',frame:256},
+  boss_ink816_boss5_sovereign:{url:'assets/art/boss_body818/boss_ink816_boss5_sovereign.webp',frame:256},
+  boss_ink816_boss6_rootmother:{url:'assets/art/boss_body818/boss_ink816_boss6_rootmother.webp',frame:256},
+  boss_ink816_boss7_mycelium_behemoth:{url:'assets/art/boss_body818/boss_ink816_boss7_mycelium_behemoth.webp',frame:256},
+  boss_ink816_boss8_hornet_queen:{url:'assets/art/boss_body818/boss_ink816_boss8_hornet_queen.webp',frame:256},
+  boss_ink816_boss9_chronobloom_orchid:{url:'assets/art/boss_body818/boss_ink816_boss9_chronobloom_orchid.webp',frame:256},
+  boss_ink816_boss10_true_rootmother:{url:'assets/art/boss_body818/boss_ink816_boss10_true_rootmother.webp',frame:256},
+  boss_ink816_c3_boss1:{url:'assets/art/boss_body818/boss_ink816_c3_boss1.webp',frame:256},
+  boss_ink816_c3_boss2:{url:'assets/art/boss_body818/boss_ink816_c3_boss2.webp',frame:256},
+  boss_ink816_c3_boss3:{url:'assets/art/boss_body818/boss_ink816_c3_boss3.webp',frame:256},
+  boss_ink816_c3_boss4:{url:'assets/art/boss_body818/boss_ink816_c3_boss4.webp',frame:256},
+  boss_ink816_c3_boss5:{url:'assets/art/boss_body818/boss_ink816_c3_boss5.webp',frame:256},
+  boss_ink816_boss_pinnacle:{url:'assets/art/boss_body818/boss_ink816_boss_pinnacle.webp',frame:256},
+  boss_ink816_c3_mini1:{url:'assets/art/boss_body818/boss_ink816_c3_mini1.webp',frame:256},
+  boss_ink816_c3_mini2:{url:'assets/art/boss_body818/boss_ink816_c3_mini2.webp',frame:256},
+  boss_ink816_c3_mini3:{url:'assets/art/boss_body818/boss_ink816_c3_mini3.webp',frame:256},
+  boss_ink816_c3_mini4:{url:'assets/art/boss_body818/boss_ink816_c3_mini4.webp',frame:256},
+  boss_ink816_c3_mini5:{url:'assets/art/boss_body818/boss_ink816_c3_mini5.webp',frame:256},
   yzs_seed_bite:{url:'assets/art/yuzu_seedlings/yzs_seed_bite.webp',frame:64},
   yzs_seed_tank:{url:'assets/art/yuzu_seedlings/yzs_seed_tank.webp',frame:64},
   yzs_seed_throw:{url:'assets/art/yuzu_seedlings/yzs_seed_throw.webp',frame:64},
@@ -20160,7 +20170,7 @@ class Game extends Phaser.Scene {
   applyBossInk(e){
     if(!e?.active||e.delveBoss||e.isDummy)return false;const current=e._bossInk;
     if(current){if(e.texture?.key!==current.key){e.anims?.stop();e.setTexture(current.key,current.frame<0?0:current.frame);}return true;}
-    const base=this.bossInkBase(e),fd=BOSS_BODY816_MAP[base];if(!fd||!(e.isBoss||e.isMini||e.isElite&&/^c3_mini[1-5]$/.test(base))||!this.realTex?.(fd.key))return false;
+    const base=this.bossInkBase(e),fd=BOSS_BODY816_MAP[base];if(!fd||!(e.isBoss||e.isMini||e.isElite&&/^(?:c3_mini[1-5]|mb[1-9](?:_|$))/.test(base))||!this.realTex?.(fd.key))return false;
     this.bossInkRetarget(e,fd.key,fd.oldFrame,256);
     e._bossInk={base,key:fd.key,player:this.player,stage:this.stageIndex,epoch:this._artEpoch||0,spawn:e._taroSpawnId,clock:0,pose:null,frame:-1};
     (this._bossInkActors||(this._bossInkActors=new Set())).add(e);
@@ -20670,6 +20680,7 @@ class Game extends Phaser.Scene {
     });
   }
   royalGuardAttack(b){
+    this.bossInkPose?.(b,3,700);
     const pick=Phaser.Utils.Array.GetRandom(b.phase2?['charge','summon','slam']:['charge','slam']),px=this.player.x,py=this.player.y;   // เอา 'prison' (กรงเสาผลึก) ออก
     if(pick==='charge'){this.chargeTelegraph(b,780,700,22);b.atkCd=2.2;}
     else if(pick==='prison'){this.showBanner('💎 Acid Crystal Cage','Destroy the crystals to open a path!',850);for(let i=0;i<3;i++){const a=Math.PI/2+i*Math.PI*2/3;this.spawnBossObject('crystal',px+Math.cos(a)*135,py+Math.sin(a)*135,7);}b.atkCd=3.0;}   // 4→3 ผลึก เว้นช่องหนีมากขึ้น
@@ -20793,6 +20804,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(ms,()=>{if(!b.active||b._ch2PoseToken!==token)return;const idle=b.texture.key==='boss6_rootmother'?'boss6_rootmother_idle':'mb6_sporewarden_walk';if(this.anims.exists(idle))b.play(idle,true);else b.setFrame(0);});
   }
   juggernautPose(b,frame,ms=820){
+    if(this.bossInkPose?.(b,frame===0?0:3,ms))return;
     if(!b||!b.active||b.texture.key!=='mb7_fungal_juggernaut')return;frame=Phaser.Math.Clamp(frame|0,0,3);
     b._jugPoseToken=(b._jugPoseToken||0)+1;const token=b._jugPoseToken;if(b.anims)b.anims.stop();b.setFrame(frame);
     this.time.delayedCall(ms,()=>{if(!b.active||b._jugPoseToken!==token)return;if(this.anims.exists('mb7_fungal_juggernaut_walk'))b.play('mb7_fungal_juggernaut_walk',true);else b.setFrame(0);});
@@ -21072,6 +21084,7 @@ class Game extends Phaser.Scene {
     else { b._arenaBusy=false; return; }
     this.arenaEnd(b,ms+200,1.2); b.atkCd=(ms+400)/1000; }
   royalStingerPose(b,frame,ms=900){
+    if(this.bossInkPose?.(b,frame===0?0:3,ms))return;
     if(!b||!b.active||b.texture.key!=='mb8_royal_stinger')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._stingerPoseToken=(b._stingerPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);
     this.time.delayedCall(ms,()=>{if(!b.active||b._stingerPoseToken!==token)return;if(this.anims.exists('mb8_royal_stinger_walk'))b.play('mb8_royal_stinger_walk',true);else b.setFrame(0);});
   }
@@ -21104,6 +21117,7 @@ class Game extends Phaser.Scene {
   }
 
   seasonKeeperPose(b,frame,ms=950){
+    if(this.bossInkPose?.(b,frame===0?0:3,ms))return;
     if(!b||!b.active||b.texture.key!=='mb9_season_keeper')return;frame=Phaser.Math.Clamp(frame|0,0,3);const token=b._keeperPoseToken=(b._keeperPoseToken||0)+1;if(b.anims)b.anims.stop();b.setFrame(frame);this.time.delayedCall(ms,()=>{if(!b.active||b._keeperPoseToken!==token)return;if(this.anims.exists('mb9_season_keeper_walk'))b.play('mb9_season_keeper_walk',true);else b.setFrame(0);});
   }
   seasonKeeperAttack(b){

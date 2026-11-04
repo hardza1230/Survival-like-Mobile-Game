@@ -1,0 +1,66 @@
+{
+  "provider": "built-in ImageGen",
+  "generations": [
+    {
+      "group": "pair12",
+      "keys": [
+        "mb1",
+        "mb2"
+      ],
+      "prompt": "Create a finished production CHARACTER ANIMATION SPRITE SHEET for Mochi Mayhem. Reference1 supplies exact identities A(top) and B(bottom); reference2 is ONLY the crisp painted dark-outline style, not its characters. A red ruby armored insect guard with golden curved mandibles, red jeweled crown and six legs. B round brass sewer/pressure creature, round toothed mouth, red valve on head, two cylindrical pipe arms, teal ooze; NOT the large teal boss. Preserve silhouettes, faces, props and palettes. Improve clarity with crisp dark anime ink edges and candy-fantasy painted highlights. Exact canvas1536x1024 RGBA,6columns x4rows,24separate256px cells. Extremely important: EACH sprite including weapons/flying particles/feet fully inside x28..228,y24..228 OF ITS OWN CELL; min24px truly alpha0 gutters on ALL sides. NO bodypart crosses the fixed grid. No ground discs/shadows/rectangle haze, no text, numbers, labels, lines or scenery. Fixed body scale/camera; planted foot/root pivot x128,y224 (flying wasp stable torso pivot). Complete head, hands, weapons and feet in EVERY frame. Row1 A: six distinct subtle idle/breathing/appendage loop poses ending close to first. Row2 SAME A: c1 crouch anticipation, c2 deeper loaded wind-up, c3 maximum loaded wind-up weapon raised (NOT yet hit), c4 decisive strike/follow-through, c5 recovery, c6 settle to idle. Row3 B idle six poses; Row4 B six attack poses using identical required timing order. The torso and limbs actually articulate; no rotated/scaled copies and no disappearing parts. All24cells fully finished. Small compact stroke trails only on c4 strike, never hide anatomy. NO gore. Transparent background must be real alpha0.",
+      "references": [
+        "assets/incoming/boss_body818/ref/pair12.png",
+        "assets/incoming/boss_body816/preview.png"
+      ]
+    },
+    {
+      "group": "pair13",
+      "keys": [
+        "mb3",
+        "mb4"
+      ],
+      "prompt": "Create a finished production CHARACTER ANIMATION SPRITE SHEET for Mochi Mayhem. Reference1 supplies exact identities A(top) and B(bottom); reference2 is ONLY the crisp painted dark-outline style, not its characters. A small round black cooking-pot/fire cauldron creature with a long handle, lava top, angry orange face and stubby ember feet. B square pale-blue ice cube golem with small ice cube head, cuboid forearms, dark angry face and cyan feet; NOT the white ice-cream giant. Preserve silhouettes, faces, props and palettes. Improve clarity with crisp dark anime ink edges and candy-fantasy painted highlights. Exact canvas1536x1024 RGBA,6columns x4rows,24separate256px cells. Extremely important: EACH sprite including weapons/flying particles/feet fully inside x28..228,y24..228 OF ITS OWN CELL; min24px truly alpha0 gutters on ALL sides. NO bodypart crosses the fixed grid. No ground discs/shadows/rectangle haze, no text, numbers, labels, lines or scenery. Fixed body scale/camera; planted foot/root pivot x128,y224 (flying wasp stable torso pivot). Complete head, hands, weapons and feet in EVERY frame. Row1 A: six distinct subtle idle/breathing/appendage loop poses ending close to first. Row2 SAME A: c1 crouch anticipation, c2 deeper loaded wind-up, c3 maximum loaded wind-up weapon raised (NOT yet hit), c4 decisive strike/follow-through, c5 recovery, c6 settle to idle. Row3 B idle six poses; Row4 B six attack poses using identical required timing order. The torso and limbs actually articulate; no rotated/scaled copies and no disappearing parts. All24cells fully finished. Small compact stroke trails only on c4 strike, never hide anatomy. NO gore. Transparent background must be real alpha0.",
+      "references": [
+        "assets/incoming/boss_body818/ref/pair13.png",
+        "assets/incoming/boss_body816/preview.png"
+      ]
+    },
+    {
+      "group": "pair14",
+      "keys": [
+        "mb5_banquet_executioner",
+        "mb6_sporewarden"
+      ],
+      "prompt": "Create a finished production CHARACTER ANIMATION SPRITE SHEET for Mochi Mayhem. Reference1 supplies exact identities A(top) and B(bottom); reference2 is ONLY the crisp painted dark-outline style, not its characters. A tall dark burgundy banquet executioner knight, crown, central dark face with glowing magenta eyes, kitchen blade/spear, fork and whisk weapons, tattered skirt armor. B green/brown thorn-and-leaf sporewarden knight, horned crown, magenta chest/face glow, large curved leaf/scythe forearms. Preserve silhouettes, faces, props and palettes. Improve clarity with crisp dark anime ink edges and candy-fantasy painted highlights. Exact canvas1536x1024 RGBA,6columns x4rows,24separate256px cells. Extremely important: EACH sprite including weapons/flying particles/feet fully inside x28..228,y24..228 OF ITS OWN CELL; min24px truly alpha0 gutters on ALL sides. NO bodypart crosses the fixed grid. No ground discs/shadows/rectangle haze, no text, numbers, labels, lines or scenery. Fixed body scale/camera; planted foot/root pivot x128,y224 (flying wasp stable torso pivot). Complete head, hands, weapons and feet in EVERY frame. Row1 A: six distinct subtle idle/breathing/appendage loop poses ending close to first. Row2 SAME A: c1 crouch anticipation, c2 deeper loaded wind-up, c3 maximum loaded wind-up weapon raised (NOT yet hit), c4 decisive strike/follow-through, c5 recovery, c6 settle to idle. Row3 B idle six poses; Row4 B six attack poses using identical required timing order. The torso and limbs actually articulate; no rotated/scaled copies and no disappearing parts. All24cells fully finished. Small compact stroke trails only on c4 strike, never hide anatomy. NO gore. Transparent background must be real alpha0.",
+      "references": [
+        "assets/incoming/boss_body818/ref/pair14.png",
+        "assets/incoming/boss_body816/preview.png"
+      ]
+    },
+    {
+      "group": "pair15",
+      "keys": [
+        "mb7_fungal_juggernaut",
+        "mb8_royal_stinger"
+      ],
+      "prompt": "Create a finished production CHARACTER ANIMATION SPRITE SHEET for Mochi Mayhem. Reference1 supplies exact identities A(top) and B(bottom); reference2 is ONLY the crisp painted dark-outline style, not its characters. A squat heavy purple mushroom juggernaut with layered cyan mushroom pauldrons, pink caps, glowing lilac eyes and violet chest nodules, huge rounded fists. B slender black-and-gold royal wasp with tall angular crown, amber clear wings, pointed golden stinger and narrow black limbs. Preserve silhouettes, faces, props and palettes. Improve clarity with crisp dark anime ink edges and candy-fantasy painted highlights. Exact canvas1536x1024 RGBA,6columns x4rows,24separate256px cells. Extremely important: EACH sprite including weapons/flying particles/feet fully inside x28..228,y24..228 OF ITS OWN CELL; min24px truly alpha0 gutters on ALL sides. NO bodypart crosses the fixed grid. No ground discs/shadows/rectangle haze, no text, numbers, labels, lines or scenery. Fixed body scale/camera; planted foot/root pivot x128,y224 (flying wasp stable torso pivot). Complete head, hands, weapons and feet in EVERY frame. Row1 A: six distinct subtle idle/breathing/appendage loop poses ending close to first. Row2 SAME A: c1 crouch anticipation, c2 deeper loaded wind-up, c3 maximum loaded wind-up weapon raised (NOT yet hit), c4 decisive strike/follow-through, c5 recovery, c6 settle to idle. Row3 B idle six poses; Row4 B six attack poses using identical required timing order. The torso and limbs actually articulate; no rotated/scaled copies and no disappearing parts. All24cells fully finished. Small compact stroke trails only on c4 strike, never hide anatomy. NO gore. Transparent background must be real alpha0.",
+      "references": [
+        "assets/incoming/boss_body818/ref/pair15.png",
+        "assets/incoming/boss_body816/preview.png"
+      ]
+    },
+    {
+      "group": "pair16",
+      "keys": [
+        "mb9_season_keeper",
+        "mb10_ancient_root_knight"
+      ],
+      "prompt": "Create a finished production CHARACTER ANIMATION SPRITE SHEET for Mochi Mayhem. Reference1 supplies exact identities A(top) and B(bottom); reference2 is ONLY the crisp painted dark-outline style, not its characters. A green-robed nature paladin/season keeper in golden leaf armor, four small differently colored seasonal gems around crown, leaf-topped staff and divided colorful stained-glass shield. B dark reddish ancient root knight, jagged rooted crown, round hot-pink chest heart, magenta thorn sword and large thorn shield. These two remain the same existing characters, not the C3 armored seed knight. Preserve silhouettes, faces, props and palettes. Improve clarity with crisp dark anime ink edges and candy-fantasy painted highlights. Exact canvas1536x1024 RGBA,6columns x4rows,24separate256px cells. Extremely important: EACH sprite including weapons/flying particles/feet fully inside x28..228,y24..228 OF ITS OWN CELL; min24px truly alpha0 gutters on ALL sides. NO bodypart crosses the fixed grid. No ground discs/shadows/rectangle haze, no text, numbers, labels, lines or scenery. Fixed body scale/camera; planted foot/root pivot x128,y224 (flying wasp stable torso pivot). Complete head, hands, weapons and feet in EVERY frame. Row1 A: six distinct subtle idle/breathing/appendage loop poses ending close to first. Row2 SAME A: c1 crouch anticipation, c2 deeper loaded wind-up, c3 maximum loaded wind-up weapon raised (NOT yet hit), c4 decisive strike/follow-through, c5 recovery, c6 settle to idle. Row3 B idle six poses; Row4 B six attack poses using identical required timing order. The torso and limbs actually articulate; no rotated/scaled copies and no disappearing parts. All24cells fully finished. Small compact stroke trails only on c4 strike, never hide anatomy. NO gore. Transparent background must be real alpha0.",
+      "references": [
+        "assets/incoming/boss_body818/ref/pair16.png",
+        "assets/incoming/boss_body816/preview.png"
+      ]
+    }
+  ],
+  "inheritedSourcePrompts": "assets/incoming/boss_body816/PROMPTS.json"
+}

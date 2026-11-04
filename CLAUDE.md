@@ -1,18 +1,18 @@
 # Version line
 
-Current release: **8.1.17**. Next release:8.1.18. Fetch the deploy branch before new work.
+Current release: **8.1.18**. Next release:8.1.19. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.17 — completed boss battle art pass
+# Latest delivery: v8.1.18 — repair source cuts and complete early miniboss motion
+
+Owner found clipped/unfinished boss sheets. Rigid256-source cuts before padding had hidden errors; new packer partitions at actual transparent source gutters BEFORE shared uniform packing. Source rects and independent PNG alpha-seam tests cover all384source cells;1111painted pixels reassigned correctly (717fromexisting21actors). Original21body source drawings preserved/repacked,9C1/C2minibosses receive108selected new ImageGen frames;4were static160/192/140/140px images. Full16-frame Ancient Root Knight and its five dedicated animations retained. New30body sheets/372frames28,292,916bytes inboss_body818 with stable logicalkeys, stage-lazy, actual Sprite replacement and physical geometry retained. Earlier-miniboss pose helpers now enter owned body clock; original AI/damage/velocity/cooldowns/colliders unchanged. All372runtime cells inspected in source compositions, not gameplay screenshots. See docs/design/BOSS_SHEETS_818.md. Full npmcheck and ten browser contracts passed locally, including final actual Arcade frame1 attack translation checks; publication/live verification pending. Owner phone testing waived.
+
+# Previous delivery: v8.1.17 — completed boss battle art pass
 
 All ordered boss-art tasks1–5 are delivered. The owner explicitly waived agent phone testing and will playtest himself. Final game/art commit:e01180437ba078508b8458b0d3dd31123099a836; CI recovery commit:53ff71c49b2eee6c842e145394b111b05426fbbd. Pages41890956493 and APK41887138733 succeeded. Live version/code and **all133 new boss-art files /904 authored frames /44,333,442bytes** match their source manifests by SHA-256. Exact immutable readback also verified all47 release files and both CI recovery files. Full npmcheck, build and ten browser contracts passed locally and in CI.
 
 Sixteen original painted projectile silhouettes now have four-frame128px loops,575,618runtime bytes, loaded per stage. The original pooled physics bullet is reused: damage, lifetime, speed, circle, scale, rotation and behaviour remain unchanged. Owned frame clocks respect pause/Low/reduced and pool/player/stage/epoch/shutdown cleanup without destroying actors. Original1254-square ImageGen sources, exact prompts, alpha/hash/border QA, previews and mechanical packer are retained. See docs/design/battle_art_audit812/DELIVERY817.md.
 
 Publication recovery: one Pages attempt timed out while updating_pages; re-running the old workflow produced duplicate github-pages artifacts. The workflow now isolates upload/deployment artifact names by github.run_attempt and allows20minutes for publishing the large site. A fresh run succeeded. Game/art bytes were unchanged by this CI fix.
-
-# Previous delivery: v8.1.16 — painted boss body animation and clarity
-
-21 original identities /22 visual forms /264 authored frames cover15 campaign bosses, Pinnacle and5 C3 minibosses. Actual Sprite replacements provide idle, wind-up, strike and recovery. B01 uses256px source frames at the same world size; B05 mouth/eyes and B06 upright bud/face/roots have distinct silhouettes. Ratio-normalized scale/circle offsets preserve real Arcade world geometry. Stage-lazy textures, fallback, freeze/pause/intro/Low/reduced, phase2 and pool cleanup are tested. Explicit charge cues follow existing release callbacks; other sequences interpolate within original pose intervals. AI, damage, cooldowns, positions and velocities remain unchanged. Pages41885436348 /APK41885436096 and live16/all21 body asset hashes verified. See DELIVERY816.md.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

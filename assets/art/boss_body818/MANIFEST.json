@@ -1,0 +1,966 @@
+{
+  "assets": [
+    {
+      "base": "boss1",
+      "key": "boss_ink816_boss1",
+      "stage": 0,
+      "path": "assets/art/boss_body818/boss_ink816_boss1.webp",
+      "source": "pair01",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 160,
+      "frameRatio": 1.6,
+      "originalBounds": [
+        8,
+        5,
+        153,
+        154
+      ],
+      "packedBounds": [
+        12.8,
+        8.0,
+        244.8,
+        246.4
+      ],
+      "bytes": 768242,
+      "sha256": "a32ae0b75a5ecebe5ee42cefb15b475ca8b2baeca9340931e32ececd6559c274",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss2",
+      "key": "boss_ink816_boss2",
+      "stage": 1,
+      "path": "assets/art/boss_body818/boss_ink816_boss2.webp",
+      "source": "pair01",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        12,
+        15,
+        244,
+        235
+      ],
+      "packedBounds": [
+        12.0,
+        15.0,
+        244.0,
+        235.0
+      ],
+      "bytes": 760132,
+      "sha256": "0a8a364b69de492152240b925d1133445ce0588dd3b24cd7aad953b64b47a842",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss3",
+      "key": "boss_ink816_boss3",
+      "stage": 2,
+      "path": "assets/art/boss_body818/boss_ink816_boss3.webp",
+      "source": "pair02",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        12,
+        25,
+        243,
+        237
+      ],
+      "packedBounds": [
+        12.0,
+        25.0,
+        243.0,
+        237.0
+      ],
+      "bytes": 769748,
+      "sha256": "583d58e73c356ccc4c554dfd1758ea472860c034f84fd0e31bcefbeadf7624d3",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss4",
+      "key": "boss_ink816_boss4",
+      "stage": 3,
+      "path": "assets/art/boss_body818/boss_ink816_boss4.webp",
+      "source": "pair02",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        3,
+        256,
+        256
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "bytes": 829974,
+      "sha256": "5381cbed7950bf58222b4501fece48e51b52cf662bddd5d92770d7cca8ce9e78",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss5_sovereign",
+      "key": "boss_ink816_boss5_sovereign",
+      "stage": 4,
+      "path": "assets/art/boss_body818/boss_ink816_boss5_sovereign.webp",
+      "source": "pair03",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        1,
+        3,
+        253,
+        253
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "bytes": 1109760,
+      "sha256": "ba99158bf0769f51e5b17f965c6fced21b508f6c93eea9fb78715230c9813c7d",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss6_rootmother",
+      "key": "boss_ink816_boss6_rootmother",
+      "stage": 5,
+      "path": "assets/art/boss_body818/boss_ink816_boss6_rootmother.webp",
+      "source": "pair03",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        1,
+        0,
+        255,
+        256
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "bytes": 1092638,
+      "sha256": "0031189d2fb1fe49b4c73fbc49242c4d9de1d170c41605b19c7fb27d07e64f80",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss7_mycelium_behemoth",
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "stage": 6,
+      "path": "assets/art/boss_body818/boss_ink816_boss7_mycelium_behemoth.webp",
+      "source": "pair04",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        10,
+        19,
+        245,
+        246
+      ],
+      "packedBounds": [
+        10.0,
+        19.0,
+        245.0,
+        246.0
+      ],
+      "bytes": 930742,
+      "sha256": "39f49c40f85f6fe3ea80f09fd9359a71a0e7436c9c909de3b5a3041afd61d8ca",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss8_hornet_queen",
+      "key": "boss_ink816_boss8_hornet_queen",
+      "stage": 7,
+      "path": "assets/art/boss_body818/boss_ink816_boss8_hornet_queen.webp",
+      "source": "pair04",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        10,
+        14,
+        246,
+        246
+      ],
+      "packedBounds": [
+        10.0,
+        14.0,
+        246.0,
+        246.0
+      ],
+      "bytes": 816108,
+      "sha256": "1fee217496cee66be5788f2dbac4caed9db10dcaa8aff5c17b07336e66057af7",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss9_chronobloom_orchid",
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "stage": 8,
+      "path": "assets/art/boss_body818/boss_ink816_boss9_chronobloom_orchid.webp",
+      "source": "pair05",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        10,
+        13,
+        246,
+        246
+      ],
+      "packedBounds": [
+        10.0,
+        13.0,
+        246.0,
+        246.0
+      ],
+      "bytes": 900316,
+      "sha256": "bf7c0614a2e6d3f64c0e6413162566178bad47d64127f8bdab61007cf04f822d",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss10_true_rootmother",
+      "key": "boss_ink816_boss10_true_rootmother",
+      "stage": 9,
+      "path": "assets/art/boss_body818/boss_ink816_boss10_true_rootmother.webp",
+      "source": "pair05",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        10,
+        9,
+        246,
+        246
+      ],
+      "packedBounds": [
+        10.0,
+        9.0,
+        246.0,
+        246.0
+      ],
+      "bytes": 977662,
+      "sha256": "e2e0b1549603b75fab2204f258b6447a0d59be71325a12f61e4d12fa905f4cb6",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_boss1",
+      "key": "boss_ink816_c3_boss1",
+      "stage": 10,
+      "path": "assets/art/boss_body818/boss_ink816_c3_boss1.webp",
+      "source": "pair06",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        1,
+        256,
+        247
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        247.0
+      ],
+      "bytes": 1206242,
+      "sha256": "e83a2876e60919c4f5e4aa3463229430e11338289022f1004a48087bdeed4226",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_boss2",
+      "key": "boss_ink816_c3_boss2",
+      "stage": 11,
+      "path": "assets/art/boss_body818/boss_ink816_c3_boss2.webp",
+      "source": "pair06",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        7,
+        256,
+        254
+      ],
+      "packedBounds": [
+        4,
+        7.0,
+        252,
+        252
+      ],
+      "bytes": 1206838,
+      "sha256": "aa8964db6fe2a1d854a2f730c2583132404b87d87da06064e7674380131dc7df",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_boss3",
+      "key": "boss_ink816_c3_boss3",
+      "stage": 12,
+      "path": "assets/art/boss_body818/boss_ink816_c3_boss3.webp",
+      "source": "pair07",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        6,
+        256,
+        256
+      ],
+      "packedBounds": [
+        4,
+        6.0,
+        252,
+        252
+      ],
+      "bytes": 1045846,
+      "sha256": "a5a4ffe27a3c5e8c9760289df00bc97e85ab97d55ec2c8dc1e57df919aea2ea9",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_boss4",
+      "key": "boss_ink816_c3_boss4",
+      "stage": 13,
+      "path": "assets/art/boss_body818/boss_ink816_c3_boss4.webp",
+      "source": "pair07",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        2,
+        2,
+        251,
+        246
+      ],
+      "packedBounds": [
+        4,
+        4,
+        251.0,
+        246.0
+      ],
+      "bytes": 840870,
+      "sha256": "2249d22a44022d76bebcedcc5511f09f20b9bed311fd71a14f8ca67f2b2f1d21",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_boss5",
+      "key": "boss_ink816_c3_boss5",
+      "stage": 14,
+      "path": "assets/art/boss_body818/boss_ink816_c3_boss5.webp",
+      "source": "pair08",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        2,
+        256,
+        252
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "bytes": 980158,
+      "sha256": "29fd1786c794c11c80130c30bf824560fd8ef65e5392bf8e6d486903bdeb40b0",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "boss_pinnacle",
+      "key": "boss_ink816_boss_pinnacle",
+      "stage": 14,
+      "path": "assets/art/boss_body818/boss_ink816_boss_pinnacle.webp",
+      "source": "pair08",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        5,
+        3,
+        251,
+        254
+      ],
+      "packedBounds": [
+        5.0,
+        4,
+        251.0,
+        252
+      ],
+      "bytes": 901738,
+      "sha256": "443fc5032f3ddbb798161e00c84b24fe9d6e7c0a3bd64724a4a78c8ca1b4d9d5",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_mini1",
+      "key": "boss_ink816_c3_mini1",
+      "stage": 10,
+      "path": "assets/art/boss_body818/boss_ink816_c3_mini1.webp",
+      "source": "pair09",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        14,
+        11,
+        249,
+        247
+      ],
+      "packedBounds": [
+        14.0,
+        11.0,
+        249.0,
+        247.0
+      ],
+      "bytes": 833158,
+      "sha256": "d131435aa2cdb28237c6e599b95961356bd2176a4c5ae70f60e8b71b3758a644",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_mini2",
+      "key": "boss_ink816_c3_mini2",
+      "stage": 11,
+      "path": "assets/art/boss_body818/boss_ink816_c3_mini2.webp",
+      "source": "pair09",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "bytes": 995938,
+      "sha256": "55ff2a89904ade2cb93e32903793363278485f16f64e414da57dded3eab4b6b4",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_mini3",
+      "key": "boss_ink816_c3_mini3",
+      "stage": 12,
+      "path": "assets/art/boss_body818/boss_ink816_c3_mini3.webp",
+      "source": "pair10",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        2,
+        256,
+        244
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        244.0
+      ],
+      "bytes": 924322,
+      "sha256": "c5eefc80779993644f4dbd48e14673e78a9d035e770e628261672fa2364fb75b",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_mini4",
+      "key": "boss_ink816_c3_mini4",
+      "stage": 13,
+      "path": "assets/art/boss_body818/boss_ink816_c3_mini4.webp",
+      "source": "pair10",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        5,
+        256,
+        248
+      ],
+      "packedBounds": [
+        4,
+        5.0,
+        252,
+        248.0
+      ],
+      "bytes": 889604,
+      "sha256": "0d2881488fdf191567d211ee7753b3a00844a10068ad69409b82e94b0eed98f1",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "c3_mini5",
+      "key": "boss_ink816_c3_mini5",
+      "stage": 14,
+      "path": "assets/art/boss_body818/boss_ink816_c3_mini5.webp",
+      "source": "pair11",
+      "sourceRows": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 24,
+      "cols": 6,
+      "rows": 4,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        3,
+        0,
+        256,
+        256
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        252
+      ],
+      "bytes": 1784980,
+      "sha256": "7aab9541f0ac6464af5fde3954b9faecaf03f5710a7653014444fb83e1f031ad",
+      "decodedBytes": 6291456
+    },
+    {
+      "base": "mb1",
+      "key": "boss_ink816_mb1",
+      "stage": 0,
+      "path": "assets/art/boss_body818/boss_ink816_mb1.webp",
+      "source": "pair12",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 160,
+      "frameRatio": 1.6,
+      "originalBounds": [
+        5,
+        8,
+        153,
+        151
+      ],
+      "packedBounds": [
+        8.0,
+        12.8,
+        244.8,
+        241.60000000000002
+      ],
+      "bytes": 814966,
+      "sha256": "16a9b66e0e117f7752eca69e154f0b47e63cd3dfa1485df8f403de99e19cf93a",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb2",
+      "key": "boss_ink816_mb2",
+      "stage": 1,
+      "path": "assets/art/boss_body818/boss_ink816_mb2.webp",
+      "source": "pair12",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 192,
+      "frameRatio": 1.3333333333333333,
+      "originalBounds": [
+        6,
+        9,
+        190,
+        183
+      ],
+      "packedBounds": [
+        8.0,
+        12.0,
+        252,
+        244.0
+      ],
+      "bytes": 1004556,
+      "sha256": "6953c1b5b21cfaabef0345977b70d07706bb077d51529e546a0f03e82b383dae",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb3",
+      "key": "boss_ink816_mb3",
+      "stage": 2,
+      "path": "assets/art/boss_body818/boss_ink816_mb3.webp",
+      "source": "pair13",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 140,
+      "frameRatio": 1.8285714285714285,
+      "originalBounds": [
+        7,
+        3,
+        133,
+        137
+      ],
+      "packedBounds": [
+        12.799999999999999,
+        5.485714285714286,
+        243.2,
+        250.5142857142857
+      ],
+      "bytes": 745910,
+      "sha256": "f8d1ec66d706fe3a281cf116a7ee37430b23f58fa377aa9ef6c869dc26643570",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb4",
+      "key": "boss_ink816_mb4",
+      "stage": 3,
+      "path": "assets/art/boss_body818/boss_ink816_mb4.webp",
+      "source": "pair13",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 140,
+      "frameRatio": 1.8285714285714285,
+      "originalBounds": [
+        3,
+        3,
+        137,
+        137
+      ],
+      "packedBounds": [
+        5.485714285714286,
+        5.485714285714286,
+        250.5142857142857,
+        250.5142857142857
+      ],
+      "bytes": 765712,
+      "sha256": "f27f5c9cb0d6023301540d97d401c98a81b3eaca5bf4fc0200ec3fbb6e4f6d3e",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb5_banquet_executioner",
+      "key": "boss_ink816_mb5_banquet_executioner",
+      "stage": 4,
+      "path": "assets/art/boss_body818/boss_ink816_mb5_banquet_executioner.webp",
+      "source": "pair14",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        2,
+        256,
+        250
+      ],
+      "packedBounds": [
+        4,
+        4,
+        252,
+        250.0
+      ],
+      "bytes": 1176086,
+      "sha256": "83cbd1b325b957473969cf04a36e20f197f077edb2bd262c341b713cdec719df",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb6_sporewarden",
+      "key": "boss_ink816_mb6_sporewarden",
+      "stage": 5,
+      "path": "assets/art/boss_body818/boss_ink816_mb6_sporewarden.webp",
+      "source": "pair14",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        9,
+        256,
+        254
+      ],
+      "packedBounds": [
+        4,
+        9.0,
+        252,
+        252
+      ],
+      "bytes": 1019176,
+      "sha256": "4fa998bda815c7c50cf13c18e1933b1fbfe67e7e3d3c88619289f342bf39672f",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb7_fungal_juggernaut",
+      "key": "boss_ink816_mb7_fungal_juggernaut",
+      "stage": 6,
+      "path": "assets/art/boss_body818/boss_ink816_mb7_fungal_juggernaut.webp",
+      "source": "pair15",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        0,
+        32,
+        256,
+        256
+      ],
+      "packedBounds": [
+        4,
+        32.0,
+        252,
+        252
+      ],
+      "bytes": 905936,
+      "sha256": "38227c2e92f257f3c350e2f55e9a4110afaab928d98f2218bf7ef26740473f9a",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb8_royal_stinger",
+      "key": "boss_ink816_mb8_royal_stinger",
+      "stage": 7,
+      "path": "assets/art/boss_body818/boss_ink816_mb8_royal_stinger.webp",
+      "source": "pair15",
+      "sourceRows": [
+        2,
+        3
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        32,
+        5,
+        224,
+        251
+      ],
+      "packedBounds": [
+        32.0,
+        5.0,
+        224.0,
+        251.0
+      ],
+      "bytes": 592398,
+      "sha256": "146f7a5c4bee0d46d777a27ca1bd33528aaa41d4203dbe7f3544af87b59c06d8",
+      "decodedBytes": 3145728
+    },
+    {
+      "base": "mb9_season_keeper",
+      "key": "boss_ink816_mb9_season_keeper",
+      "stage": 8,
+      "path": "assets/art/boss_body818/boss_ink816_mb9_season_keeper.webp",
+      "source": "pair16",
+      "sourceRows": [
+        0,
+        1
+      ],
+      "frame": 256,
+      "frames": 12,
+      "cols": 6,
+      "rows": 2,
+      "oldFrame": 256,
+      "frameRatio": 1.0,
+      "originalBounds": [
+        32,
+        3,
+        224,
+        245
+      ],
+      "packedBounds": [
+        32.0,
+        4,
+        224.0,
+        245.0
+      ],
+      "bytes": 703160,
+      "sha256": "7a35d09cedcffea395bddedc9e9ea47bb64b4eedcd070b3924d73bf166261ce6",
+      "decodedBytes": 3145728
+    }
+  ]
+}

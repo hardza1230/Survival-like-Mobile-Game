@@ -1,0 +1,171 @@
+{
+  "boss1": {
+    "url": "assets/generated/boss1_green_ant_queen_sheet.png",
+    "frame": 160
+  },
+  "boss2": {
+    "url": "assets/generated/boss2_clogmaw_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 3,
+      "yoyo": true
+    }
+  },
+  "boss3": {
+    "url": "assets/boss3_sheet.png",
+    "frame": 256
+  },
+  "boss4": {
+    "url": "assets/boss4_sheet.png",
+    "frame": 256
+  },
+  "boss5_sovereign": {
+    "url": "assets/boss5_sovereign_sheet.png",
+    "frame": 256
+  },
+  "boss6_rootmother": {
+    "url": "assets/boss6_rootmother_sheet.png",
+    "frame": 256
+  },
+  "boss7_mycelium_behemoth": {
+    "url": "assets/boss7_mycelium_behemoth_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 3,
+      "yoyo": true
+    }
+  },
+  "boss8_hornet_queen": {
+    "url": "assets/boss8_hornet_queen_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 4,
+      "yoyo": true
+    }
+  },
+  "boss9_chronobloom_orchid": {
+    "url": "assets/boss9_chronobloom_orchid_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 4,
+      "yoyo": true
+    }
+  },
+  "boss10_true_rootmother": {
+    "url": "assets/boss10_true_rootmother_sheet.png",
+    "frame": 256,
+    "anim": {
+      "frames": 2,
+      "rate": 4,
+      "yoyo": true
+    }
+  },
+  "c3_boss1": {
+    "url": "assets/art/ch3_bosses/c3_boss1_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss2": {
+    "url": "assets/art/ch3_bosses/c3_boss2_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss3": {
+    "url": "assets/art/ch3_bosses/c3_boss3_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss4": {
+    "url": "assets/art/ch3_bosses/c3_boss4_sheet.webp",
+    "frame": 256
+  },
+  "c3_boss5": {
+    "url": "assets/art/ch3_bosses/c3_boss5_sheet.webp",
+    "frame": 256
+  },
+  "boss_pinnacle": {
+    "url": "assets/art/pinnacle/boss_pinnacle_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini1": {
+    "url": "assets/art/ch3_bosses/c3_mini1_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini2": {
+    "url": "assets/art/ch3_bosses/c3_mini2_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini3": {
+    "url": "assets/art/ch3_bosses/c3_mini3_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini4": {
+    "url": "assets/art/ch3_bosses/c3_mini4_sheet.webp",
+    "frame": 256
+  },
+  "c3_mini5": {
+    "url": "assets/art/ch3_bosses/c3_mini5_sheet.webp",
+    "frame": 256
+  },
+  "mb1": {
+    "url": "assets/generated/mb1_ant_guard.png",
+    "frame": 160,
+    "stage": 0,
+    "static": true
+  },
+  "mb2": {
+    "url": "assets/generated/mb2_valve_maw.png",
+    "frame": 192,
+    "stage": 1,
+    "static": true
+  },
+  "mb3": {
+    "url": "assets/mb3.png",
+    "frame": 140,
+    "stage": 2,
+    "static": true
+  },
+  "mb4": {
+    "url": "assets/mb4.png",
+    "frame": 140,
+    "stage": 3,
+    "static": true
+  },
+  "mb5_banquet_executioner": {
+    "url": "assets/mb5_banquet_executioner_sheet.png",
+    "frame": 256,
+    "stage": 4,
+    "static": false
+  },
+  "mb6_sporewarden": {
+    "url": "assets/mb6_sporewarden_sheet.png",
+    "frame": 256,
+    "stage": 5,
+    "static": false
+  },
+  "mb7_fungal_juggernaut": {
+    "url": "assets/mb7_fungal_juggernaut_sheet.png",
+    "frame": 256,
+    "stage": 6,
+    "static": false
+  },
+  "mb8_royal_stinger": {
+    "url": "assets/mb8_royal_stinger_sheet.png",
+    "frame": 256,
+    "stage": 7,
+    "static": false
+  },
+  "mb9_season_keeper": {
+    "url": "assets/mb9_season_keeper_sheet.png",
+    "frame": 256,
+    "stage": 8,
+    "static": false
+  },
+  "mb10_ancient_root_knight": {
+    "url": "assets/mb10_ancient_root_knight_sheet.png",
+    "frame": 256,
+    "stage": 9,
+    "static": false
+  }
+}
