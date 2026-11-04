@@ -13,3 +13,9 @@ Validation: exact source/runtime hashes, dimensions, original projected footprin
 Remaining art queue: C3 effects/projectile motion and boss body pose extensions. All existing811 projectile sizing,812 Plasma and813 C1 effects are retained. Phone readability/FPS review remains pending.
 
 Packed runtime:28lossless WebP sheets,6,206,150bytes total; aggregate decoded31,825,920bytes across the full C2 kit. Only stage subsets load. Sources/previews remain outside the runtime asset list.
+
+## Publication state
+
+Runtime 214c24d29da2d99f5dede2dded97d09558a51fba is pushed. All56changed files/27,640,702bytes match immutable GitHub read-back; all changed image streams fully decode. Full local check/build and all eight browser contracts passed.
+
+Pages41864376182 and APK41864376011 are queued. Live remains8.1.13 at last check. GitHub reported an Actions/Pages service incident (xr3myzj7ms51, investigating since2026-11-04T16:05:31Z): https://www.githubstatus.com/ . Live8.1.14/newasset verification and successfulAPK are pending; source delivery is not completed deployment.
