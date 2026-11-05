@@ -131,3 +131,7 @@ The owner found clipped/unfinished boss sprites after8.1.17 had passed output-bo
 ### Exact endpoint preservation in motion sheets (8.1.19)
 
 When interleaving new drawings with old WebP endpoint cells, copy full RGBA cells with paste (no mask) and save lossless WebP with exact=True. Lossless alone may rewrite RGB under alpha zero; alpha-compositing onto a blank atlas also discards those hidden RGB values. Decode the saved atlas and compare every RGBA byte to the packed canvas. This release verified all192 retained endpoint cells exactly, while independently checking original-source transparent cuts before packing.
+
+### Liquid UI feedback (8.1.20)
+
+Use exponential interpolation from elapsed clock time for FPS-independent fluid/trail movement. Test sustained damage as well as one isolated hit: resetting a trail hold timer on every hit can leave a white full bar indefinitely. Start a new hold only when the previous trail has caught up; healing must not show a damage trail. Reset liquid state on actor/spawn replacement. Verify actual font bounds inside the tube, not only intended font size; source art previews are separate from production UI geometry contracts.
