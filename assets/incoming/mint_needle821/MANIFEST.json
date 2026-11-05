@@ -1,0 +1,15 @@
+{
+  "source": {
+    "path": "assets/incoming/mint_needle821/source.png",
+    "bytes": 289886,
+    "sha256": "73d814a3749d76e2b40228c478b74b364b5c1cc6880453d6a923f5c667f1a5a6"
+  },
+  "runtime": {
+    "path": "assets/art/mint_needle821/bpx_mint_needle821.webp",
+    "bytes": 108850,
+    "sha256": "275c2a22f44a8ca79edb6ae2f0a24a9c185dcca2a9d4d1a50a68953f321751ec",
+    "frames": 6,
+    "frameWidth": 256,
+    "frameHeight": 256
+  }
+}

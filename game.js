@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.21';
+const GAME_VERSION = '8.1.22';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.22',date:'2026-11-05',title:'Mint’s finer ice needles',items:['Mint’s normal ice lances are slimmer and smaller, with animated painted needle shapes.','Impaler throws use the same refined style while keeping their original damage and hitboxes.']},
   {v:'8.1.21',date:'2026-11-05',title:'Lighter drawing for smoother play',items:['Story scenes no longer draw the main menu hidden behind them','Battles skip an invisible grid under the floor']},
   {v:'8.1.20',date:'2026-11-05',title:'Ink and flowing health',items:['A compact painted ink HUD gives the arena more room while keeping mission and combat information clear.','Boss health flows inside a glass tube and changes smoothly from green through yellow and orange to red.','Boss phase, HP and percentage stay readable; controls keep their familiar positions and touch areas.','Status icons wrap safely, with calmer ready effects and reduced-motion support.']},
   {v:'8.1.19',date:'2026-11-05',title:'Smoother boss motion',items:['Main bosses gain extra painted poses between wind-up, impact and recovery.','Boss strikes now follow actual skill releases, with steadier facing and uninterrupted breathing.','Boss animation follows game speed and pauses while frozen or during hit-stop.']},
@@ -3318,6 +3319,7 @@ const ASSET_FX = {
   bpx_mint819_blast:{url:'assets/art/mint_outline819/bpx_mint819_blast.webp',fw:256,fh:256,frames:6,rate:22,anchor:'center'},
   bpx_mint819_charge:{url:'assets/art/mint_outline819/bpx_mint819_charge.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center',loop:true},
   bpx_mint819_lance:{url:'assets/art/mint_outline819/bpx_mint819_lance.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
+  bpx_mint_needle821:{url:'assets/art/mint_needle821/bpx_mint_needle821.webp',fw:256,fh:256,frames:6,rate:18,anchor:'center',loop:true},
   bpx_mint819_shard:{url:'assets/art/mint_outline819/bpx_mint819_shard.webp',fw:128,fh:128,frames:6,rate:18,anchor:'center',loop:true},
   bpx_mint819_hit:{url:'assets/art/mint_outline819/bpx_mint819_hit.webp',fw:128,fh:128,frames:6,rate:22,anchor:'center'},
   fx_mint_dash_shard:{url:'assets/art/mint_winter/fx_mint_dash_shard.webp',fw:128,fh:128,frames:4,rate:16,anchor:'center',loop:true},
@@ -4298,7 +4300,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
@@ -18863,7 +18865,7 @@ class Game extends Phaser.Scene {
   }
   mintOutlineKey(key){const map={fx_mint_snowstorm:'snowstorm',fx_mint_shatter:'blast',fx_mint_dash_shard:'shard',bpx_mint_rupture:'bloom',bpx_mint_needle_hit:'hit',bpx_mint_chill_hit:'hit',bpx_mint_lance_charge:'charge'},clip=map[key],next=clip&&'bpx_mint819_'+clip;return next&&(this.realTex?.(next)??this.textures?.exists(next))?next:key;}
   mintOutlineFrame(image,dt){const m=image?._mintOutline819;if(!image?.active||!m||this.state!=='play')return;m.t+=dt;const still=this.hubMotionAllowed?.()===false||(typeof Save!=='undefined'&&Save.data.settings?.vfx===0),frame=still?2:Math.floor(m.t*m.rate)%6;if(m.frame!==frame){m.frame=frame;image.setFrame(frame);}}
-  mintOutlineProjectile(b,clip,w,h=w){const key='bpx_mint819_'+clip;if(!(this.realTex?.(key)??this.textures?.exists(key)))return false;if(b._chargeFx?.active)b._chargeFx.destroy();const image=b._chargeFx=this.camWorld(this.add.sprite(b.x,b.y,key,0).setDisplaySize(w,h).setDepth(90000));image._mintOutline819={t:0,rate:18,frame:-1};this.mintOutlineFrame(image,0);b.setAlpha(0);return true;}
+  mintOutlineProjectile(b,clip,w,h=w){const fresh='bpx_mint_needle821',has=k=>(this.realTex?.(k)??this.textures?.exists(k)),key=clip==='lance'&&has(fresh)?fresh:'bpx_mint819_'+clip;if(!has(key))return false;if(b._chargeFx?.active)b._chargeFx.destroy();const image=b._chargeFx=this.camWorld(this.add.sprite(b.x,b.y,key,0).setDisplaySize(w,h).setDepth(90000));image._mintOutline819={t:0,rate:18,frame:-1};this.mintOutlineFrame(image,0);b.setAlpha(0);return true;}
   mintOutlineTrail(x,y,a,L){const key='bpx_mint819_dash';if(!(this.realTex?.(key)??this.textures?.exists(key)))return null;const image=this.trackArtVfx(this.camWorld(this.add.sprite(x,y,key,0).setOrigin(.0625,.5).setRotation(a).setDepth(5).setDisplaySize(L/.875,108)));image._mintOutline819={t:0,rate:14,frame:-1};this.mintOutlineFrame(image,0);return image;}
   mintBurstFx(x,y,r=110){
     const now=this.time.now;
@@ -18927,7 +18929,7 @@ class Game extends Phaser.Scene {
     b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xcaf3ff);b.faceVel=true;b.dmg=damage*(giant?1.35:1);b.life=range/speed;b.homing=0;
     b.impaler={full,giant,targets:new Set(),hits:0,pierces:(giant?8:2)+(basic.lv.p_coldblood||0),epoch:c.epoch,basic};
     // Larger painted lance is independent of its unchanged projectile collider.
-    if(!this.mintOutlineProjectile?.(b,'lance',(giant?108:full?68+6*(basic.lv.p_heavydraw||0):38)*1.45)&&this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?108:full?68+6*(basic.lv.p_heavydraw||0):38);
+    if(!this.mintOutlineProjectile?.(b,'lance',giant?78:full?58+4*(basic.lv.p_heavydraw||0):42)&&this.textures.exists('proj_frostlance'))this.attachProjectileArt(b,'proj_frostlance',giant?108:full?68+6*(basic.lv.p_heavydraw||0):38);
     this.physics.velocityFromRotation(angle,speed,b.body.velocity);Sfx.bp?.('mint_lance_launch',full?.62:.45,.09)||Sfx.frost();
   }
   tickImpaleMarks(){const S=this._impMarked;if(!S?.size)return;for(const e of S){const n=e.active&&this.basicAttack?.path==='pierce'?this.impaleStacks(e):0,key=n?'bpx_mint_impale'+n:null;let m=e._impMark;
@@ -18997,7 +18999,7 @@ class Game extends Phaser.Scene {
       const b=this.mintBullet(this.player.x,this.player.y,0xffffff,0.5); if(!b)continue; {
         b.setTexture(lanceKey).setTint(0xcaf3ff).setScale(0.4+lvl*0.028); b.faceVel=true; b.dmg=dmg*hitMul; b.life=flightT+0.2; b.hitGapV=0.1; b.homing=0;   // ยิงตรง ไม่ตามเป้า + หอกเล็กลง
         b.iceNeedle={freeze:0.6*(permafrost?1.6:1),frozenBonus:permafrost?1.4:1.2,shatter:blizzard||evo,dmg:dmg*hitMul,lvl};
-        this.mintOutlineProjectile?.(b,'lance',130+lvl*6);
+        this.mintOutlineProjectile?.(b,'lance',72+lvl*3);
         b.shatterState=st; b.shatterInfo={count:shardPer,dmg:shardDmg,freeze:shardFreeze,fb:shardFB,blizzard,lvl,ang:a,pierces:basic?.path==='pierce'?2+(basic.lv.p_coldblood||0):1};
         this.physics.velocityFromRotation(a,900,b.body.velocity); }
       // ถ้าพลาดทุกตัว → แตกที่สุดระยะ (fallback)

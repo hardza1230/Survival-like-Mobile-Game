@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.21**. Next release:8.1.22. Fetch the deploy branch before new work.
+Current release: **8.1.22**. Next release:8.1.23. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.21 — lighter GPU drawing (owner, OPPO A95)
+# Latest delivery: v8.1.22 — Mint ice needles
+
+Mint normal lances and Impaler throws use six smaller original painted needle frames, loaded only for Mint, with the previous art as fallback. Damage, collision, speed and timing remain unchanged. Source and prompt in assets/incoming/mint_needle821; mechanical packer scripts/pack-mint-needle821.py. Full npm check, eleven browser contracts, and final nine-clip Mint Canvas review passed locally; publication verification pending.
+
+# Previous delivery: v8.1.21 — lighter GPU drawing (owner, OPPO A95)
 
 Headless draw audit (412×915 DPR2.6, Auto=1.5): battle ~7 draw calls/frame, one floor layer + vignette — already lean. Removed two hidden costs: gridBg (4000² world grid under the floor) now setVisible(false); playMotionComic hides this.menu (layered hub ~29× overdraw behind an opaque comic) and restores it on finish. No visual change. Owner asked to measure on A95 with Combat Meter (FPS) and try Performance Low (DPR 1.25).
-
-# Previous delivery: v8.1.20 — compact ink HUD and flowing boss health
-
-Original ImageGen ink edges replace four HUD skins,145,280runtimebytes, stage-only. Compact phase/mission layout; boss strip replaces redundant encounter title,39px plate with14px animated liquid/phase/HP/percent and continuous green-yellow-orange-red health color. Actual HP is authoritative; FPS-independent drain/ghost trail, pause/Low/reduced, new-boss cleanup. Familiar controls/hit areas retained; thin ready outlines, no hidden Sesame Unique backing. Five relic previews plus overflow count, wrapping active statuses and shared trait row preserve space and information. No gameplay or balance changes. See docs/design/BATTLE_HUD_820.md. Independent original-source alpha and30/60/120FPS contracts; actual Nunito/Canvas56fixtures plus both hands/three control sizes passed during development. Full npmcheck, final web build+10reviewbuilders and all eleven browser contracts passed locally. Runtime 3c6577212ec2e98686fd626cb717838dc3291d84; Pages41965880914/APK41965880902 SUCCESS. All26 changed release files/6,720,823bytes immutable readback/decode verified, all12 remote trees matched and runtime tree aligned. Live20/code/all4 HUD skins/145,280bytes verified by SHA-256; sixteen boss-motion19 paths retained. owner phone testing waived.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
