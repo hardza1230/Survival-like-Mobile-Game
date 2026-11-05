@@ -4,7 +4,7 @@ Current release: **8.1.22**. Next release:8.1.23. Fetch the deploy branch before
 
 # Latest delivery: v8.1.22 — Mint ice needles
 
-Mint normal lances and Impaler throws use six smaller original painted needle frames, loaded only for Mint, with the previous art as fallback. Damage, collision, speed and timing remain unchanged. Source and prompt in assets/incoming/mint_needle821; mechanical packer scripts/pack-mint-needle821.py. Full npm check, eleven browser contracts, and final nine-clip Mint Canvas review passed locally; publication verification pending.
+Mint normal lances and Impaler throws use six smaller original painted needle frames, loaded only for Mint, with the previous art as fallback. Damage, collision, speed and timing remain unchanged. Source and prompt in assets/incoming/mint_needle821; mechanical packer scripts/pack-mint-needle821.py. Full npm check, eleven browser contracts, and final nine-clip Mint Canvas review passed locally; Runtime 5b2eaf55709d0d5279bf06fe437de768ab724398; Pages42063999844 and APK42063999104 SUCCESS. Live8.1.22 and the 108,850-byte needle atlas match the source SHA-256. All13 release files/4,816,026 bytes passed immutable readback and decode; runtime trees aligned.
 
 # Previous delivery: v8.1.21 — lighter GPU drawing (owner, OPPO A95)
 
