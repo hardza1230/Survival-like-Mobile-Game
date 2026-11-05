@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.22';
+const GAME_VERSION = '8.1.23';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.23',date:'2026-11-05',title:'Back to Hub fix',items:['Fixed an error after losing to a boss and tapping Back to Hub']},
   {v:'8.1.22',date:'2026-11-05',title:'Mint’s finer ice needles',items:['Mint’s normal ice lances are slimmer and smaller, with animated painted needle shapes.','Impaler throws use the same refined style while keeping their original damage and hitboxes.']},
   {v:'8.1.21',date:'2026-11-05',title:'Lighter drawing for smoother play',items:['Story scenes no longer draw the main menu hidden behind them','Battles skip an invisible grid under the floor']},
   {v:'8.1.20',date:'2026-11-05',title:'Ink and flowing health',items:['A compact painted ink HUD gives the arena more room while keeping mission and combat information clear.','Boss health flows inside a glass tube and changes smoothly from green through yellow and orange to red.','Boss phase, HP and percentage stay readable; controls keep their familiar positions and touch areas.','Status icons wrap safely, with calmer ready effects and reduced-motion support.']},
@@ -8716,6 +8717,7 @@ class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
   create(){
+    this._sesRuneButtons=null;this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
     this.renderDPR=RENDER_DPR;
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
@@ -20235,7 +20237,7 @@ class Game extends Phaser.Scene {
   bossInkIdle(e){if(!this.applyBossInk(e))return false;const m=e._bossInk;if(m.pose){m.pose=null;m.clock=0;}this.bossInkFrame(e,0);return true;}
   stopBossInk(e,restore=true){
     const m=e?._bossInk;if(!m)return;const fd=BOSS_BODY816_MAP[m.base];
-    if(restore&&fd&&(e.texture?.key===m.key||e.texture?.key===m.base))this.bossInkRetarget(e,m.base,256,fd.oldFrame);
+    if(restore&&fd&&(e.scene||!("scene" in e))&&(e.texture?.key===m.key||e.texture?.key===m.base))this.bossInkRetarget(e,m.base,256,fd.oldFrame);
     this._bossInkActors?.delete(e);delete e._bossInk;
   }
   clearBossInk(){for(const e of [...(this._bossInkActors||[])])this.stopBossInk(e);this._bossInkActors?.clear();}

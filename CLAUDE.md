@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.22**. Next release:8.1.23. Fetch the deploy branch before new work.
+Current release: **8.1.23**. Next release:8.1.24. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.22 — Mint ice needles
+# Latest delivery: v8.1.23 — Back to Hub crash after a boss loss (owner screenshot)
+
+Back to Hub = scene.restart; shutdown clearArtVfx→stopBossInk restored the boss texture on a destroyed sprite (setTexture → reading 'sys'). Restore now skips destroyed actors (scene undefined). Second crash on the new create: stale _sesRuneButtons → sesRuneLayout setRadius on null; Game.create resets _sesRuneButtons/_sesRuneUI/_sesRuneLabel/_bossInkActors. Reproduced headless (C2-5 Root Throne, spawnFinalBoss, die, Back to Hub) → clean menu after fix.
+
+# Previous delivery: v8.1.22 — Mint ice needles
 
 Mint normal lances and Impaler throws use six smaller original painted needle frames, loaded only for Mint, with the previous art as fallback. Damage, collision, speed and timing remain unchanged. Source and prompt in assets/incoming/mint_needle821; mechanical packer scripts/pack-mint-needle821.py. Full npm check, eleven browser contracts, and final nine-clip Mint Canvas review passed locally; Runtime 5b2eaf55709d0d5279bf06fe437de768ab724398; Pages42063999844 and APK42063999104 SUCCESS. Live8.1.22 and the 108,850-byte needle atlas match the source SHA-256. All13 release files/4,816,026 bytes passed immutable readback and decode; runtime trees aligned.
-
-# Previous delivery: v8.1.21 — lighter GPU drawing (owner, OPPO A95)
-
-Headless draw audit (412×915 DPR2.6, Auto=1.5): battle ~7 draw calls/frame, one floor layer + vignette — already lean. Removed two hidden costs: gridBg (4000² world grid under the floor) now setVisible(false); playMotionComic hides this.menu (layered hub ~29× overdraw behind an opaque comic) and restores it on finish. No visual change. Owner asked to measure on A95 with Combat Meter (FPS) and try Performance Low (DPR 1.25).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
