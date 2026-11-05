@@ -4,7 +4,7 @@ Current release: **8.1.24**. Next release:8.1.25. Fetch the deploy branch before
 
 # Latest delivery: v8.1.24 — Hero motion and Yuzu duo commands
 
-Ten original eight-frame hero sheets are selected lazily for unique skill poses and build-specific movement, with legacy textures as fallback. Yuzu fires a marking seed during each companion command; the existing mark and In Sync rules handle the cooperative bonus. Source sheets and provenance: assets/incoming/hero_motion823; packing: scripts/pack-hero-motion823.py. Phone play review remains with the owner.
+Ten original eight-frame hero sheets are selected lazily for unique skill poses and build-specific movement, with legacy textures as fallback. Yuzu fires a marking seed during each companion command; the existing mark and In Sync rules handle the cooperative bonus. Source sheets and provenance: assets/incoming/hero_motion823; packing: scripts/pack-hero-motion823.py. Full npm check, web/review builds and eleven browser contracts passed. Runtime 42fded32a9ff1633c861a4a2b2ca433c6db392ab; Pages 42075871206 and APK 42075871175 succeeded; all 37 files and ten live sheets verified. Phone play review remains with the owner.
 
 # Previous delivery: v8.1.23 — Back to Hub crash after a boss loss (owner screenshot)
 

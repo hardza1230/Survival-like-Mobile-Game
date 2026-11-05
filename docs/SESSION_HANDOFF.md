@@ -1,6 +1,6 @@
-# In progress — hero motion and Yuzu duo v8.1.24
+# Current checkpoint — hero motion and Yuzu duo v8.1.24
 
-Ten ImageGen eight-frame hero sheets integrated for selected Unique and build motions; Yuzu adds a marking seed to each companion command. Remote v8.1.23 merged before release. Source/provenance/QA in assets/incoming/hero_motion823; runtime assets in assets/art/hero_motion823. Owner tests on phone. Release verification and push still pending; do not treat as deployed.
+Ten ImageGen eight-frame hero sheets integrated for selected Unique and build motions; Yuzu adds a marking seed to each companion command. Remote v8.1.23 merged before release. Source/provenance/QA in assets/incoming/hero_motion823; runtime assets in assets/art/hero_motion823. Owner tests on phone. Runtime 42fded32a9ff1633c861a4a2b2ca433c6db392ab deployed; Pages 42075871206 and Android 42075871175 succeeded. All 37 release files (26,898,128 bytes) passed immutable readback; live v8.1.24 and all ten runtime sheets passed byte/hash verification. npm check, web/review builds, all eleven browser contracts and Yuzu/actor-motion tests passed. Owner will play-test on phone.
 
 # Current checkpoint — battle HUD 8.1.20 complete
 
