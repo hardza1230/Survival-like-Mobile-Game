@@ -1,0 +1,85 @@
+[
+  {
+    "key": "hud_top_panel",
+    "file": "hud_top_panel.png",
+    "width": 1478,
+    "height": 112,
+    "frames": 1,
+    "columns": 1,
+    "frame_width": 1478,
+    "frame_height": 112,
+    "bytes": 183441,
+    "sha256": "2908d805114ed7681f1240bb6f7ba3a7425b6078b815b15dbbc34d5cc07bf89a",
+    "background": "transparent",
+    "runtime_file": "assets/art/hud_ink820/hud_top_panel.webp",
+    "runtime_bytes": 34072,
+    "runtime_sha256": "d374dc46941497694995ee3d29a400396af33a02fb337d9c0f6e0b3c65374c73",
+    "nineSlice": [
+      48,
+      16,
+      48,
+      16
+    ]
+  },
+  {
+    "key": "hud_mission_card",
+    "file": "hud_mission_card.png",
+    "width": 1476,
+    "height": 136,
+    "frames": 1,
+    "columns": 1,
+    "frame_width": 1476,
+    "frame_height": 136,
+    "bytes": 241462,
+    "sha256": "77b71f310c90925cc6061157a4cdbfea67dc04f2cdb4e050f149aa5308471e2b",
+    "background": "transparent",
+    "runtime_file": "assets/art/hud_ink820/hud_mission_card.webp",
+    "runtime_bytes": 42124,
+    "runtime_sha256": "280d4b4df38b21df6aec7b42877fc572d81375982e08bcca82a54badd5e088e4",
+    "nineSlice": [
+      48,
+      16,
+      48,
+      16
+    ]
+  },
+  {
+    "key": "hud_boss_plate",
+    "file": "hud_boss_plate.png",
+    "width": 1474,
+    "height": 118,
+    "frames": 1,
+    "columns": 1,
+    "frame_width": 1474,
+    "frame_height": 118,
+    "bytes": 190052,
+    "sha256": "70b51739f3972ebddc5799d4a4cba8ab46af9f80bfaa49735f175b42aa120196",
+    "background": "transparent",
+    "runtime_file": "assets/art/hud_ink820/hud_boss_plate.webp",
+    "runtime_bytes": 34990,
+    "runtime_sha256": "3fb793ea8b92a745cf2e45e74ef8047a23373e21b2db5ae3609a7eb2e1852d8a",
+    "nineSlice": [
+      48,
+      16,
+      48,
+      16
+    ]
+  },
+  {
+    "key": "hud_round_btn",
+    "file": "hud_round_btn.png",
+    "width": 642,
+    "height": 214,
+    "frames": 3,
+    "columns": 3,
+    "frame_width": 214,
+    "frame_height": 214,
+    "bytes": 203950,
+    "sha256": "755f72553eb932129b945d87a6ec07010e9897b77e9e2eeeb7dfa69c08835ccb",
+    "background": "transparent",
+    "runtime_file": "assets/art/hud_ink820/hud_round_btn.webp",
+    "runtime_bytes": 34094,
+    "runtime_sha256": "43c150470d0e1cc84270a6f0eb243e620893d6e4d6b63e02d8203235a81ab6dc",
+    "nineSlice": null
+  }
+]

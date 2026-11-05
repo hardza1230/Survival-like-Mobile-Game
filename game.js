@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.19';
+const GAME_VERSION = '8.1.20';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.20',date:'2026-11-05',title:'Ink and flowing health',items:['A compact painted ink HUD gives the arena more room while keeping mission and combat information clear.','Boss health flows inside a glass tube and changes smoothly from green through yellow and orange to red.','Boss phase, HP and percentage stay readable; controls keep their familiar positions and touch areas.','Status icons wrap safely, with calmer ready effects and reduced-motion support.']},
   {v:'8.1.19',date:'2026-11-05',title:'Smoother boss motion',items:['Main bosses gain extra painted poses between wind-up, impact and recovery.','Boss strikes now follow actual skill releases, with steadier facing and uninterrupted breathing.','Boss animation follows game speed and pauses while frozen or during hit-stop.']},
   {v:'8.1.18',date:'2026-11-05',title:'Complete boss sprites',items:['Boss sprite sheets recover clipped weapon tips, crowns and limbs without neighboring-frame scraps.','Early minibosses gain complete idle, wind-up, strike and recovery animation.','The Ancient Root Knight keeps its full walking and attack animation set.']},
   {v:'8.1.17',date:'2026-11-05',title:'Boss shots come alive',items:['Sixteen painted boss projectiles gain compact four-frame elemental animation.','Their previous size, speed, damage and hitboxes stay the same.','Animation holds correctly when paused and uses a steady pose on Low effects.']},
@@ -2136,8 +2137,8 @@ const ASSET_IMAGES = {
   lvl_type_badge_sheet:'assets/art/levelup/lvl_type_badge_sheet.webp',
   lvl_sparkle_sheet:'assets/art/levelup/lvl_sparkle_sheet.webp',
   lvl_shine_strip:'assets/art/levelup/lvl_shine_strip.webp',
-  hud_top_panel:'assets/art/hud_minimal/hud_top_panel.webp',
-  hud_mission_card:'assets/art/hud_minimal/hud_mission_card.webp',
+  hud_top_panel:'assets/art/hud_ink820/hud_top_panel.webp',
+  hud_mission_card:'assets/art/hud_ink820/hud_mission_card.webp',
   hud_exp_frame:'assets/art/hud/hud_exp_frame.webp',
   hud_exp_fill:'assets/art/hud/hud_exp_fill.webp',
   hud_level_badge:'assets/art/hud/hud_level_badge.webp',
@@ -2146,13 +2147,13 @@ const ASSET_IMAGES = {
   hud_mission_bar_fill:'assets/art/hud/hud_mission_bar_fill.webp',
   hud_boss_bar_frame:'assets/art/hud/hud_boss_bar_frame.webp',
   hud_boss_bar_fill:'assets/art/hud/hud_boss_bar_fill.webp',
-  hud_boss_plate:'assets/art/hud_minimal/hud_boss_plate.webp',
+  hud_boss_plate:'assets/art/hud_ink820/hud_boss_plate.webp',
   hud_ic_kill:'assets/art/hud/hud_ic_kill.webp',
   hud_ic_sugar:'assets/art/hud/hud_ic_sugar.webp',
   hud_wave_pips:'assets/art/hud/hud_wave_pips.webp',
   hud_ic_pause:'assets/art/hud/hud_ic_pause.webp',
   hud_ic_sound:'assets/art/hud/hud_ic_sound.webp',
-  hud_round_btn:'assets/art/hud_minimal/hud_round_btn.webp',
+  hud_round_btn:'assets/art/hud_ink820/hud_round_btn.webp',
   hud_speed_ring:'assets/art/hud/hud_speed_ring.webp',
   pause_veil:'assets/art/pause/pause_veil.webp',
   pause_crest:'assets/art/pause/pause_crest.webp',
@@ -4247,7 +4248,7 @@ const JR_INK=(()=>{const I='#3b2416',S='#6b4a33',G='#2f7a3c',R='#a8323e',Y='#8a5
   put('#8a1f2c',['#ffb3cf','#ff7ba8','#ff9ec4']); put(Y,['#ffd166','#ffd9a0','#ffe39b','#ffe08a']); put(G,['#8bd3a0','#7de0a1','#a2e1bc','#a8f0bf','#9fd4bc','#5df08a','#7ee08f','#75ddb4']);
   put(R,['#ff8da2','#ff6b81']); put('#8a6400',['#ffcf5a']); put('#6d3aa8',['#c9a3ff','#c891ff']); put('#b4531a',['#ff8f3a','#ffae3d','#ffb27a']); put('#1f5fa8',['#6fb8ff','#8bd3ff']); put('#2a7a6a',['#8be0c8']); return m;})();
 Object.assign(TEMPLE_UI,{"bk_open_long":[432,768,4,null],"bk_page_riffle":[432,768,4,null],"bk_clasp":[256,256,6,null],"bk_emblem_spin":[256,256,8,null],"vfx_bk_magic":[256,256,8,null],"vfx_bk_burst":[512,512,6,null],"bk_cover_clean_plate":[432,768,1,null],"ic_nav_bazaar":[256,256,1,null],"ic_nav_upgrade":[256,256,1,null],"ic_side_mail":[256,256,1,null]});
-Object.assign(TEMPLE_UI,{"hud_top_panel":[340,56,1,[30,20,30,20]],"hud_mission_card":[340,75,1,[40,30,40,30]],"hud_exp_frame":[300,14,1,[6,5,6,5]],"hud_exp_fill":[280,8,1,[3,3,3,3]],"hud_level_badge":[52,32,1,[11,11,11,11]],"hud_counter_pill":[80,28,1,[12,11,12,11]],"hud_mission_bar_frame":[240,12,1,[5,4,5,4]],"hud_mission_bar_fill":[230,8,1,[3,3,3,3]],"hud_boss_bar_frame":[320,22,1,[15,9,15,9]],"hud_boss_bar_fill":[300,12,1,[5,5,5,5]],"hud_boss_plate":[320,50,1,[30,20,30,20]],"hud_ic_kill":[32,32,1,null],"hud_ic_sugar":[32,32,1,null],"hud_wave_pips":[24,24,3,null],"hud_ic_pause":[32,32,1,null],"hud_ic_sound":[32,32,2,null],"hud_round_btn":[64,64,3,null],"hud_speed_ring":[64,64,4,null]});   // v8.0.10 ใบ 47 (scripts/pack-battle-hud-top.py)
+Object.assign(TEMPLE_UI,{"hud_top_panel":[739,56,1,[24,8,24,8]],"hud_mission_card":[738,68,1,[24,8,24,8]],"hud_exp_frame":[300,14,1,[6,5,6,5]],"hud_exp_fill":[280,8,1,[3,3,3,3]],"hud_level_badge":[52,32,1,[11,11,11,11]],"hud_counter_pill":[80,28,1,[12,11,12,11]],"hud_mission_bar_frame":[240,12,1,[5,4,5,4]],"hud_mission_bar_fill":[230,8,1,[3,3,3,3]],"hud_boss_bar_frame":[320,22,1,[15,9,15,9]],"hud_boss_bar_fill":[300,12,1,[5,5,5,5]],"hud_boss_plate":[737,59,1,[24,8,24,8]],"hud_ic_kill":[32,32,1,null],"hud_ic_sugar":[32,32,1,null],"hud_wave_pips":[24,24,3,null],"hud_ic_pause":[32,32,1,null],"hud_ic_sound":[32,32,2,null],"hud_round_btn":[107,107,3,null],"hud_speed_ring":[64,64,4,null]});   // v8.0.10 ใบ 47 (scripts/pack-battle-hud-top.py)
 Object.assign(TEMPLE_UI,{chest_silver_open:[256,256,6,null],chest_gold_open:[256,256,6,null],vfx_chest_rays:[256,256,6,null],bz_chest_card:[390,200,1,[32,32,32,32]]});   // v7.9.79 ใบ 40
 const CHEST_KEYS=['chest_silver','chest_gold','chest_silver_open','chest_gold_open','vfx_chest_rays','bz_chest_card'];
 const RUBY_STAGE_KEYS=['mascot_ruby','mascot_ruby_happy','mascot_ruby_alert','mascot_ruby_think','mascot_ruby_cheer','mascot_ruby_sad','ruby_point','vfx_ruby_sparkle'];
@@ -9780,17 +9781,27 @@ class Game extends Phaser.Scene {
   }
   drawCombatControlBase(){
     const g=this.controlBase,d=this.dashBtn,u=this.uniqueBtn;if(!g||!d||!u)return;
-    const key=[d.x,d.y,d.radius,u.x,u.y,u.radius,u.fillColor].join(':');if(g._key===key)return;g._key=key;g.clear();
-    for(const b of [d,u]){g.fillStyle(0x100e1b,.92).fillCircle(b.x,b.y+3,b.radius+5);g.fillStyle(0x241d32,.98).fillCircle(b.x,b.y,b.radius);
-      g.lineStyle(1,0xffe2ad,.27).strokeCircle(b.x,b.y,b.radius-4);}
+    const key=[d.x,d.y,d.radius,d.visible,u.x,u.y,u.radius,u.fillColor,u.visible].join(':');if(g._key===key)return;g._key=key;g.clear();
+    for(const b of [d,u]){if(b.visible===false)continue;g.fillStyle(0x14121e,.86).fillCircle(b.x,b.y,b.radius);
+      g.lineStyle(1.3,0xffefd8,.45).beginPath().arc(b.x,b.y,b.radius-2,-2.8,-.25).strokePath();
+      g.lineStyle(2,b.fillColor,.55).beginPath().arc(b.x,b.y,b.radius-2,.2,2.55).strokePath();}
+  }
+  hudCompactNumber(value){const n=Math.max(0,Number(value)||0);return n>=1e6?(n/1e6).toFixed(n<1e7?1:0).replace(/\.0$/,'')+'m':n>=1e4?(n/1e3).toFixed(n<1e5?1:0).replace(/\.0$/,'')+'k':String(Math.floor(n));}
+  hudFormatCounters(){const k=this.killTxt,s=this.runSugarTxt;if(k&&/^KOs /.test(k.text))k.setText(this.hudCompactNumber(this.stageKills));if(s&&/^🍬 /.test(s.text))s.setText(this.hudCompactNumber(this.sugarRun));}
+  bossLiquidPalette(f){
+    const stops=[[0,0xf25564],[.28,0xff984c],[.55,0xffd35c],[1,0x50dc98]],mix=(a,b,t)=>{let c=0;for(const shift of [16,8,0])c|=Math.round(((a>>shift)&255)*(1-t)+((b>>shift)&255)*t)<<shift;return c;};
+    f=Math.max(0,Math.min(1,Number(f)||0));let base=stops[0][1];for(let i=1;i<stops.length;i++)if(f<=stops[i][0]){base=mix(stops[i-1][1],stops[i][1],(f-stops[i-1][0])/(stops[i][0]-stops[i-1][0]));break;}
+    return[0x111019,0x231d2b,mix(base,0x000000,.18),mix(base,0xffffff,.18),mix(base,0xffffff,.65),0xfff4df,mix(base,0xfff4df,.4),mix(base,0xffffff,.5)];
   }
   drawCombatHUDPanels(g){
     const w=this.W,art=!!this._hudArt;
+    if(art)this.hudFormatCounters();
     // Compact glass islands: no full-width ornamental header or boss plate.
     const tw=this._hudTopW||w-152;   // v8.0.14 แถบ Lv/💀/🍬 กว้างพอดีเนื้อหา
     if(!art){g.fillStyle(0x171320,.83).fillRoundedRect(8,9,tw,29,10);
     g.lineStyle(1,0xd4b178,.22).strokeRoundedRect(8,9,tw,29,10);}
-    const layoutKey=[w,art,this.lvlTxt.text,this.killTxt.text,this.runSugarTxt.text,this.timeTxt.text,this.waveObjTxt.text,this.waveObjTxt.visible,this.bossName.text,this.bossName.visible,this.bossHpTxt.text,this._seasonIconsOn].join('|');
+    const hasStatus=!!this._hst62?.icons.some(o=>o.visible);
+    const layoutKey=[w,art,this.lvlTxt.text,this.killTxt.text,this.runSugarTxt.text,this.timeTxt.text,this.waveObjTxt.text,this.waveObjTxt.visible,this.bossName.text,this.bossName.visible,this._seasonIconsOn,this.statTxt.text,this.traitTxt?.text,this.traitTxt?.visible,hasStatus].join('|');
     if(this._hudLayoutKey!==layoutKey||this.replayProgressFrame?.visible){
     this._hudLayoutKey=layoutKey;this._hudBackings=[];
     this.lvlTxt.setPosition(16,17).setColor('#fff0c7').setFontSize(12);
@@ -9804,52 +9815,55 @@ class Game extends Phaser.Scene {
     this.killTxt.name='kills';this.runSugarTxt.name='sugar';
     fit(this.killTxt,Math.max(24,(sx-kx-24)/2),10);fit(this.runSugarTxt,Math.max(24,(sx-kx-24)/2),10);
     { const sr=Math.min(sx,this.killTxt.x+this.killTxt.width+28+this.runSugarTxt.width); this.runSugarTxt.setX(Math.round(sr)); this._hudTopW=Math.min(w-152,Math.ceil((sr+12-8)/4)*4); }
+    const boss=!!this.bossName?.visible;this.timeTxt.setVisible(this.barG?.visible!==false&&!boss);
     this.timeTxt.setOrigin(0,0).setWordWrapWidth(w-142).setMaxLines(1).setStroke('#191321',3);
     this.timeTxt.name='phase';fit(this.timeTxt,w-142,11);
     // v8.0.14 เจ้าของ: หัวเวฟ + จุดเวฟอยู่กลาง ในการ์ดเดียวกับภารกิจ
     const st0=typeof STAGES!=='undefined'?STAGES[this.stageIndex]:null,np=(!this.recipeMode&&st0&&this.mode!=='boss')?st0.waves:0,pipW=np?np*10+10:0;
     const rowW=this.timeTxt.width+(np?8+pipW:0),rowX=Math.round(w/2-rowW/2);
-    const D=8;   // v8.0.17 เจ้าของ: เลื่อนพื้นที่ภารกิจลงอีกนิด
-    this.timeTxt.setPosition(rowX,45+D);this._pipX0=np?rowX+this.timeTxt.width+8:null;this._pipY=45+D+this.timeTxt.height/2;
-    let bottom=61+D;
+    this.timeTxt.setPosition(rowX,44);this._pipX0=np?rowX+this.timeTxt.width+8:null;this._pipY=44+this.timeTxt.height/2;
+    let bottom=boss?39:60;
     const objective=!!this.waveObjTxt?.visible,progress=!!this.replayProgressFrame?.visible;
     this.waveObjTxt.name='mission';
     if(objective){
       const season=!!this._seasonIconsOn;
-      this.waveObjTxt.setY(64+D).setWordWrapWidth(w-36-(season?76:0)).setMaxLines(2).setStroke('#191321',2);
-      fit(this.waveObjTxt,w-36-(season?76:0),11);
+      const missionY=boss?43:62;
+      this.waveObjTxt.setY(missionY).setWordWrapWidth(w-48-(season?76:0)).setMaxLines(2).setStroke('#191321',2);
+      fit(this.waveObjTxt,w-48-(season?76:0),11);
       if(!season)this.waveObjTxt.setOrigin(.5,0).setX(w/2);
       if(season&&this._seasonIcons){const cy=this.waveObjTxt.y+this.waveObjTxt.height/2;for(const im of this._seasonIcons)im.setY(cy);}
       const ty=this.waveObjTxt.y+this.waveObjTxt.height,mw=Math.min(230,w-84);
-      this.waveObjBg.setY(ty+5).setDisplaySize(mw,10).setAlpha(0);
-      this.waveObjBar.setY(ty+5).setDisplaySize(this.waveObjBar.width,10).setAlpha(0);
-      this._liq={x:w/2-mw/2,y:ty+5,w:mw,h:10};
+      this.waveObjBg.setY(ty+4).setDisplaySize(mw,4).setAlpha(0);
+      this.waveObjBar.setY(ty+4).setDisplaySize(this.waveObjBar.width,4).setAlpha(0);
+      this._liq={x:w/2-mw/2,y:ty+4,w:mw,h:4};
       const cw=Math.min(w-24,Math.max(rowW,this.waveObjTxt.width+(this._seasonIconsOn?76:0),mw)+32);
-      this._hudBackings.push([0x171320,.62,Math.round(w/2-cw/2),40+D,Math.round(cw),ty+21-40-D,9]);
-      bottom=ty+21;
+      this._hudBackings.push([0x171320,.68,Math.round(w/2-cw/2),40,Math.round(cw),ty+14-40,3]);
+      bottom=ty+14;
     }
     if(progress){
-      const y=objective?bottom+4:71+D,mw=Math.min(250,w-40);
+      const y=objective?bottom+4:67,mw=Math.min(250,w-40);
       this.replayProgressFrame.setPosition(w/2,y).setDisplaySize(mw,14);
       this.replayProgressFill.setPosition(w/2-mw*.435,y).setDisplaySize(mw*.87,6);
       bottom=y+10;
     }
     if(this.bossName?.visible){
-      const y=bottom+7,bg=this.bossBgW;
-      this.bossName.setOrigin(0,0).setPosition(27,y).setFontSize(11).setWordWrapWidth(w-162).setMaxLines(1).setStroke('#191321',2);
-      this.bossName.name='boss';fit(this.bossName,w-162,11);
-      this.bossHpTxt?.setOrigin(1,0).setPosition(w-18,y+1).setFontSize(9);
-      this._hudBackings.push([0x211522,.76,12,y-2,w-24,29,7]);
-      bg.setY(y+16).setDisplaySize(bg.width,8).setAlpha(0);   // v8.0.14 หลอดน้ำชมพูแดง (liquidTube) แทนแถบ
-      this.bossBar.setY(y+18).setDisplaySize(this.bossBar.width,4).setAlpha(0);
-      bottom=y+27;
+      const y=bottom+5,bg=this.bossBgW,pw=Math.min(w-24,440),left=(w-pw)/2;
+      this.bossName.setOrigin(0,0).setPosition(left+13,y).setFontSize(11).setColor('#fff0dc').setWordWrapWidth(pw-30).setMaxLines(1).setStroke('#191321',2);
+      this.bossName.name='boss';fit(this.bossName,pw-30,11);
+      this.bossHpTxt?.setOrigin(.5,.5).setPosition(w/2,y+23).setFontSize(9).setStroke('#15111e',1).setDepth(55);
+      this._hudBackings.push([0x211522,.8,left,y-4,pw,39,3]);
+      bg.width=pw-24;bg.setPosition(w/2,y+16).setDisplaySize(bg.width,14).setAlpha(0);
+      this.bossBar.setPosition(w/2-bg.width/2+2,y+17).setAlpha(0);
+      bottom=y+35;
     }
     if(!objective)this._liq=null;
     this._hudBottom=bottom;
-    this.statTxt.setY(bottom+5);this.traitTxt?.setY(bottom+22);
+    this.statTxt.setY(bottom+4).setWordWrapWidth(w-40);
+    const trait=this.traitTxt,share=!!trait?.visible&&!hasStatus&&this.statTxt.width+trait.width+24<w-40;
+    trait?.setOrigin(share?1:0,0).setPosition(share?w-20:20,bottom+(share?4:21));
     this.drawWavePips?.();
     }
-    if(!art)for(const [col,alpha,x,y,rw,rh,r] of this._hudBackings||[])g.fillStyle(col,alpha).fillRoundedRect(x,y,rw,rh,r);
+    if(!art)for(const [col,alpha,x,y,rw,rh,r] of this._hudBackings||[]){g.fillStyle(col,alpha).fillRoundedRect(x,y,rw,rh,r);g.lineStyle(1,0xffefd8,.45).strokeRoundedRect(x,y,rw,rh,r);}
     this.drawCombatControlBase();
   }
   // v8.0.14 เจ้าของ: หลอดภารกิจ = สี่เหลี่ยมมุมโค้งนิด ๆ ด้านในเป็นน้ำฟ้าเขียวไหล (วาดด้วยโค้ด canvas-safe)
@@ -9859,8 +9873,9 @@ class Game extends Phaser.Scene {
     const L=live?this._liq:(popK>0?this._liqLast:null);
     this.hudLiqG=this.liquidTube(this.hudLiqG,hud&&L?L:null,live?(this.waveObjBar?.width||0)/L.w:1,'_liqF',0,popK>0?popK:0);
     const bg=this.bossBgW,bv=!!(hud&&bg?.visible&&this.bossName?.visible),bw=bg?.width||0;
-    const bf=bw>4?Phaser.Math.Clamp((this.bossBar?.width||0)/(bw-4),0,1):0;   // v8.0.16 เฟส 50%/25% = สีเข้ม + ไหลเร็ว · เงาขาวค้างตอนโดนตี
-    this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:8}:null,bf,'_bossLiqF',bf<=.25?3:bf<=.5?2:1,0,{ghost:'_bossGhost'});
+    const boss=this.boss,spawn=boss?._taroSpawnId;if(boss!==this._hudLiquidBoss||spawn!==this._hudLiquidSpawn){this._hudLiquidBoss=boss;this._hudLiquidSpawn=spawn;this._bossLiqF=null;this._bossGhost=null;}
+    const bf=boss?.maxhp>0?Phaser.Math.Clamp(boss.hp/boss.maxhp,0,1):bw>4?Phaser.Math.Clamp((this.bossBar?.width||0)/(bw-4),0,1):0;
+    this.hudBossLiqG=this.liquidTube(this.hudBossLiqG,bv?{x:bg.x-bw/2,y:bg.y,w:bw,h:14}:null,bf,'_bossLiqF',1,0,{ghost:'_bossGhost',boss:true});
   }
   // v8.0.17 ปุ่ม Dash ยุบแล้วเด้งกลับตอนกด
   dashPress(){ (typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('dash'); const b=this.dashBtn,t=this.dashTxt; if(!b||!this.tweens)return; const k=this.ctrlScale?.()||1;
@@ -9868,11 +9883,11 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:b,scale:1,duration:240,ease:'Back.easeOut'}); if(t)this.tweens.add({targets:t,scale:k,duration:240,ease:'Back.easeOut'}); }
   // v8.0.17 Unique พร้อมใช้ = ขอบเรืองเต้น + ประกายวิ่งรอบปุ่ม + วงแสงแวบตอนเพิ่งพร้อม
   uniqueReadyGlow(g,b,col){ const now=this.time?.now||0,t=now/1000,p=.5+.5*Math.sin(t*6),r=b.radius;
+    const still=this.hubMotionAllowed?.()===false||(typeof Save!=='undefined'&&Save.data.settings?.vfx===0);
     if(this._uqReadyAt==null)this._uqReadyAt=now; const fresh=Math.max(0,1-(now-this._uqReadyAt)/600);
-    g.lineStyle(7,col,.1+.14*p).strokeCircle(b.x,b.y,r+10+3*p);
-    g.lineStyle(3,col,.5+.4*p).strokeCircle(b.x,b.y,r+5+2*p);
-    for(let i=0;i<2;i++){ const a=t*2.6+i*Math.PI; g.fillStyle(0xffffff,.9).fillCircle(b.x+Math.cos(a)*(r+6),b.y+Math.sin(a)*(r+6),2.2); }
-    if(fresh>0){ g.lineStyle(3,0xffffff,.8*fresh).strokeCircle(b.x,b.y,r+6+26*(1-fresh)); } }
+    g.lineStyle(2,col,still?.7:.55+.25*p).strokeCircle(b.x,b.y,r+5+(still?0:p));
+    if(!still){const a=t*1.8;g.fillStyle(0xfff2dc,.85).fillCircle(b.x+Math.cos(a)*(r+5),b.y+Math.sin(a)*(r+5),1.5);}
+    if(!still&&fresh>0)g.lineStyle(1.5,0xfff2dc,.5*fresh).strokeCircle(b.x,b.y,r+7+3*(1-fresh)); }
   // v8.0.17 ฆ่าบอส/มินิ = ภาพค้าง ~0.1 วิ แล้วสโลว์โมชันสั้น ๆ (เวลาจริง ไม่ขึ้นกับ x1–x4)
   killSlowmo(power=1){ if(!this.physics?.world||!this.tweens||this._slowmo)return; Sfx.orderCue?.('kill_freeze',.45,.5);this.time?.delayedCall(120,()=>{if(this.state!=='menu'&&this.state!=='dead')Sfx.orderCue?.('kill_slowmo',.3,.5);});this._slowmo=true; this._isHitStop=true;
     const w=this.physics.world,gs=this.gameSpeed||1,freeze=Math.round(90+30*power),slow=Math.round(380+320*power);
@@ -9881,13 +9896,13 @@ class Game extends Phaser.Scene {
     setTimeout(()=>{ if(!this.sys||this.sys.isActive?.()===false){done();return;} w.timeScale=1/(gs*.35); this.tweens.timeScale=gs*.35;
       setTimeout(done,slow); },freeze); }
   // v8.0.16 ตัวเลขฆ่า/Sugar เด้งตอนเปลี่ยน · Survive เหลือ <5 วิ กระพริบแดง
-  hudJuice(){ if(!this.tweens)return;
+  hudJuice(){ if(!this.tweens)return;const motion=this.hubMotionAllowed?.()!==false&&!(typeof Save!=='undefined'&&Save.data.settings?.vfx===0);
     for(const t of [this.killTxt,this.runSugarTxt]){ if(!t)continue; const n=String(t.text||'').replace(/\D/g,'');
-      if(t._jn!=null&&n!==t._jn&&t.visible){ t._jt?.stop?.(); t.setScale(1); t._jt=this.tweens.add({targets:t,scale:1.3,duration:70,yoyo:true,ease:'Quad.easeOut',onComplete:()=>t.setScale(1)}); }
+      if(t._jn!=null&&n!==t._jn&&t.visible&&motion){ t._jt?.stop?.(); t.setScale(1); t._jt=this.tweens.add({targets:t,scale:1.12,duration:70,yoyo:true,ease:'Quad.easeOut',onComplete:()=>t.setScale(1)}); }
       t._jn=n; }
     const o=this.waveObjective,T=this.waveObjTxt; if(!T||!o)return;
     const warn=!!(o&&!o.done&&o.type==='survive'&&T.visible&&this.state==='play'&&this.waveTimer>0&&this.waveTimer<5);
-    const on=warn&&Math.floor((this.time?.now||0)/220)%2===0, c=warn?(on?'#ff4d5e':'#ffd0d4'):('#'+((o&&o.color)||0xfff4b0).toString(16).padStart(6,'0'));
+    const on=warn&&(!motion||Math.floor((this.time?.now||0)/350)%2===0), c=warn?(on?'#ff6c75':'#ffd0d4'):('#'+((o&&o.color)||0xfff4b0).toString(16).padStart(6,'0'));
     if(T._jc!==c){ T._jc=c; T.setColor(c); } }
   // v8.0.16 กดเปลี่ยนความเร็ว → ป้าย x1–x4 เด้งกลางจอ
   speedPopup(){ if(!this.add||!this.tweens)return; let t=this._spdPop;
@@ -9900,21 +9915,22 @@ class Game extends Phaser.Scene {
     g.clear(); g.setVisible(!!L); if(!L){ if(o.ghost)this[o.ghost]=null; return g; }
     const PAL=[[0x0b1418,0x10242a,0x1fb5a8,0x52e3b8,0xc8fff0,0xe8fff8,0xa9f5e6,0xbffff0],[0x2a1018,0x3a1220,0xd93a6a,0xff7fa3,0xffd6e2,0xffeef3,0xffa3bf,0xffe0ea],
       [0x2a0c12,0x3a1018,0xc42848,0xf0587a,0xffc2cf,0xffe2e8,0xff8aa4,0xffd0da],[0x24060a,0x340a10,0x9e1028,0xd8304e,0xffa8b4,0xffd4da,0xff6b80,0xffc0c8]];
-    const P=PAL[pal]||PAL[0],spd=pal===3?2.2:pal===2?1.5:1;
-    const {x,y,w,h}=L,r=3,t=(this.time?.now||0)/1000*spd,now=this.time?.now||0;tf=Phaser.Math.Clamp(tf||0,0,1);
-    let f=this[key]; f=f==null||Math.abs(tf-f)>.5?tf:f+(tf-f)*(o.ghost?.35:.12); this[key]=f; const fw=Math.max(0,w*f),amp=.8+pop*2.6;
-    let gw=0; if(o.ghost){ let G=this[o.ghost]; if(!G||tf>G.v+.001)G={v:tf,hitAt:0,last:tf}; if(tf<G.last-.0005)G.hitAt=now; G.last=tf;
-      if(now-G.hitAt>180)G.v+=(tf-G.v)*.22; this[o.ghost]=G; gw=Math.max(0,w*G.v); }
+    const still=this.hubMotionAllowed?.()===false||(typeof Save!=='undefined'&&Save.data.settings?.vfx===0),now=this.time?.now||0,dt=Math.max(0,Math.min(.1,(now-(g._liquidAt??now))/1000));g._liquidAt=now;
+    const {x,y,w,h}=L,r=Math.min(4,h/2),t=still?0:now/1000;tf=Phaser.Math.Clamp(tf||0,0,1);
+    let f=this[key];f=f==null||still?tf:f+(tf-f)*(1-Math.exp(-dt*(o.boss?18:14)));this[key]=f;
+    const P=o.boss?this.bossLiquidPalette(f):PAL[pal]||PAL[0],fw=Math.max(0,w*f),amp=Math.min(h*.15,.7+pop*1.2);if(still)pop=0;
+    let gw=0; if(o.ghost){ let G=this[o.ghost]; if(!G||tf>G.v+.001)G={v:tf,hitAt:now,last:tf};if(tf<G.last-.0005&&G.v<=G.last+.002)G.hitAt=now;G.last=tf;
+      if(still)G.v=tf;else if(now-G.hitAt>180)G.v+=(tf-G.v)*(1-Math.exp(-dt*11));this[o.ghost]=G;gw=G.v>tf+.0001?Math.max(0,w*G.v):0; }
     g.fillStyle(P[0],.85).fillRoundedRect(x-1.5,y-1.5,w+3,h+3,r+1.5);
     g.fillStyle(P[1],1).fillRoundedRect(x,y,w,h,r);
     if(fw>=2){ const rr=Math.min(r,fw/2),a=x+rr,b=x+fw-rr;
       g.fillStyle(P[2],1).fillRoundedRect(x,y,fw,h,rr);
       g.fillStyle(P[3],.9).fillRoundedRect(x,y,fw,h*.55,{tl:rr,tr:rr,bl:0,br:0});
-      for(let k=0;k<Math.ceil(w/14)+2;k++){ const sx=x+((t*26+k*14)%(w+28))-14,q=[sx,sx+6,sx+11,sx+5].map(v=>Phaser.Math.Clamp(v,a,b));
+      if(!still)for(let k=0;k<Math.ceil(w/24)+2;k++){ const sx=x+((t*18+k*24)%(w+48))-24,q=[sx,sx+6,sx+11,sx+5].map(v=>Phaser.Math.Clamp(v,a,b));
         if(q[1]-q[0]<.5&&q[2]-q[3]<.5)continue; g.fillStyle(P[4],.18).fillPoints([{x:q[0],y:y+h},{x:q[1],y:y+h},{x:q[2],y},{x:q[3],y}],true); }
-      g.lineStyle(1,P[5],.55).beginPath(); for(let px=a;px<=b;px+=3){ const py=y+1.6+Math.sin(px*.18-t*(5+pop*6))*amp; px===a?g.moveTo(px,Math.max(y,py)):g.lineTo(px,Math.max(y,py)); } g.strokePath();
-      for(let k=0;k<3;k++){ const bx=x+((t*18+k*w/3)%Math.max(4,fw-4))+2,by=y+h-2-((t*4+k*1.7)%Math.max(1,h-3)); if(bx<b)g.fillStyle(0xffffff,.35).fillCircle(bx,by,1); }
-      if(f<.995)g.fillStyle(P[7],.35+.2*Math.sin(t*6)).fillCircle(x+fw,y+h/2,h*.55);
+      g.lineStyle(1,P[5],.5).beginPath();for(let px=a;px<=b;px+=6){const py=y+Math.min(2,h*.3)+(still?0:Math.sin(px*.12-t*3)*amp);px===a?g.moveTo(px,Math.max(y,py)):g.lineTo(px,Math.max(y,py));}g.strokePath();
+      if(!still&&h>=8&&fw>10)for(let k=0;k<3;k++){const bx=x+((t*12+k*fw/3)%Math.max(4,fw-6))+3,by=y+h-3-((t*3+k*1.7)%Math.max(1,h-5));if(bx<b)g.fillStyle(0xfff4df,.3).fillCircle(bx,by,.8);}
+      if(f<.995){const mr=Math.min(h*.22,fw*.22);g.fillStyle(P[7],.45).fillCircle(x+fw-mr,y+h/2,mr);}
     }
     if(gw>fw+.5)g.fillStyle(0xffffff,.72).fillRect(x+fw,y+1,gw-fw,h-2);   // เงาเลือดที่หาย ค้างแล้วค่อยหด
     g.lineStyle(1,P[6],.45).strokeRoundedRect(x,y,w,h,r);
@@ -9939,7 +9955,7 @@ class Game extends Phaser.Scene {
     if(L.pk!==pk){L.pk=pk;L.c0.removeAll(true);for(const [key,x,y,pw,ph] of panels){const p=this.tuPanel(key,0,x,y,pw,ph);if(p)L.c0.add(p);}}
     // Minimal ImageGen frames sit behind live text and code-drawn progress bars.
     const kt=this.killTxt,st=this.runSugarTxt;
-    if(kt&&/^KOs /.test(kt.text))kt.setText(kt.text.slice(4));if(st&&/^🍬 /.test(st.text))st.setText(st.text.slice(3));
+    this.hudFormatCounters?.();
     const ck=[kt?.x,st?.x,kt?.width,st?.width,w].join(':');
     if(L.ck!==ck){L.ck=ck;L.c1.list.filter(o=>!o._pip).forEach(o=>o.destroy());
       if(kt)L.c1.add(this.add.image(kt.x-9,24,'hud_ic_kill').setDisplaySize(13,13));
@@ -9962,7 +9978,7 @@ class Game extends Phaser.Scene {
     const showP=!!pb?.visible&&this.state!=='paused'; if(pb)H.pi.setPosition(pb.x,pb.y).setDisplaySize(17,17).setVisible(showP); this.pauseTxt?.setAlpha(showP?0:1);
     if(mb)H.mi.setFrame('cell'+(Sfx.muted?1:0)).setDisplaySize(18,18).setPosition(mb.x,mb.y).setVisible(!!mb.visible); this.muteTxt?.setAlpha(0);
   }
-  hudVisible(v){ this.hudList.forEach(o=>o.setVisible(v));this.sesRuneRefreshUI?.(v); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v){this.hudLiqG?.setVisible(false);this.hudBossLiqG?.setVisible(false);this._bossPipImg?.setVisible(false);} if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
+  hudVisible(v){ this._hudLayoutKey=null;this.hudList.forEach(o=>o.setVisible(v));this.sesRuneRefreshUI?.(v); this.traitTxt?.setVisible(!!(v&&this._runTrait)); if(v){this.refreshFlickerUI();this.renderWaveObjectiveHUD();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(!!this._replayMeter&&this.mode==='wave');if(this.replayProgressFill)this.replayProgressFill.setVisible(!!this._replayMeter&&this.mode==='wave'&&this._replayMeter.kills>0);} if(this.skillBar)this.skillBar.setVisible(v); if(!v){for(const o of [...(this._hst62?.icons||[]),...(this._hst62?.nums||[])])o.setVisible(false);this.hudLiqG?.setVisible(false);this.hudBossLiqG?.setVisible(false);this._bossPipImg?.setVisible(false);} if(!v&&this.lowHpVig){this._lowHpOn=false;this.lowHpVig.setAlpha(0).setVisible(false);} }
   drawBars(){
     const pad=this._pad, g=this.barG; if(!g)return; g.clear();
     this.drawCombatHUDPanels?.(g);
@@ -9976,7 +9992,7 @@ class Game extends Phaser.Scene {
 
     this.drawOverheadStatus(hpf);
     // v4.64: HUD แนวตั้งโล่งขึ้น — บรรทัดสแตตเหลือแค่ Relic/โล่ (HP อยู่เหนือหัวผู้เล่นแล้ว · สแตตรบย้ายไปหน้า Pause)
-    if(this.statTxt){ const rel=(this.relics&&this.relics.length)?'🔮 '+this.relics.map(k=>RELICS[k].emoji).join(' '):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
+    if(this.statTxt){const held=this.relics||[],rel=held.length?'🔮 '+held.slice(0,5).map(k=>RELICS[k].emoji).join(' ')+(held.length>5?' +'+(held.length-5):''):'',sh=(this._shield||0)>0?'🫧×'+this._shield:'';
 
       const fb=this._forgeState&&this._forgeState.barrierUntil>(this.elapsed||0)?this._forgeState.barrier:0;this.statTxt.setText((this._hudStatusIcons?[rel]:[rel,sh,fb>0?'Barrier '+Math.ceil(fb):'']).filter(Boolean).join('   '));   /* v8.0.85 มีไอคอนใบ 62 = โล่/Barrier เป็นไอคอนแทน */ }
     // บรรทัดชื่อด่านโชว์ 6 วิแรกของด่านแล้วจางหาย (ดูซ้ำได้ในหน้า Pause)
@@ -14039,7 +14055,7 @@ class Game extends Phaser.Scene {
   drawWavePips(){
     const g=this.pipG; if(!g)return; g.clear(); const pips=null; this.hudPipsArt?.(pips); this._bossPipImg?.setVisible(false);
     if(this.recipeMode){ this.renderRecipeProgress(g); return; }
-    const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss')return;
+    const st=STAGES[this.stageIndex]; if(!st||this.mode==='boss'||this.bossName?.visible)return;
     const n=st.waves, seg=this._pipX0!=null?10:Math.min(12,(this.W*.28)/n), w=seg-4, h=this._pipX0!=null?6:4;
     const x0=this._pipX0!=null?this._pipX0:this.W-28-n*seg, y=this._pipX0!=null?Math.round(this._pipY-h/2):49;   // ย้ายลงใต้แถบ stat (กันจุดเวฟทับเลข atk/def/crit)
     for(let i=0;i<n;i++){ const x=x0+i*seg;
@@ -18472,8 +18488,8 @@ class Game extends Phaser.Scene {
     // แถวไอคอน HUD (แทน '🫧×n' / 'Barrier N' ใน statTxt)
     const T=this.statTxt,ic=this.textures.exists('st_icons')&&T;this._hudStatusIcons=!!ic;if(!ic)return;const vis=T.visible!==false&&(this.hudList?.[0]?.visible!==false);
     while(h.icons.length<st.length){const im=this.camUI?this.camUI(this.add.image(0,0,'st_icons',0)):this.add.image(0,0,'st_icons',0);im.setScrollFactor?.(1);im.setDepth(54);const tx=this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#fff1df',stroke:'#141018',strokeThickness:3}).setOrigin(0,.5).setDepth(55);this.camUI?.(tx);tx.setScrollFactor?.(1);h.icons.push(im);h.nums.push(tx);}
-    let x=T.x+(T.text?T.width+8:0);const y=T.y+(T.height||14)/2;
-    h.icons.forEach((im,i)=>{const s=st[i];im.setVisible(!!s&&vis);h.nums[i].setVisible(!!s&&vis&&!!(s&&s[1]));if(!s)return;im.setFrame(ST62_ICON['p_'+s[0]]).setDisplaySize(22,22).setPosition(x+11,y);let w=26;if(s[1]){h.nums[i].setText(String(s[1])).setPosition(x+23,y);w+=h.nums[i].width+2;}x+=w;});}
+    let x=T.x+(T.text?T.width+8:0),y=T.y+(T.height||14)/2;
+    h.icons.forEach((im,i)=>{const s=st[i],n=h.nums[i];im.setVisible(!!s&&vis);n.setVisible(!!s&&vis&&!!(s&&s[1]));if(!s)return;if(s[1])n.setText(this.hudCompactNumber?.(s[1])||String(s[1]));const iw=22+(s[1]?n.width+2:0);if(x+iw>(this.W||Infinity)-16){x=20;y+=22;}im.setFrame(ST62_ICON['p_'+s[0]]).setDisplaySize(18,18).setPosition(x+9,y);if(s[1])n.setPosition(x+19,y);x+=iw;});if(st.length)this.traitTxt?.setY(Math.max((this._hudBottom||0)+21,y+13));}
   screenFx(life,draw,{fadeIn=0,hold=null}={}){ try{ const cam=this.cameras.main,g=this.camWorld(this.add.graphics().setDepth(95000)),t0=this.time.now,fx={g,dead:false};
     const step=()=>{ if(fx.dead||!g.active)return; const v=cam.worldView,el=(this.time.now-t0)/1000,k=life>0?Math.min(1,el/life):0; g.setPosition(v.x,v.y); g.clear(); try{draw(g,v.width,v.height,k,el);}catch(e){} if(life>0&&el>=life)fx.kill(); };
     fx.kill=()=>{ if(fx.dead)return; fx.dead=true; this.events.off('postupdate',step); if(g.active)g.destroy(); };
@@ -22224,8 +22240,8 @@ class Game extends Phaser.Scene {
     if(this.boss && this.boss.active){
       this.bossThink(this.boss,dt);
       this.tickBossObjective(dt);
-      this.bossBar.width=Math.max(0,(this._barW*0.8-4)*(this.boss.hp/this.boss.maxhp));
-      if(this.bossHpTxt)this.bossHpTxt.setText(Math.max(0,Math.ceil(this.boss.hp)).toLocaleString()+' / '+Math.ceil(this.boss.maxhp).toLocaleString());
+      this.bossBar.width=Math.max(0,((this.bossBgW?.width||this._barW*.8)-4)*(this.boss.hp/this.boss.maxhp));
+      if(this.bossHpTxt)this.bossHpTxt.setText('P'+(this.boss.phase3?3:this.boss.phase2?2:1)+' · '+this.hudCompactNumber(Math.ceil(this.boss.hp))+' / '+this.hudCompactNumber(Math.ceil(this.boss.maxhp))+' · '+Math.max(0,Math.min(100,Math.round(this.boss.hp/this.boss.maxhp*100)))+'%');
     }
     this.updateObjectiveArrow();
     this.mxTick?.(dt);this.heroFxTick?.();if(this.state==='play'&&this.player?.maxhp>0)this._minHpPct=Math.min(this._minHpPct??1,Math.max(0,this.player.hp)/this.player.maxhp);

@@ -3,7 +3,7 @@ const src=fs.readFileSync('game.js','utf8'),kit='assets/incoming/battle_hud_top/
 const ctx={window:{},navigator:{deviceMemory:8},localStorage:{getItem(){return null;}},STAGE_DECOR:{}};vm.createContext(ctx);
 vm.runInContext(src.slice(src.indexOf('const ASSET_IMAGES ='),src.indexOf('class Boot extends'))+';this.r={ASSET_IMAGES,TEMPLE_UI,HUD_KEYS,STAGE_SHEETS,artClass,bootKeep};',ctx);
 const {ASSET_IMAGES,TEMPLE_UI,HUD_KEYS,STAGE_SHEETS,artClass,bootKeep}=ctx.r;
-const miniDir='assets/incoming/battle_hud_minimal/',mini=JSON.parse(fs.readFileSync(miniDir+'MANIFEST.json','utf8')),overrides=Object.fromEntries(mini.map(e=>[e.key,e]));
+const miniDir='assets/incoming/hud_ink820/',mini=JSON.parse(fs.readFileSync(miniDir+'MANIFEST.json','utf8')),overrides=Object.fromEntries(mini.map(e=>[e.key,e]));
 assert.equal(mini.length,4);
 for(const e of mini){const b=fs.readFileSync(miniDir+e.file),w=fs.readFileSync(e.runtime_file);assert.equal(b.length,e.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),e.sha256);assert.equal(w.length,e.runtime_bytes);assert.equal(crypto.createHash('sha256').update(w).digest('hex'),e.runtime_sha256);}
 // 1. ต้นฉบับตรง MANIFEST · WebP 50% · ลงทะเบียนแบบ stage-lazy (ไม่โหลดตอนบูต) · cell/nineSlice ครึ่งหนึ่งของต้นฉบับ
@@ -24,4 +24,4 @@ assert.equal(t.hudArtSync(),false);assert.equal(made,0,'no art objects without t
 t._hudArt=true;t._hudBtns={};t.killTxt.text='7';t.runSugarTxt.text='40';t.waveObjBg.alpha=0;t._hudArtChk=0;t.hudArtSync();
 assert.equal(t._hudArt,false);assert.equal(t.killTxt.text,'KOs 7');assert.equal(t.runSugarTxt.text,'🍬 40');assert.equal(t.waveObjBg.alpha,1);assert.equal(t._hudBtns,null);
 assert(!src.includes("'hud_exp_frame',0,")&&!src.includes("tuPanel('hud_mission_card'"),'v8.0.11: no top EXP bar, plain mission backing');
-console.log('Battle HUD art: 18 pieces with 4 MANIFEST-verified minimal ImageGen overrides, stage-lazy, halved cells/slices, hooks with code fallback, evict restore passed');
+console.log('Battle HUD art: 18 pieces with 4 MANIFEST-verified original ink ImageGen overrides, stage-lazy, halved cells/slices, hooks with code fallback, evict restore passed');

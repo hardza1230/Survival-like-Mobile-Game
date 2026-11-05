@@ -1,0 +1,81 @@
+{
+  "original": {
+    "file": "source.png",
+    "bytes": 1512256,
+    "sha256": "108a4a985b72909d6ad5e7867542ff32fdd79a10ad3db25dfdf22d58d9e77123",
+    "size": [
+      1536,
+      1024
+    ]
+  },
+  "transparent": true,
+  "sourceCutAlphaThreshold": 16,
+  "cuts": [
+    {
+      "key": "hud_top_panel",
+      "sourceRect": [
+        35,
+        95,
+        1504,
+        198
+      ],
+      "sourceBorderAlphaBelow16": true
+    },
+    {
+      "key": "hud_mission_card",
+      "sourceRect": [
+        32,
+        330,
+        1500,
+        458
+      ],
+      "sourceBorderAlphaBelow16": true
+    },
+    {
+      "key": "hud_boss_plate",
+      "sourceRect": [
+        35,
+        593,
+        1501,
+        702
+      ],
+      "sourceBorderAlphaBelow16": true
+    },
+    {
+      "key": "hud_round_btn",
+      "frame": 0,
+      "sourceRect": [
+        150,
+        790,
+        364,
+        1004
+      ],
+      "sourceBorderAlphaBelow16": true
+    },
+    {
+      "key": "hud_round_btn",
+      "frame": 1,
+      "sourceRect": [
+        662,
+        790,
+        876,
+        1004
+      ],
+      "sourceBorderAlphaBelow16": true
+    },
+    {
+      "key": "hud_round_btn",
+      "frame": 2,
+      "sourceRect": [
+        1174,
+        790,
+        1388,
+        1004
+      ],
+      "sourceBorderAlphaBelow16": true
+    }
+  ],
+  "method": "source-only mechanical trim at clear alpha gutters, uniform half-size packing, no masks or repaint",
+  "runtimeBytes": 145280,
+  "decodedBytes": 677592
+}
