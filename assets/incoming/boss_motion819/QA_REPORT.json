@@ -1,0 +1,5227 @@
+{
+  "authoredInbetweens": 96,
+  "replacedActors": 16,
+  "packedFrames": 288,
+  "activeFrames": 468,
+  "sourceCutAlphaThreshold": 16,
+  "sourcePartitions": [
+    {
+      "group": "group1",
+      "path": "assets/incoming/boss_motion819/group1_source.png",
+      "cells": [
+        {
+          "row": 0,
+          "col": 0,
+          "rect": [
+            0,
+            0,
+            265,
+            264
+          ],
+          "sourcePixels": 20064,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "rect": [
+            265,
+            0,
+            517,
+            264
+          ],
+          "sourcePixels": 23386,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "rect": [
+            517,
+            0,
+            755,
+            264
+          ],
+          "sourcePixels": 24896,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "rect": [
+            755,
+            0,
+            1020,
+            264
+          ],
+          "sourcePixels": 21879,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 4,
+          "rect": [
+            1020,
+            0,
+            1270,
+            264
+          ],
+          "sourcePixels": 20873,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 5,
+          "rect": [
+            1270,
+            0,
+            1536,
+            264
+          ],
+          "sourcePixels": 21322,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "rect": [
+            0,
+            264,
+            266,
+            512
+          ],
+          "sourcePixels": 23359,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "rect": [
+            266,
+            264,
+            511,
+            512
+          ],
+          "sourcePixels": 24741,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "rect": [
+            511,
+            264,
+            757,
+            512
+          ],
+          "sourcePixels": 27736,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "rect": [
+            757,
+            264,
+            1023,
+            512
+          ],
+          "sourcePixels": 31022,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "rect": [
+            1023,
+            264,
+            1272,
+            512
+          ],
+          "sourcePixels": 25388,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "rect": [
+            1272,
+            264,
+            1536,
+            512
+          ],
+          "sourcePixels": 24176,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "rect": [
+            0,
+            512,
+            258,
+            761
+          ],
+          "sourcePixels": 26137,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "rect": [
+            258,
+            512,
+            508,
+            761
+          ],
+          "sourcePixels": 25934,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "rect": [
+            508,
+            512,
+            761,
+            761
+          ],
+          "sourcePixels": 27713,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "rect": [
+            761,
+            512,
+            1024,
+            761
+          ],
+          "sourcePixels": 28287,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "rect": [
+            1024,
+            512,
+            1273,
+            761
+          ],
+          "sourcePixels": 26930,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "rect": [
+            1273,
+            512,
+            1536,
+            761
+          ],
+          "sourcePixels": 26069,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "rect": [
+            0,
+            761,
+            272,
+            1024
+          ],
+          "sourcePixels": 27796,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "rect": [
+            272,
+            761,
+            510,
+            1024
+          ],
+          "sourcePixels": 21970,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "rect": [
+            510,
+            761,
+            757,
+            1024
+          ],
+          "sourcePixels": 24707,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "rect": [
+            757,
+            761,
+            1020,
+            1024
+          ],
+          "sourcePixels": 26564,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "rect": [
+            1020,
+            761,
+            1275,
+            1024
+          ],
+          "sourcePixels": 26463,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "rect": [
+            1275,
+            761,
+            1536,
+            1024
+          ],
+          "sourcePixels": 29144,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        }
+      ]
+    },
+    {
+      "group": "group2",
+      "path": "assets/incoming/boss_motion819/group2_source.png",
+      "cells": [
+        {
+          "row": 0,
+          "col": 0,
+          "rect": [
+            0,
+            0,
+            259,
+            255
+          ],
+          "sourcePixels": 31713,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "rect": [
+            259,
+            0,
+            513,
+            255
+          ],
+          "sourcePixels": 36481,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "rect": [
+            513,
+            0,
+            765,
+            255
+          ],
+          "sourcePixels": 39744,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "rect": [
+            765,
+            0,
+            1023,
+            255
+          ],
+          "sourcePixels": 36893,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 4,
+          "rect": [
+            1023,
+            0,
+            1282,
+            255
+          ],
+          "sourcePixels": 35859,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 5,
+          "rect": [
+            1282,
+            0,
+            1536,
+            255
+          ],
+          "sourcePixels": 34290,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "rect": [
+            0,
+            255,
+            261,
+            517
+          ],
+          "sourcePixels": 34234,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "rect": [
+            261,
+            255,
+            512,
+            517
+          ],
+          "sourcePixels": 35025,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "rect": [
+            512,
+            255,
+            765,
+            517
+          ],
+          "sourcePixels": 38109,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "rect": [
+            765,
+            255,
+            1031,
+            517
+          ],
+          "sourcePixels": 35803,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "rect": [
+            1031,
+            255,
+            1286,
+            517
+          ],
+          "sourcePixels": 34003,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "rect": [
+            1286,
+            255,
+            1536,
+            517
+          ],
+          "sourcePixels": 34679,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "rect": [
+            0,
+            517,
+            265,
+            769
+          ],
+          "sourcePixels": 31481,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "rect": [
+            265,
+            517,
+            512,
+            769
+          ],
+          "sourcePixels": 32544,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "rect": [
+            512,
+            517,
+            764,
+            769
+          ],
+          "sourcePixels": 35532,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "rect": [
+            764,
+            517,
+            1019,
+            769
+          ],
+          "sourcePixels": 30275,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "rect": [
+            1019,
+            517,
+            1281,
+            769
+          ],
+          "sourcePixels": 31357,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "rect": [
+            1281,
+            517,
+            1536,
+            769
+          ],
+          "sourcePixels": 32951,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "rect": [
+            0,
+            769,
+            257,
+            1024
+          ],
+          "sourcePixels": 21954,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "rect": [
+            257,
+            769,
+            503,
+            1024
+          ],
+          "sourcePixels": 22010,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "rect": [
+            503,
+            769,
+            763,
+            1024
+          ],
+          "sourcePixels": 21108,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "rect": [
+            763,
+            769,
+            1021,
+            1024
+          ],
+          "sourcePixels": 21830,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "rect": [
+            1021,
+            769,
+            1282,
+            1024
+          ],
+          "sourcePixels": 22138,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "rect": [
+            1282,
+            769,
+            1536,
+            1024
+          ],
+          "sourcePixels": 22163,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        }
+      ]
+    },
+    {
+      "group": "group3",
+      "path": "assets/incoming/boss_motion819/group3_source.png",
+      "cells": [
+        {
+          "row": 0,
+          "col": 0,
+          "rect": [
+            0,
+            0,
+            251,
+            256
+          ],
+          "sourcePixels": 21681,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "rect": [
+            251,
+            0,
+            499,
+            256
+          ],
+          "sourcePixels": 22165,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "rect": [
+            499,
+            0,
+            757,
+            256
+          ],
+          "sourcePixels": 21643,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "rect": [
+            757,
+            0,
+            1019,
+            256
+          ],
+          "sourcePixels": 21875,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 4,
+          "rect": [
+            1019,
+            0,
+            1271,
+            256
+          ],
+          "sourcePixels": 22469,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 5,
+          "rect": [
+            1271,
+            0,
+            1536,
+            256
+          ],
+          "sourcePixels": 23224,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "rect": [
+            0,
+            256,
+            263,
+            512
+          ],
+          "sourcePixels": 27646,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "rect": [
+            263,
+            256,
+            514,
+            512
+          ],
+          "sourcePixels": 29348,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "rect": [
+            514,
+            256,
+            765,
+            512
+          ],
+          "sourcePixels": 29817,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "rect": [
+            765,
+            256,
+            1021,
+            512
+          ],
+          "sourcePixels": 30143,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "rect": [
+            1021,
+            256,
+            1272,
+            512
+          ],
+          "sourcePixels": 27847,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "rect": [
+            1272,
+            256,
+            1536,
+            512
+          ],
+          "sourcePixels": 27938,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "rect": [
+            0,
+            512,
+            256,
+            774
+          ],
+          "sourcePixels": 31473,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "rect": [
+            256,
+            512,
+            509,
+            774
+          ],
+          "sourcePixels": 30921,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "rect": [
+            509,
+            512,
+            768,
+            774
+          ],
+          "sourcePixels": 33244,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "rect": [
+            768,
+            512,
+            1020,
+            774
+          ],
+          "sourcePixels": 32806,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "rect": [
+            1020,
+            512,
+            1277,
+            774
+          ],
+          "sourcePixels": 31840,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "rect": [
+            1277,
+            512,
+            1536,
+            774
+          ],
+          "sourcePixels": 32109,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "rect": [
+            0,
+            774,
+            256,
+            1024
+          ],
+          "sourcePixels": 30773,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "rect": [
+            256,
+            774,
+            511,
+            1024
+          ],
+          "sourcePixels": 31296,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "rect": [
+            511,
+            774,
+            760,
+            1024
+          ],
+          "sourcePixels": 28865,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "rect": [
+            760,
+            774,
+            1018,
+            1024
+          ],
+          "sourcePixels": 28123,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "rect": [
+            1018,
+            774,
+            1267,
+            1024
+          ],
+          "sourcePixels": 29883,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "rect": [
+            1267,
+            774,
+            1536,
+            1024
+          ],
+          "sourcePixels": 32652,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        }
+      ]
+    },
+    {
+      "group": "group4",
+      "path": "assets/incoming/boss_motion819/group4_source.png",
+      "cells": [
+        {
+          "row": 0,
+          "col": 0,
+          "rect": [
+            0,
+            0,
+            259,
+            268
+          ],
+          "sourcePixels": 26472,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "rect": [
+            259,
+            0,
+            508,
+            268
+          ],
+          "sourcePixels": 26854,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "rect": [
+            508,
+            0,
+            765,
+            268
+          ],
+          "sourcePixels": 29347,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "rect": [
+            765,
+            0,
+            1030,
+            268
+          ],
+          "sourcePixels": 29376,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 4,
+          "rect": [
+            1030,
+            0,
+            1288,
+            268
+          ],
+          "sourcePixels": 27688,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 0,
+          "col": 5,
+          "rect": [
+            1288,
+            0,
+            1536,
+            268
+          ],
+          "sourcePixels": 26818,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "rect": [
+            0,
+            268,
+            245,
+            519
+          ],
+          "sourcePixels": 23394,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "rect": [
+            245,
+            268,
+            504,
+            519
+          ],
+          "sourcePixels": 25514,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "rect": [
+            504,
+            268,
+            765,
+            519
+          ],
+          "sourcePixels": 28392,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "rect": [
+            765,
+            268,
+            1035,
+            519
+          ],
+          "sourcePixels": 31543,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "rect": [
+            1035,
+            268,
+            1285,
+            519
+          ],
+          "sourcePixels": 23863,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "rect": [
+            1285,
+            268,
+            1536,
+            519
+          ],
+          "sourcePixels": 23076,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "rect": [
+            0,
+            519,
+            267,
+            778
+          ],
+          "sourcePixels": 28035,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "rect": [
+            267,
+            519,
+            513,
+            778
+          ],
+          "sourcePixels": 30562,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "rect": [
+            513,
+            519,
+            766,
+            778
+          ],
+          "sourcePixels": 33807,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "rect": [
+            766,
+            519,
+            1017,
+            778
+          ],
+          "sourcePixels": 33619,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "rect": [
+            1017,
+            519,
+            1265,
+            778
+          ],
+          "sourcePixels": 30211,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "rect": [
+            1265,
+            519,
+            1536,
+            778
+          ],
+          "sourcePixels": 29268,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "rect": [
+            0,
+            778,
+            270,
+            1024
+          ],
+          "sourcePixels": 26528,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "rect": [
+            270,
+            778,
+            514,
+            1024
+          ],
+          "sourcePixels": 30127,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "rect": [
+            514,
+            778,
+            766,
+            1024
+          ],
+          "sourcePixels": 34408,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "rect": [
+            766,
+            778,
+            1017,
+            1024
+          ],
+          "sourcePixels": 31314,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "rect": [
+            1017,
+            778,
+            1266,
+            1024
+          ],
+          "sourcePixels": 27616,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "rect": [
+            1266,
+            778,
+            1536,
+            1024
+          ],
+          "sourcePixels": 26473,
+          "recoveredPixels": 0,
+          "excludedNeighborPixels": 0
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 0,
+      "sha256": "508577e892801665a8fc52216d9d0f176be47b51e38470bba94f9c984ba65389",
+      "alphaBox": [
+        24,
+        28,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 1,
+      "sha256": "5bf4d0eb21fabf3093dd4f3f191318fc43022859273d1982cf6cc0661254e2a0",
+      "alphaBox": [
+        20,
+        49,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 2,
+      "sha256": "2556eefb2f382fed9b5ef383d49efdd12bda89d4f6d361f95593da6907dd99ef",
+      "alphaBox": [
+        14,
+        39,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 3,
+      "sha256": "779d5bc1351cb40372c924f68bc6fca7136a59ac165b57566e84ef7a0347ba46",
+      "alphaBox": [
+        14,
+        41,
+        235,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 4,
+      "sha256": "5dd6c6fdaa732775b0ece7b0ea7c999673408b4f10b7cdbaa764367ecbe817f8",
+      "alphaBox": [
+        14,
+        38,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 5,
+      "sha256": "e027539f7e8af9b0a191b113b7401d67adf76b832b74fce365e6b55ace826ea9",
+      "alphaBox": [
+        13,
+        41,
+        220,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 6,
+      "sha256": "a48b9cced9ce424817cbe88929d7ecddc914d8462a8cb9e453c4189543c04bfd",
+      "alphaBox": [
+        41,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 7,
+      "sha256": "16e3050fe694cf3e354d0ef792a1a0b72b5dce7113ee09d7c01eb31512b3b763",
+      "alphaBox": [
+        15,
+        24,
+        243,
+        243
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 8,
+      "sha256": "6acbe51cfbb62dc51c7ad5dcc2585dfabed08c7daaa543ac96ef5110104e1aeb",
+      "alphaBox": [
+        18,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 9,
+      "sha256": "553ac8678bcd261fc55774b7cbc0e494cb05ae0457c173c52371a590964e666d",
+      "alphaBox": [
+        16,
+        24,
+        243,
+        243
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 10,
+      "sha256": "239a9bcf70de4cbf367a4e7df6dfbb3ff21ca68b0a622d4211e6a690a424d889",
+      "alphaBox": [
+        14,
+        24,
+        243,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 11,
+      "sha256": "0e44b2c1a7aa2c9abbe2c2c584c6c34df071f360c3b13513aa7e25a7b6e75835",
+      "alphaBox": [
+        15,
+        24,
+        243,
+        243
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 12,
+      "sha256": "061b449767ae2e84813621e0a159a44ed9c9db931e5cdc089c7c6fb71def3b18",
+      "alphaBox": [
+        13,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 13,
+      "sha256": "05d781bec7be0232d985f0ca227a19bc46924aab00730e16bf0e02b316d622a2",
+      "alphaBox": [
+        15,
+        24,
+        243,
+        243
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 14,
+      "sha256": "bef3e44d77c2d005a4ab2660e49e89bfa105c320955413dd13bc650de07cf60e",
+      "alphaBox": [
+        13,
+        24,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 15,
+      "sha256": "bc6baa723b8dfc30aa1e88cb46bc1a95446707e641efa0f6e157f66e9367f940",
+      "alphaBox": [
+        15,
+        24,
+        243,
+        243
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 16,
+      "sha256": "734ef1da89d4347f1aa33302acc6ea31bb3ef93e51562b0b86858c5336cc7b50",
+      "alphaBox": [
+        13,
+        24,
+        228,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss1",
+      "frame": 17,
+      "sha256": "8c3067a556813db14114d30b15f77768c71062720443e22f84fdd14003a29d57",
+      "alphaBox": [
+        15,
+        24,
+        243,
+        243
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 0,
+      "sha256": "daddb8722139986fb83fabeddc19937274efbd2ecea4ad4e26e49e7c4983f3dc",
+      "alphaBox": [
+        46,
+        27,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 1,
+      "sha256": "1b84d0a1b19826d68dde616027ef2049171ac91fe7f67a31cc051c3da0f5dcd5",
+      "alphaBox": [
+        26,
+        27,
+        244,
+        233
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 2,
+      "sha256": "0fca1ca26da7a8c4f4032a958be42f8de6c2b9d7fcbfae336d612b4727d5c438",
+      "alphaBox": [
+        17,
+        27,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 3,
+      "sha256": "15abee94fea98a82b0249a70c236173a93a8877cf6a70c8202e132766f3a8e0f",
+      "alphaBox": [
+        13,
+        27,
+        240,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 4,
+      "sha256": "700a5479d5506853ca0d9e5cff5dc5ba2e434f32ecca683289c0af81b332125d",
+      "alphaBox": [
+        13,
+        28,
+        240,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 5,
+      "sha256": "9f57bf0af5c5accfa85cc847ba8b6402d79b77623d8344b52d1bc5bb99c2a783",
+      "alphaBox": [
+        13,
+        27,
+        224,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 6,
+      "sha256": "21b277b3e3b264de96c01051d7ed28b19033d6c0c578e3e7a175ccbfc79a59b4",
+      "alphaBox": [
+        20,
+        27,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 7,
+      "sha256": "eec08947e183fe64a348e017e8c6676358ed8bcef4760611bbe05f54e35c6ac5",
+      "alphaBox": [
+        12,
+        27,
+        243,
+        235
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 8,
+      "sha256": "6c7442d29f67381e1e75d899c863dd745ad9d8796b4cdf1e65e7f69b969be3ba",
+      "alphaBox": [
+        22,
+        27,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 9,
+      "sha256": "f79df5d5517f3ec412f1087ebe545c170566df9deb03caa5a29aac00c301b87a",
+      "alphaBox": [
+        12,
+        27,
+        243,
+        235
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 10,
+      "sha256": "5ad6ffac4b9e920e1fad341c80218c2e3eebc423bcd381ba1cdf8310331c64d0",
+      "alphaBox": [
+        12,
+        27,
+        236,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 11,
+      "sha256": "5d59eba78b7e5bd58c2e6821ff8c6a93ffe1658c8804aff3b6a20821029a9214",
+      "alphaBox": [
+        12,
+        27,
+        243,
+        235
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 12,
+      "sha256": "ad77e6db50e984d26cfb5194ffc3090487ac85882ac2f40d1efe3739dbd27360",
+      "alphaBox": [
+        12,
+        27,
+        244,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 13,
+      "sha256": "473fd82a9a4567856d3570af803d3ba3042d33097e47d1ccc28937c0b891dcfd",
+      "alphaBox": [
+        12,
+        27,
+        243,
+        235
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 14,
+      "sha256": "b24bf86228c0855c56ae814a502db66090604b91390f002a6c01eb3dc3fec1c7",
+      "alphaBox": [
+        12,
+        27,
+        239,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 15,
+      "sha256": "080ec66d19082b7c59ebdad8597fa93a8e6dc665261a5027f20de742c6efd2bb",
+      "alphaBox": [
+        12,
+        27,
+        243,
+        235
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 16,
+      "sha256": "663fe1a768cc8f5ae631dcd03bf527bc2225c5d734c340d8ac80f2ff0cb3d738",
+      "alphaBox": [
+        13,
+        28,
+        226,
+        235
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss2",
+      "frame": 17,
+      "sha256": "b4d6246e13c9dec7089a6dd09ba879723d82d58ea8bcaf059569214abbf09b39",
+      "alphaBox": [
+        12,
+        27,
+        243,
+        235
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 0,
+      "sha256": "ec0e048d4f79477ee3c86d376022041467ff4c9a35c49e2628c97950927615e7",
+      "alphaBox": [
+        26,
+        33,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 1,
+      "sha256": "d0f0be918e9e442c2c74ee066bc7190fa9dfe05b06f74285fad5393f67f8d9a1",
+      "alphaBox": [
+        26,
+        32,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 2,
+      "sha256": "b350c50c0bc211220824a912c4d5c6fb8279549ba519460f899cddff78f64fbd",
+      "alphaBox": [
+        16,
+        25,
+        234,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 3,
+      "sha256": "5aef7a0b8e4603431732ab46afae82e317ade83e803e30b1dc1c91ee6e47f2a5",
+      "alphaBox": [
+        22,
+        35,
+        232,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 4,
+      "sha256": "8df4942d95f3a9304583da58456d86a0a0e813d6a62c425e641155500f17c5af",
+      "alphaBox": [
+        14,
+        38,
+        233,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 5,
+      "sha256": "bfb34953a5e89b1338f6de8eeb01d4098c9d024291b259e01cc7c8296f9d11fa",
+      "alphaBox": [
+        14,
+        39,
+        227,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 6,
+      "sha256": "eff80055744f2aed30b139a7ec6139a08ea6a8c4e1c26fc137bd12dac48aa0a8",
+      "alphaBox": [
+        24,
+        32,
+        238,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 7,
+      "sha256": "e382ba78b2c6a5d440536b494be783f839a434fd5d2a09bdf56c77101e247053",
+      "alphaBox": [
+        17,
+        25,
+        237,
+        233
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 8,
+      "sha256": "0544241d693c1d37d398f2d3581c81755e346a0c91f64dbc2bb4751dbba67788",
+      "alphaBox": [
+        14,
+        37,
+        230,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 9,
+      "sha256": "7f20d08bdee7888ae730ae217270b84cc44c69b78de10ceeed5e9723799513c5",
+      "alphaBox": [
+        17,
+        25,
+        237,
+        233
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 10,
+      "sha256": "8c62fb4b148e39881c2b3dd8e06d128301edb1d4dabddbeef2edefc6288af4cb",
+      "alphaBox": [
+        14,
+        25,
+        233,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 11,
+      "sha256": "03da0624578edcb981af4714a45abc5db919486cb97dd0445c2a0dc4118fc471",
+      "alphaBox": [
+        17,
+        25,
+        237,
+        233
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 12,
+      "sha256": "817d9e2d848c5cdc1edc81bbf2248b1c0cc2c2c56a4b0d81990115d4d98a9342",
+      "alphaBox": [
+        14,
+        25,
+        240,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 13,
+      "sha256": "65113c6e5c005f3ac981e66bf5e70ebe32201a1cab23efd2a0b90a710a41ca1e",
+      "alphaBox": [
+        17,
+        25,
+        237,
+        233
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 14,
+      "sha256": "0704d4110034e53327894e7acdb92a5bdab270d750ff967490d4673e5f96ccb6",
+      "alphaBox": [
+        14,
+        35,
+        232,
+        236
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 15,
+      "sha256": "7110399a9b3270258cebbfd03bf115906a7600b81727f3df110cedb0b8fbe7a8",
+      "alphaBox": [
+        17,
+        25,
+        237,
+        233
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 16,
+      "sha256": "2ffb293422fc80bf6c78d643688cd25af58edc616aa34a2a6b85f139d94a48f5",
+      "alphaBox": [
+        14,
+        38,
+        225,
+        237
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss3",
+      "frame": 17,
+      "sha256": "382a16e495f166f04a67bf9a2e1058a330caf1972aeb25db602faae77548c8f4",
+      "alphaBox": [
+        17,
+        25,
+        237,
+        233
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 0,
+      "sha256": "9d968bc4137471648f6baf2ad5779ba30713f10f5211c8aad8184484d78b525b",
+      "alphaBox": [
+        28,
+        35,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 1,
+      "sha256": "47cdefdfc97b1a77f7a0573a8a9c9372ec3875028223da5d57116c6fc96e6c02",
+      "alphaBox": [
+        7,
+        32,
+        248,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 2,
+      "sha256": "ccf16ea44800c035225b42cfd44829feed7406f155e2943b2c745626740c939c",
+      "alphaBox": [
+        5,
+        19,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 3,
+      "sha256": "bfdd148d5547114e05beb444f14b3f31f3c99c9a3cac556a67b0a8d2e9f4425c",
+      "alphaBox": [
+        15,
+        34,
+        242,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 4,
+      "sha256": "5b11f4d53f3ae8e13344b6ab923fbcd57c569832e6c8c159fdefeb6eee4c182b",
+      "alphaBox": [
+        5,
+        47,
+        239,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 5,
+      "sha256": "da95e82e3a30e8039dc1f7e400fe7600375176220e43d0abe21ec537f1fceaa9",
+      "alphaBox": [
+        11,
+        38,
+        241,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 6,
+      "sha256": "486f6f21cd8a7efe3375ce06bc02155dda1aae74481a769f614a94eaa658c1bf",
+      "alphaBox": [
+        26,
+        15,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 7,
+      "sha256": "df47181e2ca936392a5af9dec0106bed4ede5da86bed15e72a3cbc968294f72f",
+      "alphaBox": [
+        9,
+        12,
+        247,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 8,
+      "sha256": "4a18e4b6972e2e20001dedafb79df111ab1dd60bf72df8cfd2b2d9df5aed55fa",
+      "alphaBox": [
+        22,
+        25,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 9,
+      "sha256": "01167af9bf15cf9160add1cb771855c76f102a5e059c2f30e9fec3fe63cbdc54",
+      "alphaBox": [
+        15,
+        12,
+        247,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 10,
+      "sha256": "94bda867f0b841f16832da9a523f70a60167f744f1176eba06df092ac9ade269",
+      "alphaBox": [
+        9,
+        12,
+        232,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 11,
+      "sha256": "c1dc42ab8f5d1391a09461d3bfbb4a3f4468c1e0288dbab31a91a1655842c2dc",
+      "alphaBox": [
+        9,
+        12,
+        245,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 12,
+      "sha256": "aafd38c580e0250df0e8b9103b922ad01fac3ba14a903a5651845b89ab2e63f2",
+      "alphaBox": [
+        4,
+        47,
+        247,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 13,
+      "sha256": "cb129ecde64078f6e5e7b4502e47fed2b11e7e09ec3c3af6ac55089018133690",
+      "alphaBox": [
+        9,
+        12,
+        247,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 14,
+      "sha256": "9fdcc4db10007fa1566323109e8ecace4a6d0531ad3e3e76298c4949fa7e9855",
+      "alphaBox": [
+        18,
+        12,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 15,
+      "sha256": "952789f482a5eb4c0e55e242c573eedccb6d964bf2b95474d04ef9e7b0db9783",
+      "alphaBox": [
+        9,
+        12,
+        247,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 16,
+      "sha256": "92bb5aafd885f8c2855a446d14d76b941a061d325b3cf0cfc71af7b7c9ca92e7",
+      "alphaBox": [
+        9,
+        39,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss4",
+      "frame": 17,
+      "sha256": "67e687e1c46c5b621111a3ba3025ddc4a26c347fcb8d8ad46177657d4a3659f6",
+      "alphaBox": [
+        9,
+        12,
+        246,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 0,
+      "sha256": "aa5a6ffd3998e254eae30ae35bc5ee86caefb68f9da7c4c258da02047c0aa217",
+      "alphaBox": [
+        4,
+        23,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 1,
+      "sha256": "ecf0dabdf78489c6717a5aa55897e71346c33dc2b66e02076a0facbdce585dfb",
+      "alphaBox": [
+        4,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 2,
+      "sha256": "487d70995919318f38c3355623111f957bdb5e73e9b7a3b0f939650fed2a6830",
+      "alphaBox": [
+        4,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 3,
+      "sha256": "fc12ef61437e7b4c1f0cc91873086d335da406dc9b323aec4206f522fc0992b3",
+      "alphaBox": [
+        4,
+        27,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 4,
+      "sha256": "70c9c6969981337e9928ad7938a1a54857a45a6fa320a1715a6c670073dfe062",
+      "alphaBox": [
+        4,
+        31,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 5,
+      "sha256": "55c643696f9891ab9849c869be6e3e88b32e32be02861ee6c2b3ea9448b4d46b",
+      "alphaBox": [
+        4,
+        26,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 6,
+      "sha256": "821c90ea0e8b273999d62fe2098799b1b6e6e790c934bdd15aac1821e9c29a21",
+      "alphaBox": [
+        4,
+        8,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 7,
+      "sha256": "cde6046922cd0323e89bdff365c5a6d4f1aa9fcd0f2318832e155811902ad6d0",
+      "alphaBox": [
+        17,
+        29,
+        247,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 8,
+      "sha256": "91b74d133f2cb6de2fbf0fec3dfd7d36d50dabffe7777182d7816f1616ebe824",
+      "alphaBox": [
+        4,
+        27,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 9,
+      "sha256": "d997fd8e5f83bf15c7cebdafcc95b8e693c762921ef387291f260c4c8447a852",
+      "alphaBox": [
+        17,
+        18,
+        247,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 10,
+      "sha256": "879afdc6b0929f82a6c56ae76eb86971ebeb634a9d3209f37db0b1e81de3c89f",
+      "alphaBox": [
+        4,
+        8,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 11,
+      "sha256": "a1669a5cfacbdaac4c9f8ecaafc2d3e3b1e8bc7e6fdec265b7733776ad4258d1",
+      "alphaBox": [
+        6,
+        8,
+        247,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 12,
+      "sha256": "9dbf68a76adce9674dde2bb561a7a6d5a453911cbfe3745fd06e192aac4181ac",
+      "alphaBox": [
+        4,
+        8,
+        252,
+        250
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 13,
+      "sha256": "c71e790d5cd1f4fcbb583d8758f0c573e667979f1cee5774f05706f00134ac2e",
+      "alphaBox": [
+        6,
+        17,
+        245,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 14,
+      "sha256": "dd298775713a7e23655ad683764d2e1e1120c3a0cafe91af4a457587122a82b1",
+      "alphaBox": [
+        4,
+        8,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 15,
+      "sha256": "ffbf83b7f3bea15d6c1f6bff7105656aab1ca10f318a735fb87fe304c600a803",
+      "alphaBox": [
+        7,
+        18,
+        247,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 16,
+      "sha256": "a723647d9a1cf9100a544d5cc7c92e870fd109eca240b2eafc8cc521bd9c7004",
+      "alphaBox": [
+        4,
+        19,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss5_sovereign",
+      "frame": 17,
+      "sha256": "aacb230b4d198dae858746743038352321b21093a209e0bdf0a36ac4570d7546",
+      "alphaBox": [
+        6,
+        17,
+        243,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 0,
+      "sha256": "0cc522e6816cdd7c5fee7f137cc992610ed399832d25d634663e1c79548df8bf",
+      "alphaBox": [
+        8,
+        19,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 1,
+      "sha256": "341e538d469d93d9424db904c7cd458e9423f8c38cffd0c89ea223de73dd6ef9",
+      "alphaBox": [
+        9,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 2,
+      "sha256": "fcf31028a6647896bf2be0ae125effc4ab610cc43ed84e696b99af017aed6578",
+      "alphaBox": [
+        11,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 3,
+      "sha256": "94aebeb7e4dda56411817d81f453deacaff9f296552e3bea9715be5245ffbd01",
+      "alphaBox": [
+        9,
+        27,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 4,
+      "sha256": "5e63aca71e73a6c8d49f808f6b7b0ac126948409655203638f026a958d0410a5",
+      "alphaBox": [
+        11,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 5,
+      "sha256": "51996d994b998f5776e276beccfaf041fbbbb13bde17d716cf77c7202f7ae3c9",
+      "alphaBox": [
+        11,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 6,
+      "sha256": "b397b8c9ab0b8424c6997429f57bf996cf36db952ebb46f86b0d3a81a90fe031",
+      "alphaBox": [
+        8,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 7,
+      "sha256": "231f0686904697f105addb9471c84f78c7e8b06a5f849c8c2147328ff28254e4",
+      "alphaBox": [
+        7,
+        17,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 8,
+      "sha256": "73d8dae9b0082684c4815dfcdf3e4502deb71b3dd1f7d2279fad7af6673ad0b8",
+      "alphaBox": [
+        11,
+        19,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 9,
+      "sha256": "300efd9cd946d796d5c5b1c7a1c2b13898901aa384263322f4783c1a6d832526",
+      "alphaBox": [
+        9,
+        17,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 10,
+      "sha256": "2304205edae882667a4f874711c8b041c5bd7831ac3536a7f88064d220a1b065",
+      "alphaBox": [
+        8,
+        17,
+        247,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 11,
+      "sha256": "d070de1df1461a472cb7e401f7c1b8f5b18f6ba92be7c6e2800be34961f9a18e",
+      "alphaBox": [
+        7,
+        17,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 12,
+      "sha256": "23a6aa7f083615500e78e221a2ba8ac522f93caee9fab385539a4cb993b1e2c5",
+      "alphaBox": [
+        4,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 13,
+      "sha256": "a7f143697428d26135ebc1ede99c89af6564bb951b21204803b6776dd347916b",
+      "alphaBox": [
+        7,
+        17,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 14,
+      "sha256": "be6f51fcf2eb19825029e699803ca2caa592cce06b0c564f0ee1f9da2b01f792",
+      "alphaBox": [
+        13,
+        32,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 15,
+      "sha256": "7b0e70eeafa158448517eaf67b42765021f5b26f3d1fbe22485bd988c41a589b",
+      "alphaBox": [
+        11,
+        17,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 16,
+      "sha256": "5ffb2343ad492e4cdfc65049b8569c5b4fe63aecb71b22b5843eac2a8eac78d8",
+      "alphaBox": [
+        12,
+        17,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss6_rootmother",
+      "frame": 17,
+      "sha256": "ba69a60bec294f1d33882f64d959f5484d3fce53a4ac2491d9d5e35823cdaddb",
+      "alphaBox": [
+        13,
+        17,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 0,
+      "sha256": "435e86e0d96b0baa7c624cfd615ad628d97f661c385b988cd21864350f151bfe",
+      "alphaBox": [
+        11,
+        22,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 1,
+      "sha256": "94ef3259db068cbdc54d8957711424ed3f346f84ac0c4f552af48cf6957daa7c",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 2,
+      "sha256": "9707108504f3a83060f71919dad48ecac2ef6fcf2b42af097f2807d77e5439e7",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 3,
+      "sha256": "2f7fe889c9e1ea5d1122936c692eeb0a922fbc0f8b990faea3adfeebd32dda13",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 4,
+      "sha256": "03e7b9e685d52efb97826db0c810a9f52831ce4e8766fd876f2acf87018c5718",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 5,
+      "sha256": "bd2dc7e342bb7bc6aac5a4dd355a3a07e2397a65e33a26d42ffa7d76d9ecc9dc",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 6,
+      "sha256": "56023dcc155a003974662ad144468705593aac6e740a837b2037915a8ec732b2",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 7,
+      "sha256": "233e1e2947d79990fd135dc0b474d2cc503339718d5b428ff8d8412538f6818f",
+      "alphaBox": [
+        21,
+        38,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 8,
+      "sha256": "5e3dbd561c2f3dcb220a9644c5b46ff433efe64297cac42cda9f0bfdfeae7e32",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 9,
+      "sha256": "d6cb3f5aedf0512c937ab7aa7438e52560781cd185a4b400ff6f2ad0b99e7a11",
+      "alphaBox": [
+        15,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 10,
+      "sha256": "c938d368926fd2b99b2bd4f2a7db0d2a85fb533fe65b8f9072b4fd330a3d22d9",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 11,
+      "sha256": "56bad20d9a2ee98d0c4c99a997e21aec34159a861ecdeb51eb0a413611e359dd",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 12,
+      "sha256": "fe7877af32c79fe26d244e3b70545df1e7b06f9d85de615b8f6d82f2584e7baa",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 13,
+      "sha256": "3a3d08c26fb94ae7fd63a0b56f859e03364b092321b5cc77436a279c4c57a2d8",
+      "alphaBox": [
+        10,
+        43,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 14,
+      "sha256": "940267120557ad024a5858f930871cfadd568e1bde3fbad73cd9434710663617",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 15,
+      "sha256": "9084c4f70c2d81d27ea3465338ee8f9479983be4d6d81e1fa05a871234f1d5f5",
+      "alphaBox": [
+        10,
+        36,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 16,
+      "sha256": "3a5025751cc44494490aef9c9857cad77076c02b9cf04a4bc9c54bcfc5d4187b",
+      "alphaBox": [
+        10,
+        19,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss7_mycelium_behemoth",
+      "frame": 17,
+      "sha256": "d0f1429403994a20ee8ed68ed421eb87ccf1ea27bca822cc29d756527cc33f63",
+      "alphaBox": [
+        11,
+        21,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 0,
+      "sha256": "74d957d8713621fea02b17c9dc6e4f931bd758e9dc4a8cac01bfb759403897b6",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 1,
+      "sha256": "6bf695e6a1a76497099eb39c4f4beda028efb7e264b5d0bd9cba1e1d0e87d2d4",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 2,
+      "sha256": "2bb5312d09caa571b44dd57a0a7bf77780fb9e9545486231289307e5658ba238",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 3,
+      "sha256": "cc252bd84f96068dc898e84fc9c4b5f634338f354afd45fd28e2f6e0eaf23275",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 4,
+      "sha256": "6692d27e7ecfa130fba575da1db30fde7cf6c672c1313d74dda7508e89c0a7d6",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 5,
+      "sha256": "1667ec797f8cd4f259b01d1fbb0e8efae254c7fa115444de7ab21c73aa3c8d07",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 6,
+      "sha256": "dd086fda2e1be32da0e1f7aec6b5760ef457cb3161352a885a76a806e7df0755",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 7,
+      "sha256": "f09d401b32b30e5f88b08090b337901347b4e4df445af5c8e7065a0754aa2756",
+      "alphaBox": [
+        30,
+        21,
+        232,
+        245
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 8,
+      "sha256": "77bd8256be395f6dc1da7eb05a0975e9ce0bd953346ccda2f9788c3cfaa4a509",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 9,
+      "sha256": "2a69697f9c276940bacf86db25ab047a07f751157d0a4cfe26c9fce93ef73fc5",
+      "alphaBox": [
+        26,
+        22,
+        232,
+        240
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 10,
+      "sha256": "db530aaff3016d4c8c92977a319ae6ec7b82fd5cb8052a1b9359d14ff53dab68",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 11,
+      "sha256": "11fda3fefdef84de379844359fb4031773ce0165b630b52e96c30d64ef11c874",
+      "alphaBox": [
+        26,
+        21,
+        232,
+        237
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 12,
+      "sha256": "d47a72151660ad19ad1ed91d835d9c7df3e627f6f8656430c4d381a64cb0878c",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 13,
+      "sha256": "949424ac7d66e70370e42d451ef4267dd838aab1c47a3c64a727db748fe5667e",
+      "alphaBox": [
+        26,
+        21,
+        229,
+        245
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 14,
+      "sha256": "50c93db959c0ed23b9bb33fd4b40e0c30fe3f6452eb67e37a4fc77f2341f01cd",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 15,
+      "sha256": "d8575487edd10858c9e69cacd6b875fb61fa1bbe5fdaa3029a970c43319823c1",
+      "alphaBox": [
+        26,
+        26,
+        232,
+        242
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 16,
+      "sha256": "feadea5d920229d8f19f1e471b06724b77b64d99e0888d780c048ed231ec593a",
+      "alphaBox": [
+        15,
+        14,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss8_hornet_queen",
+      "frame": 17,
+      "sha256": "c66bd2091a0b0fdc4c16553eb9e5aa08a3d2460a4a8bb60920d1c04ce0b12336",
+      "alphaBox": [
+        28,
+        25,
+        227,
+        245
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 0,
+      "sha256": "693a6a442ea69ee7509e520c9178be368a1eed008762a9bc3fba633533f5862b",
+      "alphaBox": [
+        26,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 1,
+      "sha256": "665c5ca73786fba2dad9e3931388b0a1ce9c56cc7421446efb6a3310d7af0802",
+      "alphaBox": [
+        13,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 2,
+      "sha256": "21f31365cd86eeb9022d97db80f890c81af9b2792021c14ac79da27511cbe438",
+      "alphaBox": [
+        11,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 3,
+      "sha256": "d088088b6e961e46fe1733316f4ab6fc1dde0f0dcb223cad2be813b4eeb1dce9",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 4,
+      "sha256": "7e72569b1621f8bc890d47f5e92de5e88ed7d3945236a170862a6073c818cc2c",
+      "alphaBox": [
+        11,
+        27,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 5,
+      "sha256": "da61f1dd367c4b3ba3bd2cde1fab3151454257cf4fa2b75ee8cbf9cf567e1628",
+      "alphaBox": [
+        10,
+        27,
+        222,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 6,
+      "sha256": "e2e748b8ea1ee44fc9d782834e77872e7d924f40eb808d05f146826ac7d18a80",
+      "alphaBox": [
+        24,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 7,
+      "sha256": "7a211dd51c0da1c45c20e29df0677bcb31dd1e6516ff1559630fb1354772ce2d",
+      "alphaBox": [
+        10,
+        34,
+        246,
+        241
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 8,
+      "sha256": "26863b7023d40f5ce09bc882e5bcc4a7497384d9f8dee55704e817c9b838673f",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 9,
+      "sha256": "f8808013af75e8873958c2fde0b3a675ff315f211f10ea13c496f9963b370303",
+      "alphaBox": [
+        10,
+        34,
+        246,
+        241
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 10,
+      "sha256": "7b8554fa459ec80d96f0bef175ed5a8118e5bfc02351f5ff26e0c028fab9bb47",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 11,
+      "sha256": "9068612a0015100f4cb972b5a4abab8e2632ecd73f89de4f469a7b284b479b28",
+      "alphaBox": [
+        11,
+        34,
+        246,
+        241
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 12,
+      "sha256": "e13223ca12e921f6418153e68804d1d24469e7b0b21089ddd64467309eb6c160",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 13,
+      "sha256": "c18ea520db31efcce71ec120d74c8e50a7d6714cfa99c651c4a4439f7b99f931",
+      "alphaBox": [
+        10,
+        34,
+        246,
+        241
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 14,
+      "sha256": "ca263705f1dc10a0571601e9ad8acd512ad41a8c22727de981dc43e39c0472b4",
+      "alphaBox": [
+        10,
+        27,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 15,
+      "sha256": "6467ea0b29ad05634689708f15428251fabb0121d9623307db247204fd1cb242",
+      "alphaBox": [
+        10,
+        34,
+        246,
+        238
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 16,
+      "sha256": "fd333d17ccd28440b5c23f39dcf1c042083c5c51a3ae8fd6d5bee3b921cb4183",
+      "alphaBox": [
+        10,
+        27,
+        235,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss9_chronobloom_orchid",
+      "frame": 17,
+      "sha256": "3619e93533405027fbff523e93759348602ad09a19e52791134fa123a95a9c7e",
+      "alphaBox": [
+        10,
+        34,
+        246,
+        241
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 0,
+      "sha256": "3914cd90ade7ad088850577b66afb15e6981538e302f3ab67bc7eeb50ed130af",
+      "alphaBox": [
+        31,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 1,
+      "sha256": "a3918aba9a9318869d2b9614e6c004deeaf85d0c0585a7ac42229b2e916e76a6",
+      "alphaBox": [
+        16,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 2,
+      "sha256": "9a49fa697dc352e42a70b3f936556db3e2d38eb6a252ea6a1bda0fc57384331c",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 3,
+      "sha256": "573dbce82e8dd351998f784c1b703089489e053e2d33ca98478110f5ac2b8a94",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 4,
+      "sha256": "7f778bd9169dd6509cc0df561343c7733c5937703e47bd160129c665943274a0",
+      "alphaBox": [
+        10,
+        27,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 5,
+      "sha256": "a5f6c1cbdd9a164c22d814d789443e165d62162fe26bc9dd4ceb5c81be19980d",
+      "alphaBox": [
+        10,
+        27,
+        235,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 6,
+      "sha256": "95984a9a7d4a83acaa32cb861963f1d25b0bb957ddee27b64ff772614d01f82b",
+      "alphaBox": [
+        23,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 7,
+      "sha256": "ae28f7a5623baa1afd97a5395c734a41e2aa4cbe3abfa183b8891a497b041692",
+      "alphaBox": [
+        21,
+        28,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 8,
+      "sha256": "9907b1c7895ee45e4b872a2c21fdbc79446d9175e604c6b4ae059688f688456f",
+      "alphaBox": [
+        16,
+        28,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 9,
+      "sha256": "4ae3f7ccc5455ff6a5a9ad44315fd2663109e7ca4e88b9358f3e981242614471",
+      "alphaBox": [
+        17,
+        32,
+        240,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 10,
+      "sha256": "decc4ab2ac951977b9bff8694e5b55cae6684b30fcf4e773b65d1c75a2ea3cb5",
+      "alphaBox": [
+        12,
+        27,
+        245,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 11,
+      "sha256": "a439795a6db3b3326a7511e268671612be61ab4427a0e75a9642ceeaeaffaee2",
+      "alphaBox": [
+        15,
+        27,
+        241,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 12,
+      "sha256": "bb4bd04c0df3437b7ad67703c57ee390dfd59a4924d98c1ed53408aba088d6b6",
+      "alphaBox": [
+        10,
+        27,
+        246,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 13,
+      "sha256": "0d88a35014524c48307513e6ad15993ce0a5efb9c03ff3d1f1c50f5cc854c637",
+      "alphaBox": [
+        14,
+        27,
+        237,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 14,
+      "sha256": "3654a818e2974af4058420b7f3b5bd2bc884d91ca2732bd9645f0319cc76061b",
+      "alphaBox": [
+        10,
+        27,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 15,
+      "sha256": "0e9a2404979bdc58008e04224d8fa4326cc9c15b9bebcad449985424403352c1",
+      "alphaBox": [
+        15,
+        38,
+        235,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 16,
+      "sha256": "cfb63946a12ddd0ca8db34f9f12a06f59e44756ffdd2f80a11090a28d35bad81",
+      "alphaBox": [
+        10,
+        27,
+        229,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss10_true_rootmother",
+      "frame": 17,
+      "sha256": "1d96d65e409b3e3aee4d51f14b046a6d5f5937e5b398398429ea9e5d6bf7f5f7",
+      "alphaBox": [
+        14,
+        35,
+        225,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 0,
+      "sha256": "5dadf4d048e04affe6082d9e86d95a6e7ccdbf574951939803fd7e3b4669feee",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 1,
+      "sha256": "3ecc6e82da0eddea81e46abe3731014ba74e901863788606baeec8e092d0d4f3",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 2,
+      "sha256": "4633ce98037ebc6ec8e4445f440d1e36a78b1464bc68df70d8fbecc72fecebd0",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 3,
+      "sha256": "5bb28e16855cf3046632eedb83e993e7ccdcb7a637ffd20235efc2a5894e3c26",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 4,
+      "sha256": "231a7427b7e4e855737164d8966123818f404cd58b194a24b78a9645a19f9154",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 5,
+      "sha256": "bb485f72623ad0905eec31b51f1c1319e3d9bd19c0689f49d352199a84de612f",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 6,
+      "sha256": "67237e7ce93a1631506c507a1ac52a4dacd11fcf31fc5004a2c5de139d4997f0",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 7,
+      "sha256": "b868e477d2fa125aae330f28be2707291d68f0007d3cf88e4042808236997a60",
+      "alphaBox": [
+        10,
+        26,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 8,
+      "sha256": "d8db72d6d3c4e8c8703f04e607bfde7feb9da74bd09e0132793d9d6fd4ce0f6f",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 9,
+      "sha256": "3d8313d8a5f30ae8dbed7c0e260ac531ccfcfb092f051bb8a6889d8de733a4fe",
+      "alphaBox": [
+        4,
+        14,
+        250,
+        247
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 10,
+      "sha256": "5a3f7750efbf1f666301a0e563575f840b8f8c7f3d1a1f397a7eed215724f482",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 11,
+      "sha256": "eac083fbc0967c45589e965e484a0d231dd7a1a50637d2f33bd7d0aeaa1710ce",
+      "alphaBox": [
+        4,
+        13,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 12,
+      "sha256": "bd592de501fc408508311588fff294d37897d5103a3ea4981df5322965db2381",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 13,
+      "sha256": "41e769d429d2f26a3f11de9b63ad70e193c6bd61587364895fb0dbd07f4f9963",
+      "alphaBox": [
+        4,
+        14,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 14,
+      "sha256": "1fc60c6b991e0b3cca1a22cb8b0e9c5c966b5611597427f2e3bf99a85f6bbe2b",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 15,
+      "sha256": "053c075853956549ee9c1fe902f555f67ad2140eb77333da42f9f4edf340a336",
+      "alphaBox": [
+        4,
+        13,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 16,
+      "sha256": "71a76fb1c00719e8b04a69357f0e69f971b523de7d1ad34a133194f344fc5d21",
+      "alphaBox": [
+        4,
+        5,
+        252,
+        247
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss1",
+      "frame": 17,
+      "sha256": "32276afc83c4b71ba2a995c4d32a04313a1e039f85afcef7782bf7ffc3b71990",
+      "alphaBox": [
+        4,
+        18,
+        248,
+        247
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 0,
+      "sha256": "ed881290846c20e4469b79dcc61913d9dd86b706ae3ddbb4b637c304ae55f2a5",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 1,
+      "sha256": "ed4b1634c14178ec2284bdc6c625ca6aa887ebeb9aaa17b851384d906b347b30",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 2,
+      "sha256": "ffa979e915b434fb69a132a2734efe9e9d66a62b2249947fdd1b5a006f34ac35",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 3,
+      "sha256": "7524607d3cc53e4a45f652320730f19cc8c7feea5c1e76aa00491216044eadd8",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 4,
+      "sha256": "92e4efe5acdc36d0cf5a2d8e37cc7d25649063f3ed80d81fd7b06cfb03336725",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 5,
+      "sha256": "7ce34a25b15157e343dd613ee444578c9229a926880e5b860352ee36dc21747e",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 6,
+      "sha256": "bbbd7066ff915894885594c87ec635c4f7017ea0a0bc1c785dc44a2ae31263cb",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 7,
+      "sha256": "4f040b139cb9a19d6e5eb02abf0e319e8143caf46e0994a9abfc8c0192bfe6ca",
+      "alphaBox": [
+        19,
+        27,
+        243,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 8,
+      "sha256": "9ff441f98b74c8cfa79a6124e87c549f4ec8c474302c4c2d0c94d3567bda4a0c",
+      "alphaBox": [
+        4,
+        21,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 9,
+      "sha256": "504b435a87cf8a8f57593ede166bc71848d96401d2d4dea4eac9b6162c74021b",
+      "alphaBox": [
+        20,
+        27,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 10,
+      "sha256": "cb2859b36d025324cade172064dd09ee4d7579805e436edad0c426468af8d22e",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 11,
+      "sha256": "f798ab07a479641a239e7256777febeaf52eed6976d34b56294feb89641a0c47",
+      "alphaBox": [
+        18,
+        27,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 12,
+      "sha256": "1387aa7646c3a352eea01c48987d87c681b706ed3e598d8b3260836def7bd000",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 13,
+      "sha256": "d9b3f6332c61b4692a13012433813b1e0cc60fd2a854c465460a4cdb36a1fb2e",
+      "alphaBox": [
+        12,
+        27,
+        239,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 14,
+      "sha256": "c7df5fb2d704378595c3d26b2757a5602358eac1a1e58fcda2f50ef77079a210",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 15,
+      "sha256": "779f4a0f960469365bac3ec2e2ce57d8075719ef75c296acf40409aa5c1d6e06",
+      "alphaBox": [
+        12,
+        27,
+        237,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 16,
+      "sha256": "6077663aa2cce18db1d140b9ca501acc3135fcd4c58ab598a18c832a53967d2a",
+      "alphaBox": [
+        4,
+        21,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss2",
+      "frame": 17,
+      "sha256": "16bf66e2d7665afb42f420a17d1e879eb441996a79186940af6bf70df4f50f2a",
+      "alphaBox": [
+        12,
+        28,
+        243,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 0,
+      "sha256": "c69ee1afaf8f3299e33f9388703552683cb0eededc33447d48c03da001e3eb9e",
+      "alphaBox": [
+        4,
+        24,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 1,
+      "sha256": "87eaee0cce0d792a8f7279ef9db95cb142e8b069329e952e4ab47f1a140dffaa",
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 2,
+      "sha256": "438d92506d92a7b6c26ee43f507715dd12f6c9c5cbbedbf6655d9a14175492f2",
+      "alphaBox": [
+        8,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 3,
+      "sha256": "1f4ee6f796229a36685afa9ec476f598987686529b3fb7ab437f3b315bcfe187",
+      "alphaBox": [
+        9,
+        23,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 4,
+      "sha256": "42ea5b526c3a7ef4c157f62ba911440ac1544d768d772036ec5cdaacbf2275f4",
+      "alphaBox": [
+        7,
+        23,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 5,
+      "sha256": "9296dd14802e9254f78d5806440846a82628383ad520a74e6c677ae95c40f9f6",
+      "alphaBox": [
+        9,
+        24,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 6,
+      "sha256": "a6701804927de23000149111c879bf042a78066b5bb07a2bfaf4ddb0a71a3add",
+      "alphaBox": [
+        4,
+        24,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 7,
+      "sha256": "9a95e9a1d96190138f5236df54ee1b71a76a44e7b64413c1adc2241f7a01fc85",
+      "alphaBox": [
+        15,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 8,
+      "sha256": "41bbb711754e581e7e62be7a4dd49f5b1bacae499e0a216947528621906f0da1",
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 9,
+      "sha256": "b10c6e2517da069affc132f5d22942b5f7ed24128459e534cf0779ad0b13a77b",
+      "alphaBox": [
+        15,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 10,
+      "sha256": "d2f87de4e77cc633702de2670abc09318549a5982763a0b8cc10ecf473feab80",
+      "alphaBox": [
+        4,
+        22,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 11,
+      "sha256": "f12923d850fbade6d82bab05424dfecc8bb15e3fc22f85e835ed04736e31a0a1",
+      "alphaBox": [
+        15,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 12,
+      "sha256": "1414ed7822a0cef211f4e605a39cfd9ed95623a08085a99aa0507fd623c0406a",
+      "alphaBox": [
+        4,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 13,
+      "sha256": "4fa049a5b2252e7a6d773a1885b6b701206e038a02960ac16fde0d336ee5b0b0",
+      "alphaBox": [
+        15,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 14,
+      "sha256": "c90ae9b79a7487c1333b8926d933453a1894eafae1f5bfedf609a72a78dc5b47",
+      "alphaBox": [
+        8,
+        22,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 15,
+      "sha256": "32c5d5f0c6889a8c199503f1d08f2289336c353f1f41cc8296cdc1daeb8daac9",
+      "alphaBox": [
+        15,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 16,
+      "sha256": "61fca3888fe5c121c6c254a622187cc25f4372c53bcfebf9d32a9ced133e60c0",
+      "alphaBox": [
+        4,
+        22,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss3",
+      "frame": 17,
+      "sha256": "6d7bab865306e4211fdec9de5587635e2bd54c1390183b2188b41b31c0988b16",
+      "alphaBox": [
+        15,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 0,
+      "sha256": "5f5d7d4e19101ebdd40277e2cf0b8d5180361a355431c0a9a469ed0dbd63cf74",
+      "alphaBox": [
+        8,
+        28,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 1,
+      "sha256": "6932f3327eff8d047b7615fa99cc276ca447ad83012afb97f5169ab300d11e53",
+      "alphaBox": [
+        4,
+        28,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 2,
+      "sha256": "4e0720e9b7be5bb17e91d502c950ebb4f0c1db2a487e4b06261b80549816aa7d",
+      "alphaBox": [
+        7,
+        28,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 3,
+      "sha256": "2aeb6e0c46478ad87b5c8fe231db25f70b6132d11fe9a2208c00dfd19f963e62",
+      "alphaBox": [
+        7,
+        28,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 4,
+      "sha256": "568a2a36a8df87881dfbfe6a5fb71dbff8532e72dbf75ffe3b44387bb90e851d",
+      "alphaBox": [
+        4,
+        28,
+        249,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 5,
+      "sha256": "029602f064bab291b40459d1d5fbf315c246f392916b28a32932d6256a524a52",
+      "alphaBox": [
+        9,
+        28,
+        233,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 6,
+      "sha256": "1f08ce095e12f004831abf11b695945281406e3291cb7cffc4728006685fd36b",
+      "alphaBox": [
+        8,
+        29,
+        240,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 7,
+      "sha256": "4ebbc68607f31283a8baa2bfe36dc927b9842a1c7db33c64fa11ad9e3444cf4b",
+      "alphaBox": [
+        10,
+        35,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 8,
+      "sha256": "29bd4d715aaabfc1c1f07274154f33aacd1b664e704e81e65c37cdc202d1fcf4",
+      "alphaBox": [
+        4,
+        30,
+        242,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 9,
+      "sha256": "0bdac7df97f4577910c4a728c269b92f5f5b855a08cbb7733638e325f4f51f55",
+      "alphaBox": [
+        10,
+        35,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 10,
+      "sha256": "602b3b8fc946220f0e5b259b9cca1a624d6fa6274211b852f4200d970513c852",
+      "alphaBox": [
+        4,
+        28,
+        243,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 11,
+      "sha256": "298ef44e3db36f290755ac896cfc40468ec19b9a467103d9fe8d2a33fac4b6b1",
+      "alphaBox": [
+        10,
+        35,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 12,
+      "sha256": "d7dd374c855efd047fcf15ed1dae41b2e39c011210d0fd9f06b62a28274ffe32",
+      "alphaBox": [
+        4,
+        28,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 13,
+      "sha256": "abefa3522dc7a1ef355c2c45b6df6ea969270fa41a5384fa1a0c42925c959366",
+      "alphaBox": [
+        10,
+        35,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 14,
+      "sha256": "acdd88d679644858bdcb3526fbc1be9a24b1eea4735ee15f278a152f005547b1",
+      "alphaBox": [
+        16,
+        29,
+        229,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 15,
+      "sha256": "b3abc794e5786b5693fba71af7f374bb655c7487a2ed4c081488f6ed0613d7ab",
+      "alphaBox": [
+        12,
+        35,
+        244,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 16,
+      "sha256": "7f6cc5c34aa8dfcf3dd2faf19391c6ca16ad2d75712f76310dfd1aa650d9a992",
+      "alphaBox": [
+        7,
+        28,
+        251,
+        246
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss4",
+      "frame": 17,
+      "sha256": "1d55c054687545a6cf95d80470af5611fab2c3c6085311a76bfd36854904174f",
+      "alphaBox": [
+        10,
+        35,
+        243,
+        246
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 0,
+      "sha256": "d77661e07aba874c246ba8622931e0b770ad292d8193bba405ec1839663b1d38",
+      "alphaBox": [
+        28,
+        32,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 1,
+      "sha256": "c7c507ef7db83d322ec3b4ed2d6b3794630b1747f38481f1b18769ab25657065",
+      "alphaBox": [
+        14,
+        31,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 2,
+      "sha256": "13fdfd105da0d46e86333aa0ac503845ea3a91efcdfb60d43d5e020c8b4f9910",
+      "alphaBox": [
+        5,
+        31,
+        248,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 3,
+      "sha256": "e6d884671237230010fda215c60567b8ea29448ff3ad139684e86c4b3f60fba2",
+      "alphaBox": [
+        8,
+        26,
+        244,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 4,
+      "sha256": "fffb7e88b8611a4140875ac359d0d4ed47740032f2a4bfa03f951a776062ccbe",
+      "alphaBox": [
+        4,
+        32,
+        236,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 5,
+      "sha256": "fda6c40df51286f96a5a14cf00d9ae52243d190ee590e4f85f2780dcadeadf4c",
+      "alphaBox": [
+        4,
+        27,
+        219,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 6,
+      "sha256": "48d141e0c6dbbf3bd75212b9b7aee8c41c5df0e74dfe0dee69d70eba18afb53d",
+      "alphaBox": [
+        30,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 7,
+      "sha256": "d2ca13ca33bafd84ad25bc9fe1552b0e7907c7daea7154d03c2c4b6e0b4f9c22",
+      "alphaBox": [
+        9,
+        31,
+        252,
+        250
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 8,
+      "sha256": "8e0da40391ed8fac9a3859061ae94b0d490b57eee19386c3a4a8a13aab86917e",
+      "alphaBox": [
+        14,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 9,
+      "sha256": "f60ba731a4f36fe493d21182bd285f43996ac4fe662533da9c6daba9d15ddc29",
+      "alphaBox": [
+        11,
+        31,
+        252,
+        250
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 10,
+      "sha256": "48d81dfc1c4b38aa3a693edda6498ac083749c7d6b0a1b9d515bc8c5b6517a31",
+      "alphaBox": [
+        4,
+        26,
+        252,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 11,
+      "sha256": "f1e6b0b82da5fc4cb790ac902479f433362f475a9292f3b484b29e79d0ba1790",
+      "alphaBox": [
+        4,
+        31,
+        252,
+        250
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 12,
+      "sha256": "71d978bc7a8ad67dae7a670d5bb6c48d64df7b1a8a1043e9883710498b1db585",
+      "alphaBox": [
+        4,
+        26,
+        250,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 13,
+      "sha256": "137027ad09dda75fd365f99215f53336f9a221721489aad68036fee9c4b94183",
+      "alphaBox": [
+        4,
+        31,
+        249,
+        250
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 14,
+      "sha256": "b013101ac655bed096cce1c706415c52ce028e3f7066f5299f65123c0c2b9ab7",
+      "alphaBox": [
+        4,
+        26,
+        240,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 15,
+      "sha256": "dee85716245e16e96d0dad393f58c75de160d690af130f7e6a912b336760a84d",
+      "alphaBox": [
+        4,
+        32,
+        240,
+        250
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 16,
+      "sha256": "c94854d83432f91af572e6a919de9f2bf600a7c2df10dd958318ac9e27e460de",
+      "alphaBox": [
+        4,
+        26,
+        230,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_c3_boss5",
+      "frame": 17,
+      "sha256": "53f94538830449172bf0513b99e634feccdd1387a694adee6fefd4c8e044cdfb",
+      "alphaBox": [
+        4,
+        31,
+        246,
+        250
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 0,
+      "sha256": "5d185a568eb5c82421ed9cc5f044d1694118972743a4cf40cd9b4e0b9b1e30a0",
+      "alphaBox": [
+        5,
+        36,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 0
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 1,
+      "sha256": "96d08aeef8dd317e96e4c2d4d7b169687c3a14618f69bc103ceec88753403e54",
+      "alphaBox": [
+        20,
+        36,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 1
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 2,
+      "sha256": "c8773db77068891b8520c01db4c0a0b56908b0cd34f56f468418ef8396f5f417",
+      "alphaBox": [
+        12,
+        36,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 2
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 3,
+      "sha256": "63d94b54e6ea9c85ba5c84de372754331b9a87d8bd3325bf98d07981c1eb1aaf",
+      "alphaBox": [
+        5,
+        36,
+        242,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 3
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 4,
+      "sha256": "e3c233218a56e58f8d2100a50d0e2474993444274347618c5228f861d5c1b6e7",
+      "alphaBox": [
+        5,
+        36,
+        235,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 4
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 5,
+      "sha256": "97ed7303d8cfd3057b91fa38c81412ed9b90ba562ef4809c529dba573ef254c4",
+      "alphaBox": [
+        5,
+        36,
+        235,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 5
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 6,
+      "sha256": "81f097e2c4e4d38d10e39d784e831c5f8162fdd10336442afd54b2c8cb1d7e1b",
+      "alphaBox": [
+        5,
+        36,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 6
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 7,
+      "sha256": "67ab7315102d4fe0d15fd4ab8e77c902cbf635616c048d9eb07b88b5a9f47682",
+      "alphaBox": [
+        5,
+        37,
+        250,
+        251
+      ],
+      "clearBorder": true,
+      "middle": 0,
+      "from": 6,
+      "to": 7
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 8,
+      "sha256": "e906a169b6a889aad143f517f55ddba28936f1a08bf4df846706e99e33147fee",
+      "alphaBox": [
+        18,
+        36,
+        251,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 7
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 9,
+      "sha256": "1c03b500d1499d93b00368260d5c1483a17681b0d4001f48d2fb63b0f0acade1",
+      "alphaBox": [
+        11,
+        37,
+        250,
+        251
+      ],
+      "clearBorder": true,
+      "middle": 1,
+      "from": 7,
+      "to": 8
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 10,
+      "sha256": "2b1d0efea636d48baa84a80ce75c1a9fa4ed34598109bd8f742bec91900a9081",
+      "alphaBox": [
+        8,
+        36,
+        249,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 8
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 11,
+      "sha256": "8b27592524e8b0aba18f1aea67a52d2f9caabdb5a1743096e7ca80d28cc6847f",
+      "alphaBox": [
+        5,
+        37,
+        250,
+        251
+      ],
+      "clearBorder": true,
+      "middle": 2,
+      "from": 8,
+      "to": 9
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 12,
+      "sha256": "d6409507ce506690d83629c7415f48ca11776d1ac06df1d0dc1d34890f96b6ee",
+      "alphaBox": [
+        5,
+        36,
+        242,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 9
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 13,
+      "sha256": "8dd323c8d89433029e2c353779b3b998d64fca6a4225ab6ee8d900da7858d619",
+      "alphaBox": [
+        5,
+        37,
+        248,
+        251
+      ],
+      "clearBorder": true,
+      "middle": 3,
+      "from": 9,
+      "to": 10
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 14,
+      "sha256": "b5b9489c6c2380eafaa82bbcf49df57a41a3eb06f5000cc39b131b8eeeae2328",
+      "alphaBox": [
+        5,
+        36,
+        236,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 10
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 15,
+      "sha256": "c3eb818584d241bfc5b4a076cf70914098bc9d955a5cad58e9da55c8c0baa2bf",
+      "alphaBox": [
+        5,
+        37,
+        241,
+        251
+      ],
+      "clearBorder": true,
+      "middle": 4,
+      "from": 10,
+      "to": 11
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 16,
+      "sha256": "49da717012fc8459324e6d6a543f056d8bde332e1ebc277e2285d8dec007f367",
+      "alphaBox": [
+        5,
+        36,
+        233,
+        252
+      ],
+      "clearBorder": true,
+      "endpoint": 11
+    },
+    {
+      "key": "boss_ink816_boss_pinnacle",
+      "frame": 17,
+      "sha256": "a97fddca6b151e1cd21b28bc4bf688c936346cb9146557e6753dd34601d7b387",
+      "alphaBox": [
+        5,
+        37,
+        249,
+        251
+      ],
+      "clearBorder": true,
+      "middle": 5,
+      "from": 11,
+      "to": 0
+    }
+  ],
+  "endpointPixelsPreserved": true,
+  "alphaPreserved": true,
+  "method": "original endpoint pixels copied exactly; six genuinely authored inbetweens per main boss, shared uniform transform per actor; no masks/repaint/crossfade",
+  "runtimeBytes": 23121094,
+  "decodedBytes": 75497472,
+  "decodedRuntimeEndpointComparisons": 192,
+  "visualReview": "All 288 runtime cells alpha-composited on #261e30 in four source contact sheets; same identities, no hard cell crops or neighboring parts. Owner judges final gameplay on phone.",
+  "phoneTest": "Owner explicitly waived agent phone testing."
+}

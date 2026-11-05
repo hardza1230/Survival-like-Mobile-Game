@@ -12,7 +12,7 @@ class BossBodyReview extends Phaser.Scene{
  realTex(k){return this.textures.exists(k);}hubMotionAllowed(){return params.get('reduced')!=='1';}
  boundsOf(image){image.body.updateFromGameObject();return[image.body.x,image.body.y,image.body.width,image.body.height,image.body.radius*Math.abs(image.scaleX),image.displayWidth,image.displayHeight];}
 }
-for(const name of ['juggernautPose','royalStingerPose','seasonKeeperPose','bossInkBase','bossInkRetarget','applyBossInk','bossInkFrame','tickBossInk','bossInkPose','bossInkIdle','stopBossInk','clearBossInk'])BossBodyReview.prototype[name]=Game.prototype[name];
+for(const name of ['juggernautPose','royalStingerPose','seasonKeeperPose','bossInkBase','bossInkRetarget','applyBossInk','bossInkClips','bossInkBegin','bossInkRelease','bossInkFrame','tickBossInk','bossInkPose','bossInkIdle','stopBossInk','clearBossInk'])BossBodyReview.prototype[name]=Game.prototype[name];
 new Phaser.Game({type:Phaser.CANVAS,parent:'mount',width:RW,height:RH,physics:{default:'arcade',arcade:{gravity:{y:0},debug:false}},scene:[BossBodyReview]});
 `;
 writeFileSync('www/boss-body-review.js',src.slice(0,end)+tail);writeFileSync('www/boss-body-review.html','<!doctype html><html><meta charset="utf-8"><style>body{margin:0;background:#261e30}</style><div id="mount"></div><script src="phaser.min.js"></script><script src="boss-body-review.js"></script></html>');console.log('Built real Arcade boss-body geometry/pose review (no combat)');

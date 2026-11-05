@@ -1,0 +1,37 @@
+{
+  "provider": "built-in ImageGen",
+  "generations": [
+    {
+      "group": "group1",
+      "prompt": "Produce an ORIGINAL animation IN-BETWEEN sprite atlas for the existing Mochi Mayhem bosses. Exact output1536x1024 RGBA transparent,6columns x4rows,256px cells. Two references are paired endpoints, same layout. Reference1=FROM pose in each cell; Reference2=TO pose in the corresponding cell. For EACH corresponding pair draw ONE physically plausible MIDPOINT pose between them, not either endpoint. The24output cells are24new separately drawn intermediate poses, NOT copies, blended ghosts, crossfades or trails hiding the body. Identities: row1 jade-green ant queen, row2 teal pipe/grate-mouth beast, row3 brass furnace-pan robot, row4 white ice-cream golem with ice mace. Preserve EXACT faces, proportions, equipment, color palettes, dark crisp painted anime outlines fromreferences. Joint positions and body lean halfway between the pair; interpolate open mouth/raised weapon/root reach correctly, no extra limbs/faces. Column1: halfway crouch→loaded windup; column2: windup→maximum load; column3: maximum load→strike (weight traveling toward impact); column4: strike→recovery; column5: recovery→settle; column6: settle→idle. One fixed camera and scale per row, complete body/feet/weapon inside everycell with24px truly transparent gutter. All96original endpoint frames stay in our game; YOUR24new frames will be interleaved between them, so do NOT redesign or shift their body center/feet. No background scenery, rectangles, floor/shadows, text/numbers/borders, giant glow or newattackeffects. Preserve true alpha0 around eachsprite, soft clean antialiasing, legible silhouettes.",
+      "references": [
+        "assets/incoming/boss_motion819/ref/group1_from.png",
+        "assets/incoming/boss_motion819/ref/group1_to.png"
+      ]
+    },
+    {
+      "group": "group2",
+      "prompt": "Produce an ORIGINAL animation IN-BETWEEN sprite atlas for the existing Mochi Mayhem bosses. Exact output1536x1024 RGBA transparent,6columns x4rows,256px cells. Two references are paired endpoints, same layout. Reference1=FROM pose in each cell; Reference2=TO pose in the corresponding cell. For EACH corresponding pair draw ONE physically plausible MIDPOINT pose between them, not either endpoint. The24output cells are24new separately drawn intermediate poses, NOT copies, blended ghosts, crossfades or trails hiding the body. Identities: row1 crowned purple eyed-mouth Great Hunger, row2 upright root-and-flower throne woman, row3 huge mushroom/stone antler-mask Behemoth, row4 amber winged hornet queen. Preserve EXACT faces, proportions, equipment, color palettes, dark crisp painted anime outlines fromreferences. Joint positions and body lean halfway between the pair; interpolate open mouth/raised weapon/root reach correctly, no extra limbs/faces. Column1: halfway crouch→loaded windup; column2: windup→maximum load; column3: maximum load→strike (weight traveling toward impact); column4: strike→recovery; column5: recovery→settle; column6: settle→idle. One fixed camera and scale per row, complete body/feet/weapon inside everycell with24px truly transparent gutter. All96original endpoint frames stay in our game; YOUR24new frames will be interleaved between them, so do NOT redesign or shift their body center/feet. No background scenery, rectangles, floor/shadows, text/numbers/borders, giant glow or newattackeffects. Preserve true alpha0 around eachsprite, soft clean antialiasing, legible silhouettes.",
+      "references": [
+        "assets/incoming/boss_motion819/ref/group2_from.png",
+        "assets/incoming/boss_motion819/ref/group2_to.png"
+      ]
+    },
+    {
+      "group": "group3",
+      "prompt": "Produce an ORIGINAL animation IN-BETWEEN sprite atlas for the existing Mochi Mayhem bosses. Exact output1536x1024 RGBA transparent,6columns x4rows,256px cells. Two references are paired endpoints, same layout. Reference1=FROM pose in each cell; Reference2=TO pose in the corresponding cell. For EACH corresponding pair draw ONE physically plausible MIDPOINT pose between them, not either endpoint. The24output cells are24new separately drawn intermediate poses, NOT copies, blended ghosts, crossfades or trails hiding the body. Identities: row1 orchid clock flower, row2 crowned root-throne woman with many pale facebuds, row3 harvest machine with toothy front drum, row4 tree Bloom with petal canopy/long claws. Preserve EXACT faces, proportions, equipment, color palettes, dark crisp painted anime outlines fromreferences. Joint positions and body lean halfway between the pair; interpolate open mouth/raised weapon/root reach correctly, no extra limbs/faces. Column1: halfway crouch→loaded windup; column2: windup→maximum load; column3: maximum load→strike (weight traveling toward impact); column4: strike→recovery; column5: recovery→settle; column6: settle→idle. One fixed camera and scale per row, complete body/feet/weapon inside everycell with24px truly transparent gutter. All96original endpoint frames stay in our game; YOUR24new frames will be interleaved between them, so do NOT redesign or shift their body center/feet. No background scenery, rectangles, floor/shadows, text/numbers/borders, giant glow or newattackeffects. Preserve true alpha0 around eachsprite, soft clean antialiasing, legible silhouettes.",
+      "references": [
+        "assets/incoming/boss_motion819/ref/group3_from.png",
+        "assets/incoming/boss_motion819/ref/group3_to.png"
+      ]
+    },
+    {
+      "group": "group4",
+      "prompt": "Produce an ORIGINAL animation IN-BETWEEN sprite atlas for the existing Mochi Mayhem bosses. Exact output1536x1024 RGBA transparent,6columns x4rows,256px cells. Two references are paired endpoints, same layout. Reference1=FROM pose in each cell; Reference2=TO pose in the corresponding cell. For EACH corresponding pair draw ONE physically plausible MIDPOINT pose between them, not either endpoint. The24output cells are24new separately drawn intermediate poses, NOT copies, blended ghosts, crossfades or trails hiding the body. Identities: row1 articulated prism-armored Gardener, row2 golden owl Seedwarden, row3 root-coil gold-armored crowned First Planter, row4 crowned round fanged Pinnacle maw. Preserve EXACT faces, proportions, equipment, color palettes, dark crisp painted anime outlines fromreferences. Joint positions and body lean halfway between the pair; interpolate open mouth/raised weapon/root reach correctly, no extra limbs/faces. Column1: halfway crouch→loaded windup; column2: windup→maximum load; column3: maximum load→strike (weight traveling toward impact); column4: strike→recovery; column5: recovery→settle; column6: settle→idle. One fixed camera and scale per row, complete body/feet/weapon inside everycell with24px truly transparent gutter. All96original endpoint frames stay in our game; YOUR24new frames will be interleaved between them, so do NOT redesign or shift their body center/feet. No background scenery, rectangles, floor/shadows, text/numbers/borders, giant glow or newattackeffects. Preserve true alpha0 around eachsprite, soft clean antialiasing, legible silhouettes.",
+      "references": [
+        "assets/incoming/boss_motion819/ref/group4_from.png",
+        "assets/incoming/boss_motion819/ref/group4_to.png"
+      ]
+    }
+  ]
+}

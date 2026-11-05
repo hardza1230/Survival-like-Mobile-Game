@@ -1,18 +1,14 @@
 # Version line
 
-Current release: **8.1.18**. Next release:8.1.19. Fetch the deploy branch before new work.
+Current release: **8.1.19**. Next release:8.1.20. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.18 — repair source cuts and complete early miniboss motion
+# Latest delivery: v8.1.19 — smoother boss anticipation and recovery
+
+Six new authored transition drawings per main boss (96 total) interleave with exact previous endpoints: 16 main sheets/288 frames, active30 body sheets/468 frames; original16-frame Root Knight retained. Stage-lazy lossless WebP, 192 decoded endpoint cells pixel-identical. Owned clock follows game speed, pauses/freeze/hit-stop, continuous idle, protected attack facing/hurt interruption. Main strikes follow actual shot/object/summon/hazard/nova events with cast guards; charge/fog explicit wind/strike preserved. Physical geometry, damage, AI and timers unchanged. See docs/design/BOSS_MOTION_819.md. Full npmcheck, final web build and all ten browser contracts passed locally, including96 independently decoded source cells, actual660ms/760ms release events and real Arcade geometry. Publication verification pending. Owner phone testing waived.
+
+# Previous delivery: v8.1.18 — repair source cuts and complete early miniboss motion
 
 Owner found clipped/unfinished boss sheets. Rigid256-source cuts before padding had hidden errors; new packer partitions at actual transparent source gutters BEFORE shared uniform packing. Source rects and independent PNG alpha-seam tests cover all384source cells;1111painted pixels reassigned correctly (717fromexisting21actors). Original21body source drawings preserved/repacked,9C1/C2minibosses receive108selected new ImageGen frames;4were static160/192/140/140px images. Full16-frame Ancient Root Knight and its five dedicated animations retained. New30body sheets/372frames28,292,916bytes inboss_body818 with stable logicalkeys, stage-lazy, actual Sprite replacement and physical geometry retained. Earlier-miniboss pose helpers now enter owned body clock; original AI/damage/velocity/cooldowns/colliders unchanged. All372runtime cells inspected in source compositions, not gameplay screenshots. See docs/design/BOSS_SHEETS_818.md. Full npmcheck, final build and all ten browser contracts passed locally and in CI, including actual Arcade frame1 attack translation checks. Runtime9a13495e95355cb6f19927f2d646b3a78f703ab3; Pages41936748491/APK41936748513 SUCCESS. Live18/code and ALL143active boss-art files/1028frame cells/53,563,971bytes verified by source-manifest byte counts and SHA-256 (includes original Root Knight). All62changed release files/58,146,613bytes immutable readback/decode verified; local/remote trees matched. Owner phone testing waived.
-
-# Previous delivery: v8.1.17 — completed boss battle art pass
-
-All ordered boss-art tasks1–5 are delivered. The owner explicitly waived agent phone testing and will playtest himself. Final game/art commit:e01180437ba078508b8458b0d3dd31123099a836; CI recovery commit:53ff71c49b2eee6c842e145394b111b05426fbbd. Pages41890956493 and APK41887138733 succeeded. Live version/code and **all133 new boss-art files /904 authored frames /44,333,442bytes** match their source manifests by SHA-256. Exact immutable readback also verified all47 release files and both CI recovery files. Full npmcheck, build and ten browser contracts passed locally and in CI.
-
-Sixteen original painted projectile silhouettes now have four-frame128px loops,575,618runtime bytes, loaded per stage. The original pooled physics bullet is reused: damage, lifetime, speed, circle, scale, rotation and behaviour remain unchanged. Owned frame clocks respect pause/Low/reduced and pool/player/stage/epoch/shutdown cleanup without destroying actors. Original1254-square ImageGen sources, exact prompts, alpha/hash/border QA, previews and mechanical packer are retained. See docs/design/battle_art_audit812/DELIVERY817.md.
-
-Publication recovery: one Pages attempt timed out while updating_pages; re-running the old workflow produced duplicate github-pages artifacts. The workflow now isolates upload/deployment artifact names by github.run_attempt and allows20minutes for publishing the large site. A fresh run succeeded. Game/art bytes were unchanged by this CI fix.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
