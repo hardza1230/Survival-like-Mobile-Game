@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.20**. Next release:8.1.21. Fetch the deploy branch before new work.
+Current release: **8.1.21**. Next release:8.1.22. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.20 — compact ink HUD and flowing boss health
+# Latest delivery: v8.1.21 — lighter GPU drawing (owner, OPPO A95)
+
+Headless draw audit (412×915 DPR2.6, Auto=1.5): battle ~7 draw calls/frame, one floor layer + vignette — already lean. Removed two hidden costs: gridBg (4000² world grid under the floor) now setVisible(false); playMotionComic hides this.menu (layered hub ~29× overdraw behind an opaque comic) and restores it on finish. No visual change. Owner asked to measure on A95 with Combat Meter (FPS) and try Performance Low (DPR 1.25).
+
+# Previous delivery: v8.1.20 — compact ink HUD and flowing boss health
 
 Original ImageGen ink edges replace four HUD skins,145,280runtimebytes, stage-only. Compact phase/mission layout; boss strip replaces redundant encounter title,39px plate with14px animated liquid/phase/HP/percent and continuous green-yellow-orange-red health color. Actual HP is authoritative; FPS-independent drain/ghost trail, pause/Low/reduced, new-boss cleanup. Familiar controls/hit areas retained; thin ready outlines, no hidden Sesame Unique backing. Five relic previews plus overflow count, wrapping active statuses and shared trait row preserve space and information. No gameplay or balance changes. See docs/design/BATTLE_HUD_820.md. Independent original-source alpha and30/60/120FPS contracts; actual Nunito/Canvas56fixtures plus both hands/three control sizes passed during development. Full npmcheck, final web build+10reviewbuilders and all eleven browser contracts passed locally. Runtime 3c6577212ec2e98686fd626cb717838dc3291d84; Pages41965880914/APK41965880902 SUCCESS. All26 changed release files/6,720,823bytes immutable readback/decode verified, all12 remote trees matched and runtime tree aligned. Live20/code/all4 HUD skins/145,280bytes verified by SHA-256; sixteen boss-motion19 paths retained. owner phone testing waived.
-
-# Previous delivery: v8.1.19 — smoother boss anticipation and recovery
-
-Six new authored transition drawings per main boss (96 total) interleave with exact previous endpoints: 16 main sheets/288 frames, active30 body sheets/468 frames; original16-frame Root Knight retained. Stage-lazy lossless WebP, 192 decoded endpoint cells pixel-identical. Owned clock follows game speed, pauses/freeze/hit-stop, continuous idle, protected attack facing/hurt interruption. Main strikes follow actual shot/object/summon/hazard/nova events with cast guards; charge/fog explicit wind/strike preserved. Physical geometry, damage, AI and timers unchanged. See docs/design/BOSS_MOTION_819.md. Full npmcheck, final web build and all ten browser contracts passed locally, including96 independently decoded source cells, actual660ms/760ms release events and real Arcade geometry. Runtime fa3a2e825e40f3a625711009b49324f8aad7db81; Pages41960702302 and APK41960702300 SUCCESS. All49 changed release files/58,797,529bytes immutable readback/decode verified; all11 remote trees matched the local committed tree. Live19/code and ALL143 active boss-art files/1124 frame cells/61,548,051bytes verified by byte count and SHA-256. Local/remote runtime trees aligned. Owner phone testing waived.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

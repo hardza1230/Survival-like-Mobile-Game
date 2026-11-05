@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.20';
+const GAME_VERSION = '8.1.21';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.21',date:'2026-11-05',title:'Lighter drawing for smoother play',items:['Story scenes no longer draw the main menu hidden behind them','Battles skip an invisible grid under the floor']},
   {v:'8.1.20',date:'2026-11-05',title:'Ink and flowing health',items:['A compact painted ink HUD gives the arena more room while keeping mission and combat information clear.','Boss health flows inside a glass tube and changes smoothly from green through yellow and orange to red.','Boss phase, HP and percentage stay readable; controls keep their familiar positions and touch areas.','Status icons wrap safely, with calmer ready effects and reduced-motion support.']},
   {v:'8.1.19',date:'2026-11-05',title:'Smoother boss motion',items:['Main bosses gain extra painted poses between wind-up, impact and recovery.','Boss strikes now follow actual skill releases, with steadier facing and uninterrupted breathing.','Boss animation follows game speed and pauses while frozen or during hit-stop.']},
   {v:'8.1.18',date:'2026-11-05',title:'Complete boss sprites',items:['Boss sprite sheets recover clipped weapon tips, crowns and limbs without neighboring-frame scraps.','Early minibosses gain complete idle, wind-up, strike and recovery animation.','The Ancient Root Knight keeps its full walking and attack animation set.']},
@@ -8732,7 +8733,7 @@ class Game extends Phaser.Scene {
     this.arenaRim=this.camWorld(this.add.graphics().setDepth(-99999));
     this.arenaRim.lineStyle(20,0x221c35,.9).strokeRect(-WORLD/2+10,-WORLD/2+10,WORLD-20,WORLD-20);
     this.arenaRim.lineStyle(3,0xe5d5ac,.8).strokeRect(-WORLD/2+2,-WORLD/2+2,WORLD-4,WORLD-4);
-    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.10).setDepth(-100000);   // เส้นกริดจางลง (พื้นสวยแล้ว)
+    this.gridBg=this.add.grid(0,0,WORLD,WORLD,80,80,COLORS.bg1,0,COLORS.grid,0.10).setDepth(-100000).setVisible(false);   // v8.1.21 พื้นด่านทับมิดอยู่แล้ว: ไม่วาดเส้นกริด 4000×4000 ทุกเฟรม   // เส้นกริดจางลง (พื้นสวยแล้ว)
     // faux-2.5D: เลเยอร์เงาใต้ตัว (วาดใหม่ทุกเฟรม) + จัดลำดับความลึกตามแกน Y
     this.iso=true;   // สวิตช์เปิด/ปิดโหมด 2.5D เบา ๆ
     this.shadowG=this.add.graphics().setDepth(-99000);
@@ -14171,11 +14172,12 @@ class Game extends Phaser.Scene {
   playMotionComic(id,done){ const sc=this.mcScene(id),layer=this.storyLayer; if(!sc||!layer){ done&&done(false); return; }
     const prev=this.state,wasPlay=prev==='play',W=this.W,H=this.H,owner=this._bossComicOwner; if(wasPlay)this.physics.pause(); this.state='cinematic';
     layer.removeAll(true); layer.setVisible(true);
+    const menuHid=!!this.menu?.visible; if(menuHid)this.menu.setVisible(false);   // v8.1.21 ฉากเรื่องทึบเต็มจอ: ไม่ต้องวาดฉากเมนูหลักซ้อนข้างหลัง (GPU)
     const mc={id,sc,layer,i:-1,objs:[],tw:[],ev:[],done:false,ready:false,shotAt:0,red:!(this.hubMotionAllowed?this.hubMotionAllowed():true)}; this._mc=mc;
     const veil=this.add.rectangle(0,0,W,H,0x07040b,1).setOrigin(0),lt=this.add.text(W/2,H/2,'✦ Loading story…\nTap to skip',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffd166',align:'center',lineSpacing:6}).setOrigin(.5).setAlpha(0);
     layer.add([veil,lt]); this.tweens.add({targets:lt,alpha:.85,duration:500,delay:700});
     let keys=this.mcKeys(sc);const drop=()=>keys.filter(k=>/^(cs_|cs61_|vfx_cs61_)/.test(k)&&this.textures.exists(k)).forEach(k=>{ if(this.anims.exists(k))this.anims.remove(k); this.textures.remove(k); });
-    let to=null; const finish=seen=>{ if(mc.done)return;const owned=!owner||this.bossComicValid(owner);if(!owned)seen=false; mc.done=true; to&&to.remove(false); this.mcClearShot(mc); this._finishStoryCutscene=null; layer.removeAll(true); layer.setVisible(false);
+    let to=null; const finish=seen=>{ if(mc.done)return;const owned=!owner||this.bossComicValid(owner);if(!owned)seen=false; mc.done=true; to&&to.remove(false); this.mcClearShot(mc); this._finishStoryCutscene=null; layer.removeAll(true); layer.setVisible(false); if(menuHid&&this.menu)this.menu.setVisible(true);
       const d=Save.data; if(seen){ (d.mcSeen||(d.mcSeen={}))[id]=1; if(id==='s01'){ d.storyIntroSeen=true; (d.rubyStorybook||(d.rubyStorybook={}))[0]=3; (d.rubyStory||(d.rubyStory={}))[0]=1; } Save.save(); } else (this._mcFail||(this._mcFail={}))[id]=1;
       drop(); if(this._mc===mc)this._mc=null; if(owned){if(this.state==='cinematic')this.state=prev;if(wasPlay)this.physics.resume();done&&done(!!seen);} };
     mc.finish=finish; this._finishStoryCutscene=p=>this.mcTap(mc,p);
