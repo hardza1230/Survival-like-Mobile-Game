@@ -13,7 +13,7 @@ for(const hero of ['momo','mint','cocoa','taro','yuzu','sesame','berry'])for(con
 }
 // Charging holds preparation; release gets heavier recoil without restarting rapid clips every shot.
 for(const [hero,path,field]of [['momo','sniper','_berryCharge'],['mint','pierce','_impalerCharge']]){
- const s=scene(hero,path);s[field]={basic:s.basicAttack,epoch:1,start:0,ms:400,angle:0};s.time.now=350;s.poseAttack(600);s.updatePose(.1);assert.equal(s.player.frame,1);assert.equal(s.actorMotionState().kick,0);
+ const s=scene(hero,path);s[field]={basic:s.basicAttack,epoch:1,start:0,ms:400,angle:0};s.time.now=350;s.poseAttack(600);s.updatePose(.1);assert.equal(s.player.frame,hero==='momo'?7:1);if(hero==='momo')assert.equal(s.player.texture.key,'char_momo_sniper_charge_motion823');assert.equal(s.actorMotionState().kick,0);
  s[field]=null;s.poseAttack(340);const total=s._attackPoseTime;assert.equal(total,.34);assert.equal(s.actorAttackFrame(0,8),2,'prepared charge goes straight into its release');s.updatePose(.02);s.poseAttack(340);assert(s._attackPoseTime<total,'visible release is not restarted');s.animatePlayer(s.actorMotionStyle().duration/2);assert(s.player.rotation<-.06);
  const u=s.actorMotionState();s._poseHold=.2;s.actorDashLand();assert.equal(s._poseHold,.2);assert.equal(u.land,.2);const before=u;s.basicAttack.path=null;assert.notEqual(s.actorMotionState(),before);s._artEpoch++;assert.notEqual(s.actorMotionState(),before);
 }
@@ -27,3 +27,4 @@ for(const fps of [30,60,120]){const s=scene(),e=enemy();s.enemyWeightHit(e,20,0,
 for(const name of helperNames){const body=method(name);assert(!/this\.damage\(|setVelocity\(|artDelay\(|delayedCall\(/.test(body),name+' changes presentation only');}
 assert(src.includes('if(this.actorDashLand)this.actorDashLand();else this.poseFlash(CF.squash,150);'));
 console.log('Actor weight:7heroes30/60/120FPS, speed-driven continuous gait, stop/Dash recovery, charge/release/rapid-clip/recoil, stable long frames, pause/reduced/owner/path; enemy heavy/swift/ranged cadence, directional hit/telegraph/freeze/pool/boss isolation and unchanged coordinates/velocity/configured collider passed');
+for(const [hero,path,key] of [['momo','sniper','char_momo_sniper_run_motion823'],['mint','pierce','char_mint_impaler_run_motion823'],['cocoa','titan','char_cocoa_titan_run_motion823']]){const s=scene(hero,path);s.player.body.velocity.x=160;s.updatePose(.1);assert.equal(s.player.texture.key,key);assert.equal(s.player.body.velocity.x,160);assert.equal(s.player.body.radius,24);s.textures.exists=k=>k!==key;s.updatePose(.1);assert.equal(s.player.texture.key,'char_'+hero+'_run','fallback when new art is unavailable');}

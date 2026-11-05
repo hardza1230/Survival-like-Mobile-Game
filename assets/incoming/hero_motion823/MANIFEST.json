@@ -1,0 +1,174 @@
+{
+  "assets": [
+    {
+      "name": "mint_clean",
+      "source": "assets/incoming/hero_motion823/mint_clean_source.png",
+      "sourceBytes": 1509880,
+      "sourceSha256": "78e64e716eaf6db2c4d63d8bf9c37d207b5bd7599a65801ee20f6db11c76e67c",
+      "path": "assets/art/hero_motion823/mint_clean.webp",
+      "bytes": 150472,
+      "sha256": "345514f86ef59c664fe6ac62ad7b25f663bc3a14c4f03dbbd1dbaf1e5ad5a066",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.171875,
+      "uniformOffset": [
+        -18,
+        -9
+      ]
+    },
+    {
+      "name": "cocoa",
+      "source": "assets/incoming/hero_motion823/cocoa_source.png",
+      "sourceBytes": 870975,
+      "sourceSha256": "88b5ef2700eb1e04ba73c4f82a8540270f5c56a8ac666bb4f5cae13b3787bdbb",
+      "path": "assets/art/hero_motion823/cocoa.webp",
+      "bytes": 85444,
+      "sha256": "bc4a4d49c01e85369f94317761783822416dbd0b843eed9ab6f6864acef8ee32",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.1328125,
+      "uniformOffset": [
+        -3,
+        -8
+      ]
+    },
+    {
+      "name": "taro_clean",
+      "source": "assets/incoming/hero_motion823/taro_clean_source.png",
+      "sourceBytes": 1955205,
+      "sourceSha256": "1123aedc2c93b4712ced393f662f5b587d8326832e6c7914db430fd2267112e4",
+      "path": "assets/art/hero_motion823/taro_clean.webp",
+      "bytes": 148878,
+      "sha256": "3b2e03ef66e70cbd6a507075ee8025a6b048a5ea33d3378549a9aaa8491c1499",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.0,
+      "uniformOffset": [
+        4,
+        2
+      ]
+    },
+    {
+      "name": "sesame_clean",
+      "source": "assets/incoming/hero_motion823/sesame_clean_source.png",
+      "sourceBytes": 1912150,
+      "sourceSha256": "4f1188eaea0c01d9a6c32a9a15506e7c20d2067d11b70143da47664d613fe88d",
+      "path": "assets/art/hero_motion823/sesame_clean.webp",
+      "bytes": 126040,
+      "sha256": "da65eefa3ce736db6a6c2d21b5011fa9460668cb8f400a9cdc7da3fe852818fd",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.0,
+      "uniformOffset": [
+        -2,
+        3
+      ]
+    },
+    {
+      "name": "yuzu_combo",
+      "source": "assets/incoming/hero_motion823/yuzu_combo_source.png",
+      "sourceBytes": 1893645,
+      "sourceSha256": "5a36e0df8241b8a8cdc76aa96b4086d6a5f267ea9ae9c0aa3c5aefc87d2d228b",
+      "path": "assets/art/hero_motion823/yuzu_combo.webp",
+      "bytes": 154208,
+      "sha256": "5f8cf9f6908f4193f11a9348ca83db2bdd18115945b5d373dbc670842aa12176",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 0.9765625,
+      "uniformOffset": [
+        7,
+        1
+      ]
+    },
+    {
+      "name": "sniper",
+      "source": "assets/incoming/hero_motion823/sniper_source.png",
+      "sourceBytes": 1515347,
+      "sourceSha256": "4c00d542e3bea9d223b44e2d80183990f8d633ec6f9832d89e225d0512b7c7a4",
+      "path": "assets/art/hero_motion823/sniper.webp",
+      "bytes": 118436,
+      "sha256": "d692b7ec1a1215b10750696779d375478cc9500258a30e24c3aa5654842c97b3",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.0,
+      "uniformOffset": [
+        0,
+        7
+      ]
+    },
+    {
+      "name": "mint_run",
+      "source": "assets/incoming/hero_motion823/mint_run_source.png",
+      "sourceBytes": 1548622,
+      "sourceSha256": "091a5ab472dc34e2b9da21ea7ef3167388b06c8d67cc7e227c0cada866e98310",
+      "path": "assets/art/hero_motion823/mint_run.webp",
+      "bytes": 147176,
+      "sha256": "39f14e140881a4a1dc941b5a49ed123cf0df6e01668b9d24e90e56b83304b8c3",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.1171875,
+      "uniformOffset": [
+        -7,
+        -3
+      ]
+    },
+    {
+      "name": "titan_run",
+      "source": "assets/incoming/hero_motion823/titan_run_source.png",
+      "sourceBytes": 1080994,
+      "sourceSha256": "01d6bd0e550c08aa224e6ae2c162f773adb69672e326d53511f0bcdc98533724",
+      "path": "assets/art/hero_motion823/titan_run.webp",
+      "bytes": 136738,
+      "sha256": "29a89a691b11d325560ecbd9cb8ce55b10820edfa75d1841d16840a61d144dc6",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.34375,
+      "uniformOffset": [
+        -21,
+        -16
+      ]
+    },
+    {
+      "name": "rocket",
+      "source": "assets/incoming/hero_motion823/rocket_source.png",
+      "sourceBytes": 1020545,
+      "sourceSha256": "e677bff21081f301986f945b9e562e95b43b51c1548e000985feae53dcb5a8ce",
+      "path": "assets/art/hero_motion823/rocket.webp",
+      "bytes": 102172,
+      "sha256": "859480d01fd0fdab98da2705ad3c1eabd6d844c784fb5e88ff40ad8e24bbf310",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.203125,
+      "uniformOffset": [
+        -12,
+        -11
+      ]
+    },
+    {
+      "name": "sniper_charge",
+      "source": "assets/incoming/hero_motion823/sniper_charge_source.png",
+      "sourceBytes": 1135268,
+      "sourceSha256": "df86ea1bfe5013b48cc037ffd326a85122eb67608a641d4e6e7ae57da1acb143",
+      "path": "assets/art/hero_motion823/sniper_charge.webp",
+      "bytes": 93254,
+      "sha256": "a89228bb4eddfc4fa3dff3966a6a5eb98abc70b0633edc0d0e0283ebdf2d4500",
+      "frame": 128,
+      "frames": 8,
+      "cols": 8,
+      "uniformScale": 1.0,
+      "uniformOffset": [
+        1,
+        1
+      ]
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+# In progress — hero motion and Yuzu duo v8.1.24
+
+Ten ImageGen eight-frame hero sheets integrated for selected Unique and build motions; Yuzu adds a marking seed to each companion command. Remote v8.1.23 merged before release. Source/provenance/QA in assets/incoming/hero_motion823; runtime assets in assets/art/hero_motion823. Owner tests on phone. Release verification and push still pending; do not treat as deployed.
+
 # Current checkpoint — battle HUD 8.1.20 complete
 
 Owner requested fluid boss animation, then a compact expressive anime-ink battle HUD with complete necessary data and flowing green→yellow→orange→red boss health. Both implemented, published and verified. Same game identity. Owner explicitly waived agent phone testing and tests himself. No subagents, combat simulations or appearance screenshots.

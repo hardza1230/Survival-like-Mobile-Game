@@ -1,0 +1,93 @@
+[
+  {
+    "id": "mint",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\char_mint_attack_sheet.png",
+    "prompt": "Production sprite animation sheet for the SAME exact character in the reference, preserving their face, hair, clothing, body proportions and crisp painted chibi game style. Action: Mint plants her ice spear, turns and raises it, then thrusts it into the ground to summon a snowstorm, ending in a balanced recovery. Exactly 8 sequential full-body poses, arranged precisely 4 columns by 2 rows, equal square cells, consistent character scale and feet positions. Transparent background; no environment, no text, no borders; leave generous transparent gutters around each figure, no touching cell edges, no giant visual effects or separate objects. Left-to-right top row then bottom row, coherent preparation, release and recovery. Preserve complete hands, feet and silhouette in each cell.",
+    "path": "assets/incoming/hero_motion823/mint_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-e1e123e7-432e-4151-bf20-2e959fba501f.png"
+  },
+  {
+    "id": "cocoa",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\art\\bp_fx\\cocoa_titan_leap_slam_sheet.webp",
+    "prompt": "Production sprite animation sheet for the SAME exact character in the reference, preserving their face, hair, clothing, body proportions and crisp painted chibi game style. Action: Chocolate crouches, jumps upward, raises one giant fist, slams down with both feet firmly planted, then recovers. Exactly 8 sequential full-body poses, arranged precisely 4 columns by 2 rows, equal square cells, consistent character scale and feet positions. Transparent background; no environment, no text, no borders; leave generous transparent gutters around each figure, no touching cell edges, no giant visual effects or separate objects. Left-to-right top row then bottom row, coherent preparation, release and recovery. Preserve complete hands, feet and silhouette in each cell.",
+    "path": "assets/incoming/hero_motion823/cocoa_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-88cab499-8d23-4c74-a2e2-afdc4093f4ad.png"
+  },
+  {
+    "id": "taro",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\characters\\taro_attack_sheet.png",
+    "prompt": "Production sprite animation sheet for the SAME exact character in the reference, preserving their face, hair, clothing, body proportions and crisp painted chibi game style. Action: Taro gathers electricity between both hands, opens their arms, releases a circular plasma field, then recovers. Exactly 8 sequential full-body poses, arranged precisely 4 columns by 2 rows, equal square cells, consistent character scale and feet positions. Transparent background; no environment, no text, no borders; leave generous transparent gutters around each figure, no touching cell edges, no giant visual effects or separate objects. Left-to-right top row then bottom row, coherent preparation, release and recovery. Preserve complete hands, feet and silhouette in each cell.",
+    "path": "assets/incoming/hero_motion823/taro_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-2e6f1128-1956-46eb-b29d-df85f6924964.png"
+  },
+  {
+    "id": "sesame",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\characters\\sesame_attack_sheet.png",
+    "prompt": "Production sprite animation sheet for the SAME exact character in the reference, preserving their face, hair, clothing, body proportions and crisp painted chibi game style. Action: Sesame raises three tiny colored orbs, points toward the sky, then sweeps one hand down to call a meteor, and recovers. Exactly 8 sequential full-body poses, arranged precisely 4 columns by 2 rows, equal square cells, consistent character scale and feet positions. Transparent background; no environment, no text, no borders; leave generous transparent gutters around each figure, no touching cell edges, no giant visual effects or separate objects. Left-to-right top row then bottom row, coherent preparation, release and recovery. Preserve complete hands, feet and silhouette in each cell.",
+    "path": "assets/incoming/hero_motion823/sesame_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-69346abf-4c2b-42c6-b10d-cc4436cceeda.png"
+  },
+  {
+    "id": "mint_clean",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\char_mint_attack_sheet.png",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: raise her ice lance, rotate and plant its tip, then return to ready stance. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/mint_clean_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-5ba8a1f3-cee0-4d43-a5cd-efba1ce2de14.png"
+  },
+  {
+    "id": "taro_clean",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\characters\\taro_attack_sheet.png",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: bring hands together to concentrate, open both hands and extend arms, then return to ready stance. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/taro_clean_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-de689bcd-3369-4c79-aa3a-c670bdccac6f.png"
+  },
+  {
+    "id": "sesame_clean",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\characters\\sesame_attack_sheet.png",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: look upward and raise one hand, sweep the hand downward in a dramatic casting gesture, then return to ready stance. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/sesame_clean_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-ec061dfa-366a-443e-98e5-d72731d2157e.png"
+  },
+  {
+    "id": "yuzu_combo",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\characters\\yuzu_attack_sheet.png",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: point forward, throw a small seed with one hand and lift the other hand to signal a companion, then return to ready stance. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/yuzu_combo_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-19ad6a18-92bf-463c-8fba-8d364a01bdca.png"
+  },
+  {
+    "id": "sniper",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\characters\\momo_v2\\momo_run_12f.png",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: hold a tiny strawberry seed blaster close to her body while running, alternate natural running steps while always holding the weapon in the same hands. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/sniper_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-959751e0-828d-425e-9180-9f19d4b47a5d.png"
+  },
+  {
+    "id": "mint_run",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\art\\mint55\\char_mint_impaler_move.webp",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: run carrying the same ice lance tucked beside her body, alternate natural running steps. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/mint_run_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-985b331d-86f3-4123-a266-ce41df4f6c04.png"
+  },
+  {
+    "id": "titan_run",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\art\\bp_fx\\cocoa_titan_leap_slam_sheet.webp",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: run with heavy grounded steps and giant fists held low, consistent head position and repeated left and right steps. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/titan_run_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-4133eb42-d029-4d4c-926a-feff74ea5626.png"
+  },
+  {
+    "id": "rocket",
+    "ref": "E:\\Heart\\TT\\survival-mobile\\assets\\art\\bp_fx\\cocoa_rocket_launch_sheet.webp",
+    "prompt": "Production transparent sprite sheet for the EXACT SAME character shown in the reference, matching hairstyle, outfit, colors, face, equipment and hand-painted chibi style. Action: brace and point one rocket gauntlet forward, recoil slightly and recover. Show precisely 8 coherent sequential full-body character poses in a 4-column by 2-row equal square grid. Keep uniform body size, fixed ground position unless natural jump, separated by at least 40 transparent pixels. Show ONLY the character and held weapon. Absolutely NO glow, halos, aura, floating symbols, particles, magical swirls, floor shadows, gray backing, background, text, numbers or borders. Fully transparent background with clean anti-aliased cutout edges. Weapon and hair stay inside each cell. Frames ordered left to right then next row.",
+    "path": "assets/incoming/hero_motion823/rocket_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-649fb921-0363-45f1-901f-c509c209ff2e.png"
+  },
+  {
+    "id": "sniper_charge",
+    "ref": "assets/characters/momo_v2/momo_attack_8f.png",
+    "prompt": "Create a transparent sprite animation sheet, exactly 4 columns by 2 rows with eight equally spaced isolated full-body poses, each centered inside its own cell with clear transparent gutters. Match the attached game’s exact Strawberry chibi character: red hair ponytail, black red costume and small strawberry weapon, same hand-painted anime art and proportions. Eight sequential subtle SNIPER CHARGING poses, standing still aiming weapon to the right: ready, raise, take aim, concentrate, tighten grip, fully charged, steady aim, release/recover. Character only, no glowing aura, no effects, no text, no background, no frame, no cropping. Preserve identity and silhouette precisely across frames.",
+    "path": "assets/incoming/hero_motion823/sniper_charge_source.png",
+    "generated": "C:\\Users\\Norrasates\\.codex\\generated_images\\01a16858-7b05-7f10-b25f-a1e32fb79025\\exec-ca8b9371-4881-4f6b-bf9c-b7dc0d9db09b.png"
+  }
+]

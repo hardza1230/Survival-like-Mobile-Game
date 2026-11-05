@@ -1,8 +1,12 @@
 # Version line
 
-Current release: **8.1.23**. Next release:8.1.24. Fetch the deploy branch before new work.
+Current release: **8.1.24**. Next release:8.1.25. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.23 — Back to Hub crash after a boss loss (owner screenshot)
+# Latest delivery: v8.1.24 — Hero motion and Yuzu duo commands
+
+Ten original eight-frame hero sheets are selected lazily for unique skill poses and build-specific movement, with legacy textures as fallback. Yuzu fires a marking seed during each companion command; the existing mark and In Sync rules handle the cooperative bonus. Source sheets and provenance: assets/incoming/hero_motion823; packing: scripts/pack-hero-motion823.py. Phone play review remains with the owner.
+
+# Previous delivery: v8.1.23 — Back to Hub crash after a boss loss (owner screenshot)
 
 Back to Hub = scene.restart; shutdown clearArtVfx→stopBossInk restored the boss texture on a destroyed sprite (setTexture → reading 'sys'). Restore now skips destroyed actors (scene undefined). Second crash on the new create: stale _sesRuneButtons → sesRuneLayout setRadius on null; Game.create resets _sesRuneButtons/_sesRuneUI/_sesRuneLabel/_bossInkActors. Reproduced headless (C2-5 Root Throne, spawnFinalBoss, die, Back to Hub) → clean menu after fix.
 
