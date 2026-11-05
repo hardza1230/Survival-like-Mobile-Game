@@ -1,6 +1,8 @@
 # Battle art audit — 4 November 2026
 
-> Completion update,5November2026: the ordered art work has been integrated through8.1.17. See [final delivery](DELIVERY817.md), [C3/Pinnacle](DELIVERY815.md) and [body motion/clarity](DELIVERY816.md). The findings below describe the original8.1.12 audit, not current pending tasks. Owner will perform phone playtesting himself.
+> Owner-feedback correction,5November2026: source-cut errors and unfinished early miniboss animation were repaired in8.1.18; see [boss sheet repair](../BOSS_SHEETS_818.md).
+
+> Previous completion update,5November2026: the ordered art work has been integrated through8.1.17. See [final delivery](DELIVERY817.md), [C3/Pinnacle](DELIVERY815.md) and [body motion/clarity](DELIVERY816.md). The findings below describe the original8.1.12 audit, not current pending tasks. Owner will perform phone playtesting himself.
 
 Owner request: restore the painted Plasma effect while removing only its pale-blue area guide; inspect whether bosses and other battle art can join the action-anime outline family already approved for Sesame/Mint/Chocolate/Taro/Yuzu/Strawberry.
 

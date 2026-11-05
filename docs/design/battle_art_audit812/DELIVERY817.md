@@ -28,3 +28,5 @@ Owner review suggestions: B01 edge clarity; B05 versus B06 silhouettes; C2-2 fog
 - Full npmcheck, web build and all ten browser contracts passed locally; the published run repeated these checks successfully.
 - First deployment attempt stalled in updating_pages and timed out after600seconds. Re-running that workflow exposed duplicate artifacts from different attempts. Upload/deployment artifact names now include github.run_attempt and publishing permits1200000ms; the fresh run succeeded. No game or art changes were required for the recovery.
 - Ordered tasks1–5 are complete. Agent phone tests were explicitly waived; owner device appearance, feel and FPS review remains with the owner.
+
+Owner-feedback follow-up:8.1.18 fixes source-cell cuts missed by padded output-border checks and completes earlier miniboss motion. The earlier transport/hash and geometry proofs did not establish source silhouette completeness. See [boss sheet repair](../BOSS_SHEETS_818.md) for source seam validation, visual inspection and final live evidence.
