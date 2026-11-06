@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.31**. Next release:8.1.32. Fetch the deploy branch before new work.
+Current release: **8.1.32**. Next release:8.1.33. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.31 — Yuzu duo finisher per companion (owner)
+# Latest delivery: v8.1.32 — clearer hero motion823 poses (owner)
+
+Owner: new skill poses visible but unclear. Art is fine (8×128 frames); they played in 0.4–0.5s. bpPose now forces ≥0.95s for *_motion823 keys and eases frames (fast wind-up 0–30%, hold mid key pose 30–75%, settle). Run sheets unaffected (separate movement path).
+
+# Previous delivery: v8.1.31 — Yuzu duo finisher per companion (owner)
 
 duo_finish (450ms after cast) now depends on companion kind: pomelo = 8 seeds radiating from the command point (40% each, pierce 2, bigger shake); lime = one golden seed along the aim line (160%, pierce 99, speed 1150); bloodorange = 5 homing seeds (45% each, seek) fanned from Yuzu; yuzling keeps the 3-seed fan (60%). Test added in yuzu-companions (counts/pierce/seek per kind).
-
-# Previous delivery: v8.1.30 — no cut-in, Yuzu duo finisher (owner)
-
-Owner dropped the Unique cut-in (yuzuParadeCast no longer calls uniqueCutin; Settings row removed; uniqueCutin kept unused; art order 64 cancelled). Kept/strengthened team attack: 450ms after the cast (when the companion's move lands) Yuzu fires a 3-seed fan (±0.16 rad, 60% power each, pierce 1, source duo_finish) at the command point + combo pose, light shake, yz_triple_arrow cue; epoch/state guarded. Existing duo_seed mark shot unchanged.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

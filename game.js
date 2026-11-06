@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.31';
+const GAME_VERSION = '8.1.32';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.32',date:'2026-11-06',title:'Clearer hero skill poses',items:['New hero skill poses now play about twice as long and hold their key pose, so they are easier to see']},
   {v:'8.1.31',date:'2026-11-06',title:'Yuzu duo finishers per companion',items:['Pomelo: a ring of 8 seeds bursts out of the slam','Lime: one golden seed pierces the whole line','Blood Orange: 5 homing seeds chase enemies']},
   {v:'8.1.30',date:'2026-11-06',title:'Yuzu duo finisher',items:['The Yuzu cut-in is removed','As her companion’s Unique lands, Yuzu fires a fan of 3 seeds at the same spot']},
   {v:'8.1.29',date:'2026-11-06',title:'Easier Forge',items:['More Twist Cream: bosses give 2 more, minibosses 1 more, elites drop it more often','Forge prices rise half as fast','35 mods now explain themselves in one short line with their number','Boots no longer roll mods for currencies that left the game']},
@@ -21869,11 +21870,11 @@ class Game extends Phaser.Scene {
     p.rotation=Math.max(-.17,Math.min(.17,u.lean+gait-kick*side+settle*(p.flipX?-1:1)+charge));
   }
   // เลือกเฟรมท่าทาง: พุ่ง=ยืด ·s่ง=สลับก้าว · โดนตี=ย่อ · Normal=ยืน+กะพริบตา
-  bpPose(key,d){if(this.textures?.exists?.(key)){this._bpPose={key,t:0,d};this._attackPoseTime=0;}}
+  bpPose(key,d){if(this.textures?.exists?.(key)){if(/_motion823$/.test(key))d=Math.max(d||0,.95);this._bpPose={key,t:0,d};this._attackPoseTime=0;}}   // v8.1.32 เจ้าของ: ท่าใหม่เห็นแต่ไม่ชัด → เล่นอย่างน้อย 0.95 วิ (เดิม 0.4–0.5) + ค้างเฟรมกลาง
   updatePose(dt){
     if(this.state&&this.state!=='play')return;
     if(!this._hasFrames)return;
-    if(this._bpPose){const q=this._bpPose;q.t+=dt;if(q.t<q.d&&this.textures.exists(q.key)){if(this.player.texture.key!==q.key)this.player.setTexture(q.key);const n=Math.max(1,(this.textures.get?.(q.key)?.frameTotal||9)-1);this.player.setFrame(Math.min(n-1,Math.floor(q.t/q.d*n)));return;}this._bpPose=null;}
+    if(this._bpPose){const q=this._bpPose;q.t+=dt;if(q.t<q.d&&this.textures.exists(q.key)){if(this.player.texture.key!==q.key)this.player.setTexture(q.key);const n=Math.max(1,(this.textures.get?.(q.key)?.frameTotal||9)-1);const k=q.t/q.d,e=/_motion823$/.test(q.key)?(k<.3?k/.3*.45:k<.75?.45+(k-.3)/.45*.2:.65+(k-.75)/.25*.35):k;this.player.setFrame(Math.min(n-1,Math.floor(e*n)));return;}this._bpPose=null;}   // motion823: เร็วช่วงง้าง ค้างช่วงท่าเด่นกลางชีต แล้วกลับ
     if(this.character==='cocoa'&&this._titanHold&&this.textures.exists('char_cocoa_titan_charge')){const mv=this.player.body&&this.player.body.velocity.length()>24,k=mv&&this.textures.exists('char_cocoa_titan_walk')?'char_cocoa_titan_walk':'char_cocoa_titan_charge';this._bpLoopT=(this._bpLoopT||0)+dt;if(this.player.texture.key!==k)this.player.setTexture(k);this.player.setFrame(Math.floor(this._bpLoopT*10)%(k==='char_cocoa_titan_walk'?12:8));return;}
     if(this.character==='cocoa'&&this._cocoaFlickerPose){
       const pose=this._cocoaFlickerPose;pose.t+=dt;
