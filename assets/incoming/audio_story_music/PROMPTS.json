@@ -268,5 +268,94 @@
     "file": "originals/sfx_box_reveal_legend.mp3",
     "bytes": 15089,
     "sha256": "0b6f10790693a1a5b0720d2ce21b5cf9954c090f9a0ef0e49718a6e7d87ed0db"
+  },
+  {
+    "key": "bgm_title",
+    "parameters": {
+      "prompt": "Original instrumental main title theme for a cozy premium fantasy confectionery adventure game. Warm music box, delicate strings and glass bells; memorable four-bar melody, gentle wonder and warmth, approximately 84 BPM. No voice, no existing melodies. Seamless looping arrangement, soft ending, clean mobile-friendly mix.",
+      "music_length_ms": 60000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "file": "originals/bgm_title_original.mp3",
+    "bytes": 1442003,
+    "sha256": "23f935129db0d9bac92f37b1e2a9782d663397c40da710d444f5b132b571346e",
+    "provider": "ElevenLabs",
+    "endpoint": "music"
+  },
+  {
+    "key": "bgm_story_calm",
+    "parameters": {
+      "prompt": "Original instrumental cozy fantasy bedtime story, grandmother’s kitchen; gentle piano and flute, delicate music-box hints, approximately 76 BPM. Warm, clear and unobtrusive behind narration. Seamless loop, no voices or known melodies.",
+      "music_length_ms": 60000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "file": "originals/bgm_story_calm_original.mp3",
+    "bytes": 1442003,
+    "sha256": "ea0fe8dcc361a6b47fee782414e6a92dbb2200d7b9d83bdcfe70fa78769de9d1",
+    "song_id": "LGmEogN7U7dmqM18QWnx",
+    "provider": "ElevenLabs",
+    "endpoint": "music"
+  },
+  {
+    "key": "bgm_story_tension",
+    "parameters": {
+      "prompt": "Original instrumental cute fantasy suspense; the creeping hunger curse, low cello, pizzicato strings and airy wind, approximately 96 BPM. Mysterious but never horror, spacious underneath dialogue. Seamless loop; no voices or known melodies.",
+      "music_length_ms": 48000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "file": "originals/bgm_story_tension_original.mp3",
+    "bytes": 1154238,
+    "sha256": "86bfa8167660945f8a3954d448df87da43a82d3d2d86ff9126d9a9b83d580cf1",
+    "song_id": "aBarleDnt2zR5mvHxPQ4",
+    "provider": "ElevenLabs",
+    "endpoint": "music"
+  },
+  {
+    "key": "bgm_story_hope",
+    "parameters": {
+      "prompt": "Original instrumental hopeful fantasy adventure theme, friends return, warm piano, strings and glass bells, major key, approximately 92 BPM. A memorable music-box-like four-bar motif, gentle emotional lift. Spacious for dialogue, seamless loop, no vocals or known melodies.",
+      "music_length_ms": 60000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "file": "originals/bgm_story_hope_original.mp3",
+    "bytes": 1442003,
+    "sha256": "ad1f736dad1ec08e9fb87dd3e1492d90a123d337f17d331491d70391bae004be",
+    "song_id": "qumhpBsLlwaEpEx7Hhzh",
+    "provider": "ElevenLabs",
+    "endpoint": "music"
+  },
+  {
+    "key": "bgm_story_finale",
+    "parameters": {
+      "prompt": "Original instrumental warm grand fantasy finale for a cute confectionery adventure, lush orchestral strings, piano, glass bells, music-box-like four-bar motif, approximately 88 BPM. Largest, most emotional and hopeful of the themes, but leave space for dialogue. Seamless loop, no voices or known melodies.",
+      "music_length_ms": 75000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "file": "originals/bgm_story_finale_original.mp3",
+    "bytes": 1801239,
+    "sha256": "26a989e6b7b5d9869c21bd630d7e03b505a4d9b08221242a1df27b7d3b749d56",
+    "song_id": "99myrS4ps89Q6AqOZ37X",
+    "provider": "ElevenLabs",
+    "endpoint": "music"
+  },
+  {
+    "key": "bgm_bazaar",
+    "parameters": {
+      "prompt": "Original instrumental cheerful fantasy sweets bazaar, playful accordion and xylophone with gentle handclaps, approximately 110 BPM. Bouncy and welcoming without masking UI sounds, seamless loop. No voices or known melodies.",
+      "music_length_ms": 48000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "file": "originals/bgm_bazaar_original.mp3",
+    "bytes": 1153611,
+    "sha256": "cd7cec63f151027e5c032f81e55e1dc1ce1291afc909acc0d28dc28e702d4492",
+    "song_id": "yXXYaNeRPdHfNP1z8Ric",
+    "provider": "ElevenLabs",
+    "endpoint": "music"
   }
 ]

@@ -1,3 +1,7 @@
+# In progress — audio orders A04 and A07 (2026-11-06)
+
+Six original ElevenLabs Music loops (incoming source only) and 144 ElevenLabs TTS lines from existing canonical text (13 opening motion-comic, 15 Ruby stage, 15 storybook, 14 tips, 12 feature guides, 15 lobby, 60 boss) generated and technically packaged; provenance, SHA-256, saved provisional voice IDs and audition HTML in assets/incoming/audio_story_music and audio_voice_acting. 12 voices provisionally selected as candidate 1 at owner request, not subjectively listened. A04 BPM/shared motif/seams and A07 word/performance need owner listening. Draft 114 new lines await user decision before generation; other story lines and three icon-bearing tips still incomplete. No new files integrated into runtime. Latest runtime v8.1.32; fetch before follow-up.
+
 # Current checkpoint — hero motion and Yuzu duo v8.1.24
 
 Ten ImageGen eight-frame hero sheets integrated for selected Unique and build motions; Yuzu adds a marking seed to each companion command. Remote v8.1.23 merged before release. Source/provenance/QA in assets/incoming/hero_motion823; runtime assets in assets/art/hero_motion823. Owner tests on phone. Runtime 42fded32a9ff1633c861a4a2b2ca433c6db392ab deployed; Pages 42075871206 and Android 42075871175 succeeded. All 37 release files (26,898,128 bytes) passed immutable readback; live v8.1.24 and all ten runtime sheets passed byte/hash verification. npm check, web/review builds, all eleven browser contracts and Yuzu/actor-motion tests passed. Owner will play-test on phone.

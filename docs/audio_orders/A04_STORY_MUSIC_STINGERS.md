@@ -55,3 +55,7 @@
 Delivered 15 original ElevenLabs Sound Effects files (actual expanded table count), technical QA and runtime integration. Kit: `assets/incoming/audio_story_music/`; runtime: `assets/audio/story_music/`. Untouched donors, actual prompts/request metadata, MANIFEST and QA_REPORT retained. Owner phone listening/artistic review pending.
 
 Six BGM files remain pending: owner enabled Sound Effects only. Existing music continues; no Music Generation request made. One combined 1.8s book_open was selected from the permitted alternatives.
+
+## Delivery update — 2026-11-06
+
+Six original instrumental ElevenLabs Music tracks delivered to `assets/incoming/audio_story_music/` with retained donors, prompts, stereo MP3 mastering and technical QA. Existing 15 SFX remain unchanged. The six music masters are source-only, not yet connected to runtime; listen using `LISTEN_MUSIC.html`. BPM values are requested targets and shared-melody continuity and loop quality are not independently verified. Finale is instrumental without choir.

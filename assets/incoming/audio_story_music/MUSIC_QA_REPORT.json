@@ -1,0 +1,91 @@
+{
+  "provider": "ElevenLabs",
+  "method": "Stereo loudness normalization and circular one-second crossfade; original donors retained",
+  "ownerListening": "pending; musical seam, melody correspondence and BPM not verified",
+  "files": [
+    {
+      "key": "bgm_title",
+      "decode": true,
+      "nonSilent": true,
+      "sampleRate": 44100,
+      "channels": 2,
+      "bitRate": 192000,
+      "peakDbtp": -5.2,
+      "lufs": -18.6,
+      "durationMs": 60000.0,
+      "seamSampleDelta": 0.009172601625323296,
+      "loopSeam": "one-second blended overlap; musical seam requires listening",
+      "passed": true
+    },
+    {
+      "key": "bgm_story_calm",
+      "decode": true,
+      "nonSilent": true,
+      "sampleRate": 44100,
+      "channels": 2,
+      "bitRate": 192000,
+      "peakDbtp": -4.1,
+      "lufs": -17.9,
+      "durationMs": 60000.0,
+      "seamSampleDelta": 0.005774255841970444,
+      "loopSeam": "one-second blended overlap; musical seam requires listening",
+      "passed": true
+    },
+    {
+      "key": "bgm_story_tension",
+      "decode": true,
+      "nonSilent": true,
+      "sampleRate": 44100,
+      "channels": 2,
+      "bitRate": 192000,
+      "peakDbtp": -2.3,
+      "lufs": -18.0,
+      "durationMs": 48000.0,
+      "seamSampleDelta": 0.03983511030673981,
+      "loopSeam": "one-second blended overlap; musical seam requires listening",
+      "passed": true
+    },
+    {
+      "key": "bgm_story_hope",
+      "decode": true,
+      "nonSilent": true,
+      "sampleRate": 44100,
+      "channels": 2,
+      "bitRate": 192000,
+      "peakDbtp": -5.5,
+      "lufs": -18.0,
+      "durationMs": 60000.0,
+      "seamSampleDelta": 0.015166867524385452,
+      "loopSeam": "one-second blended overlap; musical seam requires listening",
+      "passed": true
+    },
+    {
+      "key": "bgm_story_finale",
+      "decode": true,
+      "nonSilent": true,
+      "sampleRate": 44100,
+      "channels": 2,
+      "bitRate": 192000,
+      "peakDbtp": -2.2,
+      "lufs": -17.6,
+      "durationMs": 75000.0,
+      "seamSampleDelta": 0.003044900018721819,
+      "loopSeam": "one-second blended overlap; musical seam requires listening",
+      "passed": true
+    },
+    {
+      "key": "bgm_bazaar",
+      "decode": true,
+      "nonSilent": true,
+      "sampleRate": 44100,
+      "channels": 2,
+      "bitRate": 192000,
+      "peakDbtp": -3.8,
+      "lufs": -18.1,
+      "durationMs": 48000.0,
+      "seamSampleDelta": 0.00014949031174182892,
+      "loopSeam": "one-second blended overlap; musical seam requires listening",
+      "passed": true
+    }
+  ]
+}

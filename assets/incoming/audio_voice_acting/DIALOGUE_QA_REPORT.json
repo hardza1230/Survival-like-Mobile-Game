@@ -1,0 +1,1306 @@
+{
+  "files": 144,
+  "allDecoded": true,
+  "peakAtMostMinus1dBTP": true,
+  "transcriptAndPerformance": "not independently listened or verified",
+  "voiceCast": "provisional candidate 1",
+  "measurements": [
+    {
+      "key": "vo_ruby_story_00",
+      "duration_ms": 3468,
+      "peakDbtp": -6.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.85
+    },
+    {
+      "key": "vo_ruby_story_01",
+      "duration_ms": 4384,
+      "peakDbtp": -6.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.69
+    },
+    {
+      "key": "vo_ruby_story_02",
+      "duration_ms": 3726,
+      "peakDbtp": -9.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.54
+    },
+    {
+      "key": "vo_ruby_story_03",
+      "duration_ms": 3236,
+      "peakDbtp": -6.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.95
+    },
+    {
+      "key": "vo_ruby_story_04",
+      "duration_ms": 3409,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.04
+    },
+    {
+      "key": "vo_ruby_story_05",
+      "duration_ms": 5025,
+      "peakDbtp": -5.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.88
+    },
+    {
+      "key": "vo_ruby_story_06",
+      "duration_ms": 2185,
+      "peakDbtp": -3.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.03
+    },
+    {
+      "key": "vo_ruby_story_07",
+      "duration_ms": 4084,
+      "peakDbtp": -5.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.97
+    },
+    {
+      "key": "vo_ruby_story_08",
+      "duration_ms": 1944,
+      "peakDbtp": -4.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.01
+    },
+    {
+      "key": "vo_ruby_story_09",
+      "duration_ms": 3389,
+      "peakDbtp": -4.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.6
+    },
+    {
+      "key": "vo_ruby_story_10",
+      "duration_ms": 3155,
+      "peakDbtp": -3.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.38
+    },
+    {
+      "key": "vo_ruby_story_11",
+      "duration_ms": 2626,
+      "peakDbtp": -5.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.72
+    },
+    {
+      "key": "vo_ruby_story_12",
+      "duration_ms": 4374,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.9
+    },
+    {
+      "key": "vo_ruby_story_13",
+      "duration_ms": 3076,
+      "peakDbtp": -4.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.04
+    },
+    {
+      "key": "vo_ruby_story_14",
+      "duration_ms": 2860,
+      "peakDbtp": -4.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.38
+    },
+    {
+      "key": "vo_ruby_book_1_1",
+      "duration_ms": 6428,
+      "peakDbtp": -6.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.97
+    },
+    {
+      "key": "vo_ruby_book_1_2",
+      "duration_ms": 5412,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.49
+    },
+    {
+      "key": "vo_ruby_book_1_3",
+      "duration_ms": 6150,
+      "peakDbtp": -4.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.04
+    },
+    {
+      "key": "vo_ruby_book_2_1",
+      "duration_ms": 6258,
+      "peakDbtp": -3.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.03
+    },
+    {
+      "key": "vo_ruby_book_2_2",
+      "duration_ms": 4186,
+      "peakDbtp": -3.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.95
+    },
+    {
+      "key": "vo_ruby_book_2_3",
+      "duration_ms": 7340,
+      "peakDbtp": -4.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.6
+    },
+    {
+      "key": "vo_ruby_book_3_1",
+      "duration_ms": 4637,
+      "peakDbtp": -4.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.67
+    },
+    {
+      "key": "vo_ruby_book_3_2",
+      "duration_ms": 5913,
+      "peakDbtp": -6.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.35
+    },
+    {
+      "key": "vo_ruby_book_3_3",
+      "duration_ms": 5220,
+      "peakDbtp": -5.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 12.47
+    },
+    {
+      "key": "vo_ruby_book_4_1",
+      "duration_ms": 4537,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.76
+    },
+    {
+      "key": "vo_ruby_book_4_2",
+      "duration_ms": 7626,
+      "peakDbtp": -6.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.45
+    },
+    {
+      "key": "vo_ruby_book_4_3",
+      "duration_ms": 6129,
+      "peakDbtp": -5.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.67
+    },
+    {
+      "key": "vo_ruby_book_5_1",
+      "duration_ms": 4674,
+      "peakDbtp": -5.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.78
+    },
+    {
+      "key": "vo_ruby_book_5_2",
+      "duration_ms": 3994,
+      "peakDbtp": -4.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.69
+    },
+    {
+      "key": "vo_ruby_book_5_3",
+      "duration_ms": 4898,
+      "peakDbtp": -4.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.94
+    },
+    {
+      "key": "vo_ruby_tip_survive",
+      "duration_ms": 2391,
+      "peakDbtp": -3.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 13.04
+    },
+    {
+      "key": "vo_ruby_tip_fill",
+      "duration_ms": 1679,
+      "peakDbtp": -5.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.54
+    },
+    {
+      "key": "vo_ruby_tip_purge",
+      "duration_ms": 2411,
+      "peakDbtp": -7.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.79
+    },
+    {
+      "key": "vo_ruby_tip_capture",
+      "duration_ms": 1346,
+      "peakDbtp": -8.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 13.47
+    },
+    {
+      "key": "vo_ruby_tip_defendNectar",
+      "duration_ms": 1598,
+      "peakDbtp": -5.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.51
+    },
+    {
+      "key": "vo_ruby_tip_seasonCycle",
+      "duration_ms": 1844,
+      "peakDbtp": -8.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.78
+    },
+    {
+      "key": "vo_ruby_tip_breakRoots",
+      "duration_ms": 2356,
+      "peakDbtp": -8.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.03
+    },
+    {
+      "key": "vo_ruby_tip_cleanAir",
+      "duration_ms": 1718,
+      "peakDbtp": -6.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 0.09
+    },
+    {
+      "key": "vo_ruby_tip_counter",
+      "duration_ms": 2819,
+      "peakDbtp": -6.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.36
+    },
+    {
+      "key": "vo_ruby_tip_mini",
+      "duration_ms": 2390,
+      "peakDbtp": -3.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.83
+    },
+    {
+      "key": "vo_ruby_tip_boss",
+      "duration_ms": 2964,
+      "peakDbtp": -6.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.05
+    },
+    {
+      "key": "vo_ruby_tip_magnet",
+      "duration_ms": 3154,
+      "peakDbtp": -8.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 7.48
+    },
+    {
+      "key": "vo_ruby_tip_heal",
+      "duration_ms": 2554,
+      "peakDbtp": -4.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 15.65
+    },
+    {
+      "key": "vo_ruby_tip_chest",
+      "duration_ms": 3078,
+      "peakDbtp": -4.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.65
+    },
+    {
+      "key": "vo_ruby_guide_dig",
+      "duration_ms": 4904,
+      "peakDbtp": -6.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 9.89
+    },
+    {
+      "key": "vo_ruby_guide_rewards",
+      "duration_ms": 5437,
+      "peakDbtp": -4.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.65
+    },
+    {
+      "key": "vo_ruby_guide_bazaar",
+      "duration_ms": 4527,
+      "peakDbtp": -3.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.97
+    },
+    {
+      "key": "vo_ruby_guide_gActivity",
+      "duration_ms": 3853,
+      "peakDbtp": -3.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 12.31
+    },
+    {
+      "key": "vo_ruby_guide_daily",
+      "duration_ms": 4116,
+      "peakDbtp": -3.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 16.33
+    },
+    {
+      "key": "vo_ruby_guide_achievements",
+      "duration_ms": 3262,
+      "peakDbtp": -2.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.44
+    },
+    {
+      "key": "vo_ruby_guide_news",
+      "duration_ms": 1931,
+      "peakDbtp": -6.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.77
+    },
+    {
+      "key": "vo_ruby_guide_gearInbox",
+      "duration_ms": 3012,
+      "peakDbtp": -7.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.42
+    },
+    {
+      "key": "vo_ruby_guide_gear",
+      "duration_ms": 4014,
+      "peakDbtp": -4.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 10.66
+    },
+    {
+      "key": "vo_ruby_guide_craft",
+      "duration_ms": 4691,
+      "peakDbtp": -3.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.42
+    },
+    {
+      "key": "vo_ruby_guide_char",
+      "duration_ms": 5190,
+      "peakDbtp": -5.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 13.11
+    },
+    {
+      "key": "vo_ruby_guide_gCodex",
+      "duration_ms": 4334,
+      "peakDbtp": -3.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.72
+    },
+    {
+      "key": "vo_strawberry_lobby_1",
+      "duration_ms": 1505,
+      "peakDbtp": -4.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.88
+    },
+    {
+      "key": "vo_strawberry_lobby_2",
+      "duration_ms": 1566,
+      "peakDbtp": -3.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 0.14
+    },
+    {
+      "key": "vo_strawberry_lobby_3",
+      "duration_ms": 1753,
+      "peakDbtp": -6.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 8.21
+    },
+    {
+      "key": "vo_mint_lobby_1",
+      "duration_ms": 1398,
+      "peakDbtp": -7.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 10.61
+    },
+    {
+      "key": "vo_mint_lobby_2",
+      "duration_ms": 1487,
+      "peakDbtp": -8.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 14.17
+    },
+    {
+      "key": "vo_mint_lobby_3",
+      "duration_ms": 1845,
+      "peakDbtp": -9.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.94
+    },
+    {
+      "key": "vo_cocoa_lobby_1",
+      "duration_ms": 1729,
+      "peakDbtp": -4.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.0
+    },
+    {
+      "key": "vo_cocoa_lobby_2",
+      "duration_ms": 1380,
+      "peakDbtp": -7.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 7.57
+    },
+    {
+      "key": "vo_cocoa_lobby_3",
+      "duration_ms": 2369,
+      "peakDbtp": -5.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 15.67
+    },
+    {
+      "key": "vo_taro_lobby_1",
+      "duration_ms": 1997,
+      "peakDbtp": -2.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 0.02
+    },
+    {
+      "key": "vo_taro_lobby_2",
+      "duration_ms": 1599,
+      "peakDbtp": -5.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.17
+    },
+    {
+      "key": "vo_taro_lobby_3",
+      "duration_ms": 1467,
+      "peakDbtp": -4.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.69
+    },
+    {
+      "key": "vo_yuzu_lobby_1",
+      "duration_ms": 1213,
+      "peakDbtp": -4.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 12.49
+    },
+    {
+      "key": "vo_yuzu_lobby_2",
+      "duration_ms": 1270,
+      "peakDbtp": -4.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.6
+    },
+    {
+      "key": "vo_yuzu_lobby_3",
+      "duration_ms": 1393,
+      "peakDbtp": -7.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 0.09
+    },
+    {
+      "key": "vo_b01_intro",
+      "duration_ms": 2480,
+      "peakDbtp": -3.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.06
+    },
+    {
+      "key": "vo_b01_fight_1",
+      "duration_ms": 1761,
+      "peakDbtp": -10.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 7.8
+    },
+    {
+      "key": "vo_b01_fight_2",
+      "duration_ms": 1415,
+      "peakDbtp": -8.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.39
+    },
+    {
+      "key": "vo_b01_release",
+      "duration_ms": 2989,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.65
+    },
+    {
+      "key": "vo_b02_intro",
+      "duration_ms": 2597,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.88
+    },
+    {
+      "key": "vo_b02_fight_1",
+      "duration_ms": 1940,
+      "peakDbtp": -6.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.92
+    },
+    {
+      "key": "vo_b02_fight_2",
+      "duration_ms": 2513,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.56
+    },
+    {
+      "key": "vo_b02_release",
+      "duration_ms": 3493,
+      "peakDbtp": -3.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.44
+    },
+    {
+      "key": "vo_b03_intro",
+      "duration_ms": 3744,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 10.18
+    },
+    {
+      "key": "vo_b03_fight_1",
+      "duration_ms": 2955,
+      "peakDbtp": -3.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.15
+    },
+    {
+      "key": "vo_b03_fight_2",
+      "duration_ms": 1435,
+      "peakDbtp": -3.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.94
+    },
+    {
+      "key": "vo_b03_release",
+      "duration_ms": 2922,
+      "peakDbtp": -8.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 16.78
+    },
+    {
+      "key": "vo_b04_intro",
+      "duration_ms": 2661,
+      "peakDbtp": -2.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.97
+    },
+    {
+      "key": "vo_b04_fight_1",
+      "duration_ms": 2136,
+      "peakDbtp": -4.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.45
+    },
+    {
+      "key": "vo_b04_fight_2",
+      "duration_ms": 2046,
+      "peakDbtp": -6.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.33
+    },
+    {
+      "key": "vo_b04_release",
+      "duration_ms": 2718,
+      "peakDbtp": -3.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.88
+    },
+    {
+      "key": "vo_b05_intro",
+      "duration_ms": 3715,
+      "peakDbtp": -7.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.24
+    },
+    {
+      "key": "vo_b05_fight_1",
+      "duration_ms": 2113,
+      "peakDbtp": -5.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.01
+    },
+    {
+      "key": "vo_b05_fight_2",
+      "duration_ms": 2447,
+      "peakDbtp": -7.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.71
+    },
+    {
+      "key": "vo_b05_release",
+      "duration_ms": 3019,
+      "peakDbtp": -3.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 18.96
+    },
+    {
+      "key": "vo_b06_intro",
+      "duration_ms": 2767,
+      "peakDbtp": -7.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.81
+    },
+    {
+      "key": "vo_b06_fight_1",
+      "duration_ms": 2834,
+      "peakDbtp": -5.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.22
+    },
+    {
+      "key": "vo_b06_fight_2",
+      "duration_ms": 4017,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.79
+    },
+    {
+      "key": "vo_b06_release",
+      "duration_ms": 2138,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.01
+    },
+    {
+      "key": "vo_b07_intro",
+      "duration_ms": 2814,
+      "peakDbtp": -6.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 8.34
+    },
+    {
+      "key": "vo_b07_fight_1",
+      "duration_ms": 3483,
+      "peakDbtp": -9.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 8.5
+    },
+    {
+      "key": "vo_b07_fight_2",
+      "duration_ms": 2972,
+      "peakDbtp": -7.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.35
+    },
+    {
+      "key": "vo_b07_release",
+      "duration_ms": 3755,
+      "peakDbtp": -2.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.92
+    },
+    {
+      "key": "vo_b08_intro",
+      "duration_ms": 4003,
+      "peakDbtp": -3.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.03
+    },
+    {
+      "key": "vo_b08_fight_1",
+      "duration_ms": 2143,
+      "peakDbtp": -7.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.99
+    },
+    {
+      "key": "vo_b08_fight_2",
+      "duration_ms": 2503,
+      "peakDbtp": -7.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.99
+    },
+    {
+      "key": "vo_b08_release",
+      "duration_ms": 2781,
+      "peakDbtp": -3.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.76
+    },
+    {
+      "key": "vo_b09_intro",
+      "duration_ms": 2242,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.1
+    },
+    {
+      "key": "vo_b09_fight_1",
+      "duration_ms": 3763,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.31
+    },
+    {
+      "key": "vo_b09_fight_2",
+      "duration_ms": 3044,
+      "peakDbtp": -2.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.9
+    },
+    {
+      "key": "vo_b09_release",
+      "duration_ms": 4783,
+      "peakDbtp": -4.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 3.31
+    },
+    {
+      "key": "vo_b10_intro",
+      "duration_ms": 3824,
+      "peakDbtp": -8.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.1
+    },
+    {
+      "key": "vo_b10_fight_1",
+      "duration_ms": 3280,
+      "peakDbtp": -2.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.56
+    },
+    {
+      "key": "vo_b10_fight_2",
+      "duration_ms": 2329,
+      "peakDbtp": -6.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.94
+    },
+    {
+      "key": "vo_b10_release",
+      "duration_ms": 3246,
+      "peakDbtp": -4.0,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.9
+    },
+    {
+      "key": "vo_b11_intro",
+      "duration_ms": 3538,
+      "peakDbtp": -6.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.17
+    },
+    {
+      "key": "vo_b11_fight_1",
+      "duration_ms": 3396,
+      "peakDbtp": -7.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.65
+    },
+    {
+      "key": "vo_b11_fight_2",
+      "duration_ms": 4208,
+      "peakDbtp": -8.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.78
+    },
+    {
+      "key": "vo_b11_release",
+      "duration_ms": 3186,
+      "peakDbtp": -7.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.81
+    },
+    {
+      "key": "vo_b12_intro",
+      "duration_ms": 3319,
+      "peakDbtp": -4.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 17.46
+    },
+    {
+      "key": "vo_b12_fight_1",
+      "duration_ms": 3313,
+      "peakDbtp": -5.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 17.28
+    },
+    {
+      "key": "vo_b12_fight_2",
+      "duration_ms": 1429,
+      "peakDbtp": -7.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.1
+    },
+    {
+      "key": "vo_b12_release",
+      "duration_ms": 3483,
+      "peakDbtp": -3.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 0.0
+    },
+    {
+      "key": "vo_b13_intro",
+      "duration_ms": 3929,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.8
+    },
+    {
+      "key": "vo_b13_fight_1",
+      "duration_ms": 2913,
+      "peakDbtp": -6.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.81
+    },
+    {
+      "key": "vo_b13_fight_2",
+      "duration_ms": 2021,
+      "peakDbtp": -5.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.81
+    },
+    {
+      "key": "vo_b13_release",
+      "duration_ms": 3595,
+      "peakDbtp": -5.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.83
+    },
+    {
+      "key": "vo_b14_intro",
+      "duration_ms": 3715,
+      "peakDbtp": -8.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.85
+    },
+    {
+      "key": "vo_b14_fight_1",
+      "duration_ms": 2208,
+      "peakDbtp": -7.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.26
+    },
+    {
+      "key": "vo_b14_fight_2",
+      "duration_ms": 3216,
+      "peakDbtp": -4.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.19
+    },
+    {
+      "key": "vo_b14_release",
+      "duration_ms": 3933,
+      "peakDbtp": -3.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.74
+    },
+    {
+      "key": "vo_b15_intro",
+      "duration_ms": 2821,
+      "peakDbtp": -6.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.62
+    },
+    {
+      "key": "vo_b15_fight_1",
+      "duration_ms": 3750,
+      "peakDbtp": -4.3,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.9
+    },
+    {
+      "key": "vo_b15_fight_2",
+      "duration_ms": 2709,
+      "peakDbtp": -7.8,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 8.25
+    },
+    {
+      "key": "vo_b15_release",
+      "duration_ms": 4185,
+      "peakDbtp": -6.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.81
+    },
+    {
+      "key": "vo_story_s00_1",
+      "duration_ms": 5164,
+      "peakDbtp": -3.1,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.72
+    },
+    {
+      "key": "vo_story_s00_2",
+      "duration_ms": 4454,
+      "peakDbtp": -2.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.15
+    },
+    {
+      "key": "vo_story_s00_3",
+      "duration_ms": 4511,
+      "peakDbtp": -2.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.47
+    },
+    {
+      "key": "vo_story_s01_1",
+      "duration_ms": 4774,
+      "peakDbtp": -3.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.39
+    },
+    {
+      "key": "vo_story_s01_2",
+      "duration_ms": 3580,
+      "peakDbtp": -8.6,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 5.78
+    },
+    {
+      "key": "vo_story_s01_3",
+      "duration_ms": 2523,
+      "peakDbtp": -7.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.42
+    },
+    {
+      "key": "vo_story_s01_4",
+      "duration_ms": 4863,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.61
+    },
+    {
+      "key": "vo_story_s01_5",
+      "duration_ms": 6383,
+      "peakDbtp": -2.7,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 2.4
+    },
+    {
+      "key": "vo_story_s01_6",
+      "duration_ms": 4805,
+      "peakDbtp": -6.5,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 8.57
+    },
+    {
+      "key": "vo_story_s01_7",
+      "duration_ms": 4960,
+      "peakDbtp": -3.9,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.97
+    },
+    {
+      "key": "vo_story_s01_8",
+      "duration_ms": 1745,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 6.71
+    },
+    {
+      "key": "vo_story_s01_9",
+      "duration_ms": 2650,
+      "peakDbtp": -3.2,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 4.92
+    },
+    {
+      "key": "vo_story_s01_10",
+      "duration_ms": 4811,
+      "peakDbtp": -2.4,
+      "decode": true,
+      "sampleRate": 44100,
+      "channels": 1,
+      "leadingSilenceMs": 7.21
+    }
+  ],
+  "onsetOver20ms": []
+}

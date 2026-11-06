@@ -1,6 +1,6 @@
 {
   "provider": "ElevenLabs",
-  "scope": "A07 category1 only; owner must select voices before recording other categories",
+  "scope": "Voice design auditions and provisional canonical-dialogue generation",
   "generations": [
     {
       "speaker": "strawberry",
@@ -541,6 +541,2024 @@
         "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
       },
       "status": "awaiting_owner_voice_selection"
+    }
+  ],
+  "dialogueGenerations": [
+    {
+      "key": "vo_ruby_story_00",
+      "speaker": "ruby",
+      "text": "You found the Heart Seed and became a person again! I’m Ruby.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "You found the Heart Seed and became a person again! I’m Ruby.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_00.mp3",
+      "bytes": 57721,
+      "sha256": "3173f72cc6a8fbac6abea5cf605ca4d3ea84177605c27955a3ae720198abf039"
+    },
+    {
+      "key": "vo_ruby_story_01",
+      "speaker": "ruby",
+      "text": "The Empress is beaten and Mint is free! Grandma’s recipes are down these pipes.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Empress is beaten and Mint is free! Grandma’s recipes are down these pipes.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_01.mp3",
+      "bytes": 72350,
+      "sha256": "429338c12d782aee9b998f9cb62153ec14ddb445c80760675d8a070a0e1af7cf"
+    },
+    {
+      "key": "vo_ruby_story_02",
+      "speaker": "ruby",
+      "text": "So hot! This machine burns stolen flavor. Cocoa is free now!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "So hot! This machine burns stolen flavor. Cocoa is free now!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_02.mp3",
+      "bytes": 61065,
+      "sha256": "ed19df98934dab91d5f67f54609cfa9607b1dc56ebeb1dfe30c2a17867afdfbf"
+    },
+    {
+      "key": "vo_ruby_story_03",
+      "speaker": "ruby",
+      "text": "The frozen mochi here were people once. Taro is free!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The frozen mochi here were people once. Taro is free!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_03.mp3",
+      "bytes": 54377,
+      "sha256": "19fafd5bec03413bf99e6c2ef07e5a27e3af42a41a3cf85a69bcc32371639cf5"
+    },
+    {
+      "key": "vo_ruby_story_04",
+      "speaker": "ruby",
+      "text": "A Crown root drinks this kitchen. Yuzu is here — let’s cut it!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "A Crown root drinks this kitchen. Yuzu is here — let’s cut it!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_04.mp3",
+      "bytes": 57721,
+      "sha256": "7c287beb2944bd78746166987af165ea401daa7c8ffdff6fe852c67c4a0c7983"
+    },
+    {
+      "key": "vo_ruby_story_05",
+      "speaker": "ruby",
+      "text": "The root slid into the garden. Grandma’s flavor is still in the Crown.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The root slid into the garden. Grandma’s flavor is still in the Crown.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_05.mp3",
+      "bytes": 86560,
+      "sha256": "e27b2624fbef32f652eb2cc88892b2e8ccfde76c91848a08717e643aac7852f0"
+    },
+    {
+      "key": "vo_ruby_story_06",
+      "speaker": "ruby",
+      "text": "These spores eat memories. Stay close to me!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "These spores eat memories. Stay close to me!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_06.mp3",
+      "bytes": 37659,
+      "sha256": "6357ee2b0c078a9932deb268ee04e8d121483ab6b17019f75e809749903832bc"
+    },
+    {
+      "key": "vo_ruby_story_07",
+      "speaker": "ruby",
+      "text": "The bees once made honey for everyone. Now they guard it for the Hunger.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The bees once made honey for everyone. Now they guard it for the Hunger.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_07.mp3",
+      "bytes": 67334,
+      "sha256": "136cde30da704281abf740dda10fe24b7a01b36d1e7423a2f684835f50e98288"
+    },
+    {
+      "key": "vo_ruby_story_08",
+      "speaker": "ruby",
+      "text": "Time stopped here when the curse began.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Time stopped here when the curse began.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_08.mp3",
+      "bytes": 32225,
+      "sha256": "6bc29051428ec6d40c8d0d28b7779f2e77a9b1eae56cec1850b9754e4e9e9de1"
+    },
+    {
+      "key": "vo_ruby_story_09",
+      "speaker": "ruby",
+      "text": "All the roots lead to one place. The Hunger is growing a body.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "All the roots lead to one place. The Hunger is growing a body.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_09.mp3",
+      "bytes": 61065,
+      "sha256": "dfdd4b79541e662ea401d84087a675ba621ccce22c726f538ee3e7b0eb5ececd"
+    },
+    {
+      "key": "vo_ruby_story_10",
+      "speaker": "ruby",
+      "text": "The fields are empty. The Hunger is reaching for the First Tree.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The fields are empty. The Hunger is reaching for the First Tree.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_10.mp3",
+      "bytes": 52287,
+      "sha256": "b9ced01ed54f04397872159eaab78de077b92aca2b282f205e2f25a637df13cb"
+    },
+    {
+      "key": "vo_ruby_story_11",
+      "speaker": "ruby",
+      "text": "These flowers were eaten hollow. Stay sharp!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "These flowers were eaten hollow. Stay sharp!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_11.mp3",
+      "bytes": 44346,
+      "sha256": "10aacb4eb34fd71eb7ee5801fad692ada903840cbf085816c32a2ee205259a56"
+    },
+    {
+      "key": "vo_ruby_story_12",
+      "speaker": "ruby",
+      "text": "The glass shows the old kingdom. Look — people, not mochi!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The glass shows the old kingdom. Look — people, not mochi!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_12.mp3",
+      "bytes": 74021,
+      "sha256": "286fe6c09cf5d66af396b241d09a2bbba526da27344d63a71da7fee63602c480"
+    },
+    {
+      "key": "vo_ruby_story_13",
+      "speaker": "ruby",
+      "text": "The first seeds sleep here. The First Tree is close!",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The first seeds sleep here. The First Tree is close!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_13.mp3",
+      "bytes": 51452,
+      "sha256": "33c6a048e7ebeff442a5bd503b234cb6522a7fbc6c1b847bc8f6c493f140db49"
+    },
+    {
+      "key": "vo_ruby_story_14",
+      "speaker": "ruby",
+      "text": "This is the First Tree. Thank you for bringing me this far.",
+      "group": "ruby_story",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "This is the First Tree. Thank you for bringing me this far.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_story/originals/vo_ruby_story_14.mp3",
+      "bytes": 48526,
+      "sha256": "9277483b59211fcdaad45d752233a7631353492c2e8e5f883e33895525f540f2"
+    },
+    {
+      "key": "vo_ruby_book_1_1",
+      "speaker": "ruby",
+      "text": "Long ago, a Crown turned everyone in Mochitopia into mochi — and began eating their flavor.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Long ago, a Crown turned everyone in Mochitopia into mochi — and began eating their flavor.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_1_1.mp3",
+      "bytes": 106622,
+      "sha256": "c4a366b75e3f04f088aeeb99128f2d44d3df8b8e0da1fe3d1c6eadb727d51680"
+    },
+    {
+      "key": "vo_ruby_book_1_2",
+      "speaker": "ruby",
+      "text": "I’m Ruby, a jam spirit. Grandma made me to guard her recipe book and one sleeping seed.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "I’m Ruby, a jam spirit. Grandma made me to guard her recipe book and one sleeping seed.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_1_2.mp3",
+      "bytes": 87814,
+      "sha256": "5763321ceb217a516a6410f25c99c848870f0d6f8ce12dc384cc98ca691e95e1"
+    },
+    {
+      "key": "vo_ruby_book_1_3",
+      "speaker": "ruby",
+      "text": "Today the floor cracked, you fell, and the Heart Seed woke in your hands. You’re a person again!",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Today the floor cracked, you fell, and the Heart Seed woke in your hands. You’re a person again!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_1_3.mp3",
+      "bytes": 100771,
+      "sha256": "9ceedf29c9c0e04d6c688976296fdd46dc6e8a8c30771e50836a179eca3cc170"
+    },
+    {
+      "key": "vo_ruby_book_2_1",
+      "speaker": "ruby",
+      "text": "The Empress is free and her flavor came home. These pipes lead to where Grandma hid her jar.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Empress is free and her flavor came home. These pipes lead to where Grandma hid her jar.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_2_1.mp3",
+      "bytes": 101189,
+      "sha256": "c3366c6f5dfe948c78e4cb318e253e7fcebbaf2a72355e8ec5dfac3f453bf1e8"
+    },
+    {
+      "key": "vo_ruby_book_2_2",
+      "speaker": "ruby",
+      "text": "Before the Hunger caught her, Grandma dropped her jar into the cracks to keep it safe.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Before the Hunger caught her, Grandma dropped her jar into the cracks to keep it safe.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_2_2.mp3",
+      "bytes": 69424,
+      "sha256": "ab01ba0f5ce9d30eeaad33d675115be0a996e0dfecef4d4fad9731a03097229e"
+    },
+    {
+      "key": "vo_ruby_book_2_3",
+      "speaker": "ruby",
+      "text": "Inside: Grandma’s Battle Recipes! Three seed styles for your Heart Seed; choose one on each floor.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Inside: Grandma’s Battle Recipes! Three seed styles for your Heart Seed; choose one on each floor.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_2_3.mp3",
+      "bytes": 119997,
+      "sha256": "180432ef851d2a0339308fc06de6179a8c557961e51215b64c1a246835f81a6d"
+    },
+    {
+      "key": "vo_ruby_book_3_1",
+      "speaker": "ruby",
+      "text": "This furnace burns the flavor the Hunger steals. Every spark is a piece of someone.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "This furnace burns the flavor the Hunger steals. Every spark is a piece of someone.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_3_1.mp3",
+      "bytes": 76947,
+      "sha256": "b3dacefacc970cb3dd95c071b9681b43fb12eedf036036b7227b12ed5166669b"
+    },
+    {
+      "key": "vo_ruby_book_3_2",
+      "speaker": "ruby",
+      "text": "Look at those jars. Cursed mochi are trapped inside, drained of everything they are.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Look at those jars. Cursed mochi are trapped inside, drained of everything they are.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_3_2.mp3",
+      "bytes": 97009,
+      "sha256": "9f9dd5a4895d6ebfc2b2a44393f5f855ed8da9858eca03a0ce01dca543af5453"
+    },
+    {
+      "key": "vo_ruby_book_3_3",
+      "speaker": "ruby",
+      "text": "Stop the furnace and their flavor comes home — then your seed can break their curse!",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stop the furnace and their flavor comes home — then your seed can break their curse!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_3_3.mp3",
+      "bytes": 90322,
+      "sha256": "9156f87ccbb235f00d65fc7fda65971eb30c56b00ca4b5b77609d0402300a5af"
+    },
+    {
+      "key": "vo_ruby_book_4_1",
+      "speaker": "ruby",
+      "text": "Cursed mochi are frozen in here as fuel. Their voices tremble beneath the frost.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Cursed mochi are frozen in here as fuel. Their voices tremble beneath the frost.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_4_1.mp3",
+      "bytes": 74439,
+      "sha256": "923bef8b6c1a26a48bd6343efa0e142d312fb4821def124f67696401acc7eddc"
+    },
+    {
+      "key": "vo_ruby_book_4_2",
+      "speaker": "ruby",
+      "text": "That gentle voice… Grandma! She froze herself so the Hunger could not eat her last page.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "That gentle voice… Grandma! She froze herself so the Hunger could not eat her last page.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_4_2.mp3",
+      "bytes": 125848,
+      "sha256": "a1ded91d5362bc80ec4ccef850aaed1f25e67588e08928354cd5e120e034e6b9"
+    },
+    {
+      "key": "vo_ruby_book_4_3",
+      "speaker": "ruby",
+      "text": "Her flavor is locked inside the Crown itself. We free the others now — then we go get hers.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Her flavor is locked inside the Crown itself. We free the others now — then we go get hers.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_4_3.mp3",
+      "bytes": 104532,
+      "sha256": "9b13300badf3f68cb10b948d7654719ee59836506d4d292be77fa934f4fb1d55"
+    },
+    {
+      "key": "vo_ruby_book_5_1",
+      "speaker": "ruby",
+      "text": "The Crown Oven. A root of the Crown comes up here to drink the whole kitchen’s flavor.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Crown Oven. A root of the Crown comes up here to drink the whole kitchen’s flavor.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_5_1.mp3",
+      "bytes": 78201,
+      "sha256": "c1f7da18d178e509d8a79101762d3a60d860177214166816b685c2234975cb03"
+    },
+    {
+      "key": "vo_ruby_book_5_2",
+      "speaker": "ruby",
+      "text": "I’m frightened. But Grandma is waiting, and the First Tree is starving.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "I’m frightened. But Grandma is waiting, and the First Tree is starving.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_5_2.mp3",
+      "bytes": 67334,
+      "sha256": "e48045d512d3d3df6d3b67da8a3c3b385a2895d8c7911b1c48e9bc16eff08aa3"
+    },
+    {
+      "key": "vo_ruby_book_5_3",
+      "speaker": "ruby",
+      "text": "Let’s cut this root together. Then we follow it — all the way to the Crown.",
+      "group": "storybook",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Let’s cut this root together. Then we follow it — all the way to the Crown.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "storybook/originals/vo_ruby_book_5_3.mp3",
+      "bytes": 80709,
+      "sha256": "10bf1bdf8194d7b4945f9227aa1129a4f4968f8624e24379e3ea1015c4a3ce29"
+    },
+    {
+      "key": "vo_ruby_tip_survive",
+      "speaker": "ruby",
+      "text": "Stay alive until the timer ends. Keep moving!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stay alive until the timer ends. Keep moving!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_survive.mp3",
+      "bytes": 39749,
+      "sha256": "8bd92ad4dc06bad1e60058735dac2d15d031ba412460b194aff2aa2116b4f753"
+    },
+    {
+      "key": "vo_ruby_tip_fill",
+      "speaker": "ruby",
+      "text": "Beat monsters to fill the Meter!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Beat monsters to fill the Meter!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_fill.mp3",
+      "bytes": 29300,
+      "sha256": "2ec824353e013472e44fd001ece8c8c8619d55ffdc4fb2b447461bcb53cae374"
+    },
+    {
+      "key": "vo_ruby_tip_purge",
+      "speaker": "ruby",
+      "text": "Keep the Wisp safe. Outside, you bleed!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Keep the Wisp safe. Outside, you bleed!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_purge.mp3",
+      "bytes": 40585,
+      "sha256": "50f2a3fbef0ec1f3ad1f9e375e6fa27e792caea7eb2642908f74ca2fceff45ab"
+    },
+    {
+      "key": "vo_ruby_tip_capture",
+      "speaker": "ruby",
+      "text": "Stand inside the ring!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stand inside the ring!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_capture.mp3",
+      "bytes": 27210,
+      "sha256": "c6fb739aa2f6aa15245c7e64af356223eb3d40c436eacad1390f618aed4e3a66"
+    },
+    {
+      "key": "vo_ruby_tip_defendNectar",
+      "speaker": "ruby",
+      "text": "Protect the flower! Stay close.",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Protect the flower! Stay close.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_defendNectar.mp3",
+      "bytes": 27628,
+      "sha256": "36077088224799a347733edc132c76592651aa00ac591361d92b5639fa3fc56e"
+    },
+    {
+      "key": "vo_ruby_tip_seasonCycle",
+      "speaker": "ruby",
+      "text": "Grab petals for all 4 seasons!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Grab petals for all 4 seasons!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_seasonCycle.mp3",
+      "bytes": 31390,
+      "sha256": "3cf523dd5bf3ef3b24e843ef8b2d02d1a4f005a3887c5b488a649f56e793d2c1"
+    },
+    {
+      "key": "vo_ruby_tip_breakRoots",
+      "speaker": "ruby",
+      "text": "Stand next to each root anchor to snap it!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stand next to each root anchor to snap it!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_breakRoots.mp3",
+      "bytes": 44764,
+      "sha256": "e2b4dba7d2ac26ba839b3c555c745faf9d9efa08608827d06ba996f6a75b1276"
+    },
+    {
+      "key": "vo_ruby_tip_cleanAir",
+      "speaker": "ruby",
+      "text": "Stay in the moving clean-air ring!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stay in the moving clean-air ring!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_cleanAir.mp3",
+      "bytes": 28464,
+      "sha256": "809c7d8d849147e803791af5ecf089951e503fb6fd0d3bb99510e7a86941552d"
+    },
+    {
+      "key": "vo_ruby_tip_counter",
+      "speaker": "ruby",
+      "text": "Dash into the glowing item to kick it at the boss!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Dash into the glowing item to kick it at the boss!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_counter.mp3",
+      "bytes": 47272,
+      "sha256": "56008fe111634dd9d148a5af2e5c9d1957e9bb7bf0ed8dab0237a152058f8d97"
+    },
+    {
+      "key": "vo_ruby_tip_mini",
+      "speaker": "ruby",
+      "text": "A Miniboss! Beat it to spin the reward wheel!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "A Miniboss! Beat it to spin the reward wheel!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_mini.mp3",
+      "bytes": 41003,
+      "sha256": "daaa23097d5ca0c0c0b0e5025efdd05c603c3994198085f71ac2169bb9a30de4"
+    },
+    {
+      "key": "vo_ruby_tip_boss",
+      "speaker": "ruby",
+      "text": "The Boss! Dash away from red warnings, then hit back!",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Boss! Dash away from red warnings, then hit back!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_boss.mp3",
+      "bytes": 51034,
+      "sha256": "79f7a10807fdf21ce833a75564b0e615c8bbf8ff3ff0960b7e972bfca09a09fd"
+    },
+    {
+      "key": "vo_ruby_tip_magnet",
+      "speaker": "ruby",
+      "text": "A Magnet! It pulls in all your EXP.",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "A Magnet! It pulls in all your EXP.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_magnet.mp3",
+      "bytes": 53959,
+      "sha256": "860ff45afb072673a00efee27c7b14d4ce999e7de8c59d12a6ce00152c7849e6"
+    },
+    {
+      "key": "vo_ruby_tip_heal",
+      "speaker": "ruby",
+      "text": "A Heal Mochi! Grab it to get HP back.",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "A Heal Mochi! Grab it to get HP back.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_heal.mp3",
+      "bytes": 41838,
+      "sha256": "816ef9156afac03d2e3fcc491322f806bce6422a6a8b35b47d4852722eee16ca"
+    },
+    {
+      "key": "vo_ruby_tip_chest",
+      "speaker": "ruby",
+      "text": "A Treasure Chest! Open it for a free upgrade.",
+      "group": "ruby_tips",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "A Treasure Chest! Open it for a free upgrade.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_tips/originals/vo_ruby_tip_chest.mp3",
+      "bytes": 51034,
+      "sha256": "0292d3ceca69e06da9d50c3843af365cc1161a1569eec493a64d2a2b0bec209c"
+    },
+    {
+      "key": "vo_ruby_guide_dig",
+      "speaker": "ruby",
+      "text": "Depths is open! Use shovels to dig under the temple. Find the ladder to go deeper.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Depths is open! Use shovels to dig under the temple. Find the ladder to go deeper.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_dig.mp3",
+      "bytes": 79873,
+      "sha256": "3cd1f4fd9fe64c3f8e1c1167dc12aa39f16db1716968f330902ed2f5529ce048"
+    },
+    {
+      "key": "vo_ruby_guide_rewards",
+      "speaker": "ruby",
+      "text": "Rewards is open! Your daily login gift, Daily Quests and Awards are all here.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Rewards is open! Your daily login gift, Daily Quests and Awards are all here.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_rewards.mp3",
+      "bytes": 89486,
+      "sha256": "91c3c6e4fc32b62158a1cc1a6142eb90141222298b9c9c667ae8fa71a64e8796"
+    },
+    {
+      "key": "vo_ruby_guide_bazaar",
+      "speaker": "ruby",
+      "text": "The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Bazaar is open! Open treasure chests and shop for gear with your Sugar and Thread.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_bazaar.mp3",
+      "bytes": 74021,
+      "sha256": "b2511ef6425a0401f9b34eb6b47f998d78941f5bb2eef74412b94a8cad8b4f69"
+    },
+    {
+      "key": "vo_ruby_guide_gActivity",
+      "speaker": "ruby",
+      "text": "Activities: daily goals and side fun that pay out rewards.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Activities: daily goals and side fun that pay out rewards.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_gActivity.mp3",
+      "bytes": 62736,
+      "sha256": "2694d21f2ac33e2aafee778a53e6373b9d49f67334a4faf1998bf7d29d6b444e"
+    },
+    {
+      "key": "vo_ruby_guide_daily",
+      "speaker": "ruby",
+      "text": "Daily Quests reset every day — finish them for reward boxes!",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Daily Quests reset every day — finish them for reward boxes!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_daily.mp3",
+      "bytes": 67334,
+      "sha256": "a10fc8c9b1267b18449bbde5db1b9a82926cde5f223774472c1342f2cbc38876"
+    },
+    {
+      "key": "vo_ruby_guide_achievements",
+      "speaker": "ruby",
+      "text": "Awards count your big moments and pay Sugar for each one.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Awards count your big moments and pay Sugar for each one.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_achievements.mp3",
+      "bytes": 54377,
+      "sha256": "02986283767b7fb334c443bb984c612d114d8f6fe0de79aa57d3ed245d3791d8"
+    },
+    {
+      "key": "vo_ruby_guide_news",
+      "speaker": "ruby",
+      "text": "News shows what changed in each update.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "News shows what changed in each update.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_news.mp3",
+      "bytes": 32225,
+      "sha256": "e6b41607a7821d198a69b57d2df43ab137b0d7f53f4d58f6d12fc689deedc723"
+    },
+    {
+      "key": "vo_ruby_guide_gearInbox",
+      "speaker": "ruby",
+      "text": "Mail keeps loot that did not fit your bag. Check it often!",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Mail keeps loot that did not fit your bag. Check it often!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_gearInbox.mp3",
+      "bytes": 49362,
+      "sha256": "af6699e1d7a78e88f80186e527e7f5040fdeaa7a56796fdda87f744227d3e152"
+    },
+    {
+      "key": "vo_ruby_guide_gear",
+      "speaker": "ruby",
+      "text": "Equipment! Put on the gear you find — it lives in the Upgrade tab.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Equipment! Put on the gear you find — it lives in the Upgrade tab.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_gear.mp3",
+      "bytes": 65662,
+      "sha256": "5e0b102f1a4c025167876070fd04ef8cdea1d75e97c6f5b5254f30522aae8ebf"
+    },
+    {
+      "key": "vo_ruby_guide_craft",
+      "speaker": "ruby",
+      "text": "The Affix Forge lets you reroll the powers on your gear (Upgrade tab).",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Affix Forge lets you reroll the powers on your gear (Upgrade tab).",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_craft.mp3",
+      "bytes": 77783,
+      "sha256": "cf72d69c94002cc430deae5e9591b4526a209e3507e1e017bbad94e712b423d2"
+    },
+    {
+      "key": "vo_ruby_guide_char",
+      "speaker": "ruby",
+      "text": "Heroes! A new friend has joined — switch heroes and spend Talent points here.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Heroes! A new friend has joined — switch heroes and spend Talent points here.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_char.mp3",
+      "bytes": 87814,
+      "sha256": "38d323acc0a345ed6aa79a986be6a7353d11a0c26ad4b55db7dbb58295e60d17"
+    },
+    {
+      "key": "vo_ruby_guide_gCodex",
+      "speaker": "ruby",
+      "text": "The Recipe Book remembers every Build card, relic and monster you meet.",
+      "group": "ruby_guides",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Recipe Book remembers every Build card, relic and monster you meet.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "ruby_guides/originals/vo_ruby_guide_gCodex.mp3",
+      "bytes": 71514,
+      "sha256": "1ddf5600286156d892b1483b96a3c0dd0730727ce1b7c94948bd65ad3978d8ad"
+    },
+    {
+      "key": "vo_strawberry_lobby_1",
+      "speaker": "strawberry",
+      "text": "Poke me again. I dare you!",
+      "group": "lobby",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "parameters": {
+        "text": "Poke me again. I dare you!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_strawberry_lobby_1.mp3",
+      "bytes": 26374,
+      "sha256": "2371ab7ec0ca97005c658a90074e87525a8ea5ae2684c46f41a124ed3fd67494"
+    },
+    {
+      "key": "vo_strawberry_lobby_2",
+      "speaker": "strawberry",
+      "text": "Pew pew! Did you see that?",
+      "group": "lobby",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "parameters": {
+        "text": "Pew pew! Did you see that?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_strawberry_lobby_2.mp3",
+      "bytes": 26374,
+      "sha256": "c5a0f1098bfd7bcacc31161f4aaddd944f8583b285b7127fdfe322231b481a42"
+    },
+    {
+      "key": "vo_strawberry_lobby_3",
+      "speaker": "strawberry",
+      "text": "Let’s go! My feet are bouncy!",
+      "group": "lobby",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "parameters": {
+        "text": "Let’s go! My feet are bouncy!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_strawberry_lobby_3.mp3",
+      "bytes": 30972,
+      "sha256": "3ff24db6ce499a508827b987c10b2e1eff632d5b16a99e408c710db3384b63b9"
+    },
+    {
+      "key": "vo_mint_lobby_1",
+      "speaker": "mint",
+      "text": "Chill. I’ve got your back.",
+      "group": "lobby",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "parameters": {
+        "text": "Chill. I’ve got your back.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_mint_lobby_1.mp3",
+      "bytes": 24284,
+      "sha256": "fb7f2223b29b0384cb61864823ed63bec99537e41710f22ceb3c62fccd0667ee"
+    },
+    {
+      "key": "vo_mint_lobby_2",
+      "speaker": "mint",
+      "text": "Too hot? I can fix that.",
+      "group": "lobby",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "parameters": {
+        "text": "Too hot? I can fix that.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_mint_lobby_2.mp3",
+      "bytes": 26374,
+      "sha256": "9afc8affa2de8b7ff8333ce9b2d50e77fdb904a7e9ccccc0d77a496276243c7c"
+    },
+    {
+      "key": "vo_mint_lobby_3",
+      "speaker": "mint",
+      "text": "Brr! …That was me. Sorry.",
+      "group": "lobby",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "parameters": {
+        "text": "Brr! …That was me. Sorry.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_mint_lobby_3.mp3",
+      "bytes": 30972,
+      "sha256": "cc80134485fb9aebb907a6a37914e1898868599f60d945c8082555218b9c1bc6"
+    },
+    {
+      "key": "vo_cocoa_lobby_1",
+      "speaker": "cocoa",
+      "text": "Cookie? I always carry two.",
+      "group": "lobby",
+      "voice_id": "uZv1Etduw4mQOvBD6ts3",
+      "parameters": {
+        "text": "Cookie? I always carry two.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_cocoa_lobby_1.mp3",
+      "bytes": 29300,
+      "sha256": "a26d4d1b44b0f03c75e9e49829ac8f5de534ff3c9d2a4ff9ab68345226c0de08"
+    },
+    {
+      "key": "vo_cocoa_lobby_2",
+      "speaker": "cocoa",
+      "text": "Hide behind me, little one.",
+      "group": "lobby",
+      "voice_id": "uZv1Etduw4mQOvBD6ts3",
+      "parameters": {
+        "text": "Hide behind me, little one.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_cocoa_lobby_2.mp3",
+      "bytes": 23448,
+      "sha256": "6b75b51a1284fc916e6d5950b4254fd21fc6c42b5de201669c5d4f81012da12b"
+    },
+    {
+      "key": "vo_cocoa_lobby_3",
+      "speaker": "cocoa",
+      "text": "Big hug or big punch? Pick!",
+      "group": "lobby",
+      "voice_id": "uZv1Etduw4mQOvBD6ts3",
+      "parameters": {
+        "text": "Big hug or big punch? Pick!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_cocoa_lobby_3.mp3",
+      "bytes": 41003,
+      "sha256": "54deca65971bac4bc3d80fa8baaf1c97c196f443957c1b24d0f14dc6f8877d0c"
+    },
+    {
+      "key": "vo_taro_lobby_1",
+      "speaker": "taro",
+      "text": "Zap! …Mostly on purpose.",
+      "group": "lobby",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "parameters": {
+        "text": "Zap! …Mostly on purpose.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_taro_lobby_1.mp3",
+      "bytes": 33061,
+      "sha256": "b6d274d37a93f7e122821061f42dcb2f3e00cb6357051250a1ce53622c621fd2"
+    },
+    {
+      "key": "vo_taro_lobby_2",
+      "speaker": "taro",
+      "text": "My compass says: adventure!",
+      "group": "lobby",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "parameters": {
+        "text": "My compass says: adventure!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_taro_lobby_2.mp3",
+      "bytes": 29300,
+      "sha256": "30366f9ce1d7e226e1dffd8d251b3ecda24299b855de083789dd2a2bcbacc064"
+    },
+    {
+      "key": "vo_taro_lobby_3",
+      "speaker": "taro",
+      "text": "Ooh, sparkly! Can I touch it?",
+      "group": "lobby",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "parameters": {
+        "text": "Ooh, sparkly! Can I touch it?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_taro_lobby_3.mp3",
+      "bytes": 25538,
+      "sha256": "0d38338beaeea31e0e429493f070a088c9b48b75a07089258f72e7dee6e5f367"
+    },
+    {
+      "key": "vo_yuzu_lobby_1",
+      "speaker": "yuzu",
+      "text": "Yuzlings! Look busy!",
+      "group": "lobby",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "parameters": {
+        "text": "Yuzlings! Look busy!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_yuzu_lobby_1.mp3",
+      "bytes": 20941,
+      "sha256": "4493d9de272bd16b700db42e86ac7db20c3604dd2e271ae3fd37725a51670bd2"
+    },
+    {
+      "key": "vo_yuzu_lobby_2",
+      "speaker": "yuzu",
+      "text": "Tiny crew, big trouble!",
+      "group": "lobby",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "parameters": {
+        "text": "Tiny crew, big trouble!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_yuzu_lobby_2.mp3",
+      "bytes": 22612,
+      "sha256": "e9bb18c90bb755974b4242adf79d552a3f242b9f4cc580980bc486d6d0b2dca0"
+    },
+    {
+      "key": "vo_yuzu_lobby_3",
+      "speaker": "yuzu",
+      "text": "Citrus squad, roll out!",
+      "group": "lobby",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "parameters": {
+        "text": "Citrus squad, roll out!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "lobby/originals/vo_yuzu_lobby_3.mp3",
+      "bytes": 23448,
+      "sha256": "74598ee32ec7f8a77b5b2742d2a77e49dc37aa39d5d274cabf2cb1688205568d"
+    },
+    {
+      "key": "vo_b01_intro",
+      "speaker": "boss_c1",
+      "text": "If I stop obeying, who will keep my children safe?",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "If I stop obeying, who will keep my children safe?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b01_intro.mp3",
+      "bytes": 41003,
+      "sha256": "d2f3b33ae1a468b1285237650d9e1887f1dccbe0df76fcf2647f059c48d9fe9b"
+    },
+    {
+      "key": "vo_b01_fight_1",
+      "speaker": "boss_c1",
+      "text": "No! The crystal promised they would be safe!",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "No! The crystal promised they would be safe!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b01_fight_1.mp3",
+      "bytes": 29300,
+      "sha256": "410891ac35da5efdc3ccc6d81d09e8a1322cfa0362630fd9a96243dc999323c1"
+    },
+    {
+      "key": "vo_b01_fight_2",
+      "speaker": "boss_c1",
+      "text": "Workers, stay behind me!",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "Workers, stay behind me!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b01_fight_2.mp3",
+      "bytes": 24702,
+      "sha256": "1bc7ac60578115d4b3ed0c4f086a5ea391d9bf96dee14a43ac0fec7128815aae"
+    },
+    {
+      "key": "vo_b01_release",
+      "speaker": "boss_c1",
+      "text": "The orders are quiet… please, keep the eggs warm.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "The orders are quiet… please, keep the eggs warm.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b01_release.mp3",
+      "bytes": 50198,
+      "sha256": "3d86fac13b6217669044835b21fc1d47d207cc748d66b2015dd7c023afba38b2"
+    },
+    {
+      "key": "vo_b02_intro",
+      "speaker": "boss_c1",
+      "text": "You call it waste. I can still hear their names.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "You call it waste. I can still hear their names.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b02_intro.mp3",
+      "bytes": 43510,
+      "sha256": "1f3aa46feb51bf3968425ff5d5c27be7ba485bf87cf03da834506402ff0e08d2"
+    },
+    {
+      "key": "vo_b02_fight_1",
+      "speaker": "boss_c1",
+      "text": "I will not let another memory wash away!",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "I will not let another memory wash away!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b02_fight_1.mp3",
+      "bytes": 37659,
+      "sha256": "796c1154daf6c76b11ee7b77d9e5fe9207e716bbcf9008495d51b4da2c9de7f4"
+    },
+    {
+      "key": "vo_b02_fight_2",
+      "speaker": "boss_c1",
+      "text": "The pipes are full. There is nowhere left to keep them!",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "The pipes are full. There is nowhere left to keep them!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b02_fight_2.mp3",
+      "bytes": 43510,
+      "sha256": "d7dab2e2d5b063c89502bea8b0e1047334c98d2b492d0b5159c74408ec71f981"
+    },
+    {
+      "key": "vo_b02_release",
+      "speaker": "boss_c1",
+      "text": "The water is clear… I can hear each voice again.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "The water is clear… I can hear each voice again.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b02_release.mp3",
+      "bytes": 58139,
+      "sha256": "89e1d7ff75ad88f5fe172bf5675d1c16629a0a3f2ce631b444ac8020cff61603"
+    },
+    {
+      "key": "vo_b03_intro",
+      "speaker": "boss_c1",
+      "text": "The stove must stay lit. Someone is still waiting for dinner.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "The stove must stay lit. Someone is still waiting for dinner.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b03_intro.mp3",
+      "bytes": 61901,
+      "sha256": "ec6151ae4a54286b2ec75495066ea217da7f60c7c9c9f94bec523c53e20d04aa"
+    },
+    {
+      "key": "vo_b03_fight_1",
+      "speaker": "boss_c1",
+      "text": "Just one more tray. Then everyone can eat.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "Just one more tray. Then everyone can eat.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b03_fight_1.mp3",
+      "bytes": 50198,
+      "sha256": "ce60844ec54f9625a30dbfa7deebe8c59cdc376b3db6267f83f86cbd94d0b065"
+    },
+    {
+      "key": "vo_b03_fight_2",
+      "speaker": "boss_c1",
+      "text": "Why does every meal smell like smoke?",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "Why does every meal smell like smoke?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b03_fight_2.mp3",
+      "bytes": 24702,
+      "sha256": "7e9ccaab887e0d621926548bb88054af672437da607b5b3c8b6fba0dfa41c16c"
+    },
+    {
+      "key": "vo_b03_release",
+      "speaker": "boss_c1",
+      "text": "At last… I can let the stove cool.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "At last… I can let the stove cool.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b03_release.mp3",
+      "bytes": 47690,
+      "sha256": "69fa0eac35af66dba020f8a758717e73c96e94a01bfaceed5ab8a9bcf79016e0"
+    },
+    {
+      "key": "vo_b04_intro",
+      "speaker": "boss_c1",
+      "text": "If the ice melts, what will protect them from forgetting?",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "If the ice melts, what will protect them from forgetting?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b04_intro.mp3",
+      "bytes": 44346,
+      "sha256": "55bc0a2936a993e1bc4dc688f8bfeedaf15b0dcde5733642427fd659a2cc95d9"
+    },
+    {
+      "key": "vo_b04_fight_1",
+      "speaker": "boss_c1",
+      "text": "Stay frozen. Stay safe. That was the order.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "Stay frozen. Stay safe. That was the order.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b04_fight_1.mp3",
+      "bytes": 35151,
+      "sha256": "630b07f60e404eea2c1ead5775f0751a3f07d14e24ec31f81ccbd99a9519fcc6"
+    },
+    {
+      "key": "vo_b04_fight_2",
+      "speaker": "boss_c1",
+      "text": "Do not take the last shelter I can give them!",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "Do not take the last shelter I can give them!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b04_fight_2.mp3",
+      "bytes": 34315,
+      "sha256": "f7a10bc65518e0bbbb0f57251e0db8fe396e07fb190e9e20aca13c6ef22204dc"
+    },
+    {
+      "key": "vo_b04_release",
+      "speaker": "boss_c1",
+      "text": "Their voices… they are warmer than I remember.",
+      "group": "boss",
+      "voice_id": "RfcFM4jK4RYas2wQz4pd",
+      "parameters": {
+        "text": "Their voices… they are warmer than I remember.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b04_release.mp3",
+      "bytes": 46436,
+      "sha256": "7b2fb68db06c7cb24f0c9efaf2945057e52ad1c3de06a9a9a1c47208fdf27651"
+    },
+    {
+      "key": "vo_b05_intro",
+      "speaker": "hunger",
+      "text": "A kingdom that cannot remember hunger can never complain.",
+      "group": "boss",
+      "voice_id": "Wm3zbk05bRXj9I33qN3Z",
+      "parameters": {
+        "text": "A kingdom that cannot remember hunger can never complain.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b05_intro.mp3",
+      "bytes": 60647,
+      "sha256": "8d3ea3a1ea7eff7c0abe5e283da8726bf12162067ca56bf3738bbd5a75775625"
+    },
+    {
+      "key": "vo_b05_fight_1",
+      "speaker": "hunger",
+      "text": "Give me the taste you are trying to save.",
+      "group": "boss",
+      "voice_id": "Wm3zbk05bRXj9I33qN3Z",
+      "parameters": {
+        "text": "Give me the taste you are trying to save.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b05_fight_1.mp3",
+      "bytes": 35151,
+      "sha256": "0100d87159de0e0145a8559a16033d640958273c7b97e61141a22c84e010e466"
+    },
+    {
+      "key": "vo_b05_fight_2",
+      "speaker": "hunger",
+      "text": "You cannot empty a hunger by feeding it!",
+      "group": "boss",
+      "voice_id": "Wm3zbk05bRXj9I33qN3Z",
+      "parameters": {
+        "text": "You cannot empty a hunger by feeding it!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b05_fight_2.mp3",
+      "bytes": 40585,
+      "sha256": "56ffa187b932d0a06d14d98211deb0ba93205eba215919d62fb320ba3719419a"
+    },
+    {
+      "key": "vo_b05_release",
+      "speaker": "hunger",
+      "text": "You have cut one root. I have so many more.",
+      "group": "boss",
+      "voice_id": "Wm3zbk05bRXj9I33qN3Z",
+      "parameters": {
+        "text": "You have cut one root. I have so many more.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b05_release.mp3",
+      "bytes": 49362,
+      "sha256": "14cd63baaefafc1201a2f69bd04883bde90cf71fac78611724e45bfb82cded4c"
+    },
+    {
+      "key": "vo_b06_intro",
+      "speaker": "boss_c2",
+      "text": "Mother said I would bloom forever if I brought enough flavor.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Mother said I would bloom forever if I brought enough flavor.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b06_intro.mp3",
+      "bytes": 45600,
+      "sha256": "019efb92fdce6ceb41c66bedfb843c4d1f2a8f0a1635696a253a8b0c2c76083c"
+    },
+    {
+      "key": "vo_b06_fight_1",
+      "speaker": "boss_c2",
+      "text": "Do not let my petals fall before she sees me!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Do not let my petals fall before she sees me!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b06_fight_1.mp3",
+      "bytes": 48526,
+      "sha256": "fec182311b186b24cfd957c59feb7a4e0c166a2652608b9a07ee87a69994f3fa"
+    },
+    {
+      "key": "vo_b06_fight_2",
+      "speaker": "boss_c2",
+      "text": "Every spore carries a memory. I need them all!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Every spore carries a memory. I need them all!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b06_fight_2.mp3",
+      "bytes": 65662,
+      "sha256": "7030b6952899a307d3eef8bf6fe17818a645e825f0c0a66dfff7274e87381f68"
+    },
+    {
+      "key": "vo_b06_release",
+      "speaker": "boss_c2",
+      "text": "Mother… was any of this garden ever mine?",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Mother… was any of this garden ever mine?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b06_release.mp3",
+      "bytes": 35987,
+      "sha256": "84bdae09f86ba984f406fa4617c0acd0c14e46d027fde3bd23cc04df2590255f"
+    },
+    {
+      "key": "vo_b07_intro",
+      "speaker": "boss_c2",
+      "text": "One heart cannot bear to lose another voice.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "One heart cannot bear to lose another voice.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b07_intro.mp3",
+      "bytes": 46436,
+      "sha256": "2bf0ba0a96b3bea072d6ffbd2b411f5e6c787f84334fa06a814e741f0c0a8549"
+    },
+    {
+      "key": "vo_b07_fight_1",
+      "speaker": "boss_c2",
+      "text": "Stay together. No one leaves the colony!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Stay together. No one leaves the colony!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b07_fight_1.mp3",
+      "bytes": 56885,
+      "sha256": "c8662b27ed4c9c4d5a26d30bc3c9121e2a5cdd3a8da053586eb15c757994dd76"
+    },
+    {
+      "key": "vo_b07_fight_2",
+      "speaker": "boss_c2",
+      "text": "Breathe with us. Forget the world outside!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Breathe with us. Forget the world outside!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b07_fight_2.mp3",
+      "bytes": 49362,
+      "sha256": "5f6e8997330306f283f26b18d996c1f1c71cb298329f2853e412fdc1f6894012"
+    },
+    {
+      "key": "vo_b07_release",
+      "speaker": "boss_c2",
+      "text": "So many names… they can finally go home.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "So many names… they can finally go home.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b07_release.mp3",
+      "bytes": 61065,
+      "sha256": "b7bee3c5039d42cc279fbadddf9423bb1c4d75c59023e41da6d8e7fc3d852f58"
+    },
+    {
+      "key": "vo_b08_intro",
+      "speaker": "boss_c2",
+      "text": "My workers brought this home. It has to be enough.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "My workers brought this home. It has to be enough.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b08_intro.mp3",
+      "bytes": 66498,
+      "sha256": "82ac87adf5a1cd82ad698b9f9caabecfb9fce4dcaea57e29d0b1cce3a1e5d6a3"
+    },
+    {
+      "key": "vo_b08_fight_1",
+      "speaker": "boss_c2",
+      "text": "Every drop belongs in the royal stores!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Every drop belongs in the royal stores!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b08_fight_1.mp3",
+      "bytes": 35987,
+      "sha256": "1f224aa2a5ed1349963ed28db50e4fa8ea0994d811196e90680aadd544376154"
+    },
+    {
+      "key": "vo_b08_fight_2",
+      "speaker": "boss_c2",
+      "text": "Do not show my workers an empty flower!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Do not show my workers an empty flower!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b08_fight_2.mp3",
+      "bytes": 41003,
+      "sha256": "bf6e3a2c8c0411e6c18465174f2af7fe44439a39ba8f6adae9344f3e0e05c2d1"
+    },
+    {
+      "key": "vo_b08_release",
+      "speaker": "boss_c2",
+      "text": "The honey… we were feeding them the curse.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "The honey… we were feeding them the curse.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b08_release.mp3",
+      "bytes": 46436,
+      "sha256": "b5b5253ab0c853aa0701b0f9e37215933199215b3d8580816403a73b297be269"
+    },
+    {
+      "key": "vo_b09_intro",
+      "speaker": "boss_c2",
+      "text": "One more moment. I can still save this day.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "One more moment. I can still save this day.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b09_intro.mp3",
+      "bytes": 37659,
+      "sha256": "0336c46457a3e75f6c3be4df390a29e6e3c4f30eaa3fa038bb0439cc9a46f707"
+    },
+    {
+      "key": "vo_b09_fight_1",
+      "speaker": "boss_c2",
+      "text": "Spring will mend it. Winter will keep it. Again!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Spring will mend it. Winter will keep it. Again!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b09_fight_1.mp3",
+      "bytes": 61065,
+      "sha256": "9b57e48841141168ff3d3703fe67f16970b2288185e9e7639ee77a6438453544"
+    },
+    {
+      "key": "vo_b09_fight_2",
+      "speaker": "boss_c2",
+      "text": "If the hands stop, nothing else has to change!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "If the hands stop, nothing else has to change!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b09_fight_2.mp3",
+      "bytes": 51034,
+      "sha256": "78f230056ac0f26c9f5dbe6eb46c0375c30c9c9d1f74f87911d2b1ac9d3d6498"
+    },
+    {
+      "key": "vo_b09_release",
+      "speaker": "boss_c2",
+      "text": "Tomorrow… I had forgotten there could be a tomorrow.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Tomorrow… I had forgotten there could be a tomorrow.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b09_release.mp3",
+      "bytes": 77783,
+      "sha256": "b3f45e8ee736bd95360de85af26248c658dc68990a02559ccf04dcc3f220e5ee"
+    },
+    {
+      "key": "vo_b10_intro",
+      "speaker": "boss_c2",
+      "text": "I kept every voice alive. Why do they all ask to leave?",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "I kept every voice alive. Why do they all ask to leave?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b10_intro.mp3",
+      "bytes": 62736,
+      "sha256": "5809a1444e4b380bf077fd6e0e563403258bd9c2414119fd666f1251085c85af"
+    },
+    {
+      "key": "vo_b10_fight_1",
+      "speaker": "boss_c2",
+      "text": "My roots have held this kingdom for centuries!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "My roots have held this kingdom for centuries!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b10_fight_1.mp3",
+      "bytes": 53959,
+      "sha256": "734e5406d2b3d4eb8c147a8c43c31851d1cc1e64300561e403a6d59aa5036d39"
+    },
+    {
+      "key": "vo_b10_fight_2",
+      "speaker": "boss_c2",
+      "text": "Do not ask a mother to loosen her hold!",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "Do not ask a mother to loosen her hold!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b10_fight_2.mp3",
+      "bytes": 38913,
+      "sha256": "31634204690254ed787466ac38e20a189a62d3c360146368323877a7886083b5"
+    },
+    {
+      "key": "vo_b10_release",
+      "speaker": "boss_c2",
+      "text": "The one who planted me… he is still waiting.",
+      "group": "boss",
+      "voice_id": "1fQG71AjI2V2lnywmnx0",
+      "parameters": {
+        "text": "The one who planted me… he is still waiting.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b10_release.mp3",
+      "bytes": 54377,
+      "sha256": "d7223be83ec2c9d70924e7d8499caddf1b9f4ec7236f3408152c32e366caea1b"
+    },
+    {
+      "key": "vo_b11_intro",
+      "speaker": "boss_c3",
+      "text": "There must be one more row. Someone is still hungry.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "There must be one more row. Someone is still hungry.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b11_intro.mp3",
+      "bytes": 58975,
+      "sha256": "60e59d9e7f9261261200d3fba9e4d084006da28aca44635a0e772065790aa788"
+    },
+    {
+      "key": "vo_b11_fight_1",
+      "speaker": "boss_c3",
+      "text": "The granaries cannot be empty. I harvested everything!",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "The granaries cannot be empty. I harvested everything!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b11_fight_1.mp3",
+      "bytes": 56885,
+      "sha256": "370b144dea1658f743894c20e13e4a72cb47429480f1ff1151db16fd7826f9c9"
+    },
+    {
+      "key": "vo_b11_fight_2",
+      "speaker": "boss_c3",
+      "text": "Stand back. I have not finished the last row!",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "Stand back. I have not finished the last row!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b11_fight_2.mp3",
+      "bytes": 68588,
+      "sha256": "f3487ffe30b560b655e0bc9276eb94aae212bbef7074fced18414f3ccc08258a"
+    },
+    {
+      "key": "vo_b11_release",
+      "speaker": "boss_c3",
+      "text": "The fields were green once… plant something for them.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "The fields were green once… plant something for them.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b11_release.mp3",
+      "bytes": 52287,
+      "sha256": "13b452875e2e8b00a678be60de0d498acfd6bb7f5bb7f6f894323f873b8c4647"
+    },
+    {
+      "key": "vo_b12_intro",
+      "speaker": "boss_c3",
+      "text": "If I take just one more taste, perhaps I will feel it.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "If I take just one more taste, perhaps I will feel it.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b12_intro.mp3",
+      "bytes": 55213,
+      "sha256": "c55406cc64414042817d57ede51629a3ebad75d031c932cc95784a98aa5e1dba"
+    },
+    {
+      "key": "vo_b12_fight_1",
+      "speaker": "boss_c3",
+      "text": "I remember sweetness. Why can I not taste yours?",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "I remember sweetness. Why can I not taste yours?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b12_fight_1.mp3",
+      "bytes": 56885,
+      "sha256": "05772c67709dbe212ede4d62df7b5dd63c44cb4c4d6fb90b402e4c86779f2eed"
+    },
+    {
+      "key": "vo_b12_fight_2",
+      "speaker": "boss_c3",
+      "text": "Do not leave me empty again!",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "Do not leave me empty again!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b12_fight_2.mp3",
+      "bytes": 24284,
+      "sha256": "bcbe80ffe2e6194345c7dc84619b9a4264d8aabfb5b66ccc8bf9d88dd64ac9e3"
+    },
+    {
+      "key": "vo_b12_release",
+      "speaker": "boss_c3",
+      "text": "So quiet… I can finally hear the orchard breathe.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "So quiet… I can finally hear the orchard breathe.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b12_release.mp3",
+      "bytes": 56885,
+      "sha256": "f24847b9f403978c614be38e547e2603f78bb42c64f4f45cc0c7202831111cb3"
+    },
+    {
+      "key": "vo_b13_intro",
+      "speaker": "boss_c3",
+      "text": "Outside, everything breaks. Here, I can still keep them whole.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "Outside, everything breaks. Here, I can still keep them whole.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b13_intro.mp3",
+      "bytes": 64408,
+      "sha256": "f9226cdda04c723225891bc0c8af6346ea5be1e712053261154a948147a10db7"
+    },
+    {
+      "key": "vo_b13_fight_1",
+      "speaker": "boss_c3",
+      "text": "That reflection is the kingdom before we failed it!",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "That reflection is the kingdom before we failed it!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b13_fight_1.mp3",
+      "bytes": 49362,
+      "sha256": "3e0f024b95d3e89b3fa0f0360a760eaaa388a280a150bfc7f7292de3defec747"
+    },
+    {
+      "key": "vo_b13_fight_2",
+      "speaker": "boss_c3",
+      "text": "I will not let another future shatter!",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "I will not let another future shatter!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b13_fight_2.mp3",
+      "bytes": 35987,
+      "sha256": "bb8f68d6afb3b5ca8c923ffc5c331c3b207896486493b24c6c2f7fffdd92f4f8"
+    },
+    {
+      "key": "vo_b13_release",
+      "speaker": "boss_c3",
+      "text": "Let them grow in the sun… even if the glass cannot follow.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "Let them grow in the sun… even if the glass cannot follow.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b13_release.mp3",
+      "bytes": 58975,
+      "sha256": "02b7a9fb2628f06d07a29e8a5f6ba4240b74e849ec775fdd9671406215aa8bfb"
+    },
+    {
+      "key": "vo_b14_intro",
+      "speaker": "boss_c3",
+      "text": "I know that seed. One has been missing all this time.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "I know that seed. One has been missing all this time.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b14_intro.mp3",
+      "bytes": 63572,
+      "sha256": "dbef52ba3e1aaf842573950f5f8e95c3dd1282caa083814b5158b87ce2f65fc6"
+    },
+    {
+      "key": "vo_b14_fight_1",
+      "speaker": "boss_c3",
+      "text": "A closed vault cannot make another mistake!",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "A closed vault cannot make another mistake!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b14_fight_1.mp3",
+      "bytes": 36823,
+      "sha256": "d5d09837a52fb938383fd0e5bdc992bada69defbde34a44762d57f259001da23"
+    },
+    {
+      "key": "vo_b14_fight_2",
+      "speaker": "boss_c3",
+      "text": "If one seed changed everything, what might another do?",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "If one seed changed everything, what might another do?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b14_fight_2.mp3",
+      "bytes": 53123,
+      "sha256": "3fcefa07980e83c1c2ed78b1e16a475dbfcbe39b473fbb7d9441e1792ba47feb"
+    },
+    {
+      "key": "vo_b14_release",
+      "speaker": "boss_c3",
+      "text": "Then take them… plant them well. Do not keep them as I did.",
+      "group": "boss",
+      "voice_id": "akO64UeBz1XW95nNmuVW",
+      "parameters": {
+        "text": "Then take them… plant them well. Do not keep them as I did.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b14_release.mp3",
+      "bytes": 64826,
+      "sha256": "9da3e3e92e7ea819816ccb7ee2eb32d0e77294c4c44d8b8d5986ff2754c81edd"
+    },
+    {
+      "key": "vo_b15_intro",
+      "speaker": "planter",
+      "text": "I wanted no one to go hungry. Tell me that was not wrong.",
+      "group": "boss",
+      "voice_id": "pnxOWvSDwUN2WZ61vdNd",
+      "parameters": {
+        "text": "I wanted no one to go hungry. Tell me that was not wrong.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b15_intro.mp3",
+      "bytes": 46436,
+      "sha256": "6bfbfa03eacb773336dea9cada1c696249bfafa59c11e052a2b0ce72d487c0f2"
+    },
+    {
+      "key": "vo_b15_fight_1",
+      "speaker": "planter",
+      "text": "I did it to feed the world! Why did their faces disappear?",
+      "group": "boss",
+      "voice_id": "pnxOWvSDwUN2WZ61vdNd",
+      "parameters": {
+        "text": "I did it to feed the world! Why did their faces disappear?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b15_fight_1.mp3",
+      "bytes": 61065,
+      "sha256": "1b946936453ea9a3d61179cf4904a04a241698e070fa952324ef47a7200bf539"
+    },
+    {
+      "key": "vo_b15_fight_2",
+      "speaker": "planter",
+      "text": "If I take it off, who will keep them safe from hunger?",
+      "group": "boss",
+      "voice_id": "pnxOWvSDwUN2WZ61vdNd",
+      "parameters": {
+        "text": "If I take it off, who will keep them safe from hunger?",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b15_fight_2.mp3",
+      "bytes": 44764,
+      "sha256": "1e57651853a83feb66e8e6fb7af9763788735f9eefb7168bb8872343320f30b5"
+    },
+    {
+      "key": "vo_b15_release",
+      "speaker": "planter",
+      "text": "Every flavor… every person. I remember why I planted it now.",
+      "group": "boss",
+      "voice_id": "pnxOWvSDwUN2WZ61vdNd",
+      "parameters": {
+        "text": "Every flavor… every person. I remember why I planted it now.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "boss/originals/vo_b15_release.mp3",
+      "bytes": 69424,
+      "sha256": "cd115a23dcd243c9437ff2ffbf69a5c191c84ebc409ec73904d2a115d3c54703"
+    },
+    {
+      "key": "vo_story_s00_1",
+      "speaker": "ruby",
+      "text": "Long ago, Mochitopia was a kingdom of people — and every home was full of flavor.",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Long ago, Mochitopia was a kingdom of people — and every home was full of flavor.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s00_1.mp3",
+      "bytes": 85724,
+      "sha256": "e8fad5ffa20882e57e601534339a16ee0c4b9bfd314e9f5c5fd3b3b45237b992"
+    },
+    {
+      "key": "vo_story_s00_2",
+      "speaker": "ruby",
+      "text": "The First Planter set a Crown on the First Tree… and the Crown grew hungry.",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The First Planter set a Crown on the First Tree… and the Crown grew hungry.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s00_2.mp3",
+      "bytes": 74021,
+      "sha256": "a73db6853aa33e38db599cd86a1f126d047c112df97f6d592f38ace21596ceae"
+    },
+    {
+      "key": "vo_story_s00_3",
+      "speaker": "ruby",
+      "text": "In one night, everyone became mochi — and the Crown began to eat their flavor.",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "In one night, everyone became mochi — and the Crown began to eat their flavor.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s00_3.mp3",
+      "bytes": 74439,
+      "sha256": "f5d0bf25a289e78f49587f2f908b6978a732aa19a0fb000c707f2d932552585f"
+    },
+    {
+      "key": "vo_story_s01_1",
+      "speaker": "ruby",
+      "text": "Hundreds of years later, a little strawberry mochi is tidying a quiet pantry…",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Hundreds of years later, a little strawberry mochi is tidying a quiet pantry…",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_1.mp3",
+      "bytes": 79037,
+      "sha256": "5157f8418669b85136e4b5b4af59b36ed9d10ee046fae94e1c7f856e6d22a19b"
+    },
+    {
+      "key": "vo_story_s01_2",
+      "speaker": "ruby",
+      "text": "…when the starving Hunger’s roots burst up through the floor!",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "…when the starving Hunger’s roots burst up through the floor!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_2.mp3",
+      "bytes": 61901,
+      "sha256": "0d7bcadc15a719f42448248557a23d2a711fbdc99ba31ac075c8ad6673b0063a"
+    },
+    {
+      "key": "vo_story_s01_3",
+      "speaker": "ruby",
+      "text": "…and a little strawberry mochi falls into the dark!",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "…and a little strawberry mochi falls into the dark!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_3.mp3",
+      "bytes": 46436,
+      "sha256": "1be211bebf94438111473a0cefa0f4166bdea819581b59802bd89d69640d945a"
+    },
+    {
+      "key": "vo_story_s01_4",
+      "speaker": "ruby",
+      "text": "She lands with a thump in a sour ant nest. Something pale is moving in the dark…",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "She lands with a thump in a sour ant nest. Something pale is moving in the dark…",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_4.mp3",
+      "bytes": 80709,
+      "sha256": "4e8ee3ebcc71156d99a4cdb4d5e9c503aadfc145c789128bc9f7b9b9f8aa93b0"
+    },
+    {
+      "key": "vo_story_s01_5",
+      "speaker": "ruby",
+      "text": "Blank, flavorless mochi creep closer — toward a little jam spirit hiding behind a crystal.",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Blank, flavorless mochi creep closer — toward a little jam spirit hiding behind a crystal.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_5.mp3",
+      "bytes": 104532,
+      "sha256": "5f16574defd4ef2c065c25ed443f775dfa711ce6526a4a93cc6066eca2d01965"
+    },
+    {
+      "key": "vo_story_s01_6",
+      "speaker": "ruby",
+      "text": "“This way!” squeaks Ruby. The two of them dash between the old roots.",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "“This way!” squeaks Ruby. The two of them dash between the old roots.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_6.mp3",
+      "bytes": 78201,
+      "sha256": "e8788a788e84f12c354ea75c9b8d2e2394cb46b5ca85ad2d527c4b9ec620ab78"
+    },
+    {
+      "key": "vo_story_s01_7",
+      "speaker": "ruby",
+      "text": "There, among the roots, something tiny is glowing — a sleeping seed.",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "There, among the roots, something tiny is glowing — a sleeping seed.",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_7.mp3",
+      "bytes": 82798,
+      "sha256": "7d04da06a0a8fa4ab13f23346ba75a4ad76f3a7041a21cab9ec66e2756d06b69"
+    },
+    {
+      "key": "vo_story_s01_8",
+      "speaker": "ruby",
+      "text": "The Heart Seed wakes at her touch…",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "The Heart Seed wakes at her touch…",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_8.mp3",
+      "bytes": 30136,
+      "sha256": "877d1b82691ea686b665f3aa0d43ca2ace9a05496676326dd030627ad8976b1c"
+    },
+    {
+      "key": "vo_story_s01_9",
+      "speaker": "ruby",
+      "text": "…and the curse breaks. Strawberry is a person again!",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "…and the curse breaks. Strawberry is a person again!",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_9.mp3",
+      "bytes": 46436,
+      "sha256": "06faec3d9fccee11b5c3c51683367d1e4c346b322271d2191748562e625d9d6c"
+    },
+    {
+      "key": "vo_story_s01_10",
+      "speaker": "ruby",
+      "text": "“I’m Ruby, Grandma’s jam spirit! That seed can free everyone. Let’s go!”",
+      "group": "motion_comic",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "“I’m Ruby, Grandma’s jam spirit! That seed can free everyone. Let’s go!”",
+        "model_id": "eleven_multilingual_v2"
+      },
+      "file": "motion_comic/originals/vo_story_s01_10.mp3",
+      "bytes": 80709,
+      "sha256": "84308234fe5505da6b380a1c0b6c0c95827f935c510e863be4c7a26eadf6a163"
     }
   ]
 }

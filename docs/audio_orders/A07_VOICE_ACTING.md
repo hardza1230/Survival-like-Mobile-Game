@@ -117,3 +117,7 @@ Direct ElevenLabs Voice Design access verified HTTP200. Delivered12 roles, each 
 
 Voice Design requires at least100 characters, so auditions begin with the requested sentence and continue with the exact shared script recorded in MANIFEST/PROMPTS. Chapter boss voices are provisional options permitted by the brief, not15 approved individual identities. Technical decode/mono44.1kHz128kbps/peak/leading-silence checks passed. Owner performance and word-accuracy listening remains pending. Categories2–6, new dialogue approval and runtime integration remain outstanding.
 
+
+## Partial delivery update — 2026-11-06
+
+Owner delegated provisional casting. Candidate 1 was selected as a provisional default for all 12 roles and saved as reusable ElevenLabs voices; no subjective listening or performance judgment was performed. 144 original TTS lines were generated from existing game text: 13 opening motion-comic captions, 15 Ruby stage lines, 15 Ruby storybook pages, 14 tips, 12 feature guides, 15 lobby lines and 60 boss reply/fight/release lines. Original donors, actual requests, saved voice IDs, final files and technical QA are in `assets/incoming/audio_voice_acting/`; `LISTEN_DIALOGUE.html` previews them. Spoken-text accuracy and character fit still require human listening. These files are source-only and not connected to the game. Chapter boss voices are shared provisional identities except Hunger and Planter. Three symbol-containing tips, remaining story shots, newly written boss slip lines and hero barks/unlock lines remain outstanding.

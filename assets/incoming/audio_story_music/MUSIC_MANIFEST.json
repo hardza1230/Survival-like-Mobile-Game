@@ -1,0 +1,74 @@
+[
+  {
+    "key": "bgm_title",
+    "file": "bgm_title.mp3",
+    "bytes": 1441375,
+    "sha256": "0a4ad61b4d4d5715cd250de6224a7629cea7b4b3e354bcfba85734886e657017",
+    "durationMs": 60000.0,
+    "loop": true,
+    "peakDbtp": -5.2,
+    "lufs": -18.6,
+    "bpm": 84,
+    "bpmNote": "prompt target, not measured"
+  },
+  {
+    "key": "bgm_story_calm",
+    "file": "bgm_story_calm.mp3",
+    "bytes": 1441375,
+    "sha256": "5f709432b0851fbf3ef87211a33b977c9ae2725aab767565eae82ccf6bab666d",
+    "durationMs": 60000.0,
+    "loop": true,
+    "peakDbtp": -4.1,
+    "lufs": -17.9,
+    "bpm": 76,
+    "bpmNote": "prompt target, not measured"
+  },
+  {
+    "key": "bgm_story_tension",
+    "file": "bgm_story_tension.mp3",
+    "bytes": 1153610,
+    "sha256": "f78c1a59c4dd9d68fdcb00ca68ec7ff2d325fba64ac899de18ac85c5290f7381",
+    "durationMs": 48000.0,
+    "loop": true,
+    "peakDbtp": -2.3,
+    "lufs": -18.0,
+    "bpm": 96,
+    "bpmNote": "prompt target, not measured"
+  },
+  {
+    "key": "bgm_story_hope",
+    "file": "bgm_story_hope.mp3",
+    "bytes": 1441375,
+    "sha256": "664a1995a6f714d48a449c7db211c2cd916076e527f06e8af012ef81cdf9e8fd",
+    "durationMs": 60000.0,
+    "loop": true,
+    "peakDbtp": -5.5,
+    "lufs": -18.0,
+    "bpm": 92,
+    "bpmNote": "prompt target, not measured"
+  },
+  {
+    "key": "bgm_story_finale",
+    "file": "bgm_story_finale.mp3",
+    "bytes": 1801865,
+    "sha256": "27ea2aadcc8affd70b64a4654350d362bb69f0175c302e10912c5e3b3855552d",
+    "durationMs": 75000.0,
+    "loop": true,
+    "peakDbtp": -2.2,
+    "lufs": -17.6,
+    "bpm": 88,
+    "bpmNote": "prompt target, not measured"
+  },
+  {
+    "key": "bgm_bazaar",
+    "file": "bgm_bazaar.mp3",
+    "bytes": 1153610,
+    "sha256": "affaab441e2ddc944a7f2277da8d4b301620ee095b987fccbc07b69b8dfe2129",
+    "durationMs": 48000.0,
+    "loop": true,
+    "peakDbtp": -3.8,
+    "lufs": -18.1,
+    "bpm": 110,
+    "bpmNote": "prompt target, not measured"
+  }
+]

@@ -1,0 +1,243 @@
+{
+  "status": "draft_awaiting_owner_decision",
+  "hero_combat": {
+    "strawberry": {
+      "start": [
+        "Ready, Ruby? Let’s go!",
+        "One step at a time!"
+      ],
+      "unique": [
+        "Taste this!",
+        "Full flavor, coming through!"
+      ],
+      "levelup": [
+        "Getting the hang of it!",
+        "A little stronger!"
+      ],
+      "evolve": [
+        "Now we’re cooking!",
+        "Let’s try this!"
+      ],
+      "boss": [
+        "Whoa. That’s a big one.",
+        "We can do this together!"
+      ],
+      "lowhp": [
+        "Ouch! Need a moment.",
+        "Still on my feet!"
+      ],
+      "revive": [
+        "Back for another helping!",
+        "I’m not done yet!"
+      ],
+      "win": [
+        "We did it, Ruby!",
+        "Flavor saved!"
+      ]
+    },
+    "mint": {
+      "start": [
+        "Stay close.",
+        "Let’s keep this cool."
+      ],
+      "unique": [
+        "Winter, answer me.",
+        "Freeze."
+      ],
+      "levelup": [
+        "That should help.",
+        "A little sharper."
+      ],
+      "evolve": [
+        "Colder. Better.",
+        "Now it’s ready."
+      ],
+      "boss": [
+        "I’ll slow it down.",
+        "Keep your distance."
+      ],
+      "lowhp": [
+        "I’m still standing.",
+        "That was close."
+      ],
+      "revive": [
+        "Not cold enough yet.",
+        "I’m back. Focus."
+      ],
+      "win": [
+        "Everyone safe? Good.",
+        "That will do."
+      ]
+    },
+    "cocoa": {
+      "start": [
+        "All right. I’m up.",
+        "Let’s get moving."
+      ],
+      "unique": [
+        "Big punch coming!",
+        "Here comes the heavy bit!"
+      ],
+      "levelup": [
+        "Feeling stronger.",
+        "That woke me up."
+      ],
+      "evolve": [
+        "Now we’re talking!",
+        "These fists are ready."
+      ],
+      "boss": [
+        "That one’s big. Good.",
+        "I’ll take the front."
+      ],
+      "lowhp": [
+        "Ow. Careful now.",
+        "Still got a little fight."
+      ],
+      "revive": [
+        "Not done yet!",
+        "Back on my feet."
+      ],
+      "win": [
+        "Nap time. Earned it.",
+        "Anyone bring cookies?"
+      ]
+    },
+    "taro": {
+      "start": [
+        "Adventure this way!",
+        "I know a shortcut. Maybe."
+      ],
+      "unique": [
+        "Storm, this way!",
+        "Let’s light it up!"
+      ],
+      "levelup": [
+        "That’s a good discovery!",
+        "New route unlocked!"
+      ],
+      "evolve": [
+        "Now that’s electric!",
+        "A brilliant connection!"
+      ],
+      "boss": [
+        "Big trouble ahead!",
+        "I’ve got a plan! Sort of."
+      ],
+      "lowhp": [
+        "Oh. That hurt.",
+        "Time to rethink the route!"
+      ],
+      "revive": [
+        "Back on the map!",
+        "I’m not lost yet!"
+      ],
+      "win": [
+        "We found our way!",
+        "I meant to do that!"
+      ]
+    },
+    "yuzu": {
+      "start": [
+        "Citrus squad, with me!",
+        "All accounted for? Move out!"
+      ],
+      "unique": [
+        "Together, now!",
+        "Squad, show them!"
+      ],
+      "levelup": [
+        "Good work, team!",
+        "Room to grow!"
+      ],
+      "evolve": [
+        "Squad, new formation!",
+        "Look how you’ve grown!"
+      ],
+      "boss": [
+        "Team, focus that one!",
+        "Big target! Stay together!"
+      ],
+      "lowhp": [
+        "Hold the line, crew!",
+        "I need a little cover!"
+      ],
+      "revive": [
+        "Back in command!",
+        "The squad’s not done!"
+      ],
+      "win": [
+        "That’s my wonderful squad!",
+        "Everyone gets an orange!"
+      ]
+    }
+  },
+  "boss_slips": [
+    [
+      "My eggs… where are they?",
+      "Please, leave the little ones alone."
+    ],
+    [
+      "Those voices… I remember them.",
+      "Please, let the water flow."
+    ],
+    [
+      "Someone is waiting for a warm meal.",
+      "I only wanted to feed them."
+    ],
+    [
+      "Were they cold all this time?",
+      "I wanted to keep them safe."
+    ],
+    [
+      "So hungry… why am I hungry?",
+      "The root is pulling me apart."
+    ],
+    [
+      "Mother… can you hear me?",
+      "I wanted a garden of my own."
+    ],
+    [
+      "These voices… they have names.",
+      "I can’t hold them all."
+    ],
+    [
+      "My hive… did they have enough?",
+      "That honey tastes wrong."
+    ],
+    [
+      "Was there another season?",
+      "I’m afraid to let today go."
+    ],
+    [
+      "The garden… it is so heavy.",
+      "There is someone beneath the roots."
+    ],
+    [
+      "These fields need time to rest.",
+      "Did anything survive the harvest?"
+    ],
+    [
+      "Was the orchard always so quiet?",
+      "I remember something sweet."
+    ],
+    [
+      "Can they grow beyond the glass?",
+      "I only wanted to keep them safe."
+    ],
+    [
+      "Seeds need soil, don’t they?",
+      "What good is a seed that never grows?"
+    ],
+    [
+      "I wanted everyone to have enough.",
+      "When did my wish become this?"
+    ]
+  ],
+  "hero_unlock": {
+    "mint": "Chill. I’ve got your back.",
+    "cocoa": "Free at last. Can I nap now?",
+    "taro": "I’m free! Which way is adventure?",
+    "yuzu": "Citrus squad, ready to grow?"
+  }
+}

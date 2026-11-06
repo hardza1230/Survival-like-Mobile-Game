@@ -1,10 +1,23 @@
 {
-  "status": "awaiting_owner_selection",
-  "savedVoiceIds": {},
+  "status": "provisional_selection_delegated_by_owner",
+  "savedVoiceIds": {
+    "strawberry": "CIn3Lujven9FOgEizTXF",
+    "ruby": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mint": "XrKsw80Bq3N7rO3ILfGi",
+    "cocoa": "uZv1Etduw4mQOvBD6ts3",
+    "taro": "X8xk6RJXMn8GUYmIqiSK",
+    "yuzu": "btJ4Akzt1AM5gCVF3ZEz",
+    "grandma": "X1J2ed2VTL9KmvGhBbkY",
+    "planter": "pnxOWvSDwUN2WZ61vdNd",
+    "hunger": "Wm3zbk05bRXj9I33qN3Z",
+    "boss_c1": "RfcFM4jK4RYas2wQz4pd",
+    "boss_c2": "1fQG71AjI2V2lnywmnx0",
+    "boss_c3": "akO64UeBz1XW95nNmuVW"
+  },
   "voices": [
     {
       "speaker": "strawberry",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -21,11 +34,12 @@
           "generated_voice_id": "8QUnEwwZ6IwX142WE9ER",
           "file": "design/strawberry_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "CIn3Lujven9FOgEizTXF"
     },
     {
       "speaker": "ruby",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -42,11 +56,12 @@
           "generated_voice_id": "uZjXljbpMm77b3LqZcLn",
           "file": "design/ruby_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "GVG9R2Ywg9D3iQVsW8Z6"
     },
     {
       "speaker": "mint",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -63,11 +78,12 @@
           "generated_voice_id": "OyoIBKTRvcT7HQCgWxiA",
           "file": "design/mint_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "XrKsw80Bq3N7rO3ILfGi"
     },
     {
       "speaker": "cocoa",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -84,11 +100,12 @@
           "generated_voice_id": "hioJCEXWdjFENlvd3DHU",
           "file": "design/cocoa_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "uZv1Etduw4mQOvBD6ts3"
     },
     {
       "speaker": "taro",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -105,11 +122,12 @@
           "generated_voice_id": "tzEq6ZCmkFbcMzuViLBr",
           "file": "design/taro_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "X8xk6RJXMn8GUYmIqiSK"
     },
     {
       "speaker": "yuzu",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -126,11 +144,12 @@
           "generated_voice_id": "u7DWNRFCjk9KjhAfEcCw",
           "file": "design/yuzu_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "btJ4Akzt1AM5gCVF3ZEz"
     },
     {
       "speaker": "grandma",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -147,11 +166,12 @@
           "generated_voice_id": "xb0L4Y0ib2WcLtsomVgh",
           "file": "design/grandma_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "X1J2ed2VTL9KmvGhBbkY"
     },
     {
       "speaker": "planter",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -168,11 +188,12 @@
           "generated_voice_id": "jMimqvQDdlWyrXxpCnFf",
           "file": "design/planter_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "pnxOWvSDwUN2WZ61vdNd"
     },
     {
       "speaker": "hunger",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -189,11 +210,12 @@
           "generated_voice_id": "28il0sof6cI10oTkYDVB",
           "file": "design/hunger_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "Wm3zbk05bRXj9I33qN3Z"
     },
     {
       "speaker": "boss_c1",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -210,11 +232,12 @@
           "generated_voice_id": "U151T7gGgvqdzNItsCx9",
           "file": "design/boss_c1_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "RfcFM4jK4RYas2wQz4pd"
     },
     {
       "speaker": "boss_c2",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -231,11 +254,12 @@
           "generated_voice_id": "qSqxt5VsBOPQd7DRa8qy",
           "file": "design/boss_c2_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "1fQG71AjI2V2lnywmnx0"
     },
     {
       "speaker": "boss_c3",
-      "selected": null,
+      "selected": 1,
       "candidates": [
         {
           "take": 1,
@@ -252,12 +276,13 @@
           "generated_voice_id": "FLr5Dcfi6SR132Yj3nH8",
           "file": "design/boss_c3_take3.mp3"
         }
-      ]
+      ],
+      "saved_voice_id": "akO64UeBz1XW95nNmuVW"
     }
   ],
   "note": "Generated preview IDs are candidates, not saved persistent TTS voice IDs. Save only owner-selected candidates using POST /v1/text-to-voice. Chapter boss candidates are provisional chapter-level voices, not fifteen approved boss identities.",
   "selection": {
-    "by": "assistant (owner delegated 1 Nov 2026) — chosen by measured pitch/speech rate vs voice description; owner may swap after listening",
+    "by": "assistant (owner delegated 1 Nov 2026) โ€” chosen by measured pitch/speech rate vs voice description; owner may swap after listening",
     "takes": {
       "strawberry": 3,
       "ruby": 2,
@@ -287,5 +312,6 @@
       "boss_c3": "PjTGYOyoRXwwmKk0xOJL"
     },
     "next": "save these 12 with POST /v1/text-to-voice, record VOICES.json savedVoiceIds, then record categories 2-6"
-  }
+  },
+  "selectionNote": "Candidate 1 provisionally selected by assistant at owner request; no subjective listening performed; owner audition remains pending."
 }
