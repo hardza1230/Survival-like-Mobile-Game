@@ -17,7 +17,7 @@
     "boss_c1/c2/c3 are provisional chapter voices, not15 individual identities."
   ],
   "dialogue": {
-    "files": 144,
+    "files": 350,
     "allDecoded": true,
     "peakAtMostMinus1dBTP": true,
     "transcriptAndPerformance": "not independently listened or verified",
@@ -1318,6 +1318,1860 @@
         "sampleRate": 44100,
         "channels": 1,
         "leadingSilenceMs": 7.21
+      },
+      {
+        "key": "vo_strawberry_start_1",
+        "duration_ms": 1283,
+        "peakDbtp": -6.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.97
+      },
+      {
+        "key": "vo_strawberry_start_2",
+        "duration_ms": 1502,
+        "peakDbtp": -6.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_strawberry_unique_1",
+        "duration_ms": 864,
+        "peakDbtp": -3.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.39
+      },
+      {
+        "key": "vo_strawberry_unique_2",
+        "duration_ms": 1673,
+        "peakDbtp": -6.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 1.61
+      },
+      {
+        "key": "vo_strawberry_levelup_1",
+        "duration_ms": 984,
+        "peakDbtp": -7.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 10.75
+      },
+      {
+        "key": "vo_strawberry_levelup_2",
+        "duration_ms": 1309,
+        "peakDbtp": -6.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.03
+      },
+      {
+        "key": "vo_strawberry_evolve_1",
+        "duration_ms": 1355,
+        "peakDbtp": -6.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.03
+      },
+      {
+        "key": "vo_strawberry_evolve_2",
+        "duration_ms": 1067,
+        "peakDbtp": -5.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.2
+      },
+      {
+        "key": "vo_strawberry_boss_1",
+        "duration_ms": 1175,
+        "peakDbtp": -4.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.22
+      },
+      {
+        "key": "vo_strawberry_boss_2",
+        "duration_ms": 1092,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_strawberry_lowhp_1",
+        "duration_ms": 1487,
+        "peakDbtp": -4.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.63
+      },
+      {
+        "key": "vo_strawberry_lowhp_2",
+        "duration_ms": 1157,
+        "peakDbtp": -7.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 10.77
+      },
+      {
+        "key": "vo_strawberry_revive_1",
+        "duration_ms": 1455,
+        "peakDbtp": -6.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.13
+      },
+      {
+        "key": "vo_strawberry_revive_2",
+        "duration_ms": 945,
+        "peakDbtp": -5.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.08
+      },
+      {
+        "key": "vo_strawberry_win_1",
+        "duration_ms": 1196,
+        "peakDbtp": -8.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.24
+      },
+      {
+        "key": "vo_strawberry_win_2",
+        "duration_ms": 946,
+        "peakDbtp": -7.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.78
+      },
+      {
+        "key": "vo_mint_start_1",
+        "duration_ms": 781,
+        "peakDbtp": -7.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.27
+      },
+      {
+        "key": "vo_mint_start_2",
+        "duration_ms": 1172,
+        "peakDbtp": -6.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.02
+      },
+      {
+        "key": "vo_mint_unique_1",
+        "duration_ms": 995,
+        "peakDbtp": -9.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 13.4
+      },
+      {
+        "key": "vo_mint_unique_2",
+        "duration_ms": 697,
+        "peakDbtp": -7.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.16
+      },
+      {
+        "key": "vo_mint_levelup_1",
+        "duration_ms": 1265,
+        "peakDbtp": -4.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 12.52
+      },
+      {
+        "key": "vo_mint_levelup_2",
+        "duration_ms": 1471,
+        "peakDbtp": -8.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.06
+      },
+      {
+        "key": "vo_mint_evolve_1",
+        "duration_ms": 919,
+        "peakDbtp": -8.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.99
+      },
+      {
+        "key": "vo_mint_evolve_2",
+        "duration_ms": 740,
+        "peakDbtp": -8.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.27
+      },
+      {
+        "key": "vo_mint_boss_1",
+        "duration_ms": 1346,
+        "peakDbtp": -7.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 13.13
+      },
+      {
+        "key": "vo_mint_boss_2",
+        "duration_ms": 1246,
+        "peakDbtp": -6.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.74
+      },
+      {
+        "key": "vo_mint_lowhp_1",
+        "duration_ms": 1174,
+        "peakDbtp": -5.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 8.59
+      },
+      {
+        "key": "vo_mint_lowhp_2",
+        "duration_ms": 1105,
+        "peakDbtp": -5.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.88
+      },
+      {
+        "key": "vo_mint_revive_1",
+        "duration_ms": 1279,
+        "peakDbtp": -7.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.91
+      },
+      {
+        "key": "vo_mint_revive_2",
+        "duration_ms": 1335,
+        "peakDbtp": -6.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.65
+      },
+      {
+        "key": "vo_mint_win_1",
+        "duration_ms": 1232,
+        "peakDbtp": -3.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.51
+      },
+      {
+        "key": "vo_mint_win_2",
+        "duration_ms": 1023,
+        "peakDbtp": -9.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.49
+      },
+      {
+        "key": "vo_cocoa_start_1",
+        "duration_ms": 1311,
+        "peakDbtp": -5.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.17
+      },
+      {
+        "key": "vo_cocoa_start_2",
+        "duration_ms": 897,
+        "peakDbtp": -5.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.35
+      },
+      {
+        "key": "vo_cocoa_unique_1",
+        "duration_ms": 1255,
+        "peakDbtp": -5.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 11.88
+      },
+      {
+        "key": "vo_cocoa_unique_2",
+        "duration_ms": 1431,
+        "peakDbtp": -5.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.17
+      },
+      {
+        "key": "vo_cocoa_levelup_1",
+        "duration_ms": 1196,
+        "peakDbtp": -4.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.0
+      },
+      {
+        "key": "vo_cocoa_levelup_2",
+        "duration_ms": 1482,
+        "peakDbtp": -7.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.35
+      },
+      {
+        "key": "vo_cocoa_evolve_1",
+        "duration_ms": 996,
+        "peakDbtp": -10.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.69
+      },
+      {
+        "key": "vo_cocoa_evolve_2",
+        "duration_ms": 1164,
+        "peakDbtp": -4.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.74
+      },
+      {
+        "key": "vo_cocoa_boss_1",
+        "duration_ms": 1921,
+        "peakDbtp": -3.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 16.89
+      },
+      {
+        "key": "vo_cocoa_boss_2",
+        "duration_ms": 1156,
+        "peakDbtp": -8.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.05
+      },
+      {
+        "key": "vo_cocoa_lowhp_1",
+        "duration_ms": 1615,
+        "peakDbtp": -6.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.97
+      },
+      {
+        "key": "vo_cocoa_lowhp_2",
+        "duration_ms": 1673,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.27
+      },
+      {
+        "key": "vo_cocoa_revive_1",
+        "duration_ms": 1110,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.6
+      },
+      {
+        "key": "vo_cocoa_revive_2",
+        "duration_ms": 1050,
+        "peakDbtp": -5.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.01
+      },
+      {
+        "key": "vo_cocoa_win_1",
+        "duration_ms": 1827,
+        "peakDbtp": -5.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.44
+      },
+      {
+        "key": "vo_cocoa_win_2",
+        "duration_ms": 1313,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.72
+      },
+      {
+        "key": "vo_taro_start_1",
+        "duration_ms": 1102,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.35
+      },
+      {
+        "key": "vo_taro_start_2",
+        "duration_ms": 1733,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.51
+      },
+      {
+        "key": "vo_taro_unique_1",
+        "duration_ms": 1108,
+        "peakDbtp": -6.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.99
+      },
+      {
+        "key": "vo_taro_unique_2",
+        "duration_ms": 1082,
+        "peakDbtp": -5.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.06
+      },
+      {
+        "key": "vo_taro_levelup_1",
+        "duration_ms": 1143,
+        "peakDbtp": -3.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.85
+      },
+      {
+        "key": "vo_taro_levelup_2",
+        "duration_ms": 1139,
+        "peakDbtp": -7.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.94
+      },
+      {
+        "key": "vo_taro_evolve_1",
+        "duration_ms": 1197,
+        "peakDbtp": -6.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.96
+      },
+      {
+        "key": "vo_taro_evolve_2",
+        "duration_ms": 1392,
+        "peakDbtp": -5.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.29
+      },
+      {
+        "key": "vo_taro_boss_1",
+        "duration_ms": 1196,
+        "peakDbtp": -7.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.78
+      },
+      {
+        "key": "vo_taro_boss_2",
+        "duration_ms": 1843,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.65
+      },
+      {
+        "key": "vo_taro_lowhp_1",
+        "duration_ms": 1197,
+        "peakDbtp": -4.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.51
+      },
+      {
+        "key": "vo_taro_lowhp_2",
+        "duration_ms": 1221,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.69
+      },
+      {
+        "key": "vo_taro_revive_1",
+        "duration_ms": 1117,
+        "peakDbtp": -7.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.83
+      },
+      {
+        "key": "vo_taro_revive_2",
+        "duration_ms": 1277,
+        "peakDbtp": -7.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.88
+      },
+      {
+        "key": "vo_taro_win_1",
+        "duration_ms": 937,
+        "peakDbtp": -8.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 17.98
+      },
+      {
+        "key": "vo_taro_win_2",
+        "duration_ms": 1548,
+        "peakDbtp": -5.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.12
+      },
+      {
+        "key": "vo_yuzu_start_1",
+        "duration_ms": 1280,
+        "peakDbtp": -3.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.56
+      },
+      {
+        "key": "vo_yuzu_start_2",
+        "duration_ms": 1279,
+        "peakDbtp": -6.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.22
+      },
+      {
+        "key": "vo_yuzu_unique_1",
+        "duration_ms": 966,
+        "peakDbtp": -4.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.56
+      },
+      {
+        "key": "vo_yuzu_unique_2",
+        "duration_ms": 1207,
+        "peakDbtp": -8.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.45
+      },
+      {
+        "key": "vo_yuzu_levelup_1",
+        "duration_ms": 963,
+        "peakDbtp": -5.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.4
+      },
+      {
+        "key": "vo_yuzu_levelup_2",
+        "duration_ms": 958,
+        "peakDbtp": -7.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.97
+      },
+      {
+        "key": "vo_yuzu_evolve_1",
+        "duration_ms": 1440,
+        "peakDbtp": -5.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.0
+      },
+      {
+        "key": "vo_yuzu_evolve_2",
+        "duration_ms": 1313,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.66
+      },
+      {
+        "key": "vo_yuzu_boss_1",
+        "duration_ms": 1369,
+        "peakDbtp": -5.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.59
+      },
+      {
+        "key": "vo_yuzu_boss_2",
+        "duration_ms": 1300,
+        "peakDbtp": -5.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.92
+      },
+      {
+        "key": "vo_yuzu_lowhp_1",
+        "duration_ms": 1201,
+        "peakDbtp": -7.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 8.5
+      },
+      {
+        "key": "vo_yuzu_lowhp_2",
+        "duration_ms": 1287,
+        "peakDbtp": -3.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.97
+      },
+      {
+        "key": "vo_yuzu_revive_1",
+        "duration_ms": 918,
+        "peakDbtp": -3.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.26
+      },
+      {
+        "key": "vo_yuzu_revive_2",
+        "duration_ms": 1465,
+        "peakDbtp": -6.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.71
+      },
+      {
+        "key": "vo_yuzu_win_1",
+        "duration_ms": 1271,
+        "peakDbtp": -5.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 1.38
+      },
+      {
+        "key": "vo_yuzu_win_2",
+        "duration_ms": 1137,
+        "peakDbtp": -2.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.54
+      },
+      {
+        "key": "vo_b01_slip_1",
+        "duration_ms": 1288,
+        "peakDbtp": -7.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.94
+      },
+      {
+        "key": "vo_b01_slip_2",
+        "duration_ms": 1747,
+        "peakDbtp": -3.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.27
+      },
+      {
+        "key": "vo_b02_slip_1",
+        "duration_ms": 1846,
+        "peakDbtp": -5.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.18
+      },
+      {
+        "key": "vo_b02_slip_2",
+        "duration_ms": 1227,
+        "peakDbtp": -5.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.13
+      },
+      {
+        "key": "vo_b03_slip_1",
+        "duration_ms": 1673,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.05
+      },
+      {
+        "key": "vo_b03_slip_2",
+        "duration_ms": 1387,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.83
+      },
+      {
+        "key": "vo_b04_slip_1",
+        "duration_ms": 1465,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.04
+      },
+      {
+        "key": "vo_b04_slip_2",
+        "duration_ms": 1336,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.74
+      },
+      {
+        "key": "vo_b05_slip_1",
+        "duration_ms": 2601,
+        "peakDbtp": -2.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.0
+      },
+      {
+        "key": "vo_b05_slip_2",
+        "duration_ms": 1573,
+        "peakDbtp": -6.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 14.49
+      },
+      {
+        "key": "vo_b06_slip_1",
+        "duration_ms": 1489,
+        "peakDbtp": -3.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.23
+      },
+      {
+        "key": "vo_b06_slip_2",
+        "duration_ms": 1303,
+        "peakDbtp": -7.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.2
+      },
+      {
+        "key": "vo_b07_slip_1",
+        "duration_ms": 3177,
+        "peakDbtp": -5.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.78
+      },
+      {
+        "key": "vo_b07_slip_2",
+        "duration_ms": 1276,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.61
+      },
+      {
+        "key": "vo_b08_slip_1",
+        "duration_ms": 2695,
+        "peakDbtp": -5.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.61
+      },
+      {
+        "key": "vo_b08_slip_2",
+        "duration_ms": 1549,
+        "peakDbtp": -2.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.9
+      },
+      {
+        "key": "vo_b09_slip_1",
+        "duration_ms": 1174,
+        "peakDbtp": -4.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.31
+      },
+      {
+        "key": "vo_b09_slip_2",
+        "duration_ms": 1370,
+        "peakDbtp": -5.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.59
+      },
+      {
+        "key": "vo_b10_slip_1",
+        "duration_ms": 2336,
+        "peakDbtp": -2.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.0
+      },
+      {
+        "key": "vo_b10_slip_2",
+        "duration_ms": 2201,
+        "peakDbtp": -11.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.28
+      },
+      {
+        "key": "vo_b11_slip_1",
+        "duration_ms": 1839,
+        "peakDbtp": -5.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.94
+      },
+      {
+        "key": "vo_b11_slip_2",
+        "duration_ms": 1481,
+        "peakDbtp": -8.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 1.11
+      },
+      {
+        "key": "vo_b12_slip_1",
+        "duration_ms": 1494,
+        "peakDbtp": -8.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.63
+      },
+      {
+        "key": "vo_b12_slip_2",
+        "duration_ms": 1571,
+        "peakDbtp": -6.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.81
+      },
+      {
+        "key": "vo_b13_slip_1",
+        "duration_ms": 1972,
+        "peakDbtp": -7.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.22
+      },
+      {
+        "key": "vo_b13_slip_2",
+        "duration_ms": 1713,
+        "peakDbtp": -6.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.55
+      },
+      {
+        "key": "vo_b14_slip_1",
+        "duration_ms": 1939,
+        "peakDbtp": -5.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.73
+      },
+      {
+        "key": "vo_b14_slip_2",
+        "duration_ms": 1981,
+        "peakDbtp": -7.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.69
+      },
+      {
+        "key": "vo_b15_slip_1",
+        "duration_ms": 1751,
+        "peakDbtp": -6.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_b15_slip_2",
+        "duration_ms": 1414,
+        "peakDbtp": -5.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.78
+      },
+      {
+        "key": "vo_mint_unlock",
+        "duration_ms": 1337,
+        "peakDbtp": -6.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.9
+      },
+      {
+        "key": "vo_cocoa_unlock",
+        "duration_ms": 2415,
+        "peakDbtp": -3.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.49
+      },
+      {
+        "key": "vo_taro_unlock",
+        "duration_ms": 2031,
+        "peakDbtp": -5.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.8
+      },
+      {
+        "key": "vo_yuzu_unlock",
+        "duration_ms": 1453,
+        "peakDbtp": -5.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.36
+      },
+      {
+        "key": "vo_story_s02_1",
+        "duration_ms": 5589,
+        "peakDbtp": -4.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.22
+      },
+      {
+        "key": "vo_story_s02_2",
+        "duration_ms": 4339,
+        "peakDbtp": -2.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.26
+      },
+      {
+        "key": "vo_story_s02_3",
+        "duration_ms": 7148,
+        "peakDbtp": -3.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.6
+      },
+      {
+        "key": "vo_story_s03_1",
+        "duration_ms": 5208,
+        "peakDbtp": -4.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.67
+      },
+      {
+        "key": "vo_story_s03_2",
+        "duration_ms": 5092,
+        "peakDbtp": -6.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.27
+      },
+      {
+        "key": "vo_story_s03_3",
+        "duration_ms": 5242,
+        "peakDbtp": -5.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.16
+      },
+      {
+        "key": "vo_story_s04_1",
+        "duration_ms": 4504,
+        "peakDbtp": -4.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.44
+      },
+      {
+        "key": "vo_story_s04_2",
+        "duration_ms": 7465,
+        "peakDbtp": -5.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.81
+      },
+      {
+        "key": "vo_story_s04_3",
+        "duration_ms": 5682,
+        "peakDbtp": -2.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.56
+      },
+      {
+        "key": "vo_story_s05_1",
+        "duration_ms": 5339,
+        "peakDbtp": -3.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.6
+      },
+      {
+        "key": "vo_story_s05_2",
+        "duration_ms": 3878,
+        "peakDbtp": -3.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.49
+      },
+      {
+        "key": "vo_story_s05_3",
+        "duration_ms": 4522,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.46
+      },
+      {
+        "key": "vo_story_s06_1",
+        "duration_ms": 2799,
+        "peakDbtp": -4.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.56
+      },
+      {
+        "key": "vo_story_s06_2",
+        "duration_ms": 2589,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.94
+      },
+      {
+        "key": "vo_story_s06_3",
+        "duration_ms": 1125,
+        "peakDbtp": -9.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.95
+      },
+      {
+        "key": "vo_story_s06_4",
+        "duration_ms": 5165,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.49
+      },
+      {
+        "key": "vo_story_s07_1",
+        "duration_ms": 2994,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.12
+      },
+      {
+        "key": "vo_story_s07_2",
+        "duration_ms": 2243,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.26
+      },
+      {
+        "key": "vo_story_s07_3",
+        "duration_ms": 1128,
+        "peakDbtp": -8.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.98
+      },
+      {
+        "key": "vo_story_s07_4",
+        "duration_ms": 4679,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.72
+      },
+      {
+        "key": "vo_story_s08_1",
+        "duration_ms": 3090,
+        "peakDbtp": -3.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.6
+      },
+      {
+        "key": "vo_story_s08_2",
+        "duration_ms": 2765,
+        "peakDbtp": -3.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_story_s08_3",
+        "duration_ms": 1057,
+        "peakDbtp": -9.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.47
+      },
+      {
+        "key": "vo_story_s08_4",
+        "duration_ms": 4572,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.88
+      },
+      {
+        "key": "vo_story_s09_1",
+        "duration_ms": 3514,
+        "peakDbtp": -4.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 1.56
+      },
+      {
+        "key": "vo_story_s09_2",
+        "duration_ms": 2363,
+        "peakDbtp": -4.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.12
+      },
+      {
+        "key": "vo_story_s09_3",
+        "duration_ms": 1291,
+        "peakDbtp": -10.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.51
+      },
+      {
+        "key": "vo_story_s09_4",
+        "duration_ms": 4955,
+        "peakDbtp": -2.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.38
+      },
+      {
+        "key": "vo_story_s11_1",
+        "duration_ms": 4427,
+        "peakDbtp": -3.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_story_s11_2",
+        "duration_ms": 3888,
+        "peakDbtp": -6.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.58
+      },
+      {
+        "key": "vo_story_s12_1",
+        "duration_ms": 2847,
+        "peakDbtp": -4.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.49
+      },
+      {
+        "key": "vo_story_s12_2",
+        "duration_ms": 3587,
+        "peakDbtp": -2.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.38
+      },
+      {
+        "key": "vo_story_s13_1",
+        "duration_ms": 5076,
+        "peakDbtp": -5.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.38
+      },
+      {
+        "key": "vo_story_s13_2",
+        "duration_ms": 4362,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.58
+      },
+      {
+        "key": "vo_story_s14_1",
+        "duration_ms": 4563,
+        "peakDbtp": -5.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 16.89
+      },
+      {
+        "key": "vo_story_s14_2",
+        "duration_ms": 6976,
+        "peakDbtp": -2.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.15
+      },
+      {
+        "key": "vo_story_s15_1",
+        "duration_ms": 4303,
+        "peakDbtp": -2.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.9
+      },
+      {
+        "key": "vo_story_s15_2",
+        "duration_ms": 4304,
+        "peakDbtp": -2.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.72
+      },
+      {
+        "key": "vo_story_s16_1",
+        "duration_ms": 3769,
+        "peakDbtp": -7.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.12
+      },
+      {
+        "key": "vo_story_s16_2",
+        "duration_ms": 1334,
+        "peakDbtp": -8.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.88
+      },
+      {
+        "key": "vo_story_s16_3",
+        "duration_ms": 2252,
+        "peakDbtp": -4.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.88
+      },
+      {
+        "key": "vo_story_s16_4",
+        "duration_ms": 4990,
+        "peakDbtp": -2.8,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.63
+      },
+      {
+        "key": "vo_story_s16_5",
+        "duration_ms": 3737,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.37
+      },
+      {
+        "key": "vo_story_s16_6",
+        "duration_ms": 3244,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.1
+      },
+      {
+        "key": "vo_story_s16_7",
+        "duration_ms": 3565,
+        "peakDbtp": -2.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.24
+      },
+      {
+        "key": "vo_story_s17_1",
+        "duration_ms": 3632,
+        "peakDbtp": -2.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.99
+      },
+      {
+        "key": "vo_story_s17_2",
+        "duration_ms": 3787,
+        "peakDbtp": -3.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.14
+      },
+      {
+        "key": "vo_story_b01_memory_1",
+        "duration_ms": 3755,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.03
+      },
+      {
+        "key": "vo_story_b01_memory_2",
+        "duration_ms": 5212,
+        "peakDbtp": -2.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.69
+      },
+      {
+        "key": "vo_story_b02_memory_1",
+        "duration_ms": 4075,
+        "peakDbtp": -5.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.83
+      },
+      {
+        "key": "vo_story_b02_memory_2",
+        "duration_ms": 3848,
+        "peakDbtp": -3.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.78
+      },
+      {
+        "key": "vo_story_b03_memory_1",
+        "duration_ms": 3084,
+        "peakDbtp": -2.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.83
+      },
+      {
+        "key": "vo_story_b03_memory_2",
+        "duration_ms": 6223,
+        "peakDbtp": -4.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.76
+      },
+      {
+        "key": "vo_story_b04_memory_1",
+        "duration_ms": 4345,
+        "peakDbtp": -3.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.49
+      },
+      {
+        "key": "vo_story_b04_memory_2",
+        "duration_ms": 7594,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.22
+      },
+      {
+        "key": "vo_story_b05_memory_1",
+        "duration_ms": 3628,
+        "peakDbtp": -4.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.19
+      },
+      {
+        "key": "vo_story_b05_memory_2",
+        "duration_ms": 4365,
+        "peakDbtp": -3.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.26
+      },
+      {
+        "key": "vo_story_b06_memory_1",
+        "duration_ms": 3278,
+        "peakDbtp": -5.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 1.61
+      },
+      {
+        "key": "vo_story_b06_memory_2",
+        "duration_ms": 4711,
+        "peakDbtp": -3.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_story_b07_memory_1",
+        "duration_ms": 4311,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.76
+      },
+      {
+        "key": "vo_story_b07_memory_2",
+        "duration_ms": 5666,
+        "peakDbtp": -2.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.13
+      },
+      {
+        "key": "vo_story_b08_memory_1",
+        "duration_ms": 4061,
+        "peakDbtp": -4.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.83
+      },
+      {
+        "key": "vo_story_b08_memory_2",
+        "duration_ms": 6193,
+        "peakDbtp": -2.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.81
+      },
+      {
+        "key": "vo_story_b09_memory_1",
+        "duration_ms": 4865,
+        "peakDbtp": -5.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.81
+      },
+      {
+        "key": "vo_story_b09_memory_2",
+        "duration_ms": 6780,
+        "peakDbtp": -2.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.16
+      },
+      {
+        "key": "vo_story_b10_memory_1",
+        "duration_ms": 4285,
+        "peakDbtp": -3.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.06
+      },
+      {
+        "key": "vo_story_b10_memory_2",
+        "duration_ms": 4824,
+        "peakDbtp": -5.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.51
+      },
+      {
+        "key": "vo_story_b11_memory_1",
+        "duration_ms": 4878,
+        "peakDbtp": -4.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.99
+      },
+      {
+        "key": "vo_story_b11_memory_2",
+        "duration_ms": 4251,
+        "peakDbtp": -3.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.01
+      },
+      {
+        "key": "vo_story_b12_memory_1",
+        "duration_ms": 4400,
+        "peakDbtp": -6.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.08
+      },
+      {
+        "key": "vo_story_b12_memory_2",
+        "duration_ms": 5679,
+        "peakDbtp": -3.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.6
+      },
+      {
+        "key": "vo_story_b13_memory_1",
+        "duration_ms": 3627,
+        "peakDbtp": -3.0,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.38
+      },
+      {
+        "key": "vo_story_b13_memory_2",
+        "duration_ms": 5612,
+        "peakDbtp": -3.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.13
+      },
+      {
+        "key": "vo_story_b14_memory_1",
+        "duration_ms": 4817,
+        "peakDbtp": -2.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 2.38
+      },
+      {
+        "key": "vo_story_b14_memory_2",
+        "duration_ms": 4540,
+        "peakDbtp": -6.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.83
+      },
+      {
+        "key": "vo_story_b15_memory_1",
+        "duration_ms": 3535,
+        "peakDbtp": -4.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.86
+      },
+      {
+        "key": "vo_story_b15_memory_2",
+        "duration_ms": 5032,
+        "peakDbtp": -3.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.66
+      },
+      {
+        "key": "vo_b01_fight_3",
+        "duration_ms": 1683,
+        "peakDbtp": -9.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.94
+      },
+      {
+        "key": "vo_b02_fight_3",
+        "duration_ms": 1292,
+        "peakDbtp": -8.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.69
+      },
+      {
+        "key": "vo_b03_fight_3",
+        "duration_ms": 1822,
+        "peakDbtp": -8.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.84
+      },
+      {
+        "key": "vo_b04_fight_3",
+        "duration_ms": 1398,
+        "peakDbtp": -5.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 13.47
+      },
+      {
+        "key": "vo_b05_fight_3",
+        "duration_ms": 1068,
+        "peakDbtp": -11.7,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.07
+      },
+      {
+        "key": "vo_b06_fight_3",
+        "duration_ms": 1080,
+        "peakDbtp": -7.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 3.24
+      },
+      {
+        "key": "vo_b07_fight_3",
+        "duration_ms": 1207,
+        "peakDbtp": -9.2,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.37
+      },
+      {
+        "key": "vo_b08_fight_3",
+        "duration_ms": 949,
+        "peakDbtp": -8.1,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 0.0
+      },
+      {
+        "key": "vo_b09_fight_3",
+        "duration_ms": 1083,
+        "peakDbtp": -8.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.85
+      },
+      {
+        "key": "vo_b10_fight_3",
+        "duration_ms": 1359,
+        "peakDbtp": -11.3,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.28
+      },
+      {
+        "key": "vo_b11_fight_3",
+        "duration_ms": 1652,
+        "peakDbtp": -9.6,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 5.03
+      },
+      {
+        "key": "vo_b12_fight_3",
+        "duration_ms": 1294,
+        "peakDbtp": -10.9,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 9.16
+      },
+      {
+        "key": "vo_b13_fight_3",
+        "duration_ms": 1371,
+        "peakDbtp": -8.4,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 6.69
+      },
+      {
+        "key": "vo_b14_fight_3",
+        "duration_ms": 907,
+        "peakDbtp": -8.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 4.49
+      },
+      {
+        "key": "vo_b15_fight_3",
+        "duration_ms": 1172,
+        "peakDbtp": -10.5,
+        "decode": true,
+        "sampleRate": 44100,
+        "channels": 1,
+        "leadingSilenceMs": 7.39
       }
     ],
     "onsetOver20ms": []

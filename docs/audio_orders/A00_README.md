@@ -9,7 +9,7 @@
 | `A03_YUZU_SFX.md` | Citrus Companions: Yuzling / Pomelo / Lime / Blood Orange, ฟื้น/สกิล/Unique · ElevenLabs | 20 | 🟢 กลาง |
 | `A04_STORY_MUSIC_STINGERS.md` | เพลงหน้าแรก, เพลงฉากเรื่อง 4 อารมณ์, เพลงร้าน/Lobby, เสียงคำการ์ตูน, ชื่อด่าน, ชนะ/แพ้ | 20 | 🟢 กลาง |
 | `A05_CHARACTER_VOICES.md` | เสียงพึมพำ (ไม่มีคำ) ของ Ruby, ฮีโร่ 5 ตัวใน Lobby, บอสตอนพูด | 31 | 🟡 ต่ำ–กลาง |
-| `A07_VOICE_ACTING.md` | เสียงพากย์ตัวละครแบบ PoE: ออกแบบเสียง, ฉากเรื่อง, Ruby, บอส 2 เสียง, ฮีโร่ต่อสู้, ปลดล็อก/Lobby | ~317 | 🎧 เลือกเสียงตั้งต้นและส่งบทเดิม144ประโยค · ยังมีบทและงานผูกเกมค้าง |
+| `A07_VOICE_ACTING.md` | เสียงพากย์ตัวละครแบบ PoE: ออกแบบเสียง, ฉากเรื่อง, Ruby, บอส 2 เสียง, ฮีโร่ต่อสู้, ปลดล็อก/Lobby | ~317 | 🎧 ส่ง350บทพูดเสียงตั้งต้น · รอฟังและผูกเกม |
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 
 ## กติการ่วม (ทุกใบ)
@@ -32,3 +32,7 @@
 ## A04 / A07 partial update — 2026-11-06
 
 A04 six music masters generated and technically checked; source only, game integration and musical review remain. A07 12 provisional voices saved and 144 existing game lines generated; source only, remaining dialogue, listening and runtime integration remain. See each order for exact scope.
+
+## A07 update — 2026-11-07
+
+Owner authorized the 114 new draft lines; those, remaining authored story captions, boss memories and alternative fight lines were generated. 350 dialogue masters are delivered as sources; three icon-bearing tips, listening review and runtime integration remain.

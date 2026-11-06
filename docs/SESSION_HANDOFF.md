@@ -1,6 +1,6 @@
-# In progress — audio orders A04 and A07 (2026-11-06)
+# In progress — audio orders A04 and A07 (2026-11-07)
 
-Six original ElevenLabs Music loops (incoming source only) and 144 ElevenLabs TTS lines from existing canonical text (13 opening motion-comic, 15 Ruby stage, 15 storybook, 14 tips, 12 feature guides, 15 lobby, 60 boss) generated and technically packaged; provenance, SHA-256, saved provisional voice IDs and audition HTML in assets/incoming/audio_story_music and audio_voice_acting. 12 voices provisionally selected as candidate 1 at owner request, not subjectively listened. A04 BPM/shared motif/seams and A07 word/performance need owner listening. Draft 114 new lines await user decision before generation; other story lines and three icon-bearing tips still incomplete. No new files integrated into runtime. Latest runtime v8.1.32; fetch before follow-up.
+A04: six original ElevenLabs Music loops, source-only, with donor/provenance/QA and LISTEN_MUSIC.html. A07: owner approved recording all 114 proposed combat/boss-slip/unlock draft lines; total 350 ElevenLabs dialogue masters now include all defined main-comic captions and boss memory beats, game stage/storybook/guide/lobby lines, 15 bosses’ replies, three fight lines, two new slip lines and release. Source/provenance/QA and LISTEN_DIALOGUE.html at assets/incoming/audio_voice_acting. Twelve candidate-1 voices are provisional and not subjectively listened; three icon-bearing tips still need a spoken-text/display choice. No audio wired into runtime; newly written lines are not in game text. Human listening for actual words, performances, music motifs, BPM and loop seams remains outstanding. Fetch deploy branch before work.
 
 # Current checkpoint — hero motion and Yuzu duo v8.1.24
 
