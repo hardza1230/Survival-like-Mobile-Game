@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.28**. Next release:8.1.29. Fetch the deploy branch before new work.
+Current release: **8.1.29**. Next release:8.1.30. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.28 — art 59 Bazaar/Heroes tab icons (owner)
+# Latest delivery: v8.1.29 — easier Forge: more Twist Cream, readable mods (owner)
+
+Owner: Twist Cream not enough, mods hard to understand. Boss reward 4+stage (was 2+), miniboss 2–3 (was 1–2), elite drop 75% (was 50%); forgePrice 1+floor(crafts/4) (was /2). MOD_EFFECT gained short {v} lines for the 35 mods enabled in v8.0.94 that only showed catalog jargon (Object.assign after MOD_EFFECT). Boots pool drops dead currency-bias mods 130–132 → 25/26/27 (still 25). Tests: affix-sound, forge-simple, forge-150 price expectations.
+
+# Previous delivery: v8.1.28 — art 59 Bazaar/Heroes tab icons (owner)
 
 Last 6 menu59 icons wired: paintedNavButton(…,icon) gets 'tab_'+id for Bazaar chests/shop/trade; drawRosterTabs adds tab_heroes/tab_talents/tab_stats (dimmed when Talents locked). Icon left of the label, text shifted; m59Img null (sheet not yet loaded) keeps old text-only tab. Note: menu59_icons loads on demand and can wait behind the background asset queue. Art order 59 now fully wired. Also ships the v8.1.27 cut-in (its Pages run hung on apt ffmpeg).
-
-# Previous delivery: v8.1.27 — Yuzu cut-in sweep (owner)
-
-Owner spec: diagonal yellow strip sweeps left→right across the screen, no dark veil, slight slow only while it closes, skill fires near the end. uniqueCutin redraws the band each tween step (head b 0→1 in 220ms, hold 260ms, tail a 0→1 in 280ms Quad.in); physics timeScale 2 (half speed) only during the tail; cast at 80% of the tail (~700ms), visuals/slow end at 760ms. Same size/position as 8.1.26 (H*.12 at y=H*.66).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

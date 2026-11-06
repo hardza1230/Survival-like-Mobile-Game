@@ -14,7 +14,7 @@ const run=data=>vm.runInNewContext('(function(){'+mig+'\n})',{}).call({data});
 {const data={currency:{transmute:5,divine:4}};run(data);assert.deepEqual(data.currency,{transmute:17});assert.equal(data._glazeMig,1);data.currency.divine=2;run(data);assert.deepEqual(data.currency,{transmute:17,divine:2},'runs once');}
 {const data={};run(data);assert.equal(JSON.stringify(data.currency),'{}');const d2={currency:{divine:'x'}};run(d2);assert.equal(JSON.stringify(d2.currency),'{}');}
 // Price per action on an item = 1 + floor(crafts/2); Merge resets crafts (and pending offers)
-assert.deepEqual([0,1,2,3,4,5,9,undefined,-3].map(n=>R('forgePrice')({crafts:n})),[1,1,2,2,3,3,5,1,1]);
+assert.deepEqual([0,1,2,3,4,5,9,undefined,-3].map(n=>R('forgePrice')({crafts:n})),[1,1,1,1,2,2,3,1,1],'v8.1.29 price +1 every 4 crafts');
 assert(/main\.grade=GRADE_NEXT\[from\];delete main\.crafts;delete main\.forgeOffers;/.test(source),'Merge resets crafts');
 // Rows open by rarity only (iLv no longer gates rows)
 const open=(grade,itemLevel)=>[0,1,2,3,4,5].filter(i=>R('forgeLineOpen')({baseId:'test',grade,itemLevel,affixes:[]},i)).length;

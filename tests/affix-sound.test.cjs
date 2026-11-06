@@ -17,7 +17,7 @@ rolls=[.99,.5];assert(s.forgeAdd(0));const m0=api.affixDef(L()[0].id);assert(!m0
 // Duplicates allowed: the same mod can sit on two rows
 const pool=api.forgePool(item,1);assert(pool.some(m=>m.row!=='sustain'),'row 2 can roll any category');
 // Bad mod (roll < 20%): negative value, cannot be upgraded
-rolls=[.05,0];assert(s.forgeAdd(1));const b=L()[1],bd=api.affixDef(b.id);assert(bd.bad);assert(b.v<0);assert.equal(cash(),5,'crafts=2 → price 2');
+rolls=[.05,0];assert(s.forgeAdd(1));const b=L()[1],bd=api.affixDef(b.id);assert(bd.bad);assert(b.v<0);assert.equal(cash(),6,'v8.1.29 crafts=2 → price 1 (rises every 4 crafts)');
 events=[];const c0=cash();assert.equal(s.forgeUpgrade(1),false);assert.deepEqual(events,['error']);assert.equal(cash(),c0,'bad mods are not upgraded');
 now+=5000;s.forgeRemove(1);now+=500;assert(s.forgeRemove(1));assert.equal(L()[1],null);assert.equal(cash(),c0-price(item),'removing a bad mod costs the price');
 // Not enough Twist Cream: error, nothing changes
