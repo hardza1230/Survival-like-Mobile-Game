@@ -1,8 +1,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8'),counts={menu_progress:39,battle_events:32,yuzu:20,story_music:15,voices:33};let total=0;
 for(const [kit,count] of Object.entries(counts)){
- const root='assets/incoming/audio_'+kit,requests=JSON.parse(fs.readFileSync(root+'/REQUESTS.json')),manifest=JSON.parse(fs.readFileSync(root+'/MANIFEST.json')),qa=JSON.parse(fs.readFileSync(root+'/QA_REPORT.json')),prompts=JSON.parse(fs.readFileSync(root+'/PROMPTS.json'));
- assert.equal(requests.length,count);assert.equal(manifest.length,count);assert.equal(prompts.length,count);assert.equal(qa.delivered,count);
+ const root='assets/incoming/audio_'+kit,requests=JSON.parse(fs.readFileSync(root+'/REQUESTS.json')),allManifest=JSON.parse(fs.readFileSync(root+'/MANIFEST.json')),qa=JSON.parse(fs.readFileSync(root+'/QA_REPORT.json')),allPrompts=JSON.parse(fs.readFileSync(root+'/PROMPTS.json')),manifest=allManifest.filter(x=>!x.key.startsWith('bgm_')),prompts=allPrompts.filter(x=>!x.key.startsWith('bgm_'));
+ assert.equal(requests.length,count);assert.equal(manifest.length,count);assert.equal(prompts.length,count);assert.equal(qa.delivered,allManifest.length);
  assert.equal(new Set(manifest.map(r=>r.key)).size,count);
  for(const r of manifest){
   const path=`assets/audio/${kit}/${r.file}`,bytes=fs.readFileSync(path),hash=crypto.createHash('sha256').update(bytes).digest('hex');
@@ -15,7 +15,15 @@ for(const [kit,count] of Object.entries(counts)){
  }
  total+=manifest.length;
 }
-assert.equal(total,139);assert(!/bgm_title:'assets\/audio\/story_music/.test(src),'no fake music path');
+assert.equal(total,139);assert(!/bgm_title:'assets\/audio\/story_music/.test(src),'source-only music is not registered as runtime');
+const musicRoot='assets/incoming/audio_story_music',music=JSON.parse(fs.readFileSync(musicRoot+'/MUSIC_MANIFEST.json')),musicQa=JSON.parse(fs.readFileSync(musicRoot+'/MUSIC_QA_REPORT.json')),musicPrompts=JSON.parse(fs.readFileSync(musicRoot+'/PROMPTS.json'));
+assert.equal(music.length,6);assert.equal(new Set(music.map(x=>x.key)).size,6);
+for(const r of music){const bytes=fs.readFileSync(musicRoot+'/'+r.file),q=musicQa.files.find(x=>x.key===r.key),p=musicPrompts.find(x=>x.key===r.key);assert.equal(bytes.length,r.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256);assert(q?.passed&&q.decode&&q.nonSilent&&q.channels===2&&q.sampleRate===44100&&q.peakDbtp<=-1);assert(p?.provider==='ElevenLabs'&&p.endpoint==='music');const donor=fs.readFileSync(musicRoot+'/'+p.file);assert.equal(crypto.createHash('sha256').update(donor).digest('hex'),p.sha256);}
+
+// A07 source delivery: the provisional cast and authored text remain auditable without boot-loading dialogue.
+const voiceRoot='assets/incoming/audio_voice_acting',voiceManifest=JSON.parse(fs.readFileSync(voiceRoot+'/DIALOGUE_MANIFEST.json')),voiceQa=JSON.parse(fs.readFileSync(voiceRoot+'/DIALOGUE_QA_REPORT.json')),voiceRequests=JSON.parse(fs.readFileSync(voiceRoot+'/GENERATIONS_A07.json')),voiceCast=JSON.parse(fs.readFileSync(voiceRoot+'/VOICES.json'));
+assert.equal(voiceManifest.files.length,144);assert.equal(voiceRequests.length,144);assert.equal(voiceQa.files,144);assert.equal(voiceQa.onsetOver20ms.length,0);assert.equal(Object.keys(voiceCast.savedVoiceIds).length,12);
+for(const r of voiceManifest.files){const bytes=fs.readFileSync(voiceRoot+'/'+r.file),q=voiceQa.measurements.find(x=>x.key===r.key),p=voiceRequests.find(x=>x.key===r.key);assert.equal(bytes.length,r.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256);assert(q?.decode&&q.channels===1&&q.sampleRate===44100&&q.peakDbtp<=-1&&q.leadingSilenceMs<20);assert.equal(p?.text,r.text);assert.equal(p?.voice_id,voiceCast.savedVoiceIds[r.speaker]);}
 const played=[],sounds=[],cache={exists:()=>true,get:()=>({duration:.5})};let now=1000;
 const context={window:{__g:{cache:{audio:cache},sound:{add(key,opts){const s={key,opts,duration:.5,isPlaying:false,once(){},play(){this.isPlaying=true;played.push(key);},stop(){this.isPlaying=false;},destroy(){this.destroyed=true;},setVolume(v){this.opts.volume=v;},setRate(r){this.opts.rate=r;}};sounds.push(s);return s;}}}},Save:{data:{settings:{voices:true}}},performance:{now:()=>now},Math,setTimeout,clearTimeout};vm.createContext(context);
 const a=src.indexOf('const Sfx = {'),b=src.indexOf('\n};',a)+3,S=vm.runInContext(src.slice(a,b)+'\nSfx',context);S.ctx={currentTime:1};
