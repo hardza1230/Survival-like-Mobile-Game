@@ -1,18 +1,14 @@
 # Version line
 
-Current release: **8.1.24**. Next release:8.1.25. Fetch the deploy branch before new work.
+Current release: **8.1.25**. Next release:8.1.26. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.24 — Hero motion and Yuzu duo commands
+# Latest delivery: v8.1.25 — Yuzu Unique cut-in (owner)
+
+uniqueCutin(hero,kind,name,color,done): every Yuzu Unique (yuzuParadeCast) first plays ~0.7s cut-in — physics timeScale 5 (20%), veil, diagonal band in the Unique colour, art cutin_yuzu_<kind> (art order 64, pending) else char_yuzu + yz_<kind>, skill name; then visuals end, speed restores, and the cast runs once state is play (epoch/shutdown guarded). Settings › Unique Cut-in (settings.cutin, default on). Other heroes later if owner approves. Headless: overlay shows, ends, buff applied, no errors.
+
+# Previous delivery: v8.1.24 — Hero motion and Yuzu duo commands
 
 Ten original eight-frame hero sheets are selected lazily for unique skill poses and build-specific movement, with legacy textures as fallback. Yuzu fires a marking seed during each companion command; the existing mark and In Sync rules handle the cooperative bonus. Source sheets and provenance: assets/incoming/hero_motion823; packing: scripts/pack-hero-motion823.py. Full npm check, web/review builds and eleven browser contracts passed. Runtime 42fded32a9ff1633c861a4a2b2ca433c6db392ab; Pages 42075871206 and APK 42075871175 succeeded; all 37 files and ten live sheets verified. Phone play review remains with the owner.
-
-# Previous delivery: v8.1.23 — Back to Hub crash after a boss loss (owner screenshot)
-
-Back to Hub = scene.restart; shutdown clearArtVfx→stopBossInk restored the boss texture on a destroyed sprite (setTexture → reading 'sys'). Restore now skips destroyed actors (scene undefined). Second crash on the new create: stale _sesRuneButtons → sesRuneLayout setRadius on null; Game.create resets _sesRuneButtons/_sesRuneUI/_sesRuneLabel/_bossInkActors. Reproduced headless (C2-5 Root Throne, spawnFinalBoss, die, Back to Hub) → clean menu after fix.
-
-# Previous delivery: v8.1.22 — Mint ice needles
-
-Mint normal lances and Impaler throws use six smaller original painted needle frames, loaded only for Mint, with the previous art as fallback. Damage, collision, speed and timing remain unchanged. Source and prompt in assets/incoming/mint_needle821; mechanical packer scripts/pack-mint-needle821.py. Full npm check, eleven browser contracts, and final nine-clip Mint Canvas review passed locally; Runtime 5b2eaf55709d0d5279bf06fe437de768ab724398; Pages42063999844 and APK42063999104 SUCCESS. Live8.1.22 and the 108,850-byte needle atlas match the source SHA-256. All13 release files/4,816,026 bytes passed immutable readback and decode; runtime trees aligned.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
