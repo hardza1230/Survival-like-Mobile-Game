@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.30';
+const GAME_VERSION = '8.1.31';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.31',date:'2026-11-06',title:'Yuzu duo finishers per companion',items:['Pomelo: a ring of 8 seeds bursts out of the slam','Lime: one golden seed pierces the whole line','Blood Orange: 5 homing seeds chase enemies']},
   {v:'8.1.30',date:'2026-11-06',title:'Yuzu duo finisher',items:['The Yuzu cut-in is removed','As her companion’s Unique lands, Yuzu fires a fan of 3 seeds at the same spot']},
   {v:'8.1.29',date:'2026-11-06',title:'Easier Forge',items:['More Twist Cream: bosses give 2 more, minibosses 1 more, elites drop it more often','Forge prices rise half as fast','35 mods now explain themselves in one short line with their number','Boots no longer roll mods for currencies that left the game']},
   {v:'8.1.28',date:'2026-11-06',title:'Painted Bazaar and Heroes tabs',items:['Bazaar tabs (Chests, Shop, Trade) and Heroes tabs (Heroes, Talents, Stats) now show painted icons']},
@@ -17441,8 +17442,13 @@ class Game extends Phaser.Scene {
     this.bpPose?.('char_yuzu_combo_motion823',.5);
     // v8.1.30 เจ้าของ: เลิก cut-in · ท่าประสาน — จังหวะที่คู่หูลงท่า Yuzu ยิงเมล็ด 3 ลูกแบบพัดเข้าจุดเดียวกัน
     const ep=this._artEpoch||0;this.time?.delayedCall?.(450,()=>{if(this.state!=='play'||(this._artEpoch||0)!==ep||!p.active)return;const a2=Math.atan2(pt.y-p.y,pt.x-p.x),d2=Math.hypot(pt.x-p.x,pt.y-p.y);
-      for(const o of [-.16,0,.16])this.yuzuShot(null,p.x,p.y,a2+o,this.yuzuPower()*.6*u.power,{seed:true,source:'duo_finish',speed:900,life:Math.max(.35,Math.min(1,(d2+80)/900)),pierce:1});
-      this.bpPose?.('char_yuzu_combo_motion823',.4);this.screenShake?.(90,.004);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_triple_arrow',.35,.4));});
+      // v8.1.31 เจ้าของ: ท่าประสานต่างกันตามคู่หู · pomelo = วงเมล็ดระเบิดออกจากจุดกระแทก · lime = เมล็ดทองลูกเดียวทะลุทั้งแนว · bloodorange = เมล็ดตามเป้า 5 ลูก · ไม่มีคู่หู = พัด 3 ลูก
+      const yp=this.yuzuPower()*u.power,life=Math.max(.35,Math.min(1,(d2+80)/900));
+      if(k==='pomelo'){for(let i=0;i<8;i++)this.yuzuShot(null,pt.x,pt.y,i*Math.PI/4,yp*.4,{seed:true,source:'duo_finish',speed:520,life:.45,pierce:2});}
+      else if(k==='lime'){this.yuzuShot(null,p.x,p.y,a2,yp*1.6,{seed:true,source:'duo_finish',speed:1150,life:.9,pierce:99});}
+      else if(k==='bloodorange'){for(let i=0;i<5;i++)this.yuzuShot(null,p.x,p.y,a2+(i-2)*.35,yp*.45,{seed:true,source:'duo_finish',speed:620,life:1.1,seek:true,pierce:0});}
+      else for(const o of [-.16,0,.16])this.yuzuShot(null,p.x,p.y,a2+o,yp*.6,{seed:true,source:'duo_finish',speed:900,life,pierce:1});
+      this.bpPose?.('char_yuzu_combo_motion823',.4);this.screenShake?.(k==='pomelo'?140:90,k==='pomelo'?.007:.004);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_triple_arrow',.35,.4));});
   }
   // v8.0.64 owner picked Citrus Command: hold the Unique to aim a spot (auto = 🎯 mark / priority target), the companion does its big move there.
   isYuzuCommand(){return this.character==='yuzu'&&!!this.basicAttack;}

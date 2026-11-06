@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.30**. Next release:8.1.31. Fetch the deploy branch before new work.
+Current release: **8.1.31**. Next release:8.1.32. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.30 — no cut-in, Yuzu duo finisher (owner)
+# Latest delivery: v8.1.31 — Yuzu duo finisher per companion (owner)
+
+duo_finish (450ms after cast) now depends on companion kind: pomelo = 8 seeds radiating from the command point (40% each, pierce 2, bigger shake); lime = one golden seed along the aim line (160%, pierce 99, speed 1150); bloodorange = 5 homing seeds (45% each, seek) fanned from Yuzu; yuzling keeps the 3-seed fan (60%). Test added in yuzu-companions (counts/pierce/seek per kind).
+
+# Previous delivery: v8.1.30 — no cut-in, Yuzu duo finisher (owner)
 
 Owner dropped the Unique cut-in (yuzuParadeCast no longer calls uniqueCutin; Settings row removed; uniqueCutin kept unused; art order 64 cancelled). Kept/strengthened team attack: 450ms after the cast (when the companion's move lands) Yuzu fires a 3-seed fan (±0.16 rad, 60% power each, pierce 1, source duo_finish) at the command point + combo pose, light shake, yz_triple_arrow cue; epoch/state guarded. Existing duo_seed mark shot unchanged.
-
-# Previous delivery: v8.1.29 — easier Forge: more Twist Cream, readable mods (owner)
-
-Owner: Twist Cream not enough, mods hard to understand. Boss reward 4+stage (was 2+), miniboss 2–3 (was 1–2), elite drop 75% (was 50%); forgePrice 1+floor(crafts/4) (was /2). MOD_EFFECT gained short {v} lines for the 35 mods enabled in v8.0.94 that only showed catalog jargon (Object.assign after MOD_EFFECT). Boots pool drops dead currency-bias mods 130–132 → 25/26/27 (still 25). Tests: affix-sound, forge-simple, forge-150 price expectations.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
