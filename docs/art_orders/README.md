@@ -26,7 +26,7 @@
 | 61 | `61_BOSS_DEFEAT_CUTSCENES.md` | Cutscene หลังล้มบอส 15 ตัว: ฉากล้ม (ทึบ) + รูปจริงที่ถูกปลดปล่อย (alpha) ต่อบอส, ฉากเดินต่อ 3 บท, FX มงกุฎแตก/แสงรสชาติคืน | 35 | ใหญ่ | 🟢 ผูกแล้ว v8.0.84 · รอตรวจมือถือ |
 | 62 | `62_STATUS_EFFECTS.md` | สถานะติดตัวในด่าน: ลูปบนมอน 7 (Burn/Chill/Brittle/Sour/Stun/Shock/Mark), ลูปบนฮีโร่ 6 (Slow/Poison/Bleed/Haste/Guard/Barrier), one-shot 3 (ติดสถานะ/Barrier แตก/หายพิษ), ไอคอนสถานะ 19 ช่อง (atlas 6×4) สำหรับเหนือหัวมอน + แถวบัฟ HUD | 17 | กลาง | 🟢 ผูกแล้ว v8.0.85 · รอตรวจมือถือ |
 | 63 | `63_YUZU_COMPANION_FORMS.md` | Yuzu คู่หูวิวัฒนาการร่าง 2–3 (Pomelo Knight/Titan, Lime Archer/Skyhunter, Blood Orange Mage/Archmage) ชีต 4×2 เดียวกับร่าง 1 ×6 + FX วิวัฒนาการ `yz_fx_evolve` 8 เฟรม + ป้ายร่าง (ไม่บังคับ) | 8 | กลาง | 🟢 ผูกครบ 8 แล้ว v8.0.95 · รอตรวจมือถือ |
-| 64 | `64_YUZU_UNIQUE_CUTIN.md` | Yuzu Unique Cut-in: ภาพ Yuzu+คู่หู (Pomelo/Lime/Blood Orange) 3 ภาพ 1024×640 พื้นโปร่งใส วางบนแถบเฉียงตอนใช้ท่าพิเศษ | 3 | กลาง | 🟡 รออาร์ต · ระบบทำแล้ว v8.1.25 (ใช้ภาพเดิมสำรอง) |
+| 64 | `64_YUZU_UNIQUE_CUTIN.md` | Yuzu Unique Cut-in: ภาพ Yuzu+คู่หู (Pomelo/Lime/Blood Orange) 3 ภาพ 1024×640 พื้นโปร่งใส วางบนแถบเฉียงตอนใช้ท่าพิเศษ | 3 | กลาง | ⛔ ยกเลิก v8.1.30 (เจ้าของเลิกใช้ cut-in) |
 | 54 | `54_DEPTHS_RANK_REWARDS.md` | Depths ตะเกียง/แสง 3×3/ป้ายเลขระยะ/คนงานเหมือง + ไอคอน Rank Rewards 10 อัน | 5 / 24 เฟรม | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |
 | 53 | `53_BESTIARY_RECIPE_BOOK.md` | Bestiary การ์ด/เงาปริศนา/หมุดขั้น/จุดอ่อน/แผง + Recipe Book หน้า/ปุ่ม Build/การ์ดคว่ำ/ตราครบ | 9 | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |
 | 52 | `52_AWARDS_TITLES.md` | Awards เหรียญหมวด 4×2, ดาวขั้น, กล่องรางวัลลับ+เปิด, ริบบิ้นฉายา, Claim all, VFX รับดาว | 7 | 🟢 | 🟩 ผูกเข้าเกม v8.0.34 · รอตรวจมือถือ |

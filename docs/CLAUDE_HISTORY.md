@@ -3478,3 +3478,8 @@ Owner: cut-in too dominant. uniqueCutin band now H*.12 (max W*.27) at y=H*.66 be
 
 Owner spec: diagonal yellow strip sweeps left→right across the screen, no dark veil, slight slow only while it closes, skill fires near the end. uniqueCutin redraws the band each tween step (head b 0→1 in 220ms, hold 260ms, tail a 0→1 in 280ms Quad.in); physics timeScale 2 (half speed) only during the tail; cast at 80% of the tail (~700ms), visuals/slow end at 760ms. Same size/position as 8.1.26 (H*.12 at y=H*.66).
 
+
+# Previous delivery: v8.1.28 — art 59 Bazaar/Heroes tab icons (owner)
+
+Last 6 menu59 icons wired: paintedNavButton(…,icon) gets 'tab_'+id for Bazaar chests/shop/trade; drawRosterTabs adds tab_heroes/tab_talents/tab_stats (dimmed when Talents locked). Icon left of the label, text shifted; m59Img null (sheet not yet loaded) keeps old text-only tab. Note: menu59_icons loads on demand and can wait behind the background asset queue. Art order 59 now fully wired. Also ships the v8.1.27 cut-in (its Pages run hung on apt ffmpeg).
+

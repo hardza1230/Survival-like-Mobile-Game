@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.29';
+const GAME_VERSION = '8.1.30';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.30',date:'2026-11-06',title:'Yuzu duo finisher',items:['The Yuzu cut-in is removed','As her companion’s Unique lands, Yuzu fires a fan of 3 seeds at the same spot']},
   {v:'8.1.29',date:'2026-11-06',title:'Easier Forge',items:['More Twist Cream: bosses give 2 more, minibosses 1 more, elites drop it more often','Forge prices rise half as fast','35 mods now explain themselves in one short line with their number','Boots no longer roll mods for currencies that left the game']},
   {v:'8.1.28',date:'2026-11-06',title:'Painted Bazaar and Heroes tabs',items:['Bazaar tabs (Chests, Shop, Trade) and Heroes tabs (Heroes, Talents, Stats) now show painted icons']},
   {v:'8.1.27',date:'2026-11-06',title:'Yuzu cut-in sweep',items:['The Yuzu cut-in is now a diagonal strip that sweeps across the screen with no dark overlay','Time slows slightly as the strip closes, then the Unique fires']},
@@ -11610,8 +11611,7 @@ class Game extends Phaser.Scene {
       {k:'vfx',e:'🎆',n:'VFX Quality',sub:'Particle count and boss effects',value:()=>['Low','Mid','High'][st.vfx||0],toggle:()=>{st.vfx=((st.vfx||0)+1)%3;}},
       {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>(_lowMemFlag?'Low-memory · ':'')+['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;clearLowMem();this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
       {k:'share',e:'📡',n:'Share Play Stats',sub:'Send each finished stage’s stats to the developer · anonymous',value:()=>Tele.status(),toggle:()=>{st.share=!st.share;Save.data.settings=st;if(st.share)setTimeout(()=>Tele.flush(),50);}},
-      {k:'cutin',e:'🎬',n:'Unique Cut-in',sub:'Short hero scene each time a Unique is used (Yuzu)',value:()=>st.cutin===false?'Off':'On',toggle:()=>{st.cutin=st.cutin===false;}},
-      {k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}},
+            {k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}},
       {k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true},
     ];
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
@@ -17421,7 +17421,6 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(IN+HOLD+OUT*.8,cast);this.time.delayedCall(IN+HOLD+OUT,end);
   }
   yuzuParadeCast(ul){
-    if(!this._yzCutinGo&&typeof this.uniqueCutin==='function'&&typeof Save!=='undefined'){const m0=this.yuzuEnsure();if(!m0)return;const info=this.uniqueInfo?.()||{};this.uniqueCutin('yuzu',m0.kind,info.name||'Citrus Command',info.color??0xffb347,()=>{this._yzCutinGo=true;try{this.yuzuParadeCast(ul);}finally{this._yzCutinGo=false;}});return;}
     const m=this.yuzuEnsure();if(!m)return;this._yzPendingBlend=null;
     if(this._yzBuff)this.yuzuEndBuff(this._yzBuff,false);
     m.action=null;m.lunge=null;m.boost=0;
@@ -17440,6 +17439,10 @@ class Game extends Phaser.Scene {
     const a=pt.ang??Math.atan2(pt.y-p.y,pt.x-p.x),d=Math.hypot(pt.x-p.x,pt.y-p.y);
     this.yuzuShot(null,p.x,p.y,a,this.yuzuPower()*.8*u.power,{seed:true,source:'duo_seed',speed:850,life:Math.max(.35,Math.min(1,(d+80)/850)),pierce:k==='lime'?2:0});
     this.bpPose?.('char_yuzu_combo_motion823',.5);
+    // v8.1.30 เจ้าของ: เลิก cut-in · ท่าประสาน — จังหวะที่คู่หูลงท่า Yuzu ยิงเมล็ด 3 ลูกแบบพัดเข้าจุดเดียวกัน
+    const ep=this._artEpoch||0;this.time?.delayedCall?.(450,()=>{if(this.state!=='play'||(this._artEpoch||0)!==ep||!p.active)return;const a2=Math.atan2(pt.y-p.y,pt.x-p.x),d2=Math.hypot(pt.x-p.x,pt.y-p.y);
+      for(const o of [-.16,0,.16])this.yuzuShot(null,p.x,p.y,a2+o,this.yuzuPower()*.6*u.power,{seed:true,source:'duo_finish',speed:900,life:Math.max(.35,Math.min(1,(d2+80)/900)),pierce:1});
+      this.bpPose?.('char_yuzu_combo_motion823',.4);this.screenShake?.(90,.004);(typeof Sfx!=='undefined'&&Sfx.orderCue?.('yz_triple_arrow',.35,.4));});
   }
   // v8.0.64 owner picked Citrus Command: hold the Unique to aim a spot (auto = 🎯 mark / priority target), the companion does its big move there.
   isYuzuCommand(){return this.character==='yuzu'&&!!this.basicAttack;}
