@@ -21,7 +21,7 @@
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |
-| 59 | `59_MENU_ICONS.md` | ไอคอนเมนูแทนอีโมจิ: แท็บ Rewards/Bazaar/Heroes, แถว Activities, Settings, Mail/News/Codex (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.79 (แท็บ Bazaar/Heroes ยังไม่ผูก) |
+| 59 | `59_MENU_ICONS.md` | ไอคอนเมนูแทนอีโมจิ: แท็บ Rewards/Bazaar/Heroes, แถว Activities, Settings, Mail/News/Codex (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกครบแล้ว v8.1.28 |
 | 60 | `60_BOSS_BODY_MOVES_AND_SHOTS.md` | ท่าบอสสายร่างกาย 4 FX (คลื่นพื้น/ตกจากฟ้า/ปัดกวาด/พุ่งชน) + กระสุนบอสภาพวาด 16 แบบ | 20 | กลาง | 🟢 ผูกแล้ว v8.0.80 |
 | 61 | `61_BOSS_DEFEAT_CUTSCENES.md` | Cutscene หลังล้มบอส 15 ตัว: ฉากล้ม (ทึบ) + รูปจริงที่ถูกปลดปล่อย (alpha) ต่อบอส, ฉากเดินต่อ 3 บท, FX มงกุฎแตก/แสงรสชาติคืน | 35 | ใหญ่ | 🟢 ผูกแล้ว v8.0.84 · รอตรวจมือถือ |
 | 62 | `62_STATUS_EFFECTS.md` | สถานะติดตัวในด่าน: ลูปบนมอน 7 (Burn/Chill/Brittle/Sour/Stun/Shock/Mark), ลูปบนฮีโร่ 6 (Slow/Poison/Bleed/Haste/Guard/Barrier), one-shot 3 (ติดสถานะ/Barrier แตก/หายพิษ), ไอคอนสถานะ 19 ช่อง (atlas 6×4) สำหรับเหนือหัวมอน + แถวบัฟ HUD | 17 | กลาง | 🟢 ผูกแล้ว v8.0.85 · รอตรวจมือถือ |

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.27';
+const GAME_VERSION = '8.1.28';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.28',date:'2026-11-06',title:'Painted Bazaar and Heroes tabs',items:['Bazaar tabs (Chests, Shop, Trade) and Heroes tabs (Heroes, Talents, Stats) now show painted icons']},
   {v:'8.1.27',date:'2026-11-06',title:'Yuzu cut-in sweep',items:['The Yuzu cut-in is now a diagonal strip that sweeps across the screen with no dark overlay','Time slows slightly as the strip closes, then the Unique fires']},
   {v:'8.1.26',date:'2026-11-06',title:'Smaller Yuzu cut-in',items:['The Yuzu Unique cut-in is a slim strip near the top with a lighter dim, so the battle stays visible']},
   {v:'8.1.25',date:'2026-11-06',title:'Yuzu Unique cut-in',items:['Using Yuzu’s Unique now plays a short team-up scene with her companion before the move lands','Turn it off in Settings › Unique Cut-in']},
@@ -12169,14 +12170,15 @@ class Game extends Phaser.Scene {
     const sp=this.add.image(cx,cy,key).setOrigin(0.5).setAlpha(alpha),scale=Math.min(maxW/sp.width,maxH/sp.height);
     sp.setScale(scale);this.menu.add(sp);return sp;
   }
-  paintedNavButton(cont,cx,cy,w,h,label,active,fn){
+  paintedNavButton(cont,cx,cy,w,h,label,active,fn,icon){
     const chrome=this.controlTheme?.()||{font:'NunitoUI, sans-serif',text:'#fff1e7',muted:'#cfc1d4',currency:'#f4d9a1',ink:'#3b2416',shadow:'#27182f',surface:0x261e30,border:0x6d536d,edge:0xf4d9a1};
     const texture=this.textures.get('painted_nav_button');
     if(!texture.has('button')){const q=texture.getSourceImage().width/2172;texture.add('button',0,93*q,135*q,1985*q,425*q);}   // v7.4.1 พิกัดตามขนาดจริง
     const halo=this.add.graphics();if(active){halo.fillStyle(chrome.edge,.10);halo.fillRoundedRect(cx-w/2-2,cy-h/2-2,w+4,h+4,12);halo.lineStyle(1.5,chrome.edge,.95);halo.strokeRoundedRect(cx-w/2,cy-h/2,w,h,10);}cont.add(halo);
     const art=this.add.image(cx,cy,'painted_nav_button','button').setDisplaySize(w,h).setAlpha(active?1:.72);
     const text=this.add.text(cx,cy,label,{fontFamily:chrome.font,fontStyle:'bold',fontSize:w<100?'10px':'12px',color:active?chrome.text:chrome.muted,stroke:chrome.shadow,strokeThickness:1.5}).setOrigin(.5);
-    cont.add([art,text]);if(fn)this._zone(cx-w/2,cy-h/2,w,h,()=>{Sfx.select&&Sfx.select();fn();});
+    cont.add([art,text]);{const z=Math.min(h*.66,26),ic=icon&&this.m59Img?.(icon,cx,cy,z);if(ic){text.x+=z*.55;ic.x=text.x-text.width/2-z*.6;ic.setAlpha(active?1:.75);cont.add(ic);}}   // v8.1.28 ใบ 59 ไอคอนแท็บ (ไม่มีภาพ = ตัวหนังสือเดิม)
+    if(fn)this._zone(cx-w/2,cy-h/2,w,h,()=>{Sfx.select&&Sfx.select();fn();});
   }
   drawHeroesTabs(){this.drawRosterTabs();}
   buildHeroes(){
@@ -12239,7 +12241,8 @@ class Game extends Phaser.Scene {
     const chrome=this.controlTheme?.()||{font:'NunitoUI, sans-serif',text:'#fff1e7',muted:'#cfc1d4',currency:'#f4d9a1',ink:'#3b2416',shadow:'#27182f',surface:0x261e30,border:0x6d536d,edge:0xf4d9a1};
     const w=this.W,p=w/941,{tw,h,y,x0,gap}=this.rosterTabLayout();
     [['roster','Heroes'],['talents','Talents'],['stats','Stats']].forEach(([id,label],i)=>{const x=x0+i*(tw+gap),lock=id==='talents'&&!(typeof talentsOpen!=='function'||talentsOpen());if(lock)label='🔒 '+label;this.rosterChrome(id===(this._heroesTab||'roster')?'tab_on':'tab_off',x,y,tw,h);
-      this.menu.add(this.add.text(x+tw/2,y+h/2,label,{fontFamily:chrome.font,fontStyle:'bold',fontSize:Math.max(13,31*p)+'px',color:chrome.text,stroke:chrome.shadow,strokeThickness:Math.min(1.5,Math.max(1,2*p))}).setOrigin(.5));
+      {const t=this.add.text(x+tw/2,y+h/2,label,{fontFamily:chrome.font,fontStyle:'bold',fontSize:Math.max(13,31*p)+'px',color:chrome.text,stroke:chrome.shadow,strokeThickness:Math.min(1.5,Math.max(1,2*p))}).setOrigin(.5);this.menu.add(t);
+       const z=Math.min(h*.66,28),ic=this.m59Img?.(({roster:'tab_heroes',talents:'tab_talents',stats:'tab_stats'})[id],x+tw/2,y+h/2,z);if(ic){t.x+=z*.55;ic.x=t.x-t.width/2-z*.6;if(lock)ic.setAlpha(.5);this.menu.add(ic);}}   // v8.1.28 ใบ 59
       this._zone(x,y,tw,h,()=>{if(lock){Sfx.error?.();this.menuToast?.('🔒 Talents open after Stage 3','#ffd166');return;}this._heroesTab=id;this.menuScreen='char';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='tab_'+id;
       if(id==='talents'&&this.hasTargetBadge?.('talents'))this.drawBadgeDot(this.menu,x+tw-8,y+8);   // v7.9.55
     });
@@ -13235,7 +13238,7 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     /* v8.0.25 เจ้าของ: เหลือ 3 แท็บ — หีบ (เงิน/ทอง/Sugar) · ร้าน (ของ 4 + วัสดุ 2 รีเฟรชฟรีวันละครั้ง) · แลก (Trade-in + ขายวัสดุ) */
     const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=TAB[this._bazTab]||this._bazTab||'chests',top=(tab==='shop'?153:121)+hs;
-    [['chests','Chests'],['shop','Shop'],['trade','Trade']].forEach(([id,label],i)=>{const tw=(w-28)/3;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();});});
+    [['chests','Chests'],['shop','Shop'],['trade','Trade']].forEach(([id,label],i)=>{const tw=(w-28)/3;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();},'tab_'+id);});
     if(tab==='chests'){ this.buildChestShop(top); this.menu.setVisible(true); return; }
     let y=top;
     const heading=(title)=>{this.menu.add(this.add.text(14,y,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe3ac'}));y+=23;};
