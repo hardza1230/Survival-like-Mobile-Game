@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.25**. Next release:8.1.26. Fetch the deploy branch before new work.
+Current release: **8.1.26**. Next release:8.1.27. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.25 — Yuzu Unique cut-in (owner)
+# Latest delivery: v8.1.26 — smaller Yuzu cut-in (owner)
+
+Owner: cut-in too dominant. uniqueCutin band now H*.12 (max W*.27) at y=H*.66 below the hero, clear of Ruby tips (was H*.3 at .42), veil alpha .25 (was .55), name 22px/stroke 4, shake halved. Timing/slow-mo unchanged. Art order 64 size note still fine (image scales to band).
+
+# Previous delivery: v8.1.25 — Yuzu Unique cut-in (owner)
 
 uniqueCutin(hero,kind,name,color,done): every Yuzu Unique (yuzuParadeCast) first plays ~0.7s cut-in — physics timeScale 5 (20%), veil, diagonal band in the Unique colour, art cutin_yuzu_<kind> (art order 64, pending) else char_yuzu + yz_<kind>, skill name; then visuals end, speed restores, and the cast runs once state is play (epoch/shutdown guarded). Settings › Unique Cut-in (settings.cutin, default on). Other heroes later if owner approves. Headless: overlay shows, ends, buff applied, no errors.
-
-# Previous delivery: v8.1.24 — Hero motion and Yuzu duo commands
-
-Ten original eight-frame hero sheets are selected lazily for unique skill poses and build-specific movement, with legacy textures as fallback. Yuzu fires a marking seed during each companion command; the existing mark and In Sync rules handle the cooperative bonus. Source sheets and provenance: assets/incoming/hero_motion823; packing: scripts/pack-hero-motion823.py. Full npm check, web/review builds and eleven browser contracts passed. Runtime 42fded32a9ff1633c861a4a2b2ca433c6db392ab; Pages 42075871206 and APK 42075871175 succeeded; all 37 files and ten live sheets verified. Phone play review remains with the owner.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.25';
+const GAME_VERSION = '8.1.26';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.26',date:'2026-11-06',title:'Smaller Yuzu cut-in',items:['The Yuzu Unique cut-in is a slim strip near the top with a lighter dim, so the battle stays visible']},
   {v:'8.1.25',date:'2026-11-06',title:'Yuzu Unique cut-in',items:['Using Yuzu’s Unique now plays a short team-up scene with her companion before the move lands','Turn it off in Settings › Unique Cut-in']},
   {v:'8.1.24',date:'2026-11-06',title:'Hero motion and Yuzu team attacks',items:['New hero animations bring selected Unique skills and builds to life.','Yuzu throws a marking seed alongside each companion command.']},
   {v:'8.1.23',date:'2026-11-05',title:'Back to Hub fix',items:['Fixed an error after losing to a boss and tapping Back to Hub']},
@@ -17395,14 +17396,14 @@ class Game extends Phaser.Scene {
     const S=(typeof Save!=='undefined'&&Save.data?.settings)||{};if(S.cutin===false||!this.add||!this.cameras?.main){done();return;}
     const W=this.W,H=this.H,epoch=this._artEpoch||0,objs=[],ui=o=>{this.camUI?.(o);o.setScrollFactor?.(0);objs.push(o);return o;},motion=this.hubMotionAllowed?.()!==false;
     const oldPhys=this.physics?.world?.timeScale??1;if(this.physics?.world&&!this._isHitStop)this.physics.world.timeScale=5;this._cutinOn=true;
-    const veil=ui(this.add.rectangle(0,0,W,H,0x0b0612,.55).setOrigin(0).setDepth(99990));
-    const bh=Math.min(H*.3,W*.62),by=H*.42,band=ui(this.add.graphics().setDepth(99991));band.fillStyle(color,.92);band.beginPath();band.moveTo(0,by-bh*.42);band.lineTo(W,by-bh*.62);band.lineTo(W,by+bh*.42);band.lineTo(0,by+bh*.62);band.closePath();band.fillPath();band.lineStyle(4,0xfff3c4,.95);band.strokePath();
+    const veil=ui(this.add.rectangle(0,0,W,H,0x0b0612,.25).setOrigin(0).setDepth(99990));
+    const bh=Math.min(H*.12,W*.27),by=H*.66,band=ui(this.add.graphics().setDepth(99991));band.fillStyle(color,.92);band.beginPath();band.moveTo(0,by-bh*.42);band.lineTo(W,by-bh*.62);band.lineTo(W,by+bh*.42);band.lineTo(0,by+bh*.62);band.closePath();band.fillPath();band.lineStyle(4,0xfff3c4,.95);band.strokePath();
     const real='cutin_'+hero+'_'+kind,has=this.textures.exists(real);
     const add=(key,frame,x,h,flip)=>{if(!this.textures.exists(key))return null;const o=ui(this.add.image(x,by,key,frame).setDepth(99992));o.setScale(h/Math.max(1,o.height));if(flip)o.setFlipX(true);return o;};
     const arts=has?[add(real,0,W*.5,bh*1.25)]:[add('char_'+hero,0,W*.32,bh*1.15),add('yz_'+kind,0,W*.7,bh*1.05,true)];
-    const txt=ui(this.add.text(W/2,by+bh*.5,name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(34,W*.08))+'px',color:'#ffffff',stroke:'#3a1a10',strokeThickness:6}).setOrigin(.5).setDepth(99993));
+    const txt=ui(this.add.text(W/2,by+bh*.5,name,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.round(Math.min(22,W*.055))+'px',color:'#ffffff',stroke:'#3a1a10',strokeThickness:4}).setOrigin(.5).setDepth(99993));
     if(motion){arts.forEach((o,i)=>{if(!o)return;const tx=o.x;o.x=i?W+o.displayWidth:-o.displayWidth;this.tweens.add({targets:o,x:tx,duration:180,ease:'Back.out'});});band.setScale(1,.1).y=by*.9;this.tweens.add({targets:band,scaleY:1,y:0,duration:140,ease:'Quad.out'});txt.setScale(1.6).setAlpha(0);this.tweens.add({targets:txt,scale:1,alpha:1,duration:200,delay:120,ease:'Back.out'});}
-    this.screenShake?.(120,.006);if(typeof Sfx!=='undefined')(Sfx.bp?.('uq_yuzu_parade',.45,.6)||Sfx.select?.());
+    this.screenShake?.(90,.003);if(typeof Sfx!=='undefined')(Sfx.bp?.('uq_yuzu_parade',.45,.6)||Sfx.select?.());
     let fin=false,dead=false;const end=()=>{if(fin)return;fin=true;this._cutinOn=false;if(this.physics?.world&&!this._isHitStop)this.physics.world.timeScale=oldPhys;objs.forEach(o=>o.active&&o.destroy());};
     this.events.once('shutdown',()=>{dead=true;end();});
     const cast=()=>{if(dead||(this._artEpoch||0)!==epoch||!this.player?.active)return;if(this.state==='play')done();else this.time.delayedCall(150,cast);};   // ท่าลงเมื่อกลับมาเล่น (กันชนหน้าเลเวลอัป/หยุด)
