@@ -3463,3 +3463,8 @@ Mint normal lances and Impaler throws use six smaller original painted needle fr
 
 Ten original eight-frame hero sheets are selected lazily for unique skill poses and build-specific movement, with legacy textures as fallback. Yuzu fires a marking seed during each companion command; the existing mark and In Sync rules handle the cooperative bonus. Source sheets and provenance: assets/incoming/hero_motion823; packing: scripts/pack-hero-motion823.py. Full npm check, web/review builds and eleven browser contracts passed. Runtime 42fded32a9ff1633c861a4a2b2ca433c6db392ab; Pages 42075871206 and APK 42075871175 succeeded; all 37 files and ten live sheets verified. Phone play review remains with the owner.
 
+
+# Previous delivery: v8.1.25 — Yuzu Unique cut-in (owner)
+
+uniqueCutin(hero,kind,name,color,done): every Yuzu Unique (yuzuParadeCast) first plays ~0.7s cut-in — physics timeScale 5 (20%), veil, diagonal band in the Unique colour, art cutin_yuzu_<kind> (art order 64, pending) else char_yuzu + yz_<kind>, skill name; then visuals end, speed restores, and the cast runs once state is play (epoch/shutdown guarded). Settings › Unique Cut-in (settings.cutin, default on). Other heroes later if owner approves. Headless: overlay shows, ends, buff applied, no errors.
+

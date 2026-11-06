@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.26**. Next release:8.1.27. Fetch the deploy branch before new work.
+Current release: **8.1.27**. Next release:8.1.28. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.26 — smaller Yuzu cut-in (owner)
+# Latest delivery: v8.1.27 — Yuzu cut-in sweep (owner)
+
+Owner spec: diagonal yellow strip sweeps left→right across the screen, no dark veil, slight slow only while it closes, skill fires near the end. uniqueCutin redraws the band each tween step (head b 0→1 in 220ms, hold 260ms, tail a 0→1 in 280ms Quad.in); physics timeScale 2 (half speed) only during the tail; cast at 80% of the tail (~700ms), visuals/slow end at 760ms. Same size/position as 8.1.26 (H*.12 at y=H*.66).
+
+# Previous delivery: v8.1.26 — smaller Yuzu cut-in (owner)
 
 Owner: cut-in too dominant. uniqueCutin band now H*.12 (max W*.27) at y=H*.66 below the hero, clear of Ruby tips (was H*.3 at .42), veil alpha .25 (was .55), name 22px/stroke 4, shake halved. Timing/slow-mo unchanged. Art order 64 size note still fine (image scales to band).
-
-# Previous delivery: v8.1.25 — Yuzu Unique cut-in (owner)
-
-uniqueCutin(hero,kind,name,color,done): every Yuzu Unique (yuzuParadeCast) first plays ~0.7s cut-in — physics timeScale 5 (20%), veil, diagonal band in the Unique colour, art cutin_yuzu_<kind> (art order 64, pending) else char_yuzu + yz_<kind>, skill name; then visuals end, speed restores, and the cast runs once state is play (epoch/shutdown guarded). Settings › Unique Cut-in (settings.cutin, default on). Other heroes later if owner approves. Headless: overlay shows, ends, buff applied, no errors.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
