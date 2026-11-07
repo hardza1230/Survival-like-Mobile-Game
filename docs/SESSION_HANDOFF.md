@@ -1,6 +1,6 @@
-# In progress — Art 65 and audio A09 source delivery (2026-11-08)
+# Current checkpoint — Art 65 and audio A09 source delivery (2026-11-08)
 
-Owner requested Daily Login 30 source-only art and A09 Ruby voice. Orders found in branch claude/cool-meitner-5vb4gw at fc82a31 and copied individually. Eleven ImageGen PNGs and 28 ElevenLabs TTS files, original donors, prompts, manifests and QA prepared in assets/incoming/login30 and audio_ruby_a09. Art frame size/alpha, nine-slice preview and 28 audio hashes/durations/peaks verified. No runtime changed; A09 in-game event wiring, subjective listening and owner mobile review remain. Commit/push pending; fetch deploy branch before publishing and preserve concurrent work.
+Owner requested Daily Login 30 source-only art and A09 Ruby voice. Orders found in branch claude/cool-meitner-5vb4gw at fc82a31 and copied individually. Eleven ImageGen PNGs and 28 ElevenLabs TTS files, original donors, prompts, manifests and QA delivered in assets/incoming/login30 and audio_ruby_a09. Art dimensions/alpha/frames, nine-slice preview and 28 audio hashes/durations/peaks verified; all 99 release files passed immutable readback. Source commit 8ca8db64c6c54d6ac13399cc013c86c4c239063f; Pages 42427497592 and APK 42427497599 auto-triggered by assets but do not add runtime wiring. Owner will wire art; A09 event wiring, subjective listening and mobile review remain. Fetch latest before future work.
 
 # Current checkpoint — Sesame comic and A07 wiring v8.1.39 (2026-11-08)
 
