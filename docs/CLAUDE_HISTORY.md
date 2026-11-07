@@ -3509,3 +3509,15 @@ Six A04 music tracks and 372 current A07 voice clips use lazy audio playback and
 # Previous delivery: v8.1.34 — tap the Lobby hero to hear a line (owner)
 
 lhTap → lobbyTapSay(): skips 'thinks' entries in LOBBY_LINES, stops a showing bubble, then tickLobbyVoice(0) shows the next 'says' line and voiceLine plays its A07 lobby clip (vo_<role>_lobby_n). Doesn't cut a line still speaking; works even before the animated lobby sprite loads. Headless: bubble + vo_strawberry_lobby_1.mp3 requested.
+
+# Previous delivery: v8.1.37 — Unique voice variety (A08)
+
+47 original ElevenLabs lines use the existing saved character voices: three lines for each of 15 Builds plus two Sesame lines. All are lazy-loaded and selected by the existing Unique voice rotation. Mono 44.1kHz/128kbps, measured at most 1.3s and −1dBTP; exact captions and donor provenance in assets/incoming/audio_unique_a08. Nine companion voice auditions were prepared; six companion responses and integration followed in v8.1.38. Human listening remains outstanding.
+
+# Previous delivery: v8.1.36 — Unique voice every cast + A08 voice order (owner)
+
+uniqueCastFx → VoiceActing.unique(scene): ignores the 12s bark throttle, cuts the hero’s own playing line (never Ruby/story), rotates vo_<role>_unique_<path>_1..4 + vo_<role>_unique_1..4 without back-to-back repeats, keeps _unique_ clips cached. Test in voice-acting-integration. docs/audio_orders/A08_UNIQUE_VOICE_LINES.md orders 45 per-Build lines, 2 Sesame, 6 Yuzu companion duo calls (needs Voice Design) — catalog rows only, no playback code needed except duo calls.
+
+# Previous delivery: v8.1.35 — every Lobby tap switches the voiced line + title theme on loading (owner)
+
+Owner: tapping fast didn't change the voice. lobbyTapSay no longer waits for VoiceActing.busy(); each tap stops the current clip and speaks the next 'says' line. 150ms debounce (_lobbyTapAt) so one touch can't skip two lines. Owner: loading music = track 2 only: index.html LoaderMusic now plays story_music/bgm_title.mp3 (was Forgotten Wind); StoryMusic.play skips bgm_a04_bgm_title while LoaderMusic.playing() so it continues seamlessly; menuMusic non-A04 screens call playMainBgm when the loader is still playing.

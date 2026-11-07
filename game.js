@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.38';
+const GAME_VERSION = '8.1.39';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.39',date:'2026-11-08',title:'Sesame rune controls',items:['Sesame’s three rune buttons now curve around the Unique button for one-thumb play','Larger tap areas and a light vibration on each rune press']},
   {v:'8.1.38',date:'2026-11-07',title:'Companion duo voices',items:['Pomelo, Lime and Blood Orange answer Yuzu during their coordinated attack.']},
   {v:'8.1.37',date:'2026-11-07',title:'Unique skill voice variety',items:['Each Build has new Unique skill calls alongside the original lines.','Sesame gains two more spell calls.']},
   {v:'8.1.36',date:'2026-11-07',title:'Unique battle cry',items:['Your hero now calls out every time they use their Unique skill, with lines that rotate']},
@@ -4948,7 +4949,12 @@ function sesRuneRecipe(orbs){const key=['p','m','b'].map(k=>orbs.filter(x=>x===k
 function sesRuneBonuses(orbs,r={}){const n=k=>orbs.filter(x=>x===k).length,p=n('p'),m=n('m'),b=n('b'),colors=new Set(orbs).size;return {p,m,b,damage:1+p*(.10+.02*(r.ember||0)),speed:1+Math.min(.3,m*(.06+.015*(r.gale||0))),attackRate:1+Math.min(.6,m*(.08+.01*(r.gale||0))),echo:Math.min(.5,b*(.12+.01*(r.tide||0))),regen:b*(.0025+.00075*(r.tide||0)),area:1+.1*(r.reach||0),spell:1+.04*colors*(r.resonance||0),cooldown:1-Math.min(.18,m*.02*(r.flow||0)),guard:Math.min(.45,b*.05*(r.ward||0))};}
 function sesRuneEnemyValid(e){return !!(e?.active&&e.hp>0&&!e.isDummy&&!e._phaseGateLocked&&!(e._phaseInvuln>0)&&Number.isFinite(e.x)&&Number.isFinite(e.y));}
 function sesRuneSegmentDistance(x,y,ax,ay,bx,by){const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-ax-dx*t,y-ay-dy*t);}
-function sesRuneControlLayout(w,h,k,left,u,d){const r=22*Math.min(1.4,Math.max(1,k)),gap=r*2+6,land=h<500&&w>h,cx=land?(left?d.x+d.radius+3*r+24:d.x-d.radius-3*r-24):Math.max(gap+r+4,Math.min(w-gap-r-4,u.x)),cy=land?d.y:u.y-u.radius-r-14,boxes=[-1,0,1].map(i=>({x:cx+i*gap,y:cy,r}));boxes.label={x:Math.max(100,Math.min(w-100,cx)),y:cy-r-9};return boxes;}
+/* v8.1.39 เจ้าของ: รูน 3 ปุ่มเป็นโค้งรอบ Unique ด้านในจอ (บน → เฉียง → ข้าง) ให้นิ้วโป้งเดียวกดถึง · Dash อยู่ใต้ Unique จึงไม่ชน */
+function sesRuneControlLayout(w,h,k,left,u,d){const r=22*Math.min(1.4,Math.max(1,k)),D=u.radius+r+10,side=left?1:-1,angs=[-90,-135,180].map(a=>left?(a===180?0:a===-135?-45:a):a);
+  let boxes=angs.map(a=>{const t=a*Math.PI/180;return {x:u.x+Math.cos(t)*D,y:u.y+Math.sin(t)*D,r};});
+  boxes=boxes.map(b=>({x:Math.max(r+2,Math.min(w-r-2,b.x)),y:Math.max(r+2,Math.min(h-r-2,b.y)),r}));
+  if(d)for(const b of boxes){const dx=b.x-d.x,dy=b.y-d.y,m=Math.hypot(dx,dy),need=b.r+d.radius+10;if(m<need){b.y=d.y-need;}}
+  const top=Math.min(...boxes.map(b=>b.y));boxes.label={x:Math.max(100,Math.min(w-100,u.x+side*(D*.55))),y:top-r-9};return boxes;}
 // End Sesame Rune Invoker helpers.
 
 
@@ -19434,17 +19440,18 @@ class Game extends Phaser.Scene {
   }
   sesRuneCreateControls(){
     this._sesRuneButtons=[];this._sesRuneUI=[];
-    for(const [key,symbol,color] of SES_RUNE_TYPES){const b=this.camUI(this.add.circle(0,0,22,0x261e30,.94).setScrollFactor(1).setDepth(54).setStrokeStyle(2,color,.95)),t=this.camUI(this.add.text(0,0,symbol+'\n'+({p:'Power',m:'Motion',b:'Regen'})[key],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff4dc',align:'center'}).setOrigin(.5).setScrollFactor(1).setDepth(55));this._sesRuneButtons.push({key,b,t});this._sesRuneUI.push(b,t);}
+    for(const [key,symbol,color] of SES_RUNE_TYPES){const b=this.camUI(this.add.circle(0,0,22,0x261e30,.94).setScrollFactor(1).setDepth(54).setStrokeStyle(2,color,.95)),t=this.camUI(this.add.text(0,0,({p:'▲',m:'➤',b:'◆'})[key]+'\n'+({p:'Power',m:'Motion',b:'Regen'})[key],{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#fff4dc',align:'center'}).setOrigin(.5).setScrollFactor(1).setDepth(55));this._sesRuneButtons.push({key,b,t});this._sesRuneUI.push(b,t);}
     this._sesRuneLabel=this.camUI(this.add.text(0,0,'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff0cd',align:'center',lineSpacing:2}).setOrigin(.5,1).setScrollFactor(1).setDepth(55));this._sesRuneUI.push(this._sesRuneLabel);this.hudList?.push(...this._sesRuneUI);this.sesRuneLayout();this.sesRuneRefreshUI();
   }
-  sesRuneLayout(){if(!this._sesRuneButtons?.length||!this.uniqueBtn)return;const boxes=sesRuneControlLayout(this.W,this.H,this.ctrlScale(),!!Save.data.settings?.ctrlLeft,this.uniqueBtn,this.dashBtn);this._sesRuneButtons.forEach((q,i)=>{const a=boxes[i];q.b.setPosition(a.x,a.y).setRadius(a.r);q.t.setPosition(a.x,a.y);});this._sesRuneLabel.setPosition(boxes.label.x,boxes.label.y);}
+  sesRuneLayout(){if(!this._sesRuneButtons?.length||!this.uniqueBtn)return;const boxes=sesRuneControlLayout(this.W,this.H,this.ctrlScale(),!!Save.data.settings?.ctrlLeft,this.uniqueBtn,this.dashBtn);this._sesRuneButtons.forEach((q,i)=>{const a=boxes[i];q.b.setPosition(a.x,a.y).setRadius(a.r);q.t.setPosition(a.x,a.y);});this._sesRuneLabel.setPosition(boxes.label.x,boxes.label.y);this.sesRuneClampLabel?.();}
+  sesRuneClampLabel(){const l=this._sesRuneLabel;if(!l?.active)return;const hh=l.displayHeight||l.height||0,hw=(l.displayWidth||l.width||0)/2,w=this.W,h=this.H;l.x=Math.max(hw+4,Math.min(w-hw-4,l.x));if(l.y-hh<4)l.y=Math.min(h-4,hh+4);}   // v8.1.39 ข้อความสูตรห้ามล้นขอบจอ (จอนอน Unique อยู่สูง)
   sesRuneRefreshUI(show){
     if(!this._sesRuneUI)return;const on=!!(this.isSesRune()&&(show??this.uniqueBtn?.visible)&&this.state!=='menu');this._sesRuneUI.forEach(o=>o.setVisible(on));if(!on)return;
-    const r=this.sesRuneRecipe(),s=this._sesRune,code=(s?.orbs||['p','p','p']).map((x,i)=>i===0?'['+x.toUpperCase()+']':x.toUpperCase()).join('  '),cd=s?.cooldowns[r.key]||0,status=s?.castLock>0?'RECOVER':cd>0?cd.toFixed(1)+'s':'READY',buffs=[s?.empowerT>0?'ARM '+s.empowerT.toFixed(1)+'s':'',s?.tideT>0?'WATER '+Math.ceil(s.shieldHp||0)+' · '+s.tideT.toFixed(1)+'s':''].filter(Boolean).join(' · '),text=r.name+' · '+status+'\n'+code+'  → replace [first]'+(buffs?'\n'+buffs:'');if(this._sesRuneLabel.text!==text)this._sesRuneLabel.setText(text);
+    const r=this.sesRuneRecipe(),s=this._sesRune,code=(s?.orbs||['p','p','p']).map((x,i)=>i===0?'['+x.toUpperCase()+']':x.toUpperCase()).join('  '),cd=s?.cooldowns[r.key]||0,status=s?.castLock>0?'RECOVER':cd>0?cd.toFixed(1)+'s':'READY',buffs=[s?.empowerT>0?'ARM '+s.empowerT.toFixed(1)+'s':'',s?.tideT>0?'WATER '+Math.ceil(s.shieldHp||0)+' · '+s.tideT.toFixed(1)+'s':''].filter(Boolean).join(' · '),text=r.name+' · '+status+'\n'+code+'  → replace [first]'+(buffs?'\n'+buffs:'');if(this._sesRuneLabel.text!==text){this._sesRuneLabel.setText(text);this.sesRuneLayout?.();}
     this._sesRuneButtons.forEach(q=>{const color=SES_RUNE_TYPES.find(t=>t[0]===q.key)[2],pressed=s?.lastTap===q.key&&s.tapFlash>0;q.b.setAlpha((s?.inputCd||0)>0?.75:1).setStrokeStyle(pressed?3:2,color,1).setFillStyle(pressed?color:0x261e30,pressed?.4:.94);});if(this.uniqueTxt?.text!==r.emoji)this.uniqueTxt?.setText(r.emoji);
   }
-  sesRuneHit(p){return this.isSesRune()&&this._sesRuneButtons?.find(q=>q.b.visible&&Math.hypot(p.x-q.b.x,p.y-q.b.y)<=q.b.radius+3);}
-  sesRunePointerDown(p){const q=this.sesRuneHit(p);if(!q)return false;if(!this._sesRunePointers?.has(p.id))this.sesRuneAdd(q.key);(this._sesRunePointers||(this._sesRunePointers=new Set())).add(p.id);return true;}
+  sesRuneHit(p){if(!this.isSesRune()||!this._sesRuneButtons)return null;const u=this.uniqueBtn;if(u?.visible&&Math.hypot(p.x-u.x,p.y-u.y)<=(u.radius||0)+4)return null;let best=null,bd=1e9;for(const q of this._sesRuneButtons){if(!q.b.visible)continue;const m=Math.hypot(p.x-q.b.x,p.y-q.b.y);if(m<=q.b.radius*1.45+4&&m<bd){bd=m;best=q;}}return best;}   // v8.1.39 พื้นที่กดใหญ่กว่าปุ่ม ~45% · ใกล้ปุ่มไหนนับปุ่มนั้น · ไม่แย่งแตะ Unique
+  sesRunePointerDown(p){const q=this.sesRuneHit(p);if(!q)return false;if(!this._sesRunePointers?.has(p.id)){this.sesRuneAdd(q.key);try{if(Save.data.settings?.haptics!==false)globalThis.navigator?.vibrate?.(12);}catch(e){}}(this._sesRunePointers||(this._sesRunePointers=new Set())).add(p.id);return true;}
   sesRuneAdd(key){
     if(this.state!=='play'||this._adBusy||this._rubyEntry?.active||!SES_RUNE_TYPES.some(t=>t[0]===key))return false;const s=this.sesRuneEnsure();if(!s||s.inputCd>0)return false;this.sesRuneCommitCooldown();const old=this.sesRuneRecipe().key;s.orbs=sesRunePush(s.orbs,key);s.inputCd=.16;s.lastTap=key;s.orbFlash=.25;s.tapFlash=.22;const now=this.sesRuneRecipe().key;if(now!==old){s.readySound=.14;s.readyKey=now;}this.sesRuneProjectCooldown();this.sesRuneSound('tap_'+key,{p:.38,m:.34,b:.36}[key]);this.sesRuneRefreshUI();this.refreshUniqueSkillUI();return true;
   }
