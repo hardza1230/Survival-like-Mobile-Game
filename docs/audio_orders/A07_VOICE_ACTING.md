@@ -1,6 +1,6 @@
 # A07 — เสียงพากย์ตัวละคร (แบบ Path of Exile) · ใบสั่งเสียง · ร่าง 1 รอเจ้าของดู
 
-สถานะ: 🎧 เสียงตั้งต้นผูกเกมแล้ว · รอฟังตรวจบท เสียง และความสมดุล
+สถานะ: ✅ ผูกเกมแล้ว · เจ้าของฟังแล้วโอเค · ตรวจและเพิ่มจุดเล่น v8.1.39
 เครื่องมือ: **ElevenLabs Voice Design** (ออกแบบเสียงตัวละครละ 1 เสียง ใช้ทั้งเกม) + **Text to Speech** (รุ่น multilingual v2 / v3 ใส่อารมณ์ได้) · ภาษาอังกฤษ
 อ้างอิงเรื่อง: `docs/STORY_CANON.md` (ร่าง 3) · กติการ่วม `A00_README.md` (ไฟล์ mono 44.1 kHz · peak ≤ −1 dBTP · ตัดเงียบหัว < 20 ms)
 
@@ -129,3 +129,11 @@ Owner authorized recording the draft combat, boss-slip and unlock lines. Added 8
 ## Integration update — 2026-11-07
 
 Owner confirmed Cocoa is female and requested Sesame as a soft mysterious female voice. Created three audition previews each and selected take 1 provisionally, re-recorded 20 Cocoa lines, generated 19 Sesame lines, corrected 63 boss lines where story gender was explicit, and recorded three previously missing Ruby target tips with matching displayed words. Full requests, donors, master hashes, provisional cast and audio QA: `assets/incoming/audio_voice_fix/`. The runtime uses the corrected masters, never the historical male Cocoa files. Main-comic and boss dialogue, Ruby stage/tips/book/tutorial, matching lobby speech and situational hero barks use lazily loaded voice with on-screen text and single-channel ownership. Some generated files have no current matching game event and remain available in the catalogue; selection still needs human listening. A04 six tracks are connected to title, story moods and bazaar.
+
+## Owner listening — 2026-11-08
+
+Owner listened and accepted the current audio. Further revisions remain possible if an issue is found in play.
+
+## Playback audit — 2026-11-08
+
+Owner accepted the audio and requested unused takes be wired where appropriate. Four hero unlock clips now have their own matching comic shots. Boss defeat comics now present both matching Ruby memory lines before the release and onward scenes. Main-story shots use their own vo_story_sNN_N clip when the displayed text matches, rather than accidentally selecting an identically worded storybook take; the storybook retains its own clips. Combat barks are selected dynamically by hero/event; boss slips and the third fight variants are also dynamically selected. Some early Ruby stage-intro and old Heart Seed storybook takes remain registered as legacy fallbacks: the current opening motion comic replaces those older presentations, so injecting them into combat or repeating the story would conflict with the current flow. Voice playback remains subject to existing scene, mute and single-channel guards.

@@ -1,8 +1,12 @@
 # Version line
 
-Current release: **8.1.38**. Next release:8.1.39. Fetch the deploy branch before new work.
+Current release: **8.1.39**. Next release:8.1.40. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.38 — Yuzu companion duo replies (A08)
+# Latest delivery: v8.1.39 — Sesame story and voices
+
+Sesame’s S10 motion comic plays before first entry to C2-1 and is available in the story gallery. Four hero unlock lines and the second boss memory beat have matching voiced comic shots. Owner cancelled art order 49 and accepted current A07/A08/A04 audio after listening.
+
+# Previous delivery: v8.1.38 — Yuzu companion duo replies (A08)
 
 Six ElevenLabs companion replies join the 47 A08 hero lines. Owner delegated provisional casting; audition 1 selected for Pomelo, Lime and Blood Orange. DuoVoice lazy-loads and rotates each pair, waits for Yuzu speech, uses Sfx, respects voice settings and cancels stale scenes. Human listening remains outstanding.
 

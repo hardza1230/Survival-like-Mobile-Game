@@ -1,3 +1,7 @@
+# In progress — Sesame comic and A07 wiring v8.1.39 (2026-11-08)
+
+Owner cancelled art 49 and accepted A04/A07/A08 audio after listening; requested S10 and wiring any unused A07 clips with matching events. Added Sesame motion comic S10 before C2-1 and gallery; added four voiced hero introductions and second boss-memory narration shots. Existing combat, boss slip/alternative, Ruby and story clips use dynamic keys or matching captions. Checking remaining clips and full release. Fetch latest before publishing; owner tests on phone.
+
 # Current checkpoint — A08 companion replies v8.1.38 (2026-11-07)
 
 Owner delegated companion casting; candidate 1 for Pomelo, Lime and Blood Orange selected provisionally. Six ElevenLabs replies complete A08's 53 lines; DuoVoice is wired to Yuzu duo finish, waits for hero dialogue, respects voice setting, guards scene/buff validity and rotates replies. Source, donors, selection and QA in assets/incoming/audio_unique_a08. Subjective listening remains pending. npm check, web/review builds, 11 browser contracts and voice tests passed. Runtime 9988bc7a575e05edd1ac2ffe42b405a8fbd6fd9c; Pages 42331901141 and APK 42331901195 succeeded. All 31 changed files passed immutable readback; live v8.1.38 and all 6 companion files match SHA-256. Owner tests on phone. Fetch latest before further work. No credentials stored.

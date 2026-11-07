@@ -1,6 +1,6 @@
 # A08 — Unique skill voice lines (ราย Build) + Yuzu duo calls · ใบสั่งเสียง
 
-สถานะ: ✅ เสียงครบ 53 ผูกเข้าเกมแล้ว · รอฟังตรวจ · 7 พ.ย. 2026 · ต่อจาก A07 (`A07_VOICE_ACTING.md`)
+สถานะ: ✅ เสียงครบ 53 ผูกเข้าเกมแล้ว · เจ้าของฟังแล้วโอเค · 7 พ.ย. 2026 · ต่อจาก A07 (`A07_VOICE_ACTING.md`)
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียงที่บันทึกไว้แล้วของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` และ `assets/incoming/audio_voice_fix/` สำหรับ Cocoa/Sesame ที่แก้แล้ว) · ห้ามสร้างเสียงใหม่ ห้ามใช้เสียงสร้างด้วยโค้ด/Runway
 
 ## ทำไมต้องสั่ง
@@ -119,3 +119,7 @@ Sesame ไม่มี Build (Rune Invoker) และกดเวทบ่อย
 ## Completion — 2026-11-07
 
 Owner delegated casting to the assistant. Candidate 1 for each companion is a provisional starting voice; six replies were generated and wired in v8.1.38. DuoVoice waits for hero dialogue, respects the voice setting and checks run/scene validity. All 53 lines pass measured technical QA; human listening remains outstanding.
+
+## Owner listening — 2026-11-08
+
+Owner listened and accepted the current audio. Further revisions remain possible if an issue is found in play.
