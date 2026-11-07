@@ -1,6 +1,6 @@
-# In progress — A08 companion replies v8.1.38 (2026-11-07)
+# Current checkpoint — A08 companion replies v8.1.38 (2026-11-07)
 
-Owner delegated companion casting; candidate 1 for Pomelo, Lime and Blood Orange selected provisionally. Six ElevenLabs replies generated and technically checked, registered and wired to Yuzu duo finish. Voice playback waits for Yuzu, respects voice setting, guards scene/buff validity and rotates replies. Source, donors, selection and QA in assets/incoming/audio_unique_a08. Subjective listening remains pending. Testing and release in progress. Fetch latest before pushing. No credentials stored.
+Owner delegated companion casting; candidate 1 for Pomelo, Lime and Blood Orange selected provisionally. Six ElevenLabs replies complete A08's 53 lines; DuoVoice is wired to Yuzu duo finish, waits for hero dialogue, respects voice setting, guards scene/buff validity and rotates replies. Source, donors, selection and QA in assets/incoming/audio_unique_a08. Subjective listening remains pending. npm check, web/review builds, 11 browser contracts and voice tests passed. Runtime 9988bc7a575e05edd1ac2ffe42b405a8fbd6fd9c; Pages 42331901141 and APK 42331901195 succeeded. All 31 changed files passed immutable readback; live v8.1.38 and all 6 companion files match SHA-256. Owner tests on phone. Fetch latest before further work. No credentials stored.
 
 # Current checkpoint — A08 Unique hero voices v8.1.37 (2026-11-07)
 
