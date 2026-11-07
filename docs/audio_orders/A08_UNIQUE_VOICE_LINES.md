@@ -1,6 +1,7 @@
 # A08 — Unique skill voice lines (ราย Build) + Yuzu duo calls · ใบสั่งเสียง
 
-สถานะ: 📝 รอสร้าง · 7 พ.ย. 2026 · ต่อจาก A07 (`A07_VOICE_ACTING.md`)
+สถานะ: ✅ เจ้าของอนุมัติบททั้งหมดแล้ว (7 พ.ย. 2026) · พร้อมอัด · ต่อจาก A07 (`A07_VOICE_ACTING.md`)
+ลำดับ: หมวด 1 + 2 อัดได้ทันทีด้วยเสียงที่บันทึกไว้ · หมวด 3 ทำออดิชันคู่หูก่อน ให้เจ้าของเลือก แล้วค่อยอัด
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียงที่บันทึกไว้แล้วของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` และ `assets/incoming/audio_voice_fix/` สำหรับ Cocoa/Sesame ที่แก้แล้ว) · ห้ามสร้างเสียงใหม่ ห้ามใช้เสียงสร้างด้วยโค้ด/Runway
 
 ## ทำไมต้องสั่ง
