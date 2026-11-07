@@ -38,8 +38,8 @@
       ],
       "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
     },
-    "selected": null,
-    "status": "owner_choice_pending"
+    "selected": 1,
+    "status": "assistant_provisional_owner_delegated"
   },
   "lime": {
     "parameters": {
@@ -80,8 +80,8 @@
       ],
       "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
     },
-    "selected": null,
-    "status": "owner_choice_pending"
+    "selected": 1,
+    "status": "assistant_provisional_owner_delegated"
   },
   "bloodorange": {
     "parameters": {
@@ -122,7 +122,7 @@
       ],
       "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
     },
-    "selected": null,
-    "status": "owner_choice_pending"
+    "selected": 1,
+    "status": "assistant_provisional_owner_delegated"
   }
 }

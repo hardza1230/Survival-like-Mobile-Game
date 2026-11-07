@@ -1,10 +1,14 @@
 # Version line
 
-Current release: **8.1.37**. Next release:8.1.38. Fetch the deploy branch before new work.
+Current release: **8.1.38**. Next release:8.1.39. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.37 — Unique voice variety (A08)
+# Latest delivery: v8.1.38 — Yuzu companion duo replies (A08)
 
-47 original ElevenLabs lines use the existing saved character voices: three lines for each of 15 Builds plus two Sesame lines. All are lazy-loaded and selected by the existing Unique voice rotation. Mono 44.1kHz/128kbps, measured at most 1.3s and −1dBTP; exact captions and donor provenance in assets/incoming/audio_unique_a08. Nine companion voice auditions are prepared; six companion responses and integration await the owner’s casting decision. Human listening remains outstanding.
+Six ElevenLabs companion replies join the 47 A08 hero lines. Owner delegated provisional casting; audition 1 selected for Pomelo, Lime and Blood Orange. DuoVoice lazy-loads and rotates each pair, waits for Yuzu speech, uses Sfx, respects voice settings and cancels stale scenes. Human listening remains outstanding.
+
+# Previous delivery: v8.1.37 — Unique voice variety (A08)
+
+47 original ElevenLabs lines use the existing saved character voices: three lines for each of 15 Builds plus two Sesame lines. All are lazy-loaded and selected by the existing Unique voice rotation. Mono 44.1kHz/128kbps, measured at most 1.3s and −1dBTP; exact captions and donor provenance in assets/incoming/audio_unique_a08. Nine companion voice auditions were prepared; six companion responses and integration followed in v8.1.38. Human listening remains outstanding.
 
 # Previous delivery: v8.1.36 — Unique voice every cast + A08 voice order (owner)
 

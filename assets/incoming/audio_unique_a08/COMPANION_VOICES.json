@@ -1,0 +1,35 @@
+{
+  "pomelo": {
+    "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+    "selected_audition": "auditions/vd_pomelo_1.mp3",
+    "preview_id": "Xdp1qgIbW7GDkljieGvZ",
+    "selection": "assistant provisional, owner delegated",
+    "creation_parameters": {
+      "voice_name": "Mochi A08 Pomelo",
+      "voice_description": "Original fantasy game companion, A big kind citrus warrior companion. Masculine low-mid pitch, warm grounded voice, brave but gentle, brief energetic battle acknowledgement. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+      "generated_voice_id": "Xdp1qgIbW7GDkljieGvZ"
+    }
+  },
+  "lime": {
+    "voice_id": "spASFtgjKPOdUxaWIeY6",
+    "selected_audition": "auditions/vd_lime_1.mp3",
+    "preview_id": "spASFtgjKPOdUxaWIeY6",
+    "selection": "assistant provisional, owner delegated",
+    "creation_parameters": {
+      "voice_name": "Mochi A08 Lime",
+      "voice_description": "Original fantasy game companion, A nimble cool citrus archer companion. Clear youthful androgynous mid register, quick precise bright delivery, friendly and heroic. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+      "generated_voice_id": "spASFtgjKPOdUxaWIeY6"
+    }
+  },
+  "bloodorange": {
+    "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+    "selected_audition": "auditions/vd_bloodorange_1.mp3",
+    "preview_id": "IuVtl3D6Kcte1EvSjvXq",
+    "selection": "assistant provisional, owner delegated",
+    "creation_parameters": {
+      "voice_name": "Mochi A08 Bloodorange",
+      "voice_description": "Original fantasy game companion, A mysterious elemental citrus mage companion. Feminine mid-low voice, soft restrained and clear with a subtle playful edge. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+      "generated_voice_id": "IuVtl3D6Kcte1EvSjvXq"
+    }
+  }
+}

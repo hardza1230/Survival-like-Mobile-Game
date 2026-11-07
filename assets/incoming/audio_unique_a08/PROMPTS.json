@@ -1550,8 +1550,8 @@
         ],
         "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
       },
-      "selected": null,
-      "status": "owner_choice_pending"
+      "selected": 1,
+      "status": "assistant_provisional_owner_delegated"
     },
     "lime": {
       "parameters": {
@@ -1592,8 +1592,8 @@
         ],
         "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
       },
-      "selected": null,
-      "status": "owner_choice_pending"
+      "selected": 1,
+      "status": "assistant_provisional_owner_delegated"
     },
     "bloodorange": {
       "parameters": {
@@ -1634,8 +1634,165 @@
         ],
         "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
       },
-      "selected": null,
-      "status": "owner_choice_pending"
+      "selected": 1,
+      "status": "assistant_provisional_owner_delegated"
     }
-  }
+  },
+  "companion_selections": {
+    "pomelo": {
+      "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "selected_audition": "auditions/vd_pomelo_1.mp3",
+      "preview_id": "Xdp1qgIbW7GDkljieGvZ",
+      "selection": "assistant provisional, owner delegated",
+      "creation_parameters": {
+        "voice_name": "Mochi A08 Pomelo",
+        "voice_description": "Original fantasy game companion, A big kind citrus warrior companion. Masculine low-mid pitch, warm grounded voice, brave but gentle, brief energetic battle acknowledgement. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "generated_voice_id": "Xdp1qgIbW7GDkljieGvZ"
+      }
+    },
+    "lime": {
+      "voice_id": "spASFtgjKPOdUxaWIeY6",
+      "selected_audition": "auditions/vd_lime_1.mp3",
+      "preview_id": "spASFtgjKPOdUxaWIeY6",
+      "selection": "assistant provisional, owner delegated",
+      "creation_parameters": {
+        "voice_name": "Mochi A08 Lime",
+        "voice_description": "Original fantasy game companion, A nimble cool citrus archer companion. Clear youthful androgynous mid register, quick precise bright delivery, friendly and heroic. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "generated_voice_id": "spASFtgjKPOdUxaWIeY6"
+      }
+    },
+    "bloodorange": {
+      "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "selected_audition": "auditions/vd_bloodorange_1.mp3",
+      "preview_id": "IuVtl3D6Kcte1EvSjvXq",
+      "selection": "assistant provisional, owner delegated",
+      "creation_parameters": {
+        "voice_name": "Mochi A08 Bloodorange",
+        "voice_description": "Original fantasy game companion, A mysterious elemental citrus mage companion. Feminine mid-low voice, soft restrained and clear with a subtle playful edge. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "generated_voice_id": "IuVtl3D6Kcte1EvSjvXq"
+      }
+    }
+  },
+  "companion_generations": [
+    {
+      "key": "vo_pomelo_duo_1",
+      "speaker": "pomelo",
+      "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "text": "Hmph!",
+      "parameters": {
+        "text": "Hmph!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_pomelo_duo_1_take1.mp3",
+      "bytes": 7566,
+      "sha256": "4a3ba19bc2efaf010b7287eec603adeaad357668d33b20abc5add71dc1dc5d76"
+    },
+    {
+      "key": "vo_pomelo_duo_2",
+      "speaker": "pomelo",
+      "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "text": "Pomelo… SMASH!",
+      "parameters": {
+        "text": "Pomelo… SMASH!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_pomelo_duo_2_take1.mp3",
+      "bytes": 19687,
+      "sha256": "1390a0f5d80b3b66ad06ba81e169d084347bb342c15f3f855993ff2a82fffbdd"
+    },
+    {
+      "key": "vo_lime_duo_1",
+      "speaker": "lime",
+      "voice_id": "spASFtgjKPOdUxaWIeY6",
+      "text": "Loosed.",
+      "parameters": {
+        "text": "Loosed.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_lime_duo_1_take1.mp3",
+      "bytes": 10910,
+      "sha256": "cf3724840d1d059b65fa7370dab09803d41798cbaba2655f1ccf8deb1a48dbdd"
+    },
+    {
+      "key": "vo_lime_duo_2",
+      "speaker": "lime",
+      "voice_id": "spASFtgjKPOdUxaWIeY6",
+      "text": "Got it!",
+      "parameters": {
+        "text": "Got it!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_lime_duo_2_take1.mp3",
+      "bytes": 10910,
+      "sha256": "8dd490ad7a24cfd6886e4a5b9e0721a26efaa5a189809090422d345504e3eedf"
+    },
+    {
+      "key": "vo_bloodorange_duo_1",
+      "speaker": "bloodorange",
+      "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "text": "Burn sweet.",
+      "parameters": {
+        "text": "Burn sweet.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_bloodorange_duo_1_take1.mp3",
+      "bytes": 20523,
+      "sha256": "4edb463442968736f215a808d3b7c464b4dc6d4c8f073256f252fbba07cf5da5"
+    },
+    {
+      "key": "vo_bloodorange_duo_2",
+      "speaker": "bloodorange",
+      "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "text": "Seek.",
+      "parameters": {
+        "text": "Seek.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_bloodorange_duo_2_take1.mp3",
+      "bytes": 12163,
+      "sha256": "ec5e1ce664066f321113797c7ab05a366e62d09dbe6976da75f0d600108f4e6f"
+    }
+  ]
 }
