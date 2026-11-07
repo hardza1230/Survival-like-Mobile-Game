@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.33';
+const GAME_VERSION = '8.1.34';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.34',date:'2026-11-07',title:'Talk to your hero',items:['Tap your hero in the Lobby and they speak their next line out loud']},
   {v:'8.1.33',date:'2026-11-07',title:'Voices and story music',items:['Hear character dialogue and new music throughout your adventure.','Cocoa and Sesame have new feminine voices.','Sesame no longer shows an in-development badge.']},
   {v:'8.1.32',date:'2026-11-06',title:'Clearer hero skill poses',items:['New hero skill poses now play about twice as long and hold their key pose, so they are easier to see']},
   {v:'8.1.31',date:'2026-11-06',title:'Yuzu duo finishers per companion',items:['Pomelo: a ring of 8 seeds bursts out of the slam','Lime: one golden seed pierces the whole line','Blood Orange: 5 homing seeds chase enemies']},
@@ -12071,6 +12072,8 @@ class Game extends Phaser.Scene {
     root.add([g,label,text]);root.setVisible(false);this.menu.add(root);
     this._lobbyVoice={hero,root,g,label,text,width,t:1.5,showing:false,hx:x,hy:y,minY:minY??y-120,left:left??-1e9,right:right??1e9};
   }
+  lobbyTapSay(){const v=this._lobbyVoice;if(!v||!v.root?.active||this.state!=='menu'||this.menuScreen!=='hub')return;if(typeof VoiceActing!=='undefined'&&VoiceActing.busy?.()&&v.showing)return;   // ยังพูดอยู่ = ไม่ตัดกลางประโยค
+    if(v.showing)this.voiceStop?.(v);const lines=LOBBY_LINES[v.hero]||LOBBY_LINES.momo,c=this._lobbyLineCursor||(this._lobbyLineCursor={});for(let n=0;n<lines.length&&lines[(c[v.hero]||0)%lines.length][0]!=='says';n++)c[v.hero]=(c[v.hero]||0)+1;v.showing=false;v.t=0;this.tickLobbyVoice(0);}
   tickLobbyVoice(dt){
     const v=this._lobbyVoice;if(!v||!v.root.active)return;
     if(this.state!=='menu'||this.menuScreen!=='hub'||(Save.data.character||'momo')!==v.hero){this.voiceStop?.(v);v.root.setVisible(false);return;}
@@ -12121,7 +12124,8 @@ class Game extends Phaser.Scene {
     const go=()=>{ if(!sp.active||this._lhSprite!==sp||!this.lhReady(k))return; sp._lhSet=set; sp.off('animationcomplete'); sp.play(k);
       if(set!=='idle')sp.once('animationcomplete',()=>{ if(!sp.active)return; sp._lhSet='idle'; if(this.lhReady(idle))sp.play(idle); if(set!=='tap')this.time?.delayedCall(30,()=>this.lhDrop([idle,this.lhKey(hero,'tap')])); }); };
     if(this.lhReady(k))go(); else this.lhLoad([k],go); }
-  lhTap(){ const sp=this._lhSprite; if(!sp||!sp.active)return; const now=Date.now(); this._lhLastTap=now; const t=(this._lhTaps||[]).filter(x=>now-x<3000); t.push(now); this._lhTaps=t;
+  lhTap(){ this.lobbyTapSay?.();   // v8.1.34 เจ้าของ: แตะตัวละคร = พูดประโยคถัดไปพร้อมเสียงพากย์ (แม้ภาพเคลื่อนไหวยังไม่โหลด)
+    const sp=this._lhSprite; if(!sp||!sp.active)return; const now=Date.now(); this._lhLastTap=now; const t=(this._lhTaps||[]).filter(x=>now-x<3000); t.push(now); this._lhTaps=t;   // v8.1.34 เจ้าของ: แตะตัวละคร = พูดประโยคถัดไปพร้อมเสียงพากย์
     if(sp._lhSet==='poke')return; if(t.length>=5){ this._lhTaps=[]; this.lhPlay('poke'); return; } if(sp._lhSet==='tap')return; this.lhPlay('tap'); }
   loadLobbyArt(){ if(this._lbArt)return; const miss=[...LB_KEYS,'dig_miner','aw_title_ribbon'].filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length)return; this._lbArt=true;   // v7.9.70 เช็กทุกครั้ง (เดิมโหลดครั้งเดียว → ถูกคืนหน่วยความจำตอนเปิดหนังสือแล้วไม่โหลดกลับ = Lobby ไม่มีกรอบ)
     try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lbArt=false; if(this.state==='menu')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
