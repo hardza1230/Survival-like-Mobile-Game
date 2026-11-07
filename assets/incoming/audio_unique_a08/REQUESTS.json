@@ -1,0 +1,237 @@
+[
+  {
+    "key": "vo_strawberry_unique_sniper_1",
+    "text": "Bullseye, berry style!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_sniper_2",
+    "text": "Hold still… gotcha!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_sniper_3",
+    "text": "One shot, all flavor!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_shotgun_1",
+    "text": "Berry blast!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_shotgun_2",
+    "text": "Up close and juicy!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_shotgun_3",
+    "text": "Pop pop POP!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_ricochet_1",
+    "text": "Bounce, little hearts!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_ricochet_2",
+    "text": "Ping, ping, ping!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_strawberry_unique_ricochet_3",
+    "text": "Find them, hearts!",
+    "speaker": "strawberry"
+  },
+  {
+    "key": "vo_mint_unique_glacier_1",
+    "text": "Bloom, glacier.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_glacier_2",
+    "text": "Stay frozen.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_glacier_3",
+    "text": "Cold, isn’t it?",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_barrage_1",
+    "text": "Snowfall.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_barrage_2",
+    "text": "Don’t move.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_barrage_3",
+    "text": "Let it snow.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_pierce_1",
+    "text": "Through you.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_pierce_2",
+    "text": "Ice lance.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_mint_unique_pierce_3",
+    "text": "One clean line.",
+    "speaker": "mint"
+  },
+  {
+    "key": "vo_cocoa_unique_brawler_1",
+    "text": "Fire fists, go!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_brawler_2",
+    "text": "Toasty punches!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_brawler_3",
+    "text": "Hot cocoa, extra hot!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_titan_1",
+    "text": "Ground, shake!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_titan_2",
+    "text": "Big bear stomp!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_titan_3",
+    "text": "Everybody, down!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_dashboxer_1",
+    "text": "Bear rush!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_dashboxer_2",
+    "text": "Coming through!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_cocoa_unique_dashboxer_3",
+    "text": "Hug incoming!",
+    "speaker": "cocoa"
+  },
+  {
+    "key": "vo_taro_unique_storm_1",
+    "text": "Chain lightning!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_storm_2",
+    "text": "Jump, sparks, jump!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_storm_3",
+    "text": "Everyone gets a zap!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_tempest_1",
+    "text": "Sentries, on duty!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_tempest_2",
+    "text": "Guard this spot!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_tempest_3",
+    "text": "Zap anything weird!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_smite_1",
+    "text": "Lightning, right there!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_smite_2",
+    "text": "Spark strike!",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_taro_unique_smite_3",
+    "text": "Bonk! …With thunder.",
+    "speaker": "taro"
+  },
+  {
+    "key": "vo_yuzu_unique_citrusGuardian_1",
+    "text": "Pomelo, smash!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_citrusGuardian_2",
+    "text": "Big peel, big punch!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_citrusGuardian_3",
+    "text": "Shield up, squad!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_zestSwarm_1",
+    "text": "Lime, take aim!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_zestSwarm_2",
+    "text": "Right through them!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_zestSwarm_3",
+    "text": "Sharp and sour!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_juiceWorkshop_1",
+    "text": "Blood Orange, now!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_juiceWorkshop_2",
+    "text": "Stir up a storm!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_yuzu_unique_juiceWorkshop_3",
+    "text": "Seeds, find them!",
+    "speaker": "yuzu"
+  },
+  {
+    "key": "vo_sesame_unique_3",
+    "text": "Mirror, remember.",
+    "speaker": "sesame"
+  },
+  {
+    "key": "vo_sesame_unique_4",
+    "text": "Quietly… now.",
+    "speaker": "sesame"
+  }
+]

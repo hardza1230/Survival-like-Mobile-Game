@@ -1,0 +1,128 @@
+{
+  "pomelo": {
+    "parameters": {
+      "voice_description": "Original fantasy game companion, A big kind citrus warrior companion. Masculine low-mid pitch, warm grounded voice, brave but gentle, brief energetic battle acknowledgement. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+      "model_id": "eleven_multilingual_ttv_v2",
+      "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side.",
+      "auto_generate_text": false
+    },
+    "result": {
+      "previews": [
+        {
+          "generated_voice_id": "Xdp1qgIbW7GDkljieGvZ",
+          "media_type": "audio/mpeg",
+          "duration_secs": 11.41825,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_pomelo_1.mp3"
+        },
+        {
+          "generated_voice_id": "MH4T6vnpMSsam2519HEB",
+          "media_type": "audio/mpeg",
+          "duration_secs": 9.0933125,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_pomelo_2.mp3"
+        },
+        {
+          "generated_voice_id": "a2UHWwPH5QWbU6DQrMXX",
+          "media_type": "audio/mpeg",
+          "duration_secs": 8.779875,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_pomelo_3.mp3"
+        }
+      ],
+      "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
+    },
+    "selected": null,
+    "status": "owner_choice_pending"
+  },
+  "lime": {
+    "parameters": {
+      "voice_description": "Original fantasy game companion, A nimble cool citrus archer companion. Clear youthful androgynous mid register, quick precise bright delivery, friendly and heroic. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+      "model_id": "eleven_multilingual_ttv_v2",
+      "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side.",
+      "auto_generate_text": false
+    },
+    "result": {
+      "previews": [
+        {
+          "generated_voice_id": "spASFtgjKPOdUxaWIeY6",
+          "media_type": "audio/mpeg",
+          "duration_secs": 7.238625,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_lime_1.mp3"
+        },
+        {
+          "generated_voice_id": "qhdkaCcnqWKCzYWxd3N8",
+          "media_type": "audio/mpeg",
+          "duration_secs": 9.746375,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_lime_2.mp3"
+        },
+        {
+          "generated_voice_id": "WoQsAmRCoSJ2NCh6nhZH",
+          "media_type": "audio/mpeg",
+          "duration_secs": 9.2761875,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_lime_3.mp3"
+        }
+      ],
+      "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
+    },
+    "selected": null,
+    "status": "owner_choice_pending"
+  },
+  "bloodorange": {
+    "parameters": {
+      "voice_description": "Original fantasy game companion, A mysterious elemental citrus mage companion. Feminine mid-low voice, soft restrained and clear with a subtle playful edge. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+      "model_id": "eleven_multilingual_ttv_v2",
+      "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side.",
+      "auto_generate_text": false
+    },
+    "result": {
+      "previews": [
+        {
+          "generated_voice_id": "IuVtl3D6Kcte1EvSjvXq",
+          "media_type": "audio/mpeg",
+          "duration_secs": 14.3439375,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_bloodorange_1.mp3"
+        },
+        {
+          "generated_voice_id": "VJe1BwO1ShLkSAJ04X74",
+          "media_type": "audio/mpeg",
+          "duration_secs": 11.0525,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_bloodorange_2.mp3"
+        },
+        {
+          "generated_voice_id": "0CGGpOAkg67TAnEIVbhq",
+          "media_type": "audio/mpeg",
+          "duration_secs": 10.059875,
+          "language": "en",
+          "detected_labels": null,
+          "previews": null,
+          "file": "auditions/vd_bloodorange_3.mp3"
+        }
+      ],
+      "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
+    },
+    "selected": null,
+    "status": "owner_choice_pending"
+  }
+}

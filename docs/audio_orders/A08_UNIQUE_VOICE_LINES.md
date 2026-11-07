@@ -1,6 +1,6 @@
 # A08 — Unique skill voice lines (ราย Build) + Yuzu duo calls · ใบสั่งเสียง
 
-สถานะ: 📝 รอสร้าง · 7 พ.ย. 2026 · ต่อจาก A07 (`A07_VOICE_ACTING.md`)
+สถานะ: 🎧 47 เสียงสกิลพร้อม · เสียงคู่หูรอเลือก · 7 พ.ย. 2026 · ต่อจาก A07 (`A07_VOICE_ACTING.md`)
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียงที่บันทึกไว้แล้วของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` และ `assets/incoming/audio_voice_fix/` สำหรับ Cocoa/Sesame ที่แก้แล้ว) · ห้ามสร้างเสียงใหม่ ห้ามใช้เสียงสร้างด้วยโค้ด/Runway
 
 ## ทำไมต้องสั่ง
@@ -111,3 +111,7 @@ Sesame ไม่มี Build (Rune Invoker) และกดเวทบ่อย
 - ไฟล์ไปที่ `assets/audio/acting/` แล้วเพิ่มแถวใน `A07_CATALOG` (url literal, text, role, duration) · หมวด 1–2 **ไม่ต้องแก้โค้ดเล่น**: `VoiceActing.unique()` หา `vo_<role>_unique_<path>_1..4` + `vo_<role>_unique_1..4` เองอยู่แล้ว
 - อัปเดตจำนวนใน `tests/voice-acting-integration.test.cjs` (`Object.keys(C).length`)
 - หมวด 3: เพิ่มเล่นเสียงคู่หูใน `yuzuParadeCast` ตอน duo_finish ผ่าน Sfx (ไม่ใช้ช่อง VoiceActing เพื่อไม่ตัดประโยค Yuzu) · เคารพปิดเสียงพากย์
+
+## Partial delivery — 2026-11-07
+
+47 hero Unique lines are generated and wired to the existing per-Build rotation, with exact text, saved voice IDs, retained ElevenLabs donors and measured technical QA in `assets/incoming/audio_unique_a08/`. Three original Voice Design options for each companion are available in `AUDITION.html`; none has been selected or saved for production, and the six companion responses are not generated or wired. Human listening for word accuracy, casting and performance remains pending.
