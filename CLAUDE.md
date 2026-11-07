@@ -4,7 +4,7 @@ Current release: **8.1.33**. Next release:8.1.34. Fetch the deploy branch before
 
 # Latest delivery: v8.1.33 — story music and character voices
 
-Six A04 music tracks and 372 current A07 voice clips use lazy audio playback and existing volume/voice settings. Owner confirmed Cocoa and Sesame feminine voices; 20 Cocoa clips and 63 explicitly gendered boss clips were recast, 19 Sesame lines and three Ruby tips generated. Voice/text mapping, one-channel ownership, subtitles, cache cleanup and mute guards; boss casting for characters without explicit gender remains provisional. Sesame’s visual development badge is hidden without changing gameplay gates. Playback, words, mixing and music loops still require owner listening.
+Six A04 music tracks and 372 current A07 voice clips use lazy audio playback and existing volume/voice settings. Owner confirmed Cocoa and Sesame feminine voices; 20 Cocoa clips and 63 explicitly gendered boss clips were recast, 19 Sesame lines and three Ruby tips generated. Voice/text mapping, one-channel ownership, subtitles, cache cleanup and mute guards; boss casting for characters without explicit gender remains provisional. Sesame’s visual development badge is hidden without changing gameplay gates. Full npm check, web/review builds and eleven browser contracts passed; runtime 12989768cac888f118afae5a2cd2401a876b0930, Pages 42320525518 and APK 42320525548 succeeded. All 617 changed files and 378 live audio files verified. Playback, words, mixing and music loops still require owner listening.
 
 # Previous delivery: v8.1.32 — clearer hero motion823 poses (owner)
 
