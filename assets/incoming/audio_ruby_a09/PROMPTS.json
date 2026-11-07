@@ -1,0 +1,593 @@
+{
+  "provider": "ElevenLabs",
+  "generations": [
+    {
+      "key": "vo_ruby_short_yuzuAim",
+      "text": "Walk toward an enemy to mark it!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Walk toward an enemy to mark it!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_yuzuAim.mp3",
+      "bytes": 24284,
+      "sha256": "c8e6e349162528a8557c08c3ec0f165918c43650c0629e66c4e21c486cac2057"
+    },
+    {
+      "key": "vo_ruby_short_survive",
+      "text": "Hang on until the timer ends!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Hang on until the timer ends!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_survive.mp3",
+      "bytes": 24702,
+      "sha256": "11d8f71c6ac1c3a861001346bb9513ad150d4f43b27d85248d4e8722feae75d1"
+    },
+    {
+      "key": "vo_ruby_short_fill",
+      "text": "Fill the meter!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Fill the meter!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_fill.mp3",
+      "bytes": 15089,
+      "sha256": "6022892e07dbc4d944fd8194fdc611b814c86d3dc9bafae62e9d9e7ec863f8b6"
+    },
+    {
+      "key": "vo_ruby_short_hunt",
+      "text": "Chase the marked Elite!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Chase the marked Elite!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_hunt.mp3",
+      "bytes": 21776,
+      "sha256": "1e6d87e3c066ef3842fd013b8060e8b2cc1e7db924014eb35f72d37c54ec0906"
+    },
+    {
+      "key": "vo_ruby_short_huntClear",
+      "text": "Clear the crowd, then the marked Elite!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Clear the crowd, then the marked Elite!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_huntClear.mp3",
+      "bytes": 30136,
+      "sha256": "cbb19a37b1100c550f2c187b04b95f1e5efaafc338d6d140ded7db007d2246fd"
+    },
+    {
+      "key": "vo_ruby_short_purge",
+      "text": "Keep the Wisp safe from red raiders!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Keep the Wisp safe from red raiders!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_purge.mp3",
+      "bytes": 32225,
+      "sha256": "912f9d6107837bbc392eed2a4519e9c669e9763057922735f163bdd49ae8a6db"
+    },
+    {
+      "key": "vo_ruby_short_capture",
+      "text": "Stay inside the ring!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stay inside the ring!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_capture.mp3",
+      "bytes": 19687,
+      "sha256": "28ed5d7fc400635f1ea2f5c9f8f52294e2c137b9dbfe5b015266b3b8306d9cab"
+    },
+    {
+      "key": "vo_ruby_short_defendNectar",
+      "text": "Protect the flower!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Protect the flower!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_defendNectar.mp3",
+      "bytes": 17597,
+      "sha256": "b979c85a4d75723e112e88b8288f3bab25d5a8a02304647d824fd7abe80884ab"
+    },
+    {
+      "key": "vo_ruby_short_seasonCycle",
+      "text": "Gather petals for all four seasons!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Gather petals for all four seasons!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_seasonCycle.mp3",
+      "bytes": 30136,
+      "sha256": "a05b5f340db553254dddc255ab596a1432d8938739edd87a09ab28d98a61cd36"
+    },
+    {
+      "key": "vo_ruby_short_breakRoots",
+      "text": "Snap every root anchor!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Snap every root anchor!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_breakRoots.mp3",
+      "bytes": 23448,
+      "sha256": "67811511847b43c9855dd623a5cb1448eb229a324b00591651fdadf5c1515661"
+    },
+    {
+      "key": "vo_ruby_short_cleanAir",
+      "text": "Follow the clean-air ring!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Follow the clean-air ring!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_cleanAir.mp3",
+      "bytes": 21776,
+      "sha256": "c0300b2945e790abcea2e9443d98ab422f022d62bd657d8d081df8c9093e4d37"
+    },
+    {
+      "key": "vo_ruby_short_counter",
+      "text": "Dash into the glowing item!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Dash into the glowing item!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_counter.mp3",
+      "bytes": 24284,
+      "sha256": "83cca12f1b0835bbdf28686c8501351f244660abfb2d4a5e49b8083bcc52d5f2"
+    },
+    {
+      "key": "vo_ruby_short_mini",
+      "text": "Beat the Miniboss!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Beat the Miniboss!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_mini.mp3",
+      "bytes": 17597,
+      "sha256": "d0c477bad58d2d15a25c1c812454efceddc54f00677336f304bb27071b7183f7"
+    },
+    {
+      "key": "vo_ruby_short_boss",
+      "text": "Defeat the Boss!",
+      "category": "short",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Defeat the Boss!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_short_boss.mp3",
+      "bytes": 17597,
+      "sha256": "fe0dd18fdea70e8d87765c5fb4d1c81a116c9532946d252e7e4f64638a0aa7e3"
+    },
+    {
+      "key": "vo_ruby_react_objdone_1",
+      "text": "Objective done! Nice!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Objective done! Nice!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_objdone_1.mp3",
+      "bytes": 23448,
+      "sha256": "fc469e9ef20dd9b7758f0ad58d0d3c95fe84adafcf247f18b57596d89aab7b3c"
+    },
+    {
+      "key": "vo_ruby_react_objdone_2",
+      "text": "That’s it — perfect!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "That’s it — perfect!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_objdone_2.mp3",
+      "bytes": 16761,
+      "sha256": "5cdb926acada0e07550e53df3ca2b4799242d12f8366fcb9a226c0b8e0ed5807"
+    },
+    {
+      "key": "vo_ruby_react_bossdown_1",
+      "text": "You did it! The flavor’s coming back!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "You did it! The flavor’s coming back!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_bossdown_1.mp3",
+      "bytes": 31390,
+      "sha256": "8cc1ffa0125bcc6580400b0f3c5b5dcd91695c6d2518b13adff3bf07814dbc1f"
+    },
+    {
+      "key": "vo_ruby_react_bossdown_2",
+      "text": "Boss down! We’re winning!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Boss down! We’re winning!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_bossdown_2.mp3",
+      "bytes": 22612,
+      "sha256": "dfb36abfd9323756d84a9fe7f1b242c12c9cfb8575eae5351d1112ca484d7275"
+    },
+    {
+      "key": "vo_ruby_react_lowhp_1",
+      "text": "Careful! Grab a Heal Mochi!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Careful! Grab a Heal Mochi!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_lowhp_1.mp3",
+      "bytes": 29300,
+      "sha256": "5e054d99ed312f6cd50499e63d6438b287d31319cda722d106234d7e270905b9"
+    },
+    {
+      "key": "vo_ruby_react_lowhp_2",
+      "text": "You’re hurt — step back a bit!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "You’re hurt — step back a bit!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_lowhp_2.mp3",
+      "bytes": 21776,
+      "sha256": "003e9fbb0e3c084b1f097290e1a12a67618e2d733beeea713b3bfc1eee46c0b8"
+    },
+    {
+      "key": "vo_ruby_react_wave_1",
+      "text": "Here they come — a big wave!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Here they come — a big wave!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_wave_1.mp3",
+      "bytes": 26374,
+      "sha256": "545b4a37fb38d87a24cbe62079f59cd95b243e2286fc703ecd6cc7604b563aba"
+    },
+    {
+      "key": "vo_ruby_react_wave_2",
+      "text": "Lots of monsters! Keep moving!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Lots of monsters! Keep moving!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_wave_2.mp3",
+      "bytes": 23448,
+      "sha256": "07f8b161b1e312820f7305c3d6771c3743c96fcc70e0fe5877a6b9d4daf506ba"
+    },
+    {
+      "key": "vo_ruby_react_timer_1",
+      "text": "Almost there — ten more seconds!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Almost there — ten more seconds!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_timer_1.mp3",
+      "bytes": 29300,
+      "sha256": "f1f8436f58d7b409c83c8c26054a434d8d63bca7dea553f42b34de4309799eb5"
+    },
+    {
+      "key": "vo_ruby_react_timer_2",
+      "text": "Just a little longer!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Just a little longer!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_timer_2.mp3",
+      "bytes": 19687,
+      "sha256": "2984e69a32350d8c53e74747ad37c4806bac9974d14cf89661dc95f586198308"
+    },
+    {
+      "key": "vo_ruby_react_revive_1",
+      "text": "Phew… you’re back!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Phew… you’re back!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_revive_1.mp3",
+      "bytes": 18851,
+      "sha256": "258ed09d1ab8d75d7095f3c84dd94e489686b2253c45af8b9848912f73ba9b70"
+    },
+    {
+      "key": "vo_ruby_react_revive_2",
+      "text": "Up you get! I believe in you!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Up you get! I believe in you!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_revive_2.mp3",
+      "bytes": 22612,
+      "sha256": "8ed8ec5ece0633eb25b88baec67e0446e4afc1b79d0586b2a282dcf05605b67d"
+    },
+    {
+      "key": "vo_ruby_react_clear_1",
+      "text": "Stage clear! Great job!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "Stage clear! Great job!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_clear_1.mp3",
+      "bytes": 24284,
+      "sha256": "5bc8f3aa08ce0bc83c2739ad96e9a1445ea0cbcd48dba29a73d9d33611337027"
+    },
+    {
+      "key": "vo_ruby_react_clear_2",
+      "text": "We did it! On to the next one!",
+      "category": "react",
+      "speaker": "ruby",
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "parameters": {
+        "text": "We did it! On to the next one!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.15
+        }
+      },
+      "file": "originals/vo_ruby_react_clear_2.mp3",
+      "bytes": 27210,
+      "sha256": "1529aca50fd78e594ae721e1dd7aeacca6ad6b362023ad9c8eab4d9ce510f3fb"
+    }
+  ]
+}
