@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.35';
+const GAME_VERSION = '8.1.36';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.36',date:'2026-11-07',title:'Unique battle cry',items:['Your hero now calls out every time they use their Unique skill, with lines that rotate']},
   {v:'8.1.35',date:'2026-11-07',title:'Chatty hero',items:['Each tap on your Lobby hero switches to a new voiced line right away','The loading screen now plays the title theme, continuing into the title screen']},
   {v:'8.1.34',date:'2026-11-07',title:'Talk to your hero',items:['Tap your hero in the Lobby and they speak their next line out loud']},
   {v:'8.1.33',date:'2026-11-07',title:'Voices and story music',items:['Hear character dialogue and new music throughout your adventure.','Cocoa and Sesame have new feminine voices.','Sesame no longer shows an in-development badge.']},
@@ -4195,14 +4196,21 @@ const VoiceActing={active:null,pending:null,serial:0,lastBark:-Infinity,history:
   caption(role,text){const exact=this.lookup(role,text);if(exact)return exact;for(const [k,v] of Object.entries(A07_CATALOG))if(v.role===role&&v.text.length>12&&String(text||'').includes(v.text))return k;return null;},
   enabled(){return typeof Save!=='undefined'&&Save.data?.settings?.voices!==false&&!Sfx.muted&&Sfx.sv>0;},
   busy(){return !!(this.pending||this.active?.sound?.isPlaying);},
-  stop(owner){if(owner&&this.active?.owner!==owner&&this.pending?.owner!==owner)return;this.serial++;if(!owner||this.pending?.owner===owner){if(this.pending?.timer)clearTimeout(this.pending.timer);this.pending=null;}if(!owner||this.active?.owner===owner){const a=this.active;this.active=null;try{a?.sound?.stop();a?.sound?.destroy();if(a?.key)a.scene?.cache?.audio?.remove(a.key);if(a){clearTimeout(Sfx._duckTimer);Sfx.bgmIntense?.(Sfx._bgmIntense);}}catch(e){}}},
+  stop(owner){if(owner&&this.active?.owner!==owner&&this.pending?.owner!==owner)return;this.serial++;if(!owner||this.pending?.owner===owner){if(this.pending?.timer)clearTimeout(this.pending.timer);this.pending=null;}if(!owner||this.active?.owner===owner){const a=this.active;this.active=null;try{a?.sound?.stop();a?.sound?.destroy();if(a?.key&&!a.key.includes('_unique_'))a.scene?.cache?.audio?.remove(a.key);if(a){clearTimeout(Sfx._duckTimer);Sfx.bgmIntense?.(Sfx._bgmIntense);}}catch(e){}}},
   play(scene,key,valid,owner,onStart){const row=A07_CATALOG[key];if(!row||!scene||!this.enabled()||this.busy())return false;if(!scene._a07AudioShutdown&&scene.events?.once){scene._a07AudioShutdown=true;scene.events.once('shutdown',()=>{this.stop();StoryMusic.stop();scene._a07AudioShutdown=false;});}const serial=++this.serial,pending=this.pending={serial,key,owner};pending.timer=setTimeout(()=>{if(this.pending===pending)this.pending=null;},8000);
     const go=()=>{if(this.pending!==pending||this.serial!==serial){if(this.pending?.key!==key)try{scene.cache?.audio?.remove(key);}catch(e){}return;}clearTimeout(pending.timer);this.pending=null;if(!this.enabled()||!valid()||!scene.cache?.audio?.exists(key)||this.active?.sound?.isPlaying)return;
-      try{const sound=scene.sound.add(key,{volume:.65*Sfx.sv,rate:1});const active=this.active={sound,owner,scene,key,end:performance.now()+row.duration};sound.once('complete',()=>{if(this.active===active)this.active=null;try{sound.destroy();if(this.pending?.key!==key)scene.cache?.audio?.remove(key);}catch(e){}});if(sound.play()===false){this.active=null;try{sound.destroy();}catch(e){}return;}Sfx.duckBgm?.(Math.max(1000,row.duration+250),.7);onStart?.(row);}
+      try{const sound=scene.sound.add(key,{volume:.65*Sfx.sv,rate:1});const active=this.active={sound,owner,scene,key,end:performance.now()+row.duration};sound.once('complete',()=>{if(this.active===active)this.active=null;try{sound.destroy();if(this.pending?.key!==key&&!key.includes('_unique_'))scene.cache?.audio?.remove(key);}catch(e){}});if(sound.play()===false){this.active=null;try{sound.destroy();}catch(e){}return;}Sfx.duckBgm?.(Math.max(1000,row.duration+250),.7);onStart?.(row);}
       catch(e){this.active=null;}};
     try{if(scene.cache?.audio?.exists(key)){go();return true;}if(!scene.load?.audio){clearTimeout(pending.timer);this.pending=null;return false;}const onError=f=>{if(f?.key!==key)return;scene.load.off?.('loaderror',onError);if(this.pending===pending){clearTimeout(pending.timer);this.pending=null;}};scene.load.on?.('loaderror',onError);scene.load.once('filecomplete-audio-'+key,()=>{scene.load.off?.('loaderror',onError);go();});scene.load.audio(key,verUrl(row.url));if(!scene.load.isLoading())scene.load.start();return true;}catch(e){if(this.pending===pending){clearTimeout(pending.timer);this.pending=null;}return false;}
   },
   text(scene,role,text,valid,owner){const key=this.lookup(role,text);return key?this.play(scene,key,valid,owner):false;},
+  /* v8.1.36 เจ้าของ: ใช้ Unique = มีเสียงทุกครั้ง · ตัดเสียงต่อสู้ของฮีโร่ที่กำลังพูดได้ (ไม่ตัด Ruby/ฉากเรื่อง) · หมุนประโยค ไม่ซ้ำติดกัน · มีประโยคราย Build (vo_<hero>_unique_<path>_N) ก็ใช้ร่วม · เก็บไฟล์ไว้ในแคช */
+  unique(scene){if(scene.state!=='play'||!scene.player?.active||scene._ruby||!this.enabled())return false;const player=scene.player;
+    if(this.busy()){if(this.active?.owner===player||this.pending?.owner===player)this.stop(player);else return false;}
+    const role=scene.character==='momo'?'strawberry':scene.character,path=scene.basicAttack?.path,keys=[];
+    for(const pre of [path?'vo_'+role+'_unique_'+path+'_':null,'vo_'+role+'_unique_'])if(pre)for(let i=1;i<=4;i++)if(A07_CATALOG[pre+i])keys.push(pre+i);
+    if(!keys.length)return false;let n=this.uniqueTurn=((this.uniqueTurn??-1)+1)%keys.length,key=keys[n];if(key===this.lastUnique&&keys.length>1){n=this.uniqueTurn=(n+1)%keys.length;key=keys[n];}
+    const epoch=scene._artEpoch;return this.play(scene,key,()=>scene.state==='play'&&scene.player===player&&scene._artEpoch===epoch&&!scene._ruby,player,r=>{this.lastUnique=key;this.lastBark=performance.now();scene.showSpeechBubble?.(r.text,Math.max(1600,r.duration+200));});},
   bark(scene,event){if(scene.state!=='play'||!scene.player?.active||scene._ruby||scene._speech||!this.enabled()||this.busy())return false;const role=scene.character==='momo'?'strawberry':scene.character,base='vo_'+role+'_'+event+'_',now=performance.now();if(now-this.lastBark<12000)return false;const previous=this.history[base]||0,choices=[previous===1?2:1,previous===1?1:2].filter(i=>A07_CATALOG[base+i]&&!this.recentBarks.includes(base+i));if(!choices.length)return false;const index=choices[0],key=base+index,row=A07_CATALOG[key];const player=scene.player,epoch=scene._artEpoch;const accepted=this.play(scene,key,()=>scene.state==='play'&&scene.player===player&&scene._artEpoch===epoch&&!scene._ruby&&!scene._speech,player,r=>{this.lastBark=performance.now();this.history[base]=index;this.recentBarks.push(key);if(this.recentBarks.length>3)this.recentBarks.shift();scene.showSpeechBubble?.(r.text,Math.max(2000,r.duration+250));});return accepted;}
 };
 const StoryMusic={serial:0,
@@ -9248,7 +9256,7 @@ class Game extends Phaser.Scene {
   sentryWardMul(){ const b=this.basicAttack,w=b?.path==='tempest'?(b.lv?.p_sentry_ward||0):0; if(!w||this.character!=='taro')return 1; const p=this.player; return (this._taro?.nodes||[]).some(n=>!n.beacon&&this.dist(n.x,n.y,p.x,p.y)<160)?1-.05*w:1; }   // v7.9.23 Sentry Ward
   uqGuardMul(){return ((this.elapsed||0)<(this._uqGuardT||0)?(this._uqGuardM||1):1)*(this.isSesRune?.()?this.sesRuneGuardMul():1);}
   // v7.9.22 ⭐ Unique cards: นับการใช้ (เปิดการ์ดหลัง 3 ครั้ง) · Echo · Mutation ตอนกด
-  uniqueCastFx(){ const p=this.player; if(!p)return;this.voiceBark?.('unique'); this._uqUses=(this._uqUses||0)+1; if(!this._inTutorial&&Save.data)Save.data.uniqueCasts=(Save.data.uniqueCasts||0)+1; (typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('unique'); const um=this.uqMul(),b=this.basicAttack,mut=this.uqMut(),T=this.elapsed||0;
+  uniqueCastFx(){ const p=this.player; if(!p)return;if(typeof VoiceActing!=='undefined')VoiceActing.unique(this); this._uqUses=(this._uqUses||0)+1; if(!this._inTutorial&&Save.data)Save.data.uniqueCasts=(Save.data.uniqueCasts||0)+1; (typeof DailyQ!=='undefined')&&!this._inTutorial&&DailyQ.tick('unique'); const um=this.uqMul(),b=this.basicAttack,mut=this.uqMut(),T=this.elapsed||0;
     if(this.uqLv('uq_echo')){ this.artDelay?.(400,()=>{ if(this.state!=='play')return; this.vfxHitRing?.(p.x,p.y,0xffd166,true); this.explodeAt(p.x,p.y,150,this.relicDmg(4)*um); }); }
     if(!mut||!b)return; const path=b.path;
     if(mut==='reb_shield'&&(this._shield||0)<2){this._shield=(this._shield||0)+1;this.floatText?.(p.x,p.y-44,'🫧 Sugar Shell',0x9fe8ff);}
