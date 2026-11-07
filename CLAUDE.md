@@ -1,8 +1,16 @@
 # Version line
 
-Current release: **8.1.36**. Next release:8.1.37. Fetch the deploy branch before new work.
+Current release: **8.1.38**. Next release:8.1.39. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.36 — Unique voice every cast + A08 voice order (owner)
+# Latest delivery: v8.1.38 — Yuzu companion duo replies (A08)
+
+Six ElevenLabs companion replies join the 47 A08 hero lines. Owner delegated provisional casting; audition 1 selected for Pomelo, Lime and Blood Orange. DuoVoice lazy-loads and rotates each pair, waits for Yuzu speech, uses Sfx, respects voice settings and cancels stale scenes. Human listening remains outstanding.
+
+# Previous delivery: v8.1.37 — Unique voice variety (A08)
+
+47 original ElevenLabs lines use the existing saved character voices: three lines for each of 15 Builds plus two Sesame lines. All are lazy-loaded and selected by the existing Unique voice rotation. Mono 44.1kHz/128kbps, measured at most 1.3s and −1dBTP; exact captions and donor provenance in assets/incoming/audio_unique_a08. Nine companion voice auditions were prepared; six companion responses and integration followed in v8.1.38. Human listening remains outstanding.
+
+# Previous delivery: v8.1.36 — Unique voice every cast + A08 voice order (owner)
 
 uniqueCastFx → VoiceActing.unique(scene): ignores the 12s bark throttle, cuts the hero’s own playing line (never Ruby/story), rotates vo_<role>_unique_<path>_1..4 + vo_<role>_unique_1..4 without back-to-back repeats, keeps _unique_ clips cached. Test in voice-acting-integration. docs/audio_orders/A08_UNIQUE_VOICE_LINES.md orders 45 per-Build lines, 2 Sesame, 6 Yuzu companion duo calls (needs Voice Design) — catalog rows only, no playback code needed except duo calls.
 

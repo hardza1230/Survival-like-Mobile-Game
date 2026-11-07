@@ -1,0 +1,1798 @@
+{
+  "provider": "ElevenLabs",
+  "initial_parameters_template": {
+    "model_id": "eleven_multilingual_v2",
+    "voice_settings": {
+      "stability": 0.42,
+      "similarity_boost": 0.75,
+      "style": 0.35,
+      "use_speaker_boost": true,
+      "speed": 1.2
+    }
+  },
+  "selected_generations": [
+    {
+      "key": "vo_strawberry_unique_sniper_1",
+      "text": "Bullseye, berry style!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Bullseye, berry style!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_sniper_1.mp3",
+      "bytes": 22612,
+      "sha256": "53043982ea3434afc230ee164bcb47fd87e3aa40a4985deb887a251469377823",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_strawberry_unique_sniper_2",
+      "text": "Hold still… gotcha!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Hold still… gotcha!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_sniper_2.mp3",
+      "bytes": 19687,
+      "sha256": "336b2382475fca585e9769dd2d3a10f7a43a97504266a522ec83186d556cb853",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_strawberry_unique_sniper_3",
+      "text": "One shot, all flavor!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "One shot, all flavor!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_sniper_3.mp3",
+      "bytes": 20523,
+      "sha256": "d545042b1aef9458b922168418c3c66b7cf9000dfe9985cb47726e7df1e97c12",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_strawberry_unique_shotgun_1",
+      "text": "Berry blast!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Berry blast!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_shotgun_1.mp3",
+      "bytes": 15089,
+      "sha256": "57a0b7670adcda8287df6a308483cec874f09e1f3a6c9367b2103243103da310",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_strawberry_unique_shotgun_2",
+      "text": "Up close and juicy!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Up close and juicy!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_shotgun_2.mp3",
+      "bytes": 24702,
+      "sha256": "80db5c4e5f2b62da55b0c86d6a75aa5803ce48b0eb9acd4045e9368576f165aa"
+    },
+    {
+      "key": "vo_strawberry_unique_shotgun_3",
+      "text": "Pop pop POP!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Pop pop POP!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_shotgun_3.mp3",
+      "bytes": 23448,
+      "sha256": "387ea02309e7d0bab19cf94c5a2b57ced80610960334938ef022b3918bc9a466"
+    },
+    {
+      "key": "vo_strawberry_unique_ricochet_1",
+      "text": "Bounce, little hearts!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Bounce, little hearts!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_ricochet_1.mp3",
+      "bytes": 24284,
+      "sha256": "d06f9054c3f4979ce11d08b9b0abcea00c220e1d977be45dd124c667daa176b0"
+    },
+    {
+      "key": "vo_strawberry_unique_ricochet_2",
+      "text": "Ping, ping, ping!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Ping, ping, ping!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_ricochet_2.mp3",
+      "bytes": 15925,
+      "sha256": "311d0cf7e9e3e3897f2c2783b221fc56043a85c60ac62a1da630b7457023016d",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_strawberry_unique_ricochet_3",
+      "text": "Find them, hearts!",
+      "speaker": "strawberry",
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Find them, hearts!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_strawberry_unique_ricochet_3.mp3",
+      "bytes": 23448,
+      "sha256": "1f7d466f3ef3ed624dc0c2585a7e8095026c8130e3eeaa919d3fc76976dd1b54"
+    },
+    {
+      "key": "vo_mint_unique_glacier_1",
+      "text": "Bloom, glacier.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Bloom, glacier.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_glacier_1.mp3",
+      "bytes": 25538,
+      "sha256": "bbbd8946d845cdb3300f7bdc52dfa8ed5024b7fb04edabb0df65bd0e79cdc1c8"
+    },
+    {
+      "key": "vo_mint_unique_glacier_2",
+      "text": "Stay frozen.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Stay frozen.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_glacier_2.mp3",
+      "bytes": 11327,
+      "sha256": "0049e9649ca2084450614a198fcedb3683e59fd35572833b7a063fa89048dd91"
+    },
+    {
+      "key": "vo_mint_unique_glacier_3",
+      "text": "Cold, isn’t it?",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Cold, isn’t it?",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_glacier_3.mp3",
+      "bytes": 27210,
+      "sha256": "07e6c553d606da360510d33c3f470028940a2a52ff4ce5d3232d1939bfb75a5f"
+    },
+    {
+      "key": "vo_mint_unique_barrage_1",
+      "text": "Snowfall.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Snowfall.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_barrage_1.mp3",
+      "bytes": 19687,
+      "sha256": "c2260607a41b7546f89936302f82904161558deabde7a8bb7c719629f15eb71e"
+    },
+    {
+      "key": "vo_mint_unique_barrage_2",
+      "text": "Don’t move.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Don’t move.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_barrage_2.mp3",
+      "bytes": 20941,
+      "sha256": "de6bb9791609c2688e6fa453e5dbae4fd6ef5b61987677c05af3c2fdffebe4cb"
+    },
+    {
+      "key": "vo_mint_unique_barrage_3",
+      "text": "Let it snow.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Let it snow.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_barrage_3.mp3",
+      "bytes": 21776,
+      "sha256": "bcd8672b435a42c8976af67f05d0ccb3fda222c06fe5877a6d95338f56f82713"
+    },
+    {
+      "key": "vo_mint_unique_pierce_1",
+      "text": "Through you.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Through you.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_pierce_1.mp3",
+      "bytes": 23448,
+      "sha256": "0b32923adb43f06a1426415c380c6701f14b22a7a001311f63cb59106a4fb065"
+    },
+    {
+      "key": "vo_mint_unique_pierce_2",
+      "text": "Ice lance.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Ice lance.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_pierce_2.mp3",
+      "bytes": 18851,
+      "sha256": "0f75bf441ebbe7acc5787bf9c6bc99c2ecd827b503adef07bfbaf50a1376f707"
+    },
+    {
+      "key": "vo_mint_unique_pierce_3",
+      "text": "One clean line.",
+      "speaker": "mint",
+      "voice_id": "XrKsw80Bq3N7rO3ILfGi",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "One clean line.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_mint_unique_pierce_3.mp3",
+      "bytes": 20941,
+      "sha256": "e022f3c8d63ff1d06ec5e1e839194c13b053b1fb7d48dc9c4db36efc7f16650c"
+    },
+    {
+      "key": "vo_cocoa_unique_brawler_1",
+      "text": "Fire fists, go!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Fire fists, go!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_brawler_1.mp3",
+      "bytes": 18015,
+      "sha256": "e4b508c7d6a59347d151461c53e98d70a31b499caa078e451a0db79c5d99e714",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_brawler_2",
+      "text": "Toasty punches!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Toasty punches!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_brawler_2.mp3",
+      "bytes": 16761,
+      "sha256": "f96a8e031225d99e6ee8b735824256580c324b7c08a713fbc69c2b4141bfb2bf",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_brawler_3",
+      "text": "Hot cocoa, extra hot!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Hot cocoa, extra hot!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_brawler_3.mp3",
+      "bytes": 26374,
+      "sha256": "307ec880063e18fee2395621ba9719440ecc9332ffb022ecdc91ba460b8e5009",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_titan_1",
+      "text": "Ground, shake!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Ground, shake!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_titan_1.mp3",
+      "bytes": 15925,
+      "sha256": "509778a195085e49b0b24a3463e20d2a312cbf4834b4472b0dba3518252100d7",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_titan_2",
+      "text": "Big bear stomp!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Big bear stomp!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_titan_2.mp3",
+      "bytes": 18851,
+      "sha256": "70f2ac66ce67d1283941d3d8db30a68170e1b6063b8a7e813cd3df544c2d1774",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_titan_3",
+      "text": "Everybody, down!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Everybody, down!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_titan_3.mp3",
+      "bytes": 15925,
+      "sha256": "562233b25ee0b5d695acb93e8452364eed716d88d8e2f88c1e989e5a91218a96",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_dashboxer_1",
+      "text": "Bear rush!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Bear rush!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_dashboxer_1.mp3",
+      "bytes": 15089,
+      "sha256": "9b2a76043fc5dab1cf1b1950f8db38de84225cc8b55b8721f6e295fd9f0378a0"
+    },
+    {
+      "key": "vo_cocoa_unique_dashboxer_2",
+      "text": "Coming through!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Coming through!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_dashboxer_2.mp3",
+      "bytes": 14253,
+      "sha256": "e13b48c5b3291a307bc5041cc6cd9b6767e5ab001c552b3f8abf893eee1bd744",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_cocoa_unique_dashboxer_3",
+      "text": "Hug incoming!",
+      "speaker": "cocoa",
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Hug incoming!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_cocoa_unique_dashboxer_3.mp3",
+      "bytes": 15925,
+      "sha256": "cbdae496b7e663f01aa2f1887045e447562bab3764b33922fe490d849c0b2573",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_taro_unique_storm_1",
+      "text": "Chain lightning!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Chain lightning!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_storm_1.mp3",
+      "bytes": 15925,
+      "sha256": "e35f4fdec1ba8953dfa789413d14616154c6264e363847e450b1e8c2dfaa2b80",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_taro_unique_storm_2",
+      "text": "Jump, sparks, jump!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Jump, sparks, jump!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_storm_2.mp3",
+      "bytes": 24284,
+      "sha256": "8df5dabcde76487786249fbc29b87cc6eec86e81591a8101dc7edfc695086090"
+    },
+    {
+      "key": "vo_taro_unique_storm_3",
+      "text": "Everyone gets a zap!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Everyone gets a zap!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_storm_3.mp3",
+      "bytes": 17597,
+      "sha256": "0e974a82b25db365a97dc84f2cf504dde660d6b7579d12489361318f8b57d002",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_taro_unique_tempest_1",
+      "text": "Sentries, on duty!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Sentries, on duty!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_tempest_1.mp3",
+      "bytes": 27210,
+      "sha256": "fefd8abe0570a7c7a4d3be878526df29e38f7517de885becc28b3a89fe45de5f"
+    },
+    {
+      "key": "vo_taro_unique_tempest_2",
+      "text": "Guard this spot!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Guard this spot!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_tempest_2.mp3",
+      "bytes": 20523,
+      "sha256": "737cbb501c3d376bea247180ae1cf89c5080183b64552905fc4c36141994e139"
+    },
+    {
+      "key": "vo_taro_unique_tempest_3",
+      "text": "Zap anything weird!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Zap anything weird!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_tempest_3.mp3",
+      "bytes": 27210,
+      "sha256": "12c022635c43b2b75ef20597ace4bc54c1aedf15c904269c54db760c2fe97e04"
+    },
+    {
+      "key": "vo_taro_unique_smite_1",
+      "text": "Lightning, right there!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Lightning, right there!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_smite_1.mp3",
+      "bytes": 17597,
+      "sha256": "86eb88beecdeca6e2be4bb6bc6a8ae5b7376eece30e46a073994c17b13e0b183",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_taro_unique_smite_2",
+      "text": "Spark strike!",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Spark strike!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_smite_2.mp3",
+      "bytes": 26374,
+      "sha256": "d13efa637d57a3eba3b53cea540f06020050eac030f47dd20a22d3778ff3ce34"
+    },
+    {
+      "key": "vo_taro_unique_smite_3",
+      "text": "Bonk! …With thunder.",
+      "speaker": "taro",
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Bonk! …With thunder.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_taro_unique_smite_3.mp3",
+      "bytes": 20941,
+      "sha256": "1bf9cab722b4c62b2cdbfc08cccf6510d8c6cb0236ff4c0e309ee42568ccd494",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_yuzu_unique_citrusGuardian_1",
+      "text": "Pomelo, smash!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Pomelo, smash!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_citrusGuardian_1.mp3",
+      "bytes": 19687,
+      "sha256": "3802bd3fa2b6acb6b2ec9a28b0c5c66083a9717102995027eeae2cea030c99e9"
+    },
+    {
+      "key": "vo_yuzu_unique_citrusGuardian_2",
+      "text": "Big peel, big punch!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Big peel, big punch!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_citrusGuardian_2.mp3",
+      "bytes": 27210,
+      "sha256": "87c793e95301d8be5527832c1db5730db46856e9871ed3d92a4d2c0fab77b757"
+    },
+    {
+      "key": "vo_yuzu_unique_citrusGuardian_3",
+      "text": "Shield up, squad!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Shield up, squad!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_citrusGuardian_3.mp3",
+      "bytes": 25538,
+      "sha256": "81340c3af0aeb19ac79d93aa07e70e3f6e3961e24fc7e436db6029bab873fa0a"
+    },
+    {
+      "key": "vo_yuzu_unique_zestSwarm_1",
+      "text": "Lime, take aim!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Lime, take aim!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_zestSwarm_1.mp3",
+      "bytes": 24702,
+      "sha256": "12f886ccd775f7ed14373fdb919127a03f183fbbf36223d33b071295330107b8"
+    },
+    {
+      "key": "vo_yuzu_unique_zestSwarm_2",
+      "text": "Right through them!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Right through them!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_zestSwarm_2.mp3",
+      "bytes": 15089,
+      "sha256": "59d2b3d2739bdb505688b253761e7f3dd0d3b79b04d78a14c7a33a1b159088dc",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_yuzu_unique_zestSwarm_3",
+      "text": "Sharp and sour!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Sharp and sour!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_zestSwarm_3.mp3",
+      "bytes": 15925,
+      "sha256": "bf995b580694460d7ba4aa15d500edb6b29e2674e28b732d3a3a76de30c12221"
+    },
+    {
+      "key": "vo_yuzu_unique_juiceWorkshop_1",
+      "text": "Blood Orange, now!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Blood Orange, now!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_juiceWorkshop_1.mp3",
+      "bytes": 17597,
+      "sha256": "613e9759cacd8d75c3fee407d4f17bd403a2e12fc1180e51b1d6d8b37ec9509e"
+    },
+    {
+      "key": "vo_yuzu_unique_juiceWorkshop_2",
+      "text": "Stir up a storm!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Stir up a storm!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_juiceWorkshop_2.mp3",
+      "bytes": 16761,
+      "sha256": "bf32d4748accfb4ff7f2672d2b60c8f28324b00de6b7b38e99eb40d1026c9ad9",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_yuzu_unique_juiceWorkshop_3",
+      "text": "Seeds, find them!",
+      "speaker": "yuzu",
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Seeds, find them!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_yuzu_unique_juiceWorkshop_3.mp3",
+      "bytes": 16761,
+      "sha256": "ba27ab7e155b8ec01c47f4ffc8c788bcb4d4dd682d3359332dcbda37d118513c",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_sesame_unique_3",
+      "text": "Mirror, remember.",
+      "speaker": "sesame",
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Mirror, remember.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_sesame_unique_3.mp3",
+      "bytes": 17597,
+      "sha256": "7d3aeb1551bd5b66b1a498e620810c72b01a7c5a47cb3a0174faaee3ad898157",
+      "selectedTake": 2
+    },
+    {
+      "key": "vo_sesame_unique_4",
+      "text": "Quietly… now.",
+      "speaker": "sesame",
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "endpoint": "text-to-speech",
+      "parameters": {
+        "text": "Quietly… now.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_sesame_unique_4.mp3",
+      "bytes": 14253,
+      "sha256": "d1fcdd54beb0c2c1953bb045320e3948a44de8d97e61bedf503e00923e5174b3",
+      "selectedTake": 2
+    }
+  ],
+  "extra_attempts": [
+    {
+      "key": "vo_strawberry_unique_sniper_2",
+      "take": 2,
+      "parameters": {
+        "text": "Hold still… gotcha!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "file": "originals/vo_strawberry_unique_sniper_2_take2.mp3",
+      "sha256": "336b2382475fca585e9769dd2d3a10f7a43a97504266a522ec83186d556cb853",
+      "bytes": 19687,
+      "active_ms": 964.83
+    },
+    {
+      "key": "vo_strawberry_unique_shotgun_1",
+      "take": 2,
+      "parameters": {
+        "text": "Berry blast!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "file": "originals/vo_strawberry_unique_shotgun_1_take2.mp3",
+      "sha256": "57a0b7670adcda8287df6a308483cec874f09e1f3a6c9367b2103243103da310",
+      "bytes": 15089,
+      "active_ms": 706.58
+    },
+    {
+      "key": "vo_cocoa_unique_brawler_1",
+      "take": 2,
+      "parameters": {
+        "text": "Fire fists, go!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_brawler_1_take2.mp3",
+      "sha256": "e4b508c7d6a59347d151461c53e98d70a31b499caa078e451a0db79c5d99e714",
+      "bytes": 18015,
+      "active_ms": 919.91
+    },
+    {
+      "key": "vo_cocoa_unique_brawler_2",
+      "take": 2,
+      "parameters": {
+        "text": "Toasty punches!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_brawler_2_take2.mp3",
+      "sha256": "f96a8e031225d99e6ee8b735824256580c324b7c08a713fbc69c2b4141bfb2bf",
+      "bytes": 16761,
+      "active_ms": 823.95
+    },
+    {
+      "key": "vo_cocoa_unique_brawler_3",
+      "take": 2,
+      "parameters": {
+        "text": "Hot cocoa, extra hot!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_brawler_3_take2.mp3",
+      "sha256": "307ec880063e18fee2395621ba9719440ecc9332ffb022ecdc91ba460b8e5009",
+      "bytes": 26374,
+      "active_ms": 1382.09
+    },
+    {
+      "key": "vo_cocoa_unique_titan_1",
+      "take": 2,
+      "parameters": {
+        "text": "Ground, shake!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_titan_1_take2.mp3",
+      "sha256": "509778a195085e49b0b24a3463e20d2a312cbf4834b4472b0dba3518252100d7",
+      "bytes": 15925,
+      "active_ms": 759.98
+    },
+    {
+      "key": "vo_cocoa_unique_titan_2",
+      "take": 2,
+      "parameters": {
+        "text": "Big bear stomp!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_titan_2_take2.mp3",
+      "sha256": "70f2ac66ce67d1283941d3d8db30a68170e1b6063b8a7e813cd3df544c2d1774",
+      "bytes": 18851,
+      "active_ms": 978.16
+    },
+    {
+      "key": "vo_cocoa_unique_dashboxer_2",
+      "take": 2,
+      "parameters": {
+        "text": "Coming through!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_dashboxer_2_take2.mp3",
+      "sha256": "e13b48c5b3291a307bc5041cc6cd9b6767e5ab001c552b3f8abf893eee1bd744",
+      "bytes": 14253,
+      "active_ms": 770.14
+    },
+    {
+      "key": "vo_taro_unique_storm_1",
+      "take": 2,
+      "parameters": {
+        "text": "Chain lightning!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "file": "originals/vo_taro_unique_storm_1_take2.mp3",
+      "sha256": "e35f4fdec1ba8953dfa789413d14616154c6264e363847e450b1e8c2dfaa2b80",
+      "bytes": 15925,
+      "active_ms": 804.6
+    },
+    {
+      "key": "vo_taro_unique_smite_3",
+      "take": 2,
+      "parameters": {
+        "text": "Bonk! …With thunder.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "file": "originals/vo_taro_unique_smite_3_take2.mp3",
+      "sha256": "1bf9cab722b4c62b2cdbfc08cccf6510d8c6cb0236ff4c0e309ee42568ccd494",
+      "bytes": 20941,
+      "active_ms": 1049.64
+    },
+    {
+      "key": "vo_yuzu_unique_zestSwarm_2",
+      "take": 2,
+      "parameters": {
+        "text": "Right through them!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "file": "originals/vo_yuzu_unique_zestSwarm_2_take2.mp3",
+      "sha256": "59d2b3d2739bdb505688b253761e7f3dd0d3b79b04d78a14c7a33a1b159088dc",
+      "bytes": 15089,
+      "active_ms": 752.7
+    },
+    {
+      "key": "vo_yuzu_unique_juiceWorkshop_2",
+      "take": 2,
+      "parameters": {
+        "text": "Stir up a storm!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "file": "originals/vo_yuzu_unique_juiceWorkshop_2_take2.mp3",
+      "sha256": "bf32d4748accfb4ff7f2672d2b60c8f28324b00de6b7b38e99eb40d1026c9ad9",
+      "bytes": 16761,
+      "active_ms": 850.88
+    },
+    {
+      "key": "vo_sesame_unique_3",
+      "take": 2,
+      "parameters": {
+        "text": "Mirror, remember.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "file": "originals/vo_sesame_unique_3_take2.mp3",
+      "sha256": "7d3aeb1551bd5b66b1a498e620810c72b01a7c5a47cb3a0174faaee3ad898157",
+      "bytes": 17597,
+      "active_ms": 1008.84
+    },
+    {
+      "key": "vo_sesame_unique_4",
+      "take": 2,
+      "parameters": {
+        "text": "Quietly… now.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "file": "originals/vo_sesame_unique_4_take2.mp3",
+      "sha256": "d1fcdd54beb0c2c1953bb045320e3948a44de8d97e61bedf503e00923e5174b3",
+      "bytes": 14253,
+      "active_ms": 821.04
+    },
+    {
+      "key": "vo_strawberry_unique_ricochet_2",
+      "take": 2,
+      "parameters": {
+        "text": "Ping, ping, ping!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "file": "originals/vo_strawberry_unique_ricochet_2_take2.mp3",
+      "sha256": "311d0cf7e9e3e3897f2c2783b221fc56043a85c60ac62a1da630b7457023016d",
+      "bytes": 15925,
+      "active_ms": 820.18
+    },
+    {
+      "key": "vo_cocoa_unique_titan_3",
+      "take": 2,
+      "parameters": {
+        "text": "Everybody, down!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_titan_3_take2.mp3",
+      "sha256": "562233b25ee0b5d695acb93e8452364eed716d88d8e2f88c1e989e5a91218a96",
+      "bytes": 15925,
+      "active_ms": 854.4
+    },
+    {
+      "key": "vo_taro_unique_storm_3",
+      "take": 2,
+      "parameters": {
+        "text": "Everyone gets a zap!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "file": "originals/vo_taro_unique_storm_3_take2.mp3",
+      "sha256": "0e974a82b25db365a97dc84f2cf504dde660d6b7579d12489361318f8b57d002",
+      "bytes": 17597,
+      "active_ms": 839.23
+    },
+    {
+      "key": "vo_taro_unique_smite_1",
+      "take": 2,
+      "parameters": {
+        "text": "Lightning, right there!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "X8xk6RJXMn8GUYmIqiSK",
+      "file": "originals/vo_taro_unique_smite_1_take2.mp3",
+      "sha256": "86eb88beecdeca6e2be4bb6bc6a8ae5b7376eece30e46a073994c17b13e0b183",
+      "bytes": 17597,
+      "active_ms": 872.49
+    },
+    {
+      "key": "vo_strawberry_unique_sniper_1",
+      "take": 2,
+      "parameters": {
+        "text": "Bullseye, berry style!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "file": "originals/vo_strawberry_unique_sniper_1_take2.mp3",
+      "sha256": "53043982ea3434afc230ee164bcb47fd87e3aa40a4985deb887a251469377823",
+      "bytes": 22612,
+      "active_ms": 1168.0
+    },
+    {
+      "key": "vo_strawberry_unique_sniper_3",
+      "take": 2,
+      "parameters": {
+        "text": "One shot, all flavor!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "CIn3Lujven9FOgEizTXF",
+      "file": "originals/vo_strawberry_unique_sniper_3_take2.mp3",
+      "sha256": "d545042b1aef9458b922168418c3c66b7cf9000dfe9985cb47726e7df1e97c12",
+      "bytes": 20523,
+      "active_ms": 1077.55
+    },
+    {
+      "key": "vo_cocoa_unique_dashboxer_3",
+      "take": 2,
+      "parameters": {
+        "text": "Hug incoming!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "gSp9n4Ccl86VHo8uIKGb",
+      "file": "originals/vo_cocoa_unique_dashboxer_3_take2.mp3",
+      "sha256": "cbdae496b7e663f01aa2f1887045e447562bab3764b33922fe490d849c0b2573",
+      "bytes": 15925,
+      "active_ms": 794.06
+    },
+    {
+      "key": "vo_yuzu_unique_juiceWorkshop_3",
+      "take": 2,
+      "parameters": {
+        "text": "Seeds, find them!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "voice_id": "btJ4Akzt1AM5gCVF3ZEz",
+      "file": "originals/vo_yuzu_unique_juiceWorkshop_3_take2.mp3",
+      "sha256": "ba27ab7e155b8ec01c47f4ffc8c788bcb4d4dd682d3359332dcbda37d118513c",
+      "bytes": 16761,
+      "active_ms": 822.93
+    }
+  ],
+  "companion_designs": {
+    "pomelo": {
+      "parameters": {
+        "voice_description": "Original fantasy game companion, A big kind citrus warrior companion. Masculine low-mid pitch, warm grounded voice, brave but gentle, brief energetic battle acknowledgement. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "Xdp1qgIbW7GDkljieGvZ",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.41825,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_pomelo_1.mp3"
+          },
+          {
+            "generated_voice_id": "MH4T6vnpMSsam2519HEB",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.0933125,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_pomelo_2.mp3"
+          },
+          {
+            "generated_voice_id": "a2UHWwPH5QWbU6DQrMXX",
+            "media_type": "audio/mpeg",
+            "duration_secs": 8.779875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_pomelo_3.mp3"
+          }
+        ],
+        "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
+      },
+      "selected": 1,
+      "status": "assistant_provisional_owner_delegated"
+    },
+    "lime": {
+      "parameters": {
+        "voice_description": "Original fantasy game companion, A nimble cool citrus archer companion. Clear youthful androgynous mid register, quick precise bright delivery, friendly and heroic. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "spASFtgjKPOdUxaWIeY6",
+            "media_type": "audio/mpeg",
+            "duration_secs": 7.238625,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_lime_1.mp3"
+          },
+          {
+            "generated_voice_id": "qhdkaCcnqWKCzYWxd3N8",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.746375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_lime_2.mp3"
+          },
+          {
+            "generated_voice_id": "WoQsAmRCoSJ2NCh6nhZH",
+            "media_type": "audio/mpeg",
+            "duration_secs": 9.2761875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_lime_3.mp3"
+          }
+        ],
+        "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
+      },
+      "selected": 1,
+      "status": "assistant_provisional_owner_delegated"
+    },
+    "bloodorange": {
+      "parameters": {
+        "voice_description": "Original fantasy game companion, A mysterious elemental citrus mage companion. Feminine mid-low voice, soft restrained and clear with a subtle playful edge. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "model_id": "eleven_multilingual_ttv_v2",
+        "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side.",
+        "auto_generate_text": false
+      },
+      "result": {
+        "previews": [
+          {
+            "generated_voice_id": "IuVtl3D6Kcte1EvSjvXq",
+            "media_type": "audio/mpeg",
+            "duration_secs": 14.3439375,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_bloodorange_1.mp3"
+          },
+          {
+            "generated_voice_id": "VJe1BwO1ShLkSAJ04X74",
+            "media_type": "audio/mpeg",
+            "duration_secs": 11.0525,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_bloodorange_2.mp3"
+          },
+          {
+            "generated_voice_id": "0CGGpOAkg67TAnEIVbhq",
+            "media_type": "audio/mpeg",
+            "duration_secs": 10.059875,
+            "language": "en",
+            "detected_labels": null,
+            "previews": null,
+            "file": "auditions/vd_bloodorange_3.mp3"
+          }
+        ],
+        "text": "Together we protect our friends. Ready when you are. Let us bring the flavor back! We are stronger when we fight side by side."
+      },
+      "selected": 1,
+      "status": "assistant_provisional_owner_delegated"
+    }
+  },
+  "companion_selections": {
+    "pomelo": {
+      "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "selected_audition": "auditions/vd_pomelo_1.mp3",
+      "preview_id": "Xdp1qgIbW7GDkljieGvZ",
+      "selection": "assistant provisional, owner delegated",
+      "creation_parameters": {
+        "voice_name": "Mochi A08 Pomelo",
+        "voice_description": "Original fantasy game companion, A big kind citrus warrior companion. Masculine low-mid pitch, warm grounded voice, brave but gentle, brief energetic battle acknowledgement. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "generated_voice_id": "Xdp1qgIbW7GDkljieGvZ"
+      }
+    },
+    "lime": {
+      "voice_id": "spASFtgjKPOdUxaWIeY6",
+      "selected_audition": "auditions/vd_lime_1.mp3",
+      "preview_id": "spASFtgjKPOdUxaWIeY6",
+      "selection": "assistant provisional, owner delegated",
+      "creation_parameters": {
+        "voice_name": "Mochi A08 Lime",
+        "voice_description": "Original fantasy game companion, A nimble cool citrus archer companion. Clear youthful androgynous mid register, quick precise bright delivery, friendly and heroic. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "generated_voice_id": "spASFtgjKPOdUxaWIeY6"
+      }
+    },
+    "bloodorange": {
+      "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "selected_audition": "auditions/vd_bloodorange_1.mp3",
+      "preview_id": "IuVtl3D6Kcte1EvSjvXq",
+      "selection": "assistant provisional, owner delegated",
+      "creation_parameters": {
+        "voice_name": "Mochi A08 Bloodorange",
+        "voice_description": "Original fantasy game companion, A mysterious elemental citrus mage companion. Feminine mid-low voice, soft restrained and clear with a subtle playful edge. Natural clean English studio recording; no effects, no music, no imitation of real voices.",
+        "generated_voice_id": "IuVtl3D6Kcte1EvSjvXq"
+      }
+    }
+  },
+  "companion_generations": [
+    {
+      "key": "vo_pomelo_duo_1",
+      "speaker": "pomelo",
+      "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "text": "Hmph!",
+      "parameters": {
+        "text": "Hmph!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_pomelo_duo_1_take1.mp3",
+      "bytes": 7566,
+      "sha256": "4a3ba19bc2efaf010b7287eec603adeaad357668d33b20abc5add71dc1dc5d76"
+    },
+    {
+      "key": "vo_pomelo_duo_2",
+      "speaker": "pomelo",
+      "voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "text": "Pomelo… SMASH!",
+      "parameters": {
+        "text": "Pomelo… SMASH!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_pomelo_duo_2_take1.mp3",
+      "bytes": 19687,
+      "sha256": "1390a0f5d80b3b66ad06ba81e169d084347bb342c15f3f855993ff2a82fffbdd"
+    },
+    {
+      "key": "vo_lime_duo_1",
+      "speaker": "lime",
+      "voice_id": "spASFtgjKPOdUxaWIeY6",
+      "text": "Loosed.",
+      "parameters": {
+        "text": "Loosed.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_lime_duo_1_take1.mp3",
+      "bytes": 10910,
+      "sha256": "cf3724840d1d059b65fa7370dab09803d41798cbaba2655f1ccf8deb1a48dbdd"
+    },
+    {
+      "key": "vo_lime_duo_2",
+      "speaker": "lime",
+      "voice_id": "spASFtgjKPOdUxaWIeY6",
+      "text": "Got it!",
+      "parameters": {
+        "text": "Got it!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_lime_duo_2_take1.mp3",
+      "bytes": 10910,
+      "sha256": "8dd490ad7a24cfd6886e4a5b9e0721a26efaa5a189809090422d345504e3eedf"
+    },
+    {
+      "key": "vo_bloodorange_duo_1",
+      "speaker": "bloodorange",
+      "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "text": "Burn sweet.",
+      "parameters": {
+        "text": "Burn sweet.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_bloodorange_duo_1_take1.mp3",
+      "bytes": 20523,
+      "sha256": "4edb463442968736f215a808d3b7c464b4dc6d4c8f073256f252fbba07cf5da5"
+    },
+    {
+      "key": "vo_bloodorange_duo_2",
+      "speaker": "bloodorange",
+      "voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "text": "Seek.",
+      "parameters": {
+        "text": "Seek.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.8,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.2
+        }
+      },
+      "file": "originals/vo_bloodorange_duo_2_take1.mp3",
+      "bytes": 12163,
+      "sha256": "ec5e1ce664066f321113797c7ab05a366e62d09dbe6976da75f0d600108f4e6f"
+    }
+  ]
+}

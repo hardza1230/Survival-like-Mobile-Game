@@ -1,0 +1,95 @@
+{
+  "selection": "assistant provisional candidate 1 for each role, delegated by owner",
+  "files": [
+    {
+      "speaker": "pomelo",
+      "candidate": 1,
+      "file": "auditions/vd_pomelo_1.mp3",
+      "bytes": 182692,
+      "sha256": "011cd0d72c57c0ec373d36bdefe1ccc1ea58e20e62b60d3f993f484e97d15c1d",
+      "duration_ms": 11416,
+      "generated_voice_id": "Xdp1qgIbW7GDkljieGvZ",
+      "decode": true
+    },
+    {
+      "speaker": "pomelo",
+      "candidate": 2,
+      "file": "auditions/vd_pomelo_2.mp3",
+      "bytes": 145493,
+      "sha256": "90870770a536866dc85312b64ec9ea8714bedaf6cc2caa1e2074655e94948446",
+      "duration_ms": 9091,
+      "generated_voice_id": "MH4T6vnpMSsam2519HEB",
+      "decode": true
+    },
+    {
+      "speaker": "pomelo",
+      "candidate": 3,
+      "file": "auditions/vd_pomelo_3.mp3",
+      "bytes": 140478,
+      "sha256": "3e87602c01daeb6e8f2547f6a5baf209ab592798169a013ff96e57703bc8daf6",
+      "duration_ms": 8777,
+      "generated_voice_id": "a2UHWwPH5QWbU6DQrMXX",
+      "decode": true
+    },
+    {
+      "speaker": "lime",
+      "candidate": 1,
+      "file": "auditions/vd_lime_1.mp3",
+      "bytes": 115818,
+      "sha256": "2c7af176b406cfdda360ecd9d56135d8557aeeac1a1f34b7d4ea9e319ae8af1a",
+      "duration_ms": 7236,
+      "generated_voice_id": "spASFtgjKPOdUxaWIeY6",
+      "decode": true
+    },
+    {
+      "speaker": "lime",
+      "candidate": 2,
+      "file": "auditions/vd_lime_2.mp3",
+      "bytes": 155942,
+      "sha256": "5f966fa82f51753ba3dd4c3b3c5e88b43a78da52bef61d75fcdd9f28bc278354",
+      "duration_ms": 9744,
+      "generated_voice_id": "qhdkaCcnqWKCzYWxd3N8",
+      "decode": true
+    },
+    {
+      "speaker": "lime",
+      "candidate": 3,
+      "file": "auditions/vd_lime_3.mp3",
+      "bytes": 148419,
+      "sha256": "93bc2594300ca575111ae750a5e5bb0d77644229079cf640eb4a40ee6311f2da",
+      "duration_ms": 9273,
+      "generated_voice_id": "WoQsAmRCoSJ2NCh6nhZH",
+      "decode": true
+    },
+    {
+      "speaker": "bloodorange",
+      "candidate": 1,
+      "file": "auditions/vd_bloodorange_1.mp3",
+      "bytes": 229503,
+      "sha256": "747f86e8ee5e213a4784e035ce90e54ca9075616cba7fa55c70454ee43e581f5",
+      "duration_ms": 14341,
+      "generated_voice_id": "IuVtl3D6Kcte1EvSjvXq",
+      "decode": true
+    },
+    {
+      "speaker": "bloodorange",
+      "candidate": 2,
+      "file": "auditions/vd_bloodorange_2.mp3",
+      "bytes": 176840,
+      "sha256": "203232e1c2ce81c1c19c962104725fc4954c2a02874b00f234cf9c2768f2d6b5",
+      "duration_ms": 11050,
+      "generated_voice_id": "VJe1BwO1ShLkSAJ04X74",
+      "decode": true
+    },
+    {
+      "speaker": "bloodorange",
+      "candidate": 3,
+      "file": "auditions/vd_bloodorange_3.mp3",
+      "bytes": 160958,
+      "sha256": "81f782efda2b5ac9949013efde75ab8b5d022f7d0b1208da84c123a2922594be",
+      "duration_ms": 10057,
+      "generated_voice_id": "0CGGpOAkg67TAnEIVbhq",
+      "decode": true
+    }
+  ]
+}
