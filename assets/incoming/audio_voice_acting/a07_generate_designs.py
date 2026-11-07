@@ -8,7 +8,7 @@ roles={
 'strawberry':'young adult woman, bright and brave, slightly clumsy warmth, clear mid pitch, light British-neutral accent',
 'ruby':'tiny female jam spirit, sparkling and fast cheerful delivery, high light pitch, airy magical vocal quality, clear intelligible words',
 'mint':'calm young adult woman, low soft voice, dry humor, slow precise words, cool but caring',
-'cocoa':'big gentle adult man, deep warm voice with a smile and gentle laugh, sleepy relaxed pace',
+'cocoa':'strong gentle adult woman, warm feminine low-mid voice with a smile and gentle laugh, sleepy relaxed pace',
 'taro':'energetic young adult man, quick excited clear speech, a little scatterbrained, curious cartographer',
 'yuzu':'warm cheerful young adult woman, sunny confident gardener, playful cute commander, decisive and friendly',
 'grandma':'kind elderly woman, gentle wise voice, a little frail but firm, comforting royal kitchen grandmother',

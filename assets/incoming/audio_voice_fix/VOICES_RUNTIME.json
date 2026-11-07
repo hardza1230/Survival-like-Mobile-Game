@@ -1,0 +1,44 @@
+{
+  "status": "provisional_owner_listening_pending",
+  "voiceIds": {
+    "strawberry": "CIn3Lujven9FOgEizTXF",
+    "ruby": "GVG9R2Ywg9D3iQVsW8Z6",
+    "mint": "XrKsw80Bq3N7rO3ILfGi",
+    "cocoa": "gSp9n4Ccl86VHo8uIKGb",
+    "taro": "X8xk6RJXMn8GUYmIqiSK",
+    "yuzu": "btJ4Akzt1AM5gCVF3ZEz",
+    "grandma": "X1J2ed2VTL9KmvGhBbkY",
+    "planter": "pnxOWvSDwUN2WZ61vdNd",
+    "hunger": "Wm3zbk05bRXj9I33qN3Z",
+    "boss_c1": "RfcFM4jK4RYas2wQz4pd",
+    "boss_c2": "1fQG71AjI2V2lnywmnx0",
+    "boss_c3": "akO64UeBz1XW95nNmuVW",
+    "sesame": "Rc2mSW0SK2gMydCaY9rQ"
+  },
+  "bossVoiceAssignments": {
+    "female_boss_c3": [
+      6,
+      8,
+      10
+    ],
+    "male_boss_c2": [
+      2,
+      3,
+      4,
+      11,
+      13,
+      14
+    ],
+    "unchanged_explicit": [
+      1,
+      5,
+      12,
+      15
+    ],
+    "remaining_gender_not_confirmed": [
+      7,
+      9
+    ]
+  },
+  "notes": "Audition and gender audit based on character descriptions and written story; female Cocoa and Sesame are owner-specified. Chapter-level voices remain shared and acting has not been listened to."
+}

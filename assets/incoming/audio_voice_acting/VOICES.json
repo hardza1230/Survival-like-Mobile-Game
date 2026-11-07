@@ -313,5 +313,7 @@
     },
     "next": "save these 12 with POST /v1/text-to-voice, record VOICES.json savedVoiceIds, then record categories 2-6"
   },
-  "selectionNote": "Candidate 1 provisionally selected by assistant at owner request; no subjective listening performed; owner audition remains pending."
+  "selectionNote": "Candidate 1 provisionally selected by assistant at owner request; no subjective listening performed; owner audition remains pending.",
+  "runtimeCastFile": "../audio_voice_fix/VOICES_RUNTIME.json",
+  "historicalNote": "Original audition IDs and older Cocoa assignments below remain for provenance; runtime uses the corrected casting in runtimeCastFile."
 }

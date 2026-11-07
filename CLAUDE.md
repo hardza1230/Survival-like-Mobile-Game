@@ -1,8 +1,12 @@
 # Version line
 
-Current release: **8.1.32**. Next release:8.1.33. Fetch the deploy branch before new work.
+Current release: **8.1.33**. Next release:8.1.34. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.32 — clearer hero motion823 poses (owner)
+# Latest delivery: v8.1.33 — story music and character voices
+
+Six A04 music tracks and 372 current A07 voice clips use lazy audio playback and existing volume/voice settings. Owner confirmed Cocoa and Sesame feminine voices; 20 Cocoa clips and 63 explicitly gendered boss clips were recast, 19 Sesame lines and three Ruby tips generated. Voice/text mapping, one-channel ownership, subtitles, cache cleanup and mute guards; boss casting for characters without explicit gender remains provisional. Sesame’s visual development badge is hidden without changing gameplay gates. Playback, words, mixing and music loops still require owner listening.
+
+# Previous delivery: v8.1.32 — clearer hero motion823 poses (owner)
 
 Owner: new skill poses visible but unclear. Art is fine (8×128 frames); they played in 0.4–0.5s. bpPose now forces ≥0.95s for *_motion823 keys and eases frames (fast wind-up 0–30%, hold mid key pose 30–75%, settle). Run sheets unaffected (separate movement path).
 

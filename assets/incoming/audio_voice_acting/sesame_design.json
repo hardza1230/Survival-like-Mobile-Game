@@ -1,0 +1,40 @@
+{
+  "parameters": {
+    "voice_description": "Original adult woman fantasy rune invoker: soft feminine voice, gentle and quietly mysterious, thoughtful and shy but growing confident, light airy mid register, clear natural English, warm restrained expression, no imitation of any real person, no effects, no music.",
+    "model_id": "eleven_multilingual_ttv_v2",
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+    "auto_generate_text": false
+  },
+  "result": {
+    "previews": [
+      {
+        "generated_voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+        "media_type": "audio/mpeg",
+        "duration_secs": 15.7284375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/sesame_take1.mp3"
+      },
+      {
+        "generated_voice_id": "QPRTD8Y6rO7MqaIPJn0s",
+        "media_type": "audio/mpeg",
+        "duration_secs": 10.112125,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/sesame_take2.mp3"
+      },
+      {
+        "generated_voice_id": "MC5i4Z1EatC2Ofhfh7zE",
+        "media_type": "audio/mpeg",
+        "duration_secs": 10.8174375,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/sesame_take3.mp3"
+      }
+    ],
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+  }
+}

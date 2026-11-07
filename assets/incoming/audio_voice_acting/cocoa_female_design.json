@@ -1,0 +1,40 @@
+{
+  "parameters": {
+    "voice_description": "Original adult woman fantasy game hero: a big-hearted strong gate guard with a warm feminine low-mid register, gentle confidence, relaxed sleepy humor and a comforting friendly smile. Clearly female voice, expressive yet natural, no caricature, no celebrity imitation, clean English studio sound, no music or sound effects.",
+    "model_id": "eleven_multilingual_ttv_v2",
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen.",
+    "auto_generate_text": false
+  },
+  "result": {
+    "previews": [
+      {
+        "generated_voice_id": "gSp9n4Ccl86VHo8uIKGb",
+        "media_type": "audio/mpeg",
+        "duration_secs": 12.0713125,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/cocoa_female_take1.mp3"
+      },
+      {
+        "generated_voice_id": "usGGjFPkm6u2uhgJ643X",
+        "media_type": "audio/mpeg",
+        "duration_secs": 8.1790625,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/cocoa_female_take2.mp3"
+      },
+      {
+        "generated_voice_id": "uwkYIwEelFap2H6oPnAy",
+        "media_type": "audio/mpeg",
+        "duration_secs": 8.597,
+        "language": "en",
+        "detected_labels": null,
+        "previews": null,
+        "file": "design/cocoa_female_take3.mp3"
+      }
+    ],
+    "text": "Hello! Let's bring the flavor back. I'm ready for a new adventure. Stay close, Ruby. Together, we can bring warmth back to every kitchen."
+  }
+}

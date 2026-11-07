@@ -59,3 +59,7 @@ Six BGM files remain pending: owner enabled Sound Effects only. Existing music c
 ## Delivery update — 2026-11-06
 
 Six original instrumental ElevenLabs Music tracks delivered to `assets/incoming/audio_story_music/` with retained donors, prompts, stereo MP3 mastering and technical QA. Existing 15 SFX remain unchanged. The six music masters are source-only, not yet connected to runtime; listen using `LISTEN_MUSIC.html`. BPM values are requested targets and shared-melody continuity and loop quality are not independently verified. Finale is instrumental without choir.
+
+## Integration update — 2026-11-07
+
+The six newly generated music tracks are connected to title, bazaar and story moods with scoped lazy loading and old-track fallback. Music playback and mute/volume controls use existing Sfx and Phaser audio. Musical loop quality, motif continuity and tempo remain unverified by human listening.

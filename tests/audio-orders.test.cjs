@@ -15,10 +15,10 @@ for(const [kit,count] of Object.entries(counts)){
  }
  total+=manifest.length;
 }
-assert.equal(total,139);assert(!/bgm_title:'assets\/audio\/story_music/.test(src),'source-only music is not registered as runtime');
+assert.equal(total,139);
 const musicRoot='assets/incoming/audio_story_music',music=JSON.parse(fs.readFileSync(musicRoot+'/MUSIC_MANIFEST.json')),musicQa=JSON.parse(fs.readFileSync(musicRoot+'/MUSIC_QA_REPORT.json')),musicPrompts=JSON.parse(fs.readFileSync(musicRoot+'/PROMPTS.json'));
 assert.equal(music.length,6);assert.equal(new Set(music.map(x=>x.key)).size,6);
-for(const r of music){const bytes=fs.readFileSync(musicRoot+'/'+r.file),q=musicQa.files.find(x=>x.key===r.key),p=musicPrompts.find(x=>x.key===r.key);assert.equal(bytes.length,r.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256);assert(q?.passed&&q.decode&&q.nonSilent&&q.channels===2&&q.sampleRate===44100&&q.peakDbtp<=-1);assert(p?.provider==='ElevenLabs'&&p.endpoint==='music');const donor=fs.readFileSync(musicRoot+'/'+p.file);assert.equal(crypto.createHash('sha256').update(donor).digest('hex'),p.sha256);}
+for(const r of music){const bytes=fs.readFileSync(musicRoot+'/'+r.file),q=musicQa.files.find(x=>x.key===r.key),p=musicPrompts.find(x=>x.key===r.key);assert.equal(bytes.length,r.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256);const runtime='assets/audio/story_music/'+r.file;assert(src.includes(runtime));assert.deepEqual(fs.readFileSync(runtime),bytes);assert(q?.passed&&q.decode&&q.nonSilent&&q.channels===2&&q.sampleRate===44100&&q.peakDbtp<=-1);assert(p?.provider==='ElevenLabs'&&p.endpoint==='music');const donor=fs.readFileSync(musicRoot+'/'+p.file);assert.equal(crypto.createHash('sha256').update(donor).digest('hex'),p.sha256);}
 
 // A07 source delivery: the provisional cast and authored text remain auditable without boot-loading dialogue.
 const voiceRoot='assets/incoming/audio_voice_acting',voiceManifest=JSON.parse(fs.readFileSync(voiceRoot+'/DIALOGUE_MANIFEST.json')),voiceQa=JSON.parse(fs.readFileSync(voiceRoot+'/DIALOGUE_QA_REPORT.json')),voiceRequests=JSON.parse(fs.readFileSync(voiceRoot+'/GENERATIONS_A07.json')),voiceCast=JSON.parse(fs.readFileSync(voiceRoot+'/VOICES.json'));

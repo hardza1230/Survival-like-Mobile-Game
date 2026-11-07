@@ -1,6 +1,6 @@
 # A07 — เสียงพากย์ตัวละคร (แบบ Path of Exile) · ใบสั่งเสียง · ร่าง 1 รอเจ้าของดู
 
-สถานะ: 🎧 เจ้าของสั่งเริ่มทำ 1 พ.ย. 2026 · หมวด 1 ส่งตัวอย่างครบ 12 บทบาท × 3 ตัวเลือก · รอเจ้าของเลือกเสียงก่อนอัดหมวด 2–6
+สถานะ: 🎧 เสียงตั้งต้นผูกเกมแล้ว · รอฟังตรวจบท เสียง และความสมดุล
 เครื่องมือ: **ElevenLabs Voice Design** (ออกแบบเสียงตัวละครละ 1 เสียง ใช้ทั้งเกม) + **Text to Speech** (รุ่น multilingual v2 / v3 ใส่อารมณ์ได้) · ภาษาอังกฤษ
 อ้างอิงเรื่อง: `docs/STORY_CANON.md` (ร่าง 3) · กติการ่วม `A00_README.md` (ไฟล์ mono 44.1 kHz · peak ≤ −1 dBTP · ตัดเงียบหัว < 20 ms)
 
@@ -9,7 +9,7 @@
 - จำกัดความถี่: ประโยคการต่อสู้ของฮีโร่ ≥ 12 วิ/ครั้ง · ประโยคเดิมไม่ซ้ำภายใน 3 ครั้ง · มีหลายเวอร์ชันต่อเหตุการณ์ (`_1…_3`)
 - เพลง/SFX ลดเสียงลง 30% ระหว่างพากย์ (ducking มีอยู่แล้วในโค้ด `duckBgm`)
 - ตัวหนังสือในเกมต้อง **ตรงคำต่อคำ** กับเสียงพากย์ · ปิดได้ใน Settings (Voice) — เสียงพึมพำ A05 ยังใช้ตอนปิด
-- **Sesame ยังไม่ทำ** (ตัวละครกำลังพัฒนา)
+- **Sesame:** เจ้าของยืนยันให้ทำเสียงผู้หญิงนุ่มลึกลับ และเอาป้าย In development ออก
 
 ---
 
@@ -21,7 +21,7 @@
 | `strawberry` | Strawberry · ตัวเอก ลูกมือคุณยาย | young woman, bright and brave, slightly clumsy warmth, clear mid pitch, light British-neutral accent |
 | `ruby` | Ruby · ภูตแยมทับทิม | tiny girl spirit, sparkly, fast and cheerful, high pitch, a little echo of magic (no effects, just airy tone) |
 | `mint` | Mint · หมอยา เย็นชาใจดี | calm young woman, low soft voice, dry humor, slow precise words |
-| `cocoa` | Cocoa · ทหารยามตัวโต | big gentle man, deep warm laugh, sleepy relaxed pace |
+| `cocoa` | Cocoa · ทหารยามตัวโต | big-hearted strong woman, warm feminine low-mid voice, gentle sleepy humor |
 | `taro` | Taro · นักทำแผนที่ | energetic young man, fast talker, excited, a bit scatterbrained |
 | `yuzu` | Yuzu · ชาวสวนส้ม หัวหน้าฝูง | warm cheerful young woman, bossy-cute commander, sunny |
 | `grandma` | คุณยาย · หัวหน้าครัวหลวง | kind elderly woman, gentle, wise, a little frail but firm |
@@ -125,3 +125,7 @@ Owner delegated provisional casting. Candidate 1 was selected as a provisional d
 ## Delivery update — 2026-11-07
 
 Owner authorized recording the draft combat, boss-slip and unlock lines. Added 80 combat barks, 30 boss-slip lines, 4 unlock lines, 47 remaining existing main-comic shots, 30 boss-memory lines and 15 pre-existing BOSS_LINES alternative fight lines: 350 dialogue masters total. Saved provisional voices, donors, exact request texts, manifests and per-file decoded true peak / onset checks are retained in `assets/incoming/audio_voice_acting/`. All remain source-only: no in-game text, events, playback, ducking or voice settings were changed. Three icon-containing Ruby tips still need a spoken-text/display decision. The alternative third fight line exists in BOSS_LINES but current story combat uses BOSS_STORIES.fight; don’t claim it currently plays. Text-to-speech word accuracy, performance, casting and mobile mix have not been human-reviewed.
+
+## Integration update — 2026-11-07
+
+Owner confirmed Cocoa is female and requested Sesame as a soft mysterious female voice. Created three audition previews each and selected take 1 provisionally, re-recorded 20 Cocoa lines, generated 19 Sesame lines, corrected 63 boss lines where story gender was explicit, and recorded three previously missing Ruby target tips with matching displayed words. Full requests, donors, master hashes, provisional cast and audio QA: `assets/incoming/audio_voice_fix/`. The runtime uses the corrected masters, never the historical male Cocoa files. Main-comic and boss dialogue, Ruby stage/tips/book/tutorial, matching lobby speech and situational hero barks use lazily loaded voice with on-screen text and single-channel ownership. Some generated files have no current matching game event and remain available in the catalogue; selection still needs human listening. A04 six tracks are connected to title, story moods and bazaar.
