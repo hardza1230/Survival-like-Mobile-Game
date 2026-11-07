@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.40**. Next release:8.1.41. Fetch the deploy branch before new work.
+Current release: **8.1.41**. Next release:8.1.42. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.40 — Sesame rune buttons arc around Unique (owner)
+# Latest delivery: v8.1.41 — perf hold, Unique voice preload, amulet/ring pools (owner)
+
+tickPerf: after a downgrade PERF.hold=30 (seconds) blocks upgrades. VoiceActing.preloadUnique(scene) in startStage loads every vo_<role>_unique_* clip. FORGE_SLOT_POOL.amulet (recovery/barrier/loot) and .ring (crit/rhythm/conditions) 25 each, distinct from boots. Forge OP audit and Sesame talent design sent to owner for decision (not changed). Mint lance: owner says done, no work.
+
+# Previous delivery: v8.1.40 — Sesame rune buttons arc around Unique (owner)
 
 Owner keeps the 10-recipe memory challenge (no recipe hints). sesRuneControlLayout places Power/Motion/Binding on an arc around Unique (up, diagonal, inward side; mirrored for ctrlLeft), distance u.radius+r+10, pushed clear of Dash. sesRuneHit: tap area ×1.45 radius, nearest rune wins, never steals taps inside Unique. 12ms vibrate on rune press (settings.haptics!==false). Glyphs ▲ ➤ ◆. Tests in sesame-runes.
-
-# Previous delivery: v8.1.39 — Sesame story and voices
-
-Sesame’s S10 motion comic plays before first entry to C2-1 and is available in the story gallery. Four hero unlock lines and the second boss memory beat have matching voiced comic shots. Owner cancelled art order 49 and accepted current A07/A08/A04 audio after listening.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

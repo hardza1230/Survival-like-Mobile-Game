@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.40';
+const GAME_VERSION = '8.1.41';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.41',date:'2026-11-08',title:'Smoother effects, sharper trinkets',items:['When effects are reduced for speed, they stay reduced for at least 30 seconds instead of flickering back','Unique skill voices load when the stage starts','Amulets now roll recovery, barrier and loot mods; rings roll critical, rhythm and condition mods']},
   {v:'8.1.40',date:'2026-11-08',title:'Sesame rune controls',items:['Sesame’s three rune buttons now curve around the Unique button for one-thumb play','Larger tap areas and a light vibration on each rune press']},
   {v:'8.1.39',date:'2026-11-08',title:'A friend returns',items:['Meet Sesame in a new motion comic before entering the garden.','Heroes and bosses share more of their voiced stories.']},
   {v:'8.1.38',date:'2026-11-07',title:'Companion duo voices',items:['Pomelo, Lime and Blood Orange answer Yuzu during their coordinated attack.']},
@@ -4209,6 +4210,8 @@ const VoiceActing={active:null,pending:null,serial:0,lastBark:-Infinity,history:
   },
   text(scene,role,text,valid,owner){const key=this.lookup(role,text);return key?this.play(scene,key,valid,owner):false;},
   /* v8.1.36 เจ้าของ: ใช้ Unique = มีเสียงทุกครั้ง · ตัดเสียงต่อสู้ของฮีโร่ที่กำลังพูดได้ (ไม่ตัด Ruby/ฉากเรื่อง) · หมุนประโยค ไม่ซ้ำติดกัน · มีประโยคราย Build (vo_<hero>_unique_<path>_N) ก็ใช้ร่วม · เก็บไฟล์ไว้ในแคช */
+  /* v8.1.41 โหลดเสียง Unique ของฮีโร่ล่วงหน้าตอนเข้าด่าน (ทุก Build) → ใช้ครั้งแรกไม่หน่วง · เก็บในแคชตามกติกา _unique_ */
+  preloadUnique(scene){try{if(!scene?.load?.audio||!this.enabled())return 0;const role=scene.character==='momo'?'strawberry':scene.character,pre='vo_'+role+'_unique_';let n=0;for(const k in A07_CATALOG)if(k.startsWith(pre)&&!scene.cache?.audio?.exists(k)){scene.load.audio(k,verUrl(A07_CATALOG[k].url));n++;}if(n&&!scene.load.isLoading())scene.load.start();return n;}catch(e){return 0;}},
   unique(scene){if(scene.state!=='play'||!scene.player?.active||scene._ruby||!this.enabled())return false;const player=scene.player;
     if(this.busy()){if(this.active?.owner===player||this.pending?.owner===player)this.stop(player);else return false;}
     const role=scene.character==='momo'?'strawberry':scene.character,path=scene.basicAttack?.path,keys=[];
@@ -6447,7 +6450,10 @@ function gearEffectiveEnhance(item){return Math.min(gearEnhanceCap(item),Math.ma
 function gearActiveAffixes(item){return forgeLines(item).filter((a,i)=>a&&forgeLineOpen(item,i));}
 const FORGE_SLOT_ROWS={weapon:['power'],gloves:['power'],armor:['sustain'],boots:['play'],amulet:['sustain','play'],ring:['power','play']};   // v8.0.93 เจ้าของ: ชนิดไอเทมกำหนดกลุ่ม mod (อาวุธ/ถุงมือ=โจมตี · เกราะ=ป้องกัน · รองเท้า=เล่น/เคลื่อนที่ · สร้อย=ป้องกัน+เล่น · แหวน=โจมตี+เล่น)
 // v8.0.94 เจ้าของ: อาวุธ/ถุงมือ/เกราะ/รองเท้า สุ่มได้ 25 mod ต่อชนิด (เปิด mod ที่มีโค้ดอยู่แล้วแต่เดิมสุ่มไม่ได้)
-const FORGE_SLOT_POOL=(()=>{const W=[1,2,3,4,6,7,10,11,12,49,57,5,50,52,53,101,108,25,26,27,35,43,44,89,90];return{weapon:W,gloves:W,armor:[13,14,15,16,17,18,20,21,63,64,115,19,23,24,61,62,65,66,67,68,71,114,91,93,95],boots:[29,31,32,33,41,42,45,48,97,100,117,118,122,139,46,119,120,121,25,26,27,142,143,98,89]};})();
+const FORGE_SLOT_POOL=(()=>{const W=[1,2,3,4,6,7,10,11,12,49,57,5,50,52,53,101,108,25,26,27,35,43,44,89,90];return{weapon:W,gloves:W,armor:[13,14,15,16,17,18,20,21,63,64,115,19,23,24,61,62,65,66,67,68,71,114,91,93,95],boots:[29,31,32,33,41,42,45,48,97,100,117,118,122,139,46,119,120,121,25,26,27,142,143,98,89],
+  /* v8.1.41 เจ้าของ: สร้อย = ฟื้นฟู/โล่/ของตก · แหวน = คริ/จังหวะ/เงื่อนไขโจมตี — แยกเอกลักษณ์ ไม่ซ้ำ pool ฝั่งรองเท้าทั้งก้อน */
+  amulet:[13,15,16,17,18,19,23,24,61,62,63,66,68,71,114,115,91,93,95,117,118,119,120,142,143],
+  ring:[3,4,10,11,12,25,26,27,35,41,42,43,44,49,52,53,57,89,90,97,98,100,108,48,46]};})();
 function forgePool(item,line,group){if(!forgeLineOpen(item,line))return [];const list=FORGE_SLOT_POOL[item.slot];if(list)return FORGE_DEFS.filter(m=>list.includes(m.number));const rows=FORGE_SLOT_ROWS[item.slot];return FORGE_DEFS.filter(m=>m.enabled&&m.slots.includes(item.slot)&&(!rows||rows.includes(m.row)));}   // v8.0.87 เจ้าของ: ไม่แบ่งหมวด — ทุกแถวสุ่มได้ทุก mod (ซ้ำได้)
 function forgeRollMod(item,line,rnd=Math.random){const pool=forgePool(item,line);if(!pool.length)return null;if(typeof FORGE_BAD_DEFS!=='undefined'&&rnd()<FORGE_BAD_CHANCE){const bad=FORGE_BAD_DEFS.filter(m=>m.slots.includes(item.slot));if(bad.length)return bad[Math.floor(rnd()*bad.length)%bad.length];}return pickWeightedMod(pool);}
 function forgeRollOptions(item,line,pool,n,forceId){const left=pool.slice(),out=[];if(forceId){const f=left.find(m=>m.id===forceId);if(f){out.push(forgeRoll(item,line,f));left.splice(left.indexOf(f),1);}}while(out.length<n&&left.length){const m=pickWeightedMod(left);if(!m)break;out.push(forgeRoll(item,line,m));left.splice(left.indexOf(m),1);}return out;}
@@ -13929,7 +13935,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.voiceStop?.();this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.voiceStop?.();if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -19632,8 +19638,9 @@ class Game extends Phaser.Scene {
     const q=perfQuality(); if(q===1){if(PERF.lvl!==2){PERF.lvl=2;this.applyPerfLive();}return;} if(q===2){if(PERF.lvl!==0){PERF.lvl=0;this.applyPerfLive();}return;}
     PERF.acc+=dt; if(PERF.acc<1)return; PERF.acc=0; const fps=this.game.loop.actualFps||60;
     if(fps<42){PERF.low++;PERF.high=0;}else if(fps>55){PERF.high++;PERF.low=0;}else{PERF.low=0;PERF.high=0;}
-    if(PERF.low>=3&&PERF.lvl<2){PERF.lvl++;PERF.low=0;this.applyPerfLive();}
-    else if(PERF.high>=10&&PERF.lvl>0){PERF.lvl--;PERF.high=0;this.applyPerfLive();}
+    PERF.hold=Math.max(0,(PERF.hold||0)-1);   // v8.1.41 เจ้าของ: ลดเอฟเฟกต์แล้วค้างไว้ ≥30 วิ ก่อนคืน (กันภาพกระพริบขึ้นลง)
+    if(PERF.low>=3&&PERF.lvl<2){PERF.lvl++;PERF.low=0;PERF.high=0;PERF.hold=30;this.applyPerfLive();}
+    else if(PERF.high>=10&&PERF.lvl>0&&!PERF.hold){PERF.lvl--;PERF.high=0;this.applyPerfLive();}
   }
   chainBolt(x1,y1,x2,y2,big=false){
     if(this.character==='taro'&&this._taro?.enabled){this.taroLightningVisual(x1,y1,x2,y2,false,big);return;}
