@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.39**. Next release:8.1.40. Fetch the deploy branch before new work.
+Current release: **8.1.40**. Next release:8.1.41. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.39 — Sesame rune buttons arc around Unique (owner)
+# Latest delivery: v8.1.40 — Sesame rune buttons arc around Unique (owner)
 
 Owner keeps the 10-recipe memory challenge (no recipe hints). sesRuneControlLayout places Power/Motion/Binding on an arc around Unique (up, diagonal, inward side; mirrored for ctrlLeft), distance u.radius+r+10, pushed clear of Dash. sesRuneHit: tap area ×1.45 radius, nearest rune wins, never steals taps inside Unique. 12ms vibrate on rune press (settings.haptics!==false). Glyphs ▲ ➤ ◆. Tests in sesame-runes.
 
-# Previous delivery: v8.1.38 — Yuzu companion duo replies (A08)
+# Previous delivery: v8.1.39 — Sesame story and voices
 
-Six ElevenLabs companion replies join the 47 A08 hero lines. Owner delegated provisional casting; audition 1 selected for Pomelo, Lime and Blood Orange. DuoVoice lazy-loads and rotates each pair, waits for Yuzu speech, uses Sfx, respects voice settings and cancels stale scenes. Human listening remains outstanding.
+Sesame’s S10 motion comic plays before first entry to C2-1 and is available in the story gallery. Four hero unlock lines and the second boss memory beat have matching voiced comic shots. Owner cancelled art order 49 and accepted current A07/A08/A04 audio after listening.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

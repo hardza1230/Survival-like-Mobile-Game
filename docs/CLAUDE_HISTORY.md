@@ -3521,3 +3521,7 @@ uniqueCastFx → VoiceActing.unique(scene): ignores the 12s bark throttle, cuts 
 # Previous delivery: v8.1.35 — every Lobby tap switches the voiced line + title theme on loading (owner)
 
 Owner: tapping fast didn't change the voice. lobbyTapSay no longer waits for VoiceActing.busy(); each tap stops the current clip and speaks the next 'says' line. 150ms debounce (_lobbyTapAt) so one touch can't skip two lines. Owner: loading music = track 2 only: index.html LoaderMusic now plays story_music/bgm_title.mp3 (was Forgotten Wind); StoryMusic.play skips bgm_a04_bgm_title while LoaderMusic.playing() so it continues seamlessly; menuMusic non-A04 screens call playMainBgm when the loader is still playing.
+
+# Previous delivery: v8.1.38 — Yuzu companion duo replies (A08)
+
+Six ElevenLabs companion replies join the 47 A08 hero lines. Owner delegated provisional casting; audition 1 selected for Pomelo, Lime and Blood Orange. DuoVoice lazy-loads and rotates each pair, waits for Yuzu speech, uses Sfx, respects voice settings and cancels stale scenes. Human listening remains outstanding.

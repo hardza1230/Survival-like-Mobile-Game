@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.39';
+const GAME_VERSION = '8.1.40';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,7 +90,8 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
-  {v:'8.1.39',date:'2026-11-08',title:'Sesame rune controls',items:['Sesame’s three rune buttons now curve around the Unique button for one-thumb play','Larger tap areas and a light vibration on each rune press']},
+  {v:'8.1.40',date:'2026-11-08',title:'Sesame rune controls',items:['Sesame’s three rune buttons now curve around the Unique button for one-thumb play','Larger tap areas and a light vibration on each rune press']},
+  {v:'8.1.39',date:'2026-11-08',title:'A friend returns',items:['Meet Sesame in a new motion comic before entering the garden.','Heroes and bosses share more of their voiced stories.']},
   {v:'8.1.38',date:'2026-11-07',title:'Companion duo voices',items:['Pomelo, Lime and Blood Orange answer Yuzu during their coordinated attack.']},
   {v:'8.1.37',date:'2026-11-07',title:'Unique skill voice variety',items:['Each Build has new Unique skill calls alongside the original lines.','Sesame gains two more spell calls.']},
   {v:'8.1.36',date:'2026-11-07',title:'Unique battle cry',items:['Your hero now calls out every time they use their Unique skill, with lines that rotate']},
@@ -4974,6 +4975,7 @@ const HERO_INTROS=[
     text:'Thanks for freeing me! I’m Taro. My lightning jumps through crowds. I know the way! Switch heroes any time in Heroes.'},
   {idx:4,id:'yuzu',flag:'yuzuIntro',card:'card_yuzu',emoji:'🍋',name:'Yuzu',color:'#c99a12',edge:0xffe07a,btn:0xe0b52a,btnEdge:0xfff4c4,stroke:'#5c4306',label:'🍋 Choose Yuzu',
     text:'Thanks for freeing me! I’m Yuzu. My Yuzling fights with me. Let’s cut the Crown’s root! Switch heroes any time in Heroes.'},
+  {idx:5,id:'sesame',flag:'sesameIntro',card:'card_sesame',emoji:'🪞',name:'Sesame',color:'#58478d',edge:0xbcaaf4,btn:0x7661b5,btnEdge:0xece3ff,stroke:'#38275b',label:'🪞 Choose Sesame',text:'I’m Sesame. Three elemental runes can weave powerful spells. Switch heroes any time in Heroes.'}
 ];
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
@@ -8249,11 +8251,13 @@ const RUBY_STORYBOOK=[
 ];
 // v8.0.2 ใบ 45 Motion Comic: ฉากแยกเลเยอร์ขยับได้ · พิกัดอ้างอิงจอ 360×780 (เหมือนภาพตรวจของฝั่งอาร์ต) · เลเยอร์ [key,x,y,กว้าง,สูง,{at,out,to,ms,ease,bob,glow,rot,sq,fps,loop,fr,a,fade}] · ภาพโหลดทีละฉาก เล่นจบคืน texture
 const MC_PANTRY=['cs_s01_far_pantry','cs_s01_mid_pantry','cs_s01_fg_pantry'],MC_NEST=['cs_s01_far_nest','cs_s01_mid_nest','cs_s01_fg_nest'],MC_ROOT=['cs_s01_far_root_floor','cs_s01_mid_root_floor','cs_s01_fg_root_floor'],MC_CITY=['cs_s00_far_city','cs_s00_mid_city','cs_s00_fg_city'];
+const MC_HERO_VOICE={mint:['vo_mint_unlock','Chill. I’ve got your back.'],cocoa:['vo_cocoa_unlock','Free at last. Can I nap now?'],taro:['vo_taro_unlock','I’m free! Which way is adventure?'],yuzu:['vo_yuzu_unlock','Citrus squad, ready to grow?']};
 const mcHero=(bg,h,card,name,line)=>({title:'A FRIEND RETURNS',shots:[
   {bg:[bg],zoom:[1,1.07],cap:'A cursed friend is trapped here, drained of flavor…',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240,{bob:3}]]},
   {bg:[bg],zoom:[1.07,1.1],flash:[1300,0xffd6e8],cap:'The Heart Seed glows in Strawberry’s hands.',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240],['cs_fx_seed_glow',180,250,150,150,{fps:10}],['cs_pup_seed_wake',180,250,70,105,{glow:1}]]},
   {bg:[bg],zoom:[1.1,1.04],shake:[300,350,.008],cap:'The curse breaks!',L:[['cs_pup_mochi_'+h+'_trapped',180,380,200,240,{out:450}],['cs_pup_mochi_'+h+'_free',180,400,170,170,{at:450,out:1100}],['cs_fx_curse_smoke',180,360,300,300,{fps:10,loop:false}],['cs_fx_transform',180,360,340,340,{fps:12,loop:false,at:200}],[card,180,340,230,320,{at:1100,fade:420}]]},
-  {bg:[bg],zoom:[1.04,1],cap:line,L:[[card,180,330,240,330,{bob:6}],['cs_fx_sparkle',90,230,70,70,{fps:9}],['cs_fx_sparkle',275,290,55,55,{fps:9,fr:3}]]}]});
+  {bg:[bg],zoom:[1.04,1],cap:line,L:[[card,180,330,240,330,{bob:6}],['cs_fx_sparkle',90,230,70,70,{fps:9}],['cs_fx_sparkle',275,290,55,55,{fps:9,fr:3}]]},
+  ...(MC_HERO_VOICE[h]?[{bg:[bg],zoom:[1,1.03],cap:MC_HERO_VOICE[h][1],voiceKey:MC_HERO_VOICE[h][0],L:[[card,180,330,240,330,{bob:6}]]}]:[])]});
 const MOTION_COMICS={
   s00:{title:'LONG AGO',shots:[
     {bg:MC_CITY,pan:[-28,28],cap:'Long ago, Mochitopia was a kingdom of people — and every home was full of flavor.',L:[['cs_pup_crowd_people',180,420,330,170]]},
@@ -8290,6 +8294,7 @@ const MOTION_COMICS={
   s07:mcHero('cs_s03_far_furnace','cocoa','card_cocoa','Cocoa','Cocoa, the old gate guard, is back — ready to punch through the iron machines!'),
   s08:mcHero('cs_s04_far_prison','taro','card_taro','Taro','Taro, the kingdom’s mapmaker, is free — his lightning leaps from guard to guard!'),
   s09:mcHero('cs_s05_far_oven','yuzu','card_yuzu','Yuzu','Yuzu, the orange grower, is herself again — with her little Yuzling close by!'),
+  s10:mcHero('cs_s10_far_glass','sesame','card_sesame','Sesame','Sesame steps free of the glass, ready to weave the elements into spells.'),
   s11:{title:'CHAPTER 1 COMPLETE',shots:[
     {bg:['cs_s11_far_oven_cold'],zoom:[1,1.06],cap:'The Crown Oven goes cold. The wounded root tears itself free…',L:[['cs_pup_root_wound',180,420,160,150,{at:500,to:[180,560],ms:900,ease:'Quad.easeIn'}],['cs_fx_dust',180,470,235,118,{fps:12,loop:false,at:900}]]},
     {bg:['cs_s11_far_crosssection'],zoom:[1.04,1.1],cap:'…and burrows down through the earth, toward the garden below.',L:[['cs_pup_root_wound',180,230,120,110,{to:[180,520],ms:2600}]]}]},
@@ -8317,9 +8322,9 @@ const MOTION_COMICS={
     {bg:['cs_s16_far_hunger_sleep'],zoom:[1.04,1.1],shake:[1700,500,.01],cap:'In the dark beneath Mochitopia, the Hunger opens one eye.',L:[['cs_s17_prop_eyes_half',180,330,300,62,{at:400,out:1700,fade:500}],['cs_s17_prop_eyes_open',180,330,320,85,{at:1700,fade:300,glow:1}]]},
     {bg:['cs_s17_far_delve'],zoom:[1,1.12],cap:'The way down is open. Together, the friends step into the Delve.',L:[['cs_s17_chr_team_back',180,470,345,265]]}]}
 };
-const MC_HERO_SCENE={mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09'},MC_STAGE_STORY=[['s00','s01'],['s02'],['s03'],['s04'],['s05']],MC_AFTER_STAGE={4:'s11',9:'s13',14:'s16'};
+const MC_HERO_SCENE={mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09',sesame:'s10'},MC_STAGE_STORY=[['s00','s01'],['s02'],['s03'],['s04'],['s05']],MC_AFTER_STAGE={4:'s11',9:'s13',14:'s16'};
 // v8.0.4 คลังเรื่อง (Lobby แท็ก 📖 Story): ลำดับตามเนื้อเรื่อง · [id, อีโมจิ, ชื่อ, ด่านที่ต้องผ่าน (stageMastery) ถึงดูได้ · −1 = หลังบทสอน] · เคยดูแล้ว (mcSeen) ดูได้เสมอ
-const MC_GALLERY=[['s00','🏰','Long Ago',-1],['s01','🌱','The Heart Seed',-1],['s02','🫙','Grandma’s Jam Jar',0],['s06','🌿','Mint Returns',1],['s03','🔥','The Stolen Flavor',1],['s04','🧊','A Voice in the Ice',2],['s05','👑','The Crown Oven',3],['s11','🕳️','Chapter 1 Complete',4],['s12','🍄','Chapter 2',4],['s07','🐻','Cocoa Returns',4],['s08','⚡','Taro Returns',6],['s13','✨','Chapter 2 Complete',9],['s14','🌾','Chapter 3',9],['s09','🍊','Yuzu Returns',9],['s15','🪞','Memories in Glass',11],['s16','🌳','The First Tree',14],['s17','🌑','The Delve',14]];
+const MC_GALLERY=[['s00','🏰','Long Ago',-1],['s01','🌱','The Heart Seed',-1],['s02','🫙','Grandma’s Jam Jar',0],['s06','🌿','Mint Returns',1],['s03','🔥','The Stolen Flavor',1],['s04','🧊','A Voice in the Ice',2],['s05','👑','The Crown Oven',3],['s11','🕳️','Chapter 1 Complete',4],['s12','🍄','Chapter 2',4],['s10','🪞','Sesame Returns',4],['s07','🐻','Cocoa Returns',4],['s08','⚡','Taro Returns',6],['s13','✨','Chapter 2 Complete',9],['s14','🌾','Chapter 3',9],['s09','🍊','Yuzu Returns',9],['s15','🪞','Memories in Glass',11],['s16','🌳','The First Tree',14],['s17','🌑','The Delve',14]];
 const BOSS_MOTION_BEATS=[
   [
     "The Empress once bargained with the Crown to keep her eggs alive.",
@@ -8390,6 +8395,7 @@ function bossCutscene61(idx,story,beats){
   const why=idx===14?'The First Tree waits. The Crown must come off.':((typeof STAGE_EPILOGUE!=='undefined'&&STAGE_EPILOGUE[idx]?.why)||story.goal),where=nl?why+'\nNext: '+nl:why;
   return{title:story.title,tag:'A memory released after the battle',boss:true,noTitle:true,fast:true,v61:true,mote:idx===3?'snow':idx===2||idx===4?'ember':'spark',shots:[
     {bg:[fall],fit:'portrait',zoom:[1,1.05],ms:2600,shake:[650,380,.008],flash:[640,col],pow:['CRACK!','KRAK!','SHATTER!','CRACK!'][idx%4],powAt:650,cap:'👑 '+story.title+'\n'+beats[0],L:[['vfx_cs61_crown_shatter',0,0,0,0,{bgPt:cr,bgW:.42,at:520,loop:false,fps:12}]]},
+    {bg:[fall],fit:'portrait',zoom:[1.05,1.08],ms:2600,cap:beats[1],L:[]},
     {bg:[mem],zoom:[1.06,1],ms:2900,flash:[420,0xffe2b3],pow:['POP!','POOF!','SHINE!','FREE!'][idx%4],cap:'“'+story.release+'”',L:[[freed,180,330,250,333,{at:300,fade:700,to:[180,300],ms:2400,bob:3}],['cs_fx_sparkle',180,250,170,170,{fps:10,at:500}]]},
     {bg:[on],fit:'portrait',zoom:[1.04,1],ms:2700,cap:where,L:[['vfx_cs61_flavor_return',180,300,210,420,{at:250,loop:false,hold:true,fps:10}]]}
   ]};
@@ -14390,14 +14396,14 @@ class Game extends Phaser.Scene {
     const fs=bossWide?14:W<380?16:17,kick=add(this.add.text(panelX+panelW/2,bossWide?74:by+24,sc.title+'  ·  '+(i+1)+' / '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',align:'center',wordWrap:{width:panelW-32}}).setOrigin(.5));
     const cap=add(this.add.text(panelX+22,bodyY,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'left',lineSpacing:5,wordWrap:{width:panelW-44},stroke:'#120a18',strokeThickness:3}).setOrigin(0,0));
     if(sc.boss){let fit=fs;while(cap.height>H-bodyY-44&&fit>11)cap.setFontSize(--fit);}
-    { const speech=sh.cap||'',bossRole='boss'+((this.stageIndex||0)+1),vk=this.voiceCaption?.('ruby',speech)||this.voiceCaption?.(bossRole,speech);if(vk)this.voicePlay?.(vk,()=>this._mc===mc&&!mc.done&&mc.i===i,mc);const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(panelX+(panelW-cap.width)/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
+    let shotVoiceMs=0;{ const speech=sh.cap||'',bossRole='boss'+((this.stageIndex||0)+1),storyKey='vo_story_'+mc.id+'_'+(i+1),specific=A07_CATALOG[storyKey],vk=sh.voiceKey||(specific&&specific.text===speech?storyKey:null)||this.voiceCaption?.('ruby',speech)||this.voiceCaption?.(bossRole,speech);if(vk&&this.voicePlay?.(vk,()=>this._mc===mc&&!mc.done&&mc.i===i,mc))shotVoiceMs=A07_CATALOG[vk]?.duration||0;const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(panelX+(panelW-cap.width)/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
       if(!red&&wrapped){ let n=0; const step=Math.max(1,Math.round(wrapped.length/95)); cap.setText(''); const ev=this.time.addEvent({delay:24,loop:true,callback:()=>{ n=Math.min(wrapped.length,n+step); if(cap.active){cap.setText(wrapped.slice(0,n));if(n%2===0){Sfx.voiceBlip?.('ruby')||Sfx.orderCue?.('type_tick',.06,.08);}} if(n>=wrapped.length){ ev.remove(false); mc.typing=null; } }}); mc.ev.push(ev); mc.typing=()=>{ ev.remove(false); if(cap.active)cap.setText(wrapped); mc.typing=null; }; } }
     const hint=add(this.add.text(W-18,H-16,i+1<n?'Tap ▶':'Tap to continue ▶',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,1).setAlpha(.8));
     [kick,cap].forEach(t=>t.setAlpha(0)); tw({targets:[kick,cap],alpha:1,duration:380,delay:220}); tw({targets:hint,alpha:.35,duration:700,yoyo:true,repeat:-1},true);
     const pad=this._pad||14,sw=70,shh=30,sx=W-sw-12,sy=pad+8,sg=add(this.add.graphics()); sg.fillStyle(0x000000,.45); sg.fillRoundedRect(sx,sy,sw,shh,15); sg.lineStyle(2,0xffffff,.7); sg.strokeRoundedRect(sx,sy,sw,shh,15);
     add(this.add.text(sx+sw/2,sy+shh/2,'Skip ⏭',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff'}).setOrigin(.5)); mc.skip={x:sx-8,y:sy-8,w:sw+16,h:shh+16};
     if(!red){ const dip=add(this.add.rectangle(0,0,W,H,0x000000,1).setOrigin(0)); tw({targets:dip,alpha:0,duration:320,ease:'Quad.easeOut'}); }
-    at(mc.sc.fast?Math.max(ms+600,1700+(sh.cap||'').length*34):Math.max(ms+900,2200+(sh.cap||'').length*45),()=>this.mcNext(mc));   // v8.0.73 เรื่องบอสเดินเร็วขึ้น
+    at(Math.max(shotVoiceMs+500,mc.sc.fast?Math.max(ms+600,1700+(sh.cap||'').length*34):Math.max(ms+900,2200+(sh.cap||'').length*45)),()=>this.mcNext(mc));   // v8.0.73 เรื่องบอสเดินเร็วขึ้น
   }
   rubyStageStory(idx,done){ const entry=RUBY_STORYBOOK[idx],d=Save.data;
     if(!entry||d.settings?.noRuby||Number(d.rubyStorybook?.[idx])>=3||this.state!=='menu')return false;

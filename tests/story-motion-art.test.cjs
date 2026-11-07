@@ -16,8 +16,15 @@ assert.equal(n,103);
 // 2. ทุกฉากอ้างแต่ key ที่มีจริง · Sesame (s10) ไม่ผูก · hook map ตรงลำดับเรื่อง
 const known=k=>ASSET_IMAGES[k]||ASSET_FX[k];for(const [id,sc] of Object.entries(MOTION_COMICS)){ assert(sc.title&&sc.shots.length>=2,id);
   for(const sh of sc.shots){ assert(typeof sh.cap==='string'&&sh.cap.length>8&&!/[฀-๿]/.test(sh.cap),id+' caption'); (sh.bg||[]).forEach(k=>assert(ASSET_IMAGES[k],id+' bg '+k)); (sh.L||[]).forEach(l=>{ assert(known(l[0]),id+' layer '+l[0]); assert(l.length>=5&&l.slice(1,5).every(Number.isFinite),id+' layer geometry '+l[0]); }); } }
-assert.equal(MOTION_COMICS.s10,undefined);assert.deepEqual(Object.keys(MOTION_COMICS).length,17);
-const J=JSON.stringify;assert.equal(J(MC_STAGE_STORY.flat()),J(['s00','s01','s02','s03','s04','s05']));assert.equal(J(MC_HERO_SCENE),J({mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09'}));assert.equal(J(MC_AFTER_STAGE),J({4:'s11',9:'s13',14:'s16'}));
+assert.equal(MOTION_COMICS.s10.shots.length,4);assert.deepEqual(Object.keys(MOTION_COMICS).length,18);assert.equal(MOTION_COMICS.s10.shots[0].bg[0],'cs_s10_far_glass');
+// The post-rescue voice is subtitled with the exact selected clip; Sesame uses existing staged art.
+const voiceCatalog=JSON.parse(src.match(/const A07_CATALOG = (\{[^\n]+\});/)[1]);
+for(const id of ['s06','s07','s08','s09']){const shot=MOTION_COMICS[id].shots.at(-1);assert(shot.voiceKey&&voiceCatalog[shot.voiceKey]);assert.equal(shot.cap,voiceCatalog[shot.voiceKey].text);}
+assert(MOTION_COMICS.s10.shots.some(sh=>sh.L.some(l=>l[0]==='cs_pup_mochi_sesame_trapped')));
+assert(src.includes("{idx:5,id:'sesame',flag:'sesameIntro'"));
+for(const [id,scene] of Object.entries(MOTION_COMICS))scene.shots.forEach((shot,i)=>{const key='vo_story_'+id+'_'+(i+1);if(voiceCatalog[key])assert.equal(shot.cap,voiceCatalog[key].text,key+' exact comic voice');});
+assert(src.includes("specific&&specific.text===speech?storyKey:null"),'scene voice uses its own take before duplicate book text');
+const J=JSON.stringify;assert.equal(J(MC_STAGE_STORY.flat()),J(['s00','s01','s02','s03','s04','s05']));assert.equal(J(MC_HERO_SCENE),J({mint:'s06',cocoa:'s07',taro:'s08',yuzu:'s09',sesame:'s10'}));assert.equal(J(MC_AFTER_STAGE),J({4:'s11',9:'s13',14:'s16'}));
 // 3. hook อยู่ครบทุกจุด และของเดิมยังเป็น fallback
 for(const s of ["this.mcGateList?.(['s00','s01'],()=>this.startChapterTutorial())","this.mcGateList(mcs,ok=>ok?fin():talk())","this.mcGate?.(MC_HERO_SCENE[hi.id],()=>this.startStoryStage(idx))","this.mcGate('s12',","this.mcGate('s14',()=>begin())","MC_AFTER_STAGE[this.stageIndex]","this.mcGate?.('s15',()=>this.spawnFinalBoss())","this.mcGate?.('s17',()=>this.buildMenuScreen())","this._finishStoryCutscene(p)","this.playStoryPanel('chapter2_cover'"])assert(src.includes(s),'missing hook '+s);
 // 4. gate / chain / โหลดไม่ได้ = คืน false (ใช้หน้าเดิม) · ดูจบ = บันทึก · ลบ texture cs_ หลังเล่น
@@ -41,4 +48,4 @@ t=mk();g.Save.data.mcSeen={};t.mcGate('s01',()=>{});while(t._mc)t._finishStoryCu
 // 6. v8.0.8 ใบ 46: ต้นฉบับตรง MANIFEST + WebP ลงทะเบียน menu-lazy
 for(const e of JSON.parse(fs.readFileSync('assets/incoming/story_shot_redo/MANIFEST.json','utf8')).assets){ const b=fs.readFileSync('assets/incoming/story_shot_redo/'+e.file);assert.equal(hash(b),e.sha256,e.key);
   const url='assets/art/story/'+e.key+'.webp',reg=e.frames>1?ASSET_FX[e.key]:ASSET_IMAGES[e.key];assert(reg&&(reg.url||reg)===url,'order46 key '+e.key);assert(fs.readFileSync(url).subarray(8,12).toString()==='WEBP');assert.equal(artClass(e.key,url),'menu'); }
-console.log('Story motion comic: 103 MANIFEST-verified pieces menu-lazy, 17 scenes reference only registered art, hooks with fallbacks, gate/chain/skip/fail/save/texture-drop passed');
+console.log('Story motion comic: 103 MANIFEST-verified pieces menu-lazy, 18 scenes reference only registered art, hooks with fallbacks, gate/chain/skip/fail/save/texture-drop passed');
