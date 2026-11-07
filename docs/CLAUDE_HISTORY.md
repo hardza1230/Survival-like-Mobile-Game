@@ -3502,3 +3502,6 @@ Owner: new skill poses visible but unclear. Art is fine (8×128 frames); they pl
 
 duo_finish (450ms after cast) now depends on companion kind: pomelo = 8 seeds radiating from the command point (40% each, pierce 2, bigger shake); lime = one golden seed along the aim line (160%, pierce 99, speed 1150); bloodorange = 5 homing seeds (45% each, seek) fanned from Yuzu; yuzling keeps the 3-seed fan (60%). Test added in yuzu-companions (counts/pierce/seek per kind).
 
+# Previous delivery: v8.1.33 — story music and character voices
+
+Six A04 music tracks and 372 current A07 voice clips use lazy audio playback and existing volume/voice settings. Owner confirmed Cocoa and Sesame feminine voices; 20 Cocoa clips and 63 explicitly gendered boss clips were recast, 19 Sesame lines and three Ruby tips generated. Voice/text mapping, one-channel ownership, subtitles, cache cleanup and mute guards; boss casting for characters without explicit gender remains provisional. Sesame’s visual development badge is hidden without changing gameplay gates. Full npm check, web/review builds and eleven browser contracts passed; runtime 12989768cac888f118afae5a2cd2401a876b0930, Pages 42320525518 and APK 42320525548 succeeded. All 617 changed files and 378 live audio files verified. Playback, words, mixing and music loops still require owner listening.

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.34**. Next release:8.1.35. Fetch the deploy branch before new work.
+Current release: **8.1.35**. Next release:8.1.36. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.34 — tap the Lobby hero to hear a line (owner)
+# Latest delivery: v8.1.35 — every Lobby tap switches the voiced line + title theme on loading (owner)
+
+Owner: tapping fast didn't change the voice. lobbyTapSay no longer waits for VoiceActing.busy(); each tap stops the current clip and speaks the next 'says' line. 150ms debounce (_lobbyTapAt) so one touch can't skip two lines. Owner: loading music = track 2 only: index.html LoaderMusic now plays story_music/bgm_title.mp3 (was Forgotten Wind); StoryMusic.play skips bgm_a04_bgm_title while LoaderMusic.playing() so it continues seamlessly; menuMusic non-A04 screens call playMainBgm when the loader is still playing.
+
+# Previous delivery: v8.1.34 — tap the Lobby hero to hear a line (owner)
 
 lhTap → lobbyTapSay(): skips 'thinks' entries in LOBBY_LINES, stops a showing bubble, then tickLobbyVoice(0) shows the next 'says' line and voiceLine plays its A07 lobby clip (vo_<role>_lobby_n). Doesn't cut a line still speaking; works even before the animated lobby sprite loads. Headless: bubble + vo_strawberry_lobby_1.mp3 requested.
-
-# Previous delivery: v8.1.33 — story music and character voices
-
-Six A04 music tracks and 372 current A07 voice clips use lazy audio playback and existing volume/voice settings. Owner confirmed Cocoa and Sesame feminine voices; 20 Cocoa clips and 63 explicitly gendered boss clips were recast, 19 Sesame lines and three Ruby tips generated. Voice/text mapping, one-channel ownership, subtitles, cache cleanup and mute guards; boss casting for characters without explicit gender remains provisional. Sesame’s visual development badge is hidden without changing gameplay gates. Full npm check, web/review builds and eleven browser contracts passed; runtime 12989768cac888f118afae5a2cd2401a876b0930, Pages 42320525518 and APK 42320525548 succeeded. All 617 changed files and 378 live audio files verified. Playback, words, mixing and music loops still require owner listening.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

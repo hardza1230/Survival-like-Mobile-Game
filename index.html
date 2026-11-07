@@ -61,10 +61,10 @@
       clearTimeout(this._introTimer);this._introTimer=null;
       root.style.opacity='0';root.style.pointerEvents='none';
       setTimeout(function(){if(root.style.opacity==='0')root.style.display='none';root.classList.remove('opening','intro-mode');},240);
-      this._introFinished=true;this.lightOn();if(window.LoaderMusic)window.LoaderMusic.stop();window.dispatchEvent(new Event('mochi-intro-finished'));
+      this._introFinished=true;this.lightOn();window.dispatchEvent(new Event('mochi-intro-finished'));
     },
     // แสงกลางจอเริ่มโผล่ (48% ของฉากเปิด) → เริ่มเพลงเมนูได้
-    lightOn:function(){if(this._lightOn)return;this._lightOn=true;if(window.LoaderMusic)window.LoaderMusic.stop();window.dispatchEvent(new Event('mochi-intro-light'));},
+    lightOn:function(){if(this._lightOn)return;this._lightOn=true;window.dispatchEvent(new Event('mochi-intro-light'));},
     skipIntro:function(){var root=document.getElementById('game-loader');if(this._introDone&&root&&root.classList.contains('opening'))this.finishIntro();},
     show:function(label,progress){
       var root=document.getElementById('game-loader');
@@ -84,7 +84,7 @@
       if(pct)pct.textContent=Math.round(p*100)+'%';
       if(status&&!this._tipT){var T=this.TIPS,me=this,i=Math.floor(Math.random()*T.length);status.textContent='💡 '+T[i];this._tipT=setInterval(function(){i=(i+1)%T.length;var el=document.getElementById('load-status');if(el)el.textContent='💡 '+T[i];},4000);}
     },
-    hide:function(){this._visibilityToken=(this._visibilityToken||0)+1;clearInterval(this._tipT);this._tipT=null;if(window.LoaderMusic)window.LoaderMusic.stop();
+    hide:function(){this._visibilityToken=(this._visibilityToken||0)+1;clearInterval(this._tipT);this._tipT=null;
       var root=document.getElementById('game-loader');
       if(!root)return;
       if(!this._introDone && root.classList.contains('intro-mode')){
@@ -101,13 +101,13 @@
       setTimeout(function(){ if(root.style.opacity==='0')root.style.display='none'; },240);
     }
   };
-  // เพลงหน้าโหลด (Fairy Kingdom) — เคารพปิดเสียง/ระดับเพลงในเซฟ · เบราว์เซอร์บล็อก autoplay ได้ → ลองเล่นใหม่ตอนแตะครั้งแรก
+  // เพลงหน้าโหลด = bgm_title (v8.1.35 เจ้าของ: ใช้เพลงที่ 2 ทั้งหมด เล่นต่อเนื่องถึงหน้า title) — เคารพปิดเสียง/ระดับเพลงในเซฟ · เบราว์เซอร์บล็อก autoplay ได้ → ลองเล่นใหม่ตอนแตะครั้งแรก
   window.LoaderMusic=(function(){var a=null,stopped=false,vol=0.32;
     try{var sv=JSON.parse(localStorage.getItem('mochi_save')||'{}'),st=sv.settings||{};if(st.sound===false)stopped=true;if(st.musicVol!=null)vol*=st.musicVol;}catch(e){}
-    function play(){if(stopped)return;try{if(!a){a=new Audio('assets/audio/bgm/menu/bgm_loading_forgotten_wind_lite.mp3');a.loop=true;a.volume=vol;}var p=a.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
+    function play(){if(stopped)return;try{if(!a){a=new Audio('assets/audio/story_music/bgm_title.mp3');a.loop=true;a.volume=vol;}var p=a.play();if(p&&p.catch)p.catch(function(){});}catch(e){}}
     function stop(){if(stopped)return;stopped=true;if(!a)return;var v=a.volume,t=setInterval(function(){v-=0.04;if(v<=0){clearInterval(t);a.pause();}else a.volume=v;},60);}
     play();window.addEventListener('pointerdown',play,{once:true,capture:true});window.addEventListener('touchstart',play,{once:true,capture:true,passive:true});
-    return {play:play,stop:stop};})();
+    return {play:play,stop:stop,playing:function(){return !stopped&&!!a&&!a.paused;}};})();
   window.addEventListener('error', function(e){
     var box = document.getElementById('err-box');
     var txt = document.getElementById('err-msg');

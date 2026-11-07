@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.34';
+const GAME_VERSION = '8.1.35';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.35',date:'2026-11-07',title:'Chatty hero',items:['Each tap on your Lobby hero switches to a new voiced line right away','The loading screen now plays the title theme, continuing into the title screen']},
   {v:'8.1.34',date:'2026-11-07',title:'Talk to your hero',items:['Tap your hero in the Lobby and they speak their next line out loud']},
   {v:'8.1.33',date:'2026-11-07',title:'Voices and story music',items:['Hear character dialogue and new music throughout your adventure.','Cocoa and Sesame have new feminine voices.','Sesame no longer shows an in-development badge.']},
   {v:'8.1.32',date:'2026-11-06',title:'Clearer hero skill poses',items:['New hero skill poses now play about twice as long and hold their key pose, so they are easier to see']},
@@ -1465,7 +1466,7 @@ const Sfx = {
     for(let i=0;i<len;i++) d[i]=Math.random()*2-1; this._noise=buf;
     return this.ctx;
   },
-  unlock(){ this.ensure(); if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume(); if(!this._currentBgm)this.playMainBgm(); },
+  unlock(){ this.ensure(); if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume(); if(!this._currentBgm&&!(typeof window!=='undefined'&&window.LoaderMusic?.playing?.()))this.playMainBgm(); },
   toggle(){
     this.muted=!this.muted; if(this.muted){this.bpLoopStop();this.eventLoopStop();this.stopChestSpin();if(typeof VoiceActing!=='undefined')VoiceActing.stop();}
     if(this.master)this.master.gain.value=this.muted?0:0.24;
@@ -1657,7 +1658,8 @@ const Sfx = {
   _lateTrack(key,vol){ this._wantTrack=key; if(!key||!ASSET_AUDIO[key])return; try{ const sc=window.__g?.scene?.scenes?.find(x=>x.sys.settings.key==='Game'); if(!sc||!sc.load)return; const go=()=>{ if(this._wantTrack===key&&sc.state!=='menu'&&(sc.boss?.active||sc.mini?.active||sc._miniFight||sc.state==='cinematic'||sc.state==='play'))this._playTrack(key,vol); };
     if(sc.cache.audio.exists(key)){go();return;} sc.load.once('filecomplete-audio-'+key,go); sc.load.audio(key,verUrl(ASSET_AUDIO[key])); if(!sc.load.isLoading())sc.load.start(); }catch(e){} },
   playMenuBgm(key){ if(!key){ if((this._currentBgmKey||'').startsWith('bgm_menu_'))this.playMainBgm(); return; } this._bgmIntense=false; this._playTrack(key,0.28); },   // v5.40
-  playMainBgm(){ this._wantTrack=null; // v6.48.1: ระหว่างหน้าโหลด/ฉากเปิดใช้เพลงหน้าโหลดเพลงเดียว → เริ่มเพลงเมนูหลังฉากเปิดจบ
+  playMainBgm(){ this._wantTrack=null; if(typeof window!=='undefined'&&window.__mochiTitleMusic&&window.LoaderMusic?.playing?.())return;   // v8.1.35 หน้า title ใช้เพลงหน้าโหลด (bgm_title) ต่อเนื่อง
+    // v6.48.1: ระหว่างหน้าโหลด/ฉากเปิดใช้เพลงหน้าโหลดเพลงเดียว → เริ่มเพลงเมนูหลังฉากเปิดจบ
     const GL=typeof window!=='undefined'&&window.GameLoader; if(GL&&!GL._introFinished&&!GL._lightOn){ if(!this._waitIntro){ this._waitIntro=true; window.addEventListener('mochi-intro-light',()=>{ this._waitIntro=false; this.playMainBgm(); },{once:true}); } return; }
     if(typeof window!=='undefined'&&window.LoaderMusic)window.LoaderMusic.stop();this._bgmIntense=false;if(!this._playTrack('bgm_main',0.28)){this.stopBgm();this.startBgm();}},
   _bgmGain:null, _bgmTimer:null, _bgmStep:0, _bgmIntense:false,
@@ -4204,7 +4206,8 @@ const VoiceActing={active:null,pending:null,serial:0,lastBark:-Infinity,history:
   bark(scene,event){if(scene.state!=='play'||!scene.player?.active||scene._ruby||scene._speech||!this.enabled()||this.busy())return false;const role=scene.character==='momo'?'strawberry':scene.character,base='vo_'+role+'_'+event+'_',now=performance.now();if(now-this.lastBark<12000)return false;const previous=this.history[base]||0,choices=[previous===1?2:1,previous===1?1:2].filter(i=>A07_CATALOG[base+i]&&!this.recentBarks.includes(base+i));if(!choices.length)return false;const index=choices[0],key=base+index,row=A07_CATALOG[key];const player=scene.player,epoch=scene._artEpoch;const accepted=this.play(scene,key,()=>scene.state==='play'&&scene.player===player&&scene._artEpoch===epoch&&!scene._ruby&&!scene._speech,player,r=>{this.lastBark=performance.now();this.history[base]=index;this.recentBarks.push(key);if(this.recentBarks.length>3)this.recentBarks.shift();scene.showSpeechBubble?.(r.text,Math.max(2000,r.duration+250));});return accepted;}
 };
 const StoryMusic={serial:0,
-  play(scene,key,valid,volume=.24){const token=++this.serial;if(!key||!ASSET_AUDIO[key]||!scene?.load)return false;const go=()=>{if(token!==this.serial||!valid()||!scene.cache?.audio?.exists(key))return;try{window.LoaderMusic?.stop?.();const previous=Sfx._currentBgmKey;Sfx._bgmIntense=false;if(Sfx._playTrack(key,volume)&&previous&&previous!==key&&previous.startsWith('bgm_a04_'))setTimeout(()=>{if(Sfx._currentBgmKey!==previous){try{scene.sound?.removeByKey?.(previous);scene.cache?.audio?.remove(previous);}catch(e){}}},900);}catch(e){}};
+  play(scene,key,valid,volume=.24){const token=++this.serial;if(!key||!ASSET_AUDIO[key]||!scene?.load)return false;if(key==='bgm_a04_bgm_title'&&window.LoaderMusic?.playing?.())return true;   // v8.1.35 เพลงหน้าโหลดคือเพลงเดียวกัน → เล่นต่อ ไม่เริ่มใหม่
+    const go=()=>{if(token!==this.serial||!valid()||!scene.cache?.audio?.exists(key))return;try{window.LoaderMusic?.stop?.();const previous=Sfx._currentBgmKey;Sfx._bgmIntense=false;if(Sfx._playTrack(key,volume)&&previous&&previous!==key&&previous.startsWith('bgm_a04_'))setTimeout(()=>{if(Sfx._currentBgmKey!==previous){try{scene.sound?.removeByKey?.(previous);scene.cache?.audio?.remove(previous);}catch(e){}}},900);}catch(e){}};
     try{if(scene.cache.audio.exists(key)){go();return true;}scene.load.once('filecomplete-audio-'+key,go);scene.load.audio(key,verUrl(ASSET_AUDIO[key]));if(!scene.load.isLoading())scene.load.start();return true;}catch(e){return false;}},
   stop(){this.serial++;}
 };
@@ -12072,7 +12075,7 @@ class Game extends Phaser.Scene {
     root.add([g,label,text]);root.setVisible(false);this.menu.add(root);
     this._lobbyVoice={hero,root,g,label,text,width,t:1.5,showing:false,hx:x,hy:y,minY:minY??y-120,left:left??-1e9,right:right??1e9};
   }
-  lobbyTapSay(){const v=this._lobbyVoice;if(!v||!v.root?.active||this.state!=='menu'||this.menuScreen!=='hub')return;if(typeof VoiceActing!=='undefined'&&VoiceActing.busy?.()&&v.showing)return;   // ยังพูดอยู่ = ไม่ตัดกลางประโยค
+  lobbyTapSay(){const v=this._lobbyVoice;if(!v||!v.root?.active||this.state!=='menu'||this.menuScreen!=='hub')return;const now=Date.now();if(now-(this._lobbyTapAt||0)<150)return;this._lobbyTapAt=now;   // v8.1.35 เจ้าของ: กดรัว = ตัดเสียงเดิม เปลี่ยนประโยคทันที (กันแตะซ้อนแค่ 0.15 วิ)
     if(v.showing)this.voiceStop?.(v);const lines=LOBBY_LINES[v.hero]||LOBBY_LINES.momo,c=this._lobbyLineCursor||(this._lobbyLineCursor={});for(let n=0;n<lines.length&&lines[(c[v.hero]||0)%lines.length][0]!=='says';n++)c[v.hero]=(c[v.hero]||0)+1;v.showing=false;v.t=0;this.tickLobbyVoice(0);}
   tickLobbyVoice(dt){
     const v=this._lobbyVoice;if(!v||!v.root.active)return;
@@ -13642,7 +13645,7 @@ class Game extends Phaser.Scene {
   voiceBossSlip(b,st){if(this._voiceSlipSeen||!this.storyVoice?.()||!b?.isBoss||!(b.maxhp>0)||b.hp/b.maxhp>.5||this._bossSayObj?.active||VoiceActing.busy())return false;const key='vo_b'+String((this.stageIndex||0)+1).padStart(2,'0')+'_slip_'+(Math.floor(performance.now()/1000)%2+1),row=A07_CATALOG[key];if(!row)return false;this._voiceSlipSeen=true;this.bossSay(row.text,st?.boss,Math.max(3300,row.duration+250));return true;}
   storyMusicPlay(key,valid,volume){return StoryMusic.play(this,key,valid,volume);}
   storyMusicStop(){StoryMusic.stop();}
-  menuMusic(s){ if(this.state!=='menu')return; const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_'))Sfx.playMainBgm(); const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;
+  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
     this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({upgrade:1,perks:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)
@@ -13692,7 +13695,7 @@ class Game extends Phaser.Scene {
     if(d){ this._activeZoneMods.push(d.id); this._zoneMul=this.zoneModMul(); this.enemies.children.iterate(e=>{if(e&&e.active){e.hp*=d.hp;e.maxhp*=d.hp;e.dmg*=d.dmg;}});
       this.showBanner('☠ Curse: '+d.name,d.desc+' · rewards ×'+d.reward.toFixed(2),2200); Sfx.bossWarn&&Sfx.bossWarn(); this.screenFlash&&this.screenFlash(0x6b2bd9,0.25); }
     if(onResume)onResume(); }
-  startRun(idx){ try{ window.LoaderMusic&&window.LoaderMusic.stop(); }catch(e){} if(this.state==='menu'){this._cocoaFlickerOn=false;this.finishCocoaFlicker(true);this.refreshFlickerUI();}  this._dmgBy={}; this._lastHitSrc=null; this._charExpGain=null;
+  startRun(idx){ try{ window.__mochiTitleMusic=false;window.LoaderMusic&&window.LoaderMusic.stop(); }catch(e){} if(this.state==='menu'){this._cocoaFlickerOn=false;this.finishCocoaFlicker(true);this.refreshFlickerUI();}  this._dmgBy={}; this._lastHitSrc=null; this._charExpGain=null;
     if(this.state!=='menu')return;
     this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;
     const endgameRequested=!!(this._recipeRequested||this._riftRequested||this._bossRushRequested||this._pinnacleRequested);
