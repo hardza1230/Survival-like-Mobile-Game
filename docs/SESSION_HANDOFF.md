@@ -1,6 +1,6 @@
-# In progress — Sesame comic and A07 wiring v8.1.39 (2026-11-08)
+# Current checkpoint — Sesame comic and A07 wiring v8.1.39 (2026-11-08)
 
-Owner cancelled art 49 and accepted A04/A07/A08 audio after listening; requested S10 and wiring any unused A07 clips with matching events. Added Sesame motion comic S10 before C2-1 and gallery; added four voiced hero introductions and second boss-memory narration shots. Existing combat, boss slip/alternative, Ruby and story clips use dynamic keys or matching captions. Checking remaining clips and full release. Fetch latest before publishing; owner tests on phone.
+Owner cancelled art order 49 and accepted A04/A07/A08 audio after listening. Sesame S10 motion comic uses existing art before first C2-1 entry and is accessible in story gallery after C1-5. Four hero unlock clips now have subtitled comic shots; both boss memory beats have their own matching voiced shots; main-story shots select their exact take before identical storybook text. Other boss fight/slip and hero battle clips already use dynamic event keys; superseded early Ruby intro recordings remain fallbacks rather than duplicating opening story. Local npm check, web/review builds, eleven browser contracts and focused voice/story tests passed. Runtime 0e963870914abbbfef9b30256bceb9a3fc22c1de; Pages 42422395307 and APK 42422395308 succeeded. All 12 changed files passed immutable readback; live version 8.1.39 verified. Owner tests on phone. Fetch deploy branch before future work.
 
 # Current checkpoint — A08 companion replies v8.1.38 (2026-11-07)
 
