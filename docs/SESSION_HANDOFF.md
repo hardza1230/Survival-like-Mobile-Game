@@ -1,6 +1,6 @@
-# In progress — A08 Unique voice lines (2026-11-07)
+# Current checkpoint — A08 Unique hero voices v8.1.37 (2026-11-07)
 
-Owner requested A08. Latest fetched branch at v8.1.36. 47 authored hero lines generated with saved A07 voices, packed and registered for existing per-Build Unique rotation; all 47 pass duration/onset/peak QA and exact text checks. Nine companion voice auditions prepared; awaiting owner casting decision before saving voices, generating six calls and wiring duo. Source, retained donors, prompts, QA and audition page in assets/incoming/audio_unique_a08. v8.1.37 prepared; release checks/push pending. No credentials stored.
+47 ElevenLabs hero Unique lines use saved A07 voices, are registered in the existing per-Build rotation and pass exact-text, duration, onset and true-peak checks. Source, donors, prompts, QA and nine companion auditions are in assets/incoming/audio_unique_a08. Owner casting decision is still needed before creating companion voices, generating six duo replies and wiring them. Subjective listening is pending. npm check, web/review builds, all 11 browser contracts and voice integration tests passed. Runtime 4d0edf6c82652d938c10dd5ee5a00536a3baa13d; Pages 42330154787 and APK 42330154760 succeeded. All 210 changed files passed immutable readback; live v8.1.37 and all 47 runtime audio files match SHA-256. Owner tests on phone. Fetch latest deploy branch before further work. No credentials stored.
 
 # Current checkpoint — A04/A07 voice integration v8.1.33 (2026-11-07)
 
