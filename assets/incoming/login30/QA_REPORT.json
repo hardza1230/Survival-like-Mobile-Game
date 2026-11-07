@@ -1,0 +1,614 @@
+{
+  "technical_checks": [
+    {
+      "key": "l30_panel",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 1,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            4,
+            4,
+            668,
+            844
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_header",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 1,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            3,
+            6,
+            597,
+            143
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_ruby",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 1,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            2,
+            12,
+            253,
+            244
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_cell",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 4,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            4,
+            2,
+            91,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 1,
+          "visibleBounds": [
+            4,
+            2,
+            91,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 2,
+          "visibleBounds": [
+            5,
+            2,
+            91,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 3,
+          "visibleBounds": [
+            4,
+            2,
+            92,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_cell30",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 2,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            4,
+            2,
+            92,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 1,
+          "visibleBounds": [
+            4,
+            2,
+            92,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_stamp",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 1,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            2,
+            2,
+            93,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_today_fx",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 6,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            21,
+            13,
+            140,
+            137
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 1,
+          "visibleBounds": [
+            21,
+            20,
+            140,
+            137
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 2,
+          "visibleBounds": [
+            21,
+            20,
+            145,
+            137
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 3,
+          "visibleBounds": [
+            21,
+            20,
+            140,
+            138
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 4,
+          "visibleBounds": [
+            21,
+            20,
+            139,
+            146
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 5,
+          "visibleBounds": [
+            21,
+            20,
+            139,
+            137
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_reward",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 6,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            2,
+            20,
+            94,
+            76
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 1,
+          "visibleBounds": [
+            2,
+            8,
+            94,
+            88
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 2,
+          "visibleBounds": [
+            6,
+            2,
+            90,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 3,
+          "visibleBounds": [
+            6,
+            2,
+            89,
+            94
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 4,
+          "visibleBounds": [
+            2,
+            9,
+            94,
+            87
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 5,
+          "visibleBounds": [
+            2,
+            3,
+            94,
+            92
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_reward30",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 1,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            16,
+            2,
+            175,
+            190
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_button",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 2,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            1,
+            1,
+            479,
+            90
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "index": 1,
+          "visibleBounds": [
+            1,
+            1,
+            479,
+            90
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    },
+    {
+      "key": "l30_claim_burst",
+      "size": true,
+      "mode": "RGBA",
+      "frameCount": 8,
+      "corners": true,
+      "frameBounds": [
+        {
+          "index": 0,
+          "visibleBounds": [
+            78,
+            77,
+            116,
+            114
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 1,
+          "visibleBounds": [
+            50,
+            46,
+            145,
+            140
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 2,
+          "visibleBounds": [
+            30,
+            27,
+            162,
+            161
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 3,
+          "visibleBounds": [
+            3,
+            2,
+            187,
+            185
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 4,
+          "visibleBounds": [
+            23,
+            14,
+            177,
+            174
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 5,
+          "visibleBounds": [
+            29,
+            17,
+            164,
+            162
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 6,
+          "visibleBounds": [
+            41,
+            31,
+            157,
+            154
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "index": 7,
+          "visibleBounds": [
+            50,
+            40,
+            144,
+            140
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ],
+      "visualReview": "source preview reviewed; live game and mobile review pending"
+    }
+  ],
+  "preview": "preview_layout.png",
+  "notes": [
+    "Actual frame art generated by imagegen; animations and nine-slice should be verified in game by integrator.",
+    "No human game or mobile verification has been performed."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "provider": "built-in imagegen",
+  "reference_assets": [
+    "assets/incoming/login_daily/states_review.png",
+    "assets/incoming/ruby_mascot/ruby_talk_proud.png"
+  ],
+  "initial": [
+    {
+      "prompt": "One isolated vertical 30-day daily-login calendar background panel, in the exact reference game's softly painted cream, gold, plum confectionery UI style. Portrait 672:848 proportion; rounded rectangle cream parchment center deliberately perfectly smooth blank for a 6x5 grid overlay; simple straight stretchable gold borders, modest icing only in all four corners within narrow 56px margins, symmetric edge ribbons. No words numbers icons characters or logo. No solid background outside the panel. Designed for nine-slice scaling. Transparent background.",
+      "file": "sources/panel_initial.png"
+    },
+    {
+      "prompt": "One isolated horizontal header ribbon banner for cute fantasy confectionery mobile UI, 4:1 aspect ratio, plum and rosy pink satin with folded ends and very small gold bow at top center, central 70% completely empty for game text. Warm gold delicate trim, soft painted rendering matching reference, clean readable silhouette. No letters, no numbers, no background. Transparent background.",
+      "file": "sources/header.png"
+    },
+    {
+      "prompt": "One isolated mobile UI mascot Ruby, matching the original reference exactly: pink-red glossy round jam spirit, ruby jewel on head, red white gingham apron, round arms and big eyes. She peeks from the upper right of a 30-day calendar, upper half of her body visible, lower edge cropped straight for placing behind UI frame. Holding a tiny simple cream calendar with no marks or numbers, big friendly smile. No other objects, no lettering, no background. Match the reference drawing closely and leave space at edges. Transparent background.",
+      "file": "sources/ruby.png"
+    },
+    {
+      "prompt": "Production sprite sheet exactly FOUR distinct square UI day cell frames in one horizontal 4 by 1 strip, each frame equal size, same centered square tile shape with generous margin inside each cell, no overlapping: frame 1 plain warm cream paper with simple light brown border future day; frame 2 bright cream with thick gold border and tiny corner sparkles today; frame 3 pale mint green paper with understated mint border claimed; frame 4 cream with thick gold ribbon border reserved for chest day. FLAT BLANK CENTERS, no numbers no text no reward items no marks inside. Matching reference softly painted cute cream-gold-plum candy game style. Transparent background, no grid or dividers.",
+      "file": "sources/cell.png"
+    },
+    {
+      "prompt": "Production sprite sheet exactly TWO square UI day-30 tiles in one horizontal 2 by 1 strip, each square tile in its own equal cell, identically aligned. First tile ornate warm cream and thick gold frame with tiny candy crown at top, second tile same shape but pale mint center and claimed coloration. Centers must remain completely blank for overlay. Distinct silhouettes against transparency, no letters numbers or other objects. Warm polished confectionery game art matching reference. Transparent background.",
+      "file": "sources/cell30.png"
+    },
+    {
+      "prompt": "One isolated round pink cookie seal with large unmistakable mint-white check mark made of thick molded sugar, tilted slightly, simple dark outline, readable at 26 pixels, friendly confectionery fantasy game style matching reference. Transparent background, no text, no numbers.",
+      "file": "sources/stamp.png"
+    },
+    {
+      "prompt": "Exactly 6-frame animation sprite sheet, six equal square cells arranged horizontally in 6x1 strip, every cell a single same-size hollow square ring of tiny gold glitter around an empty center. Successive frames make the glitter highlights move clockwise; stable ring positions and aligned canvas. The pure background must be solid black #000000 on all pixels outside the sparkles, absolutely no transparency, no borders, no letters, no numbers, no glow over cell boundaries. Warm gold candy magic. Each cell distinct and equally spaced.",
+      "file": "sources/today_fx.png"
+    },
+    {
+      "prompt": "Production six-frame icon atlas exactly six equal square cells in a single horizontal 6x1 row, each centered isolated distinct reward on transparent background: 1 one wrapped pink candy; 2 a cluster of exactly three wrapped pink candies with small glint; 3 one spool of vivid sky-blue thread; 4 one violet cream potion bottle plus small cyan crystal; 5 one compact closed silver treasure chest; 6 one compact glowing gold treasure chest slightly ajar. Bold dark warm contours, simple unmistakably different shapes readable at 22 pixels; softly painted confectionery fantasy style matching reference, no letters or numbers, no frames, no overlap and no background.",
+      "file": "sources/reward.png"
+    },
+    {
+      "prompt": "One isolated special day-30 gold treasure chest with little candy crown perched on lid, lid slightly open revealing warm golden light, simple oversized silhouette with dark warm outline, readable at 34px, polished confectionery fantasy art matching reference. No words, no numbers, no border. Transparent background.",
+      "file": "sources/reward30.png"
+    },
+    {
+      "prompt": "UI sprite sheet exactly two identical long wide horizontal button silhouettes in two equal vertically stacked rows (1 column by 2 rows). Each 5.22:1 aspect ratio button, with plain center completely blank. Top: shiny golden honey button, rounded ends with warm dark gold trim. Bottom: identical button but mint-green after-claim state, subtle gold trim. Stretchable nine-slice with clean straight middle and rounded ornamental ends, no text, no marks, no numbers, no shadows that overlap. Polished soft painted candy mobile game UI matching reference. Transparent background.",
+      "file": "sources/button_initial.png"
+    },
+    {
+      "prompt": "Exactly 8-frame animation sprite sheet, eight equal square cells arranged horizontally in 8x1 strip. Each cell contains a centered sequence of the same celebratory gold sparkle-and-tiny-pink-candy burst: starts tiny bright point, expands through rings and candies flying outward, gradually fades to nearly black by frame 8. Each frame remains strictly within its cell with breathing room; no grid lines or typography. Pure solid black #000000 background, no transparency. Cute confectionery game magic, gold and pink, clean strong readable silhouettes.",
+      "file": "sources/claim_burst.png"
+    }
+  ],
+  "revised": [
+    {
+      "prompt": "Design a single vertical 9-slice UI background panel for a mobile confectionery fantasy game. Hard technical requirement: ALL FOUR OUTER EDGES ARE UNBROKEN UNIFORM STRAIGHT THIN GOLD BANDS from corner to corner, no motifs, bows or protrusions anywhere along the straight edges; tiny simple icing only at the four extreme corners. Corners should fit within 8% of each dimension. Middle is completely blank uniform light cream, no printed grid or texture. Rounded rectangle; aspect ratio width 0.79 times height. No text, numbers, icon, border art in the center or object outside frame. Original 2D hand-painted polished candy fantasy style matching reference; transparent background outside.",
+      "file": "sources/panel.png"
+    },
+    {
+      "prompt": "Exactly two horizontal 9-slice UI button frames vertically stacked, same size, 5.22:1 button proportion. Gold honey button above, mint-green button below; both have plain shiny blank centers and simple smooth unbroken thin gold outlines across their top and bottom edges. No jewels, embellishments, bow, highlights or symbols in middle or on edges. Small rounded left and right ends only. Simple softly painted candy UI matching reference. No text, numbers, or extra objects, transparent outside.",
+      "file": "sources/button.png"
+    }
+  ],
+  "processing": "pack_source.py: crop, resize, fit, nine-slice extension and sheet assembly; imagegen originals retained under sources/"
+}

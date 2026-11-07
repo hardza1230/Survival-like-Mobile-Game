@@ -1,0 +1,170 @@
+[
+  {
+    "key": "vo_ruby_short_yuzuAim",
+    "text": "Walk toward an enemy to mark it!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_survive",
+    "text": "Hang on until the timer ends!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_fill",
+    "text": "Fill the meter!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_hunt",
+    "text": "Chase the marked Elite!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_huntClear",
+    "text": "Clear the crowd, then the marked Elite!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_purge",
+    "text": "Keep the Wisp safe from red raiders!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_capture",
+    "text": "Stay inside the ring!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_defendNectar",
+    "text": "Protect the flower!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_seasonCycle",
+    "text": "Gather petals for all four seasons!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_breakRoots",
+    "text": "Snap every root anchor!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_cleanAir",
+    "text": "Follow the clean-air ring!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_counter",
+    "text": "Dash into the glowing item!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_mini",
+    "text": "Beat the Miniboss!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_short_boss",
+    "text": "Defeat the Boss!",
+    "category": "short",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_objdone_1",
+    "text": "Objective done! Nice!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_objdone_2",
+    "text": "That’s it — perfect!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_bossdown_1",
+    "text": "You did it! The flavor’s coming back!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_bossdown_2",
+    "text": "Boss down! We’re winning!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_lowhp_1",
+    "text": "Careful! Grab a Heal Mochi!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_lowhp_2",
+    "text": "You’re hurt — step back a bit!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_wave_1",
+    "text": "Here they come — a big wave!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_wave_2",
+    "text": "Lots of monsters! Keep moving!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_timer_1",
+    "text": "Almost there — ten more seconds!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_timer_2",
+    "text": "Just a little longer!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_revive_1",
+    "text": "Phew… you’re back!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_revive_2",
+    "text": "Up you get! I believe in you!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_clear_1",
+    "text": "Stage clear! Great job!",
+    "category": "react",
+    "speaker": "ruby"
+  },
+  {
+    "key": "vo_ruby_react_clear_2",
+    "text": "We did it! On to the next one!",
+    "category": "react",
+    "speaker": "ruby"
+  }
+]

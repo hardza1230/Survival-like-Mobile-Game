@@ -1,6 +1,6 @@
 # A09 — Ruby เสียงพากย์ในด่าน (เตือนสั้น + ปฏิกิริยา) · ใบสั่งเสียง
 
-สถานะ: ✅ เจ้าของอนุมัติบทแล้ว (8 พ.ย. 2026) · พร้อมอัด · ต่อจาก A07
+สถานะ: 🟢 ส่งครบ 28 · รอผูกโค้ดและฟังตรวจ (8 พ.ย. 2026) · ต่อจาก A07
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียง Ruby ที่บันทึกไว้แล้วของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามสร้างเสียงใหม่ · ห้ามใช้เสียงสร้างด้วยโค้ด/Runway
 
 ## ทำไมต้องสั่ง
@@ -59,3 +59,7 @@ key `vo_ruby_react_<เหตุการณ์>_<1|2>` · โค้ดสุ่
 - หมวด 1: `rubySay` เล่นเสียงผ่าน lookup ด้วยข้อความอยู่แล้ว → ต้อง (ก) ตัดส่วน " · N/M" ออกก่อน lookup ใน `rubyTip` และกล่องเตือนทุก 12 วิ (`updateObjectiveArrow` แถว `tp.short`) (ข) แก้ข้อความบนจอของ `yuzuAim`/`seasonCycle` ให้ตรงบท · กล่องเตือนทุก 12 วิ ห้ามพูดทุกครั้ง: เว้นอย่างน้อย 30 วิต่อภารกิจ
 - หมวด 2: เพิ่ม `rubyReact(event)` → หมุน 2 บท · ใช้ช่องเสียง VoiceActing เดียวกัน (ไม่ทับเสียงฮีโร่/บอส) · เคารพปิดเสียงพากย์และ `rubyOn()` · ห้ามพูดระหว่างฉาก cutscene/บทพูดบอส
 - ห้ามพูดถี่: Ruby ปฏิกิริยาเว้นกันอย่างน้อย 8 วิ
+
+## ส่งมอบ — 8 พ.ย. 2026
+
+28 MP3 from ElevenLabs TTS using the saved Ruby voice. Approved exact texts, original donors, requests, measured QA and `AUDITION.html` in `assets/incoming/audio_ruby_a09/`. This is source-only: no runtime wiring, subjective listening or mobile mix review.
