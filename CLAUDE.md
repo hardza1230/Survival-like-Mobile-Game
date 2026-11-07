@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.41**. Next release:8.1.42. Fetch the deploy branch before new work.
+Current release: **8.1.42**. Next release:8.1.43. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.41 — perf hold, Unique voice preload, amulet/ring pools (owner)
+# Latest delivery: v8.1.42 — Sesame Runes talents + forge caps + story decisions (owner)
+
+Sesame: SES_RUNE_PT/PATH_TALENTS.sesRune (after '// v4.88: Passive' — CHAR_TALENTS..Passive block is hash-locked by talent-icons test). Branches Power(srP, srBoss)/Motion(srM, srCd)/Binding(HP, guard); caps Overload/Perpetual Motion/Threefold Mastery. sesRuneTalentMul hooks sesRuneDamage + rune cooldowns (floor 45%). Save.cp one-time sesTalV3 full refund of all Sesame talent points. Forge: FORGE_HP_CAP 150 (mod 13, bad mods still subtract), DR cap .4, damage bonus cap 1.5, Clean Recipe .2, Last Crumb once per item; Unique CDR was already capped at 40%. STORY_CANON: post-game = expedition beyond Mochitopia into an endless cave (Delve); animal bosses = guardian spirits. Sesame balance numbers still need mobile play.
+
+# Previous delivery: v8.1.41 — perf hold, Unique voice preload, amulet/ring pools (owner)
 
 tickPerf: after a downgrade PERF.hold=30 (seconds) blocks upgrades. VoiceActing.preloadUnique(scene) in startStage loads every vo_<role>_unique_* clip. FORGE_SLOT_POOL.amulet (recovery/barrier/loot) and .ring (crit/rhythm/conditions) 25 each, distinct from boots. Forge OP audit and Sesame talent design sent to owner for decision (not changed). Mint lance: owner says done, no work.
-
-# Previous delivery: v8.1.40 — Sesame rune buttons arc around Unique (owner)
-
-Owner keeps the 10-recipe memory challenge (no recipe hints). sesRuneControlLayout places Power/Motion/Binding on an arc around Unique (up, diagonal, inward side; mirrored for ctrlLeft), distance u.radius+r+10, pushed clear of Dash. sesRuneHit: tap area ×1.45 radius, nearest rune wins, never steals taps inside Unique. 12ms vibrate on rune press (settings.haptics!==false). Glyphs ▲ ➤ ◆. Tests in sesame-runes.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
