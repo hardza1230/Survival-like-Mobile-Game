@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.48';
+const GAME_VERSION = '8.1.49';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.49',date:'2026-11-08',title:'Smoother combat feel',items:['Enemies get nudged back a little when hit','Defeated enemies pop like mochi','EXP drops speed up and curve into you']},
   {v:'8.1.48',date:'2026-11-08',title:'Fixes',items:['Daily Login art now shows at the right size','Wings always stay behind the hero while walking']},
   {v:'8.1.47',date:'2026-11-08',title:'Cosmetics in the Lobby',items:['Your equipped wings, pet and sparkle trail now show on the Lobby hero']},
   {v:'8.1.46',date:'2026-11-08',title:'Wardrobe',items:['New Wardrobe (Bazaar → Thread): wings, pets and sparkle trails bought with Thread','Cosmetics are looks only and work on every hero','Placeholder visuals until the painted art arrives']},
@@ -19818,7 +19819,7 @@ class Game extends Phaser.Scene {
     for(let j=0;j<bullet.chain;j++){ let nb=null,nd=300*300;
       this.enemies.children.iterate(o=>{ if(o&&o.active&&!hit.has(o)){ const d=(o.x-src.x)**2+(o.y-src.y)**2; if(d<nd){nd=d;nb=o;} } });
       if(!nb)break; hit.add(nb); this.chainBolt(src.x,src.y,nb.x,nb.y); this.damage(nb,bullet.dmg*0.55,nb.x,nb.y); src=nb; } }
-  hitEnemy(bullet,enemy){ this._sgHit=!!bullet.sgPellet; const fr=!!bullet.frShot; if(fr)this._frDmg=true; try{ this._hitEnemyCore(bullet,enemy); } finally { this._sgHit=false; if(fr)this._frDmg=false; } }
+  hitEnemy(bullet,enemy){ this._sgHit=!!bullet.sgPellet; const fr=!!bullet.frShot; if(fr)this._frDmg=true; try{ this._hitEnemyCore(bullet,enemy); this.hitNudge?.(enemy); } finally { this._sgHit=false; if(fr)this._frDmg=false; } }
   _hitEnemyCore(bullet,enemy){ if(!bullet.active||!enemy.active)return;
     if(bullet.mintEpoch!=null&&bullet.mintEpoch!==(this._artEpoch||0)){this.killBullet(bullet);return;}
     if(bullet.berrySeed){this.hitBerrySeed(bullet,enemy);return;}
@@ -20097,6 +20098,7 @@ class Game extends Phaser.Scene {
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // UpdatesเงินWaitบนี้แบบ realtime
     this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
+    if(!e.isBoss&&!e.isMini&&!e.isDummy)this.mochiPop?.(e);   // v8.1.49 เจ้าของ: มอนตายแบบโมจิ (ป่อง → แบน → หาย)
     this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       // v7.9.12 เจ้าของ: ไม่ดูดเม็ดเข้าตัวแล้ว (เก็บเอง) · onBossDown ยังนับเม็ดที่เหลือให้ตอนจบด่าน
@@ -21946,6 +21948,11 @@ class Game extends Phaser.Scene {
   deathFling(e){ if(!this.fxOk()||!e.texture)return; const g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame&&e.frame.name).setScale(e.scaleX,e.scaleY).setFlipX(!!e.flipX).setDepth(e.depth||e.y)); if(e.tintColor)g.setTint(e.tintColor);
     const a=Math.atan2(e.y-this.player.y,e.x-this.player.x)+Phaser.Math.FloatBetween(-0.35,0.35), d=Phaser.Math.Between(50,85);
     this.tweens.add({targets:g,x:e.x+Math.cos(a)*d,y:e.y+Math.sin(a)*d-18,angle:(Math.cos(a)>0?1:-1)*Phaser.Math.Between(160,300),scaleX:e.scaleX*0.55,scaleY:e.scaleY*0.55,alpha:0,duration:280,ease:'Cubic.out',onComplete:()=>g.destroy()}); }
+  hitNudge(e){ if(!e?.active||e.isBoss||e.isMini||!this.player||(this.elapsed||0)<(e._nudgeAt||0))return; e._nudgeAt=(this.elapsed||0)+.12; const a=Math.atan2(e.y-this.player.y,e.x-this.player.x); e.x+=Math.cos(a)*4; e.y+=Math.sin(a)*4; }   // v8.1.49 กระเด็นถอยสั้น ๆ ตอนโดนกระสุน (ทุก 0.12 วิ/ตัว)
+  mochiPop(e){ if((typeof PERF!=='undefined'&&PERF.lvl>=2)||!e?.texture||(this._popN||0)>=18)return; const P=this._popPool||(this._popPool=[]); let g=P.pop(); while(g&&!g.scene)g=P.pop();
+    const sx=Math.abs(e.scaleX||1),sy=Math.abs(e.scaleY||1); if(g)g.setActive(true).setVisible(true).setTexture(e.texture.key,e.frame?.name).setPosition(e.x,e.y).setAlpha(1).setRotation(0); else g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame?.name));
+    g.setFlipX(!!e.flipX).setOrigin(e.originX??.5,e.originY??.5).setDepth(e.depth||e.y).setScale(sx,sy).setTintFill?.(0xffffff); this._popN=(this._popN||0)+1;
+    this.tweens.add({targets:g,scaleX:sx*1.28,scaleY:sy*.62,alpha:.85,duration:90,ease:'Quad.out',onComplete:()=>{ g.clearTint?.(); this.tweens.add({targets:g,scaleX:sx*.2,scaleY:sy*1.15,alpha:0,duration:170,ease:'Quad.in',onComplete:()=>{ this._popN=Math.max(0,(this._popN||1)-1); if(!g.scene)return; if(P.length<24){g.setVisible(false).setActive(false);P.push(g);} else g.destroy(); }}); }}); }
   burst(x,y,color){ const P=this._burstPool||(this._burstPool=[]);   // v7.8.92 perf: ใช้จุดซ้ำ (เดิมสร้าง/ทำลาย 7 รูปต่อครั้ง)
     for(let i=0;i<7;i++){ let p=P.pop(); while(p&&!p.scene)p=P.pop();
       if(p)p.setActive(true).setVisible(true).setPosition(x,y).setAlpha(1); else p=this.camWorld(this.add.image(x,y,'dot').setDepth(6));
@@ -22491,8 +22498,8 @@ class Game extends Phaser.Scene {
       if(o._xp){o.rotation=0;o.setScale((o._sc||1)*(1+Math.sin(this.elapsed*4+o.x*0.05)*0.05));}   // v7.9.26 หยดไม่หมุน · เต้นเบา ๆ
       else{ o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob); }
       const d=this.dist(o.x,o.y,this.player.x,this.player.y);
-      if(o._vac || d<this.player.pickup){ const ang=Math.atan2(this.player.y-o.y,this.player.x-o.x), sp=o._vac?560:380; o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp); if(o._xp)this.xpTrail(o,ang); if(o._sh)o._sh.setPosition(o.x,o.y+o._shDy); }
-      else { o.setVelocity(0,0); if(o._trail)this.xpTrailOff(o); } });
+      if(o._vac || d<this.player.pickup){ o._mT=(o._mT||0)+dt; const cur=Math.max(0,.5-o._mT)*(o._mSide||(o._mSide=Math.random()<.5?-1:1))*.9,ang=Math.atan2(this.player.y-o.y,this.player.x-o.x)+cur, sp=Math.min(o._vac?900:760,(o._vac?300:160)+o._mT*1500); o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp);   /* v8.1.49 เร่งเข้าตัวเป็นโค้ง */ if(o._xp)this.xpTrail(o,ang); if(o._sh)o._sh.setPosition(o.x,o.y+o._shDy); }
+      else { o._mT=0; o.setVelocity(0,0); if(o._trail)this.xpTrailOff(o); } });
 
     // bullets life + boomerang return/rebound + spin + pierce cd
     this.bullets.children.iterate(b=>{ if(!b||!b.active)return;
