@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.44**. Next release:8.1.45. Fetch the deploy branch before new work.
+Current release: **8.1.45**. Next release:8.1.46. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.44 — Daily Login preview (owner)
+# Latest delivery: v8.1.45 — Thread shop, no billing yet (owner)
+
+Owner: Thread is the paid currency; sell cosmetics/convenience only; Mochi Pass yes; no Play Billing yet. Bazaar 4th tab 'thread' → buildThreadShop: IAP_PACKS (6, first buy per pack doubles, Save.data.iapFirst), MOCHI_PASS (300 now + 60/day ×30, Save.data.mochiPass, tap card to claim). Iap.available() needs window.MochiBilling.ready; Iap.grant(id) applies rewards. Plan: docs/design/THREAD_SHOP.md. Test thread-shop; bazaar-tabs now 4 tabs.
+
+# Previous delivery: v8.1.44 — Daily Login preview (owner)
 
 Rewards → Daily Login tab when already claimed opens loginPopup('preview'): bypasses LoginCal.ready(), tap plays the claim visuals but never calls LoginCal.claim() (owner wanted a way to test art 65).
-
-# Previous delivery: v8.1.43 — art 65 Daily Login 30 + A09 Ruby stage voice (owner)
-
-Art 65: scripts/pack-login30.py → assets/art/login30/ (11 WebP, source 2× size kept, 199 KB); MENU_ORDER_ART l30_* (panel/button 9-slice); menu-lazy via LAZY_MENU_ART_RE + loginPopup ensureGroup /^(login_|day_reward|l30_)/. loginPopup uses l30 panel/header/Ruby (W≥340)/cells (today/done/chest day frame 3, day 30 l30_cell30)/rewards/stamp/today fx/button/claim burst; order-51 art and drawn graphics stay as fallback. A09: 28 clips in assets/audio/acting + A07_CATALOG rows; RUBY_TIPS.short rewritten to match spoken text; lookup strips ' · N/M'; short reminder voice ≤ once/30s per key; rubyVoiceReact(ev) (rubyReact is the avatar animation) rotates 2 lines, 8s throttle, hooks objdone/bossdown/revive/lowhp/wave/timer/clear. Tests login30-art, ruby-a09-voice.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

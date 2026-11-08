@@ -1,0 +1,17 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync(__dirname+'/../game.js','utf8');
+const a=src.indexOf('const IAP_PACKS='),b=src.indexOf('function pickWeighted(list){');
+const ctx={window:{},Date,Math,Object};
+ctx.Save={data:{threads:0},threads(){return this.data.threads||0;},addThreads(n){this.data.threads=this.threads()+n;}};
+ctx.localDayKey=()=>'2026-11-08';
+vm.createContext(ctx);vm.runInContext(src.slice(a,b)+';this.Iap=Iap;this.IAP_PACKS=IAP_PACKS;this.MOCHI_PASS=MOCHI_PASS;',ctx);
+const {Iap,Save}=ctx;
+assert.strictEqual(Iap.available(),false);
+let res;Iap.buy('thread_60',(ok,why)=>res=[ok,why]);assert.deepStrictEqual([...res],[false,'unavailable']);assert.strictEqual(Save.threads(),0);
+assert.strictEqual(Iap.grant('thread_200'),380);assert.strictEqual(Iap.grant('thread_200'),200);
+assert.strictEqual(Iap.grant('nope'),0);
+const now=Date.now();assert.strictEqual(Iap.grant('mochi_pass',now),300);assert.strictEqual(Iap.passDaysLeft(now),30);
+assert.strictEqual(Iap.claimPass(now),60);assert.strictEqual(Iap.claimPass(now),0);
+assert.strictEqual(Save.threads(),380+200+300+60);
+assert.ok(src.includes("['thread','Thread']")&&src.includes('buildThreadShop(top)'));
+console.log('Thread shop: packs, first-purchase double, Mochi Pass daily claim, billing unavailable guard passed');

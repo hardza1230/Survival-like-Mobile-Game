@@ -3542,3 +3542,8 @@ tickPerf: after a downgrade PERF.hold=30 (seconds) blocks upgrades. VoiceActing.
 
 Sesame: SES_RUNE_PT/PATH_TALENTS.sesRune (after '// v4.88: Passive' — CHAR_TALENTS..Passive block is hash-locked by talent-icons test). Branches Power(srP, srBoss)/Motion(srM, srCd)/Binding(HP, guard); caps Overload/Perpetual Motion/Threefold Mastery. sesRuneTalentMul hooks sesRuneDamage + rune cooldowns (floor 45%). Save.cp one-time sesTalV3 full refund of all Sesame talent points. Forge: FORGE_HP_CAP 150 (mod 13, bad mods still subtract), DR cap .4, damage bonus cap 1.5, Clean Recipe .2, Last Crumb once per item; Unique CDR was already capped at 40%. STORY_CANON: post-game = expedition beyond Mochitopia into an endless cave (Delve); animal bosses = guardian spirits. Sesame balance numbers still need mobile play.
 
+
+# v: v8.1.43 — art 65 Daily Login 30 + A09 Ruby stage voice (owner)
+
+Art 65: scripts/pack-login30.py → assets/art/login30/ (11 WebP, source 2× size kept, 199 KB); MENU_ORDER_ART l30_* (panel/button 9-slice); menu-lazy via LAZY_MENU_ART_RE + loginPopup ensureGroup /^(login_|day_reward|l30_)/. loginPopup uses l30 panel/header/Ruby (W≥340)/cells (today/done/chest day frame 3, day 30 l30_cell30)/rewards/stamp/today fx/button/claim burst; order-51 art and drawn graphics stay as fallback. A09: 28 clips in assets/audio/acting + A07_CATALOG rows; RUBY_TIPS.short rewritten to match spoken text; lookup strips ' · N/M'; short reminder voice ≤ once/30s per key; rubyVoiceReact(ev) (rubyReact is the avatar animation) rotates 2 lines, 8s throttle, hooks objdone/bossdown/revive/lowhp/wave/timer/clear. Tests login30-art, ruby-a09-voice.
+

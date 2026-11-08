@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.44';
+const GAME_VERSION = '8.1.45';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.45',date:'2026-11-08',title:'Thread shop',items:['The Bazaar has a new Thread tab with Thread packs and the Mochi Pass','Purchases open with the Play Store release']},
   {v:'8.1.44',date:'2026-11-08',title:'Daily Login preview',items:['Tap the Daily Login tab after claiming to look at the calendar again (no extra reward)']},
   {v:'8.1.43',date:'2026-11-08',title:'A sweeter Daily Login and a chattier Ruby',items:['The 30-day Daily Login calendar has new painted art, with Ruby, special chest days and a festive day 30','Ruby now voices her short mission reminders','Ruby cheers when you finish an objective, beat a boss, revive or clear a stage, and warns you about low HP and big waves']},
   {v:'8.1.42',date:'2026-11-08',title:'Sesame Runes talents',items:['Sesame has a new Runes talent tree: Power, Motion and Binding branches with three capstones','All talent points spent on Sesame were refunded','Stacked Forge mods now have limits: Max HP up to +150, damage reduction up to 40%, bonus damage up to +150%','Last Crumb no longer rolls twice on one item']},
@@ -6155,6 +6156,22 @@ function featureOpen(t){ if(t==='kitchen')return kitchenOpen(); if(t==='recipes'
 const CHEST_PITY=10;
 const CHESTS=[{id:'silver',name:'Silver Chest',cost:30,odds:[['common',.5],['rare',.42],['epic',.075],['legend',.005]],tint:0xdfe6f0,bg:0x2a3346,edge:0xc9d6ea,title:'#e6eefb'},
   {id:'gold',name:'Gold Chest',cost:120,odds:[['rare',.3],['epic',.6],['legend',.1]],tint:0xffc43d,bg:0x3a2a12,edge:0xffc43d,title:'#ffe08a'}];
+/* v8.1.45 เจ้าของ: ร้านด้าย (Thread = สกุลหลักที่ซื้อด้วยเงินจริง) · ขายแค่ของสวย/ความสะดวก · ยังไม่ผูก Google Play Billing (Iap.available()=false) */
+const IAP_PACKS=[{id:'thread_60',thread:60,bonus:0,price:'THB 35'},{id:'thread_200',thread:180,bonus:20,price:'THB 99'},{id:'thread_400',thread:330,bonus:70,price:'THB 179'},{id:'thread_850',thread:650,bonus:200,price:'THB 349'},{id:'thread_1800',thread:1300,bonus:500,price:'THB 699'},{id:'thread_4000',thread:2600,bonus:1400,price:'THB 1,450'}];
+const MOCHI_PASS={id:'mochi_pass',price:'THB 129',instant:300,daily:60,days:30};
+const Iap={
+  available(){ return !!(typeof window!=='undefined'&&window.MochiBilling&&window.MochiBilling.ready); },
+  pack(id){ return IAP_PACKS.find(p=>p.id===id)||null; },
+  firstBonus(id){ const d=(typeof Save!=='undefined'&&Save.data)||{}; return !(d.iapFirst&&d.iapFirst[id]); },
+  passDaysLeft(now){ const d=Save.data||{},ps=d.mochiPass; if(!ps||!ps.until)return 0; const left=Math.ceil((ps.until-(now||Date.now()))/864e5); return Math.max(0,left); },
+  passClaimable(now){ const d=Save.data||{}; return this.passDaysLeft(now)>0&&d.mochiPass.day!==localDayKey(); },
+  /* เรียกหลัง Play ยืนยันการซื้อแล้วเท่านั้น · คืนจำนวนด้ายที่ได้ */
+  grant(id,now){ const d=Save.data; if(!d)return 0; now=now||Date.now();
+    if(id===MOCHI_PASS.id){ const ps=d.mochiPass||{}; ps.until=Math.max(ps.until||0,now)+MOCHI_PASS.days*864e5; d.mochiPass=ps; Save.addThreads(MOCHI_PASS.instant); return MOCHI_PASS.instant; }
+    const p=this.pack(id); if(!p)return 0; const first=this.firstBonus(id),n=(first?p.thread*2:p.thread)+p.bonus; d.iapFirst=Object.assign({},d.iapFirst,{[id]:1}); Save.addThreads(n); return n; },
+  claimPass(now){ if(!this.passClaimable(now))return 0; Save.data.mochiPass.day=localDayKey(); Save.addThreads(MOCHI_PASS.daily); return MOCHI_PASS.daily; },
+  buy(id,done){ if(!this.available()){ done&&done(false,'unavailable'); return; } try{ window.MochiBilling.buy(id,ok=>{ const n=ok?this.grant(id):0; done&&done(!!ok,n); }); }catch(e){ done&&done(false,'error'); } }
+};
 function pickWeighted(list){ let r=Math.random(),acc=0; for(const [k,p] of list){ acc+=p; if(r<acc)return k; } return list[list.length-1][0]; }
 function talentsOpen(){ const d=(typeof Save!=='undefined'&&Save.data)||{},sm=d.stageMastery||{}; return !!sm[2]||(d.unlockedStage||0)>=3; }   // v8.0.86 เจ้าของ: Talent เปิดพร้อมบทสอน (จบด่าน 3)
 function kitchenOpen(){ return !!((Save.data&&Save.data.stageMastery)||{})[9]; }
@@ -13366,8 +13383,9 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     /* v8.0.25 เจ้าของ: เหลือ 3 แท็บ — หีบ (เงิน/ทอง/Sugar) · ร้าน (ของ 4 + วัสดุ 2 รีเฟรชฟรีวันละครั้ง) · แลก (Trade-in + ขายวัสดุ) */
     const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=TAB[this._bazTab]||this._bazTab||'chests',top=(tab==='shop'?153:121)+hs;
-    [['chests','Chests'],['shop','Shop'],['trade','Trade']].forEach(([id,label],i)=>{const tw=(w-28)/3;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();},'tab_'+id);});
+    [['chests','Chests'],['shop','Shop'],['trade','Trade'],['thread','Thread']].forEach(([id,label],i)=>{const tw=(w-28)/4;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();},'tab_'+id);});
     if(tab==='chests'){ this.buildChestShop(top); this.menu.setVisible(true); return; }
+    if(tab==='thread'){ this.buildThreadShop(top); this.menu.setVisible(true); return; }
     let y=top;
     const heading=(title)=>{this.menu.add(this.add.text(14,y,title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe3ac'}));y+=23;};
     const grid=(products,cardH,cols)=>{cols=cols||(w>h?3:2);const gap=8,cw=(w-28-gap*(cols-1))/cols;products.forEach((p,i)=>this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(cardH+gap),cw,cardH,p));y+=Math.ceil(products.length/cols)*(cardH+gap);};
@@ -13391,6 +13409,19 @@ class Game extends Phaser.Scene {
     }
     this.menu.setVisible(true);
   }
+  buildThreadShop(top){ const w=this.W,h=this.H,d=Save.data,live=Iap.available(); let y=top;
+    this.menu.add(this.add.text(14,y,'🧶 '+Save.threads()+' Thread',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#ffc6df'}));
+    this.menu.add(this.add.text(w-14,y+2,live?'':'Purchases open with the Play Store release',{fontFamily:'sans-serif',fontSize:'9px',color:'#c5b5d1'}).setOrigin(1,0)); y+=26;
+    const days=Iap.passDaysLeft(),pc=Iap.passClaimable(),ph=58,pg=this.add.graphics(); pg.fillStyle(0x3a2a14,1).fillRoundedRect(14,y,w-28,ph,12).lineStyle(2,0xffd166,.95).strokeRoundedRect(14,y,w-28,ph,12); this.menu.add(pg);
+    this.menu.add(this.add.text(26,y+9,'Mochi Pass · 30 days',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffe08a'}));
+    this.menu.add(this.add.text(26,y+29,days?days+' days left · +'+MOCHI_PASS.daily+' Thread every day':'+'+MOCHI_PASS.instant+' Thread now · +'+MOCHI_PASS.daily+' Thread every day',{fontFamily:'sans-serif',fontSize:'10px',color:'#fff0dc',wordWrap:{width:w-150}}));
+    this.menu.add(this.add.text(w-26,y+ph/2,days?(pc?'Claim +'+MOCHI_PASS.daily:'Claimed today'):MOCHI_PASS.price,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:pc?'#a8edc6':days?'#75697e':'#ffd166'}).setOrigin(1,.5));
+    this._zone(14,y,w-28,ph,()=>{ if(days){ const n=Iap.claimPass(); if(n){Sfx.clear?.();this.showBanner?.('🧶 Mochi Pass','+'+n+' Thread',1300);this.buildBazaar();} return; } this.threadBuy(MOCHI_PASS.id); }); if(pc)this.drawBadgeDot?.(this.menu,w-18,y+4); y+=ph+10;
+    const cols=w>h?3:2,gap=8,cw=(w-28-gap*(cols-1))/cols,rows=Math.ceil(IAP_PACKS.length/cols),ch=Math.min(130,Math.max(84,(h-y-20)/rows-gap));
+    IAP_PACKS.forEach((p,i)=>{ const first=Iap.firstBonus(p.id),n=(first?p.thread*2:p.thread)+p.bonus;
+      this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(ch+gap),cw,ch,{art:'ic_thread',name:n+' Thread',desc:first?'First purchase: double Thread':p.bonus?'+'+p.bonus+' bonus':'',price:p.price,color:first?0xffd166:0xffc6df,afford:live,fn:()=>this.threadBuy(p.id)}); }); }
+  threadBuy(id){ if(!Iap.available()){ Sfx.error?.(); this.showBanner?.('🧶 Coming soon','Thread purchases open with the Play Store release',1600); return; }
+    Iap.buy(id,(ok,n)=>{ if(ok){Sfx.clear?.();this.showBanner?.('🧶 Thank you!','+'+n+' Thread',1600);} if(this.state==='menu'&&this.menuScreen==='bazaar')this.buildBazaar(); }); }
   bazaarBuyGear(id,key,cost){ const it=GEAR_ALL.find(g=>g.id===id);if(!it)return; cost=cost||GEAR_BUY[it.tier]||200;
     if(key&&(Save.data.bazaarBought||[]).includes(key))return;
     if(!Save.spend(cost)){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}
