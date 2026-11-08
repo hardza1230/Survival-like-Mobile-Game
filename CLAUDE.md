@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.49**. Next release:8.1.50. Fetch the deploy branch before new work.
+Current release: **8.1.50**. Next release:8.1.51. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.49 — combat feel (owner picked items 1–4)
+# Latest delivery: v8.1.50 — mission bonus goals (owner)
+
+Owner chose positive framing: success gives more EXP (main success already pays story-budget EXP). objBonusInit(o,planned) per type: survive ≤5 hits, hunt before Overtime, purge Wisp never snuffed, capture never bleed, cleanAir ≤3s outside, defendNectar no flower lost, seasonCycle ≤8 hits, breakRoots ≤6 hits; none for fill/tutorial/planned CH1 lessons/recipe/rift. Hooks: hurtPlayer→objBonusHit, tickWaveObjective→objBonusTick, nectar loss→objBonusFail, HUD tag ' · ⭐ n' / ' · ☆'. completeWaveObjective→objBonusPay: Sugar +50% of mission Sugar, EXP +50% of story-budget wave reward. Test objective-bonus. Pending owner: trim Survive/Hunt in chapter 3; chapter-3 signature missions.
+
+# Previous delivery: v8.1.49 — combat feel (owner picked items 1–4)
 
 Already existed: player spring squash/waddle/lean/breathe (animatePlayer), enemy hit squash + ring + crit hit-stop (no white flash on hit, by design). Added: hitEnemy → hitNudge(e) pushes non-boss enemies 4px away once per 0.12s (damage() is hash-locked by a T5 test, so not there); killEnemy calls mochiPop(e) for non-boss: pooled white ghost squashes wide then thin and fades (≤18 live, off at PERF.lvl≥2); orbs in pickup range accelerate (160→760, vacuum 300→900) along a curve that straightens in 0.5s (o._mT reset when out of range).
-
-# Previous delivery: v8.1.48 — fixes: login30 frame sizes, wings depth (owner)
-
-MENU_ORDER_ART l30_* frame sizes/9-slice insets were half the packed 2× WebP (frames showed a cropped quarter) → now match file pixels (panel 672×848 inset 56, button 480×92 ×2 rows inset 48/20). Wings depth re-set after player.setDepth(y) in update so they never draw in front when walking up.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

@@ -3567,3 +3567,8 @@ COSMETICS (9: wings/pet/trail ×3, 450/300/150 Thread) + Cos (Save.data.cos {own
 
 buildLobby calls lobbyCos(x,footY,heroH) after the glow and before the hero sprite, so wings sit behind; pet floats right of the head with a bob tween; trail sparkles rise from the feet via hubEvery. Same placeholder fallback as in-stage until art 66.
 
+
+# v: v8.1.48 — fixes: login30 frame sizes, wings depth (owner)
+
+MENU_ORDER_ART l30_* frame sizes/9-slice insets were half the packed 2× WebP (frames showed a cropped quarter) → now match file pixels (panel 672×848 inset 56, button 480×92 ×2 rows inset 48/20). Wings depth re-set after player.setDepth(y) in update so they never draw in front when walking up.
+
