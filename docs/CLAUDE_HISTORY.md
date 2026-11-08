@@ -3557,3 +3557,8 @@ Rewards → Daily Login tab when already claimed opens loginPopup('preview'): by
 
 Owner: Thread is the paid currency; sell cosmetics/convenience only; Mochi Pass yes; no Play Billing yet. Bazaar 4th tab 'thread' → buildThreadShop: IAP_PACKS (6, first buy per pack doubles, Save.data.iapFirst), MOCHI_PASS (300 now + 60/day ×30, Save.data.mochiPass, tap card to claim). Iap.available() needs window.MochiBilling.ready; Iap.grant(id) applies rewards. Plan: docs/design/THREAD_SHOP.md. Test thread-shop; bazaar-tabs now 4 tabs.
 
+
+# v: v8.1.46 — Wardrobe cosmetics + art order 66 (owner)
+
+COSMETICS (9: wings/pet/trail ×3, 450/300/150 Thread) + Cos (Save.data.cos {own,eq}); buy auto-equips, tap owned to toggle. buildWardrobe (menuScreen 'wardrobe', button on Bazaar Thread tab; tap unowned twice to buy). In stage: cosSetup at startStage, tickCos in update (wings behind player, pet follows, trail while moving); destroyed on return to menu. Placeholder drawn visuals until art 66 (docs/art_orders/66_WARDROBE_COSMETICS.md, keys cos_<id>/cos_trail/cos_icons, lazy). Test wardrobe. Todo: Lobby display, free cosmetics from hard content, hide-cosmetics setting.
+

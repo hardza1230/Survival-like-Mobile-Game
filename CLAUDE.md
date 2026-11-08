@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.47**. Next release:8.1.48. Fetch the deploy branch before new work.
+Current release: **8.1.48**. Next release:8.1.49. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.47 — cosmetics on the Lobby hero (owner)
+# Latest delivery: v8.1.48 — fixes: login30 frame sizes, wings depth (owner)
+
+MENU_ORDER_ART l30_* frame sizes/9-slice insets were half the packed 2× WebP (frames showed a cropped quarter) → now match file pixels (panel 672×848 inset 56, button 480×92 ×2 rows inset 48/20). Wings depth re-set after player.setDepth(y) in update so they never draw in front when walking up.
+
+# Previous delivery: v8.1.47 — cosmetics on the Lobby hero (owner)
 
 buildLobby calls lobbyCos(x,footY,heroH) after the glow and before the hero sprite, so wings sit behind; pet floats right of the head with a bob tween; trail sparkles rise from the feet via hubEvery. Same placeholder fallback as in-stage until art 66.
-
-# Previous delivery: v8.1.46 — Wardrobe cosmetics + art order 66 (owner)
-
-COSMETICS (9: wings/pet/trail ×3, 450/300/150 Thread) + Cos (Save.data.cos {own,eq}); buy auto-equips, tap owned to toggle. buildWardrobe (menuScreen 'wardrobe', button on Bazaar Thread tab; tap unowned twice to buy). In stage: cosSetup at startStage, tickCos in update (wings behind player, pet follows, trail while moving); destroyed on return to menu. Placeholder drawn visuals until art 66 (docs/art_orders/66_WARDROBE_COSMETICS.md, keys cos_<id>/cos_trail/cos_icons, lazy). Test wardrobe. Todo: Lobby display, free cosmetics from hard content, hide-cosmetics setting.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
