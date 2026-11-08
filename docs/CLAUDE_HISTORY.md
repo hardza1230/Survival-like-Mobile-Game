@@ -3547,3 +3547,8 @@ Sesame: SES_RUNE_PT/PATH_TALENTS.sesRune (after '// v4.88: Passive' — CHAR_TAL
 
 Art 65: scripts/pack-login30.py → assets/art/login30/ (11 WebP, source 2× size kept, 199 KB); MENU_ORDER_ART l30_* (panel/button 9-slice); menu-lazy via LAZY_MENU_ART_RE + loginPopup ensureGroup /^(login_|day_reward|l30_)/. loginPopup uses l30 panel/header/Ruby (W≥340)/cells (today/done/chest day frame 3, day 30 l30_cell30)/rewards/stamp/today fx/button/claim burst; order-51 art and drawn graphics stay as fallback. A09: 28 clips in assets/audio/acting + A07_CATALOG rows; RUBY_TIPS.short rewritten to match spoken text; lookup strips ' · N/M'; short reminder voice ≤ once/30s per key; rubyVoiceReact(ev) (rubyReact is the avatar animation) rotates 2 lines, 8s throttle, hooks objdone/bossdown/revive/lowhp/wave/timer/clear. Tests login30-art, ruby-a09-voice.
 
+
+# v: v8.1.44 — Daily Login preview (owner)
+
+Rewards → Daily Login tab when already claimed opens loginPopup('preview'): bypasses LoginCal.ready(), tap plays the claim visuals but never calls LoginCal.claim() (owner wanted a way to test art 65).
+
