@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.46**. Next release:8.1.47. Fetch the deploy branch before new work.
+Current release: **8.1.47**. Next release:8.1.48. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.46 — Wardrobe cosmetics + art order 66 (owner)
+# Latest delivery: v8.1.47 — cosmetics on the Lobby hero (owner)
+
+buildLobby calls lobbyCos(x,footY,heroH) after the glow and before the hero sprite, so wings sit behind; pet floats right of the head with a bob tween; trail sparkles rise from the feet via hubEvery. Same placeholder fallback as in-stage until art 66.
+
+# Previous delivery: v8.1.46 — Wardrobe cosmetics + art order 66 (owner)
 
 COSMETICS (9: wings/pet/trail ×3, 450/300/150 Thread) + Cos (Save.data.cos {own,eq}); buy auto-equips, tap owned to toggle. buildWardrobe (menuScreen 'wardrobe', button on Bazaar Thread tab; tap unowned twice to buy). In stage: cosSetup at startStage, tickCos in update (wings behind player, pet follows, trail while moving); destroyed on return to menu. Placeholder drawn visuals until art 66 (docs/art_orders/66_WARDROBE_COSMETICS.md, keys cos_<id>/cos_trail/cos_icons, lazy). Test wardrobe. Todo: Lobby display, free cosmetics from hard content, hide-cosmetics setting.
-
-# Previous delivery: v8.1.45 — Thread shop, no billing yet (owner)
-
-Owner: Thread is the paid currency; sell cosmetics/convenience only; Mochi Pass yes; no Play Billing yet. Bazaar 4th tab 'thread' → buildThreadShop: IAP_PACKS (6, first buy per pack doubles, Save.data.iapFirst), MOCHI_PASS (300 now + 60/day ×30, Save.data.mochiPass, tap card to claim). Iap.available() needs window.MochiBilling.ready; Iap.grant(id) applies rewards. Plan: docs/design/THREAD_SHOP.md. Test thread-shop; bazaar-tabs now 4 tabs.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

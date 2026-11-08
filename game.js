@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.46';
+const GAME_VERSION = '8.1.47';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.47',date:'2026-11-08',title:'Cosmetics in the Lobby',items:['Your equipped wings, pet and sparkle trail now show on the Lobby hero']},
   {v:'8.1.46',date:'2026-11-08',title:'Wardrobe',items:['New Wardrobe (Bazaar → Thread): wings, pets and sparkle trails bought with Thread','Cosmetics are looks only and work on every hero','Placeholder visuals until the painted art arrives']},
   {v:'8.1.45',date:'2026-11-08',title:'Thread shop',items:['The Bazaar has a new Thread tab with Thread packs and the Mochi Pass','Purchases open with the Play Store release']},
   {v:'8.1.44',date:'2026-11-08',title:'Daily Login preview',items:['Tap the Daily Login tab after claiming to look at the calendar again (no extra reward)']},
@@ -12134,6 +12135,7 @@ class Game extends Phaser.Scene {
       for(let i=32;i>=1;i--)g.fillStyle(i>22?hc:0xfff1dc,.014).fillCircle(gx0,gy0,R0*i/32);
       for(let i=10;i>=1;i--)g.fillStyle(0xffe2a6,.08).fillEllipse(w/2,fy,heroH*.8*i/10,heroH*.15*i/10);
       if(!art('lb_hero_shadow')){g.lineStyle(1.5,0xffe7b0,.5).strokeEllipse(w/2,fy,heroH*.6,heroH*.1);g.fillStyle(0x1a0f24,.35).fillEllipse(w/2,fy,heroH*.4,heroH*.06).fillStyle(0x1a0f24,.25).fillEllipse(w/2,fy,heroH*.24,heroH*.035);}this.menu.add(g);img('lb_hero_shadow',0,w/2,fy,heroH*.8,heroH*.24); }
+    this.lobbyCos?.(w/2,heroY,heroH);   // v8.1.47 ของแต่งที่ Lobby (ปีกอยู่หลังฮีโร่ เพราะวาดก่อน)
     const lhI=this.lhKey?.(c,'idle'); this._lhSprite=null;
     if(LH_USE_SHEETS&&lhI&&this.lhReady(lhI)){ const sp=this.add.sprite(w/2,heroY,lhI,0).setOrigin(.5,LH_FOOT/LH_FH);sp.setScale(heroH*.975/LH_BODY);this.menu.add(sp);this._lhSprite=sp;
       const greet=this._lhHero!==c||this._enterLast!=='hub'; if(this._lhHero&&this._lhHero!==c)this.lhDrop(['idle','greet','tap'].map(t=>this.lhKey(c,t))); this._lhHero=c; sp._lhSet='idle'; sp.play(lhI); if(greet)this.lhPlay('greet');
@@ -13454,6 +13456,13 @@ class Game extends Phaser.Scene {
         this.bazaarProductCard(14+i*(cw+gap),y,cw,ch,{art:this.realTex?.('cos_icons')?'cos_icons':'ic_thread',name:c.name,desc:'',price:on?'✓ Wearing':own?'Wear':pend?'Tap again · 🧶 '+c.price:'🧶 '+c.price,color:on?0x7fe3a8:c.col,afford:own||Save.threads()>=c.price,fn:()=>this.cosTap(c)});
         const last=this.menu.list[this.menu.list.length-4]; if(last&&last.setFrame&&this.realTex?.('cos_icons'))last.setFrame(c.frame); });
       y+=ch+10; }); }
+  lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),cy=footY-hh*.55;
+    if(wg){ const k='cos_'+wg.id; let o; if(this.realTex?.(k)){ o=this.add.sprite(x,cy,k).setScale(hh*.95/128); if(this.anims?.exists?.(k))o.play(k); } else { o=this.add.graphics(); const r=hh*.2; o.fillStyle(wg.col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(x,cy); }
+      this.menu.add(o); this.tweens?.add({targets:o,scaleX:(o.scaleX||1)*1.06,duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+    if(pt){ const k='cos_'+pt.id,px=x+hh*.42,py=footY-hh*.8; let o; if(this.realTex?.(k)){ o=this.add.sprite(px,py,k).setScale(hh*.3/96); if(this.anims?.exists?.(k))o.play(k); o.setFlipX?.(true); } else o=this.add.text(px,py,pt.emoji,{fontSize:Math.round(hh*.16)+'px'}).setOrigin(.5);
+      this.menu.add(o); this.tweens?.add({targets:o,y:py-8,duration:1100,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+    if(tr)this.hubEvery?.(450,300,()=>{ if(!this.menu?.active&&this.menu?.active!==undefined)return; const sx=x+(Math.random()-.5)*hh*.5,sy=footY-4,o=this.realTex?.('cos_trail')?this.add.image(sx,sy,'cos_trail',tr.frame-6).setScale(.4):this.add.circle(sx,sy,4,tr.col,.9);
+      this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
   cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.select?.(); this._cosPend=null; this.buildWardrobe(); return; }
     if(this._cosPend!==c.id){ this._cosPend=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }
     this._cosPend=null; if(Cos.buy(c.id)){ Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }

@@ -3552,3 +3552,8 @@ Art 65: scripts/pack-login30.py → assets/art/login30/ (11 WebP, source 2× siz
 
 Rewards → Daily Login tab when already claimed opens loginPopup('preview'): bypasses LoginCal.ready(), tap plays the claim visuals but never calls LoginCal.claim() (owner wanted a way to test art 65).
 
+
+# v: v8.1.45 — Thread shop, no billing yet (owner)
+
+Owner: Thread is the paid currency; sell cosmetics/convenience only; Mochi Pass yes; no Play Billing yet. Bazaar 4th tab 'thread' → buildThreadShop: IAP_PACKS (6, first buy per pack doubles, Save.data.iapFirst), MOCHI_PASS (300 now + 60/day ×30, Save.data.mochiPass, tap card to claim). Iap.available() needs window.MochiBilling.ready; Iap.grant(id) applies rewards. Plan: docs/design/THREAD_SHOP.md. Test thread-shop; bazaar-tabs now 4 tabs.
+
