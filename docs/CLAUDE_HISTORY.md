@@ -3572,3 +3572,8 @@ buildLobby calls lobbyCos(x,footY,heroH) after the glow and before the hero spri
 
 MENU_ORDER_ART l30_* frame sizes/9-slice insets were half the packed 2× WebP (frames showed a cropped quarter) → now match file pixels (panel 672×848 inset 56, button 480×92 ×2 rows inset 48/20). Wings depth re-set after player.setDepth(y) in update so they never draw in front when walking up.
 
+
+# v: v8.1.49 — combat feel (owner picked items 1–4)
+
+Already existed: player spring squash/waddle/lean/breathe (animatePlayer), enemy hit squash + ring + crit hit-stop (no white flash on hit, by design). Added: hitEnemy → hitNudge(e) pushes non-boss enemies 4px away once per 0.12s (damage() is hash-locked by a T5 test, so not there); killEnemy calls mochiPop(e) for non-boss: pooled white ghost squashes wide then thin and fades (≤18 live, off at PERF.lvl≥2); orbs in pickup range accelerate (160→760, vacuum 300→900) along a curve that straightens in 0.5s (o._mT reset when out of range).
+
