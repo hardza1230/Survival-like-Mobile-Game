@@ -3533,3 +3533,7 @@ Sesame’s S10 motion comic plays before first entry to C2-1 and is available in
 # Previous delivery: v8.1.40 — Sesame rune buttons arc around Unique (owner)
 
 Owner keeps the 10-recipe memory challenge (no recipe hints). sesRuneControlLayout places Power/Motion/Binding on an arc around Unique (up, diagonal, inward side; mirrored for ctrlLeft), distance u.radius+r+10, pushed clear of Dash. sesRuneHit: tap area ×1.45 radius, nearest rune wins, never steals taps inside Unique. 12ms vibrate on rune press (settings.haptics!==false). Glyphs ▲ ➤ ◆. Tests in sesame-runes.
+
+# Previous delivery: v8.1.41 — perf hold, Unique voice preload, amulet/ring pools (owner)
+
+tickPerf: after a downgrade PERF.hold=30 (seconds) blocks upgrades. VoiceActing.preloadUnique(scene) in startStage loads every vo_<role>_unique_* clip. FORGE_SLOT_POOL.amulet (recovery/barrier/loot) and .ring (crit/rhythm/conditions) 25 each, distinct from boots. Forge OP audit and Sesame talent design sent to owner for decision (not changed). Mint lance: owner says done, no work.

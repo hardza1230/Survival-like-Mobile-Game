@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.42**. Next release:8.1.43. Fetch the deploy branch before new work.
+Current release: **8.1.43**. Next release:8.1.44. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.42 — Sesame Runes talents + forge caps + story decisions (owner)
+# Latest delivery: v8.1.43 — art 65 Daily Login 30 + A09 Ruby stage voice (owner)
+
+Art 65: scripts/pack-login30.py → assets/art/login30/ (11 WebP, source 2× size kept, 199 KB); MENU_ORDER_ART l30_* (panel/button 9-slice); menu-lazy via LAZY_MENU_ART_RE + loginPopup ensureGroup /^(login_|day_reward|l30_)/. loginPopup uses l30 panel/header/Ruby (W≥340)/cells (today/done/chest day frame 3, day 30 l30_cell30)/rewards/stamp/today fx/button/claim burst; order-51 art and drawn graphics stay as fallback. A09: 28 clips in assets/audio/acting + A07_CATALOG rows; RUBY_TIPS.short rewritten to match spoken text; lookup strips ' · N/M'; short reminder voice ≤ once/30s per key; rubyVoiceReact(ev) (rubyReact is the avatar animation) rotates 2 lines, 8s throttle, hooks objdone/bossdown/revive/lowhp/wave/timer/clear. Tests login30-art, ruby-a09-voice.
+
+# Previous delivery: v8.1.42 — Sesame Runes talents + forge caps + story decisions (owner)
 
 Sesame: SES_RUNE_PT/PATH_TALENTS.sesRune (after '// v4.88: Passive' — CHAR_TALENTS..Passive block is hash-locked by talent-icons test). Branches Power(srP, srBoss)/Motion(srM, srCd)/Binding(HP, guard); caps Overload/Perpetual Motion/Threefold Mastery. sesRuneTalentMul hooks sesRuneDamage + rune cooldowns (floor 45%). Save.cp one-time sesTalV3 full refund of all Sesame talent points. Forge: FORGE_HP_CAP 150 (mod 13, bad mods still subtract), DR cap .4, damage bonus cap 1.5, Clean Recipe .2, Last Crumb once per item; Unique CDR was already capped at 40%. STORY_CANON: post-game = expedition beyond Mochitopia into an endless cave (Delve); animal bosses = guardian spirits. Sesame balance numbers still need mobile play.
-
-# Previous delivery: v8.1.41 — perf hold, Unique voice preload, amulet/ring pools (owner)
-
-tickPerf: after a downgrade PERF.hold=30 (seconds) blocks upgrades. VoiceActing.preloadUnique(scene) in startStage loads every vo_<role>_unique_* clip. FORGE_SLOT_POOL.amulet (recovery/barrier/loot) and .ring (crit/rhythm/conditions) 25 each, distinct from boots. Forge OP audit and Sesame talent design sent to owner for decision (not changed). Mint lance: owner says done, no work.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,12 +42,11 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- ใบสั่งอาร์ต 65 Daily Login 30 วันทำใหม่ (เจ้าของ: ชุดเดิมไม่สวย) · 🟡 รออาร์ต · โค้ด `loginPopup()` ยังใช้ภาพใบ 51
+- ใบ 65 Daily Login 30 วัน ผูกแล้ว v8.1.43 · รอ QA มือถือ · A09 เสียง Ruby ในด่าน ผูกแล้ว v8.1.43
 - Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
 - ใบสั่ง 62 สถานะติดตัว ผูกแล้ว v8.0.85 · รอ QA มือถือ
 - อาร์ต 61 ฉากหลังล้มบอส ผูกแล้ว v8.0.84 · รอ QA มือถือ
 - ใบสั่ง 63 ผูกครบ 8 แล้ว v8.0.95 · รอ QA มือถือ · A06 เสียง 28 ผูกแล้ว v8.0.91
-- ใบสั่ง 65 Daily Login 30 วันทำใหม่ (เจ้าของบอกชุดเดิมไม่สวย) · 🟡 รออาร์ต · โค้ด `loginPopup()` ใช้ภาพใบ 51 อยู่
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame: เจ้าของอนุมัติ Rune Invoker ไม่มีสาย (2 Nov2026) · ดู `docs/design/SESAME_RUNE_INVOKER.md` · 10 เวท/การ์ดลูกแก้ว/อาร์ตและเสียงใหม่ v8.1.1 รอมือถือ · ถัดไปบาลานซ์/ความถนัดและ Talent ถาวร; ไม่ทำ Mirror Network ขั้น 2 ตามแผนเก่า
