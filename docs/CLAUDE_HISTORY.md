@@ -3537,3 +3537,8 @@ Owner keeps the 10-recipe memory challenge (no recipe hints). sesRuneControlLayo
 # Previous delivery: v8.1.41 — perf hold, Unique voice preload, amulet/ring pools (owner)
 
 tickPerf: after a downgrade PERF.hold=30 (seconds) blocks upgrades. VoiceActing.preloadUnique(scene) in startStage loads every vo_<role>_unique_* clip. FORGE_SLOT_POOL.amulet (recovery/barrier/loot) and .ring (crit/rhythm/conditions) 25 each, distinct from boots. Forge OP audit and Sesame talent design sent to owner for decision (not changed). Mint lance: owner says done, no work.
+
+# v: v8.1.42 — Sesame Runes talents + forge caps + story decisions (owner)
+
+Sesame: SES_RUNE_PT/PATH_TALENTS.sesRune (after '// v4.88: Passive' — CHAR_TALENTS..Passive block is hash-locked by talent-icons test). Branches Power(srP, srBoss)/Motion(srM, srCd)/Binding(HP, guard); caps Overload/Perpetual Motion/Threefold Mastery. sesRuneTalentMul hooks sesRuneDamage + rune cooldowns (floor 45%). Save.cp one-time sesTalV3 full refund of all Sesame talent points. Forge: FORGE_HP_CAP 150 (mod 13, bad mods still subtract), DR cap .4, damage bonus cap 1.5, Clean Recipe .2, Last Crumb once per item; Unique CDR was already capped at 40%. STORY_CANON: post-game = expedition beyond Mochitopia into an endless cave (Delve); animal bosses = guardian spirits. Sesame balance numbers still need mobile play.
+

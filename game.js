@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.43';
+const GAME_VERSION = '8.1.44';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.44',date:'2026-11-08',title:'Daily Login preview',items:['Tap the Daily Login tab after claiming to look at the calendar again (no extra reward)']},
   {v:'8.1.43',date:'2026-11-08',title:'A sweeter Daily Login and a chattier Ruby',items:['The 30-day Daily Login calendar has new painted art, with Ruby, special chest days and a festive day 30','Ruby now voices her short mission reminders','Ruby cheers when you finish an objective, beat a boss, revive or clear a stage, and warns you about low HP and big waves']},
   {v:'8.1.42',date:'2026-11-08',title:'Sesame Runes talents',items:['Sesame has a new Runes talent tree: Power, Motion and Binding branches with three capstones','All talent points spent on Sesame were refunded','Stacked Forge mods now have limits: Max HP up to +150, damage reduction up to 40%, bonus damage up to +150%','Last Crumb no longer rolls twice on one item']},
   {v:'8.1.41',date:'2026-11-08',title:'Smoother effects, sharper trinkets',items:['When effects are reduced for speed, they stay reduced for at least 30 seconds instead of flickering back','Unique skill voices load when the stage starts','Amulets now roll recovery, barrier and loot mods; rings roll critical, rhythm and condition mods']},
@@ -11333,7 +11334,7 @@ class Game extends Phaser.Scene {
     const tabs=[['login','📅 Login',ready],['daily','📋 Daily',typeof DailyQ!=='undefined'&&DailyQ.claimable()],['achievements','🏆 Awards',this.hasTargetBadge('achievements')]];
     tabs.forEach(([k,lab,dot],i)=>{ const x=x0+i*(bw+gap),on=k===active,g=this.add.graphics(); g.fillStyle(on?0xf4d9a1:0x261e30,on?1:.94).fillRoundedRect(x,y,bw,h,12).lineStyle(1.5,on?0xfff1e7:0x6d536d,1).strokeRoundedRect(x,y,bw,h,12); this.menu.add(g);
       const ik={login:'tab_login',daily:'tab_daily',achievements:'tab_awards'}[k],ic=this.m59Img?.(ik,0,y+h/2,24),lb=ic?lab.replace(/^\S+\s/,''):lab,t=this.add.text(x+bw/2+(ic?12:0),y+h/2,lb,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:on?'#3b2416':'#fff1e7'}).setOrigin(.5); if(t.width>bw-(ic?40:10))t.setScale((bw-(ic?40:10))/t.width); this.menu.add(t); if(ic){ ic.setX(t.x-t.displayWidth/2-14); this.menu.add(ic); }   /* ใบ 59 */ if(dot)this.drawBadgeDot?.(this.menu,x+bw-6,y+5);
-      this._zone(x,y,bw,h,()=>{ if(k==='login'){ if(ready)this.loginPopup('daily'); else this.menuToast?.('📅 Day '+((((cal?.i||0)%LOGIN_DAYS)+LOGIN_DAYS)%LOGIN_DAYS||LOGIN_DAYS)+' of '+LOGIN_DAYS+' claimed · next gift tomorrow','#ffe08a'); return; } if(k===active)return; Sfx.select?.(); this.menuScreen=k; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='rw_'+k; });
+      this._zone(x,y,bw,h,()=>{ if(k==='login'){ this.loginPopup(ready?'daily':'preview'); return; } if(k===active)return; Sfx.select?.(); this.menuScreen=k; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='rw_'+k; });
     return h+10; }
   buildDaily(){   // v7.5 Daily Quests: รางวัลเข้าเกม + แต้มภารกิจ 5 ข้อ + กล่อง 3 ขั้น
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('📅 Daily Quests','screen_daily');
@@ -11968,9 +11969,9 @@ class Game extends Phaser.Scene {
     return out; }
   featShow(list,anim){ for(const [o,a] of list||[]){ if(!o.active)continue; if(anim&&this.tweens){ o.setAlpha(0); this.tweens.add({targets:o,alpha:a,duration:260}); } else o.setAlpha(a); } }
   // v8.0.24 ป๊อปอัปปฏิทินเข้าเกม 7 วัน ตอนเปิด Lobby ครั้งแรกของวัน (หรือเปิดหน้า Daily) · รอให้บทสอน/เปิดฟีเจอร์ใหม่จบก่อน
-  loginPopup(from){ const d=Save.data; if(!d||typeof LoginCal==='undefined'||!LoginCal.ready()||!d.tutorialDone||!featureOpen('daily')||this.state!=='menu'||this._loginC?.active||this._chestOpen||this._gachaBusy)return;
-    if(from!=='daily'&&this.menuScreen!=='hub')return;
-    if(this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1)||this._bookCover){ if(from!=='daily')this.time?.delayedCall(1500,()=>this.loginPopup()); return; }
+  loginPopup(from){ const d=Save.data; if(!d||typeof LoginCal==='undefined'||(from!=='preview'&&!LoginCal.ready())||!d.tutorialDone||!featureOpen('daily')||this.state!=='menu'||this._loginC?.active||this._chestOpen||this._gachaBusy)return;
+    if(from!=='daily'&&from!=='preview'&&this.menuScreen!=='hub')return;   // v8.1.44 preview = ดูปฏิทินซ้ำหลังรับแล้ว (ไม่ให้ของ)
+    if(this._rubyTalk||this._featBusy||(this._featQ&&this._featQ.length)||this._weaveTour||this._stage1Coach||(d.gearTut>=0&&d.gearTut<=1)||this._bookCover){ if(from!=='daily'&&from!=='preview')this.time?.delayedCall(1500,()=>this.loginPopup()); return; }
     if(this.ensureGroup&&!this.tuHas?.('l30_panel')&&Date.now()-(this._loginArtTriedAt||0)>15000){if(this._loginArtLoading)return;this._loginArtLoading=true;const screen=this.menuScreen;
       this.ensureGroup(k=>/^(login_|day_reward|l30_)/.test(k),()=>{this._loginArtLoading=false;this._loginArtTriedAt=Date.now();if(this.state==='menu'&&this.menuScreen===screen)this.loginPopup(from);},{all:true,quiet:true});return;}
     const W=this.W,H=this.H,cal=LoginCal.data(),cur=((cal.i%LOGIN_DAYS)+LOGIN_DAYS)%LOGIN_DAYS,c=this.add.container(0,0); c._menuBackdrop=true; this.menu.add(c); this._loginC=c;Sfx.menuCue?.('login_open',.32);
@@ -11993,7 +11994,7 @@ class Game extends Phaser.Scene {
     const ny=py+(l30?70:64)+ROWS*cell+(ROWS-1)*GAP+14; T(W/2,ny,'Missed a day? No problem — the calendar just waits for you.',10,'#a89cb6');
     const bw=Math.min(pw-40,240),bh=46,bx=W/2-bw/2,by=py+ph-bh-18,bg=this.add.graphics(); bg.fillStyle(0xffb020,1).fillRoundedRect(bx,by,bw,bh,14).fillStyle(0xffffff,.2).fillRoundedRect(bx+3,by+3,bw-6,bh*.42,10); c.add(bg);let btnArt=l30?this.menuArtPanel?.('l30_button',0,bx,by,bw,bh,c):null;if(btnArt)bg.clear();
     const bt=T(W/2,by+bh/2,'🎁 Claim Day '+(cur+1),16,'#21131a','bold'); const t0=Date.now();
-    this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<600)return; const res=LoginCal.claim(); this.tapZones=[]; if(!res){ c.destroy(); this._loginC=null; this.buildMenuScreen(); return; }
+    this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<600)return; const res=from==='preview'?{i:cur,lines:['Preview only · next gift tomorrow']}:LoginCal.claim(); this.tapZones=[]; if(!res){ c.destroy(); this._loginC=null; this.buildMenuScreen(); return; }
       try{ (res.i===LOGIN_DAYS-1&&Sfx.menuCue?.('login_day30',.5))||Sfx.menuCue?.(LOGIN_CAL[res.i]?.k==='gold'?'login_day7':'login_claim',.45)||Sfx.progress&&Sfx.progress('daily'); }catch(e){}
       const at=cells[res.i]; if(at&&l30)this.menuArtFx?.('l30_claim_burst',at.x+at.cw/2,at.y+at.cw/2,at.cw*2.1,{parent:c}); if(at&&!(l30&&this.menuArtIcon?.('l30_stamp',0,at.x+at.cw-14,at.y+14,28,28,c))&&!this.menuArtIcon?.('login_stamp',0,at.x+at.cw-16,at.y+16,32,32,c)){ const ok=this.add.text(at.x+at.cw-12,at.y+12,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#7fe3a8'}).setOrigin(.5); c.add(ok); }
       if(res.chest){ const ch=CHESTS.find(x=>x.id===res.chest)||CHESTS[0]; this.time?.delayedCall(350,()=>{ c.destroy(); this._loginC=null; this._gachaBusy=false; this.openChest(ch,'login'); }); return; }
