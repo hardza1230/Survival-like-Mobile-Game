@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.51';
+const GAME_VERSION = '8.1.52';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.52',date:'2026-11-09',title:'Daily Login fix',items:['Daily Login day boxes, ribbon and Ruby now sit in the right place']},
   {v:'8.1.51',date:'2026-11-08',title:'Mission loot',items:['Finished missions burst open with Sugar pieces and a crafting material to pick up','Clear the ⭐ bonus goal too for a gear box of Rare or better','Uncollected mission loot flies to you after a few seconds']},
   {v:'8.1.50',date:'2026-11-08',title:'Bonus goals',items:['Every mission now has a ⭐ bonus goal, like keeping the Wisp lit or taking few hits','Finish the mission with the bonus goal intact for extra EXP and +50% Sugar']},
   {v:'8.1.49',date:'2026-11-08',title:'Smoother combat feel',items:['Enemies get nudged back a little when hit','Defeated enemies pop like mochi','EXP drops speed up and curve into you']},
@@ -12021,12 +12022,12 @@ class Game extends Phaser.Scene {
     const dim=this.add.rectangle(0,0,W,H,0x07040c,.82).setOrigin(0); c.add(dim);
     const COLS=6,ROWS=Math.ceil(LOGIN_DAYS/COLS),GAP=6,pw=Math.min(W-24,400),cell=Math.max(30,Math.min(Math.floor((pw-28-(COLS-1)*GAP)/COLS),Math.floor((H-24-170-(ROWS-1)*GAP)/ROWS))),ph=ROWS*cell+(ROWS-1)*GAP+170,px=(W-pw)/2,py=Math.max(12,(H-ph)/2-10),g=this.add.graphics();
     g.fillStyle(0x241a30,1).fillRoundedRect(px,py,pw,ph,18).lineStyle(2.5,0xffd166,1).strokeRoundedRect(px,py,pw,ph,18); c.add(g);const l30=!!this.menuArtPanel?.('l30_panel',0,px,py,pw,ph,c),paper=l30||!!this.menuArtPanel?.('login_panel',0,px,py,pw,ph,c);if(paper)g.clear();   /* v8.1.43 ใบ 65 · ไม่มีภาพใหม่ = ภาพใบ 51 / วาดเอง */
-    if(l30){this.menuArtIcon?.('l30_header',0,W/2-150,py-20,300,75,c);if(W>=340)this.menuArtIcon?.('l30_ruby',0,px+pw-74,py-46,92,92,c);}
+    if(l30){this.menuArtIcon?.('l30_header',0,W/2,py+16,300,75,c);if(W>=340)this.menuArtIcon?.('l30_ruby',0,px+pw-24,py-2,92,92,c);}   /* v8.1.52 menuArtIcon วางจากจุดกึ่งกลาง (เดิมส่งมุมซ้ายบน → เลื่อนซ้าย/ขึ้น) */
     const T=(x,y,t,sz,col,st,ox=.5)=>{ const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:paper?this.menuArtInk(col):col||'#fff',align:'center'}).setOrigin(ox,.5); c.add(q); return q; };
-    {const tt=T(W/2,py+(l30?18:24),l30?'Daily Login':'📅 Daily Login',19,'#ffe08a','bold');if(l30)tt.setColor('#fff4dc').setStroke('#5a2340',3);} T(W/2,py+(l30?54:46),'Day '+(cur+1)+' of '+LOGIN_DAYS+' · a new gift every day',11,'#cfc2d5');
+    {const tt=T(W/2,py+(l30?14:24),l30?'Daily Login':'📅 Daily Login',19,'#ffe08a','bold');if(l30)tt.setColor('#fff4dc').setStroke('#5a2340',3);} T(W/2,py+(l30?54:46),'Day '+(cur+1)+' of '+LOGIN_DAYS+' · a new gift every day',11,'#cfc2d5');
     const cells=[]; LOGIN_CAL.forEach((r,j)=>{ const row=Math.floor(j/COLS),col=j%COLS,big=!!r.big,cw=cell,gw=COLS*cell+(COLS-1)*GAP,x=px+(pw-gw)/2+col*(cell+GAP),y=py+(l30?70:64)+row*(cell+GAP),done=j<cur,today=j===cur,cg=this.add.graphics();
-      cg.fillStyle(today?0x5a3d1a:done?0x1f3328:0x1a1422,1).fillRoundedRect(x,y,cw,cell,10).lineStyle(big?3:2,today||big?0xffd166:done?0x7fe3a8:0x4a4059,1).strokeRoundedRect(x,y,cw,cell,10); c.add(cg);if(paper)cg.clear().fillStyle(0xf3e4cc,1).fillRoundedRect(x,y,cw,cell,12);if((l30&&(big?this.menuArtIcon?.('l30_cell30',done?1:0,x,y,cw,cell,c):this.menuArtIcon?.('l30_cell',today?1:done?2:r.k==='gold'?3:0,x,y,cw,cell,c)))||this.menuArtPanel?.('login_cell',today?1:done?2:0,x,y,cw,cell,c))cg.clear();if(today)(l30&&this.menuArtFx?.('l30_today_fx',x+cw/2,y+cell/2,cell*1.22,{parent:c,loop:true}))||this.menuArtFx?.('login_glow',x+cw/2,y+cell/2,cell*1.18,{parent:c,loop:true});
-      T(x+cw/2,y+Math.max(7,cell*.18),cell<44?String(j+1):'Day '+(j+1),cell<44?8:9,today?'#ffe08a':'#a89cb6','bold');
+      cg.fillStyle(today?0x5a3d1a:done?0x1f3328:0x1a1422,1).fillRoundedRect(x,y,cw,cell,10).lineStyle(big?3:2,today||big?0xffd166:done?0x7fe3a8:0x4a4059,1).strokeRoundedRect(x,y,cw,cell,10); c.add(cg);if(paper)cg.clear().fillStyle(0xf3e4cc,1).fillRoundedRect(x,y,cw,cell,12);if((l30&&(big?this.menuArtIcon?.('l30_cell30',done?1:0,x+cw/2,y+cell/2,cw,cell,c):this.menuArtIcon?.('l30_cell',today?1:done?2:r.k==='gold'?3:0,x+cw/2,y+cell/2,cw,cell,c)))||this.menuArtPanel?.('login_cell',today?1:done?2:0,x,y,cw,cell,c))cg.clear();if(today)(l30&&this.menuArtFx?.('l30_today_fx',x+cw/2,y+cell/2,cell*1.22,{parent:c,loop:true}))||this.menuArtFx?.('login_glow',x+cw/2,y+cell/2,cell*1.18,{parent:c,loop:true});
+      T(x+cw/2,y+Math.max(7,cell*.18),(cell<44||l30)?String(j+1):'Day '+(j+1),cell<44?8:9,today?'#ffe08a':'#a89cb6','bold');
       const ck=r.k==='silver'?'chest_silver':r.k==='gold'?'chest_gold':null,isz=cell*.42; let ic;
       const l30i=l30?(big?this.menuArtIcon?.('l30_reward30',0,x+cw/2,y+cell*.48,isz*1.5,isz*1.5,c):this.menuArtIcon?.('l30_reward',r.k==='sugar'?(r.n>=600?1:0):r.k==='thread'?2:r.k==='cur'?3:r.k==='silver'?4:5,x+cw/2,y+cell*.48,isz*1.15,isz*1.15,c)):null;
       if(l30i)ic=l30i; else if(ck&&this.realTex(ck)){ ic=this.add.image(x+cw/2,y+cell*.48,ck); ic.setScale(isz*1.15/Math.max(ic.width,ic.height)); } else ic=this.menuArtIcon?.('day_reward',r.k==='sugar'&&r.n>=600?3:r.k==='thread'?1:r.k==='cur'?2:0,x+cw/2,y+cell*.48,isz,isz,c)||this.add.text(x+cw/2,y+cell*.48,r.emoji,{fontSize:Math.round(isz*.8)+'px'}).setOrigin(.5);

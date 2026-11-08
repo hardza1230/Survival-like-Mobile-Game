@@ -3577,3 +3577,8 @@ MENU_ORDER_ART l30_* frame sizes/9-slice insets were half the packed 2× WebP (f
 
 Already existed: player spring squash/waddle/lean/breathe (animatePlayer), enemy hit squash + ring + crit hit-stop (no white flash on hit, by design). Added: hitEnemy → hitNudge(e) pushes non-boss enemies 4px away once per 0.12s (damage() is hash-locked by a T5 test, so not there); killEnemy calls mochiPop(e) for non-boss: pooled white ghost squashes wide then thin and fades (≤18 live, off at PERF.lvl≥2); orbs in pickup range accelerate (160→760, vacuum 300→900) along a curve that straightens in 0.5s (o._mT reset when out of range).
 
+
+# v: v8.1.50 — mission bonus goals (owner)
+
+Owner chose positive framing: success gives more EXP (main success already pays story-budget EXP). objBonusInit(o,planned) per type: survive ≤5 hits, hunt before Overtime, purge Wisp never snuffed, capture never bleed, cleanAir ≤3s outside, defendNectar no flower lost, seasonCycle ≤8 hits, breakRoots ≤6 hits; none for fill/tutorial/planned CH1 lessons/recipe/rift. Hooks: hurtPlayer→objBonusHit, tickWaveObjective→objBonusTick, nectar loss→objBonusFail, HUD tag ' · ⭐ n' / ' · ☆'. completeWaveObjective→objBonusPay: Sugar +50% of mission Sugar, EXP +50% of story-budget wave reward. Test objective-bonus. Pending owner: trim Survive/Hunt in chapter 3; chapter-3 signature missions.
+
