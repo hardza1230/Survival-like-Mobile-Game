@@ -3582,3 +3582,8 @@ Already existed: player spring squash/waddle/lean/breathe (animatePlayer), enemy
 
 Owner chose positive framing: success gives more EXP (main success already pays story-budget EXP). objBonusInit(o,planned) per type: survive ≤5 hits, hunt before Overtime, purge Wisp never snuffed, capture never bleed, cleanAir ≤3s outside, defendNectar no flower lost, seasonCycle ≤8 hits, breakRoots ≤6 hits; none for fill/tutorial/planned CH1 lessons/recipe/rift. Hooks: hurtPlayer→objBonusHit, tickWaveObjective→objBonusTick, nectar loss→objBonusFail, HUD tag ' · ⭐ n' / ' · ☆'. completeWaveObjective→objBonusPay: Sugar +50% of mission Sugar, EXP +50% of story-budget wave reward. Test objective-bonus. Pending owner: trim Survive/Hunt in chapter 3; chapter-3 signature missions.
 
+
+# v: v8.1.51 — mission loot burst (owner, POE-style ground loot)
+
+completeWaveObjective → missionLootBurst(o, sugar incl. bonus): takes the mission Sugar back off sugarStage/Run and spawns 4–6 loots dropType 'sugar' (sugarVal, ic_sugar) at missionPoint (capture zone / clean air / wisp / player), 1 forgeCurrency material, and if ⭐ bonus ok a spawnLoot gear box forced ≥Rare (_lootMinRare; boost 2 in ch3/endgame else 1). Pieces scatter by tween, auto-magnet after 6s; clearPickups(true) credits uncollected sugar. collectLoot handles 'sugar'. loots maxSize 12→20; random field gear 10%→8%; spawnLoot now returns g. Test mission-loot.
+

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.52';
+const GAME_VERSION = '8.1.53';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.53',date:'2026-11-09',title:'Weekly Daily Login and Taro tuning',items:['Daily Login shows one week at a time with bigger boxes, a progress bar and the Day 30 chest','Taro Sentry Build: sentries fire Ball Lightning about 35% slower and fewer balls can be out at once']},
   {v:'8.1.52',date:'2026-11-09',title:'Daily Login fix',items:['Daily Login day boxes, ribbon and Ruby now sit in the right place']},
   {v:'8.1.51',date:'2026-11-08',title:'Mission loot',items:['Finished missions burst open with Sugar pieces and a crafting material to pick up','Clear the ⭐ bonus goal too for a gear box of Rare or better','Uncollected mission loot flies to you after a few seconds']},
   {v:'8.1.50',date:'2026-11-08',title:'Bonus goals',items:['Every mission now has a ⭐ bonus goal, like keeping the Wisp lit or taking few hits','Finish the mission with the bonus goal intact for extra EXP and +50% Sugar']},
@@ -8857,9 +8858,9 @@ function taroSwarmProfile(b,p,base){const r=b?.ranks||{},rank=id=>Math.max(0,r[i
   const radius=Math.min(140,105*(1+Math.min(.4,Math.max(0,count-1)*.08))),range=base.rootRange;   /* v7.8.63 เจ้าของ: วงช็อตเริ่มใหญ่ขึ้น 85→105 · ลูกบอลเร็วขึ้น 110→145 */   // v7.8.24 Ball Lightning แบบ PoE: ลูกเล็กลอยช้า ช็อตทุกตัวในรัศมีนี้ทุก 0.15 วิ
   // v8.0.88 เจ้าของ: Sentry เริ่ม 2 ต้น · การ์ด +1 (surge) เพิ่มต้น (สูงสุด 3) · Reserve Cell (arc) = ยิงถี่ขึ้น 10%/ขั้น (สูงสุด +60%) แทนอายุยาวขึ้น
   const sentries=Math.min(TARO_SENTRY_MAX,2+rank('surge')+(b.mutation==='stormcaller'?1:0)+(b.evolved?1:0)),fire=1+.10*Math.min(6,Math.max(0,base.arc||0));
-  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.4,base.unitC*.84/fire),nodeLife:5,sentries,fire,radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
+  return {interval:Math.max(.55,base.unitC),damage:base.unitD*.30,pulse:Math.max(.65,base.unitC*1.15/fire),   /* v8.1.53 เจ้าของ: ป้อมยิงถี่เกิน ยืนนิ่งก็ผ่าน → ช้าลง ~35% (.84→1.15, พื้น .4→.65) */nodeLife:5,sentries,fire,radius,range,orbLife:Math.min(6,(range+radius)/TARO_BL_SPEED),overload:1.5*Math.min(2,rank('p_sentry_overload')),link:.8*Math.min(2,rank('p_sentry_link'))};
 }
-const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_ARC_LOOP_MAX=2,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=3,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=145,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=60,TARO_SENTRY_MAX=3,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
+const TARO_ARC_JUMP=180,TARO_ARC_STARTER=.75,TARO_ARC_LOOP=.6,TARO_ARC_LOOP_MAX=2,TARO_SHOCK_MAX=5,TARO_SHOCK_PER=.05,TARO_SHOCK_LIFE=3,TARO_OVER_R=150,TARO_OVER_TIME=3,TARO_NEEDLE_SPEED=950,TARO_NEEDLE_POWER=1.35,TARO_BL_TICK=.15,TARO_BL_SPEED=145,TARO_BL_MAX_ZAPS=6,TARO_ORB_HIT_GAP=.13,TARO_SENTRY_LEASH=350,TARO_ORB_CAP=36,TARO_SENTRY_MAX=3,TARO_OVERCHARGE=1.5,TARO_LINK_RANGE=420,TARO_BEACON_STRIKE_R=200;   // v7.8.19 Sentry fixes
 // v7.8.60 เจ้าของ: ดาวรายด่าน 3 ดวง (ภารกิจ) · บันทึก Save.data.stageStars[idx] = bitmask สูงสุดที่เคยได้ · ดาวใหม่ = Sugar โบนัส × รางวัลความยาก (กฎเหล็ก)
 const STAGE_STARS=[{name:'Clear the stage'},{name:'Finish with 70%+ HP'},{name:'Never drop below 30% HP'}],STAGE_STAR_SUGAR=30;
 const LEVELUP_DELAY_MS=650;   // v7.8.58 หน่วงก่อนเปิดการ์ดเลเวลอัพ
@@ -12020,12 +12021,12 @@ class Game extends Phaser.Scene {
       this.ensureGroup(k=>/^(login_|day_reward|l30_)/.test(k),()=>{this._loginArtLoading=false;this._loginArtTriedAt=Date.now();if(this.state==='menu'&&this.menuScreen===screen)this.loginPopup(from);},{all:true,quiet:true});return;}
     const W=this.W,H=this.H,cal=LoginCal.data(),cur=((cal.i%LOGIN_DAYS)+LOGIN_DAYS)%LOGIN_DAYS,c=this.add.container(0,0); c._menuBackdrop=true; this.menu.add(c); this._loginC=c;Sfx.menuCue?.('login_open',.32);
     const dim=this.add.rectangle(0,0,W,H,0x07040c,.82).setOrigin(0); c.add(dim);
-    const COLS=6,ROWS=Math.ceil(LOGIN_DAYS/COLS),GAP=6,pw=Math.min(W-24,400),cell=Math.max(30,Math.min(Math.floor((pw-28-(COLS-1)*GAP)/COLS),Math.floor((H-24-170-(ROWS-1)*GAP)/ROWS))),ph=ROWS*cell+(ROWS-1)*GAP+170,px=(W-pw)/2,py=Math.max(12,(H-ph)/2-10),g=this.add.graphics();
+    const wk=Math.floor(cur/7),wS=wk*7,wE=Math.min(LOGIN_DAYS,wS+7),wN=wE-wS,COLS=4,ROWS=Math.ceil(wN/COLS),GAP=6,pw=Math.min(W-24,400),cell=Math.max(30,Math.min(Math.floor((pw-28-(COLS-1)*GAP)/COLS),Math.floor((H-24-220-(ROWS-1)*GAP)/ROWS),84)),ph=ROWS*cell+(ROWS-1)*GAP+220,px=(W-pw)/2,py=Math.max(12,(H-ph)/2-10),g=this.add.graphics();
     g.fillStyle(0x241a30,1).fillRoundedRect(px,py,pw,ph,18).lineStyle(2.5,0xffd166,1).strokeRoundedRect(px,py,pw,ph,18); c.add(g);const l30=!!this.menuArtPanel?.('l30_panel',0,px,py,pw,ph,c),paper=l30||!!this.menuArtPanel?.('login_panel',0,px,py,pw,ph,c);if(paper)g.clear();   /* v8.1.43 ใบ 65 · ไม่มีภาพใหม่ = ภาพใบ 51 / วาดเอง */
     if(l30){this.menuArtIcon?.('l30_header',0,W/2,py+16,300,75,c);if(W>=340)this.menuArtIcon?.('l30_ruby',0,px+pw-24,py-2,92,92,c);}   /* v8.1.52 menuArtIcon วางจากจุดกึ่งกลาง (เดิมส่งมุมซ้ายบน → เลื่อนซ้าย/ขึ้น) */
     const T=(x,y,t,sz,col,st,ox=.5)=>{ const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:paper?this.menuArtInk(col):col||'#fff',align:'center'}).setOrigin(ox,.5); c.add(q); return q; };
     {const tt=T(W/2,py+(l30?14:24),l30?'Daily Login':'📅 Daily Login',19,'#ffe08a','bold');if(l30)tt.setColor('#fff4dc').setStroke('#5a2340',3);} T(W/2,py+(l30?54:46),'Day '+(cur+1)+' of '+LOGIN_DAYS+' · a new gift every day',11,'#cfc2d5');
-    const cells=[]; LOGIN_CAL.forEach((r,j)=>{ const row=Math.floor(j/COLS),col=j%COLS,big=!!r.big,cw=cell,gw=COLS*cell+(COLS-1)*GAP,x=px+(pw-gw)/2+col*(cell+GAP),y=py+(l30?70:64)+row*(cell+GAP),done=j<cur,today=j===cur,cg=this.add.graphics();
+    const cells=[]; LOGIN_CAL.forEach((r,j)=>{ if(j<wS||j>=wE)return; const k=j-wS,row=Math.floor(k/COLS),col=k%COLS,rn=row===0?Math.min(COLS,wN):wN-COLS,big=!!r.big,cw=cell,gw=rn*cell+(rn-1)*GAP,x=px+(pw-gw)/2+col*(cell+GAP),y=py+(l30?70:64)+row*(cell+GAP),done=j<cur,today=j===cur,cg=this.add.graphics();
       cg.fillStyle(today?0x5a3d1a:done?0x1f3328:0x1a1422,1).fillRoundedRect(x,y,cw,cell,10).lineStyle(big?3:2,today||big?0xffd166:done?0x7fe3a8:0x4a4059,1).strokeRoundedRect(x,y,cw,cell,10); c.add(cg);if(paper)cg.clear().fillStyle(0xf3e4cc,1).fillRoundedRect(x,y,cw,cell,12);if((l30&&(big?this.menuArtIcon?.('l30_cell30',done?1:0,x+cw/2,y+cell/2,cw,cell,c):this.menuArtIcon?.('l30_cell',today?1:done?2:r.k==='gold'?3:0,x+cw/2,y+cell/2,cw,cell,c)))||this.menuArtPanel?.('login_cell',today?1:done?2:0,x,y,cw,cell,c))cg.clear();if(today)(l30&&this.menuArtFx?.('l30_today_fx',x+cw/2,y+cell/2,cell*1.22,{parent:c,loop:true}))||this.menuArtFx?.('login_glow',x+cw/2,y+cell/2,cell*1.18,{parent:c,loop:true});
       T(x+cw/2,y+Math.max(7,cell*.18),(cell<44||l30)?String(j+1):'Day '+(j+1),cell<44?8:9,today?'#ffe08a':'#a89cb6','bold');
       const ck=r.k==='silver'?'chest_silver':r.k==='gold'?'chest_gold':null,isz=cell*.42; let ic;
@@ -12034,8 +12035,12 @@ class Game extends Phaser.Scene {
       ic.setAlpha(done?.45:1); c.add(ic); T(x+cw/2,y+cell-Math.max(7,cell*.16),r.k==='silver'||r.k==='gold'?(cell<48?(r.k==='gold'?'Gold':'Silver'):r.name):'+'+LoginCal.amount(r),cell<48?8:r.k==='silver'||r.k==='gold'?9:10,done?'#7fe3a8':'#ffffff','bold');
       if(done&&!(l30&&this.menuArtIcon?.('l30_stamp',0,x+cw-cell*.24,y+cell*.24,cell*.56,cell*.56,c))&&!this.menuArtIcon?.('login_stamp',0,x+cw-cell*.24,y+cell*.24,cell*.46,cell*.46,c))T(x+cw-10,y+10,'✓',12,'#7fe3a8','bold');
       if(today&&this.tweens)this.tweens.add({targets:ic,scaleX:ic.scaleX*1.12,scaleY:ic.scaleY*1.12,duration:480,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-      cells.push({x,y,cw}); });
-    const ny=py+(l30?70:64)+ROWS*cell+(ROWS-1)*GAP+14; T(W/2,ny,'Missed a day? No problem — the calendar just waits for you.',10,'#a89cb6');
+      cells[j]={x,y,cw}; });
+    const ny=py+(l30?70:64)+ROWS*cell+(ROWS-1)*GAP+14;   /* v8.1.53 เจ้าของ: 30 วันแต่แสดงทีละสัปดาห์ (ช่องใหญ่ขึ้น) + แถบความคืบหน้าไปวันที่ 30 */
+    { const bw2=pw-96,bx2=px+30,bg2=this.add.graphics(); bg2.fillStyle(0x3a2a40,.35).fillRoundedRect(bx2,ny+4,bw2,12,6).fillStyle(0xffb020,1).fillRoundedRect(bx2,ny+4,Math.max(12,bw2*cur/LOGIN_DAYS),12,6); c.add(bg2);
+      T(bx2,ny-8,'Week '+(wk+1)+' of '+Math.ceil(LOGIN_DAYS/7)+' · '+cur+' / '+LOGIN_DAYS,10,'#cfc2d5','bold',0);
+      const gx=bx2+bw2+30,gy=ny+8; if(!(l30&&this.menuArtIcon?.('l30_reward30',0,gx,gy,40,40,c)))T(gx,gy,'🎁',22); T(gx,gy+26,'Day '+LOGIN_DAYS,9,'#ffe08a','bold'); }
+    T(W/2,ny+44,'Missed a day? No problem — the calendar just waits for you.',10,'#a89cb6');
     const bw=Math.min(pw-40,240),bh=46,bx=W/2-bw/2,by=py+ph-bh-18,bg=this.add.graphics(); bg.fillStyle(0xffb020,1).fillRoundedRect(bx,by,bw,bh,14).fillStyle(0xffffff,.2).fillRoundedRect(bx+3,by+3,bw-6,bh*.42,10); c.add(bg);let btnArt=l30?this.menuArtPanel?.('l30_button',0,bx,by,bw,bh,c):null;if(btnArt)bg.clear();
     const bt=T(W/2,by+bh/2,'🎁 Claim Day '+(cur+1),16,'#21131a','bold'); const t0=Date.now();
     this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<600)return; const res=from==='preview'?{i:cur,lines:['Preview only · next gift tomorrow']}:LoginCal.claim(); this.tapZones=[]; if(!res){ c.destroy(); this._loginC=null; this.buildMenuScreen(); return; }

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.52**. Next release:8.1.53. Fetch the deploy branch before new work.
+Current release: **8.1.53**. Next release:8.1.54. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.52 — Daily Login layout fix (owner screenshot)
+# Latest delivery: v8.1.53 — weekly Daily Login + Taro Sentry nerf (owner)
+
+loginPopup shows only the current week (wS..wE of LOGIN_CAL, 4 per row, cells ≤84px), progress bar 'Week n of 5 · cur/30' with Day-30 chest icon; cells stored as cells[j] for the claim FX; LOGIN_DAYS stays 30. Taro Sentry (taroSwarmProfile non-smite): pulse max(.65, unitC*1.15/fire) (was .4, .84) and TARO_ORB_CAP 60→36 — owner: standing still cleared stages.
+
+# Previous delivery: v8.1.52 — Daily Login layout fix (owner screenshot)
 
 menuArtIcon/tuImg place by CENTER (origin .5), menuArtPanel by top-left. loginPopup passed top-left to l30_header/l30_ruby/l30_cell/l30_cell30 → shifted up-left. Now centers: header (W/2, py+16), Ruby (px+pw-24, py-2), cells (x+cw/2, y+cell/2); title y py+14; l30 cells show number only.
-
-# Previous delivery: v8.1.51 — mission loot burst (owner, POE-style ground loot)
-
-completeWaveObjective → missionLootBurst(o, sugar incl. bonus): takes the mission Sugar back off sugarStage/Run and spawns 4–6 loots dropType 'sugar' (sugarVal, ic_sugar) at missionPoint (capture zone / clean air / wisp / player), 1 forgeCurrency material, and if ⭐ bonus ok a spawnLoot gear box forced ≥Rare (_lootMinRare; boost 2 in ch3/endgame else 1). Pieces scatter by tween, auto-magnet after 6s; clearPickups(true) credits uncollected sugar. collectLoot handles 'sugar'. loots maxSize 12→20; random field gear 10%→8%; spawnLoot now returns g. Test mission-loot.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
