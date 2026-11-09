@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.61';
+const GAME_VERSION = '8.1.62';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.62',date:'2026-11-09',title:'Colossus Fist vs jumping bosses',items:['Colossus Fist boss damage +50% (1.5/3/4.5/7.5% of boss max HP by Rage)','Reaches bosses 1.5× farther than the slam ring','A boss that leaps away still gets hit by a seeking ground crack (80% slam + half the % damage)']},
   {v:'8.1.61',date:'2026-11-09',title:'Smaller Colossus charge aura',items:['Cocoa’s Colossus Fist charge aura now sits small under her feet; it still grows and changes colour as Rage rises']},
   {v:'8.1.60',date:'2026-11-09',title:'Ruby speaks in tips',items:['Ruby’s pointer tips now play her voice when a recording exists, instead of only a mumble']},
   {v:'8.1.59',date:'2026-11-09',title:'Cosmetics in stages',items:['Painted wings, pets, halos and rings now also show in stages (they were being unloaded when a stage started)']},
@@ -18896,7 +18897,10 @@ class Game extends Phaser.Scene {
     if(this._healAura&&this._healAura.active)this._healAura.destroy(); const fx=this.spawnFxAnim('growth_unlock',p.x,p.y-12,{scale:240/256,depth:p.depth+1,anchor:'center',normal:true}); if(!fx)return; fx.setTint(0x8dffb0); if(fx.anims)fx.anims.timeScale=.6; this._healAura=fx; this.trackArtVfx?.(fx);
     const follow=()=>{ if(!fx.active||!p.active){ this.events.off('postupdate',follow); return; } fx.setPosition(p.x,p.y-12); }; this.events.on('postupdate',follow); }
   // v7.6.12 เจ้าของเลือก A: Colossus Fist ใส่บอส/มินิในวงเพิ่ม % Max HP ตาม Rage 1/2/3/4 = 1/2/3/5% (มินิครึ่งเดียว) — โตตามด่านเอง · ไม่คริ/ไม่คูณ powerMul · Phase Gate ยังมีผล
-  titanPctSlam(x,y,r,lv){ const pct=[0,.01,.02,.03,.05][Math.min(4,lv|0)]||0; if(!pct)return; this.enemies.children.iterate(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini)||this.dist(e.x,e.y,x,y)>r+(e.body?.halfWidth||0))return; if(e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
+  /* v8.1.62 เจ้าของ: บอสกระโดดหนีวง → รอยแยกแผ่นดินวิ่งไปหาบอส/มินิที่อยู่นอกวง (ไม่เกิน 3 เท่ารัศมี) ตัวใกล้สุด 1 ตัว · ดาเมจ 80% ของทุบ + %HP ครึ่งหนึ่ง */
+  titanSeek(x,y,r,lv,dmg){ let best=null,bd=Infinity; this.enemies?.children?.iterate?.(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini))return; const d=this.dist(e.x,e.y,x,y),hw=e.body?.halfWidth||0; if(d<=r*1.5+hw||d>r*3+hw)return; if(d<bd){bd=d;best=e;} }); if(!best)return null;
+    const t=best,tx=t.x,ty=t.y; this.cocoaVisual?.((x+tx)/2,(y+ty)/2,Math.max(40,bd/2),'wave',0xd59b65); this.cocoaLater?.(.25,()=>{ if(!t.active||t._phaseGateLocked||(t._phaseInvuln||0)>0)return; this.damage(t,dmg*.8,t.x,t.y); const pct=[0,.015,.03,.045,.075][Math.min(4,lv|0)]*.5; if(pct){ const was=this._frDmg; this._frDmg=true; try{ this.damage(t,(t.maxhp||t.hp||0)*pct*(t.isMini&&!t.isBoss?.5:1),t.x,t.y-30); }finally{ this._frDmg=was; } } this.bpFx?.('bpx_cocoa_shockwave',t.x,t.y,140); this.screenShake?.(80,.004); Sfx.bp?.('uq_titan_aftershock',.5,.2,1.1); }); return t; }
+  titanPctSlam(x,y,r,lv){ const pct=[0,.015,.03,.045,.075][Math.min(4,lv|0)]||0; if(!pct)return; this.enemies.children.iterate(e=>{ if(!e||!e.active||!(e.isBoss||e.isMini)||this.dist(e.x,e.y,x,y)>r*1.5+(e.body?.halfWidth||0))return;   /* v8.1.62 เจ้าของ: สู้บอสกระโดดยาก → %HP +50% (1.5/3/4.5/7.5%) · ระยะถึงบอส ×1.5 */ if(e._phaseGateLocked||(e._phaseInvuln||0)>0)return;
       const was=this._frDmg; this._frDmg=true; try{ this.damage(e,(e.maxhp||e.hp||0)*pct*(e.isMini&&!e.isBoss?.5:1),e.x,e.y-30); }finally{ this._frDmg=was; } }); }
   titanSlamRadius(rage){ const b=this.basicAttack,ul=this.uniqueLevel||1,size=Math.min(1.8,1+(b?.ranks?.size||0)*.12+(b?._pm?.range||0))*(this.player?.donutImpact?1.15:1),r=Math.max(0,rage||0),b0=(150+ul*12)*size;
     if(r<=3)return b0*(1+r*.22); const lo=b0*1.66,hi=Math.max(lo,600*Math.min(1.3,size)); return lo+(hi-lo)*(Math.min(4,r)-3); }   // v7.6.10 Rage 4 = เกือบทั้งจอ
@@ -19105,7 +19109,7 @@ class Game extends Phaser.Scene {
         if(t&&(t.isBoss||t.isMini))for(let k=0;k<stick;k++)this.cocoaLater(.75+k*.35,()=>{if(!t.active)return;this.cocoaHit(t.x,t.y,r*.8,unit*.7,{push:0});this.bpFx?.('bpx_cocoa_stick',t.x,t.y,r*1.8);this.cocoaVisual(t.x,t.y,r*.8,'wave',0xff6a1a);this.screenShake?.(70,.003);Sfx.bp?.('cocoa_rocket_stick_burst',.5,.1);});}
     }else if(path==='titan'){
       const lv=this.titanRageSpend(this._titanRelease||0),rm=TITAN_RAGE_MUL[lv]*(b?.mutation==='bloodpact'?1.3:1)*(1+this.ptv('trRel'))*(lv>0&&lv>=this.titanMaxLv()&&this.ptv('rage4')?1.3:1),x=p.x,y=p.y,r=this.titanSlamRadius(lv),mark=this.cocoaMark(x,y,r);this._cocoaUniqueT=.8;this.bpPose?.(this.textures?.exists?.('char_cocoa_titan_motion823')?'char_cocoa_titan_motion823':'char_cocoa_titan_colossus',.7);Sfx.bp?.('uq_titan_drop',.6,.2);
-      this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*1.0*rm,{center:3.6,push:260+lv*80});this.titanPctSlam?.(x,y,r,lv);this.startHeroRegen?.(3+lv*1.5,(.008+.006*lv)*(this.ptv('rage4')?2:1),'🗿 Titan Recovery');if(!(lv===0&&this.heroFx?.('bpx_cocoa_titan_slam',x,y,r*2/.9,{must:true,depth:6})))this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
+      this.cocoaLater(.35,()=>{this.cocoaUnmark(mark);this.cocoaHit(x,y,r,unit*1.0*rm,{center:3.6,push:260+lv*80});this.titanPctSlam?.(x,y,r,lv);this.titanSeek?.(x,y,r,lv,unit*rm);this.startHeroRegen?.(3+lv*1.5,(.008+.006*lv)*(this.ptv('rage4')?2:1),'🗿 Titan Recovery');if(!(lv===0&&this.heroFx?.('bpx_cocoa_titan_slam',x,y,r*2/.9,{must:true,depth:6})))this.cocoaVisual(x,y,r,'fist',0xd59b65);if(lv>0&&lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_slam_full',.8,.3);else Sfx.bp?.('cocoa_colossus_slam',.72,.15);if(lv>0)this.titanRageImpact(x,y,r,lv,b);else this.screenShake(130,.005);
         if(b?.mutation==='quakestun')this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)this.applyFreeze(e,1.5,false);});
         if(this.cocoaHasInf('sour')){const until=(this.elapsed||0)+4;this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,x,y)<r)e._titanMarkT=until;});}
         if(lv>=3&&b?.evolved){this.enemies.children.iterate(e=>{if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<900&&!(e._phaseGateLocked||e._phaseInvuln>0))this.damage(e,unit*.85*rm*.5,e.x,e.y);});p.hp=Math.min(p.maxhp,p.hp+p.maxhp*.1);this.screenFlash?.(0xffd27a,.35,260);}

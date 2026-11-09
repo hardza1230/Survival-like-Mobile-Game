@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.61**. Next release:8.1.62. Fetch the deploy branch before new work.
+Current release: **8.1.62**. Next release:8.1.63. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.61 — Cocoa Titan charge aura under the feet (owner)
+# Latest delivery: v8.1.62 — Colossus Fist boss buff (owner: hard vs jumping bosses)
+
+titanPctSlam pct 1.5/3/4.5/7.5% (was 1/2/3/5) and boss reach r×1.5. New titanSeek(x,y,r,lv,unit*rm): nearest boss/mini between 1.5r and 3r gets a ground crack after 0.25 s: 80% slam damage + half the % share (no crit). Test titan-pct-slam updated.
+
+# Previous delivery: v8.1.61 — Cocoa Titan charge aura under the feet (owner)
 
 bpx_cocoa_rage aura (titan rage tick) was 120–192px centred on the body; now (58+11·rage)px wide, half height, at the feet (p.y + 0.42·displayHeight). Rage level texture swap (colour) and growth kept; slam-range preview ring unchanged.
-
-# Previous delivery: v8.1.60 — rubyGuide voiced + audio order A11 merged (owner)
-
-rubyGuide (pointer tips + storybook fallback) now calls voiceLine('ruby', line) per page and only blips when no recording. Audio orders merged into docs/audio_orders/A11_NEW_SCREENS_SFX.md (52 files): A Sesame spells (from A10, approved), B silent-screen SFX 26, C missing voice 6 (Ruby objective-complete line, rank/star tips; vo_sesame_unlock new line awaiting owner OK — wire as voiceKey on the last MOTION_COMICS.s10 shot, do not add a shot: story-motion-art test locks 4 shots). Art order 68 (Sesame runes part 2) written.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
