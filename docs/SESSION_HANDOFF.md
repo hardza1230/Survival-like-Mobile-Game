@@ -1,6 +1,6 @@
-# In progress — Wardrobe source art orders 66 and 67 (2026-11-09)
+# Current checkpoint — Wardrobe source art orders 66 and 67 (2026-11-09)
 
-Owner requested both orders. Prepared 8 + 18 original ImageGen sprite sheets in assets/incoming/cosmetics and cosmetics2, including matching store atlases assembled from generated art, manifests, prompts, QA and animation previews. Preserved sources; generated black-background dash/pop, transparent other assets and reduced aura/sugar wing opacity. Last star-pop frame is black for fade-out. Source-only; runtime and mobile review remain. Exact frame alignment, dimensions, icons and source preservation being checked before committing/pushing; fetch deploy branch before publishing.
+Owner requested both orders. Delivered 8 + 18 original ImageGen sprite sheets, store atlases, retained sources, prompts, manifests, QA and animation previews in assets/incoming/cosmetics and cosmetics2. Store icons come from matching artwork; dash/pop are black-background, other assets transparent, aura/selected wings semitransparent. Last star-pop frame is black for fade-out. All 94 delivery files passed immutable readback; source commit 1936d33f6b67cb09fcf9e4382b216daa1d4804fe. Source-only: runtime wiring, actual frame smoothness, tint appearance, gameplay and mobile review remain. Fetch deploy branch before future work.
 
 # Current checkpoint — Art 65 and audio A09 source delivery (2026-11-08)
 
