@@ -3597,3 +3597,8 @@ menuArtIcon/tuImg place by CENTER (origin .5), menuArtPanel by top-left. loginPo
 
 loginPopup shows only the current week (wS..wE of LOGIN_CAL, 4 per row, cells ≤84px), progress bar 'Week n of 5 · cur/30' with Day-30 chest icon; cells stored as cells[j] for the claim FX; LOGIN_DAYS stays 30. Taro Sentry (taroSwarmProfile non-smite): pulse max(.65, unitC*1.15/fire) (was .4, .84) and TARO_ORB_CAP 60→36 — owner: standing still cleared stages.
 
+
+# v: v8.1.54 — Wardrobe 7 slots + dyes, code ahead of art 67 (owner)
+
+COS_SLOTS wings/pet/trail/halo/aura/dash/pop; COSMETICS 28 (art 66 + 67 items; icon:[sheet,frame], trails tk/tf numeric frames). COS_DYES 5 free tints (Cos.dye/tint/col/nextDye; owned card alt button '🎨'). buildWardrobe has slot tabs (_cosTab). Stage: cosSetup builds wings/pet/halo/aura (placeholder graphics/emoji, setTint on art), tickCos moves them + trail + dash FX (detected via _lastDashAt change because doDash is hash-locked); mochiPop adds pop FX/burst when a pop cosmetic is worn. Lobby: lobbyCos aura/wings/pet/trail + lobbyCosHalo drawn next frame on top of the hero. Order 67 doc updated with code notes.
+

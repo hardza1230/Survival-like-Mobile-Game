@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.55';
+const GAME_VERSION = '8.1.56';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.56',date:'2026-11-09',title:'Painted Wardrobe',items:['All 28 cosmetics now use painted, animated art: wings, pets, trails, halos, rings, dash and pop effects','Dyes tint the painted art too']},
   {v:'8.1.55',date:'2026-11-09',title:'Rankings',items:['New Ranks tab in Rewards: Richest, Hero Levels, Weave Rank, Stage Stars, Monster Slayer, Collector, Treasure Seeker and Fashion Star','Pick your own ranking name','Rankings show as offline until the online service is switched on']},
   {v:'8.1.54',date:'2026-11-09',title:'Bigger Wardrobe',items:['Wardrobe now has 7 slots: Wings, Pets, Trails, Halos, Rings, Dash and Pops','28 cosmetics in total, sorted into tabs','Dye any cosmetic you own in 5 colours for free','Placeholder looks until the painted art arrives']},
   {v:'8.1.53',date:'2026-11-09',title:'Weekly Daily Login and Taro tuning',items:['Daily Login shows one week at a time with bigger boxes, a progress bar and the Day 30 chest','Taro Sentry Build: sentries fire Ball Lightning about 35% slower and fewer balls can be out at once']},
@@ -3227,6 +3228,33 @@ const BOSS_OUTLINE814_MAP={"vfx_b06_impact":"vfx814_b06_impact","vfx_b06_wave":"
 const BOSS_OUTLINE815_MAP={"vfx_b11_impact":"vfx815_b11_impact","vfx_b11_wave":"vfx815_b11_wave","vfx_b11_lane":"vfx815_b11_lane","vfx_b11_scythe_cut":"vfx815_b11_scythe_cut","vfx_b12_impact":"vfx815_b12_impact","vfx_b12_wave":"vfx815_b12_wave","vfx_b12_lane":"vfx815_b12_lane","vfx_b12_wither_pull":"vfx815_b12_wither_pull","vfx_b13_impact":"vfx815_b13_impact","vfx_b13_wave":"vfx815_b13_wave","vfx_b13_lane":"vfx815_b13_lane","vfx_b13_prism_beam":"vfx815_b13_prism_beam","vfx_b14_impact":"vfx815_b14_impact","vfx_b14_wave":"vfx815_b14_wave","vfx_b14_lane":"vfx815_b14_lane","vfx_b14_vault_ring":"vfx815_b14_vault_ring","vfx_b15_impact":"vfx815_b15_impact","vfx_b15_wave":"vfx815_b15_wave","vfx_b15_lane":"vfx815_b15_lane","vfx_b15_root_cage":"vfx815_b15_root_cage","vfx_bpin_impact":"vfx815_bpin_impact","vfx_bpin_wave":"vfx815_bpin_wave","vfx_bpin_lane":"vfx815_bpin_lane","vfx_bpin_maw":"vfx815_bpin_maw","vfx_b11_harvest_moon":"vfx815_b11_harvest_moon","vfx_b11_stampede_trail":"vfx815_b11_stampede_trail","vfx_b12_nectar_drip":"vfx815_b12_nectar_drip","vfx_b12_empty_heart":"vfx815_b12_empty_heart","vfx_b13_dome_shard":"vfx815_b13_dome_shard","vfx_b14_last_seed":"vfx815_b14_last_seed","vfx_b15_seed_tile":"vfx815_b15_seed_tile","vfx_b15_crown_sweep":"vfx815_b15_crown_sweep","vfx_b15_first_bloom":"vfx815_b15_first_bloom","vfx_bpin_jaw_ring":"vfx815_bpin_jaw_ring","vfx_bpin_tongue":"vfx815_bpin_tongue","vfx_bpin_eclipse":"vfx815_bpin_eclipse"};
 const BOSS_SHOT817_MAP={"bshot_01":"bshot_anim817_01","bshot_02":"bshot_anim817_02","bshot_03":"bshot_anim817_03","bshot_04":"bshot_anim817_04","bshot_05":"bshot_anim817_05","bshot_06":"bshot_anim817_06","bshot_07":"bshot_anim817_07","bshot_08":"bshot_anim817_08","bshot_09":"bshot_anim817_09","bshot_10":"bshot_anim817_10","bshot_11":"bshot_anim817_11","bshot_12":"bshot_anim817_12","bshot_13":"bshot_anim817_13","bshot_14":"bshot_anim817_14","bshot_15":"bshot_anim817_15","bshot_pin":"bshot_anim817_pin"};
 const ASSET_FX = {
+  // v8.1.56 ใบ 66+67 Wardrobe (scripts/pack-cosmetics.py · lazy: Wardrobe/Lobby/ชิ้นที่สวมตอนเริ่มด่าน)
+  cos_wing_cream:{url:'assets/art/cosmetics/cos_wing_cream.webp',fw:160,fh:128,frames:6,rate:8,anchor:'center',loop:true},
+  cos_wing_sugar:{url:'assets/art/cosmetics/cos_wing_sugar.webp',fw:160,fh:128,frames:6,rate:8,anchor:'center',loop:true},
+  cos_wing_ruby:{url:'assets/art/cosmetics/cos_wing_ruby.webp',fw:160,fh:128,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_mochi:{url:'assets/art/cosmetics/cos_pet_mochi.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_turtle:{url:'assets/art/cosmetics/cos_pet_turtle.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_bird:{url:'assets/art/cosmetics/cos_pet_bird.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
+  cos_trail:{url:'assets/art/cosmetics/cos_trail.webp',fw:48,fh:48,frames:3,rate:8,anchor:'center',loop:false},
+  cos_icons:{url:'assets/art/cosmetics/cos_icons.webp',fw:128,fh:128,frames:9,rate:8,anchor:'center',loop:false},
+  cos_halo_donut:{url:'assets/art/cosmetics/cos_halo_donut.webp',fw:96,fh:64,frames:6,rate:8,anchor:'center',loop:true},
+  cos_halo_crown:{url:'assets/art/cosmetics/cos_halo_crown.webp',fw:96,fh:64,frames:6,rate:8,anchor:'center',loop:true},
+  cos_halo_cloud:{url:'assets/art/cosmetics/cos_halo_cloud.webp',fw:96,fh:64,frames:6,rate:8,anchor:'center',loop:true},
+  cos_aura_candy:{url:'assets/art/cosmetics/cos_aura_candy.webp',fw:160,fh:80,frames:8,rate:8,anchor:'center',loop:true},
+  cos_aura_flower:{url:'assets/art/cosmetics/cos_aura_flower.webp',fw:160,fh:80,frames:8,rate:8,anchor:'center',loop:true},
+  cos_aura_star:{url:'assets/art/cosmetics/cos_aura_star.webp',fw:160,fh:80,frames:8,rate:8,anchor:'center',loop:true},
+  cos_dash_bubble:{url:'assets/art/cosmetics/cos_dash_bubble.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center',loop:false},
+  cos_dash_confetti:{url:'assets/art/cosmetics/cos_dash_confetti.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center',loop:false},
+  cos_dash_cream:{url:'assets/art/cosmetics/cos_dash_cream.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center',loop:false},
+  cos_pop_heart:{url:'assets/art/cosmetics/cos_pop_heart.webp',fw:96,fh:96,frames:5,rate:14,anchor:'center',loop:false},
+  cos_pop_sprinkle:{url:'assets/art/cosmetics/cos_pop_sprinkle.webp',fw:96,fh:96,frames:5,rate:14,anchor:'center',loop:false},
+  cos_pop_star:{url:'assets/art/cosmetics/cos_pop_star.webp',fw:96,fh:96,frames:5,rate:14,anchor:'center',loop:false},
+  cos_wing_rainbow:{url:'assets/art/cosmetics/cos_wing_rainbow.webp',fw:160,fh:128,frames:6,rate:8,anchor:'center',loop:true},
+  cos_wing_butterfly:{url:'assets/art/cosmetics/cos_wing_butterfly.webp',fw:160,fh:128,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_bunny:{url:'assets/art/cosmetics/cos_pet_bunny.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_jelly:{url:'assets/art/cosmetics/cos_pet_jelly.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
+  cos_trail2:{url:'assets/art/cosmetics/cos_trail2.webp',fw:48,fh:48,frames:3,rate:8,anchor:'center',loop:false},
+  cos_icons2:{url:'assets/art/cosmetics/cos_icons2.webp',fw:128,fh:128,frames:19,rate:8,anchor:'center',loop:false},
   bshot_anim817_01:{url:'assets/art/boss_shots817/bshot_anim817_01.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   bshot_anim817_02:{url:'assets/art/boss_shots817/bshot_anim817_02.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
   bshot_anim817_03:{url:'assets/art/boss_shots817/bshot_anim817_03.webp',fw:128,fh:128,frames:4,rate:8,anchor:'center',loop:true},
@@ -4407,7 +4435,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('ic_ses811_'))return 'sesame'; if(k.startsWith('minion_')||k.startsWith('yz_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:menu_orders|login30|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -13532,8 +13560,8 @@ class Game extends Phaser.Scene {
       this.bazaarProductCard(x,yy,cw,ch,{art:this.realTex?.(c.icon[0])?c.icon[0]:'ic_thread',name:c.name,desc:'',price:on?'✓ Wearing':own?'Wear':pend?'Tap again · 🧶 '+c.price:'🧶 '+c.price,color:on?0x7fe3a8:Cos.col(c),afford:own||Save.threads()>=c.price,fn:()=>this.cosTap(c),alt:own?{label:'🎨 '+COS_DYES[dy][0],fn:()=>{Cos.nextDye(c.id);Sfx.select?.();this.buildWardrobe();}}:null});
       const ic=this.menu.list.find(o=>o.texture?.key===c.icon[0]&&o._cosIcon==null&&o.x===x+cw/2); if(ic){ic._cosIcon=1;ic.setFrame?.(c.icon[1]);} 
       if(!this.realTex?.(c.icon[0])){ const sw=this.add.circle(x+cw-14,yy+14,7,Cos.col(c),1).setStrokeStyle(2,0xffffff,.8); this.menu.add(sw); } }); }
-  lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'),cy=footY-hh*.55;
-    const sp=(c,px,py,sz,fs)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(sz/fs); if(this.anims?.exists?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
+  lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; if(this.cosEnsure(()=>{ if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); }))return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'),cy=footY-hh*.55;
+    const sp=(c,px,py,sz,fs)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(sz/fs); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
     if(au){ let o=sp(au,x,footY-4,hh*.9,160); if(!o){ o=this.add.graphics(); const r=hh*.45; o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,r*2,r*.6).fillStyle(Cos.col(au),.14).fillEllipse(0,0,r*2,r*.6); o.setPosition(x,footY-4); } this.menu.add(o); this.tweens?.add({targets:o,alpha:.55,duration:1200,yoyo:true,repeat:-1}); }
     if(wg){ let o=sp(wg,x,cy,hh*.95,128); if(!o){ o=this.add.graphics(); const r=hh*.2,col=Cos.col(wg); o.fillStyle(col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(x,cy); }
       this.menu.add(o); this.tweens?.add({targets:o,scaleX:(o.scaleX||1)*1.06,duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
@@ -13542,16 +13570,18 @@ class Game extends Phaser.Scene {
     if(hl){ this._cosLobbyHalo={x,y:footY-hh*1.02,hh,c:hl}; const zs=this.tapZones; this.time?.delayedCall?.(0,()=>{ if(this.state==='menu'&&this.menuScreen==='hub'&&this.tapZones===zs)this.lobbyCosHalo(); else this._cosLobbyHalo=null; }); }   // ฮาโลต้องอยู่หน้าฮีโร่ → วาดหลังหน้าสร้างเสร็จ
     if(tr)this.hubEvery?.(450,300,()=>{ const sx=x+(Math.random()-.5)*hh*.5,sy=footY-4,o=this.realTex?.(tr.tk)?this.add.image(sx,sy,tr.tk,tr.tf).setScale(.4):this.add.circle(sx,sy,4,Cos.col(tr),.9); const t=Cos.tint(tr); if(t!=null&&o.setTint)o.setTint(t);
       this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
-  lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(h.hh*.42/96); if(this.anims?.exists?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
+  lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(h.hh*.42/96); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
     this.menu.add(o); this.tweens?.add({targets:o,y:h.y-5,duration:1300,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.select?.(); this._cosPend=null; this.buildWardrobe(); return; }
     if(this._cosPend!==c.id){ this._cosPend=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }
     this._cosPend=null; if(Cos.buy(c.id)){ Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
-  loadCosArt(){ if(this._cosArt||!this.ensureGroup||typeof ASSET_SHEETS==='undefined'||!(ASSET_SHEETS.cos_icons||ASSET_SHEETS.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_SHEETS.cos_icons2||this.realTex?.('cos_icons2')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_icons/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
+  loadCosArt(){ if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_icons/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
-  cosSetup(){ (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=this._cosH=this._cosA=null; this._cosDashSeen=undefined; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
+  cosNeedKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(!c)continue; const k=c.tk||('cos_'+c.id); if(ASSET_FX[k]&&!this.realTex?.(k)&&!(this._cosTried&&this._cosTried.has(k)))out.push(k); } return out; }
+  cosEnsure(after){ const need=this.cosNeedKeys(); if(!need.length||!this.ensureGroup||this._cosLoading)return false; this._cosLoading=true; (this._cosTried||(this._cosTried=new Set())); need.forEach(k=>this._cosTried.add(k)); try{ this.ensureGroup(k=>need.includes(k),()=>{ this._cosLoading=false; after&&after(); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosLoading=false; return false; } return true; }
+  cosSetup(){ if(this.state==='play'&&this.cosEnsure(()=>{ if(this.state==='play')this.cosSetup(); }))return; (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=this._cosH=this._cosA=null; this._cosDashSeen=undefined; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
     const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'); this._cosTrail=Cos.equipped('trail'); this._cosDash=Cos.equipped('dash'); this._cosPop=Cos.equipped('pop');
-    const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(p.x,p.y,k).setScale(sc); if(this.anims?.exists?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
+    const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(p.x,p.y,k).setScale(sc); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
     if(wg){ let o=sp(wg,.45); if(!o){ const col=Cos.col(wg); o=this.add.graphics(); o.fillStyle(col,.85).fillEllipse(-14,-4,24,34).fillEllipse(14,-4,24,34).lineStyle(2,0xffffff,.6).strokeEllipse(-14,-4,24,34).strokeEllipse(14,-4,24,34); } this._cosW=add(o); }
     if(pt){ let o=sp(pt,.4); if(!o)o=this.add.text(p.x,p.y,pt.emoji,{fontSize:'22px'}).setOrigin(.5); this._cosP=add(o); }
     if(hl){ let o=sp(hl,.42); if(!o){ o=this.add.graphics(); o.lineStyle(4,Cos.col(hl),.95).strokeEllipse(0,0,30,10).lineStyle(1.5,0xffffff,.8).strokeEllipse(0,-1,24,7); } this._cosH=add(o); }

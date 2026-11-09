@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.55**. Next release:8.1.56. Fetch the deploy branch before new work.
+Current release: **8.1.56**. Next release:8.1.57. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.55 — Rankings, code ready, server not set up (owner)
+# Latest delivery: v8.1.56 — art 66+67 Wardrobe wired (owner)
+
+scripts/pack-cosmetics.py: 26 sheets → assets/art/cosmetics/ (740 KB WebP; dash/pop black bg → luminance alpha so dyes tint them). Registered in ASSET_FX (fw/fh/frames, rate 8 loop / 14 once), lazy via LAZY_MENU_ART_RE 'cosmetics'. cosEnsure loads equipped sheets before cosSetup (stage) and lobbyCos (then rebuilds hub), each key tried once (_cosTried); Wardrobe icons via loadCosArt {fx:true}; anims via bpAnim. Test wardrobe checks all 26 files/keys.
+
+# Previous delivery: v8.1.55 — Rankings, code ready, server not set up (owner)
 
 BOARD_CATS 8 (sugar, hero levels from charProg, weave rank, stage stars bitmask, kills/species from bestiary, chestsOpened, cosmetics owned) + Board (name default Mochi#NNNN from uid, validName 3–14 ASCII + profanity, submit throttled 2 min from buildLobby, top(cat) + my place). Rewards tabs now 4 ('ranking' → buildRanking, category tabs, ✏️ Name via window.prompt). Supabase project mochi-mayhem is INACTIVE (paused) — owner chose 'code first'; table SQL with owner-only write RLS in docs/sql/leaderboard.sql, run it after restoring the project. Scores come from the local save, so they can be faked; server-side checks are future work. Test leaderboard.
-
-# Previous delivery: v8.1.54 — Wardrobe 7 slots + dyes, code ahead of art 67 (owner)
-
-COS_SLOTS wings/pet/trail/halo/aura/dash/pop; COSMETICS 28 (art 66 + 67 items; icon:[sheet,frame], trails tk/tf numeric frames). COS_DYES 5 free tints (Cos.dye/tint/col/nextDye; owned card alt button '🎨'). buildWardrobe has slot tabs (_cosTab). Stage: cosSetup builds wings/pet/halo/aura (placeholder graphics/emoji, setTint on art), tickCos moves them + trail + dash FX (detected via _lastDashAt change because doDash is hash-locked); mochiPop adds pop FX/burst when a pop cosmetic is worn. Lobby: lobbyCos aura/wings/pet/trail + lobbyCosHalo drawn next frame on top of the hero. Order 67 doc updated with code notes.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
