@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.60';
+const GAME_VERSION = '8.1.61';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.61',date:'2026-11-09',title:'Smaller Colossus charge aura',items:['Cocoa’s Colossus Fist charge aura now sits small under her feet; it still grows and changes colour as Rage rises']},
   {v:'8.1.60',date:'2026-11-09',title:'Ruby speaks in tips',items:['Ruby’s pointer tips now play her voice when a recording exists, instead of only a mumble']},
   {v:'8.1.59',date:'2026-11-09',title:'Cosmetics in stages',items:['Painted wings, pets, halos and rings now also show in stages (they were being unloaded when a stage started)']},
   {v:'8.1.58',date:'2026-11-09',title:'Sharper Lobby cosmetics',items:['Wings, halos and rings in the Lobby are no longer blown up past their sharp size']},
@@ -18868,7 +18869,7 @@ class Game extends Phaser.Scene {
     else{r=0;this._rageCharging=false;Sfx.bpLoopStop?.('uq_titan_charge');
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron+this.ptv('trRegen'))*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}
-    {const base=r>0.02?'bpx_cocoa_rage'+Math.min(3,Math.max(1,lv||1)):null,want=base?(this.battleOutlineKey?.(base)||base):null,au=this._rageAura;if(au&&(!au.active||au.texture.key!==want)){if(au.active)au.destroy();this._rageAura=null;}if(want&&!this._rageAura)this._rageAura=this.bpLoop?.(want,p.x,p.y,120,p.depth-1)||null;if(this._rageAura)this._rageAura.setPosition(p.x,p.y-10).setDepth(p.y-1).setScale((120+r*24)/256);}
+    {const base=r>0.02?'bpx_cocoa_rage'+Math.min(3,Math.max(1,lv||1)):null,want=base?(this.battleOutlineKey?.(base)||base):null,au=this._rageAura;if(au&&(!au.active||au.texture.key!==want)){if(au.active)au.destroy();this._rageAura=null;}if(want&&!this._rageAura)this._rageAura=this.bpLoop?.(want,p.x,p.y,120,p.depth-1)||null;if(this._rageAura){const fh=(p.displayHeight||56)*.42,sz=58+r*11;this._rageAura.setPosition(p.x,p.y+fh).setDepth(p.y-1).setScale(sz/256,sz*.5/256);}}   /* v8.1.61 เจ้าของ: ออร่าชาร์จเล็กลง อยู่ใต้เท้า (เดิม 120–192px รอบตัว) · ยังโตตามระดับ/เปลี่ยนสีตามเดิม */
     const G=this._rageG;G.clear();if(r<=0.02){this.titanRageArtOff?.();return;}
     const t=this.time.now/1000,col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347,rad=(34+r*12+Math.sin(t*(6+lv*4))*3)*.8;
     G.lineStyle(3+lv,col,.55+lv*.12).strokeCircle(p.x,p.y+6,rad);G.fillStyle(col,.08+lv*.05).fillCircle(p.x,p.y+6,rad);

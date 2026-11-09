@@ -3622,3 +3622,8 @@ GM_ENABLED/GM_CODE + GM (localStorage mochi_gm). Settings: tap bottom-right 70×
 
 Art 66/67 sheets are sized for the ~50px in-stage hero; the Lobby hero is ~380px so wings/halo/ring were blown up ~3× and looked broken. COS_LOBBY_MAX=1.6 caps lobbyCos/lobbyCosHalo sprite scale. Hi-res Lobby versions would need a new art order.
 
+
+# v: v8.1.59 — cosmetics art in stages (owner screenshot)
+
+Cause: texEvict dropped menu-class cos_* sheets on stage start, and cosEnsure had pre-marked them in _cosTried, so stages fell back to placeholders. Now texEvict skips cosWornKeys(), and _cosTried only records keys that still failed after a load.
+
