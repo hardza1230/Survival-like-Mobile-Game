@@ -16,7 +16,7 @@ assert.equal(n,103);
 // 2. ทุกฉากอ้างแต่ key ที่มีจริง · Sesame (s10) ไม่ผูก · hook map ตรงลำดับเรื่อง
 const known=k=>ASSET_IMAGES[k]||ASSET_FX[k];for(const [id,sc] of Object.entries(MOTION_COMICS)){ assert(sc.title&&sc.shots.length>=2,id);
   for(const sh of sc.shots){ assert(typeof sh.cap==='string'&&sh.cap.length>8&&!/[฀-๿]/.test(sh.cap),id+' caption'); (sh.bg||[]).forEach(k=>assert(ASSET_IMAGES[k],id+' bg '+k)); (sh.L||[]).forEach(l=>{ assert(known(l[0]),id+' layer '+l[0]); assert(l.length>=5&&l.slice(1,5).every(Number.isFinite),id+' layer geometry '+l[0]); }); } }
-assert.equal(MOTION_COMICS.s10.shots.length,4);assert.deepEqual(Object.keys(MOTION_COMICS).length,18);assert.equal(MOTION_COMICS.s10.shots[0].bg[0],'cs_s10_far_glass');
+assert.equal(MOTION_COMICS.s10.shots.length,5);   /* v8.1.65 + Sesame unlock voice shot like other heroes */assert.deepEqual(Object.keys(MOTION_COMICS).length,18);assert.equal(MOTION_COMICS.s10.shots[0].bg[0],'cs_s10_far_glass');
 // The post-rescue voice is subtitled with the exact selected clip; Sesame uses existing staged art.
 const voiceCatalog=JSON.parse(src.match(/const A07_CATALOG = (\{[^\n]+\});/)[1]);
 for(const id of ['s06','s07','s08','s09']){const shot=MOTION_COMICS[id].shots.at(-1);assert(shot.voiceKey&&voiceCatalog[shot.voiceKey]);assert.equal(shot.cap,voiceCatalog[shot.voiceKey].text);}

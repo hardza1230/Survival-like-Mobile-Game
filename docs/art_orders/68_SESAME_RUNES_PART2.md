@@ -1,6 +1,6 @@
 # 68 — Sesame ชุด 2: ปุ่มรูน · ลูกแก้ว · ไอคอนเวท 10 · ตราร่ายเวท 10 · ไอคอน Talent · ใบสั่งงานอาร์ต
 
-สถานะ: 🟢 ส่งครบ · รอผูกโค้ด · เขียน 9 พ.ย. 2026 · เจ้าของสั่ง (ต่อจากชุด sesame_invoker811 / sesame_vfx817)
+สถานะ: 🟢 ส่งครบ · ผูกแล้ว v8.1.65 (scripts/pack-sesame68.py → assets/art/sesame68/, hero-lazy) · รอ QA มือถือ
 ส่งไฟล์ที่ `assets/incoming/sesame68/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` และเข้าชุดกับภาพ Sesame เดิม (`assets/art/sesame_invoker811/`, `sesame_vfx817/`, Lobby `lobby_hero/sesame/`) · PNG32 alpha จริง · ห้ามตัวหนังสือ
 

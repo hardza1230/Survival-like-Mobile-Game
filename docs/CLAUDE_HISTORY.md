@@ -3642,3 +3642,8 @@ bpx_cocoa_rage aura (titan rage tick) was 120–192px centred on the body; now (
 
 titanPctSlam pct 1.5/3/4.5/7.5% (was 1/2/3/5) and boss reach r×1.5. New titanSeek(x,y,r,lv,unit*rm): nearest boss/mini between 1.5r and 3r gets a ground crack after 0.25 s: 80% slam damage + half the % share (no crit). Test titan-pct-slam updated.
 
+
+# v: v8.1.63 — tutorial ready for Ruby voice (owner)
+
+The first-stage coach (coachSteps) had no voice at all. showCoachIntro now calls voiceLine('ruby', body with newlines→spaces; welcome prefixed with its title) and drawCoachBubble voices step.say once per step (_coachSaid). Silent until recordings exist: A11 section C2 adds 15 lines (vo_ruby_tut_<id> ×9, vo_ruby_tut_<id>_go ×6); A11 total now 67.
+
