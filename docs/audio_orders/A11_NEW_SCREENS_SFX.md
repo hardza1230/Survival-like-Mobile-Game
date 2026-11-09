@@ -94,7 +94,8 @@ key `vo_sesame_spell_<code>` · เล่นแทนประโยครวม
 
 
 ---
-## ส่วน C — เสียงพากย์ที่หาย (6)
+## ส่วน C — เสียงพากย์ที่หาย (21)
+### C1 — ประโยคที่หาย (6)
 | key | ผู้พูด | บท | เล่นเมื่อ |
 |---|---|---|---|
 | `vo_ruby_objective_safe` | Ruby | We did it! Another little piece of flavor is safe. Nice work! | จบภารกิจในด่าน (`completeWaveObjective`) |
@@ -103,6 +104,28 @@ key `vo_sesame_spell_<code>` · เล่นแทนประโยครวม
 | `vo_ruby_guide_stars_1` | Ruby | Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP. | สอนดาวครั้งแรกที่ Lobby (ยาวได้ ≤ 5.5 วิ) |
 | `vo_ruby_guide_stars_2` | Ruby | New stars give bonus Sugar. Tap the stage box any time to replay a floor. | ต่อจากบรรทัดก่อน |
 | `vo_sesame_unlock` | Sesame | I remember now… let’s go together. | ฉาก S10 Sesame เข้าทีม (เทียบ `vo_mint_unlock`) |
+
+### C2 — Ruby บทสอนด่านแรก (15 · เพิ่ม 9 พ.ย. ตามเจ้าของถาม "เสียง Ruby ตอนสอนมีหรือยัง" → ยังไม่มีเลย)
+บทคือข้อความในเกมอยู่แล้ว (`coachSteps`) · หน้าอธิบาย = เนื้อหาการ์ด (ขึ้นบรรทัดใหม่ = เว้นวรรค) · คำสั่งสั้น = หัวการ์ดตอนทำ · โค้ดพร้อมแล้ว v8.1.63 (หาเสียงจากข้อความ)
+| key | บท |
+|---|---|
+| `vo_ruby_tut_welcome` | Hi, I’m Ruby! The Heart Seed broke your curse — you’re a person again! Let’s get you ready to save the others. |
+| `vo_ruby_tut_move` | Slide one finger to walk. Lift it to stop. |
+| `vo_ruby_tut_attack` | Your Heart Seed fights on its own. Just walk near the sour critters! |
+| `vo_ruby_tut_sweets` | Beaten foes drop stolen sweets. Walk over them to take them back! |
+| `vo_ruby_tut_cards` | Full EXP bar = 3 flavor cards. Tap one to read, tap again to take it. |
+| `vo_ruby_tut_dash` | Green button: zoom past danger. It needs a moment to recharge. |
+| `vo_ruby_tut_unique` | Pink button: your seed’s big attack. It charges up again over time. |
+| `vo_ruby_tut_hp` | HP at zero ends the stage. Pink mochi hearts heal you. |
+| `vo_ruby_tut_ready` | Training complete! Use your starter Sugar to upgrade one core, then enter the pantry. |
+| `vo_ruby_tut_move_go` | Slide your finger to walk |
+| `vo_ruby_tut_attack_go` | Defeat the enemies |
+| `vo_ruby_tut_sweets_go` | Pick up the sweets |
+| `vo_ruby_tut_cards_go` | Pick a card |
+| `vo_ruby_tut_dash_go` | TAP Dash two times |
+| `vo_ruby_tut_unique_go` | TAP your Unique |
+ความยาว: หน้าอธิบาย ≤ 6 วิ · คำสั่งสั้น ≤ 1.8 วิ · น้ำเสียงใจดี ชัด ช้ากว่าปกติเล็กน้อย (ผู้เล่นใหม่)
+
 ⚠️ บท `vo_sesame_unlock` เป็นบทใหม่ — **รอเจ้าของอนุมัติ** (บทอื่นในส่วน C เป็นข้อความที่อยู่ในเกมแล้ว)
 
 ---
@@ -111,8 +134,8 @@ key `vo_sesame_spell_<code>` · เล่นแทนประโยครวม
 |---|---|
 | A Sesame เวท (SFX 10 + เสียงพูด 10) | 20 |
 | B ฉากเงียบ SFX | 26 |
-| C เสียงพากย์ที่หาย | 6 |
-| **รวม** | **52** |
+| C เสียงพากย์ที่หาย (C1 6 + C2 บทสอน 15) | 21 |
+| **รวม** | **67** |
 
 ## ส่งมอบ
 `assets/incoming/audio_a11/` (แยกโฟลเดอร์ย่อย `sesame/`, `sfx/`, `voice/` ได้) + `MANIFEST.json` (key, file, bytes, sha256, duration_ms, kind sfx/voice, speaker, voice_id, text) + `PROMPTS.json` + `QA_REPORT.json`

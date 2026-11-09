@@ -3632,3 +3632,8 @@ Cause: texEvict dropped menu-class cos_* sheets on stage start, and cosEnsure ha
 
 rubyGuide (pointer tips + storybook fallback) now calls voiceLine('ruby', line) per page and only blips when no recording. Audio orders merged into docs/audio_orders/A11_NEW_SCREENS_SFX.md (52 files): A Sesame spells (from A10, approved), B silent-screen SFX 26, C missing voice 6 (Ruby objective-complete line, rank/star tips; vo_sesame_unlock new line awaiting owner OK — wire as voiceKey on the last MOTION_COMICS.s10 shot, do not add a shot: story-motion-art test locks 4 shots). Art order 68 (Sesame runes part 2) written.
 
+
+# v: v8.1.61 — Cocoa Titan charge aura under the feet (owner)
+
+bpx_cocoa_rage aura (titan rage tick) was 120–192px centred on the body; now (58+11·rage)px wide, half height, at the feet (p.y + 0.42·displayHeight). Rage level texture swap (colour) and growth kept; slam-range preview ring unchanged.
+

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.62';
+const GAME_VERSION = '8.1.63';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.63',date:'2026-11-09',title:'Tutorial voice ready',items:['The first-stage tutorial is ready for Ruby’s voice: each card and each instruction will be spoken once the recordings arrive']},
   {v:'8.1.62',date:'2026-11-09',title:'Colossus Fist vs jumping bosses',items:['Colossus Fist boss damage +50% (1.5/3/4.5/7.5% of boss max HP by Rage)','Reaches bosses 1.5× farther than the slam ring','A boss that leaps away still gets hit by a seeking ground crack (80% slam + half the % damage)']},
   {v:'8.1.61',date:'2026-11-09',title:'Smaller Colossus charge aura',items:['Cocoa’s Colossus Fist charge aura now sits small under her feet; it still grows and changes colour as Rage rises']},
   {v:'8.1.60',date:'2026-11-09',title:'Ruby speaks in tips',items:['Ruby’s pointer tips now play her voice when a recording exists, instead of only a mumble']},
@@ -16510,6 +16511,7 @@ class Game extends Phaser.Scene {
     const bh=Math.max(250,150+body.height+70),by=Math.max(40,(h-bh)/2-h*.04),g=this.add.graphics();
     const fr=this.tuHas('tut_card_frame')&&this.tuPanel('tut_card_frame',0,bx-8,by-30,bw+16,bh+84); if(fr)cont.add(fr); else{ g.fillStyle(0x000000,.4).fillRoundedRect(bx+4,by+6,bw,bh,22).fillStyle(0x2a1030,.98).fillRoundedRect(bx,by,bw,bh,22).lineStyle(3,0xffd166,1).strokeRoundedRect(bx,by,bw,bh,22); cont.add(g); }   // ใบ 38 กรอบการ์ด (ไม่มีภาพ = กรอบวาด)
     const av=this.rubyAvatar(w/2-40,by+78,78); if(av)cont.add(av);
+    this.voiceStop?.(); this.voiceLine?.('ruby',(step.id==='welcome'?step.title+' ':'')+String(step.body||'').replace(/\n/g,' '),()=>cont.active,cont);   // v8.1.63 Ruby พากย์บทสอน (ไม่มีไฟล์ = เงียบเหมือนเดิม)
     cont.add(this.add.text(bx+(fr?26:16),by+(fr?62:12),'STEP '+n+' / '+steps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffb3c8'}));
     const ik='tut_ic_'+step.id,hasIc=this.textures.exists(ik); if(hasIc){ const ic=this.add.image(bx+bw-(fr?58:52),by+(fr?88:52),ik); ic.setScale(72/Math.max(ic.width,ic.height)); cont.add(ic); }   // ใบสั่งอาร์ต 38 (ไอคอนประจำขั้น) · ไม่มีภาพ = ใช้อีโมจิในหัวข้อ
     const tt=this.add.text(w/2,by+96,(step.icon&&!hasIc?step.icon+' ':'')+step.title,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'26px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:5}).setOrigin(.5,0); if(tt.width>tw)tt.setScale(tw/tt.width); cont.add(tt);
@@ -16695,6 +16697,7 @@ class Game extends Phaser.Scene {
     { const av=this.rubyAvatar(bx-6,by+bh/2+28,52); if(av)cont.add(av); }   // v7.9.66 Ruby สอนทั้งบท (เดิมรูปสตรอว์เบอร์รี)
     const tx=bx+70,tw=bw-82;
     cont.add(this.add.text(tx,by+10,'STEP '+n+' / '+steps.length,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffb3c8'}).setOrigin(0,0));
+    if(step.say&&this._coachSaid!==step.id){this._coachSaid=step.id;this.voiceLine?.('ruby',step.say,()=>!!this._coach,this);}   // v8.1.63 พากย์ครั้งเดียวต่อขั้น (bubble วาดใหม่บ่อย)
     const title=this.add.text(tx,by+26,(step.icon?step.icon+' ':'')+step.say,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'22px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(0,0); if(title.width>tw)title.setScale(tw/title.width); cont.add(title);
     const sub=this.add.text(tx,by+58,step.sub||'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffffff',wordWrap:{width:tw}}).setOrigin(0,0); cont.add(sub);
     const goalStr=typeof step.goal==='function'?step.goal(this._coach):step.goal;
