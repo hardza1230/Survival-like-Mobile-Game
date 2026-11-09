@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.63**. Next release:8.1.64. Fetch the deploy branch before new work.
+Current release: **8.1.64**. Next release:8.1.65. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.63 — tutorial ready for Ruby voice (owner)
+# Latest delivery: v8.1.64 — C1-5 Great Hunger rings toned down (owner)
+
+bossSig '05_void_maw' 360/380→240/250 px, alpha .6; '05_eclipse' 900→620 px, alpha .9→.6 so the rings stop covering the boss. Hitboxes/pull unchanged.
+
+# Previous delivery: v8.1.63 — tutorial ready for Ruby voice (owner)
 
 The first-stage coach (coachSteps) had no voice at all. showCoachIntro now calls voiceLine('ruby', body with newlines→spaces; welcome prefixed with its title) and drawCoachBubble voices step.say once per step (_coachSaid). Silent until recordings exist: A11 section C2 adds 15 lines (vo_ruby_tut_<id> ×9, vo_ruby_tut_<id>_go ×6); A11 total now 67.
-
-# Previous delivery: v8.1.62 — Colossus Fist boss buff (owner: hard vs jumping bosses)
-
-titanPctSlam pct 1.5/3/4.5/7.5% (was 1/2/3/5) and boss reach r×1.5. New titanSeek(x,y,r,lv,unit*rm): nearest boss/mini between 1.5r and 3r gets a ground crack after 0.25 s: 80% slam damage + half the % share (no crit). Test titan-pct-slam updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

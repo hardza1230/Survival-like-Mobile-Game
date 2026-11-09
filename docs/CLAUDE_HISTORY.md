@@ -3637,3 +3637,8 @@ rubyGuide (pointer tips + storybook fallback) now calls voiceLine('ruby', line) 
 
 bpx_cocoa_rage aura (titan rage tick) was 120–192px centred on the body; now (58+11·rage)px wide, half height, at the feet (p.y + 0.42·displayHeight). Rage level texture swap (colour) and growth kept; slam-range preview ring unchanged.
 
+
+# v: v8.1.62 — Colossus Fist boss buff (owner: hard vs jumping bosses)
+
+titanPctSlam pct 1.5/3/4.5/7.5% (was 1/2/3/5) and boss reach r×1.5. New titanSeek(x,y,r,lv,unit*rm): nearest boss/mini between 1.5r and 3r gets a ground crack after 0.25 s: 80% slam damage + half the % share (no crit). Test titan-pct-slam updated.
+

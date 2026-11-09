@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.63';
+const GAME_VERSION = '8.1.64';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.64',date:'2026-11-09',title:'Calmer Great Hunger rings',items:['The Great Hunger’s Maw of the Void and Eclipse rings are smaller and more see-through so the boss stays visible']},
   {v:'8.1.63',date:'2026-11-09',title:'Tutorial voice ready',items:['The first-stage tutorial is ready for Ruby’s voice: each card and each instruction will be spoken once the recordings arrive']},
   {v:'8.1.62',date:'2026-11-09',title:'Colossus Fist vs jumping bosses',items:['Colossus Fist boss damage +50% (1.5/3/4.5/7.5% of boss max HP by Rage)','Reaches bosses 1.5× farther than the slam ring','A boss that leaps away still gets hit by a seeking ground crack (80% slam + half the % damage)']},
   {v:'8.1.61',date:'2026-11-09',title:'Smaller Colossus charge aura',items:['Cocoa’s Colossus Fist charge aura now sits small under her feet; it still grows and changes colour as Rage rises']},
@@ -21472,7 +21473,7 @@ class Game extends Phaser.Scene {
   // C1-5 Great Hunger · Feast: ดูดเข้าปาก 4 วิ + จานลอยเข้าปาก (ถึงปาก = บอสฟื้น 3%) · Dash เตะจาน = บอสสำลัก
   hungerFeast(b){ const n=b.phase2?5:4,pull=b.phase3?195:b.phase2?175:150; b._arenaBusy=true;
     this.stage5Pose?.(b,5,1400); this.showBanner('🍽️ The Feast','It pulls you in and eats the plates — dash into a plate to make it choke!',1200);
-    this.drainPull={x:b.x,y:b.y,t:4.2,strength:pull}; this.bossSig?.('05_void_maw',b.x,b.y,360,{life:4.2,depth:2});
+    this.drainPull={x:b.x,y:b.y,t:4.2,strength:pull}; this.bossSig?.('05_void_maw',b.x,b.y,240,{life:4.2,depth:2,alpha:.6});
     for(let i=0;i<n;i++){ const a=i*TAU/n+Math.random()*.4,r=Math.min(this.arenaVw()*.45,400);
       this.spawnCounter(b,b.x+Math.cos(a)*r,b.y+Math.sin(a)*r,{emoji:['🍰','🍗','🍩','🍮','🥧'][i%5],frame:i%5,tint:0xffb36b,drift:62+i*6,
         onArrive:bb=>{ if(!bb.active)return; const h=Math.round(bb.maxhp*.03); bb.hp=Math.min(bb.maxhp,bb.hp+h); this.popDmg?.('+3% HP',bb.x,bb.y-70,false); this.vfxHitRing?.(bb.x,bb.y,0x6dffb4,false); },
@@ -21755,7 +21756,7 @@ class Game extends Phaser.Scene {
       for(let k=0;k<9;k++)this.time.delayedCall(k*85,()=>{if(!b.active||this.state!=='play')return;for(let j=0;j<arms;j++)(this.bossInkRelease?.(b,inkCast),this.foeShot(b.x,b.y,a0+k*0.42+j*TAU/arms,205+k*4,Math.max(8,bd-4),j%2?0xffd166:0xd95cff,0.92));});
       b.atkCd=2.55*fast;
     }else if(pick==='voidMaw'){
-      this.showBanner('🌑 Maw of the Void','Run against the pull, then slip through the bullet gaps!',950);this.drainPull={x:b.x,y:b.y,t:b.phase4?2.2:1.75,strength:b.phase4?190:155};this.bossSig('05_void_maw',b.x,b.y,380,{life:this.drainPull.t,depth:2});
+      this.showBanner('🌑 Maw of the Void','Run against the pull, then slip through the bullet gaps!',950);this.drainPull={x:b.x,y:b.y,t:b.phase4?2.2:1.75,strength:b.phase4?190:155};this.bossSig('05_void_maw',b.x,b.y,250,{life:this.drainPull.t,depth:2,alpha:.6});
       for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(2).setScale(1.4+i*0.35).setAlpha(0.55));this.tweens.add({targets:ring,scale:0.10,rotation:(i%2?1:-1)*Math.PI,alpha:0,duration:1050+i*120,onComplete:()=>ring.destroy()});}
       this.time.delayedCall(720,()=>{if(!b.active)return;const n=b.phase4?22:18,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;(this.bossInkRelease?.(b,inkCast),this.foeShot(b.x,b.y,i*TAU/n,185+(i%2)*45,bd,0xd95cff,1.0));}Sfx.zap();});b.atkCd=3.15*fast;
     }else if(pick==='lastSupper'){
@@ -21763,7 +21764,7 @@ class Game extends Phaser.Scene {
       for(let i=0;i<n;i++)this.time.delayedCall(i*160,()=>{if(b.active)(this.bossInkRelease?.(b,inkCast),this.spawnEnemy(i%3===0?'tank':i%2?'fast':'shooter'));});
       for(let i=0;i<3;i++)this.spawnHazard(px+Math.cos(i*TAU/3)*155,py+Math.sin(i*TAU/3)*155,65,bd,0xff8a4d,b,inkCast);b.atkCd=3.25*fast;
     }else{
-      this.showBanner('🌘 Eclipse of Flavor','A three-layered wave is swallowing the whole field!',1050);this.screenFlash(0x26002f,0.55,480);this.bossSig('05_eclipse',b.x,b.y,900,{depth:2,alpha:.9});
+      this.showBanner('🌘 Eclipse of Flavor','A three-layered wave is swallowing the whole field!',1050);this.screenFlash(0x26002f,0.55,480);this.bossSig('05_eclipse',b.x,b.y,620,{depth:2,alpha:.6});
       this.bossNovaWave(b.x,b.y,270,bd+4,250,b,inkCast);this.bossNovaWave(b.x,b.y,340,bd+4,700,b,inkCast);this.bossNovaWave(b.x,b.y,420,bd+7,1180,b,inkCast);
       this.time.delayedCall(520,()=>{if(!b.active)return;for(let i=0;i<18;i++){if(i%6===0)continue;(this.bossInkRelease?.(b,inkCast),this.foeShot(b.x,b.y,i*TAU/18,245,bd,0xffd166,1.12));}this.screenShake(520,0.017);Sfx.bossWarn();});b.atkCd=3.6*fast;
     }
