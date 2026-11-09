@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.53';
+const GAME_VERSION = '8.1.54';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.54',date:'2026-11-09',title:'Bigger Wardrobe',items:['Wardrobe now has 7 slots: Wings, Pets, Trails, Halos, Rings, Dash and Pops','28 cosmetics in total, sorted into tabs','Dye any cosmetic you own in 5 colours for free','Placeholder looks until the painted art arrives']},
   {v:'8.1.53',date:'2026-11-09',title:'Weekly Daily Login and Taro tuning',items:['Daily Login shows one week at a time with bigger boxes, a progress bar and the Day 30 chest','Taro Sentry Build: sentries fire Ball Lightning about 35% slower and fewer balls can be out at once']},
   {v:'8.1.52',date:'2026-11-09',title:'Daily Login fix',items:['Daily Login day boxes, ribbon and Ruby now sit in the right place']},
   {v:'8.1.51',date:'2026-11-08',title:'Mission loot',items:['Finished missions burst open with Sugar pieces and a crafting material to pick up','Clear the ⭐ bonus goal too for a gear box of Rare or better','Uncollected mission loot flies to you after a few seconds']},
@@ -6182,21 +6183,46 @@ const Iap={
 };
 /* v8.1.46 เจ้าของ: Wardrobe ของแต่ง 2D (ปีก/สัตว์เลี้ยง/หางประกาย) ซื้อด้วยด้าย · ใช้ได้ทุกฮีโร่ · ไม่มีพลัง · อาร์ตใบ 66 (ยังไม่มา = วาดแทนด้วยโค้ด) */
 const COSMETICS=[
-  {id:'wing_cream',slot:'wings',name:'Whipped Cream Wings',price:450,frame:0,col:0xfff4e0},
-  {id:'wing_sugar',slot:'wings',name:'Spun Sugar Wings',price:450,frame:1,col:0xbfe8ff},
-  {id:'wing_ruby',slot:'wings',name:'Ruby Jam Wings',price:450,frame:2,col:0xff5a7a},
-  {id:'pet_mochi',slot:'pet',name:'Flying Mochi',price:300,frame:3,col:0xffd6e8,emoji:'🍡'},
-  {id:'pet_turtle',slot:'pet',name:'Macaron Turtle',price:300,frame:4,col:0x9fe0b8,emoji:'🐢'},
-  {id:'pet_bird',slot:'pet',name:'Cookie Bird',price:300,frame:5,col:0xe0a860,emoji:'🐤'},
-  {id:'trail_heart',slot:'trail',name:'Heart Trail',price:150,frame:6,col:0xff8fb5},
-  {id:'trail_star',slot:'trail',name:'Star Trail',price:150,frame:7,col:0xffe08a},
-  {id:'trail_sugar',slot:'trail',name:'Sugar Sparkle Trail',price:150,frame:8,col:0xffffff}];
-const COS_SLOTS=[['wings','Wings'],['pet','Pets'],['trail','Trails']];
+  {id:'wing_cream',slot:'wings',name:'Whipped Cream Wings',price:450,col:0xfff4e0,icon:['cos_icons',0]},
+  {id:'wing_sugar',slot:'wings',name:'Spun Sugar Wings',price:450,col:0xbfe8ff,icon:['cos_icons',1]},
+  {id:'wing_ruby',slot:'wings',name:'Ruby Jam Wings',price:450,col:0xff7a9a,icon:['cos_icons',2]},
+  {id:'wing_rainbow',slot:'wings',name:'Rainbow Jelly Wings',price:450,col:0xc8b6ff,icon:['cos_icons2',12]},
+  {id:'wing_butterfly',slot:'wings',name:'Macaron Butterfly Wings',price:450,col:0xffd0e8,icon:['cos_icons2',13]},
+  {id:'pet_mochi',slot:'pet',name:'Flying Mochi',price:300,col:0xffd6e8,emoji:'🍡',icon:['cos_icons',3]},
+  {id:'pet_turtle',slot:'pet',name:'Macaron Turtle',price:300,col:0x9fe0b8,emoji:'🐢',icon:['cos_icons',4]},
+  {id:'pet_bird',slot:'pet',name:'Cookie Bird',price:300,col:0xe0a860,emoji:'🐤',icon:['cos_icons',5]},
+  {id:'pet_bunny',slot:'pet',name:'Balloon Bunny',price:300,col:0xfff0f6,emoji:'🐰',icon:['cos_icons2',14]},
+  {id:'pet_jelly',slot:'pet',name:'Smiling Jelly',price:300,col:0x9fd8ff,emoji:'🫧',icon:['cos_icons2',15]},
+  {id:'trail_heart',slot:'trail',name:'Heart Trail',price:150,col:0xff8fb5,tk:'cos_trail',tf:0,icon:['cos_icons',6]},
+  {id:'trail_star',slot:'trail',name:'Star Trail',price:150,col:0xffe08a,tk:'cos_trail',tf:1,icon:['cos_icons',7]},
+  {id:'trail_sugar',slot:'trail',name:'Sugar Sparkle Trail',price:150,col:0xffffff,tk:'cos_trail',tf:2,icon:['cos_icons',8]},
+  {id:'trail_note',slot:'trail',name:'Music Note Trail',price:150,col:0xff9ed8,tk:'cos_trail2',tf:0,icon:['cos_icons2',16]},
+  {id:'trail_bubble',slot:'trail',name:'Bubble Trail',price:150,col:0xbfe8ff,tk:'cos_trail2',tf:1,icon:['cos_icons2',17]},
+  {id:'trail_flower',slot:'trail',name:'Little Flower Trail',price:150,col:0xfff08a,tk:'cos_trail2',tf:2,icon:['cos_icons2',18]},
+  {id:'halo_donut',slot:'halo',name:'Sprinkle Donut Halo',price:400,col:0xff9ec4,icon:['cos_icons2',0]},
+  {id:'halo_crown',slot:'halo',name:'Sugar Glass Crown',price:400,col:0xffe08a,icon:['cos_icons2',1]},
+  {id:'halo_cloud',slot:'halo',name:'Cotton Cloud Rainbow',price:400,col:0xdff4ff,icon:['cos_icons2',2]},
+  {id:'aura_candy',slot:'aura',name:'Candy Swirl Ring',price:350,col:0xff9ec4,icon:['cos_icons2',3]},
+  {id:'aura_flower',slot:'aura',name:'Blossom Ring',price:350,col:0xffc6df,icon:['cos_icons2',4]},
+  {id:'aura_star',slot:'aura',name:'Twinkle Star Ring',price:350,col:0xffe08a,icon:['cos_icons2',5]},
+  {id:'dash_bubble',slot:'dash',name:'Bubble Dash',price:250,col:0xbfe8ff,icon:['cos_icons2',6]},
+  {id:'dash_confetti',slot:'dash',name:'Confetti Dash',price:250,col:0xffd166,icon:['cos_icons2',7]},
+  {id:'dash_cream',slot:'dash',name:'Whipped Cream Dash',price:250,col:0xfff4e0,icon:['cos_icons2',8]},
+  {id:'pop_heart',slot:'pop',name:'Heart Pop',price:300,col:0xff8fb5,icon:['cos_icons2',9]},
+  {id:'pop_sprinkle',slot:'pop',name:'Sprinkle Pop',price:300,col:0xa8f0d0,icon:['cos_icons2',10]},
+  {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]}];
+const COS_SLOTS=[['wings','Wings'],['pet','Pets'],['trail','Trails'],['halo','Halos'],['aura','Rings'],['dash','Dash'],['pop','Pops']];
+/* v8.1.54 เจ้าของ: เพิ่มความหลากหลาย → ย้อมสีฟรี 5 แบบต่อชิ้นที่มีแล้ว (ไม่ต้องสั่งอาร์ตเพิ่ม) */
+const COS_DYES=[['Original',null],['Pink',0xffb6d9],['Mint',0xa8f0d0],['Gold',0xffe08a],['Sky',0xbfd8ff]];
 const Cos={
-  data(){ const d=Save.data; if(!d.cos)d.cos={own:{},eq:{}}; return d.cos; },
+  data(){ const d=Save.data; if(!d.cos)d.cos={own:{},eq:{}}; if(!d.cos.dye)d.cos.dye={}; return d.cos; },
   item(id){ return COSMETICS.find(c=>c.id===id)||null; },
   owns(id){ return !!this.data().own[id]; },
   equipped(slot){ const id=this.data().eq[slot]; return id&&this.owns(id)?this.item(id):null; },
+  dye(id){ return Math.max(0,Math.min(COS_DYES.length-1,this.data().dye[id]||0)); },
+  tint(c){ return c?COS_DYES[this.dye(c.id)][1]:null; },
+  col(c){ return this.tint(c)??c.col; },
+  nextDye(id){ if(!this.owns(id))return false; this.data().dye[id]=(this.dye(id)+1)%COS_DYES.length; Save.save(); return true; },
   buy(id){ const c=this.item(id); if(!c||this.owns(id))return false; if(!Save.spendThreads(c.price))return false; this.data().own[id]=1; this.data().eq[c.slot]=id; Save.save(); return true; },
   toggle(id){ const c=this.item(id); if(!c||!this.owns(id))return false; const eq=this.data().eq; eq[c.slot]=eq[c.slot]===id?null:id; Save.save(); return true; }
 };
@@ -13457,35 +13483,47 @@ class Game extends Phaser.Scene {
   threadBuy(id){ if(!Iap.available()){ Sfx.error?.(); this.showBanner?.('🧶 Coming soon','Thread purchases open with the Play Store release',1600); return; }
     Iap.buy(id,(ok,n)=>{ if(ok){Sfx.clear?.();this.showBanner?.('🧶 Thank you!','+'+n+' Thread',1600);} if(this.state==='menu'&&this.menuScreen==='bazaar')this.buildBazaar(); }); }
   buildWardrobe(){ this.menu.removeAll(true);this.tapZones=[];this._screenBg('Wardrobe','screen_bazaar','bazaar'); this.loadCosArt?.();
-    const w=this.W,h=this.H,hs=this._hdrShift(),cols=3,gap=8,cw=(w-28-gap*2)/cols; let y=84+hs;
+    const w=this.W,h=this.H,hs=this._hdrShift(),tab=this._cosTab=COS_SLOTS.some(t=>t[0]===this._cosTab)?this._cosTab:'wings'; let y=84+hs;
     this.menu.add(this.add.text(14,y,'🧶 '+Save.threads()+' Thread',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffc6df'}));
-    this.menu.add(this.add.text(w-14,y+2,'Looks only · works on every hero',{fontFamily:'sans-serif',fontSize:'9px',color:'#c5b5d1'}).setOrigin(1,0)); y+=24;
-    const ch=Math.min(118,Math.max(78,(h-y-20)/3-30));
-    COS_SLOTS.forEach(([slot,label])=>{ this.menu.add(this.add.text(14,y,label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe3ac'})); y+=20;
-      COSMETICS.filter(c=>c.slot===slot).forEach((c,i)=>{ const own=Cos.owns(c.id),on=Cos.equipped(slot)?.id===c.id,pend=this._cosPend===c.id;
-        this.bazaarProductCard(14+i*(cw+gap),y,cw,ch,{art:this.realTex?.('cos_icons')?'cos_icons':'ic_thread',name:c.name,desc:'',price:on?'✓ Wearing':own?'Wear':pend?'Tap again · 🧶 '+c.price:'🧶 '+c.price,color:on?0x7fe3a8:c.col,afford:own||Save.threads()>=c.price,fn:()=>this.cosTap(c)});
-        const last=this.menu.list[this.menu.list.length-4]; if(last&&last.setFrame&&this.realTex?.('cos_icons'))last.setFrame(c.frame); });
-      y+=ch+10; }); }
-  lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),cy=footY-hh*.55;
-    if(wg){ const k='cos_'+wg.id; let o; if(this.realTex?.(k)){ o=this.add.sprite(x,cy,k).setScale(hh*.95/128); if(this.anims?.exists?.(k))o.play(k); } else { o=this.add.graphics(); const r=hh*.2; o.fillStyle(wg.col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(x,cy); }
+    this.menu.add(this.add.text(w-14,y+2,'Looks only · every hero',{fontFamily:'sans-serif',fontSize:'9px',color:'#c5b5d1'}).setOrigin(1,0)); y+=24;
+    const tw=(w-28)/4; COS_SLOTS.forEach(([id,label],i)=>{ const on=Cos.equipped(id); this.paintedNavButton(this.menu,14+tw*((i%4)+.5),y+15+Math.floor(i/4)*36,tw-6,30,label+(on?' ✓':''),id===tab,()=>{this._cosTab=id;this._cosPend=null;this.buildWardrobe();},'cos_'+id); }); y+=80;
+    const list=COSMETICS.filter(c=>c.slot===tab),cols=3,gap=8,cw=(w-28-gap*(cols-1))/cols,rows=Math.ceil(list.length/cols),ch=Math.min(150,Math.max(96,(h-y-16)/rows-gap));
+    list.forEach((c,i)=>{ const own=Cos.owns(c.id),on=Cos.equipped(c.slot)?.id===c.id,pend=this._cosPend===c.id,x=14+(i%cols)*(cw+gap),yy=y+Math.floor(i/cols)*(ch+gap),dy=Cos.dye(c.id);
+      this.bazaarProductCard(x,yy,cw,ch,{art:this.realTex?.(c.icon[0])?c.icon[0]:'ic_thread',name:c.name,desc:'',price:on?'✓ Wearing':own?'Wear':pend?'Tap again · 🧶 '+c.price:'🧶 '+c.price,color:on?0x7fe3a8:Cos.col(c),afford:own||Save.threads()>=c.price,fn:()=>this.cosTap(c),alt:own?{label:'🎨 '+COS_DYES[dy][0],fn:()=>{Cos.nextDye(c.id);Sfx.select?.();this.buildWardrobe();}}:null});
+      const ic=this.menu.list.find(o=>o.texture?.key===c.icon[0]&&o._cosIcon==null&&o.x===x+cw/2); if(ic){ic._cosIcon=1;ic.setFrame?.(c.icon[1]);} 
+      if(!this.realTex?.(c.icon[0])){ const sw=this.add.circle(x+cw-14,yy+14,7,Cos.col(c),1).setStrokeStyle(2,0xffffff,.8); this.menu.add(sw); } }); }
+  lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'),cy=footY-hh*.55;
+    const sp=(c,px,py,sz,fs)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(sz/fs); if(this.anims?.exists?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
+    if(au){ let o=sp(au,x,footY-4,hh*.9,160); if(!o){ o=this.add.graphics(); const r=hh*.45; o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,r*2,r*.6).fillStyle(Cos.col(au),.14).fillEllipse(0,0,r*2,r*.6); o.setPosition(x,footY-4); } this.menu.add(o); this.tweens?.add({targets:o,alpha:.55,duration:1200,yoyo:true,repeat:-1}); }
+    if(wg){ let o=sp(wg,x,cy,hh*.95,128); if(!o){ o=this.add.graphics(); const r=hh*.2,col=Cos.col(wg); o.fillStyle(col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(x,cy); }
       this.menu.add(o); this.tweens?.add({targets:o,scaleX:(o.scaleX||1)*1.06,duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-    if(pt){ const k='cos_'+pt.id,px=x+hh*.42,py=footY-hh*.8; let o; if(this.realTex?.(k)){ o=this.add.sprite(px,py,k).setScale(hh*.3/96); if(this.anims?.exists?.(k))o.play(k); o.setFlipX?.(true); } else o=this.add.text(px,py,pt.emoji,{fontSize:Math.round(hh*.16)+'px'}).setOrigin(.5);
+    if(pt){ const px=x+hh*.42,py=footY-hh*.8; let o=sp(pt,px,py,hh*.3,96); if(o)o.setFlipX?.(true); else o=this.add.text(px,py,pt.emoji,{fontSize:Math.round(hh*.16)+'px'}).setOrigin(.5);
       this.menu.add(o); this.tweens?.add({targets:o,y:py-8,duration:1100,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-    if(tr)this.hubEvery?.(450,300,()=>{ if(!this.menu?.active&&this.menu?.active!==undefined)return; const sx=x+(Math.random()-.5)*hh*.5,sy=footY-4,o=this.realTex?.('cos_trail')?this.add.image(sx,sy,'cos_trail',tr.frame-6).setScale(.4):this.add.circle(sx,sy,4,tr.col,.9);
+    if(hl){ this._cosLobbyHalo={x,y:footY-hh*1.02,hh,c:hl}; const zs=this.tapZones; this.time?.delayedCall?.(0,()=>{ if(this.state==='menu'&&this.menuScreen==='hub'&&this.tapZones===zs)this.lobbyCosHalo(); else this._cosLobbyHalo=null; }); }   // ฮาโลต้องอยู่หน้าฮีโร่ → วาดหลังหน้าสร้างเสร็จ
+    if(tr)this.hubEvery?.(450,300,()=>{ const sx=x+(Math.random()-.5)*hh*.5,sy=footY-4,o=this.realTex?.(tr.tk)?this.add.image(sx,sy,tr.tk,tr.tf).setScale(.4):this.add.circle(sx,sy,4,Cos.col(tr),.9); const t=Cos.tint(tr); if(t!=null&&o.setTint)o.setTint(t);
       this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
+  lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(h.hh*.42/96); if(this.anims?.exists?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
+    this.menu.add(o); this.tweens?.add({targets:o,y:h.y-5,duration:1300,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.select?.(); this._cosPend=null; this.buildWardrobe(); return; }
     if(this._cosPend!==c.id){ this._cosPend=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }
     this._cosPend=null; if(Cos.buy(c.id)){ Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
-  loadCosArt(){ if(this._cosArt||!this.ensureGroup||!ASSET_SHEETS?.cos_icons||this.realTex?.('cos_icons'))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
+  loadCosArt(){ if(this._cosArt||!this.ensureGroup||typeof ASSET_SHEETS==='undefined'||!(ASSET_SHEETS.cos_icons||ASSET_SHEETS.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_SHEETS.cos_icons2||this.realTex?.('cos_icons2')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_icons/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
-  cosSetup(){ (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=null; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
-    const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'); this._cosTrail=Cos.equipped('trail');
-    if(wg){ const k='cos_'+wg.id,o=this.realTex?.(k)?this.add.sprite(p.x,p.y,k):this.add.graphics(); if(!o.setFrame){ o.fillStyle(wg.col,.85).fillEllipse(-14,-4,24,34).fillEllipse(14,-4,24,34).lineStyle(2,0xffffff,.6).strokeEllipse(-14,-4,24,34).strokeEllipse(14,-4,24,34); } this._cosW=this.camWorld(o); this._cosObjs.push(o); }
-    if(pt){ const k='cos_'+pt.id,o=this.realTex?.(k)?this.add.sprite(p.x,p.y,k).setScale(.4):this.add.text(p.x,p.y,pt.emoji,{fontSize:'22px'}).setOrigin(.5); this._cosP=this.camWorld(o); this._cosObjs.push(o); } this._cosT=0; }
-  tickCos(dt){ const p=this.player; if(!p?.active)return; this._cosT=(this._cosT||0)+dt;
-    const W=this._cosW; if(W?.active){ W.setPosition(p.x,p.y-(p.displayHeight||40)*.12); W.setDepth((p.depth||5)-2); W.setScale?.((W.setFrame?.45:1)*(1+Math.sin(this._cosT*8)*.06),(W.setFrame?.45:1)); if(W.setFlipX)W.setFlipX(!!p.flipX); if(W.anims&&!W.anims.isPlaying&&this.anims?.exists?.('cos_'+(Cos.equipped('wings')?.id)))W.play('cos_'+Cos.equipped('wings').id); }
+  cosSetup(){ (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=this._cosH=this._cosA=null; this._cosDashSeen=undefined; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
+    const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'); this._cosTrail=Cos.equipped('trail'); this._cosDash=Cos.equipped('dash'); this._cosPop=Cos.equipped('pop');
+    const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(p.x,p.y,k).setScale(sc); if(this.anims?.exists?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
+    if(wg){ let o=sp(wg,.45); if(!o){ const col=Cos.col(wg); o=this.add.graphics(); o.fillStyle(col,.85).fillEllipse(-14,-4,24,34).fillEllipse(14,-4,24,34).lineStyle(2,0xffffff,.6).strokeEllipse(-14,-4,24,34).strokeEllipse(14,-4,24,34); } this._cosW=add(o); }
+    if(pt){ let o=sp(pt,.4); if(!o)o=this.add.text(p.x,p.y,pt.emoji,{fontSize:'22px'}).setOrigin(.5); this._cosP=add(o); }
+    if(hl){ let o=sp(hl,.42); if(!o){ o=this.add.graphics(); o.lineStyle(4,Cos.col(hl),.95).strokeEllipse(0,0,30,10).lineStyle(1.5,0xffffff,.8).strokeEllipse(0,-1,24,7); } this._cosH=add(o); }
+    if(au){ let o=sp(au,.44); if(!o){ o=this.add.graphics(); o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,64,24).fillStyle(Cos.col(au),.14).fillEllipse(0,0,64,24); } this._cosA=add(o); } this._cosT=0; }
+  tickCos(dt){ const p=this.player; if(!p?.active)return; this._cosT=(this._cosT||0)+dt; const hh=p.displayHeight||48;
+    const W=this._cosW; if(W?.active){ W.setPosition(p.x,p.y-hh*.12); W.setDepth((p.depth||5)-2); const b=W.setFrame?.45:1; W.setScale?.(b*(1+Math.sin(this._cosT*8)*.06),b); if(W.setFlipX)W.setFlipX(!!p.flipX); }
+    const H=this._cosH; if(H?.active){ H.setPosition(p.x,p.y-hh*.95+Math.sin(this._cosT*3)*2); H.setDepth((p.depth||5)+.02); }
+    const A=this._cosA; if(A?.active){ A.setPosition(p.x,p.y+hh*.42); A.setDepth((p.depth||5)-3); if(!A.setFrame)A.rotation=0; A.setAlpha(.75+Math.sin(this._cosT*2)*.15); }
+    if(this._lastDashAt!==this._cosDashSeen){ if(this._cosDashSeen!==undefined&&this._lastDashAt!=null)this.cosDashFx(); this._cosDashSeen=this._lastDashAt; }   // doDash ล็อกด้วยเทส → ตรวจจากเวลาพุ่งล่าสุด
     const P=this._cosP; if(P?.active){ const tx=p.x+(p.flipX?28:-28),ty=p.y-34+Math.sin(this._cosT*3)*5,k=Math.min(1,dt*5); P.x+=(tx-P.x)*k; P.y+=(ty-P.y)*k; P.setDepth((p.depth||5)+.01); P.setFlipX?.(P.x>p.x); }
-    const T=this._cosTrail; if(T&&(this.moveDir?.lengthSq?.()||0)>.04){ this._cosTA=(this._cosTA||0)+dt; if(this._cosTA>=.12){ this._cosTA=0; if(this.perfLow?.())return; const k='cos_trail',o=this.realTex?.(k)?this.add.image(p.x,p.y+14,k,T.frame-6).setScale(.35):this.add.circle(p.x,p.y+14,4,T.col,.85); o.setDepth((p.depth||5)-.02); this.camWorld(o); this.tweens.add({targets:o,alpha:0,scale:(o.scale||1)*.4,y:o.y-10,duration:520,onComplete:()=>o.destroy()}); } } }
+    const T=this._cosTrail; if(T&&(this.moveDir?.lengthSq?.()||0)>.04){ this._cosTA=(this._cosTA||0)+dt; if(this._cosTA>=.12){ this._cosTA=0; if((typeof PERF!=='undefined'&&PERF.lvl>=2))return; const o=this.realTex?.(T.tk)?this.add.image(p.x,p.y+14,T.tk,T.tf).setScale(.35):this.add.circle(p.x,p.y+14,4,Cos.col(T),.85); const t=Cos.tint(T); if(t!=null&&o.setTint)o.setTint(t); o.setDepth((p.depth||5)-.02); this.camWorld(o); this.tweens.add({targets:o,alpha:0,scale:(o.scale||1)*.4,y:o.y-10,duration:520,onComplete:()=>o.destroy()}); } } }
+  cosDashFx(){ const c=this._cosDash,p=this.player; if(!c||!p?.active||(typeof PERF!=='undefined'&&PERF.lvl>=2))return; const k='cos_'+c.id; if(this.realTex?.(k)&&this.heroFx?.(k,p.x,p.y,64,{tint:Cos.tint(c)}))return; this.burst?.(p.x,p.y,Cos.col(c)); }
   bazaarBuyGear(id,key,cost){ const it=GEAR_ALL.find(g=>g.id===id);if(!it)return; cost=cost||GEAR_BUY[it.tier]||200;
     if(key&&(Save.data.bazaarBought||[]).includes(key))return;
     if(!Save.spend(cost)){Sfx.error();this.showBanner('🍬 Not enough Sugar','Requires '+cost+' Sugar',1300);return;}
@@ -21988,6 +22026,7 @@ class Game extends Phaser.Scene {
   mochiPop(e){ if((typeof PERF!=='undefined'&&PERF.lvl>=2)||!e?.texture||(this._popN||0)>=18)return; const P=this._popPool||(this._popPool=[]); let g=P.pop(); while(g&&!g.scene)g=P.pop();
     const sx=Math.abs(e.scaleX||1),sy=Math.abs(e.scaleY||1); if(g)g.setActive(true).setVisible(true).setTexture(e.texture.key,e.frame?.name).setPosition(e.x,e.y).setAlpha(1).setRotation(0); else g=this.camWorld(this.add.image(e.x,e.y,e.texture.key,e.frame?.name));
     g.setFlipX(!!e.flipX).setOrigin(e.originX??.5,e.originY??.5).setDepth(e.depth||e.y).setScale(sx,sy).setTintFill?.(0xffffff); this._popN=(this._popN||0)+1;
+    const pc=this._cosPop; if(pc){ const pk='cos_'+pc.id; if(!(this.realTex?.(pk)&&this.heroFx?.(pk,e.x,e.y,40,{tint:Cos.tint(pc)})))this.burst?.(e.x,e.y,Cos.col(pc)); }
     this.tweens.add({targets:g,scaleX:sx*1.28,scaleY:sy*.62,alpha:.85,duration:90,ease:'Quad.out',onComplete:()=>{ g.clearTint?.(); this.tweens.add({targets:g,scaleX:sx*.2,scaleY:sy*1.15,alpha:0,duration:170,ease:'Quad.in',onComplete:()=>{ this._popN=Math.max(0,(this._popN||1)-1); if(!g.scene)return; if(P.length<24){g.setVisible(false).setActive(false);P.push(g);} else g.destroy(); }}); }}); }
   burst(x,y,color){ const P=this._burstPool||(this._burstPool=[]);   // v7.8.92 perf: ใช้จุดซ้ำ (เดิมสร้าง/ทำลาย 7 รูปต่อครั้ง)
     for(let i=0;i<7;i++){ let p=P.pop(); while(p&&!p.scene)p=P.pop();

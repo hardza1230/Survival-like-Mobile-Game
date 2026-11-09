@@ -1,6 +1,6 @@
 # 67 — Wardrobe ชุดที่ 2 (ช่องใหม่ + ของเพิ่ม) · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รอส่ง · เขียน 9 พ.ย. 2026 · เจ้าของสั่ง "ของสดใส ส่วนอื่นเพิ่ม" · ต่อจากใบ 66 (ปีก/สัตว์เลี้ยง/หางประกาย)
+สถานะ: 🟡 รอส่ง · โค้ดพร้อมแล้ว v8.1.54 (ภาพแทน) · เขียน 9 พ.ย. 2026 · เจ้าของสั่ง "ของสดใส ส่วนอื่นเพิ่ม" · ต่อจากใบ 66 (ปีก/สัตว์เลี้ยง/หางประกาย)
 ส่งไฟล์ที่ `assets/incoming/cosmetics2/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` และเข้าชุดกับใบ 66 · **สดใส ขนมหวาน พาสเทลสว่าง มีประกาย** · PNG32 alpha จริง · ห้ามตัวหนังสือ · วาด 2 เท่าของขนาดบนจอ
 
@@ -64,7 +64,8 @@
 - ภาพต้นฉบับทั้งหมด ห้ามเลียนแบบของแต่งของเกมอื่น
 
 ## โน้ตฝั่งโค้ด (AI ที่ผูก)
-- โค้ดยังไม่มีช่องใหม่: เพิ่ม slot `halo` / `aura` / `dash` / `pop` ใน `COSMETICS` + `COS_SLOTS` (Wardrobe แสดงหลายแถว → อาจต้องแบ่งแท็บตามช่อง)
+- โค้ดพร้อมแล้ว v8.1.54: 7 ช่องใน `COS_SLOTS` (แท็บใน Wardrobe) · 28 ชิ้นใน `COSMETICS` · ย้อมสีฟรี `COS_DYES` ใช้ `setTint` → **วาดสีกลาง ๆ สว่าง ให้ย้อมแล้วยังสวย** · ไอคอนใช้ `item.icon=[sheetKey, frameIndex]` · หางใช้ `tk`/`tf` (เลขเฟรม spritesheet ปกติ) · ลงทะเบียนเป็น spritesheet ตัวเลขเฟรม (ไม่ใช่ TEMPLE_UI)
+- dash เล่นผ่าน `cosDashFx` (`heroFx('cos_<id>')`) · pop ผ่าน `mochiPop` (`heroFx('cos_<id>')`) · ฮาโล/วงใต้เท้าใน `tickCos` และ Lobby (`lobbyCos`/`lobbyCosHalo`)
 - `halo`: วางที่ `p.y - displayHeight*0.95` ตามตัว (ใน `tickCos`) · `aura`: ใต้เท้า depth ต่ำกว่าเงา/ผู้เล่น · `dash`: เรียกใน actor dash · `pop`: แทน `mochiPop` เมื่อสวม (ยังคุม ≤18 ตัว/ปิดเมื่อ PERF.lvl≥2)
 - ของเพิ่มช่องเดิม: เพิ่มแถวใน `COSMETICS` · trail2 ใช้ frame ต่อจาก `cos_trail`
 - แพ็ก WebP ไป `assets/art/cosmetics/` (สคริปต์ `scripts/pack-cosmetics2.py`) · โหลดแบบ lazy (Wardrobe + เฉพาะชิ้นที่สวมตอนเริ่มด่าน) · ห้าม boot

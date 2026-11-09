@@ -3587,3 +3587,8 @@ Owner chose positive framing: success gives more EXP (main success already pays 
 
 completeWaveObjective → missionLootBurst(o, sugar incl. bonus): takes the mission Sugar back off sugarStage/Run and spawns 4–6 loots dropType 'sugar' (sugarVal, ic_sugar) at missionPoint (capture zone / clean air / wisp / player), 1 forgeCurrency material, and if ⭐ bonus ok a spawnLoot gear box forced ≥Rare (_lootMinRare; boost 2 in ch3/endgame else 1). Pieces scatter by tween, auto-magnet after 6s; clearPickups(true) credits uncollected sugar. collectLoot handles 'sugar'. loots maxSize 12→20; random field gear 10%→8%; spawnLoot now returns g. Test mission-loot.
 
+
+# v: v8.1.52 — Daily Login layout fix (owner screenshot)
+
+menuArtIcon/tuImg place by CENTER (origin .5), menuArtPanel by top-left. loginPopup passed top-left to l30_header/l30_ruby/l30_cell/l30_cell30 → shifted up-left. Now centers: header (W/2, py+16), Ruby (px+pw-24, py-2), cells (x+cw/2, y+cell/2); title y py+14; l30 cells show number only.
+
