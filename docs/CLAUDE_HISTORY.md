@@ -3612,3 +3612,8 @@ BOARD_CATS 8 (sugar, hero levels from charProg, weave rank, stage stars bitmask,
 
 scripts/pack-cosmetics.py: 26 sheets → assets/art/cosmetics/ (740 KB WebP; dash/pop black bg → luminance alpha so dyes tint them). Registered in ASSET_FX (fw/fh/frames, rate 8 loop / 14 once), lazy via LAZY_MENU_ART_RE 'cosmetics'. cosEnsure loads equipped sheets before cosSetup (stage) and lobbyCos (then rebuilds hub), each key tried once (_cosTried); Wardrobe icons via loadCosArt {fx:true}; anims via bpAnim. Test wardrobe checks all 26 files/keys.
 
+
+# v: v8.1.57 — GM test tools (owner, code 1234)
+
+GM_ENABLED/GM_CODE + GM (localStorage mochi_gm). Settings: tap bottom-right 70×44 corner 7× within 1.5 s gaps → prompt code → 'GM Tools' row → buildGm (menuScreen 'gm'): Sugar/Thread/materials, unlock stages/heroes, heroes +10 Lv(+10 tp), Rank +5, reset Daily Login/Quests, Mochi Pass, all cosmetics, god mode (hurtPlayer) and ×10 damage (gmApply at startStage), save backup/restore, test profile (swaps mochi_save ↔ mochi_save_real; Cloud push/queuePush/syncCloud and Board.submit skip while testing). Any GM action sets Save.data.gmUsed → never submitted to Rankings. MUST set GM_ENABLED=false for the Play Store build. Test gm-tools.
+

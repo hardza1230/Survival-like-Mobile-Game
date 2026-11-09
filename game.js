@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.58';
+const GAME_VERSION = '8.1.59';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.59',date:'2026-11-09',title:'Cosmetics in stages',items:['Painted wings, pets, halos and rings now also show in stages (they were being unloaded when a stage started)']},
   {v:'8.1.58',date:'2026-11-09',title:'Sharper Lobby cosmetics',items:['Wings, halos and rings in the Lobby are no longer blown up past their sharp size']},
   {v:'8.1.57',date:'2026-11-09',title:'Test tools',items:['Hidden GM Tools for testing (resources, unlocks, save backup and a separate test profile)']},
   {v:'8.1.56',date:'2026-11-09',title:'Painted Wardrobe',items:['All 28 cosmetics now use painted, animated art: wings, pets, trails, halos, rings, dash and pop effects','Dyes tint the painted art too']},
@@ -9173,7 +9174,7 @@ class Game extends Phaser.Scene {
   // ภาพ lazy ทีละใบในหน้าเมนู: มีแล้ว = true · ยังไม่มี = สั่งโหลด แล้ววาดหน้านี้ใหม่เมื่อเสร็จ
   // pred(k,cls) เลือกผู้สมัคร · budgetMB=null คืนทุกตัวที่ตรง · ตัวที่แสดงอยู่บนจอไม่ถูกคืนเด็ดขาด
   texEvict(pred,budgetMB){ try{ const used=this.texInUse(),T=this._texT||{},cand=[];
-      for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||!this.realTex(k))continue; if((this._forceCoachTutorial||this._inTutorial)&&/^(?:vfx_)?tut_/.test(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }   // v7.9.68 ใบ 38 ไม่คืนภาพบทสอนระหว่างบทสอน
+      for(const k in this.textures.list){ if(k[0]==='_'||used.has(k)||!this.realTex(k))continue; if((this._forceCoachTutorial||this._inTutorial)&&/^(?:vfx_)?tut_/.test(k))continue; if(k.startsWith('cos_')&&this.cosWornKeys?.().includes(k))continue; const c=artClass(k); if(c&&pred(k,c))cand.push(k); }   // v8.1.58 ไม่คืนภาพของแต่งที่สวมอยู่ (เดิมโดนคืนตอนเข้าด่าน → ในด่านเป็นภาพแทน) · v7.9.68 ใบ 38 ไม่คืนภาพบทสอนระหว่างบทสอน
       if(!cand.length)return 0; cand.sort((a,b)=>(T[a]||0)-(T[b]||0));
       let mb=budgetMB==null?0:this.texMB(); const drop=new Set();
       for(const k of cand){ if(budgetMB!=null&&mb<=budgetMB)break; drop.add(k); mb-=this.texBytes(k)/1e6; }
@@ -13624,8 +13625,9 @@ class Game extends Phaser.Scene {
     this._cosPend=null; if(Cos.buy(c.id)){ Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
   loadCosArt(){ if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_icons/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
+  cosWornKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(c)out.push(c.tk||('cos_'+c.id)); } return out; }
   cosNeedKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(!c)continue; const k=c.tk||('cos_'+c.id); if(ASSET_FX[k]&&!this.realTex?.(k)&&!(this._cosTried&&this._cosTried.has(k)))out.push(k); } return out; }
-  cosEnsure(after){ const need=this.cosNeedKeys(); if(!need.length||!this.ensureGroup||this._cosLoading)return false; this._cosLoading=true; (this._cosTried||(this._cosTried=new Set())); need.forEach(k=>this._cosTried.add(k)); try{ this.ensureGroup(k=>need.includes(k),()=>{ this._cosLoading=false; after&&after(); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosLoading=false; return false; } return true; }
+  cosEnsure(after){ const need=this.cosNeedKeys(); if(!need.length||!this.ensureGroup||this._cosLoading)return false; this._cosLoading=true; (this._cosTried||(this._cosTried=new Set())); try{ this.ensureGroup(k=>need.includes(k),()=>{ this._cosLoading=false; need.forEach(k=>{ if(!this.realTex?.(k))this._cosTried.add(k); }); after&&after(); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosLoading=false; return false; } return true; }
   cosSetup(){ if(this.state==='play'&&this.cosEnsure(()=>{ if(this.state==='play')this.cosSetup(); }))return; (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=this._cosH=this._cosA=null; this._cosDashSeen=undefined; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
     const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'); this._cosTrail=Cos.equipped('trail'); this._cosDash=Cos.equipped('dash'); this._cosPop=Cos.equipped('pop');
     const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(p.x,p.y,k).setScale(sc); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
