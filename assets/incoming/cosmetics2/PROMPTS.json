@@ -1,0 +1,95 @@
+{
+  "generator": "built-in ImageGen",
+  "references": [
+    "assets/incoming/login_daily/states_review.png"
+  ],
+  "generations": [
+    {
+      "key": "cos_halo_donut",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly six equal cells in ONE horizontal row, same aligned isolated small pink frosted donut halo viewed as a horizontal ellipse floating above the head, colorful delicate sugar sprinkles; six subtly different sequential rotations, loop, stable shape and size, ample space around each frame.",
+      "file": "sources/cos_halo_donut.png"
+    },
+    {
+      "key": "cos_halo_crown",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly six equal cells in ONE horizontal row, same aligned tiny translucent light-gold sugar crown with three pastel jelly gems, hovering, readable at 40px; six coherent loop poses with tiny sparkle accents changing positions, no other object.",
+      "file": "sources/cos_halo_crown.png"
+    },
+    {
+      "key": "cos_halo_cloud",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly six equal cells in ONE horizontal row, same aligned small fluffy pale cotton-candy cloud with one tiny pastel rainbow arc on top, hovering above hero; six coherent gentle floating loop poses, stable size and identity.",
+      "file": "sources/cos_halo_cloud.png"
+    },
+    {
+      "key": "cos_aura_candy",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly eight equal cells in ONE horizontal row, a very thin delicate low-contrast horizontally elliptical ring seen from above at a shallow 3/4 angle, made of tiny pale pink and white spiral candy flecks, transparent hollow center; eight successive rotation poses. Keep individual elements sparse so red attack warning rings remain visible. No hero, no solid ground.",
+      "file": "sources/cos_aura_candy.png"
+    },
+    {
+      "key": "cos_aura_flower",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly eight equal cells in ONE horizontal row, sparse pale sakura petals forming a thin horizontally elliptical ground ring in 3/4 top-down perspective, transparent hollow center, gentle bloom and closing through eight loop poses, lightweight non-obstructive. No red, no ground, no character.",
+      "file": "sources/cos_aura_flower.png"
+    },
+    {
+      "key": "cos_aura_star",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly eight equal cells in ONE horizontal row, delicate thin pale gold stars orbit in a sparse horizontally elliptical ground ring seen at shallow angle, empty transparent center; eight coherent poses, glints move around loop, lightweight no bright filled disk, no red.",
+      "file": "sources/cos_aura_star.png"
+    },
+    {
+      "key": "cos_wing_rainbow",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly six equal rectangular cells in ONE horizontal row, same pair of light pastel translucent rainbow jelly wings viewed slightly from behind, delicate sugar edge and wide empty transparent middle gap for player torso, six sequential loop flapping poses, stable center, no character, no crossing frames.",
+      "file": "sources/cos_wing_rainbow.png"
+    },
+    {
+      "key": "cos_wing_butterfly",
+      "prompt": "Original animation sprite sheet for Mochi Mayhem cute confectionery fantasy mobile game, matching reference's softly painted premium candy style, fine dark colored outlines, pastel bright and dye-friendly, simple silhouette readable small. No letters, no numbers, no frame grid, isolated with real transparent background, no hero. Exactly six equal rectangular cells in ONE horizontal row, same pair of soft four pastel macaron-color butterfly wings viewed from behind, light translucent petal-like wings, wide empty middle gap for hero, six coherent loop flutter poses, stable anchor and size, no character.",
+      "file": "sources/cos_wing_butterfly.png"
+    },
+    {
+      "key": "cos_dash_bubble",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly SIX equal square frames arranged in ONE horizontal row, single centered iridescent pastel soap bubble bursts into smaller bubbles and fades, sequence of six distinct coherent animation phases from tight bright burst to dissipating. Thin lightweight effect, non-obstructive, no red. Each frame bounded in its own cell with generous margin. Pure solid black #000000 background throughout, no transparency.",
+      "file": "sources/cos_dash_bubble.png"
+    },
+    {
+      "key": "cos_dash_confetti",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly SIX equal square frames arranged in ONE horizontal row, burst of small pastel paper confetti expands from center and fades, six coherent sequential phases; pale cream, yellow, mint, baby blue, light pink, sparse particles. Each frame bounded in its own cell. Pure solid black #000000 background throughout, no transparency.",
+      "file": "sources/cos_dash_confetti.png"
+    },
+    {
+      "key": "cos_dash_cream",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly SIX equal square frames arranged in ONE horizontal row, tiny soft warm-white whipped cream puff forms a ring and gently disperses into tiny specks, six coherent sequential phases, unobtrusive and delicate, frames bounded in cells. Pure solid black #000000 background throughout, no transparency.",
+      "file": "sources/cos_dash_cream.png"
+    },
+    {
+      "key": "cos_pop_heart",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly FIVE equal square frames arranged in ONE horizontal row: three tiny pastel blush pink hearts pop outward then fade; small thin clean non-obtrusive effect, coherent five-stage sequence; no bright red. All elements inside frame with margin. Pure solid black #000000 background throughout, no transparency.",
+      "file": "sources/cos_pop_heart.png"
+    },
+    {
+      "key": "cos_pop_sprinkle",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly FIVE equal square frames arranged in ONE horizontal row: a few tiny pale rainbow candy sprinkles scatter outward then fade, thin sparse lightweight particle effect for frequent enemy defeat, sequential phases, not bright or large, keep within frames. Pure solid black #000000 background throughout, no transparency.",
+      "file": "sources/cos_pop_sprinkle.png"
+    },
+    {
+      "key": "cos_pop_star",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly FIVE equal square frames arranged in ONE horizontal row: one small soft golden star breaks into a few thin tiny golden twinkles then disappears, understated sparse small effect for frequent enemy defeats, sequential phases and margin per frame. Pure solid black #000000 background throughout, no transparency.",
+      "file": "sources/cos_pop_star.png"
+    },
+    {
+      "key": "cos_pet_bunny",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly SIX separate evenly spaced equal square cells in ONE horizontal row: same tiny pale mochi bunny with long ears, facing RIGHT and floating by one small pastel balloon; six coherent sequential gentle floating poses, stable size and design, 3/4 view, leave margin.",
+      "file": "sources/cos_pet_bunny.png"
+    },
+    {
+      "key": "cos_pet_jelly",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly SIX separate evenly spaced equal square cells in ONE horizontal row: same small transparent light cyan smiling jelly, facing RIGHT, six coherent successive squash-and-stretch bounce poses, consistent identity and position, center and generous margin.",
+      "file": "sources/cos_pet_jelly.png"
+    },
+    {
+      "key": "cos_trail2",
+      "prompt": "Original cute confectionery fantasy game animation spritesheet, match reference's softly painted premium candy game style, clean tiny readable pale pastel colors and fine colored dark outlines. No text, no numbers, no grid or frame borders, no character. Exactly THREE separate evenly spaced equal square cells in ONE horizontal row, each distinct tiny isolated footstep particle: 1 pale pink musical note, 2 round iridescent rainbow bubble, 3 tiny yellow flower. Bold simple shapes readable small, no other objects, no text.",
+      "file": "sources/cos_trail2.png"
+    }
+  ],
+  "iconAtlas": "Assembled from representative frames of the corresponding generated art; black effects converted to alpha for store icon display.",
+  "packing": "cosmetics2/pack_sources.py crops individual frames, preserves relative motion, scales and assembles sheets; aura and translucent wing alpha adjusted."
+}

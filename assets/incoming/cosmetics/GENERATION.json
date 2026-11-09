@@ -1,0 +1,37 @@
+[
+  {
+    "key": "cos_wing_cream",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly SIX separate evenly spaced equal rectangular cells in ONE horizontal row, same aligned wing pair in all frames, NO CHARACTER: small pair of creamy white whipped-cream wings viewed from slightly behind, wavy icing feathers, one small cherry jewel at root. Wide empty transparent central gap for player torso. Sequence of six distinct smooth poses slowly flapping from raised to lowered and back. Wing tips never cross frame boundaries.",
+    "file": "sources/cos_wing_cream.png"
+  },
+  {
+    "key": "cos_wing_sugar",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly SIX separate evenly spaced equal rectangular cells in ONE horizontal row, same aligned wing pair in all frames, NO CHARACTER: translucent pale blue and blush-pink spun sugar cotton candy wings with tiny crystal glints, symmetrical loose fluffy wings and wide empty transparent gap at center for player. Six subtly different coherent flap poses in loop. Wing tips stay within each frame.",
+    "file": "sources/cos_wing_sugar.png"
+  },
+  {
+    "key": "cos_wing_ruby",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly SIX separate evenly spaced equal rectangular cells in ONE horizontal row, same aligned wing pair in all frames, NO CHARACTER: translucent strawberry pink jelly wings with a small ruby jewel at base, light pink highlights, not dark or opaque. Wide empty transparent central gap for player. Six distinct smooth loop flap poses. No hero, no crop, keep wings inside each cell.",
+    "file": "sources/cos_wing_ruby.png"
+  },
+  {
+    "key": "cos_pet_mochi",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly SIX separate evenly spaced equal square cells in ONE horizontal row: the same very small cute round pink mochi pet with two tiny feathery wings, facing RIGHT, floating. Maintain identical identity and size and positioning; six genuine sequential poses: gentle bob, tiny wing flaps and one blink, loop. Center in each cell and leave margin.",
+    "file": "sources/cos_pet_mochi.png"
+  },
+  {
+    "key": "cos_pet_turtle",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly SIX separate evenly spaced equal square cells in ONE horizontal row: same adorable tiny turtle facing RIGHT with pale mint macaron for its shell, softly floating in air. Preserve exact identity and size, six successive swimming poses with small leg strokes and bob, loop. Center in each cell with margin.",
+    "file": "sources/cos_pet_turtle.png"
+  },
+  {
+    "key": "cos_pet_bird",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly SIX separate evenly spaced equal square cells in ONE horizontal row: same tiny round chocolate-chip cookie bird facing RIGHT, pale warm cookie body, small wings and beak, little chocolate chips; six distinct consecutive rapid wing flap animation poses but same identity and size. Center and leave margin per frame, loop.",
+    "file": "sources/cos_pet_bird.png"
+  },
+  {
+    "key": "cos_trail",
+    "prompt": "Original sprite animation sheet for Mochi Mayhem cute confectionery mobile game, match the attached reference's warm softly painted candy art and fine dark colored outlines. Bright pale pastel, readable at tiny screen size, dye-friendly, no text, no numerals, no UI, no frame borders, isolated on a genuinely transparent background. Exactly THREE separate evenly spaced equal square cells in ONE horizontal row, each a distinct tiny isolated light decorative footstep particle: cell 1 simple pale pink heart, cell 2 simple warm golden star, cell 3 one bright white faceted sugar crystal sparkle. Soft candy shine, bold simple silhouette, nothing else; leave margin each cell.",
+    "file": "sources/cos_trail.png"
+  }
+]

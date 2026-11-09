@@ -1,3 +1,7 @@
+# In progress — Wardrobe source art orders 66 and 67 (2026-11-09)
+
+Owner requested both orders. Prepared 8 + 18 original ImageGen sprite sheets in assets/incoming/cosmetics and cosmetics2, including matching store atlases assembled from generated art, manifests, prompts, QA and animation previews. Preserved sources; generated black-background dash/pop, transparent other assets and reduced aura/sugar wing opacity. Last star-pop frame is black for fade-out. Source-only; runtime and mobile review remain. Exact frame alignment, dimensions, icons and source preservation being checked before committing/pushing; fetch deploy branch before publishing.
+
 # Current checkpoint — Art 65 and audio A09 source delivery (2026-11-08)
 
 Owner requested Daily Login 30 source-only art and A09 Ruby voice. Orders found in branch claude/cool-meitner-5vb4gw at fc82a31 and copied individually. Eleven ImageGen PNGs and 28 ElevenLabs TTS files, original donors, prompts, manifests and QA delivered in assets/incoming/login30 and audio_ruby_a09. Art dimensions/alpha/frames, nine-slice preview and 28 audio hashes/durations/peaks verified; all 99 release files passed immutable readback. Source commit 8ca8db64c6c54d6ac13399cc013c86c4c239063f; Pages 42427497592 and APK 42427497599 auto-triggered by assets but do not add runtime wiring. Owner will wire art; A09 event wiring, subjective listening and mobile review remain. Fetch latest before future work.
