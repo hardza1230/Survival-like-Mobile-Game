@@ -3647,3 +3647,8 @@ titanPctSlam pct 1.5/3/4.5/7.5% (was 1/2/3/5) and boss reach r×1.5. New titanSe
 
 The first-stage coach (coachSteps) had no voice at all. showCoachIntro now calls voiceLine('ruby', body with newlines→spaces; welcome prefixed with its title) and drawCoachBubble voices step.say once per step (_coachSaid). Silent until recordings exist: A11 section C2 adds 15 lines (vo_ruby_tut_<id> ×9, vo_ruby_tut_<id>_go ×6); A11 total now 67.
 
+
+# v: v8.1.64 — C1-5 Great Hunger rings toned down (owner)
+
+bossSig '05_void_maw' 360/380→240/250 px, alpha .6; '05_eclipse' 900→620 px, alpha .9→.6 so the rings stop covering the boss. Hitboxes/pull unchanged.
+

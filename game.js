@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.65';
+const GAME_VERSION = '8.1.66';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.66',date:'2026-11-09',title:'Story voice and Cocoa fixes',items:['Story panels always speak, even when you tap ahead before the previous line ends (fixes the silent last panel in 1-1)','Cocoa Titan: the big aura around her is back; the fire ring at her feet while charging is now small and still grows and changes colour']},
   {v:'8.1.65',date:'2026-11-09',title:'New sounds and Sesame art',items:['Sesame: painted rune buttons, animated orbs, spell icons on Unique, a unique cast seal and cast sound for each of the 10 spells, and spoken spell names','Sesame now speaks when joining the team; painted icons for the Runes talent tree','Ruby voices the first tutorial, star/rank tips and mission complete','New sounds for the Thread shop, Wardrobe, Rankings, bonus goals, mission loot, codex, map, Boss Rush, curse and Pact screens']},
   {v:'8.1.64',date:'2026-11-09',title:'Calmer Great Hunger rings',items:['The Great Hunger’s Maw of the Void and Eclipse rings are smaller and more see-through so the boss stays visible']},
   {v:'8.1.63',date:'2026-11-09',title:'Tutorial voice ready',items:['The first-stage tutorial is ready for Ruby’s voice: each card and each instruction will be spoken once the recordings arrive']},
@@ -14758,7 +14759,8 @@ class Game extends Phaser.Scene {
     const fs=bossWide?14:W<380?16:17,kick=add(this.add.text(panelX+panelW/2,bossWide?74:by+24,sc.title+'  ·  '+(i+1)+' / '+n,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#ffd166',align:'center',wordWrap:{width:panelW-32}}).setOrigin(.5));
     const cap=add(this.add.text(panelX+22,bodyY,sh.cap||'',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:fs+'px',color:'#ffffff',align:'left',lineSpacing:5,wordWrap:{width:panelW-44},stroke:'#120a18',strokeThickness:3}).setOrigin(0,0));
     if(sc.boss){let fit=fs;while(cap.height>H-bodyY-44&&fit>11)cap.setFontSize(--fit);}
-    let shotVoiceMs=0;{ const speech=sh.cap||'',bossRole='boss'+((this.stageIndex||0)+1),storyKey='vo_story_'+mc.id+'_'+(i+1),specific=A07_CATALOG[storyKey],vk=sh.voiceKey||(specific&&specific.text===speech?storyKey:null)||this.voiceCaption?.('ruby',speech)||this.voiceCaption?.(bossRole,speech);if(vk&&this.voicePlay?.(vk,()=>this._mc===mc&&!mc.done&&mc.i===i,mc))shotVoiceMs=A07_CATALOG[vk]?.duration||0;const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(panelX+(panelW-cap.width)/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
+    let shotVoiceMs=0;{ const speech=sh.cap||'',bossRole='boss'+((this.stageIndex||0)+1),storyKey='vo_story_'+mc.id+'_'+(i+1),specific=A07_CATALOG[storyKey],vk=sh.voiceKey||(specific&&specific.text===speech?storyKey:null)||this.voiceCaption?.('ruby',speech)||this.voiceCaption?.(bossRole,speech);if(vk&&VoiceActing.busy?.())this.voiceStop?.();   /* v8.1.66 เจ้าของ: แผ่นถัดไปต้องพูด แม้เสียงแผ่นก่อนยังไม่จบ (เดิมถูกข้าม เช่น 1-1 แผ่นสุดท้าย) */
+    if(vk&&this.voicePlay?.(vk,()=>this._mc===mc&&!mc.done&&mc.i===i,mc))shotVoiceMs=A07_CATALOG[vk]?.duration||0;const full=sh.cap||'',wrapped=full?cap.getWrappedText(full).join('\n'):''; cap.setText(wrapped); cap.x=Math.round(panelX+(panelW-cap.width)/2);   // v8.0.3 พิมพ์คำบรรยายทีละตัว (ตัดบรรทัดก่อน ข้อความไม่กระโดด)
       if(!red&&wrapped){ let n=0; const step=Math.max(1,Math.round(wrapped.length/95)); cap.setText(''); const ev=this.time.addEvent({delay:24,loop:true,callback:()=>{ n=Math.min(wrapped.length,n+step); if(cap.active){cap.setText(wrapped.slice(0,n));if(n%2===0){Sfx.voiceBlip?.('ruby')||Sfx.orderCue?.('type_tick',.06,.08);}} if(n>=wrapped.length){ ev.remove(false); mc.typing=null; } }}); mc.ev.push(ev); mc.typing=()=>{ ev.remove(false); if(cap.active)cap.setText(wrapped); mc.typing=null; }; } }
     const hint=add(this.add.text(W-18,H-16,i+1<n?'Tap ▶':'Tap to continue ▶',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a'}).setOrigin(1,1).setAlpha(.8));
     [kick,cap].forEach(t=>t.setAlpha(0)); tw({targets:[kick,cap],alpha:1,duration:380,delay:220}); tw({targets:hint,alpha:.35,duration:700,yoyo:true,repeat:-1},true);
@@ -18932,12 +18934,12 @@ class Game extends Phaser.Scene {
     else{r=0;this._rageCharging=false;Sfx.bpLoopStop?.('uq_titan_charge');
       if(!this.recipeHas('noheal')&&!p._uqNoRegen&&p.hp<p.maxhp)p.hp=Math.min(p.maxhp,p.hp+p.maxhp*(.012+.004*iron+this.ptv('trRegen'))*this.pactHealMul()*dt);}
     this._titanRage=r;const lv=Math.floor(r);if(lv>prev){if(lv>=this.titanMaxLv())Sfx.bp?.('uq_titan_full',.65,.5);else Sfx.bp?.('cocoa_rage_level',.6,.1,0.92+0.08*lv);this.screenShake(60+lv*30,.002+lv*.0012);}
-    {const base=r>0.02?'bpx_cocoa_rage'+Math.min(3,Math.max(1,lv||1)):null,want=base?(this.battleOutlineKey?.(base)||base):null,au=this._rageAura;if(au&&(!au.active||au.texture.key!==want)){if(au.active)au.destroy();this._rageAura=null;}if(want&&!this._rageAura)this._rageAura=this.bpLoop?.(want,p.x,p.y,120,p.depth-1)||null;if(this._rageAura){const fh=(p.displayHeight||56)*.42,sz=58+r*11;this._rageAura.setPosition(p.x,p.y+fh).setDepth(p.y-1).setScale(sz/256,sz*.5/256);}}   /* v8.1.61 เจ้าของ: ออร่าชาร์จเล็กลง อยู่ใต้เท้า (เดิม 120–192px รอบตัว) · ยังโตตามระดับ/เปลี่ยนสีตามเดิม */
+    {const base=r>0.02?'bpx_cocoa_rage'+Math.min(3,Math.max(1,lv||1)):null,want=base?(this.battleOutlineKey?.(base)||base):null,au=this._rageAura;if(au&&(!au.active||au.texture.key!==want)){if(au.active)au.destroy();this._rageAura=null;}if(want&&!this._rageAura)this._rageAura=this.bpLoop?.(want,p.x,p.y,120,p.depth-1)||null;if(this._rageAura)this._rageAura.setPosition(p.x,p.y-10).setDepth(p.y-1).setScale((120+r*24)/256);}   /* v8.1.66 คืนออร่ารอบตัวตามเดิม (v8.1.61 ย่อผิดชิ้น) */
     const G=this._rageG;G.clear();if(r<=0.02){this.titanRageArtOff?.();return;}
     const t=this.time.now/1000,col=lv>=3?0xff2a2a:lv>=2?0xff6a1a:0xffb347,rad=(34+r*12+Math.sin(t*(6+lv*4))*3)*.8;
     G.lineStyle(3+lv,col,.55+lv*.12).strokeCircle(p.x,p.y+6,rad);G.fillStyle(col,.08+lv*.05).fillCircle(p.x,p.y+6,rad);
     {const SR=this.titanSlamRadius(r);let pv=this._ragePv;if(pv&&!pv.active)pv=this._ragePv=null;if(!pv&&this.bpAnim?.('bpx_cocoa_rage_preview')){pv=this._ragePv=this.heroFx('bpx_cocoa_rage_preview',p.x,p.y,256,{must:true,depth:4});}   // v7.8.45 C3 art วงพรีวิว
-      if(pv){pv.setPosition(p.x,p.y).setScale(SR*2/.9/256).setAlpha(.55+lv*.12+.1*Math.sin(t*5));if(lv>=3)pv.setTint(0xff8a7a);else if(lv>=2)pv.setTint(0xffb08a);else pv.clearTint();}
+      if(pv){pv.setPosition(p.x,p.y+(p.displayHeight||56)*.38).setScale((70+r*18)/.9/256,(70+r*18)*.55/.9/256).setAlpha(.55+lv*.12+.1*Math.sin(t*5));if(lv>=3)pv.setTint(0xff8a7a);else if(lv>=2)pv.setTint(0xffb08a);else pv.clearTint();}
       else{G.fillStyle(col,.06+lv*.03).fillCircle(p.x,p.y,SR);G.lineStyle(3,col,.5+.35*Math.abs(Math.sin(t*5))).strokeCircle(p.x,p.y,SR);G.lineStyle(1.5,0xffffff,.35).strokeCircle(p.x,p.y,SR*.48);}
       const tg=this._rageTg||(this._rageTg=[]);let ti=0;   // v7.6.9 วงระยะทุบจริง (วงใน = โซนแรงพิเศษ)
       let n=0;this.enemies.children.iterate(e=>{if(n>=40||!e||!e.active||this.dist(e.x,e.y,p.x,p.y)>SR)return;n++;const er=Math.max(12,(e.body?.halfWidth||14)+4);
