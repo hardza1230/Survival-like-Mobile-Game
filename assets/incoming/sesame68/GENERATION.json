@@ -1,0 +1,92 @@
+[
+  {
+    "key": "ses_rune_btn",
+    "prompt": "Original high-quality painted fantasy mobile game UI sprite asset for Sesame the Rune Invoker, match reference's dynamic ink outlines, warm gold metal, polished gemstones and elemental swirls, clean graphic shape readable on small mobile display. No lettering, no digits, no labels, no frame borders or grid, isolated on genuine transparent background. Nine distinct same-size round crystal buttons in EXACT 3 by 3 grid, row-major: first row FIRE (warm red/orange), each with a bold unmistakable triangular flame symbol in the center, in order normal, pressed bright, disabled muted. Second row WIND (green), each with large right-pointing arrow made of wind, normal, pressed bright, disabled muted. Third row WATER (blue), each with bold diamond-shaped water drop, normal, pressed bright, disabled muted. Three states clearly distinct, each cell independent, no touching, equal size, no other symbols. Geometric symbols are pictograms, absolutely no text.",
+    "file": "sources/ses_rune_btn.png"
+  },
+  {
+    "key": "ses_orb_p",
+    "prompt": "Original high-quality painted fantasy mobile game UI sprite asset for Sesame the Rune Invoker, match reference's dynamic ink outlines, warm gold metal, polished gemstones and elemental swirls, clean graphic shape readable on small mobile display. No lettering, no digits, no labels, no frame borders or grid, isolated on genuine transparent background. Exactly six equal squares in one horizontal strip, same small red-orange fire crystal orb rimmed in gold, with triangular flame inside turning gently across six different frames, coherent loop, maintain same identity and center, strong silhouette, no text.",
+    "file": "sources/ses_orb_p.png"
+  },
+  {
+    "key": "ses_orb_m",
+    "prompt": "Original high-quality painted fantasy mobile game UI sprite asset for Sesame the Rune Invoker, match reference's dynamic ink outlines, warm gold metal, polished gemstones and elemental swirls, clean graphic shape readable on small mobile display. No lettering, no digits, no labels, no frame borders or grid, isolated on genuine transparent background. Exactly six equal squares in one horizontal strip, same small emerald green wind crystal orb rimmed in gold, with distinct right-arrow-shaped wind swirl inside rotating gently across six different frames, coherent loop, consistent shape and center, no text.",
+    "file": "sources/ses_orb_m.png"
+  },
+  {
+    "key": "ses_orb_b",
+    "prompt": "Original high-quality painted fantasy mobile game UI sprite asset for Sesame the Rune Invoker, match reference's dynamic ink outlines, warm gold metal, polished gemstones and elemental swirls, clean graphic shape readable on small mobile display. No lettering, no digits, no labels, no frame borders or grid, isolated on genuine transparent background. Exactly six equal squares in one horizontal strip, same small azure-blue water crystal orb rimmed in gold, with diamond water drop and water bubbles swirling across six distinct frames, coherent loop, consistent center, no text.",
+    "file": "sources/ses_orb_b.png"
+  },
+  {
+    "key": "ses_spell_icons",
+    "prompt": "Original high-quality painted fantasy mobile game UI sprite asset for Sesame the Rune Invoker, match reference's dynamic ink outlines, warm gold metal, polished gemstones and elemental swirls, clean graphic shape readable on small mobile display. No lettering, no digits, no labels, no frame borders or grid, isolated on genuine transparent background. Ten distinct clear illustrated fantasy spell icons in EXACT 2 rows by 5 columns (10 equally sized cells, row major, no borders). Row 1: 1 three descending orange meteors; 2 three-bladed emerald wind chakram; 3 aqua wave armor shield; 4 golden-orange solar spear; 5 molten orange lava garden. Row 2: 6 rainbow prism weapon; 7 green-blue swirling cyclone; 8 blue crystal ground fissure; 9 blue-green mist shield; 10 radial three-color flame/wind/water blast. One distinct centered illustration per cell, no letters or numbers, no cross-cell overlap, transparent background.",
+    "file": "sources/ses_spell_icons.png"
+  },
+  {
+    "key": "ses_talent_icons",
+    "prompt": "Original high-quality painted fantasy mobile game UI sprite asset for Sesame the Rune Invoker, match reference's dynamic ink outlines, warm gold metal, polished gemstones and elemental swirls, clean graphic shape readable on small mobile display. No lettering, no digits, no labels, no frame borders or grid, isolated on genuine transparent background. Ten distinct polished magical skill icons in EXACT 2 rows by 5 columns, equal cells, row-major, clear separation, no labels. Row 1: 1 three red green blue orbs in a triangle; 2 heavy red-orange triangular rune; 3 red rune smashing tiny boss crown; 4 green wind-arrow rune with wings; 5 swirling green wind hourglass. Row 2: 6 small dark-haired Sesame silhouette protected by blue water shield; 7 aqua water chains gripping; 8 glowing cracked red orb; 9 endless green cyclone loop; 10 three colored orbs combining into one luminous prism. Transparent backgrounds, icons only, vivid gold details, no typography.",
+    "file": "sources/ses_talent_icons.png"
+  },
+  {
+    "key": "ses_cast_ppp",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A fiery solar seal with three comet motifs and three little angular triangular flame marks; warm gold and orange.",
+    "file": "sources/ses_cast_ppp.png"
+  },
+  {
+    "key": "ses_cast_mmm",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. An emerald wind seal with three curved arrowblades and a pale green three-spoked cyclone at the center.",
+    "file": "sources/ses_cast_mmm.png"
+  },
+  {
+    "key": "ses_cast_bbb",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A blue water armor seal with three diamond water drops and concentric aqua shield ripples.",
+    "file": "sources/ses_cast_bbb.png"
+  },
+  {
+    "key": "ses_cast_ppm",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A radiant orange-gold sunlance spear-shaped seal with two triangular flame marks and one green wind-arrow accent.",
+    "file": "sources/ses_cast_ppm.png"
+  },
+  {
+    "key": "ses_cast_ppb",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A warm molten magma-garden seal with two orange flame triangles and one blue water diamond, small floral lava petals.",
+    "file": "sources/ses_cast_ppb.png"
+  },
+  {
+    "key": "ses_cast_pmm",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A crystalline prism-armament seal with two green wind-arrow motifs, one orange triangular flame and a pale rainbow weapon-like central diamond.",
+    "file": "sources/ses_cast_pmm.png"
+  },
+  {
+    "key": "ses_cast_mmb",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A swirling inward cyclone convergence seal with two emerald arrow motifs and one blue water diamond, airy teal vortex.",
+    "file": "sources/ses_cast_mmb.png"
+  },
+  {
+    "key": "ses_cast_pbb",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A blue crystalline fault seal with two aqua water diamonds and one warm orange flame triangle; faceted crack motifs.",
+    "file": "sources/ses_cast_pbb.png"
+  },
+  {
+    "key": "ses_cast_mbb",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A gentle mistwalk aegis seal in soft aqua and green with two blue water diamonds and one green wind-arrow, protective curved shield petals.",
+    "file": "sources/ses_cast_mbb.png"
+  },
+  {
+    "key": "ses_cast_pmb",
+    "prompt": "Original 2D magic cast animation sprite sheet for Sesame, matching reference's bold ink-outlined hand-painted fantasy elemental effects, cute premium mobile game. Exactly SIX equal square cells in ONE horizontal row, perfectly centered and equally spaced, six genuinely distinct successive animation phases forming, spinning, flaring and fading in 0.4 seconds. Each cell contains one single thin horizontally elliptical floor magic sigil in shallow 3/4 perspective; keep identical anchor center and within cell margins, do not overlap frames. NO letters, numbers, inscriptions, alphabet, logo, border, character, or grid. Pure solid black #000000 background everywhere outside the effect, no transparency. Use warm orange-red instead of enemy neon red and no dark purple. A balanced three-element prismatic blast seal with an orange flame triangle, green wind arrow and blue water diamond arranged around a central golden spark.",
+    "file": "sources/ses_cast_pmb.png"
+  },
+  {
+    "key": "ses_orb_m",
+    "prompt": "Original polished fantasy mobile game icon spritesheet, match reference's hand-painted elemental inks and gold trim. Transparent background. Exactly six isolated emerald-green wind glass orbs in one horizontal row with generous fully transparent gaps between and around each orb. Each orb gold-rimmed and shows right-pointing arrow-shaped curling wind inside. Six successive distinct rotations, stable size, no label, no typography. IMPORTANT every pixel outside the round orb must be transparent: absolutely no white rectangle, paper, square, colored haze, horizontal band, tile, checkerboard or backdrop. Crisply cut-out game sprite, tiny mobile icon size.",
+    "file": "sources/ses_orb_m_redo.png"
+  },
+  {
+    "key": "ses_orb_b",
+    "prompt": "Original polished fantasy mobile game icon spritesheet, match reference's hand-painted elemental inks and gold trim. Transparent background. Exactly six isolated azure-blue water glass orbs in one horizontal row with generous fully transparent gaps between and around each orb. Each orb gold-rimmed with a diamond water-drop shape and tiny liquid bubbles inside. Six successive distinct rotations, stable size, no labels. IMPORTANT every pixel outside the round orb must be transparent: absolutely no white rectangle, paper, square, colored haze, horizontal band, tile, checkerboard or backdrop. Crisply cut-out game sprite, tiny mobile icon size.",
+    "file": "sources/ses_orb_b_redo.png"
+  }
+]

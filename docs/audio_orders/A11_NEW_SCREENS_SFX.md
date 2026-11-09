@@ -1,6 +1,6 @@
 # A11 — ใบรวมเสียงที่ยังขาดทั้งหมด (Sesame เวท · ฉากเงียบ · เสียงพากย์ที่หาย) · ใบสั่งเสียง
 
-สถานะ: 🟡 รอส่ง · รวมเมื่อ 9 พ.ย. 2026 ตามเจ้าของสั่ง "เอาใบ audio มารวมกัน" · **แทนใบ A10** (A10 เก็บไว้เป็นประวัติ บทอนุมัติแล้ว)
+สถานะ: 🟢 ส่งครบ · รอผูกโค้ด · รวมเมื่อ 9 พ.ย. 2026 ตามเจ้าของสั่ง "เอาใบ audio มารวมกัน" · **แทนใบ A10** (A10 เก็บไว้เป็นประวัติ บทอนุมัติแล้ว)
 เครื่องมือ: **ElevenLabs** — SFX ใช้ Sound Effects (ต้นฉบับ) · เสียงพูดใช้ **เสียงที่บันทึกไว้แล้ว** ของ A07 (Ruby: `assets/incoming/audio_voice_acting/VOICES.json` key `ruby` · Sesame: ชุดแก้ใน `assets/incoming/audio_voice_fix/`) · ห้ามสร้างเสียงใหม่ ห้ามเสียงสร้างด้วยโค้ด/Runway
 
 ## สิ่งที่ตรวจพบ (9 พ.ย.)
@@ -144,3 +144,7 @@ key `vo_sesame_spell_<code>` · เล่นแทนประโยครวม
 - **ส่วน A** — SFX → `assets/audio/sfx/sesame_a10/` + `ASSET_AUDIO` · เล่นใน cast ของแต่ละเวทแทน `ses811_cast` (ไม่มีไฟล์ = ใช้เดิม) · เสียงพูด → `assets/audio/acting/` + `A07_CATALOG` role `sesame` · `VoiceActing.unique()` ของ Sesame เลือก `vo_sesame_spell_<code>` 60% / ประโยครวม 40% · เว้นเสียงพูด ≥2.5 วิ
 - **ส่วน B** — ไฟล์ไป `assets/audio/sfx/a11/` · `Sfx.menuCue?.(key,vol)` · จุดเรียก: B1 `threadBuy`/`Iap.grant`/`claimPass` · B2 `buildWardrobe` (เข้าจากหน้าอื่น)/`cosTap`/`Cos.nextDye`/`cosDashFx` · B3 `buildRanking`/`Board.top` (`myRank<=3`)/`boardRename` · B4 `completeWaveObjective` (`_ob>0`)/`missionLootBurst`/`collectLoot` sugar (throttle 60 ms, vol ≤0.35)/gear tier≥rare · B5 `buildBestiary`/`buildSkillArchive`/`buildItemCodex`/`buildAtlasMap`/ลูกศรด่าน Lobby/`buildBossRush`/`openEndgamePreparation`/`claimPactMilestones`
 - **ส่วน C** — `assets/audio/acting/` + `A07_CATALOG` (text ตรงตัวอักษร → `rubySay`/`rubyGuide` หาเสียงจากข้อความเอง ไม่ต้องแก้โค้ด) · `vo_sesame_unlock`: ใส่ `voiceKey` ให้ shot สุดท้ายของ `MOTION_COMICS.s10` (อย่าเพิ่ม shot — เทส story-motion-art ล็อก 4 shots) · อัปเดตจำนวนใน `tests/voice-acting-integration.test.cjs`
+
+## ส่งมอบ — 9 พ.ย. 2026
+
+ส่ง 67 MP3 ที่ `assets/incoming/audio_a11/` จาก ElevenLabs พร้อมต้นฉบับ prompt, manifest, QA และ AUDITION.html · ผ่านการตรวจเทคนิคทุกไฟล์ · ยังไม่ผูก runtime หรือฟังตรวจเชิงศิลป์ · บท `vo_sesame_unlock` รอเจ้าของอนุมัติ · A04 มีเพลงครบ ผูกแล้ว และเจ้าของฟังรับแล้ว

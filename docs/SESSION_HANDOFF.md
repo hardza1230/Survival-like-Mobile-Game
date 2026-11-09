@@ -1,3 +1,7 @@
+# In progress — Sesame art order 68 and audio A11 source delivery (2026-11-09)
+
+Owner requested source-only 16 art + 52 audio, no game.js changes. Concurrent order update added 15 tutorial lines; all 67 audio files delivered. ImageGen source and packaged art, actual prompts, exact dimensions/alpha/black and preview in assets/incoming/sesame68; 67 ElevenLabs originals and mastered MP3s, exact text, QA and audition in assets/incoming/audio_a11. All passed mechanical QA. `vo_sesame_unlock` script remains awaiting owner approval. Six A04 music tracks were already delivered, integrated and owner-accepted; permission check returned HTTP 401 so additional Music Generation access cannot be confirmed, no duplicate music generated. In-game integration and listening/mobile review remain. Fetch latest deploy branch before commit/push; another AI concurrently edits game.
+
 # Current checkpoint — Wardrobe source art orders 66 and 67 (2026-11-09)
 
 Owner requested both orders. Delivered 8 + 18 original ImageGen sprite sheets, store atlases, retained sources, prompts, manifests, QA and animation previews in assets/incoming/cosmetics and cosmetics2. Store icons come from matching artwork; dash/pop are black-background, other assets transparent, aura/selected wings semitransparent. Last star-pop frame is black for fade-out. All 94 delivery files passed immutable readback; source commit 1936d33f6b67cb09fcf9e4382b216daa1d4804fe. Source-only: runtime wiring, actual frame smoothness, tint appearance, gameplay and mobile review remain. Fetch deploy branch before future work.

@@ -1,0 +1,512 @@
+[
+  {
+    "key": "ses_cast_ppp",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "ไฟคำราม + เสียงหวีดอุกกาบาตลงหนัก",
+    "limit_ms": 1400,
+    "spell": "Solar Cataclysm"
+  },
+  {
+    "key": "ses_cast_mmm",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "จักรลมหมุนตัด ซวบ ๆ 3 ครั้ง",
+    "limit_ms": 1400,
+    "spell": "Tempest Chakram"
+  },
+  {
+    "key": "ses_cast_bbb",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "คลื่นน้ำม้วนเป็นเกราะ ใสกังวาน",
+    "limit_ms": 1400,
+    "spell": "Tidal Armor"
+  },
+  {
+    "key": "ses_cast_ppm",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "หอกแสงพุ่งเร็ว เสียงแหลมสั้น + ปัง",
+    "limit_ms": 1400,
+    "spell": "Sunlance"
+  },
+  {
+    "key": "ses_cast_ppb",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "ลาวาเดือดปุด ๆ แตกจากพื้น",
+    "limit_ms": 1400,
+    "spell": "Magma Garden"
+  },
+  {
+    "key": "ses_cast_pmm",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "คริสตัลกระทบกันใส + พลังเพิ่ม (power-up)",
+    "limit_ms": 1400,
+    "spell": "Prismatic Armament"
+  },
+  {
+    "key": "ses_cast_mmb",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "พายุหมุนดูด ฮู่ววว เข้าหาศูนย์กลาง",
+    "limit_ms": 1400,
+    "spell": "Cyclone Confluence"
+  },
+  {
+    "key": "ses_cast_pbb",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "คริสตัลแตกร้าวต่อเนื่อง 5 จังหวะสั้น",
+    "limit_ms": 1400,
+    "spell": "Crystal Fault"
+  },
+  {
+    "key": "ses_cast_mbb",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "หมอกพัด + โล่เวทเปิด นุ่มเบา",
+    "limit_ms": 1400,
+    "spell": "Mistwalk Aegis"
+  },
+  {
+    "key": "ses_cast_pmb",
+    "kind": "sfx",
+    "category": "sesame",
+    "description_th": "วงระเบิดสามโทน บูม-กระเพื่อม",
+    "limit_ms": 1400,
+    "spell": "Prismatic Blast"
+  },
+  {
+    "key": "vo_sesame_spell_ppp",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Fall, little suns.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_mmm",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Spin, winds.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_bbb",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Tide, hold me.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_ppm",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Sunlance.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_ppb",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Bloom, magma.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_pmm",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Shine brighter.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_mmb",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Gather in.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_pbb",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Crack open.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_mbb",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "Into the mist.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "vo_sesame_spell_pmb",
+    "kind": "voice",
+    "category": "sesame",
+    "speaker": "sesame",
+    "text": "All three… now.",
+    "limit_ms": 2200
+  },
+  {
+    "key": "ui_thread_buy",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ไหมม้วนคลาย + ระฆังแก้วใส 2 โน้ต",
+    "limit_ms": 1200
+  },
+  {
+    "key": "ui_thread_first_bonus",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "แบบเดียวกัน + ประกายวิบวับขึ้นเสียงสูง",
+    "limit_ms": 1500
+  },
+  {
+    "key": "ui_pass_claim",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "กระดิ่งตั๋วเล็ก + ไหมลอย",
+    "limit_ms": 900
+  },
+  {
+    "key": "ui_shop_soon",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ปิ๊บต่ำนุ่ม ๆ (ไม่ใช่ error แรง)",
+    "limit_ms": 500
+  },
+  {
+    "key": "ui_wardrobe_open",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ประตูตู้ไม้เล็กเปิด + ไม้แขวนกระทบ",
+    "limit_ms": 800
+  },
+  {
+    "key": "ui_cos_buy",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ห่อของขวัญฉีก + ประกาย",
+    "limit_ms": 1000
+  },
+  {
+    "key": "ui_cos_equip",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ผ้าสะบัด + ดิ๊ง เบา",
+    "limit_ms": 500
+  },
+  {
+    "key": "ui_cos_unequip",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ผ้าสะบัดกลับ เสียงต่ำกว่า",
+    "limit_ms": 400
+  },
+  {
+    "key": "ui_cos_dye",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "พู่กันจุ่มสี ป๊อปเบา",
+    "limit_ms": 400
+  },
+  {
+    "key": "cos_dash_bubble",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ฟองสบู่แตกกระจาย",
+    "limit_ms": 400
+  },
+  {
+    "key": "cos_dash_confetti",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ปืนกระดาษสีป็อป",
+    "limit_ms": 400
+  },
+  {
+    "key": "cos_dash_cream",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "วิปครีมพ่นฟู่",
+    "limit_ms": 400
+  },
+  {
+    "key": "ui_rank_open",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "แตรเล็กประกาศ 3 โน้ต",
+    "limit_ms": 1000
+  },
+  {
+    "key": "ui_rank_top3",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ฉาบเล็ก + เสียงเชียร์เบา (ไม่มีคำ)",
+    "limit_ms": 1500
+  },
+  {
+    "key": "ui_name_saved",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ปากกาขีด + ติ๊ก",
+    "limit_ms": 500
+  },
+  {
+    "key": "mission_bonus_get",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ดาวกระทบ 3 ครั้งไล่ขึ้น",
+    "limit_ms": 1000
+  },
+  {
+    "key": "mission_loot_burst",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ฝาโหลขนมเด้ง + ของกระจาย",
+    "limit_ms": 900
+  },
+  {
+    "key": "pickup_sugar_piece",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ลูกกวาดกระทบเบา ๆ ใส · มี 3 pitch (ไฟล์เดียว โค้ดสุ่ม pitch)",
+    "limit_ms": 250
+  },
+  {
+    "key": "pickup_gear_rare",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "กล่องของขวัญสั่น + ประกายสูง",
+    "limit_ms": 800
+  },
+  {
+    "key": "ui_codex_open",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "หนังสือเล่มหนาเปิด + หน้ากระดาษพลิก",
+    "limit_ms": 800
+  },
+  {
+    "key": "ui_page_flip",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "พลิกกระดาษ 1 หน้า",
+    "limit_ms": 300
+  },
+  {
+    "key": "ui_map_open",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "กระดาษแผนที่คลี่ + ลมเบา",
+    "limit_ms": 800
+  },
+  {
+    "key": "ui_stage_swipe",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "การ์ดเลื่อนสั้น",
+    "limit_ms": 300
+  },
+  {
+    "key": "ui_bossrush_open",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "กลองหนัก 2 ครั้ง ดุดัน",
+    "limit_ms": 1000
+  },
+  {
+    "key": "ui_curse_open",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "เสียงลึกลับต่ำ + ระฆังไกล",
+    "limit_ms": 1200
+  },
+  {
+    "key": "ui_pact_claim",
+    "kind": "sfx",
+    "category": "sfx",
+    "description_th": "ตราประทับลงกระดาษ + ประกาย",
+    "limit_ms": 800
+  },
+  {
+    "key": "vo_ruby_objective_safe",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "We did it! Another little piece of flavor is safe. Nice work!",
+    "limit_ms": 7000
+  },
+  {
+    "key": "vo_ruby_guide_rank_1",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Rank up! You earned a Rank Reward.",
+    "limit_ms": 7000
+  },
+  {
+    "key": "vo_ruby_guide_rank_2",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Tap Rank Rewards to pick one. It stays forever.",
+    "limit_ms": 7000
+  },
+  {
+    "key": "vo_ruby_guide_stars_1",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP.",
+    "limit_ms": 5500
+  },
+  {
+    "key": "vo_ruby_guide_stars_2",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "New stars give bonus Sugar. Tap the stage box any time to replay a floor.",
+    "limit_ms": 7000
+  },
+  {
+    "key": "vo_sesame_unlock",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "sesame",
+    "text": "I remember now… let’s go together.",
+    "limit_ms": 7000
+  },
+  {
+    "key": "vo_ruby_tut_welcome",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Hi, I’m Ruby! The Heart Seed broke your curse — you’re a person again! Let’s get you ready to save the others.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_move",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Slide one finger to walk. Lift it to stop.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_attack",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Your Heart Seed fights on its own. Just walk near the sour critters!",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_sweets",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Beaten foes drop stolen sweets. Walk over them to take them back!",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_cards",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Full EXP bar = 3 flavor cards. Tap one to read, tap again to take it.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_dash",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Green button: zoom past danger. It needs a moment to recharge.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_unique",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Pink button: your seed’s big attack. It charges up again over time.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_hp",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "HP at zero ends the stage. Pink mochi hearts heal you.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_ready",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Training complete! Use your starter Sugar to upgrade one core, then enter the pantry.",
+    "limit_ms": 6000
+  },
+  {
+    "key": "vo_ruby_tut_move_go",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Slide your finger to walk",
+    "limit_ms": 1800
+  },
+  {
+    "key": "vo_ruby_tut_attack_go",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Defeat the enemies",
+    "limit_ms": 1800
+  },
+  {
+    "key": "vo_ruby_tut_sweets_go",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Pick up the sweets",
+    "limit_ms": 1800
+  },
+  {
+    "key": "vo_ruby_tut_cards_go",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "Pick a card",
+    "limit_ms": 1800
+  },
+  {
+    "key": "vo_ruby_tut_dash_go",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "TAP Dash two times",
+    "limit_ms": 1800
+  },
+  {
+    "key": "vo_ruby_tut_unique_go",
+    "kind": "voice",
+    "category": "voice",
+    "speaker": "ruby",
+    "text": "TAP your Unique",
+    "limit_ms": 1800
+  }
+]

@@ -1,0 +1,3416 @@
+{
+  "technical": "RGBA dimensions, frame count, empty pixels and corners verified",
+  "failed": [],
+  "assets": [
+    {
+      "key": "ses_rune_btn",
+      "file": "ses_rune_btn.png",
+      "bytes": 286717,
+      "sha256": "c0195c7a0803939a7c1b7608c6f3d84200a6e61b58128eb625671c640a4ac47d",
+      "width": 1152,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 9,
+      "columns": 9,
+      "loop": false,
+      "background": "alpha",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            4,
+            4,
+            124,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            4,
+            4,
+            124,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            4,
+            4,
+            124,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            4,
+            4,
+            124,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            4,
+            4,
+            124,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            4,
+            4,
+            124,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            5,
+            4,
+            123,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            5,
+            4,
+            123,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 8,
+          "bounds": [
+            5,
+            4,
+            123,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "frameNames": [
+        "P normal",
+        "P pressed",
+        "P cooldown",
+        "M normal",
+        "M pressed",
+        "M cooldown",
+        "B normal",
+        "B pressed",
+        "B cooldown"
+      ]
+    },
+    {
+      "key": "ses_orb_p",
+      "file": "ses_orb_p.png",
+      "bytes": 37141,
+      "sha256": "76c33cfec59c0b722170db13caa07d56b09a5e9f668d7f078101cee43a50dd07",
+      "width": 384,
+      "height": 64,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "background": "alpha",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            9,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            9,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            9,
+            6,
+            57,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            9,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            9,
+            6,
+            57,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            9,
+            6,
+            57,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_orb_m",
+      "file": "ses_orb_m.png",
+      "bytes": 43584,
+      "sha256": "ae40a34ebcdb9085b7efdd97f8ccf60d53efde10387f98c91e07b3962709cc41",
+      "width": 384,
+      "height": 64,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "background": "alpha",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_orb_b",
+      "file": "ses_orb_b.png",
+      "bytes": 38292,
+      "sha256": "07b1816d1621d03a0ef96bd84d9eed78167987b2fa48b158d02e1fd730e33b2c",
+      "width": 384,
+      "height": 64,
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": true,
+      "background": "alpha",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            8,
+            6,
+            57,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            8,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            7,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            8,
+            6,
+            56,
+            58
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_spell_icons",
+      "file": "ses_spell_icons.png",
+      "bytes": 361877,
+      "sha256": "875eea6a29e7c091336fe784a0c693fe1ab92a5eca70be534e85f7ec0acabc4b",
+      "width": 1280,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 10,
+      "columns": 10,
+      "loop": false,
+      "background": "alpha",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            5,
+            4,
+            123,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            4,
+            6,
+            124,
+            121
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            4,
+            4,
+            124,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            6,
+            4,
+            123,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            3,
+            8,
+            124,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            4,
+            5,
+            124,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            6,
+            4,
+            123,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            4,
+            8,
+            124,
+            120
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 8,
+          "bounds": [
+            6,
+            4,
+            121,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 9,
+          "bounds": [
+            4,
+            5,
+            124,
+            122
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "frameNames": [
+        "ppp",
+        "mmm",
+        "bbb",
+        "ppm",
+        "ppb",
+        "pmm",
+        "mmb",
+        "pbb",
+        "mbb",
+        "pmb"
+      ]
+    },
+    {
+      "key": "ses_cast_ppp",
+      "file": "ses_cast_ppp.png",
+      "bytes": 119905,
+      "sha256": "ef2a52499299472d97e1278ef23031b8dcd790d3c4f7946d12252381c2f4a14f",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            34,
+            61,
+            158,
+            127
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            29,
+            57,
+            163,
+            135
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            25,
+            51,
+            168,
+            140
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            14,
+            40,
+            176,
+            153
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            27,
+            50,
+            165,
+            138
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            35,
+            60,
+            157,
+            129
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_mmm",
+      "file": "ses_cast_mmm.png",
+      "bytes": 133438,
+      "sha256": "7352a13536486f595509e6afc15560ae9d1e2bf8f7cbfc996fd0060c220c120d",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            28,
+            72,
+            164,
+            135
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            25,
+            62,
+            166,
+            140
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            23,
+            53,
+            169,
+            143
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            19,
+            41,
+            175,
+            151
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            22,
+            55,
+            169,
+            143
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            28,
+            69,
+            165,
+            138
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_bbb",
+      "file": "ses_cast_bbb.png",
+      "bytes": 165515,
+      "sha256": "ae676be96d504aae20ad963785dee032a28ae3f3ee92755902f61061611c2842",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            34,
+            85,
+            158,
+            142
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            27,
+            70,
+            164,
+            148
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            24,
+            53,
+            168,
+            157
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            17,
+            28,
+            175,
+            164
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            26,
+            53,
+            167,
+            153
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            33,
+            86,
+            159,
+            145
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_ppm",
+      "file": "ses_cast_ppm.png",
+      "bytes": 116525,
+      "sha256": "e0fa9956795523c970d1fedbe434cfdc9397daf5664f13ec52dfed3efbe7e894",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            32,
+            70,
+            161,
+            121
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            26,
+            61,
+            166,
+            130
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            19,
+            50,
+            174,
+            138
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            15,
+            37,
+            177,
+            155
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            14,
+            57,
+            175,
+            135
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            31,
+            67,
+            161,
+            126
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_ppb",
+      "file": "ses_cast_ppb.png",
+      "bytes": 125392,
+      "sha256": "810dbb2d2290d82fbf28a50f24b0b7b1ad1edb55e0cb6052f05f11b61add2705",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            29,
+            77,
+            163,
+            138
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            26,
+            70,
+            166,
+            140
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            23,
+            59,
+            169,
+            143
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            15,
+            40,
+            176,
+            153
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            23,
+            51,
+            169,
+            142
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            29,
+            63,
+            163,
+            138
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_pmm",
+      "file": "ses_cast_pmm.png",
+      "bytes": 142740,
+      "sha256": "e9433d7a3697c51a9861c37e969e2467ac5930e581cd99cf91c75de6e433a112",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            28,
+            69,
+            164,
+            137
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            24,
+            58,
+            167,
+            142
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            21,
+            45,
+            171,
+            150
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            14,
+            29,
+            176,
+            163
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            24,
+            50,
+            167,
+            144
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            28,
+            61,
+            164,
+            136
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_mmb",
+      "file": "ses_cast_mmb.png",
+      "bytes": 140002,
+      "sha256": "dbc6a793b4cfa6af336f71db033a3554303205f14bc4c485ef6ad5313255ccd5",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            18,
+            73,
+            173,
+            128
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            18,
+            61,
+            174,
+            136
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            18,
+            52,
+            174,
+            143
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            45,
+            175,
+            147
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            17,
+            53,
+            175,
+            142
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            18,
+            68,
+            174,
+            133
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_pbb",
+      "file": "ses_cast_pbb.png",
+      "bytes": 167354,
+      "sha256": "ac2791d5f38977b0ece05db7657b777006396bd9adf648e42890a28c92f6698b",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            27,
+            81,
+            164,
+            141
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            23,
+            68,
+            169,
+            147
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            20,
+            56,
+            172,
+            156
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            33,
+            175,
+            159
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            20,
+            52,
+            172,
+            153
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            26,
+            68,
+            164,
+            146
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_mbb",
+      "file": "ses_cast_mbb.png",
+      "bytes": 161206,
+      "sha256": "de3b1681c4e0fd11b9e61f7e774438d72914fc0ccd37467db85e234f4a44db0c",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            34,
+            81,
+            159,
+            141
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            28,
+            60,
+            164,
+            147
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            24,
+            41,
+            168,
+            151
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            31,
+            175,
+            161
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            26,
+            50,
+            165,
+            149
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            32,
+            76,
+            159,
+            142
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_pmb",
+      "file": "ses_cast_pmb.png",
+      "bytes": 144131,
+      "sha256": "eaeda5bdcb4faf704d8566e7498825e1b526aa9eb4e8896b9e7499a91bc5d518",
+      "width": 1152,
+      "height": 192,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "background": "#000000",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            28,
+            70,
+            164,
+            134
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            24,
+            64,
+            166,
+            141
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            20,
+            53,
+            171,
+            148
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            16,
+            33,
+            175,
+            159
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            23,
+            53,
+            171,
+            147
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            28,
+            69,
+            164,
+            134
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_talent_icons",
+      "file": "ses_talent_icons.png",
+      "bytes": 371629,
+      "sha256": "aa9bd0023c2a2162f763719160cde221c94c3ad9b8d65bd4c604b0ddf1610f1c",
+      "width": 1280,
+      "height": 128,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 10,
+      "columns": 10,
+      "loop": false,
+      "background": "alpha",
+      "frames": [
+        {
+          "frame": 0,
+          "bounds": [
+            6,
+            4,
+            121,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "bounds": [
+            4,
+            5,
+            124,
+            122
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 2,
+          "bounds": [
+            10,
+            4,
+            117,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 3,
+          "bounds": [
+            4,
+            7,
+            125,
+            120
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 4,
+          "bounds": [
+            6,
+            4,
+            122,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 5,
+          "bounds": [
+            5,
+            4,
+            123,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 6,
+          "bounds": [
+            6,
+            4,
+            122,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 7,
+          "bounds": [
+            10,
+            4,
+            117,
+            123
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 8,
+          "bounds": [
+            4,
+            8,
+            124,
+            120
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 9,
+          "bounds": [
+            6,
+            4,
+            121,
+            124
+          ],
+          "cornerRGBA": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "frameNames": [
+        "rune_attunement",
+        "heavy_runes",
+        "giant_breaker",
+        "swift_runes",
+        "quick_weave",
+        "warded_body",
+        "binding_grip",
+        "overload",
+        "perpetual_motion",
+        "threefold_mastery"
+      ]
+    }
+  ],
+  "sourceFramePacking": [
+    {
+      "key": "ses_rune_btn",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceRect": [
+            39,
+            10,
+            426,
+            398
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceRect": [
+            432,
+            10,
+            820,
+            398
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceRect": [
+            825,
+            10,
+            1214,
+            398
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceRect": [
+            38,
+            404,
+            428,
+            792
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceRect": [
+            432,
+            404,
+            822,
+            792
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceRect": [
+            826,
+            404,
+            1215,
+            792
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceRect": [
+            40,
+            801,
+            425,
+            1196
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceRect": [
+            433,
+            800,
+            822,
+            1196
+          ]
+        },
+        {
+          "frame": 8,
+          "sourceRect": [
+            828,
+            801,
+            1215,
+            1196
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_orb_p",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            9,
+            159,
+            354,
+            540
+          ],
+          "placed": [
+            8,
+            5,
+            49,
+            54
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            10,
+            159,
+            354,
+            539
+          ],
+          "placed": [
+            8,
+            5,
+            49,
+            54
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            10,
+            159,
+            353,
+            540
+          ],
+          "placed": [
+            8,
+            5,
+            49,
+            54
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            10,
+            159,
+            354,
+            540
+          ],
+          "placed": [
+            8,
+            5,
+            49,
+            54
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            10,
+            159,
+            354,
+            539
+          ],
+          "placed": [
+            8,
+            5,
+            49,
+            54
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            11,
+            159,
+            354,
+            539
+          ],
+          "placed": [
+            8,
+            5,
+            49,
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_orb_m",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            47,
+            198,
+            344,
+            512
+          ],
+          "placed": [
+            6,
+            5,
+            51,
+            54
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            41,
+            199,
+            338,
+            512
+          ],
+          "placed": [
+            6,
+            5,
+            51,
+            54
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            35,
+            199,
+            332,
+            512
+          ],
+          "placed": [
+            6,
+            5,
+            51,
+            54
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            29,
+            199,
+            326,
+            512
+          ],
+          "placed": [
+            6,
+            5,
+            51,
+            54
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            22,
+            199,
+            319,
+            512
+          ],
+          "placed": [
+            6,
+            5,
+            51,
+            54
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            17,
+            199,
+            313,
+            512
+          ],
+          "placed": [
+            6,
+            5,
+            51,
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_orb_b",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            26,
+            182,
+            335,
+            518
+          ],
+          "placed": [
+            7,
+            5,
+            50,
+            54
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            27,
+            182,
+            336,
+            518
+          ],
+          "placed": [
+            7,
+            5,
+            50,
+            54
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            27,
+            182,
+            336,
+            518
+          ],
+          "placed": [
+            7,
+            5,
+            50,
+            54
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            27,
+            182,
+            336,
+            518
+          ],
+          "placed": [
+            7,
+            5,
+            50,
+            54
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            27,
+            182,
+            336,
+            518
+          ],
+          "placed": [
+            7,
+            5,
+            50,
+            54
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            27,
+            182,
+            336,
+            518
+          ],
+          "placed": [
+            7,
+            5,
+            50,
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_spell_icons",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceRect": [
+            6,
+            47,
+            342,
+            390
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceRect": [
+            366,
+            62,
+            704,
+            385
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceRect": [
+            715,
+            53,
+            1061,
+            398
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceRect": [
+            1081,
+            51,
+            1419,
+            401
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceRect": [
+            1419,
+            51,
+            1766,
+            391
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceRect": [
+            9,
+            475,
+            357,
+            817
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceRect": [
+            369,
+            481,
+            698,
+            821
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceRect": [
+            698,
+            484,
+            1063,
+            824
+          ]
+        },
+        {
+          "frame": 8,
+          "sourceRect": [
+            1072,
+            472,
+            1408,
+            822
+          ]
+        },
+        {
+          "frame": 9,
+          "sourceRect": [
+            1416,
+            479,
+            1766,
+            819
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_ppp",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            43,
+            262,
+            326,
+            418
+          ],
+          "placed": [
+            32,
+            59,
+            128,
+            70
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            30,
+            252,
+            335,
+            434
+          ],
+          "placed": [
+            27,
+            55,
+            138,
+            82
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            18,
+            239,
+            347,
+            448
+          ],
+          "placed": [
+            22,
+            49,
+            148,
+            94
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            0,
+            214,
+            362,
+            474
+          ],
+          "placed": [
+            14,
+            38,
+            163,
+            117
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            21,
+            238,
+            336,
+            443
+          ],
+          "placed": [
+            25,
+            48,
+            142,
+            92
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            41,
+            260,
+            321,
+            421
+          ],
+          "placed": [
+            33,
+            58,
+            126,
+            73
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_mmm",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            36,
+            295,
+            337,
+            439
+          ],
+          "placed": [
+            25,
+            70,
+            142,
+            68
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            30,
+            272,
+            341,
+            446
+          ],
+          "placed": [
+            22,
+            60,
+            147,
+            82
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            25,
+            254,
+            344,
+            453
+          ],
+          "placed": [
+            21,
+            51,
+            150,
+            94
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            11,
+            228,
+            357,
+            470
+          ],
+          "placed": [
+            14,
+            39,
+            163,
+            114
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            25,
+            258,
+            345,
+            453
+          ],
+          "placed": [
+            20,
+            53,
+            151,
+            92
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            31,
+            288,
+            329,
+            442
+          ],
+          "placed": [
+            26,
+            67,
+            141,
+            73
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_bbb",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            54,
+            300,
+            316,
+            426
+          ],
+          "placed": [
+            32,
+            83,
+            128,
+            62
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            33,
+            267,
+            324,
+            437
+          ],
+          "placed": [
+            25,
+            67,
+            142,
+            83
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            31,
+            231,
+            336,
+            455
+          ],
+          "placed": [
+            22,
+            50,
+            149,
+            109
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            13,
+            182,
+            347,
+            471
+          ],
+          "placed": [
+            14,
+            26,
+            163,
+            141
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            29,
+            234,
+            327,
+            447
+          ],
+          "placed": [
+            23,
+            51,
+            146,
+            104
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            45,
+            299,
+            311,
+            430
+          ],
+          "placed": [
+            31,
+            83,
+            130,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_ppm",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            33,
+            291,
+            327,
+            413
+          ],
+          "placed": [
+            30,
+            68,
+            133,
+            55
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            19,
+            270,
+            338,
+            432
+          ],
+          "placed": [
+            24,
+            59,
+            144,
+            73
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            0,
+            246,
+            355,
+            452
+          ],
+          "placed": [
+            16,
+            48,
+            160,
+            93
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            0,
+            217,
+            362,
+            487
+          ],
+          "placed": [
+            14,
+            35,
+            163,
+            122
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            0,
+            261,
+            362,
+            442
+          ],
+          "placed": [
+            14,
+            55,
+            163,
+            82
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            28,
+            283,
+            327,
+            422
+          ],
+          "placed": [
+            28,
+            65,
+            135,
+            63
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_ppb",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            43,
+            294,
+            349,
+            441
+          ],
+          "placed": [
+            27,
+            75,
+            138,
+            66
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            32,
+            278,
+            352,
+            443
+          ],
+          "placed": [
+            24,
+            68,
+            144,
+            74
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            18,
+            253,
+            351,
+            449
+          ],
+          "placed": [
+            21,
+            57,
+            150,
+            88
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            0,
+            211,
+            362,
+            471
+          ],
+          "placed": [
+            14,
+            38,
+            163,
+            117
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            8,
+            236,
+            344,
+            450
+          ],
+          "placed": [
+            20,
+            49,
+            151,
+            96
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            25,
+            263,
+            330,
+            438
+          ],
+          "placed": [
+            27,
+            61,
+            138,
+            79
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_pmm",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            30,
+            279,
+            345,
+            440
+          ],
+          "placed": [
+            25,
+            66,
+            142,
+            73
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            20,
+            256,
+            347,
+            451
+          ],
+          "placed": [
+            22,
+            56,
+            147,
+            88
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            12,
+            225,
+            353,
+            469
+          ],
+          "placed": [
+            19,
+            42,
+            154,
+            110
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            0,
+            191,
+            362,
+            498
+          ],
+          "placed": [
+            14,
+            27,
+            163,
+            138
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            20,
+            238,
+            346,
+            455
+          ],
+          "placed": [
+            22,
+            48,
+            147,
+            98
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            25,
+            261,
+            338,
+            437
+          ],
+          "placed": [
+            26,
+            59,
+            141,
+            79
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_mmb",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            40,
+            304,
+            353,
+            422
+          ],
+          "placed": [
+            16,
+            70,
+            159,
+            60
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            31,
+            283,
+            345,
+            438
+          ],
+          "placed": [
+            16,
+            59,
+            160,
+            79
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            22,
+            264,
+            337,
+            451
+          ],
+          "placed": [
+            16,
+            50,
+            160,
+            95
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            13,
+            250,
+            334,
+            461
+          ],
+          "placed": [
+            14,
+            42,
+            163,
+            107
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            11,
+            266,
+            330,
+            449
+          ],
+          "placed": [
+            15,
+            51,
+            162,
+            93
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            7,
+            296,
+            323,
+            434
+          ],
+          "placed": [
+            16,
+            66,
+            161,
+            70
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_pbb",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            42,
+            308,
+            347,
+            445
+          ],
+          "placed": [
+            25,
+            79,
+            142,
+            64
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            31,
+            279,
+            353,
+            457
+          ],
+          "placed": [
+            21,
+            66,
+            150,
+            83
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            20,
+            252,
+            355,
+            478
+          ],
+          "placed": [
+            18,
+            53,
+            156,
+            105
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            5,
+            204,
+            356,
+            483
+          ],
+          "placed": [
+            14,
+            31,
+            163,
+            130
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            7,
+            243,
+            342,
+            472
+          ],
+          "placed": [
+            18,
+            50,
+            156,
+            106
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            19,
+            279,
+            326,
+            455
+          ],
+          "placed": [
+            24,
+            66,
+            143,
+            82
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_mbb",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            40,
+            311,
+            323,
+            452
+          ],
+          "placed": [
+            32,
+            79,
+            129,
+            64
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            29,
+            264,
+            336,
+            463
+          ],
+          "placed": [
+            26,
+            58,
+            140,
+            91
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            19,
+            223,
+            343,
+            473
+          ],
+          "placed": [
+            22,
+            39,
+            148,
+            114
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            0,
+            201,
+            358,
+            495
+          ],
+          "placed": [
+            14,
+            29,
+            163,
+            134
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            21,
+            243,
+            334,
+            470
+          ],
+          "placed": [
+            24,
+            48,
+            143,
+            103
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            36,
+            299,
+            323,
+            453
+          ],
+          "placed": [
+            30,
+            74,
+            131,
+            70
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_cast_pmb",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceBounds": [
+            35,
+            275,
+            338,
+            423
+          ],
+          "placed": [
+            26,
+            68,
+            140,
+            68
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBounds": [
+            22,
+            261,
+            341,
+            437
+          ],
+          "placed": [
+            22,
+            62,
+            147,
+            81
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBounds": [
+            10,
+            238,
+            346,
+            453
+          ],
+          "placed": [
+            18,
+            51,
+            155,
+            99
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBounds": [
+            3,
+            195,
+            356,
+            477
+          ],
+          "placed": [
+            14,
+            31,
+            163,
+            130
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBounds": [
+            13,
+            240,
+            345,
+            451
+          ],
+          "placed": [
+            20,
+            51,
+            153,
+            98
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBounds": [
+            24,
+            273,
+            327,
+            423
+          ],
+          "placed": [
+            26,
+            67,
+            140,
+            69
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ses_talent_icons",
+      "sourceFrames": [
+        {
+          "frame": 0,
+          "sourceRect": [
+            19,
+            33,
+            368,
+            397
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceRect": [
+            376,
+            44,
+            722,
+            388
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceRect": [
+            724,
+            34,
+            1038,
+            387
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceRect": [
+            1054,
+            41,
+            1413,
+            383
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceRect": [
+            1421,
+            35,
+            1765,
+            392
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceRect": [
+            10,
+            457,
+            377,
+            831
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceRect": [
+            380,
+            463,
+            720,
+            814
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceRect": [
+            722,
+            450,
+            1048,
+            816
+          ]
+        },
+        {
+          "frame": 8,
+          "sourceRect": [
+            1052,
+            468,
+            1409,
+            803
+          ]
+        },
+        {
+          "frame": 9,
+          "sourceRect": [
+            1409,
+            450,
+            1762,
+            818
+          ]
+        }
+      ]
+    }
+  ],
+  "humanReview": "Visual sheet reviewed; live game animation, contrast and phone performance remain untested."
+}

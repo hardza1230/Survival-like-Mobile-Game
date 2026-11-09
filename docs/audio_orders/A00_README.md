@@ -13,7 +13,7 @@
 | `A08_UNIQUE_VOICE_LINES.md` | เสียงตอนใช้ Unique ราย Build (3 ประโยค/Build) + Sesame เพิ่ม + เสียงคู่หู Yuzu ตอนท่าประสาน | 53 (+9 ออดิชัน) | ✅ เสียงครบ 53 ผูกเข้าเกมแล้ว · เจ้าของฟังแล้วโอเค |
 | `A09_RUBY_STAGE_VOICE.md` | Ruby เสียงเตือนภารกิจ 14 + ปฏิกิริยาในด่าน 14 | 28 | 🟢 ผูกแล้ว v8.1.43 · รอฟังบนมือถือ |
 | `A10_SESAME_SPELLS.md` | Sesame เสียงร่ายเวท 10 + เรียกชื่อเวท 10 | 20 | ➡️ รวมเข้า A11 |
-| `A11_NEW_SCREENS_SFX.md` | **ใบรวม**: Sesame เวท 20 (จาก A10) + ฉากเงียบ SFX 26 + เสียงพากย์ที่หาย 21 (Ruby บทสอนด่านแรก 15, สอน/จบภารกิจ, Sesame เข้าทีม) | 67 | 🟡 รอส่ง (บท vo_sesame_unlock รออนุมัติ) |
+| `A11_NEW_SCREENS_SFX.md` | **ใบรวม**: Sesame เวท 20 (จาก A10) + ฉากเงียบ SFX 26 + เสียงพากย์ที่หาย 21 (Ruby บทสอนด่านแรก 15, สอน/จบภารกิจ, Sesame เข้าทีม) | 67 | 🟢 ส่งครบ · รอผูกโค้ด (บท vo_sesame_unlock รออนุมัติ) |
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 
 ## กติการ่วม (ทุกใบ)

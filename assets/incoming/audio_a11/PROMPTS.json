@@ -1,0 +1,1444 @@
+{
+  "provider": "ElevenLabs",
+  "generations": [
+    {
+      "key": "ses_cast_ppp",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "ไฟคำราม + เสียงหวีดอุกกาบาตลงหนัก",
+      "limit_ms": 1400,
+      "spell": "Solar Cataclysm",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: roaring flame with heavy descending meteor whistle and impact. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_ppp.mp3",
+      "bytes": 23030,
+      "sha256": "39f96c57c7521f5dcd70d1df15546822fae8e1751c000b6c459614e1569290dd"
+    },
+    {
+      "key": "ses_cast_mmm",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "จักรลมหมุนตัด ซวบ ๆ 3 ครั้ง",
+      "limit_ms": 1400,
+      "spell": "Tempest Chakram",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: three crisp spinning wind-blade swishes. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_mmm.mp3",
+      "bytes": 23030,
+      "sha256": "47f13e7a3f4ef47eb2c106319755e41a2e578c20fccd914aabe58860e1d2db02"
+    },
+    {
+      "key": "ses_cast_bbb",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "คลื่นน้ำม้วนเป็นเกราะ ใสกังวาน",
+      "limit_ms": 1400,
+      "spell": "Tidal Armor",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: clear crystalline rolling water forming a protective shield. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_bbb.mp3",
+      "bytes": 23030,
+      "sha256": "1f99f2d69afb439937b76febd31bfa47c6ace71e208747fb1b1a0d6b5e9cfd66"
+    },
+    {
+      "key": "ses_cast_ppm",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "หอกแสงพุ่งเร็ว เสียงแหลมสั้น + ปัง",
+      "limit_ms": 1400,
+      "spell": "Sunlance",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: swift solar lance high short whoosh and impact. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_ppm.mp3",
+      "bytes": 23030,
+      "sha256": "1473d0a671a75deb1a2119c6a31dee13e3e27e0e5946db742768a9b5a4d0b43c"
+    },
+    {
+      "key": "ses_cast_ppb",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "ลาวาเดือดปุด ๆ แตกจากพื้น",
+      "limit_ms": 1400,
+      "spell": "Magma Garden",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: bubbling lava cracking upward through ground. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_ppb.mp3",
+      "bytes": 23030,
+      "sha256": "ba9e5402832b0ae9d3080657053664c9a69dc2b7163febac8d104a4e8876d9fb"
+    },
+    {
+      "key": "ses_cast_pmm",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "คริสตัลกระทบกันใส + พลังเพิ่ม (power-up)",
+      "limit_ms": 1400,
+      "spell": "Prismatic Armament",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: bright crystal clinks rising magical power-up. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_pmm.mp3",
+      "bytes": 23030,
+      "sha256": "872558f3c75cef41d06c12e9528ea01638646118cb3e71703e710534e8e80938"
+    },
+    {
+      "key": "ses_cast_mmb",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "พายุหมุนดูด ฮู่ววว เข้าหาศูนย์กลาง",
+      "limit_ms": 1400,
+      "spell": "Cyclone Confluence",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: inward gathering cyclone suction whoosh. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_mmb.mp3",
+      "bytes": 23030,
+      "sha256": "26cf322ed3114168dce174744d5b1b6143dff25797dc12e5a9d406122c41bed7"
+    },
+    {
+      "key": "ses_cast_pbb",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "คริสตัลแตกร้าวต่อเนื่อง 5 จังหวะสั้น",
+      "limit_ms": 1400,
+      "spell": "Crystal Fault",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: five short successive crystalline cracks. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_pbb.mp3",
+      "bytes": 23030,
+      "sha256": "29c64b8432ad35ad09621ec32e7ea7a1606dd30c2cf977d1401d609bf8037f95"
+    },
+    {
+      "key": "ses_cast_mbb",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "หมอกพัด + โล่เวทเปิด นุ่มเบา",
+      "limit_ms": 1400,
+      "spell": "Mistwalk Aegis",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: soft airy mist and gentle magical shield opening. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_mbb.mp3",
+      "bytes": 23030,
+      "sha256": "ba7032b97dcf01c624b2804067d79213aea65f161ef5e366a11068724bc2c5ae"
+    },
+    {
+      "key": "ses_cast_pmb",
+      "kind": "sfx",
+      "category": "sesame",
+      "description_th": "วงระเบิดสามโทน บูม-กระเพื่อม",
+      "limit_ms": 1400,
+      "spell": "Prismatic Blast",
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: three-tone prismatic magical boom and outward ripple. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ses_cast_pmb.mp3",
+      "bytes": 23030,
+      "sha256": "171a4edd0a67a00d57ff62ba5f63477fba7da220b04428ddcc279c904830413b"
+    },
+    {
+      "key": "vo_sesame_spell_ppp",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Fall, little suns.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Fall, little suns.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_ppp.mp3",
+      "bytes": 20941,
+      "sha256": "90edfa953f4a6d881eb254ac363f3282c785fee88d796e9dc78d56f8112e79da"
+    },
+    {
+      "key": "vo_sesame_spell_mmm",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Spin, winds.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Spin, winds.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_mmm.mp3",
+      "bytes": 18851,
+      "sha256": "d1f860a05a03100d6de59b9c29a3e202d09344280a5ce4f9d09ceb9d52088676"
+    },
+    {
+      "key": "vo_sesame_spell_bbb",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Tide, hold me.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Tide, hold me.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_bbb.mp3",
+      "bytes": 20523,
+      "sha256": "5646a5c48c084b414d2ec7057f88c0d64fcd807d9bdd1e1db70c18a1e24e9649"
+    },
+    {
+      "key": "vo_sesame_spell_ppm",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Sunlance.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Sunlance.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_ppm.mp3",
+      "bytes": 15925,
+      "sha256": "76b4866b64d438235b5683dd6331c8c08b7d7efcf6a141df3d61d1911da47116"
+    },
+    {
+      "key": "vo_sesame_spell_ppb",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Bloom, magma.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Bloom, magma.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_ppb.mp3",
+      "bytes": 18015,
+      "sha256": "0fcd83519f7a246086202d6649a16f9712371f5aec8e026679ff2e258795b8ac"
+    },
+    {
+      "key": "vo_sesame_spell_pmm",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Shine brighter.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Shine brighter.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_pmm.mp3",
+      "bytes": 15925,
+      "sha256": "4d782815ed2a234e9a6333a574f24ca286eca95d454f073419c66c94d2994750"
+    },
+    {
+      "key": "vo_sesame_spell_mmb",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Gather in.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Gather in.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_mmb.mp3",
+      "bytes": 15925,
+      "sha256": "c52d05432c3ff0054437284704860e883e7f4071fc3dc170f5adb1ba81542b04"
+    },
+    {
+      "key": "vo_sesame_spell_pbb",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Crack open.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Crack open.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_pbb.mp3",
+      "bytes": 18015,
+      "sha256": "ef079d459d824305f520ca4c61b79d1f693555499cfee2975947cf3c635411a9"
+    },
+    {
+      "key": "vo_sesame_spell_mbb",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "Into the mist.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Into the mist.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_mbb.mp3",
+      "bytes": 17597,
+      "sha256": "7999d841d2a61cbe53a32ae78d9732b1413b52e7b552274716e0ddec1e91227e"
+    },
+    {
+      "key": "vo_sesame_spell_pmb",
+      "kind": "voice",
+      "category": "sesame",
+      "speaker": "sesame",
+      "text": "All three… now.",
+      "limit_ms": 2200,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "All three… now.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_spell_pmb.mp3",
+      "bytes": 21776,
+      "sha256": "55846c861965ae66fb5b30a5b711b0bec99a35f6793c2388a01c709f6e675f9f"
+    },
+    {
+      "key": "ui_thread_buy",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ไหมม้วนคลาย + ระฆังแก้วใส 2 โน้ต",
+      "limit_ms": 1200,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: thread spool unwinds, two clear glass bell notes. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_thread_buy.mp3",
+      "bytes": 20105,
+      "sha256": "17611be354de5dd94ed6cf6df849a01dca07a8589e3debc709e24ef747b8d758"
+    },
+    {
+      "key": "ui_thread_first_bonus",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "แบบเดียวกัน + ประกายวิบวับขึ้นเสียงสูง",
+      "limit_ms": 1500,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: thread unwinds with ascending bright magical sparkles. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_thread_first_bonus.mp3",
+      "bytes": 24702,
+      "sha256": "3668881c24cef6ee3dc5970438a7508e0ed682fb9f792f6344241035a3fc0f58"
+    },
+    {
+      "key": "ui_pass_claim",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "กระดิ่งตั๋วเล็ก + ไหมลอย",
+      "limit_ms": 900,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: tiny ticket bell and floating thread glint. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_pass_claim.mp3",
+      "bytes": 15089,
+      "sha256": "a505d66f1f30fb1a1769a72d36f07081a62c0b6f45154f78d133c9937aad5b38"
+    },
+    {
+      "key": "ui_shop_soon",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ปิ๊บต่ำนุ่ม ๆ (ไม่ใช่ error แรง)",
+      "limit_ms": 500,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: one soft low friendly notification beep. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_shop_soon.mp3",
+      "bytes": 8820,
+      "sha256": "364fe6a5ac7e91ca2e1f540d8076e7f075921c7b49e0965cb47a08128bf7d4ee"
+    },
+    {
+      "key": "ui_wardrobe_open",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ประตูตู้ไม้เล็กเปิด + ไม้แขวนกระทบ",
+      "limit_ms": 800,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: small wooden wardrobe door opens with hanger clink. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_wardrobe_open.mp3",
+      "bytes": 13835,
+      "sha256": "9f1c55505ac9de8318d01b96fd45b5e8f92c80ee5c542e58a4e7f8c9cfcfff03"
+    },
+    {
+      "key": "ui_cos_buy",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ห่อของขวัญฉีก + ประกาย",
+      "limit_ms": 1000,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: gift wrapping tears with delicate sparkles. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.0,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_cos_buy.mp3",
+      "bytes": 17179,
+      "sha256": "6b483356c76802a9338d4f9a98c6caa339e7a30078609cfa8d8d2086c45bb603"
+    },
+    {
+      "key": "ui_cos_equip",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ผ้าสะบัด + ดิ๊ง เบา",
+      "limit_ms": 500,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: light fabric swish and soft ding. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_cos_equip.mp3",
+      "bytes": 8820,
+      "sha256": "7ae036729926cf774a1a9a0b3f2027bf43c3a714aabc74b24d0fd5ee8ea49244"
+    },
+    {
+      "key": "ui_cos_unequip",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ผ้าสะบัดกลับ เสียงต่ำกว่า",
+      "limit_ms": 400,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: light fabric reverse swish, lower tone. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_cos_unequip.mp3",
+      "bytes": 8820,
+      "sha256": "1f87df5921b6616e82106f5aac8c15ce4a6e42ec8b94dd7d291c312cc37b7cd3"
+    },
+    {
+      "key": "ui_cos_dye",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "พู่กันจุ่มสี ป๊อปเบา",
+      "limit_ms": 400,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: brush dips into paint with soft pop. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_cos_dye.mp3",
+      "bytes": 8820,
+      "sha256": "f321f05f5231b0bcf89dea507e7f3286a1eba642c9bf684dc5b87c5c381c1b16"
+    },
+    {
+      "key": "cos_dash_bubble",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ฟองสบู่แตกกระจาย",
+      "limit_ms": 400,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: tiny soap bubbles pop in quick succession. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/cos_dash_bubble.mp3",
+      "bytes": 8820,
+      "sha256": "e1d1ed6c0ff179607f3aabfab91b4dfba44ebdfd2a372ce1dff1b49fc152369a"
+    },
+    {
+      "key": "cos_dash_confetti",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ปืนกระดาษสีป็อป",
+      "limit_ms": 400,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: small party confetti pop. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/cos_dash_confetti.mp3",
+      "bytes": 8820,
+      "sha256": "5697df4e497098f0e632f8ee4d89b3d8f879aa5e8cfc605d256004024f811deb"
+    },
+    {
+      "key": "cos_dash_cream",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "วิปครีมพ่นฟู่",
+      "limit_ms": 400,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: short airy whipped cream spray. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/cos_dash_cream.mp3",
+      "bytes": 8820,
+      "sha256": "9f47fddbbcc050b48aa90c84919a0cc57f9037ed1838af96825217c9bd650389"
+    },
+    {
+      "key": "ui_rank_open",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "แตรเล็กประกาศ 3 โน้ต",
+      "limit_ms": 1000,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: small three-note celebratory trumpet fanfare. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.0,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_rank_open.mp3",
+      "bytes": 17179,
+      "sha256": "de2a3642cd9e7b2f28551479cf8bd930c5c26a4bb16b12fab2dea94f1435a236"
+    },
+    {
+      "key": "ui_rank_top3",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ฉาบเล็ก + เสียงเชียร์เบา (ไม่มีคำ)",
+      "limit_ms": 1500,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: small cymbal and gentle wordless crowd cheer. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_rank_top3.mp3",
+      "bytes": 24702,
+      "sha256": "2f0c231cdd65242194f70bf7b25bfe3f06c6aea1bf0a960e8441b7ab072982aa"
+    },
+    {
+      "key": "ui_name_saved",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ปากกาขีด + ติ๊ก",
+      "limit_ms": 500,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: quick pen stroke and tick. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_name_saved.mp3",
+      "bytes": 8820,
+      "sha256": "3e18c773a6e69c36375aa30386757e45818e3ed5d111209f6edf44c313ee63b0"
+    },
+    {
+      "key": "mission_bonus_get",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ดาวกระทบ 3 ครั้งไล่ขึ้น",
+      "limit_ms": 1000,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: three bright star chimes ascending. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.0,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/mission_bonus_get.mp3",
+      "bytes": 17179,
+      "sha256": "ddcb36df74029062653d0f716d71e9c70b81f7dfb80d0c8d070256914bfcca60"
+    },
+    {
+      "key": "mission_loot_burst",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ฝาโหลขนมเด้ง + ของกระจาย",
+      "limit_ms": 900,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: candy jar lid pops and little treats scatter. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/mission_loot_burst.mp3",
+      "bytes": 15089,
+      "sha256": "7533e2f0d8f09a85118b45adec188259a8530ad802a9472058058d7dd012fc5a"
+    },
+    {
+      "key": "pickup_sugar_piece",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ลูกกวาดกระทบเบา ๆ ใส · มี 3 pitch (ไฟล์เดียว โค้ดสุ่ม pitch)",
+      "limit_ms": 250,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: single tiny light glassy candy clink. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/pickup_sugar_piece.mp3",
+      "bytes": 8820,
+      "sha256": "5a19d0ab52e8e51a4a4edbce1c6ba94ba122dccbb695b47aabddf5e9e54eb913"
+    },
+    {
+      "key": "pickup_gear_rare",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "กล่องของขวัญสั่น + ประกายสูง",
+      "limit_ms": 800,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: small gift box rattles and high sparkle. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/pickup_gear_rare.mp3",
+      "bytes": 13835,
+      "sha256": "a7431209a02a1994bceefa1df80169ee8746c6790db3a2c02695ab09095c329e"
+    },
+    {
+      "key": "ui_codex_open",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "หนังสือเล่มหนาเปิด + หน้ากระดาษพลิก",
+      "limit_ms": 800,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: heavy book opens with pages turning. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_codex_open.mp3",
+      "bytes": 13835,
+      "sha256": "389ce09bc683ab0f0cf86c736b7084f2f11b8b802a2a476550e06347cae2737b"
+    },
+    {
+      "key": "ui_page_flip",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "พลิกกระดาษ 1 หน้า",
+      "limit_ms": 300,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: one short paper page turn. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_page_flip.mp3",
+      "bytes": 8820,
+      "sha256": "d08af59ffc9201ae43b5c973956acd3b8436e6b9a234a54605e4e3683db1161b"
+    },
+    {
+      "key": "ui_map_open",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "กระดาษแผนที่คลี่ + ลมเบา",
+      "limit_ms": 800,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: paper map unfolds with light wind. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_map_open.mp3",
+      "bytes": 13835,
+      "sha256": "ea900a2d34b1d2c6146321418e30be5add76becf775dee4743b94260d77a7fab"
+    },
+    {
+      "key": "ui_stage_swipe",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "การ์ดเลื่อนสั้น",
+      "limit_ms": 300,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: short soft card slide. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_stage_swipe.mp3",
+      "bytes": 8820,
+      "sha256": "ab7b2fcea7438245a1deb76252e87d2507bd6bc256de27045a94336df797915b"
+    },
+    {
+      "key": "ui_bossrush_open",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "กลองหนัก 2 ครั้ง ดุดัน",
+      "limit_ms": 1000,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: two dramatic low drums. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.0,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_bossrush_open.mp3",
+      "bytes": 17179,
+      "sha256": "1de07b6a0e61ae3b26aeddc3c38adec73d7cf46eddd771c3c9d1da2b774e0175"
+    },
+    {
+      "key": "ui_curse_open",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "เสียงลึกลับต่ำ + ระฆังไกล",
+      "limit_ms": 1200,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: low mysterious resonance with distant bell. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_curse_open.mp3",
+      "bytes": 20105,
+      "sha256": "ec1266bf7605bb909423720cee52d2bc58d081656f1b2e2cb76f45f9008bae71"
+    },
+    {
+      "key": "ui_pact_claim",
+      "kind": "sfx",
+      "category": "sfx",
+      "description_th": "ตราประทับลงกระดาษ + ประกาย",
+      "limit_ms": 800,
+      "voice_id": null,
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Original cute premium confectionery fantasy game sound effect: rubber stamp on paper followed by bright sparkle. Clean immediate attack, short natural decay, clear on phone, no speech, no music, no imitation.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.5,
+        "model_id": "eleven_text_to_sound_v2"
+      },
+      "file": "donors/ui_pact_claim.mp3",
+      "bytes": 13835,
+      "sha256": "5f77fb383fe286ce7f68b5bfd068b4a85ebbe6a48f9009ac4c468da30c228313"
+    },
+    {
+      "key": "vo_ruby_objective_safe",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "We did it! Another little piece of flavor is safe. Nice work!",
+      "limit_ms": 7000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "We did it! Another little piece of flavor is safe. Nice work!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_ruby_objective_safe.mp3",
+      "bytes": 53123,
+      "sha256": "dc716129aed4bdad632c5d263283e88ad35f3117dd8bd153f533b0b1c58ea262"
+    },
+    {
+      "key": "vo_ruby_guide_rank_1",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Rank up! You earned a Rank Reward.",
+      "limit_ms": 7000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Rank up! You earned a Rank Reward.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_ruby_guide_rank_1.mp3",
+      "bytes": 27628,
+      "sha256": "73a3471aa38918e8e2ed660c75c7983132b302a48dcba6bae580047f87152965"
+    },
+    {
+      "key": "vo_ruby_guide_rank_2",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Tap Rank Rewards to pick one. It stays forever.",
+      "limit_ms": 7000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Tap Rank Rewards to pick one. It stays forever.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_ruby_guide_rank_2.mp3",
+      "bytes": 40585,
+      "sha256": "48d9ea190863911e564bb6819eb9e324edc41fe8e0ad592f4729992c4a91ed32"
+    },
+    {
+      "key": "vo_ruby_guide_stars_1",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP.",
+      "limit_ms": 5500,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_ruby_guide_stars_1.mp3",
+      "bytes": 95337,
+      "sha256": "34a6a4b6389033cea6e845d6920be68b377e9bfcdc7da22c6ced773a5a53b79d"
+    },
+    {
+      "key": "vo_ruby_guide_stars_2",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "New stars give bonus Sugar. Tap the stage box any time to replay a floor.",
+      "limit_ms": 7000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "New stars give bonus Sugar. Tap the stage box any time to replay a floor.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_ruby_guide_stars_2.mp3",
+      "bytes": 71514,
+      "sha256": "d9ebf4d68d91145b8b9ca826f33c778c444a16c2f05f948490b1db2f248196c3"
+    },
+    {
+      "key": "vo_sesame_unlock",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "sesame",
+      "text": "I remember now… let’s go together.",
+      "limit_ms": 7000,
+      "voice_id": "Rc2mSW0SK2gMydCaY9rQ",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "I remember now… let’s go together.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 1.12
+        }
+      },
+      "file": "donors/vo_sesame_unlock.mp3",
+      "bytes": 30972,
+      "sha256": "1ddc70ac3765dd932ae2e89352f1f13e7c708592efe8dd3ec6bd069bae7173dd"
+    },
+    {
+      "key": "vo_ruby_tut_welcome",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Hi, I’m Ruby! The Heart Seed broke your curse — you’re a person again! Let’s get you ready to save the others.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Hi, I’m Ruby! The Heart Seed broke your curse — you’re a person again! Let’s get you ready to save the others.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_welcome.mp3",
+      "bytes": 116235,
+      "sha256": "ee20b14ff7b6729765258e93563f0576f6a0754e09c89895a7eb5ff6b8532a53"
+    },
+    {
+      "key": "vo_ruby_tut_move",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Slide one finger to walk. Lift it to stop.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Slide one finger to walk. Lift it to stop.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_move.mp3",
+      "bytes": 40585,
+      "sha256": "615f7407a8a583448136dc0c60a139aa4591e1a77821d684fa5bf42d7371425d"
+    },
+    {
+      "key": "vo_ruby_tut_attack",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Your Heart Seed fights on its own. Just walk near the sour critters!",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Your Heart Seed fights on its own. Just walk near the sour critters!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_attack.mp3",
+      "bytes": 64408,
+      "sha256": "157b1af370e6ea930e0ad3802eb17c7ba3de90fec8f855f40a50481296f81100"
+    },
+    {
+      "key": "vo_ruby_tut_sweets",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Beaten foes drop stolen sweets. Walk over them to take them back!",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Beaten foes drop stolen sweets. Walk over them to take them back!",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_sweets.mp3",
+      "bytes": 58975,
+      "sha256": "dcd2036528a03d520d306b440e0fde5c1c5dad1c1c24b0ddf5b1f42860fe7b33"
+    },
+    {
+      "key": "vo_ruby_tut_cards",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Full EXP bar = 3 flavor cards. Tap one to read, tap again to take it.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Full EXP bar = 3 flavor cards. Tap one to read, tap again to take it.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_cards.mp3",
+      "bytes": 91576,
+      "sha256": "bb02de8953858bdd6eb700fbd4b66b761550ded43392da20fe72af9b4a6059a8"
+    },
+    {
+      "key": "vo_ruby_tut_dash",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Green button: zoom past danger. It needs a moment to recharge.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Green button: zoom past danger. It needs a moment to recharge.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_dash.mp3",
+      "bytes": 56049,
+      "sha256": "9282104c030caf3cf829107e638e61dd23ef3c865d5f715d8b55fd2cc32c4ec3"
+    },
+    {
+      "key": "vo_ruby_tut_unique",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Pink button: your seed’s big attack. It charges up again over time.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Pink button: your seed’s big attack. It charges up again over time.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_unique.mp3",
+      "bytes": 57721,
+      "sha256": "3cf5232603cf612009c2bcea26f54c219f72d6e28dc48f9d5c2acca0b31d1b65"
+    },
+    {
+      "key": "vo_ruby_tut_hp",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "HP at zero ends the stage. Pink mochi hearts heal you.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "HP at zero ends the stage. Pink mochi hearts heal you.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_hp.mp3",
+      "bytes": 51452,
+      "sha256": "f994c7a4cb41665a3932336daf40dde70aef0d4afdaf833f64fa857dd8da23bd"
+    },
+    {
+      "key": "vo_ruby_tut_ready",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Training complete! Use your starter Sugar to upgrade one core, then enter the pantry.",
+      "limit_ms": 6000,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Training complete! Use your starter Sugar to upgrade one core, then enter the pantry.",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_ready.mp3",
+      "bytes": 83634,
+      "sha256": "2f65de3014fddda1fd43837f6a160306aeae4e3ccaf772d17589847c40e0242c"
+    },
+    {
+      "key": "vo_ruby_tut_move_go",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Slide your finger to walk",
+      "limit_ms": 1800,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Slide your finger to walk",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_move_go.mp3",
+      "bytes": 23448,
+      "sha256": "8206967ead562c09d615531731a744d45e3d2f481eb4c1e8e3f4e634202ae83c"
+    },
+    {
+      "key": "vo_ruby_tut_attack_go",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Defeat the enemies",
+      "limit_ms": 1800,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Defeat the enemies",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_attack_go.mp3",
+      "bytes": 22612,
+      "sha256": "ad99c0426e87af8af2526c07e0820a93ce9a88859fe3b554b50e331494475dd5"
+    },
+    {
+      "key": "vo_ruby_tut_sweets_go",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Pick up the sweets",
+      "limit_ms": 1800,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Pick up the sweets",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_sweets_go.mp3",
+      "bytes": 17597,
+      "sha256": "d93aad23b49e6736b9b843935654f9e2a150faf391b55e991cba3409ff748ca9"
+    },
+    {
+      "key": "vo_ruby_tut_cards_go",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "Pick a card",
+      "limit_ms": 1800,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "Pick a card",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_cards_go.mp3",
+      "bytes": 15925,
+      "sha256": "6ab00de4cf8bb1ac29b62f125bd94c156289925075515c8927c08685243c8253"
+    },
+    {
+      "key": "vo_ruby_tut_dash_go",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "TAP Dash two times",
+      "limit_ms": 1800,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "TAP Dash two times",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_dash_go.mp3",
+      "bytes": 26374,
+      "sha256": "577623b3a00fc898236f5ff02c7d4af1254299e44e7c58d8cd684ea015e83beb"
+    },
+    {
+      "key": "vo_ruby_tut_unique_go",
+      "kind": "voice",
+      "category": "voice",
+      "speaker": "ruby",
+      "text": "TAP your Unique",
+      "limit_ms": 1800,
+      "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+      "provider": "ElevenLabs",
+      "parameters": {
+        "text": "TAP your Unique",
+        "model_id": "eleven_flash_v2_5",
+        "voice_settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.75,
+          "style": 0.35,
+          "use_speaker_boost": true,
+          "speed": 0.95
+        }
+      },
+      "file": "donors/vo_ruby_tut_unique_go.mp3",
+      "bytes": 22612,
+      "sha256": "4c78ae2c85e79d69bd723abd33250c0e9060a7c68db9104d7d405c2d4b56e6db"
+    }
+  ],
+  "mastering": "Mechanical onset trim, optional time adjustment, short SFX tail fade, mono encode and loudness normalization; no synthesized layers"
+}
