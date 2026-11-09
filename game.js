@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.57';
+const GAME_VERSION = '8.1.58';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.58',date:'2026-11-09',title:'Sharper Lobby cosmetics',items:['Wings, halos and rings in the Lobby are no longer blown up past their sharp size']},
   {v:'8.1.57',date:'2026-11-09',title:'Test tools',items:['Hidden GM Tools for testing (resources, unlocks, save backup and a separate test profile)']},
   {v:'8.1.56',date:'2026-11-09',title:'Painted Wardrobe',items:['All 28 cosmetics now use painted, animated art: wings, pets, trails, halos, rings, dash and pop effects','Dyes tint the painted art too']},
   {v:'8.1.55',date:'2026-11-09',title:'Rankings',items:['New Ranks tab in Rewards: Richest, Hero Levels, Weave Rank, Stage Stars, Monster Slayer, Collector, Treasure Seeker and Fashion Star','Pick your own ranking name','Rankings show as offline until the online service is switched on']},
@@ -6241,6 +6242,7 @@ const COSMETICS=[
   {id:'pop_heart',slot:'pop',name:'Heart Pop',price:300,col:0xff8fb5,icon:['cos_icons2',9]},
   {id:'pop_sprinkle',slot:'pop',name:'Sprinkle Pop',price:300,col:0xa8f0d0,icon:['cos_icons2',10]},
   {id:'pop_star',slot:'pop',name:'Star Pop',price:300,col:0xffe08a,icon:['cos_icons2',11]}];
+const COS_LOBBY_MAX=1.6;   // v8.1.58 เจ้าของ: Lobby ขยายภาพเล็กเกิน ~3 เท่า → แตก · จำกัดไม่เกิน 1.6 เท่าของต้นฉบับ
 const COS_SLOTS=[['wings','Wings'],['pet','Pets'],['trail','Trails'],['halo','Halos'],['aura','Rings'],['dash','Dash'],['pop','Pops']];
 /* v8.1.54 เจ้าของ: เพิ่มความหลากหลาย → ย้อมสีฟรี 5 แบบต่อชิ้นที่มีแล้ว (ไม่ต้องสั่งอาร์ตเพิ่ม) */
 const COS_DYES=[['Original',null],['Pink',0xffb6d9],['Mint',0xa8f0d0],['Gold',0xffe08a],['Sky',0xbfd8ff]];
@@ -13606,7 +13608,7 @@ class Game extends Phaser.Scene {
       const ic=this.menu.list.find(o=>o.texture?.key===c.icon[0]&&o._cosIcon==null&&o.x===x+cw/2); if(ic){ic._cosIcon=1;ic.setFrame?.(c.icon[1]);} 
       if(!this.realTex?.(c.icon[0])){ const sw=this.add.circle(x+cw-14,yy+14,7,Cos.col(c),1).setStrokeStyle(2,0xffffff,.8); this.menu.add(sw); } }); }
   lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; if(this.cosEnsure(()=>{ if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); }))return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'),cy=footY-hh*.55;
-    const sp=(c,px,py,sz,fs)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(sz/fs); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
+    const sp=(c,px,py,sz,fs)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(Math.min(sz/fs,COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
     if(au){ let o=sp(au,x,footY-4,hh*.9,160); if(!o){ o=this.add.graphics(); const r=hh*.45; o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,r*2,r*.6).fillStyle(Cos.col(au),.14).fillEllipse(0,0,r*2,r*.6); o.setPosition(x,footY-4); } this.menu.add(o); this.tweens?.add({targets:o,alpha:.55,duration:1200,yoyo:true,repeat:-1}); }
     if(wg){ let o=sp(wg,x,cy,hh*.95,128); if(!o){ o=this.add.graphics(); const r=hh*.2,col=Cos.col(wg); o.fillStyle(col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(x,cy); }
       this.menu.add(o); this.tweens?.add({targets:o,scaleX:(o.scaleX||1)*1.06,duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
@@ -13615,7 +13617,7 @@ class Game extends Phaser.Scene {
     if(hl){ this._cosLobbyHalo={x,y:footY-hh*1.02,hh,c:hl}; const zs=this.tapZones; this.time?.delayedCall?.(0,()=>{ if(this.state==='menu'&&this.menuScreen==='hub'&&this.tapZones===zs)this.lobbyCosHalo(); else this._cosLobbyHalo=null; }); }   // ฮาโลต้องอยู่หน้าฮีโร่ → วาดหลังหน้าสร้างเสร็จ
     if(tr)this.hubEvery?.(450,300,()=>{ const sx=x+(Math.random()-.5)*hh*.5,sy=footY-4,o=this.realTex?.(tr.tk)?this.add.image(sx,sy,tr.tk,tr.tf).setScale(.4):this.add.circle(sx,sy,4,Cos.col(tr),.9); const t=Cos.tint(tr); if(t!=null&&o.setTint)o.setTint(t);
       this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
-  lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(h.hh*.42/96); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
+  lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(Math.min(h.hh*.42/96,COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
     this.menu.add(o); this.tweens?.add({targets:o,y:h.y-5,duration:1300,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
   cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.select?.(); this._cosPend=null; this.buildWardrobe(); return; }
     if(this._cosPend!==c.id){ this._cosPend=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }
