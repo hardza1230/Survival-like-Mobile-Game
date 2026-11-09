@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.59';
+const GAME_VERSION = '8.1.60';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.60',date:'2026-11-09',title:'Ruby speaks in tips',items:['Ruby’s pointer tips now play her voice when a recording exists, instead of only a mumble']},
   {v:'8.1.59',date:'2026-11-09',title:'Cosmetics in stages',items:['Painted wings, pets, halos and rings now also show in stages (they were being unloaded when a stage started)']},
   {v:'8.1.58',date:'2026-11-09',title:'Sharper Lobby cosmetics',items:['Wings, halos and rings in the Lobby are no longer blown up past their sharp size']},
   {v:'8.1.57',date:'2026-11-09',title:'Test tools',items:['Hidden GM Tools for testing (resources, unlocks, save backup and a separate test profile)']},
@@ -16583,7 +16584,7 @@ class Game extends Phaser.Scene {
       const bg=this.add.graphics().fillStyle(0x211725,.98).fillRoundedRect(bx,by,bw,bh,14).lineStyle(1,0xffd590,.7).strokeRoundedRect(bx,by,bw,bh,14);c.add(bg);
       c.add(this.add.text(bx+18,by+12,'Ruby · Try it here',{fontFamily:'NunitoUI, sans-serif',fontSize:'12px',color:'#ffc0cf'}));tx.y=by+34;c.add(tx);
       c.add(this.add.text(bx+bw-18,by+bh-15,i===lines.length-1?'Got it ›':'Next ›',{fontFamily:'NunitoUI, sans-serif',fontSize:'13px',color:'#ffe0a0'}).setOrigin(1,1));
-      if(c._voicePage!==i){c._voicePage=i;Sfx.voiceBlip?.('ruby');}c._rubyGuideLayout={target:r,body:{x:bx,y:by,w:bw,h:bh},text:tx,page:i};
+      if(c._voicePage!==i){this.voiceStop?.(c);c._voicePage=i;const page=i;if(!this.voiceLine?.('ruby',lines[i],()=>c.active&&c._voicePage===page,c))Sfx.voiceBlip?.('ruby');}c._rubyGuideLayout={target:r,body:{x:bx,y:by,w:bw,h:bh},text:tx,page:i};
       this.tapZones=[{x:bx,y:by,w:bw,h:bh,tag:'ruby_guide_next',noBounce:true,fn:()=>{if(Date.now()-at<400)return;at=Date.now();if(++i>=lines.length)close();else render();}}];
     };render();
   }

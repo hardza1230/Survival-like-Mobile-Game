@@ -3617,3 +3617,8 @@ scripts/pack-cosmetics.py: 26 sheets → assets/art/cosmetics/ (740 KB WebP; das
 
 GM_ENABLED/GM_CODE + GM (localStorage mochi_gm). Settings: tap bottom-right 70×44 corner 7× within 1.5 s gaps → prompt code → 'GM Tools' row → buildGm (menuScreen 'gm'): Sugar/Thread/materials, unlock stages/heroes, heroes +10 Lv(+10 tp), Rank +5, reset Daily Login/Quests, Mochi Pass, all cosmetics, god mode (hurtPlayer) and ×10 damage (gmApply at startStage), save backup/restore, test profile (swaps mochi_save ↔ mochi_save_real; Cloud push/queuePush/syncCloud and Board.submit skip while testing). Any GM action sets Save.data.gmUsed → never submitted to Rankings. MUST set GM_ENABLED=false for the Play Store build. Test gm-tools.
 
+
+# v: v8.1.58 — Lobby cosmetics no longer upscaled past 1.6× (owner screenshot)
+
+Art 66/67 sheets are sized for the ~50px in-stage hero; the Lobby hero is ~380px so wings/halo/ring were blown up ~3× and looked broken. COS_LOBBY_MAX=1.6 caps lobbyCos/lobbyCosHalo sprite scale. Hi-res Lobby versions would need a new art order.
+

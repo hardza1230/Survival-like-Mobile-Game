@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.59**. Next release:8.1.60. Fetch the deploy branch before new work.
+Current release: **8.1.60**. Next release:8.1.61. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.59 — cosmetics art in stages (owner screenshot)
+# Latest delivery: v8.1.60 — rubyGuide voiced + audio order A11 merged (owner)
+
+rubyGuide (pointer tips + storybook fallback) now calls voiceLine('ruby', line) per page and only blips when no recording. Audio orders merged into docs/audio_orders/A11_NEW_SCREENS_SFX.md (52 files): A Sesame spells (from A10, approved), B silent-screen SFX 26, C missing voice 6 (Ruby objective-complete line, rank/star tips; vo_sesame_unlock new line awaiting owner OK — wire as voiceKey on the last MOTION_COMICS.s10 shot, do not add a shot: story-motion-art test locks 4 shots). Art order 68 (Sesame runes part 2) written.
+
+# Previous delivery: v8.1.59 — cosmetics art in stages (owner screenshot)
 
 Cause: texEvict dropped menu-class cos_* sheets on stage start, and cosEnsure had pre-marked them in _cosTried, so stages fell back to placeholders. Now texEvict skips cosWornKeys(), and _cosTried only records keys that still failed after a load.
-
-# Previous delivery: v8.1.58 — Lobby cosmetics no longer upscaled past 1.6× (owner screenshot)
-
-Art 66/67 sheets are sized for the ~50px in-stage hero; the Lobby hero is ~380px so wings/halo/ring were blown up ~3× and looked broken. COS_LOBBY_MAX=1.6 caps lobbyCos/lobbyCosHalo sprite scale. Hi-res Lobby versions would need a new art order.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
