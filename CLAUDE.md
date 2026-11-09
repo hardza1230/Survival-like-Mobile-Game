@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.56**. Next release:8.1.57. Fetch the deploy branch before new work.
+Current release: **8.1.57**. Next release:8.1.58. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.56 — art 66+67 Wardrobe wired (owner)
+# Latest delivery: v8.1.57 — GM test tools (owner, code 1234)
+
+GM_ENABLED/GM_CODE + GM (localStorage mochi_gm). Settings: tap bottom-right 70×44 corner 7× within 1.5 s gaps → prompt code → 'GM Tools' row → buildGm (menuScreen 'gm'): Sugar/Thread/materials, unlock stages/heroes, heroes +10 Lv(+10 tp), Rank +5, reset Daily Login/Quests, Mochi Pass, all cosmetics, god mode (hurtPlayer) and ×10 damage (gmApply at startStage), save backup/restore, test profile (swaps mochi_save ↔ mochi_save_real; Cloud push/queuePush/syncCloud and Board.submit skip while testing). Any GM action sets Save.data.gmUsed → never submitted to Rankings. MUST set GM_ENABLED=false for the Play Store build. Test gm-tools.
+
+# Previous delivery: v8.1.56 — art 66+67 Wardrobe wired (owner)
 
 scripts/pack-cosmetics.py: 26 sheets → assets/art/cosmetics/ (740 KB WebP; dash/pop black bg → luminance alpha so dyes tint them). Registered in ASSET_FX (fw/fh/frames, rate 8 loop / 14 once), lazy via LAZY_MENU_ART_RE 'cosmetics'. cosEnsure loads equipped sheets before cosSetup (stage) and lobbyCos (then rebuilds hub), each key tried once (_cosTried); Wardrobe icons via loadCosArt {fx:true}; anims via bpAnim. Test wardrobe checks all 26 files/keys.
-
-# Previous delivery: v8.1.55 — Rankings, code ready, server not set up (owner)
-
-BOARD_CATS 8 (sugar, hero levels from charProg, weave rank, stage stars bitmask, kills/species from bestiary, chestsOpened, cosmetics owned) + Board (name default Mochi#NNNN from uid, validName 3–14 ASCII + profanity, submit throttled 2 min from buildLobby, top(cat) + my place). Rewards tabs now 4 ('ranking' → buildRanking, category tabs, ✏️ Name via window.prompt). Supabase project mochi-mayhem is INACTIVE (paused) — owner chose 'code first'; table SQL with owner-only write RLS in docs/sql/leaderboard.sql, run it after restoring the project. Scores come from the local save, so they can be faked; server-side checks are future work. Test leaderboard.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -50,6 +50,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame: เจ้าของอนุมัติ Rune Invoker ไม่มีสาย (2 Nov2026) · ดู `docs/design/SESAME_RUNE_INVOKER.md` · 10 เวท/การ์ดลูกแก้ว/อาร์ตและเสียงใหม่ v8.1.1 รอมือถือ · ถัดไปบาลานซ์/ความถนัดและ Talent ถาวร; ไม่ทำ Mirror Network ขั้น 2 ตามแผนเก่า
+- **ก่อนขึ้น Google Play: ตั้ง `GM_ENABLED=false`** (โหมด GM รหัส 1234 สำหรับทดสอบ v8.1.57)
 - เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ และไม่ต้องถ่ายภาพหน้าจอตรวจ UI — เจ้าของตรวจบนมือถือเอง (headless หาบั๊กได้)
 
 ## 6. เอกสาร

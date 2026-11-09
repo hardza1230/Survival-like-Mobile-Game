@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.56';
+const GAME_VERSION = '8.1.57';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.57',date:'2026-11-09',title:'Test tools',items:['Hidden GM Tools for testing (resources, unlocks, save backup and a separate test profile)']},
   {v:'8.1.56',date:'2026-11-09',title:'Painted Wardrobe',items:['All 28 cosmetics now use painted, animated art: wings, pets, trails, halos, rings, dash and pop effects','Dyes tint the painted art too']},
   {v:'8.1.55',date:'2026-11-09',title:'Rankings',items:['New Ranks tab in Rewards: Richest, Hero Levels, Weave Rank, Stage Stars, Monster Slayer, Collector, Treasure Seeker and Fashion Star','Pick your own ranking name','Rankings show as offline until the online service is switched on']},
   {v:'8.1.54',date:'2026-11-09',title:'Bigger Wardrobe',items:['Wardrobe now has 7 slots: Wings, Pets, Trails, Halos, Rings, Dash and Pops','28 cosmetics in total, sorted into tabs','Dye any cosmetic you own in 5 colours for free','Placeholder looks until the painted art arrives']},
@@ -7170,7 +7171,7 @@ const Save = {
     for(const [id,stage] of Object.entries(CORE_UNLOCK_STAGE)){if(((this.data.stageMastery&&this.data.stageMastery[stage])||(id==='sesame'&&(this.data.unlockedStage||0)>=5))&&!this.data.chars.includes(id)){this.data.chars.push(id);changed=true;if(notify)(this.data.charUnlockNew||(this.data.charUnlockNew={}))[id]=true;}}
     return changed;},
   // ---- Cloud sync (Supabase) ----
-  async syncCloud(){ if(typeof Cloud==='undefined')return; const ok=await Cloud.init(); if(!ok)return;
+  async syncCloud(){ if(typeof Cloud==='undefined'||(typeof GM!=='undefined'&&GM.testing()))return; const ok=await Cloud.init(); if(!ok)return;
     const remote=await Cloud.pull();
     try{ if(Array.isArray(Cloud._remoteStats))Stats.merge(Cloud._remoteStats); Cloud.queueStats(); }catch(e){}   // v7.8.103 Play Stats ขึ้นคลาวด์ (รวมสองฝั่ง)
     if(remote&&typeof remote==='object'){
@@ -7544,10 +7545,10 @@ const Cloud = {
   base(){ try{ const b=JSON.parse(localStorage.getItem('mochi_cloud_base')||'null'); return b&&this.user&&b.uid===this.user.id?b.rev:null; }catch(e){ return null; } },
   setBase(rev){ try{ if(this.user)localStorage.setItem('mochi_cloud_base',JSON.stringify({uid:this.user.id,rev})); }catch(e){} },
   async pull(){ if(!this.ready)return null; this._remoteStats=null; try{ const st=await this.sb.from('game_saves').select('stats').eq('user_id',this.user.id).maybeSingle(); if(!st.error&&st.data)this._remoteStats=st.data.stats; }catch(e){} try{ const {data,error}=await this.sb.from('game_saves').select('data').eq('user_id',this.user.id).maybeSingle(); if(error){console.warn('[cloud] pull',error.message);return null;} return data?data.data:null; }catch(e){ return null; } },
-  async push(data){ if(!this.ready||this.hold)return; try{ const rev=data.rev||0,{error}=await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); if(!error)this.setBase(rev); else console.warn('[cloud] push',error.message); }catch(e){ console.warn('[cloud] push',e); } },
+  async push(data){ if(!this.ready||this.hold||(typeof GM!=='undefined'&&GM.testing()))return; try{ const rev=data.rev||0,{error}=await this.sb.from('game_saves').upsert({user_id:this.user.id,data,updated_at:new Date().toISOString()}); if(!error)this.setBase(rev); else console.warn('[cloud] push',error.message); }catch(e){ console.warn('[cloud] push',e); } },
   /* v7.8.103 Play Stats ขึ้นคลาวด์ (คอลัมน์ stats แยก · ส่งตอนจบรัน ไม่ใช่ทุกเซฟ · เก็บ 150 รันล่าสุด) */
   queueStats(){ if(!this.ready)return; clearTimeout(this._statT); this._statT=setTimeout(async()=>{ try{ const a=Stats.load().slice(-150); await this.sb.from('game_saves').update({stats:a}).eq('user_id',this.user.id); }catch(e){ console.warn('[cloud] stats',e); } },3000); },
-  queuePush(data){ if(!this.ready||this.hold)return; clearTimeout(this._pushT); this._pushT=setTimeout(()=>this.push(data),1500); },
+  queuePush(data){ if(!this.ready||this.hold||(typeof GM!=='undefined'&&GM.testing()))return; clearTimeout(this._pushT); this._pushT=setTimeout(()=>this.push(data),1500); },
   // ---- Google login (บัญชีถาวร ข้ามเครื่อง) ----
   isGoogle(){ try{ return !!(this.user&&this.user.app_metadata&&this.user.app_metadata.provider==='google'); }catch(e){ return false; } },
   accountLabel(){ try{ if(this.isGoogle())return this.user.email||'Google account'; return this.user?'Temporary account (this device)':'Not connected'; }catch(e){ return 'Not connected'; } },
@@ -7573,6 +7574,23 @@ const Cloud = {
   async signOut(){ try{ if(this.sb)await this.sb.auth.signOut(); }catch(e){} this.user=null;this.ready=false; },
 };
 
+/* v8.1.57 เจ้าของ: โหมด GM สำหรับทดสอบ · Settings แตะมุมขวาล่าง 7 ครั้ง → รหัส · จำในเครื่อง (localStorage) · ต้องปิดก่อนขึ้น Play Store (GM_ENABLED=false) */
+const GM_ENABLED=true,GM_CODE='1234';
+const GM={
+  ls(k,v){ try{ if(v===undefined)return localStorage.getItem(k); if(v===null)localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){ return null; } },
+  on(){ return GM_ENABLED&&this.ls('mochi_gm')==='1'; },
+  unlock(code){ if(!GM_ENABLED||String(code||'').trim()!==GM_CODE)return false; this.ls('mochi_gm','1'); return true; },
+  off(){ this.ls('mochi_gm',null); },
+  testing(){ return GM_ENABLED&&this.ls('mochi_gm_test')==='1'; },
+  mark(){ if(Save.data){ Save.data.gmUsed=true; } },
+  opt(k){ return !!(this.on()&&Save.data&&Save.data.gmOpt&&Save.data.gmOpt[k]); },
+  toggle(k){ const d=Save.data; d.gmOpt=d.gmOpt||{}; d.gmOpt[k]=!d.gmOpt[k]; this.mark(); Save.save(); return d.gmOpt[k]; },
+  backup(){ this.ls('mochi_save_gm_backup',JSON.stringify(Save.data)); },
+  hasBackup(){ return !!this.ls('mochi_save_gm_backup'); },
+  restore(){ const b=this.ls('mochi_save_gm_backup'); if(!b)return false; this.ls('mochi_save',b); return true; },
+  startTest(){ if(this.testing())return false; this.ls('mochi_save_real',this.ls('mochi_save')||''); this.ls('mochi_gm_test','1'); this.ls('mochi_save',null); return true; },
+  endTest(){ if(!this.testing())return false; const r=this.ls('mochi_save_real'); if(r)this.ls('mochi_save',r); else this.ls('mochi_save',null); this.ls('mochi_save_real',null); this.ls('mochi_gm_test',null); return true; }
+};
 /* v8.1.55 เจ้าของ: ทำเนียบหลายหมวด (คนชอบแข่ง) · ตาราง leaderboard ใน Supabase (docs/sql/leaderboard.sql) · โปรเจกต์ยังพักอยู่ → แสดง Offline */
 const BOARD_CATS=[
   {id:'sugar',col:'s_sugar',emoji:'🍬',name:'Richest',unit:'Sugar',get:d=>Math.floor(d.sugar||0)},
@@ -7590,7 +7608,7 @@ const Board={ _at:0, _cache:{},
   setName(n){ const v=this.validName(n); if(!v)return false; Save.data.boardName=v; Save.save(); this._at=0; this.submit(true); return true; },
   scores(d){ const o={}; for(const c of BOARD_CATS)o[c.col]=Math.max(0,Math.floor(c.get(d||{})||0)); return o; },
   online(){ return !!(typeof Cloud!=='undefined'&&Cloud.ready&&Cloud.sb&&Cloud.user); },
-  async submit(force){ if(!this.online()||!Save.data)return false; const now=Date.now(); if(!force&&now-this._at<120000)return false; this._at=now;
+  async submit(force){ if(!this.online()||!Save.data||Save.data.gmUsed||(typeof GM!=='undefined'&&GM.testing()))return false; const now=Date.now(); if(!force&&now-this._at<120000)return false; this._at=now;
     try{ const row=Object.assign({user_id:Cloud.user.id,name:this.name(),hero:Save.data.character||'momo',updated_at:new Date().toISOString()},this.scores(Save.data)); const {error}=await Cloud.sb.from('leaderboard').upsert(row); if(error){ this._err=error.message; return false; } this._err=null; return true; }catch(e){ this._err=String(e&&e.message||e); return false; } },
   async top(cat,limit=50){ if(!this.online())return null; const c=BOARD_CATS.find(x=>x.id===cat)||BOARD_CATS[0];
     try{ const {data,error}=await Cloud.sb.from('leaderboard').select('user_id,name,hero,'+c.col).order(c.col,{ascending:false}).limit(limit); if(error){ this._err=error.message; return null; }
@@ -10857,7 +10875,7 @@ class Game extends Phaser.Scene {
     if(changed&&this.menu&&this.tweens){ this.tweens.killTweensOf(this.menu); this.menu.setAlpha(1).setY(0); }
     if(changed&&prevMenu)this.time?.delayedCall?.(0,()=>this.menuTransition?.(this._navStack.length>navN0));   // v7.8.60 เจ้าของ: มีแอนิเมชันตอนสลับหน้าเมนู
     const _nav=this.navBarOn(s),_H0=this.H; if(_nav)this.H=_H0-NAV_H; this._navOn=_nav; this._spotBuild=false; this._inMenuBuild=true; try{   // v7.9.47 แถบเมนูล่าง: สร้างหน้าในพื้นที่สูง H−NAV_H แล้ววาดแถบทับส่วนล่าง
-    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade'){this.buildUpgrade();this.time?.delayedCall?.(450,()=>this.rankTeach?.());} else if(s==='perks')this.buildRankPerks(); else if(s==='dig'){ if(featureOpen('dig'))this.buildDig(); else { this.menuScreen='upgrade'; this.buildUpgrade(); } } else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='merge')this.buildMerge(); else if(s==='bazaar')this.buildBazaar(); else if(s==='ranking')this.buildRanking(); else if(s==='wardrobe')this.buildWardrobe(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='story')this.buildStoryBook(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='rewards'){ this.menuScreen=this._rwLast==='achievements'||(!this.hasTargetBadge('daily')&&this.hasTargetBadge('achievements'))?'achievements':'daily'; if(this.menuScreen==='daily')this.buildDaily(); else this.buildAchievements(); }  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
+    if(s==='stage')this.buildStageSelect(); else if(s==='chapter')this.buildChapterSelect(); else if(s==='upgrade'){this.buildUpgrade();this.time?.delayedCall?.(450,()=>this.rankTeach?.());} else if(s==='perks')this.buildRankPerks(); else if(s==='dig'){ if(featureOpen('dig'))this.buildDig(); else { this.menuScreen='upgrade'; this.buildUpgrade(); } } else if(s==='kitchen')this.buildKitchen(); else if(s==='gear'){const r=this._clampFonts(10);try{this.buildGear();}finally{r();}} else if(s==='gearInbox')this.buildGearInbox(); else if(s==='craft'){this.buildCraftBench();} else if(s==='merge')this.buildMerge(); else if(s==='bazaar')this.buildBazaar(); else if(s==='gm')this.buildGm(); else if(s==='ranking')this.buildRanking(); else if(s==='wardrobe')this.buildWardrobe(); else if(s==='tradein')this.buildTradeIn(); else if(s==='stats'){this._heroesTab='stats';this.menuScreen='char';this.buildHeroes();} else if(s==='talents'){this._heroesTab='talents';this.menuScreen='char';this.buildHeroes();} else if(s==='char')this.buildHeroes(); else if(s==='news')this.buildNews(); else if(s==='story')this.buildStoryBook(); else if(s==='bestiary')this.buildBestiary(); else if(s==='skills')this.buildSkillArchive(); else if(s==='settings')this.buildSettings(); else if(s==='playstats')this.buildPlayStats(); else if(s==='achievements')this.buildAchievements(); else if(s==='daily')this.buildDaily(); else if(s==='rewards'){ this.menuScreen=this._rwLast==='achievements'||(!this.hasTargetBadge('daily')&&this.hasTargetBadge('achievements'))?'achievements':'daily'; if(this.menuScreen==='daily')this.buildDaily(); else this.buildAchievements(); }  else if(s==='bossrush')this.buildHub(); else if(s==='rift'||s==='recipes'||s==='recipeprep'){this.menuScreen='atlas';this._atlasTab='board';this.buildAtlas();} else if(s==='atlas')this.buildAtlas(); else if(s==='title')this.buildTitle(); else if(HUB_GROUPS[s])this.buildHubGroup(s); else this.buildHub(); }finally{ this.H=_H0; this._inMenuBuild=false; } if(this.state==="menu")this.menu.setVisible(true); const _n0=this.menu.list.length; if(_nav&&!this._spotBuild)this.drawNavBar(this.menuScreen,_H0); this.applyGearTut(); this.setupMenuScroll(s); this.menuEnterAnim?.(this.menuScreen,_n0);
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
@@ -11859,9 +11877,11 @@ class Game extends Phaser.Scene {
             {k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}},
       {k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true},
     ];
+    if(typeof GM!=='undefined'&&GM.on())rows.push({k:'gm',e:'🛠',n:'GM Tools'+(GM.testing()?' · TEST PROFILE':''),sub:'Testing only · resources, unlocks, save tools',value:()=>'Open',toggle:()=>{},gm:true});
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
     const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-52-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
-    rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{if(r.open){Sfx.select();this._heroesTab='roster';this.menuScreen='playstats';this.buildMenuScreen();return;}r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});
+    rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{if(r.gm){Sfx.select();this.menuScreen='gm';this.buildMenuScreen();return;}if(r.open){Sfx.select();this._heroesTab='roster';this.menuScreen='playstats';this.buildMenuScreen();return;}r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});
+    if(typeof GM!=='undefined'&&GM_ENABLED&&!GM.on()){ this._zone(w-70,h-44,70,44,()=>{ const now=Date.now(); this._gmTaps=(now-(this._gmTapAt||0)<1500)?(this._gmTaps||0)+1:1; this._gmTapAt=now; if(this._gmTaps>=7){ this._gmTaps=0; let c=null; try{ c=window.prompt('Code'); }catch(e){} if(c!=null){ if(GM.unlock(c)){ Sfx.clear?.(); this.showBanner?.('🛠 GM Tools on','Open GM Tools in Settings',1500); } else Sfx.error?.(); this.buildSettings(); } } }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.quiet=true; }
     // ☁️ บัญชี Cloud Save + เข้าสู่ระบบด้วย Google
     const accY=top+rows.length*(rowH+gap);
     const isG=(typeof Cloud!=='undefined'&&Cloud.isGoogle&&Cloud.isGoogle());
@@ -13535,6 +13555,31 @@ class Game extends Phaser.Scene {
       this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(ch+gap),cw,ch,{art:'ic_thread',name:n+' Thread',desc:first?'First purchase: double Thread':p.bonus?'+'+p.bonus+' bonus':'',price:p.price,color:first?0xffd166:0xffc6df,afford:live,fn:()=>this.threadBuy(p.id)}); }); }
   threadBuy(id){ if(!Iap.available()){ Sfx.error?.(); this.showBanner?.('🧶 Coming soon','Thread purchases open with the Play Store release',1600); return; }
     Iap.buy(id,(ok,n)=>{ if(ok){Sfx.clear?.();this.showBanner?.('🧶 Thank you!','+'+n+' Thread',1600);} if(this.state==='menu'&&this.menuScreen==='bazaar')this.buildBazaar(); }); }
+  gmApply(){ if(typeof GM==='undefined'||!GM.on()||!this.player)return; if(GM.opt('dmg')){ this.player.dmgMul=(this.player.dmgMul||1)*10; this.floatText?.(this.player.x,this.player.y-70,'GM ×10 damage',0xffd166); } if(GM.opt('god'))this.floatText?.(this.player.x,this.player.y-90,'GM god mode',0x8fe8ff); }
+  buildGm(){ if(typeof GM==='undefined'||!GM.on()){ this.menuScreen='settings'; this.buildMenuScreen(); return; } this.menu.removeAll(true);this.tapZones=[];this._screenBg('GM Tools','screen_settings','settings');
+    const w=this.W,h=this.H,d=Save.data,done=(t,sub)=>{ GM.mark(); Save.save(); Sfx.clear?.(); this.showBanner?.('🛠 '+t,sub||'',1100); this.buildGm(); };
+    const A=[
+      ['🍬','+10,000 Sugar',()=>{Save.addSugar(10000);done('Sugar added');}],
+      ['🧶','+1,000 Thread',()=>{Save.addThreads(1000);done('Thread added');}],
+      ['🧪','+50 every material',()=>{for(const c of (typeof CURRENCY!=='undefined'?CURRENCY:[]))Save.addCurrency(c.key,50);done('Materials added');}],
+      ['🗺️','Unlock all stages',()=>{d.unlockedStage=Math.max(d.unlockedStage||0,STAGES.length-1);d.stageMastery=d.stageMastery||{};for(let i=0;i<STAGES.length;i++)d.stageMastery[i]=d.stageMastery[i]||1;d.tutorialDone=true;Save.unlockCoreCharacters?.(false);done('All stages open');}],
+      ['🦸','Unlock all heroes',()=>{d.chars=Array.isArray(d.chars)?d.chars:['momo'];for(const c of ['momo',...Object.keys(CORE_UNLOCK_STAGE)])if(!d.chars.includes(c))d.chars.push(c);done('All heroes unlocked');}],
+      ['⭐','All heroes +10 levels',()=>{for(const c of (d.chars||[])){const cp=Save.cp(c);if(cp){cp.lvl=(cp.lvl||1)+10;cp.tp=(cp.tp||0)+10;}}done('Hero levels +10');}],
+      ['🏅','Rank +5',()=>{d.rank=(d.rank||0)+5;done('Rank +5');}],
+      ['📅','Reset Daily Login (claim again)',()=>{const c=LoginCal.data();c.last='';done('Daily Login ready');}],
+      ['📋','Reset Daily Quests',()=>{d.dailyQ=null;done('Daily Quests reset');}],
+      ['🎟️','Start Mochi Pass (test)',()=>{Iap.grant(MOCHI_PASS.id);done('Mochi Pass active');}],
+      ['👗','Unlock all cosmetics',()=>{const cd=Cos.data();for(const c of COSMETICS)cd.own[c.id]=1;done('All cosmetics owned');}],
+      ['🛡️','God mode in stages: '+(GM.opt('god')?'ON':'off'),()=>{GM.toggle('god');this.buildGm();}],
+      ['💥','×10 damage in stages: '+(GM.opt('dmg')?'ON':'off'),()=>{GM.toggle('dmg');this.buildGm();}],
+      ['💾','Back up this save',()=>{GM.backup();done('Save backed up');}],
+      ['↩️','Restore backup'+(GM.hasBackup()?'':' (none)'),()=>{if(GM.restore())location.reload();else Sfx.error?.();}],
+      [GM.testing()?'🔙':'🧪',GM.testing()?'Leave test profile (back to real save)':'Test profile (fresh save, real save kept)',()=>{if(GM.testing()?GM.endTest():GM.startTest())location.reload();}],
+      ['🚪','Turn GM Tools off',()=>{GM.off();this.menuScreen='settings';this.buildMenuScreen();}]];
+    const top=this._hdrShift?.()+84||84,cols=2,gap=6,bw=(w-28-gap)/cols,rows=Math.ceil(A.length/cols),bh=Math.max(30,Math.min(48,(h-top-30)/rows-gap));
+    A.forEach(([e,lab,fn],i)=>{ const x=14+(i%cols)*(bw+gap),y=top+Math.floor(i/cols)*(bh+gap),g=this.add.graphics(); g.fillStyle(0x261e30,.95).fillRoundedRect(x,y,bw,bh,10).lineStyle(1.5,0x6d536d,1).strokeRoundedRect(x,y,bw,bh,10); this.menu.add(g);
+      const t=this.add.text(x+10,y+bh/2,e+' '+lab,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#fff1e7',wordWrap:{width:bw-16}}).setOrigin(0,.5); this.menu.add(t); this._zone(x,y,bw,bh,fn); });
+    this.menu.add(this.add.text(w/2,h-14,'GM saves are marked and never sent to Rankings'+(GM.testing()?' · TEST PROFILE (cloud sync off)':''),{fontFamily:'sans-serif',fontSize:'9px',color:'#a89cb6'}).setOrigin(.5)); }
   buildRanking(){ this.menu.removeAll(true);this.tapZones=[];this._screenBg('Rankings','screen_bazaar','hub'); this.rewardsTabs?.('ranking');
     const w=this.W,h=this.H,hs=this._hdrShift(),cat=this._boardCat=BOARD_CATS.some(c=>c.id===this._boardCat)?this._boardCat:'sugar',C=BOARD_CATS.find(c=>c.id===cat); let y=124+hs;
     const tw=(w-28)/4; BOARD_CATS.forEach((c,i)=>this.paintedNavButton(this.menu,14+tw*((i%4)+.5),y+14+Math.floor(i/4)*34,tw-6,28,c.emoji+' '+c.name,c.id===cat,()=>{this._boardCat=c.id;this.buildRanking();},'board_'+c.id)); y+=76;
@@ -14179,7 +14224,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.voiceStop?.();this.time?.delayedCall?.(0,()=>this.cosSetup?.());if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.voiceStop?.();this.time?.delayedCall?.(0,()=>{this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -20978,6 +21023,7 @@ class Game extends Phaser.Scene {
   hurtPlayer(dmg,ix){ if(this.state!=='play'||this.player.iframe>0)return;
     if(this.consumeShell())return;   // 🔮 Candy Shell
     if(this._inTutorial)return;
+    if(typeof GM!=='undefined'&&GM.opt('god'))return;
     this.objBonusHit?.();   // ระหว่างสอน = Invincible (freeze safe zone) ผู้เล่นใหม่จะได้ไม่ตายตอนเรียน
     if(!Number.isFinite(dmg))dmg=10;
     if(this.character==='yuzu'){dmg=this.yuzuAbsorb(dmg*this.yuzuGuard());if(dmg<=0)return;}   // guard NaN
