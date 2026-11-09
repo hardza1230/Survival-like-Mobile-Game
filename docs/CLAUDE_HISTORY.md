@@ -3592,3 +3592,8 @@ completeWaveObjective → missionLootBurst(o, sugar incl. bonus): takes the miss
 
 menuArtIcon/tuImg place by CENTER (origin .5), menuArtPanel by top-left. loginPopup passed top-left to l30_header/l30_ruby/l30_cell/l30_cell30 → shifted up-left. Now centers: header (W/2, py+16), Ruby (px+pw-24, py-2), cells (x+cw/2, y+cell/2); title y py+14; l30 cells show number only.
 
+
+# v: v8.1.53 — weekly Daily Login + Taro Sentry nerf (owner)
+
+loginPopup shows only the current week (wS..wE of LOGIN_CAL, 4 per row, cells ≤84px), progress bar 'Week n of 5 · cur/30' with Day-30 chest icon; cells stored as cells[j] for the claim FX; LOGIN_DAYS stays 30. Taro Sentry (taroSwarmProfile non-smite): pulse max(.65, unitC*1.15/fire) (was .4, .84) and TARO_ORB_CAP 60→36 — owner: standing still cleared stages.
+

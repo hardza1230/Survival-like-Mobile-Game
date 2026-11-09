@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
+const a=src.indexOf('const BOARD_CATS='),b=src.indexOf('/* ---- BESTIARY: สมุดมอนสเตอร์');
+const ctx={Math,Object,String,Date};ctx.Save={data:{sugar:2480.7,charProg:{momo:{lvl:12},sesame:{lvl:7}},rank:4,stageStars:{0:7,1:3,2:1},bestiary:{basic:120,fast:0,boss1:2},chestsOpened:9,cos:{own:{wing_cream:1,pet_bird:1}}},save(){}};
+ctx.Cloud={ready:false,user:{id:'abc-123'}};vm.createContext(ctx);vm.runInContext(src.slice(a,b)+';this.Board=Board;this.BOARD_CATS=BOARD_CATS;',ctx);
+const {Board}=ctx;assert.strictEqual(ctx.BOARD_CATS.length,8);
+const sc=Board.scores(ctx.Save.data);assert.deepStrictEqual({...sc},{s_sugar:2480,s_levels:19,s_rank:4,s_stars:6,s_kills:122,s_bestiary:2,s_chests:9,s_style:2});
+assert.ok(/^Mochi#\d{4}$/.test(Board.name()));assert.strictEqual(Board.validName('ab'),null);assert.strictEqual(Board.validName('Momo Fan_1'),'Momo Fan_1');assert.strictEqual(Board.validName('xxfuckxx'),null);assert.strictEqual(Board.validName('ไทย'),null);
+assert.ok(Board.setName('Heart'));assert.strictEqual(Board.name(),'Heart');assert.strictEqual(Board.online(),false);
+const sql=fs.readFileSync(__dirname+'/../docs/sql/leaderboard.sql','utf8');for(const c of ctx.BOARD_CATS)assert.ok(sql.includes(c.col),c.col);assert.ok(sql.includes('auth.uid() = user_id'));
+assert.ok(src.includes("['ranking','👑 Ranks',false]")&&src.includes("s==='ranking')this.buildRanking()"));
+console.log('Leaderboard: 8 categories scored from save, name default/validation/profanity, offline guard, SQL columns + owner-only write RLS passed');
