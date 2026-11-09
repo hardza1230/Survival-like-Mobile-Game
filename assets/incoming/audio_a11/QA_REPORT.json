@@ -1476,7 +1476,7 @@
     }
   ],
   "failed": [],
-  "unlockScriptApproval": "vo_sesame_unlock: generated at owner direction, script remains awaiting owner approval",
+  "unlockScriptApproval": "vo_sesame_unlock: owner approved the script on 2026-11-09; audio performance and integration remain separate",
   "humanListening": "pending; technical checks do not establish pronunciation or sound quality",
   "a04": "Six A04 music tracks already delivered, integrated, and accepted 2026-11-08. The user-permissions endpoint returned HTTP 401, so additional Music Generation access cannot be verified with this key; no duplicate music generated.",
   "concurrentUpdate": "A11 gained 15 tutorial lines while delivery was in progress; all 15 were generated with the same saved Ruby voice and included in the 67-file delivery."
