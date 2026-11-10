@@ -1,0 +1,2251 @@
+{
+  "description": "Mechanical cell occupancy and corner-alpha audit against original sheets; visual review is required to distinguish backgrounds from intentional effects and verify poses.",
+  "frame_size": [
+    128,
+    128
+  ],
+  "sheets": [
+    {
+      "file": "momo/char_momo__sakura.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6444,
+        6432,
+        9341,
+        8399,
+        6129,
+        6783,
+        7406,
+        7044
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        28,
+        0,
+        0,
+        0,
+        51,
+        7
+      ],
+      "flags": [],
+      "source": "assets/char_momo_fighter_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        24,
+        0,
+        0,
+        0,
+        51,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 18
+        }
+      ]
+    },
+    {
+      "file": "momo/char_momo_idle__sakura.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6080,
+        6061,
+        6069,
+        6031,
+        6199,
+        6349,
+        6379,
+        6115
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/momo_v2/momo_idle_8f.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "momo/char_momo_run__sakura.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        6123,
+        6326,
+        6415,
+        6531,
+        6509,
+        6476,
+        6597,
+        6307,
+        6206,
+        6462,
+        6377,
+        6276
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/momo_v2/momo_run_12f.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "momo/char_momo_attack__sakura.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3887,
+        4087,
+        4315,
+        4617,
+        4662,
+        4238,
+        3819,
+        3760
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/momo_v2/momo_attack_8f.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "momo/char_momo_dash__sakura.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4118,
+        4601,
+        4284,
+        5147,
+        6090,
+        5194,
+        4813,
+        4322
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/momo_v2/momo_dash_8f.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "momo/char_momo_hurt__sakura.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6819,
+        6497,
+        6978,
+        6929,
+        6819,
+        6127,
+        6412,
+        6509
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/momo_v2/momo_hurt_8f.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "momo/char_momo_sniper_run_motion823__sakura.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        5487,
+        5422,
+        5309,
+        5163,
+        5481,
+        5378,
+        5438,
+        5498
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/sniper.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "momo/char_momo_sniper_charge_motion823__sakura.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3810,
+        3960,
+        4044,
+        4059,
+        3976,
+        3899,
+        3857,
+        3839
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/sniper_charge.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        8611,
+        8684,
+        7895,
+        8932,
+        8354,
+        6757,
+        7064,
+        9261
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        36,
+        0,
+        0,
+        0,
+        54,
+        53
+      ],
+      "flags": [],
+      "source": "assets/char_mint_frostleaf_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        12,
+        0,
+        13,
+        3
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 24
+        }
+      ]
+    },
+    {
+      "file": "mint/char_mint_run__snow.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        7192,
+        7160,
+        7191,
+        7551,
+        7518,
+        7444,
+        7514,
+        7735,
+        7853,
+        7455,
+        7642,
+        7756
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_mint_frostleaf_run_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_attack__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3884,
+        4212,
+        4409,
+        3822,
+        4345,
+        4654,
+        3853,
+        3768
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_mint_attack_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_gale__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4403,
+        5149,
+        5009,
+        5463,
+        6519,
+        8035,
+        5263,
+        4291
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_mint_gale_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 0,
+          "max_boundary_shift_px": 31
+        },
+        {
+          "frame": 1,
+          "max_boundary_shift_px": 21
+        },
+        {
+          "frame": 2,
+          "max_boundary_shift_px": 31
+        },
+        {
+          "frame": 3,
+          "max_boundary_shift_px": 18
+        },
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 6,
+          "max_boundary_shift_px": 16
+        },
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 16
+        }
+      ]
+    },
+    {
+      "file": "mint/char_mint_bloom_motion823__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6674,
+        6749,
+        6654,
+        6809,
+        6657,
+        6575,
+        6723,
+        6625
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/mint_clean.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_impaler_charge__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        7015,
+        7045,
+        7034,
+        7095,
+        7162,
+        7134,
+        7169,
+        7211
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/mint55/char_mint_impaler_charge.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_impaler_move__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6897,
+        6643,
+        6808,
+        6955,
+        7006,
+        6983,
+        6934,
+        6939
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/mint55/char_mint_impaler_move.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_impaler_release__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6755,
+        6979,
+        7055,
+        7026,
+        6992,
+        6455,
+        6405,
+        6482
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/mint55/char_mint_impaler_release.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_impaler_run_motion823__snow.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6515,
+        6467,
+        6574,
+        6459,
+        6313,
+        6443,
+        6520,
+        6381
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/mint_run.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "mint/char_mint_lance_charged__snow.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3142,
+        3717,
+        4141,
+        5255,
+        4310,
+        3192,
+        3893,
+        3111
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/mint_lance_throw_charged_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa__chef.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        8365,
+        8302,
+        8445,
+        9221,
+        7855,
+        6791,
+        7645,
+        8652
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        97,
+        15,
+        0,
+        0,
+        238,
+        20
+      ],
+      "flags": [
+        "corner alpha coverage: possible background or clipping; compare against source"
+      ],
+      "source": "assets/char_cocoa_awakened_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        40,
+        18,
+        0,
+        0,
+        84,
+        0
+      ],
+      "review_note": "Original also reaches corners in frames 2 and 6; new artwork has higher coverage there, so clipping is not established without visual frame review.",
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_run__chef.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        7262,
+        7001,
+        7367,
+        7437,
+        7676,
+        7531,
+        7645,
+        7636,
+        7451,
+        7407,
+        7681,
+        7497
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_cocoa_run_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_attack__chef.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3929,
+        4151,
+        4460,
+        3970,
+        3961,
+        4707,
+        4469,
+        3616
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_cocoa_attack_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_hurt__chef.png",
+      "dimensions": [
+        512,
+        128
+      ],
+      "frame_count": 4,
+      "opaque_pixels_per_frame": [
+        5504,
+        5286,
+        5188,
+        5570
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_hurt_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_victory__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4221,
+        4285,
+        4288,
+        4032,
+        3844,
+        4139,
+        4095,
+        4486
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_victory_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 1,
+          "max_boundary_shift_px": 15
+        },
+        {
+          "frame": 2,
+          "max_boundary_shift_px": 13
+        },
+        {
+          "frame": 3,
+          "max_boundary_shift_px": 13
+        },
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 14
+        }
+      ]
+    },
+    {
+      "file": "cocoa/char_cocoa_dash_jab__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3800,
+        3824,
+        5009,
+        3881,
+        4147,
+        4974,
+        4171,
+        3906
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_dash_jab_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_dash_leap__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4218,
+        4381,
+        4947,
+        5548,
+        4012,
+        5338,
+        4587,
+        4202
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_dash_leap_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_fire_jab__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3645,
+        3817,
+        4964,
+        3918,
+        3643,
+        3817,
+        4958,
+        3921
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_fire_jab_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_fire_fin__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        3639,
+        3771,
+        3969,
+        4569,
+        4707,
+        3777,
+        3597,
+        3576
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_fire_finisher_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 0,
+          "max_boundary_shift_px": 15
+        },
+        {
+          "frame": 1,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 2,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 3,
+          "max_boundary_shift_px": 15
+        },
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 6,
+          "max_boundary_shift_px": 14
+        }
+      ]
+    },
+    {
+      "file": "cocoa/char_cocoa_phantom__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4401,
+        4110,
+        4169,
+        4160,
+        4406,
+        4353,
+        4514,
+        4473
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_phantom_rush_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_rocket__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        2694,
+        2741,
+        3415,
+        3319,
+        2979,
+        3601,
+        3023,
+        2940
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_rocket_launch_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_rocket_motion823__chef.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        5301,
+        5408,
+        5452,
+        5595,
+        5634,
+        5562,
+        5458,
+        5244
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/rocket.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_motion823__chef.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4761,
+        4278,
+        4942,
+        4828,
+        4879,
+        4918,
+        4540,
+        4855
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/cocoa.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 0,
+          "max_boundary_shift_px": 13
+        },
+        {
+          "frame": 1,
+          "max_boundary_shift_px": 16
+        },
+        {
+          "frame": 2,
+          "max_boundary_shift_px": 19
+        },
+        {
+          "frame": 3,
+          "max_boundary_shift_px": 16
+        }
+      ]
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_run_motion823__chef.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        8230,
+        7741,
+        7624,
+        7053,
+        7282,
+        6990,
+        7758,
+        8097
+      ],
+      "corner_pixels_alpha_ge_16": [
+        7,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/titan_run.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_charge__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4593,
+        4665,
+        4854,
+        5114,
+        5564,
+        4972,
+        4629,
+        4623
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_titan_charge_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_walk__chef.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        5566,
+        5593,
+        5791,
+        5916,
+        6015,
+        6084,
+        6413,
+        6287,
+        6139,
+        6082,
+        6213,
+        6255
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_titan_charge_walk_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_hop__chef.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        4225,
+        4016,
+        4088,
+        4241,
+        4116,
+        4038,
+        4210,
+        4258
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_titan_light_hop_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_slam__chef.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        3504,
+        3589,
+        3882,
+        3966,
+        3857,
+        3648,
+        4118,
+        4475,
+        5125,
+        4521,
+        4216,
+        4163
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_titan_leap_slam_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_colossus__chef.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "frame_count": 16,
+      "opaque_pixels_per_frame": [
+        3706,
+        3424,
+        4398,
+        4297,
+        2405,
+        3786,
+        4733,
+        4772,
+        4046,
+        3867,
+        3967,
+        4412,
+        5441,
+        4820,
+        5010,
+        4224
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/bp_fx/cocoa_titan_colossus_sheet.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 2,
+          "max_boundary_shift_px": 13
+        }
+      ]
+    },
+    {
+      "file": "taro/char_taro__star.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        5587,
+        5418,
+        5600,
+        5856,
+        6906,
+        5437,
+        6087,
+        4459
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_taro_awakened_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "taro/char_taro_run__star.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        6552,
+        6582,
+        6547,
+        6699,
+        6344,
+        5752,
+        6531,
+        6667,
+        6864,
+        6226,
+        6709,
+        6736
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/taro_run_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "taro/char_taro_attack__star.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        7079,
+        7174,
+        6851,
+        6905,
+        7341,
+        6095,
+        7978,
+        6783
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        44,
+        12,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/taro_attack_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        20,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "taro/char_taro_plasma_motion823__star.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6709,
+        6561,
+        6641,
+        7158,
+        7362,
+        7276,
+        6657,
+        6607
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/taro_clean.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "yuzu/char_yuzu__summer.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        6456,
+        6276,
+        5350,
+        6672,
+        6334,
+        6126,
+        4580,
+        9239
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/yuzu_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 6,
+          "max_boundary_shift_px": 35
+        }
+      ]
+    },
+    {
+      "file": "yuzu/char_yuzu_run__summer.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        5747,
+        5852,
+        6062,
+        5991,
+        5761,
+        5850,
+        5938,
+        5815,
+        5832,
+        6469,
+        6498,
+        6281
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/yuzu_run_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 4,
+          "max_boundary_shift_px": 15
+        },
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 15
+        }
+      ]
+    },
+    {
+      "file": "yuzu/char_yuzu_attack__summer.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        7159,
+        7917,
+        7200,
+        9745,
+        10461,
+        8041,
+        6658,
+        6581
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        3,
+        3,
+        0,
+        0,
+        10,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/yuzu_attack_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 6,
+          "max_boundary_shift_px": 18
+        }
+      ]
+    },
+    {
+      "file": "yuzu/char_yuzu_combo_motion823__summer.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        8779,
+        8513,
+        8342,
+        8553,
+        8622,
+        8291,
+        8323,
+        8360
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/yuzu_combo.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "sesame/char_sesame__moon.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        7020,
+        6665,
+        6483,
+        7171,
+        8175,
+        6510,
+        6511,
+        5972
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/char_sesame_awakened_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "sesame/char_sesame_run__moon.png",
+      "dimensions": [
+        512,
+        384
+      ],
+      "frame_count": 12,
+      "opaque_pixels_per_frame": [
+        7351,
+        7449,
+        7635,
+        7732,
+        8337,
+        8422,
+        8192,
+        8307,
+        8389,
+        8147,
+        8177,
+        8619
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/sesame_run_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "sesame/char_sesame_attack__moon.png",
+      "dimensions": [
+        512,
+        256
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        8844,
+        7732,
+        7770,
+        7571,
+        8281,
+        6450,
+        8049,
+        9257
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/characters/sesame_attack_sheet.png",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    },
+    {
+      "file": "sesame/char_sesame_meteor_motion823__moon.png",
+      "dimensions": [
+        1024,
+        128
+      ],
+      "frame_count": 8,
+      "opaque_pixels_per_frame": [
+        7224,
+        7086,
+        7141,
+        7199,
+        7165,
+        7077,
+        7079,
+        7028
+      ],
+      "corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "flags": [],
+      "source": "assets/art/hero_motion823/sesame_clean.webp",
+      "source_corner_pixels_alpha_ge_16": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bbox_threshold_64_review_flags": []
+    }
+  ]
+}
