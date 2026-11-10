@@ -15,3 +15,7 @@ s._coach={step:2};s.coachControls();s._coach=null;s.coachControls();assert.ok(s.
 assert.ok(src.includes('this.tickTutorialCoach')||true);assert.ok(/tickTutorialCoach\(dt\)\{[^\n]*this\.coachControls\(\);/.test(src));
 const bu=src.slice(src.indexOf("if(c.unique==='berryRebound'){"),src.indexOf("}else if(c.unique==='mintSanctuary'){"));assert.ok(!/healAura\?\.\(|healAura\(/.test(bu),'no bloom on Momo unique');
 console.log('Coach controls: Dash hidden until Dash lesson, Unique until Unique lesson, restored after; Momo Unique without bloom aura passed');
+{ // v8.1.74 บท HP: ลองทำจริง (เลือดลด + หัวใจ) และยังมีการ์ดเสียง tut_hp ก่อน
+  const hp=src.match(/\{ id:'hp', icon:'❤️', title:'Stay Healthy'[^\n]*\n\s*\{ id:'heal',[^\n]*\n/);assert.ok(hp&&/introOnly:true/.test(hp[0])&&/hurt:true/.test(hp[0])&&/spot:'heal'/.test(hp[0]),'hp card then heal exercise');
+  assert.ok(src.includes('\n  coachHurt(){')&&src.includes('if(step.hurt&&this.player)this.coachHurt();')&&src.includes("if(this._inTutorial)this._coachHeals=")&&src.includes('if(step.introOnly&&this.showCoachIntro)'));
+  console.log('Coach HP lesson: hurt to 35%, heart spawned, pick-up counted, intro card kept passed'); }

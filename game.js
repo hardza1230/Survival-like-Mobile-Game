@@ -16747,6 +16747,7 @@ class Game extends Phaser.Scene {
     { id:'dash', icon:'💨', title:'Dash', body:'Green button: zoom past danger.\nIt needs a moment to recharge.', say:'TAP Dash two times', sub:'Wait for it to recharge between dashes', spot:'dash', label:'TAP', goal:c=>'Dash '+Math.min(2,(this._coachDash||0)-c.dash)+'/2', check:c=>(this._coachDash||0)-c.dash>=2 },
     { id:'unique', icon:'⭐', title:'Your Unique', body:'Pink button: your seed’s big attack.\nIt charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
     { id:'hp', icon:'❤️', title:'Stay Healthy', body:'HP at zero ends the stage.\nPink mochi hearts heal you.', introOnly:true },
+    { id:'heal', icon:'❤️', title:'A Heal Mochi! Grab it to get HP back.', say:'A Heal Mochi! Grab it to get HP back.', sub:'Ouch! Walk over the pink heart', spot:'heal', hurt:true, goal:c=>(this._coachHeals||0)-c.heals>=1?'Healed!':'Grab the heart', check:c=>(this._coachHeals||0)-c.heals>=1, timeout:30 },   // v8.1.74 เจ้าของ: หลังการ์ดเสียง HP → จำลองเลือดลด + หัวใจให้เก็บ
     { id:'ready', icon:'🎁', title:'You’re Ready!', body:'Training complete! Use your starter Sugar\nto upgrade one core, then enter the pantry.', introOnly:true },
   ]; }
   startCoach(){ this.loadTutArt?.(); this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
@@ -16754,7 +16755,7 @@ class Game extends Phaser.Scene {
     if(c.step>=steps.length){ this._coachFinish(); return; }
     const step=steps[c.step];
     const go=()=>{ if(this._coach!==c)return; if(step.introOnly){ this._coachNext(); return; }
-      c.px=this.player.x; c.py=this.player.y; c.lx=c.px; c.ly=c.py; c.trav=0; c.kills=this.kills; c.dash=this._coachDash||0; c.uniq=this._coachUnique||0; c.lvl=this.level; c.card=this._coachCardPick||0; c.orbs=this._coachOrbs||0; c.t=0; c.done=false;
+      c.px=this.player.x; c.py=this.player.y; c.lx=c.px; c.ly=c.py; c.trav=0; c.kills=this.kills; c.dash=this._coachDash||0; c.uniq=this._coachUnique||0; c.lvl=this.level; c.card=this._coachCardPick||0; c.orbs=this._coachOrbs||0; c.heals=this._coachHeals||0; c.t=0; c.done=false;
       this.tutorialSetupStep(step); this.drawCoachBubble(step); this.coachControls?.(); Sfx.select&&Sfx.select(); };
     if(step.introOnly&&this.showCoachIntro)this.showCoachIntro(step,go); else go(); }
   // v7.9.66 หน้าอธิบายก่อนลองทำ: หยุดเกม + การ์ดใหญ่ (Ruby, หัวข้อ, 2–3 บรรทัด) · แตะได้หลัง 1.2 วิ (กันแตะข้ามโดยไม่ได้อ่าน)
@@ -16780,11 +16781,17 @@ class Game extends Phaser.Scene {
     const ev=this.time.addEvent({delay:83,repeat:6,callback:()=>{ f++; if(!im.active)return; if(f>5){ ev.remove(false); im.destroy(); return; } im.setFrame('cell'+f); }}); }
   coachIntroTap(){ if(this._coachIntroGo)this._coachIntroGo(); }
   // จัดสนามให้เข้ากับบทที่สอน: เคลียร์มอนเก่าให้โล่ง (freeze/calm) · บทฆ่า = สปอนมอนอ่อน ๆ ให้ลอง · บทเลเวล = เปิดการ์ดให้เลือก
+  /* v8.1.74 บทสอน HP: เลือดลดเหลือ 35% (ไม่ตาย) แล้ววางหัวใจโมจิให้เดินไปเก็บ · ข้ามโควตาหัวใจของด่าน */
+  coachHurt(){ const p=this.player; if(!p)return null; p.hp=Math.max(1,Math.min(p.hp,Math.round(p.maxhp*.35))); this.screenFlash?.(0xff4d6d,.18,220); this.screenShake?.(160,.004); try{ p.setTint?.(0xff6a8a); this.time.delayedCall(260,()=>p.clearTint?.()); }catch(e){} Sfx.hurt?.();
+    this.heals?.children?.iterate?.(o=>{ if(o&&o.active){ o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; } });
+    let h=this.heals?.getFirstDead?.(false); const x=p.x+170,y=p.y-40; if(!h)h=this.heals?.create?.(x,y,'heal'); else { h.setActive(true).setVisible(true); if(h.body)h.body.enable=true; h.setPosition(x,y); } if(!h)return null;
+    h.body?.setAllowGravity?.(false); this.camWorld(h); this.showPickupCue?.(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y)); this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'}); return h; }
   tutorialSetupStep(step){
     if(this.clearEnemies)this.clearEnemies(); if(this.clearFoes)this.clearFoes();
     if(step.spawn){ for(let i=0;i<step.spawn;i++){ const a=Math.PI*2*i/step.spawn; this.spawnEnemy('basic', a, step.spawn<=3?230:175); } }
     if(step.orbs&&this.dropOrb&&this.player){ for(let i=0;i<step.orbs;i++){ const a=Math.PI*2*i/step.orbs+.4; this.dropOrb(this.player.x+Math.cos(a)*150,this.player.y+Math.sin(a)*150,1); } }
     if(step.ready)this.uniqueCd=0;
+    if(step.hurt&&this.player)this.coachHurt();
     if(step.level){ this.pendingLvl=(this.pendingLvl||0)+1; this.time.delayedCall(220,()=>{ if(this._inTutorial&&this.state==='play')this.openLevelUp(); }); }
   }
   _coachFinish(){ this.time?.delayedCall?.(0,()=>this.coachControls?.()); if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save();
@@ -16974,6 +16981,7 @@ class Game extends Phaser.Scene {
     if(kind==='dash')return this.dashBtn?{x:this.dashBtn.x,y:this.dashBtn.y}:{x:w-58,y:h-78};
     if(kind==='unique')return this.uniqueBtn?{x:this.uniqueBtn.x,y:this.uniqueBtn.y}:{x:w-58,y:h-78-80};
     if(kind==='card')return {x:w/2,y:h*0.52};
+    if(kind==='heal'){ let t=null; this.heals?.children?.iterate?.(o=>{ if(o&&o.active&&!t)t=o; }); if(t&&this.cameras?.main){ const cam=this.cameras.main; return {x:(t.x-cam.worldView.x)*cam.zoom,y:(t.y-cam.worldView.y)*cam.zoom}; } return null; }
     if(kind==='move')return {x:w*0.28,y:h*0.64};
     if(kind==='enemy'){ const e=this.nearestEnemy?this.nearestEnemy(2000):null; if(e&&this.cameras&&this.cameras.main){ const cam=this.cameras.main; return {x:(e.x-cam.worldView.x)*cam.zoom,y:(e.y-cam.worldView.y)*cam.zoom}; } return {x:w/2,y:h*0.4}; }
     return null; }
@@ -20667,7 +20675,7 @@ class Game extends Phaser.Scene {
     if(d){d.heartAt=now;d.hearts++;}
     h.body.setAllowGravity(false); this.camWorld(h); this.showPickupCue(h,0xff5f97,1.35); if(this.iso)h.setDepth(Math.max(80000,h.y));
     this.tweens.add({targets:h,y:y-10,duration:560,yoyo:true,repeat:-1,ease:'Sine.inOut'});return h; }
-  collectHeal(player,h){ if(!h.active)return; this.rubyOnce?.('heal');
+  collectHeal(player,h){ if(!h.active)return; if(this._inTutorial)this._coachHeals=(this._coachHeals||0)+1; this.rubyOnce?.('heal');
     const power=this.healingItemPower(),p=this.player;
     const requested=Math.round((this.usesStoryBudget?.()?p.maxhp*.18:p.maxhp*.18+6)*power),amt=Math.max(0,Math.min(p.maxhp-p.hp,this.usesStoryBudget?.()?Math.min(requested,p.maxhp*.35):requested));
     this.tweens.killTweensOf(h); this.hidePickupCue(h); h.setActive(false).setVisible(false); if(h.body)h.body.enable=false;
