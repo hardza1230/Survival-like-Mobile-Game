@@ -1,16 +1,17 @@
 {
   "status": "incomplete",
   "expected_files": 68,
-  "accepted_files": 6,
+  "accepted_files": 7,
   "draft_count": 71,
   "issues": [
     "Five pet sheets have correct 1536x256 dimensions, true alpha and six nonblank frames with no strong-alpha pixels touching cell edges; poses were compared visually with the existing pet sheets.",
     "The 1024x512 opaque banner depicts all six costume concepts and leaves room along the bottom; no in-game check performed.",
     "All 49 combat sheets have candidates. Mint impaler release and Momo sniper charge were revised to restore their weapons and improve transparency; exact pose, weapon/foot anchors, clipping and animation continuity still need review.",
     "All six cards and six roster portraits need final positional and size review; no final hero assets are claimed.",
-    "Shop icon atlas is a candidate assembled from generated cards, requiring visual review.",
     "No runtime integration or device test performed.",
-    "Automated corner-alpha audit flags Cocoa main sheet frames 2 and 6; the original also reaches those corners, but the candidate covers more pixels and needs clipping review."
+    "Automated corner-alpha audit flags Cocoa main sheet frames 2 and 6; the original also reaches those corners, but the candidate covers more pixels and needs clipping review.",
+    "Shop icon atlas is 1536x256 RGBA with six transparent 256px cells, visually inspected at 90px on #261e30.",
+    "49 sheets compared against source alpha bounding boxes: 22 have one or more frame bounds differing by more than 12px. Bounds include changed costumes and effects, so this is a review flag, not proof of an anchor defect; the remaining sheets are not automatically approved."
   ],
   "missing_or_not_accepted": [
     "momo/card_momo_sakura.png",
@@ -73,8 +74,7 @@
     "sesame/char_sesame__moon.png",
     "sesame/char_sesame_run__moon.png",
     "sesame/char_sesame_attack__moon.png",
-    "sesame/char_sesame_meteor_motion823__moon.png",
-    "skin_icons69.png"
+    "sesame/char_sesame_meteor_motion823__moon.png"
   ],
   "candidate_details": [
     {
@@ -868,19 +868,6 @@
       "state": "not_accepted",
       "issues": [
         "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
-      ]
-    },
-    {
-      "requested": "skin_icons69.png",
-      "candidate": "candidates/skin_icons69.png",
-      "bytes": 733252,
-      "sha256": "5631300f0dd12d759f510bd2bb13f56c2f167cc72269941e4940362f4319b16e",
-      "width": 1536,
-      "height": 256,
-      "mode": "RGBA",
-      "state": "not_accepted",
-      "issues": [
-        "exact original pose and composition or icon crop require review"
       ]
     }
   ],

@@ -1,3 +1,7 @@
+# Current checkpoint — art order 69 icon atlas and review (2026-11-10)
+
+Generated six matching chest-up ImageGen portraits and assembled a transparent 1536x256 six-cell skin_icons69.png. Verified each cell and reviewed a 90px preview on #261e30. Seven source files now delivered: the atlas, five pet sheets, and the opaque banner. The other 61 remain candidates, including all 49 combat sheets and 12 character portraits. FRAME_AUDIT.json now compares each original's corner alpha and bounding boxes: 22 sheets have at least one bounds difference >12px, which is a review flag, not proof of a defect or proof of the remaining assets being acceptable. Exact pose, anchors, animation continuity and art review remain; no integration or mobile playtest. See QA_REPORT.json.
+
 # Current checkpoint — art order 69 corrections (2026-11-10)
 
 Reworked Momo sniper-charge and Mint impaler-release candidates using ImageGen; restored visibly missing weapon poses and removed the previous Mint gray background. Both remain candidates: exact original pose/anchors and animation still require review. FRAME_AUDIT.json checks occupancy and corner alpha for all 49 candidates; Cocoa main frames 2 and 6 have corner coverage above the threshold; the original also touches those corners, so inspect for clipping. No change to the count of six delivered files; the remaining 62 candidates are not accepted. No runtime edits or in-game/mobile tests. See QA_REPORT.json and comparison GIFs.

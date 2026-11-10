@@ -108,6 +108,32 @@
       "anchor": "center",
       "background": "opaque",
       "sourceKey": null
+    },
+    {
+      "key": "skin_icons69",
+      "file": "skin_icons69.png",
+      "hero": null,
+      "skin": "festival",
+      "bytes": 721507,
+      "sha256": "e22e0a7eb9da498d4e42e6fe311af587f6fb9b53e05beabb5e23caea9d2f9b5a",
+      "width": 1536,
+      "height": 256,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 6,
+      "columns": 6,
+      "loop": false,
+      "anchor": "center",
+      "background": "transparent",
+      "sourceKey": null,
+      "frameOrder": [
+        "momo",
+        "mint",
+        "cocoa",
+        "taro",
+        "yuzu",
+        "sesame"
+      ]
     }
   ],
   "candidates": [
@@ -718,16 +744,6 @@
       "sha256": "3f2f6eb42b12f961985c886ff12fec568bcdf7a939a75f6baee6f4f849dafc67",
       "width": 1024,
       "height": 128,
-      "mode": "RGBA",
-      "state": "not_accepted"
-    },
-    {
-      "requested": "skin_icons69.png",
-      "candidate": "candidates/skin_icons69.png",
-      "bytes": 733252,
-      "sha256": "5631300f0dd12d759f510bd2bb13f56c2f167cc72269941e4940362f4319b16e",
-      "width": 1536,
-      "height": 256,
       "mode": "RGBA",
       "state": "not_accepted"
     }

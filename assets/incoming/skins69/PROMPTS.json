@@ -402,6 +402,30 @@
     {
       "key": "momo_charge_cleanup",
       "prompt": "Remove the pale white/pink background and haze from this exact eight-frame sprite sheet. Preserve all eight character drawings, gun, costume, poses, placement and frame sequence exactly as-is. Every pixel outside the character should be fully transparent. Do not add or change anything. No text, outlines, shadows, or ground."
+    },
+    {
+      "hero": "momo",
+      "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME momo character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
+    },
+    {
+      "hero": "mint",
+      "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME mint character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
+    },
+    {
+      "hero": "cocoa",
+      "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME cocoa character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
+    },
+    {
+      "hero": "taro",
+      "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME taro character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
+    },
+    {
+      "hero": "yuzu",
+      "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME yuzu character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
+    },
+    {
+      "hero": "sesame",
+      "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME sesame character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
     }
   ]
 }
