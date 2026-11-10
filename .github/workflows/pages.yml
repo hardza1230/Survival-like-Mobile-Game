@@ -4,7 +4,8 @@ name: Deploy Web (GitHub Pages)
 # แอป (APK) โหลดหน้านี้ตอนเปิด → แก้เกมแล้ว push = แอปอัปเดตเอง ไม่ต้องลง APK ใหม่
 on:
   push:
-    branches: [ "**" ]
+    # v8.1.74: เฉพาะสาขาที่ขึ้นเกม (Pages env รับสาขานี้สาขาเดียว) · เดิม "**" ทำให้ push สาขา session ไปยกเลิกรอบขึ้นเกม (concurrency cancel-in-progress)
+    branches: [ "claude/vampire-survival-mobile-game-yo9e8w" ]
     paths:
       - "game.js"
       - "index.html"
@@ -34,8 +35,20 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-24.04   # ubuntu-latest = 26.04: Playwright 1.51.1 cannot install Chromium there
     steps:
+      # v8.1.74: repo > 2 GB (assets/incoming = ไฟล์ต้นฉบับจากฝั่งอาร์ต/เสียง) · ข้ามเฉพาะไฟล์ที่ไม่มีเทสไหนอ่าน (ตรวจด้วย fs log ทั้ง npm run check + check-*.cjs)
+      # ถ้าเทสใหม่ต้องอ่านไฟล์ในกลุ่มนี้ ให้ลบแพตเทิร์นนั้นออก
       - uses: actions/checkout@v4
-        timeout-minutes: 5
+        timeout-minutes: 15
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/assets/incoming/**/candidates/
+            !/assets/incoming/**/donors/
+            !/assets/incoming/**/*.gif
+            !/assets/incoming/**/*.jpg
+            !/assets/incoming/**/*preview*
+            !/assets/incoming/lobby_hero_motion/
       - uses: actions/setup-node@v4
         with:
           node-version: "20"

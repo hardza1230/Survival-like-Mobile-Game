@@ -32,7 +32,7 @@ def place(im,k,box,n=0):
 def cover(path,size):return ImageOps.fit(Image.open(path).convert('RGBA'),size,Image.Resampling.LANCZOS)
 
 def lobby(W,H,stage):
- im=cover(ROOT/f'assets/incoming/menu_stage_cards/stage_card_s{stage:02}.png',(W,H))
+ im=cover(ROOT/f'assets/art/menu_stage_cards/stage_card_s{stage:02}.webp',(W,H))
  shade=Image.new('RGBA',(W,H));d=ImageDraw.Draw(shade)
  for y in range(H):
   a=round(85*max(0,1-y/160)+170*max(0,(y-H*.57)/(H*.43)))

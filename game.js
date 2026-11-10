@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.73';
+const GAME_VERSION = '8.1.74';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.74',date:'2026-11-10',title:'Healing lesson',items:['Ruby’s training now lets you try healing: your HP drops, a Heal Mochi appears, and you walk over it to recover','Menu backgrounds and stage cards load faster (smaller files)']},
   {v:'8.1.73',date:'2026-11-10',title:'Sharper pets and skin previews',items:['Pets are drawn in high resolution in the Lobby and Wardrobe (no more blur)','Skins tab shows the Festival collection banner and new portrait cards']},
   {v:'8.1.72',date:'2026-11-10',title:'Tutorial buttons and Strawberry Unique',items:['Ruby’s training shows the Dash button only from the Dash lesson and the Unique button only from the Unique lesson','Strawberry Rebound no longer shows the flower bloom on the hero (the heal still works)']},
   {v:'8.1.71',date:'2026-11-10',title:'Bottom tabs everywhere',items:['The bottom tab bar no longer disappears after tapping something in Wardrobe, Mochi Patrol, Rankings, GM tools, Heroes or the Story book']},
@@ -2774,49 +2775,49 @@ const ASSET_IMAGES = {
   ic_cocoa_dashp:'assets/art/card_icons/ic_cocoa_dashp.webp',
   ic_cocoa_drum:'assets/art/card_icons/ic_cocoa_drum.webp',
   tr_emblem:'assets/art/transition/tr_emblem.webp',
-  // Stage cards and portrait menu art (source PNGs remain in incoming).
-  screen_equipment:'assets/incoming/menu_screens/screen_equipment.png',
-  screen_inbox:'assets/incoming/menu_screens/screen_inbox.png',
-  screen_endgame:'assets/incoming/menu_screens/screen_endgame.png',
-  screen_heroes:'assets/incoming/menu_screens/screen_heroes.png',
-  screen_difficulty:'assets/incoming/menu_screens/screen_difficulty.png',
-  chapter3_cover:'assets/incoming/menu_stage_cards/chapter3_cover.png',
-  chapter_endgame_cover:'assets/incoming/menu_stage_cards/chapter_endgame_cover.png',
-  stage_card_s01:'assets/incoming/menu_stage_cards/stage_card_s01.png',
-  stage_card_s02:'assets/incoming/menu_stage_cards/stage_card_s02.png',
-  stage_card_s03:'assets/incoming/menu_stage_cards/stage_card_s03.png',
-  stage_card_s04:'assets/incoming/menu_stage_cards/stage_card_s04.png',
-  stage_card_s05:'assets/incoming/menu_stage_cards/stage_card_s05.png',
-  stage_card_s06:'assets/incoming/menu_stage_cards/stage_card_s06.png',
-  stage_card_s07:'assets/incoming/menu_stage_cards/stage_card_s07.png',
-  stage_card_s08:'assets/incoming/menu_stage_cards/stage_card_s08.png',
-  stage_card_s09:'assets/incoming/menu_stage_cards/stage_card_s09.png',
-  stage_card_s10:'assets/incoming/menu_stage_cards/stage_card_s10.png',
-  stage_card_s11:'assets/incoming/menu_stage_cards/stage_card_s11.png',
-  stage_card_s12:'assets/incoming/menu_stage_cards/stage_card_s12.png',
-  stage_card_s13:'assets/incoming/menu_stage_cards/stage_card_s13.png',
-  stage_card_s14:'assets/incoming/menu_stage_cards/stage_card_s14.png',
-  stage_card_s15:'assets/incoming/menu_stage_cards/stage_card_s15.png',
-  screen_achievements:'assets/incoming/menu_screens/screen_achievements.png',
-  screen_atlas:'assets/incoming/menu_screens/screen_atlas.png',
-  screen_bazaar:'assets/incoming/menu_screens/screen_bazaar.png',
-  screen_bestiary:'assets/incoming/menu_screens/screen_bestiary.png',
-  screen_bossrush:'assets/incoming/menu_screens/screen_bossrush.png',
-  screen_chapter:'assets/incoming/menu_screens/screen_chapter.png',
-  screen_codex:'assets/incoming/menu_screens/screen_codex.png',
-  screen_daily:'assets/incoming/menu_screens/screen_daily.png',
-  screen_group_activity:'assets/incoming/menu_screens/screen_group_activity.png',
-  screen_group_codex:'assets/incoming/menu_screens/screen_group_codex.png',
-  screen_group_gear:'assets/incoming/menu_screens/screen_group_gear.png',
-  screen_group_more:'assets/incoming/menu_screens/screen_group_more.png',
-  screen_news:'assets/incoming/menu_screens/screen_news.png',
-  screen_recipes:'assets/incoming/menu_screens/screen_recipes.png',
-  screen_settings:'assets/incoming/menu_screens/screen_settings.png',
-  screen_stage:'assets/incoming/menu_screens/screen_stage.png',
-  screen_stats:'assets/incoming/menu_screens/screen_stats.png',
-  screen_talents:'assets/incoming/menu_screens/screen_talents.png',
-  screen_weave_perks:'assets/incoming/menu_screens/screen_weave_perks.png',
-  screen_zonemods:'assets/incoming/menu_screens/screen_zonemods.png',
+  // Stage cards and portrait menu art (v8.1.74: WebP in assets/art/menu_*; source PNGs stay in incoming, packed by scripts/pack-menu-incoming.py).
+  screen_equipment:'assets/art/menu_screens/screen_equipment.webp',
+  screen_inbox:'assets/art/menu_screens/screen_inbox.webp',
+  screen_endgame:'assets/art/menu_screens/screen_endgame.webp',
+  screen_heroes:'assets/art/menu_screens/screen_heroes.webp',
+  screen_difficulty:'assets/art/menu_screens/screen_difficulty.webp',
+  chapter3_cover:'assets/art/menu_stage_cards/chapter3_cover.webp',
+  chapter_endgame_cover:'assets/art/menu_stage_cards/chapter_endgame_cover.webp',
+  stage_card_s01:'assets/art/menu_stage_cards/stage_card_s01.webp',
+  stage_card_s02:'assets/art/menu_stage_cards/stage_card_s02.webp',
+  stage_card_s03:'assets/art/menu_stage_cards/stage_card_s03.webp',
+  stage_card_s04:'assets/art/menu_stage_cards/stage_card_s04.webp',
+  stage_card_s05:'assets/art/menu_stage_cards/stage_card_s05.webp',
+  stage_card_s06:'assets/art/menu_stage_cards/stage_card_s06.webp',
+  stage_card_s07:'assets/art/menu_stage_cards/stage_card_s07.webp',
+  stage_card_s08:'assets/art/menu_stage_cards/stage_card_s08.webp',
+  stage_card_s09:'assets/art/menu_stage_cards/stage_card_s09.webp',
+  stage_card_s10:'assets/art/menu_stage_cards/stage_card_s10.webp',
+  stage_card_s11:'assets/art/menu_stage_cards/stage_card_s11.webp',
+  stage_card_s12:'assets/art/menu_stage_cards/stage_card_s12.webp',
+  stage_card_s13:'assets/art/menu_stage_cards/stage_card_s13.webp',
+  stage_card_s14:'assets/art/menu_stage_cards/stage_card_s14.webp',
+  stage_card_s15:'assets/art/menu_stage_cards/stage_card_s15.webp',
+  screen_achievements:'assets/art/menu_screens/screen_achievements.webp',
+  screen_atlas:'assets/art/menu_screens/screen_atlas.webp',
+  screen_bazaar:'assets/art/menu_screens/screen_bazaar.webp',
+  screen_bestiary:'assets/art/menu_screens/screen_bestiary.webp',
+  screen_bossrush:'assets/art/menu_screens/screen_bossrush.webp',
+  screen_chapter:'assets/art/menu_screens/screen_chapter.webp',
+  screen_codex:'assets/art/menu_screens/screen_codex.webp',
+  screen_daily:'assets/art/menu_screens/screen_daily.webp',
+  screen_group_activity:'assets/art/menu_screens/screen_group_activity.webp',
+  screen_group_codex:'assets/art/menu_screens/screen_group_codex.webp',
+  screen_group_gear:'assets/art/menu_screens/screen_group_gear.webp',
+  screen_group_more:'assets/art/menu_screens/screen_group_more.webp',
+  screen_news:'assets/art/menu_screens/screen_news.webp',
+  screen_recipes:'assets/art/menu_screens/screen_recipes.webp',
+  screen_settings:'assets/art/menu_screens/screen_settings.webp',
+  screen_stage:'assets/art/menu_screens/screen_stage.webp',
+  screen_stats:'assets/art/menu_screens/screen_stats.webp',
+  screen_talents:'assets/art/menu_screens/screen_talents.webp',
+  screen_weave_perks:'assets/art/menu_screens/screen_weave_perks.webp',
+  screen_zonemods:'assets/art/menu_screens/screen_zonemods.webp',
   hub_btn_activity:'assets/art/menu_buttons/hub_btn_activity.webp',
   hub_btn_codex:'assets/art/menu_buttons/hub_btn_codex.webp',
   hub_btn_gear:'assets/art/menu_buttons/hub_btn_gear.webp',
@@ -4499,7 +4500,7 @@ const MENU_GROUPS=[
   [/^(char|chars|talents)$/,/assets\/(?:character_cards\/|art\/(?:build_(?:paths|cards)|talents|hero_roster(?:_ui)?)\/|art\/mobile_ui_789\/stat_)/],
   [/^(skills|bestiary)$/,/assets\/(?:art\/icons\/|gear\/|art\/build_(?:paths|cards)\/|art\/ch3_bosses\/|art\/ch3_enemies\/)/],
 ];
-const UI_ART_RE=/assets\/(?:ui\/|art\/(?:menu_orders|ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|mobile_ui_789|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
+const UI_ART_RE=/assets\/(?:art\/menu_(?:screens|stage_cards)\/|ui\/|art\/(?:menu_orders|ui|icons|temple|kitchen|dig|delve\/|menu_buttons|hub_reference|hero_roster(?:_ui)?|mobile_ui_789|forge_ui|build_(?:paths|cards)|talents|rewards|entry)|incoming\/|gear\/|character_cards\/|icons\/)/;
 function menuGroupRe(s){ const g=MENU_GROUPS.find(m=>m[0].test(s||'')),base=g?g[1]:/assets\/(?:art\/icons\/|ui\/currency\/)/;
   const extra=/^(gear|craft|merge|gLoadout)$/.test(s)?'rar_|merge_|ic_merge|ic_forge_|ic_star_up|ic_mod_remove|vfx_merge_|vfx_rarity_|vfx_star_up|vfx_forge_':s==='daily'?'login_|day_reward|dq_|ic_reroll':s==='achievements'?'aw_|vfx_aw_':/^(skills|bestiary)$/.test(s)?'bs_|rb_':/^(dig|perks|upgrade)$/.test(s)?'dig_|vfx_dig_|rank_reward_icons':s==='hub'?'dig_miner':null;
   return extra?new RegExp(base.source+'|assets/art/menu_orders/(?:'+extra+')'):base; }
@@ -4512,12 +4513,12 @@ function stageCritical(k,u,ch,endgame){
   const m=/^(?:char|bpx)_([a-z]+)/.exec(k); if(m&&m[1]!==ch)return false; if((k.startsWith('minion_')||k.startsWith('yz_'))&&ch!=='yuzu')return false;
   if(!endgame&&['mini_jelly_animated','feast_target_animated'].includes(k))return false;
   if(STAGE_LATE_RE.test(u||''))return false; if(!endgame&&ENDGAME_ART_RE.test(u||''))return false; return true; }
-const MENU_ONLY_RE=/assets\/(?:art\/(?:menu_orders|temple|kitchen|delve|dig|forge_ui|mobile_ui_789|story)\/|incoming\/|character_cards\/|ui\/temple\/)/;
+const MENU_ONLY_RE=/assets\/(?:art\/menu_(?:screens|stage_cards)\/|art\/(?:menu_orders|temple|kitchen|delve|dig|forge_ui|mobile_ui_789|story)\/|incoming\/|character_cards\/|ui\/temple\/)/;
 function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('ic_ses811_'))return 'sesame'; if(/^ses_(rune_btn|orb_[pmb]|spell_icons|cast_[pmb]{3}|talent_icons)$/.test(k))return 'sesame'; if(k.startsWith('minion_')||k.startsWith('yz_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)

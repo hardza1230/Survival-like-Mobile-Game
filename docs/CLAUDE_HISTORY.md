@@ -3680,3 +3680,7 @@ Sweep: sweepRecord(si,sugar) on stage clear keeps best real Sugar (d.sweepRef); 
 ## Delivery: v8.1.71 — bottom tab bar on new screens (owner: same bug as before)
 
 Screen builders called directly (button rebuilds) skip buildMenuScreen's nav bar unless listed in NAV_WRAP (v8.0.1 wrapper navWrapBuild). Added buildWardrobe, buildPatrol, buildRanking, buildGm, buildHeroes, buildStoryBook. **Every new top-level screen builder must be added to NAV_WRAP** (wardrobe test checks the new ones).
+
+## Delivery: v8.1.72 — tutorial control reveal + Momo Unique bloom removed (owner)
+
+coachControls(): during Ruby coach, Dash group hidden until step 'dash', Unique group (+Flicker) until step 'unique'; called in _coachNext, tickTutorialCoach, _coachFinish (restore). Momo berryRebound no longer calls healAura (growth_unlock flower bloom) — keeps revive sfx; Cocoa regen still uses healAura. Test: coach-controls.
