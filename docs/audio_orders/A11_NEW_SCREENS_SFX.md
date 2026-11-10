@@ -103,7 +103,7 @@ key `vo_sesame_spell_<code>` · เล่นแทนประโยครวม
 | `vo_ruby_guide_rank_2` | Ruby | Tap Rank Rewards to pick one. It stays forever. | ต่อจากบรรทัดก่อน |
 | `vo_ruby_guide_stars_1` | Ruby | Each floor has three stars: clear it, finish with 70% HP, and never fall below 30% HP. | สอนดาวครั้งแรกที่ Lobby (ยาวได้ ≤ 5.5 วิ) |
 | `vo_ruby_guide_stars_2` | Ruby | New stars give bonus Sugar. Tap the stage box any time to replay a floor. | ต่อจากบรรทัดก่อน |
-| `vo_sesame_unlock` | Sesame | I remember now… let’s go together. | ฉาก S10 Sesame เข้าทีม (เทียบ `vo_mint_unlock`) |
+| `vo_sesame_unlock` | Sesame | I remember now… let’s go together. | ฉาก S10 Sesame เข้าทีม (เทียบ `vo_mint_unlock`) · ✅ เจ้าของอนุมัติบท 10 พ.ย. 2026 |
 
 ### C2 — Ruby บทสอนด่านแรก (15 · เพิ่ม 9 พ.ย. ตามเจ้าของถาม "เสียง Ruby ตอนสอนมีหรือยัง" → ยังไม่มีเลย)
 บทคือข้อความในเกมอยู่แล้ว (`coachSteps`) · หน้าอธิบาย = เนื้อหาการ์ด (ขึ้นบรรทัดใหม่ = เว้นวรรค) · คำสั่งสั้น = หัวการ์ดตอนทำ · โค้ดพร้อมแล้ว v8.1.63 (หาเสียงจากข้อความ)

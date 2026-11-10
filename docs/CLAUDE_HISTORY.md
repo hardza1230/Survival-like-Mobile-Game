@@ -3684,3 +3684,7 @@ Screen builders called directly (button rebuilds) skip buildMenuScreen's nav bar
 ## Delivery: v8.1.72 — tutorial control reveal + Momo Unique bloom removed (owner)
 
 coachControls(): during Ruby coach, Dash group hidden until step 'dash', Unique group (+Flicker) until step 'unique'; called in _coachNext, tickTutorialCoach, _coachFinish (restore). Momo berryRebound no longer calls healAura (growth_unlock flower bloom) — keeps revive sfx; Cocoa regen still uses healAura. Test: coach-controls.
+
+## Delivery: v8.1.73 — order 69 partial wire (7 delivered files)
+
+scripts/pack-skins69.py packs MANIFEST `delivered` only → assets/art/cosmetics: cos_pet_*_hd (256×6, ASSET_FX, used by lobbyCos sp() without upscaling), skin_icons69 (6×256 card portraits), skin_banner69 (ASSET_IMAGES, Wardrobe showcase on Skins tab with no preview). 61 hero candidates (cards/roster/49 sheets) are NOT accepted by the art side yet → skins stay "Coming soon"; when delivered, register card_<hero>__<tag>, roster_<hero>__<tag>, char_*__<tag> (same frame sizes) and skins go on sale automatically.

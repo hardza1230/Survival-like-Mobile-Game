@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.74**. Next release:8.1.75. Fetch the deploy branch before new work.
+Current release: **8.1.75**. Next release:8.1.76. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.74 — hands-on healing lesson + lighter deploys (owner)
+# Latest delivery: v8.1.75 — loot feel + replay bounties (owner)
+
+lootHold(g,ms): mission burst items (sugar, currency, bonus gear) held 1.9s (collectLoot + tickLootMagnet skip), then `_vac` pulls from any range at ≥620px/s. rareLootPillar() from spawnDropBeam: gear rare/epic/legend pillars (legend + ground rings + chime), cleared by hidePickupCue. Replay (usesReplaySurvival) had no objectives → replayBountyTick: every ~50–70s (first at 22s) a 45s Bounty from the stage pool minus survive/fill via setupWaveObjective(forceType); completeWaveObjective branch: Sugar 10+3·si (+bonus goal), missionLootBurst, meter +8%; miss = no penalty; renderReplayProgress paused while active. bigFoeLoot: mini = Sugar fountain (10+3·si) + 1–2 held gear boxes min Rare (replaces 25% chance; not in Boss Rush); boss (story/replay, not rush/recipe/rift/delve) = +2 run boxes (3 at si%5===4, epic 12%+3%/stage) + Sugar 25+6·si. Test: loot-feel. Sesame `vo_sesame_unlock` line approved by owner.
+
+# Previous delivery: v8.1.74 — hands-on healing lesson + lighter deploys (owner)
 
 Ruby coach: 'hp' stays the voiced card (introOnly, vo_ruby_tut_hp); new step 'heal' → coachHurt() HP 35% + one Heal Mochi 170px right (bypasses story heart budget), spot 'heal', _coachHeals counted in collectHeal, say = vo_ruby_tip_heal, timeout 30s (a test locks _coachNext intro cards to introOnly). Deploy fixes after 3 Pages timeouts: 42 menu PNGs moved from assets/incoming/menu_* to assets/art/menu_screens|menu_stage_cards WebP (41 MB → 4.7 MB, scripts/pack-menu-incoming.py; regexes UI_ART_RE/MENU_ONLY_RE/LAZY_MENU_ART_RE got `art\/menu_(?:screens|stage_cards)\/`); pages.yml push trigger = deploy branch only (session-branch pushes no longer cancel deploys), checkout sparse (skips candidates/donors/gif/jpg/preview/lobby_hero_motion in assets/incoming — none read by tests) with 15-min timeout. **Game code must not load from assets/incoming/.**
-
-# Previous delivery: v8.1.73 — order 69 partial wire (7 delivered files)
-
-scripts/pack-skins69.py packs MANIFEST `delivered` only → assets/art/cosmetics: cos_pet_*_hd (256×6, ASSET_FX, used by lobbyCos sp() without upscaling), skin_icons69 (6×256 card portraits), skin_banner69 (ASSET_IMAGES, Wardrobe showcase on Skins tab with no preview). 61 hero candidates (cards/roster/49 sheets) are NOT accepted by the art side yet → skins stay "Coming soon"; when delivered, register card_<hero>__<tag>, roster_<hero>__<tag>, char_*__<tag> (same frame sizes) and skins go on sale automatically.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

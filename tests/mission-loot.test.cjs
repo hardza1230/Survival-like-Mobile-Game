@@ -1,6 +1,6 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 function method(n){const a=src.indexOf('\n  '+n+'(');assert(a>0,n);let i=src.indexOf('{',a),d=0;for(;i<src.length;i++){if(src[i]==='{')d++;else if(src[i]==='}'&&--d===0)break;}return src.slice(a+3,i+1);}
-const ctx={Math,forgeCurrency:()=> 'cream'};vm.createContext(ctx);vm.runInContext('class S{'+['missionPoint','missionLootBurst'].map(method).join('\n')+'};this.S=S;',ctx);
+const ctx={Math,forgeCurrency:()=> 'cream'};vm.createContext(ctx);vm.runInContext('class S{'+['missionPoint','lootHold','missionLootBurst'].map(method).join('\n')+'};this.S=S;',ctx);
 const s=new ctx.S();const pool=[];const mk=()=>{const g={active:true,body:{enable:true,reset(){},setAllowGravity(){}},setActive(){return g},setVisible(){return g},setPosition(x,y){g.x=x;g.y=y;return g},setTexture(){return g},clearTint(){return g},setAlpha(){return g},setScale(){return g}};pool.push(g);return g;};
 s.loots={getFirstDead:()=>null,create:()=>mk()};s.player={x:0,y:0};s.textures={exists:()=>true};s.camWorld=g=>g;s.tweens={killTweensOf(){},add(){}};let delayed;s.time={delayedCall:(ms,f)=>delayed=f};
 let cur=0,gear=null;s.spawnCurrencyDrop=()=>cur++;s.spawnLoot=(x,y,b)=>{gear={rare:s._lootMinRare,b,active:true,setPosition(){return gear}};return gear;};s.sugarStage=40;s.sugarRun=40;s.stageIndex=11;

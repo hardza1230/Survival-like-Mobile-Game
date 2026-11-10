@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.74';
+const GAME_VERSION = '8.1.75';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.75',date:'2026-11-10',title:'Juicier loot',items:['Mission rewards now stay on the ground for a moment so you can see them, then fly to you all at once','Rare, Epic and Legend gear drops shoot up a light pillar (Legend gets a ground ring and a chime)','Replaying a stage now has Bounty missions every minute or so: finish one for a loot fountain and +8% stage progress','Minibosses burst into a fountain of Sugar plus a guaranteed Rare-or-better gear box','Bosses add 2 extra gear boxes to your stage rewards (3 for chapter bosses) plus bonus Sugar']},
   {v:'8.1.74',date:'2026-11-10',title:'Healing lesson',items:['Ruby’s training now lets you try healing: your HP drops, a Heal Mochi appears, and you walk over it to recover','Menu backgrounds and stage cards load faster (smaller files)']},
   {v:'8.1.73',date:'2026-11-10',title:'Sharper pets and skin previews',items:['Pets are drawn in high resolution in the Lobby and Wardrobe (no more blur)','Skins tab shows the Festival collection banner and new portrait cards']},
   {v:'8.1.72',date:'2026-11-10',title:'Tutorial buttons and Strawberry Unique',items:['Ruby’s training shows the Dash button only from the Dash lesson and the Unique button only from the Unique lesson','Strawberry Rebound no longer shows the flower bloom on the hero (the heal still works)']},
@@ -14541,9 +14542,9 @@ class Game extends Phaser.Scene {
   usesReplaySurvival(){return !!(Save.data.stageMastery||{})[this.stageIndex]&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush;}
   startReplayRun(st){
     this.clearWaveObjective();this._finalStoryShown=true;if(this.pipG)this.pipG.setVisible(false);
-    this._replayMeter={kills:0,goal:REPLAY_GOAL,time:0,miniTriggered:false,miniDone:false,done:false,nextEv:60+Math.floor(Math.random()*31)};
+    this._replayMeter={kills:0,goal:REPLAY_GOAL,time:0,miniTriggered:false,miniDone:false,done:false,nextEv:60+Math.floor(Math.random()*31),nextBounty:22,bounties:0};this._replayMission=null;
     this.waveIndex=0;this.scheduleStageEvent(1200,'breather',()=>this.beginReplaySwarm());
-    this.showBanner('Replay · Survival rules','No objectives this time — defeat monsters to fill the meter · Elites count 8× · Miniboss at half, boss when full',3600);   // v7.8.91 บอกกฎ replay
+    this.showBanner('Replay · Survival rules','Defeat monsters to fill the meter · ⭐ Bounty missions pop up for extra loot · Miniboss at half, boss when full',3600);   // v7.8.91 บอกกฎ replay
   }
   beginReplaySwarm(){
     this.clearWaveObjective();this.mode='wave';this.startSurvivalWave(Math.max(1,this.waveIndex),false);this.updateWaveText();this.renderReplayProgress();
@@ -14554,8 +14555,17 @@ class Game extends Phaser.Scene {
     this.timeTxt.setText('Survival replay');this.waveObjTxt.setText('Stage progress · '+Math.floor(frac*100)+'%').setColor('#ffe08a').setVisible(true);
     this.waveObjBg.setVisible(false);this.waveObjBar.setVisible(false);this.replayProgressFrame.setVisible(true);this._pbTarget=frac;this.replayProgressFill.setVisible(frac>0);
   }
+  /* v8.1.75 เจ้าของ: เล่นซ้ำไม่มีภารกิจ ไม่ตื่นเต้น → ภารกิจ Bounty สุ่มจากภารกิจของด่าน (ไม่เอา Survive/Fill) ทุก ~50–70 วิ · 45 วิ · สำเร็จ = น้ำพุของ + หลอด +8% · พลาด = ไม่เสียอะไร */
+  replayBountyPool(){ const st=STAGES[this.stageIndex]||{},pool=(Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture']).filter(t=>t!=='survive'&&t!=='fill'&&WAVE_OBJECTIVES[t]); return pool.length?pool:['hunt','capture']; }
+  replayBountyTick(m){ const B=this._replayMission;
+    if(B){ const o=this.waveObjective; if(!o||o!==B.o){ this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; return; }
+      if(!o.done&&m.time>=B.until){ this.clearWaveObjective(); this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; this.showBanner?.('⭐ Bounty escaped','Another one will turn up soon',1400); } return; }
+    if(this.state!=='play'||this.mode!=='wave'||this.waveObjective||(m.miniTriggered&&!m.miniDone)||m.kills>=m.goal*.94||m.time<(m.nextBounty||22))return;
+    const pool=this.replayBountyPool(),type=pool[Math.floor(Math.random()*pool.length)]; m.bounties++;
+    this.setupWaveObjective(Math.max(1,this.waveIndex||1),{dur:40,forceType:type}); const o=this.waveObjective; if(!o){ m.nextBounty=m.time+30; return; }
+    o.name='Bounty · '+o.name; this._replayMission={o,type,until:m.time+45}; this.renderWaveObjectiveHUD?.(); Sfx.orderCue?.('wave_start',.4,.6); this.showBanner?.('⭐ Bounty! '+WAVE_OBJECTIVES[type].emoji+' '+WAVE_OBJECTIVES[type].name,'45s · finish it for a loot fountain',2200); }
   tickReplayProgress(dt){
-    const m=this._replayMeter;if(!m||m.done)return;m.time+=dt;this.renderReplayProgress();
+    const m=this._replayMeter;if(!m||m.done)return;m.time+=dt;this.replayBountyTick?.(m); if(!this._replayMission)this.renderReplayProgress();
     if(this.mode==='wave'&&m.nextEv&&m.time>=m.nextEv&&this.state==='play'){ m.nextEv=m.time+60+Math.floor(Math.random()*31); this.triggerRecipeEvent?.(true); }   // v7.8.100 Lens of Interest Curve: เหตุการณ์สุ่มระหว่าง Replay
     if(this._replayMeter&&this._shrine)this.tickRecipeShrine(dt);
     if(!m.miniTriggered&&m.kills>=m.goal*0.5){
@@ -15678,13 +15688,21 @@ class Game extends Phaser.Scene {
   objBonusPay(o,sugar){ const b=o?.bonus; if(!b||!b.ok)return 0; const extra=Math.round(sugar*.5); this.sugarStage+=extra; this.sugarRun+=extra;
     const sb=this._storyBudget,xp=Math.round(((sb&&sb.reward)||20)*.5); if(xp>0)this.gainXp(xp); this.floatText?.(this.player.x,this.player.y-96,'⭐ Bonus · EXP +'+xp,0xffe08a); return extra; }
   /* v8.1.51 เจ้าของ: ภารกิจเสร็จ = ของทะลักออกจากจุดภารกิจ (แบบ POE) · Sugar เป็นก้อนให้เดินเก็บ · ⭐ = กล่องอุปกรณ์ขั้นต่ำ Rare · 6 วิแล้วดูดเข้าตัวเอง */
-  missionPoint(o){ const z=this._captureZone||this._cleanAir; if(z&&z.x!=null)return {x:z.x,y:z.y}; const w=this._wisp; if(w?.active)return {x:w.x,y:w.y}; return {x:this.player.x,y:this.player.y}; }
+  missionPoint(o){ if(this._lootAt)return this._lootAt; const z=this._captureZone||this._cleanAir; if(z&&z.x!=null)return {x:z.x,y:z.y}; const w=this._wisp; if(w?.active)return {x:w.x,y:w.y}; return {x:this.player.x,y:this.player.y}; }
+  lootHold(g,ms){ if(!g)return g; g._holdUntil=(this.time?.now||0)+(ms||1800); g._mag=false; g._vac=false; return g; }
+  /* v8.1.75 เจ้าของ: มินิบอส/บอสดรอปเยอะขึ้น · มินิ = น้ำพุ Sugar + กล่องการันตี (ขั้นต่ำ Rare) ค้างให้เห็นแล้วดูดเข้าตัว · บอส = กล่องเพิ่มเข้ารางวัลจบด่าน (ด่านปิดบท +1) + Sugar โบนัส */
+  bigFoeLoot(x,y,kind){ if(this._inTutorial||!this.loots)return null; const si=this.stageIndex||0,end=si%5===4;
+    if(kind==='mini'){ const sugar=Math.round((10+si*3)*(this.diffMul?.().reward||1)); this.sugarStage+=sugar; this.sugarRun+=sugar; const o={type:'mini'},P0=this._lootAt; this._lootAt={x,y}; let out=[]; try{ out=this.missionLootBurst(o,sugar)||[]; }finally{ this._lootAt=P0; }
+      this._lootMinRare=true; try{ for(let k=0;k<(Math.random()<.3?2:1);k++){ const a=Math.random()*Math.PI*2,g=this.spawnLoot(x+Math.cos(a)*64,y+Math.sin(a)*48,2); if(g)this.lootHold(g,1900); } } finally{ this._lootMinRare=false; } return out; }
+    if(kind==='boss'){ if(!this._runBoxes)this._runBoxes=[]; const n=end?3:2,epic=Math.min(.6,.12+si*.03); for(let k=0;k<n;k++)this._runBoxes.push(Math.random()<epic?'epic':'rare'); const sugar=Math.round((25+si*6)*(this.diffMul?.().reward||1)); this.sugarStage+=sugar; this.sugarRun+=sugar; this._bossLoot={boxes:n,sugar}; return this._bossLoot; }
+    return null; }
   missionLootBurst(o,sugar){ if(!this.loots||!this.player)return []; const P=this.missionPoint(o),out=[],n=Math.max(4,Math.min(6,Math.round(sugar/8)||4)); sugar=Math.max(0,Math.round(sugar||0));
     if(sugar>0){ this.sugarStage-=sugar; this.sugarRun-=sugar; let left=sugar; for(let i=0;i<n;i++){ const v=i===n-1?left:Math.floor(sugar/n); left-=v; let g=this.loots.getFirstDead(false); const tex=this.textures?.exists?.('ic_sugar')?'ic_sugar':'gift'; if(!g)g=this.loots.create(P.x,P.y,tex); else { g.setActive(true).setVisible(true); if(g.body)g.body.enable=true; g.setPosition(P.x,P.y); } if(!g){ this.sugarStage+=v; this.sugarRun+=v; continue; }
-      g.setTexture(tex).clearTint().setAlpha(1); g.setScale(22/Math.max(1,g.width||36)); g.dropType='sugar'; g.sugarVal=v; g.curKey=null; g.lootTier=null; g.forgeExtra=false; g._mag=false; if(g.body)g.body.setAllowGravity?.(false); this.camWorld(g); out.push(g); } }
-    const ck=typeof forgeCurrency==='function'?forgeCurrency(this.currencyTierFor?.(),this._forgeLoot):null; if(ck)this.spawnCurrencyDrop(P.x,P.y,ck); 
-    if(o?.bonus?.ok){ this._lootMinRare=true; try{ const ga=Math.random()*Math.PI*2; this.spawnLoot(P.x+Math.cos(ga)*70,P.y+Math.sin(ga)*56,(this.stageIndex>=10||this.endgameDropActive?.())?2:1); } finally { this._lootMinRare=false; } }   /* v8.1.67 กล่องเกิดที่จุดตกเลย (เดิมวงแสง/ลำแสงค้างที่จุดกลาง) */
-    out.forEach((g,i)=>{ const a=i/out.length*Math.PI*2+Math.random()*.5,d=50+Math.random()*60; this.tweens.killTweensOf(g); g.setPosition(P.x,P.y); this.tweens.add({targets:g,x:P.x+Math.cos(a)*d,y:P.y+Math.sin(a)*d*.8,duration:420,ease:'Quad.out',onUpdate:()=>g.body?.reset?.(g.x,g.y)}); });
+      g.setTexture(tex).clearTint().setAlpha(1); g.setScale(22/Math.max(1,g.width||36)); g.dropType='sugar'; g.sugarVal=v; g.curKey=null; g.lootTier=null; g.forgeExtra=false; g._mag=false; g._holdUntil=0; g._vac=false; if(g.body)g.body.setAllowGravity?.(false); this.camWorld(g); out.push(g); } }
+    const ck=typeof forgeCurrency==='function'?forgeCurrency(this.currencyTierFor?.(),this._forgeLoot):null; if(ck){ const cg=this.spawnCurrencyDrop(P.x,P.y,ck); if(cg&&typeof cg==='object')out.push(cg); } 
+    if(o?.bonus?.ok){ this._lootMinRare=true; try{ const ga=Math.random()*Math.PI*2; const lg=this.spawnLoot(P.x+Math.cos(ga)*70,P.y+Math.sin(ga)*56,(this.stageIndex>=10||this.endgameDropActive?.())?2:1); if(lg)this.lootHold(lg,1900); } finally { this._lootMinRare=false; } }   /* v8.1.67 กล่องเกิดที่จุดตกเลย (เดิมวงแสง/ลำแสงค้างที่จุดกลาง) */
+    out.forEach(g=>this.lootHold(g,1900));   /* v8.1.75 เจ้าของ: ของภารกิจค้างให้เห็นก่อน ~1.9 วิ แล้วดูดเข้าตัวพร้อมกันทั้งหมด */
+    out.forEach((g,i)=>{ if(g.dropType!=='sugar')return; const a=i/out.length*Math.PI*2+Math.random()*.5,d=50+Math.random()*60; this.tweens.killTweensOf(g); g.setPosition(P.x,P.y); this.tweens.add({targets:g,x:P.x+Math.cos(a)*d,y:P.y+Math.sin(a)*d*.8,duration:420,ease:'Quad.out',onUpdate:()=>g.body?.reset?.(g.x,g.y)}); });
     this.time?.delayedCall?.(6000,()=>out.forEach(g=>{ if(g.active)g._mag=true; })); this.vfxHitRing?.(P.x,P.y,0xffd166,true); if(typeof Sfx!=='undefined')Sfx.orderCue?.('mission_loot_burst',.45,.3); return out; }
   completeWaveObjective(){
     const o=this.waveObjective;if(!o||o.done)return;this.rubyVoiceReact?.('objdone',300);Sfx.orderCue?.('mission_tube_pop',.4,.5);
@@ -15692,7 +15710,9 @@ class Game extends Phaser.Scene {
     if(o.type!=='fill'||!this.usesStoryBudget?.())this.rubySay?.('We did it! Another little piece of [flavor] is safe. Nice work!',2400,{face:'happy'});
     if(o.type==='hunt'&&o._huntPhase!=='clear')Sfx.rewardCue?.('sfx_event_hunt_threat_complete',.65);
     if(o.type==='fill'&&this.usesStoryBudget?.()){o.type='hunt';o.name='Elite Showdown';o.emoji='🎯';o.progress=0;o.target=1;o._huntPhase='elite';o._huntSpawnAt=this.time.now;o.desc='Defeat the marked Elite to finish this mission';this.renderWaveObjectiveHUD();this.showBanner('Step 2/2: Elite Showdown',o.desc,1800);return;}
-    if(this.recipeMode&&this._recipeMission){ o.done=true; const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); if(!['capture','hunt','purge'].includes(o.type))Sfx.clear(); return; }o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar'].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
+    if(this.recipeMode&&this._recipeMission){ o.done=true; const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); if(!['capture','hunt','purge'].includes(o.type))Sfx.clear(); return; }
+    if(this._replayMeter&&this._replayMission&&this._replayMission.o===o){ o.done=true; const m=this._replayMeter,bn=Math.round((10+this.stageIndex*3)*(this.diffMul?.().reward||1)); this.sugarStage+=bn; this.sugarRun+=bn; const _rb=this.objBonusPay?.(o,bn)||0; this.missionLootBurst?.(o,bn+_rb); m.kills=Math.min(m.goal,m.kills+m.goal*.08); this.clearWaveObjective(); this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; this.showBanner('⭐ Bounty complete · Sugar +'+(bn+_rb),'Stage progress +8%',1800); if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); return; }   /* v8.1.75 Bounty ตอนเล่นซ้ำ */
+    o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar'].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     const title=(_ob?'⭐ Bonus! · ':'✅ Objective Complete · ')+'Sugar +'+(bonus+_ob)+(zoneObj?' · ❤️ +20%':'');this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;if(this.usesStoryBudget?.()){this.clearFoes();this.clearEnemies();this.settleStoryBudget(true);}this.showBanner(title,this.usesStoryBudget?.()?'Earned EXP collected + objective reward — choose upgrades':'Clear the remaining enemies to advance',1500);if(!['capture','hunt','purge'].includes(o.type))Sfx.clear();
   }
   clearWaveObjective(){Sfx.eventLoopStop?.('event_capture_charge');if(this._wispSnd){this._wispSnd=false;Sfx.eventLoopStop?.('event_wisp_purify_charge');}this._pbTarget=null;this._pbShow=0;if(this.pbFx&&this.pbFx.scene)this.pbFx.clear();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
@@ -20549,13 +20569,14 @@ class Game extends Phaser.Scene {
     if(e._hungerHalo){e._hungerHalo.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerHalo=null;}
     if(!victory){this.stage5DeathGhost(e);this.chapter2DeathGhost(e);}
     if(isBoss&&!victory) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
+    if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ const bl=this.bigFoeLoot(e.x,e.y,'boss'); if(bl)this.time.delayedCall(900,()=>this.floatText?.(this.player?.x||e.x,(this.player?.y||e.y)-90,'🎁 +'+bl.boxes+' boss loot · 🍬 +'+bl.sugar,0xffd166)); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
     { const wo=this.waveObjective,_fb=this.boss; if(isBoss||(!this.bossRush&&_fb&&_fb.active&&_fb.isBoss)){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(this.usesStoryBudget?.())this.storyFieldDrops(e);
     else if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
     if(!isBoss&&!isMini&&this.chests&&this.chests.countActive(true)<3){ const rate=(isElite?0.05:0.006)*(this._boxLuckMul||1)*(this.player.boxFindMul||1); if(Math.random()<rate)this.spawnChest(e.x,e.y,'pick'); }
     if(!this.usesStoryBudget?.()&&(isMini||(isElite&&Math.random()<0.08)||(!big&&Math.random()<0.005))) this.spawnVac(e.x,e.y);   // ไอเทมMagnet (สุ่มน้อย · มินิแน่นอน)
-    if((isMini&&Math.random()<0.25*this.earlyLootMul()*(1+forgeLootValue(this,117)))||(isElite&&Math.random()<0.06*this.earlyLootMul()*(1+forgeLootValue(this,117)))) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic
+    if(isMini&&!this.bossRush)this.bigFoeLoot(e.x,e.y,'mini'); else if((isMini&&Math.random()<0.25*this.earlyLootMul()*(1+forgeLootValue(this,117)))||(isElite&&Math.random()<0.06*this.earlyLootMul()*(1+forgeLootValue(this,117)))) this.spawnLoot(e.x,e.y,isMini?2:1); // ตัวใหญ่เพิ่มโอกาส Rare/Epic · v8.1.75 มินิ = น้ำพุของ
     if(this.stageIndex===6&&e.mycoRole==='drifter')this.spawnBossObject('acid',e.x,e.y,4.2);
     if(this.stageIndex===6&&e.mycoRole==='moldSac'){const sx=e.x,sy=e.y;for(let i=0;i<2;i++)this.time.delayedCall(80+i*90,()=>{if(!this._busy())return;const child=this.spawnEnemy('sporeling');if(child)child.setPosition(sx+Phaser.Math.Between(-34,34),sy+Phaser.Math.Between(-34,34));});}
     // bomber: ระเบิดตอนตาย (เตือนสั้น ๆ ด้วยวง แล้วโดนถ้าอยู่ใกล้)
@@ -20590,15 +20611,21 @@ class Game extends Phaser.Scene {
     o._pickupRing=this.camWorld(this.add.image(o.x,o.y,'vfx_ring').setTint(color).setDepth(79981).setAlpha(0.66).setScale(0.20));
   }
   // v6.97 ของตก (currency/gear) ดูดเข้าหาตัวเมื่ออยู่ใกล้ ~120px · ช้ากว่าเม็ด EXP
-  tickLootMagnet(dt){ const p=this.player; if(!p||!this.loots||this.state!=='play')return; const R=120,R2=R*R;
-    this.loots.children.iterate(g=>{ if(!g||!g.active)return; const dx=p.x-g.x,dy=p.y-g.y,d2=dx*dx+dy*dy; if(d2>R2&&!g._mag)return;
+  tickLootMagnet(dt){ const p=this.player; if(!p||!this.loots||this.state!=='play')return; const R=120,R2=R*R,now=this.time?.now||0;
+    this.loots.children.iterate(g=>{ if(!g||!g.active)return; if(g._holdUntil){ if(now<g._holdUntil)return; g._holdUntil=0; g._vac=true; g._mag=false; }   /* v8.1.75 ของที่ค้างไว้ → ดูดจากทุกระยะ */ const dx=p.x-g.x,dy=p.y-g.y,d2=dx*dx+dy*dy; if(d2>R2&&!g._mag&&!g._vac)return;
       if(!g._mag){ g._mag=true; this.tweens.killTweensOf(g); this.hidePickupCue(g); }
-      const d=Math.sqrt(d2)||1,sp=Math.min(d,(160+380*(1-Math.min(1,d/R)))*(1+forgeLootValue(this,139))*dt); g.x+=dx/d*sp; g.y+=dy/d*sp; if(g.body)g.body.reset(g.x,g.y); }); }
+      const d=Math.sqrt(d2)||1,sp=Math.min(d,(g._vac?Math.max(620,d*2.4):(160+380*(1-Math.min(1,d/R))))*(1+forgeLootValue(this,139))*dt); g.x+=dx/d*sp; g.y+=dy/d*sp; if(g.body)g.body.reset(g.x,g.y); }); }
   hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_pickupGlint','_curIcon','_pillar','_pillarCore']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
   // ลำแสงเล็ก ๆ ชี้จุดที่ไอเทม/currency ตก (มองเห็นง่ายขึ้น)
   spawnDropBeam(o,color){ if(!o||o.dropType==='currency'||(o.dropType==='gear'&&o.lootTier==='common'))return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
     beam.setDisplaySize(12,96); o._dropBeam=beam;if(o.dropType==='gear'&&o.lootTier&&o.lootTier!=='common'&&this.textures.exists('cr_loot_glint'))o._pickupGlint=this.camWorld(this.add.image(o.x+12,o.y-24,'cr_loot_glint').setDisplaySize(16,16).setDepth(80002).setAlpha(.85));
-    this.tweens.add({targets:beam,alpha:{from:0.5,to:0.16},displayWidth:10,yoyo:true,repeat:-1,duration:640,ease:'Sine.inOut'}); }
+    this.tweens.add({targets:beam,alpha:{from:0.5,to:0.16},displayWidth:10,yoyo:true,repeat:-1,duration:640,ease:'Sine.inOut'}); this.rareLootPillar?.(o,color); }
+  /* v8.1.75 เจ้าของ: ลำแสงพิเศษของหายาก · Rare เส้นเล็ก · Epic สูงขึ้น · Legend เสาใหญ่ + วงพื้น + เสียง (ลบพร้อม hidePickupCue) */
+  rareLootPillar(o,color){ const t=o&&o.dropType==='gear'?o.lootTier:null,L={rare:[18,180,.22],epic:[30,320,.3],legend:[44,520,.36]}[t]; if(!L||(Save.data.settings?.vfx??2)===0)return null; const [w,h,a]=L,x=o.x,y=o.y+6,dp=(o.depth||80000)-2;
+    const pl=this.camWorld(this.add.rectangle(x,y,w,h,color,a).setOrigin(.5,1).setBlendMode(Phaser.BlendModes.ADD).setDepth(dp)),core=this.camWorld(this.add.rectangle(x,y,Math.max(4,w*.22),h,0xffffff,a*.75).setOrigin(.5,1).setBlendMode(Phaser.BlendModes.ADD).setDepth(dp+.5)); o._pillar=pl; o._pillarCore=core;
+    pl.scaleY=0; core.scaleY=0; this.tweens.add({targets:[pl,core],scaleY:1,duration:280,ease:'Cubic.out'}); this.tweens.add({targets:pl,alpha:{from:a*.6,to:a*1.25},scaleX:{from:.85,to:1.2},yoyo:true,repeat:-1,duration:560,delay:280});
+    if(t==='legend'){ for(let k=0;k<2;k++){ const r=this.camWorld(this.add.ellipse(x,y,24,9,color,.7).setBlendMode(Phaser.BlendModes.ADD).setDepth(dp)); this.tweens.add({targets:r,width:120+k*50,height:40+k*16,alpha:0,duration:700+k*160,repeat:-1,delay:k*350,onUpdate:()=>{ if(!o.active||!o._pillar)r.destroy(); }}); } Sfx.orderCue?.('mission_bonus_get',.45,.4); this.screenFlash?.(color,.06,180); }
+    return pl; }
   updatePickupReadability(){
     const groups=[this.heals,this.vacs,this.loots,this.chests,this.gimmicks];
     for(const grp of groups){if(!grp)continue;grp.children.iterate(o=>{if(!o||!o.active)return;const pulse=1+Math.sin(this.elapsed*5+(o.x||0)*0.03)*0.12;
@@ -20749,18 +20776,18 @@ class Game extends Phaser.Scene {
   earlyLootMul(){ return !this.recipeMode&&(this.stageIndex||0)<5?.25:1; }   /* v8.0.19 เจ้าของ: .45 → .25 ให้ได้ของหลัก ๆ จาก Bazaar */   // v7.9.94 เจ้าของ: Chapter 1 ได้ของสวมใส่เยอะเกิน → ดรอปน้อยลง
   spawnLoot(x,y,boost=0){ let g=this.loots.getFirstDead(false);
     const box='gift';   // ไอเทมปิดกล่องจนจบด่าน ใช้ภาพกล่องของขวัญจริง
-    if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); } if(g)g._mag=false;
+    if(!g) g=this.loots.create(x,y,box); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); } if(g){ g._mag=false; g._holdUntil=0; g._vac=false; }
     if(!g)return;g.setTexture(box);g.dropType='gear';g.curKey=null;g.lootTier=rollFieldGearTier(this.stageIndex,this.stageDiff||1,boost+(this.endgameDropActive()?1:0));if(this._lootMinRare&&g.lootTier==='common')g.lootTier='rare';const rarity=FIELD_DROP_TABLE[g.lootTier]||FIELD_DROP_TABLE.common;
     g.forgeExtra=Math.random()<forgeLootValue(this,119);g.body.setAllowGravity(false);g.clearTint();g.setAlpha(1);this.camWorld(g);this.showPickupCue(g,rarity.color,1.4);this.spawnDropBeam(g,rarity.color); if(this.iso)g.setDepth(Math.max(80000,g.y));
     this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); return g; }
   // 🧪 Currency ดรอปเป็นชิ้นในสนาม (เก็บ = สะสมเข้า _runCurrency + Save · โชว์ในสรุปด่าน)
   spawnCurrencyDrop(x,y,key){ let g=this.loots.getFirstDead(false);
     if(!g) g=this.loots.create(x,y,'gift'); else { g.setActive(true).setVisible(true); g.body.enable=true; g.setPosition(x,y); }
-    if(!g)return;g._mag=false;g.dropType='currency';g.curKey=key;g.forgeExtra=false;g.forgeQuantity=1+(Math.random()<forgeLootValue(this,120)?1:0);g.lootTier=null;const col=0x9fe8ff,d=currencyDef(key);
+    if(!g)return;g._mag=false;g._holdUntil=0;g._vac=false;g.dropType='currency';g.curKey=key;g.forgeExtra=false;g.forgeQuantity=1+(Math.random()<forgeLootValue(this,120)?1:0);g.lootTier=null;const col=0x9fe8ff,d=currencyDef(key);
     g.setTexture(d.asset&&this.textures.exists(d.asset)?d.asset:'prize_currency').clearTint().setAlpha(1);
     g.body.setAllowGravity(false);this.camWorld(g);this.showPickupCue(g,col,1.0);this.spawnDropBeam(g,col); if(this.iso)g.setDepth(Math.max(80000,g.y));
-    this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  collectLoot(player,g){ if(!g.active)return; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
+    this.tweens.add({targets:g,y:y-11,duration:520,yoyo:true,repeat:-1,ease:'Sine.inOut'}); return g; }
+  collectLoot(player,g){ if(!g.active||(g._holdUntil&&(this.time?.now||0)<g._holdUntil))return; g._vac=false; this.tweens.killTweensOf(g); this.hidePickupCue(g); g.setActive(false).setVisible(false); if(g.body)g.body.enable=false; g.clearTint();
     if(g.dropType==='sugar'){ const v=g.sugarVal||0; this.sugarStage+=v; this.sugarRun+=v; (Sfx.orderCue?.('pickup_sugar_piece',.3,.06,.9+Math.random()*.25)||Sfx.ev?.('pickup_currency',.4,.08)||Sfx.select()); this.burst(g.x,g.y,0xffc6df); return; }
     if(g.dropType==='currency'&&g.curKey){ const k=g.curKey,n=g.forgeQuantity||1; Save.addCurrency(k,n); if(!this._runCurrency)this._runCurrency={}; this._runCurrency[k]=(this._runCurrency[k]||0)+n;
       (Sfx.ev?.('pickup_currency',.5,.08)||Sfx.select());this.burst(g.x,g.y,0x9fe8ff); return; }
