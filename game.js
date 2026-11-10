@@ -9898,7 +9898,7 @@ class Game extends Phaser.Scene {
       // ใช้ homing (โค้งเข้าหาเป้า) + bounce (โดนแล้วเด้งไปตัวถัดที่ใกล้สุด) แทน chain lightning
       const shots=12+(ul-1)*2+(this.player.twinSprinkle?4:0), bounce=ul>=4?3:ul>=3?2:1;
       for(let i=0;i<shots;i++){const a=i/shots*Math.PI*2,b=this.berryBullet(this.player.x,this.player.y,0.28+ul*0.012,this.basicAttack);if(!b)continue;b.setTexture('proj_sprinkle').setTint(i%2?0xffd166:0xff76a8);b.dmg=(14+ul*2)*dm*up;b.life=1.65+ul*0.08;b.bounce=bounce;b.homing=0;b.faceVel=true;Object.assign(b.berrySeed,{path:'ricochet',evolved:!!this.basicAttack?.evolved,base:b.dmg});this.physics.velocityFromRotation(a,430+ul*12,b.body.velocity);}
-      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));this.healAura?.();this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
+      this.player.hp=Math.min(this.player.maxhp,this.player.hp+this.player.maxhp*(0.055+ul*0.018));try{ Sfx.playFile?.('sfx_event_revive',.5,1.05); }catch(e){}   /* v8.1.72 เจ้าของ: เอาดอกไม้บานที่ตัว (healAura) ออก เหลือเสียงฮีล */this.showBanner('🍓 Strawberry Rebound Lv'+ul,shots+' seeds · bounce toward enemies '+bounce+' · heal HP '+Math.round((0.055+ul*0.018)*100)+'%',800);(this.fxReboundScreen?.(),Sfx.bp?.('uq_rebound_burst',.6,.3))||Sfx.shoot();
     }else if(c.unique==='mintSanctuary'){
       this.castWindRush(ul);
     }else if(c.unique==='voidPull'){
@@ -16738,12 +16738,12 @@ class Game extends Phaser.Scene {
     { id:'ready', icon:'🎁', title:'You’re Ready!', body:'Training complete! Use your starter Sugar\nto upgrade one core, then enter the pantry.', introOnly:true },
   ]; }
   startCoach(){ this.loadTutArt?.(); this._coach={step:-1,px:0,py:0,kills:0,dash:0,uniq:0,lvl:1,card:0,t:0}; this._coachNext(); }
-  _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps();
+  _coachNext(){ const c=this._coach; if(!c)return; c.step++; const steps=this.coachSteps(); this.coachControls?.();
     if(c.step>=steps.length){ this._coachFinish(); return; }
     const step=steps[c.step];
     const go=()=>{ if(this._coach!==c)return; if(step.introOnly){ this._coachNext(); return; }
       c.px=this.player.x; c.py=this.player.y; c.lx=c.px; c.ly=c.py; c.trav=0; c.kills=this.kills; c.dash=this._coachDash||0; c.uniq=this._coachUnique||0; c.lvl=this.level; c.card=this._coachCardPick||0; c.orbs=this._coachOrbs||0; c.t=0; c.done=false;
-      this.tutorialSetupStep(step); this.drawCoachBubble(step); Sfx.select&&Sfx.select(); };
+      this.tutorialSetupStep(step); this.drawCoachBubble(step); this.coachControls?.(); Sfx.select&&Sfx.select(); };
     if(step.introOnly&&this.showCoachIntro)this.showCoachIntro(step,go); else go(); }
   // v7.9.66 หน้าอธิบายก่อนลองทำ: หยุดเกม + การ์ดใหญ่ (Ruby, หัวข้อ, 2–3 บรรทัด) · แตะได้หลัง 1.2 วิ (กันแตะข้ามโดยไม่ได้อ่าน)
   showCoachIntro(step,go){ if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;}
@@ -16775,7 +16775,7 @@ class Game extends Phaser.Scene {
     if(step.ready)this.uniqueCd=0;
     if(step.level){ this.pendingLvl=(this.pendingLvl||0)+1; this.time.delayedCall(220,()=>{ if(this._inTutorial&&this.state==='play')this.openLevelUp(); }); }
   }
-  _coachFinish(){ if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save();
+  _coachFinish(){ this.time?.delayedCall?.(0,()=>this.coachControls?.()); if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save();
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const rewardGranted=!Save.data.tutorialRewardGiven;
     if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.addShovels(10); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
@@ -16965,7 +16965,13 @@ class Game extends Phaser.Scene {
     if(kind==='move')return {x:w*0.28,y:h*0.64};
     if(kind==='enemy'){ const e=this.nearestEnemy?this.nearestEnemy(2000):null; if(e&&this.cameras&&this.cameras.main){ const cam=this.cameras.main; return {x:(e.x-cam.worldView.x)*cam.zoom,y:(e.y-cam.worldView.y)*cam.zoom}; } return {x:w/2,y:h*0.4}; }
     return null; }
-  tickTutorialCoach(dt){ const c=this._coach; if(!c||this.state!=='play')return; const steps=this.coachSteps(),step=steps[c.step]; if(!step)return; c.t+=dt;
+  /* v8.1.72 เจ้าของ: บทสอน Ruby — ปุ่ม Dash ยังไม่ขึ้นจนถึงบท Dash · ปุ่ม Unique ยังไม่ขึ้นจนถึงบท Unique */
+  coachControls(){ const c=this._coach,ids=this.coachSteps().map(s=>s.id),cur=c?c.step:1e9,hd=!!c&&cur<ids.indexOf('dash'),hu=!!c&&cur<ids.indexOf('unique'),H=this._coachHid||(this._coachHid={d:false,u:false});
+    const set=(list,v)=>list.forEach(o=>{ if(o&&o.setVisible)o.setVisible(v); });
+    if(hd){ set([this.dashBtn,this.dashTxt,this.dashRing],false); H.d=true; } else if(H.d){ H.d=false; set([this.dashBtn,this.dashTxt,this.dashRing],true); }
+    if(hu){ set([this.uniqueBtn,this.uniqueTxt,this.uniqueRing,this.uniqueHint,this.flickerBtn,this.flickerTxt],false); H.u=true; } else if(H.u){ H.u=false; set([this.uniqueBtn,this.uniqueTxt,this.uniqueRing],true); this.refreshUniqueSkillUI?.(); this.refreshFlickerUI?.(); }
+    this.drawCombatControlBase?.(); return {dash:!hd,unique:!hu}; }
+  tickTutorialCoach(dt){ const c=this._coach; if(!c||this.state!=='play')return; this.coachControls(); const steps=this.coachSteps(),step=steps[c.step]; if(!step)return; c.t+=dt;
     if(this._coachGoalTxt&&typeof step.goal==='function')this._coachGoalTxt.setText('🎯 '+step.goal(c));
     if(this._coachSpot&&this._coachSpotKind){ const p=this.coachSpotTarget(this._coachSpotKind); if(p){ this._coachSpot.setVisible(true); this._coachSpotRing.setPosition(p.x,p.y); if(this._coachSpotKind==='move'){ this._coachDrag=((this._coachDrag||0)+dt*0.6)%1; const k=Math.sin(this._coachDrag*Math.PI*2); this._coachSpotFinger.setPosition(this.W/2+k*this.W*0.22,this.H*0.62).setAlpha(0.95); } else this._coachSpotFinger.setPosition(p.x,p.y+22); if(this._coachSpotLab)this._coachSpotLab.setPosition(p.x-52,p.y); } else this._coachSpot.setVisible(false); }
     if(this.player&&c.lx!=null){ c.trav=(c.trav||0)+this.dist(this.player.x,this.player.y,c.lx,c.ly); c.lx=this.player.x; c.ly=this.player.y; }
