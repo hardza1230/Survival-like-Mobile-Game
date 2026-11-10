@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.75';
+const GAME_VERSION = '8.1.76';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.76',date:'2026-11-10',title:'Fresher missions, fairer loot',items:['Survive missions now appear only in Chapter 1; Chapters 2–3 use Hunt, Escort, Capture and each stage’s own mission','Hunt appears at most once per stage','Miniboss and boss loot grows by chapter: light in Chapter 1, bigger in Chapters 2 and 3']},
   {v:'8.1.75',date:'2026-11-10',title:'Juicier loot',items:['Mission rewards now stay on the ground for a moment so you can see them, then fly to you all at once','Rare, Epic and Legend gear drops shoot up a light pillar (Legend gets a ground ring and a chime)','Replaying a stage now has Bounty missions every minute or so: finish one for a loot fountain and +8% stage progress','Minibosses burst into a fountain of Sugar plus a guaranteed Rare-or-better gear box','Bosses add 2 extra gear boxes to your stage rewards (3 for chapter bosses) plus bonus Sugar']},
   {v:'8.1.74',date:'2026-11-10',title:'Healing lesson',items:['Ruby’s training now lets you try healing: your HP drops, a Heal Mochi appears, and you walk over it to recover','Menu backgrounds and stage cards load faster (smaller files)']},
   {v:'8.1.73',date:'2026-11-10',title:'Sharper pets and skin previews',items:['Pets are drawn in high resolution in the Lobby and Wardrobe (no more blur)','Skins tab shows the Festival collection banner and new portrait cards']},
@@ -7970,44 +7971,44 @@ const STAGES = [
     waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
   { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1, ready:true,
     lore:'The wounded root slides into the garden and starts growing the Hunger a new body from stolen memories',
-    objectives:['survive','hunt','purge','capture'],
+    objectives:['hunt','purge','capture'],
     waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:"Rootmother's Bud", bossHp:3600, bossDmg:46 },
   { name:'Mycelium Marsh', en:'Mycelium Marsh', emoji:'🍄', grid:0x20372d, tint:0x9ae66e, chapter:1, chapterStage:2, ready:true,
     lore:'A living fungal marsh breathes through one moving pocket of clean air while the colony hunts everything outside it',
-    objectives:['survive','hunt','cleanAir'],
+    objectives:['hunt','cleanAir','capture'],
     waves:5, recommendedPower:3000, miniAt:2, mini:'Fungal Juggernaut', boss:'Mycelium Behemoth', bossHp:5600, bossDmg:64 },
   { name:'Nectar Hive', en:'Nectar Hive', emoji:'🐝', grid:0x4b3521, tint:0xffc95c, chapter:1, chapterStage:3, ready:true,
     lore:'Fermented nectar draws a royal swarm that drains the last memory-bearing flowers from the garden',
-    objectives:['survive','hunt','defendNectar'],
+    objectives:['hunt','defendNectar','purge'],
     waves:5, recommendedPower:4200, miniAt:2, mini:'Royal Stinger', boss:'Ferment Hornet Queen', bossHp:6800, bossDmg:72 },
   { name:'Four-Season Conservatory', en:'Four-Season Conservatory', emoji:'🌦️', grid:0x29364a, tint:0x8fdcff, chapter:1, chapterStage:4, ready:true,
     lore:'Time-ferment forces heat, frost, toxic rain and storm to bloom together inside a shattered glass garden',
-    objectives:['survive','hunt','seasonCycle'],
+    objectives:['hunt','seasonCycle','capture'],
     waves:5, recommendedPower:5700, miniAt:2, mini:'Season Keeper', boss:'Chronobloom Orchid', bossHp:8200, bossDmg:82 },
   { name:'Root Throne', en:'Root Throne', emoji:'🌳', grid:0x24172b, tint:0xd56bff, chapter:1, chapterStage:5, ready:true,
     lore:'All memory roots converge on a living throne — and point onward to the one who planted the First Tree',
-    objectives:['survive','hunt','breakRoots'],
+    objectives:['hunt','breakRoots','purge'],
     waves:5, recommendedPower:7600, miniAt:2, mini:'Ancient Root Knight', boss:'The True Rootmother', bossHp:11000, bossDmg:95 },
   // ===== Chapter 3 · Throne of the First Seed (v4.73 · อาร์ตยังเป็น placeholder ที่วาดด้วยโค้ด — key c3_* / bg11-15 รอ AI อีกตัวทำภาพจริงมาใส่ ASSET_IMAGES ทับได้เลย) =====
   { name:'Ashen Seedfields', en:'Ashen Seedfields', emoji:'🌾', grid:0x2e2622, tint:0xe0a86a, chapter:2, chapterStage:1, ready:true,
     lore:'Beyond the Root Throne lie the fields where every flavor was first planted — now scorched grey to feed the starving Crown',
-    objectives:['survive','hunt','purge','capture'],
+    objectives:['hunt','purge','capture'],
     waves:5, recommendedPower:9800, miniAt:2, mini:'Scarecrow Reaper', boss:'The Harvest Colossus', bossHp:13500, bossDmg:105 },
   { name:'Hollow Orchard', en:'Hollow Orchard', emoji:'🍎', grid:0x2a1f2e, tint:0xff7a8f, chapter:2, chapterStage:2, ready:true,
     lore:'Fruit trees bloom with empty husks — the Crown drank every drop of sweetness from them',
-    objectives:['survive','hunt','capture'],
+    objectives:['hunt','capture','purge'],
     waves:5, recommendedPower:12500, miniAt:2, mini:'Husk Gardener', boss:'The Hollow Bloom', bossHp:16500, bossDmg:115 },
   { name:'Glass Greenhouse Ruins', en:'Glass Greenhouse Ruins', emoji:'🔮', grid:0x1d2b3a, tint:0x7fe6ff, chapter:2, chapterStage:3, ready:true,
     lore:'Shattered greenhouses where the first flavors were grown in secret, guarded by crystal sentinels',
-    objectives:['survive','hunt','purge'],
+    objectives:['hunt','purge','capture'],
     waves:5, recommendedPower:15800, miniAt:2, mini:'Prism Sentinel', boss:'The Glass Gardener', bossHp:20000, bossDmg:125 },
   { name:'The Seed Vault', en:'The Seed Vault', emoji:'🗝️', grid:0x241a1a, tint:0xffcf5c, chapter:2, chapterStage:4, ready:true,
     lore:'A buried vault holding the last untouched seed of every flavor — and the keepers who serve the planter',
-    objectives:['survive','hunt','capture'],
+    objectives:['hunt','capture','purge'],
     waves:5, recommendedPower:19800, miniAt:2, mini:'Vault Keeper', boss:'The Seedwarden', bossHp:24000, bossDmg:138 },
   { name:'Throne of the First Seed', en:'Throne of the First Seed', emoji:'👑', grid:0x160f1f, tint:0xb98cff, chapter:2, chapterStage:5, ready:true,
     lore:'At the First Tree sits the one who wears the Crown — take it off and break the curse',
-    objectives:['survive','hunt','purge','capture'],
+    objectives:['hunt','purge','capture'],
     waves:5, recommendedPower:24500, miniAt:2, mini:'Crown Thorn Knight', boss:'The First Planter', bossHp:30000, bossDmg:150 },
 ];
 /* v7.8.101 บทพูดบอสต่อด่าน (Story เท่านั้น) · v7.9.9 เจ้าของ: สั้น ภาษาง่าย พิมพ์ทีละตัว + พูดวนระหว่างสู้
@@ -14487,7 +14488,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.voiceStop?.();this._popN=0;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -15193,7 +15194,10 @@ class Game extends Phaser.Scene {
     this.clearWaveObjective();
     const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
     if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
-    const type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop(),def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
+    let type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop();
+    if(!(p&&p.forceType)&&!planned&&type==='hunt'&&this._huntUsed){ const st0=STAGES[this.stageIndex]||{},alt=(Array.isArray(st0.objectives)&&st0.objectives.length?st0.objectives:['survive','purge','capture']).filter(t=>t!=='hunt'); if(alt.length)type=alt[Math.floor(Math.random()*alt.length)]; }   /* v8.1.76 เจ้าของ: Hunt ไม่เกินด่านละครั้ง */
+    if(type==='hunt'&&!(p&&p.forceType))this._huntUsed=true;
+    const def=WAVE_OBJECTIVES[type]||WAVE_OBJECTIVES.survive,color=CH1_OBJECTIVE_COLORS[this.stageIndex]||STAGES[this.stageIndex].tint||0xffd166;
     const _pk=planned?Object.keys(CH1_EARLY_WAVE_PLAN[this.stageIndex]).map(Number):[],lesson=planned?((_pk.indexOf(w)+1)+'/'+_pk.length):null;
     Sfx.orderCue?.('wave_start',.35,.6);const o=this.waveObjective={type,emoji:def.emoji,name:def.name,desc:def.desc,lesson,color,progress:0,target:0,done:false};
     if(type==='survive')o.target=Math.max(1,p.dur||48);
@@ -15691,10 +15695,10 @@ class Game extends Phaser.Scene {
   missionPoint(o){ if(this._lootAt)return this._lootAt; const z=this._captureZone||this._cleanAir; if(z&&z.x!=null)return {x:z.x,y:z.y}; const w=this._wisp; if(w?.active)return {x:w.x,y:w.y}; return {x:this.player.x,y:this.player.y}; }
   lootHold(g,ms){ if(!g)return g; g._holdUntil=(this.time?.now||0)+(ms||1800); g._mag=false; g._vac=false; return g; }
   /* v8.1.75 เจ้าของ: มินิบอส/บอสดรอปเยอะขึ้น · มินิ = น้ำพุ Sugar + กล่องการันตี (ขั้นต่ำ Rare) ค้างให้เห็นแล้วดูดเข้าตัว · บอส = กล่องเพิ่มเข้ารางวัลจบด่าน (ด่านปิดบท +1) + Sugar โบนัส */
-  bigFoeLoot(x,y,kind){ if(this._inTutorial||!this.loots)return null; const si=this.stageIndex||0,end=si%5===4;
-    if(kind==='mini'){ const sugar=Math.round((10+si*3)*(this.diffMul?.().reward||1)); this.sugarStage+=sugar; this.sugarRun+=sugar; const o={type:'mini'},P0=this._lootAt; this._lootAt={x,y}; let out=[]; try{ out=this.missionLootBurst(o,sugar)||[]; }finally{ this._lootAt=P0; }
-      this._lootMinRare=true; try{ for(let k=0;k<(Math.random()<.3?2:1);k++){ const a=Math.random()*Math.PI*2,g=this.spawnLoot(x+Math.cos(a)*64,y+Math.sin(a)*48,2); if(g)this.lootHold(g,1900); } } finally{ this._lootMinRare=false; } return out; }
-    if(kind==='boss'){ if(!this._runBoxes)this._runBoxes=[]; const n=end?3:2,epic=Math.min(.6,.12+si*.03); for(let k=0;k<n;k++)this._runBoxes.push(Math.random()<epic?'epic':'rare'); const sugar=Math.round((25+si*6)*(this.diffMul?.().reward||1)); this.sugarStage+=sugar; this.sugarRun+=sugar; this._bossLoot={boxes:n,sugar}; return this._bossLoot; }
+  bigFoeLoot(x,y,kind){ if(this._inTutorial||!this.loots)return null; const si=this.stageIndex||0,ch=Math.min(2,Math.floor(si/5)),end=si%5===4,rw=this.diffMul?.().reward||1;   /* v8.1.76 เจ้าของ: ด่านแรกไม่ต้องเยอะ (ของเฟ้อ) → ไล่ตาม Chapter */
+    if(kind==='mini'){ const sugar=Math.round([4+si,8+si*2,10+si*3][ch]*rw); this.sugarStage+=sugar; this.sugarRun+=sugar; const o={type:'mini'},P0=this._lootAt; this._lootAt={x,y}; let out=[]; try{ out=this.missionLootBurst(o,sugar)||[]; }finally{ this._lootAt=P0; }
+      const boxes=ch===0?(Math.random()<.3?1:0):ch===1?1:(Math.random()<.3?2:1); this._lootMinRare=ch===2; try{ for(let k=0;k<boxes;k++){ const a=Math.random()*Math.PI*2,g=this.spawnLoot(x+Math.cos(a)*64,y+Math.sin(a)*48,ch===0?1:2); if(g)this.lootHold(g,1900); } } finally{ this._lootMinRare=false; } return out; }
+    if(kind==='boss'){ if(!this._runBoxes)this._runBoxes=[]; const n=[end?1:0,end?2:1,end?3:2][ch],epic=Math.min(.6,.12+si*.03); for(let k=0;k<n;k++)this._runBoxes.push(ch===0?'rare':Math.random()<epic?'epic':'rare'); const sugar=Math.round([8+si*2,15+si*4,25+si*6][ch]*rw); this.sugarStage+=sugar; this.sugarRun+=sugar; this._bossLoot={boxes:n,sugar}; return this._bossLoot; }
     return null; }
   missionLootBurst(o,sugar){ if(!this.loots||!this.player)return []; const P=this.missionPoint(o),out=[],n=Math.max(4,Math.min(6,Math.round(sugar/8)||4)); sugar=Math.max(0,Math.round(sugar||0));
     if(sugar>0){ this.sugarStage-=sugar; this.sugarRun-=sugar; let left=sugar; for(let i=0;i<n;i++){ const v=i===n-1?left:Math.floor(sugar/n); left-=v; let g=this.loots.getFirstDead(false); const tex=this.textures?.exists?.('ic_sugar')?'ic_sugar':'gift'; if(!g)g=this.loots.create(P.x,P.y,tex); else { g.setActive(true).setVisible(true); if(g.body)g.body.enable=true; g.setPosition(P.x,P.y); } if(!g){ this.sugarStage+=v; this.sugarRun+=v; continue; }
@@ -20569,7 +20573,7 @@ class Game extends Phaser.Scene {
     if(e._hungerHalo){e._hungerHalo.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerHalo=null;}
     if(!victory){this.stage5DeathGhost(e);this.chapter2DeathGhost(e);}
     if(isBoss&&!victory) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
-    if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ const bl=this.bigFoeLoot(e.x,e.y,'boss'); if(bl)this.time.delayedCall(900,()=>this.floatText?.(this.player?.x||e.x,(this.player?.y||e.y)-90,'🎁 +'+bl.boxes+' boss loot · 🍬 +'+bl.sugar,0xffd166)); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
+    if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ const bl=this.bigFoeLoot(e.x,e.y,'boss'); if(bl)this.time.delayedCall(900,()=>this.floatText?.(this.player?.x||e.x,(this.player?.y||e.y)-90,(bl.boxes?'🎁 +'+bl.boxes+' boss loot · ':'')+'🍬 +'+bl.sugar,0xffd166)); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
     { const wo=this.waveObjective,_fb=this.boss; if(isBoss||(!this.bossRush&&_fb&&_fb.active&&_fb.isBoss)){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(this.usesStoryBudget?.())this.storyFieldDrops(e);
     else if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป

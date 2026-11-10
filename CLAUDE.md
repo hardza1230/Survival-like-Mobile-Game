@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.75**. Next release:8.1.76. Fetch the deploy branch before new work.
+Current release: **8.1.76**. Next release:8.1.77. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.75 — loot feel + replay bounties (owner)
+# Latest delivery: v8.1.76 — mission pools + loot scaling by chapter (owner)
+
+STAGES[5..14].objectives: no 'survive' (Ch1 keeps it via default pool/lessons); purge/capture fill the gap (6 cleanAir+capture, 7 defendNectar+purge, 8 seasonCycle+capture, 9 breakRoots+purge, 10–14 hunt/purge/capture). setupWaveObjective: Hunt once per stage (_huntUsed reset in startStage; planned lessons count; forceType/bounties exempt). bigFoeLoot by chapter ch=floor(si/5): mini Sugar [4+si, 8+2si, 10+3si], boxes Ch1 30% one / Ch2 one / Ch3 one-two min Rare; boss extra run boxes [end?1:0, end?2:1, end?3:2] (Ch1 rare only), Sugar [8+2si, 15+4si, 25+6si]. Owner: Ch3 signature missions on hold — research other games first.
+
+# Previous delivery: v8.1.75 — loot feel + replay bounties (owner)
 
 lootHold(g,ms): mission burst items (sugar, currency, bonus gear) held 1.9s (collectLoot + tickLootMagnet skip), then `_vac` pulls from any range at ≥620px/s. rareLootPillar() from spawnDropBeam: gear rare/epic/legend pillars (legend + ground rings + chime), cleared by hidePickupCue. Replay (usesReplaySurvival) had no objectives → replayBountyTick: every ~50–70s (first at 22s) a 45s Bounty from the stage pool minus survive/fill via setupWaveObjective(forceType); completeWaveObjective branch: Sugar 10+3·si (+bonus goal), missionLootBurst, meter +8%; miss = no penalty; renderReplayProgress paused while active. bigFoeLoot: mini = Sugar fountain (10+3·si) + 1–2 held gear boxes min Rare (replaces 25% chance; not in Boss Rush); boss (story/replay, not rush/recipe/rift/delve) = +2 run boxes (3 at si%5===4, epic 12%+3%/stage) + Sugar 25+6·si. Test: loot-feel. Sesame `vo_sesame_unlock` line approved by owner.
-
-# Previous delivery: v8.1.74 — hands-on healing lesson + lighter deploys (owner)
-
-Ruby coach: 'hp' stays the voiced card (introOnly, vo_ruby_tut_hp); new step 'heal' → coachHurt() HP 35% + one Heal Mochi 170px right (bypasses story heart budget), spot 'heal', _coachHeals counted in collectHeal, say = vo_ruby_tip_heal, timeout 30s (a test locks _coachNext intro cards to introOnly). Deploy fixes after 3 Pages timeouts: 42 menu PNGs moved from assets/incoming/menu_* to assets/art/menu_screens|menu_stage_cards WebP (41 MB → 4.7 MB, scripts/pack-menu-incoming.py; regexes UI_ART_RE/MENU_ONLY_RE/LAZY_MENU_ART_RE got `art\/menu_(?:screens|stage_cards)\/`); pages.yml push trigger = deploy branch only (session-branch pushes no longer cancel deploys), checkout sparse (skips candidates/donors/gif/jpg/preview/lobby_hero_motion in assets/incoming — none read by tests) with 15-min timeout. **Game code must not load from assets/incoming/.**
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,6 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
+- ภารกิจประจำด่าน Chapter 3 (ข้อเสนอ Replant Seeds / Shake Trees / Mirror Beams / Crack the Vault / Hold the Last Light) · เจ้าของ: ยังก่อน ให้ดูตัวอย่างเกมอื่นประกอบก่อน
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
 - ใบ 65 Daily Login 30 วัน ผูกแล้ว v8.1.43 · รอ QA มือถือ · A09 เสียง Ruby ในด่าน ผูกแล้ว v8.1.43
