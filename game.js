@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.71';
+const GAME_VERSION = '8.1.72';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.72',date:'2026-11-10',title:'Tutorial buttons and Strawberry Unique',items:['Ruby’s training shows the Dash button only from the Dash lesson and the Unique button only from the Unique lesson','Strawberry Rebound no longer shows the flower bloom on the hero (the heal still works)']},
   {v:'8.1.71',date:'2026-11-10',title:'Bottom tabs everywhere',items:['The bottom tab bar no longer disappears after tapping something in Wardrobe, Mochi Patrol, Rankings, GM tools, Heroes or the Story book']},
   {v:'8.1.70',date:'2026-11-10',title:'Sweep, Mochi Patrol and Skins',items:['Sweep: stages with all 3 stars can be swept for half of your best real reward, 5 times a day','Mochi Patrol (Activities): leave the game open and your hero keeps fighting, up to 4 hours a day, with a Dim screen mode that saves battery','Wardrobe: new Skins tab for full outfits (coming soon); wings, halos and rings are retired and their Thread was returned']},
   {v:'8.1.69',date:'2026-11-10',title:'Cosmetics fit each hero',items:['Wings sit on the back, halos on the head and rings at the feet of each hero','Cosmetics now breathe, sway and hop together with your hero in the Lobby and Wardrobe']},

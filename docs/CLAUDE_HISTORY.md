@@ -3672,3 +3672,7 @@ buildWardrobe rewritten: showcase panel (sh=31% H, 170–270) with hero (card_<c
 ## Delivery: v8.1.69 — cosmetic anchors per hero (owner: cosmetics look stuck-on; step 1 of 3)
 
 cosAnchor(x,footY,hh) from LOBBY_FACE (head centre/top, back = 30% head→feet, feet = f[3]); wings at back, halo just above head top, pet beside shoulder, ring/trail at real feet (Cocoa no longer floats). cosAttach + cosFollow: lobbyHeroWarp upd moves attached cosmetics with breathe/sway/hop/spin (pet/halo bob via phase). Next steps discussed with owner: full-body skins art order, then paper-doll pilot on Momo.
+
+## Delivery: v8.1.70 — Sweep + Mochi Patrol (worker players) + Skins code ahead of order 69
+
+Sweep: sweepRecord(si,sugar) on stage clear keeps best real Sugar (d.sweepRef); 3-star stages show ⚡ Sweep on stage cards → 50% Sugar + 50% EXP, SWEEP_DAY=5/day. Mochi Patrol (gActivity row, FEATURE_OPEN patrol:3): buildPatrol, rate 40%/min of best clear over 8-min run, PATROL_DAY_MIN=240, ticks only while screen visible (dt cap 2s), loop fps 15 (patrolFps), Dim screen, auto-collect on leave. Skins: COS_RETIRED wings/halo/aura (refund once, refund69), COS_SLOTS skin/pet/trail/dash/pop, SKINS 6 (art keys <base>__<tag>, Cos.skinReady needs ASSET_IMAGES card_<hero>__<tag>, else "Coming soon"), skinKey/skinLoad for card/roster, skinSwap renames char_<hero>* textures in stage + skinFixAnims, runArtKeys loads only worn skin; HD pets cos_pet_*_hd used when registered. Tests: wardrobe, worker-play.

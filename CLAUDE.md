@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.71**. Next release:8.1.72. Fetch the deploy branch before new work.
+Current release: **8.1.72**. Next release:8.1.73. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.71 — bottom tab bar on new screens (owner: same bug as before)
+# Latest delivery: v8.1.72 — tutorial control reveal + Momo Unique bloom removed (owner)
+
+coachControls(): during Ruby coach, Dash group hidden until step 'dash', Unique group (+Flicker) until step 'unique'; called in _coachNext, tickTutorialCoach, _coachFinish (restore). Momo berryRebound no longer calls healAura (growth_unlock flower bloom) — keeps revive sfx; Cocoa regen still uses healAura. Test: coach-controls.
+
+# Previous delivery: v8.1.71 — bottom tab bar on new screens (owner: same bug as before)
 
 Screen builders called directly (button rebuilds) skip buildMenuScreen's nav bar unless listed in NAV_WRAP (v8.0.1 wrapper navWrapBuild). Added buildWardrobe, buildPatrol, buildRanking, buildGm, buildHeroes, buildStoryBook. **Every new top-level screen builder must be added to NAV_WRAP** (wardrobe test checks the new ones).
-
-# Previous delivery: v8.1.70 — Sweep + Mochi Patrol (worker players) + Skins code ahead of order 69
-
-Sweep: sweepRecord(si,sugar) on stage clear keeps best real Sugar (d.sweepRef); 3-star stages show ⚡ Sweep on stage cards → 50% Sugar + 50% EXP, SWEEP_DAY=5/day. Mochi Patrol (gActivity row, FEATURE_OPEN patrol:3): buildPatrol, rate 40%/min of best clear over 8-min run, PATROL_DAY_MIN=240, ticks only while screen visible (dt cap 2s), loop fps 15 (patrolFps), Dim screen, auto-collect on leave. Skins: COS_RETIRED wings/halo/aura (refund once, refund69), COS_SLOTS skin/pet/trail/dash/pop, SKINS 6 (art keys <base>__<tag>, Cos.skinReady needs ASSET_IMAGES card_<hero>__<tag>, else "Coming soon"), skinKey/skinLoad for card/roster, skinSwap renames char_<hero>* textures in stage + skinFixAnims, runArtKeys loads only worn skin; HD pets cos_pet_*_hd used when registered. Tests: wardrobe, worker-play.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
