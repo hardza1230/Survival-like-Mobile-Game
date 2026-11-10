@@ -8,7 +8,7 @@ assert.strictEqual(COSMETICS.length,28);vm.runInContext('this.COS_SLOTS=COS_SLOT
 assert.ok(Cos.buy('wing_cream'));assert.strictEqual(Save.data.threads,50);assert.strictEqual(Cos.equipped('wings').id,'wing_cream');
 assert.ok(!Cos.buy('wing_cream'));assert.ok(!Cos.buy('pet_mochi'));assert.strictEqual(Cos.equipped('pet'),null);
 assert.strictEqual(Cos.col(Cos.item('wing_cream')),0xfff4e0);Cos.nextDye('wing_cream');assert.strictEqual(Cos.col(Cos.item('wing_cream')),0xffb6d9);for(let i=0;i<4;i++)Cos.nextDye('wing_cream');assert.strictEqual(Cos.dye('wing_cream'),0);assert.ok(!Cos.nextDye('pet_mochi'));Cos.toggle('wing_cream');assert.strictEqual(Cos.equipped('wings'),null);assert.ok(!Cos.toggle('pet_mochi'));
-for(const m of ['lobbyCosHalo','cosDashFx','lobbyCos','buildWardrobe','wardBar','wardHero','cosEnsurePrev','cosTap','cosSetup','tickCos'])assert.ok(src.includes('\n  '+m+'('),m);
+for(const m of ['lobbyCosHalo','cosDashFx','lobbyCos','buildWardrobe','wardBar','wardHero','cosAnchor','cosAttach','cosFollow','cosEnsurePrev','cosTap','cosSetup','tickCos'])assert.ok(src.includes('\n  '+m+'('),m);
 assert.ok(src.includes("s==='wardrobe')this.buildWardrobe()")&&src.includes('this.tickCos?.(dt)')&&src.includes('this.cosSetup?.()'));
 console.log('Wardrobe: 28 cosmetics in 7 slots, free dyes, Thread purchase, auto-equip, toggle, no-afford guard and hooks passed');
 { const path=require('path');const m=src.match(/  (cos_[a-z0-9_]+):\{url:'(assets\/art\/cosmetics\/[^']+)',fw:(\d+),fh:(\d+),frames:(\d+)/g)||[];assert.strictEqual(m.length,26,'26 cosmetic FX sheets');

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.68**. Next release:8.1.69. Fetch the deploy branch before new work.
+Current release: **8.1.69**. Next release:8.1.70. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.68 — Wardrobe redesign (owner: match other screens, no overlap, make people want to buy)
+# Latest delivery: v8.1.69 — cosmetic anchors per hero (owner: cosmetics look stuck-on; step 1 of 3)
+
+cosAnchor(x,footY,hh) from LOBBY_FACE (head centre/top, back = 30% head→feet, feet = f[3]); wings at back, halo just above head top, pet beside shoulder, ring/trail at real feet (Cocoa no longer floats). cosAttach + cosFollow: lobbyHeroWarp upd moves attached cosmetics with breathe/sway/hop/spin (pet/halo bob via phase). Next steps discussed with owner: full-body skins art order, then paper-doll pilot on Momo.
+
+# Previous delivery: v8.1.68 — Wardrobe redesign (owner: match other screens, no overlap, make people want to buy)
 
 buildWardrobe rewritten: showcase panel (sh=31% H, 170–270) with hero (card_<c> via lobbyHeroWarp, wardHero) wearing equipped + previewed item via lobbyCos(x,foot,hh,ov,scr); tap card = try on (_cosPrev, replaces Tap-again _cosPend), cosEnsurePrev lazy-loads the previewed texture; thread pill + → Thread shop; Collection n/28; 7 slot tabs in one row (dot = equipped); cards with WEARING/OWNED tag, price pill; wardBar bottom: Buy & Wear / Need more + Get Thread / Wear-Take off + Dye. Checked 390×844 and 360×640, 0 errors.
-
-# Previous delivery: v8.1.67 — bug sweep after a real-browser smoke run (owner: hunt bugs/holes)
-
-Playwright smoke (serve repo root, scene = __g.scene.scenes.find(x=>x.buildMenuScreen); all menu screens, GM buttons, wardrobe buy/dye, login popup, 4 heroes in stage, every objective type forced via setupWaveObjective(w,{forceType})) → 0 runtime errors. Fixed: capture/cleanAir bonus only counts after first entry (b._in); Sesame voice gap checked before stopping the current line; bonus gear box spawns at its landing spot (cue/beam stayed at centre); _popN reset per stage (leaked on scene.restart); cosEnsure queues callers while loading; Mochi Pass mochiPass.left caps 30 claims; login30 day number/amount legible, preview button text; GM tap zone 40×40 (no overlap with Reset progress); GM_ENABLED auto: only *.github.io or localhost:port (bundled app https://localhost = off). Known holes (not fixed, need a server): local save editable, device clock skips daily gates, window.MochiBilling spoofable, leaderboard scores client-sent (SQL now has sanity CHECKs), Supabase project paused.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
