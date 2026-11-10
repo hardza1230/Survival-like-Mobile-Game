@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.78';
+const GAME_VERSION = '8.1.79';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.79',date:'2026-11-10',title:'Missions you control',items:['Most missions now wait on a ✨ start pad — step in when you are ready (they start by themselves after 10s)','Overcharge: after finishing a mission, step on ⚡ within 5s for 12s of extra enemies and ×2 loot','Escort the Wisp: standing right next to the wisp makes it move 70% faster, and raiders show where they come from','Follow the Clean Air: bonus bubbles appear along the path (+1.5s each)','Seasonal Harvest: petals now drop on the ground for you to collect, and four season shrines let you call the season you need','Sever the Crown Roots: guardians appear when you start cutting, and anchors pulse — cut during the glow to go twice as fast']},
   {v:'8.1.78',date:'2026-11-10',title:'Chapter 3 signature missions',items:['Ashen Seedfields: Seal the Seed Rift — fight inside the rift; every kill keeps it open longer','Hollow Orchard: Shake the Hollow Trees — fruit pours out, or a hidden ambush drops on you','Glass Greenhouse Ruins: Light the Mirror Path — charge three mirrors, then the crystal blasts the whole field','The Seed Vault: Vault Altar — choose a curse (Double Swarm, Elite Pack or No Hearts) for a bigger reward','Throne of the First Seed: Hold the Last Light — keep at least one of three lanterns burning']},
   {v:'8.1.77',date:'2026-11-10',title:'Mission tune-up',items:['Single-spot missions (Clean Air, Capture, Nectar and more) no longer always appear to your right','Follow the Clean Air shows a dotted path to where the ring goes next','Capture the Zone: bigger ring that grows much wider; defeating enemies inside speeds it up; progress never drops','Defend Nectar: losing the flower no longer costs HP (the timer drops 20% instead), and standing close heals it faster','Survive: two supply drops fall during the timer — run over to grab Sugar and sometimes a heart','Hunt: the last target is the Stalker Captain — bigger and tougher, and it drops a gear box']},
   {v:'8.1.76',date:'2026-11-10',title:'Fresher missions, fairer loot',items:['Survive missions now appear only in Chapter 1; Chapters 2–3 use Hunt, Escort, Capture and each stage’s own mission','Hunt appears at most once per stage','Miniboss and boss loot grows by chapter: light in Chapter 1, bigger in Chapters 2 and 3']},
@@ -8742,7 +8743,7 @@ const WAVE_OBJECTIVES = {
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
   capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect one nectar flower. Losing it costs 1/3 max HP; a fresh flower blooms elsewhere'},
-  seasonCycle:{emoji:'🌦️',name:'Seasonal Harvest',desc:'Monsters drop petals of the current season · fill all four seasons'},
+  seasonCycle:{emoji:'🌦️',name:'Seasonal Harvest',desc:'Pick up petals from defeated monsters · step on a shrine to call its season · fill all four'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Stand next to every corrupted root anchor to sever it before the throne pulse closes in'},
   cleanAir:{emoji:'🫧',name:'Follow the Clean Air',desc:'Stay inside the moving clean-air ring while the marsh shifts'},
   /* v8.1.78 เจ้าของ: ภารกิจประจำด่าน Chapter 3 (แรงบันดาลใจ Breach / Strongbox / Expedition / Ritual / Delirium) */
@@ -15220,7 +15221,7 @@ class Game extends Phaser.Scene {
     }else if(type==='defendNectar'){
       o.target=Math.max(34,Math.round((p.dur||52)*.74));o.desc='Protect 1 flower · '+o.target+'s · stand close to heal it';this.spawnNectarGarden();
     }else if(type==='seasonCycle'){
-      o.target=4;o.desc='Monsters drop petals of the current season · fill all 4 seasons ('+SEASON_PETALS+' each)';this.spawnSeasonSanctuaries();
+      o.target=4;o.desc='Pick up petals from defeated monsters · step on a shrine to call its season · fill all 4 ('+SEASON_PETALS+' each)';this.spawnSeasonSanctuaries();
     }else if(type==='breakRoots'){
       o.target=4;o.desc='Stand next to each of the '+o.target+' crown-root anchors to sever them';this.spawnRootAnchors(o.target);
     }else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){
@@ -15234,6 +15235,7 @@ class Game extends Phaser.Scene {
     this.renderWaveObjectiveHUD();
     if(!this.recipeMode||this._recipeMission)this.rubyTip?.(o._huntPhase?'huntClear':type);   // v7.9.60 Ruby อธิบายภารกิจ
     if(type!=='hunt')this.time?.delayedCall(350,()=>{ if(this.waveObjective===o&&!o.done)this.questFocus(type); });
+    this.missionArm?.(o,planned,p);
   }
   spawnCleanAirZone(){
     const o=this.waveObjective;if(!o||o.type!=='cleanAir')return;const pos=this.objectivePosition(0,1,110,220),r=145;
@@ -15243,6 +15245,9 @@ class Game extends Phaser.Scene {
     this._cleanAirWisp=this.camWorld(this.add.image(pos.x,pos.y-22,'ch2_mycelium_enemy_atlas',7).setScale(.24).setDepth(pos.y+3));
     this.tweens.add({targets:this._cleanAirRing,rotation:TAU,alpha:{from:.48,to:.82},duration:1700,repeat:-1,ease:'Linear'});
   }
+  /* v8.1.79 เจ้าของ: ฟองอากาศโบนัสตามเส้นทาง · แตะฟอง = +1.5 วิ */
+  cleanAirBubbles(c,o,dt){ const B=c.bub||(c.bub=[]),p=this.player; c.bt=(c.bt||0)-dt; if(c.bt<=0&&B.length<3&&Math.hypot(c.tx-c.x,c.ty-c.y)>90){ c.bt=2.2; const f=.3+Math.random()*.5,x=c.x+(c.tx-c.x)*f+(Math.random()-.5)*60,y=c.y+(c.ty-c.y)*f+(Math.random()-.5)*60,img=this.camWorld(this.add.circle(x,y,13,0xbff6ff,.55).setStrokeStyle(2,0xffffff,.9).setDepth(y+2)); this.tweens.add({targets:img,y:y-6,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); B.push({img,life:8}); }
+    for(let i=B.length-1;i>=0;i--){ const b=B[i]; b.life-=dt; const hit=p&&this.dist(p.x,p.y,b.img.x,b.img.y)<34; if(hit||b.life<=0){ if(hit){ o.progress=Math.min(o.target,o.progress+1.5); this.floatText?.(b.img.x,b.img.y-24,'+1.5s',0xbff6ff); this.burst?.(b.img.x,b.img.y,0xbff6ff); Sfx.orderCue?.('pickup_sugar_piece',.25,.05,1.3); } this.tweens.killTweensOf(b.img); b.img.destroy(); B.splice(i,1); } } }
   cleanAirPreview(c,o){ const g=this._cleanAirPath||(this._cleanAirPath=this.camWorld(this.add.graphics().setDepth(2))); if(!g.scene)return; g.clear(); const pts=[[c.x,c.y],[c.tx,c.ty],[c.nx,c.ny]],a=.35+.25*Math.sin((c.t||0)*5);
     for(let k=0;k<2;k++){ const [x0,y0]=pts[k],[x1,y1]=pts[k+1],d=Math.hypot(x1-x0,y1-y0); if(d<20)continue; const n=Math.floor(d/26); for(let i=0;i<n;i+=2){ const t0=i/n,t1=Math.min(1,(i+1)/n); g.lineStyle(5,o.color,a*(k?0.55:1)).lineBetween(x0+(x1-x0)*t0,y0+(y1-y0)*t0,x0+(x1-x0)*t1,y0+(y1-y0)*t1); } }
     g.lineStyle(3,o.color,a*.8).strokeEllipse(c.tx,c.ty,c.r*1.6,c.r*1.1); g.lineStyle(2,o.color,a*.45).strokeEllipse(c.nx,c.ny,c.r*1.2,c.r*.8); }
@@ -15251,6 +15256,7 @@ class Game extends Phaser.Scene {
     if(!c.nx){const q=this.objectivePosition(0,1,210,420);c.nx=q.x;c.ny=q.y;}
     if(c.moveIn<=0){c.tx=c.nx;c.ty=c.ny;const q=this.objectivePosition(0,1,210,420);c.nx=q.x;c.ny=q.y;c.moveIn=3.5;}
     this.cleanAirPreview?.(c,o);   /* v8.1.77 โชว์ทางที่วงจะไป */
+    this.cleanAirBubbles?.(c,o,dt);
     const dx=c.tx-c.x,dy=c.ty-c.y,d=Math.hypot(dx,dy),step=Math.min(d,82*dt);if(d>1){c.x+=dx/d*step;c.y+=dy/d*step;}
     for(const q of [this._cleanAirZone,this._cleanAirRing])if(q&&q.active)q.setPosition(c.x,c.y);if(this._cleanAirWisp&&this._cleanAirWisp.active)this._cleanAirWisp.setPosition(c.x,c.y-22+Math.sin(c.t*4)*5).setDepth(c.y+3);
     const inside=this.dist(this.player.x,this.player.y,c.x,c.y)<=c.r;o.progress=Phaser.Math.Clamp(o.progress+(inside?dt:0),0,o.target);this._cleanAirZone.setFillStyle(o.color,inside?.20:.07);
@@ -15264,7 +15270,8 @@ class Game extends Phaser.Scene {
       if(near&&(this._proxFx=(this._proxFx||0)+dt)>0.18){ this._proxFx=0; this.vfxHitRing?.(o.x,o.y,col,false); }
       if(o._pc>=need){ o._pc=0; done(o); } };
     const ev=this._waveEvent; if(ev&&ev.type==='cache')for(const c of ev.crates||[])run(c,105,1.2,c=>this.breakCrate(c),0xffd166);
-    if(this.waveNodes)this.waveNodes.children.iterate(n=>{ if(n&&n.active&&n._rootAnchor&&n._waveObjectiveNode)run(n,140,2.6,n=>this.destroyWaveObjectiveNode(n),0xd56bff); }); }
+    const pulse=((this.elapsed||0)%3)<1;   /* v8.1.79 เจ้าของ: รากเต้นเป็นจังหวะ · ตัดตอนสว่าง = เร็ว 2 เท่า · เริ่มตัดครั้งแรก = ผู้พิทักษ์โผล่ */
+    if(this.waveNodes)this.waveNodes.children.iterate(n=>{ if(!(n&&n.active&&n._rootAnchor&&n._waveObjectiveNode))return; if(n._objectiveCue)n._objectiveCue.setTint(pulse?0xffffff:0xd56bff); if(!n._guarded&&this.dist(n.x,n.y,p.x,p.y)<140){ n._guarded=true; this.floatText?.(n.x,n.y-80,'🌿 Root guardians!',0xd56bff); for(let k=0;k<3;k++){ const e=this.spawnEnemy?.('basic'); if(e){ const a=k/3*TAU; e.setPosition(n.x+Math.cos(a)*110,n.y+Math.sin(a)*110); this.vfxSpawnPoof?.(e.x,e.y); } } } run(n,140,pulse?1.3:2.6,n=>this.destroyWaveObjectiveNode(n),pulse?0xffffff:0xd56bff); }); }
   spawnRootAnchors(n=4){
     const o=this.waveObjective;if(!o||o.type!=='breakRoots')return;for(let i=0;i<n;i++){const p=this.objectivePosition(i,n,285,440),painted=this.textures.exists('objective_root_anchor'),key=painted?'objective_root_anchor':'ch2_root_enemy_atlas';let node=this.waveNodes.getFirstDead(false);if(!node)node=this.waveNodes.create(p.x,p.y,key,painted?undefined:7);else{node.setTexture(key,painted?undefined:7).setActive(true).setVisible(true).setPosition(p.x,p.y);if(node.body)node.body.enable=true;}if(!node)continue;
       node.hp=150*(1+(this.stageDiff||1)*.18);node.maxhp=node.hp;node._waveObjectiveNode=true;node._rootAnchor=true;node._coreLocked=false;node.setScale(painted?.9:.48).setDepth(node.y+1);this.camWorld(node);if(node.body){node.body.setAllowGravity(false);node.body.setImmovable(true);node.body.setCircle(48,painted?16:80,painted?16:78);}
@@ -15313,10 +15320,18 @@ class Game extends Phaser.Scene {
     if(!this.objNodeG){this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040);this.camWorld(this.objNodeG);}
     o.storm={passed:[false,false,false,false],cur:null,harvest:[0,0,0,0]}; this.stormBeginSeason(o,this._seasonState.idx,true); this.time.delayedCall(1700,()=>{ if(this.waveObjective===o&&!o.done)this.showBanner('🌦️ Seasonal Harvest','Seasons change every 10s · defeated monsters drop petals of the current season · fill all four',3200); }); }
   // v7.8.55 Seasonal Harvest: กลีบเข้าฤดูปัจจุบัน (Elite = 3) · ฤดูนี้เต็มแล้ว → ล้นไปฤดูที่ขาดมากสุดครึ่งเดียว ไม่ต้องรอ · ครบ 4 = จบ
-  seasonHarvest(o,e){ const H=o.storm.harvest,idx=this._seasonState?.idx??0;let k=idx,amt=e.isElite?3:1;
+  /* v8.1.79 เจ้าของ: กลีบตกที่พื้น ต้องเดินไปเก็บ (เดิมบินเข้าตัวเอง) · ศาล 4 ฤดู ยืน 1 วิ = เปลี่ยนเป็นฤดูนั้น */
+  seasonDropPetal(o,e){ const D=o.storm.drops||(o.storm.drops=[]); if(D.length>=24){ const d=D.shift(); d.img?.destroy(); } const idx=this._seasonState?.idx??0,info=this.seasonInfo(idx),key=this.textures?.exists?.('sakura_petal')?'sakura_petal':null;
+    const img=this.camWorld(key?this.add.image(e.x,e.y,key).setTint(info.color).setScale(.9):this.add.circle(e.x,e.y,9,info.color,.95)); img.setDepth(e.y+2); this.tweens?.add({targets:img,angle:{from:-15,to:15},duration:600,yoyo:true,repeat:-1}); D.push({x:e.x,y:e.y,idx,elite:!!e.isElite,img,life:14}); return false; }
+  seasonPetalTick(o,dt){ const D=o.storm?.drops; if(!D||!D.length)return false; const p=this.player; for(let i=D.length-1;i>=0;i--){ const d=D[i]; d.life-=dt; const dd=this.dist(p.x,p.y,d.x,d.y); if(dd<110&&dd>1){ const k=Math.min(dd,380*dt); d.x+=(p.x-d.x)/dd*k; d.y+=(p.y-d.y)/dd*k; d.img.setPosition(d.x,d.y); }
+      if(dd<36){ d.img.destroy(); D.splice(i,1); if(this.seasonHarvest(o,{isElite:d.elite,x:d.x,y:d.y},d.idx))return true; } else if(d.life<=0){ d.img.destroy(); D.splice(i,1); } } return false; }
+  seasonShrineTick(o,dt){ const st=o.storm; if(!st.shrines){ st.shrines=[0,1,2,3].map(k=>{ const q=this.objectivePosition(k,4,230,330),info=this.seasonInfo(k); return {k,x:q.x,y:q.y,pc:0,ring:this.camWorld(this.add.circle(q.x,q.y,58,info.color,.12).setStrokeStyle(3,info.color,.8).setDepth(q.y-2)),t:this.camWorld(this.add.text(q.x,q.y,info.emoji,{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4))}; }); }
+    const S=this._seasonState; if(!S)return; for(const sh of st.shrines){ const done=st.passed[sh.k],cur=S.idx===sh.k; sh.ring.setAlpha(done?.25:cur?1:.75); sh.t.setAlpha(done?.35:1); if(done||cur){ sh.pc=0; continue; } const near=this.dist(this.player.x,this.player.y,sh.x,sh.y)<58; sh.pc=near?sh.pc+dt:0;
+      if(sh.pc>=1){ sh.pc=0; S.idx=sh.k; S.t=10; const info=this.seasonInfo(sh.k); this.showBanner?.(info.emoji+' '+info.name,'You called this season',900); this.screenFlash?.(info.color,.14,200); } } }
+  seasonHarvest(o,e,forceIdx){ if(forceIdx==null&&o.storm&&o.storm.harvest)return this.seasonDropPetal(o,e); const H=o.storm.harvest,idx=forceIdx??(this._seasonState?.idx??0);let k=idx,amt=e.isElite?3:1;
     if(H[k]>=SEASON_PETALS){k=-1;let lo=1e9;for(let j=0;j<4;j++)if(H[j]<SEASON_PETALS&&H[j]<lo){lo=H[j];k=j;}if(k<0)return false;o._spill=(o._spill||0)+amt*.5;amt=Math.floor(o._spill);o._spill-=amt;if(!amt)return false;}
     H[k]=Math.min(SEASON_PETALS,H[k]+amt);const info=this.seasonInfo(k);
-    if(this.add&&this.textures?.exists?.('sakura_petal')&&this.player){const p=this.camWorld(this.add.image(e.x,e.y,'sakura_petal').setTint(info.color).setDepth(90300).setScale(.7));this.tweens.add({targets:p,x:this.player.x,y:this.player.y-30,scale:.3,alpha:.2,duration:420,ease:'Quad.in',onComplete:()=>p.destroy()});}
+    if(forceIdx==null&&this.add&&this.textures?.exists?.('sakura_petal')&&this.player){const p=this.camWorld(this.add.image(e.x,e.y,'sakura_petal').setTint(info.color).setDepth(90300).setScale(.7));this.tweens.add({targets:p,x:this.player.x,y:this.player.y-30,scale:.3,alpha:.2,duration:420,ease:'Quad.in',onComplete:()=>p.destroy()});} else if(forceIdx!=null)this.burst?.(e.x,e.y,info.color);
     if(H[k]>=SEASON_PETALS&&!o.storm.passed[k]){o.storm.passed[k]=true;this.c24Fx?.('vfx_c24_trial_pass',this.player.x,this.player.y,190,{tint:info.color});this.floatText?.(this.player.x,this.player.y-60,info.emoji+' '+info.name.split(' ')[0]+' harvest full!',info.color);this.screenFlash?.(info.color,.18,240);Sfx.clear&&Sfx.clear();}
     o.progress=H.reduce((s,v)=>s+Math.min(SEASON_PETALS,v),0)/SEASON_PETALS;this.renderWaveObjectiveHUD();
     if(o.storm.passed.every(Boolean)){o.progress=o.target;this.completeWaveObjective();return true;}
@@ -15331,6 +15346,7 @@ class Game extends Phaser.Scene {
   stormHit(o,dmgMul){ const c=o.storm.cur;c.hits++;this.player.iframe=0;this.hurtPlayer(Math.max(4,Math.round((this.player.maxhp||100)*dmgMul)),.5);this.cameras.main.shake(120,.004); }
   tickSeasonObjective(dt){
     const o=this.waveObjective;if(!o||o.type!=='seasonCycle'||!o.storm)return;const g=this.objNodeG;if(!g)return;g.clear();
+    if(o.storm.harvest){ this.seasonShrineTick?.(o,dt); if(this.seasonPetalTick?.(o,dt))return; }
     this._stormHudT=(this._stormHudT||0)-dt;if(this._stormHudT<=0){this._stormHudT=.25;this.renderWaveObjectiveHUD();}
     const idx=this._seasonState?this._seasonState.idx:0;let c=o.storm.cur;if(!c||c.idx!==idx){this.stormEndSeason(o);if(o.progress>=o.target){this.completeWaveObjective();return;}this.stormBeginSeason(o,idx,false);c=o.storm.cur;}
     if(o.storm.passed[idx]){this.c24ClearCur(c);return;}   // ฤดูที่ผ่านแล้ว = พัก ไม่มีภัย
@@ -15549,7 +15565,7 @@ class Game extends Phaser.Scene {
         w._bleedT=(w._bleedT||0)+dt; if(w._bleedT>=.5){ w._bleedT=0; P.hp-=P.maxhp*.004*stk; P.setTint?.(0xff6a6a); this.time.delayedCall(120,()=>{ if(P.active)P.clearTint?.(); }); if(P.hp<=0){ this.die(); return; } } }
       else if(w._out){ w._out=Math.max(0,w._out-dt*4); if(!w._out){ w._bleedStk=0; w._bleedT=0; } } }
     // 🕯️ Raiders: ทุก ~7s ส่งมอนแดง 2 ตัวพุ่งเข้าหา Wisp (ต้องคอยสกัด)
-    this._raidT=(this._raidT??5)-dt;if(this._raidT<=0){this._raidT=7;if(this.enemies.countActive(true)<this.maxLive){for(let i=0;i<2;i++){const e=this.spawnEnemy('fast');if(e){e._wispRaider=true;e.tintColor=0xff6a6a;e.setTint(0xff6a6a);}}this.floatText(w.x,w.y-60,'⚠ Raiders!',0xff6a6a);}}
+    this._raidT=(this._raidT??5)-dt;if(this._raidT<=0){this._raidT=7;if(this.enemies.countActive(true)<this.maxLive){let rx=0,ry=0,rn=0;for(let i=0;i<2;i++){const e=this.spawnEnemy('fast');if(e){e._wispRaider=true;e.tintColor=0xff6a6a;e.setTint(0xff6a6a);rx+=e.x;ry+=e.y;rn++;}}this.floatText(w.x,w.y-60,'⚠ Raiders!',0xff6a6a);if(rn){const a=Math.atan2(ry/rn-w.y,rx/rn-w.x);this.floatText(w.x+Math.cos(a)*120,w.y+Math.sin(a)*120,'⚠',0xff6a6a);}   /* v8.1.79 บอกทิศโจร */}}
     // มอนกัดกินแสง
     let foes=0;this.enemies.children.iterate(e=>{if(e&&e.active&&!e.isBoss&&!e.isMini&&this.dist(e.x,e.y,w.x,w.y)<=t.drainR)foes++;});
     if(foes>0)w._light-=t.drain*foes*dt; else if(near)w._light=Math.min(1,w._light+t.regen*dt);
@@ -15560,7 +15576,7 @@ class Game extends Phaser.Scene {
     if(!target){this.renderWispHUD();return;}
     w._glow.setPosition(w.x,w.y);
     if(w._state==='travel'){
-      if(near){const a=Math.atan2(target.y-w.y,target.x-w.x);w.x+=Math.cos(a)*t.speed*dt;w.y+=Math.sin(a)*t.speed*dt;w.setDepth(w.y+2);w._glow.setDepth(w.y+1);}
+      if(near){const a=Math.atan2(target.y-w.y,target.x-w.x),close=this.dist(this.player.x,this.player.y,w.x,w.y)<=110,sp=t.speed*(close?1.7:1);if(close&&Math.random()<dt*2)this.vfxHitRing?.(w.x,w.y,0xffe6a0,false);w.x+=Math.cos(a)*sp*dt;w.y+=Math.sin(a)*sp*dt;   /* v8.1.79 เจ้าของ: ยืนชิดดวงไฟ = เดินเร็วขึ้น ×1.7 */w.setDepth(w.y+2);w._glow.setDepth(w.y+1);}
       if(this.dist(w.x,w.y,target.x,target.y)<=44){w._state='channel';w._channel=0;}
     } else {  // channel
       if(near){ if(!this._wispSnd||!Sfx._eventLoops?.event_wisp_purify_charge?.isPlaying){this._wispSnd=true;Sfx.eventLoopStart?.('event_wisp_purify_charge',.32);} } else if(this._wispSnd){ this._wispSnd=false; Sfx.eventLoopStop?.('event_wisp_purify_charge'); }   // v7.2 charge loop only while channeling + near
@@ -15650,6 +15666,24 @@ class Game extends Phaser.Scene {
     if(o._huntPhase){this.startStoryHuntRound(o);this.renderWaveObjectiveHUD();this.showBanner('Next Hunt round','Clear foes to reveal the next Elite',1400);return;}
     this.renderWaveObjectiveHUD();o._huntSpawnAt=this.time.now+700;
   }
+  /* ===== v8.1.79 เจ้าของ: เลือกจังหวะเริ่มเอง (แท่น ✨) + Overcharge (เสี่ยงต่อ 12 วิ ได้ของ ×2) — แรงบันดาลใจ Ritual / Delirium ===== */
+  missionArmable(o,planned,p){ return !!o&&!planned&&!(p&&p.forceType)&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!['survive','fill','hunt'].includes(o.type)&&this.usesStoryBudget?.(); }
+  missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xffe08a,.18).setStrokeStyle(4,0xffe08a,.95).setDepth(q.y-2)),t=this.camWorld(this.add.text(q.x,q.y,'✨',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'Step in to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5));
+    this.tweens.add({targets:pad,scale:{from:.92,to:1.08},duration:600,yoyo:true,repeat:-1}); o._armPad={x:q.x,y:q.y,objs:[pad,t,l],t:10}; }
+  missionArmClear(o){ const A=o&&o._armPad; if(!A)return; for(const q of A.objs){ this.tweens.killTweensOf(q); q.destroy(); } o._armPad=null; }
+  missionArmTick(o,dt){ const A=o._armPad; A.t-=dt; const near=this.player&&this.dist(this.player.x,this.player.y,A.x,A.y)<50; if(A.objs[2]?.active)A.objs[2].setText(near?'Starting!':'Step in to start · '+Math.ceil(Math.max(0,A.t))+'s');
+    if(near||A.t<=0){ this.missionArmClear(o); this.vfxHitRing?.(A.x,A.y,0xffe08a,true); Sfx.orderCue?.('wave_start',.4,.3); this.floatText?.(this.player.x,this.player.y-70,'▶ Mission start!',0xffe08a); return false; } this.renderWaveObjectiveHUD?.(); return true; }
+  overchargeOffer(o){ if(o._ocDone||o._oc)return !!o._oc&&!o._ocDone; if(this.state!=='play'||this._inTutorial||this.recipeMode||this.riftMode||this.bossRush||['survive','fill'].includes(o.type)||!this.usesStoryBudget?.()||!this.player)return false;
+    const q=this.objectivePosition(0,1,110,150),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xff7ab8,.18).setStrokeStyle(4,0xff7ab8,.95).setDepth(q.y-2)),t=this.camWorld(this.add.text(q.x,q.y,'⚡',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd0e6',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5));
+    this.tweens.add({targets:pad,scale:{from:.92,to:1.1},duration:420,yoyo:true,repeat:-1}); o._oc={phase:'offer',t:5,x:q.x,y:q.y,objs:[pad,t,l]}; this.showBanner?.('⚡ Overcharge?','Step on ⚡ within 5s: 12s of extra enemies for ×2 loot',2000); Sfx.orderCue?.('mission_bonus_get',.35,.3); return true; }
+  overchargeTick(o,dt){ const C=o._oc,p=this.player; if(!C||!p)return; C.t-=dt;
+    if(C.phase==='offer'){ const near=this.dist(p.x,p.y,C.x,C.y)<50; C.objs[2]?.active&&C.objs[2].setText('Overcharge ×2 · '+Math.ceil(Math.max(0,C.t))+'s');
+      if(near){ C.phase='run'; C.t=12; C.sp=0; for(const q of C.objs){ this.tweens.killTweensOf(q); q.destroy(); } C.objs=[]; this.screenFlash?.(0xff7ab8,.18,240); this.showBanner?.('⚡ OVERCHARGE','Survive 12s — loot ×2',1400); if(typeof Sfx!=='undefined')Sfx.bossWarn?.(); const e=this.sigSpawnAt?.(p.x+260,p.y,true); return; }
+      if(C.t<=0)this.overchargeEnd(o,false); return; }
+    C.sp-=dt; if(C.sp<=0){ C.sp=.9; for(let k=0;k<2;k++){ const a=Math.random()*TAU; this.sigSpawnAt?.(p.x+Math.cos(a)*300,p.y+Math.sin(a)*300); } }
+    if(this.waveObjTxt?.active)this.waveObjTxt.setText('⚡ Overcharge · '+Math.ceil(Math.max(0,C.t))+'s · loot ×2');
+    if(C.t<=0)this.overchargeEnd(o,true); }
+  overchargeEnd(o,won){ const C=o._oc; for(const q of C?.objs||[]){ this.tweens.killTweensOf(q); q.destroy(); } o._oc=null; o._ocDone=true; if(won){ o._ocMul=2; if(this.spawnLoot&&this.player){ const g=this.spawnLoot(this.player.x+60,this.player.y,Math.min(2,Math.floor((this.stageIndex||0)/5)+1)); if(g)this.lootHold?.(g,1500); } } this.completeWaveObjective(); }
   /* ===== v8.1.78 ภารกิจประจำด่าน Chapter 3 (ภาพชั่วคราว: วงกราฟิก + อีโมจิ · ใบสั่งอาร์ตรอบ 4) ===== */
   sigAdd(o){ if(o){ this.camWorld(o); (this._sig.objs||(this._sig.objs=[])).push(o); } return o; }
   sigText(x,y,t,fs=26){ return this.sigAdd(this.add.text(x,y,t,{fontSize:fs+'px',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(y+5)); }
@@ -15696,7 +15730,9 @@ class Game extends Phaser.Scene {
     this.tweens.add({targets:sh,width:60,height:20,duration:650,ease:'Quad.in'});
     this.tweens.add({targets:gift,y:P.y,duration:650,ease:'Quad.in',onComplete:()=>{ gift.destroy(); sh.destroy(); if(this.state!=='play'||this.waveObjective!==o)return; this.burst?.(P.x,P.y,0xffd166); this.screenShake?.(90,.004);
       const su=Math.round(3+(this.stageIndex||0)*1.2); this.sugarStage+=su; this.sugarRun+=su; const L0=this._lootAt; this._lootAt={x:P.x,y:P.y}; try{ this.missionLootBurst?.({type:'supply',noCur:true,noHold:true},su); }finally{ this._lootAt=L0; } if(Math.random()<.5)this.dropHeal?.(P.x+30,P.y-10,'mini'); }}); }
-  tickWaveObjective(dt){this.objBonusTick?.(dt);
+  tickWaveObjective(dt){
+    { const o0=this.waveObjective; if(o0&&!o0.done&&o0._armPad&&this.missionArmTick?.(o0,dt))return; if(o0&&o0._oc&&!o0.done){ this.overchargeTick?.(o0,dt); return; } }
+    this.objBonusTick?.(dt);
     const o=this.waveObjective;if(!o||o.done)return;
     this.ensureHuntTarget?.();
     this.tickWaveEvent(dt);
@@ -15785,15 +15821,18 @@ class Game extends Phaser.Scene {
     if(o.type==='fill'&&this.usesStoryBudget?.()){o.type='hunt';o.name='Elite Showdown';o.emoji='🎯';o.progress=0;o.target=1;o._huntPhase='elite';o._huntSpawnAt=this.time.now;o.desc='Defeat the marked Elite to finish this mission';this.renderWaveObjectiveHUD();this.showBanner('Step 2/2: Elite Showdown',o.desc,1800);return;}
     if(this.recipeMode&&this._recipeMission){ o.done=true; const bn=Math.round((20+((this._amapNode&&this._amapNode.d)||1)*4)*this.diffMul().reward); this.sugarStage+=bn; this.sugarRun+=bn; this.clearWaveObjective(); this._recipeMission.done=true; this._hunger+=this.recipeHungerGoal()*MISSION_HUNGER; this.showBanner('✅ Mission complete · Sugar +'+bn+' · Hunger +'+Math.round(MISSION_HUNGER*100)+'%',this._hunger>=this.recipeHungerGoal()?'The boss is coming':'Fill the Hunger Meter to call the boss',2000); if(!['capture','hunt','purge'].includes(o.type))Sfx.clear(); return; }
     if(this._replayMeter&&this._replayMission&&this._replayMission.o===o){ o.done=true; const m=this._replayMeter,bn=Math.round((10+this.stageIndex*3)*(this.diffMul?.().reward||1)); this.sugarStage+=bn; this.sugarRun+=bn; const _rb=this.objBonusPay?.(o,bn)||0; this.missionLootBurst?.(o,bn+_rb); m.kills=Math.min(m.goal,m.kills+m.goal*.08); this.clearWaveObjective(); this._replayMission=null; m.nextBounty=m.time+50+Math.random()*20; this.showBanner('⭐ Bounty complete · Sugar +'+(bn+_rb),'Stage progress +8%',1800); if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun); return; }   /* v8.1.75 Bounty ตอนเล่นซ้ำ */
-    o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar',...(typeof SIG_MISSIONS!=='undefined'?SIG_MISSIONS:[])].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1)*(o._altarMul||1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
+    if(this.overchargeOffer?.(o))return;   /* v8.1.79 Overcharge */
+    o.done=true;const zoneObj=['purge','capture','cleanAir','breakRoots','defendNectar',...(typeof SIG_MISSIONS!=='undefined'?SIG_MISSIONS:[])].includes(o.type),bonus=Math.round((6+(this.stageIndex+1)*2+this.waveIndex*2)*(zoneObj?1.5:1)*(o._altarMul||1)*(o._ocMul||1));this.sugarStage+=bonus;this.sugarRun+=bonus;const _ob=this.objBonusPay?.(o,bonus)||0;if(_ob)Sfx.orderCue?.('mission_bonus_get',.5,.3);if(!this._inTutorial)this.missionLootBurst?.(o,bonus+_ob);   /* v8.0.18 เจ้าของ: ภารกิจคุ้มกัน/ยืนในวงได้ Sugar ×1.5 + ฟื้น HP 20% */ if(zoneObj&&this.player){const P=this.player,h=Math.round(P.maxhp*.2);P.hp=Math.min(P.maxhp,P.hp+h);this.floatText?.(P.x,P.y-70,'+'+h+' ❤️',0x6dffb4);}if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);
     const title=(_ob?'⭐ Bonus! · ':'✅ Objective Complete · ')+'Sugar +'+(bonus+_ob)+(zoneObj?' · ❤️ +20%':'');this.clearWaveObjective();this.mode='waveclear';this.waveTimer=0;if(this.usesStoryBudget?.()){this.clearFoes();this.clearEnemies();this.settleStoryBudget(true);}this.showBanner(title,this.usesStoryBudget?.()?'Earned EXP collected + objective reward — choose upgrades':'Clear the remaining enemies to advance',1500);if(!['capture','hunt','purge'].includes(o.type))Sfx.clear();
   }
-  clearWaveObjective(){this.sigClear?.();Sfx.eventLoopStop?.('event_capture_charge');if(this._wispSnd){this._wispSnd=false;Sfx.eventLoopStop?.('event_wisp_purify_charge');}this._pbTarget=null;this._pbShow=0;if(this.pbFx&&this.pbFx.scene)this.pbFx.clear();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
+  clearWaveObjective(){this.sigClear?.();{ const o=this.waveObjective; if(o){ this.missionArmClear?.(o); if(o._oc){ for(const q of o._oc.objs||[]){ this.tweens?.killTweensOf?.(q); q.destroy?.(); } o._oc=null; } } }Sfx.eventLoopStop?.('event_capture_charge');if(this._wispSnd){this._wispSnd=false;Sfx.eventLoopStop?.('event_wisp_purify_charge');}this._pbTarget=null;this._pbShow=0;if(this.pbFx&&this.pbFx.scene)this.pbFx.clear();if(this.replayProgressFrame)this.replayProgressFrame.setVisible(false);if(this.replayProgressFill)this.replayProgressFill.setVisible(false); if(this.endHuntCurse)this.endHuntCurse(); this._huntFar=0;
     this.clearWaveEvent();
     if(this.waveNodes)this.waveNodes.children.iterate(n=>{if(!n)return;if(n._objectiveCue){this.tweens.killTweensOf(n._objectiveCue);if(n._objectiveCue.active)n._objectiveCue.destroy();n._objectiveCue=null;}n._waveObjectiveNode=false;n.setActive(false).setVisible(false);if(n.body)n.body.enable=false;});
     if(this.enemies)this.enemies.children.iterate(e=>{if(!e)return;this.clearObjectiveTargetFx(e);e._waveObjectiveTarget=false;e._wispRaider=false;});
     this._raidT=null;
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
+    { const st=this.waveObjective?.storm; if(st){ for(const d of st.drops||[]){ this.tweens.killTweensOf(d.img); d.img?.destroy(); } st.drops=[]; for(const sh of st.shrines||[]){ sh.ring?.destroy(); sh.t?.destroy(); } st.shrines=null; } }
+    for(const b of this._cleanAir?.bub||[]){ this.tweens.killTweensOf(b.img); if(b.img.active)b.img.destroy(); }
     for(const k of ['_captureZone','_captureRing','_captureFill','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
