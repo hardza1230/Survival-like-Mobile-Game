@@ -457,14 +457,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        5071,
-        5365,
-        5629,
-        5040,
-        5945,
-        6774,
-        5783,
-        5343
+        3884,
+        4212,
+        4409,
+        3822,
+        4345,
+        4654,
+        3853,
+        3768
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -488,24 +488,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 24
-        },
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 23
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 25
-        },
-        {
-          "frame": 7,
-          "max_boundary_shift_px": 25
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "mint/char_mint_gale__snow.png",
@@ -739,16 +722,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 2,
-          "max_boundary_shift_px": 14
-        },
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 13
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "mint/char_mint_impaler_run_motion823__snow.png",
@@ -799,14 +773,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        3147,
-        3714,
-        4149,
-        5264,
-        4330,
-        3195,
-        3902,
-        3129
+        3142,
+        3717,
+        4141,
+        5255,
+        4310,
+        3192,
+        3893,
+        3111
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -830,16 +804,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 13
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 13
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa__chef.png",
@@ -893,18 +858,18 @@
       ],
       "frame_count": 12,
       "opaque_pixels_per_frame": [
-        7231,
-        6987,
-        7350,
-        7408,
-        7691,
-        7558,
-        7633,
-        7656,
-        7463,
-        7415,
-        7683,
-        7510
+        7262,
+        7001,
+        7367,
+        7437,
+        7676,
+        7531,
+        7645,
+        7636,
+        7451,
+        7407,
+        7681,
+        7497
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -936,16 +901,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 15
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 14
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_attack__chef.png",
@@ -955,14 +911,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4923,
-        5099,
-        5532,
-        4749,
-        4952,
-        6042,
-        5410,
-        4707
+        3929,
+        4151,
+        4460,
+        3970,
+        3961,
+        4707,
+        4469,
+        3616
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -986,24 +942,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 19
-        },
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 19
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 20
-        },
-        {
-          "frame": 7,
-          "max_boundary_shift_px": 20
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_hurt__chef.png",
@@ -1042,14 +981,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4244,
-        4261,
-        4269,
-        4069,
-        3854,
-        4112,
-        4063,
-        4516
+        4221,
+        4285,
+        4288,
+        4032,
+        3844,
+        4139,
+        4095,
+        4486
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1075,28 +1014,20 @@
       ],
       "bbox_threshold_64_review_flags": [
         {
-          "frame": 0,
-          "max_boundary_shift_px": 18
-        },
-        {
           "frame": 1,
-          "max_boundary_shift_px": 20
+          "max_boundary_shift_px": 15
         },
         {
           "frame": 2,
-          "max_boundary_shift_px": 18
+          "max_boundary_shift_px": 13
         },
         {
           "frame": 3,
-          "max_boundary_shift_px": 17
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 17
+          "max_boundary_shift_px": 13
         },
         {
           "frame": 7,
-          "max_boundary_shift_px": 19
+          "max_boundary_shift_px": 14
         }
       ]
     },
@@ -1108,14 +1039,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        3810,
-        3823,
-        5012,
-        3892,
-        4157,
-        4993,
-        4165,
-        3917
+        3800,
+        3824,
+        5009,
+        3881,
+        4147,
+        4974,
+        4171,
+        3906
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1139,40 +1070,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 0,
-          "max_boundary_shift_px": 15
-        },
-        {
-          "frame": 1,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 2,
-          "max_boundary_shift_px": 15
-        },
-        {
-          "frame": 3,
-          "max_boundary_shift_px": 14
-        },
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 15
-        },
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 14
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 19
-        },
-        {
-          "frame": 7,
-          "max_boundary_shift_px": 15
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_dash_leap__chef.png",
@@ -1182,14 +1080,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4228,
-        4391,
-        4965,
-        5573,
-        4028,
-        5335,
-        4591,
-        4209
+        4218,
+        4381,
+        4947,
+        5548,
+        4012,
+        5338,
+        4587,
+        4202
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1213,12 +1111,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 0,
-          "max_boundary_shift_px": 15
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_fire_jab__chef.png",
@@ -1228,14 +1121,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        3672,
-        3800,
-        4929,
-        3940,
-        3655,
-        3794,
-        4929,
-        3942
+        3645,
+        3817,
+        4964,
+        3918,
+        3643,
+        3817,
+        4958,
+        3921
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1259,40 +1152,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 0,
-          "max_boundary_shift_px": 18
-        },
-        {
-          "frame": 1,
-          "max_boundary_shift_px": 18
-        },
-        {
-          "frame": 2,
-          "max_boundary_shift_px": 18
-        },
-        {
-          "frame": 3,
-          "max_boundary_shift_px": 17
-        },
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 17
-        },
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 6,
-          "max_boundary_shift_px": 17
-        },
-        {
-          "frame": 7,
-          "max_boundary_shift_px": 16
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_fire_fin__chef.png",
@@ -1302,14 +1162,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        3630,
-        3760,
-        3952,
-        4562,
-        4728,
-        3781,
-        3599,
-        3588
+        3639,
+        3771,
+        3969,
+        4569,
+        4707,
+        3777,
+        3597,
+        3576
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1336,34 +1196,26 @@
       "bbox_threshold_64_review_flags": [
         {
           "frame": 0,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 1,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 2,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 3,
-          "max_boundary_shift_px": 17
-        },
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 14
-        },
-        {
-          "frame": 5,
           "max_boundary_shift_px": 15
         },
         {
-          "frame": 6,
-          "max_boundary_shift_px": 16
+          "frame": 1,
+          "max_boundary_shift_px": 14
         },
         {
-          "frame": 7,
+          "frame": 2,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 3,
+          "max_boundary_shift_px": 15
+        },
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 6,
           "max_boundary_shift_px": 14
         }
       ]
@@ -1417,14 +1269,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        2917,
-        2958,
-        3672,
-        3580,
+        2694,
+        2741,
+        3415,
+        3319,
         2979,
-        3591,
-        3012,
-        2935
+        3601,
+        3023,
+        2940
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1448,12 +1300,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 0,
-          "max_boundary_shift_px": 13
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_rocket_motion823__chef.png",
@@ -1697,14 +1544,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4233,
-        3995,
-        4094,
-        4254,
-        4124,
-        4047,
-        4204,
-        4277
+        4225,
+        4016,
+        4088,
+        4241,
+        4116,
+        4038,
+        4210,
+        4258
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1728,16 +1575,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 0,
-          "max_boundary_shift_px": 15
-        },
-        {
-          "frame": 1,
-          "max_boundary_shift_px": 13
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_titan_slam__chef.png",
@@ -1747,18 +1585,18 @@
       ],
       "frame_count": 12,
       "opaque_pixels_per_frame": [
-        3511,
-        3583,
-        3877,
-        3962,
-        4032,
-        3818,
-        4300,
-        4688,
-        5107,
-        4501,
-        4215,
-        4149
+        3504,
+        3589,
+        3882,
+        3966,
+        3857,
+        3648,
+        4118,
+        4475,
+        5125,
+        4521,
+        4216,
+        4163
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1790,24 +1628,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 8,
-          "max_boundary_shift_px": 26
-        },
-        {
-          "frame": 9,
-          "max_boundary_shift_px": 22
-        },
-        {
-          "frame": 10,
-          "max_boundary_shift_px": 23
-        },
-        {
-          "frame": 11,
-          "max_boundary_shift_px": 27
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "cocoa/char_cocoa_titan_colossus__chef.png",
@@ -1817,22 +1638,22 @@
       ],
       "frame_count": 16,
       "opaque_pixels_per_frame": [
-        3714,
-        3427,
-        4385,
-        4308,
-        2417,
-        3793,
-        4738,
-        4782,
-        4400,
-        4231,
-        4318,
-        4802,
-        5424,
-        4805,
-        4995,
-        4212
+        3706,
+        3424,
+        4398,
+        4297,
+        2405,
+        3786,
+        4733,
+        4772,
+        4046,
+        3867,
+        3967,
+        4412,
+        5441,
+        4820,
+        5010,
+        4224
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1874,36 +1695,8 @@
       ],
       "bbox_threshold_64_review_flags": [
         {
-          "frame": 8,
-          "max_boundary_shift_px": 14
-        },
-        {
-          "frame": 9,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 10,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 11,
-          "max_boundary_shift_px": 18
-        },
-        {
-          "frame": 12,
-          "max_boundary_shift_px": 20
-        },
-        {
-          "frame": 13,
-          "max_boundary_shift_px": 22
-        },
-        {
-          "frame": 14,
-          "max_boundary_shift_px": 23
-        },
-        {
-          "frame": 15,
-          "max_boundary_shift_px": 21
+          "frame": 2,
+          "max_boundary_shift_px": 13
         }
       ]
     },
@@ -2137,18 +1930,18 @@
       ],
       "frame_count": 12,
       "opaque_pixels_per_frame": [
+        5747,
+        5852,
+        6062,
+        5991,
+        5761,
+        5850,
         5938,
-        6029,
-        6228,
-        6204,
-        6895,
-        6994,
-        7085,
-        6957,
-        4568,
-        5227,
-        5233,
-        4998
+        5815,
+        5832,
+        6469,
+        6498,
+        6281
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -2159,10 +1952,10 @@
         0,
         0,
         0,
-        19,
         0,
-        6,
-        5
+        0,
+        0,
+        0
       ],
       "flags": [],
       "source": "assets/characters/yuzu_run_sheet.png",
@@ -2182,32 +1975,12 @@
       ],
       "bbox_threshold_64_review_flags": [
         {
-          "frame": 1,
-          "max_boundary_shift_px": 14
+          "frame": 4,
+          "max_boundary_shift_px": 15
         },
         {
-          "frame": 2,
-          "max_boundary_shift_px": 13
-        },
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 14
-        },
-        {
-          "frame": 8,
-          "max_boundary_shift_px": 46
-        },
-        {
-          "frame": 9,
-          "max_boundary_shift_px": 47
-        },
-        {
-          "frame": 10,
-          "max_boundary_shift_px": 46
-        },
-        {
-          "frame": 11,
-          "max_boundary_shift_px": 46
+          "frame": 7,
+          "max_boundary_shift_px": 15
         }
       ]
     },
@@ -2400,19 +2173,19 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        8891,
-        7683,
-        7740,
-        7597,
-        8305,
-        6446,
-        8064,
-        9279
+        8844,
+        7732,
+        7770,
+        7571,
+        8281,
+        6450,
+        8049,
+        9257
       ],
       "corner_pixels_alpha_ge_16": [
         0,
         0,
-        4,
+        0,
         0,
         0,
         0,
@@ -2431,12 +2204,7 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 17
-        }
-      ]
+      "bbox_threshold_64_review_flags": []
     },
     {
       "file": "sesame/char_sesame_meteor_motion823__moon.png",

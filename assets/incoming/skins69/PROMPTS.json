@@ -426,6 +426,26 @@
     {
       "hero": "sesame",
       "prompt": "Create a single transparent-background portrait icon based on the supplied character illustration. Show ONLY the SAME sesame character from the chest up, centered, face large and readable as a small 90px shop icon, with the exact same facial identity, hair, eye color, headwear and Festival costume. Include characteristic costume collar and any small head ornament. Original 2D painted chibi fantasy game artwork. Fully transparent background, no surrounding aura, no additional characters, no text, numbers, symbols, border or frame. Keep entire hairstyle and hat within canvas with clear space around them."
+    },
+    {
+      "key": "mint_attack_v4",
+      "path": "assets/char_mint_attack_sheet.png",
+      "prompt": "Edit the supplied original 8-frame Mint combat spritesheet. Preserve the exact motion in each individual frame: keep the original small character and spear at the same locations, same original 8 frames, spacing, facial features, aqua hairstyle, eyes, scale and orientation; preserve the original modest light-blue VFX and transparent gaps between frames. Change only her outfit to white/ice-blue lightweight snow princess armor with a small snowflake diadem and short white fur trim; no large shield, no big cape, no enlarged effect or expanded silhouette. Exactly eight cells in one horizontal row. No gray, cyan, white, or any backdrop; fully transparent alpha background. No letters, numbers, borders or repeated extra frames."
+    },
+    {
+      "key": "mint_gale_v4",
+      "path": "assets/char_mint_gale_sheet.png",
+      "prompt": "Edit the supplied original 8-frame Mint combat spritesheet. Preserve the exact motion in each individual frame: keep the original small character and spear at the same locations, same original 8 frames, spacing, facial features, aqua hairstyle, eyes, scale and orientation; preserve the original modest light-blue VFX and transparent gaps between frames. Change only her outfit to white/ice-blue lightweight snow princess armor with a small snowflake diadem and short white fur trim; no large shield, no big cape, no enlarged effect or expanded silhouette. Exactly eight cells in one horizontal row. No gray, cyan, white, or any backdrop; fully transparent alpha background. No letters, numbers, borders or repeated extra frames."
+    },
+    {
+      "key": "cocoa_attack_v2",
+      "path": "assets/char_cocoa_attack_sheet.png",
+      "prompt": "Edit this exact 8-frame action sprite sheet. Replace only clothing using white chef hat and small cream pastry apron, keep brown hair and preserve the same size and position of her existing round chocolate boxing mitts. Match each input frame's pose, face, hair, weapon, body scale, position and timing exactly. Reproduce original VFX as they are, no enlarged effects, no added large ornaments or capes. Exactly 8 isolated sprites in one horizontal row, in the same order, with generous transparent background; no backdrop, no text or numbers. Chibi fantasy game art identical to original."
+    },
+    {
+      "key": "mint_gale_v5",
+      "path": "assets/char_mint_gale_sheet.png",
+      "prompt": "Edit this exact 8-frame action sprite sheet. Replace only clothing using small ice-snow tiara and a modest white and ice-blue outfit, preserving her mint hair, original small spear and existing small snow effects. Match each input frame's pose, face, hair, weapon, body scale, position and timing exactly. Reproduce original VFX as they are, no enlarged effects, no added large ornaments or capes. Exactly 8 isolated sprites in one horizontal row, in the same order, with generous transparent background; no backdrop, no text or numbers. Chibi fantasy game art identical to original."
     }
   ]
 }

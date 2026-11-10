@@ -1,0 +1,161 @@
+{
+  "description": "Trials only; alpha bounds include VFX and outfit; lower error does not establish pose/anchor quality. Visual and motion review required.",
+  "trials": [
+    {
+      "file": "mint/char_mint_lance_charged__snow.png",
+      "before_flags": 2,
+      "after_flags": 0,
+      "before_mean": 10.9,
+      "after_mean": 3.9
+    },
+    {
+      "file": "cocoa/char_cocoa_run__chef.png",
+      "before_flags": 2,
+      "after_flags": 0,
+      "before_mean": 9.7,
+      "after_mean": 2.9
+    },
+    {
+      "file": "cocoa/char_cocoa_victory__chef.png",
+      "before_flags": 6,
+      "after_flags": 4,
+      "before_mean": 16.2,
+      "after_mean": 12.0
+    },
+    {
+      "file": "cocoa/char_cocoa_dash_jab__chef.png",
+      "before_flags": 8,
+      "after_flags": 0,
+      "before_mean": 15.4,
+      "after_mean": 5.4
+    },
+    {
+      "file": "cocoa/char_cocoa_dash_leap__chef.png",
+      "before_flags": 1,
+      "after_flags": 0,
+      "before_mean": 8.6,
+      "after_mean": 7.9
+    },
+    {
+      "file": "cocoa/char_cocoa_fire_jab__chef.png",
+      "before_flags": 8,
+      "after_flags": 0,
+      "before_mean": 17.1,
+      "after_mean": 5.8
+    },
+    {
+      "file": "cocoa/char_cocoa_fire_fin__chef.png",
+      "before_flags": 8,
+      "after_flags": 6,
+      "before_mean": 15.5,
+      "after_mean": 13.8
+    },
+    {
+      "file": "cocoa/char_cocoa_rocket__chef.png",
+      "before_flags": 1,
+      "after_flags": 0,
+      "before_mean": 9.5,
+      "after_mean": 6.6
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_hop__chef.png",
+      "before_flags": 2,
+      "after_flags": 0,
+      "before_mean": 9.4,
+      "after_mean": 4.8
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_slam__chef.png",
+      "before_flags": 4,
+      "after_flags": 0,
+      "before_mean": 14.6,
+      "after_mean": 5.8
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_colossus__chef.png",
+      "before_flags": 8,
+      "after_flags": 1,
+      "before_mean": 12.8,
+      "after_mean": 7.7
+    },
+    {
+      "file": "yuzu/char_yuzu__summer.png",
+      "before_flags": 1,
+      "after_flags": 1,
+      "before_mean": 8.9,
+      "after_mean": 9.8
+    },
+    {
+      "file": "yuzu/char_yuzu_run__summer.png",
+      "before_flags": 7,
+      "after_flags": 2,
+      "before_mean": 23.4,
+      "after_mean": 11.2
+    },
+    {
+      "file": "yuzu/char_yuzu_attack__summer.png",
+      "before_flags": 1,
+      "after_flags": 1,
+      "before_mean": 7.1,
+      "after_mean": 6.2
+    },
+    {
+      "file": "sesame/char_sesame_attack__moon.png",
+      "before_flags": 1,
+      "after_flags": 0,
+      "before_mean": 6.2,
+      "after_mean": 6.2
+    }
+  ],
+  "one_row_trials": [
+    {
+      "file": "momo/char_momo__sakura.png",
+      "before_flags": 1,
+      "after_flags": 1,
+      "before_mean": 6.9,
+      "after_mean": 4.5
+    },
+    {
+      "file": "mint/char_mint__snow.png",
+      "before_flags": 1,
+      "after_flags": 1,
+      "before_mean": 10.4,
+      "after_mean": 9.2
+    },
+    {
+      "file": "mint/char_mint_attack__snow.png",
+      "before_flags": 4,
+      "after_flags": 4,
+      "before_mean": 16.2,
+      "after_mean": 16.8
+    },
+    {
+      "file": "mint/char_mint_gale__snow.png",
+      "before_flags": 7,
+      "after_flags": 4,
+      "before_mean": 19.8,
+      "after_mean": 15.0
+    },
+    {
+      "file": "mint/char_mint_impaler_release__snow.png",
+      "before_flags": 2,
+      "after_flags": 0,
+      "before_mean": 6.2,
+      "after_mean": 4.8
+    },
+    {
+      "file": "cocoa/char_cocoa_attack__chef.png",
+      "before_flags": 4,
+      "after_flags": 8,
+      "before_mean": 15.2,
+      "after_mean": 18.4
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_motion823__chef.png",
+      "before_flags": 4,
+      "after_flags": 4,
+      "before_mean": 13.1,
+      "after_mean": 13.2
+    }
+  ]
+}

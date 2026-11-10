@@ -1,3 +1,7 @@
+# Current checkpoint — art order 69 frame repack (2026-11-10)
+
+Corrected mispacked rows and re-aligned frames for 14 candidate sheets and re-generated the Mint and Cocoa attack candidates from original poses. Mechanical bounding-box review flags are down from 22 to 10 of 49 sheets; this is not proof of pose correctness or product acceptance. All 61 hero/other candidates still need pose, weapon/foot anchor, effect and motion review; seven files (banner, icon atlas, five pet sheets) remain delivered. REPACK_QA.json records trials; FRAME_AUDIT.json and comparison GIFs reflect current candidate images. No runtime edits or device tests.
+
 # Current checkpoint — art order 69 icon atlas and review (2026-11-10)
 
 Generated six matching chest-up ImageGen portraits and assembled a transparent 1536x256 six-cell skin_icons69.png. Verified each cell and reviewed a 90px preview on #261e30. Seven source files now delivered: the atlas, five pet sheets, and the opaque banner. The other 61 remain candidates, including all 49 combat sheets and 12 character portraits. FRAME_AUDIT.json now compares each original's corner alpha and bounding boxes: 22 sheets have at least one bounds difference >12px, which is a review flag, not proof of a defect or proof of the remaining assets being acceptable. Exact pose, anchors, animation continuity and art review remain; no integration or mobile playtest. See QA_REPORT.json.
