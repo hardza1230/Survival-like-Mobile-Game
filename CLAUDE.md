@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.72**. Next release:8.1.73. Fetch the deploy branch before new work.
+Current release: **8.1.73**. Next release:8.1.74. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.72 — tutorial control reveal + Momo Unique bloom removed (owner)
+# Latest delivery: v8.1.73 — order 69 partial wire (7 delivered files)
+
+scripts/pack-skins69.py packs MANIFEST `delivered` only → assets/art/cosmetics: cos_pet_*_hd (256×6, ASSET_FX, used by lobbyCos sp() without upscaling), skin_icons69 (6×256 card portraits), skin_banner69 (ASSET_IMAGES, Wardrobe showcase on Skins tab with no preview). 61 hero candidates (cards/roster/49 sheets) are NOT accepted by the art side yet → skins stay "Coming soon"; when delivered, register card_<hero>__<tag>, roster_<hero>__<tag>, char_*__<tag> (same frame sizes) and skins go on sale automatically.
+
+# Previous delivery: v8.1.72 — tutorial control reveal + Momo Unique bloom removed (owner)
 
 coachControls(): during Ruby coach, Dash group hidden until step 'dash', Unique group (+Flicker) until step 'unique'; called in _coachNext, tickTutorialCoach, _coachFinish (restore). Momo berryRebound no longer calls healAura (growth_unlock flower bloom) — keeps revive sfx; Cocoa regen still uses healAura. Test: coach-controls.
-
-# Previous delivery: v8.1.71 — bottom tab bar on new screens (owner: same bug as before)
-
-Screen builders called directly (button rebuilds) skip buildMenuScreen's nav bar unless listed in NAV_WRAP (v8.0.1 wrapper navWrapBuild). Added buildWardrobe, buildPatrol, buildRanking, buildGm, buildHeroes, buildStoryBook. **Every new top-level screen builder must be added to NAV_WRAP** (wardrobe test checks the new ones).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -43,7 +43,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
-- ใบ 69 สกินเต็มตัว Festival (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
+- ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
 - ใบ 65 Daily Login 30 วัน ผูกแล้ว v8.1.43 · รอ QA มือถือ · A09 เสียง Ruby ในด่าน ผูกแล้ว v8.1.43
 - Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
 - ใบสั่ง 62 สถานะติดตัว ผูกแล้ว v8.0.85 · รอ QA มือถือ

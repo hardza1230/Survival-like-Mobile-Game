@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.72';
+const GAME_VERSION = '8.1.73';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.73',date:'2026-11-10',title:'Sharper pets and skin previews',items:['Pets are drawn in high resolution in the Lobby and Wardrobe (no more blur)','Skins tab shows the Festival collection banner and new portrait cards']},
   {v:'8.1.72',date:'2026-11-10',title:'Tutorial buttons and Strawberry Unique',items:['Ruby’s training shows the Dash button only from the Dash lesson and the Unique button only from the Unique lesson','Strawberry Rebound no longer shows the flower bloom on the hero (the heal still works)']},
   {v:'8.1.71',date:'2026-11-10',title:'Bottom tabs everywhere',items:['The bottom tab bar no longer disappears after tapping something in Wardrobe, Mochi Patrol, Rankings, GM tools, Heroes or the Story book']},
   {v:'8.1.70',date:'2026-11-10',title:'Sweep, Mochi Patrol and Skins',items:['Sweep: stages with all 3 stars can be swept for half of your best real reward, 5 times a day','Mochi Patrol (Activities): leave the game open and your hero keeps fighting, up to 4 hours a day, with a Dim screen mode that saves battery','Wardrobe: new Skins tab for full outfits (coming soon); wings, halos and rings are retired and their Thread was returned']},
@@ -2375,6 +2376,7 @@ const ASSET_IMAGES = {
   hr_ic_blossom:'assets/art/hero_roster_ui/ic_blossom.webp',
   hr_ic_candy:'assets/art/hero_roster_ui/ic_candy.webp',
   hr_ic_flower:'assets/art/hero_roster_ui/ic_flower.webp',
+  skin_banner69:'assets/art/cosmetics/skin_banner69.webp',   // v8.1.73 ใบ 69 แบนเนอร์สกิน Festival (โหลดตอนเปิด Wardrobe)
   roster_momo:'assets/art/hero_roster/momo.webp',roster_mint:'assets/art/hero_roster/mint.webp',roster_cocoa:'assets/art/hero_roster/cocoa.webp',roster_taro:'assets/art/hero_roster/taro.webp',roster_yuzu:'assets/art/hero_roster/yuzu.webp',roster_sesame:'assets/art/hero_roster/sesame.webp',
   card_momo:'assets/character_cards/card_momo.png', card_mint:'assets/character_cards/card_mint_frostleaf.png',
   card_cocoa:'assets/character_cards/card_cocoa.png', card_taro:'assets/character_cards/card_taro.png',
@@ -3270,6 +3272,13 @@ const ASSET_FX = {
   cos_pet_bird:{url:'assets/art/cosmetics/cos_pet_bird.webp',fw:96,fh:96,frames:6,rate:8,anchor:'center',loop:true},
   cos_trail:{url:'assets/art/cosmetics/cos_trail.webp',fw:48,fh:48,frames:3,rate:8,anchor:'center',loop:false},
   cos_icons:{url:'assets/art/cosmetics/cos_icons.webp',fw:128,fh:128,frames:9,rate:8,anchor:'center',loop:false},
+  /* v8.1.73 ใบ 69 ส่งแล้ว 7 ไฟล์ (สัตว์เลี้ยง HD + ไอคอนสกิน) · ชีตสกินฮีโร่ยังเป็น candidates รอผ่านตรวจ */
+  cos_pet_mochi_hd:{url:'assets/art/cosmetics/cos_pet_mochi_hd.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_turtle_hd:{url:'assets/art/cosmetics/cos_pet_turtle_hd.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_bird_hd:{url:'assets/art/cosmetics/cos_pet_bird_hd.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_bunny_hd:{url:'assets/art/cosmetics/cos_pet_bunny_hd.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
+  cos_pet_jelly_hd:{url:'assets/art/cosmetics/cos_pet_jelly_hd.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:true},
+  skin_icons69:{url:'assets/art/cosmetics/skin_icons69.webp',fw:256,fh:256,frames:6,rate:8,anchor:'center',loop:false},
   cos_halo_donut:{url:'assets/art/cosmetics/cos_halo_donut.webp',fw:96,fh:64,frames:6,rate:8,anchor:'center',loop:true},
   cos_halo_crown:{url:'assets/art/cosmetics/cos_halo_crown.webp',fw:96,fh:64,frames:6,rate:8,anchor:'center',loop:true},
   cos_halo_cloud:{url:'assets/art/cosmetics/cos_halo_cloud.webp',fw:96,fh:64,frames:6,rate:8,anchor:'center',loop:true},
@@ -13714,7 +13723,8 @@ class Game extends Phaser.Scene {
       for(let i=18;i>=1;i--)g.fillStyle(i>12?0xc9a0ff:0xffe6f4,.022).fillCircle(cx,top+sh*.48,sh*.55*i/18);
       for(let i=8;i>=1;i--)g.fillStyle(0xffd88a,.07).fillEllipse(cx,top+sh-24,sh*.7*i/8,sh*.12*i/8);
       g.lineStyle(2,0xffd166,.85).strokeRoundedRect(px,top,pw,sh,20).lineStyle(1,0xffffff,.18).strokeRoundedRect(px+5,top+5,pw-10,sh-10,16); this.menu.add(g);
-      const ov={}; if(prev)ov[prev.slot]=prev; this.cosEnsurePrev?.(prev); this.lobbyCos?.(cx,top+sh-24,sh*.74,ov,'wardrobe'); this.wardHero?.(cx,top+sh-24,sh*.74,isSkin?(pSkin||Cos.skin(wHero)||null):undefined);
+      const ban=isSkin&&!pSkin&&this.realTex?.('skin_banner69'); if(ban){ const bi=this.add.image(cx,top+sh/2,'skin_banner69'),sc=Math.max((pw-8)/bi.width,(sh-8)/bi.height); bi.setScale(sc).setCrop((bi.width-(pw-8)/sc)/2,(bi.height-(sh-8)/sc)/2,(pw-8)/sc,(sh-8)/sc); this.menu.add(bi); }   /* v8.1.73 ใบ 69 F */
+      const ov={}; if(prev)ov[prev.slot]=prev; if(!ban)this.cosEnsurePrev?.(prev); if(!ban)this.lobbyCos?.(cx,top+sh-24,sh*.74,ov,'wardrobe'); if(!ban)this.wardHero?.(cx,top+sh-24,sh*.74,isSkin?(pSkin||Cos.skin(wHero)||null):undefined);
       if(prev&&['dash','pop','trail'].includes(prev.slot)){ const ik=prev.icon[0]; if(this.realTex?.(ik)){ const o=this.add.image(cx+sh*.42,top+sh*.42,ik,prev.icon[1]).setDisplaySize(64,64); const t=Cos.tint(prev); if(t!=null&&Cos.owns(prev.id))o.setTint(t); this.menu.add(o); this.tweens?.add({targets:o,y:o.y-6,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); } T(cx+sh*.42,top+sh*.42+42,prev.slot==='pop'?'On every kill':prev.slot==='dash'?'When you dash':'While you walk',9,'#e8d8ff'); }
       // ด้าย + ปุ่มเติม
       const tw=118,tx=px+10,ty=top+10,tg=this.add.graphics(); tg.fillStyle(0x140c1c,.85).fillRoundedRect(tx,ty,tw,26,13).lineStyle(1.5,0xffb0d8,.9).strokeRoundedRect(tx,ty,tw,26,13).fillStyle(0xff7ab8,1).fillCircle(tx+tw-13,ty+13,10); this.menu.add(tg);
@@ -13869,7 +13879,8 @@ class Game extends Phaser.Scene {
   cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.menuCue?.(Cos.equipped(c.slot)?.id===c.id?'ui_cos_equip':'ui_cos_unequip',.4)||Sfx.select?.(); this.buildWardrobe(); return; }
     if(this._cosPrev!==c.id){ this._cosPrev=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }   /* v8.1.68 แตะครั้งแรก = ลองใส่ · ซื้อจากแถบล่าง */
     if(Cos.buy(c.id)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
-  loadCosArt(){ if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_icons/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
+  loadCosArt(){ if(!this._skinBan&&this.ensureGroup&&typeof ASSET_IMAGES!=='undefined'&&ASSET_IMAGES.skin_banner69&&!this.realTex?.('skin_banner69')){ this._skinBan=true; try{ this.ensureGroup(k=>k==='skin_banner69',()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true}); }catch(e){} }
+    if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2'))&&(!ASSET_FX.skin_icons69||this.realTex?.('skin_icons69')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^(cos_icons|skin_icons69)/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
   cosWornKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(c)out.push(c.tk||('cos_'+c.id)); } return out; }
   cosNeedKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(!c)continue; const k=c.tk||('cos_'+c.id); if(ASSET_FX[k]&&!this.realTex?.(k)&&!(this._cosTried&&this._cosTried.has(k)))out.push(k); } return out; }

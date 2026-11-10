@@ -21,7 +21,7 @@ for(const m of ['lobbyCosHalo','cosDashFx','lobbyCos','buildWardrobe','wardBar',
 assert.ok(src.includes("s==='wardrobe')this.buildWardrobe()")&&src.includes('this.tickCos?.(dt)')&&src.includes('this.cosSetup?.()')&&src.includes('this.skinSwap?.(true)'));
 { const nw=src.match(/const NAV_WRAP=\[([^\]]*)\]/)[1]; for(const m of ['buildWardrobe','buildPatrol','buildRanking','buildGm','buildHeroes'])assert.ok(nw.includes("'"+m+"'"),'nav bar wrap '+m); }
 console.log('Wardrobe: Skins + 4 shop slots, wings/halo/ring refund once, skins need art and belong to one hero, free dyes, Thread purchase, auto-equip, toggle, no-afford guard and hooks passed');
-{ const path=require('path');const m=src.match(/  (cos_[a-z0-9_]+):\{url:'(assets\/art\/cosmetics\/[^']+)',fw:(\d+),fh:(\d+),frames:(\d+)/g)||[];assert.strictEqual(m.length,26,'26 cosmetic FX sheets');
+{ const path=require('path');const m=src.match(/  (cos_[a-z0-9_]+):\{url:'(assets\/art\/cosmetics\/[^']+)',fw:(\d+),fh:(\d+),frames:(\d+)/g)||[];assert.strictEqual(m.length,31,'26 cosmetic FX sheets + 5 HD pets');
   for(const row of m){const [,k,u]=row.match(/(cos_[a-z0-9_]+):\{url:'([^']+)'/);assert.ok(fs.existsSync(path.join(__dirname,'..',u)),u);}
   for(const c of COSMETICS){const k=c.tk||('cos_'+c.id);assert.ok(src.includes('  '+k+':{url:'),k);assert.ok(src.includes('  '+c.icon[0]+':{url:'),c.icon[0]);}
   assert.ok(/art\\\/\(\?:menu_orders\|login30\|cosmetics\|/.test(src),'cosmetics lazy');console.log('Wardrobe art 66+67: 26 lazy FX sheets present, every cosmetic and icon sheet registered'); }
