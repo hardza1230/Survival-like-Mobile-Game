@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.76**. Next release:8.1.77. Fetch the deploy branch before new work.
+Current release: **8.1.77**. Next release:8.1.78. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.76 — mission pools + loot scaling by chapter (owner)
+# Latest delivery: v8.1.77 — missions round 1 (owner plan: round 1 of 4)
+
+objectivePosition(i,n): n<=1 now uses a random base angle (was always angle 0 = right → Clean Air drifted right). cleanAirPreview: dashed path current→target→next + ghost rings (c.nx/c.ny chosen one step ahead; _cleanAirPath cleared with zone). Capture: r0 140 (was 110), grows +240 (was +120), captureKillBonus +0.5s per kill inside (+2 elite/mini), progress never drops (owner). Defend Nectar: no 1/3 max-HP loss — lost flower = bonus fail + timer −20%; heal near 18/s. Survive: surviveSupply drops a crate at 30%/65% of the timer → Sugar 3+1.2·si pieces (noHold, must walk) + 50% heart. Hunt: last target (progress = target−1) = Stalker Captain (hp ×3.2, scale .64, gold tint) → held gear box. Next: round 2 = five Ch3 signature missions (Seed Rift, Shake Trees, Mirror Path, Vault Altar, Last Light), round 3 = Escort speed-up, Clean Air bonus bubbles, Seasonal pickup/shrine choice, Roots guardians/pulse, opt-in start + Overcharge; round 4 = art orders.
+
+# Previous delivery: v8.1.76 — mission pools + loot scaling by chapter (owner)
 
 STAGES[5..14].objectives: no 'survive' (Ch1 keeps it via default pool/lessons); purge/capture fill the gap (6 cleanAir+capture, 7 defendNectar+purge, 8 seasonCycle+capture, 9 breakRoots+purge, 10–14 hunt/purge/capture). setupWaveObjective: Hunt once per stage (_huntUsed reset in startStage; planned lessons count; forceType/bounties exempt). bigFoeLoot by chapter ch=floor(si/5): mini Sugar [4+si, 8+2si, 10+3si], boxes Ch1 30% one / Ch2 one / Ch3 one-two min Rare; boss extra run boxes [end?1:0, end?2:1, end?3:2] (Ch1 rare only), Sugar [8+2si, 15+4si, 25+6si]. Owner: Ch3 signature missions on hold — research other games first.
-
-# Previous delivery: v8.1.75 — loot feel + replay bounties (owner)
-
-lootHold(g,ms): mission burst items (sugar, currency, bonus gear) held 1.9s (collectLoot + tickLootMagnet skip), then `_vac` pulls from any range at ≥620px/s. rareLootPillar() from spawnDropBeam: gear rare/epic/legend pillars (legend + ground rings + chime), cleared by hidePickupCue. Replay (usesReplaySurvival) had no objectives → replayBountyTick: every ~50–70s (first at 22s) a 45s Bounty from the stage pool minus survive/fill via setupWaveObjective(forceType); completeWaveObjective branch: Sugar 10+3·si (+bonus goal), missionLootBurst, meter +8%; miss = no penalty; renderReplayProgress paused while active. bigFoeLoot: mini = Sugar fountain (10+3·si) + 1–2 held gear boxes min Rare (replaces 25% chance; not in Boss Rush); boss (story/replay, not rush/recipe/rift/delve) = +2 run boxes (3 at si%5===4, epic 12%+3%/stage) + Sugar 25+6·si. Test: loot-feel. Sesame `vo_sesame_unlock` line approved by owner.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- ภารกิจประจำด่าน Chapter 3 (ข้อเสนอ Replant Seeds / Shake Trees / Mirror Beams / Crack the Vault / Hold the Last Light) · เจ้าของ: ยังก่อน ให้ดูตัวอย่างเกมอื่นประกอบก่อน
+- ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 เสร็จ v8.1.77 · รอบ 2 ภารกิจใหม่ Ch3 5 แบบ (Seed Rift / Shake the Trees / Mirror Path / Vault Altar / Last Light) · รอบ 3 ปรับ Escort/Clean Air ฟองโบนัส/Seasonal/Roots + เลือกเริ่มเอง + Overcharge · รอบ 4 ใบสั่งอาร์ต
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
 - ใบ 65 Daily Login 30 วัน ผูกแล้ว v8.1.43 · รอ QA มือถือ · A09 เสียง Ruby ในด่าน ผูกแล้ว v8.1.43

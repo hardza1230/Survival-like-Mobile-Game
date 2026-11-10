@@ -13,3 +13,11 @@ const pool=m('replayBountyPool');assert.ok(/t!=='survive'&&t!=='fill'/.test(pool
 assert.ok(/m\.kills\+m\.goal\*\.08/.test(src)&&/this\.replayBountyTick\?\.\(m\)/.test(src)&&/until:m\.time\+45/.test(src),'bounty reward/timer');
 { const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].slice(0,10).map(m=>m[1]);assert.strictEqual(ob.length,10);for(const o of ob)assert.ok(!o.includes('survive')&&o.includes('hunt'),'Ch2-3 pools: no Survive');assert.ok(src.includes('this._huntUsed=true')&&src.includes('this._huntUsed=false;'),'hunt once per stage'); }
 console.log('Loot feel: held mission loot + vacuum, rare pillars, replay bounties, mini fountain, boss boxes passed');
+{ // v8.1.77 รอบ 1 ภารกิจ
+  assert.ok(/const base=n<=1\?Math\.random\(\)\*TAU:0;/.test(src),'single objective spot no longer always to the right');
+  for(const n of ['cleanAirPreview','captureKillBonus','surviveSupply'])m(n);
+  assert.ok(/r0=z\.r0\|\|140,want=r0\+f\*240/.test(src)&&src.includes("spawnCaptureZone(){\n    const o=this.waveObjective;if(!o||o.type!=='capture')return;const pos=this.objectivePosition(0,1,250,370),r=140;"),'capture zone bigger and grows more');
+  assert.ok(!/nectarLifeLoss\(\);if\(this\.state/.test(src)&&/timer -20%/.test(src),'nectar: no HP loss');
+  assert.ok(/e\._huntCaptain=cap/.test(src)&&/e\._huntCaptain&&!this\._inTutorial&&this\.spawnLoot/.test(src),'hunt captain drops a box');
+  assert.ok(/noHold:true/.test(m('surviveSupply')),'supply loot must be walked to');
+  console.log('Missions round 1: random single spot, clean-air path preview, bigger capture + kill bonus, nectar no HP loss, survive supply drops, hunt captain passed'); }
