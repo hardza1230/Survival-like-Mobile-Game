@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.77**. Next release:8.1.78. Fetch the deploy branch before new work.
+Current release: **8.1.78**. Next release:8.1.79. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.77 — missions round 1 (owner plan: round 1 of 4)
+# Latest delivery: v8.1.78 — missions round 2: Chapter 3 signature missions (placeholder visuals)
+
+SIG_MISSIONS seedRift/shakeTrees/mirrorPath/vaultAltar/lastLight → STAGES 10–14 objectives ['hunt',sig,capture|purge]. Generic layer: this._sig {type,objs} created in sigSetup (from setupWaveObjective), sigTick (from tickWaveObjective), sigOnKill (killEnemy), sigClear (clearWaveObjective); visuals = graphics + emoji via sigText (art order in round 4). seedRift: kills inside a shrinking rift (16s life, +1.5s/kill, collapses → moves, bonus lost), target 18+. shakeTrees: 3 trees, stand 1.8s, 66% fruit burst (noHold) / 34% ambush. mirrorPath: charge 3 mirrors 2.4s each → crystal blast R520 (60+18·si, ×3 normal). vaultAltar: walk onto one of 3 pacts (Double Swarm ×1.5 / Elite Pack ×1.7 / No Hearts ×1.9, dropHeal blocked) → survive 30s, reward bonus × mult + held gear box. lastLight: 3 lanterns (220hp, drained by nearby foes, rekindle 16/s near), all out = timer −30% + relight. objNodeG not cleared for SIG types. Test: sig-missions.
+
+# Previous delivery: v8.1.77 — missions round 1 (owner plan: round 1 of 4)
 
 objectivePosition(i,n): n<=1 now uses a random base angle (was always angle 0 = right → Clean Air drifted right). cleanAirPreview: dashed path current→target→next + ghost rings (c.nx/c.ny chosen one step ahead; _cleanAirPath cleared with zone). Capture: r0 140 (was 110), grows +240 (was +120), captureKillBonus +0.5s per kill inside (+2 elite/mini), progress never drops (owner). Defend Nectar: no 1/3 max-HP loss — lost flower = bonus fail + timer −20%; heal near 18/s. Survive: surviveSupply drops a crate at 30%/65% of the timer → Sugar 3+1.2·si pieces (noHold, must walk) + 50% heart. Hunt: last target (progress = target−1) = Stalker Captain (hp ×3.2, scale .64, gold tint) → held gear box. Next: round 2 = five Ch3 signature missions (Seed Rift, Shake Trees, Mirror Path, Vault Altar, Last Light), round 3 = Escort speed-up, Clean Air bonus bubbles, Seasonal pickup/shrine choice, Roots guardians/pulse, opt-in start + Overcharge; round 4 = art orders.
-
-# Previous delivery: v8.1.76 — mission pools + loot scaling by chapter (owner)
-
-STAGES[5..14].objectives: no 'survive' (Ch1 keeps it via default pool/lessons); purge/capture fill the gap (6 cleanAir+capture, 7 defendNectar+purge, 8 seasonCycle+capture, 9 breakRoots+purge, 10–14 hunt/purge/capture). setupWaveObjective: Hunt once per stage (_huntUsed reset in startStage; planned lessons count; forceType/bounties exempt). bigFoeLoot by chapter ch=floor(si/5): mini Sugar [4+si, 8+2si, 10+3si], boxes Ch1 30% one / Ch2 one / Ch3 one-two min Rare; boss extra run boxes [end?1:0, end?2:1, end?3:2] (Ch1 rare only), Sugar [8+2si, 15+4si, 25+6si]. Owner: Ch3 signature missions on hold — research other games first.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 เสร็จ v8.1.77 · รอบ 2 ภารกิจใหม่ Ch3 5 แบบ (Seed Rift / Shake the Trees / Mirror Path / Vault Altar / Last Light) · รอบ 3 ปรับ Escort/Clean Air ฟองโบนัส/Seasonal/Roots + เลือกเริ่มเอง + Overcharge · รอบ 4 ใบสั่งอาร์ต
+- ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 เสร็จ v8.1.77 · รอบ 2 เสร็จ v8.1.78 (ภาพชั่วคราว) · รอบ 3 ปรับ Escort/Clean Air ฟองโบนัส/Seasonal/Roots + เลือกเริ่มเอง + Overcharge · รอบ 4 ใบสั่งอาร์ต
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
 - ใบ 65 Daily Login 30 วัน ผูกแล้ว v8.1.43 · รอ QA มือถือ · A09 เสียง Ruby ในด่าน ผูกแล้ว v8.1.43
