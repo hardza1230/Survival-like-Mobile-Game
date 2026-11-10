@@ -3668,3 +3668,7 @@ Playwright smoke (serve repo root, scene = __g.scene.scenes.find(x=>x.buildMenuS
 ## Delivery: v8.1.68 — Wardrobe redesign (owner: match other screens, no overlap, make people want to buy)
 
 buildWardrobe rewritten: showcase panel (sh=31% H, 170–270) with hero (card_<c> via lobbyHeroWarp, wardHero) wearing equipped + previewed item via lobbyCos(x,foot,hh,ov,scr); tap card = try on (_cosPrev, replaces Tap-again _cosPend), cosEnsurePrev lazy-loads the previewed texture; thread pill + → Thread shop; Collection n/28; 7 slot tabs in one row (dot = equipped); cards with WEARING/OWNED tag, price pill; wardBar bottom: Buy & Wear / Need more + Get Thread / Wear-Take off + Dye. Checked 390×844 and 360×640, 0 errors.
+
+## Delivery: v8.1.69 — cosmetic anchors per hero (owner: cosmetics look stuck-on; step 1 of 3)
+
+cosAnchor(x,footY,hh) from LOBBY_FACE (head centre/top, back = 30% head→feet, feet = f[3]); wings at back, halo just above head top, pet beside shoulder, ring/trail at real feet (Cocoa no longer floats). cosAttach + cosFollow: lobbyHeroWarp upd moves attached cosmetics with breathe/sway/hop/spin (pet/halo bob via phase). Next steps discussed with owner: full-body skins art order, then paper-doll pilot on Momo.

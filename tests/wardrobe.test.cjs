@@ -19,6 +19,7 @@ ctx.ASSET_IMAGES={card_momo__sakura:'assets/x.webp'};Save.data.threads=1300;asse
 assert.ok(!Cos.setSkin('mint','momo_sakura'),'skin belongs to its hero');assert.ok(Cos.setSkin('momo',null));assert.strictEqual(Cos.skin('momo'),null);assert.ok(Cos.setSkin('momo','momo_sakura'));assert.ok(!Cos.buySkin('momo_sakura'));
 for(const m of ['lobbyCosHalo','cosDashFx','lobbyCos','buildWardrobe','wardBar','wardHero','cosAnchor','cosAttach','cosFollow','cosEnsurePrev','wardSkins','wardSkinBar','skinKey','skinLoad','skinSwap','skinFixAnims','cosTap','cosSetup','tickCos'])assert.ok(src.includes('\n  '+m+'('),m);
 assert.ok(src.includes("s==='wardrobe')this.buildWardrobe()")&&src.includes('this.tickCos?.(dt)')&&src.includes('this.cosSetup?.()')&&src.includes('this.skinSwap?.(true)'));
+{ const nw=src.match(/const NAV_WRAP=\[([^\]]*)\]/)[1]; for(const m of ['buildWardrobe','buildPatrol','buildRanking','buildGm','buildHeroes'])assert.ok(nw.includes("'"+m+"'"),'nav bar wrap '+m); }
 console.log('Wardrobe: Skins + 4 shop slots, wings/halo/ring refund once, skins need art and belong to one hero, free dyes, Thread purchase, auto-equip, toggle, no-afford guard and hooks passed');
 { const path=require('path');const m=src.match(/  (cos_[a-z0-9_]+):\{url:'(assets\/art\/cosmetics\/[^']+)',fw:(\d+),fh:(\d+),frames:(\d+)/g)||[];assert.strictEqual(m.length,26,'26 cosmetic FX sheets');
   for(const row of m){const [,k,u]=row.match(/(cos_[a-z0-9_]+):\{url:'([^']+)'/);assert.ok(fs.existsSync(path.join(__dirname,'..',u)),u);}

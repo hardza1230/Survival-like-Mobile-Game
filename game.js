@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.70';
+const GAME_VERSION = '8.1.71';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.71',date:'2026-11-10',title:'Bottom tabs everywhere',items:['The bottom tab bar no longer disappears after tapping something in Wardrobe, Mochi Patrol, Rankings, GM tools, Heroes or the Story book']},
   {v:'8.1.70',date:'2026-11-10',title:'Sweep, Mochi Patrol and Skins',items:['Sweep: stages with all 3 stars can be swept for half of your best real reward, 5 times a day','Mochi Patrol (Activities): leave the game open and your hero keeps fighting, up to 4 hours a day, with a Dim screen mode that saves battery','Wardrobe: new Skins tab for full outfits (coming soon); wings, halos and rings are retired and their Thread was returned']},
   {v:'8.1.69',date:'2026-11-10',title:'Cosmetics fit each hero',items:['Wings sit on the back, halos on the head and rings at the feet of each hero','Cosmetics now breathe, sway and hop together with your hero in the Lobby and Wardrobe']},
   {v:'8.1.68',date:'2026-11-10',title:'New Wardrobe',items:['Wardrobe redesigned: your hero stands on a showcase and tries on any item before you buy','All 7 slots fit in one row of tabs; cards show Wearing / Owned and the price','Buy, wear, take off and dye from one bar at the bottom; not enough Thread opens the Thread shop']},
@@ -23017,7 +23018,7 @@ Phaser.GameObjects.GameObjectFactory.prototype.text=function(x,y,value,style){
   return _textFactory.call(this,x,y,value,style).setResolution(RENDER_DPR);
 };
 // v8.0.1 เจ้าของ: แท็บล่างต้องอยู่ทุกหน้า → builder ระดับหน้าทุกตัวผ่าน navWrapBuild (เรียกซ้อนใน buildMenuScreen = ทำงานตามเดิม)
-const NAV_WRAP=['buildAchievements','buildBazaar','buildBestiary','buildChapterSelect','buildCraftBench','buildMerge','buildDaily','buildDig','buildGear','buildGearInbox','buildHub','buildHubGroup','buildKitchen','buildNews','buildPlayStats','buildRankPerks','buildSettings','buildSkillArchive','buildStageSelect','buildTradeIn','buildUpgrade','buildChars','buildTalents','buildStats','buildLobby'];
+const NAV_WRAP=['buildAchievements','buildBazaar','buildBestiary','buildChapterSelect','buildCraftBench','buildMerge','buildDaily','buildDig','buildGear','buildGearInbox','buildHub','buildHubGroup','buildKitchen','buildNews','buildPlayStats','buildRankPerks','buildSettings','buildSkillArchive','buildStageSelect','buildTradeIn','buildUpgrade','buildChars','buildTalents','buildStats','buildLobby','buildWardrobe','buildPatrol','buildRanking','buildGm','buildHeroes','buildStoryBook'];   // v8.1.71 หน้าใหม่ (Wardrobe/Patrol/Ranks/GM) ลืมใส่ → กดปุ่มในหน้าแล้วแท็บล่างหาย
 for(const n of NAV_WRAP){ const f=Game.prototype[n]; if(typeof f==='function')Game.prototype[n]=function(...a){ return this.navWrapBuild(f,a); }; }
 window.__g = new Phaser.Game({
   type: Phaser.AUTO,
