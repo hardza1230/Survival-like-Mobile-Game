@@ -14,6 +14,9 @@ create table if not exists public.leaderboard (
   s_style int not null default 0,
   updated_at timestamptz not null default now()
 );
+-- v8.1.67 กันค่ามั่วเบื้องต้น (ยังไม่ใช่การกันโกงจริง — ต้องตรวจฝั่งเซิร์ฟเวอร์ก่อนเปิดเกม)
+alter table public.leaderboard drop constraint if exists leaderboard_sane;
+alter table public.leaderboard add constraint leaderboard_sane check (s_sugar between 0 and 999999999 and s_levels between 0 and 6000 and s_rank between 0 and 9999 and s_stars between 0 and 45 and s_kills between 0 and 99999999 and s_bestiary between 0 and 500 and s_chests between 0 and 9999999 and s_style between 0 and 500 and name ~ '^[A-Za-z0-9_ .#-]{3,14}$');
 alter table public.leaderboard enable row level security;
 drop policy if exists "leaderboard read" on public.leaderboard;
 create policy "leaderboard read" on public.leaderboard for select to anon, authenticated using (true);

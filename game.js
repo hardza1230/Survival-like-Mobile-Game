@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.66';
+const GAME_VERSION = '8.1.67';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.67',date:'2026-11-10',title:'Bug sweep',items:['Bonus goals no longer fail while you are still walking to the ring or clean air','Sesame’s voice is no longer cut off when casting quickly','Bonus gear boxes land with their glow; cosmetics load reliably when entering a stage fast','Daily Login: day numbers and reward amounts are readable; preview says the gift comes tomorrow','Mochi Pass pays at most 30 daily gifts; test tools switch off automatically in the store build']},
   {v:'8.1.66',date:'2026-11-09',title:'Story voice and Cocoa fixes',items:['Story panels always speak, even when you tap ahead before the previous line ends (fixes the silent last panel in 1-1)','Cocoa Titan: the big aura around her is back; the fire ring at her feet while charging is now small and still grows and changes colour']},
   {v:'8.1.65',date:'2026-11-09',title:'New sounds and Sesame art',items:['Sesame: painted rune buttons, animated orbs, spell icons on Unique, a unique cast seal and cast sound for each of the 10 spells, and spoken spell names','Sesame now speaks when joining the team; painted icons for the Runes talent tree','Ruby voices the first tutorial, star/rank tips and mission complete','New sounds for the Thread shop, Wardrobe, Rankings, bonus goals, mission loot, codex, map, Boss Rush, curse and Pact screens']},
   {v:'8.1.64',date:'2026-11-09',title:'Calmer Great Hunger rings',items:['The Great Hunger’s Maw of the Void and Eclipse rings are smaller and more see-through so the boss stays visible']},
@@ -4333,9 +4334,10 @@ const VoiceActing={active:null,pending:null,serial:0,lastBark:-Infinity,history:
   /* v8.1.41 โหลดเสียง Unique ของฮีโร่ล่วงหน้าตอนเข้าด่าน (ทุก Build) → ใช้ครั้งแรกไม่หน่วง · เก็บในแคชตามกติกา _unique_ */
   preloadUnique(scene){try{if(!scene?.load?.audio||!this.enabled())return 0;const role=scene.character==='momo'?'strawberry':scene.character,pre='vo_'+role+'_unique_';let n=0;for(const k in A07_CATALOG)if(k.startsWith(pre)&&!scene.cache?.audio?.exists(k)){scene.load.audio(k,verUrl(A07_CATALOG[k].url));n++;}if(n&&!scene.load.isLoading())scene.load.start();return n;}catch(e){return 0;}},
   unique(scene){if(scene.state!=='play'||!scene.player?.active||scene._ruby||!this.enabled())return false;const player=scene.player;
-    if(this.busy()){if(this.active?.owner===player||this.pending?.owner===player)this.stop(player);else return false;}
     const role=scene.character==='momo'?'strawberry':scene.character,path=scene.basicAttack?.path,keys=[];
-    if(role==='sesame'&&scene.sesRuneRecipe){const now=performance.now();if(now-(this._sesVoAt||0)<2500)return false;this._sesVoAt=now;const rk=scene.sesRuneRecipe?.()?.key,sk='vo_sesame_spell_'+rk;if(rk&&A07_CATALOG[sk]&&Math.random()<.6){const epoch=scene._artEpoch;return this.play(scene,sk,()=>scene.state==='play'&&scene.player===player&&scene._artEpoch===epoch&&!scene._ruby,player,r=>{this.lastBark=performance.now();scene.showSpeechBubble?.(r.text,Math.max(1400,r.duration+200));});}}   /* v8.1.65 A11 Sesame เรียกชื่อเวท 60% */
+    if(role==='sesame'&&scene.sesRuneRecipe&&performance.now()-(this._sesVoAt||0)<2500)return false;   /* v8.1.67 เช็กช่วงเว้นก่อนตัดเสียงเดิม (เดิมร่ายถี่ = ตัดประโยคแล้วเงียบ) */
+    if(this.busy()){if(this.active?.owner===player||this.pending?.owner===player)this.stop(player);else return false;}
+    if(role==='sesame'&&scene.sesRuneRecipe){const now=performance.now();this._sesVoAt=now;const rk=scene.sesRuneRecipe?.()?.key,sk='vo_sesame_spell_'+rk;if(rk&&A07_CATALOG[sk]&&Math.random()<.6){const epoch=scene._artEpoch;return this.play(scene,sk,()=>scene.state==='play'&&scene.player===player&&scene._artEpoch===epoch&&!scene._ruby,player,r=>{this.lastBark=performance.now();scene.showSpeechBubble?.(r.text,Math.max(1400,r.duration+200));});}}   /* v8.1.65 A11 Sesame เรียกชื่อเวท 60% */
     for(const pre of [path?'vo_'+role+'_unique_'+path+'_':null,'vo_'+role+'_unique_'])if(pre)for(let i=1;i<=4;i++)if(A07_CATALOG[pre+i])keys.push(pre+i);
     if(!keys.length)return false;let n=this.uniqueTurn=((this.uniqueTurn??-1)+1)%keys.length,key=keys[n];if(key===this.lastUnique&&keys.length>1){n=this.uniqueTurn=(n+1)%keys.length;key=keys[n];}
     const epoch=scene._artEpoch;return this.play(scene,key,()=>scene.state==='play'&&scene.player===player&&scene._artEpoch===epoch&&!scene._ruby,player,r=>{this.lastUnique=key;this.lastBark=performance.now();scene.showSpeechBubble?.(r.text,Math.max(1600,r.duration+200));});},
@@ -6268,12 +6270,12 @@ const Iap={
   pack(id){ return IAP_PACKS.find(p=>p.id===id)||null; },
   firstBonus(id){ const d=(typeof Save!=='undefined'&&Save.data)||{}; return !(d.iapFirst&&d.iapFirst[id]); },
   passDaysLeft(now){ const d=Save.data||{},ps=d.mochiPass; if(!ps||!ps.until)return 0; const left=Math.ceil((ps.until-(now||Date.now()))/864e5); return Math.max(0,left); },
-  passClaimable(now){ const d=Save.data||{}; return this.passDaysLeft(now)>0&&d.mochiPass.day!==localDayKey(); },
+  passClaimable(now){ const d=Save.data||{}; return this.passDaysLeft(now)>0&&d.mochiPass.day!==localDayKey()&&(d.mochiPass.left==null||d.mochiPass.left>0); },
   /* เรียกหลัง Play ยืนยันการซื้อแล้วเท่านั้น · คืนจำนวนด้ายที่ได้ */
   grant(id,now){ const d=Save.data; if(!d)return 0; now=now||Date.now();
-    if(id===MOCHI_PASS.id){ const ps=d.mochiPass||{}; ps.until=Math.max(ps.until||0,now)+MOCHI_PASS.days*864e5; d.mochiPass=ps; Save.addThreads(MOCHI_PASS.instant); return MOCHI_PASS.instant; }
+    if(id===MOCHI_PASS.id){ const ps=d.mochiPass||{}; ps.until=Math.max(ps.until||0,now)+MOCHI_PASS.days*864e5; ps.left=(ps.left>0?ps.left:0)+MOCHI_PASS.days; d.mochiPass=ps;   /* v8.1.67 รับได้ไม่เกิน 30 ครั้งต่อ Pass */ Save.addThreads(MOCHI_PASS.instant); return MOCHI_PASS.instant; }
     const p=this.pack(id); if(!p)return 0; const first=this.firstBonus(id),n=(first?p.thread*2:p.thread)+p.bonus; d.iapFirst=Object.assign({},d.iapFirst,{[id]:1}); Save.addThreads(n); return n; },
-  claimPass(now){ if(!this.passClaimable(now))return 0; Save.data.mochiPass.day=localDayKey(); Save.addThreads(MOCHI_PASS.daily); return MOCHI_PASS.daily; },
+  claimPass(now){ if(!this.passClaimable(now))return 0; Save.data.mochiPass.day=localDayKey(); if(Save.data.mochiPass.left!=null)Save.data.mochiPass.left--; Save.addThreads(MOCHI_PASS.daily); return MOCHI_PASS.daily; },
   buy(id,done){ if(!this.available()){ done&&done(false,'unavailable'); return; } try{ window.MochiBilling.buy(id,ok=>{ const n=ok?this.grant(id):0; done&&done(!!ok,n); }); }catch(e){ done&&done(false,'error'); } }
 };
 /* v8.1.46 เจ้าของ: Wardrobe ของแต่ง 2D (ปีก/สัตว์เลี้ยง/หางประกาย) ซื้อด้วยด้าย · ใช้ได้ทุกฮีโร่ · ไม่มีพลัง · อาร์ตใบ 66 (ยังไม่มา = วาดแทนด้วยโค้ด) */
@@ -7641,7 +7643,7 @@ const Cloud = {
 };
 
 /* v8.1.57 เจ้าของ: โหมด GM สำหรับทดสอบ · Settings แตะมุมขวาล่าง 7 ครั้ง → รหัส · จำในเครื่อง (localStorage) · ต้องปิดก่อนขึ้น Play Store (GM_ENABLED=false) */
-const GM_ENABLED=true,GM_CODE='1234';
+const GM_ENABLED=(()=>{ try{ const h=location.hostname; return /\.github\.io$/.test(h)||(!!location.port&&/^(localhost|127\.)/.test(h)); }catch(e){ return true; } })(),GM_CODE='1234';   /* v8.1.67 เปิดเฉพาะเว็บทดสอบ (github.io / localhost:port) · แอปที่แพ็กไฟล์เอง (https://localhost) ปิดอัตโนมัติ */
 const GM={
   ls(k,v){ try{ if(v===undefined)return localStorage.getItem(k); if(v===null)localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){ return null; } },
   on(){ return GM_ENABLED&&this.ls('mochi_gm')==='1'; },
@@ -11948,7 +11950,7 @@ class Game extends Phaser.Scene {
     const nRows=rows.length+1;   // +1 = แถวบัญชี Cloud
     const top=portrait?92:66,gap=portrait?10:8,rowH=Math.min(portrait?68:54,(h-top-52-gap*(nRows-1))/nRows),rw=Math.min(w-30,520),rx=(w-rw)/2;
     rows.forEach((r,i)=>{const y=top+i*(rowH+gap);this._rowBtn(y,rowH,r.e,r.n,r.sub,r.value(),'#ffe08a',()=>{if(r.gm){Sfx.select();this.menuScreen='gm';this.buildMenuScreen();return;}if(r.open){Sfx.select();this._heroesTab='roster';this.menuScreen='playstats';this.buildMenuScreen();return;}r.toggle();Save.data.settings=st;Save.save();Sfx.select();this.layoutControls();this.buildSettings();},rx,rw);});
-    if(typeof GM!=='undefined'&&GM_ENABLED&&!GM.on()){ this._zone(w-70,h-44,70,44,()=>{ const now=Date.now(); this._gmTaps=(now-(this._gmTapAt||0)<1500)?(this._gmTaps||0)+1:1; this._gmTapAt=now; if(this._gmTaps>=7){ this._gmTaps=0; let c=null; try{ c=window.prompt('Code'); }catch(e){} if(c!=null){ if(GM.unlock(c)){ Sfx.clear?.(); this.showBanner?.('🛠 GM Tools on','Open GM Tools in Settings',1500); } else Sfx.error?.(); this.buildSettings(); } } }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.quiet=true; }
+    if(typeof GM!=='undefined'&&GM_ENABLED&&!GM.on()){ this._zone(w-40,h-40,40,40,()=>{ const now=Date.now(); this._gmTaps=(now-(this._gmTapAt||0)<1500)?(this._gmTaps||0)+1:1; this._gmTapAt=now; if(this._gmTaps>=7){ this._gmTaps=0; let c=null; try{ c=window.prompt('Code'); }catch(e){} if(c!=null){ if(GM.unlock(c)){ Sfx.clear?.(); this.showBanner?.('🛠 GM Tools on','Open GM Tools in Settings',1500); } else Sfx.error?.(); this.buildSettings(); } } }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.quiet=true; }
     // ☁️ บัญชี Cloud Save + เข้าสู่ระบบด้วย Google
     const accY=top+rows.length*(rowH+gap);
     const isG=(typeof Cloud!=='undefined'&&Cloud.isGoogle&&Cloud.isGoogle());
@@ -12194,11 +12196,11 @@ class Game extends Phaser.Scene {
     {const tt=T(W/2,py+(l30?14:24),l30?'Daily Login':'📅 Daily Login',19,'#ffe08a','bold');if(l30)tt.setColor('#fff4dc').setStroke('#5a2340',3);} T(W/2,py+(l30?54:46),'Day '+(cur+1)+' of '+LOGIN_DAYS+' · a new gift every day',11,'#cfc2d5');
     const cells=[]; LOGIN_CAL.forEach((r,j)=>{ if(j<wS||j>=wE)return; const k=j-wS,row=Math.floor(k/COLS),col=k%COLS,rn=row===0?Math.min(COLS,wN):wN-COLS,big=!!r.big,cw=cell,gw=rn*cell+(rn-1)*GAP,x=px+(pw-gw)/2+col*(cell+GAP),y=py+(l30?70:64)+row*(cell+GAP),done=j<cur,today=j===cur,cg=this.add.graphics();
       cg.fillStyle(today?0x5a3d1a:done?0x1f3328:0x1a1422,1).fillRoundedRect(x,y,cw,cell,10).lineStyle(big?3:2,today||big?0xffd166:done?0x7fe3a8:0x4a4059,1).strokeRoundedRect(x,y,cw,cell,10); c.add(cg);if(paper)cg.clear().fillStyle(0xf3e4cc,1).fillRoundedRect(x,y,cw,cell,12);if((l30&&(big?this.menuArtIcon?.('l30_cell30',done?1:0,x+cw/2,y+cell/2,cw,cell,c):this.menuArtIcon?.('l30_cell',today?1:done?2:r.k==='gold'?3:0,x+cw/2,y+cell/2,cw,cell,c)))||this.menuArtPanel?.('login_cell',today?1:done?2:0,x,y,cw,cell,c))cg.clear();if(today)(l30&&this.menuArtFx?.('l30_today_fx',x+cw/2,y+cell/2,cell*1.22,{parent:c,loop:true}))||this.menuArtFx?.('login_glow',x+cw/2,y+cell/2,cell*1.18,{parent:c,loop:true});
-      T(x+cw/2,y+Math.max(7,cell*.18),(cell<44||l30)?String(j+1):'Day '+(j+1),cell<44?8:9,today?'#ffe08a':'#a89cb6','bold');
+      { const dn=T(x+cw/2,y+Math.max(7,cell*.18),(cell<44||l30)?String(j+1):'Day '+(j+1),l30?11:cell<44?8:9,today?'#ffe08a':'#a89cb6','bold'); if(l30)dn.setColor('#5a2340').setStroke('#fff4dc',3).setPosition(x+cell*.2,y+cell*.2); }   /* v8.1.67 เลขวันอ่านออกบนกรอบภาพ */
       const ck=r.k==='silver'?'chest_silver':r.k==='gold'?'chest_gold':null,isz=cell*.42; let ic;
       const l30i=l30?(big?this.menuArtIcon?.('l30_reward30',0,x+cw/2,y+cell*.48,isz*1.5,isz*1.5,c):this.menuArtIcon?.('l30_reward',r.k==='sugar'?(r.n>=600?1:0):r.k==='thread'?2:r.k==='cur'?3:r.k==='silver'?4:5,x+cw/2,y+cell*.48,isz*1.15,isz*1.15,c)):null;
       if(l30i)ic=l30i; else if(ck&&this.realTex(ck)){ ic=this.add.image(x+cw/2,y+cell*.48,ck); ic.setScale(isz*1.15/Math.max(ic.width,ic.height)); } else ic=this.menuArtIcon?.('day_reward',r.k==='sugar'&&r.n>=600?3:r.k==='thread'?1:r.k==='cur'?2:0,x+cw/2,y+cell*.48,isz,isz,c)||this.add.text(x+cw/2,y+cell*.48,r.emoji,{fontSize:Math.round(isz*.8)+'px'}).setOrigin(.5);
-      ic.setAlpha(done?.45:1); c.add(ic); T(x+cw/2,y+cell-Math.max(7,cell*.16),r.k==='silver'||r.k==='gold'?(cell<48?(r.k==='gold'?'Gold':'Silver'):r.name):'+'+LoginCal.amount(r),cell<48?8:r.k==='silver'||r.k==='gold'?9:10,done?'#7fe3a8':'#ffffff','bold');
+      ic.setAlpha(done?.45:1); c.add(ic); T(x+cw/2,y+cell-Math.max(7,cell*.16),r.k==='silver'||r.k==='gold'?(cell<48?(r.k==='gold'?'Gold':'Silver'):r.name):'+'+LoginCal.amount(r),cell<48?8:r.k==='silver'||r.k==='gold'?9:10,done?'#7fe3a8':'#ffffff','bold')[l30?'setStroke':'setAlpha'](...(l30?['#5a2340',3]:[1]))[l30?'setColor':'setAlpha'](l30?(done?'#b9f5cf':'#ffffff'):1);
       if(done&&!(l30&&this.menuArtIcon?.('l30_stamp',0,x+cw-cell*.24,y+cell*.24,cell*.56,cell*.56,c))&&!this.menuArtIcon?.('login_stamp',0,x+cw-cell*.24,y+cell*.24,cell*.46,cell*.46,c))T(x+cw-10,y+10,'✓',12,'#7fe3a8','bold');
       if(today&&this.tweens)this.tweens.add({targets:ic,scaleX:ic.scaleX*1.12,scaleY:ic.scaleY*1.12,duration:480,yoyo:true,repeat:-1,ease:'Sine.inOut'});
       cells[j]={x,y,cw}; });
@@ -12208,7 +12210,7 @@ class Game extends Phaser.Scene {
       const gx=bx2+bw2+30,gy=ny+8; if(!(l30&&this.menuArtIcon?.('l30_reward30',0,gx,gy,40,40,c)))T(gx,gy,'🎁',22); T(gx,gy+26,'Day '+LOGIN_DAYS,9,'#ffe08a','bold'); }
     T(W/2,ny+44,'Missed a day? No problem — the calendar just waits for you.',10,'#a89cb6');
     const bw=Math.min(pw-40,240),bh=46,bx=W/2-bw/2,by=py+ph-bh-18,bg=this.add.graphics(); bg.fillStyle(0xffb020,1).fillRoundedRect(bx,by,bw,bh,14).fillStyle(0xffffff,.2).fillRoundedRect(bx+3,by+3,bw-6,bh*.42,10); c.add(bg);let btnArt=l30?this.menuArtPanel?.('l30_button',0,bx,by,bw,bh,c):null;if(btnArt)bg.clear();
-    const bt=T(W/2,by+bh/2,'🎁 Claim Day '+(cur+1),16,'#21131a','bold'); const t0=Date.now();
+    const bt=T(W/2,by+bh/2,from==='preview'?'Day '+(cur+1)+' · comes tomorrow':'🎁 Claim Day '+(cur+1),16,'#21131a','bold'); const t0=Date.now();
     this.tapZones=[]; this._zone(0,0,W,H,()=>{ if(Date.now()-t0<600)return; const res=from==='preview'?{i:cur,lines:['Preview only · next gift tomorrow']}:LoginCal.claim(); this.tapZones=[]; if(!res){ c.destroy(); this._loginC=null; this.buildMenuScreen(); return; }
       try{ (res.i===LOGIN_DAYS-1&&Sfx.menuCue?.('login_day30',.5))||Sfx.menuCue?.(LOGIN_CAL[res.i]?.k==='gold'?'login_day7':'login_claim',.45)||Sfx.progress&&Sfx.progress('daily'); }catch(e){}
       const at=cells[res.i]; if(at&&l30)this.menuArtFx?.('l30_claim_burst',at.x+at.cw/2,at.y+at.cw/2,at.cw*2.1,{parent:c}); if(at&&!(l30&&this.menuArtIcon?.('l30_stamp',0,at.x+at.cw-14,at.y+14,28,28,c))&&!this.menuArtIcon?.('login_stamp',0,at.x+at.cw-16,at.y+16,32,32,c)){ const ok=this.add.text(at.x+at.cw-12,at.y+12,'✓',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#7fe3a8'}).setOrigin(.5); c.add(ok); }
@@ -13691,7 +13693,7 @@ class Game extends Phaser.Scene {
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
   cosWornKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(c)out.push(c.tk||('cos_'+c.id)); } return out; }
   cosNeedKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(!c)continue; const k=c.tk||('cos_'+c.id); if(ASSET_FX[k]&&!this.realTex?.(k)&&!(this._cosTried&&this._cosTried.has(k)))out.push(k); } return out; }
-  cosEnsure(after){ const need=this.cosNeedKeys(); if(!need.length||!this.ensureGroup||this._cosLoading)return false; this._cosLoading=true; (this._cosTried||(this._cosTried=new Set())); try{ this.ensureGroup(k=>need.includes(k),()=>{ this._cosLoading=false; need.forEach(k=>{ if(!this.realTex?.(k))this._cosTried.add(k); }); after&&after(); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosLoading=false; return false; } return true; }
+  cosEnsure(after){ const need=this.cosNeedKeys(); if(!need.length||!this.ensureGroup)return false; if(this._cosLoading){ (this._cosWait||(this._cosWait=[])).push(after); return true; }   /* v8.1.67 กำลังโหลดอยู่ = เข้าคิวรอ (เดิมเข้าด่านเร็วได้ภาพแทน) */ this._cosLoading=true; (this._cosTried||(this._cosTried=new Set())); try{ this.ensureGroup(k=>need.includes(k),()=>{ this._cosLoading=false; need.forEach(k=>{ if(!this.realTex?.(k))this._cosTried.add(k); }); after&&after(); const q=this._cosWait||[]; this._cosWait=[]; q.forEach(f=>{ try{ f&&f(); }catch(e){} }); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosLoading=false; return false; } return true; }
   cosSetup(){ if(this.state==='play'&&this.cosEnsure(()=>{ if(this.state==='play')this.cosSetup(); }))return; (this._cosObjs||[]).forEach(o=>o?.destroy?.()); this._cosObjs=[]; this._cosW=this._cosP=this._cosH=this._cosA=null; this._cosDashSeen=undefined; const p=this.player; if(!p||typeof Cos==='undefined'||!Save.data)return;
     const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'); this._cosTrail=Cos.equipped('trail'); this._cosDash=Cos.equipped('dash'); this._cosPop=Cos.equipped('pop');
     const add=o=>{ this.camWorld(o); this._cosObjs.push(o); return o; },sp=(c,sc)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(p.x,p.y,k).setScale(sc); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
@@ -14292,7 +14294,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.voiceStop?.();this.time?.delayedCall?.(0,()=>{this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this.voiceStop?.();this._popN=0;this.time?.delayedCall?.(0,()=>{this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -15475,10 +15477,10 @@ class Game extends Phaser.Scene {
   objBonusHit(){ const b=this.waveObjective?.bonus; if(!b||!b.ok||b.kind!=='hits')return; b.n++; if(b.n>b.lim)this.objBonusFail(); }
   objBonusTick(dt){ const o=this.waveObjective,b=o?.bonus; if(!b||!b.ok||o.done)return;
     if(b.kind==='overtime'&&o._overtime)this.objBonusFail();
-    else if(b.kind==='bleed'&&(o._bleedStk||0)>0)this.objBonusFail();
+    else if(b.kind==='bleed'){ const z=this._captureZone; if(z&&this.dist(this.player.x,this.player.y,z.x,z.y)<=(z.radiusGoal||z.radius||110))b._in=true; if(b._in&&(o._bleedStk||0)>0)this.objBonusFail(); }   /* v8.1.67 นับหลังเข้าวงครั้งแรก (เดิมเสียโบนัสตอนเดินไปหาวง) */
     else if(b.kind==='wisp'&&this._wisp&&(this._wisp._light??1)<=0)this.objBonusFail();
     else if(b.kind==='wisp'&&!this._wisp&&o.progress<o.target&&b._seen)this.objBonusFail();
-    else if(b.kind==='out'&&this._cleanAir){ const c=this._cleanAir; if(this.dist(this.player.x,this.player.y,c.x,c.y)>c.r){ b.n+=dt; if(b.n>b.lim)this.objBonusFail(); } }
+    else if(b.kind==='out'&&this._cleanAir){ const c=this._cleanAir; if(this.dist(this.player.x,this.player.y,c.x,c.y)<=c.r)b._in=true; else if(b._in){ b.n+=dt; if(b.n>b.lim)this.objBonusFail(); } }
     if(b.kind==='wisp'&&this._wisp)b._seen=true; }
   objBonusTag(o){ const b=o?.bonus; if(!b)return ''; return b.ok?(b.kind==='hits'?' · ⭐ '+Math.max(0,b.lim-b.n):' · ⭐'):' · ☆'; }
   objBonusPay(o,sugar){ const b=o?.bonus; if(!b||!b.ok)return 0; const extra=Math.round(sugar*.5); this.sugarStage+=extra; this.sugarRun+=extra;
@@ -15487,9 +15489,9 @@ class Game extends Phaser.Scene {
   missionPoint(o){ const z=this._captureZone||this._cleanAir; if(z&&z.x!=null)return {x:z.x,y:z.y}; const w=this._wisp; if(w?.active)return {x:w.x,y:w.y}; return {x:this.player.x,y:this.player.y}; }
   missionLootBurst(o,sugar){ if(!this.loots||!this.player)return []; const P=this.missionPoint(o),out=[],n=Math.max(4,Math.min(6,Math.round(sugar/8)||4)); sugar=Math.max(0,Math.round(sugar||0));
     if(sugar>0){ this.sugarStage-=sugar; this.sugarRun-=sugar; let left=sugar; for(let i=0;i<n;i++){ const v=i===n-1?left:Math.floor(sugar/n); left-=v; let g=this.loots.getFirstDead(false); const tex=this.textures?.exists?.('ic_sugar')?'ic_sugar':'gift'; if(!g)g=this.loots.create(P.x,P.y,tex); else { g.setActive(true).setVisible(true); if(g.body)g.body.enable=true; g.setPosition(P.x,P.y); } if(!g){ this.sugarStage+=v; this.sugarRun+=v; continue; }
-      g.setTexture(tex).clearTint().setAlpha(1).setScale(.5); g.dropType='sugar'; g.sugarVal=v; g.curKey=null; g.lootTier=null; g.forgeExtra=false; g._mag=false; if(g.body)g.body.setAllowGravity?.(false); this.camWorld(g); out.push(g); } }
+      g.setTexture(tex).clearTint().setAlpha(1); g.setScale(22/Math.max(1,g.width||36)); g.dropType='sugar'; g.sugarVal=v; g.curKey=null; g.lootTier=null; g.forgeExtra=false; g._mag=false; if(g.body)g.body.setAllowGravity?.(false); this.camWorld(g); out.push(g); } }
     const ck=typeof forgeCurrency==='function'?forgeCurrency(this.currencyTierFor?.(),this._forgeLoot):null; if(ck)this.spawnCurrencyDrop(P.x,P.y,ck); 
-    if(o?.bonus?.ok){ this._lootMinRare=true; try{ const g=this.spawnLoot(P.x,P.y,(this.stageIndex>=10||this.endgameDropActive?.())?2:1); if(g)out.push(g); } finally { this._lootMinRare=false; } }
+    if(o?.bonus?.ok){ this._lootMinRare=true; try{ const ga=Math.random()*Math.PI*2; this.spawnLoot(P.x+Math.cos(ga)*70,P.y+Math.sin(ga)*56,(this.stageIndex>=10||this.endgameDropActive?.())?2:1); } finally { this._lootMinRare=false; } }   /* v8.1.67 กล่องเกิดที่จุดตกเลย (เดิมวงแสง/ลำแสงค้างที่จุดกลาง) */
     out.forEach((g,i)=>{ const a=i/out.length*Math.PI*2+Math.random()*.5,d=50+Math.random()*60; this.tweens.killTweensOf(g); g.setPosition(P.x,P.y); this.tweens.add({targets:g,x:P.x+Math.cos(a)*d,y:P.y+Math.sin(a)*d*.8,duration:420,ease:'Quad.out',onUpdate:()=>g.body?.reset?.(g.x,g.y)}); });
     this.time?.delayedCall?.(6000,()=>out.forEach(g=>{ if(g.active)g._mag=true; })); this.vfxHitRing?.(P.x,P.y,0xffd166,true); if(typeof Sfx!=='undefined')Sfx.orderCue?.('mission_loot_burst',.45,.3); return out; }
   completeWaveObjective(){

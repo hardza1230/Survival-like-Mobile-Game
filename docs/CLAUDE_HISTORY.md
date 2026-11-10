@@ -3652,3 +3652,8 @@ The first-stage coach (coachSteps) had no voice at all. showCoachIntro now calls
 
 bossSig '05_void_maw' 360/380→240/250 px, alpha .6; '05_eclipse' 900→620 px, alpha .9→.6 so the rings stop covering the boss. Hitboxes/pull unchanged.
 
+
+# v: v8.1.65 — wired art 68 (Sesame) + audio A11 (67) (owner)
+
+Audio: 26 sfx → assets/audio/sfx/a11 (ASSET_AUDIO sfx_<key>, Sfx.menuCue/orderCue at buildMenuScreen screen-open map, stage arrows, threadBuy/claimPass, cosTap/dye/cosDashFx, ranking top3/name, mission bonus/loot burst, sugar/rare pickups, skill archive page, curse, pact); 10 ses_cast_<code> → sfx/sesame_a10 (sesRuneCast, old ses811 fallback); 31 voices → acting + A07_CATALOG (Sesame spell names 60% in VoiceActing.unique with 2.5 s gap when sesRuneRecipe exists; vo_sesame_unlock via MC_HERO_VOICE → s10 now 5 shots; Ruby tutorial/tips/objective found by text). Art 68: scripts/pack-sesame68.py → assets/art/sesame68 (16, ASSET_FX, artHero sesame lazy): rune buttons (frames P0-2/M3-5/B6-8; circle kept as hit area), animated orbs, Unique spell icon (recipe order ppp,mmm,bbb,ppm,ppb,pmm,mmb,pbb,mbb,pmb), cast seal heroFx per recipe, Runes talent icons by TAL_SLOTS index. Tests a11-ses68 + updated story-motion-art/voice count 484/talent-icons.
+

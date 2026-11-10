@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.66**. Next release:8.1.67. Fetch the deploy branch before new work.
+Current release: **8.1.67**. Next release:8.1.68. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.66 — story voice skip + Cocoa feet fire (owner)
+# Latest delivery: v8.1.67 — bug sweep after a real-browser smoke run (owner: hunt bugs/holes)
+
+Playwright smoke (serve repo root, scene = __g.scene.scenes.find(x=>x.buildMenuScreen); all menu screens, GM buttons, wardrobe buy/dye, login popup, 4 heroes in stage, every objective type forced via setupWaveObjective(w,{forceType})) → 0 runtime errors. Fixed: capture/cleanAir bonus only counts after first entry (b._in); Sesame voice gap checked before stopping the current line; bonus gear box spawns at its landing spot (cue/beam stayed at centre); _popN reset per stage (leaked on scene.restart); cosEnsure queues callers while loading; Mochi Pass mochiPass.left caps 30 claims; login30 day number/amount legible, preview button text; GM tap zone 40×40 (no overlap with Reset progress); GM_ENABLED auto: only *.github.io or localhost:port (bundled app https://localhost = off). Known holes (not fixed, need a server): local save editable, device clock skips daily gates, window.MochiBilling spoofable, leaderboard scores client-sent (SQL now has sanity CHECKs), Supabase project paused.
+
+# Previous delivery: v8.1.66 — story voice skip + Cocoa feet fire (owner)
 
 Motion-comic shots: VoiceActing.play refuses while busy, so tapping ahead silenced the next panel (1-1 last panel). Now voiceStop() before voicePlay when busy. Cocoa Titan: v8.1.61 shrank the wrong piece — bpx_cocoa_rage body aura restored (120+24·rage, centred); the feet fire ring bpx_cocoa_rage_preview is now a small ellipse at the feet (70+18·rage px wide, 0.55 height), tint/growth by rage unchanged (no longer shows full slam radius).
-
-# Previous delivery: v8.1.65 — wired art 68 (Sesame) + audio A11 (67) (owner)
-
-Audio: 26 sfx → assets/audio/sfx/a11 (ASSET_AUDIO sfx_<key>, Sfx.menuCue/orderCue at buildMenuScreen screen-open map, stage arrows, threadBuy/claimPass, cosTap/dye/cosDashFx, ranking top3/name, mission bonus/loot burst, sugar/rare pickups, skill archive page, curse, pact); 10 ses_cast_<code> → sfx/sesame_a10 (sesRuneCast, old ses811 fallback); 31 voices → acting + A07_CATALOG (Sesame spell names 60% in VoiceActing.unique with 2.5 s gap when sesRuneRecipe exists; vo_sesame_unlock via MC_HERO_VOICE → s10 now 5 shots; Ruby tutorial/tips/objective found by text). Art 68: scripts/pack-sesame68.py → assets/art/sesame68 (16, ASSET_FX, artHero sesame lazy): rune buttons (frames P0-2/M3-5/B6-8; circle kept as hit area), animated orbs, Unique spell icon (recipe order ppp,mmm,bbb,ppm,ppb,pmm,mmb,pbb,mbb,pmb), cast seal heroFx per recipe, Runes talent icons by TAL_SLOTS index. Tests a11-ses68 + updated story-motion-art/voice count 484/talent-icons.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -50,7 +50,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - อาร์ตที่รอส่ง: 35 Yuzu Orchard, 36 Ruby (โค้ดใช้ภาพชั่วคราว), 49 กรอบโปรไฟล์, 50–54 เมนู (ผูกแล้ว v8.0.34 บางส่วน — ดู README) · เสียงชุด A04 เพลงรอสิทธิ์ Music Generation
 - รอ QA บนมือถือของเจ้าของ: อาร์ตที่ผูกแล้วทุกชุด (ภาพ/FPS), บาลานซ์ Yuzu/Seedlings, Citrus Command, Rewards hub
 - Sesame: เจ้าของอนุมัติ Rune Invoker ไม่มีสาย (2 Nov2026) · ดู `docs/design/SESAME_RUNE_INVOKER.md` · 10 เวท/การ์ดลูกแก้ว/อาร์ตและเสียงใหม่ v8.1.1 รอมือถือ · ถัดไปบาลานซ์/ความถนัดและ Talent ถาวร; ไม่ทำ Mirror Network ขั้น 2 ตามแผนเก่า
-- **ก่อนขึ้น Google Play: ตั้ง `GM_ENABLED=false`** (โหมด GM รหัส 1234 สำหรับทดสอบ v8.1.57)
+- GM (รหัส 1234) ปิดเองในแอปที่แพ็กไฟล์ (v8.1.67: เปิดเฉพาะ *.github.io / localhost:port) · **ก่อนขึ้น Google Play ตรวจว่า release ไม่ใช้ `server.url` ชี้ github.io** และต้องมีเซิร์ฟเวอร์ตรวจใบเสร็จ/คะแนน
 - เจ้าของ: ไม่ต้องจำลองเล่น headless เพื่อจูนบาลานซ์ และไม่ต้องถ่ายภาพหน้าจอตรวจ UI — เจ้าของตรวจบนมือถือเอง (headless หาบั๊กได้)
 
 ## 6. เอกสาร

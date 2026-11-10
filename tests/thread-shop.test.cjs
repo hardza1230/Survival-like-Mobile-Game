@@ -11,7 +11,7 @@ let res;Iap.buy('thread_60',(ok,why)=>res=[ok,why]);assert.deepStrictEqual([...r
 assert.strictEqual(Iap.grant('thread_200'),380);assert.strictEqual(Iap.grant('thread_200'),200);
 assert.strictEqual(Iap.grant('nope'),0);
 const now=Date.now();assert.strictEqual(Iap.grant('mochi_pass',now),300);assert.strictEqual(Iap.passDaysLeft(now),30);
-assert.strictEqual(Iap.claimPass(now),60);assert.strictEqual(Iap.claimPass(now),0);
+assert.strictEqual(Iap.claimPass(now),60);assert.strictEqual(Iap.claimPass(now),0);assert.strictEqual(Save.data.mochiPass.left,29);Save.data.mochiPass.left=0;Save.data.mochiPass.day='x';assert.strictEqual(Iap.claimPass(now),0,'no more than 30 claims');
 assert.strictEqual(Save.threads(),380+200+300+60);
 assert.ok(src.includes("['thread','Thread']")&&src.includes('buildThreadShop(top)'));
 console.log('Thread shop: packs, first-purchase double, Mochi Pass daily claim, billing unavailable guard passed');
