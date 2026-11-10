@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.67';
+const GAME_VERSION = '8.1.68';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.68',date:'2026-11-10',title:'New Wardrobe',items:['Wardrobe redesigned: your hero stands on a showcase and tries on any item before you buy','All 7 slots fit in one row of tabs; cards show Wearing / Owned and the price','Buy, wear, take off and dye from one bar at the bottom; not enough Thread opens the Thread shop']},
   {v:'8.1.67',date:'2026-11-10',title:'Bug sweep',items:['Bonus goals no longer fail while you are still walking to the ring or clean air','Sesame’s voice is no longer cut off when casting quickly','Bonus gear boxes land with their glow; cosmetics load reliably when entering a stage fast','Daily Login: day numbers and reward amounts are readable; preview says the gift comes tomorrow','Mochi Pass pays at most 30 daily gifts; test tools switch off automatically in the store build']},
   {v:'8.1.66',date:'2026-11-09',title:'Story voice and Cocoa fixes',items:['Story panels always speak, even when you tap ahead before the previous line ends (fixes the silent last panel in 1-1)','Cocoa Titan: the big aura around her is back; the fire ring at her feet while charging is now small and still grows and changes colour']},
   {v:'8.1.65',date:'2026-11-09',title:'New sounds and Sesame art',items:['Sesame: painted rune buttons, animated orbs, spell icons on Unique, a unique cast seal and cast sound for each of the 10 spells, and spoken spell names','Sesame now speaks when joining the team; painted icons for the Runes talent tree','Ruby voices the first tutorial, star/rank tips and mission complete','New sounds for the Thread shop, Wardrobe, Rankings, bonus goals, mission loot, codex, map, Boss Rush, curse and Pact screens']},
@@ -13664,31 +13665,78 @@ class Game extends Phaser.Scene {
         T(22,yy,(i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)),12,i<3?'#ffe08a':'#cfc2d5'); T(62,yy,q.name,12,q.me?'#ffe08a':'#fff0dc'); T(w-22,yy,Number(q.v).toLocaleString(),12,'#a8edc6',1); });
       if(!r.rows.length)T(w/2,y0+30,'Be the first on the board!',12,'#ffe08a',.5); })); }
   boardRename(){ let n=null; try{ n=window.prompt('Your ranking name (3–14 letters, numbers, space, _ . -)',Board.name()); }catch(e){} if(n==null)return; if(Board.setName(n)){ Sfx.menuCue?.('ui_name_saved',.45)||Sfx.clear?.(); this.showBanner?.('✏️ Name saved',Board.name(),1200); } else { Sfx.error?.(); this.showBanner?.('Name not allowed','Use 3–14 letters or numbers',1500); } this.buildRanking(); }
+  /* v8.1.68 เจ้าของ: Wardrobe ใหม่ — หุ่นลองชุด (แตะการ์ด = ลองใส่ก่อนซื้อ) · แท็บแถวเดียว · การ์ดมีป้าย Wearing/Owned · แถบซื้อด้านล่าง (ด้ายไม่พอ = ปุ่มไปร้านด้าย) */
   buildWardrobe(){ this.menu.removeAll(true);this.tapZones=[];this._screenBg('Wardrobe','screen_bazaar','bazaar'); this.loadCosArt?.();
-    const w=this.W,h=this.H,hs=this._hdrShift(),tab=this._cosTab=COS_SLOTS.some(t=>t[0]===this._cosTab)?this._cosTab:'wings'; let y=84+hs;
-    this.menu.add(this.add.text(14,y,'🧶 '+Save.threads()+' Thread',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffc6df'}));
-    this.menu.add(this.add.text(w-14,y+2,'Looks only · every hero',{fontFamily:'sans-serif',fontSize:'9px',color:'#c5b5d1'}).setOrigin(1,0)); y+=24;
-    const tw=(w-28)/4; COS_SLOTS.forEach(([id,label],i)=>{ const on=Cos.equipped(id); this.paintedNavButton(this.menu,14+tw*((i%4)+.5),y+15+Math.floor(i/4)*36,tw-6,30,label+(on?' ✓':''),id===tab,()=>{this._cosTab=id;this._cosPend=null;this.buildWardrobe();},'cos_'+id); }); y+=80;
-    const list=COSMETICS.filter(c=>c.slot===tab),cols=3,gap=8,cw=(w-28-gap*(cols-1))/cols,rows=Math.ceil(list.length/cols),ch=Math.min(150,Math.max(96,(h-y-16)/rows-gap));
-    list.forEach((c,i)=>{ const own=Cos.owns(c.id),on=Cos.equipped(c.slot)?.id===c.id,pend=this._cosPend===c.id,x=14+(i%cols)*(cw+gap),yy=y+Math.floor(i/cols)*(ch+gap),dy=Cos.dye(c.id);
-      this.bazaarProductCard(x,yy,cw,ch,{art:this.realTex?.(c.icon[0])?c.icon[0]:'ic_thread',name:c.name,desc:'',price:on?'✓ Wearing':own?'Wear':pend?'Tap again · 🧶 '+c.price:'🧶 '+c.price,color:on?0x7fe3a8:Cos.col(c),afford:own||Save.threads()>=c.price,fn:()=>this.cosTap(c),alt:own?{label:'🎨 '+COS_DYES[dy][0],fn:()=>{Cos.nextDye(c.id);Sfx.menuCue?.('ui_cos_dye',.4)||Sfx.select?.();this.buildWardrobe();}}:null});
-      const ic=this.menu.list.find(o=>o.texture?.key===c.icon[0]&&o._cosIcon==null&&o.x===x+cw/2); if(ic){ic._cosIcon=1;ic.setFrame?.(c.icon[1]);} 
-      if(!this.realTex?.(c.icon[0])){ const sw=this.add.circle(x+cw-14,yy+14,7,Cos.col(c),1).setStrokeStyle(2,0xffffff,.8); this.menu.add(sw); } }); }
-  lobbyCos(x,footY,hh){ if(typeof Cos==='undefined'||!Save.data)return; if(this.cosEnsure(()=>{ if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); }))return; const wg=Cos.equipped('wings'),pt=Cos.equipped('pet'),tr=Cos.equipped('trail'),hl=Cos.equipped('halo'),au=Cos.equipped('aura'),cy=footY-hh*.55;
+    const w=this.W,h=this.H,hs=this._hdrShift(),tab=this._cosTab=COS_SLOTS.some(t=>t[0]===this._cosTab)?this._cosTab:'wings',T=(x,y,str,fs,col,ox=.5,oy=.5,bold=true)=>{ const o=this.add.text(x,y,str,{fontFamily:'sans-serif',fontStyle:bold?'bold':'normal',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3}).setOrigin(ox,oy); this.menu.add(o); return o; };
+    let prev=Cos.item(this._cosPrev); if(prev&&prev.slot!==tab)prev=null; this._cosPrev=prev?prev.id:null;
+    const top=84+hs,barH=58,barY=h-barH-10,sh=Math.round(Math.max(170,Math.min(270,h*.31))),px=14,pw=w-28;
+    // ── หุ่นลองชุด
+    { const g=this.add.graphics(),cx=w/2; g.fillStyle(0x000000,.35).fillRoundedRect(px+3,top+5,pw,sh,20).fillStyle(0x221630,.94).fillRoundedRect(px,top,pw,sh,20);
+      for(let i=18;i>=1;i--)g.fillStyle(i>12?0xc9a0ff:0xffe6f4,.022).fillCircle(cx,top+sh*.48,sh*.55*i/18);
+      for(let i=8;i>=1;i--)g.fillStyle(0xffd88a,.07).fillEllipse(cx,top+sh-24,sh*.7*i/8,sh*.12*i/8);
+      g.lineStyle(2,0xffd166,.85).strokeRoundedRect(px,top,pw,sh,20).lineStyle(1,0xffffff,.18).strokeRoundedRect(px+5,top+5,pw-10,sh-10,16); this.menu.add(g);
+      const ov={}; if(prev)ov[prev.slot]=prev; this.cosEnsurePrev?.(prev); this.lobbyCos?.(cx,top+sh-24,sh*.74,ov,'wardrobe'); this.wardHero?.(cx,top+sh-24,sh*.74);
+      if(prev&&['dash','pop','trail'].includes(prev.slot)){ const ik=prev.icon[0]; if(this.realTex?.(ik)){ const o=this.add.image(cx+sh*.42,top+sh*.42,ik,prev.icon[1]).setDisplaySize(64,64); const t=Cos.tint(prev); if(t!=null&&Cos.owns(prev.id))o.setTint(t); this.menu.add(o); this.tweens?.add({targets:o,y:o.y-6,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); } T(cx+sh*.42,top+sh*.42+42,prev.slot==='pop'?'On every kill':prev.slot==='dash'?'When you dash':'While you walk',9,'#e8d8ff'); }
+      // ด้าย + ปุ่มเติม
+      const tw=118,tx=px+10,ty=top+10,tg=this.add.graphics(); tg.fillStyle(0x140c1c,.85).fillRoundedRect(tx,ty,tw,26,13).lineStyle(1.5,0xffb0d8,.9).strokeRoundedRect(tx,ty,tw,26,13).fillStyle(0xff7ab8,1).fillCircle(tx+tw-13,ty+13,10); this.menu.add(tg);
+      T(tx+10,ty+13,'🧶 '+Save.threads(),12,'#ffe0f0',0); T(tx+tw-13,ty+12,'+',16,'#ffffff');
+      this._zone(tx,ty-4,tw,34,()=>{ this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='ward_thread';
+      const own=COSMETICS.filter(c=>Cos.owns(c.id)).length; T(px+pw-12,top+23,'Collection '+own+'/'+COSMETICS.length,10,'#d9c8ee',1);
+      T(cx,top+sh-10,prev?(Cos.owns(prev.id)?'':'✨ Trying on · ')+prev.name:'Tap an item to try it on',11,prev?'#fff0b8':'#cbb8e0'); }
+    // ── แท็บแถวเดียว
+    let y=top+sh+10; const n=COS_SLOTS.length,tbw=(w-28)/n;
+    COS_SLOTS.forEach(([id,label],i)=>{ const on=!!Cos.equipped(id); this.paintedNavButton(this.menu,14+tbw*(i+.5),y+15,tbw-3,30,label,id===tab,()=>{ this._cosTab=id; this._cosPrev=null; Sfx.select?.(); this.buildWardrobe(); },'cos_'+id); if(on){ const d=this.add.circle(14+tbw*(i+1)-6,y+3,3.5,0x7fe3a8,1).setStrokeStyle(1,0xffffff,.8); this.menu.add(d); } });
+    y+=40;
+    // ── การ์ด
+    const list=COSMETICS.filter(c=>c.slot===tab),cols=3,gap=8,cw=(w-28-gap*(cols-1))/cols,rows=Math.ceil(list.length/cols),ch=Math.max(92,Math.min(138,(barY-8-y)/rows-gap));
+    list.forEach((c,i)=>{ const own=Cos.owns(c.id),on=Cos.equipped(c.slot)?.id===c.id,sel=prev&&prev.id===c.id,x=14+(i%cols)*(cw+gap),yy=y+Math.floor(i/cols)*(ch+gap),col=Cos.col(c),g=this.add.graphics();
+      g.fillStyle(0x000000,.3).fillRoundedRect(x+2,yy+4,cw,ch,14).fillStyle(0x251b31,.97).fillRoundedRect(x,yy,cw,ch,14).fillStyle(col,.16).fillRoundedRect(x,yy,cw,ch-46,{tl:14,tr:14,bl:0,br:0});
+      for(let k=6;k>=1;k--)g.fillStyle(col,.05).fillCircle(x+cw/2,yy+(ch-38)/2+2,cw*.36*k/6);
+      g.lineStyle(sel?3:1.5,sel?0xffd166:on?0x7fe3a8:col,sel?1:.8).strokeRoundedRect(x,yy,cw,ch,14); this.menu.add(g);
+      const iy=yy+(ch-38)/2+2,isz=Math.min(cw*.62,ch-52); if(this.realTex?.(c.icon[0])){ const o=this.add.image(x+cw/2,iy,c.icon[0],c.icon[1]).setDisplaySize(isz,isz); const t=own?Cos.tint(c):null; if(t!=null)o.setTint(t); this.menu.add(o); if(sel)this.tweens?.add({targets:o,y:o.y-4,duration:700,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
+      else { this.menu.add(this.add.circle(x+cw/2,iy,isz*.36,col,1).setStrokeStyle(2,0xffffff,.8)); if(c.emoji)T(x+cw/2,iy,c.emoji,Math.round(isz*.4),'#fff'); }
+      const nm=T(x+cw/2,yy+ch-36,c.name.replace(/ (Wings|Ring|Halo|Trail)$/,''),10,'#fff0dc'); nm.setWordWrapWidth?.(cw-8); if(nm.width>cw-8)nm.setScale((cw-8)/nm.width);
+      if(on||own){ const lb=on?'WEARING':'OWNED',bc=on?0x3fbf7f:0x6a5a86,bw=on?60:50,bg=this.add.graphics(); bg.fillStyle(bc,1).fillRoundedRect(x+cw-bw-4,yy+5,bw,16,8); this.menu.add(bg); T(x+cw-bw/2-4,yy+13,lb,8,'#ffffff'); T(x+cw/2,yy+ch-14,'🎨 '+COS_DYES[Cos.dye(c.id)][0],10,'#ffd9a8'); }
+      else { const pg=this.add.graphics(),aff=Save.threads()>=c.price,pw2=Math.min(cw-14,74); pg.fillStyle(aff?0x5a2a48:0x3a2a36,1).fillRoundedRect(x+(cw-pw2)/2,yy+ch-25,pw2,20,10).lineStyle(1,aff?0xff9ad0:0x8a7090,1).strokeRoundedRect(x+(cw-pw2)/2,yy+ch-25,pw2,20,10); this.menu.add(pg); T(x+cw/2,yy+ch-15,'🧶 '+c.price,11,aff?'#ffe0f0':'#b9a0b8'); }
+      this._zone(x,yy,cw,ch,()=>{ this._cosPrev=sel?null:c.id; Sfx.menuCue?.('ui_cos_equip',.3)||Sfx.select?.(); this.buildWardrobe(); }); this.tapZones[this.tapZones.length-1].tag='cos_card_'+c.id; });
+    this.wardBar(prev,barY,barH); }
+  // แถบล่าง: ซื้อ / ใส่-ถอด / ย้อมสี / ไปร้านด้าย
+  wardBar(c,y,bh){ const w=this.W,x=14,bw=w-28,g=this.add.graphics(); g.fillStyle(0x000000,.4).fillRoundedRect(x+2,y+4,bw,bh,18).fillStyle(0x1c1226,.96).fillRoundedRect(x,y,bw,bh,18).lineStyle(1.5,0xffd166,.6).strokeRoundedRect(x,y,bw,bh,18); this.menu.add(g);
+    const T=(tx,ty,s,fs,col)=>{ const o=this.add.text(tx,ty,s,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:fs+'px',color:col,stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5); this.menu.add(o); return o; };
+    const btn=(bx,by,ww,hh,fill,edge,label,fn,tag)=>{ const b=this.add.graphics(); b.fillStyle(fill,1).fillRoundedRect(bx,by,ww,hh,14).fillStyle(0xffffff,.16).fillRoundedRect(bx+3,by+3,ww-6,hh*.42,10).lineStyle(2,edge,1).strokeRoundedRect(bx,by,ww,hh,14); this.menu.add(b); T(bx+ww/2,by+hh/2,label,14,'#ffffff'); this._zone(bx,by,ww,hh,fn); this.tapZones[this.tapZones.length-1].tag=tag; return b; };
+    if(!c){ const eq=COS_SLOTS.filter(([s])=>Cos.equipped(s)).length; T(w/2,y+bh/2-8,'Looks only · shown on every hero',11,'#e8d8ff'); T(w/2,y+bh/2+9,eq+' of '+COS_SLOTS.length+' slots dressed up',10,'#b9a6cf'); return; }
+    const by=y+9,hh=bh-18;
+    if(!Cos.owns(c.id)){ const aff=Save.threads()>=c.price;
+      if(aff){ const b=btn(x+10,by,bw-20,hh,0xe0558f,0xffd166,'Buy & Wear  ·  🧶 '+c.price,()=>this.cosTap(c),'ward_buy'); this.tweens?.add({targets:b,alpha:.85,duration:700,yoyo:true,repeat:-1}); }
+      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(c.price-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+c.price,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
+      return; }
+    const on=Cos.equipped(c.slot)?.id===c.id,hw=(bw-30)/2;
+    btn(x+10,by,hw,hh,on?0x6a5a86:0x2f9a66,on?0xd8c8f0:0xa8ffcf,on?'Take off':'Wear',()=>this.cosTap(c),'ward_wear');
+    btn(x+20+hw,by,hw,hh,0x8a5a20,0xffd166,'🎨 '+COS_DYES[Cos.dye(c.id)][0],()=>{ Cos.nextDye(c.id); Sfx.menuCue?.('ui_cos_dye',.4)||Sfx.select?.(); this.buildWardrobe(); },'ward_dye'); }
+  // หุ่นลองชุด: ใช้ท่า idle ของ Lobby ถ้าโหลดแล้ว ไม่งั้นภาพการ์ดฮีโร่
+  wardHero(x,footY,hh){ const c=Save.data.character||'momo',hk='card_'+c; let o=null;
+    if(this.textures.exists(hk)&&this.lobbyHeroWarp?.(hk,x,footY,hh)){}
+    else if(this.textures.exists(hk)){ o=this.add.image(x,footY,hk).setOrigin(.5,1); o.setScale(hh/o.height); }
+    else o=this.add.text(x,footY-hh/2,'🍡',{fontSize:Math.round(hh*.4)+'px'}).setOrigin(.5);
+    if(o)this.menu.add(o); if(this._cosLobbyHalo&&this.menuScreen==='wardrobe')this.lobbyCosHalo(); }
+  // ลองของที่ยังไม่ซื้อ: โหลดภาพของชิ้นนั้นก่อน
+  cosEnsurePrev(c){ if(!c||!this.ensureGroup||typeof ASSET_FX==='undefined')return; const k=c.tk||('cos_'+c.id); if(!ASSET_FX[k]||this.realTex?.(k)||(this._cosTried&&this._cosTried.has(k))||this._cosPrevLoad===k)return; this._cosPrevLoad=k;
+    try{ this.ensureGroup(q=>q===k,()=>{ this._cosPrevLoad=null; if(!this.realTex?.(k))(this._cosTried||(this._cosTried=new Set())).add(k); if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){ this._cosPrevLoad=null; } }
+  lobbyCos(x,footY,hh,ov,scr){ if(typeof Cos==='undefined'||!Save.data)return; scr=scr||'hub'; if(this.cosEnsure(()=>{ if(this.state==='menu'&&this.menuScreen===scr)this.buildMenuScreen(); }))return; const E=sl=>ov&&(sl in ov)?ov[sl]:Cos.equipped(sl),wg=E('wings'),pt=E('pet'),tr=E('trail'),hl=E('halo'),au=E('aura'),cy=footY-hh*.55;
     const sp=(c,px,py,sz,fs)=>{ const k='cos_'+c.id; if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(Math.min(sz/fs,COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };
     if(au){ let o=sp(au,x,footY-4,hh*.9,160); if(!o){ o=this.add.graphics(); const r=hh*.45; o.lineStyle(3,Cos.col(au),.6).strokeEllipse(0,0,r*2,r*.6).fillStyle(Cos.col(au),.14).fillEllipse(0,0,r*2,r*.6); o.setPosition(x,footY-4); } this.menu.add(o); this.tweens?.add({targets:o,alpha:.55,duration:1200,yoyo:true,repeat:-1}); }
     if(wg){ let o=sp(wg,x,cy,hh*.95,128); if(!o){ o=this.add.graphics(); const r=hh*.2,col=Cos.col(wg); o.fillStyle(col,.85).fillEllipse(-r*.75,0,r*1.1,r*1.6).fillEllipse(r*.75,0,r*1.1,r*1.6).lineStyle(2,0xffffff,.6).strokeEllipse(-r*.75,0,r*1.1,r*1.6).strokeEllipse(r*.75,0,r*1.1,r*1.6); o.setPosition(x,cy); }
       this.menu.add(o); this.tweens?.add({targets:o,scaleX:(o.scaleX||1)*1.06,duration:600,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
     if(pt){ const px=x+hh*.42,py=footY-hh*.8; let o=sp(pt,px,py,hh*.3,96); if(o)o.setFlipX?.(true); else o=this.add.text(px,py,pt.emoji,{fontSize:Math.round(hh*.16)+'px'}).setOrigin(.5);
       this.menu.add(o); this.tweens?.add({targets:o,y:py-8,duration:1100,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-    if(hl){ this._cosLobbyHalo={x,y:footY-hh*1.02,hh,c:hl}; const zs=this.tapZones; this.time?.delayedCall?.(0,()=>{ if(this.state==='menu'&&this.menuScreen==='hub'&&this.tapZones===zs)this.lobbyCosHalo(); else this._cosLobbyHalo=null; }); }   // ฮาโลต้องอยู่หน้าฮีโร่ → วาดหลังหน้าสร้างเสร็จ
+    if(hl){ this._cosLobbyHalo={x,y:footY-hh*1.02,hh,c:hl}; if(scr==='hub'){ const zs=this.tapZones; this.time?.delayedCall?.(0,()=>{ if(this.state==='menu'&&this.menuScreen==='hub'&&this.tapZones===zs)this.lobbyCosHalo(); else this._cosLobbyHalo=null; }); } }   // ฮาโลต้องอยู่หน้าฮีโร่ → วาดหลังหน้าสร้างเสร็จ
     if(tr)this.hubEvery?.(450,300,()=>{ const sx=x+(Math.random()-.5)*hh*.5,sy=footY-4,o=this.realTex?.(tr.tk)?this.add.image(sx,sy,tr.tk,tr.tf).setScale(.4):this.add.circle(sx,sy,4,Cos.col(tr),.9); const t=Cos.tint(tr); if(t!=null&&o.setTint)o.setTint(t);
       this.menu.add(o); this.tweens?.add({targets:o,y:sy-hh*.25,alpha:0,duration:1200,onComplete:()=>o.destroy()}); }); }
   lobbyCosHalo(){ const h=this._cosLobbyHalo; this._cosLobbyHalo=null; if(!h)return; let o; const k='cos_'+h.c.id; if(this.realTex?.(k)){ o=this.add.sprite(h.x,h.y,k).setScale(Math.min(h.hh*.42/96,COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(h.c); if(t!=null)o.setTint(t); } else { o=this.add.graphics(); const r=h.hh*.17; o.lineStyle(5,Cos.col(h.c),.95).strokeEllipse(0,0,r*2,r*.6).lineStyle(2,0xffffff,.8).strokeEllipse(0,-1,r*1.6,r*.45); o.setPosition(h.x,h.y); }
     this.menu.add(o); this.tweens?.add({targets:o,y:h.y-5,duration:1300,yoyo:true,repeat:-1,ease:'Sine.inOut'}); }
-  cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.menuCue?.(Cos.equipped(c.slot)?.id===c.id?'ui_cos_equip':'ui_cos_unequip',.4)||Sfx.select?.(); this._cosPend=null; this.buildWardrobe(); return; }
-    if(this._cosPend!==c.id){ this._cosPend=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }
-    this._cosPend=null; if(Cos.buy(c.id)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
+  cosTap(c){ if(Cos.owns(c.id)){ Cos.toggle(c.id); Sfx.menuCue?.(Cos.equipped(c.slot)?.id===c.id?'ui_cos_equip':'ui_cos_unequip',.4)||Sfx.select?.(); this.buildWardrobe(); return; }
+    if(this._cosPrev!==c.id){ this._cosPrev=c.id; Sfx.ui?.(); this.buildWardrobe(); return; }   /* v8.1.68 แตะครั้งแรก = ลองใส่ · ซื้อจากแถบล่าง */
+    if(Cos.buy(c.id)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+c.name,'Equipped on every hero',1500); } else { Sfx.error?.(); this.showBanner?.('🧶 Not enough Thread','Requires '+c.price+' Thread',1400); } this.buildWardrobe(); }
   loadCosArt(){ if(this._cosArt||!this.ensureGroup||typeof ASSET_FX==='undefined'||!(ASSET_FX.cos_icons||ASSET_FX.cos_icons2))return; if(this.realTex?.('cos_icons')&&(!ASSET_FX.cos_icons2||this.realTex?.('cos_icons2')))return; this._cosArt=true; try{ this.ensureGroup(k=>/^cos_icons/.test(k),()=>{ if(this.state==='menu'&&this.menuScreen==='wardrobe')this.buildWardrobe(); },{all:true,quiet:true,fx:true}); }catch(e){} }
   /* ในด่าน: ปีกหลังตัว · สัตว์เลี้ยงลอยตาม · หางประกายตอนเดิน (ไม่มีภาพ = วาดด้วยโค้ด) */
   cosWornKeys(){ if(typeof Cos==='undefined'||!Save.data)return []; const out=[]; for(const [sl] of COS_SLOTS){ const c=Cos.equipped(sl); if(c)out.push(c.tk||('cos_'+c.id)); } return out; }
