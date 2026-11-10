@@ -22,6 +22,7 @@
 | 66 | `66_WARDROBE_COSMETICS.md` | Wardrobe: ปีก 3 · สัตว์เลี้ยง 3 · หางประกาย · ไอคอนร้าน | 8 | 🟠 | 🟢 ผูกแล้ว v8.1.56 · รอ QA มือถือ |
 | 67 | `67_WARDROBE_MORE.md` | Wardrobe ชุด 2: ฮาโล · วงใต้เท้า · เอฟเฟกต์พุ่ง · เอฟเฟกต์มอนตาย · ปีก/สัตว์เลี้ยง/หางเพิ่ม · ไอคอน | 18 | 🟠 | 🟢 ผูกแล้ว v8.1.56 · รอ QA มือถือ |
 | 68 | `68_SESAME_RUNES_PART2.md` | Sesame ชุด 2: ปุ่มรูน · ลูกแก้ว 3 สี · ไอคอนเวท 10 · ตราร่ายเวท 10 · ไอคอน Talent Runes | 16 | 🟠 | 🟢 ผูกแล้ว v8.1.65 · รอ QA มือถือ |
+| 69 | `69_HERO_SKINS.md` | สกินเต็มตัว Festival 6 ฮีโร่ (ภาพ Lobby/roster/ชีตในด่านครบ 49) + ไอคอน/แบนเนอร์ + สัตว์เลี้ยง HD 5 · เลิกขายปีก/ฮาโล/วงแยกชิ้น | 68 | สูง | 🟡 รออาร์ต |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |
