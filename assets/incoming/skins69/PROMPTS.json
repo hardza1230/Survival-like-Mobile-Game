@@ -1,0 +1,388 @@
+{
+  "generator": "built-in ImageGen",
+  "status": "partial",
+  "generations": [
+    {
+      "key": "card_momo_sakura",
+      "file": "momo/drafts/card_momo_sakura.png",
+      "prompt": "Edit the supplied game character illustration into Sakura Festival Momo, an original Japanese spring festival outfit for a cute fantasy mobile game. Preserve the exact same character, pink hair hairstyle and green eyes, facial identity, proportions, energetic expression, camera angle, pose, foot positions, gloves' silhouette, weapon/hand positions, and composition. Change only her outfit to a modest short sakura-pink-and-white yukata with a large obi bow, subtle blossom motifs and a small flower hairpin; strawberry-patterned hand wraps retain the same bulky fighter-glove shape. Preserve her signature strawberry ornament. Make it visually consistent with the provided illustration and clean silhouette, no background, no text. Do not change the pose or redesign the character; full body entirely within frame, feet near bottom."
+    },
+    {
+      "key": "roster_momo_sakura",
+      "file": "momo/drafts/roster_momo_sakura.png",
+      "prompt": "This is the roster illustration target: preserve the existing exact composition and action pose, face position, frame and background, pink hair, green eyes, cannon direction and every body part; apply the sakura outfit in the reference design. No letters."
+    },
+    {
+      "key": "char_momo__sakura",
+      "file": "momo/drafts/char_momo__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight different existing poses in exactly 8 columns and 1 row. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_idle__sakura",
+      "file": "momo/drafts/char_momo_idle__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight existing poses in exactly 4 columns and 2 rows. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_run__sakura",
+      "file": "momo/drafts/char_momo_run__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. twelve running frames in exactly 4 columns and 3 rows. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_attack__sakura",
+      "file": "momo/drafts/char_momo_attack__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight attack frames in exactly 4 columns and 2 rows. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_dash__sakura",
+      "file": "momo/drafts/char_momo_dash__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight dash frames in exactly 4 columns and 2 rows. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_hurt__sakura",
+      "file": "momo/drafts/char_momo_hurt__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight hurt frames in exactly 4 columns and 2 rows. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_sniper_run_motion823__sakura",
+      "file": "momo/drafts/char_momo_sniper_run_motion823__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight running frames in exactly 8 columns and 1 row. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "key": "char_momo_sniper_charge_motion823__sakura",
+      "file": "momo/drafts/char_momo_sniper_charge_motion823__sakura.png",
+      "prompt": "Precisely edit FIRST reference image, an existing chibi sprite sheet. eight charge frames in exactly 8 columns and 1 row. Each output cell must match its corresponding source cell's exact pose, character identity, pink ponytail, green eyes, head size, feet, facial expression, gun/hand position, ground anchor, VFX, scaling and all placements. Do not generate new poses or duplicate missing frames. Change ONLY her clothes to the modest white-and-sakura pink yukata, blossom obi, small sakura hairpin and strawberry hand wraps in the SECOND reference. Retain original 3/4 chibi visual style, align all frames with the first reference, keep generous separation and transparency, no grid, no words or numerals. Two reference images: FIRST is the exact edit target, SECOND is only the costume style reference."
+    },
+    {
+      "hero": "mint",
+      "source": "E:\\Heart\\TT\\survival-mobile\\assets\\character_cards\\card_mint_frostleaf.png",
+      "file": "mint/drafts/card_mint_draft.png",
+      "prompt": "Edit FIRST reference character illustration by applying the following outfit only. Keep exactly the same original character identity, facial features, hair and eye color, age-appropriate chibi proportions, pose, head and foot positions, camera angle, weapon type and position, full-body framing and style. Do not add text or numbers; keep entire figure in frame, feet near bottom, transparent background. Snowflake Princess Mint: modest icy-blue and white snow-princess outfit with lightweight ice crystal armor, soft fur cape, tiny snowflake crown, shield decorated as a snowflake; preserve exact spear and shield geometry and all pose positions."
+    },
+    {
+      "hero": "cocoa",
+      "source": "E:\\Heart\\TT\\survival-mobile\\assets\\character_cards\\card_cocoa.png",
+      "file": "cocoa/drafts/card_cocoa_draft.png",
+      "prompt": "Edit FIRST reference character illustration by applying the following outfit only. Keep exactly the same original character identity, facial features, hair and eye color, age-appropriate chibi proportions, pose, head and foot positions, camera angle, weapon type and position, full-body framing and style. Do not add text or numbers; keep entire figure in frame, feet near bottom, transparent background. Pastry Chef Cocoa: modest pastry chef outfit, small chef hat, cream apron, large baking-oven mitts that preserve exactly the original oversized fighter gauntlet shape and hand positions. Chocolate brown, cream and pastel macaron pink."
+    },
+    {
+      "hero": "taro",
+      "source": "E:\\Heart\\TT\\survival-mobile\\assets\\character_cards\\card_taro.png",
+      "file": "taro/drafts/card_taro_draft.png",
+      "prompt": "Edit FIRST reference character illustration by applying the following outfit only. Keep exactly the same original character identity, facial features, hair and eye color, age-appropriate chibi proportions, pose, head and foot positions, camera angle, weapon type and position, full-body framing and style. Do not add text or numbers; keep entire figure in frame, feet near bottom, transparent background. Starlight Astronomer Taro: modest navy and lavender astronomer's coat with subtle constellations, short wizard hat and tiny hanging star, telescope-brass styling on the original held staff while preserving its exact shape, hand and muzzle position."
+    },
+    {
+      "hero": "yuzu",
+      "source": "E:\\Heart\\TT\\survival-mobile\\assets\\character_cards\\card_yuzu.png",
+      "file": "yuzu/drafts/card_yuzu_draft.png",
+      "prompt": "Edit FIRST reference character illustration by applying the following outfit only. Keep exactly the same original character identity, facial features, hair and eye color, age-appropriate chibi proportions, pose, head and foot positions, camera angle, weapon type and position, full-body framing and style. Do not add text or numbers; keep entire figure in frame, feet near bottom, transparent background. Summer Splash Yuzu: modest and fully covered child-appropriate seaside outfit: sleeveless top, shorts, light overshirt, tiny straw hat and sunglasses perched on head. Yuzu orange, sea blue and white. Keep exact action pose, face, hair, arms and prop positions."
+    },
+    {
+      "hero": "sesame",
+      "source": "E:\\Heart\\TT\\survival-mobile\\assets\\character_cards\\card_sesame.png",
+      "file": "sesame/drafts/card_sesame_draft.png",
+      "prompt": "Edit FIRST reference character illustration by applying the following outfit only. Keep exactly the same original character identity, facial features, hair and eye color, age-appropriate chibi proportions, pose, head and foot positions, camera angle, weapon type and position, full-body framing and style. Do not add text or numbers; keep entire figure in frame, feet near bottom, transparent background. Moon Rabbit Sesame: modest pearl-white and sesame-black rabbit-ear hood, moon-patterned cape and small mochi accessories, subtle lunar gold. Preserve exact hands and original magical instrument placement and silhouette."
+    },
+    {
+      "name": "mint",
+      "skin": "snow",
+      "prompt": "Edit the FIRST image, the original Mochi Mayhem mint roster portrait. Preserve exact original character identity, face, eyes, hairstyle, full pose, position, hand and weapon positions, composition, framing, decorative frame and background. Change ONLY the clothing, hat and costume ornament to match the SECOND reference character image (the snow festival skin). Keep all visual marks and any weapons recognizable, do not add or remove hands or characters. Original polished chibi hand-painted fantasy game art. No text, no logo, no numbers. Maintain landscape aspect ratio and transparent outer corners of original."
+    },
+    {
+      "name": "cocoa",
+      "skin": "chef",
+      "prompt": "Edit the FIRST image, the original Mochi Mayhem cocoa roster portrait. Preserve exact original character identity, face, eyes, hairstyle, full pose, position, hand and weapon positions, composition, framing, decorative frame and background. Change ONLY the clothing, hat and costume ornament to match the SECOND reference character image (the chef festival skin). Keep all visual marks and any weapons recognizable, do not add or remove hands or characters. Original polished chibi hand-painted fantasy game art. No text, no logo, no numbers. Maintain landscape aspect ratio and transparent outer corners of original."
+    },
+    {
+      "name": "taro",
+      "skin": "star",
+      "prompt": "Edit the FIRST image, the original Mochi Mayhem taro roster portrait. Preserve exact original character identity, face, eyes, hairstyle, full pose, position, hand and weapon positions, composition, framing, decorative frame and background. Change ONLY the clothing, hat and costume ornament to match the SECOND reference character image (the star festival skin). Keep all visual marks and any weapons recognizable, do not add or remove hands or characters. Original polished chibi hand-painted fantasy game art. No text, no logo, no numbers. Maintain landscape aspect ratio and transparent outer corners of original."
+    },
+    {
+      "name": "yuzu",
+      "skin": "summer",
+      "prompt": "Edit the FIRST image, the original Mochi Mayhem yuzu roster portrait. Preserve exact original character identity, face, eyes, hairstyle, full pose, position, hand and weapon positions, composition, framing, decorative frame and background. Change ONLY the clothing, hat and costume ornament to match the SECOND reference character image (the summer festival skin). Keep all visual marks and any weapons recognizable, do not add or remove hands or characters. Original polished chibi hand-painted fantasy game art. No text, no logo, no numbers. Maintain landscape aspect ratio and transparent outer corners of original."
+    },
+    {
+      "name": "sesame",
+      "skin": "moon",
+      "prompt": "Edit the FIRST image, the original Mochi Mayhem sesame roster portrait. Preserve exact original character identity, face, eyes, hairstyle, full pose, position, hand and weapon positions, composition, framing, decorative frame and background. Change ONLY the clothing, hat and costume ornament to match the SECOND reference character image (the moon festival skin). Keep all visual marks and any weapons recognizable, do not add or remove hands or characters. Original polished chibi hand-painted fantasy game art. No text, no logo, no numbers. Maintain landscape aspect ratio and transparent outer corners of original."
+    },
+    {
+      "name": "mochi",
+      "prompt": "Redraw and upscale this exact existing game pet animation sprite sheet as original polished hand-painted 2D game art. Retain the identical pet character, colors, expression, facing, and exact six frame poses and frame ordering from the reference. Six separate equally spaced frames in one horizontal row; show only one complete pet per frame, with generous empty transparent space and no overlap. Keep identical apparent size and placement frame-to-frame. Transparent background, no text, no numbers, no borders, no extra characters. This is the mochi pet."
+    },
+    {
+      "name": "turtle",
+      "prompt": "Redraw and upscale this exact existing game pet animation sprite sheet as original polished hand-painted 2D game art. Retain the identical pet character, colors, expression, facing, and exact six frame poses and frame ordering from the reference. Six separate equally spaced frames in one horizontal row; show only one complete pet per frame, with generous empty transparent space and no overlap. Keep identical apparent size and placement frame-to-frame. Transparent background, no text, no numbers, no borders, no extra characters. This is the turtle pet."
+    },
+    {
+      "name": "bird",
+      "prompt": "Redraw and upscale this exact existing game pet animation sprite sheet as original polished hand-painted 2D game art. Retain the identical pet character, colors, expression, facing, and exact six frame poses and frame ordering from the reference. Six separate equally spaced frames in one horizontal row; show only one complete pet per frame, with generous empty transparent space and no overlap. Keep identical apparent size and placement frame-to-frame. Transparent background, no text, no numbers, no borders, no extra characters. This is the bird pet."
+    },
+    {
+      "name": "bunny",
+      "prompt": "Redraw and upscale this exact existing game pet animation sprite sheet as original polished hand-painted 2D game art. Retain the identical pet character, colors, expression, facing, and exact six frame poses and frame ordering from the reference. Six separate equally spaced frames in one horizontal row; show only one complete pet per frame, with generous empty transparent space and no overlap. Keep identical apparent size and placement frame-to-frame. Transparent background, no text, no numbers, no borders, no extra characters. This is the bunny pet."
+    },
+    {
+      "name": "jelly",
+      "prompt": "Redraw and upscale this exact existing game pet animation sprite sheet as original polished hand-painted 2D game art. Retain the identical pet character, colors, expression, facing, and exact six frame poses and frame ordering from the reference. Six separate equally spaced frames in one horizontal row; show only one complete pet per frame, with generous empty transparent space and no overlap. Keep identical apparent size and placement frame-to-frame. Transparent background, no text, no numbers, no borders, no extra characters. This is the jelly pet."
+    },
+    {
+      "prompt": "Create an original polished landscape 2D game illustration for the Mochi Mayhem Festival Collection, using all six character designs in the reference strip. Depict all six exact chibi heroes clearly recognizable with same faces, hair, eye colors and festival costumes: pink Momo, icy Mint, pastry chef Cocoa, astronomer Taro, summer Yuzu, moon rabbit Sesame. Together in a whimsical candy lantern festival at night, warm golden lighting and dark purple sky. Balanced composition, each character fully visible and distinct, rich but uncluttered. Leave the lower quarter quiet and dark for an interface overlay. No text, logos, interface elements, numbers, or watermarks. Family-friendly, no existing franchise style imitation."
+    },
+    {
+      "prompt": "Using the attached reference strip of six Mochi Mayhem festival characters, create one single horizontal spritesheet of six distinct bust portraits on transparent background. Exactly six evenly spaced square cells in one row. In strict left-to-right order: pink-haired strawberry fighter Momo in pink sakura yukata; mint-haired icy princess Mint; brown-haired pastry chef Cocoa with chef hat and boxing mitts; lavender-haired astronomer Taro; orange-haired summer Yuzu with straw hat; black-haired moon rabbit Sesame with rabbit-eared hood. Preserve each character's face, hair, eye colors and costume as depicted. Crop at chest, no circles, no backgrounds, no framing or overlapping between portraits, no text, no numbers. Same polished hand-painted cute chibi fantasy game illustration as reference."
+    },
+    {
+      "prompt": "Edit FIRST original Momo roster game artwork, preserving exactly its character face, pink hair, eye color, energetic pose, cannon weapon and position, composition and decorative background. Change only clothing to the pink and white sakura yukata and accessories of the SECOND reference, maintaining the original cannon geometry. Keep the original rounded rectangle background art; make only the four OUTSIDE corners fully transparent in alpha. No text, no labels, no frame added, no numbers."
+    },
+    {
+      "prompt": "Edit this exact illustration only to remove the cloudy beige opaque background and surrounding haze, leaving the complete existing Yuzu character, hair, citrus charms and crisp orange decorative ribbons unchanged. Make the entire empty area fully transparent with clean feathered edges, PNG alpha. Keep original pose, proportions, colors and clothing exactly. No text and no new objects."
+    },
+    {
+      "key": "char_mint",
+      "hero": "mint",
+      "source": "assets/char_mint_frostleaf_sheet.png",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_run",
+      "hero": "mint",
+      "source": "assets/char_mint_frostleaf_run_sheet.png",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_attack",
+      "hero": "mint",
+      "source": "assets/char_mint_attack_sheet.png",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_gale",
+      "hero": "mint",
+      "source": "assets/char_mint_gale_sheet.png",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_bloom_motion823",
+      "hero": "mint",
+      "source": "assets/art/hero_motion823/mint_clean.webp",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_impaler_charge",
+      "hero": "mint",
+      "source": "assets/art/mint55/char_mint_impaler_charge.webp",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_impaler_move",
+      "hero": "mint",
+      "source": "assets/art/mint55/char_mint_impaler_move.webp",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_impaler_release",
+      "hero": "mint",
+      "source": "assets/art/mint55/char_mint_impaler_release.webp",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_impaler_run_motion823",
+      "hero": "mint",
+      "source": "assets/art/hero_motion823/mint_run.webp",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_mint_lance_charged",
+      "hero": "mint",
+      "source": "assets/art/bp_fx/mint_lance_throw_charged_sheet.webp",
+      "prompt": "Edit FIRST original Mint combat animation sheet by changing only clothing into the Snowflake Princess skin, matching the SECOND picture's icy blue and white lightweight crystal armor, fur trim, tiny snowflake crown, and shield. Preserve identical character face, mint hair, eyes, spear position, exact source poses, effects, facing, scale, frame order, number of frames and grid in FIRST image. Do not change timing or orientation. Keep a complete isolated sprite within each original cell, consistent costume across all frames. Transparent background, no text, no labels, no numbers, no new frames. Identity and each individual source frame are binding."
+    },
+    {
+      "key": "char_taro",
+      "source": "assets/char_taro_awakened_sheet.png",
+      "prompt": "Edit the supplied Taro game sprite sheet. Repaint ONLY the clothing in each frame as a modest Starlight Astronomer outfit: navy blue short robe with gold constellation details and small wizard hat, preserving lavender hair, face, eyes, chibi proportions and staff silhouette. The reference sheet is the binding animation layout: exactly 8 columns by 1 rows, same 8 poses in identical frame order, identical foot positions, head positions, scale, facing and pose, unchanged attack VFX. Every sprite complete, with transparent space between frame cells. No new frames, no text, no labels, no borders. Transparent background."
+    },
+    {
+      "key": "char_taro_run",
+      "source": "assets/characters/taro_run_sheet.png",
+      "prompt": "Edit the supplied Taro game sprite sheet. Repaint ONLY the clothing in each frame as a modest Starlight Astronomer outfit: navy blue short robe with gold constellation details and small wizard hat, preserving lavender hair, face, eyes, chibi proportions and staff silhouette. The reference sheet is the binding animation layout: exactly 4 columns by 3 rows, same 12 poses in identical frame order, identical foot positions, head positions, scale, facing and pose, unchanged attack VFX. Every sprite complete, with transparent space between frame cells. No new frames, no text, no labels, no borders. Transparent background."
+    },
+    {
+      "key": "char_taro_attack",
+      "source": "assets/characters/taro_attack_sheet.png",
+      "prompt": "Edit the supplied Taro game sprite sheet. Repaint ONLY the clothing in each frame as a modest Starlight Astronomer outfit: navy blue short robe with gold constellation details and small wizard hat, preserving lavender hair, face, eyes, chibi proportions and staff silhouette. The reference sheet is the binding animation layout: exactly 4 columns by 2 rows, same 8 poses in identical frame order, identical foot positions, head positions, scale, facing and pose, unchanged attack VFX. Every sprite complete, with transparent space between frame cells. No new frames, no text, no labels, no borders. Transparent background."
+    },
+    {
+      "key": "char_taro_plasma_motion823",
+      "source": "assets/art/hero_motion823/taro_clean.webp",
+      "prompt": "Edit the supplied Taro game sprite sheet. Repaint ONLY the clothing in each frame as a modest Starlight Astronomer outfit: navy blue short robe with gold constellation details and small wizard hat, preserving lavender hair, face, eyes, chibi proportions and staff silhouette. The reference sheet is the binding animation layout: exactly 8 columns by 1 rows, same 8 poses in identical frame order, identical foot positions, head positions, scale, facing and pose, unchanged attack VFX. Every sprite complete, with transparent space between frame cells. No new frames, no text, no labels, no borders. Transparent background."
+    },
+    {
+      "key": "char_yuzu",
+      "hero": "yuzu",
+      "source": "assets/characters/yuzu_sheet.png",
+      "prompt": "Edit FIRST original yuzu combat animation sprite sheet, changing clothing only into modest orange and light blue summer shorts and top, light open jacket, small straw hat and sunglasses perched on head, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_yuzu_run",
+      "hero": "yuzu",
+      "source": "assets/characters/yuzu_run_sheet.png",
+      "prompt": "Edit FIRST original yuzu combat animation sprite sheet, changing clothing only into modest orange and light blue summer shorts and top, light open jacket, small straw hat and sunglasses perched on head, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_yuzu_attack",
+      "hero": "yuzu",
+      "source": "assets/characters/yuzu_attack_sheet.png",
+      "prompt": "Edit FIRST original yuzu combat animation sprite sheet, changing clothing only into modest orange and light blue summer shorts and top, light open jacket, small straw hat and sunglasses perched on head, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_yuzu_combo_motion823",
+      "hero": "yuzu",
+      "source": "assets/art/hero_motion823/yuzu_combo.webp",
+      "prompt": "Edit FIRST original yuzu combat animation sprite sheet, changing clothing only into modest orange and light blue summer shorts and top, light open jacket, small straw hat and sunglasses perched on head, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_sesame",
+      "hero": "sesame",
+      "source": "assets/char_sesame_awakened_sheet.png",
+      "prompt": "Edit FIRST original sesame combat animation sprite sheet, changing clothing only into pearl white and black moon rabbit outfit with short rabbit-ear hood, moon ornaments, short cloak, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_sesame_run",
+      "hero": "sesame",
+      "source": "assets/characters/sesame_run_sheet.png",
+      "prompt": "Edit FIRST original sesame combat animation sprite sheet, changing clothing only into pearl white and black moon rabbit outfit with short rabbit-ear hood, moon ornaments, short cloak, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_sesame_attack",
+      "hero": "sesame",
+      "source": "assets/characters/sesame_attack_sheet.png",
+      "prompt": "Edit FIRST original sesame combat animation sprite sheet, changing clothing only into pearl white and black moon rabbit outfit with short rabbit-ear hood, moon ornaments, short cloak, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_sesame_meteor_motion823",
+      "hero": "sesame",
+      "source": "assets/art/hero_motion823/sesame_clean.webp",
+      "prompt": "Edit FIRST original sesame combat animation sprite sheet, changing clothing only into pearl white and black moon rabbit outfit with short rabbit-ear hood, moon ornaments, short cloak, in the style of SECOND costume reference image. Preserve character face, eye and hair color, hair silhouette, age appropriate proportions, position, scale, weapons, all effects, exact frame order and original pose for every frame. Reproduce the exact same original frame grid and count. No new frames, no labels, no letters or numbers. Transparent background. Original 2D painted chibi game sprite art."
+    },
+    {
+      "key": "char_cocoa",
+      "hero": "cocoa",
+      "source": "assets/char_cocoa_awakened_sheet.png",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_run",
+      "hero": "cocoa",
+      "source": "assets/char_cocoa_run_sheet.png",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_attack",
+      "hero": "cocoa",
+      "source": "assets/char_cocoa_attack_sheet.png",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_hurt",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_hurt_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_victory",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_victory_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_dash_jab",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_dash_jab_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_dash_leap",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_dash_leap_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_fire_jab",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_fire_jab_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_fire_fin",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_fire_finisher_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_phantom",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_phantom_rush_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_rocket",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_rocket_launch_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_rocket_motion823",
+      "hero": "cocoa",
+      "source": "assets/art/hero_motion823/rocket.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_motion823",
+      "hero": "cocoa",
+      "source": "assets/art/hero_motion823/cocoa.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_run_motion823",
+      "hero": "cocoa",
+      "source": "assets/art/hero_motion823/titan_run.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_charge",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_titan_charge_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_walk",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_titan_charge_walk_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_hop",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_titan_light_hop_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_slam",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_titan_leap_slam_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "key": "char_cocoa_titan_colossus",
+      "hero": "cocoa",
+      "source": "assets/art/bp_fx/cocoa_titan_colossus_sheet.webp",
+      "prompt": "Edit FIRST original Cocoa combat animation sprite sheet, only changing the outfit to the pastry chef outfit in SECOND reference: small chef hat, cream apron, oversized chocolate oven mitt gauntlets in the SAME proportions as original. On enlarged Titan poses preserve exact original transformation and pose while stretching the chef outfit. Preserve original brown hair, face, eyes, direction, frame order, frame count, grid, all poses, position, scale, combat effects and fist anchor points. One complete character in each frame, original game 2D painted style. Transparent background, no text, no labels, no numbers, no new frames."
+    },
+    {
+      "prompt": "Edit the supplied transparent eight-frame Mint impaler release sprite animation. Maintain EXACTLY eight discrete animation frames in one row and match the poses one for one: she winds up, thrusts the thin icy spear forward, extends the thrust, then recovers. Retain the exact original position of the face, feet, hands, spear tip, motion and timing per frame; do not repeat one frame. The only change is her costume: pale white and icy-blue princess armor with a small snowflake tiara and pale cape. Maintain hair color, facial identity, shield and style. Absolutely no background, shadows behind the frames, gray rectangles, ground, text or extra frames; fully transparent empty space."
+    }
+  ]
+}

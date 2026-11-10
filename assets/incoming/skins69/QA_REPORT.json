@@ -1,0 +1,888 @@
+{
+  "status": "incomplete",
+  "expected_files": 68,
+  "accepted_files": 6,
+  "draft_count": 71,
+  "issues": [
+    "Five pet sheets have correct 1536x256 dimensions, true alpha and six nonblank frames with no strong-alpha pixels touching cell edges; poses were compared visually with the existing pet sheets.",
+    "The 1024x512 opaque banner depicts all six costume concepts and leaves room along the bottom; no in-game check performed.",
+    "All 49 combat sheets now have generated candidates, but many still need pose, weapon/foot anchor and animation continuity correction or review. Mint impaler release v1 has gray background and repeated poses; a v2 exists but is not verified.",
+    "All six cards and six roster portraits need final positional and size review; no final hero assets are claimed.",
+    "Shop icon atlas is a candidate assembled from generated cards, requiring visual review.",
+    "No runtime integration or device test performed."
+  ],
+  "missing_or_not_accepted": [
+    "momo/card_momo_sakura.png",
+    "momo/roster_momo_sakura.png",
+    "mint/card_mint_snow.png",
+    "mint/roster_mint_snow.png",
+    "cocoa/card_cocoa_chef.png",
+    "cocoa/roster_cocoa_chef.png",
+    "taro/card_taro_star.png",
+    "taro/roster_taro_star.png",
+    "yuzu/card_yuzu_summer.png",
+    "yuzu/roster_yuzu_summer.png",
+    "sesame/card_sesame_moon.png",
+    "sesame/roster_sesame_moon.png",
+    "momo/char_momo__sakura.png",
+    "momo/char_momo_idle__sakura.png",
+    "momo/char_momo_run__sakura.png",
+    "momo/char_momo_attack__sakura.png",
+    "momo/char_momo_dash__sakura.png",
+    "momo/char_momo_hurt__sakura.png",
+    "momo/char_momo_sniper_run_motion823__sakura.png",
+    "momo/char_momo_sniper_charge_motion823__sakura.png",
+    "mint/char_mint__snow.png",
+    "mint/char_mint_run__snow.png",
+    "mint/char_mint_attack__snow.png",
+    "mint/char_mint_gale__snow.png",
+    "mint/char_mint_bloom_motion823__snow.png",
+    "mint/char_mint_impaler_charge__snow.png",
+    "mint/char_mint_impaler_move__snow.png",
+    "mint/char_mint_impaler_release__snow.png",
+    "mint/char_mint_impaler_run_motion823__snow.png",
+    "mint/char_mint_lance_charged__snow.png",
+    "cocoa/char_cocoa__chef.png",
+    "cocoa/char_cocoa_run__chef.png",
+    "cocoa/char_cocoa_attack__chef.png",
+    "cocoa/char_cocoa_hurt__chef.png",
+    "cocoa/char_cocoa_victory__chef.png",
+    "cocoa/char_cocoa_dash_jab__chef.png",
+    "cocoa/char_cocoa_dash_leap__chef.png",
+    "cocoa/char_cocoa_fire_jab__chef.png",
+    "cocoa/char_cocoa_fire_fin__chef.png",
+    "cocoa/char_cocoa_phantom__chef.png",
+    "cocoa/char_cocoa_rocket__chef.png",
+    "cocoa/char_cocoa_rocket_motion823__chef.png",
+    "cocoa/char_cocoa_titan_motion823__chef.png",
+    "cocoa/char_cocoa_titan_run_motion823__chef.png",
+    "cocoa/char_cocoa_titan_charge__chef.png",
+    "cocoa/char_cocoa_titan_walk__chef.png",
+    "cocoa/char_cocoa_titan_hop__chef.png",
+    "cocoa/char_cocoa_titan_slam__chef.png",
+    "cocoa/char_cocoa_titan_colossus__chef.png",
+    "taro/char_taro__star.png",
+    "taro/char_taro_run__star.png",
+    "taro/char_taro_attack__star.png",
+    "taro/char_taro_plasma_motion823__star.png",
+    "yuzu/char_yuzu__summer.png",
+    "yuzu/char_yuzu_run__summer.png",
+    "yuzu/char_yuzu_attack__summer.png",
+    "yuzu/char_yuzu_combo_motion823__summer.png",
+    "sesame/char_sesame__moon.png",
+    "sesame/char_sesame_run__moon.png",
+    "sesame/char_sesame_attack__moon.png",
+    "sesame/char_sesame_meteor_motion823__moon.png",
+    "skin_icons69.png"
+  ],
+  "candidate_details": [
+    {
+      "requested": "momo/card_momo_sakura.png",
+      "candidate": "momo/candidates/card_momo_sakura.png",
+      "bytes": 1174797,
+      "sha256": "83d8eb7d8203e3b235b6ef43a82fd28ba9c3f9b532e895a2cc2dc0465f9ab192",
+      "width": 768,
+      "height": 1024,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "momo/roster_momo_sakura.png",
+      "candidate": "momo/candidates/roster_momo_sakura.png",
+      "bytes": 799315,
+      "sha256": "7d3eb800575b1a2ecab9d012ad2ec1f19f02f7119b247826270f0002c1c72af6",
+      "width": 768,
+      "height": 460,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "mint/card_mint_snow.png",
+      "candidate": "mint/candidates/card_mint_snow.png",
+      "bytes": 1112017,
+      "sha256": "fe2562b564c9e7582f8f6adbdd4973c88f5b27b31139a360cb2b842ae975ed9f",
+      "width": 768,
+      "height": 1024,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "mint/roster_mint_snow.png",
+      "candidate": "mint/candidates/roster_mint_snow.png",
+      "bytes": 854510,
+      "sha256": "1a9dce102ebb812014e412dc3ff40a32baac0649c5ba4593e1964d83a6c8b67b",
+      "width": 768,
+      "height": 460,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "cocoa/card_cocoa_chef.png",
+      "candidate": "cocoa/candidates/card_cocoa_chef.png",
+      "bytes": 1159903,
+      "sha256": "0e22315fb60b6ba301e8cecfdf9893e4decf379060bb729e0e1d454f05f44fca",
+      "width": 768,
+      "height": 1024,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "cocoa/roster_cocoa_chef.png",
+      "candidate": "cocoa/candidates/roster_cocoa_chef.png",
+      "bytes": 830257,
+      "sha256": "ea0a0e6a3666b68c6f6213eeda707d4d8041538852df6a9a1e6278bd759cc462",
+      "width": 768,
+      "height": 460,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "taro/card_taro_star.png",
+      "candidate": "taro/candidates/card_taro_star.png",
+      "bytes": 1145639,
+      "sha256": "20723e905a561a8364a8086b85a6c6fe734828861622e38161429383aff40fb4",
+      "width": 768,
+      "height": 1024,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "taro/roster_taro_star.png",
+      "candidate": "taro/candidates/roster_taro_star.png",
+      "bytes": 863297,
+      "sha256": "a52ea23345f953d8568a5e2eff27233d4f902c302e9a5e6ca3d44fc2e38ac537",
+      "width": 768,
+      "height": 460,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "yuzu/card_yuzu_summer.png",
+      "candidate": "yuzu/candidates/card_yuzu_summer.png",
+      "bytes": 1310614,
+      "sha256": "dbd36f61c435a67ff138a55f87d703b99f42dc779ac29d3af5b035ad1a096745",
+      "width": 768,
+      "height": 1024,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "yuzu/roster_yuzu_summer.png",
+      "candidate": "yuzu/candidates/roster_yuzu_summer.png",
+      "bytes": 842270,
+      "sha256": "638deafa8fc8cdf1b2fd3c603b0d4da9a7e4f114d5cba918ceb9c6e7e22b8a4a",
+      "width": 768,
+      "height": 460,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "sesame/card_sesame_moon.png",
+      "candidate": "sesame/candidates/card_sesame_moon.png",
+      "bytes": 1272160,
+      "sha256": "19c4dbce0af81f6eb0e62722ab8b8717161d9ef120a0fcf4f73d164f7cb4062d",
+      "width": 768,
+      "height": 1024,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "sesame/roster_sesame_moon.png",
+      "candidate": "sesame/candidates/roster_sesame_moon.png",
+      "bytes": 849940,
+      "sha256": "afa39237c48188acd69ea603119536561df50f476b7ac5ad4a77feb9c562b8b3",
+      "width": 768,
+      "height": 460,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    },
+    {
+      "requested": "momo/char_momo__sakura.png",
+      "candidate": "momo/candidates/char_momo__sakura.png",
+      "bytes": 227779,
+      "sha256": "bce9aabf7c6c7d15d9434ebd065693186d3816c5d90a030b519f497693e00747",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_idle__sakura.png",
+      "candidate": "momo/candidates/char_momo_idle__sakura.png",
+      "bytes": 181330,
+      "sha256": "619ecf083725f2463842dfaa600a3c9d26f94681d80c98e500da510013242f7a",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_run__sakura.png",
+      "candidate": "momo/candidates/char_momo_run__sakura.png",
+      "bytes": 282217,
+      "sha256": "8c00d2327e0215f2f12288e27ac422cbd758b09cb0d832beaebf1735d8146a7c",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_attack__sakura.png",
+      "candidate": "momo/candidates/char_momo_attack__sakura.png",
+      "bytes": 136544,
+      "sha256": "e4acf119e39c5f74895afbe72afd461257fcbe66a616bbca191b2e0cb4b2d22e",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_dash__sakura.png",
+      "candidate": "momo/candidates/char_momo_dash__sakura.png",
+      "bytes": 145403,
+      "sha256": "4cb7fcd36d7993d83412f0d0ae79237a57ff25b5b97ad4995ed7df7915d896b5",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_hurt__sakura.png",
+      "candidate": "momo/candidates/char_momo_hurt__sakura.png",
+      "bytes": 205369,
+      "sha256": "d12b58436ba9c5e672cfc4c6a272a777c6a9add03cc5cc454bb9fb1874ed5b06",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_sniper_run_motion823__sakura.png",
+      "candidate": "momo/candidates/char_momo_sniper_run_motion823__sakura.png",
+      "bytes": 164782,
+      "sha256": "e4da1fc798f0d756d1d9bfeb6077dac76cf961b4ad4ad528ee6c676de425fe54",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "momo/char_momo_sniper_charge_motion823__sakura.png",
+      "candidate": "momo/candidates/char_momo_sniper_charge_motion823__sakura.png",
+      "bytes": 148176,
+      "sha256": "bc455f694c4703e11ba87988d4c9745c124a54b027c048dabae07c3bb5d92424",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint__snow.png",
+      "candidate": "mint/candidates/char_mint__snow.png",
+      "bytes": 267730,
+      "sha256": "f49a455b4f0658e465a767aa2b37c89e71d76237a01810d25887a5597cebd95a",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_run__snow.png",
+      "candidate": "mint/candidates/char_mint_run__snow.png",
+      "bytes": 343071,
+      "sha256": "ff0fe6955a7e8974453216f44f59de049aaef7d36b7036ce068473e42489f61b",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_attack__snow.png",
+      "candidate": "mint/candidates/char_mint_attack__snow.png",
+      "bytes": 205527,
+      "sha256": "37f7eb0324b642377a2d1a7a35573cde0a16f3b55258ab25149ce914f2096292",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_gale__snow.png",
+      "candidate": "mint/candidates/char_mint_gale__snow.png",
+      "bytes": 206136,
+      "sha256": "6e27df6468ca7be597ab5408413fe5f5507cac5af917f947574e2be16d6ddf8b",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_bloom_motion823__snow.png",
+      "candidate": "mint/candidates/char_mint_bloom_motion823__snow.png",
+      "bytes": 217070,
+      "sha256": "c53dbbedf8472142c28832fc374baa4577862e16314e75db2720f143f9c82045",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_impaler_charge__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_charge__snow.png",
+      "bytes": 222626,
+      "sha256": "a4aff719e16aca72fce944aec4d6401564df300fa565dbadf7505e01328e3344",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_impaler_move__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_move__snow.png",
+      "bytes": 220434,
+      "sha256": "51ef589b12da7f0adcc9945329edc06cda5190cedcf5de5ee42c21ed7d24f4b2",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_impaler_release__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_release__snow.png",
+      "bytes": 287479,
+      "sha256": "30053927dd957ec6fba63eb33f858730144679bbf161641ad1967fa3bf32a2a6",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "no fully transparent pixels",
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source",
+        "first version has opaque gray background and repeated poses; improved v2 is an unverified alternative"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_impaler_run_motion823__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_run_motion823__snow.png",
+      "bytes": 206468,
+      "sha256": "7d1a548e850e572b59dfc2e28df299f91781be8576bcad9e5427903b8fd14e0b",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "mint/char_mint_lance_charged__snow.png",
+      "candidate": "mint/candidates/char_mint_lance_charged__snow.png",
+      "bytes": 146830,
+      "sha256": "83fcca0f2dd7cbc0b7773edf0fe50b6a310cc6e9c91a9b627853489d12db80ff",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa__chef.png",
+      "bytes": 239361,
+      "sha256": "0a29f039ef16f160618605597e3cd4640d98a79930fd9725faea7e55d80cd701",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_run__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_run__chef.png",
+      "bytes": 332569,
+      "sha256": "8375591d380e515b978bca939d8ed162da152fb551fa7394824b538ca44fcfda",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_attack__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_attack__chef.png",
+      "bytes": 168074,
+      "sha256": "a746b41063444bb17b409ba476060c9bc0b9cd4c62be4eb1216031d64ab143a5",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_hurt__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_hurt__chef.png",
+      "bytes": 82299,
+      "sha256": "1e23fa8d0843816875613cd0df2a394951c598f66dc1ab8456009e24b572b351",
+      "width": 512,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_victory__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_victory__chef.png",
+      "bytes": 139721,
+      "sha256": "d6b5e158f09fd440aacef27bf96cc1894405125462fcd6cc99efb8019df147d8",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_dash_jab__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_dash_jab__chef.png",
+      "bytes": 144470,
+      "sha256": "f5603d7ff6fc6387850bb4cd60889dedd57802f438f13dde4e9d5231a830eaf3",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_dash_leap__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_dash_leap__chef.png",
+      "bytes": 149404,
+      "sha256": "69e723565a78b8405a1656881c1c6436c145b17ec8bab81acb1dc79ab737731c",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_fire_jab__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_fire_jab__chef.png",
+      "bytes": 141692,
+      "sha256": "57574a90c17ae319fdfb449b499d75b702c4cc740968b04c397bd61a8e1d7e10",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_fire_fin__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_fire_fin__chef.png",
+      "bytes": 130940,
+      "sha256": "0a05f4941c93f85bdc528cf55e08853daa5c588353b6cc2732282ebc75ac2baf",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_phantom__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_phantom__chef.png",
+      "bytes": 143432,
+      "sha256": "dc205c86f5d34cdd463553a69dcff930a800f91c47060a237eeb72bd52b3f137",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_rocket__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_rocket__chef.png",
+      "bytes": 119687,
+      "sha256": "11df3ef0c3a2305b25dc9a2a19f819c85ce8672f61993e910b9ce26aa1d1da02",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_rocket_motion823__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_rocket_motion823__chef.png",
+      "bytes": 169384,
+      "sha256": "b0e9913ec9b471a78cfd830ab0e902234154092f06aa9004862f5f2b8012e8b0",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_motion823__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_motion823__chef.png",
+      "bytes": 150710,
+      "sha256": "c9aee78f100451c01d87f87298a84231b28653f62e96db4eb27e268f624567af",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_run_motion823__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_run_motion823__chef.png",
+      "bytes": 206631,
+      "sha256": "0f8e1374029b98fb36231254b5397a11d27936d98b4d076846acdae436a655a8",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_charge__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_charge__chef.png",
+      "bytes": 161350,
+      "sha256": "e685e4e9cc4423427b3108c52daa79046f46af7a26f7b1a897131beb5e3f49fc",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_walk__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_walk__chef.png",
+      "bytes": 300041,
+      "sha256": "9b8490812674c62edaf699bef0939bbf7292f1b8d1a3e60dc3f276a9b1bf4251",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_hop__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_hop__chef.png",
+      "bytes": 136310,
+      "sha256": "06fedfd143f44b7c0bd17e8c7af1114c42311068340d6c942cadd3d5f062be00",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_slam__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_slam__chef.png",
+      "bytes": 194569,
+      "sha256": "af9973086fd9c921daad5e17f763796b563c6afd65005a2894cc8492b359278f",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "cocoa/char_cocoa_titan_colossus__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_colossus__chef.png",
+      "bytes": 283586,
+      "sha256": "501f0691ca85c68deebeab0d3b5cc9de1611b1c48d46cd3a9d76d96c44cc5e31",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "taro/char_taro__star.png",
+      "candidate": "taro/candidates/char_taro__star.png",
+      "bytes": 219120,
+      "sha256": "72f07b4c92407caa8d799bcdd95ec9784944adb3a13a5d34e160570cc75a11f3",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "taro/char_taro_run__star.png",
+      "candidate": "taro/candidates/char_taro_run__star.png",
+      "bytes": 324234,
+      "sha256": "3a475209320ea437fb8bed79ec428c37ea5e6a8f2dbd4e925e10bd96bdbfcdfe",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "taro/char_taro_attack__star.png",
+      "candidate": "taro/candidates/char_taro_attack__star.png",
+      "bytes": 234709,
+      "sha256": "50c8466778675f6767ceeef8994b3ad8b3404c86eebb892d7fbd2fc3d941e60e",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "taro/char_taro_plasma_motion823__star.png",
+      "candidate": "taro/candidates/char_taro_plasma_motion823__star.png",
+      "bytes": 211205,
+      "sha256": "ffdd4067c4e08232ea7e0c2d7ef68ac153cf2a15659d64f9c030d65d151df8b7",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "yuzu/char_yuzu__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu__summer.png",
+      "bytes": 201842,
+      "sha256": "a1a65e628f167070cf331fb82556d64c6d1da42a6d061f690286d7290e76a3f6",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "yuzu/char_yuzu_run__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu_run__summer.png",
+      "bytes": 276100,
+      "sha256": "4f68bf238db473acc918e5f42d3d601a00ad92124179ec0da33daef53a9a9342",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "yuzu/char_yuzu_attack__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu_attack__summer.png",
+      "bytes": 260723,
+      "sha256": "8903813697a35674ea454bb222043652119d226ba00061505f8e60724283c12d",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "yuzu/char_yuzu_combo_motion823__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu_combo_motion823__summer.png",
+      "bytes": 242776,
+      "sha256": "c58fdfd0f36dc7c57840a712399878dd2c43a620d2b4a0e051958414b792d17c",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "sesame/char_sesame__moon.png",
+      "candidate": "sesame/candidates/char_sesame__moon.png",
+      "bytes": 238745,
+      "sha256": "e7deeba92010ac711ecde8d8dfa4cca4438f2634f6f76c304403220d7f316dcd",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "sesame/char_sesame_run__moon.png",
+      "candidate": "sesame/candidates/char_sesame_run__moon.png",
+      "bytes": 346184,
+      "sha256": "71dbd39f2500bd39573794f1954858a037eefb33e62965c19ad8f6eb0d54ef21",
+      "width": 512,
+      "height": 384,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "sesame/char_sesame_attack__moon.png",
+      "candidate": "sesame/candidates/char_sesame_attack__moon.png",
+      "bytes": 250700,
+      "sha256": "a1d7e869106be16ae0e5009f3d562c45412918a83de965ba7570ac649c295899",
+      "width": 512,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "sesame/char_sesame_meteor_motion823__moon.png",
+      "candidate": "sesame/candidates/char_sesame_meteor_motion823__moon.png",
+      "bytes": 215917,
+      "sha256": "3f2f6eb42b12f961985c886ff12fec568bcdf7a939a75f6baee6f4f849dafc67",
+      "width": 1024,
+      "height": 128,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+      ]
+    },
+    {
+      "requested": "skin_icons69.png",
+      "candidate": "candidates/skin_icons69.png",
+      "bytes": 733252,
+      "sha256": "5631300f0dd12d759f510bd2bb13f56c2f167cc72269941e4940362f4319b16e",
+      "width": 1536,
+      "height": 256,
+      "mode": "RGBA",
+      "state": "not_accepted",
+      "issues": [
+        "exact original pose and composition or icon crop require review"
+      ]
+    }
+  ]
+}
