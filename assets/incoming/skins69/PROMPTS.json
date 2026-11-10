@@ -383,6 +383,25 @@
     },
     {
       "prompt": "Edit the supplied transparent eight-frame Mint impaler release sprite animation. Maintain EXACTLY eight discrete animation frames in one row and match the poses one for one: she winds up, thrusts the thin icy spear forward, extends the thrust, then recovers. Retain the exact original position of the face, feet, hands, spear tip, motion and timing per frame; do not repeat one frame. The only change is her costume: pale white and icy-blue princess armor with a small snowflake tiara and pale cape. Maintain hair color, facial identity, shield and style. Absolutely no background, shadows behind the frames, gray rectangles, ground, text or extra frames; fully transparent empty space."
+    },
+    {
+      "key": "momo_sniper_charge_v3",
+      "path": "assets/art/hero_motion823/sniper_charge.webp",
+      "prompt": "Edit the provided 8-frame game sprite sheet, not a new illustration. Maintain identical eight sequential poses, the exact pink hair shape and green eyes, position and silhouette in each frame. Critical: the character is holding and charging a small red gun pointed to the right: keep the weapon and muzzle in the exact same location in all frames. Only change the dark outfit to a short pink-white sakura yukata with strawberry hand wraps. Maintain the same right-facing profile, scale, cell placement and clean transparent background. Do not add new frames, labels, letters, borders or background."
+    },
+    {
+      "key": "mint_release_v3",
+      "path": "assets/art/mint55/char_mint_impaler_release.webp",
+      "prompt": "Edit the given eight-frame transparent sprite sheet while preserving each original animation drawing and its order, positioning, scale, face, mint hair, feet, spear geometry and spear tip position. She thrusts and releases a very thin spear to the right, then returns. Replace ONLY clothing with modest white and icy blue snow princess crystal armor, small tiara and short fur cape; colors and chibi art consistent with original. Exactly eight equal cells in one row, no background, no letters, no numbers. Do not repeat identical frames, do not draw a gray rectangle or a floor."
+    },
+    {
+      "key": "yuzu_run_v2",
+      "path": "assets/characters/yuzu_run_sheet.png",
+      "prompt": "Edit this existing sprite sheet. It has exactly 12 distinct frames in a 4-column by 3-row grid. Maintain the exact existing running poses, proportions, head and feet positions, direction, frame order, face, orange hair, fruit and style. Change ONLY the outfit: modest summer orange and light-blue top, blue shorts, little white jacket, straw hat and small sunglasses resting on head. Keep each figure entirely inside its own cell with transparent gaps, no background, text, numbers or extra frames."
+    },
+    {
+      "key": "momo_charge_cleanup",
+      "prompt": "Remove the pale white/pink background and haze from this exact eight-frame sprite sheet. Preserve all eight character drawings, gun, costume, poses, placement and frame sequence exactly as-is. Every pixel outside the character should be fully transparent. Do not add or change anything. No text, outlines, shadows, or ground."
     }
   ]
 }

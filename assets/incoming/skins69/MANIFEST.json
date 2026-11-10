@@ -304,8 +304,8 @@
     {
       "requested": "momo/char_momo_sniper_charge_motion823__sakura.png",
       "candidate": "momo/candidates/char_momo_sniper_charge_motion823__sakura.png",
-      "bytes": 148176,
-      "sha256": "bc455f694c4703e11ba87988d4c9745c124a54b027c048dabae07c3bb5d92424",
+      "bytes": 121267,
+      "sha256": "e81b77badd3dbb9369a0dc676af37f153f6e084a75b758b2aa9219b96171dc2a",
       "width": 1024,
       "height": 128,
       "mode": "RGBA",
@@ -384,8 +384,8 @@
     {
       "requested": "mint/char_mint_impaler_release__snow.png",
       "candidate": "mint/candidates/char_mint_impaler_release__snow.png",
-      "bytes": 287479,
-      "sha256": "30053927dd957ec6fba63eb33f858730144679bbf161641ad1967fa3bf32a2a6",
+      "bytes": 207375,
+      "sha256": "75eaf18e1fc53c3ee6e54c21ece8087d42746d4dec0b9b8bff728c12cd13053e",
       "width": 1024,
       "height": 128,
       "mode": "RGBA",
