@@ -135,7 +135,7 @@
 |---|---|---|
 | 1 | Frozen Pantry (C1-4) + ระบบแบบเบา/แบบเต็ม | ✅ v8.1.81 |
 | 2 | Hunger's Mouth (C1-2) + Creeping Roots (C2-3) | ✅ v8.1.82 |
-| 3 | Hunger Herald (C1-1) + Grandma's Pot (C1-3) | รอ |
+| 3 | Hunger Herald (C1-1) + Grandma's Pot (C1-3) | ✅ v8.1.83 |
 | 4 | Siege of the Hunger (Delve room) | รอ |
 | 5 | Reforge สกุลเงินต่อบรรทัด + Enchant transfer (ใช้เศษจาก Herald) | รอ |
 | 6 | Grandma's Golem (C1-5) | รอ |

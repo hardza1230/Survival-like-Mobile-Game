@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.81 — League missions phase 1: Frozen Pantry (owner: PoE leagues adapted to lore)
+
+Plan + owner decisions in `docs/design/OWNER_NOTES_POE_LEAGUES.md` (phases 1–7). frozenPantry in SIG_MISSIONS, fp* methods: walk to 🫙 jar (seek) → N statues ring the jar (not enemies, auto-aim ignores them) → painting ring around the player (PR 140) fills a statue in 1.8s (General 3s) → sigSpawnAt wakes it (e._fpTok, global this._fpSeq) → kill = progress, 🎁 statues drop missionLootBurst. fpFull() = replay (_replayMeter) / riftMode / storyCleared()>=10: 6 statues, woken foe must die in 14s (20s General) or fpVanish (silent remove, loot lost), unpainted statues shatter at 34s, 40% Frost General. Light (first play Ch1–2): 4 statues, no timers, no General. Stage C1-4 objectives ['survive','hunt','frozenPantry','capture']. Next: phase 2 Hunger's Mouth (C1-2) + Creeping Roots (C2-3).
+
 # Previous delivery: v8.1.80 — Ultimatum-style Sugar Crown Trial (owner: B endgame + upgrade Vault Altar)
 
 Mission type 'ultimatum' (in SIG_MISSIONS) via ult* methods on the _sig layer: each round pick 1 of 3 ULT_CURSES pads (swarm/elite/noheal/bombs/shots/drain, stacking, mult += v) → goal from ULT_GOALS (survive in gold circle 20s / slay 14+4r in 28s / defend altar 300hp 20s / collect 5 seeds 22s) → pot += base·(1+.5r)·mult, +1 box from round 2 → decide pads 8s: 🎁 take (default) / ⚔️ risk → clear all rounds = full pot + epic box; fail = half pot & half boxes (owner did not pick; recommendation used). Delve: node type 'trial' (d≥4, r<.165) → delveMission 'ultimatum' (4 rounds). Story stage 14 vaultAltar = same engine, 2 rounds (old pact code removed). No arm pad / Overcharge on trials. Loss penalty "half" can be switched to "all" in ultFinish.

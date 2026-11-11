@@ -2,9 +2,9 @@
 const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
-assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots'];"));
+assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot'];"));
 for(const t of SIG){assert.ok(new RegExp('\\n  '+t+":\\{emoji:").test(src),'def '+t);assert.ok(src.includes(t+":['"),'bonus goal '+t);}
-const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!x.includes('frozenPantry')&&!x.includes('hungersMouth')).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
+const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!/frozenPantry|hungersMouth|hungerHerald|grandmasPot/.test(x)).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
 for(const n of ['sigAdd','sigText','sigClear','sigSpawnAt','sigSetup','sigNear','sigTick','sigOnKill'])m(n);
 const tk=m('sigTick');for(const t of SIG)assert.ok(tk.includes("o.type==='"+t+"'"),'tick '+t);assert.ok(tk.includes("o.type==='ultimatum'"));
 assert.ok(src.includes("}else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){\n      this.sigSetup(o,type,p||{});")&&src.includes('this.sigTick(dt,o);if(!this.waveObjective)return;')&&src.includes('this.sigOnKill?.(e);')&&src.includes('clearWaveObjective(){this.sigClear?.();'),'hooks');
@@ -54,7 +54,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\)this\.enemies/.test(m('sigClear')),'lane flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
@@ -68,3 +68,21 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
     for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<25;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
   console.log('League phase 2: Hunger’s Mouth (widen/close/pot burst) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
+
+{ // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
+  for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe'])m(n);
+  assert.ok(src.includes("objectives:['hungerHerald','hunt','capture','purge'],lead:'hungerHerald',")&&src.includes("objectives:['grandmasPot','hunt','capture','purge'],lead:'grandmasPot',"),'C1-1 Herald, C1-3 Pot');
+  assert.ok(/if\(stL&&!this\._bountyLead&&pool\.includes\(stL\)\)/.test(m('replayBountyTick'))&&/LEAGUE_MISSIONS\.includes\(type\)\)\?70:45/.test(m('replayBountyTick')),'league bounty first + 70s');
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
+  const obj=()=>{const o={x:0,y:0,visible:true,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(v){o.visible=v;return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},setRotation(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
+  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe'].map(m).join('')+'};this.K=S;',ctx);
+  const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj()},
+    objectivePosition:(i)=>({x:300+i*50,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{countActive:()=>en.filter(e=>e.active).length},
+    sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
+  { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.strictEqual(S.gates.length,2);assert.ok(S.herald&&S.herald._herald);sc.hhTick(.1,o,S);assert.ok(S.herald._goTo,'herald wanders');
+    for(let k=0;k<40;k++)sc.hhTick(.1,o,S);assert.ok(en.length>3,'gates spawn packs');sc.hhDown(S.herald,o,S);assert.ok(sc.done&&o.progress===1&&S.gates.length===0); }
+  { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,6);for(let i=0;i<40&&sc.gpWanted(S).length;i++)sc.gpOnKill({x:100,y:100},o,S);assert.ok(S.items.length>=6,'drops ingredients');
+    sc.player={x:100,y:100};sc.gpTick(.1,o,S);assert.ok(S.carry.length>=6,'picked up');sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(o.progress,6);assert.ok(sc.done&&sc.sugarRun>0,'dish served'); }
+  { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);sc.gpDrop(S,500,500,Object.keys(S.need)[0]);for(let k=0;k<200;k++)sc.gpTick(.1,o,S);assert.strictEqual(S.items.length,0,'ingredients spoil'); }
+  { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);for(let k=0;k<125;k++)sc.gpTick(.1,o,S);assert.ok(S.items.length>=1,'grandma tosses one when nothing drops'); }
+  console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (drops, carry, deliver, spoil, serve) passed'); }
