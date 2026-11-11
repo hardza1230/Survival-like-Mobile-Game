@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.87';
+const GAME_VERSION = '8.1.88';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.88',date:'2026-11-11',title:'Cleaner battle screen',items:['Removed the skill icon bar at the bottom of the battle screen (your skills are still listed in the pause menu)','Ruby talks less in battle: at least 30 seconds between reactions, and “objective done”, wave and timer lines only once per stage']},
   {v:'8.1.87',date:'2026-11-11',title:'Memory Book',items:['Every Bestiary tier you unlock now gives 💭 Memories (1 · 2 · 4) — tiers you already had are paid back once','Spend Memories to raise a monster’s 📖 Codex (Lv 1–5) once it reaches Tier 3: each level adds +3% damage against that monster on top of its weak spot','Open a monster in the Bestiary to see its Codex button']},
   {v:'8.1.86',date:'2026-11-11',title:'Siege of the Hunger',items:['New Delve room from depth 3: 🏰 Siege of the Hunger — hold the circle for 45 seconds while five gates pour monsters in','Every kill inside the circle fills the pot; stepping out pauses the siege and leaks the pot','A Hunger Warlord may storm a gate mid-siege for a huge pot bonus · the pot bursts into loot when the siege breaks (deeper = more)']},
   {v:'8.1.85',date:'2026-11-11',title:'Grandma’s Golem',items:['The Crown Oven of Hunger opens with 🗿 Grandma’s Golem: beat the flavor carriers to collect golem parts (🍰 head · 🥨 arms · 🥖 legs · 🍭 tail · 💗 heart)','Stand at the oven to bake the golem — every part gives it a skill, so more parts make a tougher fight and a bigger reward (you can bake early)','Berry Jam and Star Sugar now show proper icons']},
@@ -10577,7 +10578,7 @@ class Game extends Phaser.Scene {
       this.skillBar.add([bg,em,badge,lv]); this.skillChips[k]={bg,em};
       x+=cw;
     });
-    this.skillBar.setVisible(this.state==='play'||this.state==='levelup');
+    this.skillBar.setVisible(false);   /* v8.1.88 เจ้าของ: เอาแถบไอคอนสกิลล่างจอออก (ดูสกิลได้ในหน้าหยุดเกม) */
     this.checkCombos();
   }
   // ไอคอนรูปจริงของสกิล/พร (ถ้าอาร์ตทำมา) — None=คืน null (ใช้อีโมจิแทน)
@@ -14556,7 +14557,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this._rubyOnce=null;this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;this._bountyLead=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -15055,7 +15056,7 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(300,()=>{ if(!this.rubyOn()||this.stageIndex!==i)return; st[i]=1; Save.save(); this.rubySay(RUBY_STORY[i],5600,{face:[1,3,6,10,11,14].includes(i)?'sad':'normal'}); }); }   // v7.9.81 เรื่องของ Ruby ทีละด่าน (ครั้งแรกเท่านั้น)
   rubyOn(){ return this.state==='play'&&!this._coach&&!this.tutorialMode&&!(Save.data.settings||{}).noRuby; }
   /* v8.1.43 A09 Ruby ปฏิกิริยาในด่าน · หมุน 2 บท ไม่ซ้ำติดกัน · เว้น ≥8 วิ · clear พูดอย่างเดียว (หน้าสรุปไม่มีกล่อง Ruby) */
-  rubyVoiceReact(ev,delay=0){const k1='vo_ruby_react_'+ev+'_1';if(typeof A07_CATALOG==='undefined'||!A07_CATALOG[k1]||!this.rubyOn?.())return false;const nw=Date.now();if(nw-(this._rubyReactAt||0)<8000)return false;this._rubyReactAt=nw;
+  rubyVoiceReact(ev,delay=0){const k1='vo_ruby_react_'+ev+'_1';if(typeof A07_CATALOG==='undefined'||!A07_CATALOG[k1]||!this.rubyOn?.())return false;const nw=Date.now(),big=ev==='clear'||ev==='bossdown';if(!big&&nw-(this._rubyReactAt||0)<30000)return false;if(ev==='objdone'||ev==='wave'||ev==='timer'){const O=this._rubyOnce||(this._rubyOnce={});if(O[ev])return false;O[ev]=1;}this._rubyReactAt=nw;   /* v8.1.88 เจ้าของ: Ruby พูดถี่เกิน → เว้น 30s · Objective/Wave/Timer พูดด่านละครั้ง */
     const h=this._rubyReactPick||(this._rubyReactPick={}),i=h[ev]===1?2:1;h[ev]=i;const row=A07_CATALOG['vo_ruby_react_'+ev+'_'+i]||A07_CATALOG[k1],face={lowhp:'alert',wave:'alert',timer:'cheer',bossdown:'cheer',objdone:'cheer',revive:'happy',clear:'cheer'}[ev]||'normal';
     const go=()=>{if(ev==='clear'){this.voiceLine?.('ruby',row.text,()=>true,this);return;}if(this.state!=='play'||this._speech)return;this.rubySay(row.text,Math.max(2200,row.duration+400),{face});};if(delay&&this.time)this.time.delayedCall(delay,go);else go();return true;}
   rubySay(text,ms=4000,opt={}){ if(!this.add||!this.time||!this.rubyOn())return; const q=this._rubyQ||(this._rubyQ=[]); if(opt.replace){ q.length=0; this.rubyHide(true); } if(q.some(m=>m.text===text)||(this._ruby&&this._ruby.text===text))return; q.push({text,ms,face:opt.face||'normal'}); if(!this._ruby)this.rubyNext(); }

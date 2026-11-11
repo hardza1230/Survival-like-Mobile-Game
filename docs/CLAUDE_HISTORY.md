@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.86 — League phase 4: Siege of the Hunger (Delve room, Legion 5 Way)
+
+Delve node type 'siege' (d≥3, .165≤r<.205 after trial) → delveMission 'hungerSiege' (AMAP_TYPES siege 🏰). hs* methods: fixed circle R230 · 5 gates at R+300 · waves every 2.4s from 2/3/5 random gates (by progress 0/15/30s), 2+floor(d/8) foes each · progress = seconds inside (target 45) · outside: timer pauses + pot −1/s · kill while player inside → pot +1 (elite 3, Warlord 15) · 45% Hunger Warlord at 22s (elite ×1.6 size, ×4 hp) · end = hsBurst pot·(1+.05d)·(.8+.15si). In SIG_MISSIONS + LEAGUE_MISSIONS (spawn force + row-currency drop). Next: phase 7 Memory Book + art order 73.
+
 # Previous delivery: v8.1.85 — League phase 6: Grandma's Golem (C1-5) + art order 72
 
 grandmasGolem (Metamorph): gg* methods + GOLEM_PARTS (head 🍰 jam shots · arms 🥨 hazard slam · legs 🥖 speed ×1.4 · tail 🍭 2 helpers/7s · heart 💗 regen .8%/s). Collect: one elite carrier per part (e._ggPart, staggered spawn, respawn if lost) → kill drops part → walk over = take · oven ring 100: stand 2s with ≥min parts (light 3 parts/min 2 · full 5/min 3) = ggBake → golem = sigSpawnAt elite (e._golem, scale 1.5+.1n, hp ×(2|3)+.8n) with skills of baked parts → ggDown loot (8+2si)(1+.35n)(full ×1.4). C1-5 objectives ['grandmasGolem','hunt','capture','purge'] lead. Berry Jam / Star Sugar icons now reuse currency_wild_jam / currency_wish_candy. Art order 72 (15 files: league missions + Honey Drop/Recipe Ink icons) written. Next: phase 4 Siege (Delve), phase 7 Memory Book.

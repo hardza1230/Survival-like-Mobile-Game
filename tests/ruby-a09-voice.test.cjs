@@ -13,7 +13,8 @@ assert(s.includes(".replace(/\\s+·\\s+\\d+\\/\\d+$/,'')"),'runtime lookup strip
 // rubyReact rotation, 8s throttle, clear speaks without bubble
 let now=100000;const said=[],spoke=[];const sc={state:'play',rubyOn:()=>true,rubySay:t=>said.push(t),voiceLine:(r,t)=>spoke.push(t),time:null};
 const R=vm.runInContext('({'+method('rubyVoiceReact')+'\n})',Object.assign(ctx,{Date:{now:()=>now}}));const react=R.rubyVoiceReact.bind(sc);
-assert(react('bossdown'));assert(!react('wave'),'8s throttle');now+=9000;assert(react('bossdown'));assert.notEqual(said[0],said[1],'rotates');now+=9000;assert(react('clear'));assert.equal(spoke.length,1);assert(!react('nothing'));
+assert(react('bossdown'));assert(!react('wave'),'30s throttle');now+=9000;assert(react('bossdown'),'boss down is never throttled');assert.notEqual(said[0],said[1],'rotates');now+=9000;assert(react('clear'));assert.equal(spoke.length,1);assert(!react('nothing'));
+now+=31000;assert(react('objdone'));assert(!react('lowhp'),'30s gap after a line');now+=31000;assert(!react('objdone'),'v8.1.88 objective line once per stage');assert(react('lowhp'));
 for(const h of ["this.rubyVoiceReact?.('objdone',300)","this.rubyVoiceReact?.('bossdown',1800)","this.rubyVoiceReact?.('revive',1600)","this.rubyVoiceReact?.('lowhp',4000)","this.rubyVoiceReact?.('wave',400)","this.rubyVoiceReact?.('timer')","this.rubyVoiceReact?.('clear',1200)"])assert(s.includes(h),h);
 assert(s.includes("nw-(sa[vk]||0)<30000"),'short reminder voice at most every 30s');
 console.log('Ruby A09: 28 verified clips, 14 short reminders matched (progress-safe), 7 reactions hooked, rotation/throttle/clear passed');
