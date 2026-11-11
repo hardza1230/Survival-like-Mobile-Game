@@ -49,5 +49,10 @@
 - แผนที่ Delve (`AMAP_TYPES` trial/siege): emoji ⚖️ / 🏰 → `amap_trial` / `amap_siege`
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด)
+- วันที่ส่ง 11 พ.ย. 2026
+- ส่ง 7/7 ไฟล์ที่ `assets/incoming/trial74/`
+- ไฟล์ที่ขาด 0
+
+`ult_altar.png`, `ult_circle.png`, `ult_seed.png`, `ult_curse_pads.png`, `ult_choice_pads.png`, `amap_trial.png`, `amap_siege.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`center`/`feet`), `background` (`transparent`/`black`)

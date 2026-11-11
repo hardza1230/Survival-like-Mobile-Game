@@ -1,0 +1,9 @@
+[
+  {"key": "ult_altar", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ult_circle", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ult_seed", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ult_curse_pads", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ult_choice_pads", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "amap_trial", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "amap_siege", "result": "pass", "reason": "mechanical checks passed"}
+]
