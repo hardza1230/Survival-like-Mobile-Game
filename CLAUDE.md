@@ -43,6 +43,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 - League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 · phase 6 Golem v8.1.85 · phase 4 Siege v8.1.86 · phase 7 Memory Book v8.1.87 (ครบทุก phase) · อาร์ตใบ 70–74 ผูกแล้ว v8.1.93 · รอ QA มือถือ
+- ใบสั่งอาร์ต 75 (การ์ดเลเวลอัปตามประเภท) · 76 (มอน Breach) · 77 (ท่าโจมตี/ตายศัตรูพิเศษ) · **เจ้าของ: AI ฝั่งอาร์ตผูกเองตามหัวข้อ "ผูกเข้าเกม" ในแต่ละใบ** · รออาร์ต
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · v8.1.90 เข้าเกมแบบทดลองแล้ว 5 ฮีโร่ (ผ่าน scripts/qa-skin69.py) · Mint รอแก้ 4 ชีต · เดิม: ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
