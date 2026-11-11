@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.93';
+const GAME_VERSION = '8.1.94';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.94',date:'2026-11-11',title:'Distinct level-up cards',items:['Normal, Mutation, Relic and Unique choices now have distinct frames and crests.','Special cards have subtle animated borders.']},
   {v:'8.1.93',date:'2026-11-11',title:'Painted missions',items:['Every League mission now has real art: frozen statues and the sugar jar, the breach hand, rim, chests, splinters and the Breachlord, creeping roots, the Herald and its gates, Grandma’s pot and Golem, the Siege circle and Warlord','Sugar Crown Trial has its crown altar, curse pads and take/risk pads · Delve map shows Trial and Siege room icons','Chapter 3 missions got painted rifts, trees, mirrors, crystal blast, lanterns, start and Overcharge pads, season shrines, petals, bubbles, supply crates and the Stalker Captain','Mochi Patrol now has scrolling scenes for each chapter with walking mochi monsters','Honey Drop and Recipe Ink have icons; the Bestiary shows Codex badges']},
   {v:'8.1.92',date:'2026-11-11',title:'Hunger’s Domain',items:['Hunger Stones now open a special room: pick a cave on the Delve map and tap 🪨 Domain to spend one','The whole cave is torn into the breach — survive a 30-second flood of breach monsters (they drop 🔮 splinters), then face the Breachlord','Beat it for a big Sugar burst, Forge currencies, 20 splinters and Legend gear · dying in the Domain loses the stone']},
   {v:'8.1.91',date:'2026-11-11',title:'Hunger’s Mouth becomes a true breach',items:['Touch the Hunger’s hand to tear open a breach that keeps growing past the edge of the screen','Breach monsters pour in everywhere inside — every kill keeps it open a little longer, and when time runs out it collapses and pulls them all back','Breach monsters drop 🔮 Hunger Splinters (100 fuse into a Hunger Stone) and 🤲 breach chests appear inside the ring · on replays a Hand of the Hunger may reach through']},
@@ -2213,6 +2214,14 @@ const ASSET_IMAGES = {
   lvl_held_chip_sheet:'assets/art/levelup/lvl_held_chip_sheet.webp',
   lvl_held_bar:'assets/art/levelup/lvl_held_bar.webp',
   lvl_card_base:'assets/art/levelup/lvl_card_base.webp',
+  lvl_tpl_normal:'assets/art/levelup/lvl_tpl_normal.webp',
+  lvl_tpl_mutation:'assets/art/levelup/lvl_tpl_mutation.webp',
+  lvl_tpl_relic:'assets/art/levelup/lvl_tpl_relic.webp',
+  lvl_tpl_unique:'assets/art/levelup/lvl_tpl_unique.webp',
+  lvl_tpl_crest:'assets/art/levelup/lvl_tpl_crest.webp',
+  lvl_tpl_fx_mutation:'assets/art/levelup/lvl_tpl_fx_mutation.webp',
+  lvl_tpl_fx_relic:'assets/art/levelup/lvl_tpl_fx_relic.webp',
+  lvl_tpl_fx_unique:'assets/art/levelup/lvl_tpl_fx_unique.webp',
   lvl_card_accent:'assets/art/levelup/lvl_card_accent.webp',
   lvl_card_glow:'assets/art/levelup/lvl_card_glow.webp',
   lvl_card_select:'assets/art/levelup/lvl_card_select.webp',
@@ -4580,7 +4589,7 @@ const STAGE_SHEETS=[
 let _stageOnlyArt=null;
 function stageOnlyArtKeys(){ if(_stageOnlyArt)return _stageOnlyArt; const s=new Set(STAGE_SHEET_KEYS); try{ for(const i in STAGE_DECOR){ const d=STAGE_DECOR[i]; if(d&&d.items)for(const it of d.items)s.add(it.key); } }catch(e){} for(const k in ASSET_IMAGES)if(/^floor_c\d/.test(k))s.add(k); for(const k of [...s])if(bootKeep(k))s.delete(k); return _stageOnlyArt=s; }
 function deferredImage(k){return k.startsWith('stage_card_s')||k.startsWith('floor_c')||k.startsWith('dec_c')||k.startsWith('codex_c3_')||k.startsWith('epilogue_s')||/^bg(?:[2-9]|1[0-5])$/.test(k);}
-const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
+const PLAY_UI_KEYS=["lvl_screen_veil", "lvl_title_banner_sheet", "lvl_title_burst", "lvl_held_chip_sheet", "lvl_held_bar", "lvl_card_base", "lvl_card_accent", "lvl_tpl_normal", "lvl_tpl_mutation", "lvl_tpl_relic", "lvl_tpl_unique", "lvl_tpl_crest", "lvl_tpl_fx_mutation", "lvl_tpl_fx_relic", "lvl_tpl_fx_unique", "lvl_card_glow", "lvl_card_select", "lvl_icon_socket", "lvl_ribbon_sheet", "lvl_pill_sheet", "lvl_combo_chip_sheet", "lvl_type_badge_sheet", "lvl_sparkle_sheet", "lvl_shine_strip", "vfx_lvl_open", "vfx_lvl_card_in", "vfx_lvl_confirm", "vfx_lvl_special_confirm", "pause_veil", "pause_crest", "pause_title_divider", "pause_chip", "pause_stat_bar", "pause_stat_sep", "pause_panel", "pause_panel_header_line", "pause_tile", "pause_detail_strip", "pause_skill_slot", "pause_level_badge", "pause_relic_row", "pause_count_badge", "pause_btn_resume", "pause_btn_settings", "pause_btn_quit", "pause_icon_sheet", "pause_loot_icon_sheet"];PLAY_UI_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));
 const HUD_KEYS=["hud_top_panel","hud_mission_card","hud_exp_frame","hud_exp_fill","hud_level_badge","hud_counter_pill","hud_mission_bar_frame","hud_mission_bar_fill","hud_boss_bar_frame","hud_boss_bar_fill","hud_boss_plate","hud_ic_kill","hud_ic_sugar","hud_wave_pips","hud_ic_pause","hud_ic_sound","hud_round_btn","hud_speed_ring"];HUD_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v8.0.10 ใบ 47 HUD ส่วนบน (stage-lazy)
 const XP_ORB_KEYS=['xp_orbs','xp_orb_shadow','vfx_xp_pickup','vfx_xp_pickup_big','vfx_xp_trail','vfx_xp_merge','xp_bar_icon'];XP_ORB_KEYS.forEach(k=>STAGE_SHEETS.forEach(s=>s.push(k)));   // v7.9.26 ใบ 29 โหลดพร้อมทุกด่าน ไม่ใช่บูต
 const XP_ORB_PX=[0,22,26,31,37,44,56],XP_TIER_COL=[0,0xff8fb5,0x8be6a4,0x7fc9ff,0xb98cff,0xffd75e,0xfff0a0];   // ขนาดเม็ดในโลก (ส่วนที่เห็น ~75% ของเฟรม) · สีย้อม VFX ตามระดับ
@@ -4607,7 +4616,7 @@ const MENU_ORDER_ART={"rar_frame":[104,122,4,[20.0,20.0,20.0,20.0],4,false,"NORM
 Object.assign(MENU_ORDER_ART,{"l30_panel":[672,848,1,[56,56,56,56],1,false,"NORMAL"],"l30_header":[600,150,1,null,1,false,"NORMAL"],"l30_ruby":[256,256,1,null,1,false,"NORMAL"],"l30_cell":[96,96,4,null,4,false,"NORMAL"],"l30_cell30":[96,96,2,null,2,false,"NORMAL"],"l30_stamp":[96,96,1,null,1,false,"NORMAL"],"l30_today_fx":[160,160,6,null,6,true,"ADD"],"l30_reward":[96,96,6,null,6,false,"NORMAL"],"l30_reward30":[192,192,1,null,1,false,"NORMAL"],"l30_button":[480,92,2,[48,20,48,20],1,false,"NORMAL"],"l30_claim_burst":[192,192,8,null,8,false,"ADD"]});
 for(const [k,d] of Object.entries(MENU_ORDER_ART))TEMPLE_UI[k]=d.slice(0,4);
 
-Object.assign(TEMPLE_UI,{"lvl_screen_veil":[540,960,1,null],"lvl_title_banner_sheet":[500,48,1,[50,16,50,16]],"lvl_title_burst":[320,160,1,null],"lvl_held_chip_sheet":[64,64,3,null],"lvl_held_bar":[800,44,1,[16,12,16,12]],"lvl_card_base":[384,150,1,[32,28,32,28]],"lvl_card_accent":[384,150,1,[32,28,32,28]],"lvl_card_glow":[416,182,1,[40,40,40,40]],"lvl_card_select":[400,166,1,[40,36,40,36]],"lvl_icon_socket":[96,96,2,null],"lvl_ribbon_sheet":[180,28,1,[24,8,24,8]],"lvl_pill_sheet":[120,22,1,[12,8,12,8]],"lvl_combo_chip_sheet":[48,48,2,null],"lvl_type_badge_sheet":[64,64,7,null],"lvl_sparkle_sheet":[64,64,4,null],"lvl_shine_strip":[48,256,1,null],"pause_veil":[540,960,1,null],"pause_crest":[500,180,1,null],"pause_title_divider":[400,20,1,null],"pause_chip":[200,32,1,[20,12,20,12]],"pause_stat_bar":[850,64,1,[60,24,60,24]],"pause_stat_sep":[8,64,1,null],"pause_panel":[440,150,1,[30,40,30,25]],"pause_panel_header_line":[350,16,1,[16,6,24,6]],"pause_tile":[270,100,1,[24,24,24,24]],"pause_detail_strip":[800,32,1,[20,12,20,12]],"pause_skill_slot":[128,128,3,null],"pause_level_badge":[64,64,1,null],"pause_relic_row":[800,110,1,[135,32,120,32]],"pause_count_badge":[96,64,1,[24,24,24,24]],"pause_btn_resume":[850,130,1,[220,32,100,32]],"pause_btn_settings":[410,100,1,[40,32,40,32]],"pause_btn_quit":[410,100,1,[40,32,40,32]],"pause_icon_sheet":[128,128,4,null],"pause_loot_icon_sheet":[160,160,3,null],"hub_cloud_sheet":[174,70,3,null],"hub_momo_blink":[152,81,3,null]});   // v7.8.59 ใบ 23/24 ชิ้น UI (tuPanel/tuImg ใช้ร่วม)
+Object.assign(TEMPLE_UI,{"lvl_screen_veil":[540,960,1,null],"lvl_title_banner_sheet":[500,48,1,[50,16,50,16]],"lvl_title_burst":[320,160,1,null],"lvl_held_chip_sheet":[64,64,3,null],"lvl_held_bar":[800,44,1,[16,12,16,12]],"lvl_card_base":[384,150,1,[32,28,32,28]],"lvl_tpl_normal":[384,150,1,[32,28,32,28]],"lvl_tpl_mutation":[384,150,1,[32,28,32,28]],"lvl_tpl_relic":[384,150,1,[32,28,32,28]],"lvl_tpl_unique":[384,150,1,[32,28,32,28]],"lvl_tpl_crest":[96,96,4,null],"lvl_tpl_fx_mutation":[384,150,6,null],"lvl_tpl_fx_relic":[384,150,6,null],"lvl_tpl_fx_unique":[384,150,6,null],"lvl_card_accent":[384,150,1,[32,28,32,28]],"lvl_card_glow":[416,182,1,[40,40,40,40]],"lvl_card_select":[400,166,1,[40,36,40,36]],"lvl_icon_socket":[96,96,2,null],"lvl_ribbon_sheet":[180,28,1,[24,8,24,8]],"lvl_pill_sheet":[120,22,1,[12,8,12,8]],"lvl_combo_chip_sheet":[48,48,2,null],"lvl_type_badge_sheet":[64,64,7,null],"lvl_sparkle_sheet":[64,64,4,null],"lvl_shine_strip":[48,256,1,null],"pause_veil":[540,960,1,null],"pause_crest":[500,180,1,null],"pause_title_divider":[400,20,1,null],"pause_chip":[200,32,1,[20,12,20,12]],"pause_stat_bar":[850,64,1,[60,24,60,24]],"pause_stat_sep":[8,64,1,null],"pause_panel":[440,150,1,[30,40,30,25]],"pause_panel_header_line":[350,16,1,[16,6,24,6]],"pause_tile":[270,100,1,[24,24,24,24]],"pause_detail_strip":[800,32,1,[20,12,20,12]],"pause_skill_slot":[128,128,3,null],"pause_level_badge":[64,64,1,null],"pause_relic_row":[800,110,1,[135,32,120,32]],"pause_count_badge":[96,64,1,[24,24,24,24]],"pause_btn_resume":[850,130,1,[220,32,100,32]],"pause_btn_settings":[410,100,1,[40,32,40,32]],"pause_btn_quit":[410,100,1,[40,32,40,32]],"pause_icon_sheet":[128,128,4,null],"pause_loot_icon_sheet":[160,160,3,null],"hub_cloud_sheet":[174,70,3,null],"hub_momo_blink":[152,81,3,null]});   // v7.8.59 ใบ 23/24 ชิ้น UI (tuPanel/tuImg ใช้ร่วม)
 Object.assign(TEMPLE_UI,{"jr_page_bg":[540,960,1,null],"jr_header_plaque":[450,75,1,null],"jr_btn_back":[180,55,2,null],"jr_chip_currency":[190,50,1,[16,12,16,12]],"jr_chip_plus":[36,36,1,null],"jr_panel":[400,200,1,[70,50,70,50]],"jr_panel_inset":[350,120,1,[50,30,50,30]],"jr_divider":[380,14,1,null],"jr_section_title_deco":[32,32,1,null],"jr_warning_ribbon":[500,40,1,[90,9,90,9]],"jr_slot":[80,90,4,null],"jr_bag_cell":[90,90,3,null],"jr_tag_level":[60,26,1,[9,6,9,6]],"jr_badge_new":[28,28,1,null],"jr_row":[750,60,1,[50,11,50,11]],"jr_icon_ring":[56,56,4,null],"jr_star":[28,28,2,null],"jr_chip_pct":[80,32,1,[10,8,10,8]],"jr_checkbox":[32,32,2,null],"jr_radio":[32,32,2,null],"jr_lock_cell":[32,32,1,null],"jr_btn_primary":[750,100,1,[165,22,60,22]],"jr_btn_secondary":[380,75,1,[50,16,50,16]],"jr_btn_accent":[260,75,1,[38,18,38,18]],"jr_btn_icon":[50,50,2,null],"jr_btn_pill":[220,40,1,[30,10,30,10]],"jr_btn_pager":[75,45,3,null],"jr_icon_sheet":[64,64,4,null],"jr_forge_summary":[750,150,1,[250,35,50,35]],"jr_forge_footer":[750,150,1,[90,35,90,50]],"bk_page_turn":[432,768,3,null],"bk_page_shadow":[216,384,3,null],"bk_spine":[51,1536,1,null],"vfx_bk_dust":[102,102,6,null],"bk_cover_closed":[864,1536,1,null],"bk_cover_open":[432,768,5,null],"bk_cover_glow":[410,410,1,null]});   // v7.9.10 ใบ 27 สมุด (jr_) + ใบ 28 หนังสือ (bk_) · [cellW,cellH,cols,nineSlice] หลังแพ็ก
 Object.assign(TEMPLE_UI,{"ic_lb_settings":[128,128,1,null],"lb_currency_plain":[192,40,1,[22,0,22,0]],"lb_stage_panel":[320,110,1,[45,30,45,30]],"lb_battle_btn":[320,90,1,[64,0,64,0]],"lb_arrow_btn":[48,60,1,null],"lb_side_btn":[80,80,1,[16,16,16,16]],"lb_profile_frame":[260,75,1,[35,18,35,18]],"lb_avatar_ring":[75,75,1,null],"lb_currency_pill":[150,45,1,[24,0,42,0]],"ic_lb_battle":[128,128,1,null],"ic_nav_home":[128,128,1,null],"ic_nav_heroes":[128,128,1,null],"ic_nav_play":[128,128,1,null],"ic_nav_gear":[128,128,1,null],"ic_nav_activities":[128,128,1,null],"ic_side_codex":[128,128,1,null],"ic_side_inbox":[128,128,1,null],"ic_side_news":[128,128,1,null],"ic_side_daily":[128,128,1,null],"ic_side_awards":[128,128,1,null],"lb_nav_bg":[540,75,1,[18,0,18,0]],"lb_nav_active":[150,70,1,[30,14,30,14]],"lb_nav_divider":[3,50,1,null],"lb_star":[48,48,1,null],"lb_power_pill":[210,40,1,[24,0,24,0]],"lb_hero_shadow":[200,60,1,null],"vfx_lb_battle_shine":[320,90,6,null],"vfx_lb_sparkle":[64,64,2,null]});   // v7.9.51 ใบ 33 Lobby UI (scripts/pack-lobby-ui.py)
 /* v7.9.58 ใบสั่งอาร์ต 34: ฮีโร่ขยับในหน้า Lobby (แพ็ก 75% = 384×480/เฟรม, เท้า y450) · โหลดเฉพาะฮีโร่ที่เลือก ไม่โหลดตอนบูต · Sesame ผูกด้วย (เจ้าของ 22 ต.ค.) */
@@ -17241,9 +17250,35 @@ class Game extends Phaser.Scene {
     const rarIdx=rar?['common','rare','epic','legend'].indexOf(rar.id):-1;
     const glow=this.add.graphics();
     if(rarIdx>=1){const gw=rarIdx>=3?7:rarIdx>=2?5:3,ga=rarIdx>=3?0.55:rarIdx>=2?0.36:0.18;glow.lineStyle(gw,color,ga);glow.strokeRoundedRect(x-3,y-3,w+6,h+6,19);if(rarIdx>=2){glow.lineStyle(gw+6,color,ga*0.4);glow.strokeRoundedRect(x-5,y-5,w+10,h+10,21);}}
-    const art=this.tuHas('lvl_card_base');let panel;   // v7.8.59 ใบ 23: กรอบการ์ดจริง (base + ชั้นสีย้อมตามสกิล)
-    if(art){panel=this.tuPanel('lvl_card_base',0,x,y,w,h);const acc=this.tuPanel('lvl_card_accent',0,0,0,w,h);if(acc){acc.list.forEach(i=>i.setTint(color));panel.add(acc);}}
-    else{panel=this.add.graphics();const bgMix=rarIdx>=2?this._darken(color,rarIdx>=3?0.60:0.70):0x21172b;
+    const cat=(/relic/i.test(o.kind||'')||this._relicPick)?'relic':(o.uniqueCard||o.kind==='⭐ Unique Mutation'||type==='awk')?'unique':(o.mutation||o.evolution||o.companionForm||/Mutation|Evolution/.test(o.kind||''))?'mutation':'normal';
+    const templateKey='lvl_tpl_'+cat, template=this.tuHas(templateKey)?this.tuPanel(templateKey,0,x,y,w,h):null;
+    const lightCard=!!template&&cat==='normal';
+    let panel=template||(this.tuHas('lvl_card_base')?this.tuPanel('lvl_card_base',0,x,y,w,h):null);
+    if(panel&&(!template||lightCard)){
+      const accent=this.tuPanel('lvl_card_accent',0,0,0,w,h);
+      if(accent){accent.list.forEach(i=>i.setTint(color));panel.add(accent);}
+    }
+    if(template){
+      const fxKey='lvl_tpl_fx_'+cat;
+      if(cat!=='normal'&&this.tuHas(fxKey)){
+        const texture=this.tuFrames(fxKey);
+        if(!texture._lvlTemplateAnim||!this.anims.exists(fxKey)){
+          if(this.anims.exists(fxKey))this.anims.remove(fxKey);
+          const frames=Array.from({length:6},(_,i)=>({key:fxKey,frame:'cell'+i}));
+          this.anims.create({key:fxKey,frames,frameRate:8,repeat:-1});
+          texture._lvlTemplateAnim=true;
+        }
+        const fx=this.add.sprite(w/2,h/2,fxKey,'cell0').setDisplaySize(w,h);
+        panel.add(fx);
+        if(!Save.data?.settings?.reducedMotion)fx.play(fxKey);
+      }
+      const crest=this.tuImg('lvl_tpl_crest',{normal:0,mutation:1,relic:2,unique:3}[cat],18,18,30,30);
+      if(crest)panel.add(crest);
+    }
+    const badgeColor='#'+(lightCard?this._darken(color,.60):color).toString(16).padStart(6,'0');
+    const nameColor=lightCard?'#342137':'#ffffff', roleColor=lightCard?'#664521':'#f4d694';
+    const descriptionColor=lightCard?'#493a4b':'#e9e3ef', rankColor=lightCard?'#704926':'#ffe07a';
+    if(!panel){panel=this.add.graphics();const bgMix=rarIdx>=2?this._darken(color,rarIdx>=3?0.60:0.70):0x21172b;
     panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);}
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
@@ -17257,26 +17292,26 @@ class Game extends Phaser.Scene {
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
       const halo=this.lvlSocket(iconX,iconY,Math.min(45,h*0.34)*2.05,color)||this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
-      badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0,0);
-      nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:'#ffffff',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
-      roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#f4d694',wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:badgeColor}).setOrigin(0,0);
+      nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:nameColor,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
+      roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:roleColor,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       if(hl&&hl.prog){roleT.setWordWrapWidth(null);let fs=parseInt(roleT.style.fontSize)||14;while(roleT.width>textW&&fs>9)roleT.setFontSize(--fs+'px');}
-      descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:'#e9e3ef',lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
+      descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:descriptionColor,lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
-      starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
+      starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:rankColor}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
       ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
       group.add([panel,halo]);this.lvlPill(group,ctaT,1);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);this.lvlBadge(group,o,badgeT);
     }else{
       const iconX=x+w/2,iconY=y+h*0.25,iconSize=Math.min(70,h*0.25),textW=w-22;
       const halo=this.lvlSocket(iconX,iconY,Math.min(42,w*0.22)*2.05,color)||this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
       icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
-      badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#'+color.toString(16).padStart(6,'0')}).setOrigin(0.5,0);
-      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:'#ffffff',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
-      roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:'#f4d694',align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:badgeColor}).setOrigin(0.5,0);
+      nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:nameColor,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
+      roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:roleColor,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       if(hl&&hl.prog){roleT.setWordWrapWidth(null);let fs=parseInt(roleT.style.fontSize)||14;while(roleT.width>textW&&fs>9)roleT.setFontSize(--fs+'px');}
-      descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:'#e9e3ef',align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
+      descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:descriptionColor,align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
-      starsT=isPath&&o.carry?this.add.text(x+w/2,y+h*0.85,o.carry,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9be8ff',align:'center',wordWrap:{width:textW},maxLines:2}).setOrigin(0.5):this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:'#ffe07a'}).setOrigin(0.5);
+      starsT=isPath&&o.carry?this.add.text(x+w/2,y+h*0.85,o.carry,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9be8ff',align:'center',wordWrap:{width:textW},maxLines:2}).setOrigin(0.5):this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:rankColor}).setOrigin(0.5);
       ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
       group.add([panel,halo]);this.lvlPill(group,ctaT,1);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }

@@ -1,6 +1,6 @@
 # 75 — เทมเพลตการ์ดเลเวลอัปแยกตามประเภท · ใบสั่งงานอาร์ต + ผูกเอง
 
-สถานะ: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · **AI ฝั่งอาร์ตทำภาพและผูกเข้าเกมเองในใบนี้** (ทำตามหัวข้อ "ผูกเข้าเกม" ด้านล่าง)
+สถานะ: 🟢 ผูกแล้ว v8.1.94 · รอ QA มือถือ
 ส่งไฟล์ที่ `assets/incoming/levelup75/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · เข้าชุดกับการ์ดเดิมใบ 23 (`assets/art/levelup/lvl_card_base.webp`) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 
@@ -51,5 +51,8 @@
 6. **ปล่อย:** ตาม skill release (bump `GAME_VERSION`, CHANGELOG ภาษาอังกฤษ, บล็อก Latest delivery ใน CLAUDE.md, `npm run check`, build + ตรวจตาม `.github/workflows/pages.yml`, push branch deploy) · อัปเดตตาราง README ใบนี้เป็น "🟢 ผูกแล้ว vX · รอ QA มือถือ"
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด · เวอร์ชันที่ผูก)
+- วันที่ส่ง 11 พ.ย. 2026 · ผูกเข้าเกม v8.1.94
+- ส่งครบ 8 ไฟล์ที่ `assets/incoming/levelup75/` · ไฟล์ที่ขาด 0
+- `lvl_tpl_normal.png`, `lvl_tpl_mutation.png`, `lvl_tpl_relic.png`, `lvl_tpl_unique.png`, `lvl_tpl_crest.png`, `lvl_tpl_fx_mutation.png`, `lvl_tpl_fx_relic.png`, `lvl_tpl_fx_unique.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor`, `background` (`transparent`/`black`), `nineSlice` (กรอบ 4 แบบ)

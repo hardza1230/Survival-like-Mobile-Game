@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.92 — owner: Hunger Stone opens a special room (Hunger's Domain, PoE Breachstone style)
+
+Delve node panel: when Save.data.hungerStones>0 (not home/boss/vault/shrine) a 🪨 Domain ×n button sits next to Start → _domainRequested → startRecipeRun spends 1 stone, _domainRun → room mission forced 'hungerDomain' (in SIG/LEAGUE_MISSIONS). hd* methods: flood 30s (breach foes around the player every .55s, 8% elite, 35% splinter each) → hdLord: clears remaining breach foes (phase 'clearing'), spawns Breachlord (elite ×2.2 size, hp ×10·(1+.05d); fallback spawnElite(true,true)) → skills: 12-shot ring 3.2s, hazard on player 4.5s, 2 elite hands 9s → hdDown: Sugar (40+6d)(1+.05si), 3 row-currency drops, +20 splinters, grantGear('legend'). Dying = stone already spent. Art: hm_breachlord added to order 72 (21 files).
+
 # Previous delivery: v8.1.91 — owner: Breach like PoE (Hunger's Mouth rework) + art orders 72 (Breach revised) / 74 (Trial)
 
 hm* rewritten: seek (✋ hand, touch ≤85px) → hmOpen (ring R grows 115/150 px/s to 820/1150, interior fill .18, 2/3 🤲 chests appear as the ring reaches them) → timer life 11/9s, max 20, kill inside +.35s (elite +1.5, lord +5) → breach foes (e._breach, tint 0xc59bff) spawn in packs inside the ring away from the player → drops 🔮 shards (30%, elite 3, lord 10; walk ≤90px) → hmSplinters: Save.data.splinters, every 100 → hungerStones++ (stone has no use yet — owner to decide) → close: ring shrinks 420px/s, breach foes outside it vanish → hmBurst loot by kills. Full: Hand of the Hunger at 40 kills (elite ×1.6, ×4hp). Art: order 72 group B now 8 files (hand/rim/chest/splinter/icons/lord/collapse, total 20); new order 74 Sugar Crown Trial + Delve room icons (replaces order 71 group D).

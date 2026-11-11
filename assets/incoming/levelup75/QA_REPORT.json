@@ -1,0 +1,10 @@
+[
+  {"key": "lvl_tpl_normal", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_mutation", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_relic", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_unique", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_crest", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_fx_mutation", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_fx_relic", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "lvl_tpl_fx_unique", "result": "pass", "reason": "mechanical checks passed"}
+]

@@ -28,7 +28,7 @@
 | 72 | `72_LEAGUE_MISSIONS.md` | ภารกิจ League 5 แบบ: Frozen Pantry (โหล/รูปปั้น/แตก) · Hunger's Mouth แบบ PoE Breach (มือ/ขอบวง/หีบมือ/Splinter/Stone/บอสมือ/ยุบ/Breachlord) · Creeping Roots (รากแม่/เถา tileable) · Herald (ทูต/ประตู) · Grandma's Pot (หม้อ/วัตถุดิบ/การ์ดสูตร 9-slice) + ไอคอน Honey Drop / Recipe Ink | 21 | สูง | 🟢 ผูกแล้ว v8.1.93 · รอ QA มือถือ |
 | 73 | `73_LEAGUE_GOLEM_SIEGE_MEMORY.md` | ภารกิจ League ส่วนที่เหลือ: Grandma's Golem (เตา/ชิ้นส่วน 5/ตัวโกเลม) · Siege (วงป้อม/Warlord) · Memory Book (ไอคอน Memory/ป้าย Codex 5 ขั้น) | 7 | กลาง | 🟢 ผูกแล้ว v8.1.93 · รอ QA มือถือ |
 | 74 | `74_SUGAR_CROWN_TRIAL.md` | Sugar Crown Trial (แท่นมงกุฎ/วงทอง/เมล็ด · แผ่นคำสาป 6 · แผ่นรับของ/เสี่ยง) + ไอคอนห้อง Delve Trial/Siege · แทนกลุ่ม D ใบ 71 | 7 | กลาง | 🟢 ผูกแล้ว v8.1.93 · รอ QA มือถือ |
-| 75 | `75_LEVELUP_CARD_TEMPLATES.md` | เทมเพลตการ์ดเลเวลอัป 4 ประเภท (Normal/Mutation/Relic/Unique 9-slice) + ตราประเภท + FX ขอบ · **ฝั่งอาร์ตผูกเอง** | 8 | สูง | 🟡 รออาร์ต |
+| 75 | `75_LEVELUP_CARD_TEMPLATES.md` | เทมเพลตการ์ดเลเวลอัป 4 ประเภท (Normal/Mutation/Relic/Unique 9-slice) + ตราประเภท + FX ขอบ · **ฝั่งอาร์ตผูกเอง** | 8 | สูง | 🟢 ผูกแล้ว v8.1.94 · รอ QA มือถือ |
 | 76 | `76_BREACH_MONSTERS.md` | มอนรอยแยก Breach 4 สายพันธุ์ (Mite/Maw/Clawhand/Watcher) เดิน+ตาย · **ฝั่งอาร์ตผูกเอง** | 8 | กลาง | 🟡 รออาร์ต |
 | 77 | `77_SPECIAL_ENEMY_MOTION.md` | ท่าโจมตี+ตาย ศัตรูพิเศษ 6 ตัว (Herald/Golem/Warlord/บอสมือ/Breachlord/Stalker Captain) · **ฝั่งอาร์ตผูกเอง** | 12 | กลาง | 🟡 รออาร์ต |
 | 78 | `78_LEAGUE_VFX.md` | VFX ภารกิจ League/Trial/Forge/Memory 15 ชิ้น (เปิดรอยแยก · เก็บ Splinter · หีบ · หลอมหิน · ทาสีรูปปั้น · ปิดประตู · เสิร์ฟจาน · อบโกเลม · ตัดราก · ป้อมแตก · คำสาป · รับของ/เสี่ยง · ย้ายหมึก · Codex) · **ฝั่งอาร์ตผูกเอง** | 15 | กลาง | 🟡 รออาร์ต |
