@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.85**. Next release:8.1.86. Fetch the deploy branch before new work.
+Current release: **8.1.86**. Next release:8.1.87. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.85 — League phase 6: Grandma's Golem (C1-5) + art order 72
+# Latest delivery: v8.1.86 — League phase 4: Siege of the Hunger (Delve room, Legion 5 Way)
+
+Delve node type 'siege' (d≥3, .165≤r<.205 after trial) → delveMission 'hungerSiege' (AMAP_TYPES siege 🏰). hs* methods: fixed circle R230 · 5 gates at R+300 · waves every 2.4s from 2/3/5 random gates (by progress 0/15/30s), 2+floor(d/8) foes each · progress = seconds inside (target 45) · outside: timer pauses + pot −1/s · kill while player inside → pot +1 (elite 3, Warlord 15) · 45% Hunger Warlord at 22s (elite ×1.6 size, ×4 hp) · end = hsBurst pot·(1+.05d)·(.8+.15si). In SIG_MISSIONS + LEAGUE_MISSIONS (spawn force + row-currency drop). Next: phase 7 Memory Book + art order 73.
+
+# Previous delivery: v8.1.85 — League phase 6: Grandma's Golem (C1-5) + art order 72
 
 grandmasGolem (Metamorph): gg* methods + GOLEM_PARTS (head 🍰 jam shots · arms 🥨 hazard slam · legs 🥖 speed ×1.4 · tail 🍭 2 helpers/7s · heart 💗 regen .8%/s). Collect: one elite carrier per part (e._ggPart, staggered spawn, respawn if lost) → kill drops part → walk over = take · oven ring 100: stand 2s with ≥min parts (light 3 parts/min 2 · full 5/min 3) = ggBake → golem = sigSpawnAt elite (e._golem, scale 1.5+.1n, hp ×(2|3)+.8n) with skills of baked parts → ggDown loot (8+2si)(1+.35n)(full ×1.4). C1-5 objectives ['grandmasGolem','hunt','capture','purge'] lead. Berry Jam / Star Sugar icons now reuse currency_wild_jam / currency_wish_candy. Art order 72 (15 files: league missions + Honey Drop/Recipe Ink icons) written. Next: phase 4 Siege (Delve), phase 7 Memory Book.
-
-# Previous delivery: v8.1.84 — League phase 5: Reforge row currencies + Recipe Ink move (phase 4 Siege skipped for now by owner)
-
-Owner picked: 4 currencies, move (source loses mod), drops from League + normal drops (not Bazaar). CURRENCY += berryjam 🍓 / honeydrop 🍯 / starsugar ⭐ / recipeink 🖋️ (no icon art yet → prize_currency + d.tint). forgeRowCur(line): 0 transmute · 1 berryjam · 2 honeydrop · 3–5 starsugar; forgeUpPrice = row 1 forgePrice, else 1+floor(crafts/6). Add/Remove = Twist Cream forgePrice (unchanged). _forgePay(item,key,price) / _forgeDone(...,key). Move: 🖋️ button per filled non-bad row (tag mv_i) → forgeOpenMove → panel type 'move' (drawForgeMovePanel: items with an empty open row whose forgePool takes the mod) → forgeMove (1 Ink, source row null, Lv clamped to target forgeStarCap). Drops: CURRENCY_DROP_POOLS rare/epic/legend gain row currencies (common/Bazaar box stay Twist Cream); leagueCurrencyDrop on every LEAGUE_MISSIONS completion (1, full 2, Herald +1). Save._reforge84 starter gift (4/2/1/1) for played saves. Test tests/reforge-rows.test.cjs. Next: phase 4 Siege (Delve) when owner wants, phase 6 Golem, phase 7 Memory Book + art (incl. 4 currency icons).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 · phase 6 Golem v8.1.85 (phase 4 ยังไม่ทำ) · ใบสั่งอาร์ต 72 (15 ไฟล์ ภารกิจ League phase 1–3 + ไอคอน Honey Drop/Recipe Ink) รออาร์ต
+- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 · phase 6 Golem v8.1.85 · phase 4 Siege v8.1.86 · ใบสั่งอาร์ต 72 (15 ไฟล์ ภารกิจ League phase 1–3 + ไอคอน Honey Drop/Recipe Ink) รออาร์ต
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย

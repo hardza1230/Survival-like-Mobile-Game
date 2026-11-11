@@ -136,7 +136,7 @@
 | 1 | Frozen Pantry (C1-4) + ระบบแบบเบา/แบบเต็ม | ✅ v8.1.81 |
 | 2 | Hunger's Mouth (C1-2) + Creeping Roots (C2-3) | ✅ v8.1.82 |
 | 3 | Hunger Herald (C1-1) + Grandma's Pot (C1-3) | ✅ v8.1.83 |
-| 4 | Siege of the Hunger (Delve room) | รอ |
+| 4 | Siege of the Hunger (Delve room) | ✅ v8.1.86 |
 | 5 | Reforge สกุลเงินต่อบรรทัด + Enchant transfer (ใช้เศษจาก Herald) | ✅ v8.1.84 (เจ้าของเลือก: 4 สกุล · ย้าย · ดรอปจาก League + ดรอปทั่วไป) |
 | 6 | Grandma's Golem (C1-5) | ✅ v8.1.85 |
 | 7 | Memory Book + ใบสั่งอาร์ตรวมของทุก phase | รอ |

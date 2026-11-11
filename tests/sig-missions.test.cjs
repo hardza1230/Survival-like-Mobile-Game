@@ -2,7 +2,7 @@
 const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
-assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem'];"));
+assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege'];"));
 for(const t of SIG){assert.ok(new RegExp('\\n  '+t+":\\{emoji:").test(src),'def '+t);assert.ok(src.includes(t+":['"),'bonus goal '+t);}
 const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!/frozenPantry|hungersMouth|hungerHerald|grandmasPot|grandmasGolem/.test(x)).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
 for(const n of ['sigAdd','sigText','sigClear','sigSpawnAt','sigSetup','sigNear','sigTick','sigOnKill'])m(n);
@@ -104,3 +104,16 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     assert.strictEqual(S.parts.length,S.min);sc.player={x:300,y:0};for(let k=0;k<25;k++)sc.ggTick(.1,o,S);assert.strictEqual(S.phase,'fight','bake with min parts');
     const g=S.golem;assert.ok(g&&g._golem);assert.ok(g.maxhp>100,'golem is tougher');g._golem=false;sc.ggDown(g,o,S);assert.ok(sc.done&&sc.sugarRun>0); }
   console.log('League phase 6: Grandma’s Golem (carriers, parts, min-part bake, golem scaled by parts, reward) passed'); }
+
+{ // v8.1.86 League phase 4: Siege of the Hunger (Legion 5 Way, Delve room)
+  for(const n of ['hsSetup','hsTick','hsOnKill','hsBurst'])m(n);
+  assert.ok(src.includes("(d>=3&&n.r<0.205)?'siege':'normal'")&&src.includes("if(n.type==='siege')return 'hungerSiege';")&&/siege:\{emoji:'🏰'/.test(src),'Delve siege room');
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,console};vm.createContext(ctx);
+  const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setRotation(){return o}};return o;};
+  vm.runInContext('class S{'+['hsSetup','hsTick','hsOnKill','hsBurst'].map(m).join('')+'};this.K=S;',ctx);
+  const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:6},stageIndex:5,player:{x:300,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),text:()=>obj()},objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,
+    sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
+  const o={progress:0},S={};sc.hsSetup(o,S);assert.strictEqual(S.gates.length,5);for(let k=0;k<50;k++)sc.hsTick(.1,o,S);assert.ok(en.length>=4,'gates send waves');
+  for(let i=0;i<6;i++)sc.hsOnKill({x:0,y:0},o,S);assert.strictEqual(S.pot,6);sc.player={x:2000,y:0};const p0=o.progress;for(let k=0;k<25;k++)sc.hsTick(.1,o,S);assert.strictEqual(o.progress,p0,'timer pauses outside');assert.ok(S.pot<6,'pot leaks outside');
+  sc.player={x:300,y:0};for(let k=0;k<500&&!sc.done;k++)sc.hsTick(.1,o,S);assert.ok(sc.done&&sc.sugarRun>0,'siege ends with a burst');
+  console.log('League phase 4: Siege of the Hunger (5 gates, timer inside, leak outside, burst) passed'); }
