@@ -50,24 +50,29 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('Frozen Pantry: walk-to-paint statues, light/full split, refreeze timer, chest loot, completes passed'); }
 
 { // v8.1.82 League phase 2: Hunger's Mouth + Creeping Roots
-  for(const n of ['hmSetup','hmTick','hmOnKill','hmBurst','crLane','crDraw','crSetup','crTick'])m(n);
+  for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick'])m(n);
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.carriers\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.carriers\|\|S\.chests\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
-  const obj=()=>{const o={x:0,y:0,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},clear(){},lineStyle(){},beginPath(){},moveTo(){},lineTo(){},strokePath(){},fillStyle(){},fillCircle(){}};return o;};
-  vm.runInContext('class S{'+['fpFull','hmSetup','hmTick','hmOnKill','hmBurst','crLane','crDraw','crSetup','crTick'].map(m).join('')+'};this.K=S;',ctx);
+  const obj=()=>{const o={x:0,y:0,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},clear(){},lineStyle(){},beginPath(){},moveTo(){},lineTo(){},strokePath(){},fillStyle(){},fillCircle(){},fillRoundedRect(){return o},setPosition(){return o}};return o;};
+  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:1,player:{x:300,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj(),graphics:()=>obj(),image:()=>obj()},textures:{exists:()=>false},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{children:{iterate:f=>en.forEach(f)}},
-    sigSpawnAt:(x,y)=>{const e={x,y,active:true};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
-  { const [sc]=mk();const o={},S={};sc.hmSetup(o,S);assert.strictEqual(S.full,false);for(let i=0;i<5;i++)sc.hmOnKill({x:300,y:0},o,S);assert.strictEqual(S.pot,5);assert.ok(S.R>220,'kills widen');
-    let k=0;while(!sc.done&&k++<2000)sc.hmTick(.1,o,S);assert.ok(sc.done,'mouth closes');assert.ok(sc.sugarRun>0,'pot pays out'); }
+    sigSpawnAt:(x,y)=>{const e={x,y,active:true,setTint(){},setActive(v){e.active=v;return e},setVisible(){return e}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
+  { const [sc,en]=mk();const o={},S={};sc.hmSetup(o,S);assert.strictEqual(S.full,false);assert.strictEqual(S.phase,'seek');sc.player={x:2000,y:0};sc.hmTick(.1,o,S);assert.strictEqual(S.phase,'seek','opens only by touching the hand');
+    sc.player={x:300,y:0};sc.hmTick(.1,o,S);assert.strictEqual(S.phase,'open');for(let k=0;k<20;k++)sc.hmTick(.1,o,S);assert.ok(S.R>200,'breach expands');assert.ok(en.some(e=>e._breach),'breach monsters spawn inside');
+    const l0=S.life;for(let i=0;i<6;i++)sc.hmOnKill({x:300,y:0},o,S);assert.ok(S.life>l0,'kills extend the breach');assert.strictEqual(S.kills,6);
+    sc.hmOnKill({x:300,y:0,isElite:true},o,S);assert.ok(S.shards.length>=1,'elite drops splinters');const sh=S.shards[0];sc.player={x:sh.x,y:sh.y};sc.hmTick(.1,o,S);assert.ok(ctx.Save.data.splinters>=3,'splinters picked up');
+    const c=S.chests[0];c.t=c.t||{setText(){},setVisible(){}};sc.player={x:c.x,y:c.y};sc.hmTick(.1,o,S);assert.ok(c.open,'chest opens by walking');
+    ctx.Save.data.splinters=98;sc.hmSplinters(5);assert.strictEqual(ctx.Save.data.hungerStones,1,'100 splinters = 1 Hunger Stone');assert.strictEqual(ctx.Save.data.splinters,3);
+    let k=0;while(!sc.done&&k++<3000)sc.hmTick(.1,o,S);assert.ok(sc.done,'breach collapses and completes');assert.ok(sc.sugarRun>0); }
   { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
     for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<25;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
-  console.log('League phase 2: Hunger’s Mouth (widen/close/pot burst) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
+  console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 
 { // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
   for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe'])m(n);

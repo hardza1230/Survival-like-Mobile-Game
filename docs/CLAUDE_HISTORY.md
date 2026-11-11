@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.89 — owner: Ruby lines carried over into the next stage
+
+startStage bumps this._rubyEpoch, rubyHide(true) and clears _rubyQ. Delayed Ruby lines (rubyTip, rubyOnce → rubyLater(delay,fn); rubyVoiceReact delayed go) only run if the epoch still matches. rubyStoryAt keeps its own stageIndex check. If the owner meant something else carrying over (not Ruby), ask for a screenshot.
+
 # Previous delivery: v8.1.88 — owner: remove bottom skill bar, Ruby talks less
 
 drawBars: skillBar always setVisible(false) (buildSkillBar still builds chips for other code). rubyVoiceReact: 30s gap between reactions (was 8s) except clear/bossdown; objdone/wave/timer at most once per stage (this._rubyOnce reset in startStage).
