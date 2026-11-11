@@ -33,6 +33,7 @@
 | `ic_hunger_stone.png` | 512×512 | ไอคอน 🪨 Hunger Stone: ก้อนคริสตัลม่วงขัดเงาที่ประกอบจากเศษ มีรูปมือจาง ๆ ในเนื้อหิน เข้าชุดไอคอนสกุลเงินเดิม · บนจอ 16–48px |
 | `hm_hand_lord.png` | 6 เฟรม × 384×384 (6×1) loop | Hand of the Hunger (บอสรอยแยก): มือยักษ์ม่วงลอยตัว ข้อมือมีปลอกทองแตก ๆ ฝ่ามือมีตาเดียวน่ารักแบบมอนขนม นิ้วขยับช้า ๆ **รูปทรงคงที่ทุกเฟรม** · ไม่มีเงา · บนจอ ~160px |
 | `hm_collapse.png` | 8 เฟรม × 512×512 (8×1) ครั้งเดียว · **พื้นดำ #000** | วงรอยแยกยุบเข้ากลาง: เกลียวม่วง-ชมพูหมุนดูดเข้าหาจุดกลาง แล้วแตกเป็นประกายเล็ก ๆ · บนจอ ~400px |
+| `hm_breachlord.png` | 6 เฟรม × 512×512 (6×1) loop | **Breachlord** บอสห้องพิเศษ Hunger's Domain (เปิดด้วย 🪨 Hunger Stone 1 ก้อน): ร่างใหญ่ของ The Hunger ที่ประกอบจากมือม่วงหลายข้างพันกันเป็นตัว มงกุฎน้ำตาลแตกลอยเหนือหัว ตากลางลำตัวเรืองชมพู มือรอบตัวขยับเป็นวงช้า ๆ **รูปทรงคงที่ทุกเฟรม** · น่าเกรงขามที่สุดในชุดนี้แต่ยังเป็นสไตล์มอนขนม ไม่มีเลือด · ไม่มีเงา · หันเฉียงลงขวา · บนจอ ~240px |
 
 ### C — 🌱 Creeping Roots (League → Blight) · C2-3
 รากของ The Hunger เลื้อยเป็นเส้นทางเข้าหาดอก Nectar (ภาพดอกมีแล้ว `objective_nectar_flower`) · มอนเดินตามเส้น · ยืนบนรากแม่ปลายเส้น = ตัดเส้น
@@ -63,7 +64,7 @@
 | `currency_honey_drop.png` | 512×512 | หยดน้ำผึ้งทองใสอำพันขนาดใหญ่ มีรวงผึ้งเล็กติดฐาน ประกายข้างใน · บนจอ 16–40px (ปุ่ม/กระเป๋าเงิน/ของตก) → silhouette หยดน้ำต้องชัด |
 | `currency_recipe_ink.png` | 512×512 | ขวดหมึกแก้วสีฟ้าเรือง จุกเป็นขนนกปากกา หยดหมึกเรืองไหลข้างขวด มีลายเส้นสูตรอาหารจาง ๆ เป็นแสงรอบขวด (ไม่ใช่ตัวหนังสือ) · บนจอ 16–40px |
 
-**รวม 20 ไฟล์** (แก้ v8.1.91: กลุ่ม B จาก 3 → 8 ไฟล์ ตาม Breach แบบ PoE)
+**รวม 21 ไฟล์** (แก้ v8.1.91: กลุ่ม B จาก 3 → 8 ไฟล์ ตาม Breach แบบ PoE · v8.1.92 +Breachlord ห้อง Hunger's Domain)
 
 ## ข้อห้าม
 - ห้ามตัวหนังสือ/ตัวเลข/สัญลักษณ์ UI ในภาพ (การ์ดสูตรต้องว่างตรงกลาง)
@@ -77,7 +78,7 @@
 - pack: `scripts/pack-league72.py` → `assets/art/league72/*.webp` · คีย์เข้า `ASSET_FX` (sheet) / `ASSET_IMAGES` · โหลด **stage-lazy** ตามด่านที่มีภารกิจ (C1-1 hh_* · C1-2 hm_* · C1-3 gp_* · C1-4 fp_* · C2-3 cr_*) + ทุกด่านใน Delve · ไอคอนสกุลเงิน F โหลดกลุ่มเมนูเดียวกับ `currency_twist_cream`
 - ไม่มีภาพ = ใช้ของชั่วคราวเดิม (fallback อีโมจิ/วงกราฟิก) ทุกจุด
 - Frozen Pantry (`fpSetup`/`fpOpen`/`fpWake`/`fpVanish`): `S.jar` 🫙 → `fp_jar` · รูปปั้น `q.t` 🍡/🗿 → `fp_statues` เฟรม 0/1 (setTint เทาตอนแช่แข็ง → clearTint ตอนสีเต็ม) · `fp_shatter` (ADD blend) ตอน `fpWake` และ `fpVanish`
-- Hunger's Mouth (`hmSetup`/`hmOpen`/`hmTick`/`hmChest`/`hmBurst`): `S.hand` ✋/🖐️ → `hm_hand` เฟรม 0/1 · `S.ring` → `hm_rim` scale ตาม `S.R` (เก็บ fill ม่วงจาง) · หีบ 🤲 → `hm_breach_chest` · 🔮 → `hm_splinter` · บอส `e._hmLord` → `hm_hand_lord` · `hm_collapse` ตอน phase 'close' · ไอคอน splinter/stone ในเมนู
+- Hunger's Mouth (`hmSetup`/`hmOpen`/`hmTick`/`hmChest`/`hmBurst`): `S.hand` ✋/🖐️ → `hm_hand` เฟรม 0/1 · `S.ring` → `hm_rim` scale ตาม `S.R` (เก็บ fill ม่วงจาง) · หีบ 🤲 → `hm_breach_chest` · 🔮 → `hm_splinter` · บอส `e._hmLord` → `hm_hand_lord` · Breachlord `e._hdLord` (ห้อง Domain, `hdLord`) → `hm_breachlord` · ปุ่ม 🪨 Domain บนแผนที่ Delve ใช้ `ic_hunger_stone` · `hm_collapse` ตอน phase 'close' · ไอคอน splinter/stone ในเมนู
 - Creeping Roots (`crLane`/`crDraw`/`crTick`): `L.t` 🌱 → `cr_root_mother` เฟรม 0 → 1 เมื่อ `!L.open` · เส้น `S.laneG` → TileSprite `cr_root_vine` ต่อ segment (หมุนตามมุม) เก็บเส้นกราฟิกเป็น fallback
 - Hunger Herald (`hhSpawn`/`hhTick`): ศัตรู Herald (elite) → overlay sprite `hh_herald` ตามตัว (ซ่อน sprite เดิม หรือแทน texture) · `G.t` 🌀 → `hh_gate` anim
 - Grandma's Pot (`gpSetup`/`gpDrop`/`gpCard`): `S.pot` 🍲 → `gp_pot` anim · วัตถุดิบ 🍓🍋🍫⭐ → `gp_ingredients` เฟรม 0–3 · `S.card` ข้อความ → วางบน `gp_recipe_card` (9-slice)

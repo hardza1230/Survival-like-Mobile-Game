@@ -2,7 +2,7 @@
 const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
-assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege'];"));
+assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];"));
 for(const t of SIG){assert.ok(new RegExp('\\n  '+t+":\\{emoji:").test(src),'def '+t);assert.ok(src.includes(t+":['"),'bonus goal '+t);}
 const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!/frozenPantry|hungersMouth|hungerHerald|grandmasPot|grandmasGolem/.test(x)).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
 for(const n of ['sigAdd','sigText','sigClear','sigSpawnAt','sigSetup','sigNear','sigTick','sigOnKill'])m(n);
@@ -54,7 +54,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.carriers\|\|S\.chests\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.carriers\|\|S\.chests\|\|S\.domain\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
@@ -122,3 +122,18 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   for(let i=0;i<6;i++)sc.hsOnKill({x:0,y:0},o,S);assert.strictEqual(S.pot,6);sc.player={x:2000,y:0};const p0=o.progress;for(let k=0;k<25;k++)sc.hsTick(.1,o,S);assert.strictEqual(o.progress,p0,'timer pauses outside');assert.ok(S.pot<6,'pot leaks outside');
   sc.player={x:300,y:0};for(let k=0;k<500&&!sc.done;k++)sc.hsTick(.1,o,S);assert.ok(sc.done&&sc.sugarRun>0,'siege ends with a burst');
   console.log('League phase 4: Siege of the Hunger (5 gates, timer inside, leak outside, burst) passed'); }
+
+{ // v8.1.92 Hunger's Domain (Hunger Stone special room)
+  for(const n of ['hdSetup','hdTick','hdLord','hdDown'])m(n);
+  assert.ok(/this\._domainRun=!!this\._domainRequested;/.test(src)&&/Save\.data\.hungerStones--/.test(src),'stone is spent when the domain starts');
+  assert.ok(src.includes("const ms=this._domainRun?'hungerDomain':nd&&nd.mission;"),'domain replaces the room mission');
+  assert.ok(/'Domain ×'\+stones/.test(src),'Delve panel shows the Domain button');
+  const vm=require('vm');const ctx={Math,TAU:Math.PI*2,console,Save:{data:{}}};vm.createContext(ctx);
+  const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(){return o},setVisible(){return o},setOrigin(){return o},setPosition(){return o}};return o;};
+  vm.runInContext('class S{'+['hdSetup','hdTick','hdLord','hdDown','hmSplinters'].map(m).join('')+'};this.K=S;',ctx);
+  const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:8},stageIndex:5,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),text:()=>obj()},sigAdd:o=>o,
+    sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
+  const o={},S={};sc.hdSetup(o,S);for(let k=0;k<100;k++)sc.hdTick(.1,o,S);assert.ok(en.some(e=>e._breach),'flood spawns breach monsters');assert.strictEqual(S.phase,'flood');
+  for(let k=0;k<210;k++)sc.hdTick(.1,o,S);assert.strictEqual(S.phase,'lord');assert.ok(S.lord._hdLord&&S.lord.maxhp>=1000,'Breachlord is a big fight');
+  S.lord._hdLord=false;sc.hdDown(S.lord,o,S);assert.ok(sc.done&&sc.sugarRun>0);assert.ok(ctx.Save.data.splinters>=20,'big splinter reward');
+  console.log('Hunger’s Domain: stone spent, flood, Breachlord, big reward passed'); }
