@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.79**. Next release:8.1.80. Fetch the deploy branch before new work.
+Current release: **8.1.80**. Next release:8.1.81. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.79 — missions round 3: old-mission upgrades + opt-in start + Overcharge
+# Latest delivery: v8.1.80 — Ultimatum-style Sugar Crown Trial (owner: B endgame + upgrade Vault Altar)
+
+Mission type 'ultimatum' (in SIG_MISSIONS) via ult* methods on the _sig layer: each round pick 1 of 3 ULT_CURSES pads (swarm/elite/noheal/bombs/shots/drain, stacking, mult += v) → goal from ULT_GOALS (survive in gold circle 20s / slay 14+4r in 28s / defend altar 300hp 20s / collect 5 seeds 22s) → pot += base·(1+.5r)·mult, +1 box from round 2 → decide pads 8s: 🎁 take (default) / ⚔️ risk → clear all rounds = full pot + epic box; fail = half pot & half boxes (owner did not pick; recommendation used). Delve: node type 'trial' (d≥4, r<.165) → delveMission 'ultimatum' (4 rounds). Story stage 14 vaultAltar = same engine, 2 rounds (old pact code removed). No arm pad / Overcharge on trials. Loss penalty "half" can be switched to "all" in ultFinish.
+
+# Previous delivery: v8.1.79 — missions round 3: old-mission upgrades + opt-in start + Overcharge
 
 missionArm (story budget, not planned/forceType/tutorial/recipe/rift/rush, not survive/fill/hunt): ✨ pad 120–170px away; tickWaveObjective returns early (progress/bonus paused) until player steps in or 10s. overchargeOffer (from completeWaveObjective normal path, not survive/fill): ⚡ pad 5s → 12s run (2 foes/0.9s + 1 elite) → o._ocMul=2 (bonus ×2) + held gear box; ignored = normal completion; tickWaveObjective skipped while o._oc. Escort: wisp ×1.7 when player ≤110px; raid direction ⚠. Clean Air: cleanAirBubbles (≤3 on the path, +1.5s). Seasonal: seasonDropPetal/seasonPetalTick (petals are ground pickups, magnet 110px, 14s life) + seasonShrineTick (4 shrines, stand 1s = call season). Roots: pulse every 3s (need 1.3 instead of 2.6) + 3 guardians on first approach. Next: round 4 art orders (Ch3 signature props, pads, petals, bubbles, captain).
-
-# Previous delivery: v8.1.78 — missions round 2: Chapter 3 signature missions (placeholder visuals)
-
-SIG_MISSIONS seedRift/shakeTrees/mirrorPath/vaultAltar/lastLight → STAGES 10–14 objectives ['hunt',sig,capture|purge]. Generic layer: this._sig {type,objs} created in sigSetup (from setupWaveObjective), sigTick (from tickWaveObjective), sigOnKill (killEnemy), sigClear (clearWaveObjective); visuals = graphics + emoji via sigText (art order in round 4). seedRift: kills inside a shrinking rift (16s life, +1.5s/kill, collapses → moves, bonus lost), target 18+. shakeTrees: 3 trees, stand 1.8s, 66% fruit burst (noHold) / 34% ambush. mirrorPath: charge 3 mirrors 2.4s each → crystal blast R520 (60+18·si, ×3 normal). vaultAltar: walk onto one of 3 pacts (Double Swarm ×1.5 / Elite Pack ×1.7 / No Hearts ×1.9, dropHeal blocked) → survive 30s, reward bonus × mult + held gear box. lastLight: 3 lanterns (220hp, drained by nearby foes, rekindle 16/s near), all out = timer −30% + relight. objNodeG not cleared for SIG types. Test: sig-missions.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
