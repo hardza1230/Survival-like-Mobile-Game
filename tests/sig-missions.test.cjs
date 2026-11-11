@@ -7,7 +7,7 @@ for(const t of SIG){assert.ok(new RegExp('\\n  '+t+":\\{emoji:").test(src),'def 
 const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!/frozenPantry|hungersMouth|hungerHerald|grandmasPot|grandmasGolem/.test(x)).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
 for(const n of ['sigAdd','sigText','sigClear','sigSpawnAt','sigSetup','sigNear','sigTick','sigOnKill'])m(n);
 const tk=m('sigTick');for(const t of SIG)assert.ok(tk.includes("o.type==='"+t+"'"),'tick '+t);assert.ok(tk.includes("o.type==='ultimatum'"));
-assert.ok(src.includes("}else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){\n      this.sigSetup(o,type,p||{});")&&src.includes('this.sigTick(dt,o);if(!this.waveObjective)return;')&&src.includes('this.sigOnKill?.(e);')&&src.includes('clearWaveObjective(){this.sigClear?.();'),'hooks');
+assert.ok(src.includes("}else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){\n      this.sigSetup(o,type,p||{});")&&src.includes('this.sigTick(dt,o);if(!this.waveObjective)return;')&&src.includes('this.sigOnKill?.(e);')&&src.includes('clearWaveObjective(){this.artFollowClear?.();this.sigClear?.();'),'hooks');
 assert.ok(/!\(typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS\.includes\(o\.type\)\)&&this\.objNodeG\)this\.objNodeG\.clear\(\)/.test(src),'sig graphics not wiped each frame');
 assert.ok(src.includes("dropHeal(x,y,source='crate'){ if(this._sig?.noHeal)return null;")&&/\*\(o\._altarMul\|\|1\)/.test(src),'altar curse + reward multiplier');
 console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, setup/tick/kill/clear hooks, altar pacts passed');
@@ -38,7 +38,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   // vm: paint → wake → kill → complete
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,setTint(){return o},setAlpha(){return o},setVisible(v){o.vis=v;return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setPosition(x,y){o.x=x;o.y=y;return o},clearTint(){return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','fpSetup','fpOpen','fpWake','fpResolve','fpVanish','fpTick','fpOnKill'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','fpSetup','fpOpen','fpWake','fpResolve','fpVanish','fpTick','fpOnKill','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const sc=new ctx.K();const spawned=[];Object.assign(sc,{stageIndex:3,player:{x:0,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){},killTweensOf(){}},add:{circle:()=>obj()},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},
     sigSpawnAt:(x,y)=>{const e={x,y,active:true};spawned.push(e);return e;},completeWaveObjective(){this.done=true;}});
@@ -59,7 +59,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},clear(){},lineStyle(){},beginPath(){},moveTo(){},lineTo(){},strokePath(){},fillStyle(){},fillCircle(){},fillRoundedRect(){return o},setPosition(){return o}};return o;};
-  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick'].map(m).join('')+'};this.K=S;',ctx);
+  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:1,player:{x:300,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj(),graphics:()=>obj(),image:()=>obj()},textures:{exists:()=>false},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{children:{iterate:f=>en.forEach(f)}},
     sigSpawnAt:(x,y)=>{const e={x,y,active:true,setTint(){},setActive(v){e.active=v;return e},setVisible(){return e}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
@@ -80,7 +80,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(/if\(stL&&!this\._bountyLead&&pool\.includes\(stL\)\)/.test(m('replayBountyTick'))&&/LEAGUE_MISSIONS\.includes\(type\)\)\?70:45/.test(m('replayBountyTick')),'league bounty first + 70s');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,visible:true,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(v){o.visible=v;return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},setRotation(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj()},
     objectivePosition:(i)=>({x:300+i*50,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{countActive:()=>en.filter(e=>e.active).length},
     sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
@@ -99,7 +99,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,
     GOLEM_PARTS:[{k:'head',em:'🍰',name:'Cake Head',skill:'a'},{k:'arms',em:'🥨',name:'Arms',skill:'b'},{k:'legs',em:'🥖',name:'Legs',skill:'c'},{k:'tail',em:'🍭',name:'Tail',skill:'d'},{k:'heart',em:'💗',name:'Heart',skill:'e'}]};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   for(const full of [false,true]){ const sc=new ctx.K();const en=[];Object.assign(sc,{_replayMeter:full?{}:null,stageIndex:4,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),text:()=>obj()},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},
     sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){},clearTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
@@ -115,7 +115,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("(d>=3&&n.r<0.205)?'siege':'normal'")&&src.includes("if(n.type==='siege')return 'hungerSiege';")&&/siege:\{emoji:'🏰'/.test(src),'Delve siege room');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setRotation(){return o}};return o;};
-  vm.runInContext('class S{'+['hsSetup','hsTick','hsOnKill','hsBurst'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['hsSetup','hsTick','hsOnKill','hsBurst','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:6},stageIndex:5,player:{x:300,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),text:()=>obj()},objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,
     sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
   const o={progress:0},S={};sc.hsSetup(o,S);assert.strictEqual(S.gates.length,5);for(let k=0;k<50;k++)sc.hsTick(.1,o,S);assert.ok(en.length>=4,'gates send waves');
@@ -130,7 +130,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(/'Domain ×'\+stones/.test(src),'Delve panel shows the Domain button');
   const vm=require('vm');const ctx={Math,TAU:Math.PI*2,console,Save:{data:{}}};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(){return o},setVisible(){return o},setOrigin(){return o},setPosition(){return o}};return o;};
-  vm.runInContext('class S{'+['hdSetup','hdTick','hdLord','hdDown','hmSplinters'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['hdSetup','hdTick','hdLord','hdDown','hmSplinters','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const sc=new ctx.K();const en=[];Object.assign(sc,{_amapNode:{d:8},stageIndex:5,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),text:()=>obj()},sigAdd:o=>o,
     sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
   const o={},S={};sc.hdSetup(o,S);for(let k=0;k<100;k++)sc.hdTick(.1,o,S);assert.ok(en.some(e=>e._breach),'flood spawns breach monsters');assert.strictEqual(S.phase,'flood');

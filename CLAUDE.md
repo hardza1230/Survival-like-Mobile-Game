@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.92**. Next release:8.1.93. Fetch the deploy branch before new work.
+Current release: **8.1.93**. Next release:8.1.94. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.92 — owner: Hunger Stone opens a special room (Hunger's Domain, PoE Breachstone style)
+# Latest delivery: v8.1.93 — art orders 70–74 wired (63 files)
+
+scripts/pack-missions71-74.py: MANIFEST sha check → WebP q88 (black bg → luminance alpha, frames ≥512 halved except hm_rim) → assets/art/{league72,missions71,trial74,league73,patrol70}/ + menu icons moved to assets/art/menu74/ (ic_memory renamed ic_memory_book: key already used). Index assets/art/missions71_74_index.json. Mission art = ASSET_FX, artClass 'stage' (prefix fp|hm|hh|gp|gg|hs|ult|msn71 / cr_root_), loaded per stage by missionArtKeys(idx) inside stageArtKeys (Delve adds hm/hs/ult). Menu art (menu74, patrol70) = ASSET_IMAGES/ASSET_SHEETS menu-lazy; menuGroupRe adds menu74 everywhere, patrol70 on patrol/gActivity/hub. Helpers: artSpr/sigArt (sprite or old emoji), artIsSpr, artFx (one-shot, NORMAL blend), artFollow/artFollowTick/artFollowClear (overlay on special enemies: herald, golem, warlord, hand lord, Breachlord, stalker captain; base enemy alpha .01, restored on clear). Patrol: patrolScene (sky crop + mid/ground tileSprite parallax), patrolFoe (pt_foes row anims), patrolPop, pt_loot, pt_dim. Delve map tk → amap_trial/amap_siege. Codex badge/memory icon on Bestiary Codex button. Test tests/missions71-74-art.test.cjs.
+
+# Previous delivery: v8.1.92 — owner: Hunger Stone opens a special room (Hunger's Domain, PoE Breachstone style)
 
 Delve node panel: when Save.data.hungerStones>0 (not home/boss/vault/shrine) a 🪨 Domain ×n button sits next to Start → _domainRequested → startRecipeRun spends 1 stone, _domainRun → room mission forced 'hungerDomain' (in SIG/LEAGUE_MISSIONS). hd* methods: flood 30s (breach foes around the player every .55s, 8% elite, 35% splinter each) → hdLord: clears remaining breach foes (phase 'clearing'), spawns Breachlord (elite ×2.2 size, hp ×10·(1+.05d); fallback spawnElite(true,true)) → skills: 12-shot ring 3.2s, hazard on player 4.5s, 2 elite hands 9s → hdDown: Sugar (40+6d)(1+.05si), 3 row-currency drops, +20 splinters, grantGear('legend'). Dying = stone already spent. Art: hm_breachlord added to order 72 (21 files).
-
-# Previous delivery: v8.1.91 — owner: Breach like PoE (Hunger's Mouth rework) + art orders 72 (Breach revised) / 74 (Trial)
-
-hm* rewritten: seek (✋ hand, touch ≤85px) → hmOpen (ring R grows 115/150 px/s to 820/1150, interior fill .18, 2/3 🤲 chests appear as the ring reaches them) → timer life 11/9s, max 20, kill inside +.35s (elite +1.5, lord +5) → breach foes (e._breach, tint 0xc59bff) spawn in packs inside the ring away from the player → drops 🔮 shards (30%, elite 3, lord 10; walk ≤90px) → hmSplinters: Save.data.splinters, every 100 → hungerStones++ (stone has no use yet — owner to decide) → close: ring shrinks 420px/s, breach foes outside it vanish → hmBurst loot by kills. Full: Hand of the Hunger at 40 kills (elite ×1.6, ×4hp). Art: order 72 group B now 8 files (hand/rim/chest/splinter/icons/lord/collapse, total 20); new order 74 Sugar Crown Trial + Delve room icons (replaces order 71 group D).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 · phase 6 Golem v8.1.85 · phase 4 Siege v8.1.86 · phase 7 Memory Book v8.1.87 (ครบทุก phase) · ใบสั่งอาร์ต 73 (7 ไฟล์) รออาร์ต · ใบสั่งอาร์ต 72 (15 ไฟล์ ภารกิจ League phase 1–3 + ไอคอน Honey Drop/Recipe Ink) รออาร์ต
+- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 · phase 6 Golem v8.1.85 · phase 4 Siege v8.1.86 · phase 7 Memory Book v8.1.87 (ครบทุก phase) · อาร์ตใบ 70–74 ผูกแล้ว v8.1.93 · รอ QA มือถือ
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · v8.1.90 เข้าเกมแบบทดลองแล้ว 5 ฮีโร่ (ผ่าน scripts/qa-skin69.py) · Mint รอแก้ 4 ชีต · เดิม: ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย

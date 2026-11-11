@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.91 — owner: Breach like PoE (Hunger's Mouth rework) + art orders 72 (Breach revised) / 74 (Trial)
+
+hm* rewritten: seek (✋ hand, touch ≤85px) → hmOpen (ring R grows 115/150 px/s to 820/1150, interior fill .18, 2/3 🤲 chests appear as the ring reaches them) → timer life 11/9s, max 20, kill inside +.35s (elite +1.5, lord +5) → breach foes (e._breach, tint 0xc59bff) spawn in packs inside the ring away from the player → drops 🔮 shards (30%, elite 3, lord 10; walk ≤90px) → hmSplinters: Save.data.splinters, every 100 → hungerStones++ (stone has no use yet — owner to decide) → close: ring shrinks 420px/s, breach foes outside it vanish → hmBurst loot by kills. Full: Hand of the Hunger at 40 kills (elite ×1.6, ×4hp). Art: order 72 group B now 8 files (hand/rim/chest/splinter/icons/lord/collapse, total 20); new order 74 Sugar Crown Trial + Delve room icons (replaces order 71 group D).
+
 # Previous delivery: v8.1.90 — order 69 festival skins as in-game preview + automatic art QA (owner: ก + ค)
 
 scripts/qa-skin69.py <hero> [--fix]: PASS/FAIL per candidate vs original (size, feet ±6, centre ±10, edge touch) · --fix auto-aligns frames into incoming/skins69/<hero>/aligned/. scripts/pack-skins69-heroes.py packs passing heroes → assets/art/skins69/<hero>/<key>.webp. Registered: card_/roster_<hero>__<tag> in ASSET_IMAGES (menu-lazy via LAZY_MENU_ART_RE art/skins69/) and 39 char_*__<tag> sheets in ASSET_SHEETS (hero class, runArtKeys loads only the worn tag; lazyArt treats key__tag as lazy so boot budget unchanged). Live: momo sakura, cocoa chef, taro star, yuzu summer, sesame moon (skinReady → buyable 1200 threads). Mint 4 sheets fail edge test → art side redraws those frames only (rule written at top of docs/SESSION_HANDOFF.md).

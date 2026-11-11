@@ -1,6 +1,6 @@
 # 72 — ภารกิจ League (Frozen Pantry · Hunger's Mouth · Creeping Roots · Hunger Herald · Grandma's Pot) + ไอคอนสกุลเงิน Forge · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · โค้ดพร้อมแล้ว v8.1.81–v8.1.84 (ใช้อีโมจิ + วงกราฟิกเป็นภาพชั่วคราว)
+สถานะ: 🟢 ผูกแล้ว v8.1.93 (`scripts/pack-missions71-74.py` → `assets/art/<batch>/`, ไอคอนเมนู → `assets/art/menu74/`) · รอ QA มือถือ · เดิม: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · โค้ดพร้อมแล้ว v8.1.81–v8.1.84 (ใช้อีโมจิ + วงกราฟิกเป็นภาพชั่วคราว)
 ส่งไฟล์ที่ `assets/incoming/league72/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` (มุมมอง ¾ จากบน · เส้นขอบนุ่มสีเข้มของโทน · ขนมหวานน่ารัก) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 

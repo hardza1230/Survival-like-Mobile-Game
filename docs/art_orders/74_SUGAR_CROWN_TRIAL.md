@@ -1,6 +1,6 @@
 # 74 — Sugar Crown Trial (แบบ Ultimatum) + ไอคอนห้อง Delve ใหม่ · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · โค้ดพร้อมแล้ว v8.1.80 (ห้อง Trial ใน Delve + Vault Altar ด่าน 14) และ v8.1.86 (ห้อง Siege) · ตอนนี้ใช้อีโมจิ + วงกราฟิก
+สถานะ: 🟢 ผูกแล้ว v8.1.93 (`scripts/pack-missions71-74.py` → `assets/art/<batch>/`, ไอคอนเมนู → `assets/art/menu74/`) · รอ QA มือถือ · เดิม: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · โค้ดพร้อมแล้ว v8.1.80 (ห้อง Trial ใน Delve + Vault Altar ด่าน 14) และ v8.1.86 (ห้อง Siege) · ตอนนี้ใช้อีโมจิ + วงกราฟิก
 ส่งไฟล์ที่ `assets/incoming/trial74/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` (มุมมอง ¾ จากบน · เส้นขอบนุ่มสีเข้มของโทน · ขนมหวานน่ารัก) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 **แทนกลุ่ม D ของใบ 71** (`msn71_altar`, `msn71_pacts`): Vault Altar ด่าน 14 เปลี่ยนมาใช้ระบบ Trial นี้แล้ว → ไม่ต้องวาด 2 ไฟล์นั้น
