@@ -1,0 +1,9 @@
+[
+  {"key": "gg_oven", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gg_parts", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gg_golem", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hs_circle", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hs_warlord", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ic_memory", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "codex_badges", "result": "pass", "reason": "mechanical checks passed"}
+]
