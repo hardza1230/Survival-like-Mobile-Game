@@ -1,6 +1,6 @@
 # 77 — ท่าโจมตี + ท่าตายของศัตรูพิเศษ (League / Breach / Ch3) · ใบสั่งงานอาร์ต + ผูกเอง
 
-สถานะ: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · **AI ฝั่งอาร์ตทำภาพและผูกเข้าเกมเองในใบนี้** (ทำตามหัวข้อ "ผูกเข้าเกม")
+สถานะ: 🟢 ผูกแล้ว v8.1.97 · รอ QA มือถือ
 ส่งไฟล์ที่ `assets/incoming/motion77/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · **ตัวละครต้องตรงกับภาพท่ายืนที่ส่งแล้ว** (ดูไฟล์อ้างอิงในตาราง) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ**
 
@@ -47,5 +47,8 @@
 7. **ปล่อย:** ตาม skill release · อัปเดต README ใบนี้ "🟢 ผูกแล้ว vX · รอ QA มือถือ"
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด · เวอร์ชันที่ผูก)
+- วันที่ส่ง 12 พ.ย. 2026 · ผูกเข้าเกม v8.1.97
+- ส่งครบ 12 ไฟล์ที่ `assets/incoming/motion77/` · ไฟล์ที่ขาด 0
+- `hh_herald_attack.png`, `hh_herald_death.png`, `gg_golem_attack.png`, `gg_golem_death.png`, `hs_warlord_attack.png`, `hs_warlord_death.png`, `hm_hand_lord_attack.png`, `hm_hand_lord_death.png`, `hm_breachlord_attack.png`, `hm_breachlord_death.png`, `msn71_stalker_captain_attack.png`, `msn71_stalker_captain_death.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop` (false), `anchor` (`center`), `background` (`transparent`)

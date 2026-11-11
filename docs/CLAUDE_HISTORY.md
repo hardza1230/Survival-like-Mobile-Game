@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.95 — League mission and upgrade effects (art order 78)
+
+Fifteen ImageGen sources and packed flipbooks (1.43 MB WebP, 26.97 MB decoded across all groups). Thirteen stage effects are loaded by mission, two menu effects by Forge or Bestiary. Frozen Pantry reuses a paint loop while a statue is being filled and removes it on wake, loss or mission cleanup. Prior effects remain active. tests/vfx78-art.test.cjs verifies hashes, routes, hooks and loop lifecycle.
+
 # Previous delivery: v8.1.94 — distinct level-up cards (art order 75)
 
 Eight ImageGen sources verified and packed by scripts/pack-levelup75.py (192 KB WebP, 5.22 MB decoded only during play). The Normal, Mutation, Relic and Unique templates share the existing 9-slice layout with a distinct crest. Special frame FX animate at 8 fps and stay still under reduced motion. The old card art and drawn panel are fallbacks. No changes to card selection or effects. tests/levelup75-art.test.cjs covers source integrity, stage-lazy assets, categories and fallbacks.

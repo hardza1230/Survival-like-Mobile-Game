@@ -1,0 +1,50 @@
+{
+  "hh_herald_attack": {
+    "reference": "hh_herald",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 2 columns \u00d7 2 rows, four independent square cels. Row-major wind-up, anticipation, strongest impact, recovery. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: raise the same curved brass horn to lips, puff cheeks, emit a soft violet sound ripple at the bell, lower the horn. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hh_herald_death": {
+    "reference": "hh_herald",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 4 columns \u00d7 2 rows, eight independent square cels. Row-major progressive defeat, from close-to-idle pose through the collapse to tiny lingering particles. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: horn slips free, the cloak collapses softly and breaks apart into a swirl of lavender sugar dust. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "gg_golem_attack": {
+    "reference": "gg_golem",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 2 columns \u00d7 2 rows, four independent square cels. Row-major wind-up, anticipation, strongest impact, recovery. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: lift both pretzel arms high, swing the arms downward, slam the ground with a brief compact puff of sugar dust, recover. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "gg_golem_death": {
+    "reference": "gg_golem",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 4 columns \u00d7 2 rows, eight independent square cels. Row-major progressive defeat, from close-to-idle pose through the collapse to tiny lingering particles. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: cake head, pretzel arms and bread legs come loose one after another, landing in a small playful pile of pastries. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hs_warlord_attack": {
+    "reference": "hs_warlord",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 2 columns \u00d7 2 rows, four independent square cels. Row-major wind-up, anticipation, strongest impact, recovery. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: wind up with the oversized fork, sweep the fork in a clear curved arc forward, pull fork back into stance. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hs_warlord_death": {
+    "reference": "hs_warlord",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 4 columns \u00d7 2 rows, eight independent square cels. Row-major progressive defeat, from close-to-idle pose through the collapse to tiny lingering particles. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: cutlery plates come loose, the burnt toast crown falls, the pale mochi settles flat and fades. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hm_hand_lord_attack": {
+    "reference": "hm_hand_lord",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 2 columns \u00d7 2 rows, four independent square cels. Row-major wind-up, anticipation, strongest impact, recovery. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: curl the raised fingers inward, grab forward with the palm and fingers, then open the hand again. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hm_hand_lord_death": {
+    "reference": "hm_hand_lord",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 4 columns \u00d7 2 rows, eight independent square cels. Row-major progressive defeat, from close-to-idle pose through the collapse to tiny lingering particles. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: fingers curl into a fist, the single eye closes, the hand becomes scattered violet candy crystal splinters. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hm_breachlord_attack": {
+    "reference": "hm_breachlord",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 2 columns \u00d7 2 rows, four independent square cels. Row-major wind-up, anticipation, strongest impact, recovery. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: outer hands spread in unison, pulse a muted plum ring out around the body, let hands drift back. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "hm_breachlord_death": {
+    "reference": "hm_breachlord",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 4 columns \u00d7 2 rows, eight independent square cels. Row-major progressive defeat, from close-to-idle pose through the collapse to tiny lingering particles. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: outer hands fold in toward the body eye, the sugar crown cracks, the shape recedes into a small dim purple rift. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "msn71_stalker_captain_attack": {
+    "reference": "msn71_stalker_captain",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 2 columns \u00d7 2 rows, four independent square cels. Row-major wind-up, anticipation, strongest impact, recovery. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: pull back claws, lunge forward for a clear claw swipe with the burgundy cape flicking behind, then recover. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  },
+  "msn71_stalker_captain_death": {
+    "reference": "msn71_stalker_captain",
+    "prompt": "Reference is the exact idle sprite for an original Mochi Mayhem game character. Create a new transparent motion atlas of that same character, same identity, matching colors, outline, costume details, orientation, scale and centered ground anchor. Exactly 4 columns \u00d7 2 rows, eight independent square cels. Row-major progressive defeat, from close-to-idle pose through the collapse to tiny lingering particles. Leave clear wide transparent gutters and ample safe margin on every cel. Character action: gold crown falls from the head, burgundy cape slips down, candy creature fades softly. Do not redesign the character. Original soft confectionery game ink, no cast shadow or new floor, no blood, no text or numbers, no checkerboard embedded."
+  }
+}

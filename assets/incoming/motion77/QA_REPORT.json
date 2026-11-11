@@ -1,0 +1,14 @@
+[
+  {"key": "hh_herald_attack", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hh_herald_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gg_golem_attack", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gg_golem_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hs_warlord_attack", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hs_warlord_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_hand_lord_attack", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_hand_lord_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_breachlord_attack", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_breachlord_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_stalker_captain_attack", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_stalker_captain_death", "result": "pass", "reason": "mechanical checks passed"}
+]
