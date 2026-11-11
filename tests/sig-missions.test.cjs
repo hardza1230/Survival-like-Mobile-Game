@@ -2,9 +2,9 @@
 const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
-assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot'];"));
+assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem'];"));
 for(const t of SIG){assert.ok(new RegExp('\\n  '+t+":\\{emoji:").test(src),'def '+t);assert.ok(src.includes(t+":['"),'bonus goal '+t);}
-const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!/frozenPantry|hungersMouth|hungerHerald|grandmasPot/.test(x)).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
+const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!/frozenPantry|hungersMouth|hungerHerald|grandmasPot|grandmasGolem/.test(x)).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
 for(const n of ['sigAdd','sigText','sigClear','sigSpawnAt','sigSetup','sigNear','sigTick','sigOnKill'])m(n);
 const tk=m('sigTick');for(const t of SIG)assert.ok(tk.includes("o.type==='"+t+"'"),'tick '+t);assert.ok(tk.includes("o.type==='ultimatum'"));
 assert.ok(src.includes("}else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){\n      this.sigSetup(o,type,p||{});")&&src.includes('this.sigTick(dt,o);if(!this.waveObjective)return;')&&src.includes('this.sigOnKill?.(e);')&&src.includes('clearWaveObjective(){this.sigClear?.();'),'hooks');
@@ -54,7 +54,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
-  assert.ok(/if\(S\.lanes\|\|S\.herald\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
+  assert.ok(/if\(S\.lanes\|\|S\.herald\|\|S\.carriers\)this\.enemies/.test(m('sigClear')),'lane/herald flags cleared');
   assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
@@ -86,3 +86,21 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);sc.gpDrop(S,500,500,Object.keys(S.need)[0]);for(let k=0;k<200;k++)sc.gpTick(.1,o,S);assert.strictEqual(S.items.length,0,'ingredients spoil'); }
   { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);for(let k=0;k<125;k++)sc.gpTick(.1,o,S);assert.ok(S.items.length>=1,'grandma tosses one when nothing drops'); }
   console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (drops, carry, deliver, spoil, serve) passed'); }
+
+{ // v8.1.85 League phase 6: Grandma's Golem (Metamorph)
+  for(const n of ['ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'])m(n);
+  assert.ok(src.includes("objectives:['grandmasGolem','hunt','capture','purge'],lead:'grandmasGolem',"),'C1-5 Golem first');
+  assert.ok(src.includes("if(e&&(e._ggPart||e._golem)){"),'kill hook');
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,
+    GOLEM_PARTS:[{k:'head',em:'🍰',name:'Cake Head',skill:'a'},{k:'arms',em:'🥨',name:'Arms',skill:'b'},{k:'legs',em:'🥖',name:'Legs',skill:'c'},{k:'tail',em:'🍭',name:'Tail',skill:'d'},{k:'heart',em:'💗',name:'Heart',skill:'e'}]};vm.createContext(ctx);
+  const obj=()=>{const o={x:0,y:0,setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
+  vm.runInContext('class S{'+['fpFull','ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'].map(m).join('')+'};this.K=S;',ctx);
+  for(const full of [false,true]){ const sc=new ctx.K();const en=[];Object.assign(sc,{_replayMeter:full?{}:null,stageIndex:4,player:{x:0,y:0},sugarStage:0,sugarRun:0,add:{circle:()=>obj(),text:()=>obj()},
+    objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},
+    sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el,maxhp:100,hp:100,scaleX:1,setScale(){},setTint(){},clearTint(){}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});
+    const o={},S={};sc.ggSetup(o,S);assert.strictEqual(o.target,full?5:3);for(let k=0;k<55;k++)sc.ggTick(.1,o,S);const car=en.filter(e=>e._ggPart);assert.strictEqual(car.length,o.target,'every part has a carrier');
+    sc.player={x:300,y:0};for(let k=0;k<25;k++)sc.ggTick(.1,o,S);assert.strictEqual(S.phase,'collect','cannot bake with no parts');
+    for(const e of car.slice(0,S.min)){ const k=e._ggPart;e._ggPart=null;e.active=false;sc.ggDropPart(S,e,k);sc.player={x:e.x,y:e.y};sc.ggTick(.1,o,S); }
+    assert.strictEqual(S.parts.length,S.min);sc.player={x:300,y:0};for(let k=0;k<25;k++)sc.ggTick(.1,o,S);assert.strictEqual(S.phase,'fight','bake with min parts');
+    const g=S.golem;assert.ok(g&&g._golem);assert.ok(g.maxhp>100,'golem is tougher');g._golem=false;sc.ggDown(g,o,S);assert.ok(sc.done&&sc.sugarRun>0); }
+  console.log('League phase 6: Grandma’s Golem (carriers, parts, min-part bake, golem scaled by parts, reward) passed'); }

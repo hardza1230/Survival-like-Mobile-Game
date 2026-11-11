@@ -138,7 +138,7 @@
 | 3 | Hunger Herald (C1-1) + Grandma's Pot (C1-3) | ✅ v8.1.83 |
 | 4 | Siege of the Hunger (Delve room) | รอ |
 | 5 | Reforge สกุลเงินต่อบรรทัด + Enchant transfer (ใช้เศษจาก Herald) | ✅ v8.1.84 (เจ้าของเลือก: 4 สกุล · ย้าย · ดรอปจาก League + ดรอปทั่วไป) |
-| 6 | Grandma's Golem (C1-5) | รอ |
+| 6 | Grandma's Golem (C1-5) | ✅ v8.1.85 |
 | 7 | Memory Book + ใบสั่งอาร์ตรวมของทุก phase | รอ |
 
 ภาพทุกภารกิจใช้วงกราฟิก + อีโมจิชั่วคราวก่อน แล้วรวมใบสั่งอาร์ตทีหลัง
