@@ -53,15 +53,24 @@ jobs:
         with:
           node-version: "20"
       - name: Install audio validation dependency
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+        timeout-minutes: 4
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            npm install --prefix /tmp/mochi-ffmpeg --no-save --ignore-scripts --no-audit --no-fund @ffmpeg-installer/linux-x64@4.1.0
+            ffmpeg_bin=/tmp/mochi-ffmpeg/node_modules/@ffmpeg-installer/linux-x64
+            "$ffmpeg_bin/ffmpeg" -version
+            echo "$ffmpeg_bin" >> "$GITHUB_PATH"
+          fi
       - name: Validate game and UI contracts
         run: npm run check
       - name: Assemble web assets (www/)
         run: node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs && node scripts/build-ruby-story-review.mjs && node scripts/build-sesame-rune-review.mjs && node scripts/build-mint-vfx-review.mjs && node scripts/build-battle-vfx-review.mjs && node scripts/build-boss-vfx-review.mjs && node scripts/build-boss-body-review.mjs && node scripts/build-boss-shot-review.mjs && node scripts/build-battle-hud-review.mjs
       - name: Verify menu visuals
+        env:
+          FORGE_BROWSER_CHANNEL: chrome
         run: |
+          google-chrome --version
           npm install --prefix /tmp/forge-browser --no-save playwright@1.51.1
-          /tmp/forge-browser/node_modules/.bin/playwright install --with-deps chromium
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-forge-live-ui.cjs
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-lobby-live-ui.cjs
           NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-ruby-story-ui.cjs
