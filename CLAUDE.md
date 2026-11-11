@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.81**. Next release:8.1.82. Fetch the deploy branch before new work.
+Current release: **8.1.82**. Next release:8.1.83. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.81 — League missions phase 1: Frozen Pantry (owner: PoE leagues adapted to lore)
+# Latest delivery: v8.1.82 — League phase 2: Hunger's Mouth (C1-2) + Creeping Roots (C2-3)
+
+hungersMouth (Breach): hm* methods · ring shrinks (light 10px/s max 340 cap 40s · full 15px/s max 440 cap 55s, ×2.2 in last 20%) · kill while the player stands inside (enemy ≤ R+300, auto-aim kills far) → pot +1 (elite 3, Tongue 12), R +16/+44 · spawns on the ring edge · R≤40 or cap → hmBurst (missionLootBurst pot·(.7+si·.2), full ×1.3) · full: Tongue of the Hunger elite at 18s. Stage 2 objectives ['hungersMouth','hunt','capture','purge'] + `lead:'hungersMouth'` (both bag builders push st.lead last = first wave; _leadUsed reset per stage). creepingRoots (Blight, replaces defendNectar on C2-3): cr* methods · 2 lanes light / 3 + split at 18s full · lane = 5 waypoints drawn on S.laneG · foes spawned at root mother get e._lanePath/_goTo (enemy AI target override + not culled; cleared on kill/sigClear) · stand on root mother 2.2s = cut · flower 300hp (attackers ≤120px), heal near, wilt = timer −20% (no player HP loss) · all cut = early end + loot. sigSpawnAt sets this._sigForce for league types → storyCanSpawn allows up to maxLive. Next: phase 3 Hunger Herald (C1-1) + Grandma's Pot (C1-3).
+
+# Previous delivery: v8.1.81 — League missions phase 1: Frozen Pantry (owner: PoE leagues adapted to lore)
 
 Plan + owner decisions in `docs/design/OWNER_NOTES_POE_LEAGUES.md` (phases 1–7). frozenPantry in SIG_MISSIONS, fp* methods: walk to 🫙 jar (seek) → N statues ring the jar (not enemies, auto-aim ignores them) → painting ring around the player (PR 140) fills a statue in 1.8s (General 3s) → sigSpawnAt wakes it (e._fpTok, global this._fpSeq) → kill = progress, 🎁 statues drop missionLootBurst. fpFull() = replay (_replayMeter) / riftMode / storyCleared()>=10: 6 statues, woken foe must die in 14s (20s General) or fpVanish (silent remove, loot lost), unpainted statues shatter at 34s, 40% Frost General. Light (first play Ch1–2): 4 statues, no timers, no General. Stage C1-4 objectives ['survive','hunt','frozenPantry','capture']. Next: phase 2 Hunger's Mouth (C1-2) + Creeping Roots (C2-3).
-
-# Previous delivery: v8.1.80 — Ultimatum-style Sugar Crown Trial (owner: B endgame + upgrade Vault Altar)
-
-Mission type 'ultimatum' (in SIG_MISSIONS) via ult* methods on the _sig layer: each round pick 1 of 3 ULT_CURSES pads (swarm/elite/noheal/bombs/shots/drain, stacking, mult += v) → goal from ULT_GOALS (survive in gold circle 20s / slay 14+4r in 28s / defend altar 300hp 20s / collect 5 seeds 22s) → pot += base·(1+.5r)·mult, +1 box from round 2 → decide pads 8s: 🎁 take (default) / ⚔️ risk → clear all rounds = full pot + epic box; fail = half pot & half boxes (owner did not pick; recommendation used). Delve: node type 'trial' (d≥4, r<.165) → delveMission 'ultimatum' (4 rounds). Story stage 14 vaultAltar = same engine, 2 rounds (old pact code removed). No arm pad / Overcharge on trials. Loss penalty "half" can be switched to "all" in ultFinish.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry เสร็จ v8.1.81
+- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย

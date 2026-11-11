@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.80 — Ultimatum-style Sugar Crown Trial (owner: B endgame + upgrade Vault Altar)
+
+Mission type 'ultimatum' (in SIG_MISSIONS) via ult* methods on the _sig layer: each round pick 1 of 3 ULT_CURSES pads (swarm/elite/noheal/bombs/shots/drain, stacking, mult += v) → goal from ULT_GOALS (survive in gold circle 20s / slay 14+4r in 28s / defend altar 300hp 20s / collect 5 seeds 22s) → pot += base·(1+.5r)·mult, +1 box from round 2 → decide pads 8s: 🎁 take (default) / ⚔️ risk → clear all rounds = full pot + epic box; fail = half pot & half boxes (owner did not pick; recommendation used). Delve: node type 'trial' (d≥4, r<.165) → delveMission 'ultimatum' (4 rounds). Story stage 14 vaultAltar = same engine, 2 rounds (old pact code removed). No arm pad / Overcharge on trials. Loss penalty "half" can be switched to "all" in ultFinish.
+
 # Previous delivery: v8.1.79 — missions round 3: old-mission upgrades + opt-in start + Overcharge
 
 missionArm (story budget, not planned/forceType/tutorial/recipe/rift/rush, not survive/fill/hunt): ✨ pad 120–170px away; tickWaveObjective returns early (progress/bonus paused) until player steps in or 10s. overchargeOffer (from completeWaveObjective normal path, not survive/fill): ⚡ pad 5s → 12s run (2 foes/0.9s + 1 elite) → o._ocMul=2 (bonus ×2) + held gear box; ignored = normal completion; tickWaveObjective skipped while o._oc. Escort: wisp ×1.7 when player ≤110px; raid direction ⚠. Clean Air: cleanAirBubbles (≤3 on the path, +1.5s). Seasonal: seasonDropPetal/seasonPetalTick (petals are ground pickups, magnet 110px, 14s life) + seasonShrineTick (4 shrines, stand 1s = call season). Roots: pulse every 3s (need 1.3 instead of 2.6) + 3 guardians on first approach. Next: round 4 art orders (Ch3 signature props, pads, petals, bubbles, captain).

@@ -2,9 +2,9 @@
 const fs=require('fs'),assert=require('assert');const src=fs.readFileSync(__dirname+'/../game.js','utf8');
 const m=n=>{const i=src.indexOf('\n  '+n+'(');assert.ok(i>0,n);const r=/\n  [A-Za-z_$][\w$]*\(/g;r.lastIndex=i+4;const x=r.exec(src);return src.slice(i,x?x.index:undefined);};
 const SIG=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'];
-assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry'];"));
+assert.ok(src.includes("const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots'];"));
 for(const t of SIG){assert.ok(new RegExp('\\n  '+t+":\\{emoji:").test(src),'def '+t);assert.ok(src.includes(t+":['"),'bonus goal '+t);}
-const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!x.includes('frozenPantry')).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
+const ob=[...src.matchAll(/objectives:\[([^\]]*)\]/g)].map(x=>x[1]).filter(x=>!x.includes('frozenPantry')&&!x.includes('hungersMouth')).slice(0,10);SIG.forEach((t,i)=>assert.ok(ob[5+i].includes(t),'stage '+(11+i)+' has '+t));
 for(const n of ['sigAdd','sigText','sigClear','sigSpawnAt','sigSetup','sigNear','sigTick','sigOnKill'])m(n);
 const tk=m('sigTick');for(const t of SIG)assert.ok(tk.includes("o.type==='"+t+"'"),'tick '+t);assert.ok(tk.includes("o.type==='ultimatum'"));
 assert.ok(src.includes("}else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))){\n      this.sigSetup(o,type,p||{});")&&src.includes('this.sigTick(dt,o);if(!this.waveObjective)return;')&&src.includes('this.sigOnKill?.(e);')&&src.includes('clearWaveObjective(){this.sigClear?.();'),'hooks');
@@ -48,3 +48,23 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.strictEqual(spawned.length,4,'all painted statues woke');for(const e of spawned){ e.active=false; assert.ok(sc.fpOnKill(e,o,S)); }
   sc.fpTick(.1,o,S);assert.strictEqual(o.progress,4);assert.ok(sc.done,'mission completes');assert.ok(sc.sugarRun>0,'chest loot');
   console.log('Frozen Pantry: walk-to-paint statues, light/full split, refreeze timer, chest loot, completes passed'); }
+
+{ // v8.1.82 League phase 2: Hunger's Mouth + Creeping Roots
+  for(const n of ['hmSetup','hmTick','hmOnKill','hmBurst','crLane','crDraw','crSetup','crTick'])m(n);
+  assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
+  assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
+  assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
+  assert.ok(/if\(S\.lanes\)this\.enemies/.test(m('sigClear')),'lane flags cleared');
+  assert.ok(/this\._sigForce&&this\.enemies\.countActive\(true\)<\(this\.maxLive\|\|100\)\)return true/.test(m('storyCanSpawn'))&&/finally\{ this\._sigForce=false; \}/.test(m('sigSpawnAt')),'league spawns bypass story budget');
+  assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
+  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
+  const obj=()=>{const o={x:0,y:0,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},clear(){},lineStyle(){},beginPath(){},moveTo(){},lineTo(){},strokePath(){},fillStyle(){},fillCircle(){}};return o;};
+  vm.runInContext('class S{'+['fpFull','hmSetup','hmTick','hmOnKill','hmBurst','crLane','crDraw','crSetup','crTick'].map(m).join('')+'};this.K=S;',ctx);
+  const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:1,player:{x:300,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj(),graphics:()=>obj(),image:()=>obj()},textures:{exists:()=>false},
+    objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{children:{iterate:f=>en.forEach(f)}},
+    sigSpawnAt:(x,y)=>{const e={x,y,active:true};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
+  { const [sc]=mk();const o={},S={};sc.hmSetup(o,S);assert.strictEqual(S.full,false);for(let i=0;i<5;i++)sc.hmOnKill({x:300,y:0},o,S);assert.strictEqual(S.pot,5);assert.ok(S.R>220,'kills widen');
+    let k=0;while(!sc.done&&k++<2000)sc.hmTick(.1,o,S);assert.ok(sc.done,'mouth closes');assert.ok(sc.sugarRun>0,'pot pays out'); }
+  { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
+    for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<25;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
+  console.log('League phase 2: Hunger’s Mouth (widen/close/pot burst) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.81';
+const GAME_VERSION = '8.1.82';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.82',date:'2026-11-11',title:'Hunger’s Mouth & Creeping Roots',items:['The Rotting Drain opens with 👄 Hunger’s Mouth: fight inside it — kills widen the mouth and feed its pot, and when it snaps shut the pot bursts out as loot','Nectar Hive’s flower mission is now 🌱 Creeping Roots: monsters crawl along visible root paths to the flower — stand on each root mother to cut its path','On replays and after Chapter 2 both get harder: a faster mouth with the Tongue of the Hunger, and a root that splits off mid-fight']},
   {v:'8.1.81',date:'2026-11-11',title:'Frozen Pantry',items:['New mission in Sugar Frost Prison: 🧊 Frozen Pantry','Open the sugar jar, then walk close to the frozen mochi statues to paint them back to life — they wake up and fight','🎁 statues carry loot · on replays and after Chapter 2 they refreeze (and take their loot) if you are too slow, and a Frost General may be hiding among them']},
   {v:'8.1.80',date:'2026-11-11',title:'Sugar Crown Trial',items:['New Delve room ⚖️ Sugar Crown Trial (from depth 4): 4 rounds, each with a curse you pick that stacks on the last','Rounds ask you to hold the circle, slay, defend the altar or grab seeds — the loot pot grows every round','After each round: take the pot and leave, or risk it for more; failing keeps half','The Seed Vault altar is now a 2-round version of the trial']},
   {v:'8.1.79',date:'2026-11-10',title:'Missions you control',items:['Most missions now wait on a ✨ start pad — step in when you are ready (they start by themselves after 10s)','Overcharge: after finishing a mission, step on ⚡ within 5s for 12s of extra enemies and ×2 loot','Escort the Wisp: standing right next to the wisp makes it move 70% faster, and raiders show where they come from','Follow the Clean Air: bonus bubbles appear along the path (+1.5s each)','Seasonal Harvest: petals now drop on the ground for you to collect, and four season shrines let you call the season you need','Sever the Crown Roots: guardians appear when you start cutting, and anchors pulse — cut during the glow to go twice as fast']},
@@ -7964,6 +7965,7 @@ const STAGES = [
     boss:'Emerald Acid Ant Empress', bossHp:920, bossDmg:25 },
   { name:'The Rotting Drain', en:'The Rotting Drain', emoji:'🚰', grid:0x3c4d61, tint:0x8fc7ff,
     lore:'Acid from the nest floods the ancient drains, raising creatures of foam, sewage and grate scraps into a new army',
+    objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',
     waves:5, recommendedPower:280, miniAt:2, mini:'Valve Maw, Pressure Warden', boss:'Clogmaw, Lord of Clogged Pipes', bossHp:1120, bossDmg:24 },
   { name:'Chili Engine Room', en:'Chili Engine Room', emoji:'🔥', grid:0x60463c, tint:0xff8a5a,
     lore:'The chili furnace burns the stolen flavor of cursed mochi to feed a root of the Crown',
@@ -7985,7 +7987,7 @@ const STAGES = [
     waves:5, recommendedPower:3000, miniAt:2, mini:'Fungal Juggernaut', boss:'Mycelium Behemoth', bossHp:5600, bossDmg:64 },
   { name:'Nectar Hive', en:'Nectar Hive', emoji:'🐝', grid:0x4b3521, tint:0xffc95c, chapter:1, chapterStage:3, ready:true,
     lore:'Fermented nectar draws a royal swarm that drains the last memory-bearing flowers from the garden',
-    objectives:['hunt','defendNectar','purge'],
+    objectives:['hunt','creepingRoots','purge'],
     waves:5, recommendedPower:4200, miniAt:2, mini:'Royal Stinger', boss:'Ferment Hornet Queen', bossHp:6800, bossDmg:72 },
   { name:'Four-Season Conservatory', en:'Four-Season Conservatory', emoji:'🌦️', grid:0x29364a, tint:0x8fdcff, chapter:1, chapterStage:4, ready:true,
     lore:'Time-ferment forces heat, frost, toxic rain and storm to bloom together inside a shattered glass garden',
@@ -8757,7 +8759,10 @@ const WAVE_OBJECTIVES = {
   ultimatum:{emoji:'⚖️',name:'Sugar Crown Trial',desc:'4 rounds of stacking curses — take the pot, or risk it for more (losing costs half)'},
   lastLight:{emoji:'🏮',name:'Hold the Last Light',desc:'Keep at least one lantern burning — stand close to rekindle them'},
   /* v8.1.81 เจ้าของ: League แบบ PoE ปรับเข้า lore · Legion → รูปปั้นโมจิแช่แข็ง เดินเข้าใกล้ = เติมสี → ตื่นมาสู้ */
-  frozenPantry:{emoji:'🧊',name:'Frozen Pantry',desc:'Open the sugar jar, then walk near the frozen mochi to paint them back to life — beat them before they refreeze'}
+  frozenPantry:{emoji:'🧊',name:'Frozen Pantry',desc:'Open the sugar jar, then walk near the frozen mochi to paint them back to life — beat them before they refreeze'},
+  /* v8.1.82 League phase 2: Breach → Hunger’s Mouth · Blight → Creeping Roots */
+  hungersMouth:{emoji:'👄',name:'Hunger’s Mouth',desc:'Kills inside the mouth push it wider — when it snaps shut, everything you fed it bursts out as loot'},
+  creepingRoots:{emoji:'🌱',name:'Creeping Roots',desc:'Roots crawl toward the nectar flower — stand on each root mother to cut its path'}
 };
 // Wave 2 is the miniboss. Fixed early missions give new players a reliable learning path on repeat runs.
 const CH1_EARLY_WAVE_PLAN={
@@ -8767,7 +8772,7 @@ const CH1_EARLY_WAVE_PLAN={
 };
 function earlyWaveMission(stage,wave){return CH1_EARLY_WAVE_PLAN[stage]?.[wave]||null;}
 const ULT_CURSES=[{id:'swarm',em:'🐜',name:'Double Swarm',v:.3},{id:'elite',em:'💀',name:'Elite Pack',v:.4},{id:'noheal',em:'🚫',name:'No Hearts',v:.45},{id:'bombs',em:'💣',name:'Ground Bombs',v:.35},{id:'shots',em:'🌀',name:'Bullet Rings',v:.4},{id:'drain',em:'🩸',name:'Sugar Drain',v:.3}],ULT_GOALS=['survive','slay','defend','collect'];
-const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry'];
+const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots'];
 const CH1_OBJECTIVE_COLORS=[0x9dff45,0x72e8d1,0xff8a5a,0x9fe0ff,0xd59cff];
 
 const STAGE_SWARM_BEATS = [
@@ -14506,7 +14511,7 @@ class Game extends Phaser.Scene {
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
   startStage(i){this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
-    this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
+    this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
     this.bossUI.forEach(o=>o.setVisible(false));
@@ -14520,7 +14525,7 @@ class Game extends Phaser.Scene {
       Sfx.playStageBgm(1);   // v6.49.7: เดิม return ก่อนเล่นเพลง → tutorial เงียบ
       return;   // ไม่ตั้งเวฟ (coach เป็นคนสปอนมอนให้ลอง)
     }
-    const objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());
+    const objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());if(st.lead){ const b=this._waveObjectiveBag,k=b.indexOf(st.lead); if(k>=0){ b.splice(k,1); b.push(st.lead); this._leadUsed=true; } }   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
     Sfx.playStageBgm(i+1);
     this.gridBg.fillColor=st.grid;
     if(this.bgTile){ const bgKey='bg'+(i+1); if(this.bgTile.clearTint)this.bgTile.clearTint(); if(this.textures.exists(bgKey))this.bgTile.setTexture(bgKey);
@@ -15110,6 +15115,7 @@ class Game extends Phaser.Scene {
   }
   storyCanSpawn(objective=false,type=null){
     if(!this.usesStoryBudget?.()||!this._storyBudget)return true;
+    if(this._sigForce&&this.enemies.countActive(true)<(this.maxLive||100))return true;   /* v8.1.82 ภารกิจ League ต้องเกิดมอนได้ (ปาก/เส้นราก/รูปปั้น) */
     let cap=Math.min(this.maxLive||100,this.storyLiveCap());
     if(!objective&&this.waveObjective?.type==='hunt'&&!this.waveObjective.done&&this.waveObjective._huntPhase!=='clear'&&!this.huntTargetActive?.())cap=Math.max(0,cap-1);
     if(this.enemies.countActive(true)>=cap)return false;
@@ -15210,7 +15216,7 @@ class Game extends Phaser.Scene {
   setupWaveObjective(w,p){
     this.clearWaveObjective();
     const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
-    if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());}
+    if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());if(st&&st.lead&&!this._leadUsed){ const b=this._waveObjectiveBag,i=b.indexOf(st.lead); if(i>=0){ b.splice(i,1); b.push(st.lead); this._leadUsed=true; } }}   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
     let type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop();
     if(!(p&&p.forceType)&&!planned&&type==='hunt'&&this._huntUsed){ const st0=STAGES[this.stageIndex]||{},alt=(Array.isArray(st0.objectives)&&st0.objectives.length?st0.objectives:['survive','purge','capture']).filter(t=>t!=='hunt'); if(alt.length)type=alt[Math.floor(Math.random()*alt.length)]; }   /* v8.1.76 เจ้าของ: Hunt ไม่เกินด่านละครั้ง */
     if(type==='hunt'&&!(p&&p.forceType))this._huntUsed=true;
@@ -15618,7 +15624,7 @@ class Game extends Phaser.Scene {
     else if(type==='cleanAir')pt(this._cleanAirZone,(this._cleanAirZone?.radius||145)+20,'🫧 Clean-air ring');
     else if(type==='defendNectar')(this._nectarFlowers||[]).slice(0,1).forEach(f=>pt(f,90,'🌺 Protect the flower'));
     else if(type==='breakRoots')this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._rootAnchor&&out.length<4)pt(n,95,'🌳 Root anchor'); });
-    else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))&&this._sig){ const S=this._sig; if(type==='seedRift')pt({x:S.x,y:S.y},S.R+10,'🌀 Fight inside the rift'); else if(type==='shakeTrees')(S.trees||[]).forEach(t=>pt(t,100,'🌳 Stand under the tree')); else if(type==='mirrorPath'){ pt({x:S.cx,y:S.cy},80,'💎 The crystal'); (S.mirrors||[]).slice(0,1).forEach(m=>pt(m,90,'🪞 Charge each mirror')); } else if(type==='vaultAltar')pt({x:S.x,y:S.y},200,'🗝️ Pick a pact stone'); else if(type==='frozenPantry'){ if(S.phase==='seek')pt({x:S.x,y:S.y},95,'🫙 Open the sugar jar'); else (S.st||[]).filter(q=>q.state==='frozen').slice(0,1).forEach(q=>pt(q,70,'🧊 Walk close to paint it')); } else if(type==='lastLight')(S.lamps||[]).slice(0,1).forEach(L=>pt(L,120,'🏮 Keep the lanterns lit')); }
+    else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))&&this._sig){ const S=this._sig; if(type==='seedRift')pt({x:S.x,y:S.y},S.R+10,'🌀 Fight inside the rift'); else if(type==='shakeTrees')(S.trees||[]).forEach(t=>pt(t,100,'🌳 Stand under the tree')); else if(type==='mirrorPath'){ pt({x:S.cx,y:S.cy},80,'💎 The crystal'); (S.mirrors||[]).slice(0,1).forEach(m=>pt(m,90,'🪞 Charge each mirror')); } else if(type==='vaultAltar')pt({x:S.x,y:S.y},200,'🗝️ Pick a pact stone'); else if(type==='hungersMouth')pt({x:S.x,y:S.y},(S.R||200)+10,'👄 Fight inside the mouth'); else if(type==='creepingRoots'){ pt({x:S.x,y:S.y},90,'🌺 The nectar flower'); (S.lanes||[]).filter(L=>L.open).slice(0,1).forEach(L=>pt(L.pts[0],80,'🌱 Stand on the root mother')); } else if(type==='frozenPantry'){ if(S.phase==='seek')pt({x:S.x,y:S.y},95,'🫙 Open the sugar jar'); else (S.st||[]).filter(q=>q.state==='frozen').slice(0,1).forEach(q=>pt(q,70,'🧊 Walk close to paint it')); } else if(type==='lastLight')(S.lamps||[]).slice(0,1).forEach(L=>pt(L,120,'🏮 Keep the lanterns lit')); }
     return out; }
   counterTeach(x,y){ const d=typeof Save!=='undefined'&&Save.data; if(!d||this._inTutorial||(d.counterTaught||0)>=2||this._counterTaughtRun)return; this._counterTaughtRun=true; d.counterTaught=(d.counterTaught||0)+1; Save.save?.();
     this.rubyTip?.('counter',0); this.time?.delayedCall(150,()=>{ if(this.state==='play')this.questFocus('counter',true,[{x,y,r:52,l:'🦶 Dash into it!'}]); }); }
@@ -15694,15 +15700,17 @@ class Game extends Phaser.Scene {
   /* ===== v8.1.78 ภารกิจประจำด่าน Chapter 3 (ภาพชั่วคราว: วงกราฟิก + อีโมจิ · ใบสั่งอาร์ตรอบ 4) ===== */
   sigAdd(o){ if(o){ this.camWorld(o); (this._sig.objs||(this._sig.objs=[])).push(o); } return o; }
   sigText(x,y,t,fs=26){ return this.sigAdd(this.add.text(x,y,t,{fontSize:fs+'px',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(y+5)); }
-  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
-  sigSpawnAt(x,y,elite){ const e=elite?this.spawnElite?.(false,true):this.spawnEnemy?.('basic'); if(e){ const lim=WORLD/2-120; e.setPosition(Phaser.Math.Clamp(x,-lim,lim),Phaser.Math.Clamp(y,-lim,lim)); this.vfxSpawnPoof?.(e.x,e.y); } return e; }
+  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; if(S.lanes)this.enemies?.children?.iterate?.(e=>{ if(e&&e._lanePath){ e._lanePath=null; e._goTo=null; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
+  sigSpawnAt(x,y,elite){ const S0=this._sig; this._sigForce=!!(S0&&['frozenPantry','hungersMouth','creepingRoots'].includes(S0.type)); let e; try{ e=elite?this.spawnElite?.(false,true):this.spawnEnemy?.('basic'); }finally{ this._sigForce=false; } if(e){ const lim=WORLD/2-120; e.setPosition(Phaser.Math.Clamp(x,-lim,lim),Phaser.Math.Clamp(y,-lim,lim)); this.vfxSpawnPoof?.(e.x,e.y); } return e; }
   sigSetup(o,type,p){ const si=this.stageIndex||0,c=o.color; this._sig={type,objs:[]}; const S=this._sig; if(!this.objNodeG){ this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040); this.camWorld(this.objNodeG); }
     if(type==='seedRift'){ const q=this.objectivePosition(0,1,220,330); Object.assign(S,{x:q.x,y:q.y,R:190,life:16,spawn:0}); o.target=18+Math.min(6,si-10>0?si-10:0); o.desc='Defeat '+o.target+' enemies inside the rift · each kill = +1.5s';
       S.ring=this.sigAdd(this.add.circle(q.x,q.y,S.R,0x6a2bd8,.16).setStrokeStyle(5,0xb88cff,.9).setDepth(q.y-3)); S.core=this.sigText(q.x,q.y,'🌀',40); this.tweens.add({targets:S.core,rotation:TAU,duration:2400,repeat:-1}); }
     else if(type==='shakeTrees'){ o.target=3; S.trees=[]; for(let i=0;i<3;i++){ const q=this.objectivePosition(i,3,200,360),t=this.sigText(q.x,q.y-20,'🌳',54),ring=this.sigAdd(this.add.circle(q.x,q.y+10,92,c,.08).setStrokeStyle(3,c,.6).setDepth(q.y-2)); S.trees.push({x:q.x,y:q.y,t,ring,pc:0,done:false,ambush:Math.random()<.34}); } }
     else if(type==='mirrorPath'){ const cq=this.objectivePosition(0,1,140,220); S.cx=cq.x; S.cy=cq.y; S.crystal=this.sigText(cq.x,cq.y-16,'💎',46); S.mirrors=[]; o.target=3; for(let i=0;i<3;i++){ const a=i/3*TAU+Math.random()*.6,r=230+Math.random()*80,x=Phaser.Math.Clamp(cq.x+Math.cos(a)*r,-WORLD/2+130,WORLD/2-130),y=Phaser.Math.Clamp(cq.y+Math.sin(a)*r,-WORLD/2+130,WORLD/2-130); S.mirrors.push({x,y,pc:0,lit:false,t:this.sigText(x,y-14,'🪞',40),ring:this.sigAdd(this.add.circle(x,y+8,84,0x9fe0ff,.08).setStrokeStyle(3,0x9fe0ff,.6).setDepth(y-2))}); } S.beam=this.sigAdd(this.add.graphics().setDepth(90030)); }
     else if(type==='vaultAltar'||type==='ultimatum'){ this.ultSetup(o,S,type==='ultimatum'?4:2); }
-    else if(type==='frozenPantry'){ this.fpSetup(o,S); }   /* v8.1.80 เจ้าของ: Ultimatum แบบ PoE · Vault Altar = ฉบับย่อ 2 รอบ */
+    else if(type==='frozenPantry'){ this.fpSetup(o,S); }
+    else if(type==='hungersMouth'){ this.hmSetup(o,S); }
+    else if(type==='creepingRoots'){ this.crSetup(o,S); }   /* v8.1.80 เจ้าของ: Ultimatum แบบ PoE · Vault Altar = ฉบับย่อ 2 รอบ */
     else if(type==='lastLight'){ o.target=Math.max(36,Math.round((p.dur||50)*.8)); o.desc='Keep a lantern burning for '+o.target+'s · stand close to rekindle'; S.lamps=[]; for(let i=0;i<3;i++){ const q=this.objectivePosition(i,3,170,280); S.lamps.push({x:q.x,y:q.y,hp:220,maxhp:220,alive:true,t:this.sigText(q.x,q.y-16,'🏮',40),ring:this.sigAdd(this.add.circle(q.x,q.y+8,120,0xffb347,.08).setStrokeStyle(3,0xffb347,.6).setDepth(q.y-2))}); } } }
   /* ===== v8.1.81 Frozen Pantry (League → Legion ปรับเข้า lore) — The Hunger แช่แข็งโมจิไว้เป็นเชื้อเพลิง (คุกน้ำตาล C1-4)
      เดินไปเปิดโหลน้ำตาล → รูปปั้นโมจิแช่แข็งรอบโหล · ระบบยิงอัตโนมัติไม่เล็งรูปปั้น · ผู้เล่นเดินเข้าใกล้ = วงเติมสีรอบตัว → สีเต็ม = ตื่นมาสู้
@@ -15742,6 +15750,47 @@ class Game extends Phaser.Scene {
     if(left<=0){ S.aura?.setVisible(false); this.completeWaveObjective(); } }
   fpOnKill(e,o,S){ const tok=e._fpTok; e._fpTok=0; if(!o||o.done||!S||S.type!=='frozenPantry')return false; const q=(S.st||[]).find(x=>x.tok===tok&&x.state==='awake'); if(!q)return false; this.fpResolve(q,'done');
     if(q.chest){ const si=this.stageIndex||0,su=Math.round((5+si*1.4)*(q.gen?2:1)); this.sugarStage+=su; this.sugarRun+=su; const L0=this._lootAt; this._lootAt={x:e.x,y:e.y}; try{ this.missionLootBurst?.({type:'tree',noCur:true,noHold:true},su); }finally{ this._lootAt=L0; } } return true; }
+  /* ===== v8.1.82 Hunger's Mouth (League → Breach · ปากของ The Hunger โผล่จากท่อ C1-2)
+     วงหดเองตลอด · ฆ่าในวง = วงขยาย + ใส่ของลงกอง · วงปิดเข้ากลาง = กองระเบิดเป็นรางวัล · แบบเต็ม: หดเร็วกว่า ใหญ่ได้มากกว่า + บอส "Tongue of the Hunger" ===== */
+  hmSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,200,300); Object.assign(S,{x:q.x,y:q.y,full,R:220,Rmax:full?440:340,shrink:full?15:10,cap:full?55:40,pot:0,spawn:1,tongue:full?18:-1});
+    o.target=full?30:16; o.desc='Fight inside the mouth — kills widen it and feed the pot · when it snaps shut, the pot bursts out as loot';
+    S.ring=this.sigAdd(this.add.circle(q.x,q.y,S.R,0xd95cff,.12).setStrokeStyle(6,0xff7ad9,.9).setDepth(q.y-3)); S.core=this.sigText(q.x,q.y,'👄',44); S.potT=this.sigAdd(this.add.text(q.x,q.y+38,'🍬 0',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'18px',color:'#ffe6f6',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(q.y+6)); }
+  hmTick(dt,o,S){ const g=this.objNodeG; S.t=(S.t||0)+dt; const late=S.t>S.cap*.8?2.2:1; S.R=Math.max(0,S.R-S.shrink*late*dt); const R=Math.max(40,S.R);
+    S.ring.setRadius(R); S.ring.setFillStyle(0xd95cff,this.sigNear(S.x,S.y,R)?.2:.1); S.core.setScale(1+.08*Math.sin(S.t*6));
+    S.spawn-=dt; if(S.spawn<=0){ S.spawn=S.full?.8:1.1; const n=1+Math.floor(R/220); for(let k=0;k<n;k++){ const a=Math.random()*TAU; this.sigSpawnAt(S.x+Math.cos(a)*R*.9,S.y+Math.sin(a)*R*.9); } }
+    if(S.tongue>0&&S.t>=S.tongue){ S.tongue=-1; const e=this.sigSpawnAt(S.x,S.y,true); if(e){ e._hmTongue=true; if(e.setScale)e.setScale((e.baseScale||e.scaleX||1)*1.35); this.showBanner?.('👅 Tongue of the Hunger','It lashes out of the mouth — beat it for a huge pot bonus',1300); } }
+    o.progress=Math.min(o.target,S.pot); g?.clear(); const f=Math.max(0,Math.min(1,S.R/S.Rmax)); g?.fillStyle(0x190b24,.8).fillRoundedRect(S.x-50,S.y-R-24,100,8,4).fillStyle(0xff7ad9,.95).fillRoundedRect(S.x-48,S.y-R-22,96*f,4,2);
+    if(S.R<=40||S.t>=S.cap){ this.hmBurst(o,S); } }
+  hmOnKill(e,o,S){ if(!e||e.isBoss)return; if(!this.sigNear(S.x,S.y,Math.max(40,S.R)+30)||this.dist(e.x,e.y,S.x,S.y)>Math.max(40,S.R)+300)return;   /* ยิงอัตโนมัติฆ่าไกล → นับเมื่อผู้เล่นยืนในปาก */ const big=e._hmTongue?12:e.isElite||e.isMini?3:1; e._hmTongue=false;
+    S.pot+=big; S.R=Math.min(S.Rmax,S.R+(big>1?44:16)); S.potT?.setText('🍬 '+S.pot); }
+  hmBurst(o,S){ if(o.done)return; const si=this.stageIndex||0,su=Math.max(6,Math.round(S.pot*(.7+si*.2)*(S.full?1.3:1))); this.screenFlash?.(0xff9ee0,.25,240); this.screenShake?.(220,.01); this.vfxHitRing?.(S.x,S.y,0xff7ad9,true);
+    this.floatText?.(S.x,S.y-60,'👄 The mouth snaps shut!',0xff9ee0); this.sugarStage+=su; this.sugarRun+=su; const L0=this._lootAt; this._lootAt={x:S.x,y:S.y}; try{ this.missionLootBurst?.({type:'tree',noCur:true,noHold:true},su); }finally{ this._lootAt=L0; } S.ring.setVisible(false); this.completeWaveObjective(); }
+  /* ===== v8.1.82 Creeping Roots (League → Blight · รากของ The Hunger เลื้อยมาดูดดอกความทรงจำ C2-3 · แทน Defend Nectar)
+     รากเป็นเส้นทาง (เห็นล่วงหน้า) · มอนเดินตามเส้นเข้าหาดอก (ไม่ไล่ผู้เล่น) · ไม่มีป้อม · ยืนบนรากแม่ปลายเส้น 2.2s = ปิดเส้น · ดอกล้ม = เวลา −20% ไม่เสียเลือดผู้เล่น
+     แบบเบา: 2 เส้น · แบบเต็ม: 3 เส้น + แตกกิ่งเส้นที่ 4 ที่ 18s · ปิดครบทุกเส้น = จบก่อนเวลา + รางวัลพิเศษ ===== */
+  crLane(S,a){ const L0=560+Math.random()*60,pts=[],lim=WORLD/2-120; for(let k=0;k<=4;k++){ const r=L0*(1-k/4),w=k>0&&k<4?(Math.random()-.5)*160:0,x=S.x+Math.cos(a)*r+Math.cos(a+Math.PI/2)*w,y=S.y+Math.sin(a)*r+Math.sin(a+Math.PI/2)*w; pts.push({x:Phaser.Math.Clamp(x,-lim,lim),y:Phaser.Math.Clamp(y,-lim,lim)}); }
+    pts[4]={x:S.x,y:S.y}; const m=pts[0]; return {pts,open:true,pc:0,spawn:1+Math.random(),t:this.sigText(m.x,m.y-12,'🌱',50),ring:this.sigAdd(this.add.circle(m.x,m.y+6,84,0xb36bff,.1).setStrokeStyle(3,0xb36bff,.7).setDepth(m.y-2))}; }
+  crDraw(S){ const G=S.laneG; if(!G)return; G.clear(); for(const L of S.lanes){ G.lineStyle(L.open?14:8,L.open?0x7a3dbf:0x5a5560,L.open?.38:.18); G.beginPath(); G.moveTo(L.pts[0].x,L.pts[0].y); for(let k=1;k<L.pts.length;k++)G.lineTo(L.pts[k].x,L.pts[k].y); G.strokePath(); if(L.open){ G.fillStyle(0xd9a6ff,.5); for(let k=1;k<4;k++)G.fillCircle(L.pts[k].x,L.pts[k].y,7); } } }
+  crSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,120,200); Object.assign(S,{x:q.x,y:q.y,full,hp:300,maxhp:300,lanes:[],branch:full?18:-1});
+    o.target=full?48:38; o.desc='Roots crawl toward the nectar flower · stand on each 🌱 root mother to cut its path · hold until the timer ends';
+    const tex=this.textures?.exists?.('objective_nectar_flower'); S.flower=tex?this.sigAdd(this.add.image(q.x,q.y,'objective_nectar_flower').setScale(.6).setDepth(q.y+2)):this.sigText(q.x,q.y-10,'🌺',48);
+    S.laneG=this.sigAdd(this.add.graphics().setDepth(q.y-40)); const n=full?3:2,a0=Math.random()*TAU; for(let i=0;i<n;i++)S.lanes.push(this.crLane(S,a0+i/n*TAU+(Math.random()-.5)*.5)); this.crDraw(S);
+    this.showBanner?.('🌱 Creeping Roots','The roots crawl toward the flower — cut them at the root mother',1500); }
+  crTick(dt,o,S){ const g=this.objNodeG; S.t=(S.t||0)+dt;
+    if(S.branch>0&&S.t>=S.branch){ S.branch=-1; const a=Math.atan2(S.lanes[0].pts[0].y-S.y,S.lanes[0].pts[0].x-S.x)+Math.PI*(.8+Math.random()*.4); S.lanes.push(this.crLane(S,a)); this.crDraw(S); this.showBanner?.('🌱 A new root splits off!','Another path is crawling in',1100); }
+    g?.clear(); let open=0;
+    for(const L of S.lanes){ if(!L.open)continue; open++; const m=L.pts[0],near=this.sigNear(m.x,m.y,90); L.pc=Math.max(0,Math.min(2.2,L.pc+(near?dt:-dt*.5))); L.ring.setFillStyle(0xb36bff,near?.24:.1);
+      if(L.pc>0){ g?.lineStyle(7,0xffffff,.95); g?.beginPath(); g?.arc(m.x,m.y+6,78,-Math.PI/2,-Math.PI/2+TAU*L.pc/2.2,false); g?.strokePath(); }
+      if(L.pc>=2.2){ L.open=false; open--; L.t.setAlpha(.35); L.ring.setVisible(false); this.crDraw(S); this.vfxHitRing?.(m.x,m.y,0xd9a6ff,true); this.floatText?.(m.x,m.y-60,'✂️ Root cut!',0xd9a6ff); continue; }
+      L.spawn-=dt; if(L.spawn<=0){ L.spawn=S.full?2:2.6; const e=this.sigSpawnAt(m.x+(Math.random()-.5)*40,m.y+(Math.random()-.5)*40); if(e){ e._lanePath=L; e._laneI=1; e._goTo=L.pts[1]; } } }
+    let att=0; this.enemies?.children?.iterate?.(e=>{ if(!e||!e.active)return; if(e._lanePath){ if(!S.lanes.includes(e._lanePath)){ e._lanePath=null; e._goTo=null; return; } if(this.dist(e.x,e.y,e._goTo.x,e._goTo.y)<40&&e._laneI<4){ e._laneI++; e._goTo=e._lanePath.pts[e._laneI]; } }
+      if(!e.isBoss&&this.dist(e.x,e.y,S.x,S.y)<120)att++; });
+    S.hp-=att*(S.full?3:2.4)*dt; if(this.sigNear(S.x,S.y,135))S.hp=Math.min(S.maxhp,S.hp+16*dt);
+    if(S.hp<=0){ S.hp=S.maxhp*.6; o.progress=Math.max(0,o.progress-o.target*.2); this.objBonusFail?.(); this.screenShake?.(120,.006); this.showBanner?.('🥀 The flower wilted · timer -20%','It sprouts again — keep the roots away!',1400); }
+    const f=S.hp/S.maxhp; g?.fillStyle(0x190b24,.78).fillRoundedRect(S.x-36,S.y-78,72,8,4).fillStyle(f<.35?0xff5f7a:0xffc95c,.95).fillRoundedRect(S.x-34,S.y-76,68*f,4,2); S.flower?.setTint?.(att?0xff8a9c:0xffffff);
+    o.progress=Math.min(o.target,o.progress+dt);
+    if(open<=0&&!S.allCut){ S.allCut=true; const si=this.stageIndex||0,su=Math.round(10+si*1.6); this.sugarStage+=su; this.sugarRun+=su; const L0=this._lootAt; this._lootAt={x:S.x,y:S.y}; try{ this.missionLootBurst?.({type:'tree',noCur:true,noHold:true},su); }finally{ this._lootAt=L0; } this.floatText?.(S.x,S.y-96,'🌺 Every root cut!',0xffc95c); o.progress=o.target; }
+    if(o.progress>=o.target)this.completeWaveObjective(); }
   sigNear(x,y,R){ const p=this.player; return !!p&&this.dist(p.x,p.y,x,y)<R; }
   sigTick(dt,o){ const S=this._sig; if(!S||S.type!==o.type||this.state!=='play')return; const g=this.objNodeG,si=this.stageIndex||0; S.t=(S.t||0)+dt;
     if(o.type==='seedRift'){ S.life-=dt; S.spawn-=dt; const R=Math.max(60,S.R*Math.min(1,.45+S.life/16)); S.ring.setRadius(R); S.ring.setFillStyle(0x6a2bd8,this.sigNear(S.x,S.y,R)?.24:.12); S.curR=R;
@@ -15759,6 +15808,8 @@ class Game extends Phaser.Scene {
         this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,S.cx,S.cy)<R)this.damage(e,e.isMini||e.isElite?dmg*1.5:dmg*3,e.x,e.y); }); this.completeWaveObjective(); } }
     else if(o.type==='vaultAltar'||o.type==='ultimatum'){ this.ultTick(dt,o,S); }
     else if(o.type==='frozenPantry'){ this.fpTick(dt,o,S); }
+    else if(o.type==='hungersMouth'){ this.hmTick(dt,o,S); }
+    else if(o.type==='creepingRoots'){ this.crTick(dt,o,S); }
     else if(o.type==='lastLight'){ let alive=0; g?.clear(); for(const L of S.lamps){ if(!L.alive)continue; alive++; let att=0; this.enemies.children.iterate(e=>{ if(e&&e.active&&!e.isBoss&&this.dist(e.x,e.y,L.x,L.y)<130)att++; }); L.hp-=att*(2.2+si*.15)*dt; if(this.sigNear(L.x,L.y,125))L.hp=Math.min(L.maxhp,L.hp+16*dt);
         if(L.hp<=0){ L.alive=false; alive--; L.t.setAlpha(.3); L.ring.setVisible(false); this.objBonusFail?.(); this.floatText?.(L.x,L.y-60,'🏮 Lantern out!',0xff9b6a); continue; }
         const w=70,f=L.hp/L.maxhp; g?.fillStyle(0x190b24,.78).fillRoundedRect(L.x-w/2,L.y-70,w,8,4).fillStyle(f<.35?0xff5f7a:0xffb347,.95).fillRoundedRect(L.x-w/2+2,L.y-68,(w-4)*f,4,2); L.t.setScale(1+.04*Math.sin(S.t*6+L.x)); }
@@ -15800,7 +15851,7 @@ class Game extends Phaser.Scene {
     if(pot>0){ this.sugarStage+=pot; this.sugarRun+=pot; const L0=this._lootAt; this._lootAt={x:S.x,y:S.y}; try{ this.missionLootBurst?.({type:'trial',noCur:how==='fail'},pot); }finally{ this._lootAt=L0; } }
     if(this.spawnLoot)for(let k=0;k<boxes;k++){ this._lootMinRare=true; try{ const a=k/Math.max(1,boxes)*TAU,g=this.spawnLoot(S.x+Math.cos(a)*90,S.y+Math.sin(a)*70,how==='clear'&&k===boxes-1?3:2); if(g){ if(how==='clear'&&k===boxes-1&&g.lootTier!=='legend')g.lootTier='epic'; this.lootHold?.(g,1900); } } finally{ this._lootMinRare=false; } }
     o.progress=o.target; o._ultResult=how; if(!o.done)this.completeWaveObjective(); }
-  sigOnKill(e){ const o=this.waveObjective,S=this._sig; if(e&&e._fpTok&&this.fpOnKill(e,o,S))return; if(o&&!o.done&&S&&(o.type==='ultimatum'||o.type==='vaultAltar')&&S.phase==='fight'&&S.goal==='slay'&&e&&!e.isBoss){ o.progress=Math.min(o.target,o.progress+(e.isElite?2:1)); return; } if(!o||o.done||!S||o.type!=='seedRift'||!e||e.isBoss)return; if(this.dist(e.x,e.y,S.x,S.y)>(S.curR||S.R))return; o.progress=Math.min(o.target,o.progress+1); S.life=Math.min(16,S.life+1.5); if(o.progress>=o.target)this.time?.delayedCall?.(0,()=>{ if(this.waveObjective===o&&!o.done)this.completeWaveObjective(); }); }
+  sigOnKill(e){ const o=this.waveObjective,S=this._sig; if(e&&e._fpTok&&this.fpOnKill(e,o,S))return; if(e&&e._lanePath){ e._lanePath=null; e._goTo=null; } if(o&&!o.done&&S&&o.type==='hungersMouth'){ this.hmOnKill(e,o,S); return; } if(o&&!o.done&&S&&(o.type==='ultimatum'||o.type==='vaultAltar')&&S.phase==='fight'&&S.goal==='slay'&&e&&!e.isBoss){ o.progress=Math.min(o.target,o.progress+(e.isElite?2:1)); return; } if(!o||o.done||!S||o.type!=='seedRift'||!e||e.isBoss)return; if(this.dist(e.x,e.y,S.x,S.y)>(S.curR||S.R))return; o.progress=Math.min(o.target,o.progress+1); S.life=Math.min(16,S.life+1.5); if(o.progress>=o.target)this.time?.delayedCall?.(0,()=>{ if(this.waveObjective===o&&!o.done)this.completeWaveObjective(); }); }
   /* v8.1.77 เจ้าของ: Survive มีอะไรให้ทำ → กล่องเสบียงตก 2 ครั้ง (30% / 65% ของเวลา) วิ่งไปเก็บ Sugar (+หัวใจบางครั้ง) */
   surviveSupply(o){ if(this._inTutorial||this.recipeMode||!this.player||!this.loots)return; const at=[.3,.65],k=o._sup||0; if(k>=at.length||o.progress<o.target*at[k])return; o._sup=k+1;
     const P=this.objectivePosition(0,1,150,240),gift=this.camWorld(this.add.image(P.x,P.y-320,'gift').setScale(.8).setDepth(P.y+6)),sh=this.camWorld(this.add.ellipse(P.x,P.y+10,16,6,0x000000,.35).setDepth(P.y-1));
@@ -15860,7 +15911,7 @@ class Game extends Phaser.Scene {
     const sz=16,gap=2,iw=4*sz+3*gap;T.setFontSize(11).setWordWrapWidth(this.W-54-iw-6);const total=iw+6+T.width,x0=this.W/2-total/2,cy=T.y+T.height/2;this._seasonIconsOn=true;T.setOrigin(0,0).setX(x0+iw+6);
     this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   /* v8.1.50 เจ้าของ: เป้ารองต่อภารกิจ (แบบ Deep Rock) · ทำได้ = EXP +50% ของรางวัลคลื่น + Sugar +50% · ไม่มีในบทสอน/Fill */
-  objBonusInit(o,planned){ const B={survive:['Take 5 hits or fewer','hits',5],hunt:['Catch them before Overtime','overtime'],purge:['Keep the Wisp lit','wisp'],capture:['Never bleed outside the ring','bleed'],cleanAir:['Stay in clean air (3s outside max)','out',3],defendNectar:['Don’t lose a flower','flower'],seasonCycle:['Take 8 hits or fewer','hits',8],breakRoots:['Take 6 hits or fewer','hits',6],seedRift:['Never let the rift close','rift'],shakeTrees:['Take 6 hits or fewer','hits',6],mirrorPath:['Take 6 hits or fewer','hits',6],vaultAltar:['Take 8 hits or fewer','hits',8],ultimatum:['Take 12 hits or fewer','hits',12],lastLight:['Keep all 3 lanterns lit','lantern'],frozenPantry:['Take 6 hits or fewer','hits',6]}[o.type];
+  objBonusInit(o,planned){ const B={survive:['Take 5 hits or fewer','hits',5],hunt:['Catch them before Overtime','overtime'],purge:['Keep the Wisp lit','wisp'],capture:['Never bleed outside the ring','bleed'],cleanAir:['Stay in clean air (3s outside max)','out',3],defendNectar:['Don’t lose a flower','flower'],seasonCycle:['Take 8 hits or fewer','hits',8],breakRoots:['Take 6 hits or fewer','hits',6],seedRift:['Never let the rift close','rift'],shakeTrees:['Take 6 hits or fewer','hits',6],mirrorPath:['Take 6 hits or fewer','hits',6],vaultAltar:['Take 8 hits or fewer','hits',8],ultimatum:['Take 12 hits or fewer','hits',12],lastLight:['Keep all 3 lanterns lit','lantern'],frozenPantry:['Take 6 hits or fewer','hits',6],hungersMouth:['Take 6 hits or fewer','hits',6],creepingRoots:['Don’t lose the flower','flower']}[o.type];
     if(!B||planned||this._inTutorial||this.recipeMode||this.riftMode){o.bonus=null;return;} o.bonus={label:B[0],kind:B[1],lim:B[2]||0,n:0,ok:true}; this.time?.delayedCall?.(1900,()=>{ if(this.waveObjective===o&&o.bonus?.ok)this.floatText?.(this.player.x,this.player.y-90,'⭐ Bonus: '+o.bonus.label,0xffe08a); }); }
   objBonusFail(){ const b=this.waveObjective?.bonus; if(!b||!b.ok||this.waveObjective.done)return; b.ok=false; Sfx.orderCue?.('out_of_zone',.18,.8); this.floatText?.(this.player.x,this.player.y-80,'☆ Bonus lost',0xb8a8c8); }
   objBonusHit(){ const b=this.waveObjective?.bonus; if(!b||!b.ok||b.kind!=='hits')return; b.n++; if(b.n>b.lim)this.objBonusFail(); }
@@ -23142,12 +23193,12 @@ class Game extends Phaser.Scene {
       if(e.knock>0){ e.knock-=dt; return; }
       { // v5.50: มอนที่หลุดไกล → ย้ายมาเกิดใกล้ผู้เล่นใหม่ · มอนไกลคิดทิศทุก 4 เฟรม
         const fx=e.x-this.player.x,fy=e.y-this.player.y,fd2=fx*fx+fy*fy,view=Math.max(this.W,this.H)/(this.viewZoom||1);
-        if(fd2>view*view*1.9&&!e.isBoss&&!e.isMini&&!e.isElite&&!e._objectiveMark&&!e._fleeing&&!e._huntFlee&&!e._wispRaider){
+        if(fd2>view*view*1.9&&!e.isBoss&&!e.isMini&&!e.isElite&&!e._objectiveMark&&!e._fleeing&&!e._huntFlee&&!e._wispRaider&&!e._goTo){
           const a=Math.random()*TAU,r=view*0.62;e.setPosition(...(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(a)*r,this.player.y+Math.sin(a)*r));e.setVelocity(0,0);return; }
         if(fd2>view*view*0.5&&!e.isBoss&&!e.isMini){ e._aiSlot=e._aiSlot??((Math.random()*4)|0); if((this.game.loop.frame+e._aiSlot)&3)return; }
       }
       if(e._decoyT>0)e._decoyT-=dt;
-      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._fleeing||e._huntFlee){tx=e.x*2-this.player.x;ty=e.y*2-this.player.y;}if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}
+      let tx=e._decoyT>0?e._decoyX:this.player.x,ty=e._decoyT>0?e._decoyY:this.player.y;if(e._fleeing||e._huntFlee){tx=e.x*2-this.player.x;ty=e.y*2-this.player.y;}if(e._wispRaider&&this._wisp&&this._wisp.active){tx=this._wisp.x;ty=this._wisp.y;}if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}
       if(this.stageIndex===7&&this.waveObjective&&this.waveObjective.type==='defendNectar'&&['drone','honeyBomb','dartwing'].includes(e.nectarRole)&&this._nectarFlowers){let target=null,bd=Infinity;for(const f of this._nectarFlowers){if(!f.alive)continue;const d=this.dist(e.x,e.y,f.x,f.y);if(d<bd){bd=d;target=f;}}if(target){tx=target.x;ty=target.y;}}
       if(this.character==='yuzu'){const friend=this.yuzuTaunt(e);if(friend){tx=friend.x;ty=friend.y;}}
       const spd=e.spd*(this.character==='yuzu'?this.yuzuSlow(e):1);
