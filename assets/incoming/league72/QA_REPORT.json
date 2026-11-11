@@ -1,0 +1,23 @@
+[
+  {"key": "fp_jar", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "fp_statues", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "fp_shatter", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_hand", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_rim", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_breach_chest", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_splinter", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ic_hunger_splinter", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "ic_hunger_stone", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_hand_lord", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_collapse", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hm_breachlord", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "cr_root_mother", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "cr_root_vine", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hh_herald", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "hh_gate", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gp_pot", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gp_ingredients", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "gp_recipe_card", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "currency_honey_drop", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "currency_recipe_ink", "result": "pass", "reason": "mechanical checks passed"}
+]

@@ -85,5 +85,10 @@
 - สกุลเงิน: `CURRENCY` asset `currency_honey_drop` / `currency_recipe_ink` (คีย์ตั้งไว้แล้ว ตอนนี้ fallback `prize_currency` + tint) · Berry Jam → `currency_wild_jam`, Star Sugar → `currency_wish_candy` (ของเดิม ผูกได้ทันที)
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด)
+- วันที่ส่ง 11 พ.ย. 2026
+- ส่งครบ 21 ไฟล์ที่ `assets/incoming/league72/`
+- ไฟล์ที่ขาด 0
+
+`fp_jar.png`, `fp_statues.png`, `fp_shatter.png`, `hm_hand.png`, `hm_rim.png`, `hm_breach_chest.png`, `hm_splinter.png`, `ic_hunger_splinter.png`, `ic_hunger_stone.png`, `hm_hand_lord.png`, `hm_collapse.png`, `hm_breachlord.png`, `cr_root_mother.png`, `cr_root_vine.png`, `hh_herald.png`, `hh_gate.png`, `gp_pot.png`, `gp_ingredients.png`, `gp_recipe_card.png`, `currency_honey_drop.png`, `currency_recipe_ink.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`center`/`feet`), `background` (`transparent`/`black`), `nineSlice` [l,t,r,b] (เฉพาะ gp_recipe_card), `tileable` (cr_root_vine)
