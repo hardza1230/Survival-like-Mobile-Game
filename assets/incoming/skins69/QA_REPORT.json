@@ -380,14 +380,14 @@
     {
       "requested": "mint/char_mint_gale__snow.png",
       "candidate": "mint/candidates/char_mint_gale__snow.png",
-      "bytes": 206136,
-      "sha256": "6e27df6468ca7be597ab5408413fe5f5507cac5af917f947574e2be16d6ddf8b",
+      "bytes": 209288,
+      "sha256": "675a1dac7762e96b35820bec9ab4346d61ad53f027cef79d9be257e93566ee5e",
       "width": 1024,
       "height": 128,
       "mode": "RGBA",
       "state": "not_accepted",
       "issues": [
-        "frame pose, weapon/foot anchors and animation continuity require correction or review against source"
+        "Redrawn from original pose sequence and original character card; individual frames separated at uniform scale. Effects, scale, poses and anchor accuracy still require review."
       ]
     },
     {
