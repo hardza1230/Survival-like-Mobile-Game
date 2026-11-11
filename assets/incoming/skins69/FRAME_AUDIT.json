@@ -13,24 +13,24 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        6444,
-        6432,
-        9341,
-        8399,
-        6129,
-        6783,
-        7406,
-        7044
+        5981,
+        5958,
+        8634,
+        7780,
+        5693,
+        6272,
+        6863,
+        6497
       ],
       "corner_pixels_alpha_ge_16": [
         0,
         0,
-        28,
+        6,
         0,
         0,
         0,
-        51,
-        7
+        46,
+        0
       ],
       "flags": [],
       "source": "assets/char_momo_fighter_sheet.png",
@@ -44,11 +44,16 @@
         51,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 7,
-          "max_boundary_shift_px": 18
-        }
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -194,14 +199,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4118,
-        4601,
-        4284,
-        5147,
-        6090,
-        5194,
-        4813,
-        4322
+        4258,
+        4761,
+        4435,
+        5318,
+        6273,
+        5326,
+        4934,
+        4448
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -358,24 +363,24 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        8611,
-        8684,
-        7895,
-        8932,
-        8354,
-        6757,
-        7064,
-        9261
+        7060,
+        7086,
+        6414,
+        7420,
+        7198,
+        6070,
+        5688,
+        7774
       ],
       "corner_pixels_alpha_ge_16": [
         0,
         0,
-        36,
         0,
         0,
         0,
-        54,
-        53
+        0,
+        0,
+        0
       ],
       "flags": [],
       "source": "assets/char_mint_frostleaf_sheet.png",
@@ -392,8 +397,18 @@
       "bbox_threshold_64_review_flags": [
         {
           "frame": 5,
-          "max_boundary_shift_px": 24
+          "max_boundary_shift_px": 23
         }
+      ],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -498,14 +513,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4403,
-        5149,
-        5009,
-        5463,
-        6519,
-        8035,
-        5263,
-        4291
+        4656,
+        5681,
+        4852,
+        5941,
+        6472,
+        7697,
+        5393,
+        4716
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -532,32 +547,38 @@
       "bbox_threshold_64_review_flags": [
         {
           "frame": 0,
-          "max_boundary_shift_px": 31
+          "max_boundary_shift_px": 19
         },
         {
           "frame": 1,
-          "max_boundary_shift_px": 21
+          "max_boundary_shift_px": 23
         },
         {
           "frame": 2,
-          "max_boundary_shift_px": 31
+          "max_boundary_shift_px": 20
         },
         {
           "frame": 3,
-          "max_boundary_shift_px": 18
-        },
-        {
-          "frame": 5,
-          "max_boundary_shift_px": 14
+          "max_boundary_shift_px": 19
         },
         {
           "frame": 6,
-          "max_boundary_shift_px": 16
+          "max_boundary_shift_px": 15
         },
         {
           "frame": 7,
-          "max_boundary_shift_px": 16
+          "max_boundary_shift_px": 20
         }
+      ],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -568,14 +589,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        6674,
-        6749,
-        6654,
-        6809,
-        6657,
-        6575,
-        6723,
-        6625
+        6089,
+        6159,
+        6053,
+        6221,
+        6090,
+        5977,
+        6139,
+        6050
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -599,7 +620,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "mint/char_mint_impaler_charge__snow.png",
@@ -609,14 +640,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        7015,
-        7045,
-        7034,
-        7095,
-        7162,
-        7134,
-        7169,
-        7211
+        6205,
+        6237,
+        6247,
+        6270,
+        6334,
+        6333,
+        6345,
+        6370
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -640,7 +671,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "mint/char_mint_impaler_move__snow.png",
@@ -650,14 +691,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        6897,
-        6643,
-        6808,
-        6955,
-        7006,
-        6983,
-        6934,
-        6939
+        6202,
+        5948,
+        6097,
+        6290,
+        6309,
+        6314,
+        6235,
+        6298
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -681,7 +722,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "mint/char_mint_impaler_release__snow.png",
@@ -732,14 +783,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        6515,
-        6467,
-        6574,
-        6459,
-        6313,
-        6443,
-        6520,
-        6381
+        6033,
+        5978,
+        6055,
+        6007,
+        5843,
+        5936,
+        6039,
+        5930
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -763,7 +814,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "mint/char_mint_lance_charged__snow.png",
@@ -814,28 +875,26 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        8365,
-        8302,
-        8445,
-        9221,
-        7855,
-        6791,
-        7645,
-        8652
+        7694,
+        7628,
+        8615,
+        8369,
+        7235,
+        6135,
+        8071,
+        8643
       ],
       "corner_pixels_alpha_ge_16": [
         0,
         0,
-        97,
-        15,
         0,
         0,
-        238,
-        20
+        0,
+        0,
+        39,
+        0
       ],
-      "flags": [
-        "corner alpha coverage: possible background or clipping; compare against source"
-      ],
+      "flags": [],
       "source": "assets/char_cocoa_awakened_sheet.png",
       "source_corner_pixels_alpha_ge_16": [
         0,
@@ -848,7 +907,17 @@
         0
       ],
       "review_note": "Original also reaches corners in frames 2 and 6; new artwork has higher coverage there, so clipping is not established without visual frame review.",
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "cocoa/char_cocoa_run__chef.png",
@@ -1310,14 +1379,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        5301,
-        5408,
-        5452,
-        5595,
-        5634,
-        5562,
-        5458,
-        5244
+        3760,
+        3851,
+        3923,
+        3984,
+        3986,
+        3963,
+        3890,
+        3767
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1341,7 +1410,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "cocoa/char_cocoa_titan_motion823__chef.png",
@@ -1351,14 +1430,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        4761,
-        4278,
-        4942,
-        4828,
-        4879,
-        4918,
-        4540,
-        4855
+        3241,
+        3107,
+        3147,
+        3074,
+        3187,
+        3522,
+        3120,
+        3296
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1382,23 +1461,16 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 0,
-          "max_boundary_shift_px": 13
-        },
-        {
-          "frame": 1,
-          "max_boundary_shift_px": 16
-        },
-        {
-          "frame": 2,
-          "max_boundary_shift_px": 19
-        },
-        {
-          "frame": 3,
-          "max_boundary_shift_px": 16
-        }
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -1802,22 +1874,22 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        7079,
-        7174,
-        6851,
-        6905,
-        7341,
-        6095,
-        7978,
-        6783
+        5538,
+        5622,
+        5345,
+        5398,
+        6031,
+        4415,
+        6202,
+        5278
       ],
       "corner_pixels_alpha_ge_16": [
         0,
         0,
         0,
         0,
-        44,
-        12,
+        4,
+        0,
         0,
         0
       ],
@@ -1833,7 +1905,30 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 17
+        },
+        {
+          "frame": 6,
+          "max_boundary_shift_px": 15
+        },
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 14
+        }
+      ],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "taro/char_taro_plasma_motion823__star.png",
@@ -1930,18 +2025,18 @@
       ],
       "frame_count": 12,
       "opaque_pixels_per_frame": [
-        5747,
-        5852,
-        6062,
-        5991,
-        5761,
-        5850,
-        5938,
-        5815,
-        5832,
-        6469,
-        6498,
-        6281
+        7453,
+        7615,
+        7893,
+        7797,
+        7450,
+        7571,
+        7712,
+        7497,
+        7558,
+        8446,
+        8473,
+        8185
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -1973,15 +2068,20 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": [
-        {
-          "frame": 4,
-          "max_boundary_shift_px": 15
-        },
-        {
-          "frame": 7,
-          "max_boundary_shift_px": 15
-        }
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -1992,22 +2092,22 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        7159,
-        7917,
-        7200,
-        9745,
-        10461,
-        8041,
-        6658,
-        6581
+        5657,
+        6238,
+        5755,
+        7747,
+        8787,
+        5872,
+        5298,
+        5220
       ],
       "corner_pixels_alpha_ge_16": [
         0,
-        3,
-        3,
         0,
         0,
-        10,
+        0,
+        0,
+        0,
         0,
         0
       ],
@@ -2025,9 +2125,35 @@
       ],
       "bbox_threshold_64_review_flags": [
         {
+          "frame": 0,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 1,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 16
+        },
+        {
           "frame": 6,
-          "max_boundary_shift_px": 18
+          "max_boundary_shift_px": 29
+        },
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 20
         }
+      ],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -2038,14 +2164,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        8779,
-        8513,
-        8342,
-        8553,
-        8622,
-        8291,
-        8323,
-        8360
+        6084,
+        5910,
+        5775,
+        5939,
+        5972,
+        5727,
+        5779,
+        5813
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -2069,7 +2195,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "sesame/char_sesame__moon.png",
@@ -2079,14 +2215,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        7020,
-        6665,
-        6483,
-        7171,
-        8175,
-        6510,
-        6511,
-        5972
+        6320,
+        6041,
+        5873,
+        6524,
+        6487,
+        5760,
+        5797,
+        5188
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -2110,7 +2246,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "sesame/char_sesame_run__moon.png",
@@ -2173,14 +2319,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        8844,
-        7732,
-        7770,
-        7571,
-        8281,
-        6450,
-        8049,
-        9257
+        6186,
+        5239,
+        4765,
+        5923,
+        5711,
+        4417,
+        5534,
+        6376
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -2204,7 +2350,42 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [
+        {
+          "frame": 0,
+          "max_boundary_shift_px": 17
+        },
+        {
+          "frame": 1,
+          "max_boundary_shift_px": 13
+        },
+        {
+          "frame": 2,
+          "max_boundary_shift_px": 17
+        },
+        {
+          "frame": 4,
+          "max_boundary_shift_px": 14
+        },
+        {
+          "frame": 5,
+          "max_boundary_shift_px": 18
+        },
+        {
+          "frame": 7,
+          "max_boundary_shift_px": 18
+        }
+      ],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "file": "sesame/char_sesame_meteor_motion823__moon.png",
@@ -2214,14 +2395,14 @@
       ],
       "frame_count": 8,
       "opaque_pixels_per_frame": [
-        7224,
-        7086,
-        7141,
-        7199,
-        7165,
-        7077,
-        7079,
-        7028
+        6801,
+        6666,
+        6759,
+        6773,
+        6746,
+        6691,
+        6659,
+        6597
       ],
       "corner_pixels_alpha_ge_16": [
         0,
@@ -2245,7 +2426,17 @@
         0,
         0
       ],
-      "bbox_threshold_64_review_flags": []
+      "bbox_threshold_64_review_flags": [],
+      "bottom_edge_pixels_alpha_ge_64": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
     }
   ]
 }
