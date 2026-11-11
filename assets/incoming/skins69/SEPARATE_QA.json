@@ -1,0 +1,26 @@
+{
+  "description": "Automated frame separation trial, significant alpha only; visual review of all frames and effects required.",
+  "trials": [
+    {
+      "file": "momo/char_momo_dash__sakura.png",
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 8,
+      "scale": 0.293,
+      "column_separation": "4 distinct connected bands per row"
+    },
+    {
+      "file": "yuzu/char_yuzu_attack__summer.png",
+      "bbox_flags_after": 5,
+      "max_bbox_difference_after": 29,
+      "scale": 0.256,
+      "column_separation": "4 distinct connected bands per row"
+    },
+    {
+      "file": "sesame/char_sesame_attack__moon.png",
+      "bbox_flags_after": 6,
+      "max_bbox_difference_after": 18,
+      "scale": 0.239,
+      "column_separation": "4 distinct connected bands per row"
+    }
+  ]
+}

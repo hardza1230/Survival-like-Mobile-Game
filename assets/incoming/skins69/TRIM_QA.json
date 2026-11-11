@@ -1,0 +1,140 @@
+{
+  "description": "Trials retaining significant-alpha pixels; compare animation and actual anchors visually before acceptance.",
+  "trials": [
+    {
+      "file": "mint/char_mint_bloom_motion823__snow.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 6,
+      "scale": 0.446
+    },
+    {
+      "file": "mint/char_mint_impaler_charge__snow.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 8,
+      "scale": 0.444
+    },
+    {
+      "file": "mint/char_mint_impaler_move__snow.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 9,
+      "scale": 0.445
+    },
+    {
+      "file": "mint/char_mint_impaler_run_motion823__snow.png",
+      "bottom_clipped_frames_before": [
+        0,
+        2,
+        3,
+        4,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 7,
+      "scale": 0.453
+    },
+    {
+      "file": "cocoa/char_cocoa_rocket_motion823__chef.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 9,
+      "scale": 0.378
+    },
+    {
+      "file": "cocoa/char_cocoa_titan_motion823__chef.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 7,
+      "scale": 0.376
+    },
+    {
+      "file": "yuzu/char_yuzu_combo_motion823__summer.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 6,
+      "scale": 0.404
+    },
+    {
+      "file": "sesame/char_sesame_meteor_motion823__moon.png",
+      "bottom_clipped_frames_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bbox_flags_after": 0,
+      "max_bbox_difference_after": 12,
+      "scale": 0.458
+    },
+    {
+      "file": "mint/char_mint__snow.png",
+      "source_already_touches_bottom": true,
+      "note": "uniform scale, preserve significant alpha; compare with original; no visual acceptance"
+    },
+    {
+      "file": "cocoa/char_cocoa__chef.png",
+      "source_already_touches_bottom": true,
+      "note": "uniform scale, preserve significant alpha; compare with original; no visual acceptance"
+    }
+  ]
+}

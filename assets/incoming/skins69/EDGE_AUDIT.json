@@ -1,0 +1,56 @@
+{
+  "description": "Candidate strong-alpha border pixels compared with original; may reflect intentional effects, and does not prove clipping.",
+  "sheets": [
+    {
+      "file": "mint/char_mint_run__snow.png",
+      "edges": [
+        {
+          "frame": 5,
+          "edge": "left",
+          "original": 13,
+          "candidate": 17
+        },
+        {
+          "frame": 5,
+          "edge": "right",
+          "original": 7,
+          "candidate": 12
+        },
+        {
+          "frame": 6,
+          "edge": "left",
+          "original": 10,
+          "candidate": 14
+        },
+        {
+          "frame": 10,
+          "edge": "left",
+          "original": 0,
+          "candidate": 8
+        }
+      ]
+    },
+    {
+      "file": "mint/char_mint_impaler_release__snow.png",
+      "edges": [
+        {
+          "frame": 3,
+          "edge": "right",
+          "original": 0,
+          "candidate": 6
+        }
+      ]
+    },
+    {
+      "file": "cocoa/char_cocoa_run__chef.png",
+      "edges": [
+        {
+          "frame": 2,
+          "edge": "bottom",
+          "original": 5,
+          "candidate": 10
+        }
+      ]
+    }
+  ]
+}

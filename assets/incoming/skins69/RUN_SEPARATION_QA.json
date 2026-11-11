@@ -1,0 +1,41 @@
+{
+  "description": "Uniform-scale trial; inspect animation and individual poses.",
+  "trials": [
+    {
+      "file": "yuzu/char_yuzu_run__summer.png",
+      "bbox_diffs": [
+        5,
+        5,
+        5,
+        5,
+        4,
+        7,
+        7,
+        5,
+        4,
+        4,
+        7,
+        7
+      ],
+      "scale": 0.4025974025974026
+    },
+    {
+      "file": "cocoa/char_cocoa_run__chef.png",
+      "bbox_diffs": [
+        7,
+        6,
+        6,
+        6,
+        11,
+        11,
+        13,
+        7,
+        6,
+        8,
+        4,
+        5
+      ],
+      "scale": 0.36613050075872533
+    }
+  ]
+}

@@ -446,6 +446,10 @@
       "key": "mint_gale_v5",
       "path": "assets/char_mint_gale_sheet.png",
       "prompt": "Edit this exact 8-frame action sprite sheet. Replace only clothing using small ice-snow tiara and a modest white and ice-blue outfit, preserving her mint hair, original small spear and existing small snow effects. Match each input frame's pose, face, hair, weapon, body scale, position and timing exactly. Reproduce original VFX as they are, no enlarged effects, no added large ornaments or capes. Exactly 8 isolated sprites in one horizontal row, in the same order, with generous transparent background; no backdrop, no text or numbers. Chibi fantasy game art identical to original."
+    },
+    {
+      "key": "sesame_base_clean",
+      "prompt": "Remove all of the gray opaque haze/background from this exact 8-frame sprite sheet. Leave each character and each delicate gold magic symbol, pose, clothing, size and placement unchanged. Fully transparent alpha in every space around the sprites, with generous gaps between each frame; no gray cloud or ground. Do not add text, numbers or new poses."
     }
   ]
 }
