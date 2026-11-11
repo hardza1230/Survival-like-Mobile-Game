@@ -12,7 +12,9 @@
     "Shop icon atlas is 1536x256 RGBA with six transparent 256px cells, visually inspected at 90px on #261e30.",
     "Ten candidates were repacked to address strong-alpha bottom-edge truncation; two originals also touch the bottom edge. Faint-alpha edges and frame motion still require review.",
     "49 sheets compared against source alpha bounding boxes: 9 have one or more frame bounds differing by more than 12px. Bounds include changed costumes and effects, so this is a review flag, not proof of an anchor defect; remaining sheets are not automatically approved.",
-    "Edge audit: 3 sheets have extra strong-alpha pixels on frame borders compared with originals; inspect for clipping or effects."
+    "Edge audit: 3 sheets have extra strong-alpha pixels on frame borders compared with originals; inspect for clipping or effects.",
+    "Motion centroid audit: 2 sheets have a frame-relative centroid difference over 10px. Visual comparisons of the flagged frames show changed costume/VFX and do not establish anchor correctness or motion quality.",
+    "Single-frame ImageGen redraw trials for Mint base frame 6 and Sesame base frame 2 were rejected: the redraw changed weapon/limb pose or visual proportions instead of preserving the original; see single_frame_trial_compare.jpg. Existing candidates were retained."
   ],
   "missing_or_not_accepted": [
     "momo/card_momo_sakura.png",
@@ -873,5 +875,6 @@
     }
   ],
   "frame_audit": "FRAME_AUDIT.json",
-  "edge_audit": "EDGE_AUDIT.json"
+  "edge_audit": "EDGE_AUDIT.json",
+  "motion_audit": "MOTION_AUDIT.json"
 }

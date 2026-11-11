@@ -1,3 +1,11 @@
+# Current checkpoint — order 69 targeted frame trials (2026-11-11)
+
+Tested single-frame ImageGen edits for Mint base frame 6 and Sesame base frame 2 against source and current candidate. New renders changed limb/weapon pose or proportions and were rejected; comparison is single_frame_trial_compare.jpg. Frame-relative alpha-centroid audit has two review signals (MOTION_AUDIT.json); it does not verify landmarks or motion. Seven shared assets delivered and integrated separately; 61 hero/other assets remain candidates requiring exact pose/anchor/motion validation. No hero runtime integration or mobile test by this task.
+
+# Current checkpoint — order 69 relative motion audit (2026-11-11)
+
+Computed frame-relative alpha-centroid changes across 49 hero candidate sheets. Two sheets have >10px deviations in one frame (Mint base frame 6 and Sesame base frame 2); costume and effects influence centroids, so this is only a review signal. Visual comparison is in motion_flag_review.jpg. This does not establish exact poses, weapon/feet anchors, or smooth motion; 61 files remain candidates, 7 shared assets delivered and integrated separately. No runtime changes or device test by this task.
+
 # Current checkpoint — order 69 Mint gale visual revision (2026-11-11)
 
 Replaced the Mint gale candidate with a newly generated 8-frame sequence that visually follows the original action more closely, separated frames at a consistent scale, and retained original-versus-candidate GIF and mint_gale_comparison.jpg. A separate Mint run redraw retained blue noise and was not selected. Reverified all 68 manifest PNG hashes; 3 of 49 combat candidates have extra strong-alpha border pixels and 9 have >12px bounding-box differences relative to source. These are review signals only, not pass/fail proof. Seven shared files have been delivered/integrated separately; 61 files remain candidates requiring exact pose, anchors, motion and visual review. No runtime edits or mobile gameplay test performed in this task.

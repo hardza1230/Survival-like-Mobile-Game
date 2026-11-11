@@ -460,6 +460,18 @@
       "key": "mint_gale_safe_v6",
       "path": "assets/char_mint_gale_sheet.png",
       "prompt": "Edit FIRST original 8-frame sprite sheet, changing only Mint's clothing into the icy blue/white Snowflake Princess outfit in SECOND image. Reproduce all eight original poses, proportions, original small effects and expressions exactly, in the original left-to-right order. Use a simplified small diadem and short cape appropriate for a tiny sprite. Preserve mint hair and spear position; shield must be small. Critical: eight isolated frames in one row, each sprite AND effect fully inside its own invisible square, with wide transparent gaps on all sides, and generous blank transparent margins at far left/right/top/bottom. No cropped frames, no overlapping effects. Solid empty space must have true zero-alpha transparency; no grey fog, background, boxes, captions, numbers, labels, or floor."
+    },
+    {
+      "name": "mint_stun",
+      "card": "mint/candidates/card_mint_snow.png",
+      "prompt": "Edit ONLY the FIRST original 128px game animation frame. Preserve the exact character's pose, expression, face, hair, orientation, position and scale. Change only the clothing to blue-white snow princess outfit, small ice shield and small diadem, matching SECOND character outfit. Keep the original animation silhouette and attached weapon / floating orb position. The result is a single game sprite in the same relative position, fully transparent background with no backdrop, letters, numbers, extra figures or added giant effects.",
+      "status": "rejected_pose_or_style_changed"
+    },
+    {
+      "name": "sesame_action",
+      "card": "sesame/candidates/card_sesame_moon.png",
+      "prompt": "Edit ONLY the FIRST original 128px game animation frame. Preserve the exact character's pose, expression, face, hair, orientation, position and scale. Change only the clothing to black-white moon rabbit hood and moon patterned short cloak, matching SECOND character outfit. Keep the original animation silhouette and attached weapon / floating orb position. The result is a single game sprite in the same relative position, fully transparent background with no backdrop, letters, numbers, extra figures or added giant effects.",
+      "status": "rejected_pose_or_style_changed"
     }
   ]
 }
