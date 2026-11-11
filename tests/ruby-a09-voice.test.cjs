@@ -17,4 +17,5 @@ assert(react('bossdown'));assert(!react('wave'),'30s throttle');now+=9000;assert
 now+=31000;assert(react('objdone'));assert(!react('lowhp'),'30s gap after a line');now+=31000;assert(!react('objdone'),'v8.1.88 objective line once per stage');assert(react('lowhp'));
 for(const h of ["this.rubyVoiceReact?.('objdone',300)","this.rubyVoiceReact?.('bossdown',1800)","this.rubyVoiceReact?.('revive',1600)","this.rubyVoiceReact?.('lowhp',4000)","this.rubyVoiceReact?.('wave',400)","this.rubyVoiceReact?.('timer')","this.rubyVoiceReact?.('clear',1200)"])assert(s.includes(h),h);
 assert(s.includes("nw-(sa[vk]||0)<30000"),'short reminder voice at most every 30s');
+assert(s.includes('startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];'),'v8.1.89 new stage drops old Ruby lines');assert(/rubyLater\(delay,fn\)\{ const ep=this\._rubyEpoch\|0;/.test(s)&&/this\.rubyLater\(delay,\(\)=>this\.rubySay\(text/.test(s),'delayed tips are stage-bound');
 console.log('Ruby A09: 28 verified clips, 14 short reminders matched (progress-safe), 7 reactions hooked, rotation/throttle/clear passed');

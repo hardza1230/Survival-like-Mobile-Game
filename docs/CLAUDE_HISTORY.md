@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.87 — League phase 7: Memory Book (Bestiary + Codex) + art order 73 · League plan complete
+
+Memory Book = existing Bestiary + Memories/Codex (owner note "Bestiary → codex upgrade · keep soul"). Save.addKill: each tier crossed → data.memories += MEMORY_TIER [1,2,4]; Save._memory87 back-pays tiers already reached. Codex per monster (data.codex[id], CODEX_MAX 5, cost = lv+1 Memories, needs bestiaryLv ≥ BEST_MAX_TIER) via codexUpgrade(id); bestWeakMul = BEST_WEAK_MUL + codexLv·CODEX_STEP(.03) for weak-spot monsters (_bestW Set unchanged). UI: header shows 💭, detail panel button tag codex_up (close zone back=false so it can be tapped). Art order 73 (7 files: golem oven/parts/body, siege circle/warlord, ic_memory, codex badges). All 7 league phases done; waiting on art 72/73 and owner tuning.
+
 # Previous delivery: v8.1.86 — League phase 4: Siege of the Hunger (Delve room, Legion 5 Way)
 
 Delve node type 'siege' (d≥3, .165≤r<.205 after trial) → delveMission 'hungerSiege' (AMAP_TYPES siege 🏰). hs* methods: fixed circle R230 · 5 gates at R+300 · waves every 2.4s from 2/3/5 random gates (by progress 0/15/30s), 2+floor(d/8) foes each · progress = seconds inside (target 45) · outside: timer pauses + pot −1/s · kill while player inside → pot +1 (elite 3, Warlord 15) · 45% Hunger Warlord at 22s (elite ×1.6 size, ×4 hp) · end = hsBurst pot·(1+.05d)·(.8+.15si). In SIG_MISSIONS + LEAGUE_MISSIONS (spawn force + row-currency drop). Next: phase 7 Memory Book + art order 73.
