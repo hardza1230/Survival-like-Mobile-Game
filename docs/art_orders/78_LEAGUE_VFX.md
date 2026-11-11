@@ -1,6 +1,6 @@
 # 78 — VFX ภารกิจ League / Trial / Forge / Memory Book · ใบสั่งงานอาร์ต + ผูกเอง
 
-สถานะ: 🟡 รออาร์ต · เขียน 11 พ.ย. 2026 · **AI ฝั่งอาร์ตทำภาพและผูกเข้าเกมเองในใบนี้** (ทำตามหัวข้อ "ผูกเข้าเกม")
+สถานะ: 🟢 ผูกแล้ว v8.1.95 · รอ QA มือถือ
 ส่งไฟล์ที่ `assets/incoming/vfx78/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · **ทุกไฟล์พื้นดำสนิท #000** (โค้ดแปลงความสว่างเป็นความโปร่ง) · เล่นครั้งเดียว (ยกเว้นที่ระบุ loop) · **ห้ามมีตัวหนังสือ**
 
@@ -62,5 +62,8 @@
 7. **ปล่อย:** ตาม skill release · อัปเดต README ใบนี้ "🟢 ผูกแล้ว vX · รอ QA มือถือ"
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด · เวอร์ชันที่ผูก)
+- วันที่ส่ง 11 พ.ย. 2026 · ผูกเข้าเกม v8.1.95
+- ส่งครบ 15 ไฟล์ที่ `assets/incoming/vfx78/` · ไฟล์ที่ขาด 0
+- `vfx78_breach_open.png`, `vfx78_splinter_pick.png`, `vfx78_breach_chest.png`, `vfx78_stone_fuse.png`, `vfx78_statue_paint.png`, `vfx78_gates_shut.png`, `vfx78_dish_served.png`, `vfx78_golem_bake.png`, `vfx78_root_cut.png`, `vfx78_siege_break.png`, `vfx78_trial_curse.png`, `vfx78_trial_take.png`, `vfx78_trial_risk.png`, `vfx78_ink_move.png`, `vfx78_codex_up.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`center`), `background` (`black`)

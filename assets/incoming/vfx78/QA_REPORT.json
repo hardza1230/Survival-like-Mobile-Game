@@ -1,0 +1,17 @@
+[
+  {"key": "vfx78_breach_open", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_splinter_pick", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_breach_chest", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_stone_fuse", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_statue_paint", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_gates_shut", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_dish_served", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_golem_bake", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_root_cut", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_siege_break", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_trial_curse", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_trial_take", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_trial_risk", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_ink_move", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "vfx78_codex_up", "result": "pass", "reason": "mechanical checks passed"}
+]

@@ -31,7 +31,7 @@
 | 75 | `75_LEVELUP_CARD_TEMPLATES.md` | เทมเพลตการ์ดเลเวลอัป 4 ประเภท (Normal/Mutation/Relic/Unique 9-slice) + ตราประเภท + FX ขอบ · **ฝั่งอาร์ตผูกเอง** | 8 | สูง | 🟢 ผูกแล้ว v8.1.94 · รอ QA มือถือ |
 | 76 | `76_BREACH_MONSTERS.md` | มอนรอยแยก Breach 4 สายพันธุ์ (Mite/Maw/Clawhand/Watcher) เดิน+ตาย · **ฝั่งอาร์ตผูกเอง** | 8 | กลาง | 🟡 รออาร์ต |
 | 77 | `77_SPECIAL_ENEMY_MOTION.md` | ท่าโจมตี+ตาย ศัตรูพิเศษ 6 ตัว (Herald/Golem/Warlord/บอสมือ/Breachlord/Stalker Captain) · **ฝั่งอาร์ตผูกเอง** | 12 | กลาง | 🟡 รออาร์ต |
-| 78 | `78_LEAGUE_VFX.md` | VFX ภารกิจ League/Trial/Forge/Memory 15 ชิ้น (เปิดรอยแยก · เก็บ Splinter · หีบ · หลอมหิน · ทาสีรูปปั้น · ปิดประตู · เสิร์ฟจาน · อบโกเลม · ตัดราก · ป้อมแตก · คำสาป · รับของ/เสี่ยง · ย้ายหมึก · Codex) · **ฝั่งอาร์ตผูกเอง** | 15 | กลาง | 🟡 รออาร์ต |
+| 78 | `78_LEAGUE_VFX.md` | VFX ภารกิจ League/Trial/Forge/Memory 15 ชิ้น (เปิดรอยแยก · เก็บ Splinter · หีบ · หลอมหิน · ทาสีรูปปั้น · ปิดประตู · เสิร์ฟจาน · อบโกเลม · ตัดราก · ป้อมแตก · คำสาป · รับของ/เสี่ยง · ย้ายหมึก · Codex) · **ฝั่งอาร์ตผูกเอง** | 15 | กลาง | 🟢 ผูกแล้ว v8.1.95 · รอ QA มือถือ |
 | 56 | `56_YUZU_SEEDLINGS.md` | Yuzu Seedlings ลูกกระจ๊อก 4 ชนิด (Bite/Tank/Throw/Pop) เดิน+โจมตี, แตก/งอกใหม่/เมล็ดปา/ระเบิดเปรี้ยว, ไอคอนการ์ด | 9 | กลาง | 🟢 ส่งครบ 9 · ผูกแล้ว v8.0.69 |
 | 57 | `57_POWER_FAMILY_ICONS.md` | ไอคอนชุดหน้า Power family: แก่น Weave 3 สี, ตรา/ด้าย/เลื่อนอันดับ, ช่องอุปกรณ์ว่าง 6 ช่อง, Equip best/Salvage/Sets/Lock, Merge keep/rarity up, Forge FP/Add/Swap/Star up/Remove/Lucky (1 atlas 6×4) | 24 | กลาง | 🟢 ผูกแล้ว v8.0.77 (Weave) · Equipment/Merge/Forge ถัดไป |
 | 58 | `58_POWER_FAMILY_EXTRA.md` | ภาพประกอบการ์ดสรุป Weave/Equipment/Merge/Forge + ภาพหน้าว่าง 3 แบบ | 7 | เล็ก | 🟢 ผูกแล้ว v8.0.79 |
