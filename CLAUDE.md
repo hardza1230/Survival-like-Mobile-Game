@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.80**. Next release:8.1.81. Fetch the deploy branch before new work.
+Current release: **8.1.81**. Next release:8.1.82. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.80 — Ultimatum-style Sugar Crown Trial (owner: B endgame + upgrade Vault Altar)
+# Latest delivery: v8.1.81 — League missions phase 1: Frozen Pantry (owner: PoE leagues adapted to lore)
+
+Plan + owner decisions in `docs/design/OWNER_NOTES_POE_LEAGUES.md` (phases 1–7). frozenPantry in SIG_MISSIONS, fp* methods: walk to 🫙 jar (seek) → N statues ring the jar (not enemies, auto-aim ignores them) → painting ring around the player (PR 140) fills a statue in 1.8s (General 3s) → sigSpawnAt wakes it (e._fpTok, global this._fpSeq) → kill = progress, 🎁 statues drop missionLootBurst. fpFull() = replay (_replayMeter) / riftMode / storyCleared()>=10: 6 statues, woken foe must die in 14s (20s General) or fpVanish (silent remove, loot lost), unpainted statues shatter at 34s, 40% Frost General. Light (first play Ch1–2): 4 statues, no timers, no General. Stage C1-4 objectives ['survive','hunt','frozenPantry','capture']. Next: phase 2 Hunger's Mouth (C1-2) + Creeping Roots (C2-3).
+
+# Previous delivery: v8.1.80 — Ultimatum-style Sugar Crown Trial (owner: B endgame + upgrade Vault Altar)
 
 Mission type 'ultimatum' (in SIG_MISSIONS) via ult* methods on the _sig layer: each round pick 1 of 3 ULT_CURSES pads (swarm/elite/noheal/bombs/shots/drain, stacking, mult += v) → goal from ULT_GOALS (survive in gold circle 20s / slay 14+4r in 28s / defend altar 300hp 20s / collect 5 seeds 22s) → pot += base·(1+.5r)·mult, +1 box from round 2 → decide pads 8s: 🎁 take (default) / ⚔️ risk → clear all rounds = full pot + epic box; fail = half pot & half boxes (owner did not pick; recommendation used). Delve: node type 'trial' (d≥4, r<.165) → delveMission 'ultimatum' (4 rounds). Story stage 14 vaultAltar = same engine, 2 rounds (old pact code removed). No arm pad / Overcharge on trials. Loss penalty "half" can be switched to "all" in ultFinish.
-
-# Previous delivery: v8.1.79 — missions round 3: old-mission upgrades + opt-in start + Overcharge
-
-missionArm (story budget, not planned/forceType/tutorial/recipe/rift/rush, not survive/fill/hunt): ✨ pad 120–170px away; tickWaveObjective returns early (progress/bonus paused) until player steps in or 10s. overchargeOffer (from completeWaveObjective normal path, not survive/fill): ⚡ pad 5s → 12s run (2 foes/0.9s + 1 elite) → o._ocMul=2 (bonus ×2) + held gear box; ignored = normal completion; tickWaveObjective skipped while o._oc. Escort: wisp ×1.7 when player ≤110px; raid direction ⚠. Clean Air: cleanAirBubbles (≤3 on the path, +1.5s). Seasonal: seasonDropPetal/seasonPetalTick (petals are ground pickups, magnet 110px, 14s life) + seasonShrineTick (4 shrines, stand 1s = call season). Roots: pulse every 3s (need 1.3 instead of 2.6) + 3 guardians on first approach. Next: round 4 art orders (Ch3 signature props, pads, petals, bubbles, captain).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,6 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
+- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry เสร็จ v8.1.81
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
