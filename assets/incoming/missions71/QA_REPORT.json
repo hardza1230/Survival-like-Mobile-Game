@@ -1,0 +1,16 @@
+[
+  {"key": "msn71_rift", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_tree", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_mirror", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_crystal", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_crystal_blast", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_lantern", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_lantern_out", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_start_pad", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_overcharge_pad", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_season_shrines", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_petals", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_bubble", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_supply_crate", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "msn71_stalker_captain", "result": "pass", "reason": "mechanical checks passed"}
+]

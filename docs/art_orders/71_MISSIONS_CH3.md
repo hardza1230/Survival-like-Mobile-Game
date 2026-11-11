@@ -72,5 +72,10 @@
 - ไม่มีภาพ = ใช้ของชั่วคราวเดิม (fallback)
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด)
+- วันที่ส่ง 11 พ.ย. 2026
+- ส่ง 14/14 ไฟล์ที่ `assets/incoming/missions71/`
+- ไฟล์ที่ขาด 0
+
+`msn71_rift.png`, `msn71_tree.png`, `msn71_mirror.png`, `msn71_crystal.png`, `msn71_crystal_blast.png`, `msn71_lantern.png`, `msn71_lantern_out.png`, `msn71_start_pad.png`, `msn71_overcharge_pad.png`, `msn71_season_shrines.png`, `msn71_petals.png`, `msn71_bubble.png`, `msn71_supply_crate.png`, `msn71_stalker_captain.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`center`/`feet`), `background` (`transparent`/`black`)
