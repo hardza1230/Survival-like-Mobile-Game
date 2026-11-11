@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.95';
+const GAME_VERSION = '8.1.96';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.96',date:'2026-11-12',title:'Breach enemies and a faster collapse',items:['Hunger’s Mouth expands as a violet ground rift and snaps shut when its timer expires.','Kills can extend the breach up to 20 seconds after opening.','Four Breach creatures now have their own walk and defeat animations.']},
   {v:'8.1.95',date:'2026-11-11',title:'League mission effects',items:['League missions and Sugar Crown Trials have distinct effects for major actions.','Moving Recipe Ink mods and upgrading the Codex now have their own effects.']},
   {v:'8.1.94',date:'2026-11-11',title:'Distinct level-up cards',items:['Normal, Mutation, Relic and Unique choices now have distinct frames and crests.','Special cards have subtle animated borders.']},
   {v:'8.1.93',date:'2026-11-11',title:'Painted missions',items:['Every League mission now has real art: frozen statues and the sugar jar, the breach hand, rim, chests, splinters and the Breachlord, creeping roots, the Herald and its gates, Grandma’s pot and Golem, the Siege circle and Warlord','Sugar Crown Trial has its crown altar, curse pads and take/risk pads · Delve map shows Trial and Siege room icons','Chapter 3 missions got painted rifts, trees, mirrors, crystal blast, lanterns, start and Overcharge pads, season shrines, petals, bubbles, supply crates and the Stalker Captain','Mochi Patrol now has scrolling scenes for each chapter with walking mochi monsters','Honey Drop and Recipe Ink have icons; the Bestiary shows Codex badges']},
@@ -3365,6 +3366,14 @@ const BOSS_OUTLINE814_MAP={"vfx_b06_impact":"vfx814_b06_impact","vfx_b06_wave":"
 const BOSS_OUTLINE815_MAP={"vfx_b11_impact":"vfx815_b11_impact","vfx_b11_wave":"vfx815_b11_wave","vfx_b11_lane":"vfx815_b11_lane","vfx_b11_scythe_cut":"vfx815_b11_scythe_cut","vfx_b12_impact":"vfx815_b12_impact","vfx_b12_wave":"vfx815_b12_wave","vfx_b12_lane":"vfx815_b12_lane","vfx_b12_wither_pull":"vfx815_b12_wither_pull","vfx_b13_impact":"vfx815_b13_impact","vfx_b13_wave":"vfx815_b13_wave","vfx_b13_lane":"vfx815_b13_lane","vfx_b13_prism_beam":"vfx815_b13_prism_beam","vfx_b14_impact":"vfx815_b14_impact","vfx_b14_wave":"vfx815_b14_wave","vfx_b14_lane":"vfx815_b14_lane","vfx_b14_vault_ring":"vfx815_b14_vault_ring","vfx_b15_impact":"vfx815_b15_impact","vfx_b15_wave":"vfx815_b15_wave","vfx_b15_lane":"vfx815_b15_lane","vfx_b15_root_cage":"vfx815_b15_root_cage","vfx_bpin_impact":"vfx815_bpin_impact","vfx_bpin_wave":"vfx815_bpin_wave","vfx_bpin_lane":"vfx815_bpin_lane","vfx_bpin_maw":"vfx815_bpin_maw","vfx_b11_harvest_moon":"vfx815_b11_harvest_moon","vfx_b11_stampede_trail":"vfx815_b11_stampede_trail","vfx_b12_nectar_drip":"vfx815_b12_nectar_drip","vfx_b12_empty_heart":"vfx815_b12_empty_heart","vfx_b13_dome_shard":"vfx815_b13_dome_shard","vfx_b14_last_seed":"vfx815_b14_last_seed","vfx_b15_seed_tile":"vfx815_b15_seed_tile","vfx_b15_crown_sweep":"vfx815_b15_crown_sweep","vfx_b15_first_bloom":"vfx815_b15_first_bloom","vfx_bpin_jaw_ring":"vfx815_bpin_jaw_ring","vfx_bpin_tongue":"vfx815_bpin_tongue","vfx_bpin_eclipse":"vfx815_bpin_eclipse"};
 const BOSS_SHOT817_MAP={"bshot_01":"bshot_anim817_01","bshot_02":"bshot_anim817_02","bshot_03":"bshot_anim817_03","bshot_04":"bshot_anim817_04","bshot_05":"bshot_anim817_05","bshot_06":"bshot_anim817_06","bshot_07":"bshot_anim817_07","bshot_08":"bshot_anim817_08","bshot_09":"bshot_anim817_09","bshot_10":"bshot_anim817_10","bshot_11":"bshot_anim817_11","bshot_12":"bshot_anim817_12","bshot_13":"bshot_anim817_13","bshot_14":"bshot_anim817_14","bshot_15":"bshot_anim817_15","bshot_pin":"bshot_anim817_pin"};
 const ASSET_FX = {
+  brm_mite_walk:{url:'assets/art/breach76/brm_mite_walk.webp',fw:128,fh:128,frames:6,rate:10,anchor:'center',loop:true},
+  brm_mite_death:{url:'assets/art/breach76/brm_mite_death.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center'},
+  brm_maw_walk:{url:'assets/art/breach76/brm_maw_walk.webp',fw:128,fh:128,frames:6,rate:10,anchor:'center',loop:true},
+  brm_maw_death:{url:'assets/art/breach76/brm_maw_death.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center'},
+  brm_claw_walk:{url:'assets/art/breach76/brm_claw_walk.webp',fw:128,fh:128,frames:6,rate:10,anchor:'center',loop:true},
+  brm_claw_death:{url:'assets/art/breach76/brm_claw_death.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center'},
+  brm_eye_walk:{url:'assets/art/breach76/brm_eye_walk.webp',fw:128,fh:128,frames:6,rate:10,anchor:'center',loop:true},
+  brm_eye_death:{url:'assets/art/breach76/brm_eye_death.webp',fw:128,fh:128,frames:6,rate:14,anchor:'center'},
   vfx78_breach_open:{url:'assets/art/vfx78/vfx78_breach_open.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center'},
   vfx78_splinter_pick:{url:'assets/art/vfx78/vfx78_splinter_pick.webp',fw:128,fh:128,frames:6,rate:16,anchor:'center'},
   vfx78_breach_chest:{url:'assets/art/vfx78/vfx78_breach_chest.webp',fw:256,fh:256,frames:8,rate:16,anchor:'center'},
@@ -4701,7 +4710,7 @@ function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].ur
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
 const ST62_ICON={frozen:0,chill:1,brittle:2,burn:3,sour:4,stun:5,mark:6,lured:7,enraged:8,p_slow:9,p_poison:10,p_bleed:11,p_haste:12,p_guard:13,p_barrier:14,p_shell:15,p_regen:16,p_starving:17,shock:18};   // v8.0.85 ใบ 62 ช่องใน st_icons
 const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',burn:'st_burn',brittle:'st_brittle',chill:'st_chill'},ST62_COL={stun:0xffe08a,frozen:0x9fe8ff,shock:0x8ff3ff,mark:0xff5d73,sour:0xfff27a,burn:0xff8a3d,brittle:0xd8f4ff,chill:0xbfe6ff};
-function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
+function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
 function lazyArt(k,u,hero){ if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
@@ -15928,7 +15937,7 @@ class Game extends Phaser.Scene {
   /* ===== v8.1.78 ภารกิจประจำด่าน Chapter 3 (ภาพชั่วคราว: วงกราฟิก + อีโมจิ · ใบสั่งอาร์ตรอบ 4) ===== */
   sigAdd(o){ if(o){ this.camWorld(o); (this._sig.objs||(this._sig.objs=[])).push(o); } return o; }
   sigText(x,y,t,fs=26){ return this.sigAdd(this.add.text(x,y,t,{fontSize:fs+'px',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(y+5)); }
-  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; if(S.lanes||S.herald||S.carriers||S.chests||S.domain)this.enemies?.children?.iterate?.(e=>{ if(e&&(e._lanePath||e._herald||e._ggPart||e._golem||e._breach||e._hdLord)){ e._lanePath=null; e._herald=false; e._goTo=null; e._ggPart=null; e._golem=false; e._breach=false; e._hmLord=false; e._hdLord=false; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
+  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; if(S.lanes||S.herald||S.carriers||S.chests||S.domain)this.enemies?.children?.iterate?.(e=>{ if(e&&(e._lanePath||e._herald||e._ggPart||e._golem||e._breach||e._hdLord)){ e._lanePath=null; e._herald=false; e._goTo=null; e._ggPart=null; e._golem=false; e._breach=false; e._hmLord=false; e._hdLord=false; e._brSp=null; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
   sigSpawnAt(x,y,elite){ const S0=this._sig; this._sigForce=!!(S0&&(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(S0.type))); let e; try{ e=elite?this.spawnElite?.(false,true):this.spawnEnemy?.('basic'); }finally{ this._sigForce=false; } if(e){ const lim=WORLD/2-120; e.setPosition(Phaser.Math.Clamp(x,-lim,lim),Phaser.Math.Clamp(y,-lim,lim)); this.vfxSpawnPoof?.(e.x,e.y); } return e; }
   sigSetup(o,type,p){ const si=this.stageIndex||0,c=o.color; this._sig={type,objs:[]}; const S=this._sig; if(!this.objNodeG){ this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040); this.camWorld(this.objNodeG); }
     if(type==='seedRift'){ const q=this.objectivePosition(0,1,220,330); Object.assign(S,{x:q.x,y:q.y,R:190,life:16,spawn:0}); o.target=18+Math.min(6,si-10>0?si-10:0); o.desc='Defeat '+o.target+' enemies inside the rift · each kill = +1.5s';
@@ -15996,27 +16005,63 @@ class Game extends Phaser.Scene {
     o.target=full?60:30; o.desc='Touch the Hunger’s hand to open the breach · kills inside keep it open · grab 🔮 splinters and open 🤲 chests before it closes';
     S.hand=this.sigArt('hm_hand',0,q.x,q.y+40,100,'✋',48,q.y-10); S.ring=this.sigAdd(this.add.circle(q.x,q.y,1,0x2a0a3d,.18).setStrokeStyle(8,0xb36bff,.95).setDepth(q.y-60)); S.ring.setVisible(false);
     S.cue=this.sigAdd(this.add.circle(q.x,q.y,80,0xb36bff,.12).setStrokeStyle(3,0xd9a6ff,.8).setDepth(q.y-3)); this.tweens.add({targets:S.cue,scale:{from:.9,to:1.1},duration:650,yoyo:true,repeat:-1}); }
-  hmOpen(o,S){ S.phase='open'; S.R=60; S.ring.setVisible(true); S.cue.setVisible(false); if(this.artIsSpr(S.hand))S.hand.setFrame(1); else S.hand.setText?.('🖐️'); S.rim=this.artSpr('hm_rim',S.x,S.y,120,0,{depth:S.y-55}); this.screenFlash?.(0xb36bff,.25,240); this.screenShake?.(200,.008); this.vfxHitRing?.(S.x,S.y,0xb36bff,true); this.artFx?.('vfx78_breach_open',S.x,S.y,420);
+  hmOpen(o,S){ S.phase='open'; S.openLeft=S.lifeMax; S.R=60; S.ring.setRadius(S.R).setVisible(true); S.cue.setVisible(false);
+    if(this.artIsSpr(S.hand))S.hand.setFrame(1); else S.hand.setText?.('🖐️');
+    this.hmRiftFx?.(S); this.artFx?.('vfx78_breach_open',S.x,S.y,135);
     const n=S.full?3:2,a0=Math.random()*TAU; for(let i=0;i<n;i++){ const a=a0+i*TAU/n,r=S.Rmax*(.35+.4*Math.random()),lim=WORLD/2-140; S.chests.push({x:Phaser.Math.Clamp(S.x+Math.cos(a)*r,-lim,lim),y:Phaser.Math.Clamp(S.y+Math.sin(a)*r,-lim,lim),t:null,open:false}); }
     S.hud=this.sigAdd(this.add.text(0,0,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#f1dcff',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(99990));
     this.showBanner?.('🖐️ The breach opens!','Kill inside to keep it open · grab 🔮 splinters · open 🤲 chests',1600); }
+  hmRiftFx(S){
+    if(!S.riftG){
+      const graphics=this.add.graphics();
+      if(!graphics.fillPoints||!graphics.strokePoints){graphics.destroy?.();return;}
+      S.riftG=this.sigAdd(graphics.setPosition(S.x,S.y).setDepth(S.y-60));
+      S.riftPoints=Array.from({length:64},()=>({x:0,y:0}));
+      S.ring.setVisible(false);
+    }
+    const g=S.riftG,points=S.riftPoints,r=S.R,t=Save.data?.settings?.reducedMotion?0:(S.t||0);
+    g.clear();
+    if(r<=0)return;
+    const roughness=Math.min(11,r*.07);
+    for(let i=0;i<points.length;i++){
+      const a=TAU*i/points.length;
+      const edge=r+roughness*(.52*Math.sin(13*a+t*2.1)+.28*Math.sin(23*a-t*1.4)+.20*Math.cos(7*a+t));
+      points[i].x=Math.cos(a)*edge;
+      points[i].y=Math.sin(a)*edge;
+    }
+    const strength=Math.min(1,r/170);
+    g.fillStyle(0x381857,.33*strength).fillPoints(points,true);
+    g.lineStyle(28,0x5b2887,.19*strength).strokePoints(points,true,true);
+    g.lineStyle(12,0x2b103f,.72*strength).strokePoints(points,true,true);
+    g.lineStyle(3,0xb876e6,.79*strength).strokePoints(points,true,true);
+    g.lineStyle(2,0xf6a3d9,.53*strength);
+    for(let i=0;i<points.length;i+=7){
+      const a=points[i],b=points[(i+1)%points.length];
+      g.lineBetween(a.x,a.y,b.x*.977,b.y*.977);
+    }
+  }
   hmTick(dt,o,S){ const p=this.player,g=this.objNodeG; if(!p)return; S.t=(S.t||0)+dt;
     if(S.phase==='seek'){ if(this.sigNear(S.x,S.y,85))this.hmOpen(o,S); return; }
-    if(S.phase==='open'){ S.R=Math.min(S.Rmax,S.R+S.grow*dt); S.life-=dt; S.ring.setRadius(S.R); S.rim?.setDisplaySize(S.R*2.1,S.R*2.1);
+    if(S.phase==='open'){
+      S.openLeft=Math.max(0,(S.openLeft??S.lifeMax)-dt);
+      S.life=Math.min(S.openLeft,S.life-dt);
+      if(S.life<=1e-6){ S.life=0; S.phase='close'; this.showBanner?.('🌀 The breach collapses','Everything inside is pulled back through',1200); return; }
+      S.R=Math.min(S.Rmax,S.R+S.grow*dt);
+      S.ring.setRadius(S.R); this.hmRiftFx?.(S);
       for(const c of S.chests){ if(c.open)continue; const inside=this.dist(c.x,c.y,S.x,S.y)<S.R-30; if(inside&&!c.t){ c.t=this.sigArt('hm_breach_chest',0,c.x,c.y+30,80,'🤲',40,c.y-8); this.vfxSpawnPoof?.(c.x,c.y); } if(c.t&&this.dist(p.x,p.y,c.x,c.y)<70){ c.open=true; if(this.artIsSpr(c.t))c.t.setFrame(1); else c.t.setText?.('✨'); this.hmChest(S,c); } }
       S.spawn-=dt; if(S.spawn<=0){ S.spawn=S.full?.7:.95; const n=Math.min(5,2+Math.floor(S.R/350)); let cx=S.x,cy=S.y; for(let t=0;t<4;t++){ const a=Math.random()*TAU,r=S.R*(.25+.7*Math.random()); cx=S.x+Math.cos(a)*r; cy=S.y+Math.sin(a)*r; if(this.dist(cx,cy,p.x,p.y)>180)break; }
-        { for(let k=0;k<n;k++){ const e=this.sigSpawnAt(cx+(Math.random()-.5)*90,cy+(Math.random()-.5)*90); if(e){ e._breach=true; e.setTint?.(0xc59bff); e.tintColor=0xc59bff; } } } }
+        { for(let k=0;k<n;k++){ const e=this.sigSpawnAt(cx+(Math.random()-.5)*90,cy+(Math.random()-.5)*90); if(e){ e._breach=true; e.setTint?.(0xc59bff); e.tintColor=0xc59bff; this.breachFoeArt?.(e); } } } }
       if(S.lord>0&&S.kills>=S.lord){ S.lord=-1; const a=Math.random()*TAU,e=this.sigSpawnAt(p.x+Math.cos(a)*320,p.y+Math.sin(a)*320,true); if(e){ e._breach=true; e._hmLord=true; if(e.setScale)e.setScale((e.baseScale||e.scaleX||1)*1.6); this.artFollow?.(e,'hm_hand_lord',160); if(e.maxhp){ e.maxhp*=4; e.hp=e.maxhp; } e.setTint?.(0x9b6bff); this.showBanner?.('🖐️ Hand of the Hunger','The breach’s master reaches through — beat it for a splinter hoard',1500); } }
-      if(S.life<=0){ S.phase='close'; this.artFx?.('hm_collapse',S.x,S.y,420); this.showBanner?.('🌀 The breach collapses','Everything inside is pulled back through',1200); } }
-    if(S.phase==='close'){ S.R=Math.max(0,S.R-420*dt); S.ring.setRadius(Math.max(1,S.R)); S.rim?.setDisplaySize(Math.max(2,S.R*2.1),Math.max(2,S.R*2.1)); this.enemies?.children?.iterate?.(e=>{ if(e&&e.active&&e._breach&&this.dist(e.x,e.y,S.x,S.y)>S.R){ e._breach=false; e._hmLord=false; if(e._aura){ e._aura.destroy(); e._aura=null; } this.stopEnemyPresentation?.(e); e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; this.vfxSpawnPoof?.(e.x,e.y); } });
+    }
+    if(S.phase==='close'){ S.R=Math.max(0,S.R-S.Rmax*dt/.85); S.ring.setRadius(Math.max(1,S.R)); this.hmRiftFx?.(S); this.enemies?.children?.iterate?.(e=>{ if(e&&e.active&&e._breach&&this.dist(e.x,e.y,S.x,S.y)>S.R){ e._breach=false; e._hmLord=false; e._brSp=null; if(e._aura){ e._aura.destroy(); e._aura=null; } this.stopEnemyPresentation?.(e); e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; this.vfxSpawnPoof?.(e.x,e.y); } });
       for(const c of S.chests)if(c.t&&!c.open&&this.dist(c.x,c.y,S.x,S.y)>S.R){ c.open=true; c.t.setVisible?.(false); }
-      if(S.R<=0){ this.hmBurst(o,S); return; } }
+      if(S.R<=0){ S.phase='sealed'; S.ring.setVisible(false); this.hmBurst(o,S); return; } }
     for(const sh of S.shards){ if(sh.got)continue; sh.life-=dt; const d=this.dist(p.x,p.y,sh.x,sh.y); if(d<90){ sh.got=true; sh.t.setVisible?.(false); S.gotSp+=sh.n; this.artFx?.('vfx78_splinter_pick',p.x,p.y,60); this.hmSplinters(sh.n); } else if(sh.life<=0){ sh.got=true; sh.t.setVisible?.(false); } }
     S.shards=S.shards.filter(x=>!x.got); o.progress=Math.min(o.target,S.kills);
     S.hud?.setText(S.phase==='open'?'⏳ '+Math.ceil(S.life)+'s   🔮 '+S.gotSp:'').setPosition(p.x,p.y-84);
     g?.clear(); if(S.phase==='open'){ const f=Math.max(0,Math.min(1,S.life/S.lifeMax)); g?.fillStyle(0x190b24,.8).fillRoundedRect(p.x-40,p.y-70,80,7,3).fillStyle(0xb36bff,.95).fillRoundedRect(p.x-39,p.y-69,78*f,5,2); } }
   hmOnKill(e,o,S){ if(!e||e.isBoss||S.phase!=='open')return; const lord=e._hmLord; e._hmLord=false; const inside=e._breach||this.dist(e.x,e.y,S.x,S.y)<S.R; e._breach=false; if(!inside)return;
-    S.kills++; S.life=Math.min(S.lifeMax,S.life+(lord?5:e.isElite||e.isMini?1.5:.35)); const n=lord?10:e.isElite||e.isMini?3:Math.random()<.3?1:0;
+    S.kills++; S.life=Math.min(S.openLeft??S.lifeMax,S.life+(lord?5:e.isElite||e.isMini?1.5:.35)); const n=lord?10:e.isElite||e.isMini?3:Math.random()<.3?1:0;
     if(n){ const t=this.sigArt('hm_splinter',0,e.x,e.y,lord?40:28,'🔮',lord?32:22); S.shards.push({x:e.x,y:e.y,n,t,life:20}); } }
   hmChest(S,c){ const si=this.stageIndex||0,su=Math.round((8+si*1.6)*(S.full?1.3:1)),L0=this._lootAt; this.sugarStage+=su; this.sugarRun+=su; this.vfxHitRing?.(c.x,c.y,0xd9a6ff,true); this.artFx?.('vfx78_breach_chest',c.x,c.y,160); this.floatText?.(c.x,c.y-60,'🤲 Breach chest!',0xe3c4ff);
     this._lootAt={x:c.x,y:c.y}; try{ this.missionLootBurst?.({type:'tree',noHold:true},su); }finally{ this._lootAt=L0; } const n=S.full?6:3; S.gotSp+=n; this.hmSplinters(n); }
@@ -16151,7 +16196,7 @@ class Game extends Phaser.Scene {
     this.screenFlash?.(0x8a4fd8,.3,300); this.artFx?.('vfx78_breach_open',S.x,S.y,420); this.showBanner?.('🪨 Hunger’s Domain','The stone tears the cave open — survive the flood',1800); }
   hdTick(dt,o,S){ const p=this.player,g=this.objNodeG; if(!p)return; S.t=(S.t||0)+dt; const dm=Math.round(10+S.d*1.4);
     if(S.phase==='clearing'){ S.re=(S.re||0)-dt; if(S.re<=0)this.hdLord(o,S); return; }
-    if(S.phase==='flood'){ S.T-=dt; S.spawn-=dt; if(S.spawn<=0){ S.spawn=.55; for(let k=0;k<3+Math.floor(S.d/10);k++){ const a=Math.random()*TAU,r=280+Math.random()*260,e=this.sigSpawnAt(p.x+Math.cos(a)*r,p.y+Math.sin(a)*r,Math.random()<.08); if(e){ e._breach=true; e.setTint?.(0xc59bff); } } }
+    if(S.phase==='flood'){ S.T-=dt; S.spawn-=dt; if(S.spawn<=0){ S.spawn=.55; for(let k=0;k<3+Math.floor(S.d/10);k++){ const a=Math.random()*TAU,r=280+Math.random()*260,e=this.sigSpawnAt(p.x+Math.cos(a)*r,p.y+Math.sin(a)*r,Math.random()<.08); if(e){ e._breach=true; e.setTint?.(0xc59bff); this.breachFoeArt?.(e); } } }
       S.hud?.setText('🪨 Flood '+Math.ceil(S.T)+'s   🔮 '+S.sp).setPosition(p.x,p.y-84); if(S.T<=0)this.hdLord(o,S); return; }
     const e=S.lord; if(!e||!e.active||!e._hdLord){ S.re=(S.re||0)-dt; if(S.re<=0)this.hdLord(o,S); return; }
     const tick=(k,sec,fn)=>{ S.cd[k]=(S.cd[k]??sec*.5)-dt; if(S.cd[k]<=0){ S.cd[k]=sec; fn(); } };
@@ -16159,7 +16204,7 @@ class Game extends Phaser.Scene {
     tick('slam',4.5,()=>{ this.spawnHazard?.(p.x,p.y,100,Math.round(dm*1.5),0xb36bff); });
     tick('hands',9,()=>{ for(let i=0;i<2;i++){ const h=this.sigSpawnAt(e.x+(Math.random()-.5)*160,e.y+(Math.random()-.5)*160,true); if(h){ h._breach=true; h.setTint?.(0x9b6bff); } } });
     S.hud?.setText(e.maxhp?'🖐️ Breachlord '+Math.max(0,Math.round(e.hp/e.maxhp*100))+'%':'').setPosition(p.x,p.y-84); g?.clear(); }
-  hdLord(o,S){ const p=this.player,a=Math.random()*TAU,lx=p.x+Math.cos(a)*300,ly=p.y+Math.sin(a)*300; if(S.phase==='flood'){ S.phase='clearing'; this.enemies?.children?.iterate?.(q=>{ if(q&&q.active&&q._breach&&!q.isBoss){ q._breach=false; if(q._aura){ q._aura.destroy(); q._aura=null; } this.stopEnemyPresentation?.(q); q.setActive(false).setVisible(false); if(q.body)q.body.enable=false; this.vfxSpawnPoof?.(q.x,q.y); } }); }   /* น้ำท่วมจบ → ดูดมอนรอยแยกกลับ เปิดที่ให้บอส */
+  hdLord(o,S){ const p=this.player,a=Math.random()*TAU,lx=p.x+Math.cos(a)*300,ly=p.y+Math.sin(a)*300; if(S.phase==='flood'){ S.phase='clearing'; this.enemies?.children?.iterate?.(q=>{ if(q&&q.active&&q._breach&&!q.isBoss){ q._breach=false; q._brSp=null; if(q._aura){ q._aura.destroy(); q._aura=null; } this.stopEnemyPresentation?.(q); q.setActive(false).setVisible(false); if(q.body)q.body.enable=false; this.vfxSpawnPoof?.(q.x,q.y); } }); }   /* น้ำท่วมจบ → ดูดมอนรอยแยกกลับ เปิดที่ให้บอส */
     let e=this.sigSpawnAt(lx,ly,true); if(!e){ e=this.spawnElite?.(true,true); if(e)e.setPosition?.(lx,ly); } if(!e){ S.re=1; return; } S.phase='lord'; S.lord=e; e._hdLord=true; e._breach=false; this.artFollow?.(e,'hm_breachlord',240);
     if(e.setScale)e.setScale((e.baseScale||e.scaleX||1)*2.2); if(e.maxhp){ e.maxhp*=10*(1+S.d*.05); e.hp=e.maxhp; } e.setTint?.(0x8a4fd8); e.tintColor=0x8a4fd8;
     this.screenShake?.(300,.012); this.showBanner?.('🖐️ The Breachlord','The master of the breach reaches through — beat it!',1800); }
@@ -16170,20 +16215,20 @@ class Game extends Phaser.Scene {
   leagueCurrencyDrop(o){ const P=this.missionPoint?.(o)||this.player,si=this.stageIndex||0,S=this._sig,n=(this.fpFull?.()?2:1)+(o&&o.type==='hungerHerald'?1:0),W=[['berryjam',45],['honeydrop',28],['starsugar',si>=5?15:5],['recipeink',12]],T=W.reduce((a,b)=>a+b[1],0);
     for(let i=0;i<n;i++){ let r=Math.random()*T,k=W[0][0]; for(const [kk,w] of W){ r-=w; if(r<0){ k=kk; break; } } this.spawnCurrencyDrop?.(P.x+(Math.random()-.5)*70,P.y+(Math.random()-.5)*50,k); } }
   /* ===== v8.1.93 อาร์ตภารกิจ ใบ 71–74 · ไม่มีภาพ = ใช้อีโมจิ/วงกราฟิกเดิม ===== */
-  missionArtKeys(idx){ const A=typeof ASSET_FX!=='undefined'?ASSET_FX:{},pre=p=>Object.keys(A).filter(x=>x.startsWith(p)),k=[],by={0:['hh_'],1:['hm_'],2:['gp_'],3:['fp_'],4:['gg_'],7:['cr_root_'],13:['ult_']},m={6:['msn71_bubble'],8:['msn71_season_shrines','msn71_petals'],10:['msn71_rift'],11:['msn71_tree'],12:['msn71_mirror','msn71_crystal','msn71_crystal_blast'],14:['msn71_lantern','msn71_lantern_out']};
+  missionArtKeys(idx){ const A=typeof ASSET_FX!=='undefined'?ASSET_FX:{},pre=p=>Object.keys(A).filter(x=>x.startsWith(p)),k=[],by={0:['hh_'],1:['hm_','brm_'],2:['gp_'],3:['fp_'],4:['gg_'],7:['cr_root_'],13:['ult_']},m={6:['msn71_bubble'],8:['msn71_season_shrines','msn71_petals'],10:['msn71_rift'],11:['msn71_tree'],12:['msn71_mirror','msn71_crystal','msn71_crystal_blast'],14:['msn71_lantern','msn71_lantern_out']};
     const fx={hh_:['gates_shut'],hm_:['breach_open','splinter_pick','breach_chest','stone_fuse'],gp_:['dish_served'],fp_:['statue_paint'],gg_:['golem_bake'],cr_root_:['root_cut'],hs_:['siege_break'],ult_:['trial_curse','trial_take','trial_risk']};
     const prefixes=[...(by[idx]||[])];
-    if(this.recipeMode||this._recipeRequested||this.riftMode)prefixes.push('hm_','hs_','ult_');
+    if(this.recipeMode||this._recipeRequested||this.riftMode)prefixes.push('hm_','brm_','hs_','ult_');
     for(const prefix of prefixes)k.push(...pre(prefix),...(fx[prefix]||[]).map(name=>'vfx78_'+name));
     k.push(...(m[idx]||[]),'msn71_start_pad','msn71_overcharge_pad','msn71_stalker_captain'); if(idx<5)k.push('msn71_supply_crate');
-    return [...new Set(k)].filter(x=>A[x]); }
+    return [...new Set(k)].filter(x=>x!=='hm_rim'&&A[x]); }
   artSpr(key,x,y,px,frame=0,o={}){ if(!key||!this.textures?.exists?.(key))return null; const fd=(typeof ASSET_FX!=='undefined'&&ASSET_FX[key])||{},s=this.camWorld(this.add.sprite(x,y,key,frame)),fw=fd.fw||s.width,fh=fd.fh||s.height;
     s.setScale(px/Math.max(fw,fh)); s.setOrigin(.5,(o.feet!=null?o.feet:fd.anchor==='feet')?.94:.5); s.setDepth(o.depth!=null?o.depth:y+2);
     if(o.anim!==false&&fd.loop&&fd.frames>1){ if(!this.anims.exists(key))this.anims.create({key,frames:this.anims.generateFrameNumbers(key,{start:0,end:fd.frames-1}),frameRate:fd.rate||8,repeat:-1}); s.play(key); }
     if(o.sig!==false&&this._sig)this._sig.objs.push(s); return s; }
   sigArt(key,frame,x,y,px,emoji,fs,ey){ return this.artSpr(key,x,y,px,frame)||this.sigText(x,ey!=null?ey:y,emoji,fs); }
   artIsSpr(o){ return !!o&&o.type==='Sprite'; }
-  artFx(key,x,y,px){ if(!this.textures?.exists?.(key))return null; const fd=ASSET_FX[key]||{}; const sprite=this.spawnFxAnim?.(key,x,y,{normal:true,scale:px/Math.max(fd.fw||256,fd.fh||256),depth:90020}); if(sprite&&key.startsWith('vfx78_'))this.trackArtVfx?.(sprite); return sprite; }
+  artFx(key,x,y,px){ if(!this.textures?.exists?.(key))return null; const fd=ASSET_FX[key]||{}; const sprite=this.spawnFxAnim?.(key,x,y,{normal:true,scale:px/Math.max(fd.fw||256,fd.fh||256),depth:90020}); if(sprite&&/^(?:vfx78|brm)_/.test(key))this.trackArtVfx?.(sprite); return sprite; }
   artFollow(e,key,px){ if(!e||!this.textures?.exists?.(key))return null; if(e._artOv&&e._artOv.active)e._artOv.destroy(); const s=this.artSpr(key,e.x,e.y,px,0,{sig:false,feet:false}); if(!s)return null; s._fe=e; e._artOv=s; (this._artFol||(this._artFol=[])).push(s); return s; }
   artFollowTick(){ const L=this._artFol; if(!L||!L.length)return; this._artFol=L.filter(s=>{ const e=s._fe; if(!s.active)return false; if(!e||!e.active||e._artOv!==s){ if(e&&e._artOv===s){ e._artOv=null; e.setAlpha?.(1); } s.destroy(); return false; } s.setPosition(e.x,e.y).setDepth((e.depth||e.y)+1); if(e.alpha>.02)e.setAlpha(.01); const vx=e.body?.velocity?.x||0; if(Math.abs(vx)>5)s.setFlipX(vx<0); return true; }); }
   artFollowClear(){ for(const s of this._artFol||[]){ const e=s._fe; if(e&&e._artOv===s){ e._artOv=null; e.setAlpha?.(1); } if(s.active)s.destroy(); } this._artFol=[]; }
@@ -16253,7 +16298,27 @@ class Game extends Phaser.Scene {
     if(pot>0){ this.sugarStage+=pot; this.sugarRun+=pot; const L0=this._lootAt; this._lootAt={x:S.x,y:S.y}; try{ this.missionLootBurst?.({type:'trial',noCur:how==='fail'},pot); }finally{ this._lootAt=L0; } }
     if(this.spawnLoot)for(let k=0;k<boxes;k++){ this._lootMinRare=true; try{ const a=k/Math.max(1,boxes)*TAU,g=this.spawnLoot(S.x+Math.cos(a)*90,S.y+Math.sin(a)*70,how==='clear'&&k===boxes-1?3:2); if(g){ if(how==='clear'&&k===boxes-1&&g.lootTier!=='legend')g.lootTier='epic'; this.lootHold?.(g,1900); } } finally{ this._lootMinRare=false; } }
     o.progress=o.target; o._ultResult=how; if(!o.done)this.completeWaveObjective(); }
-  sigOnKill(e){ const o=this.waveObjective,S=this._sig; if(e&&e._fpTok&&this.fpOnKill(e,o,S))return; if(e&&e._lanePath){ e._lanePath=null; e._goTo=null; } if(o&&!o.done&&S&&o.type==='hungersMouth'){ this.hmOnKill(e,o,S); return; } if(e&&e._breach){ e._breach=false; e._hmLord=false; if(o&&!o.done&&S&&o.type==='hungerDomain'&&Math.random()<.35){ this.hmSplinters?.(1); S.sp=(S.sp|0)+1; } } if(o&&!o.done&&S&&o.type==='hungerSiege'){ this.hsOnKill(e,o,S); return; } if(e&&e._hdLord){ e._hdLord=false; if(o&&!o.done&&S&&o.type==='hungerDomain')this.hdDown(e,o,S); return; } if(e&&e._herald){ e._herald=false; e._goTo=null; if(o&&!o.done&&S&&o.type==='hungerHerald')this.hhDown(e,o,S); return; } if(o&&!o.done&&S&&o.type==='grandmasPot'){ this.gpOnKill(e,o,S); return; } if(e&&(e._ggPart||e._golem)){ const part=e._ggPart,gol=e._golem; e._ggPart=null; e._golem=false; if(o&&!o.done&&S&&o.type==='grandmasGolem'){ if(gol)this.ggDown(e,o,S); else this.ggDropPart(S,e,part); } return; } if(o&&!o.done&&S&&(o.type==='ultimatum'||o.type==='vaultAltar')&&S.phase==='fight'&&S.goal==='slay'&&e&&!e.isBoss){ o.progress=Math.min(o.target,o.progress+(e.isElite?2:1)); return; } if(!o||o.done||!S||o.type!=='seedRift'||!e||e.isBoss)return; if(this.dist(e.x,e.y,S.x,S.y)>(S.curR||S.R))return; o.progress=Math.min(o.target,o.progress+1); S.life=Math.min(16,S.life+1.5); if(o.progress>=o.target)this.time?.delayedCall?.(0,()=>{ if(this.waveObjective===o&&!o.done)this.completeWaveObjective(); }); }
+  breachFoeArt(e){
+    if(e._hmLord||e._hdLord)return;
+    const species=['mite','maw','claw','eye'];
+    const sp=species[Math.abs((e.x*31+e.y*17)|0)%species.length];
+    const size={mite:56,maw:90,claw:70,eye:64}[sp];
+    const overlay=this.artFollow?.(e,'brm_'+sp+'_walk',size);
+    if(!overlay)return;
+    e._brSp=sp;
+    e.clearTint?.();
+  }
+  breachFoeDeath(e){
+    const sp=e?._brSp;
+    if(!sp)return;
+    e._brSp=null;
+    const sprite=this.artFx?.('brm_'+sp+'_death',e.x,e.y,{mite:56,maw:90,claw:70,eye:64}[sp]);
+    if(sprite){
+      sprite.setFlipX?.(!!e._artOv?.flipX);
+      e._missionDeathArt=true;
+    }
+  }
+  sigOnKill(e){ const o=this.waveObjective,S=this._sig; if(e?._breach)this.breachFoeDeath?.(e); if(e&&e._fpTok&&this.fpOnKill(e,o,S))return; if(e&&e._lanePath){ e._lanePath=null; e._goTo=null; } if(o&&!o.done&&S&&o.type==='hungersMouth'){ this.hmOnKill(e,o,S); return; } if(e&&e._breach){ e._breach=false; e._hmLord=false; if(o&&!o.done&&S&&o.type==='hungerDomain'&&Math.random()<.35){ this.hmSplinters?.(1); S.sp=(S.sp|0)+1; } } if(o&&!o.done&&S&&o.type==='hungerSiege'){ this.hsOnKill(e,o,S); return; } if(e&&e._hdLord){ e._hdLord=false; if(o&&!o.done&&S&&o.type==='hungerDomain')this.hdDown(e,o,S); return; } if(e&&e._herald){ e._herald=false; e._goTo=null; if(o&&!o.done&&S&&o.type==='hungerHerald')this.hhDown(e,o,S); return; } if(o&&!o.done&&S&&o.type==='grandmasPot'){ this.gpOnKill(e,o,S); return; } if(e&&(e._ggPart||e._golem)){ const part=e._ggPart,gol=e._golem; e._ggPart=null; e._golem=false; if(o&&!o.done&&S&&o.type==='grandmasGolem'){ if(gol)this.ggDown(e,o,S); else this.ggDropPart(S,e,part); } return; } if(o&&!o.done&&S&&(o.type==='ultimatum'||o.type==='vaultAltar')&&S.phase==='fight'&&S.goal==='slay'&&e&&!e.isBoss){ o.progress=Math.min(o.target,o.progress+(e.isElite?2:1)); return; } if(!o||o.done||!S||o.type!=='seedRift'||!e||e.isBoss)return; if(this.dist(e.x,e.y,S.x,S.y)>(S.curR||S.R))return; o.progress=Math.min(o.target,o.progress+1); S.life=Math.min(16,S.life+1.5); if(o.progress>=o.target)this.time?.delayedCall?.(0,()=>{ if(this.waveObjective===o&&!o.done)this.completeWaveObjective(); }); }
   /* v8.1.77 เจ้าของ: Survive มีอะไรให้ทำ → กล่องเสบียงตก 2 ครั้ง (30% / 65% ของเวลา) วิ่งไปเก็บ Sugar (+หัวใจบางครั้ง) */
   surviveSupply(o){ if(this._inTutorial||this.recipeMode||!this.player||!this.loots)return; const at=[.3,.65],k=o._sup||0; if(k>=at.length||o.progress<o.target*at[k])return; o._sup=k+1;
     const P=this.objectivePosition(0,1,150,240),gift=this.artSpr('msn71_supply_crate',P.x,P.y-320,80,0,{sig:false,depth:P.y+6})||this.camWorld(this.add.image(P.x,P.y-320,'gift').setScale(.8).setDepth(P.y+6)),sh=this.camWorld(this.add.ellipse(P.x,P.y+10,16,6,0x000000,.35).setDepth(P.y-1));
@@ -19295,6 +19360,8 @@ class Game extends Phaser.Scene {
   }
   stopEnemyPresentation(e){
     this.stopBossInk?.(e);
+    if(e._artOv){ if(e._artOv.active)e._artOv.destroy(); e._artOv=null; e.setAlpha?.(1); }
+    e._brSp=null; e._missionDeathArt=false;
     e._enemyWeight=null;
     e._readCrest?.destroy();e._readCrest=null;e._readWind=false;
     e._glacierLifeToken=(e._glacierLifeToken||0)+1;e._frostBurnStacks=0;e._trem=0;e._shock=0;e._frostBurnUntil=0;e._frostBurnPower=0;e._frostBurnTick=0;e._glacierFrost=0;e._glacierFrostAt=0;e._glacierBrittleUntil=0;e._mintImpale=0;e._mintImpaleAt=-Infinity;e._mintRuptureAt=-Infinity;e._glacierBurstAt=-Infinity;e._chill=0;e._chillAt=null;
@@ -21230,7 +21297,7 @@ class Game extends Phaser.Scene {
     if(bSugar){ this.showBanner('📖 Codex Rank Unlocked','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
     if(!victory){this.burst(e.x,e.y,deathColor);this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);}
-    if(!big)this.playEnemyDeath(e);   // v5.78 ตัวกระเด็นหมุนออกจากผู้เล่น
+    if(!big&&!e._missionDeathArt)this.playEnemyDeath(e);   // v5.78 ตัวกระเด็นหมุนออกจากผู้เล่น
     { const now=this.time.now; this._mkT=(this._mkT||[]).filter(t=>now-t<260); this._mkT.push(now); if(this._mkT.length>=6&&now-(this._mkShakeAt||0)>450){ this._mkShakeAt=now; this._mkT=[]; this.screenShake(90,0.0035); } }   // ฆ่ารวดเป็นกลุ่ม = จอสั่นเบา
     if(big&&!victory){ this.screenShake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)(Sfx.ev?.('miniboss_defeat',.65,1)||Sfx.clear()); }
     if(e._aura){ e._aura.destroy(); e._aura=null; }   // เก็บออร่าEnraged
@@ -21238,7 +21305,7 @@ class Game extends Phaser.Scene {
     e._phaseInvuln=0;e._phaseGateLocked=false;
     if(e._hungerOrbs){e._hungerOrbs.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerOrbs=null;}
     if(e._hungerHalo){e._hungerHalo.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerHalo=null;}
-    if(!victory){this.stage5DeathGhost(e);this.chapter2DeathGhost(e);}
+    if(!victory&&!e._missionDeathArt){this.stage5DeathGhost(e);this.chapter2DeathGhost(e);}
     if(isBoss&&!victory) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ const bl=this.bigFoeLoot(e.x,e.y,'boss'); if(bl)this.time.delayedCall(900,()=>this.floatText?.(this.player?.x||e.x,(this.player?.y||e.y)-90,(bl.boxes?'🎁 +'+bl.boxes+' boss loot · ':'')+'🍬 +'+bl.sugar,0xffd166)); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
     { const wo=this.waveObjective,_fb=this.boss; if(isBoss||(!this.bossRush&&_fb&&_fb.active&&_fb.isBoss)){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
@@ -21261,7 +21328,7 @@ class Game extends Phaser.Scene {
     if(this.runSugarTxt)this.runSugarTxt.setText('🍬 '+this.sugarRun);   // UpdatesเงินWaitบนี้แบบ realtime
     this.clearObjectiveTargetFx(e);if(wasWaveTarget)this.onWaveObjectiveTargetDown(e);
     if(e._dashTel){this.tweens.killTweensOf(e._dashTel);e._dashTel.destroy();e._dashTel=null;}
-    if(!e.isBoss&&!e.isMini&&!e.isDummy)this.mochiPop?.(e);   // v8.1.49 เจ้าของ: มอนตายแบบโมจิ (ป่อง → แบน → หาย)
+    if(!e.isBoss&&!e.isMini&&!e.isDummy&&!e._missionDeathArt)this.mochiPop?.(e);   // v8.1.49 เจ้าของ: มอนตายแบบโมจิ (ป่อง → แบน → หาย)
     this.stopEnemyPresentation(e);e.setActive(false).setVisible(false); if(e.body)e.body.enable=false; e.isBoss=false; e.isMini=false; e.isElite=false; e.shooter=false; e.bomber=false; e.acid=false; e.dasher=false; e.siege=false; e.dashState=null;e.mycoRole=null;e.nectarRole=null;e.seasonRole=null;e.rootRole=null;e._waveObjectiveTarget=false;e.bloomStacks=0;e.bloomUntil=0;e._memoryToken=null;e._memoryStored=0;e._decoyT=0;e.clearTint();e.setScale(1);
     if(isBoss){ // หน่วงเปิดกล่องรางวัลให้เห็นฉากบอสตาย (bossDefeat) ก่อน — ไม่งั้นหน้าสรุปเด้งทับทันที
       // v7.9.12 เจ้าของ: ไม่ดูดเม็ดเข้าตัวแล้ว (เก็บเอง) · onBossDown ยังนับเม็ดที่เหลือให้ตอนจบด่าน

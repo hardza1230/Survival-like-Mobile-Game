@@ -1,0 +1,10 @@
+[
+  {"key": "brm_mite_walk", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_mite_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_maw_walk", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_maw_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_claw_walk", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_claw_death", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_eye_walk", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "brm_eye_death", "result": "pass", "reason": "mechanical checks passed"}
+]

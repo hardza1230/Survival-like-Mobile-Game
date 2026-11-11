@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.94 — distinct level-up cards (art order 75)
+
+Eight ImageGen sources verified and packed by scripts/pack-levelup75.py (192 KB WebP, 5.22 MB decoded only during play). The Normal, Mutation, Relic and Unique templates share the existing 9-slice layout with a distinct crest. Special frame FX animate at 8 fps and stay still under reduced motion. The old card art and drawn panel are fallbacks. No changes to card selection or effects. tests/levelup75-art.test.cjs covers source integrity, stage-lazy assets, categories and fallbacks.
+
 # Previous delivery: v8.1.93 — art orders 70–74 wired (63 files)
 
 scripts/pack-missions71-74.py: MANIFEST sha check → WebP q88 (black bg → luminance alpha, frames ≥512 halved except hm_rim) → assets/art/{league72,missions71,trial74,league73,patrol70}/ + menu icons moved to assets/art/menu74/ (ic_memory renamed ic_memory_book: key already used). Index assets/art/missions71_74_index.json. Mission art = ASSET_FX, artClass 'stage' (prefix fp|hm|hh|gp|gg|hs|ult|msn71 / cr_root_), loaded per stage by missionArtKeys(idx) inside stageArtKeys (Delve adds hm/hs/ult). Menu art (menu74, patrol70) = ASSET_IMAGES/ASSET_SHEETS menu-lazy; menuGroupRe adds menu74 everywhere, patrol70 on patrol/gActivity/hub. Helpers: artSpr/sigArt (sprite or old emoji), artIsSpr, artFx (one-shot, NORMAL blend), artFollow/artFollowTick/artFollowClear (overlay on special enemies: herald, golem, warlord, hand lord, Breachlord, stalker captain; base enemy alpha .01, restored on clear). Patrol: patrolScene (sky crop + mid/ground tileSprite parallax), patrolFoe (pt_foes row anims), patrolPop, pt_loot, pt_dim. Delve map tk → amap_trial/amap_siege. Codex badge/memory icon on Bestiary Codex button. Test tests/missions71-74-art.test.cjs.
