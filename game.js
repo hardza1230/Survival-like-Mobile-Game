@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.86';
+const GAME_VERSION = '8.1.87';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.87',date:'2026-11-11',title:'Memory Book',items:['Every Bestiary tier you unlock now gives 💭 Memories (1 · 2 · 4) — tiers you already had are paid back once','Spend Memories to raise a monster’s 📖 Codex (Lv 1–5) once it reaches Tier 3: each level adds +3% damage against that monster on top of its weak spot','Open a monster in the Bestiary to see its Codex button']},
   {v:'8.1.86',date:'2026-11-11',title:'Siege of the Hunger',items:['New Delve room from depth 3: 🏰 Siege of the Hunger — hold the circle for 45 seconds while five gates pour monsters in','Every kill inside the circle fills the pot; stepping out pauses the siege and leaks the pot','A Hunger Warlord may storm a gate mid-siege for a huge pot bonus · the pot bursts into loot when the siege breaks (deeper = more)']},
   {v:'8.1.85',date:'2026-11-11',title:'Grandma’s Golem',items:['The Crown Oven of Hunger opens with 🗿 Grandma’s Golem: beat the flavor carriers to collect golem parts (🍰 head · 🥨 arms · 🥖 legs · 🍭 tail · 💗 heart)','Stand at the oven to bake the golem — every part gives it a skill, so more parts make a tougher fight and a bigger reward (you can bake early)','Berry Jam and Star Sugar now show proper icons']},
   {v:'8.1.84',date:'2026-11-11',title:'Reforge: row currencies & Recipe Ink',items:['Upgrading a mod now uses the row’s own currency: row 1 🟢 Twist Cream · row 2 🍓 Berry Jam · row 3 🍯 Honey Drop · rows 4–6 ⭐ Star Sugar','Adding and removing mods still costs 🟢 Twist Cream on every row','New 🖋️ Recipe Ink: tap 🖋️ on a mod to move it to an empty row on another item (the mod leaves the first item)','The new currencies drop from harder fights and every League mission — veterans get a starter pack']},
@@ -7278,6 +7279,7 @@ const Save = {
     if(this.data.bestiary.boss!=null){ this.data.bestiary.boss0=(this.data.bestiary.boss0||0)+this.data.bestiary.boss; delete this.data.bestiary.boss; }
     if(this.data.bestiary.mini!=null){ this.data.bestiary.mini0=(this.data.bestiary.mini0||0)+this.data.bestiary.mini; delete this.data.bestiary.mini; }
     if(!this.data.rankPerks)this.data.rankPerks={};
+    if(!this.data._memory87){ this.data._memory87=1; let m=0; const B=this.data.bestiary||{}; for(const id in B){ const k=B[id]|0; (typeof bestiaryTiers==='function'?bestiaryTiers(id):[1,100,1000]).forEach((t,i)=>{ if(k>=t)m+=[1,2,4][i]||0; }); } if(m)this.data.memories=(this.data.memories|0)+m; }   // v8.1.87 Memory Book: จ่ายย้อนหลังตามขั้นที่ปลดแล้ว
     if(!this.data._reforge84){ this.data._reforge84=1; const c=this.data.currency||(this.data.currency={}); if((this.data.unlockedStage||0)>=1||Object.keys(this.data.stageMastery||{}).length){ c.berryjam=(Number(c.berryjam)||0)+4; c.honeydrop=(Number(c.honeydrop)||0)+2; c.starsugar=(Number(c.starsugar)||0)+1; c.recipeink=(Number(c.recipeink)||0)+1; } }   // v8.1.84 ของขวัญเริ่มระบบสกุลแถว (เซฟที่เล่นแล้ว)
     if(!this.data._glazeMig){ this.data._glazeMig=1; const c=this.data.currency||(this.data.currency={}),g=Math.max(0,Math.floor(Number(c.divine)||0)); if(g)c.transmute=(Number(c.transmute)||0)+g*3; delete c.divine; }   // v8.0.83 Crystal Glaze → Twist Cream ×3 ครั้งเดียว
     if(!this.data._rrMig){ this.data._rrMig=1; let th=0; for(const c of SPECIAL_CORES){ const n=Math.max(0,Math.min(3,Math.floor(Number((this.data.specialCores||{})[c.id])||0))); th+=c.base*n*(n+1)/2; } if(th>0)this.data.threads=(this.data.threads||0)+th; this.data.specialCores={}; if((this.data.rankPerks||{}).revive){ this.data.rankPick=Object.assign({},this.data.rankPick,{2:'revive'}); } this.data.rankPerks={}; }   // v8.0.22 Rank Rewards: คืน Thread ของ Special Cores · Rank Perk เดิม (Sugar/Box/Fortune → โบนัสอัตโนมัติ) · Revival Candle เดิมเลือกให้ที่ยศ 2
@@ -7563,7 +7565,7 @@ const Save = {
     this.data.bestiary[type]=after;
     // ปลดขั้น Bestiary = รับ Sugar (แทนที่โบนัสสแตตเดิม) — คืนจำนวน Sugar ที่ได้ให้ผู้เรียกโชว์ป้าย
     let sugar=0;
-    bestiaryTiers(type).forEach((t,i)=>{ if(before<t&&after>=t)sugar+=BEST_TIER_SUGAR[i]||0; });
+    let mem=0; bestiaryTiers(type).forEach((t,i)=>{ if(before<t&&after>=t){ sugar+=BEST_TIER_SUGAR[i]||0; mem+=(typeof MEMORY_TIER!=='undefined'&&MEMORY_TIER[i])||0; } }); if(mem)this.data.memories=(this.data.memories|0)+mem;   // v8.1.87 Memory Book
     if(sugar){ this.data.sugar=(this.data.sugar||0)+sugar; this.save(); }
     return sugar; },
 };
@@ -7841,6 +7843,10 @@ C3_BOSS_CODEX.forEach(([mini,boss],i)=>{
   BESTIARY.push({id:'boss'+(i+10),emoji:'👑',name:boss,tex:'codex_c3_boss'+n,desc:stage+' boss',bonus:[1,2,3,4,5].map(x=>({hp:x,dmg:x*0.004}))});
 });
 /* v6.78 C3: Bestiary gives Sugar/collection only, no stats */
+/* v8.1.87 เจ้าของ (League phase 7 · Bestiary → Memory Book): ปลดขั้น = ได้ 💭 Memory · ใช้ Memory อัป Codex ของมอนตัวนั้น (ต้องถึงขั้น 3) · Codex +3% ดาเมจต่อมอนตัวนั้น/ขั้น (สูงสุด 5) */
+const MEMORY_TIER=[1,2,4],CODEX_MAX=5,CODEX_STEP=.03;
+function codexLv(id){ const c=(typeof Save!=='undefined'&&Save.data&&Save.data.codex)||{}; return Math.max(0,Math.min(CODEX_MAX,c[id]|0)); }
+function codexCost(id){ return codexLv(id)+1; }
 function bestiaryLv(type){ const k=Save.kills(type); let lv=0; for(const t of bestiaryTiers(type)){ if(k>=t)lv++; else break; } return lv; }
 // v8.0.30 มอน C1-2…C2-5 แยกชนิดตามด่าน (เดิมนับรวมเป็นมด C1-1) · key = f<ด่าน>_<ชื่อ>
 const FIELD_CODEX=[
@@ -11366,8 +11372,8 @@ class Game extends Phaser.Scene {
     this.menu.removeAll(true); this.tapZones=[]; this._screenBg('📖 Bestiary','screen_bestiary');
     const w=this.W,h=this.H,hs=this._hdrShift(),L=BESTIARY.slice().sort((x,y)=>x.ord-y.ord),seen=L.filter(m=>Save.kills(m.id)>0).length,weak=L.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).length;
     const paperAreas=[];const T=(x,y,t,sz,c,st,ox=0,oy=0)=>{const q=this.add.text(x,y,t,{fontFamily:'sans-serif',fontStyle:st||'normal',fontSize:sz+'px',color:paperAreas.some(r=>x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h)?this.menuArtInk(c):c||'#fff'}).setOrigin(ox,oy);this.menu.add(q);return q;};
-    T(w/2,48+hs,'Found '+seen+' / '+L.length+' · Weak spots learned '+weak,11,'#ffe08a','bold',.5,.5);
-    T(w/2,63+hs,'Tier 1 = first sight · Tier 2 = 100 · Tier 3 = 1,000 defeats (bosses 1 / 5 / 25)',8.5,'#8bd3ff','normal',.5,.5);
+    T(w/2,48+hs,'Found '+seen+' / '+L.length+' · Weak spots '+weak+' · 💭 '+(Save.data.memories|0)+' Memories',11,'#ffe08a','bold',.5,.5);
+    T(w/2,63+hs,'Tiers: first sight · 100 · 1,000 defeats (bosses 1/5/25) · each tier gives 💭 · Tier 3 opens the Codex',8.5,'#8bd3ff','normal',.5,.5);
     const portrait=w<=h,cols=portrait?2:3,gap=7,cardW=(w-28-gap*(cols-1))/cols,rows=portrait?6:3,perPage=cols*rows,pages=Math.max(1,Math.ceil(L.length/perPage));
     if(this._bestFocus){ const k=L.findIndex(m=>m.id===this._bestFocus); if(k>=0)this._bestPage=Math.floor(k/perPage); this._bestFocus=null; }
     this._bestPage=Phaser.Math.Clamp(this._bestPage||0,0,pages-1);
@@ -11396,10 +11402,10 @@ class Game extends Phaser.Scene {
       icon(sel,px+46,py+48,64,!found); T(px+90,py+26,found?sel.name:'???',16,'#ffffff','bold'); T(px+90,py+50,found?sel.desc:'Defeat it once to learn more',10,'#cfc2d5'); T(px+90,py+66,'Defeated: '+k,10,'#ffe08a','bold');
       let yy=py+(this.tuHas?.('bs_detail_panel')&&ph>=360?ph*.45:96); ['First sight','Tier 2','Tier 3'].forEach((lab,t)=>{ const on=lv>t; T(px+18,yy,(on?'✓ ':'○ ')+lab+' · '+tiers[t]+(tiers[t]===1?' defeat':' defeats'),11,on?'#8bffb4':'#a89cb6','bold'); T(px+pw-18,yy,'🍬 '+BEST_TIER_SUGAR[t],11,on?'#8bffb4':'#a89cb6','bold',1); yy+=20; });
       yy+=6; const lg=this.add.graphics(); lg.fillStyle(lv>=3?0x3a2f18:0x1a1520,1).fillRoundedRect(px+12,yy,pw-24,ph-(yy-py)-52,12); this.menu.add(lg);
-      if(lv>=3){this.menuArtIcon?.('bs_weak',0,px+pw-26,yy+16,18); T(px+24,yy+12,'📜 Monster note',11,'#ffe08a','bold'); const lt=this.add.text(px+24,yy+30,sel.lore,{fontFamily:'sans-serif',fontSize:'11px',color:'#fff5dd',wordWrap:{width:pw-48}}); this.menu.add(lt); T(px+24,yy+36+lt.height,'⚔️ Weak spot: +5% damage to '+sel.name,11,'#8dffb0','bold'); }
+      if(lv>=3){this.menuArtIcon?.('bs_weak',0,px+pw-26,yy+16,18); T(px+24,yy+12,'📜 Monster note',11,'#ffe08a','bold'); const lt=this.add.text(px+24,yy+30,sel.lore,{fontFamily:'sans-serif',fontSize:'11px',color:'#fff5dd',wordWrap:{width:pw-48}}); this.menu.add(lt); T(px+24,yy+36+lt.height,'⚔️ Weak spot: +'+Math.round((BEST_WEAK_MUL-1+codexLv(sel.id)*CODEX_STEP)*100)+'% damage to '+sel.name,11,'#8dffb0','bold'); }
       else T(px+pw/2,yy+(ph-(yy-py)-52)/2,'🔒 Reach Tier 3 to learn its weak spot\n(+5% damage to this monster)',11,'#a89cb6','bold',.5,.5).setAlign('center');
-      const bw=bossStory?110:120,bx=bossStory?px+18:w/2-bw/2,by=py+ph-42,bb=this.add.graphics(); bb.fillStyle(0x3c3048,1).fillRoundedRect(bx,by,bw,32,10).lineStyle(1.4,0xa98cf0,1).strokeRoundedRect(bx,by,bw,32,10); this.menu.add(bb); T(bx+bw/2,by+16,'Close',12,'#ffffff','bold',.5,.5);
-      this.tapZones=[]; this._zone(0,0,w,h,()=>{ this._bestSel=null; this.buildBestiary(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='best_close'; z.back=true;
+      const bw=bossStory?110:120,bx=bossStory?px+18:w/2-bw/2,by=py+ph-42,bb=this.add.graphics(); const cdx=lv>=BEST_MAX_TIER?{lv:codexLv(sel.id),cost:codexCost(sel.id),have:Save.data.memories|0}:null; if(cdx){ const uw=Math.min(pw-36,240),ux=w/2-uw/2,uy=by-40,full=cdx.lv>=CODEX_MAX,ok=!full&&cdx.have>=cdx.cost,ug=this.add.graphics(); ug.fillStyle(ok?0x6a4a1e:0x2f2638,1).fillRoundedRect(ux,uy,uw,32,10).lineStyle(1.4,ok?0xffd166:0x6d536d,1).strokeRoundedRect(ux,uy,uw,32,10); this.menu.add(ug); T(ux+uw/2,uy+16,full?'📖 Codex Lv '+CODEX_MAX+' · weak spot +'+Math.round((BEST_WEAK_MUL-1+CODEX_MAX*CODEX_STEP)*100)+'%':'📖 Codex Lv '+cdx.lv+' → '+(cdx.lv+1)+' · 💭'+cdx.cost+' ('+cdx.have+')',11,ok?'#ffe7b0':'#a89cb6','bold',.5,.5); sel._cdxRect={x:ux,y:uy,w:uw,h:32}; } else sel._cdxRect=null;   /* v8.1.87 Memory Book */ bb.fillStyle(0x3c3048,1).fillRoundedRect(bx,by,bw,32,10).lineStyle(1.4,0xa98cf0,1).strokeRoundedRect(bx,by,bw,32,10); this.menu.add(bb); T(bx+bw/2,by+16,'Close',12,'#ffffff','bold',.5,.5);
+      this.tapZones=[]; this._zone(0,0,w,h,()=>{ this._bestSel=null; this.buildBestiary(); }); const z=this.tapZones[this.tapZones.length-1]; z.noBounce=true; z.tag='best_close'; z.back=true; if(sel._cdxRect){ z.back=false; const R=sel._cdxRect; this._zone(R.x,R.y,R.w,R.h,()=>this.codexUpgrade(sel.id)); this.tapZones[this.tapZones.length-1].tag='codex_up'; }
       if(bossStory){z.back=false;const sx=px+pw-128,sw=110,sg=this.add.graphics();sg.fillStyle(0x67422c,1).fillRoundedRect(sx,by,sw,32,10).lineStyle(1,0xffd590,1).strokeRoundedRect(sx,by,sw,32,10);this.menu.add(sg);T(sx+sw/2,by+16,'Read story',12,'#fff1d4','bold',.5,.5);this.tapZones.push({x:sx,y:by,w:sw,h:32,tag:'best_story',noBounce:true,fn:()=>this.openBossStoryPanel(sel.stage,{name:sel.name,replay:true})});} }
 
     this.menu.setVisible(true);
@@ -18815,7 +18821,9 @@ class Game extends Phaser.Scene {
     if(!k)k=e._bestiaryType||(e.acid?'acid':e.dasher?'dasher':e.siege?'siege':e.shooter?'shooter':e.bomber?'bomber':(e.texture&&e.texture.key==='e_fast'?'fast':(e.texture&&e.texture.key==='e_tank')||e.isElite?'tank':'basic'));
     e._bkS=si; e._bkR=e.roleName; e._bk=k; return k; }
   // v8.0.30 จุดอ่อนจาก Bestiary ขั้น 3: +5% ดาเมจใส่ชนิดนั้น (ชุดคำนวณตอนเริ่มด่าน)
-  bestWeakMul(e){ const W=this._bestW; if(!W||!W.size||!e||e.isDummy)return 1; return W.has(this.bestiaryKey(e))?BEST_WEAK_MUL:1; }
+  bestWeakMul(e){ const W=this._bestW; if(!W||!W.size||!e||e.isDummy)return 1; const k=this.bestiaryKey(e); return W.has(k)?BEST_WEAK_MUL+(typeof codexLv==='function'?codexLv(k)*CODEX_STEP:0):1; }
+  codexUpgrade(id){ const m=BESTIARY.find(x=>x.id===id); if(!m||bestiaryLv(id)<BEST_MAX_TIER){ Sfx.error?.(); return false; } const lv=codexLv(id); if(lv>=CODEX_MAX){ Sfx.error?.(); return false; } const c=codexCost(id),have=Save.data.memories|0; if(have<c){ Sfx.error?.(); this.showBanner?.('💭 Need '+c+' Memories','Unlock more Bestiary tiers to remember more',1500); return false; }
+    Save.data.memories=have-c; const cx=Save.data.codex||(Save.data.codex={}); cx[id]=lv+1; Save.save(); if(this._bestW&&this._bestW.has(id)){} Sfx.menuCue?.('forge_lv_up',.45)||Sfx.select?.(); this.showBanner?.('📖 Codex Lv '+(lv+1),m.name+' · weak spot +'+Math.round((BEST_WEAK_MUL-1+(lv+1)*CODEX_STEP)*100)+'% damage',1500); this.buildBestiary?.(); return true; }
   condDmgMul(e){ const yz=this.character==='yuzu'?this.yuzuVulnerable(e):1; const P=this.player,c=P&&P._cond; if(!c)return yz*(this.bestWeakMul?this.bestWeakMul(e):1); let m=yz*(this.bestWeakMul?this.bestWeakMul(e):1); const f=P.hp/Math.max(1,P.maxhp);
     if(c.c_low&&f<0.5)m+=0.20*c.c_low; if(c.c_full&&f>=0.9)m+=0.12*c.c_full;
     if(c.c_dash&&(this.elapsed||0)-(this._lastDashAt??-99)<2)m+=0.25*c.c_dash;

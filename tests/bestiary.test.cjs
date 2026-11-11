@@ -20,3 +20,11 @@ assert(method('startStage').includes('this._bestW=new Set(BESTIARY.filter(m=>bes
 assert(src.includes("label:'New monsters discovered'")&&src.includes("()=>this.continueFromSummary(this._newSpecies[0])"),'summary link to the new monster');
 assert(method('continueFromSummary').includes("this.menuScreen='bestiary'"));
 console.log('Bestiary: 3 tiers (bosses 1/5/25), C1-2..C2-5 field species, notes, real +5% weak spot, summary New! link passed');
+
+// v8.1.87 Memory Book: tiers give Memories, Codex levels raise the weak-spot bonus for that monster
+{ assert.equal(vm.runInContext('MEMORY_TIER.join()',ctx),'1,2,4');data.codex={basic:3};assert.equal(vm.runInContext("codexLv('basic')",ctx),3);assert.equal(vm.runInContext("codexCost('basic')",ctx),4);
+  g._bestW=new Set(['basic']);assert(Math.abs(g.bestWeakMul({texture:{key:'e_basic'}})-(X.BEST_WEAK_MUL+.09))<1e-9,'codex adds 3%/lv');data.codex={};
+  const ak=src.slice(src.indexOf('  addKill(type){'),src.indexOf('return sugar; },',src.indexOf('  addKill(type){')));assert(/this\.data\.memories=\(this\.data\.memories\|0\)\+mem/.test(ak),'tiers pay Memories');
+  const cu=method('codexUpgrade');assert(/bestiaryLv\(id\)<BEST_MAX_TIER/.test(cu)&&/Save\.data\.memories=have-c/.test(cu),'codex needs tier 3 and spends Memories');
+  assert(src.includes("if(sel._cdxRect){ z.back=false;"),'codex button beats the close zone');
+  console.log('Memory Book: tier Memories, Codex cost/levels, weak-spot bonus per Codex level passed'); }
