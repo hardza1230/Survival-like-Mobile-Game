@@ -14,7 +14,7 @@ function scene(W,H,{locked=false,modCount=3,selected='u0',empty=false,itemLevel=
 const screens=[[320,568],[360,640],[390,844],[430,932],[691,1536],[768,1024],[844,390]];
 const T=(s,t)=>s.tapZones.find(z=>z.tag===t),has=(s,re)=>s.nodes.some(n=>re.test(n.text));
 for(const[W,H]of screens)for(const locked of[false,true]){
- const s=scene(W,H,{locked});s._buildCraftBenchRaw();assert(has(s,/^(✓ )?Equipped$/));assert(has(s,/^MOD ROWS$/));assert(has(s,/Twist Cream · next craft 🟢1$/));
+ const s=scene(W,H,{locked});s._buildCraftBenchRaw();assert(has(s,/^(✓ )?Equipped$/));assert(has(s,/^MOD ROWS$/));assert(has(s,/^\d+  🍓\d+  🍯\d+  ⭐\d+  🖋️\d+$/),'wallet of row currencies');
  assert(!has(s,/🔨|Forge Points|Glaze/),'no FP / Glaze text');for(const t of ['roll','tier','auto','odds','swap','add','up','remove'])assert(!T(s,t),t+' old control removed');
  for(let i=0;i<3;i++){assert.equal(!!(T(s,'up_'+i)||T(s,'cap_'+i)),!locked);assert.equal(!!T(s,'rm_'+i),!locked);}assert.equal(!!T(s,'unlock'),locked);
  for(const z of s.tapZones.filter(z=>/^(up|rm|add|unlock)/.test(z.tag||'')))assert(z.h>=30,z.tag+' tap height');

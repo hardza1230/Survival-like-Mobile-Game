@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.83**. Next release:8.1.84. Fetch the deploy branch before new work.
+Current release: **8.1.84**. Next release:8.1.85. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.83 — League phase 3: Hunger Herald (C1-1) + Grandma's Pot (C1-3)
+# Latest delivery: v8.1.84 — League phase 5: Reforge row currencies + Recipe Ink move (phase 4 Siege skipped for now by owner)
+
+Owner picked: 4 currencies, move (source loses mod), drops from League + normal drops (not Bazaar). CURRENCY += berryjam 🍓 / honeydrop 🍯 / starsugar ⭐ / recipeink 🖋️ (no icon art yet → prize_currency + d.tint). forgeRowCur(line): 0 transmute · 1 berryjam · 2 honeydrop · 3–5 starsugar; forgeUpPrice = row 1 forgePrice, else 1+floor(crafts/6). Add/Remove = Twist Cream forgePrice (unchanged). _forgePay(item,key,price) / _forgeDone(...,key). Move: 🖋️ button per filled non-bad row (tag mv_i) → forgeOpenMove → panel type 'move' (drawForgeMovePanel: items with an empty open row whose forgePool takes the mod) → forgeMove (1 Ink, source row null, Lv clamped to target forgeStarCap). Drops: CURRENCY_DROP_POOLS rare/epic/legend gain row currencies (common/Bazaar box stay Twist Cream); leagueCurrencyDrop on every LEAGUE_MISSIONS completion (1, full 2, Herald +1). Save._reforge84 starter gift (4/2/1/1) for played saves. Test tests/reforge-rows.test.cjs. Next: phase 4 Siege (Delve) when owner wants, phase 6 Golem, phase 7 Memory Book + art (incl. 4 currency icons).
+
+# Previous delivery: v8.1.83 — League phase 3: Hunger Herald (C1-1) + Grandma's Pot (C1-3)
 
 LEAGUE_MISSIONS const (sigSpawnAt _sigForce + 70s replay bounty). hungerHerald (Harbinger): hh* · Herald = sigSpawnAt elite ×1.3 (full hp ×1.5), e._herald, wanders via e._goTo (new point every 2.6–4s, biased away from player) · 2/3 gates spawn packs of 3/4 every 3.4/2.6s · kill Herald (sigOnKill → hhDown) = gates close + loot incl. forge currency (no noCur) · despawned Herald respawns at gate 0. C1-1 is fully planned (CH1_EARLY_WAVE_PLAN) so Herald shows only as the first replay bounty (`lead` + this._bountyLead in replayBountyTick). grandmasPot (Ritual idea A): gp* · recipe 🍓🍋🍫 (light 3+3 · full 3+2+2, 50% +⭐ from elites) · kills drop ingredients (42% + pity 4, 75% wanted) · walk over = carry (🧺 above player) · pot ring 100 = deposit needed ones · spoil 16s/12s · trickle spawns when <6 foes within 520 · nothing for 12s → Grandma tosses one · done = gpServe loot (⭐ ×1.6). C1-3 objectives ['grandmasPot','hunt','capture','purge'] lead → wave 0. Next: phase 4 Siege of the Hunger (Delve room).
-
-# Previous delivery: v8.1.82 — League phase 2: Hunger's Mouth (C1-2) + Creeping Roots (C2-3)
-
-hungersMouth (Breach): hm* methods · ring shrinks (light 10px/s max 340 cap 40s · full 15px/s max 440 cap 55s, ×2.2 in last 20%) · kill while the player stands inside (enemy ≤ R+300, auto-aim kills far) → pot +1 (elite 3, Tongue 12), R +16/+44 · spawns on the ring edge · R≤40 or cap → hmBurst (missionLootBurst pot·(.7+si·.2), full ×1.3) · full: Tongue of the Hunger elite at 18s. Stage 2 objectives ['hungersMouth','hunt','capture','purge'] + `lead:'hungersMouth'` (both bag builders push st.lead last = first wave; _leadUsed reset per stage). creepingRoots (Blight, replaces defendNectar on C2-3): cr* methods · 2 lanes light / 3 + split at 18s full · lane = 5 waypoints drawn on S.laneG · foes spawned at root mother get e._lanePath/_goTo (enemy AI target override + not culled; cleared on kill/sigClear) · stand on root mother 2.2s = cut · flower 300hp (attackers ≤120px), heal near, wilt = timer −20% (no player HP loss) · all cut = early end + loot. sigSpawnAt sets this._sigForce for league types → storyCanSpawn allows up to maxLive. Next: phase 3 Hunger Herald (C1-1) + Grandma's Pot (C1-3).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83
+- League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 (phase 4 ยังไม่ทำ)
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
 - ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย

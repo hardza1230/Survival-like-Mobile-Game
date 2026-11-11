@@ -4,9 +4,11 @@ const R=s=>vm.runInContext(s,ctx);
 // No Forge Points anywhere in the game code
 for(const k of ['FP_MAX','FP_ADD','FP_SWAP','FP_REMOVE','FP_LUCKY','gearFP(','fpStarCost','forgeAct('])assert(!source.includes(k),k+' removed');
 // One currency: Glaze retired from the list, drops, prices and boosts; old keys alias to Twist Cream
-assert.equal(R('JSON.stringify(CURRENCY.map(c=>c.key))'),'["transmute"]');assert.equal(R("curKey('divine')"),'transmute');
-assert.equal(R('JSON.stringify(CURRENCY_DROP_POOLS)'),JSON.stringify({common:{transmute:100},rare:{transmute:100},epic:{transmute:100},legend:{transmute:100}}));
-assert.equal(R("'divine' in CURRENCY_BUY"),false);for(const t of ['common','rare','epic','legend'])for(let i=0;i<20;i++){assert.equal(R(`rollWeightedCurrency('${t}')`),'transmute');assert.equal(R(`forgeCurrency('${t}',{133:100})`),'transmute');}
+// v8.1.84 owner (League phase 5 · Reforge): row currencies for upgrades + Recipe Ink; Twist Cream still adds/removes on every row
+assert.equal(R('JSON.stringify(CURRENCY.map(c=>c.key))'),'["transmute","berryjam","honeydrop","starsugar","recipeink"]');assert.equal(R("curKey('divine')"),'transmute');
+assert.equal(R('JSON.stringify(CURRENCY_DROP_POOLS.common)'),JSON.stringify({transmute:100}),'common drops stay Twist Cream');assert.ok(R('CURRENCY_DROP_POOLS.legend.starsugar>0&&!CURRENCY_DROP_POOLS.rare.starsugar'),'harder = rarer currencies');
+assert.equal(R("'divine' in CURRENCY_BUY"),false);for(let i=0;i<20;i++){assert.equal(R(`rollWeightedCurrency('common')`),'transmute');assert.equal(R(`forgeCurrency('common',{133:100})`),'transmute');}
+assert.deepEqual([0,1,2,3,4,5].map(i=>R('forgeRowCur')(i)),['transmute','berryjam','honeydrop','starsugar','starsugar','starsugar'],'upgrade currency per row');
 assert(/const cur=\[\{key:'transmute',qty:1\+Math\.floor\(rng\(\)\*3\)\},\{key:'transmute',qty:3\+Math\.floor\(rng\(\)\*3\)\}\]/.test(source),'Bazaar sells Twist Cream only');
 // Glaze migration: each Glaze → 3 Twist Cream, exactly once
 const mig=source.slice(source.indexOf('    if(!this.data._glazeMig){'),source.indexOf('\n',source.indexOf('    if(!this.data._glazeMig){')));

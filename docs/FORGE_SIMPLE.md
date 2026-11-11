@@ -1,5 +1,7 @@
 # Simple Forge — spec (owner picked 1 Nov 2026, "Forge is the most confusing system")
 
+> **v8.1.84 owner (League phase 5 · Reforge, supersedes "one currency"):** Upgrade uses the row's currency — row 1 Twist Cream · row 2 Berry Jam · row 3 Honey Drop · rows 4–6 Star Sugar (`forgeRowCur`, `forgeUpPrice`). Add/Remove stay Twist Cream on every row. 🖋️ Recipe Ink moves one mod to an empty open row of another item (source loses it, Lv clamped to target iLv cap). New currencies drop from rare+ pools and League missions, not the Bazaar.
+
 > **v8.0.87 owner changes (supersede rules below):** Add = random mod (no 1-of-3), no row categories (any mod on any row, duplicates ok), ~20% bad mods (no upgrade), Remove costs the craft price, Lv instead of ★, rarities Mythic/Ancient/Divine (4/5/6 rows, Merge only).
 
 Replaces the v8.0.33 Forge Points (Last Epoch) version. Implement as one release; keep save compatibility.
