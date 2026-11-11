@@ -59,5 +59,10 @@
 - pack: `scripts/pack-patrol70.py` → `assets/art/patrol70/*.webp` (sky คุณภาพ 82, ชั้น alpha คุณภาพ 88) · ประมาณถอดรหัส ~9 MB รวมทั้ง 3 บท แต่โหลดครั้งละบทเดียว (~3 MB)
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ไฟล์ที่ส่ง · ไฟล์ที่ขาด)
+- วันที่ส่ง 11 พ.ย. 2026
+- ส่ง 14/14 ไฟล์ที่ `assets/incoming/patrol70/`
+- ไฟล์ที่ขาด 0
+
+`pt_c1_sky.png`, `pt_c1_mid.png`, `pt_c1_ground.png`, `pt_c2_sky.png`, `pt_c2_mid.png`, `pt_c2_ground.png`, `pt_c3_sky.png`, `pt_c3_mid.png`, `pt_c3_ground.png`, `pt_foes.png`, `pt_pop.png`, `pt_loot.png`, `pt_dim.png`, `tile_patrol.png`
+
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`feet`/`center`/`none`), `background` (`transparent`/`black`/`opaque`), `tileable` (true/false), `groundLineY` (ชั้น ground)

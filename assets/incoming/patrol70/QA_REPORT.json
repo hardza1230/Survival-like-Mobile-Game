@@ -1,0 +1,16 @@
+[
+  {"key": "pt_c1_sky", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "pt_c1_mid", "result": "pass", "reason": "mechanical checks passed; both seams matched across three repeats"},
+  {"key": "pt_c1_ground", "result": "pass", "reason": "mechanical checks passed; both seams matched across three repeats"},
+  {"key": "pt_c2_sky", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "pt_c2_mid", "result": "pass", "reason": "mechanical checks passed; both seams matched across three repeats"},
+  {"key": "pt_c2_ground", "result": "pass", "reason": "mechanical checks passed; both seams matched across three repeats"},
+  {"key": "pt_c3_sky", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "pt_c3_mid", "result": "pass", "reason": "mechanical checks passed; both seams matched across three repeats"},
+  {"key": "pt_c3_ground", "result": "pass", "reason": "mechanical checks passed; both seams matched across three repeats"},
+  {"key": "pt_foes", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "pt_pop", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "pt_loot", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "pt_dim", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "tile_patrol", "result": "pass", "reason": "mechanical checks passed"}
+]
