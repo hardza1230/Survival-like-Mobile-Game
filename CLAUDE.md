@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.89**. Next release:8.1.90. Fetch the deploy branch before new work.
+Current release: **8.1.90**. Next release:8.1.91. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.89 — owner: Ruby lines carried over into the next stage
+# Latest delivery: v8.1.90 — order 69 festival skins as in-game preview + automatic art QA (owner: ก + ค)
+
+scripts/qa-skin69.py <hero> [--fix]: PASS/FAIL per candidate vs original (size, feet ±6, centre ±10, edge touch) · --fix auto-aligns frames into incoming/skins69/<hero>/aligned/. scripts/pack-skins69-heroes.py packs passing heroes → assets/art/skins69/<hero>/<key>.webp. Registered: card_/roster_<hero>__<tag> in ASSET_IMAGES (menu-lazy via LAZY_MENU_ART_RE art/skins69/) and 39 char_*__<tag> sheets in ASSET_SHEETS (hero class, runArtKeys loads only the worn tag; lazyArt treats key__tag as lazy so boot budget unchanged). Live: momo sakura, cocoa chef, taro star, yuzu summer, sesame moon (skinReady → buyable 1200 threads). Mint 4 sheets fail edge test → art side redraws those frames only (rule written at top of docs/SESSION_HANDOFF.md).
+
+# Previous delivery: v8.1.89 — owner: Ruby lines carried over into the next stage
 
 startStage bumps this._rubyEpoch, rubyHide(true) and clears _rubyQ. Delayed Ruby lines (rubyTip, rubyOnce → rubyLater(delay,fn); rubyVoiceReact delayed go) only run if the epoch still matches. rubyStoryAt keeps its own stageIndex check. If the owner meant something else carrying over (not Ruby), ask for a screenshot.
-
-# Previous delivery: v8.1.88 — owner: remove bottom skill bar, Ruby talks less
-
-drawBars: skillBar always setVisible(false) (buildSkillBar still builds chips for other code). rubyVoiceReact: 30s gap between reactions (was 8s) except clear/bossdown; objdone/wave/timer at most once per stage (this._rubyOnce reset in startStage).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -45,7 +45,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - League missions (เจ้าของ 11 พ.ย.) แผน 7 phase ใน `docs/design/OWNER_NOTES_POE_LEAGUES.md` · phase 1 Frozen Pantry v8.1.81 · phase 2 Hunger's Mouth + Creeping Roots v8.1.82 · phase 3 Herald + Grandma's Pot v8.1.83 · phase 5 Reforge v8.1.84 · phase 6 Golem v8.1.85 · phase 4 Siege v8.1.86 · phase 7 Memory Book v8.1.87 (ครบทุก phase) · ใบสั่งอาร์ต 73 (7 ไฟล์) รออาร์ต · ใบสั่งอาร์ต 72 (15 ไฟล์ ภารกิจ League phase 1–3 + ไอคอน Honey Drop/Recipe Ink) รออาร์ต
 - ภารกิจ 4 รอบ (เจ้าของ 10 พ.ย. ชอบทุกอัน): รอบ 1 v8.1.77 · รอบ 2 v8.1.78 · รอบ 3 v8.1.79 เสร็จ · รอบ 4 = ใบสั่งอาร์ต 71 (16 ไฟล์) รออาร์ต · เจ้าของอาจปรับความถี่แท่นเริ่ม/Overcharge หลังเล่นจริง
 - ใบ 70 ฉาก Mochi Patrol (14 ไฟล์) · รออาร์ต · โค้ด buildPatrol ใช้ภาพชั่วคราว v8.1.70
-- ใบ 69 สกินเต็มตัว Festival · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
+- ใบ 69 สกินเต็มตัว Festival · v8.1.90 เข้าเกมแบบทดลองแล้ว 5 ฮีโร่ (ผ่าน scripts/qa-skin69.py) · Mint รอแก้ 4 ชีต · เดิม: ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates (เจ้าของ 10 พ.ย.: ของติดตัว ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว ทุกที่รวมในด่าน; ขายแยกเหลือ pet/trail/dash/pop) · รออาร์ต · โค้ด: ช่อง skin + heroTex(key) fallback + คืนด้ายของที่เลิกขาย
 - ใบ 65 Daily Login 30 วัน ผูกแล้ว v8.1.43 · รอ QA มือถือ · A09 เสียง Ruby ในด่าน ผูกแล้ว v8.1.43
 - Simple Forge เสร็จ v8.0.83 รอเจ้าของตรวจบนมือถือ (ราคา/ความรู้สึก 3 การ์ด)
 - ใบสั่ง 62 สถานะติดตัว ผูกแล้ว v8.0.85 · รอ QA มือถือ

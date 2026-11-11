@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.88 — owner: remove bottom skill bar, Ruby talks less
+
+drawBars: skillBar always setVisible(false) (buildSkillBar still builds chips for other code). rubyVoiceReact: 30s gap between reactions (was 8s) except clear/bossdown; objdone/wave/timer at most once per stage (this._rubyOnce reset in startStage).
+
 # Previous delivery: v8.1.87 — League phase 7: Memory Book (Bestiary + Codex) + art order 73 · League plan complete
 
 Memory Book = existing Bestiary + Memories/Codex (owner note "Bestiary → codex upgrade · keep soul"). Save.addKill: each tier crossed → data.memories += MEMORY_TIER [1,2,4]; Save._memory87 back-pays tiers already reached. Codex per monster (data.codex[id], CODEX_MAX 5, cost = lv+1 Memories, needs bestiaryLv ≥ BEST_MAX_TIER) via codexUpgrade(id); bestWeakMul = BEST_WEAK_MUL + codexLv·CODEX_STEP(.03) for weak-spot monsters (_bestW Set unchanged). UI: header shows 💭, detail panel button tag codex_up (close zone back=false so it can be tapped). Art order 73 (7 files: golem oven/parts/body, siege circle/warlord, ic_memory, codex badges). All 7 league phases done; waiting on art 72/73 and owner tuning.

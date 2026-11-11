@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.89';
+const GAME_VERSION = '8.1.90';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.90',date:'2026-11-11',title:'Festival skins (preview)',items:['Five Festival skins are now in the Wardrobe as a preview: Sakura Festival Momo, Pastry Chef Cocoa, Starlight Astronomer Taro, Summer Splash Yuzu and Moon Rabbit Sesame','They change the hero everywhere — card, roster and every move in battle','Snowflake Princess Mint is still being tailored']},
   {v:'8.1.89',date:'2026-11-11',title:'Ruby stays in her stage',items:['Ruby’s lines from the last stage no longer pop up after you move on to the next one']},
   {v:'8.1.88',date:'2026-11-11',title:'Cleaner battle screen',items:['Removed the skill icon bar at the bottom of the battle screen (your skills are still listed in the pause menu)','Ruby talks less in battle: at least 30 seconds between reactions, and “objective done”, wave and timer lines only once per stage']},
   {v:'8.1.87',date:'2026-11-11',title:'Memory Book',items:['Every Bestiary tier you unlock now gives 💭 Memories (1 · 2 · 4) — tiers you already had are paid back once','Spend Memories to raise a monster’s 📖 Codex (Lv 1–5) once it reaches Tier 3: each level adds +3% damage against that monster on top of its weak spot','Open a monster in the Bestiary to see its Codex button']},
@@ -2937,6 +2938,17 @@ const ASSET_IMAGES = {
   ic_taro_arc:'assets/icons/levelup/taro_arc.png', ic_taro_surge:'assets/icons/levelup/taro_surge.png',
   ic_sesame_power:'assets/icons/levelup/sesame_power.png', ic_sesame_rate:'assets/icons/levelup/sesame_rate.png',
   ic_sesame_pane:'assets/icons/levelup/sesame_pane.png', ic_sesame_radius:'assets/icons/levelup/sesame_radius.png',
+  /* v8.1.90 เจ้าของ: สกิน Festival (ใบ 69) แบบทดลอง — candidates ที่ผ่าน scripts/qa-skin69.py --fix (ยังไม่ใช่งานจบ) */
+  card_cocoa__chef:'assets/art/skins69/cocoa/card_cocoa__chef.webp',
+  roster_cocoa__chef:'assets/art/skins69/cocoa/roster_cocoa__chef.webp',
+  card_momo__sakura:'assets/art/skins69/momo/card_momo__sakura.webp',
+  roster_momo__sakura:'assets/art/skins69/momo/roster_momo__sakura.webp',
+  card_sesame__moon:'assets/art/skins69/sesame/card_sesame__moon.webp',
+  roster_sesame__moon:'assets/art/skins69/sesame/roster_sesame__moon.webp',
+  card_taro__star:'assets/art/skins69/taro/card_taro__star.webp',
+  roster_taro__star:'assets/art/skins69/taro/roster_taro__star.webp',
+  card_yuzu__summer:'assets/art/skins69/yuzu/card_yuzu__summer.webp',
+  roster_yuzu__summer:'assets/art/skins69/yuzu/roster_yuzu__summer.webp',
 };
 // map skills/พร → ไอคอนรูปจริง (มีเท่าที่อาร์ตทำมา · null=ใช้อีโมจิ)
 const YUZU_SEEDLING_ART_KEYS=['yzs_seed_bite','yzs_seed_tank','yzs_seed_throw','yzs_seed_pop','yzs_pop','yzs_regrow','yzs_seed_shot','vfx_yzs_sour_burst','ic_yz_seedling'];
@@ -3249,6 +3261,46 @@ const ASSET_SHEETS = {
   e_dasher:   { url:'assets/e_dasher_sheet.png',   frame:88,  anim:{frames:4, rate:13} },  // มดวิ่ง 4 เฟรม
   e_siege:    { url:'assets/e_siege_sheet.png',    frame:110, anim:{frames:4, rate:7}  },  // ปืนคัพเค้ก idle/ยิง 4 เฟรม
   boss5:      { url:'assets/boss5_sheet.png',      frame:160, anim:{frames:3, rate:4, yoyo:true} },  // เชฟขม idle: IDLE/HOVER/ACTIVE (ยกที่ตีเรืองแสง)
+  /* v8.1.90 สกิน Festival ทดลอง (ใบ 69) · โหลดแบบ hero-lazy เฉพาะสกินที่ใส่ */
+  char_cocoa__chef:{url:'assets/art/skins69/cocoa/char_cocoa__chef.webp',frame:128},
+  char_cocoa_attack__chef:{url:'assets/art/skins69/cocoa/char_cocoa_attack__chef.webp',frame:128},
+  char_cocoa_dash_jab__chef:{url:'assets/art/skins69/cocoa/char_cocoa_dash_jab__chef.webp',frame:128},
+  char_cocoa_dash_leap__chef:{url:'assets/art/skins69/cocoa/char_cocoa_dash_leap__chef.webp',frame:128},
+  char_cocoa_fire_fin__chef:{url:'assets/art/skins69/cocoa/char_cocoa_fire_fin__chef.webp',frame:128},
+  char_cocoa_fire_jab__chef:{url:'assets/art/skins69/cocoa/char_cocoa_fire_jab__chef.webp',frame:128},
+  char_cocoa_hurt__chef:{url:'assets/art/skins69/cocoa/char_cocoa_hurt__chef.webp',frame:128},
+  char_cocoa_phantom__chef:{url:'assets/art/skins69/cocoa/char_cocoa_phantom__chef.webp',frame:128},
+  char_cocoa_rocket__chef:{url:'assets/art/skins69/cocoa/char_cocoa_rocket__chef.webp',frame:128},
+  char_cocoa_rocket_motion823__chef:{url:'assets/art/skins69/cocoa/char_cocoa_rocket_motion823__chef.webp',frame:128},
+  char_cocoa_run__chef:{url:'assets/art/skins69/cocoa/char_cocoa_run__chef.webp',frame:128},
+  char_cocoa_titan_charge__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_charge__chef.webp',frame:128},
+  char_cocoa_titan_colossus__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_colossus__chef.webp',frame:128},
+  char_cocoa_titan_hop__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_hop__chef.webp',frame:128},
+  char_cocoa_titan_motion823__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_motion823__chef.webp',frame:128},
+  char_cocoa_titan_run_motion823__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_run_motion823__chef.webp',frame:128},
+  char_cocoa_titan_slam__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_slam__chef.webp',frame:128},
+  char_cocoa_titan_walk__chef:{url:'assets/art/skins69/cocoa/char_cocoa_titan_walk__chef.webp',frame:128},
+  char_cocoa_victory__chef:{url:'assets/art/skins69/cocoa/char_cocoa_victory__chef.webp',frame:128},
+  char_momo__sakura:{url:'assets/art/skins69/momo/char_momo__sakura.webp',frame:128},
+  char_momo_attack__sakura:{url:'assets/art/skins69/momo/char_momo_attack__sakura.webp',frame:128},
+  char_momo_dash__sakura:{url:'assets/art/skins69/momo/char_momo_dash__sakura.webp',frame:128},
+  char_momo_hurt__sakura:{url:'assets/art/skins69/momo/char_momo_hurt__sakura.webp',frame:128},
+  char_momo_idle__sakura:{url:'assets/art/skins69/momo/char_momo_idle__sakura.webp',frame:128},
+  char_momo_run__sakura:{url:'assets/art/skins69/momo/char_momo_run__sakura.webp',frame:128},
+  char_momo_sniper_charge_motion823__sakura:{url:'assets/art/skins69/momo/char_momo_sniper_charge_motion823__sakura.webp',frame:128},
+  char_momo_sniper_run_motion823__sakura:{url:'assets/art/skins69/momo/char_momo_sniper_run_motion823__sakura.webp',frame:128},
+  char_sesame__moon:{url:'assets/art/skins69/sesame/char_sesame__moon.webp',frame:128},
+  char_sesame_attack__moon:{url:'assets/art/skins69/sesame/char_sesame_attack__moon.webp',frame:128},
+  char_sesame_meteor_motion823__moon:{url:'assets/art/skins69/sesame/char_sesame_meteor_motion823__moon.webp',frame:128},
+  char_sesame_run__moon:{url:'assets/art/skins69/sesame/char_sesame_run__moon.webp',frame:128},
+  char_taro__star:{url:'assets/art/skins69/taro/char_taro__star.webp',frame:128},
+  char_taro_attack__star:{url:'assets/art/skins69/taro/char_taro_attack__star.webp',frame:128},
+  char_taro_plasma_motion823__star:{url:'assets/art/skins69/taro/char_taro_plasma_motion823__star.webp',frame:128},
+  char_taro_run__star:{url:'assets/art/skins69/taro/char_taro_run__star.webp',frame:128},
+  char_yuzu__summer:{url:'assets/art/skins69/yuzu/char_yuzu__summer.webp',frame:128},
+  char_yuzu_attack__summer:{url:'assets/art/skins69/yuzu/char_yuzu_attack__summer.webp',frame:128},
+  char_yuzu_combo_motion823__summer:{url:'assets/art/skins69/yuzu/char_yuzu_combo_motion823__summer.webp',frame:128},
+  char_yuzu_run__summer:{url:'assets/art/skins69/yuzu/char_yuzu_run__summer.webp',frame:128},
 };
 
 /* ---- VFX flipbook sheets (อนิเมชันหลายเฟรม เล่นไล่เฟรม) ----
@@ -4533,7 +4585,7 @@ function bootKeepAudio(k){return k==='bgm_main'||k.startsWith('sfx_ui_');}
 // v7.4 แผนหน่วยความจำกราฟิก: core = ถอดรหัสเข้า GPU ตอนบูต · lazy = ดาวน์โหลดเก็บเครื่องอย่างเดียว ถอดรหัสเมื่อใช้ และคืน GPU ได้
 const HERO_ART_IDS=['momo','mint','cocoa','taro','sesame','yuzu','berry'];
 function artHero(k){ if(k.startsWith('ic_ses811_'))return 'sesame'; if(/^ses_(rune_btn|orb_[pmb]|spell_icons|cast_[pmb]{3}|talent_icons)$/.test(k))return 'sesame'; if(k.startsWith('minion_')||k.startsWith('yz_'))return 'yuzu'; if(k.startsWith('vfx_glacier_'))return 'mint'; const m=/^(?:char|bpx|hero_screen|fx)_([a-z]+)/.exec(k); return m&&HERO_ART_IDS.includes(m[1])?m[1]:null; }
-const LAZY_MENU_ART_RE=/assets\/(?:art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/)/;
+const LAZY_MENU_ART_RE=/assets\/(?:art\/menu_(?:screens|stage_cards)\/|incoming\/|art\/(?:menu_orders|login30|cosmetics|chest|journal|book|lobby|tutorial|temple|delve|talents|hero_roster(?:_ui)?|forge_ui|mobile_ui_789|story)\/|ui\/temple\/|character_cards\/|art\/skins69\/)/;
 const LAZY_MENU_KEYS=new Set(['craft_bench_bg','ui_talent_hall','dig_bg','reveal_theater']);   // พื้นหลังหน้าเมนูใหญ่ (_screenBg โหลดเอง)
 function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].url)||(ASSET_FX[k]&&ASSET_FX[k].url)||''; }
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
@@ -4542,7 +4594,7 @@ const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',b
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
-function lazyArt(k,u,hero){ const c=artClass(k,u); return /\/(?:hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
+function lazyArt(k,u,hero){ if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?250:(Number(navigator.deviceMemory||0)>=8?600:400);   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
