@@ -146,3 +146,11 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   for(let k=0;k<210;k++)sc.hdTick(.1,o,S);assert.strictEqual(S.phase,'lord');assert.ok(S.lord._hdLord&&S.lord.maxhp>=1000,'Breachlord is a big fight');
   S.lord._hdLord=false;sc.hdDown(S.lord,o,S);assert.ok(sc.done&&sc.sugarRun>0);assert.ok(ctx.Save.data.splinters>=20,'big splinter reward');
   console.log('Hunger’s Domain: stone spent, flood, Breachlord, big reward passed'); }
+{ // v8.1.114 owner (mission review #2): Chapter 1 first play keeps only Herald (C1-1) + Frozen Pantry (C1-4); Mouth / Pot / Golem wait for a replay or Chapter 1 clear
+  const src2=require('fs').readFileSync('game.js','utf8'),vm2=require('vm');const at=src2.indexOf('  c1FirstPool('),nx=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src2.slice(at+1));
+  const ctx={Save:{data:{stageMastery:{}}},storyCleared:()=>0,C1_LATER_LEAGUE:['hungersMouth','grandmasPot','grandmasGolem']};vm2.createContext(ctx);vm2.runInContext('class S{'+src2.slice(at,at+1+nx.index)+'};this.K=S;',ctx);
+  const s=new ctx.K(),P=['grandmasPot','hunt','capture','purge'];s.stageIndex=2;require('assert').deepStrictEqual(s.c1FirstPool(P),['hunt','capture','purge'],'first play C1-3: no Pot');
+  ctx.Save.data.stageMastery[2]=true;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'replay: Pot returns');ctx.Save.data.stageMastery={};ctx.storyCleared=()=>5;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'after Chapter 1: Pot returns');
+  ctx.storyCleared=()=>0;s.stageIndex=0;require('assert').deepStrictEqual(s.c1FirstPool(['hungerHerald','hunt']),['hungerHerald','hunt'],'Herald stays in C1-1');s.stageIndex=7;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'other chapters untouched');s.stageIndex=2;s.recipeMode=true;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'Delve untouched');
+  require('assert').ok(src2.includes("objectives:['survive','hunt','frozenPantry','capture'],lead:'frozenPantry',"),'C1-4 leads with Frozen Pantry');
+  console.log('Chapter 1 pacing: first play Herald + Frozen Pantry only; Mouth/Pot/Golem on replay or after Chapter 1 passed'); }

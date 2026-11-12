@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.113';
+const GAME_VERSION = '8.1.114';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.114',date:'2026-11-12',title:'Gentler Chapter 1',items:['Your first trip through Chapter 1 now features only two special missions: the Hunger Herald (C1-1) and the Frozen Pantry (C1-4)','Hunger’s Mouth, Grandma’s Pot and Grandma’s Golem appear when you replay those stages or after you finish Chapter 1']},
   {v:'8.1.113',date:'2026-11-12',title:'Frozen Pantry: paint the grey world',items:['Inside the time dome the world turns white-grey and every monster stands still (no contact damage) until time resumes','Your path splashes rainbow pastel colour with sparkles across the grey ground']},
   {v:'8.1.112',date:'2026-11-12',title:'Frozen Pantry: time stands still',items:['Opening the jar now cracks it into a huge ice shockwave that freezes time in a glowing dome — the frozen army rises as the wave passes','When time resumes the dome shatters with a second shockwave and the painted mochi burst free']},
   {v:'8.1.111',date:'2026-11-12',title:'Frozen Pantry: the frozen army',items:['Walk up to Grandma’s sugar jar and tap Open the Jar','A whole frozen mochi army bursts up from the ice in groups while time stands still','Walk through them to splash color on the ground — every painted mochi breaks free together when time runs out; unpainted ones shatter with their loot']},
@@ -8244,7 +8245,7 @@ const STAGES = [
     waves:5, recommendedPower:560, miniAt:2, mini:'Boiling Pan', boss:'Mr. Griddle', bossHp:1000, bossDmg:28 },
   { name:'Sugar Frost Prison', en:'Sugar Frost Prison', emoji:'❄️', grid:0x3d4a5c, tint:0x9fe0ff,
     lore:'Cursed mochi are frozen as fuel — Grandma among them — and the golem wardens let no one escape',
-    objectives:['survive','hunt','frozenPantry','capture'],
+    objectives:['survive','hunt','frozenPantry','capture'],lead:'frozenPantry',
     waves:5, recommendedPower:940, miniAt:2, mini:'Giant Ice Block', boss:'Ice Cream Golem', bossHp:1400, bossDmg:32 },
   { name:'The Crown Oven of Hunger', en:'The Crown Oven of Hunger', emoji:'🌑', grid:0x2a102f, tint:0xd95cff,
     lore:'A root of the Crown rises through the royal oven to drink the whole kitchen dry — and The Great Hunger speaks through it',
@@ -9070,6 +9071,7 @@ const CH1_EARLY_WAVE_PLAN={
 function earlyWaveMission(stage,wave){return CH1_EARLY_WAVE_PLAN[stage]?.[wave]||null;}
 const ULT_CURSES=[{id:'swarm',em:'🐜',name:'Double Swarm',v:.3},{id:'elite',em:'💀',name:'Elite Pack',v:.4},{id:'noheal',em:'🚫',name:'No Hearts',v:.45},{id:'bombs',em:'💣',name:'Ground Bombs',v:.35},{id:'shots',em:'🌀',name:'Bullet Rings',v:.4},{id:'drain',em:'🩸',name:'Sugar Drain',v:.3}],ULT_GOALS=['survive','slay','defend','collect'];
 const SIG_MISSIONS=['seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight','ultimatum','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];
+const C1_LATER_LEAGUE=['hungersMouth','grandmasPot','grandmasGolem'];   // v8.1.114 ไม่โผล่ใน Chapter 1 รอบแรก
 const LEAGUE_MISSIONS=['frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain'];
 /* v8.1.85 League phase 6 (Metamorph → Grandma’s Golem): ชิ้นรสจาก Elite · แต่ละชิ้นให้สกิลโกเลม */
 const GOLEM_PARTS=[{k:'head',em:'🍰',name:'Cake Head',skill:'spits jam shots'},{k:'arms',em:'🥨',name:'Pretzel Arms',skill:'slams the ground'},{k:'legs',em:'🥖',name:'Baguette Legs',skill:'charges faster'},{k:'tail',em:'🍭',name:'Lollipop Tail',skill:'calls helpers'},{k:'heart',em:'💗',name:'Jelly Heart',skill:'heals itself'}];
@@ -14860,7 +14862,7 @@ class Game extends Phaser.Scene {
       Sfx.playStageBgm(1);   // v6.49.7: เดิม return ก่อนเล่นเพลง → tutorial เงียบ
       return;   // ไม่ตั้งเวฟ (coach เป็นคนสปอนมอนให้ลอง)
     }
-    const objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());if(st.lead){ const b=this._waveObjectiveBag,k=b.indexOf(st.lead); if(k>=0){ b.splice(k,1); b.push(st.lead); this._leadUsed=true; } }   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
+    let objectivePool=Array.isArray(st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];objectivePool=this.c1FirstPool(objectivePool);this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(objectivePool.slice());if(st.lead){ const b=this._waveObjectiveBag,k=b.indexOf(st.lead); if(k>=0){ b.splice(k,1); b.push(st.lead); this._leadUsed=true; } }   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
     Sfx.playStageBgm(i+1);
     this.gridBg.fillColor=st.grid;
     if(this.bgTile){ const bgKey='bg'+(i+1); if(this.bgTile.clearTint)this.bgTile.clearTint(); if(this.textures.exists(bgKey))this.bgTile.setTexture(bgKey);
@@ -15553,7 +15555,7 @@ class Game extends Phaser.Scene {
   setupWaveObjective(w,p){
     this.clearWaveObjective();
     const planned=!this.recipeMode&&!this.riftMode?earlyWaveMission(this.stageIndex,w):null;
-    if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture'];this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());if(st&&st.lead&&!this._leadUsed){ const b=this._waveObjectiveBag,i=b.indexOf(st.lead); if(i>=0){ b.splice(i,1); b.push(st.lead); this._leadUsed=true; } }}   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
+    if(!(p&&p.forceType)&&!planned&&(!this._waveObjectiveBag||!this._waveObjectiveBag.length)){const st=STAGES[this.stageIndex],pool=this.c1FirstPool(Array.isArray(st&&st.objectives)&&st.objectives.length?st.objectives:['survive','hunt','purge','capture']);this._waveObjectiveBag=Phaser.Utils.Array.Shuffle(pool.slice());if(st&&st.lead&&!this._leadUsed){ const b=this._waveObjectiveBag,i=b.indexOf(st.lead); if(i>=0){ b.splice(i,1); b.push(st.lead); this._leadUsed=true; } }}   /* v8.1.82 ภารกิจ League ประจำด่านมาก่อน */
     let type=p&&p.forceType?p.forceType:planned?planned.type:this._waveObjectiveBag.pop();
     if(!(p&&p.forceType)&&!planned&&type==='hunt'&&this._huntUsed){ const st0=STAGES[this.stageIndex]||{},alt=(Array.isArray(st0.objectives)&&st0.objectives.length?st0.objectives:['survive','purge','capture']).filter(t=>t!=='hunt'); if(alt.length)type=alt[Math.floor(Math.random()*alt.length)]; }   /* v8.1.76 เจ้าของ: Hunt ไม่เกินด่านละครั้ง */
     if(type==='hunt'&&!(p&&p.forceType))this._huntUsed=true;
@@ -16059,6 +16061,10 @@ class Game extends Phaser.Scene {
      เดินไปเปิดโหลน้ำตาล → รูปปั้นโมจิแช่แข็งรอบโหล · ระบบยิงอัตโนมัติไม่เล็งรูปปั้น · ผู้เล่นเดินเข้าใกล้ = วงเติมสีรอบตัว → สีเต็ม = ตื่นมาสู้
      🎁 = ตัวที่ถือรางวัล · แบบเต็ม (เล่นซ้ำ/Delve/หลังจบ Chapter 2): ตื่นแล้วต้องฆ่าใน 14s ไม่งั้นแช่แข็งกลับแล้วหายไปพร้อมรางวัล · ตัวที่ไม่ทาสีแตกใน 34s · มีนายพลน้ำแข็งสุ่ม
      แบบเบา (เล่นครั้งแรกใน Chapter 1–2): ไม่มีเวลาจำกัด ไม่มีนายพล ===== */
+  /* v8.1.114 เจ้าของ (วิจารณ์ภารกิจข้อ 2): Chapter 1 เล่นครั้งแรกหนักเกิน (League ทุกด่าน) → ครั้งแรกเหลือแค่ Herald (C1-1) + Frozen Pantry (C1-4)
+     Hunger's Mouth / Grandma's Pot / Grandma's Golem โผล่เมื่อเล่นด่านนั้นซ้ำ (ผ่านแล้ว) หรือหลังจบ Chapter 1 · โหมดอื่น (Delve/Replay bounty) ไม่ถูกกรอง */
+  c1FirstPool(pool){ const idx=this.stageIndex||0,d=(typeof Save!=='undefined'&&Save.data)||{}; if(idx>4||this.recipeMode||this.riftMode||this.bossRush||this._replayMeter||(d.stageMastery||{})[idx]||(typeof storyCleared==='function'&&storyCleared()>=5))return pool;
+    const out=pool.filter(t=>!C1_LATER_LEAGUE.includes(t)); return out.length?out:pool; }
   fpFull(){ return !!(this._replayMeter||this.riftMode||(typeof storyCleared==='function'&&storyCleared()>=10)); }
   /* v8.1.111 เจ้าของ: Frozen Pantry ยังจืด → ทำแบบเสา Legion ของ PoE ทั้งหมด (ปรับอาร์ตเข้าธีม)
      เดินไปโหล = ปุ่ม "Open the Jar" ขึ้นบนจอ · กด → กองทัพโมจิแช่แข็งเยอะ ๆ ผุดจากพื้นเป็นกลุ่มพร้อมเอฟเฟกต์น้ำแข็ง · นับถอยหลัง
