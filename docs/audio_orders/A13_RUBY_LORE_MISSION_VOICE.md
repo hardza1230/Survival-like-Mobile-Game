@@ -1,6 +1,6 @@
 # A13 — Ruby เสียงพากย์: เรื่อง Flavor Cores + อธิบายภารกิจประจำด่าน/League · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 12 พ.ย. 2026 (v8.1.104) · **AI ฝั่งเสียงทำแค่ไฟล์เสียงแล้วส่งที่โฟลเดอร์ส่งมอบ — ไม่ต้องแก้โค้ด ไม่ต้องปล่อยเวอร์ชัน** (เจ้าของ 12 พ.ย.: Claude ฝั่งโค้ดเป็นคนผูกเอง)
+สถานะ: 📦 ส่งแล้ว รอผูก
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามสร้างเสียงใหม่ · ห้ามใช้เสียงสร้างด้วยโค้ด
 
 ## ทำไมต้องสั่ง
@@ -59,6 +59,8 @@
 **รวม 31 ไฟล์**
 
 ## ส่งมอบ
+
+- 12 พ.ย. 2026 · ส่งครบ 31 ไฟล์ที่ `assets/incoming/audio_ruby_a13/` · ไฟล์ที่ขาด 0 · 📦 ส่งแล้ว รอผูก
 `assets/incoming/audio_ruby_a13/` + `MANIFEST.json` (key, file, bytes, sha256, duration_ms, speaker `ruby`, voice_id, text ตรงตัวอักษร) + `PROMPTS.json` + `QA_REPORT.json` (peak, onset, duration) + `AUDITION.html`
 
 ## ผูกเข้าเกม (Claude ฝั่งโค้ดทำ · AI ฝั่งเสียงข้ามหัวข้อนี้ได้)

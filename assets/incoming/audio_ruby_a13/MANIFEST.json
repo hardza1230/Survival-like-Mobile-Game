@@ -1,0 +1,312 @@
+[
+  {
+    "key": "vo_ruby_core_1",
+    "file": "vo_ruby_core_1.mp3",
+    "bytes": 68170,
+    "sha256": "7102241aafb6536e2e0b22ed511d169a94639b6ee0664830326b7d7a26344952",
+    "duration_ms": 4203,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "That Sugar is flavor the Hunger stole. We just took some back!"
+  },
+  {
+    "key": "vo_ruby_core_2",
+    "file": "vo_ruby_core_2.mp3",
+    "bytes": 88650,
+    "sha256": "c1b3df46decce28cd23690f9fce35d975757b4349e643b2ed3e1561b6aad7ae5",
+    "duration_ms": 5478,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Grandma wove three Flavor Cores into the Heart Seed: Life Core, Flavor Spark and Oath Shell."
+  },
+  {
+    "key": "vo_ruby_core_3",
+    "file": "vo_ruby_core_3.mp3",
+    "bytes": 88650,
+    "sha256": "bbf7227dceedf540331fb7fb416e084ae60d046c682074b1fcaece85168fbdaa",
+    "duration_ms": 5479,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Feed them Sugar and the Seed holds your true form tighter. Every friend we free shares that strength too!"
+  },
+  {
+    "key": "vo_ruby_tip_seedRift",
+    "file": "vo_ruby_tip_seedRift.mp3",
+    "bytes": 38913,
+    "sha256": "05c842a07574dec47c6c8b6cd3aef1924689a6f0002e0d5a1ac7ca5a97f24d6e",
+    "duration_ms": 2373,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Beat monsters inside the rift to keep it open!"
+  },
+  {
+    "key": "vo_ruby_tip_shakeTrees",
+    "file": "vo_ruby_tip_shakeTrees.mp3",
+    "bytes": 64408,
+    "sha256": "23110c73d18c0f9c9c72e1e7f8cf83d3092579593ed662cc6456480385afb443",
+    "duration_ms": 3950,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Stand under each tree to shake it. Fruit, or a surprise!"
+  },
+  {
+    "key": "vo_ruby_tip_mirrorPath",
+    "file": "vo_ruby_tip_mirrorPath.mp3",
+    "bytes": 49362,
+    "sha256": "3b90194d82e982cdb6e38b4bba6bab8a490cc14b7d048d9a79f59177134a57b6",
+    "duration_ms": 3027,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Stand by each mirror to charge it. Then the crystal blasts!"
+  },
+  {
+    "key": "vo_ruby_tip_vaultAltar",
+    "file": "vo_ruby_tip_vaultAltar.mp3",
+    "bytes": 47690,
+    "sha256": "95af20e787d03bf35879ada2d2678b85d8847a57e06cb90c16291d9b0faaab20",
+    "duration_ms": 2912,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Pick a curse, then take the loot or risk it for more!"
+  },
+  {
+    "key": "vo_ruby_tip_ultimatum",
+    "file": "vo_ruby_tip_ultimatum.mp3",
+    "bytes": 52287,
+    "sha256": "7e89c71d522282f0bd4b045bebddc3a57e060a1c3450ccac6a7918bd365bf4ec",
+    "duration_ms": 3204,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Each round adds a curse. Take the pot, or risk it for more!"
+  },
+  {
+    "key": "vo_ruby_tip_lastLight",
+    "file": "vo_ruby_tip_lastLight.mp3",
+    "bytes": 48108,
+    "sha256": "820fb2e53c3a0ea3bf07d4e1d05821248a1a7dc8781c2c27642945dc0e1c42dc",
+    "duration_ms": 2945,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Keep one lantern burning! Stand close to rekindle them."
+  },
+  {
+    "key": "vo_ruby_tip_frozenPantry",
+    "file": "vo_ruby_tip_frozenPantry.mp3",
+    "bytes": 60647,
+    "sha256": "b8cd2defc7e5f3870d5d1e30d7f277dbdad318e7f768207d8553789da4b9c957",
+    "duration_ms": 3713,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Open the sugar jar, then walk near the frozen mochi to wake them!"
+  },
+  {
+    "key": "vo_ruby_tip_hungersMouth",
+    "file": "vo_ruby_tip_hungersMouth.mp3",
+    "bytes": 63990,
+    "sha256": "b6aab38d1b9dc8035ffc01f1fc4e6f4a6d4a7ded0597aa2d180df8c83497167d",
+    "duration_ms": 3933,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Touch the Hunger’s hand! Kills inside keep the breach open."
+  },
+  {
+    "key": "vo_ruby_tip_creepingRoots",
+    "file": "vo_ruby_tip_creepingRoots.mp3",
+    "bytes": 56049,
+    "sha256": "2455ec997f1f600d1c1124171dc86da65822ffcd11490db834ad34759d6c3b12",
+    "duration_ms": 3437,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Roots crawl to the flower! Stand on each root mother to cut it."
+  },
+  {
+    "key": "vo_ruby_tip_hungerHerald",
+    "file": "vo_ruby_tip_hungerHerald.mp3",
+    "bytes": 56049,
+    "sha256": "1dc50cdab888283a0aed3d11e05bb816fef0c89974920ce41c06095f6c723c66",
+    "duration_ms": 3438,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "That Herald opens gates! Hunt it down to shut them."
+  },
+  {
+    "key": "vo_ruby_tip_grandmasPot",
+    "file": "vo_ruby_tip_grandmasPot.mp3",
+    "bytes": 69424,
+    "sha256": "ed08fcf27ecea44cd0bbd5553e2a95d2708ac9db17c9bfea35a3350c206b6842",
+    "duration_ms": 4275,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Step into Grandma’s ring! Beat the hungry mochi in the light to fill the pot."
+  },
+  {
+    "key": "vo_ruby_tip_grandmasGolem",
+    "file": "vo_ruby_tip_grandmasGolem.mp3",
+    "bytes": 69424,
+    "sha256": "a9b6697f03cc99b3790dd48a50f1f11100ae916124c87aa861c8d593a0a32e18",
+    "duration_ms": 4277,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Collect golem parts, bake them in the oven, then beat the golem!"
+  },
+  {
+    "key": "vo_ruby_tip_hungerSiege",
+    "file": "vo_ruby_tip_hungerSiege.mp3",
+    "bytes": 58975,
+    "sha256": "67e593a3cbfc51027f36ff91602235ac0f709cc008c3fd8a46c4530fe3094672",
+    "duration_ms": 3612,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Hold the circle! Every kill inside fills the pot."
+  },
+  {
+    "key": "vo_ruby_tip_hungerDomain",
+    "file": "vo_ruby_tip_hungerDomain.mp3",
+    "bytes": 56885,
+    "sha256": "b70cee9bc9bc299fa8594724639048919b7eb1bcfa2e50de6b4091bfc23a13dc",
+    "duration_ms": 3488,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "The whole cave is a breach! Survive, then beat the Breachlord!"
+  },
+  {
+    "key": "vo_ruby_short_seedRift",
+    "file": "vo_ruby_short_seedRift.mp3",
+    "bytes": 22194,
+    "sha256": "3c0f3d8561d8a80a1695b0807a2bf9390cede6afc0c20c8be260e9c033960ab3",
+    "duration_ms": 1315,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Fight inside the rift!"
+  },
+  {
+    "key": "vo_ruby_short_shakeTrees",
+    "file": "vo_ruby_short_shakeTrees.mp3",
+    "bytes": 20941,
+    "sha256": "4584b9a884952d811a26ab3e5b3bbce9a499d4c2165f0ea9303083288052bc04",
+    "duration_ms": 1242,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Shake every tree!"
+  },
+  {
+    "key": "vo_ruby_short_mirrorPath",
+    "file": "vo_ruby_short_mirrorPath.mp3",
+    "bytes": 21358,
+    "sha256": "8ad7ebba073b7f407e74f0dd6b7388ed306868240a8981862e404b9ac93459a5",
+    "duration_ms": 1257,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Charge every mirror!"
+  },
+  {
+    "key": "vo_ruby_short_vaultAltar",
+    "file": "vo_ruby_short_vaultAltar.mp3",
+    "bytes": 25120,
+    "sha256": "4548240e747418af14b14f4509671362c4393cdea539f0439b9e338dc8558bbe",
+    "duration_ms": 1507,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Pick a curse, then take or risk!"
+  },
+  {
+    "key": "vo_ruby_short_ultimatum",
+    "file": "vo_ruby_short_ultimatum.mp3",
+    "bytes": 26374,
+    "sha256": "5f3bcfc5ca3ebf5ca24a82e3d6051fc4f555c3cef8197374716bfeb568d2f510",
+    "duration_ms": 1580,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Take the pot or risk it!"
+  },
+  {
+    "key": "vo_ruby_short_lastLight",
+    "file": "vo_ruby_short_lastLight.mp3",
+    "bytes": 16761,
+    "sha256": "53650ae17ae95d587f06474d27e90bfaa266fbcfcc0243c557756bbb26dd9c2f",
+    "duration_ms": 988,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Keep a lantern lit!"
+  },
+  {
+    "key": "vo_ruby_short_frozenPantry",
+    "file": "vo_ruby_short_frozenPantry.mp3",
+    "bytes": 34315,
+    "sha256": "08aefa7be44c972879f9b73188ee92eb0356738afac7c4f51afc78b157a7718b",
+    "duration_ms": 2090,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Walk near the frozen mochi!"
+  },
+  {
+    "key": "vo_ruby_short_hungersMouth",
+    "file": "vo_ruby_short_hungersMouth.mp3",
+    "bytes": 25120,
+    "sha256": "5081b06b16a0fe95c54089e4c2b58dad4a377cb9d3f7ad3e68916d5a073daa33",
+    "duration_ms": 1500,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Keep fighting inside the breach!"
+  },
+  {
+    "key": "vo_ruby_short_creepingRoots",
+    "file": "vo_ruby_short_creepingRoots.mp3",
+    "bytes": 23866,
+    "sha256": "8874c7bbf65128053f5dc3cc1d20d8ec74f98ee5a02b8f6941906d1e9690f581",
+    "duration_ms": 1434,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Cut the root mothers!"
+  },
+  {
+    "key": "vo_ruby_short_hungerHerald",
+    "file": "vo_ruby_short_hungerHerald.mp3",
+    "bytes": 22194,
+    "sha256": "502e1e93b0deada6ae2980abbe4ccab66f0f2c8fac51ea3f218c1fc6eca6b317",
+    "duration_ms": 1316,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Hunt the Herald!"
+  },
+  {
+    "key": "vo_ruby_short_grandmasPot",
+    "file": "vo_ruby_short_grandmasPot.mp3",
+    "bytes": 25538,
+    "sha256": "5c01a82514b7399a2b46f73c28c0cbb91e712babec9f172d52f0035feb69e10a",
+    "duration_ms": 1533,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Fight inside the pot ring!"
+  },
+  {
+    "key": "vo_ruby_short_grandmasGolem",
+    "file": "vo_ruby_short_grandmasGolem.mp3",
+    "bytes": 20941,
+    "sha256": "5f526475f7c8e55c50daa6f5e5d644ad694014e6a8464e2180d34025503b8260",
+    "duration_ms": 1239,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Bake the golem parts!"
+  },
+  {
+    "key": "vo_ruby_short_hungerSiege",
+    "file": "vo_ruby_short_hungerSiege.mp3",
+    "bytes": 20523,
+    "sha256": "b4653b65b9dabec96300876337f2f582caad329ba3f9d80e87cdac1990c28036",
+    "duration_ms": 1219,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Hold the circle!"
+  },
+  {
+    "key": "vo_ruby_short_hungerDomain",
+    "file": "vo_ruby_short_hungerDomain.mp3",
+    "bytes": 29300,
+    "sha256": "a57da83e41d9307ada2a6385a98459190aaffbed4c99f7d58737232fba7a1871",
+    "duration_ms": 1765,
+    "speaker": "ruby",
+    "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+    "text": "Survive, then the Breachlord!"
+  }
+]

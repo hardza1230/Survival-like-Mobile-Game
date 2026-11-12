@@ -1,0 +1,453 @@
+{
+  "provider": "ElevenLabs Text to Speech",
+  "voice_id": "GVG9R2Ywg9D3iQVsW8Z6",
+  "generations": {
+    "vo_ruby_core_1": [
+      {
+        "text": "That Sugar is flavor the Hunger stole. We just took some back!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.05,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_core_2": [
+      {
+        "text": "Grandma wove three Flavor Cores into the Heart Seed: Life Core, Flavor Spark and Oath Shell.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.05,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "Grandma wove three Flavor Cores into the Heart Seed: Life Core, Flavor Spark and Oath Shell.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_core_3": [
+      {
+        "text": "Feed them Sugar and the Seed holds your true form tighter. Every friend we free shares that strength too!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.05,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "Feed them Sugar and the Seed holds your true form tighter. Every friend we free shares that strength too!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_seedRift": [
+      {
+        "text": "Beat monsters inside the rift to keep it open!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_shakeTrees": [
+      {
+        "text": "Stand under each tree to shake it. Fruit, or a surprise!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_mirrorPath": [
+      {
+        "text": "Stand by each mirror to charge it. Then the crystal blasts!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_vaultAltar": [
+      {
+        "text": "Pick a curse, then take the loot or risk it for more!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_ultimatum": [
+      {
+        "text": "Each round adds a curse. Take the pot, or risk it for more!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_lastLight": [
+      {
+        "text": "Keep one lantern burning! Stand close to rekindle them.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_frozenPantry": [
+      {
+        "text": "Open the sugar jar, then walk near the frozen mochi to wake them!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_hungersMouth": [
+      {
+        "text": "Touch the Hunger’s hand! Kills inside keep the breach open.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_creepingRoots": [
+      {
+        "text": "Roots crawl to the flower! Stand on each root mother to cut it.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_hungerHerald": [
+      {
+        "text": "That Herald opens gates! Hunt it down to shut them.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_grandmasPot": [
+      {
+        "text": "Step into Grandma’s ring! Beat the hungry mochi in the light to fill the pot.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_grandmasGolem": [
+      {
+        "text": "Collect golem parts, bake them in the oven, then beat the golem!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_hungerSiege": [
+      {
+        "text": "Hold the circle! Every kill inside fills the pot.",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_tip_hungerDomain": [
+      {
+        "text": "The whole cave is a breach! Survive, then beat the Breachlord!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.13,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_seedRift": [
+      {
+        "text": "Fight inside the rift!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_shakeTrees": [
+      {
+        "text": "Shake every tree!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_mirrorPath": [
+      {
+        "text": "Charge every mirror!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_vaultAltar": [
+      {
+        "text": "Pick a curse, then take or risk!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_ultimatum": [
+      {
+        "text": "Take the pot or risk it!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_lastLight": [
+      {
+        "text": "Keep a lantern lit!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "Keep a lantern lit!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_frozenPantry": [
+      {
+        "text": "Walk near the frozen mochi!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_hungersMouth": [
+      {
+        "text": "Keep fighting inside the breach!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      },
+      {
+        "text": "Keep fighting inside the breach!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.2,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_creepingRoots": [
+      {
+        "text": "Cut the root mothers!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_hungerHerald": [
+      {
+        "text": "Hunt the Herald!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_grandmasPot": [
+      {
+        "text": "Fight inside the pot ring!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_grandmasGolem": [
+      {
+        "text": "Bake the golem parts!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_hungerSiege": [
+      {
+        "text": "Hold the circle!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ],
+    "vo_ruby_short_hungerDomain": [
+      {
+        "text": "Survive, then the Breachlord!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.48,
+          "similarity_boost": 0.78,
+          "style": 0.12,
+          "speed": 1.08,
+          "use_speaker_boost": true
+        }
+      }
+    ]
+  }
+}
