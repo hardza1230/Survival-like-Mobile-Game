@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.117';
+const GAME_VERSION = '8.1.118';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.118',date:'2026-11-12',title:'Closer camera, monster shadows',items:['The battle camera is a little closer','Every monster now casts a soft shadow, so they stand out from the floor']},
   {v:'8.1.117',date:'2026-11-12',title:'Freeze fix',items:['Fixed a freeze when going back to the Lobby after clearing a stage','If a picture is swapped while it is on screen, the game now keeps running instead of freezing']},
   {v:'8.1.116',date:'2026-11-12',title:'Mission cards and rewards',items:['Every mission now opens with a mission card (what to do and its reward) and a shockwave, and ends with a MISSION COMPLETE stamp','Each mission type has its own reward (Berry Jam, Honeydrop, Star Sugar, Recipe Ink, Twist Cream or a gear box), shown before you start and above the start pad','Ruby now sits in the corner with her words beside her, a little higher','Boss lines appear in a small bubble above the boss’s head']},
   {v:'8.1.115',date:'2026-11-12',title:'Grandma’s Table',items:['Grandma’s Pot now ends at Grandma’s Table: spend the flavor you earned on dishes (Sugar, Berry Jam, Recipe Ink, gear boxes, sometimes a Hunger Stone)','Leftover flavor and the dish you could not afford are saved for your next pot','The pot appears only after you have found Grandma in the Sugar Frost Prison']},
@@ -10911,7 +10912,7 @@ class Game extends Phaser.Scene {
   }
 
   // zoom กล้องให้ "visible field width" คงที่ทุกเครื่อง (อ้างอิงมือถือ ~430px) — แท็บเล็ตจอกว้าง = zoom เข้ามากขึ้น ตัวละครไม่เล็กจิ๋ว
-  computeViewZoom(){ const REF_W=430, BASE=0.70;   /* v6.95.1 wider view (was .76) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
+  computeViewZoom(){ const REF_W=430, BASE=0.78;   /* v6.95.1 wider view (was .76) · v8.1.118 เจ้าของ: ไกลไป → 0.78 (ใกล้ขึ้น ~11%) */ this.viewZoom=BASE*Phaser.Math.Clamp((this.W||REF_W)/REF_W,1,2.4); }
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
@@ -23606,7 +23607,16 @@ class Game extends Phaser.Scene {
     // Android WebView บางรุ่น render ellipse จำนวนมากเป็นแท่งดำ จึงไม่วาดเงาศัตรูรวมใน Graphics นี้
     this.crates.children.iterate(c=>{ if(c&&c.active) g.fillEllipse(c.x, c.y+16, 30, 11); });
     this.heals.children.iterate(h=>{ if(h&&h.active) g.fillEllipse(h.x, h.y+11, 20, 8); });
+    this.drawFoeShadows?.();
   }
+  /* v8.1.118 เจ้าของ: มอนกลืนไปกับฉาก → เงานุ่มใต้เท้าทุกตัว · ใช้รูปเดียว (canvas ไล่สี) เป็น image pool ไม่ใช่ ellipse ใน Graphics (เคยเป็นแท่งดำบน Android WebView) · ภาพเดียวกัน depth เดียวกัน = batch เดียว */
+  drawFoeShadows(){ if(!this.enemies||!this.add||typeof document==='undefined')return; const K='mm_soft_shadow';
+    if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=128; c.height=48; const x=c.getContext('2d'); x.scale(1,48/128); const g=x.createRadialGradient(64,64,4,64,64,64); g.addColorStop(0,'rgba(10,5,16,0.62)'); g.addColorStop(.55,'rgba(10,5,16,0.34)'); g.addColorStop(1,'rgba(10,5,16,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas(K,c); }
+    const P=this._foeSh||(this._foeSh=[]),dark=this._chapter25D?1.25:1; let n=0;
+    this.enemies.children.iterate(e=>{ if(!e||!e.active||!e.visible||e.alpha<.05)return; let sh=P[n]; if(!sh||!sh.active){ sh=P[n]=this.camWorld(this.add.image(0,0,K).setDepth(-99000)); } n++;
+      const w=Math.max(26,Math.min(260,(e.displayWidth||40)*.72)); sh.setPosition(e.x,e.y+(e.displayHeight||40)*.4).setDisplaySize(w,w*.34).setAlpha(Math.min(1,e.alpha*dark)).setVisible(true); });
+    for(let i=n;i<P.length;i++)if(P[i]&&P[i].visible)P[i].setVisible(false); }
+
   // ปรับสเกล+ขอบชนของตัวละครให้เท่ากราฟิกเดิม (60px) ไม่ว่ารูปจริงจะกี่พิกเซล
   setCharScale(key){
     const src = (ASSET_SHEETS[key]&&ASSET_SHEETS[key].frame)

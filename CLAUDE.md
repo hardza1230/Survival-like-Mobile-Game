@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.117**. Next release:8.1.118. Fetch the deploy branch before new work.
+Current release: **8.1.118**. Next release:8.1.119. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.117 — owner bug: C1-1 clear → Lobby froze
+# Latest delivery: v8.1.118 — owner: camera too far, monsters blend into the floor
+
+`computeViewZoom` BASE 0.70 → 0.78 (~11% closer). `drawFoeShadows()` (called from drawShadows each frame, iso): one canvas radial-gradient texture `mm_soft_shadow` (128×48, created once) + image pool `_foeSh` at depth -99000 (camWorld; same texture/depth = one batch), per visible enemy: width 0.72×displayWidth (26–260), height ×0.34, at y+0.4×displayHeight, alpha follows the enemy (×1.25 in Chapter 2.5D); extra pool images hidden. Not Graphics ellipses (old Android WebView black-bar bug). Test `tests/foe-shadow.test.cjs`. Owner to check FPS + shadow placement on the phone. Open questions from the owner: Elite has no own art (reuses the stage monster scaled + crest) → art order on request; ink/brush outline style (Demon Slayer-like) → asked whether outline or shadow, art order for one hero as a sample.
+
+# Previous delivery: v8.1.117 — owner bug: C1-1 clear → Lobby froze
 
 Cause: placeholder (canvas) textures were removed with `textures.remove` while an object still showed them → WebGL `frame.source` null → 'glTexture' TypeError inside the render step kills Phaser's RAF loop (screen frozen). Reproduced headless (stage start before boot preload finished, `p_box` dropped by preloadAll). Fix: `texSafeRemove(k)` (used by preloadAll `drop`, ensureGroup `add`, ensureDeferred `add`) moves every object using k to `__DEFAULT`, removes, and restores the real texture + frame on the TextureManager `addtexture` event. Safety net `loopGuard()` (Game create) wraps `game.loop.callback`: an exception → `texHeal()` (objects with a missing texture/frame.source → `__DEFAULT`), console.error ×5 max, renderer.resetTextures, and the loop keeps running. Test `tests/texture-safety.test.cjs`.
-
-# Previous delivery: v8.1.116 — owner (mission review steps 4+3) shared mission presentation + per-mission rewards; Ruby corner; boss speech over the head
-
-`MISSION_REWARDS` (next to SIG_MISSIONS): fixed reward per mission type (currency key + count, or 'gear'); `missionReward(o)` adds +1 at stage 6+ and 11+ (gear = Rare+, Epic+ at 11+/endgame); `missionRewardGive(o)` drops it once at `missionPoint` (forgeQuantity forced 1) in completeWaveObjective (before cleanup) and the replay bounty. Template: `missionIntro(o,armed)` = camUI card (MISSION n/m · name · desc · Reward · "Step on ✨") that shrinks into the HUD bar after 3.5 s, replaces the beginWave banner + duplicate speech bubble (banner kept as fallback) and the replay bounty banner; `missionGo` = colour shockwave (loud on arm-pad trigger: sound+flash+GO); `missionStamp` = MISSION COMPLETE / BONUS CLEAR / BOUNTY COMPLETE stamp (scale 2.1→1 punch, sparkles, reward line) instead of the completion banner; arm pad shows the reward above it. Ruby (`rubyNext`): avatar 58px in the top-right corner (safe pad), bubble to her left with a tail, text area bw-26 (fixes overflow/overlap), raised by=pad+138. `bossSay(text,who,ms,src)`: callers pass the boss; world text 11px screen size (scaled by 1/camera zoom) centred above the head, quote only, follows the boss; no boss → old top-left tag. New test `tests/mission-template.test.cjs` (contracts + stub smoke). combat-hud UI check already failed before this release (not in the release list).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
