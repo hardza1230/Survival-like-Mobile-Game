@@ -30,7 +30,7 @@ for(const k of ['menu_hub_v3']) assert.equal(R.artClass(k),null,'hub art stays c
 for(const a of all){ if(R.bootKeep(a.k))continue; if(/^screen_/.test(a.k)||/assets\/(?:art\/temple|character_cards|incoming)\//.test(a.u)) assert(R.artClass(a.k,a.u),a.k+' should be lazy'); }
 assert.equal(R.artHero('bpx_cocoa_crack'),'cocoa'); assert.equal(R.artHero('minion_yuzling'),'yuzu'); assert.equal(R.artClass('char_mint'),null,'base hero sheet stays core for roster');
 assert(R.lazyArt('char_mint_run',R.ASSET_SHEETS.char_mint_run.url,'momo')&&!R.lazyArt('char_mint_run',R.ASSET_SHEETS.char_mint_run.url,'mint'));
-assert([250,400].includes(R.TEX_BUDGET_MB));
+assert([340,420,520].includes(R.TEX_BUDGET_MB),"v8.1.122 budgets");
 // โค้ดผูกครบ: preloadAll ดาวน์โหลดอย่างเดียว · เข้าด่านคืนภาพเมนู · เมนูคุมงบ · โหมดหน่วยความจำต่ำหลังกราฟิกดับ
 assert(/lz\(k,ASSET_IMAGES\[k\]\)\)\{  continue;/.test(src),'startup leaves lazy art to the existing on-demand loaders');
 assert(src.includes('this.menu.removeAll(true); this.texFreeForRun();'),'startRun frees menu art');

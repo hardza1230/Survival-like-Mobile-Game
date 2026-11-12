@@ -13,3 +13,9 @@ list.a=1;ev.addtexture('a');assert.equal(o.texture.key,'a');assert.equal(o.f,3,'
 const bad=spr('gone');bad.frame.source=null;sc.game.scene.getScenes=()=>[{children:{list:[bad,other]}}];list.gone=1;assert.equal(sc.texHeal(),1);assert.equal(bad.texture.key,'__DEFAULT');assert.equal(other.texture.key,'b');
 let calls=0;const L={callback(){calls++;throw new Error('glTexture');}};sc.game.loop=L;sc.game.renderer={resetTextures(){}};sc.loopGuard();sc.loopGuard();L.callback(0,16);L.callback(0,16);assert.equal(calls,2,'guard wraps once and swallows the crash');
 console.log('texture safety ok');
+// v8.1.122 owner: lobby flicker + "Preparing 0% 2%" loop after a GPU out-of-memory reload (stuck low-mem, budget below the lobby's need → evict/reload thrash).
+assert(s.includes("localStorage.getItem('mochi_lowmem_reset122')")&&s.includes("_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?340:"),'low-mem reset once + higher floor');
+assert(method('texEvict').includes('_now-(_A[k]||0)<20000)continue;'),'recently loaded art is never evicted');
+const lg=method('loopGuard');assert(lg.includes("this.textures.on('addtexture',k=>{ (this._texAddT||(this._texAddT={}))[k]=Date.now(); })")&&lg.includes('if(++burst>20)')&&lg.includes('location.reload()')&&!lg.includes('resetTextures'),'burst of crashes = save + reload');
+assert(method('buildLobby').includes("this.texEvict?.(k=>k.startsWith('bk_'),null)"),'book art freed after the lobby');
+console.log('memory thrash guards ok');

@@ -1,14 +1,16 @@
 # Version line
 
-Current release: **8.1.121**. Next release:8.1.122. Fetch the deploy branch before new work.
+Current release: **8.1.122**. Next release:8.1.123. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.121 — owner: mission card too much text / too fast / cluttered; Mint Impaler Unique refund
+# Latest delivery: v8.1.122 — owner bug: Lobby flicker / Preparing 0–2% loop / huge text after GPU out-of-memory · + special picks should feel like picking real things (Relic vault, Evolution forge) + art order 80
+
+`openLevelUp`: relic pick (`_relicPick`, not chest, 1–3 opts, not tutorial) → `drawRelicVault(opts,startY,hint)`; single evolution option → `drawEvoForge(o,startY,hint)`; else the old cards. Both push `lvlCards` entries with `onFocus` (highlightCard calls it instead of the card glow; pickCardAt keeps their hint), so the tap-twice confirm, apply, Stats and SFX are unchanged. Vault: 3 columns, light beam + pedestal (code graphics, or `vault80_pedestal`), floating icon (`lvlObjIcon`: iconKey/key texture or emoji), glow, info panel (name/desc/headline), focus = icon ×1.35 + others dimmed; `vault80_bg` if loaded. Forge: anvil (code or `forge80_anvil`), floating `ic_path_<path>`, spark loop (stops when its card leaves lvlCards), focus = hotter sparks. Art order `docs/art_orders/80_SPECIAL_PICKS.md` (21 files: vault bg/pedestal, anvil, recipe book spread + page glow, 15 Build Path cards + back) — recipe book (Mutation) and Build Path card code come when the art arrives. Test `tests/special-picks.test.cjs`.
+
+Memory bug (owner saw "Graphics memory ran out"): the context-lost handler (v6.91) reloads with `mochi_lowmem` set forever → budget 250 MB, but the Lobby alone needs ~430 MB (same in v8.1.115, measured headless) → `texBudget` evicted freshly loaded art, screens reloaded it → evict/reload loop (flicker, loader 0↔2%, DPR 1 = big text). Fixes: one-time clear of `mochi_lowmem` (`mochi_lowmem_reset122`); TEX_BUDGET_MB low 340 / normal 420 / ≥8 GB 520 (was 250/400/600); `texEvict` never evicts textures added in the last 20 s (`_texAddT` stamped by the `addtexture` listener in loopGuard); loopGuard no longer calls renderer.resetTextures and saves + reloads after >20 errors in 3 s; `buildLobby` frees `bk_*` book-opening art (~44 MB) 1.5 s after the lobby is up. Tests texture-safety + gpu-memory-budget updated.
+
+# Previous delivery: v8.1.121 — owner: mission card too much text / too fast / cluttered; Mint Impaler Unique refund
 
 `missionIntro` card = 3 lines: emoji+name, one line (armed: "Step on ✨ to begin"; desc if ≤48 chars, else `RUBY_TIPS[type].short` without brackets), 🎁 reward; holds 5.5 s (was 3.5 s) then shrinks into the HUD. Declutter: setupWaveObjective `rubyTip(type, 6200)` (650 in tutorial) and objBonusInit "⭐ Bonus" float at 6.6 s (was 1.9 s), so nothing overlaps the card. Mint Impaler (`releaseImpalerCharge`, path 'pierce'): each lance fired → `uniqueCd -= 0.5` (min 0). Escort Wisp `_wispTuning().escortR` 220 → 160 (owner). Test mission-template updated.
-
-# Previous delivery: v8.1.120 — owner: survivor-genre readability extras (items 3, 6, 7, 8; item 4 low-HP vignette already existed in tickNearDeath)
-
-`spawnRise(e,x,y)` (end of spawnEnemy): resets `_occ`; spawn inside camera worldView (non-boss) → alpha 0→1 300 ms, purple ground ring, `_spawnGrace` now+420 ms → `touchEnemy` returns. Occlusion fade in `drawFoeShadows`: enemy with depth above the player, |dx|<0.42×width, dy<0.7×height → alpha ×0.5 (`_occ/_occA`, restored when clear; shadow uses the original alpha). `drawPlayerLight()` (called from drawFoeShadows): canvas radial gradient `mm_player_light` 256², image 620×460 ADD at depth -99500, alpha .17 (.12 in Chapter 2.5D), only in play. EXP hop: `dropOrb` sets `o._hop` (14–36 px, 0.3 s, 22 px arc) — orb loop moves it and skips magnet/pickup until landed (vacuum cancels). Tests foe-shadow (extras block), sig-missions touchEnemy contract loosened.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -43,6 +45,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
+- ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) 🟡 รออาร์ต · โค้ดห้องสมบัติ/เตาหลอม v8.1.122 · สมุด/การ์ด Build Path ทำโค้ดตอนอาร์ตมา
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - เสียงชุด A04 เพลง · รอสิทธิ์ Music Generation
