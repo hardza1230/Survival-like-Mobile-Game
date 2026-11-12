@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.109';
+const GAME_VERSION = '8.1.110';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.110',date:'2026-11-12',title:'Lobby scene always loads',items:['Fixed the lobby sometimes showing a dark screen with a green grid instead of your stage scene','The Depths dig room now uses the main menu music']},
   {v:'8.1.109',date:'2026-11-12',title:'Patrol gets the temple tune',items:['Mochi Patrol now plays the calm temple music; Flavor Weave and Rank Rewards use the main menu music like the other lobby screens']},
   {v:'8.1.108',date:'2026-11-12',title:'Voices, sounds and a new results header',items:['Ruby now speaks her Flavor Core story and explains every League and Chapter 3 mission','New sounds for the League missions, Sugar Crown Trial, Forge rows and Recipe Ink, Memory Book and Mochi Patrol (with a calm night ambience)','Stage Clear has a painted header panel, hero medallion, light rays and star sockets; Ruby shows the Heart Seed while she explains the cores']},
   {v:'8.1.107',date:'2026-11-12',title:'Lobby opens on your stage',items:['After the book opens, the lobby shows your current stage scene right away (it starts loading on the title screen) instead of a backup picture']},
@@ -12621,13 +12622,13 @@ class Game extends Phaser.Scene {
     const z=this.tapZones[this.tapZones.length-1]; z.tag='feat_reveal'; z.noBounce=true; }
   // v8.1.107 ฉากด่าน + การ์ดฮีโร่ของ Lobby: เริ่มโหลดตั้งแต่หน้า Title (ก่อนเปิดหนังสือ) · โหลดเสร็จแล้วถ้าอยู่ Lobby สร้างใหม่ (ฉากจางเข้า)
   lobbyPreload(){ const d=Save.data||{},c=CHARACTERS[d.character]?d.character:'momo',si=this.lobbyStage?.()||0,sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c),
-      miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]); if(!miss.length||this._lobbyLoading)return; this._lobbyLoading=true;
+      miss=[sk,hk,'roster_'+c].filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length||(this._lobbyLoading&&Date.now()-this._lobbyLoading<8000))return; this._lobbyLoading=Date.now();   /* v8.1.110 ภาพสำรอง (canvas) นับว่ายังไม่โหลด · ค้างเกิน 8 วิ = ลองใหม่ */
     try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; this._lobbyBgIn=true; const go=()=>{ if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this._bookCover)return this.time?.delayedCall?.(400,go); this.buildMenuScreen(); }; go(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
   buildLobby(){ this.menu.setVisible(true);if(typeof Board!=='undefined')Board.submit(false); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(700,()=>this.loginPopup?.()); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c);
     this.lobbyPreload();
-    const bgk=this.textures.exists(sk)?sk:null;   /* v8.1.107 เจ้าของ: หลังเปิดหนังสือเห็นภาพสำรอง (ฉาก Hub) แปลก → ไม่ใช้ภาพสำรองแล้ว · ฉากด่านโหลดตั้งแต่หน้า Title · ยังไม่มา = พื้นมืดเรียบ แล้วฉากด่านค่อย ๆ จางเข้า */
+    const bgk=this.realTex(sk)?sk:null;   /* v8.1.107 เจ้าของ: หลังเปิดหนังสือเห็นภาพสำรอง (ฉาก Hub) แปลก → ไม่ใช้ภาพสำรองแล้ว · ฉากด่านโหลดตั้งแต่หน้า Title · ยังไม่มา = พื้นมืดเรียบ แล้วฉากด่านค่อย ๆ จางเข้า */
     const bg=bgk?this._coverImage(0,0,w,h,bgk):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
     if(bgk&&this._lobbyBgIn){ this._lobbyBgIn=false; bg.setAlpha(0); this.tweens.add({targets:bg,alpha:1,duration:600,ease:'Sine.easeOut'}); }
     if(bg.type==='Image')this.hubTween({targets:bg,scaleX:bg.scaleX*1.015,scaleY:bg.scaleY*1.015,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
@@ -14592,9 +14593,9 @@ class Game extends Phaser.Scene {
   voiceBossSlip(b,st){if(this._voiceSlipSeen||!this.storyVoice?.()||!b?.isBoss||!(b.maxhp>0)||b.hp/b.maxhp>.5||this._bossSayObj?.active||VoiceActing.busy())return false;const key='vo_b'+String((this.stageIndex||0)+1).padStart(2,'0')+'_slip_'+(Math.floor(performance.now()/1000)%2+1),row=A07_CATALOG[key];if(!row)return false;this._voiceSlipSeen=true;this.bossSay(row.text,st?.boss,Math.max(3300,row.duration+250));return true;}
   storyMusicPlay(key,valid,volume){return StoryMusic.play(this,key,valid,volume);}
   storyMusicStop(){StoryMusic.stop();}
-  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
+  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
-    this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({patrol:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
+    this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({patrol:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)
   evictOtherBgm(keep){ try{ const ks=new Set((keep||[]).filter(Boolean)),cur=Sfx._currentBgmKey,ca=this.cache.audio; const all=ca.entries&&ca.entries.keys?ca.entries.keys():[];
       for(const k of all){ if(!/^bgm_(?:[smb]\d|stage|boss|ch\d)/.test(k)||ks.has(k)||k===cur)continue; try{ this.sound.removeByKey?.(k); }catch(e){} ca.remove(k); } }catch(e){} }
