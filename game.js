@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.101';
+const GAME_VERSION = '8.1.102';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.102',date:'2026-11-12',title:'Smoother book opening',items:['The magic ring now glows around the book’s clasp before it unlocks','The cover opens straight into the lobby with no flash of a full page','Lobby icons float in more gently']},
   {v:'8.1.101',date:'2026-11-12',title:'See your boss loot',items:['Miniboss loot bursts out first; the prize chest now drops a moment later, so the wheel no longer hides the loot','Defeated bosses burst Sugar and loot boxes onto the field, which fly to you before the Boss Loot wheel opens']},
   {v:'8.1.100',date:'2026-11-12',title:'Cleaner speech, livelier cards, finished results header',items:['Boss lines and Ruby’s chatter now pop out as small tags at the top corners instead of covering the battlefield','Level-up cards shimmer, their icons bob and a colored CHOOSE tag replaces the old “Tap to choose” pill','The Stage Clear header now sits on a gold-trimmed panel with a hero medallion, turning rays and star sockets']},
   {v:'8.1.99',date:'2026-11-12',title:'Mint Barrage focus & smoother book opening',items:['Mint before choosing a build and Mint Barrage no longer end lances with a wide ice explosion — they win with fast attacks and spreading ice shards (Glacier and Impaler keep their blooms)','Barrage card Wide Bloom is now Far Shards: ice shards fly 20% farther per rank','The book opening before the lobby flows smoothly: the pages appear as the cover opens and stay after they riffle']},
@@ -4689,7 +4690,7 @@ const RUBY_COMIC_KEYS=['ruby_comic_s1_1','ruby_comic_s1_2','ruby_comic_s1_3','ru
 const RUBY_STORY_KEYS=['ruby_story_pantry','ruby_story_furnace','ruby_story_frozen','ruby_story_crown','ruby_story_paper'];
 const RUBY_MENU_KEYS=['ruby_talk_normal','ruby_talk_explain','ruby_talk_proud','ruby_talk_worried','ruby_memory_grandma','ruby_memory_jar'];
 Object.assign(TEMPLE_UI,{ruby_point:[128,128,4,null],vfx_ruby_sparkle:[64,64,6,null]});
-const BKP_KEYS=["bk_open_long", "bk_clasp", "bk_emblem_spin", "vfx_bk_magic", "bk_page_riffle", "vfx_bk_burst", "bk_cover_clean_plate"];
+const BKP_KEYS=["bk_open_long", "bk_clasp", "bk_emblem_spin", "vfx_bk_magic", "bk_cover_clean_plate"];
 const BOOK_KEYS=['bk_page_turn','bk_page_shadow','bk_spine','vfx_bk_dust','bk_cover_closed','bk_cover_open','bk_cover_glow'];
 const MENU_GROUPS=[
   [/^gLoadout$/,/assets\/art\/mobile_ui_789\/gear_/],
@@ -11047,35 +11048,29 @@ class Game extends Phaser.Scene {
     const sc=Math.max(w/432,h/768),cw=432*sc,chh=768*sc,P=(x,y)=>[(x-216)*sc,(y-384)*sc],bk=this.add.container(0,0);
     const plate=this.add.image(0,0,'bk_cover_clean_plate','cell0').setDisplaySize(cw,chh),[ex,ey]=P(222,359),
       em=this.add.image(ex,ey,'bk_emblem_spin','cell0').setDisplaySize(340*sc,380*sc),[kx0,ky]=P(400,384),kx=Math.min(kx0,w/2-62*sc),cl=this.add.image(kx,ky,'bk_clasp','cell0').setDisplaySize(140*sc,140*sc),
-      mg=this.add.image(ex,ey,'vfx_bk_magic','cell0').setDisplaySize(520*sc,520*sc).setBlendMode(Phaser.BlendModes.ADD).setAlpha(0),
-      op=this.add.image(0,0,'bk_open_long','cell0').setDisplaySize(cw,chh).setAlpha(0),
-      rf=this.add.image(0,0,'bk_page_riffle','cell0').setDisplaySize(cw,chh).setVisible(false),
-      bs=this.add.image(0,0,'vfx_bk_burst','cell0').setDisplaySize(Math.min(w,h)*1.25,Math.min(w,h)*1.25).setBlendMode(Phaser.BlendModes.ADD).setVisible(false);
-    bk.add([plate,em,cl,rf,op,mg,bs]); c.add([veil,bk]);   /* v8.1.99 เจ้าของ: กระดาษพลิกไม่ต่อเนื่อง → ชั้นหน้ากระดาษอยู่ใต้ปก เห็นตอนปกเปิด ไม่มีช่วงว่าง */
+      mg=this.add.image(kx,ky,'vfx_bk_magic','cell0').setDisplaySize(260*sc,260*sc).setBlendMode(Phaser.BlendModes.ADD).setAlpha(0),
+      op=this.add.image(0,0,'bk_open_long','cell0').setDisplaySize(cw,chh).setAlpha(0);
+    bk.add([plate,em,cl,op,mg]); c.add([veil,bk]);   /* v8.1.102 เจ้าของ: วงแหวนเวทอยู่ที่ตัวล็อกขวา · ตัดหน้ากระดาษพลิก/แสงพุ่ง (เห็นกระดาษเต็มหน้าแว้บหนึ่ง) → ปกเปิดแล้วเข้า Lobby เลย */
     let fin=false,gone=false; const T=[],at=(ms,f)=>T.push(this.time.delayedCall(ms,()=>{ if(!fin&&c.active)f(); })),
       loop=(img,key,n,ms)=>{ let i=0; T.push(this.time.addEvent({delay:ms,loop:true,callback:()=>{ if(!img.active)return; i=(i+1)%n; img.setFrame('cell'+i); }})); },
       play=(img,n,ms,t0,end)=>{ for(let i=1;i<n;i++)at(t0+i*ms,()=>img.setFrame('cell'+i)); if(end)at(t0+n*ms,end); };
     const go=()=>{ if(gone)return; gone=true; try{ done&&done(); }catch(e){ console.warn(e); } };
-    const end=()=>{ if(fin)return; fin=true; T.forEach(t=>t.remove(false)); if(this._bookCover===c)this._bookCover=null; if(this._bookSkip===end)this._bookSkip=null; this.tweens.killTweensOf([c,bk,plate,em,cl,mg,op,rf,bs,veil]); c.destroy(); go();
+    const end=()=>{ if(fin)return; fin=true; T.forEach(t=>t.remove(false)); if(this._bookCover===c)this._bookCover=null; if(this._bookSkip===end)this._bookSkip=null; this.tweens.killTweensOf([c,bk,plate,em,cl,mg,op,veil]); c.destroy(); go();
       this.time.delayedCall(60,()=>{ try{ const used=this.texInUse?.()||new Set(); BKP_KEYS.forEach(k=>{ if(!used.has(k)&&this.textures.exists(k))this.textures.remove(k); }); }catch(e){} }); };   // ใช้ครั้งเดียวต่อการเปิดเกม → คืน ~40 MB
     const finish=()=>{ if(fin)return; this._bookSkip=null; go(); if(reveal&&this.state==='menu'&&this.menuScreen==='hub'&&!this._bkRose){ this._enterLast=null; this._enterRise=true; this.buildMenuScreen(); } this._bkRose=false; this.tweens.killTweensOf([c,bk]); this.tweens.add({targets:bk,scale:bk.scale*1.45,duration:480,ease:'Cubic.in'}); this.tweens.add({targets:c,alpha:0,duration:480,ease:'Quad.in',onComplete:end}); };
     this._bookSkip=finish;
     // 1) ปกลอยเข้า + ตราขยับวน
     this.tweens.add({targets:veil,alpha:.85,duration:300}); bk.setScale(.78).setAngle(-3).setAlpha(0).setY(h*.06);
     this.tweens.add({targets:bk,scale:1,angle:0,alpha:1,y:0,duration:700,ease:'Back.out'}); loop(em,'bk_emblem_spin',8,100);
-    // 2) ประกายเวทรอบตรา
+    // 2) วงแหวนเวทที่ตัวล็อกด้านขวา
     at(650,()=>{ this.tweens.add({targets:mg,alpha:1,duration:300}); loop(mg,'vfx_bk_magic',8,100); Sfx.select&&Sfx.select(); });
     // 3) ตัวล็อกปลด + ปกสั่น
     at(1500,()=>{ Sfx.orderCue?.('book_open',.35,2)||Sfx.ui&&Sfx.ui(); this.tweens.add({targets:bk,x:{from:-4,to:4},duration:45,yoyo:true,repeat:5,ease:'Sine.inOut',onComplete:()=>bk.setX(0)}); }); play(cl,6,100,1500,()=>cl.setVisible(false));
     // 4) เฟดเข้าเฟรมแรกของปกเปิด (150ms) แล้วเปิด 12 เฟรม × 100ms · Lobby สร้างใต้ปกตอนนี้
-    at(2150,()=>{ this.tweens.add({targets:[mg,em],alpha:0,duration:150}); rf.setVisible(true).setFrame('cell0'); this.tweens.add({targets:op,alpha:1,duration:150,onComplete:()=>plate.setVisible(false)}); });
-    at(2300,()=>{ em.setVisible(false); mg.setVisible(false); if(reveal){ this._enterLast=null; this._enterRise=true; this._enterRiseDelay=2100; this._bkRose=true; go(); c.setDepth(5200); this.tweens.add({targets:veil,alpha:0,duration:400}); } this.tweens.add({targets:bk,scale:1.06,duration:1800,ease:'Sine.inOut'}); });
-    play(op,12,100,2300,()=>op.setVisible(false));
-    // 5) หน้ากระดาษพลิกรัว 8 เฟรม
-    at(3400,()=>{ rf.setVisible(true).setFrame('cell0'); Sfx.ui&&Sfx.ui(); }); play(rf,8,77,3400,()=>rf.setFrame('cell0'));   /* พลิกจบ → กลับเป็นปึกกระดาษนิ่ง (ไม่หายไป) */
-    // 6) แสงพุ่งจากกลางเล่ม → ซูมจาง
-    at(3950,()=>{ bs.setVisible(true).setFrame('cell0'); Sfx.select&&Sfx.select(); }); play(bs,6,83,3950,()=>bs.setVisible(false));
-    at(4250,finish); at(7500,end); }
+    at(2150,()=>{ this.tweens.add({targets:[mg,em],alpha:0,duration:150}); this.tweens.add({targets:op,alpha:1,duration:150,onComplete:()=>plate.setVisible(false)}); });
+    at(2300,()=>{ em.setVisible(false); mg.setVisible(false); if(reveal){ this._enterLast=null; this._enterRise=true; this._enterRiseDelay=1500; this._bkRose=true; go(); c.setDepth(5200); this.tweens.add({targets:veil,alpha:0,duration:400}); } this.tweens.add({targets:bk,scale:1.06,duration:1800,ease:'Sine.inOut'}); });
+    play(op,12,100,2300,()=>{ op.setVisible(false); finish(); });   // ปกเปิดจบ → จางออก เห็น Lobby ว่างใต้ปก แล้วไอคอนค่อยลอยเข้า
+    at(6500,end); }
   bookOpening(done,reveal){ const w=this.W,h=this.H; if(this.bkPlusReady?.()&&this.bookOpeningPlus)return this.bookOpeningPlus(done,reveal); ['bk_cover_open','bk_page_turn','bk_page_shadow','vfx_bk_dust'].forEach(k=>this.tuFrames(k));
     const c=this.camUI(this.add.container(w/2,h/2).setScrollFactor(1).setDepth(5200));this._bookCover=c;
     const veil=this.add.rectangle(-w/2,-h/2,w,h,0x0d0816,1).setOrigin(0).setAlpha(0);
@@ -12367,11 +12362,11 @@ class Game extends Phaser.Scene {
   hasNewsBadge(){ return Save.data.seenVersion!==GAME_VERSION; }
   // v7.9.54 เปิดหน้าเมนูใหม่ → ชิ้นในหน้าไหลขึ้น+จางเข้า ทีละชิ้นจากบนลงล่าง (~0.3 วิ) · เฉพาะตอนเปลี่ยนหน้า (วาดหน้าเดิมซ้ำ = ไม่เล่น) · ข้ามพื้นหลังใหญ่/แถบเมนู/ชิ้นที่มี tween อยู่แล้ว
   menuEnterAnim(scr,n){ if(scr===this._enterLast||!this.tweens||this.state!=='menu')return; this._enterLast=scr; const W=this.W,H=this.H,list=this.menu.list.slice(0,n),nd=this._navDir,slide=(nd&&Date.now()-nd.at<700)?nd.d:0; this._navDir=null; const rise=!!this._enterRise,riseD=this._enterRiseDelay||0; this._enterRise=false; this._enterRiseDelay=0;   // v7.9.77 riseD: หนังสือเปิดให้เห็นหน้าก่อน แล้วชิ้นค่อยลอยขึ้น (ไม่โผล่-หาย-โผล่)
-    for(const o of list){ if(!o||!o.active||!o.visible||o._menuBackdrop||o._noEnter||this.tweens.isTweening(o))continue; let b=null;
+    for(const o of list){ if(!o||!o.active||!o.visible||o._menuBackdrop||o._noEnter)continue; if(this.tweens.isTweening(o)){ if(rise){ const a0=o.alpha; o.setAlpha(0); this.tweens.add({targets:o,alpha:a0,duration:700,delay:riseD+500,ease:'Sine.easeInOut'}); } continue; } let b=null;
       if(o.type==='Graphics'){ const q=o._bb; if(q&&q.x1>q.x0)b={y:q.y0+o.y,w:q.x1-q.x0,h:q.y1-q.y0}; } else if(o.getBounds){ try{ const r=o.getBounds(); b={y:r.y,w:r.width,h:r.height}; }catch(e){} }
       if(!b||(b.w>W*.9&&b.h>H*.35))continue; const y0=o.y,x0=o.x,a0=o.alpha,d=Math.max(0,Math.min(200,(b.y+b.h/2)/H*200));
       if(slide){ o.x=x0+slide*W*.18; o.setAlpha(0); this.tweens.add({targets:o,x:x0,duration:260,delay:d*.4,ease:'Cubic.easeOut'}); this.tweens.add({targets:o,alpha:a0,duration:180,delay:d*.4,ease:'Quad.easeOut'}); continue; }
-      if(rise){ const rd=riseD+150+(1-(b.y+b.h/2)/H)*650; o.y=y0+70; o.setAlpha(0); this.tweens.add({targets:o,y:y0,duration:720,delay:rd,ease:'Back.easeOut'}); this.tweens.add({targets:o,alpha:a0,duration:420,delay:rd,ease:'Quad.easeOut'}); continue; }   // v7.9.71 หลังเปิดหนังสือ: ลอยขึ้นช้า ๆ ทีละชิ้น (ล่างก่อน → บน)
+      if(rise){ const rd=riseD+150+(1-(b.y+b.h/2)/H)*900; o.y=y0+34; o.setAlpha(0); this.tweens.add({targets:o,y:y0,duration:900,delay:rd,ease:'Cubic.easeOut'}); this.tweens.add({targets:o,alpha:a0,duration:700,delay:rd,ease:'Sine.easeInOut'}); continue; }   // v8.1.102 เจ้าของ: ลอยเข้านุ่มขึ้น (ไม่เด้งเกิน · ระยะสั้นลง · จางช้าลง)   // v7.9.71 หลังเปิดหนังสือ: ลอยขึ้นช้า ๆ ทีละชิ้น (ล่างก่อน → บน)
       o.y=y0+16; o.setAlpha(0); this.tweens.add({targets:o,y:y0,duration:280,delay:d,ease:'Back.easeOut'}); this.tweens.add({targets:o,alpha:a0,duration:200,delay:d,ease:'Quad.easeOut'}); } }
   // v7.9.54 จุดแจ้งเตือนเต้นเป็นจังหวะหัวใจ (เด้งใหญ่ 2 ครั้ง แล้วพัก) · tween หยุดเองเมื่อจุดถูกทำลาย
   drawBadgeDot(cont,x,y){ let g;

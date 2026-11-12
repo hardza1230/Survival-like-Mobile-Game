@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.101**. Next release:8.1.102. Fetch the deploy branch before new work.
+Current release: **8.1.102**. Next release:8.1.103. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.101 — owner: loot bomb hidden by the prize wheel (Spin)
+# Latest delivery: v8.1.102 — owner: book opening into the lobby
+
+bookOpeningPlus: vfx_bk_magic ring moved from the emblem to the right clasp (kx,ky, 260·sc) · page riffle (rf) and burst (bs) layers removed (owner saw a full page flash) → when the 12-frame cover opening ends, op hides and finish() fades straight into the lobby; `BKP_KEYS` no longer loads bk_page_riffle/vfx_bk_burst; safety end at 6500 ms; lobby rise delay 1500 ms (was 2100). menuEnterAnim rise: 34 px (was 70), 900 ms Cubic.easeOut (was Back), alpha 700 ms, stagger 900 ms; items already tweening (idle heroes) now fade in instead of popping. Test tests/book-open-continuity.test.cjs rewritten.
+
+# Previous delivery: v8.1.101 — owner: loot bomb hidden by the prize wheel (Spin)
 
 Miniboss death: spawnChest('mini') delayed 2300 ms (0 in tutorial/Boss Rush; tier rolled at death; skipped if state menu/summary or `_lootTok` changed — exitStage bumps it) so the bigFoeLoot burst (1.9 s hold → vacuum) plays before the wheel can open. Boss: new `bossLootShow(x,y,_bossLoot)` in onBossDown = visual-only burst (8 sugar + up to 4 gift sprites scatter, hold, fly to player at 1.5 s; float text at 1.9 s; rewards already granted by bigFoeLoot, totals unchanged) → openBossLootCards at 2400 ms (was 700). Old 900 ms boss-loot float text removed. No reward change.
-
-# Previous delivery: v8.1.100 — owner: speech tags, level-up card juice, Stage Clear header
-
-bossSay → left-anchored tag at (8, pad+182) 13px, width min(230,.6W), slides in from the left, drops below Ruby's bubble when both show; rubyNext bubble → right-anchored top-right tag (bw=min(.66W,280), 46px avatar, 12–13px text, slides in from the right). Level-up cards: "Tap to choose" pill → `lvlCta` (CHOOSE › pill in the card's darkened color, pulse) · `lvlCardJuice` (icon pop+bob, shine sweep on non-special cards, 2 twinkling corner ✦, entrance flash; off with reducedMotion). Stage Clear: `summaryHeaderDeco` (gold-trimmed header panel, circular hero medallion with mask, rotating rays, divider, sparkles) + star sockets and a panel behind the stars row. Tests levelup75-art / stage-summary-layout stubs extended. No gameplay/reward change.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

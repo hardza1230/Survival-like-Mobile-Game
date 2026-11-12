@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.100 — owner: speech tags, level-up card juice, Stage Clear header
+
+bossSay → left-anchored tag at (8, pad+182) 13px, width min(230,.6W), slides in from the left, drops below Ruby's bubble when both show; rubyNext bubble → right-anchored top-right tag (bw=min(.66W,280), 46px avatar, 12–13px text, slides in from the right). Level-up cards: "Tap to choose" pill → `lvlCta` (CHOOSE › pill in the card's darkened color, pulse) · `lvlCardJuice` (icon pop+bob, shine sweep on non-special cards, 2 twinkling corner ✦, entrance flash; off with reducedMotion). Stage Clear: `summaryHeaderDeco` (gold-trimmed header panel, circular hero medallion with mask, rotating rays, divider, sparkles) + star sockets and a panel behind the stars row. Tests levelup75-art / stage-summary-layout stubs extended. No gameplay/reward change.
+
 # Previous delivery: v8.1.99 — owner: Mint lance bloom off for level 1 + Barrage; book opening continuity
 
 frostShatterBurst: noBloom = !basicAttack.path (before a build) || path==='barrage' → no mintBurstFx and no bloom AoE damage; shards unchanged (Glacier/Impaler keep the bloom). Barrage card p_bar_wide renamed Far Shards: shard life ×(1+.2·rank) instead of bloom radius (fixture tests/fixtures/cocoa-rework-baseline.json updated). bookOpeningPlus: page-riffle layer added below the opening cover (bk order plate,em,cl,rf,op,…), shown at 2150 ms, rests on frame 0 after the riffle (was hidden → blank gap). Test tests/book-open-continuity.test.cjs.
