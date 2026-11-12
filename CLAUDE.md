@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.97**. Next release:8.1.98. Fetch the deploy branch before new work.
+Current release: **8.1.98**. Next release:8.1.99. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.97 — Attack and defeat animations for six special enemies (art order 77)
+# Latest delivery: v8.1.98 — review fix: breach collapse effect restored
+
+v8.1.96 (art order 76) rewrote the breach timer (total open time capped at lifeMax 20s via S.openLeft — kills extend life only up to the remaining cap) and dropped `artFx('hm_collapse')` when phase → 'close'; restored. The 20s cap is a gameplay change made by the art AI — owner asked to confirm (before: kills could keep the breach open indefinitely, each kill +.35s up to 20s left).
+
+# Previous delivery: v8.1.97 — Attack and defeat animations for six special enemies (art order 77)
 
 Twelve reference-guided sheets share their opening frame with the existing idle art. The attack ends on that idle pose. The packed sheets use the same frame sizes as the active idle assets (6.71 MB WebP, 35.78 MB decoded across mission groups). Stage-lazy overlays play at the existing skill hooks or at close range, then return to idle. A successful death clip replaces the old death pose. Missing textures keep the original visuals. tests/motion77-art.test.cjs covers wiring, cooldowns, the return to idle, death deduplication and fallback.
-
-# Previous delivery: v8.1.96 — Breach enemies, live rift edge and a fixed deadline (art order 76)
-
-Eight sources packed into 128 px frames (419 KB WebP, 3.15 MB decoded). Breach and Domain use stage-lazy overlays, falling back to tinted stage enemies and their original defeat visuals. Hunger’s Mouth has a procedural violet floor tint and animated boundary, a 20-second open cap and a collapse of up to 0.85 seconds. Spawn rates, damage and reward formulas remain intact. tests/breach76-art.test.cjs exercises sustained kills, collapse, asset registration and fallbacks.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

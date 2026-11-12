@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.96 — Breach enemies, live rift edge and a fixed deadline (art order 76)
+
+Eight sources packed into 128 px frames (419 KB WebP, 3.15 MB decoded). Breach and Domain use stage-lazy overlays, falling back to tinted stage enemies and their original defeat visuals. Hunger’s Mouth has a procedural violet floor tint and animated boundary, a 20-second open cap and a collapse of up to 0.85 seconds. Spawn rates, damage and reward formulas remain intact. tests/breach76-art.test.cjs exercises sustained kills, collapse, asset registration and fallbacks.
+
 # Previous delivery: v8.1.95 — League mission and upgrade effects (art order 78)
 
 Fifteen ImageGen sources and packed flipbooks (1.43 MB WebP, 26.97 MB decoded across all groups). Thirteen stage effects are loaded by mission, two menu effects by Forge or Bestiary. Frozen Pantry reuses a paint loop while a statue is being filled and removes it on wake, loss or mission cleanup. Prior effects remain active. tests/vfx78-art.test.cjs verifies hashes, routes, hooks and loop lifecycle.

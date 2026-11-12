@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.97';
+const GAME_VERSION = '8.1.98';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.98',date:'2026-11-12',title:'Breach collapse effect',items:['The breach plays its collapse animation again when it closes']},
   {v:'8.1.97',date:'2026-11-12',title:'Special enemy attack and defeat animations',items:['The Herald, Golem, Warlord, Hand of the Hunger, Breachlord and Stalker Captain now animate attacks and defeats.']},
   {v:'8.1.96',date:'2026-11-12',title:'Breach enemies and a faster collapse',items:['Hunger’s Mouth expands as a violet ground rift and snaps shut when its timer expires.','Kills can extend the breach up to 20 seconds after opening.','Four Breach creatures now have their own walk and defeat animations.']},
   {v:'8.1.95',date:'2026-11-11',title:'League mission effects',items:['League missions and Sugar Crown Trials have distinct effects for major actions.','Moving Recipe Ink mods and upgrading the Codex now have their own effects.']},
@@ -16058,7 +16059,7 @@ class Game extends Phaser.Scene {
     if(S.phase==='open'){
       S.openLeft=Math.max(0,(S.openLeft??S.lifeMax)-dt);
       S.life=Math.min(S.openLeft,S.life-dt);
-      if(S.life<=1e-6){ S.life=0; S.phase='close'; this.showBanner?.('🌀 The breach collapses','Everything inside is pulled back through',1200); return; }
+      if(S.life<=1e-6){ S.life=0; S.phase='close'; this.artFx?.('hm_collapse',S.x,S.y,420); this.showBanner?.('🌀 The breach collapses','Everything inside is pulled back through',1200); return; }
       S.R=Math.min(S.Rmax,S.R+S.grow*dt);
       S.ring.setRadius(S.R); this.hmRiftFx?.(S);
       for(const c of S.chests){ if(c.open)continue; const inside=this.dist(c.x,c.y,S.x,S.y)<S.R-30; if(inside&&!c.t){ c.t=this.sigArt('hm_breach_chest',0,c.x,c.y+30,80,'🤲',40,c.y-8); this.vfxSpawnPoof?.(c.x,c.y); } if(c.t&&this.dist(p.x,p.y,c.x,c.y)<70){ c.open=true; if(this.artIsSpr(c.t))c.t.setFrame(1); else c.t.setText?.('✨'); this.hmChest(S,c); } }
