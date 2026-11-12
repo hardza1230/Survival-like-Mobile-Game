@@ -15,6 +15,7 @@
 | `A10_SESAME_SPELLS.md` | Sesame เสียงร่ายเวท 10 + เรียกชื่อเวท 10 | 20 | ➡️ รวมเข้า A11 |
 | `A11_NEW_SCREENS_SFX.md` | **ใบรวม**: Sesame เวท 20 (จาก A10) + ฉากเงียบ SFX 26 + เสียงพากย์ที่หาย 21 (Ruby บทสอนด่านแรก 15, สอน/จบภารกิจ, Sesame เข้าทีม) | 67 | 🟢 ผูกแล้ว v8.1.65 |
 | `A12_LEAGUE_SFX.md` | เสียงภารกิจ League (Breach/Domain/Frozen/Herald/Pot/Golem/Roots/Siege) + Sugar Crown Trial + Forge สกุลแถว/ย้าย mod + Codex + Mochi Patrol · **ฝั่งเสียงผูกเอง** | 36 | 🟡 รอเสียง |
+| `A13_RUBY_LORE_MISSION_VOICE.md` | Ruby พากย์: เรื่อง Flavor Cores 3 + อธิบายภารกิจประจำด่าน/League 14 + เตือนสั้น 14 · **ฝั่งเสียงผูกเอง** | 31 | 🟡 รอเสียง · กลาง |
 | `A06_NEW_FEATURES_SFX.md` | ฟีเจอร์ใหม่ v8.0.85–90: Forge สุ่ม mod (ดี/เสีย/Lv/ลบ), Merge Mythic/Ancient/Divine, Relic Synergy, สถานะติดตัว 9, Yuzu วิวัฒนาการ+Unique, Taro Sentry, Login วัน 30, Depths · ElevenLabs | 28 | 🟢 ผูกแล้ว v8.0.91 |
 
 ## กติการ่วม (ทุกใบ)

@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.102 — owner: book opening into the lobby
+
+bookOpeningPlus: vfx_bk_magic ring moved from the emblem to the right clasp (kx,ky, 260·sc) · page riffle (rf) and burst (bs) layers removed (owner saw a full page flash) → when the 12-frame cover opening ends, op hides and finish() fades straight into the lobby; `BKP_KEYS` no longer loads bk_page_riffle/vfx_bk_burst; safety end at 6500 ms; lobby rise delay 1500 ms (was 2100). menuEnterAnim rise: 34 px (was 70), 900 ms Cubic.easeOut (was Back), alpha 700 ms, stagger 900 ms; items already tweening (idle heroes) now fade in instead of popping. Test tests/book-open-continuity.test.cjs rewritten.
+
 # Previous delivery: v8.1.101 — owner: loot bomb hidden by the prize wheel (Spin)
 
 Miniboss death: spawnChest('mini') delayed 2300 ms (0 in tutorial/Boss Rush; tier rolled at death; skipped if state menu/summary or `_lootTok` changed — exitStage bumps it) so the bigFoeLoot burst (1.9 s hold → vacuum) plays before the wheel can open. Boss: new `bossLootShow(x,y,_bossLoot)` in onBossDown = visual-only burst (8 sugar + up to 4 gift sprites scatter, hold, fly to player at 1.5 s; float text at 1.9 s; rewards already granted by bigFoeLoot, totals unchanged) → openBossLootCards at 2400 ms (was 700). Old 900 ms boss-loot float text removed. No reward change.

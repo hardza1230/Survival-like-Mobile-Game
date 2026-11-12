@@ -8,7 +8,8 @@ vm.runInContext(s.slice(s.indexOf('const A07_CATALOG = '),s.indexOf('const Voice
 const C=vm.runInContext('A07_CATALOG',ctx),B=vm.runInContext('A07_BY_TEXT',ctx),T=vm.runInContext('RUBY_TIPS',ctx);
 for(const r of M){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(C[r.key].role,'ruby');assert(s.includes('"url":"assets/audio/acting/'+r.file+'"'));}
 const lookup=t=>B.get('ruby|'+String(t).replace(/\s+·\s+\d+\/\d+$/,'').replace(/[\[\]]/g,''));
-for(const k in T)if(T[k].short){assert.equal(lookup(T[k].short),'vo_ruby_short_'+k,k);assert.equal(lookup(T[k].short+'  ·  3/10'),'vo_ruby_short_'+k,'progress suffix ignored');}
+const A13_PENDING=new Set(['seedRift','shakeTrees','mirrorPath','vaultAltar','ultimatum','lastLight','frozenPantry','hungersMouth','creepingRoots','hungerHerald','grandmasPot','grandmasGolem','hungerSiege','hungerDomain']);   // v8.1.104 voice ordered in A13 — the art/audio AI removes this set when wiring
+for(const k in T)if(T[k].short&&!A13_PENDING.has(k)){assert.equal(lookup(T[k].short),'vo_ruby_short_'+k,k);assert.equal(lookup(T[k].short+'  ·  3/10'),'vo_ruby_short_'+k,'progress suffix ignored');}
 assert(s.includes(".replace(/\\s+·\\s+\\d+\\/\\d+$/,'')"),'runtime lookup strips progress');
 // rubyReact rotation, 8s throttle, clear speaks without bubble
 let now=100000;const said=[],spoke=[];const sc={state:'play',rubyOn:()=>true,rubySay:t=>said.push(t),voiceLine:(r,t)=>spoke.push(t),time:null};

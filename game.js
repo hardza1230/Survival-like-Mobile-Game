@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.103';
+const GAME_VERSION = '8.1.104';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.104',date:'2026-11-12',title:'Ruby explains every mission',items:['Ruby now explains the 14 stage and League missions (Frozen Pantry, Hunger’s Mouth, Grandma’s Pot and more) when they start']},
   {v:'8.1.103',date:'2026-11-12',title:'Ruby explains the Flavor Cores',items:['After the tutorial, Ruby tells you what the Flavor Cores are: three threads Grandma wove into the Heart Seed, fed by the Sugar you win back from the Hunger','Upgrading a core makes every freed friend stronger too','The Overcharge ring no longer appears after missions']},
   {v:'8.1.102',date:'2026-11-12',title:'Smoother book opening',items:['The magic ring now glows around the book’s clasp before it unlocks','The cover opens straight into the lobby with no flash of a full page','Lobby icons float in more gently']},
   {v:'8.1.101',date:'2026-11-12',title:'See your boss loot',items:['Miniboss loot bursts out first; the prize chest now drops a moment later, so the wheel no longer hides the loot','Defeated bosses burst Sugar and loot boxes onto the field, which fly to you before the Boss Loot wheel opens']},
@@ -8715,6 +8716,21 @@ const STAGE_GIMMICKS = [
 const OVERCHARGE_ON=false;   // v8.1.103 เจ้าของ: เอาวง Overcharge ในด่านออกก่อน (โค้ดเก็บไว้ เปิดกลับ = true)
 const CORE_LORE_LINES=['That Sugar is flavor the Hunger stole. We just took some back!','Grandma wove three Flavor Cores into the Heart Seed: Life Core, Flavor Spark and Oath Shell.','Feed them Sugar and the Seed holds your true form tighter. Every friend we free shares that strength too!'];
 const RUBY_TIPS={
+  /* v8.1.104 ภารกิจประจำด่าน/League 14 แบบ: Ruby อธิบายตอนเริ่ม (เดิมเงียบ) · เสียงใบ A13 */
+  seedRift:{say:'Beat monsters [inside the rift] to keep it open!',short:'Fight [inside the rift]!'},
+  shakeTrees:{say:'Stand under each [tree] to shake it. Fruit, or a surprise!',short:'Shake every [tree]!'},
+  mirrorPath:{say:'Stand by each [mirror] to charge it. Then the crystal blasts!',short:'Charge every [mirror]!'},
+  vaultAltar:{say:'Pick a [curse], then take the loot or risk it for more!',short:'Pick a curse, then [take] or [risk]!'},
+  ultimatum:{say:'Each round adds a [curse]. Take the pot, or risk it for more!',short:'Take the pot or [risk] it!'},
+  lastLight:{say:'Keep one [lantern] burning! Stand close to rekindle them.',short:'Keep a [lantern] lit!'},
+  frozenPantry:{say:'Open the [sugar jar], then walk near the frozen mochi to wake them!',short:'Walk near the [frozen mochi]!'},
+  hungersMouth:{say:'Touch the [Hunger’s hand]! Kills inside keep the breach open.',short:'Keep fighting [inside the breach]!'},
+  creepingRoots:{say:'Roots crawl to the [flower]! Stand on each [root mother] to cut it.',short:'Cut the [root mothers]!'},
+  hungerHerald:{say:'That [Herald] opens gates! Hunt it down to shut them.',short:'Hunt the [Herald]!'},
+  grandmasPot:{say:'Carry the [ingredients] on Grandma’s recipe to the [pot]!',short:'Bring ingredients to the [pot]!'},
+  grandmasGolem:{say:'Collect [golem parts], bake them in the [oven], then beat the golem!',short:'Bake the [golem parts]!'},
+  hungerSiege:{say:'Hold the [circle]! Every kill inside fills the pot.',short:'Hold the [circle]!'},
+  hungerDomain:{say:'The whole cave is a breach! Survive, then beat the [Breachlord]!',short:'Survive, then the [Breachlord]!'},
   yuzuAim:{say:'Yuzu’s seeds fly where you [walk]. Your buddy hits the [marked target] first!',short:'Walk toward an enemy to [mark] it!'},
   survive:{say:'Stay alive until the [timer] ends. Keep moving!',short:'Hang on until the [timer] ends!'},
   fill:{say:'Beat monsters to fill the [Meter]!',short:'Fill the [meter]!'},
