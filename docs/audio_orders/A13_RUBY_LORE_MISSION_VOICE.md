@@ -1,6 +1,6 @@
-# A13 — Ruby เสียงพากย์: เรื่อง Flavor Cores + อธิบายภารกิจประจำด่าน/League · ใบสั่งเสียง + ผูกเอง
+# A13 — Ruby เสียงพากย์: เรื่อง Flavor Cores + อธิบายภารกิจประจำด่าน/League · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 12 พ.ย. 2026 (v8.1.104) · **AI ฝั่งเสียงทำเสียงและผูกเข้าเกมเอง** ตามหัวข้อ "ผูกเข้าเกม"
+สถานะ: 🟡 รอเสียง · เขียน 12 พ.ย. 2026 (v8.1.104) · **AI ฝั่งเสียงทำแค่ไฟล์เสียงแล้วส่งที่โฟลเดอร์ส่งมอบ — ไม่ต้องแก้โค้ด ไม่ต้องปล่อยเวอร์ชัน** (เจ้าของ 12 พ.ย.: Claude ฝั่งโค้ดเป็นคนผูกเอง)
 เครื่องมือ: **ElevenLabs TTS** ใช้ **เสียง Ruby เดิมของ A07** (voice ID ใน `assets/incoming/audio_voice_acting/VOICES.json` key `ruby`) · ห้ามสร้างเสียงใหม่ · ห้ามใช้เสียงสร้างด้วยโค้ด
 
 ## ทำไมต้องสั่ง
@@ -61,7 +61,7 @@
 ## ส่งมอบ
 `assets/incoming/audio_ruby_a13/` + `MANIFEST.json` (key, file, bytes, sha256, duration_ms, speaker `ruby`, voice_id, text ตรงตัวอักษร) + `PROMPTS.json` + `QA_REPORT.json` (peak, onset, duration) + `AUDITION.html`
 
-## ผูกเข้าเกม (AI ฝั่งเสียงทำเอง)
+## ผูกเข้าเกม (Claude ฝั่งโค้ดทำ · AI ฝั่งเสียงข้ามหัวข้อนี้ได้)
 อ่าน `.claude/skills/release/SKILL.md` ก่อน
 1. ตรวจ MANIFEST 31 แถว · sha256 · ความยาว/peak ด้วยสคริปต์ (ไม่ต้องฟังทีละไฟล์)
 2. คัดลอกไป `assets/audio/acting/<key>.mp3` · เพิ่มแถวใน `A07_CATALOG` ด้วย `Object.assign(A07_CATALOG,{...})` บรรทัดใหม่ (url เป็น literal `'assets/audio/acting/…'`, text, role `ruby`, duration)

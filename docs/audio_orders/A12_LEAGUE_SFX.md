@@ -1,6 +1,6 @@
-# A12 — เสียงภารกิจ League / Trial / Forge / Memory Book / Patrol · ใบสั่งเสียง + ผูกเอง
+# A12 — เสียงภารกิจ League / Trial / Forge / Memory Book / Patrol · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 11 พ.ย. 2026 · **AI ฝั่งเสียงทำเสียงและผูกเข้าเกมเองในใบนี้** (ทำตามหัวข้อ "ผูกเข้าเกม")
+สถานะ: 🟡 รอเสียง · เขียน 11 พ.ย. 2026 · **AI ฝั่งเสียงทำแค่ไฟล์เสียงแล้วส่งที่โฟลเดอร์ส่งมอบ — ไม่ต้องแก้โค้ด ไม่ต้องปล่อยเวอร์ชัน** (เจ้าของ 12 พ.ย.: Claude ฝั่งโค้ดเป็นคนผูกเอง)
 เครื่องมือ: **ElevenLabs Sound Effects** (เจ้าของสั่ง: ห้ามใช้เสียงสร้างด้วยโค้ด/Runway แทน) · ไม่มีเสียงพูดในใบนี้
 
 ## สิ่งที่ตรวจพบ (11 พ.ย.)
@@ -31,8 +31,8 @@ MP3 mono 44.1 kHz 128 kbps · peak ≤ −1 dBTP · ตัดเงียบต�
 | `lg_statue_refreeze` | 0.8s | น้ำแข็งเกาะกลับ กริ๊ก ๆ แล้วหายวับ |
 | `lg_herald_horn` | 1.0s | แตรทองเป่าสั้น เพี้ยนนิด ๆ น่ารัก |
 | `lg_gates_shut` | 0.9s | ประตูมิติหลายบานปิดพร้อมกัน วูบ-ปัง |
-| `lg_ingredient_pick` | 0.3s | เก็บผลไม้ "ป๊อก" ใส (เล่นถี่ได้) |
-| `lg_pot_deposit` | 0.5s | ของตกลงหม้อซุป "จ๋อม" + ฟองปุด |
+| `lg_pot_ritual` | 0.9s | เริ่มพิธีหม้อคุณยาย: ฝาหม้อกระทบ "เคร้ง" + ไฟลุกพรึ่บ + ฟองเดือดต่ำ ๆ (v8.1.106 Pot แบบ Ritual) |
+| `lg_pot_flavor` | 0.3s | ฆ่าในวงแล้วรสลอยเข้าหม้อ "จ๋อม" ใส ๆ (เล่นถี่ได้) |
 | `lg_dish_served` | 1.2s | ฝาหม้อเปิด ไอหอม + ระฆังเล็ก "ติ๊ง" ฉลอง |
 | `lg_golem_part` | 0.4s | ชิ้นขนมแข็ง ๆ ตกถูกเก็บ "ป๊อก" ทุ้ม |
 | `lg_golem_bake` | 1.4s | เตาไฟลุกพรึ่บ + ประตูเตาเปิด + โกเลมยืนขึ้น "ตึง" |
@@ -68,7 +68,7 @@ MP3 mono 44.1 kHz 128 kbps · peak ≤ −1 dBTP · ตัดเงียบต�
 ## ส่งมอบ
 `assets/incoming/audio_a12/` + `MANIFEST.json` (key, file, bytes, sha256, duration_ms, kind `sfx`, loop) + `PROMPTS.json` + `QA_REPORT.json` (peak, ความยาว, เงียบต้นไฟล์)
 
-## ผูกเข้าเกม (AI ฝั่งเสียงทำเอง)
+## ผูกเข้าเกม (Claude ฝั่งโค้ดทำ · AI ฝั่งเสียงข้ามหัวข้อนี้ได้)
 อ่าน `docs/audio_orders/A11_NEW_SCREENS_SFX.md` (โน้ตส่วน B = วิธีผูกเสียง SFX ที่ใช้อยู่) และ `.claude/skills/release/SKILL.md` ก่อน
 1. **ตรวจ:** MANIFEST 36 แถว · bytes/sha256 · MP3 อ่านได้ · ความยาว ±20% ตามตาราง (สคริปต์)
 2. **ติดตั้ง:** คัดลอกไป `assets/audio/sfx/a12/<key>.mp3` · ลง `ASSET_AUDIO` เป็น `sfx_<key>:'assets/audio/sfx/a12/<key>.mp3'` (URL string ตรง ๆ) · โหลดแบบเดียวกับไฟล์ `sfx/a11/` (ค้นคำ `sfx/a11/` ในตัวโหลดแล้วทำตาม) · ห้ามโหลดตอนบูต
@@ -80,7 +80,7 @@ MP3 mono 44.1 kHz 128 kbps · peak ≤ −1 dBTP · ตัดเงียบต�
    | lg_hand_lord / lg_domain_open / lg_breachlord | `hmTick` สร้าง `_hmLord` / `hdSetup` / `hdLord` |
    | lg_jar_open / lg_statue_wake / lg_statue_refreeze | `fpOpen` / `fpWake` / `fpVanish` |
    | lg_herald_horn / lg_gates_shut | `hhTick` ตอนประตูปล่อยฝูง (gap 2s) / `hhDown` |
-   | lg_ingredient_pick / lg_pot_deposit / lg_dish_served | `gpTick` เก็บ / `gpTick` ใส่หม้อ (`put>0`) / `gpServe` |
+   | lg_pot_ritual / lg_pot_flavor / lg_dish_served | `gpRound` / `gpOnKill` (ในวง) / `gpServe` |
    | lg_golem_part / lg_golem_bake / lg_golem_slam / lg_golem_crumble | `ggTick` เก็บชิ้น / `ggBake` / `ggTick` tick('arms') / `ggDown` |
    | lg_root_cut | `crTick` ตอน `L.open=false` |
    | lg_siege_gate / lg_siege_break | `hsTick` ตอนปล่อยระลอก / `hsBurst` |

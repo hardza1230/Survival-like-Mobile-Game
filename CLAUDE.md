@@ -42,7 +42,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Graphics ใน vm test stub อาจไม่มี `fillRect`/`setVisible`/`once` → ใช้ optional call หรือ property
 
 ## 5. ถัดไป
-**รออาร์ต/เสียง (AI ฝั่งอาร์ตผูกเองตามหัวข้อ "ผูกเข้าเกม" ในแต่ละใบ)**
+**รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md`
 - ใบเสียง A13 Ruby พากย์ 31 (core lore + ภารกิจ 14) · ใหม่
 - ใบเสียง A12 (36 SFX ภารกิจ/Trial/Forge/Patrol) · ยังไม่ส่ง
