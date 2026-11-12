@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.128**. Next release:8.1.129. Fetch the deploy branch before new work.
+Current release: **8.1.129**. Next release:8.1.130. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.128 — owner: presentation polish set 1 (hit flash · mochi chunks · stage mood)
+# Latest delivery: v8.1.129 — owner: presentation polish set 2 (ambient motes · step dust · elite glow · charge zoom)
+
+`stageAmbient(i)` (from stageMood): one particle emitter ('dot', freq 240 ms, life 4.2–6.5 s, slow upward drift, tint STAGE_MOOD + white, α .42→0, depth 90001) with an emit zone that `tickStageAmbient` resizes to the camera worldView each frame; destroyed on stageMood(null)/exit; off at vfx 0. `playerStepDust(dt)`: pDust puff at the feet every 0.2 s while speed > 60. Elite glow in tickEnemyReadability: `mm_rglow` (via `softGlowTex`) ADD, orange, 1.55× width, pulsing; shares the 12 cap; `_eliteGlows` cleaned in tickStageAmbient when the owner dies/stops being elite (+ trackArtVfx). tickBossZoom ×1.14 while `boss._big.stage==='charge'` (lerped). Hit-stop on elite/mini kill already existed. Test foe-shadow block.
+
+# Previous delivery: v8.1.128 — owner: presentation polish set 1 (hit flash · mochi chunks · stage mood)
 
 Hit squash already existed (`e._sqX/_sqY` in damage). `hitFlash(e)` called first in `enemyWeightHit` (damage() untouched — taro hash fixture): setTintFill white 55 ms, throttled 300 ms per enemy (boss/mini 650 ms), skipped for time-stopped/frozen and vfx=0, restores previous tint / tintColor / clear (white flash was removed long ago because constant multi-hits hid the art — throttle answers that). `mochiChunks(x,y,color,big)` in killEnemy after burst/poof: 4 (6 big) canvas dough blobs `mm_chunk`, arc + bounce squash + fade, live cap 48 (`_chunkN`). `STAGE_MOOD[15]` colours + `stageMood(i)`: canvas edge-glow `mm_mood` (white edges) tinted per stage, α .26, depth 39 under the black vignette, set in startStage (not recipe/rift), hidden in exitStage, follows resize. Test foe-shadow block.
-
-# Previous delivery: v8.1.127 — owner (stability round 1): Lobby GPU memory 431 → ~282 MB
-
-Measured headless (texMB after title → hub): `menuPrefetch` used to ensureGroup 6 menu screens (char/gLoadout/gActivity/chapter/upgrade/gear ≈ 90 MB decoded) at the lobby → now it only `fetch()`es their files into the browser cache (4 at a time, no GPU decode); screens decode on open. `MENU_TEX_SOFT_MB=300`: buildMenuScreen evicts unused menu-class art above 300 MB (recent <20 s still protected). Book-opening art `bk_*` (~44 MB) freed after the lobby with retries (8 s, up to 4) because the 20 s guard blocked the first try. Hub now 326 MB at once → 282 MB after ~30 s. Next stability ideas: boot-class fx (43 MB) / vfx (24 MB) are combat art held in menus. Test texture-safety block.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

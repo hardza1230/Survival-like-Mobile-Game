@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.128';
+const GAME_VERSION = '8.1.129';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.129',date:'2026-11-13',title:'Living stages',items:['Soft motes drift through every stage in its own colour','Little dough puffs at your feet as you walk','Elite monsters glow','The camera leans in while a boss charges its big move']},
   {v:'8.1.128',date:'2026-11-13',title:'Juicier hits',items:['Monsters flash white for a split second when hit (bosses less often)','Defeated monsters burst into little mochi dough pieces that bounce and fade','Each stage has its own soft coloured glow around the screen edges']},
   {v:'8.1.127',date:'2026-11-13',title:'Lighter Lobby',items:['The Lobby now uses about a third less graphics memory, so the game is less likely to run out of memory and reload on phones']},
   {v:'8.1.126',date:'2026-11-12',title:'Stage missions for Chapters 2 and 3',items:['Every Chapter 2 and 3 stage now opens with its own signature mission, like Chapter 1','Fermented Canopy (C2-1) gains Defend the Nectar as its signature mission']},
@@ -10931,7 +10932,7 @@ class Game extends Phaser.Scene {
   // ซูมออกระหว่างบอสด้วย lerp ต่อเฟรม เพื่อให้เห็นสนามกว้างและทำงานสม่ำเสมอทุกอุปกรณ์
   applyMainZoom(){ if(this.cameras&&this.cameras.main)this.cameras.main.setZoom((this.viewZoom||1)*RENDER_DPR*(this._bossZoom||1)); }
   tickBossZoom(){
-    const want=(this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1))*(this._snipe&&(this._snipe.kind!=='yuzu'||performance.now()-this._snipe.t0>250)?0.72:1);   // v8.0.65 Yuzu tap = no zoom pulse   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
+    const want=(this.mode==='boss'?0.58:(this.mode==='mini'?0.68:1))*(this.boss?._big?.stage==='charge'?1.14:1)*(this._snipe&&(this._snipe.kind!=='yuzu'||performance.now()-this._snipe.t0>250)?0.72:1);   // v8.0.65 Yuzu tap = no zoom pulse   // v6.0.66 ชาร์จสไนเปอร์ = ซูมออก
     if(this._bossZoom==null)this._bossZoom=1;
     if(Math.abs(this._bossZoom-want)>0.003){this._bossZoom+=(want-this._bossZoom)*0.10;this.applyMainZoom();}
     else if(this._bossZoom!==want){this._bossZoom=want;this.applyMainZoom();}
@@ -23571,7 +23572,9 @@ class Game extends Phaser.Scene {
   tickEnemyReadability(e){if(!e?.active)return;if(e.isElite){const set=this._readElites||(this._readElites=new Set());let crest=e._readCrest;
       if(!crest?.active&&set.size<12){crest=e._readCrest=this.combatReadSprite('cr_elite_crest',e.x,e.y,20,20,93004);if(crest){set.add(crest);crest.once('destroy',()=>{set.delete(crest);if(e._readCrest===crest)e._readCrest=null;});}}
       crest?.setPosition(e.x,e.y-Math.max(28,e.body?.halfHeight||28)-34).setAlpha(.92);
-    }else if(e._readCrest){e._readCrest.destroy();e._readCrest=null;}
+      /* v8.1.129 เจ้าของ: Elite มีแสงเรืองรอบตัว (นอกจากตัวใหญ่) */ let gl=e._eliteGlow; if((!gl||!gl.active)&&set.size<12&&this.softGlowTex?.()){ gl=e._eliteGlow=this.camWorld(this.add.image(e.x,e.y,'mm_rglow').setTint(0xffa040)); gl.setBlendMode?.(Phaser.BlendModes.ADD); this.trackArtVfx?.(gl); gl._owner=e; (this._eliteGlows||(this._eliteGlows=new Set())).add(gl); }
+      if(gl?.active){ const sz=Math.max(70,(e.displayWidth||60)*1.55); gl.setPosition(e.x,e.y).setDisplaySize(sz,sz*.8).setDepth((e.depth||e.y)-.2).setAlpha(.38+Math.sin((this.elapsed||0)*4+e.x*.01)*.12).setVisible(e.visible!==false); }
+    }else if(e._readCrest||e._eliteGlow){if(e._readCrest){e._readCrest.destroy();e._readCrest=null;}if(e._eliteGlow){if(e._eliteGlow.active)e._eliteGlow.destroy();e._eliteGlow=null;}}
     const wind=e.frozen<=0&&(e._enemyAction?.state==='windup'||e.dashState==='wind');if(wind&&!e._readWind)this.combatReadSpark('cr_windup',e.x,e.y-Math.max(28,e.body?.halfHeight||28)-8,30);e._readWind=!!wind;
   }
   combatFxAlpha(key,w,alpha=1){key=key.replace(/^vfx81[345]_b/,'vfx_b');if(w<180)return alpha;
@@ -23630,10 +23633,18 @@ class Game extends Phaser.Scene {
   mochiChunks(x,y,color,big){ if(!this.add?.image||typeof document==='undefined'||(Save.data?.settings?.vfx??1)===0)return; const K='mm_chunk'; if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=c.height=32; const g=c.getContext('2d'),gr=g.createRadialGradient(12,11,2,16,16,15); gr.addColorStop(0,'#ffffff'); gr.addColorStop(.55,'#f4f0f4'); gr.addColorStop(1,'rgba(220,210,225,0)'); g.fillStyle=gr; g.beginPath(); g.ellipse(16,16,14,12,0,0,Math.PI*2); g.fill(); this.textures.addCanvas(K,c); }
     const n=big?6:4,live=this._chunkN||0; if(live>48)return; for(let i=0;i<n;i++){ const a=-Math.PI/2+(Math.random()-.5)*2.4,d=26+Math.random()*(big?60:38),tx=x+Math.cos(a)*d,ty=y+Math.abs(Math.sin(a))*10+8,sz=(big?.55:.38)+Math.random()*.25,o=this.camWorld(this.add.image(x,y,K).setTint(color).setScale(sz).setDepth(y+2)); this._chunkN=(this._chunkN||0)+1;
       this.tweens.add({targets:o,x:tx,duration:420,ease:'Quad.out'}); this.tweens.add({targets:o,y:{from:y,to:y-26-Math.random()*22},duration:200,ease:'Quad.out',yoyo:true,onComplete:()=>{ if(!o.active)return; o.y=ty; this.tweens.add({targets:o,scaleY:sz*.55,scaleX:sz*1.25,duration:90,yoyo:true}); this.tweens.add({targets:o,alpha:0,delay:380,duration:320,onComplete:()=>{ this._chunkN=Math.max(0,(this._chunkN||1)-1); o.destroy(); }}); }}); } }
+  softGlowTex(){ const K='mm_rglow'; if(this.textures.exists(K))return K; if(typeof document==='undefined')return null; const cv=document.createElement('canvas'); cv.width=cv.height=128; const x2=cv.getContext('2d'),gg=x2.createRadialGradient(64,64,0,64,64,64); gg.addColorStop(0,'rgba(255,255,255,0.85)'); gg.addColorStop(.5,'rgba(255,255,255,0.35)'); gg.addColorStop(1,'rgba(255,255,255,0)'); x2.fillStyle=gg; x2.fillRect(0,0,128,128); this.textures.addCanvas(K,cv); return K; }
+  /* v8.1.129 ฝุ่นแป้งเล็ก ๆ ที่เท้าตอนเดิน (ทุก 0.2 วิ ตอนเดินเร็วพอ) */
+  playerStepDust(dt){ const p=this.player,v=p?.body?.velocity; if(!p||!v||this.state!=='play'||!this.pDust||(Save.data?.settings?.vfx??1)===0)return; if(v.x*v.x+v.y*v.y<60*60){ this._stepT=0; return; } this._stepT=(this._stepT||0)-dt; if(this._stepT>0)return; this._stepT=.2; this._emit(this.pDust,p.x+(Math.random()-.5)*14,p.y+26,0xf3e6d8,1); }
+  /* v8.1.129 ละอองลอยในฉากตามสีด่าน (ฝุ่นแป้ง/ไอเย็น/สปอร์) · ตัวปล่อยอนุภาคเดียว เกิดในกรอบกล้อง ~4 ต่อวิ */
+  stageAmbient(i){ if(this._ambEm){ this._ambEm.destroy?.(); this._ambEm=null; } if(i==null||!this.add?.particles||(Save.data?.settings?.vfx??1)===0||!this.textures.exists('dot'))return; const col=STAGE_MOOD[i]??0xffffff,cam=this.cameras.main,zone=new Phaser.Geom.Rectangle(0,0,10,10);
+    const em=this._ambEm=this.add.particles(0,0,'dot',{ frequency:240, lifespan:{min:4200,max:6500}, speedX:{min:-10,max:10}, speedY:{min:-16,max:-4}, scale:{start:.55,end:.15}, alpha:{start:.42,end:0}, tint:[col,0xffffff], emitZone:{type:'random',source:zone}, quantity:1 }); em.setDepth(90001); this.camWorld(em);
+    em._zone=zone; em._cam=cam; }
+  tickStageAmbient(){ if(this._eliteGlows)for(const g of this._eliteGlows){ const o=g._owner; if(!g.active||!o||!o.active||!o.isElite){ this._eliteGlows.delete(g); if(g.active)g.destroy(); if(o&&o._eliteGlow===g)o._eliteGlow=null; } } const em=this._ambEm; if(!em||!em.active)return; const v=em._cam?.worldView; if(v&&v.width)em._zone.setTo(v.x,v.y,v.width,v.height); }
   /* ไฟส่องฉากตามธีมด่าน: ขอบจอเรืองสีประจำด่านจาง ๆ (มี 'vignette' ดำอยู่แล้ว · อันนี้ย้อมสี) */
   stageMood(i){ if(!this.add?.image||typeof document==='undefined')return; const K='mm_mood'; if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'),gr=g.createRadialGradient(128,128,70,128,128,182); gr.addColorStop(0,'rgba(255,255,255,0)'); gr.addColorStop(1,'rgba(255,255,255,0.75)'); g.fillStyle=gr; g.fillRect(0,0,256,256); this.textures.addCanvas(K,c); }
     if(!this.moodVig||!this.moodVig.active){ this.moodVig=this.add.image(this.W/2,this.H/2,K).setScrollFactor(1).setDepth(39); this.camUI(this.moodVig); }
-    const col=i==null?null:STAGE_MOOD[i]; this.moodVig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H); if(col==null){ this.moodVig.setVisible(false); return; } this.moodVig.setTint(col).setAlpha(.26).setVisible(true); }
+    this.stageAmbient?.(i); const col=i==null?null:STAGE_MOOD[i]; this.moodVig.setPosition(this.W/2,this.H/2).setDisplaySize(this.W,this.H); if(col==null){ this.moodVig.setVisible(false); return; } this.moodVig.setTint(col).setAlpha(.26).setVisible(true); }
   burst(x,y,color){ const P=this._burstPool||(this._burstPool=[]);   // v7.8.92 perf: ใช้จุดซ้ำ (เดิมสร้าง/ทำลาย 7 รูปต่อครั้ง)
     for(let i=0;i<7;i++){ let p=P.pop(); while(p&&!p.scene)p=P.pop();
       if(p)p.setActive(true).setVisible(true).setPosition(x,y).setAlpha(1); else p=this.camWorld(this.add.image(x,y,'dot').setDepth(6));
@@ -23708,7 +23719,7 @@ class Game extends Phaser.Scene {
     // Android WebView บางรุ่น render ellipse จำนวนมากเป็นแท่งดำ จึงไม่วาดเงาศัตรูรวมใน Graphics นี้
     this.crates.children.iterate(c=>{ if(c&&c.active) g.fillEllipse(c.x, c.y+16, 30, 11); });
     this.heals.children.iterate(h=>{ if(h&&h.active) g.fillEllipse(h.x, h.y+11, 20, 8); });
-    this.drawFoeShadows?.();
+    this.drawFoeShadows?.(); this.playerStepDust?.(1/60); this.tickStageAmbient?.();
   }
   /* v8.1.118 เจ้าของ: มอนกลืนไปกับฉาก → เงานุ่มใต้เท้าทุกตัว · ใช้รูปเดียว (canvas ไล่สี) เป็น image pool ไม่ใช่ ellipse ใน Graphics (เคยเป็นแท่งดำบน Android WebView) · ภาพเดียวกัน depth เดียวกัน = batch เดียว */
   /* v8.1.120 เจ้าของ: แสงนุ่มรอบตัวผู้เล่น (พื้นรอบตัวสว่างกว่าขอบจอ) · รูป canvas ไล่สีครั้งเดียว · ADD จาง ๆ ใต้ทุกตัว */

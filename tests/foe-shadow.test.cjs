@@ -26,3 +26,10 @@ const hf=method('hitFlash');assert(hf.includes('(e.isBoss||e.isMini?650:300)')&&
 assert(method('mochiChunks').includes('if(live>48)return;')&&s.includes('this.mochiChunks?.(e.x,e.y,'),'chunks capped');
 assert(s.includes('const STAGE_MOOD=[')&&method('stageMood').includes("setAlpha(.26)")&&method('exitStage').includes('this.stageMood?.(null)'),'stage mood on/off');
 console.log('polish set 1 ok');
+// v8.1.129 owner (polish set 2): step dust, stage ambient motes, elite glow, zoom-in during boss charge.
+assert(method('tickBossZoom').includes("*(this.boss?._big?.stage==='charge'?1.14:1)"),'charge zoom');
+const er=method('tickEnemyReadability');assert(er.includes("this.add.image(e.x,e.y,'mm_rglow').setTint(0xffa040)")&&er.includes('gl._owner=e'),'elite glow');
+const ta=method('tickStageAmbient');assert(ta.includes("if(!g.active||!o||!o.active||!o.isElite)")&&ta.includes('em._zone.setTo(v.x,v.y,v.width,v.height)'),'glow cleanup + motes follow camera');
+assert(method('stageMood').includes('this.stageAmbient?.(i)')&&method('stageAmbient').includes('frequency:240')&&method('playerStepDust').includes('this._stepT=.2'),'ambient + dust');
+assert(method('drawShadows').includes('this.playerStepDust?.(1/60); this.tickStageAmbient?.();'));
+console.log('polish set 2 ok');
