@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.122';
+const GAME_VERSION = '8.1.123';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.123',date:'2026-11-12',title:'Softer paint, cleaner gear',items:['Frozen Pantry: the rainbow paint is now small watery puddles that spread out and gently ripple','Equipment: smaller item icons, no rarity frame — rarity shows as a coloured glow and gradient (Epic pulses, Legendary sparkles)','C1-5 boss: the Maw of the Void swirl is smaller and fainter (full size only in the final phase)']},
   {v:'8.1.122',date:'2026-11-12',title:'Memory fix, Treasure Vault and Evolution Forge',items:['Fixed the Lobby flickering and loading looping at 0–2% after the phone ran out of graphics memory','Relic picks now open a Treasure Vault: three treasures float on glass pedestals — tap one to look closer, tap again to take it','Evolution now happens at a forge: tap the forge, then tap again to forge your weapon']},
   {v:'8.1.121',date:'2026-11-12',title:'Easier-to-read mission cards',items:['Mission cards now show just three lines (name, what to do, reward) and stay longer','Ruby’s mission tip and the bonus goal appear after the card closes','Mint (Impaler): every lance shot takes 0.5s off the Unique cooldown','Escort Wisp: smaller ring around the wisp']},
   {v:'8.1.120',date:'2026-11-12',title:'Clearer battles',items:['Monsters that appear on screen fade in with a dust ring and cannot hurt you for a split second','Monsters standing in front of your hero turn see-through','A soft light around your hero','EXP gems pop out in a little arc before flying to you']},
@@ -13152,6 +13153,13 @@ class Game extends Phaser.Scene {
     let f=0;timer=this.time.addEvent({delay:loop?180:75,loop,repeat:loop?0:d[4]-1,callback:()=>{
       if(!o.active){clean();return;}f++;if(!loop&&f>=d[4]){o.destroy();return;}o.setFrame('cell'+(f%d[4]));}});return o;
   }
+  /* v8.1.123 เจ้าของ: ช่องอุปกรณ์ ไอคอนใหญ่ + กรอบความหายากอ่านยาก → ไม่มีกรอบ ใช้แสงไล่สีตามความหายาก (พื้นไล่สีจากล่าง + แสงนุ่มหลังไอคอน) · Epic+ เต้นเบา ๆ · Legend+ มีประกาย */
+  gearRarityFx(item,x,y,w,h,parent=this.menu){ if(!item||!this.add||!parent)return null; const gr=gearGrade(item),rk=typeof gradeRank==='function'?gradeRank(gr):1,hex=(TIER_LABEL[gr]||TIER_LABEL.common||{}).color||'#ffffff',c=Phaser.Display.Color.HexStringToColor(hex).color,out=[];
+    const g=this.add.graphics(); g.fillGradientStyle?.(c,c,c,c,0,0,.42,.42); g.fillRect?.(x+3,y+h*.3,w-6,h*.7-3); out.push(g);
+    const K='mm_rglow'; if(!this.textures.exists(K)&&typeof document!=='undefined'){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x2=cv.getContext('2d'),gg=x2.createRadialGradient(64,64,0,64,64,64); gg.addColorStop(0,'rgba(255,255,255,0.85)'); gg.addColorStop(.5,'rgba(255,255,255,0.35)'); gg.addColorStop(1,'rgba(255,255,255,0)'); x2.fillStyle=gg; x2.fillRect(0,0,128,128); this.textures.addCanvas(K,cv); }
+    if(this.textures.exists(K)){ const gl=this.add.image(x+w/2,y+h*.54,K).setTint(c).setDisplaySize(w*.95,h*.95).setAlpha(rk>=2?.55:.35); out.push(gl); if(rk>=3&&this.tweens){ this.tweens.add({targets:gl,alpha:{from:.35,to:.75},duration:1100,yoyo:true,repeat:-1,ease:'Sine.inOut'}); gl.once?.('destroy',()=>this.tweens.killTweensOf(gl)); } }
+    if(rk>=4&&this.tweens){ for(let i=0;i<2;i++){ const sp=this.add.text(x+w*(i?.78:.22),y+h*(i?.3:.72),'✦',{fontSize:Math.round(Math.max(8,w*.16))+'px',color:hex}).setOrigin(.5).setAlpha(0); out.push(sp); this.tweens.add({targets:sp,alpha:{from:0,to:1},scale:{from:.6,to:1.1},duration:700,yoyo:true,repeat:-1,delay:i*700,ease:'Sine.inOut'}); sp.once?.('destroy',()=>this.tweens.killTweensOf(sp)); } }
+    parent.add(out); return out; }
   menuRarityFrame(item,x,y,w,h,key='rar_cell',parent=this.menu){const g=gearGrade(item),i=Math.min(3,Math.max(0,['common','rare','epic','legend'].indexOf(g),gradeRank(g)-1)),o=this.menuArtPanel(key,i,x,y,w,h,parent);if(o&&gradeRank(g)>4){const c=Phaser.Display.Color.HexStringToColor((TIER_LABEL[g]||{}).color||'#ffffff').color;(o.list||[o]).forEach(q=>q?.setTint?.(c));}return o;}
   templeArtFrames(){
     for(const [key,cols,rows] of [['temple_special_cores',5,1],['temple_rank_emblems',3,2]]){
@@ -13626,8 +13634,8 @@ class Game extends Phaser.Scene {
       const g=this.add.graphics(); if(J)this.jrImg('jr_slot',isSel?1:on?0:3,sx,y,ss+4,(ss+4)*1.06); else { g.fillStyle(isSel?0x423039:0x261e30,.97); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,10);
       g.lineStyle(isSel?1.8:1, isSel?0xf4d9a1:(on?0x85d5b2:0x6d536d), isSel?.95:.8); g.strokeRoundedRect(sx-ss/2,y-ss/2,ss,ss,10); }
       const artKey=on?'gear_'+it.id:null;
-      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y,artKey).setDisplaySize(ss*0.84,ss*0.84):this.pwIcon?.('slot_'+slot,sx,y,ss*.8)?.setAlpha(on?.9:.5)||this.add.text(sx,y,on?it.emoji:'—',{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);   /* v8.0.78 ช่องว่าง = ไอคอนใบ 57 */
-      this.menu.add(g);if(on&&this.menuRarityFrame){const equippedArt=Save.equippedGearItem(slot);if(equippedArt&&gearGrade(equippedArt)!=='start')this.menuRarityFrame?.(equippedArt,sx-ss/2,y-ss/2,ss,ss);}this.menu.add(em);this.menu.bringToTop?.(em);   /* pwIcon ถูกเพิ่มก่อนกรอบช่อง → ดึงขึ้นบน */this.menu.add(J?this.jrFit(this.add.text(sx,y-(ss+4)*.53+5,def.label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'8px',color:isSel?'#ffb3cf':'#e9dce8'}).setOrigin(.5,.5),ss-14):this.add.text(sx,y-ss/2-13,def.label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:isSel?'#ffb3cf':'#e9dce8'}).setOrigin(.5,0));
+      const em=artKey&&this.textures.exists(artKey)?this.add.image(sx,y,artKey).setDisplaySize(ss*0.66,ss*0.66):this.pwIcon?.('slot_'+slot,sx,y,ss*.8)?.setAlpha(on?.9:.5)||this.add.text(sx,y,on?it.emoji:'—',{fontSize:Math.round(ss*0.5)+'px'}).setOrigin(0.5).setAlpha(on?1:0.4);   /* v8.0.78 ช่องว่าง = ไอคอนใบ 57 */
+      this.menu.add(g);if(on){const equippedArt=Save.equippedGearItem(slot);if(equippedArt&&gearGrade(equippedArt)!=='start')this.gearRarityFx?.(equippedArt,sx-ss/2,y-ss/2,ss,ss);}this.menu.add(em);this.menu.bringToTop?.(em);   /* pwIcon ถูกเพิ่มก่อนกรอบช่อง → ดึงขึ้นบน */this.menu.add(J?this.jrFit(this.add.text(sx,y-(ss+4)*.53+5,def.label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'8px',color:isSel?'#ffb3cf':'#e9dce8'}).setOrigin(.5,.5),ss-14):this.add.text(sx,y-ss/2-13,def.label,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:isSel?'#ffb3cf':'#e9dce8'}).setOrigin(.5,0));
       const newN=Save.gearItemsForSlot(slot).filter(x=>x.isNew).length;
       if(newN){ const nd=J?this.tuImg('jr_badge_new',0,sx+ss/2-2,y-ss/2+2,16,16):this.add.circle(sx+ss/2-2,y-ss/2+2,7,0xff5689,1); const nn=this.add.text(nd.x,nd.y,String(Math.min(9,newN)),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'8px',color:'#ffffff'}).setOrigin(0.5); nn._jrKeep=true; this.menu.add([nd,nn]); }
       if(on&&lv>0){ const bd=this.add.text(sx+ss/2-3,y+ss/2-2,'+'+lv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,1); this.menu.add(bd); }
@@ -13661,9 +13669,9 @@ class Game extends Phaser.Scene {
     const gap=6,cw=(w-28-gap*(cols-1))/cols,ch=cw,visible=items.slice(page*pageSize,page*pageSize+pageSize);
     visible.forEach((item,i)=>{ const base=GEAR_ALL.find(g=>g.id===item.baseId); if(!base)return; const col=i%cols,row=Math.floor(i/cols),x=14+col*(cw+gap),iy=y+row*(ch+gap),on=selected&&selected.uid===item.uid,eq=Save.isGearEquipped(item.uid),tl=TIER_LABEL[item.grade]||TIER_LABEL.common;
       const color=Phaser.Display.Color.HexStringToColor(tl.color).color,g=this.add.graphics();if(J){const bc=this.jrImg('jr_bag_cell',on?1:eq?2:0,x+cw/2,iy+ch/2,cw,ch);if(bc&&!on&&!eq)bc.setTint(color);}else{g.fillStyle(on?0x423039:0x261e30,.97);g.fillRoundedRect(x,iy,cw,ch,10);g.lineStyle(on?1.8:eq?1.6:1,on?0xf4d9a1:eq?0x85d5b2:color,on?.95:.9);g.strokeRoundedRect(x,iy,cw,ch,10);}
-      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+ch*.54,artKey).setDisplaySize(cw*.72,cw*.72):this.add.text(x+cw/2,iy+ch*.54,base.emoji,{fontSize:Math.round(cw*.42)+'px'}).setOrigin(0.5);
+      const artKey='gear_'+base.id,em=this.textures.exists(artKey)?this.add.image(x+cw/2,iy+ch*.54,artKey).setDisplaySize(cw*.62,cw*.62):this.add.text(x+cw/2,iy+ch*.54,base.emoji,{fontSize:Math.round(cw*.42)+'px'}).setOrigin(0.5);
       const lt=this.add.text(x+cw-3,iy+3,'Lv'+(item.itemLevel||1),{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'9px',color:'#ffffff',backgroundColor:'#2e2140',padding:{x:3,y:1}}).setOrigin(1,0);
-      this.menu.add(g);this.menuRarityFrame?.(item,x,iy,cw,ch);this.menu.add([em,lt]);
+      this.menu.add(g);this.gearRarityFx?.(item,x,iy,cw,ch);this.menu.add([em,lt]);
       if(item.isNew){const nd=this.add.circle(x+6,iy+6,4,0xff5689,1);this.menu.add(nd);}
       if(eq&&!J){const ck=this.add.text(x+4,iy+ch-3,'✓',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'11px',color:'#8bd3a0'}).setOrigin(0,1);this.menu.add(ck);}   /* สมุด: ช่องใส่อยู่มี ✓ ในภาพแล้ว */
       if(!eq&&item.grade!=='start'){const sc=gearCompareScore(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),up=sc.sum;   /* v7.8.78 เจ้าของ: ลูกศรบอกว่าดีกว่าชิ้นที่ใส่อยู่ไหม (ATK+DEF รวม) · v7.8.84 รองเท้านับวิ่ง/Dash ด้วย */
@@ -16153,7 +16161,12 @@ class Game extends Phaser.Scene {
     S.T+=1.2; }   // เผื่อเวลาช่วงคลื่นแผ่
   fpBlob(S,x,y){ const g=S.paint; if(!g||S.blobs>520)return; S.blobs++; const R=[0xffb3c7,0xffd1a3,0xfff2a8,0xb8f2c4,0xa8dcff,0xc9b8ff,0xffc4f0];   // v8.1.113 สีรุ้งพาสเทลไล่ตามทางเดิน + ประกาย
     S.hue=((S.hue||0)+1)%(R.length*3); const c=R[Math.floor(S.hue/3)];
-    for(let i=0;i<3;i++){ const a=Math.random()*TAU,r=Math.random()*36,rad=26+Math.random()*32; g.fillStyle?.(i?R[(Math.floor(S.hue/3)+i)%R.length]:c,.42+Math.random()*.18); g.fillCircle?.(x+Math.cos(a)*r,y+Math.sin(a)*r*.75,rad); }
+    /* v8.1.123 เจ้าของ: พาสเทลใต้เท้าเล็กลง + เหมือนน้ำไร้รูปร่าง กระจายออก มีขยับเบา ๆ → แอ่งสีจากภาพนุ่ม (canvas ครั้งเดียว) ย้อมสี ยืด/หมุนสุ่ม ขยายออกตอนเกิด · วนใช้ซ้ำสูงสุด 320 แอ่ง · ไม่มี add.image (เทส) = วงกลมแบบเดิม */
+    if(this.add?.image&&typeof document!=='undefined'){ const K='mm_puddle'; if(!this.textures.exists(K)){ const cv=document.createElement('canvas'); cv.width=cv.height=96; const x2=cv.getContext('2d'); for(const [ox,oy,rr] of [[48,48,40],[36,42,26],[60,40,24],[44,60,24],[62,58,20]]){ const gr=x2.createRadialGradient(ox,oy,0,ox,oy,rr); gr.addColorStop(0,'rgba(255,255,255,0.75)'); gr.addColorStop(.6,'rgba(255,255,255,0.4)'); gr.addColorStop(1,'rgba(255,255,255,0)'); x2.fillStyle=gr; x2.fillRect(0,0,96,96); } this.textures.addCanvas(K,cv); }
+      const P=S.pud||(S.pud=[]); for(let i=0;i<2;i++){ const a=Math.random()*TAU,r=Math.random()*14,sz=22+Math.random()*20,tint=i?R[(Math.floor(S.hue/3)+2)%R.length]:c; let q; if(P.length<320){ q=this.sigAdd(this.add.image(0,0,K).setDepth(-98000)); P.push(q); } else { S.pi=((S.pi||0)+1)%P.length; q=P[S.pi]; this.tweens?.killTweensOf?.(q); }
+        q.setPosition(x+Math.cos(a)*r,y+Math.sin(a)*r*.7).setTint?.(tint); q.setRotation?.(Math.random()*TAU); q.bx=sz/96*(.75+Math.random()*.5); q.by=sz/96*(.6+Math.random()*.4); q.ph=Math.random()*TAU; q._ready=false; q.setAlpha?.(.55+Math.random()*.2); q.setScale?.(q.bx*.25,q.by*.25);
+        this.tweens?.add?.({targets:q,scaleX:q.bx,scaleY:q.by,duration:650+Math.random()*300,ease:'Cubic.easeOut',onComplete:()=>{ q._ready=true; }}); } }
+    else for(let i=0;i<3;i++){ const a=Math.random()*TAU,r=Math.random()*20,rad=14+Math.random()*16; g.fillStyle?.(i?R[(Math.floor(S.hue/3)+i)%R.length]:c,.42+Math.random()*.18); g.fillCircle?.(x+Math.cos(a)*r,y+Math.sin(a)*r*.75,rad); }
     if(S.blobs%2===0&&this.add?.text&&(S.spk=(S.spk||0))<40){ S.spk++; const sx=x+(Math.random()-.5)*70,sy=y+(Math.random()-.5)*50,sp=this.add.text(sx,sy,Math.random()<.5?'✦':'✧',{fontSize:(12+Math.random()*10|0)+'px',color:'#ffffff'}).setOrigin(.5).setDepth(-97900).setAlpha(0); this.camWorld?.(sp);
       this.tweens.add({targets:sp,alpha:{from:0,to:1},scale:{from:.5,to:1.2},y:sy-10,duration:420,yoyo:true,hold:300,onComplete:()=>{ S.spk--; sp.destroy(); }}); } }
   fpTimeStop(S,on){ const R=(S.BR||520)+30,R2=R*R; this.enemies?.children?.iterate?.(e=>{ if(!e||!e.active)return; if(on){ if(e._timeStop||e.isBoss||e._fpTok)return; const dx=e.x-S.x,dy=e.y-S.y; if(dx*dx+dy*dy>R2)return; e._timeStop=true; e.setVelocity?.(0,0); e.setTint?.(0xc9c9d2); (S.stopped||(S.stopped=[])).push(e); } });
@@ -16173,6 +16186,7 @@ class Game extends Phaser.Scene {
   fpTick(dt,o,S){ const p=this.player; if(!p)return;
     if(S.phase==='seek'){ const near=this.sigNear(S.x,S.y,120); S.btn?.setVisible(near); if(!S.btn&&near)this.fpOpen(o,S); return; }
     if(S.phase==='paint'){ S.T-=dt; if(S.lx==null||Math.hypot(p.x-S.lx,p.y-S.ly)>16){ S.lx=p.x; S.ly=p.y; this.fpBlob(S,p.x,p.y); }
+      if(S.pud&&(S.wob=((S.wob||0)+1)%2)===0){ const t=(this.time?.now||0)/1000; for(const q of S.pud)if(q._ready&&q.active)q.setScale(q.bx*(1+.06*Math.sin(t*1.7+q.ph)),q.by*(1+.06*Math.cos(t*1.3+q.ph))); }   /* แอ่งสีกระเพื่อมเบา ๆ */
       if(S.stopOn&&((S.stopT=(S.stopT||0)-dt)<=0)){ S.stopT=.3; this.fpTimeStop(S,true); }
       if(!S.pfx&&this.textures?.exists?.('vfx78_statue_paint'))S.pfx=this.artSpr('vfx78_statue_paint',p.x,p.y,110); S.pfx?.setPosition?.(p.x,p.y);   // ละอองสีหมุนรอบตัวตอนระบาย (ใบ 78)
       let painted=0,all=0; for(const q of S.st){ if(q.state!=='frozen')continue; all++; if(q.fill<1&&this.sigNear(q.x,q.y,S.PR)){ q.fill=Math.min(1,q.fill+dt/(q.gen?.9:.35)); if(q.fill>=1){ q.t.clearTint?.(); q.t.setTint?.(0xffd6ec); this.vfxHitRing?.(q.x,q.y,0xffb3d9,false); } } if(q.fill>=1)painted++; }
@@ -23181,7 +23195,7 @@ class Game extends Phaser.Scene {
       for(let k=0;k<9;k++)this.time.delayedCall(k*85,()=>{if(!b.active||this.state!=='play')return;for(let j=0;j<arms;j++)(this.bossInkRelease?.(b,inkCast),this.foeShot(b.x,b.y,a0+k*0.42+j*TAU/arms,205+k*4,Math.max(8,bd-4),j%2?0xffd166:0xd95cff,0.92));});
       b.atkCd=2.55*fast;
     }else if(pick==='voidMaw'){
-      this.showBanner('🌑 Maw of the Void','Run against the pull, then slip through the bullet gaps!',950);this.drainPull={x:b.x,y:b.y,t:b.phase4?2.2:1.75,strength:b.phase4?190:155};this.bossSig('05_void_maw',b.x,b.y,250,{life:this.drainPull.t,depth:2,alpha:.6});
+      this.showBanner('🌑 Maw of the Void','Run against the pull, then slip through the bullet gaps!',950);this.drainPull={x:b.x,y:b.y,t:b.phase4?2.2:1.75,strength:b.phase4?190:155};this.bossSig('05_void_maw',b.x,b.y,b.phase4?210:150,{life:this.drainPull.t,depth:2,alpha:b.phase4?.45:.3});   /* v8.1.123 เจ้าของ: เอฟเฟกต์บอส C1-5 เยอะไป → ท่าธรรมดาเล็ก/จาง · เต็มขนาดเฉพาะเฟส 4 (ท่าใหญ่ Eclipse คงเดิม) */
       for(let i=0;i<4;i++){const ring=this.camWorld(this.add.image(b.x,b.y,'hunger_seal').setDepth(2).setScale(1.4+i*0.35).setAlpha(0.55));this.tweens.add({targets:ring,scale:0.10,rotation:(i%2?1:-1)*Math.PI,alpha:0,duration:1050+i*120,onComplete:()=>ring.destroy()});}
       this.time.delayedCall(720,()=>{if(!b.active)return;const n=b.phase4?22:18,gap=Phaser.Math.Between(0,n-1);for(let i=0;i<n;i++){if(i===gap||i===(gap+1)%n)continue;(this.bossInkRelease?.(b,inkCast),this.foeShot(b.x,b.y,i*TAU/n,185+(i%2)*45,bd,0xd95cff,1.0));}Sfx.zap();});b.atkCd=3.15*fast;
     }else if(pick==='lastSupper'){

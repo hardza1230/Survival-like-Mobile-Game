@@ -1,16 +1,16 @@
 # Version line
 
-Current release: **8.1.122**. Next release:8.1.123. Fetch the deploy branch before new work.
+Current release: **8.1.123**. Next release:8.1.124. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.122 — owner bug: Lobby flicker / Preparing 0–2% loop / huge text after GPU out-of-memory · + special picks should feel like picking real things (Relic vault, Evolution forge) + art order 80
+# Latest delivery: v8.1.123 — owner: Frozen Pantry paint smaller + watery; equipment slots readable (glow/gradient instead of frame)
+
+`fpBlob`: 2 puddle images per step from one canvas texture `mm_puddle` (96², 5 overlapping soft radial blobs = amorphous), pastel tint, random rotation/stretch, 22–42 px, spread tween 0.25→1 over 0.65–0.95 s, ring-buffer max 320 (`S.pud`, `S.pi`), depth -98000 via sigAdd; fallback circles (no add.image, vm tests) smaller (14–30). fpTick paint phase wobbles ready puddles every 2nd frame (±6% scale). `gearRarityFx(item,x,y,w,h)` replaces `menuRarityFrame` in buildGear equipped row + inventory cells: bottom-up gradient (fillGradientStyle, rarity colour .42→0), soft radial glow `mm_rglow` tinted (Epic+ pulses, Legend+ two ✦ sparkles; tweens killed on destroy); icons smaller (slot .84→.66, cell .72→.62). Other menuRarityFrame uses (compare/forge panels) unchanged. C1-5 boss Maw of the Void `05_void_maw` 250 px α.6 → 150 px α.3 (phase 4: 210 px α.45); Eclipse (big move) unchanged. Tests special-picks (block), equipment-redesign ctx stubs.
+
+# Previous delivery: v8.1.122 — owner bug: Lobby flicker / Preparing 0–2% loop / huge text after GPU out-of-memory · + special picks should feel like picking real things (Relic vault, Evolution forge) + art order 80
 
 `openLevelUp`: relic pick (`_relicPick`, not chest, 1–3 opts, not tutorial) → `drawRelicVault(opts,startY,hint)`; single evolution option → `drawEvoForge(o,startY,hint)`; else the old cards. Both push `lvlCards` entries with `onFocus` (highlightCard calls it instead of the card glow; pickCardAt keeps their hint), so the tap-twice confirm, apply, Stats and SFX are unchanged. Vault: 3 columns, light beam + pedestal (code graphics, or `vault80_pedestal`), floating icon (`lvlObjIcon`: iconKey/key texture or emoji), glow, info panel (name/desc/headline), focus = icon ×1.35 + others dimmed; `vault80_bg` if loaded. Forge: anvil (code or `forge80_anvil`), floating `ic_path_<path>`, spark loop (stops when its card leaves lvlCards), focus = hotter sparks. Art order `docs/art_orders/80_SPECIAL_PICKS.md` (21 files: vault bg/pedestal, anvil, recipe book spread + page glow, 15 Build Path cards + back) — recipe book (Mutation) and Build Path card code come when the art arrives. Test `tests/special-picks.test.cjs`.
 
 Memory bug (owner saw "Graphics memory ran out"): the context-lost handler (v6.91) reloads with `mochi_lowmem` set forever → budget 250 MB, but the Lobby alone needs ~430 MB (same in v8.1.115, measured headless) → `texBudget` evicted freshly loaded art, screens reloaded it → evict/reload loop (flicker, loader 0↔2%, DPR 1 = big text). Fixes: one-time clear of `mochi_lowmem` (`mochi_lowmem_reset122`); TEX_BUDGET_MB low 340 / normal 420 / ≥8 GB 520 (was 250/400/600); `texEvict` never evicts textures added in the last 20 s (`_texAddT` stamped by the `addtexture` listener in loopGuard); loopGuard no longer calls renderer.resetTextures and saves + reloads after >20 errors in 3 s; `buildLobby` frees `bk_*` book-opening art (~44 MB) 1.5 s after the lobby is up. Tests texture-safety + gpu-memory-budget updated.
-
-# Previous delivery: v8.1.121 — owner: mission card too much text / too fast / cluttered; Mint Impaler Unique refund
-
-`missionIntro` card = 3 lines: emoji+name, one line (armed: "Step on ✨ to begin"; desc if ≤48 chars, else `RUBY_TIPS[type].short` without brackets), 🎁 reward; holds 5.5 s (was 3.5 s) then shrinks into the HUD. Declutter: setupWaveObjective `rubyTip(type, 6200)` (650 in tutorial) and objBonusInit "⭐ Bonus" float at 6.6 s (was 1.9 s), so nothing overlaps the card. Mint Impaler (`releaseImpalerCharge`, path 'pierce'): each lance fired → `uniqueCd -= 0.5` (min 0). Escort Wisp `_wispTuning().escortR` 220 → 160 (owner). Test mission-template updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
