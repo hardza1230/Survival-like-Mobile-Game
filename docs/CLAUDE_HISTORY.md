@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.110 — owner: lobby stage scene did not load (green grid); Depths music
+
+Root cause: when the stage card is evicted/not loaded a canvas placeholder with the same key exists; lobbyPreload filtered with `textures.exists` (placeholder counted as loaded → never fetched) and buildLobby drew the placeholder (green grid). Both now use `realTex`; `_lobbyLoading` is a timestamp (retry after 8 s if a load stalls). menuMusic: Depths (`dig`) back on the main menu track (owner) — temple track now only Mochi Patrol.
+
 # Previous delivery: v8.1.109 — owner: Patrol uses the Weave music; Weave back to the main menu music
 
 menuMusic map: `{patrol:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}` (was upgrade/perks/dig → temple). Flavor Weave (`upgrade`) and Rank Perks (`perks`) now fall through to the main menu track like other lobby screens; Mochi Patrol plays tea_for_two_temple (A12 pt_ambient_loop still layered quietly).
