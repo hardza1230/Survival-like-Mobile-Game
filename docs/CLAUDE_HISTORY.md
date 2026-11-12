@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.115 — owner (mission review step 1): Grandma's Pot = PoE Ritual tribute shop, tied to the story
+
+After the last course `gpTable` (replaces the old gpServe burst; gpServe kept unused): tribute = flavor + saved `Save.data.potFlavor`; `gpMenu` offers 4 dishes (deferred dish first, Sugar Bowl always, then random from Sugar Feast 10 / Berry Jam×2 9 / Recipe Ink 12 / Gear Box(rare) 13 / Epic Box 22 (full only) / Hunger Stone 30 (20%)) + a ✔ Done plate, in an arc around the pot; standing 0.5 s on a plate buys it (`gpBuy`: sugar loot burst / Save.addCurrency / _runBoxes / hungerStones). Ends on Done, 25 s, nothing affordable, or walking >520px away → `gpFinish`: half the leftover flavor saved (cap 30) + the priciest unaffordable dish deferred (`potDeferred`). Story: Grandma is frozen in the Sugar Frost Prison (C1-4) but her pot remembers her recipes → Pot only in pools after `stageMastery[3]` (c1FirstPool + replayBountyPool), one-time Ruby lines on the first pot (`potStory`) and first table (`potTableSeen`; no VO yet). Tests sig-missions Pot + Chapter 1 pacing updated.
+
 # Previous delivery: v8.1.114 — owner (mission review step 2): lighter Chapter 1 first play
 
 `C1_LATER_LEAGUE=['hungersMouth','grandmasPot','grandmasGolem']` + `c1FirstPool(pool)` applied in both wave-objective bag builders: on stages 0–4, when the stage is not yet mastered, Chapter 1 not cleared (`storyCleared()<5`) and not Delve/rift/Boss Rush/replay meter, those three are removed (lead then has nothing to promote). First play keeps Hunger Herald (C1-1 lead) and Frozen Pantry (C1-4, now `lead:'frozenPantry'`). Replay bounties and Delve unchanged. Mission review plan (owner agreed): 2 ✅ → 1 Pot as "choose a recipe" (distinct verb) → 4 shared start/end presentation template; 3 unique rewards + 5 per-mission play stats alongside. Test sig-missions gained a Chapter 1 pacing block.

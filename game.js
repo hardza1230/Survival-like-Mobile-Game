@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.116';
+const GAME_VERSION = '8.1.117';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.117',date:'2026-11-12',title:'Freeze fix',items:['Fixed a freeze when going back to the Lobby after clearing a stage','If a picture is swapped while it is on screen, the game now keeps running instead of freezing']},
   {v:'8.1.116',date:'2026-11-12',title:'Mission cards and rewards',items:['Every mission now opens with a mission card (what to do and its reward) and a shockwave, and ends with a MISSION COMPLETE stamp','Each mission type has its own reward (Berry Jam, Honeydrop, Star Sugar, Recipe Ink, Twist Cream or a gear box), shown before you start and above the start pad','Ruby now sits in the corner with her words beside her, a little higher','Boss lines appear in a small bubble above the boss’s head']},
   {v:'8.1.115',date:'2026-11-12',title:'Grandma’s Table',items:['Grandma’s Pot now ends at Grandma’s Table: spend the flavor you earned on dishes (Sugar, Berry Jam, Recipe Ink, gear boxes, sometimes a Hunger Stone)','Leftover flavor and the dish you could not afford are saved for your next pot','The pot appears only after you have found Grandma in the Sugar Frost Prison']},
   {v:'8.1.114',date:'2026-11-12',title:'Gentler Chapter 1',items:['Your first trip through Chapter 1 now features only two special missions: the Hunger Herald (C1-1) and the Frozen Pantry (C1-4)','Hunger’s Mouth, Grandma’s Pot and Grandma’s Golem appear when you replay those stages or after you finish Chapter 1']},
@@ -9445,6 +9446,7 @@ class Game extends Phaser.Scene {
   constructor(){ super('Game'); }
 
   create(){
+    this.loopGuard?.();
     this._sesRuneButtons=null;this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
     this.renderDPR=RENDER_DPR;
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
@@ -9554,7 +9556,7 @@ class Game extends Phaser.Scene {
     this._preloadQuiet=!!quiet;
     this._allLoading=true;this._allWait=done?[done]:[];
     const L=window.GameLoader,real=k=>{ if(!this.textures.exists(k))return false; return !(this.textures.get(k).getSourceImage() instanceof HTMLCanvasElement); };
-    const drop=k=>{ if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } };
+    const drop=k=>this.texSafeRemove(k);
     let n=0;
     const skip=u=>only&&!only.test(u); let skipped=0;
     // Stage assets are requested by ensureStageArt when entering that stage.
@@ -9614,6 +9616,17 @@ class Game extends Phaser.Scene {
       if(Array.isArray(o.list))o.list.forEach(fix); };
     try{ (this.children.list||[]).forEach(fix); }catch(e){}
     for(const k in this){ try{ const g=this[k]; if(g&&g.children&&typeof g.getChildren==='function'&&g.children.entries)g.getChildren().forEach(fix); }catch(e){} } }
+  /* v8.1.116 เจ้าของ: จบ C1-1 กด Lobby แล้วค้าง → ลบภาพสำรอง (placeholder) ที่ยังแสดงอยู่ทำให้ WebGL 'glTexture of null' แล้วลูปเกมตาย · ก่อนลบ ย้ายทุกอ็อบเจกต์ที่ใช้ภาพนั้นไปภาพว่าง แล้วคืนภาพจริงเมื่อโหลดเสร็จ */
+  texSafeRemove(k){ if(!this.textures?.exists?.(k))return; const hold=[],seen=new Set(),fix=o=>{ if(!o||seen.has(o))return; seen.add(o); if(o.texture&&o.texture.key===k&&o.setTexture){ hold.push([o,o.frame?o.frame.name:null]); try{ o.anims?.stop?.(); o.setTexture('__DEFAULT'); }catch(e){} } if(Array.isArray(o.list))o.list.forEach(fix); };
+    try{ for(const sc of this.game?.scene?.getScenes?.(false)||[this])(sc?.children?.list||[]).forEach(fix); for(const key in this){ const g=this[key]; if(g&&g.children&&g.children.entries&&typeof g.getChildren==='function')g.getChildren().forEach(fix); } }catch(e){}
+    this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); });
+    if(!hold.length)return; const H=this._texHold||(this._texHold={}); (H[k]||(H[k]=[])).push(...hold);
+    if(!this._texHoldOn){ this._texHoldOn=true; this.textures.on?.('addtexture',key=>{ const L=this._texHold&&this._texHold[key]; if(!L)return; delete this._texHold[key]; const T=this.textures.get(key); for(const [o,f] of L){ try{ if(o.scene&&o.texture&&o.texture.key==='__DEFAULT')o.setTexture(key,f!=null&&T.has(f)?f:undefined); }catch(e){} } }); } }
+  /* v8.1.116 ตาข่ายกันค้าง: ถ้าเฟรมใดพังเพราะภาพที่ถูกลบ (frame.source=null) → ซ่อมอ็อบเจกต์นั้นเป็นภาพว่างแล้วเล่นต่อ แทนลูปเกมตาย (จอค้าง) */
+  texHeal(){ let n=0; const T=this.textures,fix=o=>{ if(!o)return; try{ if(o.texture&&o.setTexture&&o.texture.key!=='__DEFAULT'&&(!T.exists(o.texture.key)||(o.frame&&!o.frame.source))){ o.anims?.stop?.(); o.setTexture('__DEFAULT'); n++; } }catch(e){} if(Array.isArray(o.list))o.list.forEach(fix); };
+    try{ for(const sc of this.game?.scene?.getScenes?.(false)||[this])(sc?.children?.list||[]).forEach(fix); }catch(e){} return n; }
+  loopGuard(){ const G=this.game,L=G&&G.loop; if(!L||L._mmGuard||typeof L.callback!=='function')return; L._mmGuard=true; const cb=L.callback; let errs=0;
+    L.callback=(t,d)=>{ try{ cb(t,d); }catch(e){ const n=this.texHeal(); if(errs++<5)console.error('frame recovered ('+n+' fixed)',e); try{ G.renderer?.resetTextures?.(true); }catch(_){} } }; }
   texTouch(keys){ const T=this._texT||(this._texT={}),now=Date.now(); for(const k of keys)T[k]=now; }
   // ภาพ lazy ทีละใบในหน้าเมนู: มีแล้ว = true · ยังไม่มี = สั่งโหลด แล้ววาดหน้านี้ใหม่เมื่อเสร็จ
   // pred(k,cls) เลือกผู้สมัคร · budgetMB=null คืนทุกตัวที่ตรง · ตัวที่แสดงอยู่บนจอไม่ถูกคืนเด็ดขาด
@@ -9682,7 +9695,7 @@ class Game extends Phaser.Scene {
   prioritizeLoad(keys){ try{ const L=this.load.list; if(!L||!L.entries||!L.entries.length)return; const ks=new Set(keys),arr=L.entries; const front=arr.filter(f=>ks.has(f.key)); if(!front.length)return; const rest=arr.filter(f=>!ks.has(f.key)); arr.length=0; front.concat(rest).forEach(f=>arr.push(f)); }catch(e){} }
   ensureGroup(re,done,opts={}){ const need=[],hit=typeof re==='function'?re:((k,u)=>re.test(u||''));
     const real=k=>{ if(!this.textures.exists(k))return false; const src=this.textures.get(k).getSourceImage(); return !(src instanceof HTMLCanvasElement); };
-    const add=(k,fn)=>{ if(real(k))return; if(this.textures.exists(k)){ this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } need.push(k); fn(); };
+    const add=(k,fn)=>{ if(real(k))return; this.texSafeRemove(k); need.push(k); fn(); };
     for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if((opts.all||(!k.startsWith('screen_')&&!deferredImage(k)))&&hit(k,u))add(k,()=>this.load.image(k,verUrl(u))); }
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if((opts.all||!STAGE_SHEET_KEYS.has(k))&&hit(k,sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
     if(opts.fx)for(const k in ASSET_FX){ const fx=ASSET_FX[k]; if(hit(k,fx.url))add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
@@ -9701,7 +9714,7 @@ class Game extends Phaser.Scene {
     if(tier===2&&!D[1].done){ this.ensureDeferred(()=>this.ensureDeferred(null,2),1); return; }
     if(T.started)return; T.started=true;
     const menuOnly=u=>MENU_ONLY_RE.test(u||''),want=u=>tier===2?menuOnly(u):!menuOnly(u);
-    let n=0; const add=(k,fn)=>{ if(this.textures.exists(k)){ const src=this.textures.get(k).getSourceImage(); if(!(src instanceof HTMLCanvasElement))return; this.textures.remove(k); ['_idle','_walk'].forEach(sx=>{ if(this.anims.exists(k+sx))this.anims.remove(k+sx); }); } fn(); n++; }; // ลบ placeholder ที่ Boot วาดแทนไว้
+    let n=0; const add=(k,fn)=>{ if(this.textures.exists(k)){ const src=this.textures.get(k).getSourceImage(); if(!(src instanceof HTMLCanvasElement))return; this.texSafeRemove(k); } fn(); n++; }; // ลบ placeholder ที่ Boot วาดแทนไว้
     for(const k in ASSET_IMAGES){ const u=ASSET_IMAGES[k]; if(!k.startsWith('screen_')&&!deferredImage(k)&&want(u))add(k,()=>this.load.image(k,verUrl(u))); }
     for(const k in ASSET_SHEETS){ const sh=ASSET_SHEETS[k]; if(!STAGE_SHEET_KEYS.has(k)&&want(sh.url))add(k,()=>this.load.spritesheet(k,verUrl(sh.url),{frameWidth:sh.frame,frameHeight:sh.frame})); }
     if(tier===1){ for(const k in ASSET_FX){ const fx=ASSET_FX[k]; add(k,()=>this.load.spritesheet(k,verUrl(fx.url),{frameWidth:fx.fw,frameHeight:fx.fh})); }
