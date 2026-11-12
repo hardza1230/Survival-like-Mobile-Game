@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.102**. Next release:8.1.103. Fetch the deploy branch before new work.
+Current release: **8.1.103**. Next release:8.1.104. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.102 — owner: book opening into the lobby
+# Latest delivery: v8.1.103 — owner: Flavor Cores tied to the story (Ruby explains)
+
+Lore (STORY_CANON §2): Flavor Cores = 3 threads Grandma wove into the Heart Seed — Life Core (true form → HP), Flavor Spark (stolen flavor → DMG), Oath Shell (promise to protect → armor); Sugar = flavor taken back from monsters; feeding the cores makes the Seed hold every freed friend's form tighter (why one upgrade powers all heroes). Code: `CORE_LORE_LINES` (3 pages) shown via rubyGuide (target gLoadout) at the first step of the post-tutorial weave tour in applyGearTut (once per tour, `_coreLoreDone`; sets Save.data.coreLoreTaught; skipped with noRuby), then the old spotlight tour continues. Tutorial Complete hint text updated. Test tests/core-lore.test.cjs (added to npm run check). Owner: Overcharge ring removed for now — `OVERCHARGE_ON=false` makes overchargeOffer return false (code kept; set true to restore).
+
+# Previous delivery: v8.1.102 — owner: book opening into the lobby
 
 bookOpeningPlus: vfx_bk_magic ring moved from the emblem to the right clasp (kx,ky, 260·sc) · page riffle (rf) and burst (bs) layers removed (owner saw a full page flash) → when the 12-frame cover opening ends, op hides and finish() fades straight into the lobby; `BKP_KEYS` no longer loads bk_page_riffle/vfx_bk_burst; safety end at 6500 ms; lobby rise delay 1500 ms (was 2100). menuEnterAnim rise: 34 px (was 70), 900 ms Cubic.easeOut (was Back), alpha 700 ms, stagger 900 ms; items already tweening (idle heroes) now fade in instead of popping. Test tests/book-open-continuity.test.cjs rewritten.
-
-# Previous delivery: v8.1.101 — owner: loot bomb hidden by the prize wheel (Spin)
-
-Miniboss death: spawnChest('mini') delayed 2300 ms (0 in tutorial/Boss Rush; tier rolled at death; skipped if state menu/summary or `_lootTok` changed — exitStage bumps it) so the bigFoeLoot burst (1.9 s hold → vacuum) plays before the wheel can open. Boss: new `bossLootShow(x,y,_bossLoot)` in onBossDown = visual-only burst (8 sugar + up to 4 gift sprites scatter, hold, fly to player at 1.5 s; float text at 1.9 s; rewards already granted by bigFoeLoot, totals unchanged) → openBossLootCards at 2400 ms (was 700). Old 900 ms boss-loot float text removed. No reward change.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -55,7 +55,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - Sesame Rune Invoker (เจ้าของอนุมัติ 2 พ.ย., `docs/design/SESAME_RUNE_INVOKER.md`) v8.1.1 รอมือถือ
 
 **รอเจ้าของตัดสินใจ / ทำต่อ**
-- ความถี่แท่นเริ่มภารกิจ/Overcharge หลังเล่นจริง
+- ความถี่แท่นเริ่มภารกิจหลังเล่นจริง · Overcharge ปิดไว้ v8.1.103 (`OVERCHARGE_ON`)
 - Sesame: บาลานซ์/ความถนัดและ Talent ถาวร (ไม่ทำ Mirror Network ขั้น 2)
 - ยกเลิกแล้ว: ใบ 35 Yuzu Orchard (→ Citrus Companions 55/56) · ใบ 49 กรอบโปรไฟล์
 

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.102';
+const GAME_VERSION = '8.1.103';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.103',date:'2026-11-12',title:'Ruby explains the Flavor Cores',items:['After the tutorial, Ruby tells you what the Flavor Cores are: three threads Grandma wove into the Heart Seed, fed by the Sugar you win back from the Hunger','Upgrading a core makes every freed friend stronger too','The Overcharge ring no longer appears after missions']},
   {v:'8.1.102',date:'2026-11-12',title:'Smoother book opening',items:['The magic ring now glows around the book’s clasp before it unlocks','The cover opens straight into the lobby with no flash of a full page','Lobby icons float in more gently']},
   {v:'8.1.101',date:'2026-11-12',title:'See your boss loot',items:['Miniboss loot bursts out first; the prize chest now drops a moment later, so the wheel no longer hides the loot','Defeated bosses burst Sugar and loot boxes onto the field, which fly to you before the Boss Loot wheel opens']},
   {v:'8.1.100',date:'2026-11-12',title:'Cleaner speech, livelier cards, finished results header',items:['Boss lines and Ruby’s chatter now pop out as small tags at the top corners instead of covering the battlefield','Level-up cards shimmer, their icons bob and a colored CHOOSE tag replaces the old “Tap to choose” pill','The Stage Clear header now sits on a gold-trimmed panel with a hero medallion, turning rays and star sockets']},
@@ -8710,6 +8711,9 @@ const STAGE_GIMMICKS = [
 /* ภารกิจสุ่มประจำWave Chapter 1 — เปลี่ยนสิ่งที่ผู้เล่นต้องทำโดยไม่เพิ่มภาระระบบฟิสิกส์หนัก */
 /* v7.9.60 เจ้าของ: มาสคอต Ruby บอกวิธีเล่นแต่ละภารกิจ (กรอบข้อความด้านบน คำสำคัญเป็นสี [..]) · say = ครั้งแรก ๆ (2 บรรทัด), short = สรุปสั้น/เตือนซ้ำ */
 /* v7.9.81 เจ้าของ: Ruby พูดเป็นธรรมชาติ มีเรื่องราว · Ruby = Mochi Core ไส้แยมทับทิม ผู้เฝ้าตำราสูตรของตู้กับข้าว · Great Hunger กลืนรสของเธอไป เลยปลุกร่างนักสู้ไม่ได้ · ทุกด่านที่ชนะ = ความทรงจำกลับมาทีละชิ้น */
+/* v8.1.103 Flavor Cores ในเรื่อง: คุณยายถักแก่น 3 เส้นไว้ในเมล็ดหัวใจ (Life Core = ร่างคน · Flavor Spark = รสที่ถูกขโมย · Oath Shell = คำสัญญาปกป้องกัน) · Sugar = รสที่ชิงคืนจากมอน · ป้อนแก่น = เมล็ดยึดร่างคนได้แน่นขึ้น → แข็งแรงถาวร แบ่งให้เพื่อนทุกคนที่ปลดคำสาปแล้ว */
+const OVERCHARGE_ON=false;   // v8.1.103 เจ้าของ: เอาวง Overcharge ในด่านออกก่อน (โค้ดเก็บไว้ เปิดกลับ = true)
+const CORE_LORE_LINES=['That Sugar is flavor the Hunger stole. We just took some back!','Grandma wove three Flavor Cores into the Heart Seed: Life Core, Flavor Spark and Oath Shell.','Feed them Sugar and the Seed holds your true form tighter. Every friend we free shares that strength too!'];
 const RUBY_TIPS={
   yuzuAim:{say:'Yuzu’s seeds fly where you [walk]. Your buddy hits the [marked target] first!',short:'Walk toward an enemy to [mark] it!'},
   survive:{say:'Stay alive until the [timer] ends. Keep moving!',short:'Hang on until the [timer] ends!'},
@@ -11243,6 +11247,7 @@ class Game extends Phaser.Scene {
   applyGearTut(){ if(this._featBusy||(this._featQ&&this._featQ.length))return; const d=Save.data; if(this.state!=='menu')return;
     if(this._weaveTour){ const T=this._weaveTour,s=this.menuScreen,find=f=>this.tapZones.find(f);   // v7.9.45 ทัวร์หลังบทสอน: Hub → Gear & Power → Weave & Rank → อัปแก่น → Back → Back → Play → ด่าน 1
       const spot=(z,label,fn)=>{ if(!z)return false; const f0=z.fn; z.fn=fn||(()=>f0()); this.tapZones=[z]; const c=this.add.container(0,0); this.menu.add(c); this.drawSpotlight(c,z.x,z.y,z.w,z.h,label); return true; };
+      if(T==='hub'&&s==='hub'&&!this._coreLoreDone&&!this._rubyTalk&&find(q=>q.tag==='gLoadout')&&!Save.data?.settings?.noRuby){ this._coreLoreDone=true; this.rubyGuide(CORE_LORE_LINES,()=>{ Save.data.coreLoreTaught=true; Save.save(); this.applyGearTut(); },{target:'gLoadout'}); return; }   // v8.1.103 เจ้าของ: Flavor Core ไม่มีที่มา → Ruby เล่าว่าแก่นคือเส้นใยในเมล็ดหัวใจ · Sugar = รสที่ชิงคืนมา
       if(T==='hub'&&s==='hub'){ const z=find(q=>q.tag==='gLoadout'),f0=z&&z.fn; if(spot(z,'Use your Sugar to grow stronger · Tap Upgrade',()=>{ this._weaveTour='gear'; f0(); }))return; }
       if(T==='gear'&&s==='gLoadout'){ const z=find(q=>q.tag==='upgrade'),f0=z&&z.fn; if(spot(z,'Weave gives every hero permanent strength',()=>{ this._weaveTour='weave'; this._tutorialWeaveCoach=true; f0(); }))return; }
       if(T==='weave'&&s==='upgrade'&&Date.now()-(this._weaveSpotAt||0)>300){ this._weaveTour='back'; this._tutorialWeaveCoach=false; return this.applyGearTut(); }   // ไม่มีแก่นที่ซื้อได้ → ข้ามไปสอนปุ่ม Back
@@ -15935,7 +15940,7 @@ class Game extends Phaser.Scene {
   missionArmClear(o){ const A=o&&o._armPad; if(!A)return; for(const q of A.objs){ this.tweens.killTweensOf(q); q.destroy(); } o._armPad=null; }
   missionArmTick(o,dt){ const A=o._armPad; A.t-=dt; const near=this.player&&this.dist(this.player.x,this.player.y,A.x,A.y)<50; if(A.objs[2]?.active)A.objs[2].setText(near?'Starting!':'Step in to start · '+Math.ceil(Math.max(0,A.t))+'s');
     if(near||A.t<=0){ this.missionArmClear(o); this.vfxHitRing?.(A.x,A.y,0xffe08a,true); Sfx.orderCue?.('wave_start',.4,.3); this.floatText?.(this.player.x,this.player.y-70,'▶ Mission start!',0xffe08a); return false; } this.renderWaveObjectiveHUD?.(); return true; }
-  overchargeOffer(o){ if(o._ocDone||o._oc)return !!o._oc&&!o._ocDone; if(this.state!=='play'||this._inTutorial||this.recipeMode||this.riftMode||this.bossRush||['survive','fill','vaultAltar','ultimatum'].includes(o.type)||!this.usesStoryBudget?.()||!this.player)return false;
+  overchargeOffer(o){ if(!OVERCHARGE_ON)return false; if(o._ocDone||o._oc)return !!o._oc&&!o._ocDone; if(this.state!=='play'||this._inTutorial||this.recipeMode||this.riftMode||this.bossRush||['survive','fill','vaultAltar','ultimatum'].includes(o.type)||!this.usesStoryBudget?.()||!this.player)return false;
     const q=this.objectivePosition(0,1,110,150),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xff7ab8,.18).setStrokeStyle(4,0xff7ab8,.95).setDepth(q.y-2)),t=this.artSpr('msn71_overcharge_pad',q.x,q.y,92,0,{sig:false,depth:q.y-1})||this.camWorld(this.add.text(q.x,q.y,'⚡',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd0e6',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5));
     this.tweens.add({targets:pad,scale:{from:.92,to:1.1},duration:420,yoyo:true,repeat:-1}); o._oc={phase:'offer',t:5,x:q.x,y:q.y,objs:[pad,t,l]}; this.showBanner?.('⚡ Overcharge?','Step on ⚡ within 5s: 12s of extra enemies for ×2 loot',2000); Sfx.orderCue?.('mission_bonus_get',.35,.3); return true; }
   overchargeTick(o,dt){ const C=o._oc,p=this.player; if(!C||!p)return; C.t-=dt;
@@ -17686,7 +17691,7 @@ class Game extends Phaser.Scene {
       const amount=this.add.text(x+55,cy+11,rewardGranted?reward.amount:'Claimed',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:rewardGranted?'18px':'12px',color:rewardGranted?'#ffe0a0':'#b8a9c5'}).setOrigin(0,0.5);
       items.push(icon,name,amount);
     });
-    const hint=this.add.text(w/2,h*0.67,'Spend Sugar on a core upgrade before your first stage',{fontFamily:'sans-serif',fontSize:'12px',color:'#e3d2e8',align:'center',wordWrap:{width:pw-32}}).setOrigin(0.5);
+    const hint=this.add.text(w/2,h*0.67,'Feed your Sugar to the Heart Seed’s Flavor Cores before your first stage',{fontFamily:'sans-serif',fontSize:'12px',color:'#e3d2e8',align:'center',wordWrap:{width:pw-32}}).setOrigin(0.5);
     // ปุ่มหลัก: ไปหน้า Flavor Weave (สอนอัพแก่น) · ปุ่มรอง: ข้ามไปเลือกด่าน
     const bw2=Math.min(w-40,270),bh2=56,byc=h*0.80;
     const btn=this.add.graphics(); btn.fillStyle(COLORS.pink,1); btn.fillRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,20); btn.lineStyle(2,0xffffff,0.35); btn.strokeRoundedRect(w/2-bw2/2,byc-bh2/2,bw2,bh2,20);
