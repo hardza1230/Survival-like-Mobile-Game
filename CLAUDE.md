@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.118**. Next release:8.1.119. Fetch the deploy branch before new work.
+Current release: **8.1.119**. Next release:8.1.120. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.118 — owner: camera too far, monsters blend into the floor
+# Latest delivery: v8.1.119 — owner: green grid under the first Lobby; remove the white outline around the hero
+
+Green grid = `syncBgTile` floor pool drawn with the TileSprite `displayTexture` '__MISSING' (bgTile created with 'bg1', which is stage-lazy and not loaded at boot → Phaser missing-texture green boxes, visible under the Lobby). Now: displayTexture key missing / '__*' / not in TextureManager → hide bgTile + pool and return; pool images start as '__DEFAULT'. Hero outline: `tickPlayerReadability` no longer draws `_readPlayerEdge` (cream tint-fill copy ×1.055, alpha .48 from v8.0.35); destroys a leftover one; foot ring `cr_player_ring` kept. Tests arena-edges (missing-floor block + textures stub) and combat-readability (no edge, ring checks) updated.
+
+# Previous delivery: v8.1.118 — owner: camera too far, monsters blend into the floor
 
 `computeViewZoom` BASE 0.70 → 0.78 (~11% closer). `drawFoeShadows()` (called from drawShadows each frame, iso): one canvas radial-gradient texture `mm_soft_shadow` (128×48, created once) + image pool `_foeSh` at depth -99000 (camWorld; same texture/depth = one batch), per visible enemy: width 0.72×displayWidth (26–260), height ×0.34, at y+0.4×displayHeight, alpha follows the enemy (×1.25 in Chapter 2.5D); extra pool images hidden. Not Graphics ellipses (old Android WebView black-bar bug). Test `tests/foe-shadow.test.cjs`. Owner to check FPS + shadow placement on the phone. Open questions from the owner: Elite has no own art (reuses the stage monster scaled + crest) → art order on request; ink/brush outline style (Demon Slayer-like) → asked whether outline or shadow, art order for one hero as a sample.
-
-# Previous delivery: v8.1.117 — owner bug: C1-1 clear → Lobby froze
-
-Cause: placeholder (canvas) textures were removed with `textures.remove` while an object still showed them → WebGL `frame.source` null → 'glTexture' TypeError inside the render step kills Phaser's RAF loop (screen frozen). Reproduced headless (stage start before boot preload finished, `p_box` dropped by preloadAll). Fix: `texSafeRemove(k)` (used by preloadAll `drop`, ensureGroup `add`, ensureDeferred `add`) moves every object using k to `__DEFAULT`, removes, and restores the real texture + frame on the TextureManager `addtexture` event. Safety net `loopGuard()` (Game create) wraps `game.loop.callback`: an exception → `texHeal()` (objects with a missing texture/frame.source → `__DEFAULT`), console.error ×5 max, renderer.resetTextures, and the loop keeps running. Test `tests/texture-safety.test.cjs`.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

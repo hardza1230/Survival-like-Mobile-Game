@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.118';
+const GAME_VERSION = '8.1.119';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.119',date:'2026-11-12',title:'Cleaner lobby and hero',items:['No more green grid under the Lobby while the first pictures load','The pale outline around your hero is gone (the foot ring stays)']},
   {v:'8.1.118',date:'2026-11-12',title:'Closer camera, monster shadows',items:['The battle camera is a little closer','Every monster now casts a soft shadow, so they stand out from the floor']},
   {v:'8.1.117',date:'2026-11-12',title:'Freeze fix',items:['Fixed a freeze when going back to the Lobby after clearing a stage','If a picture is swapped while it is on screen, the game now keeps running instead of freezing']},
   {v:'8.1.116',date:'2026-11-12',title:'Mission cards and rewards',items:['Every mission now opens with a mission card (what to do and its reward) and a shockwave, and ends with a MISSION COMPLETE stamp','Each mission type has its own reward (Berry Jam, Honeydrop, Star Sugar, Recipe Ink, Twist Cream or a gear box), shown before you start and above the start pad','Ruby now sits in the corner with her words beside her, a little higher','Boss lines appear in a small bubble above the boss’s head']},
@@ -20411,7 +20412,8 @@ class Game extends Phaser.Scene {
     btn(by+bh-72,'⬇ Download update',0x4fae6a,()=>{ try{ const B=window.Capacitor?.Plugins?.Browser; if(B)B.open({url}); else window.open(url,'_blank'); }catch(e){ try{window.open(url,'_blank');}catch(_){} } close(); });
     btn(by+bh-26,'Later',0x5a4b75,()=>{ try{localStorage.setItem('mochi_apk_skip',latest+'|'+new Date().toDateString());}catch(e){} close(); }); Sfx.select&&Sfx.select(); }
   // v6.93 พื้นด่านเดิมเป็น TileSprite 4000×4000 (canvas 64MB) → ย่อเหลือ ~จอ + ลายพื้น 2 รอบ แล้วขยับตามกล้องทีละ "1 รอบลาย" (ลายพื้นยึดโลก ไม่เลื่อน)
-  syncBgTile(){ const t=this.bgTile,fr=t&&(t.displayFrame||t.frame); if(!t||!t.active||!fr||!t.displayTexture)return; const cam=this.cameras.main,v=cam.worldView; if(!v||!v.width)return;
+  syncBgTile(){ const t=this.bgTile,fk=t&&t.displayTexture&&t.displayTexture.key,fr=t&&(t.displayFrame||t.frame); if(!t||!t.active||!fr||!t.displayTexture)return;
+    if(!fk||fk.startsWith('__')||!this.textures.exists(fk)){ if(t.visible)t.setVisible(false); for(const im of this._bgImgs||[])if(im&&im.scene&&im.visible)im.setVisible(false); return; }   /* v8.1.119 เจ้าของ: lobby ตอนแรกเห็นพื้นตารางเขียว = ภาพพื้นยังไม่มา (displayTexture '__MISSING' = กรอบเขียว Phaser) → ไม่วาดพื้นจนกว่าภาพจริงมา */ const cam=this.cameras.main,v=cam.worldView; if(!v||!v.width)return;
     // v7.4 GPU memory: the TileSprite stays 2×2 + hidden (its own canvas was WORLD-size = 43–64MB on the GPU); the floor is drawn by a small pool of plain Images sharing the source texture (0 extra GPU memory)
     if(t.width>4||t.height>4)t.setSize(2,2); if(t.visible)t.setVisible(false);
     const P=Math.max(32,fr.width*Math.abs(t.tileScaleX||1)),Q=Math.max(32,fr.height*Math.abs(t.tileScaleY||1));
@@ -20419,8 +20421,8 @@ class Game extends Phaser.Scene {
     const half=WORLD/2,left=Math.max(-half,v.x),top=Math.max(-half,v.y),right=Math.min(half,v.right),bottom=Math.min(half,v.bottom);
     const x0=Math.floor(left/P)*P,y0=Math.floor(top/Q)*Q,nx=Math.max(0,Math.ceil((right-x0)/P)),ny=Math.max(0,Math.ceil((bottom-y0)/Q)),need=right>left&&bottom>top?nx*ny:0,pool=this._bgImgs||(this._bgImgs=[]);
     for(let k=pool.length-1;k>=0;k--)if(!pool[k]||!pool[k].scene)pool.splice(k,1);
-    while(pool.length<need&&pool.length<64)pool.push(this.camWorld(this.add.image(0,0,t.displayTexture.key,fr.name).setOrigin(0,0)));
-    const tinted=t.isTinted,tint=t.tintTopLeft,key=t.displayTexture.key;
+    while(pool.length<need&&pool.length<64)pool.push(this.camWorld(this.add.image(0,0,'__DEFAULT').setOrigin(0,0)));
+    const tinted=t.isTinted,tint=t.tintTopLeft,key=fk;
     pool.forEach((im,k)=>{ if(k>=need){ if(im.visible)im.setVisible(false); return; } if(im.texture.key!==key||im.frame.name!==fr.name)im.setTexture(key,fr.name);
       const x=x0+(k%nx)*P,y=y0+Math.floor(k/nx)*Q,w=P+1,h=Q+1,cx=Math.max(0,-half-x),cy=Math.max(0,-half-y),cw=Math.min(w,half-x)-cx,ch=Math.min(h,half-y)-cy;
       im.setPosition(x,y).setDisplaySize(w,h).setCrop(cx/w*fr.width,cy/h*fr.height,cw/w*fr.width,ch/h*fr.height).setDepth(t.depth).setAlpha(t.alpha).setVisible(cw>0&&ch>0);if(tinted)im.setTint(tint);else if(im.isTinted)im.clearTint(); }); }
@@ -23475,8 +23477,7 @@ class Game extends Phaser.Scene {
   tickPlayerReadability(){const p=this.player;if(this.state!=='play'||!p?.active)return;
     let rim=this._readPlayerRing;if(!rim?.active)rim=this._readPlayerRing=this.combatReadSprite('cr_player_ring',p.x,p.y+31,68,28,p.depth-.1);
     rim?.setPosition(p.x,p.y+31).setDepth(p.depth-.1).setAlpha(.75).setVisible(p.visible!==false);
-    let edge=this._readPlayerEdge;if(!edge?.active){edge=this._readPlayerEdge=this.add.image(p.x,p.y,p.texture.key,p.frame?.name??0);this.camWorld?.(edge);this.trackArtVfx?.(edge);}
-    edge.setTexture(p.texture.key,p.frame?.name??0).setOrigin(p.originX??.5,p.originY??.5).setPosition(p.x,p.y).setScale(p.scaleX*1.055,p.scaleY*1.055).setRotation(p.rotation).setFlipX(p.flipX).setDepth(p.depth-.05).setTintFill(0xfff5d6).setAlpha(.48*(p.alpha??1)).setVisible(p.visible!==false);
+    if(this._readPlayerEdge){ if(this._readPlayerEdge.active)this._readPlayerEdge.destroy(); this._readPlayerEdge=null; }   /* v8.1.119 เจ้าของ: กรอบขาวรอบตัวละครไม่เอา → เลิกวาดเงาขอบสีครีม (เหลือวงใต้เท้า) */
   }
   tickEnemyReadability(e){if(!e?.active)return;if(e.isElite){const set=this._readElites||(this._readElites=new Set());let crest=e._readCrest;
       if(!crest?.active&&set.size<12){crest=e._readCrest=this.combatReadSprite('cr_elite_crest',e.x,e.y,20,20,93004);if(crest){set.add(crest);crest.once('destroy',()=>{set.delete(crest);if(e._readCrest===crest)e._readCrest=null;});}}

@@ -18,7 +18,7 @@ const bullet=new Node();bullet.body={width:128,height:128,offset:{x:0,y:0},veloc
 const warning=sc.makeHazardReadability(12,30,86,760),g=nodes.findLast(n=>n.ops.length),tw=tweens.at(-1);assert.equal(tw.config.duration,760);tw.config.targets.p=.5;tw.config.onUpdate();assert(g.ops.filter(x=>x[0]==='circle').every(x=>x[1]===86));assert.equal(g.ops.at(-1)[1],86);warning.kill();assert(tw.removed&&!g.active);
 const hazard=method('spawnHazard');assert(hazard.includes('delayedCall(760'));assert(hazard.includes('this.dist(this.player.x,this.player.y,x,y)<r+8'));assert(hazard.includes('this.hurtPlayer(dmg,0.5)'));
 // Two player markers reuse art/frame and never modify the physics actor.
-sc.player={active:true,x:30,y:40,texture:{key:'char_momo'},frame:{name:2},originX:.5,originY:.5,scaleX:.5,scaleY:.5,rotation:.2,flipX:true,depth:40,body:{radius:18},alpha:1};const ps=JSON.stringify(sc.player);sc.tickPlayerReadability();const ring=sc._readPlayerRing,edge=sc._readPlayerEdge,count=nodes.length;sc.tickPlayerReadability();assert.equal(nodes.length,count);assert.equal(JSON.stringify(sc.player),ps);assert.equal(edge.frame,2);assert.equal(ring.y,71);
+sc.player={active:true,x:30,y:40,texture:{key:'char_momo'},frame:{name:2},originX:.5,originY:.5,scaleX:.5,scaleY:.5,rotation:.2,flipX:true,depth:40,body:{radius:18},alpha:1};const ps=JSON.stringify(sc.player);sc.tickPlayerReadability();const ring=sc._readPlayerRing,edge=sc._readPlayerEdge,count=nodes.length;sc.tickPlayerReadability();assert.equal(nodes.length,count);assert.equal(JSON.stringify(sc.player),ps);assert(!edge,'v8.1.119 owner: no cream outline around the hero');assert.equal(ring.y,71);
 // Run the production presentation ordering only (no combat simulation). Upward movement
 // used to leave the outline at the prior, higher Y depth, in front of the hero.
 const presentationStart=src.indexOf('    this.tickCocoaFlicker(dt);this.updatePose(dt);this.animatePlayer(dt);');
@@ -32,9 +32,7 @@ sc.updatePose=()=>{sc.player.texture={key:pose%2?'char_momo_run':'char_momo'};sc
 sc.animatePlayer=()=>{Object.assign(sc.player,{scaleX:.4+pose*.001,scaleY:.5,rotation:pose*.01,flipX:!!(pose%2),alpha:pose%3?.7:1});};
 for(const iso of [true,false]){sc.iso=iso;sc.player.depth=100;
  for(const y of [100,99,80,40,-20,-21,0,40,100,100]){pose++;sc.player.y=y;const priorDepth=sc.player.depth;present.call(sc,1/60);
-  const p=sc.player;assert.equal(p.depth,iso?y:priorDepth);assert.equal(edge.depth,p.depth-.05);assert(edge.depth<p.depth,'outline must stay behind hero');assert(ring.depth<edge.depth);
-  assert.equal(edge.key,p.texture.key);assert.equal(edge.frame,p.frame.name);assert.equal(edge.x,p.x);assert.equal(edge.y,p.y);assert.equal(ring.y,p.y+31);
-  assert.equal(edge.scaleX,p.scaleX*1.055);assert.equal(edge.scaleY,p.scaleY*1.055);assert.equal(edge.rotation,p.rotation);assert.equal(edge.flipX,p.flipX);assert.equal(edge.originY,p.originY);assert.equal(edge.alpha,.48*p.alpha);
+  const p=sc.player;assert.equal(p.depth,iso?y:priorDepth);assert(ring.depth<p.depth,'foot ring stays behind hero');assert.equal(ring.y,p.y+31);assert(!sc._readPlayerEdge);
  }
 }
 assert.equal(nodes.length,count,'movement reuses both markers');
@@ -45,5 +43,5 @@ assert.equal(sc.combatFxAlpha('fx_mint_storm',300,1),.68);assert.equal(sc.combat
 const common={dropType:'gear',lootTier:'common'},currency={dropType:'currency'};const pre=nodes.length;sc.spawnDropBeam(common,1);sc.spawnDropBeam(currency,1);assert.equal(nodes.length,pre);const rare=new Node(0,0);Object.assign(rare,{dropType:'gear',lootTier:'epic',depth:80000});sc.spawnDropBeam(rare,1);const gl=rare._pickupGlint;assert(gl&&rare._dropBeam);sc.hidePickupCue(rare);assert(!gl.active&&rare._pickupGlint===null);
 // Crowded critical numbers are throttled separately; forced numbers retain the original bypass.
 sc.enemies={countActive:()=>80};sc.dmgPool=[];sc.viewZoom=1;sc.popDmg(10,0,0,true);const first=sc._critNumAt;sc.time.now+=10;const nt=nodes.length;sc.popDmg(11,0,0,true);assert.equal(nodes.length,nt);assert.equal(sc._critNumAt,first);sc.popDmg(12,0,0,true,true);assert(nodes.length>nt);assert(!src.includes("const str = crit ? ('💥 '+n)"));
-sc.clearArtVfx();assert(!ring.active&&!edge.active);assert.equal(sc._readElites.size,0);assert.equal(sc._readSparks.size,0);
+sc.clearArtVfx();assert(!ring.active);assert.equal(sc._readElites.size,0);assert.equal(sc._readSparks.size,0);
 console.log('Combat readability:7 source-verified alpha sprites,128px projectile body/velocity parity, exact warning radius/760ms, reused player markers, bounded Elite/windup/sparks, cleanup, opacity gates, loot hierarchy and critical-number throttling passed');
