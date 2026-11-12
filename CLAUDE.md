@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.120**. Next release:8.1.121. Fetch the deploy branch before new work.
+Current release: **8.1.121**. Next release:8.1.122. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.120 — owner: survivor-genre readability extras (items 3, 6, 7, 8; item 4 low-HP vignette already existed in tickNearDeath)
+# Latest delivery: v8.1.121 — owner: mission card too much text / too fast / cluttered; Mint Impaler Unique refund
+
+`missionIntro` card = 3 lines: emoji+name, one line (armed: "Step on ✨ to begin"; desc if ≤48 chars, else `RUBY_TIPS[type].short` without brackets), 🎁 reward; holds 5.5 s (was 3.5 s) then shrinks into the HUD. Declutter: setupWaveObjective `rubyTip(type, 6200)` (650 in tutorial) and objBonusInit "⭐ Bonus" float at 6.6 s (was 1.9 s), so nothing overlaps the card. Mint Impaler (`releaseImpalerCharge`, path 'pierce'): each lance fired → `uniqueCd -= 0.5` (min 0). Escort Wisp `_wispTuning().escortR` 220 → 160 (owner). Test mission-template updated.
+
+# Previous delivery: v8.1.120 — owner: survivor-genre readability extras (items 3, 6, 7, 8; item 4 low-HP vignette already existed in tickNearDeath)
 
 `spawnRise(e,x,y)` (end of spawnEnemy): resets `_occ`; spawn inside camera worldView (non-boss) → alpha 0→1 300 ms, purple ground ring, `_spawnGrace` now+420 ms → `touchEnemy` returns. Occlusion fade in `drawFoeShadows`: enemy with depth above the player, |dx|<0.42×width, dy<0.7×height → alpha ×0.5 (`_occ/_occA`, restored when clear; shadow uses the original alpha). `drawPlayerLight()` (called from drawFoeShadows): canvas radial gradient `mm_player_light` 256², image 620×460 ADD at depth -99500, alpha .17 (.12 in Chapter 2.5D), only in play. EXP hop: `dropOrb` sets `o._hop` (14–36 px, 0.3 s, 22 px arc) — orb loop moves it and skips magnet/pickup until landed (vacuum cancels). Tests foe-shadow (extras block), sig-missions touchEnemy contract loosened.
-
-# Previous delivery: v8.1.119 — owner: green grid under the first Lobby; remove the white outline around the hero
-
-Green grid = `syncBgTile` floor pool drawn with the TileSprite `displayTexture` '__MISSING' (bgTile created with 'bg1', which is stage-lazy and not loaded at boot → Phaser missing-texture green boxes, visible under the Lobby). Now: displayTexture key missing / '__*' / not in TextureManager → hide bgTile + pool and return; pool images start as '__DEFAULT'. Hero outline: `tickPlayerReadability` no longer draws `_readPlayerEdge` (cream tint-fill copy ×1.055, alpha .48 from v8.0.35); destroys a leftover one; foot ring `cr_player_ring` kept. Tests arena-edges (missing-floor block + textures stub) and combat-readability (no edge, ring checks) updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

@@ -17,7 +17,9 @@ assert(cw.indexOf('missionRewardGive')<cw.indexOf('this.clearWaveObjective();thi
 const bw=method('beginWave');assert(bw.includes('this.missionIntro?.(o,!!o._armPad)')&&bw.includes('if(!_card)this.showSpeechBubble'),'intro card replaces banner + duplicate bubble');
 assert(method('missionArm').includes("'🎁 '+R.txt"),'reward floats above the start pad');assert(method('missionArmTick').includes('this.missionGo(o,A.x,A.y,true)'));
 assert(method('setupWaveObjective').includes('this.missionGo?.(o,null,null,false)'));
-const it=method('missionIntro');assert(it.includes("'Reward: '+R.txt")&&it.includes('this.camUI(c)')&&it.includes("'Step on ✨ to begin'"));
+const it=method('missionIntro');assert(it.includes("'🎁 '+R.txt")&&it.includes('this.camUI(c)')&&it.includes("'Step on ✨ to begin'")&&it.includes('delayedCall?.(5500'),'v8.1.121: 3 lines, 5.5 s');
+assert(method('setupWaveObjective').includes("this._inTutorial?650:6200")&&method('objBonusInit').includes('delayedCall?.(6600'),'Ruby tip + bonus text wait for the card');
+{const ri=method('releaseImpalerCharge');assert(ri.includes('if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-.5);'),'Mint Impaler: each lance cuts Unique cooldown by 0.5 s');}
 console.log('mission-template ok');
 // v8.1.116 owner: Ruby in the corner with the bubble to her left (no overflow, no overlap), raised; boss speech small above the boss head, quote only.
 const rn=method('rubyNext');assert(rn.includes('ax=W-pad-av0/2,bx=ax-av0/2-6-bw,by=pad+138')&&rn.includes('this.rubyAvatar(ax-40,by+bh+4,av0,m.face)')&&rn.includes('const tx0=bx+13')&&rn.includes('(bw-26)/Math.max(1,x)'),'Ruby layout');

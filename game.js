@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.120';
+const GAME_VERSION = '8.1.121';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.121',date:'2026-11-12',title:'Easier-to-read mission cards',items:['Mission cards now show just three lines (name, what to do, reward) and stay longer','Ruby’s mission tip and the bonus goal appear after the card closes','Mint (Impaler): every lance shot takes 0.5s off the Unique cooldown','Escort Wisp: smaller ring around the wisp']},
   {v:'8.1.120',date:'2026-11-12',title:'Clearer battles',items:['Monsters that appear on screen fade in with a dust ring and cannot hurt you for a split second','Monsters standing in front of your hero turn see-through','A soft light around your hero','EXP gems pop out in a little arc before flying to you']},
   {v:'8.1.119',date:'2026-11-12',title:'Cleaner lobby and hero',items:['No more green grid under the Lobby while the first pictures load','The pale outline around your hero is gone (the foot ring stays)']},
   {v:'8.1.118',date:'2026-11-12',title:'Closer camera, monster shadows',items:['The battle camera is a little closer','Every monster now casts a soft shadow, so they stand out from the floor']},
@@ -15607,7 +15608,7 @@ class Game extends Phaser.Scene {
     this.objBonusInit?.(o,!!planned);
     if(o._huntPhase)o.desc='Clear foes to reveal each marked Elite, then defeat it';
     this.renderWaveObjectiveHUD();
-    if(!this.recipeMode||this._recipeMission)this.rubyTip?.(o._huntPhase?'huntClear':type);   // v7.9.60 Ruby อธิบายภารกิจ
+    if(!this.recipeMode||this._recipeMission)this.rubyTip?.(o._huntPhase?'huntClear':type,this._inTutorial?650:6200);   // v7.9.60 Ruby อธิบายภารกิจ · v8.1.121 หลังการ์ดภารกิจหุบ (ไม่ซ้อนข้อความ)
     if(type!=='hunt')this.time?.delayedCall(350,()=>{ if(this.waveObjective===o&&!o.done)this.questFocus(type); });
     this.missionArm?.(o,planned,p);
     if(!o._armPad&&!this._inTutorial)this.time?.delayedCall?.(450,()=>{ if(this.waveObjective===o&&!o.done)this.missionGo?.(o,null,null,false); });   /* v8.1.116 คลื่นเปิดภารกิจ */
@@ -15906,7 +15907,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<4;i++)this.time.delayedCall(i*120,()=>{const r=this.camWorld(this.add.circle(x,y,R,0xffd166,0).setStrokeStyle(10-i*2,0xfff1b0,1).setDepth(90000));this.tweens.add({targets:r,scale:big*(0.6+i*0.15),alpha:0,duration:800,ease:'Cubic.out',onComplete:()=>r.destroy()});});
     this.floatText(x,y-R-20,'✨ PURIFIED!',0xffd166); }
   // ===== Escort the Wisp (purge objective) =====
-  _wispTuning(){ return {escortR:220,channel:2.4+this.stageIndex*0.18,speed:120,drainR:56,drain:0.34+this.stageIndex*0.05,regen:0.42,respawn:2.5}; }
+  _wispTuning(){ return {escortR:160,channel:2.4+this.stageIndex*0.18,speed:120,drainR:56,drain:0.34+this.stageIndex*0.05,regen:0.42,respawn:2.5}; }   /* v8.1.121 เจ้าของ: วงคุ้มกัน Wisp เล็กลง 220 → 160 */
   spawnPurifyWisp(){
     const o=this.waveObjective;if(!o||o.type!=='purge')return;
     this.killPurifyWisp(false);
@@ -16060,10 +16061,11 @@ class Game extends Phaser.Scene {
     const h=y+20,g=this.add.graphics(); g.fillStyle?.(0x1a1224,.86); g.fillRoundedRect?.(-pw/2,-12,pw,h,16); g.lineStyle?.(3,col,.95); g.strokeRoundedRect?.(-pw/2,-12,pw,h,16); g.fillStyle?.(col,.9); g.fillRoundedRect?.(-pw/2+18,-12,pw-36,4,2);
     const c=this.add.container(0,0,[g,...items]); c._h=h; return c; }
   missionIntro(o,armed){ if(!o||this._inTutorial||!this.add?.container||!this.W)return false; this.missionCardClear(); const W=this.W,H=this.H,col=o.color||0xffd166,R=o._rw=this.missionReward(o),hx='#'+col.toString(16).padStart(6,'0');
-    const c=this.missionPanel([{t:'MISSION'+(o.lesson?' '+o.lesson:''),sz:11,c:'#c7bdd6',st:2,gap:2},{t:o.emoji+' '+o.name,sz:22,c:hx,st:5,gap:6},{t:o.desc,sz:13,c:'#ffffff'},R&&{t:'Reward: '+R.txt,sz:14,c:'#ffe08a',gap:2},armed&&{t:'Step on ✨ to begin',sz:12,c:'#9fe8ff'}],col);
+    /* v8.1.121 เจ้าของ: อ่านไม่ทัน ข้อความเยอะ เร็ว รก → 3 บรรทัด (ชื่อ · สิ่งที่ต้องทำสั้น ๆ · รางวัล) ค้าง 5.5 วิ */ const tip=typeof RUBY_TIPS!=='undefined'&&RUBY_TIPS[o.type]&&RUBY_TIPS[o.type].short,line=armed?'Step on ✨ to begin':((o.desc||'').length<=48?o.desc:(tip?tip.replace(/[\[\]]/g,''):o.desc));
+    const c=this.missionPanel([{t:o.emoji+' '+o.name,sz:22,c:hx,st:5,gap:6},{t:line,sz:15,c:'#ffffff',gap:6},R&&{t:'🎁 '+R.txt,sz:14,c:'#ffe08a',gap:2}],col);
     const y=Math.max(H*.2,this._ruby?this._ruby.bottom+28:0); c.setPosition(W/2,y-24).setDepth(61).setAlpha(0).setScale(.86); c.setScrollFactor?.(1); this.camUI(c); this._msnCard=c;
     this.tweens.add({targets:c,y,alpha:1,scale:1,duration:320,ease:'Back.out'});
-    const T=this.waveObjTxt; this.time?.delayedCall?.(3500,()=>{ if(this._msnCard!==c)return; this.tweens.add({targets:c,x:T?T.x:W/2,y:T?T.y:30,scale:.25,alpha:0,duration:420,ease:'Cubic.easeIn',onComplete:()=>{ if(this._msnCard===c)this.missionCardClear(); if(T?.active!==false&&T?.visible)this.tweens.add({targets:T,scale:{from:1.35,to:1},duration:380,ease:'Back.out'}); }}); });
+    const T=this.waveObjTxt; this.time?.delayedCall?.(5500,()=>{ if(this._msnCard!==c)return; this.tweens.add({targets:c,x:T?T.x:W/2,y:T?T.y:30,scale:.25,alpha:0,duration:420,ease:'Cubic.easeIn',onComplete:()=>{ if(this._msnCard===c)this.missionCardClear(); if(T?.active!==false&&T?.visible)this.tweens.add({targets:T,scale:{from:1.35,to:1},duration:380,ease:'Back.out'}); }}); });
     return true; }
   missionGo(o,x,y,loud){ if(!o||this._inTutorial||!this.add)return; x=x??this.player?.x; y=y??this.player?.y; if(x==null)return; const col=o.color||0xffd166; if(loud&&typeof Sfx!=='undefined')Sfx.orderCue?.('wave_start',.4,.3);
     for(let w=0;w<2;w++){ const r=this.camWorld(this.add.circle(x,y,30,col,0).setStrokeStyle(w?4:9,w?0xffffff:col,.95).setDepth(90005)); this.tweens.add({targets:r,scale:9+w*3,alpha:{from:1,to:0},duration:620+w*200,delay:w*90,ease:'Cubic.easeOut',onComplete:()=>r.destroy()}); }
@@ -16664,7 +16666,7 @@ class Game extends Phaser.Scene {
     this._seasonIcons.forEach((im,k)=>{const cur=o.storm.cur&&o.storm.cur.idx===k&&!o.storm.passed[k];im.setTexture('ui_c24_season_icons',o.storm.passed[k]?4+k:k).setDisplaySize(cur?sz+4:sz,cur?sz+4:sz).setPosition(x0+sz/2+k*(sz+gap),cy).setVisible(true);});}
   /* v8.1.50 เจ้าของ: เป้ารองต่อภารกิจ (แบบ Deep Rock) · ทำได้ = EXP +50% ของรางวัลคลื่น + Sugar +50% · ไม่มีในบทสอน/Fill */
   objBonusInit(o,planned){ const B={survive:['Take 5 hits or fewer','hits',5],hunt:['Catch them before Overtime','overtime'],purge:['Keep the Wisp lit','wisp'],capture:['Never bleed outside the ring','bleed'],cleanAir:['Stay in clean air (3s outside max)','out',3],defendNectar:['Don’t lose a flower','flower'],seasonCycle:['Take 8 hits or fewer','hits',8],breakRoots:['Take 6 hits or fewer','hits',6],seedRift:['Never let the rift close','rift'],shakeTrees:['Take 6 hits or fewer','hits',6],mirrorPath:['Take 6 hits or fewer','hits',6],vaultAltar:['Take 8 hits or fewer','hits',8],ultimatum:['Take 12 hits or fewer','hits',12],lastLight:['Keep all 3 lanterns lit','lantern'],frozenPantry:['Take 6 hits or fewer','hits',6],hungersMouth:['Take 6 hits or fewer','hits',6],creepingRoots:['Don’t lose the flower','flower'],hungerHerald:['Take 6 hits or fewer','hits',6],grandmasPot:['Take 8 hits or fewer','hits',8],grandmasGolem:['Take 8 hits or fewer','hits',8],hungerSiege:['Take 10 hits or fewer','hits',10],hungerDomain:['Take 12 hits or fewer','hits',12]}[o.type];
-    if(!B||planned||this._inTutorial||this.recipeMode||this.riftMode){o.bonus=null;return;} o.bonus={label:B[0],kind:B[1],lim:B[2]||0,n:0,ok:true}; this.time?.delayedCall?.(1900,()=>{ if(this.waveObjective===o&&o.bonus?.ok)this.floatText?.(this.player.x,this.player.y-90,'⭐ Bonus: '+o.bonus.label,0xffe08a); }); }
+    if(!B||planned||this._inTutorial||this.recipeMode||this.riftMode){o.bonus=null;return;} o.bonus={label:B[0],kind:B[1],lim:B[2]||0,n:0,ok:true}; this.time?.delayedCall?.(6600,()=>{ if(this.waveObjective===o&&o.bonus?.ok)this.floatText?.(this.player.x,this.player.y-90,'⭐ Bonus: '+o.bonus.label,0xffe08a); }); }
   objBonusFail(){ const b=this.waveObjective?.bonus; if(!b||!b.ok||this.waveObjective.done)return; b.ok=false; Sfx.orderCue?.('out_of_zone',.18,.8); this.floatText?.(this.player.x,this.player.y-80,'☆ Bonus lost',0xb8a8c8); }
   objBonusHit(){ const b=this.waveObjective?.bonus; if(!b||!b.ok||b.kind!=='hits')return; b.n++; if(b.n>b.lim)this.objBonusFail(); }
   objBonusTick(dt){ const o=this.waveObjective,b=o?.bonus; if(!b||!b.ok||o.done)return;
@@ -20783,6 +20785,7 @@ class Game extends Phaser.Scene {
     const damage=(16+lvl*4)*dm*(aw?1.2:1)*(basic.mutation==='permafrost'?1.15:1)*(.65+(.65+.18*(basic.lv.p_heavydraw||0))*progress)*countBonus*1.35;
     const range=(340+lvl*22)*(aw?1.28:1)*(1+.1*(basic.ranks.chill||0))*(1+(basic._pm?.range||0)),speed=1000;
     const b=this.mintBullet(this.player.x,this.player.y,0xffffff,0.4+lvl*.028);if(!b)return;
+    if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-.5);   /* v8.1.121 เจ้าของ: Mint สาย Impaler ยิงหอกแต่ละครั้ง = Unique คูลดาวน์ลด 0.5 วิ */
     if(full&&basic.evolved)basic._impalerFullShots=(basic._impalerFullShots||0)+1;
     const giant=full&&basic.evolved&&basic._impalerFullShots%3===0;
     b.setTexture(this.textures.exists('proj_frostlance')?'proj_frostlance':'proj_boomer').setTint(0xcaf3ff);b.faceVel=true;b.dmg=damage*(giant?1.35:1);b.life=range/speed;b.homing=0;
