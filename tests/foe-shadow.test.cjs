@@ -20,3 +20,9 @@ assert(method('drawPlayerLight').includes("L.setDepth?.(-99500)")&&method('dropO
   const sc2=Object.assign(new C2(),{player:pl,textures:{exists:()=>true},add:{image:img},camWorld:x=>x,enemies:{children:{iterate(f){f(e);}}}});
   sc2.drawFoeShadows();assert.equal(e.alpha,.5,'in front of the hero = half alpha');e.y=200;e.depth=200;sc2.drawFoeShadows();assert.equal(e.alpha,1,'restored');}
 console.log('readability extras ok');
+// v8.1.128 owner (polish set 1): throttled hit flash, mochi chunks on death, stage mood edge tint.
+assert(method('enemyWeightHit').startsWith('  enemyWeightHit(e,amount,x,critical=false){\n    this.hitFlash?.(e);'),'flash on every hit path (damage() untouched)');
+const hf=method('hitFlash');assert(hf.includes('(e.isBoss||e.isMini?650:300)')&&hf.includes('e.setTintFill(0xffffff)')&&hf.includes('delayedCall?.(55'),'throttled 55 ms flash');
+assert(method('mochiChunks').includes('if(live>48)return;')&&s.includes('this.mochiChunks?.(e.x,e.y,'),'chunks capped');
+assert(s.includes('const STAGE_MOOD=[')&&method('stageMood').includes("setAlpha(.26)")&&method('exitStage').includes('this.stageMood?.(null)'),'stage mood on/off');
+console.log('polish set 1 ok');

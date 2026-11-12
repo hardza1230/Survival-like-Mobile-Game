@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.126 — owner: lead (signature) mission for every Chapter 2/3 stage
+
+STAGES[5–14] gain `lead`: C2-1 defendNectar (added to its objectives; was Delve-only) · C2-2 cleanAir · C2-3 creepingRoots · C2-4 seasonCycle · C2-5 breakRoots · C3-1 seedRift · C3-2 shakeTrees · C3-3 mirrorPath · C3-4 vaultAltar · C3-5 lastLight. Existing lead logic (bag builder moves the lead to the end of the bag → first mission, once per run via `_leadUsed`). Test special-picks block.
+
 # Previous delivery: v8.1.125 — owner: Frozen Pantry paint phase = short pause, whole map frozen, hero does not attack
 
 fpOpen sets `S.global` (fpTimeStop ignores the dome radius → every non-boss enemy gets `_timeStop`, refreshed every 0.3 s) and `this._holdFire` (update skips the auto-cast skills loop; orbit contact still runs). Cleared in fpThaw, sigClear and startStage. Paint time `T` full 16→10 · light 22→12 (+1.2 s wave). damage() deliberately untouched (taro T5 hash fixture). Tests sig-missions (time-stop line now expects far enemies stopped too) + special-picks block.
