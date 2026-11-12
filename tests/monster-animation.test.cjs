@@ -23,7 +23,7 @@ const at=source.indexOf('function registerEnemyActionAnimations('),end=source.in
 const register=vm.runInNewContext(source.slice(at,end)+'\nregisterEnemyActionAnimations',{ASSET_SHEETS:defs,Math});const clips=new Map(),scene={textures:{exists:()=>true},anims:{exists:k=>clips.has(k),generateFrameNumbers:(key,{start,end})=>Array.from({length:end-start+1},(_,i)=>({key,frame:start+i})),create(c){clips.set(c.key,c);}}};register(scene);register(scene);assert.equal(clips.size,3);assert.equal(clips.get('future_idle').repeat,-1);assert.equal(clips.get('future_attack').repeat,0);assert.equal(clips.get('future_attack').frames[0].frame,8);assert.equal(clips.get('future_death').frames[0].key,'future_death_sheet');
 assert(source.includes('this.tickEnemyPresentation(e,dt);\n      if(e.frozen>0)'));
 assert(!method('stage5EnemyPose').includes('delayedCall'));
-assert(method('spawnEnemy').includes('this.resetEnemyPresentation(e,atlasFrame)'));
+assert(method('spawnEnemy','edgeSpawnPt').includes('this.resetEnemyPresentation(e,atlasFrame)'));
 assert(method('spawnElite').includes('this.resetEnemyPresentation(e,eliteFrame)'));
 assert(method('clearEnemies').includes('this.stopEnemyPresentation(e)'));
 console.log('Monster controller: movement/idle, stable scale, freeze/thaw, action priority, pooled species frame, death ghost and deferred action registration passed');

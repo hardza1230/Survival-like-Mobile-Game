@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.103 — owner: Flavor Cores tied to the story (Ruby explains)
+
+Lore (STORY_CANON §2): Flavor Cores = 3 threads Grandma wove into the Heart Seed — Life Core (true form → HP), Flavor Spark (stolen flavor → DMG), Oath Shell (promise to protect → armor); Sugar = flavor taken back from monsters; feeding the cores makes the Seed hold every freed friend's form tighter (why one upgrade powers all heroes). Code: `CORE_LORE_LINES` (3 pages) shown via rubyGuide (target gLoadout) at the first step of the post-tutorial weave tour in applyGearTut (once per tour, `_coreLoreDone`; sets Save.data.coreLoreTaught; skipped with noRuby), then the old spotlight tour continues. Tutorial Complete hint text updated. Test tests/core-lore.test.cjs (added to npm run check). Owner: Overcharge ring removed for now — `OVERCHARGE_ON=false` makes overchargeOffer return false (code kept; set true to restore).
+
 # Previous delivery: v8.1.102 — owner: book opening into the lobby
 
 bookOpeningPlus: vfx_bk_magic ring moved from the emblem to the right clasp (kx,ky, 260·sc) · page riffle (rf) and burst (bs) layers removed (owner saw a full page flash) → when the 12-frame cover opening ends, op hides and finish() fades straight into the lobby; `BKP_KEYS` no longer loads bk_page_riffle/vfx_bk_burst; safety end at 6500 ms; lobby rise delay 1500 ms (was 2100). menuEnterAnim rise: 34 px (was 70), 900 ms Cubic.easeOut (was Back), alpha 700 ms, stagger 900 ms; items already tweening (idle heroes) now fade in instead of popping. Test tests/book-open-continuity.test.cjs rewritten.

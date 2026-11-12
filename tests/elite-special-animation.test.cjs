@@ -10,7 +10,7 @@ const at=source.indexOf('function registerEnemyActionAnimations('),last=source.i
 const register=vm.runInNewContext(source.slice(at,last)+'\nregisterEnemyActionAnimations',{ASSET_SHEETS:defs});
 for(const key of special)anims.create({key:key+'_walk'});
 register({anims,textures:{exists:()=>true}});
-const names=['applySpecialEnemyArt','stopEnemyPresentation','resetEnemyPresentation','enemyAction','tickEnemyPresentation','spawnElite','spawnEnemy','antArtKey','drainArtKey','fireArtKey','iceArtKey','stage5ArtKey','chapter3ArtKey','canopyArtKey','myceliumArtKey','nectarArtKey','tickFeast','recipeOnKill','awakenMimic','wardenAct','touchEnemy','playEnemyDeath','chapter2DeathGhost'];
+const names=['applySpecialEnemyArt','stopEnemyPresentation','resetEnemyPresentation','enemyAction','tickEnemyPresentation','spawnElite','spawnEnemy','edgeSpawnPt','antArtKey','drainArtKey','fireArtKey','iceArtKey','stage5ArtKey','chapter3ArtKey','canopyArtKey','myceliumArtKey','nectarArtKey','tickFeast','recipeOnKill','awakenMimic','wardenAct','touchEnemy','playEnemyDeath','chapter2DeathGhost'];
 const curves=(i,a,t=1.18)=>i<a.length?a[i]:a.at(-1)*t**(i-a.length+1);
 const killBody=method('killEnemy'),rewardStart=killBody.indexOf('if(e._mimic){'),rewardEnd=killBody.indexOf('\n',rewardStart);const mimicReward=killBody.slice(rewardStart,rewardEnd);
 const Scene=vm.runInNewContext('class Scene{'+names.map(method).join('\n')+'\nmimicReward(e){'+mimicReward+'}\n}Scene',{Math,Phaser:{Math:{FloatBetween:a=>a,Between:a=>a}},stageCurveValue:curves,ASSET_SHEETS:defs,BALANCE:balance,TAU:Math.PI*2,FEAST_FIRST:6,FEAST_EVERY:16,FEAST_LIFE:22,FEAST_SHARE:.15,HUNGER_PER_KILL:.25,Sfx:new Proxy({},{get:()=>()=>{}})});

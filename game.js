@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.104';
+const GAME_VERSION = '8.1.105';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -83,13 +83,14 @@ const STORY_WAVE_PLAN=[
 ];
 // v7.9.50 Card types unlock stage by stage in Story (owner: reveal card types gradually, as part of the tutorial) · value = stage index where the type first appears
 /* v7.9.86 เจ้าของ: มอน/บอส/มินิบอสห้ามเกิดนอกแมพ · จุดที่อยู่นอกแมพ → ย้ายไปกลางแมพ (สุ่มรอบ ๆ กลางเล็กน้อย) */
-function inMapPt(x,y,m=80){ const L=WORLD/2-m; if(Math.abs(x)<=L&&Math.abs(y)<=L)return [x,y]; const a=Math.random()*Math.PI*2,r=Math.random()*220; return [Math.cos(a)*r,Math.sin(a)*r]; }
+function inMapPt(x,y,m=80){ const L=WORLD/2-m; return [Math.max(-L,Math.min(L,x)),Math.max(-L,Math.min(L,y))]; }   // v8.1.105 เจ้าของ: มอนโผล่กลางจอ — เดิมจุดนอกแมพถูกสุ่มไปใกล้กลางแมพ → ตอนนี้ดันเข้าขอบแมพแทน
 const STORY_HP_MUL=1.2;   // v7.9.85 เจ้าของ: ตัวละครตีแรงไป → มอน/Elite/มินิ/บอสใน Story ถึกขึ้น 20%
 const CARD_UNLOCK={path:1,relic:2,unique:3,mod:4,mutation:5,evolution:5,infusion:6,trade:7};
 const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 fighting styles for this stage. Your next cards follow that style.'],relic:['🔮','Relic','A strong passive bonus that lasts the whole stage. You can hold a few.'],unique:['⭐','Unique Upgrade','You used your Unique 3 times — now you can power it up.'],mod:['🧩','Modifier','Adds a new trick to your attack, like an explosion or chain hit.'],mutation:['⭐','Mutation','Change how your attack works. Pick 1, the other locks.'],evolution:['✨','Evolution','Your attack is maxed — evolve it into its final form!'],infusion:['🍯','Flavor Infusion','Give your attack a flavor: burn, freeze, poison or heal.'],trade:['⚖️','Trade-off','Big bonus with a cost. Read both sides before you take it.']};
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.105',date:'2026-11-12',title:'Edge spawns, sure pickups, spread missions',items:['Regular monsters now walk in from the edge of the screen instead of popping up in the middle','Pickups pulled to you are always collected (no more items stuck on your hero)','Wisp cores, root anchors, trees, mirrors and other multi-spot missions spread out across the map','Freed heroes appear in Heroes only after their rescue scene']},
   {v:'8.1.104',date:'2026-11-12',title:'Ruby explains every mission',items:['Ruby now explains the 14 stage and League missions (Frozen Pantry, Hunger’s Mouth, Grandma’s Pot and more) when they start']},
   {v:'8.1.103',date:'2026-11-12',title:'Ruby explains the Flavor Cores',items:['After the tutorial, Ruby tells you what the Flavor Cores are: three threads Grandma wove into the Heart Seed, fed by the Sugar you win back from the Hunger','Upgrading a core makes every freed friend stronger too','The Overcharge ring no longer appears after missions']},
   {v:'8.1.102',date:'2026-11-12',title:'Smoother book opening',items:['The magic ring now glows around the book’s clasp before it unlocks','The cover opens straight into the lobby with no flash of a full page','Lobby icons float in more gently']},
@@ -5315,6 +5316,9 @@ const HEROES_WIP=['sesame'];   // v7.9.39 Yuzu เสร็จแล้ว (Orch
 const FIGHTER_PLAYTEST_ALL=false; // ก่อนขึ้น Store เปิด roster เพื่อ QA; เซฟ chars/stageMastery ยังเก็บไว้สำหรับเงื่อนไขจริง
 const CORE_UNLOCK_STAGE={mint:0,cocoa:1,taro:2,yuzu:3,sesame:4};   /* v8.1.0 Sesame: จบ C1-5 -> เล่นตั้งแต่ C2-1; Rune Invoker prototype ยัง WIP */   /* v8.0.66 เจ้าของ: ฮีโร่ทุกตัวปลดใน Chapter 1 ทีละด่าน — Mint C1-2 · Cocoa C1-3 · Taro C1-4 · Yuzu C1-5 */   /* v7.9.78 เจ้าของ: Taro C2-3 · Yuzu C3-1 · Sesame เดิมวางแผน C3-3; ถูกแทนด้วยเกณฑ์ C1-5 ใน v8.1.0 */   // v7.9.75 เจ้าของ: Mint เล่นได้ตั้งแต่ C1-3 (ผ่าน C1-2) · Cocoa ตั้งแต่ C2-1 (ผ่าน C1-5)
 // v7.6.3 แนะนำฮีโร่ก่อนเข้าด่านครั้งแรก (ไม่บังคับ) · v8.0.66 idx = ด่านที่เล่นได้ครั้งแรก (C1-2…C1-5)
+/* v8.1.105 เจ้าของ: จบ C1-2 แล้วเปิด Heroes เห็น Cocoa ก่อนดูฉากช่วยเพื่อน → ฮีโร่ที่มีฉากแนะนำ (HERO_INTROS) โชว์ในรายชื่อหลังเห็นฉาก/ข้อความแนะนำแล้วเท่านั้น */
+function heroRevealed(id){ if(id==='momo'||(typeof FIGHTER_PLAYTEST_ALL!=='undefined'&&FIGHTER_PLAYTEST_ALL))return true; const d=(typeof Save!=='undefined'&&Save.data)||{}; if(!(d.chars||[]).includes(id))return false;
+  const hi=HERO_INTROS.find(x=>x.id===id); if(!hi)return true; return !!(d[hi.flag]||(d.stageMastery||{})[hi.idx]||(typeof MC_HERO_SCENE!=='undefined'&&(d.mcSeen||{})[MC_HERO_SCENE[id]])||d.character===id); }
 const HERO_INTROS=[
   {idx:1,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
     text:'Thanks for freeing me! I’m Mint. My frost freezes the sludge ahead. Try me! Switch heroes any time in Heroes.'},
@@ -11767,7 +11771,7 @@ class Game extends Phaser.Scene {
   }
   // ⚔️ อาวุธประจำตัวรายตัวละคร: อัพเกรด 4 · Mutation 2 · Evolution
   buildWeaponCodex(top){
-    const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]&&(c==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c))),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
+    const ids=CHAR_ORDER.filter(c=>BASIC_ATTACKS[c]&&(typeof heroRevealed==='function'?heroRevealed(c):(c==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c)))),pages=ids.length;this._codexChar=Phaser.Math.Clamp(this._codexChar||0,0,pages-1);
     const ch=ids[this._codexChar],c=CHARACTERS[ch],d=ch==='taro'?taroAttackInfo(BASIC_ATTACKS[ch],{path:this._codexTaroPath==='base'?null:this._codexTaroPath||'storm'}):BASIC_ATTACKS[ch],col=c.color||0xf0a54a,hex='#'+col.toString(16).padStart(6,'0');
     if(ch==='taro'){const paths=[{id:'base',name:'Starter'},...BASIC_PATHS.taro],cw=(this.W-32)/4;paths.forEach((path,i)=>this.heroButton(10+i*(cw+4),top,cw,44,path.name.replace(/ Build$/,''),()=>{this._codexTaroPath=path.id;this.buildSkillArchive();},{active:path.id===(this._codexTaroPath||'storm'),fontSize:12}));top+=50;}
     const rows=[{head:c.emoji+' '+c.name+' — '+d.emoji+' '+d.name,hex}];
@@ -12910,7 +12914,7 @@ class Game extends Phaser.Scene {
     this.menu.y=0;this.menu.removeAll(true);this.tapZones=[];if(!this._heroPreview)this._heroPreview=Save.data.character||'momo';this._screenBg('Heroes','screen_heroes');this.drawRosterTabs();
     if(Object.values(Save.data.charUnlockNew||{}).some(Boolean)){Save.data.charUnlockNew={};Save.save();}
     const w=this.W,h=this.H,p=w/941,landscape=w>h,side=30*p,extra=landscape?0:Math.max(0,h-1672*p),gap=18*p,rowGap=Math.min(gap+extra*.20,26*p);
-    const roster=CHAR_ORDER.filter(id=>id==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(id));   // v7.9.83 เจ้าของ: ซ่อนฮีโร่ที่ยังไม่ปลด (ไม่โชว์ล็อก) จนกว่าจะถึงด่าน
+    const roster=CHAR_ORDER.filter(id=>typeof heroRevealed==='function'?heroRevealed(id):(id==='momo'||FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(id)));   // v7.9.83 เจ้าของ: ซ่อนฮีโร่ที่ยังไม่ปลด (ไม่โชว์ล็อก) จนกว่าจะถึงด่าน
     if(!roster.includes(this._heroPreview))this._heroPreview=roster.includes(Save.data.character)?Save.data.character:roster[0];
     const id=this._heroPreview,c=CHARACTERS[id];
     const info={momo:['Ranged · Easy','Ranged','Fast seed shots.\nA great first hero.',0xff93b3],mint:['Control','Control','Frost lances.\nSlow and freeze.',0x81e9eb],cocoa:['Melee','Melee','Powerful bear punches.\nHold the frontline.',0xf5bb7e],taro:['Lightning','Lightning','Arc, Sparks and sentries.\nControl the battlefield.',0xd1a0ff],yuzu:['Summoner','Summoner','Seeds and one citrus friend.\nChoose tank, ranger or witch.',0xf5ec83],sesame:['Invoker','Invoker','Mix P / M / B runes.\nTen elemental invocations.',0xe4e0eb]};
@@ -15742,7 +15746,8 @@ class Game extends Phaser.Scene {
 
   objectivePosition(i=0,n=1,minR=240,maxR=390){
     const lim=WORLD/2-130;let pos={x:this.player.x,y:this.player.y};
-    const base=n<=1?Math.random()*TAU:0;   /* v8.1.77 เจ้าของ: Clean Air เดินไปขวาตลอด → จุดเดียวเคยเริ่มที่มุม 0 (ขวา) เสมอ */
+    if(n>1){ minR=Math.round(minR*1.6); maxR=Math.round(maxR*2.2); }   /* v8.1.105 เจ้าของ: ภารกิจหลายจุด (แกน Escort the Wisp ฯลฯ) กระจุกกลางแมพ → กระจายไกลขึ้นทั่วแมพ · ภารกิจจุดเดียวคงระยะเดิม */
+    const base=Math.random()*TAU;   /* v8.1.77 เจ้าของ: Clean Air เดินไปขวาตลอด → จุดเดียวเคยเริ่มที่มุม 0 (ขวา) เสมอ */
     for(let tryN=0;tryN<8;tryN++){const a=base+(i/n)*TAU+Phaser.Math.FloatBetween(-.38,.38)+tryN*.72,r=Phaser.Math.Between(minR,maxR);pos={x:Phaser.Math.Clamp(this.player.x+Math.cos(a)*r,-lim,lim),y:Phaser.Math.Clamp(this.player.y+Math.sin(a)*r,-lim,lim)};let blocked=false;
       if(this.solidProps)this.solidProps.children.iterate(s=>{if(s&&s.active&&this.dist(pos.x,pos.y,s.x,s.y)<135)blocked=true;});if(!blocked)break;}
     return pos;
@@ -19566,11 +19571,20 @@ class Game extends Phaser.Scene {
     const ghost=this.trackArtVfx(this.camWorld(this.add.sprite(e.x,e.y,key,e._enemyRestFrame||0).setScale(e.baseScale||1).setFlipX(flip).setDepth(e.depth||e.y)));
     ghost.once('animationcomplete',()=>ghost.destroy());ghost.play(anim);
   }
+  /* v8.1.105 เจ้าของ: มอนปกติ (ไม่ใช่ event/ภารกิจ) ต้องเดินเข้ามาจากขอบจอเท่านั้น → จุดเกิด = นอกกรอบกล้องเล็กน้อยตามทิศ ang ·
+     ถ้าชิดขอบแมพจนจุดนั้นตกลงในจอ ลองทิศอื่น (ด้านที่ยังมีพื้นที่) */
+  edgeSpawnPt(ang){ const P=this.player,z=this.viewZoom||1,cam=this.cameras?.main?.worldView,cx=cam&&cam.width?cam.centerX:P.x,cy=cam&&cam.height?cam.centerY:P.y,
+      hw=(cam&&cam.width?cam.width:this.W/z)/2+42,hh=(cam&&cam.height?cam.height:this.H/z)/2+42,clamp=typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y];
+    const at=a=>{ const c=Math.cos(a),s=Math.sin(a),t=Math.min(Math.abs(c)>1e-4?hw/Math.abs(c):1e9,Math.abs(s)>1e-4?hh/Math.abs(s):1e9); return clamp(cx+c*t,cy+s*t); },
+      inView=(x,y)=>Math.abs(x-cx)<hw-30&&Math.abs(y-cy)<hh-30;
+    let best=at(ang); if(!inView(best[0],best[1]))return best;
+    for(let i=1;i<12;i++){ const p=at(ang+i*Math.PI/6); if(!inView(p[0],p[1]))return p; }
+    return best; }
   spawnEnemy(type,angOverride,radOverride){
     if(this.storyCanSpawn?.(false,type)===false)return null;
     if(this.enemies&&this.enemies.countActive(true)>=(this.maxLive||100)+24)return null;   // v4.60: เพดานรวมกันมอนล้น (Colony Call/Mold Sac ของ C2-2 เคยสะสมถึง 209 ตัว) · ผู้เรียกทุกจุด guard null แล้ว
-    const ang=angOverride!=null?angOverride:Math.random()*Math.PI*2, rad=radOverride!=null?radOverride:Math.max(this.W,this.H)/this.viewZoom*0.62+40;
-    const [x,y]=(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*rad,this.player.y+Math.sin(ang)*rad);
+    const ang=angOverride!=null?angOverride:Math.random()*Math.PI*2;
+    const [x,y]=radOverride!=null?(typeof inMapPt==='function'?inMapPt:(x,y)=>[x,y])(this.player.x+Math.cos(ang)*radOverride,this.player.y+Math.sin(ang)*radOverride):this.edgeSpawnPt(ang);
     let e=this.enemies.getFirstDead(false);
     let key=type==='acid'?'e_acid':type==='dasher'?'e_dasher':type==='fast'?'e_fast':type==='shooter'?'e_shooter':type==='bomber'?'e_bomber':type==='siege'?'e_siege':type==='tank'?'e_tank':'e_basic';
     if(this.stageIndex===0)key=this.antArtKey(type);
@@ -21480,7 +21494,7 @@ class Game extends Phaser.Scene {
   tickLootMagnet(dt){ const p=this.player; if(!p||!this.loots||this.state!=='play')return; const R=120,R2=R*R,now=this.time?.now||0;
     this.loots.children.iterate(g=>{ if(!g||!g.active)return; if(g._holdUntil){ if(now<g._holdUntil)return; g._holdUntil=0; g._vac=true; g._mag=false; }   /* v8.1.75 ของที่ค้างไว้ → ดูดจากทุกระยะ */ const dx=p.x-g.x,dy=p.y-g.y,d2=dx*dx+dy*dy; if(d2>R2&&!g._mag&&!g._vac)return;
       if(!g._mag){ g._mag=true; this.tweens.killTweensOf(g); this.hidePickupCue(g); }
-      const d=Math.sqrt(d2)||1,sp=Math.min(d,(g._vac?Math.max(620,d*2.4):(160+380*(1-Math.min(1,d/R))))*(1+forgeLootValue(this,139))*dt); g.x+=dx/d*sp; g.y+=dy/d*sp; if(g.body)g.body.reset(g.x,g.y); }); }
+      const d=Math.sqrt(d2)||1,sp=Math.min(d,(g._vac?Math.max(620,d*2.4):(160+380*(1-Math.min(1,d/R))))*(1+forgeLootValue(this,139))*dt); g.x+=dx/d*sp; g.y+=dy/d*sp; if(g.body)g.body.reset(g.x,g.y); if(Math.abs(p.x-g.x)+Math.abs(p.y-g.y)<30)this.collectLoot(p,g); }); }   /* v8.1.105 เจ้าของ: ของถูกดูดมาแล้วติดตัวไม่เข้า → ถึงตัวแล้วเก็บเลย ไม่รอ overlap */
   hidePickupCue(o){if(!o)return;for(const k of ['_pickupGlow','_pickupRing','_dropBeam','_pickupGlint','_curIcon','_pillar','_pillarCore']){const q=o[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();o[k]=null;}}}
   // ลำแสงเล็ก ๆ ชี้จุดที่ไอเทม/currency ตก (มองเห็นง่ายขึ้น)
   spawnDropBeam(o,color){ if(!o||o.dropType==='currency'||(o.dropType==='gear'&&o.lootTier==='common'))return; const beam=this.camWorld(this.add.image(o.x,o.y-2,'vfx_glow').setTint(color).setDepth((o.depth||80000)-1).setAlpha(0.5).setBlendMode(Phaser.BlendModes.ADD));
@@ -22971,7 +22985,7 @@ class Game extends Phaser.Scene {
     const W=this.W,top=this.heroesContentTop()+18,bw=Math.min(W-32,400),bx=W/2-bw/2;
     const need=charExpNeed(cp.lvl),g=this.add.graphics();
     // v5.41 ‹ › เปลี่ยนตัวละคร (เฉพาะที่มีแล้ว) — เปลี่ยนตัวที่ใช้เล่นด้วย
-    const own=CHAR_ORDER.filter(c=>FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c)),oi=Math.max(0,own.indexOf(id));
+    const own=CHAR_ORDER.filter(c=>typeof heroRevealed==='function'?heroRevealed(c):(FIGHTER_PLAYTEST_ALL||(Save.data.chars||[]).includes(c))),oi=Math.max(0,own.indexOf(id));
     if(own.length>1){ const sw=d=>{ const n=own[(oi+d+own.length)%own.length]; Save.data.character=n; Save.save(); this.character=n; Sfx.select(); this.buildMenuScreen(); };
       const la=this.add.text(bx+12,top,'‹',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'24px',color:'#ffd166'}).setOrigin(0.5); this.menu.add(la); this._zone(bx-6,top-18,40,36,()=>sw(-1)); }
     const hx=own.length>1?bx+28:bx;
@@ -23867,6 +23881,7 @@ class Game extends Phaser.Scene {
       if(o._xp){o.rotation=0;o.setScale((o._sc||1)*(1+Math.sin(this.elapsed*4+o.x*0.05)*0.05));}   // v7.9.26 หยดไม่หมุน · เต้นเบา ๆ
       else{ o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob); }
       const d=this.dist(o.x,o.y,this.player.x,this.player.y);
+      if((o._vac||d<this.player.pickup)&&d<24){ this.collectOrb(this.player,o); return; }   // v8.1.105 ถึงตัวแล้วเก็บเลย (เดิมบางเม็ดวนรอบตัวไม่เข้า)
       if(o._vac || d<this.player.pickup){ o._mT=(o._mT||0)+dt; const cur=Math.max(0,.5-o._mT)*(o._mSide||(o._mSide=Math.random()<.5?-1:1))*.9,ang=Math.atan2(this.player.y-o.y,this.player.x-o.x)+cur, sp=Math.min(o._vac?900:760,(o._vac?300:160)+o._mT*1500); o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp);   /* v8.1.49 เร่งเข้าตัวเป็นโค้ง */ if(o._xp)this.xpTrail(o,ang); if(o._sh)o._sh.setPosition(o.x,o.y+o._shDy); }
       else { o._mT=0; o.setVelocity(0,0); if(o._trail)this.xpTrailOff(o); } });
 
