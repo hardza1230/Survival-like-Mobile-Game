@@ -81,7 +81,7 @@ function drawCard(options, category, loaded, relicPick = false, reduced = false)
     anims:{exists:()=>false,create:anim=>out.animations.push(anim)},
     tweens:{add(){}},
     textures:{exists:()=>false},
-    iconKey:()=>null,lvlSocket:()=>null,lvlPill(){},lvlBadge(){},drawComboHints(){},
+    iconKey:()=>null,lvlSocket:()=>null,lvlPill(){},lvlCta(){},lvlCardJuice(){},lvlBadge(){},drawComboHints(){},
   };
   const group={members:[],add(member){this.members.push(...(Array.isArray(member)?member:[member]));}};
   draw.call(scene,group,{type:'basic',name:'Test Card',...options},10,20,320,130,{starting:true});

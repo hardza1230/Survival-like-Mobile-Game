@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.98 — review fix: breach collapse effect restored
+
+v8.1.96 (art order 76) rewrote the breach timer (total open time capped at lifeMax 20s via S.openLeft — kills extend life only up to the remaining cap) and dropped `artFx('hm_collapse')` when phase → 'close'; restored. The 20s cap is a gameplay change made by the art AI — owner asked to confirm (before: kills could keep the breach open indefinitely, each kill +.35s up to 20s left).
+
 # Previous delivery: v8.1.97 — Attack and defeat animations for six special enemies (art order 77)
 
 Twelve reference-guided sheets share their opening frame with the existing idle art. The attack ends on that idle pose. The packed sheets use the same frame sizes as the active idle assets (6.71 MB WebP, 35.78 MB decoded across mission groups). Stage-lazy overlays play at the existing skill hooks or at close range, then return to idle. A successful death clip replaces the old death pose. Missing textures keep the original visuals. tests/motion77-art.test.cjs covers wiring, cooldowns, the return to idle, death deduplication and fallback.

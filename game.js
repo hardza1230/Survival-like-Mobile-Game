@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.99';
+const GAME_VERSION = '8.1.100';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.100',date:'2026-11-12',title:'Cleaner speech, livelier cards, finished results header',items:['Boss lines and Ruby’s chatter now pop out as small tags at the top corners instead of covering the battlefield','Level-up cards shimmer, their icons bob and a colored CHOOSE tag replaces the old “Tap to choose” pill','The Stage Clear header now sits on a gold-trimmed panel with a hero medallion, turning rays and star sockets']},
   {v:'8.1.99',date:'2026-11-12',title:'Mint Barrage focus & smoother book opening',items:['Mint before choosing a build and Mint Barrage no longer end lances with a wide ice explosion — they win with fast attacks and spreading ice shards (Glacier and Impaler keep their blooms)','Barrage card Wide Bloom is now Far Shards: ice shards fly 20% farther per rank','The book opening before the lobby flows smoothly: the pages appear as the cover opens and stay after they riffle']},
   {v:'8.1.98',date:'2026-11-12',title:'Breach collapse effect',items:['The breach plays its collapse animation again when it closes']},
   {v:'8.1.97',date:'2026-11-12',title:'Special enemy attack and defeat animations',items:['The Herald, Golem, Warlord, Hand of the Hunger, Breachlord and Stalker Captain now animate attacks and defeats.']},
@@ -15265,14 +15266,14 @@ class Game extends Phaser.Scene {
     const go=()=>{if(ev==='clear'){this.voiceLine?.('ruby',row.text,()=>true,this);return;}if(this.state!=='play'||this._speech)return;this.rubySay(row.text,Math.max(2200,row.duration+400),{face});};if(delay&&this.time){const ep=this._rubyEpoch|0;this.time.delayedCall(delay,()=>{if((this._rubyEpoch|0)===ep)go();});}else go();return true;}
   rubySay(text,ms=4000,opt={}){ if(!this.add||!this.time||!this.rubyOn())return; const q=this._rubyQ||(this._rubyQ=[]); if(opt.replace){ q.length=0; this.rubyHide(true); } if(q.some(m=>m.text===text)||(this._ruby&&this._ruby.text===text))return; q.push({text,ms,face:opt.face||'normal'}); if(!this._ruby)this.rubyNext(); }
   rubyNext(){ const m=(this._rubyQ||[]).shift(); if(!m)return;m.ms=Math.max(m.ms||4000,(this.voiceDuration?.('ruby',m.text)||0)+400); if(!this.rubyOn()){ this._rubyQ=[]; return; }
-    const W=this.W,pad=this._pad||14,bw=Math.min(W-20,400),bx=(W-bw)/2,by=pad+182,fs=W<380?13:14,lines=rubyWrap(m.text,Math.floor((bw-96)/(fs*.56))),lh=fs+7,bh=Math.max(70,24+lines.length*lh),c=this.add.container(0,0).setScrollFactor(1).setDepth(64);
+    const W=this.W,pad=this._pad||14,bw=Math.min(Math.round(W*.66),280),bx=W-bw-8,by=pad+182,fs=W<380?12:13,lines=rubyWrap(m.text,Math.floor((bw-70)/(fs*.56))),lh=fs+6,bh=Math.max(54,18+lines.length*lh),   /* v8.1.100 เจ้าของ: คำพูด Ruby บังจอ → ป้ายเล็กมุมขวาบน เลื่อนเข้าจากขวา */c=this.add.container(0,0).setScrollFactor(1).setDepth(64);
     const g=this.add.graphics(); g.fillStyle(0x000000,.35); g.fillRoundedRect(bx+3,by+4,bw,bh,16); g.fillStyle(0x0b0710,.94); g.fillRoundedRect(bx,by,bw,bh,16); g.lineStyle(3,0xffffff,1); g.strokeRoundedRect(bx,by,bw,bh,16); c.add(g);
-    const tx0=bx+80,cols=['#ffd54a','#7dff6a','#ff8fb8']; let ci=0; lines.forEach((ln,li)=>{ const parts=ln.split(/(\[[^\]]+\])/).filter(Boolean),row=[]; let x=0;
-      for(const pt of parts){ const hl=pt[0]==='['; const t=this.add.text(0,by+16+li*lh,hl?pt.slice(1,-1):pt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:(hl?fs+1:fs)+'px',color:hl?cols[ci++%cols.length]:'#ffffff',stroke:'#000000',strokeThickness:hl?3:0}); row.push(t); x+=t.width; }
-      const k=Math.min(1,(bw-94)/Math.max(1,x)); let cx=tx0; row.forEach(t=>{ t.setScale(k).setPosition(cx,t.y+(1-k)*fs*.5); cx+=t.width*k; c.add(t); }); });
-    const av=this.rubyAvatar(bx+1,by+bh-3,60,m.face); c.add(av); this.rubySparkle(c,bx+40,by+bh-33);
-    const nm=this.add.text(bx+40,by+2,'Ruby',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'15px',color:'#ffffff'}).setOrigin(.5,1); const nb=this.add.graphics(); nb.fillStyle(0x6a2fd6,1); nb.fillRoundedRect(bx+40-nm.width/2-12,by+2-nm.height-3,nm.width+24,nm.height+5,9); nb.lineStyle(2,0xffffff,.9); nb.strokeRoundedRect(bx+40-nm.width/2-12,by+2-nm.height-3,nm.width+24,nm.height+5,9); c.add([nb,nm]);
-    this.camUI(c); c.setAlpha(0); c.x=40; this.tweens.add({targets:c,alpha:1,x:0,duration:260,ease:'Back.easeOut'}); this.rubyReact?.(c,av,m,bx,by,bh);
+    const tx0=bx+58,cols=['#ffd54a','#7dff6a','#ff8fb8']; let ci=0; lines.forEach((ln,li)=>{ const parts=ln.split(/(\[[^\]]+\])/).filter(Boolean),row=[]; let x=0;
+      for(const pt of parts){ const hl=pt[0]==='['; const t=this.add.text(0,by+11+li*lh,hl?pt.slice(1,-1):pt,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:(hl?fs+1:fs)+'px',color:hl?cols[ci++%cols.length]:'#ffffff',stroke:'#000000',strokeThickness:hl?3:0}); row.push(t); x+=t.width; }
+      const k=Math.min(1,(bw-66)/Math.max(1,x)); let cx=tx0; row.forEach(t=>{ t.setScale(k).setPosition(cx,t.y+(1-k)*fs*.5); cx+=t.width*k; c.add(t); }); });
+    const av=this.rubyAvatar(bx+2,by+bh-2,46,m.face); c.add(av); this.rubySparkle(c,bx+28,by+bh-26);
+    const nm=this.add.text(bx+30,by+2,'Ruby',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffffff'}).setOrigin(.5,1); const nb=this.add.graphics(); nb.fillStyle(0x6a2fd6,1); nb.fillRoundedRect(bx+30-nm.width/2-9,by+2-nm.height-2,nm.width+18,nm.height+4,8); nb.lineStyle(2,0xffffff,.9); nb.strokeRoundedRect(bx+30-nm.width/2-9,by+2-nm.height-2,nm.width+18,nm.height+4,8); c.add([nb,nm]);
+    this.camUI(c); c.setAlpha(0); c.x=bw*.7; this.tweens.add({targets:c,alpha:1,x:0,duration:260,ease:'Back.easeOut'}); this.rubyReact?.(c,av,m,bx,by,bh);
     Sfx.orderCue?.('ruby_pop_in',.25,.5)||Sfx.select&&Sfx.select(); if(this._speech){ try{ this._speech.ev.remove(); this._speech.box.destroy(); }catch(e){} this._speech=null; } this._ruby={c,text:m.text,bottom:by+bh};{const vk=this.voiceLookup?.('ruby',m.text),sa=this._rubyShortAt||(this._rubyShortAt={}),nw=Date.now();if(!(vk&&vk.includes('_short_')&&nw-(sa[vk]||0)<30000)){if(vk&&vk.includes('_short_'))sa[vk]=nw;this.voiceLine?.('ruby',m.text,()=>this._ruby?.c===c&&this.rubyOn(),c);}}   /* v8.1.43 เตือนสั้นพูดซ้ำได้ทุก 30 วิต่อภารกิจ */
     this._ruby.ev=this.time.addEvent({delay:150,loop:true,callback:()=>{ if(!this.rubyOn())this.rubyHide(true); }});
     this._ruby.end=this.time.delayedCall(m.ms,()=>this.rubyHide()); }
@@ -16706,9 +16707,9 @@ class Game extends Phaser.Scene {
   /* v7.8.102 กรอบคำพูดติดจอ (UI) — เดิมลอยเหนือบอสในโลก พอกล้องแพนกลับบอสหลุดจอเลยไม่เห็น */
   bossSay(text,who,ms){ if(!text)return;if(this._bossSayObj)this.voiceStop?.(this._bossSayObj); this._bossSayObj?.destroy(); this._bossSayEv?.remove(false);
     const full='“'+text+'”',head=who?who+'\n':'',hold=Math.max(ms||Math.max(3300,1800+text.length*70),(this.voiceDuration?.('boss'+((this.stageIndex||0)+1),text)||0)+300);   /* v7.9.9 พิมพ์ทีละตัว · ค้างนานตามความยาว */
-    const t=this.camUI(this.add.text(this.W/2,this.H*0.70,head+full,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#3a1f2b',backgroundColor:'#fff6ea',padding:{x:12,y:8},align:'center',lineSpacing:3,wordWrap:{width:Math.min(320,this.W-48)}}).setOrigin(.5).setScrollFactor(1).setDepth(130).setAlpha(0));
+    const t=this.camUI(this.add.text(8,Math.max((this._pad||14)+182,this._ruby?.c?.active&&this._ruby.bottom?this._ruby.bottom+8:0),head+full,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'13px',color:'#3a1f2b',backgroundColor:'#fff6ea',padding:{x:10,y:6},align:'left',lineSpacing:2,wordWrap:{width:Math.min(230,Math.round(this.W*.6))}}).setOrigin(0,0).setScrollFactor(1).setDepth(130).setAlpha(0));   /* v8.1.100 เจ้าของ: คำพูดบอสบังจอ → ป้ายมุมซ้ายบน (Ruby อยู่ขวาบน) */
     const fh=t.height; t.setFixedSize(t.width,0).setText(head+'“'); t.setFixedSize(t.width,fh);
-    this._bossSayObj=t;this.voiceLine?.('boss'+((this.stageIndex||0)+1),text,()=>this._bossSayObj===t&&t.active,t); this.tweens.add({targets:t,alpha:1,y:t.y-8,duration:180});
+    this._bossSayObj=t;this.voiceLine?.('boss'+((this.stageIndex||0)+1),text,()=>this._bossSayObj===t&&t.active,t); t.x=-40; this.tweens.add({targets:t,alpha:1,x:8,duration:220,ease:'Back.easeOut'});
     let n=1; this._bossSayEv=this.time.addEvent({delay:38,repeat:full.length-2,callback:()=>{ if(t.active){t.setText(head+full.slice(0,++n));if(n%2===0)Sfx.voiceBlip?.('boss_c'+Math.min(3,1+Math.floor((this.stageIndex||0)/5)))||Sfx.orderCue?.('type_tick',.05,.08);} }});
     this._bossSayEnd=this.time.now+full.length*38+hold;
     this.time.delayedCall(full.length*38+hold,()=>{ if(this._bossSayObj===t)this._bossSayObj=null; if(t.active)this.tweens.add({targets:t,alpha:0,duration:300,onComplete:()=>t.destroy()}); }); }
@@ -17218,6 +17219,17 @@ class Game extends Phaser.Scene {
   summaryText(box,x,y,text,size=14,color='#fff4e1',width=200,origin=0){
     const o=this.add.text(x,y,text,{fontFamily:'NunitoUI, sans-serif',fontSize:size+'px',fontStyle:'bold',color,align:origin===.5?'center':'left',wordWrap:{width},maxLines:2,lineSpacing:2}).setOrigin(origin,.5);box.push(o);return o;
   }
+  /* v8.1.100 แผงหัวหน้าจบด่าน: พื้นแผง ขอบทอง เหรียญวงกลมหลังฮีโร่ แสงหมุน เส้นคั่นใต้หัวข้อ ประกาย (ไม่มีภาพ = กราฟิกโค้ดล้วน) */
+  summaryHeaderDeco(box,H,hx,hy,size,animate){
+    const quit=!!this._quitSummary,gold=quit?0xa995b8:0xf5c879,g=this.add.graphics();
+    g.fillStyle(0x000000,.28).fillRoundedRect(H.x+2,H.y+4,H.w,H.h,18);g.fillStyle(quit?0x231c2e:0x2b1d36,.96).fillRoundedRect(H.x,H.y,H.w,H.h,18);
+    g.fillStyle(0xffffff,.05).fillRoundedRect(H.x+4,H.y+4,H.w-8,H.h*.42,14);g.lineStyle(2,gold,.85).strokeRoundedRect(H.x,H.y,H.w,H.h,18);g.lineStyle(1,gold,.3).strokeRoundedRect(H.x+5,H.y+5,H.w-10,H.h-10,14);box.push(g);
+    const r=size*.5;if(!quit){const rays=this.add.graphics();rays.x=hx;rays.y=hy;rays.fillStyle?.(0xffe4aa,.16);for(let i=0;i<12;i++){const a=i*Math.PI/6,b=a+.16;rays.fillTriangle?.(0,0,Math.cos(a)*r*1.5,Math.sin(a)*r*1.5,Math.cos(b)*r*1.5,Math.sin(b)*r*1.5);}box.push(rays);
+      if(animate||this.hubMotionAllowed?.()!==false){const tw=this.tweens.add({targets:rays,angle:360,duration:16000,repeat:-1});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}}
+    const m=this.add.graphics();m.fillStyle?.(quit?0x3a3046:0x4a2d52,1);m.fillCircle?.(hx,hy,r);m.fillStyle?.(0xffffff,.08);m.fillCircle?.(hx,hy-r*.25,r*.7);m.lineStyle?.(3,gold,1);m.strokeCircle?.(hx,hy,r);m.lineStyle?.(1.5,0xffffff,.35);m.strokeCircle?.(hx,hy,r-5);box.push(m);
+    const tx=H.x+size+24,dv=this.add.graphics();dv.lineStyle?.(2,gold,.55);dv.lineBetween?.(tx,H.y+H.h*.385,H.x+H.w-18,H.y+H.h*.385);dv.fillStyle?.(gold,1);dv.fillCircle?.(tx,H.y+H.h*.385,3);box.push(dv);
+    if(!quit)for(const [px,py,sz] of [[H.x+H.w-22,H.y+16,13],[hx+r*.82,hy-r*.82,11],[H.x+H.w-40,H.y+H.h-16,9]]){const sp=this.summaryText(box,px,py,'✦',sz,'#ffe9b0',20,.5);if(animate||this.hubMotionAllowed?.()!==false){const tw=this.tweens.add({targets:sp,alpha:{from:.25,to:1},scale:{from:.7,to:1.2},yoyo:true,repeat:-1,duration:700+sz*40});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}}
+  }
   summaryCard(box,r,fill=0x211a30,stroke=0x75617a){const g=this.add.graphics().fillStyle(fill,.95).fillRoundedRect(r.x,r.y,r.w,r.h,16).lineStyle(1,stroke,.65).strokeRoundedRect(r.x,r.y,r.w,r.h,16);box.push(g);return g;}
   summaryRewardPanel(box,r){
     const key='sc44_frame';if(!this.textures.exists(key))return this.summaryCard(box,r);
@@ -17255,14 +17267,16 @@ class Game extends Phaser.Scene {
     this.over.removeAll(true);const box=[],w=this.W,h=this.H,L=this._summaryLayout=stageSummaryLayout(w,h),motion=this.hubMotionAllowed?this.hubMotionAllowed():true,animate=motion&&!this._summaryPresentationShown;
     const bg=this.resultBackdrop(this._quitSummary?'result_defeat':'result_victory');box.push(bg,this.add.rectangle(0,0,w,h,0x100d1b,this._quitSummary?.64:.12).setOrigin(0));
     const st=STAGES[this.stageIndex],H=L.header,heroKey=this.character==='cocoa'&&this.textures.exists('char_cocoa_victory')?'char_cocoa_victory':'char_'+this.character;
-    const artSize=Math.min(H.h-4,H.w*.34,140),hx=H.x+artSize*.52,hy=H.y+H.h*.53;
-    if(this.textures.exists(heroKey)){const im=this.add.image(hx,hy,heroKey,heroKey==='char_cocoa_victory'?7:CF.cheer).setDisplaySize(artSize,artSize);box.push(im);if(animate){const tw=this.tweens.add({targets:im,y:hy-4,duration:900,yoyo:true,repeat:1,ease:'Sine.inOut'});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}}
-    const tx=H.x+artSize+12,tw=H.x+H.w-tx;
+    const artSize=Math.min(H.h-16,H.w*.32,132),hx=H.x+10+artSize*.5,hy=H.y+H.h*.5;
+    this.summaryHeaderDeco(box,H,hx,hy,artSize,animate);   /* v8.1.100 เจ้าของ: หัวหน้าจบด่านดูไม่เสร็จ → แผงหัว + เหรียญฮีโร่ + แสงหมุน */
+    if(this.textures.exists(heroKey)){const im=this.add.image(hx,hy+artSize*.06,heroKey,heroKey==='char_cocoa_victory'?7:CF.cheer).setDisplaySize(artSize*1.08,artSize*1.08);box.push(im);const mk=this.make?.graphics?.({add:false});if(mk&&im.setMask){mk.fillCircle(hx,hy,artSize*.5-3);im.setMask(mk.createGeometryMask());}if(animate){const tw=this.tweens.add({targets:im,y:hy-4,duration:900,yoyo:true,repeat:1,ease:'Sine.inOut'});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}}
+    const tx=H.x+artSize+24,tw=H.x+H.w-tx-12;
     this.summaryText(box,tx,H.y+H.h*.24,this._quitSummary?'RUN ENDED':'STAGE CLEAR',Math.min(28,Math.max(19,tw*.13)),this._quitSummary?'#dac7e2':'#ffe4aa',tw);
     const title=this.summaryText(box,tx,H.y+H.h*.53,st.name,15,'#fff4e1',tw);while(title.height>H.h*.36&&parseInt(title.style.fontSize)>11)title.setFontSize(parseInt(title.style.fontSize)-1);
     this.summaryText(box,tx,H.y+H.h*.83,this._firstMastery&&!this._quitSummary?'FIRST CLEAR':(CHARACTERS[this.character]?.name||this.character),11,'#bcaacb',tw);
     const sr=this._quitSummary?null:this._starRes,S=L.stars;this._summaryStarObjs=[];
-    if(sr){const cell=S.w/3;for(let b=0;b<3;b++){const got=!!(sr.mask&(1<<b)),x=S.x+cell*(b+.5);const star=this.summaryText(box,x-12,S.y+22,got?'★':'☆',28,got?'#ffda89':'#796c8b',40,.5);this._summaryStarObjs.push(star);if(animate&&got)star.setAlpha(0);
+    if(sr||S)this.summaryCard(box,S,0x1f1730,0x8a6a4f);
+    if(sr){const cell=S.w/3;for(let b=0;b<3;b++){const got=!!(sr.mask&(1<<b)),x=S.x+cell*(b+.5);{const so=this.add.graphics();so.fillStyle?.(got?0x5a3a1c:0x2a2236,1);so.fillCircle?.(x-12,S.y+22,17);so.lineStyle?.(2,got?0xffd27a:0x5d5070,got?.95:.6);so.strokeCircle?.(x-12,S.y+22,17);box.push(so);}const star=this.summaryText(box,x-12,S.y+22,got?'★':'☆',28,got?'#ffda89':'#796c8b',40,.5);this._summaryStarObjs.push(star);if(animate&&got)star.setAlpha(0);
       this.summaryText(box,x+16,S.y+23,sr.fresh&(1<<b)?'NEW':'',9,'#bff0d3',30,.5);this._summaryBtns.push({x:S.x+b*cell,y:S.y,w:cell,h:S.h,tag:'star_'+b,fn:()=>this.openSummaryDetails('stars',b)});}
     }else this.summaryText(box,S.x+S.w/2,S.y+22,this._quitSummary?'Collected rewards are saved':'Adventure complete',13,'#c5b4d1',S.w-16,.5);
     const R=L.loot;this.summaryRewardPanel(box,R);this.summaryText(box,R.x+32,R.y+22,'REWARDS',10,'#c9b4d4',R.w-32);this.summaryText(box,R.x+R.w-32,R.y+22,'View all ›',10,'#e8d1a3',90,1);
@@ -17465,8 +17479,8 @@ class Game extends Phaser.Scene {
       descT=this.add.text(textX,y+75,dd,{fontFamily:'sans-serif',fontSize:w<300?'9px':'11px',color:descriptionColor,lineSpacing:2,wordWrap:{width:textW},maxLines:2}).setOrigin(0,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(textX,y+h-20,o.carry,{fontFamily:'sans-serif',fontSize:'9px',color:'#9be8ff',wordWrap:{width:Math.max(60,textW-110)},maxLines:2}).setOrigin(0,0.5):this.add.text(textX,y+h-20,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:rankColor}).setOrigin(0,0.5);   /* v7.8.28 การ์ด Build Path: บรรทัดการ์ดเริ่มต้นที่พาไปด้วย */
-      ctaT=this.add.text(x+w-14,y+h-20,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
-      group.add([panel,halo]);this.lvlPill(group,ctaT,1);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);this.lvlBadge(group,o,badgeT);
+      ctaT=this.add.text(x+w-16,y+h-18,'CHOOSE ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(1,0.5);
+      group.add([panel,halo]);this.lvlCta(group,ctaT,color,options);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);this.lvlBadge(group,o,badgeT);
     }else{
       const iconX=x+w/2,iconY=y+h*0.25,iconSize=Math.min(70,h*0.25),textW=w-22;
       const halo=this.lvlSocket(iconX,iconY,Math.min(42,w*0.22)*2.05,color)||this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
@@ -17478,12 +17492,13 @@ class Game extends Phaser.Scene {
       descT=this.add.text(x+w/2,y+h*0.60,dd,{fontFamily:'sans-serif',fontSize:'9px',color:descriptionColor,align:'center',lineSpacing:2,wordWrap:{width:textW},maxLines:3}).setOrigin(0.5,0);
       let stars='';if(!options.starting&&!isPath&&type!=='awk'&&type!=='heal'&&type!=='util'){const mx=o.max||5;stars='Lv '+lvl+' / '+(mx>=99?'∞':mx);}   /* v7.6.1 เจ้าของ: ตัวเลขแทนดาว · อัปไม่จำกัด = ∞ */
       starsT=isPath&&o.carry?this.add.text(x+w/2,y+h*0.85,o.carry,{fontFamily:'sans-serif',fontSize:'8.5px',color:'#9be8ff',align:'center',wordWrap:{width:textW},maxLines:2}).setOrigin(0.5):this.add.text(x+w/2,y+h*0.87,stars+(tagS?'   '+tagS:''),{fontFamily:'sans-serif',fontSize:'10px',color:rankColor}).setOrigin(0.5);
-      ctaT=this.add.text(x+w/2,y+h-13,'Tap to choose  ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
-      group.add([panel,halo]);this.lvlPill(group,ctaT,1);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
+      ctaT=this.add.text(x+w/2,y+h-14,'CHOOSE ›',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffffff'}).setOrigin(0.5);
+      group.add([panel,halo]);this.lvlCta(group,ctaT,color,options);group.add([icon,badgeT,nameT,roleT,descT,starsT,ctaT]);
     }
     // v6.51.0: การ์ดพิเศษ (Mutation/Evolution/Relic/Path/Infusion/Fusion/Modifier) เด่นขึ้น — กรอบทองเต้น+ริบบิ้น+แสงวิ่ง+ประกาย
     const SPK={'Companion Evolution':['COMPANION FORM',0xffd447],'Build Path':['PICK ONE BUILD',0x7fd8ff],'Flavor Infusion':['INFUSION',0xff9a4d],'Dual Infusion':['DUAL INFUSION',0xff9a4d],'Fusion':['FUSION',0xc58bff],'Relic':['RELIC',0xff7ad9],'Modifier':['MODIFIER',0x6fe3c4]};
     const sp=o.evolution?['✨ EVOLUTION',0xffd447]:o.mutation?['🧬 MUTATION',0xc58bff]:SPK[o.kind]?['✦ '+SPK[o.kind][0],SPK[o.kind][1]]:null;
+    if(!options.starting)this.lvlCardJuice(group,x,y,w,h,color,icon,!!sp,options.index||0);
     if(sp&&!options.starting){
       const sc=sp[1],fx=this.tuPanel('lvl_card_glow',0,x-16,y-16,w+32,h+32)||this.add.graphics();
       if(fx.type==='Container')fx.list.forEach(i=>i.setTint(sc));else{fx.lineStyle(4,sc,1);fx.strokeRoundedRect(x-2,y-2,w+4,h+4,18);fx.lineStyle(10,sc,0.35);fx.strokeRoundedRect(x-6,y-6,w+12,h+12,22);}
@@ -17507,6 +17522,18 @@ class Game extends Phaser.Scene {
   // v7.8.59 ใบ 23 helpers: วงไอคอน (ฐาน + วงแหวนย้อมสี) · เม็ดยาหลังข้อความ · สัญลักษณ์ประเภทหน้าป้าย
   lvlSocket(x,y,size,color){if(!this.tuHas('lvl_icon_socket'))return null;this.tuFrames('lvl_icon_socket');const c=this.add.container(x,y);c.add(this.add.image(0,0,'lvl_icon_socket','cell0').setDisplaySize(size,size));c.add(this.add.image(0,0,'lvl_icon_socket','cell1').setDisplaySize(size,size).setTint(color));return c;}
   lvlPill(group,t,cell){if(!this.tuHas('lvl_pill_sheet')||!t)return null;const pw=t.width+22,ph=Math.max(20,t.height+8),px=t.x-t.originX*t.width-11,py=t.y-t.originY*t.height-(ph-t.height)/2,p=this.tuPanel('lvl_pill_sheet',cell,px,py,pw,ph);if(p)group.add(p);return p;}
+  /* v8.1.100 เจ้าของ: "Tap to choose" ดูไม่เข้า → ป้าย CHOOSE สีตามการ์ด (ไม่ใช้ pill art) */
+  lvlCta(group,t,color,options={}){if(!t)return null;const pw=t.width+20,ph=t.height+8,px=t.x-t.originX*t.width-10,py=t.y-t.originY*t.height-4,g=this.add.graphics();
+    g.fillStyle(this._darken?this._darken(color,.55):color,1);g.fillRoundedRect(px,py,pw,ph,ph/2);g.lineStyle(1.5,0xffffff,.85);g.strokeRoundedRect(px,py,pw,ph,ph/2);group.add(g);
+    if(!Save.data?.settings?.reducedMotion)this.tweens.add({targets:[g,t],alpha:{from:1,to:.62},yoyo:true,repeat:-1,duration:760,delay:(options.index||0)*120,ease:'Sine.inOut'});return g;}
+  /* v8.1.100 เจ้าของ: การ์ดจืด → ลูกเล่นเบา ๆ ทุกใบ: แสงวิ่งผ่าน (การ์ดพิเศษมีของตัวเองแล้ว) · ไอคอนลอย · ประกายมุม · เด้งเข้าตอนเปิด */
+  lvlCardJuice(group,x,y,w,h,color,icon,special,idx){if(Save.data?.settings?.reducedMotion)return;
+    if(icon){const iy=icon.y;this.tweens.add({targets:icon,y:iy-3,yoyo:true,repeat:-1,duration:900+idx*70,ease:'Sine.inOut'});const sx=icon.scaleX,sy=icon.scaleY;icon.setScale(sx*.4,sy*.4);this.tweens.add({targets:icon,scaleX:sx,scaleY:sy,duration:340,delay:80+idx*90,ease:'Back.easeOut'});}
+    if(!special){const sh=this.add.rectangle(x-24,y+h/2,22,h*1.3,0xffffff,.22).setAngle(16),mk=this.make.graphics({add:false});mk.fillRoundedRect(x,y,w,h,16);sh.setMask(mk.createGeometryMask());group.add(sh);
+      this.tweens.add({targets:sh,x:x+w+24,duration:760,repeat:-1,repeatDelay:2300,delay:500+idx*260,ease:'Sine.inOut'});}
+    for(let i=0;i<2;i++){const sx=i?x+w-12:x+12,sy=i?y+h-10:y+10,st=this.add.text(sx,sy,'✦',{fontSize:'11px',color:'#'+(color>>>0).toString(16).padStart(6,'0')}).setOrigin(.5).setAlpha(0);group.add(st);
+      this.tweens.add({targets:st,alpha:{from:0,to:.95},scale:{from:.6,to:1.25},yoyo:true,repeat:-1,duration:620,repeatDelay:900+i*500,delay:idx*180+i*400});}
+    const fl=this.add.graphics();fl.lineStyle(3,0xffffff,.9);fl.strokeRoundedRect(x,y,w,h,16);group.add(fl);this.tweens.add({targets:fl,alpha:{from:.9,to:0},duration:420,delay:60+idx*90,onComplete:()=>fl.destroy()});}
   lvlBadge(group,o,t){if(!this.tuHas('lvl_type_badge_sheet')||!t)return;const i={atk:0,pas:1,basic:2,heal:3,util:4,uni:5,awk:6}[o.type||'atk'];if(i==null)return;this.tuFrames('lvl_type_badge_sheet');const s=t.height+6;group.add(this.add.image(t.x+t.width+5+s/2,t.y+t.height/2,'lvl_type_badge_sheet','cell'+i).setDisplaySize(s,s));}
   // ป้ายหัวเรื่อง (ช่องตามโหมด) วางหลังข้อความ + ระเบิดดาวตอนเปิด (ไม่ซ้ำภายใน 1.5s) · ข้อความหดให้พอดีจอ
   lvlTitleArt(t,cell,open){if(!t)return;let fs=13;const tr=this.tuHas('lvl_title_banner_sheet')?this.W-120:this.W-40;while(t.width>tr&&fs>9)t.setFontSize(--fs+'px');   /* v7.8.70: ตัวหนังสือไม่ทับหัวท้ายริบบิ้น */if(!this.tuHas('lvl_title_banner_sheet'))return;const bw=Math.min(this.W-12,t.width+70),bh=t.height+14,b=this.tuPanel('lvl_title_banner_sheet',cell,t.x-bw/2,t.y-7,bw,bh);if(!b)return;const i=this.lvlUp.getIndex(t);this.lvlUp.addAt(b,Math.max(0,i));t.setColor('#fff7e0').setStroke('#3a1b2e',3);
