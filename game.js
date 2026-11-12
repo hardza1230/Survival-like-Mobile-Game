@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.123';
+const GAME_VERSION = '8.1.124';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.124',date:'2026-11-12',title:'Boss power moves',items:['Bosses now stop, stand still and gather power inside a red circle, then unleash a big slam with two rings of bullets','After the slam the boss stands still for a moment: your chance to hit back','Big moves come every 14s, faster in later phases']},
   {v:'8.1.123',date:'2026-11-12',title:'Softer paint, cleaner gear',items:['Frozen Pantry: the rainbow paint is now small watery puddles that spread out and gently ripple','Equipment: smaller item icons, no rarity frame — rarity shows as a coloured glow and gradient (Epic pulses, Legendary sparkles)','C1-5 boss: the Maw of the Void swirl is smaller and fainter (full size only in the final phase)']},
   {v:'8.1.122',date:'2026-11-12',title:'Memory fix, Treasure Vault and Evolution Forge',items:['Fixed the Lobby flickering and loading looping at 0–2% after the phone ran out of graphics memory','Relic picks now open a Treasure Vault: three treasures float on glass pedestals — tap one to look closer, tap again to take it','Evolution now happens at a forge: tap the forge, then tap again to forge your weapon']},
   {v:'8.1.121',date:'2026-11-12',title:'Easier-to-read mission cards',items:['Mission cards now show just three lines (name, what to do, reward) and stay longer','Ruby’s mission tip and the bonus goal appear after the card closes','Mint (Impaler): every lance shot takes 0.5s off the Unique cooldown','Escort Wisp: smaller ring around the wisp']},
@@ -16850,7 +16851,7 @@ class Game extends Phaser.Scene {
     b.atkCd=0.85; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.royalGuard=this.stageIndex===0; b.atks=['slam','aimed','radial','nova']; if(this.stageIndex>=1)b.atks.push('charge'); if(this.stageIndex>=2)b.atks.push('spiral'); if(this.stageIndex>=3)b.atks.push('summon');   // Minibossมีลูกเล่นมากขึ้น + โจมตีถี่ขึ้น (buff จาก feedback)
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='mini'; b._breathe=0; b._baseScale=mScale;
     if(this.anims.exists(mkey+'_idle'))b.play(mkey+'_idle',true);else if(this.anims.exists(mkey+'_walk'))b.play(mkey+'_walk',true);
-    this.boss=b;b._said=false;b._sayAt=0;b._sayI=-1; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
+    this.boss=b;this._bossEpoch=(this._bossEpoch||0)+1;b._big=null;b._bigHold=false;b._bigT=0;b._said=false;b._sayAt=0;b._sayI=-1; this.camWorld(b);this.applyBossRage(b,false);this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=9;
     this.waveAlive=adds+1;
     this.mode='mini';this.updateWaveText();
     this.applyBossInk?.(b);this.miniIntro(b);
@@ -16927,7 +16928,7 @@ class Game extends Phaser.Scene {
     b.atkCd=0.8; b.phase2=false;b._enraged=false;b._comboLock=false;b._phaseInvuln=0;b._phaseGateLocked=false;b._phaseShieldFx=null;b._phaseImmunePopAt=0;b.rage=null;b._rageBaseHp=0;b.rageCdMul=1; b.atks=this.stageIndex===0?['queen']:['slam','radial','aimed','charge','spiral','trap']; if(this.stageIndex>=1)b.atks.push('summon');
     b._drainMotion=this.stageIndex===1; b._drainMotionKind='boss'; b._breathe=0; b._baseScale=fScale;
     if(this.anims.exists(bkey+'_idle'))b.play(bkey+'_idle',true);else if(this.anims.exists(bkey+'_walk')){ b.play(bkey+'_walk',true); }else if(bkey==='boss6_rootmother'&&this.anims.exists('boss6_rootmother_idle'))(this.bossInkIdle?.(b)||b.play('boss6_rootmother_idle',true)); else if(b.anims){ b.anims.stop(); b.setFrame(0); }
-    this.boss=b;b._said=false;b._sayAt=0;b._sayI=-1; this.camWorld(b);this.applyBossRage(b,false);if(this.recipeMode&&this.recipeHas('twinboss'))this.time.delayedCall(900,()=>{if(this.state!=='play'||!this.boss)return;const g=this.spawnElite();if(g){g.hp*=6;g.maxhp=g.hp;g.setPosition(this.boss.x+120,this.boss.y);g.setScale((g.baseScale||1)*1.4);g.tintColor=0xb07aff;g.setTint(0xb07aff);this.showBanner('👥 Bodyguard','The boss brought a giant elite!',1600);}});this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
+    this.boss=b;this._bossEpoch=(this._bossEpoch||0)+1;b._big=null;b._bigHold=false;b._bigT=0;b._said=false;b._sayAt=0;b._sayI=-1; this.camWorld(b);this.applyBossRage(b,false);if(this.recipeMode&&this.recipeHas('twinboss'))this.time.delayedCall(900,()=>{if(this.state!=='play'||!this.boss)return;const g=this.spawnElite();if(g){g.hp*=6;g.maxhp=g.hp;g.setPosition(this.boss.x+120,this.boss.y);g.setScale((g.baseScale||1)*1.4);g.tintColor=0xb07aff;g.setTint(0xb07aff);this.showBanner('👥 Bodyguard','The boss brought a giant elite!',1600);}});this.bossUI.forEach(o=>o.setVisible(true));this.resetBossObjective();this._weakAcc=11;
     this.waveAlive=1; this.updateWaveText();
     if(this._pinnacleRun){ b.hp*=2; b.maxhp=b.hp; b.dmg=Math.round(b.dmg*1.4); b.spd=104; if(this.textures.exists('boss_pinnacle')){ if(b.anims)b.anims.stop(); b.setTexture('boss_pinnacle',0); b._pinnacleArt=true; b.tintColor=null; b.clearTint(); } else { b.tintColor=0x8a4dff; b.setTint(0x8a4dff); } b.setScale((b.baseScale||1.55)*1.25); b.baseScale=(b.baseScale||1.55)*1.25; b._baseScale=b.baseScale; }
     const _dvb=this.setupDelveBoss(b); if(_dvb){ if(this.bossName)this.bossName.setText('👹 '+(b.delveBoss==='warden'?'The Jelly Warden':'Madame Candlewick')+' · Floor '+this._amapNode.d); this.bossIntro(b,_dvb); return; }
@@ -23395,8 +23396,25 @@ class Game extends Phaser.Scene {
     }
     if(this._dvDark){ const cam=this.cameras.main,wv=cam.worldView,D=this._dvDark; D.rect.setPosition(wv.x-40,wv.y-40).setSize(wv.width+80,wv.height+80); D.mg.clear(); D.mg.fillStyle(0xffffff); D.mg.fillCircle(p.x,p.y,150); L.forEach(o=>{ if(o.kind==='candle'&&o.lit)D.mg.fillCircle(o.x,o.y-30,105); }); D.mg.fillCircle(b.x,b.y,70); }
   }
-  bossThink(b,dt){ if(this.holdArenaFogBoss(b))return;if(b.delveBoss){ this.delveBossThink(b,dt); return; } const before=b.atkCd; this._bossThinkCore(b,dt);this.rootKnightMotion(b);
+  bossThink(b,dt){ if(this.holdArenaFogBoss(b))return;if(b.delveBoss){ this.delveBossThink(b,dt); return; } if(this.bossBigMove?.(b,dt)){ b.atkCd=Math.max(b.atkCd||0,1); this._bossThinkCore(b,dt); b.atkCd=Math.max(b.atkCd,.6); return; } const before=b.atkCd; this._bossThinkCore(b,dt);this.rootKnightMotion(b);
     if(b.active&&before!==undefined&&before<=0.05&&b.atkCd>0.4&&!b._comboLock){ const ch=b.hp<b.maxhp*0.3?0.6:b.phase2?0.45:0.3; if(Math.random()<ch){ b._comboLock=true; this.time.delayedCall(Phaser.Math.Between(520,780),()=>{ b._comboLock=false; this.bossFollowUp(b); }); } } }
+  /* v8.1.124 เจ้าของ: บอสต้องมีจังหวะหยุดยืนนิ่ง แล้วปล่อยท่าใหญ่ → ทุก 14 วิ (เฟส 2: 11 · เฟส 3+: 9) บอสหยุด ชาร์จ 1.4 วิ (วงแดงค่อย ๆ เต็ม) → กระแทกในวง + กระสุน 2 วง → ยืนพัก 1.1 วิให้ตีสวน */
+  bossBigMove(b,dt){ if(!b||!b.isBoss||!b.active||this._inTutorial||this.state!=='play')return false; const B=b._big,R=280,col=0xff4d6d;
+    if(B&&B.boss!==this._bossEpoch){ b._big=null; b._bigHold=false; b._bigT=0; return false; }   /* บอสตัวใหม่จาก pool: ล้างสถานะเก่า */
+    if(!B){ if((b._phaseInvuln||0)>0||b.frozen>0)return false; b._bigT=(b._bigT||0)+dt; if(b._bigT<(b.phase3?9:b.phase2?11:14))return false; b._bigT=0;
+      const ring=this.camWorld(this.add.circle(b.x,b.y,R,col,.1).setStrokeStyle(5,col,.9).setDepth(2)),fill=this.camWorld(this.add.circle(b.x,b.y,R,col,.22).setDepth(2).setScale(.05));
+      this.tweens.add({targets:fill,scale:1,duration:1400,ease:'Sine.in'}); this.tweens.add({targets:ring,alpha:{from:.5,to:1},duration:180,yoyo:true,repeat:3});
+      b._big={t:1.4,stage:'charge',objs:[ring,fill],boss:this._bossEpoch}; b._bigHold=true; b.setVelocity?.(0,0); this.time.delayedCall(3200,()=>{ for(const o of [ring,fill])if(o.active)o.destroy(); });
+      const nm=(STAGES[this.stageIndex]||{}).boss||'The boss'; this.showBanner?.('⚠️ '+nm+' gathers power!','Get out of the red circle!',1300); if(typeof Sfx!=='undefined')Sfx.bossWarn?.(); this.screenShake?.(240,.004); return true; }
+    B.t-=dt; if(B.objs)for(const o of B.objs)if(o.active)o.setPosition(b.x,b.y);
+    if(B.stage==='charge'){ if(B.t>0)return true; const p=this.player,bd=Math.max(12,Math.round((b.dmg||20)*.45));
+      for(const o of B.objs||[])if(o.active)o.destroy(); B.objs=null;
+      if(p&&this.dist(p.x,p.y,b.x,b.y)<R)this.hurtPlayer(Math.max(15,Math.round((b.dmg||20)*.9)));
+      for(let w=0;w<2;w++)this.time.delayedCall(w*240,()=>{ if(!b.active||this.state!=='play')return; const n=b.phase3?24:18,off=w*Math.PI/n; for(let i=0;i<n;i++)this.foeShot(b.x,b.y,off+i*TAU/n,230+w*40,bd,col,1.1); });
+      for(let w=0;w<2;w++){ const sw=this.camWorld(this.add.circle(b.x,b.y,30,col,0).setStrokeStyle(w?4:10,w?0xffffff:col,.95).setDepth(90005)); this.tweens.add({targets:sw,scale:R/30,alpha:{from:1,to:0},duration:420+w*160,delay:w*70,ease:'Cubic.easeOut',onComplete:()=>sw.destroy()}); }
+      this.screenShake?.(320,.014); this.screenFlash?.(col,.18,240); if(typeof Sfx!=='undefined')Sfx.zap?.();
+      B.stage='rest'; B.t=1.1; this.floatText?.(b.x,b.y-(b.displayHeight||120)*.6,'💫 Opening!',0xffe08a); return true; }
+    if(B.t>0)return true; b._bigHold=false; b._big=null; b.atkCd=Math.min(b.atkCd||1,.8); return false; }
   _bossThinkCore(b,dt){
     if(!b.visible)b.setVisible(true); if(b.alpha<1)b.setAlpha(1);   // safety: บอสต้องมองเห็นเสมอตอนสู้ (กันค้างล่องหนจาก tween คัตซีน)
     if(!Number.isFinite(b.spd))b.spd=94;   // safety: กัน spd หลุด (undefined→NaN velocity→Position NaN→บอสล่องหน)
@@ -24105,7 +24123,8 @@ class Game extends Phaser.Scene {
       if(e.bloomUntil>0){e.bloomUntil-=dt;if(e.bloomUntil<=0)e.bloomStacks=0;}if(e._aura&&e._aura.active)e._aura.setPosition(e.x,e.y).setDepth(e.y-1);
       this.tickFrostBurn(e,dt);if(!e.active)return;this.tickEnemyPresentation(e,dt);
       if(e.frozen>0){ e.frozen-=dt; e.setVelocity(0,0); if(e.frozen<=0){ if(e.tintColor)e.setTint(e.tintColor); else e.clearTint(); } return; }
-      if(e._timeStop){ e.setVelocity(0,0); return; }   // v8.1.113 หยุดเวลา (Frozen Pantry) แยกจากแช่แข็ง: ไม่เดิน ไม่ยิง ไม่ทำดาเมจสัมผัส · โดนตีได้ปกติ ไม่นับเป็น frozen (ไม่ไปเพิ่มดาเมจ Mint)
+      if(e._timeStop){ e.setVelocity(0,0); return; }
+      if(e._bigHold&&e._big&&e.isBoss&&this.boss===e){ e.setVelocity(0,0); return; }   /* v8.1.124 บอสยืนชาร์จท่าใหญ่/พัก */   // v8.1.113 หยุดเวลา (Frozen Pantry) แยกจากแช่แข็ง: ไม่เดิน ไม่ยิง ไม่ทำดาเมจสัมผัส · โดนตีได้ปกติ ไม่นับเป็น frozen (ไม่ไปเพิ่มดาเมจ Mint)
       if(this.holdArenaFogBoss(e))return;
       if(e.knock>0){ e.knock-=dt; return; }
       { // v5.50: มอนที่หลุดไกล → ย้ายมาเกิดใกล้ผู้เล่นใหม่ · มอนไกลคิดทิศทุก 4 เฟรม

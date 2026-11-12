@@ -1,16 +1,14 @@
 # Version line
 
-Current release: **8.1.123**. Next release:8.1.124. Fetch the deploy branch before new work.
+Current release: **8.1.124**. Next release:8.1.125. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.123 — owner: Frozen Pantry paint smaller + watery; equipment slots readable (glow/gradient instead of frame)
+# Latest delivery: v8.1.124 — owner: bosses should stop, stand still and use big attacks
+
+`bossBigMove(b,dt)` (story/rush bosses with `isBoss`, not Delve bosses, not tutorial) runs first in `bossThink`: timer `_bigT` 14 s (phase 2: 11 · phase 3+: 9) → charge 1.4 s: `_bigHold` (enemy loop zeroes velocity for `this.boss`), red ring R 280 + inner fill growing, banner "⚠️ <boss> gathers power!", bossWarn → slam: hurtPlayer(max 15, dmg×0.9) if inside R, 2 bullet rings (18, phase 3: 24; bd = dmg×0.45) 240 ms apart, shockwaves, shake/flash → rest 1.1 s standing ("💫 Opening!") → release (atkCd ≤ .8). While active the normal kit is held (atkCd forced ≥ .6) but phase transitions still run. `this._bossEpoch` bumped and `_big/_bigHold/_bigT` reset where `this.boss=b` is assigned (2 spawn paths) so a pooled sprite never keeps a stale hold. Test `tests/boss-big-move.test.cjs`.
+
+# Previous delivery: v8.1.123 — owner: Frozen Pantry paint smaller + watery; equipment slots readable (glow/gradient instead of frame)
 
 `fpBlob`: 2 puddle images per step from one canvas texture `mm_puddle` (96², 5 overlapping soft radial blobs = amorphous), pastel tint, random rotation/stretch, 22–42 px, spread tween 0.25→1 over 0.65–0.95 s, ring-buffer max 320 (`S.pud`, `S.pi`), depth -98000 via sigAdd; fallback circles (no add.image, vm tests) smaller (14–30). fpTick paint phase wobbles ready puddles every 2nd frame (±6% scale). `gearRarityFx(item,x,y,w,h)` replaces `menuRarityFrame` in buildGear equipped row + inventory cells: bottom-up gradient (fillGradientStyle, rarity colour .42→0), soft radial glow `mm_rglow` tinted (Epic+ pulses, Legend+ two ✦ sparkles; tweens killed on destroy); icons smaller (slot .84→.66, cell .72→.62). Other menuRarityFrame uses (compare/forge panels) unchanged. C1-5 boss Maw of the Void `05_void_maw` 250 px α.6 → 150 px α.3 (phase 4: 210 px α.45); Eclipse (big move) unchanged. Tests special-picks (block), equipment-redesign ctx stubs.
-
-# Previous delivery: v8.1.122 — owner bug: Lobby flicker / Preparing 0–2% loop / huge text after GPU out-of-memory · + special picks should feel like picking real things (Relic vault, Evolution forge) + art order 80
-
-`openLevelUp`: relic pick (`_relicPick`, not chest, 1–3 opts, not tutorial) → `drawRelicVault(opts,startY,hint)`; single evolution option → `drawEvoForge(o,startY,hint)`; else the old cards. Both push `lvlCards` entries with `onFocus` (highlightCard calls it instead of the card glow; pickCardAt keeps their hint), so the tap-twice confirm, apply, Stats and SFX are unchanged. Vault: 3 columns, light beam + pedestal (code graphics, or `vault80_pedestal`), floating icon (`lvlObjIcon`: iconKey/key texture or emoji), glow, info panel (name/desc/headline), focus = icon ×1.35 + others dimmed; `vault80_bg` if loaded. Forge: anvil (code or `forge80_anvil`), floating `ic_path_<path>`, spark loop (stops when its card leaves lvlCards), focus = hotter sparks. Art order `docs/art_orders/80_SPECIAL_PICKS.md` (21 files: vault bg/pedestal, anvil, recipe book spread + page glow, 15 Build Path cards + back) — recipe book (Mutation) and Build Path card code come when the art arrives. Test `tests/special-picks.test.cjs`.
-
-Memory bug (owner saw "Graphics memory ran out"): the context-lost handler (v6.91) reloads with `mochi_lowmem` set forever → budget 250 MB, but the Lobby alone needs ~430 MB (same in v8.1.115, measured headless) → `texBudget` evicted freshly loaded art, screens reloaded it → evict/reload loop (flicker, loader 0↔2%, DPR 1 = big text). Fixes: one-time clear of `mochi_lowmem` (`mochi_lowmem_reset122`); TEX_BUDGET_MB low 340 / normal 420 / ≥8 GB 520 (was 250/400/600); `texEvict` never evicts textures added in the last 20 s (`_texAddT` stamped by the `addtexture` listener in loopGuard); loopGuard no longer calls renderer.resetTextures and saves + reloads after >20 errors in 3 s; `buildLobby` frees `bk_*` book-opening art (~44 MB) 1.5 s after the lobby is up. Tests texture-safety + gpu-memory-budget updated.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
