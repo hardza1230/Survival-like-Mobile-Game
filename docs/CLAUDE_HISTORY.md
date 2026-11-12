@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.125 — owner: Frozen Pantry paint phase = short pause, whole map frozen, hero does not attack
+
+fpOpen sets `S.global` (fpTimeStop ignores the dome radius → every non-boss enemy gets `_timeStop`, refreshed every 0.3 s) and `this._holdFire` (update skips the auto-cast skills loop; orbit contact still runs). Cleared in fpThaw, sigClear and startStage. Paint time `T` full 16→10 · light 22→12 (+1.2 s wave). damage() deliberately untouched (taro T5 hash fixture). Tests sig-missions (time-stop line now expects far enemies stopped too) + special-picks block.
+
 # Previous delivery: v8.1.124 — owner: bosses should stop, stand still and use big attacks
 
 `bossBigMove(b,dt)` (story/rush bosses with `isBoss`, not Delve bosses, not tutorial) runs first in `bossThink`: timer `_bigT` 14 s (phase 2: 11 · phase 3+: 9) → charge 1.4 s: `_bigHold` (enemy loop zeroes velocity for `this.boss`), red ring R 280 + inner fill growing, banner "⚠️ <boss> gathers power!", bossWarn → slam: hurtPlayer(max 15, dmg×0.9) if inside R, 2 bullet rings (18, phase 3: 24; bd = dmg×0.45) 240 ms apart, shockwaves, shake/flash → rest 1.1 s standing ("💫 Opening!") → release (atkCd ≤ .8). While active the normal kit is held (atkCd forced ≥ .6) but phase transitions still run. `this._bossEpoch` bumped and `_big/_bigHold/_bigT` reset where `this.boss=b` is assigned (2 spawn paths) so a pooled sprite never keeps a stale hold. Test `tests/boss-big-move.test.cjs`.

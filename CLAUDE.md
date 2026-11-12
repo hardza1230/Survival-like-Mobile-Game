@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.126**. Next release:8.1.127. Fetch the deploy branch before new work.
+Current release: **8.1.127**. Next release:8.1.128. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.126 — owner: lead (signature) mission for every Chapter 2/3 stage
+# Latest delivery: v8.1.127 — owner (stability round 1): Lobby GPU memory 431 → ~282 MB
+
+Measured headless (texMB after title → hub): `menuPrefetch` used to ensureGroup 6 menu screens (char/gLoadout/gActivity/chapter/upgrade/gear ≈ 90 MB decoded) at the lobby → now it only `fetch()`es their files into the browser cache (4 at a time, no GPU decode); screens decode on open. `MENU_TEX_SOFT_MB=300`: buildMenuScreen evicts unused menu-class art above 300 MB (recent <20 s still protected). Book-opening art `bk_*` (~44 MB) freed after the lobby with retries (8 s, up to 4) because the 20 s guard blocked the first try. Hub now 326 MB at once → 282 MB after ~30 s. Next stability ideas: boot-class fx (43 MB) / vfx (24 MB) are combat art held in menus. Test texture-safety block.
+
+# Previous delivery: v8.1.126 — owner: lead (signature) mission for every Chapter 2/3 stage
 
 STAGES[5–14] gain `lead`: C2-1 defendNectar (added to its objectives; was Delve-only) · C2-2 cleanAir · C2-3 creepingRoots · C2-4 seasonCycle · C2-5 breakRoots · C3-1 seedRift · C3-2 shakeTrees · C3-3 mirrorPath · C3-4 vaultAltar · C3-5 lastLight. Existing lead logic (bag builder moves the lead to the end of the bag → first mission, once per run via `_leadUsed`). Test special-picks block.
-
-# Previous delivery: v8.1.125 — owner: Frozen Pantry paint phase = short pause, whole map frozen, hero does not attack
-
-fpOpen sets `S.global` (fpTimeStop ignores the dome radius → every non-boss enemy gets `_timeStop`, refreshed every 0.3 s) and `this._holdFire` (update skips the auto-cast skills loop; orbit contact still runs). Cleared in fpThaw, sigClear and startStage. Paint time `T` full 16→10 · light 22→12 (+1.2 s wave). damage() deliberately untouched (taro T5 hash fixture). Tests sig-missions (time-stop line now expects far enemies stopped too) + special-picks block.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

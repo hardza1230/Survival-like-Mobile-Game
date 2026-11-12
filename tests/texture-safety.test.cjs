@@ -19,3 +19,8 @@ assert(method('texEvict').includes('_now-(_A[k]||0)<20000)continue;'),'recently 
 const lg=method('loopGuard');assert(lg.includes("this.textures.on('addtexture',k=>{ (this._texAddT||(this._texAddT={}))[k]=Date.now(); })")&&lg.includes('if(++burst>20)')&&lg.includes('location.reload()')&&!lg.includes('resetTextures'),'burst of crashes = save + reload');
 assert(method('buildLobby').includes("this.texEvict?.(k=>k.startsWith('bk_'),null)"),'book art freed after the lobby');
 console.log('memory thrash guards ok');
+// v8.1.127 stability: Lobby GPU 431 → ~282 MB (headless): prefetch downloads only (no GPU decode), menu soft cap 300 MB, book art freed with retries.
+assert(method('menuPrefetch').includes('fetch(verUrl(u))')&&!method('menuPrefetch').includes('this.ensureGroup('),'prefetch never decodes into GPU');
+assert(s.includes('const MENU_TEX_SOFT_MB=300;')&&s.includes("if(this.texMB()>MENU_TEX_SOFT_MB)this.texEvict((k,c)=>c==='menu',MENU_TEX_SOFT_MB);"),'menu soft cap');
+assert(method('buildLobby').includes("if((n||0)<4)free((n||0)+1);"),'book art freed with retries');
+console.log('lobby memory ok');

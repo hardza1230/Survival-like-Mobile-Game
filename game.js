@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.126';
+const GAME_VERSION = '8.1.127';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.127',date:'2026-11-13',title:'Lighter Lobby',items:['The Lobby now uses about a third less graphics memory, so the game is less likely to run out of memory and reload on phones']},
   {v:'8.1.126',date:'2026-11-12',title:'Stage missions for Chapters 2 and 3',items:['Every Chapter 2 and 3 stage now opens with its own signature mission, like Chapter 1','Fermented Canopy (C2-1) gains Defend the Nectar as its signature mission']},
   {v:'8.1.125',date:'2026-11-12',title:'Frozen Pantry painting pause',items:['While you paint the Frozen Pantry, every monster on the map stands still and your hero stops attacking','The painting phase is shorter (12s, 10s on replay)']},
   {v:'8.1.124',date:'2026-11-12',title:'Boss power moves',items:['Bosses now stop, stand still and gather power inside a red circle, then unleash a big slam with two rings of bullets','After the slam the boss stands still for a moment: your chance to hit back','Big moves come every 14s, faster in later phases']},
@@ -4804,6 +4805,7 @@ function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return
 function lazyArt(k,u,hero){ if(/^(?:char|card|roster)_[a-z]+.*__[a-z]+$/.test(k))return true;   /* v8.1.90 สกิน (key__tag) ไม่โหลดตอนบูต · runArtKeys/skinLoad โหลดเฉพาะสกินที่ใส่ */ const c=artClass(k,u); return /\/(?:hero_motion823|yuzu_forms63|bloodorange_skill96|yuzu_hierarchy97|sesame_vfx817|mint_outline819|mint_needle821|cocoa_outline810|taro_outline810|yuzu_outline810|momo_outline810|sesame_invoker811)\//.test(u||artUrl(k))||!!c&&!(c==='hero'&&artHero(k)===hero); }
 let _lowMemFlag=false; try{ _lowMemFlag=localStorage.getItem('mochi_lowmem')==='1'; }catch(e){}
 try{ if(!localStorage.getItem('mochi_lowmem_reset122')){ localStorage.setItem('mochi_lowmem_reset122','1'); localStorage.removeItem('mochi_lowmem'); _lowMemFlag=false; } }catch(e){}   /* v8.1.122 เจ้าของ: ติดโหมดหน่วยความจำต่ำถาวรจนเกมวนโหลด → ล้างครั้งเดียว */
+const MENU_TEX_SOFT_MB=300;
 const TEX_BUDGET_MB=(_lowMemFlag||Number(navigator.deviceMemory||8)<=4)?340:(Number(navigator.deviceMemory||0)>=8?520:420);   /* v8.1.122 low 250 → 340 (lobby ต้องใช้ ~430 · ต่ำกว่านี้ = ลบแล้วโหลดใหม่วน) · 8 GB 600 → 520 */   // v7.9.72 เจ้าของ: เครื่อง RAM ≥8 GB ได้ 600 MB
 function clearLowMem(){ _lowMemFlag=false; try{ localStorage.removeItem('mochi_lowmem'); }catch(e){} }   // ผู้เล่นเลือก Performance เอง = ปิดโหมดหน่วยความจำต่ำ (มีผลเปิดเกมครั้งหน้า)
 
@@ -9676,7 +9678,8 @@ class Game extends Phaser.Scene {
   /* v7.9.59 พักอยู่ Lobby → โหลดภาพหน้าแท็บล่างไว้ก่อนเงียบ ๆ (ทีละหน้า) กดแล้วหน้าขึ้นทันที */
   menuPrefetch(){ if(this._prefetchOn||this._allComplete)return; this._prefetchOn=true; const list=['char','gLoadout','gActivity','chapter','upgrade','gear'];
     const next=()=>{ if(!list.length){ this._prefetchOn=false; return; } if(this.state!=='menu'){ this._prefetchOn=false; return; } const s=list.shift(),miss=this.menuLazyMissing(s); if(!miss.length){ next(); return; } const ks=new Set(miss);
-      try{ this.ensureGroup(k=>ks.has(k),()=>setTimeout(next,400),{all:true,quiet:true}); }catch(e){ this._prefetchOn=false; } };
+      /* v8.1.127 เสถียรภาพ: prefetch แค่ดาวน์โหลดไฟล์เข้าแคชเบราว์เซอร์ (ไม่ถอดรหัสเข้า GPU) · เดิมโหลด 6 หน้าเข้า GPU ตั้งแต่ lobby (~90 MB) */
+      try{ const urls=miss.map(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]?.url).filter(Boolean); let i=0; const step=()=>{ if(this.state!=='menu'){ this._prefetchOn=false; return; } const b=urls.slice(i,i+4); i+=4; if(!b.length){ setTimeout(next,400); return; } Promise.all(b.map(u=>fetch(verUrl(u)).then(r=>r.ok&&r.blob()).catch(()=>null))).then(()=>setTimeout(step,120)); }; if(typeof fetch==='function')step(); else next(); }catch(e){ this._prefetchOn=false; } };
     setTimeout(next,1500); }
   menuLazyMissing(s){ const re=menuGroupRe(s),ch=this.character||Save.data.character||'momo',out=[];
     const chk=(k,u)=>{ if(re.test(u||'')&&(!['gear','craft'].includes(s)||this.equipmentAssetNeeded(k,u||''))&&lazyArt(k,u,ch)&&artClass(k,u)!=='hero'&&!k.startsWith('screen_')&&!this.realTex(k))out.push(k); };
@@ -11347,7 +11350,7 @@ class Game extends Phaser.Scene {
     // v6.54.1: ภาพยังโหลดอยู่ → วาดหน้านี้ใหม่เมื่อโหลดเสร็จ (กันไอคอนหาย/เห็นเป็น ◆)
     if(this.load&&this.load.isLoading&&this.load.isLoading()&&!this._rebuildOnLoad){ this._rebuildOnLoad=true; const scr=s; let t=null; const re=()=>{ if(t)return; t=setTimeout(()=>{ t=null; this._rebuildOnLoad=false; if(this.state==='menu'&&this.menuScreen===scr&&!this._gachaBusy)this.buildMenuScreen(); },150); }; this.load.once('complete',re); setTimeout(()=>{ if(this._rebuildOnLoad&&this.menuScreen===scr)re(); },4000); }
     // v7.4 ภาพที่แสดงอยู่ = ใช้ล่าสุด · เกินงบ GPU → คืนภาพ lazy ที่ไม่ได้แสดง (LRU)
-    try{ this.texTouch(this.texInUse()); this.texBudget(); }catch(e){} }
+    try{ this.texTouch(this.texInUse()); this.texBudget(); if(this.texMB()>MENU_TEX_SOFT_MB)this.texEvict((k,c)=>c==='menu',MENU_TEX_SOFT_MB); }catch(e){} }   /* v8.1.127 หน้าเมนู: คืนอาร์ตเมนูที่ไม่ได้แสดง เมื่อเกิน 300 MB */
   // v6.52.0: สอนใส่ไอเทม/สุ่ม/คราฟ หลังล้มบอสด่าน 1 ครั้งแรก — สปอตไลต์บังคับกดทีละขั้น
   applyGearTut(){ if(this._featBusy||(this._featQ&&this._featQ.length))return; const d=Save.data; if(this.state!=='menu')return;
     if(this._weaveTour){ const T=this._weaveTour,s=this.menuScreen,find=f=>this.tapZones.find(f);   // v7.9.45 ทัวร์หลังบทสอน: Hub → Gear & Power → Weave & Rank → อัปแก่น → Back → Back → Play → ด่าน 1
@@ -12658,7 +12661,7 @@ class Game extends Phaser.Scene {
   lobbyPreload(){ const d=Save.data||{},c=CHARACTERS[d.character]?d.character:'momo',si=this.lobbyStage?.()||0,sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c),
       miss=[sk,hk,'roster_'+c].filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length||(this._lobbyLoading&&Date.now()-this._lobbyLoading<8000))return; this._lobbyLoading=Date.now();   /* v8.1.110 ภาพสำรอง (canvas) นับว่ายังไม่โหลด · ค้างเกิน 8 วิ = ลองใหม่ */
     try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; this._lobbyBgIn=true; const go=()=>{ if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this._bookCover)return this.time?.delayedCall?.(400,go); this.buildMenuScreen(); }; go(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
-  buildLobby(){ if(!this._bookCover&&!this._bkFreed){ this._bkFreed=true; this.time?.delayedCall?.(1500,()=>{ if(!this._bookCover)this.texEvict?.(k=>k.startsWith('bk_'),null); }); }   /* v8.1.122 อาร์ตหนังสือเปิด (~44 MB) ไม่ใช้แล้วหลังเข้า lobby */
+  buildLobby(){ if(!this._bookCover&&!this._bkFreed){ this._bkFreed=true; const free=(n)=>this.time?.delayedCall?.(n?8000:1500,()=>{ if(this._bookCover){ free(1); return; } const left=Object.keys(this.textures?.list||{}).some(k=>k.startsWith('bk_')&&this.realTex(k)); if(!left)return; this.texEvict?.(k=>k.startsWith('bk_'),null); if((n||0)<4)free((n||0)+1); }); free(0); }   /* v8.1.127 ลองซ้ำจนคืนได้ (ภาพที่เพิ่งโหลดไม่ถึง 20 วิ ถูกกันไว้) */   /* v8.1.122 อาร์ตหนังสือเปิด (~44 MB) ไม่ใช้แล้วหลังเข้า lobby */
     this.menu.setVisible(true);if(typeof Board!=='undefined')Board.submit(false); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(700,()=>this.loginPopup?.()); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c);
