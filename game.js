@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.100';
+const GAME_VERSION = '8.1.101';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.101',date:'2026-11-12',title:'See your boss loot',items:['Miniboss loot bursts out first; the prize chest now drops a moment later, so the wheel no longer hides the loot','Defeated bosses burst Sugar and loot boxes onto the field, which fly to you before the Boss Loot wheel opens']},
   {v:'8.1.100',date:'2026-11-12',title:'Cleaner speech, livelier cards, finished results header',items:['Boss lines and Ruby’s chatter now pop out as small tags at the top corners instead of covering the battlefield','Level-up cards shimmer, their icons bob and a colored CHOOSE tag replaces the old “Tap to choose” pill','The Stage Clear header now sits on a gold-trimmed panel with a hero medallion, turning rays and star sockets']},
   {v:'8.1.99',date:'2026-11-12',title:'Mint Barrage focus & smoother book opening',items:['Mint before choosing a build and Mint Barrage no longer end lances with a wide ice explosion — they win with fast attacks and spreading ice shards (Glacier and Impaler keep their blooms)','Barrage card Wide Bloom is now Far Shards: ice shards fly 20% farther per rank','The book opening before the lobby flows smoothly: the pages appear as the cover opens and stay after they riffle']},
   {v:'8.1.98',date:'2026-11-12',title:'Breach collapse effect',items:['The breach plays its collapse animation again when it closes']},
@@ -14490,7 +14491,7 @@ class Game extends Phaser.Scene {
     this._quitSummary=true;this._clearShovels=0; this._summaryDoubled=false;this._summaryPresentationShown=false; this._stageReward=null;
     this.showStageSummary(false);
   }
-  exitStage(){this.clearBossStory?.(); this._rubyEntry?.destroy();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
+  exitStage(){this._lootTok=(this._lootTok||0)+1;this.clearBossStory?.(); this._rubyEntry?.destroy();this._heroScreen?.kill();if(this._uniqueNotice?.active)this._uniqueNotice.destroy(); Sfx.bpLoopStop?.();Sfx.eventLoopStop?.();Sfx.stopSlotSpin?.(); this.clearDelveMods&&this.clearDelveMods(); this.clearMysteryCards();this._bossLootOpen=false;this._bossRerolled=false;  this.cancelBeat(); this.clearBiome&&this.clearBiome(); this.clearDelveBoss&&this.clearDelveBoss(); this.cancelSnipe&&this.cancelSnipe(); this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearSugarCoins(); if(this._speech){this._speech.ev.remove();this._speech.box.destroy();this._speech=null;}
     this.physics.resume(); this.time.paused=false; this.clearCharSignature(); this.clearBossObjects();   // ปลดหยุดฟิสิกส์+นาฬิกา + ล้าง boss objects ก่อนออก (ไม่งั้นด่านหน้าค้าง)
     if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false;
     this._bossZoom=1;this.applyMainZoom();
@@ -17021,8 +17022,19 @@ class Game extends Phaser.Scene {
    // v7.8.93 diffBest ไม่บันทึกแล้ว (Story ระดับเดียว)
     this.screenFlash(0xffd166,0.42,420);this.burst(x,y,0xffd166);Sfx.chest();
     const _note=canUnlock?((this._storyKeyJustCollected===next?'🗝 Wayseed Key · ':'🔓 Unlocked ')+STAGES[next].name):(progressUnlock?'🛠️ The next Chapter 2 stage is still in production':null);
-    this.time.delayedCall(700,()=>this.openBossLootCards(()=>this.revealStageReward(_note)));
+    const _bl=this._bossLoot,_show=this.bossLootShow?.(x,y,_bl);   /* v8.1.101 เจ้าของ: บอสไม่เห็น loot bomb เพราะวงล้อเด้งทันที → ของระเบิดออก ลอยค้าง แล้วบินเข้าตัวก่อน ค่อยเปิดวงล้อ */
+    this.time.delayedCall(_show?2400:700,()=>this.openBossLootCards(()=>this.revealStageReward(_note)));
   }
+  // ภาพล้วน: Sugar/กล่องของบอสพุ่งออกจากจุดตาย ค้าง ~1.1 วิ แล้วบินเข้าผู้เล่น (รางวัลถูกบวกไปแล้วใน bigFoeLoot — ไม่แตะยอด)
+  bossLootShow(x,y,bl){ if(!this.add||!this.tweens||this._inTutorial)return false; const P=this.player; if(!P)return false;
+    const n=8,boxes=Math.min(4,bl?.boxes||0),items=[]; const mk=(key,emo,sz)=>{ const o=this.textures?.exists?.(key)?this.add.image(x,y,key).setDisplaySize(sz,sz):this.add.text(x,y,emo,{fontSize:Math.round(sz*.8)+'px'}).setOrigin(.5); o.setDepth?.(90000); this.camWorld?.(o); return o; };
+    for(let i=0;i<n;i++)items.push(mk('ic_sugar','🍬',24)); for(let i=0;i<boxes;i++)items.push(mk('gift','🎁',40));
+    this.vfxHitRing?.(x,y,0xffd166,true); this.screenShake?.(160,.008); Sfx.orderCue?.('mission_loot_burst',.5,.3);
+    items.forEach((o,i)=>{ const a=i/items.length*Math.PI*2+Math.random()*.4,d=(o.width>30?70:90)+Math.random()*60,tx=x+Math.cos(a)*d,ty=y+Math.sin(a)*d*.8;
+      this.tweens.add({targets:o,x:tx,y:ty,duration:460,ease:'Quad.out',onComplete:()=>{ this.tweens.add({targets:o,y:ty-8,duration:300,yoyo:true,repeat:1,ease:'Sine.inOut'}); }});
+      this.time.delayedCall(1500+i*45,()=>{ if(!o.active)return; this.tweens.killTweensOf(o); this.tweens.add({targets:o,x:{getEnd:()=>this.player?.x??tx},y:{getEnd:()=>this.player?.y??ty},scale:o.scale*.5,duration:380,ease:'Quad.in',onComplete:()=>{ o.destroy(); if(i%3===0)Sfx.xp?.(); }}); }); });
+    if(bl)this.time.delayedCall(1900,()=>this.floatText?.(this.player?.x||x,(this.player?.y||y)-90,(bl.boxes?'🎁 +'+bl.boxes+' boss loot · ':'')+'🍬 +'+bl.sugar,0xffd166));
+    return true; }
   // v6.54.9: ล้มบอส = การ์ดสุ่ม 3 ใบ (ของหลายชนิด) เลือก 1 แบบ Jackpot Event
   openBossLootCards(done){ if(this._bossLootOpen)return; this._bossLootOpen=true; const _d0=done; done=()=>{this._bossLootOpen=false;_d0&&_d0();};   // v7.8.97 เจ้าของ (แบบ A): รางวัลบอส = วงล้อทอง + ปุ่ม Double or Nothing
     const si=this.stageIndex||0,dr=this.diffMul?this.diffMul().reward:1,S=n=>Math.max(1,Math.round(n*(1+si*0.3)*dr));
@@ -21407,7 +21419,7 @@ class Game extends Phaser.Scene {
     if(e._hungerHalo){e._hungerHalo.forEach(o=>{if(o&&o.active)o.destroy();});e._hungerHalo=null;}
     if(!victory&&!e._missionDeathArt){this.stage5DeathGhost(e);this.chapter2DeathGhost(e);}
     if(isBoss&&!victory) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
-    if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ const bl=this.bigFoeLoot(e.x,e.y,'boss'); if(bl)this.time.delayedCall(900,()=>this.floatText?.(this.player?.x||e.x,(this.player?.y||e.y)-90,(bl.boxes?'🎁 +'+bl.boxes+' boss loot · ':'')+'🍬 +'+bl.sugar,0xffd166)); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
+    if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ this.bigFoeLoot(e.x,e.y,'boss'); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
     { const wo=this.waveObjective,_fb=this.boss; if(isBoss||(!this.bossRush&&_fb&&_fb.active&&_fb.isBoss)){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(this.usesStoryBudget?.())this.storyFieldDrops(e);
     else if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
@@ -21437,7 +21449,7 @@ class Game extends Phaser.Scene {
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
     if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
-    if(isMini){ this._nextChestTier=this.miniChestTier(); this.spawnChest(e.x,e.y,'mini');this.onWaveCleared(false,true); return; }   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
+    if(isMini){ const mt=this.miniChestTier(),mx=e.x,my=e.y,ms=this._lootTok||0; this.time.delayedCall(this._inTutorial||this.bossRush?0:2300,()=>{ if(this.state==='menu'||this.state==='summary'||ms!==(this._lootTok||0))return; this._nextChestTier=mt; this.spawnChest(mx,my,'mini'); });this.onWaveCleared(false,true); return; }   /* v8.1.101 เจ้าของ: วงล้อ (Spin) เปิดทับ loot bomb → กล่องมินิบอสหล่นหลังของระเบิดออกและดูดเข้าตัวแล้ว (~2.3 วิ) */   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ if(b._chargeFx){b._chargeFx.destroy();b._chargeFx=null;} b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้

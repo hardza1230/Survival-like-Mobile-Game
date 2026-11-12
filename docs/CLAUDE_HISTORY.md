@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.99 — owner: Mint lance bloom off for level 1 + Barrage; book opening continuity
+
+frostShatterBurst: noBloom = !basicAttack.path (before a build) || path==='barrage' → no mintBurstFx and no bloom AoE damage; shards unchanged (Glacier/Impaler keep the bloom). Barrage card p_bar_wide renamed Far Shards: shard life ×(1+.2·rank) instead of bloom radius (fixture tests/fixtures/cocoa-rework-baseline.json updated). bookOpeningPlus: page-riffle layer added below the opening cover (bk order plate,em,cl,rf,op,…), shown at 2150 ms, rests on frame 0 after the riffle (was hidden → blank gap). Test tests/book-open-continuity.test.cjs.
+
 # Previous delivery: v8.1.98 — review fix: breach collapse effect restored
 
 v8.1.96 (art order 76) rewrote the breach timer (total open time capped at lifeMax 20s via S.openLeft — kills extend life only up to the remaining cap) and dropped `artFx('hm_collapse')` when phase → 'close'; restored. The 20s cap is a gameplay change made by the art AI — owner confirmed 12 Nov: they ordered it (endless kill-extension meant the mission could never finish) — keep the cap.
