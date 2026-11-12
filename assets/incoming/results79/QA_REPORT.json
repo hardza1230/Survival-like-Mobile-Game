@@ -1,0 +1,8 @@
+[
+  {"key": "sc79_header_plate", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "sc79_medallion", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "sc79_medallion_back", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "sc79_rays", "result": "pass", "reason": "mechanical checks passed; 12 ray sectors at three radii"},
+  {"key": "sc79_star_socket", "result": "pass", "reason": "mechanical checks passed"},
+  {"key": "core79_heart_seed", "result": "pass", "reason": "mechanical checks passed; all three target strand colors present"}
+]

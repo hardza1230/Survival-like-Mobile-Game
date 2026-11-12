@@ -1,6 +1,6 @@
 # 69 — สกินเต็มตัวฮีโร่ชุดแรก (Festival Collection) + สัตว์เลี้ยงความละเอียดสูง · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 10 พ.ย. 2026 · ยังไม่มีโค้ด (โค้ดจะเตรียมช่อง Skin รออาร์ต)
+สถานะ: 📦 ส่งแล้ว รอผูก
 ส่งไฟล์ที่ `assets/incoming/skins69/<hero>/` (แยกโฟลเดอร์ต่อฮีโร่) และ `assets/incoming/skins69/pets/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json` ที่ `assets/incoming/skins69/`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือในภาพ**
 ตัวละครต้องตรงโมเดลตาม `docs/CHARACTER_BIBLE.md` (หน้า ผม สีตา ทรงตัว เหมือนเดิม — เปลี่ยนแค่ชุด)
@@ -95,5 +95,8 @@
 - pack script: `scripts/pack-skins69.py` (WebP, ชีตด่านคงขนาดเฟรม 128, card ลด 50% เป็น 384×512 ตามชุดเดิมถ้าเดิมถูกลด)
 
 ## ส่งมอบ
-(ฝั่งอาร์ตกรอก: วันที่ · ฮีโร่ที่ส่ง · ไฟล์ที่ขาด)
+- 12 พ.ย. 2026 · ส่งไฟล์ฮีโร่จริงครบ 61 ไฟล์ · ไฟล์ที่ขาด 0
+- Momo 10 · Mint 12 · Cocoa 21 · Taro 6 · Yuzu 6 · Sesame 6
+- รวม 7 ไฟล์ส่วนกลางที่ส่งไว้แล้วเป็น 68/68 ใน MANIFEST · รุ่นทดลอง Mint Impaler Release v2 เก็บเป็น candidate
+- ตรวจทุกฮีโร่ด้วย `scripts/qa-skin69.py --fix` และตรวจไฟล์ส่งมอบซ้ำกับต้นฉบับ · 📦 ส่งแล้ว รอผูก
 MANIFEST ต่อไฟล์: `key`, `file`, `hero`, `skin`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `loop`, `anchor` (`feet`/`center`), `background` (`transparent`), `sourceKey` (key ต้นฉบับที่ใช้เป็นแบบท่า)

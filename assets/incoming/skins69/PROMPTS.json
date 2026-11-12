@@ -1,6 +1,6 @@
 {
   "generator": "built-in ImageGen",
-  "status": "partial",
+  "status": "complete",
   "generations": [
     {
       "key": "card_momo_sakura",
@@ -472,6 +472,374 @@
       "card": "sesame/candidates/card_sesame_moon.png",
       "prompt": "Edit ONLY the FIRST original 128px game animation frame. Preserve the exact character's pose, expression, face, hair, orientation, position and scale. Change only the clothing to black-white moon rabbit hood and moon patterned short cloak, matching SECOND character outfit. Keep the original animation silhouette and attached weapon / floating orb position. The result is a single game sprite in the same relative position, fully transparent background with no backdrop, letters, numbers, extra figures or added giant effects.",
       "status": "rejected_pose_or_style_changed"
+    }
+  ],
+  "promotions": [
+    {
+      "key": "card_momo__sakura",
+      "file": "momo/card_momo_sakura.png",
+      "candidate": "momo/candidates/card_momo_sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "roster_momo__sakura",
+      "file": "momo/roster_momo_sakura.png",
+      "candidate": "momo/candidates/roster_momo_sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "card_mint__snow",
+      "file": "mint/card_mint_snow.png",
+      "candidate": "mint/candidates/card_mint_snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "roster_mint__snow",
+      "file": "mint/roster_mint_snow.png",
+      "candidate": "mint/candidates/roster_mint_snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "card_cocoa__chef",
+      "file": "cocoa/card_cocoa_chef.png",
+      "candidate": "cocoa/candidates/card_cocoa_chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "roster_cocoa__chef",
+      "file": "cocoa/roster_cocoa_chef.png",
+      "candidate": "cocoa/candidates/roster_cocoa_chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "card_taro__star",
+      "file": "taro/card_taro_star.png",
+      "candidate": "taro/candidates/card_taro_star.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "roster_taro__star",
+      "file": "taro/roster_taro_star.png",
+      "candidate": "taro/candidates/roster_taro_star.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "card_yuzu__summer",
+      "file": "yuzu/card_yuzu_summer.png",
+      "candidate": "yuzu/candidates/card_yuzu_summer.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "roster_yuzu__summer",
+      "file": "yuzu/roster_yuzu_summer.png",
+      "candidate": "yuzu/candidates/roster_yuzu_summer.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "card_sesame__moon",
+      "file": "sesame/card_sesame_moon.png",
+      "candidate": "sesame/candidates/card_sesame_moon.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "roster_sesame__moon",
+      "file": "sesame/roster_sesame_moon.png",
+      "candidate": "sesame/candidates/roster_sesame_moon.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo__sakura",
+      "file": "momo/char_momo__sakura.png",
+      "candidate": "momo/candidates/char_momo__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo_idle__sakura",
+      "file": "momo/char_momo_idle__sakura.png",
+      "candidate": "momo/candidates/char_momo_idle__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo_run__sakura",
+      "file": "momo/char_momo_run__sakura.png",
+      "candidate": "momo/candidates/char_momo_run__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo_attack__sakura",
+      "file": "momo/char_momo_attack__sakura.png",
+      "candidate": "momo/candidates/char_momo_attack__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo_dash__sakura",
+      "file": "momo/char_momo_dash__sakura.png",
+      "candidate": "momo/candidates/char_momo_dash__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo_hurt__sakura",
+      "file": "momo/char_momo_hurt__sakura.png",
+      "candidate": "momo/candidates/char_momo_hurt__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_momo_sniper_run_motion823__sakura",
+      "file": "momo/char_momo_sniper_run_motion823__sakura.png",
+      "candidate": "momo/candidates/char_momo_sniper_run_motion823__sakura.png",
+      "processing": "existing ImageGen candidate aligned by qa-skin69.py --fix"
+    },
+    {
+      "key": "char_momo_sniper_charge_motion823__sakura",
+      "file": "momo/char_momo_sniper_charge_motion823__sakura.png",
+      "candidate": "momo/candidates/char_momo_sniper_charge_motion823__sakura.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint__snow",
+      "file": "mint/char_mint__snow.png",
+      "candidate": "mint/candidates/char_mint__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_run__snow",
+      "file": "mint/char_mint_run__snow.png",
+      "candidate": "mint/candidates/char_mint_run__snow.png",
+      "processing": "existing ImageGen candidate aligned by qa-skin69.py --fix"
+    },
+    {
+      "key": "char_mint_attack__snow",
+      "file": "mint/char_mint_attack__snow.png",
+      "candidate": "mint/candidates/char_mint_attack__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_gale__snow",
+      "file": "mint/char_mint_gale__snow.png",
+      "candidate": "mint/candidates/char_mint_gale__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_bloom_motion823__snow",
+      "file": "mint/char_mint_bloom_motion823__snow.png",
+      "candidate": "mint/candidates/char_mint_bloom_motion823__snow.png",
+      "processing": "existing ImageGen candidate aligned by qa-skin69.py --fix"
+    },
+    {
+      "key": "char_mint_impaler_charge__snow",
+      "file": "mint/char_mint_impaler_charge__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_charge__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_impaler_move__snow",
+      "file": "mint/char_mint_impaler_move__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_move__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_impaler_release__snow",
+      "file": "mint/char_mint_impaler_release__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_release__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_impaler_run_motion823__snow",
+      "file": "mint/char_mint_impaler_run_motion823__snow.png",
+      "candidate": "mint/candidates/char_mint_impaler_run_motion823__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_mint_lance_charged__snow",
+      "file": "mint/char_mint_lance_charged__snow.png",
+      "candidate": "mint/candidates/char_mint_lance_charged__snow.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa__chef",
+      "file": "cocoa/char_cocoa__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_run__chef",
+      "file": "cocoa/char_cocoa_run__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_run__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_attack__chef",
+      "file": "cocoa/char_cocoa_attack__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_attack__chef.png",
+      "processing": "existing ImageGen candidate aligned by qa-skin69.py --fix"
+    },
+    {
+      "key": "char_cocoa_hurt__chef",
+      "file": "cocoa/char_cocoa_hurt__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_hurt__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_victory__chef",
+      "file": "cocoa/char_cocoa_victory__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_victory__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_dash_jab__chef",
+      "file": "cocoa/char_cocoa_dash_jab__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_dash_jab__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_dash_leap__chef",
+      "file": "cocoa/char_cocoa_dash_leap__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_dash_leap__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_fire_jab__chef",
+      "file": "cocoa/char_cocoa_fire_jab__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_fire_jab__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_fire_fin__chef",
+      "file": "cocoa/char_cocoa_fire_fin__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_fire_fin__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_phantom__chef",
+      "file": "cocoa/char_cocoa_phantom__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_phantom__chef.png",
+      "processing": "existing ImageGen candidate aligned by qa-skin69.py --fix"
+    },
+    {
+      "key": "char_cocoa_rocket__chef",
+      "file": "cocoa/char_cocoa_rocket__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_rocket__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_rocket_motion823__chef",
+      "file": "cocoa/char_cocoa_rocket_motion823__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_rocket_motion823__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_motion823__chef",
+      "file": "cocoa/char_cocoa_titan_motion823__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_motion823__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_run_motion823__chef",
+      "file": "cocoa/char_cocoa_titan_run_motion823__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_run_motion823__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_charge__chef",
+      "file": "cocoa/char_cocoa_titan_charge__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_charge__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_walk__chef",
+      "file": "cocoa/char_cocoa_titan_walk__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_walk__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_hop__chef",
+      "file": "cocoa/char_cocoa_titan_hop__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_hop__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_slam__chef",
+      "file": "cocoa/char_cocoa_titan_slam__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_slam__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_cocoa_titan_colossus__chef",
+      "file": "cocoa/char_cocoa_titan_colossus__chef.png",
+      "candidate": "cocoa/candidates/char_cocoa_titan_colossus__chef.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_taro__star",
+      "file": "taro/char_taro__star.png",
+      "candidate": "taro/candidates/char_taro__star.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_taro_run__star",
+      "file": "taro/char_taro_run__star.png",
+      "candidate": "taro/candidates/char_taro_run__star.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_taro_attack__star",
+      "file": "taro/char_taro_attack__star.png",
+      "candidate": "taro/candidates/char_taro_attack__star.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_taro_plasma_motion823__star",
+      "file": "taro/char_taro_plasma_motion823__star.png",
+      "candidate": "taro/candidates/char_taro_plasma_motion823__star.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_yuzu__summer",
+      "file": "yuzu/char_yuzu__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu__summer.png",
+      "processing": "existing ImageGen candidate aligned by qa-skin69.py --fix"
+    },
+    {
+      "key": "char_yuzu_run__summer",
+      "file": "yuzu/char_yuzu_run__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu_run__summer.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_yuzu_attack__summer",
+      "file": "yuzu/char_yuzu_attack__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu_attack__summer.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_yuzu_combo_motion823__summer",
+      "file": "yuzu/char_yuzu_combo_motion823__summer.png",
+      "candidate": "yuzu/candidates/char_yuzu_combo_motion823__summer.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_sesame__moon",
+      "file": "sesame/char_sesame__moon.png",
+      "candidate": "sesame/candidates/char_sesame__moon.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_sesame_run__moon",
+      "file": "sesame/char_sesame_run__moon.png",
+      "candidate": "sesame/candidates/char_sesame_run__moon.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_sesame_attack__moon",
+      "file": "sesame/char_sesame_attack__moon.png",
+      "candidate": "sesame/candidates/char_sesame_attack__moon.png",
+      "processing": "existing ImageGen candidate"
+    },
+    {
+      "key": "char_sesame_meteor_motion823__moon",
+      "file": "sesame/char_sesame_meteor_motion823__moon.png",
+      "candidate": "sesame/candidates/char_sesame_meteor_motion823__moon.png",
+      "processing": "existing ImageGen candidate"
     }
   ]
 }

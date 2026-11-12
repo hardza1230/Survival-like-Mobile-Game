@@ -1,0 +1,86 @@
+[
+  {
+    "key": "sc79_header_plate",
+    "file": "sc79_header_plate.png",
+    "bytes": 89318,
+    "sha256": "47d24a01d4ae3b3a3e1931aedc92c75e1eb7627bdce03dd0f0d84b34facc538f",
+    "width": 512,
+    "height": 192,
+    "frameWidth": 512,
+    "frameHeight": 192,
+    "frameCount": 1,
+    "columns": 1,
+    "background": "transparent",
+    "nineSlice": [
+      48,
+      40,
+      48,
+      40
+    ]
+  },
+  {
+    "key": "sc79_medallion",
+    "file": "sc79_medallion.png",
+    "bytes": 43140,
+    "sha256": "269764e3b21dd1c869a8c70b469144e85fc8e16942a167c4be1cd9f1c0d7a948",
+    "width": 256,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 1,
+    "columns": 1,
+    "background": "transparent"
+  },
+  {
+    "key": "sc79_medallion_back",
+    "file": "sc79_medallion_back.png",
+    "bytes": 76918,
+    "sha256": "33f38d4fcf0c9055b1218f3bcfa0020f6018abae660f116ee44897229f98c37c",
+    "width": 256,
+    "height": 256,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "frameCount": 1,
+    "columns": 1,
+    "background": "transparent"
+  },
+  {
+    "key": "sc79_rays",
+    "file": "sc79_rays.png",
+    "bytes": 94076,
+    "sha256": "b8dea4a873b3c42fc210bd4adcd6060e7e33741f380ea55980afb07aafb46104",
+    "width": 384,
+    "height": 384,
+    "frameWidth": 384,
+    "frameHeight": 384,
+    "frameCount": 1,
+    "columns": 1,
+    "background": "black"
+  },
+  {
+    "key": "sc79_star_socket",
+    "file": "sc79_star_socket.png",
+    "bytes": 39254,
+    "sha256": "1b3f8bea69e8d971f167ebdf19565bc29f16c32630342f93b81a3495ac753cb1",
+    "width": 256,
+    "height": 128,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameCount": 2,
+    "columns": 2,
+    "background": "transparent"
+  },
+  {
+    "key": "core79_heart_seed",
+    "file": "core79_heart_seed.png",
+    "bytes": 734566,
+    "sha256": "34fa9bf3b8cd5b0e2d3894ad6181161d0d7452ac1fbf14f32e6a0f0c0584ecf1",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 768,
+    "frameHeight": 512,
+    "frameCount": 1,
+    "columns": 1,
+    "background": "transparent"
+  }
+]

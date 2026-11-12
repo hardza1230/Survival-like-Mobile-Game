@@ -1,6 +1,6 @@
 # 79 — หัวหน้าจบด่าน (ชุดอาร์ต) + ภาพเรื่อง Flavor Cores · ใบสั่งงานอาร์ต
 
-สถานะ: 🟡 รออาร์ต · เขียน 12 พ.ย. 2026 (v8.1.104) · **AI ฝั่งอาร์ตทำแค่ไฟล์ภาพแล้วส่งที่โฟลเดอร์ส่งมอบ — ไม่ต้องแก้โค้ด ไม่ต้องปล่อยเวอร์ชัน** (เจ้าของ 12 พ.ย.: Claude ฝั่งโค้ดเป็นคนผูกเอง)
+สถานะ: 📦 ส่งแล้ว รอผูก
 ส่งไฟล์ที่ `assets/incoming/results79/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · เข้าชุดกับ `sc44_frame` (ใบ 44) · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ/ตัวเลข**
 
@@ -41,4 +41,6 @@
 7. **ปล่อย:** ตาม skill release · อัปเดต README "🟢 ผูกแล้ว vX · รอ QA มือถือ"
 
 ## ส่งมอบ
+
+- 12 พ.ย. 2026 · ส่งครบ 6 ไฟล์ที่ `assets/incoming/results79/` · ไฟล์ที่ขาด 0 · 📦 ส่งแล้ว รอผูก
 MANIFEST ต่อไฟล์: `key`, `file`, `bytes`, `sha256`, `width`, `height`, `frameWidth`, `frameHeight`, `frameCount`, `columns`, `background` (`transparent`/`black`), `nineSlice` (header_plate)

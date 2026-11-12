@@ -1,0 +1,38 @@
+{
+  "sc79_header_plate": {
+    "prompt": "Original Mochi Mayhem game raster art, soft hue-matched dark outlines, hand-painted confectionery textures and restrained candy gloss. Wide horizontal result-header plate, exact target aspect 512:192. Solid quiet dark plum velvet centre for overlay labels. Continuous antique candy gold trim with small leaf and ribbon engraving confined to four rounded 9-slice corners (48×40-equivalent), straight evenly stretchable rails. Perfectly front-facing, all frame edges isolated, no plaques or interior decorations. Actual transparent exterior, no simulated checkerboard. No letters, numbers, watermarks or crop guides.",
+    "references": [
+      "assets\\art\\stage_clear\\sc44_frame.webp"
+    ]
+  },
+  "sc79_medallion": {
+    "prompt": "Original Mochi Mayhem game raster art, soft hue-matched dark outlines, hand-painted confectionery textures and restrained candy gloss. One perfectly concentric round antique gold candy medallion frame, front view. Thin-to-medium raised ornate rim with two tiny leaf ornaments and one small star on top integrated into gold rim. Inner radius exactly 44 percent of canvas size, interior wholly transparent and empty, no inner disc, exterior true alpha. Rim nearly fills the square, keep safe breathing room. Actual transparent exterior, no simulated checkerboard. No letters, numbers, watermarks or crop guides.",
+    "references": [
+      "assets\\art\\stage_clear\\sc44_frame.webp"
+    ]
+  },
+  "sc79_medallion_back": {
+    "prompt": "Original Mochi Mayhem game raster art, soft hue-matched dark outlines, hand-painted confectionery textures and restrained candy gloss. A single perfect round soft rosy-plum gradient disc for underneath a game hero portrait, soft warm pink central light and muted purple edges, faint fine sugar flake texture, clean subtle round silhouette on fully transparent outside. No border, portrait, objects or stars. Actual transparent exterior, no simulated checkerboard. No letters, numbers, watermarks or crop guides.",
+    "references": []
+  },
+  "sc79_rays": {
+    "prompt": "Original Mochi Mayhem game raster art, soft hue-matched dark outlines, hand-painted confectionery textures and restrained candy gloss. A single centered radial sunburst with exactly twelve softly glowing warm gold amber rays in a square canvas. Clear black gaps between the rays, soft fade at tips and outer border, no white core. Pure solid #000 black background, no illustration or ornaments. Pure opaque black background. No letters, numbers, watermarks or crop guides.",
+    "references": [],
+    "processing": "Isolated a painted ray from the generated image and rotated it in 30-degree increments to achieve exactly 12 rays."
+  },
+  "sc79_star_socket": {
+    "prompt": "Original Mochi Mayhem game raster art, soft hue-matched dark outlines, hand-painted confectionery textures and restrained candy gloss. Exactly two separate square cels in a horizontal strip with generous transparent margins. The same front-facing round recessed reward socket in both cells, 0 on the left is a dark plum recess with silver rim, 1 on the right is a warm amber recess with gold rim and a soft halo. Both holes entirely empty. No stars or designs inside. Actual transparent exterior, no simulated checkerboard. No letters, numbers, watermarks or crop guides.",
+    "references": [
+      "assets\\art\\stage_clear\\sc44_frame.webp"
+    ]
+  },
+  "core79_heart_seed": {
+    "prompt": [
+      "Original Mochi Mayhem game raster art, soft hue-matched dark outlines, hand-painted confectionery textures and restrained candy gloss. Painterly 3:2 story illustration for Mochi Mayhem, inspired by the Heart Seed in the reference, one glowing golden strawberry seed shaped like a heart levitating in Grandma's cozy dim confectionery kitchen. Exactly three braided luminous threads wrap the seed, each visibly distinct throughout: rosy red Life #ff5f7a, amber gold Flavor #f0a54a, pale sky blue Oath #6ec6ff. Small Sugar crystal grains drift into the threads. A distant warm lamp and softly painted cabinet shapes give sense of Grandma's kitchen. Warm affectionate storytelling, centerpiece reads at 300px. Wide softly fading true-alpha vignette perimeter, no people or mascots. Actual transparent exterior, no simulated checkerboard. No letters, numbers, watermarks or crop guides.",
+      "Original Mochi Mayhem illustration, landscape 3:2, no text, no numbers, no characters. The attached art is a reference for the golden strawberry Heart Seed only. Paint one small glowing golden strawberry seed shaped like a heart floating centrally inside Grandma’s softly lit dark candy kitchen. Three distinct thick saturated fiber threads visibly braid loosely around it, each seen uninterrupted along multiple large arcs: one vivid rose red (#ff5f7a), one warm orange gold (#f0a54a), and one prominent unmistakable cool bright sky-blue (#6ec6ff). Give the saturated sky-blue strand equal prominence and area to the gold and rose strands, including a large foreground blue curve across the lower half. Do not bleach the colored strands toward white. Tiny recovered sugar flecks float toward the weave. Very soft dark vignette fade to real transparent alpha around the entire landscape perimeter. Cute hand-painted candy-fantasy art with warm lantern ambience. No textual labels or symbols."
+    ],
+    "references": [
+      "assets\\art\\story\\cs_pup_seed_wake.webp"
+    ]
+  }
+}
