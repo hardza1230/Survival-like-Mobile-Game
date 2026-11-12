@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.118 — owner: camera too far, monsters blend into the floor
+
+`computeViewZoom` BASE 0.70 → 0.78 (~11% closer). `drawFoeShadows()` (called from drawShadows each frame, iso): one canvas radial-gradient texture `mm_soft_shadow` (128×48, created once) + image pool `_foeSh` at depth -99000 (camWorld; same texture/depth = one batch), per visible enemy: width 0.72×displayWidth (26–260), height ×0.34, at y+0.4×displayHeight, alpha follows the enemy (×1.25 in Chapter 2.5D); extra pool images hidden. Not Graphics ellipses (old Android WebView black-bar bug). Test `tests/foe-shadow.test.cjs`. Owner to check FPS + shadow placement on the phone. Open questions from the owner: Elite has no own art (reuses the stage monster scaled + crest) → art order on request; ink/brush outline style (Demon Slayer-like) → asked whether outline or shadow, art order for one hero as a sample.
+
 # Previous delivery: v8.1.117 — owner bug: C1-1 clear → Lobby froze
 
 Cause: placeholder (canvas) textures were removed with `textures.remove` while an object still showed them → WebGL `frame.source` null → 'glTexture' TypeError inside the render step kills Phaser's RAF loop (screen frozen). Reproduced headless (stage start before boot preload finished, `p_box` dropped by preloadAll). Fix: `texSafeRemove(k)` (used by preloadAll `drop`, ensureGroup `add`, ensureDeferred `add`) moves every object using k to `__DEFAULT`, removes, and restores the real texture + frame on the TextureManager `addtexture` event. Safety net `loopGuard()` (Game create) wraps `game.loop.callback`: an exception → `texHeal()` (objects with a missing texture/frame.source → `__DEFAULT`), console.error ×5 max, renderer.resetTextures, and the loop keeps running. Test `tests/texture-safety.test.cjs`.

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.119**. Next release:8.1.120. Fetch the deploy branch before new work.
+Current release: **8.1.120**. Next release:8.1.121. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.119 — owner: green grid under the first Lobby; remove the white outline around the hero
+# Latest delivery: v8.1.120 — owner: survivor-genre readability extras (items 3, 6, 7, 8; item 4 low-HP vignette already existed in tickNearDeath)
+
+`spawnRise(e,x,y)` (end of spawnEnemy): resets `_occ`; spawn inside camera worldView (non-boss) → alpha 0→1 300 ms, purple ground ring, `_spawnGrace` now+420 ms → `touchEnemy` returns. Occlusion fade in `drawFoeShadows`: enemy with depth above the player, |dx|<0.42×width, dy<0.7×height → alpha ×0.5 (`_occ/_occA`, restored when clear; shadow uses the original alpha). `drawPlayerLight()` (called from drawFoeShadows): canvas radial gradient `mm_player_light` 256², image 620×460 ADD at depth -99500, alpha .17 (.12 in Chapter 2.5D), only in play. EXP hop: `dropOrb` sets `o._hop` (14–36 px, 0.3 s, 22 px arc) — orb loop moves it and skips magnet/pickup until landed (vacuum cancels). Tests foe-shadow (extras block), sig-missions touchEnemy contract loosened.
+
+# Previous delivery: v8.1.119 — owner: green grid under the first Lobby; remove the white outline around the hero
 
 Green grid = `syncBgTile` floor pool drawn with the TileSprite `displayTexture` '__MISSING' (bgTile created with 'bg1', which is stage-lazy and not loaded at boot → Phaser missing-texture green boxes, visible under the Lobby). Now: displayTexture key missing / '__*' / not in TextureManager → hide bgTile + pool and return; pool images start as '__DEFAULT'. Hero outline: `tickPlayerReadability` no longer draws `_readPlayerEdge` (cream tint-fill copy ×1.055, alpha .48 from v8.0.35); destroys a leftover one; foot ring `cr_player_ring` kept. Tests arena-edges (missing-floor block + textures stub) and combat-readability (no edge, ring checks) updated.
-
-# Previous delivery: v8.1.118 — owner: camera too far, monsters blend into the floor
-
-`computeViewZoom` BASE 0.70 → 0.78 (~11% closer). `drawFoeShadows()` (called from drawShadows each frame, iso): one canvas radial-gradient texture `mm_soft_shadow` (128×48, created once) + image pool `_foeSh` at depth -99000 (camWorld; same texture/depth = one batch), per visible enemy: width 0.72×displayWidth (26–260), height ×0.34, at y+0.4×displayHeight, alpha follows the enemy (×1.25 in Chapter 2.5D); extra pool images hidden. Not Graphics ellipses (old Android WebView black-bar bug). Test `tests/foe-shadow.test.cjs`. Owner to check FPS + shadow placement on the phone. Open questions from the owner: Elite has no own art (reuses the stage monster scaled + crest) → art order on request; ink/brush outline style (Demon Slayer-like) → asked whether outline or shadow, art order for one hero as a sample.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.119';
+const GAME_VERSION = '8.1.120';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.120',date:'2026-11-12',title:'Clearer battles',items:['Monsters that appear on screen fade in with a dust ring and cannot hurt you for a split second','Monsters standing in front of your hero turn see-through','A soft light around your hero','EXP gems pop out in a little arc before flying to you']},
   {v:'8.1.119',date:'2026-11-12',title:'Cleaner lobby and hero',items:['No more green grid under the Lobby while the first pictures load','The pale outline around your hero is gone (the foot ring stays)']},
   {v:'8.1.118',date:'2026-11-12',title:'Closer camera, monster shadows',items:['The battle camera is a little closer','Every monster now casts a soft shadow, so they stand out from the floor']},
   {v:'8.1.117',date:'2026-11-12',title:'Freeze fix',items:['Fixed a freeze when going back to the Lobby after clearing a stage','If a picture is swapped while it is on screen, the game now keeps running instead of freezing']},
@@ -19851,8 +19852,12 @@ class Game extends Phaser.Scene {
     if(e.tintColor)e.setTint(e.tintColor); else e.clearTint();
     e._bloat=false; e._feast=false; if(this._biome==='fermented'&&!e.isBoss&&!e.isMini&&Math.random()<0.18){ e._bloat=true; e.tintColor=0xb07cff; e.setTint(0xb07cff); } e._ember=false; if(this._biome==='spicy'&&!e.isBoss&&!e.isMini&&Math.random()<0.15){ e._ember=true; e._emberT=Math.random(); e.tintColor=0xff7a3d; e.setTint(0xff7a3d); }
     this.camWorld(e);
-    this.vfxSpawnPoof(x,y);this.storySpawned?.();return e;
+    this.vfxSpawnPoof(x,y);this.spawnRise?.(e,x,y);this.storySpawned?.();return e;
   }
+  /* v8.1.120 เจ้าของ: มอนที่เกิดในจอ (ขอบแผนที่) ไม่โผล่ทับตัวทันที → ค่อย ๆ ปรากฏ 0.3 วิ + วงฝุ่นที่พื้น + ชนไม่เจ็บ 0.42 วิ · เกิดนอกจอไม่ต้องทำอะไร */
+  spawnRise(e,x,y){ if(!e)return; e._occ=false; const v=this.cameras?.main?.worldView; if(!v||!v.width||!v.contains?.(x,y)||e.isBoss)return; const now=this.time?.now||0; e._spawnGrace=now+420;
+    if(this.tweens){ e.setAlpha?.(0); this.tweens.add({targets:e,alpha:1,duration:300,ease:'Sine.out'}); const gy=y+(e.displayHeight||40)*.4,r=this.camWorld(this.add.ellipse(x,gy,24,9,0xb98cff,.0).setStrokeStyle(3,0xb98cff,.85).setDepth(-98990)); this.tweens.add({targets:r,scaleX:3.2,scaleY:3.2,alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>r.destroy()}); } }
+
 
   /* ---------- COMBAT ---------- */
   getBullet(x,y,tint,scale){
@@ -21750,7 +21755,8 @@ class Game extends Phaser.Scene {
     if(!o){if(budget){budget.issued+=value;budget.paid+=value;}this.gainXp(value);return;}   // v7.9.8 pool เต็ม = ได้ EXP ทันทีทุกโหมด (เดิมเฉพาะ Story)
     if(budget)budget.issued+=value;
     o._storyBudget=budget; o.value=value; o._vac=false; this.orbSkin(o,value); o.setRotation(0).setDepth(80000);
-    o.body.setAllowGravity(false); o.setScale(o._sc); this.camWorld(o); }
+    o.body.setAllowGravity(false); o.setScale(o._sc); this.camWorld(o);
+    { const a=Math.random()*Math.PI*2,r=14+Math.random()*22; o._hop={t:0,x0:x,y0:y,x1:x+Math.cos(a)*r,y1:y+Math.sin(a)*r*.7}; }   /* v8.1.120 เจ้าของ: EXP กระเด็นเป็นโค้งออกจากมอนก่อน แล้วค่อยดูดเข้าตัว */ }
   collectOrb(player,o){ if(!o.active)return; if(this._inTutorial)this._coachOrbs=(this._coachOrbs||0)+1; const ox=o.x,oy=o.y,ov=o.value||1; o.setActive(false).setVisible(false); if(o.body)o.body.enable=false; o.clearTint(); this.xpTrailOff(o); if(o._storyBudget)o._storyBudget.paid+=ov;Sfx.xp(); this.jelly(0.9,-0.9);
     {const t=o._tier||1;if(!o._xp||!this.xpFxOk()||!(t>=5?this.heroFx('vfx_xp_pickup_big',ox,oy,100,{depth:80001}):this.heroFx('vfx_xp_pickup',ox,oy,48,{tint:XP_TIER_COL[t],depth:80001})))this.vfxCollectSparkle(ox,oy,this.orbStyle(ov).tint);} this.gainXp(ov); this.fireRecipes('xp20'); }
   // ---- ไอเทมฟื้นฟู HP ----
@@ -22348,7 +22354,7 @@ class Game extends Phaser.Scene {
   // v4.31: gacha ลดเกรด — ส่วนใหญ่ common/rare, epic หายาก, ไม่มี legend (legend ได้จาก forge/ดรอปนรกเท่านั้น) · v4.32 รับ itemLevel ที่ผู้เล่นเลือก
   gachaRoll(itemLevel=1){ const r=Math.random(), roll=r<0.68?'common':r<0.97?'rare':'epic';   // 68% common · 29% rare · 3% epic
     for(const t of [roll,'rare','common','epic']){ const it=this.grantGear(t,{gacha:true,itemLevel}); if(it)return it; } return null; }
-  touchEnemy(player,e){ if(!e.active||this.player.iframe>0||e._timeStop)return;
+  touchEnemy(player,e){ if(!e.active||this.player.iframe>0||e._timeStop||(e._spawnGrace&&(this.time?.now||0)<e._spawnGrace))return;
     if(!e.shooter&&!e.acid&&!e.bomber&&!e.dasher&&this.anims.exists((e._enemyArtKey||e.texture.key)+'_attack'))this.enemyAction(e,'attack',340);
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.())this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
@@ -23611,11 +23617,18 @@ class Game extends Phaser.Scene {
     this.drawFoeShadows?.();
   }
   /* v8.1.118 เจ้าของ: มอนกลืนไปกับฉาก → เงานุ่มใต้เท้าทุกตัว · ใช้รูปเดียว (canvas ไล่สี) เป็น image pool ไม่ใช่ ellipse ใน Graphics (เคยเป็นแท่งดำบน Android WebView) · ภาพเดียวกัน depth เดียวกัน = batch เดียว */
+  /* v8.1.120 เจ้าของ: แสงนุ่มรอบตัวผู้เล่น (พื้นรอบตัวสว่างกว่าขอบจอ) · รูป canvas ไล่สีครั้งเดียว · ADD จาง ๆ ใต้ทุกตัว */
+  drawPlayerLight(){ const p=this.player; if(!p||!this.add||typeof document==='undefined')return; const K='mm_player_light'; let L=this._pLight;
+    if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=c.height=256; const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128); g.addColorStop(0,'rgba(255,244,222,0.9)'); g.addColorStop(.45,'rgba(255,236,206,0.45)'); g.addColorStop(1,'rgba(255,230,200,0)'); x.fillStyle=g; x.fillRect(0,0,256,256); this.textures.addCanvas(K,c); }
+    if(!L||!L.active){ L=this._pLight=this.camWorld(this.add.image(p.x,p.y,K)); L.setDepth?.(-99500); L.setBlendMode?.(typeof Phaser!=='undefined'?Phaser.BlendModes.ADD:1); L.setDisplaySize?.(620,460); } const on=this.state==='play'&&p.visible!==false; L.setVisible(on); if(on)L.setPosition(p.x,p.y+18).setAlpha(this._chapter25D?.12:.17); }
   drawFoeShadows(){ if(!this.enemies||!this.add||typeof document==='undefined')return; const K='mm_soft_shadow';
     if(!this.textures.exists(K)){ const c=document.createElement('canvas'); c.width=128; c.height=48; const x=c.getContext('2d'); x.scale(1,48/128); const g=x.createRadialGradient(64,64,4,64,64,64); g.addColorStop(0,'rgba(10,5,16,0.62)'); g.addColorStop(.55,'rgba(10,5,16,0.34)'); g.addColorStop(1,'rgba(10,5,16,0)'); x.fillStyle=g; x.fillRect(0,0,128,128); this.textures.addCanvas(K,c); }
     const P=this._foeSh||(this._foeSh=[]),dark=this._chapter25D?1.25:1; let n=0;
-    this.enemies.children.iterate(e=>{ if(!e||!e.active||!e.visible||e.alpha<.05)return; let sh=P[n]; if(!sh||!sh.active){ sh=P[n]=this.camWorld(this.add.image(0,0,K).setDepth(-99000)); } n++;
-      const w=Math.max(26,Math.min(260,(e.displayWidth||40)*.72)); sh.setPosition(e.x,e.y+(e.displayHeight||40)*.4).setDisplaySize(w,w*.34).setAlpha(Math.min(1,e.alpha*dark)).setVisible(true); });
+    const pl=this.player; this.enemies.children.iterate(e=>{ if(!e||!e.active||!e.visible)return;
+      /* v8.1.120 เจ้าของ: มอนที่ยืนบังตัวเรา (อยู่หน้าและทับตัว) จางลงครึ่งหนึ่ง เห็นตัวเราชัด */ const occ=!!pl&&e.depth>pl.depth&&Math.abs(e.x-pl.x)<(e.displayWidth||40)*.42&&e.y-pl.y<(e.displayHeight||40)*.7; if(occ&&!e._occ){ e._occ=true; e._occA=e.alpha; e.setAlpha(e.alpha*.5); } else if(!occ&&e._occ){ e._occ=false; e.setAlpha(e._occA??1); }
+      const ea=e._occ?(e._occA??1):e.alpha; if(ea<.05)return; let sh=P[n]; if(!sh||!sh.active){ sh=P[n]=this.camWorld(this.add.image(0,0,K).setDepth(-99000)); } n++;
+      const w=Math.max(26,Math.min(260,(e.displayWidth||40)*.72)); sh.setPosition(e.x,e.y+(e.displayHeight||40)*.4).setDisplaySize(w,w*.34).setAlpha(Math.min(1,ea*dark)).setVisible(true); });
+    this.drawPlayerLight?.();
     for(let i=n;i<P.length;i++)if(P[i]&&P[i].visible)P[i].setVisible(false); }
 
   // ปรับสเกล+ขอบชนของตัวละครให้เท่ากราฟิกเดิม (60px) ไม่ว่ารูปจริงจะกี่พิกเซล
@@ -24088,6 +24101,7 @@ class Game extends Phaser.Scene {
     this.orbs.children.iterate(o=>{ if(!o||!o.active){if(o&&o._sh&&o._sh.visible)o._sh.setVisible(false);return;}
       if(o._xp){o.rotation=0;o.setScale((o._sc||1)*(1+Math.sin(this.elapsed*4+o.x*0.05)*0.05));}   // v7.9.26 หยดไม่หมุน · เต้นเบา ๆ
       else{ o.rotation+=dt*2.2; const bob=1+Math.sin(this.elapsed*5+o.x*0.05)*0.12; o.setScale((o._sc||1)*bob); }
+      if(o._hop){ const H=o._hop; if(o._vac){ o._hop=null; } else { H.t+=dt/.3; const k=Math.min(1,H.t),bx=H.x0+(H.x1-H.x0)*k,by=H.y0+(H.y1-H.y0)*k; o.setVelocity(0,0); o.setPosition(bx,by-Math.sin(Math.PI*k)*22); if(o._sh)o._sh.setPosition(bx,by+(o._shDy||0)); if(k>=1)o._hop=null; else return; } }
       const d=this.dist(o.x,o.y,this.player.x,this.player.y);
       if((o._vac||d<this.player.pickup)&&d<24){ this.collectOrb(this.player,o); return; }   // v8.1.105 ถึงตัวแล้วเก็บเลย (เดิมบางเม็ดวนรอบตัวไม่เข้า)
       if(o._vac || d<this.player.pickup){ o._mT=(o._mT||0)+dt; const cur=Math.max(0,.5-o._mT)*(o._mSide||(o._mSide=Math.random()<.5?-1:1))*.9,ang=Math.atan2(this.player.y-o.y,this.player.x-o.x)+cur, sp=Math.min(o._vac?900:760,(o._vac?300:160)+o._mT*1500); o.setVelocity(Math.cos(ang)*sp,Math.sin(ang)*sp);   /* v8.1.49 เร่งเข้าตัวเป็นโค้ง */ if(o._xp)this.xpTrail(o,ang); if(o._sh)o._sh.setPosition(o.x,o.y+o._shDy); }
