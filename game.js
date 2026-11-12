@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.98';
+const GAME_VERSION = '8.1.99';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.99',date:'2026-11-12',title:'Mint Barrage focus & smoother book opening',items:['Mint before choosing a build and Mint Barrage no longer end lances with a wide ice explosion — they win with fast attacks and spreading ice shards (Glacier and Impaler keep their blooms)','Barrage card Wide Bloom is now Far Shards: ice shards fly 20% farther per rank','The book opening before the lobby flows smoothly: the pages appear as the cover opens and stay after they riffle']},
   {v:'8.1.98',date:'2026-11-12',title:'Breach collapse effect',items:['The breach plays its collapse animation again when it closes']},
   {v:'8.1.97',date:'2026-11-12',title:'Special enemy attack and defeat animations',items:['The Herald, Golem, Warlord, Hand of the Hunger, Breachlord and Stalker Captain now animate attacks and defeats.']},
   {v:'8.1.96',date:'2026-11-12',title:'Breach enemies and a faster collapse',items:['Hunger’s Mouth expands as a violet ground rift and snaps shut when its timer expires.','Kills can extend the breach up to 20 seconds after opening.','Four Breach creatures now have their own walk and defeat animations.']},
@@ -5523,7 +5524,7 @@ const BASIC_PATHS={
     {id:'barrage',iconKey:'ic_path_barrage',name:'Barrage Build',emoji:'🌨️',base:{dmg:0.55,cd:0.78,count:1},headline:'+1 Lance · 22% faster',desc:'Fire 2 lances 22% faster, each at 55% damage. Lances burst into ice shards. Each lance past 2 makes every lance and shard 15% weaker.',
       upgrades:[{id:'p_quickdraw',iconKey:'ic_path_p_quickdraw',name:'Wide Volley',emoji:'🌬️',max:3,headline:'Wider lance spread',desc:'Spread each lance 20% wider per rank to cover more enemies.'},
                 {id:'p_splinter',iconKey:'ic_path_p_splinter',name:'Crystal Payload',emoji:'💠',max:3,headline:'+12% Shard DMG',desc:'Shards deal 12% more damage per rank; direct lance damage stays the same.'},
-                {id:'p_bar_wide',iconKey:'ic_path_p_bar_wide',name:'Wide Bloom',emoji:'❄️',max:3,fx:{},headline:'Bigger shard burst',desc:'Shard bursts cover 20% more area per rank.'},
+                {id:'p_bar_wide',iconKey:'ic_path_p_bar_wide',name:'Far Shards',emoji:'❄️',max:3,fx:{},headline:'Shards fly farther',desc:'Ice shards fly 20% farther per rank.'},
                 {id:'p_bar_chain',iconKey:'ic_path_p_bar_chain',name:'Shard Chain',emoji:'🔗',max:3,fx:{},headline:'Bursts chain on',desc:'Each shard burst has a 25% chance per rank to burst again on a nearby enemy at 60% power.'},
                 {id:'p_bar_echo',iconKey:'ic_path_p_bar_echo',name:'Lance Echo',emoji:'🔁',max:2,fx:{},headline:'Every few volleys fire twice',desc:'Every 4th volley (every 3rd at rank 2) fires again 0.25s later.'}]},
     {id:'pierce',iconKey:'ic_path_pierce',name:'Crystal Impaler Build',emoji:'🏹',base:{dmg:1.75,cd:1.4,range:0.3},headline:'Charge → Impale → Rupture',desc:'Charge one powerful lance automatically: +30% range, but 40% slower. It goes through enemies. Full hits build Impale; the next full hit against 3 stacks triggers Crystal Rupture. Dashing or getting hit fires it early, weaker.',
@@ -11048,7 +11049,7 @@ class Game extends Phaser.Scene {
       op=this.add.image(0,0,'bk_open_long','cell0').setDisplaySize(cw,chh).setAlpha(0),
       rf=this.add.image(0,0,'bk_page_riffle','cell0').setDisplaySize(cw,chh).setVisible(false),
       bs=this.add.image(0,0,'vfx_bk_burst','cell0').setDisplaySize(Math.min(w,h)*1.25,Math.min(w,h)*1.25).setBlendMode(Phaser.BlendModes.ADD).setVisible(false);
-    bk.add([plate,em,cl,op,rf,mg,bs]); c.add([veil,bk]);
+    bk.add([plate,em,cl,rf,op,mg,bs]); c.add([veil,bk]);   /* v8.1.99 เจ้าของ: กระดาษพลิกไม่ต่อเนื่อง → ชั้นหน้ากระดาษอยู่ใต้ปก เห็นตอนปกเปิด ไม่มีช่วงว่าง */
     let fin=false,gone=false; const T=[],at=(ms,f)=>T.push(this.time.delayedCall(ms,()=>{ if(!fin&&c.active)f(); })),
       loop=(img,key,n,ms)=>{ let i=0; T.push(this.time.addEvent({delay:ms,loop:true,callback:()=>{ if(!img.active)return; i=(i+1)%n; img.setFrame('cell'+i); }})); },
       play=(img,n,ms,t0,end)=>{ for(let i=1;i<n;i++)at(t0+i*ms,()=>img.setFrame('cell'+i)); if(end)at(t0+n*ms,end); };
@@ -11065,11 +11066,11 @@ class Game extends Phaser.Scene {
     // 3) ตัวล็อกปลด + ปกสั่น
     at(1500,()=>{ Sfx.orderCue?.('book_open',.35,2)||Sfx.ui&&Sfx.ui(); this.tweens.add({targets:bk,x:{from:-4,to:4},duration:45,yoyo:true,repeat:5,ease:'Sine.inOut',onComplete:()=>bk.setX(0)}); }); play(cl,6,100,1500,()=>cl.setVisible(false));
     // 4) เฟดเข้าเฟรมแรกของปกเปิด (150ms) แล้วเปิด 12 เฟรม × 100ms · Lobby สร้างใต้ปกตอนนี้
-    at(2150,()=>{ this.tweens.add({targets:[mg,em],alpha:0,duration:150}); this.tweens.add({targets:op,alpha:1,duration:150,onComplete:()=>plate.setVisible(false)}); });
+    at(2150,()=>{ this.tweens.add({targets:[mg,em],alpha:0,duration:150}); rf.setVisible(true).setFrame('cell0'); this.tweens.add({targets:op,alpha:1,duration:150,onComplete:()=>plate.setVisible(false)}); });
     at(2300,()=>{ em.setVisible(false); mg.setVisible(false); if(reveal){ this._enterLast=null; this._enterRise=true; this._enterRiseDelay=2100; this._bkRose=true; go(); c.setDepth(5200); this.tweens.add({targets:veil,alpha:0,duration:400}); } this.tweens.add({targets:bk,scale:1.06,duration:1800,ease:'Sine.inOut'}); });
     play(op,12,100,2300,()=>op.setVisible(false));
     // 5) หน้ากระดาษพลิกรัว 8 เฟรม
-    at(3400,()=>{ rf.setVisible(true).setFrame('cell0'); Sfx.ui&&Sfx.ui(); }); play(rf,8,77,3400,()=>rf.setVisible(false));
+    at(3400,()=>{ rf.setVisible(true).setFrame('cell0'); Sfx.ui&&Sfx.ui(); }); play(rf,8,77,3400,()=>rf.setFrame('cell0'));   /* พลิกจบ → กลับเป็นปึกกระดาษนิ่ง (ไม่หายไป) */
     // 6) แสงพุ่งจากกลางเล่ม → ซูมจาง
     at(3950,()=>{ bs.setVisible(true).setFrame('cell0'); Sfx.select&&Sfx.select(); }); play(bs,6,83,3950,()=>bs.setVisible(false));
     at(4250,finish); at(7500,end); }
@@ -20690,8 +20691,8 @@ class Game extends Phaser.Scene {
     const shardCount=glacier?0:Math.min(6,Math.max(0,count),Math.max(0,12-(this._mintShardCount||0)));
     // Planned count above six retains value in power; scene saturation never removes the bloom.
     const power=sdmg*(glacier?1+.08*Math.max(0,count-3):1+.12*Math.max(0,count-6));
-    const bar=this.basicAttack?.path==='barrage'?this.basicAttack.lv||{}:{},bloomR=(118+lvl*8+(blizzard?40:0))*(1+.2*(bar.p_bar_wide||0));   /* v7.9.23 Wide Bloom */this.mintBurstFx(x,y,bloomR);
-    let hits=0;this.enemies.children.iterate(e=>{if(hits>=24||!e?.active||this.dist(e.x,e.y,x,y)>bloomR)return;hits++;
+    const bar=this.basicAttack?.path==='barrage'?this.basicAttack.lv||{}:{},noBloom=!this.basicAttack?.path||this.basicAttack.path==='barrage',bloomR=noBloom?0:(118+lvl*8+(blizzard?40:0));   /* v8.1.99 เจ้าของ: เลเวล 1 (ยังไม่เลือกบิลด์) + Barrage = ไม่มีระเบิดวงกว้าง เหลือแค่ shard · บิลด์อื่นระเบิดเหมือนเดิม */ if(!noBloom)this.mintBurstFx(x,y,bloomR);
+    let hits=0;if(!noBloom)this.enemies.children.iterate(e=>{if(hits>=24||!e?.active||this.dist(e.x,e.y,x,y)>bloomR)return;hits++;
       this.damage(e,power*(this.basicAttack?.path==='barrage'?1.3:1.6)*((e.isBoss||e.isMini)?0.6:1),e.x,e.y);   // v8.0.0 Barrage bloom 1.6→1.3 (owner nerf)
       if(e.active)this.mintChill(e,freeze*1.2);
     });
@@ -20701,7 +20702,7 @@ class Game extends Phaser.Scene {
       const a=baseAng+(i/(shardCount-1||1)-.5)*arc+Phaser.Math.FloatBetween(-.06,.06),b=this.mintBullet(x,y,0xffffff,.28);if(!b)break;
       this._mintShardCount++;
       b.setTexture('proj_sprinkle').setTint(0xcaf3ff);if(!this.mintOutlineProjectile?.(b,'shard',40))this.attachProjectileArt(b,'proj_mint_shard',24,.67,.5);
-      b.faceVel=true;b.dmg=power;b.life=.5;b.pierce=true;b.hitGapV=.1;b.homing=0;
+      b.faceVel=true;b.dmg=power;b.life=.5*(1+.2*(bar.p_bar_wide||0));b.pierce=true;b.hitGapV=.1;b.homing=0;
       b.iceNeedle={freeze,frozenBonus:fb,shatter:blizzard,dmg:power,lvl};
       this.physics.velocityFromRotation(a,760+Math.random()*140,b.body.velocity);
     }
