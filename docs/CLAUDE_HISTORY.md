@@ -2,7 +2,7 @@
 
 # Previous delivery: v8.1.98 — review fix: breach collapse effect restored
 
-v8.1.96 (art order 76) rewrote the breach timer (total open time capped at lifeMax 20s via S.openLeft — kills extend life only up to the remaining cap) and dropped `artFx('hm_collapse')` when phase → 'close'; restored. The 20s cap is a gameplay change made by the art AI — owner asked to confirm (before: kills could keep the breach open indefinitely, each kill +.35s up to 20s left).
+v8.1.96 (art order 76) rewrote the breach timer (total open time capped at lifeMax 20s via S.openLeft — kills extend life only up to the remaining cap) and dropped `artFx('hm_collapse')` when phase → 'close'; restored. The 20s cap is a gameplay change made by the art AI — owner confirmed 12 Nov: they ordered it (endless kill-extension meant the mission could never finish) — keep the cap.
 
 # Previous delivery: v8.1.97 — Attack and defeat animations for six special enemies (art order 77)
 
