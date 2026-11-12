@@ -29,7 +29,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('Ultimatum: Delve trial rooms, 4/2 rounds, stacking curses, take-or-risk, fail = half pot passed'); }
 
 { // v8.1.81 Frozen Pantry (League → Legion) · v8.1.111 reworked like PoE Legion (jar button, frozen army, paint trail, all thaw at once)
-  for(const n of ['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpBlob','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill'])m(n);
+  for(const n of ['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpBlob','fpTimeStop','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill'])m(n);
   assert.ok(/\n  frozenPantry:\{emoji:/.test(src)&&src.includes("frozenPantry:['Take 6 hits or fewer'"),'def + bonus goal');
   assert.ok(src.includes("objectives:['survive','hunt','frozenPantry','capture']"),'C1-4 has Frozen Pantry');
   assert.ok(src.includes("else if(type==='frozenPantry'){ this.fpSetup(o,S); }")&&src.includes("else if(o.type==='frozenPantry'){ this.fpTick(dt,o,S); }")&&src.includes('if(e&&e._fpTok&&this.fpOnKill(e,o,S))return;'),'hooks');
@@ -37,7 +37,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(/storyCleared\(\)>=10/.test(m('fpFull'))&&/_replayMeter/.test(m('fpFull')),'light first play, full on replay/after Ch2');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,active:true,visible:true,scaleX:1,scaleY:1,setTint(){return o},setAlpha(){return o},setScale(){return o},setVisible(v){o.visible=v;return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setPosition(x,y){o.x=x;o.y=y;return o},clearTint(){return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpBlob','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpBlob','fpTimeStop','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=(full)=>{const sc=new ctx.K();const spawned=[],blobs=[];Object.assign(sc,{stageIndex:3,player:{x:0,y:0},sugarStage:0,sugarRun:0,fpFull:()=>full,tweens:{add(){},killTweensOf(){}},time:{delayedCall(ms,f){f();}},
     add:{circle:()=>obj(),graphics:()=>{const g=obj();g.fillCircle=(x,y,r)=>blobs.push([x,y,r]);g.clear=()=>g;g.fillStyle=()=>g;g.fillRoundedRect=()=>g;return g;}},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},
@@ -50,7 +50,11 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   { const [sc,spawned]=mk(true);const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);assert.strictEqual(o.target,24);sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.ok(S.st.some(q=>q.gen),'Frost General in full');
     for(const q of S.st){ sc.player={x:q.x,y:q.y}; for(let k=0;k<12;k++)sc.fpTick(.1,o,S); if(S.phase!=='paint')break; } assert.strictEqual(S.phase,'fight','painting everyone thaws early');
     for(let k=0;k<260;k++)sc.fpTick(.1,o,S);assert.ok(sc.done,'full: survivors vanish after 25s and the mission ends');assert.ok(S.st.every(q=>q.state==='lost'||q.state==='done')); }
-  console.log('Frozen Pantry (Legion): jar button, frozen army in groups, paint trail, all thaw at once, unpainted shatter, full timer, completes passed'); }
+  { const [sc]=mk(false);const near={x:310,y:0,active:true,v:1,setVelocity(){this.v=0;},setTint(c){this.tint=c;},clearTint(){this.tint=null;}},far={x:2000,y:0,active:true,setVelocity(){},setTint(){},clearTint(){}};sc.enemies={children:{iterate(f){[near,far].forEach(f);}}};
+    const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.ok(near._timeStop&&!far._timeStop&&near.v===0,'enemies inside the dome stop in time');
+    assert.ok(!near.frozen,'time stop is not the frozen status (no Mint shatter bonus)');assert.ok(m('touchEnemy').includes('||e._timeStop)return;'),'stopped enemies deal no contact damage');
+    S.T=0;sc.fpTick(.1,o,S);assert.ok(!near._timeStop&&near.tint==null,'time resumes on thaw');assert.ok(m('sigClear').includes('e._timeStop=false'),'cleared if the mission ends early'); }
+  console.log('Frozen Pantry (Legion): jar button, time-stop dome, frozen army in groups, rainbow paint trail, all thaw at once, unpainted shatter, full timer, completes passed'); }
 
 { // v8.1.82 League phase 2: Hunger's Mouth + Creeping Roots
   for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick'])m(n);

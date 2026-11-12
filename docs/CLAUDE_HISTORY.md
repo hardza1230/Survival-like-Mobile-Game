@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.111 — owner: Frozen Pantry reworked like the PoE Legion monolith
+
+fpSetup/fpBtnOver/fpBtnHit/fpOpen/fpBlob/fpThaw/fpWake/fpResolve/fpVanish/fpTick/fpOnKill. Near the jar (120px) a UI pill "🧊 Open the Jar" (camUI container, W/2,H-232; tap via pointerdown `fpBtnHit`, joystick ignores it via `joyBlocked→fpBtnOver`; vm/no-container fallback opens on approach). Open → frozen army in 3 (light) / 4 (full) clusters around the jar: 14 / 24 statues (full: last one = Frost General), every 4th 🎁; they pop up one by one (45 ms stagger, Back-ease scale + fp_shatter). Time frozen 22 s / 16 s (bar over the player): walking paints the ground with soft multi-colour blobs (Graphics depth -98000, ≤520 blobs, every 16px moved) + vfx78_statue_paint swirl following the player; a statue within 95px fills in .35 s (general .9 s) and turns pink. Timer end or all painted → `fpThaw`: all painted statues spawn at once (sigSpawnAt), unpainted shatter (loot lost, bonus fail); full: 25 s to beat them or they vanish. Chest kill = sugar (4+1.1·si)·(gen 2.5) loot burst. A12 lg_statue_wake moved to fpThaw. Tests sig-missions (Frozen block), vfx78-art (paint swirl), audio-a12 updated.
+
 # Previous delivery: v8.1.110 — owner: lobby stage scene did not load (green grid); Depths music
 
 Root cause: when the stage card is evicted/not loaded a canvas placeholder with the same key exists; lobbyPreload filtered with `textures.exists` (placeholder counted as loaded → never fetched) and buildLobby drew the placeholder (green grid). Both now use `realTex`; `_lobbyLoading` is a timestamp (retry after 8 s if a load stalls). menuMusic: Depths (`dig`) back on the main menu track (owner) — temple track now only Mochi Patrol.
