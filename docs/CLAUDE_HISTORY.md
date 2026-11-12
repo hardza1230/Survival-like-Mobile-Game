@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.113 — owner: Frozen Pantry time-stop status, grey world, rainbow paint
+
+New enemy flag `e._timeStop` (separate from `frozen`, so Mint shatter/brittle bonuses are untouched): enemy loop `if(e._timeStop){ setVelocity(0,0); return; }` after the frozen line, presentation pauses anims, `touchEnemy` returns (no contact damage); reset in spawnEnemy and on death; `fpTimeStop(S,on)` stops non-boss enemies within dome R+30 (grey tint 0xc9c9d2), re-applied every 0.3 s during paint, released in fpThaw and sigClear. Dome is now opaque white-grey (0xe9e9ef α.82, depth -98500); fpBlob paints rainbow pastel blobs (7-colour cycle along the path, α .42–.6) above it + twinkling ✦/✧ sparkles (≤40 alive, depth -97900). Test sig-missions gained a time-stop block.
+
 # Previous delivery: v8.1.112 — owner: Frozen Pantry activation presentation (like PoE Legion)
 
 fpOpen: jar shakes 0.3 s → flash/shake/bossWarn + big fp_shatter → two expanding ice shockwave rings (40→520px, 760/980 ms) + persistent "time stands still" dome (circle R520, pale blue, depth -98500, fades in) + banner "⏳ TIME STANDS STILL"; statues now rise (scale + 18px lift) when the wave reaches them (delay 380 ms + dist/0.68 px·ms⁻¹) instead of a fixed stagger; paint timer +1.2 s for the wave (bar clamped). fpThaw: bigger flash/shake, dome flashes white and shatters (scale 1.12, fade), second shockwave, banner "⏳ TIME RESUMES", the break-free banner 0.7 s later. Enemies outside are not frozen (would trigger Mint shatter bonuses). No reward/timing change beyond +1.2 s paint time.

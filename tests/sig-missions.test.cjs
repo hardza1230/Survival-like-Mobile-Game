@@ -82,13 +82,13 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 
 { // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
-  for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpTick','gpServe'])m(n);
+  for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe'])m(n);
   assert.ok(src.includes("objectives:['hungerHerald','hunt','capture','purge'],lead:'hungerHerald',")&&src.includes("objectives:['grandmasPot','hunt','capture','purge'],lead:'grandmasPot',"),'C1-1 Herald, C1-3 Pot');
   assert.ok(/if\(stL&&!this\._bountyLead&&pool\.includes\(stL\)\)/.test(m('replayBountyTick'))&&/LEAGUE_MISSIONS\.includes\(type\)\)\?70:45/.test(m('replayBountyTick')),'league bounty first + 70s');
-  const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
+  const vm=require('vm');const SD={};const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console,Save:{data:SD,save(){},addCurrency(k,n){SD['c_'+k]=(SD['c_'+k]||0)+n;}}};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,visible:true,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(v){o.visible=v;return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},setRotation(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
-  const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj()},
+  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpMenu','gpTable','gpPlate','gpBuy','gpFinish','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  const mk=()=>{for(const k in SD)delete SD[k];const sc=new ctx.K();const en=[];Object.assign(sc,{SD,stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj()},
     objectivePosition:(i)=>({x:300+i*50,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{countActive:()=>en.filter(e=>e.active).length},
     sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
   { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.strictEqual(S.gates.length,2);assert.ok(S.herald&&S.herald._herald);sc.hhTick(.1,o,S);assert.ok(S.herald._goTo,'herald wanders');
@@ -97,9 +97,13 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'ritual');assert.strictEqual(S.round,1);assert.ok(S.foes.length>=7,'course spawns hungry mochi');
     const n1=S.foes.length;S.foes.forEach(e=>{e.x=S.x;e.y=S.y;sc.gpOnKill(e,o,S);e.active=false;});assert.strictEqual(S.flavor,n1,'kills inside the light feed the pot');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'rest');assert.strictEqual(o.progress,1);
     for(let k=0;k<30;k++)sc.gpTick(.1,o,S);assert.strictEqual(S.round,2,'next course starts');sc.player={x:S.x+900,y:S.y};const before=S.flavor;S.foes[0].x=S.x;sc.gpOnKill(S.foes[0],o,S);assert.strictEqual(S.flavor,before,'kills outside the ring do not count');
-    for(let k=0;k<40;k++)sc.gpTick(.1,o,S);assert.ok(S.spice<=3.2&&(S.spices.length>0||(sc.hurt||0)>0||S.spice<3.2),'spice hazard ticks');S.foes.forEach(e=>e.active=false);sc.gpTick(.1,o,S);assert.ok(sc.done&&sc.sugarRun>0&&o.progress===2,'pot bursts after the last course'); }
+    for(let k=0;k<40;k++)sc.gpTick(.1,o,S);assert.ok(S.spice<=3.2&&(S.spices.length>0||(sc.hurt||0)>0||S.spice<3.2),'spice hazard ticks');S.foes.forEach(e=>e.active=false);sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'table','v8.1.115 Grandma’s table after the last course');assert.strictEqual(o.progress,2);
+    assert.strictEqual(S.plates.length,5,'4 dishes + Done');assert.ok(S.plates.some(P=>P.id==='sugar_s'),'cheap dish always offered');S.tribute=20;const cheap=S.plates.find(P=>P.id==='sugar_s');sc.player={x:cheap.x,y:cheap.y};for(let k=0;k<6;k++)sc.gpTick(.1,o,S);
+    assert.ok(cheap.taken&&S.tribute===16&&sc.sugarRun>0,'stand on a dish to buy it with flavor');const dn=S.plates.find(P=>P.done);sc.player={x:dn.x,y:dn.y};for(let k=0;k<6;k++)sc.gpTick(.1,o,S);assert.ok(sc.done,'Done ends the table');
+    assert.strictEqual(sc.SD.potFlavor,8,'half the leftover flavor is saved'); }
+  { const [sc]=mk();sc.fpFull=()=>false;const o={},S={};sc.gpSetup(o,S);sc.SD.potDeferred='ink';S.flavor=3;sc.gpTable(o,S);assert.strictEqual(S.plates[0].id,'ink','deferred dish comes back first');const top=S.plates.filter(P=>!P.done).sort((a,b)=>b.cost-a.cost)[0].id;sc.gpFinish(o,S);assert.strictEqual(sc.SD.potDeferred,top,'priciest dish you could not afford is saved for next time'); }
   { const [sc]=mk();sc.fpFull=()=>true;const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,3,'full = 3 courses');sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);sc.gpTick(.1,o,S);assert.ok(S.spices.length>=0); }
-  console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, pot burst) passed'); }
+  console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, Grandma’s table: buy dishes with flavor, Done, save leftovers, defer) passed'); }
 
 { // v8.1.85 League phase 6: Grandma's Golem (Metamorph)
   for(const n of ['ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'])m(n);
@@ -150,7 +154,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   const src2=require('fs').readFileSync('game.js','utf8'),vm2=require('vm');const at=src2.indexOf('  c1FirstPool('),nx=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src2.slice(at+1));
   const ctx={Save:{data:{stageMastery:{}}},storyCleared:()=>0,C1_LATER_LEAGUE:['hungersMouth','grandmasPot','grandmasGolem']};vm2.createContext(ctx);vm2.runInContext('class S{'+src2.slice(at,at+1+nx.index)+'};this.K=S;',ctx);
   const s=new ctx.K(),P=['grandmasPot','hunt','capture','purge'];s.stageIndex=2;require('assert').deepStrictEqual(s.c1FirstPool(P),['hunt','capture','purge'],'first play C1-3: no Pot');
-  ctx.Save.data.stageMastery[2]=true;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'replay: Pot returns');ctx.Save.data.stageMastery={};ctx.storyCleared=()=>5;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'after Chapter 1: Pot returns');
+  ctx.Save.data.stageMastery[2]=true;require('assert').deepStrictEqual(s.c1FirstPool(P),['hunt','capture','purge'],'v8.1.115 replay before meeting Grandma (C1-4): still no Pot');ctx.Save.data.stageMastery[3]=true;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'replay after meeting Grandma: Pot returns');ctx.Save.data.stageMastery={3:true};ctx.storyCleared=()=>5;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'after Chapter 1: Pot returns');
   ctx.storyCleared=()=>0;s.stageIndex=0;require('assert').deepStrictEqual(s.c1FirstPool(['hungerHerald','hunt']),['hungerHerald','hunt'],'Herald stays in C1-1');s.stageIndex=7;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'other chapters untouched');s.stageIndex=2;s.recipeMode=true;require('assert').deepStrictEqual(s.c1FirstPool(P),P,'Delve untouched');
   require('assert').ok(src2.includes("objectives:['survive','hunt','frozenPantry','capture'],lead:'frozenPantry',"),'C1-4 leads with Frozen Pantry');
   console.log('Chapter 1 pacing: first play Herald + Frozen Pantry only; Mouth/Pot/Golem on replay or after Chapter 1 passed'); }
