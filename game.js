@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.106';
+const GAME_VERSION = '8.1.107';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.107',date:'2026-11-12',title:'Lobby opens on your stage',items:['After the book opens, the lobby shows your current stage scene right away (it starts loading on the title screen) instead of a backup picture']},
   {v:'8.1.106',date:'2026-11-12',title:'Grandma’s Pot becomes a ritual',items:['Step into Grandma’s pot ring to start a ritual: the world goes dark, hungry mochi pour in course after course and spicy drops rain down','Kills inside the light fill the pot; when the last course ends the pot bursts with loot (fill it 80% for a gear box)']},
   {v:'8.1.105',date:'2026-11-12',title:'Edge spawns, sure pickups, spread missions',items:['Regular monsters now walk in from the edge of the screen instead of popping up in the middle','Pickups pulled to you are always collected (no more items stuck on your hero)','Wisp cores, root anchors, trees, mirrors and other multi-spot missions spread out across the map','Freed heroes appear in Heroes only after their rescue scene']},
   {v:'8.1.104',date:'2026-11-12',title:'Ruby explains every mission',items:['Ruby now explains the 14 stage and League missions (Frozen Pantry, Hunger’s Mouth, Grandma’s Pot and more) when they start']},
@@ -12570,12 +12571,17 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:ic,x:tx,y:ty,scale:s1*.32,duration:620,ease:'Cubic.inOut',onComplete:()=>{ this.featShow(hid,true); const ring=this.add.circle(tx,ty,30,0xffd36e,0).setStrokeStyle(4,0xffe08a,1); c.add(ring);
         this.tweens.add({targets:ring,scale:2.2,alpha:0,duration:520,onComplete:()=>{ c.destroy(); if(!this._featFly)return; this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); this.featRevealNext(); }}); this.tweens.add({targets:ic,alpha:0,duration:420,delay:120}); }}); });
     const z=this.tapZones[this.tapZones.length-1]; z.tag='feat_reveal'; z.noBounce=true; }
+  // v8.1.107 ฉากด่าน + การ์ดฮีโร่ของ Lobby: เริ่มโหลดตั้งแต่หน้า Title (ก่อนเปิดหนังสือ) · โหลดเสร็จแล้วถ้าอยู่ Lobby สร้างใหม่ (ฉากจางเข้า)
+  lobbyPreload(){ const d=Save.data||{},c=CHARACTERS[d.character]?d.character:'momo',si=this.lobbyStage?.()||0,sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c),
+      miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]); if(!miss.length||this._lobbyLoading)return; this._lobbyLoading=true;
+    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; this._lobbyBgIn=true; const go=()=>{ if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this._bookCover)return this.time?.delayedCall?.(400,go); this.buildMenuScreen(); }; go(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
   buildLobby(){ this.menu.setVisible(true);if(typeof Board!=='undefined')Board.submit(false); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(700,()=>this.loginPopup?.()); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
-    const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c),miss=[sk,hk,'roster_'+c].filter(k=>!this.textures.exists(k)&&ASSET_IMAGES[k]);
-    if(miss.length&&!this._lobbyLoading){ this._lobbyLoading=true; try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; if(this.state==='menu'&&this.menuScreen==='hub')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
-    const bgk=this.textures.exists(sk)?sk:(this.textures.exists('hub_ui_background')?'hub_ui_background':null);
+    const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c);
+    this.lobbyPreload();
+    const bgk=this.textures.exists(sk)?sk:null;   /* v8.1.107 เจ้าของ: หลังเปิดหนังสือเห็นภาพสำรอง (ฉาก Hub) แปลก → ไม่ใช้ภาพสำรองแล้ว · ฉากด่านโหลดตั้งแต่หน้า Title · ยังไม่มา = พื้นมืดเรียบ แล้วฉากด่านค่อย ๆ จางเข้า */
     const bg=bgk?this._coverImage(0,0,w,h,bgk):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
+    if(bgk&&this._lobbyBgIn){ this._lobbyBgIn=false; bg.setAlpha(0); this.tweens.add({targets:bg,alpha:1,duration:600,ease:'Sine.easeOut'}); }
     if(bg.type==='Image')this.hubTween({targets:bg,scaleX:bg.scaleX*1.015,scaleY:bg.scaleY*1.015,duration:9000,yoyo:true,repeat:-1,ease:'Sine.inOut'});
     const shade=this.add.graphics(),T0=48,B0=72;for(let i=0;i<T0;i++){const y0=Math.floor(i*h*.22/T0),y1=Math.floor((i+1)*h*.22/T0);shade.fillStyle(0x0d0816,.5*(1-i/T0)).fillRect(0,y0,w,y1-y0);}for(let i=0;i<B0;i++){const y0=Math.floor(h*.5+i*h*.5/B0),y1=Math.floor(h*.5+(i+1)*h*.5/B0);shade.fillStyle(0x0d0816,.66*(i+1)/B0).fillRect(0,y0,w,y1-y0);}this.menu.add(shade);
     // ── ข้อ 4 ป้ายโปรไฟล์ (ซ้ายบน): ฮีโร่ · Lv + EXP · Power · Rank · v7.9.51 ใบ 33 = กรอบ lb_profile_frame + lb_avatar_ring
@@ -12752,7 +12758,7 @@ class Game extends Phaser.Scene {
   loadLobbyArt(){ if(this._lbArt)return; const miss=[...LB_KEYS,'dig_miner','aw_title_ribbon'].filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length)return; this._lbArt=true;   // v7.9.70 เช็กทุกครั้ง (เดิมโหลดครั้งเดียว → ถูกคืนหน่วยความจำตอนเปิดหนังสือแล้วไม่โหลดกลับ = Lobby ไม่มีกรอบ)
     try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lbArt=false; if(this.state==='menu')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
   /* v7.9.64 หน้าเปิดเกม: ฉาก Hub เดิม (Strawberry ถือคทาแยกชิ้น ใบ 25) + โลโก้ + TAP TO START · แตะที่ไหนก็ได้ → Lobby (เปิดปกหนังสือ) */
-  buildTitle(){ this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H;
+  buildTitle(){ try{ this.lobbyPreload?.(); }catch(e){} this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
     const bg=this.textures.exists(bgKey)?this._coverImage(0,0,w,h,bgKey):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
     const live=bgKey==='hub_ui_background'&&this.buildHubScene?.(bg);
