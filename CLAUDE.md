@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.124**. Next release:8.1.125. Fetch the deploy branch before new work.
+Current release: **8.1.125**. Next release:8.1.126. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.124 — owner: bosses should stop, stand still and use big attacks
+# Latest delivery: v8.1.125 — owner: Frozen Pantry paint phase = short pause, whole map frozen, hero does not attack
+
+fpOpen sets `S.global` (fpTimeStop ignores the dome radius → every non-boss enemy gets `_timeStop`, refreshed every 0.3 s) and `this._holdFire` (update skips the auto-cast skills loop; orbit contact still runs). Cleared in fpThaw, sigClear and startStage. Paint time `T` full 16→10 · light 22→12 (+1.2 s wave). damage() deliberately untouched (taro T5 hash fixture). Tests sig-missions (time-stop line now expects far enemies stopped too) + special-picks block.
+
+# Previous delivery: v8.1.124 — owner: bosses should stop, stand still and use big attacks
 
 `bossBigMove(b,dt)` (story/rush bosses with `isBoss`, not Delve bosses, not tutorial) runs first in `bossThink`: timer `_bigT` 14 s (phase 2: 11 · phase 3+: 9) → charge 1.4 s: `_bigHold` (enemy loop zeroes velocity for `this.boss`), red ring R 280 + inner fill growing, banner "⚠️ <boss> gathers power!", bossWarn → slam: hurtPlayer(max 15, dmg×0.9) if inside R, 2 bullet rings (18, phase 3: 24; bd = dmg×0.45) 240 ms apart, shockwaves, shake/flash → rest 1.1 s standing ("💫 Opening!") → release (atkCd ≤ .8). While active the normal kit is held (atkCd forced ≥ .6) but phase transitions still run. `this._bossEpoch` bumped and `_big/_bigHold/_bigT` reset where `this.boss=b` is assigned (2 spawn paths) so a pooled sprite never keeps a stale hold. Test `tests/boss-big-move.test.cjs`.
-
-# Previous delivery: v8.1.123 — owner: Frozen Pantry paint smaller + watery; equipment slots readable (glow/gradient instead of frame)
-
-`fpBlob`: 2 puddle images per step from one canvas texture `mm_puddle` (96², 5 overlapping soft radial blobs = amorphous), pastel tint, random rotation/stretch, 22–42 px, spread tween 0.25→1 over 0.65–0.95 s, ring-buffer max 320 (`S.pud`, `S.pi`), depth -98000 via sigAdd; fallback circles (no add.image, vm tests) smaller (14–30). fpTick paint phase wobbles ready puddles every 2nd frame (±6% scale). `gearRarityFx(item,x,y,w,h)` replaces `menuRarityFrame` in buildGear equipped row + inventory cells: bottom-up gradient (fillGradientStyle, rarity colour .42→0), soft radial glow `mm_rglow` tinted (Epic+ pulses, Legend+ two ✦ sparkles; tweens killed on destroy); icons smaller (slot .84→.66, cell .72→.62). Other menuRarityFrame uses (compare/forge panels) unchanged. C1-5 boss Maw of the Void `05_void_maw` 250 px α.6 → 150 px α.3 (phase 4: 210 px α.45); Eclipse (big move) unchanged. Tests special-picks (block), equipment-redesign ctx stubs.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

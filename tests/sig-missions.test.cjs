@@ -51,7 +51,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     for(const q of S.st){ sc.player={x:q.x,y:q.y}; for(let k=0;k<12;k++)sc.fpTick(.1,o,S); if(S.phase!=='paint')break; } assert.strictEqual(S.phase,'fight','painting everyone thaws early');
     for(let k=0;k<260;k++)sc.fpTick(.1,o,S);assert.ok(sc.done,'full: survivors vanish after 25s and the mission ends');assert.ok(S.st.every(q=>q.state==='lost'||q.state==='done')); }
   { const [sc]=mk(false);const near={x:310,y:0,active:true,v:1,setVelocity(){this.v=0;},setTint(c){this.tint=c;},clearTint(){this.tint=null;}},far={x:2000,y:0,active:true,setVelocity(){},setTint(){},clearTint(){}};sc.enemies={children:{iterate(f){[near,far].forEach(f);}}};
-    const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.ok(near._timeStop&&!far._timeStop&&near.v===0,'enemies inside the dome stop in time');
+    const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.ok(near._timeStop&&far._timeStop&&near.v===0&&S.global&&sc._holdFire,'v8.1.125 owner: every monster on the map stops and the hero holds fire');
     assert.ok(!near.frozen,'time stop is not the frozen status (no Mint shatter bonus)');assert.ok(m('touchEnemy').includes('||e._timeStop||'),'stopped enemies deal no contact damage');
     S.T=0;sc.fpTick(.1,o,S);assert.ok(!near._timeStop&&near.tint==null,'time resumes on thaw');assert.ok(m('sigClear').includes('e._timeStop=false'),'cleared if the mission ends early'); }
   console.log('Frozen Pantry (Legion): jar button, time-stop dome, frozen army in groups, rainbow paint trail, all thaw at once, unpainted shatter, full timer, completes passed'); }

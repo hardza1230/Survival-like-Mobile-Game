@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.124';
+const GAME_VERSION = '8.1.125';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.125',date:'2026-11-12',title:'Frozen Pantry painting pause',items:['While you paint the Frozen Pantry, every monster on the map stands still and your hero stops attacking','The painting phase is shorter (12s, 10s on replay)']},
   {v:'8.1.124',date:'2026-11-12',title:'Boss power moves',items:['Bosses now stop, stand still and gather power inside a red circle, then unleash a big slam with two rings of bullets','After the slam the boss stands still for a moment: your chance to hit back','Big moves come every 14s, faster in later phases']},
   {v:'8.1.123',date:'2026-11-12',title:'Softer paint, cleaner gear',items:['Frozen Pantry: the rainbow paint is now small watery puddles that spread out and gently ripple','Equipment: smaller item icons, no rarity frame — rarity shows as a coloured glow and gradient (Epic pulses, Legendary sparkles)','C1-5 boss: the Maw of the Void swirl is smaller and fainter (full size only in the final phase)']},
   {v:'8.1.122',date:'2026-11-12',title:'Memory fix, Treasure Vault and Evolution Forge',items:['Fixed the Lobby flickering and loading looping at 0–2% after the phone ran out of graphics memory','Relic picks now open a Treasure Vault: three treasures float on glass pedestals — tap one to look closer, tap again to take it','Evolution now happens at a forge: tap the forge, then tap again to forge your weapon']},
@@ -14881,7 +14882,7 @@ class Game extends Phaser.Scene {
     const L=STAGE_PROPS[i]; if(!L)return;
     for(const p of L)add(p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
   }
-  startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
+  startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];this._holdFire=false;this.voiceStop?.();this._popN=0;this._huntUsed=false;this.time?.delayedCall?.(0,()=>{this.skinSwap?.(true);this.cosSetup?.();this.gmApply?.();});if(typeof VoiceActing!=='undefined')VoiceActing.preloadUnique?.(this);this.storyMusicStop?.();this._voiceSlipSeen=false;this._voiceLowHp=false;this._rubyLowHp=false;this._voiceLevelPending=this._voiceEvolvePending=false;this.time?.delayedCall?.(1600,()=>{if(this.state==='play'&&this.stageIndex===i)this.voiceBark?.('start');});this.stopHubMotion?.(); this._pathTeach=null; this._newSpecies=[]; try{ this._bestW=new Set(BESTIARY.filter(m=>bestiaryLv(m.id)>=BEST_MAX_TIER).map(m=>m.id)); }catch(e){ this._bestW=null; } this.rubyStoryAt?.(i);this._bossSayObj?.destroy();this._bossSayObj=null;this._lvlQueued=false;this._minHpPct=1;this._starRes=null;
     this._forgeState=null;this._forgeLoot=Object.assign({},this.player&&this.player.forgeMods||{});this.clearCocoaCombat();const st=STAGES[i]; this.clearCrossroads(); this._xrNext=null; this._xrDuel=false; this.clearExitPortal(); this.clearBossObjects();this.clearWaveObjective(); this.clearPickups(true); this.clearOrbs(); this.stageIndex=i; this._fieldDrops=null;this._storyKillHeal=null;this._lifeOnKillCd=0;this._storyBudget=null;this._replayMeter=null;this._leadUsed=false;this._bountyLead=false;if(this.pipG)this.pipG.setVisible(true); this._seasonState=null; this._rootThrone=null; this.stageElapsed=0; this.boss=null; this.mode='breather'; this.waveIndex=0; this.waveAlive=0;this.moveSlowT=0;this.drainPull=null;
     this._runBoxes=[]; this._runCurrency={};   // เคลียร์ไอเทม/กล่องค้างจากรอบก่อน + รีเซ็ตสะสมกล่อง/currency ของด่านนี้
     this._bossZoom=1;this.applyMainZoom();
@@ -16106,7 +16107,7 @@ class Game extends Phaser.Scene {
   /* ===== v8.1.78 ภารกิจประจำด่าน Chapter 3 (ภาพชั่วคราว: วงกราฟิก + อีโมจิ · ใบสั่งอาร์ตรอบ 4) ===== */
   sigAdd(o){ if(o){ this.camWorld(o); (this._sig.objs||(this._sig.objs=[])).push(o); } return o; }
   sigText(x,y,t,fs=26){ return this.sigAdd(this.add.text(x,y,t,{fontSize:fs+'px',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(y+5)); }
-  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; for(const e of S.foes||[])if(e)e._gpFoe=false; for(const e of S.stopped||[])if(e){ e._timeStop=false; if(e.active){ if(e.tintColor)e.setTint?.(e.tintColor); else e.clearTint?.(); } } if(S.lanes||S.herald||S.carriers||S.chests||S.domain)this.enemies?.children?.iterate?.(e=>{ if(e&&(e._lanePath||e._herald||e._ggPart||e._golem||e._breach||e._hdLord)){ e._lanePath=null; e._herald=false; e._goTo=null; e._ggPart=null; e._golem=false; e._breach=false; e._hmLord=false; e._hdLord=false; e._brSp=null; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
+  sigClear(){ const S=this._sig; this._sig=null; this._holdFire=false; if(!S)return; for(const e of S.foes||[])if(e)e._gpFoe=false; for(const e of S.stopped||[])if(e){ e._timeStop=false; if(e.active){ if(e.tintColor)e.setTint?.(e.tintColor); else e.clearTint?.(); } } if(S.lanes||S.herald||S.carriers||S.chests||S.domain)this.enemies?.children?.iterate?.(e=>{ if(e&&(e._lanePath||e._herald||e._ggPart||e._golem||e._breach||e._hdLord)){ e._lanePath=null; e._herald=false; e._goTo=null; e._ggPart=null; e._golem=false; e._breach=false; e._hmLord=false; e._hdLord=false; e._brSp=null; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
   sigSpawnAt(x,y,elite){ const S0=this._sig; this._sigForce=!!(S0&&(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(S0.type))); let e; try{ e=elite?this.spawnElite?.(false,true):this.spawnEnemy?.('basic'); }finally{ this._sigForce=false; } if(e){ const lim=WORLD/2-120; e.setPosition(Phaser.Math.Clamp(x,-lim,lim),Phaser.Math.Clamp(y,-lim,lim)); this.vfxSpawnPoof?.(e.x,e.y); } return e; }
   sigSetup(o,type,p){ const si=this.stageIndex||0,c=o.color; this._sig={type,objs:[]}; const S=this._sig; if(!this.objNodeG){ this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040); this.camWorld(this.objNodeG); }
     if(type==='seedRift'){ const q=this.objectivePosition(0,1,220,330); Object.assign(S,{x:q.x,y:q.y,R:190,life:16,spawn:0}); o.target=18+Math.min(6,si-10>0?si-10:0); o.desc='Defeat '+o.target+' enemies inside the rift · each kill = +1.5s';
@@ -16136,7 +16137,7 @@ class Game extends Phaser.Scene {
      เดินไปโหล = ปุ่ม "Open the Jar" ขึ้นบนจอ · กด → กองทัพโมจิแช่แข็งเยอะ ๆ ผุดจากพื้นเป็นกลุ่มพร้อมเอฟเฟกต์น้ำแข็ง · นับถอยหลัง
      เดินแล้วพื้นเป็นสีระบาย (ไม่มีวง) · ตัวที่โดนสีระบาย = ตื่นมาสู้ได้ · หมดเวลา/ทาครบ = ทุกตัวแตกน้ำแข็งพร้อมกัน (ตัวที่ไม่โดนสี = แตกหายไปพร้อมรางวัล)
      แบบเบา 14 ตัว 22 วิ · แบบเต็ม 24 ตัว + นายพลน้ำแข็ง 16 วิ และหลังตื่นต้องล้มใน 25 วิ */
-  fpSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,220,320); Object.assign(S,{x:q.x,y:q.y,phase:'seek',full,st:[],PR:95,T:full?16:22,blobs:0,lx:null,ly:null,fight:0});
+  fpSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,220,320); Object.assign(S,{x:q.x,y:q.y,phase:'seek',full,st:[],PR:95,T:full?10:12,blobs:0,lx:null,ly:null,fight:0});
     o.target=full?24:14; o.progress=0; o.desc='Open Grandma’s sugar jar · paint the frozen mochi army before time runs out · painted ones break free to fight';
     S.jar=this.sigArt('fp_jar',0,q.x,q.y+30,90,'🫙',46,q.y-10); S.glow=this.sigAdd(this.add.circle(q.x,q.y+10,70,0x9fe0ff,.12).setDepth(q.y-3)); this.tweens.add({targets:S.glow,alpha:{from:.5,to:1},scale:{from:.9,to:1.1},duration:800,yoyo:true,repeat:-1});
     S.paint=this.sigAdd(this.add.graphics().setDepth(-98000));   /* เหนือพื้น ใต้ทุกอย่างที่เรียงตาม y */ S.fx=this.sigAdd(this.add.graphics().setDepth(90010));
@@ -16149,7 +16150,7 @@ class Game extends Phaser.Scene {
     const BR=S.BR=520,jx=S.x,jy=S.y; this.tweens.add({targets:S.jar,x:{from:(S.jar.x||jx)-4,to:(S.jar.x||jx)+4},duration:50,yoyo:true,repeat:5,onComplete:()=>{ S.jar.setAlpha?.(.45); }});
     this.time?.delayedCall?.(320,()=>{ if(S.phase!=='paint')return; this.screenFlash?.(0xdff6ff,.35,320); this.screenShake?.(320,.012); if(typeof Sfx!=='undefined')Sfx.bossWarn?.(); this.artFx?.('fp_shatter',jx,jy,200);
       S.bubble=this.sigAdd(this.add.circle(jx,jy,BR,0xe9e9ef,.82).setStrokeStyle(6,0xffffff,.9).setDepth(-98500).setAlpha(0)); this.tweens.add({targets:S.bubble,alpha:1,duration:700});   // v8.1.113 เจ้าของ: ในโดม = โลกขาวเทา (เวลาหยุด) แล้วผู้เล่นระบายสีรุ้งพาสเทลลงไป
-      S.stopOn=true; this.fpTimeStop(S,true);
+      S.stopOn=true; S.global=true; this._holdFire=true; this.fpTimeStop(S,true);   /* v8.1.125 เจ้าของ: ช่วงระบายสี = มอนทั้งแผนที่หยุด + ตัวละครไม่โจมตี · ช่วงสั้น ๆ */
       for(let w=0;w<2;w++){ const wave=this.sigAdd(this.add.circle(jx,jy,40,0xdff6ff,0).setStrokeStyle(w?4:10,w?0x9fe0ff:0xffffff,.95).setDepth(90005)); this.tweens.add({targets:wave,scale:BR/40,alpha:{from:1,to:0},duration:760+w*220,delay:w*90,ease:'Cubic.easeOut',onComplete:()=>wave.destroy?.()}); }
       this.showBanner?.('⏳ TIME STANDS STILL','Paint the frozen army before time resumes — '+S.T+'s',1800); });
     const groups=S.full?4:3,lim=WORLD/2-130,gen=S.full?n-1:-1; let k=0;
@@ -16170,9 +16171,9 @@ class Game extends Phaser.Scene {
     else for(let i=0;i<3;i++){ const a=Math.random()*TAU,r=Math.random()*20,rad=14+Math.random()*16; g.fillStyle?.(i?R[(Math.floor(S.hue/3)+i)%R.length]:c,.42+Math.random()*.18); g.fillCircle?.(x+Math.cos(a)*r,y+Math.sin(a)*r*.75,rad); }
     if(S.blobs%2===0&&this.add?.text&&(S.spk=(S.spk||0))<40){ S.spk++; const sx=x+(Math.random()-.5)*70,sy=y+(Math.random()-.5)*50,sp=this.add.text(sx,sy,Math.random()<.5?'✦':'✧',{fontSize:(12+Math.random()*10|0)+'px',color:'#ffffff'}).setOrigin(.5).setDepth(-97900).setAlpha(0); this.camWorld?.(sp);
       this.tweens.add({targets:sp,alpha:{from:0,to:1},scale:{from:.5,to:1.2},y:sy-10,duration:420,yoyo:true,hold:300,onComplete:()=>{ S.spk--; sp.destroy(); }}); } }
-  fpTimeStop(S,on){ const R=(S.BR||520)+30,R2=R*R; this.enemies?.children?.iterate?.(e=>{ if(!e||!e.active)return; if(on){ if(e._timeStop||e.isBoss||e._fpTok)return; const dx=e.x-S.x,dy=e.y-S.y; if(dx*dx+dy*dy>R2)return; e._timeStop=true; e.setVelocity?.(0,0); e.setTint?.(0xc9c9d2); (S.stopped||(S.stopped=[])).push(e); } });
+  fpTimeStop(S,on){ const R=(S.BR||520)+30,R2=R*R; this.enemies?.children?.iterate?.(e=>{ if(!e||!e.active)return; if(on){ if(e._timeStop||e.isBoss||e._fpTok)return; const dx=e.x-S.x,dy=e.y-S.y; if(!S.global&&dx*dx+dy*dy>R2)return; e._timeStop=true; e.setVelocity?.(0,0); e.setTint?.(0xc9c9d2); (S.stopped||(S.stopped=[])).push(e); } });
     if(!on){ for(const e of S.stopped||[]){ if(!e)continue; e._timeStop=false; if(e.active){ if(e.tintColor)e.setTint?.(e.tintColor); else e.clearTint?.(); } } S.stopped=[]; S.stopOn=false; } }
-  fpThaw(o,S){ S.phase='fight'; this.fpTimeStop(S,false); S.fx?.clear?.(); if(S.pfx?.active)S.pfx.destroy(); S.pfx=null; this.screenFlash?.(0xdff6ff,.42,360); this.screenShake?.(380,.014); this.vfxHitRing?.(S.x,S.y,0xbfe8ff,true); this.a12?.('lg_statue_wake',.5,.3);
+  fpThaw(o,S){ S.phase='fight'; this._holdFire=false; S.global=false; this.fpTimeStop(S,false); S.fx?.clear?.(); if(S.pfx?.active)S.pfx.destroy(); S.pfx=null; this.screenFlash?.(0xdff6ff,.42,360); this.screenShake?.(380,.014); this.vfxHitRing?.(S.x,S.y,0xbfe8ff,true); this.a12?.('lg_statue_wake',.5,.3);
     if(S.bubble){ const b=S.bubble; b.setStrokeStyle?.(10,0xffffff,1); this.tweens.add({targets:b,scale:1.12,alpha:0,duration:420,ease:'Cubic.easeIn'}); }   // โดมเวลาหยุดแตก
     const wv=this.add.circle?.(S.x,S.y,40,0xffffff,0); if(wv){ this.sigAdd(wv.setStrokeStyle(12,0xdff6ff,1).setDepth(90005)); this.tweens.add({targets:wv,scale:(S.BR||520)/40,alpha:{from:1,to:0},duration:520,ease:'Cubic.easeOut'}); }
     this.showBanner?.('⏳ TIME RESUMES','',900);
@@ -24203,7 +24204,7 @@ class Game extends Phaser.Scene {
       if(b.life<=0)this.killBullet(b); });
 
     // auto-cast skills tick
-    for(const key in this.skills){ if(SKILLDEFS[key].orbit) continue;
+    if(!this._holdFire)for(const key in this.skills){ if(SKILLDEFS[key].orbit) continue;
       this.skillCd[key]-=dt;if(key==='meteor'&&this.character==='cocoa'&&this._cocoaFlicker)continue; if(this.skillCd[key]<=0){ this._ccCdMul=0; this._mxSrc=key; if(this._mx)this._mx.casts[key]=(this._mx.casts[key]||0)+1; this.castSkill(key,this.skills[key]); this.skillCd[key]=this.cdOf(key,this.skills[key])*(this.player.cdMul||1)*(key==='meteor'&&this._ccCdMul?this._ccCdMul:1); } }
     if(this.ringBalls.length){ this.ringRot=(this.ringRot||0)+dt*(this.ringSpin||2.6);
       this.ringBalls.forEach(b=>{ if(b.hitCd>0)b.hitCd-=dt; const a=this.ringRot+(b.ang0||0),pulse=1+Math.sin(this.elapsed*7+(b._motionPhase||0))*0.11;
