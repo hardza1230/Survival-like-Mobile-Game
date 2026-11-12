@@ -79,42 +79,12 @@ assert.equal(run.missionArtKeys.call({},5).some(k=>k.startsWith('vfx78_')),false
 const delve=run.missionArtKeys.call({recipeMode:true},5);
 for (const name of [...stageCases[1],...stageCases[13],'siege_break']) assert(delve.includes('vfx78_'+name));
 
-let near=true, created=0, woke=0;
-const statue={x:20,y:30,state:'frozen',fill:0,ring:{setFillStyle(){}},t:{setAlpha(){},clearTint(){}}};
-const state={st:[statue],objs:[]};
-const scene={
-  _sig:state,player:{x:0,y:0},sigNear:()=>near,fpWake(){woke++;statue.state='awake';},
-  textures:{exists:key=>key==='vfx78_statue_paint'},
-  artSpr(key,x,y,px) {
-    assert.deepEqual([key,x,y,px],['vfx78_statue_paint',20,30,100]);
-    created++;
-    const sprite={active:true,visible:true,setVisible(v){this.visible=v;},destroy(){this.active=false;}};
-    state.objs.push(sprite);
-    return sprite;
-  }
-};
-run.fpTick.call(scene,.2,{},state);
-const sprite=statue.paintFx;
-assert(sprite.active&&sprite.visible);
-near=false;
-run.fpTick.call(scene,.2,{},state);
-assert(sprite.active&&!sprite.visible);
-near=true;
-run.fpTick.call(scene,.2,{},state);
-assert(sprite.visible&&created===1);
-run.fpTick.call(scene,2,{},state);
-assert(!sprite.active&&statue.paintFx===null&&woke===1);
-statue.state='frozen';
-statue.fill=0;
-run.fpTick.call(scene,.2,{},state);
-const second=statue.paintFx;
-run.sigClear.call(scene);
-assert(!second.active&&scene._sig===null);
-
-const noTexture={...scene,textures:{exists:()=>false},_sig:state};
-statue.state='frozen';
-statue.fill=0;
-statue.paintFx=null;
-run.fpTick.call(noTexture,.2,{},state);
-assert(statue.fill>0&&statue.paintFx===null&&created===2);
+// v8.1.111 Frozen Pantry reworked (Legion): the paint swirl follows the player while painting, one sprite, cleared by sigClear.
+let created=0;const state={phase:'paint',T:10,full:false,st:[{x:999,y:999,state:'frozen',fill:0,t:{}}],objs:[],lx:null,ly:null,fx:null,paint:null};
+const scene={_sig:state,player:{x:20,y:30},sigNear:()=>false,fpBlob(){},fpThaw(){state.phase='fight';},textures:{exists:key=>key==='vfx78_statue_paint'},
+  artSpr(key,x,y,px){assert.deepEqual([key,x,y,px],['vfx78_statue_paint',20,30,110]);created++;const sprite={active:true,x,y,setPosition(a,b){this.x=a;this.y=b;},destroy(){this.active=false;}};state.objs.push(sprite);return sprite;}};
+run.fpTick.call(scene,.2,{},state);scene.player={x:60,y:70};run.fpTick.call(scene,.2,{},state);const sprite=state.pfx;
+assert(sprite.active&&created===1&&sprite.x===60&&sprite.y===70,'one swirl that follows the player');
+run.sigClear.call(scene);assert(!sprite.active&&scene._sig===null);
+const s2={...state,pfx:null,objs:[],phase:'paint'},noTexture={...scene,_sig:s2,textures:{exists:()=>false}};run.fpTick.call(noTexture,.2,{},s2);assert(s2.pfx==null&&created===1,'no texture → no swirl');
 console.log('Order 78: fifteen sources, packed assets, stage/menu routes, all hooks and paint-loop lifecycle passed');

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.110**. Next release:8.1.111. Fetch the deploy branch before new work.
+Current release: **8.1.111**. Next release:8.1.112. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.110 — owner: lobby stage scene did not load (green grid); Depths music
+# Latest delivery: v8.1.111 — owner: Frozen Pantry reworked like the PoE Legion monolith
+
+fpSetup/fpBtnOver/fpBtnHit/fpOpen/fpBlob/fpThaw/fpWake/fpResolve/fpVanish/fpTick/fpOnKill. Near the jar (120px) a UI pill "🧊 Open the Jar" (camUI container, W/2,H-232; tap via pointerdown `fpBtnHit`, joystick ignores it via `joyBlocked→fpBtnOver`; vm/no-container fallback opens on approach). Open → frozen army in 3 (light) / 4 (full) clusters around the jar: 14 / 24 statues (full: last one = Frost General), every 4th 🎁; they pop up one by one (45 ms stagger, Back-ease scale + fp_shatter). Time frozen 22 s / 16 s (bar over the player): walking paints the ground with soft multi-colour blobs (Graphics depth -98000, ≤520 blobs, every 16px moved) + vfx78_statue_paint swirl following the player; a statue within 95px fills in .35 s (general .9 s) and turns pink. Timer end or all painted → `fpThaw`: all painted statues spawn at once (sigSpawnAt), unpainted shatter (loot lost, bonus fail); full: 25 s to beat them or they vanish. Chest kill = sugar (4+1.1·si)·(gen 2.5) loot burst. A12 lg_statue_wake moved to fpThaw. Tests sig-missions (Frozen block), vfx78-art (paint swirl), audio-a12 updated.
+
+# Previous delivery: v8.1.110 — owner: lobby stage scene did not load (green grid); Depths music
 
 Root cause: when the stage card is evicted/not loaded a canvas placeholder with the same key exists; lobbyPreload filtered with `textures.exists` (placeholder counted as loaded → never fetched) and buildLobby drew the placeholder (green grid). Both now use `realTex`; `_lobbyLoading` is a timestamp (retry after 8 s if a load stalls). menuMusic: Depths (`dig`) back on the main menu track (owner) — temple track now only Mochi Patrol.
-
-# Previous delivery: v8.1.109 — owner: Patrol uses the Weave music; Weave back to the main menu music
-
-menuMusic map: `{patrol:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}` (was upgrade/perks/dig → temple). Flavor Weave (`upgrade`) and Rank Perks (`perks`) now fall through to the main menu track like other lobby screens; Mochi Patrol plays tea_for_two_temple (A12 pt_ambient_loop still layered quietly).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

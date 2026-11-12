@@ -28,26 +28,29 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok(/'vaultAltar','ultimatum'\]\.includes\(o\.type\)/.test(src),'no arm/overcharge on trials');
   console.log('Ultimatum: Delve trial rooms, 4/2 rounds, stacking curses, take-or-risk, fail = half pot passed'); }
 
-{ // v8.1.81 Frozen Pantry (League → Legion)
-  for(const n of ['fpFull','fpSetup','fpOpen','fpWake','fpResolve','fpVanish','fpTick','fpOnKill'])m(n);
+{ // v8.1.81 Frozen Pantry (League → Legion) · v8.1.111 reworked like PoE Legion (jar button, frozen army, paint trail, all thaw at once)
+  for(const n of ['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpBlob','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill'])m(n);
   assert.ok(/\n  frozenPantry:\{emoji:/.test(src)&&src.includes("frozenPantry:['Take 6 hits or fewer'"),'def + bonus goal');
   assert.ok(src.includes("objectives:['survive','hunt','frozenPantry','capture']"),'C1-4 has Frozen Pantry');
   assert.ok(src.includes("else if(type==='frozenPantry'){ this.fpSetup(o,S); }")&&src.includes("else if(o.type==='frozenPantry'){ this.fpTick(dt,o,S); }")&&src.includes('if(e&&e._fpTok&&this.fpOnKill(e,o,S))return;'),'hooks');
-  const ft=m('fpTick');assert.ok(/sigNear\(q\.x,q\.y,S\.PR\+24\)/.test(ft),'paint by walking near');assert.ok(/if\(S\.full\)\{ q\.life-=dt/.test(ft),'refreeze timer only in full');
+  assert.ok(src.includes('if(this.fpBtnHit?.(p))return;')&&m('joyBlocked').includes('this.fpBtnOver?.(p)'),'jar button tap, joystick ignores it');
   assert.ok(/storyCleared\(\)>=10/.test(m('fpFull'))&&/_replayMeter/.test(m('fpFull')),'light first play, full on replay/after Ch2');
-  // vm: paint → wake → kill → complete
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
-  const obj=()=>{const o={x:0,y:0,setTint(){return o},setAlpha(){return o},setVisible(v){o.vis=v;return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setPosition(x,y){o.x=x;o.y=y;return o},clearTint(){return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','fpSetup','fpOpen','fpWake','fpResolve','fpVanish','fpTick','fpOnKill','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
-  const sc=new ctx.K();const spawned=[];Object.assign(sc,{stageIndex:3,player:{x:0,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){},killTweensOf(){}},add:{circle:()=>obj()},
+  const obj=()=>{const o={x:0,y:0,active:true,visible:true,scaleX:1,scaleY:1,setTint(){return o},setAlpha(){return o},setScale(){return o},setVisible(v){o.visible=v;return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setPosition(x,y){o.x=x;o.y=y;return o},clearTint(){return o}};return o;};
+  vm.runInContext('class S{'+['fpFull','fpSetup','fpBtnOver','fpBtnHit','fpOpen','fpBlob','fpThaw','fpWake','fpResolve','fpVanish','fpTick','fpOnKill','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  const mk=(full)=>{const sc=new ctx.K();const spawned=[],blobs=[];Object.assign(sc,{stageIndex:3,player:{x:0,y:0},sugarStage:0,sugarRun:0,fpFull:()=>full,tweens:{add(){},killTweensOf(){}},time:{delayedCall(ms,f){f();}},
+    add:{circle:()=>obj(),graphics:()=>{const g=obj();g.fillCircle=(x,y,r)=>blobs.push([x,y,r]);g.clear=()=>g;g.fillStyle=()=>g;g.fillRoundedRect=()=>g;return g;}},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},
-    sigSpawnAt:(x,y)=>{const e={x,y,active:true};spawned.push(e);return e;},completeWaveObjective(){this.done=true;}});
-  const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);assert.strictEqual(o.target,4);assert.strictEqual(S.full,false);
-  sc.fpTick(.1,o,S);assert.strictEqual(S.phase,'seek');sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.strictEqual(S.phase,'paint');assert.strictEqual(S.st.length,4);
-  for(const q of S.st){ sc.player={x:q.x,y:q.y}; for(let k=0;k<25;k++)sc.fpTick(.1,o,S); }
-  assert.strictEqual(spawned.length,4,'all painted statues woke');for(const e of spawned){ e.active=false; assert.ok(sc.fpOnKill(e,o,S)); }
-  sc.fpTick(.1,o,S);assert.strictEqual(o.progress,4);assert.ok(sc.done,'mission completes');assert.ok(sc.sugarRun>0,'chest loot');
-  console.log('Frozen Pantry: walk-to-paint statues, light/full split, refreeze timer, chest loot, completes passed'); }
+    sigSpawnAt:(x,y)=>{const e={x,y,active:true,setActive(v){this.active=v;return this;},setVisible(){return this;}};spawned.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,spawned,blobs];};
+  { const [sc,spawned,blobs]=mk(false);const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);assert.strictEqual(o.target,14);assert.strictEqual(S.full,false);
+    sc.fpTick(.1,o,S);assert.strictEqual(S.phase,'seek');sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.strictEqual(S.phase,'paint','no button in vm → opens on approach');assert.strictEqual(S.st.length,14,'a whole frozen army');
+    const half=S.st.slice(0,9);for(const q of half){ sc.player={x:q.x,y:q.y}; for(let k=0;k<6;k++)sc.fpTick(.1,o,S); }assert.ok(blobs.length>0,'walking paints the ground');const P=S.st.filter(q=>q.fill>=1).length;assert.ok(P>=9&&P<14,'painted '+P);assert.strictEqual(spawned.length,0,'nobody wakes while time is frozen');
+    for(let k=0;k<400&&S.phase==='paint';k++)sc.fpTick(.1,o,S);assert.strictEqual(S.phase,'fight');assert.strictEqual(spawned.length,P,'painted ones all break free at once');assert.strictEqual(S.st.filter(q=>q.state==='lost').length,14-P,'unpainted shatter');
+    for(const e of spawned){ e.active=false; assert.ok(sc.fpOnKill(e,o,S)); } sc.fpTick(.1,o,S);assert.strictEqual(o.progress,P);assert.ok(sc.done,'mission completes'); }
+  { const [sc,spawned]=mk(true);const o={target:0,progress:0},S={type:'frozenPantry',objs:[]};sc.fpSetup(o,S);assert.strictEqual(o.target,24);sc.player={x:300,y:0};sc.fpTick(.1,o,S);assert.ok(S.st.some(q=>q.gen),'Frost General in full');
+    for(const q of S.st){ sc.player={x:q.x,y:q.y}; for(let k=0;k<12;k++)sc.fpTick(.1,o,S); if(S.phase!=='paint')break; } assert.strictEqual(S.phase,'fight','painting everyone thaws early');
+    for(let k=0;k<260;k++)sc.fpTick(.1,o,S);assert.ok(sc.done,'full: survivors vanish after 25s and the mission ends');assert.ok(S.st.every(q=>q.state==='lost'||q.state==='done')); }
+  console.log('Frozen Pantry (Legion): jar button, frozen army in groups, paint trail, all thaw at once, unpainted shatter, full timer, completes passed'); }
 
 { // v8.1.82 League phase 2: Hunger's Mouth + Creeping Roots
   for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick'])m(n);

@@ -80,7 +80,7 @@ MP3 mono 44.1 kHz 128 kbps · peak ≤ −1 dBTP · ตัดเงียบต�
    | lg_breach_open / lg_breach_collapse | `hmOpen` / `hmTick` ตอน `S.phase='close'` |
    | lg_splinter_pick / lg_breach_chest / lg_hunger_stone | `hmTick` เก็บ shard / `hmChest` / `hmSplinters` เมื่อ `made>0` |
    | lg_hand_lord / lg_domain_open / lg_breachlord | `hmTick` สร้าง `_hmLord` / `hdSetup` / `hdLord` |
-   | lg_jar_open / lg_statue_wake / lg_statue_refreeze | `fpOpen` / `fpWake` / `fpVanish` |
+   | lg_jar_open / lg_statue_wake / lg_statue_refreeze | `fpOpen` / `fpThaw` (ทุกตัวแตกพร้อมกัน v8.1.111) / `fpVanish` |
    | lg_herald_horn / lg_gates_shut | `hhTick` ตอนประตูปล่อยฝูง (gap 2s) / `hhDown` |
    | lg_pot_ritual / lg_pot_flavor / lg_dish_served | `gpRound` / `gpOnKill` (ในวง) / `gpServe` |
    | lg_golem_part / lg_golem_bake / lg_golem_slam / lg_golem_crumble | `ggTick` เก็บชิ้น / `ggBake` / `ggTick` tick('arms') / `ggDown` |
