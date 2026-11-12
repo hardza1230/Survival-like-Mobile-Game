@@ -1,0 +1,371 @@
+{
+  "provider": "ElevenLabs Sound Effects",
+  "generations": {
+    "lg_breach_open": [
+      {
+        "text": "One-shot opening of a candy-fantasy rift: a fast tearing fabric arc, a soft deep inward wind swell, then a few clear glass-sugar sparkles. Immediate onset, clean short decay. No dialogue, music, or background noise.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      },
+      {
+        "text": "One-shot opening of a candy-fantasy rift: a fast tearing fabric arc, a soft deep inward wind swell, then a few clear glass-sugar sparkles. Immediate onset, clean short decay. No dialogue, music, or background noise. Start immediately and avoid any silent lead-in.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_breach_collapse": [
+      {
+        "text": "A short soft inward suction rush folds up into one rounded candy pop, then quiet. Deep air texture with gentle top end. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      },
+      {
+        "text": "A short soft inward suction rush folds up into one rounded candy pop, then quiet. Deep air texture with gentle top end. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed. Start immediately and avoid any silent lead-in.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_splinter_pick": [
+      {
+        "text": "One tiny clear purple glass crystal pickup ting. Single immediate light attack, soft rounded ending, very short. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_breach_chest": [
+      {
+        "text": "Two soft candy hands part with a gentle scrape, wrapped sweets tumble, a warm bright gold bell glints once. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      },
+      {
+        "text": "Two soft candy hands part with a gentle scrape, wrapped sweets tumble, a warm bright gold bell glints once. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed. Immediate close onset, short clean tail.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      },
+      {
+        "text": "Two soft candy hands part with a gentle scrape, wrapped sweets tumble, a warm bright gold bell glints once. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed. Immediate close onset, short clean tail.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      },
+      {
+        "text": "Two soft candy hands part with a gentle scrape, wrapped sweets tumble, a warm bright gold bell glints once. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.12,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_hunger_stone": [
+      {
+        "text": "Faceted sugar crystals circle and click together, finishing in one low warm glass gong with restrained resonance. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_hand_lord": [
+      {
+        "text": "A giant candy hand appears: soft crystallized sugar knuckle crackles then a short low whimsical creature growl. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_domain_open": [
+      {
+        "text": "An underground candy cavern rumbles softly, a wide dimensional fabric tear and a low mysterious wind drone. Start immediately and decay gently. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.6,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_breachlord": [
+      {
+        "text": "A deep rounded fantastical creature roar with soft chamber reflection and several large papery hand swishes. Majestic candy monster entrance, family friendly. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_jar_open": [
+      {
+        "text": "A glass sugar jar lid unscrews and lifts with one little clink, followed by a gentle puff of icy vapor. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      },
+      {
+        "text": "A glass sugar jar lid unscrews and lifts with one little clink, followed by a gentle puff of icy vapor. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed. Immediate close onset, short clean tail.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_statue_wake": [
+      {
+        "text": "Candy ice snaps into tiny flecks, followed immediately by a cute rounded mochi bounce. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_statue_refreeze": [
+      {
+        "text": "Short quiet frost crystallization ticks spread across glass, with a gentle twinkling vanish at the end. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_herald_horn": [
+      {
+        "text": "A short warm funny single brass horn call, slightly off pitch like a tiny candy herald, soft and unabrasive. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_gates_shut": [
+      {
+        "text": "Several candy portals suck shut in one tight soft whoosh and a rounded muffled slam, whimsical magical texture. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_pot_ritual": [
+      {
+        "text": "A copper pot lid strikes with a soft clang, an oven fire flares, then a low sweet simmer. Cozy candy ritual, quick clean one-shot. Original game SFX, no dialogue or music.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_pot_flavor": [
+      {
+        "text": "A single tiny clean magical flavor droplet swoops into a soup pot and lands with a clear quiet plop. Very short, immediate onset, gentle on repeated playback. Original game SFX, no dialogue or music.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_dish_served": [
+      {
+        "text": "A small copper pot lid lifts, sweet steam exhales softly, one warm celebratory kitchen bell chimes and decays. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.2,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_golem_part": [
+      {
+        "text": "One solid baked candy part picked up with a short low rounded wooden pop, tactile but quiet, immediate. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_golem_bake": [
+      {
+        "text": "A little oven fire flares, heavy old oven door opens and a friendly pastry golem plants one deep padded footstep. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_golem_slam": [
+      {
+        "text": "One weighty muffled impact of a dense bread loaf striking wood, with short soft bass and a little crumb scatter. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.7,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_golem_crumble": [
+      {
+        "text": "A large baked confection crumbles and spills into a soft gravelly pile of crisp crumbs, no frightening elements. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_root_cut": [
+      {
+        "text": "One short swish through a fresh tender vine, a woody snip, and a few dry leaves fall quickly. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_siege_gate": [
+      {
+        "text": "A restrained little dimensional gate exhales, a low purple soft whoomp, very short and quiet for repetition. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "lg_siege_break": [
+      {
+        "text": "A candy-stone rampart gives way in a rounded golden shimmery wave, followed by a faint distant nonverbal cheer. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1.4,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "tr_curse_pick": [
+      {
+        "text": "Airy wordless whisper texture curls around a low soft ritual bell as a candy-fantasy curse seal lights, no intelligible voices. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "tr_round_won": [
+      {
+        "text": "A brief ascending golden chord played by soft sugar bells, one satisfying rounded celebratory accent and decay. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "tr_take": [
+      {
+        "text": "A ribbon loosens and a little gift box pops open with a soft reassuring warm chime. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "tr_risk": [
+      {
+        "text": "A miniature blade is drawn in one clean rounded metal shing followed by one firm low drum hit, adventure tone. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "tr_fail": [
+      {
+        "text": "A little gold candy crown drops with a muted jingle, then a short sad wind sigh, gently comedic and kind. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 1,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "ui_forge_row_up": [
+      {
+        "text": "A tiny jeweler hammer taps once, followed by a sweet soft sugar-metal ping, focused short interface feedback. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "ui_forge_ink_move": [
+      {
+        "text": "A brief flowing blue ink swish, a tactile quill scratch across parchment and a small glass ding, close and restrained. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.9,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "ui_codex_up": [
+      {
+        "text": "One soft page flips in an old recipe book, releasing a warm round golden bell glow, small quick upgrade cue. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.8,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "ui_memory_gain": [
+      {
+        "text": "A soft rising remembered sparkle, one rounded lavender glass ping dissolving quietly, gentle menu reward. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "ui_domain_button": [
+      {
+        "text": "A small polished crystal stone clacks against a plinth with a soft low magical resonance, subtle confirmation. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.6,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "pt_pop": [
+      {
+        "text": "A tiny pillowy mochi puffs into air with one very soft rounded pop, immediate and short, for repeated playback. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "pt_loot": [
+      {
+        "text": "One extremely gentle candy pickup bell tick with a tiny upward pitch, immediate and very short, low volume. Original cozy mobile game sound effect. Immediate onset; no music, intelligible speech, or background bed.",
+        "duration_seconds": 0.5,
+        "loop": false,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v3"
+      }
+    ],
+    "pt_ambient_loop": [
+      {
+        "text": "Continuous quiet candy garden at night. Distant sparse crickets, faint smooth warm breeze, slight paper lantern rustle, steady quiet texture across the complete seamless loop. No identifiable sudden events, no crescendo, no music, no voices. Original cozy mobile game sound effect. Gapless continuous ambience.",
+        "duration_seconds": 20,
+        "loop": true,
+        "prompt_influence": 0.4,
+        "model_id": "eleven_text_to_sound_v2"
+      }
+    ]
+  }
+}
