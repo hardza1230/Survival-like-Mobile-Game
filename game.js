@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.125';
+const GAME_VERSION = '8.1.126';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.126',date:'2026-11-12',title:'Stage missions for Chapters 2 and 3',items:['Every Chapter 2 and 3 stage now opens with its own signature mission, like Chapter 1','Fermented Canopy (C2-1) gains Defend the Nectar as its signature mission']},
   {v:'8.1.125',date:'2026-11-12',title:'Frozen Pantry painting pause',items:['While you paint the Frozen Pantry, every monster on the map stands still and your hero stops attacking','The painting phase is shorter (12s, 10s on replay)']},
   {v:'8.1.124',date:'2026-11-12',title:'Boss power moves',items:['Bosses now stop, stand still and gather power inside a red circle, then unleash a big slam with two rings of bullets','After the slam the boss stands still for a moment: your chance to hit back','Big moves come every 14s, faster in later phases']},
   {v:'8.1.123',date:'2026-11-12',title:'Softer paint, cleaner gear',items:['Frozen Pantry: the rainbow paint is now small watery puddles that spread out and gently ripple','Equipment: smaller item icons, no rarity frame — rarity shows as a coloured glow and gradient (Epic pulses, Legendary sparkles)','C1-5 boss: the Maw of the Void swirl is smaller and fainter (full size only in the final phase)']},
@@ -8265,44 +8266,44 @@ const STAGES = [
     waves:5, recommendedPower:1450, miniAt:2, mini:'Banquet Executioner', boss:'The Great Hunger', bossHp:2800, bossDmg:40 },
   { name:'The Fermented Canopy', en:'The Fermented Canopy', emoji:'🌿', grid:0x143c35, tint:0x56e5bd, chapter:1, chapterStage:1, ready:true,
     lore:'The wounded root slides into the garden and starts growing the Hunger a new body from stolen memories',
-    objectives:['hunt','purge','capture'],
+    objectives:['defendNectar','hunt','purge','capture'],lead:'defendNectar',
     waves:5, recommendedPower:2200, miniAt:2, mini:'Sporewarden Mantis', boss:"Rootmother's Bud", bossHp:3600, bossDmg:46 },
   { name:'Mycelium Marsh', en:'Mycelium Marsh', emoji:'🍄', grid:0x20372d, tint:0x9ae66e, chapter:1, chapterStage:2, ready:true,
     lore:'A living fungal marsh breathes through one moving pocket of clean air while the colony hunts everything outside it',
-    objectives:['hunt','cleanAir','capture'],
+    objectives:['hunt','cleanAir','capture'],lead:'cleanAir',
     waves:5, recommendedPower:3000, miniAt:2, mini:'Fungal Juggernaut', boss:'Mycelium Behemoth', bossHp:5600, bossDmg:64 },
   { name:'Nectar Hive', en:'Nectar Hive', emoji:'🐝', grid:0x4b3521, tint:0xffc95c, chapter:1, chapterStage:3, ready:true,
     lore:'Fermented nectar draws a royal swarm that drains the last memory-bearing flowers from the garden',
-    objectives:['hunt','creepingRoots','purge'],
+    objectives:['hunt','creepingRoots','purge'],lead:'creepingRoots',
     waves:5, recommendedPower:4200, miniAt:2, mini:'Royal Stinger', boss:'Ferment Hornet Queen', bossHp:6800, bossDmg:72 },
   { name:'Four-Season Conservatory', en:'Four-Season Conservatory', emoji:'🌦️', grid:0x29364a, tint:0x8fdcff, chapter:1, chapterStage:4, ready:true,
     lore:'Time-ferment forces heat, frost, toxic rain and storm to bloom together inside a shattered glass garden',
-    objectives:['hunt','seasonCycle','capture'],
+    objectives:['hunt','seasonCycle','capture'],lead:'seasonCycle',
     waves:5, recommendedPower:5700, miniAt:2, mini:'Season Keeper', boss:'Chronobloom Orchid', bossHp:8200, bossDmg:82 },
   { name:'Root Throne', en:'Root Throne', emoji:'🌳', grid:0x24172b, tint:0xd56bff, chapter:1, chapterStage:5, ready:true,
     lore:'All memory roots converge on a living throne — and point onward to the one who planted the First Tree',
-    objectives:['hunt','breakRoots','purge'],
+    objectives:['hunt','breakRoots','purge'],lead:'breakRoots',
     waves:5, recommendedPower:7600, miniAt:2, mini:'Ancient Root Knight', boss:'The True Rootmother', bossHp:11000, bossDmg:95 },
   // ===== Chapter 3 · Throne of the First Seed (v4.73 · อาร์ตยังเป็น placeholder ที่วาดด้วยโค้ด — key c3_* / bg11-15 รอ AI อีกตัวทำภาพจริงมาใส่ ASSET_IMAGES ทับได้เลย) =====
   { name:'Ashen Seedfields', en:'Ashen Seedfields', emoji:'🌾', grid:0x2e2622, tint:0xe0a86a, chapter:2, chapterStage:1, ready:true,
     lore:'Beyond the Root Throne lie the fields where every flavor was first planted — now scorched grey to feed the starving Crown',
-    objectives:['hunt','seedRift','capture'],
+    objectives:['hunt','seedRift','capture'],lead:'seedRift',
     waves:5, recommendedPower:9800, miniAt:2, mini:'Scarecrow Reaper', boss:'The Harvest Colossus', bossHp:13500, bossDmg:105 },
   { name:'Hollow Orchard', en:'Hollow Orchard', emoji:'🍎', grid:0x2a1f2e, tint:0xff7a8f, chapter:2, chapterStage:2, ready:true,
     lore:'Fruit trees bloom with empty husks — the Crown drank every drop of sweetness from them',
-    objectives:['hunt','shakeTrees','purge'],
+    objectives:['hunt','shakeTrees','purge'],lead:'shakeTrees',
     waves:5, recommendedPower:12500, miniAt:2, mini:'Husk Gardener', boss:'The Hollow Bloom', bossHp:16500, bossDmg:115 },
   { name:'Glass Greenhouse Ruins', en:'Glass Greenhouse Ruins', emoji:'🔮', grid:0x1d2b3a, tint:0x7fe6ff, chapter:2, chapterStage:3, ready:true,
     lore:'Shattered greenhouses where the first flavors were grown in secret, guarded by crystal sentinels',
-    objectives:['hunt','mirrorPath','capture'],
+    objectives:['hunt','mirrorPath','capture'],lead:'mirrorPath',
     waves:5, recommendedPower:15800, miniAt:2, mini:'Prism Sentinel', boss:'The Glass Gardener', bossHp:20000, bossDmg:125 },
   { name:'The Seed Vault', en:'The Seed Vault', emoji:'🗝️', grid:0x241a1a, tint:0xffcf5c, chapter:2, chapterStage:4, ready:true,
     lore:'A buried vault holding the last untouched seed of every flavor — and the keepers who serve the planter',
-    objectives:['hunt','vaultAltar','purge'],
+    objectives:['hunt','vaultAltar','purge'],lead:'vaultAltar',
     waves:5, recommendedPower:19800, miniAt:2, mini:'Vault Keeper', boss:'The Seedwarden', bossHp:24000, bossDmg:138 },
   { name:'Throne of the First Seed', en:'Throne of the First Seed', emoji:'👑', grid:0x160f1f, tint:0xb98cff, chapter:2, chapterStage:5, ready:true,
     lore:'At the First Tree sits the one who wears the Crown — take it off and break the curse',
-    objectives:['hunt','lastLight','capture'],
+    objectives:['hunt','lastLight','capture'],lead:'lastLight',
     waves:5, recommendedPower:24500, miniAt:2, mini:'Crown Thorn Knight', boss:'The First Planter', bossHp:30000, bossDmg:150 },
 ];
 /* v7.8.101 บทพูดบอสต่อด่าน (Story เท่านั้น) · v7.9.9 เจ้าของ: สั้น ภาษาง่าย พิมพ์ทีละตัว + พูดวนระหว่างสู้

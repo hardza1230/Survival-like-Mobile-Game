@@ -18,3 +18,7 @@ console.log('pantry paint + gear glow ok');
 // v8.1.125 owner: Frozen Pantry paint = short phase, whole map frozen, hero does not attack.
 assert(method('fpThaw').includes("S.phase='fight'; this._holdFire=false; S.global=false;")&&method('sigClear').includes('this._holdFire=false;')&&s.includes('if(!this._holdFire)for(const key in this.skills){')&&s.includes('T:full?10:12'),'hold fire + short paint');
 console.log('pantry hold-fire ok');
+// v8.1.126 owner: Chapter 2 and 3 stages get a lead (signature) mission too, like Chapter 1.
+for(const t of ['defendNectar','cleanAir','creepingRoots','seasonCycle','breakRoots','seedRift','shakeTrees','mirrorPath','vaultAltar','lastLight'])assert(s.includes(t+"'],lead:'"+t+"'")||s.includes("lead:'"+t+"'"),'lead '+t);
+assert(s.includes("objectives:['defendNectar','hunt','purge','capture'],lead:'defendNectar'"),'C2-1 Defend Nectar');
+console.log('chapter 2-3 leads ok');

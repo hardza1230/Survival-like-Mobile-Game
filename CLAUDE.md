@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.125**. Next release:8.1.126. Fetch the deploy branch before new work.
+Current release: **8.1.126**. Next release:8.1.127. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.125 — owner: Frozen Pantry paint phase = short pause, whole map frozen, hero does not attack
+# Latest delivery: v8.1.126 — owner: lead (signature) mission for every Chapter 2/3 stage
+
+STAGES[5–14] gain `lead`: C2-1 defendNectar (added to its objectives; was Delve-only) · C2-2 cleanAir · C2-3 creepingRoots · C2-4 seasonCycle · C2-5 breakRoots · C3-1 seedRift · C3-2 shakeTrees · C3-3 mirrorPath · C3-4 vaultAltar · C3-5 lastLight. Existing lead logic (bag builder moves the lead to the end of the bag → first mission, once per run via `_leadUsed`). Test special-picks block.
+
+# Previous delivery: v8.1.125 — owner: Frozen Pantry paint phase = short pause, whole map frozen, hero does not attack
 
 fpOpen sets `S.global` (fpTimeStop ignores the dome radius → every non-boss enemy gets `_timeStop`, refreshed every 0.3 s) and `this._holdFire` (update skips the auto-cast skills loop; orbit contact still runs). Cleared in fpThaw, sigClear and startStage. Paint time `T` full 16→10 · light 22→12 (+1.2 s wave). damage() deliberately untouched (taro T5 hash fixture). Tests sig-missions (time-stop line now expects far enemies stopped too) + special-picks block.
-
-# Previous delivery: v8.1.124 — owner: bosses should stop, stand still and use big attacks
-
-`bossBigMove(b,dt)` (story/rush bosses with `isBoss`, not Delve bosses, not tutorial) runs first in `bossThink`: timer `_bigT` 14 s (phase 2: 11 · phase 3+: 9) → charge 1.4 s: `_bigHold` (enemy loop zeroes velocity for `this.boss`), red ring R 280 + inner fill growing, banner "⚠️ <boss> gathers power!", bossWarn → slam: hurtPlayer(max 15, dmg×0.9) if inside R, 2 bullet rings (18, phase 3: 24; bd = dmg×0.45) 240 ms apart, shockwaves, shake/flash → rest 1.1 s standing ("💫 Opening!") → release (atkCd ≤ .8). While active the normal kit is held (atkCd forced ≥ .6) but phase transitions still run. `this._bossEpoch` bumped and `_big/_bigHold/_bigT` reset where `this.boss=b` is assigned (2 spawn paths) so a pooled sprite never keeps a stale hold. Test `tests/boss-big-move.test.cjs`.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
