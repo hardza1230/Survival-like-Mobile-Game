@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.105';
+const GAME_VERSION = '8.1.106';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.106',date:'2026-11-12',title:'Grandma’s Pot becomes a ritual',items:['Step into Grandma’s pot ring to start a ritual: the world goes dark, hungry mochi pour in course after course and spicy drops rain down','Kills inside the light fill the pot; when the last course ends the pot bursts with loot (fill it 80% for a gear box)']},
   {v:'8.1.105',date:'2026-11-12',title:'Edge spawns, sure pickups, spread missions',items:['Regular monsters now walk in from the edge of the screen instead of popping up in the middle','Pickups pulled to you are always collected (no more items stuck on your hero)','Wisp cores, root anchors, trees, mirrors and other multi-spot missions spread out across the map','Freed heroes appear in Heroes only after their rescue scene']},
   {v:'8.1.104',date:'2026-11-12',title:'Ruby explains every mission',items:['Ruby now explains the 14 stage and League missions (Frozen Pantry, Hunger’s Mouth, Grandma’s Pot and more) when they start']},
   {v:'8.1.103',date:'2026-11-12',title:'Ruby explains the Flavor Cores',items:['After the tutorial, Ruby tells you what the Flavor Cores are: three threads Grandma wove into the Heart Seed, fed by the Sugar you win back from the Hunger','Upgrading a core makes every freed friend stronger too','The Overcharge ring no longer appears after missions']},
@@ -8731,7 +8732,7 @@ const RUBY_TIPS={
   hungersMouth:{say:'Touch the [Hunger’s hand]! Kills inside keep the breach open.',short:'Keep fighting [inside the breach]!'},
   creepingRoots:{say:'Roots crawl to the [flower]! Stand on each [root mother] to cut it.',short:'Cut the [root mothers]!'},
   hungerHerald:{say:'That [Herald] opens gates! Hunt it down to shut them.',short:'Hunt the [Herald]!'},
-  grandmasPot:{say:'Carry the [ingredients] on Grandma’s recipe to the [pot]!',short:'Bring ingredients to the [pot]!'},
+  grandmasPot:{say:'Step into Grandma’s [ring]! Beat the hungry mochi in the light to fill the [pot].',short:'Fight inside the [pot ring]!'},
   grandmasGolem:{say:'Collect [golem parts], bake them in the [oven], then beat the golem!',short:'Bake the [golem parts]!'},
   hungerSiege:{say:'Hold the [circle]! Every kill inside fills the pot.',short:'Hold the [circle]!'},
   hungerDomain:{say:'The whole cave is a breach! Survive, then beat the [Breachlord]!',short:'Survive, then the [Breachlord]!'},
@@ -9002,7 +9003,7 @@ const WAVE_OBJECTIVES = {
   creepingRoots:{emoji:'🌱',name:'Creeping Roots',desc:'Roots crawl toward the nectar flower — stand on each root mother to cut its path'},
   /* v8.1.83 League phase 3: Harbinger → Hunger Herald · Ritual (แนว ก.) → Grandma’s Pot */
   hungerHerald:{emoji:'📯',name:'Hunger Herald',desc:'A herald drifts across the field opening gates for rushing packs — hunt it down to slam every gate shut'},
-  grandmasPot:{emoji:'🍲',name:'Grandma’s Pot',desc:'Monsters drop ingredients — carry the ones on Grandma’s recipe to the pot before they spoil'},
+  grandmasPot:{emoji:'🍲',name:'Grandma’s Pot',desc:'Step into the pot’s ring to start a ritual — beat the hungry mochi inside the light, course after course, and the pot bursts with loot'},
   hungerDomain:{emoji:'🪨',name:'Hunger’s Domain',desc:'A Hunger Stone tears the whole cave into the breach — survive the flood, then face the Breachlord'},
   hungerSiege:{emoji:'🏰',name:'Siege of the Hunger',desc:'Hold the circle while five gates pour monsters in — every kill inside fills the pot, and it bursts when the siege ends'},
   grandmasGolem:{emoji:'🗿',name:'Grandma’s Golem',desc:'Flavor carriers drop golem parts — bake them in the oven, then beat the golem: more parts = tougher golem, bigger reward'}
@@ -15899,7 +15900,7 @@ class Game extends Phaser.Scene {
     else if(type==='cleanAir')pt(this._cleanAirZone,(this._cleanAirZone?.radius||145)+20,'🫧 Clean-air ring');
     else if(type==='defendNectar')(this._nectarFlowers||[]).slice(0,1).forEach(f=>pt(f,90,'🌺 Protect the flower'));
     else if(type==='breakRoots')this.waveNodes?.children.iterate(n=>{ if(n?.active&&n._rootAnchor&&out.length<4)pt(n,95,'🌳 Root anchor'); });
-    else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))&&this._sig){ const S=this._sig; if(type==='seedRift')pt({x:S.x,y:S.y},S.R+10,'🌀 Fight inside the rift'); else if(type==='shakeTrees')(S.trees||[]).forEach(t=>pt(t,100,'🌳 Stand under the tree')); else if(type==='mirrorPath'){ pt({x:S.cx,y:S.cy},80,'💎 The crystal'); (S.mirrors||[]).slice(0,1).forEach(m=>pt(m,90,'🪞 Charge each mirror')); } else if(type==='vaultAltar')pt({x:S.x,y:S.y},200,'🗝️ Pick a pact stone'); else if(type==='hungerHerald')pt(S.herald&&S.herald.active?S.herald:null,90,'📯 Hunt the Herald'); else if(type==='grandmasGolem'){ if(S.golem&&S.golem.active)pt(S.golem,110,'🗿 Beat the golem'); else if(S.parts&&S.parts.length>=S.min&&!S.carriers.some(c=>c.e&&c.e.active))pt({x:S.x,y:S.y},100,'🔥 Bake it in the oven'); else { const d=(S.drops||[])[0],c=(S.carriers||[]).find(c=>c.e&&c.e.active); if(d)pt(d,50,'Grab the golem part'); else if(c)pt(c.e,90,c.p.em+' Flavor carrier'); if(S.parts&&S.parts.length>=S.min)pt({x:S.x,y:S.y},100,'🔥 Bake now or find more parts'); } } else if(type==='grandmasPot'){ const it=(S.items||[]).find(q=>q.need); if((S.carry||[]).length)pt({x:S.x,y:S.y},100,'🍲 Bring it to the pot'); else if(it)pt(it,50,'🧺 Grab the ingredient'); else pt({x:S.x,y:S.y},100,'🍲 Grandma’s pot'); } else if(type==='hungerDomain'){ if(S.lord&&S.lord.active)pt(S.lord,130,'🖐️ The Breachlord'); } else if(type==='hungerSiege')pt({x:S.x,y:S.y},S.R+10,'🏰 Hold the circle'); else if(type==='hungersMouth'){ if(S.phase==='seek')pt({x:S.x,y:S.y},85,'✋ Touch the Hunger’s hand'); else { const c=(S.chests||[]).find(c=>c.t&&!c.open),sh=(S.shards||[])[0]; if(c)pt(c,70,'🤲 Breach chest'); else if(sh)pt(sh,50,'🔮 Splinter'); } } else if(type==='creepingRoots'){ pt({x:S.x,y:S.y},90,'🌺 The nectar flower'); (S.lanes||[]).filter(L=>L.open).slice(0,1).forEach(L=>pt(L.pts[0],80,'🌱 Stand on the root mother')); } else if(type==='frozenPantry'){ if(S.phase==='seek')pt({x:S.x,y:S.y},95,'🫙 Open the sugar jar'); else (S.st||[]).filter(q=>q.state==='frozen').slice(0,1).forEach(q=>pt(q,70,'🧊 Walk close to paint it')); } else if(type==='lastLight')(S.lamps||[]).slice(0,1).forEach(L=>pt(L,120,'🏮 Keep the lanterns lit')); }
+    else if((typeof SIG_MISSIONS!=='undefined'&&SIG_MISSIONS.includes(type))&&this._sig){ const S=this._sig; if(type==='seedRift')pt({x:S.x,y:S.y},S.R+10,'🌀 Fight inside the rift'); else if(type==='shakeTrees')(S.trees||[]).forEach(t=>pt(t,100,'🌳 Stand under the tree')); else if(type==='mirrorPath'){ pt({x:S.cx,y:S.cy},80,'💎 The crystal'); (S.mirrors||[]).slice(0,1).forEach(m=>pt(m,90,'🪞 Charge each mirror')); } else if(type==='vaultAltar')pt({x:S.x,y:S.y},200,'🗝️ Pick a pact stone'); else if(type==='hungerHerald')pt(S.herald&&S.herald.active?S.herald:null,90,'📯 Hunt the Herald'); else if(type==='grandmasGolem'){ if(S.golem&&S.golem.active)pt(S.golem,110,'🗿 Beat the golem'); else if(S.parts&&S.parts.length>=S.min&&!S.carriers.some(c=>c.e&&c.e.active))pt({x:S.x,y:S.y},100,'🔥 Bake it in the oven'); else { const d=(S.drops||[])[0],c=(S.carriers||[]).find(c=>c.e&&c.e.active); if(d)pt(d,50,'Grab the golem part'); else if(c)pt(c.e,90,c.p.em+' Flavor carrier'); if(S.parts&&S.parts.length>=S.min)pt({x:S.x,y:S.y},100,'🔥 Bake now or find more parts'); } } else if(type==='grandmasPot'){ pt({x:S.x,y:S.y},(S.R||200)+10,S.phase==='wait'?'🍲 Step in to begin':'🍲 Fight inside the light'); } else if(type==='hungerDomain'){ if(S.lord&&S.lord.active)pt(S.lord,130,'🖐️ The Breachlord'); } else if(type==='hungerSiege')pt({x:S.x,y:S.y},S.R+10,'🏰 Hold the circle'); else if(type==='hungersMouth'){ if(S.phase==='seek')pt({x:S.x,y:S.y},85,'✋ Touch the Hunger’s hand'); else { const c=(S.chests||[]).find(c=>c.t&&!c.open),sh=(S.shards||[])[0]; if(c)pt(c,70,'🤲 Breach chest'); else if(sh)pt(sh,50,'🔮 Splinter'); } } else if(type==='creepingRoots'){ pt({x:S.x,y:S.y},90,'🌺 The nectar flower'); (S.lanes||[]).filter(L=>L.open).slice(0,1).forEach(L=>pt(L.pts[0],80,'🌱 Stand on the root mother')); } else if(type==='frozenPantry'){ if(S.phase==='seek')pt({x:S.x,y:S.y},95,'🫙 Open the sugar jar'); else (S.st||[]).filter(q=>q.state==='frozen').slice(0,1).forEach(q=>pt(q,70,'🧊 Walk close to paint it')); } else if(type==='lastLight')(S.lamps||[]).slice(0,1).forEach(L=>pt(L,120,'🏮 Keep the lanterns lit')); }
     return out; }
   counterTeach(x,y){ const d=typeof Save!=='undefined'&&Save.data; if(!d||this._inTutorial||(d.counterTaught||0)>=2||this._counterTaughtRun)return; this._counterTaughtRun=true; d.counterTaught=(d.counterTaught||0)+1; Save.save?.();
     this.rubyTip?.('counter',0); this.time?.delayedCall(150,()=>{ if(this.state==='play')this.questFocus('counter',true,[{x,y,r:52,l:'🦶 Dash into it!'}]); }); }
@@ -15975,7 +15976,7 @@ class Game extends Phaser.Scene {
   /* ===== v8.1.78 ภารกิจประจำด่าน Chapter 3 (ภาพชั่วคราว: วงกราฟิก + อีโมจิ · ใบสั่งอาร์ตรอบ 4) ===== */
   sigAdd(o){ if(o){ this.camWorld(o); (this._sig.objs||(this._sig.objs=[])).push(o); } return o; }
   sigText(x,y,t,fs=26){ return this.sigAdd(this.add.text(x,y,t,{fontSize:fs+'px',stroke:'#1a0f1e',strokeThickness:4}).setOrigin(.5).setDepth(y+5)); }
-  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; if(S.lanes||S.herald||S.carriers||S.chests||S.domain)this.enemies?.children?.iterate?.(e=>{ if(e&&(e._lanePath||e._herald||e._ggPart||e._golem||e._breach||e._hdLord)){ e._lanePath=null; e._herald=false; e._goTo=null; e._ggPart=null; e._golem=false; e._breach=false; e._hmLord=false; e._hdLord=false; e._brSp=null; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
+  sigClear(){ const S=this._sig; this._sig=null; if(!S)return; for(const e of S.foes||[])if(e)e._gpFoe=false; if(S.lanes||S.herald||S.carriers||S.chests||S.domain)this.enemies?.children?.iterate?.(e=>{ if(e&&(e._lanePath||e._herald||e._ggPart||e._golem||e._breach||e._hdLord)){ e._lanePath=null; e._herald=false; e._goTo=null; e._ggPart=null; e._golem=false; e._breach=false; e._hmLord=false; e._hdLord=false; e._brSp=null; } }); for(const q of S.objs||[]){ if(q){ this.tweens?.killTweensOf?.(q); if(q.active)q.destroy(); } } }
   sigSpawnAt(x,y,elite){ const S0=this._sig; this._sigForce=!!(S0&&(typeof LEAGUE_MISSIONS!=='undefined'&&LEAGUE_MISSIONS.includes(S0.type))); let e; try{ e=elite?this.spawnElite?.(false,true):this.spawnEnemy?.('basic'); }finally{ this._sigForce=false; } if(e){ const lim=WORLD/2-120; e.setPosition(Phaser.Math.Clamp(x,-lim,lim),Phaser.Math.Clamp(y,-lim,lim)); this.vfxSpawnPoof?.(e.x,e.y); } return e; }
   sigSetup(o,type,p){ const si=this.stageIndex||0,c=o.color; this._sig={type,objs:[]}; const S=this._sig; if(!this.objNodeG){ this.objNodeG=this.add.graphics().setScrollFactor(1).setDepth(90040); this.camWorld(this.objNodeG); }
     if(type==='seedRift'){ const q=this.objectivePosition(0,1,220,330); Object.assign(S,{x:q.x,y:q.y,R:190,life:16,spawn:0}); o.target=18+Math.min(6,si-10>0?si-10:0); o.desc='Defeat '+o.target+' enemies inside the rift · each kill = +1.5s';
@@ -16148,29 +16149,35 @@ class Game extends Phaser.Scene {
     const si=this.stageIndex||0,su=Math.round((10+si*1.8)*(S.full?1.4:1)),L0=this._lootAt; this.sugarStage+=su; this.sugarRun+=su; this._lootAt={x:e.x,y:e.y}; try{ this.missionLootBurst?.({type:'tree',noHold:true},su); }finally{ this._lootAt=L0; } this.completeWaveObjective(); }
   /* ===== v8.1.83 Grandma’s Pot (League → Ritual แนว ก. · หม้อของคุณยาย + การ์ดสูตร · C1-3 ห้องเครื่องพริก)
      มอนดรอปวัตถุดิบ (🍓🍋🍫 · ⭐ ทองจาก Elite ในแบบเต็ม) · เดินเก็บ = ถือไว้ · เดินเข้าวงหม้อ = ใส่ที่สูตรต้องการ · วัตถุดิบเสียตามเวลา · ครบสูตร = จานรางวัล (สูตรมี ⭐ = ดีกว่า) ===== */
-  gpSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,160,260),K=['🍓','🍋','🍫']; Phaser.Utils?.Array?.Shuffle?.(K);
-    const need=full?{[K[0]]:3,[K[1]]:2,[K[2]]:2}:{[K[0]]:3,[K[1]]:3}; if(full&&Math.random()<.5)need['⭐']=1;
-    Object.assign(S,{x:q.x,y:q.y,full,need,got:{},items:[],carry:[],pity:0,trickle:2,life:full?12:16}); for(const k in need)S.got[k]=0; o.target=Object.values(need).reduce((a,b)=>a+b,0);
-    o.desc='Grab the ingredients monsters drop and carry them to Grandma’s pot before they spoil'; S.pot=this.sigArt('gp_pot',0,q.x,q.y+40,110,'🍲',50,q.y-8); S.ring=this.sigAdd(this.add.circle(q.x,q.y,100,0xffb347,.1).setStrokeStyle(4,0xffd166,.8).setDepth(q.y-3));
-    if(this.textures?.exists?.('gp_recipe_card')&&this.add.nineslice)S.cardBg=this.sigAdd(this.camWorld(this.add.nineslice(q.x,q.y-61,'gp_recipe_card',0,240,44,28,28,24,24).setDepth(q.y+5)));
-    S.card=this.sigAdd(this.add.text(q.x,q.y-70,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#fff4dc',stroke:'#1a0f1e',strokeThickness:4,align:'center'}).setOrigin(.5).setDepth(q.y+6));
-    S.bag=this.sigAdd(this.add.text(0,0,'',{fontFamily:'sans-serif',fontSize:'16px',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(99990)); this.gpCard(S); }
-  gpCard(S){ S.card?.setText('📜 '+Object.keys(S.need).map(k=>k+' '+S.got[k]+'/'+S.need[k]).join('   ')); if(S.cardBg&&S.card)S.cardBg.setSize?.(Math.max(120,S.card.width+40),44); }
-  gpWanted(S){ return Object.keys(S.need).filter(k=>S.got[k]+S.carry.filter(c=>c===k).length+S.items.filter(q=>q.k===k).length<S.need[k]); }
-  gpDrop(S,x,y,k){ const fi={'🍓':0,'🍋':1,'🍫':2,'⭐':3}[k],t=this.sigArt('gp_ingredients',fi||0,x,y,36,k,26); this.tweens?.add?.({targets:t,y:y-8,duration:500,yoyo:true,repeat:-1}); S.items.push({x,y,k,t,life:S.life,need:k in S.need}); }
-  gpOnKill(e,o,S){ if(!e||e.isBoss)return; const want=this.gpWanted(S).filter(k=>k!=='⭐');
-    if(S.need['⭐']&&(e.isElite||e.isMini)&&this.gpWanted(S).includes('⭐')){ this.gpDrop(S,e.x,e.y,'⭐'); return; }
-    S.pity++; if(Math.random()<.42||S.pity>=4){ S.pity=0; const all=Object.keys(S.need).filter(k=>k!=='⭐'),k=want.length&&Math.random()<.75?want[Math.floor(Math.random()*want.length)]:all[Math.floor(Math.random()*all.length)]; if(k)this.gpDrop(S,e.x,e.y,k); } }
-  gpTick(dt,o,S){ const p=this.player; if(!p)return;
-    for(const q of S.items){ q.life-=dt; if(q.life<3)q.t.setAlpha?.(.4+.6*Math.abs(Math.sin(q.life*6))); if(this.dist(p.x,p.y,q.x,q.y)<60){ q.got=true; S.carry.push(q.k); q.t.setVisible(false); } else if(q.life<=0){ q.got=true; q.t.setVisible(false); } }
-    S.items=S.items.filter(q=>!q.got);
-    if(S.carry.length&&this.sigNear(S.x,S.y,100)){ const left=[]; let put=0; for(const k of S.carry){ if(k in S.need&&S.got[k]<S.need[k]){ S.got[k]++; put++; } else left.push(k); } S.carry=left; if(put){ this.vfxHitRing?.(S.x,S.y,0xffd166,false); this.floatText?.(S.x,S.y-100,'+'+put+' into the pot',0xffd166); this.gpCard(S); } }
-    S.bag?.setText(S.carry.length?'🧺 '+S.carry.join(''):'').setPosition(p.x,p.y-74);
-    let nearN=0; this.enemies?.children?.iterate?.(e=>{ if(e&&e.active&&this.dist(e.x,e.y,p.x,p.y)<520)nearN++; }); if(nearN<6){ S.trickle-=dt; if(S.trickle<=0){ S.trickle=2.4; const a=Math.random()*TAU; this.sigSpawnAt(p.x+Math.cos(a)*380,p.y+Math.sin(a)*380,S.need['⭐']&&this.gpWanted(S).includes('⭐')&&Math.random()<.3); } }
-    S.idle=(S.items.length||S.carry.length)?0:(S.idle||0)+dt; if(S.idle>=12){ S.idle=0; const w=this.gpWanted(S); if(w.length){ const a=Math.random()*TAU; this.gpDrop(S,p.x+Math.cos(a)*230,p.y+Math.sin(a)*230,w[0]); this.floatText?.(p.x,p.y-90,'👵 Grandma tosses you one!',0xffe08a); } }   /* กันค้าง: ไม่มีวัตถุดิบเลย 12s */
-    o.progress=Object.keys(S.need).reduce((a,k)=>a+S.got[k],0); if(o.progress>=o.target)this.gpServe(o,S); }
-  gpServe(o,S){ if(o.done)return; const si=this.stageIndex||0,gold=!!S.need['⭐'],su=Math.round((9+si*1.6)*(S.full?1.4:1)*(gold?1.6:1)),L0=this._lootAt; this.sugarStage+=su; this.sugarRun+=su;
-    this.screenFlash?.(0xffd166,.2,220); this.vfxHitRing?.(S.x,S.y,0xffd166,true); this.artFx?.('vfx78_dish_served',S.x,S.y,220); this.floatText?.(S.x,S.y-110,gold?'🌟 Golden dish served!':'🍲 Dish served!',0xffe08a); this._lootAt={x:S.x,y:S.y}; try{ this.missionLootBurst?.({type:'tree',noHold:true},su); }finally{ this._lootAt=L0; } S.bag?.setText(''); this.completeWaveObjective(); }
+  /* v8.1.106 เจ้าของ: Grandma's Pot เดิม (เก็บผลไม้ส่งหม้อ) จืด → ทำแบบ Ritual ของ PoE ต่างแค่การดรอปรางวัล
+     เดินเข้าวงหม้อ = เริ่มพิธี · นอกวงมืด (สปอตไลต์) · มอนหิวไหลเข้ามาเป็นคอร์ส (เบา 2 · เต็ม 3 + Elite คอร์สสุดท้าย) · ภัยพริกตกเป็นจุดเตือน
+     ฆ่าในวง = รส 🍲 เข้าหม้อ (นอกวงไม่นับ) · ครบทุกคอร์ส = หม้อระเบิดของ ยิ่งรสเต็มยิ่งได้มาก (≥80% = กล่องอุปกรณ์) */
+  gpSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,160,260),R=210;
+    Object.assign(S,{x:q.x,y:q.y,R,full,phase:'wait',round:0,rounds:full?3:2,foes:[],flavor:0,maxFlavor:0,spice:2,spices:[],rt:0}); o.target=S.rounds; o.progress=0;
+    o.desc='Step into Grandma’s ring to start the ritual · beat the hungry mochi inside the light · '+S.rounds+' courses';
+    S.pot=this.sigArt('gp_pot',0,q.x,q.y+40,110,'🍲',50,q.y-8); S.ring=this.sigAdd(this.add.circle(q.x,q.y,R,0xffb347,.08).setStrokeStyle(5,0xffd166,.85).setDepth(q.y-3));
+    S.dark=this.sigAdd(this.add.circle(q.x,q.y,R+700,0x000000,0).setStrokeStyle(1400,0x0b0612,1).setAlpha(0).setDepth(90030));
+    S.card=this.sigAdd(this.add.text(q.x,q.y-92,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#fff4dc',stroke:'#1a0f1e',strokeThickness:4,align:'center'}).setOrigin(.5).setDepth(q.y+6)); this.gpCard(S); }
+  gpCard(S){ S.card?.setText(S.phase==='wait'?'🍲 Step in to begin':S.phase==='rest'?'✨ Next course…':'Course '+S.round+'/'+S.rounds+'  ·  🍲 '+S.flavor); }
+  gpDark(S,on){ if(!S.dark)return; this.tweens?.killTweensOf?.(S.dark); if(this.tweens?.add)this.tweens.add({targets:S.dark,alpha:on?.55:0,duration:on?500:400}); else S.dark.setAlpha?.(on?.55:0); }
+  gpRound(o,S){ S.round++; S.phase='ritual'; S.rt=0; S.foes=[]; const n=(S.full?7:5)+S.round*2,elite=S.full&&S.round===S.rounds;
+    for(let i=0;i<n;i++){ const a=i/n*TAU+Math.random()*.3,e=this.sigSpawnAt(S.x+Math.cos(a)*(S.R+70),S.y+Math.sin(a)*(S.R+70),elite&&i===0); if(e){ e._gpFoe=true; e.setTint?.(0xffc078); e.tintColor=0xffc078; S.foes.push(e); } }
+    S.maxFlavor+=n+(elite?3:0); this.gpDark(S,true); this.vfxHitRing?.(S.x,S.y,0xffd166,true); this.floatText?.(S.x,S.y-120,'🍲 Course '+S.round+'! Feed the pot',0xffe08a); if(typeof Sfx!=='undefined')Sfx.bossWarn?.(); this.gpCard(S); }
+  gpOnKill(e,o,S){ if(!e||!e._gpFoe||!S)return; e._gpFoe=false; if(this.sigNear(S.x,S.y,S.R+40)){ const v=e.isElite?4:1; S.flavor+=v; this.floatText?.(e.x,e.y-40,'+'+v+' 🍲',0xffd166); } else this.floatText?.(e.x,e.y-40,'Too far from the pot!',0xffb0c8); this.gpCard(S); }
+  gpTick(dt,o,S){ const p=this.player; if(!p||o.done)return;
+    if(S.phase==='wait'){ if(this.sigNear(S.x,S.y,S.R))this.gpRound(o,S); return; }
+    if(S.phase==='rest'){ S.rt-=dt; if(S.rt<=0)this.gpRound(o,S); return; }
+    S.rt+=dt;
+    if(S.full||S.round>1){ S.spice-=dt; if(S.spice<=0){ S.spice=S.full?2.2:3.2; const x=p.x+(Math.random()-.5)*120,y=p.y+(Math.random()-.5)*120,w=this.sigAdd(this.add.circle(x,y,70,0xff5a3c,.18).setStrokeStyle(3,0xff8a5c,.9).setDepth(y-2)); S.spices.push({x,y,t:1.1,w}); } }   // ภัยพริกตก: จุดเตือน 1.1 วิ
+    for(const q of S.spices){ q.t-=dt; if(q.t<=0&&!q.done){ q.done=true; q.w.setVisible?.(false); this.vfxHitRing?.(q.x,q.y,0xff7a4d,false); if(this.dist(p.x,p.y,q.x,q.y)<70)this.hurtPlayer?.(Math.round(6+(this.stageIndex||0)*2.5),.4); } }
+    S.spices=S.spices.filter(q=>!q.done);
+    S.foes=S.foes.filter(e=>e&&e.active&&e._gpFoe);
+    if(!S.foes.length||S.rt>30){ for(const e of S.foes)e._gpFoe=false; S.foes=[]; o.progress=S.round; this.gpDark(S,false);
+      if(S.round>=S.rounds){ this.gpServe(o,S); return; } S.phase='rest'; S.rt=2.5; this.floatText?.(S.x,S.y-120,'✨ Course cleared!',0xffe08a); }
+    this.gpCard(S); }
+  gpServe(o,S){ if(o.done)return; const si=this.stageIndex||0,ratio=Math.min(1,S.flavor/Math.max(1,S.maxFlavor)),su=Math.round((9+si*1.6)*(S.full?1.4:1)*(.6+.8*ratio)),L0=this._lootAt; this.sugarStage+=su; this.sugarRun+=su; this.gpDark(S,false);
+    this.screenFlash?.(0xffd166,.2,220); this.vfxHitRing?.(S.x,S.y,0xffd166,true); this.artFx?.('vfx78_dish_served',S.x,S.y,220); this.floatText?.(S.x,S.y-110,(ratio>=.8?'🌟 Grandma’s feast!':'🍲 Dish served!')+'  '+S.flavor+'/'+S.maxFlavor,0xffe08a);
+    this._lootAt={x:S.x,y:S.y}; try{ this.missionLootBurst?.({type:'tree',noHold:true,bonus:{ok:ratio>=.8}},su); }finally{ this._lootAt=L0; } this.completeWaveObjective(); }
   /* ===== v8.1.85 Grandma’s Golem (League → Metamorph · ตำราคุณยายมีสูตรอบโกเลมขนมจากชิ้นรส · C1-5 เตาอบมงกุฎ)
      Elite "ผู้ถือรส" ถือชิ้นส่วนคนละชิ้น (หัว แขน ขา หาง ใจ) · ฆ่า = ชิ้นตก เดินเก็บ · ยืนที่เตา 2s (มีอย่างน้อย min ชิ้น) = อบโกเลม
      ทุกชิ้นให้สกิล (หัว ยิงแยม · แขน ทุบพื้น · ขา วิ่งเร็ว · หาง เรียกลูกน้อง · ใจ ฟื้นเลือด) · ยิ่งใส่ชิ้นมาก โกเลมยิ่งแกร่ง รางวัลยิ่งมาก (เลือกอบเร็วได้)

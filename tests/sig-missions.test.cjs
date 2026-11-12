@@ -75,22 +75,24 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 
 { // v8.1.83 League phase 3: Hunger Herald + Grandma's Pot
-  for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe'])m(n);
+  for(const n of ['hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpTick','gpServe'])m(n);
   assert.ok(src.includes("objectives:['hungerHerald','hunt','capture','purge'],lead:'hungerHerald',")&&src.includes("objectives:['grandmasPot','hunt','capture','purge'],lead:'grandmasPot',"),'C1-1 Herald, C1-3 Pot');
   assert.ok(/if\(stL&&!this\._bountyLead&&pool\.includes\(stL\)\)/.test(m('replayBountyTick'))&&/LEAGUE_MISSIONS\.includes\(type\)\)\?70:45/.test(m('replayBountyTick')),'league bounty first + 70s');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))},Utils:{Array:{Shuffle:a=>a}}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,visible:true,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(v){o.visible=v;return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},setRotation(){return o},setPosition(x,y){o.x=x;o.y=y;return o}};return o;};
-  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpWanted','gpDrop','gpOnKill','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  vm.runInContext('class S{'+['fpFull','hhSetup','hhSpawn','hhTick','hhDown','gpSetup','gpCard','gpDark','gpRound','gpOnKill','gpTick','gpServe','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:2,player:{x:0,y:0},sugarStage:0,sugarRun:0,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj()},
     objectivePosition:(i)=>({x:300+i*50,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{countActive:()=>en.filter(e=>e.active).length},
     sigSpawnAt:(x,y,el)=>{const e={x,y,active:true,isElite:!!el};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
   { const [sc,en]=mk();const o={},S={};sc.hhSetup(o,S);assert.strictEqual(S.gates.length,2);assert.ok(S.herald&&S.herald._herald);sc.hhTick(.1,o,S);assert.ok(S.herald._goTo,'herald wanders');
     for(let k=0;k<40;k++)sc.hhTick(.1,o,S);assert.ok(en.length>3,'gates spawn packs');sc.hhDown(S.herald,o,S);assert.ok(sc.done&&o.progress===1&&S.gates.length===0); }
-  { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,6);for(let i=0;i<40&&sc.gpWanted(S).length;i++)sc.gpOnKill({x:100,y:100},o,S);assert.ok(S.items.length>=6,'drops ingredients');
-    sc.player={x:100,y:100};sc.gpTick(.1,o,S);assert.ok(S.carry.length>=6,'picked up');sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(o.progress,6);assert.ok(sc.done&&sc.sugarRun>0,'dish served'); }
-  { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);sc.gpDrop(S,500,500,Object.keys(S.need)[0]);for(let k=0;k<200;k++)sc.gpTick(.1,o,S);assert.strictEqual(S.items.length,0,'ingredients spoil'); }
-  { const [sc]=mk();const o={},S={};sc.gpSetup(o,S);for(let k=0;k<125;k++)sc.gpTick(.1,o,S);assert.ok(S.items.length>=1,'grandma tosses one when nothing drops'); }
-  console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (drops, carry, deliver, spoil, serve) passed'); }
+  { const [sc,en]=mk();sc.fpFull=()=>false;sc.hurtPlayer=()=>{sc.hurt=(sc.hurt||0)+1;};const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,2);assert.strictEqual(S.phase,'wait');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'wait','far away: ritual waits');   // v8.1.106 Ritual-style pot
+    sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'ritual');assert.strictEqual(S.round,1);assert.ok(S.foes.length>=7,'course spawns hungry mochi');
+    const n1=S.foes.length;S.foes.forEach(e=>{e.x=S.x;e.y=S.y;sc.gpOnKill(e,o,S);e.active=false;});assert.strictEqual(S.flavor,n1,'kills inside the light feed the pot');sc.gpTick(.1,o,S);assert.strictEqual(S.phase,'rest');assert.strictEqual(o.progress,1);
+    for(let k=0;k<30;k++)sc.gpTick(.1,o,S);assert.strictEqual(S.round,2,'next course starts');sc.player={x:S.x+900,y:S.y};const before=S.flavor;S.foes[0].x=S.x;sc.gpOnKill(S.foes[0],o,S);assert.strictEqual(S.flavor,before,'kills outside the ring do not count');
+    for(let k=0;k<40;k++)sc.gpTick(.1,o,S);assert.ok(S.spice<=3.2&&(S.spices.length>0||(sc.hurt||0)>0||S.spice<3.2),'spice hazard ticks');S.foes.forEach(e=>e.active=false);sc.gpTick(.1,o,S);assert.ok(sc.done&&sc.sugarRun>0&&o.progress===2,'pot bursts after the last course'); }
+  { const [sc]=mk();sc.fpFull=()=>true;const o={},S={};sc.gpSetup(o,S);assert.strictEqual(o.target,3,'full = 3 courses');sc.player={x:S.x,y:S.y};sc.gpTick(.1,o,S);sc.gpTick(.1,o,S);assert.ok(S.spices.length>=0); }
+  console.log('League phase 3: Hunger Herald (wander, gates, shut on kill) + Grandma’s Pot (ritual ring, courses, kills in the light, spice hazard, pot burst) passed'); }
 
 { // v8.1.85 League phase 6: Grandma's Golem (Metamorph)
   for(const n of ['ggSetup','ggList','ggCarrier','ggDropPart','ggTick','ggBake','ggSpawnGolem','ggDown'])m(n);

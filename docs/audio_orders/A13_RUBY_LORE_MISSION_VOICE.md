@@ -33,7 +33,7 @@
 | `vo_ruby_tip_hungersMouth` | C1-2 | Touch the Hunger’s hand! Kills inside keep the breach open. |
 | `vo_ruby_tip_creepingRoots` | C2-3 | Roots crawl to the flower! Stand on each root mother to cut it. |
 | `vo_ruby_tip_hungerHerald` | C1-1 | That Herald opens gates! Hunt it down to shut them. |
-| `vo_ruby_tip_grandmasPot` | C1-3 | Carry the ingredients on Grandma’s recipe to the pot! |
+| `vo_ruby_tip_grandmasPot` | C1-3 | Step into Grandma’s ring! Beat the hungry mochi in the light to fill the pot. |
 | `vo_ruby_tip_grandmasGolem` | C1-5 | Collect golem parts, bake them in the oven, then beat the golem! |
 | `vo_ruby_tip_hungerSiege` | Delve | Hold the circle! Every kill inside fills the pot. |
 | `vo_ruby_tip_hungerDomain` | Delve | The whole cave is a breach! Survive, then beat the Breachlord! |
@@ -51,7 +51,7 @@
 | `vo_ruby_short_hungersMouth` | Keep fighting inside the breach! |
 | `vo_ruby_short_creepingRoots` | Cut the root mothers! |
 | `vo_ruby_short_hungerHerald` | Hunt the Herald! |
-| `vo_ruby_short_grandmasPot` | Bring ingredients to the pot! |
+| `vo_ruby_short_grandmasPot` | Fight inside the pot ring! |
 | `vo_ruby_short_grandmasGolem` | Bake the golem parts! |
 | `vo_ruby_short_hungerSiege` | Hold the circle! |
 | `vo_ruby_short_hungerDomain` | Survive, then the Breachlord! |

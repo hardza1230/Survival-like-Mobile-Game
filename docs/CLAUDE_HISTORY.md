@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.104 — Ruby mission tips for 14 signature/League missions + new orders A13 / 79
+
+RUBY_TIPS gained say/short for all SIG_MISSIONS (seedRift…hungerDomain) → rubyTip at objective start now speaks for them (was silent; text only, voice pending). tests/ruby-a09-voice.test.cjs: `A13_PENDING` set exempts these 14 from the short-voice check until A13 is wired. New orders (art/audio AI wires them itself): `docs/audio_orders/A13_RUBY_LORE_MISSION_VOICE.md` (31 Ruby VO: core lore 3 + tips 14 + shorts 14) · `docs/art_orders/79_RESULTS_HEADER_CORE_LORE.md` (6: results header plate/medallion/back/rays/star socket + Heart Seed illustration for the core lore, hooks into summaryHeaderDeco / rubyGuide opt.art). Pending list for the other AI: `docs/PENDING_ART_AUDIO_ORDERS.md`.
+
 # Previous delivery: v8.1.103 — owner: Flavor Cores tied to the story (Ruby explains)
 
 Lore (STORY_CANON §2): Flavor Cores = 3 threads Grandma wove into the Heart Seed — Life Core (true form → HP), Flavor Spark (stolen flavor → DMG), Oath Shell (promise to protect → armor); Sugar = flavor taken back from monsters; feeding the cores makes the Seed hold every freed friend's form tighter (why one upgrade powers all heroes). Code: `CORE_LORE_LINES` (3 pages) shown via rubyGuide (target gLoadout) at the first step of the post-tutorial weave tour in applyGearTut (once per tour, `_coreLoreDone`; sets Save.data.coreLoreTaught; skipped with noRuby), then the old spotlight tour continues. Tutorial Complete hint text updated. Test tests/core-lore.test.cjs (added to npm run check). Owner: Overcharge ring removed for now — `OVERCHARGE_ON=false` makes overchargeOffer return false (code kept; set true to restore).

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.105**. Next release:8.1.106. Fetch the deploy branch before new work.
+Current release: **8.1.106**. Next release:8.1.107. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.105 — owner: edge spawns, stuck pickups, spread missions, hero reveal
+# Latest delivery: v8.1.106 — owner: Grandma's Pot reworked as a PoE-style Ritual
+
+Owner: old pot (collect ingredients → deliver) felt empty → Ritual, only the reward drop differs. gpSetup/gpCard/gpDark/gpRound/gpOnKill/gpTick/gpServe (gpWanted/gpDrop removed): ring R210 around the pot, phase wait → player enters → courses (light 2 / full 3; foes 5|7 + 2·course spawned on the ring edge via sigSpawnAt, gold tint, full last course +1 elite) · outside the ring darkened (circle stroke 1400px at depth 90030, alpha .55) · spice hazard from course 2 (full: all) = 70px telegraph 1.1 s near the player, hurt 6+2.5·stage · kills inside R+40 add flavor (elite 4) · course ends when its foes are dead or 30 s · rest 2.5 s · serve: sugar (9+1.6·si)·(full 1.4)·(.6+.8·ratio), missionLootBurst bonus box when ratio ≥ .8. Tip/desc/quest-focus text updated (A13 lines too). gp_ingredients / gp_recipe_card art now unused. Test sig-missions Pot block rewritten.
+
+# Previous delivery: v8.1.105 — owner: edge spawns, stuck pickups, spread missions, hero reveal
 
 `inMapPt` now clamps to the map (was: off-map points teleported to a random spot ≤220px from map center → monsters popped mid-screen; Yuzu companions too). spawnEnemy without radOverride uses new `edgeSpawnPt(ang)` = camera worldView rectangle +42px along ang, clamped; if clamped into view, tries 11 other angles (mission/event spawns pass radOverride and are unchanged). Pickups: tickLootMagnet collects when |dx|+|dy|<30; orb loop collects when pulled and d<24 (overlap no longer required). objectivePosition: n>1 → minR×1.6, maxR×2.2, random base angle (single-point missions unchanged). `heroRevealed(id)` (global, near HERO_INTROS): hero listed in Heroes roster/codex/switch arrows only after its intro flag / mcSeen scene / stageMastery[idx] / selected. Tests: spawnEnemy extract lists gained edgeSpawnPt; hero-roster flags + reveal check.
-
-# Previous delivery: v8.1.104 — Ruby mission tips for 14 signature/League missions + new orders A13 / 79
-
-RUBY_TIPS gained say/short for all SIG_MISSIONS (seedRift…hungerDomain) → rubyTip at objective start now speaks for them (was silent; text only, voice pending). tests/ruby-a09-voice.test.cjs: `A13_PENDING` set exempts these 14 from the short-voice check until A13 is wired. New orders (art/audio AI wires them itself): `docs/audio_orders/A13_RUBY_LORE_MISSION_VOICE.md` (31 Ruby VO: core lore 3 + tips 14 + shorts 14) · `docs/art_orders/79_RESULTS_HEADER_CORE_LORE.md` (6: results header plate/medallion/back/rays/star socket + Heart Seed illustration for the core lore, hooks into summaryHeaderDeco / rubyGuide opt.art). Pending list for the other AI: `docs/PENDING_ART_AUDIO_ORDERS.md`.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
