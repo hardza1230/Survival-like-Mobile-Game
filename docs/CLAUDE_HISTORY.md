@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.107 — owner: lobby showed the backup picture after the book opened
+
+buildLobby no longer falls back to `hub_ui_background` (owner: looked odd) — new `lobbyPreload()` (stage_card_sNN + hero card + roster, called from buildTitle and buildLobby) starts loading on the title screen; until it arrives the lobby uses a dark plain rect, and when it lands the lobby rebuilds (waits while `_bookCover` is up) with the stage scene fading in (`_lobbyBgIn`, 600 ms). Other lobby art still lazy (loadLobbyArt).
+
 # Previous delivery: v8.1.106 — owner: Grandma's Pot reworked as a PoE-style Ritual
 
 Owner: old pot (collect ingredients → deliver) felt empty → Ritual, only the reward drop differs. gpSetup/gpCard/gpDark/gpRound/gpOnKill/gpTick/gpServe (gpWanted/gpDrop removed): ring R210 around the pot, phase wait → player enters → courses (light 2 / full 3; foes 5|7 + 2·course spawned on the ring edge via sigSpawnAt, gold tint, full last course +1 elite) · outside the ring darkened (circle stroke 1400px at depth 90030, alpha .55) · spice hazard from course 2 (full: all) = 70px telegraph 1.1 s near the player, hurt 6+2.5·stage · kills inside R+40 add flavor (elite 4) · course ends when its foes are dead or 30 s · rest 2.5 s · serve: sugar (9+1.6·si)·(full 1.4)·(.6+.8·ratio), missionLootBurst bonus box when ratio ≥ .8. Tip/desc/quest-focus text updated (A13 lines too). gp_ingredients / gp_recipe_card art now unused. Test sig-missions Pot block rewritten.

@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.108';
+const GAME_VERSION = '8.1.109';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.109',date:'2026-11-12',title:'Patrol gets the temple tune',items:['Mochi Patrol now plays the calm temple music; Flavor Weave and Rank Rewards use the main menu music like the other lobby screens']},
   {v:'8.1.108',date:'2026-11-12',title:'Voices, sounds and a new results header',items:['Ruby now speaks her Flavor Core story and explains every League and Chapter 3 mission','New sounds for the League missions, Sugar Crown Trial, Forge rows and Recipe Ink, Memory Book and Mochi Patrol (with a calm night ambience)','Stage Clear has a painted header panel, hero medallion, light rays and star sockets; Ruby shows the Heart Seed while she explains the cores']},
   {v:'8.1.107',date:'2026-11-12',title:'Lobby opens on your stage',items:['After the book opens, the lobby shows your current stage scene right away (it starts loading on the title screen) instead of a backup picture']},
   {v:'8.1.106',date:'2026-11-12',title:'Grandma’s Pot becomes a ritual',items:['Step into Grandma’s pot ring to start a ritual: the world goes dark, hungry mochi pour in course after course and spicy drops rain down','Kills inside the light fill the pot; when the last course ends the pot bursts with loot (fill it 80% for a gear box)']},
@@ -4430,7 +4431,7 @@ const ASSET_AUDIO = {
   bgm_a04_bgm_story_hope:'assets/audio/story_music/bgm_story_hope.mp3',
   bgm_a04_bgm_story_finale:'assets/audio/story_music/bgm_story_finale.mp3',
   bgm_a04_bgm_bazaar:'assets/audio/story_music/bgm_bazaar.mp3',
-  bgm_menu_temple:  'assets/audio/bgm/menu/tea_for_two_temple.mp3',   // v5.40 วิหาร Flavor Weave + Rank Perks
+  bgm_menu_temple:  'assets/audio/bgm/menu/tea_for_two_temple.mp3',   // v5.40 วิหาร · v8.1.109 Mochi Patrol + Depths (Weave ใช้เพลงหน้าหลัก)
   bgm_menu_depths:  'assets/audio/bgm/menu/bgm_menu_depths.mp3',   // ห้องขุดใต้วิหาร
   bgm_menu_kitchen: 'assets/audio/bgm/menu/bgm_menu_kitchen.mp3',  // ครัวสูตร
   bgm_stage1:     'assets/audio/bgm/min/bgm_stage1.mp3',
@@ -14591,9 +14592,9 @@ class Game extends Phaser.Scene {
   voiceBossSlip(b,st){if(this._voiceSlipSeen||!this.storyVoice?.()||!b?.isBoss||!(b.maxhp>0)||b.hp/b.maxhp>.5||this._bossSayObj?.active||VoiceActing.busy())return false;const key='vo_b'+String((this.stageIndex||0)+1).padStart(2,'0')+'_slip_'+(Math.floor(performance.now()/1000)%2+1),row=A07_CATALOG[key];if(!row)return false;this._voiceSlipSeen=true;this.bossSay(row.text,st?.boss,Math.max(3300,row.duration+250));return true;}
   storyMusicPlay(key,valid,volume){return StoryMusic.play(this,key,valid,volume);}
   storyMusicStop(){StoryMusic.stop();}
-  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={upgrade:'bgm_menu_temple',perks:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;
+  menuMusic(s){ if(this.state!=='menu')return; if(typeof window!=='undefined')window.__mochiTitleMusic=s==='title';const a04=s==='title'?'bgm_a04_bgm_title':s==='bazaar'?'bgm_a04_bgm_bazaar':null;if(a04){this.storyMusicPlay?.(a04,()=>this.state==='menu'&&this.menuScreen===s);return;}this.storyMusicStop?.();if((Sfx._currentBgmKey||'').startsWith('bgm_a04_')||window.LoaderMusic?.playing?.())Sfx.playMainBgm(); const key={patrol:'bgm_menu_temple',dig:'bgm_menu_temple',kitchen:'bgm_menu_kitchen'}[s]||null;   // v8.1.109 เจ้าของ: Mochi Patrol ใช้เพลงวิหาร (เดิมของ Flavor Weave) · Weave/Rank Perks กลับไปใช้เพลงหน้าหลักเหมือนหน้าอื่น
     if(!key||this.cache.audio.exists(key)){ Sfx.playMenuBgm(key); return; } if(!ASSET_AUDIO[key])return;
-    this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({upgrade:1,perks:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
+    this.load.audio(key,verUrl(ASSET_AUDIO[key])); this.load.once('filecomplete-audio-'+key,()=>{ if(this.state==='menu'&&({patrol:1,dig:1,kitchen:1})[this.menuScreen])this.menuMusic(this.menuScreen); }); this.load.start(); }
   // v6.92 เพลงที่ถอดรหัสแล้วกินแรม ~20MB/เพลง → ลบเพลงด่าน/บอสของด่านอื่นออกจาก cache (ไฟล์ยังอยู่ในเครื่อง โหลดกลับเร็ว)
   evictOtherBgm(keep){ try{ const ks=new Set((keep||[]).filter(Boolean)),cur=Sfx._currentBgmKey,ca=this.cache.audio; const all=ca.entries&&ca.entries.keys?ca.entries.keys():[];
       for(const k of all){ if(!/^bgm_(?:[smb]\d|stage|boss|ch\d)/.test(k)||ks.has(k)||k===cur)continue; try{ this.sound.removeByKey?.(k); }catch(e){} ca.remove(k); } }catch(e){} }
