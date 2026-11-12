@@ -33,3 +33,8 @@ const ta=method('tickStageAmbient');assert(ta.includes("if(!g.active||!o||!o.act
 assert(method('stageMood').includes('this.stageAmbient?.(i)')&&method('stageAmbient').includes('frequency:240')&&method('playerStepDust').includes('this._stepT=.2'),'ambient + dust');
 assert(method('drawShadows').includes('this.playerStepDust?.(1/60); this.tickStageAmbient?.();'));
 console.log('polish set 2 ok');
+// v8.1.130 owner (lobby UI polish): currency count-up since last seen.
+{ const lc=method('lobbyCountUp');assert(lc.includes('if(!t||!t.setText||old==null||val<=old')&&lc.includes('duration:800')&&s.includes("this.lobbyCountUp?.(t,'sugar',d.sugar,compact,")&&s.includes("this.lobbyCountUp?.(t,'thread',Save.threads?.(),compact,"),'count-up on sugar + thread');
+  const C=vm.runInContext('class L{'+lc+'\n}L',ctx);const tw=[];const l=Object.assign(new C(),{tweens:{add(c){tw.push(c);}},time:{delayedCall(ms,f){f();}},add:{text:()=>({setOrigin(){return this;},destroy(){}})},menu:{add(){}},hubMotionAllowed:()=>true});
+  const t={active:true,scaleX:1,scaleY:1,txt:'',setText(x){this.txt=x;}};l.lobbyCountUp(t,'sugar',100,String,0,0);assert.equal(tw.length,0,'first view: no animation');l.lobbyCountUp(t,'sugar',150,String,0,0);assert.equal(t.txt,'100');assert(tw.length>=1&&tw[0].v===150,'counts 100 → 150');l.lobbyCountUp(t,'sugar',120,String,0,0);}
+console.log('lobby count-up ok');

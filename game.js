@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.129';
+const GAME_VERSION = '8.1.130';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.130',date:'2026-11-13',title:'Lobby counters',items:['Back in the Lobby, your Sugar and Thread count up from what you had before, with a little sparkle']},
   {v:'8.1.129',date:'2026-11-13',title:'Living stages',items:['Soft motes drift through every stage in its own colour','Little dough puffs at your feet as you walk','Elite monsters glow','The camera leans in while a boss charges its big move']},
   {v:'8.1.128',date:'2026-11-13',title:'Juicier hits',items:['Monsters flash white for a split second when hit (bosses less often)','Defeated monsters burst into little mochi dough pieces that bounce and fade','Each stage has its own soft coloured glow around the screen edges']},
   {v:'8.1.127',date:'2026-11-13',title:'Lighter Lobby',items:['The Lobby now uses about a third less graphics memory, so the game is less likely to run out of memory and reload on phones']},
@@ -12564,6 +12565,10 @@ class Game extends Phaser.Scene {
     if(this.bpAnim?.('vfx_hub_firefly'))for(let i=0;i<7;i++){const x=80+((i*149)%920),y=1000+((i*61)%380),s=this.add.sprite(x,y,'vfx_hub_firefly',0).setDisplaySize(34,34);if(motion){s.play({key:'vfx_hub_firefly',startFrame:i%4});this.hubTween({targets:s,x:x+(i%2?40:-40),y:y-30-(i%3)*12,duration:2600+i*300,yoyo:true,repeat:-1,ease:'Sine.inOut'});}root.add(s);}
     return true; }
   // ทำซ้ำทุก ms (+สุ่ม jitter) ล้างใน stopHubMotion
+  /* v8.1.130 เจ้าของ (UI polish lobby): เงินที่เพิ่มขึ้นตั้งแต่ครั้งก่อนที่เห็น → ตัวเลขวิ่งขึ้น 0.8 วิ + เด้ง + ประกายที่ไอคอน · ครั้งแรกไม่วิ่ง */
+  lobbyCountUp(t,key,val,fmt,ix,iy){ val=Math.floor(Number(val)||0); const seen=this._lbSeen||(this._lbSeen={}),old=seen[key]; seen[key]=val; if(!t||!t.setText||old==null||val<=old||!this.tweens||!this.hubMotionAllowed?.())return;
+    const st={v:old},sx=t.scaleX,sy=t.scaleY; t.setText(fmt(old)); this.time?.delayedCall?.(350,()=>{ if(!t.active)return; this.tweens.add({targets:st,v:val,duration:800,ease:'Cubic.easeOut',onUpdate:()=>{ if(t.active)t.setText(fmt(Math.round(st.v))); },onComplete:()=>{ if(!t.active)return; t.setText(fmt(val)); this.tweens.add({targets:t,scaleX:sx*1.25,scaleY:sy*1.25,duration:110,yoyo:true,ease:'Quad.out'}); }});
+      if(ix!=null)for(let i=0;i<5;i++){ const sp=this.add.text(ix,iy,'✦',{fontSize:(9+i*2)+'px',color:'#fff3c4'}).setOrigin(.5); this.menu.add(sp); const a=i/5*Math.PI*2; this.tweens.add({targets:sp,x:ix+Math.cos(a)*22,y:iy+Math.sin(a)*16,alpha:0,duration:600,delay:i*40,onComplete:()=>sp.destroy()}); } }); }
   hubEvery(ms,jitter,fn){if(!this.hubMotionAllowed()||!this.time?.addEvent)return null;const ev={stop:false,remove(){this.stop=true;t?.remove(false);}};let t=null;const loop=()=>{if(ev.stop)return;t=this.time.delayedCall(ms+Math.random()*jitter,()=>{if(ev.stop)return;fn();loop();});};loop();(this._hubEvents||(this._hubEvents=[])).push(ev);return ev;}
   // แสงวิ่ง 1 ครั้งทับกล่อง (โลโก้/ปุ่ม Play)
   hubFlash(key,x,y,w,h){if(this.state!=='menu'||(this.menuScreen!=='hub'&&this.menuScreen!=='title')||!this.bpAnim?.(key))return;const s=this.add.sprite(x,y,key,0).setDisplaySize(w,h).setAlpha(.9);this.menu.add(s);s.play(key);s.once('animationcomplete',()=>s.destroy());}
@@ -12697,11 +12702,11 @@ class Game extends Phaser.Scene {
     const sx=side+pw+8,sw=gx-8-sx,moneyKey=art('lb_currency_plain')?'lb_currency_plain':'lb_power_pill';
     const compact=n=>{const v=Math.max(0,Math.floor(Number(n)||0)),units=['','K','M','B','T','Q'];let i=0,q=v;while(q>=1000&&i<units.length-1){q/=1000;i++;}const rounded=Number(q.toFixed(i?2:0));if(rounded>=1000&&i<units.length-1)return '1'+units[i+1];return String(rounded)+units[i];};
     panel(moneyKey,sx,top,sw,gearW);this.hubArt('candy',sx+16,top+gearW/2,20,20);
-    fit(this.hubText(sx+sw-8,top+gearW/2,compact(d.sugar),14,'#ffe5aa',1),sw-36);
+    { const t=fit(this.hubText(sx+sw-8,top+gearW/2,compact(d.sugar),14,'#ffe5aa',1),sw-36)||null; this.lobbyCountUp?.(t,'sugar',d.sugar,compact,sx+16,top+gearW/2); }
     if(featureOpen('bazaar')){ this._zone(sx,top,sw,gearW,()=>{this._bazTab=this._bazTab||'chests';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='bazaar'; }
     { const ty=top+gearW+6,th=30;panel(moneyKey,sx,ty,sw,th);
       if(this.realTex('ic_thread'))this.menu.add(this.add.image(sx+16,ty+th/2,'ic_thread').setDisplaySize(22,22)); else this.menu.add(this.add.text(sx+16,ty+th/2,'🧶',{fontSize:'15px'}).setOrigin(.5));
-      fit(this.hubText(sx+sw-8,ty+th/2,compact(Save.threads?.()),13,'#cfe9ff',1),sw-36);
+      { const t=fit(this.hubText(sx+sw-8,ty+th/2,compact(Save.threads?.()),13,'#cfe9ff',1),sw-36)||null; this.lobbyCountUp?.(t,'thread',Save.threads?.(),compact,sx+16,ty+th/2); }
       if(featureOpen('bazaar')){ this._zone(sx,ty-2,sw,th+4,()=>{this._bazTab='chests';this.menuScreen='bazaar';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='thread_pill'; }
       try{ const mr=Save.minersReady&&Save.minersReady()&&Save.minersTick(),mn=mr?Math.floor(mr.store||0):0;   // v8.0.27 เจ้าของ: เก็บด้ายจาก Miners ได้จาก Lobby
         if(mn>=1){ const my=ty+th+6,mh=26,mw=sw-16,mg=this.add.graphics(); mg.fillStyle(0x3d5a2a,.95).fillRoundedRect(sx,my,mw,mh,13).lineStyle(1.5,0xa8ffb0,1).strokeRoundedRect(sx,my,mw,mh,13); this.menu.add(mg);

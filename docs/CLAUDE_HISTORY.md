@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.128 — owner: presentation polish set 1 (hit flash · mochi chunks · stage mood)
+
+Hit squash already existed (`e._sqX/_sqY` in damage). `hitFlash(e)` called first in `enemyWeightHit` (damage() untouched — taro hash fixture): setTintFill white 55 ms, throttled 300 ms per enemy (boss/mini 650 ms), skipped for time-stopped/frozen and vfx=0, restores previous tint / tintColor / clear (white flash was removed long ago because constant multi-hits hid the art — throttle answers that). `mochiChunks(x,y,color,big)` in killEnemy after burst/poof: 4 (6 big) canvas dough blobs `mm_chunk`, arc + bounce squash + fade, live cap 48 (`_chunkN`). `STAGE_MOOD[15]` colours + `stageMood(i)`: canvas edge-glow `mm_mood` (white edges) tinted per stage, α .26, depth 39 under the black vignette, set in startStage (not recipe/rift), hidden in exitStage, follows resize. Test foe-shadow block.
+
 # Previous delivery: v8.1.127 — owner (stability round 1): Lobby GPU memory 431 → ~282 MB
 
 Measured headless (texMB after title → hub): `menuPrefetch` used to ensureGroup 6 menu screens (char/gLoadout/gActivity/chapter/upgrade/gear ≈ 90 MB decoded) at the lobby → now it only `fetch()`es their files into the browser cache (4 at a time, no GPU decode); screens decode on open. `MENU_TEX_SOFT_MB=300`: buildMenuScreen evicts unused menu-class art above 300 MB (recent <20 s still protected). Book-opening art `bk_*` (~44 MB) freed after the lobby with retries (8 s, up to 4) because the 20 s guard blocked the first try. Hub now 326 MB at once → 282 MB after ~30 s. Next stability ideas: boot-class fx (43 MB) / vfx (24 MB) are combat art held in menus. Test texture-safety block.
