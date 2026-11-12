@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.107**. Next release:8.1.108. Fetch the deploy branch before new work.
+Current release: **8.1.108**. Next release:8.1.109. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.107 — owner: lobby showed the backup picture after the book opened
+# Latest delivery: v8.1.108 — wired A13 + A12 + order 79 (+ order 69 confirmed), delivered by the art/audio AI on asset-delivery/a13-a12-79-69
+
+**A13** 31 Ruby VO → `assets/audio/acting/`, one `Object.assign(A07_CATALOG,…)` row block (core lore 3, mission tips 14, shorts 14; texts verified identical to RUBY_TIPS/CORE_LORE_LINES); `A13_PENDING` removed from tests/ruby-a09-voice (+A13 block), voice-acting catalog count 515. **A12** 36 SFX → `assets/audio/sfx/a12/`, `sfx_<key>` in ASSET_AUDIO (background-loaded like A11); new scene helper `a12(k,vol,gap)` (ui_* → Sfx.menuCue, else orderCue; returns false when the file is missing so old cues still play, e.g. gpRound `a12('lg_pot_ritual')||Sfx.bossWarn`); hooks per the A12 table in hm*/hd*/fp*/hh*/gp*/gg*/cr*/hs*/ult*/forgeUpgrade (line>0)/forgeMove/codexUpgrade/Domain button/patrolPop/buildPatrol; ui_memory_gain in Save.addKill (mem>0, gap 2 s); pt_ambient_loop via Sfx.eventLoopStart in buildPatrol, stopped in patrolStop. Test tests/audio-a12.test.cjs. **79** `scripts/pack-results79.py` → `assets/art/results79/` (6 WebP, 203 KB, rays luminance-alpha); sc79_* stage-lazy (artClass + stageArtKeys after bv46_key), core79_heart_seed menu-lazy (preloaded in openTutorialWeave); TEMPLE_UI sc79_header_plate 9-slice + sc79_star_socket 2 cells; hooks in summaryHeaderDeco (plate/rays/medallion back), showStageSummary (medallion frame over the masked hero, star sockets) and rubyGuide `opt.art` (Heart Seed above Ruby's box in the core-lore talk); every hook keeps the v8.1.100 code graphics as fallback. Test tests/results79-art.test.cjs. **69** all 62 hero files pass `qa-skin69.py --fix`; repack is byte-identical to what is live (Mint integrated 11 Nov) → docs only.
+
+# Previous delivery: v8.1.107 — owner: lobby showed the backup picture after the book opened
 
 buildLobby no longer falls back to `hub_ui_background` (owner: looked odd) — new `lobbyPreload()` (stage_card_sNN + hero card + roster, called from buildTitle and buildLobby) starts loading on the title screen; until it arrives the lobby uses a dark plain rect, and when it lands the lobby rebuilds (waits while `_bookCover` is up) with the stage scene fading in (`_lobbyBgIn`, 600 ms). Other lobby art still lazy (loadLobbyArt).
-
-# Previous delivery: v8.1.106 — owner: Grandma's Pot reworked as a PoE-style Ritual
-
-Owner: old pot (collect ingredients → deliver) felt empty → Ritual, only the reward drop differs. gpSetup/gpCard/gpDark/gpRound/gpOnKill/gpTick/gpServe (gpWanted/gpDrop removed): ring R210 around the pot, phase wait → player enters → courses (light 2 / full 3; foes 5|7 + 2·course spawned on the ring edge via sigSpawnAt, gold tint, full last course +1 elite) · outside the ring darkened (circle stroke 1400px at depth 90030, alpha .55) · spice hazard from course 2 (full: all) = 70px telegraph 1.1 s near the player, hurt 6+2.5·stage · kills inside R+40 add flavor (elite 4) · course ends when its foes are dead or 30 s · rest 2.5 s · serve: sugar (9+1.6·si)·(full 1.4)·(.6+.8·ratio), missionLootBurst bonus box when ratio ≥ .8. Tip/desc/quest-focus text updated (A13 lines too). gp_ingredients / gp_recipe_card art now unused. Test sig-missions Pot block rewritten.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -43,11 +43,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
-- รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md`
-- ใบเสียง A13 Ruby พากย์ 31 (core lore + ภารกิจ 14) · ใหม่
-- ใบเสียง A12 (36 SFX ภารกิจ/Trial/Forge/Patrol) · ยังไม่ส่ง
-- ใบอาร์ต 79 หัวหน้าจบด่าน + ภาพเมล็ดหัวใจ (6) · ใหม่
-- ใบ 69 สกินเต็มตัว Festival · v8.1.90 ทดลอง 5 ฮีโร่ (scripts/qa-skin69.py) · Mint รอแก้ 4 ชีต · ตัวฮีโร่ 61 ไฟล์ยังเป็น candidates · ผูกแล้ว 7/68 (v8.1.73 pets HD/icons/banner) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
+- รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
+- ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - เสียงชุด A04 เพลง · รอสิทธิ์ Music Generation
 
 **รอ QA บนมือถือของเจ้าของ**

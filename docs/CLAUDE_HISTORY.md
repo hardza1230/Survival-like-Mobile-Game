@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.106 — owner: Grandma's Pot reworked as a PoE-style Ritual
+
+Owner: old pot (collect ingredients → deliver) felt empty → Ritual, only the reward drop differs. gpSetup/gpCard/gpDark/gpRound/gpOnKill/gpTick/gpServe (gpWanted/gpDrop removed): ring R210 around the pot, phase wait → player enters → courses (light 2 / full 3; foes 5|7 + 2·course spawned on the ring edge via sigSpawnAt, gold tint, full last course +1 elite) · outside the ring darkened (circle stroke 1400px at depth 90030, alpha .55) · spice hazard from course 2 (full: all) = 70px telegraph 1.1 s near the player, hurt 6+2.5·stage · kills inside R+40 add flavor (elite 4) · course ends when its foes are dead or 30 s · rest 2.5 s · serve: sugar (9+1.6·si)·(full 1.4)·(.6+.8·ratio), missionLootBurst bonus box when ratio ≥ .8. Tip/desc/quest-focus text updated (A13 lines too). gp_ingredients / gp_recipe_card art now unused. Test sig-missions Pot block rewritten.
+
 # Previous delivery: v8.1.105 — owner: edge spawns, stuck pickups, spread missions, hero reveal
 
 `inMapPt` now clamps to the map (was: off-map points teleported to a random spot ≤220px from map center → monsters popped mid-screen; Yuzu companions too). spawnEnemy without radOverride uses new `edgeSpawnPt(ang)` = camera worldView rectangle +42px along ang, clamped; if clamped into view, tries 11 other angles (mission/event spawns pass radOverride and are unchanged). Pickups: tickLootMagnet collects when |dx|+|dy|<30; orb loop collects when pulled and d<24 (overlap no longer required). objectivePosition: n>1 → minR×1.6, maxR×2.2, random base angle (single-point missions unchanged). `heroRevealed(id)` (global, near HERO_INTROS): hero listed in Heroes roster/codex/switch arrows only after its intro flag / mcSeen scene / stageMastery[idx] / selected. Tests: spawnEnemy extract lists gained edgeSpawnPt; hero-roster flags + reveal check.
