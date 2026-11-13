@@ -29,8 +29,12 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
         await page.waitForTimeout(1000);
         const st=await page.evaluate(()=>{const s=window.__g.scene.getScene('Game'),g=window.__g,P=s.player;let act='';
           try{
+            if(s.state!=='cinematic')s._qaCin=0;
             if(s.state==='levelup'&&s._pathTeach){s._pathTeach.next();act='teach';}
             else if(s.state==='levelup'&&s.lvlCards&&s.lvlCards.length&&(s.levelCardReadyAt||0)<=s.time.now){const c=s.lvlCards[0],x=(c.left+c.right)/2,y=(c.top+c.bottom)/2;s.pickCardAt(x,y);s.pickCardAt(x,y);act='card';}
+            else if(s.state==='rolling'&&s._rollBtns&&s._rollBtns.length){s._rollBtns[0].fn();act='roll';}
+            else if(s.state==='rewardChoice'&&s._rewardBtns&&s._rewardBtns.length){s._rewardBtns[0].fn();act='reward';}
+            else if(s.state==='cinematic'){s._qaCin=(s._qaCin||0)+1;if(s._qaCin>=6&&s._finishStoryCutscene){s._finishStoryCutscene({x:195,y:420,id:-77});act='skip-cine';}}
             else if(s.state==='levelup')act='wait:'+(s.lvlCards||[]).length+':'+Math.round((s.levelCardReadyAt||0)-s.time.now);
             else if(s.state==='play'&&P&&P.body){if(P.hp<P.maxhp*.5)P.hp=P.maxhp;const t=s.time.now/1000,ox=(s._sig&&s._sig.x!=null)?s._sig.x:(s.objNode?s.objNode.x:null),oy=(s._sig&&s._sig.y!=null)?s._sig.y:(s.objNode?s.objNode.y:null);
               let tx=Math.cos(t*.7)*260,ty=Math.sin(t*.9)*260;if(ox!=null){tx=ox+Math.cos(t)*60;ty=oy+Math.sin(t)*60;}
@@ -39,7 +43,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
           const pm=performance.memory;return {state:s.state,act,fps:g.loop.actualFps,heap:pm?pm.usedJSHeapSize/1048576:0,tex:s.texMB?s.texMB():0,level:s.level||0,stage:s.stageIndex,elapsed:Math.round(s.elapsed||0),hp:P?Math.round(P.hp):null,boss:!!(s.boss&&s.boss.active),over:!!(s.over&&s.over.visible),loader:!!(document.querySelector('#loader')&&getComputedStyle(document.querySelector('#loader')).display!=='none')};});
         res.states[st.state]=(res.states[st.state]||0)+1;if(st.state==='play')fps.push(st.fps);heap=Math.max(heap,st.heap);tex=Math.max(tex,st.tex);res.level=st.level;
         const sig=st.state+'|'+st.elapsed+'|'+st.level;if(sig===last)same++;else{same=0;last=sig;}
-        if(same===20)res.stuck.push({atSec:Math.round((Date.now()-start)/1000),state:st.state,elapsed:st.elapsed,act:st.act});
+        if(same===20&&left)res.stuck.push({atSec:Math.round((Date.now()-start)/1000),state:st.state,elapsed:st.elapsed,act:st.act});
         if(st.act.startsWith('bot-error'))res.stuck.push({bot:st.act});
         if(['summary','win','over','dead','rushDone','epilogue'].includes(st.state)||st.over){res.result=st.state;break;}
         if(st.state!=='menu')left=true; if(st.state==='menu'&&left){res.result='back-to-menu';break;} if(!left&&(Date.now()-start)>90000){res.result='never-started';break;}
