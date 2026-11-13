@@ -41,5 +41,5 @@
   - App ID (Android): `ca-app-pub-6736744441157705~4936664616`
   - Rewarded ad unit `rewarded_main`: `ca-app-pub-6736744441157705/4748962358`
   - ช่วงทดสอบใช้รหัสโฆษณาทดสอบของ Google · **ห้ามเจ้าของกดโฆษณาจริงของเกมตัวเอง** (เสี่ยงโดนปิดบัญชี)
-- Supabase: โปรเจกต์ `mochi-mayhem` (tohsnflngkfoutqcfrwi) เปิดแล้ว 13 พ.ย.
+- Supabase: โปรเจกต์ `mochi-mayhem` (tohsnflngkfoutqcfrwi) เปิดแล้ว 13 พ.ย. · ตาราง qa_reports / run_stats / bucket qa-shots · งานลบข้อมูลเกิน 12 เดือน `qa-retention-12m` ตั้งแล้ว (ยกเว้นภาพใน qa-shots — ยังต้องทำตัวลบผ่าน Storage API ก่อนครบ 12 เดือน)
 
