@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.133**. Next release:8.1.134. Fetch the deploy branch before new work.
+Current release: **8.1.134**. Next release:8.1.135. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.133 — owner: Forge mod readability (the rest of the suggestions, as fitting)
+# Latest delivery: v8.1.134 — owner: equipped item did not fly into the slot
+
+v8.1.131 only hooked the inventory double-tap; the owner used the "⚔ Equip" action button (buildGear drawAction 2). It now calls `gearEquipFly` too (origin = the tapped button rect from `_lastTapZ`, key `gear_<baseId>`). Test foe-shadow assertion.
+
+# Previous delivery: v8.1.133 — owner: Forge mod readability (the rest of the suggestions, as fitting)
 
 Row header shows level pips `●`×st + `○`×(cap−st) (max 10) in the tier colour instead of "Lv x / cap" (bar keeps "Lv x / cap"). Row frame: thin neutral border + 4 px tier-colour stripe on the left (selected row keeps the gold border). `forgeModText(x,y,mod,v,col,maxW)`: splits `modLine` around the formatted value — value 15 px bold white, text 13 px tier colour; shrinks the whole line to ≥75% then truncates. Not done on purpose: merging empty rows into one "+ Add" row (each row has its own upgrade currency, so rows must stay distinct). Tests forge-redesign (forgeModText in the extract list, pips regex, value split).
-
-# Previous delivery: v8.1.132 — owner: Forge mod rows too busy → select a row, actions in one bottom bar
-
-`_buildCraftBenchRaw`: filled mod rows now show only icon + full-width mod text + header (MOD n · Lv / BAD); tapping a row (`row_i`) sets `_forgeSel={uid,line}` (clears `_forgeRm`) and rebuilds; the first filled row is selected by default; selected row = gold border. One action bar at the bottom of the MOD ROWS card (row height reserves 52 px instead of 26 when any filled row exists): label "MOD n · Lv x / cap" + Upgrade/cap/bad pill (same tags `up_i`/`cap_i`) + 🖋️ (`mv_i`) + 🗑 (`rm_i`, double-tap confirm text). Empty/locked rows unchanged; a locked item still shows Unlock instead of the bar. Tests forge-redesign (per-row selection, only the selected row has actions, row tap selects); forge-live UI passed.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

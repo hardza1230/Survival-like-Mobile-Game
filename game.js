@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.133';
+const GAME_VERSION = '8.1.134';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.134',date:'2026-11-13',title:'Equip fly fix',items:['The ⚔ Equip button now also sends the item flying into its gear slot']},
   {v:'8.1.133',date:'2026-11-13',title:'Easier-to-read mods',items:['Forge mod values stand out in bold white','Mod levels show as dots (●●●○○)','Each mod row has a coloured stripe on the left instead of a coloured frame']},
   {v:'8.1.132',date:'2026-11-13',title:'Cleaner Forge',items:['Forge mod rows no longer each carry three buttons: tap a mod row to select it, and its Upgrade, move (🖋️) and remove (🗑) buttons appear in one bar at the bottom','Mod text now uses the full width of the row']},
   {v:'8.1.131',date:'2026-11-13',title:'Menus react',items:['Equipping gear makes the item fly into its slot, which glows in the item’s rarity colour','Upgrading a Talent makes that node pulse with sparkles']},
@@ -13744,7 +13745,7 @@ class Game extends Phaser.Scene {
       const cW=Math.round((full-bgap*2)*.25),dW=full-bgap*2-cW*2,SL={2:eq?[14,y1,full,bh]:[14,y1,hw,bh],e:[14+hw+bgap,y1,hw,bh],c:[14,y2,cW,bh2],g:[14+cW+bgap,y2,cW,bh2],3:[14+cW*2+bgap*2,y2,dW,bh2],s:[14,bagY,hw,30],m:[14+hw+bgap,bagY,hw,30]};   /* v7.9.3 R1 Equip|Enhance คู่กัน · C3 แถว 2 = Craft | Salvage/Unlock/Lock */
       const conf=(ck,label)=>this._gearConfirm===ck?'⚠ Tap again to confirm':label, arm=ck=>{this._gearConfirm=ck;Sfx.error();this.buildMenuScreen();};   /* v7.9.3 S2 ยืนยันที่ตัวปุ่ม */   // v7.8.94 ★ รวมกับ 🔒 · แถว 2 Craft|Lock|Salvage · แถว 3 Salvage weaker|Equip Best   // v7.8.84 แถวล่าง 3 ปุ่ม: Salvage · Salvage ▼ · Best
       const drawAction=(i,label,color,fn,tc)=>{const [bx,by,bw,bhh]=SL[i];this.heroButton(bx,by,bw,bhh,label,fn,{active:(i===2||i==='e')&&!!fn,disabled:!fn,fontSize:(i===2||i==='e')?(eq?15:13):12});if(fn){const z=this.tapZones[this.tapZones.length-1];z.fn=fn;if(i==='c')z.tag='gear_craft';if(i===2&&!eq)z.tag='gear_equip';}};
-      if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid))Sfx.equipment('equip');this.buildMenuScreen();});
+      if(!eq)drawAction(2,'⚔ Equip',0x3fa868,()=>{if(Save.equipGearInstance(sel,selected.uid)){Sfx.equipment('equip');const z=this._lastTapZ,b0=GEAR_ALL.find(g=>g.id===selected.baseId);if(b0)this.gearEquipFly?.({key:'gear_'+b0.id,x:z?z.x+z.w/2:this.W/2,y:z?z.y+z.h/2:this.H*.7,slot:sel,item:selected});}this.buildMenuScreen();});   /* v8.1.134 ปุ่ม Equip ก็บินเข้าช่อง */
       {const lv=gearEffectiveEnhance(selected),can=base.enh&&lv<_enhCap,cost=gearEnhShardCost(lv),afford=Save.threads()>=cost,od=enhanceOdds(lv),risk=od.destroy>0?' ⚠':od.brk>0?' ~':'';
         drawAction(eq?2:'e',can?conf('enh:'+selected.uid+':'+lv,'⚒ Enhance +'+(lv+1)+(eq?'   ':' ')+'🧶'+cost+risk):'iLv cap +'+_enhCap,can?(afford?0xb88925:0x73404b):0x3f6d54,can?()=>{ if(!afford){Sfx.error();this.showBanner('🧶 Not enough Thread','Requires '+cost+' Thread · salvage gear to get more',1400);return;} const live=Save.gearItem(selected.uid);if(!live||gearEffectiveEnhance(live)!==lv||gearEffectiveEnhance(live)>=gearEnhanceCap(live)){this.buildMenuScreen();return;} const _el=live.enhanceLv||0,_od=typeof enhanceOdds==='function'?enhanceOdds(_el):{destroy:0},ck='enh:'+selected.uid+':'+_el;if(_od.destroy>0&&this._gearConfirm!==ck){arm(ck);return;} this._gearConfirm=null; if(Save.spendShards(cost)){ const res=Save.enhance(selected.uid); Sfx.equipmentEnhance(res);
             if(res.result==='success'){this.screenFlash(0xffd166,.4,260);this.showBanner('⚒️ Enhanced!','Now +'+res.lv,1100);}

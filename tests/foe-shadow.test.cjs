@@ -42,6 +42,6 @@ console.log('lobby count-up ok');
 assert(method('handleTap').includes('this._lastTapZ={x:hit.x,y:hit.y,w:hit.w,h:hit.h,screen:this.menuScreen};'),'tap rect remembered');
 assert(method('menuChanged').includes('this.menuPulse(z.x,z.y,z.w,z.h,col)')&&method('menuPulse').includes('alpha:0,duration:520'),'pulse');
 const bgx=method('buildGear');assert(bgx.includes("(this._gearSlotPos||(this._gearSlotPos={}))[slot]={x:sx,y,ss};")&&bgx.includes("this.gearEquipFly?.({key:'gear_'+base.id"),'equip fly');
-assert(method('gearEquipFly').includes('this.menuPulse(P.x-P.ss/2,P.y-P.ss/2,P.ss,P.ss,col)'));
+assert(bgx.includes("this.gearEquipFly?.({key:'gear_'+b0.id,x:z?z.x+z.w/2"),'Equip button flies too');assert(method('gearEquipFly').includes('this.menuPulse(P.x-P.ss/2,P.y-P.ss/2,P.ss,P.ss,col)'));
 assert(s.includes("this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.menuChanged?.(0x8ff0b0);"),'talent pulse');
 console.log('menu polish ok');
