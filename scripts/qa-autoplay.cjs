@@ -16,7 +16,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
       const page=await browser.newPage({viewport:{width:390,height:844}}),errs=[],cerr=[];
       page.on('pageerror',e=>errs.push(String(e.message).slice(0,300)));
       page.on('console',m=>{if(m.type()==='error'){const t=m.text();if(!/Failed to load resource|404/.test(t))cerr.push(t.slice(0,300));}});
-      await page.addInitScript(({idx})=>{try{localStorage.clear();localStorage.setItem('mochi_gm','1');
+      await page.addInitScript(({idx})=>{try{window.__qaBot=true;localStorage.clear();localStorage.setItem('mochi_gm','1');
         const s={tutorialDone:true,unlockedStage:14,character:'momo',gmOpt:{god:true,dmg:true},gmUsed:true,settings:{music:0,sfx:0}};localStorage.setItem('mochi_save',JSON.stringify(s));}catch(e){}},{idx});
       const t0=Date.now();await page.goto(`http://localhost:${port}/index.html`);
       const sceneReady=await page.waitForFunction(()=>{const g=window.__g,s=g&&g.scene&&g.scene.getScene('Game');return s&&s.sys.isActive()&&s.state==='menu';},null,{timeout:120000}).then(()=>true,()=>false);
@@ -44,11 +44,13 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
         res.states[st.state]=(res.states[st.state]||0)+1;if(st.state==='play')fps.push(st.fps);heap=Math.max(heap,st.heap);tex=Math.max(tex,st.tex);res.level=st.level;
         const sig=st.state+'|'+st.elapsed+'|'+st.level;if(sig===last)same++;else{same=0;last=sig;}
         if(same===20&&left)res.stuck.push({atSec:Math.round((Date.now()-start)/1000),state:st.state,elapsed:st.elapsed,act:st.act});
+        if(same===20&&left)await page.evaluate(m=>{try{typeof QA!=='undefined'&&QA.report('stuck',m,'bot');}catch(e){}},'bot stuck '+st.state+' at '+st.elapsed+'s ('+st.act+')');
         if(st.act.startsWith('bot-error'))res.stuck.push({bot:st.act});
         if(['summary','win','over','dead','rushDone','epilogue'].includes(st.state)||st.over){res.result=st.state;break;}
         if(st.state!=='menu')left=true; if(st.state==='menu'&&left){res.result='back-to-menu';break;} if(!left&&(Date.now()-start)>90000){res.result='never-started';break;}
       }
       res.sec=Math.round((Date.now()-start)/1000);if(!res.result)res.result='timeout';
+      await page.evaluate(r=>{try{typeof QA!=='undefined'&&QA.report('bot-result',r,'bot');}catch(e){}},'stage '+idx+' '+res.result+' '+res.sec+'s lvl '+res.level).catch(()=>{});await page.waitForTimeout(2500);
       if(fps.length){res.fpsMin=Math.round(Math.min(...fps));res.fpsAvg=Math.round(fps.reduce((a,b)=>a+b,0)/fps.length);}res.heapMaxMB=Math.round(heap);res.texMaxMB=Math.round(tex);
       report.stages.push(res);console.log(JSON.stringify({stage:idx,result:res.result,sec:res.sec,errors:errs.length,console:cerr.length,stuck:res.stuck.length,fps:res.fpsAvg,tex:res.texMaxMB,lvl:res.level}));
       fs.writeFileSync(OUT,JSON.stringify(report,null,1));await page.close();

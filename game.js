@@ -7942,7 +7942,7 @@ const Stats={
 };
 /* v7.8.44 ช่วงที่ 1: ส่งสถิติจบด่านขึ้น Supabase (ตาราง run_stats · เพิ่มได้อย่างเดียว อ่านไม่ได้) · เปิดเองใน Settings (ค่าเริ่มต้นปิด) · ไม่มีข้อมูลระบุตัวตน มีแค่รหัสสุ่มประจำเครื่อง · คิวในเครื่องไว้ส่งทีหลังถ้าออฟไลน์ */
 const Tele={ Q:'mochi_tele_q', MAX:40,
-  on(){ try{ return !!(Save.data.settings&&Save.data.settings.share); }catch(e){ return false; } },
+  on(){ try{ return (typeof BETA_BUILD!=='undefined'&&BETA_BUILD)||!!(Save.data.settings&&Save.data.settings.share); }catch(e){ return false; } },   /* v8.1.139 ช่วงทดสอบส่งสถิติจบด่านทุกคน (ไม่ระบุตัวตน) */
   id(){ try{ let v=localStorage.getItem('mochi_install_id'); if(!v){ v=(crypto.randomUUID?crypto.randomUUID():'i'+Date.now().toString(36)+Math.random().toString(36).slice(2)); localStorage.setItem('mochi_install_id',v); } return v; }catch(e){ return 'unknown'; } },
   load(){ try{ const a=JSON.parse(localStorage.getItem(this.Q)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } },
   save(a){ try{ localStorage.setItem(this.Q,JSON.stringify(a.slice(-this.MAX))); }catch(e){} },
@@ -7958,6 +7958,61 @@ const Tele={ Q:'mochi_tele_q', MAX:40,
 };
 const CLOUD_URL='https://tohsnflngkfoutqcfrwi.supabase.co';
 const CLOUD_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvaHNuZmxuZ2tmb3V0cWNmcndpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MjE3NzYsImV4cCI6MjEwNTE5Nzc3Nn0.EX6rE5skhsJq9jpwRvloDimZoPi5Mnhz-wpTwnx6ej4';
+/* v8.1.139 เจ้าของ: ปุ่ม 🐞 แจ้งบั๊ก + รายงานอัตโนมัติ → Supabase (ตาราง qa_reports · ภาพที่ bucket qa-shots · เพิ่มได้อย่างเดียว อ่านไม่ได้) · ไม่มีข้อมูลระบุตัวตน มีแค่รหัสสุ่มเครื่อง
+   BETA_BUILD=true ช่วงทดสอบ (ปุ่มขึ้นทุกคน + ส่ง error อัตโนมัติ + สถิติจบด่าน) · ปล่อยจริงตั้ง false → ปุ่มขึ้นเฉพาะ GM · ตัวเดียวกันใช้กับบอท (scripts/qa-autoplay.cjs) */
+const BETA_BUILD=true;
+const QA={ Q:'mochi_qa_q', errs:[], sentKeys:{}, autoN:0, AUTO_MAX:5,
+  on(){ return BETA_BUILD||(typeof GM!=='undefined'&&GM.on()); },
+  init(){ if(this._init)return; this._init=true; const push=(m,src)=>{ try{ m=String(m||'').slice(0,400); if(!m)return; this.errs.push({t:Math.round(performance.now()/1000),m,src}); if(this.errs.length>20)this.errs.shift(); this.auto(m); }catch(e){} };
+    try{ window.addEventListener('error',e=>push((e.message||'error')+(e.filename?' @'+String(e.filename).split('/').pop()+':'+e.lineno+':'+e.colno:'')+(e.error&&e.error.stack?' | '+String(e.error.stack).split('\n').slice(1,4).join(' ').slice(0,300):''),'error'));
+      window.addEventListener('unhandledrejection',e=>push('promise: '+((e.reason&&(e.reason.stack||e.reason.message))||e.reason),'promise'));
+      const ce=console.error.bind(console); console.error=(...a)=>{ try{ push(a.map(x=>x&&x.stack?x.stack:String(x)).join(' '),'console'); }catch(e){} ce(...a); }; }catch(e){} },
+  scene(){ try{ return window.__g&&window.__g.scene.getScene('Game'); }catch(e){ return null; } },
+  snapshot(s){ s=s||this.scene(); const b=s&&s.basicAttack,P=s&&s.player,st=s&&typeof STAGES!=='undefined'&&STAGES[s.stageIndex];
+    let tex=null; try{ tex=s&&s.texMB?Math.round(s.texMB()):null; }catch(e){}
+    return { stage:s&&s.state!=='menu'&&st?(st.chapterStage?('C'+(st.chapter+1)+'-'+st.chapterStage):st.name):null, hero:(s&&s.character)||(Save.data&&Save.data.character)||null, path:b&&b.path||null, state:s?String(s.state||'')+(s.state==='menu'?':'+(s.menuScreen||''):''):null,
+      data:{ level:s&&s.level, elapsed:s&&Math.round(s.elapsed||0), hp:P?Math.round(P.hp):null, maxhp:P?Math.round(P.maxhp):null, mission:s&&s.waveObjective&&s.waveObjective.type||null, boss:!!(s&&s.boss&&s.boss.active),
+        cards:b&&b.lv?Object.keys(b.lv).filter(k=>b.lv[k]>0).map(k=>k+':'+b.lv[k]).slice(0,40):null, mutation:b&&b.mutation||null, evolved:!!(b&&b.evolved), relics:s&&s._rel?Object.keys(s._rel).slice(0,20):null,
+        fps:(window.__g&&Math.round(window.__g.loop.actualFps))||null, texMB:tex, heapMB:(performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):null),
+        device:{ua:(navigator.userAgent||'').slice(0,160),w:screen.width,h:screen.height,dpr:window.devicePixelRatio||1,mem:navigator.deviceMemory||null}, errors:this.errs.slice(-20), gm:typeof GM!=='undefined'&&GM.on() } }; },
+  shot(cb){ const g=window.__g; let done=false; const fin=v=>{ if(!done){ done=true; cb(v); } }; setTimeout(()=>fin(null),1500);
+    try{ g.renderer.snapshot(img=>{ try{ const W=Math.min(480,img.width),H=Math.round(img.height*W/img.width),c=document.createElement('canvas'); c.width=W; c.height=H; c.getContext('2d').drawImage(img,0,0,W,H); c.toBlob(bl=>fin(bl),'image/jpeg',.6); }catch(e){ fin(null); } }); }catch(e){ fin(null); } },
+  report(kind,note,source,cb){ if(!this.on()&&source!=='bot')return; const snap=this.snapshot(),row={install_id:Tele.id(),v:GAME_VERSION,source:source||'player',kind:kind||'bug',note:note?String(note).slice(0,2000):null,stage:snap.stage,hero:snap.hero,path:snap.path,state:snap.state,data:snap.data,shot:null};
+    this.shot(bl=>{ if(!bl||typeof fetch!=='function'){ this.enqueue(row); this.flush(); cb&&cb(true); return; } const path=new Date().toISOString().slice(0,10)+'/'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2))+'.jpg';
+      fetch(CLOUD_URL+'/storage/v1/object/qa-shots/'+path,{method:'POST',headers:{'apikey':CLOUD_KEY,'Authorization':'Bearer '+CLOUD_KEY,'Content-Type':'image/jpeg'},body:bl}).then(r=>{ if(r.ok)row.shot=path; }).catch(()=>{}).finally(()=>{ this.enqueue(row); this.flush(); cb&&cb(true); }); }); },
+  auto(m){ if(!BETA_BUILD||this.autoN>=this.AUTO_MAX)return; const k=m.slice(0,120); if(this.sentKeys[k])return; this.sentKeys[k]=1; this.autoN++; setTimeout(()=>{ try{ this.report('error',m,window.__qaBot?'bot':'auto'); }catch(e){} },50); },
+  load(){ try{ const a=JSON.parse(localStorage.getItem(this.Q)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } },
+  enqueue(row){ try{ const a=this.load(); a.push(row); localStorage.setItem(this.Q,JSON.stringify(a.slice(-15))); }catch(e){} },
+  flush(){ if(this._busy||typeof fetch!=='function')return; const a=this.load(); if(!a.length)return; this._busy=true; const batch=a.slice(0,5);
+    fetch(CLOUD_URL+'/rest/v1/qa_reports',{method:'POST',headers:{'apikey':CLOUD_KEY,'Authorization':'Bearer '+CLOUD_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(batch)})
+      .then(r=>{ if(r.ok){ try{ localStorage.setItem(this.Q,JSON.stringify(this.load().slice(batch.length))); }catch(e){} this.err=null; } else this.err='HTTP '+r.status; })
+      .catch(()=>{ this.err='offline'; }).finally(()=>{ this._busy=false; if(!this.err&&this.load().length)setTimeout(()=>this.flush(),1500); }); },
+  /* ปุ่ม 🐞 เป็น DOM ลอยเหนือเกม (ไม่ยุ่งกับ tap zone/จอยในเกม) · แตะ = ถ่ายภาพก่อน → หยุดเกม → หน้ากรอกสั้น ๆ */
+  button(){ if(this._btn||!this.on()||typeof document==='undefined')return; const b=document.createElement('button'); b.textContent='🐞'; b.setAttribute('aria-label','Report a bug');
+    b.style.cssText='position:fixed;left:6px;top:46%;z-index:9998;width:34px;height:34px;border-radius:17px;border:1px solid rgba(255,255,255,.35);background:rgba(20,12,30,.55);font-size:17px;line-height:1;padding:0;opacity:.75;touch-action:manipulation';
+    b.addEventListener('click',e=>{ e.stopPropagation(); this.open(); }); ['pointerdown','touchstart'].forEach(t=>b.addEventListener(t,e=>e.stopPropagation(),{passive:true})); document.body.appendChild(b); this._btn=b; },
+  open(){ if(this._modal)return; const s=this.scene(),wasPlay=s&&s.state==='play'; let snapRow=null;
+    if(wasPlay){ s.state='qa'; s.physics.pause(); s.time.paused=true; if(s.joy){ s.joy.active=false; s.joy.dx=0; s.joy.dy=0; } }
+    const resume=()=>{ if(wasPlay&&s&&s.state==='qa'){ s.state='play'; s.physics.resume(); s.time.paused=false; } };
+    this.shot(bl=>{ snapRow=bl; const m=document.createElement('div'); this._modal=m;
+      m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(10,6,16,.72);display:flex;align-items:center;justify-content:center;font-family:sans-serif';
+      m.innerHTML='<div style="background:#241833;color:#fff4e6;border:2px solid #ffd590;border-radius:16px;padding:14px;width:min(92vw,380px);box-sizing:border-box">'+
+        '<div style="font-weight:bold;font-size:16px;color:#ffd590;margin-bottom:8px">🐞 Report</div>'+
+        '<div id="qaKinds" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>'+
+        '<textarea id="qaNote" maxlength="2000" placeholder="What did you see? What did you expect?" style="width:100%;height:96px;box-sizing:border-box;border-radius:10px;border:1px solid #6b5585;background:#160e20;color:#fff;font-size:14px;padding:8px"></textarea>'+
+        '<div style="font-size:11px;color:#bba;margin:6px 0 10px">A screenshot and game info (stage, hero, cards, errors) are sent anonymously.</div>'+
+        '<div style="display:flex;gap:8px;justify-content:flex-end"><button id="qaCancel" style="padding:9px 14px;border-radius:10px;border:0;background:#4a3a5c;color:#fff;font-size:14px">Cancel</button><button id="qaSend" style="padding:9px 18px;border-radius:10px;border:0;background:#ff8a3d;color:#fff;font-weight:bold;font-size:14px">Send</button></div></div>';
+      document.body.appendChild(m); let kind='bug'; const kinds=[['bug','🐞 Bug'],['stuck','⛔ Stuck'],['looks','👀 Looks wrong'],['hard','💀 Too hard'],['easy','😴 Too easy'],['idea','💡 Idea']],box=m.querySelector('#qaKinds');
+      const paint=()=>box.querySelectorAll('button').forEach(x=>{ const on=x.dataset.k===kind; x.style.background=on?'#ffd590':'#3a2d4a'; x.style.color=on?'#241833':'#fff'; });
+      for(const [k,l] of kinds){ const x=document.createElement('button'); x.dataset.k=k; x.textContent=l; x.style.cssText='padding:6px 9px;border-radius:12px;border:0;font-size:12px'; x.onclick=()=>{ kind=k; paint(); }; box.appendChild(x); } paint();
+      ['pointerdown','touchstart','keydown'].forEach(t=>m.addEventListener(t,e=>e.stopPropagation(),{passive:true}));
+      const close=()=>{ m.remove(); this._modal=null; resume(); };
+      m.querySelector('#qaCancel').onclick=close;
+      m.querySelector('#qaSend').onclick=()=>{ const note=m.querySelector('#qaNote').value; const shot=snapRow; close(); this.reportWith(kind,note,shot); try{ s&&s.showBanner&&s.showBanner('🐞 Thank you!','Report sent',1100); }catch(e){} };
+    }); },
+  reportWith(kind,note,blob){ const keep=this.shot; this.shot=cb=>cb(blob); try{ this.report(kind,note,'player'); }finally{ this.shot=keep; } }
+};
+try{ QA.init(); }catch(e){}
 const Cloud = {
   sb:null, user:null, ready:false, _pushT:null, _deeplinkBound:false, _onLogin:null,
   enabled(){ try{ return !!(window.supabase&&CLOUD_URL&&CLOUD_KEY); }catch(e){ return false; } },
@@ -9497,7 +9552,8 @@ class Game extends Phaser.Scene {
 
   create(){
     this.loopGuard?.();
-    this._sesRuneButtons=null;this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
+    this._sesRuneButtons=null;
+    try{ if(typeof QA!=='undefined'){ QA.button(); QA.flush(); } }catch(e){}   /* v8.1.139 ปุ่ม 🐞 + ส่งรายงานที่ค้าง */this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
     this.renderDPR=RENDER_DPR;
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
