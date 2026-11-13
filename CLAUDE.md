@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.134**. Next release:8.1.135. Fetch the deploy branch before new work.
+Current release: **8.1.135**. Next release:8.1.136. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.134 — owner: equipped item did not fly into the slot
+# Latest delivery: v8.1.135 — owner: duplicate level-up cards (all heroes)
+
+Owner screenshot: Yuzu Best Friends and Minion Squad both showed "+1 Minion". Fixed same-effect cards inside one hero's pool: Yuzu `family` (Best Friends) no longer adds Minions — yuzuPower +8%/rank (was 4), yuzuShield +15%/rank (was 8); `seedling` max 3→5, `YZ_SEED_COUNT` [0..5], yuzuSeedMax clamp 5 (cap 10 still reachable); "+1 Minion" headline only on seedling. Pomelo `p_bodyguard` Close Guard: was DR near Pomelo (= Loyal Guard) → each Pulp Slam gives a 4%·rank max-HP shield for 3s. `y_keepripe` Golden Reach (= Zest Splash radius) → "Golden Finish" third sweep ×(1+.2·rank). Momo Sniper `size` Twin Seed: was +10% Heavy Seed dmg (= volley/power) → +1 pierce/rank (max 3). Taro Spark `arc` High Voltage: was +10% dmg (= power) → Spark range/life +15%/rank. Taro Sentry skips `rate` in the roll (same as Reserve Cell). Not changed: Mint Rime Mark vs Deep Chill (different statuses), Sesame classic cards (only in tutorial; rune cards are used). New test card-duplicates; yuzu-companions / yuzu-hierarchy-97 updated for the new Minion counts and family numbers.
+
+# Previous delivery: v8.1.134 — owner: equipped item did not fly into the slot
 
 v8.1.131 only hooked the inventory double-tap; the owner used the "⚔ Equip" action button (buildGear drawAction 2). It now calls `gearEquipFly` too (origin = the tapped button rect from `_lastTapZ`, key `gear_<baseId>`). Test foe-shadow assertion.
-
-# Previous delivery: v8.1.133 — owner: Forge mod readability (the rest of the suggestions, as fitting)
-
-Row header shows level pips `●`×st + `○`×(cap−st) (max 10) in the tier colour instead of "Lv x / cap" (bar keeps "Lv x / cap"). Row frame: thin neutral border + 4 px tier-colour stripe on the left (selected row keeps the gold border). `forgeModText(x,y,mod,v,col,maxW)`: splits `modLine` around the formatted value — value 15 px bold white, text 13 px tier colour; shrinks the whole line to ≥75% then truncates. Not done on purpose: merging empty rows into one "+ Add" row (each row has its own upgrade currency, so rows must stay distinct). Tests forge-redesign (forgeModText in the extract list, pips regex, value split).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

@@ -28,7 +28,7 @@ for(const path of [null,'citrusGuardian','zestSwarm','juiceWorkshop']){
 // Kills no longer evolve Companion forms; evolution requires a card choice.
 {const s=scene('citrusGuardian'),m=s.yuzuEnsure();s._yzHitOwner=m;for(let i=0;i<50;i++)s.yuzuOnKill();assert.equal(m.growth,0);assert.equal(s.yuzuForm(m),1);assert.equal(m.kills,50);}
 // Legacy HP/family investment now improves hits and shields without introducing a down state.
-{const s=scene('citrusGuardian'),m=s.yuzuEnsure(),old=s.yuzuPower();s.basicAttack.lv.family=2;assert.equal(s.yuzuPower(),old*1.08);s.yuzuShield(.2,4);assert(Math.abs(s._yzShield.hp-23.2)<1e-8);}
+{const s=scene('citrusGuardian'),m=s.yuzuEnsure(),old=s.yuzuPower();s.basicAttack.lv.family=2;assert.equal(s.yuzuPower(),old*1.16);s.yuzuShield(.2,4);assert(Math.abs(s._yzShield.hp-26)<1e-8);}
 // Taunt is scoped to ordinary foes and cannot hijack story targets or Wisp raiders.
 {const s=scene('citrusGuardian'),m=s.yuzuEnsure(),e=enemy(m.spr.x+20,m.spr.y);assert.equal(s.yuzuTaunt(e),m.spr);for(const flag of ['isBoss','isMini','_waveObjectiveTarget','_wispRaider','_fleeing']){e[flag]=true;assert.equal(s.yuzuTaunt(e),null);e[flag]=false;}}
 // Sour patches, Aroma slow and Guard stay scoped to Yuzu.
@@ -155,7 +155,7 @@ console.log('Yuzu v61: steady mark, mission/boss above mark, unlock-card guarant
 console.log('Yuzu v60: seed mark focus/×1.25/expiry/pool safety, walk-direction aim, card skill unlocks + Evolution, Dash keeps an engaged companion and rush cooldown passed');
 
 // Owner97: immortal role Minions, easier multiple-source recruitment.
-{const up=a.BASIC_ATTACKS.yuzu.upgrades.find(u=>u.id==='seedling');assert.equal(up.max,3);const s=scene(null,[]);assert.equal(s.yuzuSeedMax(),1);for(const[r,n]of[[1,2],[2,3],[3,4]]){s.basicAttack.lv.seedling=r;assert.equal(s.yuzuSeedMax(),n);}s.basicAttack.path='zestSwarm';s.basicAttack.lv.family=3;s.basicAttack.lv.companion_form=2;s.basicAttack.evolved=true;assert.equal(s.yuzuSeedMax(),10);}
+{const up=a.BASIC_ATTACKS.yuzu.upgrades.find(u=>u.id==='seedling');assert.equal(up.max,5);const s=scene(null,[]);assert.equal(s.yuzuSeedMax(),1);for(const[r,n]of[[1,2],[2,3],[3,4],[5,6]]){s.basicAttack.lv.seedling=r;assert.equal(s.yuzuSeedMax(),n);}s.basicAttack.path='zestSwarm';s.basicAttack.lv.family=3;s.basicAttack.lv.companion_form=2;s.basicAttack.evolved=true;assert.equal(s.yuzuSeedMax(),10);s.basicAttack.lv.seedling=3;assert.equal(s.yuzuSeedMax(),8,'Best Friends adds no Minions (v8.1.135)');}
 {const e=enemy(40,0,1000),s=scene(null,[e]);s.yuzuEnsure();s.yuzuTickSeeds(.01);const q=s._yzSeeds[0];q.spr.setPosition(40,0);q.cd=0;q.retarget=0;s.yuzuTickSeeds(.01);assert(q.pending,'attack has windup');s.yuzuTickSeeds(.09);assert(s.hits.some(x=>x.source==='yuzu.minion_punch'));q.hp=0;s.yuzuTickSeeds(.01);assert(q.alive);assert.equal(q.regrow,0);s.yuzuSeedPop(q);assert(q.alive,'legacy pop cannot down a Minion');}
 {const e=enemy(150,0,1000),s=scene('zestSwarm',[e]);s.yuzuEnsure();s.yuzuTickSeeds(.01);const q=s._yzSeeds[0];assert.equal(q.cfg.role,'archer');q.spr.setPosition(0,0);q.cd=0;q.retarget=0;s.yuzuTickSeeds(.01);s.yuzuTickSeeds(.09);assert(s._yzShots.some(x=>x.source==='seedling'&&x.mini),'Lime Minions shoot');}
 {const e=enemy(100,0,1000),s=scene('juiceWorkshop',[e]);s.yuzuEnsure();s.yuzuTickSeeds(.01);const q=s._yzSeeds[0];assert.equal(q.cfg.role,'mage');s.yuzuMinionStrike(q,e);assert(s._yzShots.some(x=>x.element),'Blood Orange Minions cast elements');}
