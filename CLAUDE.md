@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.136**. Next release:8.1.137. Fetch the deploy branch before new work.
+Current release: **8.1.137**. Next release:8.1.138. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.136 — owner: Creeping Roots (Blight) roots should come out of the centre
+# Latest delivery: v8.1.137 — owner: new art arrived (order 80 special picks)
+
+Merged `asset-delivery/special-picks80` (21/21, sha/bytes verified). `scripts/pack-special-picks80.py` → `assets/art/special_picks80/` 1.4 MB WebP (vault bg 540×756, book 768×480, page glow 6×288×360 black→luminance alpha, path cards 384×576, pedestal/anvil as delivered). Keys in ASSET_IMAGES (+ `book80_page_glow` ASSET_FX), `artClass` → 'stage'; `stageArtKeys` adds vault/forge/book/back + only the current hero's 3 `pathcard80_<pathId>` (≈4–8 MB decoded per run). Vault/forge already used the art (v8.1.122). New `drawRecipeBook` (2 Mutation options → left/right page text inside the textRects, tap = page glow anim, tap again = pick; not in tutorial) and `drawPathCards` (3 backs flip to painted fronts at 260+320·i ms, name on the bottom band, tap = zoom + info panel with pathStyle/desc/carry, tap again = pick; taps wait until all are face up). Both return false without art → old cards (Yuzu paths have no painted cards). New test special-picks80-art.
+
+# Previous delivery: v8.1.136 — owner: Creeping Roots (Blight) roots should come out of the centre
 
 C2-3 Creeping Roots: each lane now starts with `grow:0` and grows from the flower (pts[4]) out to the root mother (pts[0]) over 1.8s (`crGrowTick`, `crGrowPts` returns the grown polyline centre-first). Vines are built centre-out and resized per frame; without vine art the fallback line + a glowing tip are drawn. The root mother and its ring appear only when the root arrives (small ring + shake); while a lane grows it spawns nothing and cannot be cut. The 18s branch lane grows the same way. No towers. Test sig-missions (grow start 0, no walkers while growing, polyline starts at the centre).
-
-# Previous delivery: v8.1.135 — owner: duplicate level-up cards (all heroes)
-
-Owner screenshot: Yuzu Best Friends and Minion Squad both showed "+1 Minion". Fixed same-effect cards inside one hero's pool: Yuzu `family` (Best Friends) no longer adds Minions — yuzuPower +8%/rank (was 4), yuzuShield +15%/rank (was 8); `seedling` max 3→5, `YZ_SEED_COUNT` [0..5], yuzuSeedMax clamp 5 (cap 10 still reachable); "+1 Minion" headline only on seedling. Pomelo `p_bodyguard` Close Guard: was DR near Pomelo (= Loyal Guard) → each Pulp Slam gives a 4%·rank max-HP shield for 3s. `y_keepripe` Golden Reach (= Zest Splash radius) → "Golden Finish" third sweep ×(1+.2·rank). Momo Sniper `size` Twin Seed: was +10% Heavy Seed dmg (= volley/power) → +1 pierce/rank (max 3). Taro Spark `arc` High Voltage: was +10% dmg (= power) → Spark range/life +15%/rank. Taro Sentry skips `rate` in the roll (same as Reserve Cell). Not changed: Mint Rime Mark vs Deep Chill (different statuses), Sesame classic cards (only in tutorial; rune cards are used). New test card-duplicates; yuzu-companions / yuzu-hierarchy-97 updated for the new Minion counts and family numbers.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -43,7 +43,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
-- ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) 🟡 รออาร์ต · โค้ดห้องสมบัติ/เตาหลอม v8.1.122 · สมุด/การ์ด Build Path ทำโค้ดตอนอาร์ตมา
+- ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · รอ QA มือถือ
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - เสียงชุด A04 เพลง · รอสิทธิ์ Music Generation

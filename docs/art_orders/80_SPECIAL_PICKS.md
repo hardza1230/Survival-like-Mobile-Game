@@ -1,6 +1,6 @@
 # 80 — หน้าเลือกพิเศษ (ห้องสมบัติ Relic · เตาหลอม Evolution · สมุดสูตร Mutation · การ์ด Build Path) · ใบสั่งงานอาร์ต
 
-สถานะ: 📦 ส่งแล้ว รอผูก · 21/21
+สถานะ: 🟢 ผูกแล้ว v8.1.137 · รอ QA มือถือ · 21/21 · pack `scripts/pack-special-picks80.py` → `assets/art/special_picks80/` (vault bg 540×756 · สมุด 768×480 · แสงหมึก 6×288×360 แปลงพื้นดำเป็น alpha · การ์ด 384×576) · โหลดตอนเข้าด่าน (การ์ดเฉพาะ 3 ใบของฮีโร่ + หลังการ์ด) · `drawRecipeBook` / `drawPathCards` · ไม่มีภาพ = การ์ดเดิม
 ส่งไฟล์ที่ `assets/incoming/special_picks80/` พร้อม `MANIFEST.json`, `PROMPTS.json`, `QA_REPORT.json`
 สไตล์ตาม `00_STYLE_GUIDE.md` · PNG32 alpha จริง · **ห้ามมีตัวหนังสือ ตัวเลข หรือสัญลักษณ์อ่านได้ในภาพ** (ชื่อ/คำอธิบายโค้ดเขียนเอง)
 

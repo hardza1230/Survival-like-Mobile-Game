@@ -11,7 +11,7 @@
 | 2 | `docs/audio_orders/A12_LEAGUE_SFX.md` | SFX ภารกิจ League / Trial / Forge / Memory Book / Patrol (แถวหม้อคุณยายแก้ใหม่แล้ว: `lg_pot_ritual`, `lg_pot_flavor`) | 36 | ElevenLabs Sound Effects | ตามใบ | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 3 | `docs/art_orders/79_RESULTS_HEADER_CORE_LORE.md` | หัวหน้าจบด่าน (แผง/เหรียญ/พื้นเหรียญ/แสง/ช่องดาว) + ภาพเมล็ดหัวใจกับ Flavor Cores | 6 | ImageGen | `assets/incoming/results79/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 4 | `docs/art_orders/69_HERO_SKINS.md` | สกิน Festival: **Mint แก้ 4 ชีต** (gale f6 · impaler_release f4 · run f4/8/9/11+ ล้นขอบ → วาดตัวเล็กลง) แล้วตัวฮีโร่ที่เหลือจาก candidates → ตัวจริง · ตรวจด้วย `scripts/qa-skin69.py <hero>` ก่อนส่ง | 61 | ImageGen | `assets/incoming/skins69/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
-| 5 | `docs/art_orders/80_SPECIAL_PICKS.md` | **หน้าเลือกพิเศษ** ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ดภาพวาด Build Path 15+1 | 21 | ImageGen | `assets/incoming/special_picks80/` | 📦 ส่งแล้ว รอผูก · 21/21 |
+| 5 | `docs/art_orders/80_SPECIAL_PICKS.md` | **หน้าเลือกพิเศษ** ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ดภาพวาด Build Path 15+1 | 21 | ImageGen | `assets/incoming/special_picks80/` | 🟢 ผูกแล้ว v8.1.137 · รอ QA มือถือ |
 | — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 
 ## หมายเหตุ
