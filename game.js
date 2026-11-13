@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.137';
+const GAME_VERSION = '8.1.138';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.138',date:'2026-11-13',title:'Build Path card art fix',items:['Mint: the Glacier Bloom and Barrage card pictures now match their builds','Instinct picks (Kill Streak, Last Stand) show their relic icons']},
   {v:'8.1.137',date:'2026-11-13',title:'Painted Build Path cards and Grandma’s recipe book',items:['Build Path: three painted cards flip face up one by one; tap to look closer, tap again to choose','Mutation: Grandma’s recipe book opens with one recipe on each page; the chosen page glows','Relic vault and Evolution forge now use painted art']},
   {v:'8.1.136',date:'2026-11-13',title:'Creeping Roots burst from the flower',items:['Creeping Roots: roots now grow out of the nectar flower toward each root mother before the monsters start walking in']},
   {v:'8.1.135',date:'2026-11-13',title:'No more look-alike cards',items:['Yuzu: Best Friends now boosts companion hits and shields instead of adding a Minion; Minion Squad goes up to 5 ranks','Yuzu Pomelo: Close Guard now shields Yuzu on every Pulp Slam; Golden Finish makes the third sweep hit harder','Momo Sniper: Twin Seed adds Heavy Seed pierce instead of damage','Taro: Spark High Voltage extends Spark reach; Sentry build no longer offers Lightning Rhythm (same as Reserve Cell)']},
@@ -4832,6 +4833,9 @@ function artUrl(k){ return ASSET_IMAGES[k]||(ASSET_SHEETS[k]&&ASSET_SHEETS[k].ur
 // null = core · 'hero' (ฮีโร่ตัวอื่น) · 'stage' (ภาพเฉพาะด่าน) · 'endgame' · 'menu' (หน้าเมนูย่อย)
 const ST62_ICON={frozen:0,chill:1,brittle:2,burn:3,sour:4,stun:5,mark:6,lured:7,enraged:8,p_slow:9,p_poison:10,p_bleed:11,p_haste:12,p_guard:13,p_barrier:14,p_shell:15,p_regen:16,p_starving:17,shock:18};   // v8.0.85 ใบ 62 ช่องใน st_icons
 const ST62_LOOP={stun:'st_stun',shock:'st_shock',mark:'st_mark',sour:'st_sour',burn:'st_burn',brittle:'st_brittle',chill:'st_chill'},ST62_COL={stun:0xffe08a,frozen:0x9fe8ff,shock:0x8ff3ff,mark:0xff5d73,sour:0xfff27a,burn:0xff8a3d,brittle:0xd8f4ff,chill:0xbfe6ff};
+/* v8.1.138 เจ้าของ: ภาพ Glacier Bloom กับ Barrage สลับกัน (ภาพพายุหิมะ = Glacier · ภาพหนามน้ำแข็งแตก = Barrage) */
+const PATHCARD_ART={glacier:'pathcard80_barrage',barrage:'pathcard80_glacier'};
+function pathCardKey(id){ return PATHCARD_ART[id]||'pathcard80_'+id; }
 function artClass(k,u){ if(bootKeep(k))return null; u=u||artUrl(k); if(!u)return null; if(/^(?:vault80|forge80|book80|pathcard80)_/.test(k))return 'stage'; if(/^(?:fp|hm|hh|gp|gg|hs|ult|msn71|brm)_|^cr_root_/.test(k)||/assets\/art\/vfx78\//.test(u))return 'stage'; if(/assets\/art\/(?:menu74|patrol70)\//.test(u))return 'menu';   /* v8.1.93 อาร์ตภารกิจ = stage · ไอคอน/Patrol = menu */ if(k.startsWith('yzs_')||k==='vfx_yzs_sour_burst'||k==='ic_yz_seedling')return 'stage'; if(k.startsWith('yc59_'))return 'stage'; if(k.startsWith('st_'))return 'stage'; if(k.startsWith('core79_'))return 'menu'; if(k.startsWith('bv46_')||k.startsWith('sc44_')||k.startsWith('sc79_')||k.startsWith('cr_')||k==='fx_mint_dash_shard'||k==='fx_mint_snowstorm')return 'stage'; if(RUBY_STAGE_KEYS.includes(k))return 'stage'; if(/^ruby_comic_/.test(k)||RUBY_MENU_KEYS.includes(k)||RUBY_STORY_KEYS.includes(k))return 'menu'; const h=artHero(k); if(h)return k==='char_'+h?null:'hero';
   if(/^bg\d+$/.test(k))return k==='bg1'?null:'stage'; if(stageOnlyArtKeys().has(k)||deferredImage(k))return 'stage';
   if(ENDGAME_ART_RE.test(u))return 'endgame'; if(LAZY_MENU_KEYS.has(k)||LAZY_MENU_ART_RE.test(u))return 'menu'; return null; }
@@ -9725,7 +9729,7 @@ class Game extends Phaser.Scene {
     keys.push(...Object.keys(ASSET_FX).filter(k=>k.startsWith('st_')),'st_icons');   // v8.0.85 ใบ 62 สถานะติดตัว ทุกด่านใช้ร่วม (≈3.8 MiB)
     if(idx>=5)keys.push('floor_c'+(idx<10?'2'+(idx-4):'3'+(idx-9)));
     keys.push(...(this.missionArtKeys?.(idx)||[]));   /* v8.1.93 อาร์ตภารกิจ */
-    keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow','pathcard80_back',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[this.character||Save.data.character])||[]).map(p=>'pathcard80_'+p.id));   /* v8.1.137 ใบ 80 */
+    keys.push('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow','pathcard80_back',...((typeof BASIC_PATHS!=='undefined'&&BASIC_PATHS[this.character||Save.data.character])||[]).map(p=>typeof pathCardKey==='function'?pathCardKey(p.id):'pathcard80_'+p.id));   /* v8.1.137 ใบ 80 */
     const decor=STAGE_DECOR[idx];if(decor)for(const it of decor.items)keys.push(it.key);
     return [...new Set(keys)].filter(k=>ASSET_IMAGES[k]||ASSET_SHEETS[k]||ASSET_FX[k]);   // v7.8.32 ASSET_FX เฉพาะด่าน (C2-4) โหลดพร้อมด่าน
   }
@@ -18228,7 +18232,7 @@ class Game extends Phaser.Scene {
     const total=finalCardW*cols+gap*(cols-1), lx=(w-total)/2;
     /* v8.1.122 เจ้าของ: Relic / Evolution ไม่ใช่การ์ด → ห้องสมบัติ (ของลอยบนแท่น) / เตาหลอม · ใช้ระบบแตะ 2 ครั้งเดิม (lvlCards + onFocus) */
     const vault=this._relicPick&&!this._chestReward&&opts.length>0&&opts.length<=3&&!this._inTutorial,forge=!vault&&opts.length===1&&opts[0]&&opts[0].evolution;
-    const book=!vault&&!forge&&!this._inTutorial&&opts.length===2&&opts.every(o=>o&&o.mutation)&&this.realTex?.('book80_spread'),pcards=!vault&&!forge&&opts.length===3&&opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.('pathcard80_'+o.key))&&this.realTex?.('pathcard80_back');   /* v8.1.137 ใบ 80 สมุดสูตร Mutation · การ์ด Build Path */
+    const book=!vault&&!forge&&!this._inTutorial&&opts.length===2&&opts.every(o=>o&&o.mutation)&&this.realTex?.('book80_spread'),pcards=!vault&&!forge&&opts.length===3&&opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.(pathCardKey(o.key)))&&this.realTex?.('pathcard80_back');   /* v8.1.137 ใบ 80 สมุดสูตร Mutation · การ์ด Build Path */
     if(vault&&this.drawRelicVault?.(opts,startY,t)){} else if(forge&&this.drawEvoForge?.(opts[0],startY,t)){} else if(book&&this.drawRecipeBook?.(opts,startY,t)){} else if(pcards&&this.drawPathCards?.(opts,startY,t)){} else
     opts.forEach((o,i)=>{
       const col=i%cols,row=Math.floor(i/cols),x=lx+col*(finalCardW+gap), y=startY+row*(ch+gap);
@@ -18320,7 +18324,7 @@ class Game extends Phaser.Scene {
     opts.forEach((o,i)=>{ const cx=W/2+(i-(n-1)/2)*(cw+gap),im=this.add.image(cx,cy,'pathcard80_back').setDisplaySize(cw,ch),
         nm=this.add.text(cx,cy-ch/2+ch*(602+50)/768,o.title||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:Math.max(10,Math.round(cw/10))+'px',color:'#fff4dc',align:'center',stroke:'#2a1020',strokeThickness:3,wordWrap:{width:cw*400/512}}).setOrigin(.5).setAlpha(0);
       G.add([im,nm]); const sx=im.scaleX,sy=im.scaleY,flipAt=260+i*320;
-      this.time.delayedCall(flipAt,()=>{ if(!im.active)return; Sfx.card?.(); this.tweens.add({targets:im,scaleX:0,duration:130,ease:'Sine.in',onComplete:()=>{ if(!im.active)return; im.setTexture('pathcard80_'+o.key).setDisplaySize(cw,ch); const fx=im.scaleX; im.scaleX=0; this.tweens.add({targets:im,scaleX:fx,duration:150,ease:'Back.out'}); this.tweens.add({targets:nm,alpha:1,duration:200}); } }); });
+      this.time.delayedCall(flipAt,()=>{ if(!im.active)return; Sfx.card?.(); this.tweens.add({targets:im,scaleX:0,duration:130,ease:'Sine.in',onComplete:()=>{ if(!im.active)return; im.setTexture(pathCardKey(o.key)).setDisplaySize(cw,ch); const fx=im.scaleX; im.scaleX=0; this.tweens.add({targets:im,scaleX:fx,duration:150,ease:'Back.out'}); this.tweens.add({targets:nm,alpha:1,duration:200}); } }); });
       const card={left:cx-cw/2,right:cx+cw/2,top:cy-ch/2,bottom:cy+ch/2,apply:o.apply,title:o.title,opt:o};
       card.onFocus=()=>{ for(const q of items){ const on=q.card===card; this.tweens.killTweensOf(q.im); this.tweens.add({targets:q.im,displayWidth:cw*(on?1.18:1),displayHeight:ch*(on?1.18:1),duration:180,ease:'Back.out'}); q.im.setAlpha(on?1:.5); q.nm.setAlpha(on?1:.5); q.im.setDepth?.(on?2:1); }
         it.setText((o.emoji?o.emoji+' ':'')+(o.title||'')); id.setText([o.pathStyle||'',o.desc||'',o.carry||''].filter(Boolean).join('\n')); hint?.setText('Tap again to choose “'+(o.title||'')+'”'); };
@@ -19656,7 +19660,7 @@ class Game extends Phaser.Scene {
   condRelicCard(){ const b=this.basicAttack; if(!b)return null; const own=b.condRelics||[];
     const D=[['c_streak','🔥','Kill Streak','+3% damage per kill in your streak (max +40%)'],['c_close','🛡️','Last Stand','Take 30% less damage while HP < 35%']].filter(d=>!own.includes(d[0]));
     if(!D.length)return null; const [id,emoji,title,desc]=Phaser.Utils.Array.GetRandom(D);
-    return {type:'relic',key:'cond_'+id,lvl:1,max:1,kind:'Instinct',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }
+    return {type:'relic',key:'cond_'+id,iconKey:'relic_'+({c_streak:'streak',c_close:'laststand'})[id],lvl:1,max:1,kind:'Instinct',color:0xc07bff,emoji,title,desc,headline:'🎯 '+desc,apply:()=>{ b.condRelics=(b.condRelics||[]).concat(id); const p=this.player; p._cond=p._cond||{}; p._cond[id]=(p._cond[id]||0)+2; this.showBanner(emoji+' '+title,desc,1600); Sfx.clear(); }}; }
   bestiaryKey(e){ const si=this.stageIndex|0; if(e.isBoss)return 'boss'+si; if(e.isMini)return 'mini'+si;
     if(e._bkS===si&&e._bkR===e.roleName&&e._bk)return e._bk; let k=null;
     if(si>=1&&si<=9&&e.roleName){ const f='f'+si+'_'+bestSlug(e.roleName); if(BESTIARY_IDS.has(f))k=f; }

@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.137**. Next release:8.1.138. Fetch the deploy branch before new work.
+Current release: **8.1.138**. Next release:8.1.139. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.137 — owner: new art arrived (order 80 special picks)
+# Latest delivery: v8.1.138 — owner: Glacier Bloom / Barrage card pictures swapped + art order for relics and vault picks
+
+Owner: the Mint Glacier Bloom and Barrage painted cards read swapped (blizzard streaks = Glacier snowstorm, bursting ice spikes = Barrage shards). Delivered files match order 80, so the code maps them: `PATHCARD_ART={glacier:'pathcard80_barrage',barrage:'pathcard80_glacier'}` + `pathCardKey(id)` used by the routing check, `drawPathCards` and `stageArtKeys`. Instinct cards (`condRelicCard`) now use `relic_streak` / `relic_laststand` icons. New art order 81 (`docs/art_orders/81_RELICS_SPECIAL_ICONS.md`): 8 missing relic icons, 36 Modifier icons (`mod_<id>`), 5 Trade-off icons (`trade_<id>`), 3 Yuzu path cards, optional redo of Cocoa Titan/Dash Boxer cards (they look like Fire Fist). Test special-picks80-art (swap map).
+
+# Previous delivery: v8.1.137 — owner: new art arrived (order 80 special picks)
 
 Merged `asset-delivery/special-picks80` (21/21, sha/bytes verified). `scripts/pack-special-picks80.py` → `assets/art/special_picks80/` 1.4 MB WebP (vault bg 540×756, book 768×480, page glow 6×288×360 black→luminance alpha, path cards 384×576, pedestal/anvil as delivered). Keys in ASSET_IMAGES (+ `book80_page_glow` ASSET_FX), `artClass` → 'stage'; `stageArtKeys` adds vault/forge/book/back + only the current hero's 3 `pathcard80_<pathId>` (≈4–8 MB decoded per run). Vault/forge already used the art (v8.1.122). New `drawRecipeBook` (2 Mutation options → left/right page text inside the textRects, tap = page glow anim, tap again = pick; not in tutorial) and `drawPathCards` (3 backs flip to painted fronts at 260+320·i ms, name on the bottom band, tap = zoom + info panel with pathStyle/desc/carry, tap again = pick; taps wait until all are face up). Both return false without art → old cards (Yuzu paths have no painted cards). New test special-picks80-art.
-
-# Previous delivery: v8.1.136 — owner: Creeping Roots (Blight) roots should come out of the centre
-
-C2-3 Creeping Roots: each lane now starts with `grow:0` and grows from the flower (pts[4]) out to the root mother (pts[0]) over 1.8s (`crGrowTick`, `crGrowPts` returns the grown polyline centre-first). Vines are built centre-out and resized per frame; without vine art the fallback line + a glowing tip are drawn. The root mother and its ring appear only when the root arrives (small ring + shake); while a lane grows it spawns nothing and cannot be cut. The 18s branch lane grows the same way. No towers. Test sig-missions (grow start 0, no walkers while growing, polyline starts at the centre).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -43,7 +43,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 
 ## 5. ถัดไป
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
-- ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · รอ QA มือถือ
+- ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · v8.1.138 สลับภาพ Glacier/Barrage (`PATHCARD_ART`) · รอ QA มือถือ
+- ใบ 81 ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) การ์ด Cocoa Titan/Dash Boxer ใหม่ 🟡 รออาร์ต · ส่งที่ `assets/incoming/relics81/`
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
 - เสียงชุด A04 เพลง · รอสิทธิ์ Music Generation

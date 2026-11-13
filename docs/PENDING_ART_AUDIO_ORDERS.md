@@ -12,6 +12,7 @@
 | 3 | `docs/art_orders/79_RESULTS_HEADER_CORE_LORE.md` | หัวหน้าจบด่าน (แผง/เหรียญ/พื้นเหรียญ/แสง/ช่องดาว) + ภาพเมล็ดหัวใจกับ Flavor Cores | 6 | ImageGen | `assets/incoming/results79/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 4 | `docs/art_orders/69_HERO_SKINS.md` | สกิน Festival: **Mint แก้ 4 ชีต** (gale f6 · impaler_release f4 · run f4/8/9/11+ ล้นขอบ → วาดตัวเล็กลง) แล้วตัวฮีโร่ที่เหลือจาก candidates → ตัวจริง · ตรวจด้วย `scripts/qa-skin69.py <hero>` ก่อนส่ง | 61 | ImageGen | `assets/incoming/skins69/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 5 | `docs/art_orders/80_SPECIAL_PICKS.md` | **หน้าเลือกพิเศษ** ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ดภาพวาด Build Path 15+1 | 21 | ImageGen | `assets/incoming/special_picks80/` | 🟢 ผูกแล้ว v8.1.137 · รอ QA มือถือ |
+| 6 | `docs/art_orders/81_RELICS_SPECIAL_ICONS.md` | **ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3** (+ แก้การ์ด Cocoa 2 ไม่บังคับ) | 54 | ImageGen | `assets/incoming/relics81/` | 🟡 รออาร์ต |
 | — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 
 ## หมายเหตุ

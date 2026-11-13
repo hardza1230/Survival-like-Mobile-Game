@@ -11,10 +11,11 @@ assert(/if\(\/\^\(\?:vault80\|forge80\|book80\|pathcard80\)_\/\.test\(k\)\)retur
 assert(/keys\.push\('vault80_bg','vault80_pedestal','forge80_anvil','book80_spread','book80_page_glow','pathcard80_back',\.\.\.\(\(typeof BASIC_PATHS/.test(src));
 // Hooks: book only with art and two Mutation options; painted cards only when all 3 + back are loaded; old cards otherwise.
 assert(src.includes("opts.length===2&&opts.every(o=>o&&o.mutation)&&this.realTex?.('book80_spread')"));
-assert(src.includes("opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.('pathcard80_'+o.key))&&this.realTex?.('pathcard80_back')"));
+assert(src.includes("opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.(pathCardKey(o.key)))&&this.realTex?.('pathcard80_back')"));
 assert(src.includes("else if(book&&this.drawRecipeBook?.(opts,startY,t)){} else if(pcards&&this.drawPathCards?.(opts,startY,t)){} else"));
 function method(n){const a=src.indexOf('  '+n+'('),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0&&m,n);return src.slice(a,a+1+m.index);}
-const C=vm.runInNewContext('class C{'+['drawRecipeBook','drawPathCards'].map(method).join('\n')+'\n}C',{Sfx:{card(){}}});
+const C=vm.runInNewContext('class C{'+['drawRecipeBook','drawPathCards'].map(method).join('\n')+'\n}C',{Sfx:{card(){}},pathCardKey:id=>({glacier:'pathcard80_barrage',barrage:'pathcard80_glacier'})[id]||'pathcard80_'+id});
+assert(src.includes("const PATHCARD_ART={glacier:'pathcard80_barrage',barrage:'pathcard80_glacier'};"),'owner: Glacier Bloom and Barrage pictures swapped');
 const obj=()=>{const o=new Proxy({active:true,scaleX:1,scaleY:1,height:20,y:0,alpha:1},{get(t,k){return k in t?t[k]:(...a)=>{t[k+'Args']=a;return o;};},set(t,k,v){t[k]=v;return true;}});return o;};
 const mk=(tex)=>{const s=new C(),added=[],calls=[];Object.assign(s,{W:360,H:740,lvlCards:[],lvlUp:{add:a=>added.push(...[].concat(a))},realTex:k=>tex.includes(k),add:{image:()=>obj(),text:()=>obj(),graphics:()=>obj(),sprite:()=>obj()},anims:{exists:()=>true},tweens:{add(){},killTweensOf(){}},time:{now:0,delayedCall:(ms,f)=>calls.push(f)}});return [s,calls];};
 {const [s]=mk([]);assert.equal(s.drawRecipeBook([{mutation:1},{mutation:1}],100,null),false,'no art = old cards');assert.equal(s.drawPathCards([{},{},{}],100,null),false);}
