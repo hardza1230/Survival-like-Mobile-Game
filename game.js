@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.130';
+const GAME_VERSION = '8.1.131';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.131',date:'2026-11-13',title:'Menus react',items:['Equipping gear makes the item fly into its slot, which glows in the item’s rarity colour','Upgrading a Talent makes that node pulse with sparkles']},
   {v:'8.1.130',date:'2026-11-13',title:'Lobby counters',items:['Back in the Lobby, your Sugar and Thread count up from what you had before, with a little sparkle']},
   {v:'8.1.129',date:'2026-11-13',title:'Living stages',items:['Soft motes drift through every stage in its own colour','Little dough puffs at your feet as you walk','Elite monsters glow','The camera leans in while a boss charges its big move']},
   {v:'8.1.128',date:'2026-11-13',title:'Juicier hits',items:['Monsters flash white for a split second when hit (bosses less often)','Defeated monsters burst into little mochi dough pieces that bounce and fade','Each stage has its own soft coloured glow around the screen edges']},
@@ -11098,8 +11099,17 @@ class Game extends Phaser.Scene {
     if(!hit){ let best=1e9; const MIN=44,SLOP=6;
       for(let i=zs.length-1;i>=0;i--){ const z=zs[i]; const ew=Math.max(0,(MIN-z.w)/2)+SLOP,eh=Math.max(0,(MIN-z.h)/2)+SLOP;
         if(px>=z.x-ew&&px<=z.x+z.w+ew&&py>=z.y-eh&&py<=z.y+z.h+eh){ const d=Math.hypot(px-(z.x+z.w/2),py-(z.y+z.h/2)); if(d<best){best=d;hit=z;} } } }
-    if(!hit)return; feedback(hit,px,py); (this._pressBounce?this._pressBounce(hit,()=>hit.fn(),hit.sound||'click'):Sfx.uiAction(hit.sound||'click',()=>hit.fn())); }
+    if(!hit)return; this._lastTapZ={x:hit.x,y:hit.y,w:hit.w,h:hit.h,screen:this.menuScreen}; feedback(hit,px,py); (this._pressBounce?this._pressBounce(hit,()=>hit.fn(),hit.sound||'click'):Sfx.uiAction(hit.sound||'click',()=>hit.fn())); }
   // v7.9.53 เจ้าของ: กดแล้วเด้ง ๆ ให้รู้สึกสนุก · ชิ้นส่วนของปุ่ม (ภาพ/ตัวหนังสือ/กรอบที่อยู่ในกรอบแตะ) ยุบ 0.86 → เด้ง 1.08 แล้วค่อยทำงาน (~130ms) · ไม่มีชิ้นให้เด้ง = ทำทันทีเหมือนเดิม
+  /* v8.1.131 เจ้าของ (UI polish): สิ่งที่เพิ่งเปลี่ยนเด้งเรือง · ใช้กรอบปุ่มที่เพิ่งแตะ (handleTap เก็บไว้) วาดหลังหน้าวาดใหม่ */
+  menuChanged(col=0xffe08a){ const z=this._lastTapZ; if(!z||!this.time)return; const scr=this.menuScreen; this.time.delayedCall(0,()=>{ if(this.state==='menu'&&this.menuScreen===scr)this.menuPulse(z.x,z.y,z.w,z.h,col); }); }
+  menuPulse(x,y,w,h,col=0xffe08a){ if(!this.menu||!this.add||!this.tweens)return; const g=this.add.graphics().setPosition(x+w/2,y+h/2); g.lineStyle(3,col,1).strokeRoundedRect(-w/2,-h/2,w,h,Math.min(12,h/2)); g.fillStyle(col,.18).fillRoundedRect(-w/2,-h/2,w,h,Math.min(12,h/2)); this.menu.add(g);
+    this.tweens.add({targets:g,scaleX:1.08,scaleY:1.12,alpha:0,duration:520,ease:'Cubic.easeOut',onComplete:()=>g.destroy()});
+    for(let i=0;i<6;i++){ const a=i/6*Math.PI*2,sp=this.add.text(x+w/2,y+h/2,'✦',{fontSize:(9+i%3*3)+'px',color:'#'+col.toString(16).padStart(6,'0')}).setOrigin(.5); this.menu.add(sp); this.tweens.add({targets:sp,x:x+w/2+Math.cos(a)*(w*.55+10),y:y+h/2+Math.sin(a)*(h*.55+8),alpha:0,duration:560,delay:i*25,onComplete:()=>sp.destroy()}); } }
+  /* ใส่อุปกรณ์: ไอคอนบินจากช่องกระเป๋าเข้าช่องอุปกรณ์ แล้วช่องเรืองตามสีความหายาก */
+  gearEquipFly(f){ if(!f||!this.time)return; const scr=this.menuScreen; this.time.delayedCall(0,()=>{ const P=this._gearSlotPos?.[f.slot]; if(!P||this.state!=='menu'||this.menuScreen!==scr||!this.add||!this.tweens)return; const hex=(TIER_LABEL[(typeof gearGrade==='function'&&f.item)?gearGrade(f.item):'common']||TIER_LABEL.common||{}).color||'#ffe08a',col=Phaser.Display.Color.HexStringToColor(hex).color;
+      if(!this.textures.exists(f.key)){ this.menuPulse(P.x-P.ss/2,P.y-P.ss/2,P.ss,P.ss,col); return; } const im=this.add.image(f.x,f.y,f.key).setDisplaySize(P.ss*.9,P.ss*.9).setAlpha(.95); this.menu.add(im); const s0=im.scaleX;
+      this.tweens.add({targets:im,x:P.x,y:P.y,scaleX:s0*.7,scaleY:s0*.7,duration:360,ease:'Cubic.easeIn',onComplete:()=>{ im.destroy(); this.menuPulse(P.x-P.ss/2,P.y-P.ss/2,P.ss,P.ss,col); }}); }); }
   _pressBounce(z,fn,kind){ const run=()=>Sfx.uiAction(kind,fn);
     if(this._pressBusy)return; if(this.state!=='menu'||!this.time||!this.tweens||!this.menu?.list||z.nav||z.noBounce)return run();
     const sc=this._mScrollMax>0?(this._mScroll||0):0,zx=z.x,zy=z.y,zw=z.w,zh=z.h,cx=zx+zw/2,cy=zy+zh/2,objs=[];
@@ -13642,7 +13652,7 @@ class Game extends Phaser.Scene {
     { const cp=Save.cp?Save.cp(id):null,[px,py,pw]=this._pwBox,ad=this._adBase=heroAD(id,null),pg=this.add.graphics(); if(J)this.jrPanel('jr_panel',0,px-2,py-3,pw+4,pbh+6,.4); else {pg.fillStyle(0x261e30,.97); pg.fillRoundedRect(px,py,pw,pbh,12); pg.lineStyle(1,0x6d536d,.8).strokeRoundedRect(px,py,pw,pbh,12);} this._pwG=pg;
       this._pwT=this.add.text(px+pw/2,py+pbh/2,((CHARACTERS[id]&&CHARACTERS[id].name)||id)+(cp?' Lv'+cp.lvl:'')+'    ⚔ ATK '+ad.a+'    🛡 DEF '+ad.d,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'13px',color:'#ffffff',align:'center'}).setOrigin(.5); if(this._pwT.width>pw-10)this._pwT.setScale((pw-10)/this._pwT.width); this.menu.add([pg,this._pwT]); }
     const sgap=6, ss=Math.min(64,Math.floor((w-24-sgap*5)/6)), sx0=12+((w-24)-(ss*6+sgap*5))/2+ss/2, sy=ay+pbh+8+13+ss/2;
-    ['weapon','armor','gloves','amulet','ring','boots'].forEach((slot,i)=>{ const sx=sx0+i*(ss+sgap), y=sy;
+    ['weapon','armor','gloves','amulet','ring','boots'].forEach((slot,i)=>{ const sx=sx0+i*(ss+sgap), y=sy; (this._gearSlotPos||(this._gearSlotPos={}))[slot]={x:sx,y,ss};
       const def=GEAR_SLOTS.find(g=>g.slot===slot), curId=Save.data.gear[slot], it=GEAR[slot].find(g=>g.id===curId)||GEAR[slot][0];
       const lv=Save.gearLv(it.id), on=it.id.indexOf('_none')<0, isSel=slot===flt;
       const g=this.add.graphics(); if(J)this.jrImg('jr_slot',isSel?1:on?0:3,sx,y,ss+4,(ss+4)*1.06); else { g.fillStyle(isSel?0x423039:0x261e30,.97); g.fillRoundedRect(sx-ss/2,y-ss/2,ss,ss,10);
@@ -13691,7 +13701,7 @@ class Game extends Phaser.Scene {
       if(!eq&&item.grade!=='start'){const sc=gearCompareScore(item,this._adBase||(this._adBase=heroAD(Save.data.character||'momo',null))),up=sc.sum;   /* v7.8.78 เจ้าของ: ลูกศรบอกว่าดีกว่าชิ้นที่ใส่อยู่ไหม (ATK+DEF รวม) · v7.8.84 รองเท้านับวิ่ง/Dash ด้วย */
         if(sc.any&&up){const both=sc.mixed,col=both?(up>0?'#ffd166':'#ffb27a'):(up>0?'#5df08a':'#ff6b81'),ar=this.add.text(x+5,iy+ch-3,up>0?'▲':'▼',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:Math.round(Math.max(13,cw*.2))+'px',color:col,stroke:'#1a1022',strokeThickness:3}).setOrigin(0,1);ar._jrKeep=true;this.menu.add(ar);}}
       if((item.enhanceLv||0)>0){const lv=this.add.text(x+cw-4-(J?3:0),iy+ch-3-(J?3:0),'+'+item.enhanceLv,{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffd166'}).setOrigin(1,1);lv._jrKeep=true;this.menu.add(lv);}
-      this._zone(x,iy,cw,ch,()=>{ if(on&&!eq){ if(Save.equipGearInstance(item.slot,item.uid))Sfx.equipment('equip'); this._adBase=null; this.buildMenuScreen(); return; }   /* v7.9.2 S1 แตะซ้ำ = ใส่ */
+      this._zone(x,iy,cw,ch,()=>{ if(on&&!eq){ if(Save.equipGearInstance(item.slot,item.uid)){ Sfx.equipment('equip'); this.gearEquipFly?.({key:'gear_'+base.id,x:x+cw/2,y:iy+ch*.54,slot:item.slot,item}); } this._adBase=null; this.buildMenuScreen(); return; }   /* v7.9.2 S1 แตะซ้ำ = ใส่ */
         this.gearSelectedUid=item.uid;this.gearSlot=item.slot;if(item.isNew)Save.markGearSeen(item.uid);this.buildMenuScreen();});
     });
     y+=Math.ceil(visible.length/cols)*(ch+gap);
@@ -23309,7 +23319,7 @@ class Game extends Phaser.Scene {
       const pc=this.add.text(pbx+pbw/2,pby+15,mx?'':ok?cost+' Talent Point'+(cost>1?'s':''):'Locked',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'10px',color:'#ffe0bc'}).setOrigin(0.5),pt2=this.add.text(pbx+pbw/2,pby+38,mx?'MAX':ok?'Upgrade':'🔒',{fontFamily:'NunitoUI, sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:'#3a2400',strokeThickness:3}).setOrigin(0.5);
       this.menu.add([t1,t1b,t2,t3,pg,pc,pt2]);
       this._zone(pbx,pby,pbw,pbh,()=>{ if(!can){Sfx.select&&Sfx.select();this.menuToast(mx?'Already maxed':!ok?(n.soon?'Coming in a later update':n.cap&&N.some(o=>o.cap&&o!==n&&(tal[o.id]||0)>0)?'Only 1 Capstone per path — reset to change':'Upgrade the node above first'):'Need '+cost+' Talent Points — level up this hero','#ff9bb5');return;}
-        cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.buildMenuScreen(); }); }
+        cp.tal=cp.tal||{};cp.tal[n.id]=r+1;cp.tp-=cost;Save.save();Sfx.progress('talent');this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.menuChanged?.(0x8ff0b0);this.buildMenuScreen(); }); }
     const defsN=0,listTop=aTop+rows*rh2+12+detH-8+2,rh=0;
     if(Save.data.talRefundNote){Save.data.talRefundNote=0;Save.save();this.menuToast('Path talents reworked — points refunded','#8ff0b0');}
     // v4.88.2: รีเซ็ต Talent คืน TP ทั้งหมด (จ่าย Sugar · แตะ 2 ครั้งยืนยัน)

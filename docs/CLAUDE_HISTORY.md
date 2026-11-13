@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.129 — owner: presentation polish set 2 (ambient motes · step dust · elite glow · charge zoom)
+
+`stageAmbient(i)` (from stageMood): one particle emitter ('dot', freq 240 ms, life 4.2–6.5 s, slow upward drift, tint STAGE_MOOD + white, α .42→0, depth 90001) with an emit zone that `tickStageAmbient` resizes to the camera worldView each frame; destroyed on stageMood(null)/exit; off at vfx 0. `playerStepDust(dt)`: pDust puff at the feet every 0.2 s while speed > 60. Elite glow in tickEnemyReadability: `mm_rglow` (via `softGlowTex`) ADD, orange, 1.55× width, pulsing; shares the 12 cap; `_eliteGlows` cleaned in tickStageAmbient when the owner dies/stops being elite (+ trackArtVfx). tickBossZoom ×1.14 while `boss._big.stage==='charge'` (lerped). Hit-stop on elite/mini kill already existed. Test foe-shadow block.
+
 # Previous delivery: v8.1.128 — owner: presentation polish set 1 (hit flash · mochi chunks · stage mood)
 
 Hit squash already existed (`e._sqX/_sqY` in damage). `hitFlash(e)` called first in `enemyWeightHit` (damage() untouched — taro hash fixture): setTintFill white 55 ms, throttled 300 ms per enemy (boss/mini 650 ms), skipped for time-stopped/frozen and vfx=0, restores previous tint / tintColor / clear (white flash was removed long ago because constant multi-hits hid the art — throttle answers that). `mochiChunks(x,y,color,big)` in killEnemy after burst/poof: 4 (6 big) canvas dough blobs `mm_chunk`, arc + bounce squash + fade, live cap 48 (`_chunkN`). `STAGE_MOOD[15]` colours + `stageMood(i)`: canvas edge-glow `mm_mood` (white edges) tinted per stage, α .26, depth 39 under the black vignette, set in startStage (not recipe/rift), hidden in exitStage, follows resize. Test foe-shadow block.

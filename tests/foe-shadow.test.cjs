@@ -38,3 +38,10 @@ console.log('polish set 2 ok');
   const C=vm.runInContext('class L{'+lc+'\n}L',ctx);const tw=[];const l=Object.assign(new C(),{tweens:{add(c){tw.push(c);}},time:{delayedCall(ms,f){f();}},add:{text:()=>({setOrigin(){return this;},destroy(){}})},menu:{add(){}},hubMotionAllowed:()=>true});
   const t={active:true,scaleX:1,scaleY:1,txt:'',setText(x){this.txt=x;}};l.lobbyCountUp(t,'sugar',100,String,0,0);assert.equal(tw.length,0,'first view: no animation');l.lobbyCountUp(t,'sugar',150,String,0,0);assert.equal(t.txt,'100');assert(tw.length>=1&&tw[0].v===150,'counts 100 → 150');l.lobbyCountUp(t,'sugar',120,String,0,0);}
 console.log('lobby count-up ok');
+// v8.1.131 owner (menu polish): last tapped control pulses after a successful change; equipped gear flies into its slot.
+assert(method('handleTap').includes('this._lastTapZ={x:hit.x,y:hit.y,w:hit.w,h:hit.h,screen:this.menuScreen};'),'tap rect remembered');
+assert(method('menuChanged').includes('this.menuPulse(z.x,z.y,z.w,z.h,col)')&&method('menuPulse').includes('alpha:0,duration:520'),'pulse');
+const bgx=method('buildGear');assert(bgx.includes("(this._gearSlotPos||(this._gearSlotPos={}))[slot]={x:sx,y,ss};")&&bgx.includes("this.gearEquipFly?.({key:'gear_'+base.id"),'equip fly');
+assert(method('gearEquipFly').includes('this.menuPulse(P.x-P.ss/2,P.y-P.ss/2,P.ss,P.ss,col)'));
+assert(s.includes("this.menuToast('🌟 '+n.name+' Lv '+(r+1),'#8ff0b0');this.menuChanged?.(0x8ff0b0);"),'talent pulse');
+console.log('menu polish ok');
