@@ -57,7 +57,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   console.log('Frozen Pantry (Legion): jar button, time-stop dome, frozen army in groups, rainbow paint trail, all thaw at once, unpainted shatter, full timer, completes passed'); }
 
 { // v8.1.82 League phase 2: Hunger's Mouth + Creeping Roots
-  for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick'])m(n);
+  for(const n of ['hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crGrowPts','crGrowTick','crDraw','crSetup','crTick'])m(n);
   assert.ok(src.includes("objectives:['hungersMouth','hunt','capture','purge'],lead:'hungersMouth',")&&src.includes("objectives:['hunt','creepingRoots','purge'],"),'C1-2 Mouth (first wave), C2-3 Roots');
   assert.ok(src.includes("if(st&&st.lead&&!this._leadUsed)")&&src.includes("this._replayMeter=null;this._leadUsed=false;"),'lead mission first');
   assert.ok(src.includes("if(e._goTo){tx=e._goTo.x;ty=e._goTo.y;}")&&src.includes("&&!e._wispRaider&&!e._goTo){"),'lane walkers follow waypoints, not culled');
@@ -66,7 +66,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
   assert.ok((src.match(/b\.push\(st\.lead\)/g)||[]).length===2,'lead applied to both bag builders');
   const vm=require('vm');const ctx={Math,Phaser:{Math:{Clamp:(v,a,b)=>Math.max(a,Math.min(b,v))}},TAU:Math.PI*2,WORLD:4000,storyCleared:()=>0,console};vm.createContext(ctx);
   const obj=()=>{const o={x:0,y:0,setRadius(){return o},setFillStyle(){return o},setStrokeStyle(){return o},setDepth(){return o},setScale(){return o},setText(t){o.text=t;return o},setVisible(){return o},setOrigin(){return o},setAlpha(){return o},setTint(){return o},clear(){},lineStyle(){},beginPath(){},moveTo(){},lineTo(){},strokePath(){},fillStyle(){},fillCircle(){},fillRoundedRect(){return o},setPosition(){return o}};return o;};
-  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crDraw','crSetup','crTick','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
+  ctx.Save={data:{}};vm.runInContext('class S{'+['fpFull','hmSetup','hmOpen','hmTick','hmOnKill','hmChest','hmSplinters','hmBurst','crLane','crGrowPts','crGrowTick','crDraw','crSetup','crTick','sigArt','artSpr','artIsSpr'].map(m).join('')+'};this.K=S;',ctx);
   const mk=()=>{const sc=new ctx.K();const en=[];Object.assign(sc,{stageIndex:1,player:{x:300,y:0},sugarStage:0,sugarRun:0,objNodeG:null,tweens:{add(){}},add:{circle:()=>obj(),text:()=>obj(),graphics:()=>obj(),image:()=>obj()},textures:{exists:()=>false},
     objectivePosition:()=>({x:300,y:0}),sigText:()=>obj(),sigAdd:o=>o,dist:(a,b,c,d)=>Math.hypot(a-c,b-d),sigNear(x,y,R){return Math.hypot(this.player.x-x,this.player.y-y)<R;},enemies:{children:{iterate:f=>en.forEach(f)}},
     sigSpawnAt:(x,y)=>{const e={x,y,active:true,setTint(){},setActive(v){e.active=v;return e},setVisible(){return e}};en.push(e);return e;},completeWaveObjective(){this.done=true;}});return [sc,en];};
@@ -77,7 +77,7 @@ console.log('Signature missions: 5 Ch3 types defined, assigned to stages 11-15, 
     const c=S.chests[0];c.t=c.t||{setText(){},setVisible(){}};sc.player={x:c.x,y:c.y};sc.hmTick(.1,o,S);assert.ok(c.open,'chest opens by walking');
     ctx.Save.data.splinters=98;sc.hmSplinters(5);assert.strictEqual(ctx.Save.data.hungerStones,1,'100 splinters = 1 Hunger Stone');assert.strictEqual(ctx.Save.data.splinters,3);
     let k=0;while(!sc.done&&k++<3000)sc.hmTick(.1,o,S);assert.ok(sc.done,'breach collapses and completes');assert.ok(sc.sugarRun>0); }
-  { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
+  { const [sc,en]=mk();const o={progress:0},S={};sc.crSetup(o,S);assert.strictEqual(S.lanes.length,2);assert.ok(S.lanes.every(L=>L.grow===0),'roots start inside the flower');assert.strictEqual(sc.crGrowPts(S.lanes[0]).length,1);sc.crTick(.1,o,S);assert.strictEqual(en.length,0,'no walkers while roots grow');{const L=S.lanes[0],q=sc.crGrowPts(L);assert.deepStrictEqual(q[0],L.pts[4],'roots grow out of the centre');}for(let k=0;k<40;k++)sc.crTick(.1,o,S);assert.ok(en.length>0&&en[0]._goTo,'walkers get a waypoint');
     for(const L of S.lanes){ sc.player={x:L.pts[0].x,y:L.pts[0].y}; for(let k=0;k<25;k++)sc.crTick(.1,o,S); } assert.ok(S.lanes.every(L=>!L.open),'all cut');assert.ok(sc.done,'all cut ends early');assert.ok(sc.sugarRun>0); }
   console.log('League phase 2: Hunger’s Mouth PoE breach (hand, expand, kill-extend, splinters, chests, collapse) + Creeping Roots (lanes, waypoints, cut, early end) passed'); }
 

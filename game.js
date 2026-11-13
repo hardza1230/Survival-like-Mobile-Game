@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.135';
+const GAME_VERSION = '8.1.136';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.136',date:'2026-11-13',title:'Creeping Roots burst from the flower',items:['Creeping Roots: roots now grow out of the nectar flower toward each root mother before the monsters start walking in']},
   {v:'8.1.135',date:'2026-11-13',title:'No more look-alike cards',items:['Yuzu: Best Friends now boosts companion hits and shields instead of adding a Minion; Minion Squad goes up to 5 ranks','Yuzu Pomelo: Close Guard now shields Yuzu on every Pulp Slam; Golden Finish makes the third sweep hit harder','Momo Sniper: Twin Seed adds Heavy Seed pierce instead of damage','Taro: Spark High Voltage extends Spark reach; Sentry build no longer offers Lightning Rhythm (same as Reserve Cell)']},
   {v:'8.1.134',date:'2026-11-13',title:'Equip fly fix',items:['The ⚔ Equip button now also sends the item flying into its gear slot']},
   {v:'8.1.133',date:'2026-11-13',title:'Easier-to-read mods',items:['Forge mod values stand out in bold white','Mod levels show as dots (●●●○○)','Each mod row has a coloured stripe on the left instead of a coloured frame']},
@@ -16314,17 +16315,29 @@ class Game extends Phaser.Scene {
      รากเป็นเส้นทาง (เห็นล่วงหน้า) · มอนเดินตามเส้นเข้าหาดอก (ไม่ไล่ผู้เล่น) · ไม่มีป้อม · ยืนบนรากแม่ปลายเส้น 2.2s = ปิดเส้น · ดอกล้ม = เวลา −20% ไม่เสียเลือดผู้เล่น
      แบบเบา: 2 เส้น · แบบเต็ม: 3 เส้น + แตกกิ่งเส้นที่ 4 ที่ 18s · ปิดครบทุกเส้น = จบก่อนเวลา + รางวัลพิเศษ ===== */
   crLane(S,a){ const L0=560+Math.random()*60,pts=[],lim=WORLD/2-120; for(let k=0;k<=4;k++){ const r=L0*(1-k/4),w=k>0&&k<4?(Math.random()-.5)*160:0,x=S.x+Math.cos(a)*r+Math.cos(a+Math.PI/2)*w,y=S.y+Math.sin(a)*r+Math.sin(a+Math.PI/2)*w; pts.push({x:Phaser.Math.Clamp(x,-lim,lim),y:Phaser.Math.Clamp(y,-lim,lim)}); }
-    pts[4]={x:S.x,y:S.y}; const m=pts[0]; return {pts,open:true,pc:0,spawn:1+Math.random(),t:this.sigArt('cr_root_mother',0,m.x,m.y+40,100,'🌱',50,m.y-12),ring:this.sigAdd(this.add.circle(m.x,m.y+6,84,0xb36bff,.1).setStrokeStyle(3,0xb36bff,.7).setDepth(m.y-2))}; }
-  crDraw(S){ const G=S.laneG; if(!G)return; G.clear(); if(this.textures?.exists?.('cr_root_vine'))for(const L of S.lanes){ if(!L.vines){ L.vines=[]; for(let k=0;k<L.pts.length-1;k++){ const a=L.pts[k],b=L.pts[k+1],len=Math.hypot(b.x-a.x,b.y-a.y),v=this.camWorld(this.add.tileSprite(a.x,a.y,len,28,'cr_root_vine').setOrigin(0,.5).setRotation(Math.atan2(b.y-a.y,b.x-a.x)).setDepth(S.y-42)); v.tileScaleX=v.tileScaleY=28/((ASSET_FX.cr_root_vine&&ASSET_FX.cr_root_vine.fh)||32); this.sigAdd(v); L.vines.push(v); } } for(const v of L.vines)v.setAlpha(L.open?1:.3); } if(S.lanes.every(L=>L.vines))return; for(const L of S.lanes){ G.lineStyle(L.open?14:8,L.open?0x7a3dbf:0x5a5560,L.open?.38:.18); G.beginPath(); G.moveTo(L.pts[0].x,L.pts[0].y); for(let k=1;k<L.pts.length;k++)G.lineTo(L.pts[k].x,L.pts[k].y); G.strokePath(); if(L.open){ G.fillStyle(0xd9a6ff,.5); for(let k=1;k<4;k++)G.fillCircle(L.pts[k].x,L.pts[k].y,7); } } }
+    pts[4]={x:S.x,y:S.y}; const m=pts[0],t=this.sigArt('cr_root_mother',0,m.x,m.y+40,100,'🌱',50,m.y-12),ring=this.sigAdd(this.add.circle(m.x,m.y+6,84,0xb36bff,.1).setStrokeStyle(3,0xb36bff,.7).setDepth(m.y-2));
+    t?.setAlpha?.(0); ring.setVisible(false);   // v8.1.136 เจ้าของ: รากงอกออกจากตรงกลางแบบ Blight จริง → รากแม่โผล่ตอนรากงอกถึงปลาย
+    return {pts,open:true,pc:0,spawn:1+Math.random(),grow:0,t,ring}; }
+  /* v8.1.136 รากงอกจากดอกตรงกลางออกไปหารากแม่ (grow 0→1) · ระหว่างงอกยังไม่ปล่อยมอน/ตัดไม่ได้ */
+  crGrowPts(L){ const P=L.pts,seg=P.length-1,g=Math.max(0,Math.min(1,L.grow==null?1:L.grow))*seg,out=[P[seg]]; for(let k=seg;k>0&&g>seg-k;k--){ const a=P[k],b=P[k-1],f=Math.min(1,g-(seg-k)); out.push({x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f}); } return out; }
+  crDraw(S){ const G=S.laneG; if(!G)return; G.clear(); const vine=this.textures?.exists?.('cr_root_vine');
+    for(const L of S.lanes){ const Q=this.crGrowPts(L);
+      if(vine){ if(!L.vines){ L.vines=[]; for(let k=L.pts.length-1;k>0;k--){ const a=L.pts[k],b=L.pts[k-1],v=this.camWorld(this.add.tileSprite(a.x,a.y,1,28,'cr_root_vine').setOrigin(0,.5).setRotation(Math.atan2(b.y-a.y,b.x-a.x)).setDepth(S.y-42)); v.tileScaleX=v.tileScaleY=28/((ASSET_FX.cr_root_vine&&ASSET_FX.cr_root_vine.fh)||32); v._len=Math.hypot(b.x-a.x,b.y-a.y); this.sigAdd(v); L.vines.push(v); } }
+        L.vines.forEach((v,i)=>{ const q0=Q[i],q1=Q[i+1],w=q1?Math.hypot(q1.x-q0.x,q1.y-q0.y):0; v.setVisible(w>1); if(w>1)v.setSize?.(w,28); v.width=w; v.setAlpha(L.open?1:.3); }); }
+      else { G.lineStyle(L.open?14:8,L.open?0x7a3dbf:0x5a5560,L.open?.38:.18); G.beginPath(); G.moveTo(Q[0].x,Q[0].y); for(let k=1;k<Q.length;k++)G.lineTo(Q[k].x,Q[k].y); G.strokePath(); if(L.open&&L.grow>=1){ G.fillStyle(0xd9a6ff,.5); for(let k=1;k<4;k++)G.fillCircle(L.pts[k].x,L.pts[k].y,7); } }
+      if(L.grow<1){ const tip=Q[Q.length-1]; G.fillStyle(0xd9a6ff,.85); G.fillCircle?.(tip.x,tip.y,9); G.lineStyle(3,0xb36bff,.6); G.strokeCircle?.(tip.x,tip.y,15); } } }
+  crGrowTick(dt,S){ let any=false; for(const L of S.lanes){ if(L.grow>=1)continue; any=true; L.grow=Math.min(1,L.grow+dt/1.8);
+      if(L.grow>=1){ const m=L.pts[0]; L.t?.setAlpha?.(1); L.ring?.setVisible(true); this.vfxHitRing?.(m.x,m.y,0xb36bff,false); this.screenShake?.(80,.003); } }
+    if(any)this.crDraw(S); return any; }
   crSetup(o,S){ const full=this.fpFull(),q=this.objectivePosition(0,1,120,200); Object.assign(S,{x:q.x,y:q.y,full,hp:300,maxhp:300,lanes:[],branch:full?18:-1});
     o.target=full?48:38; o.desc='Roots crawl toward the nectar flower · stand on each 🌱 root mother to cut its path · hold until the timer ends';
     const tex=this.textures?.exists?.('objective_nectar_flower'); S.flower=tex?this.sigAdd(this.add.image(q.x,q.y,'objective_nectar_flower').setScale(.6).setDepth(q.y+2)):this.sigText(q.x,q.y-10,'🌺',48);
     S.laneG=this.sigAdd(this.add.graphics().setDepth(q.y-40)); const n=full?3:2,a0=Math.random()*TAU; for(let i=0;i<n;i++)S.lanes.push(this.crLane(S,a0+i/n*TAU+(Math.random()-.5)*.5)); this.crDraw(S);
-    this.showBanner?.('🌱 Creeping Roots','The roots crawl toward the flower — cut them at the root mother',1500); }
-  crTick(dt,o,S){ const g=this.objNodeG; S.t=(S.t||0)+dt;
+    this.showBanner?.('🌱 Creeping Roots','Roots burst from the flower — cut them at the root mother',1500); }
+  crTick(dt,o,S){ const g=this.objNodeG; S.t=(S.t||0)+dt; this.crGrowTick(dt,S);
     if(S.branch>0&&S.t>=S.branch){ S.branch=-1; const a=Math.atan2(S.lanes[0].pts[0].y-S.y,S.lanes[0].pts[0].x-S.x)+Math.PI*(.8+Math.random()*.4); S.lanes.push(this.crLane(S,a)); this.crDraw(S); this.showBanner?.('🌱 A new root splits off!','Another path is crawling in',1100); }
     g?.clear(); let open=0;
-    for(const L of S.lanes){ if(!L.open)continue; open++; const m=L.pts[0],near=this.sigNear(m.x,m.y,90); L.pc=Math.max(0,Math.min(2.2,L.pc+(near?dt:-dt*.5))); L.ring.setFillStyle(0xb36bff,near?.24:.1);
+    for(const L of S.lanes){ if(!L.open)continue; open++; if(L.grow<1)continue; const m=L.pts[0],near=this.sigNear(m.x,m.y,90); L.pc=Math.max(0,Math.min(2.2,L.pc+(near?dt:-dt*.5))); L.ring.setFillStyle(0xb36bff,near?.24:.1);
       if(L.pc>0){ g?.lineStyle(7,0xffffff,.95); g?.beginPath(); g?.arc(m.x,m.y+6,78,-Math.PI/2,-Math.PI/2+TAU*L.pc/2.2,false); g?.strokePath(); }
       if(L.pc>=2.2){ L.open=false; open--; if(this.artIsSpr(L.t))L.t.setFrame(1); else L.t.setAlpha(.35); L.ring.setVisible(false); this.crDraw(S); this.vfxHitRing?.(m.x,m.y,0xd9a6ff,true); this.a12?.('lg_root_cut',.4,.2); this.artFx?.('vfx78_root_cut',m.x,m.y,140); this.floatText?.(m.x,m.y-60,'✂️ Root cut!',0xd9a6ff); continue; }
       L.spawn-=dt; if(L.spawn<=0){ L.spawn=S.full?2:2.6; const e=this.sigSpawnAt(m.x+(Math.random()-.5)*40,m.y+(Math.random()-.5)*40); if(e){ e._lanePath=L; e._laneI=1; e._goTo=L.pts[1]; } } }

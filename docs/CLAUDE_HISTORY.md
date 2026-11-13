@@ -3930,3 +3930,7 @@ SIG_MISSIONS seedRift/shakeTrees/mirrorPath/vaultAltar/lastLight → STAGES 10�
 ## Delivery: v8.1.133 — owner: Forge mod readability (the rest of the suggestions, as fitting)
 
 Row header shows level pips `●`×st + `○`×(cap−st) (max 10) in the tier colour instead of "Lv x / cap" (bar keeps "Lv x / cap"). Row frame: thin neutral border + 4 px tier-colour stripe on the left (selected row keeps the gold border). `forgeModText(x,y,mod,v,col,maxW)`: splits `modLine` around the formatted value — value 15 px bold white, text 13 px tier colour; shrinks the whole line to ≥75% then truncates. Not done on purpose: merging empty rows into one "+ Add" row (each row has its own upgrade currency, so rows must stay distinct). Tests forge-redesign (forgeModText in the extract list, pips regex, value split).
+
+## Delivery: v8.1.134 — owner: equipped item did not fly into the slot
+
+v8.1.131 only hooked the inventory double-tap; the owner used the "⚔ Equip" action button (buildGear drawAction 2). It now calls `gearEquipFly` too (origin = the tapped button rect from `_lastTapZ`, key `gear_<baseId>`). Test foe-shadow assertion.
