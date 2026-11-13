@@ -40,8 +40,8 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
               let tx=Math.cos(t*.7)*260,ty=Math.sin(t*.9)*260;if(ox!=null){tx=ox+Math.cos(t)*60;ty=oy+Math.sin(t)*60;}
               const a=Math.atan2(ty-P.y,tx-P.x),d=Math.hypot(tx-P.x,ty-P.y),j=s.joy;if(j&&(!j.active||j.id===-77)){j.active=d>30;j.id=d>30?-77:-1;j.dx=d>30?Math.cos(a):0;j.dy=d>30?Math.sin(a):0;}act='move';}
           }catch(e){act='bot-error:'+e.message;}
-          const pm=performance.memory;return {state:s.state,act,fps:g.loop.actualFps,heap:pm?pm.usedJSHeapSize/1048576:0,tex:s.texMB?s.texMB():0,level:s.level||0,stage:s.stageIndex,elapsed:Math.round(s.elapsed||0),hp:P?Math.round(P.hp):null,boss:!!(s.boss&&s.boss.active),over:!!(s.over&&s.over.visible),loader:!!(document.querySelector('#loader')&&getComputedStyle(document.querySelector('#loader')).display!=='none')};});
-        res.states[st.state]=(res.states[st.state]||0)+1;if(st.state==='play')fps.push(st.fps);heap=Math.max(heap,st.heap);tex=Math.max(tex,st.tex);res.level=st.level;
+          const pm=performance.memory;return {state:s.state,act,fps:g.loop.actualFps,heap:pm?pm.usedJSHeapSize/1048576:0,tex:s.texMB?s.texMB():0,level:s.level||0,orbs:s.orbs?s.orbs.countActive(true):0,xp:Math.round(s.xp||0),xpNext:Math.round(s.xpNext||0),stage:s.stageIndex,elapsed:Math.round(s.elapsed||0),hp:P?Math.round(P.hp):null,boss:!!(s.boss&&s.boss.active),over:!!(s.over&&s.over.visible),loader:!!(document.querySelector('#loader')&&getComputedStyle(document.querySelector('#loader')).display!=='none')};});
+        res.states[st.state]=(res.states[st.state]||0)+1;if(st.state==='play')fps.push(st.fps);heap=Math.max(heap,st.heap);tex=Math.max(tex,st.tex);res.level=st.level;res.elapsed=st.elapsed;res.orbsMax=Math.max(res.orbsMax||0,st.orbs);res.xp=st.xp+'/'+st.xpNext;
         const sig=st.state+'|'+st.elapsed+'|'+st.level;if(sig===last)same++;else{same=0;last=sig;}
         if(same===20&&left)res.stuck.push({atSec:Math.round((Date.now()-start)/1000),state:st.state,elapsed:st.elapsed,act:st.act});
         if(same===20&&left)await page.evaluate(m=>{try{typeof QA!=='undefined'&&QA.report('stuck',m,'bot');}catch(e){}},'bot stuck '+st.state+' at '+st.elapsed+'s ('+st.act+')');
@@ -52,7 +52,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
       res.sec=Math.round((Date.now()-start)/1000);if(!res.result)res.result='timeout';
       await page.evaluate(r=>{try{typeof QA!=='undefined'&&QA.report('bot-result',r,'bot');}catch(e){}},'stage '+idx+' '+res.result+' '+res.sec+'s lvl '+res.level).catch(()=>{});await page.waitForTimeout(2500);
       if(fps.length){res.fpsMin=Math.round(Math.min(...fps));res.fpsAvg=Math.round(fps.reduce((a,b)=>a+b,0)/fps.length);}res.heapMaxMB=Math.round(heap);res.texMaxMB=Math.round(tex);
-      report.stages.push(res);console.log(JSON.stringify({stage:idx,result:res.result,sec:res.sec,errors:errs.length,console:cerr.length,stuck:res.stuck.length,fps:res.fpsAvg,tex:res.texMaxMB,lvl:res.level}));
+      report.stages.push(res);console.log(JSON.stringify({stage:idx,result:res.result,sec:res.sec,errors:errs.length,console:cerr.length,stuck:res.stuck.length,fps:res.fpsAvg,tex:res.texMaxMB,lvl:res.level,gameSec:res.elapsed,orbsMax:res.orbsMax,xp:res.xp}));
       fs.writeFileSync(OUT,JSON.stringify(report,null,1));await page.close();
     }
   }finally{await browser.close();server.close();}

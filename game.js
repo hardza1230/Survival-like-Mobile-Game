@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.139';
+const GAME_VERSION = '8.1.140';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.140',date:'2026-11-13',title:'Real rewarded ads (test mode)',items:['Double Sugar, boss loot reroll and revive now play a real video ad in the Android app (test ads during the closed test)','Watch the ad to the end to get the reward','Thread is earned by playing: Temple Depths and Daily Login (no purchases)']},
   {v:'8.1.139',date:'2026-11-13',title:'Bug button and a lighter game',items:['New 🐞 button on the left edge: tap it to send a bug report with a screenshot (testing builds)','The game download is about 40% smaller and loads faster: images and sounds are compressed','Errors are reported automatically so they can be fixed sooner']},
   {v:'8.1.138',date:'2026-11-13',title:'Build Path card art fix',items:['Mint: the Glacier Bloom and Barrage card pictures now match their builds','Instinct picks (Kill Streak, Last Stand) show their relic icons']},
   {v:'8.1.137',date:'2026-11-13',title:'Painted Build Path cards and Grandma’s recipe book',items:['Build Path: three painted cards flip face up one by one; tap to look closer, tap again to choose','Mutation: Grandma’s recipe book opens with one recipe on each page; the chosen page glows','Relic vault and Evolution forge now use painted art']},
@@ -7402,12 +7403,40 @@ const GACHA_LEVELS = [ {lo:1,hi:10,cost:150}, {lo:11,hi:20,cost:320}, {lo:21,hi:
 const DEFAULT_SETTINGS={share:false,mx:false,sound:true,voices:true,shake:2,flash:true,damageNumbers:true,vfx:2,quality:0,musicVol:1,sfxVol:1};   // v7.2 owner: VFX High · Shake Normal · v7.4 Performance Auto (GPU memory)
 const VOL_STEPS=[1,0.75,0.5,0.25,0];
 function applyVolSettings(st){ st=st||{}; Sfx.setVolumes(st.musicVol==null?1:st.musicVol, st.sfxVol==null?1:st.sfxVol); }
-// ---- Monetization: rewarded ads + IAP (จุดต่อ Capacitor AdMob/Billing · ตอนนี้ยังNone plugin = ใช้เดโมจำลอง) ----
-// ⚙️ ขึ้นสโตร์จริง: npm i @capacitor-community/admob → ใส่ ad unit id ที่ ADMOB_REWARD_ID แล้วต่อใน Game.showRewardedAd
-const ADMOB_REWARD_ID = '';   // ← ใส่ Rewarded Ad Unit ID ตอน integrate จริง
+// ---- Monetization: rewarded ads only (LAUNCH_RULES rule 4 · v8.1.140) ----
+// Native app: @capacitor-community/admob (manifest app id is set by scripts/set-android-landscape.mjs).
+// Web / old APK without the plugin: the 3-second demo ad below.
+const ADMOB_APP_ID = 'ca-app-pub-6736744441157705~4936664616';
+const ADMOB_REWARD_ID = 'ca-app-pub-6736744441157705/4748962358';
+const ADMOB_TEST_REWARD_ID = 'ca-app-pub-3940256099942544/5224354917';   // Google sample rewarded unit
+const ADS_TEST = true;    // closed test: Google test ads only (never click real ads of our own game) · set false at launch
+const IAP_ENABLED = false; // owner 13 Nov: no real-money purchases for now · Thread shop hidden, Thread comes from play
 const AdManager = {
-  plugin(){ try{ const C=window.Capacitor; return (C&&C.Plugins&&C.Plugins.AdMob)||window.AdMob||null; }catch(e){ return null; } },
-  hasRealAds(){ const p=this.plugin(); return !!(ADMOB_REWARD_ID && p && p.showRewardVideoAd); },
+  _init:null, privacyRequired:false, lastResult:'',
+  plugin(){ try{ const C=window.Capacitor; const p=(C&&C.Plugins&&C.Plugins.AdMob)||window.AdMob||null; return (p&&C&&C.isNativePlatform&&!C.isNativePlatform())?null:p; }catch(e){ return null; } },
+  hasRealAds(){ const p=this.plugin(); return !!(p && p.showRewardVideoAd && p.prepareRewardVideoAd); },
+  unitId(){ return ADS_TEST ? ADMOB_TEST_REWARD_ID : ADMOB_REWARD_ID; },
+  // UMP consent first (GDPR form shows only where required), then the SDK
+  init(){ if(this._init)return this._init; const p=this.plugin(); if(!p||!p.initialize)return (this._init=Promise.resolve(false));
+    this._init=(async()=>{ try{ let info=p.requestConsentInfo?await p.requestConsentInfo():null;
+        if(info&&info.isConsentFormAvailable&&info.status==='REQUIRED'&&p.showConsentForm)info=await p.showConsentForm();
+        this.privacyRequired=!!(info&&info.privacyOptionsRequirementStatus==='REQUIRED'); }catch(e){}
+      try{ await p.initialize({initializeForTesting:ADS_TEST}); return true; }catch(e){ return false; } })();
+    return this._init; },
+  privacyForm(){ const p=this.plugin(); try{ return p&&p.showPrivacyOptionsForm?Promise.resolve(p.showPrivacyOptionsForm()).catch(()=>{}):Promise.resolve(); }catch(e){ return Promise.resolve(); } },
+  // resolves 'rewarded' | 'skipped' (closed early) | 'failed' (no ad / error)
+  show(){ const p=this.plugin(); if(!this.hasRealAds())return Promise.resolve('failed');
+    return this.init().then(()=>new Promise(res=>{ let got=false,done=false,shown=false; const hs=[];
+      const fin=r=>{ if(done)return; done=true; clearTimeout(loadT); hs.forEach(h=>{ try{h&&h.remove&&h.remove();}catch(e){} }); this.lastResult=r; res(r); };
+      const on=(ev,f)=>{ try{ Promise.resolve(p.addListener(ev,f)).then(h=>{ if(done){ try{h&&h.remove&&h.remove();}catch(e){} } else hs.push(h); }).catch(()=>{}); }catch(e){} };
+      const loadT=setTimeout(()=>{ if(!shown)fin('failed'); },20000);
+      on('onRewardedVideoAdShowed',()=>{ shown=true; clearTimeout(loadT); });
+      on('onRewardedVideoAdReward',()=>{ got=true; });
+      on('onRewardedVideoAdDismissed',()=>setTimeout(()=>fin(got?'rewarded':'skipped'),60));
+      on('onRewardedVideoAdFailedToShow',()=>fin('failed'));
+      Promise.resolve(p.prepareRewardVideoAd({adId:this.unitId(),isTesting:ADS_TEST}))
+        .then(()=>p.showRewardVideoAd()).then(r=>{ shown=true; clearTimeout(loadT); if(r&&(r.amount!=null||r.type!=null))got=true; setTimeout(()=>fin(got?'rewarded':'skipped'),60000); })
+        .catch(()=>fin(got?'rewarded':'failed')); })); },
 };
 const Store = {
   products:[ {id:'noads',emoji:'🚫',name:'Remove interstitial ads',desc:'Permanently disable interstitial ads (rewarded ads still optional)'} ],
@@ -7927,7 +7956,7 @@ const Stats={
     try{ if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t).then(()=>true,()=>fb()); }catch(e){} return Promise.resolve(fb()); }
 };
 /* v7.8.44 ช่วงที่ 1: ส่งสถิติจบด่านขึ้น Supabase (ตาราง run_stats · เพิ่มได้อย่างเดียว อ่านไม่ได้) · เปิดเองใน Settings (ค่าเริ่มต้นปิด) · ไม่มีข้อมูลระบุตัวตน มีแค่รหัสสุ่มประจำเครื่อง · คิวในเครื่องไว้ส่งทีหลังถ้าออฟไลน์ */
-const Tele={ Q:'mochi_tele_q', MAX:40,
+const Tele={ Q:'mochi_tele_q', MAX:120,
   on(){ try{ return (typeof BETA_BUILD!=='undefined'&&BETA_BUILD)||!!(Save.data.settings&&Save.data.settings.share); }catch(e){ return false; } },   /* v8.1.139 ช่วงทดสอบส่งสถิติจบด่านทุกคน (ไม่ระบุตัวตน) */
   id(){ try{ let v=localStorage.getItem('mochi_install_id'); if(!v){ v=(crypto.randomUUID?crypto.randomUUID():'i'+Date.now().toString(36)+Math.random().toString(36).slice(2)); localStorage.setItem('mochi_install_id',v); } return v; }catch(e){ return 'unknown'; } },
   load(){ try{ const a=JSON.parse(localStorage.getItem(this.Q)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } },
@@ -7940,6 +7969,12 @@ const Tele={ Q:'mochi_tele_q', MAX:40,
     fetch(CLOUD_URL+'/rest/v1/run_stats',{method:'POST',headers:{'apikey':CLOUD_KEY,'Authorization':'Bearer '+CLOUD_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(batch)})
       .then(r=>{ if(r.ok){ const rest=this.load().slice(batch.length); this.save(rest); this.sent=(this.sent||0)+batch.length; this.err=null; } else this.err='HTTP '+r.status; })
       .catch(e=>{ this.err='offline'; }).finally(()=>{ this._busy=false; if(!this.err&&this.load().length)setTimeout(()=>this.flush(),1500); }); },
+  /* v8.1.140 play events (LAUNCH_RULES rule 7 · same run_stats table, mode 'event'): session · stage_start · tutorial_done · screen · ad
+     → funnel of the first 10 minutes and where players stop · sec = seconds since this app session began · max 150 per session */
+  ev(name,data,stage){ if(!this.on())return; try{ this._evN=(this._evN||0)+1; if(this._evN>150)return; const t0=this._t0||(this._t0=Date.now()),d=(typeof Save!=='undefined'&&Save.data)||{};
+      const row={install_id:this.id(),v:typeof GAME_VERSION!=='undefined'?GAME_VERSION:'?',hero:d.character||null,path:null,mode:'event',stage:stage||null,diff:0,result:String(name).slice(0,40),sec:Math.round((Date.now()-t0)/1000),
+        data:Object.assign({unlocked:d.unlockedStage|0,tut:!!d.tutorialDone,sugar:d.sugar|0},data||{})};
+      const a=this.load(); a.push(row); this.save(a); if(name==='session'||name==='ad')this.flush(); }catch(e){} },
   status(){ const n=this.load().length; return !this.on()?'Off':(n?n+' waiting'+(this.err?' ('+this.err+')':''):'On'+(this.sent?' · '+this.sent+' sent':'')); }
 };
 const CLOUD_URL='https://tohsnflngkfoutqcfrwi.supabase.co';
@@ -9539,7 +9574,7 @@ class Game extends Phaser.Scene {
   create(){
     this.loopGuard?.();
     this._sesRuneButtons=null;
-    try{ if(typeof QA!=='undefined'){ QA.button(); QA.flush(); } }catch(e){}   /* v8.1.139 ปุ่ม 🐞 + ส่งรายงานที่ค้าง */this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
+    try{ if(typeof QA!=='undefined'){ QA.button(); QA.flush(); } }catch(e){} try{ if(typeof AdManager!=='undefined')AdManager.init(); }catch(e){} try{ if(!window.__teleSession){ window.__teleSession=1; Tele.ev('session',{native:!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()),mem:navigator.deviceMemory||null}); } }catch(e){}   /* v8.1.139 ปุ่ม 🐞 + ส่งรายงานที่ค้าง */this._sesRuneUI=null;this._sesRuneLabel=null;this._bossInkActors=null;   // v8.1.23 scene.restart (Back to Hub) เก็บ instance เดิม: ล้างอ้างอิงปุ่ม/บอสของรอบก่อนที่ถูกทำลายแล้ว
     this.renderDPR=RENDER_DPR;
     this.W=this.scale.width/RENDER_DPR; this.H=this.scale.height/RENDER_DPR; // layout เป็น CSS px; canvas เป็น physical px
     this.computeViewZoom();                                // zoom ปรับตามความกว้างจอ → มือถือ/แท็บเล็ตเห็นสนามพอ ๆ กัน
@@ -11415,7 +11450,7 @@ class Game extends Phaser.Scene {
   }
   // v4.63: แนวตั้ง header อยู่ต่ำกว่าแนวนอน 25px (safe-area) — หน้าที่วางข้อความย่อยใต้หัวด้วยพิกัดแนวนอนให้บวกค่านี้
   _hdrShift(){ return this.W<=this.H?30:0; }
-  buildMenuScreen(){ if(this._patrolOn&&this.menuScreen!=='patrol')this.patrolStop(); { const sc=this.menuScreen||'hub',M={wardrobe:'ui_wardrobe_open',ranking:'ui_rank_open',bestiary:'ui_codex_open',skills:'ui_codex_open',atlas:'ui_map_open',bossrush:'ui_bossrush_open'}; if(sc!==this._cueScreen&&M[sc]&&!this._chestOpen)Sfx.menuCue?.(M[sc],.4); this._cueScreen=sc; }   /* v8.1.65 A11 เสียงเปิดหน้า */
+  buildMenuScreen(){ if(this._patrolOn&&this.menuScreen!=='patrol')this.patrolStop(); { const sc=this.menuScreen||'hub',M={wardrobe:'ui_wardrobe_open',ranking:'ui_rank_open',bestiary:'ui_codex_open',skills:'ui_codex_open',atlas:'ui_map_open',bossrush:'ui_bossrush_open'}; if(sc!==this._cueScreen&&M[sc]&&!this._chestOpen)Sfx.menuCue?.(M[sc],.4); if(sc!==this._cueScreen){ try{ Tele.ev('screen',{s:sc}); }catch(e){} } this._cueScreen=sc; }   /* v8.1.65 A11 เสียงเปิดหน้า */
     if(this._chestOpen||this._rubyTalk?.active)return; this.cancelMenuMotion(); const s=this.menuScreen||'hub'; this._jrSkin=false; if(Save._cloudConflict){ this.stopHubMotion?.(); this.buildCloudConflict(); return; }if(s==='atlas'&&this.state==='menu'&&this.mcGate?.('s17',()=>this.buildMenuScreen()))return;   // v8.0.2 Motion Comic ก่อน Delve ครั้งแรก
     if(s!=='hub')this.stopHubMotion?.(); this._gearPinned=null;
     let fullCached=false; try{ fullCached=localStorage.getItem('mochi_full_cached')==='1'; }catch(e){}
@@ -12347,7 +12382,7 @@ class Game extends Phaser.Scene {
     const pt=this.input.activePointer, sk=this._tutSkip;
     if(sk&&pt&&pt.x>=sk.x&&pt.x<=sk.x+sk.w&&pt.y>=sk.y&&pt.y<=sk.y+sk.h){ this._tutorialStep=pages.length-1; }
     if(this._tutorialStep<pages.length-1){this._tutorialStep++;this.drawTutorial();return;}
-    Save.data.tutorialDone=true;Save.save();this.over.setVisible(false);this._tutPages=null;this._tutSkip=null;const done=this._tutorialDone;this._tutorialDone=null;if(done)done();
+    Save.data.tutorialDone=true;Save.save();try{ Tele.ev('tutorial_done'); }catch(e){}this.over.setVisible(false);this._tutPages=null;this._tutSkip=null;const done=this._tutorialDone;this._tutorialDone=null;if(done)done();
   }
   buildAchievements(){   // v8.0.23 Awards ใหม่: ใกล้สำเร็จ 3 รายการ · 4 หมวด · ขั้น ★ · รับทีละขั้น
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('🏆 Awards','screen_achievements');
@@ -12439,6 +12474,7 @@ class Game extends Phaser.Scene {
       {k:'quality',e:'⚡',n:'Performance',sub:'Auto adapts to your phone · resolution applies on restart',value:()=>(_lowMemFlag?'Low-memory · ':'')+['Auto','Low','High'][st.quality||0],toggle:()=>{st.quality=((st.quality||0)+1)%3;clearLowMem();this.menuToast&&this.menuToast('Resolution changes apply next launch');}},
       {k:'share',e:'📡',n:'Share Play Stats',sub:'Send each finished stage’s stats to the developer · anonymous',value:()=>Tele.status(),toggle:()=>{st.share=!st.share;Save.data.settings=st;if(st.share)setTimeout(()=>Tele.flush(),50);}},
             {k:'mx',e:'📈',n:'Combat Meter',sub:'Live DPS / boss / FPS numbers in battle · full report in Play Stats',value:()=>st.mx?'On':'Off',toggle:()=>{st.mx=!st.mx;}},
+      ...(AdManager.privacyRequired?[{k:'adPrivacy',e:'🛡',n:'Ad Privacy',sub:'Change your ad consent choices',value:()=>'Open',toggle:()=>{AdManager.privacyForm();}}]:[]),
       {k:'stats',e:'📊',n:'Play Stats',sub:'Your runs on this device: wins, deaths, cards',value:()=>'Open',toggle:()=>{},open:true},
     ];
     if(typeof GM!=='undefined'&&GM.on())rows.push({k:'gm',e:'🛠',n:'GM Tools'+(GM.testing()?' · TEST PROFILE':''),sub:'Testing only · resources, unlocks, save tools',value:()=>'Open',toggle:()=>{},gm:true});
@@ -14122,8 +14158,8 @@ class Game extends Phaser.Scene {
   buildBazaar(){
     this.menu.removeAll(true);this.tapZones=[];this._screenBg('Mochi Bazaar','screen_bazaar','gLoadout');
     /* v8.0.25 เจ้าของ: เหลือ 3 แท็บ — หีบ (เงิน/ทอง/Sugar) · ร้าน (ของ 4 + วัสดุ 2 รีเฟรชฟรีวันละครั้ง) · แลก (Trade-in + ขายวัสดุ) */
-    const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=TAB[this._bazTab]||this._bazTab||'chests',top=(tab==='shop'?153:121)+hs;
-    [['chests','Chests'],['shop','Shop'],['trade','Trade'],['thread','Thread']].forEach(([id,label],i)=>{const tw=(w-28)/4;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();},'tab_'+id);});
+    const TAB={buy:'shop',orders:'shop',gamble:'chests',sell:'trade'},w=this.W,h=this.H,hs=this._hdrShift(),tab=this._bazTab=(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED&&this._bazTab==='thread')?'chests':(TAB[this._bazTab]||this._bazTab||'chests'),top=(tab==='shop'?153:121)+hs;
+    const bTabs=[['chests','Chests'],['shop','Shop'],['trade','Trade'],['thread','Thread']].filter(t=>typeof IAP_ENABLED==='undefined'||IAP_ENABLED||t[0]!=='thread');bTabs.forEach(([id,label],i)=>{const tw=(w-28)/bTabs.length;this.paintedNavButton(this.menu,14+tw*(i+.5),89+hs,tw-6,38,label,id===tab,()=>{this._bazTab=id;this.buildBazaar();},'tab_'+id);});
     if(tab==='chests'){ this.buildChestShop(top); this.menu.setVisible(true); return; }
     if(tab==='thread'){ this.buildThreadShop(top); this.menu.setVisible(true); return; }
     let y=top;
@@ -14161,7 +14197,8 @@ class Game extends Phaser.Scene {
     const cols=w>h?3:2,gap=8,cw=(w-28-gap*(cols-1))/cols,rows=Math.ceil(IAP_PACKS.length/cols),ch=Math.min(130,Math.max(84,(h-y-20)/rows-gap));
     IAP_PACKS.forEach((p,i)=>{ const first=Iap.firstBonus(p.id),n=(first?p.thread*2:p.thread)+p.bonus;
       this.bazaarProductCard(14+(i%cols)*(cw+gap),y+Math.floor(i/cols)*(ch+gap),cw,ch,{art:'ic_thread',name:n+' Thread',desc:first?'First purchase: double Thread':p.bonus?'+'+p.bonus+' bonus':'',price:p.price,color:first?0xffd166:0xffc6df,afford:live,fn:()=>this.threadBuy(p.id)}); }); }
-  threadBuy(id){ if(!Iap.available()){ Sfx.menuCue?.('ui_shop_soon',.35)||Sfx.error?.(); this.showBanner?.('🧶 Coming soon','Thread purchases open with the Play Store release',1600); return; }
+  threadHowTo(){ Sfx.select?.(); this.showBanner?.('🧶 Earn Thread','Dig in Temple Depths and claim Daily Login rewards',2200); }
+  threadBuy(id){ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } if(!Iap.available()){ Sfx.menuCue?.('ui_shop_soon',.35)||Sfx.error?.(); this.showBanner?.('🧶 Coming soon','Thread purchases open with the Play Store release',1600); return; }
     const first=Iap.firstBonus(id); Iap.buy(id,(ok,n)=>{ if(ok){Sfx.menuCue?.(first&&id!==MOCHI_PASS.id?'ui_thread_first_bonus':'ui_thread_buy',.5)||Sfx.clear?.();this.showBanner?.('🧶 Thank you!','+'+n+' Thread',1600);} if(this.state==='menu'&&this.menuScreen==='bazaar')this.buildBazaar(); }); }
   gmApply(){ if(typeof GM==='undefined'||!GM.on()||!this.player)return; if(GM.opt('dmg')){ this.player.dmgMul=(this.player.dmgMul||1)*10; this.floatText?.(this.player.x,this.player.y-70,'GM ×10 damage',0xffd166); } if(GM.opt('god'))this.floatText?.(this.player.x,this.player.y-90,'GM god mode',0x8fe8ff); }
   buildGm(){ if(typeof GM==='undefined'||!GM.on()){ this.menuScreen='settings'; this.buildMenuScreen(); return; } this.menu.removeAll(true);this.tapZones=[];this._screenBg('GM Tools','screen_settings','settings');
@@ -14220,7 +14257,7 @@ class Game extends Phaser.Scene {
       // ด้าย + ปุ่มเติม
       const tw=118,tx=px+10,ty=top+10,tg=this.add.graphics(); tg.fillStyle(0x140c1c,.85).fillRoundedRect(tx,ty,tw,26,13).lineStyle(1.5,0xffb0d8,.9).strokeRoundedRect(tx,ty,tw,26,13).fillStyle(0xff7ab8,1).fillCircle(tx+tw-13,ty+13,10); this.menu.add(tg);
       T(tx+10,ty+13,'🧶 '+Save.threads(),12,'#ffe0f0',0); T(tx+tw-13,ty+12,'+',16,'#ffffff');
-      this._zone(tx,ty-4,tw,34,()=>{ this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='ward_thread';
+      this._zone(tx,ty-4,tw,34,()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); }); this.tapZones[this.tapZones.length-1].tag='ward_thread';
       const shopAll=COSMETICS.filter(c=>!Cos.retired(c)),own=shopAll.filter(c=>Cos.owns(c.id)).length+SKINS.filter(k=>Cos.skinOwns(k.id)).length; T(px+pw-12,top+23,'Collection '+own+'/'+(shopAll.length+SKINS.length),10,'#d9c8ee',1);
       const pn=pSkin||prev,po=pSkin?Cos.skinOwns(pSkin.id):prev&&Cos.owns(prev.id); T(cx,top+sh-10,pn?(po?'':'✨ Trying on · ')+pn.name:isSkin?'Tap a skin to try it on':'Tap an item to try it on',11,pn?'#fff0b8':'#cbb8e0'); }
     // ── แท็บแถวเดียว
@@ -14249,7 +14286,7 @@ class Game extends Phaser.Scene {
     const by=y+9,hh=bh-18;
     if(!Cos.owns(c.id)){ const aff=Save.threads()>=c.price;
       if(aff){ const b=btn(x+10,by,bw-20,hh,0xe0558f,0xffd166,'Buy & Wear  ·  🧶 '+c.price,()=>this.cosTap(c),'ward_buy'); this.tweens?.add({targets:b,alpha:.85,duration:700,yoyo:true,repeat:-1}); }
-      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(c.price-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+c.price,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
+      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(c.price-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+c.price,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
       return; }
     const on=Cos.equipped(c.slot)?.id===c.id,hw=(bw-30)/2;
     btn(x+10,by,hw,hh,on?0x6a5a86:0x2f9a66,on?0xd8c8f0:0xa8ffcf,on?'Take off':'Wear',()=>this.cosTap(c),'ward_wear');
@@ -14278,7 +14315,7 @@ class Game extends Phaser.Scene {
     if(!(Save.data.chars||[]).includes(k.hero)){ T(w/2,y+bh/2,'🔒 Unlock '+(CHARACTERS?.[k.hero]?.name||k.hero)+' first',12,'#ffb0c8'); return; }
     if(!Cos.skinOwns(k.id)){ const aff=Save.threads()>=SKIN_PRICE;
       if(aff){ const b=btn(x+10,by,bw-20,hh,0xe0558f,0xffd166,'Buy & Wear  ·  🧶 '+SKIN_PRICE,()=>{ if(Cos.buySkin(k.id)){ Sfx.menuCue?.('ui_cos_buy',.5)||Sfx.clear?.(); this.showBanner?.('✨ '+k.name,'Worn by '+(CHARACTERS?.[k.hero]?.name||k.hero)+' everywhere',1500); } else Sfx.error?.(); this.buildWardrobe(); },'ward_skin_buy'); this.tweens?.add({targets:b,alpha:.85,duration:700,yoyo:true,repeat:-1}); }
-      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(SKIN_PRICE-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+SKIN_PRICE,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
+      else { T(x+bw*.28,by+hh/2-7,'Need 🧶 '+(SKIN_PRICE-Save.threads())+' more',11,'#ffb0c8'); T(x+bw*.28,by+hh/2+9,'Price 🧶 '+SKIN_PRICE,10,'#cbb8e0'); btn(x+bw*.52,by,bw*.48-10,hh,0x6a4bd0,0xbfa8ff,'Get Thread ›',()=>{ if(typeof IAP_ENABLED!=='undefined'&&!IAP_ENABLED){ this.threadHowTo(); return; } this._bazTab='thread'; this.menuScreen='bazaar'; this.buildMenuScreen(); },'ward_get'); }
       return; }
     const on=Cos.data().skin[k.hero]===k.id; btn(x+10,by,bw-20,hh,on?0x6a5a86:0x2f9a66,on?0xd8c8f0:0xa8ffcf,on?'Back to original outfit':'Wear',()=>{ Cos.setSkin(k.hero,on?null:k.id); Sfx.menuCue?.(on?'ui_cos_unequip':'ui_cos_equip',.4)||Sfx.select?.(); this.buildWardrobe(); },'ward_skin_wear'); }
   // หุ่นลองชุด: ใช้ท่า idle ของ Lobby ถ้าโหลดแล้ว ไม่งั้นภาพการ์ดฮีโร่
@@ -14839,7 +14876,7 @@ class Game extends Phaser.Scene {
         this.elapsed=0; this.kills=0; this.stageKills=0; this.sugarStage=0; this.sugarRun=0; if(this.runSugarTxt)this.runSugarTxt.setText('🍬 0');
         if(this.killTxt)this.killTxt.setText('KOs 0');
         this.stageIndex=idx; this.boss=null; this.mode='wave'; this.waveIndex=0; this.waveAlive=0;this._finalStoryShown=false;this.bossRush=!!this._bossRushRequested;this._bossRushRequested=false;this._pinnacleRun=!!this._pinnacleRequested;this._pinnacleRequested=false;if(this._pinnacleRun){this.bossRush=true;}this.riftMode=!!this._riftRequested;this._riftTier=this.riftMode?this._riftRequested.tier:0;this._riftMods=this.riftMode?this._riftRequested.mods:[];this._riftRequested=null;this.recipeMode=!!this._recipeRequested;this._recipe=this._recipeRequested||null;if(this.recipeMode){this.riftMode=true;this._riftTier=this._recipe.tier;this._riftMods=(this._recipe.mods||[]).slice();}this._pact={};this._pactHeat=0;if(this.recipeMode){(this._recipe.mods||[]).forEach(id=>{const d=recipeModDef(id);if(d&&d.pact)Object.keys(d.pact).forEach(k=>{this._pact[k]=(this._pact[k]||0)+d.pact[k];});});}this._recipeRequested=null;if(this.bossRush){this._rushList=this._pinnacleRun?[idx]:this.bossRushList();this._rushPos=0;this._rushDown=0;this._rushT0=0;}
-        Stats.start(this);   /* v6.99.1 direct (delayedCall could stall while time paused) */
+        Stats.start(this); try{ Tele.ev('stage_start',{mode:this.mode||null,diff:this.difficulty|0,tutorial:!!this._inTutorial},Stats.stageLab?Stats.stageLab(this.stageIndex):String(this.stageIndex)); }catch(e){}   /* v6.99.1 direct (delayedCall could stall while time paused) */
         this.character=CHARACTERS[Save.data.character]?Save.data.character:'momo';
         this._sesRuneMode=this.character==='sesame'&&!this._forceCoachTutorial&&!!Save.data.tutorialDone;
         this.skills={}; this.basicAttack=null; this.passives={}; this.resetRelics(); this._clearT=0; this._clearFled=false; this.uniqueCd=0; this.uniqueLevel=typeof uniqueTalentLevel==='function'?uniqueTalentLevel(this.character||Save.data.character):1;this._cocoaRegenT=0; this.wardGuardT=0; this.pathHasteT=0; this.windRushT=0; this.swarmAcc=null;this._triSeals=[];this._echoTrail=[];this._echoTrailAcc=0;
@@ -24170,10 +24207,14 @@ class Game extends Phaser.Scene {
   // ---- Rewarded Ad: แสดงโฆษณาแล้วให้รางวัล (ตอนนี้เดโมจำลอง · ต่อ AdMob จริงได้ที่ hasRealAds/plugin) ----
   showRewardedAd(label,onReward){
     if(this._adBusy)return;
-    if(AdManager.hasRealAds()){ this._adBusy=true; const p=AdManager.plugin();
-      try{ Promise.resolve(p.prepareRewardVideoAd?p.prepareRewardVideoAd({adId:ADMOB_REWARD_ID}):null)
-        .then(()=>p.showRewardVideoAd()).then(()=>{this._adBusy=false;onReward&&onReward();})
-        .catch(()=>{this._adBusy=false;this._playSimAd(label,onReward);}); return; }catch(e){ this._adBusy=false; } }
+    if(AdManager.hasRealAds()){ this._adBusy=true;
+      const ctx=Sfx.ctx; try{ if(ctx&&ctx.state==='running')ctx.suspend(); }catch(e){}
+      const back=()=>{ this._adBusy=false; try{ if(ctx&&!Sfx.muted)ctx.resume(); }catch(e){} };
+      AdManager.show().then(r=>{ back(); try{ Tele.ev('ad',{where:label||'',r,test:ADS_TEST}); }catch(e){}
+        if(r==='rewarded'){ onReward&&onReward(); return; }
+        if(r==='skipped'){ this.showBanner?.('📺 Ad closed early','Watch to the end to get the reward',1600); return; }
+        this.showBanner?.('📺 No ad right now','Check your connection and try again in a moment',1800); }).catch(()=>back());
+      return; }
     this._playSimAd(label,onReward);
   }
   _playSimAd(label,onReward){

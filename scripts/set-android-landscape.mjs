@@ -43,6 +43,17 @@ if (!/android:scheme="com\.mochimayhem\.game"/.test(xml)) {
         `;
   xml = xml.replace('</activity>', deepLink + '</activity>');
 }
+// AdMob (@capacitor-community/admob) needs the app id in the manifest or the app crashes on start.
+// The id is public (it ships inside every app); keep in sync with ADMOB_APP_ID in game.js.
+const ADMOB_APP_ID = 'ca-app-pub-6736744441157705~4936664616';
+if (!/com\.google\.android\.gms\.ads\.APPLICATION_ID/.test(xml)) {
+  const meta = `
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="${ADMOB_APP_ID}" />
+        <meta-data android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT" android:value="true" />
+    `;
+  if (!/<\/application>/.test(xml)) throw new Error('application tag not found');
+  xml = xml.replace('</application>', meta + '</application>');
+}
 fs.writeFileSync(manifest, xml);
 
 const activityPath = 'android/app/src/main/java/com/mochimayhem/game/MainActivity.java';
