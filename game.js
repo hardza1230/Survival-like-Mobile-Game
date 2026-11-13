@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.140';
+const GAME_VERSION = '8.1.141';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.141',date:'2026-11-13',title:'Clearer training',items:['Training points with a finger instead of a moving ring','Sweets to pick up glow during training','Dash and Unique lessons dim the screen around the button','The Lobby hero keeps retrying if its picture did not load']},
   {v:'8.1.140',date:'2026-11-13',title:'Real rewarded ads (test mode)',items:['Double Sugar, boss loot reroll and revive now play a real video ad in the Android app (test ads during the closed test)','Watch the ad to the end to get the reward','Thread is earned by playing: Temple Depths and Daily Login (no purchases)']},
   {v:'8.1.139',date:'2026-11-13',title:'Bug button and a lighter game',items:['New 🐞 button on the left edge: tap it to send a bug report with a screenshot (testing builds)','The game download is about 40% smaller and loads faster: images and sounds are compressed','Errors are reported automatically so they can be fixed sooner']},
   {v:'8.1.138',date:'2026-11-13',title:'Build Path card art fix',items:['Mint: the Glacier Bloom and Barrage card pictures now match their builds','Instinct picks (Kill Streak, Last Stand) show their relic icons']},
@@ -7996,7 +7997,7 @@ const QA={ Q:'mochi_qa_q', errs:[], sentKeys:{}, autoN:0, AUTO_MAX:5,
         cards:b&&b.lv?Object.keys(b.lv).filter(k=>b.lv[k]>0).map(k=>k+':'+b.lv[k]).slice(0,40):null, mutation:b&&b.mutation||null, evolved:!!(b&&b.evolved), relics:s&&s._rel?Object.keys(s._rel).slice(0,20):null,
         fps:(window.__g&&Math.round(window.__g.loop.actualFps))||null, texMB:tex, heapMB:(performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):null),
         device:{ua:(navigator.userAgent||'').slice(0,160),w:screen.width,h:screen.height,dpr:window.devicePixelRatio||1,mem:navigator.deviceMemory||null}, errors:this.errs.slice(-20), gm:typeof GM!=='undefined'&&GM.on() } }; },
-  shot(cb){ const g=window.__g; let done=false; const fin=v=>{ if(!done){ done=true; cb(v); } }; setTimeout(()=>fin(null),1500);
+  shot(cb){ const g=window.__g; let done=false; const fin=v=>{ if(!done){ done=true; cb(v); } }; setTimeout(()=>fin(null),4000);
     try{ g.renderer.snapshot(img=>{ try{ const W=Math.min(480,img.width),H=Math.round(img.height*W/img.width),c=document.createElement('canvas'); c.width=W; c.height=H; c.getContext('2d').drawImage(img,0,0,W,H); c.toBlob(bl=>fin(bl),'image/jpeg',.6); }catch(e){ fin(null); } }); }catch(e){ fin(null); } },
   report(kind,note,source,cb){ if(!this.on()&&source!=='bot')return; const snap=this.snapshot(),row={install_id:Tele.id(),v:GAME_VERSION,source:source||'player',kind:kind||'bug',note:note?String(note).slice(0,2000):null,stage:snap.stage,hero:snap.hero,path:snap.path,state:snap.state,data:snap.data,shot:null};
     this.shot(bl=>{ if(!bl||typeof fetch!=='function'){ this.enqueue(row); this.flush(); cb&&cb(true); return; } const path=new Date().toISOString().slice(0,10)+'/'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2))+'.jpg';
@@ -12796,6 +12797,8 @@ class Game extends Phaser.Scene {
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c);
     this.lobbyPreload();
+    /* v8.1.141 owner 🐞: Strawberry stayed a placeholder in the Lobby after the tutorial → keep retrying the hero card every 3 s (max 10) and rebuild once it is real */
+    if(!this.realTex(hk)&&ASSET_IMAGES[hk]&&Date.now()-(this._lobbyHeroRetryAt||0)>4000){ let n=0; const retry=()=>{ this._lobbyHeroRetryAt=Date.now(); if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this.realTex(hk)){ this.buildMenuScreen(); return; } if(++n>10)return; this._lobbyLoading=false; this.lobbyPreload(); this.time?.delayedCall?.(3000,retry); }; this._lobbyHeroRetryAt=Date.now(); this.time?.delayedCall?.(3000,retry); }
     const bgk=this.realTex(sk)?sk:null;   /* v8.1.107 เจ้าของ: หลังเปิดหนังสือเห็นภาพสำรอง (ฉาก Hub) แปลก → ไม่ใช้ภาพสำรองแล้ว · ฉากด่านโหลดตั้งแต่หน้า Title · ยังไม่มา = พื้นมืดเรียบ แล้วฉากด่านค่อย ๆ จางเข้า */
     const bg=bgk?this._coverImage(0,0,w,h,bgk):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
     if(bgk&&this._lobbyBgIn){ this._lobbyBgIn=false; bg.setAlpha(0); this.tweens.add({targets:bg,alpha:1,duration:600,ease:'Sine.easeOut'}); }
@@ -18007,7 +18010,7 @@ class Game extends Phaser.Scene {
     { id:'welcome', icon:'👋', title:'Hi, I’m Ruby!', body:'The Heart Seed broke your curse — you’re a person again!\nLet’s get you ready to save the others.', introOnly:true },
     { id:'move', icon:'👆', title:'Moving', body:'Slide one finger to walk.\nLift it to stop.', say:'Slide your finger to walk', sub:'Walk around a little', spot:'move', goal:c=>'Walk around · '+Math.min(100,Math.round((c.trav||0)/7))+'%', check:c=>(c.trav||0)>=700 },
     { id:'attack', icon:'⚔️', title:'Attacking', body:'Your Heart Seed fights on its own.\nJust walk near the sour critters!', say:'Defeat the enemies', sub:'Walk near them — you attack on your own', spot:'enemy', goal:c=>'Defeat '+Math.min(3,this.kills-c.kills)+'/3', spawn:3, check:c=>this.kills-c.kills>=3 },
-    { id:'sweets', icon:'🍬', title:'Sweets = EXP', body:'Beaten foes drop stolen sweets.\nWalk over them to take them back!', say:'Pick up the sweets', sub:'Walk over the shiny drops', spot:null, orbs:4, goal:c=>'Collected '+Math.min(3,(this._coachOrbs||0)-c.orbs)+'/3', check:c=>(this._coachOrbs||0)-c.orbs>=3, timeout:30 },
+    { id:'sweets', icon:'🍬', title:'Sweets = EXP', body:'Beaten foes drop stolen sweets.\nWalk over them to take them back!', say:'Pick up the sweets', sub:'Walk over the shiny drops', spot:'orb', orbs:4, goal:c=>'Collected '+Math.min(3,(this._coachOrbs||0)-c.orbs)+'/3', check:c=>(this._coachOrbs||0)-c.orbs>=3, timeout:30 },
     { id:'cards', icon:'🃏', title:'Level Up!', body:'Full EXP bar = 3 flavor cards.\nTap one to read, tap again to take it.', say:'Pick a card', sub:'Tap once to read, tap again to take', spot:'card', goal:'Pick a card', level:true, check:c=>(this._coachCardPick||0)-c.card>=1 },
     { id:'dash', icon:'💨', title:'Dash', body:'Green button: zoom past danger.\nIt needs a moment to recharge.', say:'TAP Dash two times', sub:'Wait for it to recharge between dashes', spot:'dash', label:'TAP', goal:c=>'Dash '+Math.min(2,(this._coachDash||0)-c.dash)+'/2', check:c=>(this._coachDash||0)-c.dash>=2 },
     { id:'unique', icon:'⭐', title:'Your Unique', body:'Pink button: your seed’s big attack.\nIt charges up again over time.', say:'TAP your Unique', sub:'Pink button above Dash', spot:'unique', label:'TAP', spawn:6, ready:true, goal:'Use your Unique', check:c=>(this._coachUnique||0)-c.uniq>=1, timeout:25 },
@@ -18059,7 +18062,7 @@ class Game extends Phaser.Scene {
     if(step.hurt&&this.player)this.coachHurt();
     if(step.level){ this.pendingLvl=(this.pendingLvl||0)+1; this.time.delayedCall(220,()=>{ if(this._inTutorial&&this.state==='play')this.openLevelUp(); }); }
   }
-  _coachFinish(){ this.time?.delayedCall?.(0,()=>this.coachControls?.()); if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save();
+  _coachFinish(){ this.time?.delayedCall?.(0,()=>this.coachControls?.()); if(this._coachIntro){this._coachIntro.destroy();this._coachIntro=null;} if(this._coachUI){this._coachUI.destroy();this._coachUI=null;} if(this._coachSpot){this._coachSpot.destroy();this._coachSpot=null;} this._coach=null; this._inTutorial=false; if(this.clearEnemies)this.clearEnemies(); Save.data.tutorialDone=true; Save.data.tutorialCoachPassed=true; Save.save(); try{ Tele.ev('tutorial_done'); }catch(e){}
     // v4.25: รางวัลจบสอน = 🍬 Sugar (พออัพ Flavor Weave 3 แก่นได้ — เปิดตั้งแต่เริ่ม · gear ยังล็อกจนผ่านด่าน 1)
     const rewardGranted=!Save.data.tutorialRewardGiven;
     if(rewardGranted){ Save.data.tutorialRewardGiven=true; Save.addSugar(140); Save.addShovels(10); Save.save(); }   // รางวัลครั้งเดียว; เซฟเก่าที่รับรางวัลแล้วไม่รับซ้ำ
@@ -18239,6 +18242,10 @@ class Game extends Phaser.Scene {
     if(!step||!step.spot)return; const cont=this.add.container(0,0).setScrollFactor(1).setDepth(59); this.camUI(cont);
     const rArt=this.tuHas('vfx_tut_ring'); let ring; if(rArt){ this.tuFrames('vfx_tut_ring'); ring=this.add.image(0,0,'vfx_tut_ring','cell0').setDisplaySize(128,128); let rf=0; const ev=this.time.addEvent({delay:125,loop:true,callback:()=>{ if(!ring.active){ev.remove(false);return;} rf=(rf+1)%6; ring.setFrame('cell'+rf); }}); } else ring=this.add.circle(0,0,44,0xffe08a,0).setStrokeStyle(5,0xffe08a,1); /* ใบ 38 วงไอซิ่งหมุน */ const finger=this.textures.exists('tut_finger')?this.add.image(0,0,'tut_finger').setOrigin(.297,.016).setDisplaySize(56,56):this.add.text(0,0,'👆',{fontSize:'34px'}).setOrigin(0.5,0);   // ใบ 38
     const lab=this.add.text(0,0,step.label||'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'20px',color:'#1a0f1e',backgroundColor:'#ffe08a',padding:{x:10,y:4}}).setOrigin(1,0.5).setVisible(!!step.label);
+    /* v8.1.141 owner (🐞 feedback): Dash/Unique steps = spotlight (screen dims around the button) · enemy/heal = pointing finger only, no moving ring · sweets = glow on the nearest drop */
+    const shade=(step.spot==='dash'||step.spot==='unique')?[0,1,2,3].map(()=>this.add.rectangle(0,0,1,1,0x07040c,.62).setOrigin(0)):null; if(shade)cont.add(shade); this._coachShade=shade;
+    if(step.spot==='enemy'||step.spot==='heal')ring.setVisible(false);
+    const glow=step.spot==='orb'?this.add.circle(0,0,30,0xfff3a0,.28).setStrokeStyle(3,0xffffff,.9):null; if(glow){ cont.add(glow); this.tweens.add({targets:glow,scale:{from:.85,to:1.3},alpha:{from:1,to:.55},yoyo:true,repeat:-1,duration:480,ease:'Sine.inOut'}); ring.setVisible(false); } this._coachGlow=glow;
     cont.add([ring,finger,lab]); this._coachSpot=cont; this._coachSpotRing=ring; this._coachSpotFinger=finger; this._coachSpotLab=lab; this._coachSpotKind=step.spot;
     if(rArt){ const k0=ring.scale; this.tweens.add({targets:ring,scale:{from:k0*.92,to:k0*1.08},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'}); } else this.tweens.add({targets:ring,scale:{from:0.8,to:1.25},alpha:{from:1,to:0.45},yoyo:true,repeat:-1,duration:620,ease:'Sine.inOut'});
     this.tweens.add({targets:lab,scale:{from:1,to:1.12},yoyo:true,repeat:-1,duration:420,ease:'Sine.inOut'});
@@ -18248,6 +18255,7 @@ class Game extends Phaser.Scene {
     if(kind==='unique')return this.uniqueBtn?{x:this.uniqueBtn.x,y:this.uniqueBtn.y}:{x:w-58,y:h-78-80};
     if(kind==='card')return {x:w/2,y:h*0.52};
     if(kind==='heal'){ let t=null; this.heals?.children?.iterate?.(o=>{ if(o&&o.active&&!t)t=o; }); if(t&&this.cameras?.main){ const cam=this.cameras.main; return {x:(t.x-cam.worldView.x)*cam.zoom,y:(t.y-cam.worldView.y)*cam.zoom}; } return null; }
+    if(kind==='orb'){ let t=null,bd=1e9; const P=this.player; this.orbs?.children?.iterate?.(o=>{ if(!o||!o.active||!P)return; const d=Math.hypot(o.x-P.x,o.y-P.y); if(d<bd){bd=d;t=o;} }); if(t&&this.cameras?.main){ const cam=this.cameras.main; return {x:(t.x-cam.worldView.x)*cam.zoom,y:(t.y-cam.worldView.y)*cam.zoom}; } return null; }
     if(kind==='move')return {x:w*0.28,y:h*0.64};
     if(kind==='enemy'){ const e=this.nearestEnemy?this.nearestEnemy(2000):null; if(e&&this.cameras&&this.cameras.main){ const cam=this.cameras.main; return {x:(e.x-cam.worldView.x)*cam.zoom,y:(e.y-cam.worldView.y)*cam.zoom}; } return {x:w/2,y:h*0.4}; }
     return null; }
@@ -18259,7 +18267,7 @@ class Game extends Phaser.Scene {
     this.drawCombatControlBase?.(); return {dash:!hd,unique:!hu}; }
   tickTutorialCoach(dt){ const c=this._coach; if(!c||this.state!=='play')return; this.coachControls(); const steps=this.coachSteps(),step=steps[c.step]; if(!step)return; c.t+=dt;
     if(this._coachGoalTxt&&typeof step.goal==='function')this._coachGoalTxt.setText('🎯 '+step.goal(c));
-    if(this._coachSpot&&this._coachSpotKind){ const p=this.coachSpotTarget(this._coachSpotKind); if(p){ this._coachSpot.setVisible(true); this._coachSpotRing.setPosition(p.x,p.y); if(this._coachSpotKind==='move'){ this._coachDrag=((this._coachDrag||0)+dt*0.6)%1; const k=Math.sin(this._coachDrag*Math.PI*2); this._coachSpotFinger.setPosition(this.W/2+k*this.W*0.22,this.H*0.62).setAlpha(0.95); } else this._coachSpotFinger.setPosition(p.x,p.y+22); if(this._coachSpotLab)this._coachSpotLab.setPosition(p.x-52,p.y); } else this._coachSpot.setVisible(false); }
+    if(this._coachSpot&&this._coachSpotKind){ const p=this.coachSpotTarget(this._coachSpotKind); if(p){ this._coachSpot.setVisible(true); this._coachSpotRing.setPosition(p.x,p.y); if(this._coachGlow)this._coachGlow.setPosition(p.x,p.y); if(this._coachShade){ const r=50,W=this.W,H=this.H,x0=Math.max(0,p.x-r),y0=Math.max(0,p.y-r),x1=Math.min(W,p.x+r),y1=Math.min(H,p.y+r),S=this._coachShade; S[0].setPosition(0,0).setSize(W,y0); S[1].setPosition(0,y1).setSize(W,H-y1); S[2].setPosition(0,y0).setSize(x0,y1-y0); S[3].setPosition(x1,y0).setSize(W-x1,y1-y0); } if(this._coachSpotKind==='move'){ this._coachDrag=((this._coachDrag||0)+dt*0.6)%1; const k=Math.sin(this._coachDrag*Math.PI*2); this._coachSpotFinger.setPosition(this.W/2+k*this.W*0.22,this.H*0.62).setAlpha(0.95); } else this._coachSpotFinger.setPosition(p.x,p.y+22); if(this._coachSpotLab)this._coachSpotLab.setPosition(p.x-52,p.y); } else this._coachSpot.setVisible(false); }
     if(this.player&&c.lx!=null){ c.trav=(c.trav||0)+this.dist(this.player.x,this.player.y,c.lx,c.ly); c.lx=this.player.x; c.ly=this.player.y; }
     if(step.tap){ if(this.input.activePointer&&this.input.activePointer.isDown&&c.t>0.4)this._coachNext(); return; }
     if((step.check&&step.check(c))||(step.timeout&&c.t>=step.timeout)){ if(!c.done){c.done=true; if(this._coachGoalTxt)this._coachGoalTxt.setText('✅ Done!'); this.showBanner&&this.showBanner('✅ Great job!','',1300); this.tutGreatFx?.(); Sfx.select&&Sfx.select(); const adv=()=>{ if(this._coach!==c)return; if(this.state!=='play'){this.time.delayedCall(300,adv);return;} this._coachNext(); }; this.time.delayedCall(1600,adv);} }   // v7.9.68 รอให้ปิดการ์ดเลเวลอัพก่อน (เดิมขึ้นหน้าอธิบายทับการ์ด → การ์ดค้างแตะไม่ได้)
