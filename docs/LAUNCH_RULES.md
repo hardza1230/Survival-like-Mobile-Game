@@ -33,3 +33,12 @@
 - v8.1.135 การ์ดไม่ซ้ำ (Yuzu Best Friends / Close Guard / Golden Finish · Momo Sniper Twin Seed · Taro Spark/Sentry)
 - v8.1.116–134 checklist เดิม (ความเสถียร Lobby/หน่วยความจำ · ท่าใหญ่บอส · Frozen Pantry · ภารกิจ Ch2–3 · Forge mod · ไอเทมลอยเข้าช่อง)
 - เก่ากว่า: ดู CLAUDE.md §5 "รอ QA บนมือถือของเจ้าของ"
+
+## บัญชีและรหัส (13 พ.ย. 2026)
+- Play Console: บัญชีบุคคล "oHEARTo" · ส่งยืนยันตัวตนแล้ว รอ Google · ยืนยันมือถือ Android ✅ · Trader = non-trader (ช่วงทดสอบ · เปลี่ยนเป็น trader ตอนเปิดโฆษณาจริง) · ยืนยันเบอร์โทร รอหลังยืนยันตัวตน
+- AdMob: ประเทศรับเงิน Thailand · ข้อมูลรับเงินกรอกแล้ว รอยืนยันตัวตน · จ่ายเมื่อถึง $100
+  - App ID (Android): `ca-app-pub-6736744441157705~4936664616`
+  - Rewarded ad unit `rewarded_main`: `ca-app-pub-6736744441157705/4748962358`
+  - ช่วงทดสอบใช้รหัสโฆษณาทดสอบของ Google · **ห้ามเจ้าของกดโฆษณาจริงของเกมตัวเอง** (เสี่ยงโดนปิดบัญชี)
+- Supabase: โปรเจกต์ `mochi-mayhem` (tohsnflngkfoutqcfrwi) เปิดแล้ว 13 พ.ย.
+
