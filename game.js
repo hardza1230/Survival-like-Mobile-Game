@@ -12158,8 +12158,8 @@ class Game extends Phaser.Scene {
   // 🌀 Mochi Rift menu — เลือก Tier · สุ่มด่าน+mod (Reroll ฟรี) · Pinnacle ใช้ 3 กุญแจ
   recipeBag(){ if(!Array.isArray(Save.data.recipes))Save.data.recipes=[]; return Save.data.recipes; }
   // R9: เซฟเก่าที่เคยเล่น Rift → แจก recipe ตาม Tier ที่ไปถึง 1 ครั้ง (กุญแจเดิมใช้เปิด Pinnacle ต่อได้)
-  startPinnacle(){ const keys=Save.data.riftKeys||0; if(atlasPinnacleOpen()&&!Save.data.pinnacleFreeUsed){ Save.data.pinnacleFreeUsed=true; Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); return; } if(keys<PINNACLE_KEY_COST){this.menuToast('Need '+PINNACLE_KEY_COST+' 🗝️ keys — every '+RECIPE_FRAGS_PER_KEY+' 🧩 fragments from recipe bosses make one','#ff9bb5');return;}
-    Save.data.riftKeys=keys-PINNACLE_KEY_COST; Save.save(); this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); }
+  startPinnacle(){ const keys=Save.data.riftKeys||0; if(atlasPinnacleOpen()&&!Save.data.pinnacleFreeUsed){ Save.data.pinnacleFreeUsed=true; Save.save(); this._pinnaclePaid={free:true}; this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); return; } if(keys<PINNACLE_KEY_COST){this.menuToast('Need '+PINNACLE_KEY_COST+' 🗝️ keys — every '+RECIPE_FRAGS_PER_KEY+' 🧩 fragments from recipe bosses make one','#ff9bb5');return;}
+    Save.data.riftKeys=keys-PINNACLE_KEY_COST; Save.save(); this._pinnaclePaid={keys:PINNACLE_KEY_COST}; this.stageDiff=3; this._pinnacleRequested=true; this.startRun(14); }
   buildAtlas(){
     this.menu.removeAll(true);this.tapZones=[];this._amRect=null;this._amView=null;this._amDrag=null;this._screenBg('⛏ Mochi Delve','screen_atlas');
     const w=this.W,h=this.H,cw=Math.min(w-28,460),cx=(w-cw)/2,at=atlasData();let top=(w<=h?100:70);const th=recipeThemes(),best=Save.data.recipeBest||{};
@@ -14817,7 +14817,7 @@ class Game extends Phaser.Scene {
     const w=this.W,h=this.H,bw=Math.min(w-40,360),x=w/2,top=Math.max(110,h*0.22);
     const choices=[['all','All loot','Standard drop pool'],['weapon','Weapons','Equipment drops are weapons'],['armor','Armor','Armor, gloves and boots'],['materials','Crafting materials','Equipment rewards become crafting currency']];
     choices.forEach(([id,name,desc],i)=>{this.menu.add(this.add.text(x,top+i*66+27,desc,{fontFamily:'sans-serif',fontSize:'11px',color:'#cfc2df'}).setOrigin(0.5));this.uiPillBtn(this.menu,x,top+i*66,bw,52,COLORS.grape,'',name,()=>{this._farmFocusRequested=id;this.startRun(idx);});});
-    this.uiPillBtn(this.menu,x,top+choices.length*66,bw,42,COLORS.pink,'','Back',()=>{this._recipeRequested=null;this._riftRequested=null;this._bossRushRequested=false;this._pinnacleRequested=false;this._farmFocusRequested=null;this.menuScreen='endgame';this.buildMenuScreen();});
+    this.uiPillBtn(this.menu,x,top+choices.length*66,bw,42,COLORS.pink,'','Back',()=>{ /* v8.1.142 bot QA: Back from Pinnacle prep refunds the free entry / keys (were lost) */ if(this._pinnacleRequested&&this._pinnaclePaid){ const pp=this._pinnaclePaid; if(pp.free)Save.data.pinnacleFreeUsed=false; if(pp.keys)Save.data.riftKeys=(Save.data.riftKeys||0)+pp.keys; Save.save(); } this._pinnaclePaid=null; this._recipeRequested=null;this._riftRequested=null;this._bossRushRequested=false;this._pinnacleRequested=false;this._farmFocusRequested=null;this.menuScreen='endgame';this.buildMenuScreen();});
   }
   checkEndgameCurse(progress,onResume){
     if(!this.isEndgameRun()||this.state!=='play'||this._inTutorial||!['wave','breather'].includes(this.mode))return false;

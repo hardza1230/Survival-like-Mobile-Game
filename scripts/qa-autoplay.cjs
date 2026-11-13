@@ -33,7 +33,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
         for(let D=1;D<=45&&!node;D++){for(const n of delveRow(D)){const nd=amapNode(n.id);if(nd.type===want&&(want!=='boss'||D>=10)){node=nd;break;}}}
         if(!node)return 'no node '+want;
         for(let D=1;D<node.d;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=Math.max(dv.best||0,i==='pinnacle'?30:node.d-1);
-        if(i==='pinnacle'){for(let D=1;D<=30;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=30;d.pinnacleFreeUsed=false;s.startPinnacle();return 'pinnacle';}
+        if(i==='pinnacle'){for(let D=1;D<=30;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=30;d.pinnacleFreeUsed=false;s._farmFocusRequested='all';s.startPinnacle();return 'pinnacle';}
         d.mapTable={node:node.id,mods:[]};const rr=mapTableRecipe();s.stageDiff=1;s._recipeRequested=rr;s._domainRequested=false;s._farmFocusRequested='all';s.startRun(rr.theme);return 'delve '+want+' depth '+node.d+' '+node.id;},idx);
       res.start=startInfo;
       const fps=[];let heap=0,tex=0,last='',same=0,start=Date.now(),left=false;
