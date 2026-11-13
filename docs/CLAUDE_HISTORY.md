@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.131 — owner: menu polish (changed thing pulses · equip fly)
+
+Audit: Merge already has fly-together + `vfx_merge_fuse` + `vfx_rarity_up` + flash + rarity cue; Weave buy already sparkles (tuSparkle). New: `handleTap` stores `_lastTapZ` (hit rect, content coords); `menuChanged(col)` → after the rebuild (`delayedCall 0`, same screen) `menuPulse(x,y,w,h,col)` = rounded glow rect scaling 1→1.08/1.12 + fade 520 ms + 6 ✦; used on Talent upgrade. buildGear records `_gearSlotPos[slot]`; inventory tap-to-equip calls `gearEquipFly({key,x,y,slot,item})` → after rebuild the gear icon flies 360 ms into the slot and the slot pulses in the rarity colour (no texture → pulse only). Test foe-shadow block. Forge mod rows critique pending owner choice.
+
 # Previous delivery: v8.1.130 — owner: lobby UI polish (most of it already existed)
 
 Audit of buildLobby: BATTLE button already breathes (3.5%, 1.8 s) + `vfx_lb_battle_shine` every 3 s; hero already has ground shadow/glow (`lb_hero_shadow` or graphics) + idle acts (`LH_ACTS` every 8–14 s) + greet/tap; badge dots already bounce; page transitions were removed on purpose (owner v7.9.35, `menuTransition` returns). All hub motion is skipped when the phone has "reduce motion" on (`hubMotionAllowed`). New: `lobbyCountUp(t,key,val,fmt,ix,iy)` on the Sugar and Thread pills — remembers the last value shown (`_lbSeen`), and when it grew counts up over 0.8 s after 0.35 s, pops the number and sparkles the icon; first view and decreases just show the value. Test foe-shadow block.

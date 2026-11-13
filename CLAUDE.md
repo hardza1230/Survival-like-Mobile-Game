@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.132**. Next release:8.1.133. Fetch the deploy branch before new work.
+Current release: **8.1.133**. Next release:8.1.134. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.132 — owner: Forge mod rows too busy → select a row, actions in one bottom bar
+# Latest delivery: v8.1.133 — owner: Forge mod readability (the rest of the suggestions, as fitting)
+
+Row header shows level pips `●`×st + `○`×(cap−st) (max 10) in the tier colour instead of "Lv x / cap" (bar keeps "Lv x / cap"). Row frame: thin neutral border + 4 px tier-colour stripe on the left (selected row keeps the gold border). `forgeModText(x,y,mod,v,col,maxW)`: splits `modLine` around the formatted value — value 15 px bold white, text 13 px tier colour; shrinks the whole line to ≥75% then truncates. Not done on purpose: merging empty rows into one "+ Add" row (each row has its own upgrade currency, so rows must stay distinct). Tests forge-redesign (forgeModText in the extract list, pips regex, value split).
+
+# Previous delivery: v8.1.132 — owner: Forge mod rows too busy → select a row, actions in one bottom bar
 
 `_buildCraftBenchRaw`: filled mod rows now show only icon + full-width mod text + header (MOD n · Lv / BAD); tapping a row (`row_i`) sets `_forgeSel={uid,line}` (clears `_forgeRm`) and rebuilds; the first filled row is selected by default; selected row = gold border. One action bar at the bottom of the MOD ROWS card (row height reserves 52 px instead of 26 when any filled row exists): label "MOD n · Lv x / cap" + Upgrade/cap/bad pill (same tags `up_i`/`cap_i`) + 🖋️ (`mv_i`) + 🗑 (`rm_i`, double-tap confirm text). Empty/locked rows unchanged; a locked item still shows Unlock instead of the bar. Tests forge-redesign (per-row selection, only the selected row has actions, row tap selects); forge-live UI passed.
-
-# Previous delivery: v8.1.131 — owner: menu polish (changed thing pulses · equip fly)
-
-Audit: Merge already has fly-together + `vfx_merge_fuse` + `vfx_rarity_up` + flash + rarity cue; Weave buy already sparkles (tuSparkle). New: `handleTap` stores `_lastTapZ` (hit rect, content coords); `menuChanged(col)` → after the rebuild (`delayedCall 0`, same screen) `menuPulse(x,y,w,h,col)` = rounded glow rect scaling 1→1.08/1.12 + fade 520 ms + 6 ✦; used on Talent upgrade. buildGear records `_gearSlotPos[slot]`; inventory tap-to-equip calls `gearEquipFly({key,x,y,slot,item})` → after rebuild the gear icon flies 360 ms into the slot and the slot pulses in the rarity colour (no texture → pulse only). Test foe-shadow block. Forge mod rows critique pending owner choice.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

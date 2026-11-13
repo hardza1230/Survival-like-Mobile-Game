@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.132';
+const GAME_VERSION = '8.1.133';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.133',date:'2026-11-13',title:'Easier-to-read mods',items:['Forge mod values stand out in bold white','Mod levels show as dots (●●●○○)','Each mod row has a coloured stripe on the left instead of a coloured frame']},
   {v:'8.1.132',date:'2026-11-13',title:'Cleaner Forge',items:['Forge mod rows no longer each carry three buttons: tap a mod row to select it, and its Upgrade, move (🖋️) and remove (🗑) buttons appear in one bar at the bottom','Mod text now uses the full width of the row']},
   {v:'8.1.131',date:'2026-11-13',title:'Menus react',items:['Equipping gear makes the item fly into its slot, which glows in the item’s rarity colour','Upgrading a Talent makes that node pulse with sparkles']},
   {v:'8.1.130',date:'2026-11-13',title:'Lobby counters',items:['Back in the Lobby, your Sugar and Thread count up from what you had before, with a little sparkle']},
@@ -13916,11 +13917,11 @@ class Game extends Phaser.Scene {
     /* v8.1.132 เจ้าของ: แถว mod รก (ปุ่ม 3 ปุ่ม × 6 แถว) → แตะแถวเพื่อเลือก · ปุ่ม Upgrade / 🖋️ / 🗑 ของแถวที่เลือกอยู่แถบเดียวด้านล่าง */
     const filled=vis.filter(i=>{const a=affs[i];return a&&forgeLineOpen(selected,i)&&affixDef(a.id);}); let selL=this._forgeSel&&this._forgeSel.uid===selected.uid?this._forgeSel.line:null; if(!filled.includes(selL))selL=filled.length?filled[0]:null; this._forgeSel=selL==null?null:{uid:selected.uid,line:selL};
     let ry=M.y+30;vis.forEach(i=>{const a=affs[i],open=forgeLineOpen(selected,i),mod=a&&affixDef(a.id),bad=!!mod?.bad,isSel=i===selL,st=mod?tierStars(mod,a.t):0,col=bad?'#ff7a85':mod?(MOD_TIER_COLOR[st]||'#fff0df'):'#a99fbb',g=this.add.graphics();this._forgeRowRects[i]={x:rx,y:ry,w:rw,h:rowH};
-      g.fillStyle(bad?0x3a1e26:isSel?0x3d2f4a:mod?0x2f2438:0x221a2b,.97).fillRoundedRect(rx,ry,rw,rowH,12).lineStyle(isSel?2.6:mod?1.4:1,isSel?0xf4d9a1:mod?Phaser.Display.Color.HexStringToColor(col).color:0x6d536d,isSel?1:mod?.85:.7).strokeRoundedRect(rx,ry,rw,rowH,12);this.menu.add(g);
-      this.forgeText(rx+10,ry+4,'MOD '+(i+1)+(bad?'  ·  💀 BAD':mod?'  ·  Lv '+st+' / '+forgeStarCap(selected,mod):''),10,bad?'#ff9aa3':'#bfaecd',true,rw*.5);
+      g.fillStyle(bad?0x3a1e26:isSel?0x3d2f4a:mod?0x2f2438:0x221a2b,.97).fillRoundedRect(rx,ry,rw,rowH,12).lineStyle(isSel?2.6:1,isSel?0xf4d9a1:0x6d536d,isSel?1:.55).strokeRoundedRect(rx,ry,rw,rowH,12); if(mod)g.fillStyle(Phaser.Display.Color.HexStringToColor(col).color,1).fillRoundedRect(rx+3,ry+6,4,rowH-12,2); this.menu.add(g);   /* v8.1.133 สีระดับเป็นแถบซ้าย แทนกรอบสีทั้งแถว */
+      this.forgeText(rx+10,ry+4,'MOD '+(i+1)+(bad?'  ·  💀 BAD':mod?'  ·  '+'●'.repeat(Math.min(st,10))+'○'.repeat(Math.max(0,Math.min(10,forgeStarCap(selected,mod))-Math.min(st,10))):''),10,bad?'#ff9aa3':mod?col:'#bfaecd',true,rw*.6);   /* v8.1.133 Lv เป็นจุด ●●●○○ */
       const two=rowH>=66,ph=two?Math.max(26,Math.min(34,rowH-42)):Math.min(34,rowH-14),py=ry+rowH-ph-6,pw=Math.min(190,Math.floor(rw*.5));
       if(mod){ drawForgeModIcon(this,mod,rx+22,ry+rowH/2+6,24);
-        {const tw=rw-50,t=this.forgeText(rx+40,ry+Math.min(19,rowH-20),modLine(mod,a.v),13,col,true,0);if(t.width>tw){const k=Math.max(.75,tw/t.width);t.setScale?.(k);let q=String(t.text);while(q.length>4&&t.width*k>tw){q=q.slice(0,-1);t.setText(q+'…');}}}   /* ข้อความเต็มกว้างแถว (ไม่มีปุ่มในแถวแล้ว) */
+        this.forgeModText?.(rx+40,ry+Math.min(19,rowH-20),mod,a.v,col,rw-50);   /* v8.1.133 ตัวเลขม็อดเด่น (ขาวหนา) · ข้อความเต็มกว้างแถว */
         if(isSel)this.forgeText(rx+rw-10,ry+4,'▼ actions below',9,'#f4d9a1',true,rw*.4,1);
         this._zone(rx,ry,rw,rowH,()=>{ if(this._forgeSel?.line===i)return; Sfx.select?.(); this._forgeSel={uid:selected.uid,line:i}; this._forgeRm=null; this.buildCraftBench(); }); this.tapZones[this.tapZones.length-1].tag='row_'+i; }
       else if(open){ this.forgeText(rx+10,ry+Math.min(21,rowH-20),'Empty',13,'#a99fbb',true,rw-pw-30);
@@ -13943,6 +13944,10 @@ class Game extends Phaser.Scene {
     else{const t=this.forgeText(M.x+M.w/2,M.y+M.h-20,'Add / 🗑 = 🟢 · Upgrade: row 1 🟢 · row 2 🍓 · row 3 🍯 · rows 4–6 ⭐ · 🖋️ = move a mod',10,'#9a8aa7',false,0,.5);if(t.width>M.w-16)t.setScale?.((M.w-16)/t.width);}
     if(this._forgePanel)this.drawForgePanel(selected,items);this.menu.setVisible(true);
   }
+  /* v8.1.133 เจ้าของ: ม็อดอ่านยาก → แยกตัวเลขเป็นสีขาวตัวโต ส่วนข้อความใช้สีระดับ · ยาวเกินย่อทั้งชุด (ไม่ต่ำกว่า 75%) แล้วค่อยตัดท้าย */
+  forgeModText(x,y,mod,v,col,maxW){ const line=modLine(mod,v),f=typeof mod.fmt==='function'?String(mod.fmt(v)):String(v??''),at=f?line.indexOf(f):-1; if(at<0){ const t=this.forgeText(x,y,line,13,col,true,0); if(t.width>maxW){ const k=Math.max(.75,maxW/t.width); t.setScale?.(k); let q=String(t.text); while(q.length>4&&t.width*k>maxW){ q=q.slice(0,-1); t.setText(q+'…'); } } return [t]; }
+    const parts=[[line.slice(0,at),13,col],[f,15,'#ffffff'],[line.slice(at+f.length),13,col]].filter(p=>p[0]),objs=[]; let cx=x; for(const [tx,fs,c] of parts){ const t=this.forgeText(cx,y+(fs===15?-1:0),tx,fs,c,true,0); objs.push(t); cx+=t.width||0; }
+    const total=cx-x; if(total>maxW){ const k=Math.max(.75,maxW/total); let px=x; for(const t of objs){ t.setScale?.(k); t.x=px; px+=(t.width||0)*k; } } return objs; }
   drawForgePanel(selected,items){   // v8.0.83 เหลือแค่ตัวเลือกชิ้น (⇄) · odds/families/details ของระบบเก่าเอาออก
     const state=this._forgePanel;if(state&&state.type==='move')return this.drawForgeMovePanel(selected,state);if(!state||state.type!=='items'){this._forgePanel=null;return;}const w=this.W,h=this.H,pw=Math.min(w-28,460),ph=Math.min(h-32,430),x=(w-pw)/2,y=(h-ph)/2;
     const shade=this.add.rectangle(0,0,w,h,0x0b0711,.88).setOrigin(0);shade._menuBackdrop=true;this.menu.add(shade);this.pwCard(x,y,pw,ph,false);this.tapZones=[];
