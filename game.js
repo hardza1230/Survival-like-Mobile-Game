@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.141';
+const GAME_VERSION = '8.1.142';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.142',date:'2026-11-13',title:'Smoother ads, mission button, louder chests',items:['Rewarded ads load in advance so the button works at once, and game music pauses during the ad','Missions start with a Start mission button instead of a ring','Chest openings build up and burst with rarity sounds and confetti','C1-1 has its own music again; the level-up screen fades in gently','Pinnacle: going Back before the run gives your entry back']},
   {v:'8.1.141',date:'2026-11-13',title:'Clearer training',items:['Training points with a finger instead of a moving ring','Sweets to pick up glow during training','Dash and Unique lessons dim the screen around the button','The Lobby hero keeps retrying if its picture did not load']},
   {v:'8.1.140',date:'2026-11-13',title:'Real rewarded ads (test mode)',items:['Double Sugar, boss loot reroll and revive now play a real video ad in the Android app (test ads during the closed test)','Watch the ad to the end to get the reward','Thread is earned by playing: Temple Depths and Daily Login (no purchases)']},
   {v:'8.1.139',date:'2026-11-13',title:'Bug button and a lighter game',items:['New 🐞 button on the left edge: tap it to send a bug report with a screenshot (testing builds)','The game download is about 40% smaller and loads faster: images and sounds are compressed','Errors are reported automatically so they can be fixed sooner']},
@@ -4492,6 +4493,8 @@ const ASSET_AUDIO = {
   /* v8.1.139 ขนาดแอป: ลบเพลงสำรองยุคเก่า bgm/min + bgm_ch2/ch3 (สร้างด้วยโค้ด) 11 MB · ทุกด่านมีเพลง ElevenLabs bgm_sNN/bgm_bNN ครบ 15 ด่าน */
   // v5.4+ เพลงประจำด่าน 1 ด่าน 1 เพลง (scripts/gen_stage_bgm.cjs) · ต้องเขียน path เต็ม (build-www คัดลอกเฉพาะ path ที่เห็นในโค้ด)
   bgm_s01: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s01.mp3',
+  bgm_c11_stage: 'assets/audio/bgm/clockmakers_tea_break.mp3',   // v8.1.142 owner: C1-1 = owner tracks (supplied 2026-09-07) · tutorial keeps bgm_s01
+  bgm_c11_boss: 'assets/audio/bgm/gates_of_the_calamity.mp3',
   bgm_s02: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s02.mp3',
   bgm_s03: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s03.mp3',
   bgm_s04: 'assets/audio/bgm/elevenlabs_campaign/c1/bgm_s04.mp3',
@@ -4674,6 +4677,8 @@ const StoryMusic={serial:0,
 };
 
 function bgmKeyFor(kind,stageNum){
+  /* v8.1.142 owner 🐞: C1-1 and the tutorial shared one track → real C1-1 runs use the owner's "Clockmaker's Tea Break" + boss "Gates of the Calamity" */
+  if(stageNum===1&&BGM_MODE!=='endgame'&&(kind==='stage'||kind==='boss')){ let tut=true; try{ const g=window.__g&&window.__g.scene.getScene('Game'); tut=!(typeof Save!=='undefined'&&Save.data&&Save.data.tutorialDone)||!!(g&&(g._inTutorial||g._forceCoachTutorial)); }catch(e){} const k=kind==='stage'?'bgm_c11_stage':'bgm_c11_boss'; if(!tut&&ASSET_AUDIO[k])return k; }
   if(BGM_MODE==='endgame'){const k='bgm_endgame'+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   if(kind==='mini'){const k='bgm_m'+String(stageNum).padStart(2,'0');return ASSET_AUDIO[k]?k:null;}
   if(kind==='stage'){const k='bgm_s'+String(stageNum).padStart(2,'0');if(ASSET_AUDIO[k])return k;}
@@ -7422,8 +7427,12 @@ const AdManager = {
     this._init=(async()=>{ try{ let info=p.requestConsentInfo?await p.requestConsentInfo():null;
         if(info&&info.isConsentFormAvailable&&info.status==='REQUIRED'&&p.showConsentForm)info=await p.showConsentForm();
         this.privacyRequired=!!(info&&info.privacyOptionsRequirementStatus==='REQUIRED'); }catch(e){}
-      try{ await p.initialize({initializeForTesting:ADS_TEST}); return true; }catch(e){ return false; } })();
+      try{ await p.initialize({initializeForTesting:ADS_TEST}); this.preload(); return true; }catch(e){ return false; } })();
     return this._init; },
+  /* v8.1.142 owner 🐞 "ad button not instant": keep one rewarded ad loaded in the background (was loaded only on tap → slow / failed) */
+  preload(){ const p=this.plugin(); if(!p||!p.prepareRewardVideoAd||this._loading||this._loaded)return; this._loading=true;
+    Promise.resolve(p.prepareRewardVideoAd({adId:this.unitId(),isTesting:ADS_TEST})).then(()=>{ this._loaded=true; },e=>{ this._loaded=false; this.lastError=this.errText(e); setTimeout(()=>this.preload(),30000); }).finally(()=>{ this._loading=false; }); },
+  errText(e){ try{ return e?(e.message||e.code||JSON.stringify(e)).toString().slice(0,200):''; }catch(_){ return String(e); } },
   privacyForm(){ const p=this.plugin(); try{ return p&&p.showPrivacyOptionsForm?Promise.resolve(p.showPrivacyOptionsForm()).catch(()=>{}):Promise.resolve(); }catch(e){ return Promise.resolve(); } },
   // resolves 'rewarded' | 'skipped' (closed early) | 'failed' (no ad / error)
   show(){ const p=this.plugin(); if(!this.hasRealAds())return Promise.resolve('failed');
@@ -7435,9 +7444,9 @@ const AdManager = {
       on('onRewardedVideoAdReward',()=>{ got=true; });
       on('onRewardedVideoAdDismissed',()=>setTimeout(()=>fin(got?'rewarded':'skipped'),60));
       on('onRewardedVideoAdFailedToShow',()=>fin('failed'));
-      Promise.resolve(p.prepareRewardVideoAd({adId:this.unitId(),isTesting:ADS_TEST}))
-        .then(()=>p.showRewardVideoAd()).then(r=>{ shown=true; clearTimeout(loadT); if(r&&(r.amount!=null||r.type!=null))got=true; setTimeout(()=>fin(got?'rewarded':'skipped'),60000); })
-        .catch(()=>fin(got?'rewarded':'failed')); })); },
+      const ready=this._loaded?Promise.resolve():Promise.resolve(p.prepareRewardVideoAd({adId:this.unitId(),isTesting:ADS_TEST})); this._loaded=false;
+      ready.then(()=>p.showRewardVideoAd()).then(r=>{ shown=true; clearTimeout(loadT); if(r&&(r.amount!=null||r.type!=null))got=true; setTimeout(()=>fin(got?'rewarded':'skipped'),60000); })
+        .catch(e=>{ this.lastError=this.errText(e); fin(got?'rewarded':'failed'); }); })).finally(()=>setTimeout(()=>this.preload(),500)); },
 };
 const Store = {
   products:[ {id:'noads',emoji:'🚫',name:'Remove interstitial ads',desc:'Permanently disable interstitial ads (rewarded ads still optional)'} ],
@@ -7987,8 +7996,8 @@ const QA={ Q:'mochi_qa_q', errs:[], sentKeys:{}, autoN:0, AUTO_MAX:5,
   on(){ return BETA_BUILD||(typeof GM!=='undefined'&&GM.on()); },
   init(){ if(this._init)return; this._init=true; const push=(m,src)=>{ try{ m=String(m||'').slice(0,400); if(!m)return; this.errs.push({t:Math.round(performance.now()/1000),m,src}); if(this.errs.length>20)this.errs.shift(); this.auto(m); }catch(e){} };
     try{ window.addEventListener('error',e=>push((e.message||'error')+(e.filename?' @'+String(e.filename).split('/').pop()+':'+e.lineno+':'+e.colno:'')+(e.error&&e.error.stack?' | '+String(e.error.stack).split('\n').slice(1,4).join(' ').slice(0,300):''),'error'));
-      window.addEventListener('unhandledrejection',e=>push('promise: '+((e.reason&&(e.reason.stack||e.reason.message))||e.reason),'promise'));
-      const ce=console.error.bind(console); console.error=(...a)=>{ try{ push(a.map(x=>x&&x.stack?x.stack:String(x)).join(' '),'console'); }catch(e){} ce(...a); }; }catch(e){} },
+      window.addEventListener('unhandledrejection',e=>push('promise: '+((e.reason&&(e.reason.stack||e.reason.message))||(e.reason&&typeof e.reason==='object'?(()=>{ try{ return JSON.stringify(e.reason).slice(0,300); }catch(_){ return String(e.reason); } })():e.reason)),'promise'));
+      const ce=console.error.bind(console); console.error=(...a)=>{ try{ push(a.map(x=>x&&x.stack?x.stack:(x&&typeof x==='object'?(()=>{ try{ return JSON.stringify(x).slice(0,300); }catch(_){ return String(x); } })():String(x))).join(' '),'console');   /* v8.1.142: objects were logged as [object Object] */ }catch(e){} ce(...a); }; }catch(e){} },
   scene(){ try{ return window.__g&&window.__g.scene.getScene('Game'); }catch(e){ return null; } },
   snapshot(s){ s=s||this.scene(); const b=s&&s.basicAttack,P=s&&s.player,st=s&&typeof STAGES!=='undefined'&&STAGES[s.stageIndex];
     let tex=null; try{ tex=s&&s.texMB?Math.round(s.texMB()):null; }catch(e){}
@@ -9966,6 +9975,7 @@ class Game extends Phaser.Scene {
 
       if(Save.data.settings?.ctrlLeft?p.x<this.W/2:p.x>=this.W/2)(this._actionPointers||(this._actionPointers=new Set())).add(p.id);
       if(this.fpBtnHit?.(p))return;   // v8.1.111 ปุ่ม Open the Jar
+      if(this.missionBtnHit?.(p))return;   // v8.1.142 ปุ่ม Start mission
       if(this.sesRunePointerDown?.(p))return;
       if(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2){this.toggleCocoaFlicker();return;}
       if(this.uniqueBtn && this.uniqueBtn.visible && this.dist(p.x,p.y,this.uniqueBtn.x,this.uniqueBtn.y)<this.uniqueBtn.radius+8){ if(this.isTitanHold?.()){ if(this.uniqueCd<=0&&!this._titanHold)this._titanHold={id:p.id}; return; } if(this.isSniperUnique()||this.isBlastUnique()||this.mintChargeKind()||this.isYuzuCommand?.()){ if(this.uniqueCd<=0)this.startSnipeCharge(p); return; } this.useCharacterSkill(); return; }
@@ -10007,7 +10017,7 @@ class Game extends Phaser.Scene {
     if(len>max){ const k=(len-max)/len; j.bx+=dx*k; j.by+=dy*k; dx=p.x-j.bx; dy=p.y-j.by; len=max; this.joyBase.setPosition(j.bx,j.by); }
     const m=len<=dead?0:Math.min(1,(len-dead)/(full-dead)); j.dx=len?dx/len*m:0; j.dy=len?dy/len*m:0; this.joyKnob.setPosition(j.bx+dx,j.by+dy); }
   joyEnd(){ const j=this.joy; j.active=false; j.id=-1; j.dx=0; j.dy=0; this.joyBase.setVisible(false); this.joyKnob.setVisible(false); }
-  joyBlocked(p){if(this.fpBtnOver?.(p))return true;const mid=(this.W||390)/2;if(this._actionPointers?.has(p.id)||(Save.data.settings?.ctrlLeft?p.x<mid:p.x>=mid))return true; if(this.sesRuneHit?.(p))return true;const near=(b,r)=>b&&b.visible&&this.dist(p.x,p.y,b.x,b.y)<r; return near(this.uniqueBtn,(this.uniqueBtn?.radius||0)+8)||near(this.dashBtn,(this.dashBtn?.radius||0)+8)||!!(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2); }
+  joyBlocked(p){if(this.fpBtnOver?.(p)||this.missionBtnOver?.(p))return true;const mid=(this.W||390)/2;if(this._actionPointers?.has(p.id)||(Save.data.settings?.ctrlLeft?p.x<mid:p.x>=mid))return true; if(this.sesRuneHit?.(p))return true;const near=(b,r)=>b&&b.visible&&this.dist(p.x,p.y,b.x,b.y)<r; return near(this.uniqueBtn,(this.uniqueBtn?.radius||0)+8)||near(this.dashBtn,(this.dashBtn?.radius||0)+8)||!!(this.flickerBtn?.visible&&Math.abs(p.x-this.flickerBtn.x)<=this.flickerBtn.width/2&&Math.abs(p.y-this.flickerBtn.y)<=this.flickerBtn.height/2); }
   // v7.0 KEYBOARD (เล่นบนเบราว์เซอร์คอม): WASD/ลูกศร=เดิน · Space/Shift=Dash · E/J (กดค้าง)=Unique · F=Flicker · Esc/P=หยุด · 1-4=เลือกการ์ด
   setupKeyboard(){ const kb=this.input.keyboard; if(!kb)return; this._kbKeys=kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT',false);
     const fake=(type,btn,id)=>{ if(!btn)return; this.input.emit(type,{x:btn.x*RENDER_DPR,y:btn.y*RENDER_DPR,id}); };
@@ -12789,16 +12799,20 @@ class Game extends Phaser.Scene {
         this.tweens.add({targets:ring,scale:2.2,alpha:0,duration:520,onComplete:()=>{ c.destroy(); if(!this._featFly)return; this._featFly=false; if(this._featQ&&this._featQ[0]===t)this._featQ.shift(); this.featRevealNext(); }}); this.tweens.add({targets:ic,alpha:0,duration:420,delay:120}); }}); });
     const z=this.tapZones[this.tapZones.length-1]; z.tag='feat_reveal'; z.noBounce=true; }
   // v8.1.107 ฉากด่าน + การ์ดฮีโร่ของ Lobby: เริ่มโหลดตั้งแต่หน้า Title (ก่อนเปิดหนังสือ) · โหลดเสร็จแล้วถ้าอยู่ Lobby สร้างใหม่ (ฉากจางเข้า)
+  /* v8.1.142 owner 🐞 "menus bounce 2-3 times after C1-1": art batches finishing one after another each rebuilt the whole Lobby (8 rebuilds in 15 s) → merge into one rebuild, never during a feature reveal */
+  hubRefresh(){ const now=Date.now(); if(this._hubRefreshAt&&now-this._hubRefreshAt<2000)return; this._hubRefreshAt=now;
+    const go=()=>{ this._hubRefreshAt=0; if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this._featBusy||this._bookCover){ this._hubRefreshAt=Date.now(); this.time?.delayedCall?.(500,go); return; } this.buildMenuScreen(); };
+    if(this.time?.delayedCall)this.time.delayedCall(700,go); else go(); }
   lobbyPreload(){ const d=Save.data||{},c=CHARACTERS[d.character]?d.character:'momo',si=this.lobbyStage?.()||0,sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c),
       miss=[sk,hk,'roster_'+c].filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length||(this._lobbyLoading&&Date.now()-this._lobbyLoading<8000))return; this._lobbyLoading=Date.now();   /* v8.1.110 ภาพสำรอง (canvas) นับว่ายังไม่โหลด · ค้างเกิน 8 วิ = ลองใหม่ */
-    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; this._lobbyBgIn=true; const go=()=>{ if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this._bookCover)return this.time?.delayedCall?.(400,go); this.buildMenuScreen(); }; go(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
+    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lobbyLoading=false; this._lobbyBgIn=true; const go=()=>{ if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this._bookCover)return this.time?.delayedCall?.(400,go); this.hubRefresh(); }; go(); },{all:true,quiet:true}); }catch(e){ this._lobbyLoading=false; } }
   buildLobby(){ if(!this._bookCover&&!this._bkFreed){ this._bkFreed=true; const free=(n)=>this.time?.delayedCall?.(n?8000:1500,()=>{ if(this._bookCover){ free(1); return; } const left=Object.keys(this.textures?.list||{}).some(k=>k.startsWith('bk_')&&this.realTex(k)); if(!left)return; this.texEvict?.(k=>k.startsWith('bk_'),null); if((n||0)<4)free((n||0)+1); }); free(0); }   /* v8.1.127 ลองซ้ำจนคืนได้ (ภาพที่เพิ่งโหลดไม่ถึง 20 วิ ถูกกันไว้) */   /* v8.1.122 อาร์ตหนังสือเปิด (~44 MB) ไม่ใช้แล้วหลังเข้า lobby */
     this.menu.setVisible(true);if(typeof Board!=='undefined')Board.submit(false); this.menuPrefetch?.(); this.featureReveal?.(); this.time?.delayedCall(700,()=>this.loginPopup?.()); this.time?.delayedCall(900,()=>this.starTeach?.());   // v7.9.49 หลังจบด่าน startRun ซ่อน menu ไว้ — ทุก builder ต้องเปิดเอง (Lobby ลืม → จอค้างโลกเกม)
     this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H,d=Save.data,c=CHARACTERS[d.character]?d.character:'momo',ch=CHARACTERS[c],si=this.lobbyStage(),st=STAGES[si]||STAGES[0];
     const sk='stage_card_s'+String(si+1).padStart(2,'0'),hk=this.skinKey?.('card_'+c,c)||('card_'+c);
     this.lobbyPreload();
     /* v8.1.141 owner 🐞: Strawberry stayed a placeholder in the Lobby after the tutorial → keep retrying the hero card every 3 s (max 10) and rebuild once it is real */
-    if(!this.realTex(hk)&&ASSET_IMAGES[hk]&&Date.now()-(this._lobbyHeroRetryAt||0)>4000){ let n=0; const retry=()=>{ this._lobbyHeroRetryAt=Date.now(); if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this.realTex(hk)){ this.buildMenuScreen(); return; } if(++n>10)return; this._lobbyLoading=false; this.lobbyPreload(); this.time?.delayedCall?.(3000,retry); }; this._lobbyHeroRetryAt=Date.now(); this.time?.delayedCall?.(3000,retry); }
+    if(!this.realTex(hk)&&ASSET_IMAGES[hk]&&Date.now()-(this._lobbyHeroRetryAt||0)>4000){ let n=0; const retry=()=>{ this._lobbyHeroRetryAt=Date.now(); if(this.state!=='menu'||this.menuScreen!=='hub')return; if(this.realTex(hk)){ this.hubRefresh(); return; } if(++n>10)return; this._lobbyLoading=false; this.lobbyPreload(); this.time?.delayedCall?.(3000,retry); }; this._lobbyHeroRetryAt=Date.now(); this.time?.delayedCall?.(3000,retry); }
     const bgk=this.realTex(sk)?sk:null;   /* v8.1.107 เจ้าของ: หลังเปิดหนังสือเห็นภาพสำรอง (ฉาก Hub) แปลก → ไม่ใช้ภาพสำรองแล้ว · ฉากด่านโหลดตั้งแต่หน้า Title · ยังไม่มา = พื้นมืดเรียบ แล้วฉากด่านค่อย ๆ จางเข้า */
     const bg=bgk?this._coverImage(0,0,w,h,bgk):this.add.rectangle(0,0,w,h,0x1a1420,1).setOrigin(0);this.menu.add(bg);
     if(bgk&&this._lobbyBgIn){ this._lobbyBgIn=false; bg.setAlpha(0); this.tweens.add({targets:bg,alpha:1,duration:600,ease:'Sine.easeOut'}); }
@@ -12976,7 +12990,7 @@ class Game extends Phaser.Scene {
     const sp=this._lhSprite; if(!sp||!sp.active)return; const now=Date.now(); this._lhLastTap=now; const t=(this._lhTaps||[]).filter(x=>now-x<3000); t.push(now); this._lhTaps=t;   // v8.1.34 เจ้าของ: แตะตัวละคร = พูดประโยคถัดไปพร้อมเสียงพากย์
     if(sp._lhSet==='poke')return; if(t.length>=5){ this._lhTaps=[]; this.lhPlay('poke'); return; } if(sp._lhSet==='tap')return; this.lhPlay('tap'); }
   loadLobbyArt(){ if(this._lbArt)return; const miss=[...LB_KEYS,'dig_miner','aw_title_ribbon'].filter(k=>!this.realTex(k)&&ASSET_IMAGES[k]); if(!miss.length)return; this._lbArt=true;   // v7.9.70 เช็กทุกครั้ง (เดิมโหลดครั้งเดียว → ถูกคืนหน่วยความจำตอนเปิดหนังสือแล้วไม่โหลดกลับ = Lobby ไม่มีกรอบ)
-    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lbArt=false; if(this.state==='menu')this.buildMenuScreen(); },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
+    try{ this.ensureGroup(k=>miss.includes(k),()=>{ this._lbArt=false; if(this.state==='menu'){ if(this.menuScreen==='hub')this.hubRefresh(); else this.buildMenuScreen(); } },{all:true,quiet:true}); }catch(e){ this._lbArt=false; } }
   /* v7.9.64 หน้าเปิดเกม: ฉาก Hub เดิม (Strawberry ถือคทาแยกชิ้น ใบ 25) + โลโก้ + TAP TO START · แตะที่ไหนก็ได้ → Lobby (เปิดปกหนังสือ) */
   buildTitle(){ try{ this.lobbyPreload?.(); }catch(e){} this.stopHubMotion();this.menu.removeAll(true);this.tapZones=[];const w=this.W,h=this.H;
     const bgKey=this.textures.exists('hub_ui_background')?'hub_ui_background':'menu_hub_v3';
@@ -14135,6 +14149,12 @@ class Game extends Phaser.Scene {
     this.menu.add(this.add.text(w/2,y+2,'Chests drop gear for your current item level · Thread comes from salvage, stages and the Dig',{fontFamily:'sans-serif',fontSize:'10px',color:'#c5b5d1',align:'center',wordWrap:{width:w-36}}).setOrigin(.5,0)); }
   chestVisual(c,x,y,sz){ for(const k of ['chest_'+c.id,'prize_chest','chest']){ if(this.realTex(k)){ const im=this.add.image(x,y,k); im.setScale(sz/Math.max(im.width,im.height)); if(k!=='chest_'+c.id&&c.id==='silver')im.setTint(0xd8e2f0); return im; } }
     return this.add.text(x,y,'🧰',{fontSize:Math.round(sz*.7)+'px'}).setOrigin(.5); }   // ใบสั่งอาร์ต 40 จะส่ง chest_silver/chest_gold
+  /* v8.1.142 owner 🐞 "chest effects not grand": confetti + light rings by rarity (code-drawn, no new art) */
+  chestBurst(x,y,color,tier){ if(!this.add||!this.tweens)return; const n={legend:40,epic:26,rare:16}[tier]||10,rings=tier==='legend'?3:tier==='epic'?2:1,cols=[color,0xffffff,0xfff1a8];
+    for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2,d=110+Math.random()*(tier==='legend'?260:180),r=3+Math.random()*(tier==='legend'?7:5),dot=i%3===2?this.add.star(x,y,5,r*.6,r*1.4,cols[i%3]):this.add.circle(x,y,r,cols[i%3]); dot.setDepth?.(60); this.menu.add(dot);
+      this.tweens.add({targets:dot,x:x+Math.cos(a)*d,y:y+Math.sin(a)*d+40,alpha:0,scale:{from:1.2,to:.3},angle:Math.random()*360,duration:700+Math.random()*700,ease:'Cubic.out',onComplete:()=>dot.destroy()}); }
+    for(let k=0;k<rings;k++){ const rg=this.add.circle(x,y,30,color,0).setStrokeStyle(6-k,color,.95); this.menu.add(rg); this.tweens.add({targets:rg,scale:tier==='legend'?9:6,alpha:0,delay:k*180,duration:750,ease:'Cubic.out',onComplete:()=>rg.destroy()}); }
+    if(tier==='legend'||tier==='epic')this.time.delayedCall(220,()=>this.screenFlash?.(0xffffff,tier==='legend'?.45:.25,260)); }
   openChest(c,isFree){ if(this._gachaBusy)return; const d=Save.data; if(isFree==='weekly'||isFree==='gift'||isFree==='login'){ this._chestBack=isFree==='gift'?'achievements':isFree==='login'?'hub':'daily'; } else if(isFree){ d.chestFreeDay=localDayKey(); } else { if(Save.threads()<c.cost)return; d.threads=Save.threads()-c.cost; } (typeof DailyQ!=='undefined')&&DailyQ.tick('chest'); if(isFree!=='gift'&&isFree!=='weekly'&&isFree!=='login')d.chestsOpened=(d.chestsOpened||0)+1;
     let tier=pickWeighted(c.odds); if(c.id==='silver'&&tier==='legend')(d.secrets||(d.secrets={})).silverLegend=1; if(c.id==='gold'){ d.chestPity=(d.chestPity||0)+1; if(tier==='legend'||d.chestPity>=CHEST_PITY){ tier='legend'; d.chestPity=0; } } Save.save();
     const lv=GACHA_LEVELS[Math.max(0,gachaMaxBand())],ilv=lv.lo+Math.floor(Math.random()*(lv.hi-lv.lo+1));
@@ -14146,6 +14166,7 @@ class Game extends Phaser.Scene {
     const status=this.add.text(w/2,h*.66,'Tap… the lid is shaking!',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:'#c7bdd6'}).setOrigin(.5);
     glow.setVisible(false);this.menu.add(bg);this.revealBackdrop?.(this.menu,w,h);this.menu.add([title,glow,chest,status]); this.menu.setVisible(true); Sfx.chest?.(); { const tt=this.add.text(w/2,Math.max(26,h*.065),'🧶 Thread '+Save.threads(),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:'#cfe9ff',stroke:'#1a0f1e',strokeThickness:4,backgroundColor:'#2a1d3acc',padding:{x:12,y:5}}).setOrigin(.5); this.menu.add(tt); this._chestThrTxt=tt; }   // v8.0.70 เจ้าของ: หน้าเปิดหีบบอก Thread ที่เหลือ
     this.tweens.add({targets:chest,angle:{from:-6,to:6},duration:80,yoyo:true,repeat:anim?3:10});
+    if(!anim){ this.tweens.add({targets:chest,scale:{from:chest.scale,to:chest.scale*1.12},duration:1100,ease:'Quad.in'}); this.time.delayedCall(500,()=>this.screenShake?.(250,.004)); this.time.delayedCall(850,()=>this.screenShake?.(300,.008)); }   /* v8.1.142 owner 🐞: chest opening felt flat → tension builds before the pop */
     this.tweens.add({targets:glow,rotation:Math.PI*2,scale:2.4,alpha:{from:.2,to:.85},duration:1100,ease:'Cubic.in'});
     this.time.delayedCall(1150,()=>{ let it=null; for(const t of [tier,'epic','rare','common']){ it=this.grantGear(t,{gacha:true,itemLevel:ilv}); if(it)break; } if(!it){ Save.addThreads(Math.round(c.cost*.5)); } if(this._chestThrTxt?.active)this._chestThrTxt.setText('🧶 Thread '+Save.threads());
       if(!status.active||this.state!=='menu'){ this._gachaBusy=false; this._chestOpen=false; return; }
@@ -14153,7 +14174,8 @@ class Game extends Phaser.Scene {
       if(anim){ chest.setAngle(0); this.tweens.add({targets:chest,y:h*.57,scale:cs*.62,alpha:.85,duration:260}); status.setY(h*.71); } else this.tweens.add({targets:chest,scale:cs*1.25,alpha:0,angle:0,duration:220});
       if(this.realTex('vfx_chest_rays')){ this.tuFrames('vfx_chest_rays'); const ry=this.add.image(w/2,h*.47,'vfx_chest_rays','cell0').setDisplaySize(380,380).setBlendMode(Phaser.BlendModes.ADD).setTint(color); this.menu.addAt(ry,2); let f=0; const ev=this.time.addEvent({delay:100,loop:true,callback:()=>{ if(!ry.active){ ev.remove(); return; } f=(f+1)%6; ry.setFrame('cell'+f); }}); this.tweens.add({targets:ry,rotation:Math.PI*2,duration:9000,repeat:-1}); glow.setVisible(false); }
       const gArt=it?('gear_'+it.id):null; if(gArt&&this.textures.exists(gArt)){ const gi=this.add.image(w/2,h*.47,gArt).setDisplaySize(130,130),ts=gi.scaleX; gi.setScale(ts*.2); this.menu.add(gi); this.tweens.add({targets:gi,scaleX:ts,scaleY:ts,duration:360,ease:'Back.out'}); }
-      glow.setTint(color).setScale(2.9).setAlpha(.9); this.screenFlash(color,t2==='legend'?.85:t2==='epic'?.65:.4,520); this.screenShake(t2==='legend'?620:300,t2==='legend'?.02:.008); if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.();
+      glow.setTint(color).setScale(2.9).setAlpha(.9); this.screenFlash(color,t2==='legend'?.85:t2==='epic'?.65:.4,520); this.screenShake(t2==='legend'?620:300,t2==='legend'?.02:.008); this.chestBurst?.(w/2,h*.47,color,t2);
+      /* v8.1.142 owner 🐞: chest sound did not fit → the rarity reveal stingers (box_reveal_*) instead of the generic clear/legend cue */ if(!(Sfx.orderCue?.('box_reveal_'+(t2==='legend'?'legend':t2==='epic'?'epic':t2==='rare'?'rare':'common'),t2==='legend'?.55:.45,.1))){ if(t2==='legend')Sfx.legend?.(); else Sfx.clear?.(); }
       title.setText(it?(t2==='legend'?'🌟 LEGEND 🌟':t2==='epic'?'✦ EPIC ✦':t2==='rare'?'★ RARE ★':'COMMON'):'All owned').setColor(hex);
       status.setText(it?(it.name+'\n'+TIER_LABEL[t2].name+gearDeliverySuffix(it)):'Refund 🧶'+Math.round(c.cost*.5)).setColor('#ffffff').setAlign('center').setFontSize('18px');
       const bw=Math.min(w-60,260),by=h*.82,btn=this.add.graphics(); btn.fillStyle(color,1).fillRoundedRect(w/2-bw/2,by-24,bw,48,16); const bt=this.add.text(w/2,by,'Collect',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#17101d'}).setOrigin(.5); this.menu.add([btn,bt]);
@@ -16207,8 +16229,15 @@ class Game extends Phaser.Scene {
   }
   /* ===== v8.1.79 เจ้าของ: เลือกจังหวะเริ่มเอง (แท่น ✨) + Overcharge (เสี่ยงต่อ 12 วิ ได้ของ ×2) — แรงบันดาลใจ Ritual / Delirium ===== */
   missionArmable(o,planned,p){ return !!o&&!planned&&!(p&&p.forceType)&&!this._inTutorial&&!this.recipeMode&&!this.riftMode&&!this.bossRush&&!['survive','fill','hunt','vaultAltar','ultimatum'].includes(o.type)&&this.usesStoryBudget?.(); }
-  missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xffe08a,.18).setStrokeStyle(4,0xffe08a,.95).setDepth(q.y-2)),t=this.artSpr('msn71_start_pad',q.x,q.y,92,0,{sig:false,depth:q.y-1})||this.camWorld(this.add.text(q.x,q.y,'✨',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'Step in to start',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffe08a',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5)),R=o._rw||(o._rw=this.missionReward?.(o)),rl=R?this.camWorld(this.add.text(q.x,q.y-56,'🎁 '+R.txt,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#9fe8ff',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5)):null;   /* v8.1.116 รางวัลลอยเหนือแท่น */
-    this.tweens.add({targets:pad,scale:{from:.92,to:1.08},duration:600,yoyo:true,repeat:-1}); o._armPad={x:q.x,y:q.y,objs:[pad,t,l,...(rl?[rl]:[])],t:10}; }
+  /* v8.1.142 owner 🐞: the ✨ start ring → a "Start mission" button like Frozen Pantry's jar (tap anywhere in the stage · still starts by itself after 10 s) */
+  missionArm(o,planned,p){ if(!this.missionArmable(o,planned,p)||!this.player)return; const q=this.objectivePosition(0,1,120,170),R=o._rw||(o._rw=this.missionReward?.(o)),objs=[];
+    const W=this.W||390,H=this.H||844,bw=240,bh=58; let btn=null;
+    if(this.add.container&&this.camUI){ btn=this.add.container(W/2,H-232).setDepth(9500); const g=this.add.graphics(); g.fillStyle(0x2a1a0e,.94).fillRoundedRect(-bw/2,-bh/2,bw,bh,bh/2); g.lineStyle(3,0xffe08a,1).strokeRoundedRect(-bw/2,-bh/2,bw,bh,bh/2);
+      const t=this.add.text(0,R?-9:0,'▶ Start mission',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'19px',color:'#fff3cf',stroke:'#2a1a0e',strokeThickness:4}).setOrigin(.5),c=this.add.text(0,R?13:20,R?'🎁 '+R.txt:'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'11px',color:'#9fe8ff',stroke:'#2a1a0e',strokeThickness:3}).setOrigin(.5);
+      btn.add([g,t,c]); this.camUI(btn); btn.setScrollFactor?.(1); objs.push(btn); this.tweens.add({targets:btn,scale:{from:1,to:1.06},duration:520,yoyo:true,repeat:-1}); btn._cd=c; btn._R=R; }
+    o._armPad={x:q.x,y:q.y,objs,t:10,btn,btnR:{w:bw,h:bh}}; }
+  missionBtnOver(p){ const A=this.waveObjective&&this.waveObjective._armPad; if(!A||!A.btn||!A.btn.visible||this.state!=='play')return false; const b=A.btn,r=A.btnR; return Math.abs(p.x-b.x)<=r.w/2+10&&Math.abs(p.y-b.y)<=r.h/2+10; }
+  missionBtnHit(p){ if(!this.missionBtnOver(p))return false; const A=this.waveObjective._armPad; A.t=0; A.tap=true; return true; }
   missionArmClear(o){ const A=o&&o._armPad; if(!A)return; for(const q of A.objs){ this.tweens.killTweensOf(q); q.destroy(); } o._armPad=null; }
   /* ===== v8.1.116 เจ้าของ (รีวิวภารกิจ ข้อ 4): แม่แบบการนำเสนอร่วมทุกภารกิจ · เปิด = การ์ดภารกิจ (ชื่อ/สิ่งที่ต้องทำ/รางวัล) + คลื่นกระแทก · ระหว่าง = แถบเดียว · จบ = ตราประทับ MISSION COMPLETE + ของรางวัล ===== */
   missionReward(o){ if(!o||this._inTutorial||(this.recipeMode&&!this._recipeMission)||typeof MISSION_REWARDS==='undefined')return null; const r=MISSION_REWARDS[o.type]; if(!r)return null; const si=this.stageIndex||0,k=r[0];
@@ -16239,8 +16268,8 @@ class Game extends Phaser.Scene {
     const P=this.missionPoint?.(o); if(P)this.missionGo(o,P.x,P.y,false);
     this.time?.delayedCall?.(2300,()=>{ if(this._msnCard!==c)return; this.tweens.add({targets:c,y:y-40,alpha:0,duration:380,onComplete:()=>{ if(this._msnCard===c)this.missionCardClear(); }}); });
     return true; }
-  missionArmTick(o,dt){ const A=o._armPad; A.t-=dt; const near=this.player&&this.dist(this.player.x,this.player.y,A.x,A.y)<50; if(A.objs[2]?.active)A.objs[2].setText(near?'Starting!':'Step in to start · '+Math.ceil(Math.max(0,A.t))+'s');
-    if(near||A.t<=0){ this.missionArmClear(o); this.vfxHitRing?.(A.x,A.y,0xffe08a,true); if(this.missionGo)this.missionGo(o,A.x,A.y,true); else { Sfx.orderCue?.('wave_start',.4,.3); this.floatText?.(this.player.x,this.player.y-70,'▶ Mission start!',0xffe08a); } return false; } this.renderWaveObjectiveHUD?.(); return true; }
+  missionArmTick(o,dt){ const A=o._armPad; A.t-=dt; if(A.btn?._cd?.active&&!A.btn._R)A.btn._cd.setText('Starts by itself in '+Math.ceil(Math.max(0,A.t))+'s');
+    if(A.t<=0){ this.missionArmClear(o); this.vfxHitRing?.(A.x,A.y,0xffe08a,true); if(this.missionGo)this.missionGo(o,A.x,A.y,true); else { Sfx.orderCue?.('wave_start',.4,.3); this.floatText?.(this.player.x,this.player.y-70,'▶ Mission start!',0xffe08a); } return false; } this.renderWaveObjectiveHUD?.(); return true; }
   overchargeOffer(o){ if(!OVERCHARGE_ON)return false; if(o._ocDone||o._oc)return !!o._oc&&!o._ocDone; if(this.state!=='play'||this._inTutorial||this.recipeMode||this.riftMode||this.bossRush||['survive','fill','vaultAltar','ultimatum'].includes(o.type)||!this.usesStoryBudget?.()||!this.player)return false;
     const q=this.objectivePosition(0,1,110,150),pad=this.camWorld(this.add.circle(q.x,q.y,46,0xff7ab8,.18).setStrokeStyle(4,0xff7ab8,.95).setDepth(q.y-2)),t=this.artSpr('msn71_overcharge_pad',q.x,q.y,92,0,{sig:false,depth:q.y-1})||this.camWorld(this.add.text(q.x,q.y,'⚡',{fontSize:'30px'}).setOrigin(.5).setDepth(q.y+4)),l=this.camWorld(this.add.text(q.x,q.y+40,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'12px',color:'#ffd0e6',stroke:'#1a0f1e',strokeThickness:3}).setOrigin(.5).setDepth(q.y+5));
     this.tweens.add({targets:pad,scale:{from:.92,to:1.1},duration:420,yoyo:true,repeat:-1}); o._oc={phase:'offer',t:5,x:q.x,y:q.y,objs:[pad,t,l]}; this.showBanner?.('⚡ Overcharge?','Step on ⚡ within 5s: 12s of extra enemies for ×2 loot',2000); Sfx.orderCue?.('mission_bonus_get',.35,.3); return true; }
@@ -18300,7 +18329,7 @@ class Game extends Phaser.Scene {
     Sfx.eventLoopStop?.();const _wasLvl=this.state==='levelup'; this.state='levelup'; this.physics.pause();
     const _sndForced=!!this._forcedOpts;   // v7.2 sound picked after the final choices are known (guaranteed Relic levels build their offer below)
     const w=this.W,h=this.H; if(this._cardHi){this.tweens.killTweensOf(this._cardHi);} this.lvlUp.removeAll(true); this._cardHi=null; this.lvlCards=[];
-    const veil=this.textures.exists('lvl_screen_veil'),bg=this.add.rectangle(0,0,w,h,0x160f21,veil?0.5:0.94).setOrigin(0,0);
+    const veil=this.textures.exists('lvl_screen_veil'),bg=this.add.rectangle(0,0,w,h,0x160f21,veil?0.62:0.94).setOrigin(0,0);   /* v8.1.142 owner 🐞: card screen too bright → darker veil + fade in */
     this.lvlUp.add(bg);if(veil)this.lvlUp.add(this.add.image(0,0,'lvl_screen_veil').setOrigin(0).setDisplaySize(w,h));   // v7.8.59 ใบ 23 ม่าน
     const heldBot0=this.drawHeldBar(this.lvlUp, 8);
     const heldBot=heldBot0;   // (เอา recipe panel ออกแล้ว — ยกเลิกระบบ codex ปรุง)
@@ -18329,7 +18358,7 @@ class Game extends Phaser.Scene {
     const pathPick=opts[0]&&(opts[0].kind==='Build Path'||opts[0].kind==='Flavor Infusion'); if(pathPick)t.setText(opts[0].kind==='Build Path'?'🛤 CHOOSE YOUR BUILD PATH · tap twice':'🍯 INFUSION — pick 1 · tap again to confirm');
     this.lvlTitleArt?.(t,this._chestReward?1:this._relicPick?2:pathPick?3:0,!_wasLvl);
     if(_nt)this.drawCardIntro(_nt,side,startY+rows*(ch+gap)+4,w-side*2,_nH-10);
-    this.lvlUp.setVisible(true);
+    this.lvlUp.setVisible(true); if(this.tweens&&this.lvlUp.setAlpha){ this.lvlUp.setAlpha(0); this.tweens.add({targets:this.lvlUp,alpha:1,duration:280,ease:'Sine.out'}); }
   }
   newCardIntro(opts){ if(this._inTutorial||typeof Save==='undefined'||!Save.data)return null; const seen=Save.data.cardSeen=Save.data.cardSeen||{};
     for(const o of opts||[]){ const t=cardTypeOf(o); if(t&&CARD_INTRO[t]&&!seen[t]){ seen[t]=1; try{Save.save();}catch(e){} return t; } } return null; }
@@ -24216,9 +24245,9 @@ class Game extends Phaser.Scene {
   showRewardedAd(label,onReward){
     if(this._adBusy)return;
     if(AdManager.hasRealAds()){ this._adBusy=true;
-      const ctx=Sfx.ctx; try{ if(ctx&&ctx.state==='running')ctx.suspend(); }catch(e){}
-      const back=()=>{ this._adBusy=false; try{ if(ctx&&!Sfx.muted)ctx.resume(); }catch(e){} };
-      AdManager.show().then(r=>{ back(); try{ Tele.ev('ad',{where:label||'',r,test:ADS_TEST}); }catch(e){}
+      const ctx=Sfx.ctx,gs=window.__g&&window.__g.sound,wasMute=!!(gs&&gs.mute); try{ if(ctx&&ctx.state==='running')ctx.suspend(); if(gs)gs.mute=true; }catch(e){}   /* v8.1.142 owner 🐞: game music kept playing under the ad */
+      const back=()=>{ this._adBusy=false; try{ if(ctx&&!Sfx.muted)ctx.resume(); if(gs)gs.mute=wasMute; }catch(e){} };
+      AdManager.show().then(r=>{ back(); try{ Tele.ev('ad',{where:label||'',r,test:ADS_TEST,err:r==='failed'?AdManager.lastError||'':undefined}); }catch(e){}
         if(r==='rewarded'){ onReward&&onReward(); return; }
         if(r==='skipped'){ this.showBanner?.('📺 Ad closed early','Watch to the end to get the reward',1600); return; }
         this.showBanner?.('📺 No ad right now','Check your connection and try again in a moment',1800); }).catch(()=>back());

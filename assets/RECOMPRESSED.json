@@ -14580,6 +14580,12 @@
 "packed_sha256": "33ac4dab63fdbc198f1bad709786d297e13214a09bfae905e561aa4dad7da069",
 "sha256": "96999218837b13a371d97809e4e632e83d0b08bb7cf62a20ae5a1fa593c79d52"
 },
+"assets/audio/bgm/clockmakers_tea_break.mp3": {
+"bytes": 2095823,
+"packed_bytes": 1073565,
+"packed_sha256": "4181abf9f8dc2b9208ef2d47c45a8affabd3c6deb4b8e500735fec1a0ff570d5",
+"sha256": "5163b3b15e365826d3fdb214a442e151abd33ab03701038c087250f0257f43a6"
+},
 "assets/audio/bgm/elevenlabs_campaign/c1/bgm_b01.mp3": {
 "bytes": 1499948,
 "packed_bytes": 624894,
@@ -14849,6 +14855,12 @@
 "packed_bytes": 620976,
 "packed_sha256": "98cd6023abdf26d1652d9c509145553ab0accdfcaf639fbcc2b3727d34a79288",
 "sha256": "a934e58fdf461a51e9d4e5dd7775ebc6e22bb9f50af61f6eb046306f3b480a52"
+},
+"assets/audio/bgm/gates_of_the_calamity.mp3": {
+"bytes": 4527237,
+"packed_bytes": 2134536,
+"packed_sha256": "1e06f76836473bb66ee71ac537ef42ea298dc4fd0684ebf9ce833ecd2bf610a6",
+"sha256": "79d0decb9d0b5ef1dc8ec5284e4ce9e44ca9e7e50f97164da3ddf53b0f92de89"
 },
 "assets/audio/bgm/menu/bgm_menu_depths.mp3": {
 "bytes": 501552,
