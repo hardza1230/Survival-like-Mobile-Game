@@ -1,4 +1,4 @@
-# งานอาร์ต/เสียงที่ค้าง · สำหรับ AI ฝั่งอาร์ต/เสียง (อัปเดต 12 พ.ย. 2026 · เกม v8.1.108 · ทุกใบในตารางผูกแล้ว)
+# งานอาร์ต/เสียงที่ค้าง · สำหรับ AI ฝั่งอาร์ต/เสียง (อัปเดต 13 พ.ย. 2026 · ตรวจบนเกม v8.1.136)
 
 **กติกาใหม่ (เจ้าของ 12 พ.ย.): AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ แล้วส่งที่โฟลเดอร์ส่งมอบของแต่ละใบ — ไม่ต้องแก้โค้ด ไม่ต้องเขียนเทส ไม่ต้องปล่อยเวอร์ชัน · Claude ฝั่งโค้ดเป็นคนผูกเข้าเกม**
 หัวข้อ "ผูกเข้าเกม" ในแต่ละใบเป็นโน้ตของฝั่งโค้ด ข้ามได้ · ส่งงานพร้อม `MANIFEST.json` (ฟิลด์ตามใบ) + `PROMPTS.json` + `QA_REPORT.json` ตรวจไฟล์ด้วยสคริปต์ (ขนาด/กริด/พื้นหลัง/ความยาว/peak) ไม่ต้องเปิดดูทีละไฟล์
@@ -12,7 +12,7 @@
 | 3 | `docs/art_orders/79_RESULTS_HEADER_CORE_LORE.md` | หัวหน้าจบด่าน (แผง/เหรียญ/พื้นเหรียญ/แสง/ช่องดาว) + ภาพเมล็ดหัวใจกับ Flavor Cores | 6 | ImageGen | `assets/incoming/results79/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 4 | `docs/art_orders/69_HERO_SKINS.md` | สกิน Festival: **Mint แก้ 4 ชีต** (gale f6 · impaler_release f4 · run f4/8/9/11+ ล้นขอบ → วาดตัวเล็กลง) แล้วตัวฮีโร่ที่เหลือจาก candidates → ตัวจริง · ตรวจด้วย `scripts/qa-skin69.py <hero>` ก่อนส่ง | 61 | ImageGen | `assets/incoming/skins69/` | 🟢 ผูกแล้ว v8.1.108 · รอเจ้าของตรวจบนมือถือ |
 | 5 | `docs/art_orders/80_SPECIAL_PICKS.md` | **หน้าเลือกพิเศษ** ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ดภาพวาด Build Path 15+1 | 21 | ImageGen | `assets/incoming/special_picks80/` | 🟡 รออาร์ต |
-| — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | ตามใบ | ⛔ รอสิทธิ์ Music Generation (ข้ามไปก่อน) |
+| — | `docs/audio_orders/A04_STORY_MUSIC_STINGERS.md` | เพลงเรื่อง/Lobby | 6 | ElevenLabs Music | `assets/incoming/audio_story_music/` | 🟢 ส่งและผูกครบ · เจ้าของฟังแล้วโอเค 8 พ.ย. 2026 |
 
 ## หมายเหตุ
 - ห้ามเสียงสร้างด้วยโค้ด/Runway (เจ้าของสั่ง) · ห้ามตัวหนังสือในภาพ
