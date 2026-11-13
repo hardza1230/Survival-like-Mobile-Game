@@ -3,7 +3,10 @@
 // page errors, console errors, stuck states, stage result/time, FPS, JS heap and texture MB.
 // Usage: node scripts/build-www.mjs && NODE_PATH=/opt/node22/lib/node_modules node scripts/qa-autoplay.cjs [stages=0-14] [maxSec=240] [out=qa-report.json]
 const fs=require('fs'),http=require('http'),path=require('path'),{chromium}=require('playwright');
-const arg=process.argv.slice(2),range=(arg[0]||'0-14').split('-').map(Number),stages=[];for(let i=range[0];i<=(range[1]??range[0]);i++)stages.push(i);
+const arg=process.argv.slice(2),stages=[];
+// Endgame targets (v8.1.142): "endgame" = one run in each Delve room type + Pinnacle · or a comma list like "d:boss,d:siege,pinnacle"
+if(/^(endgame|d:|pinnacle)/.test(arg[0]||''))stages.push(...(arg[0]==='endgame'?['d:normal','d:elite','d:vault','d:shrine','d:trial','d:siege','d:boss','d:city','pinnacle']:arg[0].split(',')));
+else{const range=(arg[0]||'0-14').split('-').map(Number);for(let i=range[0];i<=(range[1]??range[0]);i++)stages.push(i);}
 const MAX=+(arg[1]||240),OUT=arg[2]||'qa-report.json';
 const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.png':'image/png','.mp3':'audio/mpeg','.json':'application/json','.css':'text/css','.wav':'audio/wav','.ogg':'audio/ogg','.woff2':'font/woff2'};
 (async()=>{
@@ -23,7 +26,16 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
       const res={stage:idx,boot:sceneReady,bootSec:(Date.now()-t0)/1000,result:null,sec:0,states:{},stuck:[],errors:errs,consoleErrors:cerr,fpsMin:null,fpsAvg:null,heapMaxMB:null,texMaxMB:null,level:0};
       if(!sceneReady){res.result='boot-timeout';report.stages.push(res);await page.close();continue;}
       report.version=await page.evaluate(()=>typeof GAME_VERSION!=='undefined'?GAME_VERSION:null);
-      await page.evaluate(i=>{const s=window.__g.scene.getScene('Game');Save.data.tutorialDone=true;Save.data.unlockedStage=Math.max(Save.data.unlockedStage||0,14);s.startRun(i);},idx);
+      const startInfo=await page.evaluate(i=>{const s=window.__g.scene.getScene('Game');const d=Save.data;d.tutorialDone=true;d.unlockedStage=Math.max(d.unlockedStage||0,14);d.stageMastery=d.stageMastery||{};for(let k=0;k<15;k++)d.stageMastery[k]=d.stageMastery[k]||1;
+        if(typeof i==='number'){s.startRun(i);return 'story '+i;}
+        // Endgame: clear every Delve row above the target so it is open, then start it the way the Delve map button does
+        const want=i==='pinnacle'?'boss':i.slice(2),dv=delveSave();let node=null;
+        for(let D=1;D<=45&&!node;D++){for(const n of delveRow(D)){const nd=amapNode(n.id);if(nd.type===want&&(want!=='boss'||D>=10)){node=nd;break;}}}
+        if(!node)return 'no node '+want;
+        for(let D=1;D<node.d;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=Math.max(dv.best||0,i==='pinnacle'?30:node.d-1);
+        if(i==='pinnacle'){for(let D=1;D<=30;D++)delveRow(D).forEach(n=>{dv.clears[n.id]=1;});dv.best=30;d.pinnacleFreeUsed=false;s.startPinnacle();return 'pinnacle';}
+        d.mapTable={node:node.id,mods:[]};const rr=mapTableRecipe();s.stageDiff=1;s._recipeRequested=rr;s._domainRequested=false;s._farmFocusRequested='all';s.startRun(rr.theme);return 'delve '+want+' depth '+node.d+' '+node.id;},idx);
+      res.start=startInfo;
       const fps=[];let heap=0,tex=0,last='',same=0,start=Date.now(),left=false;
       while((Date.now()-start)/1000<MAX){
         await page.waitForTimeout(1000);
@@ -52,7 +64,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
       res.sec=Math.round((Date.now()-start)/1000);if(!res.result)res.result='timeout';
       await page.evaluate(r=>{try{typeof QA!=='undefined'&&QA.report('bot-result',r,'bot');}catch(e){}},'stage '+idx+' '+res.result+' '+res.sec+'s lvl '+res.level).catch(()=>{});await page.waitForTimeout(2500);
       if(fps.length){res.fpsMin=Math.round(Math.min(...fps));res.fpsAvg=Math.round(fps.reduce((a,b)=>a+b,0)/fps.length);}res.heapMaxMB=Math.round(heap);res.texMaxMB=Math.round(tex);
-      report.stages.push(res);console.log(JSON.stringify({stage:idx,result:res.result,sec:res.sec,errors:errs.length,console:cerr.length,stuck:res.stuck.length,fps:res.fpsAvg,tex:res.texMaxMB,lvl:res.level,gameSec:res.elapsed,orbsMax:res.orbsMax,xp:res.xp,kills:res.kills,foesMax:res.foesMax}));
+      report.stages.push(res);console.log(JSON.stringify({stage:idx,start:res.start,result:res.result,sec:res.sec,errors:errs.length,console:cerr.length,stuck:res.stuck.length,fps:res.fpsAvg,tex:res.texMaxMB,lvl:res.level,gameSec:res.elapsed,orbsMax:res.orbsMax,xp:res.xp,kills:res.kills,foesMax:res.foesMax}));
       fs.writeFileSync(OUT,JSON.stringify(report,null,1));await page.close();
     }
   }finally{await browser.close();server.close();}
