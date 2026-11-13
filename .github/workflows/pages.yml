@@ -107,9 +107,9 @@ jobs:
             const version=await (await get('version.json')).json();
             if(version.version!==expected)throw Error('Live version '+version.version+' != '+expected);
             const game=await (await get('game.js')).text();
-            if(!game.includes("const GAME_VERSION = '"+expected+"'")||!game.includes('assets/art/forge_ui/atlas.png'))throw Error('Live Forge code is stale');
-            const atlas=new Uint8Array(await (await get('assets/art/forge_ui/atlas.png')).arrayBuffer());
-            if(![137,80,78,71,13,10,26,10].every((v,j)=>atlas[j]===v))throw Error('Live atlas is not PNG');
+            if(!game.includes("const GAME_VERSION = '"+expected+"'")||!game.includes('assets/art/forge_ui/atlas.webp'))throw Error('Live Forge code is stale');
+            const atlas=new Uint8Array(await (await get('assets/art/forge_ui/atlas.webp')).arrayBuffer());
+            if(String.fromCharCode(...atlas.slice(0,4))!=='RIFF'||String.fromCharCode(...atlas.slice(8,12))!=='WEBP')throw Error('Live atlas is not WebP');   // v8.1.139 runtime art is WebP
             console.log('Live Forge verified: v'+expected+'; published code and production atlas match');return;
           }catch(e){last=e;if(i<5)await new Promise(r=>setTimeout(r,5000));}}throw last;})().catch(e=>{console.error(e);process.exitCode=1;});
           JS
