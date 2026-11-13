@@ -61,27 +61,10 @@ jobs:
             "$ffmpeg_bin/ffmpeg" -version
             echo "$ffmpeg_bin" >> "$GITHUB_PATH"
           fi
-      - name: Validate game and UI contracts
-        run: npm run check
-      - name: Assemble web assets (www/)
-        run: node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs && node scripts/build-ruby-story-review.mjs && node scripts/build-sesame-rune-review.mjs && node scripts/build-mint-vfx-review.mjs && node scripts/build-battle-vfx-review.mjs && node scripts/build-boss-vfx-review.mjs && node scripts/build-boss-body-review.mjs && node scripts/build-boss-shot-review.mjs && node scripts/build-battle-hud-review.mjs
-      - name: Verify menu visuals
-        env:
-          FORGE_BROWSER_CHANNEL: chrome
-        run: |
-          google-chrome --version
-          npm install --prefix /tmp/forge-browser --no-save playwright@1.51.1
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-forge-live-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-lobby-live-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-ruby-story-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-asset-cache.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-sesame-rune-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-mint-vfx-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-battle-vfx-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-boss-vfx-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-boss-body-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-boss-shot-ui.cjs
-          NODE_PATH=/tmp/forge-browser/node_modules node scripts/check-battle-hud-ui.cjs
+      # v8.1.142: deploy gate = contract tests + build (~20 s) · browser UI checks run in the parallel "visual" job below
+      # (same script locally before every release: bash scripts/ci-checks.sh)
+      - name: Validate game contracts and assemble www/
+        run: bash scripts/ci-checks.sh fast
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -113,3 +96,30 @@ jobs:
             console.log('Live Forge verified: v'+expected+'; published code and production atlas match');return;
           }catch(e){last=e;if(i<5)await new Promise(r=>setTimeout(r,5000));}}throw last;})().catch(e=>{console.error(e);process.exitCode=1;});
           JS
+
+  # v8.1.142: browser UI contract checks in parallel (2–3 min) — they no longer hold the deploy back.
+  # A red "visual" job means a UI contract broke: fix it in the next release.
+  visual:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        timeout-minutes: 15
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/assets/incoming/**/candidates/
+            !/assets/incoming/**/donors/
+            !/assets/incoming/**/*.gif
+            !/assets/incoming/**/*.jpg
+            !/assets/incoming/**/*preview*
+            !/assets/incoming/lobby_hero_motion/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Browser UI checks
+        env:
+          FORGE_BROWSER_CHANNEL: chrome
+        run: |
+          npm install --prefix /tmp/forge-browser --no-save playwright@1.51.1
+          NODE_PATH=/tmp/forge-browser/node_modules bash scripts/ci-checks.sh visual

@@ -46,19 +46,19 @@ to the deploy branch at the same time — always fetch and merge first, never fo
 
 ## 3. Checks (must all pass before committing)
 
-Run what the Pages CI runs, in this order (Playwright is pre-installed; never run
-`playwright install`):
+One script runs exactly what CI runs (contract tests, build, all 11 browser UI checks; ~3 min).
+Playwright is pre-installed; never run `playwright install`:
 
 ```bash
-npm run check
-node scripts/build-www.mjs && node scripts/build-forge-review.mjs && node scripts/build-lobby-review.mjs && node scripts/build-ruby-story-review.mjs
-NODE_PATH=/opt/node22/lib/node_modules node scripts/check-forge-live-ui.cjs
-NODE_PATH=/opt/node22/lib/node_modules node scripts/check-lobby-live-ui.cjs
-NODE_PATH=/opt/node22/lib/node_modules node scripts/check-ruby-story-ui.cjs
+NODE_PATH=/opt/node22/lib/node_modules bash scripts/ci-checks.sh
 ```
 
-- If `.github/workflows/pages.yml` gained new build/check steps, run those too (read the
-  "Assemble web assets" and "Verify menu visuals" steps).
+It must print `ci-checks all: PASS`. A `FAIL <name>` line shows the log tail. CI's deploy job
+only runs the `fast` part (tests + build); the browser checks run in a parallel `visual` job
+that does not hold the deploy back — so the local full run is the real gate. Never push with
+a failing check.
+
+- New CI check or build step → add it to `scripts/ci-checks.sh` (pages.yml calls that script), never only to the workflow.
 - A failing test after an intended text/number change: update the test/fixture to the new
   intended value and say so in the delivery block. Never skip or delete a test to go green.
 - Owner rules: no headless balance simulation, no screenshots to judge looks — the owner
@@ -81,19 +81,18 @@ NODE_PATH=/opt/node22/lib/node_modules node scripts/check-ruby-story-ui.cjs
 2. Check no Pages run is in progress (mcp__github__actions_list, workflow `pages.yml`,
    load it with ToolSearch `select:mcp__github__actions_list`). If one is running (other
    session), wait for it — both share the `pages` concurrency group and cancel each other.
-3. Push the deploy branch ALONE: `git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w`
+3. Push both branches right away (pages.yml only triggers on the deploy branch, so the session
+   branch push does not cancel the deploy — v8.1.74):
+   `git push origin HEAD:claude/vampire-survival-mobile-game-yo9e8w && git push -u origin HEAD:<session-branch>`
    (fast-forward only; network failure → retry 2s/4s/8s/16s).
-4. Do not sit and poll. Schedule a check-in ~5 min out with `send_later` (claude-code-remote),
-   tell the owner the deploy is running, and end the turn.
+4. Deploy job takes ~1.5 min. Schedule one check-in ~3 min out with `send_later`, tell the owner
+   it is going live, end the turn.
 5. On the check-in: find the run for the pushed SHA.
-   - success → the run's last step already verifies the live `version.json` and `game.js`
-     match `GAME_VERSION`. Then push the session branch: `git push -u origin HEAD:<session-branch>`.
-   - failure → read the job log (mcp__github__get_job_logs), fix the cause, re-check, push
-     again. Never leave the live game on a failed deploy without telling the owner.
-   - cancelled → another push hit the concurrency group; re-run (actions_run_trigger
-     rerun) or push again once nothing is running.
-6. If a stop hook complains the session branch is unpushed while the deploy runs, explain
-   that pushing it now would cancel the live deploy.
+   - `deploy` job success → its last step already verified the live `version.json` and `game.js`.
+   - `visual` job red → a UI contract broke; read its log, fix in the next release (live game is fine).
+   - `deploy` failure → read the job log (mcp__github__get_job_logs), fix, re-run ci-checks, push again.
+     Never leave the live game on a failed deploy without telling the owner.
+   - cancelled → a newer push to the deploy branch superseded it; check that newer run instead.
 
 ## 6. Report to the owner (Thai, short)
 
