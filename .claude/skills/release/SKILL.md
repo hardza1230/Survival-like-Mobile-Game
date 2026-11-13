@@ -32,16 +32,19 @@ to the deploy branch at the same time — always fetch and merge first, never fo
      next line (7.8.104 → 7.9.1, 7.9.98 → 8.0.0); ask if a bump would land there.
 3. If the other session already used the number you planned, take the next one.
 
-## 2. Edit the three version places
+## 2. Bump the version (one command)
 
-- `game.js` line ~53: `const GAME_VERSION = 'x.y.z';` — keep this exact form (pages.yml and
-  build-www.mjs grep it).
-- `game.js` `const CHANGELOG = [` — insert a new first entry:
-  `{v:'x.y.z',date:'YYYY-MM-DD',title:'Short player-facing title',items:['What changed for the player','…']},`
-  Player language, no code names, 1–4 items.
-- `CLAUDE.md` — add `# Latest delivery: vx.y.z — <title> (owner)` with one dense paragraph
-  (what/where in code, numbers, tests touched) above the current Latest block, and rename
-  the old `# Latest delivery:` heading to `# Previous delivery:`.
+Write the CLAUDE.md delivery block to a scratch file (starts with `# Latest delivery: `, one
+dense paragraph: what/where in code, numbers, tests touched), then:
+
+```bash
+node scripts/bump-version.mjs "Short player-facing title" "What changed 1|What changed 2" "Thai line: what the owner should test" < block.md
+```
+
+It bumps `GAME_VERSION` (patch +1), adds the CHANGELOG entry (English, 1–4 items, no code
+names), updates the CLAUDE.md version line, puts the new Latest block in, renames the old
+one to Previous and moves the oldest block to `docs/CLAUDE_HISTORY.md`, and adds the
+"รอ QA" line to `docs/LAUNCH_RULES.md`. Minor/major bumps: edit by hand.
 - If the release changes "สถานะปัจจุบัน"/"ถัดไป" facts, update those sections too.
 
 ## 3. Checks (must all pass before committing)
