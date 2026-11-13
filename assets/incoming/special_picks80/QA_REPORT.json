@@ -1,0 +1,23 @@
+[
+  {"key": "vault80_bg", "result": "pass", "reason": "RGBA 720x1008; opaque; center dimmer than sides; near-black bottom"},
+  {"key": "vault80_pedestal", "result": "pass", "reason": "RGBA 256x256; true alpha; no silhouette touching edge"},
+  {"key": "forge80_anvil", "result": "pass", "reason": "RGBA 384x256; true alpha; no silhouette touching edge"},
+  {"key": "book80_spread", "result": "pass", "reason": "RGBA 1024x640; true alpha; no silhouette touching edge"},
+  {"key": "book80_page_glow", "result": "pass", "reason": "RGBA 3072x640; 6 nonempty frames; pure black edges; loop seam delta 1.93/255"},
+  {"key": "pathcard80_back", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_sniper", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_shotgun", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_ricochet", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_glacier", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_barrage", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_pierce", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_brawler", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_titan", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_dashboxer", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_storm", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_smite", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_tempest", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_prism", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_lens", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"},
+  {"key": "pathcard80_sentinel", "result": "pass", "reason": "RGBA 512x768; true alpha; 24px rounded mask"}
+]

@@ -1,0 +1,195 @@
+[
+  {
+    "key": "vault80_bg",
+    "tool": "ImageGen",
+    "prompt": "Portrait 5:7 full-bleed eye-level subterranean confectionery vault. Cookie-stone walls, jars on shelves at far edges, small sugar-coin piles in corners, warm side candles. Middle y25–70% open and dim, without pedestals. Lower 30% fades near black. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-41f5499b-f935-42d9-8ca8-9657ced05350.png"
+  },
+  {
+    "key": "vault80_pedestal",
+    "tool": "ImageGen",
+    "prompt": "Square transparent sprite. Short cylindrical crystal display plinth, thin gold edging, pale cyan spun-sugar filaments, top ellipse centered at y≈30 percent and base near bottom. Front three-quarter eye level, centered, no item on top. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": true,
+    "source": "exec-480eff67-f8c0-49ca-8c29-41220816c818.png"
+  },
+  {
+    "key": "forge80_anvil",
+    "tool": "ImageGen",
+    "prompt": "Landscape 3:2 transparent sprite. Cute broad chocolate-dark metal anvil with thin gold edges, resting on orange-gold glowing candy coals. Upper anvil surface near 28 percent of height. Entire silhouette visible. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": true,
+    "source": "exec-36fc181f-00f4-4710-a69d-49b1600d49b4.png"
+  },
+  {
+    "key": "book80_spread",
+    "tool": "ImageGen",
+    "prompt": "Landscape 8:5 transparent sprite. Grandma’s open antique recipe book, nearly straight-on top view, broad and flat. Berry-red leather cover, gold corners, ribbon bookmark, tiny flour flecks and honey drops only in margins. Two completely blank pale parchment pages, large clear rectangles starting 7 and 55 percent across and 11 percent down, each 37 percent wide and 75 percent tall. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": true,
+    "source": "exec-f4f1a157-de2d-40cb-ac86-d04ac5eeaf5e.png"
+  },
+  {
+    "key": "book80_page_glow",
+    "tool": "ImageGen",
+    "prompt": "Portrait 4:5 single source frame for looping additive FX. Pure solid black #000. Warm golden glowing ink swirls and tiny brush flicks framing all four page margins with wide open center. No physical paper. Keep all glow inside 8 percent clear border. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-8acca740-54d8-4cb0-b4d8-9a1c1746f77a.png",
+    "postprocess": "Six phases of a rotating intensity wave on the same painted ink, black levels cleaned and borders kept black."
+  },
+  {
+    "key": "pathcard80_back",
+    "tool": "ImageGen",
+    "prompt": "Portrait 2:3 full bleed tarot card back. Dark aubergine field, antique gold and cream filigree, candy details, centered embossed plain mochi crest with three-forked path motif. Symmetric and elegant. Full bleed to all edges. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-31b7c471-811c-4b1b-bc29-64d3f26d2679.png"
+  },
+  {
+    "key": "pathcard80_sniper",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is momo's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: takes careful aim from a high ledge, one long straight glowing pink seed trajectory. Palette pink and berry red. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-abece076-3b73-4dac-a6ca-1d2752d5e9ff.png",
+    "reference": [
+      "assets/character_cards/card_momo.png"
+    ]
+  },
+  {
+    "key": "pathcard80_shotgun",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is momo's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: leaps forward firing a wide short fan of pink seeds. Palette pink and berry red. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-5fe68e0b-be05-4c27-93f4-c4a9932b24f7.png",
+    "reference": [
+      "assets/character_cards/card_momo.png"
+    ]
+  },
+  {
+    "key": "pathcard80_ricochet",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is momo's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: fires seeds that zigzag and rebound between multiple small enemies. Palette pink and berry red. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-a95120f7-796a-4e17-8ce9-54fc1488dcaf.png",
+    "reference": [
+      "assets/character_cards/card_momo.png"
+    ]
+  },
+  {
+    "key": "pathcard80_glacier",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is mint's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: plants her ice spear into the ground, causing a huge sharply petaled ice blossom. Palette glacial cyan and ivory. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-9c60da8f-3f26-42e2-9ee3-8a642158f6d7.png",
+    "reference": [
+      "assets/character_cards/card_mint.png"
+    ]
+  },
+  {
+    "key": "pathcard80_barrage",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is mint's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: casts a dense diagonal rain of small ice spears. Palette glacial cyan and ivory. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-14afef5d-6d6a-4966-8d07-9bbdcf851191.png",
+    "reference": [
+      "assets/character_cards/card_mint.png"
+    ]
+  },
+  {
+    "key": "pathcard80_pierce",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is mint's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: drives one huge crystal spear through a row of enemies. Palette glacial cyan and ivory. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-468ddb22-83c3-48e2-b0d9-8c4b68c578ce.png",
+    "reference": [
+      "assets/character_cards/card_mint.png"
+    ]
+  },
+  {
+    "key": "pathcard80_brawler",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is cocoa's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: lands a close fiery fist strike with a compact flame plume. Palette burnt orange and warm gold. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-2183ff78-826a-40fc-9233-16fdf383d633.png",
+    "reference": [
+      "assets/character_cards/card_cocoa.png"
+    ]
+  },
+  {
+    "key": "pathcard80_titan",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is cocoa's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: becomes a giant version of the same girl and cracks the ground with a heavy downward smash. Palette burnt orange and warm gold. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-17a473a5-ef68-4194-850b-cfee323aaeca.png",
+    "reference": [
+      "assets/character_cards/card_cocoa.png"
+    ]
+  },
+  {
+    "key": "pathcard80_dashboxer",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is cocoa's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: charges in a low stance with layered warm orange dash afterimages. Palette burnt orange and warm gold. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-b6d75a52-6f3a-48f0-bb2f-5ba2f78262d3.png",
+    "reference": [
+      "assets/character_cards/card_cocoa.png"
+    ]
+  },
+  {
+    "key": "pathcard80_storm",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is taro's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: casts forked chain lightning linking multiple enemies. Palette lavender and violet lightning. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-d4d7e9c9-6c64-4245-9b59-ec4ac69f0198.png",
+    "reference": [
+      "assets/character_cards/card_taro.png"
+    ]
+  },
+  {
+    "key": "pathcard80_smite",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is taro's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: calls a single huge vertical lightning strike onto one point. Palette lavender and violet lightning. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-f31c5912-8365-46a0-8a6d-83757c065095.png",
+    "reference": [
+      "assets/character_cards/card_taro.png"
+    ]
+  },
+  {
+    "key": "pathcard80_tempest",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is taro's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: stands amid a triangle of compact summoned lightning sentries. Palette lavender and violet lightning. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-5a7bbdd2-bc5c-4d58-a3e6-5dc61a6299f3.png",
+    "reference": [
+      "assets/character_cards/card_taro.png"
+    ]
+  },
+  {
+    "key": "pathcard80_prism",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is sesame's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: splits a rainbow beam in multiple directions through a crystal prism. Palette ivory white and pale gold. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-87b3b1d7-3d14-4bf7-91d9-c8ca0128d63a.png",
+    "reference": [
+      "assets/character_cards/card_sesame.png"
+    ]
+  },
+  {
+    "key": "pathcard80_lens",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is sesame's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: focuses a single intense ray through a round magical lens. Palette ivory white and pale gold. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-ba1762f8-b048-455c-8ba0-5004ca07c7fd.png",
+    "reference": [
+      "assets/character_cards/card_sesame.png"
+    ]
+  },
+  {
+    "key": "pathcard80_sentinel",
+    "tool": "ImageGen",
+    "prompt": "Single full-bleed 2:3 fantasy tarot battle build card, tightly aligned to image edges. Reference image is sesame's canonical costume and face only. Match hair, outfit, age and proportions exactly; keep their established weapon where appropriate. Hero action: commands floating mirror sentinels, each firing a small beam. Palette ivory white and pale gold. Hero large and readable at 110 pixels. Illustration confined to upper 75 percent. Lower quarter of entire card is one broad COMPLETELY EMPTY dark wine-brown nameplate, subtle low-contrast surface, gold hairline divider and no art crossing it. Slim antique cream and gold candy filigree around whole card, cohesive premium collectible deck. The artwork and card surface extend fully to canvas bounds; no tabletop or space outside card. Original Mochi Mayhem premium confectionery fantasy game art. Soft sculpted painted forms, clean silhouettes, restrained outlines, luminous confectionery material and warm edge lighting. No text, numbers, letters, runes, glyphs, signatures, mockups or watermarks.",
+    "transparent_background": false,
+    "source": "exec-09e978cc-2277-405e-857a-14f65e1249bd.png",
+    "reference": [
+      "assets/character_cards/card_sesame.png"
+    ]
+  }
+]
