@@ -16,7 +16,7 @@ const T=(s,t)=>s.tapZones.find(z=>z.tag===t),has=(s,re)=>s.nodes.some(n=>re.test
 for(const[W,H]of screens)for(const locked of[false,true]){
  const s=scene(W,H,{locked});s._buildCraftBenchRaw();assert(has(s,/^(✓ )?Equipped$/));assert(has(s,/^MOD ROWS$/));assert(has(s,/^\d+  🍓\d+  🍯\d+  ⭐\d+  🖋️\d+$/),'wallet of row currencies');
  assert(!has(s,/🔨|Forge Points|Glaze/),'no FP / Glaze text');for(const t of ['roll','tier','auto','odds','swap','add','up','remove'])assert(!T(s,t),t+' old control removed');
- for(let i=0;i<3;i++){assert.equal(!!(T(s,'up_'+i)||T(s,'cap_'+i)),!locked);assert.equal(!!T(s,'rm_'+i),!locked);}assert.equal(!!T(s,'unlock'),locked);
+ for(let i=0;i<3;i++){s._forgeSel={uid:'u0',line:i};s._buildCraftBenchRaw();assert.equal(!!(T(s,'up_'+i)||T(s,'cap_'+i)),!locked);assert.equal(!!T(s,'rm_'+i),!locked);for(let j=0;j<3;j++)if(j!==i)assert(!T(s,'up_'+j)&&!T(s,'rm_'+j),'v8.1.132 only the selected row has actions');assert.equal(!!T(s,'row_'+((i+1)%3)),!locked||true);}assert.equal(!!T(s,'unlock'),locked);
  for(const z of s.tapZones.filter(z=>/^(up|rm|add|unlock)/.test(z.tag||'')))assert(z.h>=30,z.tag+' tap height');
  // rows stay inside the mods card and do not overlap
  const R=s._forgeRowRects;for(let i=1;i<3;i++)assert(R[i].y>=R[i-1].y+R[i-1].h);const M=s._forgeLayout.mods;assert(R[2].y+R[2].h<=M.y+M.h);assert.equal(s.menu.y,0);
@@ -35,7 +35,7 @@ for(const[W,H]of screens){const s=scene(W,H,{modCount:0,grade:'divine'});s._buil
 // Star cap: the Upgrade pill becomes the reason
 {const s=scene(390,844,{itemLevel:1,grade:'rare',modCount:1});items[0].affixes[0].t=10;s._buildCraftBenchRaw();assert(!T(s,'up_0'));assert(T(s,'cap_0'));assert(has(s,/^Max Lv \d at iLv 1( · next at iLv \d+)?$/));}
 // Remove = double tap
-{const s=scene(390,844);s._buildCraftBenchRaw();T(s,'rm_2').fn();assert(api().forgeLines(items[0])[2]);assert(has(s,/^Tap 🗑 again · 🟢1$/));T(s,'rm_2').fn();assert.equal(api().forgeLines(items[0])[2],null);assert(T(s,'add_2'));assert.equal(wallet.transmute,39,'v8.0.87 remove costs the craft price');}
+{const s=scene(390,844);s._buildCraftBenchRaw();T(s,'row_2').fn();assert.equal(s._forgeSel.line,2,'tap a row selects it');T(s,'rm_2').fn();assert(api().forgeLines(items[0])[2]);assert(has(s,/^Tap 🗑 again · 🟢1$/));T(s,'rm_2').fn();assert.equal(api().forgeLines(items[0])[2],null);assert(T(s,'add_2'));assert.equal(wallet.transmute,39,'v8.0.87 remove costs the craft price');}
 // Bad mod row: 💀 BAD label, no Upgrade, remove hint
 {const s=scene(390,844,{modCount:1});items[0].affixes=[{id:'b_frail',v:-30,t:0,line:0}];s._buildCraftBenchRaw();assert(has(s,/^MOD 1  ·  💀 BAD$/));assert(!T(s,'up_0'));assert(T(s,'cap_0'));assert(has(s,/^−30 Max HP$/));}
 {const s=scene(390,844,{pending:true});s._buildCraftBenchRaw();assert(!items[0].forgeChoice);assert.equal(wallet.transmute,41,'old pending roll refunded');}

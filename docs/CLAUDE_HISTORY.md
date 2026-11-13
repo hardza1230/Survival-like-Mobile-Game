@@ -1,5 +1,9 @@
 # Moved from CLAUDE.md sections 1, 2, 6–8 (31 Oct 2026, token trim 2)
 
+# Previous delivery: v8.1.130 — owner: lobby UI polish (most of it already existed)
+
+Audit of buildLobby: BATTLE button already breathes (3.5%, 1.8 s) + `vfx_lb_battle_shine` every 3 s; hero already has ground shadow/glow (`lb_hero_shadow` or graphics) + idle acts (`LH_ACTS` every 8–14 s) + greet/tap; badge dots already bounce; page transitions were removed on purpose (owner v7.9.35, `menuTransition` returns). All hub motion is skipped when the phone has "reduce motion" on (`hubMotionAllowed`). New: `lobbyCountUp(t,key,val,fmt,ix,iy)` on the Sugar and Thread pills — remembers the last value shown (`_lbSeen`), and when it grew counts up over 0.8 s after 0.35 s, pops the number and sparkles the icon; first view and decreases just show the value. Test foe-shadow block.
+
 # Previous delivery: v8.1.129 — owner: presentation polish set 2 (ambient motes · step dust · elite glow · charge zoom)
 
 `stageAmbient(i)` (from stageMood): one particle emitter ('dot', freq 240 ms, life 4.2–6.5 s, slow upward drift, tint STAGE_MOOD + white, α .42→0, depth 90001) with an emit zone that `tickStageAmbient` resizes to the camera worldView each frame; destroyed on stageMood(null)/exit; off at vfx 0. `playerStepDust(dt)`: pDust puff at the feet every 0.2 s while speed > 60. Elite glow in tickEnemyReadability: `mm_rglow` (via `softGlowTex`) ADD, orange, 1.55× width, pulsing; shares the 12 cap; `_eliteGlows` cleaned in tickStageAmbient when the owner dies/stops being elite (+ trackArtVfx). tickBossZoom ×1.14 while `boss._big.stage==='charge'` (lerped). Hit-stop on elite/mini kill already existed. Test foe-shadow block.

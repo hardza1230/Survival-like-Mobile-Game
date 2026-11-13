@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.131';
+const GAME_VERSION = '8.1.132';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.132',date:'2026-11-13',title:'Cleaner Forge',items:['Forge mod rows no longer each carry three buttons: tap a mod row to select it, and its Upgrade, move (🖋️) and remove (🗑) buttons appear in one bar at the bottom','Mod text now uses the full width of the row']},
   {v:'8.1.131',date:'2026-11-13',title:'Menus react',items:['Equipping gear makes the item fly into its slot, which glows in the item’s rarity colour','Upgrading a Talent makes that node pulse with sparkles']},
   {v:'8.1.130',date:'2026-11-13',title:'Lobby counters',items:['Back in the Lobby, your Sugar and Thread count up from what you had before, with a little sparkle']},
   {v:'8.1.129',date:'2026-11-13',title:'Living stages',items:['Soft motes drift through every stage in its own colour','Little dough puffs at your feet as you walk','Elite monsters glow','The camera leans in while a boss charges its big move']},
@@ -13908,24 +13909,20 @@ class Game extends Phaser.Scene {
     else this.forgeButton(S.x+S.w-80,S.y+6,70,36,'Equip',()=>{if(Save.equipGearInstance(slot,selected.uid))Sfx.equipment('equip');this.buildCraftBench();},{kind:'primary',tag:'equip'});
     /* v8.0.83 MOD ROWS (v8.0.87: แถวตามขั้น สูงสุด 6 · Lv แทนดาว · mod ไม่ดี · ลบเสีย Twist Cream): เต็ม = mod + Lv + ปุ่ม Upgrade (หรือเหตุผลที่ตัน) + 🗑 · ว่าง = + Add a mod · ล็อก = Merge to open */
     this.pwCard(M.x,M.y,M.w,M.h,false);{const ic=this.pwIcon?.('mod_add',M.x+20,M.y+15,20);this.pwSection('MOD ROWS',M.x+(ic?34:12),M.y+15);const pc=this.forgeText(M.x+M.w-12,M.y+8,'🟢'+price+' per craft',11,'#cfc1d4',true,M.w*.5,1);this.menuArtIcon?.('ic_forge_point',0,M.x+M.w-12-(pc.width||0)-10,M.y+15,14);}   /* ค้อน = ราคาต่อการตี */
-    const fl0=affs.findIndex((_,i)=>!forgeLineOpen(selected,i)),firstLock=fl0>=0?fl0:(affs.length<6&&GRADE_NEXT[grade]?affs.length:-1),vis=[...affs.map((a,i)=>i).filter(i=>forgeLineOpen(selected,i)),...(firstLock>=0?[firstLock]:[])],nR=Math.max(1,vis.length),rowH=Math.max(40,Math.min(L.rowH,Math.floor((M.h-30-26-(nR-1)*6)/nR))),rg=Math.max(4,Math.min(10,Math.floor((M.h-30-26-nR*rowH)/nR))),rx=M.x+10,rw=M.w-20,lockedItem=!!selected.locked;this._forgeRowRects=[];
+    const fl0=affs.findIndex((_,i)=>!forgeLineOpen(selected,i)),firstLock=fl0>=0?fl0:(affs.length<6&&GRADE_NEXT[grade]?affs.length:-1),vis=[...affs.map((a,i)=>i).filter(i=>forgeLineOpen(selected,i)),...(firstLock>=0?[firstLock]:[])],nR=Math.max(1,vis.length),BAR=affs.some((a,i)=>a&&forgeLineOpen(selected,i)&&affixDef(a.id))?52:26,rowH=Math.max(40,Math.min(L.rowH,Math.floor((M.h-30-BAR-(nR-1)*6)/nR))),rg=Math.max(4,Math.min(10,Math.floor((M.h-30-BAR-nR*rowH)/nR))),rx=M.x+10,rw=M.w-20,lockedItem=!!selected.locked;this._forgeRowRects=[];
     const pill=(px,py,pw,ph,label,on,icon,fn,tag)=>{const g=this.add.graphics();g.fillStyle(on?0xf4d9a1:0x3a3046,on?1:.95).fillRoundedRect(px,py,pw,ph,ph/2).lineStyle(1,on?0xfff1e7:0x6d536d,on?.6:.8).strokeRoundedRect(px,py,pw,ph,ph/2);this.menu.add(g);
       const ic=icon&&this.pwIcon?.(icon,px+ph/2+2,py+ph/2,ph-6),tx=ic?px+ph+2:px+10,mw=px+pw-10-tx,t=this.forgeText(tx+mw/2,py+(ph-15)/2,label,12,on?'#3a2530':'#cfc1d4',true,0,.5);if(t.width>mw)t.setScale?.(mw/t.width);
       if(fn){this._zone(px,py,pw,ph,fn);this.tapZones[this.tapZones.length-1].tag=tag;}return g;};
-    let ry=M.y+30;vis.forEach(i=>{const a=affs[i],open=forgeLineOpen(selected,i),mod=a&&affixDef(a.id),bad=!!mod?.bad,st=mod?tierStars(mod,a.t):0,col=bad?'#ff7a85':mod?(MOD_TIER_COLOR[st]||'#fff0df'):'#a99fbb',g=this.add.graphics();this._forgeRowRects[i]={x:rx,y:ry,w:rw,h:rowH};
-      g.fillStyle(bad?0x3a1e26:mod?0x2f2438:0x221a2b,.97).fillRoundedRect(rx,ry,rw,rowH,12).lineStyle(mod?1.4:1,mod?Phaser.Display.Color.HexStringToColor(col).color:0x6d536d,mod?.85:.7).strokeRoundedRect(rx,ry,rw,rowH,12);this.menu.add(g);
+    /* v8.1.132 เจ้าของ: แถว mod รก (ปุ่ม 3 ปุ่ม × 6 แถว) → แตะแถวเพื่อเลือก · ปุ่ม Upgrade / 🖋️ / 🗑 ของแถวที่เลือกอยู่แถบเดียวด้านล่าง */
+    const filled=vis.filter(i=>{const a=affs[i];return a&&forgeLineOpen(selected,i)&&affixDef(a.id);}); let selL=this._forgeSel&&this._forgeSel.uid===selected.uid?this._forgeSel.line:null; if(!filled.includes(selL))selL=filled.length?filled[0]:null; this._forgeSel=selL==null?null:{uid:selected.uid,line:selL};
+    let ry=M.y+30;vis.forEach(i=>{const a=affs[i],open=forgeLineOpen(selected,i),mod=a&&affixDef(a.id),bad=!!mod?.bad,isSel=i===selL,st=mod?tierStars(mod,a.t):0,col=bad?'#ff7a85':mod?(MOD_TIER_COLOR[st]||'#fff0df'):'#a99fbb',g=this.add.graphics();this._forgeRowRects[i]={x:rx,y:ry,w:rw,h:rowH};
+      g.fillStyle(bad?0x3a1e26:isSel?0x3d2f4a:mod?0x2f2438:0x221a2b,.97).fillRoundedRect(rx,ry,rw,rowH,12).lineStyle(isSel?2.6:mod?1.4:1,isSel?0xf4d9a1:mod?Phaser.Display.Color.HexStringToColor(col).color:0x6d536d,isSel?1:mod?.85:.7).strokeRoundedRect(rx,ry,rw,rowH,12);this.menu.add(g);
       this.forgeText(rx+10,ry+4,'MOD '+(i+1)+(bad?'  ·  💀 BAD':mod?'  ·  Lv '+st+' / '+forgeStarCap(selected,mod):''),10,bad?'#ff9aa3':'#bfaecd',true,rw*.5);
       const two=rowH>=66,ph=two?Math.max(26,Math.min(34,rowH-42)):Math.min(34,rowH-14),py=ry+rowH-ph-6,pw=Math.min(190,Math.floor(rw*.5));
-      if(mod){ const cap=forgeStarCap(selected,mod),rm=this._forgeRm&&this._forgeRm.uid===selected.uid&&this._forgeRm.line===i;drawForgeModIcon(this,mod,rx+22,ry+rowH/2+6,24);
-        {const tw=two?rw-50:rw-40-pw-82,t=this.forgeText(rx+40,ry+Math.min(19,rowH-20),modLine(mod,a.v),13,col,true,0);if(t.width>tw){const k=Math.max(.75,tw/t.width);t.setScale?.(k);let q=String(t.text);while(q.length>4&&t.width*k>tw){q=q.slice(0,-1);t.setText(q+'…');}}}   /* v8.0.92 เจ้าของ: mod อ่านไม่ออก (ถูกตัด) → แถวสูงพอ = ข้อความเต็มบรรทัด ปุ่มอยู่บรรทัดล่าง */
-        if(bad)pill(rx+rw-pw-42,py,pw,ph,'Remove it with 🗑',false,null,lockedItem?null:()=>this.forgeUpgrade(i),'cap_'+i);
-        else if(st>=cap)pill(rx+rw-pw-42,py,pw,ph,forgeStarCapText(selected,mod),false,null,lockedItem?null:()=>this.forgeUpgrade(i),'cap_'+i);
-        else { const ck=forgeRowCur(i),up=forgeUpPrice(selected,i); pill(rx+rw-pw-42,py,pw,ph,'Upgrade · '+((currencyDef(ck)||{}).emoji||'🟢')+up,!lockedItem&&Save.currency(ck)>=up,'star_up',lockedItem?null:()=>this.forgeUpgrade(i),'up_'+i); }
-        if(!bad&&!lockedItem){ const mx=rx+rw-pw-42-36,mg=this.add.graphics();mg.fillStyle(0x23314a,1).fillRoundedRect(mx,py,30,ph,9).lineStyle(1,0x7fd8ff,.7).strokeRoundedRect(mx,py,30,ph,9);this.menu.add(mg);this.forgeText(mx+15,py+(ph-14)/2,'🖋️',12,'#fff0df',true,0,.5);this._zone(mx-2,py-4,34,ph+8,()=>this.forgeOpenMove(i));this.tapZones[this.tapZones.length-1].tag='mv_'+i; }   /* v8.1.84 ย้าย mod (Recipe Ink) */
-        const bx=rx+rw-36,bg=this.add.graphics();bg.fillStyle(rm?0x8d3b3e:0x2a2134,1).fillRoundedRect(bx,py,30,ph,9).lineStyle(1,rm?0xffb0a0:0x6d536d,.8).strokeRoundedRect(bx,py,30,ph,9);this.menu.add(bg);
-        if(!this.pwIcon?.('mod_remove',bx+15,py+ph/2,ph-8))this.forgeText(bx+15,py+(ph-14)/2,'🗑',12,'#fff0df',true,0,.5);
-        if(!lockedItem){this._zone(bx-4,ry,40,rowH,()=>this.forgeRemove(i));this.tapZones[this.tapZones.length-1].tag='rm_'+i;}
-        if(rm)this.forgeText(bx-6,ry+4,'Tap 🗑 again · 🟢'+price,10,'#ffb0a0',true,rw*.5,1); }
+      if(mod){ drawForgeModIcon(this,mod,rx+22,ry+rowH/2+6,24);
+        {const tw=rw-50,t=this.forgeText(rx+40,ry+Math.min(19,rowH-20),modLine(mod,a.v),13,col,true,0);if(t.width>tw){const k=Math.max(.75,tw/t.width);t.setScale?.(k);let q=String(t.text);while(q.length>4&&t.width*k>tw){q=q.slice(0,-1);t.setText(q+'…');}}}   /* ข้อความเต็มกว้างแถว (ไม่มีปุ่มในแถวแล้ว) */
+        if(isSel)this.forgeText(rx+rw-10,ry+4,'▼ actions below',9,'#f4d9a1',true,rw*.4,1);
+        this._zone(rx,ry,rw,rowH,()=>{ if(this._forgeSel?.line===i)return; Sfx.select?.(); this._forgeSel={uid:selected.uid,line:i}; this._forgeRm=null; this.buildCraftBench(); }); this.tapZones[this.tapZones.length-1].tag='row_'+i; }
       else if(open){ this.forgeText(rx+10,ry+Math.min(21,rowH-20),'Empty',13,'#a99fbb',true,rw-pw-30);
         pill(rx+rw-pw-6,py,pw,ph,'+ Add random mod · 🟢'+price,!lockedItem&&have>=price,'mod_add',null,null);
         if(!lockedItem){this._zone(rx,ry,rw,rowH,()=>this.forgeAdd(i));this.tapZones[this.tapZones.length-1].tag='add_'+i;} }
@@ -13933,6 +13930,16 @@ class Game extends Phaser.Scene {
         this._zone(rx,ry,rw,rowH,()=>{Sfx.select?.();this._mergeMain=selected.uid;this._mergeF=null;this._mergeCarry=undefined;this._mergeBack='craft';this.menuScreen='merge';this.buildMenuScreen();});this.tapZones[this.tapZones.length-1].tag='merge_'+i; }
       ry+=rowH+rg;});
     if(lockedItem)this.forgeButton(rx,Math.min(ry,M.y+M.h-50),rw,44,'🔓 Unlock to craft',()=>{if(Save.gearItem(selected.uid)){Save.toggleGearLock(selected.uid);Sfx.equipment('unlock');}this.buildCraftBench();},{kind:'primary',tag:'unlock'});
+    else if(selL!=null){ const i=selL,a=affs[i],mod=affixDef(a.id),bad=!!mod.bad,st=tierStars(mod,a.t),cap=forgeStarCap(selected,mod),rm=this._forgeRm&&this._forgeRm.uid===selected.uid&&this._forgeRm.line===i,ph=40,py=M.y+M.h-ph-8,bx=rx+rw-44,mx=bx-46,pw=(bad?bx:mx)-rx-8;
+      this.forgeText(rx+4,py-15,'MOD '+(i+1)+' · '+(bad?'💀 BAD':'Lv '+st+' / '+cap),10,bad?'#ff9aa3':'#f4d9a1',true,rw*.6);
+      if(bad)pill(rx,py,pw,ph,'Remove it with 🗑',false,null,()=>this.forgeUpgrade(i),'cap_'+i);
+      else if(st>=cap)pill(rx,py,pw,ph,forgeStarCapText(selected,mod),false,null,()=>this.forgeUpgrade(i),'cap_'+i);
+      else { const ck=forgeRowCur(i),up=forgeUpPrice(selected,i); pill(rx,py,pw,ph,'Upgrade · '+((currencyDef(ck)||{}).emoji||'🟢')+up,Save.currency(ck)>=up,'star_up',()=>this.forgeUpgrade(i),'up_'+i); }
+      if(!bad){ const mg=this.add.graphics();mg.fillStyle(0x23314a,1).fillRoundedRect(mx,py,40,ph,10).lineStyle(1,0x7fd8ff,.7).strokeRoundedRect(mx,py,40,ph,10);this.menu.add(mg);this.forgeText(mx+20,py+(ph-15)/2,'🖋️',13,'#fff0df',true,0,.5);this._zone(mx-2,py-4,44,ph+8,()=>this.forgeOpenMove(i));this.tapZones[this.tapZones.length-1].tag='mv_'+i; }
+      const bg=this.add.graphics();bg.fillStyle(rm?0x8d3b3e:0x2a2134,1).fillRoundedRect(bx,py,40,ph,10).lineStyle(1,rm?0xffb0a0:0x6d536d,.8).strokeRoundedRect(bx,py,40,ph,10);this.menu.add(bg);
+      if(!this.pwIcon?.('mod_remove',bx+20,py+ph/2,ph-10))this.forgeText(bx+20,py+(ph-15)/2,'🗑',13,'#fff0df',true,0,.5);
+      this._zone(bx-2,py-4,46,ph+8,()=>this.forgeRemove(i));this.tapZones[this.tapZones.length-1].tag='rm_'+i;
+      if(rm)this.forgeText(rx+rw-4,py-15,'Tap 🗑 again · 🟢'+price,10,'#ffb0a0',true,rw*.5,1); }
     else{const t=this.forgeText(M.x+M.w/2,M.y+M.h-20,'Add / 🗑 = 🟢 · Upgrade: row 1 🟢 · row 2 🍓 · row 3 🍯 · rows 4–6 ⭐ · 🖋️ = move a mod',10,'#9a8aa7',false,0,.5);if(t.width>M.w-16)t.setScale?.((M.w-16)/t.width);}
     if(this._forgePanel)this.drawForgePanel(selected,items);this.menu.setVisible(true);
   }
