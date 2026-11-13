@@ -22529,6 +22529,7 @@ class Game extends Phaser.Scene {
   touchEnemy(player,e){ if(!e.active||this.player.iframe>0||e._timeStop||(e._spawnGrace&&(this.time?.now||0)<e._spawnGrace))return;
     if(!e.shooter&&!e.acid&&!e.bomber&&!e.dasher&&this.anims.exists((e._enemyArtKey||e.texture.key)+'_attack'))this.enemyAction(e,'attack',340);
     if(this._inTutorial){ this.player.iframe=0.3; const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.())this.player.setVelocity(Math.cos(a)*180,Math.sin(a)*180); return; }   // ระหว่างสอน = ไม่เสียเลือด แค่กระเด้งเบา ๆ
+    if(typeof GM!=='undefined'&&GM.opt('god')){ this.player.iframe=0.3; return; }   /* v8.1.139 GM god: ชนมอนก็ไม่เสียเลือด (เดิมกันแค่กระสุน) */
     if(e.frostbite)this.moveSlowT=Math.max(this.moveSlowT||0,0.75);
     if(this.consumeShell()){ const a=Math.atan2(this.player.y-e.y,this.player.x-e.x); if(!this.titanChanneling?.())this.player.setVelocity(Math.cos(a)*220,Math.sin(a)*220); return; }   // v4.89.2: ชนมอนก็ใช้โล่ Candy Shell (เดิมบล็อกแค่กระสุน)
     this._noteHit(e.isBoss?'boss':e.isMini?'mini':e.isElite?'elite':'swarm',Number.isFinite(e.dmg)?e.dmg:10);
