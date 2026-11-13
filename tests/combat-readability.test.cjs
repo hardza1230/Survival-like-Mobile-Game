@@ -1,8 +1,9 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Presentation contracts only: no combat simulation or balance tuning.
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),crypto=require('crypto'),{EventEmitter}=require('events');
 const src=fs.readFileSync('game.js','utf8'),rows=JSON.parse(fs.readFileSync('assets/art/combat_readability/MANIFEST.json','utf8'));
-assert.equal(rows.length,7);for(const r of rows){const path='assets/art/combat_readability/'+r.key+'.webp',b=fs.readFileSync(path);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256);assert(src.includes(r.key+":'"+path+"'"));assert.equal(b.toString('ascii',12,16),'VP8L');const n=b.readUInt32LE(21);assert.equal((n&0x3fff)+1,r.width);assert.equal(((n>>>14)&0x3fff)+1,r.height);assert(n&(1<<28),'alpha');}
-const bolt=rows.find(r=>r.key==='cr_foe_bolt');for(const p of ['proj_foe','proj_enemy']){const b=fs.readFileSync('assets/generated/'+p+'.png');assert.equal(b.readUInt32BE(16),bolt.width);assert.equal(b.readUInt32BE(20),bolt.height);}assert.equal(bolt.width,128);
+assert.equal(rows.length,7);for(const r of rows){const path='assets/art/combat_readability/'+r.key+'.webp',b=fs.readFileSync(path);assert.equal(P.h(b),r.sha256);assert(src.includes(r.key+":'"+path+"'"));assert(['VP8L','VP8X','VP8 '].includes(b.toString('ascii',12,16)));const n=P.vp8l(b);assert.equal((n&0x3fff)+1,r.width);assert.equal(((n>>>14)&0x3fff)+1,r.height);assert(n&(1<<28),'alpha');}
+const bolt=rows.find(r=>r.key==='cr_foe_bolt');for(const p of ['proj_foe','proj_enemy']){const d=P.webp(fs.readFileSync('assets/generated/'+p+'.webp'));assert.equal(d.w,bolt.width);assert.equal(d.h,bolt.height);}assert.equal(bolt.width,128);
 for(const k of ['cr_player_ring','cr_warning_rim'])assert(rows.find(r=>r.key===k).centerAlpha<.035);
 function method(n){const i=src.indexOf('  '+n+'(');assert(i>=0,n);const m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(i+1));assert(m,n);return src.slice(i,i+1+m.index);}
 const Save={data:{settings:{vfx:1}}},Phaser={BlendModes:{ADD:1},Math:{Between:()=>0}};

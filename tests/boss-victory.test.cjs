@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Production presentation/lifecycle adapters only; no combat simulation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),src=fs.readFileSync('game.js','utf8');
 function method(n){const at=src.indexOf('\n  '+n+'(');assert(at>=0,n);const tail=src.slice(at+3),next=/\n  [A-Za-z_$][\w$]*\(/.exec(tail);return src.slice(at,at+3+next.index);}
@@ -29,6 +30,6 @@ for(let i=0;i<14;i++){
 for(const flag of ['recipeMode','riftMode','bossRush','_inTutorial','_pinnacleRun']){const s=scene();s[flag]=true;Save.data.unlockedStage=0;assert.equal(s.storyGateKeyTarget(),null);assert.equal(s.collectStoryGateKey(3),false);}
 {const s=scene({missing:true,red:true});Save.data.unlockedStage=2;s.queueBossVictory(pose,1,1);assert.equal(s.jobs.at(-1).ms,1150);run(s);assert.equal(Save.data.unlockedStage,3,'art failure never blocks the key');}
 {const s=scene();Save.data.unlockedStage=2;s.queueBossVictory(pose,1,1);s.clearBossVictory();run(s);assert.equal(Save.data.unlockedStage,2,'cancel before collection cannot unlock');}
-const crypto=require('node:crypto'),m=JSON.parse(fs.readFileSync('assets/art/boss_victory/MANIFEST.json','utf8'));for(const[p,h]of[[m.path,m.sha256],[m.source,m.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);
+const crypto=require('node:crypto'),m=JSON.parse(fs.readFileSync('assets/art/boss_victory/MANIFEST.json','utf8'));for(const[p,h]of[[m.path,m.sha256],[m.source,m.source_sha256]])assert.equal(P.h(fs.readFileSync(p)),h);
 assert(src.includes("'sc44_frame','bv46_key'"));assert(src.includes("if(k.startsWith('bv46_')"));
 console.log('Story gate key: all14 next-stage doors, idempotent collection/unlock, old progression/replays/finale/special modes, canceled/missing-art and original asset hashes passed');

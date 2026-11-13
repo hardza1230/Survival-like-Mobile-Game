@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,n);return source.slice(at,at+1+next.index);}
@@ -43,7 +44,7 @@ for(const key of textures){
  const id=key.startsWith('c3_')?key.replace('c3_e_','c3_').replace('_animated',''):key.replace(/^e_/,'s5_').replace('_animated','');
  for(const stage of key.startsWith('c3_')?[10,11,12,13,14]:[4])assert(stageSheets[stage].includes(key));
  const png=fs.readFileSync('assets/incoming/monster_batch6/'+id+'_sheet.png');assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1024);assert.equal(png[25],6);
- const b=fs.readFileSync(defs[key].url);assert.equal(b.toString('ascii',12,16),'VP8L');const packed=b.readUInt32LE(21),dim=defs[key].frame*4;assert(packed&(1<<28));assert.equal((packed&0x3fff)+1,dim);assert.equal(((packed>>>14)&0x3fff)+1,dim);
+ const b=fs.readFileSync(defs[key].url);assert(['VP8L','VP8X','VP8 '].includes(b.toString('ascii',12,16)));const packed=P.vp8l(b),dim=defs[key].frame*4;assert(packed&(1<<28));assert.equal((packed&0x3fff)+1,dim);assert.equal(((packed>>>14)&0x3fff)+1,dim);
  assert.equal(packing[id].bounds.length,16);for(const [x,y,w,h] of packing[id].bounds){assert(x>=10&&y>=10);assert.equal(y+h,packing[id].baseline);assert(x+w<=246);assert(Math.abs(x+w/2-128)<=.5);}
  assert.deepEqual(Array.from(clips.get(key+'_death').frames,f=>f.frame),[14,15]);assert.equal(clips.get(key+'_hurt').frames.length,2);
 }

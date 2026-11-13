@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Decode actual original RGBA sources independently: output padding cannot hide a bad source cut.
 const fs=require('node:fs'),assert=require('node:assert/strict'),zlib=require('node:zlib'),crypto=require('node:crypto');
 const manifest=JSON.parse(fs.readFileSync('assets/incoming/boss_body818/MANIFEST.json')),
@@ -18,5 +19,5 @@ for(const group of qa.sourcePartitions){const im=decode(group.path);assert.equal
 assert(recovered>=717,'recover parts lost at old rigid cuts');assert(excluded>=717,'remove neighboring parts assigned to old cells');assert(badOldCuts>0,'fixture genuinely includes source-grid errors');assert.equal(recovered,qa.recoveredPixels);assert.equal(excluded,qa.excludedNeighborPixels);assert.equal(checked,384);
 for(const key of ['mb1','mb2','mb3','mb4']){const a=manifest.assets.find(a=>a.base===key);assert(a);assert.equal(a.frames,12);assert(a.oldFrame<256);}
 assert(!manifest.assets.some(a=>a.base==='mb10_ancient_root_knight'),'completed sixteen-frame Root Knight stays intact');
-for(const a of manifest.assets){assert.equal(qa.frames.filter(f=>f.key===a.key).length,a.frames);const b=fs.readFileSync(a.path);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),a.sha256);}
+for(const a of manifest.assets){assert.equal(qa.frames.filter(f=>f.key===a.key).length,a.frames);const b=fs.readFileSync(a.path);assert.equal(P.h(b),a.sha256);}
 console.log('Boss818:384 source cells decoded; transparent SOURCE seams precede packing; actual old-cut losses/neighbor scraps recovered, complete exclusive source coverage, four static minis replaced, full16-frame Root Knight preserved');

@@ -57,6 +57,9 @@ jobs:
       - name: Assemble web assets (www/)
         run: npm run build:www
 
+      - name: Drop dev review pages from the app (~34 MB, CI checks only)
+        run: rm -f www/*-review.html www/*-review.js
+
       - name: Add Android platform
         run: npx cap add android
 

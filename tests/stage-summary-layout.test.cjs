@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Production result presentation only; no combat simulation or reward generation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8');
@@ -29,6 +30,6 @@ assert(!method('onStageClear').includes('this.playBoxOpening('),'no separate dup
 console.log('Stage results:8 viewports, quit/clear, hero/best gear/growth, all23 boxes+12materials+shovels in paged details, stars, Bestiary, stale/late ad guards, instant reveal/cleanup and recap replay passed');
 // Original generated donors and packed runtime files must match the delivered provenance.
 const crypto=require('node:crypto'),art=JSON.parse(fs.readFileSync('assets/art/stage_clear/MANIFEST.json','utf8'));
-assert.equal(art.length,2);for(const row of art){for(const [file,hash]of [[row.source,row.source_sha256],[row.path,row.sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),hash);assert(src.includes(row.key+":'"+row.path+"'"));}
+assert.equal(art.length,2);for(const row of art){for(const [file,hash]of [[row.source,row.source_sha256],[row.path,row.sha256]])assert.equal(P.h(fs.readFileSync(file)),hash);assert(src.includes(row.key+":'"+row.path+"'"));}
 assert.equal(art.find(v=>v.key==='sc44_background').width,1024);assert(art.find(v=>v.key==='sc44_frame').alpha);assert(method('stageArtKeys').includes("'sc44_background','sc44_frame'"));assert(method('summaryRewardPanel').includes('for(let i=0;i<5;i++)'),'fixed corners + central crest');
 console.log('Stage Clear ImageGen:2 original donor/final hashes, alpha frame, fixed15-cell slices, stage lazy loading and fallback passed');

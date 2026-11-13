@@ -1,11 +1,12 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Order56 art/owned presentation adapters only; no browser, battle loop or balance simulation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8'),base='assets/incoming/yuzu_seedlings/',run='assets/art/yuzu_seedlings/';
 const manifest=JSON.parse(fs.readFileSync(base+'MANIFEST.json')),runtime=JSON.parse(fs.readFileSync(run+'MANIFEST.json'));
-const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const sha=b=>P.h(b);
 assert.equal(manifest.length,9);assert.equal(runtime.length,9);
-for(const r of manifest){const b=fs.readFileSync(base+r.file);assert.equal(sha(b),r.sha256);assert.equal(b.length,r.bytes);assert.equal(b.readUInt32BE(16),r.width);assert.equal(b.readUInt32BE(20),r.height);assert.equal(r.width,r.frameWidth*r.frameCount);assert.equal(r.height,r.frameHeight);assert.equal(sha(fs.readFileSync(base+r.source)),r.sourceSha256);if(r.key.startsWith('yzs_seed_')&&r.key!=='yzs_seed_shot'){assert.equal(r.frameCount,8);assert.equal(r.anchor.y,120);}}
-for(const r of runtime){const b=fs.readFileSync(run+r.file);assert.equal(sha(b),r.sha256);assert.equal(b.length,r.bytes);assert.equal(r.frameWidth,manifest.find(p=>p.key===r.key).frameWidth/2);if(r.anchor.type==='foot')assert.equal(r.anchor.y,60,'runtime half-size foot anchor');assert(src.includes(run+r.file),r.key+' registered');}
+for(const r of manifest){const b=fs.readFileSync(base+r.file);assert.equal(sha(b),r.sha256);assert.equal(P.n(b),r.bytes);assert.equal(b.readUInt32BE(16),r.width);assert.equal(b.readUInt32BE(20),r.height);assert.equal(r.width,r.frameWidth*r.frameCount);assert.equal(r.height,r.frameHeight);assert.equal(sha(fs.readFileSync(base+r.source)),r.sourceSha256);if(r.key.startsWith('yzs_seed_')&&r.key!=='yzs_seed_shot'){assert.equal(r.frameCount,8);assert.equal(r.anchor.y,120);}}
+for(const r of runtime){const b=fs.readFileSync(run+r.file);assert.equal(sha(b),r.sha256);assert.equal(P.n(b),r.bytes);assert.equal(r.frameWidth,manifest.find(p=>p.key===r.key).frameWidth/2);if(r.anchor.type==='foot')assert.equal(r.anchor.y,60,'runtime half-size foot anchor');assert(src.includes(run+r.file),r.key+' registered');}
 const qa=JSON.parse(fs.readFileSync(base+'QA_REPORT.json'));assert(qa.files.every(r=>r.decoded&&r.exactSize));assert(qa.files.filter(r=>r.key!=='vfx_yzs_sour_burst').every(r=>r.transparentEdges&&r.alphaMin===0));assert(qa.runtimeDecodedBytes<1.2e6);
 const Save={data:{settings:{vfx:1,flash:true}}},ctx={Math,Map,Set,WeakMap,WeakSet,Save,Phaser:{Math:{Angle:{Wrap:x=>x}}}};vm.createContext(ctx);
 vm.runInContext(src.match(/^const YZ_SEED_COUNT=.*$/m)[0]+src.match(/^const YZ_SEED_KIND=.*$/m)[0],ctx);

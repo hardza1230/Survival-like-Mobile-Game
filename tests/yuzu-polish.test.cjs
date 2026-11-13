@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Isolated production action/AI/presentation adapters, no combat loop or gameplay simulation.
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto'),src=fs.readFileSync('game.js','utf8');
 const ctx={Math,Map,Set,WeakMap,WeakSet,inMapPt:(x,y)=>[Math.max(-1000,Math.min(1000,x)),Math.max(-1000,Math.min(1000,y))],Sfx:{bp:()=>true},Phaser:{Math:{Angle:{Wrap:a=>a}}}};vm.createContext(ctx);
@@ -25,6 +26,6 @@ for(const kind of ['pomelo','lime','bloodorange']){const{s,m}=scene(kind);m.down
 {const{s,m}=scene('bloodorange');for(const flavor of [0,1,2]){m.castFlavor=flavor;s.yuzuBeginAction(m,'garden',()=>{});m.action.t=m.action.wind+.01;assert.equal(s.yuzuVisualPose(m).frame,flavor);m.action=null;}}
 for(const[opt,frame]of[[{first:true},1],[{burn:true},3]]){const{s,m}=scene();s.yuzuShot(m,0,0,0,31,opt);assert.equal(s._yzShots[0].spr.frame,frame);
  assert.equal(s._yzShots[0].amount,31);assert.equal(s._yzShots[0].speed,440);}
-for(const a of JSON.parse(fs.readFileSync('assets/art/yuzu47/MANIFEST.json','utf8'))){assert.equal(crypto.createHash('sha256').update(fs.readFileSync(a.path)).digest('hex'),a.sha256);assert.equal(crypto.createHash('sha256').update(fs.readFileSync(a.source)).digest('hex'),a.source_sha256);assert.equal(a.alpha[0],0);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
+for(const a of JSON.parse(fs.readFileSync('assets/art/yuzu47/MANIFEST.json','utf8'))){assert.equal(P.h(fs.readFileSync(a.path)),a.sha256);assert.equal(P.h(fs.readFileSync(a.source)),a.source_sha256);assert.equal(a.alpha[0],0);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
 {const{s,m}=scene('pomelo');let released=0;s.yuzuBeginAction(m,'arrow',()=>released++);m.groundY=40;m.spr.y=-35;assert(m.action);s.yuzuTickAction(m,1);assert.equal(released,1);}
 console.log('Yuzu polish: frame-aligned once-only releases at30/60/120FPS, recovery/tempo/pause/stale ownership, Dash preemption, cast/roll poses (no fall/revive), fallback identity, sticky pooled targets/retreat/leash and new art hashes passed');

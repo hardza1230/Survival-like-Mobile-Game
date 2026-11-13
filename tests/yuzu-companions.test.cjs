@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Isolated owned-actor / damage / projectile / lifecycle contracts; no game or combat simulation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8');
@@ -49,7 +50,7 @@ for(const path of ['citrusGuardian','zestSwarm','juiceWorkshop']){const s=scene(
 const paths=a.BASIC_PATHS.yuzu;assert.deepEqual(Array.from(paths,p=>p.id),['zestSwarm','citrusGuardian','juiceWorkshop']);assert.deepEqual(Array.from(a.BASIC_ATTACKS.yuzu.upgrades,u=>u.id),['power','rate','family','splash','loyal','seedling']);
 for(const path of paths){assert.equal(path.upgrades.length,5);const nodes=a.talentBranch(path);assert.equal(nodes.length,10);const tal={};for(const n of nodes){assert(!n.soon);assert.equal(typeof n.apply,'function');tal[n.id]=1;}const p={};a.applyPathTalents(p,'yuzu',path.id,tal);assert.equal(Object.keys(p._pt).length,10);assert(nodes.every(n=>n.id.startsWith('pt_'+path.id+'_')));}
 // All runtime cells are source verified alpha and hero-lazy, keeping boot / other heroes isolated.
-for(const m of JSON.parse(fs.readFileSync('assets/art/yuzu_companions/MANIFEST.json'))){const p='assets/art/yuzu_companions/'+m.file,b=fs.readFileSync(p);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),m.sha256);assert(src.includes("url:'"+p+"',frame:256"));assert.equal(m.frames,m.key.startsWith('yz_fx_')?4:8);assert.equal(m.alpha[0],0);}
+for(const m of JSON.parse(fs.readFileSync('assets/art/yuzu_companions/MANIFEST.json'))){const p='assets/art/yuzu_companions/'+m.file,b=fs.readFileSync(p);assert.equal(P.h(b),m.sha256);assert(src.includes("url:'"+p+"',frame:256"));assert.equal(m.frames,m.key.startsWith('yz_fx_')?4:8);assert.equal(m.alpha[0],0);}
 assert(src.includes("if(k.startsWith('minion_')||k.startsWith('yz_'))return 'yuzu';"));
 assert(!src.includes('YUZU_START=')&&!src.includes('yuzuSprout(')&&!src.includes('yuzuThrow('));
 console.log('Yuzu companions: immortal single ownership, Hardy/family conversion, card-only growth, scoped taunt/aura, deterministic brews, shields, swept/pool-safe projectiles, buff starts, bounds/cleanup, stable cards/30 talents and 40 alpha frames passed');

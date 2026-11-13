@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Production menu helpers only; no browser, game capture or combat simulation.
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8');
@@ -24,6 +25,6 @@ for(const[w,h]of[[320,504],[360,576],[390,780],[430,868],[768,960],[844,326]])fo
  for(const o of nodes.filter(o=>o.type==='Text')){const left=o.x-o.width*o.originX;assert(left>=-.5&&left+o.width<=w+.5,'text outside viewport: '+o.text);}
 }
 for(const reduced of[true,false]){const{s,tweens}=scene(390,780,{reduced,huge:true});s._pwShown={cid:'momo',v:900};s.buildGearPower();assert.equal(tweens.length>0,!reduced);s.menuScreen='gear';for(const t of tweens)t.onUpdate?.();assert.equal(s.menuScreen,'gear');}
-/* v8.0.87 hash updated: enhance tip shows only until the first enhance (d.enhDone) */assert.equal(crypto.createHash('sha256').update(method('powerTips').replace(/\r\n/g,'\n').trim()).digest('hex'),'5a90a2090a3894d1ae5dc4139644e12a1c7c19e6c02d3dd8e635ead5b9935506','Power simulation/sorting/economy unchanged');
-const m=JSON.parse(fs.readFileSync('assets/incoming/power56/MANIFEST.json'));assert.equal(m.cells.length,6);assert.equal(m.frame,192);assert.equal(m.alpha[0],0);assert(m.alpha[1]>=250);for(const[p,hash]of[[m.path,m.sha256],[m.source,m.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),hash);assert(src.includes("power56_icons:{url:'"+m.path+"',frame:192}"));
+/* v8.0.87 hash updated: enhance tip shows only until the first enhance (d.enhDone) */assert.equal(P.h(method('powerTips').replace(/\r\n/g,'\n').trim()),'5a90a2090a3894d1ae5dc4139644e12a1c7c19e6c02d3dd8e635ead5b9935506','Power simulation/sorting/economy unchanged');
+const m=JSON.parse(fs.readFileSync('assets/incoming/power56/MANIFEST.json'));assert.equal(m.cells.length,6);assert.equal(m.frame,192);assert.equal(m.alpha[0],0);assert(m.alpha[1]>=250);for(const[p,hash]of[[m.path,m.sha256],[m.source,m.source_sha256]])assert.equal(P.h(fs.readFileSync(p)),hash);assert(src.includes("power56_icons:{url:'"+m.path+"',frame:192}"));
 console.log('Power hub: six viewport layouts, 2×2/landscape routes, no overlapping targets, complete costs/risk, all waiting actions, empty/missing-art/large values/reduced/stale gain animation, source hashes and identical gain calculation passed');

@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8'),kit='assets/incoming/battle_hud_top/',man=JSON.parse(fs.readFileSync(kit+'MANIFEST.json','utf8'));
 const ctx={window:{},navigator:{deviceMemory:8},localStorage:{getItem(){return null;}},STAGE_DECOR:{}};vm.createContext(ctx);
@@ -5,10 +6,10 @@ vm.runInContext(src.slice(src.indexOf('const ASSET_IMAGES ='),src.indexOf('class
 const {ASSET_IMAGES,TEMPLE_UI,HUD_KEYS,STAGE_SHEETS,artClass,bootKeep}=ctx.r;
 const miniDir='assets/incoming/hud_ink820/',mini=JSON.parse(fs.readFileSync(miniDir+'MANIFEST.json','utf8')),overrides=Object.fromEntries(mini.map(e=>[e.key,e]));
 assert.equal(mini.length,4);
-for(const e of mini){const b=fs.readFileSync(miniDir+e.file),w=fs.readFileSync(e.runtime_file);assert.equal(b.length,e.bytes);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),e.sha256);assert.equal(w.length,e.runtime_bytes);assert.equal(crypto.createHash('sha256').update(w).digest('hex'),e.runtime_sha256);}
+for(const e of mini){const b=fs.readFileSync(miniDir+e.file),w=fs.readFileSync(e.runtime_file);assert.equal(P.n(b),e.bytes);assert.equal(P.h(b),e.sha256);assert.equal(P.n(w),e.runtime_bytes);assert.equal(P.h(w),e.runtime_sha256);}
 // 1. ต้นฉบับตรง MANIFEST · WebP 50% · ลงทะเบียนแบบ stage-lazy (ไม่โหลดตอนบูต) · cell/nineSlice ครึ่งหนึ่งของต้นฉบับ
 assert.equal(man.length,18);assert.equal(JSON.stringify(HUD_KEYS),JSON.stringify(man.map(e=>e.key)));
-for(const e of man){ const b=fs.readFileSync(kit+e.file);assert.equal(b.length,e.bytes,e.key);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),e.sha256,e.key);
+for(const e of man){ const b=fs.readFileSync(kit+e.file);assert.equal(b.length,e.bytes,e.key);assert.equal(P.h(b),e.sha256,e.key);
   const active=overrides[e.key]||e,url=active.runtime_file||'assets/art/hud/'+e.key+'.webp',w=fs.readFileSync(url);assert.equal(w.subarray(8,12).toString(),'WEBP');assert.equal(ASSET_IMAGES[e.key],url);assert(src.includes(`'${url}'`),'literal URL '+e.key);
   assert.equal(bootKeep(e.key),false);assert.equal(artClass(e.key,url),'stage',e.key);assert(STAGE_SHEETS.every(s=>s.includes(e.key)),'every stage loads '+e.key);
   assert.equal(JSON.stringify(TEMPLE_UI[e.key]),JSON.stringify([active.frame_width/2,active.frame_height/2,active.frames,active.nineSlice?active.nineSlice.map(v=>Math.floor(v/2)):null]),e.key); }

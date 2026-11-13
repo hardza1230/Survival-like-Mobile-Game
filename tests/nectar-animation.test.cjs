@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,n);return source.slice(at,at+1+next.index);}
@@ -44,7 +45,7 @@ assert(stages[7].includes('ch2_nectar_enemy_atlas'));assert(stages[7].includes('
 const packing=JSON.parse(fs.readFileSync('assets/incoming/ch2_s3_animations/PACKING.json','utf8'));
 for(const id of ids){const stem='c23_'+id,key=stem+'_animated';assert(stages[7].includes(key));for(const i of [4,5,6,8,9,10])assert(!stages[i].includes(key));
  const png=fs.readFileSync('assets/incoming/ch2_s3_animations/'+stem+'_sheet.png');assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1024);assert.equal(png[25],6);
- const b=fs.readFileSync(defs[key].url);assert.equal(b.toString('ascii',12,16),'VP8L');const dim=b.readUInt32LE(21);assert(dim&(1<<28));assert.equal((dim&0x3fff)+1,1024);assert.equal(((dim>>>14)&0x3fff)+1,1024);
+ const b=fs.readFileSync(defs[key].url);assert(['VP8L','VP8X','VP8 '].includes(b.toString('ascii',12,16)));const dim=P.vp8l(b);assert(dim&(1<<28));assert.equal((dim&0x3fff)+1,1024);assert.equal(((dim>>>14)&0x3fff)+1,1024);
  assert.equal(packing[stem].bounds.length,16);for(const [x,y,w,h] of packing[stem].bounds){assert(x>=10&&y>=10);assert.equal(y+h,236);assert(x+w<=246);assert(Math.abs(x+w/2-128)<=.5);}
  assert.deepEqual(Array.from(clips.get(key+'_death').frames,f=>f.frame),[14,15]);
 }

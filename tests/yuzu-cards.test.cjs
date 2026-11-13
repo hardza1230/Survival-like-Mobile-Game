@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Isolated presentation/save/asset contracts; no browser or combat simulation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const src=fs.readFileSync('game.js','utf8');
@@ -6,11 +7,11 @@ function method(n){const at=src.indexOf('\n  '+n+'(');assert(at>0,n);const next=
 const ctx={Math,Save:{data:{}},STAGE_SHEETS:[],STAGE_DECOR:{},RUBY_STAGE_KEYS:[]};vm.createContext(ctx);
 vm.runInContext(block('const ASSET_IMAGES = {','const SKILL_ICON =')+block('const YUZU_CARD_ICONS=','const BASIC_EVO_DESC=')+block('const BASIC_ATTACKS = {','// 🛤 Build Path')+block('const BASIC_PATHS={','// 🍯 Flavor Infusion')+block('const UNIQUE_CARDS=[','const CORE_UNLOCK_STAGE')+block('function recipeCards(','function recipeSeen(')+';this.a={ASSET_IMAGES,YUZU_CARD_ICONS,yuzuCardArt,YUZU_EVOLUTIONS,BASIC_ATTACKS,BASIC_PATHS,UNIQUE_MUTS,recipeCards};',ctx);
 const a=ctx.a,Scene=vm.runInContext('class Scene{'+['cardArtKey','basicAttackInfo','stageArtKeys'].map(method).join('\n')+'}Scene',ctx);
-const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const sha=b=>P.h(b);
 const manifest=JSON.parse(fs.readFileSync('assets/art/build_cards/yuzu59/MANIFEST.json'));
 assert.equal(manifest.icons.length,48);assert.equal(new Set(manifest.icons.map(x=>x.sha256)).size,48,'every icon is distinct');
 assert.equal(manifest.decodedBytes,48*96*96*4);
-for(const r of manifest.icons){assert.equal(sha(fs.readFileSync(r.file)),r.sha256,r.id);assert.equal(sha(fs.readFileSync(r.source)),r.sourceSha256,r.source);assert.deepEqual(r.size,[96,96]);assert(Object.values(a.ASSET_IMAGES).includes(r.file),r.id+' registered');}
+for(const r of manifest.icons){assert.equal(P.sha(r.file),r.sha256,r.id);assert.equal(sha(fs.readFileSync(r.source)),r.sourceSha256,r.source);assert.deepEqual(r.size,[96,96]);assert(Object.values(a.ASSET_IMAGES).includes(r.file),r.id+' registered');}
 const covered=new Set(),pathIds=['citrusGuardian','zestSwarm','juiceWorkshop'];
 const s=new Scene();s.character='yuzu';s.basicAttack={character:'yuzu'};s.textures={exists:k=>!!a.ASSET_IMAGES[k]};
 for(const path of pathIds){

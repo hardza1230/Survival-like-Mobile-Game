@@ -7,8 +7,9 @@ s.rootKnightPose(b,1,1000);assert.equal(plays.at(-1),'mb10_ancient_root_knight_c
 s.rootKnightPose(b,'charge',1000);assert.equal(plays.at(-1),'mb10_ancient_root_knight_charge');const n=plays.length;b.texture.key='other';timers.at(-1)();assert.equal(plays.length,n);b.texture.key='mb10_ancient_root_knight';b.hp=0;s.rootKnightMotion(b);assert.equal(plays.length,n);
 assert(source.includes("anim:{start:4,frames:4,rate:7}"));assert(source.includes("deathFrame=e.texture.key==='mb10_ancient_root_knight'?15:"));assert(source.includes("if(keys.includes('mb10_ancient_root_knight'))registerRootKnightAnimations(this)"));
 console.log('Root Knight: boot/lazy registration, distinct motion/attacks, timer interruption, pooled/dead guards and defeat frame passed');
-// Decode the production PNG to catch cutouts touching cell edges or neighboring scraps.
-const png=fs.readFileSync('assets/mb10_ancient_root_knight_sheet.png'),chunks=[];let pos=8;
+// Decode the delivered PNG master (v8.1.139: runtime is now WebP; master kept in assets/incoming/legacy_png) to catch cutouts touching cell edges or neighboring scraps.
+{const P=require('./_packed.cjs'),d=P.webp(fs.readFileSync('assets/mb10_ancient_root_knight_sheet.webp'));assert.equal(d.w,1024);assert.equal(d.h,1024);}
+const png=fs.readFileSync('assets/incoming/legacy_png/mb10_ancient_root_knight_sheet.png'),chunks=[];let pos=8;
 while(pos<png.length){const n=png.readUInt32BE(pos),tag=png.toString('ascii',pos+4,pos+8);if(tag==='IDAT')chunks.push(png.subarray(pos+8,pos+8+n));pos+=12+n;}
 assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1024);assert.equal(png[25],6);
 const raw=require('node:zlib').inflateSync(Buffer.concat(chunks)),stride=4096,pixels=Buffer.alloc(1024*stride);let at=0;

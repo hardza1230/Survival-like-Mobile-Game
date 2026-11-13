@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Orders50–54: production dimensions/hash contract, page isolation and animation lifetime.
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),crypto=require('crypto'),{EventEmitter}=require('node:events');
 const src=fs.readFileSync('game.js','utf8'),rows=JSON.parse(fs.readFileSync('assets/art/menu_orders/MANIFEST.json','utf8'));
@@ -9,7 +10,7 @@ const page={merge_forge:'merge',login_daily:'daily',awards:'achievements',codex_
 const RETIRED=new Set(['ic_lucky','vfx_lucky']);   // v8.0.83 Simple Forge has no lucky refund: art kept on disk, no longer loaded
 for(const r of rows){if(RETIRED.has(r.key)){assert(!ctx.group('craft').test('assets/art/menu_orders/'+r.key+'.webp'),r.key+' retired: not decoded on Forge');continue;}
   const url='assets/art/menu_orders/'+r.key+'.webp',bytes=fs.readFileSync(url);
-  assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256,r.key+' runtime bytes');
+  assert.equal(P.sha(url,bytes),r.sha256,r.key+' runtime bytes');
   assert(src.includes(r.key+":'"+url+"'"),'literal path required by web build: '+r.key);
   assert.deepEqual(defs[r.key].slice(0,4),[r.frameWidth,r.frameHeight,r.columns,r.nineSlice]);assert.equal(defs[r.key][4],r.frames);
   assert(ctx.group(page[r.source]).test(url),r.key+' loads on its page');

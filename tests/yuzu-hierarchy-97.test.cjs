@@ -1,7 +1,8 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Isolated production ownership/card/presentation adapters; no game loop or balance simulation.
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');const src=fs.readFileSync('game.js','utf8');
 const manifest=JSON.parse(fs.readFileSync('assets/art/yuzu_hierarchy97/MANIFEST.json'));assert.equal(manifest.assets.length,4);assert.equal(manifest.decodedBytes,425984);
-for(const r of manifest.assets){for(const[p,h]of[[r.path,r.sha256],[r.source,r.sourceSha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);assert.equal(r.frames,8);assert.equal(r.alpha[0],0);assert(src.includes("url:'"+r.path+"',frame:"+r.frame));}
+for(const r of manifest.assets){for(const[p,h]of[[r.path,r.sha256],[r.source,r.sourceSha256]])assert.equal(P.h(fs.readFileSync(p)),h);assert.equal(r.frames,8);assert.equal(r.alpha[0],0);assert(src.includes("url:'"+r.path+"',frame:"+r.frame));}
 const Save={data:{settings:{vfx:1}}},ctx={Save,Math,Map,Set,WeakMap,WeakSet,inMapPt:(x,y)=>[Math.max(-1000,Math.min(1000,x)),Math.max(-1000,Math.min(1000,y))],yuzuCardArt:()=> 'yc59_evo_lime',SKILL_ICON:{test:'yc59_power'},BASIC_PATHS:{yuzu:[{id:'zestSwarm',upgrades:[]}]},rollRarity:()=>({potency:1,ranks:1,color:0xffeeaa}),Phaser:{Math:{Angle:{Wrap:x=>x}},Utils:{Array:{Shuffle:a=>a}}}};vm.createContext(ctx);
 vm.runInContext(['YZ_SEED_COUNT','YZ_SEED_KIND','YUZU_FORMS'].map(n=>src.match(new RegExp('^const '+n+'=.*$','m'))[0]).join('\n'),ctx);
 const C=vm.runInContext('(class{'+src.slice(src.indexOf('  // Citrus Companions:'),src.indexOf('  tickFR(dt){'))+'})',ctx);ctx.Base=C;

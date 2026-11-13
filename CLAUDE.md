@@ -1,14 +1,16 @@
 # Version line
 
-Current release: **8.1.138**. Next release:8.1.139. Fetch the deploy branch before new work.
+Current release: **8.1.139**. Next release:8.1.140. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.138 — owner: Glacier Bloom / Barrage card pictures swapped + art order for relics and vault picks
+# Latest delivery: v8.1.139 — owner: bug button + Supabase reports, app under the Play 200 MB limit, QA bot
+
+**Bug reporter:** `QA` module (after CLOUD_KEY): `snapshot()` (stage/hero/path/cards/relics/mission/HP/fps/texMB/heap/device/last 20 errors) · `shot()` JPEG ≤480 px via renderer.snapshot → Supabase Storage `qa-shots` · row into `qa_reports` (insert-only RLS, `Prefer: return=minimal`) · offline queue `mochi_qa_q` (15) flushed on Game create · auto report of new errors (window error / unhandledrejection / console.error, max 5 per session) · DOM 🐞 button (left 46%) opens a modal (kinds Bug/Stuck/Looks wrong/Too hard/Too easy/Idea), pauses play via state `qa`. `BETA_BUILD=true` → button for everyone + `Tele` run_stats on; set false at launch (button GM-only). Tables `qa_reports` + `run_stats` + bucket `qa-shots` created (migration `qa_reports_and_run_stats`). 12-month retention job NOT yet scheduled (owner approval pending). Container cannot reach supabase.co — verified via SQL as anon (insert ok, select 0). GM god now also blocks contact damage.
+**App size:** www without `*-review.*` 439 → **180 MB zipped**. `scripts/compress-assets.py` recompressed 2,978 WebP/MP3 in place (WebP q80/q75 >150 KB, music 80k, voice 56k mono, SFX 96k), 479 PNG → WebP (game.js URLs + kitchen_loader.css updated, PNGs removed; root-knight master kept in `assets/incoming/legacy_png`), old fallback music `bgm/min` + `bgm_ch2/ch3` removed (`bgmKey` falls back to `bgm_sNN/bNN`). Ledger `assets/RECOMPRESSED.json` (original sha/bytes + packed sha); tests use `tests/_packed.cjs` (`h/n/eq/same/webp/vp8l`) so delivery hash checks stay strict. validate-game-content reads WebP via `W()`. android.yml / release-aab.yml drop review pages. Packing standard in skill wire-art §2b + CLAUDE.md §3.
+**QA:** `scripts/qa-autoplay.cjs` bot (round 1: 14/15 stages, 0 errors, 0 stuck; `docs/QA_CHECKLIST.md`), reports through `QA.report(...,'bot')`. Privacy policy updated (stats, reports, AdMob, 12-month retention). New test qa-report; ~46 tests moved to the ledger helper.
+
+# Previous delivery: v8.1.138 — owner: Glacier Bloom / Barrage card pictures swapped + art order for relics and vault picks
 
 Owner: the Mint Glacier Bloom and Barrage painted cards read swapped (blizzard streaks = Glacier snowstorm, bursting ice spikes = Barrage shards). Delivered files match order 80, so the code maps them: `PATHCARD_ART={glacier:'pathcard80_barrage',barrage:'pathcard80_glacier'}` + `pathCardKey(id)` used by the routing check, `drawPathCards` and `stageArtKeys`. Instinct cards (`condRelicCard`) now use `relic_streak` / `relic_laststand` icons. New art order 81 (`docs/art_orders/81_RELICS_SPECIAL_ICONS.md`): 8 missing relic icons, 36 Modifier icons (`mod_<id>`), 5 Trade-off icons (`trade_<id>`), 3 Yuzu path cards, optional redo of Cocoa Titan/Dash Boxer cards (they look like Fire Fist). Test special-picks80-art (swap map).
-
-# Previous delivery: v8.1.137 — owner: new art arrived (order 80 special picks)
-
-Merged `asset-delivery/special-picks80` (21/21, sha/bytes verified). `scripts/pack-special-picks80.py` → `assets/art/special_picks80/` 1.4 MB WebP (vault bg 540×756, book 768×480, page glow 6×288×360 black→luminance alpha, path cards 384×576, pedestal/anvil as delivered). Keys in ASSET_IMAGES (+ `book80_page_glow` ASSET_FX), `artClass` → 'stage'; `stageArtKeys` adds vault/forge/book/back + only the current hero's 3 `pathcard80_<pathId>` (≈4–8 MB decoded per run). Vault/forge already used the art (v8.1.122). New `drawRecipeBook` (2 Mutation options → left/right page text inside the textRects, tap = page glow anim, tap again = pick; not in tutorial) and `drawPathCards` (3 backs flip to painted fronts at 260+320·i ms, name on the bottom band, tap = zoom + info panel with pathStyle/desc/carry, tap again = pick; taps wait until all are face up). Both return false without art → old cards (Yuzu paths have no painted cards). New test special-picks80-art.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด
@@ -24,6 +26,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - `index.html` (โหลด phaser + game.js) · `game.js` = โค้ดเกมทั้งหมด (~21k บรรทัด) · `phaser.min.js` 3.80.1
 - `assets/` รูป/เสียงจริง · คีย์อยู่ใน `ASSET_IMAGES` / `ASSET_SHEETS` / `ASSET_FX` / `ASSET_AUDIO` / `TEMPLE_UI` (URL ต้องเป็น literal `'assets/…'` เพราะ build-www คัดลอกเฉพาะที่เจอ) · อาร์ตเข้า `assets/incoming/<batch>/` → pack script `scripts/pack-*.py` → `assets/art/<batch>/` (ใช้ skill wire-art)
 - โหลดอาร์ตใหม่แบบ lazy เสมอ (stage/menu/hero) ห้าม boot — งบ GPU บูตเต็ม ~300 MB
+- **ขนาดแอป (Google Play ไฟล์หลัก ≤ 200 MB):** ทั้งเกมที่ส่งไปต้อง < 190 MB · มาตรฐานแพ็ก (skill wire-art §2b): WebP q80 (q75 ถ้า >150 KB) · ความละเอียด ≤ 2× ขนาดบนจอ · เพลง 80k · เสียงพูด 56k โมโน · SFX 96k · ตรวจด้วย `python3 scripts/compress-assets.py --dry` · หน้า `*-review.*` ไม่ใส่ในแอป (android.yml / release-aab.yml ลบก่อน sync)
 - `docs/art_orders/` ใบสั่งอาร์ต (README = ตารางสถานะ) · `docs/audio_orders/` ใบสั่งเสียง · `docs/LORE.md`/`STORY_CANON.md` เนื้อเรื่อง · `docs/HANDOFF_NEXT_AI.md`
 - `tests/*.cjs` (method-extract vm tests; เมธอดใหม่ต้องเพิ่มในรายการ extract ของเทสที่เกี่ยว) · `npm run check` รวมทุกเทส
 - Build: `scripts/build-www.mjs` → www/ (esbuild minify) · `.github/workflows/pages.yml` deploy GitHub Pages (live update ของ debug APK ผ่าน `server.url`) · `android.yml` debug APK · `release-aab.yml` signed AAB (`docs/RELEASE_SIGNING.md`)

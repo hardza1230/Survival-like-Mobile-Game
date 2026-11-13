@@ -39,7 +39,7 @@
 #game-loader .k-city{background-image:url('city.webp');transform:scale(1.08)}
 #game-loader .k-flowers{background-image:url('foreground.webp');opacity:0;transform:scale(1.13)}
 #game-loader .k-petals{position:absolute;inset:0;opacity:0;overflow:hidden}
-#game-loader .k-petals i{position:absolute;left:var(--x);top:-8%;width:clamp(16px,5vw,36px);height:clamp(16px,5vw,36px);background:url('../procedural_replacements/sakura_petal.png') center/contain no-repeat;animation:k-petal-fall var(--speed) linear var(--delay) infinite;will-change:transform}
+#game-loader .k-petals i{position:absolute;left:var(--x);top:-8%;width:clamp(16px,5vw,36px);height:clamp(16px,5vw,36px);background:url('../procedural_replacements/sakura_petal.webp') center/contain no-repeat;animation:k-petal-fall var(--speed) linear var(--delay) infinite;will-change:transform}
 #game-loader .k-petals i:nth-child(1){--x:5%;--speed:4.1s;--delay:-2s}
 #game-loader .k-petals i:nth-child(2){--x:18%;--speed:5.2s;--delay:-.4s}
 #game-loader .k-petals i:nth-child(3){--x:31%;--speed:4.7s;--delay:-3s}

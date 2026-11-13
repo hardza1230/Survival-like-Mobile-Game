@@ -1,9 +1,10 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8');
 const crypto=require('node:crypto'),kit='assets/incoming/mint_winter_update/',manifest=JSON.parse(fs.readFileSync(kit+'MANIFEST.json','utf8'));
 assert.equal(manifest.assets.length,4);
-for(const a of manifest.assets){const raw=fs.readFileSync(kit+a.source),packed=fs.readFileSync(a.runtime);assert.equal(raw.readUInt32BE(16),a.width);assert.equal(raw.readUInt32BE(20),a.height);assert.equal(packed.subarray(0,4).toString(),'RIFF');assert.equal(packed.subarray(8,12).toString(),'WEBP');assert.equal(crypto.createHash('sha256').update(packed).digest('hex'),a.sha256);}
-for(const raw of manifest.raw){assert.equal(crypto.createHash('sha256').update(fs.readFileSync(kit+raw.file)).digest('hex'),raw.sha256,'ImageGen originals preserved');}
+for(const a of manifest.assets){const raw=fs.readFileSync(kit+a.source),packed=fs.readFileSync(a.runtime);assert.equal(raw.readUInt32BE(16),a.width);assert.equal(raw.readUInt32BE(20),a.height);assert.equal(packed.subarray(0,4).toString(),'RIFF');assert.equal(packed.subarray(8,12).toString(),'WEBP');assert.equal(P.h(packed),a.sha256);}
+for(const raw of manifest.raw){assert.equal(P.h(fs.readFileSync(kit+raw.file)),raw.sha256,'ImageGen originals preserved');}
 function method(n){const a=src.indexOf('  '+n+'('),m=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(src.slice(a+1));assert(a>=0&&m,n);return src.slice(a,a+1+m.index);}
 const Save={data:{settings:{vfx:1},character:'mint'}};
 const C=vm.runInNewContext('class C{'+['drawGlacierSnow','tickGlacierSnow','emitLanceDistanceShards','tickLobbyVoice','menuRasterPanel'].map(method).join('\n')+'\n}C',{Save,LOBBY_LINES:{mint:[['says','Hello'],['thinks','Snow']]},CHARACTERS:{mint:{name:'Mint'}}});

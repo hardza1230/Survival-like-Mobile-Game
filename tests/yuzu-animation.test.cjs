@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Production visual adapters only; no combat, enemy spawning or gameplay updates.
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto'),src=fs.readFileSync('game.js','utf8');
 const ctx={Math,Map,Set,WeakMap,WeakSet};vm.createContext(ctx);const at=src.indexOf('  // Citrus Companions: one owned actor'),end=src.indexOf('  tickFR(dt){');
@@ -21,7 +22,7 @@ for(const kind of['pomelo','lime','bloodorange']){
 {const{s,m}=scene('pomelo',true);m.motion={kind:'roll',t:.4,prep:.12};for(let i=0;i<30;i++)s.yuzuVisual(m,1/30);assert.equal(m.spr.rotation,0);assert.equal(m._yzVisual.sx,1);assert.equal(m._yzVisual.bob,0);m.motion=null;m.groundY=m.spr.y+75;s.yuzuVisual(m,.03);assert(m.shadow.ellipse.w<64*.62);}
 {const{s,m}=scene();s.yuzuVisual(m,.02);const all=[m.spr,m.shadow,m.label,m.bar];s.clearYuzuCrew();assert(all.every(o=>!o.active));}
 const manifest=JSON.parse(fs.readFileSync('assets/art/yuzu48/MANIFEST.json','utf8'));assert.equal(manifest.length,3);
-for(const a of manifest){for(const[p,h]of[[a.path,a.sha256],[a.source,a.source_sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h);assert.equal(a.frames,16);assert.equal(a.frame,256);assert.equal(a.alpha[0],0);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
+for(const a of manifest){for(const[p,h]of[[a.path,a.sha256],[a.source,a.source_sha256]])assert.equal(P.h(fs.readFileSync(p)),h);assert.equal(a.frames,16);assert.equal(a.frame,256);assert.equal(a.alpha[0],0);assert(a.key.startsWith('yz_'));assert(src.includes("url:'"+a.path+"',frame:256"));}
 console.log('Yuzu animation:48frames/hash contracts,30/60/120FPS anchored feet, movement-driven gait/no treadmill, pause/reduced motion/shadow cleanup, release-frame parity/fallback/flavors and untouched gameplay coordinates passed');
 // v50 production presentation: no HP bar, one small timed-buff ring, stable foot/shadow.
 for(const kind of ['pomelo','lime','bloodorange'])for(const red of [false,true]){

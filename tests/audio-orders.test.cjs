@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8'),counts={menu_progress:39,battle_events:32,yuzu:20,story_music:15,voices:33};let total=0;
 for(const [kit,count] of Object.entries(counts)){
@@ -5,25 +6,25 @@ for(const [kit,count] of Object.entries(counts)){
  assert.equal(requests.length,count);assert.equal(manifest.length,count);assert.equal(prompts.length,count);assert.equal(qa.delivered,allManifest.length);
  assert.equal(new Set(manifest.map(r=>r.key)).size,count);
  for(const r of manifest){
-  const path=`assets/audio/${kit}/${r.file}`,bytes=fs.readFileSync(path),hash=crypto.createHash('sha256').update(bytes).digest('hex');
-  assert.equal(bytes.length,r.bytes);assert.equal(hash,r.sha256);assert(bytes.length>500);assert(src.includes(`${r.key}:'${path}'`),'literal build path');
-  assert.deepEqual(bytes,fs.readFileSync(root+'/'+r.file));
+  const path=`assets/audio/${kit}/${r.file}`,bytes=fs.readFileSync(path),hash=P.sha(path,bytes);
+  assert.equal(P.bytes(path,bytes),r.bytes);assert.equal(hash,r.sha256);assert(bytes.length>500);assert(src.includes(`${r.key}:'${path}'`),'literal build path');
+  assert(P.same(path,fs.readFileSync(root+'/'+r.file)),path);
   const q=qa.files.find(x=>x.key===r.key),request=requests.find(x=>x.key===r.key),prompt=prompts.find(x=>x.key===r.key);
   assert(q.passed&&q.decode&&q.nonSilent);assert(q.peakDbtp<=-1);assert(Math.abs(q.durationMs-request.durationMs)<2);assert(r.loop||q.leadingSilenceMs<5);
   assert.equal(prompt.provider,'ElevenLabs');assert.equal(prompt.endpoint,'sound-generation');assert.equal(prompt.parameters.text,request.prompt);
-  const donor=fs.readFileSync(root+'/'+prompt.file);assert.equal(crypto.createHash('sha256').update(donor).digest('hex'),prompt.sha256);
+  const donor=fs.readFileSync(root+'/'+prompt.file);assert.equal(P.h(donor),prompt.sha256);
  }
  total+=manifest.length;
 }
 assert.equal(total,139);
 const musicRoot='assets/incoming/audio_story_music',music=JSON.parse(fs.readFileSync(musicRoot+'/MUSIC_MANIFEST.json')),musicQa=JSON.parse(fs.readFileSync(musicRoot+'/MUSIC_QA_REPORT.json')),musicPrompts=JSON.parse(fs.readFileSync(musicRoot+'/PROMPTS.json'));
 assert.equal(music.length,6);assert.equal(new Set(music.map(x=>x.key)).size,6);
-for(const r of music){const bytes=fs.readFileSync(musicRoot+'/'+r.file),q=musicQa.files.find(x=>x.key===r.key),p=musicPrompts.find(x=>x.key===r.key);assert.equal(bytes.length,r.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256);const runtime='assets/audio/story_music/'+r.file;assert(src.includes(runtime));assert.deepEqual(fs.readFileSync(runtime),bytes);assert(q?.passed&&q.decode&&q.nonSilent&&q.channels===2&&q.sampleRate===44100&&q.peakDbtp<=-1);assert(p?.provider==='ElevenLabs'&&p.endpoint==='music');const donor=fs.readFileSync(musicRoot+'/'+p.file);assert.equal(crypto.createHash('sha256').update(donor).digest('hex'),p.sha256);}
+for(const r of music){const bytes=fs.readFileSync(musicRoot+'/'+r.file),q=musicQa.files.find(x=>x.key===r.key),p=musicPrompts.find(x=>x.key===r.key);assert.equal(P.n(bytes),r.bytes);assert.equal(P.h(bytes),r.sha256);const runtime='assets/audio/story_music/'+r.file;assert(src.includes(runtime));assert(P.same(runtime,bytes),runtime);assert(q?.passed&&q.decode&&q.nonSilent&&q.channels===2&&q.sampleRate===44100&&q.peakDbtp<=-1);assert(p?.provider==='ElevenLabs'&&p.endpoint==='music');const donor=fs.readFileSync(musicRoot+'/'+p.file);assert.equal(P.h(donor),p.sha256);}
 
 // A07 source delivery: the provisional cast and authored text remain auditable without boot-loading dialogue.
 const voiceRoot='assets/incoming/audio_voice_acting',voiceManifest=JSON.parse(fs.readFileSync(voiceRoot+'/DIALOGUE_MANIFEST.json')),voiceQa=JSON.parse(fs.readFileSync(voiceRoot+'/DIALOGUE_QA_REPORT.json')),voiceRequests=JSON.parse(fs.readFileSync(voiceRoot+'/GENERATIONS_A07.json')),voiceCast=JSON.parse(fs.readFileSync(voiceRoot+'/VOICES.json'));
 assert.equal(voiceManifest.files.length,350);assert.equal(voiceRequests.length,350);assert.equal(voiceQa.files,350);assert.equal(voiceQa.onsetOver20ms.length,0);assert.equal(Object.keys(voiceCast.savedVoiceIds).length,12);
-for(const r of voiceManifest.files){const bytes=fs.readFileSync(voiceRoot+'/'+r.file),q=voiceQa.measurements.find(x=>x.key===r.key),p=voiceRequests.find(x=>x.key===r.key);assert.equal(bytes.length,r.bytes);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),r.sha256);assert(q?.decode&&q.channels===1&&q.sampleRate===44100&&q.peakDbtp<=-1&&q.leadingSilenceMs<20);assert.equal(p?.text,r.text);assert.equal(p?.voice_id,voiceCast.savedVoiceIds[r.speaker]);}
+for(const r of voiceManifest.files){const bytes=fs.readFileSync(voiceRoot+'/'+r.file),q=voiceQa.measurements.find(x=>x.key===r.key),p=voiceRequests.find(x=>x.key===r.key);assert.equal(P.n(bytes),r.bytes);assert.equal(P.h(bytes),r.sha256);assert(q?.decode&&q.channels===1&&q.sampleRate===44100&&q.peakDbtp<=-1&&q.leadingSilenceMs<20);assert.equal(p?.text,r.text);assert.equal(p?.voice_id,voiceCast.savedVoiceIds[r.speaker]);}
 const played=[],sounds=[],cache={exists:()=>true,get:()=>({duration:.5})};let now=1000;
 const context={window:{__g:{cache:{audio:cache},sound:{add(key,opts){const s={key,opts,duration:.5,isPlaying:false,once(){},play(){this.isPlaying=true;played.push(key);},stop(){this.isPlaying=false;},destroy(){this.destroyed=true;},setVolume(v){this.opts.volume=v;},setRate(r){this.opts.rate=r;}};sounds.push(s);return s;}}}},Save:{data:{settings:{voices:true}}},performance:{now:()=>now},Math,setTimeout,clearTimeout};vm.createContext(context);
 const a=src.indexOf('const Sfx = {'),b=src.indexOf('\n};',a)+3,S=vm.runInContext(src.slice(a,b)+'\nSfx',context);S.ctx={currentTime:1};

@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('game.js','utf8');
 function method(n){const at=source.indexOf('  '+n+'('),tail=source.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,n);return source.slice(at,at+1+next.index);}
@@ -34,8 +35,8 @@ const stageSheets=vm.runInNewContext(source.slice(stageStart,stageEnd)+'\nSTAGE_
 const packing=JSON.parse(fs.readFileSync('assets/incoming/ch1_ice_animations/PACKING.json','utf8'));
 for(const id of ['wisp','shard','caster','bomber','guardian']){
  const key='e_ice_'+id+'_animated';assert(stageSheets[3].includes(key),'Lazy stage load must include '+key);
- const b=fs.readFileSync(defs[key].url);assert.equal(b.toString('ascii',0,4),'RIFF');assert.equal(b.toString('ascii',12,16),'VP8L');assert.equal(b[20],0x2f);
- const packed=b.readUInt32LE(21);assert(packed&(1<<28),'Runtime WebP must retain alpha');assert.equal((packed&0x3fff)+1,512);assert.equal(((packed>>>14)&0x3fff)+1,512);
+ const b=fs.readFileSync(defs[key].url);assert.equal(b.toString('ascii',0,4),'RIFF');assert(['VP8L','VP8X','VP8 '].includes(b.toString('ascii',12,16)));
+ const packed=P.vp8l(b);assert(packed&(1<<28),'Runtime WebP must retain alpha');assert.equal((packed&0x3fff)+1,512);assert.equal(((packed>>>14)&0x3fff)+1,512);
  assert.equal(packing[id].bounds.length,16);
  for(const [x,y,w,h] of packing[id].bounds){assert(x>=10&&y>=10);assert.equal(y+h,236);assert(x+w<=246);assert(Math.abs((x+w/2)-128)<=.5);}
 }

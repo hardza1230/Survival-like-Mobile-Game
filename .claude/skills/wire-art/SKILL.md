@@ -36,16 +36,35 @@ Copy the closest existing script and keep its style (short, asserts first):
 
 | Kind | Copy from | Pipeline |
 |---|---|---|
-| UI pieces / icons / panels with alpha | `pack-chest-shop.py`, `pack-lobby-ui.py` | sha/bytes assert → resize (50% of the 2× source is usual) → WebP q86–90 |
+| UI pieces / icons / panels with alpha | `pack-chest-shop.py`, `pack-lobby-ui.py` | sha/bytes assert → resize to ≤2× on-screen size → WebP q80 (see 2b) |
 | VFX on black background | `pack-boss-vfx-c3.py`, `pack-hero-vfx-gaps.py` | luminance alpha (max channel ×1.35, unpremultiply, <8 → transparent), NORMAL blend in game; prints ready `ASSET_FX` lines incl. `fill` bbox |
-| Frame sheets / character motion | `pack-lobby-hero-motion.py`, `pack-ruby-comic.py` | per-frame resize, one row or the source grid, WebP q88 |
-| Card / talent icons | `pack-card-icons-2.py`, `pack-talent-icons.py` | 256 → 128 WebP q90 |
+| Frame sheets / character motion | `pack-lobby-hero-motion.py`, `pack-ruby-comic.py` | per-frame resize, one row or the source grid, WebP q80 (see 2b) |
+| Card / talent icons | `pack-card-icons-2.py`, `pack-talent-icons.py` | 256 → 128 WebP q80 |
 | Already-WebP candidates delivered | `pack-book-opening-plus.py` | copy after bytes/sha check |
 
 - Keep `.webp` keys = MANIFEST keys; output `assets/art/<batch>/<key>.webp`.
 - Print size per file and the total; mention decoded size (w·h·4) for big sheets.
 - Run it with `python3 scripts/pack-<batch>.py` (Pillow is installed). Never edit the
   incoming sources.
+
+## 2b. Packing standard (owner 13 Nov 2026 · app must stay under the Google Play 200 MB base limit)
+
+Art and audio AIs deliver big masters (PNG32 / WAV / high-bitrate MP3) — keep doing that; they never ship.
+The pack step decides the shipped size, so every pack script follows these numbers:
+
+| Kind | Rule |
+|---|---|
+| Still / sheet / UI WebP | lossy `quality=80` (`75` if the output is still > 150 KB), `alpha_quality=85`, `method=6`. Lossless only for tiny pixel-exact UI (< 20 KB). |
+| Resolution | at most **2× the real on-screen size** from the order's "แสดงจริง" column at 360×780 (e.g. shown 110 px → 220 px wide). Frame sheets: per frame. |
+| Black-bg VFX | luminance alpha as before, then the same WebP quality rule. |
+| Music / story music | MP3 80 kbps stereo 44.1 kHz. |
+| Voice / acting | MP3 56 kbps **mono**. |
+| SFX | MP3 96 kbps (mono if the source is mono). |
+| New PNG/JPG in the game | avoid — pack to WebP. |
+
+- Print the shipped total of the batch and the decoded size; keep one batch ≲ 2–3 MB WebP unless the order says otherwise.
+- After packing run `python3 scripts/compress-assets.py --dry` to see the whole game total; the shipped app (www/ without `*-review.*`) must stay **< 190 MB** (10 MB headroom).
+- `scripts/compress-assets.py` re-applies the WebP/MP3 rules in place to everything game.js references (keeps a file only if ≥ 10% smaller).
 
 ## 3. Register keys in game.js
 

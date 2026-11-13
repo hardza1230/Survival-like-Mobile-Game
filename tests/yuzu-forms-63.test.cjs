@@ -1,12 +1,13 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Presentation adapters and ownership lifecycle only; no simulated combat or balance changes.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');
-const src=fs.readFileSync('game.js','utf8'),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+const src=fs.readFileSync('game.js','utf8'),hash=b=>P.h(b);
 const manifest=JSON.parse(fs.readFileSync('assets/art/yuzu_forms63/MANIFEST.json','utf8'));assert.equal(manifest.assets.length,8);assert.equal(manifest.decodedBytes,3682304);
 const ctx={navigator:{},localStorage:{getItem:()=>null},console,location:{search:'',href:'http://x/'},document:{},Phaser:{}};ctx.window=ctx;vm.createContext(ctx);
 const decor=src.slice(src.indexOf('const STAGE_DECOR={'),src.indexOf('\n};',src.indexOf('const STAGE_DECOR={'))+3);
 vm.runInContext(decor+'\n'+src.slice(src.indexOf('const ASSET_IMAGES ='),src.indexOf('class Boot extends'))+';this.R={ASSET_SHEETS,artClass,artHero,lazyArt};',ctx);
 for(const r of manifest.assets){
- const file='assets/art/yuzu_forms63/'+r.file,b=fs.readFileSync(file);assert.equal(hash(b),r.sha256);assert.equal(b.length,r.bytes);assert.equal(b.toString('ascii',0,4),'RIFF');assert.equal(b.toString('ascii',8,12),'WEBP');
+ const file='assets/art/yuzu_forms63/'+r.file,b=fs.readFileSync(file);assert.equal(hash(b),r.sha256);assert.equal(P.n(b),r.bytes);assert.equal(b.toString('ascii',0,4),'RIFF');assert.equal(b.toString('ascii',8,12),'WEBP');
  const donor=fs.readFileSync(r.source);assert.equal(hash(donor),r.sourceSha256);assert.equal(ctx.R.ASSET_SHEETS[r.key].url,file);assert.equal(ctx.R.ASSET_SHEETS[r.key].frame,r.frame);
  assert.equal(ctx.R.artHero(r.key),'yuzu');assert.equal(ctx.R.artClass(r.key),'hero');for(const hero of ['yuzu','momo','mint'])assert(ctx.R.lazyArt(r.key,file,hero),'all forms deferred until battle, even selected Yuzu');assert(src.includes("url:'"+file+"'"));
 }

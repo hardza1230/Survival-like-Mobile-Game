@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 // Post-victory presentation and ownership only; no combat simulation.
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const src=fs.readFileSync('game.js','utf8');
@@ -28,7 +29,7 @@ for(const n of ['exitStage','die','clearArtVfx'])assert(method(n).includes('clea
 assert.equal(scene().bossLine(2),'mini intro');assert.equal(scene().bossLine(0),ctx.profiles[0].reply);assert(src.includes("tag:'best_story'"));assert(src.includes('sheet&&o.frames&&!red'));
 console.log('Boss comics:15 profiles/45 layered shots, victory→boss→chapter→results, no old intro/still recap, seen/skip/load-failure/special-mode/Bestiary and owner-cancel/shutdown guards passed');
 const crypto=require('node:crypto'),art=JSON.parse(fs.readFileSync('assets/art/story/boss45/MANIFEST.json','utf8'));
-assert.equal(art.length,15);for(const row of art){for(const [p,h]of [[row.source,row.source_sha256],[row.path,row.sha256]])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h,p);assert(src.includes(row.key+":'"+row.path+"'"));assert.equal(row.width,768);assert.equal(row.height,1152);}
+assert.equal(art.length,15);for(const row of art){for(const [p,h]of [[row.source,row.source_sha256],[row.path,row.sha256]])assert.equal(P.h(fs.readFileSync(p)),h,p);assert(src.includes(row.key+":'"+row.path+"'"));assert.equal(row.width,768);assert.equal(row.height,1152);}
 console.log('Boss ImageGen:15 original packed source/final hashes and scene keys passed');
 // Every background, puppet and FX must be registered or the real loader would reject the entire scene.
 const artCtx={window:{},navigator:{deviceMemory:8},localStorage:{getItem(){return null;}},STAGE_DECOR:{}};vm.createContext(artCtx);vm.runInContext(src.slice(src.indexOf('const ASSET_IMAGES ='),src.indexOf('class Boot extends'))+';this.reg={ASSET_IMAGES,ASSET_SHEETS,ASSET_FX,artClass};',artCtx);

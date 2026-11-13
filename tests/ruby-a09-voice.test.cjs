@@ -1,3 +1,4 @@
+const P=require('./_packed.cjs');   // v8.1.139 recompressed assets ledger
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
 const s=fs.readFileSync('game.js','utf8');
 function method(name){const at=s.indexOf('  '+name+'('),tail=s.slice(at+1),next=/\n  [A-Za-z_]\w*\([^\n]*\)\s*\{/.exec(tail);assert(at>=0&&next,name);return s.slice(at,at+1+next.index);}
@@ -6,7 +7,7 @@ const M=JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a09/MANIFEST.json
 const ctx={performance:{now:()=>0},Save:{data:{settings:{}}},Sfx:{},window:{},StoryMusic:{}};vm.createContext(ctx);
 vm.runInContext(s.slice(s.indexOf('const A07_CATALOG = '),s.indexOf('const VoiceActing=')),ctx);const i=s.indexOf('const RUBY_TIPS={');vm.runInContext(s.slice(i,s.indexOf('\n};',i)+3),ctx);
 const C=vm.runInContext('A07_CATALOG',ctx),B=vm.runInContext('A07_BY_TEXT',ctx),T=vm.runInContext('RUBY_TIPS',ctx);
-for(const r of M){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(C[r.key].role,'ruby');assert(s.includes('"url":"assets/audio/acting/'+r.file+'"'));}
+for(const r of M){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(P.sha('assets/audio/acting/'+r.file,b),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(C[r.key].role,'ruby');assert(s.includes('"url":"assets/audio/acting/'+r.file+'"'));}
 const lookup=t=>B.get('ruby|'+String(t).replace(/\s+·\s+\d+\/\d+$/,'').replace(/[\[\]]/g,''));
 for(const k in T)if(T[k].short){assert.equal(lookup(T[k].short),'vo_ruby_short_'+k,k);assert.equal(lookup(T[k].short+'  ·  3/10'),'vo_ruby_short_'+k,'progress suffix ignored');}
 assert(s.includes(".replace(/\\s+·\\s+\\d+\\/\\d+$/,'')"),'runtime lookup strips progress');
@@ -20,6 +21,6 @@ assert(s.includes("nw-(sa[vk]||0)<30000"),'short reminder voice at most every 30
 assert(s.includes('startStage(i){this._rubyOnce=null;this._rubyEpoch=(this._rubyEpoch|0)+1;this.rubyHide?.(true);this._rubyQ=[];'),'v8.1.89 new stage drops old Ruby lines');assert(/rubyLater\(delay,fn\)\{ const ep=this\._rubyEpoch\|0;/.test(s)&&/this\.rubyLater\(delay,\(\)=>this\.rubySay\(text/.test(s),'delayed tips are stage-bound');
 console.log('Ruby A09: 28 verified clips, 14 short reminders matched (progress-safe), 7 reactions hooked, rotation/throttle/clear passed');
 // v8.1.108 A13: 31 Ruby clips (core lore + 14 mission tips/shorts) present, hashed, and found by text
-{const M13=JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a13/MANIFEST.json','utf8'));assert.equal(M13.length,31);for(const r of M13){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(crypto.createHash('sha256').update(b).digest('hex'),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(lookup(r.text),r.key,r.key);}
+{const M13=JSON.parse(fs.readFileSync('assets/incoming/audio_ruby_a13/MANIFEST.json','utf8'));assert.equal(M13.length,31);for(const r of M13){const b=fs.readFileSync('assets/audio/acting/'+r.file);assert.equal(P.sha('assets/audio/acting/'+r.file,b),r.sha256,r.key);assert.equal(C[r.key].text,r.text);assert.equal(lookup(r.text),r.key,r.key);}
 for(const k in T){assert.equal(lookup(T[k].say),'vo_ruby_tip_'+k,'tip voiced '+k);}
 const cl=/const CORE_LORE_LINES=\[(.*?)\];/.exec(s)[1].match(/'((?:[^'\\]|\\.)*)'/g).map(x=>x.slice(1,-1));cl.forEach((t,i)=>assert.equal(lookup(t),'vo_ruby_core_'+(i+1)));console.log('A13 Ruby voice: 31 clips, every mission tip and core-lore page voiced passed');}
