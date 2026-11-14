@@ -5,10 +5,11 @@ const M=JSON.parse(fs.readFileSync('assets/incoming/audio_a12/MANIFEST.json','ut
 for(const r of M){const src=fs.readFileSync('assets/incoming/audio_a12/'+r.file);assert.equal(crypto.createHash('sha256').update(src).digest('hex'),r.sha256,r.key);
   const dst='assets/audio/sfx/a12/'+r.key+'.mp3';{const d=fs.readFileSync(dst);assert(d.length>0&&d.length<=src.length&&(d[0]===0x49||d[0]===0xff),dst+' installed (recompressed v8.1.139 packing standard)');}assert(s.includes("sfx_"+r.key+": '"+dst+"'"),r.key);}
 const H={lg_breach_open:'hmOpen',lg_breach_collapse:'hmTick',lg_splinter_pick:'hmTick',lg_breach_chest:'hmChest',lg_hunger_stone:'hmSplinters',lg_hand_lord:'hmTick',lg_domain_open:'hdSetup',lg_breachlord:'hdLord',
- lg_jar_open:'fpOpen',lg_statue_wake:'fpThaw',lg_statue_refreeze:'fpVanish',lg_herald_horn:'hhTick',lg_gates_shut:'hhDown',lg_pot_ritual:'gpRound',lg_pot_flavor:'gpOnKill',lg_dish_served:'gpServe',
+ lg_jar_open:'fpOpen',lg_statue_wake:'fpThaw',lg_statue_refreeze:'fpVanish',lg_gates_shut:'hhDown',lg_pot_ritual:'gpRound',lg_pot_flavor:'gpOnKill',lg_dish_served:'gpServe',
  lg_golem_part:'ggTick',lg_golem_bake:'ggBake',lg_golem_slam:'ggTick',lg_golem_crumble:'ggDown',lg_root_cut:'crTick',lg_siege_gate:'hsTick',lg_siege_break:'hsBurst',
  tr_curse_pick:'ultStartFight',tr_round_won:'ultRoundWon',tr_take:'ultTick',tr_risk:'ultTick',tr_fail:'ultFinish',ui_forge_row_up:'forgeUpgrade',ui_forge_ink_move:'forgeMove',ui_codex_up:'codexUpgrade',
  pt_pop:'patrolPop',pt_loot:'buildPatrol',pt_ambient_loop:'buildPatrol'};
+/* v8.1.144 owner: lg_herald_horn retired (sounded like a car horn) — hhTick now uses lg_breach_open */ assert(method('hhTick').includes("'lg_breach_open'"),'herald gates use the rift sound');
 for(const [k,fn] of Object.entries(H))assert(method(fn).includes("'"+k+"'"),k+' in '+fn);
 assert(s.includes("this.a12?.('ui_domain_button'")&&s.includes("Sfx.menuCue?.('ui_memory_gain'"),'domain button + memory gain');
 assert(method('patrolStop').includes("eventLoopStop?.('pt_ambient_loop')"),'ambient stops when leaving Patrol');

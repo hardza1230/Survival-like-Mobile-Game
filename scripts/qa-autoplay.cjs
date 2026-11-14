@@ -19,7 +19,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
       const page=await browser.newPage({viewport:{width:390,height:844}}),errs=[],cerr=[];
       page.on('pageerror',e=>errs.push(String(e.message).slice(0,300)));
       page.on('console',m=>{if(m.type()==='error'){const t=m.text();if(!/Failed to load resource|404/.test(t))cerr.push(t.slice(0,300));}});
-      await page.addInitScript(({idx})=>{try{window.__qaBot=true;localStorage.clear();localStorage.setItem('mochi_gm','1');
+      await page.addInitScript(({idx})=>{try{window.__qaBot=true;window.__qaShotWanted=true;localStorage.clear();localStorage.setItem('mochi_gm','1');
         const s={tutorialDone:true,unlockedStage:14,character:'momo',gmOpt:{god:true,dmg:true},gmUsed:true,settings:{music:0,sfx:0}};localStorage.setItem('mochi_save',JSON.stringify(s));}catch(e){}},{idx});
       const t0=Date.now();await page.goto(`http://localhost:${port}/index.html`);
       const sceneReady=await page.waitForFunction(()=>{const g=window.__g,s=g&&g.scene&&g.scene.getScene('Game');return s&&s.sys.isActive()&&s.state==='menu';},null,{timeout:120000}).then(()=>true,()=>false);
@@ -43,7 +43,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
           try{
             if(s.state!=='cinematic')s._qaCin=0;
             if(s.state==='levelup'&&s._pathTeach){s._pathTeach.next();act='teach';}
-            else if(s.state==='levelup'&&s.lvlCards&&s.lvlCards.length&&(s.levelCardReadyAt||0)<=s.time.now){const c=s.lvlCards[0],x=(c.left+c.right)/2,y=(c.top+c.bottom)/2;s.pickCardAt(x,y);s.pickCardAt(x,y);act='card';}
+            else if(s.state==='levelup'&&s.lvlCards&&s.lvlCards.length&&(s.levelCardReadyAt||0)<=s.time.now&&!(window.__qaShotWanted&&s.lvlCards[0].opt&&s.lvlCards[0].opt.kind==='Build Path'&&!window.__qaShotDone&&(window.__qaShotDone=1,window.__qaShotNow=1))){const c=s.lvlCards[0],x=(c.left+c.right)/2,y=(c.top+c.bottom)/2;s.pickCardAt(x,y);s.pickCardAt(x,y);act='card';}
             else if(s.state==='rolling'&&s._rollBtns&&s._rollBtns.length){s._rollBtns[0].fn();act='roll';}
             else if(s.state==='rewardChoice'&&s._rewardBtns&&s._rewardBtns.length){s._rewardBtns[0].fn();act='reward';}
             else if(s.state==='cinematic'){s._qaCin=(s._qaCin||0)+1;if(s._qaCin>=6&&s._finishStoryCutscene){s._finishStoryCutscene({x:195,y:420,id:-77});act='skip-cine';}}
@@ -52,7 +52,8 @@ const mime={'.js':'text/javascript','.html':'text/html','.webp':'image/webp','.p
               let tx=Math.cos(t*.7)*260,ty=Math.sin(t*.9)*260;if(ox!=null){tx=ox+Math.cos(t)*60;ty=oy+Math.sin(t)*60;}
               const a=Math.atan2(ty-P.y,tx-P.x),d=Math.hypot(tx-P.x,ty-P.y),j=s.joy;if(j&&(!j.active||j.id===-77)){j.active=d>30;j.id=d>30?-77:-1;j.dx=d>30?Math.cos(a):0;j.dy=d>30?Math.sin(a):0;}act='move';}
           }catch(e){act='bot-error:'+e.message;}
-          const pm=performance.memory;return {state:s.state,act,fps:g.loop.actualFps,heap:pm?pm.usedJSHeapSize/1048576:0,tex:s.texMB?s.texMB():0,level:s.level||0,orbs:s.orbs?s.orbs.countActive(true):0,kills:s.kills||0,foes:s.enemies?s.enemies.countActive(true):0,xp:Math.round(s.xp||0),xpNext:Math.round(s.xpNext||0),stage:s.stageIndex,elapsed:Math.round(s.elapsed||0),hp:P?Math.round(P.hp):null,boss:!!(s.boss&&s.boss.active),over:!!(s.over&&s.over.visible),loader:!!(document.querySelector('#loader')&&getComputedStyle(document.querySelector('#loader')).display!=='none')};});
+          const pm=performance.memory;const shot=!!window.__qaShotNow;window.__qaShotNow=0;return {shot,state:s.state,act,fps:g.loop.actualFps,heap:pm?pm.usedJSHeapSize/1048576:0,tex:s.texMB?s.texMB():0,level:s.level||0,orbs:s.orbs?s.orbs.countActive(true):0,kills:s.kills||0,foes:s.enemies?s.enemies.countActive(true):0,xp:Math.round(s.xp||0),xpNext:Math.round(s.xpNext||0),stage:s.stageIndex,elapsed:Math.round(s.elapsed||0),hp:P?Math.round(P.hp):null,boss:!!(s.boss&&s.boss.active),over:!!(s.over&&s.over.visible),loader:!!(document.querySelector('#loader')&&getComputedStyle(document.querySelector('#loader')).display!=='none')};});
+        if(st.shot&&process.env.QA_SHOT_DIR){ await page.screenshot({path:path.join(process.env.QA_SHOT_DIR,'path_'+idx+'.png')}); }
         res.states[st.state]=(res.states[st.state]||0)+1;if(st.state==='play')fps.push(st.fps);heap=Math.max(heap,st.heap);tex=Math.max(tex,st.tex);res.level=st.level;res.elapsed=st.elapsed;res.orbsMax=Math.max(res.orbsMax||0,st.orbs);res.kills=st.kills;res.foesMax=Math.max(res.foesMax||0,st.foes);(st.elapsed%15===0&&(res.trace=res.trace||[]).length<80)&&(res.trace.push([st.elapsed,st.level,st.kills,st.foes,st.state]));res.xp=st.xp+'/'+st.xpNext;
         const sig=st.state+'|'+st.elapsed+'|'+st.level;if(sig===last)same++;else{same=0;last=sig;}
         if(same===20&&left)res.stuck.push({atSec:Math.round((Date.now()-start)/1000),state:st.state,elapsed:st.elapsed,act:st.act});

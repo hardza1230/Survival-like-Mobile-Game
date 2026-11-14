@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.143';
+const GAME_VERSION = '8.1.144';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','Grandma’s recipe! Pick 1 of 3 
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.144',date:'2026-11-14',title:'Clearer rewards',items:['Miniboss loot shows what you got before the level-up and the chest','The stage results appear one by one','Build Path cards are wide again with painted art and short text','Herald gates no longer farm EXP; the Wisp walks slowly even when you are away','Drops have soft shadows; Chapter 1 bosses share one theme']},
   {v:'8.1.143',date:'2026-11-14',title:'Lighter effects',items:['Simple glows, rings and screen veils are now drawn by the game instead of images, so phones use less memory']},
   {v:'8.1.142',date:'2026-11-13',title:'Smoother ads, mission button, louder chests',items:['Rewarded ads load in advance so the button works at once, and game music pauses during the ad','Missions start with a Start mission button instead of a ring','Chest openings build up and burst with rarity sounds and confetti','C1-1 has its own music again; the level-up screen fades in gently','Pinnacle: going Back before the run gives your entry back']},
   {v:'8.1.141',date:'2026-11-13',title:'Clearer training',items:['Training points with a finger instead of a moving ring','Sweets to pick up glow during training','Dash and Unique lessons dim the screen around the button','The Lobby hero keeps retrying if its picture did not load']},
@@ -4669,6 +4670,7 @@ const StoryMusic={serial:0,
 
 function bgmKeyFor(kind,stageNum){
   /* v8.1.142 owner 🐞: C1-1 and the tutorial shared one track → real C1-1 runs use the owner's "Clockmaker's Tea Break" + boss "Gates of the Calamity" */
+  if(kind==='boss'&&stageNum>=2&&stageNum<=5&&BGM_MODE!=='endgame'&&ASSET_AUDIO.bgm_c11_boss)return 'bgm_c11_boss';   /* v8.1.144 owner: Gates of the Calamity = boss theme for all of Chapter 1 (Ch2–3 tracks coming from the owner) */
   if(stageNum===1&&BGM_MODE!=='endgame'&&(kind==='stage'||kind==='boss')){ let tut=true; try{ const g=window.__g&&window.__g.scene.getScene('Game'); tut=!(typeof Save!=='undefined'&&Save.data&&Save.data.tutorialDone)||!!(g&&(g._inTutorial||g._forceCoachTutorial)); }catch(e){} const k=kind==='stage'?'bgm_c11_stage':'bgm_c11_boss'; if(!tut&&ASSET_AUDIO[k])return k; }
   if(BGM_MODE==='endgame'){const k='bgm_endgame'+(kind==='boss'?'_boss':'');if(ASSET_AUDIO[k])return k;}
   if(kind==='mini'){const k='bgm_m'+String(stageNum).padStart(2,'0');return ASSET_AUDIO[k]?k:null;}
@@ -16104,7 +16106,7 @@ class Game extends Phaser.Scene {
     for(let i=0;i<4;i++)this.time.delayedCall(i*120,()=>{const r=this.camWorld(this.add.circle(x,y,R,0xffd166,0).setStrokeStyle(10-i*2,0xfff1b0,1).setDepth(90000));this.tweens.add({targets:r,scale:big*(0.6+i*0.15),alpha:0,duration:800,ease:'Cubic.out',onComplete:()=>r.destroy()});});
     this.floatText(x,y-R-20,'✨ PURIFIED!',0xffd166); }
   // ===== Escort the Wisp (purge objective) =====
-  _wispTuning(){ return {escortR:160,channel:2.4+this.stageIndex*0.18,speed:120,drainR:56,drain:0.34+this.stageIndex*0.05,regen:0.42,respawn:2.5}; }   /* v8.1.121 เจ้าของ: วงคุ้มกัน Wisp เล็กลง 220 → 160 */
+  _wispTuning(){ return {escortR:130,channel:2.4+this.stageIndex*0.18,speed:96,away:.38,drainR:56,drain:(0.34+this.stageIndex*0.05)*.6,regen:0.42,respawn:2.5}; }   /* v8.1.144 owner 🐞: ring 160→130 · wisp drifts slowly on its own (was stopping) · in the ring a bit faster but not rushing (120→96, close ×1.7→×1.25) · tougher (drain ×0.6) */   /* v8.1.121 เจ้าของ: วงคุ้มกัน Wisp เล็กลง 220 → 160 */
   spawnPurifyWisp(){
     const o=this.waveObjective;if(!o||o.type!=='purge')return;
     this.killPurifyWisp(false);
@@ -16150,7 +16152,7 @@ class Game extends Phaser.Scene {
     if(!target){this.renderWispHUD();return;}
     w._glow.setPosition(w.x,w.y);
     if(w._state==='travel'){
-      if(near){const a=Math.atan2(target.y-w.y,target.x-w.x),close=this.dist(this.player.x,this.player.y,w.x,w.y)<=110,sp=t.speed*(close?1.7:1);if(close&&Math.random()<dt*2)this.vfxHitRing?.(w.x,w.y,0xffe6a0,false);w.x+=Math.cos(a)*sp*dt;w.y+=Math.sin(a)*sp*dt;   /* v8.1.79 เจ้าของ: ยืนชิดดวงไฟ = เดินเร็วขึ้น ×1.7 */w.setDepth(w.y+2);w._glow.setDepth(w.y+1);}
+      {const a=Math.atan2(target.y-w.y,target.x-w.x),close=near&&this.dist(this.player.x,this.player.y,w.x,w.y)<=90,sp=t.speed*(near?(close?1.25:1):t.away);if(close&&Math.random()<dt*2)this.vfxHitRing?.(w.x,w.y,0xffe6a0,false);w.x+=Math.cos(a)*sp*dt;w.y+=Math.sin(a)*sp*dt;   /* v8.1.79 เจ้าของ: ยืนชิดดวงไฟ = เดินเร็วขึ้น ×1.7 */w.setDepth(w.y+2);w._glow.setDepth(w.y+1);}
       if(this.dist(w.x,w.y,target.x,target.y)<=44){w._state='channel';w._channel=0;}
     } else {  // channel
       if(near){ if(!this._wispSnd||!Sfx._eventLoops?.event_wisp_purify_charge?.isPlaying){this._wispSnd=true;Sfx.eventLoopStart?.('event_wisp_purify_charge',.32);} } else if(this._wispSnd){ this._wispSnd=false; Sfx.eventLoopStop?.('event_wisp_purify_charge'); }   // v7.2 charge loop only while channeling + near
@@ -16506,15 +16508,16 @@ class Game extends Phaser.Scene {
      Herald ลอยไปมา (ไม่ไล่ผู้เล่น · e._goTo จุดสุ่มรอบสนาม) · ประตู 2/3 บานปล่อยฝูงพุ่งใส่ผู้เล่นเป็นระยะ · ฆ่า Herald = ปิดทุกประตู + รางวัลรวมเศษสกุลเงินตีบวก ===== */
   hhSetup(o,S){ const full=this.fpFull(),n=full?3:2; Object.assign(S,{full,gates:[],herald:null,wander:0,respawn:0}); o.target=1;
     o.desc='Hunt the 📯 Herald — it drifts away while its '+n+' gates pour out rushing packs · beat it to shut every gate';
-    for(let i=0;i<n;i++){ const q=this.objectivePosition(i,n,280,420); S.gates.push({x:q.x,y:q.y,cd:1.5+i*.8,t:this.sigArt('hh_gate',0,q.x,q.y,140,'🌀',46,q.y-10),ring:this.sigAdd(this.add.circle(q.x,q.y,70,0x7a3dbf,.16).setStrokeStyle(4,0xb36bff,.85).setDepth(q.y-3))}); }
+    for(let i=0;i<n;i++){ const q=this.objectivePosition(i,n,280,420); const EL=(x,y,w,h,c,al)=>this.add.ellipse?this.add.ellipse(x,y,w,h,c,al):this.add.circle(x,y,w/2,c,al),sh=this.sigAdd(EL(q.x,q.y+44,190,58,0x12081c,.38).setDepth(q.y-12)),gl=this.sigAdd(EL(q.x,q.y+40,160,46,0xb36bff,.18).setDepth(q.y-11)); gl.setBlendMode?.(Phaser.BlendModes.ADD); this.tweens.add({targets:gl,alpha:{from:.1,to:.32},scaleX:{from:.92,to:1.08},duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});   /* v8.1.144 owner 🐞: the gate looked pasted on → ground shadow + glow under it, ring lies flat on the floor */
+      S.gates.push({x:q.x,y:q.y,cd:1.5+i*.8,t:this.sigArt('hh_gate',0,q.x,q.y,140,'🌀',46,q.y-10),ring:this.sigAdd(EL(q.x,q.y+40,150,46,0x7a3dbf,.12).setStrokeStyle(3,0xb36bff,.7).setDepth(q.y-10)),sh,gl}); }
     this.hhSpawn(o,S); }
   hhSpawn(o,S){ const g=S.gates[0],e=this.sigSpawnAt(g.x,g.y,true); if(!e){ S.respawn=1; return; } e._herald=true; S.herald=e; this.artFollow?.(e,'hh_herald',120); if(e.setScale)e.setScale((e.baseScale||e.scaleX||1)*1.3); if(S.full&&e.maxhp){ e.maxhp*=1.5; e.hp=e.maxhp; } e.setTint?.(0xd9a6ff); e.tintColor=0xd9a6ff; S.wander=0;
     this.showBanner?.('📯 Hunger Herald','It drifts away while its gates pour out packs — hunt it down!',1500); }
   hhTick(dt,o,S){ const p=this.player,h=S.herald; if(!p)return; S.t=(S.t||0)+dt;
     if(!h||!h.active||!h._herald){ S.herald=null; S.respawn-=dt; if(S.respawn<=0)this.hhSpawn(o,S); }
     else { S.wander-=dt; if(S.wander<=0||!h._goTo){ S.wander=2.6+Math.random()*1.4; const a=Math.atan2(h.y-p.y,h.x-p.x)+(Math.random()-.5)*2.2,r=180+Math.random()*160,lim=WORLD/2-160; h._goTo={x:Phaser.Math.Clamp(h.x+Math.cos(a)*r,-lim,lim),y:Phaser.Math.Clamp(h.y+Math.sin(a)*r,-lim,lim)}; } }
-    for(const G of S.gates){ G.cd-=dt; if(!this.artIsSpr(G.t))G.t.setRotation?.((S.t*2)%TAU); if(G.cd<=0){ G.cd=S.full?2.6:3.4; this.artFollowAct?.(h); this.a12?.('lg_herald_horn',.35,2); const k=S.full?4:3; for(let i=0;i<k;i++)this.sigSpawnAt(G.x+(Math.random()-.5)*60,G.y+(Math.random()-.5)*60); this.vfxHitRing?.(G.x,G.y,0xb36bff,false); } } }
-  hhDown(e,o,S){ this.a12?.('lg_gates_shut',.5,.5); for(const G of S.gates){ G.t.setVisible(false); G.ring.setVisible(false); this.vfxHitRing?.(G.x,G.y,0xd9a6ff,true); this.artFx?.('vfx78_gates_shut',G.x,G.y,160); } S.gates=[]; o.progress=1; this.screenFlash?.(0xd9a6ff,.2,220); this.floatText?.(e.x,e.y-70,'📯 Every gate slams shut!',0xe3c4ff);
+    for(const G of S.gates){ G.cd-=dt; if(!this.artIsSpr(G.t))G.t.setRotation?.((S.t*2)%TAU); if(G.cd<=0){ G.cd=S.full?2.6:3.4; this.artFollowAct?.(h); this.a12?.('lg_breach_open',.22,2); /* v8.1.144 owner 🐞: the herald horn sounded like a car horn */ const k=S.full?4:3; for(let i=0;i<k;i++){ const m=this.sigSpawnAt(G.x+(Math.random()-.5)*60,G.y+(Math.random()-.5)*60); if(m)m._xpMul=.25; } this.vfxHitRing?.(G.x,G.y,0xb36bff,false); } } }
+  hhDown(e,o,S){ this.a12?.('lg_gates_shut',.5,.5); for(const G of S.gates){ G.t.setVisible(false); G.ring.setVisible(false); G.sh?.setVisible(false); G.gl?.setVisible(false); this.vfxHitRing?.(G.x,G.y,0xd9a6ff,true); this.artFx?.('vfx78_gates_shut',G.x,G.y,160); } S.gates=[]; o.progress=1; this.screenFlash?.(0xd9a6ff,.2,220); this.floatText?.(e.x,e.y-70,'📯 Every gate slams shut!',0xe3c4ff);
     const si=this.stageIndex||0,su=Math.round((10+si*1.8)*(S.full?1.4:1)),L0=this._lootAt; this.sugarStage+=su; this.sugarRun+=su; this._lootAt={x:e.x,y:e.y}; try{ this.missionLootBurst?.({type:'tree',noHold:true},su); }finally{ this._lootAt=L0; } this.completeWaveObjective(); }
   /* ===== v8.1.83 Grandma’s Pot (League → Ritual แนว ก. · หม้อของคุณยาย + การ์ดสูตร · C1-3 ห้องเครื่องพริก)
      มอนดรอปวัตถุดิบ (🍓🍋🍫 · ⭐ ทองจาก Elite ในแบบเต็ม) · เดินเก็บ = ถือไว้ · เดินเข้าวงหม้อ = ใส่ที่สูตรต้องการ · วัตถุดิบเสียตามเวลา · ครบสูตร = จานรางวัล (สูตรมี ⭐ = ดีกว่า) ===== */
@@ -16907,7 +16910,8 @@ class Game extends Phaser.Scene {
   /* v8.1.75 เจ้าของ: มินิบอส/บอสดรอปเยอะขึ้น · มินิ = น้ำพุ Sugar + กล่องการันตี (ขั้นต่ำ Rare) ค้างให้เห็นแล้วดูดเข้าตัว · บอส = กล่องเพิ่มเข้ารางวัลจบด่าน (ด่านปิดบท +1) + Sugar โบนัส */
   bigFoeLoot(x,y,kind){ if(this._inTutorial||!this.loots)return null; const si=this.stageIndex||0,ch=Math.min(2,Math.floor(si/5)),end=si%5===4,rw=this.diffMul?.().reward||1;   /* v8.1.76 เจ้าของ: ด่านแรกไม่ต้องเยอะ (ของเฟ้อ) → ไล่ตาม Chapter */
     if(kind==='mini'){ const sugar=Math.round([4+si,8+si*2,10+si*3][ch]*rw); this.sugarStage+=sugar; this.sugarRun+=sugar; const o={type:'mini'},P0=this._lootAt; this._lootAt={x,y}; let out=[]; try{ out=this.missionLootBurst(o,sugar)||[]; }finally{ this._lootAt=P0; }
-      const boxes=ch===0?(Math.random()<.3?1:0):ch===1?1:(Math.random()<.3?2:1); this._lootMinRare=ch===2; try{ for(let k=0;k<boxes;k++){ const a=Math.random()*Math.PI*2,g=this.spawnLoot(x+Math.cos(a)*64,y+Math.sin(a)*48,ch===0?1:2); if(g)this.lootHold(g,1900); } } finally{ this._lootMinRare=false; } return out; }
+      const boxes=ch===0?(Math.random()<.3?1:0):ch===1?1:(Math.random()<.3?2:1); this._lootMinRare=ch===2; let gn=0; try{ for(let k=0;k<boxes;k++){ const a=Math.random()*Math.PI*2,g=this.spawnLoot(x+Math.cos(a)*64,y+Math.sin(a)*48,ch===0?1:2); if(g){ this.lootHold(g,1900); gn++; } } } finally{ this._lootMinRare=false; }
+      const cur=out.filter(g=>g&&g.dropType&&g.dropType!=='sugar').length; this.time?.delayedCall?.(700,()=>{ if(this.state==='play')this.showBanner?.('🎁 Miniboss loot','🍬 +'+sugar+' Sugar'+(gn?' · 🎁 '+gn+' gear':'')+(cur?' · ✨ crafting':''),2000); });   /* v8.1.144 owner 🐞: say what dropped while it is on screen */ return out; }
     if(kind==='boss'){ if(!this._runBoxes)this._runBoxes=[]; const n=[end?1:0,end?2:1,end?3:2][ch],epic=Math.min(.6,.12+si*.03); for(let k=0;k<n;k++)this._runBoxes.push(ch===0?'rare':Math.random()<epic?'epic':'rare'); const sugar=Math.round([8+si*2,15+si*4,25+si*6][ch]*rw); this.sugarStage+=sugar; this.sugarRun+=sugar; this._bossLoot={boxes:n,sugar}; return this._bossLoot; }
     return null; }
   missionLootBurst(o,sugar){ if(!this.loots||!this.player)return []; const P=this.missionPoint(o),out=[],n=Math.max(4,Math.min(6,Math.round(sugar/8)||4)); sugar=Math.max(0,Math.round(sugar||0));
@@ -17637,12 +17641,12 @@ class Game extends Phaser.Scene {
     if(this.hubMotionAllowed&&!this.hubMotionAllowed()){sugarText.setText('+'+total);rewards.flat().forEach(o=>o.setAlpha(1));this._summaryStarObjs?.forEach(o=>o.setAlpha(1));return;}
     this._summaryReveal={sugarText,rewards,stars:this._summaryStarObjs||[]};
     const later=(ms,fn)=>{this._summarySoundTimers.push(this.time.delayedCall(ms,()=>{if(this.state==='summary'&&this._summarySoundToken===token)fn();}));};
-    Sfx.result('open');if((this._newSpecies||[]).length)later(180,()=>Sfx.orderCue?.('best_new',.3));const stars=this._quitSummary?null:this._starRes;if(stars)for(let b=0;b<3;b++)if(stars.mask&(1<<b))later(120+b*160,()=>{Sfx.orderCue?.('stage_star_'+(b+1),.3);const o=this._summaryStarObjs?.[b];if(o?.active){o.setAlpha(1);const tw=this.tweens.add({targets:o,scale:{from:1.18,to:1},duration:180,ease:'Back.out'});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}});
+    Sfx.result('open');if((this._newSpecies||[]).length)later(180,()=>Sfx.orderCue?.('best_new',.3));const stars=this._quitSummary?null:this._starRes;/* v8.1.144 owner 🐞: everything popped at once → stars, then Sugar, then each reward in turn */ const nStar=stars?[0,1,2].filter(b=>stars.mask&(1<<b)).length:0; if(stars)for(let b=0;b<3;b++)if(stars.mask&(1<<b))later(250+b*330,()=>{Sfx.orderCue?.('stage_star_'+(b+1),.3);const o=this._summaryStarObjs?.[b];if(o?.active){o.setAlpha(1);const tw=this.tweens.add({targets:o,scale:{from:1.18,to:1},duration:180,ease:'Back.out'});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}});
     const ticks=total>0?Math.min(8,total):0;
-    if(ticks){sugarText.setText('+0');for(let i=1;i<=ticks;i++)later(120+i*45,()=>{sugarText.setText('+'+Math.floor(total*i/ticks));Sfx.result('count',.9+i*.025);});}
-    const at=120+ticks*45;
-    rewards.forEach((group,i)=>{group.forEach(o=>o.setAlpha(0));later(at+80+i*Math.min(45,240/Math.max(1,rewards.length)),()=>{group.forEach(o=>o.setAlpha(1));Sfx.result('reveal');});});
-    if(this._firstMastery||this._lastLvlUps>0)later(at+80+Math.min(240,rewards.length*45),()=>{Sfx.result('important');if(this._firstMastery)this.playSummaryGrowth?.('mastery');if(this._lastLvlUps>0)this.playSummaryGrowth?.('levelup');});
+    const s0=250+nStar*330+150; if(ticks){sugarText.setText('+0');for(let i=1;i<=ticks;i++)later(s0+i*70,()=>{sugarText.setText('+'+Math.floor(total*i/ticks));Sfx.result('count',.9+i*.025);});}
+    const at=s0+ticks*70;
+    const step=Math.max(110,Math.min(380,1400/Math.max(1,rewards.length)));rewards.forEach((group,i)=>{group.forEach(o=>o.setAlpha(0));later(at+350+i*step,()=>{group.forEach(o=>{o.setAlpha(1);if(o.setScale&&o.type!=='Graphics'&&this.tweens){const sx=o.scaleX||1,sy=o.scaleY||1;o.setScale(sx*1.2,sy*1.2);const tw=this.tweens.add({targets:o,scaleX:sx,scaleY:sy,duration:220,ease:'Back.out'});(this._summaryTweens||(this._summaryTweens=[])).push(tw);}});Sfx.result('reveal');});});
+    if(this._firstMastery||this._lastLvlUps>0)later(at+350+Math.max(0,rewards.length-1)*step+250,()=>{Sfx.result('important');if(this._firstMastery)this.playSummaryGrowth?.('mastery');if(this._lastLvlUps>0)this.playSummaryGrowth?.('levelup');});
     if(this.events&&!this._summaryShutdownHook){this._summaryShutdownHook=true;this.events.once('shutdown',()=>{this.stopSummaryPresentation();this._summaryShutdownHook=false;});}
   }
   buildSummaryExpBar(box,px,py,pw,ph,font,animate){
@@ -17730,7 +17734,7 @@ class Game extends Phaser.Scene {
     this.summaryText(box,tx,H.y+H.h*.83,this._firstMastery&&!this._quitSummary?'FIRST CLEAR':(CHARACTERS[this.character]?.name||this.character),11,'#bcaacb',tw);
     const sr=this._quitSummary?null:this._starRes,S=L.stars;this._summaryStarObjs=[];
     if(sr||S)this.summaryCard(box,S,0x1f1730,0x8a6a4f);
-    if(sr){const cell=S.w/3;for(let b=0;b<3;b++){const got=!!(sr.mask&(1<<b)),x=S.x+cell*(b+.5);{const si79=this.tuHas?.('sc79_star_socket')&&this.tuImg?.('sc79_star_socket',got?1:0,x-12,S.y+22,38,38);if(si79)box.push(si79);else{const so=this.add.graphics();so.fillStyle?.(got?0x5a3a1c:0x2a2236,1);so.fillCircle?.(x-12,S.y+22,17);so.lineStyle?.(2,got?0xffd27a:0x5d5070,got?.95:.6);so.strokeCircle?.(x-12,S.y+22,17);box.push(so);}}const star=this.summaryText(box,x-12,S.y+22,got?'★':'☆',28,got?'#ffda89':'#796c8b',40,.5);this._summaryStarObjs.push(star);if(animate&&got)star.setAlpha(0);
+    if(sr){const cell=S.w/3;for(let b=0;b<3;b++){const got=!!(sr.mask&(1<<b)),x=S.x+cell*(b+.5);{const si79=this.tuHas?.('sc79_star_socket')&&this.tuImg?.('sc79_star_socket',got?1:0,x-12,S.y+22,38,38);if(si79)box.push(si79);else{const so=this.add.graphics();so.fillStyle?.(got?0x5a3a1c:0x2a2236,1);so.fillCircle?.(x-12,S.y+22,17);so.lineStyle?.(2,got?0xffd27a:0x5d5070,got?.95:.6);so.strokeCircle?.(x-12,S.y+22,17);box.push(so);}}const star=this.add.star?this.add.star(x-12,S.y+22,5,7.5,16,got?0xffda89:0x3a3048).setStrokeStyle(2,got?0xfff1c4:0x796c8b,got?.9:.8):this.summaryText(box,x-12,S.y+22,got?'★':'☆',28,got?'#ffda89':'#796c8b',40,.5);if(this.add.star)box.push(star);this._summaryStarObjs.push(star);   /* v8.1.144 owner 🐞: ★ glyph sat off the socket → shape centred on it */if(animate&&got)star.setAlpha(0);
       this.summaryText(box,x+16,S.y+23,sr.fresh&(1<<b)?'NEW':'',9,'#bff0d3',30,.5);this._summaryBtns.push({x:S.x+b*cell,y:S.y,w:cell,h:S.h,tag:'star_'+b,fn:()=>this.openSummaryDetails('stars',b)});}
     }else this.summaryText(box,S.x+S.w/2,S.y+22,this._quitSummary?'Collected rewards are saved':'Adventure complete',13,'#c5b4d1',S.w-16,.5);
     const R=L.loot;this.summaryRewardPanel(box,R);this.summaryText(box,R.x+32,R.y+22,'REWARDS',10,'#c9b4d4',R.w-32);this.summaryText(box,R.x+R.w-32,R.y+22,'View all ›',10,'#e8d1a3',90,1);
@@ -17917,16 +17921,18 @@ class Game extends Phaser.Scene {
     panel.fillStyle(bgMix,0.98);panel.fillRoundedRect(x,y,w,h,16);panel.lineStyle(2+Math.max(0,rarIdx)*0.9,color,0.96);panel.strokeRoundedRect(x,y,w,h,16);panel.fillStyle(color,1);panel.fillRoundedRect(x,y,7,h,4);}
     if(rarIdx>=2){this.tweens.add({targets:glow,alpha:{from:rarIdx>=3?0.58:0.42,to:1},yoyo:true,repeat:-1,duration:rarIdx>=3?520:780,ease:'Sine.inOut'});}
     group.add(glow);
-    const iconKey=this.cardArtKey?.(o)||(o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas'));
+    let iconKey=this.cardArtKey?.(o)||(o.iconKey&&this.textures.exists(o.iconKey)?o.iconKey:type==='heal'?(this.textures.exists('ic_heart')?'ic_heart':null):type==='awk'?this.iconKey(o.key,false):this.iconKey(o.key,type==='pas')),iconFrame;
+    /* v8.1.144 owner 🐞: Build Path back to the wide card layout, with the painted path card (order 80) as its picture (square crop of the illustration) */
+    if(o.kind==='Build Path'&&typeof pathCardKey==='function'){ const pk=pathCardKey(o.key); if(this.realTex?.(pk)){ const T=this.textures.get(pk),src=T.getSourceImage(); if(!T.has('sq')){ const sw=src.width,sy=Math.round(src.height*.12); T.add('sq',0,0,sy,sw,Math.min(sw,src.height-sy)); } iconKey=pk; iconFrame='sq'; } }
     let icon,badgeT,nameT,roleT,descT,starsT,ctaT; let hl=options.starting?null:this._cardHeadline(o);if(hl&&(hl.t==null||hl.t==='undefined'||/undefined/.test(String(hl.t))))hl=null;   /* v7.8.59 การ์ด Relic บางใบขึ้น "undefined" */
     if(hl&&!options.starting)hl=this._cardProgress(o,hl)||hl;   /* v7.9.25 เจ้าของ: บอกค่าเดิม → ค่าหลังเลือก */
     // v6.52.1: คำอธิบายสั้นลง — แยกแท็กไปบรรทัดดาว · ตัดท่อนที่ซ้ำกับหัวข้อเขียว
-    let dd=String(o.desc||''),tagS='';{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}
+    let dd=String(o.desc||''),tagS=''; if(o.kind==='Build Path'){ const m=dd.match(/^[^.!?]*[.!?]/); if(m&&m[0].length>=20)dd=m[0]; }   /* v8.1.144 owner: short, simple text */{const ti=dd.search(/\s{2}·\s{2}|\s⬆\s/);if(ti>=0){tagS=dd.slice(ti).replace(/^\s*·\s*/,'').trim();dd=dd.slice(0,ti);}}
     if(hl&&hl.t){const h=hl.t.replace(/^[^A-Za-z0-9+\-−×]+/,'').replace(/…$/,'').trim();if(h.length>3&&dd.trim().startsWith(h)){const r=dd.trim().slice(h.length).replace(/^[\s,·;—-]+/,'');if(r.length>3)dd=r.charAt(0).toUpperCase()+r.slice(1);}}
     if(wide){
       const iconX=x+Math.min(66,h*0.40),iconY=y+h/2,iconSize=Math.min(78,h*0.56),textX=x+Math.min(118,h*0.76),textW=w-(textX-x)-14;
       const halo=this.lvlSocket(iconX,iconY,Math.min(45,h*0.34)*2.05,color)||this.add.circle(iconX,iconY,Math.min(45,h*0.34),color,0.13).setStrokeStyle(2,color,0.30);
-      icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
+      icon=iconKey?this.add.image(iconX,iconY,iconKey,iconFrame).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(textX,y+10,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:badgeColor}).setOrigin(0,0);
       nameT=this.add.text(textX,y+29,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':w<300?'14px':'16px',color:nameColor,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
       roleT=hl?this.add.text(textX,y+51,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hl.c,stroke:hl.s,strokeThickness:3,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0):this.add.text(textX,y+55,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'10px',color:roleColor,wordWrap:{width:textW},maxLines:1}).setOrigin(0,0);
@@ -17939,7 +17945,7 @@ class Game extends Phaser.Scene {
     }else{
       const iconX=x+w/2,iconY=y+h*0.25,iconSize=Math.min(70,h*0.25),textW=w-22;
       const halo=this.lvlSocket(iconX,iconY,Math.min(42,w*0.22)*2.05,color)||this.add.circle(iconX,iconY,Math.min(42,w*0.22),color,0.13).setStrokeStyle(2,color,0.30);
-      icon=iconKey?this.add.image(iconX,iconY,iconKey).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
+      icon=iconKey?this.add.image(iconX,iconY,iconKey,iconFrame).setDisplaySize(iconSize,iconSize):this.add.text(iconX,iconY,o.emoji||'?',{fontSize:Math.round(iconSize*0.72)+'px'}).setOrigin(0.5);
       badgeT=this.add.text(x+w/2,y+9,badge,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:badgeColor}).setOrigin(0.5,0);
       nameT=this.add.text(x+w/2,y+h*0.42,title+(options.starting||isPath?'':'  Lv'+lvl+jump),{fontFamily:'sans-serif',fontStyle:'bold',fontSize:isPath?'18px':'14px',color:nameColor,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
       roleT=hl?this.add.text(x+w/2,y+h*0.505,hl.t,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'14px',color:hl.c,stroke:hl.s,strokeThickness:3,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0):this.add.text(x+w/2,y+h*0.52,role,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'9px',color:roleColor,align:'center',wordWrap:{width:textW},maxLines:1}).setOrigin(0.5,0);
@@ -18329,7 +18335,7 @@ class Game extends Phaser.Scene {
     if(this.pendingLvl>0 && this.state==='play' && this.mode!=='reward' && !this._bossLootOpen) (this.queueLevelUp?this.queueLevelUp():this.openLevelUp());
   }
   // v7.8.58 เจ้าของ: การ์ดเลเวลอัพไม่เด้งทันที — โชว์ LEVEL UP ก่อน LEVELUP_DELAY_MS แล้วค่อยเปิด (ไม่ซ้อนคิว)
-  queueLevelUp(){ if(this._inTutorial&&this._coach&&['welcome','move','attack','sweets'].includes(this.coachSteps()[this._coach.step]?.id))return;   // v7.9.68 บทสอน: เก็บเลเวลไว้จนถึงขั้นสอนการ์ด
+  queueLevelUp(){ if(this._levelHoldUntil&&this.time?.now<this._levelHoldUntil){ if(!this._lvlHoldAt||Date.now()-this._lvlHoldAt>4000){ this._lvlHoldAt=Date.now(); this.time.delayedCall(this._levelHoldUntil-this.time.now+60,()=>{ this._lvlHoldAt=0; if(this.state==='play'&&this.pendingLvl>0)this.queueLevelUp(); }); } return; } if(this._inTutorial&&this._coach&&['welcome','move','attack','sweets'].includes(this.coachSteps()[this._coach.step]?.id))return;   // v7.9.68 บทสอน: เก็บเลเวลไว้จนถึงขั้นสอนการ์ด
     if(!this.time?.delayedCall||this._inTutorial){this.openLevelUp();return;} if(this._lvlQueued)return; this._lvlQueued=true;
     const p=this.player;if(p?.active)this.floatText?.(p.x,p.y-70,'LEVEL UP!',0xffe07a);
     this.time.delayedCall(LEVELUP_DELAY_MS,()=>{ this._lvlQueued=false; if(this.state==='play'&&this.pendingLvl>0&&this.mode!=='reward'&&!this._bossLootOpen)this.openLevelUp(); }); }   // v7.9.45 บอสตายแล้วไม่เปิดการ์ดซ้อนวงล้อรางวัล (ด่านจบอยู่แล้ว)
@@ -18361,7 +18367,7 @@ class Game extends Phaser.Scene {
     const total=finalCardW*cols+gap*(cols-1), lx=(w-total)/2;
     /* v8.1.122 เจ้าของ: Relic / Evolution ไม่ใช่การ์ด → ห้องสมบัติ (ของลอยบนแท่น) / เตาหลอม · ใช้ระบบแตะ 2 ครั้งเดิม (lvlCards + onFocus) */
     const vault=this._relicPick&&!this._chestReward&&opts.length>0&&opts.length<=3&&!this._inTutorial,forge=!vault&&opts.length===1&&opts[0]&&opts[0].evolution;
-    const book=!vault&&!forge&&!this._inTutorial&&opts.length===2&&opts.every(o=>o&&o.mutation)&&this.realTex?.('book80_spread'),pcards=!vault&&!forge&&opts.length===3&&opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.(pathCardKey(o.key)))&&this.realTex?.('pathcard80_back');   /* v8.1.137 ใบ 80 สมุดสูตร Mutation · การ์ด Build Path */
+    const book=!vault&&!forge&&!this._inTutorial&&opts.length===2&&opts.every(o=>o&&o.mutation)&&this.realTex?.('book80_spread'),pcards=false&&!vault&&!forge&&opts.length===3&&opts.every(o=>o&&o.kind==='Build Path'&&this.realTex?.(pathCardKey(o.key)))&&this.realTex?.('pathcard80_back');   /* v8.1.137 ใบ 80 สมุดสูตร Mutation · การ์ด Build Path */
     if(vault&&this.drawRelicVault?.(opts,startY,t)){} else if(forge&&this.drawEvoForge?.(opts[0],startY,t)){} else if(book&&this.drawRecipeBook?.(opts,startY,t)){} else if(pcards&&this.drawPathCards?.(opts,startY,t)){} else
     opts.forEach((o,i)=>{
       const col=i%cols,row=Math.floor(i/cols),x=lx+col*(finalCardW+gap), y=startY+row*(ch+gap);
@@ -21588,6 +21594,10 @@ class Game extends Phaser.Scene {
       const a=m.life<2?Math.max(.15,m.life/2):1; m.ring.setRotation(m.ph*.25).setAlpha(.5*a); m.shard.setAlpha(.9*a).setY(m.y-14+Math.sin(m.ph)*2.5); } }
   // ท่าใหญ่ของบอส (วงระเบิด/คลื่น) ทำกระจกแตก · ศัตรูธรรมดาไม่ทำ (เจ้าของ 21 ต.ค. ตามแนะนำ)
   sesMirrorBreak(test){ const M=this._sesMirrors; if(this.character!=='sesame'||!M||!M.length)return; for(let i=M.length-1;i>=0;i--)if(test(M[i].x,M[i].y)){ this.sesMirrorGone(M[i],true); M.splice(i,1); } }
+  /* v8.1.144 owner 🐞: EXP/items looked pasted on the floor → one soft ground shadow under every pickup (single Graphics, ≤ 260 drops, off on low performance) */
+  tickDropShadows(){ if(typeof PERF!=='undefined'&&PERF.lvl>=2){ this._dropSh?.clear?.(); return; } let g=this._dropSh; if(!g||!g.scene){ if(!this.add?.graphics)return; g=this._dropSh=this.camWorld(this.add.graphics().setDepth(-97000)); } g.clear(); let n=0;
+    const one=(o,w)=>{ if(!o||!o.active||!o.visible||n>=260)return; n++; const ww=Math.max(10,(o.displayWidth||w)*.7); g.fillStyle(0x1a0f1e,.22).fillEllipse(o.x,o.y+(o.displayHeight||w)*.42,ww,ww*.32); g.fillStyle(0x1a0f1e,.14).fillEllipse(o.x,o.y+(o.displayHeight||w)*.42,ww*1.4,ww*.45); };
+    for(const grp of [this.loots,this.heals,this.vacs,this.gimmicks,this.chests,this.orbs])grp?.children?.iterate?.(o=>one(o,24)); }
   tickAura(dt){
     const lvl=this.skills&&this.skills.aura;if(!lvl){this.clearAuraFx();return;}
     const aw=lvl>=SKILL_AWAKEN_LV,r=(72+lvl*13)*(aw?1.35:1);this.ensureAuraFx();this._auraAngle=(this._auraAngle||0)+dt*(aw?1.45:1.05);this._sakuraHealCd=Math.max(0,(this._sakuraHealCd||0)-dt);
@@ -21943,7 +21953,7 @@ class Game extends Phaser.Scene {
     const bSugar=Save.addKill(btype);if(bSugar&&Save.kills(btype)>1)Sfx.orderCue?.('best_tier',.3,1); if(Save.kills(btype)===1&&!this._inTutorial)(this._newSpecies||(this._newSpecies=[])).push(btype);   // v8.0.30 ชนิดใหม่ → หน้าสรุปด่าน
     if(bSugar){ this.showBanner('📖 Codex Rank Unlocked','+🍬 '+bSugar,1100); Sfx.chest&&Sfx.chest(); }
     const deathColor=big?0xffd166:(isElite?0xffb15a:(e.texture.key==='e_tank'?0x8b5cf0:0xffd166));
-    if(!victory){this.burst(e.x,e.y,deathColor);this.vfxDeathPoof(e.x,e.y,deathColor,big||isElite);this.mochiChunks?.(e.x,e.y,e.tintColor||(STAGE_MOOD[this.stageIndex]??0xffe3ef),big||isElite);}
+    if(!victory){/* v8.1.144 owner 🐞: orange dots on death looked like EXP/items → pale mochi-powder puff, flying dots only for big/elite and small */ if(big||isElite)this.burst(e.x,e.y,0xfff3e6);this.vfxDeathPoof(e.x,e.y,0xf1e6f4,big||isElite);this.mochiChunks?.(e.x,e.y,e.tintColor||(STAGE_MOOD[this.stageIndex]??0xffe3ef),big||isElite);}
     if(!big&&!e._missionDeathArt)this.playEnemyDeath(e);   // v5.78 ตัวกระเด็นหมุนออกจากผู้เล่น
     { const now=this.time.now; this._mkT=(this._mkT||[]).filter(t=>now-t<260); this._mkT.push(now); if(this._mkT.length>=6&&now-(this._mkShakeAt||0)>450){ this._mkShakeAt=now; this._mkT=[]; this.screenShake(90,0.0035); } }   // ฆ่ารวดเป็นกลุ่ม = จอสั่นเบา
     if(big&&!victory){ this.screenShake(isBoss?400:220,isBoss?0.012:0.008); this.burst(e.x,e.y,0xff9ec4); if(isMini)(Sfx.ev?.('miniboss_defeat',.65,1)||Sfx.clear()); }
@@ -21955,7 +21965,7 @@ class Game extends Phaser.Scene {
     if(!victory&&!e._missionDeathArt){this.stage5DeathGhost(e);this.chapter2DeathGhost(e);}
     if(isBoss&&!victory) this.bossDefeat(e.x,e.y);   // ฉากบอสตายอลังการ
     if(isBoss&&!e.isDummy&&!this.bossRush&&!this.recipeMode&&!this.riftMode&&!e.delveBoss){ this.bigFoeLoot(e.x,e.y,'boss'); }   /* v8.1.75 บอสดรอปเยอะขึ้น */
-    { const wo=this.waveObjective,_fb=this.boss; if(isBoss||(!this.bossRush&&_fb&&_fb.active&&_fb.isBoss)){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) this.dropOrb(e.x,e.y,this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1)); }   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
+    { const wo=this.waveObjective,_fb=this.boss; if(isBoss||(!this.bossRush&&_fb&&_fb.active&&_fb.isBoss)){} else if(this.usesStoryBudget?.()||!(wo&&wo._overtime&&!wo.done&&!e.isMini&&!e.isElite)) { let xv=this.usesStoryBudget?.()&&this._storyBudget?this.storyEnemyXp(e):(e.xp||1); if(e._xpMul!=null)xv=Math.floor(xv*e._xpMul+Math.random()); if(xv>0)this.dropOrb(e.x,e.y,xv); } }   /* v8.1.144 e._xpMul: Herald gate packs give ¼ EXP (owner: standing at the gates farmed EXP) */   // v6.54.8: บอสไม่ดรอป EXP/หัวใจ (ด่านจบแล้ว ไร้ค่า) → Sugar Bounty เข้ารางวัลตรง   // v4.87.1: ภารกิจเกินเวลา = มอนธรรมดาไม่ดรอป EXP (กันปั๊มเลเวล) · ออร์บเดียวต่อศัตรู · สีบอกค่า EXP (ไม่สแปมหลายเม็ด)
     if(this.usesStoryBudget?.())this.storyFieldDrops(e);
     else if(isMini||(isElite&&Math.random()<0.18)) this.dropHeal(e.x+Phaser.Math.Between(-10,10),e.y+Phaser.Math.Between(-10,10));  // หัวใจเป็นรางวัลตัวอันตรายเท่านั้น · มอนสเตอร์ธรรมดาไม่ดWaitป
     // กล่องสูตรลับ (เลือกเอง 1 ใบ) — RNG จากการฆ่ามอนสเตอร์: elite 5% · ธรรมดา 0.6% (บอส/มินิมีกล่องของตัวเองแล้ว)
@@ -21984,7 +21994,8 @@ class Game extends Phaser.Scene {
       this.scheduleStageEvent(_ln?2400:1600,'reward',()=>this.onBossDown(bx,by)); return; }   // Waitจนพ้นหน้าเลเวลอัพ/กล่องสุ่มก่อนเปิดหน้ารางวัล (กันทับหน้าการ์ด)
     if(e._mimic){ const t=e._mimic; e._mimic=null; this._noMimicNext=true; this._nextChestTier=t; this.spawnChest(e.x,e.y,'mini'); }
     if(isMini&&!this._inTutorial&&Math.random()<0.25){ Save.addShovels(1); this.floatText(e.x,e.y-40,'+1 ⛏️',0xffd9a8); }   // v5.32 มินิบอส 25% +1 พลั่ว
-    if(isMini){ const mt=this.miniChestTier(),mx=e.x,my=e.y,ms=this._lootTok||0; this.time.delayedCall(this._inTutorial||this.bossRush?0:2300,()=>{ if(this.state==='menu'||this.state==='summary'||ms!==(this._lootTok||0))return; this._nextChestTier=mt; this.spawnChest(mx,my,'mini'); });this.onWaveCleared(false,true); return; }   /* v8.1.101 เจ้าของ: วงล้อ (Spin) เปิดทับ loot bomb → กล่องมินิบอสหล่นหลังของระเบิดออกและดูดเข้าตัวแล้ว (~2.3 วิ) */   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
+    if(isMini){ const mt=this.miniChestTier(),mx=e.x,my=e.y,ms=this._lootTok||0; if(!this._inTutorial&&!this.bossRush)this._levelHoldUntil=(this.time?.now||0)+2900;   /* v8.1.144 owner 🐞: loot → EXP/level-up → chest, one after another (level-up and the Spin wheel used to cover the loot) */
+      let tries=0; const drop=()=>{ if(this.state==='menu'||this.state==='summary'||ms!==(this._lootTok||0))return; if((this.state!=='play'||(this.pendingLvl||0)>0)&&tries++<40){ this.time.delayedCall(400,drop); return; } this._nextChestTier=mt; this.spawnChest(mx,my,'mini'); }; this.time.delayedCall(this._inTutorial||this.bossRush?0:3600,drop);this.onWaveCleared(false,true); return; }   /* v8.1.101 เจ้าของ: วงล้อ (Spin) เปิดทับ loot bomb → กล่องมินิบอสหล่นหลังของระเบิดออกและดูดเข้าตัวแล้ว (~2.3 วิ) */   // Minibossตาย = ดWaitปกล่องสกิล 1 ใบแน่นอน แล้วผ่านเวฟ
   }
   killBullet(b){ if(b._chargeFx){b._chargeFx.destroy();b._chargeFx=null;} b.setActive(false).setVisible(false); if(b.body){b.body.enable=false; b.body.stop();} }
   // ของสำคัญมีฮาโล+วงชีพจรให้อ่านชัด โดยไม่ดึงเข้าหาผู้เล่น เพื่อเก็บไว้ใช้ภายหลังได้
@@ -24376,7 +24387,7 @@ class Game extends Phaser.Scene {
     this.drawDashRing();
     if(this.player.forgeMods)forgeTick(this,dt);this.updatePickupReadability(); this.tickLootMagnet(dt); this.tickProximityObjects(dt); this.animateProgressBar(dt);
     if(this.isSesRune?.())this.sesRuneCooldownTick(dt);else if(this.uniqueCd>0)this.uniqueCd=Math.max(0,this.uniqueCd-dt);this.tickLanceCharges?.(dt);if(this.uniqueBtn){const u=this.uniqueInfo();this.uniqueBtn.setFillStyle(u.color,this.uniqueCd>0?0.10:0.28);}this.drawUniqueRing();
-    this.tickAura(dt);
+    this.tickAura(dt); this.tickDropShadows?.();
     if(this._mintDashTween?.isPaused())this._mintDashTween.resume();if(this._mintDashFinish)this.finishFrostLance(this._mintDashFinish);this.tickGlacierSnow(dt);
     this.tickSnipe(); this.tickIceTrails(dt); this.tickCrossroads(dt); this.tickCharSignature(dt); this.tickCocoaCombo(dt); this.tickYuzuCrew(dt); this.tickFR(dt); this.drawShellBubble(); this.tickInfusion(dt); this.modTick(dt); this.tickPathTalents(dt);
     if(this._coach)this.tickTutorialCoach(dt);
