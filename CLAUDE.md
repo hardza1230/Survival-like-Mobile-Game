@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.147**. Next release:8.1.148. Fetch the deploy branch before new work.
+Current release: **8.1.148**. Next release:8.1.149. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.147 — audio order A14 wired — chest opening sounds (owner)
+# Latest delivery: v8.1.148 — Lobby hero feels alive — idle acts, shadow follow, depth motes (owner)
+
+Owner asked for more depth and life on the Lobby hero (code only, no new art). `lobbyHeroWarp`: shadow (`_lhShadow`, now its own graphics + `lb_hero_shadow`) shrinks/fades with hops and stretches with breathing; new `st.lean` bends the strips sideways (cosmetics follow via `cosFollow`); untouched ≥5 s → `lobbyHeroAct` every 5.5–9.5 s picks peek / look / stretch / wiggle / hop (skipped below 35 FPS, tap resets the timer). New `lobbyHeroAmbient`: 'back' 7 light motes rising behind the hero, 'front' 3 faint bokeh in front drifting slowly; back glow pulses. All off with prefers-reduced-motion. Test: new lobby-alive.
+
+# Previous delivery: v8.1.147 — audio order A14 wired — chest opening sounds (owner)
 
 Delivery `asset-delivery/audio-a14` merged (8/8 match MANIFEST). `scripts/pack-audio-a14.py` → `assets/audio/sfx/chest_a14/` 8 MP3 96k mono (114 KB). Keys `sfx_chest_shake_build`, `sfx_chest_burst_{common,rare,epic,legend}`, `sfx_chest_confetti`, `sfx_chest_item_land`, `sfx_chest_duplicate` in ASSET_AUDIO; lazy-loaded by `chestSfxLoad()` (called in `buildBazaar` and `openChest`). `openChest`: build-up `chest_shake_build` (fallback `Sfx.chest`), burst `chest_burst_<tier>` (fallback `box_reveal_*`), epic/legend + `chest_confetti` at 120 ms, `chest_item_land` / `chest_duplicate` at 380 ms. Test: new audio-a14.
-
-# Previous delivery: v8.1.146 — art order 82 wired — Build Path full-card Unique art (owner)
-
-Delivery `asset-delivery/pathuq82` merged (18/18 match MANIFEST). `scripts/pack-pathuq82.py` → `assets/art/pathuq82/` 15 × 720×298 WebP q80 (483 KB · 0.82 MB GPU each, 3 per run); Sesame's 3 kept in incoming only (rune mode has no Build Path). Keys `pathuq82_<hero>_<path>` in ASSET_IMAGES, `artClass` stage, `stageArtKeys` loads the current hero's 3 (order-80 path cards no longer loaded; flip layout off since v8.1.144). `drawReadableChoiceCard` wide branch: Build Path with a loaded picture → full-card cover image (centred crop) + thin rarity-colour frame, text from 50% width in light colours with dark stroke; otherwise the v8.1.144 square crop / icon. Tests: new pathuq82-art; special-picks80-art updated (artClass regex, stage keys).
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

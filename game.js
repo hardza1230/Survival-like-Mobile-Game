@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.147';
+const GAME_VERSION = '8.1.148';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.148',date:'2026-11-14',title:'Lobby hero feels alive — idle acts, shadow follow, depth motes (owner)',items:['b']},
   {v:'8.1.147',date:'2026-11-14',title:'Chest opening sounds',items:['New chest opening sounds: a shake build-up, then a burst that grows with rarity','Sparkle burst on Epic and Legend, plus item-land and duplicate sounds']},
   {v:'8.1.146',date:'2026-11-14',title:'Painted Build Path cards',items:['Each Build Path card now shows a full painting of that build’s Unique skill']},
   {v:'8.1.145',date:'2026-11-14',title:'Build Paths from the first stage',items:['Strawberry can pick a Build Path from C1-1, so every hero gets to try a build before the next friend joins']},
@@ -12913,7 +12914,9 @@ class Game extends Phaser.Scene {
     { const g=this.add.graphics(),hc=ch.color||0xffc6e0,gx0=w/2,gy0=heroY-heroH*.5,R0=heroH*.62,fy=heroY-heroH*(1-((LOBBY_FACE[c]||[])[3]||1))-2;
       for(let i=32;i>=1;i--)g.fillStyle(i>22?hc:0xfff1dc,.014).fillCircle(gx0,gy0,R0*i/32);
       for(let i=10;i>=1;i--)g.fillStyle(0xffe2a6,.08).fillEllipse(w/2,fy,heroH*.8*i/10,heroH*.15*i/10);
-      if(!art('lb_hero_shadow')){g.lineStyle(1.5,0xffe7b0,.5).strokeEllipse(w/2,fy,heroH*.6,heroH*.1);g.fillStyle(0x1a0f24,.35).fillEllipse(w/2,fy,heroH*.4,heroH*.06).fillStyle(0x1a0f24,.25).fillEllipse(w/2,fy,heroH*.24,heroH*.035);}this.menu.add(g);img('lb_hero_shadow',0,w/2,fy,heroH*.8,heroH*.24); }
+      const sg=this.add.graphics().setPosition(w/2,fy); if(!art('lb_hero_shadow')){sg.lineStyle(1.5,0xffe7b0,.5).strokeEllipse(0,0,heroH*.6,heroH*.1);sg.fillStyle(0x1a0f24,.35).fillEllipse(0,0,heroH*.4,heroH*.06).fillStyle(0x1a0f24,.25).fillEllipse(0,0,heroH*.24,heroH*.035);}this.menu.add(g);this.menu.add(sg);const si=img('lb_hero_shadow',0,w/2,fy,heroH*.8,heroH*.24);
+      /* v8.1.148 เจ้าของ: ฮีโร่ Lobby มีมิติ/มีชีวิต → เงาหดตามตอนกระโดด + แสงหลังตัวหายใจ + ละอองลอยหลังตัว */
+      this._lhShadow=[sg,si].filter(Boolean).map(o=>({o,sx:o.scaleX,sy:o.scaleY,a:o.alpha})); this.hubTween({targets:g,alpha:{from:.78,to:1},duration:2800,yoyo:true,repeat:-1,ease:'Sine.inOut'}); this.lobbyHeroAmbient?.('back',w/2,fy,heroH,ch.color||0xffc6e0); }
     this.lobbyCos?.(w/2,heroY,heroH);   // v8.1.47 ของแต่งที่ Lobby (ปีกอยู่หลังฮีโร่ เพราะวาดก่อน)
     const lhI=this.lhKey?.(c,'idle'); this._lhSprite=null;
     if(LH_USE_SHEETS&&lhI&&this.lhReady(lhI)){ const sp=this.add.sprite(w/2,heroY,lhI,0).setOrigin(.5,LH_FOOT/LH_FH);sp.setScale(heroH*.975/LH_BODY);this.menu.add(sp);this._lhSprite=sp;
@@ -12925,6 +12928,7 @@ class Game extends Phaser.Scene {
     else if(this.textures.exists(hk)){ const hi=this.add.image(w/2,heroY,hk).setOrigin(.5,1);hi.setScale(heroH/hi.height);this.menu.add(hi);this.hubTween({targets:hi,y:heroY-5,duration:1600,yoyo:true,repeat:-1,ease:'Sine.inOut'});
       if(LH_USE_SHEETS&&lhI&&!this._lhLoading){ this._lhLoading=true; this.lhLoad([lhI,this.lhKey(c,'greet'),this.lhKey(c,'tap')],()=>{ this._lhLoading=false; if(this.state==='menu'&&this.menuScreen==='hub'&&(Save.data.character||'momo')===c)this.buildMenuScreen(); }); } }
     else this.hubText(w/2,heroY-heroH/2,ch.emoji||'🍡',Math.min(96,heroH*.5),'#fff',.5);
+    this.lobbyHeroAmbient?.('front',w/2,heroY,heroH,ch.color||0xffc6e0);
     /* v7.9.94 เจ้าของ: กล่องคำพูดลอยเหนือหัวฮีโร่ (หางชี้ลง) · กว้างไม่เกินช่องระหว่างปุ่มข้างจอ */
     { const gapW=w-2*(side+54)-8,bw=Math.max(120,Math.min(170,gapW-16)),lf=LOBBY_FACE[c]||[.5,.28,.27,1],headY=Math.min(heroY-heroH*(1-lf[1]+lf[2]*.62),heroY-heroH*.95+10),hx=w/2+(lf[0]-.5)*heroH*.55;
       this.startLobbyVoice(c,hx,headY,bw,top+ph+8,side+54+4,w-side-54-4); }
@@ -13004,14 +13008,33 @@ class Game extends Phaser.Scene {
   lobbyHeroWarp(key,x,y,H){ if(!this.textures.exists(key)||!this.tweens)return false; const src=this.textures.get(key).getSourceImage(),tw=src.width,th=src.height; if(!tw||!th)return false;
     const N=28,sc=H/th,c=this.add.container(x,y); this.menu.add(c); const strips=[];
     for(let i=0;i<N;i++){ const y0=Math.floor(th*i/N),y1=Math.ceil(th*(i+1)/N)+1,im=this.add.image(0,0,key).setOrigin(.5,1).setScale(sc); im.setCrop(0,y0,tw,Math.min(th,y1)-y0); c.add(im); strips.push({im,h:1-(i+.5)/N}); }
-    const st={t:Math.random()*10,sq:0,hop:0,spin:0,amp:1}; this._lhWarp={c,st,x,y};
+    const st={t:Math.random()*10,sq:0,hop:0,spin:0,amp:1,lean:0,H}; this._lhWarp={c,st,x,y}; const shd=this._lhShadow||[]; this._lhShadow=null;
     const upd=()=>{ if(!c.active)return; const t=st.t,br=Math.sin(t*2.1);
       const sy=(1+.018*br)*(1-st.sq),sx=(1-.010*br)*(1+st.sq*.7); c.setScale(sx,sy); c.y=y-st.hop; c.rotation=st.spin; this.cosFollow?.(st,x,y,sx,sy);
-      for(const q of strips){ const h=q.h,bend=h*h; q.im.x=st.amp*(bend*4.2*Math.sin(t*1.15)+h*h*h*1.6*Math.sin(t*3.3+h*5))/Math.max(.01,sx); } };
+      for(const q of strips){ const h=q.h,bend=h*h; q.im.x=(st.amp*(bend*4.2*Math.sin(t*1.15)+h*h*h*1.6*Math.sin(t*3.3+h*5))+st.lean*h)/Math.max(.01,sx); }
+      if(shd.length){ const k=Math.max(.45,1-st.hop/(H*.5)),wb=1+.02*br+st.sq*.5; for(const s of shd)if(s.o.active){ s.o.setScale(s.sx*k*wb,s.sy*k); s.o.setAlpha(s.a*(.4+.6*k)); s.o.x=x+st.lean*.15; } } };
     this.hubTween({targets:st,t:st.t+TAU*20,duration:120000,repeat:-1,onUpdate:upd}); upd();
     this._zone(x-H*.3,y-H*.95,H*.6,H*.95,()=>this.lobbyHeroTap()); const hz=this.tapZones[this.tapZones.length-1]; hz.tag='lobby_hero'; hz.noBounce=true;
+    /* v8.1.148 เจ้าของ: ยืนเฉย ๆ นานแล้วขยับเอง (เขย่งดู / เอียงมอง / ยืดตัว / ส่ายดีใจ / กระโดดเบา ๆ) · ไม่เล่นถ้า FPS ต่ำ */
+    this._lhIdleAt=Date.now(); this.hubEvery?.(5500,4000,()=>{ if(this._lhWarp?.st!==st||!c.active||st.busy||Date.now()-(this._lhIdleAt||0)<5000||(this.game?.loop?.actualFps||60)<35)return; this.lobbyHeroAct(st); });
     return true; }
-  lobbyHeroTap(){ const W=this._lhWarp; if(!W||!W.c.active)return; const st=W.st,now=Date.now(),tp=(this._lhTaps||[]).filter(v=>now-v<3000); tp.push(now); this._lhTaps=tp;
+  lobbyHeroAct(st,pick){ if(!this.tweens||!st)return; const H=st.H||300,acts=['peek','look','stretch','wiggle','hop'],a=pick||acts.filter(v=>v!==st.last)[Math.floor(Math.random()*(acts.length-1))]; st.last=a; st.busy=true;
+    const done=()=>{ st.busy=false; },T=(cfg)=>this.tweens.add(Object.assign({targets:st},cfg));
+    if(a==='peek'){ T({sq:-.05,hop:H*.025,duration:260,ease:'Sine.out',yoyo:true,hold:420,onComplete:()=>T({sq:0,hop:0,duration:120,ease:'Sine.inOut',onComplete:done})}); }
+    else if(a==='look'){ const d=Math.random()<.5?-1:1; T({lean:d*H*.07,duration:420,ease:'Sine.inOut',onComplete:()=>T({lean:-d*H*.06,duration:620,delay:700,ease:'Sine.inOut',onComplete:()=>T({lean:0,duration:420,delay:600,ease:'Sine.inOut',onComplete:done})})}); }
+    else if(a==='stretch'){ T({sq:-.08,duration:520,ease:'Sine.out',onComplete:()=>T({sq:.06,duration:180,delay:350,ease:'Quad.in',onComplete:()=>T({sq:0,duration:380,ease:'Back.out',onComplete:done})})}); }
+    else if(a==='wiggle'){ st.amp=3; T({amp:1,duration:1100,ease:'Quad.out',onComplete:done}); }
+    else { T({sq:.08,duration:110,ease:'Quad.out',onComplete:()=>T({sq:-.04,hop:H*.07,duration:200,ease:'Quad.out',onComplete:()=>T({sq:0,hop:0,duration:260,ease:'Bounce.out',onComplete:()=>T({sq:.06,duration:90,yoyo:true,onComplete:done})})})}); }
+    return a; }
+  /* v8.1.148 เจ้าของ: เพิ่มมิติ → 'back' ละอองแสงลอยขึ้นหลังตัว · 'front' โบเก้จาง ๆ หน้าตัว (ขยับช้า = รู้สึกมีระยะลึก) · ไม่มีภาพใหม่ */
+  lobbyHeroAmbient(layer,x,footY,H,col){ if(!this.hubMotionAllowed?.()||!this.add?.graphics||!this.menu)return 0; const R=Math.random; let n=0;
+    if(layer==='back'){ for(let i=0;i<7;i++){ const m=this.add.graphics(),r=1.6+R()*2.2; m.fillStyle(i%3?0xfff1dc:col,.9).fillCircle(0,0,r).fillStyle(0xffffff,.25).fillCircle(0,0,r*2.2); this.menu.add(m); n++;
+        const go=()=>{ if(!m.active)return; const x0=x+(R()-.5)*H*.7; m.setPosition(x0,footY-H*(.05+R()*.25)).setAlpha(0); this.hubTween({targets:m,y:footY-H*(.75+R()*.25),x:x0+(R()-.5)*H*.15,alpha:{from:0,to:.8},duration:4200+R()*3000,ease:'Sine.inOut',onComplete:go}); };
+        this.time?.delayedCall?.(i*650,go); } }
+    else { const spots=[[-.46,-.22,.11],[.47,-.62,.08],[.34,-.04,.13]]; for(const [fx,fy,fr] of spots){ const b=this.add.graphics(),r=H*fr; for(let k=6;k>=1;k--)b.fillStyle(k>3?col:0xfff1dc,.035).fillCircle(0,0,r*k/6); b.setPosition(x+fx*H,footY+fy*H); this.menu.add(b); n++;
+        this.hubTween({targets:b,x:b.x+(R()<.5?-1:1)*(8+R()*10),y:b.y-(10+R()*12),alpha:{from:1,to:.55},duration:5200+R()*2500,yoyo:true,repeat:-1,ease:'Sine.inOut'}); } }
+    return n; }
+  lobbyHeroTap(){ const W=this._lhWarp; if(!W||!W.c.active)return; this._lhIdleAt=Date.now(); const st=W.st,now=Date.now(),tp=(this._lhTaps||[]).filter(v=>now-v<3000); tp.push(now); this._lhTaps=tp;
     const big=tp.length>=5; if(big)this._lhTaps=[]; this.tweens.add({targets:st,sq:big?.16:.12,duration:90,ease:'Quad.out',onComplete:()=>{ this.tweens.add({targets:st,sq:-.05,hop:big?70:22,duration:big?260:170,ease:'Quad.out',onComplete:()=>{ this.tweens.add({targets:st,sq:0,hop:0,duration:big?320:220,ease:'Bounce.out'}); }}); }});
     /* v7.9.77 เจ้าของ: แตะรัวแล้วไม่หมุนตัวแล้ว → ส่ายแรงขึ้นแทน */
     st.amp=big?4:2.2; this.tweens.add({targets:st,amp:1,duration:900,ease:'Quad.out'}); Sfx.voice?.((Save.data.character||'momo')+(big?'_poke':'_tap'),.24)||Sfx.select&&Sfx.select(); }
@@ -14474,7 +14497,7 @@ class Game extends Phaser.Scene {
     return {hx,hy,top,feet,back:{x:hx,y:hy+(feet-hy)*.3}}; }
   cosAttach(o,footY,hh,bob){ if(!o)return o; (this._cosAttach||(this._cosAttach=[])).push({o,bx:o.x,by:o.y,h:Math.max(0,Math.min(1,(footY-o.y)/hh)),bob:bob||0,ph:Math.random()*6}); return o; }
   cosFollow(st,x0,y0,sx,sy){ const L=this._cosAttach; if(!L||!L.length)return; const t=st.t; this._cosAttach=L.filter(q=>q.o&&q.o.active);
-    for(const q of this._cosAttach){ const h=q.h,dx=st.amp*(h*h*4.2*Math.sin(t*1.15)+h*h*h*1.6*Math.sin(t*3.3+h*5)); q.o.x=x0+(q.bx-x0)*sx+dx; q.o.y=y0-st.hop-(y0-q.by)*sy+(q.bob?Math.sin(t*1.6+q.ph)*q.bob:0); if(st.spin)q.o.rotation=st.spin*(q.h>.2?1:0); } }
+    for(const q of this._cosAttach){ const h=q.h,dx=st.amp*(h*h*4.2*Math.sin(t*1.15)+h*h*h*1.6*Math.sin(t*3.3+h*5))+(st.lean||0)*h; q.o.x=x0+(q.bx-x0)*sx+dx; q.o.y=y0-st.hop-(y0-q.by)*sy+(q.bob?Math.sin(t*1.6+q.ph)*q.bob:0); if(st.spin)q.o.rotation=st.spin*(q.h>.2?1:0); } }
   lobbyCos(x,footY,hh,ov,scr){ if(typeof Cos==='undefined'||!Save.data)return; scr=scr||'hub'; this._cosAttach=[]; if(this.cosEnsure(()=>{ if(this.state==='menu'&&this.menuScreen===scr)this.buildMenuScreen(); }))return; const E=sl=>ov&&(sl in ov)?ov[sl]:Cos.equipped(sl),wg=E('wings'),pt=E('pet'),tr=E('trail'),hl=E('halo'),au=E('aura'),A=this.cosAnchor(x,footY,hh);
     const sp=(c,px,py,sz,fs)=>{ let k='cos_'+c.id; const hd=k+'_hd'; if(typeof ASSET_FX!=='undefined'&&ASSET_FX[hd]){ if(this.realTex?.(hd)){ k=hd; fs=ASSET_FX[hd].fw||fs; } else this.skinLoad?.(hd); }   /* v8.1.70 สัตว์เลี้ยง HD (ใบ 69 G) ใน Lobby ไม่ต้องขยาย */
       if(!this.realTex?.(k))return null; const o=this.add.sprite(px,py,k).setScale(Math.min(sz/fs,k===hd?1:COS_LOBBY_MAX)); if(this.bpAnim?.(k))o.play(k); const t=Cos.tint(c); if(t!=null)o.setTint(t); return o; };

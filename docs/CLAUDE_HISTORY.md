@@ -3989,3 +3989,8 @@ Owner asked which art can become code; survey in `docs/CODE_VS_ART.md`, tier A d
 
 Owner: Strawberry never got to try a build — Build Path opened at C1-2 and C1-2 already hands over to Mint. `CARD_UNLOCK.path` 1 → 0 (path pick at level 5 from C1-1; tutorial still excluded via `_inTutorial`). Lore: `CARD_INTRO.path` now says a page of Grandma's recipes was tucked in the Heart Seed; the C1-2 jam jar keeps its comic line (`ruby_comic_s2_3` has an exact voice line, test ruby-storybook) and `docs/STORY_CANON.md` C1-2 row notes the change.
 
+
+# Delivery: v8.1.146 — art order 82 wired — Build Path full-card Unique art (owner)
+
+Delivery `asset-delivery/pathuq82` merged (18/18 match MANIFEST). `scripts/pack-pathuq82.py` → `assets/art/pathuq82/` 15 × 720×298 WebP q80 (483 KB · 0.82 MB GPU each, 3 per run); Sesame's 3 kept in incoming only (rune mode has no Build Path). Keys `pathuq82_<hero>_<path>` in ASSET_IMAGES, `artClass` stage, `stageArtKeys` loads the current hero's 3 (order-80 path cards no longer loaded; flip layout off since v8.1.144). `drawReadableChoiceCard` wide branch: Build Path with a loaded picture → full-card cover image (centred crop) + thin rarity-colour frame, text from 50% width in light colours with dark stroke; otherwise the v8.1.144 square crop / icon. Tests: new pathuq82-art; special-picks80-art updated (artClass regex, stage keys).
+
