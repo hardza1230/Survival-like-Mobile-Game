@@ -46,7 +46,7 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 ## 5. ถัดไป
 **รออาร์ต/เสียง (เจ้าของ 12 พ.ย.: AI ฝั่งอาร์ต/เสียงทำแค่ไฟล์ส่งที่ `assets/incoming/<batch>/` · Claude ฝั่งโค้ดผูกเองด้วย skill wire-art · ใบ 75–78 ก่อนหน้านี้ฝั่งอาร์ตผูกเอง)**
 - ใบ 80 หน้าเลือกพิเศษ (ห้องสมบัติ Relic · ทั่ง Evolution · สมุดสูตร Mutation · การ์ด Build Path 15+1) ผูกแล้ว v8.1.137 · v8.1.138 สลับภาพ Glacier/Barrage (`PATHCARD_ART`) · รอ QA มือถือ
-- ใบ 82 ภาพการ์ด Build Path สี่เหลี่ยม เน้น Unique (18 · `assets/incoming/pathuq82/`) 🟡 รออาร์ต · โค้ดรอรับ: `drawReadableChoiceCard` ใช้ `pathuq82_<hero>_<path>` ก่อนภาพใบ 80 ตัด (v8.1.144)
+- ใบ 82 ภาพการ์ด Build Path เต็มการ์ด 1024×424 เน้น Unique (18 · `assets/incoming/pathuq82/`) 🟡 รออาร์ต · ตอนผูก: `drawReadableChoiceCard` วาดภาพเต็มการ์ด + ข้อความชิดขวา (ตอนนี้ใช้ภาพใบ 80 ตัดสี่เหลี่ยมซ้าย v8.1.144)
 - ใบ 81 ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) การ์ด Cocoa Titan/Dash Boxer ใหม่ 🟡 รออาร์ต · ส่งที่ `assets/incoming/relics81/`
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
