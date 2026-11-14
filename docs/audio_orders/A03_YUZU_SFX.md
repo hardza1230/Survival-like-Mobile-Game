@@ -1,6 +1,6 @@
 # A03 — Yuzu Citrus Companions · ElevenLabs SFX
 
-สถานะ: ปรับตามแผนคู่หู v8.0.38 · รอเชื่อม ElevenLabs/ไฟล์เสียง · แทนรายการ Orchard Swarm เดิม ไม่ต้องทำเสียง Toss/Sprout/Elder แล้ว
+สถานะ: ✅ ส่งครบ ผูกเข้าเกมแล้ว (ไฟล์ใน `assets/incoming/audio_yuzu/`) · อัปเดตหัวไฟล์ 14 พ.ย. 2026 · เดิม: ปรับตามแผนคู่หู v8.0.38 · แทนรายการ Orchard Swarm เดิม ไม่ต้องทำเสียง Toss/Sprout/Elder แล้ว
 
 ใช้ ElevenLabs โดยตรงตามคำสั่งเจ้าของ สร้างเสียงใหม่ ห้ามเลียนแบบเพลง ศิลปิน หรือเกมเดิม ไม่มีคำพูด ใช้กติกา A00 ทุกข้อ ส่ง assets/incoming/audio_yuzu/
 

@@ -20,3 +20,5 @@
 - **79:** ภาพ `core79_heart_seed` ต้องตรงกับ `docs/STORY_CANON.md` §2 (Flavor Cores) · สีเส้นใย Life `#ff5f7a` · Flavor `#f0a54a` · Oath `#6ec6ff`
 - **69:** เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว · ขายแยกเหลือ pet/trail/dash/pop
 - ใบ 72 `gp_ingredients` / `gp_recipe_card` ไม่ใช้แล้ว (Grandma's Pot เปลี่ยนเป็นแบบ Ritual v8.1.106) — ไม่ต้องทำเพิ่ม
+
+**ใหม่ 14 พ.ย.:** `docs/art_orders/82_BUILD_PATH_UNIQUE_ART.md` (18 ภาพ → `assets/incoming/pathuq82/`) · `docs/audio_orders/A14_CHEST_OPENING.md` (8 เสียง → `assets/incoming/audio_chest_a14/`)

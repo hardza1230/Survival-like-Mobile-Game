@@ -50,7 +50,8 @@ Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิ
 - ใบ 81 ไอคอน Relic ที่ขาด 8 · Modifier 36 · Trade-off 5 · การ์ด Build Path Yuzu 3 · (ไม่บังคับ) การ์ด Cocoa Titan/Dash Boxer ใหม่ 🟡 รออาร์ต · ส่งที่ `assets/incoming/relics81/`
 - รวมงานค้างให้ AI อีกตัว: `docs/PENDING_ART_AUDIO_ORDERS.md` · A13 / A12 / 79 / 69 ผูกแล้ว v8.1.108 · รอ QA มือถือ
 - ใบ 69 สกินเต็มตัว Festival ครบ 68/68 · 6 ฮีโร่ผ่าน qa-skin69 · ผูกแล้ว (Mint 11 พ.ย. · ยืนยัน v8.1.108) · เจ้าของ 10 พ.ย.: ปีก/ฮาโล/วง เลิกขายแยก → สกินเต็มตัว; ขายแยกเหลือ pet/trail/dash/pop
-- เสียงชุด A04 เพลง · รอสิทธิ์ Music Generation
+- A14 เสียงเปิดกล่อง 8 (ลุ้น + ระเบิด 4 ระดับ) 🟡 รอเสียง · `assets/incoming/audio_chest_a14/` · ผูกใน `openChest`
+- (A04 ส่งครบแล้ว · หัวไฟล์ A01–A05 อัปเดตเป็น ✅ 14 พ.ย.)
 
 **รอ QA บนมือถือของเจ้าของ**
 - ล่าสุด: v8.1.101 loot มินิบอส/บอส · v8.1.100 ป้ายคำพูด/การ์ดเลเวลอัป/หัวหน้าจบด่าน · v8.1.99 Mint bloom/หนังสือเปิด

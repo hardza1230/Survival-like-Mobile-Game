@@ -1,6 +1,6 @@
 # A01 — เสียงหน้าเมนูใหม่ (Merge · Forge Points · Login · Daily · Awards · Codex · Depths · Rank · Power) · ใบสั่งเสียง
 
-สถานะ: 🟡 รอเสียง · เขียน 25 ต.ค. 2026 · ส่งที่ `assets/incoming/audio_menu_progress/`
+สถานะ: ✅ ส่งครบ ผูกเข้าเกมแล้ว (ไฟล์ใน `assets/incoming/audio_menu_progress/`) · อัปเดตหัวไฟล์ 14 พ.ย. 2026 · เขียน 25 ต.ค. 2026 · ส่งที่ `assets/incoming/audio_menu_progress/`
 กติการ่วมดู `A00_README.md` · ทั้งหมดเป็น SFX mono
 
 ## ตอนนี้เป็นยังไง (ตรวจจากโค้ด v8.0.33)
