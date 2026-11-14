@@ -3999,3 +3999,8 @@ Delivery `asset-delivery/pathuq82` merged (18/18 match MANIFEST). `scripts/pack-
 
 Delivery `asset-delivery/audio-a14` merged (8/8 match MANIFEST). `scripts/pack-audio-a14.py` → `assets/audio/sfx/chest_a14/` 8 MP3 96k mono (114 KB). Keys `sfx_chest_shake_build`, `sfx_chest_burst_{common,rare,epic,legend}`, `sfx_chest_confetti`, `sfx_chest_item_land`, `sfx_chest_duplicate` in ASSET_AUDIO; lazy-loaded by `chestSfxLoad()` (called in `buildBazaar` and `openChest`). `openChest`: build-up `chest_shake_build` (fallback `Sfx.chest`), burst `chest_burst_<tier>` (fallback `box_reveal_*`), epic/legend + `chest_confetti` at 120 ms, `chest_item_land` / `chest_duplicate` at 380 ms. Test: new audio-a14.
 
+
+# Delivery: v8.1.148 — Lobby hero feels alive — idle acts, shadow follow, depth motes (owner)
+
+Owner asked for more depth and life on the Lobby hero (code only, no new art). `lobbyHeroWarp`: shadow (`_lhShadow`, now its own graphics + `lb_hero_shadow`) shrinks/fades with hops and stretches with breathing; new `st.lean` bends the strips sideways (cosmetics follow via `cosFollow`); untouched ≥5 s → `lobbyHeroAct` every 5.5–9.5 s picks peek / look / stretch / wiggle / hop (skipped below 35 FPS, tap resets the timer). New `lobbyHeroAmbient`: 'back' 7 light motes rising behind the hero, 'front' 3 faint bokeh in front drifting slowly; back glow pulses. All off with prefers-reduced-motion. Test: new lobby-alive.
+

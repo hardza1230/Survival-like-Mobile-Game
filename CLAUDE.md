@@ -1,14 +1,14 @@
 # Version line
 
-Current release: **8.1.149**. Next release:8.1.150. Fetch the deploy branch before new work.
+Current release: **8.1.150**. Next release:8.1.151. Fetch the deploy branch before new work.
 
-# Latest delivery: v8.1.149 — owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows
+# Latest delivery: v8.1.150 — owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish
+
+**Relic pick:** all 22 `RELICS.headline` rewritten as one plain line (≤28 chars, e.g. "Crits heal you", "+25% to far enemies"); relic options carry `short` + `note` (combo / evolves-into only); the vault info panel shows that line (16px bold) instead of desc + synergy + "for" text; Mods/Trade-offs show their first sentence. **Vault background:** `vault80_bg` now covers the whole screen (`addAt` index 1, under the header) — the top gap is gone. **Hero intros (`HERO_INTROS`):** one short line each ("I’m Cocoa! My punches smash the machines. Try me!"), bubble 150→96 px, 17px bold. Shrine left as is (owner). **Capture the Zone:** `captureHud` draws a progress arc on the ring edge + seconds left in the centre ("⬇ 12s" when outside); `capturePulse` at 25/50/75% hurts/pushes enemies within 1.25R (normal 40% max HP + knockback, elite/miniboss 8%, bosses untouched); `captureFinishSweep` on completion hits everything but bosses within max(2.2R, 520) (normal ×5 = cleared, elite/miniboss 25%). Mission text: "Stay in the ring until it fills. It blasts enemies every 25%!". Test: new owner-round150.
+
+# Previous delivery: v8.1.149 — owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows
 
 Reports from v8.1.147. **Wardrobe:** its only entry was the Thread tab, hidden since v8.1.140 (`IAP_ENABLED=false`) → Bazaar's 4th tab is now Wardrobe while IAP is off (opens `menuScreen='wardrobe'`; Back returns to the Bazaar). **The Great Hunger (C1-5):** seal aura α .58→.32, halos .42/.26→.2/.1, orbs 8→4, smaller, α .32–.52 and always behind the body (`setDepth(b.y-4)`). **Yuzu:** seedlings' shadow is a 2-layer Graphics (28×10 α .09 + 18×6 α .18, was a 16×5 ellipse); companion shadow gets a wider faint outer layer. Tests: new owner-round149; bazaar-tabs updated.
-
-# Previous delivery: v8.1.148 — Lobby hero feels alive — idle acts, shadow follow, depth motes (owner)
-
-Owner asked for more depth and life on the Lobby hero (code only, no new art). `lobbyHeroWarp`: shadow (`_lhShadow`, now its own graphics + `lb_hero_shadow`) shrinks/fades with hops and stretches with breathing; new `st.lean` bends the strips sideways (cosmetics follow via `cosFollow`); untouched ≥5 s → `lobbyHeroAct` every 5.5–9.5 s picks peek / look / stretch / wiggle / hop (skipped below 35 FPS, tap resets the timer). New `lobbyHeroAmbient`: 'back' 7 light motes rising behind the hero, 'front' 3 faint bokeh in front drifting slowly; back glow pulses. All off with prefers-reduced-motion. Test: new lobby-alive.
 
 ## 1. โปรเจกต์
 Mochi Mayhem — เกมมือถือ survival-like ธีมโมจิน่ารัก เป้าหมาย Google Play · เจ้าของทำงานบนมือถือ เป็นผู้กำกับ ให้ AI เขียนโค้ดทั้งหมด

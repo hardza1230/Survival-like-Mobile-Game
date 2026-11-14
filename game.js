@@ -50,7 +50,7 @@ function clampPlayerStats(p){ if(p._uqGlass){p.maxhp=Math.max(1,Math.round(p.max
 const TAU = Math.PI * 2;   // global — Game scene (บอส/VFX) อ้างถึง TAU ด้วย เดิมประกาศเฉพาะใน Boot.create → "TAU is not defined"
 
 /* ---- เวอร์ชัน + บันทึกUpdates (build-www ดึงไปทำ version.json ให้หน้า download) ---- */
-const GAME_VERSION = '8.1.149';
+const GAME_VERSION = '8.1.150';
 const COMBAT_WARN_FILL = 0.8515625;
 try{ localStorage.setItem('mochi_last_ver',GAME_VERSION); }catch(e){}   // v7.8.104 index.html เทียบกับ version.json → ถ้าไม่ตรงโหลด game.js แบบ fresh
 // v7.8.100 Lens of Surprise: ทุกรอบ Story ตั้งแต่ด่าน 3 สุ่มลักษณะพิเศษ 1 อย่าง (มีของแลกตามกฎเหล็ก)
@@ -90,6 +90,7 @@ const CARD_INTRO={path:['📖','Battle Recipe','A page of Grandma’s recipes wa
 function cardTypeOf(o){ if(!o)return null; const k=o.kind; return k==='Build Path'?'path':k==='Relic'?'relic':(o.uniqueCard||k==='⭐ Unique'||k==='⭐ Unique Mutation')?'unique':k==='Modifier'?'mod':o.mutation?'mutation':o.evolution?'evolution':k==='Flavor Infusion'?'infusion':k==='Trade-off'?'trade':null; }
 function storyXpNext(level){return 12+6*(Math.max(1,level)-1);}
 const CHANGELOG = [
+  {v:'8.1.150',date:'2026-11-14',title:'owner round 5 — short Relic / hero intro text, vault background, Capture the Zone polish',items:['b']},
   {v:'8.1.149',date:'2026-11-14',title:'owner 🐞 round 4 — Wardrobe tab, Great Hunger aura, Yuzu soft shadows',items:['b']},
   {v:'8.1.148',date:'2026-11-14',title:'Lobby hero feels alive — idle acts, shadow follow, depth motes (owner)',items:['b']},
   {v:'8.1.147',date:'2026-11-14',title:'Chest opening sounds',items:['New chest opening sounds: a shake build-up, then a burst that grows with rarity','Sparkle burst on Epic and Legend, plus item-land and duplicate sounds']},
@@ -5333,29 +5334,29 @@ const PASSIVES = {
    ได้จาก: เลเวล 6 (การันตี) · กล่องมินิบอส · กล่องลับในแมพ 30% · hook อยู่ที่ damage/killEnemy/hurtPlayer/die/doDash (ดู relicOn*) */
 const RELIC_CAP = 5;   // v6.72: Relic + Modifier + Trade-off รวมช่องเดียว (เดิม Relic 3 + Mod 3 + Trade 2)
 const RELICS = {
-  splinter:  { emoji:'💥', name:'Crit Splinter',  headline:'Crits splinter', desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
-  leech:     { emoji:'🩸', name:'Berry Leech',    headline:'Crits heal', desc:'Crits heal 1% max HP (0.25s cooldown)' },
-  burst:     { emoji:'🎆', name:'Sugar Burst',    headline:'Kills may explode', desc:'Slain enemies have an 18% chance to explode, hurting everything nearby' },
-  shell:     { emoji:'🫧', name:'Candy Shell',    headline:'Kills grant shields', desc:'Every 15 kills, or any elite/miniboss/boss kill, gain a shield that blocks the next hit' },
-  jam:       { emoji:'🍓', name:'Sticky Jam',     headline:'Dash leaves a sticky puddle', desc:'Dashing leaves a jam puddle for 3s. Enemies inside get stuck for a moment and take 25% more damage.' },
-  crown:     { emoji:'👑', name:'Crown Breaker',  headline:'Every 40 boss hits: stun', desc:'Every 40 hits on a boss or miniboss (at most every 6s) stuns it for 0.8s and crushes it for a big hit.' },
-  glass:     { emoji:'💔', name:'Cracked Crystal',    headline:'+40% damage · −25% HP', desc:'+40% damage, but -25% max HP' },
-  lastbreath:{ emoji:'🕯️', name:'Last Breath',    headline:'Survive one lethal hit', desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
-  chill:     { emoji:'❄️', name:'Cold Snap',      headline:'Every 6s: freeze burst', desc:'Every 6s your next hit freezes the target and enemies near it for 1s (bosses and minibosses are not frozen).' },
-  firstbite: { emoji:'🎯', name:'First Bite',     headline:'+35% opening hit', desc:'Your first hit against each enemy deals 35% more damage.' },
-  dashcharge:{ emoji:'⚡', name:'Spark Step',     headline:'Dash empowers 3 hits', desc:'After dashing, your next 3 hits within 3s deal 25% more damage.' },
+  splinter:  { emoji:'💥', name:'Crit Splinter',  headline:'Crits shoot 2 shards', desc:'Crits splinter into 2 shards that hit nearby enemies for 40% damage' },
+  leech:     { emoji:'🩸', name:'Berry Leech',    headline:'Crits heal you', desc:'Crits heal 1% max HP (0.25s cooldown)' },
+  burst:     { emoji:'🎆', name:'Sugar Burst',    headline:'Kills can explode', desc:'Slain enemies have an 18% chance to explode, hurting everything nearby' },
+  shell:     { emoji:'🫧', name:'Candy Shell',    headline:'Every 15 kills: a shield', desc:'Every 15 kills, or any elite/miniboss/boss kill, gain a shield that blocks the next hit' },
+  jam:       { emoji:'🍓', name:'Sticky Jam',     headline:'Dash leaves sticky jam', desc:'Dashing leaves a jam puddle for 3s. Enemies inside get stuck for a moment and take 25% more damage.' },
+  crown:     { emoji:'👑', name:'Crown Breaker',  headline:'Hit a boss 40 times: stun', desc:'Every 40 hits on a boss or miniboss (at most every 6s) stuns it for 0.8s and crushes it for a big hit.' },
+  glass:     { emoji:'💔', name:'Cracked Crystal',    headline:'+40% damage, −25% HP', desc:'+40% damage, but -25% max HP' },
+  lastbreath:{ emoji:'🕯️', name:'Last Breath',    headline:'Survive 1 deadly hit', desc:'Once per stage, a lethal hit leaves you at 1 HP with 2s invulnerability' },
+  chill:     { emoji:'❄️', name:'Cold Snap',      headline:'Every 6s: a freezing hit', desc:'Every 6s your next hit freezes the target and enemies near it for 1s (bosses and minibosses are not frozen).' },
+  firstbite: { emoji:'🎯', name:'First Bite',     headline:'First hit +35%', desc:'Your first hit against each enemy deals 35% more damage.' },
+  dashcharge:{ emoji:'⚡', name:'Spark Step',     headline:'After a dash: 3 strong hits', desc:'After dashing, your next 3 hits within 3s deal 25% more damage.' },
   streak:    { emoji:'🔥', name:'Kill Streak',    headline:'Kills stack damage', desc:'+3% damage per kill in your streak (max +40%).' },   // v7.9.23 จาก Instinct
-  laststand: { emoji:'🛡️', name:'Last Stand',     headline:'Tougher at low HP', desc:'Take 30% less damage while HP is below 35%.' },
-  harvest:   { emoji:'🍵', name:'Mochi Harvest',  headline:'Heal every 20 kills', desc:'Every 20 enemy kills restore 5% max HP.' },
+  laststand: { emoji:'🛡️', name:'Last Stand',     headline:'Low HP: take less damage', desc:'Take 30% less damage while HP is below 35%.' },
+  harvest:   { emoji:'🍵', name:'Mochi Harvest',  headline:'Every 20 kills: heal 5%', desc:'Every 20 enemy kills restore 5% max HP.' },
   // v8.0.89 เจ้าของ: Relic หลากหลายขึ้น · แต่ละอันเข้ากับบางสาย (for = บิลด์ที่ได้ประโยชน์ โชว์บนการ์ด)
-  heavydough:{ emoji:'🥖', name:'Heavy Dough',    headline:'+30% damage · −20% attack speed', desc:'+30% damage, but you attack 20% slower. Great for big single hits.', for:'Sniper · Titan · Crystal Impaler', paths:['sniper','titan','pierce'] },
-  sugarrush: { emoji:'🍭', name:'Sugar Rush',     headline:'+25% attack speed · −15% damage', desc:'Attack 25% faster, but each hit deals 15% less. Great for many small hits.', for:'Shotgun · Barrage · Spark', paths:['shotgun','barrage','smite','brawler'] },
-  frostcandy:{ emoji:'🧊', name:'Frost Candy',    headline:'+30% vs frozen/chilled', desc:'+30% damage to frozen, chilled or Brittle enemies.', for:'Mint · Cold Snap', paths:['glacier','barrage','pierce'] },
+  heavydough:{ emoji:'🥖', name:'Heavy Dough',    headline:'+30% damage, slower attacks', desc:'+30% damage, but you attack 20% slower. Great for big single hits.', for:'Sniper · Titan · Crystal Impaler', paths:['sniper','titan','pierce'] },
+  sugarrush: { emoji:'🍭', name:'Sugar Rush',     headline:'Faster attacks, −15% damage', desc:'Attack 25% faster, but each hit deals 15% less. Great for many small hits.', for:'Shotgun · Barrage · Spark', paths:['shotgun','barrage','smite','brawler'] },
+  frostcandy:{ emoji:'🧊', name:'Frost Candy',    headline:'+30% vs frozen', desc:'+30% damage to frozen, chilled or Brittle enemies.', for:'Mint · Cold Snap', paths:['glacier','barrage','pierce'] },
   copperwhisk:{emoji:'🔌', name:'Copper Whisk',   headline:'+30% vs shocked', desc:'+30% damage to shocked enemies (Taro shock or Static Shock).', for:'Taro Sentry · Arc · Spark', paths:['tempest','storm','smite'] },
-  longspoon: { emoji:'🥄', name:'Long Spoon',     headline:'+25% far away', desc:'+25% damage to enemies more than 350px away.', for:'Sniper · Arc · Sentry', paths:['sniper','storm','tempest','pierce'] },
-  crowdcrush:{ emoji:'🍩', name:'Crowd Crusher',  headline:'+25% up close', desc:'+25% damage to enemies within 160px.', for:'Shotgun · Brawler · Dash Boxer', paths:['shotgun','brawler','dashboxer'] },
-  twinbake:  { emoji:'🧁', name:'Twin Bake',      headline:'Unique +40% · −15% cooldown', desc:'Your Unique skill deals 40% more damage and recharges 15% faster.', for:'Unique-heavy builds', paths:['dashboxer','titan','glacier'] },
-  giantslayer:{emoji:'🗡️', name:'Giant Slayer',   headline:'+25% vs big foes · −10% others', desc:'+25% damage to elites, minibosses and bosses, but 10% less to normal enemies.', for:'Titan · Sniper · Impaler', paths:['titan','sniper','pierce'] },
+  longspoon: { emoji:'🥄', name:'Long Spoon',     headline:'+25% to far enemies', desc:'+25% damage to enemies more than 350px away.', for:'Sniper · Arc · Sentry', paths:['sniper','storm','tempest','pierce'] },
+  crowdcrush:{ emoji:'🍩', name:'Crowd Crusher',  headline:'+25% to close enemies', desc:'+25% damage to enemies within 160px.', for:'Shotgun · Brawler · Dash Boxer', paths:['shotgun','brawler','dashboxer'] },
+  twinbake:  { emoji:'🧁', name:'Twin Bake',      headline:'Unique +40% and faster', desc:'Your Unique skill deals 40% more damage and recharges 15% faster.', for:'Unique-heavy builds', paths:['dashboxer','titan','glacier'] },
+  giantslayer:{emoji:'🗡️', name:'Giant Slayer',   headline:'+25% vs bosses and elites', desc:'+25% damage to elites, minibosses and bosses, but 10% less to normal enemies.', for:'Titan · Sniper · Impaler', paths:['titan','sniper','pierce'] },
 };
 // คู่ synergy — ถือครบทั้งคู่ = ผลพิเศษเพิ่ม (โชว์ในการ์ดเมื่อถืออีกครึ่งอยู่แล้ว)
 const RELIC_SYNERGIES = [
@@ -5467,14 +5468,14 @@ function heroRevealed(id){ if(id==='momo'||(typeof FIGHTER_PLAYTEST_ALL!=='undef
   const hi=HERO_INTROS.find(x=>x.id===id); if(!hi)return true; return !!(d[hi.flag]||(d.stageMastery||{})[hi.idx]||(typeof MC_HERO_SCENE!=='undefined'&&(d.mcSeen||{})[MC_HERO_SCENE[id]])||d.character===id); }
 const HERO_INTROS=[
   {idx:1,id:'mint',flag:'mintIntro',card:'card_mint',emoji:'🌿',name:'Mint',color:'#2f7fb0',edge:0x8fd0ff,btn:0x4fb6e8,btnEdge:0xe6f7ff,stroke:'#1d4f6e',label:'❄️ Choose Mint',
-    text:'Thanks for freeing me! I’m Mint. My frost freezes the sludge ahead. Try me! Switch heroes any time in Heroes.'},
+    text:'I’m Mint! My frost freezes the sludge. Try me!'},
   {idx:2,id:'cocoa',flag:'cocoaIntro',card:'card_cocoa',emoji:'🐻',name:'Cocoa',color:'#8a4b22',edge:0xd9a066,btn:0xa0612f,btnEdge:0xffe2bf,stroke:'#4a2410',label:'🐻 Choose Cocoa',
-    text:'Thanks for freeing me! I’m Cocoa. Seeds bounce off the machines ahead — my punches break them. Switch heroes any time in Heroes.'},
+    text:'I’m Cocoa! My punches smash the machines. Try me!'},
   {idx:3,id:'taro',flag:'taroIntro',card:'card_taro',emoji:'⚡',name:'Taro',color:'#6a4fc8',edge:0xb9a3ff,btn:0x7c5ce0,btnEdge:0xeee6ff,stroke:'#2e1f66',label:'⚡ Choose Taro',
-    text:'Thanks for freeing me! I’m Taro. My lightning jumps through crowds. I know the way! Switch heroes any time in Heroes.'},
+    text:'I’m Taro! My lightning hits whole crowds. Try me!'},
   {idx:4,id:'yuzu',flag:'yuzuIntro',card:'card_yuzu',emoji:'🍋',name:'Yuzu',color:'#c99a12',edge:0xffe07a,btn:0xe0b52a,btnEdge:0xfff4c4,stroke:'#5c4306',label:'🍋 Choose Yuzu',
-    text:'Thanks for freeing me! I’m Yuzu. My Yuzling fights with me. Let’s cut the Crown’s root! Switch heroes any time in Heroes.'},
-  {idx:5,id:'sesame',flag:'sesameIntro',card:'card_sesame',emoji:'🪞',name:'Sesame',color:'#58478d',edge:0xbcaaf4,btn:0x7661b5,btnEdge:0xece3ff,stroke:'#38275b',label:'🪞 Choose Sesame',text:'I’m Sesame. Three elemental runes can weave powerful spells. Switch heroes any time in Heroes.'}
+    text:'I’m Yuzu! My little Yuzling fights with me. Try me!'},
+  {idx:5,id:'sesame',flag:'sesameIntro',card:'card_sesame',emoji:'🪞',name:'Sesame',color:'#58478d',edge:0xbcaaf4,btn:0x7661b5,btnEdge:0xece3ff,stroke:'#38275b',label:'🪞 Choose Sesame',text:'I’m Sesame! I mix runes into big spells. Try me!'}
 ];
 const SIGNATURE_WEAPONS = {
   berryBlaster:{name:'Heart Seed Gun',emoji:'🍓',skill:'sprinkle',dmgMul:1.02,cdMul:1.0,shots:0,trait:'+2% damage · steady fire'},
@@ -9222,7 +9223,7 @@ const WAVE_OBJECTIVES = {
   fill:{emoji:'🍬',name:'Fill the Meter',desc:'Defeat enemies to fill the meter'},
   hunt:{emoji:'🎯',name:'Hunt the Threat',desc:'Defeat the marked Elite — it blinks away when you get close and leaves a trap'},
   purge:{emoji:'🕯️',name:'Escort the Wisp',desc:'Guide the wisp to each cursed core — red raiders hunt the wisp, intercept them'},
-  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stand in the ring to purify it — the ring grows while enemies swarm in to stop you'},
+  capture:{emoji:'🔷',name:'Capture the Zone',desc:'Stay in the ring until it fills. It blasts enemies every 25%!'},
   defendNectar:{emoji:'🌺',name:'Defend Nectar',desc:'Protect one nectar flower. Losing it costs 1/3 max HP; a fresh flower blooms elsewhere'},
   seasonCycle:{emoji:'🌦️',name:'Seasonal Harvest',desc:'Pick up petals from defeated monsters · step on a shrine to call its season · fill all four'},
   breakRoots:{emoji:'🌳',name:'Sever the Crown Roots',desc:'Stand next to every corrupted root anchor to sever it before the throne pulse closes in'},
@@ -13345,10 +13346,10 @@ class Game extends Phaser.Scene {
     const shade=this.add.rectangle(0,0,w,h,0x0a0612,0.86).setOrigin(0); this.menu.add(shade);
     const ah=Math.min(h*0.46,360),aw=ah*0.75,art=this.textures.exists(hi.card)?this.add.image(w/2,h*0.30,hi.card).setDisplaySize(aw,ah):this.add.text(w/2,h*0.30,hi.emoji,{fontSize:'90px'}).setOrigin(0.5); this.menu.add(art);
     this.tweens.add({targets:art,y:art.y-8,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    const bw=Math.min(w-30,420),bh=150,bx=(w-bw)/2,by=h*0.30+ah/2+6,g=this.add.graphics();
+    const bw=Math.min(w-30,420),bh=96,bx=(w-bw)/2   /* v8.1.150 เจ้าของ: คำแนะนำตัวฮีโร่ยาวไป → ประโยคสั้น ตัวใหญ่ขึ้น */,by=h*0.30+ah/2+6,g=this.add.graphics();
     g.fillStyle(0xffffff,0.97);g.fillRoundedRect(bx,by,bw,bh,18);g.fillTriangle(w/2-12,by+1,w/2+12,by+1,w/2,by-14);g.lineStyle(3,hi.edge,1);g.strokeRoundedRect(bx,by,bw,bh,18);
     const nm=this.add.text(bx+16,by+12,hi.emoji+' '+hi.name,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'15px',color:hi.color});
-    const tx=this.add.text(bx+16,by+38,hi.text,{fontFamily:'sans-serif',fontSize:'14px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
+    const tx=this.add.text(bx+16,by+40,hi.text,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#2a1a33',wordWrap:{width:bw-32},lineSpacing:4});
     this.menu.add([g,nm,tx]);
     const btw=Math.min(w-60,300),bth=48,bty=Math.min(h-40,by+bh+40),btn=this.add.graphics();btn.fillStyle(hi.btn,1);btn.fillRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);btn.lineStyle(3,hi.btnEdge,1);btn.strokeRoundedRect(w/2-btw/2,bty-bth/2,btw,bth,20);
     const bt=this.add.text(w/2,bty,hi.label,{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffffff',stroke:hi.stroke,strokeThickness:3}).setOrigin(0.5);this.menu.add([btn,bt]);
@@ -16142,7 +16143,19 @@ class Game extends Phaser.Scene {
     const step=Math.floor(f*10);if(step>(o._capStep||0)){o._capStep=step;if(Sfx.chestTick)Sfx.chestTick(step*3);
       const p=this.camWorld(this.add.circle(z.x,z.y,R*Math.max(.1,f),col,0).setStrokeStyle(5,col,0.9).setDepth(z.depth+1));this.tweens.add({targets:p,scale:1.35,alpha:0,duration:480,onComplete:()=>p.destroy()});
       this.floatText(z.x,z.y-R-10,(step*10)+'%',col);}
-    if(inside&&f>0.05){o._rushT=(o._rushT??5)-dt;if(o._rushT<=0){o._rushT=Phaser.Math.FloatBetween(3.6,5.2)-f*1.2;this.captureRush(z);}} }
+    if(inside&&f>0.05){o._rushT=(o._rushT??5)-dt;if(o._rushT<=0){o._rushT=Phaser.Math.FloatBetween(3.6,5.2)-f*1.2;this.captureRush(z);}}
+    this.captureHud?.(z,R,f,col,inside,o); const q=Math.floor(f*4); if(q>(o._capQ||0)&&q<4){ o._capQ=q; this.capturePulse?.(z,R,col); } }
+  /* v8.1.150 เจ้าของ: Capture the Zone ยืนเฉย ๆ ไม่รู้ทำอะไร → เส้นความคืบหน้ารอบขอบวง + วินาทีที่เหลือกลางวง + ทุก 25% วงปล่อยคลื่นผลักมอน · จบ = ล้างมอนรอบวง */
+  captureHud(z,R,f,col,inside,o){ if(!this.add?.graphics)return; let g=this._captureArc; if(!g||!g.scene){ g=this._captureArc=this.camWorld(this.add.graphics().setDepth(z.depth+2)); }
+    g.clear(); g.lineStyle(9,0x1a0f24,.45).strokeCircle(z.x,z.y,R+8); if(f>0){ g.lineStyle(7,col,.95).beginPath(); g.arc(z.x,z.y,R+8,-Math.PI/2,-Math.PI/2+TAU*f,false); g.strokePath(); }
+    const left=Math.max(0,Math.ceil((o.target||0)-(o.progress||0))); let t=this._captureSec;
+    if(!t||!t.scene){ t=this._captureSec=this.camWorld(this.add.text(z.x,z.y,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'40px',color:'#ffffff',stroke:'#1a0f24',strokeThickness:7}).setOrigin(.5).setDepth(z.depth+3)); }
+    t.setPosition(z.x,z.y).setText(inside?left+'s':'⬇ '+left+'s').setAlpha(inside?.95:.7).setColor(inside?'#ffffff':'#ffd0d8'); return left; }
+  capturePulse(z,R,col){ if(!z)return 0; let n=0; const PR=R*1.25;
+    (this.enemies?.getChildren?.()||[]).slice().forEach(e=>{ if(!e||!e.active||e.isBoss||e.isDummy)return; const d=this.dist(e.x,e.y,z.x,z.y); if(d>PR)return; const a=Math.atan2(e.y-z.y,e.x-z.x),hard=e.isElite||e.isMini;
+      this.damage?.(e,(e.maxhp||e.hp||10)*(hard?.08:.4),e.x,e.y); if(e.active&&!hard){ e.knock=Math.max(e.knock||0,.35); e.setVelocity?.(Math.cos(a)*520,Math.sin(a)*520); } n++; });
+    if(this.add?.circle){ const w=this.camWorld(this.add.circle(z.x,z.y,R*.3,col,0).setStrokeStyle(10,0xfff1b0,.95).setDepth(z.depth+2)); this.tweens?.add({targets:w,scale:PR/(R*.3),alpha:0,duration:420,ease:'Cubic.out',onComplete:()=>w.destroy()}); }
+    this.screenShake?.(160,.006); Sfx.orderCue?.('mission_tube_pop',.35,.3); return n; }
   captureRush(z){ const a=Math.random()*TAU,far=Math.max(this.W,this.H)/this.viewZoom*0.55,sx=z.x+Math.cos(a)*far,sy=z.y+Math.sin(a)*far;
     const ang=Math.atan2(z.y-sy,z.x-sx),mx=z.x+Math.cos(a)*(z.radiusGoal+90),my=z.y+Math.sin(a)*(z.radiusGoal+90);
     const warn=this.camWorld(this.add.text(mx,my,'➤➤',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'34px',color:'#ff5a6e',stroke:'#1a0f24',strokeThickness:6}).setOrigin(0.5).setRotation(ang).setDepth(90000));
@@ -16151,9 +16164,11 @@ class Game extends Phaser.Scene {
     this.time.delayedCall(1100,()=>{ if(!this._captureZone)return;const n=6+Math.min(4,this.stageIndex||0)+Math.round(Phaser.Math.Clamp(this.waveObjective?this.waveObjective.progress/25:0,0,1)*4),pa=Math.atan2(sy-this.player.y,sx-this.player.x),pd=this.dist(sx,sy,this.player.x,this.player.y);
       for(let i=0;i<n;i++){const e=this.spawnEnemy(i%2?'fast':'dasher',pa+Phaser.Math.FloatBetween(-0.18,0.18),pd*Phaser.Math.FloatBetween(0.95,1.08));if(e&&e.spd)e.spd*=1.35;} }); }
   // v5.22: จบ capture = วงชำระขยายใหญ่ทั่วจอ + จอแฟลชขาวทอง + เสียง
+  captureFinishSweep(x,y,R){ let n=0; const FR=Math.max(R*2.2,520); (this.enemies?.getChildren?.()||[]).slice().forEach(e=>{ if(!e||!e.active||e.isBoss||e.isDummy||this.dist(e.x,e.y,x,y)>FR)return; const hard=e.isElite||e.isMini; this.damage?.(e,(e.maxhp||e.hp||10)*(hard?.25:5),e.x,e.y); n++; }); return n; }   /* v8.1.150 จบวง = ล้างมอนธรรมดารอบวง (Elite/มินิบอส −25%) */
   captureDoneFX(){ Sfx.eventLoopStop?.('event_capture_charge');Sfx.rewardCue?.('sfx_event_capture_complete',.65);this._captureSfxAt=this.time.now;const z=this._captureZone;if(!z)return;const R=z.radiusGoal,x=z.x,y=z.y;
 
     this.screenFlash(0xfff4c2,0.85,520);this.screenShake(420,0.012);if(this.hitStop)this.hitStop(60);
+    this.captureFinishSweep?.(x,y,R);
     const big=Math.max(this.W,this.H)/this.viewZoom/R*1.1;
     const disc=this.camWorld(this.add.circle(x,y,R,0xffe08a,0.55).setDepth(89990));this.tweens.add({targets:disc,scale:big,alpha:0,duration:900,ease:'Cubic.out',onComplete:()=>disc.destroy()});
     const ring=this.camWorld(this.add.image(x,y,'vfx_magic_circle').setTint(0xffd166).setDisplaySize(R*2,R*1.72).setDepth(89995));this.tweens.add({targets:ring,scaleX:ring.scaleX*big*0.8,scaleY:ring.scaleY*big*0.8,rotation:TAU*0.5,alpha:0,duration:1000,ease:'Cubic.out',onComplete:()=>ring.destroy()});
@@ -16996,7 +17011,7 @@ class Game extends Phaser.Scene {
     for(const s of this._seasonShrines||[]){for(const q of [s.zone,s.ring,s.label])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._seasonShrines=null;
     { const st=this.waveObjective?.storm; if(st){ for(const d of st.drops||[]){ this.tweens.killTweensOf(d.img); d.img?.destroy(); } st.drops=[]; for(const sh of st.shrines||[]){ sh.ring?.destroy(); sh.t?.destroy(); } st.shrines=null; } }
     for(const b of this._cleanAir?.bub||[]){ this.tweens.killTweensOf(b.img); if(b.img.active)b.img.destroy(); }
-    for(const k of ['_captureZone','_captureRing','_captureFill','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
+    for(const k of ['_captureZone','_captureRing','_captureFill','_captureArc','_captureSec','_cleanAirZone','_cleanAirRing','_cleanAirWisp','_cleanAirPath']){const q=this[k];if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();this[k]=null;}}this._cleanAir=null;for(const f of this._nectarFlowers||[]){for(const q of [f.sprite,f.ring])if(q){this.tweens.killTweensOf(q);if(q.active)q.destroy();}}this._nectarFlowers=null;
     this.killPurifyWisp(false);this._wispRespawn=0;
     if(this.objNodeG)this.objNodeG.clear();
     this.waveObjective=null;for(const q of [this.waveObjTxt,this.waveObjBg,this.waveObjBar])if(q)q.setVisible(false);this.syncSeasonIcons?.(null);
@@ -18461,11 +18476,11 @@ class Game extends Phaser.Scene {
   /* ===== v8.1.122 ห้องสมบัติ Relic: ของ 3 ชิ้นลอยบนแท่นแก้ว + ลำแสง · แตะ = ซูม + อ่านผล · แตะซ้ำ = เก็บ · อาร์ตใบ 80 (vault80_bg / vault80_pedestal) ถ้ามี ไม่มี = วาดด้วยโค้ด ===== */
   lvlObjIcon(o,x,y,size){ const k=[o.iconKey,o.key].find(k=>k&&this.textures.exists(k)); if(k){ const im=this.add.image(x,y,k); im.setScale(size/Math.max(im.width||1,im.height||1)); return im; } return this.add.text(x,y,o.emoji||'✨',{fontSize:Math.round(size*.8)+'px'}).setOrigin(.5); }
   drawRelicVault(opts,top,hint){ const W=this.W,H=this.H,G=this.lvlUp; if(!G||!this.add)return false; const n=opts.length,bot=H-24,midY=top+Math.min(250,(bot-top)*.42),cw=Math.min(130,(W-24)/n);
-    if(this.realTex?.('vault80_bg'))G.add(this.add.image(W/2,top-30,'vault80_bg').setOrigin(.5,0).setDisplaySize(W,Math.min(H-top+30,W*1.4)).setAlpha(.9));
+    if(this.realTex?.('vault80_bg')){ const bg=this.add.image(W/2,H/2,'vault80_bg'); bg.setScale(Math.max(W/Math.max(1,bg.width),H/Math.max(1,bg.height))).setAlpha(.9); if(G.addAt)G.addAt(bg,Math.min(1,G.length||0)); else G.add(bg); }   /* v8.1.150 เจ้าของ: พื้นหลังห้องสมบัติไม่เต็มด้านบน → คลุมทั้งจอ อยู่ใต้หัวข้อ */
     hint?.setText('🔮 TREASURE VAULT · tap a treasure');
     const info=this.add.container(0,0); const iy=midY+110,ih=Math.max(110,Math.min(190,bot-iy)),ig=this.add.graphics(); ig.fillStyle(0x140c1e,.92); ig.fillRoundedRect(14,iy,W-28,ih,16); ig.lineStyle(2,0xc07bff,.8); ig.strokeRoundedRect(14,iy,W-28,ih,16);
     const it=this.add.text(W/2,iy+14,'Tap a treasure to look closer',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'17px',color:'#ffe08a',align:'center',stroke:'#1a1224',strokeThickness:3,wordWrap:{width:W-60}}).setOrigin(.5,0),
-      id=this.add.text(W/2,iy+44,'',{fontFamily:'sans-serif',fontSize:'13px',color:'#ffffff',align:'center',wordWrap:{width:W-60},lineSpacing:3}).setOrigin(.5,0); info.add([ig,it,id]); G.add(info);
+      id=this.add.text(W/2,iy+48,'',{fontFamily:'sans-serif',fontStyle:'bold',fontSize:'16px',color:'#ffffff',align:'center',wordWrap:{width:W-60},lineSpacing:6}).setOrigin(.5,0); info.add([ig,it,id]); G.add(info);
     const items=[];
     opts.forEach((o,i)=>{ const cx=W/2+(i-(n-1)/2)*cw,col=o.color||0xc07bff,base=midY+50;
       const beam=this.add.graphics(); beam.fillStyle(0xfff4d6,.10); beam.fillTriangle(cx-14,top-6,cx+14,top-6,cx+cw*.42,base); beam.fillTriangle(cx-14,top-6,cx-cw*.42,base,cx+cw*.42,base);
@@ -18476,7 +18491,7 @@ class Game extends Phaser.Scene {
       this.tweens.add({targets:ic,y:midY-7,duration:1100+i*90,yoyo:true,repeat:-1,ease:'Sine.inOut'}); this.tweens.add({targets:glow,alpha:{from:.14,to:.34},scale:{from:.92,to:1.1},duration:900,yoyo:true,repeat:-1});
       const card={left:cx-cw/2,right:cx+cw/2,top:midY-cw*.5,bottom:base+80,apply:o.apply,title:o.title,opt:o};
       card.onFocus=()=>{ for(const q of items){ const on=q.card===card; this.tweens.killTweensOf(q.ic); q.ic.setScale(q.s0*(on?1.35:1)); this.tweens.add({targets:q.ic,y:midY-7,duration:900,yoyo:true,repeat:-1,ease:'Sine.inOut'}); for(const z of [q.ic,q.ped,q.lab])z.setAlpha?.(on?1:.4); q.glow.setVisible(on); }
-        it.setText((o.emoji?o.emoji+' ':'')+(o.title||'')); id.setText([o.kind&&o.kind!=='Relic'?'['+o.kind+']':'',o.desc||'',o.headline||''].filter(Boolean).join('\n')); hint?.setText('Tap again to take “'+(o.title||'')+'”'); };
+        it.setText((o.emoji?o.emoji+' ':'')+(o.title||'')); id.setText([o.kind&&o.kind!=='Relic'?'['+o.kind+']':'',o.short||String(o.desc||'').split(/(?<=[.!])\s/)[0],o.note||''].filter(Boolean).join('\n'));   /* v8.1.150 เจ้าของ: ข้อความ Relic ยาวไป → ประโยคสั้นเดียว + คอมโบ (ถ้ามี) */ hint?.setText('Tap again to take “'+(o.title||'')+'”'); };
       items.push({card,ic,ped,lab,glow,s0}); this.lvlCards.push(card); });
     return true; }
   /* ===== v8.1.122 เตาหลอม Evolution: อาวุธลอยเหนือทั่ง + ประกายไฟ · แตะ = ไฟลุก · แตะซ้ำ = หลอม ===== */
@@ -19772,7 +19787,7 @@ class Game extends Phaser.Scene {
     const fr=((FUSIONS[(this.basicAttack||{}).character]||[]).map(f=>f.relic)),w=pool.map(k=>(RELIC_SYNERGIES.some(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a]))?2.5:1)*(fr.includes(k)?2:1)*((RELICS[k].paths||[]).includes((this.basicAttack||{}).path)?1.8:1)),out=[];   // v8.0.89 Relic ที่เข้ากับสายที่เล่นอยู่ ออกบ่อยขึ้น
     while(out.length<n&&pool.length){ let tot=w.reduce((a,b)=>a+b,0),r=Math.random()*tot,i=0; for(;i<pool.length-1;i++){r-=w[i];if(r<=0)break;} const k=pool.splice(i,1)[0];w.splice(i,1);
       const d=RELICS[k],syn=RELIC_SYNERGIES.find(s=>(s.a===k&&own[s.b])||(s.b===k&&own[s.a])),fu=(FUSIONS[(this.basicAttack||{}).character]||[]).find(f=>f.relic===k);   // v7.8.88 บอกล่วงหน้าว่า Relic นี้ + Evolution = Fusion
-      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,headline:[syn?'🔗 '+syn.name+': '+syn.desc:'',fu?'🧬 + Evolution → '+fu.name:'',d.headline||'',d.for?'👍 '+d.for:''].filter(Boolean).join('  ')||undefined,apply:()=>this.gainRelic(k)}); }
+      out.push({type:'relic',key:'relic_'+k,iconKey:'relic_'+k,lvl:1,max:1,kind:'Relic',color:0xc07bff,emoji:d.emoji,title:d.name,desc:d.desc,short:d.headline,note:[syn?'🔗 Combo: '+syn.name:'',fu?'🧬 Evolves into '+fu.name:''].filter(Boolean).join('\n'),headline:[syn?'🔗 '+syn.name+': '+syn.desc:'',fu?'🧬 + Evolution → '+fu.name:'',d.headline||'',d.for?'👍 '+d.for:''].filter(Boolean).join('  ')||undefined,apply:()=>this.gainRelic(k)}); }
     // v6.72 A2/A3: Modifier/Trade-off ออกในหน้า Relic แทนการ์ดเลเวลอัพ (แทนที่ช่องสุ่ม 1 ใบต่อชนิด)
     if(!this._inTutorial&&this.basicAttack){ const extra=[]; if(this.cardOpen?.('mod')!==false&&Math.random()<0.6){const mc=this.modCard();if(mc)extra.push(mc);} if(((this.stageIndex||0)>=5||this.recipeMode)&&this.cardOpen?.('trade')!==false&&Math.random()<0.35){const tc=this.tradeCard();if(tc)extra.push(tc);}
       for(const c of extra){ if(out.length<n)out.push(c); else { const i=Phaser.Math.Between(0,out.length-1); if(out[i].type==='relic')out[i]=c; } } }
